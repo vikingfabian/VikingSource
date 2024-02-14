@@ -1,0 +1,106 @@
+﻿#Hjälte ideer
+Elf - ranged "Only walks down a smelly dungeon to afford an expensive lifestyle, of beauty products and parties"
+
+Shapeshifter - kan som action byta till puma (glas kanon) eller björn (tank)[walk, and transform at start of next turn], djur formen drainar stamina tills dom är slut, 
+	ultimate är en wereworlf
+	https://aliisaacstoryteller.com/2015/09/03/the-beast-within-shapeshifters-in-irish-mythology/
+	
+Chibi - "She and her fluffy friends just wanna give you big a hug, forever and ever, until you stop breathing" 
+	liten figur som spawnar luddiga monster som kväver sina fiender, ludden försvinner om dom är ensamma	
+	utimate: slaktar alla ludd för att boosta sig själv (skapa armor piece?)
+
+Recruit - lätt spelad, "this young brat is arriving fresh from the hero academy, and hasnt done an honest day of work in his life"
+svärd, kast knivar
+toys: har extra heal/stamina flaskor
+hero complex: starkare nära skadad hjälte
+moster book, skill, kan adda moster och ge +1 i att attackera dom (plus pierce kanske);
+
+Dwarf:
+"Through the eons they have fought of invading forces of goblins, titans and deamons - however, their true nemesis will always be the top shelf."
+High armor (no dodge), kan bära mer items
+Crowd control
+Dash move - istället för run - move + dash3 (med pushback och give/recieve damage)
+
+Amazon 
+"A strong female warrior, with the magical power to wear a bra as full body armor" 
+"The amazonial men are domesticated, and not fit for combat"
+glas kanon, spjut o sköld, kan kasta sina vapen
+Leap skill: jump to enemy position, 2-3 squares away, 3-5 damage
+
+Animal trainer (druid) - "Nothing gets more press than a cute animal in pain, thats when we call for this hero"
+
+Magician "Like an old grandpa: nice, but never stops reminding you how much harder life was, a thousand years ago"
+En action byter element (plus liten attack)
+//force - flytta saker, sköld
+Light <> Shadow (healer, damage dealer)
+Fire <> Ice (aoe attacker)
+Earth <> Astral (animal minions, undead minions)
+Varje element har mana, som är en bonus poäng man kan samla och använda i tunga attacker. Tex att bli healad (eller intilliggande hjälte) ger +light
+"cold" - unit effect, -1 move, -1 attack
+eldfat - klicka på den för att suga upp 2fire
+Element XXX property - kan finnas på moster och vapen, bonus skada för motsatt element, immuna i sitt egna (kanske vapen skada ska delas upp i elementel och physical)
+ -Ger även bonus som kan gå över vatten med is, stå i eld om fire, upptäcker dolda ting om light, 
+Special element. tex Electric (Light+Fire), dessa ger special strategier
+
+Runemaster - kort system, spendera kort från en spell book, kan bränna kort för extra effekt (hans start skills är en kort draft)
+återfår kort när han är nere på ett
+
+Hobbit - rouge karaktär, snabb, osynlig, lootare
+
+Khaja (Thief) "Tell me again, why we bring a thief with us? now all the loot has gone missing again!"
+rouge karaktär, backstabber
+-katt furry karaktär
+
+Dragon hunter
+A job for only the bravest of men. And with that I mean braindead madmen.
+Charged attack, ta ett steg, attackera - blir starkare och starkare.
+
+Paladin "Blessed with the legal right to save or kill a man, in the name of God"
+"What is the right thing to do? You can count on this guy to know! In fact he will be so certain, that he will ready to torture and kill to prove his point."
+Nybörjar healer/tank
+
+
+Emo - "Channel the raw power of teenage angst - mascara is included"//and then stand in a corner and sob for a bit" 
+jrpg hero parody
+jiggly tits på female
+
+Tank - "Shield your team mates and keep them alive, so they live to tell the tale about how much more kills they got"
+Taunt skill: enemies will attack you
+Sheep herder: move enemies towards a point
+Shield bash: push back enemy, stunn, and take position
+
+Barbarian/Monk - Använder ett energi system likt Batman Chronicles
+	Kanske med "kuber" i olika färger som slumpas, olika färger kan göra olika saker
+	Typ Fire-amulet, Water-amulet, Power-amulett(wild)
+	Ta två och konvertera till Power
+
+#Personality traits
+Randomized, one good, one bad - unlocks after a couple of levels
+EX: 
+Good: 
+Gold rush - +5% hit chance if picked gold in previous move
+Bond, bonus if adjacent to the same hero two times a row
+Group pressure, +1 move if next to two heroes a turn start
+
+Bad: 
+Blood sick - -5% if attacking adjacent to a hero with <50% health
+Proj fear, dont like standing in line of fire
+
+#Character stats
+Health 
+Stamina
+Arm Strength: Svärd/yxor/tung sköld (kan hålla tvåhans i en hand om dubbel strength & tvärtom)
+Dexterity: Projektil vapen (Bonus range vid högt)
+Wisdom: Magiska vapen/tier2 spells
+Endurance: Armor carry level
+(kanske)Agility: Ger defence dodge, bonsuar vid terräng, ignorera traps
+
+#Hero Skins
+Original
+Fire, Ice, Earth
+Pink, Punk, Exotic, Bling
+Pirate, High fantasy, Manga, Steampunk 
+Horror, Chrismas
+Joker
+Handikapp, Ranbow, Void
+Metal, Scifi

@@ -1,0 +1,130 @@
+﻿#Gifted Achievements
+Achievements man kan ge varann (max två per game), man kan unlocka extra knasiga efter hand
+-Black sheap, getting blamed for failure
+-The Completionist, its all or nothing (YT The Completionist/The bearded Completionist, -you deserve the golden poop)
+-The NOOB, some people never learn
+-The cattle, -you are letting people push you around
+-The mouth, talks too much
+-Greedy Goblin, so greedy...
+-Kill stealer, someone is waiting for that last hit
+-Scorched earth, leaving devestation behind
+-Loot whore, just here for the loot
+-Ninja, grab all stuff and run
+-Lone wolf, "I can do this on my own"
+-Lucky star, the lords of random are in your favor
+-The short straw, Better luck next time.
+-The Fat Wall, always in the way
+-Meat shield, taking all the hits
+-The Net Troll, just here to annoy you
+-The Joker, just fools around
+-LOL, -you made me laugh
+-Salty, someones mood is dropping
+-Death wish, Leeroy Jenkins!, runs blindly into battle
+-Support angel, always there to help
+-The Heal Bitch, playing support against his will
+-Backseat gamer, wont let people make their own decisions
+-Born leader, someone just took command
+-Cliff hanger, some people push their luck to the limit
+-Sleeping guard, -now is not the time for a break!
+-The slog, -what is taking so much time?!
+-The fool, -hope you wont make that mistake again
+-Overthinker, (YT moviebob, antithinker kanske) 
+-Masochist, -i start to think you like taking hits
+-Resource drainer, -dont spend all your items in one turn!
+-Locked pockets, someone is way too cheap
+-The Communist, "everyone should have their fair share"
+-The Begger, always in need
+-In care, everyone has to help this person out
+-The cry baby, someone is not happy
+-The mobster, "Do this, or else..."
+-The haxxer, -Did you just break the game?
+-Control freak, -relax man!
+-Careless stoner, cant ever be serious 
+-Social Vampire, just here for the company
+-Demanding host, "my house, my rules!"
+-The shopper, someone is spending to much time buying stuff
+-The chick - time to break this sausage fest (YT chickaroney)
+-The granpa, hates the new
+-Hiding rabbit, some people always run from danger
+-The pig, that was discusting
+-In sheep clothes, someone suddenly became dangerous
+-The smurf, someone has already played through the game
+-Judas, I thought you where on my side
+-The scavanger, someone is picking up every bread crum
+-Spartan, some people do great, using almost nothing
+-White knight, a bit too nice and helpful
+ -ice queen, breaking hearts and dont care
+ //-Animal cruelty, dont forget your pet
+ -The silent type, Communnication is key, you know?
+
+ #COMMUNICATION
+ Markings:
+ -This one is mine
+ -I move here
+ -You can take that
+ -You move there
+ -You move Pet there
+ (-i need item)
+
+
+#Fysik
+Fälla träd, blir två rutor med logs
+Log täcker terräng som tex vatten, även lava under en runda
+Frysa vatten, kan gå över, den som står i vattnet blir frusen
+Skjuta igenom eldfat, eld property på pil
+Pilar kan utgöra en tillfällig stege
+Shockwave, kan leda till stun, släcka eld, rasa väggar
+Eld + gräs > torrt gräs
+
+#Boss Ai Deck
+Charge - move one step, the next card is hidden
+Storm - virvelvind som jagar närmsta spelare
+
+#Hero upgrades
+Guard skill - få +1 armor och parry för varje sparad attack action
+Attack more: lvl1 > 3stamina för en attack till, lvl2 > alltid en extra attack
+Throw back: vid dodge > projectile retaliate 3 
+
+#Loot runner mode / Cutthroat Quest
+Baserat på arcadia quest, man tävlar om mest loot
+Man har tre gubbar: ledare, melee & archer
+Man aktiverar en i taget, efter blir dom "fatiged: -1move, -1attack", andra aktivering ger "must rest: cant be activated"
+Man kan välja Rest: alla enheter blir ready, döda repawnar, levande healar (kanske bonus på inaktiverad)
+Gubbarna bär på guld, som dom droppar vid skada (lite grann sidan om) och död
+Side-quests, rädda prinsessa, döda bossar osv. ger bonus guld
+Final Retaliate X: retaliate även om död, -1 för varje overkill
+
+
+#BRAiN
+*Butter fingers - parry/retaliate minskar styrka med 2
+*Spöke med back-off defence, 80% chans att backa undan attacken
+*Mage "dice chucker" magic: tex 60% skada alla fiender i LOS 2, 40% ta en skada av alla i LOS
+	-kan vara effektivt för att rerolla items
+*Soul sucker - fiende som minskar ens stats och sedan flyr
+*Stor overkill ska pulvrisera monstret
+*Buckle, ger disarm om man blockar melee skada
+*Spelet laddar upp Highscore till playfab (en server/tjänst specialgjord för highscores, stats, etc till spel),
+*Discord-botten laddar sedan ner Highscore-listan från playfab var 10:e sekund, och skriver/editerar ett meddelande i Discord
+*Story chest, som ger en boost för nästa bana (finns bakom boss o sånt)
+
+creature med stor klubba (knight club), laddar klubban i slutet av rundan - går då långsamt och slår hårt
+100 click ger cookies
+Custom pekare unlocks (+trace?)
+alla items har slots för power-gems, tex 3gems = +1 attack
+vapen med engångs eller tappable (rest reset) skill - tex att göra en extra attack
+Npc som ger olika förolämpningar till varje karaktär (utom amazon kanske)
+Combo attack, vissa strategier kan leda till nya (om man har rätt skill för det) t.ex. Advance (move + hit1) > Slash (2 times +1attack) > Finisher (pierce3 attack)
+Stridshorn, ger group morale boost skill
+Boost juice: +2 stamina, +4hp, +morale boost
+golden die, reroll all misses
+Nån device som tickar ner och levlar upp alla fiender in en area
+
+Blessing/Curse varje roll har 10% chans att få dubbel skada/miss
+
+Lobby coinpush minispel: "Flick a hero" > knuffa runda brickor för att slå ut monster brickor (Catacombs, Flick 'em Up!)
+
+#Enemies
+Treemen: Växer i attack styrka vid healing
+
+#Visual Unlocks
+Bära boss/fiende huvuden som sköld

@@ -1,0 +1,91 @@
+﻿System.Diagnostics.Debug.WriteLine(
+
+
+##Recieved World overview
+Warning: Get sender ID, PlayerVisualMode
+Recieve Private Home Location for Local:1
+Warning: Get sender ID, PlayerVisualMode
+##Recieved World overview
+Warning: Get sender ID, NewPlayer
+Error: Remote obj ID{32,1} already set by:GameObject.Hero{32,1}
+--replace with GameObject.Hero{32,1}
+Recieve Private Home Location for Local:2
+Error: Remote obj ID{32,9} already set by:Guard
+--replace with Door
+Error: Remote obj ID{32,13} already set by:Mother
+--replace with Mother
+Error: Remote obj ID{32,11} already set by:Horse Transport
+--replace with Door
+FATHER
+Error: Remote obj ID{32,7} already set by:Guard
+--replace with Door
+Error: Remote obj ID{32,3} already set by:GameObject.Herb{32,3}
+--replace with GameObject.Herb{32,3}
+Error: Remote obj ID{32,5} already set by:Father
+--replace with Father
+
+
+
+
+
+
+(collisions funkar inte i build area (för att den laddar?)
+
+(-fixa slutboss
+
+npc kan fastna i mark och väggar
+                     
+System.Diagnostics.Debug.WriteLine(
+Error: Sent update to non updateable object: GameObject.RootAttack{32,67}
+Error: Remote obj ID{32,65} already set by:GameObject.RootAttack{32,65}
+--replace with GameObject.DeathLoot{32,71}
+
+Error: Sent update to non updateable object: GameObject.HumanoidArrow{32,168}
+
+
+
+
+
+//here appears to issues when trying to craft a few things in Lootfest2, bombs and cookies (lol).
+
+//lootfest2 keeps crashing when i try to unequip a sheild
+//GamefarmContact:5LFU N0|73: Value was either too large or too small for an Int32. @ System.Convert.ToInt32( System.Convert.ToInt32( IntVector3.FromV3( Map.WorldPosition( CharacterPhysicsSimple.addVelocity( CharacterPhysics
+//GamefarmContact:5LFU N0|34: IndexOutOfRangeException @ Players.Player.UpdateItemAmount( Players.PlayerGadgets.RemoveItem( Players.EquipSetup.Use( Players.Player.playButtonInput( Players.Player.Button_Event( PlayState.Butto
+//GamefarmContact:5LFU N10|10: NullReferenceException @ PlayState.AllHeroes( GameObjects.AbsUpdateObj.ClosestHero( GameObjects.AbsUpdateObj.checkOutsideUpdateArea_ClosestHero( GameObjects.EnvironmentObj.AbsDestuctableEnvironment.Time_
+//GamefarmContact:5LFU N0|66: Use handweapon @ GameObjects.Gadgets.WeaponGadget.HandWeapon.Use( GameObjects.Characters.Hero.UpdateAttack( GameObjects.Characters.Hero.Time_Update( Director.GameObjCollection.updateObjectList( Direc
+//GamefarmContact:5LFU N67|68: NullReferenceException @ Director.EnvironmentObjectQue.ClientRequest( PlayState.readPacket( PlayState.NetworkReadPacket( Network.Session.ReadIncomingPackets( Network.Session.Time_Update( Engine
+//GamefarmContact:5LFU N10|10: NullReferenceException @ Players.PlayerProgress.AssignButton( Players.Player.SelectEquipButton_dialogue( Players.Player.SelectEquip_dialogue( GadgetLink.TriggerEvent( HUD.AbsBlockMenuMember.Click( 
+//GamefarmContact:5LFU N0|66: The asynchronous operation ( could not be performed. There are too many pending operations. @ Microsoft.Xna.Framework.GamerServices.ErrorHandler.ThrowExceptionFromResult( Microsoft.Xna.Framework.GamerServices.Guide
+//5-U N0|0: NullReferenceException @ Commander.GamePhase_Attack.Update( Commander.Players.LocalPlayer.Update( Commander.PlayState.Time_Update( Engine.Update.MainUpdate( MainGame.updateLoop( Debug.BlueScreen.TryCatch( Ma
+
+//GamefarmContact:5LFU N0|8: Unable to read beyond the end of the stream. @ System.IO.__Error.EndOfFile( System.IO.BinaryReader.FillBuffer( System.IO.BinaryReader.ReadBoolean( GameObjects.EnvironmentObj.Door.ReadStream( GameObjec
+//GamefarmContact:5LFU N0|10: Use handweapon @ GameObjects.Gadgets.WeaponGadget.HandWeapon.Use( GameObjects.Characters.Hero.UpdateAttack( GameObjects.Characters.Hero.Time_Update( Director.GameObjCollection.updateObjectList( Direc
+//GamefarmContact:5LFU N0|66: Parameter name: index @ System.ThrowHelper.ThrowArgumentOutOfRangeException( System.Collections.Generic.List`1.get_Item( MainMenuState.BlockMenuLinkEvent( HUD.AbsBlockMenuMember.Click( HUD.AbsMenu.
+//GamefarmContact:5LFU N10|10: Value was either too large or too small for an Int32. @ System.Convert.ToInt32( System.Convert.ToInt32( IntVector3.FromV3( Map.WorldPosition( CharacterPhysicsSimple.addVelocity( CharacterPhysic
+//GamefarmContact:5LFU N0|10: IndexOutOfRangeException @ Voxels.VoxelLib.ReadMaterialAndReps( Map.Chunk.readDataGrid( Map.Chunk.ReadChunk( DataLib.SafeMainThreadReader.Time_Update( Engine.Update.Time_Update( Engine.Update.Ma
+//nyway I played a bit more, went to a town, tried to buy and sell some stuff, found a "Volcan smith" who had the ability to insert a magic gem in a weapon, which I wasn't able to do as I didn't have any.  He also had the ability to make bombs and I had the ingredients for one, think it was a firebomb.  So I tried to make it, and after selecting all the ingredients the game crashed.  I sent you the callstack using XBox messaging.  So, sorry, it's a fail - guess this update is going to have to drag out a little longer :-p
+//GamefarmContact:5LFU N0|10: Use handweapon @ GameObjects.Gadgets.WeaponGadget.HandWeapon.Use( GameObjects.Characters.Hero.UpdateAttack( GameObjects.Characters.Hero.Time_Update( Director.GameObjCollection.updateObjectList( Direc
+
+//I found the problem, every weapon you enchant will have its damage to 1 after loading a saved game
+	//(+10 text fastna vid enchant
+
+//amefarmContact:5LFU N10|10: NullReferenceException @ PlayState.AllHeroes( Players.Player.UpdateGamerNames( Players.Player.Update( PlayState.Time_Update( Engine.Update.MainUpdate( MainGame.updateLoop( Debug.BlueScreen
+//GamefarmContact:5LFU N0|10: ScrapResult, Iron Spear @ GameObjects.Gadgets.WeaponGadget.HandWeapon.ScrapResult( GameObjects.NPC.Worker.scrapSelectedItemOK( HUD.Generic2ArgLink`2.TriggerEvent( HUD.AbsBlockMenuMember.Click( HUD.Ab
+//GamefarmContact:5LFU N0|10: Use handweapon @ GameObjects.Gadgets.WeaponGadget.HandWeapon.Use( GameObjects.Characters.Hero.UpdateAttack( GameObjects.Characters.Hero.Time_Update( Director.GameObjCollection.updateObjectList( Direc
+
+//Unequipping gear causes a crash 100% of the time, 
+//as does crafting bombs from the weapon enchanter (also 100% of the time).
+
+//Constant time-out-style crashes - especially on loading into someone else's world - drain your gold as trying to fast travel back to them, as cheap as it is, cannot compare to the frequency at which the crashes happen.
+
+//NPCs do not appear (such as the cook for the story quest) for numerous log-ins, others disappear completely (20+ restarts and nowhere on my world does the Guard Captain exist anymore to hand in the 3 egg nests I destroyed.
+
+//The starting chest disappears... not sure if that is intentional, but if it is I suggest making a textual notification of that since I was using it to store all of my loot and gold prior to purchase of the game during the tutorial and then the chest vanished two log-ins after said purchase - along with all of my farmed mats and loot.
+
+//Trophy for beating the last boss is given upon killing 2 wizards (may have been triggered via defeat of a specific wizard, to be honest. All I know is that it went off when my two friends and I killed our second one and we all obtained it).
+
+//Enemy fortifications (the tower / parapet ones) render oddly for the host. Stairs go under them, lead to walls, or simply do not exist. This makes the chests obtainable only to players who join sessions.
+
+//Items and mobs can climb onto areas players cannot reach. I'm sure you are aware of this one since the start, but it is quite troublesome and annoying.
+
+

@@ -1,0 +1,53 @@
+﻿//#region Using Statements
+//using System;
+//using Microsoft.Xna.Framework;
+//using Microsoft.Xna.Framework.Content;
+//using Microsoft.Xna.Framework.Graphics;
+//#endregion
+
+//namespace VikingEngine.Graphics
+//{
+//    /// <summary>
+//    /// Custom particle system for creating a giant plume of long lasting smoke.
+//    /// </summary>
+//    class Leaf : ParticleSystem
+//    {
+//        public Leaf()
+//            : base()
+//        { }
+
+//        protected override void InitializeSettings(ParticleSettings settings)
+//        {
+//            //settings.Texture = LoadedTexture.pleaf;
+
+//            settings.MaxParticles = 500;
+
+//            settings.Duration = TimeSpan.FromSeconds(4);
+
+//            settings.MinHorizontalVelocity = 0.3f;
+//            settings.MaxHorizontalVelocity = 0.6f;
+
+//            settings.MinVerticalVelocity = -2f;
+//            settings.MaxVerticalVelocity = 2f;
+
+//            // Create a wind effect by tilting the gravity vector sideways.
+//            settings.Gravity = new Vector3(14f, -4f, -4f);
+
+//            settings.EndVelocity = 0.75f;
+
+//            settings.MinRotateSpeed = -2;
+//            settings.MaxRotateSpeed = 10;
+
+//            const float SizeMin = 0.4f;
+//            const float SizeMax = 0.6f;
+//            settings.MinStartSize = SizeMin;
+//            settings.MaxStartSize = SizeMax;
+
+//            settings.MinEndSize = SizeMin;
+//            settings.MaxEndSize = SizeMax;
+
+//            settings.MinColor = Color.DarkGray;
+//            settings.MaxColor = Color.White;
+//        }
+//    }
+//}

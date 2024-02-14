@@ -1,0 +1,104 @@
+﻿#BILD#
+
+##
+
+##Ui
+Open Dyslexic
+ui scale (UiStyleGuide.cs)
+
+##
+
+*spotting uppdaterar inte på todo
+*ljud
+ -ingame vol
+
+
+*castle guard spawn på camp
+*camps får inte blocka en ruta stora gångar
+*"block" text vid gold armor mot direct damage
+*inte kunna trycka end turn medan man flyttar gubbe
+*Door unlock popup
+*kan lägga en länk till logg på error
+
+*retaliate funkar inte på client monster
+
+*bleed ger skada flera ggr per turn
+*client visade fiende attack, ebart en crit skada som 2 hits
+*välja hjälte i lobby ändrar den i tutorial
+*posioned måste ske efter attack resolve
+*fienden ska upptäcka hidden om dom ställer sig brevid
+achievements send to
+
+*respawn muppar upp ens strategi val
+
+*placera dummie på trap
+*hover av tärningar under roll låser animationen, ta bort tool tip efter roll
+
+*throw på spik
+*fixa en push/throw check
+*dödsanimation på monster modeller följer inte storleken
+
+*Shop
+
+#BILD#
+dörr sidor
+låst dörr
+längre propuerty bg, och stackable
+buffs propuerty bg, samma bakgrund till hover iconer
+
+*move pet ska inte låsa strategi
+-ta bort namn på spelar titlar 
+*monster walk to ranged, checkar inte damage där man trampar
+
+trade post: merchant
+**skärm lock musen på fokus gain
+
+items:
+arcrobat shoes: bättre dodge odds
+runner shoes: run strategy ger +2 move
+
+grund utrustning:
+	crippled: 1 move/1 attack X turns
+
+
+camp spot: quick travel, få stamina av att aktivera
+	-ge alla adj heroes en health boost
+Floating Leeches (ballong iglar)
+
+bälte till items
+romersk guldbar till skills
+
+strategi beskriv timer o stamina
+
+*Lava pool efter fire lizard attack
+-Fire, kanske reduceras för varje steg man tar
+
+##############
+*all hud borde vara släkt genom en absHud, och kunna ligga i en lista med all hud - ska vara lätt att tända/släcka
+
+alltid kunna hoovra tärningar
+klotter system, med stämplar (siffror, bokstäver för olika symboler)
+batman! peppra gubben med skjärnor
+Centrera kameran över min gubbe då jag clickar mitt namn
+Värden som adderas ska alltid visa "+" tex "+2 Pierce"
+
+-movement, pathfinding när man tracar genom ensam blockad ruta, återgår inte till orginal pos om man har flyttat pekaren genom vägg
+-pratbubbla om attack resultat
+-samla skada, för att visa eller blocka
+
+man väljer en grundklass, typ bågskytt, krigare, magiker
+-spelet slumpar stats, vapen och skills, få val mellan fyra special skills
+
+medals - klara utmaningar för level up
+
+ai som skill - varje monster har en slumpad ai, som hämdful, slå svagast, närmast, mot guld eller rikast, följare
+taunt, monster kan bli lockade att bara jaga en hjälte
+
+kopiera inventory från Battle Chasers
+
+blood rage > fire, adrenaline
+ 
+//management-strategy: öppna dörrar, kistor, byta utrustning, ge bort, droppa saker 
+
+Unlocka "table decorations" - saker hjälten har framför sig i val-menyn-baren, och kanske väggprydnad bakom
+

@@ -1,0 +1,35 @@
+﻿Change Log
+-Water texture
+-Ships!
+-Soften the medium ai aggression a bit
+
+
+Error
+
+AI
+-sök fiende armeer som passerar
+
+Steam Launch Roadmap
+-Fail state for the game
+-Localization to 8 languages
+-player to player diplomacy
+-(maybe) Achievements
+-(maybe) Full controller support
+-(maybe) Save
+-(maybe) Mountain ridges and water reefs that block movement
+-(maybe) Visually display city guard size
+-(maybe) Linux support
+
+-(Removed) Boost soldiers with a command system
+
+
+
+ACHIEVEMENT
+-Inte starta krig
+-Utrota första bossen (early)
+-ally med green wood
+-överlev honor guards
+-köp 1/3 faction specific units
+-sea battles mot vikings
+-Ge inte slutbossen en chans att dyka upp
+

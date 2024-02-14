@@ -1,0 +1,28 @@
+﻿1. Monopol
+2. Risk 
+3. Flipper - pong
+4. Nåt i stil med Tetris/Columns
+5. Topdown colusseum fighter baserad på "Octogeddon"
+6. Gravitation slinger, kopia av "12 orbits"
+7. Spel där man i två lag styr tanks mot varann
+
+#Stora projekt
+A. Smash bros
+B. MOBA
+C. coop RPG, typ gamla FF stil
+D. Fullt bilrace spel, kan oxå vara en kopia av slingshot racer för variation
+
+
+#Modes till XBOX realease
+-Joust
+-Bagatelle
+-Carball
+-Minigolf
+-Spacewar
+-???
+
+
+
+Bonus games
+-Frogger
+-switch-shoot

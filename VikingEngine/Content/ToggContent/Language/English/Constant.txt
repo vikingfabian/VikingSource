@@ -1,0 +1,14 @@
+﻿#. These are words are names for specific features, they need to be the same each time they are used
+#. Will be inserted in other text by %<ConstantId>
+
+msgid "BattleDie" #.Red dice, used in attacks
+msgstr "Battle Dice"
+
+msgid "BloodRage" #.Is collected from kills and builds up to a power action
+msgstr "Blood Rage"
+
+msgid "Stamina" #.A value you can spend to make extra actions
+msgstr "Stamina"
+
+msgid "Pierce" #.Will ignore one armor
+msgstr "Pierce"

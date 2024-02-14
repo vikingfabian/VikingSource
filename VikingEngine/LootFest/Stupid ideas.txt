@@ -1,0 +1,308 @@
+﻿
+Kunna konstruera 
+Item kan vara som döskallarna i halo
+Ett item som gör att man lämnar alla lootade områden som brända
+Item som förvandlar som döda till roliga grejer
+
+Ha en history lista över alla världar man besökt och lite fakta över hur det gick, hur länge man spela, 
+	hur många man slog ihjäl, hur många procent secrets, vad dog man av, highscore.
+	Även ett tekniskt namn på världen ifall jag vill felsöka den.
+	
+Olika tävlingar som sker vid utsatta tider, t.ex. race och tuneringar. Man borde kunna anordna egna tävling med egna regler och banor.
+
+Waypoints, sätt ett antal skyltar
+
+#GRafik
+skuggan på sidor kanske ska bli mörkare ju längre ned man kommer
+
+En bok som man samlar alla monster i, genom att studera dom eller köpa info, dom man känner till tar mer skada.
+	-Samlarboken behöver köpas
+	-vissa kan vara intresserade av en fylld bok till högt pris, även för unika föremål
+
+Vissa säljare har föremål dom bara bytar mot andra specifika grejer
+
+Borde jobba vidare på pack-ide'n man kan packa allt möjligt i väskor som man släpar med häst/bil 
+	stå i närheten och den blir en del av pause menyn
+	bärande träl
+
+odödliga jättemonster som härjar nånstans, innehåller uniqe item, har okänd svaghet
+
+Smälla upp ett safehouse
+
+Trälar som följer med en börjar genast jobba på föremål man har på en önskelista, det gäller att försvara dom från moster
+	-dom levlar upp i det dom gör
+	-har var sin begränsade pack utrymme, fickor
+	-kan ha enkla, försvarande skyttar
+
+Filé kniv, döda fienden med sista slaget och du får en hud, kort distans
+Bok, kasta en kort bit, samla info.
+Bensåg, för ben och horn
+
+En typ av skatter försvinner så fort man dött en gång, vissa skatter skjuter upp detta till två ggr (en gångs användning?)
+
+Försäljare
+	-kan ha grejer dom samlar på, anger antal dom vill ha
+	-finns också tidsbegränsade tidsupprag, skaffa nåt, eller leverera
+	-kan också vara besatta av nåt unikt föremål
+
+-hålla insvärdet längre, ger hårdare slag men längre cooldown
+
+-Kunna bygga, basen ialla fall
+	-claima gruvor för sten
+	-köpa/finna byggblock
+-?riddjur
+-Tre spel modes
+	-Practice, väldigt enkelt, ingen score eller uniqe item
+	-Loot fest, efter en död försvinner alla uniqe items och möjligheten att sätta score
+	-Survival, som lootfest fast med törst och ständigt svårare fiender, tiden är din high score, det går inte att fortsätta efter man dött. 
+		Möjlighet att resa döda kamrater.
+		Säljarna ökar vatten priset hela tiden.
+-områdena vid vägarna är oftast säkrare från monster
+det först unika föremålet gör helt enkelt att den låser upp den funktionen och syns som inventory
+unika föremål har alltid olika sätt som man hittar dom på, så man inte kan hitta svaret på nåt forum
+
+man kan fråga efter uppdrag, det är då tidsbegränsat, tips är att inte fråga efter för många samtidigt, saftig belöning oftast
+	-en uniqe kan vara att starta och klara tre uppdrag inom en viss tid
+	-kanske låta uppdragen poppa upp efter hand som i dead rising
+
+-knappa in namn för att låsa upp specifika kostymer
+	-screwattack keps
+	-AVGN tröjan me pennor
+	-angry joe kläder
+	-zeigst robot
+	-benzai (hans björn på huvudet)?
+	-minecraft, spawnar creepers
+
+-folk kan bli arga om man inte klarar av quests
+
+-galen idé, roleplay points, följ en rollspelande karaktärs önskningar och få extra poäng
+
+-olika sätt att locka fram bossar, t.ex. att bära viss färg
+
+-önskebrunn, extra funktion i survival
+
+-valet att smasha en kista istället för att använda nyckel, vissa föremål går då sönder, vapen startar i sämrre skick
+	-kistan skulle oxå kunna vara av värde
+	(smasha dörr, kan starta fälla, vissa dörrar har kraftigare lås, magic seal)
+
+-kanske nåt sätt att förstöra monster spawn (caves, eggnest) och humanoid outposts, finn skatter, gör vägen fri, kan finnas som uppdrag
+
+-placera bonus karaktärer på  helt slumpartade ställen
+
+-återvinn bossarna som stora monster
+
+-man kan få reda på vad bossarnas attack element är och vad som skyddar mot det
+
+-kunna göra modeller, som sedan dyker upp som random statyer
+
+-magi attacker gör en törstig, drar man den sista droppen så dör man av uttorkning.
+
+ jag tänkte n¨ågot kanske lite att dom spawnar adds
+ Coolt.
+viking säger:
+ ingen dum id´e, magiker som trollar fram en massa skum skit
+ som i mario
+
+ Alchemist, kruk bomber, metall bomb, bomb kastare, exloding arrows
+
+ Fasta eldkastare på borgar (monteras upp/ner)
+
+ Mining spots, fasta platser man kan mina metaller, syns som ett märke i marken, Y-prompta
+
+ Underjords gångar, med guld, monster och fällor
+
+ Ha kända borgar som byggnader man kan låsa upp som hem
+
+ Koppla in gitarr och spela, köp instrument i spelet
+
+ Builder-bot gubbe som knallar efter en och bygger saker, algoritmiskt
+	-kan ha player2 bot för test
+
+ Flatten landscape knapp
+
+ Helig handgranat, exploderar och fyller ett område med träd och blommor
+
+ Eld och rök emitter block, möjligtvis lava/vatten emitter
+	-lägg in post light effect på eld och lava
+
+Visa emotions som flaggor över huvudet
+
+giant pool game
+
+ the idea to have hats for zombies as a easter egg
+
+ Gör nåt liknande "Stellar Impact" när vattnet funkar
+
+ got an idea yesterday to make a zombie builder that create traps, hehe
+	Fabian Jakobsson: fall pits and shooting turrets and so
+
+Dörrar som man desingar själv, bara vrider upp en grupp block
+
+Sätta flaggor som används som varp locations, namnge
+
+Implementa robo rally iden på spelet
+
+ have a lootfest bomberman type game
+
+ fillblock, fylla mycket stora områden med en typ av block eller repeterande templates
+
+ pottery, samma som glas med lägre värde
+
+ Firestone, smoke stone, block med particlar som man kan sätta ut
+
+ Skulle kunna använda chunkens array till att hoppa direkt till dom block som är fyllda
+
+ "need to win coins when you win a race
+
+ public struct VertexPositionColorNormal : IVertexType
+{
+    public Vector3 Position;
+    public Color Color;
+    public Vector3 Normal;
+ 
+    public VertexPositionColorNormal(Vector3 position, Color color, Vector3 normal)
+    {
+        this.Position = position;
+        this.Color = color;
+        this.Normal = normal;
+    }
+ 
+    public static readonly VertexElement[] VertexElements =
+    {
+        new VertexElement(0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0),
+        new VertexElement(sizeof(float)*3, VertexElementFormat.Color, VertexElementUsage.Color, 0),
+        new VertexElement(sizeof(float)*4, VertexElementFormat.Vector3, VertexElementUsage.Normal, 0)
+    };
+    public static readonly Verte
+    public static readonly VertexDeclaration vertexDeclaration = new VertexDeclaration(VertexElements);
+ 
+    public VertexDeclaration VertexDeclaration
+    {
+       get { return vertexDeclaration; }
+    }
+}
+
+I was thnking vehicle battles would work like this: when you press start battle, a zone pops up like the square for races, but make it much larger or maybe an option to set size. Land vehicles vs land, and air vs air
+-Could set lives too
+-you will be set in a corner
+
+Marble, platforming kula, marble blast ultra kinda
+
+Checkpoint system, måste köra över lila streck, ger ett checknummer, man kan sätta required checkpoints i settings
+
+Rosa block, no fire
+
+Spjut. Kan kastas och plockas upp, drar man svärd så lägger man spjutet på marken.
+
+Sheep cyclon . typ stötte man på ett får i lootfest börjar det cirkulera dig för evigt =9
+
+Kunna beväpna alla basic NPCs
+
+Child mode, spelare i split som blir likt tails i Sonic
+
+shoulder pads would be a fun option
+
+-PVP beta?
+	-bowman class
+		-skjuta pilar
+		-Kniv
+		-Eldpilar
+	-knight class
+		-stort svärd
+		-sköld
+	-ninja class
+		-snabb
+		-hoppar
+		-kast stjärna
+
+
+a bit of a brave heart story, you terrorise leaders that are bought with money, by assasinate them
+[18:15:01] Fabian Jakobsson: so the main updates will be better ai with armies that you try to sneak around
+[18:16:34] Fabian Jakobsson: maybe some mechanism where you can walk without being discovered behind enemy backs
+[18:18:52] Fabian Jakobsson: that is hopefully a small enough update to make in 3months
+[18:19:47] Fabian Jakobsson: also have another idea resolving being some back riding knight that take missions for glory, that main update will be the animals
+- en annan idé är monster distress (zombie style)
+
+Lootfest3 - knights idén - börja som väpnare och skaffa honor till att bli dubbad. Som dubbad ska man skydda kungen på ett antal plundrings tåg/jakt på rövare
+	-kungen dör och man ska skydda hans son mot angripare, slutligen fälla rövarkungen (kan delas in i ett antal taktiska strider, blandat med att skydda sin egen stad mot anfall)
+	-hitta en lämplig "häst" kan oxå vara ett uppdrag
+	-möjligen en tunering där man ska klara av 3kämpar i en tunering
+
+LF:LD utmanade utan att splitta modes: You have large castles that are defended by orchs, you have to go in and take away their flag before you can build in that area
+
+Glowes som avgör spear damage/type
+
+#TOURNEY
+maybe Dan had a point, what if I made a lootfest racing game :)
+would be fun to have a horse race with knights and try to stab random orchs on the road for power ups :)
+kinda like Carmageddon
+horses can jump and side-step too, so its more variated than just cars
+maybe could have flying dragon sections to mix it up a bit
+and other flying animals, have the classic big/medium/small veihcles
+collecting enemies on a lance, get kebab skewer bonus
+"Lootfest  tourney"
+could make one large map with a giant city with all the races, kinda like that free roaming "need for speed" game, you run to checkpoints and start different tours
+
+
+(5. Survival mode
+	-begränsat med gräv och block
+	-tids high score
+(6. RPG
+	-skapa monster och NCPs, rörelsemöster, hälsa, storlek, drop
+	-vapen och spelstil
+-share message history to joining gamers
+-clienter with full access should be able to change other gamers permissions or kick them
+
+-samla vatten från vatten tiles
+
+
+##FAT KING
+Fixa predictions
+Lag översikt
+Kunna se kungarna, visa hälsa
+
+ public class CustomArray<T>
+ {
+  public T[] Array;
+  public int Count;
+  public int MaxCount;
+  float resizeFactor;
+
+  public CustomArray()
+   : this(10, 2f)
+  {
+  }
+
+  public CustomArray(int initialCapacity, float resizeFactor)
+  {
+   this.resizeFactor = resizeFactor;
+   Array = new T[initialCapacity];
+  }
+
+  public void Add(T t)
+  {
+   if (MaxCount == 0 || Count < MaxCount)
+   {
+    if (Count == Array.Length)
+    {
+     System.Array.Resize<T>(ref Array, (int)(Count * resizeFactor));
+    }
+
+    Array[Count++] = t;
+   }
+  }
+
+
+  idea for ring, each time you eat, you fart poisinous smoke :)
+
+   BERGgoriller att rida på
+
+   
+Historie träd
+
+-skaffa honor för att bli upptgen som riddare
+	-håll kungen vid liv(j/n)
+		j-Bli utsedd till att förgöra upproriska bönder, ställer upp? (j/n)
+			j-slakta bönder
+
+			n-möt upprorsmän, 

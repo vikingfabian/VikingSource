@@ -1,0 +1,2 @@
+﻿*boostad kula om man keyup precis vid omladdning-tajming
+*alltid köra

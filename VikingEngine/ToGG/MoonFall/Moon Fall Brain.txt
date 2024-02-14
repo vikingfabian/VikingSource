@@ -1,0 +1,87 @@
+﻿Runda
+Olika action att välja ifrån, en action har två rundor cooldown, efter fyra rundor läggs det på mynt
+(ändra cooldown för antal så dom tvingas rotera)
+
+*Move
+Alla flyttar i hemlighet, väljaren får göra en teleport move
+
+*Recruit
+Alla (auto) Spawnar figurer på slott, väljaren får en ledare (i hemstad?)
+
+*War 
+(börjar med cooldown)
+(senaste vinsten flyttar home banner)
+1. Plotting -> alla lägger ut plotting markörer 
+ -Sucide misson, alla dina units dör, VP for each (valfri)
+ -Betrayal, omvandlar alla motståndare (från valfri spelare) till dina (även ally, inte leader), -1 honor
+ -Retreat, fly med din styrka(valfri)
+ -Merchenaries, addar styrka
+ -Double that, betala 1 coin för varje motståndare merchenary, dom går över på din sida
+
+ -Glory kills, VP för varje död unit
+ -Heroic death, honor för var av dina egna döda
+ -Glorious victory, dubbel VP vinst, dubbla symboler
+
+2. Alla strider resolvas i turn order på slagfält
+(A)Battle
+-Går igenom plott order
+-Kvarlevande styrka vinner, alla non-ally motståndare dör
+
+(B)Peaceful Land grab
+-Om ensam eller alla är allierade
+Kanske: Genomgår plotts om allierade
+
+-sen spawnar nya slagfält med VP på
+-slagfält har även symboler, par ger bonus poäng
+
+*Tax/(Upkeep)
+Dra in resurser från alla dominerade områden, väljare +1 coin per område
+
+*Develop
+Köp hus och uppgraderingar (2st, väljaren får 3)
+*Borg +1 soldat
+*Temple +1 präst
+*Tear down, får pengar tillbaka
+*statue, få honor
+*valfritt antal plots, 1guld st
+
+*Market, antal kort som kan köpas
+Kanske: varje kort i marknaden är markerat med vem som får det efter din draft
+	Också hur många som finns tillgängliga
+
+buy back av monster är gratis
+
+*Prayer
+1. Mest präster vid varje gud får bonusar
+2. Gudarna bytar plats (eller bara en)
+ -warrior god, placeras på kartan, ger vinnaren bonus VP
+
+*Alliance
+ 1. Välj en spelare du per default blir allierad med
+ 2. Alla andra spelare får bjuda pengar för en annan allians
+ -Kanske: Delar på peaceful landgrab vinster
+ -Kanske: Får 1 VP varje gång din allierade får (eller hälften)
+ -Bryts efter War
+
+ *Break (your) alliance
+ 1. Alla rutor med ledare konverterar en ally unit
+ 2. -1 Honor
+
+ #Monster krafter
+ -Adds 1 retreat plot, and puts retreat before betrayal
+ -Plus one force for each player above you in honor
+ -
+
+
+ #Andra ideer
+ Honor kan heta political track/senate
+
+ Kanske ha nåt straff för över styrka (hur mycket extra styrka man vinner med)
+	-Corruption value, de spelarna med mest förlorar poäng
+	-Eller 1 mynt per 2 överstyrka till förlorare
+ 
+ Scenario, en special regel som gäller ett spel
+	tex:
+	-Neutrala monster man kan döda för score
+	-Sjöfart kostar pengar
+	

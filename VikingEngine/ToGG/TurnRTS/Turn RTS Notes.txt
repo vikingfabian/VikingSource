@@ -1,0 +1,45 @@
+﻿
+Builders, 
+	bygga väggar 0 guld, 
+	bygga skyttetorn 1 guld, ger support inom 2 rutor
+
+Häst stall, 
+	carage van, kan bära 8 gubbar, move 4
+	falkon 1 guld, ignorerar terräng, stark mot allt utom ranged
+
+Viking, Attackerar alla in range
+crossbow, auto dödar en unit inom 2 rutor i början av rundan 
+
+
+--version 2
+
+Det finns flaggor som ger guld, och dom som ger tech
+Varje gubbe auto attackerar efter rundan med prio ordning
+	-fortsätt attackera samma
+	-Tog skada av
+	-gubbar sen byggnad
+	-närmast emot min senast förflyttning
+	//-svagast enhet, först styrke typ sen hp
+	-senast förflyttning/attack riktning
+	-höger, sen vänster
+	
+(fire emblem heroes)
+Bonusar, enheter delas in i 
+	-Ranged, Mount, Flying, Sword, Spear,
+	
+
+	Ranged> Flying, Spear
+	Mount> Ranged
+	Sword> Spear
+	Spear> Mount 
+
+Bonusar ver2 
+	skill: Anti-mount 25 (extra skada mot mounts)
+
+
+Grupp move
+	-ctrl: alla länkade
+	-shift: alla länkade, samma typ
+	-tab: toggla paralell/column move
+
+Stå brevid två fiender: melee lock

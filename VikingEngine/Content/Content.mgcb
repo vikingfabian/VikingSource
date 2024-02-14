@@ -1,0 +1,930 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:
+/profile:Reach
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+
+#---------------------------------- Content ---------------------------------#
+
+#begin DSS/dss_bg.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DSS/dss_bg.png
+
+#begin DSS/Map/map_sz0_i1.map
+/copy:DSS/Map/map_sz0_i1.map
+
+#begin DSS/Map/map_sz0_i10.map
+/copy:DSS/Map/map_sz0_i10.map
+
+#begin DSS/Map/map_sz0_i11.map
+/copy:DSS/Map/map_sz0_i11.map
+
+#begin DSS/Map/map_sz0_i12.map
+/copy:DSS/Map/map_sz0_i12.map
+
+#begin DSS/Map/map_sz0_i13.map
+/copy:DSS/Map/map_sz0_i13.map
+
+#begin DSS/Map/map_sz0_i14.map
+/copy:DSS/Map/map_sz0_i14.map
+
+#begin DSS/Map/map_sz0_i15.map
+/copy:DSS/Map/map_sz0_i15.map
+
+#begin DSS/Map/map_sz0_i16.map
+/copy:DSS/Map/map_sz0_i16.map
+
+#begin DSS/Map/map_sz0_i2.map
+/copy:DSS/Map/map_sz0_i2.map
+
+#begin DSS/Map/map_sz0_i3.map
+/copy:DSS/Map/map_sz0_i3.map
+
+#begin DSS/Map/map_sz0_i4.map
+/copy:DSS/Map/map_sz0_i4.map
+
+#begin DSS/Map/map_sz0_i5.map
+/copy:DSS/Map/map_sz0_i5.map
+
+#begin DSS/Map/map_sz0_i6.map
+/copy:DSS/Map/map_sz0_i6.map
+
+#begin DSS/Map/map_sz0_i7.map
+/copy:DSS/Map/map_sz0_i7.map
+
+#begin DSS/Map/map_sz0_i8.map
+/copy:DSS/Map/map_sz0_i8.map
+
+#begin DSS/Map/map_sz0_i9.map
+/copy:DSS/Map/map_sz0_i9.map
+
+#begin DSS/Map/map_sz1_i1.map
+/copy:DSS/Map/map_sz1_i1.map
+
+#begin DSS/Map/map_sz1_i10.map
+/copy:DSS/Map/map_sz1_i10.map
+
+#begin DSS/Map/map_sz1_i11.map
+/copy:DSS/Map/map_sz1_i11.map
+
+#begin DSS/Map/map_sz1_i12.map
+/copy:DSS/Map/map_sz1_i12.map
+
+#begin DSS/Map/map_sz1_i13.map
+/copy:DSS/Map/map_sz1_i13.map
+
+#begin DSS/Map/map_sz1_i14.map
+/copy:DSS/Map/map_sz1_i14.map
+
+#begin DSS/Map/map_sz1_i15.map
+/copy:DSS/Map/map_sz1_i15.map
+
+#begin DSS/Map/map_sz1_i16.map
+/copy:DSS/Map/map_sz1_i16.map
+
+#begin DSS/Map/map_sz1_i2.map
+/copy:DSS/Map/map_sz1_i2.map
+
+#begin DSS/Map/map_sz1_i3.map
+/copy:DSS/Map/map_sz1_i3.map
+
+#begin DSS/Map/map_sz1_i4.map
+/copy:DSS/Map/map_sz1_i4.map
+
+#begin DSS/Map/map_sz1_i5.map
+/copy:DSS/Map/map_sz1_i5.map
+
+#begin DSS/Map/map_sz1_i6.map
+/copy:DSS/Map/map_sz1_i6.map
+
+#begin DSS/Map/map_sz1_i7.map
+/copy:DSS/Map/map_sz1_i7.map
+
+#begin DSS/Map/map_sz1_i8.map
+/copy:DSS/Map/map_sz1_i8.map
+
+#begin DSS/Map/map_sz1_i9.map
+/copy:DSS/Map/map_sz1_i9.map
+
+#begin DSS/Map/map_sz2_i1.map
+/copy:DSS/Map/map_sz2_i1.map
+
+#begin DSS/Map/map_sz2_i10.map
+/copy:DSS/Map/map_sz2_i10.map
+
+#begin DSS/Map/map_sz2_i11.map
+/copy:DSS/Map/map_sz2_i11.map
+
+#begin DSS/Map/map_sz2_i12.map
+/copy:DSS/Map/map_sz2_i12.map
+
+#begin DSS/Map/map_sz2_i13.map
+/copy:DSS/Map/map_sz2_i13.map
+
+#begin DSS/Map/map_sz2_i14.map
+/copy:DSS/Map/map_sz2_i14.map
+
+#begin DSS/Map/map_sz2_i15.map
+/copy:DSS/Map/map_sz2_i15.map
+
+#begin DSS/Map/map_sz2_i16.map
+/copy:DSS/Map/map_sz2_i16.map
+
+#begin DSS/Map/map_sz2_i2.map
+/copy:DSS/Map/map_sz2_i2.map
+
+#begin DSS/Map/map_sz2_i3.map
+/copy:DSS/Map/map_sz2_i3.map
+
+#begin DSS/Map/map_sz2_i4.map
+/copy:DSS/Map/map_sz2_i4.map
+
+#begin DSS/Map/map_sz2_i5.map
+/copy:DSS/Map/map_sz2_i5.map
+
+#begin DSS/Map/map_sz2_i6.map
+/copy:DSS/Map/map_sz2_i6.map
+
+#begin DSS/Map/map_sz2_i7.map
+/copy:DSS/Map/map_sz2_i7.map
+
+#begin DSS/Map/map_sz2_i8.map
+/copy:DSS/Map/map_sz2_i8.map
+
+#begin DSS/Map/map_sz2_i9.map
+/copy:DSS/Map/map_sz2_i9.map
+
+#begin DSS/Map/map_sz3_i1.map
+/copy:DSS/Map/map_sz3_i1.map
+
+#begin DSS/Map/map_sz3_i10.map
+/copy:DSS/Map/map_sz3_i10.map
+
+#begin DSS/Map/map_sz3_i11.map
+/copy:DSS/Map/map_sz3_i11.map
+
+#begin DSS/Map/map_sz3_i12.map
+/copy:DSS/Map/map_sz3_i12.map
+
+#begin DSS/Map/map_sz3_i13.map
+/copy:DSS/Map/map_sz3_i13.map
+
+#begin DSS/Map/map_sz3_i14.map
+/copy:DSS/Map/map_sz3_i14.map
+
+#begin DSS/Map/map_sz3_i15.map
+/copy:DSS/Map/map_sz3_i15.map
+
+#begin DSS/Map/map_sz3_i16.map
+/copy:DSS/Map/map_sz3_i16.map
+
+#begin DSS/Map/map_sz3_i2.map
+/copy:DSS/Map/map_sz3_i2.map
+
+#begin DSS/Map/map_sz3_i3.map
+/copy:DSS/Map/map_sz3_i3.map
+
+#begin DSS/Map/map_sz3_i4.map
+/copy:DSS/Map/map_sz3_i4.map
+
+#begin DSS/Map/map_sz3_i5.map
+/copy:DSS/Map/map_sz3_i5.map
+
+#begin DSS/Map/map_sz3_i6.map
+/copy:DSS/Map/map_sz3_i6.map
+
+#begin DSS/Map/map_sz3_i7.map
+/copy:DSS/Map/map_sz3_i7.map
+
+#begin DSS/Map/map_sz3_i8.map
+/copy:DSS/Map/map_sz3_i8.map
+
+#begin DSS/Map/map_sz3_i9.map
+/copy:DSS/Map/map_sz3_i9.map
+
+#begin DSS/Map/map_sz4_i1.map
+/copy:DSS/Map/map_sz4_i1.map
+
+#begin DSS/Map/map_sz4_i10.map
+/copy:DSS/Map/map_sz4_i10.map
+
+#begin DSS/Map/map_sz4_i11.map
+/copy:DSS/Map/map_sz4_i11.map
+
+#begin DSS/Map/map_sz4_i12.map
+/copy:DSS/Map/map_sz4_i12.map
+
+#begin DSS/Map/map_sz4_i13.map
+/copy:DSS/Map/map_sz4_i13.map
+
+#begin DSS/Map/map_sz4_i14.map
+/copy:DSS/Map/map_sz4_i14.map
+
+#begin DSS/Map/map_sz4_i15.map
+/copy:DSS/Map/map_sz4_i15.map
+
+#begin DSS/Map/map_sz4_i16.map
+/copy:DSS/Map/map_sz4_i16.map
+
+#begin DSS/Map/map_sz4_i2.map
+/copy:DSS/Map/map_sz4_i2.map
+
+#begin DSS/Map/map_sz4_i3.map
+/copy:DSS/Map/map_sz4_i3.map
+
+#begin DSS/Map/map_sz4_i4.map
+/copy:DSS/Map/map_sz4_i4.map
+
+#begin DSS/Map/map_sz4_i5.map
+/copy:DSS/Map/map_sz4_i5.map
+
+#begin DSS/Map/map_sz4_i6.map
+/copy:DSS/Map/map_sz4_i6.map
+
+#begin DSS/Map/map_sz4_i7.map
+/copy:DSS/Map/map_sz4_i7.map
+
+#begin DSS/Map/map_sz4_i8.map
+/copy:DSS/Map/map_sz4_i8.map
+
+#begin DSS/Map/map_sz4_i9.map
+/copy:DSS/Map/map_sz4_i9.map
+
+#begin DSS/Map/map_sz5_i1.map
+/copy:DSS/Map/map_sz5_i1.map
+
+#begin DSS/Map/map_sz5_i10.map
+/copy:DSS/Map/map_sz5_i10.map
+
+#begin DSS/Map/map_sz5_i11.map
+/copy:DSS/Map/map_sz5_i11.map
+
+#begin DSS/Map/map_sz5_i12.map
+/copy:DSS/Map/map_sz5_i12.map
+
+#begin DSS/Map/map_sz5_i13.map
+/copy:DSS/Map/map_sz5_i13.map
+
+#begin DSS/Map/map_sz5_i14.map
+/copy:DSS/Map/map_sz5_i14.map
+
+#begin DSS/Map/map_sz5_i15.map
+/copy:DSS/Map/map_sz5_i15.map
+
+#begin DSS/Map/map_sz5_i16.map
+/copy:DSS/Map/map_sz5_i16.map
+
+#begin DSS/Map/map_sz5_i2.map
+/copy:DSS/Map/map_sz5_i2.map
+
+#begin DSS/Map/map_sz5_i3.map
+/copy:DSS/Map/map_sz5_i3.map
+
+#begin DSS/Map/map_sz5_i4.map
+/copy:DSS/Map/map_sz5_i4.map
+
+#begin DSS/Map/map_sz5_i5.map
+/copy:DSS/Map/map_sz5_i5.map
+
+#begin DSS/Map/map_sz5_i6.map
+/copy:DSS/Map/map_sz5_i6.map
+
+#begin DSS/Map/map_sz5_i7.map
+/copy:DSS/Map/map_sz5_i7.map
+
+#begin DSS/Map/map_sz5_i8.map
+/copy:DSS/Map/map_sz5_i8.map
+
+#begin DSS/Map/map_sz5_i9.map
+/copy:DSS/Map/map_sz5_i9.map
+
+#begin DSS/Sound/back.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/back.wav
+
+#begin DSS/Sound/buy.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/buy.wav
+
+#begin DSS/Sound/click.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/click.wav
+
+#begin DSS/Sound/ordermove.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ordermove.wav
+
+#begin DSS/Sound/orderstop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/orderstop.wav
+
+#begin DSS/Sound/wrong.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/wrong.wav
+
+#begin DSS/watertex_i1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DSS/watertex_i1.png
+
+#begin DSS/watertex_i2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DSS/watertex_i2.png
+
+#begin DSS/watertex_i3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DSS/watertex_i3.png
+
+#begin DSS/watertex_i4.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DSS/watertex_i4.png
+
+#begin DSS/watertex.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DSS/watertex.png
+
+#begin Font/Bold.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/Bold.spritefont
+
+#begin Font/Console.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/Console.spritefont
+
+#begin Font/Regular.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/Regular.spritefont
+
+#begin Model/cube_repeating.fbx
+/importer:FbxImporter
+/processor:ModelProcessor
+/processorParam:ColorKeyColor=0,0,0,0
+/processorParam:ColorKeyEnabled=True
+/processorParam:DefaultEffect=BasicEffect
+/processorParam:GenerateMipmaps=True
+/processorParam:GenerateTangentFrames=False
+/processorParam:PremultiplyTextureAlpha=True
+/processorParam:PremultiplyVertexColors=True
+/processorParam:ResizeTexturesToPowerOfTwo=False
+/processorParam:RotationX=0
+/processorParam:RotationY=0
+/processorParam:RotationZ=0
+/processorParam:Scale=1
+/processorParam:SwapWindingOrder=False
+/processorParam:TextureFormat=Compressed
+/build:Model/cube_repeating.fbx
+
+#begin Model/cylinder_closed.fbx
+/importer:FbxImporter
+/processor:ModelProcessor
+/processorParam:ColorKeyColor=0,0,0,0
+/processorParam:ColorKeyEnabled=True
+/processorParam:DefaultEffect=BasicEffect
+/processorParam:GenerateMipmaps=True
+/processorParam:GenerateTangentFrames=False
+/processorParam:PremultiplyTextureAlpha=True
+/processorParam:PremultiplyVertexColors=True
+/processorParam:ResizeTexturesToPowerOfTwo=False
+/processorParam:RotationX=0
+/processorParam:RotationY=0
+/processorParam:RotationZ=0
+/processorParam:Scale=1
+/processorParam:SwapWindingOrder=False
+/processorParam:TextureFormat=Compressed
+/build:Model/cylinder_closed.fbx
+
+#begin Model/plane.fbx
+/importer:FbxImporter
+/processor:ModelProcessor
+/processorParam:ColorKeyColor=0,0,0,0
+/processorParam:ColorKeyEnabled=True
+/processorParam:DefaultEffect=BasicEffect
+/processorParam:GenerateMipmaps=True
+/processorParam:GenerateTangentFrames=False
+/processorParam:PremultiplyTextureAlpha=True
+/processorParam:PremultiplyVertexColors=True
+/processorParam:ResizeTexturesToPowerOfTwo=False
+/processorParam:RotationX=0
+/processorParam:RotationY=0
+/processorParam:RotationZ=0
+/processorParam:Scale=1
+/processorParam:SwapWindingOrder=False
+/processorParam:TextureFormat=Compressed
+/build:Model/plane.fbx
+
+#begin Model/SelectCircleDotted.fbx
+/importer:FbxImporter
+/processor:ModelProcessor
+/processorParam:ColorKeyColor=0,0,0,0
+/processorParam:ColorKeyEnabled=True
+/processorParam:DefaultEffect=BasicEffect
+/processorParam:GenerateMipmaps=True
+/processorParam:GenerateTangentFrames=False
+/processorParam:PremultiplyTextureAlpha=True
+/processorParam:PremultiplyVertexColors=True
+/processorParam:ResizeTexturesToPowerOfTwo=False
+/processorParam:RotationX=0
+/processorParam:RotationY=0
+/processorParam:RotationZ=0
+/processorParam:Scale=1
+/processorParam:SwapWindingOrder=False
+/processorParam:TextureFormat=Compressed
+/build:Model/SelectCircleDotted.fbx
+
+#begin Model/SelectCircleSolid.fbx
+/importer:FbxImporter
+/processor:ModelProcessor
+/processorParam:ColorKeyColor=0,0,0,0
+/processorParam:ColorKeyEnabled=True
+/processorParam:DefaultEffect=BasicEffect
+/processorParam:GenerateMipmaps=True
+/processorParam:GenerateTangentFrames=False
+/processorParam:PremultiplyTextureAlpha=True
+/processorParam:PremultiplyVertexColors=True
+/processorParam:ResizeTexturesToPowerOfTwo=False
+/processorParam:RotationX=0
+/processorParam:RotationY=0
+/processorParam:RotationZ=0
+/processorParam:Scale=1
+/processorParam:SwapWindingOrder=False
+/processorParam:TextureFormat=Compressed
+/build:Model/SelectCircleSolid.fbx
+
+#begin Model/SelectCircleThick.fbx
+/importer:FbxImporter
+/processor:ModelProcessor
+/processorParam:ColorKeyColor=0,0,0,0
+/processorParam:ColorKeyEnabled=True
+/processorParam:DefaultEffect=BasicEffect
+/processorParam:GenerateMipmaps=True
+/processorParam:GenerateTangentFrames=False
+/processorParam:PremultiplyTextureAlpha=True
+/processorParam:PremultiplyVertexColors=True
+/processorParam:ResizeTexturesToPowerOfTwo=False
+/processorParam:RotationX=0
+/processorParam:RotationY=0
+/processorParam:RotationZ=0
+/processorParam:Scale=1
+/processorParam:SwapWindingOrder=False
+/processorParam:TextureFormat=Compressed
+/build:Model/SelectCircleThick.fbx
+
+#begin Model/SelectSquareDotted.fbx
+/importer:FbxImporter
+/processor:ModelProcessor
+/processorParam:ColorKeyColor=0,0,0,0
+/processorParam:ColorKeyEnabled=True
+/processorParam:DefaultEffect=BasicEffect
+/processorParam:GenerateMipmaps=True
+/processorParam:GenerateTangentFrames=False
+/processorParam:PremultiplyTextureAlpha=True
+/processorParam:PremultiplyVertexColors=True
+/processorParam:ResizeTexturesToPowerOfTwo=False
+/processorParam:RotationX=0
+/processorParam:RotationY=0
+/processorParam:RotationZ=0
+/processorParam:Scale=1
+/processorParam:SwapWindingOrder=False
+/processorParam:TextureFormat=Compressed
+/build:Model/SelectSquareDotted.fbx
+
+#begin Model/SelectSquareSolid.fbx
+/importer:FbxImporter
+/processor:ModelProcessor
+/processorParam:ColorKeyColor=0,0,0,0
+/processorParam:ColorKeyEnabled=True
+/processorParam:DefaultEffect=BasicEffect
+/processorParam:GenerateMipmaps=True
+/processorParam:GenerateTangentFrames=False
+/processorParam:PremultiplyTextureAlpha=True
+/processorParam:PremultiplyVertexColors=True
+/processorParam:ResizeTexturesToPowerOfTwo=False
+/processorParam:RotationX=0
+/processorParam:RotationY=0
+/processorParam:RotationZ=0
+/processorParam:Scale=1
+/processorParam:SwapWindingOrder=False
+/processorParam:TextureFormat=Compressed
+/build:Model/SelectSquareSolid.fbx
+
+#begin Model/sphere.fbx
+/importer:FbxImporter
+/processor:ModelProcessor
+/processorParam:ColorKeyColor=0,0,0,0
+/processorParam:ColorKeyEnabled=True
+/processorParam:DefaultEffect=BasicEffect
+/processorParam:GenerateMipmaps=True
+/processorParam:GenerateTangentFrames=False
+/processorParam:PremultiplyTextureAlpha=True
+/processorParam:PremultiplyVertexColors=True
+/processorParam:ResizeTexturesToPowerOfTwo=False
+/processorParam:RotationX=0
+/processorParam:RotationY=0
+/processorParam:RotationZ=0
+/processorParam:Scale=1
+/processorParam:SwapWindingOrder=False
+/processorParam:TextureFormat=Compressed
+/build:Model/sphere.fbx
+
+#begin Shaders/DeferredRenderer/DepthWriter.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/DeferredRenderer/DepthWriter.fx
+
+#begin Shaders/Effect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/Effect.fx
+
+#begin Shaders/EffectOld.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/EffectOld.fx
+
+#begin Shaders/InstancingTest.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/InstancingTest.fx
+
+#begin Shaders/LightParticleEffect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/LightParticleEffect.fx
+
+#begin Shaders/ParticleEffect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/ParticleEffect.fx
+
+#begin Shaders/PixelShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/PixelShader.fx
+
+#begin Shaders/ShadowMap.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/ShadowMap.fx
+
+#begin Texture/Lf3Tiles2.tga
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Texture/Lf3Tiles2.tga
+
+#begin Texture/noimage.tga
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Texture/noimage.tga
+
+#begin Texture/square_particle.tga
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Texture/square_particle.tga
+
+#begin Texture/whitearea256.tga
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Texture/whitearea256.tga
+
+#begin ToggContent/Button_Clicked.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:ToggContent/Button_Clicked.wav
+
+#begin ToggContent/buy.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:ToggContent/buy.wav
+
+#begin ToggContent/Cursor_Moved.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:ToggContent/Cursor_Moved.wav
+
+#begin ToggContent/hi_100ms.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:ToggContent/hi_100ms.wav
+
+#begin ToggContent/lo_100ms.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:ToggContent/lo_100ms.wav
+
+#begin ToggContent/Returning.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:ToggContent/Returning.wav
+
+#begin ToggContent/sword1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:ToggContent/sword1.wav
+
+#begin Version Number.txt
+/copy:Version Number.txt
+
+#begin VoxelModel/LfWars/armybanner.vox
+/copy:VoxelModel/LfWars/armybanner.vox
+
+#begin VoxelModel/LfWars/armystand.vox
+/copy:VoxelModel/LfWars/armystand.vox
+
+#begin VoxelModel/LfWars/Arrow.vox
+/copy:VoxelModel/LfWars/Arrow.vox
+
+#begin VoxelModel/LfWars/banner.vox
+/copy:VoxelModel/LfWars/banner.vox
+
+#begin VoxelModel/LfWars/citybanner.vox
+/copy:VoxelModel/LfWars/citybanner.vox
+
+#begin VoxelModel/LfWars/cityicon.vox
+/copy:VoxelModel/LfWars/cityicon.vox
+
+#begin VoxelModel/LfWars/fo_stone1.vox
+/copy:VoxelModel/LfWars/fo_stone1.vox
+
+#begin VoxelModel/LfWars/fo_stone2.vox
+/copy:VoxelModel/LfWars/fo_stone2.vox
+
+#begin VoxelModel/LfWars/fo_tree1.vox
+/copy:VoxelModel/LfWars/fo_tree1.vox
+
+#begin VoxelModel/LfWars/fol_bush1.vox
+/copy:VoxelModel/LfWars/fol_bush1.vox
+
+#begin VoxelModel/LfWars/horse_brown.vox
+/copy:VoxelModel/LfWars/horse_brown.vox
+
+#begin VoxelModel/LfWars/horse_white.vox
+/copy:VoxelModel/LfWars/horse_white.vox
+
+#begin VoxelModel/LfWars/horsebanner.vox
+/copy:VoxelModel/LfWars/horsebanner.vox
+
+#begin VoxelModel/LfWars/little_boltarrow.vox
+/copy:VoxelModel/LfWars/little_boltarrow.vox
+
+#begin VoxelModel/LfWars/little_crossboworc.vox
+/copy:VoxelModel/LfWars/little_crossboworc.vox
+
+#begin VoxelModel/LfWars/little_hirdman.vox
+/copy:VoxelModel/LfWars/little_hirdman.vox
+
+#begin VoxelModel/LfWars/little_javelin.vox
+/copy:VoxelModel/LfWars/little_javelin.vox
+
+#begin VoxelModel/LfWars/party_restbar.vox
+/copy:VoxelModel/LfWars/party_restbar.vox
+
+#begin VoxelModel/LfWars/war_archer_i2.vox
+/copy:VoxelModel/LfWars/war_archer_i2.vox
+
+#begin VoxelModel/LfWars/war_archer.vox
+/copy:VoxelModel/LfWars/war_archer.vox
+
+#begin VoxelModel/LfWars/war_ballista_i2.vox
+/copy:VoxelModel/LfWars/war_ballista_i2.vox
+
+#begin VoxelModel/LfWars/war_ballista_proj.vox
+/copy:VoxelModel/LfWars/war_ballista_proj.vox
+
+#begin VoxelModel/LfWars/war_ballista.vox
+/copy:VoxelModel/LfWars/war_ballista.vox
+
+#begin VoxelModel/LfWars/war_bannerman.vox
+/copy:VoxelModel/LfWars/war_bannerman.vox
+
+#begin VoxelModel/LfWars/war_cannonball.vox
+/copy:VoxelModel/LfWars/war_cannonball.vox
+
+#begin VoxelModel/LfWars/war_folkman.vox
+/copy:VoxelModel/LfWars/war_folkman.vox
+
+#begin VoxelModel/LfWars/war_knight_i2.vox
+/copy:VoxelModel/LfWars/war_knight_i2.vox
+
+#begin VoxelModel/LfWars/war_knight_i3.vox
+/copy:VoxelModel/LfWars/war_knight_i3.vox
+
+#begin VoxelModel/LfWars/war_knight.vox
+/copy:VoxelModel/LfWars/war_knight.vox
+
+#begin VoxelModel/LfWars/war_recruit.vox
+/copy:VoxelModel/LfWars/war_recruit.vox
+
+#begin VoxelModel/LfWars/war_sailor_i2.vox
+/copy:VoxelModel/LfWars/war_sailor_i2.vox
+
+#begin VoxelModel/LfWars/war_sailor.vox
+/copy:VoxelModel/LfWars/war_sailor.vox
+
+#begin VoxelModel/LfWars/war_spearman.vox
+/copy:VoxelModel/LfWars/war_spearman.vox
+
+#begin VoxelModel/LfWars/war_town_factory.vox
+/copy:VoxelModel/LfWars/war_town_factory.vox
+
+#begin VoxelModel/LfWars/war_town1.vox
+/copy:VoxelModel/LfWars/war_town1.vox
+
+#begin VoxelModel/LfWars/war_town2.vox
+/copy:VoxelModel/LfWars/war_town2.vox
+
+#begin VoxelModel/LfWars/war_town3.vox
+/copy:VoxelModel/LfWars/war_town3.vox
+
+#begin VoxelModel/LfWars/war_worker.vox
+/copy:VoxelModel/LfWars/war_worker.vox
+
+#begin VoxelModel/LfWars/war_workerhut.vox
+/copy:VoxelModel/LfWars/war_workerhut.vox
+
+#begin VoxelModel/LfWars/warmap_grass1.vox
+/copy:VoxelModel/LfWars/warmap_grass1.vox
+
+#begin VoxelModel/LfWars/warmap_grassdark1.vox
+/copy:VoxelModel/LfWars/warmap_grassdark1.vox
+
+#begin VoxelModel/LfWars/warmap_mountain1.vox
+/copy:VoxelModel/LfWars/warmap_mountain1.vox
+
+#begin VoxelModel/LfWars/warmap_mountaindark1.vox
+/copy:VoxelModel/LfWars/warmap_mountaindark1.vox
+
+#begin VoxelModel/LfWars/warmap_sand1.vox
+/copy:VoxelModel/LfWars/warmap_sand1.vox
+
+#begin VoxelModel/LfWars/warmap_sanddark1.vox
+/copy:VoxelModel/LfWars/warmap_sanddark1.vox
+
+#begin VoxelModel/LfWars/wars_archer_ship.vox
+/copy:VoxelModel/LfWars/wars_archer_ship.vox
+
+#begin VoxelModel/LfWars/wars_ballista_ship.vox
+/copy:VoxelModel/LfWars/wars_ballista_ship.vox
+
+#begin VoxelModel/LfWars/wars_captain.vox
+/copy:VoxelModel/LfWars/wars_captain.vox
+
+#begin VoxelModel/LfWars/wars_darklord.vox
+/copy:VoxelModel/LfWars/wars_darklord.vox
+
+#begin VoxelModel/LfWars/wars_deserter.vox
+/copy:VoxelModel/LfWars/wars_deserter.vox
+
+#begin VoxelModel/LfWars/wars_folk_ship.vox
+/copy:VoxelModel/LfWars/wars_folk_ship.vox
+
+#begin VoxelModel/LfWars/wars_knight_ship.vox
+/copy:VoxelModel/LfWars/wars_knight_ship.vox
+
+#begin VoxelModel/LfWars/wars_loading_anim.vox
+/copy:VoxelModel/LfWars/wars_loading_anim.vox
+
+#begin VoxelModel/LfWars/wars_piker.vox
+/copy:VoxelModel/LfWars/wars_piker.vox
+
+#begin VoxelModel/LfWars/wars_shipbuild.vox
+/copy:VoxelModel/LfWars/wars_shipbuild.vox
+
+#begin VoxelModel/LfWars/wars_shipcrew.vox
+/copy:VoxelModel/LfWars/wars_shipcrew.vox
+
+#begin VoxelModel/LfWars/wars_soldier_i2.vox
+/copy:VoxelModel/LfWars/wars_soldier_i2.vox
+
+#begin VoxelModel/LfWars/wars_soldier_i3.vox
+/copy:VoxelModel/LfWars/wars_soldier_i3.vox
+
+#begin VoxelModel/LfWars/wars_soldier_ship.vox
+/copy:VoxelModel/LfWars/wars_soldier_ship.vox
+
+#begin VoxelModel/LfWars/wars_soldier.vox
+/copy:VoxelModel/LfWars/wars_soldier.vox
+
+#begin VoxelModel/LfWars/wars_trollcannon.vox
+/copy:VoxelModel/LfWars/wars_trollcannon.vox
+
+#begin VoxelModel/LfWars/wars_viking_ship.vox
+/copy:VoxelModel/LfWars/wars_viking_ship.vox
+

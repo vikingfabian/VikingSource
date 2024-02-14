@@ -1,0 +1,32 @@
+﻿Mario Party tärning
+
+-boosts:
+Tärning +1, tryck under förflyttning
+Fiskespö, dra en passerande spelare till din ruta
+Magnet, dra åt dig pengar från alla nära spelare
+Sköld, blockar en boost
+Jail free card, kan blocka en polisman
+
+-Vandrande polisman, tar alla boosts (för fusk)
+
+Köp stjärna vid GO rutan, först till tre vinner
+	-tre hus i rad: stjärna
+Landa på en ruta, köp med knapp inom viss tid sen startar auktion - kanske randomizar gratis, olika kostnader, och auktion
+
+
+
+#VERSION2
+Först en runda - sen realtid
+
+Gå i en cirkel, rutor ger och tar pengar. Togglar mellan.
+Landa på spelare kickar dom till GO - och tar mynt
+(kan köpa traps som tar pengar, skyddar)
+(pot i mitten)
+passera gå, få mer pengar
+(minigame roffa pengar, mer minigames)
+Items
+*Extra tärning
+*Hatt med tagg
+*Bil, dubbla tärning, knockar alla spelare på vägen
+*Spelar swap teleport
+*Långsam turtledice

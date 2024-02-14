@@ -1,0 +1,155 @@
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.Graphics;
+
+namespace VikingEngine.DSSWars.Map
+{
+
+    class FactionColorsMap : Point3D
+    {
+        
+        Graphics.Mesh model;
+        Graphics.PixelTexture texture;
+
+        public FactionColorsMap(Vector3 pos, Vector3 scale)
+            :base(Vector3.Zero, Vector3.Zero, false)
+        {
+            
+            texture = new Graphics.PixelTexture(DssRef.world.Size);
+
+            //Ref.draw.DontAddNextRenderObject();
+            //Graphics.TextureSource source = new Graphics.TextureSource(texture.Texture);
+            Sprite source = new Sprite();
+            source.SourceF = VectorRect.ZeroOne;
+
+            const float SourceAdj = 1.6f;
+            float radiusAdjX = SourceAdj / DssRef.world.Size.X;
+            float radiusAdjY = SourceAdj / DssRef.world.Size.Y;
+
+            source.SourceF.AddXRadius(-radiusAdjX);
+            source.SourceF.AddYRadius(-radiusAdjY);
+            
+            //source.SourceArea.Position.X += radiusAdjX;
+            //source.SourceArea.Position.Y += radiusAdjY;
+            //source.SourceArea.Size.X -= radiusAdjX * 2f;
+            //source.SourceArea.Size.Y -= radiusAdjY * 2f;
+
+
+            model = new Graphics.Mesh(LoadedMesh.plane, VectorExt.SetY(pos, DssLib.OverviewMapYpos), scale, 
+                TextureEffectType.Flat, SpriteName.NO_IMAGE, Color.White, false);
+            model.texture = texture;
+            model.TextureSource = source;
+            //model.Y = RTSlib.OverviewMapYpos;
+
+            Ref.draw.CurrentRenderLayer = DrawGame.MinimapLayer;
+            Ref.draw.AddToRenderList(this);
+            Ref.draw.CurrentRenderLayer = DrawGame.TerrainLayer;
+
+            quedEvent();
+        }
+
+        public void quedEvent()
+        {
+            updateArea(DssRef.world.tileBounds);
+        }
+        public void SetNewTexture()
+        {
+            texture.ApplyPixelsToTexture();//.SetData();
+        }
+
+        void updateArea(Rectangle2 area)
+        {
+            Tile t;
+
+            ForXYLoop loop = new ForXYLoop(area);
+            while (loop.Next())
+            {
+                t = DssRef.world.tileGrid.Get(loop.Position);
+                texture.SetPixel(loop.Position, t.MinimapColor(loop.Position));
+            }
+
+            texture.ApplyPixelsToTexture();
+        }
+
+
+        Graphics.Motion3d fadeMotion;
+        void fadeIn(Vector3 dir)
+        {
+            if (fadeMotion != null && !fadeMotion.IsDeleted)
+                fadeMotion.DeleteMe();
+            fadeMotion = new Graphics.Motion3d(Graphics.MotionType.OPACITY,
+                model, dir, Graphics.MotionRepeate.NO_REPEAT, 100, true);
+        }
+
+#region DRAW
+        public override void Draw(int cameraIndex)
+        {
+            Engine.Draw.graphicsDeviceManager.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
+            model.Draw(cameraIndex);
+            Engine.Draw.graphicsDeviceManager.GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
+
+            //if (Map.MapDetailLayer.CameraIndexToView[cameraIndex].DrawOverview)
+            //{
+            //DssRef.world.Draw(cameraIndex);//, true);
+
+            var factions = DssRef.world.factionsCounter;
+            factions.Reset();
+
+            while (factions.Next())//foreach (var m in DssRef.state.players)
+            {
+                factions.sel.armiesCounter.Reset();
+                while (factions.sel.armiesCounter.Next())
+                {
+
+                    var groupsCounter = factions.sel.armiesCounter.sel.groups.counter();
+                    while (groupsCounter.Next())
+                    {
+                        groupsCounter.sel.DrawOverviewIcon(cameraIndex);
+                    }
+                }            
+            }
+        }
+        public override DrawObjType DrawType
+        {
+            get { return DrawObjType.Mesh; }
+        }
+
+        public override void copyAllDataFrom(Graphics.AbsDraw clone)
+        {
+            throw new NotImplementedException();
+        }
+        public override Graphics.AbsDraw CloneMe()
+        {
+            throw new NotImplementedException();
+        }
+        public override Color Color
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+        public override float Opacity
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+        public override void UpdateCulling()
+        {
+            throw new NotImplementedException();
+        }
+#endregion
+    }
+}

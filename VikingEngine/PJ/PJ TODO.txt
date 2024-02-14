@@ -1,0 +1,123 @@
+﻿
+debug text synlig i en video
+mapread crash, read generic buttonmap
+
+Kolla "nano golf", kopiera :)
+
+
+##bild
+
+-LJUD
+-musik
+
+##CERT
+
+
+dubbelkolla MIN antal spelare vid mode byte
+zombie partiklar remote
+(checka available character på remote
+
+##Car ball
+Hattar om en spelare gör tre mål
+Kyckling streaker om man äger (4-0)
+
+##SENARE
+
+https://github.com/gabomdq/SDL_GameControllerDB
+extra kontroll support
+
+http://craftworkgames.github.io/MonoGame.Extended/
+ha some exempel till source
+
+
+vinnar placering bild (vinnar pall, 4positioner, höns publik)
+tomat/sko/ägg/trosa kastning från motspelare
+
+metal-tema
+
+#strategy
+hammra efter attack fick honom att flytta en till (tömde område till 0)
+håll knapp för att flytta
+
+//uppgradera länder
+
+There is probably a lot more i could comment on too, but onto the things i think could improve:
+* I think the laser is very underpowered, due to potentially shooting all 3 shots in the wrong direction.. We really didn't feel a huge power spike when we picked it up, and it only lead to a couple of hits/kills. In comparison, the red shells were always a big treath,
+* Some times when down on the ground, you can't do anything but get hit when getting back up. This is due to the spikes moving down to block you.. A good way of fixing this would be to allow the player to change direction while on the ground (like before the game starts)
+* Sometimes, although rarely, one of the players is put in a really bad spawn possition. I had one possition where my opponent could basically hit me imedietly then stomp on me in 1 swift movement. This is usually not a problem, but when it happens it ruins the fun/balance
+
+These are things i would love to see, that aren't possitive or negative to the current game.
+* i would love to see more power ups, For example a bouble or shield that defends you from 1 hit for a bit of time. Or how about a force field that interacts with the spiky blocks to either remove them, or PUSH them away. This could be a great way to turn the spike blocks into weapons.
+* More modification blocks(like the reverse and speed up blocks) would be really interesting. For example a stacis block (makes you static in the air for a tiny bit) or a teleport block.
+* Online multiplayer would be a GREAT addition to a game like this, and i could see it as a great party game i'd play with my online friends on streams. Im pretty sure you could get some of the bigger youtube creators to play it too.
+
+Hey, so here comes the feedback for Car jousting and minigolf.
+Car:
+people had trouble figuring out who they were, so it might be useful to have the button they chose displayed underneath the car.
+It could be interesting to have a "targeting line" while turning so you can aim for specific things.
+I am thinking it could be really cool to have a "boost" mechanic. Pick up a powerup and doubleclick to use it. I dunno if this would be doable.
+You could probably increase the size of the ball a bit to make it easier to hit for the cars.
+Maybe there could be a "goalie" mode? For example: you drive INTO your own goal to activate. Once activated you instead of turning move up/down when you click your button like pong. If you go all the way to one side you cancel it.
+
+Minigolf:
+People seemed to enjoy it, but i think there should be a "total score" next to our current gold. for example "2 (21)" Where 2 is my current gold and 21 is my accumulated gold.
+This might just be my experience, but we very often ended on negative gold. I think it might be worth it to increase the gold gain a bit and/or reduce the gold loss by a bit. Going into negative gold feels bad, whilest gaining LOTS of gold feels good.
+We talked about it before, but powerups would definetly be great.
+A short popup at the start of the game saying "collect all x white coins to open the goal" would help new people understand.
+
+
+tetris till DS som hade uppdrag för spelarna, den första att klara den får en bonus
+kom också att tänka på något för a "spica" upp spelet, lägga till en nivå till om man så vill. Kom och tänka på bejeweled och gamla spelet Rainbow warrior till amiga/c64. De har diamant/fruit bonus, då man samlar på sig saker, 1 av varje färg.
+mer eller mindre ta bort 1 av varje färg, utan att ta bort "dubbel" av något för en extra bonus
+Gör en hungrig gris i mitten i multiplayer som har en pratbubbla, första att mata den med vad den ber om kastar X gråa block på de andra 
+
+donkey kong barrel
+bomb drops
+
+Carball:
+bumping off the walls is an improvement, although it might have to be tweaked a bit. Possibly swap which way you are going(the direction) as you come out? test around with it. 
+It is an improvement because it doesn't make people have to think About the edges as a continuation.
+An animation should play once a goal has happened. Possibly even take a couple of seconds before the ball respawns so people have time to get in possition.
+There NEEDS to be some i-frames after death. possibly all the way to 1/1.5 seconds.
+I love the goal post part, but when playing 1v2 your goal is so small its really hard to stay in the goal. An improvement would be to add: "If(Team2.count < Team1.count) then car.goalspeed = car.goalspeed / 2. 
+this would allow goalkeeping to be a thing for the solo player.
+I think the ball needs a tiny bit less friction. Try tweaking it by 10%.
+
+Ideas i would love to see:
+A flare(explosion of particles) when you manage to save a shot in goal. Bigger flare if the shot was fast("epic save"). This would make goalkeeping really fun.
+A flare when goals are scored as a celebration. This could be combined with waiting for the ball to respawn.
+As you start the game, the button should be displayed underneath the car to point out who is who. this will remove any confusion.
+Crowd cheering!
+
+Sound effect ideas. (possible joke dlc?)
+I would LOVE to do sound effects for goals and saves. I've played a lot of rocket league and whenever we score in rocket league i yell out "GOOOOAAAARRRUUUU"(goal in pretend japanese), 
+and when we save i yell out "SAAAVVUUUU!"(save in pretend japanese) and "EPIKU SAVU!"(Epic save).
+This would be really funny to implement into the game as a joke. possible even make it a secret(?)
+
+
+Match 3.
+This will become a good game with a couple of modifications. First of all, we need to tweak the 'speed' of the game. That is not saying we should make it go fast, its saying we make changes to make it a bit more fast pased, 
+but not so fast pased that it loses its match 3 charm.
+So here are some changes i'd like to see.
+A rare bomb drop that explodes everything around it. Activates if anything in its imediet surrounding(8 blocks) is cleared. This would clear stone blocks.
+Higher comboes should be more destructive to the opponents.
+Instead of ONLY dropping stone, with the new higher destructiveness, the comboes could ALSO drop colored blocks randomly. This IS destructive, but is easier to solve than a whole line of just rocks.
+It would be cool to have some special blocks(like the bomb) that activate when combined near. either once or twice. Here are some ideas:
+
+A lightning bolt. This clears a whole line(vertically)
+A clown(or something like that) This changes 4 blocks on the enemy bords to a different color randomly.
+A trophy of someone lifting something. This adds 1 line of garbage to the enemy's bottom row, pushing the rest up.
+A pair of swords crossed. This deletes 3 blocks on each diagonal line.
+A mirror. This mirrors your left side over to your right side.(funny and potentially not helpfull)
+A heavy weight. This crushes down from above and removes any block until at least half of the lines "support it". meaning if there are 6 vertical lines, it will push down and remove blocks until at least 3 of those lines are touching it.
+
+Boss mode - nån blir en boss och dom andra kämpar mot personen
+
+Geometry Dash - bra exempel på single player one button game.
+
+Tanks minigame
+
+"What the golf" har ett hinder med bilar som kör vid kontakt
+https://twitter.com/timgarbos/status/1032291486900125696
+
+Bra tetris effekter: https://twitter.com/RainingBlobs

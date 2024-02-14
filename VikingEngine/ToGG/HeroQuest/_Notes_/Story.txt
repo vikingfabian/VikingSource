@@ -1,0 +1,112 @@
+﻿#Crossed paths
+Tidig mission om att går in och hämta ett viktigt föremål (gravplundring?), möter ett par mörka figurer kommer från en portal - en flash - och dom är borta, alla monster är döda och det står en kista framför dom med föremålet. Banan är sen över.
+
+#MAGIKER SIDE MISSION
+Magi bana, parodi på Harry potter, skicka barn på livsfarliga tävlingar
+Kan ha revive potions, över när alla är döda - som end game alternativ
+
+-Welcome to "Magic Apprentice Challenge"! The only school trial with an audience and popcorn! We are going to start with the freshman year students, always a favorite!
+
+*First child dies
+-Oh, the first one goes down! Someone skipped on his homework, hihi!
+
+*Second child dies
+-Nasty! That is going to leave a stain! The people love it, and cheer for more blood!
+
+*Third child dies
+-Aoch! Simple card tricks aint gonna help you here buddy!
+
+#STRANGE VISITORS (sido mission)
+Orcer som attackerar bank/trade-ruite med maskingevär (leder medeltida orcer)
+
+#MAIN STORY (Act 1 - simpler times)
+Första tredje delen: hjältarna hjälper byn att rensa ut monster. 
+Sitter i tavern 
+Elf: "This place really needs some colors. And actual sunlight would not hurt."
+Paladin: "I like the place, its quiet, peaceful for the mind"
+"HELP!"
+Mage: "Oh dear! Sounds like we need to put our minds at war"
+Elf: "Eat my dust, suckers!"
+
+Avslutas med en inbjudan till kungens tron: 
+"I need help with a sensitive matter. My people are superstisius, beleieve in prophesies and panic will spread"
+
+The goblin king - första slutbossen
+När besegred
+"You are laughing now, you misguided fools!"
+-"We are heroes, protector of the realm!"
+"Is it really worth the starving farmers in ---?"
+-"Let me answer that:" [Slår ihjäl bossen]
+
+The Dungeon Lord - riktig slutboss
+Alla karaktärer har en monolog när dom går in i rummet
+Amazon: Are you surprised?! All big problems are run by small men.
+Mage: Wait a second, this has to be the lost prince...
+Elf: Finally, I thought this would never end!
+
+
+Your king
+
+The prophecy
+"A lonely king dies on an empty throne"
+"Replaced by the army of ice and bone"
+"Oh my, the long night is near"
+"Flee, flee quickly, my dear"
+("A deep love will come from the darkest of hearts"
+"Will reach through the ages"
+
+-His whife is told to be lost to the hordes
+-Has made a deal with a devil, to (get a son?)
+
+-Daughter storyline:
+	Recruit: "Saving a p-p-princess?!"
+	King: "Yes, yes, my daughter is a princess. I just want her safe, keep your hands to yourself, you aint going to marry her!"
+
+	Bybor: Oh no, this is the prophecy coming true
+
+	Sayd to be abducted. Is actually trying to get away.
+	-/He sacrificed my stepmother
+	-Im actually just adopted, to keep the peace
+
+	Kan ha boss strid med dottern, där hon ger upp efter en skada (you can always trust a life in the court to soften its members)
+
+-"The Queen" storyline:
+	Kings whife is found as an undead general
+
+
+#GAME+ STORY (Act 2) : The necromancer
+Undeads are knocking on the door.
+Main stroy will have a mission with an undead outpost, warning about the necromancer
+
+First they need to flee the kingdom, the king refuses to leave
+Heroes sent to find the source of their power and destroy it
+
+
+#CITY IN THE RED MIST
+En stad dold i en röd dimma, legenden om det röda guldet som tvista sina offer. Tvist på Dark souls brädspelet. Ge upp mekanik.
+Kunna bränna stamina för att få dodge tärning.
+Vid death respawn så försvinner hjärtan o stamina.
+När man ger upp, alla stats och monster resettas, man kan köpa o levla.
+Samla själar istället för guld - för items/level upp.
+Unlocka red mist skins
+"Stampeder"- kallas dom som följer en gold rush
+"Aaah, you are a Stampeder. You are like a chain, pull one in the mist and the rest will follow. Turn back while you still can."
+"Murgo gold" röda guldet i Belgarion
+
+#THE RED THREAD (elf side story)
+"Aaah, my favorite spot of the east end forest!"
+"I want to start this decade of sewing study, by looking at Master Mehlinidilihil's classic embroidery between year 862 and 867"
+"...and some of you maybe want to be naughty and slip into the 868 leaf pattern ^^"
+"hahahaha!"
+"I want you to put extra attension the the thread count of... CRASH!"
+
+#Act II - the necromancer / chaos lord / the Plague
+Fyra gudar skapade världen
+Lag: Lag & ordning, Lek: Chaos, Frii: Ljuset & livet (paladins gud), Oede: Mörkret & döden
+Dessa har döttrar o söner som är halvgudar
+Necromalia: Oede's upproriska dotter (de odödas gudinna)
+
+Chaos guden splittra folket och starta det första kriget
+Dom dräpte chaos och gick i exil
+Statyer syns på gudarna, men chaos guden är bannad och borttagen (ses i tronrummet, och chaos guden kan ses nerstoppad i källare)
+Förklaringen till undead invationen är att dom dricker chaos gudens blod

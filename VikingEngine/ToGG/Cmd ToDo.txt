@@ -1,0 +1,112 @@
+﻿
+flixstor.to "boys"
+
+#Bild
+//tutorial pil
+/player icon
+/exit map route
+/tutorial arrow
+/LOS knapp - bättre iconer
+/spyglass filled
+result screen bg
+title menu bg
+terräng för alla banor
+/grå faser
+
+Victory/Defeat text
+
+supply wagon, supply pile
+bone dragon boss
+drill sergent
+engineer
+battering ram
+ballista + elf
+elf princess
+warrior
+recruit spear, archer
+
+(Rulebook
+
+
+
+####
+
+small spell error - should read: Reach 6 Victory Points, before your opponent does.
+or you could just drop the word does
+Reach 6 Victory Points, before your opponent. - is just as valid
+
+
+ta spelaren till story efter 3:e tutorial
+//ta bort supp tutorial, ha en liten fight istället
+börja tut1 med i-rutan
+
+mission result screen
+	-säga varför man förlora
+
+LOS knapp - bättre iconer
+
+fyll story knapp efter tut, sen quick
+
+###RELEASE####
+
+LOS ska ignorera adj uints
+
+skog ska vara max2 attack även till rutan
+
+spel settings
+	-ras
+	-large battle
+
+-Tid
+-visa aim block, när opponent är i range
+-Kunna ångra 0 attacker
+
+orcer
+	-unsupportiv, ingen support
+	-fler move/attack - sämre gubbar
+
+attack tool tip ska visa supporters
+ignorer enheter i line of sight(?)
+//-darken the skies, kunna flytta
+-over shoulder supp, ska kolla LOS
+
+I think it'd be easier to understand what is going on if you darken the rest of the screen until the player click on what you want them to click inside of the tutorial missions
+ -använd stor knapp till nästa available
+
+Retreat in i opponents ska döda två liv
+cam edge scroll beroende av zoom
+
+
+#Network
+aim funkar inte ibland
+oh yea, the host dont see if the net crashes
+[18:37:04] Fabian Jakobsson: i should put more debug into that
+[18:37:38] Fabian Jakobsson: and also auto save the matches to auto re connect later
+
+Hmm also have no way to exit, gotta dashboard (i prospect mode)
+	styra meny i prospect
+
+
+
+#Kanske
+
+sno hud från Northgard
+
+Rage - plus på counter attack
+Guard - ignore retreat, +1 på counter
+
+Command plupp?
+	-Får en varje runda
+	-Kan boosta förflyttning/attack
+	-Köpa bort rest
+	-Special command kort som kostar pluppar
+
+Få command pluppar för overkill
+
+
+-Cool down tid på vissa kort
+
+#store front
+A light wargame, heavily inspired by the Command & Colors game series. You are restricted to just move a few units each turn, making every move feel crucial. Another benefit is the low downtime makes the multiplayer quick and exciting.
+
+

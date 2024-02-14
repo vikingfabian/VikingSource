@@ -1,0 +1,32 @@
+﻿#. Category: STRATEGY CARDS
+
+msgid "StrategyRest"
+msgstr "Rest"
+msgstr
+"Move once, no attacks. At the end of turn: " 
+"Regain all %<Stamina> and %(HealthRegain) health. "
+"Lose %(BloodRageLost) %<BloodRage>."
+
+msgid "StrategyAdvance"
+msgstr "Advance"
+msgstr "Move and attack"
+
+msgid "StrategyFight"
+msgstr "Fight"
+msgstr "Attack twice. No movement."
+
+msgid "StrategyAimedShot"
+msgstr "Aimed shot"
+msgstr "Make one %(AttacksAdd) attack."
+
+msgid "StrategyRun"
+msgstr "Run"
+msgstr "Move double length. No attacks.";
+
+msgid "StrategyUltimatePiercingShot"
+msgstr "Piercing shot"
+msgstr "Move and make one %<Pierce> %(PierceValue) attack."
+
+msgid "StrategyUltimateShieldWall"
+msgstr "Shield wall"
+msgstr "**UNDER CONSTRUCTION** .Move once. You and any adjacent friendly unit gain +2 heavy armor dice and 'retaliate melee' for 1 turn."

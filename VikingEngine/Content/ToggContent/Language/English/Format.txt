@@ -1,0 +1,10 @@
+﻿#. Comment
+msgid "Id for the text"
+msgstr "The text, %(variablename), %<INSERT_CONSTANT>"
+"Text continues here on same row /n"
+"This text is on a new line"
+
+#. This text is split up in two parts
+msgid "TwoPart""
+msgstr "First part of a text (object name)"
+msgstr "Second part of a text (object description)"
