@@ -24,13 +24,13 @@ namespace VikingEngine.DSSWars.Map
             Sprite source = new Sprite();
             source.SourceF = VectorRect.ZeroOne;
 
-            const float SourceAdj = 1.6f;
-            float radiusAdjX = SourceAdj / DssRef.world.Size.X;
-            float radiusAdjY = SourceAdj / DssRef.world.Size.Y;
+            //const float SourceAdj = 1.6f;
+            //float radiusAdjX = SourceAdj / DssRef.world.Size.X;
+            //float radiusAdjY = SourceAdj / DssRef.world.Size.Y;
 
-            source.SourceF.AddXRadius(-radiusAdjX);
-            source.SourceF.AddYRadius(-radiusAdjY);
-            
+            source.SourceF.AddXRadius(-0.007f);
+            source.SourceF.AddYRadius(-0.007f);
+
             //source.SourceArea.Position.X += radiusAdjX;
             //source.SourceArea.Position.Y += radiusAdjY;
             //source.SourceArea.Size.X -= radiusAdjX * 2f;
