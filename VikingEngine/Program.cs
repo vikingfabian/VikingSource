@@ -1,8 +1,9 @@
 ﻿using VikingEngine;
 
+var steam = new VikingEngine.SteamWrapping.SteamManager();
 if (PlatformSettings.SteamAPI)
 {
-    new VikingEngine.SteamWrapping.SteamManager().Initialize();
+    steam.Initialize();
 }
 using var game = new VikingEngine.MainGame();
 game.Run();
