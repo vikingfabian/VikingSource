@@ -31,10 +31,10 @@ namespace VikingEngine.DSSWars
 
         public SpottedArray<GameObject.City> cities;
 
-
         public Texture2D flagTexture;
         public int previousWarAgainstFaction = -1;
         public DiplomaticRelation[] diplomaticRelations = null;
+        public DiplomaticSide diplomaticSide = DiplomaticSide.None;
 
         public bool textureLoaded = false;
         public Vector2 FlagTextureTargetSheetPos;
@@ -49,6 +49,7 @@ namespace VikingEngine.DSSWars
         public bool isAlive = true;
         public bool availableForPlayer = false;
         public FactionType factiontype;
+        public FactionGroupType grouptype = FactionGroupType.Other;
         public bool displayInFullOverview = false;
         public float growthMultiplier = 1f;
 
@@ -201,8 +202,6 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        
-
         public AbsMapObject GetUnit(System.IO.BinaryReader r)
         {
             ushort id = r.ReadUInt16();
@@ -210,8 +209,6 @@ namespace VikingEngine.DSSWars
 
             return result;
         }
-
-        
 
         public bool HasArmyBlockingPosition(IntVector2 tilepos)
         {
@@ -827,6 +824,12 @@ namespace VikingEngine.DSSWars
                     return SpeakTerms.SpeakTermsN1_Bad;
             }
         }
+
+        public bool WantToAllyAgainstDark()
+        {
+            return diplomaticSide == DiplomaticSide.Light &&
+                DssRef.state.events.nextEvent >= EventType.DarkLord;
+        }
     }
 
     enum FactionSize
@@ -852,5 +855,18 @@ namespace VikingEngine.DSSWars
         IceRaven = 10,
         DragonSlayer = 11,
         SouthHara = 12,
+    }
+
+    enum FactionGroupType
+    {
+        Other,
+        Nordic,
+    }
+
+    enum DiplomaticSide
+    {
+        None,
+        Light,
+        Dark,
     }
 }

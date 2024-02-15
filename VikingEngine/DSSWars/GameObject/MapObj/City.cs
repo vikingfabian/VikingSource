@@ -907,12 +907,21 @@ namespace VikingEngine.DSSWars.GameObject
         public void buySoldiersAction(UnitType type, int count)
         {
             Army army;
-            buySoldiers(type, count, true, out army);
+            bool success = buySoldiers(type, count, true, out army);
+            if (success)
+            {
+                var typeData = DssRef.unitsdata.Get(type);
+                if (typeData.factionUniqueType >= 0)
+                {
+                    DssRef.achieve.onFactionUniquePurchase(typeData.factionUniqueType);
+                }
+            }
         }
 
         public bool buySoldiers(UnitType type, int count, bool commit, out Army army, bool ignoreCityPurchaseOptions = false)
         {
             var typeData = DssRef.unitsdata.Get(type);
+
             int workersTotCost = typeData.workForceCount() * count;
             int moneyTotCost;            
 

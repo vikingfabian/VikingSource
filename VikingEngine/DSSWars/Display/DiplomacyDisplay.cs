@@ -16,6 +16,8 @@ namespace VikingEngine.DSSWars.Display
     {
         Players.LocalPlayer player;
         DiplomaticRelation selectedRelation;
+        Faction otherfaction;
+        bool againstDark;
 
         public DiplomacyDisplay(RichboxGui gui, Players.LocalPlayer player)
            : base(gui)
@@ -43,7 +45,9 @@ namespace VikingEngine.DSSWars.Display
 
         void toHud(Faction faction, bool selection)
         {
+            otherfaction = faction;
             selectedRelation = player.faction.diplomaticRelations[faction.index];
+            againstDark = faction.WantToAllyAgainstDark() && player.faction.diplomaticSide == DiplomaticSide.Light;
             if (selectedRelation == null)
             {
                selectedRelation = DssRef.diplomacy.SetRelationType(player.faction, faction, RelationType.RelationType0_Neutral, true);
@@ -164,6 +168,12 @@ namespace VikingEngine.DSSWars.Display
                     }
                 }
 
+                if (againstDark)
+                {
+                    content.newLine();
+                    content.ListDot();
+                    content.Add(new RichBoxText("Is light side ally"));
+                }
             }
         }
 
@@ -197,18 +207,18 @@ namespace VikingEngine.DSSWars.Display
         void peaceAction(bool peace_notTruce)
         {
             //stoppa armeer med attack command
-            Faction faction = selectedRelation.opponent(player.faction);
-            int cost = Diplomacy.EndWarCost(selectedRelation.Relation, selectedRelation.SpeakTerms, peace_notTruce);
+            //Faction otherfaction = selectedRelation.opponent(player.faction);
+            int cost = Diplomacy.EndWarCost(selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, peace_notTruce);
 
             if (player.diplomaticPoints.pay(cost, false))
             {               
                 if (peace_notTruce)
                 {
-                    DssRef.diplomacy.SetRelationType(player.faction, faction, RelationType.RelationType1_Peace);
+                    DssRef.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationType1_Peace);
                 }
                 else
                 {
-                    DssRef.diplomacy.SetRelationType(player.faction, faction, RelationType.RelationTypeN2_Truce);
+                    DssRef.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationTypeN2_Truce);
                     
                     selectedRelation.RelationEnd_GameTimeSec = Ref.TotalGameTimeSec + DssLib.TruceTimeSec;
                 }
@@ -218,12 +228,12 @@ namespace VikingEngine.DSSWars.Display
         bool canForgePeace(bool peace_notTruce)
         { 
             
-            return player.diplomaticPoints.Int() >= Diplomacy.EndWarCost(selectedRelation.Relation, selectedRelation.SpeakTerms, peace_notTruce);
+            return player.diplomaticPoints.Int() >= Diplomacy.EndWarCost(selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, peace_notTruce);
         }
 
         void peaceTooltip(bool peace_notTruce)
         {
-            int cost = Diplomacy.EndWarCost(selectedRelation.Relation, selectedRelation.SpeakTerms, peace_notTruce);
+            int cost = Diplomacy.EndWarCost(selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, peace_notTruce);
             RelationType toRelation = peace_notTruce ? RelationType.RelationType0_Neutral : RelationType.RelationTypeN2_Truce;
             RichBoxContent content = new RichBoxContent();
 
@@ -246,18 +256,18 @@ namespace VikingEngine.DSSWars.Display
 
         void allianceAction(bool ally_notFriend)
         {
-            Faction faction = selectedRelation.opponent(player.faction);
-            int cost = Diplomacy.AllianceCost(selectedRelation.Relation, selectedRelation.SpeakTerms, ally_notFriend);
+            //Faction otherfaction = selectedRelation.opponent(player.faction);
+            int cost = Diplomacy.AllianceCost(selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, ally_notFriend);
 
             if (player.diplomaticPoints.pay(cost, false))
             {
                 if (ally_notFriend)
                 {
-                    DssRef.diplomacy.SetRelationType(player.faction, faction, RelationType.RelationType3_Ally);
+                    DssRef.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationType3_Ally);
                 }
                 else
                 {
-                    DssRef.diplomacy.SetRelationType(player.faction, faction, RelationType.RelationType2_Good);
+                    DssRef.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationType2_Good);
                 }
 
                 player.hud.needRefresh = true;
@@ -266,12 +276,12 @@ namespace VikingEngine.DSSWars.Display
 
         bool canForgeAlliance(bool ally_notFriend)
         {
-            return player.diplomaticPoints.Int() >= Diplomacy.AllianceCost(selectedRelation.Relation, selectedRelation.SpeakTerms, ally_notFriend);
+            return player.diplomaticPoints.Int() >= Diplomacy.AllianceCost(selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, ally_notFriend);
         }
 
         void allianceTooltip(bool ally_notFriend)
         {
-            int cost = Diplomacy.AllianceCost(selectedRelation.Relation, selectedRelation.SpeakTerms, ally_notFriend);
+            int cost = Diplomacy.AllianceCost(selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, ally_notFriend);
             RelationType toRelation = ally_notFriend ? RelationType.RelationType3_Ally : RelationType.RelationType2_Good;
 
             RichBoxContent content = new RichBoxContent();
@@ -302,14 +312,14 @@ namespace VikingEngine.DSSWars.Display
 
         void servantAction()
         {
-            Faction faction = selectedRelation.opponent(player.faction);
-            int cost = Diplomacy.MakeServantCost(player);
+            //Faction otherfaction = selectedRelation.opponent(player.faction);
+            int cost = Diplomacy.MakeServantCost(player, againstDark);
 
             if (canMakeServant() &&
                 player.diplomaticPoints.pay(cost, false))
             {
                 player.servantFactions++;
-                faction.mergeTo(player.faction);
+                otherfaction.mergeTo(player.faction);
 
                 player.hud.needRefresh = true;
             }
@@ -317,23 +327,20 @@ namespace VikingEngine.DSSWars.Display
 
         bool canMakeServant()
         {
-            Faction faction = selectedRelation.opponent(player.faction);
-
             return selectedRelation.Relation == RelationType.RelationType3_Ally &&
-                player.faction.militaryStrength >= Diplomacy.MiltitaryStrengthXServant * faction.militaryStrength && 
-                player.diplomaticPoints.Int() >= Diplomacy.MakeServantCost(player) &&
-                faction.cities.Count <= DssRef.diplomacy.ServantMaxCities &&
+                player.faction.militaryStrength >= Diplomacy.MiltitaryStrengthXServant * otherfaction.militaryStrength && 
+                player.diplomaticPoints.Int() >= Diplomacy.MakeServantCost(player, againstDark) &&
+                otherfaction.cities.Count <= DssRef.diplomacy.ServantMaxCities &&
                 hasStrongerFoe();
         }
 
         bool hasStrongerFoe()
         {
-            Faction faction = selectedRelation.opponent(player.faction);
-            var wars = DssRef.diplomacy.collectWars(faction);
+            var wars = DssRef.diplomacy.collectWars(otherfaction);
 
             foreach (var w in wars)
             {
-                if (DssRef.world.factions[w].militaryStrength > faction.militaryStrength * 1.2f)
+                if (DssRef.world.factions[w].militaryStrength > otherfaction.militaryStrength * 1.2f)
                 { 
                     return true;
                 }
@@ -343,8 +350,7 @@ namespace VikingEngine.DSSWars.Display
 
         void servantTooltip()
         {
-            Faction faction = selectedRelation.opponent(player.faction);
-            int cost = Diplomacy.MakeServantCost(player);
+            int cost = Diplomacy.MakeServantCost(player, againstDark);
             
             RichBoxContent content = new RichBoxContent();
 
@@ -360,8 +366,8 @@ namespace VikingEngine.DSSWars.Display
                 //content.title("Military strength");
                 //string 
                 //content.newLine();
-                content.Add(new RichBoxText(string.Format(militaryStrengthCompare, Convert.ToInt32(player.faction.militaryStrength), Convert.ToInt32(faction.militaryStrength)), 
-                    HudLib.ResourceCostColor(player.faction.militaryStrength >= faction.militaryStrength * Diplomacy.MiltitaryStrengthXServant)));
+                content.Add(new RichBoxText(string.Format(militaryStrengthCompare, Convert.ToInt32(player.faction.militaryStrength), Convert.ToInt32(otherfaction.militaryStrength)), 
+                    HudLib.ResourceCostColor(player.faction.militaryStrength >= otherfaction.militaryStrength * Diplomacy.MiltitaryStrengthXServant)));
                 //content.text(faction.player.Name + ": " + Convert.ToInt32(faction.militaryStrength));
                 content.newLine();
             }
@@ -374,7 +380,7 @@ namespace VikingEngine.DSSWars.Display
             content.ListDot();
             {
                 string militaryStrength = "Servant can have max {0} citites";
-                content.Add(new RichBoxText(string.Format(militaryStrength, DssRef.diplomacy.ServantMaxCities), HudLib.ResourceCostColor(faction.cities.Count <= DssRef.diplomacy.ServantMaxCities)));
+                content.Add(new RichBoxText(string.Format(militaryStrength, DssRef.diplomacy.ServantMaxCities), HudLib.ResourceCostColor(otherfaction.cities.Count <= DssRef.diplomacy.ServantMaxCities)));
                 content.newLine();
             }
 

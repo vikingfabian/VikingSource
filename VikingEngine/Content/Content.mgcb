@@ -784,9 +784,6 @@
 #begin VoxelModel/LfWars/little_boltarrow.vox
 /copy:VoxelModel/LfWars/little_boltarrow.vox
 
-#begin VoxelModel/LfWars/little_crossboworc.vox
-/copy:VoxelModel/LfWars/little_crossboworc.vox
-
 #begin VoxelModel/LfWars/little_hirdman.vox
 /copy:VoxelModel/LfWars/little_hirdman.vox
 
@@ -885,6 +882,9 @@
 
 #begin VoxelModel/LfWars/wars_captain.vox
 /copy:VoxelModel/LfWars/wars_captain.vox
+
+#begin VoxelModel/LfWars/wars_crossbow.vox
+/copy:VoxelModel/LfWars/wars_crossbow.vox
 
 #begin VoxelModel/LfWars/wars_darklord.vox
 /copy:VoxelModel/LfWars/wars_darklord.vox

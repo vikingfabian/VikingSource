@@ -10,6 +10,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
         public CrossBow() 
         {
             unitType = UnitType.CrossBow;
+            factionUniqueType = 0;
 
             modelScale = StandardModelScale;
             boundRadius = StandardBoundRadius;
@@ -21,14 +22,15 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
             ArmyFrontToBackPlacement = ArmyPlacement.Mid;
             basehealth = DefaultHealth;
             mainAttack = AttackType.Bolt;
-            attackDamage = 50;
-            attackDamageStructure = 40;
-            attackDamageSea = 100;
+            attackDamage = 100;
+            attackDamageStructure = 80;
+            attackDamageSea = 120;
             attackTimePlusCoolDown = StandardAttackAndCoolDownTime * 4f;
 
-            modelName = LootFest.VoxelModelName.little_crossboworc;
+            modelName = LootFest.VoxelModelName.wars_crossbow;
 
-            description = "";
+            description = "Powerful ranged soldier";
+            goldCost = MathExt.MultiplyInt(2, DssLib.GroupDefaultCost);
         }
         
     }

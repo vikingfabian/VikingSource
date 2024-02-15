@@ -1,7 +1,5 @@
 ﻿Change Log
--Water texture
--Ships!
--Soften the medium ai aggression a bit
+-After the dark lord enters, other factions will be more willing to ally with you
 
 
 Error
@@ -25,11 +23,19 @@ Steam Launch Roadmap
 
 
 ACHIEVEMENT
--Inte starta krig
--Utrota första bossen (early)
--ally med green wood
--överlev honor guards
--köp 1/3 faction specific units
--sea battles mot vikings
--Ge inte slutbossen en chans att dyka upp
 
+check
+victory25,
+victory50,
+victory100,
+victory200,
+victory_peace,
+early_hara,
+greenwood_ally,
+viking_naval,
+honorguards,
+buy_special1,
+buy_special3,
+no_darklord,
+warmonger,
+friendship,

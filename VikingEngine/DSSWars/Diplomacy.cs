@@ -361,17 +361,23 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public static int EndWarCost(RelationType relation, SpeakTerms speakterms, bool peace_notTruce)
+        public static int EndWarCost(RelationType relation, SpeakTerms speakterms, bool againstDark, bool peace_notTruce)
         {
             int cost = 0;
             cost -= (int)relation; //2 or 3
             cost -= (int)speakterms;//0
 
-            cost = Bound.Min(cost, 1);
             if (peace_notTruce)
             {
                 cost *= 2;
             }
+
+            if (againstDark)
+            {
+                cost -= 1;
+            }
+
+            cost = Bound.Min(cost, 1);
 
             return cost;
         }
@@ -381,12 +387,17 @@ namespace VikingEngine.DSSWars
             return 1;
         }
 
-        public static int MakeServantCost(LocalPlayer player)
+        public static int MakeServantCost(LocalPlayer player, bool againstDark)
         {
-            return 5 * (player.servantFactions+1);
+            int baseCost = 5;
+            if (againstDark)
+            {
+                baseCost -= 1;
+            }
+            return baseCost * (player.servantFactions + 1);
         }
 
-        public static int AllianceCost(RelationType relation, SpeakTerms speakterms, bool ally_notFriend)
+        public static int AllianceCost(RelationType relation, SpeakTerms speakterms, bool againstDark, bool ally_notFriend)
         {
             RelationType toRelation = ally_notFriend ? RelationType.RelationType3_Ally : RelationType.RelationType2_Good;
             int diff = toRelation - relation; //1 or 2
@@ -394,7 +405,15 @@ namespace VikingEngine.DSSWars
             int cost = diff * 2 + 1;
             cost -= (int)speakterms;//0
 
-            cost = Bound.Min(cost, 2);
+            int minCost = 2;
+
+            if (againstDark)
+            {
+                minCost = 1;
+                cost -= 1;
+            }
+
+            cost = Bound.Min(cost, minCost);
             
             return cost;
         }
@@ -422,6 +441,7 @@ namespace VikingEngine.DSSWars
         {
             return relation <= RelationType.RelationTypeN3_War;
         }
+
     }
 
     class DiplomaticRelation

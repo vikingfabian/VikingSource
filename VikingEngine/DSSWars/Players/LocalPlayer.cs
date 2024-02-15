@@ -39,6 +39,7 @@ namespace VikingEngine.DSSWars.Players
         {
             var pStorage = DssRef.storage.localPlayers[playerindex];
             faction.SetProfile(DssRef.storage.profiles[pStorage.profile]);
+            faction.diplomaticSide = DiplomaticSide.Light;
 
             input = new InputMap(playerindex);
             input.setInputSource(pStorage.inputSource.sourceType, pStorage.inputSource.controllerIndex);
@@ -135,6 +136,16 @@ namespace VikingEngine.DSSWars.Players
                         DssRef.world.cities[n].faction.player.onPlayerNeighborCapture(this);
                     }
                 }
+            }
+        }
+
+        public override void onNewRelation(Faction otherFaction, DiplomaticRelation rel, RelationType previousRelation)
+        {
+            base.onNewRelation(otherFaction, rel, previousRelation);
+
+            if (rel.Relation == RelationType.RelationType3_Ally)
+            {
+                DssRef.achieve.onAlly(faction, otherFaction);
             }
         }
 

@@ -53,7 +53,6 @@ namespace VikingEngine.DSSWars.GameObject
         }
     }
 
-
     class Ballista : BaseSoldier
     {
         public Ballista()

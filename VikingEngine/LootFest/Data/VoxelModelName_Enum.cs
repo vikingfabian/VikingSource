@@ -472,7 +472,7 @@ namespace VikingEngine.LootFest
         little_archerman,
         little_archerorc,
         little_crossbowman,
-        little_crossboworc,
+        wars_crossbow,
         little_javelinman,
         little_javelinorc,
         

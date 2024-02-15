@@ -12,6 +12,7 @@ namespace VikingEngine.DSSWars.GameObject
             :base() 
         {
             unitType = UnitType.GreenSoldier;
+            factionUniqueType = 1;
 
             secondaryAttack = AttackType.Arrow;
             secondaryAttackDamage = 100;

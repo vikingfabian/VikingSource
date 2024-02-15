@@ -52,6 +52,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Vector3 captainPosDiff;
         public Vector3 leftCrewPosDiff;
+        public int factionUniqueType = -1;
 
         public Vector3 ShadowModelScale()
         {

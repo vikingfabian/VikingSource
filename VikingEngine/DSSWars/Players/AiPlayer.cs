@@ -73,6 +73,7 @@ namespace VikingEngine.DSSWars.Players
                     break;
 
                 case FactionType.DarkLord:
+                    faction.diplomaticSide = DiplomaticSide.Dark;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     faction.growthMultiplier = 1.5f;
                     name = "Eye of Doom";
@@ -80,6 +81,7 @@ namespace VikingEngine.DSSWars.Players
                     break;
 
                 case FactionType.DarkFollower:
+                    faction.diplomaticSide = DiplomaticSide.Dark;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     faction.growthMultiplier = 1.5f;
                     name = "Servants of Dread";
@@ -88,12 +90,14 @@ namespace VikingEngine.DSSWars.Players
                     break;
 
                 case FactionType.UnitedKingdom:
+                    faction.diplomaticSide = DiplomaticSide.Dark;
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     name = "United Kingdoms";
                     faction.displayInFullOverview = true;
                     break;
 
                 case FactionType.GreenWood:
+                    faction.diplomaticSide = DiplomaticSide.Light;
                     DssRef.Faction_GreenWood = faction.index;
 
                     aggressionLevel = AggressionLevel1_RevengeOnly;
@@ -108,35 +112,43 @@ namespace VikingEngine.DSSWars.Players
                     break;
 
                 case FactionType.NordicRealm:
+                    faction.grouptype = FactionGroupType.Nordic;
+                    faction.diplomaticSide = DiplomaticSide.Light;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     name = "Nordic realms";
                     addStartCitiesBuyOption(UnitType.Viking);
                     break;
 
                 case FactionType.BearClaw:
+                    faction.grouptype = FactionGroupType.Nordic;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     name = "Bear claw";
                     addStartCitiesBuyOption(UnitType.Viking);
                     break;
 
                 case FactionType.NordicSpur:
+                    faction.grouptype = FactionGroupType.Nordic;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     name = "Nordic spur";
                     addStartCitiesBuyOption(UnitType.Viking);
                     break;
 
                 case FactionType.IceRaven:
+                    faction.grouptype = FactionGroupType.Nordic;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     name = "Ice Raven";
                     addStartCitiesBuyOption(UnitType.Viking);
                     break;
 
                 case FactionType.DragonSlayer:
+                    faction.grouptype = FactionGroupType.Nordic;
                     aggressionLevel = Ref.rnd.Chance(0.4) ? AggressionLevel2_RandomAttacks : AggressionLevel1_RevengeOnly;
                     name = "Dragon slayer";
+                    addStartCitiesBuyOption(UnitType.CrossBow);
                     break;
 
                 case FactionType.SouthHara:
+                    faction.diplomaticSide = DiplomaticSide.Dark;
                     DssRef.Faction_SouthHara = faction.index;
 
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
@@ -1133,10 +1145,15 @@ namespace VikingEngine.DSSWars.Players
             base.onNewRelation(otherFaction, rel, previousRelation);
             if (rel.Relation == RelationType.RelationTypeN3_War)
             {
-                if (!otherFaction.player.IsAi() &&
+                if (otherFaction.factiontype == FactionType.Player &&
                     DssRef.storage.aiAggressivity == AiAggressivity.High)
-                { 
+                {
                     protectedPlayer = true;
+                }
+                else if (otherFaction.factiontype == FactionType.DarkLord &&
+                    faction.diplomaticSide == DiplomaticSide.None)
+                {
+                    faction.diplomaticSide = DiplomaticSide.Light;
                 }
             }
         }

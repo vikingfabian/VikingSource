@@ -12,6 +12,7 @@ namespace VikingEngine.DSSWars.GameObject
             :base()
         {
             unitType = UnitType.Viking;
+            factionUniqueType = 2;
 
             ArmySpeedBonusSea = 0.6;
             attackDamage = 50;

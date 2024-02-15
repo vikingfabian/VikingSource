@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
+using System.Xml.Xsl;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
@@ -454,23 +455,6 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        //public IntVector2 PlacementIndexToPlacement(IntVector2 index) { 
-            
-        //}
-        
-        //public IntVector2 nextPlacement(IntVector2 currentPlaceIndex)
-        //{
-        //    IntVector2 result = currentPlaceIndex;
-
-        //    if (++currentPlaceIndex.X >= GroupsWidth)
-        //    {
-        //        currentPlaceIndex.X = 0;
-        //        ++currentPlaceIndex.Y;
-        //    }
-        //    result.X = PlacementX[result.X];
-        //    return result;
-        //}
-
         protected override void setInRenderState()
         {              
             if (inRender)
@@ -574,34 +558,25 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        //protected override bool mayAttack(AbsMapObject otherObj)
-        //{
-        //    return targetsFaction(otherObj) ||
-        //        (otherObj.objectType() == GameObject.ObjectType.Army &&
-        //        otherObj.GetArmy().targetsFaction(this));
-        //}
-
         public bool targetsFaction(AbsMapObject otherObj)
         {
             return ai.attackTarget != null &&
                 ai.attackTarget.faction == otherObj.faction;
         }
 
-
-        //public void remove(AbsSoldier soldier)
-        //{
-        //    var counter = groups.counter();
-        //    while (counter.Next())
-        //    {
-        //        counter.sel.remove(soldier);
-        //    }
-        //}
-
-
         public override void DeleteMe(DeleteReason reason, bool removeFromParent)
         {
             isDeleted = true;
             Debug.CrashIfThreaded();
+
+            if (reason == DeleteReason.EmptyGroup && faction.grouptype == FactionGroupType.Nordic)
+            {
+                var battle = battles.First();
+                if (battle != null && battle.faction.player.IsPlayer())
+                {
+                    DssRef.achieve.UnlockAchievement(AchievementIndex.viking_naval);
+                }
+            }
 
             var counter = groups.counter();
             while (counter.Next())
@@ -660,8 +635,6 @@ namespace VikingEngine.DSSWars.GameObject
             
         }
 
-
-
         public override void OnNewOwner()
         {
             if (inRender)
@@ -701,11 +674,6 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
         
-        //public override Vector3 WorldPosition()
-        //{
-        //    return center;
-        //}
-
         public Vector3 leadingPosition()
         {
             var leader = groups.First();

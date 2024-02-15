@@ -168,9 +168,16 @@ namespace VikingEngine.DSSWars
                             darkLordAllies = null;
                             darkLordAvailableFactions = null;
 
+                            var greenwood = DssRef.world.factions[DssRef.Faction_GreenWood];
+
                             foreach (var p in DssRef.state.localPlayers)
                             {
                                 p.hud.messages.Add("Dark times", "The Eye of Doom has entered the map!");
+
+                                if (!DssRef.diplomacy.InWar(p.faction, greenwood))
+                                {
+                                    DssRef.diplomacy.GetOrCreateRelation(p.faction, greenwood).SpeakTerms = SpeakTerms.SpeakTerms1_Good;
+                                }
                             }
                         }
                     }
@@ -472,6 +479,10 @@ namespace VikingEngine.DSSWars
         {
             if (nextEvent != EventType.End)
             {
+                if (DssRef.state.darkLordPlayer.darkLordUnit == null)
+                {
+                    DssRef.achieve.UnlockAchievement(AchievementIndex.no_darklord);
+                }
                 victory();
             }
         }
@@ -482,6 +493,8 @@ namespace VikingEngine.DSSWars
             DssRef.achieve.onVictory();
             DssRef.state.localPlayers[0].menuSystem.victoryScreen();
         }
+
+       
     }
 
     enum BossTimeSettings
