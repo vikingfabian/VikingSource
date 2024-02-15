@@ -32,7 +32,7 @@ namespace VikingEngine
 #else
             StartProgram.LootFest3;
 #endif
-        public static readonly bool Debug_SteamAPI = false;
+        public static readonly bool Debug_SteamAPI = true;
 
         public static readonly bool Debug_AllowDisconnect = false;
 

@@ -91,7 +91,7 @@ namespace VikingEngine.SteamWrapping
             applicationSettings = SetupSteamApplicationSettings(PlatformSettings.RunProgram);
 
             isInitialized = SteamAPI.Init(applicationSettings.appId);
-            lib.DoNothing();
+            //lib.DoNothing();
             if (!isInitialized)
             {
                 Debug.LogError("SteamAPI_Init() failed.");

@@ -8,16 +8,16 @@ namespace VikingEngine.DSSWars
     {
         public static bool AutoStartLevel = false;
 
-        public static bool SpawnStartingArmies = PlatformSettings.DevBuild ? false :
+        public static bool SpawnStartingArmies = PlatformSettings.DevBuild ? true :
             true;//DO NOT CHANGE
         
-        public static bool RunAI = PlatformSettings.DevBuild ? false :
+        public static bool RunAI = PlatformSettings.DevBuild ? true :
            true;//DO NOT CHANGE
 
         public static bool EndlessResources = PlatformSettings.DevBuild ? true : 
             false;//DO NOT CHANGE
 
-        public static bool EndlessDiplomacy = PlatformSettings.DevBuild ? false :
+        public static bool EndlessDiplomacy = PlatformSettings.DevBuild ? true :
             false;//DO NOT CHANGE
 
         public static bool SkipRecruitTime = PlatformSettings.DevBuild ? false :

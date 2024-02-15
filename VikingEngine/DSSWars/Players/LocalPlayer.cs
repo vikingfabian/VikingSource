@@ -328,7 +328,7 @@ namespace VikingEngine.DSSWars.Players
                 army.rotation = playerRot;
 
                 //int count = Ref.rnd.Int(4, 8);
-                for (int i = 0; i <6; ++i)
+                for (int i = 0; i < 20; ++i)
                 {
                     new SoldierGroup(army, UnitType.Sailor, false).completeTransform(SoldierTransformType.ToShip);
                 }
@@ -361,20 +361,20 @@ namespace VikingEngine.DSSWars.Players
             }
             //else
             {
-                {
-                    var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
-                    army.rotation = enemyRot;
-                    //int count = 4;//Ref.rnd.Int(4, 8);
-                    for (int i = 0; i < 3; ++i)
-                    {
-                        new SoldierGroup(army, UnitType.Soldier, false).completeTransform(SoldierTransformType.ToShip);
-                    }
-                    for (int i = 0; i < 3; ++i)
-                    {
-                        new SoldierGroup(army, UnitType.Ballista, false).completeTransform(SoldierTransformType.ToShip);
-                    }
-                    army.refreshPositions(true);
-                }
+                //{
+                //    var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
+                //    army.rotation = enemyRot;
+                //    //int count = 4;//Ref.rnd.Int(4, 8);
+                //    for (int i = 0; i < 3; ++i)
+                //    {
+                //        new SoldierGroup(army, UnitType.Soldier, false).completeTransform(SoldierTransformType.ToShip);
+                //    }
+                //    for (int i = 0; i < 3; ++i)
+                //    {
+                //        new SoldierGroup(army, UnitType.Ballista, false).completeTransform(SoldierTransformType.ToShip);
+                //    }
+                //    army.refreshPositions(true);
+                //}
                 //count = Ref.rnd.Int(4, 8);
                 //for (int i = 0; i < count; ++i)
                 //{

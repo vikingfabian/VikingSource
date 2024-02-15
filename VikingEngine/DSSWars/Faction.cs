@@ -227,10 +227,10 @@ namespace VikingEngine.DSSWars
 
         public void update()
         {
-            if (player is Players.LocalPlayer)
-            {
-                lib.DoNothing();
-            }
+            //if (player is Players.LocalPlayer)
+            //{
+            //    lib.DoNothing();
+            //}
 
             armiesCounter.Reset();
             while (armiesCounter.Next())
@@ -270,17 +270,22 @@ namespace VikingEngine.DSSWars
                 desertersUpdate();
             }
 
-            if (index == 88)
+            if (factiontype == FactionType.SouthHara)
             {
                 lib.DoNothing();
             }
 
-            if (armies.Count == 0 && cities.Count == 0 && 
-                factiontype != FactionType.DarkLord &&
-                factiontype != FactionType.SouthHara)
+            if (armies.Count == 0 && cities.Count == 0)
             {
-                DeleteMe();
+                bool protectedFaction = factiontype == FactionType.DarkLord ||
+                    (factiontype == FactionType.SouthHara && DssRef.state.events.nextEvent <= EventType.SouthShips);
+                                    
+                if (!protectedFaction)
+                {
+                    DeleteMe();
+                }
             }
+        
         }
 
         void desertersUpdate()
@@ -723,8 +728,13 @@ namespace VikingEngine.DSSWars
         {
             isAlive = false;
             DssRef.diplomacy.onFactionDeath(this);
-            //banner.DeleteMe();
-            //DssRef.world.factions.Remove(this);
+
+            if (factiontype == FactionType.SouthHara && 
+                DssRef.state.events.nextEvent <= EventType.DarkLord &&
+                DssRef.storage.bossTimeSettings <= BossTimeSettings.Early)
+            {
+                DssRef.achieve.UnlockAchievement(AchievementIndex.early_hara);
+            }
         }
 
         public bool HasZeroUnits()

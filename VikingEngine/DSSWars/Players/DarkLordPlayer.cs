@@ -84,17 +84,20 @@ namespace VikingEngine.DSSWars.Players
             if (hasEntered)
             {
                 var city = faction.cities.GetRandomUnsafe(Ref.rnd);
-                foreach (var n in city.neighborCities)
+                if (city != null)
                 {
-                    var nFaction = DssRef.world.cities[n].faction;
-                    if (nFaction != faction && 
-                        !DssRef.diplomacy.PositiveRelationWithPlayer(nFaction))
+                    foreach (var n in city.neighborCities)
                     {
-                        lock (darkLordAllies)
+                        var nFaction = DssRef.world.cities[n].faction;
+                        if (nFaction != faction &&
+                            !DssRef.diplomacy.PositiveRelationWithPlayer(nFaction))
                         {
-                            if (!darkLordAllies.Contains(nFaction))
+                            lock (darkLordAllies)
                             {
-                                darkLordAllies.Add(nFaction);
+                                if (!darkLordAllies.Contains(nFaction))
+                                {
+                                    darkLordAllies.Add(nFaction);
+                                }
                             }
                         }
                     }

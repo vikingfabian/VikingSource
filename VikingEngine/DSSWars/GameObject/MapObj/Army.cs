@@ -445,11 +445,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         nextGroupPlacementIndex.Grindex_Next(groupsWidth);
                         groupsC.sel.SetArmyPlacement(result, onPurchase); //behöver en wake up alert
-                                                                          //if (groupsC.sel.lifeState == SoldierGroup.LifeState_New)
-                                                                          //{
-                                                                          //    groupsC.sel.setGroundY();
-
-                        //}
+                                                                          
                     }
                 }
             }
@@ -569,7 +565,9 @@ namespace VikingEngine.DSSWars.GameObject
             isDeleted = true;
             Debug.CrashIfThreaded();
 
-            if (reason == DeleteReason.EmptyGroup && faction.grouptype == FactionGroupType.Nordic)
+            if (reason == DeleteReason.EmptyGroup &&
+                isShip && 
+                faction.grouptype == FactionGroupType.Nordic)
             {
                 var battle = battles.First();
                 if (battle != null && battle.faction.player.IsPlayer())

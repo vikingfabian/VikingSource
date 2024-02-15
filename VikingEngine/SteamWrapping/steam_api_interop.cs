@@ -5273,8 +5273,10 @@ public class SteamAPIInterop
 {
 [DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamAPI_RestartAppIfNecessary", CallingConvention = CallingConvention.Cdecl)]
 internal static extern bool SteamAPI_RestartAppIfNecessary(uint unOwnAppID );
+
 [DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamAPI_Init", CallingConvention = CallingConvention.Cdecl)]
 internal static extern bool SteamAPI_Init();
+
 [DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamAPI_RunCallbacks", CallingConvention = CallingConvention.Cdecl)]
 internal static extern void SteamAPI_RunCallbacks();
 [DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamAPI_RegisterCallback", CallingConvention = CallingConvention.Cdecl)]
