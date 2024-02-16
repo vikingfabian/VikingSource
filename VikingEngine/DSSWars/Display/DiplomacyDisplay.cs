@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.Display
 
             if ( selectedRelation!= null)
             {
-                
+
                 content.Add(new RichBoxBeginTitle(2));
                 content.Add(faction.FlagTextureToHud());
                 content.Add(new RichBoxText(faction.PlayerName));
@@ -70,6 +70,18 @@ namespace VikingEngine.DSSWars.Display
 
                 content.newLine();
 
+                if (otherfaction.player.IsAi())
+                {
+                    playerToAi();
+                }
+                else
+                {
+                    playerToPlayer();
+                }
+            }
+
+            void playerToAi()
+            {
                 if (selectedRelation.Relation == RelationType.RelationTypeN2_Truce)
                 {
                     string truceLength = "Ends in {0} seconds";
@@ -175,6 +187,119 @@ namespace VikingEngine.DSSWars.Display
                     content.Add(new RichBoxText("Is light side ally"));
                 }
             }
+        }
+
+        void playerToPlayer()
+        {
+            var otherPlayer = otherfaction.player.GetLocalPlayer();
+
+            var PtoP = player.toPlayerDiplomacies[otherPlayer.playerData.localPlayerIndex];
+
+            if (PtoP.suggestingNewRelation)
+            {
+                content.Add(new RichBoxText("New relation offered: "));
+                content.Add(new RichBoxImage(Diplomacy.RelationSprite(PtoP.suggestedRelation)));
+                content.Add(new RichBoxText(Diplomacy.RelationString(PtoP.suggestedRelation)));
+                content.newLine();
+
+                if (PtoP.suggestedBy == player.playerData.localPlayerIndex)
+                {
+                    content.Add(new RichboxButton(new List<AbsRichBoxMember>()
+                        {
+                            //new RichBoxImage(SpriteName.WarsRelationPeace),
+                            new RichBoxText("Cancel"),
+                        },
+                        new RbAction(cancelToPlayerRelation, SoundLib.menuBuy)));
+                }
+                else
+                {
+                    content.Add(new RichboxButton(new List<AbsRichBoxMember>()
+                        {
+                            //new RichBoxImage(SpriteName.WarsRelationPeace),
+                            new RichBoxText("Accept new relation"),
+                        },
+                       new RbAction(acceptToPlayerRelation, SoundLib.menuBuy)));
+                }
+            }
+            else
+            {
+                if (selectedRelation.Relation <= RelationType.RelationTypeN2_Truce)
+                {
+                    content.newLine();
+
+                    content.Add(new RichboxButton(new List<AbsRichBoxMember>()
+                        {
+                            new RichBoxImage(SpriteName.WarsRelationPeace),
+                            new RichBoxText("Offer peace"),
+                        },
+                        new RbAction(offerToPlayerRelation, SoundLib.menuBuy)));
+                }
+                else if (selectedRelation.Relation < RelationType.RelationType3_Ally)
+                {
+                    content.newLine();
+
+                    content.Add(new RichboxButton(new List<AbsRichBoxMember>()
+                        {
+                            new RichBoxImage(SpriteName.WarsRelationAlly),
+                            new RichBoxText("Offer alliance"),
+                        },
+                        new RbAction(offerToPlayerRelation, SoundLib.menuBuy)));
+                }
+            }
+        }
+
+        void offerToPlayerRelation()
+        {
+            var otherPlayer = otherfaction.player.GetLocalPlayer();
+            var PtoP = player.toPlayerDiplomacies[otherPlayer.playerData.localPlayerIndex];
+
+            PtoP.suggestingNewRelation = true;
+
+            if (selectedRelation.Relation <= RelationType.RelationTypeN2_Truce)
+            {
+                PtoP.suggestedRelation = RelationType.RelationType1_Peace;
+            }
+            else
+            {
+                PtoP.suggestedRelation = RelationType.RelationType3_Ally;
+            }
+
+            PtoP.suggestedBy = player.playerData.localPlayerIndex;
+
+
+            var message = new RichBoxContent();
+            message.h1(player.Name + " offers new relations");
+            message.newLine();
+            message.Add(new RichBoxImage(Diplomacy.RelationSprite(PtoP.suggestedRelation)));
+            message.Add(new RichBoxText(Diplomacy.RelationString(PtoP.suggestedRelation)));
+            message.newLine();
+            message.Add(new RichboxButton(new List<AbsRichBoxMember>
+                {
+                    new RichBoxText("Accept new relation")
+                },
+                new RbAction(acceptToPlayerRelation)));
+            otherPlayer.hud.messages.Add(message);
+        }
+
+        void acceptToPlayerRelation()
+        {
+            var otherPlayer = otherfaction.player.GetLocalPlayer();
+            var PtoP = player.toPlayerDiplomacies[otherPlayer.playerData.localPlayerIndex];
+
+            if (PtoP.suggestingNewRelation)
+            { 
+                DssRef.diplomacy.SetRelationType(player.faction, otherfaction, PtoP.suggestedRelation);
+            }
+
+            PtoP.suggestingNewRelation = false;
+        }
+
+        void cancelToPlayerRelation()
+        {
+            var otherPlayer = otherfaction.player.GetLocalPlayer();
+            var PtoP = player.toPlayerDiplomacies[otherPlayer.playerData.localPlayerIndex];
+
+            PtoP.suggestingNewRelation = false;
         }
 
         void extendTruceAction()

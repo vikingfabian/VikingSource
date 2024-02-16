@@ -7,6 +7,7 @@ using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.LootFest.Players;
 using VikingEngine.HUD.RichBox;
+using System.Collections.Generic;
 
 namespace VikingEngine.DSSWars.Players
 {    
@@ -33,6 +34,8 @@ namespace VikingEngine.DSSWars.Players
 
         public int servantFactions = 0;
         public int warsStarted = 0;
+
+        public PlayerToPlayerDiplomacy[] toPlayerDiplomacies = null;
 
         public LocalPlayer(Faction faction, int playerindex, int numPlayers)
             :base(faction)
@@ -64,6 +67,22 @@ namespace VikingEngine.DSSWars.Players
             new AsynchUpdateable(interactAsynchUpdate, "DSS player interact", 0);
 
             refreshNeihgborAggression();
+
+            toPlayerDiplomacies = new PlayerToPlayerDiplomacy[numPlayers];
+            for (int i = 0; i < numPlayers; i++)
+            {
+                if (i != playerindex)
+                {
+                    if (toPlayerDiplomacies[i] == null)
+                    {
+                        var PtoP = new PlayerToPlayerDiplomacy()
+                        { index = i, };
+
+                        toPlayerDiplomacies[i] = PtoP;
+                        var otherP = DssRef.state.localPlayers[i].toPlayerDiplomacies[playerindex] = PtoP;
+                    }
+                }
+            }
         }
 
         public override void createStartUnits()
