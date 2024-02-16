@@ -380,59 +380,63 @@ namespace VikingEngine.DSSWars
                     }
                 }
 
-                playerMostSouthCity[playerIx] = mostSouth;
-
-                //Find spawn
-                int maxLoops = 10000;
-                IntVector2 left = mostSouth.tilePos;
-                left.Y = DssRef.world.Size.Y - 2;
-                IntVector2 right = mostSouth.tilePos;
-                right.Y = DssRef.world.Size.Y - 2;
-
-                bool foundSpawn = false;
-
-                while (--maxLoops >= 0 && !foundSpawn)
+                if (mostSouth != null)
                 {
-                    left.X--;
-                    if (left.X <= 2)
-                    {
-                        left.X = mostSouth.tilePos.X;
-                        left.Y--;
-                    }
-                    right.X++;
-                    if (right.X >= DssRef.world.Size.X - 3)
-                    {
-                        right.X = mostSouth.tilePos.X;
-                        right.Y--;
-                    }
 
-                    checkPos[0] = left;
-                    checkPos[1] = right;
+                    playerMostSouthCity[playerIx] = mostSouth;
 
-                    foreach (var pos in checkPos)
+                    //Find spawn
+                    int maxLoops = 10000;
+                    IntVector2 left = mostSouth.tilePos;
+                    left.Y = DssRef.world.Size.Y - 2;
+                    IntVector2 right = mostSouth.tilePos;
+                    right.Y = DssRef.world.Size.Y - 2;
+
+                    bool foundSpawn = false;
+
+                    while (--maxLoops >= 0 && !foundSpawn)
                     {
-                        Map.Tile tile;
-                        if (DssRef.world.tileGrid.TryGet(pos, out tile))
+                        left.X--;
+                        if (left.X <= 2)
                         {
-                            if (tile.IsWater())
-                            {
-                                bool available = true;
+                            left.X = mostSouth.tilePos.X;
+                            left.Y--;
+                        }
+                        right.X++;
+                        if (right.X >= DssRef.world.Size.X - 3)
+                        {
+                            right.X = mostSouth.tilePos.X;
+                            right.Y--;
+                        }
 
-                                foreach (var used in usedTiles)
+                        checkPos[0] = left;
+                        checkPos[1] = right;
+
+                        foreach (var pos in checkPos)
+                        {
+                            Map.Tile tile;
+                            if (DssRef.world.tileGrid.TryGet(pos, out tile))
+                            {
+                                if (tile.IsWater())
                                 {
-                                    if (used.SideLength(pos) <= 4)
+                                    bool available = true;
+
+                                    foreach (var used in usedTiles)
                                     {
-                                        available = false;
+                                        if (used.SideLength(pos) <= 4)
+                                        {
+                                            available = false;
+                                            break;
+                                        }
+                                    }
+
+                                    if (available)
+                                    {
+                                        foundSpawn = true;
+                                        spawnPos_Player[playerIx] = pos;
+                                        usedTiles.Add(pos);
                                         break;
                                     }
-                                }
-
-                                if (available)
-                                {
-                                    foundSpawn = true;
-                                    spawnPos_Player[playerIx] = pos;
-                                    usedTiles.Add(pos);
-                                    break;
                                 }
                             }
                         }

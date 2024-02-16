@@ -12,31 +12,14 @@ Steam Launch Roadmap
 -Fail state for the game
 -Localization to 8 languages
 -player to player diplomacy
--(maybe) Achievements
 -(maybe) Full controller support
 -(maybe) Save
 -(maybe) Mountain ridges and water reefs that block movement
 -(maybe) Visually display city guard size
+-(maybe) Road building
 -(maybe) Linux support
+-(maybe) Soldiers will fight in formation
+-(maybe) Some basic resources
 
 -(Removed) Boost soldiers with a command system
 
-
-
-ACHIEVEMENT
-
---check
-/victory25,
-/victory50,
-/victory100,
-/victory200,
-/victory_peace,
-/early_hara,
-/greenwood_ally,
-/viking_naval,
-/honorguards,
-/buy_special1,
-/buy_special3,
-no_darklord,
-/warmonger,
-/friendship,

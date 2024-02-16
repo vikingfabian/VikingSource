@@ -110,7 +110,7 @@ namespace VikingEngine.DSSWars.GameObject
         public SoldierUnitAdvancedModel(AbsSoldierUnit soldier)
             :base(soldier)
         {
-            //walkingAnimation = WalkingAnimation.Standard;
+            walkingAnimation = WalkingAnimation.Standard;
 
             //model = soldier.group.army.faction.AutoLoadModelInstance(
             //    soldier.data.RandomModelName(), soldier.data.modelScale,  true);
