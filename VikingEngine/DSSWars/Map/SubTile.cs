@@ -17,11 +17,6 @@ namespace VikingEngine.DSSWars.Map
             this.groundY = groundY;
         }
 
-        //public SubTile(System.IO.BinaryReader r, int version)
-        //{
-        //    read(r, version);
-        //}
-
         public void write(System.IO.BinaryWriter w)
         {
             w.Write(color.R);
@@ -48,5 +43,15 @@ namespace VikingEngine.DSSWars.Map
         Tree,
         Stones,
         Num
+    }
+
+    enum SubTileType
+    { 
+        NONE,
+        River,
+        Sea,
+        Grass,
+        Tree,
+        Rock,
     }
 }

@@ -66,11 +66,11 @@ namespace VikingEngine.DSSWars.Map
             DssRef.detailMap.polygons.Clear();
 
             Vector2 topLeft = VectorExt.V2NegHalf;
-            IntVector2 subTileStart = pos * UnitDetailMap3.Width;
+            IntVector2 subTileStart = pos * WorldData.SubTileWidth;
 
-            for (int y = 0; y < UnitDetailMap3.Width; ++y)
+            for (int y = 0; y < WorldData.SubTileWidth; ++y)
             {
-                for (int x = 0; x < UnitDetailMap3.Width; ++x)
+                for (int x = 0; x < WorldData.SubTileWidth; ++x)
                 {
                     SubTile subTile = DssRef.world.subTileGrid.Get(
                         subTileStart.X + x, subTileStart.Y + y);

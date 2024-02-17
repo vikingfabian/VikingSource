@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars
         }
         public static IntVector2 ToSubTilePos(Vector3 pos)
         {
-            return new IntVector2(pos.X * UnitDetailMap3.Width, pos.Z * UnitDetailMap3.Width);
+            return new IntVector2(pos.X * WorldData.SubTileWidth, pos.Z * WorldData.SubTileWidth);
         }
 
         public static Vector3 ToMapPos(IntVector2 tile)

@@ -728,7 +728,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         void processSubTiles(int part)
         {
-            const int WidthMin1 = UnitDetailMap3.Width - 1;
+            const int WidthMin1 = WorldData.SubTileWidth - 1;
 
             //ForXYLoop loop = new ForXYLoop(world.Size);
 
@@ -739,10 +739,10 @@ namespace VikingEngine.DSSWars.Map.Generate
             //while (loop.Next())
             for (int loopy = 0; loopy < world.Size.Y; ++loopy)
             {
-                int supTileStartY = loopy * UnitDetailMap3.Width;
+                int supTileStartY = loopy * WorldData.SubTileWidth;
                 for (int loopx = startX; loopx < endX; ++loopx)
                 {
-                    int supTileStartX = loopx * UnitDetailMap3.Width;
+                    int supTileStartX = loopx * WorldData.SubTileWidth;
 
                     var tile = world.tileGrid.array[loopx, loopy];// .Get(loop.Position);
                     var terrain = Tile.TerrainTypes[tile.biom, tile.heightLevel];

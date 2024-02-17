@@ -174,13 +174,13 @@ namespace VikingEngine.DSSWars.Map
 
         void createMountainPeak(float peakHeight)
         {
-            mountainPeak = new float[UnitDetailMap3.Width, UnitDetailMap3.Width];
+            mountainPeak = new float[WorldData.SubTileWidth, WorldData.SubTileWidth];
 
-            ForXYLoop loop = new ForXYLoop(new IntVector2(UnitDetailMap3.Width));
+            ForXYLoop loop = new ForXYLoop(new IntVector2(WorldData.SubTileWidth));
 
-            Vector2 center = new Vector2((UnitDetailMap3.Width -1) * 0.5f);
+            Vector2 center = new Vector2((WorldData.SubTileWidth -1) * 0.5f);
 
-            float half = UnitDetailMap3.Width * 0.5f;
+            float half = WorldData.SubTileWidth * 0.5f;
 
             while (loop.Next())
             {

@@ -28,6 +28,8 @@ namespace VikingEngine.DSSWars
         public const int EpicMapHeigth = 1024;
         public const double TileWidthInKm = 0.064;
 
+        public const int SubTileWidth = 8;
+
         public static readonly Color WaterCol = new Color(14, 155, 246);
         public static readonly Color WaterCol2 = ColorExt.Multiply(WaterCol, 0.9f);
         public static readonly Color WaterDarkCol = new Color(0.043f, 0.486f,0.773f);
@@ -120,7 +122,7 @@ namespace VikingEngine.DSSWars
 
             unitCollAreaGrid = new UnitCollAreaGrid(Size);
 
-            subTileGrid = new Grid2D<SubTile>(Size * UnitDetailMap3.Width);
+            subTileGrid = new Grid2D<SubTile>(Size * SubTileWidth);
         }
 
         //public Faction initEvilFactions()
@@ -299,7 +301,7 @@ namespace VikingEngine.DSSWars
 
         public Tile tileFromSubTilePos(IntVector2 position)
         {
-            return tileGrid.Get(position.X / UnitDetailMap3.Width, position.Y / UnitDetailMap3.Width);
+            return tileGrid.Get(position.X / SubTileWidth, position.Y / SubTileWidth);
         }  
 
         public bool adjacentToLand(IntVector2 tile)
@@ -394,8 +396,8 @@ namespace VikingEngine.DSSWars
         public float SubTileHeight(Vector3 wp)
         {
             return subTileGrid.array[
-                Convert.ToInt32(wp.X * UnitDetailMap3.Width + 3.5f), 
-                Convert.ToInt32(wp.Z * UnitDetailMap3.Width + 3.5f)].groundY;
+                Convert.ToInt32(wp.X * SubTileWidth + 3.5f), 
+                Convert.ToInt32(wp.Z * SubTileWidth + 3.5f)].groundY;
                 
         }
 
