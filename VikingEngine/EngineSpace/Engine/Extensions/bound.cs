@@ -105,6 +105,11 @@ namespace VikingEngine
             if (value < min) { return min; }
             return value;
         }
+
+
+        /// <summary>
+        /// Set minimum bound
+        /// </summary>
         public static float MinAbs(float value, float min)
         {
             if (Math.Abs(value) < Math.Abs(min))

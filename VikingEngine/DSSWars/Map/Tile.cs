@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.LootFest;
+using VikingEngine.ToGG.HeroQuest;
 
 namespace VikingEngine.DSSWars.Map
 {
@@ -55,6 +56,7 @@ namespace VikingEngine.DSSWars.Map
         public TileContent tileContent = TileContent.NONE;
         public int BorderCount;
         public int BorderRegion_North, BorderRegion_East, BorderRegion_South, BorderRegion_West;
+        public int seaDistanceHeatMap = int.MinValue;
         //--
 
         
@@ -81,6 +83,37 @@ namespace VikingEngine.DSSWars.Map
         public Tile(System.IO.BinaryReader r, int version)
         {
             read(r, version);
+        }
+
+        public void setWaterHeat_Land(int heat)
+        {
+            //int heat = neighborHeat + (diagonal ? 12 : 10);
+            if (seaDistanceHeatMap == int.MinValue)
+            {
+                seaDistanceHeatMap = heat;
+            }
+            else
+            {
+                if (heat < seaDistanceHeatMap)
+                {
+                    seaDistanceHeatMap = heat;
+                }
+            }
+        }
+
+        public void setWaterHeat_Water(int heat)
+        {
+            if (seaDistanceHeatMap == int.MinValue)
+            {
+                seaDistanceHeatMap = heat;
+            }
+            else
+            {
+                if (heat > seaDistanceHeatMap)
+                {
+                    seaDistanceHeatMap = heat;
+                }
+            }
         }
 
 

@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 generateDigChains();
                 LoadStatus = 50;
 
-                setWaterHeight();
+                setWaterHeightAndWaterHeatmap();
 
                 LoadStatus = 55;
                 generateCities();
@@ -355,15 +355,120 @@ namespace VikingEngine.DSSWars.Map.Generate
             }
         }
 
-        void setWaterHeight()
+        void setWaterHeightAndWaterHeatmap()
         {
+            const int OrthogonalHeat = 10;
+            const int DiagonalHeat = 12;
+
+
+            //Först markera ut alla borders
+            //Loopa tills alla avstånd är uträknade
+
+
             ForXYLoop loop = new ForXYLoop(world.Size);
             while (loop.Next())
             {
-                if (!world.tileGrid.array[loop.Position.X, loop.Position.Y].IsLand())
+                var tile = world.tileGrid.array[loop.Position.X, loop.Position.Y];
+                if (tile.IsWater())
                 {
-                    world.tileGrid.array[loop.Position.X, loop.Position.Y].heightLevel =
-                        world.adjacentToLand(loop.Position) ? Tile.LowWaterHeight : Tile.DeepWaterHeight;
+                    tile.heightLevel = Tile.DeepWaterHeight;
+                    Tile nTile;
+
+                    //Check if it has a neighbor tile that is land
+                    foreach (IntVector2 dir in IntVector2.Dir4Array)
+                    {
+                        var npos = loop.Position + dir;
+                        if (world.GetTileSafe(npos, out nTile) && nTile.IsLand())
+                        {
+                            //Is water to land border
+                            nTile.seaDistanceHeatMap = OrthogonalHeat;
+
+                            tile.heightLevel = Tile.LowWaterHeight;
+                            tile.seaDistanceHeatMap = -OrthogonalHeat;
+                        }
+                    }
+
+                    if (tile.seaDistanceHeatMap == int.MinValue)
+                    {
+                        foreach (IntVector2 dir in IntVector2.AllDiagonalsArray)
+                        {
+                            var npos = loop.Position + dir;
+                            if (world.GetTileSafe(npos, out nTile) && nTile.IsLand())
+                            {
+                                //Is water to land border
+                                if (nTile.seaDistanceHeatMap == int.MinValue)
+                                {
+                                    nTile.seaDistanceHeatMap = DiagonalHeat;
+                                }
+                                tile.heightLevel = Tile.LowWaterHeight;
+                                if (tile.seaDistanceHeatMap == int.MinValue)
+                                {
+                                    tile.seaDistanceHeatMap = -DiagonalHeat;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            //Loop until every tile has a distance value
+            int updatedTiles = int.MaxValue;
+
+            while (updatedTiles > 0)
+            {
+                updatedTiles = 0;
+
+                loop.Reset();
+                while (loop.Next())
+                {
+                    var tile = world.tileGrid.array[loop.Position.X, loop.Position.Y];
+                    if (tile.seaDistanceHeatMap == int.MinValue)
+                    {
+                        Tile nTile;
+
+                        foreach (IntVector2 dir in IntVector2.Dir4Array)
+                        {
+                            var npos = loop.Position + dir;
+                            if (world.GetTileSafe(npos, out nTile) && nTile.seaDistanceHeatMap != int.MinValue)
+                            {
+                                ++updatedTiles;
+
+                                if (tile.IsLand())
+                                {
+                                    tile.setWaterHeat_Land(nTile.seaDistanceHeatMap + OrthogonalHeat);
+                                }
+                                else
+                                {
+                                    tile.setWaterHeat_Water(nTile.seaDistanceHeatMap - OrthogonalHeat);
+                                }
+                            }
+                        }
+
+                        foreach (IntVector2 dir in IntVector2.AllDiagonalsArray)
+                        {
+                            var npos = loop.Position + dir;
+                            if (world.GetTileSafe(npos, out nTile) && 
+                                nTile.seaDistanceHeatMap != int.MinValue)
+                            {
+                                bool land = tile.IsLand();
+
+                                if (land == nTile.IsLand())
+                                {
+                                    ++updatedTiles;
+
+                                    if (land)
+                                    {
+                                        tile.setWaterHeat_Land(nTile.seaDistanceHeatMap + DiagonalHeat);
+                                    }
+                                    else
+                                    {
+                                        tile.setWaterHeat_Water(nTile.seaDistanceHeatMap - DiagonalHeat);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

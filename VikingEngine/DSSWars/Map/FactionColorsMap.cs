@@ -48,6 +48,8 @@ namespace VikingEngine.DSSWars.Map
             Ref.draw.CurrentRenderLayer = DrawGame.TerrainLayer;
 
             quedEvent();
+
+            //new DebugMap();
         }
 
         public void quedEvent()
