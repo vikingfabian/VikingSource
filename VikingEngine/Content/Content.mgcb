@@ -772,6 +772,15 @@
 #begin VoxelModel/LfWars/fol_bush1.vox
 /copy:VoxelModel/LfWars/fol_bush1.vox
 
+#begin VoxelModel/LfWars/fol_sprout.vox
+/copy:VoxelModel/LfWars/fol_sprout.vox
+
+#begin VoxelModel/LfWars/fol_tree_hard.vox
+/copy:VoxelModel/LfWars/fol_tree_hard.vox
+
+#begin VoxelModel/LfWars/fol_tree_soft.vox
+/copy:VoxelModel/LfWars/fol_tree_soft.vox
+
 #begin VoxelModel/LfWars/horse_brown.vox
 /copy:VoxelModel/LfWars/horse_brown.vox
 

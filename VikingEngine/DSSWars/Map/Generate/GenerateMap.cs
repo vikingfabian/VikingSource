@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.PJ.Tanks;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Map.Generate
@@ -850,6 +851,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     int supTileStartX = loopx * WorldData.SubTileWidth;
 
                     var tile = world.tileGrid.array[loopx, loopy];// .Get(loop.Position);
+                    SubTileMainType tileType = tile.IsLand() ? SubTileMainType.DefaultLand : SubTileMainType.DefaultSea;
                     var terrain = Tile.TerrainTypes[tile.biom, tile.heightLevel];
 
                     //IntVector2 start = loop.Position * UnitDetailMap3.Width;
@@ -866,25 +868,25 @@ namespace VikingEngine.DSSWars.Map.Generate
                     {
                         for (int x = 1; x < WidthMin1; ++x)
                         {
-                            block(x, y, groundY);
+                            block(x, y, groundY, tileType);
                         }
                     }
 
                     for (int sidePos = 1; sidePos < WidthMin1; ++sidePos)
                     {
-                        block(0, sidePos, groundY_w);
+                        block(0, sidePos, groundY_w, tileType);
 
-                        block(WidthMin1, sidePos, groundY_e);
+                        block(WidthMin1, sidePos, groundY_e, tileType);
 
-                        block(sidePos, 0, groundY_n);
+                        block(sidePos, 0, groundY_n, tileType);
 
-                        block(sidePos, WidthMin1, groundY_s);
+                        block(sidePos, WidthMin1, groundY_s, tileType);
                     }
 
-                    block(0, 0, lib.SmallestValue(groundY_w, groundY_n));
-                    block(WidthMin1, 0, lib.SmallestValue(groundY_e, groundY_n));
-                    block(0, WidthMin1, lib.SmallestValue(groundY_w, groundY_s));
-                    block(WidthMin1, WidthMin1, lib.SmallestValue(groundY_s, groundY_e));
+                    block(0, 0, lib.SmallestValue(groundY_w, groundY_n), tileType);
+                    block(WidthMin1, 0, lib.SmallestValue(groundY_e, groundY_n), tileType);
+                    block(0, WidthMin1, lib.SmallestValue(groundY_w, groundY_s), tileType);
+                    block(WidthMin1, WidthMin1, lib.SmallestValue(groundY_s, groundY_e), tileType);
 
                     float edgeHeight(int x, int y)
                     {
@@ -899,7 +901,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         return result;
                     }
 
-                    void block(int x, int y, float topY)
+                    void block(int x, int y, float topY, SubTileMainType tiletype)
                     {
                         const int RndRange = 3;
                         Microsoft.Xna.Framework.Color rndColor;
@@ -932,7 +934,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         }
 
                         world.subTileGrid.Set(supTileStartX + x, supTileStartY + y,
-                            new SubTile(rndColor, topY));
+                            new SubTile(tiletype, rndColor, topY));
 
                     }
                 }
@@ -951,18 +953,20 @@ namespace VikingEngine.DSSWars.Map.Generate
             IntVector2 radius = IntVector2.Zero;
             IntVector2 center = IntVector2.Zero;
 
-            foliageAreas(FoilType.Tree, numTreeSpots, new Range(2, 14), new Range(1, 8));
-            singleFoilDots(FoilType.Stones, numStoneSpots);
+            foliageAreas(SubTileFoilType.Tree, numTreeSpots, new Range(2, 14), new Range(1, 8));
+            singleFoilDots(SubTileFoilType.Stones, numStoneSpots);
 
-            void foliageAreas(FoilType type, int count,
+            void foliageAreas(SubTileFoilType type, int count,
                 Range large, Range small)
             {
+                int int_type = (int)type;
+
                 for (int i = 0; i < count; ++i)
                 {
                     center = area.RandomTile();
                     Tile tile = world.tileFromSubTilePos(center);
 
-                    if (tile.terrain().foilEnabled[(int)type])
+                    if (tile.terrain().foilEnabled[int_type])
                     {
                         radius.X = large.GetRandom();
                         radius.Y = large.GetRandom();
@@ -1007,7 +1011,8 @@ namespace VikingEngine.DSSWars.Map.Generate
                                         world.tileFromSubTilePos(loop.Position).IsLand())
                                     {
                                         var st = world.subTileGrid.Get(loop.Position);
-                                        st.foil = type;
+                                        st.maintype = SubTileMainType.Foil;
+                                        st.undertype = int_type;
                                         world.subTileGrid.Set(loop.Position, st);
                                     }
                                 }
@@ -1017,8 +1022,10 @@ namespace VikingEngine.DSSWars.Map.Generate
                 }
             }
 
-            void singleFoilDots(FoilType type, int count)
+            void singleFoilDots(SubTileFoilType type, int count)
             {
+                int int_type = (int)type;
+
                 for (int i = 0; i < count; ++i)
                 {
                     center = area.RandomTile();
@@ -1028,7 +1035,8 @@ namespace VikingEngine.DSSWars.Map.Generate
                     {
                         //subTileGrid.Get(center).foil = type;
                         var st = world.subTileGrid.Get(center);
-                        st.foil = type;
+                        st.maintype = SubTileMainType.Foil;
+                        st.undertype = int_type;
                         world.subTileGrid.Set(center, st);
                     }
                 }

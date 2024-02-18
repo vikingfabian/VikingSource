@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.Map
         public float groundYoffset;
         public float[,] mountainPeak = null;
         public SurfaceTextureType textureType = SurfaceTextureType.None;
-        public bool[] foilEnabled = new bool[(int)FoilType.Num];
+        public bool[] foilEnabled = new bool[(int)SubTileFoilType.NUM];
 
         public TerrainCultureType culture = TerrainCultureType.Plains;
         public int influenceCost;
@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.Map
                     break;
 
                 case 2:
-                    foilEnabled[(int)FoilType.Stones] = true;
+                    foilEnabled[(int)SubTileFoilType.Stones] = true;
                     switch (biom)
                     {
                         case BiomTypeGreen:
@@ -79,13 +79,13 @@ namespace VikingEngine.DSSWars.Map
                     break;
 
                 case 3:
-                    foilEnabled[(int)FoilType.Stones] = true;
+                    foilEnabled[(int)SubTileFoilType.Stones] = true;
                     switch (biom)
                     {
                         case BiomTypeGreen:
                             color = Ground1;
                             textureType = SurfaceTextureType.Grass;
-                            foilEnabled[(int)FoilType.Tree] = true;
+                            foilEnabled[(int)SubTileFoilType.Tree] = true;
                             culture = TerrainCultureType.Forest;
                             break;
                         case BiomTypeDry:
@@ -97,13 +97,13 @@ namespace VikingEngine.DSSWars.Map
                     break;
 
                 case 4:
-                    foilEnabled[(int)FoilType.Stones] = true;
+                    foilEnabled[(int)SubTileFoilType.Stones] = true;
                     switch (biom)
                     {
                         case BiomTypeGreen:
                             color = Ground2;
                             textureType = SurfaceTextureType.Grass;
-                            foilEnabled[(int)FoilType.Tree] = true;
+                            foilEnabled[(int)SubTileFoilType.Tree] = true;
                             culture = TerrainCultureType.Forest;
                             break;
                         case BiomTypeDry:
@@ -115,13 +115,13 @@ namespace VikingEngine.DSSWars.Map
                     break;
 
                 case 5:
-                    foilEnabled[(int)FoilType.Stones] = true;
+                    foilEnabled[(int)SubTileFoilType.Stones] = true;
                     switch (biom)
                     {
                         case BiomTypeGreen:
                             color = Ground3;
                             textureType = SurfaceTextureType.Grass;
-                            foilEnabled[(int)FoilType.Tree] = true;
+                            foilEnabled[(int)SubTileFoilType.Tree] = true;
                             culture = TerrainCultureType.Forest;
                             break;
                         case BiomTypeDry:

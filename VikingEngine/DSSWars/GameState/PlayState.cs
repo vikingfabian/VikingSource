@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map;
 //
@@ -13,6 +14,7 @@ namespace VikingEngine.DSSWars
 {
     class PlayState : Engine.GameState
     {
+        WorldResources resources = new WorldResources();
         Map.TerrainOverviewMap overviewMap;
         public Culling culling;
         public PathFindingPool pathFindingPool = new PathFindingPool();
@@ -26,6 +28,8 @@ namespace VikingEngine.DSSWars
         public bool PartyMode = false;   
         bool exitThreads = false;
         public GameEvents events;
+
+        bool bResourceUpdate = false;
 
         public PlayState(bool host)
             : base(true)
@@ -59,6 +63,7 @@ namespace VikingEngine.DSSWars
             new AsynchUpdateable_TryCatch(asyncUserUpdate, "DSS user update", 58);
             new AsynchUpdateable_TryCatch(asyncMapBorders, "DSS map borders update", 59);
             new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60);
+            new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
             isReady = host;
         }
 
@@ -189,6 +194,11 @@ namespace VikingEngine.DSSWars
 
         }
 
+        public void OneMinute_Update()
+        { 
+            bResourceUpdate = true;
+        }
+
         public override void OnDestroy()
         {
             exitThreads = true;
@@ -235,13 +245,26 @@ namespace VikingEngine.DSSWars
                 DssRef.world.factionsCounter.sel.shareAllHostedObjects(sender);
             }
         }
+
+        bool asyncResourcesUpdate(int id, float time)
+        {
+            //Runs every minute to upate any resource progression: trees grow, food spoil, etc
+            if (bResourceUpdate)
+            {
+                bResourceUpdate = false;
+
+                resources.asyncUpdate();
+            }
+
+            return exitThreads;
+        }
+
         bool asyncDiplomacyUpdate(int id, float time)
         {
             DssRef.diplomacy.async_update();
             events.asyncUpdate();
 
             return exitThreads;
-
         }
 
         bool asyncUserUpdate(int id, float time)

@@ -86,15 +86,15 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.horse_brown, false);
             loadVoxelModel(VoxelModelName.horse_white, false);
 
-            foreach (var model in DetailMapTile.TreeFoliage)
-            {
-                loadVoxelModel(model, false);
-            }
+            //foreach (var model in DetailMapTile.TreeFoliage)
+            //{
+                loadVoxelModel(DetailMapTile.TreeFoliage, false);
+            //}
 
-            foreach (var model in DetailMapTile.StoneFoliage)
-            {
-                loadVoxelModel(model, false);
-            }
+            //foreach (var model in DetailMapTile.StoneFoliage)
+            //{
+                loadVoxelModel(DetailMapTile.StoneFoliage, false);
+            //}
 
             asycTaskComplete = true;
 

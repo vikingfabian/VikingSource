@@ -20,6 +20,11 @@ namespace VikingEngine.DSSWars.Map
         Timer.Basic waterAnimTimer = new Timer.Basic(3000,true);
         int waterFrame = 0;
         double waterMoveCurve = 0;
+
+        /// <summary>
+        /// Trigger a reload of the map
+        /// </summary>
+        public bool needReload = false;
         public UnitDetailMap()
         {
             DssRef.detailMap = this;
@@ -64,57 +69,65 @@ namespace VikingEngine.DSSWars.Map
         public void asynchUpdate()
         {
            
-                for (int i = tiles.Count - 1; i >= 0; --i)
+            for (int i = tiles.Count - 1; i >= 0; --i)
+            {
+                var tile = DssRef.world.tileGrid.Get(tiles[i].pos);
+                byte render = DssRef.state.culling.cullingStateA ? tile.renderStateA : tile.renderStateB;
+                if (render == Culling.NoRender || needReload)
                 {
-                    var tile = DssRef.world.tileGrid.Get(tiles[i].pos);
-                    byte render = DssRef.state.culling.cullingStateA ? tile.renderStateA : tile.renderStateB;
-                    if (render == Culling.NoRender)
-                    {
-                        tile.hasTileInRender = false;
-                        tiles[i].add = false;
-                        processingTiles.Add(tiles[i]);
-                        tiles.RemoveAt(i);
-                    }
+                    tile.hasTileInRender = false;
+                    tiles[i].add = false;
+                    processingTiles.Add(tiles[i]);
+                    tiles.RemoveAt(i);
                 }
+            }
+            
 
-                for (int pIx = 0; pIx < DssRef.state.culling.players.Length; ++pIx)
+            for (int pIx = 0; pIx < DssRef.state.culling.players.Length; ++pIx)
+            {
+                if (DssRef.state.localPlayers[pIx].bUnitDetailLayer)
                 {
-                    if (DssRef.state.localPlayers[pIx].bUnitDetailLayer)
+                    var p = DssRef.state.culling.players[pIx];
+
+                    var state = DssRef.state.culling.cullingStateA ? p.stateA : p.stateB;
+                    var loopArea = state.enterArea;
+                    loopArea.size += 1;
+
+                    loopArea.SetTileBounds(DssRef.world.tileBounds);
+
+                    if (loopArea.Width > 0 && loopArea.Height > 0)
                     {
-                        var p = DssRef.state.culling.players[pIx];
+                        ForXYLoop loop = new ForXYLoop(loopArea);
 
-                        var state = DssRef.state.culling.cullingStateA ? p.stateA : p.stateB;
-                        var loopArea = state.enterArea;
-                        loopArea.size += 1;
-
-                        loopArea.SetTileBounds(DssRef.world.tileBounds);
-
-                        if (loopArea.Width > 0 && loopArea.Height > 0)
+                        while (loop.Next())
                         {
-                            ForXYLoop loop = new ForXYLoop(loopArea);
+                            var tile = DssRef.world.tileGrid.Get(loop.Position);
 
-                            while (loop.Next())
+                            if (!tile.hasTileInRender)
                             {
-                                var tile = DssRef.world.tileGrid.Get(loop.Position);
-
-                                if (!tile.hasTileInRender)
-                                {
-                                    tile.hasTileInRender = true;
-                                    var maptile = new DetailMapTile(loop.Position);
-                                    processingTiles.Add(maptile);
-                                    tiles.Add(maptile);
-                                }
+                                tile.hasTileInRender = true;
+                                var maptile = new DetailMapTile(loop.Position);
+                                processingTiles.Add(maptile);
+                                tiles.Add(maptile);
                             }
                         }
                     }
                 }
-
-                lock (synchTiles)
-                {
-                    synchTiles.AddRange(processingTiles);
-                }
-                processingTiles.Clear();
             }
+
+            needReload = false;
+
+            lock (synchTiles)
+            {
+                synchTiles.AddRange(processingTiles);
+            }
+            processingTiles.Clear();
+        }
+
         
+        //public void asynch_OnMapUpdate()
+        //{ 
+            
+        //}
     }
 }
