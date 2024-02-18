@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars
             this.host = host;
             
             overviewMap = new Map.TerrainOverviewMap();
-            new Map.UnitDetailMap3();
+            new Map.UnitDetailMap();
 
             Engine.Update.SetFrameRate(60);
 

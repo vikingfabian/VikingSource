@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars
         public static Players.GameStorage storage;
         public static Achievements achieve = null;
         public static PlayState state;
-        public static Map.UnitDetailMap3 detailMap;
+        public static Map.UnitDetailMap detailMap;
         public static GameObject.AllUnits unitsdata;
         public static GameTime time;
         public static Display.Translation.AbsLanguage lang;

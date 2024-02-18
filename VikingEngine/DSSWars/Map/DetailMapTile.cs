@@ -9,14 +9,14 @@ namespace VikingEngine.DSSWars.Map
     class DetailMapTile
     {
         static readonly IntervalF FoliageCenterRange = 
-            IntervalF.FromCenter(0.5f * UnitDetailMap3.SubTileSz.X, 0.2f * UnitDetailMap3.SubTileSz.X);
+            IntervalF.FromCenter(0.5f * UnitDetailMap.SubTileSz.X, 0.2f * UnitDetailMap.SubTileSz.X);
 
-        static readonly Vector2 GrassSize = new Vector2(0.03f, 0.11f) * UnitDetailMap3.SubTileSz;
+        static readonly Vector2 GrassSize = new Vector2(0.03f, 0.11f) * UnitDetailMap.SubTileSz;
 
-        static readonly Vector2 SandSize = new Vector2(0.03f) * UnitDetailMap3.SubTileSz;
+        static readonly Vector2 SandSize = new Vector2(0.03f) * UnitDetailMap.SubTileSz;
 
         static readonly IntervalF GrassCenterRange =
-            IntervalF.FromCenter(0.5f * UnitDetailMap3.SubTileSz.X, 0.45f * UnitDetailMap3.SubTileSz.X);
+            IntervalF.FromCenter(0.5f * UnitDetailMap.SubTileSz.X, 0.45f * UnitDetailMap.SubTileSz.X);
 
         public static readonly List<LootFest.VoxelModelName> TreeFoliage = new List<LootFest.VoxelModelName>
             {
@@ -74,7 +74,7 @@ namespace VikingEngine.DSSWars.Map
                 {
                     SubTile subTile = DssRef.world.subTileGrid.Get(
                         subTileStart.X + x, subTileStart.Y + y);
-                    Vector2 subTopLeft = new Vector2(topLeft.X + x * UnitDetailMap3.SubTileSz.X, topLeft.Y + y * UnitDetailMap3.SubTileSz.Y);
+                    Vector2 subTopLeft = new Vector2(topLeft.X + x * UnitDetailMap.SubTileSz.X, topLeft.Y + y * UnitDetailMap.SubTileSz.Y);
                     
                     block(subTopLeft, ref subTile);
 
@@ -102,7 +102,7 @@ namespace VikingEngine.DSSWars.Map
             {
                 var top = Graphics.PolygonColor.QuadXZ(
                     subTopLeft,
-                    UnitDetailMap3.SubTileSz, false, subTile.groundY,
+                    UnitDetailMap.SubTileSz, false, subTile.groundY,
                     subTile.foil == FoilType.Tree ? SpriteName.warsFoliageShadow : SpriteName.WhiteArea_LFtiles,
                     Dir4.N,
                     subTile.color);
