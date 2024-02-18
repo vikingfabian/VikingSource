@@ -752,7 +752,7 @@ namespace VikingEngine.DSSWars.GameObject
             else
             {
                 args.content.icontext(SpriteName.rtsIncomeTime, "Total Income: " + income.ToString());
-                args.content.icontext(SpriteName.WarsGuard,"Guard count: " + TextLib.Divition_Large(workForce.Int(), maxGuardSize));
+                args.content.icontext(SpriteName.WarsGuard,"Guard count: " + TextLib.Divition_Large(guardCount, maxGuardSize));
                 args.content.icontext(SpriteName.WarsStrengthIcon,"Strength rating: " + string.Format(HudLib.OneDecimalFormat, strengthValue));
                 args.content.icontext(SpriteName.rtsUpkeepTime,"Upkeep: " + upkeep.ToString());
                 args.content.icontext(SpriteName.WarsWorker,"Work force: " + TextLib.Divition_Large(workForce.Int(), workForce.max));

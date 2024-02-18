@@ -131,26 +131,28 @@ namespace VikingEngine.DSSWars
                     {
                         rel.relationIcon.Visible = false;
                     }
-
-                    if (visible && !overHud)
+                    else
                     {
-                        if (player.input.inputSource.IsController)
+                        if (visible && !overHud)
                         {
-                            float dist = (player.mapControls.XPointerPos() - rel.bg.RealCenter).Length();
-                            if (dist < controller_closestDist)
-                            { 
-                                controller_closestDist = dist;
-                                newHover = rel;
-                                hoverArea = rel.bg.RealArea();
-                            }
-                        }
-                        else
-                        {
-                            var area = rel.bg.RealArea();
-                            if (area.IntersectPoint(Input.Mouse.Position))
+                            if (player.input.inputSource.IsController)
                             {
-                                newHover = rel;
-                                hoverArea = area;
+                                float dist = (player.mapControls.XPointerPos() - rel.bg.RealCenter).Length();
+                                if (dist < controller_closestDist)
+                                {
+                                    controller_closestDist = dist;
+                                    newHover = rel;
+                                    hoverArea = rel.bg.RealArea();
+                                }
+                            }
+                            else
+                            {
+                                var area = rel.bg.RealArea();
+                                if (area.IntersectPoint(Input.Mouse.Position))
+                                {
+                                    newHover = rel;
+                                    hoverArea = area;
+                                }
                             }
                         }
                     }
