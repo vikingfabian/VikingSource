@@ -26,6 +26,9 @@ namespace VikingEngine.DSSWars
         public static bool TestOffscreenUpdate = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE
 
+        public static bool DebugResoursesSuperSpeed = PlatformSettings.DevBuild ? true :
+           false;//DO NOT CHANGE
+
         public static MapSize? SaveLoadSpecificMap = PlatformSettings.DevBuild ? null :
             null;
 

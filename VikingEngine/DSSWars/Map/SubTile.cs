@@ -31,6 +31,13 @@ namespace VikingEngine.DSSWars.Map
             this.maintype = type;
         }
 
+        public void SetType(SubTileMainType main, int under, int value)
+        {
+            maintype = main;
+            undertype = under;
+            this.typeValue = value;
+        }
+
         public void write(System.IO.BinaryWriter w)
         {
             w.Write(color.R);

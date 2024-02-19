@@ -177,6 +177,11 @@ namespace VikingEngine
             return Uint() * UintDiv;/// (double)uint.MaxValue;
         }
 
+        public double Double(double exMax)
+        {
+            return Uint() * UintDiv * exMax;/// (double)uint.MaxValue) * exMax;
+        }
+
         public double Double(double min, double exMax)
         {
             double diff = exMax - min;

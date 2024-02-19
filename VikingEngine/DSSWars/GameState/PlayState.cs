@@ -254,7 +254,7 @@ namespace VikingEngine.DSSWars
         bool asyncResourcesUpdate(int id, float time)
         {
             //Runs every minute to upate any resource progression: trees grow, food spoil, etc
-            if (bResourceUpdate)
+            if (bResourceUpdate || StartupSettings.DebugResoursesSuperSpeed)
             {
                 bResourceUpdate = false;
 

@@ -29,6 +29,11 @@ namespace VikingEngine.EngineSpace.Maths
             }
         }
 
+        public float OctaveNoise2D_Normal(float octaves, float persistence, float scale, float x, float y)
+        {
+            return (OctaveNoise2D(octaves, persistence, scale, x, y) + 1f) / 2f;
+        }
+
         // Each octave adds a higher frequency/lower amplitude function.
         // Amplitude dies with the persistence factor [0-1] after each octave.
         public float OctaveNoise2D(float octaves, float persistence, float scale, float x, float y)

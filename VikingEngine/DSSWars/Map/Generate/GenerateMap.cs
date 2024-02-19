@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.LootFest.Map;
+using VikingEngine.PJ.Joust;
 using VikingEngine.PJ.Tanks;
 using VikingEngine.ToGG.MoonFall;
 
@@ -22,7 +24,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         GenerateRegion region = new GenerateRegion();
         CityCultureCollection cityCultureCollection = new CityCultureCollection();
         public bool abort = false;
-
+        VikingEngine.EngineSpace.Maths.SimplexNoise2D noiseMap;
         public bool Generate(MapSize size, int number, bool save) 
         {
             ushort seed = Ref.rnd.Ushort();
@@ -87,6 +89,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         { 
             this.world = world;
             world.rnd = new PcgRandom(world.seed);
+            noiseMap = new EngineSpace.Maths.SimplexNoise2D(world.seed);
 
             partComplete = new bool[ProcessSubTileParts];
 
@@ -121,7 +124,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             Task.Factory.StartNew(() =>
             {
-                generateSubTileFoliage();
+                //generateSubTileFoliage();
                 postComplete = true;
             });
         }
@@ -850,7 +853,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 {
                     int supTileStartX = loopx * WorldData.SubTileWidth;
 
-                    var tile = world.tileGrid.array[loopx, loopy];// .Get(loop.Position);
+                    Tile tile = world.tileGrid.array[loopx, loopy];// .Get(loop.Position);
                     SubTileMainType tileType = tile.IsLand() ? SubTileMainType.DefaultLand : SubTileMainType.DefaultSea;
                     var terrain = Tile.TerrainTypes[tile.biom, tile.heightLevel];
 
@@ -868,25 +871,25 @@ namespace VikingEngine.DSSWars.Map.Generate
                     {
                         for (int x = 1; x < WidthMin1; ++x)
                         {
-                            block(x, y, groundY, tileType);
+                            subTile(x, y, groundY, tileType);
                         }
                     }
 
                     for (int sidePos = 1; sidePos < WidthMin1; ++sidePos)
                     {
-                        block(0, sidePos, groundY_w, tileType);
+                        subTile(0, sidePos, groundY_w, tileType);
 
-                        block(WidthMin1, sidePos, groundY_e, tileType);
+                        subTile(WidthMin1, sidePos, groundY_e, tileType);
 
-                        block(sidePos, 0, groundY_n, tileType);
+                        subTile(sidePos, 0, groundY_n, tileType);
 
-                        block(sidePos, WidthMin1, groundY_s, tileType);
+                        subTile(sidePos, WidthMin1, groundY_s, tileType);
                     }
 
-                    block(0, 0, lib.SmallestValue(groundY_w, groundY_n), tileType);
-                    block(WidthMin1, 0, lib.SmallestValue(groundY_e, groundY_n), tileType);
-                    block(0, WidthMin1, lib.SmallestValue(groundY_w, groundY_s), tileType);
-                    block(WidthMin1, WidthMin1, lib.SmallestValue(groundY_s, groundY_e), tileType);
+                    subTile(0, 0, lib.SmallestValue(groundY_w, groundY_n), tileType);
+                    subTile(WidthMin1, 0, lib.SmallestValue(groundY_e, groundY_n), tileType);
+                    subTile(0, WidthMin1, lib.SmallestValue(groundY_w, groundY_s), tileType);
+                    subTile(WidthMin1, WidthMin1, lib.SmallestValue(groundY_s, groundY_e), tileType);
 
                     float edgeHeight(int x, int y)
                     {
@@ -901,7 +904,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         return result;
                     }
 
-                    void block(int x, int y, float topY, SubTileMainType tiletype)
+                    void subTile(int x, int y, float topY, SubTileMainType tiletype)
                     {
                         const int RndRange = 3;
                         Microsoft.Xna.Framework.Color rndColor;
@@ -933,14 +936,21 @@ namespace VikingEngine.DSSWars.Map.Generate
                             topY += terrain.mountainPeak[x, y];
                         }
 
-                        world.subTileGrid.Set(supTileStartX + x, supTileStartY + y,
-                            new SubTile(tiletype, rndColor, topY));
+                        int subX = supTileStartX + x;
+                        int subY = supTileStartY + y;
+
+                        var subTile = new SubTile(tiletype, rndColor, topY);
+                        TerrainContent.createSubTileContent(subX, subY, tile, ref subTile, world, noiseMap);
+
+                        world.subTileGrid.Set(subX, subY, subTile);
 
                     }
                 }
 
             }
         }
+
+       
 
         void generateSubTileFoliage()
         {

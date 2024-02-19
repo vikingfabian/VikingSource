@@ -42,7 +42,10 @@ namespace VikingEngine.DSSWars.Map
         public bool[] foilEnabled = new bool[(int)SubTileFoilType.NUM];
 
         public TerrainCultureType culture = TerrainCultureType.Plains;
+
         public int influenceCost;
+
+        public float percTree = 0;
 
         public HeightMapSettings(int biom, int height)
         {
@@ -69,13 +72,16 @@ namespace VikingEngine.DSSWars.Map
                         case BiomTypeGreen:
                             color = Ground0;
                             textureType = SurfaceTextureType.Sand;
+                            percTree = 0.3f;
                             break;
                         case BiomTypeDry:
                             color = Dry0;
                             textureType = SurfaceTextureType.Sand;
+                            percTree = 0.1f;
                             break;
                     }
                     influenceCost = 10;
+                    
                     break;
 
                 case 3:
@@ -87,13 +93,16 @@ namespace VikingEngine.DSSWars.Map
                             textureType = SurfaceTextureType.Grass;
                             foilEnabled[(int)SubTileFoilType.TreeHard] = true;
                             culture = TerrainCultureType.Forest;
+                            percTree = 0.6f;
                             break;
                         case BiomTypeDry:
                             color = Dry1;
                             textureType = SurfaceTextureType.Sand;
+                            percTree = 0.3f;
                             break;
                     }
                     influenceCost = 12;
+                    percTree = 0.4f;
                     break;
 
                 case 4:
@@ -105,10 +114,12 @@ namespace VikingEngine.DSSWars.Map
                             textureType = SurfaceTextureType.Grass;
                             foilEnabled[(int)SubTileFoilType.TreeHard] = true;
                             culture = TerrainCultureType.Forest;
+                            percTree = 0.6f;
                             break;
                         case BiomTypeDry:
                             color = Dry2;
                             culture = TerrainCultureType.Mountain;
+                            percTree = 0.4f;
                             break;
                     }
                     influenceCost = 14;
@@ -123,10 +134,12 @@ namespace VikingEngine.DSSWars.Map
                             textureType = SurfaceTextureType.Grass;
                             foilEnabled[(int)SubTileFoilType.TreeHard] = true;
                             culture = TerrainCultureType.Forest;
+                            percTree = 0.75f;
                             break;
                         case BiomTypeDry:
                             color = Dry3;
                             culture = TerrainCultureType.Mountain;
+                            percTree = 0.45f;
                             break;
                     }
                     influenceCost = 16;
@@ -142,9 +155,11 @@ namespace VikingEngine.DSSWars.Map
                     {
                         case BiomTypeGreen:
                             color = Ground4;
+                            percTree = 0.4f;
                             break;
                         case BiomTypeDry:
                             color = Dry4;
+                            percTree = 0.2f;
                             break;
                     }
                     influenceCost = 18;

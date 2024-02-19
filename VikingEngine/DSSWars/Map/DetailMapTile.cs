@@ -18,8 +18,18 @@ namespace VikingEngine.DSSWars.Map
         static readonly IntervalF GrassCenterRange =
             IntervalF.FromCenter(0.5f * WorldData.SubTileSz.X, 0.45f * WorldData.SubTileSz.X);
 
-        public const LootFest.VoxelModelName TreeFoliage = LootFest.VoxelModelName.fol_tree_hard;
-        public const LootFest.VoxelModelName StoneFoliage = LootFest.VoxelModelName.fo_stone1;
+        const LootFest.VoxelModelName TreeFoliage = LootFest.VoxelModelName.fol_tree_hard;
+        const LootFest.VoxelModelName StoneFoliage = LootFest.VoxelModelName.fo_stone1;
+
+        public static List<LootFest.VoxelModelName> LoadModel()
+        {
+            return new List<LootFest.VoxelModelName>
+            {
+                TreeFoliage,
+                StoneFoliage,
+                 LootFest.VoxelModelName.fol_sprout,
+            };
+        }
 
         const LoadedTexture Texture = LoadedTexture.SpriteSheet;
         public static readonly Graphics.CustomEffect ModelEffect =
@@ -81,7 +91,7 @@ namespace VikingEngine.DSSWars.Map
                             pos.X + subTopLeft.X,
                             subTile.groundY,
                             pos.Y + subTopLeft.Y);
-                        createFoliage((SubTileFoilType)subTile.undertype, topCenter);
+                        createFoliage((SubTileFoilType)subTile.undertype, subTile.typeValue, topCenter);
                     }
 
                     DssRef.world.subTileGrid.Set(
@@ -238,12 +248,13 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        void createFoliage(SubTileFoilType type, Vector3 wp)
+        void createFoliage(SubTileFoilType type, int sizeValue, Vector3 wp)
         {
             wp.X += FoliageCenterRange.GetRandom(rnd);
             wp.Z += FoliageCenterRange.GetRandom(rnd);
 
             LootFest.VoxelModelName modelName;
+            float scale = 0.12f;
 
             switch (type)
             {
@@ -252,8 +263,12 @@ namespace VikingEngine.DSSWars.Map
                     break;
                 case SubTileFoilType.TreeHard:
                     modelName = TreeFoliage;
+                    scale = 0.05f + 0.002f * sizeValue;
                     break;
-
+                case SubTileFoilType.TreeHardSprout:
+                    modelName = LootFest.VoxelModelName.fol_sprout;
+                    scale = 0.05f + 0.01f * sizeValue;
+                    break;
                 default:
                     throw new NotImplementedException();
             }
@@ -274,7 +289,7 @@ namespace VikingEngine.DSSWars.Map
 #if DEBUG
             model.DebugName = "Map foliage " + model.DebugName;
 #endif
-            foliage.Add(new Foliage(modelName, rnd.Double(), wp));
+            foliage.Add(new Foliage(modelName, rnd.Double(), wp, scale));
         }
 
         public void synchToRender()
