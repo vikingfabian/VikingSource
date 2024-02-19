@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars.GameObject
                             ++mountain;
                             break;
                     }
-                    if (tile.biom == TerrainSettings.BiomTypeDry)
+                    if (tile.biom == HeightMapSettings.BiomTypeDry)
                     {
                         ++dryBiom;
                     }
@@ -414,7 +414,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             float iconScale = IconScale();            
 
-            VectorVolume volume = new VectorVolume(position,
+            VectorVolumeC volume = new VectorVolumeC(position,
                 new Vector3(iconScale * 0.5f, 0.1f, iconScale * 0.5f));
             bound = volume.boundingBox();
         }

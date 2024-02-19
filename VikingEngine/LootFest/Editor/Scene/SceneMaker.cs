@@ -341,7 +341,7 @@ namespace VikingEngine.LootFest.Editor
                     }
                     selectedMemberIndex = shortestDist.minMemberIndex;
                     //place box around it
-                    VectorVolume vol = collection.members[selectedMemberIndex].Volume;
+                    VectorVolumeC vol = collection.members[selectedMemberIndex].Volume;
                     selectionBox.Position = vol.Center; selectionBox.Scale = vol.HalfSize;
                     info += " Model:" + collection.members[selectedMemberIndex].Name;
                 }

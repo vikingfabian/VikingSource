@@ -26,7 +26,7 @@ namespace VikingEngine.LootFest.GO.EnvironmentObj
             this.WorldPos = args.startWp;
             
             CollisionAndDefaultBound = new Bounds.ObjectBound(new BoundData2(new VikingEngine.Physics.StaticBoxBound(
-                new VectorVolume(args.startPos, HalfSize)), Vector3.Zero));
+                new VectorVolumeC(args.startPos, HalfSize)), Vector3.Zero));
         }
 
 

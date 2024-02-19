@@ -41,7 +41,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
             positionRange = new IntervalVector3(new Vector3(weaponPosDiff.X, weaponPosDiff.Y * 0.35f, weaponPosDiff.Z * 0.15f), weaponPosDiff);
 
             CollisionAndDefaultBound = new GO.Bounds.ObjectBound(new LootFest.BoundData2(new VikingEngine.Physics.Box1axisBound(
-                new VectorVolume(Vector3.Zero, boundScale),
+                new VectorVolumeC(Vector3.Zero, boundScale),
                 parent.FireDir(this.Type)),
                 Vector3.Zero));
             //updateImage();

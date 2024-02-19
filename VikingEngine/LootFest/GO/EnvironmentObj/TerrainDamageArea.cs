@@ -10,7 +10,7 @@ namespace VikingEngine.LootFest.GO.EnvironmentObj
             :base(new GoArgs(volume.Position))
         {
             WorldPos = volume.Position;
-            VectorVolume vol = volume.VolumeF;
+            VectorVolumeC vol = volume.VolumeF;
             CollisionAndDefaultBound = new GO.Bounds.ObjectBound(new BoundData2(new VikingEngine.Physics.StaticBoxBound(volume.VolumeF), Vector3.Zero));
            
         }

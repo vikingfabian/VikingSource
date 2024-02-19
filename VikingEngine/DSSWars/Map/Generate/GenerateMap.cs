@@ -199,7 +199,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             for (int i = 0; i < numLandChains; ++i)
             {
                 heightCurve = terrainTypes.GetRandom(world.rnd);
-                biom = world.rnd.Chance(0.2) ? TerrainSettings.BiomTypeDry : TerrainSettings.BiomTypeGreen;//lib.Rnd.NextDouble() < 0.2;//world.rnd.RandomChance(0.2f);
+                biom = world.rnd.Chance(0.2) ? HeightMapSettings.BiomTypeDry : HeightMapSettings.BiomTypeGreen;//lib.Rnd.NextDouble() < 0.2;//world.rnd.RandomChance(0.2f);
 
                 center = world.rnd.vector2(world.Size.X, world.Size.Y);
 
@@ -509,7 +509,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         //Make sure most cities are close to water
                         //pulls its food from the sea or wet land
                         if (numWaterTiles > 0 || 
-                            (world.rnd.Chance(0.2f) && cityTile.biom != TerrainSettings.BiomTypeDry))
+                            (world.rnd.Chance(0.2f) && cityTile.biom != HeightMapSettings.BiomTypeDry))
                         {
                             if (cityHasEnoughGround(pos))//numWaterTiles <= 2
                             {                                

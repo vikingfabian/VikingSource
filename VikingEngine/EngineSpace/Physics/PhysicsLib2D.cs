@@ -204,7 +204,7 @@ namespace VikingEngine.Physics
         }       
 
 
-        public static Vector2[] StaticBoxVertices(VectorVolume area)
+        public static Vector2[] StaticBoxVertices(VectorVolumeC area)
         {
             float left = area.Center.X - area.HalfSize.X;
             float right = area.Center.X + area.HalfSize.X;
@@ -230,13 +230,13 @@ namespace VikingEngine.Physics
             //}
         }
 
-        public static bool Vertice2DInsideVolume(Vector2 vertice, VectorVolume rectangle)
+        public static bool Vertice2DInsideVolume(Vector2 vertice, VectorVolumeC rectangle)
         {
             return Math.Abs(vertice.X - rectangle.Center.X) < rectangle.HalfSize.X &&
                 Math.Abs(vertice.Y - rectangle.Center.Z) < rectangle.HalfSize.Z;
         }
 
-        public static float Vertice2DInsideVolumeDepth(Vector2 vertice, VectorVolume rectangle)
+        public static float Vertice2DInsideVolumeDepth(Vector2 vertice, VectorVolumeC rectangle)
         {
             return new Vector2(rectangle.HalfSize.X - Math.Abs(vertice.X - rectangle.Center.X),
                 rectangle.HalfSize.Z - Math.Abs(vertice.Y - rectangle.Center.Z)).Length();

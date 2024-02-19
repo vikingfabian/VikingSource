@@ -330,7 +330,7 @@ namespace VikingEngine.LootFest.GO.PlayerCharacter
             const float BoundHeight = 2.0f * CollRadius;
             var bound = new GO.Bounds.ObjectBound(
               new BoundData2(new VikingEngine.Physics.StaticBoxBound(
-                    new VectorVolume(Vector3.Zero, new Vector3(CollRadius, BoundHeight, CollRadius))),
+                    new VectorVolumeC(Vector3.Zero, new Vector3(CollRadius, BoundHeight, CollRadius))),
                     new Vector3(0, BoundHeight * 0.6f, 0)));//offset
 
             bound.DebugBoundColor(Color.Pink);

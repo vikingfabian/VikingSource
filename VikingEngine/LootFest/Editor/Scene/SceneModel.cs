@@ -49,11 +49,11 @@ namespace VikingEngine.LootFest.Editor
             loadModel(gamestate, fromStorage);
         }
 
-        public VectorVolume Volume
+        public VectorVolumeC Volume
         {
             get
             {
-                VectorVolume result = new VectorVolume(Model.position, Model.GridSize.Vec * Model.scale);
+                VectorVolumeC result = new VectorVolumeC(Model.position, Model.GridSize.Vec * Model.scale);
                 result.Center.Y += result.HalfSizeY * 0.5f;
                 return result;
             }
