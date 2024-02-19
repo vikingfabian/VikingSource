@@ -235,7 +235,7 @@ namespace VikingEngine.DSSWars.Players
 
             
 
-            //DssRef.detailMap.PlayerUpdate(mapControls.playerPointerPos, bUnitDetailLayer);
+            //DssRef.state.detailMap.PlayerUpdate(mapControls.playerPointerPos, bUnitDetailLayer);
             drawUnitsView.Update();
         }
 

@@ -6,7 +6,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.Map
 {
-    class UnitDetailMap
+    class MapLayer_Detail
     {
         List<DetailMapTile> tiles;
         public static readonly Vector2 SubTileSz = new Vector2(1f / WorldData.SubTileWidth);
@@ -26,12 +26,13 @@ namespace VikingEngine.DSSWars.Map
         /// </summary>
         public bool needReload = false;
         public UnitDetailMap()
+        public MapLayer_Detail()
         {
-            DssRef.detailMap = this;
+            DssRef.state.detailMap = this;
             tiles = new List<DetailMapTile>(128);
 
             Graphics.Mesh waterBottom;
-            TerrainOverviewMap.WaterModel(out waterSurface, out waterBottom, true);
+            MapLayer_Overview.WaterModel(out waterSurface, out waterBottom, true);
             waterSurface.AddToRender(DrawGame.UnitDetailLayer);
             waterBottom.AddToRender(DrawGame.UnitDetailLayer);
         }

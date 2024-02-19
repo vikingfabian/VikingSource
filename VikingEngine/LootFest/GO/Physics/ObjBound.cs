@@ -46,7 +46,7 @@ namespace VikingEngine.LootFest
         public static BoundData2 QuickRectangleRotatedData(Vector3 Size)
         {
             return new BoundData2(new Physics.Box1axisBound(
-                    new VectorVolume(Vector3.Zero, Size), Rotation1D.D0), Vector3.Zero);
+                    new VectorVolumeC(Vector3.Zero, Size), Rotation1D.D0), Vector3.Zero);
         }
         public static BoundData2 QuickBoundingBoxData(float Size)
         {
@@ -55,7 +55,7 @@ namespace VikingEngine.LootFest
         public static BoundData2 QuickBoundingBoxData(Vector3 Size)
         {
             return new BoundData2(new Physics.StaticBoxBound(
-                    new VectorVolume(Vector3.Zero, Size)), Vector3.Zero);
+                    new VectorVolumeC(Vector3.Zero, Size)), Vector3.Zero);
         }
 
         /// <returns>Null is no collision</returns>
@@ -581,10 +581,10 @@ namespace VikingEngine.LootFest
             switch (type)
             {
                 case Bound3DType.BoundingBox:
-                    Bound = new Physics.StaticBoxBound(new VectorVolume(center, halfsize));
+                    Bound = new Physics.StaticBoxBound(new VectorVolumeC(center, halfsize));
                     break;
                 case Bound3DType.Box1axisRotation:
-                    Bound = new Physics.Box1axisBound(new VectorVolume(center, halfsize), Rotation1D.D0);
+                    Bound = new Physics.Box1axisBound(new VectorVolumeC(center, halfsize), Rotation1D.D0);
                     break;
                 case Bound3DType.Cylinder:
                     Bound = new Physics.CylinderBound(new CylinderVolume(center, halfsize.Y, halfsize.X));

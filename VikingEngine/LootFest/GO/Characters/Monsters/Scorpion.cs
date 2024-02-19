@@ -31,16 +31,16 @@ namespace VikingEngine.LootFest.GO.Characters.Monsters
          override protected void createBound(float imageScale)
          {
              Vector3 bodyHalfSz = new Vector3(0.36f * imageScale, 0.14f * imageScale, imageScale * 0.26f);
-             BoundData2 body = new BoundData2(new Box1axisBound(new VectorVolume(Vector3.Zero, bodyHalfSz), Rotation1D.D0), new Vector3(0, bodyHalfSz.Y, 0.08f * imageScale));
+             BoundData2 body = new BoundData2(new Box1axisBound(new VectorVolumeC(Vector3.Zero, bodyHalfSz), Rotation1D.D0), new Vector3(0, bodyHalfSz.Y, 0.08f * imageScale));
 
              Vector3 clawSz = new Vector3(0.10f * imageScale, 0.06f * imageScale, 0.15f * imageScale);
              Vector3 clawOffset = new Vector3(-0.22f * imageScale, 0.08f * imageScale, -0.32f * imageScale);
-             BoundData2 leftClaw = new BoundData2(new Box1axisBound(new VectorVolume(Vector3.Zero, clawSz), Rotation1D.D0), clawOffset);
+             BoundData2 leftClaw = new BoundData2(new Box1axisBound(new VectorVolumeC(Vector3.Zero, clawSz), Rotation1D.D0), clawOffset);
              clawOffset.X = -clawOffset.X;
-             BoundData2 rightClaw = new BoundData2(new Box1axisBound(new VectorVolume(Vector3.Zero, clawSz), Rotation1D.D0), clawOffset);
+             BoundData2 rightClaw = new BoundData2(new Box1axisBound(new VectorVolumeC(Vector3.Zero, clawSz), Rotation1D.D0), clawOffset);
 
              Vector3 tailSz = new Vector3(0.068f * imageScale, 0.26f * imageScale, imageScale * 0.17f);
-             BoundData2 tail = new BoundData2(new Box1axisBound(new VectorVolume(Vector3.Zero, tailSz), Rotation1D.D0), new Vector3(0, 1.4f * tailSz.Y, 0.29f * imageScale));
+             BoundData2 tail = new BoundData2(new Box1axisBound(new VectorVolumeC(Vector3.Zero, tailSz), Rotation1D.D0), new Vector3(0, 1.4f * tailSz.Y, 0.29f * imageScale));
 
              CollisionAndDefaultBound = new GO.Bounds.ObjectBound(new BoundData2[] { body, leftClaw, rightClaw, tail });
              TerrainInteractBound = LootFest.ObjSingleBound.QuickCylinderBound(imageScale * ScaleToBound, imageScale * 0.5f);

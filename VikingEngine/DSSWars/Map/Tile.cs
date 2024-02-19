@@ -10,7 +10,7 @@ namespace VikingEngine.DSSWars.Map
 {
     class Tile
     {
-        public static TerrainSettings[,] TerrainTypes;
+        public static HeightMapSettings[,] TerrainTypes;
 
         public static void Init()
         {
@@ -20,12 +20,12 @@ namespace VikingEngine.DSSWars.Map
                 TypeToHeight_aboveWater[i] = Math.Max(TypeToHeight[i], 0);
             }
 
-            TerrainTypes = new TerrainSettings[TerrainSettings.BiomCount, MaxHeight + 1];
-            for (int biom = 0; biom < TerrainSettings.BiomCount; ++biom)
+            TerrainTypes = new HeightMapSettings[HeightMapSettings.BiomCount, MaxHeight + 1];
+            for (int biom = 0; biom < HeightMapSettings.BiomCount; ++biom)
             {
                 for (int height = 0; height <= MaxHeight; ++height)
                 {
-                    TerrainTypes[biom, height] = new TerrainSettings(biom, height);
+                    TerrainTypes[biom, height] = new HeightMapSettings(biom, height);
                 }
             }
 
@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.Map
 
         //Save data
         public int CityIndex;
-        public int biom = TerrainSettings.BiomTypeGreen;
+        public int biom = HeightMapSettings.BiomTypeGreen;
         public int heightLevel;
         public TileContent tileContent = TileContent.NONE;
         public int BorderCount;
@@ -313,7 +313,7 @@ namespace VikingEngine.DSSWars.Map
             return color;
         }
 
-        public TerrainSettings terrain()
+        public HeightMapSettings terrain()
         {
             return TerrainTypes[biom, heightLevel];
         }

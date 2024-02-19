@@ -535,16 +535,34 @@ namespace VikingEngine //AreaVolyme
         }
     }
 
+    public struct VectorVolume
+    {
+        public Vector3 Position;
+        public Vector3 Scale;
+
+        public VectorVolume()
+        {
+            Position = new Vector3();
+            Scale = new Vector3();
+        }
+
+        public VectorVolume(Vector3 position, Vector3 size)
+        {
+            Position = position;
+            Scale = size;
+        }
+    }
+
     /// <summary>
     /// A bounding box dimentions with its position in center
     /// </summary>
-    public struct VectorVolume
+    public struct VectorVolumeC
     {
-        public static readonly VectorVolume ZeroOne = new VectorVolume(Vector3.Zero, Vector3.One);
+        public static readonly VectorVolumeC ZeroOne = new VectorVolumeC(Vector3.Zero, Vector3.One);
  
         public Vector3 Center;
         public Vector3 HalfSize;
-        public VectorVolume(Vector3 center, Vector3 halfSize)
+        public VectorVolumeC(Vector3 center, Vector3 halfSize)
         {
             Center = center;
             HalfSize = halfSize;
@@ -580,7 +598,7 @@ namespace VikingEngine //AreaVolyme
             get { return HalfSize.Z; }
             set { HalfSize.Z = value; }
         }
-        public bool Intersect(VectorVolume otherVol)
+        public bool Intersect(VectorVolumeC otherVol)
         {
             return Math.Abs(this.Center.X - otherVol.Center.X) <= this.HalfSize.X + otherVol.HalfSize.X &&
                 Math.Abs(this.Center.Z - otherVol.Center.Z) <= this.HalfSize.Z + otherVol.HalfSize.Z &&
@@ -598,7 +616,7 @@ namespace VikingEngine //AreaVolyme
                 Math.Abs(this.Center.Z - point.Z) <= this.HalfSize.Z;
 
         }
-        public IntersectDetails3D IntersectDepth(VectorVolume otherVol)
+        public IntersectDetails3D IntersectDepth(VectorVolumeC otherVol)
         {
             //Vector3 diff = this.Center - otherVol.Center;
             //diff -= HalfSize + otherVol.HalfSize;
@@ -613,7 +631,7 @@ namespace VikingEngine //AreaVolyme
             return result;
         }
 
-        public Vector3 IntersectLength3D(VectorVolume otherVol)
+        public Vector3 IntersectLength3D(VectorVolumeC otherVol)
         {
             Vector3 posDiff = otherVol.Center - this.Center;
             Vector3 scale = this.HalfSize + otherVol.HalfSize;

@@ -7,13 +7,13 @@ using VikingEngine.Graphics;
 namespace VikingEngine.DSSWars.Map
 {
 
-    class FactionColorsMap : Point3D
+    class FactionColorsTexture : Point3D
     {
         
         Graphics.Mesh model;
         Graphics.PixelTexture texture;
 
-        public FactionColorsMap(Vector3 pos, Vector3 scale)
+        public FactionColorsTexture(Vector3 pos, Vector3 scale)
             :base(Vector3.Zero, Vector3.Zero, false)
         {
             texture = new Graphics.PixelTexture(DssRef.world.Size);

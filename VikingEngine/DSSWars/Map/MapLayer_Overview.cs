@@ -6,10 +6,10 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.Map
 {
-    class TerrainOverviewMap : Point3D
+    class MapLayer_Overview : Point3D
     {
-        Graphics.GeneratedObjColor model;
-        Map.FactionColorsMap factionColorsMap;
+        
+       
         
         public Map.Borders borders;
         //BordersUpdate bordersUpdate;
@@ -17,9 +17,11 @@ namespace VikingEngine.DSSWars.Map
         //Timer.Basic borderUpdate = new Timer.Basic(1000, true);
 
         int state_Processing_Sych_Complete = 2;
+        Map.MapLayer_Factions factionsMap;
 
-        public TerrainOverviewMap()
+        public MapLayer_Overview(Map.MapLayer_Factions factionsMap)
         {
+            this.factionsMap = factionsMap;
             Ref.draw.CurrentRenderLayer = DrawGame.TerrainLayer;
 
             generateTerrain();
@@ -31,7 +33,7 @@ namespace VikingEngine.DSSWars.Map
             waterBottom.AddToRender(DrawGame.TerrainLayer);
             waterBottom.Y = waterSurface.Y - 0.1f;
 
-            factionColorsMap = new FactionColorsMap(waterSurface.Position, waterSurface.Scale);
+            
             borders = new Map.Borders();
             //bordersUpdate = new BordersUpdate(borders, worldOverviewModel);
 
@@ -44,15 +46,14 @@ namespace VikingEngine.DSSWars.Map
         {
             //Graphics.Mesh waterBottom;
 
-            Vector3 surfacePos = new Vector3(DssRef.world.Size.X * 0.5f - 0.5f, Tile.WaterSurfaceY, DssRef.world.Size.Y * 0.5f - 0.5f);
-            Vector3 waterScale = new Vector3(DssRef.world.Size.X, 1f, DssRef.world.Size.Y);
+            var vol = WaterModelVolume();
 
-            waterBottom = new Mesh(LoadedMesh.plane, surfacePos, new Vector3(1f), 
+            waterBottom = new Mesh(LoadedMesh.plane, vol.Position, new Vector3(1f), 
                 TextureEffectType.Flat, SpriteName.WhiteArea_LFtiles, Color.DarkBlue, false);
             waterBottom.Y -= 0.6f;
-            waterBottom.Scale = waterScale;
+            waterBottom.Scale = vol.Scale;
 
-            waterSurface = new Mesh(LoadedMesh.plane, surfacePos, new Vector3(1f), 
+            waterSurface = new Mesh(LoadedMesh.plane, vol.Position, new Vector3(1f), 
                 TextureEffectType.Flat, SpriteName.WhiteArea_LFtiles, Color.White,//Color.CornflowerBlue,
                 false);
 
@@ -66,11 +67,19 @@ namespace VikingEngine.DSSWars.Map
                 waterSurface.Color = WorldData.WaterCol;//new Color(14, 155, 246);
                 //new Color(4.3f, 48.6f,77.3f);
             }
-            waterSurface.Scale = waterScale;
+            waterSurface.Scale = vol.Scale;
             const float SurfaceTrans = 0.8f;
             waterSurface.Opacity = SurfaceTrans;
 
             //waterSurface.Visible = true;
+        }
+
+        public static VectorVolume WaterModelVolume()
+        {
+            Vector3 surfacePos = new Vector3(DssRef.world.Size.X * 0.5f - 0.5f, Tile.WaterSurfaceY, DssRef.world.Size.Y * 0.5f - 0.5f);
+            Vector3 waterScale = new Vector3(DssRef.world.Size.X, 1f, DssRef.world.Size.Y);
+
+            return new VectorVolume(surfacePos, waterScale);
         }
 
         private void generateTerrain()
@@ -168,7 +177,7 @@ namespace VikingEngine.DSSWars.Map
 
             polygons.AddRange(billboards);
 
-            model = new Graphics.GeneratedObjColor(new Graphics.PolygonsAndTrianglesColor(
+            Graphics.GeneratedObjColor heightMapModel = new Graphics.GeneratedObjColor(new Graphics.PolygonsAndTrianglesColor(
                 polygons, null), LoadedTexture.SpriteSheet, true);
 
         }
@@ -201,7 +210,7 @@ namespace VikingEngine.DSSWars.Map
                 state_Processing_Sych_Complete = 0;
 
                 borders.quedEvent();
-                factionColorsMap.quedEvent();
+                factionsMap.asyncTask();//factionColorsTex.quedEvent();
 
                 state_Processing_Sych_Complete = 1;
             }
@@ -213,7 +222,7 @@ namespace VikingEngine.DSSWars.Map
             {
                 DssRef.world.BordersUpdated = false;
                 borders.SetNewModel();
-                factionColorsMap.SetNewTexture();
+                factionsMap.syncTask();//factionColorsTex.SetNewTexture();
 
                 state_Processing_Sych_Complete = 2;
             }

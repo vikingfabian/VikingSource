@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine.DSSWars.Map
 {
-    class TerrainSettings
+    class HeightMapSettings
     {
         public const int BiomTypeGreen = 0;
         public const int BiomTypeDry = 1;
@@ -44,7 +44,7 @@ namespace VikingEngine.DSSWars.Map
         public TerrainCultureType culture = TerrainCultureType.Plains;
         public int influenceCost;
 
-        public TerrainSettings(int biom, int height)
+        public HeightMapSettings(int biom, int height)
         {
             groundYoffsetChance = DefaultGroundYoffsetChance;
             groundYoffset = DefaultGroundYoffset;

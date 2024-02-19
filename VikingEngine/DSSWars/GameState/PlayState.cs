@@ -14,8 +14,10 @@ namespace VikingEngine.DSSWars
 {
     class PlayState : Engine.GameState
     {
-        WorldResources resources = new WorldResources();
-        Map.TerrainOverviewMap overviewMap;
+        Map.MapLayer_Factions factionsMap;
+        Map.MapLayer_Overview overviewMap;
+        public Map.MapLayer_Detail detailMap;
+
         public Culling culling;
         public PathFindingPool pathFindingPool = new PathFindingPool();
         
@@ -44,9 +46,10 @@ namespace VikingEngine.DSSWars
             culling = new Culling();
 
             this.host = host;
-            
-            overviewMap = new Map.TerrainOverviewMap();
-            new Map.UnitDetailMap();
+
+            factionsMap = new MapLayer_Factions();
+            overviewMap = new Map.MapLayer_Overview(factionsMap);
+            detailMap = new Map.MapLayer_Detail();
 
             Engine.Update.SetFrameRate(60);
 
@@ -183,7 +186,7 @@ namespace VikingEngine.DSSWars
             {
                 overviewMap.HalfSecondUpdate();
             }
-            DssRef.detailMap.update();
+            detailMap.update();
 
             foreach (var local in localPlayers)
             {
@@ -280,7 +283,7 @@ namespace VikingEngine.DSSWars
 
         bool asynchMapGenerating(int id, float time)
         {
-            DssRef.detailMap.asynchUpdate();
+            DssRef.state.detailMap.asynchUpdate();
             overviewMap.unitMiniModels.asynchUpdate();
 
             return exitThreads;

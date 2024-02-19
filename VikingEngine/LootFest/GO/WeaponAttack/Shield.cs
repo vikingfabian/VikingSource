@@ -32,7 +32,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
             image.Scale1D = ShieldScale * image.SizeToScale;
 
             CollisionAndDefaultBound = new Bounds.ObjectBound(new LootFest.BoundData2(new VikingEngine.Physics.Box1axisBound(
-                new VectorVolume(Vector3.Zero, new Vector3(boundScale, boundScale, 0.3f)),Rotation1D.D0), new Vector3(0, 1, 0))); //QuickBoundingBox(boundScale);
+                new VectorVolumeC(Vector3.Zero, new Vector3(boundScale, boundScale, 0.3f)),Rotation1D.D0), new Vector3(0, 1, 0))); //QuickBoundingBox(boundScale);
 
             refreshModel(pStorage);
         }

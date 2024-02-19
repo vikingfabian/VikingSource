@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars.GameObject
                             ++mountain;
                             break;
                     }
-                    if (tile.biom == TerrainSettings.BiomTypeDry)
+                    if (tile.biom == HeightMapSettings.BiomTypeDry)
                     {
                         ++dryBiom;
                     }
@@ -414,7 +414,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             float iconScale = IconScale();            
 
-            VectorVolume volume = new VectorVolume(position,
+            VectorVolumeC volume = new VectorVolumeC(position,
                 new Vector3(iconScale * 0.5f, 0.1f, iconScale * 0.5f));
             bound = volume.boundingBox();
         }
@@ -751,14 +751,14 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                args.content.icontext(SpriteName.rtsIncomeTime, "Total Income: " + income.ToString());
-                args.content.icontext(SpriteName.WarsGuard,"Guard count: " + TextLib.Divition_Large(workForce.Int(), maxGuardSize));
-                args.content.icontext(SpriteName.WarsStrengthIcon,"Strength rating: " + string.Format(HudLib.OneDecimalFormat, strengthValue));
-                args.content.icontext(SpriteName.rtsUpkeepTime,"Upkeep: " + upkeep.ToString());
-                args.content.icontext(SpriteName.WarsWorker,"Work force: " + TextLib.Divition_Large(workForce.Int(), workForce.max));
+                args.content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, income));
+                args.content.icontext(SpriteName.WarsGuard, string.Format(DssRef.lang.Hud_GuardCount,TextLib.Divition_Large(guardCount, maxGuardSize)));
+                args.content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, string.Format(HudLib.OneDecimalFormat, strengthValue)));
+                args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, upkeep));
+                args.content.icontext(SpriteName.WarsWorker, string.Format(DssRef.lang.Hud_WorkForce, TextLib.Divition_Large(workForce.Int(), workForce.max)));
                 if (immigrants.HasValue())
                 {
-                    args.content.icontext(SpriteName.WarsWorkerAdd,"Immigrants: " + immigrants.Int());
+                    args.content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.Hud_Immigrants, immigrants.Int()));
                 }
             }
             if (args.selected && faction == args.player.faction)
@@ -770,7 +770,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (nobelHouse)
             {
                 args.content.ListDot();
-                args.content.Add(new RichBoxText("Nobel house"));
+                args.content.Add(new RichBoxText(DssRef.lang.Building_NobelHouse));
                 args.content.newLine();
             }
 
@@ -778,7 +778,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 args.content.ListDot();
                 args.content.Add(new RichBoxImage(SpriteName.WarsFactoryIcon));
-                args.content.Add(new RichBoxText("Dark factory"));
+                args.content.Add(new RichBoxText(DssRef.lang.Building_DarkFactory));
                 args.content.newLine();
             }
         }

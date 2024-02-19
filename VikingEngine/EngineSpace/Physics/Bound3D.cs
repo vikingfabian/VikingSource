@@ -15,7 +15,7 @@ namespace VikingEngine.Physics
         /// <summary>
         /// The radius of a square that surronds the whole bound shape, this is to make a quick and CPU cheap coll check
         /// </summary>
-        VectorVolume OuterBound { get; }
+        VectorVolumeC OuterBound { get; }
 
         //VectorVolume VolumeBound { get; }
         /// <summary>
@@ -38,7 +38,7 @@ namespace VikingEngine.Physics
 
         Bound3DType Type { get; }
 
-        VectorVolume CenterScale { get; set; }
+        VectorVolumeC CenterScale { get; set; }
         RectangleCentered PlaneCenterScale { get; }
         Vector3 Center { get; set; }
         int BoundID { get; }
@@ -48,18 +48,18 @@ namespace VikingEngine.Physics
 
     struct CylinderBound : IBound3D
     {
-        VectorVolume outerBound;
+        VectorVolumeC outerBound;
         CylinderVolume volume;
 
         public CylinderBound(CylinderVolume volume)
         {
             boundID = PhysicsLib3D.NextID();
             this.volume = volume;
-            outerBound = VectorVolume.ZeroOne;
+            outerBound = VectorVolumeC.ZeroOne;
             updateOuterBound();
         }
         public CylinderVolume InnerCirkle { get { return volume; } }
-        public VectorVolume OuterBound
+        public VectorVolumeC OuterBound
         {
             get
             {
@@ -118,13 +118,13 @@ namespace VikingEngine.Physics
 
         void updateOuterBound()
         {
-            outerBound = new VectorVolume(volume.Center, new Vector3(volume.Radius, volume.HalfHeight, volume.Radius));
+            outerBound = new VectorVolumeC(volume.Center, new Vector3(volume.Radius, volume.HalfHeight, volume.Radius));
         }
 
         public Vector3 Center { get { return volume.Center; } set { volume.Center = value; outerBound.Center = value; } }
         public float Rotation { get { return 0; } set { } }
-        public VectorVolume CenterScale { 
-            get { return new VectorVolume(volume.Center, new Vector3(volume.Radius, volume.HalfHeight, volume.Radius)); }
+        public VectorVolumeC CenterScale { 
+            get { return new VectorVolumeC(volume.Center, new Vector3(volume.Radius, volume.HalfHeight, volume.Radius)); }
             set { volume.Center = value.Center; volume.Radius = value.HalfSizeX; volume.HalfHeight = value.HalfSizeY; }
         }
 
@@ -156,10 +156,10 @@ namespace VikingEngine.Physics
 
     struct StaticBoxBound : IBound3D
     {
-        VectorVolume volume;
-        public VectorVolume CenterScale { get { return volume; } set{ volume = value;} }
+        VectorVolumeC volume;
+        public VectorVolumeC CenterScale { get { return volume; } set{ volume = value;} }
         public RectangleCentered PlaneCenterScale { get { return volume.PlaneRect(); } }
-        public StaticBoxBound(VectorVolume _area)
+        public StaticBoxBound(VectorVolumeC _area)
         {
             boundID = PhysicsLib3D.NextID();
             volume = _area;
@@ -235,7 +235,7 @@ namespace VikingEngine.Physics
         }
 
         
-        public VectorVolume OuterBound
+        public VectorVolumeC OuterBound
         {
             get
             {
@@ -271,14 +271,14 @@ namespace VikingEngine.Physics
 
     struct Box1axisBound : IBound3D
     {
-        VectorVolume outerBound;
+        VectorVolumeC outerBound;
        // VectorVolume innerBound;
-        VectorVolume volume;
-        public VectorVolume CenterScale { get { return volume; } set { volume = value; } }
+        VectorVolumeC volume;
+        public VectorVolumeC CenterScale { get { return volume; } set { volume = value; } }
         public RectangleCentered PlaneCenterScale { get { return volume.PlaneRect(); } }
         public Rotation1D rotation;
 
-        public Box1axisBound(VectorVolume _area, Rotation1D _rotation)
+        public Box1axisBound(VectorVolumeC _area, Rotation1D _rotation)
         {
             boundID = PhysicsLib3D.NextID();
             volume = _area;
@@ -348,7 +348,7 @@ namespace VikingEngine.Physics
             outerBound.HalfSizeZ = largestRadius;
         }
 
-        public VectorVolume OuterBound
+        public VectorVolumeC OuterBound
         {
             get
             {

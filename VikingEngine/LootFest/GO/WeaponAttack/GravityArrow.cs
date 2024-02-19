@@ -43,7 +43,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
         public static GO.Bounds.ObjectBound ArrowBound(Rotation1D dir)
         {
             const float BoundW = 0.2f;
-            return new GO.Bounds.ObjectBound(new LootFest.BoundData2(new VikingEngine.Physics.Box1axisBound(new VectorVolume(Vector3.Zero,
+            return new GO.Bounds.ObjectBound(new LootFest.BoundData2(new VikingEngine.Physics.Box1axisBound(new VectorVolumeC(Vector3.Zero,
                 new Vector3(BoundW, BoundW, 1.1f)), dir), Vector3.Zero));
         }
 

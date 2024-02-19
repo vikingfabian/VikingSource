@@ -30,7 +30,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
             this.sett = sett;
 
             CollisionAndDefaultBound = new Bounds.ObjectBound(new LootFest.BoundData2(new VikingEngine.Physics.Box1axisBound(
-                new VectorVolume(Vector3.Zero, sett.scale * sett.scaleToBoundSize), 
+                new VectorVolumeC(Vector3.Zero, sett.scale * sett.scaleToBoundSize), 
                 parent.FireDir(this.Type)),
                 Vector3.Zero));
 
