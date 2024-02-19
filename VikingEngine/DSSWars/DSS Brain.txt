@@ -1,7 +1,7 @@
 ﻿Change Log
--After the dark lord enters, other factions will be more willing to ally with you
--Crossbowmen are almost twice as strong.
--14 Achievements, done and tested
+-Changed save location
+-Fixed reported bugs
+
 
 Error
 

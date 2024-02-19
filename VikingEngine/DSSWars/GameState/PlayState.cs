@@ -68,7 +68,10 @@ namespace VikingEngine.DSSWars
             new AsynchUpdateable_TryCatch(asyncUserUpdate, "DSS user update", 58);
             new AsynchUpdateable_TryCatch(asyncMapBorders, "DSS map borders update", 59);
             new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60);
-            new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
+            if (StartupSettings.RunResoursesUpdate)
+            {
+                new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
+            }
             isReady = host;
         }
 

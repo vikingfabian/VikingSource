@@ -26,6 +26,9 @@ namespace VikingEngine.DSSWars
         public static bool TestOffscreenUpdate = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE
 
+        public static bool RunResoursesUpdate = PlatformSettings.DevBuild ? true :
+          false;//DO NOT CHANGE
+
         public static bool DebugResoursesSuperSpeed = PlatformSettings.DevBuild ? true :
            false;//DO NOT CHANGE
 

@@ -16,7 +16,7 @@ namespace VikingEngine.DataStream
 #elif CCG
                 "PickHero";
 #elif DSS
-                "LootfestWars"; 
+                "DSS_warparty"; 
 #elif TOGG
                 "TowardsGoldAndGlory"; 
 #else
