@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars.Map
                         case BiomTypeGreen:
                             color = Ground1;
                             textureType = SurfaceTextureType.Grass;
-                            foilEnabled[(int)SubTileFoilType.Tree] = true;
+                            foilEnabled[(int)SubTileFoilType.TreeHard] = true;
                             culture = TerrainCultureType.Forest;
                             break;
                         case BiomTypeDry:
@@ -103,7 +103,7 @@ namespace VikingEngine.DSSWars.Map
                         case BiomTypeGreen:
                             color = Ground2;
                             textureType = SurfaceTextureType.Grass;
-                            foilEnabled[(int)SubTileFoilType.Tree] = true;
+                            foilEnabled[(int)SubTileFoilType.TreeHard] = true;
                             culture = TerrainCultureType.Forest;
                             break;
                         case BiomTypeDry:
@@ -121,7 +121,7 @@ namespace VikingEngine.DSSWars.Map
                         case BiomTypeGreen:
                             color = Ground3;
                             textureType = SurfaceTextureType.Grass;
-                            foilEnabled[(int)SubTileFoilType.Tree] = true;
+                            foilEnabled[(int)SubTileFoilType.TreeHard] = true;
                             culture = TerrainCultureType.Forest;
                             break;
                         case BiomTypeDry:

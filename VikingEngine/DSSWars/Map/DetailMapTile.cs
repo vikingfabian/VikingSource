@@ -250,7 +250,7 @@ namespace VikingEngine.DSSWars.Map
                 case SubTileFoilType.Stones:
                     modelName = StoneFoliage;
                     break;
-                case SubTileFoilType.Tree:
+                case SubTileFoilType.TreeHard:
                     modelName = TreeFoliage;
                     break;
 

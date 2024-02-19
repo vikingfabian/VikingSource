@@ -64,8 +64,10 @@ namespace VikingEngine.DSSWars.Map
 
     enum SubTileFoilType
     {
-        TreeSprout,
-        Tree,
+        TreeHardSprout,
+        TreeSoftSprout,
+        TreeHard,
+        TreeSoft,
         Bush,
         Stones,
         NUM

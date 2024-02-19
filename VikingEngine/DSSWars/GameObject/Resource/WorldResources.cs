@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 
                 if (subtile.maintype == Map.SubTileMainType.Foil)
                 {
-                    if (subtile.undertype == (int)Map.SubTileFoilType.Tree)
+                    if (subtile.undertype == (int)Map.SubTileFoilType.TreeHard)
                     {
                         IntVector2 rndDir = arraylib.RandomListMember(IntVector2.Dir8Array);
                         Map.SubTile ntile;
@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                             if (ntile.maintype == Map.SubTileMainType.DefaultLand)
                             {
                                 ntile.maintype = Map.SubTileMainType.Foil;
-                                ntile.undertype = (int)Map.SubTileFoilType.Tree;
+                                ntile.undertype = (int)Map.SubTileFoilType.TreeHardSprout;
 
                                 DssRef.world.subTileGrid.Set(npos, ntile);
                             }

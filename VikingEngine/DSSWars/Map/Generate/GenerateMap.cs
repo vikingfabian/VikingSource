@@ -953,7 +953,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             IntVector2 radius = IntVector2.Zero;
             IntVector2 center = IntVector2.Zero;
 
-            foliageAreas(SubTileFoilType.Tree, numTreeSpots, new Range(2, 14), new Range(1, 8));
+            foliageAreas(SubTileFoilType.TreeHard, numTreeSpots, new Range(2, 14), new Range(1, 8));
             singleFoilDots(SubTileFoilType.Stones, numStoneSpots);
 
             void foliageAreas(SubTileFoilType type, int count,
