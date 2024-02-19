@@ -14,6 +14,8 @@ namespace VikingEngine.DSSWars
 {
     class PlayState : Engine.GameState
     {
+        WorldResources resources = new WorldResources();
+
         Map.MapLayer_Factions factionsMap;
         Map.MapLayer_Overview overviewMap;
         public Map.MapLayer_Detail detailMap;

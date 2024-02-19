@@ -35,6 +35,7 @@ namespace VikingEngine.DSSWars
         public static readonly Color WaterDarkCol = new Color(0.043f, 0.486f,0.773f);
         public static readonly Color WaterDarkCol2 = ColorExt.Multiply(WaterDarkCol, 1.1f);
 
+        public static readonly Vector2 SubTileSz = new Vector2(1f / SubTileWidth);
         public Rectangle2 tileBounds;
         public VectorRect unitBounds;
         public IntVector2 Size;

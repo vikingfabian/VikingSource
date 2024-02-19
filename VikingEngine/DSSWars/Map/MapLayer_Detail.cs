@@ -9,7 +9,7 @@ namespace VikingEngine.DSSWars.Map
     class MapLayer_Detail
     {
         List<DetailMapTile> tiles;
-        public static readonly Vector2 SubTileSz = new Vector2(1f / WorldData.SubTileWidth);
+       
 
         List<DetailMapTile> processingTiles = new List<DetailMapTile>(800);
         List<DetailMapTile> synchTiles = new List<DetailMapTile>(800);
@@ -25,7 +25,6 @@ namespace VikingEngine.DSSWars.Map
         /// Trigger a reload of the map
         /// </summary>
         public bool needReload = false;
-        public UnitDetailMap()
         public MapLayer_Detail()
         {
             DssRef.state.detailMap = this;

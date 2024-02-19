@@ -9,14 +9,14 @@ namespace VikingEngine.DSSWars.Map
     class DetailMapTile
     {
         static readonly IntervalF FoliageCenterRange = 
-            IntervalF.FromCenter(0.5f * UnitDetailMap.SubTileSz.X, 0.2f * UnitDetailMap.SubTileSz.X);
+            IntervalF.FromCenter(0.5f * WorldData.SubTileSz.X, 0.2f * WorldData.SubTileSz.X);
 
-        static readonly Vector2 GrassSize = new Vector2(0.03f, 0.11f) * UnitDetailMap.SubTileSz;
+        static readonly Vector2 GrassSize = new Vector2(0.03f, 0.11f) * WorldData.SubTileSz;
 
-        static readonly Vector2 SandSize = new Vector2(0.03f) * UnitDetailMap.SubTileSz;
+        static readonly Vector2 SandSize = new Vector2(0.03f) * WorldData.SubTileSz;
 
         static readonly IntervalF GrassCenterRange =
-            IntervalF.FromCenter(0.5f * UnitDetailMap.SubTileSz.X, 0.45f * UnitDetailMap.SubTileSz.X);
+            IntervalF.FromCenter(0.5f * WorldData.SubTileSz.X, 0.45f * WorldData.SubTileSz.X);
 
         public const LootFest.VoxelModelName TreeFoliage = LootFest.VoxelModelName.fol_tree_hard;
         public const LootFest.VoxelModelName StoneFoliage = LootFest.VoxelModelName.fo_stone1;
@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.Map
             model.DebugName = "Detail map tile " + pos.ToString();
 #endif
 
-            DssRef.detailMap.polygons.Clear();
+            DssRef.state.detailMap.polygons.Clear();
 
             Vector2 topLeft = VectorExt.V2NegHalf;
             IntVector2 subTileStart = pos * WorldData.SubTileWidth;
@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.Map
                     rnd.SetSeed(subX * 3 + subY * 11);
 
                     SubTile subTile = DssRef.world.subTileGrid.Get(subX, subY);
-                    Vector2 subTopLeft = new Vector2(topLeft.X + x * UnitDetailMap.SubTileSz.X, topLeft.Y + y * UnitDetailMap.SubTileSz.Y);
+                    Vector2 subTopLeft = new Vector2(topLeft.X + x * WorldData.SubTileSz.X, topLeft.Y + y * WorldData.SubTileSz.Y);
                     
                     block(subTopLeft, ref subTile);
 
@@ -91,13 +91,13 @@ namespace VikingEngine.DSSWars.Map
             }
 
             verticeData = PolygonLib.BuildVDFromPolygons(
-                new Graphics.PolygonsAndTrianglesColor(DssRef.detailMap.polygons, null));
+                new Graphics.PolygonsAndTrianglesColor(DssRef.state.detailMap.polygons, null));
 
             void block(Vector2 subTopLeft, ref SubTile subTile)
             {
                 var top = Graphics.PolygonColor.QuadXZ(
                     subTopLeft,
-                    UnitDetailMap.SubTileSz, false, subTile.groundY,
+                    WorldData.SubTileSz, false, subTile.groundY,
                     subTile.maintype == SubTileMainType.Foil ? SpriteName.warsFoliageShadow : SpriteName.WhiteArea_LFtiles,
                     Dir4.N,
                     subTile.color);
@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars.Map
                 else
                 {
                     bottom.Move(VectorExt.V3FromY(-0.1f));
-                    bottomCol = TerrainSettings.DeepWaterCol1;
+                    bottomCol = HeightMapSettings.DeepWaterCol1;
                 }
                 Graphics.PolygonColor left = new Graphics.PolygonColor(
                     bottom.V1nw.Position, bottom.V3ne.Position,
@@ -140,16 +140,16 @@ namespace VikingEngine.DSSWars.Map
                 front.V3ne.Color = bottomCol;
 
 
-                DssRef.detailMap.polygons.Add(top);
-                DssRef.detailMap.polygons.Add(front);
-                DssRef.detailMap.polygons.Add(left);
-                DssRef.detailMap.polygons.Add(right);
+                DssRef.state.detailMap.polygons.Add(top);
+                DssRef.state.detailMap.polygons.Add(front);
+                DssRef.state.detailMap.polygons.Add(left);
+                DssRef.state.detailMap.polygons.Add(right);
             }
         }
 
         void surfaceTexture(Tile tile, SubTile subTile, Vector2 subTopLeft)
         {
-            TerrainSettings terrain = Tile.TerrainTypes[tile.biom, tile.heightLevel];
+            HeightMapSettings terrain = Tile.TerrainTypes[tile.biom, tile.heightLevel];
 
             Vector3 center = new Vector3(
                 subTopLeft.X,
@@ -212,7 +212,7 @@ namespace VikingEngine.DSSWars.Map
 
                                 straw.setSprite(SpriteName.WhiteArea_LFtiles, Dir4.N);
 
-                                DssRef.detailMap.polygons.Add(straw);
+                                DssRef.state.detailMap.polygons.Add(straw);
                             }
                         }
                         break;
@@ -227,7 +227,7 @@ namespace VikingEngine.DSSWars.Map
                                 
                                 Color color = ColorExt.ChangeBrighness(subTile.color, rnd.Int(-6, 20));
 
-                                DssRef.detailMap.polygons.Add(
+                                DssRef.state.detailMap.polygons.Add(
                                     PolygonColor.QuadXZ(pos, SandSize, true,
                                     center.Y + 0.001f, SpriteName.WhiteArea_LFtiles, Dir4.N,
                                     color));

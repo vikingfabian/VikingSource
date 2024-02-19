@@ -37,7 +37,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 }
             }
 
-            DssRef.detailMap.needReload = true;
+            DssRef.state.detailMap.needReload = true;
         }
     }
 }
