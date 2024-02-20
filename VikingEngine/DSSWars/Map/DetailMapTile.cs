@@ -263,7 +263,7 @@ namespace VikingEngine.DSSWars.Map
                     break;
                 case SubTileFoilType.TreeHard:
                     modelName = TreeFoliage;
-                    scale = 0.05f + 0.002f * sizeValue;
+                    scale = 0.03f + 0.0012f * sizeValue;
                     break;
                 case SubTileFoilType.TreeHardSprout:
                     modelName = LootFest.VoxelModelName.fol_sprout;
