@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.Map
         /// Amount of resources that can be extracted, or other value like building size
         /// </summary>
         public int typeValue = 0;
-
+        //public int colorVariant = 0;
         public int typeQuality = 0;
 
         /// <summary>

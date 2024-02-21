@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.Map
@@ -48,7 +49,7 @@ namespace VikingEngine.DSSWars.Map
             this.pos = pos;
             
             var tile = DssRef.world.tileGrid.Get(pos);
-            if (tile.heightLevel != Tile.DeepWaterHeight)
+            if (tile.heightLevel != Height.DeepWaterHeight)
             {
                 polygonBlock(tile);
             }
@@ -123,7 +124,7 @@ namespace VikingEngine.DSSWars.Map
                 else
                 {
                     bottom.Move(VectorExt.V3FromY(-0.1f));
-                    bottomCol = HeightMapSettings.DeepWaterCol1;
+                    bottomCol = MapSettings.DeepWaterCol1;
                 }
                 Graphics.PolygonColor left = new Graphics.PolygonColor(
                     bottom.V1nw.Position, bottom.V3ne.Position,
@@ -159,7 +160,14 @@ namespace VikingEngine.DSSWars.Map
 
         void surfaceTexture(Tile tile, SubTile subTile, Vector2 subTopLeft)
         {
-            HeightMapSettings terrain = Tile.TerrainTypes[tile.biom, tile.heightLevel];
+            //Height h = DssRef.map.heigts[tile.heightLevel];
+            BiomColor biom = DssRef.map.bioms.colors[(int)tile.biom];
+            var col = biom.colors_height[tile.heightLevel];
+            //if (tile.seaDistanceHeatMap <= 12)
+            //{
+            //    col.Color = ColorExt.Mix(col.Color, biom.brightCoast.Color, 0.5f);
+            //}
+            //Height terrain = Tile.TerrainTypes[, tile.heightLevel];
 
             Vector3 center = new Vector3(
                 subTopLeft.X,
@@ -169,7 +177,7 @@ namespace VikingEngine.DSSWars.Map
             
             if (subTile.maintype != SubTileMainType.Foil)
             {
-                switch (terrain.textureType)
+                switch (col.Texture)
                 {
                     case SurfaceTextureType.Grass:
                         {

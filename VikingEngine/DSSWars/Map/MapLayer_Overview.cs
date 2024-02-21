@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.Map
@@ -116,9 +117,10 @@ namespace VikingEngine.DSSWars.Map
                 for (pos.X = 0; pos.X < DssRef.world.Size.X; ++pos.X)
                 {
                     Tile tile = DssRef.world.tileGrid.Get(pos);
-                    if (tile.heightLevel != Tile.DeepWaterHeight)
+                    if (tile.heightLevel != Height.DeepWaterHeight)
                     {
-                        Color terrainCol = Tile.TerrainTypes[tile.biom, tile.heightLevel].color;
+                        Color terrainCol = DssRef.map.bioms.colors[(int)tile.biom].Color(tile).Color;
+                        //Tile.TerrainTypes[tile.biom, tile.heightLevel].color;
 
                         center.X = pos.X;
                         nw.X = pos.X - 0.5f;

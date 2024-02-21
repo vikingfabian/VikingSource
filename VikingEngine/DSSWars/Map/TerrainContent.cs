@@ -64,7 +64,7 @@ namespace VikingEngine.DSSWars.Map
         public static void createSubTileContent(int x, int y, Tile tile, ref SubTile subTile, 
             WorldData world, VikingEngine.EngineSpace.Maths.SimplexNoise2D noiseMap)
         {
-            var percTree = tile.terrain().percTree;
+            var percTree = tile.heightSett().percTree;
             if (percTree > 0)
             {
                 float noise = noiseMap.OctaveNoise2D_Normal(4, 0.75f, 1, x, y);

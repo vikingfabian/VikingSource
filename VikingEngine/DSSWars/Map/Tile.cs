@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.LootFest;
 using VikingEngine.ToGG.HeroQuest;
 
@@ -10,23 +11,16 @@ namespace VikingEngine.DSSWars.Map
 {
     class Tile
     {
-        public static HeightMapSettings[,] TerrainTypes;
+        public const int NoBorderRegion = -2;
+        public const int SeaBorder = -1;
+        const int CompareToAmountCities = 8;
 
         public static void Init()
         {
-            TypeToHeight_aboveWater =new float[TypeToHeight.Length];
+            TypeToHeight_aboveWater = new float[TypeToHeight.Length];
             for (int i = 0; i < TypeToHeight.Length; i++)
             {
                 TypeToHeight_aboveWater[i] = Math.Max(TypeToHeight[i], 0);
-            }
-
-            TerrainTypes = new HeightMapSettings[HeightMapSettings.BiomCount, MaxHeight + 1];
-            for (int biom = 0; biom < HeightMapSettings.BiomCount; ++biom)
-            {
-                for (int height = 0; height <= MaxHeight; ++height)
-                {
-                    TerrainTypes[biom, height] = new HeightMapSettings(biom, height);
-                }
             }
 
             TypeToWalkingMultiplier = new float[TypeToWalkingDistance.Length];
@@ -38,20 +32,9 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        public const int NoBorderRegion = -2;
-        public const int SeaBorder = -1;
-        const int CompareToAmountCities = 8;
-
-        public const int DeepWaterHeight = 0;
-        public const int LowWaterHeight = 1;
-        public const int MinLandHeight = 2;
-        public const int MountainHeightStart = 6;
-        const int MaxHeight = 7;
-
-
         //Save data
         public int CityIndex;
-        public int biom = HeightMapSettings.BiomTypeGreen;
+        public BiomType biom =  BiomType.Green;
         public int heightLevel;
         public TileContent tileContent = TileContent.NONE;
         public int BorderCount;
@@ -59,7 +42,6 @@ namespace VikingEngine.DSSWars.Map
         public int seaDistanceHeatMap = int.MinValue;
         //--
 
-        
         public int WorkerCount = 0;
         public byte renderStateA = Culling.NoRender;
         public byte renderStateB = Culling.NoRender;
@@ -71,7 +53,7 @@ namespace VikingEngine.DSSWars.Map
         {
             CityIndex = -1;
 
-            heightLevel = DeepWaterHeight;
+            heightLevel = Height.DeepWaterHeight;
            
             BorderCount = 0;
             BorderRegion_North = NoBorderRegion; 
@@ -120,7 +102,7 @@ namespace VikingEngine.DSSWars.Map
         public void write(System.IO.BinaryWriter w)
         {
             w.Write(Debug.Ushort_OrCrash(CityIndex));//(ushort)CityIndex);
-            w.Write(Debug.Byte_OrCrash(biom));//(byte)biom);
+            w.Write(Debug.Byte_OrCrash((byte)biom));//(byte)biom);
             w.Write(Debug.Byte_OrCrash(heightLevel));//(byte)heightLevel);
             w.Write(Debug.Byte_OrCrash((int)tileContent));//(byte)tileContent);
             w.Write(Debug.Ushort_OrCrash(BorderCount));//(ushort)BorderCount);
@@ -134,7 +116,7 @@ namespace VikingEngine.DSSWars.Map
         public void read(System.IO.BinaryReader r, int version)
         {
             CityIndex = r.ReadUInt16();
-            biom = r.ReadByte();
+            biom = (BiomType)r.ReadByte();
             heightLevel = r.ReadByte();
             tileContent = (TileContent)r.ReadByte();
             BorderCount = r.ReadUInt16();
@@ -226,7 +208,7 @@ namespace VikingEngine.DSSWars.Map
             if (tileContent == TileContent.City)
                 return cityColor;
 
-            if (heightLevel <= LowWaterHeight)
+            if (heightLevel <= Height.LowWaterHeight)
             {
                 return lib.IsEven(pos.X + pos.Y) ? 
                     WorldData.WaterDarkCol : WorldData.WaterDarkCol2;
@@ -313,9 +295,9 @@ namespace VikingEngine.DSSWars.Map
             return color;
         }
 
-        public HeightMapSettings terrain()
+        public Height heightSett()
         {
-            return TerrainTypes[biom, heightLevel];
+            return DssRef.map.heigts[heightLevel];
         }
 
         Color cityColor
@@ -387,8 +369,8 @@ namespace VikingEngine.DSSWars.Map
             else return TypeToWalkingMultiplier[heightLevel];
         }
 
-        public bool IsLand() { return heightLevel > LowWaterHeight; }
-        public bool IsWater() { return heightLevel <= LowWaterHeight; }
+        public bool IsLand() { return heightLevel > Height.LowWaterHeight; }
+        public bool IsWater() { return heightLevel <= Height.LowWaterHeight; }
         
         public override string ToString()
         {

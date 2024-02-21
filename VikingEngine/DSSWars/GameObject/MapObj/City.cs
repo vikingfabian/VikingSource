@@ -8,8 +8,8 @@ using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
@@ -88,7 +88,7 @@ namespace VikingEngine.DSSWars.GameObject
                 else 
                 {
                     ++land;
-                    switch (tile.terrain().culture)
+                    switch (tile.heightSett().culture)
                     {
                         case TerrainCultureType.Plains:
                             ++plain;
@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars.GameObject
                             ++mountain;
                             break;
                     }
-                    if (tile.biom == HeightMapSettings.BiomTypeDry)
+                    if (tile.biom == BiomType.YellowDry || tile.biom == BiomType.RedDry)
                     {
                         ++dryBiom;
                     }
