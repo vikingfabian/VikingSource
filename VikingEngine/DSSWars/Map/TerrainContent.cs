@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VikingEngine.LootFest.Map;
+using System.Drawing;
 
 namespace VikingEngine.DSSWars.Map
 {
@@ -14,18 +10,18 @@ namespace VikingEngine.DSSWars.Map
 
         public void asyncFoilGroth(IntVector2 pos, SubTile subtile)
         {
-            switch ((Map.SubTileFoilType)subtile.undertype)
+            switch ((Map.TerrainSubFoilType)subtile.subTerrain)
             {
 
-                case Map.SubTileFoilType.TreeHard:
+                case Map.TerrainSubFoilType.TreeHard:
                     {
-                        if (subtile.typeValue < TreeMaxSize)
+                        if (subtile.terrainValue < TreeMaxSize)
                         {
-                            subtile.typeValue++;
+                            subtile.terrainValue++;
                             DssRef.world.subTileGrid.Set(pos, subtile);
                         }
 
-                        if (Ref.rnd.Chance(0.2) && subtile.typeValue > 20 && subtile.typeValue < 90)
+                        if (Ref.rnd.Chance(0.2) && subtile.terrainValue > 20 && subtile.terrainValue < 90)
                         {
                             IntVector2 rndDir = arraylib.RandomListMember(IntVector2.Dir8Array);
                             if (Ref.rnd.Chance(0.2))
@@ -36,9 +32,9 @@ namespace VikingEngine.DSSWars.Map
                             var npos = pos + rndDir;
                             if (DssRef.world.subTileGrid.TryGet(npos, out ntile))
                             {
-                                if (ntile.maintype == Map.SubTileMainType.DefaultLand)
+                                if (ntile.mainTerrain == Map.TerrainMainType.DefaultLand)
                                 {
-                                    ntile.SetType(Map.SubTileMainType.Foil, (int)Map.SubTileFoilType.TreeHardSprout, 1);
+                                    ntile.SetType(Map.TerrainMainType.Foil, (int)Map.TerrainSubFoilType.TreeHardSprout, 1);
 
                                     DssRef.world.subTileGrid.Set(npos, ntile);
                                 }
@@ -48,11 +44,11 @@ namespace VikingEngine.DSSWars.Map
                     }
                     break;
 
-                case Map.SubTileFoilType.TreeHardSprout:
+                case Map.TerrainSubFoilType.TreeHardSprout:
                     {
-                        if (++subtile.typeValue > SproutMaxSize)
+                        if (++subtile.terrainValue > SproutMaxSize)
                         {
-                            subtile.SetType(Map.SubTileMainType.Foil, (int)Map.SubTileFoilType.TreeHard, 1);
+                            subtile.SetType(Map.TerrainMainType.Foil, (int)Map.TerrainSubFoilType.TreeHard, 1);
                         }
 
                         DssRef.world.subTileGrid.Set(pos, subtile);
@@ -61,22 +57,62 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        public static void createSubTileContent(int x, int y, Tile tile, ref SubTile subTile, 
-            WorldData world, VikingEngine.EngineSpace.Maths.SimplexNoise2D noiseMap)
+        public static void createSubTileContent(int x, int y, 
+            float distanceToCity,
+            Tile tile, 
+            ref IntervalF mudRadius,
+            ref SubTile subTile, 
+            WorldData world, 
+            VikingEngine.EngineSpace.Maths.SimplexNoise2D noiseMap)
         {
+
             var percTree = tile.heightSett().percTree;
             if (percTree > 0)
             {
+                
+                if (distanceToCity <= mudRadius.Max)
+                    
+                {
+                    if (distanceToCity <= mudRadius.Min || world.rnd.Chance(0.5))
+                    {
+                        subTile.SetType(TerrainMainType.Destroyed, 0, 1);
+                        return;
+                    }
+                }
+
                 float noise = noiseMap.OctaveNoise2D_Normal(4, 0.75f, 1, x, y);
 
                 if (noise < percTree && noise < world.rnd.Double(percTree * 2f))
                 {
                     int size = (int)((1.0 - Math.Min(noise, world.rnd.Double())) * TreeMaxSize);
 
-                    subTile.SetType(SubTileMainType.Foil, (int)SubTileFoilType.TreeHard, size);
+                    subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.TreeHard, size);
                 }
 
             }
         }
+    }
+
+    enum TerrainMainType
+    {
+        DefaultLand,
+        DefaultSea,
+        Destroyed,
+
+        Foil,
+        Terrain,
+        Building,
+        NUM
+    }
+
+    enum TerrainSubFoilType
+    {
+        TreeHardSprout,
+        TreeSoftSprout,
+        TreeHard,
+        TreeSoft,
+        Bush,
+        Stones,
+        NUM
     }
 }

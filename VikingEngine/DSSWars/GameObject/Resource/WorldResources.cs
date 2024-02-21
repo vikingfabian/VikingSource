@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             {
                var subtile = DssRef.world.subTileGrid.Get(loop.Position);
 
-                if (subtile.maintype == Map.SubTileMainType.Foil)
+                if (subtile.mainTerrain == Map.TerrainMainType.Foil)
                 {
                     terrainContent.asyncFoilGroth(loop.Position, subtile);
                 }

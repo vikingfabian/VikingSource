@@ -9,9 +9,6 @@ namespace VikingEngine.DSSWars.Map
 {
     class MapLayer_Overview : Point3D
     {
-        
-       
-        
         public Map.Borders borders;
         //BordersUpdate bordersUpdate;
         public UnitMiniModels unitMiniModels;
@@ -154,17 +151,19 @@ namespace VikingEngine.DSSWars.Map
 
                         if (tile.IsLand())
                         {
+                            float h = Bound.Max(TileSideHeight, center.Y + 0.5f); 
+
                             if (edge4Dir[3]) //west
                             {
-                                polygons.Add(side(nw, sw, sideTex, ColorExt.ChangeBrighness(terrainCol, -5), TileSideHeight));
+                                polygons.Add(side(nw, sw, sideTex, ColorExt.ChangeBrighness(terrainCol, -5), h));
                             }
                             if (edge4Dir[1]) //east
                             {
-                                polygons.Add(side(se, ne, sideTex, ColorExt.ChangeBrighness(terrainCol, -5), TileSideHeight));
+                                polygons.Add(side(se, ne, sideTex, ColorExt.ChangeBrighness(terrainCol, -5), h));
                             }
                             if (edge4Dir[2]) //south
                             {
-                                polygons.Add(side(sw, se, sideTex, ColorExt.ChangeBrighness(terrainCol, -10), TileSideHeight));
+                                polygons.Add(side(sw, se, sideTex, ColorExt.ChangeBrighness(terrainCol, -10), h));
                             }
                         }
 

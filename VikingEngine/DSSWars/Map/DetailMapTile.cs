@@ -86,13 +86,13 @@ namespace VikingEngine.DSSWars.Map
 
                     surfaceTexture(tile, subTile, subTopLeft);
 
-                    if (subTile.maintype == SubTileMainType.Foil)
+                    if (subTile.mainTerrain == TerrainMainType.Foil)
                     {
                         Vector3 topCenter = new Vector3(
                             pos.X + subTopLeft.X,
                             subTile.groundY,
                             pos.Y + subTopLeft.Y);
-                        createFoliage((SubTileFoilType)subTile.undertype, subTile.typeValue, topCenter);
+                        createFoliage((TerrainSubFoilType)subTile.subTerrain, subTile.terrainValue, topCenter);
                     }
 
                     DssRef.world.subTileGrid.Set(
@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars.Map
                 var top = Graphics.PolygonColor.QuadXZ(
                     subTopLeft,
                     WorldData.SubTileSz, false, subTile.groundY,
-                    subTile.maintype == SubTileMainType.Foil ? SpriteName.warsFoliageShadow : SpriteName.WhiteArea_LFtiles,
+                    subTile.mainTerrain == TerrainMainType.Foil ? SpriteName.warsFoliageShadow : SpriteName.WhiteArea_LFtiles,
                     Dir4.N,
                     subTile.color);
 
@@ -160,14 +160,8 @@ namespace VikingEngine.DSSWars.Map
 
         void surfaceTexture(Tile tile, SubTile subTile, Vector2 subTopLeft)
         {
-            //Height h = DssRef.map.heigts[tile.heightLevel];
             BiomColor biom = DssRef.map.bioms.colors[(int)tile.biom];
             var col = biom.colors_height[tile.heightLevel];
-            //if (tile.seaDistanceHeatMap <= 12)
-            //{
-            //    col.Color = ColorExt.Mix(col.Color, biom.brightCoast.Color, 0.5f);
-            //}
-            //Height terrain = Tile.TerrainTypes[, tile.heightLevel];
 
             Vector3 center = new Vector3(
                 subTopLeft.X,
@@ -175,7 +169,7 @@ namespace VikingEngine.DSSWars.Map
                 subTopLeft.Y);
 
             
-            if (subTile.maintype != SubTileMainType.Foil)
+            if (subTile.mainTerrain != TerrainMainType.Foil)
             {
                 switch (col.Texture)
                 {
@@ -256,7 +250,7 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        void createFoliage(SubTileFoilType type, int sizeValue, Vector3 wp)
+        void createFoliage(TerrainSubFoilType type, int sizeValue, Vector3 wp)
         {
             wp.X += FoliageCenterRange.GetRandom(rnd);
             wp.Z += FoliageCenterRange.GetRandom(rnd);
@@ -266,14 +260,14 @@ namespace VikingEngine.DSSWars.Map
 
             switch (type)
             {
-                case SubTileFoilType.Stones:
+                case TerrainSubFoilType.Stones:
                     modelName = StoneFoliage;
                     break;
-                case SubTileFoilType.TreeHard:
+                case TerrainSubFoilType.TreeHard:
                     modelName = TreeFoliage;
                     scale = 0.03f + 0.0012f * sizeValue;
                     break;
-                case SubTileFoilType.TreeHardSprout:
+                case TerrainSubFoilType.TreeHardSprout:
                     modelName = LootFest.VoxelModelName.fol_sprout;
                     scale = 0.05f + 0.01f * sizeValue;
                     break;
