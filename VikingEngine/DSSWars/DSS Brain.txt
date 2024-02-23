@@ -1,7 +1,9 @@
 ﻿Change Log
--Changed save location
+-Changed save location from "C:\Users\name\Documents\My Games\LootfestWars" to DSSwarparty
+(!) move the files if you wan to keep your flag designs
 -Fixed reported bugs
--chaged foliage
+-bioms/foliage
+-player to player diplomacy
 
 Error
 
@@ -11,7 +13,7 @@ AI
 Steam Launch Roadmap
 -Fail state for the game
 -Localization to 8 languages
--player to player diplomacy
+
 -(maybe) Full controller support
 -(maybe) Save
 -(maybe) Mountain ridges and water reefs that block movement
