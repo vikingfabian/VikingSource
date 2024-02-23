@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.Input;
 
-namespace VikingEngine.DSSWars.Players
+namespace VikingEngine.DSSWars.Data
 {
     class LocalPlayerStorage
     {
@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars.Players
         {
             //w.Write((int)inputSource);
             //w.Write(controllerIndex);
-            
+
             w.Write(screenIndex);
             w.Write(profile);
         }

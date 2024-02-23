@@ -1,7 +1,10 @@
 ﻿Change Log
--Changed save location
+-Changed save location from "C:\Users\name\Documents\My Games\LootfestWars" to DSSwarparty
+(!) move the files if you wan to keep your flag designs
 -Fixed reported bugs
--chaged foliage
+-bioms/foliage
+
+
 
 Error
 

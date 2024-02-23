@@ -29,7 +29,10 @@ namespace VikingEngine.DSSWars
 
         public GameEvents()
         {
-            prepareNext();
+            if (DssRef.storage.bossTimeSettings != BossTimeSettings.Never)
+            {
+                prepareNext();
+            }
         }
 
         void prepareNext()

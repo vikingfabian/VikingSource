@@ -15,10 +15,10 @@ using Microsoft.Xna.Framework.Content;
 using VikingEngine.Graphics;
 using VikingEngine.Timer;
 using VikingEngine.LootFest;
-using VikingEngine.DSSWars.Players;
 using VikingEngine.Input;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DebugExtensions;
+using VikingEngine.DSSWars.Data;
 
 namespace VikingEngine.DSSWars
 {

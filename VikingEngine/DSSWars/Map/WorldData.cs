@@ -132,9 +132,13 @@ namespace VikingEngine.DSSWars
         //{
         //    //evilFactionIndex = factions.Count;
         //    var faction = new Faction(this, FactionType.DarkLord);
-            
+
         //    return faction;
         //}
+        public void writeMetaData(System.IO.BinaryWriter w)
+        {
+            w.Write(seed);
+        }
 
         public void write(System.IO.BinaryWriter w)
         {

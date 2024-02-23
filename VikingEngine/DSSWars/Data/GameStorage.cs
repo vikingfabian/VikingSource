@@ -11,7 +11,7 @@ using VikingEngine.LootFest;
 using VikingEngine.Network;
 using VikingEngine.PJ;
 
-namespace VikingEngine.DSSWars.Players
+namespace VikingEngine.DSSWars.Data
 {
     class GameStorage
     {
@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.Players
         public MapSize mapSize = MapSize.Medium;
         public AiAggressivity aiAggressivity = AiAggressivity.Medium;
 
-         
+
         public int aiEconomyLevel = 1;
 
         public const int DiplomacyDifficultyCount = 3;
@@ -52,7 +52,7 @@ namespace VikingEngine.DSSWars.Players
                 localPlayers[i] = new LocalPlayerStorage(i);
             }
         }
-        
+
         public void Load()
         {
             DataStream.DataStreamHandler.TryReadBinaryIO(path, read);
@@ -88,7 +88,7 @@ namespace VikingEngine.DSSWars.Players
             const int Version = 9;
 
             w.Write(Version);
-            
+
             foreach (var p in profiles)
             {
                 p.write(w);
@@ -118,26 +118,26 @@ namespace VikingEngine.DSSWars.Players
             {
                 return;
             }
-            
+
             for (int i = 0; i < ProfilesCount; ++i)
             {
                 profiles[i].read(r);
             }
 
             mapSize = (MapSize)r.ReadInt32();
-            
+
             verticalScreenSplit = r.ReadBoolean();
 
             for (int i = 0; i < MaxLocalPlayerCount; ++i)
             {
                 localPlayers[i].read(r, version);
             }
-            
+
             aiAggressivity = (AiAggressivity)r.ReadInt32();
-            aiEconomyLevel = Bound.Set( r.ReadInt32(), 0, DssLib.AiEconomyLevel.Length-1);
+            aiEconomyLevel = Bound.Set(r.ReadInt32(), 0, DssLib.AiEconomyLevel.Length - 1);
 
             if (version >= 6)
-            { 
+            {
                 generateNewMaps = r.ReadBoolean();
             }
             if (version >= 7)
@@ -156,7 +156,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void checkPlayerDoublettes()
         {
-            for (int i = 0; i < MaxLocalPlayerCount-1; ++i)
+            for (int i = 0; i < MaxLocalPlayerCount - 1; ++i)
             {
                 checkPlayerDoublettes(i);
             }
@@ -168,7 +168,7 @@ namespace VikingEngine.DSSWars.Players
                 if (i != masterIndex)
                 {
                     localPlayers[i].checkDoublette(i, localPlayers);
-                } 
+                }
             }
         }
 
@@ -191,11 +191,11 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (!localPlayers[i].inputSource.Connected)
                 {
-                    localPlayers[i].inputSource= InputSource.Empty;
+                    localPlayers[i].inputSource = InputSource.Empty;
                 }
             }
         }
     }
 
-   
+
 }
