@@ -74,6 +74,8 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.war_town_factory, false);
             loadVoxelModel(VoxelModelName.war_workerhut, false);
 
+            loadVoxelModel(VoxelModelName.city_tower24, false);
+
             loadVoxelModel(VoxelModelName.Arrow, true);
             loadVoxelModel(VoxelModelName.little_javelin, true);
             loadVoxelModel(VoxelModelName.little_boltarrow, true);
@@ -86,12 +88,7 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.horse_brown, false);
             loadVoxelModel(VoxelModelName.horse_white, false);
 
-            foreach (var model in DetailMapTile.TreeFoliage)
-            {
-                loadVoxelModel(model, false);
-            }
-
-            foreach (var model in DetailMapTile.StoneFoliage)
+            foreach (var model in DetailMapTile.LoadModel())
             {
                 loadVoxelModel(model, false);
             }

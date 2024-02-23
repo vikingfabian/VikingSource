@@ -41,9 +41,9 @@ namespace VikingEngine.LootFest.GO.EnvironmentObj
             position = args.startPos;
 
             CollisionAndDefaultBound = new Bounds.ObjectBound(new BoundData2(new VikingEngine.Physics.StaticBoxBound(
-                    new VectorVolume(position, HalfSize)), Vector3.Zero));
+                    new VectorVolumeC(position, HalfSize)), Vector3.Zero));
             displayLabelBound = new Bounds.ObjectBound(new BoundData2(new VikingEngine.Physics.StaticBoxBound(
-                    new VectorVolume(position, HalfSize * 3)), Vector3.Zero));
+                    new VectorVolumeC(position, HalfSize * 3)), Vector3.Zero));
 
         }
 

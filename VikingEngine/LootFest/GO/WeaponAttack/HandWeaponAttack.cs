@@ -33,7 +33,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
             //}
 
             CollisionAndDefaultBound = new GO.Bounds.ObjectBound(new LootFest.BoundData2(new VikingEngine.Physics.Box1axisBound(
-                new VectorVolume(Vector3.Zero, boundScale), 
+                new VectorVolumeC(Vector3.Zero, boundScale), 
                 parent.FireDir(handWeaponType)),
                 Vector3.Zero));
         }

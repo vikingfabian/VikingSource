@@ -163,5 +163,49 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// Save changes and close editor
         /// </summary>
         public override string ProfileEditor_SaveAndExit => "Spara och Avsluta";
+
+
+        //--NOT TRANSLATED
+
+        /// <summary>
+        /// Ingame display. Unit gold production
+        /// </summary>
+        public override string Hud_TotalIncome => "Total Income: {0}";
+
+        /// <summary>
+        /// Unit gold cost.
+        /// </summary>
+        public override string Hud_Upkeep => "Upkeep: {0}";
+
+        /// <summary>
+        /// Ingame display. Unit gold cost.
+        /// </summary>
+        public override string Hud_WorkForce => "Work force: {0}";
+
+        /// <summary>
+        /// Ingame display. Soldiers protecting a building.
+        /// </summary>
+        public override string Hud_GuardCount => "Guard count: {0}";
+
+        /// <summary>
+        /// Ingame display. Unit caculated battle strength.
+        /// </summary>
+        public override string Hud_StrengthRating => "Strength rating: {0}";
+
+        /// <summary>
+        /// Ingame display. Extra men coming from outside the city state.
+        /// </summary>
+        public override string Hud_Immigrants => "Immigrants: {0}";
+
+        /// <summary>
+        /// City building type. Building for knights and diplomats.
+        /// </summary>
+        public override string Building_NobelHouse => "Nobel house";
+
+        /// <summary>
+        /// City building type. Evil mass production.
+        /// </summary>
+        public override string Building_DarkFactory => "Dark factory";
+
     }
 }

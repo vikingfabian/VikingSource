@@ -3,6 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.Settings;
+using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.Map;
+using VikingEngine.PJ.Joust;
+using VikingEngine.PJ.SmashBirds;
+using VikingEngine.PJ.Tanks;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Map.Generate
@@ -21,12 +27,22 @@ namespace VikingEngine.DSSWars.Map.Generate
         GenerateRegion region = new GenerateRegion();
         CityCultureCollection cityCultureCollection = new CityCultureCollection();
         public bool abort = false;
+        VikingEngine.EngineSpace.Maths.SimplexNoise2D noiseMap;
+        BiomsLayout biomsLayout;
 
+        IntervalF[] citySizeToMudRadius = new IntervalF[]
+        {
+            new IntervalF(2, 4),
+            new IntervalF(3, 5),
+            new IntervalF(5, 7),
+        };
+        
         public bool Generate(MapSize size, int number, bool save) 
         {
             ushort seed = Ref.rnd.Ushort();
             world = new WorldData(seed, size);
             world.saveIndex = number;
+            biomsLayout = new BiomsLayout(world.rnd);
 
             try
             {
@@ -51,7 +67,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 generateDigChains();
                 LoadStatus = 50;
 
-                setWaterHeight();
+                setWaterHeightAndWaterHeatmap();
 
                 LoadStatus = 55;
                 generateCities();
@@ -86,6 +102,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         { 
             this.world = world;
             world.rnd = new PcgRandom(world.seed);
+            noiseMap = new EngineSpace.Maths.SimplexNoise2D(world.seed);
 
             partComplete = new bool[ProcessSubTileParts];
 
@@ -120,7 +137,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             Task.Factory.StartNew(() =>
             {
-                generateSubTileFoliage();
+                //generateSubTileFoliage();
                 postComplete = true;
             });
         }
@@ -177,14 +194,14 @@ namespace VikingEngine.DSSWars.Map.Generate
             IntervalF restartDistRange = new IntervalF(2, 30);
             int[] heightCurve;
 
-            int biom;
+            BiomType biom;
             Vector2 center = Vector2.Zero;
             float radius;
             Rotation1D growDir;
             int chainLength;
             Rotation1D heightCenter;
             float heightCenterLength;
-            Vector2 percentHCenter;
+            //Vector2 percentHCenter;
             Vector2 posDiff;
             float percentDist;
             Tile tile;
@@ -199,9 +216,10 @@ namespace VikingEngine.DSSWars.Map.Generate
             for (int i = 0; i < numLandChains; ++i)
             {
                 heightCurve = terrainTypes.GetRandom(world.rnd);
-                biom = world.rnd.Chance(0.2) ? TerrainSettings.BiomTypeDry : TerrainSettings.BiomTypeGreen;//lib.Rnd.NextDouble() < 0.2;//world.rnd.RandomChance(0.2f);
+                //biom = world.rnd.Chance(0.2) ? BiomType.YellowDry : BiomType.Green;//lib.Rnd.NextDouble() < 0.2;//world.rnd.RandomChance(0.2f);
 
                 center = world.rnd.vector2(world.Size.X, world.Size.Y);
+                biom = biomsLayout.get(world, center);
 
                 startPos = center;
                 newChain(out radius, out growDir, out chainLength, out heightCenter, out heightCenterLength);
@@ -219,13 +237,13 @@ namespace VikingEngine.DSSWars.Map.Generate
                     {
                         for (pos.X = start.X; pos.X <= end.X; ++pos.X)
                         {
-                            percentHCenter = Vector2.One + heightCenter.Direction(heightCenterLength);
+                            //percentHCenter = Vector2.One + heightCenter.Direction(heightCenterLength);
                             posDiff = pos.Vec - center;
 
-                            float distFromCenter = (posDiff).Length();
+                            float distFromCenter = posDiff.Length();
                             if (distFromCenter <= radius)
                             {
-                                posDiff *= percentHCenter;
+                                //posDiff *= percentHCenter;
                                 percentDist = distFromCenter / radius;
                                 //tile = GetTileSafe(pos);
                                 if (world.GetTileSafe(pos, out tile))
@@ -251,15 +269,20 @@ namespace VikingEngine.DSSWars.Map.Generate
                                     {
                                         setTerrain = heightCurve[4];
                                     }
+
                                     if (setTerrain > tile.heightLevel)
                                     {
                                         tile.heightLevel = setTerrain;
                                         tile.biom = biom;
                                     }
-                                    else if (world.rnd.Chance(0.4f))
+                                    else 
                                     {
                                         tile.biom = biom;
                                     }
+                                    //else if (world.rnd.Chance(0.4f))
+                                    //{
+                                    //    tile.biom = biom;
+                                    //}
                                 }
 
                             }
@@ -339,7 +362,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                                 {
                                     sunken[loopArea.Position.X, loopArea.Position.Y] = sub;
                                     t.heightLevel -= sub;
-                                    Bound.Min(ref t.heightLevel, Tile.LowWaterHeight);
+                                    Bound.Min(ref t.heightLevel,  Height.LowWaterHeight);
                                 }
 
 
@@ -355,15 +378,120 @@ namespace VikingEngine.DSSWars.Map.Generate
             }
         }
 
-        void setWaterHeight()
+        void setWaterHeightAndWaterHeatmap()
         {
+            const int OrthogonalHeat = 10;
+            const int DiagonalHeat = 12;
+
+
+            //Först markera ut alla borders
+            //Loopa tills alla avstånd är uträknade
+
+
             ForXYLoop loop = new ForXYLoop(world.Size);
             while (loop.Next())
             {
-                if (!world.tileGrid.array[loop.Position.X, loop.Position.Y].IsLand())
+                var tile = world.tileGrid.array[loop.Position.X, loop.Position.Y];
+                if (tile.IsWater())
                 {
-                    world.tileGrid.array[loop.Position.X, loop.Position.Y].heightLevel =
-                        world.adjacentToLand(loop.Position) ? Tile.LowWaterHeight : Tile.DeepWaterHeight;
+                    tile.heightLevel = Height.DeepWaterHeight;
+                    Tile nTile;
+
+                    //Check if it has a neighbor tile that is land
+                    foreach (IntVector2 dir in IntVector2.Dir4Array)
+                    {
+                        var npos = loop.Position + dir;
+                        if (world.GetTileSafe(npos, out nTile) && nTile.IsLand())
+                        {
+                            //Is water to land border
+                            nTile.seaDistanceHeatMap = OrthogonalHeat;
+
+                            tile.heightLevel = Height.LowWaterHeight;
+                            tile.seaDistanceHeatMap = -OrthogonalHeat;
+                        }
+                    }
+
+                    if (tile.seaDistanceHeatMap == int.MinValue)
+                    {
+                        foreach (IntVector2 dir in IntVector2.AllDiagonalsArray)
+                        {
+                            var npos = loop.Position + dir;
+                            if (world.GetTileSafe(npos, out nTile) && nTile.IsLand())
+                            {
+                                //Is water to land border
+                                if (nTile.seaDistanceHeatMap == int.MinValue)
+                                {
+                                    nTile.seaDistanceHeatMap = DiagonalHeat;
+                                }
+                                tile.heightLevel = Height.LowWaterHeight;
+                                if (tile.seaDistanceHeatMap == int.MinValue)
+                                {
+                                    tile.seaDistanceHeatMap = -DiagonalHeat;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            //Loop until every tile has a distance value
+            int updatedTiles = int.MaxValue;
+
+            while (updatedTiles > 0)
+            {
+                updatedTiles = 0;
+
+                loop.Reset();
+                while (loop.Next())
+                {
+                    var tile = world.tileGrid.array[loop.Position.X, loop.Position.Y];
+                    if (tile.seaDistanceHeatMap == int.MinValue)
+                    {
+                        Tile nTile;
+
+                        foreach (IntVector2 dir in IntVector2.Dir4Array)
+                        {
+                            var npos = loop.Position + dir;
+                            if (world.GetTileSafe(npos, out nTile) && nTile.seaDistanceHeatMap != int.MinValue)
+                            {
+                                ++updatedTiles;
+
+                                if (tile.IsLand())
+                                {
+                                    tile.setWaterHeat_Land(nTile.seaDistanceHeatMap + OrthogonalHeat);
+                                }
+                                else
+                                {
+                                    tile.setWaterHeat_Water(nTile.seaDistanceHeatMap - OrthogonalHeat);
+                                }
+                            }
+                        }
+
+                        foreach (IntVector2 dir in IntVector2.AllDiagonalsArray)
+                        {
+                            var npos = loop.Position + dir;
+                            if (world.GetTileSafe(npos, out nTile) && 
+                                nTile.seaDistanceHeatMap != int.MinValue)
+                            {
+                                bool land = tile.IsLand();
+
+                                if (land == nTile.IsLand())
+                                {
+                                    ++updatedTiles;
+
+                                    if (land)
+                                    {
+                                        tile.setWaterHeat_Land(nTile.seaDistanceHeatMap + DiagonalHeat);
+                                    }
+                                    else
+                                    {
+                                        tile.setWaterHeat_Water(nTile.seaDistanceHeatMap - DiagonalHeat);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -390,7 +518,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 IntVector2 pos = new IntVector2(cityArea.RandomPos());
                 Tile cityTile = world.tileGrid.Get(pos);
                 {
-                    if (cityTile.IsLand() && cityTile.heightLevel < Tile.MountainHeightStart)
+                    if (cityTile.IsLand() && cityTile.heightLevel < Height.MountainHeightStart)
                     {
                         //TODO check larger area
                         int numWaterTiles = 0;
@@ -404,7 +532,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         //Make sure most cities are close to water
                         //pulls its food from the sea or wet land
                         if (numWaterTiles > 0 || 
-                            (world.rnd.Chance(0.2f) && cityTile.biom != TerrainSettings.BiomTypeDry))
+                            (world.rnd.Chance(0.2f) && cityTile.biom != BiomType.YellowDry))
                         {
                             if (cityHasEnoughGround(pos))//numWaterTiles <= 2
                             {                                
@@ -438,7 +566,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             while (edgeLoop.Next())
             {
                 var t = world.tileGrid.Get(edgeLoop.Position);
-                if (t.IsLand() && t.heightLevel < Tile.MountainHeightStart)
+                if (t.IsLand() && t.heightLevel < Height.MountainHeightStart)
                 {
                     ++edgeCount;
                 }
@@ -454,7 +582,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             while (edgeLoop.Next())
             {
                 var t = world.tileGrid.Get(edgeLoop.Position);
-                if (t.IsLand() && t.heightLevel < Tile.MountainHeightStart)
+                if (t.IsLand() && t.heightLevel < Height.MountainHeightStart)
                 {
                     ++edgeCount;
                 }
@@ -474,7 +602,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             while (loop.Next())
             {
                 var t =  world.tileGrid.Get(loop.Position);
-                if (t.IsLand() && t.heightLevel < Tile.MountainHeightStart)
+                if (t.IsLand() && t.heightLevel < Height.MountainHeightStart)
                 {
                     ++usableTileCount;
                 }
@@ -728,27 +856,30 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         void processSubTiles(int part)
         {
-            const int WidthMin1 = UnitDetailMap3.Width - 1;
-
-            //ForXYLoop loop = new ForXYLoop(world.Size);
+            const int WidthMin1 = WorldData.TileSubDivitions - 1;
 
             int partWidth = world.Size.X / ProcessSubTileParts;
             int startX = partWidth * part;
             int endX = startX + partWidth;
-
-            //while (loop.Next())
+            
             for (int loopy = 0; loopy < world.Size.Y; ++loopy)
             {
-                int supTileStartY = loopy * UnitDetailMap3.Width;
+                int supTileStartY = loopy * WorldData.TileSubDivitions;
                 for (int loopx = startX; loopx < endX; ++loopx)
                 {
-                    int supTileStartX = loopx * UnitDetailMap3.Width;
+                    int supTileStartX = loopx * WorldData.TileSubDivitions;
 
-                    var tile = world.tileGrid.array[loopx, loopy];// .Get(loop.Position);
-                    var terrain = Tile.TerrainTypes[tile.biom, tile.heightLevel];
+                    Tile tile = world.tileGrid.array[loopx, loopy];
+                    var city = world.cities[tile.CityIndex];
+                    var cityPos = city.tilePos;
+                    float distanceToCity = VectorExt.Length(cityPos.X - loopx, cityPos.Y - loopy);
+                    IntervalF mudRadius = citySizeToMudRadius[(int)city.CityType];
 
-                    //IntVector2 start = loop.Position * UnitDetailMap3.Width;
+                    Height heightSett = DssRef.map.heigts[tile.heightLevel];
+                    Biom biom = DssRef.map.bioms.bioms[(int)tile.biom];
 
+                    TerrainMainType tileType = tile.IsLand() ? TerrainMainType.DefaultLand : TerrainMainType.DefaultSea;
+                    
                     float groundY = tile.GroundY();
 
                     float groundY_w = edgeHeight(-1, 0);
@@ -761,25 +892,25 @@ namespace VikingEngine.DSSWars.Map.Generate
                     {
                         for (int x = 1; x < WidthMin1; ++x)
                         {
-                            block(x, y, groundY);
+                            subTile(x, y, groundY, tileType);
                         }
                     }
 
                     for (int sidePos = 1; sidePos < WidthMin1; ++sidePos)
                     {
-                        block(0, sidePos, groundY_w);
+                        subTile(0, sidePos, groundY_w, tileType);
 
-                        block(WidthMin1, sidePos, groundY_e);
+                        subTile(WidthMin1, sidePos, groundY_e, tileType);
 
-                        block(sidePos, 0, groundY_n);
+                        subTile(sidePos, 0, groundY_n, tileType);
 
-                        block(sidePos, WidthMin1, groundY_s);
+                        subTile(sidePos, WidthMin1, groundY_s, tileType);
                     }
 
-                    block(0, 0, lib.SmallestValue(groundY_w, groundY_n));
-                    block(WidthMin1, 0, lib.SmallestValue(groundY_e, groundY_n));
-                    block(0, WidthMin1, lib.SmallestValue(groundY_w, groundY_s));
-                    block(WidthMin1, WidthMin1, lib.SmallestValue(groundY_s, groundY_e));
+                    subTile(0, 0, lib.SmallestValue(groundY_w, groundY_n), tileType);
+                    subTile(WidthMin1, 0, lib.SmallestValue(groundY_e, groundY_n), tileType);
+                    subTile(0, WidthMin1, lib.SmallestValue(groundY_w, groundY_s), tileType);
+                    subTile(WidthMin1, WidthMin1, lib.SmallestValue(groundY_s, groundY_e), tileType);
 
                     float edgeHeight(int x, int y)
                     {
@@ -794,21 +925,27 @@ namespace VikingEngine.DSSWars.Map.Generate
                         return result;
                     }
 
-                    void block(int x, int y, float topY)
+                    void subTile(int x, int y, float topY, TerrainMainType tiletype)
                     {
                         const int RndRange = 3;
-                        Microsoft.Xna.Framework.Color rndColor;
+
+                        int subX = supTileStartX + x;
+                        int subY = supTileStartY + y;
+
+                        Color rndColor;
+
+                        var col = biom.Color(tile);
 
                         if (world.rnd.Chance(0.6))
                         {
-                            rndColor = new Microsoft.Xna.Framework.Color(
-                                Bound.Byte(terrain.color.R + world.rnd.Plus_Minus(RndRange)),
-                                Bound.Byte(terrain.color.G + world.rnd.Plus_Minus(RndRange)),
-                                Bound.Byte(terrain.color.B + world.rnd.Plus_Minus(RndRange)));
+                            rndColor = new Color(
+                                Bound.Byte(col.Color.R + world.rnd.Plus_Minus(RndRange)),
+                                Bound.Byte(col.Color.G + world.rnd.Plus_Minus(RndRange)),
+                                Bound.Byte(col.Color.B + world.rnd.Plus_Minus(RndRange)));
                         }
                         else
                         {
-                            rndColor = terrain.color;
+                            rndColor = col.Color;
                         }
 
                         if (topY < groundY)
@@ -816,18 +953,20 @@ namespace VikingEngine.DSSWars.Map.Generate
                             rndColor = ColorExt.ChangeBrighness(rndColor, 10);
                         }
 
-                        if (world.rnd.Chance(terrain.groundYoffsetChance))
+                        if (world.rnd.Chance(heightSett.groundYoffsetChance))
                         {
-                            topY += world.rnd.Plus_MinusF(terrain.groundYoffset);
+                            topY += world.rnd.Plus_MinusF(heightSett.groundYoffset);
                         }
 
-                        if (terrain.mountainPeak != null)
+                        if (heightSett.mountainPeak != null)
                         {
-                            topY += terrain.mountainPeak[x, y];
+                            topY += heightSett.mountainPeak[x, y];
                         }
 
-                        world.subTileGrid.Set(supTileStartX + x, supTileStartY + y,
-                            new SubTile(rndColor, topY));
+                        var subTile = new SubTile(tiletype, rndColor, topY);
+                        TerrainContent.createSubTileContent(subX, subY, distanceToCity, tile, heightSett, biom, ref mudRadius, ref subTile, world, noiseMap);
+
+                        world.subTileGrid.Set(subX, subY, subTile);
 
                     }
                 }
@@ -835,100 +974,6 @@ namespace VikingEngine.DSSWars.Map.Generate
             }
         }
 
-        void generateSubTileFoliage()
-        {
-            int numTreeSpots = world.areaTileCount / 50;
-            int numStoneSpots = world.areaTileCount / 100;
-
-            const int SmallSpotMaxOffset = 6;
-            Rectangle2 area = new Rectangle2(new IntVector2(6), world.subTileGrid.Size - 6);
-
-            IntVector2 radius = IntVector2.Zero;
-            IntVector2 center = IntVector2.Zero;
-
-            foliageAreas(FoilType.Tree, numTreeSpots, new Range(2, 14), new Range(1, 8));
-            singleFoilDots(FoilType.Stones, numStoneSpots);
-
-            void foliageAreas(FoilType type, int count,
-                Range large, Range small)
-            {
-                for (int i = 0; i < count; ++i)
-                {
-                    center = area.RandomTile();
-                    Tile tile = world.tileFromSubTilePos(center);
-
-                    if (tile.terrain().foilEnabled[(int)type])
-                    {
-                        radius.X = large.GetRandom();
-                        radius.Y = large.GetRandom();
-
-                        generateSpot();
-
-                        center.X += world.rnd.Plus_Minus(SmallSpotMaxOffset);
-                        center.Y += world.rnd.Plus_Minus(SmallSpotMaxOffset);
-
-                        radius.X = small.GetRandom();
-                        radius.Y = small.GetRandom();
-
-                        generateSpot();
-
-                        if (world.rnd.Chance(0.4))
-                        {
-                            center.X += world.rnd.Plus_Minus(SmallSpotMaxOffset);
-                            center.Y += world.rnd.Plus_Minus(SmallSpotMaxOffset);
-
-                            radius.X = small.GetRandom();
-                            radius.Y = small.GetRandom();
-
-                            generateSpot();
-                        }
-
-                        void generateSpot()
-                        {
-                            Vector2 centerVec = center.Vec;
-                            float maxRadius = radius.SideLength() + 1;
-                            ForXYLoop loop = new ForXYLoop(Rectangle2.FromCenterTileAndRadius(center, radius));
-                            while (loop.Next())
-                            {
-                                float offsetPerc = 1f -
-                                    (loop.Position.Vec - centerVec).Length() / maxRadius;
-
-                                float chance = offsetPerc * 0.6f + 0.1f;
-
-
-                                if (world.rnd.Chance(chance))
-                                {
-                                    if (world.subTileGrid.InBounds(loop.Position) &&
-                                        world.tileFromSubTilePos(loop.Position).IsLand())
-                                    {
-                                        var st = world.subTileGrid.Get(loop.Position);
-                                        st.foil = type;
-                                        world.subTileGrid.Set(loop.Position, st);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            void singleFoilDots(FoilType type, int count)
-            {
-                for (int i = 0; i < count; ++i)
-                {
-                    center = area.RandomTile();
-                    Tile tile = world.tileFromSubTilePos(center);
-
-                    if (tile.terrain().foilEnabled[(int)type])
-                    {
-                        //subTileGrid.Get(center).foil = type;
-                        var st = world.subTileGrid.Get(center);
-                        st.foil = type;
-                        world.subTileGrid.Set(center, st);
-                    }
-                }
-            }
-        }
     }
 
 

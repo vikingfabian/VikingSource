@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.Map
@@ -9,25 +10,32 @@ namespace VikingEngine.DSSWars.Map
     class DetailMapTile
     {
         static readonly IntervalF FoliageCenterRange = 
-            IntervalF.FromCenter(0.5f * UnitDetailMap3.SubTileSz.X, 0.2f * UnitDetailMap3.SubTileSz.X);
+            IntervalF.FromCenter(0.5f * WorldData.SubTileWidth, 0.2f * WorldData.SubTileWidth);
 
-        static readonly Vector2 GrassSize = new Vector2(0.03f, 0.11f) * UnitDetailMap3.SubTileSz;
+        static readonly Vector2 GrassSize = new Vector2(0.03f, 0.11f) * WorldData.SubTileWidth;
 
-        static readonly Vector2 SandSize = new Vector2(0.03f) * UnitDetailMap3.SubTileSz;
+        static readonly Vector2 SandSize = new Vector2(0.03f) * WorldData.SubTileWidth;
 
         static readonly IntervalF GrassCenterRange =
-            IntervalF.FromCenter(0.5f * UnitDetailMap3.SubTileSz.X, 0.45f * UnitDetailMap3.SubTileSz.X);
+            IntervalF.FromCenter(0.5f * WorldData.SubTileWidth, 0.45f * WorldData.SubTileWidth);
 
-        public static readonly List<LootFest.VoxelModelName> TreeFoliage = new List<LootFest.VoxelModelName>
+        //const LootFest.VoxelModelName TreeFoliage = LootFest.VoxelModelName.fol_tree_hard;
+        //const LootFest.VoxelModelName StoneFoliage = LootFest.VoxelModelName.fo_stone1;
+
+        public static List<LootFest.VoxelModelName> LoadModel()
+        {
+            return new List<LootFest.VoxelModelName>
             {
-                LootFest.VoxelModelName.fo_tree1,
-                LootFest.VoxelModelName.fol_bush1,
-            };
-        public static readonly List<LootFest.VoxelModelName> StoneFoliage = new List<LootFest.VoxelModelName>
-            {
+                LootFest.VoxelModelName.fol_tree_hard,
+                LootFest.VoxelModelName.fol_tree_soft,
                 LootFest.VoxelModelName.fo_stone1,
-                LootFest.VoxelModelName.fo_stone2,
+                LootFest.VoxelModelName.fol_sprout,
+                LootFest.VoxelModelName.fol_tallgrass,
+                LootFest.VoxelModelName.fol_herbs,
+                LootFest.VoxelModelName.fol_bush1,
+                LootFest.VoxelModelName.fol_stoneblock,
             };
+        }
 
         const LoadedTexture Texture = LoadedTexture.SpriteSheet;
         public static readonly Graphics.CustomEffect ModelEffect =
@@ -39,18 +47,17 @@ namespace VikingEngine.DSSWars.Map
         List<Foliage> foliage;
 
         public bool add = true;
+        static PcgRandom rnd = new PcgRandom();
 
         public DetailMapTile(IntVector2 pos)
         {
             this.pos = pos;
-
-            //tile.inRender = true;
+            
             var tile = DssRef.world.tileGrid.Get(pos);
-            if (tile.heightLevel != Tile.DeepWaterHeight)
+            if (tile.heightLevel != Height.DeepWaterHeight)
             {
                 polygonBlock(tile);
             }
-
         }
 
         void polygonBlock(Tile tile)
@@ -63,30 +70,34 @@ namespace VikingEngine.DSSWars.Map
             model.DebugName = "Detail map tile " + pos.ToString();
 #endif
 
-            DssRef.detailMap.polygons.Clear();
+            DssRef.state.detailMap.polygons.Clear();
 
             Vector2 topLeft = VectorExt.V2NegHalf;
-            IntVector2 subTileStart = pos * UnitDetailMap3.Width;
+            IntVector2 subTileStart = pos * WorldData.TileSubDivitions;
 
-            for (int y = 0; y < UnitDetailMap3.Width; ++y)
+            for (int y = 0; y < WorldData.TileSubDivitions; ++y)
             {
-                for (int x = 0; x < UnitDetailMap3.Width; ++x)
+                for (int x = 0; x < WorldData.TileSubDivitions; ++x)
                 {
-                    SubTile subTile = DssRef.world.subTileGrid.Get(
-                        subTileStart.X + x, subTileStart.Y + y);
-                    Vector2 subTopLeft = new Vector2(topLeft.X + x * UnitDetailMap3.SubTileSz.X, topLeft.Y + y * UnitDetailMap3.SubTileSz.Y);
+                    int subX = subTileStart.X + x;
+                    int subY = subTileStart.Y + y;
+
+                    rnd.SetSeed(subX * 3 + subY * 11);
+
+                    SubTile subTile = DssRef.world.subTileGrid.Get(subX, subY);
+                    Vector2 subTopLeft = new Vector2(topLeft.X + x * WorldData.SubTileWidth, topLeft.Y + y * WorldData.SubTileWidth);
                     
                     block(subTopLeft, ref subTile);
 
                     surfaceTexture(tile, subTile, subTopLeft);
 
-                    if (subTile.foil != FoilType.None)
+                    if (subTile.mainTerrain == TerrainMainType.Foil)
                     {
                         Vector3 topCenter = new Vector3(
                             pos.X + subTopLeft.X,
                             subTile.groundY,
                             pos.Y + subTopLeft.Y);
-                        createFoliage(subTile.foil, topCenter);
+                        createFoliage((TerrainSubFoilType)subTile.subTerrain, subTile.terrainValue, topCenter);
                     }
 
                     DssRef.world.subTileGrid.Set(
@@ -96,14 +107,14 @@ namespace VikingEngine.DSSWars.Map
             }
 
             verticeData = PolygonLib.BuildVDFromPolygons(
-                new Graphics.PolygonsAndTrianglesColor(DssRef.detailMap.polygons, null));
+                new Graphics.PolygonsAndTrianglesColor(DssRef.state.detailMap.polygons, null));
 
             void block(Vector2 subTopLeft, ref SubTile subTile)
             {
                 var top = Graphics.PolygonColor.QuadXZ(
                     subTopLeft,
-                    UnitDetailMap3.SubTileSz, false, subTile.groundY,
-                    subTile.foil == FoilType.Tree ? SpriteName.warsFoliageShadow : SpriteName.WhiteArea_LFtiles,
+                    WorldData.SubTileWidthV2, false, subTile.groundY,
+                    subTile.mainTerrain == TerrainMainType.Foil ? SpriteName.warsFoliageShadow : SpriteName.WhiteArea_LFtiles,
                     Dir4.N,
                     subTile.color);
 
@@ -118,7 +129,7 @@ namespace VikingEngine.DSSWars.Map
                 else
                 {
                     bottom.Move(VectorExt.V3FromY(-0.1f));
-                    bottomCol = TerrainSettings.DeepWaterCol1;
+                    bottomCol = MapSettings.DeepWaterCol1;
                 }
                 Graphics.PolygonColor left = new Graphics.PolygonColor(
                     bottom.V1nw.Position, bottom.V3ne.Position,
@@ -145,16 +156,17 @@ namespace VikingEngine.DSSWars.Map
                 front.V3ne.Color = bottomCol;
 
 
-                DssRef.detailMap.polygons.Add(top);
-                DssRef.detailMap.polygons.Add(front);
-                DssRef.detailMap.polygons.Add(left);
-                DssRef.detailMap.polygons.Add(right);
+                DssRef.state.detailMap.polygons.Add(top);
+                DssRef.state.detailMap.polygons.Add(front);
+                DssRef.state.detailMap.polygons.Add(left);
+                DssRef.state.detailMap.polygons.Add(right);
             }
         }
 
         void surfaceTexture(Tile tile, SubTile subTile, Vector2 subTopLeft)
         {
-            TerrainSettings terrain = Tile.TerrainTypes[tile.biom, tile.heightLevel];
+            Biom biom = DssRef.map.bioms.bioms[(int)tile.biom];
+            var col = biom.colors_height[tile.heightLevel];
 
             Vector3 center = new Vector3(
                 subTopLeft.X,
@@ -162,23 +174,23 @@ namespace VikingEngine.DSSWars.Map
                 subTopLeft.Y);
 
             
-            if (subTile.foil != FoilType.Tree)
+            if (subTile.mainTerrain != TerrainMainType.Foil)
             {
-                switch (terrain.textureType)
+                switch (col.Texture)
                 {
                     case SurfaceTextureType.Grass:
                         {
-                            int count = Ref.rnd.Int(5, 20);
+                            int count = rnd.Int(5, 20);
                             for (int i = 0; i < count; ++i)
                             {
                                 Vector3 pos = center;
-                                pos.X += GrassCenterRange.GetRandom();
-                                pos.Z += GrassCenterRange.GetRandom();
+                                pos.X += GrassCenterRange.GetRandom(rnd);
+                                pos.Z += GrassCenterRange.GetRandom(rnd);
 
                                 Color bottomCol = ColorExt.ChangeBrighness(subTile.color, 4);
                                 Color topCol = bottomCol;
 
-                                double rndCol = Ref.rnd.Double();
+                                double rndCol = rnd.Double();
                                 if (rndCol < 0.7)
                                 {
                                     topCol = ColorExt.ChangeBrighness(topCol, 6);
@@ -217,22 +229,22 @@ namespace VikingEngine.DSSWars.Map
 
                                 straw.setSprite(SpriteName.WhiteArea_LFtiles, Dir4.N);
 
-                                DssRef.detailMap.polygons.Add(straw);
+                                DssRef.state.detailMap.polygons.Add(straw);
                             }
                         }
                         break;
                     case SurfaceTextureType.Sand:
                         {
-                            int count = Ref.rnd.Int(24, 30);
+                            int count = rnd.Int(24, 30);
                             for (int i = 0; i < count; ++i)
                             {
                                 Vector2 pos = Vector2.Zero;
-                                pos.X = center.X + GrassCenterRange.GetRandom();
-                                pos.Y = center.Z + GrassCenterRange.GetRandom();
+                                pos.X = center.X + GrassCenterRange.GetRandom(rnd);
+                                pos.Y = center.Z + GrassCenterRange.GetRandom(rnd);
                                 
-                                Color color = ColorExt.ChangeBrighness(subTile.color, Ref.rnd.Int(-6, 20));
+                                Color color = ColorExt.ChangeBrighness(subTile.color, rnd.Int(-6, 20));
 
-                                DssRef.detailMap.polygons.Add(
+                                DssRef.state.detailMap.polygons.Add(
                                     PolygonColor.QuadXZ(pos, SandSize, true,
                                     center.Y + 0.001f, SpriteName.WhiteArea_LFtiles, Dir4.N,
                                     color));
@@ -243,28 +255,49 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        void createFoliage(FoilType type, Vector3 wp)
+        void createFoliage(TerrainSubFoilType type, int sizeValue, Vector3 wp)
         {
-            wp.X += FoliageCenterRange.GetRandom();
-            wp.Z += FoliageCenterRange.GetRandom();
+            wp.X += FoliageCenterRange.GetRandom(rnd);
+            wp.Z += FoliageCenterRange.GetRandom(rnd);
 
-            List<LootFest.VoxelModelName> foliageModels;
+            LootFest.VoxelModelName modelName;
+            float scale = 0.12f;
 
             switch (type)
             {
-                case FoilType.Stones:
-                    foliageModels = StoneFoliage;
+                case TerrainSubFoilType.TallGrass:
+                    modelName = LootFest.VoxelModelName.fol_tallgrass;
                     break;
-                case FoilType.Tree:
-                    foliageModels = TreeFoliage;
+                case TerrainSubFoilType.StoneBlock:
+                    modelName = LootFest.VoxelModelName.fol_stoneblock;
                     break;
-
+                case TerrainSubFoilType.Bush:
+                    modelName = LootFest.VoxelModelName.fol_bush1;
+                    break;
+                case TerrainSubFoilType.Herbs:
+                    modelName = LootFest.VoxelModelName.fol_herbs;
+                    break;
+                case TerrainSubFoilType.Stones:
+                    modelName = LootFest.VoxelModelName.fo_stone1;
+                    break;
+                case TerrainSubFoilType.TreeHard:
+                    modelName = LootFest.VoxelModelName.fol_tree_hard;
+                    scale = 0.03f + 0.0012f * sizeValue;
+                    break;
+                case TerrainSubFoilType.TreeSoft:
+                    modelName = LootFest.VoxelModelName.fol_tree_soft;
+                    scale = 0.03f + 0.0012f * sizeValue;
+                    break;
+                case TerrainSubFoilType.TreeHardSprout:
+                    modelName = LootFest.VoxelModelName.fol_sprout;
+                    scale = 0.05f + 0.01f * sizeValue;
+                    break;
                 default:
                     throw new NotImplementedException();
             }
-            var modelName = foliageModels[lib.SmallestValue(
-                Ref.rnd.Int(foliageModels.Count),
-                Ref.rnd.Int(foliageModels.Count))];
+            //var modelName = foliageModels[lib.SmallestValue(
+            //    rnd.Int(foliageModels.Count),
+            //    rnd.Int(foliageModels.Count))];
 
             //var model = LootFest.LfRef.modelLoad.AutoLoadModelInstance(modelName,
             //        0.12f, 0, false, false);
@@ -279,15 +312,13 @@ namespace VikingEngine.DSSWars.Map
 #if DEBUG
             model.DebugName = "Map foliage " + model.DebugName;
 #endif
-            foliage.Add(new Foliage(modelName, wp));
+            foliage.Add(new Foliage(modelName, rnd.Double(), wp, scale));
         }
 
         public void synchToRender()
         {
             if (add)
             {
-               
-
                 if (model != null)
                 {
                     model.BuildFromVerticeData(verticeData,

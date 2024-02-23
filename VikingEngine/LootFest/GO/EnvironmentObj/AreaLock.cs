@@ -239,7 +239,7 @@ namespace VikingEngine.LootFest.GO.EnvironmentObj
 
                 List<Graphics.ParticleInitData> particles = new List<Graphics.ParticleInitData>(pCount);
 
-                VectorVolume vol = new VectorVolume(CollisionAndDefaultBound.MainBound.center, CollisionAndDefaultBound.MainBound.halfSize);
+                VectorVolumeC vol = new VectorVolumeC(CollisionAndDefaultBound.MainBound.center, CollisionAndDefaultBound.MainBound.halfSize);
 
                 if (nsDir)
                     vol.HalfSizeZ = 1f;

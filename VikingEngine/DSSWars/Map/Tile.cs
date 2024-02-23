@@ -3,29 +3,24 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.LootFest;
+using VikingEngine.ToGG.HeroQuest;
 
 namespace VikingEngine.DSSWars.Map
 {
     class Tile
     {
-        public static TerrainSettings[,] TerrainTypes;
+        public const int NoBorderRegion = -2;
+        public const int SeaBorder = -1;
+        const int CompareToAmountCities = 8;
 
         public static void Init()
         {
-            TypeToHeight_aboveWater =new float[TypeToHeight.Length];
+            TypeToHeight_aboveWater = new float[TypeToHeight.Length];
             for (int i = 0; i < TypeToHeight.Length; i++)
             {
                 TypeToHeight_aboveWater[i] = Math.Max(TypeToHeight[i], 0);
-            }
-
-            TerrainTypes = new TerrainSettings[TerrainSettings.BiomCount, MaxHeight + 1];
-            for (int biom = 0; biom < TerrainSettings.BiomCount; ++biom)
-            {
-                for (int height = 0; height <= MaxHeight; ++height)
-                {
-                    TerrainTypes[biom, height] = new TerrainSettings(biom, height);
-                }
             }
 
             TypeToWalkingMultiplier = new float[TypeToWalkingDistance.Length];
@@ -37,27 +32,16 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        public const int NoBorderRegion = -2;
-        public const int SeaBorder = -1;
-        const int CompareToAmountCities = 8;
-
-        public const int DeepWaterHeight = 0;
-        public const int LowWaterHeight = 1;
-        public const int MinLandHeight = 2;
-        public const int MountainHeightStart = 6;
-        const int MaxHeight = 7;
-
-
         //Save data
         public int CityIndex;
-        public int biom = TerrainSettings.BiomTypeGreen;
+        public BiomType biom =  BiomType.Green;
         public int heightLevel;
         public TileContent tileContent = TileContent.NONE;
         public int BorderCount;
         public int BorderRegion_North, BorderRegion_East, BorderRegion_South, BorderRegion_West;
+        public int seaDistanceHeatMap = int.MinValue;
         //--
 
-        
         public int WorkerCount = 0;
         public byte renderStateA = Culling.NoRender;
         public byte renderStateB = Culling.NoRender;
@@ -69,7 +53,7 @@ namespace VikingEngine.DSSWars.Map
         {
             CityIndex = -1;
 
-            heightLevel = DeepWaterHeight;
+            heightLevel = Height.DeepWaterHeight;
            
             BorderCount = 0;
             BorderRegion_North = NoBorderRegion; 
@@ -83,11 +67,42 @@ namespace VikingEngine.DSSWars.Map
             read(r, version);
         }
 
+        public void setWaterHeat_Land(int heat)
+        {
+            //int heat = neighborHeat + (diagonal ? 12 : 10);
+            if (seaDistanceHeatMap == int.MinValue)
+            {
+                seaDistanceHeatMap = heat;
+            }
+            else
+            {
+                if (heat < seaDistanceHeatMap)
+                {
+                    seaDistanceHeatMap = heat;
+                }
+            }
+        }
+
+        public void setWaterHeat_Water(int heat)
+        {
+            if (seaDistanceHeatMap == int.MinValue)
+            {
+                seaDistanceHeatMap = heat;
+            }
+            else
+            {
+                if (heat > seaDistanceHeatMap)
+                {
+                    seaDistanceHeatMap = heat;
+                }
+            }
+        }
+
 
         public void write(System.IO.BinaryWriter w)
         {
             w.Write(Debug.Ushort_OrCrash(CityIndex));//(ushort)CityIndex);
-            w.Write(Debug.Byte_OrCrash(biom));//(byte)biom);
+            w.Write(Debug.Byte_OrCrash((byte)biom));//(byte)biom);
             w.Write(Debug.Byte_OrCrash(heightLevel));//(byte)heightLevel);
             w.Write(Debug.Byte_OrCrash((int)tileContent));//(byte)tileContent);
             w.Write(Debug.Ushort_OrCrash(BorderCount));//(ushort)BorderCount);
@@ -101,7 +116,7 @@ namespace VikingEngine.DSSWars.Map
         public void read(System.IO.BinaryReader r, int version)
         {
             CityIndex = r.ReadUInt16();
-            biom = r.ReadByte();
+            biom = (BiomType)r.ReadByte();
             heightLevel = r.ReadByte();
             tileContent = (TileContent)r.ReadByte();
             BorderCount = r.ReadUInt16();
@@ -172,94 +187,6 @@ namespace VikingEngine.DSSWars.Map
             closeCities = new StaticList<KeyValuePair<float, City>>(CompareToAmountCities);
         }
 
-        //public void FindOwner(IntVector2 myPos, List<City> cities, WorldData tiles, StaticList<KeyValuePair<float, City>> closeCities)
-        //{
-
-        //    if (IsLand() && tileContent != TileContent.City)
-        //    {
-        //       //First pick out the closest cities, ignoring terrain
-        //        closeCities.QuickClear();
-
-        //        float furthestAddedCity = 0;
-        //        int furthestAddedCityIndex = -1;
-
-        //        int preFillCount = lib.SmallestValue(CompareToAmountCities, cities.Count);
-        //        for (int preSetIx = 0; preSetIx < preFillCount; ++preSetIx)
-        //        {
-        //            float dist = WP.birdDistance(cities[preSetIx], myPos);
-
-        //            if (dist <= 2)
-        //            { //Very close to city, will auto assign to that
-        //                CityIndex = cities[preSetIx].index;
-        //                return;
-        //            }
-
-        //            closeCities.Add(new KeyValuePair<float, City>(dist, cities[preSetIx]));
-        //            if (dist > furthestAddedCity)
-        //            {
-        //                furthestAddedCity = dist;
-        //                furthestAddedCityIndex = preSetIx;
-        //            }
-        //        }
-
-        //        for (int i = CompareToAmountCities; i < cities.Count; ++i)
-        //        {
-        //            float dist = WP.birdDistance(cities[i], myPos);
-        //            if (dist < furthestAddedCity)
-        //            {
-        //                closeCities.Array[furthestAddedCityIndex] = new KeyValuePair<float, City>(dist, cities[i]);
-        //                furthestAddedCity = 0;
-        //                for (int cc = 0; cc < closeCities.Count; ++cc)
-        //                {
-        //                    if (closeCities.Array[cc].Key > furthestAddedCity)
-        //                    {
-        //                        furthestAddedCity = dist;
-        //                        furthestAddedCityIndex = cc;
-        //                    }
-        //                }
-
-        //            }
-        //        }
-
-
-        //        FindMinValue closest = new FindMinValue(true);
-        //        //compare the distance to the closest cities, with terrain included
-        //        for (int cc = 0; cc < closeCities.Count; ++cc)
-        //        {
-        //            float dist = distanceValueToTile(myPos, closeCities[cc].Value.tilePos, tiles);
-        //            closest.Next(dist, cc);
-        //        }
-        //        CityIndex = closeCities[closest.minMemberIndex].Value.index;
-        //    }
-        //}
-
-        //static float distanceValueToTile(IntVector2 start, IntVector2 end, WorldData tiles)
-        //{
-        //    const float StepLenghtMulti = 0.8f;
-
-        //    float result = 0;
-        //    Vector2 pos = start.Vec;
-        //    IntVector2 diff = (end - start);
-        //    Vector2 stepLength = diff.Vec;
-        //    stepLength.Normalize();
-        //    stepLength *= StepLenghtMulti;
-
-        //    float lenght = diff.Length();
-        //    int numSteps = (int)(lenght / StepLenghtMulti);
-        //    for (int i = 1; i < numSteps; ++i)
-        //    {
-        //        pos += stepLength;
-        //        result += tiles.GetTile(pos).TroupWalkingDistance(false) + (i * 1f);
-        //    }
-
-        //    return result; //+ lib.Square(lenght);
-        //}
-
-        //public static float birdDistanceToCity(City city, IntVector2 tilePos)
-        //{
-        //    return (city.tilePos - tilePos).Length();
-        //}
-
         public City City()
         {
             if (CityIndex < 0)
@@ -269,73 +196,11 @@ namespace VikingEngine.DSSWars.Map
             return DssRef.world.cities[CityIndex]; 
         }
 
-        //public bool IsCity()
-        //{ 
-        //    return tileContent == TileContent.City;
-        //}
-
         static readonly Color HeadCity = new Color(255,174,184);
         static readonly Color LargeCity = new Color(253,0,30);
         static readonly Color SmallCity = new Color(148,0,17);
 
-        
-
-        ////const int StartCol
-        //const int MinimapLevelCol = 10;
-        //static readonly Color MinimapLvl1 = Color.White;
-        //static readonly Color MinimapLvl2 = new Color(byte.MaxValue - MinimapLevelCol, byte.MaxValue - MinimapLevelCol, byte.MaxValue - MinimapLevelCol);
-        //static readonly Color MinimapLvl3 = new Color(byte.MaxValue - MinimapLevelCol * 2, byte.MaxValue - MinimapLevelCol * 2, byte.MaxValue - MinimapLevelCol * 2);
-        //static readonly Color MinimapLvl4 = new Color(byte.MaxValue - MinimapLevelCol * 3, byte.MaxValue - MinimapLevelCol * 3, byte.MaxValue - MinimapLevelCol * 3);
-        //static readonly Color MinimapLvl5 = new Color(byte.MaxValue - MinimapLevelCol * 4, byte.MaxValue - MinimapLevelCol * 4, byte.MaxValue - MinimapLevelCol * 4);
-        //static readonly Color MinimapLvl6 = new Color(byte.MaxValue - MinimapLevelCol * 5, byte.MaxValue - MinimapLevelCol * 5, byte.MaxValue - MinimapLevelCol * 5);
-
         public bool HasBorderImage() { return BorderCount > 0; }
-
-        //public Color TerrainColor
-        //{
-        //    get
-        //    {
-        //        switch (height)
-        //        {
-        //            case TerrainType.DeepWater_0: return DeepWaterCol1;
-        //            case TerrainType.LowWater_1: return SeaBottomCol;
-        //            case TerrainType.OpenField_2: return Biom ? Dry1 : Ground1;
-        //            case TerrainType.Plains_3: return Biom ? Dry2 : Ground2;
-        //            case TerrainType.Vegetation_4: return Biom ? Dry3 : Ground3;
-        //            case TerrainType.Hills_5: return Biom ? Dry4 : Ground4;
-        //            case TerrainType.Mountain_6: return Biom ? Dry5 : Ground5;
-        //            case TerrainType.MountainRidge_7: return Biom ? Dry6 : Ground6;
-
-        //           // case TerrainType.Urban: return cityColor;
-
-
-        //            default: throw new NotImplementedException();
-        //        }
-        //    }
-        //}
-
-        //public VoxelModelName TerrainModel
-        //{
-        //    get
-        //    {
-        //        switch (heightLevel)
-        //        {
-        //            //case TerrainType.DeepWater_0: return VoxelModelName.NUM_NON;//DeepWaterCol1;
-        //            //case TerrainType.LowWater_1: return VoxelModelName.warmap_sand1;// SeaBottomCol;
-        //            //case TerrainType.OpenField_2: return VoxelModelName.warmap_sand1; //DryTerrain ? Dry1 : Ground1;
-        //            //case TerrainType.Plains_3: return VoxelModelName.warmap_sanddark1; //DryTerrain ? Dry2 : Ground2;
-        //            //case TerrainType.Vegetation_4: return VoxelModelName.warmap_grass1;//DryTerrain ? Dry3 : Ground3;
-        //            //case TerrainType.Hills_5: return VoxelModelName.warmap_grassdark1; //DryTerrain ? Dry4 : Ground4;
-        //            //case TerrainType.Mountain_6: return VoxelModelName.warmap_mountain1; //ryTerrain ? Dry5 : Ground5;
-        //            //case TerrainType.MountainRidge_7: return VoxelModelName.warmap_mountaindark1; //DryTerrain ? Dry6 : Ground6;
-
-        //            // case TerrainType.Urban: return cityColor;
-
-
-        //            default: throw new NotImplementedException();
-        //        }
-        //    }
-        //}
 
         public Color MinimapColor(IntVector2 pos)
         {
@@ -343,7 +208,7 @@ namespace VikingEngine.DSSWars.Map
             if (tileContent == TileContent.City)
                 return cityColor;
 
-            if (heightLevel <= LowWaterHeight)
+            if (heightLevel <= Height.LowWaterHeight)
             {
                 return lib.IsEven(pos.X + pos.Y) ? 
                     WorldData.WaterDarkCol : WorldData.WaterDarkCol2;
@@ -372,19 +237,6 @@ namespace VikingEngine.DSSWars.Map
             }
 
             return WaterSurfaceY;
-            //if (IsLand)
-            //{
-            //    float result = TypeToHeight[(int)terrain];
-            //    if (AdjacantToCity != null || IsCity)//Special is TileSpecial_AdjacentToCity || IsCity)
-            //    {
-            //        result += 0.3f;
-            //    }
-            //    return result;
-            //}
-            //else
-            //{
-            //    return WaterHeight;
-            //}
         }
 
         Color heightAndFactionCol(IntVector2 pos)
@@ -443,27 +295,15 @@ namespace VikingEngine.DSSWars.Map
             return color;
         }
 
-        public TerrainSettings terrain()
+        public Height heightSett()
         {
-            return TerrainTypes[biom, heightLevel];
+            return DssRef.map.heigts[heightLevel];
         }
-        //Color heightColor()
-        //{
-        //    switch (height)
-        //    {
-        //        case TerrainType.DeepWater_0: return DeepWaterCol1;
-        //        case TerrainType.LowWater_1: return SeaBottomCol;
-        //        case TerrainType.OpenField_2: return MinimapLvl1;
-        //        case TerrainType.Plains_3: return MinimapLvl2;
-        //        case TerrainType.Vegetation_4: return MinimapLvl3;
-        //        case TerrainType.Hills_5: return MinimapLvl4;
-        //        case TerrainType.Mountain_6: return MinimapLvl5;
-        //        case TerrainType.MountainRidge_7: return MinimapLvl6;
 
-        //        //case TerrainType.Urban: return cityColor;
-        //        default: throw new NotImplementedException();
-        //    }            
-        //}
+        public Biom Biom()
+        {
+            return DssRef.map.bioms.bioms[(int)biom];
+        }
 
         Color cityColor
         {
@@ -534,17 +374,9 @@ namespace VikingEngine.DSSWars.Map
             else return TypeToWalkingMultiplier[heightLevel];
         }
 
-        public bool IsLand() { return heightLevel > LowWaterHeight; }
-        public bool IsWater() { return heightLevel <= LowWaterHeight; }
-        //TileSpecialType TileSpecialType
-        //{
-        //    get 
-        //    {
-        //        if (Special == null)
-        //            return Map.TileSpecialType.NON;
-        //        else return Special.Type;
-        //    }
-        //}
+        public bool IsLand() { return heightLevel > Height.LowWaterHeight; }
+        public bool IsWater() { return heightLevel <= Height.LowWaterHeight; }
+        
         public override string ToString()
         {
             if (IsWater())
@@ -554,12 +386,6 @@ namespace VikingEngine.DSSWars.Map
             return heightLevel.ToString() + " {" + City().ToString() + "}";
         }
     }
-
-    //enum BiomType
-    //{
-    //    Green,
-    //    Dry,
-    //}
 
     enum TerrainType
     {

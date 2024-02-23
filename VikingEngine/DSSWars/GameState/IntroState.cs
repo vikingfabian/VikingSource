@@ -7,6 +7,7 @@ using VikingEngine.Graphics;
 using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 using VikingEngine.PJ;
+using VikingEngine.DSSWars.Map.Settings;
 
 namespace VikingEngine.DSSWars
 {
@@ -77,6 +78,7 @@ namespace VikingEngine.DSSWars
                 new Timer.AsynchActionTrigger(asynchContentLoading);
                 new Timer.AsynchActionTrigger(asynchStorageLoading);
 
+                new MapSettings();
                 Map.Tile.Init();
             
                 //new Network.Session();

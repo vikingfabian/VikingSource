@@ -38,7 +38,7 @@ namespace VikingEngine.LootFest.GO.Characters.Monsters
          override protected void createBound(float imageScale)
          {
              Vector3 sz = new Vector3(0.32f * imageScale, 0.4f * imageScale, imageScale * 0.5f);
-             CollisionAndDefaultBound = new GO.Bounds.ObjectBound(new BoundData2(new Box1axisBound(new VectorVolume(Vector3.Zero, sz), Rotation1D.D0), new Vector3(0, sz.Y * 0.6f, 0)));//LootFest.ObjSingleBound.QuickRectangleRotated2(new Vector3(0.32f * imageScale, 0.4f * imageScale, imageScale * 0.5f));
+             CollisionAndDefaultBound = new GO.Bounds.ObjectBound(new BoundData2(new Box1axisBound(new VectorVolumeC(Vector3.Zero, sz), Rotation1D.D0), new Vector3(0, sz.Y * 0.6f, 0)));//LootFest.ObjSingleBound.QuickRectangleRotated2(new Vector3(0.32f * imageScale, 0.4f * imageScale, imageScale * 0.5f));
              TerrainInteractBound = LootFest.ObjSingleBound.QuickCylinderBound(imageScale * ScaleToBound, imageScale * 0.2f);
          }
         protected override VoxelModelName imageName

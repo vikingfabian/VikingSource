@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map;
 //
@@ -13,7 +14,12 @@ namespace VikingEngine.DSSWars
 {
     class PlayState : Engine.GameState
     {
-        Map.TerrainOverviewMap overviewMap;
+        WorldResources resources = new WorldResources();
+
+        Map.MapLayer_Factions factionsMap;
+        Map.MapLayer_Overview overviewMap;
+        public Map.MapLayer_Detail detailMap;
+
         public Culling culling;
         public PathFindingPool pathFindingPool = new PathFindingPool();
         
@@ -26,6 +32,8 @@ namespace VikingEngine.DSSWars
         public bool PartyMode = false;   
         bool exitThreads = false;
         public GameEvents events;
+
+        bool bResourceUpdate = false;
 
         public PlayState(bool host)
             : base(true)
@@ -40,9 +48,10 @@ namespace VikingEngine.DSSWars
             culling = new Culling();
 
             this.host = host;
-            
-            overviewMap = new Map.TerrainOverviewMap();
-            new Map.UnitDetailMap3();
+
+            factionsMap = new MapLayer_Factions();
+            overviewMap = new Map.MapLayer_Overview(factionsMap);
+            detailMap = new Map.MapLayer_Detail();
 
             Engine.Update.SetFrameRate(60);
 
@@ -59,6 +68,10 @@ namespace VikingEngine.DSSWars
             new AsynchUpdateable_TryCatch(asyncUserUpdate, "DSS user update", 58);
             new AsynchUpdateable_TryCatch(asyncMapBorders, "DSS map borders update", 59);
             new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60);
+            if (StartupSettings.RunResoursesUpdate)
+            {
+                new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
+            }
             isReady = host;
         }
 
@@ -178,7 +191,7 @@ namespace VikingEngine.DSSWars
             {
                 overviewMap.HalfSecondUpdate();
             }
-            DssRef.detailMap.update();
+            detailMap.update();
 
             foreach (var local in localPlayers)
             {
@@ -187,6 +200,11 @@ namespace VikingEngine.DSSWars
 
             Engine.ParticleHandler.Update(time);
 
+        }
+
+        public void OneMinute_Update()
+        { 
+            bResourceUpdate = true;
         }
 
         public override void OnDestroy()
@@ -235,13 +253,26 @@ namespace VikingEngine.DSSWars
                 DssRef.world.factionsCounter.sel.shareAllHostedObjects(sender);
             }
         }
+
+        bool asyncResourcesUpdate(int id, float time)
+        {
+            //Runs every minute to upate any resource progression: trees grow, food spoil, etc
+            if (bResourceUpdate || StartupSettings.DebugResoursesSuperSpeed)
+            {
+                bResourceUpdate = false;
+
+                resources.asyncUpdate();
+            }
+
+            return exitThreads;
+        }
+
         bool asyncDiplomacyUpdate(int id, float time)
         {
             DssRef.diplomacy.async_update();
             events.asyncUpdate();
 
             return exitThreads;
-
         }
 
         bool asyncUserUpdate(int id, float time)
@@ -257,7 +288,7 @@ namespace VikingEngine.DSSWars
 
         bool asynchMapGenerating(int id, float time)
         {
-            DssRef.detailMap.asynchUpdate();
+            DssRef.state.detailMap.asynchUpdate();
             overviewMap.unitMiniModels.asynchUpdate();
 
             return exitThreads;

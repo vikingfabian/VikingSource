@@ -8,6 +8,7 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.LootFest.Players;
 using VikingEngine.HUD.RichBox;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace VikingEngine.DSSWars.Players
 {    
@@ -206,7 +207,9 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                     {
-                        DssRef.state.events.TestNextEvent();
+                        cityBuilderTest();
+                        //DssRef.state.events.TestNextEvent();
+                        
                         //battleLineUpTest(true);
                     }
 
@@ -254,7 +257,7 @@ namespace VikingEngine.DSSWars.Players
 
             
 
-            //DssRef.detailMap.PlayerUpdate(mapControls.playerPointerPos, bUnitDetailLayer);
+            //DssRef.state.detailMap.PlayerUpdate(mapControls.playerPointerPos, bUnitDetailLayer);
             drawUnitsView.Update();
         }
 
@@ -316,9 +319,17 @@ namespace VikingEngine.DSSWars.Players
         }
 
 
+        void cityBuilderTest()
+        {
+            IntVector2 position = mapControls.subTilePosition;
+
+            var model = DssRef.models.ModelInstance( LootFest.VoxelModelName.city_tower24, WorldData.SubTileWidth * 1.4f, false);//1.4f
+            model.AddToRender(DrawGame.UnitDetailLayer);
+            model.position = WP.ToSubTilePos_Centered(position);
+           
+        }
 
 
-        
 
         void battleLineUpTest(bool friendly)
         {

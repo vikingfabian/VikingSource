@@ -13,6 +13,7 @@ namespace VikingEngine.DSSWars
         public bool halfSecond = false;
         float second = 0;
         int quarter = 0;
+        int minute = 0;
 
         public GameTime()
         {
@@ -39,7 +40,14 @@ namespace VikingEngine.DSSWars
                 { 
                     case 0: oneSecond = true; break;
                     case 1: halfSecond = true; break;
-                    case 2: oneSecond_part2 = true; break;
+                    case 2: 
+                        oneSecond_part2 = true;
+                        if (++minute >= 60)
+                        {
+                            minute = 0;
+                            DssRef.state.OneMinute_Update();
+                        }
+                        break;
                     case 3: halfSecond = true; break;
                 }                
             }

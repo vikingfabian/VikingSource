@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars.Players
 
         public Vector3 playerPointerPos = Vector3.Zero, mousePosition = Vector3.Zero;
         
-        public IntVector2 tilePosition;
+        public IntVector2 tilePosition, subTilePosition;
         public bool onNewTile = false;
 
         public Graphics.TopViewCamera camera;
@@ -143,6 +143,7 @@ namespace VikingEngine.DSSWars.Players
 
                     IntVector2 prevTile = tilePosition;
                     tilePosition = WP.ToTilePos(mousePosition);
+                    subTilePosition = WP.ToSubTilePos(mousePosition);
                     onNewTile = prevTile != tilePosition;
 
                     hover.begin(true);

@@ -711,9 +711,9 @@ namespace VikingEngine.LootFest.Map
                 " SIZE X:" + Size.X.ToString() + " SIZE Y:" + Size.Y.ToString() + " SIZE Z:" + Size.Z.ToString() + " }";
         }
 
-        public VectorVolume VolumeF
+        public VectorVolumeC VolumeF
         {
-            get { return new VectorVolume(CenterV3, HalfWidthV3); }
+            get { return new VectorVolumeC(CenterV3, HalfWidthV3); }
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Transactions;
 using VikingEngine.DataLib;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.Settings;
 
 namespace VikingEngine.DSSWars
 {
@@ -13,11 +14,12 @@ namespace VikingEngine.DSSWars
         public static Models models;
         public static InputMap input;
         public static WorldData world = null;
+        public static MapSettings map = null;
         public static Diplomacy diplomacy = null;
         public static Players.GameStorage storage;
         public static Achievements achieve = null;
         public static PlayState state;
-        public static Map.UnitDetailMap3 detailMap;
+        
         public static GameObject.AllUnits unitsdata;
         public static GameTime time;
         public static Display.Translation.AbsLanguage lang;

@@ -225,7 +225,7 @@ namespace VikingEngine.DSSWars.Map
                                     if (!adjInf.locked)
                                     {
                                         double length = (npos-city.tilePos).Length64();
-                                        int cost = world.tileGrid.Get(npos).terrain().influenceCost + adjInf.influence;
+                                        int cost = world.tileGrid.Get(npos).heightSett().influenceCost + adjInf.influence;
                                         cost += Convert.ToInt32(length * length) * 10;
 
                                         if (adjInf.city < 0 || cost < influence)

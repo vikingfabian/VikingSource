@@ -14,7 +14,7 @@ namespace VikingEngine.LootFest.GO.Bounds
         /// <summary>
         /// The radius of a square that surronds the whole bound shape, this is to make a quick and CPU cheap coll check
         /// </summary>
-        public VectorVolume outerBound; //Gör om så det bara finns outer bound scale V3
+        public VectorVolumeC outerBound; //Gör om så det bara finns outer bound scale V3
         public float inneSphereRadius;
 
         public float rotation;
@@ -83,10 +83,10 @@ namespace VikingEngine.LootFest.GO.Bounds
 
         abstract public BoundShape Type { get; }
 
-        public VectorVolume CenterScale {
+        public VectorVolumeC CenterScale {
             get
             {
-                return new VectorVolume(center, halfSize);
+                return new VectorVolumeC(center, halfSize);
             }
             set
             {

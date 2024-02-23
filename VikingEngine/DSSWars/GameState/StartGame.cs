@@ -17,6 +17,7 @@ namespace VikingEngine.DSSWars
         WorldDataStorage storage;
         int map_start_process_done = 0;
         MapBackgroundLoading loading;
+        PlayState state = null;
 
         public StartGame(NetworkLobby netLobby, MapBackgroundLoading loading)
             :base(false)
@@ -55,9 +56,9 @@ namespace VikingEngine.DSSWars
             loading.Update();
             loadingStatusText.TextString = loading.ProgressString();
 
-            if (loading.Complete())
+            if (loading.Complete() && state == null)
             {
-                new PlayState(true);
+                state = new PlayState(true);
             }
             //if (storage.loadComplete)
             //{

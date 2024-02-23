@@ -754,6 +754,12 @@
 #begin VoxelModel/LfWars/banner.vox
 /copy:VoxelModel/LfWars/banner.vox
 
+#begin VoxelModel/LfWars/city_tower24.vox
+/copy:VoxelModel/LfWars/city_tower24.vox
+
+#begin VoxelModel/LfWars/city_tower32.vox
+/copy:VoxelModel/LfWars/city_tower32.vox
+
 #begin VoxelModel/LfWars/citybanner.vox
 /copy:VoxelModel/LfWars/citybanner.vox
 
@@ -763,14 +769,29 @@
 #begin VoxelModel/LfWars/fo_stone1.vox
 /copy:VoxelModel/LfWars/fo_stone1.vox
 
-#begin VoxelModel/LfWars/fo_stone2.vox
-/copy:VoxelModel/LfWars/fo_stone2.vox
-
 #begin VoxelModel/LfWars/fo_tree1.vox
 /copy:VoxelModel/LfWars/fo_tree1.vox
 
 #begin VoxelModel/LfWars/fol_bush1.vox
 /copy:VoxelModel/LfWars/fol_bush1.vox
+
+#begin VoxelModel/LfWars/fol_herbs.vox
+/copy:VoxelModel/LfWars/fol_herbs.vox
+
+#begin VoxelModel/LfWars/fol_sprout.vox
+/copy:VoxelModel/LfWars/fol_sprout.vox
+
+#begin VoxelModel/LfWars/fol_stoneblock.vox
+/copy:VoxelModel/LfWars/fol_stoneblock.vox
+
+#begin VoxelModel/LfWars/fol_tallgrass.vox
+/copy:VoxelModel/LfWars/fol_tallgrass.vox
+
+#begin VoxelModel/LfWars/fol_tree_hard.vox
+/copy:VoxelModel/LfWars/fol_tree_hard.vox
+
+#begin VoxelModel/LfWars/fol_tree_soft.vox
+/copy:VoxelModel/LfWars/fol_tree_soft.vox
 
 #begin VoxelModel/LfWars/horse_brown.vox
 /copy:VoxelModel/LfWars/horse_brown.vox

@@ -11,7 +11,7 @@ namespace VikingEngine.LootFest
     {
         Graphics.Mesh img;
         float time = 2000;
-        public TerrainCollMarker(VectorVolume box)
+        public TerrainCollMarker(VectorVolumeC box)
             :base(true)
         {
 

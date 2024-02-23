@@ -59,5 +59,23 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string ProfileEditor_DiscardAndExitDescription { get; }
         public abstract string ProfileEditor_SaveAndExit { get; }
 
+
+        public abstract string Hud_TotalIncome { get; }
+
+        public abstract string Hud_Upkeep { get; }
+
+        public abstract string Hud_WorkForce { get; }
+
+        public abstract string Hud_GuardCount { get; }
+
+        public abstract string Hud_StrengthRating { get; }
+
+        public abstract string Hud_Immigrants { get; }
+
+        public abstract string Building_NobelHouse { get; }
+
+        public abstract string Building_DarkFactory { get; }
+
+
     }
 }

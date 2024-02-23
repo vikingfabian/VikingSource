@@ -556,6 +556,9 @@ namespace VikingEngine.LootFest
         armystand,
         cityicon,
 
+            city_tower24,
+
+
         horse_white, horse_brown,
         
         stupid_board,
@@ -656,10 +659,15 @@ namespace VikingEngine.LootFest
         little_evilcastle_towerN,
         little_evilcastle_towerS,
 
-        fo_tree1,
+        fol_tree_hard,
+        fol_tree_soft,
+        fol_sprout,
         fo_stone1,
-        fo_stone2,
         fol_bush1,
+        fol_stoneblock,
+        fol_tallgrass,
+        fol_herbs,
+
         #endregion
 
         NUM_NON

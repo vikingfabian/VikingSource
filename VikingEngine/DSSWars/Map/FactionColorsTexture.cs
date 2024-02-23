@@ -7,41 +7,27 @@ using VikingEngine.Graphics;
 namespace VikingEngine.DSSWars.Map
 {
 
-    class FactionColorsMap : Point3D
+    class FactionColorsTexture : Point3D
     {
         
         Graphics.Mesh model;
         Graphics.PixelTexture texture;
 
-        public FactionColorsMap(Vector3 pos, Vector3 scale)
+        public FactionColorsTexture(Vector3 pos, Vector3 scale)
             :base(Vector3.Zero, Vector3.Zero, false)
         {
-            
             texture = new Graphics.PixelTexture(DssRef.world.Size);
 
-            //Ref.draw.DontAddNextRenderObject();
-            //Graphics.TextureSource source = new Graphics.TextureSource(texture.Texture);
             Sprite source = new Sprite();
             source.SourceF = VectorRect.ZeroOne;
 
-            //const float SourceAdj = 1.6f;
-            //float radiusAdjX = SourceAdj / DssRef.world.Size.X;
-            //float radiusAdjY = SourceAdj / DssRef.world.Size.Y;
-
             source.SourceF.AddXRadius(-0.007f);
             source.SourceF.AddYRadius(-0.007f);
-
-            //source.SourceArea.Position.X += radiusAdjX;
-            //source.SourceArea.Position.Y += radiusAdjY;
-            //source.SourceArea.Size.X -= radiusAdjX * 2f;
-            //source.SourceArea.Size.Y -= radiusAdjY * 2f;
-
 
             model = new Graphics.Mesh(LoadedMesh.plane, VectorExt.SetY(pos, DssLib.OverviewMapYpos), scale, 
                 TextureEffectType.Flat, SpriteName.NO_IMAGE, Color.White, false);
             model.texture = texture;
             model.TextureSource = source;
-            //model.Y = RTSlib.OverviewMapYpos;
 
             Ref.draw.CurrentRenderLayer = DrawGame.MinimapLayer;
             Ref.draw.AddToRenderList(this);
@@ -56,7 +42,7 @@ namespace VikingEngine.DSSWars.Map
         }
         public void SetNewTexture()
         {
-            texture.ApplyPixelsToTexture();//.SetData();
+            texture.ApplyPixelsToTexture();
         }
 
         void updateArea(Rectangle2 area)

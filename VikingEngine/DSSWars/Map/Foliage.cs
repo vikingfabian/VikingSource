@@ -10,16 +10,22 @@ namespace VikingEngine.DSSWars.Map
         Graphics.AbsVoxelObj model;
         LootFest.VoxelModelName modelName;
         Vector3 pos;
+        float scale;
+        double randomFrame;
 
-        public Foliage(LootFest.VoxelModelName modelName, Vector3 pos)
+        public Foliage(LootFest.VoxelModelName modelName, double randomFrame, Vector3 pos, float scale)
         {
             this.modelName = modelName;
             this.pos = pos;
+            this.scale = scale;
+            this.randomFrame = randomFrame;
         }
 
         public void addToRender()
         {
-            model = DssRef.models.ModelInstance(modelName, 0.12f, false);
+            model = DssRef.models.ModelInstance(modelName, scale, false);
+            model.Frame = (int)(randomFrame * model.NumFrames);
+            
             model.AddToRender(DrawGame.UnitDetailLayer);
             model.position = pos;
         }
