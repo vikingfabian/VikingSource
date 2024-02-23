@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars.Map.Settings
         public int influenceCost;
 
         public float percTree = 0;
-
+        public bool isMountainPeek= false;
 
 
         public Height(int height)
@@ -192,6 +192,7 @@ namespace VikingEngine.DSSWars.Map.Settings
                     //        break;
                     //}
                     influenceCost = 100;
+                    isMountainPeek = true;
                     break;
 
                 default: throw new NotImplementedException();

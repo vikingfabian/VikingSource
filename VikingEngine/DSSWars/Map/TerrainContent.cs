@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using VikingEngine.DSSWars.Map.Settings;
 
 namespace VikingEngine.DSSWars.Map
 {
@@ -59,19 +60,17 @@ namespace VikingEngine.DSSWars.Map
 
         public static void createSubTileContent(int x, int y, 
             float distanceToCity,
-            Tile tile, 
+            Tile tile,
+            Height height,
+            Biom biom,
             ref IntervalF mudRadius,
             ref SubTile subTile, 
             WorldData world, 
             VikingEngine.EngineSpace.Maths.SimplexNoise2D noiseMap)
         {
-
-            var percTree = tile.heightSett().percTree;
-            if (percTree > 0)
+            if (tile.IsLand() && !height.isMountainPeek)
             {
-                
                 if (distanceToCity <= mudRadius.Max)
-                    
                 {
                     if (distanceToCity <= mudRadius.Min || world.rnd.Chance(0.5))
                     {
@@ -80,15 +79,55 @@ namespace VikingEngine.DSSWars.Map
                     }
                 }
 
-                float noise = noiseMap.OctaveNoise2D_Normal(4, 0.75f, 1, x, y);
-
-                if (noise < percTree && noise < world.rnd.Double(percTree * 2f))
+                if (world.rnd.Chance(0.6))
                 {
-                    int size = (int)((1.0 - Math.Min(noise, world.rnd.Double())) * TreeMaxSize);
+                    float stonenoise = noiseMap.OctaveNoise2D(4, 0.8f, 5, -x, y);
+                    if (stonenoise > 0.6f)
+                    {
+                        subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.StoneBlock, 1);
+                        return;
+                    }
+                    if (stonenoise < -0.5f)
+                    {
+                        subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.Stones, 1);
+                        return;
+                    }
 
-                    subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.TreeHard, size);
+                    float herbnoise = noiseMap.OctaveNoise2D(4, 0.8f, 5, x, -y);
+                    if (herbnoise > 0.6f)
+                    {
+                        subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.Herbs, 1);
+                        return;
+                    }
+                    if (herbnoise < -0.5f)
+                    {
+                        subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.Bush, 1);
+                        return;
+                    }
+
+                    float grassnoise = noiseMap.OctaveNoise2D(4, 0.8f, 5, -x, -y);
+                    if (grassnoise > 0.5f)
+                    {
+                        subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.TallGrass, 1);
+                        return;
+                    }
                 }
 
+
+                var percTree = height.percTree * biom.percTree;
+                if (percTree > 0)
+                {
+                    float treenoise = noiseMap.OctaveNoise2D_Normal(4, 0.75f, 1, x, y);
+
+                    if (treenoise < percTree && treenoise < world.rnd.Double(percTree * 2f))
+                    {
+                        int size = (int)((1.0 - Math.Min(treenoise, world.rnd.Double())) * TreeMaxSize);
+
+                        bool soft = world.rnd.Chance(biom.percSoftTree);
+                        subTile.SetType(TerrainMainType.Foil, (int)(soft? TerrainSubFoilType.TreeSoft : TerrainSubFoilType.TreeHard), size);
+                    }
+
+                }
             }
         }
     }
@@ -112,7 +151,10 @@ namespace VikingEngine.DSSWars.Map
         TreeHard,
         TreeSoft,
         Bush,
+        Herbs,
+        TallGrass,
         Stones,
+        StoneBlock,
         NUM
     }
 }

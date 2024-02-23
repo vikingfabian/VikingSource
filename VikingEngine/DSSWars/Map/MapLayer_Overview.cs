@@ -116,7 +116,7 @@ namespace VikingEngine.DSSWars.Map
                     Tile tile = DssRef.world.tileGrid.Get(pos);
                     if (tile.heightLevel != Height.DeepWaterHeight)
                     {
-                        Color terrainCol = DssRef.map.bioms.colors[(int)tile.biom].Color(tile).Color;
+                        Color terrainCol = DssRef.map.bioms.bioms[(int)tile.biom].Color(tile).Color;
                         //Tile.TerrainTypes[tile.biom, tile.heightLevel].color;
 
                         center.X = pos.X;

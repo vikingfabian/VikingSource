@@ -300,6 +300,11 @@ namespace VikingEngine.DSSWars.Map
             return DssRef.map.heigts[heightLevel];
         }
 
+        public Biom Biom()
+        {
+            return DssRef.map.bioms.bioms[(int)biom];
+        }
+
         Color cityColor
         {
             get

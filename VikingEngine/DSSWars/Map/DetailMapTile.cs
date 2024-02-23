@@ -19,16 +19,21 @@ namespace VikingEngine.DSSWars.Map
         static readonly IntervalF GrassCenterRange =
             IntervalF.FromCenter(0.5f * WorldData.SubTileWidth, 0.45f * WorldData.SubTileWidth);
 
-        const LootFest.VoxelModelName TreeFoliage = LootFest.VoxelModelName.fol_tree_hard;
-        const LootFest.VoxelModelName StoneFoliage = LootFest.VoxelModelName.fo_stone1;
+        //const LootFest.VoxelModelName TreeFoliage = LootFest.VoxelModelName.fol_tree_hard;
+        //const LootFest.VoxelModelName StoneFoliage = LootFest.VoxelModelName.fo_stone1;
 
         public static List<LootFest.VoxelModelName> LoadModel()
         {
             return new List<LootFest.VoxelModelName>
             {
-                TreeFoliage,
-                StoneFoliage,
-                 LootFest.VoxelModelName.fol_sprout,
+                LootFest.VoxelModelName.fol_tree_hard,
+                LootFest.VoxelModelName.fol_tree_soft,
+                LootFest.VoxelModelName.fo_stone1,
+                LootFest.VoxelModelName.fol_sprout,
+                LootFest.VoxelModelName.fol_tallgrass,
+                LootFest.VoxelModelName.fol_herbs,
+                LootFest.VoxelModelName.fol_bush1,
+                LootFest.VoxelModelName.fol_stoneblock,
             };
         }
 
@@ -160,7 +165,7 @@ namespace VikingEngine.DSSWars.Map
 
         void surfaceTexture(Tile tile, SubTile subTile, Vector2 subTopLeft)
         {
-            BiomColor biom = DssRef.map.bioms.colors[(int)tile.biom];
+            Biom biom = DssRef.map.bioms.bioms[(int)tile.biom];
             var col = biom.colors_height[tile.heightLevel];
 
             Vector3 center = new Vector3(
@@ -260,11 +265,27 @@ namespace VikingEngine.DSSWars.Map
 
             switch (type)
             {
+                case TerrainSubFoilType.TallGrass:
+                    modelName = LootFest.VoxelModelName.fol_tallgrass;
+                    break;
+                case TerrainSubFoilType.StoneBlock:
+                    modelName = LootFest.VoxelModelName.fol_stoneblock;
+                    break;
+                case TerrainSubFoilType.Bush:
+                    modelName = LootFest.VoxelModelName.fol_bush1;
+                    break;
+                case TerrainSubFoilType.Herbs:
+                    modelName = LootFest.VoxelModelName.fol_herbs;
+                    break;
                 case TerrainSubFoilType.Stones:
-                    modelName = StoneFoliage;
+                    modelName = LootFest.VoxelModelName.fo_stone1;
                     break;
                 case TerrainSubFoilType.TreeHard:
-                    modelName = TreeFoliage;
+                    modelName = LootFest.VoxelModelName.fol_tree_hard;
+                    scale = 0.03f + 0.0012f * sizeValue;
+                    break;
+                case TerrainSubFoilType.TreeSoft:
+                    modelName = LootFest.VoxelModelName.fol_tree_soft;
                     scale = 0.03f + 0.0012f * sizeValue;
                     break;
                 case TerrainSubFoilType.TreeHardSprout:

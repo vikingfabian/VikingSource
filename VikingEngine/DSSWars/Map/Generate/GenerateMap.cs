@@ -861,7 +861,6 @@ namespace VikingEngine.DSSWars.Map.Generate
             int partWidth = world.Size.X / ProcessSubTileParts;
             int startX = partWidth * part;
             int endX = startX + partWidth;
-
             
             for (int loopy = 0; loopy < world.Size.Y; ++loopy)
             {
@@ -876,8 +875,8 @@ namespace VikingEngine.DSSWars.Map.Generate
                     float distanceToCity = VectorExt.Length(cityPos.X - loopx, cityPos.Y - loopy);
                     IntervalF mudRadius = citySizeToMudRadius[(int)city.CityType];
 
-                    Height h = DssRef.map.heigts[tile.heightLevel];
-                    BiomColor biom = DssRef.map.bioms.colors[(int)tile.biom];
+                    Height heightSett = DssRef.map.heigts[tile.heightLevel];
+                    Biom biom = DssRef.map.bioms.bioms[(int)tile.biom];
 
                     TerrainMainType tileType = tile.IsLand() ? TerrainMainType.DefaultLand : TerrainMainType.DefaultSea;
                     
@@ -954,18 +953,18 @@ namespace VikingEngine.DSSWars.Map.Generate
                             rndColor = ColorExt.ChangeBrighness(rndColor, 10);
                         }
 
-                        if (world.rnd.Chance(h.groundYoffsetChance))
+                        if (world.rnd.Chance(heightSett.groundYoffsetChance))
                         {
-                            topY += world.rnd.Plus_MinusF(h.groundYoffset);
+                            topY += world.rnd.Plus_MinusF(heightSett.groundYoffset);
                         }
 
-                        if (h.mountainPeak != null)
+                        if (heightSett.mountainPeak != null)
                         {
-                            topY += h.mountainPeak[x, y];
+                            topY += heightSett.mountainPeak[x, y];
                         }
 
                         var subTile = new SubTile(tiletype, rndColor, topY);
-                        TerrainContent.createSubTileContent(subX, subY, distanceToCity, tile, ref mudRadius, ref subTile, world, noiseMap);
+                        TerrainContent.createSubTileContent(subX, subY, distanceToCity, tile, heightSett, biom, ref mudRadius, ref subTile, world, noiseMap);
 
                         world.subTileGrid.Set(subX, subY, subTile);
 

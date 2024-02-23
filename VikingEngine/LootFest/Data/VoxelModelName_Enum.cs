@@ -663,8 +663,11 @@ namespace VikingEngine.LootFest
         fol_tree_soft,
         fol_sprout,
         fo_stone1,
-        fo_stone2,
         fol_bush1,
+        fol_stoneblock,
+        fol_tallgrass,
+        fol_herbs,
+
         #endregion
 
         NUM_NON

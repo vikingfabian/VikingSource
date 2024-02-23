@@ -7,65 +7,74 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.Map.Settings
 {
-    class Bioms
+    class WorldBioms
     {
-        public BiomColor[] colors = new BiomColor[(int)BiomType.NUM];
-        public Bioms()
+        public Biom[] bioms = new Biom[(int)BiomType.NUM];
+        public WorldBioms()
         {
-            colors[(int)BiomType.WetGreen] = new BiomColor(
+            bioms[(int)BiomType.WetGreen] = new Biom(
                 new TileColor( new Color(113, 123, 31), SurfaceTextureType.Grass),
 
                 new TileColor(new Color(208,207,148), SurfaceTextureType.Sand),
                 new TileColor(new Color(40, 43, 19), SurfaceTextureType.None), 
-                new TileColor(new Color(75, 76, 73), SurfaceTextureType.None)
+                new TileColor(new Color(75, 76, 73), SurfaceTextureType.None),
+                1.1f, 0.6f
                 );
 
-            colors[(int)BiomType.Green] = new BiomColor(
+            bioms[(int)BiomType.Green] = new Biom(
                 new TileColor(new Color(104,146,70), SurfaceTextureType.Grass),
 
                 new TileColor(new Color(255,254,181), SurfaceTextureType.Sand),
                 new TileColor(new Color(8, 71, 6), SurfaceTextureType.None), 
-                new TileColor(new Color(73, 76, 73), SurfaceTextureType.None)
+                new TileColor(new Color(73, 76, 73), SurfaceTextureType.None),
+                1f, 0.25f
                 );
 
-            colors[(int)BiomType.YellowDry] = new BiomColor(
+            bioms[(int)BiomType.YellowDry] = new Biom(
                 new TileColor(new Color(171,162,54), SurfaceTextureType.Sand), 
 
                 new TileColor(new Color(255,237,130), SurfaceTextureType.Sand), 
                 new TileColor(new Color(80, 60, 2), SurfaceTextureType.None), 
-                new TileColor(new Color(81, 79, 68), SurfaceTextureType.None)
+                new TileColor(new Color(81, 79, 68), SurfaceTextureType.None),
+                0.6f, 0
                 );
 
-            colors[(int)BiomType.RedDry] = new BiomColor(
+            bioms[(int)BiomType.RedDry] = new Biom(
                 new TileColor(new Color(171,120,54), SurfaceTextureType.Sand),  
 
                new TileColor(new Color(255,220,130), SurfaceTextureType.Sand),
                 new TileColor(new Color(60, 33, 9), SurfaceTextureType.None), 
-                new TileColor(new Color(90, 79, 65), SurfaceTextureType.None)
+                new TileColor(new Color(90, 79, 65), SurfaceTextureType.None),
+                0.75f, 0
                 );
 
-            colors[(int)BiomType.Frozen] = new BiomColor(
+            bioms[(int)BiomType.Frozen] = new Biom(
                 new TileColor(new Color(86, 109, 83), SurfaceTextureType.Grass), 
 
                 new TileColor(new Color(197, 242, 242), SurfaceTextureType.Sand), 
                 new TileColor(new Color(40, 53, 47), SurfaceTextureType.None), 
-                new TileColor(new Color(97, 114, 114), SurfaceTextureType.None)
+                new TileColor(new Color(97, 114, 114), SurfaceTextureType.None),
+                1.3f, 0.8f
                 );
         }
     }
 
-    class BiomColor
+    class Biom
     {
-        const int Variants = 3;
         const int MainColorHeight = 4;
         public TileColor[] colors_height = new TileColor[Height.MaxHeight+1];
         public TileColor brightCoast;
+        public float percTree;
+        public float percSoftTree;
 
         public SurfaceTextureType textureType = SurfaceTextureType.None;
 
-        public BiomColor(TileColor mainCol, 
-            TileColor brightCoast, TileColor darkGradient, TileColor mountain)
+        public Biom(TileColor mainCol, 
+            TileColor brightCoast, TileColor darkGradient, TileColor mountain,
+            float percTree, float percSoftTree)
         {
+            this.percTree = percTree;
+            this.percSoftTree = percSoftTree;
             this.brightCoast = brightCoast;
             //Under water coastal color
             for (int height = 0; height <= Height.LowWaterHeight; height++)

@@ -16,13 +16,13 @@ namespace VikingEngine.DSSWars.Map.Settings
         //static readonly Color SeaBottomCol = new Color(253, 198, 137);
 
         public Height[] heigts;
-        public Bioms bioms;
+        public WorldBioms bioms;
 
         public MapSettings()
         {
             DssRef.map = this;
 
-            bioms = new Bioms();
+            bioms = new WorldBioms();
             heigts = new Height[Height.MaxHeight + 1];
 
             for (int height = 0; height <= Height.MaxHeight; ++height)
