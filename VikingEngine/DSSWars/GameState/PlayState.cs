@@ -106,7 +106,12 @@ namespace VikingEngine.DSSWars
                 var startFaction = DssRef.world.getNextFreeFaction(i == 0);
                 var local = new Players.LocalPlayer(startFaction, i, playerCount);
                 localPlayers.Add(local);
-            }            
+            }
+
+            for (var i = 0; i < playerCount; ++i)
+            {
+                localPlayers[i].initPlayerToPlayer(i, playerCount);
+            }
         }
 
         void onGameStart()

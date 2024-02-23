@@ -482,7 +482,7 @@ namespace VikingEngine.DSSWars.Players
 
             //playerPointerPos += VectorExt.V2toV3XZ(player.input.move.directionAndTime * panSpeed);
             panCamera(VectorExt.V2toV3XZ(-player.input.move.directionAndTime * panSpeed));
-            if (!player.hud.displays.mouseOver() && !controllerInput)
+            if (!player.hud.hudMouseOver() && !controllerInput)
             {
                 if (hasMouseMapMoveInput())
                 {

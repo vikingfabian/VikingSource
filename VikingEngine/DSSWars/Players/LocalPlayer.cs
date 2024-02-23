@@ -62,14 +62,19 @@ namespace VikingEngine.DSSWars.Players
 
             Ref.draw.AddPlayerScreen(playerData);
             drawUnitsView = new MapDetailLayerManager(playerData);
-            
+
             menuSystem = new GameMenuSystem(input, IsLocalHost());
 
             new AsynchUpdateable(interactAsynchUpdate, "DSS player interact", 0);
 
             refreshNeihgborAggression();
-
             toPlayerDiplomacies = new PlayerToPlayerDiplomacy[numPlayers];
+            //initPlayerToPlayer(playerindex, numPlayers);
+        }
+
+        public void initPlayerToPlayer(int playerindex, int numPlayers)
+        {
+            
             for (int i = 0; i < numPlayers; i++)
             {
                 if (i != playerindex)

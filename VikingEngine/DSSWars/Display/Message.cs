@@ -1,7 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.VisualBasic;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using VikingEngine.DSSWars.Players;
+using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Network;
 
@@ -13,9 +16,10 @@ namespace VikingEngine.DSSWars.Display
         public RichboxGuiSettings settings;
 
         List<Message> messages = new List<Message>();
-
-        public MessageGroup(RichboxGuiSettings settings)
+        LocalPlayer player;
+        public MessageGroup(LocalPlayer player, RichboxGuiSettings settings)
         {
+            this.player = player;   
             this.settings = settings;
         }
 
@@ -34,7 +38,7 @@ namespace VikingEngine.DSSWars.Display
 
         public void Add(RichBoxContent content)
         {
-            messages.Insert(0, new Message(content, settings));
+            messages.Insert(0, new Message(player, content, settings));
             UpdatePositions();
         }
 
@@ -48,6 +52,11 @@ namespace VikingEngine.DSSWars.Display
 
             if (messages.Count > 0)
             {
+                foreach (var message in messages)
+                {
+                    message.update();
+                }
+
                 if (messages.Last().time.secPassed(20))
                 {
                     arraylib.PullLastMember(messages).DeleteMe();
@@ -63,9 +72,22 @@ namespace VikingEngine.DSSWars.Display
                 foreach (var message in messages)
                 {
                     currentPos.Y += settings.edgeWidth * 2f;
-                    currentPos = message.Update(currentPos);                    
+                    currentPos = message.UpdatePoisitions(currentPos);                    
                 }
             }
+        }
+
+        public bool mouseOver()
+        {
+            foreach (var p in messages)
+            {
+                if (p.mouseOver())
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 
@@ -77,8 +99,9 @@ namespace VikingEngine.DSSWars.Display
         public VectorRect area;
         public TimeStamp time;
         Vector2 contentOffset;
+        RbInteraction interaction;
 
-        public Message(RichBoxContent content, RichboxGuiSettings settings)
+        public Message(LocalPlayer player, RichBoxContent content, RichboxGuiSettings settings)
         {
             richBox = new RichBoxGroup(Vector2.Zero,
             settings.width, settings.contentLayer, settings.RbSettings, content, true, true, false);
@@ -90,20 +113,34 @@ namespace VikingEngine.DSSWars.Display
             contentOffset = new Vector2(settings.edgeWidth);
 
             area.AddRadius(settings.edgeWidth);
-
             time = TimeStamp.Now();
+            interaction = new RbInteraction(content, settings.contentLayer,
+                    player.input.RichboxGuiSelect);
         }
 
-        public Vector2 Update(Vector2 position)
+        public Vector2 UpdatePoisitions(Vector2 position)
         {
             area.Position = position;
             bg.Area = area;
             richBox.SetOffset(area.Position + contentOffset);
+                       
+
             return area.LeftBottom;
+        }
+
+        public void update()
+        { 
+            interaction.update();
+        }
+
+        public bool mouseOver()
+        {
+            return bg.Area.IntersectPoint(Input.Mouse.Position);
         }
 
         public void DeleteMe()
         {
+            interaction.DeleteMe();
             bg.DeleteMe();
             richBox.DeleteAll();
         }

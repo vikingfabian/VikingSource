@@ -66,7 +66,7 @@ namespace VikingEngine.DSSWars
             bool overHud = false;
             if (player.input.inputSource.HasMouse)
             {
-                overHud = player.hud.displays.mouseOver();
+                overHud = player.hud.hudMouseOver();
             }
             else 
             {

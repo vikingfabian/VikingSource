@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars.Display
         {
             this.player = player;
             displays = new GameHudDisplays(player);
-            messages = new MessageGroup(HudLib.richboxGui);
+            messages = new MessageGroup(player, HudLib.richboxGui);
             tooltip = new Tooltip();
         }
 
@@ -59,7 +59,7 @@ namespace VikingEngine.DSSWars.Display
             if ( player.input.inputSource.HasMouse)
             {
                 needRefresh |= displays.update();
-                mouseOver = displays.mouseOver();
+                mouseOver = hudMouseOver();
             }
 
             if (displays.menuStateHasChange)
@@ -133,6 +133,11 @@ namespace VikingEngine.DSSWars.Display
                     displays.objectDisplay.refresh(player, obj, selected, pos);
                 }
             }
+        }
+
+        public bool hudMouseOver()
+        {
+            return displays.mouseOver() || messages.mouseOver();
         }
     }
     enum HudDetailLevel
