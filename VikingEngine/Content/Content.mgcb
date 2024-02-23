@@ -754,6 +754,12 @@
 #begin VoxelModel/LfWars/banner.vox
 /copy:VoxelModel/LfWars/banner.vox
 
+#begin VoxelModel/LfWars/city_tower24.vox
+/copy:VoxelModel/LfWars/city_tower24.vox
+
+#begin VoxelModel/LfWars/city_tower32.vox
+/copy:VoxelModel/LfWars/city_tower32.vox
+
 #begin VoxelModel/LfWars/citybanner.vox
 /copy:VoxelModel/LfWars/citybanner.vox
 

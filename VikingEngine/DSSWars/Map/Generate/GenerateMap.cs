@@ -856,7 +856,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         void processSubTiles(int part)
         {
-            const int WidthMin1 = WorldData.SubTileWidth - 1;
+            const int WidthMin1 = WorldData.TileSubDivitions - 1;
 
             int partWidth = world.Size.X / ProcessSubTileParts;
             int startX = partWidth * part;
@@ -865,10 +865,10 @@ namespace VikingEngine.DSSWars.Map.Generate
             
             for (int loopy = 0; loopy < world.Size.Y; ++loopy)
             {
-                int supTileStartY = loopy * WorldData.SubTileWidth;
+                int supTileStartY = loopy * WorldData.TileSubDivitions;
                 for (int loopx = startX; loopx < endX; ++loopx)
                 {
-                    int supTileStartX = loopx * WorldData.SubTileWidth;
+                    int supTileStartX = loopx * WorldData.TileSubDivitions;
 
                     Tile tile = world.tileGrid.array[loopx, loopy];
                     var city = world.cities[tile.CityIndex];

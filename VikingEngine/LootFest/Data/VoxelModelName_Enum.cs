@@ -556,6 +556,9 @@ namespace VikingEngine.LootFest
         armystand,
         cityicon,
 
+            city_tower24,
+
+
         horse_white, horse_brown,
         
         stupid_board,

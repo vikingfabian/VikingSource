@@ -10,14 +10,14 @@ namespace VikingEngine.DSSWars.Map
     class DetailMapTile
     {
         static readonly IntervalF FoliageCenterRange = 
-            IntervalF.FromCenter(0.5f * WorldData.SubTileSz.X, 0.2f * WorldData.SubTileSz.X);
+            IntervalF.FromCenter(0.5f * WorldData.SubTileWidth, 0.2f * WorldData.SubTileWidth);
 
-        static readonly Vector2 GrassSize = new Vector2(0.03f, 0.11f) * WorldData.SubTileSz;
+        static readonly Vector2 GrassSize = new Vector2(0.03f, 0.11f) * WorldData.SubTileWidth;
 
-        static readonly Vector2 SandSize = new Vector2(0.03f) * WorldData.SubTileSz;
+        static readonly Vector2 SandSize = new Vector2(0.03f) * WorldData.SubTileWidth;
 
         static readonly IntervalF GrassCenterRange =
-            IntervalF.FromCenter(0.5f * WorldData.SubTileSz.X, 0.45f * WorldData.SubTileSz.X);
+            IntervalF.FromCenter(0.5f * WorldData.SubTileWidth, 0.45f * WorldData.SubTileWidth);
 
         const LootFest.VoxelModelName TreeFoliage = LootFest.VoxelModelName.fol_tree_hard;
         const LootFest.VoxelModelName StoneFoliage = LootFest.VoxelModelName.fo_stone1;
@@ -68,11 +68,11 @@ namespace VikingEngine.DSSWars.Map
             DssRef.state.detailMap.polygons.Clear();
 
             Vector2 topLeft = VectorExt.V2NegHalf;
-            IntVector2 subTileStart = pos * WorldData.SubTileWidth;
+            IntVector2 subTileStart = pos * WorldData.TileSubDivitions;
 
-            for (int y = 0; y < WorldData.SubTileWidth; ++y)
+            for (int y = 0; y < WorldData.TileSubDivitions; ++y)
             {
-                for (int x = 0; x < WorldData.SubTileWidth; ++x)
+                for (int x = 0; x < WorldData.TileSubDivitions; ++x)
                 {
                     int subX = subTileStart.X + x;
                     int subY = subTileStart.Y + y;
@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars.Map
                     rnd.SetSeed(subX * 3 + subY * 11);
 
                     SubTile subTile = DssRef.world.subTileGrid.Get(subX, subY);
-                    Vector2 subTopLeft = new Vector2(topLeft.X + x * WorldData.SubTileSz.X, topLeft.Y + y * WorldData.SubTileSz.Y);
+                    Vector2 subTopLeft = new Vector2(topLeft.X + x * WorldData.SubTileWidth, topLeft.Y + y * WorldData.SubTileWidth);
                     
                     block(subTopLeft, ref subTile);
 
@@ -108,7 +108,7 @@ namespace VikingEngine.DSSWars.Map
             {
                 var top = Graphics.PolygonColor.QuadXZ(
                     subTopLeft,
-                    WorldData.SubTileSz, false, subTile.groundY,
+                    WorldData.SubTileWidthV2, false, subTile.groundY,
                     subTile.mainTerrain == TerrainMainType.Foil ? SpriteName.warsFoliageShadow : SpriteName.WhiteArea_LFtiles,
                     Dir4.N,
                     subTile.color);

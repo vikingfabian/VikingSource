@@ -74,6 +74,8 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.war_town_factory, false);
             loadVoxelModel(VoxelModelName.war_workerhut, false);
 
+            loadVoxelModel(VoxelModelName.city_tower24, false);
+
             loadVoxelModel(VoxelModelName.Arrow, true);
             loadVoxelModel(VoxelModelName.little_javelin, true);
             loadVoxelModel(VoxelModelName.little_boltarrow, true);
