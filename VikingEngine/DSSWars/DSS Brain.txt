@@ -1,6 +1,5 @@
 ﻿Change Log
--Cities can be upgraded 3 times
--Automation (kinda untested and experimental)
+
 
 Error
 
