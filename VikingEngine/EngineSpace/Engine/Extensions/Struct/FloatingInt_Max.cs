@@ -62,9 +62,17 @@ namespace VikingEngine
         public bool HasValue()
         { return value >= 1.0; }
 
+
+        public bool IsMax()
+        {
+            return value >= max;
+        }
+
         public override string ToString()
         {
             return Int().ToString() + " / " + max.ToString();
         }
+
+
     }
 }

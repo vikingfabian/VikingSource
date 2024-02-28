@@ -107,4 +107,26 @@ namespace VikingEngine.HUD.RichBox
             }
         }
     }
+
+    class RbAction_ChangeInt : AbsRbAction
+    {
+        Action refreshCAllback;
+        IntGetSetIx property;
+        int propertyIx;
+        int add;
+        public RbAction_ChangeInt(IntGetSetIx property, int propertyIx, int add, Action refreshCAllback)
+        {
+            this.refreshCAllback= refreshCAllback;
+            this.property = property;
+            this.propertyIx = propertyIx; 
+            this.add = add;
+        }
+        public override void actionTrigger()
+        {
+            int value = property(propertyIx, false, 0);
+            property(propertyIx, true, value + add);
+
+            refreshCAllback.Invoke();
+        }
+    }
 }

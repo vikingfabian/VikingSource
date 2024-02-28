@@ -51,7 +51,6 @@ namespace VikingEngine.DSSWars.GameObject
         public CityDetail detailObj;
         public List<CityPurchaseOption> cityPurchaseOptions;
         
-
         public float ai_armyDefenceValue = 0;
         public bool nobelHouse = false;
 
@@ -439,7 +438,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             int maxFit = MathExt.MultiplyInt(0.8, CityDetail.WorkersPerTile * CityDetail.HutMaxLevel * areaSize);
-            maxEpandWorkSize = workForce.max + ExpandWorkForce;//Bound.Max(workForce.max * 2 + MathExt.MultiplyInt(0.2, maxFit), maxFit);
+            maxEpandWorkSize = Bound.Max(workForce.max + ExpandWorkForce * 3, maxFit); //Bound.Max(workForce.max * 2 + MathExt.MultiplyInt(0.2, maxFit), maxFit);
         }
 
         void refreshCitySize()
@@ -525,6 +524,11 @@ namespace VikingEngine.DSSWars.GameObject
             return !nobelHouse &&
                 workForce.value >= DssLib.NobelHouseWorkForceReqiurement &&
                 faction.gold >= DssLib.NobelHouseCost;
+        }
+
+        public bool canEverGetNobelHouse()
+        {
+            return maxEpandWorkSize >= DssLib.NobelHouseWorkForceReqiurement;
         }
 
         public void buyNobelHouseAction()
@@ -867,6 +871,19 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
             return false;
+        }
+
+        public bool HasUnitPurchaseOption(UnitType type)
+        {
+            foreach (var m in cityPurchaseOptions)
+            {
+                if (m.unitType == type)
+                {
+                    return m.available;
+                }
+            }
+
+            return false;   
         }
 
         public override void setFaction(Faction faction)

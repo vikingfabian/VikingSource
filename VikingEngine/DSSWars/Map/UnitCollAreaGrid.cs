@@ -487,12 +487,12 @@ namespace VikingEngine.DSSWars.Map
             grid.Get(areaPos).cities.Add(city);
         }
 
-        public void remove(GameObject.City city)
-        {
-            IntVector2 areaPos = city.tilePos / UnitGridSquareWidth;
+        //public void remove(GameObject.City city)
+        //{
+        //    IntVector2 areaPos = city.tilePos / UnitGridSquareWidth;
 
-            grid.Get(areaPos).cities.Remove(city);
-        }
+        //    grid.Get(areaPos).cities.Remove(city);
+        //}
 
         public GameObject.City closestCity(IntVector2 tilePos)
         {

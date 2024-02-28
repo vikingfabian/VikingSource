@@ -10,13 +10,16 @@ namespace VikingEngine.HUD.RichBox
 {
     class RichboxButton : AbsRichBoxMember
     {
-        public AbsRbAction click, enter;
-        List<AbsRichBoxMember> content;
+        protected AbsRbAction click, enter;
+        protected List<AbsRichBoxMember> content;
         Graphics.Image bgPointer;
         public bool enabled;
 
         public Input.IButtonMap buttonMap = null;
         public Color? overrideBgColor;
+
+        public RichboxButton()
+        { }
 
         public RichboxButton(List<AbsRichBoxMember> content, AbsRbAction click, AbsRbAction enter = null, bool enabled = true, Color? overrideBgColor = null)
         {
@@ -48,6 +51,9 @@ namespace VikingEngine.HUD.RichBox
             group.parentMember.Push(this);
 
             group.position.X += 4;
+
+            createPreContent(group);
+
             foreach (var m in content)
             {
                 m.Create(group);
@@ -87,10 +93,22 @@ namespace VikingEngine.HUD.RichBox
             group.buttonGrid_Y_X.Last().Add(this);
         }
 
+        virtual protected void createPreContent(RichBoxGroup group)
+        { }
+
         public VectorRect area()
         {
             return bgPointer.Area;
         }
 
+        public override void onClick()
+        {
+            click?.actionTrigger();
+        }
+
+        public override void onEnter()
+        {
+            enter?.actionTrigger();
+        }
     }
 }

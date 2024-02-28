@@ -37,6 +37,7 @@ namespace VikingEngine.DSSWars.Players
         public int warsStarted = 0;
 
         public PlayerToPlayerDiplomacy[] toPlayerDiplomacies = null;
+        public Automation automation;
 
         public LocalPlayer(Faction faction, int playerindex, int numPlayers)
             :base(faction)
@@ -52,6 +53,7 @@ namespace VikingEngine.DSSWars.Players
             faction.displayInFullOverview = true;
 
             hud = new GameHud(this);
+            automation = new Automation(this);
 
             playerData = Engine.XGuide.GetPlayer(playerindex);
             playerData.Tag = this;
@@ -269,6 +271,8 @@ namespace VikingEngine.DSSWars.Players
         public void asyncUserUpdate()
         {
             diplomacyMap?.asynchUpdate();
+
+            automation.asyncUpdate();
         }
 
         void updateDiplomacy()
@@ -534,6 +538,8 @@ namespace VikingEngine.DSSWars.Players
                 diplomaticPoints.max = 10;
                 diplomaticPoints.value = 10;
             }
+
+            automation.oneSecondUpdate();
         }
 
         public bool IsLocalHost()
