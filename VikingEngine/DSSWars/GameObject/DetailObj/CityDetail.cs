@@ -441,9 +441,9 @@ namespace VikingEngine.DSSWars.GameObject
 
             this.bound = new Physics.RectangleBound(city.WorldPositionXZ(), new Vector2(0.5f));
 
-            model = DssRef.models.ModelInstance(detailmodelName, 1f, false);
-            model.AddToRender(DrawGame.UnitDetailLayer);
-            model.position = city.position;
+            //model = DssRef.models.ModelInstance(detailmodelName, 1f, false);
+            //model.AddToRender(DrawGame.UnitDetailLayer);
+            //model.position = city.position;
 
             bannerModel = city.faction.AutoLoadModelInstance(
                BannerModelName, 0.6f);
@@ -462,7 +462,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void DeleteMe()
         {
-            base.DeleteMe();
+            //base.DeleteMe();
             bannerModel.DeleteMe();
         }
     }

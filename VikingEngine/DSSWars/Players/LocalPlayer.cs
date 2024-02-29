@@ -330,11 +330,11 @@ namespace VikingEngine.DSSWars.Players
 
         void cityBuilderTest()
         {
-            IntVector2 position = mapControls.subTilePosition;
+            //IntVector2 position = mapControls.subTilePosition;
 
-            var model = DssRef.models.ModelInstance( LootFest.VoxelModelName.city_tower24, WorldData.SubTileWidth * 1.4f, false);//1.4f
-            model.AddToRender(DrawGame.UnitDetailLayer);
-            model.position = WP.ToSubTilePos_Centered(position);
+            //var model = DssRef.models.ModelInstance( LootFest.VoxelModelName.city_tower24, WorldData.SubTileWidth * 1.4f, false);//1.4f
+            //model.AddToRender(DrawGame.UnitDetailLayer);
+            //model.position = WP.ToSubTilePos_Centered(position);
            
         }
 
