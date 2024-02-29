@@ -146,7 +146,11 @@ namespace VikingEngine.DSSWars.Players
                                 {
                                     const int RecruitChunk = 5;
                                     var army = citiesC.sel.recruitToClosestArmy();
-                                    var typeCount = army.Status().getTypeCounts();
+                                    Dictionary<UnitType, int> typeCount = null;
+                                    if (army != null)
+                                    {
+                                        typeCount = army.Status().getTypeCounts();
+                                    }
 
                                     for (int maxCount = RecruitChunk; maxCount <= 100; maxCount += RecruitChunk)
                                     {
@@ -161,7 +165,10 @@ namespace VikingEngine.DSSWars.Players
                                             {
                                                 
                                                 int current = 0;
-                                                typeCount.TryGetValue(unitType, out current);
+                                                if (typeCount != null)
+                                                {
+                                                    typeCount.TryGetValue(unitType, out current);
+                                                }
 
                                                 if (current < recruitCount)
                                                 {
