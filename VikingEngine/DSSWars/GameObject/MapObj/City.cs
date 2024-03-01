@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DataStream;
@@ -339,7 +340,7 @@ namespace VikingEngine.DSSWars.GameObject
             workForce.max += amount;
             refreshCitySize();
 
-            detailObj.updateWorkerModels();
+            detailObj.refreshWorkerSubtiles();//updateWorkerModels();
         }
 
         public void expandGuardSize(int amount)
@@ -472,7 +473,11 @@ namespace VikingEngine.DSSWars.GameObject
                 if (newType != CityType)
                 {
                     CityType = newType;
-                    detailObj.refreshModel();
+                    //detailObj.refreshModel();
+                    Task.Factory.StartNew(() =>
+                    {
+                        createBuildingSubtiles(DssRef.world);
+                    });
 
                     if (overviewModel != null)
                     {

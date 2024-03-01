@@ -811,6 +811,9 @@
 #begin VoxelModel/LfWars/fol_bush1.vox
 /copy:VoxelModel/LfWars/fol_bush1.vox
 
+#begin VoxelModel/LfWars/fol_farmculture.vox
+/copy:VoxelModel/LfWars/fol_farmculture.vox
+
 #begin VoxelModel/LfWars/fol_herbs.vox
 /copy:VoxelModel/LfWars/fol_herbs.vox
 

@@ -678,6 +678,7 @@ namespace VikingEngine.LootFest
         fol_stoneblock,
         fol_tallgrass,
         fol_herbs,
+        fol_farmculture,
 
         #endregion
 

@@ -157,6 +157,7 @@ namespace VikingEngine.DSSWars.Map
         TallGrass,
         Stones,
         StoneBlock,
+        FarmCulture,
         NUM
     }
 

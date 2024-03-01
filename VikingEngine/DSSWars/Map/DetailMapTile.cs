@@ -31,6 +31,7 @@ namespace VikingEngine.DSSWars.Map
                 LootFest.VoxelModelName.fol_herbs,
                 LootFest.VoxelModelName.fol_bush1,
                 LootFest.VoxelModelName.fol_stoneblock,
+                LootFest.VoxelModelName.fol_farmculture,
             };
         }
 
@@ -298,6 +299,10 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainSubFoilType.TreeHardSprout:
                     modelName = LootFest.VoxelModelName.fol_sprout;
                     scale = 0.05f + 0.01f * sizeValue;
+                    break;
+                case TerrainSubFoilType.FarmCulture:
+                    scale = 0.1f;
+                    modelName = LootFest.VoxelModelName.fol_farmculture;
                     break;
                 default:
                     throw new NotImplementedException();
