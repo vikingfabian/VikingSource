@@ -19,9 +19,6 @@ namespace VikingEngine.DSSWars.Map
         static readonly IntervalF GrassCenterRange =
             IntervalF.FromCenter(0.5f * WorldData.SubTileWidth, 0.45f * WorldData.SubTileWidth);
 
-        //const LootFest.VoxelModelName TreeFoliage = LootFest.VoxelModelName.fol_tree_hard;
-        //const LootFest.VoxelModelName StoneFoliage = LootFest.VoxelModelName.fo_stone1;
-
         public static List<LootFest.VoxelModelName> LoadModel()
         {
             return new List<LootFest.VoxelModelName>
@@ -34,6 +31,7 @@ namespace VikingEngine.DSSWars.Map
                 LootFest.VoxelModelName.fol_herbs,
                 LootFest.VoxelModelName.fol_bush1,
                 LootFest.VoxelModelName.fol_stoneblock,
+                LootFest.VoxelModelName.fol_farmculture,
             };
         }
 
@@ -93,11 +91,13 @@ namespace VikingEngine.DSSWars.Map
 
                     if (subTile.mainTerrain == TerrainMainType.Foil)
                     {
-                        Vector3 topCenter = new Vector3(
-                            pos.X + subTopLeft.X,
-                            subTile.groundY,
-                            pos.Y + subTopLeft.Y);
-                        createFoliage((TerrainSubFoilType)subTile.subTerrain, subTile.terrainValue, topCenter);
+                        createFoliage((TerrainSubFoilType)subTile.subTerrain, subTile.terrainValue, 
+                            topCenter(ref subTile, ref subTopLeft));
+                    }
+                    else if (subTile.mainTerrain == TerrainMainType.Building)
+                    {
+                        createBuilding((TerrainBuildingType)subTile.subTerrain, 
+                            topCenter(ref subTile, ref subTopLeft));
                     }
 
                     DssRef.world.subTileGrid.Set(
@@ -161,6 +161,14 @@ namespace VikingEngine.DSSWars.Map
                 DssRef.state.detailMap.polygons.Add(left);
                 DssRef.state.detailMap.polygons.Add(right);
             }
+
+            Vector3 topCenter(ref SubTile subTile, ref Vector2 subTopLeft)
+            {
+               return new Vector3(
+                    pos.X + subTopLeft.X,
+                    subTile.groundY,
+                    pos.Y + subTopLeft.Y);
+            }
         }
 
         void surfaceTexture(Tile tile, SubTile subTile, Vector2 subTopLeft)
@@ -174,7 +182,8 @@ namespace VikingEngine.DSSWars.Map
                 subTopLeft.Y);
 
             
-            if (subTile.mainTerrain != TerrainMainType.Foil)
+            if (subTile.mainTerrain != TerrainMainType.Foil &&
+                subTile.mainTerrain != TerrainMainType.Building)
             {
                 switch (col.Texture)
                 {
@@ -204,7 +213,6 @@ namespace VikingEngine.DSSWars.Map
                                     topCol.G = Bound.Byte(topCol.G + 8);
                                     topCol.B = Bound.Byte(topCol.B + 8);
                                 }
-
 
                                 Graphics.PolygonColor straw = new PolygonColor();
                                 //Bottom left
@@ -292,17 +300,13 @@ namespace VikingEngine.DSSWars.Map
                     modelName = LootFest.VoxelModelName.fol_sprout;
                     scale = 0.05f + 0.01f * sizeValue;
                     break;
+                case TerrainSubFoilType.FarmCulture:
+                    scale = 0.1f;
+                    modelName = LootFest.VoxelModelName.fol_farmculture;
+                    break;
                 default:
                     throw new NotImplementedException();
             }
-            //var modelName = foliageModels[lib.SmallestValue(
-            //    rnd.Int(foliageModels.Count),
-            //    rnd.Int(foliageModels.Count))];
-
-            //var model = LootFest.LfRef.modelLoad.AutoLoadModelInstance(modelName,
-            //        0.12f, 0, false, false);
-
-            //model.position = wp;
 
             if (foliage == null)
             {
@@ -312,7 +316,69 @@ namespace VikingEngine.DSSWars.Map
 #if DEBUG
             model.DebugName = "Map foliage " + model.DebugName;
 #endif
-            foliage.Add(new Foliage(modelName, rnd.Double(), wp, scale));
+            foliage.Add(new Foliage(modelName, rnd, wp, scale));
+        }
+
+        void createBuilding(TerrainBuildingType buildingType, Vector3 wp)
+        {
+            wp.X += WorldData.SubTileHalfWidth;
+            wp.Z += WorldData.SubTileHalfWidth;
+            LootFest.VoxelModelName modelName;
+            float scale = WorldData.SubTileWidth * 1.4f;
+
+            switch (buildingType)
+            {
+                case TerrainBuildingType.DirtWall:
+                    modelName = LootFest.VoxelModelName.city_dirtwall;
+                    break;
+                case TerrainBuildingType.DirtTower:
+                    modelName = LootFest.VoxelModelName.city_dirttower;
+                    break;
+                case TerrainBuildingType.WoodWall:
+                    modelName = LootFest.VoxelModelName.city_woodwall;
+                    break;
+                case TerrainBuildingType.WoodTower:
+                    modelName = LootFest.VoxelModelName.city_woodtower;
+                    break;
+                case TerrainBuildingType.StoneWall:
+                    modelName = LootFest.VoxelModelName.city_stonewall;
+                    break;
+                case TerrainBuildingType.StoneTower:
+                    modelName = LootFest.VoxelModelName.city_stonetower;
+                    break;
+
+                case TerrainBuildingType.WorkerHut:
+                    modelName = LootFest.VoxelModelName.city_workerhut;
+                    break;
+               
+                case TerrainBuildingType.StoneHall:
+                    modelName = LootFest.VoxelModelName.city_stonehall;
+                    break;
+                case TerrainBuildingType.SmallHouse:
+                    modelName = LootFest.VoxelModelName.city_smallhouse;
+                    break;
+                case TerrainBuildingType.BigHouse:
+                    modelName = LootFest.VoxelModelName.city_bighouse;
+                    break;
+                case TerrainBuildingType.CobbleStones:
+                    modelName = LootFest.VoxelModelName.city_cobblestone;
+                    break;
+                case TerrainBuildingType.Square:
+                    modelName = LootFest.VoxelModelName.city_square;
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+
+            if (foliage == null)
+            {
+                foliage = new List<Foliage>(8);
+            }
+#if DEBUG
+            model.DebugName = "Building " + model.DebugName;
+#endif
+            foliage.Add(new Foliage(modelName, rnd, wp, scale));
+
         }
 
         public void synchToRender()
@@ -330,6 +396,7 @@ namespace VikingEngine.DSSWars.Map
                     verticeData = null;
                 }
 
+                //foliage?.addToRender();
                 if (foliage != null)
                 {
                     foreach (var m in foliage)
@@ -347,8 +414,6 @@ namespace VikingEngine.DSSWars.Map
 
         public void DeleteMe()
         {
-            var tile = DssRef.world.tileGrid.Get(pos);
-            
             model?.DeleteMe();
             if (foliage != null)
             {

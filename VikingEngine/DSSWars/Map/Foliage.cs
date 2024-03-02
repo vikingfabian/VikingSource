@@ -13,12 +13,12 @@ namespace VikingEngine.DSSWars.Map
         float scale;
         double randomFrame;
 
-        public Foliage(LootFest.VoxelModelName modelName, double randomFrame, Vector3 pos, float scale)
+        public Foliage(LootFest.VoxelModelName modelName, PcgRandom rnd, Vector3 pos, float scale)
         {
             this.modelName = modelName;
             this.pos = pos;
             this.scale = scale;
-            this.randomFrame = randomFrame;
+            this.randomFrame = rnd.Double();
         }
 
         public void addToRender()

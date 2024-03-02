@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players;
@@ -338,7 +340,7 @@ namespace VikingEngine.DSSWars.GameObject
             workForce.max += amount;
             refreshCitySize();
 
-            detailObj.updateWorkerModels();
+            detailObj.refreshWorkerSubtiles();//updateWorkerModels();
         }
 
         public void expandGuardSize(int amount)
@@ -471,7 +473,11 @@ namespace VikingEngine.DSSWars.GameObject
                 if (newType != CityType)
                 {
                     CityType = newType;
-                    detailObj.refreshModel();
+                    //detailObj.refreshModel();
+                    Task.Factory.StartNew(() =>
+                    {
+                        createBuildingSubtiles(DssRef.world);
+                    });
 
                     if (overviewModel != null)
                     {
@@ -998,7 +1004,84 @@ namespace VikingEngine.DSSWars.GameObject
             return success;
         }
 
+        public void createBuildingSubtiles(WorldData world)
+        {
+            IntVector2 topleft = WP.ToSubTilePos_TopLeft(tilePos);
 
+            TerrainBuildingType tower;
+            TerrainBuildingType wall;
+            TerrainBuildingType house;
+            TerrainBuildingType road;
+            double percBuilding;
+
+            switch (this.CityType)
+            {
+                case CityType.Small:
+                    tower = TerrainBuildingType.DirtTower;
+                    wall = TerrainBuildingType.DirtWall;
+                    house = TerrainBuildingType.SmallHouse;
+                    road = TerrainBuildingType.CobbleStones;
+                    percBuilding = 0.3;
+                    break;
+                case CityType.Large:
+                    tower = TerrainBuildingType.WoodTower;
+                    wall= TerrainBuildingType.WoodWall;
+                    house = TerrainBuildingType.SmallHouse;
+                    road = TerrainBuildingType.Square;
+                    percBuilding = 0.5;
+                    break;
+                default:
+                    tower = TerrainBuildingType.StoneTower;
+                    wall = TerrainBuildingType.StoneWall;
+                    house = TerrainBuildingType.BigHouse;
+                    road = TerrainBuildingType.Square;
+                    percBuilding = 0.6;
+                    break;
+
+            }
+
+            for (int y = 0; y < WorldData.TileSubDivitions; ++y)
+            {
+                for (int x = 0; x < WorldData.TileSubDivitions; ++x)
+                {
+                    TerrainBuildingType buildingType = TerrainBuildingType.NUM;
+
+                    bool edgeX = x == 0 || x == WorldData.TileSubDivitions_MaxIndex;
+                    bool edgeY = y == 0 || y == WorldData.TileSubDivitions_MaxIndex;
+
+                    if (edgeX || edgeY)
+                    {
+                        if (edgeX && edgeY)
+                        {
+                            buildingType = tower;
+                        }
+                        else
+                        {
+                            buildingType = wall;
+                        }
+                    }
+                    else if (x == 4 && y == 3)
+                    {
+                        buildingType = TerrainBuildingType.StoneHall;
+                    }
+                    else if (x == 4 && y == 4)
+                    {
+                        buildingType = TerrainBuildingType.Square;
+                    }
+                    else
+                    {
+                        buildingType = world.rnd.Chance(percBuilding) ? house : road;
+                    }
+
+                    IntVector2 pos = topleft;
+                    pos.X += x;
+                    pos.Y += y;
+                    var subTile = world.subTileGrid.Get(pos);
+                    subTile.SetType(TerrainMainType.Building, (int)buildingType, 1);
+                    world.subTileGrid.Set(pos, subTile);
+                }
+            }
+        }
 
         public Army recruitToClosestArmy()
         {

@@ -29,6 +29,7 @@ namespace VikingEngine.DSSWars
         public const double TileWidthInKm = 0.064;
 
         public const int TileSubDivitions = 8;
+        public const int TileSubDivitions_MaxIndex = TileSubDivitions-1;
 
         public static readonly Color WaterCol = new Color(14, 155, 246);
         public static readonly Color WaterCol2 = ColorExt.Multiply(WaterCol, 0.9f);

@@ -39,6 +39,11 @@ namespace VikingEngine.DSSWars
             return new IntVector2(pos.X * WorldData.TileSubDivitions, pos.Z * WorldData.TileSubDivitions);
         }
 
+        public static IntVector2 ToSubTilePos_TopLeft(IntVector2 pos)
+        {
+            return new IntVector2(pos.X * WorldData.TileSubDivitions, pos.Y * WorldData.TileSubDivitions);
+        }
+
         public static Vector3 ToMapPos(IntVector2 tile)
         {
             return new Vector3(
