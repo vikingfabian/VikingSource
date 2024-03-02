@@ -1,5 +1,6 @@
 ﻿Change Log
-
+-Instead of taking a city by damaging it, it now does a domniation check and turns into the faction with strongest army, next to it.
+-New city visuals
 
 Error
 

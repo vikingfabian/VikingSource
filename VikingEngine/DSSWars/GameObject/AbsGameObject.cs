@@ -29,6 +29,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         abstract public bool defeatedBy(Faction attacker);
 
+        virtual public bool defeated()
+        {
+            return isDeleted;
+        }
+
         abstract public bool aliveAndBelongTo(Faction faction);
 
         virtual public void toHud(Display.ObjectHudArgs args)

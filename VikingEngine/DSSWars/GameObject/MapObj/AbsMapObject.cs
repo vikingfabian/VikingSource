@@ -78,36 +78,37 @@ namespace VikingEngine.DSSWars.GameObject
             //}
             //bool collectCities = this.objectType() == ObjectType.Army;
             //Remove completed battles
-            if (battles.Count > 0)
+
+            if (defeated())
             {
-                var battlesC = battles.counter();
-                while (battlesC.Next())
-                {
-                    battlesC.sel.collectBattles_asynchMarker = false;
-                    //if (battlesC.sel.defeatedBy(faction))
-                    //{
-                    //    battlesC.RemoveAtCurrent();
-                    //    if (battles.Count == 0)
-                    //    {
-                    //        this.EnterPeaceEvent();
-                    //    }
-                    //}
-                }
+                battles.Clear();
             }
-
-
-            DssRef.world.unitCollAreaGrid.collectMapObjectBattles(faction, tilePos, ref battlesUnitsBuffer, gameobjectType() == GameObjectType.Army);
-
-            foreach (var m in battlesUnitsBuffer)
+            else
             {
-                bool inBattle = VectorExt.PlaneXZLength(m.position - position) <= DssLib.BattleConflictRadius;
-                if (inBattle)
+
+                if (battles.Count > 0)
                 {
-                    m.collectBattles_asynchMarker = true;
-                    
-                    battles.AddIfNotExists(m);
-                    m.battles.AddIfNotExists(this);
-                }              
+                    var battlesC = battles.counter();
+                    while (battlesC.Next())
+                    {
+                        battlesC.sel.collectBattles_asynchMarker = false;
+                    }
+                }
+
+
+                DssRef.world.unitCollAreaGrid.collectMapObjectBattles(faction, tilePos, ref battlesUnitsBuffer, gameobjectType() == GameObjectType.Army);
+
+                foreach (var m in battlesUnitsBuffer)
+                {
+                    bool inBattle = VectorExt.PlaneXZLength(m.position - position) <= DssLib.BattleConflictRadius;
+                    if (inBattle)
+                    {
+                        m.collectBattles_asynchMarker = true;
+
+                        battles.AddIfNotExists(m);
+                        m.battles.AddIfNotExists(this);
+                    }
+                }
             }
 
             if (battles.Count > 0)
@@ -123,15 +124,6 @@ namespace VikingEngine.DSSWars.GameObject
                             this.EnterPeaceEvent();
                         }
                     }
-
-                    //if (battlesC.sel.defeatedBy(faction))
-                    //{
-                    //    battlesC.RemoveAtCurrent();
-                    //    if (battles.Count == 0)
-                    //    {
-                    //        this.EnterPeaceEvent();
-                    //    }
-                    //}
                 }
             }
         }
