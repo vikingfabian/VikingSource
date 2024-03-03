@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.DSSWars.Battle;
 using VikingEngine.HUD.RichBox;
 //
 
@@ -11,15 +12,15 @@ namespace VikingEngine.DSSWars.GameObject
     /// <summary>
     /// Large scale objects
     /// </summary>
-    abstract class AbsMapObject : AbsGroup
+    abstract partial class AbsMapObject : AbsGroup
     {
         public Faction faction;
 
         /// <summary>
         /// Pågående strider, om order ges läggs inte battle till förrän armeerna är intill varandra
         /// </summary>
-        public SpottedArray<AbsMapObject> battles = new SpottedArray<AbsMapObject>(4);
-        SpottedArrayCounter<AbsMapObject> battlesCounter;
+        
+        //SpottedArrayCounter<AbsMapObject> battlesCounter;
         public bool enterRender_asynch = false;
         public bool inRender = false;
 
@@ -29,7 +30,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public AbsMapObject()
         {
-            battlesCounter = new SpottedArrayCounter<AbsMapObject>(battles);
+            //battlesCounter = new SpottedArrayCounter<AbsMapObject>(battles);
         }
         
         virtual public bool rayCollision(Ray ray)
@@ -41,10 +42,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             DssRef.state.culling.InRender_Asynch(ref enterRender_asynch, tilePos);
         }
-        public bool InBattle()
-        {
-            return battles.Count > 0;
-        }
+        
 
         public void PauseUpdate()
         {
@@ -57,7 +55,6 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 inRender = enterRender_asynch;
                 setInRenderState();
-
             }
         }
 
@@ -65,68 +62,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void EnterPeaceEvent()
         { }
-
-
-        public bool collectBattles_asynchMarker = false;
-        static List<AbsMapObject> battlesUnitsBuffer = new List<AbsMapObject>();
-
-        protected void collectBattles_asynch()
-        {
-            //if (objectType() == ObjectType.City && GetCity().index == 346)
-            //{ 
-            //    lib.DoNothing();
-            //}
-            //bool collectCities = this.objectType() == ObjectType.Army;
-            //Remove completed battles
-
-            if (defeated())
-            {
-                battles.Clear();
-            }
-            else
-            {
-
-                if (battles.Count > 0)
-                {
-                    var battlesC = battles.counter();
-                    while (battlesC.Next())
-                    {
-                        battlesC.sel.collectBattles_asynchMarker = false;
-                    }
-                }
-
-
-                DssRef.world.unitCollAreaGrid.collectMapObjectBattles(faction, tilePos, ref battlesUnitsBuffer, gameobjectType() == GameObjectType.Army);
-
-                foreach (var m in battlesUnitsBuffer)
-                {
-                    bool inBattle = VectorExt.PlaneXZLength(m.position - position) <= DssLib.BattleConflictRadius;
-                    if (inBattle)
-                    {
-                        m.collectBattles_asynchMarker = true;
-
-                        battles.AddIfNotExists(m);
-                        m.battles.AddIfNotExists(this);
-                    }
-                }
-            }
-
-            if (battles.Count > 0)
-            {
-                var battlesC = battles.counter();
-                while (battlesC.Next())
-                {
-                    if (battlesC.sel.collectBattles_asynchMarker == false)
-                    {
-                        battlesC.RemoveAtCurrent();
-                        if (battles.Count == 0)
-                        {
-                            this.EnterPeaceEvent();
-                        }
-                    }
-                }
-            }
-        }
 
         public float distanceTo(AbsMapObject obj)
         {

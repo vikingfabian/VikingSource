@@ -26,6 +26,7 @@ namespace VikingEngine.DSSWars
         public int nextGroupId = 0;
         public List<Players.LocalPlayer> localPlayers;
         public Players.DarkLordPlayer darkLordPlayer;
+        public SpottedArray<Battle.BattleGroup> battles = new SpottedArray<Battle.BattleGroup>(64);
 
         bool host;
         bool isReady= false;

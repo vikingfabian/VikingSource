@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.GameObject
         public float halfColDepth;
 
        
-        const float GroupSpacing = AbsSoldierData.RowWidth * AbsSoldierData.DefaultGroupSpacing * 1.2f;
+        public const float GroupSpacing = AbsSoldierData.RowWidth * AbsSoldierData.DefaultGroupSpacing * 1.2f;
 
         //public bool hasWalkingOrder = false;
         public SpottedArray<AbsSoldierUnit> soldiers;
