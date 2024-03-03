@@ -402,6 +402,17 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void refreshPositions(bool onPurchase)
         {
+            int width = groupsWidth();
+
+            IntVector2 nextGroupPlacementIndex = IntVector2.Zero;
+
+            refreshPositionsFor(ArmyPlacement.Front, ref nextGroupPlacementIndex, width, onPurchase);
+            refreshPositionsFor(ArmyPlacement.Mid, ref nextGroupPlacementIndex, width, onPurchase);
+            refreshPositionsFor(ArmyPlacement.Back, ref nextGroupPlacementIndex, width, onPurchase);
+        }
+
+        public int groupsWidth()
+        {
             int width;
 
             if (groups.Count > Size3Capacity)
@@ -417,17 +428,31 @@ namespace VikingEngine.DSSWars.GameObject
                 width = GroupsWidth_Size2;
             }
             else
-            { 
-                width= GroupsWidth_Size1;
+            {
+                width = GroupsWidth_Size1;
             }
-            IntVector2 nextGroupPlacementIndex = IntVector2.Zero;
 
-            refreshPositionsFor(ArmyPlacement.Front, ref nextGroupPlacementIndex, width, onPurchase);
-            refreshPositionsFor(ArmyPlacement.Mid, ref nextGroupPlacementIndex, width, onPurchase);
-            refreshPositionsFor(ArmyPlacement.Back, ref nextGroupPlacementIndex, width, onPurchase);
+            return width;
         }
 
-        static readonly int[] PlacementX = new int[] { 0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5 };
+        //static readonly int[] PlacementX = new int[] { 0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5 };
+
+        /// <returns>Sequence of 0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5</returns>
+        public static int TogglePlacementX(int index)
+        {
+            if (index == 0)
+            {
+                return 0;
+            }
+
+            int half = (index + 1) / 2;
+            if (half * 2 > index)
+            {
+                return -half;
+            }
+            return half;
+        }
+
 
         public void refreshPositionsFor(ArmyPlacement armyPlacement, ref IntVector2 nextGroupPlacementIndex, int groupsWidth, bool onPurchase)
         {
@@ -441,7 +466,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (soldier.data.ArmyFrontToBackPlacement == armyPlacement)
                     {
                         IntVector2 result = nextGroupPlacementIndex;
-                        result.X = PlacementX[result.X];
+                        result.X = TogglePlacementX(nextGroupPlacementIndex.X);// PlacementX[result.X];
 
                         nextGroupPlacementIndex.Grindex_Next(groupsWidth);
                         groupsC.sel.SetArmyPlacement(result, onPurchase); //behöver en wake up alert

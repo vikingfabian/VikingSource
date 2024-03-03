@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool needWalkPathCheck = false;
         //public SoldierWalkingPath walkingPath = null;
 
-        Vector3 currentArmyPosition;
+        public Vector3 currentArmyPosition;
 
         public IntVector2 tilePos;
         public IntVector2 armyLocalPlacement = IntVector2.Zero;
@@ -77,6 +77,8 @@ namespace VikingEngine.DSSWars.GameObject
         public int groupObjective = GroupObjective_FollowArmyObjective;
         bool isRecruit;
         public bool inShipTransform = false;
+        public IntVector2 battleGridPos;
+        public Vector3 battleWp;
 
         public SoldierGroup(Army army, UnitType type, bool recruit)
         {
@@ -359,17 +361,24 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (soldiers.Count > 0 && !lockMovement)
             {
+                if (army.battleGroup != null)
+                {
+                    update_Inbattle(time, fullUpdate);
+                    return;
+                }
+
+
                 //UPDATE OBJECTIVE
                 {
                     bool newIdleGroup = false;
 
                     int newObjective = groupObjective;
                     bool induvidualUpdate;
-                    bool walking= false;
+                    bool walking = false;
                     if (groupObjective == GroupObjective_IsSplit)
                     {
                         induvidualUpdate = true;
-                      
+
                         if (attacking_soldierGroupOrCity == null)
                         {
                             refreshGroupPositions();
@@ -437,12 +446,12 @@ namespace VikingEngine.DSSWars.GameObject
                             else
                             {
                                 //Group attack move
-                                walking = !updateWalking(closest_sp.position, time);
+                                walking = !updateWalking(closest_sp.position, army.rotation, time);
                             }
                         }
                         else if (groupObjective == GroupObjective_FindArmyPlacement)
                         {
-                            if (updateWalking(currentArmyPosition, time))
+                            if (updateWalking(currentArmyPosition, army.rotation, time))
                             {
                                 newObjective = GroupObjective_FollowArmyObjective;
                                 newIdleGroup = true;
@@ -454,10 +463,10 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                         else
                         {
-                            if (army.ai.objective == ArmyObjective.MoveTo||
-                                army.ai.objective== ArmyObjective.Attack)
+                            if (army.ai.objective == ArmyObjective.MoveTo ||
+                                army.ai.objective == ArmyObjective.Attack)
                             {
-                                if (updateWalking(currentArmyPosition, time))
+                                if (updateWalking(currentArmyPosition, army.rotation, time))
                                 {
                                     newIdleGroup = true;
                                 }
@@ -471,43 +480,10 @@ namespace VikingEngine.DSSWars.GameObject
                             {
                                 lib.DoNothing();
                             }
-                                //Follow army
-                                
+                            //Follow army
+
                         }
-                        //float followObjectiveValue = 1f;
 
-
-                        //if (army.ai.objective == ArmyObjective.Halt)
-                        //{
-                        //    newObjective = GroupObjective.Idle;
-                        //}
-                        //else if (attacking_soldierGroupOrCity != null)
-                        //{
-                        //    newObjective = GroupObjective.Attack;
-                        //}
-                        //else if (army.ai.objective == ArmyObjective.None)
-                        //{
-                        //    if (groupObjective != GroupObjective.Idle)
-                        //    {
-                        //        newObjective = GroupObjective.FindArmyPlacement;
-                        //    }
-
-                        //    followObjectiveValue = 0;
-                        //}
-                        //else
-                        //{
-                        //    newObjective = GroupObjective.FollowArmyObjective;
-
-                        //    if (tilePos.SideLength(army.ai.adjustedWalkGoal) <= 1)
-                        //    {
-                        //        followObjectiveValue = 0.5f;
-                        //    }
-                        //}
-
-                        //if (followObjectiveValue < 1f)
-                        //{//Free to chase enemies and help allias
-                        //    updateFreeChaseObjective(ref newObjective);
-                        //}
                     }
 
                     if (induvidualUpdate)
@@ -516,7 +492,7 @@ namespace VikingEngine.DSSWars.GameObject
                         while (soldiersC.Next())
                         {
                             soldiersC.sel.update(time, fullUpdate);
-                        }                        
+                        }
                     }
                     else
                     {
@@ -524,7 +500,7 @@ namespace VikingEngine.DSSWars.GameObject
                         while (soldiersC.Next())
                         {
                             soldiersC.sel.update_GroupLocked(walking);
-                        }                        
+                        }
                     }
 
                     groupIsIdle = newIdleGroup;
@@ -535,42 +511,17 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                //switch (groupObjective)
-                //{
-                //    case GroupObjective.FindArmyPlacement:
-                //    case GroupObjective.FollowArmyObjective:
-                //        {
-                //            if (updateWalking(currentArmyPosition, time))
-                //            {
-                //                setObjective(GroupObjective.Idle);
-                //            }
-                //        }
-                //        break;
+            }
+        }
 
-                //    case GroupObjective.Attack:
-                //        {
-                //            var closest_sp = attacking_soldierGroupOrCity;
-                //            if (closest_sp != null)
-                //            {
-                //                if (groupCollisionDistance(closest_sp) < 0.02f)
-                //                {
-                //                    splitGroup();
-                //                }
-                //                else
-                //                {
-                //                    updateWalking(closest_sp.position, time);
-                //                }
-                //            }
+        void update_Inbattle(float time, bool fullUpdate)
+        {
+            bool walking = !updateWalking(battleWp, army.battleDirection, time);
 
-                //        }
-                //        break;
-                //}
-
-                //INDUVIDUAL UPDATE
-
-
-                //armyCenter += position;
-                //++centerCount;
+            var soldiersC = soldiers.counter();
+            while (soldiersC.Next())
+            {
+                soldiersC.sel.update_GroupLocked(walking);
             }
         }
 
@@ -713,7 +664,7 @@ namespace VikingEngine.DSSWars.GameObject
         //}
 
 
-        bool updateWalking(Vector3 walkTowards, float time)
+        bool updateWalking(Vector3 walkTowards, Rotation1D finalRotation, float time)
         {
             Vector2 diff = new Vector2(
                 walkTowards.X - position.X,
@@ -724,7 +675,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (diff.Length() > speed)
             {
                 Rotation1D dir = Rotation1D.FromDirection(diff);
-                if (rotateTowardsAngle(dir))
+                if (rotateTowardsAngle(dir, time))
                 {
                     Vector2 move = VectorExt.SetLength(diff, speed);
                     position.X += move.X;
@@ -734,38 +685,38 @@ namespace VikingEngine.DSSWars.GameObject
             else
             {
                 //final adjust when reached goal
-                if (rotateTowardsAngle(army.rotation))
+                if (rotateTowardsAngle(finalRotation, time))
                 {
                     //hasWalkingOrder = false;
                     return true;
                 }
             }
 
-            return false;
+            return false;            
+        }
 
-            bool rotateTowardsAngle(Rotation1D goalDir)
+        bool rotateTowardsAngle(Rotation1D goalDir, float time)
+        {
+            float adiff = rotation.AngleDifference(goalDir.radians);
+            float abs_adiff = Math.Abs(adiff);
+
+            float angleAdd = rotateSpeed * time;
+            if (abs_adiff <= angleAdd)
             {
-                float adiff = rotation.AngleDifference(goalDir.radians);
-                float abs_adiff = Math.Abs(adiff);
-
-                float angleAdd = rotateSpeed * time;
-                if (abs_adiff <= angleAdd)
-                {
-                    rotation = goalDir;
-                    return true;
-                }
-                else
-                {//Rotate group
-                    rotation.Add(angleAdd * lib.ToLeftRight(adiff));
-                    return false;
-                }
+                rotation = goalDir;
+                return true;
+            }
+            else
+            {//Rotate group
+                rotation.Add(angleAdd * lib.ToLeftRight(adiff));
+                return false;
             }
         }
 
         //void updateArmyWalkingGoal(out Vector3 walkTowards)
         //{
         //    walkTowards = armyPathGoal;
-            
+
         //}
 
         //bool updateAttackGoal(out Vector3 walkTowards)

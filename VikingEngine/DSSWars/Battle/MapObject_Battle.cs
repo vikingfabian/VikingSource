@@ -10,6 +10,9 @@ namespace VikingEngine.DSSWars.GameObject
     partial class AbsMapObject
     {
         public BattleGroup battleGroup = null;
+        public IntVector2 battleGridForward;
+        public Rotation1D battleDirection;
+
         public SpottedArray<AbsMapObject> battles = new SpottedArray<AbsMapObject>(4);
 
         public bool collectBattles_asynchMarker = false;

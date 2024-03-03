@@ -449,6 +449,28 @@ namespace VikingEngine
             }
         }
 
+        public static IntVector2 RotateVector(IntVector2 value, IntVector2 forward_negY)
+        {
+            IntVector2 result = value;
+            if (forward_negY.X < 0)
+            {//left
+                result.X = value.Y;
+                result.Y = -value.X;
+            }
+            else if (forward_negY.X > 0)
+            {//right
+                result.X = -value.Y;
+                result.Y = value.X;
+            }
+            else if (forward_negY.Y > 0)
+            {//down
+                result.X = -value.X;
+                result.Y = -value.Y;
+            }
+
+            return result;
+        }
+
         public static IntVector2 RotateVector(IntVector2 value, int steps)
         {
             if (steps < 0)
