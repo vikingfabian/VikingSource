@@ -342,8 +342,8 @@ namespace VikingEngine.DSSWars.Players
 
         void battleLineUpTest(bool friendly)
         {
-            Rotation1D enemyRot = Rotation1D.FromDegrees(90 + Ref.rnd.Plus_Minus(45));
-            Rotation1D playerRot = Rotation1D.FromDegrees(180 - 45); //enemyRot.getInvert();
+            Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(45));
+            Rotation1D playerRot = enemyRot.getInvert();
 
             Faction enemyFac = DssRef.state.darkLordPlayer.faction;
             DssRef.state.darkLordPlayer.faction.hasDeserters = false;
@@ -367,7 +367,11 @@ namespace VikingEngine.DSSWars.Players
                 army.rotation = playerRot;
 
                 //int count = Ref.rnd.Int(4, 8);
-                for (int i = 0; i < 5; ++i)
+                for (int i = 0; i < 3; ++i)
+                {
+                    new SoldierGroup(army, UnitType.Knight, false);
+                }
+                for (int i = 0; i < 14; ++i)
                 {
                     new SoldierGroup(army, UnitType.Soldier, false);
                 }
@@ -408,9 +412,13 @@ namespace VikingEngine.DSSWars.Players
                     var army = enemyFac.NewArmy(VectorExt.AddX(position, 3));
                     army.rotation = enemyRot;
                     //int count = 4;//Ref.rnd.Int(4, 8);
-                    for (int i = 0; i < 5; ++i)
+                    for (int i = 0; i < 9; ++i)
                     {
                         new SoldierGroup(army, UnitType.Soldier, false);
+                    }
+                    for (int i = 0; i < 9; ++i)
+                    {
+                        new SoldierGroup(army, UnitType.Pikeman, false);
                     }
                     for (int i = 0; i < 5; ++i)
                     {
@@ -418,6 +426,22 @@ namespace VikingEngine.DSSWars.Players
                     }
                     army.refreshPositions(true);
                 }
+
+
+                //{
+                //    var army = enemyFac.NewArmy(VectorExt.AddY(position, 2));
+                //    army.rotation = enemyRot;
+                //    //int count = 4;//Ref.rnd.Int(4, 8);
+                //    for (int i = 0; i < 5; ++i)
+                //    {
+                //        new SoldierGroup(army, UnitType.Soldier, false);
+                //    }
+                //    for (int i = 0; i < 5; ++i)
+                //    {
+                //        new SoldierGroup(army, UnitType.Ballista, false);
+                //    }
+                //    army.refreshPositions(true);
+                //}
                 //count = Ref.rnd.Int(4, 8);
                 //for (int i = 0; i < count; ++i)
                 //{

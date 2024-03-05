@@ -471,7 +471,7 @@ namespace VikingEngine
             return result;
         }
 
-        public static IntVector2 RotateVector(IntVector2 value, int steps)
+        public static IntVector2 RotateVector_D4(IntVector2 value, int steps)
         {
             if (steps < 0)
                 steps += 4;

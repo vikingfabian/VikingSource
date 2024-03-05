@@ -16,20 +16,25 @@ namespace VikingEngine.DSSWars.Battle
         const int StandardGridRadius = 25;
 
         int index;
-        List<AbsMapObject> members;
+        SpottedArray<AbsMapObject> members;
+        SpottedArrayCounter<AbsMapObject> membersC;
         Vector2 center;
         Rotation1D rotation;
 
         IntVector2 gridTopLeft;
         Grid2D<BattleGridNode> grid;
+        Time preparationTime = new Time(10, TimeUnit.Seconds);
+        float nextAiOrderTime = 0;
+        public bool battleState = false;
 
         public BattleGroup(AbsMapObject m1, AbsMapObject m2) 
         {
-            members = new List<AbsMapObject> 
-            { 
-                m1, m2
-            };
+            members = new SpottedArray<AbsMapObject>(4);
+            membersC = new SpottedArrayCounter<AbsMapObject>(members);
 
+            members.Add(m1);
+            members.Add(m2);
+          
             m2.battleGroup = this;
 
             index = DssRef.state.battles.Add(this);
@@ -45,6 +50,18 @@ namespace VikingEngine.DSSWars.Battle
             placeSoldiers(m2);
 
             Ref.update.AddSyncAction(new SyncAction(debugVisuals));
+        }
+
+        public SpottedArrayCounter<AbsMapObject> MembersCounter()
+        {
+            return membersC.Clone();
+        }
+
+        public void addPart(AbsMapObject m)
+        {
+            m.battleGroup = this;
+            members.Add(m);
+            placeSoldiers(m);
         }
 
         void createGrid()
@@ -112,12 +129,196 @@ namespace VikingEngine.DSSWars.Battle
             }
         }
 
+        public void async_update(float time)
+        {
+            if (battleState)
+            {
+                nextAiOrderTime-= time;
+                if (nextAiOrderTime < 0)
+                {
+                    refreshAiOrders();
+                    refreshGroupsWalkPath();
+
+                    nextAiOrderTime = 3600;//500;
+                }
+            }
+            else if (preparationTime.CountDown())
+            {
+                battleState = true;
+            }
+        }
+
+        void refreshAiOrders()
+        {
+            //todo replace with player orders
+            membersC.Reset();
+
+            while (membersC.Next())
+            {
+                var army = membersC.sel.GetArmy();
+                if (army != null)
+                {                    
+                    var groupsC = army.groups.counter();
+                    while (groupsC.Next())
+                    {
+                        groupsC.sel.asynchFindBattleTarget(this);
+                    }
+                }
+            }
+        }
+
+        void refreshGroupsWalkPath()
+        {
+            /*
+             * Försök att alltid hålla formation
+             * 1. Refresh av alla enheters position i grid
+             * 2. Ge path till de med helt rak move först, och blocka rutan framför sig
+             * 3. Flytta alla andra, gör en kort flank sökning eller köa
+             */
+
+            clearGrid();
+
+            refreshUnitsGridPositions();
+
+            membersC.Reset();
+
+            while (membersC.Next())
+            {
+                var army = membersC.sel.GetArmy();
+                if (army != null)
+                {
+                    var groupsC = army.groups.counter();
+                    while (groupsC.Next())
+                    {
+                        walkPath(groupsC.sel, true);
+                    }
+                }
+            }
+
+            membersC.Reset();
+
+            while (membersC.Next())
+            {
+                var army = membersC.sel.GetArmy();
+                if (army != null)
+                {
+                    var groupsC = army.groups.counter();
+                    while (groupsC.Next())
+                    {
+                        if (!groupsC.sel.battleWalkPath)
+                        {
+                            walkPath(groupsC.sel, false);
+                        }
+                    }
+                }
+            }
+
+        }
+
+        void clearGrid()
+        {
+            grid.LoopBegin();
+            while (grid.LoopNext())
+            {
+                grid.LoopValueGet().clear();
+            }
+        }
+
+        void refreshUnitsGridPositions()
+        {
+            membersC.Reset();
+            while (membersC.Next())
+            {
+                var army = membersC.sel.GetArmy();
+                if (army != null)
+                {
+                    var groupsC = army.groups.counter();
+                    while (groupsC.Next())
+                    {
+                        groupsC.sel.battleWalkPath = false;
+                        groupsC.sel.battleGridPos = WpToGridPos(groupsC.sel.position.X, groupsC.sel.position.Z);
+                        getNode(groupsC.sel.battleGridPos).add(groupsC.sel);
+                    }
+                }
+            }
+        }
+
+        void walkPath(SoldierGroup group, bool straightOnly)
+        {
+            if (group.attacking_soldierGroupOrCity != null &&
+                !group.attackState)
+            {
+                IntVector2 diff = group.attacking_soldierGroupOrCity.battleGridPos - group.battleGridPos;
+                if (diff.HasValue())
+                {
+                    var nDiff = diff.Normal();
+                    IntVector2 next = group.battleGridPos + nDiff;
+
+                    if (straightOnly)
+                    {                       
+                        if (diff.IsOrthogonal())// && !getNode(next).blockedByFriendly(group))
+                        {
+                            tryWalkToNode(group, next);
+                            //applyWalkNode(group, next);
+                        }
+                    }
+                    else
+                    {
+                        //Walk towards enemy
+                        if (!tryWalkToNode(group, next))
+                        {
+                            //Try left and right turn
+                            next = group.battleGridPos + VectorExt.RotateVector45DegreeLeft_Normal(nDiff);
+                            if (!tryWalkToNode(group, next))
+                            {
+                                next = group.battleGridPos + VectorExt.RotateVector45DegreeRight_Normal(nDiff);
+                                tryWalkToNode(group, next);
+
+                                //on fail, the unit will que up
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        bool tryWalkToNode(SoldierGroup group, IntVector2 next)
+        {
+            var goalNode = getNode(next);
+
+            if (goalNode.blockedByFriendly(group))
+            {
+                return false;
+            }
+            else
+            {
+                //Apply
+                group.battleWalkPath = true;
+                getNode(group.battleGridPos).remove(group);
+                goalNode.add(group);
+
+                group.battleWp = goalNode.worldPos;
+
+                return true;
+            }
+        }
+
+        void applyWalkNode(SoldierGroup group, IntVector2 next)
+        {
+            getNode(group.battleGridPos).remove(group);
+            var goalNode = getNode(next);
+            goalNode.add(group);
+
+            group.battleWp = goalNode.worldPos;
+        }
+
         void placeGroupInNode(SoldierGroup group, IntVector2 nodePos)
         {
             group.battleGridPos = nodePos;
             var node = getNode(group.battleGridPos);
             group.battleWp = node.worldPos;
-            node.group = group;
+            node.add(group);
         }
 
         void debugVisuals()
@@ -181,7 +382,52 @@ namespace VikingEngine.DSSWars.Battle
 
     class BattleGridNode
     { 
-        public SoldierGroup group = null;
+        public SoldierGroup group1 = null;
+        public SoldierGroup group2 = null;
         public Vector3 worldPos;
+
+        public void add(SoldierGroup group)
+        {
+            if (group1 == null)
+            {
+                group1 = group;
+            }
+            else
+            {
+                group2 = group;
+            }
+        }
+
+        public void remove(SoldierGroup group)
+        {
+            if (group1 == group)
+            {
+                group1 = null;
+            }
+            else if (group2 == group)
+            {
+                group2 = null;
+            }
+        }
+
+        public bool blockedByFriendly(SoldierGroup group)
+        {
+            if (group1 != null && group1.army.faction == group.army.faction)
+            { 
+                return true;
+            }
+            if (group2 != null && group2.army.faction == group.army.faction)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public void clear()
+        {
+            group1 = null;
+            group2 = null;
+        }
     }
 }

@@ -69,6 +69,8 @@ namespace VikingEngine.DSSWars
             new AsynchUpdateable_TryCatch(asyncUserUpdate, "DSS user update", 58);
             new AsynchUpdateable_TryCatch(asyncMapBorders, "DSS map borders update", 59);
             new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60);
+            new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62);
+
             if (StartupSettings.RunResoursesUpdate)
             {
                 new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
@@ -260,6 +262,16 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        bool asyncBattlesUpdate(int id, float time)
+        {
+            var battlesC = battles.counter();
+            while (battlesC.Next())
+            {
+                battlesC.sel.async_update(time);
+            }
+            return exitThreads;
+        }
+
         bool asyncResourcesUpdate(int id, float time)
         {
             //Runs every minute to upate any resource progression: trees grow, food spoil, etc
@@ -375,24 +387,24 @@ namespace VikingEngine.DSSWars
         {
             DssRef.world.unitCollAreaGrid.asynchUpdate();
 
-            var factions = DssRef.world.factions.counter();
-            while (factions.Next())
-            {
-                var armiesC = factions.sel.armies.counter();
-                while (armiesC.Next())
-                {
-                    var groupsC = armiesC.sel.groups.counter();
-                    while (groupsC.Next())
-                    {
-                        groupsC.sel.asynchNearObjectsUpdate();
-                    }
-                }
-            }
+            //var factions = DssRef.world.factions.counter();
+            //while (factions.Next())
+            //{
+            //    var armiesC = factions.sel.armies.counter();
+            //    while (armiesC.Next())
+            //    {
+            //        var groupsC = armiesC.sel.groups.counter();
+            //        while (groupsC.Next())
+            //        {
+            //            groupsC.sel.asynchNearObjectsUpdate();
+            //        }
+            //    }
+            //}
 
-            foreach (var m in DssRef.world.cities)
-            {
-                m.asynchNearObjectsUpdate();
-            }
+            //foreach (var m in DssRef.world.cities)
+            //{
+            //    m.asynchNearObjectsUpdate();
+            //}
 
             return exitThreads;
         }

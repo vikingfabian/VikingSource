@@ -486,7 +486,6 @@ namespace VikingEngine.DSSWars.GameObject
                         OverviewBannerModelName, 1f);
                     overviewBanner.AddToRender(DrawGame.TerrainLayer);
 
-
                     updateModelsPosition();
                 }
             }

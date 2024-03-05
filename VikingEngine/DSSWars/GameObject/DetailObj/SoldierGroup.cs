@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.GameObject
      * -object: kolla avstånd
      */
 
-    class SoldierGroup : AbsGroup
+    partial class SoldierGroup : AbsGroup
     {
         public const int GroupObjective_FollowArmyObjective = 0;
         public const int GroupObjective_IsSplit = 1;
@@ -75,10 +75,11 @@ namespace VikingEngine.DSSWars.GameObject
         public int lifeState = LifeState_New;
 
         public int groupObjective = GroupObjective_FollowArmyObjective;
+        public bool attackState = false;
         bool isRecruit;
         public bool inShipTransform = false;
-        public IntVector2 battleGridPos;
-        public Vector3 battleWp;
+        
+        
 
         public SoldierGroup(Army army, UnitType type, bool recruit)
         {
@@ -102,8 +103,7 @@ namespace VikingEngine.DSSWars.GameObject
             createAllSoldiers(type, recruit, typeData, count);
 
             if (recruit)
-            {
-                
+            {                
                 new TrainingCompleteTimer(this);
             }
 
@@ -112,8 +112,6 @@ namespace VikingEngine.DSSWars.GameObject
                 (typeData.rowWidth - 1) * typeData.groupSpacing,
                 (typeData.columnsDepth - 1) * typeData.groupSpacing);
             float radius = boxSz.Length() * 0.5f;
-
-
 
             groupRadius = radius;
             refreshAttackRadius(typeData);
@@ -134,6 +132,10 @@ namespace VikingEngine.DSSWars.GameObject
             else
             {
                 attackRadius = groupRadius + typeData.attackRange;
+                //if (typeData.mainAttack == AttackType.Melee)
+                //{
+                //    attackRadius *= 0.75f;
+                //}
             }
         }
 
@@ -358,12 +360,18 @@ namespace VikingEngine.DSSWars.GameObject
             //{
             //    lib.DoNothing();
             //}
+            if (groupId == 2)
+            {
+                lib.DoNothing();
+            }
+
 
             if (soldiers.Count > 0 && !lockMovement)
             {
-                if (army.battleGroup != null)
+                if (army.battleGroup != null && 
+                    !army.battleGroup.battleState)
                 {
-                    update_Inbattle(time, fullUpdate);
+                    update_battlePreparations(time, fullUpdate);
                     return;
                 }
 
@@ -373,6 +381,7 @@ namespace VikingEngine.DSSWars.GameObject
                     bool newIdleGroup = false;
 
                     int newObjective = groupObjective;
+                    bool newAttackState = false;
                     bool induvidualUpdate;
                     bool walking = false;
                     if (groupObjective == GroupObjective_IsSplit)
@@ -436,6 +445,7 @@ namespace VikingEngine.DSSWars.GameObject
                             {
                                 //SPLIT GROUP
                                 newObjective = GroupObjective_IsSplit;
+                                newAttackState = true;
 
                                 var soldiersC = soldiers.counter();
                                 while (soldiersC.Next())
@@ -446,12 +456,13 @@ namespace VikingEngine.DSSWars.GameObject
                             else
                             {
                                 //Group attack move
-                                walking = !updateWalking(closest_sp.position, army.rotation, time);
+                                walking = !updateWalking(battleWp, false, Rotation1D.D0, time);
+                                //walking = !updateWalking(closest_sp.position, true, army.rotation, time);
                             }
                         }
                         else if (groupObjective == GroupObjective_FindArmyPlacement)
                         {
-                            if (updateWalking(currentArmyPosition, army.rotation, time))
+                            if (updateWalking(currentArmyPosition, true, army.rotation, time))
                             {
                                 newObjective = GroupObjective_FollowArmyObjective;
                                 newIdleGroup = true;
@@ -466,7 +477,7 @@ namespace VikingEngine.DSSWars.GameObject
                             if (army.ai.objective == ArmyObjective.MoveTo ||
                                 army.ai.objective == ArmyObjective.Attack)
                             {
-                                if (updateWalking(currentArmyPosition, army.rotation, time))
+                                if (updateWalking(currentArmyPosition, true, army.rotation, time))
                                 {
                                     newIdleGroup = true;
                                 }
@@ -509,21 +520,12 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         groupObjective = newObjective;
                     }
+                    attackState = newAttackState;
                 }
 
             }
         }
 
-        void update_Inbattle(float time, bool fullUpdate)
-        {
-            bool walking = !updateWalking(battleWp, army.battleDirection, time);
-
-            var soldiersC = soldiers.counter();
-            while (soldiersC.Next())
-            {
-                soldiersC.sel.update_GroupLocked(walking);
-            }
-        }
 
         public override void toHud(ObjectHudArgs args)
         {
@@ -664,7 +666,7 @@ namespace VikingEngine.DSSWars.GameObject
         //}
 
 
-        bool updateWalking(Vector3 walkTowards, Rotation1D finalRotation, float time)
+        bool updateWalking(Vector3 walkTowards, bool rotate, Rotation1D finalRotation, float time)
         {
             Vector2 diff = new Vector2(
                 walkTowards.X - position.X,
@@ -682,7 +684,7 @@ namespace VikingEngine.DSSWars.GameObject
                     position.Z += move.Y;
                 }
             }
-            else
+            else if (rotate)
             {
                 //final adjust when reached goal
                 if (rotateTowardsAngle(finalRotation, time))
@@ -691,6 +693,8 @@ namespace VikingEngine.DSSWars.GameObject
                     return true;
                 }
             }
+            else
+            { return true; }
 
             return false;            
         }
@@ -827,15 +831,8 @@ namespace VikingEngine.DSSWars.GameObject
             return VectorExt.Length(group.position.X - position.X, group.position.Z - position.Z);
         }
 
-        public void addAttackTarget(AbsGroup newTarget, bool counterAttack = false)
+        public void addAttackTarget(AbsGroup newTarget)
         {
-            //if (attacking.Count < attacking.Array.Length)
-            //{
-
-            //if (!attacking.Contains(group))
-            //{
-            //attacking.Add(group);
-
             refreshAttacking();
 
             if (!newTarget.defeatedBy(army.faction) && newTarget != attacking_soldierGroupOrCity)
@@ -851,16 +848,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 attacking_soldierGroupOrCity = newTarget;
 
-                //if (!counterAttack 
-                //    &&
-                //    //newTarget.objectType() == GameObject.ObjectType.SoldierGroup &&
-                //    (this.isMelee() || !newTarget.isMelee()))
-                //{
-                //    newTarget.GetGroup().addAttackTarget(this, true);
-                //}
             }
-            //}
-            //}
         }
 
         void refreshAttacking()
@@ -883,6 +871,8 @@ namespace VikingEngine.DSSWars.GameObject
         //    }
         //}
 
+        
+
         public void asynchNearObjectsUpdate()
         {
             if (debugTagged)
@@ -897,8 +887,7 @@ namespace VikingEngine.DSSWars.GameObject
             refreshAttacking();
 
             if (attacking_soldierGroupOrCity == null && army.battles.Count > 0)
-            {
-               
+            {               
                 //Version 2: förlitar sig på att mapobject.battles 
                 AbsGroup nearest = null;
                 float distanceValue = float.MaxValue;
@@ -943,42 +932,7 @@ namespace VikingEngine.DSSWars.GameObject
                     addAttackTarget(nearest);
                 }
             }
-            //else
-            //{
-            //    foreach (var m in opponents)
-            //    {
-            //        if (m != attacking.First())
-            //        {
-            //            groupCollisionCheck(m);
-            //        }
-            //    }
-            //}
-
-            //void checkNearest(AbsGroup toGroup, ref AbsGroup nearest, float maxDistance, ref float distanceValue)
-            //{
-            //    const float AngleDiffValue = 20f;
-
-            //    Vector2 diff = new Vector2(toGroup.position.X - this.position.X, toGroup.position.Z - this.position.Z);
-
-            //    float l = diff.Length();
-
-            //    if (l <= maxDistance)
-            //    {
-            //        float dir = lib.V2ToAngle(diff);
-            //        float aDiff = rotation.AngleDifference(dir);
-            //        float anglePercDiff = Math.Abs(aDiff) / MathExt.TauOver2;
-
-            //        float value = l + l * anglePercDiff * AngleDiffValue;
-
-            //        if (value < distanceValue)
-            //        {
-            //            nearest = toGroup;
-            //            distanceValue = value;
-            //        }
-            //    }
-            //}
-
-            
+           
         }
 
         float distanceValueTo(AbsGroup toGroup)
