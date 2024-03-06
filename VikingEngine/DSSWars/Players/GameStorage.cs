@@ -24,8 +24,9 @@ namespace VikingEngine.DSSWars.Players
         public List<ProfileData> profiles;
         public MapSize mapSize = MapSize.Medium;
         public AiAggressivity aiAggressivity = AiAggressivity.Medium;
+        public BossSize bossSize = BossSize.Medium;
+        public bool allowPauseCommand = true;
 
-         
         public int aiEconomyLevel = 1;
 
         public const int DiplomacyDifficultyCount = 3;
@@ -65,19 +66,27 @@ namespace VikingEngine.DSSWars.Players
 
         public double DifficultyLevelPerc()
         {
-            double levelPerc = DssLib.AiEconomyLevel[DssRef.storage.aiEconomyLevel];
-            int aggdiff = (int)DssRef.storage.aiAggressivity - (int)AiAggressivity.Medium;
-            levelPerc *= 1.0 + aggdiff * 0.5;
+            double levelPerc = DssLib.AiEconomyLevel[aiEconomyLevel];
+            int aggdiff = (int)aiAggressivity - (int)AiAggressivity.Medium;
+            levelPerc *= 1.0 + aggdiff * 0.25;
 
-            double bossTimeDiff = DssRef.storage.bossTimeSettings - BossTimeSettings.Normal;
+            double bossTimeDiff = bossTimeSettings - BossTimeSettings.Normal;
             levelPerc *= 1.0 - bossTimeDiff * 0.25;
 
-            double diplomacyDiff = DssRef.storage.diplomacyDifficulty - 1;
-            levelPerc *= 1.0 + diplomacyDiff * 0.5;
+            double bossSizeDiff = bossSize - BossSize.Medium;
+            levelPerc *= 1.0 - bossSizeDiff * 0.25;
 
-            if (!DssRef.storage.honorGuard)
+            double diplomacyDiff = DssRef.storage.diplomacyDifficulty - 1;
+            levelPerc *= 1.0 + diplomacyDiff * 0.25;
+
+            if (!honorGuard)
             {
                 levelPerc *= 1.25;
+            }
+            
+            if (!allowPauseCommand)
+            {
+                levelPerc *= 1.5;
             }
 
             return levelPerc;
@@ -85,7 +94,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void write(System.IO.BinaryWriter w)
         {
-            const int Version = 9;
+            const int Version = 10;
 
             w.Write(Version);
             
@@ -110,6 +119,9 @@ namespace VikingEngine.DSSWars.Players
             w.Write(honorGuard);
             w.Write(diplomacyDifficulty);
             w.Write((int)bossTimeSettings);
+
+            w.Write((int)bossSize);
+            w.Write(allowPauseCommand);
         }
         public void read(System.IO.BinaryReader r)
         {
@@ -151,6 +163,11 @@ namespace VikingEngine.DSSWars.Players
             if (version >= 9)
             {
                 bossTimeSettings = (BossTimeSettings)r.ReadInt32();
+            }
+            if (version >= 10)
+            {
+                bossSize = (BossSize)r.ReadInt32();
+                allowPauseCommand = r.ReadBoolean();
             }
         }
 
