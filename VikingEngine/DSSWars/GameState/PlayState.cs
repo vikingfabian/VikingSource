@@ -267,7 +267,11 @@ namespace VikingEngine.DSSWars
             var battlesC = battles.counter();
             while (battlesC.Next())
             {
-                battlesC.sel.async_update(time);
+                bool deleted = battlesC.sel.async_update(time);
+                if (deleted)
+                { 
+                    battlesC.RemoveAtCurrent();
+                }
             }
             return exitThreads;
         }

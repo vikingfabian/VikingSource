@@ -64,7 +64,7 @@ namespace VikingEngine.DSSWars.GameObject
             //}
         }
 
-        public void asynchFindBattleTarget(BattleGroup battle)
+        public bool asynchFindBattleTarget(BattleGroup battle)
         {   
             refreshAttacking();
 
@@ -119,6 +119,14 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
+            return attacking_soldierGroupOrCity != null;
+        }
+
+        public void setBattleWalkingSpeed()
+        {
+            AbsSoldierData typeData = DssRef.unitsdata.Get(type);
+            //TODO pick subtile
+            walkSpeed = typeData.walkingSpeed * terrainSpeedMultiplier;
         }
     }
 }

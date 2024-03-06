@@ -544,22 +544,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return groupObjective == GroupObjective_FollowArmyObjective;//hasWalkingOrder && attacking.Count == 0;
         }
-        //5646080031160
-        //082620
-        //15e
-
 
         public void EnterPeaceEvent()
         {
             attacking_soldierGroupOrCity = null;
-
-            //var typeData = DssRef.unitsdata.Get(type);
-
-            //if (typeData.bonusProjectiles > 0)
-            //{
-                
-            //}
-            //onLeaveAttackState(army.inRender);
         }
 
         void refreshGroupPositions()

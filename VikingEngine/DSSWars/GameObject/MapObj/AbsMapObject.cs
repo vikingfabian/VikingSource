@@ -60,8 +60,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         abstract protected void setInRenderState();
 
-        virtual public void EnterPeaceEvent()
-        { }
+        virtual public void ExitBattleGroup()
+        {
+            battleGroup = null;
+        }
 
         public float distanceTo(AbsMapObject obj)
         {

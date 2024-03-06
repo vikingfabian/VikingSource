@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.Battle
 {
     class BattleGroup
     {
-        const int StandardGridRadius = 25;
+        const int StandardGridRadius = 20;
 
         int index;
         SpottedArray<AbsMapObject> members;
@@ -48,8 +48,6 @@ namespace VikingEngine.DSSWars.Battle
 
             placeSoldiers(m1);
             placeSoldiers(m2);
-
-            Ref.update.AddSyncAction(new SyncAction(debugVisuals));
         }
 
         public SpottedArrayCounter<AbsMapObject> MembersCounter()
@@ -68,14 +66,14 @@ namespace VikingEngine.DSSWars.Battle
         {
             gridTopLeft = new IntVector2(-StandardGridRadius);
             grid = new Grid2D<BattleGridNode>(StandardGridRadius * 2 + 1);
-            grid.LoopBegin();
-            while (grid.LoopNext())
-            {
-                grid.LoopValueSet(new BattleGridNode()
-                {
-                    worldPos = gridPosToWp(grid.LoopPosition + gridTopLeft),
-                });
-            }
+            //grid.LoopBegin();
+            //while (grid.LoopNext())
+            //{
+            //    grid.LoopValueSet(new BattleGridNode()
+            //    {
+            //        worldPos = gridPosToWp(grid.LoopPosition + gridTopLeft),
+            //    });
+            //}
         }
 
         void placeSoldiers(AbsMapObject aArmy)
@@ -92,7 +90,7 @@ namespace VikingEngine.DSSWars.Battle
                 invertY.Y = -invertY.Y;
                 army.battleDirection.Add(-(float)invertY.MajorDirection * MathExt.TauOver4);
 
-                bool reversingForwardDirection = rotation.AngleDifference(army.rotation.radians) > MathExt.TauOver4;
+                bool reversingForwardDirection = Math.Abs(army.battleDirection.AngleDifference(army.rotation.radians)) > MathExt.TauOver4;
 
                 int width = army.groupsWidth();
                 var groupsC = army.groups.counter();
@@ -129,42 +127,64 @@ namespace VikingEngine.DSSWars.Battle
             }
         }
 
-        public void async_update(float time)
+        public bool async_update(float time)
         {
             if (battleState)
             {
                 nextAiOrderTime-= time;
                 if (nextAiOrderTime < 0)
                 {
-                    refreshAiOrders();
-                    refreshGroupsWalkPath();
+                    bool inBattle = refreshAiOrders_hasBattle();
 
-                    nextAiOrderTime = 3600;//500;
+                    if (inBattle)
+                    {
+                        refreshGroupsWalkPath();
+
+                        nextAiOrderTime = 600;
+                    }
+                    else
+                    {
+                        DeleteMe();
+                        return true;
+                    }
                 }
             }
             else if (preparationTime.CountDown())
             {
                 battleState = true;
             }
+
+            return false;
         }
 
-        void refreshAiOrders()
+        bool refreshAiOrders_hasBattle()
         {
+            bool hasBattle = false;
+
             //todo replace with player orders
             membersC.Reset();
 
             while (membersC.Next())
             {
-                var army = membersC.sel.GetArmy();
-                if (army != null)
-                {                    
-                    var groupsC = army.groups.counter();
-                    while (groupsC.Next())
+                if (membersC.sel.defeated())
+                {
+                    membersC.RemoveAtCurrent();
+                }
+                else
+                {
+                    var army = membersC.sel.GetArmy();
+                    if (army != null)
                     {
-                        groupsC.sel.asynchFindBattleTarget(this);
+                        var groupsC = army.groups.counter();
+                        while (groupsC.Next())
+                        {
+                            hasBattle |= groupsC.sel.asynchFindBattleTarget(this);
+                        }
                     }
                 }
             }
+
+            return hasBattle;
         }
 
         void refreshGroupsWalkPath()
@@ -220,7 +240,7 @@ namespace VikingEngine.DSSWars.Battle
             grid.LoopBegin();
             while (grid.LoopNext())
             {
-                grid.LoopValueGet().clear();
+                grid.LoopValueGet()?.clear();
             }
         }
 
@@ -256,7 +276,7 @@ namespace VikingEngine.DSSWars.Battle
 
                     if (straightOnly)
                     {                       
-                        if (diff.IsOrthogonal())// && !getNode(next).blockedByFriendly(group))
+                        if (diff.IsOrthogonal())
                         {
                             tryWalkToNode(group, next);
                             //applyWalkNode(group, next);
@@ -374,9 +394,43 @@ namespace VikingEngine.DSSWars.Battle
         BattleGridNode getNode(IntVector2 pos)
         {
             BattleGridNode node;
-            grid.TryGet(pos - gridTopLeft, out node);
+            IntVector2 localPos = pos - gridTopLeft;
+            if (grid.TryGet(localPos, out node))
+            {
+                if (node == null)
+                {
+                    node = new BattleGridNode()
+                    {
+                        worldPos = gridPosToWp(pos),
+                    };
+
+                    grid.Set(localPos, node);
+                }
+            }
+            else
+            {
+                //expand size
+                //Rectangle2//LengthToClosestTileEdge
+                Rectangle2 area = new Rectangle2(IntVector2.Zero, grid.Size);
+                var minAdd = area.LengthToClosestTileEdge(localPos);
+
+                IntVector2 addRadius = new IntVector2( Math.Max(minAdd * 2, 10));
+                grid.ExpandSize(addRadius * 2, addRadius);
+                gridTopLeft -= addRadius;
+
+                return getNode(pos);
+            }
 
             return node;
+        }
+
+        void DeleteMe()
+        {
+            membersC.Reset();
+            while (membersC.Next())
+            {
+                membersC.sel.ExitBattleGroup();
+            }
         }
     }
 

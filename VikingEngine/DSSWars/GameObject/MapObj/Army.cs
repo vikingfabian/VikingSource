@@ -519,37 +519,52 @@ namespace VikingEngine.DSSWars.GameObject
                 float totalStrength = 0;
                 int dps;
                 
-
                 Map.Tile tile;
                 if (DssRef.world.tileGrid.TryGet(tilePos, out tile))
                 { 
                     terrainSpeedMultiplier = tile.TerrainSpeedMultiplier(isShip);
                 }
+                
+                var battleGroup_sp = battleGroup;
+                bool inBattle = battleGroup_sp != null && battleGroup_sp.battleState;
+                bool notBattle = !inBattle;
 
                 var groupsC = groups.counter();
+
+               
                 while (groupsC.Next())
-                {   
+                {
                     var unitData = DssRef.unitsdata.Get(groupsC.sel.type);
                     groupsC.sel.asynchUpdate();
                     count += groupsC.sel.soldiers.Count;
+                    groupsC.sel.setBattleWalkingSpeed();
 
                     if (groupsC.sel.IsShip())
                     {
                         ++shipCount;
-                        speedbonus += unitData.ArmySpeedBonusSea;
-                        groupsC.sel.walkSpeed = transportSpeedSea;
-                        dps= unitData.DPS_sea();
+                        dps = unitData.DPS_sea();
+
+                        if (notBattle)                       
+                        {
+                            speedbonus += unitData.ArmySpeedBonusSea;
+                            groupsC.sel.walkSpeed = transportSpeedSea;
+                        }
                     }
                     else
                     {
-                        speedbonus += unitData.ArmySpeedBonusLand;
-                        groupsC.sel.walkSpeed = transportSpeedLand;
                         dps = unitData.DPS_land();
+
+                        if (notBattle)
+                        {
+                            speedbonus += unitData.ArmySpeedBonusLand;
+                            groupsC.sel.walkSpeed = transportSpeedLand;
+                        }
                     }
-                   
+
 
                     totalStrength += (dps + unitData.basehealth * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldiers.Count;
                 }
+                
                 isShip = shipCount > groups.Count / 2;
                 soldierRadius = MathExt.SquareRootF(count) / 20f;
                 strengthValue = count;
@@ -564,7 +579,6 @@ namespace VikingEngine.DSSWars.GameObject
                 transportSpeedLand = Convert.ToSingle(AbsSoldierData.StandardWalkingSpeed * speedbonus);
                 transportSpeedSea = Convert.ToSingle(AbsSoldierData.StandardShipSpeed * speedbonus);
                 collectBattles_asynch();
-
 
                 strengthValue = totalStrength / AllUnits.AverageGroupStrength;
             }
@@ -683,9 +697,10 @@ namespace VikingEngine.DSSWars.GameObject
             return !isDeleted;
         }
 
-        public override void EnterPeaceEvent()
+        public override void ExitBattleGroup()
         {
-            base.EnterPeaceEvent();
+            base.ExitBattleGroup();
+
             refreshPositions(false);
             ai.EnterPeaceEvent();
 

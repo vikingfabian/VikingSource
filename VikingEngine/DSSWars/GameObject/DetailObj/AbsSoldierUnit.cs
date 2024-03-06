@@ -788,6 +788,8 @@ namespace VikingEngine.DSSWars.GameObject
             return data.walkingSpeed * group.terrainSpeedMultiplier * time;
         }
 
+        
+
         void rotateTowards(AbsDetailUnit target, float speed)
         {
             if (target != null)

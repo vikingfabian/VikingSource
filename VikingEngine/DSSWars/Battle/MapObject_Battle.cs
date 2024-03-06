@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars.GameObject
                         battlesC.RemoveAtCurrent();
                         if (battles.Count == 0)
                         {
-                            this.EnterPeaceEvent();
+                            this.ExitBattleGroup();
                         }
                     }
                 }
@@ -107,7 +107,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool InBattle()
         {
-            return battles.Count > 0;
+            return battleGroup != null;
+            //return battles.Count > 0;
         }
+
+
     }
 }
