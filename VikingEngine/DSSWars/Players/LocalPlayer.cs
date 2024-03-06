@@ -367,18 +367,18 @@ namespace VikingEngine.DSSWars.Players
                 army.rotation = playerRot;
 
                 //int count = Ref.rnd.Int(4, 8);
-                for (int i = 0; i < 35; ++i)
-                {
-                    new SoldierGroup(army, UnitType.Knight, false);
-                }
-                for (int i = 0; i < 80; ++i)
-                {
-                    new SoldierGroup(army, UnitType.Soldier, false);
-                }
                 for (int i = 0; i < 5; ++i)
                 {
-                    new SoldierGroup(army, UnitType.Archer, false);
+                    new SoldierGroup(army, UnitType.Knight, false).completeTransform(SoldierTransformType.ToShip);
                 }
+                for (int i = 0; i < 10; ++i)
+                {
+                    new SoldierGroup(army, UnitType.Soldier, false).completeTransform(SoldierTransformType.ToShip);
+                }
+                //for (int i = 0; i < 5; ++i)
+                //{
+                //    new SoldierGroup(army, UnitType.Archer, false).completeTransform(SoldierTransformType.ToShip);
+                //}
 
                 //count = Ref.rnd.Int(0, 8);
                 //for (int i = 0; i < count; ++i)
@@ -412,9 +412,9 @@ namespace VikingEngine.DSSWars.Players
                     var army = enemyFac.NewArmy(VectorExt.AddX(position, 3));
                     army.rotation = enemyRot;
                     //int count = 4;//Ref.rnd.Int(4, 8);
-                    for (int i = 0; i < 60; ++i)
+                    for (int i = 0; i < 10; ++i)
                     {
-                        new SoldierGroup(army, UnitType.Soldier, false);
+                        new SoldierGroup(army, UnitType.Soldier, false).completeTransform(SoldierTransformType.ToShip);
                     }
                     //for (int i = 0; i < 9; ++i)
                     //{

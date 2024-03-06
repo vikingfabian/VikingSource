@@ -172,14 +172,22 @@ namespace VikingEngine.DSSWars.Battle
                 }
                 else
                 {
-                    var army = membersC.sel.GetArmy();
-                    if (army != null)
+                    if (membersC.sel.gameobjectType() == GameObjectType.Army)
                     {
+                        var army = membersC.sel.GetArmy();
+                        //if (army != null)
+                        //{
                         var groupsC = army.groups.counter();
                         while (groupsC.Next())
                         {
                             hasBattle |= groupsC.sel.asynchFindBattleTarget(this);
                         }
+                        //}
+                    }
+                    else
+                    {
+                        var city = membersC.sel.GetCity();
+                        city.asynchFindBattleTarget();
                     }
                 }
             }
@@ -249,9 +257,10 @@ namespace VikingEngine.DSSWars.Battle
             membersC.Reset();
             while (membersC.Next())
             {
-                var army = membersC.sel.GetArmy();
-                if (army != null)
+                if (membersC.sel.gameobjectType() == GameObjectType.Army)
                 {
+                    var army = membersC.sel.GetArmy();
+
                     var groupsC = army.groups.counter();
                     while (groupsC.Next())
                     {
@@ -259,6 +268,11 @@ namespace VikingEngine.DSSWars.Battle
                         groupsC.sel.battleGridPos = WpToGridPos(groupsC.sel.position.X, groupsC.sel.position.Z);
                         getNode(groupsC.sel.battleGridPos).add(groupsC.sel);
                     }
+                }
+                else
+                { 
+                    var city = membersC.sel.GetCity();
+                    city.battleGridPos = WpToGridPos(city.position.X, city.position.Z);
                 }
             }
         }
@@ -410,7 +424,6 @@ namespace VikingEngine.DSSWars.Battle
             else
             {
                 //expand size
-                //Rectangle2//LengthToClosestTileEdge
                 Rectangle2 area = new Rectangle2(IntVector2.Zero, grid.Size);
                 var minAdd = area.LengthToClosestTileEdge(localPos);
 

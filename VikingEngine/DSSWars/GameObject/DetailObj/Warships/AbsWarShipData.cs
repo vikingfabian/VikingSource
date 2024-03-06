@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (mainAttack == AttackType.Melee)
             {
-                attackRange = 0.2f;
+                attackRange = 0.15f;
             }
             else
             { 

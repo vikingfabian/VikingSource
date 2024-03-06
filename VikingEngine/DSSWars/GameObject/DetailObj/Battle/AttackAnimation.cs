@@ -112,17 +112,6 @@ namespace VikingEngine.DSSWars.GameObject
                         Projectile.ProjectileAttack(fullUpdate, this, data.secondaryAttack, target, damage, 0, 0);
                     }
                 }
-
-                //if (data.attackSetCount > 0)
-                //{
-                //    attackSetIndex++;
-                //    if (attackSetIndex >= data.attackSetCount)
-                //    {
-                //        attackSetIndex = 0;
-                //        attackCooldownTime.MilliSeconds += data.attackSetCoolDown;// / attackSpeedMultiplier;
-                //        prevAttackTime = attackCooldownTime.MilliSeconds;
-                //    }
-                //}
             }
         }
 

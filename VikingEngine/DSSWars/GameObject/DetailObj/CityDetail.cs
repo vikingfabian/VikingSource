@@ -422,7 +422,7 @@ namespace VikingEngine.DSSWars.GameObject
         //    base.closestTargetCheck(unit, friendly, distance, ref closestOpponent, ref closestOpponentDistance);
         //}
 
-        public void asynchNearObjectsUpdate()
+        public void asynchFindBattleTarget()
         {
             AbsDetailUnit closestOpponent = null;
             float closestOpponentDistance = float.MaxValue;

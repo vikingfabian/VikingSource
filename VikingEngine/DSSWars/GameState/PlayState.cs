@@ -342,11 +342,11 @@ namespace VikingEngine.DSSWars
         bool asynchAiPlayersUpdate(int id, float time)
         {
             
-                var factions = DssRef.world.factions.counter();
-                while (factions.Next())
-                {
-                    factions.sel.asynchAiPlayersUpdate(time);
-                }
+            var factions = DssRef.world.factions.counter();
+            while (factions.Next())
+            {
+                factions.sel.asynchAiPlayersUpdate(time);
+            }
             
             return exitThreads;
         }
@@ -405,10 +405,10 @@ namespace VikingEngine.DSSWars
             //    }
             //}
 
-            //foreach (var m in DssRef.world.cities)
-            //{
-            //    m.asynchNearObjectsUpdate();
-            //}
+            foreach (var m in DssRef.world.cities)
+            {
+                m.asynchNearObjectsUpdate();
+            }
 
             return exitThreads;
         }
