@@ -192,7 +192,7 @@ namespace VikingEngine.DSSWars
                 city.setFaction(this);
                 if (!duringStartUp)
                 {
-                    player.OnCityCapture();
+                    player.OnCityCapture(city);
 
                     if (mainCity == null || mainCity.faction != this)
                     {

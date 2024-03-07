@@ -72,18 +72,18 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (DssRef.storage.aiAggressivity == AiAggressivity.Medium)
                 {
-                    if (Ref.rnd.Chance(0.8))
+                    if (Ref.rnd.Chance(0.35))
                     {
                         aggressionLevel = AggressionLevel2_RandomAttacks;
                     }
-                    else if (Ref.rnd.Chance(0.1))
+                    else if (Ref.rnd.Chance(0.06))
                     {
                         aggressionLevel = AggressionLevel3_FocusedAttacks;
                     }
                 }
                 else if (DssRef.storage.aiAggressivity == AiAggressivity.High)
                 {
-                    if (Ref.rnd.Chance(0.5))
+                    if (Ref.rnd.Chance(0.6))
                     {
                         aggressionLevel = AggressionLevel2_RandomAttacks;
                     }
@@ -143,7 +143,7 @@ namespace VikingEngine.DSSWars.Players
 
         abstract public string Name { get; }
 
-        virtual public void OnCityCapture()
+        virtual public void OnCityCapture(City city)
         {}
     }
 

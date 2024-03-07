@@ -178,6 +178,7 @@ namespace VikingEngine.DSSWars.Players
                 checkPlayerDoublettes(i);
             }
         }
+
         public void checkPlayerDoublettes(int masterIndex)
         {
             for (int i = 0; i < MaxLocalPlayerCount; ++i)
