@@ -44,11 +44,11 @@ namespace VikingEngine.DSSWars
                     {
                         IntervalF[] timeMinutes =
                             {
-                            new IntervalF(5,8),//Immediate,
-                            new IntervalF(10,20),//Early,
-                            new IntervalF(20,30),//Normal,
-                            new IntervalF(30,40),//Late,
-                            new IntervalF(40,60),//VeryLate,
+                            new IntervalF(5,8),//Immediate,                           
+                            new IntervalF(20,30),
+                            new IntervalF(30,40),//Normal,
+                            new IntervalF(40,60),
+                            new IntervalF(60,80),//VeryLate,
                         };
 
                         nextTotalGameTimeMin = timeMinutes[(int)DssRef.storage.bossTimeSettings];
@@ -62,11 +62,11 @@ namespace VikingEngine.DSSWars
                     {
                         IntervalF[] timeMinutes =
                            {
-                            new IntervalF(5,10),//Immediate,
-                            new IntervalF(30,40),//Early,
-                            new IntervalF(70,80),//Normal,
-                            new IntervalF(80,100),//Late,
-                            new IntervalF(100,240),//VeryLate,
+                            new IntervalF(5,10),//Immediate,                            
+                            new IntervalF(70,80),
+                            new IntervalF(80,100),//Normal,
+                            new IntervalF(100,240),
+                            new IntervalF(140,320),//VeryLate,
                         };
 
                         nextTotalGameTimeMin = timeMinutes[(int)DssRef.storage.bossTimeSettings];
@@ -115,19 +115,37 @@ namespace VikingEngine.DSSWars
                                 IntVector2 spawn = spawnPos_Player[playerIx];
                                 Rotation1D enemyRot = Rotation1D.D0;
 
+                                Range soldierCount = Range.Zero;
+
+                                switch (DssRef.storage.bossSize)
+                                {
+                                    case BossSize.Small:
+                                        soldierCount = new Range(10, 14);
+                                        break;
+                                    case BossSize.Medium:
+                                        soldierCount = new Range(14, 18);
+                                        break;
+                                    case BossSize.Large:
+                                        soldierCount = new Range(18, 23);
+                                        break;
+                                    case BossSize.Huge:
+                                        soldierCount = new Range(24, 30);
+                                        break;
+                                }
+
                                 var army = enemyFac.NewArmy(VectorExt.AddY(spawn, 0));
                                 army.rotation = enemyRot;
-                                int count = Ref.rnd.Int(24, 30) / DssRef.state.localPlayers.Count;
+                                int count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
                                 for (int i = 0; i < count; ++i)
                                 {
                                     new SoldierGroup(army, UnitType.Pikeman, false);
                                 }
-                                count = Ref.rnd.Int(24, 30) / DssRef.state.localPlayers.Count;
+                                count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
                                 for (int i = 0; i < count; ++i)
                                 {
                                     new SoldierGroup(army, UnitType.Sailor, false);
                                 }
-                                count = Ref.rnd.Int(24, 30) / DssRef.state.localPlayers.Count;
+                                count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
                                 for (int i = 0; i < count; ++i)
                                 {
                                     new SoldierGroup(army, UnitType.CrossBow, false);

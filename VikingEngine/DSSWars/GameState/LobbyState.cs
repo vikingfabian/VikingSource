@@ -140,6 +140,12 @@ namespace VikingEngine.DSSWars
                 bossTimeOptions.Add(new GuiOption<BossTimeSettings>(bossTime.ToString(), bossTime));
             }
 
+            var bossSizeOptions = new List<GuiOption<BossSize>>((int)BossSize.NUM);
+            for (BossSize bossSize = 0; bossSize < BossSize.NUM; bossSize++)
+            { 
+                bossSizeOptions.Add(new GuiOption<BossSize>(bossSize.ToString(), bossSize));
+            }
+
             GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
             {
                 
@@ -176,10 +182,12 @@ namespace VikingEngine.DSSWars
 
 
                 difficultyLevelText = new GuiLabel("XXX", layout);
+                new GuiCheckbox("Allow pause and command", null, allowPauseProperty, layout);
                 new GuiCheckbox("Get honor guards", "Start with soldiers that have no upkeep", honorGuardProperty, layout);
 
                 new GuiOptionsList<AiAggressivity>(SpriteName.NO_IMAGE, "Ai aggression", agressiveOptions, aggresiveProperty, layout);
                 new GuiOptionsList<BossTimeSettings>(SpriteName.NO_IMAGE, "Boss enter time", bossTimeOptions, bossTimeProperty, layout);
+                new GuiOptionsList<BossSize>(SpriteName.NO_IMAGE, "Boss size", bossSizeOptions, bossSizeProperty, layout);
                 new GuiOptionsList<int>(SpriteName.NO_IMAGE, "Ai Economy", aiEconomyOptions, aiEconomyProperty, layout);
                 new GuiOptionsList<int>(SpriteName.NO_IMAGE, "Diplomacy difficulty", diplomacyOptions, diplomacyDifficultyProperty, layout);
 
@@ -229,6 +237,17 @@ namespace VikingEngine.DSSWars
             return DssRef.storage.bossTimeSettings;
         }
 
+        public BossSize bossSizeProperty(bool set, BossSize value)
+        {
+            if (set)
+            {
+                DssRef.storage.bossSize = value;
+                DssRef.storage.Save(null);
+                refreshDifficultyLevel();
+            }
+            return DssRef.storage.bossSize;
+        }
+
         public AiAggressivity aggresiveProperty(bool set, AiAggressivity value)
         {
             if (set)
@@ -261,7 +280,16 @@ namespace VikingEngine.DSSWars
             }
             return DssRef.storage.diplomacyDifficulty;
         }
-
+        public bool allowPauseProperty(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                DssRef.storage.allowPauseCommand = value;
+                DssRef.storage.Save(null);
+                refreshDifficultyLevel();
+            }
+            return DssRef.storage.allowPauseCommand;
+        }
         public bool honorGuardProperty(int index, bool set, bool value)
         {
             if (set)

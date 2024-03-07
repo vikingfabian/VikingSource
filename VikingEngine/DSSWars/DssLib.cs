@@ -148,6 +148,16 @@ namespace VikingEngine.DSSWars
         NUM
     }
 
+    enum BossSize
+    {
+        Small,
+        Medium,
+        Large,
+        Huge,
+
+        NUM
+    }
+
 }
 
 
