@@ -34,28 +34,28 @@ namespace VikingEngine.ToGG.Commander
             unitMessages = new ToggEngine.Display3D.UnitMessagesHandler();
 
             //draw.ClrColor = Color.White;
-            if (Ref.music == null)
-            {
-                Ref.music = new Sound.MusicPlayer();
+            //if (Ref.music == null)
+            //{
+            //    Ref.music = new Sound.MusicPlayer();
                     
-                Ref.music.SetPlaylist(new List<Sound.SongData>
-                {
-                    //new Sound.SongData(MusicFolder + FilePath.Dir + "Aftermath_loop", true, 1f),
-                    new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "BBaaB_loop", true, 1f),
-                    new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "Gargoyle_loop", true, 1f),
-                    new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "RM 1 - Introversion", false, 1f),
-                    new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "RM 10 - Incubation", false, 1f),
-                    new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "RM 2 - Arcane Benevolence", false, 1f),
-                    new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "RM 3 - Left in Autumn", false, 1f),
-                    new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "RM 4 - Warhogs", false, 1f),
-                    new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "RM 5 - Suddenly Empty", false, 1f),
-                    new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "RM 6 - Auderesne", false, 1f),
-                    new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "RM 7 - For Eternity", false, 1f),
-                    new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "RM 8 - Asynchronous Flanking", false, 1f),
-                    new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "RM 9 - Weeping Bedlam", false, 1f),
-                    new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "YesGod_loop", true, 1f),
-                }, true);
-            }
+            //    Ref.music.SetPlaylist(new List<Sound.SongData>
+            //    {
+            //        //new Sound.SongData(MusicFolder + FilePath.Dir + "Aftermath_loop", true, 1f),
+            //        new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "BBaaB_loop", true, 1f),
+            //        new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "Gargoyle_loop", true, 1f),
+            //        new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "RM 1 - Introversion", false, 1f),
+            //        new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "RM 10 - Incubation", false, 1f),
+            //        new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "RM 2 - Arcane Benevolence", false, 1f),
+            //        new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "RM 3 - Left in Autumn", false, 1f),
+            //        new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "RM 4 - Warhogs", false, 1f),
+            //        new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "RM 5 - Suddenly Empty", false, 1f),
+            //        new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "RM 6 - Auderesne", false, 1f),
+            //        new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "RM 7 - For Eternity", false, 1f),
+            //        new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "RM 8 - Asynchronous Flanking", false, 1f),
+            //        new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "RM 9 - Weeping Bedlam", false, 1f),
+            //        new Sound.SongData(MusicFolder + DataStream.FilePath.Dir + "YesGod_loop", true, 1f),
+            //    }, true);
+            //}
             
             
             new ToggEngine.Map.Board(gameSetup, ToggEngine.Map.BoardType.Match);
@@ -66,7 +66,7 @@ namespace VikingEngine.ToGG.Commander
             if (gameSetup.loadMap == null)
             {
                 toggRef.board.model.beginGenerateModel();
-                if (Ref.netSession.IsHostOrOffline)
+                if (Ref.netSession == null || Ref.netSession.IsHostOrOffline)
                 {
                     BeginNextPlayer(true);
                 }
@@ -123,7 +123,7 @@ namespace VikingEngine.ToGG.Commander
             toggRef.board.update();
             toggRef.cam.update();
             //camera.Time_Update(time);
-            Ref.music.Update();
+            Ref.music?.Update();
         }
 
         public override void NetworkReadPacket(Network.ReceivedPacket packet)

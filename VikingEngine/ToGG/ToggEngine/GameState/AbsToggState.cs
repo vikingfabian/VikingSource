@@ -27,7 +27,7 @@ namespace VikingEngine.ToGG
         public override void Time_Update(float time)
         {
             base.Time_Update(time);
-            Ref.lobby.update();
+            Ref.lobby?.update();
         }
 
         protected void listSaveFiles(bool storage)

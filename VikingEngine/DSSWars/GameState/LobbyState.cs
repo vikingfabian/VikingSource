@@ -19,6 +19,10 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.Input;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DebugExtensions;
+using System.ComponentModel.Design;
+using VikingEngine.ToGG.Commander.LevelSetup;
+using VikingEngine.ToGG;
+using VikingEngine.ToGG.ToggEngine.Map;
 
 namespace VikingEngine.DSSWars
 {
@@ -197,6 +201,7 @@ namespace VikingEngine.DSSWars
                 if (PlatformSettings.DevBuild)
                 {
                     new GuiTextButton("Map file generator", "Creates maps to play on. Takes about 10 minutes.", mapFileGenerator, false, layout);
+                    new GuiLargeTextButton("Play Commander", "", new GuiAction(extra_PlayCommanderVersus), false, layout);
                 }
                 //new GuiTextButton("Voxel Editor", "Tool to create the voxel models. Xbox controller required!", voxeleditor, false, layout);
                 new GuiSectionSeparator(layout);
@@ -204,6 +209,23 @@ namespace VikingEngine.DSSWars
             } layout.End();
 
             refreshDifficultyLevel();
+        }
+
+        void extra_PlayCommanderVersus()
+        {
+            new SquareDic();
+            MainTerrainProperties.Init();
+            new VikingEngine.ToGG.InputMap(0);
+            new Network.Session();
+
+            GameSetup setup = new GameSetup();
+            setup.lobbyMembers = new List<AbsLobbyMember>
+            {
+                new LocalLobbyMember(0),
+                new AiLobbyMember(),
+            };
+
+            new ToGG.Commander.CmdPlayState(setup);
         }
 
         void refreshDifficultyLevel()

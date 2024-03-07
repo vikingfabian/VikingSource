@@ -2161,7 +2161,8 @@ namespace VikingEngine
                 }
             }
 
-            if (PlatformSettings.RunProgram == StartProgram.ToGG)
+            if (PlatformSettings.RunProgram == StartProgram.ToGG ||
+                PlatformSettings.RunProgram == StartProgram.DSS)
             {
                 currentIndex = numTilesWidth * 93;
                 {
@@ -2300,7 +2301,8 @@ namespace VikingEngine
 
 
             }
-            if (PlatformSettings.RunProgram == StartProgram.ToGG)
+            if (PlatformSettings.RunProgram == StartProgram.ToGG ||
+                PlatformSettings.RunProgram == StartProgram.DSS)
             {
 
                 currentIndex = numTilesWidth * 108;
