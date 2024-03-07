@@ -508,13 +508,16 @@ namespace VikingEngine.DSSWars.GameObject
 
         abstract public UnitType DetailUnitType();
 
-        
+
+        abstract public bool IsShipType();
 
         abstract public bool IsStructure();
 
         abstract public bool IsSoldierUnit();
 
         abstract public bool IsSingleTarget();
+
+        virtual public AbsSoldierUnit GetSoldierUnit() { return null; }
 
         virtual protected bool IsStunned
         {

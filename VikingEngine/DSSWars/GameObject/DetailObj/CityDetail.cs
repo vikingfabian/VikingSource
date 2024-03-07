@@ -463,6 +463,11 @@ namespace VikingEngine.DSSWars.GameObject
             return this.Faction() == faction;
         }
 
+        public override bool IsShipType()
+        {
+            return false;
+        }
+
         public override bool IsStructure() 
         { return true; }
 

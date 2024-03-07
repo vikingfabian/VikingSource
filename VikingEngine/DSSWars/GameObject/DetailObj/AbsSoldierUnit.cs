@@ -998,7 +998,10 @@ namespace VikingEngine.DSSWars.GameObject
             return true;
         }
 
-        abstract public bool IsShipType();
+        public override AbsSoldierUnit GetSoldierUnit()
+        {
+            return this;
+        }
 
         public override AbsMapObject RelatedMapObject()
         {

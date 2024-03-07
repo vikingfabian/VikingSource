@@ -101,6 +101,7 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.wars_deserter, false);
             loadVoxelModel(VoxelModelName.horse_brown, false);
             loadVoxelModel(VoxelModelName.horse_white, false);
+            loadVoxelModel(VoxelModelName.wars_shipmelee, false);
 
             foreach (var model in DetailMapTile.LoadModel())
             {

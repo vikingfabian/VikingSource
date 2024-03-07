@@ -15,53 +15,16 @@ namespace VikingEngine.DSSWars.GameObject
         public bool battleWalkPath = false;
 
         void update_battlePreparations(float time, bool fullUpdate)
-        {
-            //if (army.battleGroup.battleState)
-            //{
-            //    var closest_sp = attacking_soldierGroupOrCity;
-            //    if (closest_sp != null)
-            //    {
-            //        if (groupCollisionDistance(closest_sp) < 0.02f)
-            //        {
-            //            //SPLIT GROUP
-            //            //newObjective = GroupObjective_IsSplit;
+        {            
+            bool walking = !updateWalking(battleWp, true, army.battleDirection, time);
 
-            //            var soldiersC = soldiers.counter();
-            //            while (soldiersC.Next())
-            //            {
-            //                soldiersC.sel.setAttackState();
-            //            }
-            //        }
-            //        else
-            //        {
-            //            //Group attack move
-            //            bool walking = !updateWalking(battleWp, false, Rotation1D.D0, time);
+            var soldiersC = soldiers.counter();
+            while (soldiersC.Next())
+            {
+                soldiersC.sel.update_GroupLocked(walking);
+            }
 
-            //            var soldiersC = soldiers.counter();
-            //            while (soldiersC.Next())
-            //            {
-            //                soldiersC.sel.update_GroupLocked(walking);
-            //            }
-            //        }
-            //    }
-            //    //bool walking = !updateWalking(battleWp, false, Rotation1D.D0, time);
-
-            //    //var soldiersC = soldiers.counter();
-            //    //while (soldiersC.Next())
-            //    //{
-            //    //    soldiersC.sel.update_GroupLocked(walking);
-            //    //}
-            //}
-            //else
-            //{
-                bool walking = !updateWalking(battleWp, true, army.battleDirection, time);
-
-                var soldiersC = soldiers.counter();
-                while (soldiersC.Next())
-                {
-                    soldiersC.sel.update_GroupLocked(walking);
-                }
-            //}
+            groupIsIdle = !walking;
         }
 
         public bool asynchFindBattleTarget(BattleGroup battle)
@@ -124,7 +87,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void setBattleWalkingSpeed()
         {
-            AbsSoldierData typeData = DssRef.unitsdata.Get(type);
+            AbsSoldierData typeData = FirstSoldierData();
+            
             //TODO pick subtile
             walkSpeed = typeData.walkingSpeed * terrainSpeedMultiplier;
         }

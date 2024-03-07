@@ -25,6 +25,7 @@ namespace VikingEngine.DSSWars.Battle
         Grid2D<BattleGridNode> grid;
         Time preparationTime = new Time(10, TimeUnit.Seconds);
         float nextAiOrderTime = 0;
+        float checkIdleTime = 800;
         public bool battleState = false;
 
         public BattleGroup(AbsMapObject m1, AbsMapObject m2) 
@@ -149,12 +150,51 @@ namespace VikingEngine.DSSWars.Battle
                     }
                 }
             }
-            else if (preparationTime.CountDown())
+            else 
             {
-                battleState = true;
+                checkIdleTime -= time;
+
+                if (checkIdleTime <= 0)
+                {
+                    checkIdleTime = 200;
+
+                    if (allIdle())
+                    {
+                        battleState = true;
+                    }
+                }
+
+                if (preparationTime.CountDown())
+                {
+                    battleState = true;
+                }
             }
 
             return false;
+        }
+
+        bool allIdle()
+        {
+            membersC.Reset();
+
+            while (membersC.Next())
+            {
+                if (membersC.sel.gameobjectType() == GameObjectType.Army)
+                {
+                    var army = membersC.sel.GetArmy();
+
+                    var groupsC = army.groups.counter();
+                    while (groupsC.Next())
+                    {
+                        if (!groupsC.sel.groupIsIdle)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            return true;
         }
 
         bool refreshAiOrders_hasBattle()
@@ -413,11 +453,7 @@ namespace VikingEngine.DSSWars.Battle
             {
                 if (node == null)
                 {
-                    node = new BattleGridNode()
-                    {
-                        worldPos = gridPosToWp(pos),
-                    };
-
+                    node = new BattleGridNode(gridPosToWp(pos));
                     grid.Set(localPos, node);
                 }
             }
@@ -452,6 +488,17 @@ namespace VikingEngine.DSSWars.Battle
         public SoldierGroup group1 = null;
         public SoldierGroup group2 = null;
         public Vector3 worldPos;
+        public bool water;
+
+        public BattleGridNode(Vector3 worldPos)
+        {
+            this.worldPos = worldPos;
+            Map.Tile tile;
+            if (DssRef.world.tileGrid.TryGet(new IntVector2(worldPos.X, worldPos.Z), out tile))
+            {
+                water = tile.IsWater();
+            }
+        }
 
         public void add(SoldierGroup group)
         {

@@ -387,7 +387,7 @@ namespace VikingEngine.DSSWars.Map
         {
             cityDominationStrength.Clear();
 
-            cityDominationStrength.Add(city.faction.index, 1);
+            cityDominationStrength.Add(city.faction.index, 0);
 
             IntVector2 areaPos = city.tilePos / UnitGridSquareWidth;
             UnitCollArea area;

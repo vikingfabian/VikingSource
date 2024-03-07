@@ -1547,7 +1547,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool IsShip()
         { 
-            var  first =soldiers.First();
+            var  first = soldiers.First();
             if (first != null)
             { 
                 return first.IsShipType();
@@ -1555,7 +1555,18 @@ namespace VikingEngine.DSSWars.GameObject
 
             return false;
         }
-                
+
+        public AbsSoldierData FirstSoldierData()
+        {
+            var first = soldiers.First();
+            if (first != null)
+            {
+                return first.data;
+            }
+
+            return DssRef.unitsdata.Get(type);
+        }
+
         public override string Name()
         {
             return type.ToString() + " Group(" + groupId.ToString() + ")";
