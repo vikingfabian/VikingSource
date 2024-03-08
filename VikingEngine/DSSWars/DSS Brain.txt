@@ -1,6 +1,8 @@
 ﻿Change Log
 -Two new  difficulty settings
 -Reduced the game difficulty on medium, both bosses are about 20min later and almost half their size, neighbor ai aggression is reduced to half
+-Grid battle (bye bye battle blob!)
+-Some improvements to ship on land yankiness (not completely solved)
 
 Error
 -controller for automation 
