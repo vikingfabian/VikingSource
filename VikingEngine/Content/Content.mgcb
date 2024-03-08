@@ -970,6 +970,9 @@
 #begin VoxelModel/LfWars/wars_shipcrew.vox
 /copy:VoxelModel/LfWars/wars_shipcrew.vox
 
+#begin VoxelModel/LfWars/wars_shipmelee.vox
+/copy:VoxelModel/LfWars/wars_shipmelee.vox
+
 #begin VoxelModel/LfWars/wars_soldier_i2.vox
 /copy:VoxelModel/LfWars/wars_soldier_i2.vox
 

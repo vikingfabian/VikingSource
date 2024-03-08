@@ -209,10 +209,10 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                     {
-                        cityBuilderTest();
+                        //cityBuilderTest();
                         //DssRef.state.events.TestNextEvent();
                         
-                        //battleLineUpTest(true);
+                        battleLineUpTest(true);
                     }
 
                     if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
@@ -337,8 +337,8 @@ namespace VikingEngine.DSSWars.Players
 
         void battleLineUpTest(bool friendly)
         {
-            Rotation1D enemyRot = Rotation1D.FromDegrees(220 + Ref.rnd.Plus_Minus(45));
-            Rotation1D playerRot = Rotation1D.FromDegrees(180 - 45); //enemyRot.getInvert();
+            Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(45));
+            Rotation1D playerRot = enemyRot;//enemyRot.getInvert();
 
             Faction enemyFac = DssRef.state.darkLordPlayer.faction;
             DssRef.state.darkLordPlayer.faction.hasDeserters = false;
@@ -362,50 +362,50 @@ namespace VikingEngine.DSSWars.Players
                 army.rotation = playerRot;
 
                 //int count = Ref.rnd.Int(4, 8);
-                for (int i = 0; i < 20; ++i)
+                for (int i = 0; i < 5; ++i)
                 {
-                    new SoldierGroup(army, UnitType.Sailor, false).completeTransform(SoldierTransformType.ToShip);
+                    new SoldierGroup(army, UnitType.Knight, false);
+                }
+                for (int i = 0; i < 10; ++i)
+                {
+                    new SoldierGroup(army, UnitType.Soldier, false);
                 }
 
-                //count = Ref.rnd.Int(0, 8);
-                //for (int i = 0; i < count; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Soldier, false);
-                //}
-
-                //count = Ref.rnd.Int(4, 8);
-                //for (int i = 0; i < count; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Archer, false);
-                //}
-
-
-                //count = Ref.rnd.Int(0, 8);
-                //for (int i = 0; i < count; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Knight, false);
-                //}
-
-                //count = Ref.rnd.Int(0, 16);
-                //for (int i = 0; i < count; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Ballista, false);
-                //}
                 army.refreshPositions(true);
             }
             //else
             {
+                {
+                    var army = enemyFac.NewArmy(VectorExt.AddX(position, 3));
+                    army.rotation = enemyRot;
+                    //int count = 4;//Ref.rnd.Int(4, 8);
+                    for (int i = 0; i < 5; ++i)
+                    {
+                        new SoldierGroup(army, UnitType.Soldier, false);
+                    }
+                    //for (int i = 0; i < 9; ++i)
+                    //{
+                    //    new SoldierGroup(army, UnitType.Pikeman, false);
+                    //}
+                    //for (int i = 0; i < 5; ++i)
+                    //{
+                    //    new SoldierGroup(army, UnitType.Ballista, false);
+                    //}
+                    army.refreshPositions(true);
+                }
+
+
                 //{
-                //    var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
+                //    var army = enemyFac.NewArmy(VectorExt.AddY(position, 2));
                 //    army.rotation = enemyRot;
                 //    //int count = 4;//Ref.rnd.Int(4, 8);
-                //    for (int i = 0; i < 3; ++i)
+                //    for (int i = 0; i < 5; ++i)
                 //    {
-                //        new SoldierGroup(army, UnitType.Soldier, false).completeTransform(SoldierTransformType.ToShip);
+                //        new SoldierGroup(army, UnitType.Soldier, false);
                 //    }
-                //    for (int i = 0; i < 3; ++i)
+                //    for (int i = 0; i < 5; ++i)
                 //    {
-                //        new SoldierGroup(army, UnitType.Ballista, false).completeTransform(SoldierTransformType.ToShip);
+                //        new SoldierGroup(army, UnitType.Ballista, false);
                 //    }
                 //    army.refreshPositions(true);
                 //}

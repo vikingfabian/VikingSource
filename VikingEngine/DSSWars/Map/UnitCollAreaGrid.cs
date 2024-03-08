@@ -173,28 +173,28 @@ namespace VikingEngine.DSSWars.Map
             IntVector2 areaPos = tilePos / UnitGridSquareWidth;
             UnitCollArea area;
 
-            if (grid.TryGet(areaPos.X, areaPos.Y, out area))
-            {
-                var groups_sp = area.groups;
-                if (groups_sp != null)
-                {
-                    for (int i = 0; i < groups_sp.Count; ++i)
-                    {
-                        groups_sp[i].soldiers.toList(ref playerNearDetailUnits);
-                    }
-                }
-            }
+            //if (grid.TryGet(areaPos.X, areaPos.Y, out area))
+            //{
+            //    var groups_sp = area.groups;
+            //    if (groups_sp != null)
+            //    {
+            //        for (int i = 0; i < groups_sp.Count; ++i)
+            //        {
+            //            groups_sp[i].soldiers.toList(ref playerNearDetailUnits);
+            //        }
+            //    }
+            //}
 
-            if (playerNearDetailUnits.Count > 0)
-            {
-                return playerNearDetailUnits;
-            }
+            //if (playerNearDetailUnits.Count > 0)
+            //{
+            //    return playerNearDetailUnits;
+            //}
 
             for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
             {
                 for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
                 {
-                    if (x != areaPos.X || y != areaPos.Y)
+                    //if (x != areaPos.X || y != areaPos.Y)
                     {
                         if (grid.TryGet(x, y, out area))
                         {
@@ -387,7 +387,7 @@ namespace VikingEngine.DSSWars.Map
         {
             cityDominationStrength.Clear();
 
-            cityDominationStrength.Add(city.faction.index, 1);
+            cityDominationStrength.Add(city.faction.index, 0);
 
             IntVector2 areaPos = city.tilePos / UnitGridSquareWidth;
             UnitCollArea area;
@@ -403,7 +403,7 @@ namespace VikingEngine.DSSWars.Map
                         {
                             foreach (var army in armies_sp)
                             {
-                                bool inRange = (army.tilePos - city.tilePos).Length() <= DssLib.BattleConflictRadius;
+                                bool inRange = (army.tilePos - city.tilePos).Length() <= DssLib.CityDominationRadius;
 
                                 if (inRange)
                                 {

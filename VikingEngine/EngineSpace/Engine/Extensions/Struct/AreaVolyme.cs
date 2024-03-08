@@ -1034,6 +1034,15 @@ namespace VikingEngine //AreaVolyme
             return false;
         }
 
+        public bool IntersectPoint(float x, float y)
+        {
+            if (x >= Position.X && y >= Position.Y && x <= Position.X + Size.X && y <= Position.Y + Size.Y)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public bool IntersectTilePoint(Vector2 point)
         {
             if (point.X >= Position.X && point.Y >= Position.Y && point.X <= Position.X + Size.X - 1 && point.Y <= Position.Y + Size.Y - 1)

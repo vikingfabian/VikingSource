@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.DSSWars.GameObject;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -78,7 +79,7 @@ namespace VikingEngine.DSSWars.GameObject
                 prevAttackTime = attackCooldownTime.MilliSeconds;
                 attackFrameTime.MilliSeconds = data.attackFrameTime;
 
-                attackDir = angleToUnit(target);
+                
 
                 int damage;
                 if (mainAttack)
@@ -99,6 +100,12 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (data.mainAttack == AttackType.Melee && mainAttack)
                 {
+                    attackDir = angleToUnit(target);
+
+                    if (fullUpdate && IsShipType())
+                    {
+                        new ShipMeleeAttack(GetSoldierUnit(), attackDir);
+                    }
                     target.takeDamage(damage, attackDir, group.army.faction, fullUpdate);
                 }
                 else
@@ -112,17 +119,6 @@ namespace VikingEngine.DSSWars.GameObject
                         Projectile.ProjectileAttack(fullUpdate, this, data.secondaryAttack, target, damage, 0, 0);
                     }
                 }
-
-                //if (data.attackSetCount > 0)
-                //{
-                //    attackSetIndex++;
-                //    if (attackSetIndex >= data.attackSetCount)
-                //    {
-                //        attackSetIndex = 0;
-                //        attackCooldownTime.MilliSeconds += data.attackSetCoolDown;// / attackSpeedMultiplier;
-                //        prevAttackTime = attackCooldownTime.MilliSeconds;
-                //    }
-                //}
             }
         }
 

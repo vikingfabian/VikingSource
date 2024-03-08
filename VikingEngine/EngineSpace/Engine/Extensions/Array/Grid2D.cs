@@ -79,6 +79,25 @@ namespace VikingEngine
             size = newSize;
         }
 
+        public void ExpandSize(IntVector2 add, IntVector2 move)
+        {
+            IntVector2 newSize = size + add;
+            T[,] newArray = new T[newSize.X, newSize.Y];
+            
+            for (int y = 0; y < size.Y; ++y)
+            {
+                int newY = y + move.Y;
+                
+                for (int x = 0; x < size.X; ++x)
+                {
+                    newArray[x + move.X, newY] = array[x, y];
+                }
+            }
+
+            array = newArray;
+            size = newSize;
+        }
+
         /// <summary>
         /// Move all members in a scroll like way
         /// </summary>

@@ -1,11 +1,13 @@
 ﻿Change Log
 -Two new  difficulty settings
 -Reduced the game difficulty on medium, both bosses are about 20min later and almost half their size, neighbor ai aggression is reduced to half
+-Grid battle (bye bye battle blob!)
+-Some improvements to ship on land yankiness (not completely solved)
 
 Error
+-controller for automation 
+-tabbing betwen cities and armies
 
-AI
--sök fiende armeer som passerar
 
 Steam Launch Roadmap
 -Fail state for the game
@@ -21,4 +23,8 @@ Steam Launch Roadmap
 -(maybe) Some basic resources
 
 -(Removed) Boost soldiers with a command system
+
+
+-Battle notification
+-AI sök fiende armeer som passerar
 
