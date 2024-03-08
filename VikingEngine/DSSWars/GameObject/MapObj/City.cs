@@ -22,7 +22,7 @@ using VikingEngine.ToGG;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class City : GameObject.AbsMapObject
+    partial class City : GameObject.AbsMapObject
     {
         public const int ExpandWorkForce = AbsSoldierData.GroupDefaultCount * 4;
         public const int ExpandGuardSize = AbsSoldierData.GroupDefaultCount;
@@ -651,7 +651,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void dominationCheck()
         {
-            if (battles.Count == 0)
+            if (battleGroup == null)
             {
                var faction = DssRef.world.unitCollAreaGrid.CityDomination(this);
 
@@ -678,7 +678,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             ai_armyDefenceValue = defence;
 
-            detailObj.asynchNearObjectsUpdate();
+            //detailObj.asynchNearObjectsUpdate();
         }
 
         protected override void setInRenderState()

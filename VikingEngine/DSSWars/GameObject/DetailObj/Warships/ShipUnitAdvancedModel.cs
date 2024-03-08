@@ -52,6 +52,7 @@ namespace VikingEngine.DSSWars.GameObject
             rightcrew.Rotation = model.Rotation;
             rightcrew.position = model.Rotation.TranslateAlongAxis(
                 rightCrewPosDiff, model.position);
+
         }
 
         public override void displayHealth(float percHealth)

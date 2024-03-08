@@ -256,16 +256,21 @@ namespace VikingEngine.DSSWars.Players
             {
                 var nearDetailUnits = DssRef.world.unitCollAreaGrid.MapControlsNearDetailUnits(tilePosition);
 
-                BoundingSphere bound = new BoundingSphere(Vector3.Zero, AbsSoldierData.StandardBoundRadius * 2f);
+                BoundingSphere bound = new BoundingSphere(Vector3.Zero, 0f);
 
                 foreach (var m in nearDetailUnits)
                 {
                     bound.Center = m.position;
-                    bound.Radius = m.radius;
+                    bound.Radius = m.radius * 2f;
                     float? distance = ray.Intersects(bound);
                     if (distance.HasValue)
                     { //intersects
                         hover.obj = m;
+                        if (Input.Mouse.ButtonDownEvent(MouseButton.Left))
+                        {
+                            m.debugTagged = true;
+                            m.group.debugTagged = true;
+                        }
                         break;
                     }
                 }

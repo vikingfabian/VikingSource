@@ -321,7 +321,7 @@ namespace VikingEngine.DSSWars.Map
 
         static readonly float[] TypeToWalkingDistance = new float[]
         {
-            20,//Deep water
+            6,//Deep water
             3,//Water_0,
             0.8f,//OpenField_1,
             1,//Plains_2,
@@ -337,12 +337,12 @@ namespace VikingEngine.DSSWars.Map
         {
             0.8f,//Deep water
             1f,//Water_0,
-            8f,//OpenField_1,
-            12,//Plains_2,
-            15,//Vegetation_3,
-            28,//Hills_4,
-            48,//Mountain_5,
-            200,//MountainRidge_6,
+            4f,//OpenField_1,
+            6,//Plains_2,
+            6,//Vegetation_3,
+            6,//Hills_4,
+            6,//Mountain_5,
+            6,//MountainRidge_6,
         };
 
         public const float WaterSurfaceY = -0.1f;

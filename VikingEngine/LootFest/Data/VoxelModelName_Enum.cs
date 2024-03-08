@@ -512,6 +512,7 @@ namespace VikingEngine.LootFest
         wars_darklord,
 
         wars_shipcrew,
+        wars_shipmelee,
         wars_captain,
         wars_soldier_ship,
         wars_viking_ship,

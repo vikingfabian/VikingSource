@@ -422,7 +422,7 @@ namespace VikingEngine.DSSWars.GameObject
         //    base.closestTargetCheck(unit, friendly, distance, ref closestOpponent, ref closestOpponentDistance);
         //}
 
-        public void asynchNearObjectsUpdate()
+        public void asynchFindBattleTarget()
         {
             AbsDetailUnit closestOpponent = null;
             float closestOpponentDistance = float.MaxValue;
@@ -461,6 +461,11 @@ namespace VikingEngine.DSSWars.GameObject
         public override bool aliveAndBelongTo(Faction faction)
         {
             return this.Faction() == faction;
+        }
+
+        public override bool IsShipType()
+        {
+            return false;
         }
 
         public override bool IsStructure() 
