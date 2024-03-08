@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map;
 
 namespace VikingEngine.DSSWars.Battle
 {
@@ -67,14 +68,6 @@ namespace VikingEngine.DSSWars.Battle
         {
             gridTopLeft = new IntVector2(-StandardGridRadius);
             grid = new Grid2D<BattleGridNode>(StandardGridRadius * 2 + 1);
-            //grid.LoopBegin();
-            //while (grid.LoopNext())
-            //{
-            //    grid.LoopValueSet(new BattleGridNode()
-            //    {
-            //        worldPos = gridPosToWp(grid.LoopPosition + gridTopLeft),
-            //    });
-            //}
         }
 
         void placeSoldiers(AbsMapObject aArmy)
@@ -124,7 +117,6 @@ namespace VikingEngine.DSSWars.Battle
                         }
                     }
                 }
-
             }
         }
 
@@ -206,30 +198,29 @@ namespace VikingEngine.DSSWars.Battle
 
             while (membersC.Next())
             {
-                if (membersC.sel.defeated())
+                if (membersC.sel.gameobjectType() == GameObjectType.Army)
                 {
-                    membersC.RemoveAtCurrent();
-                }
-                else
-                {
-                    if (membersC.sel.gameobjectType() == GameObjectType.Army)
+                    if (membersC.sel.defeated())
+                    {
+                        membersC.sel.battleGroup =null;
+                        membersC.RemoveAtCurrent();
+                    }
+                    else
                     {
                         var army = membersC.sel.GetArmy();
-                        //if (army != null)
-                        //{
                         var groupsC = army.groups.counter();
                         while (groupsC.Next())
                         {
                             hasBattle |= groupsC.sel.asynchFindBattleTarget(this);
                         }
-                        //}
-                    }
-                    else
-                    {
-                        var city = membersC.sel.GetCity();
-                        city.asynchFindBattleTarget();
                     }
                 }
+                else
+                {
+                    var city = membersC.sel.GetCity();
+                    city.asynchFindBattleTarget();
+                }
+               
             }
 
             return hasBattle;
@@ -342,14 +333,29 @@ namespace VikingEngine.DSSWars.Battle
                         if (!tryWalkToNode(group, next))
                         {
                             //Try left and right turn
-                            next = group.battleGridPos + VectorExt.RotateVector45DegreeLeft_Normal(nDiff);
-                            if (!tryWalkToNode(group, next))
-                            {
-                                next = group.battleGridPos + VectorExt.RotateVector45DegreeRight_Normal(nDiff);
-                                tryWalkToNode(group, next);
+                            IntVector2 left = group.battleGridPos + VectorExt.RotateVector45DegreeLeft_Normal(nDiff);
+                            BattleGridNode leftNode;
+                            float leftValue = flankToNodeValue(group, left, out leftNode);
 
-                                //on fail, the unit will que up
+                            IntVector2 right = group.battleGridPos + VectorExt.RotateVector45DegreeRight_Normal(nDiff);
+                            BattleGridNode rightNode;
+                            float rightValue = flankToNodeValue(group, right, out rightNode);
+
+                            if (leftValue > rightValue)
+                            {
+                                applyWalkToNode(group, leftNode);
                             }
+                            else if (rightValue > 0)
+                            { 
+                                applyWalkToNode(group, rightNode);
+                            }
+                            //if (!tryWalkToNode(group, next))
+                            //{
+                            //    next = group.battleGridPos + VectorExt.RotateVector45DegreeRight_Normal(nDiff);
+                            //    tryWalkToNode(group, next);
+
+                            //    //on fail, the unit will que up
+                            //}
                         }
                     }
                 }
@@ -357,25 +363,74 @@ namespace VikingEngine.DSSWars.Battle
 
         }
 
+        float flankToNodeValue(SoldierGroup group, IntVector2 next, out BattleGridNode goalNode)
+        {
+            goalNode = getNode(next);
+
+            if (goalNode.blockedByFriendly(group) || goalNode.blocked)
+            {
+                return 0;
+            }
+            else
+            {
+                float value = 2;
+                var currentNode = getNode(group.battleGridPos);
+                float currentDist = VectorExt.SideLength_XZ(group.army.position, currentNode.worldPos);
+                float nextDist = VectorExt.SideLength_XZ(group.army.position, goalNode.worldPos);
+
+                value += nextDist - currentDist; //Moving away from center is more points
+
+                if (group.IsShip() != goalNode.water)
+                {
+                    value -= 1;
+                }
+
+                return value;
+            }
+        }
+
         bool tryWalkToNode(SoldierGroup group, IntVector2 next)
         {
             var goalNode = getNode(next);
 
-            if (goalNode.blockedByFriendly(group))
+            if (goalNode.blockedByFriendly(group) || goalNode.blocked)
             {
                 return false;
             }
             else
             {
-                //Apply
-                group.battleWalkPath = true;
-                getNode(group.battleGridPos).remove(group);
-                goalNode.add(group);
-
-                group.battleWp = goalNode.worldPos;
-
-                return true;
+                return applyWalkToNode(group, goalNode);
             }
+        }
+
+        private bool applyWalkToNode(SoldierGroup group, BattleGridNode goalNode)
+        {
+            //Apply
+            group.battleWalkPath = true;
+            var currentNode = getNode(group.battleGridPos);
+            currentNode.remove(group);
+            goalNode.add(group);
+
+            group.battleWp = goalNode.worldPos;
+
+            if (group.IsShip() != goalNode.water)
+            {
+                Tile tile;
+                if (DssRef.world.tileGrid.TryGet(group.tilePos, out tile))
+                {
+                    if (tile.IsWater() == goalNode.water)
+                    {
+                        if (!group.inShipTransform)
+                        {
+                            group.inShipTransform = true;
+                            new ShipTransform(group, true);
+                        }
+
+                    }
+                }
+            }
+
+            return true;
         }
 
         void applyWalkNode(SoldierGroup group, IntVector2 next)
@@ -402,7 +457,8 @@ namespace VikingEngine.DSSWars.Battle
 
             while (loop.Next())
             {
-                Vector3 pos = gridPosToWp(loop.Position);
+                bool outsideBounds;
+                Vector3 pos = gridPosToWp(loop.Position, out outsideBounds);
 
                 Graphics.Mesh dot = new Graphics.Mesh(LoadedMesh.cube_repeating,
                         pos,
@@ -414,7 +470,7 @@ namespace VikingEngine.DSSWars.Battle
         }
 
         /// <returns>V3 world position</returns>
-        Vector3 gridPosToWp(IntVector2 gridPos)
+        Vector3 gridPosToWp(IntVector2 gridPos, out bool outsideBounds)
         {
             Vector2 offset = VectorExt.RotateVector(
                 new Vector2(
@@ -427,8 +483,15 @@ namespace VikingEngine.DSSWars.Battle
                 0,
                 center.Y + offset.Y);
 
-            result.Y = DssRef.world.SubTileHeight(result);
-
+            if (DssRef.world.unitBounds.IntersectPoint(result.X, result.Z))
+            {
+                result.Y = DssRef.world.SubTileHeight(result);
+                outsideBounds = false;
+            }
+            else
+            {
+                outsideBounds = true;
+            }
             return result;  
         }
 
@@ -453,7 +516,9 @@ namespace VikingEngine.DSSWars.Battle
             {
                 if (node == null)
                 {
-                    node = new BattleGridNode(gridPosToWp(pos));
+                    bool outsideBounds;
+                    Vector3 wp = gridPosToWp(pos, out outsideBounds);
+                    node = new BattleGridNode(wp, outsideBounds);
                     grid.Set(localPos, node);
                 }
             }
@@ -489,10 +554,12 @@ namespace VikingEngine.DSSWars.Battle
         public SoldierGroup group2 = null;
         public Vector3 worldPos;
         public bool water;
+        public bool blocked;
 
-        public BattleGridNode(Vector3 worldPos)
+        public BattleGridNode(Vector3 worldPos, bool outsideBounds)
         {
             this.worldPos = worldPos;
+            blocked = outsideBounds;
             Map.Tile tile;
             if (DssRef.world.tileGrid.TryGet(new IntVector2(worldPos.X, worldPos.Z), out tile))
             {

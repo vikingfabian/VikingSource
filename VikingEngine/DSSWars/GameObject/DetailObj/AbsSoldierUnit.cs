@@ -179,8 +179,16 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Vector3 groupPosition(Vector3 groupCenter, float groupRotation)
         {
+            if (id == 37)
+            {
+                lib.DoNothing();
+            }
             Vector3 result = position;
             Vector2 rotatedOffset = VectorExt.RotateVector(groupOffset, groupRotation);
+            if (Math.Abs(rotatedOffset.X) > 0.5f)
+            {
+                lib.DoNothing();
+            }
             result.X = groupCenter.X + rotatedOffset.X;
             result.Z = groupCenter.Z + rotatedOffset.Y;
 
@@ -282,7 +290,7 @@ namespace VikingEngine.DSSWars.GameObject
         const float ModelGroundYAdj = 0.02f;
         void updateGroudY(bool set)
         {
-            if (position.X > 0 && position.Z>0)
+            if (DssRef.world.unitBounds.IntersectPoint(position.X, position.Z))//position.X > 0 && position.Z>0)
             {
                 float y = DssRef.world.SubTileHeight(position) + ModelGroundYAdj;
 

@@ -403,7 +403,7 @@ namespace VikingEngine.DSSWars.Map
                         {
                             foreach (var army in armies_sp)
                             {
-                                bool inRange = (army.tilePos - city.tilePos).Length() <= DssLib.BattleConflictRadius;
+                                bool inRange = (army.tilePos - city.tilePos).Length() <= DssLib.CityDominationRadius;
 
                                 if (inRange)
                                 {

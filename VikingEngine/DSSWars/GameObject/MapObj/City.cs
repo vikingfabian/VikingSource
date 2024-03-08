@@ -651,7 +651,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void dominationCheck()
         {
-            if (battles.Count == 0)
+            if (battleGroup == null)
             {
                var faction = DssRef.world.unitCollAreaGrid.CityDomination(this);
 

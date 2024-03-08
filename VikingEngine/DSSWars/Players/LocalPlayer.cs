@@ -364,41 +364,13 @@ namespace VikingEngine.DSSWars.Players
                 //int count = Ref.rnd.Int(4, 8);
                 for (int i = 0; i < 5; ++i)
                 {
-                    new SoldierGroup(army, UnitType.Knight, false).completeTransform(SoldierTransformType.ToShip);
+                    new SoldierGroup(army, UnitType.Knight, false);
                 }
                 for (int i = 0; i < 10; ++i)
                 {
-                    new SoldierGroup(army, UnitType.Soldier, false).completeTransform(SoldierTransformType.ToShip);
+                    new SoldierGroup(army, UnitType.Soldier, false);
                 }
-                //for (int i = 0; i < 5; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Archer, false).completeTransform(SoldierTransformType.ToShip);
-                //}
 
-                //count = Ref.rnd.Int(0, 8);
-                //for (int i = 0; i < count; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Soldier, false);
-                //}
-
-                //count = Ref.rnd.Int(4, 8);
-                //for (int i = 0; i < count; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Archer, false);
-                //}
-
-
-                //count = Ref.rnd.Int(0, 8);
-                //for (int i = 0; i < count; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Knight, false);
-                //}
-
-                //count = Ref.rnd.Int(0, 16);
-                //for (int i = 0; i < count; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Ballista, false);
-                //}
                 army.refreshPositions(true);
             }
             //else
@@ -407,9 +379,9 @@ namespace VikingEngine.DSSWars.Players
                     var army = enemyFac.NewArmy(VectorExt.AddX(position, 3));
                     army.rotation = enemyRot;
                     //int count = 4;//Ref.rnd.Int(4, 8);
-                    for (int i = 0; i < 10; ++i)
+                    for (int i = 0; i < 5; ++i)
                     {
-                        new SoldierGroup(army, UnitType.Soldier, false).completeTransform(SoldierTransformType.ToShip);
+                        new SoldierGroup(army, UnitType.Soldier, false);
                     }
                     //for (int i = 0; i < 9; ++i)
                     //{

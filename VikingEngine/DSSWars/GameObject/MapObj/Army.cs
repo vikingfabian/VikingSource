@@ -323,7 +323,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void update()
         {
-            if (id == 295)
+            if (id == 313)
             {
                 lib.DoNothing();
             }
@@ -704,9 +704,16 @@ namespace VikingEngine.DSSWars.GameObject
             refreshPositions(false);
             ai.EnterPeaceEvent();
 
+            bool refreshArmyPos = ai.IdleObjetive();
+
             var groupsC = groups.counter();
             while (groupsC.Next())
-            {
+            {   
+                if (refreshArmyPos)
+                {
+                    groupsC.sel.bumpWalkToNode(tilePos);
+                }
+
                 groupsC.sel.EnterPeaceEvent();
             }
         }
