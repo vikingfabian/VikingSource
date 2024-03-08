@@ -150,19 +150,14 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public override void OnCityCapture()
+        public override void OnCityCapture(City city)
         {
             if (DssRef.storage.aiAggressivity >= AiAggressivity.Medium)
             {
-                var cityC = faction.cityCounter.Clone();
-
-                while (cityC.Next())
+                foreach (var n in city.neighborCities)
                 {
-                    foreach (var n in cityC.sel.neighborCities)
-                    {
-                        DssRef.world.cities[n].faction.player.onPlayerNeighborCapture(this);
-                    }
-                }
+                    DssRef.world.cities[n].faction.player.onPlayerNeighborCapture(this);
+                }                
             }
         }
 
@@ -299,7 +294,7 @@ namespace VikingEngine.DSSWars.Players
         void updateGameSpeed()
         {
            
-            if (input.PauseGame.DownEvent && IsLocalHost())
+            if (DssRef.storage.allowPauseCommand && input.PauseGame.DownEvent && IsLocalHost())
             {
                 DssRef.state.pauseAction();
             }

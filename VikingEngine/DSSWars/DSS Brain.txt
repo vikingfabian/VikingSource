@@ -1,4 +1,7 @@
 ﻿Change Log
+-Two new  difficulty settings
+-Reduced the game difficulty on medium, both bosses are about 20min later and almost half their size, neighbor ai aggression is reduced to half
+
 Error
 -controller for automation 
 -tabbing betwen cities and armies

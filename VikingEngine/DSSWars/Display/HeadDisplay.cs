@@ -22,11 +22,6 @@ namespace VikingEngine.DSSWars.Display
         {
             if (bg.Visible && refresh)
             {
-                //if (refresh) //|| this.fullDisplay != fullDisplay)
-                //{
-
-
-
                 beginRefresh();
 
                 switch (player.hud.displays.CurrentMenuState)
@@ -40,12 +35,6 @@ namespace VikingEngine.DSSWars.Display
                         break;
                 }
                 endRefresh(player.playerData.view.safeScreenArea.Position, true);
-                //}
-
-                //if (interaction != null)
-                //{
-                // interaction.update();
-                //}//
             }
 
             void toggleMenu()
@@ -88,15 +77,18 @@ namespace VikingEngine.DSSWars.Display
 
             void pauseButton()
             {
-                content.Add(new RichboxButton(new List<AbsRichBoxMember>
+                if (DssRef.storage.allowPauseCommand)
+                {
+                    content.Add(new RichboxButton(new List<AbsRichBoxMember>
                     {
                         new RichBoxImage(player.input.PauseGame.Icon),
                         new RichBoxText(Ref.isPaused? "Resume" : "Pause"),
                     },
-                    new RbAction(DssRef.state.pauseAction),
-                    null));
+                        new RbAction(DssRef.state.pauseAction),
+                        null));
 
-                content.Add(new RichBoxNewLine());
+                    content.Add(new RichBoxNewLine());
+                }
             }
 
             
