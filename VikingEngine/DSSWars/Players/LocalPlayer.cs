@@ -338,7 +338,7 @@ namespace VikingEngine.DSSWars.Players
         void battleLineUpTest(bool friendly)
         {
             Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(45));
-            Rotation1D playerRot = enemyRot.getInvert();
+            Rotation1D playerRot = enemyRot;//enemyRot.getInvert();
 
             Faction enemyFac = DssRef.state.darkLordPlayer.faction;
             DssRef.state.darkLordPlayer.faction.hasDeserters = false;

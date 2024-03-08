@@ -360,7 +360,7 @@ namespace VikingEngine.DSSWars.GameObject
             //{
             //    lib.DoNothing();
             //}
-            if (groupId == 1611)
+            if (debugTagged)//groupId == 1611)
             {
                 lib.DoNothing();
             }
@@ -388,7 +388,8 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         induvidualUpdate = true;
 
-                        if (attacking_soldierGroupOrCity == null)
+                        if (attacking_soldierGroupOrCity == null &&
+                            army.battleGroup == null)//dont regroup in battle (start spinning)
                         {
                             refreshGroupPositions();
 

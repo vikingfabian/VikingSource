@@ -104,16 +104,16 @@ namespace VikingEngine.DSSWars.GameObject
             //WritePosition(w, model.position);
         }
 
-        override public void InitRemote(Players.AbsPlayer player, System.IO.BinaryReader r)
-        {
-            //base.InitRemote(player, r);
+        //override public void InitRemote(Players.AbsPlayer player, System.IO.BinaryReader r)
+        //{
+        //    //base.InitRemote(player, r);
 
-            //readId(r);
-            //Vector3 startPos = ReadPosition(r);
-            //clientPosition = startPos;
+        //    //readId(r);
+        //    //Vector3 startPos = ReadPosition(r);
+        //    //clientPosition = startPos;
 
-            //init(startPos);
-        }
+        //    //init(startPos);
+        //}
 
         //abstract protected void initData();
 
@@ -179,7 +179,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Vector3 groupPosition(Vector3 groupCenter, float groupRotation)
         {
-            if (id == 37)
+            if (debugTagged)
             {
                 lib.DoNothing();
             }

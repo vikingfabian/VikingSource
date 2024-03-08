@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int updatesCount = 0;
 
-        public bool debug_addedByRemote = false;
+        //public bool debug_addedByRemote = false;
         //public float attackSoundPitch = 0f;
         //public bool usedInOrderCheck;
 
@@ -49,12 +49,12 @@ namespace VikingEngine.DSSWars.GameObject
         protected int collisionFrames = 0;
         public DetailUnitModel model;
 
-        bool isDeleted = false;
+        //bool isDeleted = false;
 
-        virtual public void InitRemote(Players.AbsPlayer player, System.IO.BinaryReader r)
-        {
-            debug_addedByRemote = true;
-        }
+        //virtual public void InitRemote(Players.AbsPlayer player, System.IO.BinaryReader r)
+        //{
+        //    debug_addedByRemote = true;
+        //}
 
         virtual public void netShareUnit() { }
 

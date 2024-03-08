@@ -24,6 +24,7 @@ namespace VikingEngine.DSSWars.GameObject
                 soldiersC.sel.update_GroupLocked(walking);
             }
 
+            groupObjective = GroupObjective_FollowArmyObjective;
             groupIsIdle = !walking;
         }
 

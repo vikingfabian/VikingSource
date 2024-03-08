@@ -266,6 +266,11 @@ namespace VikingEngine.DSSWars.Players
                     if (distance.HasValue)
                     { //intersects
                         hover.obj = m;
+                        if (Input.Mouse.ButtonDownEvent(MouseButton.Left))
+                        {
+                            m.debugTagged = true;
+                            m.group.debugTagged = true;
+                        }
                         break;
                     }
                 }
