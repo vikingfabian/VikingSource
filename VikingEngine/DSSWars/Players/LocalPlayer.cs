@@ -7,6 +7,7 @@ using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.LootFest.Players;
 using VikingEngine.HUD.RichBox;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace VikingEngine.DSSWars.Players
@@ -35,6 +36,9 @@ namespace VikingEngine.DSSWars.Players
         public int servantFactions = 0;
         public int warsStarted = 0;
 
+        public PlayerToPlayerDiplomacy[] toPlayerDiplomacies = null;
+        public Automation automation;
+
         public LocalPlayer(Faction faction, int playerindex, int numPlayers)
             :base(faction)
         {
@@ -49,6 +53,7 @@ namespace VikingEngine.DSSWars.Players
             faction.displayInFullOverview = true;
 
             hud = new GameHud(this);
+            automation = new Automation(this);
 
             playerData = Engine.XGuide.GetPlayer(playerindex);
             playerData.Tag = this;
@@ -59,12 +64,33 @@ namespace VikingEngine.DSSWars.Players
 
             Ref.draw.AddPlayerScreen(playerData);
             drawUnitsView = new MapDetailLayerManager(playerData);
-            
+
             menuSystem = new GameMenuSystem(input, IsLocalHost());
 
             new AsynchUpdateable(interactAsynchUpdate, "DSS player interact", 0);
 
             refreshNeihgborAggression();
+            toPlayerDiplomacies = new PlayerToPlayerDiplomacy[numPlayers];
+            //initPlayerToPlayer(playerindex, numPlayers);
+        }
+
+        public void initPlayerToPlayer(int playerindex, int numPlayers)
+        {
+            
+            for (int i = 0; i < numPlayers; i++)
+            {
+                if (i != playerindex)
+                {
+                    if (toPlayerDiplomacies[i] == null)
+                    {
+                        var PtoP = new PlayerToPlayerDiplomacy()
+                        { index = i, };
+
+                        toPlayerDiplomacies[i] = PtoP;
+                        var otherP = DssRef.state.localPlayers[i].toPlayerDiplomacies[playerindex] = PtoP;
+                    }
+                }
+            }
         }
 
         public override void createStartUnits()
@@ -124,19 +150,14 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public override void OnCityCapture()
+        public override void OnCityCapture(City city)
         {
             if (DssRef.storage.aiAggressivity >= AiAggressivity.Medium)
             {
-                var cityC = faction.cityCounter.Clone();
-
-                while (cityC.Next())
+                foreach (var n in city.neighborCities)
                 {
-                    foreach (var n in cityC.sel.neighborCities)
-                    {
-                        DssRef.world.cities[n].faction.player.onPlayerNeighborCapture(this);
-                    }
-                }
+                    DssRef.world.cities[n].faction.player.onPlayerNeighborCapture(this);
+                }                
             }
         }
 
@@ -188,10 +209,10 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                     {
-                        cityBuilderTest();
+                        //cityBuilderTest();
                         //DssRef.state.events.TestNextEvent();
                         
-                        //battleLineUpTest(true);
+                        battleLineUpTest(true);
                     }
 
                     if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
@@ -245,6 +266,8 @@ namespace VikingEngine.DSSWars.Players
         public void asyncUserUpdate()
         {
             diplomacyMap?.asynchUpdate();
+
+            automation.asyncUpdate();
         }
 
         void updateDiplomacy()
@@ -271,7 +294,7 @@ namespace VikingEngine.DSSWars.Players
         void updateGameSpeed()
         {
            
-            if (input.PauseGame.DownEvent && IsLocalHost())
+            if (DssRef.storage.allowPauseCommand && input.PauseGame.DownEvent && IsLocalHost())
             {
                 DssRef.state.pauseAction();
             }
@@ -302,11 +325,11 @@ namespace VikingEngine.DSSWars.Players
 
         void cityBuilderTest()
         {
-            IntVector2 position = mapControls.subTilePosition;
+            //IntVector2 position = mapControls.subTilePosition;
 
-            var model = DssRef.models.ModelInstance( LootFest.VoxelModelName.city_tower24, WorldData.SubTileWidth * 1.4f, false);//1.4f
-            model.AddToRender(DrawGame.UnitDetailLayer);
-            model.position = WP.ToSubTilePos_Centered(position);
+            //var model = DssRef.models.ModelInstance( LootFest.VoxelModelName.city_tower24, WorldData.SubTileWidth * 1.4f, false);//1.4f
+            //model.AddToRender(DrawGame.UnitDetailLayer);
+            //model.position = WP.ToSubTilePos_Centered(position);
            
         }
 
@@ -314,8 +337,8 @@ namespace VikingEngine.DSSWars.Players
 
         void battleLineUpTest(bool friendly)
         {
-            Rotation1D enemyRot = Rotation1D.FromDegrees(220 + Ref.rnd.Plus_Minus(45));
-            Rotation1D playerRot = Rotation1D.FromDegrees(180 - 45); //enemyRot.getInvert();
+            Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(45));
+            Rotation1D playerRot = enemyRot;//enemyRot.getInvert();
 
             Faction enemyFac = DssRef.state.darkLordPlayer.faction;
             DssRef.state.darkLordPlayer.faction.hasDeserters = false;
@@ -339,50 +362,50 @@ namespace VikingEngine.DSSWars.Players
                 army.rotation = playerRot;
 
                 //int count = Ref.rnd.Int(4, 8);
-                for (int i = 0; i < 20; ++i)
+                for (int i = 0; i < 5; ++i)
                 {
-                    new SoldierGroup(army, UnitType.Sailor, false).completeTransform(SoldierTransformType.ToShip);
+                    new SoldierGroup(army, UnitType.Knight, false);
+                }
+                for (int i = 0; i < 10; ++i)
+                {
+                    new SoldierGroup(army, UnitType.Soldier, false);
                 }
 
-                //count = Ref.rnd.Int(0, 8);
-                //for (int i = 0; i < count; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Soldier, false);
-                //}
-
-                //count = Ref.rnd.Int(4, 8);
-                //for (int i = 0; i < count; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Archer, false);
-                //}
-
-
-                //count = Ref.rnd.Int(0, 8);
-                //for (int i = 0; i < count; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Knight, false);
-                //}
-
-                //count = Ref.rnd.Int(0, 16);
-                //for (int i = 0; i < count; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Ballista, false);
-                //}
                 army.refreshPositions(true);
             }
             //else
             {
+                {
+                    var army = enemyFac.NewArmy(VectorExt.AddX(position, 3));
+                    army.rotation = enemyRot;
+                    //int count = 4;//Ref.rnd.Int(4, 8);
+                    for (int i = 0; i < 5; ++i)
+                    {
+                        new SoldierGroup(army, UnitType.Soldier, false);
+                    }
+                    //for (int i = 0; i < 9; ++i)
+                    //{
+                    //    new SoldierGroup(army, UnitType.Pikeman, false);
+                    //}
+                    //for (int i = 0; i < 5; ++i)
+                    //{
+                    //    new SoldierGroup(army, UnitType.Ballista, false);
+                    //}
+                    army.refreshPositions(true);
+                }
+
+
                 //{
-                //    var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
+                //    var army = enemyFac.NewArmy(VectorExt.AddY(position, 2));
                 //    army.rotation = enemyRot;
                 //    //int count = 4;//Ref.rnd.Int(4, 8);
-                //    for (int i = 0; i < 3; ++i)
+                //    for (int i = 0; i < 5; ++i)
                 //    {
-                //        new SoldierGroup(army, UnitType.Soldier, false).completeTransform(SoldierTransformType.ToShip);
+                //        new SoldierGroup(army, UnitType.Soldier, false);
                 //    }
-                //    for (int i = 0; i < 3; ++i)
+                //    for (int i = 0; i < 5; ++i)
                 //    {
-                //        new SoldierGroup(army, UnitType.Ballista, false).completeTransform(SoldierTransformType.ToShip);
+                //        new SoldierGroup(army, UnitType.Ballista, false);
                 //    }
                 //    army.refreshPositions(true);
                 //}
@@ -510,6 +533,8 @@ namespace VikingEngine.DSSWars.Players
                 diplomaticPoints.max = 10;
                 diplomaticPoints.value = 10;
             }
+
+            automation.oneSecondUpdate();
         }
 
         public bool IsLocalHost()

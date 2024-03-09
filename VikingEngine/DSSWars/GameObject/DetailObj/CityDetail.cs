@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DSSWars.Map;
@@ -50,7 +51,7 @@ namespace VikingEngine.DSSWars.GameObject
         //int workerModelsActiveCount = 0;
         List<WorkerData> workers= new List<WorkerData>();
         int totalWorkerHutAndLevelCount = 0;
-        public WorkersModels workersModels = null;
+        //public WorkersModels workersModels = null;
         int storedAttacks = 0;
         public CityDetail(City city)
         {
@@ -62,6 +63,8 @@ namespace VikingEngine.DSSWars.GameObject
             
             health = 10000;
             radius = 0.7f;
+
+            refreshWorkerSubtiles();
             //attack = new AttackAnimation(this);
             //onNewOwner();
         }
@@ -88,7 +91,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     model = initModel();
 
-                    updateWorkerModels();
+                    //updateWorkerModels();
                 }
             }  
             else
@@ -98,80 +101,173 @@ namespace VikingEngine.DSSWars.GameObject
                     model.DeleteMe();
                     model = null;
 
-                    workersModels.DeleteMe();
-                    workersModels = null;
+                    //workersModels.DeleteMe();
+                    //workersModels = null;
                 }
             }
         }
 
-        public void updateWorkerModels()
+        public void refreshWorkerSubtiles()
         {
-            if (model != null)
+            int goalDisplayCount = WorkersToModelsCount(city.workForce.max);
+            if (goalDisplayCount > totalWorkerHutAndLevelCount)
             {
-                int goalDisplayCount = WorkersToModelsCount(city.workForce.max);
-                PcgRandom rnd = new PcgRandom(DssRef.world.TileSeed(city.tilePos.X, city.tilePos.Y));
-
-                if (goalDisplayCount > totalWorkerHutAndLevelCount)
+                Task.Factory.StartNew(() =>
                 {
-                    //find available tile
-                    
                     ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, 1));
-                    edgeLoop.Next();
-                    //edgeLoop.RandomPosition(rnd);
+                    edgeLoop.RandomPosition(true);
+
+                    int maxLoops = 10000;
 
                     while (goalDisplayCount > totalWorkerHutAndLevelCount)
                     {
-                        Tile t;
-                        if (DssRef.world.tileGrid.TryGet(edgeLoop.Position, out t) &&
-                                t.IsLand() && t.CityIndex == city.index &&
-                            (
-                                t.tileContent == TileContent.NONE || 
-                                (t.tileContent == TileContent.WorkerHut && t.WorkerCount < WorkerHutsPerTile_MaxLevel))
-                            )
+                        if (edgeLoop.Next())
                         {
-                            if (t.WorkerCount < WorkerHutsPerTile)
+                            
+                            Tile t;
+                            if (DssRef.world.tileGrid.TryGet(edgeLoop.Position, out t) &&
+                                    t.IsLand() && t.CityIndex == city.index)
                             {
-                                workers.Add(new WorkerData()
+                                const int SubStartTrialCount = 4;
+                                IntVector2 topLeft = WP.ToSubTilePos_TopLeft(edgeLoop.Position);
+
+                                for (int trialIx = 0; trialIx < SubStartTrialCount; ++trialIx)
                                 {
-                                    tile = edgeLoop.Position,
-                                    tilePlacementIndex = t.WorkerCount,
-                                    //inUse = false,
-                                });
-                            }
-                            else
-                            {
-                                for (int i = workers.Count - 1; i >= 0; i--)
-                                {
-                                    if (workers[i].tile == edgeLoop.Position && workers[i].level==1)
+                                    IntVector2 subPos = topLeft;
+                                    subPos.X += Ref.rnd.Int(WorldData.TileSubDivitions);
+                                    subPos.Y += Ref.rnd.Int(WorldData.TileSubDivitions);
+
+
+                                    if (Build.BuildLib.TryAutoBuild(subPos, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut))
                                     {
-                                        ++workers[i].level;
-                                        break;
+                                        ++totalWorkerHutAndLevelCount;
+
+                                        //Place farm curlutures
+                                        const int CulturesPerFarm = 2;
+                                        int cultureCount = 0;
+
+                                        ForXYEdgeLoop farmLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(subPos, 1));
+                                        farmLoop.RandomPosition(true);
+
+                                        while (cultureCount < CulturesPerFarm)
+                                        {
+                                            while (farmLoop.Next())
+                                            {
+                                                if (Build.BuildLib.TryAutoBuild(farmLoop.Position, TerrainMainType.Foil, (int)TerrainSubFoilType.FarmCulture))
+                                                {
+                                                    ++cultureCount;
+                                                    if (cultureCount >= CulturesPerFarm)
+                                                    {
+                                                        break;
+                                                    }
+                                                }
+                                            }
+
+                                            farmLoop.ExpandRadius();
+                                            farmLoop.RandomPosition(true);
+
+                                            if (--maxLoops < 0)
+                                            {
+                                                return;
+                                            }
+                                        }
+
+                                        if (goalDisplayCount <= totalWorkerHutAndLevelCount)
+                                        {
+                                            return;
+                                        }
                                     }
                                 }
                             }
 
-                            t.tileContent = TileContent.WorkerHut;
-                            ++t.WorkerCount;
-                            ++totalWorkerHutAndLevelCount;
                         }
                         else
                         {
-                            bool inLoop = edgeLoop.Next();
-                            if (!inLoop)
-                            {
-                                edgeLoop.ExpandRadius();
-                            }
+                            edgeLoop.ExpandRadius();
+                            edgeLoop.RandomPosition(true);
+                        }
+
+
+                        if (--maxLoops < 0)
+                        {   
+                            return;
                         }
                     }
-                }
+                });
 
-                if (workersModels == null)
-                {
-                    workersModels = new WorkersModels();
-                }
-                workersModels.Refresh(city, workers, rnd);
+
+
             }
         }
+
+        //public void updateWorkerModels()
+        //{
+        //    if (model != null)
+        //    {
+        //        int goalDisplayCount = WorkersToModelsCount(city.workForce.max);
+        //        PcgRandom rnd = new PcgRandom(DssRef.world.TileSeed(city.tilePos.X, city.tilePos.Y));
+
+        //        if (goalDisplayCount > totalWorkerHutAndLevelCount)
+        //        {
+        //            //find available tile
+                    
+        //            ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, 1));
+        //            edgeLoop.Next();
+        //            //edgeLoop.RandomPosition(rnd);
+
+        //            while (goalDisplayCount > totalWorkerHutAndLevelCount)
+        //            {
+        //                Tile t;
+        //                if (DssRef.world.tileGrid.TryGet(edgeLoop.Position, out t) &&
+        //                        t.IsLand() && t.CityIndex == city.index &&
+        //                    (
+        //                        t.tileContent == TileContent.NONE || 
+        //                        (t.tileContent == TileContent.WorkerHut && t.WorkerCount < WorkerHutsPerTile_MaxLevel))
+        //                    )
+        //                {
+        //                    if (t.WorkerCount < WorkerHutsPerTile)
+        //                    {
+        //                        workers.Add(new WorkerData()
+        //                        {
+        //                            tile = edgeLoop.Position,
+        //                            tilePlacementIndex = t.WorkerCount,
+        //                            //inUse = false,
+        //                        });
+        //                    }
+        //                    else
+        //                    {
+        //                        for (int i = workers.Count - 1; i >= 0; i--)
+        //                        {
+        //                            if (workers[i].tile == edgeLoop.Position && workers[i].level==1)
+        //                            {
+        //                                ++workers[i].level;
+        //                                break;
+        //                            }
+        //                        }
+        //                    }
+
+        //                    t.tileContent = TileContent.WorkerHut;
+        //                    ++t.WorkerCount;
+        //                    ++totalWorkerHutAndLevelCount;
+        //                }
+        //                else
+        //                {
+        //                    bool inLoop = edgeLoop.Next();
+        //                    if (!inLoop)
+        //                    {
+        //                        edgeLoop.ExpandRadius();
+        //                    }
+        //                }
+        //            }
+        //        }
+
+        //        //if (workersModels == null)
+        //        //{
+        //        //    workersModels = new WorkersModels();
+        //        //}
+        //        workersModels.Refresh(city, workers, rnd);
+        //    }
+        //}
 
        
         static int WorkersToModelsCount(int workers)
@@ -214,15 +310,15 @@ namespace VikingEngine.DSSWars.GameObject
                     city.guardCount = 0;
 
                     //Lost city to opponent
-                    if (fullUpdate)
-                    {
-                        city.setFaction(damageFaction);
-                    }
-                    else
-                    {
-                        Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(city.setFaction, damageFaction));
-                        //new Timer.Action1ArgTrigger<Faction>(city.setFaction, damageFaction);
-                    }
+                    //if (fullUpdate)
+                    //{
+                    //    city.setFaction(damageFaction);
+                    //}
+                    //else
+                    //{
+                    //    Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(city.setFaction, damageFaction));
+                    //    //new Timer.Action1ArgTrigger<Faction>(city.setFaction, damageFaction);
+                    //}
                 }
             }
         }
@@ -326,7 +422,7 @@ namespace VikingEngine.DSSWars.GameObject
         //    base.closestTargetCheck(unit, friendly, distance, ref closestOpponent, ref closestOpponentDistance);
         //}
 
-        public void asynchNearObjectsUpdate()
+        public void asynchFindBattleTarget()
         {
             AbsDetailUnit closestOpponent = null;
             float closestOpponentDistance = float.MaxValue;
@@ -365,6 +461,11 @@ namespace VikingEngine.DSSWars.GameObject
         public override bool aliveAndBelongTo(Faction faction)
         {
             return this.Faction() == faction;
+        }
+
+        public override bool IsShipType()
+        {
+            return false;
         }
 
         public override bool IsStructure() 
@@ -441,9 +542,9 @@ namespace VikingEngine.DSSWars.GameObject
 
             this.bound = new Physics.RectangleBound(city.WorldPositionXZ(), new Vector2(0.5f));
 
-            model = DssRef.models.ModelInstance(detailmodelName, 1f, false);
-            model.AddToRender(DrawGame.UnitDetailLayer);
-            model.position = city.position;
+            //model = DssRef.models.ModelInstance(detailmodelName, 1f, false);
+            //model.AddToRender(DrawGame.UnitDetailLayer);
+            //model.position = city.position;
 
             bannerModel = city.faction.AutoLoadModelInstance(
                BannerModelName, 0.6f);
@@ -462,7 +563,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void DeleteMe()
         {
-            base.DeleteMe();
+            //base.DeleteMe();
             bannerModel.DeleteMe();
         }
     }

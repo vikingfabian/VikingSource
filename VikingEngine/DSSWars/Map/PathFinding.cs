@@ -30,6 +30,7 @@ namespace VikingEngine.DSSWars.Map
         public void Return(PathFinding path)
         {
             // Reset the node to a default state
+            
             path.recycle();
             pool.Push(path);
         }

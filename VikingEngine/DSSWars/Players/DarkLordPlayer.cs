@@ -15,14 +15,32 @@ namespace VikingEngine.DSSWars.Players
         int diplomacyPoints = 0;
         bool hasEntered = false;
 
-        public int factoriesLeft = 3;
+        public int factoriesLeft;
 
         public DarkLord darkLordUnit = null;
 
         public DarkLordPlayer(Faction faction)
             : base(faction)
         {
-            maxDiplomacy = DssLib.HeadCityMaxWorkForce * 40;
+            switch (DssRef.storage.bossSize)
+            {
+                case BossSize.Small:
+                    factoriesLeft = 2;
+                    maxDiplomacy = DssLib.HeadCityMaxWorkForce * 24;
+                    break;
+                case BossSize.Medium:
+                    factoriesLeft = 3;
+                    maxDiplomacy = DssLib.HeadCityMaxWorkForce * 30;
+                    break;
+                case BossSize.Large:
+                    factoriesLeft = 3;
+                    maxDiplomacy = DssLib.HeadCityMaxWorkForce * 36;
+                    break;
+                case BossSize.Huge:
+                    factoriesLeft = 4;
+                    maxDiplomacy = DssLib.HeadCityMaxWorkForce * 42;
+                    break;
+            }
         }
 
         public void EnterMap(Faction takeOverFaction, List<Faction> darkLordAllies)

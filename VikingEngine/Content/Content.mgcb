@@ -754,11 +754,47 @@
 #begin VoxelModel/LfWars/banner.vox
 /copy:VoxelModel/LfWars/banner.vox
 
+#begin VoxelModel/LfWars/city_bighouse.vox
+/copy:VoxelModel/LfWars/city_bighouse.vox
+
+#begin VoxelModel/LfWars/city_cobblestone.vox
+/copy:VoxelModel/LfWars/city_cobblestone.vox
+
+#begin VoxelModel/LfWars/city_dirttower.vox
+/copy:VoxelModel/LfWars/city_dirttower.vox
+
+#begin VoxelModel/LfWars/city_dirtwall.vox
+/copy:VoxelModel/LfWars/city_dirtwall.vox
+
+#begin VoxelModel/LfWars/city_smallhouse.vox
+/copy:VoxelModel/LfWars/city_smallhouse.vox
+
+#begin VoxelModel/LfWars/city_square.vox
+/copy:VoxelModel/LfWars/city_square.vox
+
+#begin VoxelModel/LfWars/city_stonehall.vox
+/copy:VoxelModel/LfWars/city_stonehall.vox
+
+#begin VoxelModel/LfWars/city_stonetower.vox
+/copy:VoxelModel/LfWars/city_stonetower.vox
+
+#begin VoxelModel/LfWars/city_stonewall.vox
+/copy:VoxelModel/LfWars/city_stonewall.vox
+
 #begin VoxelModel/LfWars/city_tower24.vox
 /copy:VoxelModel/LfWars/city_tower24.vox
 
 #begin VoxelModel/LfWars/city_tower32.vox
 /copy:VoxelModel/LfWars/city_tower32.vox
+
+#begin VoxelModel/LfWars/city_woodtower.vox
+/copy:VoxelModel/LfWars/city_woodtower.vox
+
+#begin VoxelModel/LfWars/city_woodwall.vox
+/copy:VoxelModel/LfWars/city_woodwall.vox
+
+#begin VoxelModel/LfWars/city_workerhut.vox
+/copy:VoxelModel/LfWars/city_workerhut.vox
 
 #begin VoxelModel/LfWars/citybanner.vox
 /copy:VoxelModel/LfWars/citybanner.vox
@@ -774,6 +810,9 @@
 
 #begin VoxelModel/LfWars/fol_bush1.vox
 /copy:VoxelModel/LfWars/fol_bush1.vox
+
+#begin VoxelModel/LfWars/fol_farmculture.vox
+/copy:VoxelModel/LfWars/fol_farmculture.vox
 
 #begin VoxelModel/LfWars/fol_herbs.vox
 /copy:VoxelModel/LfWars/fol_herbs.vox
@@ -930,6 +969,9 @@
 
 #begin VoxelModel/LfWars/wars_shipcrew.vox
 /copy:VoxelModel/LfWars/wars_shipcrew.vox
+
+#begin VoxelModel/LfWars/wars_shipmelee.vox
+/copy:VoxelModel/LfWars/wars_shipmelee.vox
 
 #begin VoxelModel/LfWars/wars_soldier_i2.vox
 /copy:VoxelModel/LfWars/wars_soldier_i2.vox

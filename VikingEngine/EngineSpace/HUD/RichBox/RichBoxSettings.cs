@@ -12,7 +12,7 @@ namespace VikingEngine.HUD.RichBox
         public TextFormat head1, head2;
         public TextFormat button;
         public TextFormat buttonDisabled;
-
+        public SpriteName checkOn, checkOff;
 
         public float breadIconHeight, titleIconHeight;
 
@@ -32,6 +32,9 @@ namespace VikingEngine.HUD.RichBox
 
             this.breadIconHeight = iconHeight;
             this.titleIconHeight = iconHeight * TitleSizeUp;
+
+            checkOn = SpriteName.cmdHudCheckOn;
+            checkOff = SpriteName.cmdHudCheckOff;
         }
 
         public RichBoxSettings(GuiStyle guiStyle)

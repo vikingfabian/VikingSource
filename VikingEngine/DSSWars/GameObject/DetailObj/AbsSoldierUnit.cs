@@ -104,16 +104,16 @@ namespace VikingEngine.DSSWars.GameObject
             //WritePosition(w, model.position);
         }
 
-        override public void InitRemote(Players.AbsPlayer player, System.IO.BinaryReader r)
-        {
-            //base.InitRemote(player, r);
+        //override public void InitRemote(Players.AbsPlayer player, System.IO.BinaryReader r)
+        //{
+        //    //base.InitRemote(player, r);
 
-            //readId(r);
-            //Vector3 startPos = ReadPosition(r);
-            //clientPosition = startPos;
+        //    //readId(r);
+        //    //Vector3 startPos = ReadPosition(r);
+        //    //clientPosition = startPos;
 
-            //init(startPos);
-        }
+        //    //init(startPos);
+        //}
 
         //abstract protected void initData();
 
@@ -179,8 +179,16 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Vector3 groupPosition(Vector3 groupCenter, float groupRotation)
         {
+            if (debugTagged)
+            {
+                lib.DoNothing();
+            }
             Vector3 result = position;
             Vector2 rotatedOffset = VectorExt.RotateVector(groupOffset, groupRotation);
+            if (Math.Abs(rotatedOffset.X) > 0.5f)
+            {
+                lib.DoNothing();
+            }
             result.X = groupCenter.X + rotatedOffset.X;
             result.Z = groupCenter.Z + rotatedOffset.Y;
 
@@ -282,7 +290,7 @@ namespace VikingEngine.DSSWars.GameObject
         const float ModelGroundYAdj = 0.02f;
         void updateGroudY(bool set)
         {
-            if (position.X > 0 && position.Z>0)
+            if (DssRef.world.unitBounds.IntersectPoint(position.X, position.Z))//position.X > 0 && position.Z>0)
             {
                 float y = DssRef.world.SubTileHeight(position) + ModelGroundYAdj;
 
@@ -788,6 +796,8 @@ namespace VikingEngine.DSSWars.GameObject
             return data.walkingSpeed * group.terrainSpeedMultiplier * time;
         }
 
+        
+
         void rotateTowards(AbsDetailUnit target, float speed)
         {
             if (target != null)
@@ -996,7 +1006,10 @@ namespace VikingEngine.DSSWars.GameObject
             return true;
         }
 
-        abstract public bool IsShipType();
+        public override AbsSoldierUnit GetSoldierUnit()
+        {
+            return this;
+        }
 
         public override AbsMapObject RelatedMapObject()
         {

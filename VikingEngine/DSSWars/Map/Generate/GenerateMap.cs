@@ -138,6 +138,11 @@ namespace VikingEngine.DSSWars.Map.Generate
             Task.Factory.StartNew(() =>
             {
                 //generateSubTileFoliage();
+                foreach (var c in world.cities)
+                {
+                    c.createBuildingSubtiles(world);
+                }
+
                 postComplete = true;
             });
         }

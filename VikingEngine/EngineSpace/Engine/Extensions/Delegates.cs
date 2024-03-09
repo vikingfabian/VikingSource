@@ -22,6 +22,7 @@ namespace VikingEngine
     
     delegate bool BoolGetSet(int index, bool set, bool value);
     delegate int IntGetSet(bool set, int value);
+    delegate int IntGetSetIx(int index, bool set, int value);
     delegate float FloatGetSet(bool set, float value);
     delegate Color ColorGetSet(bool set, Color value);
     delegate T GenericGetSet<T>(bool set, T value);

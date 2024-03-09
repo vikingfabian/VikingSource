@@ -84,13 +84,25 @@ namespace VikingEngine.HUD.RichBox
 
         public RichboxButton Button(string caption, AbsRbAction action, AbsRbAction enter, bool enabled)
         {
-            var result =new RichboxButton(
+            var result = new RichboxButton(
                 new List<AbsRichBoxMember>
                 {
                     new RichBoxText(caption),
                 },
                 action, enter, enabled);
-            Add(result); 
+            Add(result);
+            return result;
+        }
+        public RichboxButton Button(SpriteName icon, string caption, AbsRbAction action, AbsRbAction enter, bool enabled)
+        {
+            var result = new RichboxButton(
+                new List<AbsRichBoxMember>
+                {
+                    new RichBoxImage(icon),
+                    new RichBoxText(caption),
+                },
+                action, enter, enabled);
+            Add(result);
             return result;
         }
 
@@ -102,5 +114,52 @@ namespace VikingEngine.HUD.RichBox
             return dot;
         }
 
+        public void PlusMinusInt(SpriteName icon, string label, IntGetSetIx property, int propertyIx)
+        {
+            newLine();
+            RichboxIntDisplay intDisplay = new RichboxIntDisplay(property, propertyIx);
+
+            if (icon != SpriteName.NO_IMAGE)
+            {
+                Add(new RichBoxImage(icon));
+                Add(new RichBoxSpace(0.6f));
+            }
+            Add(new RichBoxText(label));
+
+            Add(new RichBoxTab(0.4f));
+
+            Add(new RichboxButton(
+               new List<AbsRichBoxMember>
+               {
+                    new RichBoxText("-10"),
+               },
+               new RbAction_ChangeInt(property, propertyIx, -10, intDisplay.refresh)));
+            space();
+            Add(new RichboxButton(
+                new List<AbsRichBoxMember>
+                {
+                    new RichBoxText("-1"),
+                },
+                new RbAction_ChangeInt(property, propertyIx, -1, intDisplay.refresh)));
+            space();
+            Add(intDisplay);
+            space();
+            Add(new RichboxButton(
+                new List<AbsRichBoxMember>
+                {
+                    new RichBoxText("+1"),
+                },
+                new RbAction_ChangeInt(property, propertyIx, +1, intDisplay.refresh)));
+            space();
+            Add(new RichboxButton(
+               new List<AbsRichBoxMember>
+               {
+                    new RichBoxText("+10"),
+               },
+               new RbAction_ChangeInt(property, propertyIx, +10, intDisplay.refresh)));
+            
+
+
+        }
     }
 }

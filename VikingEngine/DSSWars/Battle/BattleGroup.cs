@@ -1,0 +1,614 @@
+﻿using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map;
+
+namespace VikingEngine.DSSWars.Battle
+{
+    class BattleGroup
+    {
+        const int StandardGridRadius = 20;
+
+        int index;
+        SpottedArray<AbsMapObject> members;
+        SpottedArrayCounter<AbsMapObject> membersC;
+        Vector2 center;
+        Rotation1D rotation;
+
+        IntVector2 gridTopLeft;
+        Grid2D<BattleGridNode> grid;
+        Time preparationTime = new Time(10, TimeUnit.Seconds);
+        float nextAiOrderTime = 0;
+        float checkIdleTime = 800;
+        public bool battleState = false;
+
+        public BattleGroup(AbsMapObject m1, AbsMapObject m2) 
+        {
+            members = new SpottedArray<AbsMapObject>(4);
+            membersC = new SpottedArrayCounter<AbsMapObject>(members);
+
+            members.Add(m1);
+            members.Add(m2);
+          
+            m2.battleGroup = this;
+
+            index = DssRef.state.battles.Add(this);
+
+            center = VectorExt.V3XZtoV2(m2.position + m1.position) / 2f;
+            Vector2 diff = VectorExt.V3XZtoV2(m2.position - m1.position);
+            rotation = Rotation1D.FromDirection(diff);
+            rotation.radians %= MathExt.TauOver4;
+
+            createGrid();
+
+            placeSoldiers(m1);
+            placeSoldiers(m2);
+        }
+
+        public SpottedArrayCounter<AbsMapObject> MembersCounter()
+        {
+            return membersC.Clone();
+        }
+
+        public void addPart(AbsMapObject m)
+        {
+            m.battleGroup = this;
+            members.Add(m);
+            placeSoldiers(m);
+        }
+
+        void createGrid()
+        {
+            gridTopLeft = new IntVector2(-StandardGridRadius);
+            grid = new Grid2D<BattleGridNode>(StandardGridRadius * 2 + 1);
+        }
+
+        void placeSoldiers(AbsMapObject aArmy)
+        {
+            var army = aArmy.GetArmy();
+            if (army != null)
+            {
+                IntVector2 armyGridPos = WpToGridPos(army.position.X, army.position.Z);
+                army.battleGridForward = -armyGridPos.MajorDirectionVec;
+                army.battleDirection = rotation;
+
+                
+                IntVector2 invertY = armyGridPos;
+                invertY.Y = -invertY.Y;
+                army.battleDirection.Add(-(float)invertY.MajorDirection * MathExt.TauOver4);
+
+                bool reversingForwardDirection = Math.Abs(army.battleDirection.AngleDifference(army.rotation.radians)) > MathExt.TauOver4;
+
+                int width = army.groupsWidth();
+                var groupsC = army.groups.counter();
+                IntVector2 nextGroupPlacementIndex = IntVector2.Zero;
+
+                for (ArmyPlacement armyPlacement = ArmyPlacement.Front; armyPlacement <= ArmyPlacement.Back; armyPlacement++)
+                {
+                    groupsC.Reset();
+
+                    while (groupsC.Next())
+                    {
+                        var soldier = groupsC.sel.FirstSoldier();
+                        if (soldier != null)
+                        {
+                            if (soldier.data.ArmyFrontToBackPlacement == armyPlacement)
+                            {
+                                IntVector2 result = nextGroupPlacementIndex;
+                                result.X = Army.TogglePlacementX(nextGroupPlacementIndex.X);// PlacementX[result.X];
+
+                                if (reversingForwardDirection)
+                                { 
+                                    result.X = -result.X;
+                                }
+
+                                nextGroupPlacementIndex.Grindex_Next(width);
+
+                                placeGroupInNode(groupsC.sel, IntVector2.RotateVector(result, army.battleGridForward) + armyGridPos);
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public bool async_update(float time)
+        {
+            if (battleState)
+            {
+                nextAiOrderTime-= time;
+                if (nextAiOrderTime < 0)
+                {
+                    bool inBattle = refreshAiOrders_hasBattle();
+
+                    if (inBattle)
+                    {
+                        refreshGroupsWalkPath();
+
+                        nextAiOrderTime = 600;
+                    }
+                    else
+                    {
+                        DeleteMe();
+                        return true;
+                    }
+                }
+            }
+            else 
+            {
+                checkIdleTime -= time;
+
+                if (checkIdleTime <= 0)
+                {
+                    checkIdleTime = 200;
+
+                    if (allIdle())
+                    {
+                        battleState = true;
+                    }
+                }
+
+                if (preparationTime.CountDown())
+                {
+                    battleState = true;
+                }
+            }
+
+            return false;
+        }
+
+        bool allIdle()
+        {
+            membersC.Reset();
+
+            while (membersC.Next())
+            {
+                if (membersC.sel.gameobjectType() == GameObjectType.Army)
+                {
+                    var army = membersC.sel.GetArmy();
+
+                    var groupsC = army.groups.counter();
+                    while (groupsC.Next())
+                    {
+                        if (!groupsC.sel.groupIsIdle)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        bool refreshAiOrders_hasBattle()
+        {
+            bool hasBattle = false;
+
+            //todo replace with player orders
+            membersC.Reset();
+
+            while (membersC.Next())
+            {
+                if (membersC.sel.gameobjectType() == GameObjectType.Army)
+                {
+                    if (membersC.sel.defeated())
+                    {
+                        membersC.sel.battleGroup =null;
+                        membersC.RemoveAtCurrent();
+                    }
+                    else
+                    {
+                        var army = membersC.sel.GetArmy();
+                        var groupsC = army.groups.counter();
+                        while (groupsC.Next())
+                        {
+                            hasBattle |= groupsC.sel.asynchFindBattleTarget(this);
+                        }
+                    }
+                }
+                else
+                {
+                    var city = membersC.sel.GetCity();
+                    city.asynchFindBattleTarget();
+                }
+               
+            }
+
+            return hasBattle;
+        }
+
+        void refreshGroupsWalkPath()
+        {
+            /*
+             * Försök att alltid hålla formation
+             * 1. Refresh av alla enheters position i grid
+             * 2. Ge path till de med helt rak move först, och blocka rutan framför sig
+             * 3. Flytta alla andra, gör en kort flank sökning eller köa
+             */
+
+            clearGrid();
+
+            refreshUnitsGridPositions();
+
+            membersC.Reset();
+
+            while (membersC.Next())
+            {
+                var army = membersC.sel.GetArmy();
+                if (army != null)
+                {
+                    var groupsC = army.groups.counter();
+                    while (groupsC.Next())
+                    {
+                        walkPath(groupsC.sel, true);
+                    }
+                }
+            }
+
+            membersC.Reset();
+
+            while (membersC.Next())
+            {
+                var army = membersC.sel.GetArmy();
+                if (army != null)
+                {
+                    var groupsC = army.groups.counter();
+                    while (groupsC.Next())
+                    {
+                        if (!groupsC.sel.battleWalkPath)
+                        {
+                            walkPath(groupsC.sel, false);
+                        }
+                    }
+                }
+            }
+
+        }
+
+        void clearGrid()
+        {
+            grid.LoopBegin();
+            while (grid.LoopNext())
+            {
+                grid.LoopValueGet()?.clear();
+            }
+        }
+
+        void refreshUnitsGridPositions()
+        {
+            membersC.Reset();
+            while (membersC.Next())
+            {
+                if (membersC.sel.gameobjectType() == GameObjectType.Army)
+                {
+                    var army = membersC.sel.GetArmy();
+
+                    var groupsC = army.groups.counter();
+                    while (groupsC.Next())
+                    {
+                        groupsC.sel.battleWalkPath = false;
+                        groupsC.sel.battleGridPos = WpToGridPos(groupsC.sel.position.X, groupsC.sel.position.Z);
+                        getNode(groupsC.sel.battleGridPos).add(groupsC.sel);
+                    }
+                }
+                else
+                { 
+                    var city = membersC.sel.GetCity();
+                    city.battleGridPos = WpToGridPos(city.position.X, city.position.Z);
+                }
+            }
+        }
+
+        void walkPath(SoldierGroup group, bool straightOnly)
+        {
+            if (group.attacking_soldierGroupOrCity != null &&
+                !group.attackState)
+            {
+                IntVector2 diff = group.attacking_soldierGroupOrCity.battleGridPos - group.battleGridPos;
+                if (diff.HasValue())
+                {
+                    var nDiff = diff.Normal();
+                    IntVector2 next = group.battleGridPos + nDiff;
+
+                    if (straightOnly)
+                    {                       
+                        if (diff.IsOrthogonal())
+                        {
+                            tryWalkToNode(group, next);
+                            //applyWalkNode(group, next);
+                        }
+                    }
+                    else
+                    {
+                        //Walk towards enemy
+                        if (!tryWalkToNode(group, next))
+                        {
+                            //Try left and right turn
+                            IntVector2 left = group.battleGridPos + VectorExt.RotateVector45DegreeLeft_Normal(nDiff);
+                            BattleGridNode leftNode;
+                            float leftValue = flankToNodeValue(group, left, out leftNode);
+
+                            IntVector2 right = group.battleGridPos + VectorExt.RotateVector45DegreeRight_Normal(nDiff);
+                            BattleGridNode rightNode;
+                            float rightValue = flankToNodeValue(group, right, out rightNode);
+
+                            if (leftValue > rightValue)
+                            {
+                                applyWalkToNode(group, leftNode);
+                            }
+                            else if (rightValue > 0)
+                            { 
+                                applyWalkToNode(group, rightNode);
+                            }
+                            //if (!tryWalkToNode(group, next))
+                            //{
+                            //    next = group.battleGridPos + VectorExt.RotateVector45DegreeRight_Normal(nDiff);
+                            //    tryWalkToNode(group, next);
+
+                            //    //on fail, the unit will que up
+                            //}
+                        }
+                    }
+                }
+            }
+
+        }
+
+        float flankToNodeValue(SoldierGroup group, IntVector2 next, out BattleGridNode goalNode)
+        {
+            goalNode = getNode(next);
+
+            if (goalNode.blockedByFriendly(group) || goalNode.blocked)
+            {
+                return 0;
+            }
+            else
+            {
+                float value = 2;
+                var currentNode = getNode(group.battleGridPos);
+                float currentDist = VectorExt.SideLength_XZ(group.army.position, currentNode.worldPos);
+                float nextDist = VectorExt.SideLength_XZ(group.army.position, goalNode.worldPos);
+
+                value += nextDist - currentDist; //Moving away from center is more points
+
+                if (group.IsShip() != goalNode.water)
+                {
+                    value -= 1;
+                }
+
+                return value;
+            }
+        }
+
+        bool tryWalkToNode(SoldierGroup group, IntVector2 next)
+        {
+            var goalNode = getNode(next);
+
+            if (goalNode.blockedByFriendly(group) || goalNode.blocked)
+            {
+                return false;
+            }
+            else
+            {
+                return applyWalkToNode(group, goalNode);
+            }
+        }
+
+        private bool applyWalkToNode(SoldierGroup group, BattleGridNode goalNode)
+        {
+            //Apply
+            group.battleWalkPath = true;
+            var currentNode = getNode(group.battleGridPos);
+            currentNode.remove(group);
+            goalNode.add(group);
+
+            group.battleWp = goalNode.worldPos;
+
+            if (group.IsShip() != goalNode.water)
+            {
+                Tile tile;
+                if (DssRef.world.tileGrid.TryGet(group.tilePos, out tile))
+                {
+                    if (tile.IsWater() == goalNode.water)
+                    {
+                        if (!group.inShipTransform)
+                        {
+                            group.inShipTransform = true;
+                            new ShipTransform(group, true);
+                        }
+
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        void applyWalkNode(SoldierGroup group, IntVector2 next)
+        {
+            getNode(group.battleGridPos).remove(group);
+            var goalNode = getNode(next);
+            goalNode.add(group);
+
+            group.battleWp = goalNode.worldPos;
+        }
+
+        void placeGroupInNode(SoldierGroup group, IntVector2 nodePos)
+        {
+            group.battleGridPos = nodePos;
+            var node = getNode(group.battleGridPos);
+            group.battleWp = node.worldPos;
+            node.add(group);
+        }
+
+        void debugVisuals()
+        {
+            Rectangle2 area = Rectangle2.FromCenterTileAndRadius(IntVector2.Zero, 5);
+            ForXYLoop loop = new ForXYLoop(area);
+
+            while (loop.Next())
+            {
+                bool outsideBounds;
+                Vector3 pos = gridPosToWp(loop.Position, out outsideBounds);
+
+                Graphics.Mesh dot = new Graphics.Mesh(LoadedMesh.cube_repeating,
+                        pos,
+                        new Vector3(0.05f), Graphics.TextureEffectType.Flat,
+                        SpriteName.WhiteArea, loop.Position == IntVector2.Zero? Color.Blue : Color.Red, false);
+              
+                dot.AddToRender(DrawGame.UnitDetailLayer);
+            }
+        }
+
+        /// <returns>V3 world position</returns>
+        Vector3 gridPosToWp(IntVector2 gridPos, out bool outsideBounds)
+        {
+            Vector2 offset = VectorExt.RotateVector(
+                new Vector2(
+                    gridPos.X * SoldierGroup.GroupSpacing, 
+                    gridPos.Y * SoldierGroup.GroupSpacing), 
+                rotation.radians);
+
+            Vector3 result = new Vector3(
+                center.X + offset.X,
+                0,
+                center.Y + offset.Y);
+
+            if (DssRef.world.unitBounds.IntersectPoint(result.X, result.Z))
+            {
+                result.Y = DssRef.world.SubTileHeight(result);
+                outsideBounds = false;
+            }
+            else
+            {
+                outsideBounds = true;
+            }
+            return result;  
+        }
+
+        IntVector2 WpToGridPos(float worldX, float worldZ)
+        {
+            float offsetX = worldX - center.X;
+            float offsetY = worldZ - center.Y;
+            
+            Vector2 rotatedBackOffset = VectorExt.RotateVector(new Vector2(offsetX, offsetY), -rotation.radians);
+
+            var result = new IntVector2( 
+                rotatedBackOffset.X / SoldierGroup.GroupSpacing, 
+                rotatedBackOffset.Y / SoldierGroup.GroupSpacing);
+            return result;  
+        }
+
+        BattleGridNode getNode(IntVector2 pos)
+        {
+            BattleGridNode node;
+            IntVector2 localPos = pos - gridTopLeft;
+            if (grid.TryGet(localPos, out node))
+            {
+                if (node == null)
+                {
+                    bool outsideBounds;
+                    Vector3 wp = gridPosToWp(pos, out outsideBounds);
+                    node = new BattleGridNode(wp, outsideBounds);
+                    grid.Set(localPos, node);
+                }
+            }
+            else
+            {
+                //expand size
+                Rectangle2 area = new Rectangle2(IntVector2.Zero, grid.Size);
+                var minAdd = area.LengthToClosestTileEdge(localPos);
+
+                IntVector2 addRadius = new IntVector2( Math.Max(minAdd * 2, 10));
+                grid.ExpandSize(addRadius * 2, addRadius);
+                gridTopLeft -= addRadius;
+
+                return getNode(pos);
+            }
+
+            return node;
+        }
+
+        void DeleteMe()
+        {
+            membersC.Reset();
+            while (membersC.Next())
+            {
+                membersC.sel.ExitBattleGroup();
+            }
+        }
+    }
+
+    class BattleGridNode
+    { 
+        public SoldierGroup group1 = null;
+        public SoldierGroup group2 = null;
+        public Vector3 worldPos;
+        public bool water;
+        public bool blocked;
+
+        public BattleGridNode(Vector3 worldPos, bool outsideBounds)
+        {
+            this.worldPos = worldPos;
+            blocked = outsideBounds;
+            Map.Tile tile;
+            if (DssRef.world.tileGrid.TryGet(new IntVector2(worldPos.X, worldPos.Z), out tile))
+            {
+                water = tile.IsWater();
+            }
+        }
+
+        public void add(SoldierGroup group)
+        {
+            if (group1 == null)
+            {
+                group1 = group;
+            }
+            else
+            {
+                group2 = group;
+            }
+        }
+
+        public void remove(SoldierGroup group)
+        {
+            if (group1 == group)
+            {
+                group1 = null;
+            }
+            else if (group2 == group)
+            {
+                group2 = null;
+            }
+        }
+
+        public bool blockedByFriendly(SoldierGroup group)
+        {
+            if (group1 != null && group1.army.faction == group.army.faction)
+            { 
+                return true;
+            }
+            if (group2 != null && group2.army.faction == group.army.faction)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public void clear()
+        {
+            group1 = null;
+            group2 = null;
+        }
+    }
+}

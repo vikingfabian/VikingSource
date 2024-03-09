@@ -512,6 +512,7 @@ namespace VikingEngine.LootFest
         wars_darklord,
 
         wars_shipcrew,
+        wars_shipmelee,
         wars_captain,
         wars_soldier_ship,
         wars_viking_ship,
@@ -556,8 +557,19 @@ namespace VikingEngine.LootFest
         armystand,
         cityicon,
 
-            city_tower24,
-
+        //city_tower24,
+        city_workerhut,
+        city_cobblestone,
+        city_square,
+        city_stonehall,
+        city_smallhouse,
+        city_bighouse,
+        city_dirtwall,
+        city_dirttower,
+        city_woodwall,
+        city_woodtower,
+        city_stonewall,
+        city_stonetower,
 
         horse_white, horse_brown,
         
@@ -667,6 +679,7 @@ namespace VikingEngine.LootFest
         fol_stoneblock,
         fol_tallgrass,
         fol_herbs,
+        fol_farmculture,
 
         #endregion
 

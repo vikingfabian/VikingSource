@@ -91,6 +91,8 @@ namespace VikingEngine
     {
         Rectangle2 area;
         public IntVector2 Position;
+        IntVector2 start;
+        bool loopHasStarted;
 
         public ForXYEdgeLoop(IntVector2 size)
             : this(new Rectangle2(size))
@@ -100,7 +102,7 @@ namespace VikingEngine
         { }
 
         public ForXYEdgeLoop(Rectangle2 area)
-            :this()//area.Position, area.BottomRightTile)
+            :this()
         {
             this.area = area;
             Reset();
@@ -114,6 +116,7 @@ namespace VikingEngine
             Position.X -= 1;
             stepDir = 0;
             stepsLeft = area.Width;
+            loopHasStarted = false;
         }
         
         static readonly IntVector2[] stepDirOrder = new IntVector2[]
@@ -135,31 +138,44 @@ namespace VikingEngine
             {
                 if (++stepDir >= 4)
                 {
-                    return false;
+                    stepDir = 0;
                 }
                 stepsLeft = ((stepDir == 1 || stepDir ==  3)?  area.Height : area.Width) - 1;
             }
-            return true;           
+
+            if (!loopHasStarted)
+            {
+                start = Position;
+                loopHasStarted =true;
+                return true;   
+            }
+
+            return Position != start;
         }
 
-        public void RandomPosition()
+        public void RandomPosition(bool prepareLoop)
         {
-            //Pick random corner, then random steps on the edge
-            stepDir = Ref.rnd.Int(4);
-            stepsLeft = (stepDir == 1 || stepDir == 3) ? area.Height : area.Width;
-            
-            int moveAlongEdge = Ref.rnd.Int(stepsLeft -1);
-            Position = area.GetTileCorner((Corner)stepDir) + stepDirOrder[stepDir] * moveAlongEdge;            
+            RandomPosition(Ref.rnd, prepareLoop);   
         }
 
-        public void RandomPosition(PcgRandom rnd)
+        public void RandomPosition(PcgRandom rnd, bool prepareLoop)
         {
             //Pick random corner, then random steps on the edge
             stepDir = rnd.Int(4);
             stepsLeft = (stepDir == 1 || stepDir == 3) ? area.Height : area.Width;
 
             int moveAlongEdge = rnd.Int(stepsLeft - 1);
+            stepsLeft -= moveAlongEdge;
+            if (prepareLoop)
+            {
+                moveAlongEdge -= 1;
+            }
+            else
+            { 
+                stepsLeft -= 1;
+            }
             Position = area.GetTileCorner((Corner)stepDir) + stepDirOrder[stepDir] * moveAlongEdge;
+
         }
 
         public void ExpandRadius()

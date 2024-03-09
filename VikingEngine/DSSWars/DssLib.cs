@@ -52,6 +52,7 @@ namespace VikingEngine.DSSWars
         public const float NobelHouseUpkeep = 5;
 
         public const float BattleConflictRadius = 2f;
+        public const float CityDominationRadius = BattleConflictRadius + 1.5f;
 
 
         public static readonly UnitType[] AvailableUnitTypes = new UnitType[]
@@ -144,6 +145,16 @@ namespace VikingEngine.DSSWars
         /// Makes sure to prioritize players as target, ai players protect eachother against players
         /// </summary>
         High,
+
+        NUM
+    }
+
+    enum BossSize
+    {
+        Small,
+        Medium,
+        Large,
+        Huge,
 
         NUM
     }

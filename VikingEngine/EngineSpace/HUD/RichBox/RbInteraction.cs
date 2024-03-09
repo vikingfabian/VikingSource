@@ -43,7 +43,7 @@ namespace VikingEngine.HUD.RichBox
                 {
                     if (m.buttonMap != null && m.buttonMap.DownEvent)
                     {
-                        m.click?.actionTrigger();
+                        m.onClick();//.click?.actionTrigger();
                     }
 
                     area = m.area();
@@ -68,7 +68,7 @@ namespace VikingEngine.HUD.RichBox
             }
             if (clickInput.DownEvent && hover != null)
             {
-                hover.click?.actionTrigger();
+                hover.onClick();//.click?.actionTrigger();
                 return true;
             }
 
@@ -81,7 +81,7 @@ namespace VikingEngine.HUD.RichBox
             if (hover != null)
             {
                 selectionOutline = new RectangleLines(hover.area(), 2, 1, layer);
-                hover.enter?.actionTrigger();
+                hover.onEnter();//.enter?.actionTrigger();
                 //Debug.Log("on enter");
             }
         }

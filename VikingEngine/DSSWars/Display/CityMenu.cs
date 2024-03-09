@@ -92,7 +92,7 @@ namespace VikingEngine.DSSWars.Display
 
             content.newLine();
 
-            if (!city.nobelHouse)
+            if (!city.nobelHouse && city.canEverGetNobelHouse())
             {
                 content.Button("Nobel house",
                      new RbAction(city.buyNobelHouseAction, SoundLib.menuBuy),

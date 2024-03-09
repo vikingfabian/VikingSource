@@ -130,6 +130,8 @@ namespace VikingEngine.DSSWars.Map
                 }
             }
         }
+
+
     }
 
     enum TerrainMainType
@@ -155,6 +157,24 @@ namespace VikingEngine.DSSWars.Map
         TallGrass,
         Stones,
         StoneBlock,
+        FarmCulture,
+        NUM
+    }
+
+    enum TerrainBuildingType
+    {
+        DirtWall,
+        DirtTower,
+        WoodWall,
+        WoodTower,
+        StoneWall,
+        StoneTower,
+        StoneHall,
+        SmallHouse,
+        BigHouse,
+        Square,
+        CobbleStones,
+        WorkerHut,
         NUM
     }
 }

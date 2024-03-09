@@ -74,7 +74,21 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.war_town_factory, false);
             loadVoxelModel(VoxelModelName.war_workerhut, false);
 
-            loadVoxelModel(VoxelModelName.city_tower24, false);
+            loadVoxelModel(VoxelModelName.city_dirtwall, false);
+            loadVoxelModel(VoxelModelName.city_dirttower, false);
+            loadVoxelModel(VoxelModelName.city_woodwall, false);
+            loadVoxelModel(VoxelModelName.city_woodtower, false);
+            loadVoxelModel(VoxelModelName.city_stonewall, false);
+            loadVoxelModel(VoxelModelName.city_stonetower, false);
+
+            loadVoxelModel(VoxelModelName.city_stonehall, false);
+            loadVoxelModel(VoxelModelName.city_workerhut, false);
+
+            loadVoxelModel(VoxelModelName.city_cobblestone, false);
+            loadVoxelModel(VoxelModelName.city_square, false);
+            loadVoxelModel(VoxelModelName.city_smallhouse, false);
+            loadVoxelModel(VoxelModelName.city_bighouse, false);
+            //loadVoxelModel(VoxelModelName.city_tower24, false);
 
             loadVoxelModel(VoxelModelName.Arrow, true);
             loadVoxelModel(VoxelModelName.little_javelin, true);
@@ -87,6 +101,7 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.wars_deserter, false);
             loadVoxelModel(VoxelModelName.horse_brown, false);
             loadVoxelModel(VoxelModelName.horse_white, false);
+            loadVoxelModel(VoxelModelName.wars_shipmelee, false);
 
             foreach (var model in DetailMapTile.LoadModel())
             {

@@ -361,7 +361,17 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         public bool IdleObjetive()
-        { 
+        {
+            if (objective == ArmyObjective.Attack) 
+            {
+                var attackTarget_sp = attackTarget;
+                if (attackTarget_sp!= null && attackTarget_sp.defeated())
+                {
+                    attackTarget = null;
+                    objective = ArmyObjective.None;
+                    return true;
+                }
+            }
             return objective == ArmyObjective.None || objective == ArmyObjective.Halt;
         }
 
