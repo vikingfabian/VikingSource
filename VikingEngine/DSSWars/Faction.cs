@@ -135,7 +135,7 @@ namespace VikingEngine.DSSWars
             for (int i = 0; i < armiesCount; i++)
             {
                 var army = new Army();
-                army.readGameState(this, r, version);
+                army.readGameState(this, r, version, pointers);
                 armies.Add(army);
             }
 

@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.Data
             //TODO spara alla pointers sist, eller någon pointer replacement list
             DssRef.world.writeGameState(w);
 
-            DssRef.state.events
+            DssRef.state.events.writeGameState(w);
         }
 
         public override void Time_Update(float time_ms)
@@ -185,7 +185,7 @@ class BattleMemberObjectPointer: AbsObjectPointer
 
         public override void SetPointer()
         {
-            battle  = (AbsMapObject)GetObject();
+            battle.addPart((AbsMapObject)GetObject(), false);
         }
     }
 }

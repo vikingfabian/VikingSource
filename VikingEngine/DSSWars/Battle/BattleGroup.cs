@@ -69,7 +69,8 @@ namespace VikingEngine.DSSWars.Battle
                 new BattleMemberObjectPointer(w, membersC.sel);
             }
 
-            DataStreamLib.wr
+            SaveLib.WriteVector(w, center);
+            w.Write(rotation.ByteDir);
         }
        
         public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)

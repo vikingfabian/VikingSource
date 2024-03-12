@@ -91,8 +91,7 @@ namespace VikingEngine.DSSWars.GameObject
             int groupsCount = r.ReadUInt16();
             for (int i = 0; i < groupsCount; i++)
             {
-                SoldierGroup group = new SoldierGroup(this, r, version);
-               
+                SoldierGroup group = new SoldierGroup(this, r, version, pointers);               
             }
 
             init(faction);
