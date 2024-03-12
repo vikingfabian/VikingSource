@@ -146,7 +146,7 @@ namespace VikingEngine.DSSWars
 
         void asynchStorageLoading()
         {
-            new Players.GameStorage().Load();
+            new Data.GameStorage().Load();
             loadingDataComplete = true;
         }
 

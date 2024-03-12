@@ -7,8 +7,11 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using VikingEngine.DataStream;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Battle
 {
@@ -52,16 +55,45 @@ namespace VikingEngine.DSSWars.Battle
             placeSoldiers(m2);
         }
 
+        public BattleGroup(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        {
+            readGameState(r, version, pointers);
+        }
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            w.Write((ushort)members.Count);
+            var membersC = members.counter();
+            while (membersC.Next())
+            {
+                new BattleMemberObjectPointer(w, membersC.sel);
+            }
+
+            DataStreamLib.wr
+        }
+       
+        public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        {
+
+        }
+        public void addPointer(AbsGameObject objectPointer)
+        {
+            addPart((AbsMapObject)objectPointer, false);
+        }
+
         public SpottedArrayCounter<AbsMapObject> MembersCounter()
         {
             return membersC.Clone();
         }
 
-        public void addPart(AbsMapObject m)
+        public void addPart(AbsMapObject m, bool atStart = true)
         {
             m.battleGroup = this;
             members.Add(m);
-            placeSoldiers(m);
+            if (atStart)
+            {
+                placeSoldiers(m);
+            }
         }
 
         void createGrid()
@@ -565,6 +597,22 @@ namespace VikingEngine.DSSWars.Battle
             {
                 water = tile.IsWater();
             }
+        }
+
+        public BattleGridNode(Vector3 worldPos, bool outsideBounds, 
+            System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+            :this(worldPos, outsideBounds)
+        {
+            readGameState(r, version, pointers);
+        }
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+
+        }
+        public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        {
+
         }
 
         public void add(SoldierGroup group)

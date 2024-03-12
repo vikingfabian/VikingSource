@@ -38,6 +38,8 @@ namespace VikingEngine.DSSWars
         public FlagDesign flagDesign;
         public List<BlockHDPair> modelColorReplace;
 
+
+
         public ProfileData(FactionType factiontype, int index)
         {
             this.index = index;
@@ -431,7 +433,7 @@ namespace VikingEngine.DSSWars
                     }
                     break;
             }
-
+            
 
             //if (factiontype == FactionType.Player)
             //{
@@ -492,6 +494,11 @@ namespace VikingEngine.DSSWars
 
             //    flagDesign = arraylib.RandomListMember(FlagDesign.AiBanner);
             //}
+        }
+
+        public ProfileData(System.IO.BinaryReader r)
+        {
+            read(r);
         }
 
         public ProfileData Clone()

@@ -66,6 +66,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         abstract public AbsMapObject RelatedMapObject();
 
+        virtual public City GetCity() { return null; }
+
+        virtual public Army GetArmy() { return null; }
+
         virtual public void stateDebugText(HUD.RichBox.RichBoxContent content)
         { }
 

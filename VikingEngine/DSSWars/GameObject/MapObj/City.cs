@@ -66,7 +66,7 @@ namespace VikingEngine.DSSWars.GameObject
         public City(int index, System.IO.BinaryReader r, int version)
         {
             this.index = index;
-            read(r, version);
+            readMapFile(r, version);
         }
 
         public void generateCultureAndEconomy(WorldData world, CityCultureCollection cityCultureCollection)
@@ -267,7 +267,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
-        public void write(System.IO.BinaryWriter w)
+        public void writeMapFile(System.IO.BinaryWriter w)
         {
             tilePos.writeUshort(w);
 
@@ -289,7 +289,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
-        public void read(System.IO.BinaryReader r, int version)
+        public void readMapFile(System.IO.BinaryReader r, int version)
         {
             tilePos.readUshort(r);
 
@@ -311,6 +311,24 @@ namespace VikingEngine.DSSWars.GameObject
                 cityPurchase.read(r);
                 cityPurchaseOptions.Add(cityPurchase);
             }
+
+        }
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+
+        }
+        public void readGameState(System.IO.BinaryReader r, int version)
+        {
+
+        }
+
+        public void writeNet(System.IO.BinaryWriter w)
+        {
+
+        }
+        public void readNet(System.IO.BinaryReader r)
+        {
 
         }
 

@@ -76,6 +76,24 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+
+        }
+        public void readGameState(System.IO.BinaryReader r, int version)
+        {
+
+        }
+
+        public void writeNet(System.IO.BinaryWriter w)
+        {
+
+        }
+        public void readNet(System.IO.BinaryReader r)
+        {
+
+        }
+
         virtual public void InitLocal(Vector3 center, IntVector2 gridPlacement, 
             IntVector2 tile, SoldierGroup group)
         {

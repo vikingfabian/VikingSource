@@ -640,6 +640,17 @@ namespace VikingEngine
             X = r.ReadUInt16(); Y = r.ReadUInt16();
         }
 
+        public void writeShort(System.IO.BinaryWriter w)
+        {
+            w.Write((short)X); w.Write((short)Y);
+        }
+
+        public void readShort(System.IO.BinaryReader r)
+        {
+            X = r.ReadInt16(); Y = r.ReadInt16();
+        }
+
+
         public void writeSByte(System.IO.BinaryWriter w)
         {
             w.Write((sbyte)X); w.Write((sbyte)Y);

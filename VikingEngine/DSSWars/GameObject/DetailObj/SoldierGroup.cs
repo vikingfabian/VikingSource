@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
@@ -53,7 +54,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int groupId;
 
         public UnitType type;
-        public int projectileHits = 0;
+        //public int projectileHits = 0;
         //public bool isShip = false;
         //public ShipTransform inShipTransform = null;
         public bool lockMovement=false;
@@ -91,6 +92,7 @@ namespace VikingEngine.DSSWars.GameObject
             this.army = army;
 
             AbsSoldierData typeData = DssRef.unitsdata.Get(type);
+            
 
             recruit &= typeData.recruitTrainingTimeSec > 0;
 
@@ -121,6 +123,60 @@ namespace VikingEngine.DSSWars.GameObject
 
             army.AddSoldierGroup(this);
             rotation = army.rotation;
+        }
+
+        public SoldierGroup(Army army, System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        {
+            this.army = army;
+            readGameState(r, version, pointers);
+        }
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)type);
+            w.Write((byte)FirstSoldierData().unitType);
+
+            armyLocalPlacement.writeShort(w);
+
+            bool lockedInArmyGrid = army.IdleObjetive() && groupObjective == GroupObjective_FollowArmyObjective;
+            w.Write(lockedInArmyGrid);
+
+            w.Write((byte)groupObjective);
+
+
+            w.Write((byte)soldiers.Count);
+            bool soldiersLockedInGroup = groupObjective == GroupObjective_FollowArmyObjective;
+            
+            if (soldiersLockedInGroup)
+            {
+                WP.writePosXZ(w, position);
+                w.Write(rotation.ByteDir);
+            }
+            else
+            {
+                var soldiersC = soldiers.counter();
+                while (soldiersC.Next())
+                { 
+                    soldiersC.sel.writeGameState(w);
+                }
+            }
+        }
+        public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        {
+            UnitType type = (UnitType)r.ReadByte();
+            UnitType soldierType = (UnitType)r.ReadByte();
+
+            armyLocalPlacement.readShort(r);
+
+        }
+
+        public void writeNet(System.IO.BinaryWriter w)
+        {
+
+        }
+        public void readNet(System.IO.BinaryReader r)
+        {
+
         }
 
         void refreshAttackRadius(AbsSoldierData typeData)
@@ -475,8 +531,8 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                         else
                         {
-                            if (army.ai.objective == ArmyObjective.MoveTo ||
-                                army.ai.objective == ArmyObjective.Attack)
+                            if (army.objective == ArmyObjective.MoveTo ||
+                                army.objective == ArmyObjective.Attack)
                             {
                                 if (updateWalking(currentArmyPosition, true, army.rotation, time))
                                 {

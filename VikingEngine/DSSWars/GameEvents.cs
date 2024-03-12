@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
 {
@@ -33,6 +35,15 @@ namespace VikingEngine.DSSWars
             {
                 prepareNext();
             }
+        }
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+
+        }
+        public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        {
+
         }
 
         void prepareNext()
@@ -160,7 +171,7 @@ namespace VikingEngine.DSSWars
                                 }
 
                                 DssRef.diplomacy.declareWar(enemyFac, DssRef.state.localPlayers[playerIx].faction);
-                                army.ai.Order_MoveTo(VectorExt.AddY(playerMostSouthCity[playerIx].tilePos, 3));
+                                army.Order_MoveTo(VectorExt.AddY(playerMostSouthCity[playerIx].tilePos, 3));
                             }
                         }
 

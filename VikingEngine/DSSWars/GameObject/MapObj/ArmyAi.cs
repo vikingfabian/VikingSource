@@ -10,12 +10,12 @@ using VikingEngine.ToGG.HeroQuest.Players.Ai;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class ArmyAi
+    partial class Army
     {
         const float MaxRegroupTime = 5000;
         const float MaxRegroupTime_Battle = 30000;
         
-        Army army;
+        //Army army;
         WalkingPath path = null, newpath = null;
 
         public ArmyObjective objective = ArmyObjective.None;
@@ -27,17 +27,17 @@ namespace VikingEngine.DSSWars.GameObject
 
         bool nextPathNode = false;
 
-        public ArmyAi(Army army)
-        {
-            this.army = army;
-        }
+        //public ArmyAi(Army army)
+        //{
+        //    this.army = army;
+        //}
 
-        public void Update(bool fullUpdate)
+        public void aiUpdate(bool fullUpdate)
         {
-            if (army.id == 786)
-            { 
-                lib.DoNothing();
-            }
+            //if (id == 786)
+            //{ 
+            //    lib.DoNothing();
+            //}
             if (nextPathNode)
             {
                 if (newpath != null)
@@ -57,7 +57,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void applyNewPathNode()
         {
-            if (army.id == 1)
+            if (id == 1)
             { 
                 lib.DoNothing();
             }
@@ -67,7 +67,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (path_sp.HasMoreNodes())
                 {
                     IntVector2 last = path_sp.LastNode();
-                    if (army.faction.HasArmyBlockingPosition(last))
+                    if (faction.HasArmyBlockingPosition(last))
                     {
                         path_sp.RemoveLast();
                     }
@@ -91,28 +91,28 @@ namespace VikingEngine.DSSWars.GameObject
                     bool nextIsShipTransform = path_sp.nextTwoNodesAreShip();
                     bool nextIsFootTransform = path_sp.nextTwoNodesAreByFeet();
 
-                    var prevRotation = army.rotation;
+                    var prevRotation = rotation;
 
-                    army.setWalkNode(node.position, nextIsFootTransform, nextIsShipTransform);
+                    setWalkNode(node.position, nextIsFootTransform, nextIsShipTransform);
                     if (nextIsShipTransform ||
                         nextIsFootTransform ||
-                        Rotation1D.AngleDifference_Absolute(prevRotation.radians, army.rotation.Radians) >= MathExt.TauOver8)
+                        Rotation1D.AngleDifference_Absolute(prevRotation.radians, rotation.Radians) >= MathExt.TauOver8)
                     {
                         waitForRegroup = true;
-                        if (army.id == 1)
-                        {
-                            lib.DoNothing();
-                        }
+                        //if (id == 1)
+                        //{
+                        //    lib.DoNothing();
+                        //}
                         stateTime = 0;
                     }
 
                     if (isOUtSideBattle(path_sp))
                     { 
                         waitForRegroup = true;
-                        if (army.id == 1)
-                        {
-                            lib.DoNothing();
-                        }
+                        //if (army.id == 1)
+                        //{
+                        //    lib.DoNothing();
+                        //}
                         stateTime = 0;
                     }
                 }
@@ -128,21 +128,21 @@ namespace VikingEngine.DSSWars.GameObject
             return objective == ArmyObjective.Attack && path.NodeCountLeft() == 3;
         }
 
-        public void asynchUpdate(float time)
+        public void asynchAiUpdate(float time)
         {
-            if (army.id == 1 && stateTime >= 2000)
-            {
-                lib.DoNothing();
-            }
+            //if (army.id == 1 && stateTime >= 2000)
+            //{
+            //    lib.DoNothing();
+            //}
             if (objective != ArmyObjective.None)
             {
                 var attackTarget_sp = attackTarget;
 
                 if (objective == ArmyObjective.Attack && attackTarget_sp != null)
                 {
-                    if (attackTarget_sp.defeatedBy(army.faction))
+                    if (attackTarget_sp.defeatedBy(faction))
                     {
-                        if ((walkGoal - army.tilePos).SideLength() <= 2)
+                        if ((walkGoal - tilePos).SideLength() <= 2)
                         {
                             clearObjective();
                         }
@@ -183,10 +183,10 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (waitForRegroup)
                     {
-                        float maxtime = (isOUtSideBattle(path_sp) && !army.InBattle()) ? MaxRegroupTime_Battle : MaxRegroupTime;
+                        float maxtime = (isOUtSideBattle(path_sp) && !InBattle()) ? MaxRegroupTime_Battle : MaxRegroupTime;
                         if (stateTime < maxtime)
                         {
-                            var groupC = army.groups.counter();
+                            var groupC = groups.counter();
                             while (groupC.Next())
                             {
                                 if (!groupC.sel.groupIsIdle)
@@ -201,7 +201,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (path_sp.HasMoreNodes())
                     {
                         var node = path_sp.CurrentNode();
-                        float l = VectorExt.Length(node.position.X - army.position.X, node.position.Y - army.position.Z);
+                        float l = VectorExt.Length(node.position.X - position.X, node.position.Y - position.Z);
 
                         if (l <= 0.2f)
                         {
@@ -223,12 +223,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         void refreshNextWalkingNode()
         {
-            if (army.id == 1)
-            {
-                lib.DoNothing();
-            }
+            //if (army.id == 1)
+            //{
+            //    lib.DoNothing();
+            //}
 
-            IntVector2 walkPos = army.tilePos;
+            IntVector2 walkPos = tilePos;
             var path_sp = path;
             if (path_sp != null)
             {
@@ -236,7 +236,7 @@ namespace VikingEngine.DSSWars.GameObject
                 walkPos = node.position;
             }
 
-            var groupC = army.groups.counter();
+            var groupC = groups.counter();
             while (groupC.Next())
             {
                 groupC.sel.bumpWalkToNode(walkPos);
@@ -249,12 +249,12 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if ((objective == ArmyObjective.Attack  || objective == ArmyObjective.MoveTo)
                 &&
-                army.tilePos != adjustedWalkGoal)
+                tilePos != adjustedWalkGoal)
             {
                 PathFinding pf = DssRef.state.pathFindingPool.Get();//new PathFinding();
                 {
-                    newpath = pf.FindPath(army.tilePos, army.rotation, walkGoal,
-                        army.isShip);
+                    newpath = pf.FindPath(tilePos, rotation, walkGoal,
+                        isShip);
                 } 
                 DssRef.state.pathFindingPool.Return(pf);
 
@@ -267,10 +267,10 @@ namespace VikingEngine.DSSWars.GameObject
         public void onArmyMerge()
         {
             waitForRegroup = true;
-            if (army.id == 1)
-            {
-                lib.DoNothing();
-            }
+            //if (army.id == 1)
+            //{
+            //    lib.DoNothing();
+            //}
             stateTime = 0;
             refreshNextWalkingNode();
         }
@@ -286,7 +286,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void Order_Attack(AbsMapObject attackTarget)
         {
-            DssRef.diplomacy.declareWar(army.faction, attackTarget.faction);
+            DssRef.diplomacy.declareWar(faction, attackTarget.faction);
             clearObjective();
             this.attackTarget = attackTarget;
             this.attackTargetFaction = attackTarget.faction.index;
@@ -298,8 +298,8 @@ namespace VikingEngine.DSSWars.GameObject
             clearObjective();
             objective = ArmyObjective.Halt;
 
-            army.tilePos = WP.ToTilePos(army.position);
-            army.setWalkNode(army.tilePos, false, false);
+            tilePos = WP.ToTilePos(position);
+            setWalkNode(tilePos, false, false);
 
         }
 
@@ -345,8 +345,7 @@ namespace VikingEngine.DSSWars.GameObject
                 pv.addTo(images);
             }
         }
-
-        public void stateDebugText(RichBoxContent content)
+        public override void stateDebugText(RichBoxContent content)
         {
             content.text("Objective: " + objective.ToString());
             if (objective != ArmyObjective.None)
@@ -358,6 +357,19 @@ namespace VikingEngine.DSSWars.GameObject
                 content.text("walkGoal: " + walkGoal.ToString());
                 content.text("adjusted walkGoal: " + adjustedWalkGoal.ToString());
             }
+        }
+
+        public void writeAiState(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)objective);
+            if (objective == ArmyObjective.Attack)
+            {
+
+            }
+        }
+        public void readAiState(System.IO.BinaryReader r, int version)
+        {
+
         }
 
         public bool IdleObjetive()
@@ -378,13 +390,13 @@ namespace VikingEngine.DSSWars.GameObject
         public void EnterPeaceEvent()
         {
             waitForRegroup = true;
-            if (army.id == 1)
-            {
-                lib.DoNothing();
-            }
+            //if (army.id == 1)
+            //{
+            //    lib.DoNothing();
+            //}
             stateTime = 0;
         }
-        }
+    }
 
     enum ArmyObjective
     {

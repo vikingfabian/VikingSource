@@ -29,6 +29,25 @@ namespace VikingEngine.DSSWars.Players
 
         virtual public void Update()
         { }
+
+        virtual public void writeGameState(System.IO.BinaryWriter w)
+        {
+
+        }
+        virtual public void readGameState(System.IO.BinaryReader r, int version)
+        {
+
+        }
+
+        virtual public void writeNet(System.IO.BinaryWriter w)
+        {
+
+        }
+        virtual public void readNet(System.IO.BinaryReader r)
+        {
+
+        }
+
         virtual public void oneSecUpdate()
         { }
        

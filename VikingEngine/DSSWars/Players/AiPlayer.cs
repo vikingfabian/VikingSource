@@ -555,7 +555,7 @@ namespace VikingEngine.DSSWars.Players
                     for (int i = 0; i < Trials; i++)
                     {
                         var army = faction.armies.GetRandomUnsafe(Ref.rnd);
-                        if (army != null && army.ai.IdleObjetive() && army.groups.Count >= 5)
+                        if (army != null && army.IdleObjetive() && army.groups.Count >= 5)
                         {
                             mainArmy = army;
                             mainArmyState = MainArmyState_CollectSupport;
@@ -646,7 +646,7 @@ namespace VikingEngine.DSSWars.Players
                         nextDecisionTimer.MilliSeconds += 4000;
                         if (city.distanceTo(mainArmy) > 2)
                         {
-                            mainArmy.ai.Order_MoveTo(city.tilePos);
+                            mainArmy.Order_MoveTo(city.tilePos);
                         }
                     }
                     else
@@ -689,7 +689,7 @@ namespace VikingEngine.DSSWars.Players
             else if (mainArmyState == MainArmyState_Attack ||
                 mainArmyState == MainArmyState_Defend)
             {
-                if (mainArmy.ai.IdleObjetive())
+                if (mainArmy.IdleObjetive())
                 {
                     mainArmyState = MainArmyState_CollectSupport;
                 }
@@ -716,7 +716,7 @@ namespace VikingEngine.DSSWars.Players
                             }
                             else
                             {
-                                mainArmy.ai.Order_MoveTo(city.tilePos);
+                                mainArmy.Order_MoveTo(city.tilePos);
                             }
                         }
                     }
@@ -758,7 +758,7 @@ namespace VikingEngine.DSSWars.Players
             }
             if (mainArmyState == MainArmyState_Attack || mainArmyState == MainArmyState_Defend)
             {
-                return !mainArmy.ai.IdleObjetive();
+                return !mainArmy.IdleObjetive();
             }
             return false;
         }
@@ -809,10 +809,10 @@ namespace VikingEngine.DSSWars.Players
 
             foreach (var a in DssRef.world.unitCollAreaGrid.armies_aiUpdate)
             {
-                double chance = a.ai.objective == ArmyObjective.None ? 0.8 : 0.1;
+                double chance = a.objective == ArmyObjective.None ? 0.8 : 0.1;
                 if (a != mainArmy && Ref.rnd.Chance(chance))
                 {
-                    a.ai.Order_MoveTo(toPos);
+                    a.Order_MoveTo(toPos);
                 }
             }
         }
@@ -894,8 +894,8 @@ namespace VikingEngine.DSSWars.Players
                             return true;
                         }
 
-                        if (army.ai.attackTarget == city ||
-                            city.distanceTo(army.ai.walkGoal) <= 4)
+                        if (army.attackTarget == city ||
+                            city.distanceTo(army.walkGoal) <= 4)
                         {
                             return true;
                         }
@@ -1055,7 +1055,7 @@ namespace VikingEngine.DSSWars.Players
             for (int i = 0; i < 3; i++)
             {
                 var army2 = faction.armies.GetRandomUnsafe(Ref.rnd);
-                if (army2 != null && army2.ai.IdleObjetive())
+                if (army2 != null && army2.IdleObjetive())
                 {
                     if (army == null ||
                         army2.strengthValue > army.strengthValue)
@@ -1077,7 +1077,7 @@ namespace VikingEngine.DSSWars.Players
             if (DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate.Count > 0)
             {
                 AbsMapObject result = arraylib.RandomListMember(DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate);
-                army.ai.Order_Attack(result);
+                army.Order_Attack(result);
                 return result;
             }
 
@@ -1101,7 +1101,7 @@ namespace VikingEngine.DSSWars.Players
                 {   
                     if (mayAttackFaction(city.faction))
                     {
-                        army.ai.Order_Attack(city);
+                        army.Order_Attack(city);
                         return city;
                     }
                 }

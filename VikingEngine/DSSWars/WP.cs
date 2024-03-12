@@ -90,5 +90,19 @@ namespace VikingEngine.DSSWars
         {
             return (obj1.tilePos - obj2.tilePos).Length();
         }
+
+        public static void writePosXZ(System.IO.BinaryWriter w, Vector3 position)
+        {
+            w.Write((Half)position.X);
+            w.Write((Half)position.Z);
+        }
+        public static void readPosXZ(System.IO.BinaryReader r, out Vector3 position, out IntVector2 tilePos)
+        {
+            position = Vector3.Zero;
+            position.X = (float)r.ReadHalf();
+            position.Z = (float)r.ReadHalf();
+
+            tilePos = new IntVector2(position.X, position.Z);
+        }
     }
 }

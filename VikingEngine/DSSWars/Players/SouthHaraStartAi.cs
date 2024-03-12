@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.Players
                 while (armiesC.Next())
                 {
                     if (!messageDone &&
-                            armiesC.sel.ai.walkGoal.SideLength(armiesC.sel.tilePos) <= 80)
+                            armiesC.sel.walkGoal.SideLength(armiesC.sel.tilePos) <= 80)
                     {                       
                         foreach (var p in DssRef.state.localPlayers)
                         {
@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.Players
                     }
 
                     if (armiesC.sel.InBattle() ||
-                        armiesC.sel.ai.IdleObjetive())
+                        armiesC.sel.IdleObjetive())
                     {
                         complete();
                     }

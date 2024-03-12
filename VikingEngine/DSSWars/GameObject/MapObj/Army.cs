@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
 using System.Xml.Xsl;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
@@ -13,7 +14,7 @@ using VikingEngine.ToGG.HeroQuest.Data.Condition;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class Army : AbsMapObject
+    partial class Army : AbsMapObject
     {
         public const float MaxTradeDistance = 3;
 
@@ -29,7 +30,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         const LootFest.VoxelModelName OverviewBannerModelName = LootFest.VoxelModelName.armystand;
 
-        public ArmyAi ai;
+        //public ArmyAi ai;
         public SpottedArray<SoldierGroup> groups = new SpottedArray<SoldierGroup>(32);
         //public SpottedArrayCounter<SoldierGroup> groupsCounter;
 
@@ -54,22 +55,56 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Army(Faction faction, IntVector2 startPosition)
         {
-            //this.faction = faction;
-            ai = new ArmyAi(this);
-            //index = faction.nextArmyId++;
             id = ++NextId;
-
-           // groupsCounter = groups.counter();           
-
-            bound = new BoundingSphere(Vector3.Zero, 0.5f);
-
+            
             position = WP.ToWorldPos(startPosition);
             tilePos = startPosition;
-            asynchCullingUpdate(1f);
-            //inRender = enterRender_asynch;
 
-            //faction.armies.Add(this);
+            init(faction);
+        }
+
+        public Army()
+        { }
+
+        void init(Faction faction)
+        {
+            bound = new BoundingSphere(Vector3.Zero, 0.5f);
+            asynchCullingUpdate(1f);
             faction.AddArmy(this);
+        }
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            WP.writePosXZ(w, position);
+
+            w.Write((ushort)groups.Count);
+            var groupsC = groups.counter();
+            while (groupsC.Next())
+            { 
+                groupsC.sel.writeGameState(w);
+            }
+        }
+        public void readGameState(Faction faction, System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        {
+            WP.readPosXZ(r, out position, out tilePos);
+
+            int groupsCount = r.ReadUInt16();
+            for (int i = 0; i < groupsCount; i++)
+            {
+                SoldierGroup group = new SoldierGroup(this, r, version);
+               
+            }
+
+            init(faction);
+        }
+
+        public void writeNet(System.IO.BinaryWriter w)
+        {
+
+        }
+        public void readNet(System.IO.BinaryReader r)
+        {
+
         }
 
         public override string Name()
@@ -209,7 +244,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             toArmy.refreshPositions(false);
-            toArmy.ai.onArmyMerge();
+            toArmy.onArmyMerge();
         }
 
         public void disbandSoldiersAction(UnitType type, int count)
@@ -296,7 +331,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (player.faction == faction)
             {
-                ai.hoverAndSelectInfo(guiModels, player.playerData.localPlayerIndex);
+                hoverAndSelectInfo(guiModels, player.playerData.localPlayerIndex);
             }
         }
 
@@ -316,10 +351,7 @@ namespace VikingEngine.DSSWars.GameObject
             //frameModel.SetSpriteName(hover ? SpriteName.LittleUnitSelectionDotted : SpriteName.WhiteCirkle);
         }
 
-        public override void stateDebugText(RichBoxContent content)
-        {
-            ai.stateDebugText(content);
-        }
+        
 
         virtual public void update()
         {
@@ -389,7 +421,7 @@ namespace VikingEngine.DSSWars.GameObject
                     overviewBanner.Frame = isShip ? 1 : 0;
                 }
 
-                ai.Update(fullUpdate);
+                aiUpdate(fullUpdate);
             }
         }
 
@@ -594,8 +626,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool targetsFaction(AbsMapObject otherObj)
         {
-            return ai.attackTarget != null &&
-                ai.attackTarget.faction == otherObj.faction;
+            return attackTarget != null &&
+                attackTarget.faction == otherObj.faction;
         }
 
         public override void DeleteMe(DeleteReason reason, bool removeFromParent)
@@ -702,9 +734,9 @@ namespace VikingEngine.DSSWars.GameObject
             base.ExitBattleGroup();
 
             refreshPositions(false);
-            ai.EnterPeaceEvent();
+            EnterPeaceEvent();
 
-            bool refreshArmyPos = ai.IdleObjetive();
+            bool refreshArmyPos = IdleObjetive();
 
             var groupsC = groups.counter();
             while (groupsC.Next())

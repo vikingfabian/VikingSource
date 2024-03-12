@@ -16,9 +16,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
         virtual public SoldierGroup GetGroup() { return null; }
         
-        virtual public City GetCity() { return null; }
-
-        virtual public Army GetArmy() { return null; }
+        
 
         abstract public bool isMelee();
     }

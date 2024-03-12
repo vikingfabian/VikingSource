@@ -64,7 +64,7 @@ namespace VikingEngine.DSSWars.Map
 
         public Tile(System.IO.BinaryReader r, int version)
         {
-            read(r, version);
+            readMapFile(r, version);
         }
 
         public void setWaterHeat_Land(int heat)
@@ -99,7 +99,7 @@ namespace VikingEngine.DSSWars.Map
         }
 
 
-        public void write(System.IO.BinaryWriter w)
+        public void writeMapFile(System.IO.BinaryWriter w)
         {
             w.Write(Debug.Ushort_OrCrash(CityIndex));//(ushort)CityIndex);
             w.Write(Debug.Byte_OrCrash((byte)biom));//(byte)biom);
@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars.Map
             w.Write(Debug.Short_OrCrash(BorderRegion_West));//(short)BorderRegion_West);
         }
 
-        public void read(System.IO.BinaryReader r, int version)
+        public void readMapFile(System.IO.BinaryReader r, int version)
         {
             CityIndex = r.ReadUInt16();
             biom = (BiomType)r.ReadByte();

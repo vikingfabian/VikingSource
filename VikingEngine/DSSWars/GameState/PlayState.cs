@@ -4,10 +4,12 @@ using System.Net.Http.Headers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DebugExtensions;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.ToGG.MoonFall;
 //
 
 namespace VikingEngine.DSSWars
@@ -76,6 +78,21 @@ namespace VikingEngine.DSSWars
                 new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
             }
             isReady = host;
+        }
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            events.writeGameState(w);
+            w.Write((ushort)battles.Count);
+            var battlesC = battles.counter();
+            while (battlesC.Next())
+            {
+                battlesC.sel.writeGameState(w);
+            }
+        }
+        public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        {
+            events.readGameState(r, version, pointers);
         }
 
         void initPlayers()
@@ -359,7 +376,7 @@ namespace VikingEngine.DSSWars
                 var armiesC = factions.sel.armies.counter();
                 while (armiesC.Next())
                 {
-                    armiesC.sel.ai.asynchUpdate(time);
+                    armiesC.sel.asynchAiUpdate(time);
                 }
             }
 

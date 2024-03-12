@@ -239,7 +239,7 @@ namespace VikingEngine.DSSWars.Display
         void halt()
         {
             SoundLib.orderstop.Play();
-            army.ai.haltMovement();
+            army.haltMovement();
         }
 
         void disbandAllYes()

@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
@@ -98,8 +99,59 @@ namespace VikingEngine.DSSWars
             this.profile = profile;
             flagTexture = profile.flagDesign.CreateTexture(profile);
         }
+        virtual public void writeGameState(System.IO.BinaryWriter w)
+        {
+            profile.write(w);
 
-        public void write(System.IO.BinaryWriter w)
+            w.Write((ushort)cities.Count);
+            var citiesC = cityCounter.Clone();
+            while (citiesC.Next())
+            {
+                w.Write((ushort)citiesC.sel.index);
+            }
+
+            w.Write((ushort)armies.Count); 
+            var armiesC = armiesCounter.Clone();
+            while(armiesC.Next())
+            { 
+                armiesC.sel.writeGameState(w); 
+            }
+
+
+            player.writeGameState(w);
+        }
+        virtual public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        {
+            profile = new ProfileData(r);
+
+            int citiesCount = r.ReadUInt16();
+            for (int i = 0; i < citiesCount; i++)
+            {
+                int cityIx = r.ReadUInt16();
+                cities.Add(DssRef.world.cities[cityIx]);
+            }
+
+            int armiesCount = r.ReadUInt16();
+            for (int i = 0; i < armiesCount; i++)
+            {
+                var army = new Army();
+                army.readGameState(this, r, version);
+                armies.Add(army);
+            }
+
+            player.readGameState(r, version);
+        }
+
+        virtual public void writeNet(System.IO.BinaryWriter w)
+        {
+
+        }
+        virtual public void readNet(System.IO.BinaryReader r)
+        {
+
+        }
+
+        public void writeMapFile(System.IO.BinaryWriter w)
         {
             w.Write((ushort)cities.Count);
             var cityCount = cityCounter.Clone();
@@ -111,7 +163,7 @@ namespace VikingEngine.DSSWars
             w.Write(availableForPlayer);
         }
 
-        public void read(System.IO.BinaryReader r, int version, WorldData world)
+        public void readMapFile(System.IO.BinaryReader r, int version, WorldData world)
         {
             int cityCount = r.ReadUInt16();
 
@@ -215,7 +267,7 @@ namespace VikingEngine.DSSWars
             var armyC = armiesCounter.Clone();
             while (armyC.Next())
             {
-                if ((armyC.sel.ai.objective == ArmyObjective.None || armyC.sel.ai.objective == ArmyObjective.Halt) &&
+                if ((armyC.sel.objective == ArmyObjective.None || armyC.sel.objective == ArmyObjective.Halt) &&
                     armyC.sel.tilePos == tilepos)
                 { 
                     return true;
@@ -673,7 +725,7 @@ namespace VikingEngine.DSSWars
                 var armiesC = armies.counter();
                 while (armiesC.Next())
                 {
-                    armiesC.sel.ai.stopAllAttacksAgainst(otherFaction);
+                    armiesC.sel.stopAllAttacksAgainst(otherFaction);
                 }
             });
         }
