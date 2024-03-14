@@ -366,17 +366,17 @@ namespace VikingEngine.DSSWars.Players
                 {
                     new SoldierGroup(army, UnitType.Knight, false);
                 }
-                for (int i = 0; i < 10; ++i)
-                {
-                    new SoldierGroup(army, UnitType.Soldier, false);
-                }
+                //for (int i = 0; i < 10; ++i)
+                //{
+                //    new SoldierGroup(army, UnitType.Soldier, false);
+                //}
 
                 army.refreshPositions(true);
             }
             //else
             {
                 {
-                    var army = enemyFac.NewArmy(VectorExt.AddX(position, 3));
+                    var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
                     army.rotation = enemyRot;
                     //int count = 4;//Ref.rnd.Int(4, 8);
                     for (int i = 0; i < 5; ++i)

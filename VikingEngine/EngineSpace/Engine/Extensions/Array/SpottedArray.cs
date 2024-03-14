@@ -289,12 +289,14 @@ namespace VikingEngine
             return result;
         }
 
-        public void AddIfNotExists(T obj)
+        public bool AddIfNotExists(T obj)
         {
             if (!Array.Contains(obj))
             { 
                 Add(obj);
+                return true;
             }
+            return false;
         }
 
         public void Add(SpottedArray<T> array)

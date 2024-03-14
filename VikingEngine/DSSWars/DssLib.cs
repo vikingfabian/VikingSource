@@ -52,6 +52,7 @@ namespace VikingEngine.DSSWars
         public const float NobelHouseUpkeep = 5;
 
         public const float BattleConflictRadius = 2f;
+        public const int BattleChainConflictRadius = 3;
         public const float CityDominationRadius = BattleConflictRadius + 1.5f;
 
 

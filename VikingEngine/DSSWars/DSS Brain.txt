@@ -1,8 +1,9 @@
 ﻿Change Log
 -Fixed city capture, the strongest faction in the battle grid when the battle ends will take the city.
-
+-Idle armies within 3 tiles of the battle will be chained in the fight.
 
 Error
+-armies får inte stanna på städer efter fight
 -controller for automation 
 -tabbing betwen cities and armies
 

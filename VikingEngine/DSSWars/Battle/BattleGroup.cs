@@ -38,10 +38,10 @@ namespace VikingEngine.DSSWars.Battle
             members = new SpottedArray<AbsMapObject>(4);
             membersC = new SpottedArrayCounter<AbsMapObject>(members);
 
-            members.Add(m1);
-            members.Add(m2);
+            //members.Add(m1);
+            //members.Add(m2);
           
-            m2.battleGroup = this;
+            //m2.battleGroup = this;
 
             index = DssRef.state.battles.Add(this);
 
@@ -52,8 +52,11 @@ namespace VikingEngine.DSSWars.Battle
 
             createGrid();
 
-            placeSoldiers(m1);
-            placeSoldiers(m2);
+            addPart(m1);
+            addPart(m2);
+
+            //placeSoldiers(m1);
+            //placeSoldiers(m2);
         }
 
         public BattleGroup(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
@@ -88,14 +91,20 @@ namespace VikingEngine.DSSWars.Battle
             return membersC.Clone();
         }
 
-        public void addPart(AbsMapObject m, bool atStart = true)
+        public bool addPart(AbsMapObject m, bool atStart = true)
         {
+            bool newMember = false;
             m.battleGroup = this;
-            members.Add(m);
-            if (atStart)
+            if (members.AddIfNotExists(m))
             {
-                placeSoldiers(m);
+                newMember =true;
+                if (atStart)
+                {
+                    placeSoldiers(m);
+                }
             }
+
+            return newMember;
         }
 
         void createGrid()
@@ -178,6 +187,8 @@ namespace VikingEngine.DSSWars.Battle
             }
             else 
             {
+                chainAdjacentArmies();
+
                 checkIdleTime -= time;
 
                 if (checkIdleTime <= 0)
@@ -221,6 +232,29 @@ namespace VikingEngine.DSSWars.Battle
             }
 
             return true;
+        }
+
+        void chainAdjacentArmies()
+        {
+            List<Faction> factions = new List<Faction>(2);
+
+            var membersC = members.counter();
+            while (membersC.Next())
+            {
+                factions.AddIfMissing(membersC.sel.faction);
+            }
+
+            membersC.Reset();
+            while (membersC.Next())
+            {
+                List<AbsMapObject> nearMapObjects = DssRef.world.unitCollAreaGrid.BattleGroupNearMapObjects(
+                    membersC.sel.tilePos, factions);
+
+                foreach (var obj in nearMapObjects)
+                { 
+                    addPart(obj);
+                }
+            }
         }
 
         bool refreshAiOrders_hasBattle()

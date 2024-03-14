@@ -41,7 +41,7 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                         else if (battleGroup == null && m.battleGroup == null)
                         {
-                            battleGroup = new BattleGroup(this, m);                            
+                            new BattleGroup(this, m);                            
                         }
                     }
                 }
