@@ -31,6 +31,7 @@ namespace VikingEngine.DSSWars.Battle
         float nextAiOrderTime = 0;
         float checkIdleTime = 800;
         public bool battleState = false;
+        
 
         public BattleGroup(AbsMapObject m1, AbsMapObject m2) 
         {
@@ -170,7 +171,7 @@ namespace VikingEngine.DSSWars.Battle
                     }
                     else
                     {
-                        DeleteMe();
+                        ExitBattle();
                         return true;
                     }
                 }
@@ -571,12 +572,53 @@ namespace VikingEngine.DSSWars.Battle
             return node;
         }
 
-        void DeleteMe()
+        
+
+        void ExitBattle()
         {
+            List<City> cities = new List<City>(2);
+            Dictionary<int, float> cityDominationStrength = new Dictionary<int, float>();
+
             membersC.Reset();
             while (membersC.Next())
             {
+                if (membersC.sel.gameobjectType() == GameObjectType.City)
+                {
+                    cities.Add(membersC.sel.GetCity());
+                }
+
+                if (cityDominationStrength.ContainsKey(membersC.sel.faction.index))
+                {
+                    cityDominationStrength[membersC.sel.faction.index] += membersC.sel.strengthValue;
+                }
+                else
+                {
+                    cityDominationStrength.Add(membersC.sel.faction.index, membersC.sel.strengthValue);
+                }
+
                 membersC.sel.ExitBattleGroup();
+            }
+
+            if (cities.Count > 0)
+            {
+                int strongestFaction = -1;
+                float strongest = float.MinValue;
+
+                foreach (var kv in cityDominationStrength)
+                {
+                    if (kv.Value > strongest)
+                    {
+                        strongestFaction = kv.Key;
+                        strongest = kv.Value;
+                    }
+                }
+
+                var dominatingFaction = DssRef.world.factions.Array[strongestFaction];
+
+                foreach (var c in cities)
+                { 
+                    Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(c.setFaction, dominatingFaction));
+                }
             }
         }
     }

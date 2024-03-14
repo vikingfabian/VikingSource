@@ -661,23 +661,23 @@ namespace VikingEngine.DSSWars.GameObject
             //strength
             strengthValue = 2f * guardCount / AbsSoldierData.GroupDefaultCount;
 
-            if (guardCount <= 0)
-            {
-                dominationCheck();
-            }
+            //if (guardCount <= 0)
+            //{
+            //    dominationCheck();
+            //}
         }
 
-        void dominationCheck()
-        {
-            if (battleGroup == null)
-            {
-               var faction = DssRef.world.unitCollAreaGrid.CityDomination(this);
+        //public void dominationCheck()
+        //{
+        //    if (battleGroup == null)
+        //    {
+        //       var faction = DssRef.world.unitCollAreaGrid.CityDomination(this);
 
-                Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(setFaction, faction));
-               //setFaction(faction);
+        //        Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(setFaction, faction));
+        //       //setFaction(faction);
                
-            }
-        }
+        //    }
+        //}
 
         public void asynchNearObjectsUpdate()
         {

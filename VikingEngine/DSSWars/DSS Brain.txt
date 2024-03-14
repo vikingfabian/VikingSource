@@ -1,8 +1,6 @@
 ﻿Change Log
--Two new  difficulty settings
--Reduced the game difficulty on medium, both bosses are about 20min later and almost half their size, neighbor ai aggression is reduced to half
--Grid battle (bye bye battle blob!)
--Some improvements to ship on land yankiness (not completely solved)
+-Fixed city capture, the strongest faction in the battle grid when the battle ends will take the city.
+
 
 Error
 -controller for automation 
