@@ -11,12 +11,14 @@ namespace VikingEngine.DSSWars.GameObject
 
     partial class SoldierGroup
     {
+        const float BattlePrepSpeedBoost = 1.4f;
+
         public Vector3 battleWp;
         public bool battleWalkPath = false;
 
         void update_battlePreparations(float time, bool fullUpdate)
         {            
-            bool walking = !updateWalking(battleWp, true, army.battleDirection, time);
+            bool walking = !updateWalking(battleWp, true, army.battleDirection, time * BattlePrepSpeedBoost);
 
             var soldiersC = soldiers.counter();
             while (soldiersC.Next())
@@ -84,6 +86,16 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             return attacking_soldierGroupOrCity != null;
+        }
+
+        public void setBattleNode(Vector3 wp)
+        {
+            battleWp = wp;
+            var soldiersC = soldiers.counter();
+            while (soldiersC.Next())
+            {
+                soldiersC.sel.setBattleNode();
+            }
         }
 
         public void setBattleWalkingSpeed()

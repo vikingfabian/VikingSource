@@ -234,7 +234,6 @@ namespace VikingEngine.DSSWars
         { 
             army.parentArrayIndex = armies.Add(army);
             army.faction = this;
-            army.parentArrayIndex = nextArmyId++;
         }
 
         public void AddCity(City city, bool duringStartUp)

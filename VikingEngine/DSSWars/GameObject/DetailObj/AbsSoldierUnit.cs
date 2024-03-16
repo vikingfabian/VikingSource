@@ -252,6 +252,10 @@ namespace VikingEngine.DSSWars.GameObject
                             }
                             collisionUpdate();
                             break;
+                        case SoldierAiState.GroupLock:
+                            //In wrong state
+                            setFreeAttack();
+                            break;
                     }
                     
                     updateGroudY(false);
@@ -262,6 +266,10 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         case SoldierAiState.FreeAttack:
                             updateMoveAttackPrio(time, fullUpdate);
+                            break;
+                        case SoldierAiState.GroupLock:
+                            //In wrong state
+                            setFreeAttack();
                             break;
                     }
                 }
@@ -299,6 +307,11 @@ namespace VikingEngine.DSSWars.GameObject
             state.idle = false;
             walkingGoal = groupPosition(group.position, group.rotation.radians);
             bonusProjectiles = data.bonusProjectiles;
+        }
+
+        public void setBattleNode()
+        {
+            walkingGoal = groupPosition(group.battleWp, group.rotation.radians);
         }
 
 

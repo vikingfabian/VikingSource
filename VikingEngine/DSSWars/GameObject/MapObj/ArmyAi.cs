@@ -223,6 +223,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         void refreshNextWalkingNode()
         {
+
+            if (battleGroup != null)
+            {
+                return;
+            }
             //if (army.id == 1)
             //{
             //    lib.DoNothing();
@@ -267,21 +272,21 @@ namespace VikingEngine.DSSWars.GameObject
         public void onArmyMerge()
         {
             waitForRegroup = true;
-            //if (army.id == 1)
-            //{
-            //    lib.DoNothing();
-            //}
             stateTime = 0;
             refreshNextWalkingNode();
         }
 
 
-        public void Order_MoveTo(IntVector2 area)
+        public void Order_MoveTo(IntVector2 goalTilePos)
         {
             clearObjective();
-            walkGoal = area;
-            adjustedWalkGoal=walkGoal;
-            objective = ArmyObjective.MoveTo;
+
+            if (goalTilePos != tilePos)
+            {
+                walkGoal = goalTilePos;
+                adjustedWalkGoal = walkGoal;
+                objective = ArmyObjective.MoveTo;
+            }
         }
 
         public void Order_Attack(AbsMapObject attackTarget)
@@ -308,12 +313,6 @@ namespace VikingEngine.DSSWars.GameObject
             objective = ArmyObjective.None;
             attackTarget = null;
             path = null;
-
-            //var armyC= army.groupsCounter.Clone();
-            //while ()
-            //{
-
-            //}
         }
 
         public void stopAllAttacksAgainst(Faction otherFaction)
@@ -387,14 +386,15 @@ namespace VikingEngine.DSSWars.GameObject
             return objective == ArmyObjective.None || objective == ArmyObjective.Halt;
         }
 
-        public void EnterPeaceEvent()
+        public void Ai_EnterPeaceEvent()
         {
             waitForRegroup = true;
-            //if (army.id == 1)
-            //{
-            //    lib.DoNothing();
-            //}
             stateTime = 0;
+
+            if (IdleObjetive())
+            {
+                Order_MoveTo(positionBeforeBattle);
+            }
         }
     }
 

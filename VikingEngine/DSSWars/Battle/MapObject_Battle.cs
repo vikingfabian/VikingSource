@@ -26,22 +26,25 @@ namespace VikingEngine.DSSWars.GameObject
 
                 foreach (var m in battlesUnitsBuffer)
                 {
-                    bool inBattle = VectorExt.PlaneXZLength(m.position - position) <= DssLib.BattleConflictRadius;
-                    if (inBattle)
+                    if (!m.isDeleted)
                     {
-                        if (m.battleGroup != null &&
-                            battleGroup == null)
+                        bool inBattle = VectorExt.PlaneXZLength(m.position - position) <= DssLib.BattleConflictRadius;
+                        if (inBattle)
                         {
-                            m.battleGroup.addPart(this);
-                        }
-                        else if (battleGroup != null &&
-                            m.battleGroup == null)
-                        { 
-                            battleGroup.addPart(m);
-                        }
-                        else if (battleGroup == null && m.battleGroup == null)
-                        {
-                            new BattleGroup(this, m);                            
+                            if (m.battleGroup != null &&
+                                battleGroup == null)
+                            {
+                                m.battleGroup.addPart(this);
+                            }
+                            else if (battleGroup != null &&
+                                m.battleGroup == null)
+                            {
+                                battleGroup.addPart(m);
+                            }
+                            else if (battleGroup == null && m.battleGroup == null)
+                            {
+                                new BattleGroup(this, m);
+                            }
                         }
                     }
                 }

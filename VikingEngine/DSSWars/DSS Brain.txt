@@ -1,9 +1,9 @@
 ﻿Change Log
--Fixed city capture, the strongest faction in the battle grid when the battle ends will take the city.
--Idle armies within 3 tiles of the battle will be chained in the fight.
+-Fixed bug that made armies stuck in battle, or started moving away
+-Armies return to old positions after battle
+-Soldiers get 40% speed boost in battle preparation phase
 
 Error
--armies får inte stanna på städer efter fight
 -controller for automation 
 -tabbing betwen cities and armies
 

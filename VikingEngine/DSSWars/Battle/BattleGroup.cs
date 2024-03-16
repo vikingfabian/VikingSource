@@ -118,6 +118,7 @@ namespace VikingEngine.DSSWars.Battle
             var army = aArmy.GetArmy();
             if (army != null)
             {
+                army.positionBeforeBattle = army.tilePos;
                 IntVector2 armyGridPos = WpToGridPos(army.position.X, army.position.Z);
                 army.battleGridForward = -armyGridPos.MajorDirectionVec;
                 army.battleDirection = rotation;
@@ -479,7 +480,7 @@ namespace VikingEngine.DSSWars.Battle
             currentNode.remove(group);
             goalNode.add(group);
 
-            group.battleWp = goalNode.worldPos;
+            group.setBattleNode(goalNode.worldPos);
 
             if (group.IsShip() != goalNode.water)
             {
@@ -493,13 +494,14 @@ namespace VikingEngine.DSSWars.Battle
                             group.inShipTransform = true;
                             new ShipTransform(group, true);
                         }
-
                     }
                 }
             }
 
             return true;
         }
+
+       
 
         void applyWalkNode(SoldierGroup group, IntVector2 next)
         {

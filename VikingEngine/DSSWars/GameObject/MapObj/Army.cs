@@ -50,7 +50,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool isShip = false;
 
         public float terrainSpeedMultiplier = 1.0f;
-
+        public IntVector2 positionBeforeBattle;
         //IntVector2 nextGroupPlacement = IntVector2.Zero;
 
         public Army(Faction faction, IntVector2 startPosition)
@@ -679,6 +679,11 @@ namespace VikingEngine.DSSWars.GameObject
         public void setWalkNode(IntVector2 area,
             bool nextIsFootTransform, bool nextIsShipTransform)
         {
+            if (battleGroup != null)
+            {
+                return;
+            }
+
             if (id == 786)
             { 
                 lib.DoNothing();
@@ -733,7 +738,7 @@ namespace VikingEngine.DSSWars.GameObject
             base.ExitBattleGroup();
 
             refreshPositions(false);
-            EnterPeaceEvent();
+            Ai_EnterPeaceEvent();
 
             bool refreshArmyPos = IdleObjetive();
 

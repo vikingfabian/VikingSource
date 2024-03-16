@@ -552,6 +552,10 @@ namespace VikingEngine.DSSWars.GameObject
                                 //walking = !updateWalking(closest_sp.position, true, army.rotation, time);
                             }
                         }
+                        else if (army.battleGroup != null)
+                        {
+                            walking = !updateWalking(battleWp, false, Rotation1D.D0, time);
+                        }
                         else if (groupObjective == GroupObjective_FindArmyPlacement)
                         {
                             if (updateWalking(currentArmyPosition, true, army.rotation, time))
@@ -1100,7 +1104,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 lib.DoNothing();
             }
-           
+
             walkingOrderTo = area;
             Vector3 areaCenter = WP.ToWorldPos(area);
             currentArmyPosition = armyPlacement(areaCenter);
@@ -1275,17 +1279,17 @@ namespace VikingEngine.DSSWars.GameObject
             return s.data.scoutMovement;
         }
 
-        public IntVector2 targetArea()
-        {
-            if (groupObjective == GroupObjective_FollowArmyObjective)
-            {
-                return walkingOrderTo;
-            }
-            else
-            {
-                return tilePos;
-            }
-        }
+        //public IntVector2 targetArea()
+        //{
+        //    if (groupObjective == GroupObjective_FollowArmyObjective)
+        //    {
+        //        return walkingOrderTo;
+        //    }
+        //    else
+        //    {
+        //        return tilePos;
+        //    }
+        //}
 
         public void onNewModel(LootFest.VoxelModelName name, Graphics.VoxelModel master)
         {
