@@ -39,11 +39,35 @@ namespace VikingEngine.DSSWars
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
+            w.Write((int)nextEvent);
+            w.Write((int)eventState);
+            w.Write(eventPrepareTimeSec);
+            w.Write(eventCheckGameTimeSec);
+            w.Write(eventTriggerGameTimeSec);
 
+            nextTotalGameTimeMin.Write(w);
+            nextExpectedPlayerSize.Write(w);
+
+            IOLib.WriteObjectList(w, playerMostSouthCity);
+            IOLib.WriteBinaryList(w, spawnPos_Player);
+            IOLib.WriteObjectList(w, darkLordAvailableFactions);
+            IOLib.WriteObjectList(w, darkLordAllies);
         }
         public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
+            nextEvent = (EventType)r.ReadInt32();
+            eventState = (EventState)r.ReadInt32();
+            eventPrepareTimeSec = r.ReadSingle();
+            eventCheckGameTimeSec = r.ReadSingle();
+            eventTriggerGameTimeSec = r.ReadSingle();
 
+            nextTotalGameTimeMin.Read(r);
+            nextExpectedPlayerSize.Read(r);
+
+            playerMostSouthCity = IOLib.ReadObjectList<City>(r).ToArray();
+            spawnPos_Player = IOLib.ReadBinaryList<IntVector2>(r).ToArray();
+            darkLordAvailableFactions = IOLib.ReadObjectList<Faction>(r);
+            darkLordAllies = IOLib.ReadObjectList<Faction>(r);
         }
 
         void prepareNext()

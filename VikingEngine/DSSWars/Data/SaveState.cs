@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Valve.Steamworks;
@@ -9,11 +10,13 @@ using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.PJ.Strategy;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Data
 {
     class SaveGamestate : AbsUpdateable
     {
+        const int Version = 1;
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
         public SaveGamestate() :
@@ -28,13 +31,28 @@ namespace VikingEngine.DSSWars.Data
 
             Task.Factory.StartNew(() =>
             {
-                DssRef.storage.write(w);
+                writeGameState(w);
             });
 
-            //TODO spara alla pointers sist, eller någon pointer replacement list
-            DssRef.world.writeGameState(w);
+            //TODO spara metadata och ladda kartan först
+        }
 
-            DssRef.state.events.writeGameState(w);
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            w.Write(Version);
+
+            DssRef.storage.write(w);
+            DssRef.world.writeGameState(w);
+            DssRef.state.writeGameState(w);
+        }
+
+        public void readGameState(System.IO.BinaryReader r, ObjectPointerCollection pointers)
+        {
+            int version = r.ReadInt32();
+
+            DssRef.storage.read(r);
+            DssRef.world.readGameState(r, version, pointers);
+            DssRef.state.readGameState(r, version, pointers);
         }
 
         public override void Time_Update(float time_ms)
@@ -71,11 +89,11 @@ namespace VikingEngine.DSSWars.Data
             switch (type)
             {
                 case GameObjectType.Army:
-                    writeFaction(w, gameObject.Faction());
+                    writeFaction(w, gameObject.GetFaction());
                     w.Write((ushort)gameObject.GetArmy().id);
                     break;
                 case GameObjectType.City:
-                    w.Write((ushort)gameObject.GetCity().index);
+                    w.Write((ushort)gameObject.GetCity().parentArrayIndex);
                     break;
             }
         }
@@ -88,23 +106,11 @@ namespace VikingEngine.DSSWars.Data
                 case GameObjectType.Army:
                     factionIndex = readFaction(r);
                     id = r.ReadUInt16();
-                    //var armiesC = faction.armies.counter();
-                    //while (armiesC.Next())
-                    //{
-                    //    if (armiesC.sel.id == id)
-                    //    {
-                    //        return armiesC.sel;
-                    //    }
-                    //}
                     break;
                 case GameObjectType.City:
-                    //return DssRef.world.cities[r.ReadUInt16()];
                     id = r.ReadUInt16();
                     break;
             }
-
-            //throw new Exception("ReadObjectPointer");
-
         }
 
         protected Faction GetFaction()
@@ -136,7 +142,7 @@ namespace VikingEngine.DSSWars.Data
 
         public void writeFaction(System.IO.BinaryWriter w, Faction faction)
         {
-            w.Write((ushort)faction.index);
+            w.Write((ushort)faction.parentArrayIndex);
         }
 
         public int readFaction(System.IO.BinaryReader r)

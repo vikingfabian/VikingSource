@@ -83,6 +83,7 @@ namespace VikingEngine.DSSWars
         public void writeGameState(System.IO.BinaryWriter w)
         {
             events.writeGameState(w);
+
             w.Write((ushort)battles.Count);
             var battlesC = battles.counter();
             while (battlesC.Next())

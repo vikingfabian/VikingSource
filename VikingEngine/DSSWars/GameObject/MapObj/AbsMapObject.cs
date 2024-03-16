@@ -94,7 +94,7 @@ namespace VikingEngine.DSSWars.GameObject
             OnNewOwner();
         }
 
-        override public Faction Faction()
+        override public Faction GetFaction()
         {
             return faction;
         }
@@ -114,10 +114,12 @@ namespace VikingEngine.DSSWars.GameObject
 
     enum GameObjectType
     {
+        Faction,
         City,
         Army,
         SoldierGroup,
         Soldier,
+       
         NUM_NON,
     }
 }

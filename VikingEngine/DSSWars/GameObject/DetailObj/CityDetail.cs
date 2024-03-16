@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.GameObject
                             
                             Tile t;
                             if (DssRef.world.tileGrid.TryGet(edgeLoop.Position, out t) &&
-                                    t.IsLand() && t.CityIndex == city.index)
+                                    t.IsLand() && t.CityIndex == city.parentArrayIndex)
                             {
                                 const int SubStartTrialCount = 4;
                                 IntVector2 topLeft = WP.ToSubTilePos_TopLeft(edgeLoop.Position);
@@ -427,7 +427,7 @@ namespace VikingEngine.DSSWars.GameObject
             AbsDetailUnit closestOpponent = null;
             float closestOpponentDistance = float.MaxValue;
 
-            var opponentGroups = DssRef.world.unitCollAreaGrid.collectOpponentGroups(Faction(), tilePos);
+            var opponentGroups = DssRef.world.unitCollAreaGrid.collectOpponentGroups(GetFaction(), tilePos);
 
             foreach (var m in opponentGroups)
             {
@@ -455,12 +455,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override bool defeatedBy(Faction attacker)
         {
-            return this.Faction() == attacker;
+            return this.GetFaction() == attacker;
         }
 
         public override bool aliveAndBelongTo(Faction faction)
         {
-            return this.Faction() == faction;
+            return this.GetFaction() == faction;
         }
 
         public override bool IsShipType()
@@ -481,7 +481,7 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        override public Faction Faction()
+        override public Faction GetFaction()
         {
             return city.faction;
         }

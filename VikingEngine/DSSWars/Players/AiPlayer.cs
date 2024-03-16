@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.Players
                         aggressionLevel = AggressionLevel0_Passive;
                     }
                     
-                    name = "AI " + faction.index.ToString();
+                    name = "AI " + faction.parentArrayIndex.ToString();
                     break;
 
                 case FactionType.DarkLord:
@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars.Players
 
                 case FactionType.GreenWood:
                     faction.diplomaticSide = DiplomaticSide.Light;
-                    DssRef.Faction_GreenWood = faction.index;
+                    DssRef.Faction_GreenWood = faction.parentArrayIndex;
 
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     faction.growthMultiplier = 0.75f;
@@ -149,7 +149,7 @@ namespace VikingEngine.DSSWars.Players
 
                 case FactionType.SouthHara:
                     faction.diplomaticSide = DiplomaticSide.Dark;
-                    DssRef.Faction_SouthHara = faction.index;
+                    DssRef.Faction_SouthHara = faction.parentArrayIndex;
 
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     faction.growthMultiplier = 1.1f;
@@ -270,12 +270,12 @@ namespace VikingEngine.DSSWars.Players
 
                         while (faction.armiesCounter.Next() && found < 2)
                         {
-                            if (faction.armiesCounter.sel.index == purchaseOrderIndex1)
+                            if (faction.armiesCounter.sel.parentArrayIndex == purchaseOrderIndex1)
                             {
                                 army1 = faction.armiesCounter.sel;
                                 ++found;
                             }
-                            else if (faction.armiesCounter.sel.index == purchaseOrderIndex2)
+                            else if (faction.armiesCounter.sel.parentArrayIndex == purchaseOrderIndex2)
                             {
                                 army2 = faction.armiesCounter.sel;
                                 ++found;
@@ -528,7 +528,7 @@ namespace VikingEngine.DSSWars.Players
                         purchaseOrder = PurchaseOrderType_CityGuard;
                     }
 
-                    purchaseOrderIndex1 = city.index;
+                    purchaseOrderIndex1 = city.parentArrayIndex;
                 }
             }
         }
@@ -537,7 +537,7 @@ namespace VikingEngine.DSSWars.Players
         {
             purchaseCount = Ref.rnd.Int(5, maxPurchaseCount);
             purchaseOrder = PurchaseOrderType_Army;
-            purchaseOrderIndex1 = city.index;
+            purchaseOrderIndex1 = city.parentArrayIndex;
 
         }
 
@@ -665,7 +665,7 @@ namespace VikingEngine.DSSWars.Players
                         city = AttackRamdom(mainArmy);
                         if (city != null)
                         {
-                            mainArmyWar = city.faction.index;
+                            mainArmyWar = city.faction.parentArrayIndex;
                         }
                     }
                     else
@@ -777,7 +777,7 @@ namespace VikingEngine.DSSWars.Players
 
                     purchaseIsMainArmy = true;
                     purchaseOrder = PurchaseOrderType_Army;
-                    purchaseOrderIndex1 = city.index;
+                    purchaseOrderIndex1 = city.parentArrayIndex;
 
                     collectLooseArmies(city.tilePos);
                 }
@@ -797,7 +797,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     purchaseOrder = PurchaseOrderType_Army;
                     purchaseOrderFocus = PurchaseOrderFocus_QuickDefend;
-                    purchaseOrderIndex1 = city.index;
+                    purchaseOrderIndex1 = city.parentArrayIndex;
                 }
 
             }
@@ -999,13 +999,13 @@ namespace VikingEngine.DSSWars.Players
 
                         if (armyC.sel.groups.Count > otherArmy.groups.Count)
                         {
-                            purchaseOrderIndex2 = armyC.sel.index;
-                            purchaseOrderIndex1 = otherArmy.index;
+                            purchaseOrderIndex2 = armyC.sel.parentArrayIndex;
+                            purchaseOrderIndex1 = otherArmy.parentArrayIndex;
                         }
                         else
                         {
-                            purchaseOrderIndex1 = armyC.sel.index;
-                            purchaseOrderIndex2 = otherArmy.index;
+                            purchaseOrderIndex1 = armyC.sel.parentArrayIndex;
+                            purchaseOrderIndex2 = otherArmy.parentArrayIndex;
                         }
 
                         break;

@@ -78,9 +78,9 @@ namespace VikingEngine.DSSWars.GameObject
 
             workers = new WarmashineWorkerCollection();
 
-            workers.Add(soldier.Faction(),
+            workers.Add(soldier.GetFaction(),
                 soldier.data.modelScale * Xdiff, soldier.data.modelScale * Zdiff);
-            workers.Add(soldier.Faction(),
+            workers.Add(soldier.GetFaction(),
                 soldier.data.modelScale * -Xdiff, soldier.data.modelScale * Zdiff);
         }
 

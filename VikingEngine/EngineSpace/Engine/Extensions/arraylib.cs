@@ -145,7 +145,6 @@ namespace VikingEngine
             }
 
             return toList;
-            //return fromlist.ConvertAll(x => x as TTo);
         }
 
         public static List<TTo> CastValue<TFrom, TTo>(List<TFrom> fromlist)

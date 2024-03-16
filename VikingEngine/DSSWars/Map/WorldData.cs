@@ -145,14 +145,33 @@ namespace VikingEngine.DSSWars
                 city.writeGameState(w);
             }
 
-            var factionsC = factions.counter();
-            while (factionsC.Next())
+            foreach (var faction in factions.Array)
             {
-                factionsC.sel.writeGameState(w);
+                if (faction != null && faction.isAlive)
+                {
+                    w.Write(true);
+                    faction.writeGameState(w);
+                }
+                else
+                { 
+                    w.Write(false); 
+                }
             }
         }
         public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
+            foreach (City city in cities)
+            {
+                city.readGameState(r, version, pointers);
+            }
+
+            for (int i = 0; i < factions.Array.Length; i++)
+            {
+                if (r.ReadBoolean())
+                {
+                    factions.Array[i].readGameState(r, version, pointers);
+                }
+            }
 
         }
         public void writeMetaData(System.IO.BinaryWriter w)

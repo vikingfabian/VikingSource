@@ -1,24 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
-using VikingEngine.DSSWars.Players;
 
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
-using VikingEngine.PJ.Tanks;
-using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
 {
-    partial class Faction
+    partial class Faction : AbsGameObject
     {
-        public int index;
+        //public int index;
         public Players.AbsPlayer player = null;
         public ProfileData profile;
 
@@ -76,7 +70,7 @@ namespace VikingEngine.DSSWars
             armies = new SpottedArray<Army>(16);
             armiesCounter = armies.counter();
 
-            this.index = addTo.factions.Add(this);
+            this.parentArrayIndex = addTo.factions.Add(this);
         }
 
         public void onGameStart()
@@ -107,7 +101,7 @@ namespace VikingEngine.DSSWars
             var citiesC = cityCounter.Clone();
             while (citiesC.Next())
             {
-                w.Write((ushort)citiesC.sel.index);
+                w.Write((ushort)citiesC.sel.parentArrayIndex);
             }
 
             w.Write((ushort)armies.Count); 
@@ -117,6 +111,15 @@ namespace VikingEngine.DSSWars
                 armiesC.sel.writeGameState(w); 
             }
 
+            for (int i = 0; i < diplomaticRelations.Length; ++i)
+            {
+                if (diplomaticRelations[i] != null &&
+                    diplomaticRelations[i].IsFactionOne(this))
+                {
+                    diplomaticRelations[i].write(w);
+                }
+            }
+            w.Write(short.MinValue);//write end
 
             player.writeGameState(w);
         }
@@ -139,6 +142,19 @@ namespace VikingEngine.DSSWars
                 armies.Add(army);
             }
 
+            while (true)
+            { 
+                DiplomaticRelation relation = new DiplomaticRelation();
+                if (relation.read(r, version))
+                {
+                    relation.addToFactions();
+                }
+                else
+                {
+                    break;
+                }
+            }
+
             player.readGameState(r, version);
         }
 
@@ -157,7 +173,7 @@ namespace VikingEngine.DSSWars
             var cityCount = cityCounter.Clone();
             while (cityCount.Next())
             {
-                w.Write((ushort)cityCount.sel.index);
+                w.Write((ushort)cityCount.sel.parentArrayIndex);
             }
 
             w.Write(availableForPlayer);
@@ -218,7 +234,7 @@ namespace VikingEngine.DSSWars
         { 
             army.parentArrayIndex = armies.Add(army);
             army.faction = this;
-            army.index = nextArmyId++;
+            army.parentArrayIndex = nextArmyId++;
         }
 
         public void AddCity(City city, bool duringStartUp)
@@ -696,7 +712,7 @@ namespace VikingEngine.DSSWars
                             {
                                 var thirdFaction = m.opponent(otherFaction);
 
-                                var thisAndThirdRelation = diplomaticRelations[thirdFaction.index];
+                                var thisAndThirdRelation = diplomaticRelations[thirdFaction.parentArrayIndex];
                                 if (thisAndThirdRelation == null)
                                 {
                                     //Gain bad relation
@@ -800,7 +816,7 @@ namespace VikingEngine.DSSWars
             {
                 return Owner.Name;
             }
-            return "Faction " + index.ToString();
+            return "Faction " + parentArrayIndex.ToString();
         }
 
         public string PlayerName
@@ -813,7 +829,7 @@ namespace VikingEngine.DSSWars
 
         public void WriteNetId(System.IO.BinaryWriter w)
         {
-            w.Write((byte)index);
+            w.Write((byte)parentArrayIndex);
         }
         public Players.AbsPlayer Owner
         {
@@ -891,6 +907,30 @@ namespace VikingEngine.DSSWars
         {
             return diplomaticSide == DiplomaticSide.Light &&
                 DssRef.state.events.nextEvent >= EventType.DarkLord;
+        }
+        
+        public override Faction GetFaction()
+        {
+            return this;
+        }
+
+        public Army GetArmyFromId(int id)
+        {
+            var armiesC = armies.counter();
+            while (armiesC.Next())
+            {
+                if (armiesC.sel.id == id)
+                { 
+                    return armiesC.sel;
+                }
+            }
+
+            return null;    
+        }
+
+        public override GameObjectType gameobjectType()
+        {
+            return GameObjectType.Faction;
         }
     }
 

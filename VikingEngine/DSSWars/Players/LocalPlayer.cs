@@ -486,7 +486,7 @@ namespace VikingEngine.DSSWars.Players
         bool clickHover()
         {
             if (mapControls.hover.obj != null &&
-                mapControls.hover.obj.Faction() == this.faction)
+                mapControls.hover.obj.GetFaction() == this.faction)
             {
                 SoundLib.click.Play();
 

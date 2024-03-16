@@ -73,6 +73,16 @@ namespace VikingEngine
             return Int().ToString() + " / " + max.ToString();
         }
 
+        public void write16bit(System.IO.BinaryWriter w)
+        { 
+            w.Write(Convert.ToUInt16(value));
+            w.Write(Convert.ToUInt16(max));
+        }
 
+        public void read16bit(System.IO.BinaryReader r)
+        {
+            value = r.ReadUInt16();
+            max = r.ReadUInt16();
+        }
     }
 }

@@ -28,21 +28,6 @@ namespace VikingEngine
     {
         void write(System.IO.BinaryWriter w);
         void read(System.IO.BinaryReader r);
-        //void SaveFailed(bool save);
-        //public void write(System.IO.BinaryWriter w)
-        //{
-
-        //}
-        //public void read(System.IO.BinaryReader r)
-        //{
-
-        //}
-        //public static XXX FromStream(System.IO.BinaryReader r)
-        //{
-        //    XXX result = XXX.Zero;
-        //    result.ReadStream(r);
-        //    return result;
-        //}
     }
     /// <summary>
     /// Used by the RotationQuarterion to callback a event action when changed

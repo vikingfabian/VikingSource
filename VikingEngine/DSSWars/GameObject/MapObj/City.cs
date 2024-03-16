@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DataStream;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
@@ -28,7 +29,7 @@ namespace VikingEngine.DSSWars.GameObject
         public const int ExpandGuardSize = AbsSoldierData.GroupDefaultCount;
         public const int ExpandGuardSizeCost = 12000;
 
-        public int index;
+        //public int index;
         public int areaSize = 0;
         public CityType CityType;
         public List<int> neighborCities = new List<int>();
@@ -41,9 +42,7 @@ namespace VikingEngine.DSSWars.GameObject
         float upkeep;
         public int maxGuardSize;
         public int guardCount;
-        //public int guardRecruitDelay
         public FloatingInt_Max workForce = new FloatingInt_Max();
-        //public int maxWorkForce;
         public int maxEpandWorkSize;
         public FloatingInt immigrants = new FloatingInt();
         const double ImmigrantsRemovePerSec = 0.1;
@@ -58,14 +57,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         public City(int index, IntVector2 pos, CityType type, WorldData world)
         {
-            this.index = index;
+            this.parentArrayIndex = index;
             this.tilePos = pos;
             this.CityType = type;
         }
 
         public City(int index, System.IO.BinaryReader r, int version)
         {
-            this.index = index;
+            this.parentArrayIndex = index;
             readMapFile(r, version);
         }
 
@@ -271,14 +270,14 @@ namespace VikingEngine.DSSWars.GameObject
         {
             tilePos.writeUshort(w);
 
-            w.Write(Debug.Byte_OrCrash((int)CityType));//(byte)CityType);
-            w.Write(Debug.Ushort_OrCrash(areaSize));//(ushort)areaSize);
-            w.Write(Debug.Byte_OrCrash(workHutStyle));//(byte)workHutStyle);
+            w.Write(Debug.Byte_OrCrash((int)CityType));
+            w.Write(Debug.Ushort_OrCrash(areaSize));
+            w.Write(Debug.Byte_OrCrash(workHutStyle));
 
             w.Write(Debug.Byte_OrCrash(neighborCities.Count));
             foreach (var n in neighborCities)
             {
-                w.Write(Debug.Ushort_OrCrash(n));//(ushort)n);
+                w.Write(Debug.Ushort_OrCrash(n));
             }
 
             w.Write(Debug.Byte_OrCrash(cityPurchaseOptions.Count));
@@ -316,11 +315,18 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-
+            workForce.write16bit(w);
+            immigrants.write16bit(w);
+            w.Write(nobelHouse);
         }
-        public void readGameState(System.IO.BinaryReader r, int version)
+        public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
+            workForce.read16bit(r);
+            immigrants.read16bit(r);
+            nobelHouse = r.ReadBoolean();
 
+            refreshCitySize();
+            detailObj.refreshWorkerSubtiles();
         }
 
         public void writeNet(System.IO.BinaryWriter w)
@@ -357,7 +363,6 @@ namespace VikingEngine.DSSWars.GameObject
         {
             workForce.max += amount;
             refreshCitySize();
-
             detailObj.refreshWorkerSubtiles();//updateWorkerModels();
         }
 
@@ -618,11 +623,11 @@ namespace VikingEngine.DSSWars.GameObject
         public void update()
         {
             updateDetailLevel();
-            if (index == 50)
-            {
-                lib.DoNothing();
+            //if (parentArrayIndex == 50)
+            //{
+            //    lib.DoNothing();
 
-            }
+            //}
 
             //battles.checkForUpdatedList();
 
@@ -770,17 +775,17 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override bool Equals(object obj)
         {
-            return obj is City && ((City)obj).index == index;
+            return obj is City && ((City)obj).parentArrayIndex == parentArrayIndex;
         }
 
         public override string ToString()
         {
-            return "City" + index.ToString();
+            return "City" + parentArrayIndex.ToString();
         }
 
         public override string Name()
         {
-            return "City" + index.ToString();
+            return "City" + parentArrayIndex.ToString();
         }
 
         public override void toHud(Display.ObjectHudArgs args)

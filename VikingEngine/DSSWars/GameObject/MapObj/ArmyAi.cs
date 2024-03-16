@@ -153,7 +153,7 @@ namespace VikingEngine.DSSWars.GameObject
                         return;
                     }
 
-                    if (attackTarget_sp.faction.index != attackTargetFaction)
+                    if (attackTarget_sp.faction.parentArrayIndex != attackTargetFaction)
                     {
                         //Target changed owner
                         objective = ArmyObjective.MoveTo;
@@ -289,7 +289,7 @@ namespace VikingEngine.DSSWars.GameObject
             DssRef.diplomacy.declareWar(faction, attackTarget.faction);
             clearObjective();
             this.attackTarget = attackTarget;
-            this.attackTargetFaction = attackTarget.faction.index;
+            this.attackTargetFaction = attackTarget.faction.parentArrayIndex;
             objective = ArmyObjective.Attack;
         }
 

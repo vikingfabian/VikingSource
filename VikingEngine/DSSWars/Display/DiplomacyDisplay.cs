@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars.Display
         void toHud(Faction faction, bool selection)
         {
             otherfaction = faction;
-            selectedRelation = player.faction.diplomaticRelations[faction.index];
+            selectedRelation = player.faction.diplomaticRelations[faction.parentArrayIndex];
             againstDark = faction.WantToAllyAgainstDark() && player.faction.diplomaticSide == DiplomaticSide.Light;
             if (selectedRelation == null)
             {

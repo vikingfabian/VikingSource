@@ -7,10 +7,10 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    abstract partial class AbsDetailUnit : AbsGameObject
+    abstract partial class AbsDetailUnit : AbsWorldObject
     {
         //const float DropTargetAdd = 1;
-        public int id;
+        //public int id;
 
         public int health;
         public float radius;
@@ -184,13 +184,13 @@ namespace VikingEngine.DSSWars.GameObject
         {
             var attackTarget_sp = attackTarget;
 
-            if (attackTarget_sp != null && attackTarget_sp.defeatedBy(Faction()))
+            if (attackTarget_sp != null && attackTarget_sp.defeatedBy(GetFaction()))
             {
                 attackTarget = null;
             }
 
             var nextAttackTarget_sp= nextAttackTarget;
-            if (nextAttackTarget_sp != null && !nextAttackTarget_sp.defeatedBy(Faction()))
+            if (nextAttackTarget_sp != null && !nextAttackTarget_sp.defeatedBy(GetFaction()))
             {
                 attackTarget = nextAttackTarget_sp;
             }
@@ -364,10 +364,10 @@ namespace VikingEngine.DSSWars.GameObject
         //    return w;
         //}
 
-        protected void readId(System.IO.BinaryReader r)
-        {
-            id = r.ReadUInt16();
-        }
+        //protected void readId(System.IO.BinaryReader r)
+        //{
+        //    id = r.ReadUInt16();
+        //}
 
         //public void writeAttack(int index, AbsUnit target)
         //{
@@ -489,7 +489,7 @@ namespace VikingEngine.DSSWars.GameObject
             get { return player().IsLocal; }
         }
 
-        override public Faction Faction()
+        override public Faction GetFaction()
         {
             return group.army.faction;
         }
@@ -535,13 +535,13 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string Name()
         {
-            return DetailUnitType().ToString() + "(" + id.ToString() + ")";
+            return DetailUnitType().ToString() + "(" + parentArrayIndex.ToString() + ")";
         }
 
         public override string ToString()
         {
             string groupName = group == null? "" : " group(" + group.groupId.ToString() + ")";
-            return DetailUnitType().ToString() + "(" + id.ToString() + ")" + groupName + " p" + " area(" + tilePos.X.ToString() + "," + tilePos.Y.ToString() + ")";
+            return DetailUnitType().ToString() + "(" + parentArrayIndex.ToString() + ")" + groupName + " p" + " area(" + tilePos.X.ToString() + "," + tilePos.Y.ToString() + ")";
         }
     }
 

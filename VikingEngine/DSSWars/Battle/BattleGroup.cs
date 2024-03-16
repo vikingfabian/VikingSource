@@ -621,13 +621,13 @@ namespace VikingEngine.DSSWars.Battle
                     cities.Add(membersC.sel.GetCity());
                 }
 
-                if (cityDominationStrength.ContainsKey(membersC.sel.faction.index))
+                if (cityDominationStrength.ContainsKey(membersC.sel.faction.parentArrayIndex))
                 {
-                    cityDominationStrength[membersC.sel.faction.index] += membersC.sel.strengthValue;
+                    cityDominationStrength[membersC.sel.faction.parentArrayIndex] += membersC.sel.strengthValue;
                 }
                 else
                 {
-                    cityDominationStrength.Add(membersC.sel.faction.index, membersC.sel.strengthValue);
+                    cityDominationStrength.Add(membersC.sel.faction.parentArrayIndex, membersC.sel.strengthValue);
                 }
 
                 membersC.sel.ExitBattleGroup();

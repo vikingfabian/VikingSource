@@ -384,7 +384,7 @@ namespace VikingEngine.DSSWars.Players
                 hover.frameModel.Visible = true;
                 hover.obj.selectionFrame(true, hover);
 
-                hover.frameModel.Color = hover.obj.Faction() == player.faction? Color.White : Color.LightGray;
+                hover.frameModel.Color = hover.obj.GetFaction() == player.faction? Color.White : Color.LightGray;
 
                 updateSelectionGui(hover);
             }

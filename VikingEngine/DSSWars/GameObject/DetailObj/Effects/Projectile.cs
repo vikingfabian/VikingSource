@@ -217,7 +217,7 @@ namespace VikingEngine.DSSWars.GameObject
             AbsDetailUnit fromAttack)
         {
 
-            target.takeDamage(damage, fromAttack.attackDir, fromAttack.Faction(), fullUpdate);
+            target.takeDamage(damage, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate);
             if (splashCount > 0 && target.IsSoldierUnit())
             {
                 int splashDamage = Convert.ToInt32(splashPercDamage * damage);
@@ -227,7 +227,7 @@ namespace VikingEngine.DSSWars.GameObject
                     var target2 = target.group.soldiers.GetRandomUnsafe(Ref.rnd);
                     if (target2 != null)
                     {
-                        target2.takeDamage(splashDamage, fromAttack.attackDir, fromAttack.Faction(), fullUpdate);
+                        target2.takeDamage(splashDamage, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate);
                     }
                 }
             }

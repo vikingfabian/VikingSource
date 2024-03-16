@@ -144,7 +144,7 @@ namespace VikingEngine.DSSWars.GameObject
         public KnightBannerModel(AbsSoldierUnit soldier)
             : base(soldier)
         {
-            banner = new HorseBanner(soldier.Faction(), soldier.data.modelScale);
+            banner = new HorseBanner(soldier.GetFaction(), soldier.data.modelScale);
         }
 
         //protected override void updateShipAnimation(AbsSoldierUnit soldier)

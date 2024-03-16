@@ -286,7 +286,7 @@ namespace VikingEngine.DSSWars
                     rel.tilePos = faction.landAreaCenter();
 
                     rel.inCullingView = tileBound.IntersectTilePoint(rel.tilePos);
-                    rel.relation = DssRef.diplomacy.GetRelationType(player.faction.index, rel.faction); 
+                    rel.relation = DssRef.diplomacy.GetRelationType(player.faction.parentArrayIndex, rel.faction); 
                 }
             }
 
@@ -349,7 +349,7 @@ namespace VikingEngine.DSSWars
         class QuestFlag : AbsFlag
         {
             public Graphics.Image icon = null;
-            public AbsGameObject GameObject = null;
+            public AbsWorldObject GameObject = null;
         }
     }
 

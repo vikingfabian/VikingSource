@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.LootFest.Players;
+using VikingEngine.PJ.Strategy;
 using VikingEngine.ToGG.HeroQuest.Gadgets;
 using VikingEngine.ToGG.MoonFall;
 
@@ -11,9 +13,6 @@ namespace VikingEngine.DSSWars
 {
     class Diplomacy
     {
-        
-        
-
         public const float MiltitaryStrengthXServant = 2f;
        
         List<int> aiPlayerAsynchUpdate_wars = new List<int>();
@@ -92,6 +91,8 @@ namespace VikingEngine.DSSWars
             }
         }
 
+
+
         public List<int> aiPlayerAsynchUpdate_collectWars(Faction aifaction)
         {
             aiPlayerAsynchUpdate_wars.Clear();
@@ -138,7 +139,7 @@ namespace VikingEngine.DSSWars
 
         public RelationType GetRelationType(Faction faction1, Faction faction2)
         {
-            DiplomaticRelation rel = faction1.diplomaticRelations[faction2.index];
+            DiplomaticRelation rel = faction1.diplomaticRelations[faction2.parentArrayIndex];
             if (rel == null)
             {
                 return RelationType.RelationType0_Neutral;
@@ -161,7 +162,7 @@ namespace VikingEngine.DSSWars
                 return false;
             }
 
-            DiplomaticRelation rel = faction1.diplomaticRelations[faction2.index];
+            DiplomaticRelation rel = faction1.diplomaticRelations[faction2.parentArrayIndex];
             if (rel == null)
             {
                 return false;
@@ -192,7 +193,7 @@ namespace VikingEngine.DSSWars
 
         public DiplomaticRelation GetOrCreateRelation(Faction faction1, Faction faction2)
         {
-            DiplomaticRelation rel = faction1.diplomaticRelations[faction2.index];
+            DiplomaticRelation rel = faction1.diplomaticRelations[faction2.parentArrayIndex];
             if (rel == null)
             {
                 rel = NewRelation(faction1, faction2, RelationType.RelationType0_Neutral);
@@ -204,7 +205,7 @@ namespace VikingEngine.DSSWars
         {
             if (faction1 != faction2)
             {
-                DiplomaticRelation rel = faction1.diplomaticRelations[faction2.index];
+                DiplomaticRelation rel = faction1.diplomaticRelations[faction2.parentArrayIndex];
                 if (rel != null)
                 {
                     if (rel.Relation != newRelation)
@@ -231,7 +232,7 @@ namespace VikingEngine.DSSWars
         {
             DiplomaticRelation rel;
             SpeakTerms speakterms = (SpeakTerms)Math.Min((int)faction1.DefaultSpeakingTerms(), (int)faction2.DefaultSpeakingTerms());
-            rel = new DiplomaticRelation(faction1.index, faction2.index, newRelation, speakterms);
+            rel = new DiplomaticRelation(faction1.parentArrayIndex, faction2.parentArrayIndex, newRelation, speakterms);
 
             faction1.player.onNewRelation(faction2, rel, RelationType.RelationType0_Neutral);
             faction2.player.onNewRelation(faction1, rel, RelationType.RelationType0_Neutral);
@@ -307,7 +308,7 @@ namespace VikingEngine.DSSWars
             {
                 if (faction.diplomaticRelations[relIx] != null)
                 {
-                    DssRef.world.factions[relIx].diplomaticRelations[faction.index] = null;
+                    DssRef.world.factions[relIx].diplomaticRelations[faction.parentArrayIndex] = null;
                 }
             }
         }
@@ -451,6 +452,9 @@ namespace VikingEngine.DSSWars
         public SpeakTerms SpeakTerms;
         public float RelationEnd_GameTimeSec;
 
+        public DiplomaticRelation()
+        { }
+
         public DiplomaticRelation(int faction1, int faction2, RelationType Relation, SpeakTerms speakterms)
         {
             this.Relation = Relation;
@@ -467,8 +471,37 @@ namespace VikingEngine.DSSWars
                 this.faction2 = faction1;
             }
 
+            addToFactions();
+        }
+
+        public void addToFactions()
+        { 
             DssRef.world.factions.Array[faction1].diplomaticRelations[faction2] = this;
             DssRef.world.factions.Array[faction2].diplomaticRelations[faction1] = this;
+        }
+
+        public void write(System.IO.BinaryWriter w)
+        {
+            w.Write((short)faction1);
+            w.Write((short)faction2);
+            w.Write((sbyte)Relation);
+            w.Write((sbyte)SpeakTerms);
+            w.Write(Convert.ToByte(RelationEnd_GameTimeSec));
+        }
+
+        public bool read(System.IO.BinaryReader r, int version)
+        {
+            faction1 = r.ReadInt16();
+            if (faction1 > 0)
+            {
+                faction2 = r.ReadInt16();
+                Relation = (RelationType)r.ReadSByte();
+                SpeakTerms = (SpeakTerms)r.ReadSByte();
+                RelationEnd_GameTimeSec = r.ReadByte();
+                return true;
+            }
+
+            return false;
         }
 
         public bool opponentIsPlayer(Faction faction)
@@ -496,7 +529,7 @@ namespace VikingEngine.DSSWars
 
         public Faction opponent(Faction faction)
         {
-            if (faction.index == faction1)
+            if (faction.parentArrayIndex == faction1)
             {
                 return DssRef.world.factions[faction2];
             }
@@ -514,6 +547,11 @@ namespace VikingEngine.DSSWars
                 Relation = RelationType.RelationTypeN3_War;
             }
         }
+
+        public bool IsFactionOne(Faction faction)
+        {
+            return faction.parentArrayIndex == faction1;
+        }
     }
 
     enum RelationType
@@ -527,8 +565,6 @@ namespace VikingEngine.DSSWars
         RelationTypeN2_Truce = -2,
         RelationTypeN3_War = -3,
         RelationTypeN4_TotalWar = -4,
-
-    
     }
 
     enum SpeakTerms

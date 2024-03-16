@@ -104,7 +104,7 @@ namespace VikingEngine.DSSWars.Players
         public void mapExecute()
         {
             if (player.mapControls.hover.obj != null &&
-                player.mapControls.hover.obj.Faction() != player.faction)
+                player.mapControls.hover.obj.GetFaction() != player.faction)
             {
                 SoundLib.ordermove.Play();
                 army.Order_Attack(player.mapControls.hover.obj.RelatedMapObject());

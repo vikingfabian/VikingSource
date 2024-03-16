@@ -93,42 +93,49 @@ namespace VikingEngine.DSSWars.GameObject
 
             AbsSoldierData typeData = DssRef.unitsdata.Get(type);
             
-
             recruit &= typeData.recruitTrainingTimeSec > 0;
+            
 
-            int count = typeData.rowWidth * typeData.columnsDepth;
-
-            soldiers = new SpottedArray<AbsSoldierUnit>(count);
+            init(typeData);
 
             //Column for column spawning
-            halfColDepth = typeData.columnsDepth * -0.5f;
-            createAllSoldiers(type, recruit, typeData, count);
+            int count = typeData.rowWidth * typeData.columnsDepth;
+            createAllSoldiers(recruit, typeData, count);
 
             if (recruit)
             {                
                 new TrainingCompleteTimer(this);
             }
 
+            
+            refreshAttackRadius(typeData);
+            refreshRotateSpeed();            
+
+            army.AddSoldierGroup(this);
+            rotation = army.rotation;
+        }
+
+        void init(AbsSoldierData typeData)
+        {
+            int count = typeData.rowWidth * typeData.columnsDepth;
+
+            soldiers = new SpottedArray<AbsSoldierUnit>(count);
+            halfColDepth = typeData.columnsDepth * -0.5f;
 
             Vector2 boxSz = new Vector2(
                 (typeData.rowWidth - 1) * typeData.groupSpacing,
                 (typeData.columnsDepth - 1) * typeData.groupSpacing);
             float radius = boxSz.Length() * 0.5f;
 
+            skirmishCount = MathExt.MultiplyInt(0.3, count);
+
             groupRadius = radius;
-            refreshAttackRadius(typeData);
-            refreshRotateSpeed();
-
-            skirmishCount = MathExt.MultiplyInt(0.3, soldiers.Count);
-
-            army.AddSoldierGroup(this);
-            rotation = army.rotation;
         }
 
         public SoldierGroup(Army army, System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
             this.army = army;
-            readGameState(r, version, pointers);
+            readGameState(r, version, pointers);            
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
@@ -141,18 +148,18 @@ namespace VikingEngine.DSSWars.GameObject
             bool lockedInArmyGrid = army.IdleObjetive() && groupObjective == GroupObjective_FollowArmyObjective;
             w.Write(lockedInArmyGrid);
 
-            w.Write((byte)groupObjective);
-
-
-            w.Write((byte)soldiers.Count);
-            bool soldiersLockedInGroup = groupObjective == GroupObjective_FollowArmyObjective;
-            
-            if (soldiersLockedInGroup)
+            if (!lockedInArmyGrid)
             {
                 WP.writePosXZ(w, position);
                 w.Write(rotation.ByteDir);
             }
-            else
+
+            w.Write((byte)groupObjective);
+
+            w.Write((byte)soldiers.Count);
+            bool soldiersLockedInGroup = groupObjective == GroupObjective_FollowArmyObjective;
+            
+            if (!soldiersLockedInGroup)
             {
                 var soldiersC = soldiers.counter();
                 while (soldiersC.Next())
@@ -163,11 +170,39 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
-            UnitType type = (UnitType)r.ReadByte();
+            type = (UnitType)r.ReadByte();
             UnitType soldierType = (UnitType)r.ReadByte();
 
             armyLocalPlacement.readShort(r);
 
+            bool lockedInArmyGrid = r.ReadBoolean();
+
+            if (!lockedInArmyGrid)
+            {
+                WP.readPosXZ(r,out position, out tilePos);
+                rotation.ByteDir = r.ReadByte();
+            }
+
+            groupObjective = r.ReadByte();
+
+            int soldiersCount = r.ReadByte();
+            bool soldiersLockedInGroup = groupObjective == GroupObjective_FollowArmyObjective;
+
+            AbsSoldierData typeData = DssRef.unitsdata.Get(type);
+            init(typeData);
+
+            AbsSoldierData soldierData = DssRef.unitsdata.Get(soldierType);
+
+            createAllSoldiers(false, soldierData, soldiersCount);
+
+            if (!soldiersLockedInGroup)
+            {
+                var soldiersC = soldiers.counter();
+                while (soldiersC.Next())
+                {
+                    soldiersC.sel.readGameState(r, version);
+                }
+            }
         }
 
         public void writeNet(System.IO.BinaryWriter w)
@@ -195,7 +230,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        private void createAllSoldiers(UnitType type, bool recruit, AbsSoldierData typeData, int count)
+        private void createAllSoldiers(bool recruit, AbsSoldierData typeData, int count)
         {
             int xStart = -typeData.rowWidth / 2;
             IntVector2 bannerPos = bannerManPos();
@@ -216,7 +251,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     else
                     {
-                        unit = createUnit(type,
+                        unit = createUnit(typeData.unitType,
                           recruit,
                           new IntVector2(x + xStart, y), tilePos);
                     }
@@ -328,7 +363,7 @@ namespace VikingEngine.DSSWars.GameObject
                         typeData = SoldierData();
                         int count = totalHealth / typeData.basehealth;
 
-                        createAllSoldiers(typeData.unitType, false, typeData, count);
+                        createAllSoldiers(false, typeData, count);
                     }
 
                     refreshAttackRadius(typeData);
@@ -481,7 +516,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 while (soldiersC.Next())
                                 {
                                     soldiersC.sel.clearAttack();
-                                    soldiersC.sel.aiState = AbsSoldierUnit.SoldierAiState_GroupLock;
+                                    soldiersC.sel.aiState =SoldierAiState.GroupLock;
                                 }
                             }
                         }
@@ -591,7 +626,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             args.content.h2(typeData.unitType.ToString() + " group");
             args.content.newLine();
-            if (args.selected && Faction() == args.player.faction)
+            if (args.selected && GetFaction() == args.player.faction)
             {
                 new Display.GroupMenu(args.player, this, args.content);
             }
@@ -1157,7 +1192,7 @@ namespace VikingEngine.DSSWars.GameObject
                 double dist = WP.birdDistance(closestCity, tilePos);
                 double keep = lib.ValueOnPercentScale(12, 3, dist, true) * 0.7 + 0.1;
 
-                if (deserter && closestCity.faction == this.Faction())
+                if (deserter && closestCity.faction == this.GetFaction())
                 { 
                     keep *= 0.6;
                 }
@@ -1219,10 +1254,10 @@ namespace VikingEngine.DSSWars.GameObject
             return soldiers.First();
         }
 
-        public override void tagObject()
+        public override void AddDebugTag()
         {
-            base.tagObject();
-            army.tagObject();
+            base.AddDebugTag();
+            army.AddDebugTag();
         }
 
         override public bool isMelee()
@@ -1402,7 +1437,7 @@ namespace VikingEngine.DSSWars.GameObject
             }            
         }
 
-        public override Faction Faction()
+        public override Faction GetFaction()
         {
             return army.faction;
         }

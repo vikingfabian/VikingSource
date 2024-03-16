@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    abstract class AbsGroup : AbsGameObject
+    abstract class AbsGroup : AbsWorldObject
     {           
         public float groupRadius, attackRadius;
         public IntVector2 battleGridPos;

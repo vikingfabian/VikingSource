@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.GameObject
         public Rotation1D rotation = Rotation1D.D180.Add(Ref.rnd.Plus_MinusF(0.8f));
         public float soldierRadius = 0.5f;
         BoundingSphere bound;
-        public int index;
+        //public int index;
         public static int NextId = 0;
         public int id;
        
@@ -108,7 +108,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string Name()
         {
-            return "Army" + index.ToString();
+            return "Army" + parentArrayIndex.ToString();
         }
 
         public override void toHud(Display.ObjectHudArgs args)
@@ -772,12 +772,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string ToString()
         {
-            return "Army" + index.ToString() + ", " + faction.ToString();
+            return "Army" + parentArrayIndex.ToString() + ", " + faction.ToString();
         }
 
         public bool Is(int index, int faction)
         {
-            return this.index == index && this.faction.index == faction;
+            return this.parentArrayIndex == index && this.faction.parentArrayIndex == faction;
         }
     }
     enum ArmyPlacement

@@ -74,12 +74,12 @@ namespace VikingEngine.DSSWars.Display
             }
         }
 
-        void hoverTip(Players.LocalPlayer player, GameObject.AbsGameObject obj)
+        void hoverTip(Players.LocalPlayer player, GameObject.AbsWorldObject obj)
         {
             RichBoxContent content = new RichBoxContent();
 
             bool attackTarget = player.armyControls != null &&
-                obj.Faction() != player.faction;
+                obj.GetFaction() != player.faction;
 
             if (attackTarget)
             {
@@ -91,12 +91,12 @@ namespace VikingEngine.DSSWars.Display
             content.Add(new RichBoxText(obj.Name()));
             content.newLine();
 
-            if (obj.Faction() != player.faction)
+            if (obj.GetFaction() != player.faction)
             {
-                var relation = DssRef.diplomacy.GetRelationType(player.faction, obj.Faction());
+                var relation = DssRef.diplomacy.GetRelationType(player.faction, obj.GetFaction());
 
                 content.newLine();
-                content.Add(new RichBoxText(obj.Faction().PlayerName, Color.LightYellow));
+                content.Add(new RichBoxText(obj.GetFaction().PlayerName, Color.LightYellow));
                 content.newLine();
                 content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation)));
                 content.Add(new RichBoxText(Diplomacy.RelationString(relation), Color.LightBlue));
@@ -106,11 +106,11 @@ namespace VikingEngine.DSSWars.Display
 
             if (attackTarget)
             {
-                if (!DssRef.diplomacy.InWar(player.faction, obj.Faction()))
+                if (!DssRef.diplomacy.InWar(player.faction, obj.GetFaction()))
                 {
                     content.Add(new RichBoxSeperationLine());
 
-                    RelationType rel = DssRef.diplomacy.GetRelationType(player.faction, obj.Faction());
+                    RelationType rel = DssRef.diplomacy.GetRelationType(player.faction, obj.GetFaction());
                     content.h2("War declaration");
                     content.text("Cost: " + Diplomacy.DeclareWarCost(rel) + " diplomacy points");
                     string diplomacy = "Diplomatic points: {0}";
@@ -137,7 +137,7 @@ namespace VikingEngine.DSSWars.Display
                     content.newLine();
                     content.text("VS.");
                     content.newLine();
-                    content.Add(new RichBoxTexture(obj.Faction().flagTexture, 1f, 0, 0.2f));
+                    content.Add(new RichBoxTexture(obj.GetFaction().flagTexture, 1f, 0, 0.2f));
                     content.Add(new RichBoxText(": " + string.Format(HudLib.OneDecimalFormat, defender.strengthValue)));
                     content.newLine();
                 }
