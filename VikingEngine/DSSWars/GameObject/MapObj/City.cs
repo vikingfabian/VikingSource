@@ -636,7 +636,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void oneSecUpdate()
         {
-            if (guardCount > 0)
+            if (battleGroup == null)
             {
                 double addWorkers = workForceAddPerSec * faction.growthMultiplier;
                 if (faction.player.IsAi())
@@ -950,10 +950,10 @@ namespace VikingEngine.DSSWars.GameObject
                 OnNewOwner();
             }
 
-            if (guardCount <= 0)
-            {
-                guardCount = 1;
-            }
+            //if (guardCount <= 0)
+            //{
+            //    guardCount = 1;
+            //}
         }
 
         override public void OnNewOwner()
