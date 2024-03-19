@@ -141,7 +141,7 @@ namespace VikingEngine.DSSWars
             {
                 case EventType.SouthShips:
                     {
-                        var enemyFac = DssRef.world.factions.Array[DssRef.Faction_SouthHara];
+                        var enemyFac = DssRef.world.factions.Array[DssRef.settings.Faction_SouthHara];
 
                         for (int playerIx = 0; playerIx < DssRef.state.localPlayers.Count; ++playerIx)
                         {
@@ -224,7 +224,7 @@ namespace VikingEngine.DSSWars
                             darkLordAllies = null;
                             darkLordAvailableFactions = null;
 
-                            var greenwood = DssRef.world.factions[DssRef.Faction_GreenWood];
+                            var greenwood = DssRef.world.factions[DssRef.settings.Faction_GreenWood];
 
                             foreach (var p in DssRef.state.localPlayers)
                             {

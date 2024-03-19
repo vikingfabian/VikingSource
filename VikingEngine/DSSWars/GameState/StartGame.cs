@@ -22,6 +22,8 @@ namespace VikingEngine.DSSWars
         public StartGame(NetworkLobby netLobby, MapBackgroundLoading loading)
             :base(false)
         {
+            new PlaySettings();
+
             if (loading == null)
             { 
                 loading = new MapBackgroundLoading();

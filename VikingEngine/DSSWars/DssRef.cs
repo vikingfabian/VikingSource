@@ -24,8 +24,8 @@ namespace VikingEngine.DSSWars
         public static GameObject.AllUnits unitsdata;
         public static GameTime time;
         public static Display.Translation.AbsLanguage lang;
+        public static PlaySettings settings;
 
-        public static int Faction_SouthHara;
-        public static int Faction_GreenWood;
+        
     }
 }

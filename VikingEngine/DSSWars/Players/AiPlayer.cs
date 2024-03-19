@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars.Players
 
                 case FactionType.GreenWood:
                     faction.diplomaticSide = DiplomaticSide.Light;
-                    DssRef.Faction_GreenWood = faction.parentArrayIndex;
+                    DssRef.settings.Faction_GreenWood = faction.parentArrayIndex;
 
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     faction.growthMultiplier = 0.75f;
@@ -149,7 +149,7 @@ namespace VikingEngine.DSSWars.Players
 
                 case FactionType.SouthHara:
                     faction.diplomaticSide = DiplomaticSide.Dark;
-                    DssRef.Faction_SouthHara = faction.parentArrayIndex;
+                    DssRef.settings.Faction_SouthHara = faction.parentArrayIndex;
 
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     faction.growthMultiplier = 1.1f;
@@ -406,6 +406,14 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        bool haveIncomeForArmyPurchase(bool aggresive)
+        {
+            bool haveMoney = faction.gold >= DssLib.GroupDefaultCost * 20;
+            bool haveIncome = faction.NetIncome() >= DssLib.GroupDefaultCost * (aggresive ? 5 : 15);
+
+            return haveMoney && haveIncome;
+        }
+
         override public void aiPlayerAsynchUpdate(float time)
         {
             //if (faction.factiontype == FactionType.SouthHara)
@@ -426,24 +434,23 @@ namespace VikingEngine.DSSWars.Players
                 }
 
                 nextDecisionTimer.MilliSeconds = Ref.rnd.Float(2000, 5000);
-
-                bool haveMoney = faction.gold >= DssLib.GroupDefaultCost * 10 && faction.NetIncome() > 0;
-                bool haveIncome = faction.NetIncome() >= DssLib.GroupDefaultCost * 10;
+                
                 bool protect = Ref.rnd.Chance(0.6);
 
                 var wars = DssRef.diplomacy.aiPlayerAsynchUpdate_collectWars(faction);
                 bool inWar = aggressionLevel >= AggressionLevel2_RandomAttacks ||
                     (aggressionLevel == AggressionLevel1_RevengeOnly && wars.Count > 0);
 
-                
+                bool haveMoney = faction.gold >= DssLib.GroupDefaultCost * 20 && faction.NetIncome() > 0;
+                bool haveIncome = faction.NetIncome() >= DssLib.GroupDefaultCost * (inWar? 5 : 15);
+
                 if (inWar && Ref.rnd.Chance(aggressionLevel == AggressionLevel2_RandomAttacks ? 0.05 : 0.3) &&
                     !mainArmyLockedInTravel())
                 {
                     mainArmy_AsyncUpdate(wars);
                 }
                 else
-                if (protect && haveMoney &&
-                    (inWar || haveIncome))
+                if (protect && haveMoney && haveIncome)
                 {
                     City city = faction.cities.GetRandomSafe(Ref.rnd);
 

@@ -1,17 +1,10 @@
 ﻿Change Log
-*prio of friendly army selection
-*controller support for automation & pause menu 
-*Double city guard health
-*Mercenaries (experimental)
-*Knights -50% gold cost and increased to use 2 workers
-*A few bug fixes.
-*HUD improvements
+*Ai must save twice as much before recruiting, saving to spending swings harder on high aggresivity
+
 
 Error
 -Armies blir non-responsive
-
 -gubbar som fastnar
--diplomacy flagga på fel plats
 
 Retreat system
 -retreat av de sista motståndarna
@@ -29,7 +22,10 @@ Polish
 -zoom av diplomacy
 //-omplacera workforce hud
 -AI sök fiende armeer som passerar
+
+Art
 -checkbox art
+-Mercenary icon
 
 Steam Launch Roadmap
 -Fail state for the game

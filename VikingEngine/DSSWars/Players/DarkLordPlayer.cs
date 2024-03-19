@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars.Players
 
             this.darkLordAllies = darkLordAllies;
 
-            Faction greenwood = DssRef.world.factions.Array[DssRef.Faction_GreenWood];
+            Faction greenwood = DssRef.world.factions.Array[DssRef.settings.Faction_GreenWood];
            
 
             foreach (var ally in darkLordAllies)
