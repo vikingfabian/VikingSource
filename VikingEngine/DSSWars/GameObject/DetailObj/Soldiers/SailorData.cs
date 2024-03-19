@@ -33,6 +33,7 @@ namespace VikingEngine.DSSWars.GameObject
             modelVariationCount = 2;
 
             description = "Strong during sea warfare";
+            icon = SpriteName.WarsUnitIcon_Viking;
         }
     }
 }

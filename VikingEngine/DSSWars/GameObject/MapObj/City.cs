@@ -48,6 +48,7 @@ namespace VikingEngine.DSSWars.GameObject
         const double ImmigrantsRemovePerSec = 0.1;
         double workForceAddPerSec;
         public int workHutStyle = 0;
+        public int mercenaries = 0;
 
         public CityDetail detailObj;
         public List<CityPurchaseOption> cityPurchaseOptions;
@@ -343,9 +344,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
+       
+
         public int expandWorkForceCost()
         {
-            //const int ExpandWorkForceCost = 20000;
             return 40000 + workForce.max * 10;
         }
 
@@ -409,7 +411,30 @@ namespace VikingEngine.DSSWars.GameObject
             }
             return false;
         }
+        public bool buyMercenary(bool commit, int count)
+        {
+            int totalCost = 0;
 
+            if (faction.calcCost(buyMercenaryCost(count), ref totalCost))
+            {
+                if (commit)
+                {                    
+                    faction.payMoney(totalCost, true);
+                    faction.mercenaryCost += DssLib.MercenaryPurchaseCost_Add * count;
+
+                    mercenaries += DssLib.MercenaryPurchaseCount * count;
+                }
+                return true;
+            }
+
+            return false;
+        }
+
+        public int buyMercenaryCost(int count)
+        {
+            double result = MathExt.SumOfLinearIncreases(faction.mercenaryCost, DssLib.MercenaryPurchaseCost_Add, count);
+            return Convert.ToInt32(result);
+        }
 
 
         public int GuardUpkeep(int maxGuardSize)
@@ -636,7 +661,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void oneSecUpdate()
         {
-            if (guardCount > 0)
+            if (battleGroup == null)
             {
                 double addWorkers = workForceAddPerSec * faction.growthMultiplier;
                 if (faction.player.IsAi())
@@ -664,12 +689,9 @@ namespace VikingEngine.DSSWars.GameObject
             detailObj.asynchUpdate();
 
             //strength
-            strengthValue = 2f * guardCount / AbsSoldierData.GroupDefaultCount;
+            strengthValue = 2.5f * guardCount / AbsSoldierData.GroupDefaultCount;
 
-            //if (guardCount <= 0)
-            //{
-            //    dominationCheck();
-            //}
+            
         }
 
         //public void dominationCheck()
@@ -793,22 +815,25 @@ namespace VikingEngine.DSSWars.GameObject
             base.toHud(args);
             if (args.player.hud.detailLevel == HudDetailLevel.Minimal)
             {
+                
+                args.content.Add(new RichBoxImage(SpriteName.WarsWorker));
+                args.content.Add(new RichBoxText(TextLib.LargeNumber(workForce.Int())));
+                args.content.space();
                 args.content.Add(new RichBoxImage(SpriteName.WarsGuard));
                 args.content.Add(new RichBoxText(TextLib.LargeNumber(workForce.Int())));
                 args.content.space();
                 args.content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
                 args.content.Add(new RichBoxText(string.Format(HudLib.OneDecimalFormat, strengthValue)));
-                args.content.space();
-                args.content.Add(new RichBoxImage(SpriteName.WarsWorker));
-                args.content.Add(new RichBoxText(TextLib.LargeNumber(workForce.Int())));
+               
             }
             else
             {
-                args.content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, income));
+                args.content.icontext(SpriteName.WarsWorker, string.Format(DssRef.lang.Hud_WorkForce, TextLib.Divition_Large(workForce.Int(), workForce.max)));
                 args.content.icontext(SpriteName.WarsGuard, string.Format(DssRef.lang.Hud_GuardCount,TextLib.Divition_Large(guardCount, maxGuardSize)));
                 args.content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, string.Format(HudLib.OneDecimalFormat, strengthValue)));
+                args.content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, income));
                 args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, upkeep));
-                args.content.icontext(SpriteName.WarsWorker, string.Format(DssRef.lang.Hud_WorkForce, TextLib.Divition_Large(workForce.Int(), workForce.max)));
+                
                 if (immigrants.HasValue())
                 {
                     args.content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.Hud_Immigrants, immigrants.Int()));
@@ -950,10 +975,10 @@ namespace VikingEngine.DSSWars.GameObject
                 OnNewOwner();
             }
 
-            if (guardCount <= 0)
-            {
-                guardCount = 1;
-            }
+            //if (guardCount <= 0)
+            //{
+            //    guardCount = 1;
+            //}
         }
 
         override public void OnNewOwner()
@@ -1023,14 +1048,15 @@ namespace VikingEngine.DSSWars.GameObject
 
             army = null;
 
-            bool success = workForce.value >= workersTotCost &&
+            bool success = spendMenForDrafting(workersTotCost, false) &&//workForce.value >= workersTotCost &&
                faction.gold >= moneyTotCost;
 
 
             if (success && commit)
             {
                 faction.payMoney(moneyTotCost, true);
-                workForce.pay(workersTotCost, true);
+                //workForce.pay(workersTotCost, true);
+                spendMenForDrafting(workersTotCost, true);
 
                 army = recruitToClosestArmy();
 
@@ -1049,6 +1075,22 @@ namespace VikingEngine.DSSWars.GameObject
                 army?.OnSoldierPurchaseCompleted();
 
             }
+            return success;
+        }
+
+        bool spendMenForDrafting(int menCount, bool commit)
+        { 
+            bool success = mercenaries + workForce.value >= menCount;
+
+            if (success && commit)
+            {
+                int mercUse = Math.Min(mercenaries, menCount);
+                mercenaries -= mercUse;
+                menCount -= mercUse;
+
+                workForce.pay(menCount, true);
+            }
+
             return success;
         }
 

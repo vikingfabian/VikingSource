@@ -139,10 +139,10 @@ namespace VikingEngine.DSSWars.Players
         {
             if (DssRef.storage.aiAggressivity >= AiAggressivity.Medium)
             {
-                faction.cityCounter.Reset();
-                while (faction.cityCounter.Next())
+                var citiesC = faction.cities.counter();
+                while (citiesC.Next())
                 {
-                    foreach (var n in faction.cityCounter.sel.neighborCities)
+                    foreach (var n in citiesC.sel.neighborCities)
                     {
                         DssRef.world.cities[n].faction.player.onPlayerNeighborCapture(this);
                     }
@@ -180,22 +180,25 @@ namespace VikingEngine.DSSWars.Players
         public void userUpdate()
         {
             bool openMenySystem = menuSystem.update();
-            //if (menuSystem.Open)
-            //{
-            //    if (!menuSystem.menuUpdate())
-            //    {
-            //        menuSystem.closeMenu();
-            //        mapControls.clearSelection();
-            //    }
-            //}
-            //else
+            
             if (!openMenySystem)
             {
-                //if (!StartupSettings.Trailer)
-                //{
+                
                 hud.update();
-                //}
-                mapControls.update(hud.mouseOver);
+
+                if (hud.menuFocus)
+                {
+                    hud.updateMenuFocus();
+                }
+                else
+                {
+                    mapControls.update(hud.mouseOver);
+
+                    if (input.AutomationSetting.DownEvent)
+                    {
+                        hud.OpenAutomationMenu();
+                    }
+                }
 
                 updateDiplomacy();
 
@@ -227,6 +230,7 @@ namespace VikingEngine.DSSWars.Players
                 if (input.inputSource.IsController)
                 {
                     if (!mapControls.focusedObjectMenuState() && 
+                        !hud.menuFocus &&
                         input.Select.DownEvent)    
                     {
                         if (mapControls.selection.obj == null)
@@ -237,7 +241,7 @@ namespace VikingEngine.DSSWars.Players
                         {
                             mapExecute();
                         }
-                    }
+                    }                    
                 }
                 else
                 {
@@ -253,6 +257,8 @@ namespace VikingEngine.DSSWars.Players
                         }
                     }
                 }
+
+               
 
                 updateGameSpeed();
             }
@@ -366,10 +372,10 @@ namespace VikingEngine.DSSWars.Players
                 {
                     new SoldierGroup(army, UnitType.Knight, false);
                 }
-                //for (int i = 0; i < 10; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Soldier, false);
-                //}
+                for (int i = 0; i < 10; ++i)
+                {
+                    new SoldierGroup(army, UnitType.Soldier, false);
+                }
 
                 army.refreshPositions(true);
             }
@@ -381,12 +387,12 @@ namespace VikingEngine.DSSWars.Players
                     //int count = 4;//Ref.rnd.Int(4, 8);
                     for (int i = 0; i < 5; ++i)
                     {
-                        new SoldierGroup(army, UnitType.Soldier, false);
+                        new SoldierGroup(army, UnitType.Trollcannon, false);
                     }
-                    //for (int i = 0; i < 9; ++i)
-                    //{
-                    //    new SoldierGroup(army, UnitType.Pikeman, false);
-                    //}
+                    for (int i = 0; i < 9; ++i)
+                    {
+                        new SoldierGroup(army, UnitType.Pikeman, false);
+                    }
                     //for (int i = 0; i < 5; ++i)
                     //{
                     //    new SoldierGroup(army, UnitType.Ballista, false);
@@ -457,6 +463,7 @@ namespace VikingEngine.DSSWars.Players
             }
 
             bClear = mapControls.clearSelection();
+            hud.clearState();
 
             return bClear;
         }

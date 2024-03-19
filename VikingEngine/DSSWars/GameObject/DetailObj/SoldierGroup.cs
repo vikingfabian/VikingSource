@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool needWalkPathCheck = false;
         //public SoldierWalkingPath walkingPath = null;
 
-        public Vector3 currentArmyPosition;
+        public Vector3 goalWp;
 
         public IntVector2 tilePos;
         public IntVector2 armyLocalPlacement = IntVector2.Zero;
@@ -548,17 +548,17 @@ namespace VikingEngine.DSSWars.GameObject
                             else
                             {
                                 //Group attack move
-                                walking = !updateWalking(battleWp, false, Rotation1D.D0, time);
+                                walking = !updateWalking(goalWp, false, Rotation1D.D0, time);
                                 //walking = !updateWalking(closest_sp.position, true, army.rotation, time);
                             }
                         }
                         else if (army.battleGroup != null)
                         {
-                            walking = !updateWalking(battleWp, false, Rotation1D.D0, time);
+                            walking = !updateWalking(goalWp, false, Rotation1D.D0, time);
                         }
                         else if (groupObjective == GroupObjective_FindArmyPlacement)
                         {
-                            if (updateWalking(currentArmyPosition, true, army.rotation, time))
+                            if (updateWalking(goalWp, true, army.rotation, time))
                             {
                                 newObjective = GroupObjective_FollowArmyObjective;
                                 newIdleGroup = true;
@@ -573,7 +573,7 @@ namespace VikingEngine.DSSWars.GameObject
                             if (army.objective == ArmyObjective.MoveTo ||
                                 army.objective == ArmyObjective.Attack)
                             {
-                                if (updateWalking(currentArmyPosition, true, army.rotation, time))
+                                if (updateWalking(goalWp, true, army.rotation, time))
                                 {
                                     newIdleGroup = true;
                                 }
@@ -880,7 +880,7 @@ namespace VikingEngine.DSSWars.GameObject
                 //}
 
             }
-            walkTowards = currentArmyPosition;
+            walkTowards = goalWp;
             return true;//hasWalkingOrder;
         }
 
@@ -1107,7 +1107,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             walkingOrderTo = area;
             Vector3 areaCenter = WP.ToWorldPos(area);
-            currentArmyPosition = armyPlacement(areaCenter);
+            goalWp = armyPlacement(areaCenter);
 
             if ((nextIsFootTransform && IsShip()) ||
                 (nextIsShipTransform && !IsShip()))
@@ -1125,7 +1125,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             walkingOrderTo = nodePos;
             Vector3 areaCenter = WP.ToWorldPos(walkingOrderTo);
-            currentArmyPosition = armyPlacement(areaCenter);
+            goalWp = armyPlacement(areaCenter);
         }
 
         public void setGroundY()
@@ -1421,7 +1421,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
 
                 armyLocalPlacement = newLocalPlacement;
-                currentArmyPosition = armyPlacement(army.position);
+                goalWp = armyPlacement(army.position);
 
                 //if (currentArmyPosition.X < 2 && currentArmyPosition.Z < 2)
                 //{
@@ -1431,7 +1431,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (!army.inRender || lifeState == LifeState_New)
                 {
                     ++lifeState;
-                    position = currentArmyPosition;
+                    position = goalWp;
                     setGroundY();
                 }
                 else if (groupObjective == GroupObjective_FollowArmyObjective)

@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.Display
                     menuType == MenuType.InGame? 0.5f : 0f,
                     layer, 
                     Input.InputSource.DefaultPC);
-                menu.useAnyControllerInput = menuType != MenuType.InGame;
+                menu.useAnyControllerInput = true;//menuType != MenuType.InGame;
                 Input.Mouse.LockToScreenArea = false;
             }
         }

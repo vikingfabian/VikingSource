@@ -45,6 +45,7 @@ namespace VikingEngine.DSSWars.GameObject
             ArmyFrontToBackPlacement = ArmyPlacement.Back;
 
             description = "Strong against cities";
+            icon = SpriteName.WarsUnitIcon_Ballista;
         }
 
         public override AbsDetailUnit CreateUnit()

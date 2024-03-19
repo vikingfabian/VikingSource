@@ -32,6 +32,7 @@ namespace VikingEngine.DSSWars.GameObject
             modelVariationCount = 2;
 
             description = "Only strong when protected.";
+            icon = SpriteName.WarsUnitIcon_Archer;
         }        
     }
 

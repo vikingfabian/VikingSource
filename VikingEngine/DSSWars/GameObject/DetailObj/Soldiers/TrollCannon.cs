@@ -43,6 +43,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
             ArmyFrontToBackPlacement = ArmyPlacement.Back;
 
             description = "Heavy long range units";
+            icon = SpriteName.WarsUnitIcon_Trollcannon;
         }
     }
 }

@@ -311,7 +311,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void setBattleNode()
         {
-            walkingGoal = groupPosition(group.battleWp, group.rotation.radians);
+            walkingGoal = groupPosition(group.goalWp, group.rotation.radians);
         }
 
 

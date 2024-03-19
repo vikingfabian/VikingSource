@@ -23,6 +23,15 @@ namespace VikingEngine.DSSWars.GameObject
 
             return result;
         }
+
+        public List<KeyValuePair<UnitType, int>> getTypeCounts_Sorted()
+        {
+            var counts = getTypeCounts();
+            var sortedList = counts.ToList();
+            sortedList.Sort((pair1, pair2) => pair2.Value.CompareTo(pair1.Value));
+            return sortedList;
+        }
+
     }
 
     //class UnitTypeStatus

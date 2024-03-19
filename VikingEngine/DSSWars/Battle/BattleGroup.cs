@@ -509,14 +509,14 @@ namespace VikingEngine.DSSWars.Battle
             var goalNode = getNode(next);
             goalNode.add(group);
 
-            group.battleWp = goalNode.worldPos;
+            group.goalWp = goalNode.worldPos;
         }
 
         void placeGroupInNode(SoldierGroup group, IntVector2 nodePos)
         {
             group.battleGridPos = nodePos;
             var node = getNode(group.battleGridPos);
-            group.battleWp = node.worldPos;
+            group.goalWp = node.worldPos;
             node.add(group);
         }
 

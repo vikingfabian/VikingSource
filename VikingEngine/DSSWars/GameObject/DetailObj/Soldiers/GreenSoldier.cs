@@ -20,6 +20,8 @@ namespace VikingEngine.DSSWars.GameObject
             bonusProjectiles = 2;
 
             goldCost = GroupDefaultCount * 4;
+
+            icon = SpriteName.WarsUnitIcon_Greensoldier;
         }
     }
 }

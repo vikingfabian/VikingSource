@@ -11,7 +11,7 @@ namespace VikingEngine.DSSWars.Display
     class HeadDisplay : RichboxGuiPart
     {        
         public bool fullDisplay = true;
-        const string AutomationMenuState = "auto";
+        public const string AutomationMenuState = "auto";
 
         public HeadDisplay(RichboxGui gui)
             :base(gui)
@@ -116,10 +116,7 @@ namespace VikingEngine.DSSWars.Display
                     if (fullDisplay)
                     {
                         gold();
-                    }
 
-                    if (fullDisplay)
-                    {
                         const string TotalIncomeText = "Total income/second: ";
                         content.Add(new RichBoxImage(SpriteName.rtsIncomeTime));
                         content.space();
@@ -181,6 +178,7 @@ namespace VikingEngine.DSSWars.Display
                         var automationButton = new HUD.RichBox.RichboxButton(
                             new List<AbsRichBoxMember>
                             {
+                                new RichBoxImage(player.input.AutomationSetting.Icon),
                                 new RichBoxImage(SpriteName.MenuPixelIconSettings),
                                 new HUD.RichBox.RichBoxText("Automation"),
                             },

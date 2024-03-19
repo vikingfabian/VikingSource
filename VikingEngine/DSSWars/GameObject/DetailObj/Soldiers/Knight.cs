@@ -37,7 +37,8 @@ namespace VikingEngine.DSSWars.GameObject
             columnsDepth = 3;
             groupSpacing = DefaultGroupSpacing * 1.4f;
 
-            goldCost = MathExt.MultiplyInt(3, DssLib.GroupDefaultCost);
+            goldCost = MathExt.MultiplyInt(2, DssLib.GroupDefaultCost);
+            workForcePerUnit = 2;
             upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
 
             modelAdjY = 0.1f;
@@ -46,6 +47,7 @@ namespace VikingEngine.DSSWars.GameObject
             hasBannerMan = false;
 
             description = "Strong in open field battles";
+            icon = SpriteName.WarsUnitIcon_Knight;
         }
 
 

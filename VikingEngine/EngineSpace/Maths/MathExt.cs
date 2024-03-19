@@ -425,5 +425,17 @@ namespace VikingEngine
         { 
             return (int)Math.Ceiling(value/divide);
         }
+
+        /// <summary>
+        /// Calculates the sum of a series of purchases.
+        /// </summary>
+        /// <param name="initialValue">The initial purchase amount.</param>
+        /// <param name="increase">The increase in purchase amount for each subsequent purchase.</param>
+        /// <param name="repeate">The total number of purchases.</param>
+        /// <returns>The total sum of all purchases.</returns>
+        public static double SumOfLinearIncreases(double initialValue, double increase, int repeate)
+        {
+            return repeate / 2.0 * (2 * initialValue + (repeate - 1) * increase);
+        }
     }
 }

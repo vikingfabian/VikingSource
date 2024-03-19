@@ -35,6 +35,11 @@ namespace VikingEngine.DSSWars
         public static readonly RotationQuarterion BannerRotation = new RotationQuarterion(Quaternion.CreateFromYawPitchRoll(-0.3f, 0f, 0f));
 
 
+        public const int MercenaryPurchaseCount = 150;
+        public const int MercenaryPurchaseCost_Start = 2500;
+        public const int MercenaryPurchaseCost_Add = 50;
+
+
         public const int DefaultMaxCommand = 2;
         public const double DefaultCommandPerSecond = 1.0 / 60.0;
         public const double NobelHouseAddCommand = 1.0 / 120.0;
