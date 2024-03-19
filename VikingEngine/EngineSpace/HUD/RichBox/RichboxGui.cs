@@ -201,6 +201,10 @@ namespace VikingEngine.HUD.RichBox
             menuStateHasChange = true;
         }
 
+        public bool HasMenuState(string state)
+        { 
+            return menuState.Contains(state);
+        }
         public void menuBack()
         {
             arraylib.RemoveLast(menuState);

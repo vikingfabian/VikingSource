@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject
         public const int WorkersPerTile = WorkersPerHut * WorkerHutsPerTile * HutMaxLevel;
         public const int HutMaxLevel = 2;
         City city;
-        const int GuardMaxHealth = 40;
+        const int GuardMaxHealth = 80;
         int guardHealth = GuardMaxHealth;
         float nextRespawn = 0;
         CityDetailData data;
@@ -373,21 +373,6 @@ namespace VikingEngine.DSSWars.GameObject
 
                             int hits = startMultiAttack(fullUpdate, attackTarget_sp, shortDist, attacks, true);
                             storedAttacks = attacks - hits;
-                            //var soldiersC = attackTarget.group.soldiers.counter();
-                            //while (soldiersC.Next())
-                            //{
-                            //    if (soldiersC.sel != attackTarget && soldiersC.sel.Alive_IncomingDamageIncluded())
-                            //    {
-                            //        --attacks;
-                            //        startAttack(fullUpdate, soldiersC.sel, shortDist, true);
-                            //    }
-
-                            //    if (attacks <= 0)
-                            //    {
-                            //        break;
-                            //    }
-                            //}
-                            //storedAttacks = attacks;
                         }
                         else
                         {
@@ -412,16 +397,6 @@ namespace VikingEngine.DSSWars.GameObject
             return pos;
 
         }
-
-        //protected override void closestTargetCheck(AbsDetailUnit unit, bool friendly, float distance, ref AbsDetailUnit closestOpponent, ref float closestOpponentDistance)
-        //{
-        //    if (city.index == 107)
-        //    {
-        //        lib.DoNothing();
-        //    }
-        //    base.closestTargetCheck(unit, friendly, distance, ref closestOpponent, ref closestOpponentDistance);
-        //}
-
         public void asynchFindBattleTarget()
         {
             AbsDetailUnit closestOpponent = null;

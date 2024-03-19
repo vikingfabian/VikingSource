@@ -13,12 +13,12 @@ namespace VikingEngine.DSSWars.GameObject
     {
         const float BattlePrepSpeedBoost = 1.4f;
 
-        public Vector3 battleWp;
+        //public Vector3 battleWp;
         public bool battleWalkPath = false;
 
         void update_battlePreparations(float time, bool fullUpdate)
         {            
-            bool walking = !updateWalking(battleWp, true, army.battleDirection, time * BattlePrepSpeedBoost);
+            bool walking = !updateWalking(goalWp, true, army.battleDirection, time * BattlePrepSpeedBoost);
 
             var soldiersC = soldiers.counter();
             while (soldiersC.Next())
@@ -90,7 +90,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void setBattleNode(Vector3 wp)
         {
-            battleWp = wp;
+            goalWp = wp;
             var soldiersC = soldiers.counter();
             while (soldiersC.Next())
             {

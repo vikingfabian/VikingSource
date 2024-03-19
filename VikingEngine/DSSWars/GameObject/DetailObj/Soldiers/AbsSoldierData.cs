@@ -54,6 +54,8 @@ namespace VikingEngine.DSSWars.GameObject
         public Vector3 leftCrewPosDiff;
         public int factionUniqueType = -1;
 
+        public SpriteName icon = SpriteName.MissingImage;
+
         public Vector3 ShadowModelScale()
         {
             return modelToShadowScale * modelScale;

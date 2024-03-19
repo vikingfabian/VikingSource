@@ -2262,6 +2262,17 @@ namespace VikingEngine
                     add(SpriteName.WarsRelationTotalWar, 2, 2);
                     add(SpriteName.rtsIncomeTime, 2, 2);
                     add(SpriteName.rtsUpkeepTime, 2, 2);
+
+                    add(SpriteName.WarsUnitIcon_Soldier, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Archer, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Ballista, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Knight, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Honorguard, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Pikeman, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Trollcannon, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Viking, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Greensoldier, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Folkman, 2, 2);
                 }
 
                 currentIndex = numTilesWidth * 96;

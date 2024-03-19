@@ -31,6 +31,7 @@ namespace VikingEngine.DSSWars.GameObject
             modelVariationCount = 3;
 
             description = "A general purpose unit.";
+            icon = SpriteName.WarsUnitIcon_Soldier;
         }
     }
 

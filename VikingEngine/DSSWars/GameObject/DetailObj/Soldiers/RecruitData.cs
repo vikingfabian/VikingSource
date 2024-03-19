@@ -33,6 +33,7 @@ namespace VikingEngine.DSSWars.GameObject
             ArmyFrontToBackPlacement = recruitFor.ArmyFrontToBackPlacement;
 
             modelName = LootFest.VoxelModelName.war_recruit;
+            icon = recruitFor.icon;
         }
 
         public override AbsDetailUnit CreateUnit()

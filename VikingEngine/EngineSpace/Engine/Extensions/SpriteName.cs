@@ -2444,6 +2444,18 @@ namespace VikingEngine
 
         WarsDarkLordBossIcon,
         WarsFactoryIcon,
+
+        WarsUnitIcon_Soldier,
+        WarsUnitIcon_Archer,
+        WarsUnitIcon_Ballista,
+        WarsUnitIcon_Knight,
+        WarsUnitIcon_Honorguard,
+        WarsUnitIcon_Pikeman,
+        WarsUnitIcon_Trollcannon,
+        WarsUnitIcon_Viking,
+        WarsUnitIcon_Greensoldier,
+        WarsUnitIcon_Folkman,
+
         #endregion
 
         #region RTS

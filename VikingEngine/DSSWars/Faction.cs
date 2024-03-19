@@ -19,10 +19,10 @@ namespace VikingEngine.DSSWars
         public GameObject.City mainCity;
         public Vector3 SelectionCenter { get; private set; }
 
-        public SpottedArrayCounter<GameObject.City> cityCounter;
+        //public SpottedArrayCounter<GameObject.City> cityCounter;
 
-        public SpottedArrayCounter<GameObject.City> cityAsynchMainCounter;
-        public SpottedArrayCounter<GameObject.City> cityAsynchAiCounter;
+        //public SpottedArrayCounter<GameObject.City> cityAsynchMainCounter;
+        //public SpottedArrayCounter<GameObject.City> cityAsynchAiCounter;
 
         public SpottedArray<GameObject.City> cities;
 
@@ -51,6 +51,8 @@ namespace VikingEngine.DSSWars
         public float militaryStrength = 0;
         public bool hasDeserters = true;
 
+        public int mercenaryCost = DssLib.MercenaryPurchaseCost_Start;
+
         public Faction()
         { }
 
@@ -62,10 +64,10 @@ namespace VikingEngine.DSSWars
 
             cities = new SpottedArray<GameObject.City>(8);
 
-            cityCounter = new SpottedArrayCounter<City>(cities);
+            //cityCounter = new SpottedArrayCounter<City>(cities);
 
-            cityAsynchMainCounter = new SpottedArrayCounter<City>(cities);
-            cityAsynchAiCounter = new SpottedArrayCounter<City>(cities);
+            //cityAsynchMainCounter = new SpottedArrayCounter<City>(cities);
+            //cityAsynchAiCounter = new SpottedArrayCounter<City>(cities);
 
             armies = new SpottedArray<Army>(16);
             armiesCounter = armies.counter();
@@ -98,7 +100,7 @@ namespace VikingEngine.DSSWars
             profile.write(w);
 
             w.Write((ushort)cities.Count);
-            var citiesC = cityCounter.Clone();
+            var citiesC = cities.counter();
             while (citiesC.Next())
             {
                 w.Write((ushort)citiesC.sel.parentArrayIndex);
@@ -170,10 +172,10 @@ namespace VikingEngine.DSSWars
         public void writeMapFile(System.IO.BinaryWriter w)
         {
             w.Write((ushort)cities.Count);
-            var cityCount = cityCounter.Clone();
-            while (cityCount.Next())
+            var citiesC = cities.counter();
+            while (citiesC.Next())
             {
-                w.Write((ushort)cityCount.sel.parentArrayIndex);
+                w.Write((ushort)citiesC.sel.parentArrayIndex);
             }
 
             w.Write(availableForPlayer);
@@ -207,10 +209,10 @@ namespace VikingEngine.DSSWars
             if (!textureLoaded)
                 FlagTexture.ColorAndAlpha = profile.getColor(ProfileColorType.Main).ToVector4();
 
-            cityCounter.Reset();
-            while (cityCounter.Next())
+            var citiesC = cities.counter();
+            while (citiesC.Next())
             {
-                cityCounter.sel.OnNewOwner();
+                citiesC.sel.OnNewOwner();
             }
         }
 
@@ -322,10 +324,18 @@ namespace VikingEngine.DSSWars
             resources_oneSecUpdate();
             player.oneSecUpdate();
 
-            cityCounter.Reset();
-            while (cityCounter.Next())
+            var citiesC = cities.counter();
+            while (citiesC.Next())
             {
-                cityCounter.sel.oneSecUpdate();
+                if (citiesC.sel.faction == this)
+                {
+                    citiesC.sel.oneSecUpdate();
+                }
+                else
+                {
+                    citiesC.RemoveAtCurrent();
+                    refreshMainCity();
+                }
             }
 
             if (!player.IsAi())
@@ -427,6 +437,11 @@ namespace VikingEngine.DSSWars
             return nextUnitId;
         }
 
+        //public bool canBuyMercenay(int count)
+        //{
+        //    return (workForce.max + ExpandWorkForce * count) <= maxEpandWorkSize;
+        //}
+
         public void remove(Army army)
         {
             Debug.CrashIfThreaded();
@@ -453,13 +468,13 @@ namespace VikingEngine.DSSWars
             {
                 City largest = null;
 
-                cityCounter.Reset();
+                var citiesC = cities.counter();
 
-                while (cityCounter.Next())
+                while (citiesC.Next())
                 {
-                    if (largest == null || cityCounter.sel.workForce.max > largest.workForce.max)
+                    if (largest == null || citiesC.sel.workForce.max > largest.workForce.max)
                     {
-                        largest = cityCounter.sel;
+                        largest = citiesC.sel;
                     }
                 }
 
@@ -770,20 +785,20 @@ namespace VikingEngine.DSSWars
 
         public void SetNeighborToPlayer()
         {
-            cityCounter.Reset();
+            var citiesC = cities.counter();
 
-            while (cityCounter.Next())
+            while (citiesC.Next())
             {
-                cityCounter.sel.SetNeighborToPlayer();
+                citiesC.sel.SetNeighborToPlayer();
             }
         }
         public bool HasPlayerNeighbor()
         {
-            cityCounter.Reset();
+            var citiesC = cities.counter();
 
-            while (cityCounter.Next())
+            while (citiesC.Next())
             {
-                if (cityCounter.sel.HasPlayerNeighbor())
+                if (citiesC.sel.HasPlayerNeighbor())
                 {
                     return true;
                 }

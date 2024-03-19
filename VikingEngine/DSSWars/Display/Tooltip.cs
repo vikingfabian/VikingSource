@@ -149,6 +149,23 @@ namespace VikingEngine.DSSWars.Display
                 {
                     content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
                     content.Add(new RichBoxText(string.Format(HudLib.OneDecimalFormat, mapObj.strengthValue)));
+                    if (obj.gameobjectType() == GameObjectType.Army)
+                    {
+                        content.newLine();
+                        content.Add(new RichBoxImage(SpriteName.WarsGroupIcon));
+                        content.space(1);
+
+                        
+                        var typeCounts = obj.GetArmy().Status().getTypeCounts_Sorted();
+
+                        foreach (var kv in typeCounts)
+                        {
+                            AbsSoldierData typeData = DssRef.unitsdata.Get(kv.Key);
+                            content.Add(new RichBoxText(kv.Value.ToString()));
+                            content.Add(new RichBoxImage(typeData.icon));
+                            content.space(2);
+                        }
+                    }
                 }
             }
             //content.Add(new RichBoxSeperationLine());

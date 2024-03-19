@@ -1,10 +1,35 @@
 ﻿Change Log
--
+*prio of friendly army selection
+*controller support for automation & pause menu 
+*Double city guard health
+*Mercenaries (experimental)
+*Knights -50% gold cost and increased to use 2 workers
+*A few bug fixes.
+*HUD improvements
 
 Error
--controller for automation 
--tabbing betwen cities and armies
+-Armies blir non-responsive
 
+-gubbar som fastnar
+-diplomacy flagga på fel plats
+
+Retreat system
+-retreat av de sista motståndarna
+-light taunt units (slingers, light cavalry)
+-reassemble av flydd arme
+
+Polish
+-fyll alla default flaggor
+-fler flagg färger
+-ai start delay option
+-tabbing betwen cities and armies
+-attack warning -Battle notification
+-diplomacy toggle
+-end credits
+-zoom av diplomacy
+//-omplacera workforce hud
+-AI sök fiende armeer som passerar
+-checkbox art
 
 Steam Launch Roadmap
 -Fail state for the game
@@ -22,6 +47,6 @@ Steam Launch Roadmap
 -(Removed) Boost soldiers with a command system
 
 
--Battle notification
--AI sök fiende armeer som passerar
+
+
 

@@ -26,7 +26,6 @@ namespace VikingEngine.DSSWars
 
         public IButtonMap Stop;
 
-
         public IButtonMap DragPan;
         public IButtonMap NextArmy;
         public IButtonMap PrevBattle;
@@ -38,8 +37,10 @@ namespace VikingEngine.DSSWars
         public IButtonMap ToggleHudDetail;
         public IButtonMap GameSpeed;
         public IButtonMap PauseGame;
-       
-     
+
+        public IButtonMap AutomationSetting;
+
+
         public InputMap(int playerIx)
             : base(playerIx)
         {
@@ -62,13 +63,10 @@ namespace VikingEngine.DSSWars
             Execute = new MouseButtonMap(MouseButton.Right);
             ControllerCancel = new MouseButtonMap(MouseButton.Right);
             DragPan = new MouseButtonMap(MouseButton.Middle);
-            //NextArmy = new KeyboardButtonMap(Keys.D1);
-            //PrevBattle = new KeyboardButtonMap(Keys.D2);
-            //CardMenu = new KeyboardButtonMap(Keys.Tab);
-            //Options = new AlternativeButtonsMap(new KeyboardButtonMap(Keys.LeftControl), new KeyboardButtonMap(Keys.RightControl));
+            
             Home = new KeyboardButtonMap(Keys.Home);
-
             Stop = new KeyboardButtonMap(Keys.H);
+            AutomationSetting = new KeyboardButtonMap(Keys.I);
 
             Menu = new KeyboardButtonMap(Keys.Escape);
             ToggleHudDetail = new KeyboardButtonMap(Keys.U);
@@ -78,8 +76,6 @@ namespace VikingEngine.DSSWars
         }
         public override void xboxSetup()
         {
-            //throw new NotImplementedException();
-            //source = InputSourceType.XController;
             move = new DirectionalXboxMap(ThumbStickType.Left, false, inputSource.controllerIndex);
             dpadMove = new DirectionalXboxMap(ThumbStickType.D, false, inputSource.controllerIndex);  
             cameraTiltZoom =new DirectionalXboxMap(ThumbStickType.Right, false, inputSource.controllerIndex);
@@ -89,6 +85,7 @@ namespace VikingEngine.DSSWars
             ControllerCancel = new XboxButtonMap(Buttons.B, inputSource.controllerIndex);
 
             Stop = new XboxButtonMap(Buttons.DPadLeft, inputSource.controllerIndex);
+            AutomationSetting = new XboxButtonMap(Buttons.Back, inputSource.controllerIndex);
 
             DragPan = new XboxButtonMap(Buttons.RightShoulder, inputSource.controllerIndex);
             Home = new XboxButtonMap(Buttons.DPadRight, inputSource.controllerIndex);

@@ -21,6 +21,7 @@ namespace VikingEngine.DSSWars.Display
 
         public GameHudDisplays displays;
         public MessageGroup messages;
+        public bool menuFocus = false;
 
         public GameHud(LocalPlayer player)
         {
@@ -28,6 +29,59 @@ namespace VikingEngine.DSSWars.Display
             displays = new GameHudDisplays(player);
             messages = new MessageGroup(player, HudLib.richboxGui);
             tooltip = new Tooltip();
+        }
+
+        public void OpenAutomationMenu()
+        {
+            if (displays.HasMenuState(HeadDisplay.AutomationMenuState))
+            {
+                displays.clearState();
+            }
+            else
+            {
+                player.clearSelection();
+                displays.SetMenuState(HeadDisplay.AutomationMenuState);
+                if (player.input.inputSource.IsController)
+                {
+                    setHeadMenuFocus(true);
+                }
+            }
+        }
+
+        public void clearState()
+        {
+            setHeadMenuFocus(false);
+            displays.clearState();
+        }
+
+        void setHeadMenuFocus(bool set)
+        {
+            if (menuFocus != set)
+            {
+                displays.headDisplay.viewOutLine(set);
+                if (set)
+                {
+                    displays.beginMove(0);
+                }
+                else
+                {
+                    displays.clearMoveSelection();
+                }
+
+                player.mapControls.focusMap(!set);
+                menuFocus = set;
+            }
+        }
+
+        public void updateMenuFocus()
+        {
+            displays.updateMove();
+
+            if (player.input.AutomationSetting.DownEvent ||
+                player.input.ControllerCancel.DownEvent)
+            {
+                player.clearSelection();
+            }
         }
 
         public void update()

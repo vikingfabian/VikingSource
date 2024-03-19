@@ -235,6 +235,11 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        bool lookingForAttackTarget()
+        {
+            return selection.obj != null && selection.obj.gameobjectType() == GameObjectType.Army;
+        }
+
         void mouseHoverUpdate()
         {
             //nearMapObjects.checkForUpdatedList();
@@ -242,15 +247,25 @@ namespace VikingEngine.DSSWars.Players
 
             if (player.drawUnitsView.current.type == MapDetailLayerType.TerrainOverview2)
             {
+                AbsMapObject intersectObj = null;
                 var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects(tilePosition, false);
                 foreach (var m in nearMapObjects)
                 {
                     if (m.rayCollision(ray))
                     {
-                        hover.obj = m;
-                        break;
+                        intersectObj = m;
+
+                        if (
+                            (m.faction == player.faction && m.gameobjectType() == GameObjectType.Army) ||
+                            lookingForAttackTarget()
+                            )
+                        {
+                            break;
+                        }
                     }
                 }
+
+                hover.obj = intersectObj;
             }
             else if (player.drawUnitsView.current.type == MapDetailLayerType.UnitDetail1)
             {
@@ -281,6 +296,7 @@ namespace VikingEngine.DSSWars.Players
         {
             if (player.drawUnitsView.current.type == MapDetailLayerType.TerrainOverview2)
             {
+                const float FriendlyPriorityDistAdd = 0.25f;
                 float maxDistance = 5;
                 if (player.armyControls != null)
                 {
@@ -292,11 +308,20 @@ namespace VikingEngine.DSSWars.Players
                 float closest = float.MaxValue;
                 foreach (var m in nearMapObjects)
                 {
-                   var dist= VectorExt.PlaneXZLength(m.position - mousePosition);
-                    if (dist < closest && dist <= maxDistance)
-                    { 
-                        closest= dist;
-                        closestObj = m;
+                    var dist= VectorExt.PlaneXZLength(m.position - mousePosition);
+                    if (dist <= maxDistance)
+                    {
+                        if (dist < closest || 
+                            (
+                                closestObj.faction != player.faction && 
+                                dist < closest + FriendlyPriorityDistAdd && 
+                                !lookingForAttackTarget()
+                            )
+                            )
+                        {
+                            closest = dist;
+                            closestObj = m;
+                        }
                     }
                 }
 
@@ -356,6 +381,9 @@ namespace VikingEngine.DSSWars.Players
             }
             controllerPointer.Visible = !set;
         }
+
+        
+
 
         public bool clearSelection()
         {
@@ -520,6 +548,11 @@ namespace VikingEngine.DSSWars.Players
 
             DssRef.world.WorldBound(ref playerPointerPos.X, ref playerPointerPos.Z);
             playerPointerPos.Y = DssRef.world.GetTile(playerPointerPos).GroundY() + 0.5f;
+        }
+
+        public void focusMap(bool focus)
+        {
+            controllerPointer.Visible = focus;
         }
 
         void panCamera(Vector3 pan)
