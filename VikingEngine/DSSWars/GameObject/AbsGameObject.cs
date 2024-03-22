@@ -11,8 +11,6 @@ using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-
-
     abstract class AbsGameObject
     {
 
@@ -25,8 +23,22 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public City GetCity() { return null; }
 
         virtual public Army GetArmy() { return null; }
-        
-    }
 
+        virtual public IntVector2 TilePos() 
+        { 
+            throw new NotImplementedException();
+        }
+    }
+    enum GameObjectType
+    {
+        Faction,
+        City,
+        Army,
+        SoldierGroup,
+        Soldier,
+        Battle,
+
+        NUM_NON,
+    }
 }
 

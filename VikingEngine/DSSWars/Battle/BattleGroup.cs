@@ -15,11 +15,10 @@ using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Battle
 {
-    class BattleGroup
+    class BattleGroup :AbsGameObject
     {
         const int StandardGridRadius = 20;
-
-        int index;
+                
         SpottedArray<AbsMapObject> members;
         SpottedArrayCounter<AbsMapObject> membersC;
         Vector2 center;
@@ -38,12 +37,7 @@ namespace VikingEngine.DSSWars.Battle
             members = new SpottedArray<AbsMapObject>(4);
             membersC = new SpottedArrayCounter<AbsMapObject>(members);
 
-            //members.Add(m1);
-            //members.Add(m2);
-          
-            //m2.battleGroup = this;
-
-            index = DssRef.state.battles.Add(this);
+            parentArrayIndex = DssRef.state.battles.Add(this);
 
             center = VectorExt.V3XZtoV2(m2.position + m1.position) / 2f;
             Vector2 diff = VectorExt.V3XZtoV2(m2.position - m1.position);
@@ -54,9 +48,6 @@ namespace VikingEngine.DSSWars.Battle
 
             addPart(m1);
             addPart(m2);
-
-            //placeSoldiers(m1);
-            //placeSoldiers(m2);
         }
 
         public BattleGroup(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
@@ -340,7 +331,6 @@ namespace VikingEngine.DSSWars.Battle
                     }
                 }
             }
-
         }
 
         void clearGrid()
@@ -501,8 +491,6 @@ namespace VikingEngine.DSSWars.Battle
             return true;
         }
 
-       
-
         void applyWalkNode(SoldierGroup group, IntVector2 next)
         {
             getNode(group.battleGridPos).remove(group);
@@ -608,8 +596,6 @@ namespace VikingEngine.DSSWars.Battle
             return node;
         }
 
-        
-
         void ExitBattle()
         {
             List<City> cities = new List<City>(2);
@@ -656,6 +642,21 @@ namespace VikingEngine.DSSWars.Battle
                     Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(c.setFaction, dominatingFaction));
                 }
             }
+        }
+
+        public override Faction GetFaction()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IntVector2 TilePos()
+        {
+            return IntVector2.FromVec2(center);
+        }
+
+        public override GameObjectType gameobjectType()
+        {
+            return GameObjectType.Battle;
         }
     }
 
@@ -737,5 +738,6 @@ namespace VikingEngine.DSSWars.Battle
             group1 = null;
             group2 = null;
         }
+               
     }
 }

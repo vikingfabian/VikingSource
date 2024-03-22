@@ -39,6 +39,10 @@ namespace VikingEngine.DSSWars.Players
         public PlayerToPlayerDiplomacy[] toPlayerDiplomacies = null;
         public Automation automation;
 
+        int tabCity = -1;
+        Army tabArmy = null;
+        Army tabBattle = null;
+
         public LocalPlayer(Faction faction, int playerindex, int numPlayers)
             :base(faction)
         {
@@ -263,7 +267,7 @@ namespace VikingEngine.DSSWars.Players
                 updateGameSpeed();
             }
 
-            
+            updateObjectTabbing();
 
             //DssRef.state.detailMap.PlayerUpdate(mapControls.playerPointerPos, bUnitDetailLayer);
             drawUnitsView.Update();
@@ -274,6 +278,31 @@ namespace VikingEngine.DSSWars.Players
             diplomacyMap?.asynchUpdate();
 
             automation.asyncUpdate();
+        }
+
+        void updateObjectTabbing()
+        {
+            if (input.NextCity.DownEvent && faction.cities.Count > 0)
+            {
+                tabCity++;
+                if (tabCity >= faction.cities.Count)
+                {
+                    tabCity = 0;
+                }
+
+                int current = 0;
+                var citiesC = faction.cities.counter();
+                while (citiesC.Next())
+                {
+                    if (current == tabCity)
+                    { 
+                        //focus on city
+                        mapControls.cameraFocus = citiesC.sel.tilePos;
+                        return;
+                    }
+                    current++;
+                }
+            }
         }
 
         void updateDiplomacy()

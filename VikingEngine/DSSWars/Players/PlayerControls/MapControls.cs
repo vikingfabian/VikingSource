@@ -38,6 +38,8 @@ namespace VikingEngine.DSSWars.Players
         bool controllerInput;
         public bool unlockEdgePush = false;
 
+        public AbsGameObject cameraFocus = null;
+
         public MapControls(LocalPlayer player)
         {
             this.player = player;
@@ -519,7 +521,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (hasMouseMapMoveInput())
                 {
-                    bool hasValue;
+                    //bool hasValue;
                     Vector3 prevMousePosition = screenPosToWorldPos(Input.Mouse.Position - Input.Mouse.MoveDistance);
                    
                     Vector3 diff = mousePosition - prevMousePosition;
@@ -560,6 +562,8 @@ namespace VikingEngine.DSSWars.Players
             pan.Y = 0;
             if (VectorExt.HasValue(pan))
             {
+                cameraFocus = null;
+
                 camera.LookTarget -= pan;
                 camera.setLookTargetXBound(DssRef.world.unitBounds.Position.X, DssRef.world.unitBounds.Right);
                 camera.setLookTargetZBound(DssRef.world.unitBounds.Position.Y, DssRef.world.unitBounds.Bottom);
