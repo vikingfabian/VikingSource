@@ -574,7 +574,7 @@ namespace VikingEngine.DSSWars
         void openProfileEditor(int ProfileIx)
         {
             
-            new ProfileSettingsState(ProfileIx);
+            new PaintFlagState(ProfileIx);
         }
 
         protected override void createDrawManager()

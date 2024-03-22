@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.Profile
                     nextPos,
                     Engine.Screen.TextSizeV2,
                     Align.Zero,
-                     ProfileSettingsState.ProfileColorName(type), Color.White, ImageLayers.Lay2);
+                     PaintFlagState.ProfileColorName(type), Color.White, ImageLayers.Lay2);
                 nextPos.Y += Engine.Screen.TextBreadHeight + ButtonGuiSettings.highlightThickness *2;
                 VectorRect area = new VectorRect(nextPos, Engine.Screen.IconSizeV2);
 

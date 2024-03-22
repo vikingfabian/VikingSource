@@ -11,7 +11,7 @@ using VikingEngine.LootFest.Map.HDvoxel;
 
 namespace VikingEngine.DSSWars
 {
-    class ProfileSettingsState : Engine.GameState, DataStream.IStreamIOCallback
+    class PaintFlagState : Engine.GameState, DataStream.IStreamIOCallback
     {        
         InputMap input;
         int profileIx;
@@ -25,10 +25,10 @@ namespace VikingEngine.DSSWars
         Vector2 squareSz;
         //ColorButtonGroup colorButtons;
         Display.MenuSystem menuSystem;
-        ProfileEditorHud hud;
+        PaintFlagHud hud;
         bool isExiting = false;
 
-        public ProfileSettingsState(int profileIx)
+        public PaintFlagState(int profileIx)
             : base(false)
         {
             draw.ClrColor = Color.SaddleBrown;
@@ -83,7 +83,7 @@ namespace VikingEngine.DSSWars
 
             //new HUD.RichBox.RichBoxGroup(Engine.Screen.SafeArea.Position, Engine.Screen.SafeArea.Width * 0.25f,
             //    ImageLayers.Background1, HudLib.RbSettings, rbContent);
-            hud = new ProfileEditorHud(input, this);
+            hud = new PaintFlagHud(input, this);
 
         }
         
@@ -209,9 +209,9 @@ namespace VikingEngine.DSSWars
             menuSystem.openMenu();
 
             const int HueCount = 32;
-            const int LightnessCount = 16;
+            const int LightnessCount = 24;
 
-            double[] Saturations = new double[] { 1, 0.75, 0.5, 0.25, 0.1 };
+            double[] Saturations = new double[] { 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0 };
 
             GuiLayout layout = new GuiLayout(DssRef.lang.ProfileEditor_PickColor, menuSystem.menu, GuiLayoutMode.MultipleColumns, null);
             {

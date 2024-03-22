@@ -408,10 +408,16 @@ namespace VikingEngine.DSSWars.Players
 
         bool haveIncomeForArmyPurchase(bool aggresive)
         {
-            bool haveMoney = faction.gold >= DssLib.GroupDefaultCost * 20;
-            bool haveIncome = faction.NetIncome() >= DssLib.GroupDefaultCost * (aggresive ? 5 : 15);
-
-            return haveMoney && haveIncome;
+            if (aggresive)
+            {
+                return faction.gold >= DssRef.settings.AiArmyPurchase_MoneyMin_Aggresive &&
+                    faction.NetIncome() >= DssRef.settings.AiArmyPurchase_IncomeMin_Aggresive;
+            }
+            else
+            {
+                return faction.gold >= DssRef.settings.AiArmyPurchase_MoneyMin &&
+                    faction.NetIncome() >= DssRef.settings.AiArmyPurchase_IncomeMin;
+            }
         }
 
         override public void aiPlayerAsynchUpdate(float time)
@@ -441,8 +447,8 @@ namespace VikingEngine.DSSWars.Players
                 bool inWar = aggressionLevel >= AggressionLevel2_RandomAttacks ||
                     (aggressionLevel == AggressionLevel1_RevengeOnly && wars.Count > 0);
 
-                bool haveMoney = faction.gold >= DssLib.GroupDefaultCost * 20 && faction.NetIncome() > 0;
-                bool haveIncome = faction.NetIncome() >= DssLib.GroupDefaultCost * (inWar? 5 : 15);
+                //bool haveMoney = faction.gold >= DssLib.GroupDefaultCost * 20 && faction.NetIncome() > 0;
+                //bool haveIncome = faction.NetIncome() >= DssLib.GroupDefaultCost * (inWar? 5 : 15);
 
                 if (inWar && Ref.rnd.Chance(aggressionLevel == AggressionLevel2_RandomAttacks ? 0.05 : 0.3) &&
                     !mainArmyLockedInTravel())
@@ -450,7 +456,7 @@ namespace VikingEngine.DSSWars.Players
                     mainArmy_AsyncUpdate(wars);
                 }
                 else
-                if (protect && haveMoney && haveIncome)
+                if (protect && haveIncomeForArmyPurchase(inWar))
                 {
                     City city = faction.cities.GetRandomSafe(Ref.rnd);
 
@@ -575,9 +581,9 @@ namespace VikingEngine.DSSWars.Players
 
             if (mainArmyState == MainArmyState_StartNew)
             {
-                bool haveIncome = faction.NetIncome() >= 0 &&
-                    faction.gold >= DssLib.GroupDefaultCost * 5;
-                if (haveIncome)
+                //bool haveIncome = faction.NetIncome() >= 0 &&
+                //    faction.gold >= DssLib.GroupDefaultCost * 5;
+                if (haveIncomeForArmyPurchase(true))
                 {
                     //Start fresh
                     mainArmy = null;

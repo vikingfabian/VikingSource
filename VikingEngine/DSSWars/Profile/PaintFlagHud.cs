@@ -16,13 +16,13 @@ using VikingEngine.ToGG.ToggEngine.QueAction;
 
 namespace VikingEngine.DSSWars.Profile
 {
-    class ProfileEditorHud : RichboxGui
+    class PaintFlagHud : RichboxGui
     {
         public ProfileEditorHudPart part;
         
         //InputMap input;
 
-        public ProfileEditorHud(InputMap input, ProfileSettingsState state)
+        public PaintFlagHud(InputMap input, PaintFlagState state)
             : base()
         { 
             this.input = input;
@@ -35,9 +35,9 @@ namespace VikingEngine.DSSWars.Profile
     }
     class ProfileEditorHudPart: RichboxGuiPart
     {
-        public ProfileSettingsState state;
+        public PaintFlagState state;
 
-        public ProfileEditorHudPart(ProfileEditorHud gui, ProfileSettingsState state)
+        public ProfileEditorHudPart(PaintFlagHud gui, PaintFlagState state)
             : base(gui)
         {
             this.state = state;
@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars.Profile
 
         void flagcolor(ProfileColorType colorType)
         {
-            content.text(ProfileSettingsState.ProfileColorName(colorType));
+            content.text(PaintFlagState.ProfileColorName(colorType));
             content.newLine();
             content.Add(new RichboxButton(
                 new List<AbsRichBoxMember>
@@ -127,7 +127,7 @@ namespace VikingEngine.DSSWars.Profile
 
         void peoplecolor(ProfileColorType colorType)
         {
-            content.text(ProfileSettingsState.ProfileColorName(colorType));
+            content.text(PaintFlagState.ProfileColorName(colorType));
             content.newLine();
             var color = new RichBoxImage(SpriteName.WhiteArea);
             color.color = state.profile.getColor(colorType);
