@@ -109,7 +109,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return tilePos;
         }
-
+        public override Vector3 WorldPos()
+        {
+            return position;
+        }
         //public override bool Alive()
         //{
         //    return !isDeleted;

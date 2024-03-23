@@ -28,6 +28,13 @@ namespace VikingEngine.DSSWars.GameObject
         { 
             throw new NotImplementedException();
         }
+
+        virtual public Vector3 WorldPos()
+        {
+            throw new NotImplementedException();
+        }
+
+        //abstract public bool IsDeleted();
     }
     enum GameObjectType
     {

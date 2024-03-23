@@ -164,8 +164,8 @@ namespace VikingEngine.DSSWars.Players
                 panInput();
             }
 
-            
             zoomInput();
+            cameraFocusUpdate();
             updateCamera();
         }
 
@@ -535,7 +535,6 @@ namespace VikingEngine.DSSWars.Players
 
                 if (DssRef.state.localPlayers.Count == 1)
                 {
-
                     if (!player.input.DragPan.IsDown &&
                         !player.input.Select.IsDown &&
                         Input.Mouse.HasEdgePush())
@@ -550,6 +549,33 @@ namespace VikingEngine.DSSWars.Players
 
             DssRef.world.WorldBound(ref playerPointerPos.X, ref playerPointerPos.Z);
             playerPointerPos.Y = DssRef.world.GetTile(playerPointerPos).GroundY() + 0.5f;
+        }
+
+        void cameraFocusUpdate()
+        {
+            if (cameraFocus != null)
+            {   
+                Vector3 goal = cameraFocus.WorldPos();
+                goal.Y = 0;
+                Vector3 diff = goal - camera.LookTarget;
+                if (VectorExt.HasValue(diff))
+                {
+                    float panSpeed = 0.003f * Ref.DeltaGameTimeMs * camera.targetZoom;
+                    
+                    if (panSpeed >= diff.Length())
+                    {
+                        camera.LookTarget = goal;
+                    }
+                    else
+                    {
+                        diff.Normalize();
+                        Vector3 move = diff * panSpeed;
+                        camera.LookTarget += move;
+                    }
+                    
+                    playerPointerPos = camera.LookTarget;
+                } 
+            }
         }
 
         public void focusMap(bool focus)
@@ -568,7 +594,6 @@ namespace VikingEngine.DSSWars.Players
                 camera.setLookTargetXBound(DssRef.world.unitBounds.Position.X, DssRef.world.unitBounds.Right);
                 camera.setLookTargetZBound(DssRef.world.unitBounds.Position.Y, DssRef.world.unitBounds.Bottom);
 
-                //DssRef.world.unitBounds.KeepPointInsideBound_Position(ref camera.setLookTargetXBound, 
                 playerPointerPos = camera.LookTarget;
             }
         }

@@ -297,7 +297,7 @@ namespace VikingEngine.DSSWars.Players
                     if (current == tabCity)
                     { 
                         //focus on city
-                        mapControls.cameraFocus = citiesC.sel.tilePos;
+                        mapControls.cameraFocus = citiesC.sel;
                         return;
                     }
                     current++;
