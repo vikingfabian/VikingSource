@@ -11,6 +11,7 @@ using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.LootFest.Players;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Battle
@@ -31,9 +32,11 @@ namespace VikingEngine.DSSWars.Battle
         float checkIdleTime = 800;
         public bool battleState = false;
         
-
+        bool[] playerJoined = null;
         public BattleGroup(AbsMapObject m1, AbsMapObject m2) 
         {
+            playerJoined = new bool[DssRef.state.localPlayers.Count];
+
             members = new SpottedArray<AbsMapObject>(4);
             membersC = new SpottedArrayCounter<AbsMapObject>(members);
 
@@ -88,7 +91,18 @@ namespace VikingEngine.DSSWars.Battle
             m.battleGroup = this;
             if (members.AddIfNotExists(m))
             {
-                newMember =true;
+                newMember = true;
+                if (m.faction.player.IsPlayer())
+                {
+                    var player = m.faction.player.GetLocalPlayer();
+                    int ix = player.playerData.localPlayerIndex;
+                    if (!playerJoined[ix])
+                    {
+                        playerJoined[ix] = true;
+                        player.battles.Add(this);
+                    }
+                }
+
                 if (atStart)
                 {
                     placeSoldiers(m);
@@ -642,6 +656,14 @@ namespace VikingEngine.DSSWars.Battle
                     Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(c.setFaction, dominatingFaction));
                 }
             }
+
+            for (int ix = 0; ix < playerJoined.Length; ++ix)
+            {
+                if (playerJoined[ix])
+                {
+                    DssRef.state.localPlayers[ix].battles.Remove(this);
+                }
+            }
         }
 
         public override Faction GetFaction()
@@ -652,6 +674,11 @@ namespace VikingEngine.DSSWars.Battle
         public override IntVector2 TilePos()
         {
             return IntVector2.FromVec2(center);
+        }
+
+        public override Vector3 WorldPos()
+        {
+            return VectorExt.V3FromXZ(center, 0);
         }
 
         public override GameObjectType gameobjectType()

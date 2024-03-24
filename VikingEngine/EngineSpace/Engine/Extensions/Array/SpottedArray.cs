@@ -44,6 +44,22 @@ namespace VikingEngine
             return sel != null;
         }
 
+        public bool Next_Rollover()
+        {
+            if (array.Count == 0) 
+            { 
+                return false;
+            }
+
+            sel = array.NextIteration(ref selIndex);
+            if (sel == null)
+            {
+                selIndex = -1;
+                sel = array.NextIteration(ref selIndex);
+            }
+            return sel != null;
+        }
+
         public void Reset(SpottedArray<T> array)
         {
             this.array = array;

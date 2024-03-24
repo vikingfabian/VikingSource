@@ -9,6 +9,7 @@ using VikingEngine.LootFest.Players;
 using VikingEngine.HUD.RichBox;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.DSSWars.Battle;
 
 namespace VikingEngine.DSSWars.Players
 {    
@@ -39,9 +40,11 @@ namespace VikingEngine.DSSWars.Players
         public PlayerToPlayerDiplomacy[] toPlayerDiplomacies = null;
         public Automation automation;
 
+        public SpottedArray<Battle.BattleGroup> battles = new SpottedArray<Battle.BattleGroup>(4);
+
         int tabCity = -1;
-        Army tabArmy = null;
-        Army tabBattle = null;
+        SpottedArrayCounter<Army> tabArmy;
+        SpottedArrayCounter<BattleGroup> tabBattle;
 
         public LocalPlayer(Faction faction, int playerindex, int numPlayers)
             :base(faction)
@@ -49,6 +52,9 @@ namespace VikingEngine.DSSWars.Players
             var pStorage = DssRef.storage.localPlayers[playerindex];
             faction.SetProfile(DssRef.storage.profiles[pStorage.profile]);
             faction.diplomaticSide = DiplomaticSide.Light;
+
+            tabArmy = faction.armiesCounter.Clone();
+            tabBattle = new SpottedArrayCounter<BattleGroup>(battles);
 
             input = new InputMap(playerindex);
             input.setInputSource(pStorage.inputSource.sourceType, pStorage.inputSource.controllerIndex);
@@ -282,6 +288,7 @@ namespace VikingEngine.DSSWars.Players
 
         void updateObjectTabbing()
         {
+            //CITY
             if (input.NextCity.DownEvent && faction.cities.Count > 0)
             {
                 tabCity++;
@@ -301,6 +308,26 @@ namespace VikingEngine.DSSWars.Players
                         return;
                     }
                     current++;
+                }
+            }
+
+            //ARMY
+            if (input.NextArmy.DownEvent)
+            {
+                if (tabArmy.Next_Rollover())
+                {
+                    mapControls.cameraFocus = tabArmy.sel;
+                    return;
+                }
+            }
+
+            //BATTLE
+            if (input.NextBattle.DownEvent)
+            {
+                if (tabBattle.Next_Rollover())
+                {
+                    mapControls.cameraFocus = tabBattle.sel;
+                    return;
                 }
             }
         }
