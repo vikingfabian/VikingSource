@@ -20,7 +20,6 @@ namespace VikingEngine.DSSWars.GameObject
         /// Pågående strider, om order ges läggs inte battle till förrän armeerna är intill varandra
         /// </summary>
         
-        //SpottedArrayCounter<AbsMapObject> battlesCounter;
         public bool enterRender_asynch = false;
         public bool inRender = false;
 
@@ -106,20 +105,19 @@ namespace VikingEngine.DSSWars.GameObject
             return this;
         }
 
+        public override IntVector2 TilePos()
+        {
+            return tilePos;
+        }
+        public override Vector3 WorldPos()
+        {
+            return position;
+        }
         //public override bool Alive()
         //{
         //    return !isDeleted;
         //}
     }
 
-    enum GameObjectType
-    {
-        Faction,
-        City,
-        Army,
-        SoldierGroup,
-        Soldier,
-       
-        NUM_NON,
-    }
+    
 }

@@ -23,12 +23,12 @@ namespace VikingEngine.DSSWars
         public IButtonMap ControllerCancel;
         public IButtonMap ControllerFocus;
         public IButtonMap Execute;
-
         public IButtonMap Stop;
 
         public IButtonMap DragPan;
         public IButtonMap NextArmy;
-        public IButtonMap PrevBattle;
+        public IButtonMap NextCity;
+        public IButtonMap NextBattle;
         public IButtonMap CardMenu;
         public IButtonMap Options;
         public IButtonMap Home;
@@ -72,6 +72,10 @@ namespace VikingEngine.DSSWars
             ToggleHudDetail = new KeyboardButtonMap(Keys.U);
             GameSpeed = new KeyboardButtonMap(Keys.Tab);
             PauseGame = new KeyboardButtonMap(Keys.Space);
+
+            NextCity = new KeyboardButtonMap(Keys.D1);
+            NextArmy = new KeyboardButtonMap(Keys.D2);
+            NextBattle = new KeyboardButtonMap(Keys.D3);
             menuInput.keyboardSetup();
         }
         public override void xboxSetup()
@@ -96,6 +100,18 @@ namespace VikingEngine.DSSWars
             PauseGame = new XboxButtonMap(Buttons.LeftShoulder, inputSource.controllerIndex);
 
             menuInput.xboxSetup(inputSource.controllerIndex);
+
+            NextCity = new TwoCombinedButtonsMap(
+                new XboxButtonMap(Buttons.LeftTrigger, inputSource.controllerIndex), 
+                new XboxButtonMap(Buttons.A, inputSource.controllerIndex));
+
+            NextArmy = new TwoCombinedButtonsMap(
+                new XboxButtonMap(Buttons.LeftTrigger, inputSource.controllerIndex),
+                new XboxButtonMap(Buttons.X, inputSource.controllerIndex));
+
+            NextBattle = new TwoCombinedButtonsMap(
+                new XboxButtonMap(Buttons.LeftTrigger, inputSource.controllerIndex),
+                new XboxButtonMap(Buttons.Y, inputSource.controllerIndex));
 
         }
 

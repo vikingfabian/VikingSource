@@ -7597,7 +7597,7 @@ public class SteamAPI
 {
 public static bool Init(uint appId)
 {
-SteamAPIInterop.SteamAPI_RestartAppIfNecessary (appId);
+SteamAPIInterop.SteamAPI_RestartAppIfNecessary(appId);
 return SteamAPIInterop.SteamAPI_Init ();
 }
 

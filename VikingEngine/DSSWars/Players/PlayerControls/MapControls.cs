@@ -38,6 +38,8 @@ namespace VikingEngine.DSSWars.Players
         bool controllerInput;
         public bool unlockEdgePush = false;
 
+        public AbsGameObject cameraFocus = null;
+
         public MapControls(LocalPlayer player)
         {
             this.player = player;
@@ -162,8 +164,8 @@ namespace VikingEngine.DSSWars.Players
                 panInput();
             }
 
-            
             zoomInput();
+            cameraFocusUpdate();
             updateCamera();
         }
 
@@ -519,7 +521,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (hasMouseMapMoveInput())
                 {
-                    bool hasValue;
+                    //bool hasValue;
                     Vector3 prevMousePosition = screenPosToWorldPos(Input.Mouse.Position - Input.Mouse.MoveDistance);
                    
                     Vector3 diff = mousePosition - prevMousePosition;
@@ -533,7 +535,6 @@ namespace VikingEngine.DSSWars.Players
 
                 if (DssRef.state.localPlayers.Count == 1)
                 {
-
                     if (!player.input.DragPan.IsDown &&
                         !player.input.Select.IsDown &&
                         Input.Mouse.HasEdgePush())
@@ -550,6 +551,33 @@ namespace VikingEngine.DSSWars.Players
             playerPointerPos.Y = DssRef.world.GetTile(playerPointerPos).GroundY() + 0.5f;
         }
 
+        void cameraFocusUpdate()
+        {
+            if (cameraFocus != null)
+            {   
+                Vector3 goal = cameraFocus.WorldPos();
+                goal.Y = 0;
+                Vector3 diff = goal - camera.LookTarget;
+                if (VectorExt.HasValue(diff))
+                {
+                    float panSpeed = 0.003f * Ref.DeltaGameTimeMs * camera.targetZoom;
+                    
+                    if (panSpeed >= diff.Length())
+                    {
+                        camera.LookTarget = goal;
+                    }
+                    else
+                    {
+                        diff.Normalize();
+                        Vector3 move = diff * panSpeed;
+                        camera.LookTarget += move;
+                    }
+                    
+                    playerPointerPos = camera.LookTarget;
+                } 
+            }
+        }
+
         public void focusMap(bool focus)
         {
             controllerPointer.Visible = focus;
@@ -560,11 +588,12 @@ namespace VikingEngine.DSSWars.Players
             pan.Y = 0;
             if (VectorExt.HasValue(pan))
             {
+                cameraFocus = null;
+
                 camera.LookTarget -= pan;
                 camera.setLookTargetXBound(DssRef.world.unitBounds.Position.X, DssRef.world.unitBounds.Right);
                 camera.setLookTargetZBound(DssRef.world.unitBounds.Position.Y, DssRef.world.unitBounds.Bottom);
 
-                //DssRef.world.unitBounds.KeepPointInsideBound_Position(ref camera.setLookTargetXBound, 
                 playerPointerPos = camera.LookTarget;
             }
         }

@@ -9,6 +9,7 @@ using VikingEngine.LootFest.Players;
 using VikingEngine.HUD.RichBox;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.DSSWars.Battle;
 
 namespace VikingEngine.DSSWars.Players
 {    
@@ -39,12 +40,21 @@ namespace VikingEngine.DSSWars.Players
         public PlayerToPlayerDiplomacy[] toPlayerDiplomacies = null;
         public Automation automation;
 
+        public SpottedArray<Battle.BattleGroup> battles = new SpottedArray<Battle.BattleGroup>(4);
+
+        int tabCity = -1;
+        SpottedArrayCounter<Army> tabArmy;
+        SpottedArrayCounter<BattleGroup> tabBattle;
+
         public LocalPlayer(Faction faction, int playerindex, int numPlayers)
             :base(faction)
         {
             var pStorage = DssRef.storage.localPlayers[playerindex];
             faction.SetProfile(DssRef.storage.profiles[pStorage.profile]);
             faction.diplomaticSide = DiplomaticSide.Light;
+
+            tabArmy = faction.armiesCounter.Clone();
+            tabBattle = new SpottedArrayCounter<BattleGroup>(battles);
 
             input = new InputMap(playerindex);
             input.setInputSource(pStorage.inputSource.sourceType, pStorage.inputSource.controllerIndex);
@@ -263,7 +273,7 @@ namespace VikingEngine.DSSWars.Players
                 updateGameSpeed();
             }
 
-            
+            updateObjectTabbing();
 
             //DssRef.state.detailMap.PlayerUpdate(mapControls.playerPointerPos, bUnitDetailLayer);
             drawUnitsView.Update();
@@ -274,6 +284,52 @@ namespace VikingEngine.DSSWars.Players
             diplomacyMap?.asynchUpdate();
 
             automation.asyncUpdate();
+        }
+
+        void updateObjectTabbing()
+        {
+            //CITY
+            if (input.NextCity.DownEvent && faction.cities.Count > 0)
+            {
+                tabCity++;
+                if (tabCity >= faction.cities.Count)
+                {
+                    tabCity = 0;
+                }
+
+                int current = 0;
+                var citiesC = faction.cities.counter();
+                while (citiesC.Next())
+                {
+                    if (current == tabCity)
+                    { 
+                        //focus on city
+                        mapControls.cameraFocus = citiesC.sel;
+                        return;
+                    }
+                    current++;
+                }
+            }
+
+            //ARMY
+            if (input.NextArmy.DownEvent)
+            {
+                if (tabArmy.Next_Rollover())
+                {
+                    mapControls.cameraFocus = tabArmy.sel;
+                    return;
+                }
+            }
+
+            //BATTLE
+            if (input.NextBattle.DownEvent)
+            {
+                if (tabBattle.Next_Rollover())
+                {
+                    mapControls.cameraFocus = tabBattle.sel;
+                    return;
+                }
+            }
         }
 
         void updateDiplomacy()

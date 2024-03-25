@@ -11,6 +11,7 @@ namespace VikingEngine.Input
     { //Index får inte förändras
         NoButtonMap,
         AlternativeButtonsMap,
+        CombinedButtonsMap,
         Keyboard,
         Mouse,
         XController,
@@ -394,7 +395,56 @@ namespace VikingEngine.Input
         }
     }
 
-    
+    struct TwoCombinedButtonsMap : IButtonMap
+    {
+        IButtonMap altKey;
+        IButtonMap key;
+
+        public TwoCombinedButtonsMap(IButtonMap altKey, IButtonMap key)
+        {
+            this.altKey = altKey;
+            this.key = key;
+        }
+
+        public SpriteName Icon { get { return SpriteName.MissingImage; } }
+
+        public void ListIcons(List<SpriteName> list)
+        {
+            list.Add(altKey.Icon);
+            list.Add(key.Icon);
+        }
+
+        public bool IsDown { get { return altKey.IsDown && key.IsDown; } }
+        public bool DownEvent
+        {
+            get
+            {
+                return (altKey.IsDown && key.IsDown) && (altKey.DownEvent || key.DownEvent);
+            }
+        }
+        public bool UpEvent { get { return (altKey.IsDown != key.IsDown) && (altKey.UpEvent || key.UpEvent); ; } }
+        public float Value { get { return IsDown ? 1f : 0f; } }
+        //public SpriteName[] Icons { get { return icons; } }
+        public string ButtonName { get { return altKey.ButtonName + " + " + key.ButtonName; } }
+        public bool IsMouse { get { return key.IsMouse; } }
+        public InputSourceType inputSource { get { return key.inputSource; } }
+        public int buttonIndex { get { return key.buttonIndex; } }
+        public int ControllerIndex { get { return key.ControllerIndex; } set { } }
+
+        public void write(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)ButtonMapType.CombinedButtonsMap);
+            altKey.write(w);
+            key.write(w);
+        }
+        public void read(System.IO.BinaryReader r)
+        {
+            altKey = MapRead.Button(r);
+            key = MapRead.Button(r);
+        }
+    }
+
+
 
     struct KeyboardButtonMap : IButtonMap
     {        
