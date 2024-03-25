@@ -7,6 +7,7 @@ using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.Graphics;
+using VikingEngine.Input;
 using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.HUD.RichBox
@@ -158,8 +159,28 @@ namespace VikingEngine.HUD.RichBox
                },
                new RbAction_ChangeInt(property, propertyIx, +10, intDisplay.refresh)));
             
+        }
 
+        public void ButtonDescription(IButtonMap buttonMap, string desc)
+        {
+            newLine();
+            ButtonMap(buttonMap);
+            space();
+            Add(new RichBoxText(desc));
+        }
+        public void ButtonMap(IButtonMap buttonMap)
+        { 
+            List<SpriteName> sprites = new List<SpriteName>(2);
+            buttonMap.ListIcons(sprites);
 
+            for (int i = 0; i < sprites.Count; i++)
+            {
+                Add(new RichBoxImage(sprites[i]));
+                if (i < sprites.Count - 1)
+                {
+                    Add(new RichBoxText("+"));
+                }
+            }
         }
     }
 }

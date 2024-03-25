@@ -2273,6 +2273,9 @@ namespace VikingEngine
                     add(SpriteName.WarsUnitIcon_Viking, 2, 2);
                     add(SpriteName.WarsUnitIcon_Greensoldier, 2, 2);
                     add(SpriteName.WarsUnitIcon_Folkman, 2, 2);
+
+                    addWithSizeDef(SpriteName.TextureHueSaturation, currentIndex, 1, 1, 45, 45);
+                    addWithSizeDef(SpriteName.TextureDarknessGradient, currentIndex, 1, 1, 45, 45);
                 }
 
                 currentIndex = numTilesWidth * 96;
@@ -2296,6 +2299,7 @@ namespace VikingEngine
 
                     add(SpriteName.WarsDarkLordBossIcon);
                     add(SpriteName.WarsFactoryIcon);
+                    add(SpriteName.ColorPickerCircle);
                 }
 
                 currentIndex = numTilesWidth * 106;

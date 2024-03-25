@@ -9,6 +9,7 @@ namespace VikingEngine.DSSWars
     class FlagDesign
     {
         public static FlagDesign[] AiBanner;
+        public static FlagDesign PlayerGriffin;
         //public static FlagDesign DarkLordBanner, DarkFollowersBanner, UnitedKingdomsBanner;
 
         public static void Init()
@@ -157,6 +158,25 @@ namespace VikingEngine.DSSWars
                 AiBanner6,
             };
 
+            PlayerGriffin = new FlagDesign(new byte[]
+            {
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 1, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0,
+                0, 1, 1, 1, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 2, 0, 0, 0, 2, 2, 0, 0, 0, 2, 0, 2, 0, 0,
+                0, 2, 2, 0, 0, 2, 2, 2, 0, 0, 2, 0, 2, 0, 0, 0,
+                0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 0, 2, 0, 2, 2, 0,
+                0, 2, 1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0,
+                0, 0, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 2, 1, 0, 2, 2, 2, 2, 2, 2, 0, 0, 0, 2, 2, 0,
+                0, 0, 1, 0, 0, 0, 2, 2, 2, 2, 2, 2, 0, 2, 0, 0,
+                0, 0, 1, 0, 0, 0, 0, 0, 2, 2, 2, 0, 2, 2, 0, 0,
+                0, 0, 1, 0, 0, 0, 2, 2, 0, 2, 2, 2, 0, 0, 0, 0,
+                0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 2, 2, 0, 0, 2, 0, 2, 0, 0, 0, 0,
+                0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0,
+            });
             //DarkLordBanner = new FlagDesign(new byte[]
             //{
             //    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -179,13 +199,13 @@ namespace VikingEngine.DSSWars
 
         }
 
-    public Grid2D<byte> dataGrid;
+        public Grid2D<byte> dataGrid;
 
-    public FlagDesign(System.IO.BinaryReader r)
-    {
-        basicInit();
-        read(r);
-    }
+        public FlagDesign(System.IO.BinaryReader r)
+        {
+            basicInit();
+            read(r);
+        }
 
         public FlagDesign(byte[] bytearray)
         {

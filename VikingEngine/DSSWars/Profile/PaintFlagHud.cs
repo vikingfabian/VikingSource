@@ -19,8 +19,9 @@ namespace VikingEngine.DSSWars.Profile
     class PaintFlagHud : RichboxGui
     {
         public ProfileEditorHudPart part;
-        
-        //InputMap input;
+        public HSLColorArea colorArea;
+       
+
 
         public PaintFlagHud(InputMap input, PaintFlagState state)
             : base()
@@ -29,8 +30,10 @@ namespace VikingEngine.DSSWars.Profile
             settings = HudLib.richboxGui;
             settings.width= Engine.Screen.Width * 0.25f;
 
-            part=new ProfileEditorHudPart(this, state);
+            part = new ProfileEditorHudPart(this, state);
             parts = new List<RichboxGuiPart> { part };
+
+            colorArea = new HSLColorArea(input, state);
         }
     }
     class ProfileEditorHudPart: RichboxGuiPart
@@ -102,13 +105,13 @@ namespace VikingEngine.DSSWars.Profile
         {
             content.text(PaintFlagState.ProfileColorName(colorType));
             content.newLine();
-            content.Add(new RichboxButton(
-                new List<AbsRichBoxMember>
-                {
-                    new RichBoxImage(SpriteName.IconColorPick),
-                },
-                new RbAction1Arg<ProfileColorType>(state.changeColor, colorType), null, true));
-            content.space();
+            //content.Add(new RichboxButton(
+            //    new List<AbsRichBoxMember>
+            //    {
+            //        new RichBoxImage(SpriteName.IconColorPick),
+            //    },
+            //    new RbAction1Arg<ProfileColorType>(state.changeColor, colorType), null, true));
+            //content.space();
             var color = new RichBoxImage(SpriteName.WhiteArea);
             color.color = state.profile.getColor(colorType);
             content.Add(new RichboxButton(
@@ -118,6 +121,7 @@ namespace VikingEngine.DSSWars.Profile
                     color,
                 },
                 new RbAction1Arg<ProfileColorType>(selectColorType, colorType), null, true));
+
             if (state.selectedColorType == colorType)
             {
                 content.Add(new RichBoxImage(SpriteName.LfNpcSpeechArrow));
@@ -135,10 +139,22 @@ namespace VikingEngine.DSSWars.Profile
                 new List<AbsRichBoxMember>
                 {
                     new RichBoxImage(SpriteName.IconColorPick),
-                    color
+                    color,
                 },
-                new RbAction1Arg<ProfileColorType>(state.changeColor, colorType), null, true));
-            
+                new RbAction1Arg<ProfileColorType>(selectColorType, colorType), null, true));
+
+            if (state.selectedColorType == colorType)
+            {
+                content.Add(new RichBoxImage(SpriteName.LfNpcSpeechArrow));
+            }
+            //content.Add(new RichboxButton(
+            //    new List<AbsRichBoxMember>
+            //    {
+            //        new RichBoxImage(SpriteName.IconColorPick),
+            //        color
+            //    },
+            //    new RbAction1Arg<ProfileColorType>(state.changeColor, colorType), null, true));
+
             content.newLine();
         }
 
@@ -151,7 +167,8 @@ namespace VikingEngine.DSSWars.Profile
 
         void selectColorType(ProfileColorType colorType)
         {
-            state.selectedColorType = colorType;
+            state.setColorType(colorType);
+            
             refresh();
         }
 

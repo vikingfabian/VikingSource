@@ -847,17 +847,18 @@ namespace VikingEngine.DSSWars.GameObject
             //Properties
             if (nobelHouse)
             {
+                args.content.newLine();
                 args.content.ListDot();
                 args.content.Add(new RichBoxText(DssRef.lang.Building_NobelHouse));
-                args.content.newLine();
             }
 
             if (CityType == CityType.Factory)
             {
+                args.content.newLine();
                 args.content.ListDot();
                 args.content.Add(new RichBoxImage(SpriteName.WarsFactoryIcon));
                 args.content.Add(new RichBoxText(DssRef.lang.Building_DarkFactory));
-                args.content.newLine();
+                
             }
         }
 

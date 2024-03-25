@@ -198,6 +198,12 @@ namespace VikingEngine.DSSWars.Display
                         {
                             content.text("City count: " + TextLib.LargeNumber(faction.cities.Count));
                             content.text("Army count: " + TextLib.LargeNumber(faction.armies.Count));
+
+                            content.ButtonDescription(player.input.NextCity, "Next city");
+                            content.ButtonDescription(player.input.NextArmy, "Next army");
+                            content.ButtonDescription(player.input.NextBattle, "Next battle");
+
+
                             content.newParagraph();
                         }
 

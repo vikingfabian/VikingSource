@@ -94,7 +94,7 @@ namespace VikingEngine.DSSWars
             new SpriteSheet();
             LootFest.Data.Block.Init();
             ProfileData.Init();
-            FlagDesign.Init();
+            
             new GameObject.AllUnits();
             new Models().loadContent();
 
@@ -146,6 +146,7 @@ namespace VikingEngine.DSSWars
 
         void asynchStorageLoading()
         {
+            FlagDesign.Init();
             new Data.GameStorage().Load();
             loadingDataComplete = true;
         }

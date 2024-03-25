@@ -1,10 +1,16 @@
 ﻿Change Log
-*Ai must save twice as much before recruiting, saving to spending swings harder on high aggresivity
+* Ai must save twice as much money before recruiting, money-saving to money-spending swings harder on high aggresivity
+* Color picker for flag design
+* More default flag designs
+* Tab between cities, armies and battles with key 1, 2, 3 or buttons LT+A, X, Y 
 
+-Do you think the tabbing also should select the unit?
 
 Error
 -Armies blir non-responsive
 -gubbar som fastnar
+-also path finding of a land army will often prefer water over land when the boat building will cause the travel time to take considerably longer than if it went over land
+from what i've seen, this generally only happens if the army is on a land tile immediately adjacent to water
 
 Retreat system
 -retreat av de sista motståndarna
@@ -22,6 +28,9 @@ Polish
 -zoom av diplomacy
 //-omplacera workforce hud
 -AI sök fiende armeer som passerar
+-difficulty slider
+-battlegrid: would it be possible to just not let units move into a water tile if it is a land battle?
+-merc cost till difficulty
 
 Art
 -checkbox art
@@ -29,18 +38,14 @@ Art
 
 Steam Launch Roadmap
 -Fail state for the game
+-End credits screen
 -Localization to 8 languages
+-Full controller support
 
--(maybe) Full controller support
+-(maybe) Battle retreat system 
 -(maybe) Save
 -(maybe) Mountain ridges and water reefs that block movement
 -(maybe) Visually display city guard size
--(maybe) Road building
--(maybe) Linux support
--(maybe) Soldiers will fight in formation
--(maybe) Some basic resources
-
--(Removed) Boost soldiers with a command system
 
 
 

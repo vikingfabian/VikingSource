@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-
+using System.Net;
 using System.Text;
 using VikingEngine.HUD;
 using VikingEngine.LootFest.Map.HDvoxel;
@@ -91,12 +91,55 @@ namespace VikingEngine.DSSWars
                                 setColor(ProfileColorType.Detail1, Color.Pink);
                                 setColor(ProfileColorType.Detail2, Color.Brown);
                                 break;
+
+                            case 4:
+                                setColor(ProfileColorType.Main, new Color(63, 79, 63));
+                                setColor(ProfileColorType.Detail1, new Color(0, 0, 0));
+                                setColor(ProfileColorType.Detail2, new Color(220, 213, 222));
+
+                                flagDesign = FlagDesign.PlayerGriffin;
+                                break;
+
+                            case 5:
+                                setColor(ProfileColorType.Main, new Color(139, 2, 2));
+                                setColor(ProfileColorType.Detail1, new Color(181, 133, 94));
+                                setColor(ProfileColorType.Detail2, new Color(220, 213, 222));
+
+                                flagDesign = FlagDesign.PlayerGriffin;
+                                break;
+
+                            case 6:
+                                setColor(ProfileColorType.Main, new Color(46, 73, 94));
+                                setColor(ProfileColorType.Detail1, new Color(99, 175, 174));
+                                setColor(ProfileColorType.Detail2, new Color(243, 232, 191));
+
+                                flagDesign = FlagDesign.PlayerGriffin;
+                                break;
+
+                            case 7:
+                                setColor(ProfileColorType.Main, new Color(98, 42, 52));
+                                setColor(ProfileColorType.Detail1, new Color(205, 193, 68));
+                                setColor(ProfileColorType.Detail2, new Color(240, 193, 193));
+
+                                flagDesign = FlagDesign.PlayerGriffin;
+                                break;
+
+
+
+                            default:
+                                setColor(ProfileColorType.Main, Color.DarkGray);
+                                setColor(ProfileColorType.Detail1, Color.Brown);
+                                setColor(ProfileColorType.Detail2, Color.LightGray);
+                                break;
                         }
 
                         setColor(ProfileColorType.Skin, Color.Beige);
                         setColor(ProfileColorType.Hair, Color.Brown);
 
-                        flagDesign = new FlagDesign();
+                        if (flagDesign == null)
+                        {
+                            flagDesign = new FlagDesign();
+                        }
                     }
                     break;
 

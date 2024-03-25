@@ -8,6 +8,9 @@ using Microsoft.Xna.Framework.Input;
 using VikingEngine.HUD;
 using VikingEngine.DSSWars.Profile;
 using VikingEngine.LootFest.Map.HDvoxel;
+using VikingEngine.PJ.Tanks;
+using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
+
 
 namespace VikingEngine.DSSWars
 {
@@ -16,11 +19,11 @@ namespace VikingEngine.DSSWars
         InputMap input;
         int profileIx;
         public ProfileData profile;
-        public ProfileColorType selectedColorType = ProfileColorType.Main;
+        public ProfileColorType selectedColorType;
         public FlagDesign file;
         Grid2D<Image> imageGrid;
         Vector2 start;
-        VectorRect paintArea;
+        public VectorRect paintArea;
         float squareWidth;
         Vector2 squareSz;
         //ColorButtonGroup colorButtons;
@@ -40,6 +43,8 @@ namespace VikingEngine.DSSWars
             input = new InputMap(player);
             this.profileIx = profileIx;
             profile = DssRef.storage.profiles[profileIx].Clone();
+
+            
 
             file = profile.flagDesign;
 
@@ -67,7 +72,7 @@ namespace VikingEngine.DSSWars
                     area.Size, ImageLayers.Bottom5));
             }
 
-            float paintAreaEdge = Engine.Screen.Width * 0.05f;
+            //float paintAreaEdge = Engine.Screen.Width * 0.05f;
 
             //colorButtons = new ColorButtonGroup(paintArea, profile);
             
@@ -84,6 +89,7 @@ namespace VikingEngine.DSSWars
             //new HUD.RichBox.RichBoxGroup(Engine.Screen.SafeArea.Position, Engine.Screen.SafeArea.Width * 0.25f,
             //    ImageLayers.Background1, HudLib.RbSettings, rbContent);
             hud = new PaintFlagHud(input, this);
+            setColorType(ProfileColorType.Main);
 
         }
         
@@ -99,38 +105,53 @@ namespace VikingEngine.DSSWars
                 }
                 else
                 {
-                    updateInput();
+                    if (hud.colorArea.updateInput())
+                    {
+                        profile.setColor(selectedColorType, hud.colorArea.getColor());
+
+                        onColorChange();
+                    }
+                    else
+                    {
+                        updateInput();
+                    }
                 }
 
             }
+        }
+
+        public void setColorType(ProfileColorType colorType)
+        {
+            selectedColorType = colorType;
+            var color = profile.getColor(colorType);
+
+            hud.colorArea.setColor(color);
         }
 
         IntVector2 gridPosition;
         static readonly IntVector2 GridMaxPos = new IntVector2(DssLib.UserHeraldicWidth - 1);
         void updateInput()
         {
-            //colorButtons.update();
-            Vector2 pointer = Input.Mouse.Position;
-
-            bool inPaintArea = paintArea.IntersectPoint(pointer);
-            if (inPaintArea)
+            if (selectedColorType <= ProfileColorType.Detail2)
             {
-                Vector2 paintPos = pointer - paintArea.Position;
-                gridPosition = new IntVector2(
-                    (int)(paintPos.X / squareWidth),
-                    (int)(paintPos.Y / squareWidth));
-                gridPositionBounds();
+                Vector2 pointer = Input.Mouse.Position;
 
-                if (input.Select.IsDown || Input.Mouse.IsButtonDown(MouseButton.Left))
+                bool inPaintArea = paintArea.IntersectPoint(pointer);
+                if (inPaintArea)
                 {
-                    setColor(selectedColorType);
-                }
-            }
+                    Vector2 paintPos = pointer - paintArea.Position;
+                    gridPosition = new IntVector2(
+                        (int)(paintPos.X / squareWidth),
+                        (int)(paintPos.Y / squareWidth));
+                    gridPositionBounds();
 
-            //if (input.menuInput.openCloseInputEvent())
-            //{
-            //    mainMenu();
-            //}
+                    if (input.Select.IsDown || Input.Mouse.IsButtonDown(MouseButton.Left))
+                    {
+                        setColor(selectedColorType);
+                    }
+                }
+
+            }
         }
        public void discardAndExit()
         {
