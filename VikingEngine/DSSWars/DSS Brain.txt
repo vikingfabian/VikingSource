@@ -1,7 +1,8 @@
 ﻿Change Log
-* 
+* Tab between cities and armies - select added
 
--Do you think the tabbing also should select the unit?
+
+
 
 Error
 -also path finding of a land army will often prefer water over land when the boat building will cause the travel time to take considerably longer than if it went over land
@@ -13,14 +14,13 @@ Retreat system
 -reassemble av flydd arme
 
 Polish
--select //tabbing betwen cities and armies
 -attack warning -Battle notification
 -diplomacy toggle
 -end credits
 -zoom av diplomacy
 //-omplacera workforce hud
 -AI sök fiende armeer som passerar
--difficulty slider
+-difficulty slider (merc cost)
 -ai start delay option
 -battlegrid: would it be possible to just not let units move into a water tile if it is a land battle?
 -merc cost till difficulty

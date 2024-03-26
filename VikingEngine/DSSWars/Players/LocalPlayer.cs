@@ -305,6 +305,8 @@ namespace VikingEngine.DSSWars.Players
                     { 
                         //focus on city
                         mapControls.cameraFocus = citiesC.sel;
+                        mapSelect(citiesC.sel);
+
                         return;
                     }
                     current++;
@@ -317,6 +319,8 @@ namespace VikingEngine.DSSWars.Players
                 if (tabArmy.Next_Rollover())
                 {
                     mapControls.cameraFocus = tabArmy.sel;
+                    mapSelect(tabArmy.sel);
+
                     return;
                 }
             }
@@ -495,8 +499,7 @@ namespace VikingEngine.DSSWars.Players
         }
 
         void mapSelect()
-        {           
-
+        { 
             bool oldselection = clearSelection();
             
             bool newselection = clickHover();
@@ -507,6 +510,15 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        void mapSelect(AbsWorldObject mapObject)
+        {
+            clearSelection();
+
+            mapControls.hover.obj = mapObject;
+            clickHover();
+
+        }
+        
         public bool clearSelection()
         {
             bool bClear=false;
