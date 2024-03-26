@@ -253,7 +253,7 @@ namespace VikingEngine.DSSWars.Players
 
             if (IsLocal)
             {
-                if (faction.factiontype == FactionType.DarkFollower)
+                if (faction.factiontype == FactionType.SouthHara)
                 {
                     lib.DoNothing();
                 }
@@ -429,12 +429,16 @@ namespace VikingEngine.DSSWars.Players
 
             if (StartupSettings.RunAI && nextDecisionTimer.CountDownGameTime(time))
             {
-                if (faction.cities.Count == 0 && faction.armies.Count == 0)
+                if (faction.cities.Count == 0)
                 {
-                    nextDecisionTimer.MilliSeconds = 10000;
+                    mainArmy = null;
+                    if (faction.armies.Count == 0)
+                    {
+                        nextDecisionTimer.MilliSeconds = 10000;
+                    }
                     return;
                 }
-                if (faction.factiontype == FactionType.DarkLord)
+                if (faction.factiontype == FactionType.DarkFollower)
                 { 
                     lib.DoNothing();
                 }
@@ -1034,7 +1038,7 @@ namespace VikingEngine.DSSWars.Players
                 Army army = StrongIdleArmy();
 
                 if (army != null &&
-                    army != mainArmy)
+                    (army != mainArmy || Ref.rnd.Chance(0.25)))
                 {
                     if (
                         wars.Count == 0 ||
