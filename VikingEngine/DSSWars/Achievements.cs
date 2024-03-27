@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars
         public Achievements() 
         {
             DssRef.achieve = this;
-            difficultyPerc = DssRef.storage.DifficultyLevelPerc();
+            difficultyPerc = DssRef.difficulty.TotalDifficulty();
         }
         public void UnlockAchievement(AchievementIndex achievement)
         {

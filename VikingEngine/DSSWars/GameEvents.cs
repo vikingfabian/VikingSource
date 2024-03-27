@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars
 
         public GameEvents()
         {
-            if (DssRef.storage.bossTimeSettings != BossTimeSettings.Never)
+            if (DssRef.difficulty.bossTimeSettings != BossTimeSettings.Never)
             {
                 prepareNext();
             }
@@ -86,7 +86,7 @@ namespace VikingEngine.DSSWars
                             new IntervalF(60,80),//VeryLate,
                         };
 
-                        nextTotalGameTimeMin = timeMinutes[(int)DssRef.storage.bossTimeSettings];
+                        nextTotalGameTimeMin = timeMinutes[(int)DssRef.difficulty.bossTimeSettings];
                         nextExpectedPlayerSize = new IntervalF(DssLib.HeadCityMaxWorkForce * 2f, DssLib.HeadCityMaxWorkForce * 4f);
                     }
                     break;
@@ -104,7 +104,7 @@ namespace VikingEngine.DSSWars
                             new IntervalF(140,320),//VeryLate,
                         };
 
-                        nextTotalGameTimeMin = timeMinutes[(int)DssRef.storage.bossTimeSettings];
+                        nextTotalGameTimeMin = timeMinutes[(int)DssRef.difficulty.bossTimeSettings];
                         nextExpectedPlayerSize = new IntervalF(DssLib.HeadCityMaxWorkForce * 4f, DssLib.HeadCityMaxWorkForce * 8f);
                     }
                     break;
@@ -152,7 +152,7 @@ namespace VikingEngine.DSSWars
 
                                 Range soldierCount = Range.Zero;
 
-                                switch (DssRef.storage.bossSize)
+                                switch (DssRef.difficulty.bossSize)
                                 {
                                     case BossSize.Small:
                                         soldierCount = new Range(10, 14);
@@ -251,7 +251,7 @@ namespace VikingEngine.DSSWars
 
         public void asyncUpdate()
         {
-            if (DssRef.storage.bossTimeSettings != BossTimeSettings.Never &&
+            if (DssRef.difficulty.bossTimeSettings != BossTimeSettings.Never &&
                 (
                 nextEvent == EventType.SouthShips ||
                 nextEvent == EventType.DarkLordWarning ||

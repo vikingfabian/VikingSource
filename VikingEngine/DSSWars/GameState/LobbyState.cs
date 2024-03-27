@@ -115,36 +115,36 @@ namespace VikingEngine.DSSWars
                 mapSizes.Add(new GuiOption<MapSize>(name, sz));
             }
             
-            var agressiveOptions = new List<GuiOption<AiAggressivity>>((int)AiAggressivity.NUM);
-            for (AiAggressivity agg = 0; agg < AiAggressivity.NUM; agg++)
-            {
-                agressiveOptions.Add(new GuiOption<AiAggressivity>(agg.ToString(), agg));
-            }
+            //var agressiveOptions = new List<GuiOption<AiAggressivity>>((int)AiAggressivity.NUM);
+            //for (AiAggressivity agg = 0; agg < AiAggressivity.NUM; agg++)
+            //{
+            //    agressiveOptions.Add(new GuiOption<AiAggressivity>(agg.ToString(), agg));
+            //}
 
-            var aiEconomyOptions = new List<GuiOption<int>>(DssLib.AiEconomyLevel.Length);
-            for (int i = 0; i < DssLib.AiEconomyLevel.Length; ++i)
-            {
-                aiEconomyOptions.Add(new GuiOption<int>(DssLib.AiEconomyLevel[i].ToString() + "%", i));
-            }
+            //var aiEconomyOptions = new List<GuiOption<int>>(DssLib.AiEconomyLevel.Length);
+            //for (int i = 0; i < DssLib.AiEconomyLevel.Length; ++i)
+            //{
+            //    aiEconomyOptions.Add(new GuiOption<int>(DssLib.AiEconomyLevel[i].ToString() + "%", i));
+            //}
 
-            var diplomacyOptions = new List<GuiOption<int>>(GameStorage.DiplomacyDifficultyCount)
-            {
-                new GuiOption<int>("Easy", 0),
-                new GuiOption<int>("Medium", 1),
-                new GuiOption<int>("Hard", 2)
-            };
+            //var diplomacyOptions = new List<GuiOption<int>>(GameStorage.DiplomacyDifficultyCount)
+            //{
+            //    new GuiOption<int>("Easy", 0),
+            //    new GuiOption<int>("Medium", 1),
+            //    new GuiOption<int>("Hard", 2)
+            //};
 
-            var bossTimeOptions = new List<GuiOption<BossTimeSettings>>((int)BossTimeSettings.NUM);
-            for (BossTimeSettings bossTime = 0; bossTime < BossTimeSettings.NUM; bossTime++)
-            {
-                bossTimeOptions.Add(new GuiOption<BossTimeSettings>(bossTime.ToString(), bossTime));
-            }
+            //var bossTimeOptions = new List<GuiOption<BossTimeSettings>>((int)BossTimeSettings.NUM);
+            //for (BossTimeSettings bossTime = 0; bossTime < BossTimeSettings.NUM; bossTime++)
+            //{
+            //    bossTimeOptions.Add(new GuiOption<BossTimeSettings>(bossTime.ToString(), bossTime));
+            //}
 
-            var bossSizeOptions = new List<GuiOption<BossSize>>((int)BossSize.NUM);
-            for (BossSize bossSize = 0; bossSize < BossSize.NUM; bossSize++)
-            { 
-                bossSizeOptions.Add(new GuiOption<BossSize>(bossSize.ToString(), bossSize));
-            }
+            //var bossSizeOptions = new List<GuiOption<BossSize>>((int)BossSize.NUM);
+            //for (BossSize bossSize = 0; bossSize < BossSize.NUM; bossSize++)
+            //{ 
+            //    bossSizeOptions.Add(new GuiOption<BossSize>(bossSize.ToString(), bossSize));
+            //}
 
             GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
             {
@@ -182,14 +182,19 @@ namespace VikingEngine.DSSWars
 
 
                 difficultyLevelText = new GuiLabel("XXX", layout);
-                new GuiCheckbox("Allow pause and command", null, allowPauseProperty, layout);
-                new GuiCheckbox("Get honor guards", "Start with soldiers that have no upkeep", honorGuardProperty, layout);
+                string text = "Difficulty level " + DssRef.difficulty.PercDifficulty.ToString() + "%";
+                new GuiTextButton(text, null, selectDifficultyMenu, true, layout);
 
-                new GuiOptionsList<AiAggressivity>(SpriteName.NO_IMAGE, "Ai aggression", agressiveOptions, aggresiveProperty, layout);
-                new GuiOptionsList<BossTimeSettings>(SpriteName.NO_IMAGE, "Boss enter time", bossTimeOptions, bossTimeProperty, layout);
-                new GuiOptionsList<BossSize>(SpriteName.NO_IMAGE, "Boss size", bossSizeOptions, bossSizeProperty, layout);
-                new GuiOptionsList<int>(SpriteName.NO_IMAGE, "Ai Economy", aiEconomyOptions, aiEconomyProperty, layout);
-                new GuiOptionsList<int>(SpriteName.NO_IMAGE, "Diplomacy difficulty", diplomacyOptions, diplomacyDifficultyProperty, layout);
+                new GuiCheckbox("Allow pause and command", null, allowPauseProperty, layout);
+                new GuiCheckbox("Boss events", "Turning off the boss will put the game in a sandbox mode with no ending.", bossProperty, layout);
+
+                //new GuiCheckbox("Get honor guards", "Start with soldiers that have no upkeep", honorGuardProperty, layout);
+
+                //new GuiOptionsList<AiAggressivity>(SpriteName.NO_IMAGE, "Ai aggression", agressiveOptions, aggresiveProperty, layout);
+                //new GuiOptionsList<BossTimeSettings>(SpriteName.NO_IMAGE, "Boss enter time", bossTimeOptions, bossTimeProperty, layout);
+                //new GuiOptionsList<BossSize>(SpriteName.NO_IMAGE, "Boss size", bossSizeOptions, bossSizeProperty, layout);
+                //new GuiOptionsList<int>(SpriteName.NO_IMAGE, "Ai Economy", aiEconomyOptions, aiEconomyProperty, layout);
+                //new GuiOptionsList<int>(SpriteName.NO_IMAGE, "Diplomacy difficulty", diplomacyOptions, diplomacyDifficultyProperty, layout);
 
                 new GuiSectionSeparator(layout);
                 new GuiTextButton(Ref.langOpt.Options_title, null, new GuiAction(optionsMenu), true, layout);
@@ -204,6 +209,32 @@ namespace VikingEngine.DSSWars
             } layout.End();
 
             refreshDifficultyLevel();
+        }
+
+
+
+        //void settingsGui(GuiLayout layout)
+        //{
+            
+
+        //}
+
+        void selectDifficultyMenu()
+        {
+            GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
+            {
+                Difficulty.OptionsGui(layout, difficultyOptionsLink);
+            }
+            layout.End();
+        }
+
+
+        void difficultyOptionsLink(int difficulty)
+        { 
+            DssRef.difficulty.set(difficulty);
+            DssRef.storage.Save(null);
+            refreshDifficultyLevel();
+            mainMenu();
         }
 
         void refreshDifficultyLevel()
@@ -223,83 +254,96 @@ namespace VikingEngine.DSSWars
             //    levelPerc *= 1.25;
             //}
 
-            difficultyLevelText.text.TextString = "Difficulty level " + Math.Round(DssRef.storage.DifficultyLevelPerc()).ToString() + "%";
+
+            difficultyLevelText.text.TextString = "Total Difficulty " + DssRef.difficulty.TotalDifficulty().ToString() + "%";
         }
 
-        public BossTimeSettings bossTimeProperty(bool set, BossTimeSettings value)
-        {
-            if (set)
-            {
-                DssRef.storage.bossTimeSettings = value;
-                DssRef.storage.Save(null);
-                refreshDifficultyLevel();
-            }
-            return DssRef.storage.bossTimeSettings;
-        }
+        //public BossTimeSettings bossTimeProperty(bool set, BossTimeSettings value)
+        //{
+        //    if (set)
+        //    {
+        //        DssRef.storage.bossTimeSettings = value;
+        //        DssRef.storage.Save(null);
+        //        refreshDifficultyLevel();
+        //    }
+        //    return DssRef.storage.bossTimeSettings;
+        //}
 
-        public BossSize bossSizeProperty(bool set, BossSize value)
-        {
-            if (set)
-            {
-                DssRef.storage.bossSize = value;
-                DssRef.storage.Save(null);
-                refreshDifficultyLevel();
-            }
-            return DssRef.storage.bossSize;
-        }
+        //public BossSize bossSizeProperty(bool set, BossSize value)
+        //{
+        //    if (set)
+        //    {
+        //        DssRef.storage.bossSize = value;
+        //        DssRef.storage.Save(null);
+        //        refreshDifficultyLevel();
+        //    }
+        //    return DssRef.storage.bossSize;
+        //}
 
-        public AiAggressivity aggresiveProperty(bool set, AiAggressivity value)
-        {
-            if (set)
-            {
-                DssRef.storage.aiAggressivity = value;
-                DssRef.storage.Save(null);
-                refreshDifficultyLevel();
-            }
-            return DssRef.storage.aiAggressivity;
-        }
+        //public AiAggressivity aggresiveProperty(bool set, AiAggressivity value)
+        //{
+        //    if (set)
+        //    {
+        //        DssRef.storage.aiAggressivity = value;
+        //        DssRef.storage.Save(null);
+        //        refreshDifficultyLevel();
+        //    }
+        //    return DssRef.storage.aiAggressivity;
+        //}
 
-        public int aiEconomyProperty(bool set, int value)
-        {
-            if (set)
-            {
-                DssRef.storage.aiEconomyLevel = value;
-                DssRef.storage.Save(null);
-                refreshDifficultyLevel();
-            }
-            return DssRef.storage.aiEconomyLevel;
-        }
+        //public int aiEconomyProperty(bool set, int value)
+        //{
+        //    if (set)
+        //    {
+        //        DssRef.storage.aiEconomyLevel = value;
+        //        DssRef.storage.Save(null);
+        //        refreshDifficultyLevel();
+        //    }
+        //    return DssRef.storage.aiEconomyLevel;
+        //}
 
-        public int diplomacyDifficultyProperty(bool set, int value)
-        {
-            if (set)
-            {
-                DssRef.storage.diplomacyDifficulty = value;
-                DssRef.storage.Save(null);
-                refreshDifficultyLevel();
-            }
-            return DssRef.storage.diplomacyDifficulty;
-        }
+        //public int diplomacyDifficultyProperty(bool set, int value)
+        //{
+        //    if (set)
+        //    {
+        //        DssRef.storage.diplomacyDifficulty = value;
+        //        DssRef.storage.Save(null);
+        //        refreshDifficultyLevel();
+        //    }
+        //    return DssRef.storage.diplomacyDifficulty;
+        //}
         public bool allowPauseProperty(int index, bool set, bool value)
         {
             if (set)
             {
-                DssRef.storage.allowPauseCommand = value;
+                DssRef.difficulty.allowPauseCommand = value;
                 DssRef.storage.Save(null);
                 refreshDifficultyLevel();
             }
-            return DssRef.storage.allowPauseCommand;
+            return DssRef.difficulty.allowPauseCommand;
         }
-        public bool honorGuardProperty(int index, bool set, bool value)
+
+        public bool bossProperty(int index, bool set, bool value)
         {
             if (set)
             {
-                DssRef.storage.honorGuard = value;
+                DssRef.difficulty.boss = value;
                 DssRef.storage.Save(null);
                 refreshDifficultyLevel();
             }
-            return DssRef.storage.honorGuard;
+            return DssRef.difficulty.boss;
         }
+
+        //public bool honorGuardProperty(int index, bool set, bool value)
+        //{
+        //    if (set)
+        //    {
+        //        DssRef.storage.honorGuard = value;
+        //        DssRef.storage.Save(null);
+        //        refreshDifficultyLevel();
+        //    }
+        //    return DssRef.storage.honorGuard;
+        //}
 
         public MapSize mapSizeProperty(bool set, MapSize value)
         {

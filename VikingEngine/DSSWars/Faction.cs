@@ -813,7 +813,7 @@ namespace VikingEngine.DSSWars
 
             if (factiontype == FactionType.SouthHara && 
                 DssRef.state.events.nextEvent <= EventType.DarkLord &&
-                DssRef.storage.bossTimeSettings <= BossTimeSettings.Early)
+                DssRef.difficulty.bossTimeSettings <= BossTimeSettings.Early)
             {
                 DssRef.achieve.UnlockAchievement(AchievementIndex.early_hara);
             }

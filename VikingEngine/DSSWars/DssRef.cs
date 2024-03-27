@@ -25,7 +25,6 @@ namespace VikingEngine.DSSWars
         public static GameTime time;
         public static Display.Translation.AbsLanguage lang;
         public static PlaySettings settings;
-
-        
+        public static Difficulty difficulty = new Difficulty();
     }
 }

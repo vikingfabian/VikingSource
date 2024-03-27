@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars
         {
             DssRef.diplomacy = this;
 
-            switch (DssRef.storage.diplomacyDifficulty)
+            switch (DssRef.difficulty.diplomacyDifficulty)
             {
                 case 0:
                     DefaultMaxDiplomacy = 4;
@@ -111,8 +111,8 @@ namespace VikingEngine.DSSWars
 
             if (aiPlayerAsynchUpdate_wars_withplayer.Count > 0 &&
                 (
-                    DssRef.storage.aiAggressivity == AiAggressivity.High ||
-                    (DssRef.storage.aiAggressivity == AiAggressivity.Medium && Ref.rnd.Chance(0.5))
+                    DssRef.difficulty.aiAggressivity == AiAggressivity.High ||
+                    (DssRef.difficulty.aiAggressivity == AiAggressivity.Medium && Ref.rnd.Chance(0.5))
                 ))
             {
                 return aiPlayerAsynchUpdate_wars_withplayer;

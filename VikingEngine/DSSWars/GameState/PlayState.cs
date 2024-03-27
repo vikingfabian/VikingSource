@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars
 
         void initPlayers()
         {
-            Players.AiPlayer.EconomyMultiplier = DssLib.AiEconomyLevel[DssRef.storage.aiEconomyLevel] / 100.0; ;
+            Players.AiPlayer.EconomyMultiplier = Difficulty.AiEconomyLevel[DssRef.difficulty.aiEconomyLevel] / 100.0; ;
 
             new Faction(DssRef.world, FactionType.DarkLord);
             new Faction(DssRef.world, FactionType.SouthHara);

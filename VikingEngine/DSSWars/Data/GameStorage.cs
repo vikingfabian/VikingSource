@@ -23,21 +23,9 @@ namespace VikingEngine.DSSWars.Data
         DataStream.FilePath path = new DataStream.FilePath(null, "DSS_profiles", ".set");
         public List<ProfileData> profiles;
         public MapSize mapSize = MapSize.Medium;
-        public AiAggressivity aiAggressivity = AiAggressivity.Medium;
-        public BossSize bossSize = BossSize.Medium;
-        public bool allowPauseCommand = true;
-
-
-        public int aiEconomyLevel = 1;
-
-        public const int DiplomacyDifficultyCount = 3;
-        public int diplomacyDifficulty = 1;
         public bool generateNewMaps = false;
         public LocalPlayerStorage[] localPlayers = null;
-        public bool honorGuard = true;
-
-        public BossTimeSettings bossTimeSettings = BossTimeSettings.Normal;
-
+        
         public GameStorage()
         {
             DssRef.storage = this;
@@ -65,37 +53,37 @@ namespace VikingEngine.DSSWars.Data
             DataStream.BeginReadWrite.BinaryIO(true, path, write, null, callBack, true);
         }
 
-        public double DifficultyLevelPerc()
-        {
-            double levelPerc = DssLib.AiEconomyLevel[aiEconomyLevel];
-            int aggdiff = (int)aiAggressivity - (int)AiAggressivity.Medium;
-            levelPerc *= 1.0 + aggdiff * 0.25;
+        //public double DifficultyLevelPerc()
+        //{
+        //    double levelPerc = DssLib.AiEconomyLevel[aiEconomyLevel];
+        //    int aggdiff = (int)aiAggressivity - (int)AiAggressivity.Medium;
+        //    levelPerc *= 1.0 + aggdiff * 0.25;
 
-            double bossTimeDiff = bossTimeSettings - BossTimeSettings.Normal;
-            levelPerc *= 1.0 - bossTimeDiff * 0.25;
+        //    double bossTimeDiff = bossTimeSettings - BossTimeSettings.Normal;
+        //    levelPerc *= 1.0 - bossTimeDiff * 0.25;
 
-            double bossSizeDiff = bossSize - BossSize.Medium;
-            levelPerc *= 1.0 - bossSizeDiff * 0.25;
+        //    double bossSizeDiff = bossSize - BossSize.Medium;
+        //    levelPerc *= 1.0 - bossSizeDiff * 0.25;
 
-            double diplomacyDiff = DssRef.storage.diplomacyDifficulty - 1;
-            levelPerc *= 1.0 + diplomacyDiff * 0.25;
+        //    double diplomacyDiff = DssRef.storage.diplomacyDifficulty - 1;
+        //    levelPerc *= 1.0 + diplomacyDiff * 0.25;
 
-            if (!honorGuard)
-            {
-                levelPerc *= 1.25;
-            }
+        //    if (!honorGuard)
+        //    {
+        //        levelPerc *= 1.25;
+        //    }
             
-            if (!allowPauseCommand)
-            {
-                levelPerc *= 1.5;
-            }
+        //    if (!allowPauseCommand)
+        //    {
+        //        levelPerc *= 1.5;
+        //    }
 
-            return levelPerc;
-        }
+        //    return levelPerc;
+        //}
 
         public void write(System.IO.BinaryWriter w)
         {
-            const int Version = 10;
+            const int Version = 11;
 
             w.Write(Version);
 
@@ -113,16 +101,17 @@ namespace VikingEngine.DSSWars.Data
                 localPlayers[i].write(w);
             }
 
-            w.Write((int)aiAggressivity);
-            w.Write(aiEconomyLevel);
+            //w.Write((int)aiAggressivity);
+            //w.Write(aiEconomyLevel);
 
             w.Write(generateNewMaps);
-            w.Write(honorGuard);
-            w.Write(diplomacyDifficulty);
-            w.Write((int)bossTimeSettings);
+            DssRef.difficulty.write(w);
+            //w.Write(honorGuard);
+            //w.Write(diplomacyDifficulty);
+            //w.Write((int)bossTimeSettings);
 
-            w.Write((int)bossSize);
-            w.Write(allowPauseCommand);
+            //w.Write((int)bossSize);
+            //w.Write(allowPauseCommand);
         }
         public void read(System.IO.BinaryReader r)
         {
@@ -146,29 +135,37 @@ namespace VikingEngine.DSSWars.Data
                 localPlayers[i].read(r, version);
             }
 
-            aiAggressivity = (AiAggressivity)r.ReadInt32();
-            aiEconomyLevel = Bound.Set(r.ReadInt32(), 0, DssLib.AiEconomyLevel.Length - 1);
-
-            if (version >= 6)
+            if (version >= 11)
             {
                 generateNewMaps = r.ReadBoolean();
+                DssRef.difficulty.read(r, version);
             }
-            if (version >= 7)
+            else
             {
-                honorGuard = r.ReadBoolean();
-            }
-            if (version >= 8)
-            {
-                diplomacyDifficulty = r.ReadInt32();
-            }
-            if (version >= 9)
-            {
-                bossTimeSettings = (BossTimeSettings)r.ReadInt32();
-            }
-            if (version >= 10)
-            {
-                bossSize = (BossSize)r.ReadInt32();
-                allowPauseCommand = r.ReadBoolean();
+                //aiAggressivity = (AiAggressivity)r.ReadInt32();
+                //aiEconomyLevel = Bound.Set(r.ReadInt32(), 0, DssLib.AiEconomyLevel.Length - 1);
+
+                //if (version >= 6)
+                //{
+                //    generateNewMaps = r.ReadBoolean();
+                //}
+                //if (version >= 7)
+                //{
+                //    honorGuard = r.ReadBoolean();
+                //}
+                //if (version >= 8)
+                //{
+                //    diplomacyDifficulty = r.ReadInt32();
+                //}
+                //if (version >= 9)
+                //{
+                //    bossTimeSettings = (BossTimeSettings)r.ReadInt32();
+                //}
+                //if (version >= 10)
+                //{
+                //    bossSize = (BossSize)r.ReadInt32();
+                //    allowPauseCommand = r.ReadBoolean();
+                //}
             }
         }
 

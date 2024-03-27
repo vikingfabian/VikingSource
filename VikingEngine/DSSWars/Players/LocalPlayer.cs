@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars.Players
                 new SoldierGroup(mainArmy, UnitType.Soldier, false);
             }
 
-            if (IsPlayer() && DssRef.storage.honorGuard)
+            if (IsPlayer() && DssRef.difficulty.honorGuard)
             {
                 int guardCount = 12;
 
@@ -147,7 +147,7 @@ namespace VikingEngine.DSSWars.Players
 
         void refreshNeihgborAggression()
         {
-            if (DssRef.storage.aiAggressivity >= AiAggressivity.Medium)
+            if (DssRef.difficulty.aiAggressivity >= AiAggressivity.Medium)
             {
                 var citiesC = faction.cities.counter();
                 while (citiesC.Next())
@@ -162,7 +162,7 @@ namespace VikingEngine.DSSWars.Players
 
         public override void OnCityCapture(City city)
         {
-            if (DssRef.storage.aiAggressivity >= AiAggressivity.Medium)
+            if (DssRef.difficulty.aiAggressivity >= AiAggressivity.Medium)
             {
                 foreach (var n in city.neighborCities)
                 {
@@ -360,7 +360,7 @@ namespace VikingEngine.DSSWars.Players
         void updateGameSpeed()
         {
            
-            if (DssRef.storage.allowPauseCommand && input.PauseGame.DownEvent && IsLocalHost())
+            if (DssRef.difficulty.allowPauseCommand && input.PauseGame.DownEvent && IsLocalHost())
             {
                 DssRef.state.pauseAction();
             }

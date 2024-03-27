@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars
         {
             DssRef.settings = this;
 
-            switch (DssRef.storage.aiAggressivity)
+            switch (DssRef.difficulty.aiAggressivity)
             {
                 case AiAggressivity.Low:
                     AiArmyPurchase_MoneyMin = DssLib.GroupDefaultCost * 50;

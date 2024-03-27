@@ -979,7 +979,7 @@ namespace VikingEngine.DSSWars.Players
                     City c = DssRef.world.cities[m];
                     if (c.faction != faction && c.faction != weakestOpponent)
                     {
-                        if (DssRef.storage.aiAggressivity >= AiAggressivity.Medium &&
+                        if (DssRef.difficulty.aiAggressivity >= AiAggressivity.Medium &&
                             c.faction.player.IsPlayer())
                         {
                             return myCity;
@@ -1163,7 +1163,7 @@ namespace VikingEngine.DSSWars.Players
             if (rel.Relation == RelationType.RelationTypeN3_War)
             {
                 if (otherFaction.factiontype == FactionType.Player &&
-                    DssRef.storage.aiAggressivity == AiAggressivity.High)
+                    DssRef.difficulty.aiAggressivity == AiAggressivity.High)
                 {
                     protectedPlayer = true;
                 }

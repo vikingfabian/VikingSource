@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Players
         public DarkLordPlayer(Faction faction)
             : base(faction)
         {
-            switch (DssRef.storage.bossSize)
+            switch (DssRef.difficulty.bossSize)
             {
                 case BossSize.Small:
                     factoriesLeft = 2;

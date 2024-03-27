@@ -78,7 +78,7 @@ namespace VikingEngine.DSSWars
         public const float GroupDefaultUpkeep = SoldierDefaultUpkeep * AbsSoldierData.GroupDefaultCount;
         public const int DefalutRecruitTrainingTimeSec = 60;
 
-        public static int[] AiEconomyLevel = new int[] { 50, 75, 100, 125, 150, 200 };
+        
 
         public const float WeeklyArmyActionPoints = 0.05f; 
         public const float ArmyMoveDoubleTimeCostToFatigue = 0.1f;
