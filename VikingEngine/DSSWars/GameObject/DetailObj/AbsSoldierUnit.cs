@@ -404,7 +404,10 @@ namespace VikingEngine.DSSWars.GameObject
             else if (attackTarget == null)
             { 
                 state.idle = true;
-                if (group.army.battleGroup== null)
+                if (group.army.battleGroup == null)
+                {
+                    setReGroupState();
+                }
             }
             else
             {

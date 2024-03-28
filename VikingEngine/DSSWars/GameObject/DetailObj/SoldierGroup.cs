@@ -479,7 +479,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         induvidualUpdate = true;
 
-                        if (attacking_soldierGroupOrCity == null &&
+                        if (//attacking_soldierGroupOrCity == null &&
                             army.battleGroup == null)//dont regroup in battle (start spinning)
                         {
                             refreshGroupPositions();
