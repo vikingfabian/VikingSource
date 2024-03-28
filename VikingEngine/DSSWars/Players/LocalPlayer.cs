@@ -428,37 +428,37 @@ namespace VikingEngine.DSSWars.Players
                 army.rotation = playerRot;
 
                 //int count = Ref.rnd.Int(4, 8);
-                for (int i = 0; i < 5; ++i)
+                for (int i = 0; i < 15; ++i)
                 {
-                    new SoldierGroup(army, UnitType.Knight, false);
+                    new SoldierGroup(army, UnitType.Viking, false).completeTransform(SoldierTransformType.ToShip);
                 }
                 for (int i = 0; i < 10; ++i)
                 {
-                    new SoldierGroup(army, UnitType.Soldier, false);
+                    new SoldierGroup(army, UnitType.Soldier, false).completeTransform(SoldierTransformType.ToShip);
                 }
 
                 army.refreshPositions(true);
             }
             //else
             {
-                {
-                    var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
-                    army.rotation = enemyRot;
-                    //int count = 4;//Ref.rnd.Int(4, 8);
-                    for (int i = 0; i < 5; ++i)
-                    {
-                        new SoldierGroup(army, UnitType.Trollcannon, false);
-                    }
-                    for (int i = 0; i < 9; ++i)
-                    {
-                        new SoldierGroup(army, UnitType.Pikeman, false);
-                    }
-                    //for (int i = 0; i < 5; ++i)
-                    //{
-                    //    new SoldierGroup(army, UnitType.Ballista, false);
-                    //}
-                    army.refreshPositions(true);
-                }
+                //{
+                //    var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
+                //    army.rotation = enemyRot;
+                //    //int count = 4;//Ref.rnd.Int(4, 8);
+                //    for (int i = 0; i < 5; ++i)
+                //    {
+                //        new SoldierGroup(army, UnitType.Trollcannon, false);
+                //    }
+                //    for (int i = 0; i < 9; ++i)
+                //    {
+                //        new SoldierGroup(army, UnitType.Pikeman, false);
+                //    }
+                //    //for (int i = 0; i < 5; ++i)
+                //    //{
+                //    //    new SoldierGroup(army, UnitType.Ballista, false);
+                //    //}
+                //    army.refreshPositions(true);
+                //}
 
 
                 //{

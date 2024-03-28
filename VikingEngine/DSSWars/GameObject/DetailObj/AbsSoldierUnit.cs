@@ -401,6 +401,11 @@ namespace VikingEngine.DSSWars.GameObject
                 //Attacking
                 updateAttack(time);
             }
+            else if (attackTarget == null)
+            { 
+                state.idle = true;
+                if (group.army.battleGroup== null)
+            }
             else
             {
                 var inReach = checkTargetInReach();

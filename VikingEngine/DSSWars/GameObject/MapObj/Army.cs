@@ -354,7 +354,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void update()
         {
-            if (id == 313)
+            if (id == 51)
             {
                 lib.DoNothing();
             }
