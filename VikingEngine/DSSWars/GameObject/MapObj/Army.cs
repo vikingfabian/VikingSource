@@ -557,7 +557,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 
                 var battleGroup_sp = battleGroup;
-                bool inBattle = battleGroup_sp != null && battleGroup_sp.battleState;
+                bool inBattle = battleGroup_sp != null && battleGroup_sp.battleState == Battle.BattleState.Battle;
                 bool notBattle = !inBattle;
 
                 var groupsC = groups.counter();

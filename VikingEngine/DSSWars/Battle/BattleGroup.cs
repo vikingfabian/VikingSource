@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.Battle
         Time preparationTime = new Time(10, TimeUnit.Seconds);
         float nextAiOrderTime = 0;
         float checkIdleTime = 800;
-        public bool battleState = false;
+        public BattleState battleState = BattleState.Prepare;
         
         bool[] playerJoined = null;
         public BattleGroup(AbsMapObject m1, AbsMapObject m2) 
@@ -87,6 +87,9 @@ namespace VikingEngine.DSSWars.Battle
 
         public bool addPart(AbsMapObject m, bool atStart = true)
         {
+            if (battleState == BattleState.End)
+            { return false; }
+
             bool newMember = false;
             m.battleGroup = this;
             if (members.AddIfNotExists(m))
@@ -171,46 +174,52 @@ namespace VikingEngine.DSSWars.Battle
 
         public bool async_update(float time)
         {
-            if (battleState)
-            {
-                nextAiOrderTime-= time;
-                if (nextAiOrderTime < 0)
-                {
-                    bool inBattle = refreshAiOrders_hasBattle();
+            switch (battleState)
+            { 
+                case BattleState.Prepare:
+                    chainAdjacentArmies();
 
-                    if (inBattle)
+                    checkIdleTime -= time;
+
+                    if (checkIdleTime <= 0)
                     {
-                        refreshGroupsWalkPath();
+                        checkIdleTime = 200;
 
-                        nextAiOrderTime = 600;
+                        if (allIdle())
+                        {
+                            battleState = BattleState.Battle;
+                        }
                     }
-                    else
+
+                    if (preparationTime.CountDown())
                     {
-                        ExitBattle();
-                        return true;
+                        battleState = BattleState.Battle;
                     }
-                }
-            }
-            else 
-            {
-                chainAdjacentArmies();
+                    break;
 
-                checkIdleTime -= time;
-
-                if (checkIdleTime <= 0)
-                {
-                    checkIdleTime = 200;
-
-                    if (allIdle())
+                case BattleState.Battle:
+                    nextAiOrderTime -= time;
+                    if (nextAiOrderTime < 0)
                     {
-                        battleState = true;
-                    }
-                }
+                        bool inBattle = refreshAiOrders_hasBattle();
 
-                if (preparationTime.CountDown())
-                {
-                    battleState = true;
-                }
+                        if (inBattle)
+                        {
+                            refreshGroupsWalkPath();
+
+                            nextAiOrderTime = 600;
+                        }
+                        else
+                        {
+                            battleState = BattleState.End;
+                            
+                        }
+                    }
+                    break;
+
+                case BattleState.End:
+                    ExitBattle();
+                    return true;
             }
 
             return false;
@@ -416,10 +425,13 @@ namespace VikingEngine.DSSWars.Battle
 
                             if (leftValue > rightValue)
                             {
-                                applyWalkToNode(group, leftNode);
+                                if (leftValue > 0)
+                                {
+                                    applyWalkToNode(group, leftNode);
+                                }
                             }
                             else if (rightValue > 0)
-                            { 
+                            {
                                 applyWalkToNode(group, rightNode);
                             }
                             //if (!tryWalkToNode(group, next))
@@ -455,7 +467,7 @@ namespace VikingEngine.DSSWars.Battle
 
                 if (group.IsShip() != goalNode.water)
                 {
-                    value -= 1;
+                    value = -1;//-= 1;
                 }
 
                 return value;
@@ -766,5 +778,12 @@ namespace VikingEngine.DSSWars.Battle
             group2 = null;
         }
                
+    }
+
+    enum BattleState
+    { 
+        Prepare,
+        Battle,
+        End,
     }
 }

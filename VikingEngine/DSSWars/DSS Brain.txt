@@ -6,7 +6,7 @@
 
 Error
 -cities som inte blir captured
--the horses dont load when paused, plus rotation error
+
 -also path finding of a land army will often prefer water over land when the boat building will cause the travel time to take considerably longer than if it went over land
 from what i've seen, this generally only happens if the army is on a land tile immediately adjacent to water
 
@@ -16,14 +16,17 @@ Retreat system
 -reassemble av flydd arme
 
 Polish
+-armeer ska visa ifall de strider på hud
 -attack warning -Battle notification
 -diplomacy toggle
 -end credits
 -zoom av diplomacy
 //-omplacera workforce hud
 -AI sök fiende armeer som passerar
--battlegrid: would it be possible to just not let units move into a water tile if it is a land battle?
--merc cost till difficulty
+//-battlegrid: would it be possible to just not let units move into a water tile if it is a land battle?
+	-max väntetid, sen path finding eller båtbygge
+-krig icon på karta
+-the horses dont load when paused, plus rotation error
 
 Art
 -checkbox art

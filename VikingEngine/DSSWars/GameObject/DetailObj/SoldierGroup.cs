@@ -460,7 +460,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (soldiers.Count > 0 && !lockMovement)
             {
                 if (army.battleGroup != null && 
-                    !army.battleGroup.battleState)
+                    army.battleGroup.battleState != Battle.BattleState.Battle)
                 {
                     update_battlePreparations(time, fullUpdate);
                     return;
