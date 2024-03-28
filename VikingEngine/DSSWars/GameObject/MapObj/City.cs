@@ -420,7 +420,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (commit)
                 {                    
                     faction.payMoney(totalCost, true);
-                    faction.mercenaryCost += DssLib.MercenaryPurchaseCost_Add * count;
+                    faction.mercenaryCost += DssRef.difficulty.MercenaryPurchaseCost_Add * count;
 
                     mercenaries += DssLib.MercenaryPurchaseCount * count;
                 }
@@ -432,7 +432,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int buyMercenaryCost(int count)
         {
-            double result = MathExt.SumOfLinearIncreases(faction.mercenaryCost, DssLib.MercenaryPurchaseCost_Add, count);
+            double result = MathExt.SumOfLinearIncreases(faction.mercenaryCost, DssRef.difficulty.MercenaryPurchaseCost_Add, count);
             return Convert.ToInt32(result);
         }
 

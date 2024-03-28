@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.Display
                 {
                     content.Add(new RichBoxBeginTitle(2));
                     content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
-                    content.Add(new RichBoxText("Strenght ratings:"));
+                    content.Add(new RichBoxText("Strength ratings:"));
                     
                     content.newLine();
                     content.Add(new RichBoxTexture(player.faction.flagTexture, 1f, 0, 0.2f));

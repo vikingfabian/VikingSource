@@ -32,6 +32,9 @@ namespace VikingEngine.DSSWars.Data
         public bool allowPauseCommand = true;
         public bool boss = true;
 
+        public int MercenaryPurchaseCost_Start;
+        public int MercenaryPurchaseCost_Add;
+
         public Difficulty(int difficulty = DefaultOption)
         {
             set(difficulty);
@@ -50,6 +53,7 @@ namespace VikingEngine.DSSWars.Data
                     "Boss enter time: " + TextLib.IndexDivition((int)difficulty.bossTimeSettings, (int)BossTimeSettings.NUM) + "." + Environment.NewLine +
                     "Ai Economy: " + AiEconomyLevel[difficulty.aiEconomyLevel].ToString() + "%. " + Environment.NewLine +
                     "Diplomacy difficulty: " + TextLib.IndexDivition(difficulty.diplomacyDifficulty, DiplomacyDifficultyCount) + "." + Environment.NewLine +
+                    "Mercenary cost: " + difficulty.MercenaryPurchaseCost_Start.ToString() + "." + Environment.NewLine +
                     "Honor guards: " + TextLib.YesNo(difficulty.honorGuard) + ".",
 
                     new GuiAction1Arg<int>(difficultyOptionsLink, i),
@@ -107,6 +111,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 1;
                     diplomacyDifficulty = 1;
                     honorGuard = true;
+
                     break;
 
                 case 3: //Medium
@@ -154,6 +159,11 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = false;
                     break;
             }
+
+            int mediumOffset = difficulty - 3;
+
+            MercenaryPurchaseCost_Start = 3000 + mediumOffset * 250;
+            MercenaryPurchaseCost_Add = 60 + mediumOffset * 10;
         }
 
         public void write(System.IO.BinaryWriter w)

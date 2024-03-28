@@ -36,8 +36,7 @@ namespace VikingEngine.DSSWars
 
 
         public const int MercenaryPurchaseCount = 150;
-        public const int MercenaryPurchaseCost_Start = 2500;
-        public const int MercenaryPurchaseCost_Add = 50;
+       
 
 
         public const int DefaultMaxCommand = 2;

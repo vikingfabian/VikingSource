@@ -226,7 +226,7 @@ namespace VikingEngine.DSSWars.Display
             content.h2("Cost");
             content.newLine();
             HudLib.ResourceCost(content, SpriteName.rtsUpkeep, "Gold", cost, player.faction.gold);
-            content.text(string.Format("Cost will increase by {0}", DssLib.MercenaryPurchaseCost_Add * count));
+            content.text(string.Format("Cost will increase by {0}", DssRef.difficulty.MercenaryPurchaseCost_Add * count));
 
             content.newParagraph();
             content.h2("Gain");
