@@ -24,6 +24,7 @@ Polish
 -AI sök fiende armeer som passerar
 -battlegrid: would it be possible to just not let units move into a water tile if it is a land battle?
 -merc cost till difficulty
+-dölj move path OnHud 
 
 Art
 -checkbox art
