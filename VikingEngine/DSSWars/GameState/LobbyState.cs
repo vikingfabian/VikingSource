@@ -148,7 +148,10 @@ namespace VikingEngine.DSSWars
 
             GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
             {
-                
+                if (StartupSettings.CheatActive)
+                {
+                    new GuiLabel("! debug cheats !", layout);
+                }
                 new GuiLargeTextButton(DssRef.lang.Lobby_Start, null, new GuiAction(startGame), false, layout);
                 
                 new GuiTextButton(string.Format(DssRef.lang.Lobby_LocalMultiplayerEdit, DssRef.storage.playerCount),

@@ -34,10 +34,19 @@ namespace VikingEngine.DSSWars
            false;//DO NOT CHANGE
 
         public static MapSize? SaveLoadSpecificMap = PlatformSettings.DevBuild ? null :
-            null;
+            null;//DO NOT CHANGE
 
         public static bool BlockBackgroundLoading = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE
+
         //public const bool Trailer = true;
+
+        public static bool CheatActive =>
+            !SpawnStartingArmies ||
+            !RunAI ||
+            EndlessResources ||
+            EndlessDiplomacy ||
+            SkipRecruitTime;
+
     }
 }

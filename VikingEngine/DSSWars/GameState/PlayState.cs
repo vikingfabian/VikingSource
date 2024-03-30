@@ -400,6 +400,10 @@ namespace VikingEngine.DSSWars
                 var factions = DssRef.world.factions.counter();
                 while (factions.Next())
                 {
+                    if (factions.sel.factiontype == FactionType.SouthHara)
+                    { 
+                        lib.DoNothing();
+                    }
                     factions.sel.asynchSleepObjectsUpdate(time);
                 }
             }

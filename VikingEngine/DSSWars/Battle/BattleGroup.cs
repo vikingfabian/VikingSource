@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.Battle
     class BattleGroup :AbsGameObject
     {
         const int StandardGridRadius = 20;
-                
+        const float MaxQueTime = 5000;        
         SpottedArray<AbsMapObject> members;
         SpottedArrayCounter<AbsMapObject> membersC;
         Vector2 center;
@@ -91,10 +91,12 @@ namespace VikingEngine.DSSWars.Battle
             { return false; }
 
             bool newMember = false;
-            m.battleGroup = this;
+
             if (members.AddIfNotExists(m))
             {
+                m.OnBattleJoin(this);
                 newMember = true;
+
                 if (m.faction.player.IsPlayer())
                 {
                     var player = m.faction.player.GetLocalPlayer();
@@ -205,7 +207,7 @@ namespace VikingEngine.DSSWars.Battle
 
                         if (inBattle)
                         {
-                            refreshGroupsWalkPath();
+                            refreshGroupsWalkPath(time);
 
                             nextAiOrderTime = 600;
                         }
@@ -309,7 +311,7 @@ namespace VikingEngine.DSSWars.Battle
             return hasBattle;
         }
 
-        void refreshGroupsWalkPath()
+        void refreshGroupsWalkPath(float time)
         {
             /*
              * Försök att alltid hålla formation
@@ -332,7 +334,7 @@ namespace VikingEngine.DSSWars.Battle
                     var groupsC = army.groups.counter();
                     while (groupsC.Next())
                     {
-                        walkPath(groupsC.sel, true);
+                        walkPath(groupsC.sel, true, time);
                     }
                 }
             }
@@ -349,7 +351,7 @@ namespace VikingEngine.DSSWars.Battle
                     {
                         if (!groupsC.sel.battleWalkPath)
                         {
-                            walkPath(groupsC.sel, false);
+                            walkPath(groupsC.sel, false, time);
                         }
                     }
                 }
@@ -378,7 +380,14 @@ namespace VikingEngine.DSSWars.Battle
                     while (groupsC.Next())
                     {
                         groupsC.sel.battleWalkPath = false;
+                        IntVector2 prev = groupsC.sel.battleGridPos;
                         groupsC.sel.battleGridPos = WpToGridPos(groupsC.sel.position.X, groupsC.sel.position.Z);
+
+                        if (groupsC.sel.battleGridPos != prev)
+                        {
+                            groupsC.sel.prevBattleGridPos = prev;
+                        }
+
                         getNode(groupsC.sel.battleGridPos).add(groupsC.sel);
                     }
                 }
@@ -390,7 +399,7 @@ namespace VikingEngine.DSSWars.Battle
             }
         }
 
-        void walkPath(SoldierGroup group, bool straightOnly)
+        void walkPath(SoldierGroup group, bool straightOnly, float time)
         {
             if (group.attacking_soldierGroupOrCity != null &&
                 !group.attackState)
@@ -423,16 +432,17 @@ namespace VikingEngine.DSSWars.Battle
                             BattleGridNode rightNode;
                             float rightValue = flankToNodeValue(group, right, out rightNode);
 
-                            if (leftValue > rightValue)
+                            if (leftValue > rightValue && leftValue > 0)
                             {
-                                if (leftValue > 0)
-                                {
-                                    applyWalkToNode(group, leftNode);
-                                }
+                                applyWalkToNode(group, leftNode);
                             }
                             else if (rightValue > 0)
                             {
                                 applyWalkToNode(group, rightNode);
+                            }
+                            else
+                            { 
+                                group.battleQueTime += time;
                             }
                             //if (!tryWalkToNode(group, next))
                             //{
@@ -458,7 +468,13 @@ namespace VikingEngine.DSSWars.Battle
             }
             else
             {
-                float value = 2;
+                float value = 4;
+
+                if (next == group.prevBattleGridPos)
+                {
+                    value = -1;
+                }
+
                 var currentNode = getNode(group.battleGridPos);
                 float currentDist = VectorExt.SideLength_XZ(group.army.position, currentNode.worldPos);
                 float nextDist = VectorExt.SideLength_XZ(group.army.position, goalNode.worldPos);
@@ -467,7 +483,7 @@ namespace VikingEngine.DSSWars.Battle
 
                 if (group.IsShip() != goalNode.water)
                 {
-                    value = -1;//-= 1;
+                    value = group.battleQueTime < MaxQueTime? - 1: -10;//-= 1;
                 }
 
                 return value;
@@ -482,6 +498,10 @@ namespace VikingEngine.DSSWars.Battle
             {
                 return false;
             }
+            else if (group.IsShip() != goalNode.water)
+            {
+                return group.battleQueTime < MaxQueTime;
+            }
             else
             {
                 return applyWalkToNode(group, goalNode);
@@ -491,6 +511,7 @@ namespace VikingEngine.DSSWars.Battle
         private bool applyWalkToNode(SoldierGroup group, BattleGridNode goalNode)
         {
             //Apply
+            group.battleQueTime = 0;
             group.battleWalkPath = true;
             var currentNode = getNode(group.battleGridPos);
             currentNode.remove(group);

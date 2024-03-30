@@ -223,16 +223,16 @@ namespace VikingEngine.DSSWars.Players
                     if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                     {
                         //cityBuilderTest();
-                        //DssRef.state.events.TestNextEvent();
+                        DssRef.state.events.TestNextEvent();
                         
-                        battleLineUpTest(true);
+                        //battleLineUpTest(true);
                     }
 
                     if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                     {
                         
                         //hud.messages.Add("message!", "Hello hello");
-                        battleLineUpTest(false);
+                        //battleLineUpTest(false);
                         //mapControls.FocusObject()?.tagObject();
                     }
                 }

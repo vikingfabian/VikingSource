@@ -1016,7 +1016,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         public bool buySoldiers(UnitType type, int count, bool commit, out Army army, bool ignoreCityPurchaseOptions = false)
-        {
+        {//todo check 0 count
             var typeData = DssRef.unitsdata.Get(type);
 
             int workersTotCost = typeData.workForceCount() * count;

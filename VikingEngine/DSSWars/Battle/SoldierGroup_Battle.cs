@@ -15,6 +15,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         //public Vector3 battleWp;
         public bool battleWalkPath = false;
+        //public IntVector2 prevBattleGridPos;
+        public float battleQueTime = 0;
 
         void update_battlePreparations(float time, bool fullUpdate)
         {            

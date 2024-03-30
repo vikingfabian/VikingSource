@@ -97,11 +97,11 @@ namespace VikingEngine.DSSWars
                     {
                         IntervalF[] timeMinutes =
                            {
-                            new IntervalF(5,10),//Immediate,                            
-                            new IntervalF(70,80),
-                            new IntervalF(80,100),//Normal,
-                            new IntervalF(100,240),
-                            new IntervalF(140,320),//VeryLate,
+                            new IntervalF(35,40),//Immediate,                            
+                            new IntervalF(100,120),
+                            new IntervalF(120,130),//Normal,
+                            new IntervalF(130,270),
+                            new IntervalF(170,350),//VeryLate,
                         };
 
                         nextTotalGameTimeMin = timeMinutes[(int)DssRef.difficulty.bossTimeSettings];

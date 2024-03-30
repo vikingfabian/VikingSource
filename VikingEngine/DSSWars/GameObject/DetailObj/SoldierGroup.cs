@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.GameObject
         public Army army;
         public IntVector2 walkingOrderTo;
 
-        public Time groupWaitingTime;
+        //public Time groupWaitingTime;
         public bool groupIsIdle = false;
         public bool allInduvidualsAreIdle = false;
         //public SpriteName icon;

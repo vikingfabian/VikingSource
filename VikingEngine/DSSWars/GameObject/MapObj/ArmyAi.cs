@@ -34,10 +34,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void aiUpdate(bool fullUpdate)
         {
-            //if (id == 786)
-            //{ 
-            //    lib.DoNothing();
-            //}
+            if (faction.factiontype == FactionType.SouthHara)
+            {
+                lib.DoNothing();
+            }
             if (nextPathNode)
             {
                 if (newpath != null)

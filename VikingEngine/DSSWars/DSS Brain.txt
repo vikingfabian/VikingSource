@@ -1,12 +1,13 @@
 ﻿Change Log
 * Tab between cities and armies - select added
 * Simplified difficulty selection
-* Added mercenary cost to difficulty
-
+* Added mercenary cost to difficulty, and increased the cost.
+* Units in battle will not do ship building, until five second has passed queuing (experimental)
+* Made some changes to avoid units get stuck in battle
+* Found and fixed some issues that can make factions be too passive
+* Added 30min to to final boss enter time
 
 Error
--cities som inte blir captured
-
 -also path finding of a land army will often prefer water over land when the boat building will cause the travel time to take considerably longer than if it went over land
 from what i've seen, this generally only happens if the army is on a land tile immediately adjacent to water
 
@@ -27,16 +28,20 @@ Polish
 	-max väntetid, sen path finding eller båtbygge
 -krig icon på karta
 -the horses dont load when paused, plus rotation error
+-stats namn och på armeer/faktioner
+-kungadömmet ska inte dela wars med dark followers (secret ally)
 
 Art
 -checkbox art
 -Mercenary icon
+-battle icon
 
 Steam Launch Roadmap
 -Fail state for the game
 -End credits screen
 -Localization to 8 languages
 -Full controller support
+-Polish the turd
 
 -(maybe) Battle retreat system 
 -(maybe) Save

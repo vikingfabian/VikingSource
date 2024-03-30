@@ -108,6 +108,11 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        virtual public void OnBattleJoin(BattleGroup group)
+        { 
+            this.battleGroup = group;
+        }
+
         public bool InBattle()
         {
             return battleGroup != null;

@@ -422,10 +422,10 @@ namespace VikingEngine.DSSWars.Players
 
         override public void aiPlayerAsynchUpdate(float time)
         {
-            //if (faction.factiontype == FactionType.SouthHara)
-            //{
-            //    lib.DoNothing();
-            //}
+            if (faction.factiontype == FactionType.SouthHara)
+            {
+                lib.DoNothing();
+            }
 
             if (StartupSettings.RunAI && nextDecisionTimer.CountDownGameTime(time))
             {
@@ -435,10 +435,11 @@ namespace VikingEngine.DSSWars.Players
                     if (faction.armies.Count == 0)
                     {
                         nextDecisionTimer.MilliSeconds = 10000;
+                        return;
                     }
-                    return;
+                    
                 }
-                if (faction.factiontype == FactionType.DarkFollower)
+                if (faction.factiontype == FactionType.SouthHara)
                 { 
                     lib.DoNothing();
                 }
@@ -451,16 +452,13 @@ namespace VikingEngine.DSSWars.Players
                 bool inWar = aggressionLevel >= AggressionLevel2_RandomAttacks ||
                     (aggressionLevel == AggressionLevel1_RevengeOnly && wars.Count > 0);
 
-                //bool haveMoney = faction.gold >= DssLib.GroupDefaultCost * 20 && faction.NetIncome() > 0;
-                //bool haveIncome = faction.NetIncome() >= DssLib.GroupDefaultCost * (inWar? 5 : 15);
-
+                
                 if (inWar && Ref.rnd.Chance(aggressionLevel == AggressionLevel2_RandomAttacks ? 0.05 : 0.3) &&
                     !mainArmyLockedInTravel())
                 {
                     mainArmy_AsyncUpdate(wars);
                 }
-                else
-                if (protect && haveIncomeForArmyPurchase(inWar))
+                else if (protect && haveIncomeForArmyPurchase(inWar))
                 {
                     City city = faction.cities.GetRandomSafe(Ref.rnd);
 
@@ -478,6 +476,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     searchAttackTarget(wars);
                 }
+                
 
                 async_buildUpCheck();
 
@@ -762,9 +761,14 @@ namespace VikingEngine.DSSWars.Players
 
         bool emptyMainArmy()
         {
-            return mainArmy == null ||
+            if (mainArmy == null ||
                  mainArmy.isDeleted ||
-                 mainArmy.groups.Count < 4;
+                 mainArmy.groups.Count < 4)
+            {
+                mainArmy = null;
+                return true;
+            }
+            return false;
         }
 
         bool mainArmyLockedInTravel()
@@ -1033,11 +1037,16 @@ namespace VikingEngine.DSSWars.Players
 
         void searchAttackTarget(List<int> wars)
         {
+            
             if (faction.armies.Count > 0)
             {
                 Army army = StrongIdleArmy();
 
-                if (army != null &&
+                if (faction.cities.Count == 0 && Ref.rnd.Chance(0.5))
+                {
+                    AttackRamdom(army);
+                }
+                else if (army != null &&
                     (army != mainArmy || Ref.rnd.Chance(0.25)))
                 {
                     if (
@@ -1088,42 +1097,46 @@ namespace VikingEngine.DSSWars.Players
 
         AbsMapObject AttackFaction(Army army, Faction opponent)
         {
-            var areaPos = UnitCollAreaGrid.ToAreaPos(army.tilePos);
-            DssRef.world.unitCollAreaGrid.collectCitiesAndArmies(areaPos, 2, army.strengthValue * 0.8f, DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate,
-                null, opponent);
-            if (DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate.Count > 0)
+            if (army != null)
             {
-                AbsMapObject result = arraylib.RandomListMember(DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate);
-                army.Order_Attack(result);
-                return result;
+                var areaPos = UnitCollAreaGrid.ToAreaPos(army.tilePos);
+                DssRef.world.unitCollAreaGrid.collectCitiesAndArmies(areaPos, 2, army.strengthValue * 0.8f, DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate,
+                    null, opponent);
+                if (DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate.Count > 0)
+                {
+                    AbsMapObject result = arraylib.RandomListMember(DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate);
+                    army.Order_Attack(result);
+                    return result;
+                }
             }
-
             return null;
         }
 
         City AttackRamdom(Army army)
         {
-            var areaPos = UnitCollAreaGrid.ToAreaPos(army.tilePos);
-
-            int compareCityCount = 4;
-
-            DssRef.world.unitCollAreaGrid.collectCities_fromArea(areaPos,
-                compareCityCount, DssRef.world.unitCollAreaGrid.cities_aiUpdate,
-                faction, null);
-
-            //TODO pick random city
-            foreach (var city in DssRef.world.unitCollAreaGrid.cities_aiUpdate)
+            if (army != null)
             {
-                if (army.strengthValue > city.strengthValue + city.ai_armyDefenceValue)
-                {   
-                    if (mayAttackFaction(city.faction))
+                var areaPos = UnitCollAreaGrid.ToAreaPos(army.tilePos);
+
+                int compareCityCount = 4;
+
+                DssRef.world.unitCollAreaGrid.collectCities_fromArea(areaPos,
+                    compareCityCount, DssRef.world.unitCollAreaGrid.cities_aiUpdate,
+                    faction, null);
+
+                //TODO pick random city
+                foreach (var city in DssRef.world.unitCollAreaGrid.cities_aiUpdate)
+                {
+                    if (army.strengthValue > city.strengthValue + city.ai_armyDefenceValue)
                     {
-                        army.Order_Attack(city);
-                        return city;
+                        if (mayAttackFaction(city.faction))
+                        {
+                            army.Order_Attack(city);
+                            return city;
+                        }
                     }
                 }
             }
-
             return null;
         }
 

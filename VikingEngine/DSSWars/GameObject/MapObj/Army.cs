@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
 using System.Xml.Xsl;
+using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
@@ -731,6 +732,18 @@ namespace VikingEngine.DSSWars.GameObject
         public override bool aliveAndBelongTo(Faction faction)
         {
             return !isDeleted;
+        }
+
+        public override void OnBattleJoin(BattleGroup group)
+        {
+            base.OnBattleJoin(group);
+
+            var groupsC = groups.counter();
+            while (groupsC.Next())
+            {   
+                groupsC.sel.battleQueTime = 0;
+                groupsC.sel.prevBattleGridPos = IntVector2.MinValue;
+            }
         }
 
         public override void ExitBattleGroup()

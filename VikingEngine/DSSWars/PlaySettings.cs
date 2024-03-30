@@ -12,11 +12,11 @@ namespace VikingEngine.DSSWars
         public int Faction_SouthHara;
         public int Faction_GreenWood;
 
-        public int AiArmyPurchase_MoneyMin = DssLib.GroupDefaultCost * 20;
-        public int AiArmyPurchase_IncomeMin = DssLib.GroupDefaultCost * 15;
+        public int AiArmyPurchase_MoneyMin;
+        public int AiArmyPurchase_IncomeMin;
 
-        public int AiArmyPurchase_MoneyMin_Aggresive = DssLib.GroupDefaultCost * 10;
-        public int AiArmyPurchase_IncomeMin_Aggresive = DssLib.GroupDefaultCost * 5;
+        public int AiArmyPurchase_MoneyMin_Aggresive;
+        public int AiArmyPurchase_IncomeMin_Aggresive;
 
         public PlaySettings() 
         {
@@ -25,25 +25,25 @@ namespace VikingEngine.DSSWars
             switch (DssRef.difficulty.aiAggressivity)
             {
                 case AiAggressivity.Low:
-                    AiArmyPurchase_MoneyMin = DssLib.GroupDefaultCost * 50;
-                    AiArmyPurchase_IncomeMin = DssLib.GroupDefaultCost * 30;
-
-                    AiArmyPurchase_MoneyMin_Aggresive = DssLib.GroupDefaultCost * 40;
-                    AiArmyPurchase_IncomeMin_Aggresive = DssLib.GroupDefaultCost * 20;
-                    break;
-                case AiAggressivity.Medium:
-                    AiArmyPurchase_MoneyMin = DssLib.GroupDefaultCost * 40;
-                    AiArmyPurchase_IncomeMin = DssLib.GroupDefaultCost * 30;
+                    AiArmyPurchase_MoneyMin = DssLib.GroupDefaultCost * 20;
+                    AiArmyPurchase_IncomeMin = Convert.ToInt32(DssLib.GroupDefaultUpkeep * 15);
 
                     AiArmyPurchase_MoneyMin_Aggresive = DssLib.GroupDefaultCost * 20;
-                    AiArmyPurchase_IncomeMin_Aggresive = DssLib.GroupDefaultCost * 10;
+                    AiArmyPurchase_IncomeMin_Aggresive = Convert.ToInt32(DssLib.GroupDefaultUpkeep * 15);
                     break;
-                case AiAggressivity.High:
+                case AiAggressivity.Medium:
                     AiArmyPurchase_MoneyMin = DssLib.GroupDefaultCost * 20;
-                    AiArmyPurchase_IncomeMin = DssLib.GroupDefaultCost * 15;
+                    AiArmyPurchase_IncomeMin = Convert.ToInt32(DssLib.GroupDefaultUpkeep * 15);
 
                     AiArmyPurchase_MoneyMin_Aggresive = DssLib.GroupDefaultCost * 10;
-                    AiArmyPurchase_IncomeMin_Aggresive = DssLib.GroupDefaultCost * 5;
+                    AiArmyPurchase_IncomeMin_Aggresive = Convert.ToInt32(DssLib.GroupDefaultUpkeep * 5);
+                    break;
+                case AiAggressivity.High:
+                    AiArmyPurchase_MoneyMin = DssLib.GroupDefaultCost * 40;
+                    AiArmyPurchase_IncomeMin = Convert.ToInt32(DssLib.GroupDefaultUpkeep * 20);
+
+                    AiArmyPurchase_MoneyMin_Aggresive = DssLib.GroupDefaultCost * 5;
+                    AiArmyPurchase_IncomeMin_Aggresive = Convert.ToInt32(DssLib.GroupDefaultUpkeep * 5);
                     break;
 
             }
