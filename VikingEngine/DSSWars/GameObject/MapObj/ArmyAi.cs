@@ -351,7 +351,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (objective == ArmyObjective.Attack)
                 {
-                    content.text("Attack: " + attackTarget.Name());
+                    content.text("Attack: " + attackTarget.TypeName());
                 }
                 content.text("walkGoal: " + walkGoal.ToString());
                 content.text("adjusted walkGoal: " + adjustedWalkGoal.ToString());

@@ -87,9 +87,12 @@ namespace VikingEngine.DSSWars.Display
                 content.Add(new RichBoxNewLine());
             }
 
-            content.Add(new RichBoxBeginTitle());             
-            content.Add(new RichBoxText(obj.Name()));
-            content.newLine();
+            string name = obj.Name();
+            if (name != null)
+            {
+                content.text(name).overrideColor = Color.LightYellow;
+            }
+            content.h2(obj.TypeName()).overrideColor = Color.LightGray;
 
             if (obj.GetFaction() != player.faction)
             {
@@ -147,6 +150,7 @@ namespace VikingEngine.DSSWars.Display
                 var mapObj = obj as AbsMapObject;
                 if (mapObj != null)
                 {
+                    content.newLine();
                     content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
                     content.Add(new RichBoxText(string.Format(HudLib.OneDecimalFormat, mapObj.strengthValue)));
                     if (obj.gameobjectType() == GameObjectType.Army)

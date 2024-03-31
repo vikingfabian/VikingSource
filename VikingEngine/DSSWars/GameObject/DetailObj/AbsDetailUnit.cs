@@ -533,7 +533,7 @@ namespace VikingEngine.DSSWars.GameObject
         
         abstract public AbsDetailUnitData Data();
 
-        public override string Name()
+        public override string TypeName()
         {
             return DetailUnitType().ToString() + "(" + parentArrayIndex.ToString() + ")";
         }

@@ -1084,7 +1084,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (debugTagged)
                 {
-                    Debug.Log("New Objective (" + Name() + "): " +
+                    Debug.Log("New Objective (" + TypeName() + "): " +
                         groupObjective.ToString() + " > " + objective.ToString());
                 }
 
@@ -1402,7 +1402,7 @@ namespace VikingEngine.DSSWars.GameObject
                 //var c = attacking.counter();
                 //while (c.Next())
                 //{
-                    content.text("attacking: " + attacking_soldierGroupOrCity.Name());
+                    content.text("attacking: " + attacking_soldierGroupOrCity.TypeName());
                 //}
             }
             else
@@ -1411,7 +1411,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             content.Add(new RichBoxNewLine(true));
-            content.text(army.Name());
+            content.text(army.TypeName());
             army.stateDebugText(content);
         }
 
@@ -1474,7 +1474,7 @@ namespace VikingEngine.DSSWars.GameObject
             return DssRef.unitsdata.Get(type);
         }
 
-        public override string Name()
+        public override string TypeName()
         {
             return type.ToString() + " Group(" + groupId.ToString() + ")";
         }

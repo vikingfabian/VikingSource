@@ -62,7 +62,7 @@ namespace VikingEngine.DSSWars.Display
                             var tradeButton = new HUD.RichBox.RichboxButton(
                                 new List<AbsRichBoxMember>
                                 {
-                                new HUD.RichBox.RichBoxText("Send to " + ta.Name()),
+                                new HUD.RichBox.RichBoxText("Send to " + ta.TypeName()),
                                 },
                                 new RbAction1Arg<Army>(startArmyTrade, ta, SoundLib.menu), null);
                             content.Add(tradeButton);
@@ -135,7 +135,7 @@ namespace VikingEngine.DSSWars.Display
                         }
                         else
                         {
-                            content.h2("Send units to " + player.hud.displays.otherArmy.Name());
+                            content.h2("Send units to " + player.hud.displays.otherArmy.TypeName());
                         }
                         
                         var status = army.Status().getTypeCounts();

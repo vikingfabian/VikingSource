@@ -52,12 +52,13 @@ namespace VikingEngine.DSSWars.GameObject
 
         public float terrainSpeedMultiplier = 1.0f;
         public IntVector2 positionBeforeBattle;
+        string name;
         //IntVector2 nextGroupPlacement = IntVector2.Zero;
 
         public Army(Faction faction, IntVector2 startPosition)
         {
             id = ++NextId;
-            
+            name = Data.NameGenerator.ArmyName();
             position = WP.ToWorldPos(startPosition);
             tilePos = startPosition;
 
@@ -107,9 +108,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
+        public override string TypeName()
+        {
+            return "Army" + " (" + TextLib.IndexToString( parentArrayIndex) +   ")";//return "Army" + parentArrayIndex.ToString();
+        }
+
         public override string Name()
         {
-            return "Army" + parentArrayIndex.ToString();
+            return name;//return "Army" + parentArrayIndex.ToString();
         }
 
         public override void toHud(Display.ObjectHudArgs args)

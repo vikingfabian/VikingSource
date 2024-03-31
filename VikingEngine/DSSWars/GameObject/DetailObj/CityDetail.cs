@@ -473,7 +473,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string ToString()
         {
-            return city.Name() + " -detail obj";
+            return city.TypeName() + " -detail obj";
         }
 
         public override AbsDetailUnitData Data()
