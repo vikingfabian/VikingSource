@@ -187,8 +187,8 @@ namespace VikingEngine.DSSWars.Display
                         content.Add(automationButton);
                         //content.Button(SpriteName.MenuPixelIconSettings, "Automation", new RbAction(DssRef.state.exit), null, true);
 
-                        string diplomacy = "Diplomatic points: {0}";
-                        content.icontext(SpriteName.WarsDiplomaticPoint, string.Format(diplomacy, player.diplomaticPoints.ToString()));
+                        string diplomacy = "Diplomatic points: {0}/{1}({2})";
+                        content.icontext(SpriteName.WarsDiplomaticPoint, string.Format(diplomacy, player.diplomaticPoints.Int(), player.diplomaticPoints_softMax, player.diplomaticPoints.max));
                         string command = "Command points: {0}";
                         content.icontext(SpriteName.WarsCommandPoint, string.Format(command, player.commandPoints.ToString()));
 

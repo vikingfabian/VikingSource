@@ -43,6 +43,15 @@ namespace VikingEngine
             }
         }
 
+        public void add(double add, int max)
+        {
+            value += add;
+            if (value > max)
+            {
+                value = max;
+            }
+        }
+
         public void setMax(double max)
         {
             this.max= (int)Math.Floor(max);

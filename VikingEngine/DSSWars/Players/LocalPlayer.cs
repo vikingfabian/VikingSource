@@ -10,6 +10,7 @@ using VikingEngine.HUD.RichBox;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DSSWars.Battle;
+using System;
 
 namespace VikingEngine.DSSWars.Players
 {    
@@ -33,6 +34,7 @@ namespace VikingEngine.DSSWars.Players
 
         public FloatingInt_Max commandPoints = new FloatingInt_Max();
         public FloatingInt_Max diplomaticPoints = new FloatingInt_Max();
+        public int diplomaticPoints_softMax;
 
         public int servantFactions = 0;
         public int warsStarted = 0;
@@ -584,7 +586,7 @@ namespace VikingEngine.DSSWars.Players
             base.onGameStart();
             oneSecUpdate();
             commandPoints.value = commandPoints.max * 0.5;
-            diplomaticPoints.value = diplomaticPoints.max * 0.5;
+            diplomaticPoints.value = diplomaticPoints.max * 0.6;
 
         }
 
@@ -595,8 +597,18 @@ namespace VikingEngine.DSSWars.Players
             commandPoints.setMax(DssLib.DefaultMaxCommand + DssLib.NobelHouseAddMaxCommand * faction.nobelHouseCount);
             commandPoints.add(DssLib.DefaultCommandPerSecond + DssLib.NobelHouseAddCommand * faction.nobelHouseCount);
 
-            diplomaticPoints.setMax(DssRef.diplomacy.DefaultMaxDiplomacy + DssRef.diplomacy.NobelHouseAddMaxDiplomacy * faction.nobelHouseCount);
-            diplomaticPoints.add(DssRef.diplomacy.DefaultDiplomacyPerSecond + DssRef.diplomacy.NobelHouseAddDiplomacy * faction.nobelHouseCount);
+            double max = DssRef.diplomacy.DefaultMaxDiplomacy + DssRef.diplomacy.NobelHouseAddMaxDiplomacy * faction.nobelHouseCount;
+            diplomaticPoints_softMax = (int)Math.Floor(max);
+            diplomaticPoints.setMax(max + DssRef.diplomacy.Diplomacy_HardMax_Add);
+
+            if (diplomaticPoints.value < diplomaticPoints_softMax)
+            {
+                diplomaticPoints.add(DssRef.diplomacy.DefaultDiplomacyPerSecond + DssRef.diplomacy.NobelHouseAddDiplomacy * faction.nobelHouseCount, diplomaticPoints_softMax);
+            }
+            else
+            {
+                diplomaticPoints.add(DssRef.diplomacy.AddDiplomacy_AfterSoftlock_PerSecond);
+            }
 
             if (StartupSettings.EndlessResources)
             {

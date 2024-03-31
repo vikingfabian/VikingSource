@@ -1,11 +1,5 @@
 ﻿Change Log
-* Tab between cities and armies - select added
-* Simplified difficulty selection
-* Added mercenary cost to difficulty, and increased the cost.
-* Units in battle will not do ship building, until five second has passed queuing (experimental)
-* Made some changes to avoid units get stuck in battle
-* Found and fixed some issues that can make factions be too passive
-* Added 30min to to final boss enter time
+* Diplomacy is divided into a soft max and a hard max. Nobel houses affect the income speed half way, then it slowly adds 1 point/4 minutes (experimental).
 
 Error
 -also path finding of a land army will often prefer water over land when the boat building will cause the travel time to take considerably longer than if it went over land
@@ -42,7 +36,7 @@ Steam Launch Roadmap
 -Localization to 8 languages
 -Full controller support
 -Polish the turd
-
+.             
 -(maybe) Battle retreat system 
 -(maybe) Save
 -(maybe) Mountain ridges and water reefs that block movement
