@@ -1,7 +1,9 @@
 ﻿Change Log
-* Diplomacy is divided into a soft max and a hard max. Nobel houses affect the income speed half way, then it slowly adds 1 point/4 minutes (experimental).
+* Diplomacy is divided into a soft limit and a hard limit. Nobel houses affect the income speed half way, then it slowly adds 1 point/4 minutes (experimental).
+* Truce will now end battles
 * Name generator
-
+* Fixed some ghost issues
+* Battles on unit HUD
 
 Error
 -strid fastnar vid peace
