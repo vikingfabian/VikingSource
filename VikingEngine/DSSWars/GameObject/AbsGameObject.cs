@@ -34,6 +34,8 @@ namespace VikingEngine.DSSWars.GameObject
             throw new NotImplementedException();
         }
 
+        virtual public string TypeName() { return null; }
+
         //abstract public bool IsDeleted();
     }
     enum GameObjectType

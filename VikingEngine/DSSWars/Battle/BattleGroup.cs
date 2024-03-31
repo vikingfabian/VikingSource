@@ -685,8 +685,11 @@ namespace VikingEngine.DSSWars.Battle
                 var dominatingFaction = DssRef.world.factions.Array[strongestFaction];
 
                 foreach (var c in cities)
-                { 
-                    Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(c.setFaction, dominatingFaction));
+                {
+                    if (c.guardCount <= 5)
+                    {
+                        Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(c.setFaction, dominatingFaction));
+                    }
                 }
             }
 
@@ -712,6 +715,11 @@ namespace VikingEngine.DSSWars.Battle
         public override Vector3 WorldPos()
         {
             return VectorExt.V3FromXZ(center, 0);
+        }
+
+        public override string TypeName()
+        {
+            return "Battle (" + TextLib.IndexToString(parentArrayIndex) + ")";
         }
 
         public override GameObjectType gameobjectType()

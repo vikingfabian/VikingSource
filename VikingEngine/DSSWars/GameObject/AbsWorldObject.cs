@@ -62,7 +62,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.Add(new RichBoxSeperationLine());
         }
 
-        abstract public string TypeName();
+        
 
         virtual public string Name() { return null; }
 

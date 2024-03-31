@@ -33,11 +33,15 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         public bool asynchFindBattleTarget(BattleGroup battle)
-        {   
+        {
+            if (army.id == 2072)
+            {
+                lib.DoNothing();
+            }
+
             refreshAttacking();
 
-            if (attacking_soldierGroupOrCity == null ||
-                groupObjective != GroupObjective_IsSplit)
+            if (attacking_soldierGroupOrCity == null)
             {
                 //Version 3: hämtar från battlegroup
                 AbsGroup nearest = null;

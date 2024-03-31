@@ -451,7 +451,8 @@ namespace VikingEngine.DSSWars
         public void remove(City city)
         {   
             cities.Remove(city);
-            if (city == mainCity)
+            if (city == mainCity ||
+               mainCity == null || mainCity.faction != this)
             {
                 refreshMainCity();                     
             }
