@@ -654,7 +654,7 @@ namespace VikingEngine.DSSWars.Battle
         void ExitBattle()
         {
             List<City> cities = new List<City>(2);
-            Dictionary<int, float> cityDominationStrength = new Dictionary<int, float>();
+            Dictionary<int, float> cityDominationStrength = new Dictionary<int, float>(4);
 
             membersC.Reset();
             while (membersC.Next())
@@ -693,13 +693,7 @@ namespace VikingEngine.DSSWars.Battle
             if (cities.Count > 0)
             {
                 foreach (var c in cities)
-                    //Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(c.setFaction, dominatingFaction));
-                //{
-                    if (c.guardCount <= 5)
-                    {
-                        Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(c.setFaction, dominatingFaction));
-                    }
-                //{
+                {
                     if (c.faction != dominatingFaction)
                     {
                         if (c.faction.player.IsPlayer())
@@ -736,14 +730,6 @@ namespace VikingEngine.DSSWars.Battle
                     }
                 }
             }
-
-            //for (int ix = 0; ix < playerJoined.Length; ++ix)
-            //{
-            //    if (playerJoined[ix])
-            //    {
-            //        DssRef.state.localPlayers[ix].battles.Remove(this);
-            //    }
-            //}
         }
 
         public override Faction GetFaction()

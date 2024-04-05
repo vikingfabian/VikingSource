@@ -14,6 +14,10 @@ namespace VikingEngine.DSSWars.Display.CutScene
     {
         public AbsCutScene()
         {
+            if (DssRef.state.cutScene != null)
+            {
+                throw new Exception("Multiple cutscenes");
+            }
             DssRef.state.cutScene = this;
         }
 
@@ -38,8 +42,6 @@ namespace VikingEngine.DSSWars.Display.CutScene
             blackout.Color = victory ? new Color(16, 16, 32) : new Color(3, 9, 8);
             blackout.Opacity = 0;
 
-            
-
             new Timer.AsynchActionTrigger(load_asynch, true);
         }
 
@@ -48,18 +50,17 @@ namespace VikingEngine.DSSWars.Display.CutScene
             string image = victory ? "success" : "fail";
 
             bgTex = Ref.main.Content.Load<Texture2D>(DssLib.StoryContentDir + image);
-            //new Timer.Action0ArgTrigger(loadingComplete);
         }
 
         override public void Time_Update(float time)
         {
             switch (state_0black_1in_2ready)
             {
-                case 0:
-                    Ref.music.PlaySong(victory ? Data.Music.Victory : Data.Music.Fail, false);
-                    blackout.Opacity += 1.2f * Ref.DeltaTimeSec;
+                case 0:                    
+                    blackout.Opacity += 0.6f * Ref.DeltaTimeSec;
                     if (blackout.Opacity >= 1)
                     {
+                        Ref.music.PlaySong(victory ? Data.Music.Victory : Data.Music.Fail, false);
                         state_0black_1in_2ready++;
                     }
                     break;
@@ -76,8 +77,6 @@ namespace VikingEngine.DSSWars.Display.CutScene
                                 h = Screen.SafeArea.Height;
                                 w = h / bgTex.Height * bgTex.Width;
                             }
-                            //float x = Screen.SafeArea.X;
-                            //float y = Screen.CenterScreen.Y - h * 0.5f;
 
                             bgImage = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE,
                                 Screen.CenterScreen - new Vector2(w, h) * 0.5f, new Vector2(w, h), HudLib.CutSceneBgLayer, false);
