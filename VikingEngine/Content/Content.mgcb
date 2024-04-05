@@ -313,6 +313,36 @@
 #begin DSS/Map/map_sz5_i9.map
 /copy:DSS/Map/map_sz5_i9.map
 
+#begin DSS/Music/dramatic-opener-nonloop.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/dramatic-opener-nonloop.mp3
+
+#begin DSS/Music/epic-warfare-nonloop.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/epic-warfare-nonloop.mp3
+
+#begin DSS/Music/sadness-in-blue.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/sadness-in-blue.mp3
+
+#begin DSS/Music/shadow-hunter-nonloop.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/shadow-hunter-nonloop.mp3
+
+#begin DSS/Music/we-are-heroes.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/we-are-heroes.mp3
+
 #begin DSS/Sound/back.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor

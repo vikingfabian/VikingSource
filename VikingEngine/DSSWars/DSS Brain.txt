@@ -16,6 +16,8 @@ Retreat system
 -reassemble av flydd arme
 
 Polish
+-seperata sparfiler
+
 -attack warning -Battle notification
 -diplomacy toggle
 -end credits
@@ -29,6 +31,7 @@ Polish
 Art
 -checkbox art
 -Mercenary icon
+-world domination achieve
 
 Steam Launch Roadmap
 -Fail state for the game

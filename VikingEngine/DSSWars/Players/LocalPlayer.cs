@@ -228,7 +228,7 @@ namespace VikingEngine.DSSWars.Players
                         //DssRef.state.events.TestNextEvent();
 
                         //battleLineUpTest(true);
-                        new Display.CutScene.EndScene(true);
+                        new Display.CutScene.EndScene(false);
                     }
 
                     if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))

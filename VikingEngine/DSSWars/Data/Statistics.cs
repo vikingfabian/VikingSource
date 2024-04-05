@@ -30,18 +30,19 @@ namespace VikingEngine.DSSWars.Data
 
         public void ToHud(RichBoxContent content)
         {
-            content.text(string.Format(DssRef.lang.EndGameStatistics_SoldiersRecruited, SoldiersRecruited));
-            content.text(string.Format(DssRef.lang.EndGameStatistics_FriendlySoldiersLost, FriendlySoldiersLost));
-            content.text(string.Format(DssRef.lang.EndGameStatistics_EnemySoldiersKilled, EnemySoldiersKilled));
-            content.text(string.Format(DssRef.lang.EndGameStatistics_CitiesCaptured, CitiesCaptured));
-            content.text(string.Format(DssRef.lang.EndGameStatistics_CitiesLost, CitiesLost));
-            content.text(string.Format(DssRef.lang.EndGameStatistics_BattlesWon, BattlesWon));
-            content.text(string.Format(DssRef.lang.EndGameStatistics_BattlesLost, BattlesLost));
-            content.text(string.Format(DssRef.lang.EndGameStatistics_WarsStartedByYou, WarsStartedByYou));
-            content.text(string.Format(DssRef.lang.EndGameStatistics_WarsStartedByEnemy, WarsStartedByEnemy));
+            content.text(string.Format(DssRef.lang.EndGameStatistics_SoldiersRecruited, TextLib.LargeNumber(SoldiersRecruited)));
+            content.text(string.Format(DssRef.lang.EndGameStatistics_FriendlySoldiersLost, TextLib.LargeNumber(FriendlySoldiersLost)));
+            content.text(string.Format(DssRef.lang.EndGameStatistics_EnemySoldiersKilled, TextLib.LargeNumber(EnemySoldiersKilled)));
+            content.text(string.Format(DssRef.lang.EndGameStatistics_SoldiersDeserted, TextLib.LargeNumber(SoldiersDeserted)));
+            content.text(string.Format(DssRef.lang.EndGameStatistics_CitiesCaptured, TextLib.LargeNumber(CitiesCaptured)));
+            content.text(string.Format(DssRef.lang.EndGameStatistics_CitiesLost, TextLib.LargeNumber(CitiesLost)));
+            content.text(string.Format(DssRef.lang.EndGameStatistics_BattlesWon, TextLib.LargeNumber(BattlesWon)));
+            content.text(string.Format(DssRef.lang.EndGameStatistics_BattlesLost, TextLib.LargeNumber(BattlesLost)));
+            content.text(string.Format(DssRef.lang.EndGameStatistics_WarsStartedByYou, TextLib.LargeNumber(WarsStartedByYou)));
+            content.text(string.Format(DssRef.lang.EndGameStatistics_WarsStartedByEnemy, TextLib.LargeNumber(WarsStartedByEnemy)));
             content.newParagraph();
-            content.text(string.Format(DssRef.lang.EndGameStatistics_AlliedFactions, AlliedFactions));
-            content.text(string.Format(DssRef.lang.EndGameStatistics_ServantFactions, ServantFactions));
+            content.text(string.Format(DssRef.lang.EndGameStatistics_AlliedFactions, TextLib.LargeNumber(AlliedFactions)));
+            content.text(string.Format(DssRef.lang.EndGameStatistics_ServantFactions, TextLib.LargeNumber(ServantFactions)));
         }
     }
 }

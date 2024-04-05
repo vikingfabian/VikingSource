@@ -26,16 +26,16 @@ namespace VikingEngine.DSSWars.Display.CutScene
         Graphics.Image blackout;
         Texture2D bgTex = null;
         Graphics.ImageAdvanced bgImage = null;
-        bool success;
+        bool victory;
         EndSceneDisplay display;
-        public EndScene(bool success)
+        public EndScene(bool victory)
             : base()
         {
-            this.success = success;
+            this.victory = victory;
             VectorRect area = Screen.Area;
             area.AddRadius(5);
             blackout = new Graphics.Image(SpriteName.WhiteArea, area.Position, area.Size, HudLib.CutSceneBgLayer);
-            blackout.Color = new Color(16, 16, 32);
+            blackout.Color = victory ? new Color(16, 16, 32) : new Color(3, 9, 8);
             blackout.Opacity = 0;
 
             
@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
 
         void load_asynch()
         {
-            string image = success ? "success" : "fail";
+            string image = victory ? "success" : "fail";
 
             bgTex = Ref.main.Content.Load<Texture2D>(DssLib.StoryContentDir + image);
             //new Timer.Action0ArgTrigger(loadingComplete);
@@ -56,6 +56,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
             switch (state_0black_1in_2ready)
             {
                 case 0:
+                    Ref.music.PlaySong(victory ? Data.Music.Victory : Data.Music.Fail, false);
                     blackout.Opacity += 1.2f * Ref.DeltaTimeSec;
                     if (blackout.Opacity >= 1)
                     {
@@ -69,12 +70,17 @@ namespace VikingEngine.DSSWars.Display.CutScene
                         {
                             float w = Screen.SafeArea.Width;
                             float h = w / bgTex.Width * bgTex.Height;
-                            float x = Screen.SafeArea.X;
 
-                            float y = Screen.CenterScreen.Y - h * 0.5f;
+                            if (h > Screen.SafeArea.Height)
+                            { 
+                                h = Screen.SafeArea.Height;
+                                w = h / bgTex.Height * bgTex.Width;
+                            }
+                            //float x = Screen.SafeArea.X;
+                            //float y = Screen.CenterScreen.Y - h * 0.5f;
 
                             bgImage = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE,
-                                new Vector2(x, y), new Vector2(w, h), HudLib.CutSceneBgLayer, false);
+                                Screen.CenterScreen - new Vector2(w, h) * 0.5f, new Vector2(w, h), HudLib.CutSceneBgLayer, false);
                             bgImage.Texture = bgTex;
                             bgImage.SetFullTextureSource();
                             bgImage.Opacity = 0f;
@@ -97,7 +103,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
 
         void initDisplay()
         {
-            display = new EndSceneDisplay();
+            display = new EndSceneDisplay(victory);
         }
     }
 }

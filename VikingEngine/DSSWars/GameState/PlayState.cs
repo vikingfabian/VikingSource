@@ -174,6 +174,11 @@ namespace VikingEngine.DSSWars
         {
             base.Time_Update(time);
 
+            if (Ref.music != null)
+            {
+                Ref.music.Update();
+            }
+
             if (cutScene != null)
             {
                 cutScene.Time_Update(time);

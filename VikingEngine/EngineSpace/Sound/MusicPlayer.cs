@@ -25,7 +25,7 @@ namespace VikingEngine.Sound
 
         public MusicPlayer()
         {
-            lib.DoNothing();
+            //lib.DoNothing();
         }
 
         public void nextRandomSong()
@@ -119,9 +119,12 @@ namespace VikingEngine.Sound
                 switch (playSongState)
                 {
                     case PlaySongState.Playing:
-                        if (playTime.CountDown())
+                        if (playList != null)
                         {
-                            nextRandomSong();
+                            if (playTime.CountDown())
+                            {
+                                nextRandomSong();
+                            }
                         }
                         break;
                     case PlaySongState.FadeOut:

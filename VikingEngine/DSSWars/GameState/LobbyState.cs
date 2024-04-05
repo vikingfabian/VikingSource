@@ -62,6 +62,7 @@ namespace VikingEngine.DSSWars
                 Color.DarkGray, ImageLayers.Background2);
 
             new Timer.AsynchActionTrigger(load_asynch, true);
+            new Timer.TimedAction0ArgTrigger(playMusic, 1000);
         }       
         
         void load_asynch()
@@ -85,6 +86,14 @@ namespace VikingEngine.DSSWars
 
             //Graphics.TextG title = new Graphics.TextG(LoadedFont.Bold, bgImage.CenterTop, Engine.Screen.TextSizeV2 * 2.6f, new Align(new Vector2(PublicConstants.Half, 1f)),
             //    "DSS War Party", new Color(36,80,89), ImageLayers.Background8);
+        }
+
+        void playMusic()
+        {
+            if (Ref.music != null)
+            {
+                Ref.music.PlaySong(Data.Music.Intro, false);
+            }
         }
        
         void mainMenu()
@@ -661,6 +670,11 @@ namespace VikingEngine.DSSWars
             if (VikingEngine.Input.Keyboard.Ctrl && VikingEngine.Input.Keyboard.KeyDownEvent(Keys.V))
             {
                 voxeleditor();
+            }
+
+            if (Ref.music != null)
+            {
+                Ref.music.Update();
             }
         }
 
