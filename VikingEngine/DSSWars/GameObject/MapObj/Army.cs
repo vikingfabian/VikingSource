@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
 using System.Xml.Xsl;
+using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
@@ -51,12 +52,13 @@ namespace VikingEngine.DSSWars.GameObject
 
         public float terrainSpeedMultiplier = 1.0f;
         public IntVector2 positionBeforeBattle;
+        string name;
         //IntVector2 nextGroupPlacement = IntVector2.Zero;
 
         public Army(Faction faction, IntVector2 startPosition)
         {
             id = ++NextId;
-            
+            name = Data.NameGenerator.ArmyName();
             position = WP.ToWorldPos(startPosition);
             tilePos = startPosition;
 
@@ -106,9 +108,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
+        public override string TypeName()
+        {
+            return "Army" + " (" + TextLib.IndexToString( parentArrayIndex) +   ")";//return "Army" + parentArrayIndex.ToString();
+        }
+
         public override string Name()
         {
-            return "Army" + parentArrayIndex.ToString();
+            return name;//return "Army" + parentArrayIndex.ToString();
         }
 
         public override void toHud(Display.ObjectHudArgs args)
@@ -362,7 +369,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void update()
         {
-            if (id == 51)
+            if (id == 1391)
             {
                 lib.DoNothing();
             }
@@ -565,7 +572,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 
                 var battleGroup_sp = battleGroup;
-                bool inBattle = battleGroup_sp != null && battleGroup_sp.battleState;
+                bool inBattle = battleGroup_sp != null && battleGroup_sp.battleState == Battle.BattleState.Battle;
                 bool notBattle = !inBattle;
 
                 var groupsC = groups.counter();
@@ -739,6 +746,18 @@ namespace VikingEngine.DSSWars.GameObject
         public override bool aliveAndBelongTo(Faction faction)
         {
             return !isDeleted;
+        }
+
+        public override void OnBattleJoin(BattleGroup group)
+        {
+            base.OnBattleJoin(group);
+
+            var groupsC = groups.counter();
+            while (groupsC.Next())
+            {   
+                groupsC.sel.battleQueTime = 0;
+                groupsC.sel.prevBattleGridPos = IntVector2.MinValue;
+            }
         }
 
         public override void ExitBattleGroup()

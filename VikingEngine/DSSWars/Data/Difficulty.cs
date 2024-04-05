@@ -162,8 +162,8 @@ namespace VikingEngine.DSSWars.Data
 
             int mediumOffset = difficulty - 3;
 
-            MercenaryPurchaseCost_Start = 3000 + mediumOffset * 250;
-            MercenaryPurchaseCost_Add = 60 + mediumOffset * 10;
+            MercenaryPurchaseCost_Start = 3500 + mediumOffset * 500;
+            MercenaryPurchaseCost_Add = 100 + mediumOffset * 20;
         }
 
         public void write(System.IO.BinaryWriter w)

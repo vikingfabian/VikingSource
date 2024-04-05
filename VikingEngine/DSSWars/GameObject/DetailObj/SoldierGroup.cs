@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.GameObject
         public Army army;
         public IntVector2 walkingOrderTo;
 
-        public Time groupWaitingTime;
+        //public Time groupWaitingTime;
         public bool groupIsIdle = false;
         public bool allInduvidualsAreIdle = false;
         //public SpriteName icon;
@@ -105,7 +105,6 @@ namespace VikingEngine.DSSWars.GameObject
             {                
                 new TrainingCompleteTimer(this);
             }
-
             refreshAttackRadius(typeData);
             refreshRotateSpeed();            
 
@@ -339,7 +338,6 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                inShipTransform = false;
                 if (IsShip() != (transformType == SoldierTransformType.ToShip))
                 {
                     int totalHealth = 0;
@@ -371,6 +369,8 @@ namespace VikingEngine.DSSWars.GameObject
 
                     refreshAttackRadius(typeData);
                 }
+
+                inShipTransform = false;
             }
         }
 
@@ -460,42 +460,70 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
 
-            if (soldiers.Count > 0 && !lockMovement)
+            if (soldiers.Count > 0)
             {
-                if (army.battleGroup != null && 
-                    !army.battleGroup.battleState)
+                if (!lockMovement)
                 {
-                    update_battlePreparations(time, fullUpdate);
-                    return;
-                }
-
-
-                //UPDATE OBJECTIVE
-                {
-                    bool newIdleGroup = false;
-
-                    int newObjective = groupObjective;
-                    bool newAttackState = false;
-                    bool induvidualUpdate;
-                    bool walking = false;
-                    if (groupObjective == GroupObjective_IsSplit)
+                    if (army.battleGroup != null &&
+                        army.battleGroup.battleState != Battle.BattleState.Battle)
                     {
-                        induvidualUpdate = true;
+                        update_battlePreparations(time, fullUpdate);
+                        return;
+                    }
 
-                        if (//attacking_soldierGroupOrCity == null &&
-                            army.battleGroup == null)//dont regroup in battle (start spinning)
+
+                    //UPDATE OBJECTIVE
+                    {
+                        bool newIdleGroup = false;
+
+                        int newObjective = groupObjective;
+                        bool newAttackState = false;
+                        bool induvidualUpdate;
+                        bool walking = false;
+                        if (groupObjective == GroupObjective_IsSplit)
                         {
-                            refreshGroupPositions();
+                            induvidualUpdate = true;
 
+                            if (//attacking_soldierGroupOrCity == null &&
+                                army.battleGroup == null)//dont regroup in battle (start spinning)
+                            {
+                                refreshGroupPositions();
+
+                                if (fullUpdate)
+                                {
+                                    var soldiersC = soldiers.counter();
+                                    while (soldiersC.Next())
+                                    {
+                                        soldiersC.sel.setReGroupState();
+                                    }
+
+                                    newObjective = GroupObjective_ReGrouping;
+                                }
+                                else
+                                {
+                                    induvidualUpdate = false;
+                                    newObjective = GroupObjective_FindArmyPlacement;
+                                }
+                            }
+                        }
+                        else if (groupObjective == GroupObjective_ReGrouping)
+                        {
                             if (fullUpdate)
                             {
-                                var soldiersC = soldiers.counter();
-                                while (soldiersC.Next())
-                                {
-                                    soldiersC.sel.setReGroupState();
-                                }
+                                induvidualUpdate = true;
 
-                                newObjective = GroupObjective_ReGrouping;
+                                if (allInduvidualsAreIdle)
+                                {
+                                    //LOCK in place
+                                    newObjective = GroupObjective_FindArmyPlacement;
+
+                                    var soldiersC = soldiers.counter();
+                                    while (soldiersC.Next())
+                                    {
+                                        soldiersC.sel.clearAttack();
+                                        soldiersC.sel.aiState = SoldierAiState.GroupLock;
+                                    }
+                                }
                             }
                             else
                             {
@@ -503,125 +531,114 @@ namespace VikingEngine.DSSWars.GameObject
                                 newObjective = GroupObjective_FindArmyPlacement;
                             }
                         }
-                    }
-                    else if (groupObjective == GroupObjective_ReGrouping)
-                    {
-                        if (fullUpdate)
-                        {
-                            induvidualUpdate = true;
-
-                            if (allInduvidualsAreIdle)
-                            {
-                                //LOCK in place
-                                newObjective = GroupObjective_FindArmyPlacement;
-
-                                var soldiersC = soldiers.counter();
-                                while (soldiersC.Next())
-                                {
-                                    soldiersC.sel.clearAttack();
-                                    soldiersC.sel.aiState =SoldierAiState.GroupLock;
-                                }
-                            }
-                        }
                         else
-                        {
+                        { //Moving like a group
+
                             induvidualUpdate = false;
-                            newObjective = GroupObjective_FindArmyPlacement;
-                        }
-                    }
-                    else
-                    { //Moving like a group
-
-                        induvidualUpdate = false;
-                        var closest_sp = attacking_soldierGroupOrCity;
-                        if (closest_sp != null)
-                        {
-                            if (groupCollisionDistance(closest_sp) < 0.02f)
+                            var closest_sp = attacking_soldierGroupOrCity;
+                            if (closest_sp != null)
                             {
-                                //SPLIT GROUP
-                                newObjective = GroupObjective_IsSplit;
-                                newAttackState = true;
-
-                                var soldiersC = soldiers.counter();
-                                while (soldiersC.Next())
+                                if (groupCollisionDistance(closest_sp) < 0.02f)
                                 {
-                                    soldiersC.sel.setAttackState();
+                                    //SPLIT GROUP
+                                    newObjective = GroupObjective_IsSplit;
+                                    newAttackState = true;
+
+                                    var soldiersC = soldiers.counter();
+                                    while (soldiersC.Next())
+                                    {
+                                        soldiersC.sel.setAttackState();
+                                    }
+                                }
+                                else
+                                {
+                                    //Group attack move
+                                    walking = !updateWalking(goalWp, false, Rotation1D.D0, time);
+                                    //walking = !updateWalking(closest_sp.position, true, army.rotation, time);
                                 }
                             }
-                            else
+                            else if (army.battleGroup != null)
                             {
-                                //Group attack move
                                 walking = !updateWalking(goalWp, false, Rotation1D.D0, time);
-                                //walking = !updateWalking(closest_sp.position, true, army.rotation, time);
                             }
-                        }
-                        else if (army.battleGroup != null)
-                        {
-                            walking = !updateWalking(goalWp, false, Rotation1D.D0, time);
-                        }
-                        else if (groupObjective == GroupObjective_FindArmyPlacement)
-                        {
-                            if (updateWalking(goalWp, true, army.rotation, time))
-                            {
-                                newObjective = GroupObjective_FollowArmyObjective;
-                                newIdleGroup = true;
-                            }
-                            else
-                            {
-                                walking = true;
-                            }
-                        }
-                        else
-                        {
-                            if (army.objective == ArmyObjective.MoveTo ||
-                                army.objective == ArmyObjective.Attack)
+                            else if (groupObjective == GroupObjective_FindArmyPlacement)
                             {
                                 if (updateWalking(goalWp, true, army.rotation, time))
                                 {
+                                    newObjective = GroupObjective_FollowArmyObjective;
                                     newIdleGroup = true;
                                 }
                                 else
                                 {
                                     walking = true;
                                 }
-                                newObjective = GroupObjective_FindArmyPlacement;
                             }
                             else
                             {
-                                lib.DoNothing();
+                                if (army.objective == ArmyObjective.MoveTo ||
+                                    army.objective == ArmyObjective.Attack)
+                                {
+                                    if (updateWalking(goalWp, true, army.rotation, time))
+                                    {
+                                        newIdleGroup = true;
+                                    }
+                                    else
+                                    {
+                                        walking = true;
+                                    }
+                                    newObjective = GroupObjective_FindArmyPlacement;
+                                }
+                                else
+                                {
+                                    lib.DoNothing();
+                                }
+                                //Follow army
+
                             }
-                            //Follow army
 
                         }
 
-                    }
-
-                    if (induvidualUpdate)
-                    {
-                        var soldiersC = soldiers.counter();
-                        while (soldiersC.Next())
+                        if (induvidualUpdate)
                         {
-                            soldiersC.sel.update(time, fullUpdate);
+                            var soldiersC = soldiers.counter();
+                            while (soldiersC.Next())
+                            {
+                                soldiersC.sel.update(time, fullUpdate);
+                            }
                         }
+                        else
+                        {
+                            var soldiersC = soldiers.counter();
+                            while (soldiersC.Next())
+                            {
+                                soldiersC.sel.update_GroupLocked(walking);
+                            }
+                        }
+
+                        groupIsIdle = newIdleGroup;
+
+                        if (newObjective != groupObjective)
+                        {
+                            groupObjective = newObjective;
+                        }
+                        attackState = newAttackState;
+                    }
+                }
+
+            }
+            else
+            {
+                if (!inShipTransform)
+                {
+                    if (fullUpdate)
+                    {
+                        DeleteMe(DeleteReason.EmptyGroup, true);
                     }
                     else
                     {
-                        var soldiersC = soldiers.counter();
-                        while (soldiersC.Next())
-                        {
-                            soldiersC.sel.update_GroupLocked(walking);
-                        }
+                        Ref.update.AddSyncAction(new SyncAction2Arg<DeleteReason, bool>(DeleteMe, DeleteReason.EmptyGroup, true));
                     }
-
-                    groupIsIdle = newIdleGroup;
-
-                    if (newObjective != groupObjective)
-                    {
-                        groupObjective = newObjective;
-                    }
-                    attackState = newAttackState;
                 }
-
             }
         }
 
@@ -941,7 +958,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         void refreshAttacking()
         {
-            if (attacking_soldierGroupOrCity != null && attacking_soldierGroupOrCity.defeated())
+            if (attacking_soldierGroupOrCity != null && 
+                (attacking_soldierGroupOrCity.defeated() || !DssRef.diplomacy.InWar(army.faction, attacking_soldierGroupOrCity.GetFaction())))
             {
                 attacking_soldierGroupOrCity = null;
             }
@@ -1087,7 +1105,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (debugTagged)
                 {
-                    Debug.Log("New Objective (" + Name() + "): " +
+                    Debug.Log("New Objective (" + TypeName() + "): " +
                         groupObjective.ToString() + " > " + objective.ToString());
                 }
 
@@ -1405,7 +1423,7 @@ namespace VikingEngine.DSSWars.GameObject
                 //var c = attacking.counter();
                 //while (c.Next())
                 //{
-                    content.text("attacking: " + attacking_soldierGroupOrCity.Name());
+                    content.text("attacking: " + attacking_soldierGroupOrCity.TypeName());
                 //}
             }
             else
@@ -1414,7 +1432,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             content.Add(new RichBoxNewLine(true));
-            content.text(army.Name());
+            content.text(army.TypeName());
             army.stateDebugText(content);
         }
 
@@ -1477,7 +1495,7 @@ namespace VikingEngine.DSSWars.GameObject
             return DssRef.unitsdata.Get(type);
         }
 
-        public override string Name()
+        public override string TypeName()
         {
             return type.ToString() + " Group(" + groupId.ToString() + ")";
         }

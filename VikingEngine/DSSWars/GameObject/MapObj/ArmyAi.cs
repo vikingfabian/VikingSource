@@ -34,10 +34,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void aiUpdate(bool fullUpdate)
         {
-            //if (id == 786)
-            //{ 
-            //    lib.DoNothing();
-            //}
+            if (faction.factiontype == FactionType.SouthHara)
+            {
+                lib.DoNothing();
+            }
             if (nextPathNode)
             {
                 if (newpath != null)
@@ -351,7 +351,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (objective == ArmyObjective.Attack)
                 {
-                    content.text("Attack: " + attackTarget.Name());
+                    content.text("Attack: " + attackTarget.TypeName());
                 }
                 content.text("walkGoal: " + walkGoal.ToString());
                 content.text("adjusted walkGoal: " + adjustedWalkGoal.ToString());

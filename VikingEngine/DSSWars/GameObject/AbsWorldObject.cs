@@ -34,9 +34,15 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void toHud(Display.ObjectHudArgs args)
         {
+            string name = Name();
+            if (name != null)
+            {
+                args.content.text(name).overrideColor = Color.LightYellow;
+                args.content.newLine();
+            }
             args.content.Add(new RichBoxBeginTitle());
             args.content.Add(GetFaction().FlagTextureToHud());
-            args.content.Add(new RichBoxText(Name()));
+            args.content.Add(new RichBoxText(TypeName()));
 
             if (PlatformSettings.DevBuild)
             {
@@ -46,7 +52,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 var relation = DssRef.diplomacy.GetRelationType(args.player.faction, GetFaction());
 
-                args.content.Add(new RichBoxNewLine());
+                args.content.newLine();
                 args.content.Add(new RichBoxText(GetFaction().PlayerName, Color.LightYellow));
                 args.content.newLine();
                 args.content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation)));
@@ -56,8 +62,9 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.Add(new RichBoxSeperationLine());
         }
 
-        abstract public string Name();
+        
 
+        virtual public string Name() { return null; }
 
         abstract public AbsMapObject RelatedMapObject();
         virtual public void stateDebugText(HUD.RichBox.RichBoxContent content)

@@ -24,6 +24,10 @@ namespace VikingEngine.DSSWars
         public double NobelHouseAddDiplomacy = 1.0 / 240.0;
         public double NobelHouseAddMaxDiplomacy = 0.25;
 
+
+        public double AddDiplomacy_AfterSoftlock_PerSecond = 1 / 120.0;
+        public double Diplomacy_HardMax_Add = 5;
+
         public double SpeakTermsOnWar_BadChance;
         public double SpeakTermsOnWar_NoneChance;
 

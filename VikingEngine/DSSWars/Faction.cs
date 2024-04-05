@@ -457,7 +457,8 @@ namespace VikingEngine.DSSWars
         public void remove(City city)
         {   
             cities.Remove(city);
-            if (city == mainCity)
+            if (city == mainCity ||
+               mainCity == null || mainCity.faction != this)
             {
                 refreshMainCity();                     
             }
@@ -489,16 +490,20 @@ namespace VikingEngine.DSSWars
         
         }
 
-        public IntVector2 landAreaCenter()
+        public IntVector2 landAreaCenter(out bool cityPosition)
         {
             if (mainCity != null)
             {
+                cityPosition = true;
                 return mainCity.tilePos - IntVector2.One;
             }
             else if (armies.Count > 0)
             {
+                cityPosition = false;
                 return armies.First().tilePos;
             }
+
+            cityPosition = false;
             return IntVector2.Zero;
         }
 

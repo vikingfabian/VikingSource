@@ -430,11 +430,13 @@ namespace VikingEngine.DSSWars
             {
                 if (time > 0)
                 {
-                    var factions = DssRef.world.factions.counter();
-                    while (factions.Next())
-                    {
-                        factions.sel.asynchSleepObjectsUpdate(time);
+                    //factions.sel.asynchSleepObjectsUpdate(time);
+                    if (factions.sel.factiontype == FactionType.SouthHara)
+                    { 
+                        lib.DoNothing();
                     }
+                    factions.sel.asynchSleepObjectsUpdate(time);
+                    
                 }
             }
             return exitThreads;

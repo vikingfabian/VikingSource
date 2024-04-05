@@ -55,10 +55,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public float ai_armyDefenceValue = 0;
         public bool nobelHouse = false;
+        string name = null;
 
         public City(int index, IntVector2 pos, CityType type, WorldData world)
         {
             this.parentArrayIndex = index;
+            
             this.tilePos = pos;
             this.CityType = type;
         }
@@ -466,6 +468,8 @@ namespace VikingEngine.DSSWars.GameObject
             VectorVolumeC volume = new VectorVolumeC(position,
                 new Vector3(iconScale * 0.5f, 0.1f, iconScale * 0.5f));
             bound = volume.boundingBox();
+
+            name = Data.NameGenerator.CityName(tilePos);
         }
 
         void initEconomy()
@@ -807,7 +811,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string Name()
         {
-            return "City" + parentArrayIndex.ToString();
+            return name;
+        }
+
+        public override string TypeName()
+        {
+            return "City (" + TextLib.IndexToString(parentArrayIndex) + ")";
         }
 
         public override void toHud(Display.ObjectHudArgs args)
@@ -1016,7 +1025,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         public bool buySoldiers(UnitType type, int count, bool commit, out Army army, bool ignoreCityPurchaseOptions = false)
-        {
+        {//todo check 0 count
             var typeData = DssRef.unitsdata.Get(type);
 
             int workersTotCost = typeData.workForceCount() * count;

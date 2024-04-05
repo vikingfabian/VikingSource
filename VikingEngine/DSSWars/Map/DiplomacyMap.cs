@@ -89,29 +89,34 @@ namespace VikingEngine.DSSWars
                 if (faction != null &&
                     !faction.HasZeroUnits() &&
                     rel.inCullingView &&
-                    (!player.drawUnitsView.current.DrawFullOverview || faction.displayInFullOverview))
+                    (!player.drawUnitsView.current.DrawFullOverview || faction.displayInFullOverview || rel == selected))
                 {
+                    bool cityPos;
+                    var landAreaCenter = faction.landAreaCenter(out cityPos);
+
                     if (rel.ImageGroup == null)
                     {
-                        
-                        rel.flag = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE, Vector2.Zero, Engine.Screen.IconSizeV2 * 0.6f, HudLib.DiplomacyDisplayLayer, true);
+                        int layerAdd = cityPos ? 0 : -3;
+
+
+                        rel.flag = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE, Vector2.Zero, Engine.Screen.IconSizeV2 * 0.6f, HudLib.DiplomacyDisplayLayer + layerAdd, true);
                         rel.flag.Texture = faction.flagTexture;
                         rel.flag.SetFullTextureSource();
 
-                        rel.bg = new Graphics.Image(SpriteName.WarsRelationFlag, rel.flag.position, rel.flag.size * 2.2f, HudLib.DiplomacyDisplayLayer + 1, true);
+                        rel.bg = new Graphics.Image(SpriteName.WarsRelationFlag, rel.flag.position, rel.flag.size * 2.2f, HudLib.DiplomacyDisplayLayer + 1 + layerAdd, true);
                         rel.bg.Color = faction.Color();
                         //rel.bg.ColorAndAlpha(Color.Black, 0.8f);
                         rel.bg.Height *= 1.5f;
                         rel.bg.Ypos += rel.bg.Height * 0.25f;
 
-                        rel.relationIcon = new Graphics.Image(SpriteName.WarsRelationNeutral, rel.flag.position, Engine.Screen.IconSizeV2 * 0.6f, HudLib.DiplomacyDisplayLayer, true);
+                        rel.relationIcon = new Graphics.Image(SpriteName.WarsRelationNeutral, rel.flag.position, Engine.Screen.IconSizeV2 * 0.6f, HudLib.DiplomacyDisplayLayer + layerAdd, true);
                         rel.relationIcon.Ypos += rel.flag.Height * 0.9f;
 
                         rel.ImageGroup = new Graphics.ImageGroupParent2D(rel.flag, rel.bg, rel.relationIcon);
                     }
 
                     Vector3 wp = Vector3.Zero;
-                    var landAreaCenter = faction.landAreaCenter();
+                    
                     wp.X = landAreaCenter.X+0.5f;
                     wp.Z = landAreaCenter.Y-6;
 
@@ -207,15 +212,15 @@ namespace VikingEngine.DSSWars
             {
                 if (currentHover != null)
                 {
-                    hoverbox.Visible = true;
-                    hoverArea.AddRadius(4);
-                    hoverbox.Area = hoverArea;
+                    //hoverbox.Visible = true;
+                    //hoverArea.AddRadius(4);
+                    //hoverbox.Area = hoverArea;
 
                     if (player.input.Select.DownEvent)
                     {
                         selected = currentHover;
-                        seletionbox.Area = hoverArea;
-                        seletionbox.Visible = true;
+                        //seletionbox.Area = hoverArea;
+                        //seletionbox.Visible = true;
                         player.hud.needRefresh = true;
 
                         player.hud.displays.beginMove(2);
@@ -223,7 +228,7 @@ namespace VikingEngine.DSSWars
                 }
                 else
                 {
-                    hoverbox.Visible = false;
+                    //hoverbox.Visible = false;
 
                     if (player.input.Select.DownEvent)
                     {
@@ -233,13 +238,35 @@ namespace VikingEngine.DSSWars
             }
 
             if (selected != null)
-            {
+            {               
                 player.hud.displays.updateMove();
 
                 if (player.input.ControllerCancel.DownEvent)
                 {
                     cancel();
                 }
+            }
+
+            updateSelectBox(currentHover, hoverbox);
+            updateSelectBox(selected, seletionbox);
+
+        }
+
+        void updateSelectBox(RelationFlag relation, Graphics.Image box)
+        {            
+            if (relation != null)
+            {
+                var hoverArea = relation.bg.RealArea();
+                
+                hoverArea.AddRadius(4);
+                box.Area = hoverArea;
+                box.Visible = true;
+                //seletionbox.Area = hoverArea;
+                //seletionbox.Visible = true;
+            }
+            else
+            {
+                box.Visible = false;
             }
         }
 
@@ -283,7 +310,8 @@ namespace VikingEngine.DSSWars
                 Faction faction = DssRef.world.factions[rel.faction];
                 if (faction != null)
                 {
-                    rel.tilePos = faction.landAreaCenter();
+                    bool cityPos;
+                    rel.tilePos = faction.landAreaCenter(out cityPos);
 
                     rel.inCullingView = tileBound.IntersectTilePoint(rel.tilePos);
                     rel.relation = DssRef.diplomacy.GetRelationType(player.faction.parentArrayIndex, rel.faction); 

@@ -43,6 +43,7 @@ namespace VikingEngine.DSSWars
         public Rectangle2 tileBounds;
         public VectorRect unitBounds;
         public IntVector2 Size;
+        public IntVector2 HalfSize;
         public Grid2D<Tile> tileGrid;
         public Grid2D<SubTile> subTileGrid;
        
@@ -78,7 +79,7 @@ namespace VikingEngine.DSSWars
 
             //size
             Size = SizeDimentions(mapSize);
-
+            HalfSize = Size / 2;
             rnd = new PcgRandom(seed);
 
             refreshSize();

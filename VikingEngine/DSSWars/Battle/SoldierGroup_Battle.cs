@@ -15,6 +15,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         //public Vector3 battleWp;
         public bool battleWalkPath = false;
+        //public IntVector2 prevBattleGridPos;
+        public float battleQueTime = 0;
 
         void update_battlePreparations(float time, bool fullUpdate)
         {            
@@ -31,11 +33,15 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         public bool asynchFindBattleTarget(BattleGroup battle)
-        {   
+        {
+            if (army.id == 2072)
+            {
+                lib.DoNothing();
+            }
+
             refreshAttacking();
 
-            if (attacking_soldierGroupOrCity == null ||
-                groupObjective != GroupObjective_IsSplit)
+            if (attacking_soldierGroupOrCity == null)
             {
                 //Version 3: hämtar från battlegroup
                 AbsGroup nearest = null;

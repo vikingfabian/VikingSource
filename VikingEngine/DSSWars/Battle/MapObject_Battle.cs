@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Battle;
+using VikingEngine.DSSWars.Display;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -108,12 +109,25 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        virtual public void OnBattleJoin(BattleGroup group)
+        { 
+            this.battleGroup = group;
+        }
+
         public bool InBattle()
         {
             return battleGroup != null;
             //return battles.Count > 0;
         }
+        public override void toHud(ObjectHudArgs args)
+        {
+            base.toHud(args);
 
+            if (battleGroup != null)
+            {
+                args.content.icontext(SpriteName.WarsRelationWar, battleGroup.TypeName()).overrideColor = Microsoft.Xna.Framework.Color.Red;
+            }
+        }
 
     }
 }
