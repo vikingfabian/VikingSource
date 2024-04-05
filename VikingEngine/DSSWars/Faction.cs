@@ -7,6 +7,7 @@ using VikingEngine.DSSWars.GameObject;
 
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
 {
@@ -369,23 +370,28 @@ namespace VikingEngine.DSSWars
         {
             if ( gold < 0)
             {
-                if (factiontype == FactionType.SouthHara)
-                {
-                    lib.DoNothing();
-                }
+                //if (factiontype == FactionType.SouthHara)
+                //{
+                //    lib.DoNothing();
+                //}
                 int payDiff = -gold + armyUpkeep;
 
                 if (hasDeserters && payDiff >= armyUpkeep * 5)
                 {
-                    if (player.IsPlayer())
-                    {
-                        player.GetLocalPlayer().hud.messages.Add("Deserters!", "Unpaid soldiers are deserting from your armies");
-                    }
+                    
                     //Gain a portion of deserters on all armies
+                    int totalDeserters = 0;
+
                     armiesCounter.Reset();
                     while (armiesCounter.Next())
                     {
-                        armiesCounter.sel.desertSoldiers();
+                        totalDeserters += armiesCounter.sel.desertSoldiers();
+                    }
+
+                    if (player.IsPlayer())
+                    {
+                        player.GetLocalPlayer().hud.messages.Add("Deserters!", "Unpaid soldiers are deserting from your armies");
+                        player.GetLocalPlayer().statistics.SoldiersDeserted += totalDeserters;
                     }
                 }
             }

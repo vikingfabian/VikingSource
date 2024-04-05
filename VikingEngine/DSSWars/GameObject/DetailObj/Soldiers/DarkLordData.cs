@@ -60,9 +60,9 @@ namespace VikingEngine.DSSWars.GameObject
             DssRef.state.events.onDarkLordSpawn();
         }
 
-        public override void onDeath(bool fullUpdate)
+        public override void onDeath(bool fullUpdate, Faction enemyFaction)
         {
-            base.onDeath(fullUpdate);
+            base.onDeath(fullUpdate, enemyFaction);
 
             Ref.update.AddSyncAction(new SyncAction(DssRef.state.events.onDarkLorDeath));
         }

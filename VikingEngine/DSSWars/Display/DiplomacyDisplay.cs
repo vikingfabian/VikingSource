@@ -388,6 +388,7 @@ namespace VikingEngine.DSSWars.Display
             {
                 if (ally_notFriend)
                 {
+                    ++player.statistics.AlliedFactions;
                     DssRef.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationType3_Ally);
                 }
                 else
@@ -443,7 +444,7 @@ namespace VikingEngine.DSSWars.Display
             if (canMakeServant() &&
                 player.diplomaticPoints.pay(cost, false))
             {
-                player.servantFactions++;
+                ++player.statistics.ServantFactions;
                 otherfaction.mergeTo(player.faction);
 
                 player.hud.needRefresh = true;

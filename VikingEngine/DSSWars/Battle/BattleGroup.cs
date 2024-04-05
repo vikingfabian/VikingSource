@@ -32,10 +32,12 @@ namespace VikingEngine.DSSWars.Battle
         float checkIdleTime = 800;
         public bool battleState = false;
         
-        bool[] playerJoined = null;
+        //bool[] playerJoined = null;
+        List<Faction> factions = new List<Faction>(4);
+
         public BattleGroup(AbsMapObject m1, AbsMapObject m2) 
         {
-            playerJoined = new bool[DssRef.state.localPlayers.Count];
+            //playerJoined = new bool[DssRef.state.localPlayers.Count];
 
             members = new SpottedArray<AbsMapObject>(4);
             membersC = new SpottedArrayCounter<AbsMapObject>(members);
@@ -91,16 +93,22 @@ namespace VikingEngine.DSSWars.Battle
             m.battleGroup = this;
             if (members.AddIfNotExists(m))
             {
+                bool newFaction = !factions.Contains(m.faction);
                 newMember = true;
                 if (m.faction.player.IsPlayer())
                 {
                     var player = m.faction.player.GetLocalPlayer();
                     int ix = player.playerData.localPlayerIndex;
-                    if (!playerJoined[ix])
+                    if (newFaction)//!playerJoined[ix])
                     {
-                        playerJoined[ix] = true;
+                        //playerJoined[ix] = true;
                         player.battles.Add(this);
                     }
+                }
+
+                if (newFaction)
+                {
+                    factions.Add(m.faction);
                 }
 
                 if (atStart)
@@ -635,35 +643,68 @@ namespace VikingEngine.DSSWars.Battle
                 membersC.sel.ExitBattleGroup();
             }
 
+            int strongestFaction = -1;
+            float strongest = float.MinValue;
+
+            foreach (var kv in cityDominationStrength)
+            {
+                if (kv.Value > strongest)
+                {
+                    strongestFaction = kv.Key;
+                    strongest = kv.Value;
+                }
+            }
+
+            var dominatingFaction = DssRef.world.factions.Array[strongestFaction];
+
             if (cities.Count > 0)
             {
-                int strongestFaction = -1;
-                float strongest = float.MinValue;
-
-                foreach (var kv in cityDominationStrength)
+                foreach (var c in cities)
                 {
-                    if (kv.Value > strongest)
+                    if (c.faction != dominatingFaction)
                     {
-                        strongestFaction = kv.Key;
-                        strongest = kv.Value;
+                        if (c.faction.player.IsPlayer())
+                        {
+                            ++c.faction.player.GetLocalPlayer().statistics.CitiesLost;
+                        }
+                        if (dominatingFaction.player.IsPlayer())
+                        {
+                            ++dominatingFaction.player.GetLocalPlayer().statistics.CitiesCaptured;
+                        }
+
+                        Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(c.setFaction, dominatingFaction));
                     }
                 }
-
-                var dominatingFaction = DssRef.world.factions.Array[strongestFaction];
-
-                foreach (var c in cities)
-                { 
-                    Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(c.setFaction, dominatingFaction));
-                }
             }
 
-            for (int ix = 0; ix < playerJoined.Length; ++ix)
+            for (int i = 0; i < factions.Count; ++i)
             {
-                if (playerJoined[ix])
+                var f = factions[i];
+
+                bool winner = f == dominatingFaction || !DssRef.diplomacy.InWar(f, dominatingFaction);
+
+                if (f.player.IsPlayer())
                 {
-                    DssRef.state.localPlayers[ix].battles.Remove(this);
+                    var p = f.player.GetLocalPlayer();
+                    p.battles.Remove(this);
+                    if (winner)
+                    {
+                        p.statistics.BattlesWon++;
+                    }
+                    else
+                    {
+                        p.statistics.BattlesLost++;
+                    }
                 }
             }
+
+            //for (int ix = 0; ix < playerJoined.Length; ++ix)
+            //{
+            //    if (playerJoined[ix])
+            //    {
+            //        DssRef.state.localPlayers[ix].battles.Remove(this);
+            //    }
+            //}
         }
 
         public override Faction GetFaction()

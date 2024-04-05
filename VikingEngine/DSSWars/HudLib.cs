@@ -12,6 +12,9 @@ namespace VikingEngine.DSSWars
         public const float HeadDisplayBgOpacity = 0.9f;
         public static float HeadDisplayWidth, HeadDisplayEdge;
 
+        public const ImageLayers CutContentLayer = ImageLayers.Lay2;
+        public const ImageLayers CutSceneBgLayer = ImageLayers.Lay3;
+
         public const ImageLayers HeadDisplayContentLayer = ImageLayers.Lay6;
         public const ImageLayers HeadDisplayLayer = ImageLayers.Lay7;
 
@@ -20,6 +23,7 @@ namespace VikingEngine.DSSWars
         public static RichBoxSettings RbSettings;
 
         public static RichboxGuiSettings richboxGui;
+        public static RichboxGuiSettings cutsceneGui;
 
         public static void Init()
         {
@@ -45,6 +49,17 @@ namespace VikingEngine.DSSWars
                 bglayer = HeadDisplayLayer,
                 RbSettings= RbSettings,
             };
+
+            cutsceneGui = new RichboxGuiSettings()
+            {
+                bgCol = Color.Black,
+                bgAlpha = 0.5f,
+                edgeWidth = HeadDisplayEdge,
+                width = HeadDisplayWidth,
+                contentLayer = CutContentLayer -2,
+                bglayer = CutSceneBgLayer -2,
+                RbSettings = RbSettings,
+            };
         }
 
         public static void ResourceCost(RichBoxContent content, SpriteName icon, string name, int needResource, int hasResource)
@@ -65,6 +80,11 @@ namespace VikingEngine.DSSWars
         public static Color ResourceCostColor(bool hasEnough)
         { 
             return hasEnough ? Color.LightGreen : Color.Red;
+        }
+
+        public static SpriteName CheckImage(bool value)
+        { 
+            return value? SpriteName.cmdHudCheckOn : SpriteName.cmdHudCheckOff;
         }
         
     }

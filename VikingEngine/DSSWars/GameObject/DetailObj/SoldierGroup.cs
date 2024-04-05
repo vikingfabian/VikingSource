@@ -95,7 +95,6 @@ namespace VikingEngine.DSSWars.GameObject
             
             recruit &= typeData.recruitTrainingTimeSec > 0;
             
-
             init(typeData);
 
             //Column for column spawning
@@ -107,12 +106,16 @@ namespace VikingEngine.DSSWars.GameObject
                 new TrainingCompleteTimer(this);
             }
 
-            
             refreshAttackRadius(typeData);
             refreshRotateSpeed();            
 
             army.AddSoldierGroup(this);
             rotation = army.rotation;
+
+            if (army.faction.player.IsPlayer())
+            {
+                army.faction.player.GetLocalPlayer().statistics.SoldiersRecruited += count;
+            }
         }
 
         void init(AbsSoldierData typeData)

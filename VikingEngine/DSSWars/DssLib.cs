@@ -13,6 +13,7 @@ namespace VikingEngine.DSSWars
     static class DssLib
     {
         public static readonly string ContentDir = "DSS" + DataStream.FilePath.Dir;
+        public static readonly string StoryContentDir = ContentDir + "Story" + DataStream.FilePath.Dir;
 
 #region DEBUG
         public static readonly bool RandomSeed = PlatformSettings.DebugOptions ? true :

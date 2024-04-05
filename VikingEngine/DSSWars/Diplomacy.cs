@@ -239,7 +239,6 @@ namespace VikingEngine.DSSWars
             return rel;
         }
 
-
         public void declareWar(Faction attacker, Faction defender)
         {
             if (!InWar(attacker, defender))
@@ -251,7 +250,7 @@ namespace VikingEngine.DSSWars
                 {
                     int cost = DeclareWarCost(prevRelation);
                     var player = attacker.player.GetLocalPlayer();
-                    player.warsStarted++;
+                    ++player.statistics.WarsStartedByYou;
                     player.diplomaticPoints.pay(cost, true);
 
                     if (prevRelation >= RelationType.RelationType1_Peace)
@@ -262,7 +261,11 @@ namespace VikingEngine.DSSWars
                     {
                         relation.SetWorseSpeakTerms(SpeakTermsOnWar_BadChance, SpeakTermsOnWar_NoneChance);
                     }
-                }                
+                }
+                if (defender.player.IsPlayer())
+                { 
+                    ++defender.player.GetLocalPlayer().statistics.WarsStartedByEnemy;
+                }
             }
         }
 
@@ -395,7 +398,7 @@ namespace VikingEngine.DSSWars
             {
                 baseCost -= 1;
             }
-            return baseCost * (player.servantFactions + 1);
+            return baseCost * (player.statistics.ServantFactions + 1);
         }
 
         public static int AllianceCost(RelationType relation, SpeakTerms speakterms, bool againstDark, bool ally_notFriend)

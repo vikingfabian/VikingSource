@@ -274,19 +274,25 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void desertSoldiers()
+        public int desertSoldiers()
         {
             int count = MathExt.MultiplyInt(Ref.rnd.Double(0.2, 0.4), groups.Count);
+            int soldiersDeserted = 0;
 
             for (int i = 0; i < count; i++)
             {
                 var group = groups.PullRandom_Safe(Ref.rnd);
                 if (group != null)
                 {
-                    group.DeleteMe(DeleteReason.Desert, false);
-                    //group.onDisband(true);
+                    soldiersDeserted += group.soldiers.Count;
+                    group.DeleteMe(DeleteReason.Desert, false);                    
                 }
             }
+
+            //if (faction.player.IsPlayer())
+            //{
+            //    faction.player.GetLocalPlayer().statistics.SoldiersDeserted += soldiersDeserted;
+            //}
 
             if (groups.Count <= 0)
             {
@@ -296,6 +302,8 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 refreshPositions(false);
             }
+
+            return soldiersDeserted;
         }
 
 

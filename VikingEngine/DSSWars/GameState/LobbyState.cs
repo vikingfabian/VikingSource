@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars
             mainMenu();
 
             Graphics.TextG version = new Graphics.TextG(LoadedFont.Console, Screen.SafeArea.RightBottom, 
-                Engine.Screen.TextSizeV2, new Align(Vector2.One), "DSS war party - ver "+ Engine.LoadContent.SteamVersion, 
+                Engine.Screen.TextSizeV2, new Align(Vector2.One), string.Format(DssRef.lang.Lobby_GameVersion,Engine.LoadContent.SteamVersion), 
                 Color.LightYellow, ImageLayers.Background2);
 
             maploading = new Graphics.TextG(LoadedFont.Console, Screen.SafeArea.LeftBottom,
@@ -74,8 +74,7 @@ namespace VikingEngine.DSSWars
         {
             float w = Engine.Screen.SafeArea.Width;
             float h = w/bgTex.Width*bgTex.Height;
-            float x = Engine.Screen.SafeArea.X;
-            
+            float x = Engine.Screen.SafeArea.X;            
             float y = Screen.CenterScreen.Y - h * 0.5f;
 
             bgImage = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE,
@@ -182,8 +181,8 @@ namespace VikingEngine.DSSWars
 
 
                 difficultyLevelText = new GuiLabel("XXX", layout);
-                string text = "Difficulty level " + DssRef.difficulty.PercDifficulty.ToString() + "%";
-                new GuiTextButton(text, null, selectDifficultyMenu, true, layout);
+                
+                new GuiTextButton(string.Format(DssRef.lang.Settings_DifficultyLevel, DssRef.difficulty.PercDifficulty), null, selectDifficultyMenu, true, layout);
 
                 new GuiCheckbox("Allow pause and command", null, allowPauseProperty, layout);
                 new GuiCheckbox("Boss events", "Turning off the boss will put the game in a sandbox mode with no ending.", bossProperty, layout);
@@ -254,8 +253,8 @@ namespace VikingEngine.DSSWars
             //    levelPerc *= 1.25;
             //}
 
-
-            difficultyLevelText.text.TextString = "Total Difficulty " + DssRef.difficulty.TotalDifficulty().ToString() + "%";
+            //string Settings_TotalDifficulty = "Total Difficulty {0}%";
+            difficultyLevelText.text.TextString = string.Format( DssRef.lang.Settings_TotalDifficulty, DssRef.difficulty.TotalDifficulty());
         }
 
         //public BossTimeSettings bossTimeProperty(bool set, BossTimeSettings value)

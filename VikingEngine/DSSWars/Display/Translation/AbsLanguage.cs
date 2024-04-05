@@ -32,6 +32,8 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string Lobby_ExitGame { get; }
 
+        public abstract string Lobby_GameVersion { get; }
+
         public abstract string Player_DefaultName { get; }
 
         public abstract string ProfileEditor_Description { get; }
@@ -75,6 +77,25 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string Building_NobelHouse { get; }
 
         public abstract string Building_DarkFactory { get; }
+
+        public abstract string Settings_TotalDifficulty { get; }
+
+        public abstract string Settings_DifficultyLevel { get; }
+
+
+        public abstract string EndGameStatistics_Time { get; }
+        public abstract string EndGameStatistics_SoldiersRecruited { get; }
+        public abstract string EndGameStatistics_FriendlySoldiersLost { get; }
+        public abstract string EndGameStatistics_EnemySoldiersKilled { get; }
+        public abstract string EndGameStatistics_SoldiersDeserted { get; }
+        public abstract string EndGameStatistics_CitiesCaptured { get; }
+        public abstract string EndGameStatistics_CitiesLost { get; }
+        public abstract string EndGameStatistics_BattlesWon { get; }
+        public abstract string EndGameStatistics_BattlesLost { get; }
+        public abstract string EndGameStatistics_WarsStartedByYou { get; }
+        public abstract string EndGameStatistics_WarsStartedByEnemy { get; }
+        public abstract string EndGameStatistics_AlliedFactions { get; }
+        public abstract string EndGameStatistics_ServantFactions { get; }
 
 
     }

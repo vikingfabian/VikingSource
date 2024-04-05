@@ -81,7 +81,7 @@ namespace VikingEngine.DSSWars.GameObject
             return Rotation1D.FromDirection(VectorExt.V3XZtoV2(targetPosDiff));
         }
 
-        virtual public void takeDamage(int damageAmount, Rotation1D attackDir, Faction damageFaction, bool fullUpdate)
+        virtual public void takeDamage(int damageAmount, Rotation1D attackDir, Faction enemyFaction, bool fullUpdate)
         {
             if (health > 0)
             {
@@ -96,7 +96,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (health <= 0 && localMember)
                     {
-                        onDeath( fullUpdate);
+                        onDeath(fullUpdate, enemyFaction);
                     }
 
                     if (fullUpdate)
@@ -272,9 +272,18 @@ namespace VikingEngine.DSSWars.GameObject
             get { return Data().basehealth - health; }
         }
 
-        virtual public void onDeath(bool fullUpdate)
+        virtual public void onDeath(bool fullUpdate, Faction enemyFaction)
         {
             //onEvent(UnitEventType.Death);
+            if (enemyFaction.player.IsPlayer())
+            {
+                ++enemyFaction.player.GetLocalPlayer().statistics.EnemySoldiersKilled;
+            }
+            if (group.army.faction.player.IsPlayer())
+            {
+                ++group.army.faction.player.GetLocalPlayer().statistics.FriendlySoldiersLost;
+            }
+
             if (fullUpdate)
             {
                 DeleteMe(DeleteReason.Death, true);

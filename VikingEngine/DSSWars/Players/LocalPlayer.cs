@@ -10,6 +10,7 @@ using VikingEngine.HUD.RichBox;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DSSWars.Battle;
+using VikingEngine.DSSWars.GameState;
 
 namespace VikingEngine.DSSWars.Players
 {    
@@ -34,8 +35,9 @@ namespace VikingEngine.DSSWars.Players
         public FloatingInt_Max commandPoints = new FloatingInt_Max();
         public FloatingInt_Max diplomaticPoints = new FloatingInt_Max();
 
-        public int servantFactions = 0;
-        public int warsStarted = 0;
+        //public int servantFactions = 0;
+        //public int warsStarted = 0;
+        public Data.Statistics statistics = new Data.Statistics();
 
         public PlayerToPlayerDiplomacy[] toPlayerDiplomacies = null;
         public Automation automation;
@@ -224,15 +226,16 @@ namespace VikingEngine.DSSWars.Players
                     {
                         //cityBuilderTest();
                         //DssRef.state.events.TestNextEvent();
-                        
-                        battleLineUpTest(true);
+
+                        //battleLineUpTest(true);
+                        new Display.CutScene.EndScene(true);
                     }
 
                     if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                     {
                         
                         //hud.messages.Add("message!", "Hello hello");
-                        battleLineUpTest(false);
+                        //battleLineUpTest(false);
                         //mapControls.FocusObject()?.tagObject();
                     }
                 }
