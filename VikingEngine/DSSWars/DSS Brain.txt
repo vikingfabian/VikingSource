@@ -15,6 +15,7 @@ Retreat system
 
 Polish
 -seperata sparfiler
+-game credits
 
 -armeer ska visa ifall de strider på hud
 -attack warning -Battle notification
@@ -36,8 +37,6 @@ Art
 -world domination achieve
 
 Steam Launch Roadmap
--Fail state for the game
--End credits screen
 -Localization to 8 languages
 -Full controller support
 -Polish the turd
