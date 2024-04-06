@@ -653,6 +653,9 @@ namespace VikingEngine.DSSWars.Battle
 
         void ExitBattle()
         {
+            if (members.Count == 0)
+            { return; }
+
             List<City> cities = new List<City>(2);
             Dictionary<int, float> cityDominationStrength = new Dictionary<int, float>(4);
 

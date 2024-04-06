@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Display.CutScene;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.ToGG.MoonFall;
@@ -551,9 +552,23 @@ namespace VikingEngine.DSSWars
         {
             nextEvent = EventType.End;
             DssRef.achieve.onVictory();
-            DssRef.state.localPlayers[0].menuSystem.victoryScreen();
+            //DssRef.state.localPlayers[0].menuSystem.victoryScreen();
+
+            new EndScene(true);
         }
 
+        public void onPlayerDeath()
+        {
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                if (p.faction.isAlive)
+                {
+                    return;
+                }
+            }
+
+            new EndScene(false);
+        }
        
     }
 

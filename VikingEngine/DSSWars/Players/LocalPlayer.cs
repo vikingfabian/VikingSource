@@ -53,6 +53,7 @@ namespace VikingEngine.DSSWars.Players
         public LocalPlayer(Faction faction, int playerindex, int numPlayers)
             :base(faction)
         {
+            faction.factiontype = FactionType.Player;
             var pStorage = DssRef.storage.localPlayers[playerindex];
             faction.SetProfile(DssRef.storage.profiles[pStorage.profile]);
             faction.diplomaticSide = DiplomaticSide.Light;
@@ -232,7 +233,7 @@ namespace VikingEngine.DSSWars.Players
                         //battleLineUpTest(true);
 
                         //battleLineUpTest(true);
-                        new Display.CutScene.EndScene(false);
+                        new Display.CutScene.EndScene(true);
                     }
 
                     if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))

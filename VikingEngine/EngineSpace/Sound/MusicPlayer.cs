@@ -92,13 +92,16 @@ namespace VikingEngine.Sound
             shuffleSongsLeftToPlay = playList.Count;
         }
 
-        public void PlaySong(SongData songdata, bool isAsynch)
+        public void PlaySong(SongData songdata, bool isAsynch, bool autoplay = true)
         {
             if (PlatformSettings.PlayMusic)
             {
-                playSongState = PlaySongState.LoadingSong;
-                playingFromPlayList = false;
-                keepPlaying = true;
+                if (autoplay)
+                {
+                    playSongState = PlaySongState.LoadingSong;
+                    playingFromPlayList = false;
+                }
+                keepPlaying = autoplay;
                 new LoadAndPlaySong(this, songdata, isAsynch);
             }
         }
@@ -197,7 +200,17 @@ namespace VikingEngine.Sound
         {
             nextSong = song;
             nextSongData = songData;
-            playSongState = PlaySongState.FadeOut;
+
+            if (keepPlaying)
+            {
+                playSongState = PlaySongState.FadeOut;
+            }
+        }
+
+        public void PlayLoaded()
+        {
+            keepPlaying = true;
+            beginNextSong();
         }
 
         public void SetVolume(float masterVolume)
@@ -222,6 +235,8 @@ namespace VikingEngine.Sound
         {
             return playSongState != PlaySongState.Stopped;
         }
+
+        public PlaySongState PlaySongState { get { return playSongState; } }
     }
 
     class LoadAndPlaySong : StorageTask//QueAndSynch
@@ -302,6 +317,7 @@ namespace VikingEngine.Sound
                 Engine.Sound.PlayMusic(storedSong, seamlessLoop);
             }
         }
+
     }
 
     enum PlaySongState

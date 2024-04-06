@@ -271,6 +271,7 @@ namespace VikingEngine.DSSWars
 
         public void exit()
         {
+            Ref.music.stop(true);
             exitThreads = true;
             new ExitGamePlay();
         }

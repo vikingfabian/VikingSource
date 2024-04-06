@@ -21,6 +21,11 @@ namespace VikingEngine.DSSWars.Display.CutScene
             DssRef.state.cutScene = this;
         }
 
+        virtual public void Close()
+        {
+            DssRef.state.cutScene = null;
+        }
+
         abstract public void Time_Update(float time);
     }
 
@@ -32,13 +37,16 @@ namespace VikingEngine.DSSWars.Display.CutScene
         Graphics.ImageAdvanced bgImage = null;
         bool victory;
         EndSceneDisplay display;
+
+        DoomEpilogue doomEpilouge;
+
         public EndScene(bool victory)
             : base()
         {
             this.victory = victory;
             VectorRect area = Screen.Area;
             area.AddRadius(5);
-            blackout = new Graphics.Image(SpriteName.WhiteArea, area.Position, area.Size, HudLib.CutSceneBgLayer);
+            blackout = new Graphics.Image(SpriteName.WhiteArea, area.Position, area.Size, HudLib.CutSceneBgLayer+1);
             blackout.Color = victory ? new Color(16, 16, 32) : new Color(3, 9, 8);
             blackout.Opacity = 0;
 
@@ -54,6 +62,15 @@ namespace VikingEngine.DSSWars.Display.CutScene
 
         override public void Time_Update(float time)
         {
+            if (doomEpilouge != null)
+            {
+                if (doomEpilouge.update())
+                {
+                    doomEpilouge = null;
+                }
+                return;
+            }
+
             switch (state_0black_1in_2ready)
             {
                 case 0:                    
@@ -79,7 +96,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
                             }
 
                             bgImage = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE,
-                                Screen.CenterScreen - new Vector2(w, h) * 0.5f, new Vector2(w, h), HudLib.CutSceneBgLayer, false);
+                                Screen.CenterScreen - new Vector2(w, h) * 0.5f, new Vector2(w, h), HudLib.CutSceneBgLayer-1, false);
                             bgImage.Texture = bgTex;
                             bgImage.SetFullTextureSource();
                             bgImage.Opacity = 0f;
@@ -96,13 +113,32 @@ namespace VikingEngine.DSSWars.Display.CutScene
                     }
                     break;
                 
+                case 2:
+                    if (display!= null )
+                    {
+                        display.update();
+                    }                    
+                    break;
             }
 
         }
 
+        void watchEpilogue()
+        {
+            doomEpilouge = new DoomEpilogue();
+        }
+
         void initDisplay()
         {
-            display = new EndSceneDisplay(victory);
+            display = new EndSceneDisplay(victory, watchEpilogue);
+        }
+
+        public override void Close()
+        {
+            blackout.DeleteMe();
+            bgImage.DeleteMe();
+            display.DeleteMe();
+            base.Close();
         }
     }
 }

@@ -19,11 +19,26 @@ namespace VikingEngine.DSSWars.Display.CutScene
         EndSceneLeftDisplayMain left;
         EndSceneCenterDisplayMain center;
         EndSceneRightDisplayMain right;
-        public EndSceneDisplay(bool victory)
+        public EndSceneDisplay(bool victory, Action watchEpilogue)
         { 
             left = new EndSceneLeftDisplayMain();
-            center = new EndSceneCenterDisplayMain(victory);
+            center = new EndSceneCenterDisplayMain(victory, watchEpilogue);
             right = new EndSceneRightDisplayMain();
+
+            center.beginMove(0);
+        }
+
+        public void update()
+        {
+            center.updateMove();
+            center.update();
+        }
+
+        public void DeleteMe()
+        {
+            left.DeleteMe();
+            center.DeleteMe();
+            right.DeleteMe();
         }
     }
 
@@ -73,10 +88,10 @@ namespace VikingEngine.DSSWars.Display.CutScene
     {
         EndSceneCenterDisplayPart part;
 
-        public EndSceneCenterDisplayMain(bool victory)
+        public EndSceneCenterDisplayMain(bool victory, Action watchEpilogue)
             : base(HudLib.cutsceneGui, DssRef.state.localPlayers[0].input)
         {
-            part = new EndSceneCenterDisplayPart(victory, this);
+            part = new EndSceneCenterDisplayPart(victory, this, watchEpilogue);
 
             parts = new List<HUD.RichBox.RichboxGuiPart>()
             {
@@ -87,7 +102,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
 
     class EndSceneCenterDisplayPart : RichboxGuiPart
     {
-        public EndSceneCenterDisplayPart(bool victory, RichboxGui gui)
+        public EndSceneCenterDisplayPart(bool victory, RichboxGui gui, Action watchEpilogue)
             : base(gui)
         {
             if (victory)
@@ -118,9 +133,14 @@ namespace VikingEngine.DSSWars.Display.CutScene
             }
 
             content.newParagraph();
-            content.Button("Continue", null, null, true);
-            content.space();
-            content.Button("Exit", null, null, true);
+            if (victory)
+            {
+                content.Button("Watch epilogue", new RbAction(watchEpilogue), null, true);
+                content.newLine();
+            }
+            content.Button("Continue", new RbAction(DssRef.state.cutScene.Close), null, true);
+            content.newLine();
+            content.Button("Exit game", new RbAction(DssRef.state.exit), null, true);
 
             Vector2 pos = Engine.Screen.SafeArea.CenterTop;
             pos.X -= HudLib.cutsceneGui.width * 0.5f;

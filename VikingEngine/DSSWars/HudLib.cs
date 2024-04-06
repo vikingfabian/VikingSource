@@ -12,6 +12,9 @@ namespace VikingEngine.DSSWars
         public const float HeadDisplayBgOpacity = 0.9f;
         public static float HeadDisplayWidth, HeadDisplayEdge;
 
+        public const ImageLayers StoryContentLayer = ImageLayers.Lay1_Front;
+        public const ImageLayers StoryBgLayer = ImageLayers.Lay1_Back;
+
         public const ImageLayers CutContentLayer = ImageLayers.Lay2;
         public const ImageLayers CutSceneBgLayer = ImageLayers.Lay3;
 

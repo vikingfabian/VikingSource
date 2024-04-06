@@ -11,8 +11,7 @@ namespace VikingEngine.DSSWars.Display
     class GameHud
     {
         LocalPlayer player;
-
-        
+                
         public Tooltip tooltip;
         Timer.Basic refreshTimer = new Timer.Basic(500, false);
         public bool mouseOver = false;

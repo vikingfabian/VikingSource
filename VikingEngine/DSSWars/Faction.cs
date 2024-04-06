@@ -819,14 +819,21 @@ namespace VikingEngine.DSSWars
 
         public void DeleteMe()
         {
-            isAlive = false;
-            DssRef.diplomacy.onFactionDeath(this);
-
-            if (factiontype == FactionType.SouthHara && 
-                DssRef.state.events.nextEvent <= EventType.DarkLord &&
-                DssRef.difficulty.bossTimeSettings <= BossTimeSettings.Early)
+            if (isAlive)
             {
-                DssRef.achieve.UnlockAchievement(AchievementIndex.early_hara);
+                isAlive = false;
+                DssRef.diplomacy.onFactionDeath(this);
+
+                if (factiontype == FactionType.SouthHara &&
+                    DssRef.state.events.nextEvent <= EventType.DarkLord &&
+                    DssRef.difficulty.bossTimeSettings <= BossTimeSettings.Early)
+                {
+                    DssRef.achieve.UnlockAchievement(AchievementIndex.early_hara);
+                }
+                else if (factiontype == FactionType.Player)
+                {
+                    DssRef.state.events.onPlayerDeath();
+                }
             }
         }
 

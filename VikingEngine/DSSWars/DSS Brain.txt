@@ -1,9 +1,7 @@
 ﻿Change Log
-* Diplomacy is divided into a soft limit and a hard limit. Nobel houses affect the income speed half way, then it slowly adds 1 point/4 minutes (experimental).
-* Truce will now end battles
-* Name generator
-* Fixed some ghost issues
-* Battles on unit HUD
+* Bought some cheap, royalty free music and put it in my game.
+* End screen for victory or loss, with statistics.
+* Prologue: a short "movie" you can watch when you win the game.
 
 Error
 -strid fastnar vid peace
