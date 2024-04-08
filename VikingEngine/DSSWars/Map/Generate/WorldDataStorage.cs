@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars
             this.worldData = data;
             var filePath = mapfilePath(data.mapSize, data.saveIndex, true);
             System.IO.Directory.CreateDirectory(filePath.CompleteDirectory);
-            new DataStream.WriteBinaryIO(filePath, data.write, null);
+            new DataStream.WriteBinaryIO(filePath, data.writeMapFile, null);
         }
 
         public void loadMap(MapSize size, int mapIndex)
@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars
             this.worldData.saveIndex = mapIndex;
             DssRef.world = this.worldData;
             var filePath = mapfilePath(worldData.mapSize, worldData.saveIndex, false);
-            readTask = new DataStream.ReadBinaryIO(filePath, worldData.read, this);
+            readTask = new DataStream.ReadBinaryIO(filePath, worldData.readMapFile, this);
         }
 
         public DataStream.FilePath mapfilePath(MapSize size, int mapIndex, bool save)

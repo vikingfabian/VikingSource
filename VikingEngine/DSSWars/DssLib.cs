@@ -13,6 +13,7 @@ namespace VikingEngine.DSSWars
     static class DssLib
     {
         public static readonly string ContentDir = "DSS" + DataStream.FilePath.Dir;
+        public static readonly string StoryContentDir = ContentDir + "Story" + DataStream.FilePath.Dir;
 
 #region DEBUG
         public static readonly bool RandomSeed = PlatformSettings.DebugOptions ? true :
@@ -35,6 +36,10 @@ namespace VikingEngine.DSSWars
         public static readonly RotationQuarterion BannerRotation = new RotationQuarterion(Quaternion.CreateFromYawPitchRoll(-0.3f, 0f, 0f));
 
 
+        public const int MercenaryPurchaseCount = 150;
+       
+
+
         public const int DefaultMaxCommand = 2;
         public const double DefaultCommandPerSecond = 1.0 / 60.0;
         public const double NobelHouseAddCommand = 1.0 / 120.0;
@@ -52,6 +57,8 @@ namespace VikingEngine.DSSWars
         public const float NobelHouseUpkeep = 5;
 
         public const float BattleConflictRadius = 2f;
+        public const int BattleChainConflictRadius = 3;
+        public const float CityDominationRadius = BattleConflictRadius + 1.5f;
 
 
         public static readonly UnitType[] AvailableUnitTypes = new UnitType[]
@@ -71,7 +78,7 @@ namespace VikingEngine.DSSWars
         public const float GroupDefaultUpkeep = SoldierDefaultUpkeep * AbsSoldierData.GroupDefaultCount;
         public const int DefalutRecruitTrainingTimeSec = 60;
 
-        public static int[] AiEconomyLevel = new int[] { 50, 75, 100, 125, 150, 200 };
+        
 
         public const float WeeklyArmyActionPoints = 0.05f; 
         public const float ArmyMoveDoubleTimeCostToFatigue = 0.1f;

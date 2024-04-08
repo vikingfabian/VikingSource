@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars.Display
         void toHud(Faction faction, bool selection)
         {
             otherfaction = faction;
-            selectedRelation = player.faction.diplomaticRelations[faction.index];
+            selectedRelation = player.faction.diplomaticRelations[faction.parentArrayIndex];
             againstDark = faction.WantToAllyAgainstDark() && player.faction.diplomaticSide == DiplomaticSide.Light;
             if (selectedRelation == null)
             {
@@ -388,6 +388,7 @@ namespace VikingEngine.DSSWars.Display
             {
                 if (ally_notFriend)
                 {
+                    ++player.statistics.AlliedFactions;
                     DssRef.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationType3_Ally);
                 }
                 else
@@ -443,7 +444,7 @@ namespace VikingEngine.DSSWars.Display
             if (canMakeServant() &&
                 player.diplomaticPoints.pay(cost, false))
             {
-                player.servantFactions++;
+                ++player.statistics.ServantFactions;
                 otherfaction.mergeTo(player.faction);
 
                 player.hud.needRefresh = true;

@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject
         public const int WorkersPerTile = WorkersPerHut * WorkerHutsPerTile * HutMaxLevel;
         public const int HutMaxLevel = 2;
         City city;
-        const int GuardMaxHealth = 40;
+        const int GuardMaxHealth = 80;
         int guardHealth = GuardMaxHealth;
         float nextRespawn = 0;
         CityDetailData data;
@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.GameObject
                             
                             Tile t;
                             if (DssRef.world.tileGrid.TryGet(edgeLoop.Position, out t) &&
-                                    t.IsLand() && t.CityIndex == city.index)
+                                    t.IsLand() && t.CityIndex == city.parentArrayIndex)
                             {
                                 const int SubStartTrialCount = 4;
                                 IntVector2 topLeft = WP.ToSubTilePos_TopLeft(edgeLoop.Position);
@@ -373,21 +373,6 @@ namespace VikingEngine.DSSWars.GameObject
 
                             int hits = startMultiAttack(fullUpdate, attackTarget_sp, shortDist, attacks, true);
                             storedAttacks = attacks - hits;
-                            //var soldiersC = attackTarget.group.soldiers.counter();
-                            //while (soldiersC.Next())
-                            //{
-                            //    if (soldiersC.sel != attackTarget && soldiersC.sel.Alive_IncomingDamageIncluded())
-                            //    {
-                            //        --attacks;
-                            //        startAttack(fullUpdate, soldiersC.sel, shortDist, true);
-                            //    }
-
-                            //    if (attacks <= 0)
-                            //    {
-                            //        break;
-                            //    }
-                            //}
-                            //storedAttacks = attacks;
                         }
                         else
                         {
@@ -412,22 +397,12 @@ namespace VikingEngine.DSSWars.GameObject
             return pos;
 
         }
-
-        //protected override void closestTargetCheck(AbsDetailUnit unit, bool friendly, float distance, ref AbsDetailUnit closestOpponent, ref float closestOpponentDistance)
-        //{
-        //    if (city.index == 107)
-        //    {
-        //        lib.DoNothing();
-        //    }
-        //    base.closestTargetCheck(unit, friendly, distance, ref closestOpponent, ref closestOpponentDistance);
-        //}
-
-        public void asynchNearObjectsUpdate()
+        public void asynchFindBattleTarget()
         {
             AbsDetailUnit closestOpponent = null;
             float closestOpponentDistance = float.MaxValue;
 
-            var opponentGroups = DssRef.world.unitCollAreaGrid.collectOpponentGroups(Faction(), tilePos);
+            var opponentGroups = DssRef.world.unitCollAreaGrid.collectOpponentGroups(GetFaction(), tilePos);
 
             foreach (var m in opponentGroups)
             {
@@ -455,12 +430,17 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override bool defeatedBy(Faction attacker)
         {
-            return this.Faction() == attacker;
+            return this.GetFaction() == attacker;
         }
 
         public override bool aliveAndBelongTo(Faction faction)
         {
-            return this.Faction() == faction;
+            return this.GetFaction() == faction;
+        }
+
+        public override bool IsShipType()
+        {
+            return false;
         }
 
         public override bool IsStructure() 
@@ -476,7 +456,7 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        override public Faction Faction()
+        override public Faction GetFaction()
         {
             return city.faction;
         }
@@ -493,7 +473,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string ToString()
         {
-            return city.Name() + " -detail obj";
+            return city.TypeName() + " -detail obj";
         }
 
         public override AbsDetailUnitData Data()

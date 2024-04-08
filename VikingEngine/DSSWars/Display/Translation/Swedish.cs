@@ -70,6 +70,12 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Lobby_ExitGame => "Avsluta";
 
+
+        /// <summary>
+        /// Game name and version number
+        /// </summary>
+        public override string Lobby_GameVersion => "DSS war party - ver {0}";
+
         /// <summary>
         /// Display local multiplayer name, 0: player number
         /// </summary>
@@ -207,5 +213,79 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Building_DarkFactory => "Dark factory";
 
+        /// <summary>
+        /// In game settings menu. Sums all difficulty options in percentage.
+        /// </summary>
+        public override string Settings_TotalDifficulty => "Total svårighet {0}%";
+
+        /// <summary>
+        /// In game settings menu. Base difficulty option.
+        /// </summary>
+        public override string Settings_DifficultyLevel => "Svårighetsnivå {0}%";
+
+        /// <summary>
+        /// Stats that are shown on the end game screen. Total ingame time passed.
+        /// </summary>
+        public override string EndGameStatistics_Time => "Ingame time: {0}";
+
+        /// <summary>
+        /// Stats that are shown on the end game screen. How many soldiers you bought.
+        /// </summary>
+        public override string EndGameStatistics_SoldiersRecruited => "Soldiers recruited: {0}";
+
+        /// <summary>
+        /// Stats that are shown on the end game screen. Count of your soldiers that died in battle.
+        /// </summary>
+        public override string EndGameStatistics_FriendlySoldiersLost => "Soldiers lost in battle: {0}";
+
+        /// <summary>
+        /// Stats that are shown on the end game screen. Count of opponent soldiers you killed in battle.
+        /// </summary>
+        public override string EndGameStatistics_EnemySoldiersKilled => "Enemy soldiers killed in battle: {0}";
+
+        /// <summary>
+        /// Stats that are shown on the end game screen. Count of your soldiers that have left you.
+        /// </summary>
+        public override string EndGameStatistics_SoldiersDeserted => "Soldiers deserted: {0}";
+
+        /// <summary>
+        /// Stats that are shown on the end game screen. Count of cities won in battle.
+        /// </summary>
+        public override string EndGameStatistics_CitiesCaptured => "Cities captured: {0}";
+
+        /// <summary>
+        /// Stats that are shown on the end game screen. Count of cities lost in battle.
+        /// </summary>
+        public override string EndGameStatistics_CitiesLost => "Cities lost: {0}";
+
+        /// <summary>
+        /// Stats that are shown on the end game screen. Count of battle win results.
+        /// </summary>
+        public override string EndGameStatistics_BattlesWon => "Battles won: {0}";
+
+        /// <summary>
+        /// Stats that are shown on the end game screen. Count of battle lost results.
+        /// </summary>
+        public override string EndGameStatistics_BattlesLost => "Battles lost: {0}";
+
+        /// <summary>
+        /// Stats that are shown on the end game screen. Diplomacy. War declarations made by you.
+        /// </summary>
+        public override string EndGameStatistics_WarsStartedByYou => "War declarations made: {0}";
+
+        /// <summary>
+        /// Stats that are shown on the end game screen.  Diplomacy. War declarations made toward you.
+        /// </summary>
+        public override string EndGameStatistics_WarsStartedByEnemy => "War declarations recieved: {0}";
+
+        /// <summary>
+        /// Stats that are shown on the end game screen. Allies made through diplomacy.
+        /// </summary>
+        public override string EndGameStatistics_AlliedFactions => "Diplomatic alliances: {0}";
+
+        /// <summary>
+        /// Stats that are shown on the end game screen. Servants made through diplomacy. Servants cities and armies become yours.
+        /// </summary>
+        public override string EndGameStatistics_ServantFactions => "Diplomatic servants: {0}";
     }
 }

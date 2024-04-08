@@ -15,7 +15,6 @@ using Microsoft.Xna.Framework.Content;
 using VikingEngine.Graphics;
 using VikingEngine.Timer;
 using VikingEngine.LootFest;
-using VikingEngine.DSSWars.Players;
 using VikingEngine.Input;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DebugExtensions;
@@ -23,6 +22,7 @@ using System.ComponentModel.Design;
 using VikingEngine.ToGG.Commander.LevelSetup;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.ToggEngine.Map;
+using VikingEngine.DSSWars.Data;
 
 namespace VikingEngine.DSSWars
 {
@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars
             mainMenu();
 
             Graphics.TextG version = new Graphics.TextG(LoadedFont.Console, Screen.SafeArea.RightBottom, 
-                Engine.Screen.TextSizeV2, new Align(Vector2.One), "DSS war party - ver "+ Engine.LoadContent.SteamVersion, 
+                Engine.Screen.TextSizeV2, new Align(Vector2.One), string.Format(DssRef.lang.Lobby_GameVersion,Engine.LoadContent.SteamVersion), 
                 Color.LightYellow, ImageLayers.Background2);
 
             maploading = new Graphics.TextG(LoadedFont.Console, Screen.SafeArea.LeftBottom,
@@ -66,6 +66,7 @@ namespace VikingEngine.DSSWars
                 Color.DarkGray, ImageLayers.Background2);
 
             new Timer.AsynchActionTrigger(load_asynch, true);
+            new Timer.TimedAction0ArgTrigger(playMusic, 1000);
         }       
         
         void load_asynch()
@@ -78,8 +79,7 @@ namespace VikingEngine.DSSWars
         {
             float w = Engine.Screen.SafeArea.Width;
             float h = w/bgTex.Width*bgTex.Height;
-            float x = Engine.Screen.SafeArea.X;
-            
+            float x = Engine.Screen.SafeArea.X;            
             float y = Screen.CenterScreen.Y - h * 0.5f;
 
             bgImage = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE,
@@ -90,6 +90,14 @@ namespace VikingEngine.DSSWars
 
             //Graphics.TextG title = new Graphics.TextG(LoadedFont.Bold, bgImage.CenterTop, Engine.Screen.TextSizeV2 * 2.6f, new Align(new Vector2(PublicConstants.Half, 1f)),
             //    "DSS War Party", new Color(36,80,89), ImageLayers.Background8);
+        }
+
+        void playMusic()
+        {
+            if (Ref.music != null)
+            {
+                Ref.music.PlaySong(Data.Music.Intro, false);
+            }
         }
        
         void mainMenu()
@@ -119,40 +127,12 @@ namespace VikingEngine.DSSWars
                 mapSizes.Add(new GuiOption<MapSize>(name, sz));
             }
             
-            var agressiveOptions = new List<GuiOption<AiAggressivity>>((int)AiAggressivity.NUM);
-            for (AiAggressivity agg = 0; agg < AiAggressivity.NUM; agg++)
-            {
-                agressiveOptions.Add(new GuiOption<AiAggressivity>(agg.ToString(), agg));
-            }
-
-            var aiEconomyOptions = new List<GuiOption<int>>(DssLib.AiEconomyLevel.Length);
-            for (int i = 0; i < DssLib.AiEconomyLevel.Length; ++i)
-            {
-                aiEconomyOptions.Add(new GuiOption<int>(DssLib.AiEconomyLevel[i].ToString() + "%", i));
-            }
-
-            var diplomacyOptions = new List<GuiOption<int>>(GameStorage.DiplomacyDifficultyCount)
-            {
-                new GuiOption<int>("Easy", 0),
-                new GuiOption<int>("Medium", 1),
-                new GuiOption<int>("Hard", 2)
-            };
-
-            var bossTimeOptions = new List<GuiOption<BossTimeSettings>>((int)BossTimeSettings.NUM);
-            for (BossTimeSettings bossTime = 0; bossTime < BossTimeSettings.NUM; bossTime++)
-            {
-                bossTimeOptions.Add(new GuiOption<BossTimeSettings>(bossTime.ToString(), bossTime));
-            }
-
-            var bossSizeOptions = new List<GuiOption<BossSize>>((int)BossSize.NUM);
-            for (BossSize bossSize = 0; bossSize < BossSize.NUM; bossSize++)
-            { 
-                bossSizeOptions.Add(new GuiOption<BossSize>(bossSize.ToString(), bossSize));
-            }
-
             GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
             {
-                
+                if (StartupSettings.CheatActive)
+                {
+                    new GuiLabel("! debug cheats !", layout);
+                }
                 new GuiLargeTextButton(DssRef.lang.Lobby_Start, null, new GuiAction(startGame), false, layout);
                 
                 new GuiTextButton(string.Format(DssRef.lang.Lobby_LocalMultiplayerEdit, DssRef.storage.playerCount),
@@ -166,7 +146,7 @@ namespace VikingEngine.DSSWars
                         new GuiLabel(string.Format( DssRef.lang.Player_DefaultName, playerNum), layout);
                         new GuiTextButton(DssRef.lang.Lobby_NextScreen, null, new GuiAction1Arg<int>(nextScreenIndex, playerNum), false, layout);
                     }
-                    DssRef.storage.profiles[playerData.profile].Button(layout, new GuiAction1Arg<int>(listProfiles, playerNum), true);
+                    DssRef.storage.flagStorage.flagDesigns[playerData.profile].Button(layout, new GuiAction1Arg<int>(listProfiles, playerNum), true);
                     new GuiTextButton(DssRef.lang.Lobby_ProfileEdit, null, new GuiAction1Arg<int>( openProfileEditor, playerData.profile), false, layout);
                     
                     if (DssRef.storage.playerCount > 1)
@@ -186,14 +166,11 @@ namespace VikingEngine.DSSWars
 
 
                 difficultyLevelText = new GuiLabel("XXX", layout);
-                new GuiCheckbox("Allow pause and command", null, allowPauseProperty, layout);
-                new GuiCheckbox("Get honor guards", "Start with soldiers that have no upkeep", honorGuardProperty, layout);
+                
+                new GuiTextButton(string.Format(DssRef.lang.Settings_DifficultyLevel, DssRef.difficulty.PercDifficulty), null, selectDifficultyMenu, true, layout);
 
-                new GuiOptionsList<AiAggressivity>(SpriteName.NO_IMAGE, "Ai aggression", agressiveOptions, aggresiveProperty, layout);
-                new GuiOptionsList<BossTimeSettings>(SpriteName.NO_IMAGE, "Boss enter time", bossTimeOptions, bossTimeProperty, layout);
-                new GuiOptionsList<BossSize>(SpriteName.NO_IMAGE, "Boss size", bossSizeOptions, bossSizeProperty, layout);
-                new GuiOptionsList<int>(SpriteName.NO_IMAGE, "Ai Economy", aiEconomyOptions, aiEconomyProperty, layout);
-                new GuiOptionsList<int>(SpriteName.NO_IMAGE, "Diplomacy difficulty", diplomacyOptions, diplomacyDifficultyProperty, layout);
+                new GuiCheckbox("Allow pause and command", null, allowPauseProperty, layout);
+                new GuiCheckbox("Boss events", "Turning off the boss will put the game in a sandbox mode with no ending.", bossProperty, layout);
 
                 new GuiSectionSeparator(layout);
                 new GuiTextButton(Ref.langOpt.Options_title, null, new GuiAction(optionsMenu), true, layout);
@@ -209,6 +186,32 @@ namespace VikingEngine.DSSWars
             } layout.End();
 
             refreshDifficultyLevel();
+        }
+
+
+
+        //void settingsGui(GuiLayout layout)
+        //{
+            
+
+        //}
+
+        void selectDifficultyMenu()
+        {
+            GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
+            {
+                Difficulty.OptionsGui(layout, difficultyOptionsLink);
+            }
+            layout.End();
+        }
+
+
+        void difficultyOptionsLink(int difficulty)
+        { 
+            DssRef.difficulty.set(difficulty);
+            DssRef.storage.Save(null);
+            refreshDifficultyLevel();
+            mainMenu();
         }
 
         void extra_PlayCommanderVersus()
@@ -245,83 +248,96 @@ namespace VikingEngine.DSSWars
             //    levelPerc *= 1.25;
             //}
 
-            difficultyLevelText.text.TextString = "Difficulty level " + Math.Round(DssRef.storage.DifficultyLevelPerc()).ToString() + "%";
+            //string Settings_TotalDifficulty = "Total Difficulty {0}%";
+            difficultyLevelText.text.TextString = string.Format( DssRef.lang.Settings_TotalDifficulty, DssRef.difficulty.TotalDifficulty());
         }
 
-        public BossTimeSettings bossTimeProperty(bool set, BossTimeSettings value)
-        {
-            if (set)
-            {
-                DssRef.storage.bossTimeSettings = value;
-                DssRef.storage.Save(null);
-                refreshDifficultyLevel();
-            }
-            return DssRef.storage.bossTimeSettings;
-        }
+        //public BossTimeSettings bossTimeProperty(bool set, BossTimeSettings value)
+        //{
+        //    if (set)
+        //    {
+        //        DssRef.storage.bossTimeSettings = value;
+        //        DssRef.storage.Save(null);
+        //        refreshDifficultyLevel();
+        //    }
+        //    return DssRef.storage.bossTimeSettings;
+        //}
 
-        public BossSize bossSizeProperty(bool set, BossSize value)
-        {
-            if (set)
-            {
-                DssRef.storage.bossSize = value;
-                DssRef.storage.Save(null);
-                refreshDifficultyLevel();
-            }
-            return DssRef.storage.bossSize;
-        }
+        //public BossSize bossSizeProperty(bool set, BossSize value)
+        //{
+        //    if (set)
+        //    {
+        //        DssRef.storage.bossSize = value;
+        //        DssRef.storage.Save(null);
+        //        refreshDifficultyLevel();
+        //    }
+        //    return DssRef.storage.bossSize;
+        //}
 
-        public AiAggressivity aggresiveProperty(bool set, AiAggressivity value)
-        {
-            if (set)
-            {
-                DssRef.storage.aiAggressivity = value;
-                DssRef.storage.Save(null);
-                refreshDifficultyLevel();
-            }
-            return DssRef.storage.aiAggressivity;
-        }
+        //public AiAggressivity aggresiveProperty(bool set, AiAggressivity value)
+        //{
+        //    if (set)
+        //    {
+        //        DssRef.storage.aiAggressivity = value;
+        //        DssRef.storage.Save(null);
+        //        refreshDifficultyLevel();
+        //    }
+        //    return DssRef.storage.aiAggressivity;
+        //}
 
-        public int aiEconomyProperty(bool set, int value)
-        {
-            if (set)
-            {
-                DssRef.storage.aiEconomyLevel = value;
-                DssRef.storage.Save(null);
-                refreshDifficultyLevel();
-            }
-            return DssRef.storage.aiEconomyLevel;
-        }
+        //public int aiEconomyProperty(bool set, int value)
+        //{
+        //    if (set)
+        //    {
+        //        DssRef.storage.aiEconomyLevel = value;
+        //        DssRef.storage.Save(null);
+        //        refreshDifficultyLevel();
+        //    }
+        //    return DssRef.storage.aiEconomyLevel;
+        //}
 
-        public int diplomacyDifficultyProperty(bool set, int value)
-        {
-            if (set)
-            {
-                DssRef.storage.diplomacyDifficulty = value;
-                DssRef.storage.Save(null);
-                refreshDifficultyLevel();
-            }
-            return DssRef.storage.diplomacyDifficulty;
-        }
+        //public int diplomacyDifficultyProperty(bool set, int value)
+        //{
+        //    if (set)
+        //    {
+        //        DssRef.storage.diplomacyDifficulty = value;
+        //        DssRef.storage.Save(null);
+        //        refreshDifficultyLevel();
+        //    }
+        //    return DssRef.storage.diplomacyDifficulty;
+        //}
         public bool allowPauseProperty(int index, bool set, bool value)
         {
             if (set)
             {
-                DssRef.storage.allowPauseCommand = value;
+                DssRef.difficulty.allowPauseCommand = value;
                 DssRef.storage.Save(null);
                 refreshDifficultyLevel();
             }
-            return DssRef.storage.allowPauseCommand;
+            return DssRef.difficulty.allowPauseCommand;
         }
-        public bool honorGuardProperty(int index, bool set, bool value)
+
+        public bool bossProperty(int index, bool set, bool value)
         {
             if (set)
             {
-                DssRef.storage.honorGuard = value;
+                DssRef.difficulty.boss = value;
                 DssRef.storage.Save(null);
                 refreshDifficultyLevel();
             }
-            return DssRef.storage.honorGuard;
+            return DssRef.difficulty.boss;
         }
+
+        //public bool honorGuardProperty(int index, bool set, bool value)
+        //{
+        //    if (set)
+        //    {
+        //        DssRef.storage.honorGuard = value;
+        //        DssRef.storage.Save(null);
+        //        refreshDifficultyLevel();
+        //    }
+        //    return DssRef.storage.honorGuard;
+        //}
 
         public MapSize mapSizeProperty(bool set, MapSize value)
         {
@@ -546,9 +562,9 @@ namespace VikingEngine.DSSWars
         {
             GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_ProfilesSelectTitle, menuSystem.menu);
             {
-                for (int i = 0; i < DssRef.storage.profiles.Count; ++i)
+                for (int i = 0; i < DssRef.storage.flagStorage.flagDesigns.Count; ++i)
                 {
-                    DssRef.storage.profiles[i].Button(layout, new GuiAction2Arg<int, int>(selectProfileLink, playerNumber, i), false);
+                    DssRef.storage.flagStorage.flagDesigns[i].Button(layout, new GuiAction2Arg<int, int>(selectProfileLink, playerNumber, i), false);
                 }
             }
             layout.End();
@@ -561,7 +577,15 @@ namespace VikingEngine.DSSWars
                 Ref.gamesett.optionsMenu(layout);
             }
             layout.End();
+
+            layout.OnDelete += closingOptionsMenu;
         }
+
+        void closingOptionsMenu()
+        {
+            Ref.gamesett.Save();
+        }
+
         void selectProfileLink(int playerNumber, int profile)
         {
             
@@ -596,7 +620,7 @@ namespace VikingEngine.DSSWars
         void openProfileEditor(int ProfileIx)
         {
             
-            new ProfileSettingsState(ProfileIx);
+            new PaintFlagState(ProfileIx);
         }
 
         protected override void createDrawManager()
@@ -640,6 +664,11 @@ namespace VikingEngine.DSSWars
             if (VikingEngine.Input.Keyboard.Ctrl && VikingEngine.Input.Keyboard.KeyDownEvent(Keys.V))
             {
                 voxeleditor();
+            }
+
+            if (Ref.music != null)
+            {
+                Ref.music.Update();
             }
         }
 

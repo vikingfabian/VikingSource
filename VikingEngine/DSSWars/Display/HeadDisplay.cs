@@ -11,7 +11,7 @@ namespace VikingEngine.DSSWars.Display
     class HeadDisplay : RichboxGuiPart
     {        
         public bool fullDisplay = true;
-        const string AutomationMenuState = "auto";
+        public const string AutomationMenuState = "auto";
 
         public HeadDisplay(RichboxGui gui)
             :base(gui)
@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars.Display
 
             void pauseButton()
             {
-                if (DssRef.storage.allowPauseCommand)
+                if (DssRef.difficulty.allowPauseCommand)
                 {
                     content.Add(new RichboxButton(new List<AbsRichBoxMember>
                     {
@@ -116,10 +116,7 @@ namespace VikingEngine.DSSWars.Display
                     if (fullDisplay)
                     {
                         gold();
-                    }
 
-                    if (fullDisplay)
-                    {
                         const string TotalIncomeText = "Total income/second: ";
                         content.Add(new RichBoxImage(SpriteName.rtsIncomeTime));
                         content.space();
@@ -181,6 +178,7 @@ namespace VikingEngine.DSSWars.Display
                         var automationButton = new HUD.RichBox.RichboxButton(
                             new List<AbsRichBoxMember>
                             {
+                                new RichBoxImage(player.input.AutomationSetting.Icon),
                                 new RichBoxImage(SpriteName.MenuPixelIconSettings),
                                 new HUD.RichBox.RichBoxText("Automation"),
                             },
@@ -189,8 +187,8 @@ namespace VikingEngine.DSSWars.Display
                         content.Add(automationButton);
                         //content.Button(SpriteName.MenuPixelIconSettings, "Automation", new RbAction(DssRef.state.exit), null, true);
 
-                        string diplomacy = "Diplomatic points: {0}";
-                        content.icontext(SpriteName.WarsDiplomaticPoint, string.Format(diplomacy, player.diplomaticPoints.ToString()));
+                        string diplomacy = "Diplomatic points: {0}/{1}({2})";
+                        content.icontext(SpriteName.WarsDiplomaticPoint, string.Format(diplomacy, player.diplomaticPoints.Int(), player.diplomaticPoints_softMax, player.diplomaticPoints.max));
                         string command = "Command points: {0}";
                         content.icontext(SpriteName.WarsCommandPoint, string.Format(command, player.commandPoints.ToString()));
 
@@ -200,6 +198,12 @@ namespace VikingEngine.DSSWars.Display
                         {
                             content.text("City count: " + TextLib.LargeNumber(faction.cities.Count));
                             content.text("Army count: " + TextLib.LargeNumber(faction.armies.Count));
+
+                            content.ButtonDescription(player.input.NextCity, "Next city");
+                            content.ButtonDescription(player.input.NextArmy, "Next army");
+                            content.ButtonDescription(player.input.NextBattle, "Next battle");
+
+
                             content.newParagraph();
                         }
 

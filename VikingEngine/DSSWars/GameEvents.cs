@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Display.CutScene;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
 {
@@ -29,10 +32,43 @@ namespace VikingEngine.DSSWars
 
         public GameEvents()
         {
-            if (DssRef.storage.bossTimeSettings != BossTimeSettings.Never)
+            if (DssRef.difficulty.bossTimeSettings != BossTimeSettings.Never)
             {
                 prepareNext();
             }
+        }
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            w.Write((int)nextEvent);
+            w.Write((int)eventState);
+            w.Write(eventPrepareTimeSec);
+            w.Write(eventCheckGameTimeSec);
+            w.Write(eventTriggerGameTimeSec);
+
+            nextTotalGameTimeMin.Write(w);
+            nextExpectedPlayerSize.Write(w);
+
+            IOLib.WriteObjectList(w, playerMostSouthCity);
+            IOLib.WriteBinaryList(w, spawnPos_Player);
+            IOLib.WriteObjectList(w, darkLordAvailableFactions);
+            IOLib.WriteObjectList(w, darkLordAllies);
+        }
+        public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        {
+            nextEvent = (EventType)r.ReadInt32();
+            eventState = (EventState)r.ReadInt32();
+            eventPrepareTimeSec = r.ReadSingle();
+            eventCheckGameTimeSec = r.ReadSingle();
+            eventTriggerGameTimeSec = r.ReadSingle();
+
+            nextTotalGameTimeMin.Read(r);
+            nextExpectedPlayerSize.Read(r);
+
+            playerMostSouthCity = IOLib.ReadObjectList<City>(r).ToArray();
+            spawnPos_Player = IOLib.ReadBinaryList<IntVector2>(r).ToArray();
+            darkLordAvailableFactions = IOLib.ReadObjectList<Faction>(r);
+            darkLordAllies = IOLib.ReadObjectList<Faction>(r);
         }
 
         void prepareNext()
@@ -51,7 +87,7 @@ namespace VikingEngine.DSSWars
                             new IntervalF(60,80),//VeryLate,
                         };
 
-                        nextTotalGameTimeMin = timeMinutes[(int)DssRef.storage.bossTimeSettings];
+                        nextTotalGameTimeMin = timeMinutes[(int)DssRef.difficulty.bossTimeSettings];
                         nextExpectedPlayerSize = new IntervalF(DssLib.HeadCityMaxWorkForce * 2f, DssLib.HeadCityMaxWorkForce * 4f);
                     }
                     break;
@@ -62,14 +98,14 @@ namespace VikingEngine.DSSWars
                     {
                         IntervalF[] timeMinutes =
                            {
-                            new IntervalF(5,10),//Immediate,                            
-                            new IntervalF(70,80),
-                            new IntervalF(80,100),//Normal,
-                            new IntervalF(100,240),
-                            new IntervalF(140,320),//VeryLate,
+                            new IntervalF(35,40),//Immediate,                            
+                            new IntervalF(100,120),
+                            new IntervalF(120,130),//Normal,
+                            new IntervalF(130,270),
+                            new IntervalF(170,350),//VeryLate,
                         };
 
-                        nextTotalGameTimeMin = timeMinutes[(int)DssRef.storage.bossTimeSettings];
+                        nextTotalGameTimeMin = timeMinutes[(int)DssRef.difficulty.bossTimeSettings];
                         nextExpectedPlayerSize = new IntervalF(DssLib.HeadCityMaxWorkForce * 4f, DssLib.HeadCityMaxWorkForce * 8f);
                     }
                     break;
@@ -106,7 +142,7 @@ namespace VikingEngine.DSSWars
             {
                 case EventType.SouthShips:
                     {
-                        var enemyFac = DssRef.world.factions.Array[DssRef.Faction_SouthHara];
+                        var enemyFac = DssRef.world.factions.Array[DssRef.settings.Faction_SouthHara];
 
                         for (int playerIx = 0; playerIx < DssRef.state.localPlayers.Count; ++playerIx)
                         {
@@ -117,7 +153,7 @@ namespace VikingEngine.DSSWars
 
                                 Range soldierCount = Range.Zero;
 
-                                switch (DssRef.storage.bossSize)
+                                switch (DssRef.difficulty.bossSize)
                                 {
                                     case BossSize.Small:
                                         soldierCount = new Range(10, 14);
@@ -160,7 +196,7 @@ namespace VikingEngine.DSSWars
                                 }
 
                                 DssRef.diplomacy.declareWar(enemyFac, DssRef.state.localPlayers[playerIx].faction);
-                                army.ai.Order_MoveTo(VectorExt.AddY(playerMostSouthCity[playerIx].tilePos, 3));
+                                army.Order_MoveTo(VectorExt.AddY(playerMostSouthCity[playerIx].tilePos, 3));
                             }
                         }
 
@@ -189,7 +225,7 @@ namespace VikingEngine.DSSWars
                             darkLordAllies = null;
                             darkLordAvailableFactions = null;
 
-                            var greenwood = DssRef.world.factions[DssRef.Faction_GreenWood];
+                            var greenwood = DssRef.world.factions[DssRef.settings.Faction_GreenWood];
 
                             foreach (var p in DssRef.state.localPlayers)
                             {
@@ -216,7 +252,7 @@ namespace VikingEngine.DSSWars
 
         public void asyncUpdate()
         {
-            if (DssRef.storage.bossTimeSettings != BossTimeSettings.Never &&
+            if (DssRef.difficulty.bossTimeSettings != BossTimeSettings.Never &&
                 (
                 nextEvent == EventType.SouthShips ||
                 nextEvent == EventType.DarkLordWarning ||
@@ -516,9 +552,23 @@ namespace VikingEngine.DSSWars
         {
             nextEvent = EventType.End;
             DssRef.achieve.onVictory();
-            DssRef.state.localPlayers[0].menuSystem.victoryScreen();
+            //DssRef.state.localPlayers[0].menuSystem.victoryScreen();
+
+            new EndScene(true);
         }
 
+        public void onPlayerDeath()
+        {
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                if (p.faction.isAlive)
+                {
+                    return;
+                }
+            }
+
+            new EndScene(false);
+        }
        
     }
 

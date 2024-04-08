@@ -92,6 +92,11 @@ namespace VikingEngine
             return value.ToString() + "/" + dividedBy.ToString();
         }
 
+        public static string IndexDivition(int index, int length)
+        {
+            return (index+1).ToString() + "/" + length.ToString();
+        }
+
         public static string Divition_Large(int value, int dividedBy)
         {
             return LargeNumber(value) + " / " + LargeNumber(dividedBy);

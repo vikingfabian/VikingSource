@@ -34,6 +34,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
 
             modelName = LootFest.VoxelModelName.war_folkman;
             description = "Cheap untrained soldiers";
+            icon = SpriteName.WarsUnitIcon_Folkman;
         }
     }
 }

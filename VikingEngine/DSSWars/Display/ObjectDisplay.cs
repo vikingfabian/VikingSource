@@ -9,7 +9,7 @@ namespace VikingEngine.DSSWars.Display
             : base(gui)
         { }
 
-        public void refresh(Players.LocalPlayer player, GameObject.AbsGameObject obj, bool selected, Vector2 pos)
+        public void refresh(Players.LocalPlayer player, GameObject.AbsWorldObject obj, bool selected, Vector2 pos)
         {
             interaction?.DeleteMe();
             interaction = null;

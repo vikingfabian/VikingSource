@@ -52,5 +52,15 @@ namespace VikingEngine
 
         public bool HasValue()
         {  return value >= 1.0; }
+
+        public void write16bit(System.IO.BinaryWriter w)
+        {
+            w.Write(Convert.ToUInt16(value));
+        }
+
+        public void read16bit(System.IO.BinaryReader r)
+        {
+            value = r.ReadUInt16();
+        }
     }
 }

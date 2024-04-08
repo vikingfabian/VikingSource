@@ -50,6 +50,14 @@ namespace VikingEngine.HUD.RichBox
             this.settings = settings;
         }
 
+        public void DeleteMe()
+        {
+            foreach (var p in parts)
+            {
+                p.DeleteMe();
+            }
+        }
+
         public void clearState()
         {
             menuState.Clear();
@@ -201,6 +209,10 @@ namespace VikingEngine.HUD.RichBox
             menuStateHasChange = true;
         }
 
+        public bool HasMenuState(string state)
+        { 
+            return menuState.Contains(state);
+        }
         public void menuBack()
         {
             arraylib.RemoveLast(menuState);
@@ -258,6 +270,12 @@ namespace VikingEngine.HUD.RichBox
             this.gui = gui;
             bg = new Graphics.Image(SpriteName.WhiteArea, Vector2.Zero, Vector2.Zero, gui.settings.bglayer);
             bg.ColorAndAlpha(gui.settings.bgCol, gui.settings.bgAlpha);
+        }
+
+        public void DeleteMe()
+        {
+            bg.DeleteMe();
+            beginRefresh();
         }
 
         public bool update()

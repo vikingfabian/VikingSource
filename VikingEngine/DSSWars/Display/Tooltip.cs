@@ -74,12 +74,12 @@ namespace VikingEngine.DSSWars.Display
             }
         }
 
-        void hoverTip(Players.LocalPlayer player, GameObject.AbsGameObject obj)
+        void hoverTip(Players.LocalPlayer player, GameObject.AbsWorldObject obj)
         {
             RichBoxContent content = new RichBoxContent();
 
             bool attackTarget = player.armyControls != null &&
-                obj.Faction() != player.faction;
+                obj.GetFaction() != player.faction;
 
             if (attackTarget)
             {
@@ -87,16 +87,19 @@ namespace VikingEngine.DSSWars.Display
                 content.Add(new RichBoxNewLine());
             }
 
-            content.Add(new RichBoxBeginTitle());             
-            content.Add(new RichBoxText(obj.Name()));
-            content.newLine();
-
-            if (obj.Faction() != player.faction)
+            string name = obj.Name();
+            if (name != null)
             {
-                var relation = DssRef.diplomacy.GetRelationType(player.faction, obj.Faction());
+                content.text(name).overrideColor = Color.LightYellow;
+            }
+            content.h2(obj.TypeName()).overrideColor = Color.LightGray;
+
+            if (obj.GetFaction() != player.faction)
+            {
+                var relation = DssRef.diplomacy.GetRelationType(player.faction, obj.GetFaction());
 
                 content.newLine();
-                content.Add(new RichBoxText(obj.Faction().PlayerName, Color.LightYellow));
+                content.Add(new RichBoxText(obj.GetFaction().PlayerName, Color.LightYellow));
                 content.newLine();
                 content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation)));
                 content.Add(new RichBoxText(Diplomacy.RelationString(relation), Color.LightBlue));
@@ -106,11 +109,11 @@ namespace VikingEngine.DSSWars.Display
 
             if (attackTarget)
             {
-                if (!DssRef.diplomacy.InWar(player.faction, obj.Faction()))
+                if (!DssRef.diplomacy.InWar(player.faction, obj.GetFaction()))
                 {
                     content.Add(new RichBoxSeperationLine());
 
-                    RelationType rel = DssRef.diplomacy.GetRelationType(player.faction, obj.Faction());
+                    RelationType rel = DssRef.diplomacy.GetRelationType(player.faction, obj.GetFaction());
                     content.h2("War declaration");
                     content.text("Cost: " + Diplomacy.DeclareWarCost(rel) + " diplomacy points");
                     string diplomacy = "Diplomatic points: {0}";
@@ -129,7 +132,7 @@ namespace VikingEngine.DSSWars.Display
                 {
                     content.Add(new RichBoxBeginTitle(2));
                     content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
-                    content.Add(new RichBoxText("Strenght ratings:"));
+                    content.Add(new RichBoxText("Strength ratings:"));
                     
                     content.newLine();
                     content.Add(new RichBoxTexture(player.faction.flagTexture, 1f, 0, 0.2f));
@@ -137,7 +140,7 @@ namespace VikingEngine.DSSWars.Display
                     content.newLine();
                     content.text("VS.");
                     content.newLine();
-                    content.Add(new RichBoxTexture(obj.Faction().flagTexture, 1f, 0, 0.2f));
+                    content.Add(new RichBoxTexture(obj.GetFaction().flagTexture, 1f, 0, 0.2f));
                     content.Add(new RichBoxText(": " + string.Format(HudLib.OneDecimalFormat, defender.strengthValue)));
                     content.newLine();
                 }
@@ -147,8 +150,26 @@ namespace VikingEngine.DSSWars.Display
                 var mapObj = obj as AbsMapObject;
                 if (mapObj != null)
                 {
+                    content.newLine();
                     content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
                     content.Add(new RichBoxText(string.Format(HudLib.OneDecimalFormat, mapObj.strengthValue)));
+                    if (obj.gameobjectType() == GameObjectType.Army)
+                    {
+                        content.newLine();
+                        content.Add(new RichBoxImage(SpriteName.WarsGroupIcon));
+                        content.space(1);
+
+                        
+                        var typeCounts = obj.GetArmy().Status().getTypeCounts_Sorted();
+
+                        foreach (var kv in typeCounts)
+                        {
+                            AbsSoldierData typeData = DssRef.unitsdata.Get(kv.Key);
+                            content.Add(new RichBoxText(kv.Value.ToString()));
+                            content.Add(new RichBoxImage(typeData.icon));
+                            content.space(2);
+                        }
+                    }
                 }
             }
             //content.Add(new RichBoxSeperationLine());

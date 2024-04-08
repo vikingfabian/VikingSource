@@ -60,7 +60,7 @@ namespace VikingEngine.DSSWars.Players
                 if (player.input.Stop.DownEvent)
                 {
                     SoundLib.orderstop.Play();
-                    army.ai.haltMovement();
+                    army.haltMovement();
                 }
             }
         }
@@ -104,15 +104,15 @@ namespace VikingEngine.DSSWars.Players
         public void mapExecute()
         {
             if (player.mapControls.hover.obj != null &&
-                player.mapControls.hover.obj.Faction() != player.faction)
+                player.mapControls.hover.obj.GetFaction() != player.faction)
             {
                 SoundLib.ordermove.Play();
-                army.ai.Order_Attack(player.mapControls.hover.obj.RelatedMapObject());
+                army.Order_Attack(player.mapControls.hover.obj.RelatedMapObject());
             }
             else
             {
                 SoundLib.ordermove.Play();
-                army.ai.Order_MoveTo(player.mapControls.tilePosition);
+                army.Order_MoveTo(player.mapControls.tilePosition);
             }
         }
 

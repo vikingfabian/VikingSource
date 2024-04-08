@@ -5,9 +5,10 @@ using System.Text;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    abstract class AbsGroup : AbsGameObject
+    abstract class AbsGroup : AbsWorldObject
     {           
         public float groupRadius, attackRadius;
+        public IntVector2 battleGridPos, prevBattleGridPos;
 
         virtual public Vector2 WorldPositionXZ()
         {
@@ -15,9 +16,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
         virtual public SoldierGroup GetGroup() { return null; }
         
-        virtual public City GetCity() { return null; }
-
-        virtual public Army GetArmy() { return null; }
+        
 
         abstract public bool isMelee();
     }

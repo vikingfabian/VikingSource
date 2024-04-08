@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.Map
         {
             for (int i = 0; i < world.cities.Count; ++i)
             {
-                world.cities[i].index = i;
+                world.cities[i].parentArrayIndex = i;
                 world.cities[i].neighborCities.Clear();
                 world.cities[i].areaSize = 0;
             }
@@ -167,7 +167,7 @@ namespace VikingEngine.DSSWars.Map
                 while(startloop.Next())
                 {
                     var inf = inflenceMap.Get(startloop.Position);
-                    inf.city = city.index;
+                    inf.city = city.parentArrayIndex;
                     inf.influence = startInfluence;
                     inf.locked = true;  
                 }
@@ -185,7 +185,7 @@ namespace VikingEngine.DSSWars.Map
                     Influence inf;
                     if (inflenceMap.TryGet(loop.Position, out inf))
                     {
-                        if (inf.city == city.index)
+                        if (inf.city == city.parentArrayIndex)
                         {
                             int influence = inf.influence;
                             int support = 0;
@@ -196,7 +196,7 @@ namespace VikingEngine.DSSWars.Map
                                 var npos = loop.Position + dir;
                                 if (inflenceMap.TryGet(npos, out adjInf))
                                 {
-                                    if (adjInf.city == city.index)
+                                    if (adjInf.city == city.parentArrayIndex)
                                     {
                                         support++;
                                     }
@@ -230,7 +230,7 @@ namespace VikingEngine.DSSWars.Map
 
                                         if (adjInf.city < 0 || cost < influence)
                                         {
-                                            adjInf.city = city.index;
+                                            adjInf.city = city.parentArrayIndex;
                                             adjInf.influence = influence - Math.Max(cost, 0);
                                             madeInflence = true;
                                         }

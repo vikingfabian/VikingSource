@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
@@ -18,7 +19,7 @@ namespace VikingEngine.DSSWars
         public Achievements() 
         {
             DssRef.achieve = this;
-            difficultyPerc = DssRef.storage.DifficultyLevelPerc();
+            difficultyPerc = DssRef.difficulty.TotalDifficulty();
         }
         public void UnlockAchievement(AchievementIndex achievement)
         {
@@ -47,11 +48,11 @@ namespace VikingEngine.DSSWars
 
                         foreach (var p in DssRef.state.localPlayers)
                         {
-                            if (p.warsStarted == 0)
+                            if (p.statistics.WarsStartedByYou == 0)
                             {
                                 UnlockAchievement(AchievementIndex.victory_peace);
                             }
-                            else if (p.warsStarted >= 12)
+                            else if (p.statistics.WarsStartedByYou >= 12)
                             {
                                 UnlockAchievement(AchievementIndex.warmonger);
                             }

@@ -37,7 +37,8 @@ namespace VikingEngine.DSSWars.GameObject
             columnsDepth = 3;
             groupSpacing = DefaultGroupSpacing * 1.4f;
 
-            goldCost = MathExt.MultiplyInt(3, DssLib.GroupDefaultCost);
+            goldCost = MathExt.MultiplyInt(2, DssLib.GroupDefaultCost);
+            workForcePerUnit = 2;
             upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
 
             modelAdjY = 0.1f;
@@ -46,6 +47,7 @@ namespace VikingEngine.DSSWars.GameObject
             hasBannerMan = false;
 
             description = "Strong in open field battles";
+            icon = SpriteName.WarsUnitIcon_Knight;
         }
 
 
@@ -144,7 +146,7 @@ namespace VikingEngine.DSSWars.GameObject
         public KnightBannerModel(AbsSoldierUnit soldier)
             : base(soldier)
         {
-            banner = new HorseBanner(soldier.Faction(), soldier.data.modelScale);
+            banner = new HorseBanner(soldier.GetFaction(), soldier.data.modelScale);
         }
 
         //protected override void updateShipAnimation(AbsSoldierUnit soldier)

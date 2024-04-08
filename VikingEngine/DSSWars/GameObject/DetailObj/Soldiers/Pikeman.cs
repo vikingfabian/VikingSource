@@ -29,6 +29,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
             modelName = LootFest.VoxelModelName.wars_piker;
 
             description = "";
+            icon = SpriteName.WarsUnitIcon_Pikeman;
         }
     }
 }

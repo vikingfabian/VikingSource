@@ -643,7 +643,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                             IntVector2 dir = checkDirs[dirIx];
                             Tile neighbor = world.tileGrid.array[dir.X + loop.Position.X, dir.Y + loop.Position.Y];
                             bool land = neighbor.IsLand();
-                            if (neighbor.CityIndex != owner.index)
+                            if (neighbor.CityIndex != owner.parentArrayIndex)
                             {
                                 t.AddBorder(dirIx, land? neighbor.CityIndex: Tile.SeaBorder);
                                 borderCity = neighbor.CityIndex;

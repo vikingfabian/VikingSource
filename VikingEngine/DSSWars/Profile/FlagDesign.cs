@@ -9,6 +9,7 @@ namespace VikingEngine.DSSWars
     class FlagDesign
     {
         public static FlagDesign[] AiBanner;
+        public static FlagDesign PlayerGriffin;
         //public static FlagDesign DarkLordBanner, DarkFollowersBanner, UnitedKingdomsBanner;
 
         public static void Init()
@@ -157,6 +158,25 @@ namespace VikingEngine.DSSWars
                 AiBanner6,
             };
 
+            PlayerGriffin = new FlagDesign(new byte[]
+            {
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 1, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0,
+                0, 1, 1, 1, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 2, 0, 0, 0, 2, 2, 0, 0, 0, 2, 0, 2, 0, 0,
+                0, 2, 2, 0, 0, 2, 2, 2, 0, 0, 2, 0, 2, 0, 0, 0,
+                0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 0, 2, 0, 2, 2, 0,
+                0, 2, 1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0,
+                0, 0, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 2, 1, 0, 2, 2, 2, 2, 2, 2, 0, 0, 0, 2, 2, 0,
+                0, 0, 1, 0, 0, 0, 2, 2, 2, 2, 2, 2, 0, 2, 0, 0,
+                0, 0, 1, 0, 0, 0, 0, 0, 2, 2, 2, 0, 2, 2, 0, 0,
+                0, 0, 1, 0, 0, 0, 2, 2, 0, 2, 2, 2, 0, 0, 0, 0,
+                0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 2, 2, 0, 0, 2, 0, 2, 0, 0, 0, 0,
+                0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0,
+            });
             //DarkLordBanner = new FlagDesign(new byte[]
             //{
             //    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -179,13 +199,13 @@ namespace VikingEngine.DSSWars
 
         }
 
-    public Grid2D<byte> dataGrid;
+        public Grid2D<byte> dataGrid;
 
-    public FlagDesign(System.IO.BinaryReader r)
-    {
-        basicInit();
-        read(r);
-    }
+        public FlagDesign(System.IO.BinaryReader r)
+        {
+            basicInit();
+            read(r);
+        }
 
         public FlagDesign(byte[] bytearray)
         {
@@ -237,7 +257,7 @@ namespace VikingEngine.DSSWars
             dataGrid.FromArray(array);
         }
 
-        public Color[] toColorArray(ProfileData factionVisual)
+        public Color[] toColorArray(FlagAndColor factionVisual)
         {
             byte[] dataArray = dataGrid.ToArray();
             Color[] result = new Color[dataArray.Length];
@@ -249,7 +269,7 @@ namespace VikingEngine.DSSWars
             return result;
         }
 
-        public Texture2D CreateTexture(ProfileData factionVisual)
+        public Texture2D CreateTexture(FlagAndColor factionVisual)
         {
             var texture = new Texture2D(Engine.Draw.graphicsDeviceManager.GraphicsDevice, 
                 DssLib.UserHeraldicWidth, DssLib.UserHeraldicWidth);

@@ -11,7 +11,7 @@ namespace VikingEngine.DSSWars.Profile
     {
         public static HUD.ButtonGuiSettings ButtonGuiSettings;
 
-        public ColorButtonGroup(VectorRect paintArea, ProfileData profile)
+        public ColorButtonGroup(VectorRect paintArea, FlagAndColor profile)
         {
             ButtonGuiSettings = new HUD.ButtonGuiSettings(Color.White, 4f, Color.White, Color.Red);
 
@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.Profile
                     nextPos,
                     Engine.Screen.TextSizeV2,
                     Align.Zero,
-                     ProfileSettingsState.ProfileColorName(type), Color.White, ImageLayers.Lay2);
+                     PaintFlagState.ProfileColorName(type), Color.White, ImageLayers.Lay2);
                 nextPos.Y += Engine.Screen.TextBreadHeight + ButtonGuiSettings.highlightThickness *2;
                 VectorRect area = new VectorRect(nextPos, Engine.Screen.IconSizeV2);
 
@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars.Profile
             refreshColors(profile);
         }
 
-        public void refreshColors(ProfileData profile)
+        public void refreshColors(FlagAndColor profile)
         {
             foreach (var m in buttons)
             {
@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.Profile
             createHighlight();
         }
 
-        public void refeshColor(ProfileData profile)
+        public void refeshColor(FlagAndColor profile)
         {
             baseImage.Color = profile.getColor((ProfileColorType)option);
         }

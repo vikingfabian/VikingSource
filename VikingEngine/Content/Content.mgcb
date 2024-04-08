@@ -313,6 +313,36 @@
 #begin DSS/Map/map_sz5_i9.map
 /copy:DSS/Map/map_sz5_i9.map
 
+#begin DSS/Music/dramatic-opener-nonloop.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/dramatic-opener-nonloop.mp3
+
+#begin DSS/Music/epic-warfare-nonloop.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/epic-warfare-nonloop.mp3
+
+#begin DSS/Music/sadness-in-blue.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/sadness-in-blue.mp3
+
+#begin DSS/Music/shadow-hunter-nonloop.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/shadow-hunter-nonloop.mp3
+
+#begin DSS/Music/we-are-heroes.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/we-are-heroes.mp3
+
 #begin DSS/Sound/back.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -348,6 +378,90 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/wrong.wav
+
+#begin DSS/Story/doom_story1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DSS/Story/doom_story1.png
+
+#begin DSS/Story/doom_story2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DSS/Story/doom_story2.png
+
+#begin DSS/Story/doom_story3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DSS/Story/doom_story3.png
+
+#begin DSS/Story/doom_story4.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DSS/Story/doom_story4.png
+
+#begin DSS/Story/fail.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DSS/Story/fail.png
+
+#begin DSS/Story/nighmare.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DSS/Story/nighmare.png
+
+#begin DSS/Story/success.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DSS/Story/success.png
 
 #begin DSS/watertex_i1.png
 /importer:TextureImporter
@@ -969,6 +1083,9 @@
 
 #begin VoxelModel/LfWars/wars_shipcrew.vox
 /copy:VoxelModel/LfWars/wars_shipcrew.vox
+
+#begin VoxelModel/LfWars/wars_shipmelee.vox
+/copy:VoxelModel/LfWars/wars_shipmelee.vox
 
 #begin VoxelModel/LfWars/wars_soldier_i2.vox
 /copy:VoxelModel/LfWars/wars_soldier_i2.vox

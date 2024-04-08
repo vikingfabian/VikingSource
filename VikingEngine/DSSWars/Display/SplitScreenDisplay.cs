@@ -67,7 +67,7 @@ namespace VikingEngine.DSSWars.Display
                     images.Add(screenbg);
 
                     Graphics.ImageAdvanced profileIcon = new ImageAdvanced(SpriteName.NO_IMAGE, area2.Position + Engine.Screen.SmallIconSizeV2, Engine.Screen.IconSizeV2, ImageLayers.Lay6, false);
-                    var profileData = DssRef.storage.profiles[player.profile];
+                    var profileData = DssRef.storage.flagStorage.flagDesigns[player.profile];
                     profileIcon.Texture = profileData.flagDesign.CreateTexture(profileData);
                     profileIcon.SetFullTextureSource();
                     images.Add(profileIcon);

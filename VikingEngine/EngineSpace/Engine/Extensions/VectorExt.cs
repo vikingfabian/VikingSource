@@ -584,6 +584,60 @@ namespace VikingEngine
             return new IntVector2(-vector.Y, vector.X);
         }
 
+        public static IntVector2 RotateVector45DegreeLeft_Normal(IntVector2 vector)
+        {
+            // Adjusting rotation logic based on corrected understanding of directions
+            if (vector.Y < 0) // North, Northeast, or Northwest
+            {
+                if (vector.X < 0) return new IntVector2(-1, 0); // Northwest to West
+                else if (vector.X > 0) return new IntVector2(0, -1); // Northeast to North
+                else return new IntVector2(-1, -1); // North to Northwest
+            }
+            else if (vector.Y > 0) // South, Southeast, or Southwest
+            {
+                if (vector.X < 0) return new IntVector2(0, 1); // Southwest to South
+                else if (vector.X > 0) return new IntVector2(1, 0); // Southeast to East
+                else return new IntVector2(1, 1); // South to Southeast
+            }
+            else if (vector.X > 0) // East
+            {
+                return new IntVector2(1, -1); // East to Northeast
+            }
+            else if (vector.X < 0) // West
+            {
+                return new IntVector2(-1, 1); // West to Southwest
+            }
+
+            return vector; // In case vector is (0,0) or does not fit any category
+        }
+
+        public static IntVector2 RotateVector45DegreeRight_Normal(IntVector2 vector)
+        {
+            // Adjusting rotation logic based on corrected understanding of directions
+            if (vector.Y < 0) // North, Northeast, or Northwest
+            {
+                if (vector.X > 0) return new IntVector2(1, 0); // Northeast to East
+                else if (vector.X < 0) return new IntVector2(0, -1); // Northwest to North
+                else return new IntVector2(1, -1); // North to Northeast
+            }
+            else if (vector.Y > 0) // South, Southeast, or Southwest
+            {
+                if (vector.X > 0) return new IntVector2(0, 1); // Southeast to South
+                else if (vector.X < 0) return new IntVector2(-1, 0); // Southwest to West
+                else return new IntVector2(-1, 1); // South to Southwest
+            }
+            else if (vector.X > 0) // East
+            {
+                return new IntVector2(1, 1); // East to Southeast
+            }
+            else if (vector.X < 0) // West
+            {
+                return new IntVector2(-1, -1); // West to Northwest
+            }
+
+            return vector; // In case vector is (0,0) or does not fit any category
+        }
+
         public static Vector3 RotateVector90DegreeLeftXZ(Vector3 vector)
         {
             return new Vector3(vector.Z, vector.Y, -vector.X);

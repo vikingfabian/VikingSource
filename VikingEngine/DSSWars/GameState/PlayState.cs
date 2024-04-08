@@ -4,10 +4,13 @@ using System.Net.Http.Headers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DebugExtensions;
+using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Display.CutScene;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.ToGG.MoonFall;
 //
 
 namespace VikingEngine.DSSWars
@@ -26,12 +29,14 @@ namespace VikingEngine.DSSWars
         public int nextGroupId = 0;
         public List<Players.LocalPlayer> localPlayers;
         public Players.DarkLordPlayer darkLordPlayer;
+        public SpottedArray<Battle.BattleGroup> battles = new SpottedArray<Battle.BattleGroup>(64);
 
         bool host;
         bool isReady= false;
         public bool PartyMode = false;   
         bool exitThreads = false;
         public GameEvents events;
+        public AbsCutScene cutScene=null;
 
         bool bResourceUpdate = false;
 
@@ -68,6 +73,8 @@ namespace VikingEngine.DSSWars
             new AsynchUpdateable_TryCatch(asyncUserUpdate, "DSS user update", 58);
             new AsynchUpdateable_TryCatch(asyncMapBorders, "DSS map borders update", 59);
             new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60);
+            new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62);
+
             if (StartupSettings.RunResoursesUpdate)
             {
                 new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
@@ -75,9 +82,25 @@ namespace VikingEngine.DSSWars
             isReady = host;
         }
 
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            events.writeGameState(w);
+
+            w.Write((ushort)battles.Count);
+            var battlesC = battles.counter();
+            while (battlesC.Next())
+            {
+                battlesC.sel.writeGameState(w);
+            }
+        }
+        public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        {
+            events.readGameState(r, version, pointers);
+        }
+
         void initPlayers()
         {
-            Players.AiPlayer.EconomyMultiplier = DssLib.AiEconomyLevel[DssRef.storage.aiEconomyLevel] / 100.0; ;
+            Players.AiPlayer.EconomyMultiplier = Difficulty.AiEconomyLevel[DssRef.difficulty.aiEconomyLevel] / 100.0; ;
 
             new Faction(DssRef.world, FactionType.DarkLord);
             new Faction(DssRef.world, FactionType.SouthHara);
@@ -150,6 +173,17 @@ namespace VikingEngine.DSSWars
         public override void Time_Update(float time)
         {
             base.Time_Update(time);
+
+            if (Ref.music != null)
+            {
+                Ref.music.Update();
+            }
+
+            if (cutScene != null)
+            {
+                cutScene.Time_Update(time);
+                return;
+            }
 
             if (Ref.DeltaGameTimeMs > 0)
             {
@@ -237,6 +271,7 @@ namespace VikingEngine.DSSWars
 
         public void exit()
         {
+            Ref.music.stop(true);
             exitThreads = true;
             new ExitGamePlay();
         }
@@ -259,140 +294,167 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        bool asyncBattlesUpdate(int id, float time)
+        {
+            if (cutScene == null)
+            {
+                var battlesC = battles.counter();
+                while (battlesC.Next())
+                {
+                    bool deleted = battlesC.sel.async_update(time);
+                    if (deleted)
+                    {
+                        battlesC.RemoveAtCurrent();
+                    }
+                }
+            }
+            return exitThreads;
+        }
+
         bool asyncResourcesUpdate(int id, float time)
         {
-            //Runs every minute to upate any resource progression: trees grow, food spoil, etc
-            if (bResourceUpdate || StartupSettings.DebugResoursesSuperSpeed)
+            if (cutScene == null)
             {
-                bResourceUpdate = false;
+                //Runs every minute to upate any resource progression: trees grow, food spoil, etc
+                if (bResourceUpdate || StartupSettings.DebugResoursesSuperSpeed)
+                {
+                    bResourceUpdate = false;
 
-                resources.asyncUpdate();
+                    resources.asyncUpdate();
+                }
             }
-
             return exitThreads;
         }
 
         bool asyncDiplomacyUpdate(int id, float time)
         {
-            DssRef.diplomacy.async_update();
-            events.asyncUpdate();
-
+            if (cutScene == null)
+            {
+                DssRef.diplomacy.async_update();
+                events.asyncUpdate();
+            }
             return exitThreads;
         }
 
         bool asyncUserUpdate(int id, float time)
         {
-            foreach (var local in localPlayers)
+            if (cutScene == null)
             {
-                local.asyncUserUpdate();
+                foreach (var local in localPlayers)
+                {
+                    local.asyncUserUpdate();
+                }
             }
-
             return exitThreads;
 
         }
 
         bool asynchMapGenerating(int id, float time)
         {
-            DssRef.state.detailMap.asynchUpdate();
-            overviewMap.unitMiniModels.asynchUpdate();
-
+            if (cutScene == null)
+            {
+                DssRef.state.detailMap.asynchUpdate();
+                overviewMap.unitMiniModels.asynchUpdate();
+            }
             return exitThreads;
         }
         bool asyncMapBorders(int id, float time)
         {
-            overviewMap.runAsyncTask();
-
+            if (cutScene == null)
+            {
+                overviewMap.runAsyncTask();
+            }
             return exitThreads;
         }
         
         bool asynchGameObjectsUpdate(int id, float time)
         {
-           
-            foreach (var m in DssRef.world.cities)
+            if (cutScene == null)
             {
-                m.asynchGameObjectsUpdate();
-            }
+                foreach (var m in DssRef.world.cities)
+                {
+                    m.asynchGameObjectsUpdate();
+                }
 
-            var factions = DssRef.world.factions.counter();
-            while (factions.Next())
-            {
-                factions.sel.asynchGameObjectsUpdate(time);
-            }
-                        
+                var factions = DssRef.world.factions.counter();
+                while (factions.Next())
+                {
+                    factions.sel.asynchGameObjectsUpdate(time);
+                }
+            }         
             return exitThreads;
         }
 
         bool asynchAiPlayersUpdate(int id, float time)
         {
-            
+            if (cutScene == null)
+            {
                 var factions = DssRef.world.factions.counter();
                 while (factions.Next())
                 {
                     factions.sel.asynchAiPlayersUpdate(time);
                 }
+            }
             
             return exitThreads;
         }
 
         bool asynchArmyAiUpdate(int id, float time)
         {
-            var factions = DssRef.world.factions.counter();
-            while (factions.Next())
+            if (cutScene == null)
             {
-                var armiesC = factions.sel.armies.counter();
-                while (armiesC.Next())
+                var factions = DssRef.world.factions.counter();
+                while (factions.Next())
                 {
-                    armiesC.sel.ai.asynchUpdate(time);
+                    var armiesC = factions.sel.armies.counter();
+                    while (armiesC.Next())
+                    {
+                        armiesC.sel.asynchAiUpdate(time);
+                    }
                 }
             }
-
             return exitThreads;
         }
 
         bool asynchCullingUpdate(int id, float time)
         {
-            culling.asynch_update(time);
-            
+            if (cutScene == null)
+            {
+                culling.asynch_update(time);
+            }
             return exitThreads;
         }
 
         bool asynchSleepObjectsUpdate(int id, float time)
         {
-            time *= Ref.GameTimeSpeed;
-
-            if (time > 0)
+            if (cutScene == null)
             {
-                var factions = DssRef.world.factions.counter();
-                while (factions.Next())
+                if (time > 0)
                 {
-                    factions.sel.asynchSleepObjectsUpdate(time);
+                    var factions = DssRef.world.factions.counter();
+                    while (factions.Next())
+                    {
+                        if (factions.sel.factiontype == FactionType.SouthHara)
+                        {
+                            lib.DoNothing();
+                        }
+                        factions.sel.asynchSleepObjectsUpdate(time);
+                    }
                 }
             }
             return exitThreads;
         }
         bool asynchNearObjectsUpdate(int id, float time)
         {
-            DssRef.world.unitCollAreaGrid.asynchUpdate();
-
-            var factions = DssRef.world.factions.counter();
-            while (factions.Next())
+            if (cutScene == null)
             {
-                var armiesC = factions.sel.armies.counter();
-                while (armiesC.Next())
+                DssRef.world.unitCollAreaGrid.asynchUpdate();
+
+                foreach (var m in DssRef.world.cities)
                 {
-                    var groupsC = armiesC.sel.groups.counter();
-                    while (groupsC.Next())
-                    {
-                        groupsC.sel.asynchNearObjectsUpdate();
-                    }
+                    m.asynchNearObjectsUpdate();
                 }
             }
-
-            foreach (var m in DssRef.world.cities)
-            {
-                m.asynchNearObjectsUpdate();
-            }
-
             return exitThreads;
         }
 

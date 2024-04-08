@@ -17,9 +17,10 @@ namespace VikingEngine.DSSWars.GameObject
         AbsVoxelObj transformModel, loadingModel;
         bool transformEffect = false;
 
-        public ShipTransform(SoldierGroup group)
+        public ShipTransform(SoldierGroup group, bool immediet)
             :base(false)
         {
+
             this.group = group;
             
             toShip = !group.IsShip();
@@ -27,6 +28,9 @@ namespace VikingEngine.DSSWars.GameObject
             transformTimer.Seconds = (toShip ? 20f : 6f) * group.SoldierData().ShipBuildTimeMultiplier;
 
             AddToUpdateList();
+
+            if (immediet)
+            { begin(); }
         }
 
         public override void Time_Update(float time_ms)
@@ -37,14 +41,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (DssRef.world.tileGrid.TryGet(group.tilePos, out tile) &&
                     tile.IsWater() == toShip)
                 {
-                    transformEffect = true;                    
-                    lookingForTerrain = false;
-                    group.lockMovement = true;
-                    //var soldiers = group.soldiers.counter();
-                    //while (soldiers.Next())
-                    //{
-                    //    soldiers.sel.lockMovement = true;
-                    //}
+                    begin();
                 }
             }
             else
@@ -57,6 +54,13 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             updateEffect();
+        }
+
+        void begin()
+        { 
+            transformEffect = true;                    
+            lookingForTerrain = false;
+            group.lockMovement = true;
         }
 
         void updateEffect()

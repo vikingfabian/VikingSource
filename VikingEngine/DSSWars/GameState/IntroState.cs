@@ -35,6 +35,8 @@ namespace VikingEngine.DSSWars
                    LoadedFont.Regular, new Vector2(Engine.Screen.Width * 0.5f, Engine.Screen.Height * 0.85f), new Vector2(Engine.Screen.TextSize * 2f),
                    Align.CenterAll, "Loading...", Color.White, ImageLayers.Lay4);
 
+            Ref.music = new Sound.MusicPlayer(); 
+
 
             if (isReset)
             {
@@ -93,8 +95,8 @@ namespace VikingEngine.DSSWars
             Engine.LoadContent.LoadTexture(LoadedTexture.SpriteSheet, Engine.LoadContent.TexturePath + "Lf3Tiles2");
             new SpriteSheet();
             LootFest.Data.Block.Init();
-            ProfileData.Init();
-            FlagDesign.Init();
+            FlagAndColor.Init();
+            
             new GameObject.AllUnits();
             new Models().loadContent();
 
@@ -146,7 +148,10 @@ namespace VikingEngine.DSSWars
 
         void asynchStorageLoading()
         {
-            new Players.GameStorage().Load();
+            FlagDesign.Init();
+            new Data.GameStorage().Load();
+            Ref.gamesett.Load();
+
             loadingDataComplete = true;
         }
 

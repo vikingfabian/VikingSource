@@ -2263,6 +2263,20 @@ namespace VikingEngine
                     add(SpriteName.WarsRelationTotalWar, 2, 2);
                     add(SpriteName.rtsIncomeTime, 2, 2);
                     add(SpriteName.rtsUpkeepTime, 2, 2);
+
+                    add(SpriteName.WarsUnitIcon_Soldier, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Archer, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Ballista, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Knight, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Honorguard, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Pikeman, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Trollcannon, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Viking, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Greensoldier, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Folkman, 2, 2);
+
+                    addWithSizeDef(SpriteName.TextureHueSaturation, currentIndex, 1, 1, 45, 45);
+                    addWithSizeDef(SpriteName.TextureDarknessGradient, currentIndex, 1, 1, 45, 45);
                 }
 
                 currentIndex = numTilesWidth * 96;
@@ -2286,6 +2300,7 @@ namespace VikingEngine
 
                     add(SpriteName.WarsDarkLordBossIcon);
                     add(SpriteName.WarsFactoryIcon);
+                    add(SpriteName.ColorPickerCircle);
                 }
 
                 currentIndex = numTilesWidth * 106;

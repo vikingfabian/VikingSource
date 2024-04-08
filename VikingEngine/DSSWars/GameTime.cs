@@ -13,7 +13,8 @@ namespace VikingEngine.DSSWars
         public bool halfSecond = false;
         float second = 0;
         int quarter = 0;
-        int minute = 0;
+        int secondsToMinute = 0;
+        int totalMinutes = 0;
 
         public GameTime()
         {
@@ -42,15 +43,24 @@ namespace VikingEngine.DSSWars
                     case 1: halfSecond = true; break;
                     case 2: 
                         oneSecond_part2 = true;
-                        if (++minute >= 60)
+                        if (++secondsToMinute >= 60)
                         {
-                            minute = 0;
+                            secondsToMinute = 0;
+                            ++totalMinutes;
                             DssRef.state.OneMinute_Update();
                         }
                         break;
                     case 3: halfSecond = true; break;
                 }                
             }
+        }
+
+        public TimeSpan TotalIngameTime()
+        {
+            TimeSpan timeSpan = TimeSpan.FromMinutes(totalMinutes);
+            timeSpan = timeSpan.Add(TimeSpan.FromSeconds(secondsToMinute));
+
+            return timeSpan;
         }
     }
 }

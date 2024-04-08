@@ -11,10 +11,12 @@ namespace VikingEngine.Input
     { //Index får inte förändras
         NoButtonMap,
         AlternativeButtonsMap,
+        CombinedButtonsMap,
         Keyboard,
         Mouse,
         XController,
         GenericController,
+        XController_NoAlt,
     }
     
     interface IButtonMap
@@ -394,7 +396,56 @@ namespace VikingEngine.Input
         }
     }
 
-    
+    struct TwoCombinedButtonsMap : IButtonMap
+    {
+        IButtonMap altKey;
+        IButtonMap key;
+
+        public TwoCombinedButtonsMap(IButtonMap altKey, IButtonMap key)
+        {
+            this.altKey = altKey;
+            this.key = key;
+        }
+
+        public SpriteName Icon { get { return SpriteName.MissingImage; } }
+
+        public void ListIcons(List<SpriteName> list)
+        {
+            list.Add(altKey.Icon);
+            list.Add(key.Icon);
+        }
+
+        public bool IsDown { get { return altKey.IsDown && key.IsDown; } }
+        public bool DownEvent
+        {
+            get
+            {
+                return (altKey.IsDown && key.IsDown) && (altKey.DownEvent || key.DownEvent);
+            }
+        }
+        public bool UpEvent { get { return (altKey.IsDown != key.IsDown) && (altKey.UpEvent || key.UpEvent); ; } }
+        public float Value { get { return IsDown ? 1f : 0f; } }
+        //public SpriteName[] Icons { get { return icons; } }
+        public string ButtonName { get { return altKey.ButtonName + " + " + key.ButtonName; } }
+        public bool IsMouse { get { return key.IsMouse; } }
+        public InputSourceType inputSource { get { return key.inputSource; } }
+        public int buttonIndex { get { return key.buttonIndex; } }
+        public int ControllerIndex { get { return key.ControllerIndex; } set { } }
+
+        public void write(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)ButtonMapType.CombinedButtonsMap);
+            altKey.write(w);
+            key.write(w);
+        }
+        public void read(System.IO.BinaryReader r)
+        {
+            altKey = MapRead.Button(r);
+            key = MapRead.Button(r);
+        }
+    }
+
+
 
     struct KeyboardButtonMap : IButtonMap
     {        
@@ -631,10 +682,6 @@ namespace VikingEngine.Input
     
     struct XboxButtonMap : IButtonMap
     {
-        /* Static */
-        
-
-        /*Properties */
         public bool IsDown { get { return Input.XInput.Instance(controllerIx).IsButtonDown(button); } }
         public bool DownEvent { get { return Input.XInput.Instance(controllerIx).KeyDownEvent(button); } }
         public bool UpEvent { get { return Input.XInput.Instance(controllerIx).KeyUpEvent(button); } }
@@ -692,6 +739,66 @@ namespace VikingEngine.Input
         }
     }
 
+    struct XboxButtonMap_NoAlt : IButtonMap
+    {
+        public bool IsDown { get { return Input.XInput.Instance(controllerIx).IsButtonDown(button) && !altIsDown();  } }
+        public bool DownEvent { get { return Input.XInput.Instance(controllerIx).KeyDownEvent(button) && !altIsDown(); } }
+        public bool UpEvent { get { return Input.XInput.Instance(controllerIx).KeyUpEvent(button); } }
+
+        bool altIsDown()
+        {
+            var ins = Input.XInput.Instance(controllerIx);
+            return ins.IsButtonDown(Buttons.LeftTrigger) || ins.IsButtonDown(Buttons.RightTrigger);
+        }
+        public float Value
+        {
+            get
+            {
+                if (button == Buttons.LeftTrigger)
+                    return Input.XInput.Instance(controllerIx).LeftTrigger;
+                else if (button == Buttons.RightTrigger)
+                    return Input.XInput.Instance(controllerIx).RightTrigger;
+                return IsDown ? 1f : 0f;
+            }
+        }
+
+        public bool IsMouse { get { return false; } }
+        public string ButtonName { get { return button.ToString(); } }
+        public InputSourceType inputSource { get { return InputSourceType.XController; } }
+        public int buttonIndex { get { return (int)button; } }
+        public int ControllerIndex { get { return controllerIx; } set { controllerIx = value; } }
+
+        int controllerIx;
+        Buttons button;
+
+        public XboxButtonMap_NoAlt(Buttons button, int controllerIx)
+        {
+            this.button = button;
+            this.controllerIx = controllerIx;
+        }
+
+        public SpriteName Icon
+        {
+            get
+            {
+                return XboxInputLib.ButtonSprite(button);
+            }
+        }
+        public void ListIcons(List<SpriteName> list)
+        {
+            list.Add(Icon);
+        }
+
+        public void write(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)ButtonMapType.XController_NoAlt);
+            w.Write((int)button);
+        }
+        public void read(System.IO.BinaryReader r)
+        {
+            button = (Buttons)r.ReadInt32();
+        }
+    }
     //struct GenericControllerButtonMap : IButtonMap
     //{
     //    /* Static */
@@ -738,7 +845,7 @@ namespace VikingEngine.Input
     //            }
     //        }
     //    }            
-            
+
     //    public bool IsDown { get { return SharpDXInput.IsDown(button, controllerIx); } }
     //    public bool DownEvent { get { return SharpDXInput.DownEvent(button, controllerIx); } }
     //    public bool UpEvent { get { return SharpDXInput.UpEvent(button, controllerIx); } }
@@ -748,7 +855,7 @@ namespace VikingEngine.Input
     //    public PlayerInputSource inputSource { get { return PlayerInputSource.GenericController; } }
     //    public int buttonIndex { get { return (int)button; } }
     //    public int ControllerIndex { get { return controllerIx; } set { controllerIx = value; } }
-       
+
 
     //    /* Novelty Methods */
     //    public void ListIcons(List<SpriteName> list)
@@ -767,9 +874,9 @@ namespace VikingEngine.Input
     //    }
     //}
 
-    
 
-    
 
-    
+
+
+
 }

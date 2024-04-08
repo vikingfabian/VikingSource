@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
@@ -13,11 +14,11 @@ namespace VikingEngine.DSSWars.GameObject
 
    abstract class AbsSoldierUnit: AbsDetailUnit
     {
-       public const int SoldierAiState_GroupLock = 0;
-        const int SoldierAiState_ColumnQue = 1;
-        const int SoldierAiState_FreeAttack = 2;
-        const int SoldierAiState_Idle = 3;
-        const int SoldierAiState_ReGroup = 4;
+       //public const int SoldierAiState_GroupLock = 0;
+       // const int SoldierAiState_ColumnQue = 1;
+       // const int SoldierAiState_FreeAttack = 2;
+       // const int SoldierAiState_Idle = 3;
+       // const int SoldierAiState_ReGroup = 4;
 
         protected const float GoalReachDist_GROUP = AbsSoldierData.StandardBoundRadius * 2f;
         protected const float GoalReachDist_WhenColliding = GoalReachDist_GROUP * 3f;
@@ -36,7 +37,7 @@ namespace VikingEngine.DSSWars.GameObject
         
         public IntVector2 gridPlacement;
 
-        public int aiState = SoldierAiState_GroupLock;
+        public SoldierAiState aiState = SoldierAiState.GroupLock;
         public int following = -1;
 
         public int bonusProjectiles = 0;
@@ -54,7 +55,7 @@ namespace VikingEngine.DSSWars.GameObject
             upgradeUnit.parentArrayIndex = parentArrayIndex;
             upgradeUnit.following = following;
 
-            upgradeUnit.id = id;
+            upgradeUnit.parentArrayIndex = parentArrayIndex;
             upgradeUnit.attackTarget = attackTarget;
             upgradeUnit.tilePos = tilePos;
             upgradeUnit.rotation = rotation;
@@ -64,14 +65,38 @@ namespace VikingEngine.DSSWars.GameObject
 
         
 
-        public void write(System.IO.BinaryWriter w)
+        //public void write(System.IO.BinaryWriter w)
+        //{
+        //    w.Write((byte)data.unitType);
+        //    WritePosition(w, position);
+        //    w.Write(rotation.ByteDir);
+        //}
+
+        //public void read(System.IO.BinaryReader r, Players.AbsPlayer player, SoldierGroup group)
+        //{
+
+        //}
+
+        public void writeGameState(System.IO.BinaryWriter w)
         {
-            w.Write((byte)data.unitType);
-            WritePosition(w, position);
+            //w.Write((byte)data.unitType);
+            w.Write((byte)aiState);
+            WP.writePosXZ(w, position);
             w.Write(rotation.ByteDir);
+
+        }
+        public void readGameState(System.IO.BinaryReader r, int version)
+        {
+            aiState=(SoldierAiState)r.ReadByte();
+            WP.readPosXZ(r, out position, out tilePos);
+            rotation.ByteDir = r.ReadByte();
         }
 
-        public void read(System.IO.BinaryReader r, Players.AbsPlayer player, SoldierGroup group)
+        public void writeNet(System.IO.BinaryWriter w)
+        {
+
+        }
+        public void readNet(System.IO.BinaryReader r)
         {
 
         }
@@ -81,7 +106,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             this.group = group;
             this.gridPlacement = gridPlacement;
-            id = group.army.faction.pickNextUnitId();
+            parentArrayIndex = group.army.faction.pickNextUnitId();
 
             init(false);
             tilePos = tile;
@@ -104,16 +129,16 @@ namespace VikingEngine.DSSWars.GameObject
             //WritePosition(w, model.position);
         }
 
-        override public void InitRemote(Players.AbsPlayer player, System.IO.BinaryReader r)
-        {
-            //base.InitRemote(player, r);
+        //override public void InitRemote(Players.AbsPlayer player, System.IO.BinaryReader r)
+        //{
+        //    //base.InitRemote(player, r);
 
-            //readId(r);
-            //Vector3 startPos = ReadPosition(r);
-            //clientPosition = startPos;
+        //    //readId(r);
+        //    //Vector3 startPos = ReadPosition(r);
+        //    //clientPosition = startPos;
 
-            //init(startPos);
-        }
+        //    //init(startPos);
+        //}
 
         //abstract protected void initData();
 
@@ -179,8 +204,16 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Vector3 groupPosition(Vector3 groupCenter, float groupRotation)
         {
+            if (debugTagged)
+            {
+                lib.DoNothing();
+            }
             Vector3 result = position;
             Vector2 rotatedOffset = VectorExt.RotateVector(groupOffset, groupRotation);
+            if (Math.Abs(rotatedOffset.X) > 0.5f)
+            {
+                lib.DoNothing();
+            }
             result.X = groupCenter.X + rotatedOffset.X;
             result.Z = groupCenter.Z + rotatedOffset.Y;
 
@@ -195,7 +228,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     switch (aiState)
                     {
-                        case SoldierAiState_ColumnQue:
+                        case SoldierAiState.ColumnQue:
                              if (data.mainAttack != AttackType.Melee ||
                                 bonusProjectiles > 0)
                             {
@@ -203,21 +236,25 @@ namespace VikingEngine.DSSWars.GameObject
                             }
                             updateFollowQue(time);
                             break;
-                        case SoldierAiState_FreeAttack:
+                        case SoldierAiState.FreeAttack:
                             updateMoveAttackPrio(time, fullUpdate);
                             collisionUpdate();
                             break;
-                        case SoldierAiState_Idle:
+                        case SoldierAiState.Idle:
                             state.idle = true;
                             state.walking = false;
                             break;
-                        case SoldierAiState_ReGroup:
+                        case SoldierAiState.ReGroup:
                             if (!walkTowards(time, walkingGoal))
                             {
                                 rotateToAngle(group.rotation.radians);
                                 state.idle = !state.rotating;
                             }
                             collisionUpdate();
+                            break;
+                        case SoldierAiState.GroupLock:
+                            //In wrong state
+                            setFreeAttack();
                             break;
                     }
                     
@@ -227,8 +264,12 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     switch (aiState)
                     {
-                        case SoldierAiState_FreeAttack:
+                        case SoldierAiState.FreeAttack:
                             updateMoveAttackPrio(time, fullUpdate);
+                            break;
+                        case SoldierAiState.GroupLock:
+                            //In wrong state
+                            setFreeAttack();
                             break;
                     }
                 }
@@ -261,17 +302,22 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void setReGroupState()
         {
-            aiState = SoldierAiState_ReGroup;
+            aiState = SoldierAiState.ReGroup;
             state.walkingOrderComplete = false;
             state.idle = false;
             walkingGoal = groupPosition(group.position, group.rotation.radians);
             bonusProjectiles = data.bonusProjectiles;
         }
 
+        public void setBattleNode()
+        {
+            walkingGoal = groupPosition(group.goalWp, group.rotation.radians);
+        }
+
 
         public void setAttackState()
         {
-            aiState = SoldierAiState_ColumnQue;
+            aiState = SoldierAiState.ColumnQue;
 
             if (following < 0)
             {
@@ -282,7 +328,7 @@ namespace VikingEngine.DSSWars.GameObject
         const float ModelGroundYAdj = 0.02f;
         void updateGroudY(bool set)
         {
-            if (position.X > 0 && position.Z>0)
+            if (DssRef.world.unitBounds.IntersectPoint(position.X, position.Z))//position.X > 0 && position.Z>0)
             {
                 float y = DssRef.world.SubTileHeight(position) + ModelGroundYAdj;
 
@@ -354,6 +400,14 @@ namespace VikingEngine.DSSWars.GameObject
                 state.attacking = true;
                 //Attacking
                 updateAttack(time);
+            }
+            else if (attackTarget == null)
+            { 
+                state.idle = true;
+                if (group.army.battleGroup == null)
+                {
+                    setReGroupState();
+                }
             }
             else
             {
@@ -472,7 +526,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (target == null || 
                 target.Dead() ||
-                target.Faction() == this.Faction())
+                target.GetFaction() == this.GetFaction())
             {
                 attackTarget = null;
                 return HasTargetInReach.NoTarget;
@@ -657,17 +711,17 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void setFreeAttack()
         {
-            if (aiState != SoldierAiState_ReGroup)
+            if (aiState != SoldierAiState.ReGroup)
             { 
                 walkStraightUpdates = 0;
 
                 if (data.canAttackCharacters)
                 {
-                    aiState = SoldierAiState_FreeAttack;
+                    aiState = SoldierAiState.FreeAttack;
                 }
                 else
                 {
-                    aiState = SoldierAiState_Idle;
+                    aiState = SoldierAiState.Idle;
                 }
 
             }
@@ -788,6 +842,8 @@ namespace VikingEngine.DSSWars.GameObject
             return data.walkingSpeed * group.terrainSpeedMultiplier * time;
         }
 
+        
+
         void rotateTowards(AbsDetailUnit target, float speed)
         {
             if (target != null)
@@ -823,7 +879,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 goalDistans = VectorExt.PlaneXZLength(walkingGoal - position);
 
-                if (aiState == SoldierAiState_ColumnQue)
+                if (aiState == SoldierAiState.ColumnQue)
                 {
                     bumpIntoEnemyWhileQue_asynch();
 
@@ -832,7 +888,7 @@ namespace VikingEngine.DSSWars.GameObject
                         groupAttackTarget_asynch();
                     }
                 }
-                else if (aiState == SoldierAiState_FreeAttack)
+                else if (aiState == SoldierAiState.FreeAttack)
                 {
                     groupAttackTarget_asynch();
                     asynchFriendlyCollisionsCheck();
@@ -953,7 +1009,7 @@ namespace VikingEngine.DSSWars.GameObject
             content.text("SoldierAiState: " + aiState.ToString());
 
             content.Add(new RichBoxNewLine(true));
-            content.text(group.Name());
+            content.text(group.TypeName());
             group.stateDebugText(content);
         }
         
@@ -975,10 +1031,10 @@ namespace VikingEngine.DSSWars.GameObject
             return Dead_IncomingDamageIncluded();
         }
 
-        public override void tagObject()
+        public override void AddDebugTag()
         {
-            base.tagObject();
-            group.tagObject();
+            base.AddDebugTag();
+            group.AddDebugTag();
         }
 
         public override AbsDetailUnitData Data()
@@ -996,7 +1052,10 @@ namespace VikingEngine.DSSWars.GameObject
             return true;
         }
 
-        abstract public bool IsShipType();
+        public override AbsSoldierUnit GetSoldierUnit()
+        {
+            return this;
+        }
 
         public override AbsMapObject RelatedMapObject()
         {

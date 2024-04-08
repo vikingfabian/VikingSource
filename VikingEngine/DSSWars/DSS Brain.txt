@@ -1,24 +1,61 @@
 ﻿Change Log
--Two new  difficulty settings
--Reduced the game difficulty on medium, both bosses are about 20min later and almost half their size, neighbor ai aggression is reduced to half
+* Bought some cheap, royalty free music and put it in my game.
+* End screen for victory or loss, with statistics.
+* Prologue: a short "movie" you can watch when you win the game.
+* Now saves sound/graphics settings
+! Multiscreen setting does not work in save/load
+* Save files are split up, now each flag is its own file (for easy share)
+
+! How to restore your lost flag designs: 
+C:\Users\name\Documents\My Games\LootfestWars
+remove DSS_gameoptions (if there is one)
+rename DSS_profiles to DSS_gameoptions
+start game, go into flag design and "save & exit" on each flag you want to keep
 
 Error
+-strid fastnar vid peace
+-also path finding of a land army will often prefer water over land when the boat building will cause the travel time to take considerably longer than if it went over land
+from what i've seen, this generally only happens if the army is on a land tile immediately adjacent to water
 
-AI
--sök fiende armeer som passerar
+Retreat system
+-retreat av de sista motståndarna
+-light taunt units (slingers, light cavalry)
+-reassemble av flydd arme
+
+Polish
+-seperata sparfiler
+-game credits
+
+-armeer ska visa ifall de strider på hud
+-attack warning -Battle notification
+-diplomacy toggle
+-end credits
+//-omplacera workforce hud
+-AI sök fiende armeer som passerar
+//-battlegrid: would it be possible to just not let units move into a water tile if it is a land battle?
+	-max väntetid, sen path finding eller båtbygge
+-krig icon på karta
+-the horses dont load when paused, plus rotation error
+-kungadömmet ska inte dela wars med dark followers (secret ally)
+-dölj move path OnHud 
+
+Art
+-checkbox art
+-Mercenary icon
+-battle icon
+-world domination achieve
 
 Steam Launch Roadmap
--Fail state for the game
 -Localization to 8 languages
-
--(maybe) Full controller support
+-Full controller support
+-Polish the turd
+.             
+-(maybe) Battle retreat system 
 -(maybe) Save
 -(maybe) Mountain ridges and water reefs that block movement
 -(maybe) Visually display city guard size
--(maybe) Road building
--(maybe) Linux support
--(maybe) Soldiers will fight in formation
--(maybe) Some basic resources
 
--(Removed) Boost soldiers with a command system
+
+
+
 

@@ -7,6 +7,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG;
+using VikingEngine.ToGG.MoonFall;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace VikingEngine.DSSWars.Display
@@ -39,10 +40,28 @@ namespace VikingEngine.DSSWars.Display
                 {
                     content.newLine();
 
-                    content.Button("Recruit " + opt.unitType.ToString() + " (" + status.typeCount[(int)opt.unitType] + ")",
+                    string recruitText = "Recruit " + opt.unitType.ToString();
+                    string count = status.typeCount[(int)opt.unitType].ToString();
+                    AbsSoldierData typeData = DssRef.unitsdata.Get(opt.unitType);
+
+                    content.Add(new RichBoxText(count));
+                    content.Add(new RichBoxImage(typeData.icon));
+                    
+                    content.Add(new RichBoxSpace());
+
+                    content.Add(new RichboxButton(
+                        new List<AbsRichBoxMember>
+                        {                            
+                            new RichBoxText(recruitText),
+                        },
                         new RbAction2Arg<UnitType, int>(city.buySoldiersAction, opt.unitType, 1, SoundLib.menuBuy),
                         new RbAction2Arg<CityPurchaseOption, int>(buySoldiersTip, opt, 1),
-                        canBuySoldiers(opt.unitType, 1));
+                        canBuySoldiers(opt.unitType, 1)));
+
+                    //content.Button(recruitText,
+                    //    new RbAction2Arg<UnitType, int>(city.buySoldiersAction, opt.unitType, 1, SoundLib.menuBuy),
+                    //    new RbAction2Arg<CityPurchaseOption, int>(buySoldiersTip, opt, 1),
+                    //    canBuySoldiers(opt.unitType, 1));
 
                     content.Add(new RichBoxSpace());
 
@@ -54,6 +73,29 @@ namespace VikingEngine.DSSWars.Display
                 }
             }
 
+            content.newLine();
+
+            content.icontext(SpriteName.WarsSoldierIcon, "Mercenaries: " + TextLib.LargeNumber(city.mercenaries));
+
+            content.newLine();
+
+            string importMecenariesText = "Import {0} mercenaries";
+
+            content.Add(new RichboxButton(new List<AbsRichBoxMember>{
+                    new RichBoxImage(SpriteName.WarsSoldierIcon),
+                    new RichBoxText( string.Format(importMecenariesText, DssLib.MercenaryPurchaseCount)),
+                },
+               new RbAction1Arg<int>(buyMercenaryAction, 1, SoundLib.menuBuy),
+               new RbAction1Arg<int>(buyMercenaryToolTip, 1),
+               city.buyMercenary(false, 1)));
+
+            content.Add(new RichBoxSpace());
+
+            content.Button((DssLib.MercenaryPurchaseCount * 5).ToString(),
+               new RbAction1Arg<int>(buyMercenaryAction, 5, SoundLib.menuBuy),
+               new RbAction1Arg<int>(buyMercenaryToolTip, 5),
+               city.buyMercenary(false, 5));
+
             content.Add(new RichBoxNewLine(true));
 
             content.Add(new RichboxButton(new List<AbsRichBoxMember>{
@@ -63,12 +105,7 @@ namespace VikingEngine.DSSWars.Display
                 new RbAction1Arg<int>(buyWorkforceAction, 1, SoundLib.menuBuy),
                 new RbAction1Arg<int>(buyWorkforceToolTip, 1),
                 city.buyWorkforce(false, 1)));
-            //content.Add(new RichBoxSpace());
-            //content.Button("x5",
-            //    new RbAction1Arg<int>(buyWorkforceAction, 5, SoundLib.menuBuy),
-            //    new RbAction1Arg<int>(buyWorkforceToolTip, 5),
-            //    city.buyWorkforce(false, 5));
-
+            
             content.newLine();
 
             {
@@ -168,7 +205,37 @@ namespace VikingEngine.DSSWars.Display
             content.newLine();
 
             player.hud.tooltip.create(player, content, true);
+        
+        
         }
+
+
+        void buyMercenaryAction(int count)
+        {
+            city.buyMercenary(true, count);
+        }
+
+        public void buyMercenaryToolTip(int count)
+        {
+            RichBoxContent content = new RichBoxContent();
+
+            int cost = city.buyMercenaryCost(count);
+
+            content.text(TextLib.Quote("Soldiers will be drafted from mercenaries instead of your workforce"));
+            content.newLine();
+            content.h2("Cost");
+            content.newLine();
+            HudLib.ResourceCost(content, SpriteName.rtsUpkeep, "Gold", cost, player.faction.gold);
+            content.text(string.Format("Cost will increase by {0}", DssRef.difficulty.MercenaryPurchaseCost_Add * count));
+
+            content.newParagraph();
+            content.h2("Gain");
+            content.newLine();
+            content.icontext(SpriteName.WarsSoldierIcon, string.Format("{0} mercenaries", DssLib.MercenaryPurchaseCount * count));
+            
+            player.hud.tooltip.create(player, content, true);
+        }
+
 
         void buyWorkforceAction(int count)
         {

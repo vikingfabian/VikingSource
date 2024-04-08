@@ -22,6 +22,9 @@ namespace VikingEngine.DSSWars
         public StartGame(NetworkLobby netLobby, MapBackgroundLoading loading)
             :base(false)
         {
+            Ref.music.stop(true);
+            new PlaySettings();
+
             if (loading == null)
             { 
                 loading = new MapBackgroundLoading();
@@ -59,6 +62,11 @@ namespace VikingEngine.DSSWars
             if (loading.Complete() && state == null)
             {
                 state = new PlayState(true);
+            }
+
+            if (Ref.music != null)
+            {
+                Ref.music.Update();
             }
             //if (storage.loadComplete)
             //{

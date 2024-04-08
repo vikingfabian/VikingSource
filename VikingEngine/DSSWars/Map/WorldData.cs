@@ -5,6 +5,7 @@ using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.GameObject;
 using Microsoft.Xna.Framework;
 using VikingEngine.DataStream;
+using VikingEngine.DSSWars.Data;
 
 namespace VikingEngine.DSSWars
 {
@@ -42,6 +43,7 @@ namespace VikingEngine.DSSWars
         public Rectangle2 tileBounds;
         public VectorRect unitBounds;
         public IntVector2 Size;
+        public IntVector2 HalfSize;
         public Grid2D<Tile> tileGrid;
         public Grid2D<SubTile> subTileGrid;
        
@@ -77,7 +79,7 @@ namespace VikingEngine.DSSWars
 
             //size
             Size = SizeDimentions(mapSize);
-
+            HalfSize = Size / 2;
             rnd = new PcgRandom(seed);
 
             refreshSize();
@@ -133,11 +135,52 @@ namespace VikingEngine.DSSWars
         //{
         //    //evilFactionIndex = factions.Count;
         //    var faction = new Faction(this, FactionType.DarkLord);
-            
+
         //    return faction;
         //}
 
-        public void write(System.IO.BinaryWriter w)
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            foreach (City city in cities)
+            {
+                city.writeGameState(w);
+            }
+
+            foreach (var faction in factions.Array)
+            {
+                if (faction != null && faction.isAlive)
+                {
+                    w.Write(true);
+                    faction.writeGameState(w);
+                }
+                else
+                { 
+                    w.Write(false); 
+                }
+            }
+        }
+        public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        {
+            foreach (City city in cities)
+            {
+                city.readGameState(r, version, pointers);
+            }
+
+            for (int i = 0; i < factions.Array.Length; i++)
+            {
+                if (r.ReadBoolean())
+                {
+                    factions.Array[i].readGameState(r, version, pointers);
+                }
+            }
+
+        }
+        public void writeMetaData(System.IO.BinaryWriter w)
+        {
+            w.Write(seed);
+        }
+
+        public void writeMapFile(System.IO.BinaryWriter w)
         {
             DebugWriteSize tilesSz = new DebugWriteSize();
             DebugWriteSize citiesSz = new DebugWriteSize();
@@ -156,7 +199,7 @@ namespace VikingEngine.DSSWars
             while (loop.Next())
             {
                 var tile = tileGrid.Get(loop.Position);
-                tile.write(w);
+                tile.writeMapFile(w);
             }
             tilesSz.end(w);
 
@@ -168,7 +211,7 @@ namespace VikingEngine.DSSWars
             w.Write(cities.Count);
             foreach (var m in cities)
             {
-                m.write(w);
+                m.writeMapFile(w);
             }
             citiesSz.end(w);
 
@@ -182,7 +225,7 @@ namespace VikingEngine.DSSWars
             while (factionsCount.Next())
             {
                 w.Write((byte)factionsCount.sel.factiontype);
-                factionsCount.sel.write(w);
+                factionsCount.sel.writeMapFile(w);
             }
             factionsSz.end(w);
 
@@ -199,7 +242,7 @@ namespace VikingEngine.DSSWars
             lib.DoNothing();
         }
 
-        public void read(System.IO.BinaryReader r)
+        public void readMapFile(System.IO.BinaryReader r)
         {
            int version = r.ReadInt32();
 
@@ -231,7 +274,7 @@ namespace VikingEngine.DSSWars
             {
                 FactionType factionType = (FactionType)r.ReadByte();
                 var faction = new Faction(this, factionType);
-                faction.read(r, version, this);
+                faction.readMapFile(r, version, this);
                
             }
 
