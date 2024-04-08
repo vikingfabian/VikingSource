@@ -71,6 +71,10 @@ namespace VikingEngine.DSSWars.Display
             GuiLayout layout = new GuiLayout("Game menu", menu);
             {  
                 new GuiTextButton("Resume", null, closeMenu, false, layout);
+                
+                Ref.gamesett.soundOptions(layout);
+                new GuiSectionSeparator(layout);
+
                 new GuiDialogButton("Exit", null, new GuiAction(DssRef.state.exit), false, layout);
             }
             layout.End();

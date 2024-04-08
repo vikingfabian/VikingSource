@@ -180,6 +180,8 @@ namespace VikingEngine.DSSWars
                     new GuiTextButton("Map file generator", "Creates maps to play on. Takes about 10 minutes.", mapFileGenerator, false, layout);
                     new GuiLargeTextButton("Play Commander", "", new GuiAction(extra_PlayCommanderVersus), false, layout);
                 }
+                new GuiTextButton("Credits", null, credits, true, layout);
+
                 //new GuiTextButton("Voxel Editor", "Tool to create the voxel models. Xbox controller required!", voxeleditor, false, layout);
                 new GuiSectionSeparator(layout);
                 new GuiTextButton(DssRef.lang.Lobby_ExitGame, null, exitGame, false, layout);
@@ -189,10 +191,46 @@ namespace VikingEngine.DSSWars
         }
 
 
+        public void credits()
+        {
+            GuiLayout layout = new GuiLayout("Credits", menuSystem.menu);
+            layout.scrollOnly = true;
+            {
+                //var oldFormat = menu.style.textFormat;
+                //menu.style.textFormat.Font = LoadedFont.Console;
+                //menu.style.textFormat.size *= 1.6f;
 
+                new GuiLabel("DSS war party", layout);
+
+                new GuiLabel("Art, Design & Programming:" + Environment.NewLine +
+                    "Fabian \"Viking\" Jakobsson", layout);
+
+                new GuiLabel("Music:" + Environment.NewLine +
+                    "Diva Production Music / Melody Loops" + Environment.NewLine +
+                    "EdRecords / Melody Loops" + Environment.NewLine +
+                    "Jon Wright / Melody Loops" + Environment.NewLine +
+                    "Erick McNereney / Melody Loops" + Environment.NewLine +
+                    "Soundroll / Melody Loops", layout);
+
+                new GuiLabel("Main playtesters:" + Environment.NewLine +
+                    "Pontus Bengtsson" + Environment.NewLine +
+                    "Craig \"Total Miner\" Martin" + Environment.NewLine +
+                    "Rocky" + Environment.NewLine +
+                    "blumpo" + Environment.NewLine +
+                    "Staticwombat"
+                    ,layout);
+
+                //new GuiLabel("Winner of the Creative Coast \"Game Concept Challenge\" 2018 Award", layout);
+
+                new GuiSectionSeparator(layout);
+
+                new GuiLabel("vikingfabian games", layout);
+            }
+            layout.End();
+        }
         //void settingsGui(GuiLayout layout)
         //{
-            
+
 
         //}
 

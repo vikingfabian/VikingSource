@@ -1,9 +1,10 @@
 ﻿Change Log
 * Bought some cheap, royalty free music and put it in my game.
+* Credits
 * End screen for victory or loss, with statistics.
 * Prologue: a short "movie" you can watch when you win the game.
 * Now saves sound/graphics settings
-! Multiscreen setting does not work in save/load
+! Multiscreen setup does not work in save/load
 * Save files are split up, now each flag is its own file (for easy share)
 
 ! How to restore your lost flag designs: 
