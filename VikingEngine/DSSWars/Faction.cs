@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars
     {
         //public int index;
         public Players.AbsPlayer player = null;
-        public ProfileData profile;
+        public FlagAndColor profile;
 
         public GameObject.City mainCity;
         public Vector3 SelectionCenter { get; private set; }
@@ -88,10 +88,10 @@ namespace VikingEngine.DSSWars
 
         public void initVisuals()
         {
-            SetProfile(new ProfileData(factiontype, -1));
+            SetProfile(new FlagAndColor(factiontype, -1));
         }
 
-        public void SetProfile(ProfileData profile)
+        public void SetProfile(FlagAndColor profile)
         {
             this.profile = profile;
             flagTexture = profile.flagDesign.CreateTexture(profile);
@@ -128,7 +128,7 @@ namespace VikingEngine.DSSWars
         }
         virtual public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
-            profile = new ProfileData(r);
+            profile = new FlagAndColor(r);
 
             int citiesCount = r.ReadUInt16();
             for (int i = 0; i < citiesCount; i++)

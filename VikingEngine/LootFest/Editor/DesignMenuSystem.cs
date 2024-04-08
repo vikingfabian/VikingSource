@@ -786,12 +786,12 @@ namespace VikingEngine.LootFest.Editor
             {
                 new GuiTitle("DSS soldier color mapping", layout);
                 //SkinCol, HairCol, MainCol, AltMainCol, DetailCol1, DetailCol2;
-                appearanceMaterials(VikingEngine.DSSWars.ProfileData.SkinCol, "skin", layout, link);
-                appearanceMaterials(VikingEngine.DSSWars.ProfileData.HairCol, "hair", layout, link);
-                appearanceMaterials(VikingEngine.DSSWars.ProfileData.MainCol, "main 1", layout, link);
-                appearanceMaterials(VikingEngine.DSSWars.ProfileData.AltMainCol, "main 2", layout, link);
-                appearanceMaterials(VikingEngine.DSSWars.ProfileData.DetailCol1, "detail 1", layout, link);
-                appearanceMaterials(VikingEngine.DSSWars.ProfileData.DetailCol2, "detail 2", layout, link);
+                appearanceMaterials(VikingEngine.DSSWars.FlagAndColor.SkinCol, "skin", layout, link);
+                appearanceMaterials(VikingEngine.DSSWars.FlagAndColor.HairCol, "hair", layout, link);
+                appearanceMaterials(VikingEngine.DSSWars.FlagAndColor.MainCol, "main 1", layout, link);
+                appearanceMaterials(VikingEngine.DSSWars.FlagAndColor.AltMainCol, "main 2", layout, link);
+                appearanceMaterials(VikingEngine.DSSWars.FlagAndColor.DetailCol1, "detail 1", layout, link);
+                appearanceMaterials(VikingEngine.DSSWars.FlagAndColor.DetailCol2, "detail 2", layout, link);
 
             }
         }

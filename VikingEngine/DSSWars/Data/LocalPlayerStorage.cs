@@ -96,21 +96,11 @@ namespace VikingEngine.DSSWars.Data
 
         public void write(System.IO.BinaryWriter w)
         {
-            //w.Write((int)inputSource);
-            //w.Write(controllerIndex);
-
             w.Write(screenIndex);
             w.Write(profile);
         }
         public void read(System.IO.BinaryReader r, int version)
         {
-            //inputSource = (InputSourceType)r.ReadInt32();
-            //controllerIndex = r.ReadInt32();
-
-            if (version <= 4)
-            {
-                new InputSource().read(r);
-            }
             screenIndex = r.ReadInt32();
             profile = r.ReadInt32();
         }

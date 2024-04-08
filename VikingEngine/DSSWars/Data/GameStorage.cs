@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Xml.Schema;
+using VikingEngine.DSSWars.Profile;
 using VikingEngine.Engine;
 using VikingEngine.Input;
 using VikingEngine.LootFest;
@@ -15,26 +16,22 @@ namespace VikingEngine.DSSWars.Data
 {
     class GameStorage
     {
-        const int ProfilesCount = 16;
+        
         public const int MaxLocalPlayerCount = 4;
         public int playerCount = 1;
         public bool verticalScreenSplit = true;
 
-        DataStream.FilePath path = new DataStream.FilePath(null, "DSS_profiles", ".set");
-        public List<ProfileData> profiles;
+        DataStream.FilePath path = new DataStream.FilePath(null, "DSS_gameoptions", ".set");
+       
         public MapSize mapSize = MapSize.Medium;
         public bool generateNewMaps = false;
         public LocalPlayerStorage[] localPlayers = null;
-        
+        public Profile.FlagStorage flagStorage;
+
         public GameStorage()
         {
             DssRef.storage = this;
-            profiles = new List2<ProfileData>(ProfilesCount);
-
-            for (int i = 0; i < ProfilesCount; ++i)
-            {
-                profiles.Add(new ProfileData(FactionType.Player, i));
-            }
+            flagStorage = new FlagStorage();
 
             localPlayers = new LocalPlayerStorage[MaxLocalPlayerCount];
             for (int i = 0; i < MaxLocalPlayerCount; ++i)
@@ -46,6 +43,8 @@ namespace VikingEngine.DSSWars.Data
         public void Load()
         {
             DataStream.DataStreamHandler.TryReadBinaryIO(path, read);
+
+            flagStorage.Load();
         }
 
         public void Save(DataStream.IStreamIOCallback callBack)
@@ -83,14 +82,14 @@ namespace VikingEngine.DSSWars.Data
 
         public void write(System.IO.BinaryWriter w)
         {
-            const int Version = 11;
+            const int Version = 12;
 
             w.Write(Version);
 
-            foreach (var p in profiles)
-            {
-                p.write(w);
-            }
+            //foreach (var p in profiles)
+            //{
+            //    p.write(w);
+            //}
 
             w.Write((int)mapSize);
 
@@ -101,31 +100,26 @@ namespace VikingEngine.DSSWars.Data
                 localPlayers[i].write(w);
             }
 
-            //w.Write((int)aiAggressivity);
-            //w.Write(aiEconomyLevel);
-
             w.Write(generateNewMaps);
             DssRef.difficulty.write(w);
-            //w.Write(honorGuard);
-            //w.Write(diplomacyDifficulty);
-            //w.Write((int)bossTimeSettings);
-
-            //w.Write((int)bossSize);
-            //w.Write(allowPauseCommand);
+            
         }
         public void read(System.IO.BinaryReader r)
         {
             int version = r.ReadInt32();
-            if (version < 4)
+            if (version <= 4)
             {
                 return;
             }
 
-            for (int i = 0; i < ProfilesCount; ++i)
+            if (version < 12)
             {
-                profiles[i].read(r);
+                flagStorage.old_read(r);
+                //for (int i = 0; i < ProfilesCount; ++i)
+                //{
+                //    flagDesigns[i].read(r);
+                //}
             }
-
             mapSize = (MapSize)r.ReadInt32();
 
             verticalScreenSplit = r.ReadBoolean();
@@ -140,33 +134,7 @@ namespace VikingEngine.DSSWars.Data
                 generateNewMaps = r.ReadBoolean();
                 DssRef.difficulty.read(r, version);
             }
-            else
-            {
-                //aiAggressivity = (AiAggressivity)r.ReadInt32();
-                //aiEconomyLevel = Bound.Set(r.ReadInt32(), 0, DssLib.AiEconomyLevel.Length - 1);
-
-                //if (version >= 6)
-                //{
-                //    generateNewMaps = r.ReadBoolean();
-                //}
-                //if (version >= 7)
-                //{
-                //    honorGuard = r.ReadBoolean();
-                //}
-                //if (version >= 8)
-                //{
-                //    diplomacyDifficulty = r.ReadInt32();
-                //}
-                //if (version >= 9)
-                //{
-                //    bossTimeSettings = (BossTimeSettings)r.ReadInt32();
-                //}
-                //if (version >= 10)
-                //{
-                //    bossSize = (BossSize)r.ReadInt32();
-                //    allowPauseCommand = r.ReadBoolean();
-                //}
-            }
+            
         }
 
         public void checkPlayerDoublettes()

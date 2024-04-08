@@ -13,8 +13,8 @@ namespace VikingEngine
     /// </summary>
     class GameSettings
     {
-        const int Version = 9;
-        const string FileName = "GameSettingsPC";
+        const int Version = 10;
+        const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
         DataStream.FilePath path = new DataStream.FilePath(null, FileName, FileEnd, true, true);
@@ -54,12 +54,6 @@ namespace VikingEngine
             Engine.Screen.PcTargetResolution.write(w);
             w.Write(Engine.Screen.PcTargetFullScreen);
             w.Write((byte)Engine.Screen.UseRecordingPreset);
-//#if PCGAME
-//            SaveLib.WriteString(w, Engine.Screen.FormScreen.DeviceName);
-//#else
-//            SaveLib.WriteString(w, null);
-//#endif
-
             w.Write(Sound.MusicPlayer.MasterVolume);
             w.Write(Engine.Sound.SoundVolume);
             w.Write((byte)VibrationLevel);
@@ -82,56 +76,20 @@ namespace VikingEngine
             Engine.Screen.PcTargetFullScreen = r.ReadBoolean();
             Engine.Screen.UseRecordingPreset = (Engine.RecordingPresets)r.ReadByte();
 
-            string screenName = SaveLib.ReadString(r);
-#if PCGAME
-            //foreach (var m in System.Windows.Forms.Screen.AllScreens)
-            //{
-            //    if (m.DeviceName == screenName)
-            //    {
-            //        Engine.Screen.FormScreen = m;
-            //        break;
-            //    }
-            //}
-#endif          
             Sound.MusicPlayer.MasterVolume = r.ReadSingle();
             Engine.Sound.SoundVolume = r.ReadSingle();
-            if (version >= 5)
-            {
-                VibrationLevel = r.ReadByte();
-            }
-            if (version >= 6)
-            {
-                UiScale = r.ReadSingle();
-                dyslexiaFont = r.ReadBoolean();
-            }
-            if (version >= 7)
-            {
-                bannedPeers.read(r, version);
-            }
+            VibrationLevel = r.ReadByte();            
+            
+            UiScale = r.ReadSingle();
+            dyslexiaFont = r.ReadBoolean();
+            bannedPeers.read(r, version);
+            
         }
 
         public void write(System.IO.BinaryWriter w)
         {
             w.Write(Version);
             writeSettings(w);
-//            w.Write(Engine.Screen.RenderScalePerc);
-//            Engine.Screen.PcTargetResolution.write(w);
-//            w.Write(Engine.Screen.PcTargetFullScreen);
-//            //w.Write(ChunkLoadRadius);
-//            w.Write(FrameRate);
-//            w.Write(DetailLevel);
-
-//            w.Write(Sound.MusicPlayer.MasterVolume);
-//            w.Write(Engine.Sound.SoundVolume);
-//            w.Write(AutoJoinToCoopLevel);
-//            w.Write((byte)Engine.Screen.UseRecordingPreset);
-//#if PCGAME
-//            SaveLib.WriteString(w, Engine.Screen.FormScreen.DeviceName);
-//#else
-//            SaveLib.WriteString(w, null);
-//#endif
-
-//            bannedPeers.write(w);
         }
 
         public void read(System.IO.BinaryReader r)
@@ -285,9 +243,9 @@ namespace VikingEngine
         {
             if (Ref.music != null)
             {
-                new GuiFloatSlider(SpriteName.MenuPixelIconMusicVol, "Music Volume", musicVolProperty, new IntervalF(0, 1), false, layout);
+                new GuiFloatSlider(SpriteName.MenuPixelIconMusicVol, "Music Volume", musicVolProperty, new IntervalF(0, 4), false, layout);
             }
-            new GuiFloatSlider(SpriteName.MenuPixelIconSoundVol, "Sound Volume", soundVolProperty, new IntervalF(0, 1), false, layout);
+            new GuiFloatSlider(SpriteName.MenuPixelIconSoundVol, "Sound Volume", soundVolProperty, new IntervalF(0, 4), false, layout);
         }
 
         public void graphicsOptions(GuiLayout layout)

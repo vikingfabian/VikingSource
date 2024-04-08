@@ -10,7 +10,7 @@ namespace VikingEngine.Sound
     {
         public IntervalF LoopTimesRange = new IntervalF(2, 3);
         PcgRandom random = new PcgRandom();
-        public static float MasterVolume = 0.4f;
+        public static float MasterVolume = 1f;
         public static float SongVolumeAdjust = 1f;
         List<SongData> playList;
         int shuffleSongsLeftToPlay = 0;

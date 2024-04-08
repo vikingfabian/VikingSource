@@ -8,7 +8,7 @@ using VikingEngine.LootFest.Map.HDvoxel;
 
 namespace VikingEngine.DSSWars
 {
-    class ProfileData
+    class FlagAndColor
     {
         public static readonly int ColorCount = (int)ProfileColorType.NUM;
         static readonly ColorRange AiColorRange = new ColorRange(new Color(new Vector3(0.1f)), new Color(new Vector3(0.9f)));
@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars
 
 
 
-        public ProfileData(FactionType factiontype, int index)
+        public FlagAndColor(FactionType factiontype, int index)
         {
             this.index = index;
             colors = new Color[ColorCount];
@@ -539,14 +539,14 @@ namespace VikingEngine.DSSWars
             //}
         }
 
-        public ProfileData(System.IO.BinaryReader r)
+        public FlagAndColor(System.IO.BinaryReader r)
         {
-            read(r);
+            read_old(r);
         }
 
-        public ProfileData Clone()
+        public FlagAndColor Clone()
         {
-            ProfileData clonedData = new ProfileData(FactionType.Player, this.index)
+            FlagAndColor clonedData = new FlagAndColor(FactionType.Player, this.index)
             {
                 colors = this.colors != null ? (Color[])this.colors.Clone() : null,
                 blockColors = this.blockColors != null ? (ushort[])this.blockColors.Clone() : null,
@@ -643,8 +643,32 @@ namespace VikingEngine.DSSWars
             button.icon.SetFullTextureSource();
         }
 
+        //public void write(System.IO.BinaryWriter w)
+        //{
+        //    for (int i = 0; i < ColorCount; ++i)
+        //    {
+        //        SaveLib.WriteColorStream_3B(w, colors[i]);
+        //    }
+
+        //    flagDesign.write(w);
+        //}
+
+        public void read_old(System.IO.BinaryReader r)
+        {
+            for (int i = 0; i < ColorCount; ++i)
+            {
+                colors[i] = SaveLib.ReadColorStream_3B(r);
+            }
+
+            flagDesign.read(r);
+        }
+
         public void write(System.IO.BinaryWriter w)
         {
+            const int Version = 2;
+
+            w.Write(Version);
+
             for (int i = 0; i < ColorCount; ++i)
             {
                 SaveLib.WriteColorStream_3B(w, colors[i]);
@@ -655,6 +679,8 @@ namespace VikingEngine.DSSWars
 
         public void read(System.IO.BinaryReader r)
         {
+            int version = r.ReadInt32();
+
             for (int i = 0; i < ColorCount; ++i)
             {
                 colors[i] = SaveLib.ReadColorStream_3B(r);

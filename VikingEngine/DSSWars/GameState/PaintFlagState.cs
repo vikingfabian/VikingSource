@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars
     {        
         InputMap input;
         int profileIx;
-        public ProfileData profile;
+        public FlagAndColor profile;
         public ProfileColorType selectedColorType;
         public FlagDesign file;
         Grid2D<Image> imageGrid;
@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars
 
             input = new InputMap(player);
             this.profileIx = profileIx;
-            profile = DssRef.storage.profiles[profileIx].Clone();
+            profile = DssRef.storage.flagStorage.flagDesigns[profileIx].Clone();
 
             
 
@@ -160,9 +160,9 @@ namespace VikingEngine.DSSWars
        public void saveAndExit()
         {
             //EXIT
-            DssRef.storage.profiles[profileIx] = profile;
+            DssRef.storage.flagStorage.flagDesigns[profileIx] = profile;
             new LobbyState();
-            DssRef.storage.Save(this);
+            DssRef.storage.flagStorage.Save(profileIx);
         }
 
         public void SaveComplete(bool save, int player, bool completed, byte[] value)

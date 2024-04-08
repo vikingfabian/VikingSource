@@ -257,7 +257,7 @@ namespace VikingEngine.DSSWars
             dataGrid.FromArray(array);
         }
 
-        public Color[] toColorArray(ProfileData factionVisual)
+        public Color[] toColorArray(FlagAndColor factionVisual)
         {
             byte[] dataArray = dataGrid.ToArray();
             Color[] result = new Color[dataArray.Length];
@@ -269,7 +269,7 @@ namespace VikingEngine.DSSWars
             return result;
         }
 
-        public Texture2D CreateTexture(ProfileData factionVisual)
+        public Texture2D CreateTexture(FlagAndColor factionVisual)
         {
             var texture = new Texture2D(Engine.Draw.graphicsDeviceManager.GraphicsDevice, 
                 DssLib.UserHeraldicWidth, DssLib.UserHeraldicWidth);

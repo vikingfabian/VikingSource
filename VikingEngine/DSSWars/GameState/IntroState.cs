@@ -95,7 +95,7 @@ namespace VikingEngine.DSSWars
             Engine.LoadContent.LoadTexture(LoadedTexture.SpriteSheet, Engine.LoadContent.TexturePath + "Lf3Tiles2");
             new SpriteSheet();
             LootFest.Data.Block.Init();
-            ProfileData.Init();
+            FlagAndColor.Init();
             
             new GameObject.AllUnits();
             new Models().loadContent();
@@ -150,6 +150,8 @@ namespace VikingEngine.DSSWars
         {
             FlagDesign.Init();
             new Data.GameStorage().Load();
+            Ref.gamesett.Load();
+
             loadingDataComplete = true;
         }
 

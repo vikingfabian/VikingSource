@@ -24,7 +24,7 @@ namespace VikingEngine.Engine
         static float stackVolume = SoundStandardVolume;
 
         public const float MusicStandardVol = 0.16f;
-        public const float SoundStandardVolume = 0.4f;
+        public const float SoundStandardVolume = 1f;
 
         static float musicVol = MusicStandardVol;
         public static float SoundVolume = SoundStandardVolume;

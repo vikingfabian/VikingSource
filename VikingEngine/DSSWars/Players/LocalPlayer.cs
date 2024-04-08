@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.Players
         {
             faction.factiontype = FactionType.Player;
             var pStorage = DssRef.storage.localPlayers[playerindex];
-            faction.SetProfile(DssRef.storage.profiles[pStorage.profile]);
+            faction.SetProfile(DssRef.storage.flagStorage.flagDesigns[pStorage.profile]);
             faction.diplomaticSide = DiplomaticSide.Light;
 
             tabArmy = faction.armiesCounter.Clone();
