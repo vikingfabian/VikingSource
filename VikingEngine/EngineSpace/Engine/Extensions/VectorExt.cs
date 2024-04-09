@@ -17,6 +17,8 @@ namespace VikingEngine
         public static readonly Vector2 V2HalfY = new Vector2(0f, 0.5f);
         public static readonly Vector2 V2NegHalfX = new Vector2(-0.5f, 0f);
         public static readonly Vector2 V2NegHalfY = new Vector2(0f, -0.5f);
+        public static readonly Vector2 V2Min = new Vector2(float.MinValue);
+        public static readonly Vector2 V2Max = new Vector2(float.MaxValue);
 
 
         public static float Dot(this Vector3 op1, Vector3 op2) { return Vector3.Dot(op1, op2); }

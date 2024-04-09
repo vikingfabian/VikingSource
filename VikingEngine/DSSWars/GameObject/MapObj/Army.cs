@@ -53,6 +53,8 @@ namespace VikingEngine.DSSWars.GameObject
         public float terrainSpeedMultiplier = 1.0f;
         public IntVector2 positionBeforeBattle;
         string name;
+
+        public Vector2 cullingTopLeft, cullingBottomRight;
         //IntVector2 nextGroupPlacement = IntVector2.Zero;
 
         public Army(Faction faction, IntVector2 startPosition)
@@ -564,7 +566,11 @@ namespace VikingEngine.DSSWars.GameObject
                 double speedbonus = 0;
                 float totalStrength = 0;
                 int dps;
-                
+
+                Vector2 minpos = VectorExt.V2Max;
+                Vector2 maxpos = VectorExt.V2Min;
+
+
                 Map.Tile tile;
                 if (DssRef.world.tileGrid.TryGet(tilePos, out tile))
                 { 
@@ -607,6 +613,23 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                     }
 
+                    if (groupsC.sel.position.X < minpos.X)
+                    {
+                        minpos.X = groupsC.sel.position.X;
+                    }
+                    if (groupsC.sel.position.X > maxpos.X)
+                    { 
+                        maxpos.X = groupsC.sel.position.X;
+                    }
+
+                    if (groupsC.sel.position.Y < minpos.Y)
+                    {
+                        minpos.Y = groupsC.sel.position.Y;
+                    }
+                    if (groupsC.sel.position.X > maxpos.Y)
+                    {
+                        maxpos.Y = groupsC.sel.position.X;
+                    }
 
                     totalStrength += (dps + unitData.basehealth * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldiers.Count;
                 }
