@@ -215,7 +215,7 @@ namespace VikingEngine.DSSWars
                 new GuiLabel("Main playtesters:" + Environment.NewLine +
                     "Pontus Bengtsson" + Environment.NewLine +
                     "Craig \"Total Miner\" Martin" + Environment.NewLine +
-                    "Rocky" + Environment.NewLine +
+                    "Rocky Johnsson" + Environment.NewLine +
                     "blumpo" + Environment.NewLine +
                     "Staticwombat"
                     ,layout);
