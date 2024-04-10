@@ -37,7 +37,7 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        public void asynchCullingUpdate(float time)
+        virtual public void asynchCullingUpdate(float time, bool bStateA)
         {
             DssRef.state.culling.InRender_Asynch(ref enterRender_asynch, tilePos);
         }

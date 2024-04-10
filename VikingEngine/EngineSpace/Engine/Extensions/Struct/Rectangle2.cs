@@ -502,19 +502,34 @@ namespace VikingEngine
             return point;
         }
 
-        public bool IntersectRect(Rectangle2 collideWith)
+        public bool IntersectRect(Rectangle2 otherRect)
         {
-            if (this.pos.X + size.X > collideWith.X &&
-                this.pos.X < collideWith.X + collideWith.Width)
+            if (this.pos.X + size.X > otherRect.X &&
+                this.pos.X < otherRect.X + otherRect.Width)
             {
-                if (this.pos.Y + size.Y > collideWith.Y &&
-                    this.pos.Y < collideWith.Y + collideWith.Height)
+                if (this.pos.Y + size.Y > otherRect.Y &&
+                    this.pos.Y < otherRect.Y + otherRect.Height)
                 {
                     return true;
                 }
             }
             return false;
         }
+
+        public bool IntersectRect(Vector2 otherRectMin, Vector2 otherRectMax)
+        {
+            if (this.pos.X + size.X > otherRectMin.X &&
+                this.pos.X < otherRectMax.X)
+            {
+                if (this.pos.Y + size.Y > otherRectMin.Y &&
+                    this.pos.Y < otherRectMax.Y)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public void AddRadius(int radius)
         {
             pos.X -= radius;

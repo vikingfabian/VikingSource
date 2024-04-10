@@ -35,12 +35,12 @@ namespace VikingEngine.DSSWars
             var factions = DssRef.world.factions.counter();
             while (factions.Next())
             {
-                factions.sel.asynchCullingUpdate(time);
+                factions.sel.asynchCullingUpdate(time, cullingStateA);
             }
 
             foreach (var m in DssRef.world.cities)
             {
-                m.asynchCullingUpdate(time);
+                m.asynchCullingUpdate(time, cullingStateA);
             }
         }
         void asynch_updateTiles()
@@ -74,7 +74,35 @@ namespace VikingEngine.DSSWars
                 }
             }
         }
-        
+
+        public void InRender_Asynch(ref bool enterRender, bool bStateA, ref Vector2 minpos, ref Vector2 maxpos)
+        {
+            for (int cameraIndex = 0; cameraIndex < Ref.draw.ActivePlayerScreens.Count; ++cameraIndex)
+            {
+                var state = bStateA ? players[cameraIndex].stateA : players[cameraIndex].stateB;
+                if (state.enterArea.IntersectRect(minpos, maxpos))
+                { 
+                    enterRender = true;
+                    return;
+                }
+            }
+
+            enterRender = false;
+            //Map.Tile tile;
+            //if (DssRef.world.tileGrid.TryGet(pos, out tile))
+            //{
+            //    byte value = cullingStateA ? tile.renderStateA : tile.renderStateB;
+            //    if (value == NoRender)
+            //    {
+            //        enterRender = false;
+            //    }
+            //    else
+            //    {
+            //        enterRender = enterRender || value == EnterRender;
+            //    }
+            //}
+        }
+
         //public bool TileInRender(IntVector2 pos)
         //{
         //    var tile = DssRef.world.tileGrid.Get(pos);

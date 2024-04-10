@@ -54,6 +54,7 @@ namespace VikingEngine.DSSWars.GameObject
         public IntVector2 positionBeforeBattle;
         string name;
 
+        static readonly Vector2 CamCullingRadius = new Vector2(SoldierGroup.GroupSpacing * 1.4f);
         public Vector2 cullingTopLeft, cullingBottomRight;
         //IntVector2 nextGroupPlacement = IntVector2.Zero;
 
@@ -73,7 +74,7 @@ namespace VikingEngine.DSSWars.GameObject
         void init(Faction faction)
         {
             bound = new BoundingSphere(Vector3.Zero, 0.5f);
-            asynchCullingUpdate(1f);
+            asynchCullingUpdate(1f, DssRef.state.culling.cullingStateA);
             faction.AddArmy(this);
         }
 
@@ -622,13 +623,13 @@ namespace VikingEngine.DSSWars.GameObject
                         maxpos.X = groupsC.sel.position.X;
                     }
 
-                    if (groupsC.sel.position.Y < minpos.Y)
+                    if (groupsC.sel.position.Z < minpos.Y)
                     {
-                        minpos.Y = groupsC.sel.position.Y;
+                        minpos.Y = groupsC.sel.position.Z;
                     }
-                    if (groupsC.sel.position.X > maxpos.Y)
+                    if (groupsC.sel.position.Z > maxpos.Y)
                     {
-                        maxpos.Y = groupsC.sel.position.X;
+                        maxpos.Y = groupsC.sel.position.Z;
                     }
 
                     totalStrength += (dps + unitData.basehealth * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldiers.Count;
@@ -650,7 +651,15 @@ namespace VikingEngine.DSSWars.GameObject
                 collectBattles_asynch();
 
                 strengthValue = totalStrength / AllUnits.AverageGroupStrength;
+
+                cullingTopLeft = minpos - CamCullingRadius;
+                cullingBottomRight = maxpos + CamCullingRadius;
             }
+        }
+
+        override public void asynchCullingUpdate(float time, bool bStateA)
+        {
+            DssRef.state.culling.InRender_Asynch(ref enterRender_asynch, bStateA, ref cullingTopLeft, ref cullingBottomRight);
         }
 
         public void asynchSleepObjectsUpdate(float time)

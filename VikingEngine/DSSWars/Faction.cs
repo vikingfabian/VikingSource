@@ -427,12 +427,12 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public void asynchCullingUpdate(float time)
+        public void asynchCullingUpdate(float time, bool bStateA)
         {
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
-                armiesC.sel.asynchCullingUpdate(time);
+                armiesC.sel.asynchCullingUpdate(time, bStateA);
             }
         }
 
