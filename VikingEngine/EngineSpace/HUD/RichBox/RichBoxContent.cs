@@ -96,12 +96,21 @@ namespace VikingEngine.HUD.RichBox
         }
         public RichboxButton Button(SpriteName icon, string caption, AbsRbAction action, AbsRbAction enter, bool enabled)
         {
+            var buttonContent = new List<AbsRichBoxMember>(3);
+            
+            if (icon != SpriteName.NO_IMAGE)
+            {
+                buttonContent.Add(new RichBoxImage(icon));
+                buttonContent.Add(new RichBoxSpace());
+            }
+            buttonContent.Add(new RichBoxText(caption));
+            //{
+            //    new RichBoxImage(icon),
+            //    new RichBoxText(caption),
+            //},
+
             var result = new RichboxButton(
-                new List<AbsRichBoxMember>
-                {
-                    new RichBoxImage(icon),
-                    new RichBoxText(caption),
-                },
+                buttonContent,
                 action, enter, enabled);
             Add(result);
             return result;

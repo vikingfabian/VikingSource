@@ -39,6 +39,11 @@ namespace VikingEngine.DSSWars
         public IButtonMap PauseGame;
 
         public IButtonMap AutomationSetting;
+        public IButtonMap FlagDesign_ToggleColor_Prev;
+        public IButtonMap FlagDesign_ToggleColor_Next;
+        public IButtonMap FlagDesign_PaintBucket;
+        public IButtonMap Controller_FlagDesign_Colorpicker;
+
 
 
         public InputMap(int playerIx)
@@ -76,6 +81,12 @@ namespace VikingEngine.DSSWars
             NextCity = new KeyboardButtonMap(Keys.D1);
             NextArmy = new KeyboardButtonMap(Keys.D2);
             NextBattle = new KeyboardButtonMap(Keys.D3);
+
+            FlagDesign_ToggleColor_Prev = new TwoCombinedButtonsMap(new KeyboardButtonMap(Keys.LeftShift), new KeyboardButtonMap(Keys.Tab));
+            FlagDesign_ToggleColor_Next = new KeyboardButtonMap(Keys.Tab);
+            Controller_FlagDesign_Colorpicker = new NoButtonMap();
+            FlagDesign_PaintBucket = new KeyboardButtonMap(Keys.LeftAlt);
+
             menuInput.keyboardSetup();
         }
         public override void xboxSetup()
@@ -113,6 +124,10 @@ namespace VikingEngine.DSSWars
                 new XboxButtonMap(Buttons.LeftTrigger, inputSource.controllerIndex),
                 new XboxButtonMap(Buttons.Y, inputSource.controllerIndex));
 
+            FlagDesign_ToggleColor_Prev = new XboxButtonMap(Buttons.LeftShoulder, inputSource.controllerIndex);
+            FlagDesign_ToggleColor_Next = new XboxButtonMap(Buttons.RightShoulder, inputSource.controllerIndex);
+            Controller_FlagDesign_Colorpicker = new XboxButtonMap(Buttons.Y, inputSource.controllerIndex);
+            FlagDesign_PaintBucket = new XboxButtonMap(Buttons.X, inputSource.controllerIndex);
         }
 
         public override void genericControllerSetup()

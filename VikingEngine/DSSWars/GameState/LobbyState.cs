@@ -658,7 +658,9 @@ namespace VikingEngine.DSSWars
         void openProfileEditor(int ProfileIx)
         {
             
-            new PaintFlagState(ProfileIx);
+            int p=-1;
+            bool bController = Input.XInput.KeyIsDown(Buttons.A, ref p) || Input.XInput.KeyIsDown(Buttons.X, ref p);
+            new PaintFlagState(ProfileIx, bController);
         }
 
         protected override void createDrawManager()

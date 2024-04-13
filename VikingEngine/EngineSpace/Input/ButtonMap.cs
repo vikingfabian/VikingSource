@@ -23,6 +23,9 @@ namespace VikingEngine.Input
     {
         bool IsDown { get; }
         bool DownEvent { get; }
+
+        bool DownEvent_AnyInstance { get; }
+
         bool UpEvent { get; }
         float Value { get; }
         SpriteName Icon { get; }
@@ -118,6 +121,8 @@ namespace VikingEngine.Input
     {
         public bool IsDown { get { return false; } }
         public bool DownEvent { get { return false; } }
+
+        public bool DownEvent_AnyInstance { get { return false; } }
         public bool UpEvent { get { return false; } }
         public float Value { get { return 0f; } }
         public SpriteName Icon { get { return SpriteName.MissingImage; } }
@@ -156,6 +161,9 @@ namespace VikingEngine.Input
 
         public bool IsDown { get { return button2 == null ? button1.IsDown : button1.IsDown || button2.IsDown; } }
         public bool DownEvent { get { return button2 == null ? button1.DownEvent : button1.DownEvent || button2.DownEvent; } }
+
+        public bool DownEvent_AnyInstance { get { return button2 == null ? button1.DownEvent_AnyInstance : button1.DownEvent || button2.DownEvent_AnyInstance; } }
+
         public bool UpEvent { get { return button2 == null ? button1.UpEvent : button1.UpEvent || button2.UpEvent; } }
         public float Value { get { return button2 == null ? button1.Value : button1.Value + button2.Value; } }
         public int buttonIndex { get { return button1.buttonIndex; } }
@@ -254,6 +262,12 @@ namespace VikingEngine.Input
                     case 5:
                         return button1.DownEvent || button2.DownEvent || button3.DownEvent || button4.DownEvent || button5.DownEvent;
                 }
+            }
+        }
+
+        public bool DownEvent_AnyInstance {
+            get { 
+                throw new NotImplementedException();
             }
         }
 
@@ -421,6 +435,13 @@ namespace VikingEngine.Input
             get
             {
                 return (altKey.IsDown && key.IsDown) && (altKey.DownEvent || key.DownEvent);
+            }
+        }
+        public bool DownEvent_AnyInstance
+        {
+            get
+            {
+                throw new NotImplementedException();
             }
         }
         public bool UpEvent { get { return (altKey.IsDown != key.IsDown) && (altKey.UpEvent || key.UpEvent); ; } }
@@ -597,6 +618,13 @@ namespace VikingEngine.Input
 
             return Keyboard.KeyDownEvent(key); 
         } }
+        public bool DownEvent_AnyInstance
+        {
+            get
+            {
+                return DownEvent;
+            }
+        }
         public bool UpEvent { get { return Keyboard.KeyUpEvent(key); } }
         public float Value { get { return IsDown ? 1f : 0f; } }
         //public SpriteName[] Icons { get { return icons; } }
@@ -628,6 +656,15 @@ namespace VikingEngine.Input
         /* Properties */
         public bool IsDown { get { return Input.Mouse.IsButtonDown(button); } }
         public bool DownEvent { get { return Input.Mouse.ButtonDownEvent(button); } }
+
+        public bool DownEvent_AnyInstance
+        {
+            get
+            {
+                return DownEvent;
+            }
+        }
+
         public bool UpEvent { get { return Input.Mouse.ButtonUpEvent(button); } }
         public float Value { get { return Input.Mouse.IsButtonDown(button) ? 1f : 0f; } }
         public string ButtonName { get { return button.ToString() + "Click"; } }
@@ -684,6 +721,15 @@ namespace VikingEngine.Input
     {
         public bool IsDown { get { return Input.XInput.Instance(controllerIx).IsButtonDown(button); } }
         public bool DownEvent { get { return Input.XInput.Instance(controllerIx).KeyDownEvent(button); } }
+
+        public bool DownEvent_AnyInstance
+        {
+            get
+            {
+                return Input.XInput.KeyDownEvent(button);
+            }
+        }
+
         public bool UpEvent { get { return Input.XInput.Instance(controllerIx).KeyUpEvent(button); } }
         public float Value
         {
@@ -743,13 +789,38 @@ namespace VikingEngine.Input
     {
         public bool IsDown { get { return Input.XInput.Instance(controllerIx).IsButtonDown(button) && !altIsDown();  } }
         public bool DownEvent { get { return Input.XInput.Instance(controllerIx).KeyDownEvent(button) && !altIsDown(); } }
+        public bool DownEvent_AnyInstance
+        {
+            get
+            {
+                foreach (var m in XInput.controllers)
+                {
+                    if (m.Connected)
+                    {
+                        if (m.KeyDownEvent(button) && !altIsDownForInstance(m))
+                        { 
+                            return true;
+                        }
+                    }
+
+                }
+
+                return false;
+            }
+        }
         public bool UpEvent { get { return Input.XInput.Instance(controllerIx).KeyUpEvent(button); } }
 
         bool altIsDown()
         {
             var ins = Input.XInput.Instance(controllerIx);
+            return altIsDownForInstance(ins);
+        }
+
+        bool altIsDownForInstance(XController ins)
+        { 
             return ins.IsButtonDown(Buttons.LeftTrigger) || ins.IsButtonDown(Buttons.RightTrigger);
         }
+
         public float Value
         {
             get

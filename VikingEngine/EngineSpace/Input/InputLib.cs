@@ -169,6 +169,15 @@ namespace VikingEngine.Input
             }
         }
 
+        //public static bool DownEvent_AnyInstance(IButtonMap buttons)
+        //{
+        //    if (buttons.inputSource == InputSourceType.XController)
+        //    {
+        //        Input.XInput.KeyDownEvent(
+        //        //return Input.XInput.Instance(buttons.ControllerIndex).Connected;
+        //    }
+        //    return buttons.DownEvent;
+        //}
     }
 
     struct ButtonGroup

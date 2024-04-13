@@ -77,6 +77,20 @@ namespace VikingEngine.Input
             }
         }
 
+        static public bool AnyActivationKey_DownEvent()
+        {
+
+            if (KeyDownEvent(Keys.Enter) ||
+                KeyDownEvent(Keys.Space) ||
+                KeyDownEvent(Keys.Tab) ||
+                KeyDownEvent(Keys.Escape))
+            {
+                return true;
+            }   
+            
+            return false;
+        }
+
         public static Keys? CheckKeyDowns(List<Keys> keyList)
         {
             if (currentState.GetHashCode() != 0)

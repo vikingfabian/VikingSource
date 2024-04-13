@@ -10,13 +10,14 @@ using VikingEngine.DSSWars.Profile;
 using VikingEngine.LootFest.Map.HDvoxel;
 using VikingEngine.PJ.Tanks;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
+using VikingEngine.Input;
 
 
 namespace VikingEngine.DSSWars
 {
     class PaintFlagState : Engine.GameState, DataStream.IStreamIOCallback
     {        
-        InputMap input;
+        InputMap keyboardInput, controllerInput;
         int profileIx;
         public FlagAndColor profile;
         public ProfileColorType selectedColorType;
@@ -26,12 +27,15 @@ namespace VikingEngine.DSSWars
         public VectorRect paintArea;
         float squareWidth;
         Vector2 squareSz;
-        //ColorButtonGroup colorButtons;
         Display.MenuSystem menuSystem;
         PaintFlagHud hud;
         bool isExiting = false;
+        public bool controllerMode;
+        public bool controllerPickColorState = false;
 
-        public PaintFlagState(int profileIx)
+        Graphics.Image pointer;
+
+        public PaintFlagState(int profileIx, bool bController)
             : base(false)
         {
             draw.ClrColor = Color.SaddleBrown;
@@ -40,11 +44,13 @@ namespace VikingEngine.DSSWars
             int player = 0;
             Engine.XGuide.LocalHostIndex = player;
 
-            input = new InputMap(player);
+            
+            keyboardInput = new InputMap(player);
+            controllerInput = new InputMap(player);
+            controllerInput.xboxSetup();
+
             this.profileIx = profileIx;
             profile = DssRef.storage.flagStorage.flagDesigns[profileIx].Clone();
-
-            
 
             file = profile.flagDesign;
 
@@ -72,27 +78,30 @@ namespace VikingEngine.DSSWars
                     area.Size, ImageLayers.Bottom5));
             }
 
-            //float paintAreaEdge = Engine.Screen.Width * 0.05f;
-
-            //colorButtons = new ColorButtonGroup(paintArea, profile);
-            
             updateImageGrid();
+
+            pointer = new Graphics.Image(SpriteName.ColorPickerCircle,
+                    paintArea.Center, Engine.Screen.SmallIconSizeV2, ImageLayers.Lay1_Front, true);
+            
+            setControllerMode(bController);
 
             //HUD
             HudLib.Init();
-            menuSystem = new Display.MenuSystem(input,  Display.MenuType.Editor);
+            menuSystem = new Display.MenuSystem(keyboardInput,  Display.MenuType.Editor);
 
-            //HUD.RichBox.RichBoxContent rbContent = new HUD.RichBox.RichBoxContent();
-            //rbContent.add(SpriteName.KeyEsc, DssRef.lang.ProfileEditor_OptionsMenu);
-            //rbContent.add(SpriteName.KeyAlt, "Bucket");
-
-            //new HUD.RichBox.RichBoxGroup(Engine.Screen.SafeArea.Position, Engine.Screen.SafeArea.Width * 0.25f,
-            //    ImageLayers.Background1, HudLib.RbSettings, rbContent);
-            hud = new PaintFlagHud(input, this);
+            hud = new PaintFlagHud(keyboardInput, this);
             setColorType(ProfileColorType.Main);
 
         }
-        
+
+        void setControllerMode(bool value)
+        {
+            controllerMode = value;
+            pointer.Visible = value;
+        }
+
+        public InputMap VisualInput => controllerMode ? controllerInput : keyboardInput;
+
         public override void Time_Update(float time)
         { 
             base.Time_Update(time);
@@ -132,10 +141,124 @@ namespace VikingEngine.DSSWars
         static readonly IntVector2 GridMaxPos = new IntVector2(DssLib.UserHeraldicWidth - 1);
         void updateInput()
         {
+            if (controllerMode)
+            {
+                if (Input.Keyboard.AnyActivationKey_DownEvent())
+                {
+                    setControllerMode(false);
+                    hud.part.refresh();
+                    return;
+                }
+            }
+            else
+            {
+                int p=-1;
+                if (Input.XInput.AnyActivationKey_DownEvent(ref p))
+                {
+                    setControllerMode(true);
+                    hud.part.refresh();
+                    return;
+                }
+            }
+
+            if (keyboardInput.FlagDesign_ToggleColor_Prev.DownEvent || controllerInput.FlagDesign_ToggleColor_Prev.DownEvent_AnyInstance)
+            {
+                nextColorType(false);
+            }
+            else if (keyboardInput.FlagDesign_ToggleColor_Next.DownEvent || controllerInput.FlagDesign_ToggleColor_Next.DownEvent_AnyInstance)
+            {
+                nextColorType(true);
+            }
+
+            if (controllerPickColorState)
+            {
+                if (hud.colorArea.updateControllerInput())
+                {
+                    profile.setColor(selectedColorType, hud.colorArea.getColor());
+                    onColorChange();
+                }
+
+                if (XInput.KeyDownEvent(Buttons.Back) ||
+                    controllerInput.ControllerCancel.DownEvent_AnyInstance ||
+                    controllerInput.Select.DownEvent_AnyInstance ||
+                    controllerInput.Controller_FlagDesign_Colorpicker.DownEvent_AnyInstance)
+                {
+                    controllerPickColorState = false;
+                    hud.part.refresh();
+                }
+            }
+            else
+            {
+                if (controllerInput.Controller_FlagDesign_Colorpicker.DownEvent_AnyInstance)
+                {
+                    controllerPickColorState = true;
+                    hud.part.refresh();
+                }
+
+                foreach (var ins in XInput.controllers)
+                {
+                    if (ins.Connected)
+                    {
+                        if (ins.bLeftStick)
+                        {
+                            pointer.position += 0.4f * paintArea.Width * Ref.DeltaGameTimeSec * ins.JoyStickValue(ThumbStickType.Left).Direction;
+                            pointer.position = paintArea.KeepPointInsideBound_Position(pointer.position);
+                        }
+
+                        if (ins.IsButtonDown(Buttons.A))
+                        {
+                            paintInput(pointer.position, true, false);
+                        }
+                        else if (ins.IsButtonDown(Buttons.X))
+                        {
+                            paintInput(pointer.position, true, true);
+                        }
+                    }
+                }
+
+                //if (controllerInput.Select.DownEvent_AnyInstance)
+                //{
+
+                //}
+
+                if (XInput.KeyDownEvent(Buttons.DPadUp))
+                {
+                    moveOption(IntVector2.FromDir4(Dir4.N));
+                }
+                if (XInput.KeyDownEvent(Buttons.DPadDown))
+                {
+                    moveOption(IntVector2.FromDir4(Dir4.S));
+                }
+                if (XInput.KeyDownEvent(Buttons.DPadLeft))
+                {
+                    moveOption(IntVector2.FromDir4(Dir4.W));
+                }
+                if (XInput.KeyDownEvent(Buttons.DPadRight))
+                {
+                    moveOption(IntVector2.FromDir4(Dir4.E));
+                }
+
+                
+                paintInput(Input.Mouse.Position, 
+                    keyboardInput.Select.IsDown || Input.Mouse.IsButtonDown(MouseButton.Left),
+                    keyboardInput.FlagDesign_PaintBucket.IsDown);
+                   
+                if (XInput.KeyDownEvent(Buttons.Back))
+                {
+                    discardAndExit();
+                }
+                if (XInput.KeyDownEvent(Buttons.Start))
+                {
+                    saveAndExit();
+                }
+            }
+            
+        }
+
+        void paintInput(Vector2 pointer, bool keyIsDown, bool bBucket)
+        {
             if (selectedColorType <= ProfileColorType.Detail2)
             {
-                Vector2 pointer = Input.Mouse.Position;
-
                 bool inPaintArea = paintArea.IntersectPoint(pointer);
                 if (inPaintArea)
                 {
@@ -145,14 +268,35 @@ namespace VikingEngine.DSSWars
                         (int)(paintPos.Y / squareWidth));
                     gridPositionBounds();
 
-                    if (input.Select.IsDown || Input.Mouse.IsButtonDown(MouseButton.Left))
+                    if (keyIsDown)
                     {
-                        setColor(selectedColorType);
+                        setColor(selectedColorType, bBucket);
                     }
                 }
-
             }
         }
+
+        void nextColorType(bool forward)
+        {
+            if (forward)
+            {
+                selectedColorType++;
+                if (selectedColorType >= ProfileColorType.NUM)
+                {
+                    selectedColorType = 0;
+                }
+            }
+            else
+            {
+                selectedColorType--;
+                if (selectedColorType < 0)
+                {
+                    selectedColorType = ProfileColorType.NUM -1;
+                }
+            }
+            hud.part.selectColorType(selectedColorType);
+        }
+
        public void discardAndExit()
         {
             new LobbyState();
@@ -293,9 +437,9 @@ namespace VikingEngine.DSSWars
             gridPosition = Bound.Set(gridPosition, IntVector2.Zero, GridMaxPos);
         }
 
-        void setColor(ProfileColorType color)
+        void setColor(ProfileColorType color, bool bBucket)
         {
-            if (Input.Keyboard.Alt)
+            if (bBucket)
             {
                 byte prev = file.dataGrid.Get(gridPosition);
                 if (prev != (byte)color)
