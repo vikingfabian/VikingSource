@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.Display.Translation
 {
-    class English : AbsLanguage
+    partial class English : AbsLanguage
     {
         /// <summary>
         /// Name of this language
@@ -256,7 +256,11 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Ingame display. Soldiers protecting a building.
         /// </summary>
-        public override string Hud_GuardCount => "Guard count: {0}";
+        public override string Hud_GuardCount => "Group count";
+
+        public override string Hud_SoldierCount => "Soldier count";
+
+        public override string Hud_SoldierGroupsCount => "Guard count: {0}";
 
         /// <summary>
         /// Ingame display. Unit caculated battle strength.
@@ -593,6 +597,15 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string EndGameStatistics_ServantFactions => "Diplomatic servants: {0}";
 
+        /// <summary>
+        /// Collective unit type on the map. Army of soldiers.
+        /// </summary>
+        public override string UnitType_Army => "Army";
+        
+        /// <summary>
+        /// Collective unit type on the map. Common name for village or city.
+        /// </summary>
+        public override string UnitType_City => "City";
 
         /// <summary>
         /// Name for a specialized type of soldier. Standard front line soldier.
@@ -625,53 +638,53 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string UnitType_Pikeman=> "Pikeman";
 
         /// <summary>
-        /// Name for a specialized type of soldier.
+        /// Name for a specialized type of soldier. Armored cavalry unit.
         /// </summary>
         public override string UnitType_Knight=> "Knight";
 
         /// <summary>
-        /// Name for a specialized type of soldier.
+        /// Name for a specialized type of soldier. Bow and arrow.
         /// </summary>
         public override string UnitType_Archer=> "Archer";
 
         /// <summary>
-        /// Name for a specialized type of soldier.
+        /// Name for a specialized type of soldier. 
         /// </summary>
         public override string UnitType_CrossBow=> "CrossBow";
 
         /// <summary>
-        /// Name for a specialized type of soldier.
+        /// Name for a specialized type of soldier. Warmashine that slings large spears.
         /// </summary>
         public override string UnitType_Ballista=> "Ballista";
 
         /// <summary>
-        /// Name for a specialized type of soldier.
+        /// Name for a specialized type of soldier. A fantasy troll wearing a cannon.
         /// </summary>
         public override string UnitType_Trollcannon=> "Troll cannon";
 
         /// <summary>
-        /// Name for a specialized type of soldier.
+        /// Name for a specialized type of soldier. Soldier from the forest.
         /// </summary>
         public override string UnitType_GreenSoldier=> "Green soldier";
 
         /// <summary>
-        /// Name for a specialized type of soldier.
+        /// Name for a specialized type of soldier. Naval unit from the north.
         /// </summary>
         public override string UnitType_Viking=> "Viking";
 
         /// <summary>
-        /// Name for a specialized type of soldier.
+        /// Name for a specialized type of soldier. The evil master boss.
         /// </summary>
         public override string UnitType_DarkLord=> "Dark Lord";
 
         /// <summary>
-        /// Name for a specialized type of soldier.
+        /// Name for a specialized type of soldier. Soldier that carries a large flag.
         /// </summary>
         public override string UnitType_BannerMan=> "Bannerman";
 
         /// <summary>
-        /// Name for a military unit.
+        /// Name for a military unit. Soldier carrying ship. 0: unit type it carries
         /// </summary>
-        public override string UnitType_Warship=> "Warship";
+        public override string UnitType_WarshipWithUnit=> "{0} warship";
     }
 }

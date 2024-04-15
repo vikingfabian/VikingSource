@@ -150,10 +150,10 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 if (args.gui.menuState.Count == 0)
                 {
-                    args.content.icontext(SpriteName.WarsGroupIcon, "Group count: " + groups.Count);
-                    args.content.icontext(SpriteName.WarsSoldierIcon,"Total count: " + TextLib.LargeNumber(count));
-                    args.content.icontext(SpriteName.WarsStrengthIcon,"Strength rating: " + string.Format(HudLib.OneDecimalFormat, strengthValue));
-                    args.content.icontext(SpriteName.rtsUpkeepTime,"Upkeep: " + TextLib.LargeNumber(upkeep));
+                    args.content.icontext(SpriteName.WarsGroupIcon, DssRef.lang.Hud_SoldierGroupsCount + ": " + groups.Count);
+                    args.content.icontext(SpriteName.WarsSoldierIcon,DssRef.lang.Hud_SoldierCount + ": " + TextLib.LargeNumber(count));
+                    args.content.icontext(SpriteName.WarsStrengthIcon,DssRef.lang.Hud_StrengthRating + ": " + string.Format(HudLib.OneDecimalFormat, strengthValue));
+                    args.content.icontext(SpriteName.rtsUpkeepTime,DssRef.lang.Hud_Upkeep + ": " + TextLib.LargeNumber(upkeep));
                     if (PlatformSettings.DevBuild)
                     {
                         args.content.text("Id: " + id.ToString());
@@ -836,7 +836,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string ToString()
         {
-            return "Army" + parentArrayIndex.ToString() + ", " + faction.ToString();
+            return DssRef.lang.UnitType_Army + parentArrayIndex.ToString() + ", " + faction.ToString();
         }
 
         public bool Is(int index, int faction)

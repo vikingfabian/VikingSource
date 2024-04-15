@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.Display.Translation
 {
-    abstract class AbsLanguage
+    abstract partial class AbsLanguage
     {
         public abstract string MyLanguage { get; }
 
@@ -76,6 +76,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string Hud_WorkForce { get; }
 
         public abstract string Hud_GuardCount { get; }
+
+        public abstract string Hud_SoldierCount { get; }
+
+        public abstract string Hud_SoldierGroupsCount { get; }
 
         public abstract string Hud_StrengthRating { get; }
 
@@ -175,6 +179,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string EndGameStatistics_ServantFactions { get; }
 
 
+        public abstract string UnitType_Army { get; }
+        public abstract string UnitType_City { get; }
+
         public abstract string UnitType_Soldier { get; }
         public abstract string UnitType_Sailor { get; }
         public abstract string UnitType_Folkman { get; }
@@ -190,7 +197,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string UnitType_Viking { get; }
         public abstract string UnitType_DarkLord { get; }
         public abstract string UnitType_BannerMan { get; }
-        public abstract string UnitType_Warship { get; }
+        public abstract string UnitType_WarshipWithUnit { get; }
 
 
         //public abstract string ArmyOption_Halt { get; }

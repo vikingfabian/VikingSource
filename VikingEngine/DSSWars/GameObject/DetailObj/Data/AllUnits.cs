@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using System.Text;
 using VikingEngine.DSSWars.GameObject.DetailObj.Soldiers;
 using VikingEngine.LootFest;
@@ -113,6 +114,91 @@ namespace VikingEngine.DSSWars.GameObject
 
             return soldier;
         }
+
+        public string Name(UnitType type)
+        {
+            switch (type)
+            {
+                case UnitType.Soldier:
+                    return DssRef.lang.UnitType_Soldier;
+
+                case UnitType.Sailor:
+                    return DssRef.lang.UnitType_Sailor;
+
+                case UnitType.Folkman:
+                    return DssRef.lang.UnitType_Folkman;
+
+                case UnitType.Spearman:
+                    return DssRef.lang.UnitType_Spearman;
+
+                case UnitType.HonorGuard:
+                    return DssRef.lang.UnitType_HonorGuard;
+
+                case UnitType.Pikeman:
+                    return DssRef.lang.UnitType_Pikeman;
+
+                case UnitType.Knight:
+                    return DssRef.lang.UnitType_Knight;
+
+                case UnitType.Archer:
+                    return DssRef.lang.UnitType_Archer;
+
+                case UnitType.CrossBow:
+                    return DssRef.lang.UnitType_CrossBow;
+
+                case UnitType.Ballista:
+                    return DssRef.lang.UnitType_Ballista;
+
+                case UnitType.Trollcannon:
+                    return DssRef.lang.UnitType_Trollcannon;
+
+                case UnitType.GreenSoldier:
+                    return DssRef.lang.UnitType_GreenSoldier;
+
+                case UnitType.Viking:
+                    return DssRef.lang.UnitType_Viking;
+
+                case UnitType.DarkLord:
+                    return DssRef.lang.UnitType_DarkLord;
+
+                case UnitType.BannerMan:
+                    return DssRef.lang.UnitType_BannerMan;
+
+                // Warship cases
+                case UnitType.SoldierWarship:
+                    return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Soldier);
+
+                case UnitType.SailorWarship:
+                    return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Sailor);
+
+                case UnitType.HonorGuardWarship:
+                    return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_HonorGuard);
+
+                case UnitType.PikemanWarship:
+                    return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Pikeman);
+
+                case UnitType.ArcherWarship:
+                    return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Archer);
+
+                case UnitType.CrossbowWarship:
+                    return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_CrossBow);
+
+                case UnitType.BallistaWarship:
+                    return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Ballista);
+
+                case UnitType.TrollcannonWarship:
+                    return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Trollcannon);
+
+                case UnitType.VikingWarship:
+                    return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Viking);
+
+                case UnitType.DarkLordWarship:
+                    return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_DarkLord);
+
+                default:
+                    return "Unknown Unit Type";
+            }
+        }
     }
 
     enum UnitType
@@ -160,52 +246,7 @@ namespace VikingEngine.DSSWars.GameObject
         DarkLordWarship = 30,
 
 
-
-
-
-
         NUM = 35,
-        //LongSword = 1,
-        //SpearMan = 2,
-        //Farmer = 3,
-        //FarmerPig = 4,
-        //Knight = 5,
-        //TankDude = 6,
-        //Viking = 7,
-        //Archer = 8,
-        //CrossBow = 9,
-        //Slinger = 10,
-        //Javeliner = 11,
-        //Scout = 12,
-        //Healer = 13,
-        //Dog = 14,
-        //Ballista = 15,
-        //BombCatapult = 16,
-        //RocketLauncher = 17,
-        //BatteringRam = 18,
-        //Tower = 19,
-        //Mill = 20,
-        //Wall = 21,
-        //WallGate = 22,
-
-        //SpartanSpearman = 23,
-        //SpartanSword = 24,
-        //SpartanKing = 25,
-
-        //ArcadeSword = 26,
-        //ArcadeArcher = 27,
-
-        //PersianSoldier = 28,
-        //PersianArcher = 29,
-        //PersianKingsGuard = 30,
-        //PersianMagician = 31,
-        //PersianOgre = 32,
-        //PersianBarbarians = 33,
-
-        //Leader = 36,
-        //BannerMan = 37,
-
-
-        //NUM_NON = 36,
+       
     }
 }
