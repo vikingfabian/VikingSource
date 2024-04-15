@@ -84,6 +84,32 @@ namespace VikingEngine.Input
             return false;
         }
 
+        static public bool AnyActivationKey_DownEvent(ref int player)
+        {
+            for (int i = 0; i < controllers.Count; i++)
+            {
+                if (controllers[i].KeyDownEvent(Buttons.A, Buttons.X, Buttons.Start))
+                {
+                    player = Instance(i).Index;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        static public bool KeyIsDown(Buttons button, ref int player)
+        {
+            for (int i = 0; i < controllers.Count; i++)
+            {
+                if (controllers[i].IsButtonDown(button))
+                {
+                    player = Instance(i).Index;
+                    return true;
+                }
+            }
+            return false;
+        }
+
         static public bool KeyDownEvent_index(Buttons button, out int index)
         {
             for (int i = 0; i < controllers.Count; i++)

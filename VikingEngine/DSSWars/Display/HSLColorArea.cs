@@ -69,6 +69,8 @@ namespace VikingEngine.DSSWars.Display
             }
         }
 
+        
+
         public Color getColor()
         {
             return lib.HSL2RGB(hsl.X, hsl.Y, hsl.Z);
@@ -78,22 +80,65 @@ namespace VikingEngine.DSSWars.Display
         {
             if (huePick.updateInput())
             {
-                hsl.X = huePick.percPosition.X;
-                hsl.Y = 1- huePick.percPosition.Y;
-
-                updatePreview(true, huePick.PointerPos);
+                onHueChange();
                 return true;
             }
             if (darkPick.updateInput())
             {
-                hsl.Z = darkPick.percPosition.X;
-                updatePreview(true, darkPick.PointerPos);
+                onLightChange();
 
                 return true;
             }
             updatePreview(false, Vector2.Zero);
 
             return false;
+        }
+
+        
+
+        public bool updateControllerInput()
+        {
+            bool bInput = false;
+            foreach (var c in Input.XInput.controllers)
+            {
+                if (c.Connected)
+                {
+                    Vector2 hue = c.JoyStickValue(ThumbStickType.Left).Direction;
+                    Vector2 light = c.JoyStickValue(ThumbStickType.Right).Direction;
+                    light.Y = 0;
+
+                    if (VectorExt.HasValue(hue))
+                    {
+                        huePick.updateControllerInput(hue);
+                        onHueChange();
+                        bInput = true;
+                    }
+
+                    if (VectorExt.HasValue(light))
+                    {
+                        darkPick.updateControllerInput(light);
+                        onLightChange();
+
+                        bInput = true;
+                    }
+                }
+            }
+
+            return bInput;
+        }
+
+        private void onLightChange()
+        {
+            hsl.Z = darkPick.percPosition.X;
+            updatePreview(true, darkPick.PointerPos);
+        }
+
+        private void onHueChange()
+        {
+            hsl.X = huePick.percPosition.X;
+            hsl.Y = 1 - huePick.percPosition.Y;
+
+            updatePreview(true, huePick.PointerPos);
         }
 
         class ColorPickArea
@@ -144,6 +189,19 @@ namespace VikingEngine.DSSWars.Display
                 }
 
                 return keyDown;
+            }
+
+            public void updateControllerInput(Vector2 input)
+            {
+                if (input != Vector2.Zero)
+                {
+                    input =input * Ref.DeltaTimeSec * 1f;
+
+                    percPosition.X = Bound.Set(percPosition.X + input.X, 0, 1f);
+                    percPosition.Y = Bound.Set(percPosition.Y + input.Y, 0, 1f);
+
+                    SetPercPosition(percPosition);
+                }
             }
 
             public void SetPercPosition(Vector2 pos)
