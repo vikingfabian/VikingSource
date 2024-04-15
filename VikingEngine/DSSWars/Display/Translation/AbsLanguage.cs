@@ -175,5 +175,35 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string EndGameStatistics_ServantFactions { get; }
 
 
+        public abstract string UnitType_Soldier { get; }
+        public abstract string UnitType_Sailor { get; }
+        public abstract string UnitType_Folkman { get; }
+        public abstract string UnitType_Spearman { get; }
+        public abstract string UnitType_HonorGuard { get; }
+        public abstract string UnitType_Pikeman { get; }
+        public abstract string UnitType_Knight { get; }
+        public abstract string UnitType_Archer { get; }
+        public abstract string UnitType_CrossBow { get; }
+        public abstract string UnitType_Ballista { get; }
+        public abstract string UnitType_Trollcannon { get; }
+        public abstract string UnitType_GreenSoldier { get; }
+        public abstract string UnitType_Viking { get; }
+        public abstract string UnitType_DarkLord { get; }
+        public abstract string UnitType_BannerMan { get; }
+        public abstract string UnitType_Warship { get; }
+
+
+        //public abstract string ArmyOption_Halt { get; }
+        //public abstract string ArmyOption_Disband { get; }
+
+        //public abstract string ArmyOption_SendTo{ get; }
+        //public abstract string ArmyOption_Divide { get; }
+
+        //public abstract string ArmyOption_DivideDescription { get; }
+
+        //public abstract string ArmyOption_RemoveGroups { get; }
+        //public abstract string ArmyOption_DisbandAll { get; }
+
+        //public abstract string ArmyOption_Merge { get; }
     }
 }

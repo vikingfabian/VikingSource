@@ -339,5 +339,88 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// Stats that are shown on the end game screen. Servants made through diplomacy. Servants cities and armies become yours.
         /// </summary>
         public override string EndGameStatistics_ServantFactions => "Diplomatic servants: {0}";
+
+
+
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_Soldier => "";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_Sailor => "";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_Folkman => "";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_Spearman => "";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_HonorGuard => "";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_Pikeman => "";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_Knight => "";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_Archer => "";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_CrossBow => "";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_Ballista => "";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_Trollcannon => "";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_GreenSoldier => "";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_Viking => "";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_DarkLord => "";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_BannerMan => "";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_Warship => "";
     }
 }
