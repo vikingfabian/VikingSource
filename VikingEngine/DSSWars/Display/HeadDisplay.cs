@@ -61,7 +61,7 @@ namespace VikingEngine.DSSWars.Display
             {
                 content.Add(new RichBoxImage(SpriteName.rtsMoney));
                 content.space();
-                content.Add(new RichBoxText("Gold: " + TextLib.LargeNumber(faction.gold), negativeRed(faction.gold)));
+                content.Add(new RichBoxText(DssRef.lang.ResourceType_Gold + ": " + TextLib.LargeNumber(faction.gold), negativeRed(faction.gold)));
                 content.Add(new RichBoxNewLine());
             }
 
@@ -82,7 +82,7 @@ namespace VikingEngine.DSSWars.Display
                     content.Add(new RichboxButton(new List<AbsRichBoxMember>
                     {
                         new RichBoxImage(player.input.PauseGame.Icon),
-                        new RichBoxText(Ref.isPaused? "Resume" : "Pause"),
+                        new RichBoxText(Ref.isPaused? DssRef.lang.Input_ResumePaused : DssRef.lang.Input_Pause),
                     },
                         new RbAction(DssRef.state.pauseAction),
                         null));
@@ -117,10 +117,10 @@ namespace VikingEngine.DSSWars.Display
                     {
                         gold();
 
-                        const string TotalIncomeText = "Total income/second: ";
+                        //const string TotalIncomeText = "Total income/second: ";
                         content.Add(new RichBoxImage(SpriteName.rtsIncomeTime));
                         content.space();
-                        content.Add(new RichBoxText(TotalIncomeText + TextLib.LargeNumber(faction.NetIncome()),
+                        content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(faction.NetIncome())),
                                 negativeRed(faction.NetIncome())));
                         content.newLine();
                     }
@@ -136,7 +136,7 @@ namespace VikingEngine.DSSWars.Display
                     }
                     else
                     {
-                        string gameSpeed = "Game speed: " + Ref.GameTimeSpeed.ToString() + "x";
+                        string gameSpeed = string.Format(DssRef.lang.Hud_GameSpeed, Ref.GameTimeSpeed);//"Game speed: " + Ref.GameTimeSpeed.ToString() + "x";
 
                         if (DssRef.state.IsSinglePlayer())
                         {
@@ -146,7 +146,7 @@ namespace VikingEngine.DSSWars.Display
                                 for (int i = 0; i < DssLib.GameSpeedOptions.Length; i++)
                                 {
                                     content.Add(new RichboxButton(
-                                        new List<AbsRichBoxMember> { new RichBoxText("x" + DssLib.GameSpeedOptions[i].ToString()) },
+                                        new List<AbsRichBoxMember> { new RichBoxText(string.Format( DssRef.lang.Hud_XTimes, DssLib.GameSpeedOptions[i])) },
                                         new RbAction1Arg<int>(gameSpeedClick, DssLib.GameSpeedOptions[i]), null, true));
                                     content.space();
                                 }
@@ -167,12 +167,12 @@ namespace VikingEngine.DSSWars.Display
                         content.Add(new RichBoxNewLine());
                         content.Add(new RichBoxImage(SpriteName.rtsIncomeTime));
                         content.space();
-                        content.Add(new RichBoxText("Workforce Income: " + TextLib.LargeNumber(faction.cityIncome)));
+                        content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(faction.cityIncome))));
 
                         content.Add(new RichBoxNewLine());
                         content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
                         content.space();
-                        content.Add(new RichBoxText("Army upkeep: " + TextLib.LargeNumber(faction.armyUpkeep)));
+                        content.Add(new RichBoxText(string.Format( DssRef.lang.Hud_ArmyUpkeep, TextLib.LargeNumber(faction.armyUpkeep))));
 
                         content.newLine();
                         var automationButton = new HUD.RichBox.RichboxButton(
@@ -180,37 +180,37 @@ namespace VikingEngine.DSSWars.Display
                             {
                                 new RichBoxImage(player.input.AutomationSetting.Icon),
                                 new RichBoxImage(SpriteName.MenuPixelIconSettings),
-                                new HUD.RichBox.RichBoxText("Automation"),
+                                new HUD.RichBox.RichBoxText(DssRef.lang.Automation_Title),
                             },
                             new RbAction1Arg<string>(player.hud.displays.SetMenuState, AutomationMenuState, SoundLib.menu),
                             null);
                         content.Add(automationButton);
                         //content.Button(SpriteName.MenuPixelIconSettings, "Automation", new RbAction(DssRef.state.exit), null, true);
 
-                        string diplomacy = "Diplomatic points: {0}/{1}({2})";
-                        content.icontext(SpriteName.WarsDiplomaticPoint, string.Format(diplomacy, player.diplomaticPoints.Int(), player.diplomaticPoints_softMax, player.diplomaticPoints.max));
-                        string command = "Command points: {0}";
-                        content.icontext(SpriteName.WarsCommandPoint, string.Format(command, player.commandPoints.ToString()));
+                        //string diplomacy = "Diplomatic points: {0}/{1}({2})";
+                        content.icontext(SpriteName.WarsDiplomaticPoint, string.Format(DssRef.lang.ResourceType_DiplomacyPoints_WithSoftAndHardLimit, player.diplomaticPoints.Int(), player.diplomaticPoints_softMax, player.diplomaticPoints.max));
+                        //string command = "Command points: {0}";
+                        //content.icontext(SpriteName.WarsCommandPoint, string.Format(command, player.commandPoints.ToString()));
 
                         content.Add(new RichBoxNewLine(true));
 
                         if (player.hud.detailLevel == HudDetailLevel.Extended)
                         {
-                            content.text("City count: " + TextLib.LargeNumber(faction.cities.Count));
-                            content.text("Army count: " + TextLib.LargeNumber(faction.armies.Count));
+                            content.text(string.Format(DssRef.lang.Hud_CityCount,TextLib.LargeNumber(faction.cities.Count)));
+                            content.text(string.Format(DssRef.lang.Hud_ArmyCount, TextLib.LargeNumber(faction.armies.Count)));
 
-                            content.ButtonDescription(player.input.NextCity, "Next city");
-                            content.ButtonDescription(player.input.NextArmy, "Next army");
-                            content.ButtonDescription(player.input.NextBattle, "Next battle");
+                            content.ButtonDescription(player.input.NextCity, DssRef.lang.Input_NextCity);
+                            content.ButtonDescription(player.input.NextArmy, DssRef.lang.Input_NextArmy);
+                            content.ButtonDescription(player.input.NextBattle, DssRef.lang.Input_NextBattle);
 
 
                             content.newParagraph();
                         }
 
-                        if (Ref.isPaused && player.IsLocalHost())
-                        {
-                            content.Button("Exit game", new RbAction(DssRef.state.exit), null, true);
-                        }
+                        //if (Ref.isPaused && player.IsLocalHost())
+                        //{
+                        //    content.Button("Exit game", new RbAction(DssRef.state.exit), null, true);
+                        //}
                         content.newLine();
                         toggleMenu();
                     }

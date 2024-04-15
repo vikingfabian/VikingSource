@@ -16,58 +16,58 @@ namespace VikingEngine.DSSWars.Display
         {
             this.player = player;
             this.group = group;
-            var typeData = DssRef.unitsdata.Get(group.type);
+            //var typeData = DssRef.unitsdata.Get(group.type);
 
-            bool hasCommand = player.commandPoints.Int() >= 1;
+            //bool hasCommand = player.commandPoints.Int() >= 1;
 
-            if (typeData.Command_Javelin)
-            {
-                content.Add(new RichboxButton(
-                    new List<AbsRichBoxMember>
-                    {
-                        new HUD.RichBox.RichBoxText("Javelin throw"),
-                    },
-                    new RbAction(JavelinCommand, SoundLib.menuBuy),
-                    new RbAction(JavelinCommandTooltip),
-                    hasCommand));
-            }
+            //if (typeData.Command_Javelin)
+            //{
+            //    content.Add(new RichboxButton(
+            //        new List<AbsRichBoxMember>
+            //        {
+            //            new HUD.RichBox.RichBoxText("Javelin throw"),
+            //        },
+            //        new RbAction(JavelinCommand, SoundLib.menuBuy),
+            //        new RbAction(JavelinCommandTooltip),
+            //        hasCommand));
+            //}
         }
 
-        void JavelinCommand()
-        {
-            if (player.commandPoints.pay(1, false))
-            {
-                var soldiersC = group.soldiers.counter();
+        //void JavelinCommand()
+        //{
+        //    if (player.commandPoints.pay(1, false))
+        //    {
+        //        var soldiersC = group.soldiers.counter();
 
-                while (soldiersC.Next())
-                {
-                    soldiersC.sel.bonusProjectiles += 1;
-                }
-                player.hud.needRefresh = true;
-            }
-        }
+        //        while (soldiersC.Next())
+        //        {
+        //            soldiersC.sel.bonusProjectiles += 1;
+        //        }
+        //        player.hud.needRefresh = true;
+        //    }
+        //}
 
-        void JavelinCommandTooltip()
-        {
-            RichBoxContent content = beginCommandTooltip();
+        //void JavelinCommandTooltip()
+        //{
+        //    RichBoxContent content = beginCommandTooltip();
 
-            content.text("Javelins on their next attack.");
-            content.text("No time limit.");
+        //    content.text("Javelins on their next attack.");
+        //    content.text("No time limit.");
 
-            player.hud.tooltip.create(player, content, true);
-        }
+        //    player.hud.tooltip.create(player, content, true);
+        //}
 
-        RichBoxContent beginCommandTooltip()
-        {
-            RichBoxContent content = new RichBoxContent();
-            content.h1("Command");
-            content.h2("Cost");
-            HudLib.ResourceCost(content, SpriteName.WarsCommandSub,"Command points", 1, player.commandPoints.Int());
-            content.newLine();
-            content.h2("Gain");
+        //RichBoxContent beginCommandTooltip()
+        //{
+        //    RichBoxContent content = new RichBoxContent();
+        //    content.h1("Command");
+        //    content.h2("Cost");
+        //    HudLib.ResourceCost(content, SpriteName.WarsCommandSub,"Command points", 1, player.commandPoints.Int());
+        //    content.newLine();
+        //    content.h2("Gain");
 
-            return content;
-        }
+        //    return content;
+        //}
     }
 
    

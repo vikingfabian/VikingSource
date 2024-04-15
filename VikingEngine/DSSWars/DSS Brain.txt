@@ -1,12 +1,8 @@
 ﻿Change Log
 * Improved camera culling
-* 
+* Removed soldier Command and Command points
+* Flag painter controller support
 
-! How to restore your lost flag designs: 
-C:\Users\name\Documents\My Games\LootfestWars
-remove DSS_gameoptions (if there is one)
-rename DSS_profiles to DSS_gameoptions
-start game, go into flag design and "save & exit" on each flag you want to keep
 
 Error
 -strid fastnar vid peace
@@ -19,13 +15,10 @@ Retreat system
 -reassemble av flydd arme
 
 Polish
--seperata sparfiler
--game credits
 
 -armeer ska visa ifall de strider på hud
 -attack warning -Battle notification
 -diplomacy toggle
--end credits
 //-omplacera workforce hud
 -AI sök fiende armeer som passerar
 //-battlegrid: would it be possible to just not let units move into a water tile if it is a land battle?
@@ -43,7 +36,6 @@ Art
 
 Steam Launch Roadmap
 -Localization to 8 languages
--Full controller support
 -Polish the turd
 .             
 -(maybe) Battle retreat system 

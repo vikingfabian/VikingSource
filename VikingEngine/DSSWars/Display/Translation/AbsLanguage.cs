@@ -66,36 +66,75 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string ProfileEditor_Hue { get; }
         public abstract string ProfileEditor_Lightness { get; }
         public abstract string ProfileEditor_NextColorType { get; }
+
        
 
-
+        public abstract string Hud_GameSpeed { get; }
         public abstract string Hud_TotalIncome { get; }
 
         public abstract string Hud_Upkeep { get; }
 
-        public abstract string Hud_WorkForce { get; }
+        public abstract string Hud_ArmyUpkeep { get; }
+
+        //public abstract string Hud_WorkForce { get; }
 
         public abstract string Hud_GuardCount { get; }
+
+        public abstract string Hud_IncreaseMaxGuardCount { get; }
+
+        public abstract string Hud_GuardCount_MustExpandCityMessage { get; }
 
         public abstract string Hud_SoldierCount { get; }
 
         public abstract string Hud_SoldierGroupsCount { get; }
 
+
         public abstract string Hud_StrengthRating { get; }
 
         public abstract string Hud_Immigrants { get; }
 
+        public abstract string Hud_CityCount { get; }
+        public abstract string Hud_ArmyCount { get; }
+
         public abstract string Hud_Cancel { get; }
 
         public abstract string Hud_Back { get; }
-
+        public abstract string Hud_AreYouSure { get; }
+        public abstract string Hud_Yes { get; }
+        public abstract string Hud_XTimes { get; }
 
         public abstract string Hud_PurchaseTitle_Requirement { get; }
         public abstract string Hud_PurchaseTitle_Cost { get; }
         public abstract string Hud_PurchaseTitle_Gain { get; }
+       
+        public abstract string Hud_Purchase_ResourceCostOfAvailable { get; }
+
+        public abstract string Hud_Purchase_CostWillIncreaseByX { get; }
+
+        public abstract string Hud_Purchase_MaxCapasity { get; }
+
         public abstract string Hud_CompareMilitaryStrength_YourToOther { get; }
 
+        public abstract string Input_NextCity { get; }
+        public abstract string Input_NextArmy { get; }
+        public abstract string Input_NextBattle { get; }
+
+        public abstract string Input_Pause { get; }
+        public abstract string Input_ResumePaused { get; }
+
+        public abstract string ResourceType_Gold { get; }
+        public abstract string ResourceType_Workers { get; }
+        public abstract string ResourceType_Workers_Description { get; }
+        public abstract string ResourceType_DiplomacyPoints { get; }
+        public abstract string ResourceType_DiplomacyPoints_WithSoftAndHardLimit { get; }
+
         public abstract string Building_NobelHouse { get; }
+        public abstract string Building_NobelHouse_DiplomacyPointsAdd { get; }
+        public abstract string Building_NobelHouse_DiplomacyPointsLimit { get; }
+        public abstract string Building_NobelHouse_UnlocksKnight { get; }
+
+        public abstract string Building_BuildAction { get; }
+        public abstract string Building_IsBuilt { get; }
 
         public abstract string Building_DarkFactory { get; }
 
@@ -114,12 +153,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string Automation_InfoLine_Priority { get; }
         public abstract string Automation_InfoLine_PurchaseSpeed { get; }
 
-
-        public abstract string HudAction_Recruit { get; }
-        public abstract string HudAction_ExpandWorkForce { get; }
         public abstract string HudAction_BuyItem { get; }
 
-        public abstract string DiplomacyPoints { get; }
+        
         public abstract string Diplomacy_RelationType { get; }
         public abstract string Diplomacy_RelationType_Servant { get; }
         public abstract string Diplomacy_RelationType_Ally { get; }
@@ -164,6 +200,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string Diplomacy_ServantPriceWillRaise { get; }
         public abstract string Diplomacy_ServantGainAbsorbFaction { get; }
 
+        public abstract string EndGameStatistics_Title { get; }
         public abstract string EndGameStatistics_Time { get; }
         public abstract string EndGameStatistics_SoldiersRecruited { get; }
         public abstract string EndGameStatistics_FriendlySoldiersLost { get; }
@@ -199,18 +236,57 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string UnitType_BannerMan { get; }
         public abstract string UnitType_WarshipWithUnit { get; }
 
+        public abstract string SoldierStats_Title { get; }
+        public abstract string SoldierStats_GroupCountAndSoldierCount { get; }
+        public abstract string SoldierStats_AttackStrengthLandSeaCity { get; }
+        public abstract string SoldierStats_Health { get; }
 
-        //public abstract string ArmyOption_Halt { get; }
-        //public abstract string ArmyOption_Disband { get; }
+        public abstract string SoldierStats_SpeedBonusLand { get; }
+        public abstract string SoldierStats_SpeedBonusSea { get; }
 
-        //public abstract string ArmyOption_SendTo{ get; }
-        //public abstract string ArmyOption_Divide { get; }
+        public abstract string ArmyOption_Halt { get; }
+        public abstract string ArmyOption_Disband { get; }
+        public abstract string ArmyOption_Divide { get; }
+        public abstract string ArmyOption_RemoveX { get; }
+        public abstract string ArmyOption_DisbandAll { get; }
+        public abstract string ArmyOption_XGroupsOfType { get; }
+        public abstract string ArmyOption_SendToX { get; }
+        public abstract string ArmyOption_SendToNewArmy { get; }
+        public abstract string ArmyOption_SendX { get; }
+        public abstract string ArmyOption_SendAll { get; }
+        public abstract string ArmyOption_SplitHalf { get; }
+        public abstract string ArmyOption_MergeArmies { get; }
 
-        //public abstract string ArmyOption_DivideDescription { get; }
 
-        //public abstract string ArmyOption_RemoveGroups { get; }
-        //public abstract string ArmyOption_DisbandAll { get; }
+        public abstract string CityOption_Recruit { get; }
+        public abstract string CityOption_RecruitType { get; }
+        public abstract string CityOption_XMercenaries { get; }
+        public abstract string CityOption_BuyXMercenaries { get; }
 
-        //public abstract string ArmyOption_Merge { get; }
+        public abstract string CityOption_Mercenaries_Description { get; }
+        public abstract string CityOption_ExpandWorkForce { get; }
+        public abstract string CityOption_ExpandWorkForce_IncreaseMax { get; }
+
+        public abstract string CityOption_ExpandGuardSize { get; }
+        
+        public abstract string EndScreen_VictoryTitle { get; }
+
+        public abstract List<string> EndScreen_VictoryQoutes { get; }
+
+        public abstract string EndScreen_FailTitle { get; }
+
+        public abstract List<string> EndScreen_FailureQoutes { get; }
+
+        public abstract string EndScreen_WatchEpilouge { get; }
+
+        public abstract string EndScreen_Epilouge_Title { get; }
+        public abstract string EndScreen_Epilouge_Text { get; }
+
+
+        public abstract string GameMenu_Title { get; }
+        public abstract string GameMenu_ContinueGame { get; }
+        public abstract string GameMenu_Resume { get; }
+
+        public abstract string GameMenu_ExitGame { get; }
     }
 }

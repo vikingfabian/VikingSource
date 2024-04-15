@@ -33,14 +33,14 @@ namespace VikingEngine.DSSWars.Display
                 status = new ArmyStatus();
             }
 
-            content.h2("Recruit soldier groups");
+            content.h2(DssRef.lang.CityOption_Recruit);
             foreach (var opt in city.cityPurchaseOptions)
             {
                 if (opt.available)
                 {
                     content.newLine();
 
-                    string recruitText = "Recruit " + opt.unitType.ToString();
+                    string recruitText = string.Format(DssRef.lang.CityOption_RecruitType, DssRef.unitsdata.Name( opt.unitType));
                     string count = status.typeCount[(int)opt.unitType].ToString();
                     AbsSoldierData typeData = DssRef.unitsdata.Get(opt.unitType);
 
@@ -58,14 +58,9 @@ namespace VikingEngine.DSSWars.Display
                         new RbAction2Arg<CityPurchaseOption, int>(buySoldiersTip, opt, 1),
                         canBuySoldiers(opt.unitType, 1)));
 
-                    //content.Button(recruitText,
-                    //    new RbAction2Arg<UnitType, int>(city.buySoldiersAction, opt.unitType, 1, SoundLib.menuBuy),
-                    //    new RbAction2Arg<CityPurchaseOption, int>(buySoldiersTip, opt, 1),
-                    //    canBuySoldiers(opt.unitType, 1));
-
                     content.Add(new RichBoxSpace());
 
-                    content.Button("x5",
+                    content.Button(string.Format(DssRef.lang.Hud_XTimes, 5),//"x5",
                         new RbAction2Arg<UnitType, int>(city.buySoldiersAction, opt.unitType, 5, SoundLib.menuBuy),
                         new RbAction2Arg<CityPurchaseOption, int>(buySoldiersTip, opt, 5),
                         canBuySoldiers(opt.unitType, 5));
@@ -75,15 +70,15 @@ namespace VikingEngine.DSSWars.Display
 
             content.newLine();
 
-            content.icontext(SpriteName.WarsSoldierIcon, "Mercenaries: " + TextLib.LargeNumber(city.mercenaries));
+            content.icontext(SpriteName.WarsSoldierIcon, string.Format(DssRef.lang.CityOption_RecruitType, TextLib.LargeNumber(city.mercenaries)));
 
             content.newLine();
 
-            string importMecenariesText = "Import {0} mercenaries";
+            //string importMecenariesText = "Import {0} mercenaries";
 
             content.Add(new RichboxButton(new List<AbsRichBoxMember>{
                     new RichBoxImage(SpriteName.WarsSoldierIcon),
-                    new RichBoxText( string.Format(importMecenariesText, DssLib.MercenaryPurchaseCount)),
+                    new RichBoxText( string.Format(DssRef.lang.CityOption_BuyXMercenaries, DssLib.MercenaryPurchaseCount)),
                 },
                new RbAction1Arg<int>(buyMercenaryAction, 1, SoundLib.menuBuy),
                new RbAction1Arg<int>(buyMercenaryToolTip, 1),
@@ -100,7 +95,7 @@ namespace VikingEngine.DSSWars.Display
 
             content.Add(new RichboxButton(new List<AbsRichBoxMember>{
                     new RichBoxImage(SpriteName.WarsWorkerAdd),
-                    new RichBoxText( "Expand city"),
+                    new RichBoxText(DssRef.lang.CityOption_ExpandWorkForce),
                 },
                 new RbAction1Arg<int>(buyWorkforceAction, 1, SoundLib.menuBuy),
                 new RbAction1Arg<int>(buyWorkforceToolTip, 1),
@@ -112,7 +107,7 @@ namespace VikingEngine.DSSWars.Display
                 int count = 1;
                 content.Add(new RichboxButton(new List<AbsRichBoxMember>{
                         new RichBoxImage(SpriteName.WarsGuardAdd),
-                        new RichBoxText( "Expand guard"),
+                        new RichBoxText( DssRef.lang.CityOption_ExpandGuardSize),
                     },
                     new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
                     new RbAction1Arg<int>(buyGuardSizeToolTip, count),
@@ -121,7 +116,7 @@ namespace VikingEngine.DSSWars.Display
             content.Add(new RichBoxSpace());
             {
                 int count = 5;
-                content.Button("x5",
+                content.Button(string.Format(DssRef.lang.Hud_XTimes, count),
                 new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
                 new RbAction1Arg<int>(buyGuardSizeToolTip, count),
                 city.buyCityGuards(false, count));
@@ -131,7 +126,7 @@ namespace VikingEngine.DSSWars.Display
 
             if (!city.nobelHouse && city.canEverGetNobelHouse())
             {
-                content.Button("Nobel house",
+                content.Button(DssRef.lang.Building_NobelHouse,//"Nobel house",
                      new RbAction(city.buyNobelHouseAction, SoundLib.menuBuy),
                      new RbAction(buyNobelhouseTooltip),
                      city.canBuyNobelHouse());
@@ -153,55 +148,56 @@ namespace VikingEngine.DSSWars.Display
 
             if (city.nobelHouse)
             {
-                content.h2("Built");
+                content.h2(DssRef.lang.Building_IsBuilt);
             }
             else
             {
-                content.h2("Build");
+                content.h2(DssRef.lang.Building_BuildAction);
                 content.newLine();
-                content.h2("Requirement");
+                content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement);
                 content.newLine();
-                HudLib.ResourceCost(content, SpriteName.WarsWorker,"Workers", DssLib.NobelHouseWorkForceReqiurement, city.workForce.Int());
+                HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Worker, DssLib.NobelHouseWorkForceReqiurement, city.workForce.Int());
                 content.newLine();
-                content.h2("Cost");
+                content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
                 content.newLine();
-                HudLib.ResourceCost(content, SpriteName.rtsUpkeep, "Gold", DssLib.NobelHouseCost, player.faction.gold);
+                HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, DssLib.NobelHouseCost, player.faction.gold);
                 content.newLine();
-                content.h2("Gain");
+                content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
             }
 
             content.newLine();
 
-            string addDiplomacy = "1 diplomacy point per {0} seconds";
+            //string addDiplomacy = "1 diplomacy point per {0} seconds";
             int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.NobelHouseAddDiplomacy * 3600);
-            string addDiplomacyMax = "+{0} to diplomacy point max limit";
-            string addCommand = "1 command point per {0} seconds";
-            int commandSec = Convert.ToInt32(DssLib.NobelHouseAddCommand * 3600);
-            string upkeep = "upkeep +{0}";
+            //string addDiplomacyMax = "+{0} to diplomacy point max limit";
+            //string addCommand = "1 command point per {0} seconds";
+            //int commandSec = Convert.ToInt32(DssLib.NobelHouseAddCommand * 3600);
+            //string upkeep = "upkeep +{0}";
 
 
             content.ListDot();
             content.Add(new RichBoxImage(SpriteName.WarsDiplomaticAddTime));
-            content.Add(new RichBoxText(string.Format(addDiplomacy, diplomacydSec)));
+            content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobelHouse_DiplomacyPointsAdd, diplomacydSec)));
             content.newLine();
 
             content.ListDot();
             content.Add(new RichBoxImage(SpriteName.WarsDiplomaticPoint));
-            content.Add(new RichBoxText(string.Format(addDiplomacyMax, DssRef.diplomacy.NobelHouseAddMaxDiplomacy)));
+            content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobelHouse_DiplomacyPointsLimit, DssRef.diplomacy.NobelHouseAddMaxDiplomacy)));
             content.newLine();
 
-            content.ListDot();
-            content.Add(new RichBoxImage(SpriteName.WarsCommandAddTime));
-            content.Add(new RichBoxText(string.Format(addCommand, commandSec)));
-            content.newLine();
+            //content.ListDot();
+            //content.Add(new RichBoxImage(SpriteName.WarsCommandAddTime));
+            //content.Add(new RichBoxText(string.Format(addCommand, commandSec)));
+            //content.newLine();
 
             content.ListDot();
-            content.Add(new RichBoxText("Unlocks Knight unit"));
+            content.Add(new RichBoxText(DssRef.lang.Building_NobelHouse_UnlocksKnight));
             content.newLine();
 
             content.ListDot();
             content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
-            content.Add(new RichBoxText(string.Format(upkeep, DssLib.NobelHouseUpkeep)));
+            HudLib.Upkeep(content, Convert.ToInt32(DssLib.NobelHouseUpkeep), true);
+            //content.Add(new RichBoxText(string.Format(upkeep, DssLib.NobelHouseUpkeep)));
             content.newLine();
 
             player.hud.tooltip.create(player, content, true);
@@ -221,17 +217,17 @@ namespace VikingEngine.DSSWars.Display
 
             int cost = city.buyMercenaryCost(count);
 
-            content.text(TextLib.Quote("Soldiers will be drafted from mercenaries instead of your workforce"));
+            content.text(TextLib.Quote(DssRef.lang.CityOption_Mercenaries_Description));
             content.newLine();
-            content.h2("Cost");
+            content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
             content.newLine();
-            HudLib.ResourceCost(content, SpriteName.rtsUpkeep, "Gold", cost, player.faction.gold);
-            content.text(string.Format("Cost will increase by {0}", DssRef.difficulty.MercenaryPurchaseCost_Add * count));
+            HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, cost, player.faction.gold);
+            content.text(string.Format(DssRef.lang.Hud_Purchase_CostWillIncreaseByX, DssRef.difficulty.MercenaryPurchaseCost_Add * count));
 
             content.newParagraph();
-            content.h2("Gain");
+            content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
             content.newLine();
-            content.icontext(SpriteName.WarsSoldierIcon, string.Format("{0} mercenaries", DssLib.MercenaryPurchaseCount * count));
+            content.icontext(SpriteName.WarsSoldierIcon, string.Format(DssRef.lang.CityOption_XMercenaries, DssLib.MercenaryPurchaseCount * count));
             
             player.hud.tooltip.create(player, content, true);
         }
@@ -247,19 +243,19 @@ namespace VikingEngine.DSSWars.Display
             RichBoxContent content = new RichBoxContent();
             if (city.canExpandWorkForce(count))
             {
-                content.text(TextLib.Quote("Workers provide income. And are drafted as soldiers for your armies"));
+                content.text(TextLib.Quote(DssRef.lang.ResourceType_Workers_Description));
                 content.newLine();
-                content.h2("Cost");
+                content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
                 content.newLine();
-                HudLib.ResourceCost(content, SpriteName.rtsUpkeep, "Gold", city.expandWorkForceCost()* count, player.faction.gold);
+                HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, city.expandWorkForceCost()* count, player.faction.gold);
                 content.newLine();
-                content.h2("Gain");
+                content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
                 content.newLine();
-                content.icontext(SpriteName.WarsWorkerAdd, "Max work force +" + (City.ExpandWorkForce*count).ToString());
+                content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.CityOption_ExpandWorkForce_IncreaseMax, City.ExpandWorkForce * count));
             }
             else 
             {
-                content.Add(new RichBoxText("Has reached maximum capacity", Color.Red));
+                content.Add(new RichBoxText(DssRef.lang.Hud_Purchase_MaxCapasity, Color.Red));
             }
             player.hud.tooltip.create(player, content, true);
         }
@@ -274,19 +270,21 @@ namespace VikingEngine.DSSWars.Display
 
             if (city.canIncreaseGuardSize(count))
             {
-                content.h2("Cost");
+                content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
                 content.newLine();
-                HudLib.ResourceCost(content, SpriteName.rtsUpkeep, "Gold", City.ExpandGuardSizeCost * count, player.faction.gold);
+                HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, City.ExpandGuardSizeCost * count, player.faction.gold);
                 content.newLine();
-                content.icontext(SpriteName.rtsUpkeepTime, "Upkeep +" + city.GuardUpkeep(City.ExpandGuardSize * count).ToString());
+                //content.icontext(SpriteName.rtsUpkeepTime, "Upkeep +" + city.GuardUpkeep(City.ExpandGuardSize * count).ToString());
+                HudLib.Upkeep(content, city.GuardUpkeep(City.ExpandGuardSize * count), true);
+
+                content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
                 
-                content.h2("Gain");
-                
-                content.icontext(SpriteName.WarsGuardAdd,"Max guard size +" + (City.ExpandGuardSize * count).ToString());
+                content.icontext(SpriteName.WarsGuardAdd, string.Format(DssRef.lang.Hud_IncreaseMaxGuardCount, City.ExpandGuardSize * count));
             }
             else 
             {
-                content.Add(new RichBoxText("Has reached maximum capacity. You need to expand the city.", Color.Red));
+                content.Add(new RichBoxText(DssRef.lang.Hud_Purchase_MaxCapasity, Color.Red));
+                content.Add(new RichBoxText(DssRef.lang.Hud_GuardCount_MustExpandCityMessage, Color.Red));
             }
 
             player.hud.tooltip.create(player, content, true);
@@ -300,34 +298,32 @@ namespace VikingEngine.DSSWars.Display
             RichBoxContent content = new RichBoxContent();
             content.text(TextLib.Quote(typeData.description));
             content.newLine();
-            content.h2("Cost");
+            content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
             content.newLine();
-            HudLib.ResourceCost(content, SpriteName.rtsUpkeep,"Gold", opt.goldCost * count, player.faction.gold);
+            HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, opt.goldCost * count, player.faction.gold);
             content.newLine();
-            HudLib.ResourceCost(content, SpriteName.WarsWorkerSub, "Workers", typeData.workForceCount() * count, city.workForce.Int());
+            HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Worker, typeData.workForceCount() * count, city.workForce.Int());
             content.newLine();
             content.newLine();
-            content.icontext(SpriteName.rtsUpkeep, "Upkeep: " + (typeData.Upkeep() * count).ToString());
+            content.icontext(SpriteName.rtsUpkeep, DssRef.lang.Hud_Upkeep + ": " + (typeData.Upkeep() * count).ToString());
             content.newParagraph();
 
-            content.h2("Gain");
+            content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
             int unitCount = typeData.rowWidth * typeData.columnsDepth;
-            string countText = "{0} groups, a total of {1} units";
-            content.text(string.Format(countText, count, unitCount * count));
+            //string countText = "{0} groups, a total of {1} units";
+            content.text(string.Format(DssRef.lang.SoldierStats_GroupCountAndSoldierCount, count, unitCount * count));
             content.newParagraph();
 
-            content.h2("Stats per unit");
-            content.text("Cost: " + string.Format(HudLib.OneDecimalFormat, opt.goldCost / (double)unitCount));
-            content.text("Upkeep: " + string.Format(HudLib.OneDecimalFormat, typeData.Upkeep() / (double)unitCount));
+            content.h2(DssRef.lang.SoldierStats_Title);
+            content.text(DssRef.lang.Hud_PurchaseTitle_Cost + ": " + string.Format(HudLib.OneDecimalFormat, opt.goldCost / (double)unitCount));
+            content.text(DssRef.lang.Hud_Upkeep + ": " + string.Format(HudLib.OneDecimalFormat, typeData.Upkeep() / (double)unitCount));
 
-            content.text("Attack strength: ");
-
-            string attackStrengthAreas = "Land {0} | Sea {1} | City {2}";
-            content.text(string.Format(attackStrengthAreas, dpsCompared(typeData.DPS_land(), dpsSoldier), dpsCompared(typeData.DPS_sea(), dpsSoldier), dpsCompared(typeData.DPS_structure(), dpsSoldier)));
+            //string attackStrengthAreas = "Attack strength: Land {0} | Sea {1} | City {2}";
+            content.text(string.Format(DssRef.lang.SoldierStats_AttackStrengthLandSeaCity, dpsCompared(typeData.DPS_land(), dpsSoldier), dpsCompared(typeData.DPS_sea(), dpsSoldier), dpsCompared(typeData.DPS_structure(), dpsSoldier)));
 
             //content.text("Attack on sea: " + dpsCompared(typeData.DPS_sea(), dpsSoldier));
             //content.text("Attack city: " + dpsCompared(typeData.DPS_structure(), dpsSoldier));
-            content.text("Health: " + typeData.basehealth);
+            content.text(string.Format( DssRef.lang.SoldierStats_Health, typeData.basehealth));
 
 
             speedBonus(true, typeData.ArmySpeedBonusLand);
@@ -340,7 +336,7 @@ namespace VikingEngine.DSSWars.Display
             {
                 if (bonus != 0)
                 {                    
-                    string bonusText = land? "Army speed bonus on land: {0}" : "Army speed bonus on sea: {0}";
+                    string bonusText = land? DssRef.lang.SoldierStats_SpeedBonusLand : DssRef.lang.SoldierStats_SpeedBonusSea;
                     content.text(string.Format(bonusText, TextLib.PercentAddText((float)bonus)));
                 }
             }

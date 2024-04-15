@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.Display
                     var button = new HUD.RichBox.RichboxButton(
                     new List<AbsRichBoxMember>
                     {
-                        new HUD.RichBox.RichBoxText("Halt"),
+                        new HUD.RichBox.RichBoxText(DssRef.lang.ArmyOption_Halt),
                     },
                     new RbAction(halt), null);
                     button.addShortCutButton(player.input.Stop, false);
@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.Display
                     var disbandButton = new HUD.RichBox.RichboxButton(
                         new List<AbsRichBoxMember>
                         {
-                        new HUD.RichBox.RichBoxText("Disband units"),
+                        new HUD.RichBox.RichBoxText(DssRef.lang.ArmyOption_Disband),
                         },
                         new RbAction1Arg<string>(player.hud.displays.SetMenuState, DisbandMenuState, SoundLib.menu), 
                         null);
@@ -62,7 +62,7 @@ namespace VikingEngine.DSSWars.Display
                             var tradeButton = new HUD.RichBox.RichboxButton(
                                 new List<AbsRichBoxMember>
                                 {
-                                new HUD.RichBox.RichBoxText("Send to " + ta.TypeName()),
+                                new HUD.RichBox.RichBoxText(string.Format(DssRef.lang.ArmyOption_SendToX, ta.TypeName())),
                                 },
                                 new RbAction1Arg<Army>(startArmyTrade, ta, SoundLib.menu), null);
                             content.Add(tradeButton);
@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.Display
                     var splitButton = new HUD.RichBox.RichboxButton(
                         new List<AbsRichBoxMember>
                         {
-                                new HUD.RichBox.RichBoxText("Divide army"),
+                                new HUD.RichBox.RichBoxText(DssRef.lang.ArmyOption_Divide),
                         },
                         new RbAction1Arg<Army>(startArmyTrade, null, SoundLib.menu), null);
                     content.Add(splitButton);
@@ -82,21 +82,21 @@ namespace VikingEngine.DSSWars.Display
 
                 case DisbandMenuState:
                     {
-                        content.h2("Disband Options");
+                        content.h2(DssRef.lang.ArmyOption_Disband);
                         var status = army.Status().getTypeCounts();
 
                         foreach (var kv in status)
                         {
                             content.newLine();
-                            content.text(kv.Key.ToString() + " groups: " + kv.Value);
+                            content.text(string.Format(DssRef.lang.ArmyOption_XGroupsOfType, kv.Value, DssRef.unitsdata.Name(kv.Key)));//kv.Key.ToString() + " groups: " + kv.Value);
                             content.newLine();
-                            content.Button("Remove 1",
+                            content.Button(string.Format(DssRef.lang.ArmyOption_RemoveX, 1),//"Remove 1",
                                 new RbAction2Arg<UnitType, int>(army.disbandSoldiersAction, kv.Key, 1, SoundLib.menu),
                                 null, true);
 
                             content.space();
 
-                            content.Button("Remove 5",
+                            content.Button(string.Format(DssRef.lang.ArmyOption_RemoveX, 5),//"Remove 5",
                                 new RbAction2Arg<UnitType, int>(army.disbandSoldiersAction, kv.Key, 5, SoundLib.menu),
                                 null,
                                 kv.Value >= 5);
@@ -106,7 +106,7 @@ namespace VikingEngine.DSSWars.Display
                         var allbutton = new HUD.RichBox.RichboxButton(
                             new List<AbsRichBoxMember>
                             {
-                        new HUD.RichBox.RichBoxText("Disband all"),
+                        new HUD.RichBox.RichBoxText(DssRef.lang.ArmyOption_DisbandAll),
                             },
                             new RbAction1Arg<string>(player.hud.displays.SetMenuState, DisbandAllMenuState, SoundLib.menu), 
                             null);
@@ -115,12 +115,13 @@ namespace VikingEngine.DSSWars.Display
                     break;
 
                 case DisbandAllMenuState:
-                    content.h2("Disband all, sure?");
+                    content.h1(DssRef.lang.ArmyOption_DisbandAll);
+                    content.h2(DssRef.lang.Hud_AreYouSure);
                     content.newLine();
                     var allbuttonyes = new HUD.RichBox.RichboxButton(
                         new List<AbsRichBoxMember>
                         {
-                        new HUD.RichBox.RichBoxText("Yes"),
+                        new HUD.RichBox.RichBoxText(DssRef.lang.Hud_Yes),
                         },
                         new RbAction(disbandAllYes, SoundLib.menu), 
                         null);
@@ -131,11 +132,11 @@ namespace VikingEngine.DSSWars.Display
                     {
                         if (player.hud.displays.otherArmy == null)
                         {
-                            content.h2("Divide units to a new army");
+                            content.h2(DssRef.lang.ArmyOption_SendToNewArmy);
                         }
                         else
                         {
-                            content.h2("Send units to " + player.hud.displays.otherArmy.TypeName());
+                            content.h2(string.Format(DssRef.lang.ArmyOption_SendToX, player.hud.displays.otherArmy.TypeName()));//"Send units to " + player.hud.displays.otherArmy.TypeName());
                         }
                         
                         var status = army.Status().getTypeCounts();
@@ -144,22 +145,22 @@ namespace VikingEngine.DSSWars.Display
                         {
                             splitable |= kv.Value > 1;
                             content.newLine();
-                            content.text(kv.Key.ToString() + " groups: " + kv.Value);
+                            content.text(string.Format(DssRef.lang.ArmyOption_XGroupsOfType, kv.Value, DssRef.unitsdata.Name(kv.Key)));//kv.Key.ToString() + " groups: " + kv.Value);
                             content.newLine();
-                            content.Button("Send 1",
+                            content.Button(string.Format(DssRef.lang.ArmyOption_SendX, 1),//"Send 1",
                                 new RbAction2Arg<UnitType, int>(tradeSoldiersAction, kv.Key, 1, SoundLib.menu),
                                 null, true);
 
                             content.space();
 
-                            content.Button("Send 5",
+                            content.Button(string.Format(DssRef.lang.ArmyOption_SendX, 5),//"Send 5",
                                 new RbAction2Arg<UnitType, int>(tradeSoldiersAction, kv.Key, 5, SoundLib.menu),
                                 null,
                                 kv.Value >= 5);
 
                             content.space();
 
-                            content.Button("Send All",
+                            content.Button(DssRef.lang.ArmyOption_SendAll,//"Send All",
                                new RbAction2Arg<UnitType, int>(tradeSoldiersAction, kv.Key, kv.Value, SoundLib.menu),
                                null, true);
 
@@ -171,7 +172,7 @@ namespace VikingEngine.DSSWars.Display
                             var halfAndHalfbutton = new HUD.RichBox.RichboxButton(
                             new List<AbsRichBoxMember>
                             {
-                                new HUD.RichBox.RichBoxText("Split army in half"),
+                                new HUD.RichBox.RichBoxText(DssRef.lang.ArmyOption_SplitHalf),
                             },
                             new RbAction(splitArmyInHalf, SoundLib.menu), null);
                             halfAndHalfbutton.enabled = splitable;
@@ -182,7 +183,7 @@ namespace VikingEngine.DSSWars.Display
                             var allbutton = new HUD.RichBox.RichboxButton(
                             new List<AbsRichBoxMember>
                             {
-                                new HUD.RichBox.RichBoxText("Merge armies"),
+                                new HUD.RichBox.RichBoxText(DssRef.lang.ArmyOption_MergeArmies),
                             },
                             new RbAction(mergeArmies, SoundLib.menu), null);
                             content.Add(allbutton);
@@ -224,11 +225,8 @@ namespace VikingEngine.DSSWars.Display
 
         void tradeSoldiersAction(UnitType type, int count)
         {
-            army.tradeSoldiersAction(ref player.hud.displays.otherArmy, type, count);
-            
+            army.tradeSoldiersAction(ref player.hud.displays.otherArmy, type, count);            
         }
-
-        
 
         void startArmyTrade(Army toarmy)
         {

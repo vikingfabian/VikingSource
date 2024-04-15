@@ -8,7 +8,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 {
     class ResourceCollection : List<ResourceChunk>
     {
-        public void Add(Resource resource)
+        public void Add(ItemResource resource)
         {
             foreach (var chunk in this)
             {
@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             this.AddRange(collection);
         }
 
-        public bool HasResources(ResourceType resourceType, int minQuality, int count)
+        public bool HasResources(ItemResourceType resourceType, int minQuality, int count)
         {
             int totalCount = 0;
             foreach (var chunk in this)
@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             return false;
         }
 
-        public bool SpendResources(ResourceType resourceType, int minQuality, int count)
+        public bool SpendResources(ItemResourceType resourceType, int minQuality, int count)
         {
             if (!HasResources(resourceType, minQuality, count))
                 return false;

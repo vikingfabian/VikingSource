@@ -68,28 +68,17 @@ namespace VikingEngine.DSSWars.Display
         void pauseMenu()
         { 
             openMenu();
-            GuiLayout layout = new GuiLayout("Game menu", menu);
+            GuiLayout layout = new GuiLayout(DssRef.lang.GameMenu_Title, menu);
             {  
-                new GuiTextButton("Resume", null, closeMenu, false, layout);
+                new GuiTextButton(DssRef.lang.GameMenu_Resume, null, closeMenu, false, layout);
                 
                 Ref.gamesett.soundOptions(layout);
                 new GuiSectionSeparator(layout);
 
-                new GuiDialogButton("Exit", null, new GuiAction(DssRef.state.exit), false, layout);
+                new GuiDialogButton(DssRef.lang.GameMenu_ExitGame, null, new GuiAction(DssRef.state.exit), false, layout);
             }
             layout.End();
         }
 
-        public void victoryScreen()
-        {
-            openMenu();
-            GuiLayout layout = new GuiLayout("Victory!", menu);
-            {
-                new GuiLabel("You have defeated the dark lord", layout);
-                new GuiTextButton("Resume", null, closeMenu, false, layout);
-                new GuiDialogButton("Exit", null, new GuiAction(DssRef.state.exit), false, layout);
-            }
-            layout.End();
-        }
     }
 }

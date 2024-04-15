@@ -816,7 +816,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string TypeName()
         {
-            return "City (" + TextLib.IndexToString(parentArrayIndex) + ")";
+            return DssRef.lang.UnitType_City + " (" + TextLib.IndexToString(parentArrayIndex) + ")";
         }
 
         public override void toHud(Display.ObjectHudArgs args)
@@ -837,7 +837,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                args.content.icontext(SpriteName.WarsWorker, string.Format(DssRef.lang.Hud_WorkForce, TextLib.Divition_Large(workForce.Int(), workForce.max)));
+                args.content.icontext(SpriteName.WarsWorker, string.Format(DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.Int(), workForce.max)));
                 args.content.icontext(SpriteName.WarsGuard, string.Format(DssRef.lang.Hud_GuardCount,TextLib.Divition_Large(guardCount, maxGuardSize)));
                 args.content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, string.Format(HudLib.OneDecimalFormat, strengthValue)));
                 args.content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, income));

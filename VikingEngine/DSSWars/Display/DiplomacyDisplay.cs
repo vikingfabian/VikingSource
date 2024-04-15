@@ -529,7 +529,7 @@ namespace VikingEngine.DSSWars.Display
         {
             content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
             content.newLine();
-            HudLib.ResourceCost(content, SpriteName.WarsDiplomaticSub, DssRef.lang.DiplomacyPoints, cost, player.diplomaticPoints.Int());
+            HudLib.ResourceCost(content, GameObject.Resource.ResourceType.DiplomaticPoint, cost, player.diplomaticPoints.Int());
             content.newLine();
         }
     }

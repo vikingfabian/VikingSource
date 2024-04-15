@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars
@@ -65,21 +63,34 @@ namespace VikingEngine.DSSWars
             };
         }
 
-        public static void ResourceCost(RichBoxContent content, SpriteName icon, string name, int needResource, int hasResource)
+        public static void ResourceCost(RichBoxContent content, GameObject.Resource.ResourceType resource, int needResource, int hasResource)
         {
-            string text = name + ": " + TextLib.Divition_Large(needResource, hasResource);
-            //Color? color = null;
-            //if (needResource > hasResource)
-            //{
-            //    color = Color.Red;
-            //}
+            SpriteName icon = GameObject.Resource.ResourceLib.PayIcon(resource);
+
             if (icon != SpriteName.NO_IMAGE)
             {
                 content.Add(new RichBoxImage(icon));
             }
+
+            string text = string.Format(DssRef.lang.Hud_Purchase_ResourceCostOfAvailable,
+                GameObject.Resource.ResourceLib.Name(resource), TextLib.LargeNumber(needResource), TextLib.LargeNumber(hasResource));
+
             content.Add( new RichBoxText(text, ResourceCostColor(hasResource >= needResource)));
         }
 
+        public static void Upkeep(RichBoxContent content, int value, bool increase)
+        {
+            string text = DssRef.lang.Hud_Upkeep;
+            if (increase) 
+            {
+                text += " +";
+            }
+            else
+            {
+                text += ": ";
+            }
+            content.icontext(SpriteName.rtsUpkeepTime, text + TextLib.LargeNumber(value));  
+        }
         public static Color ResourceCostColor(bool hasEnough)
         { 
             return hasEnough ? Color.LightGreen : Color.Red;

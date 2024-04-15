@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.GameObject.Resource
 {
-    struct Resource
+    struct ItemResource
     {
-        public static readonly Resource Empty = new Resource();
+        public static readonly ItemResource Empty = new ItemResource();
 
-        public ResourceType type;
+        public ItemResourceType type;
 
         /// <summary>
         /// Goes from 0: broken, to 255: masterpiece
@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         /// </summary>
         public int value;
 
-        public Resource(ResourceType type, int quality, int value)
+        public ItemResource(ItemResourceType type, int quality, int value)
         {
             this.type = type;
             this.quality = quality;
@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         }
     }    
     
-    enum ResourceType
+    enum ItemResourceType
     {
         NONE,
 

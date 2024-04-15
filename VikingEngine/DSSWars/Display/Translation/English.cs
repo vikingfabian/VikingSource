@@ -237,26 +237,30 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string ProfileEditor_NextColorType => "Next color type";
 
+        /// <summary>
+        /// Current running speed of the game, compared to real time
+        /// </summary>
+        public override string Hud_GameSpeed => "Game speed: {0}x";
 
         /// <summary>
         /// Ingame display. Unit gold production
         /// </summary>
-        public override string Hud_TotalIncome => "Total Income: {0}";
+        public override string Hud_TotalIncome => "Total income/second: {0}";
 
         /// <summary>
         /// Unit gold cost.
         /// </summary>
         public override string Hud_Upkeep => "Upkeep: {0}";
-
-        /// <summary>
-        /// Ingame display. Unit gold cost.
-        /// </summary>
-        public override string Hud_WorkForce => "Work force: {0}";
+        public override string Hud_ArmyUpkeep => "Army upkeep: {0}";
 
         /// <summary>
         /// Ingame display. Soldiers protecting a building.
         /// </summary>
         public override string Hud_GuardCount => "Group count";
+
+        public override string Hud_IncreaseMaxGuardCount => "Max guard size +{0}";
+
+        public override string Hud_GuardCount_MustExpandCityMessage => "You need to expand the city.";
 
         public override string Hud_SoldierCount => "Soldier count";
 
@@ -273,18 +277,95 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_Immigrants => "Immigrants: {0}";
 
 
+        public override string Hud_CityCount => "City count: {0}";
+        public override string Hud_ArmyCount => "Army count: {0}";
+
         public override string Hud_Cancel => "Cancel";
         public override string Hud_Back => "Back";
+
+        /// <summary>
+        /// Submenu for when the player will make destructive choices
+        /// </summary>
+        public override string Hud_AreYouSure => "Are you sure?";    
+        public override string Hud_Yes => "Yes";
+
+        /// <summary>
+        /// Mini button to repeat a purchase a number of times. E.G. "x5"
+        /// </summary>
+        public override string Hud_XTimes => "x{0}";
 
         public override string Hud_PurchaseTitle_Requirement => "Requirement";
         public override string Hud_PurchaseTitle_Cost => "Cost";
         public override string Hud_PurchaseTitle_Gain => "Gain";
+
+        /// <summary>
+        /// How much of a resource that will be used, "5 gold. (Available: 10)". There will be a "cost" title above the text. 0: Resource, 1: cost, 2: available
+        /// </summary>
+        public override string Hud_Purchase_ResourceCostOfAvailable => "{1} {0}. (Available: {2})";
+
+        public override string Hud_Purchase_CostWillIncreaseByX => "Cost will increase by {0}";
+
+        public override string Hud_Purchase_MaxCapasity => "Has reached maximum capacity";
+
         public override string Hud_CompareMilitaryStrength_YourToOther => "Strength: Your {0} - Their {1}";
+
+        /// <summary>
+        /// Describes button input. Move to the next city.
+        /// </summary>
+        public override string Input_NextCity => "Next city";
+
+        /// <summary>
+        /// Describes button input. Move to the next army.
+        /// </summary>
+        public override string Input_NextArmy => "Next army";
+
+        /// <summary>
+        /// Describes button input. Move to the next battle.
+        /// </summary>
+        public override string Input_NextBattle => "Next battle";
+
+        /// <summary>
+        /// Describes button input. Pause.
+        /// </summary>
+        public override string Input_Pause => "Pause";
+
+        /// <summary>
+        /// Describes button input. Resume from paused.
+        /// </summary>
+        public override string Input_ResumePaused => "Resume";
+        
+        /// <summary>
+        /// Generic money resource
+        /// </summary>
+        public override string ResourceType_Gold => "Gold";
+
+        /// <summary>
+        /// Working men resource
+        /// </summary>
+        public override string ResourceType_Workers => "Workers";
+
+
+        public override string ResourceType_Workers_Description => "Workers provide income. And are drafted as soldiers for your armies";
+
+        /// <summary>
+        /// The resource used in diplomacy
+        /// </summary>
+        public override string ResourceType_DiplomacyPoints => "Diplomacy points";
+
+
+        public override string ResourceType_DiplomacyPoints_WithSoftAndHardLimit => "Diplomatic points: {0}/{1}({2})";
 
         /// <summary>
         /// City building type. Building for knights and diplomats.
         /// </summary>
         public override string Building_NobelHouse => "Nobel house";
+
+        public override string Building_NobelHouse_DiplomacyPointsAdd => "1 diplomacy point per {0} seconds";
+        public override string Building_NobelHouse_DiplomacyPointsLimit => "+{0} to diplomacy point max limit";
+        public override string Building_NobelHouse_UnlocksKnight => "Unlocks Knight unit";
+
+        public override string Building_BuildAction => "Build";
+        public override string Building_IsBuilt => "Built";
 
         /// <summary>
         /// City building type. Evil mass production.
@@ -349,25 +430,11 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Automation_InfoLine_PurchaseSpeed => "Does max one purchase per second";
 
-        /// <summary>
-        /// Button caption for action. Purchase soldiers.
-        /// </summary>
-        public override string HudAction_Recruit => "Recruit";
-        
-        /// <summary>
-        /// Button caption for action. Create housing for more workers.
-        /// </summary>
-        public override string HudAction_ExpandWorkForce => "Expand work force";
         
         /// <summary>
         /// Button caption for action. A specialized building for knights and diplomats.
         /// </summary>
         public override string HudAction_BuyItem => "Buy {0}";
-
-        /// <summary>
-        /// The resource used in diplomacy
-        /// </summary>
-        public override string DiplomacyPoints=> "Diplomacy points";
 
         /// <summary>
         /// The state of peace or war between two nations
@@ -531,7 +598,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Diplomacy_ServantGainAbsorbFaction=> "Absorb the other faction";
 
-
+        /// <summary>
+        /// Stats that are shown on the end game screen. Display title.
+        /// </summary>
+        public override string EndGameStatistics_Title => "Stats";
         /// <summary>
         /// Stats that are shown on the end game screen. Total ingame time passed.
         /// </summary>
@@ -686,5 +756,162 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// Name for a military unit. Soldier carrying ship. 0: unit type it carries
         /// </summary>
         public override string UnitType_WarshipWithUnit=> "{0} warship";
+
+
+        public override string SoldierStats_Title => "Stats per unit";
+
+        public override string SoldierStats_GroupCountAndSoldierCount => "{0} groups, a total of {1} units";
+        public override string SoldierStats_AttackStrengthLandSeaCity => "Attack strength: Land {0} | Sea {1} | City {2}";
+        public override string SoldierStats_Health => "Health: {0}";
+
+        public override string SoldierStats_SpeedBonusLand => "Army speed bonus on land: {0}";
+        public override string SoldierStats_SpeedBonusSea => "Army speed bonus on sea: {0}";
+        /// <summary>
+        /// Menu option to control an army. Make them stop moving.
+        /// </summary>
+        public override string ArmyOption_Halt => "Halt";
+
+        /// <summary>
+        /// Menu option to control an army. Remove soldiers.
+        /// </summary>
+        public override string ArmyOption_Disband => "Disband units";
+
+        /// <summary>
+        /// Menu option to control an army. Options to send soldiers between armies.
+        /// </summary>
+        public override string ArmyOption_Divide => "Divide army";
+
+        /// <summary>
+        /// Menu option to control an army. Remove soldiers.
+        /// </summary>
+        public override string ArmyOption_RemoveX => "Remove {0}";
+
+        /// <summary>
+        /// Menu option to control an army. Remove soldiers.
+        /// </summary>
+        public override string ArmyOption_DisbandAll => "Disband all";
+
+        /// <summary>
+        /// Menu option to control an army. 0: Count, 1: Unit type
+        /// </summary>
+        public override string ArmyOption_XGroupsOfType => "{1} groups: {0}";
+
+        /// <summary>
+        /// Menu option to control an army. Options to send soldiers between armies.
+        /// </summary>
+        public override string ArmyOption_SendToX => "Send units to {0}";
+
+        /// <summary>
+        /// Menu option to control an army. Options to send soldiers between armies.
+        /// </summary>
+        public override string ArmyOption_SendToNewArmy => "Divide units to a new army";
+
+        /// <summary>
+        /// Menu option to control an army. Options to send soldiers between armies.
+        /// </summary>
+        public override string ArmyOption_SendX => "Send {0}";
+
+        /// <summary>
+        /// Menu option to control an army. Options to send soldiers between armies.
+        /// </summary>
+        public override string ArmyOption_SendAll => "Send All";
+
+        /// <summary>
+        /// Menu option to control an army. Options to send soldiers between armies.
+        /// </summary>
+        public override string ArmyOption_SplitHalf => "Split army in half";
+
+        /// <summary>
+        /// Menu option to control an army. Options to send soldiers between armies.
+        /// </summary>
+        public override string ArmyOption_MergeArmies => "Merge armies";
+
+
+
+        /// <summary>
+        /// Button caption for action. Purchase soldiers.
+        /// </summary>
+        public override string CityOption_Recruit => "Recruit";
+
+        
+        public override string CityOption_RecruitType => "Recruit {0}";
+        public override string CityOption_XMercenaries => "Mercenaries: {0}";
+        public override string CityOption_BuyXMercenaries => "Import {0} mercenaries";
+
+        public override string CityOption_Mercenaries_Description => "Soldiers will be drafted from mercenaries instead of your workforce";
+        /// <summary>
+        /// Button caption for action. Create housing for more workers.
+        /// </summary>
+        public override string CityOption_ExpandWorkForce => "Expand work force";
+        public override string CityOption_ExpandWorkForce_IncreaseMax => "Max work force +{0}";
+        public override string CityOption_ExpandGuardSize => "Expand guard";
+
+        /// <summary>
+        /// Game has ended in success.
+        /// </summary>
+        public override string EndScreen_VictoryTitle => "Victory!";
+
+        /// <summary>
+        /// Qoutes from the leader character you play in the game
+        /// </summary>
+        public override List<string> EndScreen_VictoryQoutes => new List<string>
+        {
+            "In times of peace, we mourn the dead.",
+            "Every triumph carries a shadow of sacrifice.",
+            "Remember the journey that brought us here, dotted with the souls of the brave.",
+            "Our minds are light from victory, our hearts are heavy from the weight of the fallen"
+        };
+
+        /// <summary>
+        /// Game has ended in failure.
+        /// </summary>
+        public override string EndScreen_FailTitle => "Failure!";
+
+        /// <summary>
+        /// Qoutes from the leader character you play in the game
+        /// </summary>
+        public override List<string> EndScreen_FailureQoutes => new List<string>
+        {
+            "With our bodies torn from marching and nights of worry, we welcome the end.",
+            "Defeat may darken our lands, but they cannot extinguish the light of our determination.",
+            "Extinguish the flames in our hearts, from their ashes, our children shall forge a new dawn.",
+            "Let our tales be the ember that kindles tomorrow's victory.",
+        };
+
+        /// <summary>
+        /// A small cutscene at the end of the game
+        /// </summary>
+        public override string EndScreen_WatchEpilouge => "Watch epilogue";
+
+        /// <summary>
+        /// Cutscene title
+        /// </summary>
+        public override string EndScreen_Epilouge_Title => "Epilogue";
+
+        /// <summary>
+        /// Cutscene introduction
+        /// </summary>
+        public override string EndScreen_Epilouge_Text => "160 years ago";
+
+
+        /// <summary>
+        /// Ingame menu when pausing
+        /// </summary>
+        public override string GameMenu_Title => "Game menu";
+
+        /// <summary>
+        /// Continue playing the game after end screen
+        /// </summary>
+        public override string GameMenu_ContinueGame => "Continue";
+
+        /// <summary>
+        /// Continue playing the game
+        /// </summary>
+        public override string GameMenu_Resume => "Resume";
+
+        /// <summary>
+        /// Exit to game lobby
+        /// </summary>
+        public override string GameMenu_ExitGame => "Exit game";
     }
 }

@@ -11,18 +11,18 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         public const int ChunkSize = 8;
 
         public int count;
-        public Resource resource1;
-        public Resource resource2;
-        public Resource resource3;
-        public Resource resource4;
-        public Resource resource5;
-        public Resource resource6;
-        public Resource resource7;
-        public Resource resource8;
+        public ItemResource resource1;
+        public ItemResource resource2;
+        public ItemResource resource3;
+        public ItemResource resource4;
+        public ItemResource resource5;
+        public ItemResource resource6;
+        public ItemResource resource7;
+        public ItemResource resource8;
 
-        public void Add(Resource resource)
+        public void Add(ItemResource resource)
         {
-            if (count >= 8 || resource.type == ResourceType.NONE)
+            if (count >= 8 || resource.type == ItemResourceType.NONE)
             {
                 throw new InvalidOperationException("ResourceChunk is full or resource is invalid.");
             }
@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             ++count;
         }
 
-        public int CountResources(ResourceType resourceType, int minQuality)
+        public int CountResources(ItemResourceType resourceType, int minQuality)
         {
             int matchingResources = 0;
             if (resource1.type == resourceType && resource1.quality >= minQuality) matchingResources++;
@@ -57,7 +57,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             return matchingResources;
         }
 
-        public bool RemoveResource(ResourceType resourceType, int minQuality)
+        public bool RemoveResource(ItemResourceType resourceType, int minQuality)
         {
             for (int i = count - 1; i >= 0; --i)
             {
@@ -71,9 +71,9 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             return false;
         }
 
-        Resource removeAt(int index)
+        ItemResource removeAt(int index)
         {
-            Resource result = Resource.Empty;
+            ItemResource result = ItemResource.Empty;
 
             switch (index)
             {
@@ -103,16 +103,16 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             return result;
         }
 
-        void ShiftResource(ref Resource current, ref Resource next)
+        void ShiftResource(ref ItemResource current, ref ItemResource next)
         {
-            if (current.type == ResourceType.NONE && next.type != ResourceType.NONE)
+            if (current.type == ItemResourceType.NONE && next.type != ItemResourceType.NONE)
             {
                 current = next;
-                next = new Resource();
+                next = new ItemResource();
             }
         }
 
-        private Resource GetResourceAtIndex(int index)
+        private ItemResource GetResourceAtIndex(int index)
         {
             return index switch
             {
@@ -124,11 +124,11 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 5 => resource6,
                 6 => resource7,
                 7 => resource8,
-                _ => new Resource() // Return a default Resource, assuming ResourceType.NONE is default
+                _ => new ItemResource() // Return a default Resource, assuming ResourceType.NONE is default
             };
         }
 
-        private void SetResourceAtIndex(int index, Resource resource)
+        private void SetResourceAtIndex(int index, ItemResource resource)
         {
             switch (index)
             {

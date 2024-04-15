@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.Players
             content.newLine();
             content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
                 {
-                    new RichBoxText( DssRef.lang.HudAction_Recruit),
+                    new RichBoxText( DssRef.lang.CityOption_Recruit),
                 }, AutoRecruitProperty));
                         
             for (int i = 0; i < DssLib.AvailableUnitTypes.Length; i++)
@@ -81,7 +81,7 @@ namespace VikingEngine.DSSWars.Players
 
             content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
                 {
-                    new RichBoxText( DssRef.lang.HudAction_ExpandWorkForce),
+                    new RichBoxText( DssRef.lang.CityOption_ExpandWorkForce),
                 }, AutoExpandCityProperty));
 
             content.newLine();

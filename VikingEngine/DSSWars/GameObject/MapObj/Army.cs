@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string TypeName()
         {
-            return "Army" + " (" + TextLib.IndexToString( parentArrayIndex) +   ")";//return "Army" + parentArrayIndex.ToString();
+            return DssRef.lang.UnitType_Army + " (" + TextLib.IndexToString( parentArrayIndex) +   ")";//return "Army" + parentArrayIndex.ToString();
         }
 
         public override string Name()
