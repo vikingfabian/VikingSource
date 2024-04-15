@@ -170,6 +170,20 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string ProfileEditor_SaveAndExit => "Spara och Avsluta";
 
+        /// <summary>
+        /// In player profile editor. Part of the Hue, Saturation and Lightness color options.
+        /// </summary>
+        public override string ProfileEditor_Hue => "Hue";
+
+        /// <summary>
+        /// In player profile editor. Part of the Hue, Saturation and Lightness color options.
+        /// </summary>
+        public override string ProfileEditor_Lightness => "Lightness";
+
+        /// <summary>
+        /// In player profile editor. Move between flag and soldier color options.
+        /// </summary>
+        public override string ProfileEditor_NextColorType => "Next color type";
 
         //--NOT TRANSLATED
 
@@ -222,6 +236,44 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// In game settings menu. Base difficulty option.
         /// </summary>
         public override string Settings_DifficultyLevel => "Svårighetsnivå {0}%";
+
+
+
+        /// <summary>
+        /// Options for automating game mechanics. Menu title.
+        /// </summary>
+        public override string Automation_Title => "Automation";
+        /// <summary>
+        /// Options for automating game mechanics. Information about how the automation works.
+        /// </summary>
+        public override string Automation_InfoLine_MaxWorkforce => "Will wait for the work force to max out";
+        /// <summary>
+        /// Options for automating game mechanics. Information about how the automation works.
+        /// </summary>
+        public override string Automation_InfoLine_NegativeIncome => "Will pause if the income is negative";
+        /// <summary>
+        /// Options for automating game mechanics. Information about how the automation works.
+        /// </summary>
+        public override string Automation_InfoLine_Priority => "Large cities are in priority";
+        /// <summary>
+        /// Options for automating game mechanics. Information about how the automation works.
+        /// </summary>
+        public override string Automation_InfoLine_PurchaseSpeed => "Does max one purchase per second";
+
+        /// <summary>
+        /// Button caption for action. Purchase soldiers.
+        /// </summary>
+        public override string HudAction_Recruit => "Recruit";
+
+        /// <summary>
+        /// Button caption for action. Create housing for more workers.
+        /// </summary>
+        public override string HudAction_ExpandWorkForce => "Expand work force";
+
+        /// <summary>
+        /// Button caption for action. A specialized building for knights and diplomats.
+        /// </summary>
+        public override string HudAction_BuyItem => "Buy nobel house";
 
         /// <summary>
         /// Stats that are shown on the end game screen. Total ingame time passed.

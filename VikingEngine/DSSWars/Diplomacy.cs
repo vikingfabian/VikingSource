@@ -324,14 +324,14 @@ namespace VikingEngine.DSSWars
         {
             switch (relation)
             {
-                case RelationType.RelationType4_Servant: return "Servant";
-                case RelationType.RelationType3_Ally: return "Ally";
-                case RelationType.RelationType2_Good: return "Good";
-                case RelationType.RelationType1_Peace: return "Peace";
-                case RelationType.RelationType0_Neutral: return "Neutral";
-                case RelationType.RelationTypeN2_Truce: return "Truce";
-                case RelationType.RelationTypeN3_War: return "War";
-                case RelationType.RelationTypeN4_TotalWar: return "Total war";
+                case RelationType.RelationType4_Servant: return DssRef.lang.Diplomacy_RelationType_Servant;
+                case RelationType.RelationType3_Ally: return DssRef.lang.Diplomacy_RelationType_Ally;
+                case RelationType.RelationType2_Good: return DssRef.lang.Diplomacy_RelationType_Good;
+                case RelationType.RelationType1_Peace: return DssRef.lang.Diplomacy_RelationType_Peace;
+                case RelationType.RelationType0_Neutral: return DssRef.lang.Diplomacy_RelationType_Neutral;
+                case RelationType.RelationTypeN2_Truce: return DssRef.lang.Diplomacy_RelationType_Truce;
+                case RelationType.RelationTypeN3_War: return DssRef.lang.Diplomacy_RelationType_War;
+                case RelationType.RelationTypeN4_TotalWar: return DssRef.lang.Diplomacy_RelationType_TotalWar;
 
                 default:
                     throw new NotImplementedException("RelationString " + relation.ToString());
@@ -359,10 +359,10 @@ namespace VikingEngine.DSSWars
         {
             switch (speak)
             {
-                case SpeakTerms.SpeakTerms1_Good: return "Good";
-                case SpeakTerms.SpeakTerms0_Normal: return "Normal";
-                case SpeakTerms.SpeakTermsN1_Bad: return "Bad";
-                case SpeakTerms.SpeakTermsN2_None: return "None";
+                case SpeakTerms.SpeakTerms1_Good: return DssRef.lang.Diplomacy_SpeakTerms_Good;
+                case SpeakTerms.SpeakTerms0_Normal: return DssRef.lang.Diplomacy_SpeakTerms_Normal;
+                case SpeakTerms.SpeakTermsN1_Bad: return DssRef.lang.Diplomacy_SpeakTerms_Bad;
+                case SpeakTerms.SpeakTermsN2_None: return DssRef.lang.Diplomacy_SpeakTerms_None;
 
                 default:
                     throw new NotImplementedException("Speaking terms " + speak.ToString());

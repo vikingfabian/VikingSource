@@ -65,11 +65,11 @@ namespace VikingEngine.DSSWars.Players
 
         public void toMenu(RichBoxContent content, bool fullDisplay)
         {
-            content.h1("Automation");
+            content.h1(DssRef.lang.Automation_Title);
             content.newLine();
             content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
                 {
-                    new RichBoxText("Recruit"),
+                    new RichBoxText( DssRef.lang.HudAction_Recruit),
                 }, AutoRecruitProperty));
                         
             for (int i = 0; i < DssLib.AvailableUnitTypes.Length; i++)
@@ -81,23 +81,23 @@ namespace VikingEngine.DSSWars.Players
 
             content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
                 {
-                    new RichBoxText("Expand work force"),
+                    new RichBoxText( DssRef.lang.HudAction_ExpandWorkForce),
                 }, AutoExpandCityProperty));
 
             content.newLine();
             content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
                 {
-                    new RichBoxText("Buy nobel house"),
+                    new RichBoxText( DssRef.lang.HudAction_BuyItem),
                 }, AutoNobelHouseProperty));
 
             content.newLine();
 
             List<string> listinfo = new List<string> 
             {
-                "Will wait for the work force to max out",
-                "Will pause if the income is negative",
-                "Large cities are in priority",
-                "Does max one purchase per second",
+                DssRef.lang.Automation_InfoLine_MaxWorkforce,
+                DssRef.lang.Automation_InfoLine_NegativeIncome,
+                DssRef.lang.Automation_InfoLine_Priority,
+                DssRef.lang.Automation_InfoLine_PurchaseSpeed,
             };
 
             foreach (var m in listinfo)

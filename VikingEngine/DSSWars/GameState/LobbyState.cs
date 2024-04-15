@@ -162,15 +162,15 @@ namespace VikingEngine.DSSWars
                 }
 
                 new GuiOptionsList<MapSize>(SpriteName.NO_IMAGE, DssRef.lang.Lobby_MapSizeTitle, mapSizes, mapSizeProperty, layout);
-                new GuiCheckbox("Generate new maps", "Generating is slower than loading the pre-built maps", generateNewMapsProperty, layout);
+                new GuiCheckbox(DssRef.lang.Settings_GenerateMaps, DssRef.lang.Settings_GenerateMaps_SlowDescription, generateNewMapsProperty, layout);
 
 
                 difficultyLevelText = new GuiLabel("XXX", layout);
                 
                 new GuiTextButton(string.Format(DssRef.lang.Settings_DifficultyLevel, DssRef.difficulty.PercDifficulty), null, selectDifficultyMenu, true, layout);
 
-                new GuiCheckbox("Allow pause and command", null, allowPauseProperty, layout);
-                new GuiCheckbox("Boss events", "Turning off the boss will put the game in a sandbox mode with no ending.", bossProperty, layout);
+                new GuiCheckbox(DssRef.lang.Settings_AllowPause, null, allowPauseProperty, layout);
+                new GuiCheckbox(DssRef.lang.Settings_BossEvents, DssRef.lang.Settings_BossEvents_SandboxDescription, bossProperty, layout);
 
                 new GuiSectionSeparator(layout);
                 new GuiTextButton(Ref.langOpt.Options_title, null, new GuiAction(optionsMenu), true, layout);
@@ -432,11 +432,11 @@ namespace VikingEngine.DSSWars
 
         void inputWarningMenu()
         {
-            GuiLayout layout = new GuiLayout("Warning", menuSystem.menu);
+            GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_WarningTitle, menuSystem.menu);
             {
-                new GuiLabel("One player has no input", layout);
-                new GuiIconTextButton(SpriteName.MenuIconResume, "Back", null, mainMenu, false, layout);
-                new GuiIconTextButton(SpriteName.MenuPixelIconPlay, "Ignore warning", null, startGame_nochecks, false, layout);
+                new GuiLabel(DssRef.lang.Lobby_PlayerWithoutInputWarning, layout);
+                new GuiIconTextButton(SpriteName.MenuIconResume, DssRef.lang.Hud_Back, null, mainMenu, false, layout);
+                new GuiIconTextButton(SpriteName.MenuPixelIconPlay, DssRef.lang.Lobby_IgnoreWarning, null, startGame_nochecks, false, layout);
             }
             layout.End();
         }

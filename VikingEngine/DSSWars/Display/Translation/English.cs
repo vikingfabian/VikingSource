@@ -9,6 +9,16 @@ namespace VikingEngine.DSSWars.Display.Translation
     class English : AbsLanguage
     {
         /// <summary>
+        /// Name of this language
+        /// </summary>
+        public override string MyLanguage => "English";
+
+        /// <summary>
+        /// Select language option
+        /// </summary>
+        public override string Lobby_Language => "Language";
+
+        /// <summary>
         /// Start playing the game
         /// </summary>
         public override string Lobby_Start => "START";
@@ -23,6 +33,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Lobby_LocalMultiplayerTitle => "Select player count";
 
+        /// <summary>
+        /// Description for local multiplayer
+        /// </summary>
         public override string Lobby_LocalMultiplayerControllerRequired => "Multiplayer requires Xbox controllers";
 
         /// <summary>
@@ -56,6 +69,26 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// Opens profile editor
         /// </summary>
         public override string Lobby_ProfileEdit => "Edit profile";
+
+
+        public override string Lobby_WarningTitle => "Warning";
+        public override string Lobby_IgnoreWarning => "Ignore warning";
+
+        /// <summary>
+        /// Warning when one player has no input selected.
+        /// </summary>
+        public override string Lobby_PlayerWithoutInputWarning => "One player has no input";
+
+        /// <summary>
+        /// Menu with content that are outside what most players will use.
+        /// </summary>
+        public override string Lobby_Extra => "Extra";
+
+        /// <summary>
+        /// The extra content is not translated or have full controller support.
+        /// </summary>
+        public override string Lobby_Extra_NoSupportWarning => "Warning! This content is not covered by localization or expected input/accessiblity support";
+
 
         public override string Lobby_MapSizeTitle => "Map size";
 
@@ -105,90 +138,104 @@ namespace VikingEngine.DSSWars.Display.Translation
         //--
 
         /// <summary>
-        /// Opens menu with editor options
+        /// In player profile editor. Opens menu with editor options
         /// </summary>
         public override string ProfileEditor_OptionsMenu => "Options";
 
         /// <summary>
-        /// Title for selecting flag colors
+        /// In player profile editor. Title for selecting flag colors
         /// </summary>
         public override string ProfileEditor_FlagColorsTitle => "Flag colors";
 
         /// <summary>
-        /// Flag color option
+        /// In player profile editor. Flag color option
         /// </summary>
         public override string ProfileEditor_MainColor => "Main color";
 
         /// <summary>
-        /// Flag color option
+        /// In player profile editor. Flag color option
         /// </summary>
         public override string ProfileEditor_Detail1Color => "Detail color 1";
 
         /// <summary>
-        /// Flag color option
+        /// In player profile editor. Flag color option
         /// </summary>
         public override string ProfileEditor_Detail2Color => "Detail color 2";
 
         /// <summary>
-        /// Title for selecting you soldiers colors
+        /// In player profile editor. Title for selecting you soldiers colors
         /// </summary>
         public override string ProfileEditor_PeopleColorsTitle => "People";
 
         /// <summary>
-        /// Soldier color option
+        /// In player profile editor. Soldier color option
         /// </summary>
         public override string ProfileEditor_SkinColor => "Skin color";
-        
+
         /// <summary>
-        /// Soldier color option
+        /// In player profile editor. Soldier color option
         /// </summary>
         public override string ProfileEditor_HairColor => "Hair color";
 
         /// <summary>
-        /// Open color palette
+        /// In player profile editor. Open color palette and select color
         /// </summary>
         public override string ProfileEditor_PickColor => "Pick color";
 
         /// <summary>
-        /// Adjust image position
+        /// In player profile editor. Adjust image position
         /// </summary>
         public override string ProfileEditor_MoveImage => "Move image";
 
         /// <summary>
-        /// Move direction
+        /// In player profile editor. Move direction
         /// </summary>
         public override string ProfileEditor_MoveImageLeft => "Left";
-        
+
         /// <summary>
-        /// Move direction
+        /// In player profile editor. Move direction
         /// </summary>
         public override string ProfileEditor_MoveImageRight => "Right";
-        
+
         /// <summary>
-        /// Move direction
+        /// In player profile editor. Move direction
         /// </summary>
         public override string ProfileEditor_MoveImageUp => "Up";
-        
+
         /// <summary>
-        /// Move direction
+        /// In player profile editor. Move direction
         /// </summary>
         public override string ProfileEditor_MoveImageDown => "Down";
 
         /// <summary>
-        /// Close editor without saving
+        /// In player profile editor. Close editor without saving
         /// </summary>
         public override string ProfileEditor_DiscardAndExit => "Discard and Exit";
 
         /// <summary>
-        /// Tooltip for discarding
+        /// In player profile editor. Tooltip for discarding
         /// </summary>
         public override string ProfileEditor_DiscardAndExitDescription => "Undo all changes";
 
         /// <summary>
-        /// Save changes and close editor
+        /// In player profile editor. Save changes and close editor
         /// </summary>
         public override string ProfileEditor_SaveAndExit => "Save and Exit";
 
+        /// <summary>
+        /// In player profile editor. Part of the Hue, Saturation and Lightness color options.
+        /// </summary>
+        public override string ProfileEditor_Hue => "Hue";
+
+        /// <summary>
+        /// In player profile editor. Part of the Hue, Saturation and Lightness color options.
+        /// </summary>
+        public override string ProfileEditor_Lightness => "Lightness";
+
+        /// <summary>
+        /// In player profile editor. Move between flag and soldier color options.
+        /// </summary>
+        public override string ProfileEditor_NextColorType => "Next color type";
 
 
         /// <summary>
@@ -221,6 +268,15 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_Immigrants => "Immigrants: {0}";
 
+
+        public override string Hud_Cancel => "Cancel";
+        public override string Hud_Back => "Back";
+
+        public override string Hud_PurchaseTitle_Requirement => "Requirement";
+        public override string Hud_PurchaseTitle_Cost => "Cost";
+        public override string Hud_PurchaseTitle_Gain => "Gain";
+        public override string Hud_CompareMilitaryStrength_YourToOther => "Strength: Your {0} - Their {1}";
+
         /// <summary>
         /// City building type. Building for knights and diplomats.
         /// </summary>
@@ -240,6 +296,237 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// In game settings menu. Base difficulty option.
         /// </summary>
         public override string Settings_DifficultyLevel => "Difficulty level {0}%";
+
+
+        /// <summary>
+        ///  In game settings menu.Option for creating new maps instead of loading one
+        /// </summary>
+        public override string Settings_GenerateMaps => "Generate new maps";
+
+        /// <summary>
+        ///  In game settings menu.Creating new maps has a longer loading time
+        /// </summary>
+        public override string Settings_GenerateMaps_SlowDescription => "Generating is slower than loading the pre-built maps";
+
+        /// <summary>
+        ///  In game settings menu.Difficulty option. Block the ability to play the game while paused.
+        /// </summary>
+        public override string Settings_AllowPause => "Allow pause and command";
+
+        /// <summary>
+        ///  In game settings menu.Difficulty option. Have bosses that enter the game.
+        /// </summary>
+        public override string Settings_BossEvents => "Boss events";
+
+        /// <summary>
+        ///  In game settings menu.Difficulty option. No Boss description.
+        /// </summary>
+        public override string Settings_BossEvents_SandboxDescription => "Turning off the boss will put the game in a sandbox mode with no ending.";
+
+
+        /// <summary>
+        /// Options for automating game mechanics. Menu title.
+        /// </summary>
+        public override string Automation_Title => "Automation";
+        /// <summary>
+        /// Options for automating game mechanics. Information about how the automation works.
+        /// </summary>
+        public override string Automation_InfoLine_MaxWorkforce => "Will wait for the work force to max out";
+        /// <summary>
+        /// Options for automating game mechanics. Information about how the automation works.
+        /// </summary>
+        public override string Automation_InfoLine_NegativeIncome => "Will pause if the income is negative";
+        /// <summary>
+        /// Options for automating game mechanics. Information about how the automation works.
+        /// </summary>
+        public override string Automation_InfoLine_Priority => "Large cities are in priority";
+        /// <summary>
+        /// Options for automating game mechanics. Information about how the automation works.
+        /// </summary>
+        public override string Automation_InfoLine_PurchaseSpeed => "Does max one purchase per second";
+
+        /// <summary>
+        /// Button caption for action. Purchase soldiers.
+        /// </summary>
+        public override string HudAction_Recruit => "Recruit";
+        
+        /// <summary>
+        /// Button caption for action. Create housing for more workers.
+        /// </summary>
+        public override string HudAction_ExpandWorkForce => "Expand work force";
+        
+        /// <summary>
+        /// Button caption for action. A specialized building for knights and diplomats.
+        /// </summary>
+        public override string HudAction_BuyItem => "Buy {0}";
+
+        /// <summary>
+        /// The resource used in diplomacy
+        /// </summary>
+        public override string DiplomacyPoints=> "Diplomacy points";
+
+        /// <summary>
+        /// The state of peace or war between two nations
+        /// </summary>
+        public override string Diplomacy_RelationType=> "Relation";
+
+        /// <summary>
+        /// Diplomatic relation. You are in direct control over the nations resources.
+        /// </summary>
+        public override string Diplomacy_RelationType_Servant=> "Servant";
+
+        /// <summary>
+        /// Diplomatic relation. Full co-operation.
+        /// </summary>
+        public override string Diplomacy_RelationType_Ally=> "Ally";
+
+        /// <summary>
+        /// Diplomatic relation. Reduced chance of war.
+        /// </summary>
+        public override string Diplomacy_RelationType_Good=> "Good";
+
+        /// <summary>
+        /// Diplomatic relation. Peace agreement.
+        /// </summary>
+        public override string Diplomacy_RelationType_Peace=> "Peace";
+        
+        /// <summary>
+        /// Diplomatic relation. Have not yet made any contact.
+        /// </summary>
+        public override string Diplomacy_RelationType_Neutral=> "Neutral";
+        /// <summary>
+        /// Diplomatic relation. Temporary peace agreement.
+        /// </summary>
+        public override string Diplomacy_RelationType_Truce=> "Truce";
+        /// <summary>
+        /// Diplomatic relation. War.
+        /// </summary>
+        public override string Diplomacy_RelationType_War=> "War";
+        /// <summary>
+        /// Diplomatic relation. War with no chance of peace.
+        /// </summary>
+        public override string Diplomacy_RelationType_TotalWar=> "Total war";
+
+        /// <summary>
+        /// Diplomatic communication. How well you can discuss terms.
+        /// </summary>
+        public override string Diplomacy_SpeakTermIs=> "Speaking terms: {0}";
+
+        /// <summary>
+        /// Diplomatic communication. Better than normal.
+        /// </summary>
+        public override string Diplomacy_SpeakTerms_Good=> "Good";
+
+        /// <summary>
+        /// Diplomatic communication. Normal.
+        /// </summary>
+        public override string Diplomacy_SpeakTerms_Normal=> "Normal";
+
+        /// <summary>
+        /// Diplomatic communication. Worse than normal.
+        /// </summary>
+        public override string Diplomacy_SpeakTerms_Bad=> "Bad";
+
+        /// <summary>
+        /// Diplomatic communication. Will not communicate.
+        /// </summary>
+        public override string Diplomacy_SpeakTerms_None=> "None";
+
+        /// <summary>
+        /// Diplomatic action. Make a new diplomatic relation.
+        /// </summary>
+        public override string Diplomacy_ForgeNewRelationTo=> "Forge relations to: {0}";
+
+        /// <summary>
+        /// Diplomatic action. Suggest a new diplomatic relation.
+        /// </summary>
+        public override string Diplomacy_OfferPeace=> "Offer peace";
+
+        /// <summary>
+        /// Diplomatic action. Suggest a new diplomatic relation.
+        /// </summary>
+        public override string Diplomacy_OfferAlliance=> "Offer alliance";
+
+        /// <summary>
+        /// Diplomatic title. Another player Suggested a new diplomatic relation. 0: player name
+        /// </summary>
+        public override string Diplomacy_PlayerOfferAlliance => "{0} offers new relations";
+
+        /// <summary>
+        /// Diplomatic action. Accept new diplomatic relation.
+        /// </summary>
+        public override string Diplomacy_AcceptRelationOffer=> "Accept new relation";
+
+        /// <summary>
+        /// Diplomatic description. Another player Suggested a new diplomatic relation. 0: relation type
+        /// </summary>
+        public override string Diplomacy_NewRelationOffered=> "New relation offered: {0}";
+
+        /// <summary>
+        /// Diplomatic action. Make another nation to serve you.
+        /// </summary>
+        public override string Diplomacy_AbsorbServant=> "Absorb as servant";
+
+        /// <summary>
+        /// Diplomatic description. Is against evil.
+        /// </summary>
+        public override string Diplomacy_LightSide=> "Is light side ally";
+
+        /// <summary>
+        /// Diplomatic description. How long the truce will last.
+        /// </summary>
+        public override string Diplomacy_TruceTimeLength=> "Ends in {0} seconds";
+
+        /// <summary>
+        /// Diplomatic action. Make the truce last longer.
+        /// </summary>
+        public override string Diplomacy_ExtendTruceAction=> "Extend truce";
+
+        /// <summary>
+        /// Diplomatic description. How long the truce will be extended.
+        /// </summary>
+        public override string Diplomacy_TruceExtendTimeLength=> "Extends truce by {0} seconds";
+
+        /// <summary>
+        /// Diplomatic description. Going against an agreed relation will cost diplomatic points.
+        /// </summary>
+        public override string Diplomacy_BreakingRelationCost=> "Breaking the relation will cost {0} diplomacy";
+
+        /// <summary>
+        /// Diplomatic description for allies.
+        /// </summary>
+        public override string Diplomacy_AllyDescription=> "Allies share war declarations.";
+
+        /// <summary>
+        /// Diplomatic description for good relation.
+        /// </summary>
+        public override string Diplomacy_GoodRelationDescription=> "Limits the ability to declare war.";
+
+        /// <summary>
+        /// Diplomatic description. You must have a larger military force than your servant (another nation that you will control).
+        /// </summary>
+        public override string Diplomacy_ServantRequirement_XStrongerMilitary=> "{0}x stronger military power";
+
+        /// <summary>
+        /// Diplomatic description. Servant must be stuck in a hopeless war (another nation that you will control).
+        /// </summary>
+        public override string Diplomacy_ServantRequirement_HopelessWar=> "Servant must be in war against a stronger foe";
+
+        /// <summary>
+        /// Diplomatic description. A servant can't own too many cities (another nation that you will control).
+        /// </summary>
+        public override string Diplomacy_ServantRequirement_MaxCities=> "Servant can have max {0} citites";
+
+        /// <summary>
+        /// Diplomatic description. Const in diplomatic points will increase (another nation that you will control).
+        /// </summary>
+        public override string Diplomacy_ServantPriceWillRaise=> "Price will raise for each servant";
+
+        /// <summary>
+        /// Diplomatic description. The result of servant relation, peaceful take over of another nation.
+        /// </summary>
+        public override string Diplomacy_ServantGainAbsorbFaction=> "Absorb the other faction";
+
 
         /// <summary>
         /// Stats that are shown on the end game screen. Total ingame time passed.

@@ -12,7 +12,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         {
             if (PlatformSettings.DevBuild)
             {
-                DssRef.lang = new Swedish();
+                DssRef.lang = new English();
                 Ref.langOpt= new HUD.OptionsLanguage_Swedish();
             }
             else

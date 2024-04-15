@@ -54,8 +54,8 @@ namespace VikingEngine.DSSWars.Profile
             if (state.controllerPickColorState)
             {
                 content.h2(PaintFlagState.ProfileColorName(state.selectedColorType));
-                content.icontext(SpriteName.LeftStick, "Hue");
-                content.icontext(SpriteName.RightStick, "Lightness");
+                content.icontext(SpriteName.LeftStick, DssRef.lang.ProfileEditor_Hue);
+                content.icontext(SpriteName.RightStick, DssRef.lang.ProfileEditor_Lightness);
                 content.newParagraph();
 
                 colorTypes();
@@ -66,11 +66,11 @@ namespace VikingEngine.DSSWars.Profile
                 content.newLine();
 
                 content.icontext(state.VisualInput.FlagDesign_PaintBucket.Icon, DssRef.lang.ProfileEditor_Bucket);
-                content.icontext(state.VisualInput.FlagDesign_ToggleColor_Next.Icon, "Next color type");
+                content.icontext(state.VisualInput.FlagDesign_ToggleColor_Next.Icon, DssRef.lang.ProfileEditor_NextColorType);
 
                 if (state.controllerMode)
                 {
-                    content.icontext(state.VisualInput.Controller_FlagDesign_Colorpicker.Icon, "Pick color");
+                    content.icontext(state.VisualInput.Controller_FlagDesign_Colorpicker.Icon, DssRef.lang.ProfileEditor_PickColor);
                 }
 
                 content.newParagraph();

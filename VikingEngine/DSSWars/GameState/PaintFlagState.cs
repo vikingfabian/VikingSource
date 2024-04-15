@@ -313,35 +313,7 @@ namespace VikingEngine.DSSWars
         {
         }
 
-        //void mainMenu()
-        //{
-        //    menuSystem.openMenu();
-
-        //    GuiLayout layout = new GuiLayout(DssRef.lang.ProfileEditor_OptionsMenu, menuSystem.menu, GuiLayoutMode.MultipleColumns, null);
-        //    {
-        //        new GuiLabel(DssRef.lang.ProfileEditor_FlagColorsTitle, layout);
-        //        profileColorButton(ProfileColorType.Main, layout);
-        //        profileColorButton(ProfileColorType.Detail1, layout);
-        //        profileColorButton(ProfileColorType.Detail2, layout);
-
-        //        new GuiSectionSeparator(layout);
-        //        new GuiLabel(DssRef.lang.ProfileEditor_PeopleColorsTitle, layout);
-        //        profileColorButton(ProfileColorType.Skin, layout);
-        //        profileColorButton(ProfileColorType.Hair, layout);
-
-        //        new GuiSectionSeparator(layout);
-
-        //        new GuiTextButton(DssRef.lang.ProfileEditor_MoveImage, null, moveImage, true, layout);
-        //        if (PlatformSettings.DevBuild)
-        //        {
-        //            new GuiTextButton("*Print array", null, file.dataGrid.Print, false, layout);
-        //        }
-        //        new GuiTextButton(DssRef.lang.ProfileEditor_DiscardAndExit, DssRef.lang.ProfileEditor_DiscardAndExitDescription, discardAndExit, false, layout);
-        //        new GuiTextButton(DssRef.lang.ProfileEditor_SaveAndExit, null, saveAndExit, false, layout);
-        //    }
-        //    layout.End();
-        //}
-
+       
         void moveImage()
         {
             GuiLayout layout = new GuiLayout(DssRef.lang.ProfileEditor_MoveImage, menuSystem.menu, GuiLayoutMode.MultipleColumns, null);

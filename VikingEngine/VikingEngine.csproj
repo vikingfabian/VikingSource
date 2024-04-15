@@ -63,6 +63,9 @@
     <None Remove="LF2\**" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="DSSWars\Display\Translation\Swedish.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
   </ItemGroup>
