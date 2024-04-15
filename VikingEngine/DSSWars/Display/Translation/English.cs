@@ -305,5 +305,86 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// Stats that are shown on the end game screen. Servants made through diplomacy. Servants cities and armies become yours.
         /// </summary>
         public override string EndGameStatistics_ServantFactions => "Diplomatic servants: {0}";
+
+
+        /// <summary>
+        /// Name for a specialized type of soldier. Standard front line soldier.
+        /// </summary>
+        public override string UnitType_Soldier=> "Soldier";
+        
+        /// <summary>
+        /// Name for a specialized type of soldier. Naval battle soldier.
+        /// </summary>
+        public override string UnitType_Sailor=> "Sailor";
+
+        /// <summary>
+        /// Name for a specialized type of soldier. Drafted peasants.
+        /// </summary>
+        public override string UnitType_Folkman=> "Folkman";
+
+        /// <summary>
+        /// Name for a specialized type of soldier. Shield and spear unit.
+        /// </summary>
+        public override string UnitType_Spearman=> "Spearman";
+
+        /// <summary>
+        /// Name for a specialized type of soldier. Elite force, part of the Kings guard.
+        /// </summary>
+        public override string UnitType_HonorGuard=> "Honor Guard";
+
+        /// <summary>
+        /// Name for a specialized type of soldier. Anti cavalry, wears long two-handed spears.
+        /// </summary>
+        public override string UnitType_Pikeman=> "Pikeman";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_Knight=> "Knight";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_Archer=> "Archer";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_CrossBow=> "CrossBow";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_Ballista=> "Ballista";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_Trollcannon=> "Troll cannon";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_GreenSoldier=> "Green soldier";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_Viking=> "Viking";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_DarkLord=> "Dark Lord";
+
+        /// <summary>
+        /// Name for a specialized type of soldier.
+        /// </summary>
+        public override string UnitType_BannerMan=> "Bannerman";
+
+        /// <summary>
+        /// Name for a military unit.
+        /// </summary>
+        public override string UnitType_Warship=> "Warship";
     }
 }
