@@ -9,7 +9,7 @@ namespace VikingEngine.DSSWars
     partial class Faction
     {
         public int gold = 40;
-        public int cityIncome, armyUpkeep;
+        public int totalWorkForce, cityIncome, armyUpkeep;
         public int nobelHouseCount = 0;
 
         public bool calcCost(int cost, ref int totalCost) {
@@ -46,18 +46,22 @@ namespace VikingEngine.DSSWars
         public void resources_updateAsynch()
         {
             int cityIncomeCount = 0;
+            int workForceCount = 0;
             int nobel = 0;
             var citiesC = cities.counter();
             while (citiesC.Next())
             {
                 citiesC.sel.updateIncome_asynch();
                 cityIncomeCount += citiesC.sel.income;
+                workForceCount += citiesC.sel.workForce.Int();
+
                 if (citiesC.sel.nobelHouse)
                 {
                     ++nobel;
                 }
             }
 
+            totalWorkForce = workForceCount;
             cityIncome = cityIncomeCount;
             nobelHouseCount = nobel;
 

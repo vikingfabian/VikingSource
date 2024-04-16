@@ -150,10 +150,11 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 if (args.gui.menuState.Count == 0)
                 {
-                    args.content.icontext(SpriteName.WarsGroupIcon, DssRef.lang.Hud_SoldierGroupsCount + ": " + groups.Count);
-                    args.content.icontext(SpriteName.WarsSoldierIcon,DssRef.lang.Hud_SoldierCount + ": " + TextLib.LargeNumber(count));
-                    args.content.icontext(SpriteName.WarsStrengthIcon,DssRef.lang.Hud_StrengthRating + ": " + string.Format(HudLib.OneDecimalFormat, strengthValue));
-                    args.content.icontext(SpriteName.rtsUpkeepTime,DssRef.lang.Hud_Upkeep + ": " + TextLib.LargeNumber(upkeep));
+                    //HudLib.ItemCount(args.content, SpriteName.WarsGroupIcon, DssRef.lang.Hud_SoldierGroupsCount, groups.Count.ToString());
+                    args.content.icontext(SpriteName.WarsGroupIcon, string.Format( DssRef.lang.Hud_SoldierGroupsCount, groups.Count));
+                    args.content.icontext(SpriteName.WarsSoldierIcon,string.Format(DssRef.lang.Hud_SoldierCount, TextLib.LargeNumber(count)));
+                    args.content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, string.Format(HudLib.OneDecimalFormat, strengthValue)));
+                    args.content.icontext(SpriteName.rtsUpkeepTime,string.Format(DssRef.lang.Hud_Upkeep ,TextLib.LargeNumber(upkeep)));
                     if (PlatformSettings.DevBuild)
                     {
                         args.content.text("Id: " + id.ToString());

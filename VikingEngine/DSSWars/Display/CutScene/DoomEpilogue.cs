@@ -35,9 +35,9 @@ namespace VikingEngine.DSSWars.Display.CutScene
             blackout.Opacity = 0;
 
             title = new Graphics.TextG( LoadedFont.Bold, VectorExt.AddY(Engine.Screen.CenterScreen, -Engine.Screen.IconSize * 2f), Engine.Screen.TextSizeV2 * 2f, Graphics.Align.CenterWidth, 
-                DssRef.lang.EndScreen_Epilouge_Title, Color.Yellow, HudLib.StoryContentLayer);
+                DssRef.lang.EndScreen_Epilogue_Title, Color.Yellow, HudLib.StoryContentLayer);
             text = new Graphics.TextBoxSimple(LoadedFont.Regular, VectorExt.AddY(Engine.Screen.CenterScreen, 0), Engine.Screen.TextSizeV2 * 2f, Graphics.Align.CenterWidth,
-               DssRef.lang.EndScreen_Epilouge_Text, 
+               DssRef.lang.EndScreen_Epilogue_Text, 
                 Color.White, HudLib.StoryContentLayer, Engine.Screen.Width * 0.3f);
 
             title.Opacity = 0;

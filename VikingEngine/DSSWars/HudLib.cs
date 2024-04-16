@@ -91,6 +91,13 @@ namespace VikingEngine.DSSWars
             }
             content.icontext(SpriteName.rtsUpkeepTime, text + TextLib.LargeNumber(value));  
         }
+
+        public static void ItemCount(RichBoxContent content, SpriteName icon, string item, string count)
+        { 
+            string text = string.Format( DssRef.lang.Language_ItemCountPresentation, item, count);
+            content.icontext(icon, text);
+        }
+
         public static Color ResourceCostColor(bool hasEnough)
         { 
             return hasEnough ? Color.LightGreen : Color.Red;

@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars
         public IButtonMap NextArmy;
         public IButtonMap NextCity;
         public IButtonMap NextBattle;
-        public IButtonMap CardMenu;
+        //public IButtonMap CardMenu;
         public IButtonMap Options;
         public IButtonMap Home;
         public IButtonMap Menu;

@@ -69,30 +69,32 @@ namespace VikingEngine.DSSWars.Players
                         aggressionLevel = AggressionLevel0_Passive;
                     }
                     
-                    name = "AI " + faction.parentArrayIndex.ToString();
+                    name = string.Format(DssRef.lang.FactionName_GenericAi, faction.parentArrayIndex);
                     break;
 
                 case FactionType.DarkLord:
                     faction.diplomaticSide = DiplomaticSide.Dark;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     faction.growthMultiplier = 1.5f;
-                    name = "Eye of Doom";
+                    name = DssRef.lang.FactionName_DarkLord;
                     faction.displayInFullOverview = true;
                     break;
 
                 case FactionType.DarkFollower:
                     faction.diplomaticSide = DiplomaticSide.Dark;
+                    DssRef.settings.Faction_DarkFollower = faction.parentArrayIndex;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     faction.growthMultiplier = 1.5f;
-                    name = "Servants of Dread";
+                    name = DssRef.lang.FactionName_DarkFollower;
                     faction.displayInFullOverview = true;
                     faction.gold += DssLib.HeadCityMaxWorkForce * 10;
                     break;
 
                 case FactionType.UnitedKingdom:
                     faction.diplomaticSide = DiplomaticSide.Dark;
+                    DssRef.settings.Faction_UnitedKingdom = faction.parentArrayIndex;
                     aggressionLevel = AggressionLevel1_RevengeOnly;
-                    name = "United Kingdoms";
+                    name = DssRef.lang.FactionName_UnitedKingdom;
                     faction.displayInFullOverview = true;
                     break;
 
@@ -102,48 +104,48 @@ namespace VikingEngine.DSSWars.Players
 
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     faction.growthMultiplier = 0.75f;
-                    name = "Green wood";
+                    name = DssRef.lang.FactionName_Greenwood;
                     addStartCitiesBuyOption(UnitType.GreenSoldier);
                     break;
 
                 case FactionType.EasternEmpire:
                     aggressionLevel = AggressionLevel1_RevengeOnly;
-                    name = "Eastern empire";
+                    name = DssRef.lang.FactionName_EasternEmpire;
                     break;
 
                 case FactionType.NordicRealm:
                     faction.grouptype = FactionGroupType.Nordic;
                     faction.diplomaticSide = DiplomaticSide.Light;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
-                    name = "Nordic realms";
+                    name = DssRef.lang.FactionName_NordicRealm;
                     addStartCitiesBuyOption(UnitType.Viking);
                     break;
 
                 case FactionType.BearClaw:
                     faction.grouptype = FactionGroupType.Nordic;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
-                    name = "Bear claw";
+                    name = DssRef.lang.FactionName_BearClaw;
                     addStartCitiesBuyOption(UnitType.Viking);
                     break;
 
                 case FactionType.NordicSpur:
                     faction.grouptype = FactionGroupType.Nordic;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
-                    name = "Nordic spur";
+                    name = DssRef.lang.FactionName_NordicSpur;
                     addStartCitiesBuyOption(UnitType.Viking);
                     break;
 
                 case FactionType.IceRaven:
                     faction.grouptype = FactionGroupType.Nordic;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
-                    name = "Ice Raven";
+                    name = DssRef.lang.FactionName_IceRaven;
                     addStartCitiesBuyOption(UnitType.Viking);
                     break;
 
                 case FactionType.DragonSlayer:
                     faction.grouptype = FactionGroupType.Nordic;
                     aggressionLevel = Ref.rnd.Chance(0.4) ? AggressionLevel2_RandomAttacks : AggressionLevel1_RevengeOnly;
-                    name = "Dragon slayer";
+                    name = DssRef.lang.FactionName_Dragonslayer;
                     addStartCitiesBuyOption(UnitType.CrossBow);
                     break;
 
@@ -154,7 +156,7 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     faction.growthMultiplier = 1.1f;
                     faction.hasDeserters = false;
-                    name = "South Hara";
+                    name = DssRef.lang.FactionName_SouthHara;
                     faction.displayInFullOverview = true;
                     faction.gold += DssLib.HeadCityMaxWorkForce * 5;
                     break;

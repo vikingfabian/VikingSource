@@ -14,6 +14,11 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string MyLanguage => "English";
 
         /// <summary>
+        /// How to display a number of items. 0: item, 1:Number
+        /// </summary>
+        public override string Language_ItemCountPresentation => "{0}: {1}";
+
+        /// <summary>
         /// Select language option
         /// </summary>
         public override string Lobby_Language => "Language";
@@ -29,7 +34,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Lobby_LocalMultiplayerEdit => "Local multiplayer ({0})";
 
         /// <summary>
-        /// Titel for menu where you select split screen player count
+        /// Title for menu where you select split screen player count
         /// </summary>
         public override string Lobby_LocalMultiplayerTitle => "Select player count";
 
@@ -87,7 +92,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// The extra content is not translated or have full controller support.
         /// </summary>
-        public override string Lobby_Extra_NoSupportWarning => "Warning! This content is not covered by localization or expected input/accessiblity support";
+        public override string Lobby_Extra_NoSupportWarning => "Warning! This content is not covered by localization or expected input/accessibility support";
 
 
         public override string Lobby_MapSizeTitle => "Map size";
@@ -123,7 +128,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Lobby_MapSizeOptEpic => "Epic";
 
         /// <summary>
-        /// Map size description X by Y kilometers
+        /// Map size description X by Y kilometers. 0: Width, 1: Height
         /// </summary>
         public override string Lobby_MapSizeDesc => "{0}x{1} km";
         /// <summary>
@@ -135,8 +140,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// Display local multiplayer name, 0: player number
         /// </summary>
         public override string Player_DefaultName => "Player {0}";
-        //--
-
+        
         /// <summary>
         /// In player profile editor. Opens menu with editor options
         /// </summary>
@@ -256,20 +260,25 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Ingame display. Soldiers protecting a building.
         /// </summary>
-        public override string Hud_GuardCount => "Group count";
+        public override string Hud_GuardCount => "Guards";
 
         public override string Hud_IncreaseMaxGuardCount => "Max guard size +{0}";
 
         public override string Hud_GuardCount_MustExpandCityMessage => "You need to expand the city.";
 
-        public override string Hud_SoldierCount => "Soldier count";
+        public override string Hud_SoldierCount => "Soldier count: {0}";
 
-        public override string Hud_SoldierGroupsCount => "Guard count: {0}";
+        public override string Hud_SoldierGroupsCount => "Group count: {0}";
 
         /// <summary>
         /// Ingame display. Unit caculated battle strength.
         /// </summary>
         public override string Hud_StrengthRating => "Strength rating: {0}";
+        
+        /// <summary>
+        /// Ingame display. Caculated battle strength for the whole nation.
+        /// </summary>
+        public override string Hud_TotalStrengthRating => "Military strength: {0}";
 
         /// <summary>
         /// Ingame display. Extra men coming from outside the city state.
@@ -305,7 +314,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string Hud_Purchase_CostWillIncreaseByX => "Cost will increase by {0}";
 
-        public override string Hud_Purchase_MaxCapasity => "Has reached maximum capacity";
+        public override string Hud_Purchase_MaxCapacity => "Has reached maximum capacity";
 
         public override string Hud_CompareMilitaryStrength_YourToOther => "Strength: Your {0} - Their {1}";
 
@@ -352,17 +361,19 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string ResourceType_DiplomacyPoints => "Diplomacy points";
 
-
-        public override string ResourceType_DiplomacyPoints_WithSoftAndHardLimit => "Diplomatic points: {0}/{1}({2})";
+        /// <summary>
+        /// 0: How many points you got, 1: Soft max value (will increase much slower after this), 2: Hard limit
+        /// </summary>
+        public override string ResourceType_DiplomacyPoints_WithSoftAndHardLimit => "Diplomatic points: {0} / {1} ({2})";
 
         /// <summary>
         /// City building type. Building for knights and diplomats.
         /// </summary>
-        public override string Building_NobelHouse => "Nobel house";
+        public override string Building_NobleHouse => "Noble house";
 
-        public override string Building_NobelHouse_DiplomacyPointsAdd => "1 diplomacy point per {0} seconds";
-        public override string Building_NobelHouse_DiplomacyPointsLimit => "+{0} to diplomacy point max limit";
-        public override string Building_NobelHouse_UnlocksKnight => "Unlocks Knight unit";
+        public override string Building_NobleHouse_DiplomacyPointsAdd => "1 diplomacy point per {0} seconds";
+        public override string Building_NobleHouse_DiplomacyPointsLimit => "+{0} to diplomacy point max limit";
+        public override string Building_NobleHouse_UnlocksKnight => "Unlocks Knight unit";
 
         public override string Building_BuildAction => "Build";
         public override string Building_IsBuilt => "Built";
@@ -406,7 +417,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         ///  In game settings menu.Difficulty option. No Boss description.
         /// </summary>
-        public override string Settings_BossEvents_SandboxDescription => "Turning off the boss will put the game in a sandbox mode with no ending.";
+        public override string Settings_BossEvents_SandboxDescription => "Disabling boss events will put the game in a sandbox mode with no ending.";
 
 
         /// <summary>
@@ -416,7 +427,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Options for automating game mechanics. Information about how the automation works.
         /// </summary>
-        public override string Automation_InfoLine_MaxWorkforce => "Will wait for the work force to max out";
+        public override string Automation_InfoLine_MaxWorkforce => "Will wait for the workforce to max out";
         /// <summary>
         /// Options for automating game mechanics. Information about how the automation works.
         /// </summary>
@@ -428,7 +439,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Options for automating game mechanics. Information about how the automation works.
         /// </summary>
-        public override string Automation_InfoLine_PurchaseSpeed => "Does max one purchase per second";
+        public override string Automation_InfoLine_PurchaseSpeed => "Performs a maximum of one purchase per second";
 
         
         /// <summary>
@@ -479,7 +490,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Diplomacy_RelationType_TotalWar=> "Total war";
 
         /// <summary>
-        /// Diplomatic communication. How well you can discuss terms.
+        /// Diplomatic communication. How well you can discuss terms. 0: SpeakTerms
         /// </summary>
         public override string Diplomacy_SpeakTermIs=> "Speaking terms: {0}";
 
@@ -561,7 +572,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Diplomatic description. Going against an agreed relation will cost diplomatic points.
         /// </summary>
-        public override string Diplomacy_BreakingRelationCost=> "Breaking the relation will cost {0} diplomacy";
+        public override string Diplomacy_BreakingRelationCost=> "Breaking the relation will cost {0} diplomacy points";
 
         /// <summary>
         /// Diplomatic description for allies.
@@ -586,12 +597,12 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Diplomatic description. A servant can't own too many cities (another nation that you will control).
         /// </summary>
-        public override string Diplomacy_ServantRequirement_MaxCities=> "Servant can have max {0} citites";
+        public override string Diplomacy_ServantRequirement_MaxCities=> "Servant can have max {0} cities";
 
         /// <summary>
         /// Diplomatic description. Const in diplomatic points will increase (another nation that you will control).
         /// </summary>
-        public override string Diplomacy_ServantPriceWillRaise=> "Price will raise for each servant";
+        public override string Diplomacy_ServantPriceWillRise=> "Price will rise for each servant";
 
         /// <summary>
         /// Diplomatic description. The result of servant relation, peaceful take over of another nation.
@@ -655,7 +666,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Stats that are shown on the end game screen.  Diplomacy. War declarations made toward you.
         /// </summary>
-        public override string EndGameStatistics_WarsStartedByEnemy => "War declarations recieved: {0}";
+        public override string EndGameStatistics_WarsStartedByEnemy => "War declarations received: {0}";
 
         /// <summary>
         /// Stats that are shown on the end game screen. Allies made through diplomacy.
@@ -720,7 +731,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Name for a specialized type of soldier. 
         /// </summary>
-        public override string UnitType_CrossBow=> "CrossBow";
+        public override string UnitType_Crossbow=> "Crossbow";
 
         /// <summary>
         /// Name for a specialized type of soldier. Warmashine that slings large spears.
@@ -730,12 +741,12 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Name for a specialized type of soldier. A fantasy troll wearing a cannon.
         /// </summary>
-        public override string UnitType_Trollcannon=> "Troll cannon";
+        public override string UnitType_Trollcannon=> "Trollcannon";
 
         /// <summary>
         /// Name for a specialized type of soldier. Soldier from the forest.
         /// </summary>
-        public override string UnitType_GreenSoldier=> "Green soldier";
+        public override string UnitType_GreenSoldier=> "Green Soldier";
 
         /// <summary>
         /// Name for a specialized type of soldier. Naval unit from the north.
@@ -750,21 +761,41 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Name for a specialized type of soldier. Soldier that carries a large flag.
         /// </summary>
-        public override string UnitType_BannerMan=> "Bannerman";
+        public override string UnitType_Bannerman=> "Bannerman";
 
         /// <summary>
         /// Name for a military unit. Soldier carrying ship. 0: unit type it carries
         /// </summary>
         public override string UnitType_WarshipWithUnit=> "{0} warship";
 
-
+        /// <summary>
+        /// Information about a soldier type
+        /// </summary>
         public override string SoldierStats_Title => "Stats per unit";
 
+        /// <summary>
+        /// How many groups of soldiers
+        /// </summary>
         public override string SoldierStats_GroupCountAndSoldierCount => "{0} groups, a total of {1} units";
+        
+        /// <summary>
+        /// Soldiers will have different strengths depending if the attack on open field, from ships or attacking a settlement
+        /// </summary>
         public override string SoldierStats_AttackStrengthLandSeaCity => "Attack strength: Land {0} | Sea {1} | City {2}";
+
+        /// <summary>
+        /// How many wounds a soldier can endure
+        /// </summary>
         public override string SoldierStats_Health => "Health: {0}";
 
+        /// <summary>
+        /// Some soldiers will increase the army movement speed
+        /// </summary>
         public override string SoldierStats_SpeedBonusLand => "Army speed bonus on land: {0}";
+
+        /// <summary>
+        /// Some soldiers will increase the ship movement speed
+        /// </summary>
         public override string SoldierStats_SpeedBonusSea => "Army speed bonus on sea: {0}";
         /// <summary>
         /// Menu option to control an army. Make them stop moving.
@@ -819,7 +850,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
         /// </summary>
-        public override string ArmyOption_SplitHalf => "Split army in half";
+        public override string ArmyOption_DivideHalf => "Divide army in half";
 
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
@@ -829,22 +860,126 @@ namespace VikingEngine.DSSWars.Display.Translation
 
 
         /// <summary>
-        /// Button caption for action. Purchase soldiers.
+        /// Purchase soldiers.
         /// </summary>
         public override string CityOption_Recruit => "Recruit";
 
-        
+        /// <summary>
+        /// Purchase soldiers of type. 0:type
+        /// </summary>
         public override string CityOption_RecruitType => "Recruit {0}";
+
+        /// <summary>
+        /// Number of paid soldiers
+        /// </summary>
         public override string CityOption_XMercenaries => "Mercenaries: {0}";
+
+        /// <summary>
+        /// Purchase a number of paid soldiers
+        /// </summary>
         public override string CityOption_BuyXMercenaries => "Import {0} mercenaries";
 
         public override string CityOption_Mercenaries_Description => "Soldiers will be drafted from mercenaries instead of your workforce";
+        
         /// <summary>
         /// Button caption for action. Create housing for more workers.
         /// </summary>
-        public override string CityOption_ExpandWorkForce => "Expand work force";
-        public override string CityOption_ExpandWorkForce_IncreaseMax => "Max work force +{0}";
+        public override string CityOption_ExpandWorkForce => "Expand workforce";
+        public override string CityOption_ExpandWorkForce_IncreaseMax => "Max workforce +{0}";
         public override string CityOption_ExpandGuardSize => "Expand guard";
+
+
+
+        /// <summary>
+        /// The main boss. Named after a glowing metal stone stuck in their forehead.
+        /// </summary>
+        public override string FactionName_DarkLord => "Eye of Doom";
+
+        /// <summary>
+        /// Orc inspired faction. Works for the dark lord.
+        /// </summary>
+        public override string FactionName_DarkFollower => "Servants of Dread";
+
+        /// <summary>
+        /// The largest faction, the old but corrupted kingdom.
+        /// </summary>
+        public override string FactionName_UnitedKingdom => "United Kingdoms";
+
+        /// <summary>
+        /// Elf inspired faction. Lives in harmony with the forest.
+        /// </summary>
+        public override string FactionName_Greenwood => "Greenwood";
+        
+        /// <summary>
+        /// Asian flavored faction to the east 
+        /// </summary>
+        public override string FactionName_EasternEmpire => "Eastern Empire";
+        
+        /// <summary>
+        /// Viking flavored kingdom in the north. The largest one.
+        /// </summary>
+        public override string FactionName_NordicRealm => "Nordic Realms";
+
+        /// <summary>
+        /// Viking flavored kingdom in the north. Uses a bear claw symbol.
+        /// </summary>
+        public override string FactionName_BearClaw => "Bear claw";
+
+        /// <summary>
+        /// Viking flavored kingdom in the north. Uses a cock symbol.
+        /// </summary>
+        public override string FactionName_NordicSpur => "Nordic spur";
+
+        /// <summary>
+        /// Viking flavored kingdom in the north. Uses a black raven symbol.
+        /// </summary>
+        public override string FactionName_IceRaven => "Ice Raven";
+
+        /// <summary>
+        /// Faction famous for killing dragons with powerful ballistas.
+        /// </summary>
+        public override string FactionName_Dragonslayer => "Dragonslayer";
+
+        /// <summary>
+        /// A mercenary unit from the south. Arabic flavored.
+        /// </summary>
+        public override string FactionName_SouthHara => "South Hara";
+
+        /// <summary>
+        /// Name for neutral CPU controlled nations
+        /// </summary>
+        public override string FactionName_GenericAi => "AI {0}";
+
+        /// <summary>
+        /// Display name for players and their numbers
+        /// </summary>
+        public override string FactionName_Player => "Player {0}";
+
+        /// <summary>
+        /// Message for when a miniboss is approaching on ships from the south.
+        /// </summary>
+        public override string EventMessage_HaraMercenaryTitle => "Enemy approaching!";
+        public override string EventMessage_HaraMercenaryText => "Hara mercenaries have been spotted in the south";
+
+        /// <summary>
+        /// First warning that the main boss will appear.
+        /// </summary>
+        public override string EventMessage_ProphesyTitle => "A dark prophesy";
+        public override string EventMessage_ProphesyText => "The Eye of Doom will appear soon, and your enemies will join him!";
+
+        /// <summary>
+        /// Second warning that the main boss will appear.
+        /// </summary>
+        public override string EventMessage_FinalBossEnterTitle => "Dark times";
+        public override string EventMessage_FinalBossEnterText => "The Eye of Doom has entered the map!";
+
+        /// <summary>
+        /// Message when the main boss will meet you on the battlefield.
+        /// </summary>
+        public override string EventMessage_FinalBattleTitle => "A desperate attack";
+        public override string EventMessage_FinalBattleText => "The dark lord has joined the battlefield. Now is your chance to destroy him!";
+
+
 
         /// <summary>
         /// Game has ended in success.
@@ -852,9 +987,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string EndScreen_VictoryTitle => "Victory!";
 
         /// <summary>
-        /// Qoutes from the leader character you play in the game
+        /// Quotes from the leader character you play in the game
         /// </summary>
-        public override List<string> EndScreen_VictoryQoutes => new List<string>
+        public override List<string> EndScreen_VictoryQuotes => new List<string>
         {
             "In times of peace, we mourn the dead.",
             "Every triumph carries a shadow of sacrifice.",
@@ -868,9 +1003,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string EndScreen_FailTitle => "Failure!";
 
         /// <summary>
-        /// Qoutes from the leader character you play in the game
+        /// Quotes from the leader character you play in the game
         /// </summary>
-        public override List<string> EndScreen_FailureQoutes => new List<string>
+        public override List<string> EndScreen_FailureQuotes => new List<string>
         {
             "With our bodies torn from marching and nights of worry, we welcome the end.",
             "Defeat may darken our lands, but they cannot extinguish the light of our determination.",
@@ -881,18 +1016,17 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// A small cutscene at the end of the game
         /// </summary>
-        public override string EndScreen_WatchEpilouge => "Watch epilogue";
+        public override string EndScreen_WatchEpilogue => "Watch epilogue";
 
         /// <summary>
         /// Cutscene title
         /// </summary>
-        public override string EndScreen_Epilouge_Title => "Epilogue";
+        public override string EndScreen_Epilogue_Title => "Epilogue";
 
         /// <summary>
         /// Cutscene introduction
         /// </summary>
-        public override string EndScreen_Epilouge_Text => "160 years ago";
-
+        public override string EndScreen_Epilogue_Text => "160 years ago";
 
         /// <summary>
         /// Ingame menu when pausing

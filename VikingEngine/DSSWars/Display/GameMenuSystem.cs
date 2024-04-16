@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.Display
             base.closeMenu();
         }
 
-        void pauseMenu()
+        public void pauseMenu()
         { 
             openMenu();
             GuiLayout layout = new GuiLayout(DssRef.lang.GameMenu_Title, menu);

@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.Players
                     {                       
                         foreach (var p in DssRef.state.localPlayers)
                         {
-                            p.hud.messages.Add("Enemy approaching!", "Hara merchenaries has been spotted in the south");
+                            p.hud.messages.Add(DssRef.lang.EventMessage_HaraMercenaryTitle, DssRef.lang.EventMessage_HaraMercenaryText);
                         }
                         messageDone = true;
                     }

@@ -51,11 +51,11 @@ namespace VikingEngine.DSSWars
                 });
             }
 
-            if (DssRef.state.darkLordPlayer.darkLordUnit != null && DssRef.state.darkLordPlayer.darkLordUnit.Alive())
+            if (DssRef.settings.darkLordPlayer.darkLordUnit != null && DssRef.settings.darkLordPlayer.darkLordUnit.Alive())
             {
                 questFlags.Add(new QuestFlag()
                 {
-                    GameObject = DssRef.state.darkLordPlayer.darkLordUnit,
+                    GameObject = DssRef.settings.darkLordPlayer.darkLordUnit,
                     icon = new Graphics.Image(SpriteName.WarsDarkLordBossIcon, Vector2.Zero, Screen.IconSizeV2, HudLib.DiplomacyDisplayLayer - 2, true),
                 });
             }
@@ -270,7 +270,7 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        private void cancel()
+        public void cancel()
         {
             if (selected != null)
             {

@@ -72,7 +72,8 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
 
-            if (rel.Relation == RelationType.RelationType3_Ally)
+            if (rel.Relation == RelationType.RelationType3_Ally &&
+                !rel.secret)
             {
                 faction.tradeAllianceWars(otherFaction);
             }

@@ -116,7 +116,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
                 //};
 
                 content.h1(DssRef.lang.EndScreen_VictoryTitle).overrideColor = Color.Yellow;
-                content.text(arraylib.RandomListMember(DssRef.lang.EndScreen_VictoryQoutes));
+                content.text(arraylib.RandomListMember(DssRef.lang.EndScreen_VictoryQuotes));
             }
             else
             {
@@ -129,13 +129,13 @@ namespace VikingEngine.DSSWars.Display.CutScene
                 //};
 
                 content.h1(DssRef.lang.EndScreen_FailTitle).overrideColor = Color.Yellow;
-                content.text(arraylib.RandomListMember(DssRef.lang.EndScreen_FailureQoutes));
+                content.text(arraylib.RandomListMember(DssRef.lang.EndScreen_FailureQuotes));
             }
 
             content.newParagraph();
             if (victory)
             {
-                content.Button(DssRef.lang.EndScreen_WatchEpilouge, new RbAction(watchEpilogue), null, true);
+                content.Button(DssRef.lang.EndScreen_WatchEpilogue, new RbAction(watchEpilogue), null, true);
                 content.newLine();
             }
             content.Button(DssRef.lang.GameMenu_ContinueGame, new RbAction(DssRef.state.cutScene.Close), null, true);

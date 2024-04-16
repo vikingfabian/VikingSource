@@ -10,6 +10,8 @@ namespace VikingEngine.DSSWars.Display.Translation
     {
         public abstract string MyLanguage { get; }
 
+        public abstract string Language_ItemCountPresentation { get; }
+
         public abstract string Lobby_Language { get; }
         public abstract string Lobby_Start { get; }
         public abstract string Lobby_LocalMultiplayerEdit { get; }
@@ -91,6 +93,8 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string Hud_StrengthRating { get; }
 
+        public abstract string Hud_TotalStrengthRating { get; }
+
         public abstract string Hud_Immigrants { get; }
 
         public abstract string Hud_CityCount { get; }
@@ -111,7 +115,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string Hud_Purchase_CostWillIncreaseByX { get; }
 
-        public abstract string Hud_Purchase_MaxCapasity { get; }
+        public abstract string Hud_Purchase_MaxCapacity { get; }
 
         public abstract string Hud_CompareMilitaryStrength_YourToOther { get; }
 
@@ -128,10 +132,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string ResourceType_DiplomacyPoints { get; }
         public abstract string ResourceType_DiplomacyPoints_WithSoftAndHardLimit { get; }
 
-        public abstract string Building_NobelHouse { get; }
-        public abstract string Building_NobelHouse_DiplomacyPointsAdd { get; }
-        public abstract string Building_NobelHouse_DiplomacyPointsLimit { get; }
-        public abstract string Building_NobelHouse_UnlocksKnight { get; }
+        public abstract string Building_NobleHouse { get; }
+        public abstract string Building_NobleHouse_DiplomacyPointsAdd { get; }
+        public abstract string Building_NobleHouse_DiplomacyPointsLimit { get; }
+        public abstract string Building_NobleHouse_UnlocksKnight { get; }
 
         public abstract string Building_BuildAction { get; }
         public abstract string Building_IsBuilt { get; }
@@ -197,7 +201,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string Diplomacy_ServantRequirement_HopelessWar { get; }
         public abstract string Diplomacy_ServantRequirement_MaxCities { get; }
 
-        public abstract string Diplomacy_ServantPriceWillRaise { get; }
+        public abstract string Diplomacy_ServantPriceWillRise { get; }
         public abstract string Diplomacy_ServantGainAbsorbFaction { get; }
 
         public abstract string EndGameStatistics_Title { get; }
@@ -227,13 +231,13 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string UnitType_Pikeman { get; }
         public abstract string UnitType_Knight { get; }
         public abstract string UnitType_Archer { get; }
-        public abstract string UnitType_CrossBow { get; }
+        public abstract string UnitType_Crossbow { get; }
         public abstract string UnitType_Ballista { get; }
         public abstract string UnitType_Trollcannon { get; }
         public abstract string UnitType_GreenSoldier { get; }
         public abstract string UnitType_Viking { get; }
         public abstract string UnitType_DarkLord { get; }
-        public abstract string UnitType_BannerMan { get; }
+        public abstract string UnitType_Bannerman { get; }
         public abstract string UnitType_WarshipWithUnit { get; }
 
         public abstract string SoldierStats_Title { get; }
@@ -254,7 +258,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string ArmyOption_SendToNewArmy { get; }
         public abstract string ArmyOption_SendX { get; }
         public abstract string ArmyOption_SendAll { get; }
-        public abstract string ArmyOption_SplitHalf { get; }
+        public abstract string ArmyOption_DivideHalf { get; }
         public abstract string ArmyOption_MergeArmies { get; }
 
 
@@ -268,19 +272,44 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string CityOption_ExpandWorkForce_IncreaseMax { get; }
 
         public abstract string CityOption_ExpandGuardSize { get; }
-        
+
+
+        public abstract string FactionName_DarkLord { get; }
+        public abstract string FactionName_DarkFollower { get; }
+        public abstract string FactionName_UnitedKingdom { get; }
+        public abstract string FactionName_Greenwood { get; }
+        public abstract string FactionName_EasternEmpire { get; }
+        public abstract string FactionName_NordicRealm { get; }
+        public abstract string FactionName_BearClaw { get; }
+        public abstract string FactionName_NordicSpur { get; }
+        public abstract string FactionName_IceRaven { get; }
+        public abstract string FactionName_Dragonslayer { get; }
+        public abstract string FactionName_SouthHara { get; }
+        public abstract string FactionName_GenericAi { get; }
+        public abstract string FactionName_Player { get; }
+
+        public abstract string EventMessage_HaraMercenaryTitle { get; }
+        public abstract string EventMessage_HaraMercenaryText { get; }
+        public abstract string EventMessage_ProphesyTitle { get; }
+        public abstract string EventMessage_ProphesyText { get; }
+        public abstract string EventMessage_FinalBossEnterTitle { get; }
+        public abstract string EventMessage_FinalBossEnterText { get; }
+        public abstract string EventMessage_FinalBattleTitle { get; }
+        public abstract string EventMessage_FinalBattleText { get; }
+
+
         public abstract string EndScreen_VictoryTitle { get; }
 
-        public abstract List<string> EndScreen_VictoryQoutes { get; }
+        public abstract List<string> EndScreen_VictoryQuotes { get; }
 
         public abstract string EndScreen_FailTitle { get; }
 
-        public abstract List<string> EndScreen_FailureQoutes { get; }
+        public abstract List<string> EndScreen_FailureQuotes { get; }
 
-        public abstract string EndScreen_WatchEpilouge { get; }
+        public abstract string EndScreen_WatchEpilogue { get; }
 
-        public abstract string EndScreen_Epilouge_Title { get; }
-        public abstract string EndScreen_Epilouge_Text { get; }
+        public abstract string EndScreen_Epilogue_Title { get; }
+        public abstract string EndScreen_Epilogue_Text { get; }
 
 
         public abstract string GameMenu_Title { get; }

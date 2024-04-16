@@ -36,6 +36,16 @@ namespace VikingEngine.DSSWars
             {
                 prepareNext();
             }
+
+            //Prepare secret alliances
+            var DarkFollower = DssRef.world.factions.Array[DssRef.settings.Faction_DarkFollower];
+            var SouthHara = DssRef.world.factions.Array[DssRef.settings.Faction_SouthHara];
+            var UnitedKingdom = DssRef.world.factions.Array[DssRef.settings.Faction_UnitedKingdom];
+
+            DssRef.diplomacy.SetRelationType(DarkFollower, SouthHara, RelationType.RelationType3_Ally).secret = true;
+            DssRef.diplomacy.SetRelationType(DarkFollower, UnitedKingdom, RelationType.RelationType3_Ally).secret = true;
+            DssRef.diplomacy.SetRelationType(UnitedKingdom, SouthHara, RelationType.RelationType3_Ally).secret = true;
+
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
@@ -212,15 +222,15 @@ namespace VikingEngine.DSSWars
                     {
                         foreach (var p in DssRef.state.localPlayers)
                         {
-                            p.hud.messages.Add("A dark prophesy", "The Eye of Doom will appear soon, and your enemies will join him!");
+                            p.hud.messages.Add(DssRef.lang.EventMessage_ProphesyTitle, DssRef.lang.EventMessage_ProphesyText);
                         }
                     }
                     break;
                 case EventType.DarkLord:
                     {
                         if (arraylib.HasMembers(darkLordAvailableFactions))
-                        { 
-                            DssRef.state.darkLordPlayer.EnterMap(arraylib.RandomListMember(darkLordAvailableFactions), darkLordAllies);
+                        {
+                            DssRef.settings.darkLordPlayer.EnterMap(arraylib.RandomListMember(darkLordAvailableFactions), darkLordAllies);
 
                             darkLordAllies = null;
                             darkLordAvailableFactions = null;
@@ -229,7 +239,7 @@ namespace VikingEngine.DSSWars
 
                             foreach (var p in DssRef.state.localPlayers)
                             {
-                                p.hud.messages.Add("Dark times", "The Eye of Doom has entered the map!");
+                                p.hud.messages.Add(DssRef.lang.EventMessage_FinalBossEnterTitle, DssRef.lang.EventMessage_FinalBossEnterText);
 
                                 if (!DssRef.diplomacy.InWar(p.faction, greenwood))
                                 {
@@ -512,7 +522,7 @@ namespace VikingEngine.DSSWars
             factories.Remove(city);
             if (factories.Count == 0)
             {
-                DssRef.state.darkLordPlayer.factoriesLeft = 0;
+                DssRef.settings.darkLordPlayer.factoriesLeft = 0;
                 nextEvent = EventType.DarkLordInPerson;
                 //Ref.update.AddSyncAction(new SyncAction(RunNextEvent));
             }
@@ -524,7 +534,7 @@ namespace VikingEngine.DSSWars
 
             foreach (var p in DssRef.state.localPlayers)
             {
-                p.hud.messages.Add("A desperate attack", "The dark lord has joined the battlefield. Now is your chance to destroy him!");
+                p.hud.messages.Add(DssRef.lang.EventMessage_FinalBattleTitle, DssRef.lang.EventMessage_FinalBattleText);
             }
 
         }
@@ -540,7 +550,7 @@ namespace VikingEngine.DSSWars
         {
             if (nextEvent != EventType.End)
             {
-                if (DssRef.state.darkLordPlayer.darkLordUnit == null)
+                if (DssRef.settings.darkLordPlayer.darkLordUnit == null)
                 {
                     DssRef.achieve.UnlockAchievement(AchievementIndex.no_darklord);
                 }

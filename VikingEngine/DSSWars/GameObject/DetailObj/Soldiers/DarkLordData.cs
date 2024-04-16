@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars.GameObject
         public override AbsDetailUnit CreateUnit()
         {
             var unit = new DarkLord();
-            DssRef.state.darkLordPlayer.darkLordUnit = unit;
+            DssRef.settings.darkLordPlayer.darkLordUnit = unit;
             return unit;
         }
     }
@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars.GameObject
         public DarkLord()
             : base()
         {
-            DssRef.state.darkLordPlayer.darkLordUnit = this;
+            DssRef.settings.darkLordPlayer.darkLordUnit = this;
             DssRef.state.events.onDarkLordSpawn();
         }
 

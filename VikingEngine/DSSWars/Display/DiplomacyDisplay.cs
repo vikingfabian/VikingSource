@@ -61,7 +61,11 @@ namespace VikingEngine.DSSWars.Display
                 content.Add(new RichBoxText(faction.PlayerName));
                 content.Add(new RichBoxSeperationLine());
 
-               
+                HeadDisplay.FactionSize(faction, content, false);
+                //content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(faction.totalWorkForce));
+                //content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_TotalStrengthRating, TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
+                
+                content.newParagraph();
                 //content.text(string.Format(relation, Diplomacy.RelationString(selectedRelation.Relation)));
 
                 content.Add(new RichBoxText(DssRef.lang.Diplomacy_RelationType + " :"));
@@ -448,8 +452,8 @@ namespace VikingEngine.DSSWars.Display
             {
                 ++player.statistics.ServantFactions;
                 otherfaction.mergeTo(player.faction);
-
-                player.hud.needRefresh = true;
+                player.diplomacyMap.cancel();
+                //player.hud.needRefresh = true;
             }
         }
 
@@ -516,7 +520,7 @@ namespace VikingEngine.DSSWars.Display
             content.newLine();
 
             diplomacyCostToHud(cost, content);
-            content.text(DssRef.lang.Diplomacy_ServantPriceWillRaise);
+            content.text(DssRef.lang.Diplomacy_ServantPriceWillRise);
 
             content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
             

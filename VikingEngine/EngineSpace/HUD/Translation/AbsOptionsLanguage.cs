@@ -17,5 +17,18 @@ namespace VikingEngine.HUD
         public abstract string InputNotSet { get; }
 
         public abstract string VerticalSplitScreen { get; }
+
+        public abstract string SoundOption_MusicVolume { get; }
+        public abstract string SoundOption_SoundVolume { get; }
+        public abstract string GraphicsOption_Resolution { get; }
+        public abstract string GraphicsOption_Resolution_PercentageOption { get; }
+        public abstract string GraphicsOption_Fullscreen { get; }
+        public abstract string GraphicsOption_OversizeWidth { get; }
+        public abstract string GraphicsOption_PercentageOversizeWidth { get; }
+        public abstract string GraphicsOption_OversizeHeight { get; }
+        public abstract string GraphicsOption_PercentageOversizeHeight { get; }
+        public abstract string GraphicsOption_Oversize_None { get; }
+        public abstract string GraphicsOption_RecordingPresets { get; }
+        public abstract string GraphicsOption_YoutubePreset { get; }
     }
 }

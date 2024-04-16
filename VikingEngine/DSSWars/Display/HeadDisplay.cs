@@ -84,14 +84,27 @@ namespace VikingEngine.DSSWars.Display
                         new RichBoxImage(player.input.PauseGame.Icon),
                         new RichBoxText(Ref.isPaused? DssRef.lang.Input_ResumePaused : DssRef.lang.Input_Pause),
                     },
-                        new RbAction(DssRef.state.pauseAction),
-                        null));
+                    new RbAction(DssRef.state.pauseAction),
+                    null));
 
                     content.Add(new RichBoxNewLine());
                 }
             }
 
-            
+            void gameMenuButton()
+            {
+                content.Add(new RichboxButton(new List<AbsRichBoxMember>
+                    {
+                        new RichBoxImage(player.input.Menu.Icon),
+                        new RichBoxText(DssRef.lang.GameMenu_Title),
+                    },
+                    new RbAction(player.menuSystem.pauseMenu),
+                    null));
+
+                content.Add(new RichBoxNewLine());
+            }
+
+
 
             void defaultMenu(Players.LocalPlayer player, bool fullDisplay, Faction faction)
             {
@@ -130,6 +143,11 @@ namespace VikingEngine.DSSWars.Display
                         content.newLine();
                     }
 
+                    FactionSize(faction, content, fullDisplay);
+                    //content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(faction.totalWorkForce));
+                    //content.icontext(SpriteName.WarsStrengthIcon, string.Format( DssRef.lang.Hud_TotalStrengthRating, TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
+                    
+
                     if (player.IsLocalHost() && Ref.isPaused)
                     {
                         pauseButton();
@@ -157,6 +175,7 @@ namespace VikingEngine.DSSWars.Display
                         if (fullDisplay && player.IsLocalHost())
                         {
                             pauseButton();
+                            gameMenuButton();
                         }
                     }
 
@@ -217,6 +236,29 @@ namespace VikingEngine.DSSWars.Display
 
                 }
             }
+        }
+
+        public static void FactionSize(Faction faction, RichBoxContent content, bool fullDisplay)
+        {
+            if (fullDisplay)
+            {
+                 content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(faction.totalWorkForce));
+                content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_TotalStrengthRating, TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
+            }
+            else
+            {
+                content.newLine();
+                content.Add(new RichBoxImage(SpriteName.WarsWorker));
+                content.space();
+                content.Add(new RichBoxText(TextLib.LargeNumber(faction.totalWorkForce)));
+
+                content.space(2);
+
+                content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
+                content.space();
+                content.Add(new RichBoxText(TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
+            }
+            content.newLine();
         }
 
         void gameSpeedClick(int toSpeed)

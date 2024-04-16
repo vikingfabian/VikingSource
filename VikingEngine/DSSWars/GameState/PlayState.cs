@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars
         
         public int nextGroupId = 0;
         public List<Players.LocalPlayer> localPlayers;
-        public Players.DarkLordPlayer darkLordPlayer;
+        
         public SpottedArray<Battle.BattleGroup> battles = new SpottedArray<Battle.BattleGroup>(64);
 
         bool host;
@@ -108,11 +108,10 @@ namespace VikingEngine.DSSWars
             DssRef.world.factionsCounter.Reset();
             while (DssRef.world.factionsCounter.Next())
             {
-
                 DssRef.world.factionsCounter.sel.initDiplomacy(DssRef.world);
                 if (DssRef.world.factionsCounter.sel.factiontype == FactionType.DarkLord)
                 {
-                    darkLordPlayer = new Players.DarkLordPlayer(DssRef.world.factionsCounter.sel);
+                    DssRef.settings.darkLordPlayer = new Players.DarkLordPlayer(DssRef.world.factionsCounter.sel);
                 }
                 else
                 {

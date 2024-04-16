@@ -86,13 +86,13 @@ namespace VikingEngine.DSSWars
         public const float ArmyWeeklyCityTraining = 0.010f;
         public const float ArmyMaxCityTraining = -0.20f;
 
-        public const int SmallCityStartWorkForce = AbsSoldierData.GroupDefaultCount * 4;
-        public const int LargeCityStartWorkForce = AbsSoldierData.GroupDefaultCount * 6;
-        public const int HeadCityStartWorkForce = AbsSoldierData.GroupDefaultCount * 10;
+        //public const int SmallCityStartWorkForce = AbsSoldierData.GroupDefaultCount * 4;
+        //public const int LargeCityStartWorkForce = AbsSoldierData.GroupDefaultCount * 6;
+        //public const int HeadCityStartWorkForce = AbsSoldierData.GroupDefaultCount * 10;
 
-        public static readonly int SmallCityMaxWorkForce = Convert.ToInt32(1.5 * SmallCityStartWorkForce);
-        public static readonly int LargeCityMaxWorkForce = Convert.ToInt32(1.5 * LargeCityStartWorkForce);
-        public static readonly int HeadCityMaxWorkForce = Convert.ToInt32(1.5 * HeadCityStartWorkForce);
+        public static readonly int SmallCityMaxWorkForce = Convert.ToInt32(AbsSoldierData.GroupDefaultCount * 6);
+        public static readonly int LargeCityMaxWorkForce = Convert.ToInt32(AbsSoldierData.GroupDefaultCount * 9);
+        public static readonly int HeadCityMaxWorkForce = Convert.ToInt32(AbsSoldierData.GroupDefaultCount * 15);
 
         public static readonly int NobelHouseWorkForceReqiurement = HeadCityMaxWorkForce;
 

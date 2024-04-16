@@ -232,10 +232,10 @@ namespace VikingEngine
                 {
                     new GuiTextButton("Next song", null, Ref.music.nextRandomSong, false, layout);
                 }
-                if (Ref.music.IsPlaying())
-                {
-                    new GuiDelegateLabel(SongTitleProperty, layout);
-                }
+                //if (Ref.music.IsPlaying())
+                //{
+                //    new GuiDelegateLabel(SongTitleProperty, layout);
+                //}
             }
         }
 
@@ -243,9 +243,9 @@ namespace VikingEngine
         {
             if (Ref.music != null)
             {
-                new GuiFloatSlider(SpriteName.MenuPixelIconMusicVol, "Music Volume", musicVolProperty, new IntervalF(0, 4), false, layout);
+                new GuiFloatSlider(SpriteName.MenuPixelIconMusicVol, Ref.langOpt.SoundOption_MusicVolume, musicVolProperty, new IntervalF(0, 4), false, layout);
             }
-            new GuiFloatSlider(SpriteName.MenuPixelIconSoundVol, "Sound Volume", soundVolProperty, new IntervalF(0, 4), false, layout);
+            new GuiFloatSlider(SpriteName.MenuPixelIconSoundVol, Ref.langOpt.SoundOption_SoundVolume, soundVolProperty, new IntervalF(0, 4), false, layout);
         }
 
         public void graphicsOptions(GuiLayout layout)
@@ -257,10 +257,10 @@ namespace VikingEngine
             List<GuiOption<int>> optionsList = new List<GuiOption<int>>();
             foreach (var m in resoutionPercOptions)
             {
-                optionsList.Add(new GuiOption<int>(m.ToString() + "%", m));
+                optionsList.Add(new GuiOption<int>(string.Format(Ref.langOpt.GraphicsOption_Resolution_PercentageOption, m), m));
             }
 
-            new GuiOptionsList<int>(SpriteName.MenuIconScreenResolution, "Resolution", optionsList, resolutionPercProperty, layout);
+            new GuiOptionsList<int>(SpriteName.MenuIconScreenResolution, Ref.langOpt.GraphicsOption_Resolution, optionsList, resolutionPercProperty, layout);
             fullScreenBox(layout);//new GuiCheckbox("Fullscreen", null, Ref.pc_gamesett.fullscreenProperty, layout);
 
             if (!Screen.PcTargetFullScreen)
@@ -268,31 +268,31 @@ namespace VikingEngine
                 int[] oversizes = new int[] { 150, 175, 200, 250, 300 };
                 List<GuiOption<int>> oversizeWidthList = new List<GuiOption<int>>();
                 List<GuiOption<int>> oversizeHeightList = new List<GuiOption<int>>();
-                oversizeWidthList.Add(new GuiOption<int>("None", 0));
-                oversizeHeightList.Add(new GuiOption<int>("None", 0));
+                oversizeWidthList.Add(new GuiOption<int>(Ref.langOpt.GraphicsOption_Oversize_None, 0));
+                oversizeHeightList.Add(new GuiOption<int>(Ref.langOpt.GraphicsOption_Oversize_None, 0));
                 foreach (var ov in oversizes)
                 {
-                    oversizeWidthList.Add(new GuiOption<int>(ov + "% Width", ov));
-                    oversizeHeightList.Add(new GuiOption<int>(ov + "% Height", ov));
+                    oversizeWidthList.Add(new GuiOption<int>(string.Format(Ref.langOpt.GraphicsOption_PercentageOversizeWidth, ov), ov));
+                    oversizeHeightList.Add(new GuiOption<int>(string.Format(Ref.langOpt.GraphicsOption_PercentageOversizeHeight, ov), ov));
                 }
-                new GuiOptionsList<int>(SpriteName.NO_IMAGE, "Oversize width", oversizeWidthList, oversizeWidthProperty, layout);
-                new GuiOptionsList<int>(SpriteName.NO_IMAGE, "Oversize height", oversizeHeightList, oversizeHeightProperty, layout);
+                new GuiOptionsList<int>(SpriteName.NO_IMAGE, Ref.langOpt.GraphicsOption_OversizeWidth, oversizeWidthList, oversizeWidthProperty, layout);
+                new GuiOptionsList<int>(SpriteName.NO_IMAGE, Ref.langOpt.GraphicsOption_OversizeHeight, oversizeHeightList, oversizeHeightProperty, layout);
 
             }
 
-            new GuiTextButton("Recording presets", null, new GuiAction1Arg<Gui>(recordingResolutionOptions, layout.gui), true, layout);
+            new GuiTextButton(Ref.langOpt.GraphicsOption_RecordingPresets, null, new GuiAction1Arg<Gui>(recordingResolutionOptions, layout.gui), true, layout);
         }
 
 
 
         void fullScreenBox(GuiLayout layout)
         {
-            new GuiCheckbox("Fullscreen", null, Ref.gamesett.fullscreenProperty, layout);
+            new GuiCheckbox(Ref.langOpt.GraphicsOption_Fullscreen, null, Ref.gamesett.fullscreenProperty, layout);
         }
 
         void recordingResolutionOptions(Gui gui)
         {
-            GuiLayout layout = new GuiLayout("Recording setup", gui);
+            GuiLayout layout = new GuiLayout(Ref.langOpt.GraphicsOption_RecordingPresets, gui);
             {
                 var monitor = Microsoft.Xna.Framework.Graphics.GraphicsAdapter.DefaultAdapter;
                 for (RecordingPresets rp = 0; rp < RecordingPresets.NumNon; ++rp)
@@ -304,14 +304,16 @@ namespace VikingEngine
                     }
                     else
                     {
+                        string name = string.Format(Ref.langOpt.GraphicsOption_YoutubePreset, sz.Y);
+
                         if (rp == Engine.Screen.UseRecordingPreset)
                         {
-                            new GuiIconTextButton(SpriteName.LfCheckYes, rp.ToString(), null,
+                            new GuiIconTextButton(SpriteName.LfCheckYes, name, null,
                                 new GuiAction1Arg<RecordingPresets>(Ref.gamesett.setRecordingPreset, rp), false, layout);
                         }
                         else
                         {
-                            new GuiTextButton(rp.ToString(), null,
+                            new GuiTextButton(name, null,
                                 new GuiAction1Arg<RecordingPresets>(Ref.gamesett.setRecordingPreset, rp), false, layout);
                         }
                     }

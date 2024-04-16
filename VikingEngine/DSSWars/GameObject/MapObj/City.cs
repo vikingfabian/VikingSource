@@ -477,22 +477,23 @@ namespace VikingEngine.DSSWars.GameObject
             switch (CityType)
             {
                 case CityType.Small:
-                    workForce.value = DssLib.SmallCityStartWorkForce;
+                    //workForce.value = DssLib.SmallCityStartWorkForce;
                     workForce.max = DssLib.SmallCityMaxWorkForce;
                     break;
                 case CityType.Large:
-                    workForce.value = DssLib.LargeCityStartWorkForce;
+                    //workForce.value = DssLib.LargeCityStartWorkForce;
                     workForce.max = DssLib.LargeCityMaxWorkForce;
                     break;
                 default:
-                    workForce.value = DssLib.HeadCityStartWorkForce;
+                    //workForce.value = DssLib.HeadCityStartWorkForce;
                     workForce.max = DssLib.HeadCityMaxWorkForce;
                     nobelHouse = true;
                     break;
             }
+            workForce.value = workForce.max;
 
             int maxFit = MathExt.MultiplyInt(0.8, CityDetail.WorkersPerTile * CityDetail.HutMaxLevel * areaSize);
-            maxEpandWorkSize = Bound.Max(workForce.max + ExpandWorkForce * 3, maxFit); //Bound.Max(workForce.max * 2 + MathExt.MultiplyInt(0.2, maxFit), maxFit);
+            maxEpandWorkSize = Bound.Max(workForce.max + ExpandWorkForce * 3, maxFit);
         }
 
         void refreshCitySize()
@@ -823,8 +824,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             base.toHud(args);
             if (args.player.hud.detailLevel == HudDetailLevel.Minimal)
-            {
-                
+            {   
                 args.content.Add(new RichBoxImage(SpriteName.WarsWorker));
                 args.content.Add(new RichBoxText(TextLib.LargeNumber(workForce.Int())));
                 args.content.space();
@@ -833,12 +833,13 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.space();
                 args.content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
                 args.content.Add(new RichBoxText(string.Format(HudLib.OneDecimalFormat, strengthValue)));
-               
             }
             else
             {
-                args.content.icontext(SpriteName.WarsWorker, string.Format(DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.Int(), workForce.max)));
-                args.content.icontext(SpriteName.WarsGuard, string.Format(DssRef.lang.Hud_GuardCount,TextLib.Divition_Large(guardCount, maxGuardSize)));
+                HudLib.ItemCount(args.content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.Int(), workForce.max));
+                //args.content.icontext(SpriteName.WarsWorker, string.Format(DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.Int(), workForce.max)));
+                HudLib.ItemCount(args.content,SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount,TextLib.Divition_Large(guardCount, maxGuardSize));
+                //args.content.icontext(SpriteName.WarsGuard, string.Format(DssRef.lang.Hud_GuardCount,TextLib.Divition_Large(guardCount, maxGuardSize)));
                 args.content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, string.Format(HudLib.OneDecimalFormat, strengthValue)));
                 args.content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, income));
                 args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, upkeep));
@@ -858,7 +859,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 args.content.newLine();
                 args.content.ListDot();
-                args.content.Add(new RichBoxText(DssRef.lang.Building_NobelHouse));
+                args.content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse));
             }
 
             if (CityType == CityType.Factory)

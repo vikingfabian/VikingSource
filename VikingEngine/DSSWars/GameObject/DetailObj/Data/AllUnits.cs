@@ -144,7 +144,7 @@ namespace VikingEngine.DSSWars.GameObject
                     return DssRef.lang.UnitType_Archer;
 
                 case UnitType.CrossBow:
-                    return DssRef.lang.UnitType_CrossBow;
+                    return DssRef.lang.UnitType_Crossbow;
 
                 case UnitType.Ballista:
                     return DssRef.lang.UnitType_Ballista;
@@ -162,7 +162,7 @@ namespace VikingEngine.DSSWars.GameObject
                     return DssRef.lang.UnitType_DarkLord;
 
                 case UnitType.BannerMan:
-                    return DssRef.lang.UnitType_BannerMan;
+                    return DssRef.lang.UnitType_Bannerman;
 
                 // Warship cases
                 case UnitType.SoldierWarship:
@@ -181,7 +181,7 @@ namespace VikingEngine.DSSWars.GameObject
                     return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Archer);
 
                 case UnitType.CrossbowWarship:
-                    return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_CrossBow);
+                    return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Crossbow);
 
                 case UnitType.BallistaWarship:
                     return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Ballista);

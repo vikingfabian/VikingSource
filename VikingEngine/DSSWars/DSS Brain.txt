@@ -1,11 +1,14 @@
 ﻿Change Log
 * Improved camera culling
 * Removed soldier Command and Command points
-* Flag painter controller support
-
+* Flag painter has controller support
+* Made a menu button for "mouse only" play accessability
+* All text is localized (you wont see the difference) and AI spell checked
+* DarkFollower, SouthHara and UnitedKingdom will start with a secret alliance. Secret means that they don't share wars.
+* Servant hud error -fixed
+* Increased worker start count from 60% to 100%
 
 Error
--strid fastnar vid peace
 -also path finding of a land army will often prefer water over land when the boat building will cause the travel time to take considerably longer than if it went over land
 from what i've seen, this generally only happens if the army is on a land tile immediately adjacent to water
 
@@ -15,17 +18,11 @@ Retreat system
 -reassemble av flydd arme
 
 Polish
-
--armeer ska visa ifall de strider på hud
 -attack warning -Battle notification
 -diplomacy toggle
-//-omplacera workforce hud
 -AI sök fiende armeer som passerar
-//-battlegrid: would it be possible to just not let units move into a water tile if it is a land battle?
-	-max väntetid, sen path finding eller båtbygge
 -krig icon på karta
 -the horses dont load when paused, plus rotation error
--kungadömmet ska inte dela wars med dark followers (secret ally)
 -dölj move path OnHud 
 
 Art
@@ -35,11 +32,11 @@ Art
 -world domination achieve
 
 Steam Launch Roadmap
--Localization to 8 languages
+-Localization to 8 languages (all preparations done)
 -Polish the turd
 .             
--(maybe) Battle retreat system 
 -(maybe) Save
+-(maybe) Battle retreat system 
 -(maybe) Mountain ridges and water reefs that block movement
 -(maybe) Visually display city guard size
 

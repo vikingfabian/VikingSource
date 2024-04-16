@@ -38,5 +38,19 @@ namespace VikingEngine.HUD
         /// Label for checkbox. Option for local split screen gameplay.
         /// </summary>
         public override string VerticalSplitScreen => "Vertikal skärmdelning";
+
+
+        public override string SoundOption_MusicVolume => "Music Volume";
+        public override string SoundOption_SoundVolume => "Sound Volume";
+        public override string GraphicsOption_Resolution => "Resolution";
+        public override string GraphicsOption_Resolution_PercentageOption => "{0}%";
+        public override string GraphicsOption_Fullscreen => "Fullscreen";
+        public override string GraphicsOption_OversizeWidth => "Oversize width";
+        public override string GraphicsOption_PercentageOversizeWidth => "{0}% Width";
+        public override string GraphicsOption_OversizeHeight => "Oversize height";
+        public override string GraphicsOption_PercentageOversizeHeight => "{0}% Height";
+        public override string GraphicsOption_Oversize_None => "None";
+        public override string GraphicsOption_RecordingPresets => "Recording presets";
+        public override string GraphicsOption_YoutubePreset => "Youtube {0}p";
     }
 }

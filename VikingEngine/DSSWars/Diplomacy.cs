@@ -458,6 +458,7 @@ namespace VikingEngine.DSSWars
         public RelationType Relation;
         public SpeakTerms SpeakTerms;
         public float RelationEnd_GameTimeSec;
+        public bool secret = false;
 
         public DiplomaticRelation()
         { }

@@ -414,8 +414,8 @@ namespace VikingEngine.DSSWars.Players
             Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(45));
             Rotation1D playerRot = enemyRot;//enemyRot.getInvert();
 
-            Faction enemyFac = DssRef.state.darkLordPlayer.faction;
-            DssRef.state.darkLordPlayer.faction.hasDeserters = false;
+            Faction enemyFac = DssRef.settings.darkLordPlayer.faction;
+            DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
             //DssRef.world.factionsCounter.Reset();
 
             //enemyFac = DssRef.world.factions.Array[DssRef.world.evilFactionIndex];

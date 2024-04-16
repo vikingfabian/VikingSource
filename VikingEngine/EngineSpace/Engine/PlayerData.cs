@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using VikingEngine.SteamWrapping;
+using VikingEngine.DSSWars;
 ////xna
 
 namespace VikingEngine.Engine
@@ -211,8 +212,12 @@ namespace VikingEngine.Engine
                 return gamerTag;
             }
 #endif
+
+#if DSS
+            return string.Format(DssRef.lang.FactionName_Player, localPlayerIndex + 1);
+#else
             return "Player" +  TextLib.IndexToString(localPlayerIndex);
-            
+#endif
         }
         
         public override string ToString()

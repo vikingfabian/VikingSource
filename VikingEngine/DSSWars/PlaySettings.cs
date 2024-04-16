@@ -9,8 +9,11 @@ namespace VikingEngine.DSSWars
 {
     class PlaySettings
     {
+        public Players.DarkLordPlayer darkLordPlayer;
         public int Faction_SouthHara;
         public int Faction_GreenWood;
+        public int Faction_DarkFollower;
+        public int Faction_UnitedKingdom;
 
         public int AiArmyPurchase_MoneyMin;
         public int AiArmyPurchase_IncomeMin;

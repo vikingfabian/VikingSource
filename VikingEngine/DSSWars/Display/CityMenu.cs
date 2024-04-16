@@ -70,7 +70,7 @@ namespace VikingEngine.DSSWars.Display
 
             content.newLine();
 
-            content.icontext(SpriteName.WarsSoldierIcon, string.Format(DssRef.lang.CityOption_RecruitType, TextLib.LargeNumber(city.mercenaries)));
+            content.icontext(SpriteName.WarsSoldierIcon, string.Format(DssRef.lang.CityOption_XMercenaries, TextLib.LargeNumber(city.mercenaries)));
 
             content.newLine();
 
@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.Display
 
             if (!city.nobelHouse && city.canEverGetNobelHouse())
             {
-                content.Button(DssRef.lang.Building_NobelHouse,//"Nobel house",
+                content.Button(DssRef.lang.Building_NobleHouse,//"Nobel house",
                      new RbAction(city.buyNobelHouseAction, SoundLib.menuBuy),
                      new RbAction(buyNobelhouseTooltip),
                      city.canBuyNobelHouse());
@@ -177,12 +177,12 @@ namespace VikingEngine.DSSWars.Display
 
             content.ListDot();
             content.Add(new RichBoxImage(SpriteName.WarsDiplomaticAddTime));
-            content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobelHouse_DiplomacyPointsAdd, diplomacydSec)));
+            content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
             content.newLine();
 
             content.ListDot();
             content.Add(new RichBoxImage(SpriteName.WarsDiplomaticPoint));
-            content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobelHouse_DiplomacyPointsLimit, DssRef.diplomacy.NobelHouseAddMaxDiplomacy)));
+            content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.NobelHouseAddMaxDiplomacy)));
             content.newLine();
 
             //content.ListDot();
@@ -191,7 +191,7 @@ namespace VikingEngine.DSSWars.Display
             //content.newLine();
 
             content.ListDot();
-            content.Add(new RichBoxText(DssRef.lang.Building_NobelHouse_UnlocksKnight));
+            content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
             content.newLine();
 
             content.ListDot();
@@ -255,7 +255,7 @@ namespace VikingEngine.DSSWars.Display
             }
             else 
             {
-                content.Add(new RichBoxText(DssRef.lang.Hud_Purchase_MaxCapasity, Color.Red));
+                content.Add(new RichBoxText(DssRef.lang.Hud_Purchase_MaxCapacity, Color.Red));
             }
             player.hud.tooltip.create(player, content, true);
         }
@@ -283,7 +283,7 @@ namespace VikingEngine.DSSWars.Display
             }
             else 
             {
-                content.Add(new RichBoxText(DssRef.lang.Hud_Purchase_MaxCapasity, Color.Red));
+                content.Add(new RichBoxText(DssRef.lang.Hud_Purchase_MaxCapacity, Color.Red));
                 content.Add(new RichBoxText(DssRef.lang.Hud_GuardCount_MustExpandCityMessage, Color.Red));
             }
 

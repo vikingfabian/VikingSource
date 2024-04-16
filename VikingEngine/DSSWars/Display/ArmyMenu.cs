@@ -172,7 +172,7 @@ namespace VikingEngine.DSSWars.Display
                             var halfAndHalfbutton = new HUD.RichBox.RichboxButton(
                             new List<AbsRichBoxMember>
                             {
-                                new HUD.RichBox.RichBoxText(DssRef.lang.ArmyOption_SplitHalf),
+                                new HUD.RichBox.RichBoxText(DssRef.lang.ArmyOption_DivideHalf),
                             },
                             new RbAction(splitArmyInHalf, SoundLib.menu), null);
                             halfAndHalfbutton.enabled = splitable;
