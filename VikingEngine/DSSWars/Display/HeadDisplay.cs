@@ -175,10 +175,12 @@ namespace VikingEngine.DSSWars.Display
                         if (fullDisplay && player.IsLocalHost())
                         {
                             pauseButton();
-                            gameMenuButton();
                         }
                     }
-
+                    if (fullDisplay && player.IsLocalHost())
+                    {
+                        gameMenuButton();
+                    }
 
                     if (fullDisplay)
                     {

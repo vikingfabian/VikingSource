@@ -51,7 +51,7 @@ namespace VikingEngine.Engine
             Fonts[(int)LoadedFont.Console] = Content.Load<SpriteFont>("Font\\Console");
 
             Engine.Screen.RegularFontSize = MeasureString("XXjj", LoadedFont.Regular).Y;
-            Engine.Screen.RefreshHudSize();
+            //Engine.Screen.RefreshUiSize();
 
             Textures[0] = Content.Load<Texture2D>(TexturePath + "noimage");
             Textures[(int)LoadedTexture.TargetColor0] = Content.Load<Texture2D>(TexturePath + "noimage");

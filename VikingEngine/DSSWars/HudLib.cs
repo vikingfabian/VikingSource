@@ -78,18 +78,15 @@ namespace VikingEngine.DSSWars
             content.Add( new RichBoxText(text, ResourceCostColor(hasResource >= needResource)));
         }
 
-        public static void Upkeep(RichBoxContent content, int value, bool increase)
+        public static void Upkeep(RichBoxContent content, double value)
         {
-            string text = DssRef.lang.Hud_Upkeep;
-            if (increase) 
-            {
-                text += " +";
-            }
-            else
-            {
-                text += ": ";
-            }
-            content.icontext(SpriteName.rtsUpkeepTime, text + TextLib.LargeNumber(value));  
+            string valuestring = string.Format(OneDecimalFormat, value);
+            content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, valuestring));
+        }
+        public static void Upkeep(RichBoxContent content, int value)
+        {
+            string valuestring = TextLib.LargeNumber(value);
+            content.icontext(SpriteName.rtsUpkeepTime, string.Format( DssRef.lang.Hud_Upkeep, valuestring));  
         }
 
         public static void ItemCount(RichBoxContent content, SpriteName icon, string item, string count)

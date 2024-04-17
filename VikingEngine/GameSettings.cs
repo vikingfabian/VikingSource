@@ -27,6 +27,7 @@ namespace VikingEngine
         public float UiScale = 1f;
         public bool dyslexiaFont = false;
         public Network.BannedPeers bannedPeers = new Network.BannedPeers();
+        public bool graphicsHasChanged = false;
 
         public GameSettings()
         {
@@ -81,6 +82,10 @@ namespace VikingEngine
             VibrationLevel = r.ReadByte();            
             
             UiScale = r.ReadSingle();
+            if (UiScale < 0.5f)
+            {
+                UiScale = 1f;
+            }
             dyslexiaFont = r.ReadBoolean();
             bannedPeers.read(r, version);
             
@@ -172,6 +177,7 @@ namespace VikingEngine
                 Engine.Screen.UseRecordingPreset = RecordingPresets.NumNon;
                 Engine.Screen.PcTargetFullScreen = value;
                 Engine.Screen.ApplyScreenSettings();
+                graphicsHasChanged = true;
             }
             return Engine.Screen.PcTargetFullScreen;
         }
@@ -180,6 +186,7 @@ namespace VikingEngine
         {
             Engine.Screen.UseRecordingPreset = rp;
             Screen.ApplyScreenSettings();
+            graphicsHasChanged = true;
         }
 
         public IntVector2 resolutionProperty(bool set, IntVector2 res)
@@ -194,6 +201,7 @@ namespace VikingEngine
 
                 Screen.Monitor = val;
                 Screen.ApplyScreenSettings();
+                graphicsHasChanged = true;
             }
 
             return Screen.Monitor;
@@ -206,6 +214,7 @@ namespace VikingEngine
                 Engine.Screen.UseRecordingPreset = RecordingPresets.NumNon;
                 Engine.Screen.RenderScalePerc = res;
                 Engine.Screen.ApplyScreenSettings();
+                graphicsHasChanged = true;
             }
             return Engine.Screen.RenderScalePerc;
         }
@@ -281,9 +290,9 @@ namespace VikingEngine
             }
 
             new GuiTextButton(Ref.langOpt.GraphicsOption_RecordingPresets, null, new GuiAction1Arg<Gui>(recordingResolutionOptions, layout.gui), true, layout);
+
+            new GuiFloatSlider(SpriteName.LFIconLetter, Ref.langOpt.GraphicsOption_UiScale, uiScaleProperty, new IntervalF(0.5f, 2f), false, layout);
         }
-
-
 
         void fullScreenBox(GuiLayout layout)
         {
@@ -346,6 +355,8 @@ namespace VikingEngine
             {
                 Engine.Screen.oversizeWidthPerc = value;
                 Screen.ApplyScreenSettings();
+
+                graphicsHasChanged = true;
             }
             return Engine.Screen.oversizeWidthPerc;
         }
@@ -356,6 +367,8 @@ namespace VikingEngine
             {
                 Engine.Screen.oversizeHeightPerc = value;
                 Screen.ApplyScreenSettings();
+
+                graphicsHasChanged = true;
             }
             return Engine.Screen.oversizeHeightPerc;
         }
@@ -368,6 +381,18 @@ namespace VikingEngine
         public float soundVolProperty(bool set, float value)
         {
             return GetSet.Do<float>(set, ref Engine.Sound.SoundVolume, value);
+        }
+
+        public float uiScaleProperty(bool set, float value)
+        {
+            if (set)
+            {
+                UiScale = value;
+
+                graphicsHasChanged = true;
+                Screen.RefreshUiSize();
+            }
+            return UiScale;
         }
 
         public int vibrationProperty(bool set, int value)

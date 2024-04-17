@@ -582,7 +582,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return !nobelHouse &&
                 workForce.value >= DssLib.NobelHouseWorkForceReqiurement &&
-                faction.gold >= DssLib.NobelHouseCost;
+                faction.gold >= DssLib.NobleHouseCost;
         }
 
         public bool canEverGetNobelHouse()
@@ -593,7 +593,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void buyNobelHouseAction()
         {
             if (canBuyNobelHouse() &&
-                faction.payMoney(DssLib.NobelHouseCost, false))
+                faction.payMoney(DssLib.NobleHouseCost, false))
             {
                 nobelHouse = true;
                 var typeData = DssRef.unitsdata.Get(UnitType.Knight);

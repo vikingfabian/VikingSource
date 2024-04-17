@@ -221,6 +221,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
 
         public abstract string UnitType_Army { get; }
+        public abstract string UnitType_SoldierGroup { get; }
         public abstract string UnitType_City { get; }
 
         public abstract string UnitType_Soldier { get; }

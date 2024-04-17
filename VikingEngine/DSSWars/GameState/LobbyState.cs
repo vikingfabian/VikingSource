@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars
             {
                 mapBackgroundLoading = new MapBackgroundLoading();
             }
-            float txtSz = Engine.Screen.Height * 0.0012f;
+            //float txtSz = Engine.Screen.Height * 0.0012f;
 
             Ref.draw.ClrColor = new Color(11, 30, 34);
 
@@ -616,12 +616,17 @@ namespace VikingEngine.DSSWars
             }
             layout.End();
 
-            layout.OnDelete += closingOptionsMenu;
+            layout.OnDelete += closingOptionsMenuEvent;
         }
 
-        void closingOptionsMenu()
+        void closingOptionsMenuEvent()
         {
             Ref.gamesett.Save();
+            if (Ref.gamesett.graphicsHasChanged)
+            {
+                Ref.gamesett.graphicsHasChanged = false;
+                new LobbyState();
+            }
         }
 
         void selectProfileLink(int playerNumber, int profile)

@@ -30,5 +30,7 @@ namespace VikingEngine.HUD
         public abstract string GraphicsOption_Oversize_None { get; }
         public abstract string GraphicsOption_RecordingPresets { get; }
         public abstract string GraphicsOption_YoutubePreset { get; }
+
+        public abstract string GraphicsOption_UiScale { get; }
     }
 }

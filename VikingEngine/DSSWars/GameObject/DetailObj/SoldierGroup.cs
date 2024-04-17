@@ -648,7 +648,7 @@ namespace VikingEngine.DSSWars.GameObject
             //base.toHud(args);
             var typeData = DssRef.unitsdata.Get(type);
 
-            args.content.h2(typeData.unitType.ToString() + " group");
+            args.content.h2(typeData.unitType.ToString() + " " + DssRef.lang.UnitType_SoldierGroup);
             args.content.newLine();
             if (args.selected && GetFaction() == args.player.faction)
             {

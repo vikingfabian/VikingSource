@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.Display
                 content.newParagraph();
                 //content.text(string.Format(relation, Diplomacy.RelationString(selectedRelation.Relation)));
 
-                content.Add(new RichBoxText(DssRef.lang.Diplomacy_RelationType + " :"));
+                content.Add(new RichBoxText(DssRef.lang.Diplomacy_RelationType + ": "));
                 content.Add(new RichBoxImage(Diplomacy.RelationSprite(selectedRelation.Relation)));
                 content.Add(new RichBoxText(Diplomacy.RelationString(selectedRelation.Relation)));
 

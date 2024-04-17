@@ -600,8 +600,8 @@ namespace VikingEngine.DSSWars.Players
         {
             base.oneSecUpdate();
 
-            commandPoints.setMax(DssLib.DefaultMaxCommand + DssLib.NobelHouseAddMaxCommand * faction.nobelHouseCount);
-            commandPoints.add(DssLib.DefaultCommandPerSecond + DssLib.NobelHouseAddCommand * faction.nobelHouseCount);
+            commandPoints.setMax(DssLib.DefaultMaxCommand + DssLib.NobleHouseAddMaxCommand * faction.nobelHouseCount);
+            commandPoints.add(DssLib.DefaultCommandPerSecond + DssLib.NobleHouseAddCommand * faction.nobelHouseCount);
 
             double max = DssRef.diplomacy.DefaultMaxDiplomacy + DssRef.diplomacy.NobelHouseAddMaxDiplomacy * faction.nobelHouseCount;
             diplomaticPoints_softMax = (int)Math.Floor(max);

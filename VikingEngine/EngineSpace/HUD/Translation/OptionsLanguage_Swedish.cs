@@ -52,5 +52,10 @@ namespace VikingEngine.HUD
         public override string GraphicsOption_Oversize_None => "None";
         public override string GraphicsOption_RecordingPresets => "Recording presets";
         public override string GraphicsOption_YoutubePreset => "Youtube {0}p";
+
+        /// <summary>
+        /// Change size on text and icons
+        /// </summary>
+        public override string GraphicsOption_UiScale => "Ui Scale";
     }
 }

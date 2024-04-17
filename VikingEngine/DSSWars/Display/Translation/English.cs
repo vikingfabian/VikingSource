@@ -684,6 +684,11 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string UnitType_Army => "Army";
         
         /// <summary>
+        /// Collective unit type on the map. Army of soldiers.
+        /// </summary>
+        public override string UnitType_SoldierGroup => "Group";
+        
+        /// <summary>
         /// Collective unit type on the map. Common name for village or city.
         /// </summary>
         public override string UnitType_City => "City";

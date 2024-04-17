@@ -42,8 +42,8 @@ namespace VikingEngine.DSSWars
 
         public const int DefaultMaxCommand = 2;
         public const double DefaultCommandPerSecond = 1.0 / 60.0;
-        public const double NobelHouseAddCommand = 1.0 / 120.0;
-        public const double NobelHouseAddMaxCommand = 0.5;
+        public const double NobleHouseAddCommand = 1.0 / 120.0;
+        public const double NobleHouseAddMaxCommand = 0.5;
 
         //public const int DefaultMaxDiplomacy = 4;
         //public const double DefaultDiplomacyPerSecond = 1.0 / 60.0;
@@ -53,8 +53,8 @@ namespace VikingEngine.DSSWars
         public const int TruceTimeSec = 180;
 
        
-        public const int NobelHouseCost = 2000;
-        public const float NobelHouseUpkeep = 5;
+        public const int NobleHouseCost = 4000;
+        public const float NobleHouseUpkeep = 10;
 
         public const float BattleConflictRadius = 2f;
         public const int BattleChainConflictRadius = 3;

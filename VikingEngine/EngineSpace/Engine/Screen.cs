@@ -171,7 +171,7 @@ namespace VikingEngine.Engine
             ResolutionVec = RenderingResolution.Vec;
             MonitorCenter = MonitorTargetResolution / 2;
             
-            RefreshHudSize();
+            RefreshUiSize();
             
             ScreenIsReady = true;
             if (Ref.gamestate != null) Ref.gamestate.OnResolutionChange();
@@ -191,17 +191,16 @@ namespace VikingEngine.Engine
             }
         }
     
-        public static void RefreshHudSize()
+        public static void RefreshUiSize()
         {
-            IconSize = (int)(MinWidthHeight * 0.05f);
+            IconSize = (float)Math.Round(MinWidthHeight * 0.05 * Ref.gamesett.UiScale);
             SmallIconSize = (int)(IconSize * 0.6f);
             IconSizeV2 = new Vector2(IconSize);
             SmallIconSizeV2 = new Vector2(SmallIconSize);
             BorderWidth = (int)(IconSize * 0.12f);
 
-            TextSize = MinWidthHeight * 0.0006f;
+            TextSize = MinWidthHeight * 0.0006f * Ref.gamesett.UiScale;
             TextSizeV2 = new Vector2(TextSize);
-
 
             TextIconExactSize = new Vector2(IconSize / RegularFontSize);
             TextSmallIconExactSize = new Vector2(SmallIconSize / RegularFontSize);
@@ -209,13 +208,8 @@ namespace VikingEngine.Engine
             TextIconFitSize = TextIconExactSize * 0.8f;
             TextSmallIconFitSize = TextSmallIconExactSize * 0.8f;
 
-
-            //float h = Graphics.AbsText.ScaleToHeight(TextBreadScale.Y, LoadedFont.Regular);
-            TextBreadHeight = MathExt.Round(SmallIconSize * 0.6f);//Graphics.AbsText.ScaleToHeight(TextBreadScale.Y, LoadedFont.Regular);
-            TextTitleHeight = MathExt.Round(TextBreadHeight * 1.2f);//Graphics.AbsText.ScaleToHeight(TextTitleScale.Y, LoadedFont.Bold);
-
-            //TextBreadScale = new Vector2(0.5f);
-            //TextTitleScale = new Vector2(0.7f);
+            TextBreadHeight = MathExt.Round(SmallIconSize * 0.6f);
+            TextTitleHeight = MathExt.Round(TextBreadHeight * 1.2f);
 
             TextBreadScale = Graphics.AbsText.HeightToScale(TextBreadHeight, LoadedFont.Regular);
             TextTitleScale = Graphics.AbsText.HeightToScale(TextTitleHeight, LoadedFont.Bold);

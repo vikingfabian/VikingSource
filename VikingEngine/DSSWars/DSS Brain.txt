@@ -7,6 +7,8 @@
 * DarkFollower, SouthHara and UnitedKingdom will start with a secret alliance. Secret means that they don't share wars.
 * Servant hud error -fixed
 * Increased worker start count from 60% to 100%
+* scaleable ui
+* Doubled noble house cost and upkeep
 
 Error
 -also path finding of a land army will often prefer water over land when the boat building will cause the travel time to take considerably longer than if it went over land
@@ -25,7 +27,9 @@ Polish
 -the horses dont load when paused, plus rotation error
 -dölj move path OnHud 
 
+
 Art
+-list punkt
 -checkbox art
 -Mercenary icon
 -battle icon

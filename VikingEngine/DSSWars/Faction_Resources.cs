@@ -95,7 +95,7 @@ namespace VikingEngine.DSSWars
         }
         public int TotalUpkeep()
         { 
-            int total = armyUpkeep + Convert.ToInt32(DssLib.NobelHouseUpkeep * nobelHouseCount);
+            int total = armyUpkeep + Convert.ToInt32(DssLib.NobleHouseUpkeep * nobelHouseCount);
             return total;
         }
     }

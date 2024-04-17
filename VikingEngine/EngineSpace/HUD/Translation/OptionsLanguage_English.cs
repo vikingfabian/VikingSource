@@ -78,5 +78,10 @@ namespace VikingEngine.HUD
         /// 0: height resolution
         /// </summary>
         public override string GraphicsOption_YoutubePreset => "Youtube {0}p";
+
+        /// <summary>
+        /// Change size on text and icons
+        /// </summary>
+        public override string GraphicsOption_UiScale => "Ui Scale";
     }
 }

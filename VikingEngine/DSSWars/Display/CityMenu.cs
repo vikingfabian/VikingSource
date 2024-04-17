@@ -6,6 +6,7 @@ using Valve.Steamworks;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.PJ;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.MoonFall;
 using static System.Net.Mime.MediaTypeNames;
@@ -160,9 +161,11 @@ namespace VikingEngine.DSSWars.Display
                 content.newLine();
                 content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
                 content.newLine();
-                HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, DssLib.NobelHouseCost, player.faction.gold);
+                HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, DssLib.NobleHouseCost, player.faction.gold);
+                HudLib.Upkeep(content, Convert.ToInt32(DssLib.NobleHouseUpkeep));
                 content.newLine();
                 content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
+                
             }
 
             content.newLine();
@@ -194,9 +197,9 @@ namespace VikingEngine.DSSWars.Display
             content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
             content.newLine();
 
-            content.ListDot();
-            content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
-            HudLib.Upkeep(content, Convert.ToInt32(DssLib.NobelHouseUpkeep), true);
+            //content.ListDot();
+            //content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
+            //HudLib.Upkeep(content, Convert.ToInt32(DssLib.NobelHouseUpkeep), true);
             //content.Add(new RichBoxText(string.Format(upkeep, DssLib.NobelHouseUpkeep)));
             content.newLine();
 
@@ -275,7 +278,7 @@ namespace VikingEngine.DSSWars.Display
                 HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, City.ExpandGuardSizeCost * count, player.faction.gold);
                 content.newLine();
                 //content.icontext(SpriteName.rtsUpkeepTime, "Upkeep +" + city.GuardUpkeep(City.ExpandGuardSize * count).ToString());
-                HudLib.Upkeep(content, city.GuardUpkeep(City.ExpandGuardSize * count), true);
+                HudLib.Upkeep(content, city.GuardUpkeep(City.ExpandGuardSize * count));
 
                 content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
                 
@@ -305,7 +308,8 @@ namespace VikingEngine.DSSWars.Display
             HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Worker, typeData.workForceCount() * count, city.workForce.Int());
             content.newLine();
             content.newLine();
-            content.icontext(SpriteName.rtsUpkeep, DssRef.lang.Hud_Upkeep + ": " + (typeData.Upkeep() * count).ToString());
+            HudLib.Upkeep(content, typeData.Upkeep() * count);
+            //content.icontext(SpriteName.rtsUpkeep, DssRef.lang.Hud_Upkeep + ": " + (typeData.Upkeep() * count).ToString());
             content.newParagraph();
 
             content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
@@ -316,7 +320,8 @@ namespace VikingEngine.DSSWars.Display
 
             content.h2(DssRef.lang.SoldierStats_Title);
             content.text(DssRef.lang.Hud_PurchaseTitle_Cost + ": " + string.Format(HudLib.OneDecimalFormat, opt.goldCost / (double)unitCount));
-            content.text(DssRef.lang.Hud_Upkeep + ": " + string.Format(HudLib.OneDecimalFormat, typeData.Upkeep() / (double)unitCount));
+            //content.text(DssRef.lang.Hud_Upkeep + ": " + string.Format(HudLib.OneDecimalFormat, typeData.Upkeep() / (double)unitCount));
+            HudLib.Upkeep(content, typeData.Upkeep() / (double)unitCount);
 
             //string attackStrengthAreas = "Attack strength: Land {0} | Sea {1} | City {2}";
             content.text(string.Format(DssRef.lang.SoldierStats_AttackStrengthLandSeaCity, dpsCompared(typeData.DPS_land(), dpsSoldier), dpsCompared(typeData.DPS_sea(), dpsSoldier), dpsCompared(typeData.DPS_structure(), dpsSoldier)));

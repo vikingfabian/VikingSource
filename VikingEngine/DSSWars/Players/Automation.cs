@@ -87,7 +87,7 @@ namespace VikingEngine.DSSWars.Players
             content.newLine();
             content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
                 {
-                    new RichBoxText( DssRef.lang.HudAction_BuyItem),
+                    new RichBoxText(string.Format( DssRef.lang.HudAction_BuyItem, DssRef.lang.Building_NobleHouse)),
                 }, AutoNobelHouseProperty));
 
             content.newLine();
