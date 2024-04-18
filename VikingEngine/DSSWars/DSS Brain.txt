@@ -35,16 +35,20 @@ Art
 -battle icon
 -world domination achieve
 
-Steam Launch Roadmap
--Localization to 8 languages (all preparations done)
--Polish the turd
+#Steam Launch Roadmap
+- Localization to 8 languages (all preparations done)
+- Polish the turd
 .             
--(maybe) Save
--(maybe) Battle retreat system 
--(maybe) Mountain ridges and water reefs that block movement
--(maybe) Visually display city guard size
+- (maybe) Save
+- (maybe) Battle retreat system 
+- (maybe) Mountain ridges and water reefs that block movement
+- (maybe) Visually display city guard size
 
-
+#Upcoming Events
+- May 17: Game challenge competition and showcase booth
+- Juni 10: Steam next fest
+- August: Steam release
+- Late Summer / Early Autumn: Game world championship
 
 
 
