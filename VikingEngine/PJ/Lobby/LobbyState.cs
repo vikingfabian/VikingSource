@@ -963,7 +963,7 @@ namespace VikingEngine.PJ
 
             if (lostControllerDisplay.created.msPassed(400))
             {
-                closeInput = Input.InputLib.AnyButtonDownEvent();
+                closeInput = Input.InputLib.AnyKeyDownEvent();
             }
 
             if (lostControllerDisplay.update() || closeInput)

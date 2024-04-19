@@ -14,14 +14,20 @@ using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Data
 {
-    class SaveGamestate : AbsUpdateable
+    class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
-        const int Version = 1;
+        public const int Version = 1;
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
+
+        DataStream.FilePath path = new DataStream.FilePath(null, "DSS_savestate_v" + Version.ToString(), ".sav");
+        bool dataReady = false;
+        public bool complete = false;
 
         public SaveGamestate() :
             base(false)
-        { }
+        {
+            
+        }
 
         public void save()
         {
@@ -32,9 +38,16 @@ namespace VikingEngine.DSSWars.Data
             Task.Factory.StartNew(() =>
             {
                 writeGameState(w);
+                dataReady = true;   
             });
 
             //TODO spara metadata och ladda kartan först
+            
+        }
+
+        public void SaveComplete(bool save, int player, bool completed, byte[] value)
+        {
+            complete = true;
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
@@ -57,7 +70,11 @@ namespace VikingEngine.DSSWars.Data
 
         public override void Time_Update(float time_ms)
         {
-            
+            if (dataReady)
+            { 
+                dataReady = false;
+                new WriteByteArray(path, memoryStream, this);
+            }
         }
 
     }

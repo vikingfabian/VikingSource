@@ -48,7 +48,7 @@ namespace VikingEngine.HUD
 
         public void guiActionTrigger(Gui menu, GuiMember menuMember)
         {
-            action();
+            action?.Invoke();
         }
     }
 

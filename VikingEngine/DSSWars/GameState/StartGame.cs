@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars
 
             if (loading == null)
             { 
-                loading = new MapBackgroundLoading();
+                loading = new MapBackgroundLoading(null);
             }
 
             this.loading=loading;

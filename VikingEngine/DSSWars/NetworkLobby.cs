@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars
                     case Network.PacketType.rtsWantSeed:
                         {
                             var w = Ref.netSession.BeginWritingPacket(Network.PacketType.rtsSeed, Network.PacketReliability.Reliable);
-                            w.Write(WorldData.LoadingWorld.seed);
+                            w.Write(WorldData.LoadingWorld.metaData.seed);
                         }
                         break;
                     case Network.PacketType.rtsMapLoadedAndReady:

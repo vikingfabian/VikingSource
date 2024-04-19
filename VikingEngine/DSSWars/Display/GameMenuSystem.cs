@@ -7,6 +7,7 @@ using VikingEngine.HUD;
 using VikingEngine.ToGG.HeroQuest;
 using VikingEngine.ToGG;
 using Microsoft.Xna.Framework;
+using VikingEngine.DSSWars.Display.CutScene;
 
 namespace VikingEngine.DSSWars.Display
 {
@@ -65,13 +66,23 @@ namespace VikingEngine.DSSWars.Display
             base.closeMenu();
         }
 
+        void saveGameState()
+        {
+            closeMenu();
+
+            if (DssRef.state.cutScene == null)
+            {
+                new SaveScene();
+            }
+        }
+
         public void pauseMenu()
         { 
             openMenu();
             GuiLayout layout = new GuiLayout(DssRef.lang.GameMenu_Title, menu);
             {  
                 new GuiTextButton(DssRef.lang.GameMenu_Resume, null, closeMenu, false, layout);
-                
+                new GuiTextButton(DssRef.lang.GameMenu_SaveState, DssRef.lang.GameMenu_SaveStateWarnings, saveGameState, false, layout);
                 Ref.gamesett.soundOptions(layout);
                 new GuiSectionSeparator(layout);
 

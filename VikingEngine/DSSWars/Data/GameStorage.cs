@@ -27,11 +27,13 @@ namespace VikingEngine.DSSWars.Data
         public bool generateNewMaps = false;
         public LocalPlayerStorage[] localPlayers = null;
         public Profile.FlagStorage flagStorage;
+        public SaveMeta meta = null;
 
         public GameStorage()
         {
             DssRef.storage = this;
             flagStorage = new FlagStorage();
+            meta = new SaveMeta();
 
             localPlayers = new LocalPlayerStorage[MaxLocalPlayerCount];
             for (int i = 0; i < MaxLocalPlayerCount; ++i)
@@ -43,7 +45,7 @@ namespace VikingEngine.DSSWars.Data
         public void Load()
         {
             DataStream.DataStreamHandler.TryReadBinaryIO(path, read);
-
+            meta.Load();
             flagStorage.Load();
         }
 

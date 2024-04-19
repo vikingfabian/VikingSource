@@ -37,11 +37,10 @@ namespace VikingEngine.DSSWars.Map.Generate
             new IntervalF(5, 7),
         };
         
-        public bool Generate(MapSize size, int number, bool save) 
+        public bool Generate(MapSize size, int number, bool save, ushort seed) 
         {
-            ushort seed = Ref.rnd.Ushort();
-            world = new WorldData(seed, size);
-            world.saveIndex = number;
+            //ushort seed = Ref.rnd.Ushort();
+            world = new WorldData(new Data.WorldMetaData(seed, size, number));
             biomsLayout = new BiomsLayout(world.rnd);
 
             try
@@ -101,8 +100,8 @@ namespace VikingEngine.DSSWars.Map.Generate
         public void postLoadGenerate_Part1(WorldData world)
         { 
             this.world = world;
-            world.rnd = new PcgRandom(world.seed);
-            noiseMap = new EngineSpace.Maths.SimplexNoise2D(world.seed);
+            world.rnd = new PcgRandom(world.metaData.seed);
+            noiseMap = new EngineSpace.Maths.SimplexNoise2D(world.metaData.seed);
 
             partComplete = new bool[ProcessSubTileParts];
 
@@ -133,7 +132,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         public void postLoadGenerate_Part2(WorldData world)
         {
             this.world = world;
-            world.rnd = new PcgRandom(world.seed);
+            world.rnd = new PcgRandom(world.metaData.seed);
 
             Task.Factory.StartNew(() =>
             {

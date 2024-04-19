@@ -6,9 +6,11 @@ using VikingEngine.DSSWars.GameObject;
 using Microsoft.Xna.Framework;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Data;
+using System.Xml.Linq;
 
 namespace VikingEngine.DSSWars
-{
+{   
+
     class WorldData
     {  
         public static WorldData LoadingWorld = null;
@@ -40,6 +42,9 @@ namespace VikingEngine.DSSWars
         public static readonly float SubTileWidth = 1f / TileSubDivitions;
         public static readonly Vector2 SubTileWidthV2 = new Vector2(SubTileWidth);
         public static readonly float SubTileHalfWidth = SubTileWidth * 0.5f;
+
+        public WorldMetaData metaData;
+
         public Rectangle2 tileBounds;
         public VectorRect unitBounds;
         public IntVector2 Size;
@@ -55,10 +60,10 @@ namespace VikingEngine.DSSWars
 
         public bool BordersUpdated = true;
         
-        public ushort seed;
+       
         public PcgRandom rnd;
-        public int saveIndex = -1;
-        public MapSize mapSize;
+        
+       
         public int areaTileCount;
         //public int evilFactionIndex=-1;
         public bool abortLoad = false;
@@ -69,18 +74,18 @@ namespace VikingEngine.DSSWars
             factionsCounter = new SpottedArrayCounter<Faction>(factions);
         }
 
-        public WorldData(ushort seed, MapSize size)
-            :this()
+        public WorldData(WorldMetaData metaData)//ushort seed, MapSize size)
+            :this ()
         {
-            this.seed = seed;
+            this.metaData = metaData;
             LoadingWorld = this;
             //LoadStatus = 0;
-            mapSize = size;
+            //mapSize = size;
 
             //size
-            Size = SizeDimentions(mapSize);
+            Size = SizeDimentions(metaData.mapSize);
             HalfSize = Size / 2;
-            rnd = new PcgRandom(seed);
+            rnd = new PcgRandom(metaData.seed);
 
             refreshSize();
            
@@ -114,6 +119,28 @@ namespace VikingEngine.DSSWars
             }
 
             return result;
+        }
+
+        public static string SizeString(MapSize mapSize)
+        {
+            string name = null;
+            switch (mapSize)
+            {
+                case MapSize.Tiny: name = DssRef.lang.Lobby_MapSizeOptTiny; break;
+                case MapSize.Small: name = DssRef.lang.Lobby_MapSizeOptSmall; break;
+                case MapSize.Medium: name = DssRef.lang.Lobby_MapSizeOptMedium; break;
+                case MapSize.Large: name = DssRef.lang.Lobby_MapSizeOptLarge; break;
+                case MapSize.Huge: name = DssRef.lang.Lobby_MapSizeOptHuge; break;
+                case MapSize.Epic: name = DssRef.lang.Lobby_MapSizeOptEpic; break;
+            }
+
+            var dim = SizeDimentions(mapSize);
+            name += " " +
+                string.Format(DssRef.lang.Lobby_MapSizeDesc,
+                    Math.Round(dim.X * WorldData.TileWidthInKm),
+                    Math.Round(dim.Y * WorldData.TileWidthInKm));
+
+            return name;
         }
 
         void refreshSize()
@@ -175,10 +202,7 @@ namespace VikingEngine.DSSWars
             }
 
         }
-        public void writeMetaData(System.IO.BinaryWriter w)
-        {
-            w.Write(seed);
-        }
+        
 
         public void writeMapFile(System.IO.BinaryWriter w)
         {
@@ -189,7 +213,7 @@ namespace VikingEngine.DSSWars
             const int SaveMapVersion = 4;
             w.Write(SaveMapVersion);
 
-            w.Write(seed);
+            w.Write(metaData.seed);
             Size.write(w);
 
             if (abortLoad) return;
@@ -246,7 +270,7 @@ namespace VikingEngine.DSSWars
         {
            int version = r.ReadInt32();
 
-            seed=r.ReadUInt16();
+            metaData.seed = r.ReadUInt16();
             Size.read(r);
             refreshSize();
             ForXYLoop loop = new ForXYLoop(Size);
@@ -463,7 +487,7 @@ namespace VikingEngine.DSSWars
 
         public int TileSeed(int x, int y)
         {
-            return seed + x * 11 + y * 13;
+            return metaData.seed + x * 11 + y * 13;
         }
 
         public bool GetTileSafe(Vector3 pos, out Tile tile)

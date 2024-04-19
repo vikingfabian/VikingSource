@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.Graphics;
@@ -105,26 +106,14 @@ namespace VikingEngine.DSSWars
         public const float OverviewMapYpos = 0.4f;
 #endregion
 
-        //public const int FactionType_DefaultAi = 0;
-        //public const int FactionType_Player = 1;
-        //public const int FactionType_DarkLord = 2;
-        //public const int FactionType_DarkFollower = 3;
-        //public const int FactionType_UnitedKingdom = 4;
-
-        //public const int FactionType_GreenWood = 5;
-        //public const int FactionType_EasternEmpire = 6;
-        //public const int FactionType_NordicRealm = 7;
-        //public const int FactionType_BearClaw = 8;
-        //public const int FactionType_NordicSpur = 9;
-        //public const int FactionType_IceRaven = 10;
-
-        //public const int FactionType_DragonSlayer = 11;
-        //public const int FactionType_SouthHara = 12;
+      
 
         public static string MoneyToString(int amount)
         {
             return amount.ToString() + "gold";
         }
+
+        
     }
 
     enum MapSize { Tiny, Small, Medium, Large, Huge, Epic, NUM }

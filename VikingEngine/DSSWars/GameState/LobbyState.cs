@@ -47,9 +47,8 @@ namespace VikingEngine.DSSWars
             Engine.Screen.SetupSplitScreen(1, true);
             if (!StartupSettings.BlockBackgroundLoading)
             {
-                mapBackgroundLoading = new MapBackgroundLoading();
+                mapBackgroundLoading = new MapBackgroundLoading(null);
             }
-            //float txtSz = Engine.Screen.Height * 0.0012f;
 
             Ref.draw.ClrColor = new Color(11, 30, 34);
 
@@ -87,9 +86,6 @@ namespace VikingEngine.DSSWars
             bgImage.Texture = bgTex;
             bgImage.SetFullTextureSource();
             bgImage.Opacity = 0.5f;
-
-            //Graphics.TextG title = new Graphics.TextG(LoadedFont.Bold, bgImage.CenterTop, Engine.Screen.TextSizeV2 * 2.6f, new Align(new Vector2(PublicConstants.Half, 1f)),
-            //    "DSS War Party", new Color(36,80,89), ImageLayers.Background8);
         }
 
         void playMusic()
@@ -109,22 +105,7 @@ namespace VikingEngine.DSSWars
             var mapSizes = new List<GuiOption<MapSize>>((int)MapSize.NUM);
             for (MapSize sz = 0; sz < MapSize.NUM; ++sz)
             {
-                string name=null;
-                switch (sz)
-                {
-                    case MapSize.Tiny: name = DssRef.lang.Lobby_MapSizeOptTiny; break;
-                    case MapSize.Small: name = DssRef.lang.Lobby_MapSizeOptSmall; break;
-                    case MapSize.Medium: name = DssRef.lang.Lobby_MapSizeOptMedium; break;
-                    case MapSize.Large: name = DssRef.lang.Lobby_MapSizeOptLarge; break;
-                    case MapSize.Huge: name = DssRef.lang.Lobby_MapSizeOptHuge; break;
-                    case MapSize.Epic: name = DssRef.lang.Lobby_MapSizeOptEpic; break;
-                }
-                var dim= WorldData.SizeDimentions(sz);
-                name += " " + 
-                    string.Format(DssRef.lang.Lobby_MapSizeDesc, 
-                        Math.Round(dim.X * WorldData.TileWidthInKm),
-                        Math.Round(dim.Y * WorldData.TileWidthInKm));
-                mapSizes.Add(new GuiOption<MapSize>(name, sz));
+                mapSizes.Add(new GuiOption<MapSize>(WorldData.SizeString(sz), sz));
             }
             
             GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
@@ -133,7 +114,13 @@ namespace VikingEngine.DSSWars
                 {
                     new GuiLabel("! debug cheats !", layout);
                 }
-                new GuiLargeTextButton(DssRef.lang.Lobby_Start, null, new GuiAction(startGame), false, layout);
+
+                if (DssRef.storage.meta.saveState1 != null)
+                {
+                    new GuiTextButton(DssRef.lang.GameMenu_ContinueFromSave, DssRef.storage.meta.saveState1.InfoString(), continueFromSave, false, layout);
+                }
+                
+               new GuiLargeTextButton(DssRef.lang.Lobby_Start, null, new GuiAction(startGame), false, layout);
                 
                 new GuiTextButton(string.Format(DssRef.lang.Lobby_LocalMultiplayerEdit, DssRef.storage.playerCount),
                     null, localMultiplayerMenu, true, layout);
@@ -290,60 +277,6 @@ namespace VikingEngine.DSSWars
             difficultyLevelText.text.TextString = string.Format( DssRef.lang.Settings_TotalDifficulty, DssRef.difficulty.TotalDifficulty());
         }
 
-        //public BossTimeSettings bossTimeProperty(bool set, BossTimeSettings value)
-        //{
-        //    if (set)
-        //    {
-        //        DssRef.storage.bossTimeSettings = value;
-        //        DssRef.storage.Save(null);
-        //        refreshDifficultyLevel();
-        //    }
-        //    return DssRef.storage.bossTimeSettings;
-        //}
-
-        //public BossSize bossSizeProperty(bool set, BossSize value)
-        //{
-        //    if (set)
-        //    {
-        //        DssRef.storage.bossSize = value;
-        //        DssRef.storage.Save(null);
-        //        refreshDifficultyLevel();
-        //    }
-        //    return DssRef.storage.bossSize;
-        //}
-
-        //public AiAggressivity aggresiveProperty(bool set, AiAggressivity value)
-        //{
-        //    if (set)
-        //    {
-        //        DssRef.storage.aiAggressivity = value;
-        //        DssRef.storage.Save(null);
-        //        refreshDifficultyLevel();
-        //    }
-        //    return DssRef.storage.aiAggressivity;
-        //}
-
-        //public int aiEconomyProperty(bool set, int value)
-        //{
-        //    if (set)
-        //    {
-        //        DssRef.storage.aiEconomyLevel = value;
-        //        DssRef.storage.Save(null);
-        //        refreshDifficultyLevel();
-        //    }
-        //    return DssRef.storage.aiEconomyLevel;
-        //}
-
-        //public int diplomacyDifficultyProperty(bool set, int value)
-        //{
-        //    if (set)
-        //    {
-        //        DssRef.storage.diplomacyDifficulty = value;
-        //        DssRef.storage.Save(null);
-        //        refreshDifficultyLevel();
-        //    }
-        //    return DssRef.storage.diplomacyDifficulty;
-        //}
         public bool allowPauseProperty(int index, bool set, bool value)
         {
             if (set)
@@ -366,17 +299,6 @@ namespace VikingEngine.DSSWars
             return DssRef.difficulty.boss;
         }
 
-        //public bool honorGuardProperty(int index, bool set, bool value)
-        //{
-        //    if (set)
-        //    {
-        //        DssRef.storage.honorGuard = value;
-        //        DssRef.storage.Save(null);
-        //        refreshDifficultyLevel();
-        //    }
-        //    return DssRef.storage.honorGuard;
-        //}
-
         public MapSize mapSizeProperty(bool set, MapSize value)
         {
             if (set && DssRef.storage.mapSize != value)
@@ -397,10 +319,10 @@ namespace VikingEngine.DSSWars
         void restartBackgroundLoading()
         { 
             if (mapBackgroundLoading != null)
-                {
-                    mapBackgroundLoading.Abort();
-                    mapBackgroundLoading = new MapBackgroundLoading();
-                }
+            {
+                mapBackgroundLoading.Abort();
+                mapBackgroundLoading = new MapBackgroundLoading(null);
+            }
         }
 
         void selectInputMenu(int playerNumber, bool startGame)
@@ -748,8 +670,6 @@ namespace VikingEngine.DSSWars
             new StartGame(netLobby, mapBackgroundLoading);
         }
 
-       
-
         void startGame()
         {
             if (DssRef.storage.playerCount == 1)
@@ -785,6 +705,18 @@ namespace VikingEngine.DSSWars
         void startGame_nochecks()
         {
             new StartGame(netLobby, mapBackgroundLoading);
+        }
+
+        void continueFromSave()
+        {
+            if (mapBackgroundLoading != null)
+            {
+                mapBackgroundLoading.Abort();
+                
+            }
+            mapBackgroundLoading = new MapBackgroundLoading(DssRef.storage.meta.saveState1);
+
+            startGame_nochecks();
         }
 
 

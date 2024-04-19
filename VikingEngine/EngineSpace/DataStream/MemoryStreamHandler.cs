@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VikingEngine.DataStream
 {
-    class MemoryStreamHandler
+    class MemoryStreamHandler: DataLib.ISaveByteArrayObj
     {
         System.IO.MemoryStream s;
         System.IO.BinaryWriter w;
@@ -74,6 +74,8 @@ namespace VikingEngine.DataStream
         {
             return s.ToArray();
         }
+
+        public byte[] ByteArraySaveData { get { return ByteArray(); } set { SetByteArray(value); } }
 
         public void SetByteArray(byte[] data)
         {

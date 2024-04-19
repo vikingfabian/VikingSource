@@ -31,7 +31,7 @@ namespace VikingEngine.Input
             }
         }
 
-        public static bool AnyButtonDownEvent()
+        public static bool AnyKeyDownEvent()
         {
             foreach (var m in XInput.controllers)
             {

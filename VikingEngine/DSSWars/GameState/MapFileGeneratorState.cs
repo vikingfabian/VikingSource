@@ -79,7 +79,7 @@ namespace VikingEngine.DSSWars
             {
                 while (true)
                 {
-                    bool success = new GenerateMap().Generate(loadingSz, loadingNumber, true);
+                    bool success = new GenerateMap().Generate(loadingSz, loadingNumber, true, Ref.rnd.Ushort());
 
                     if (success)
                     {

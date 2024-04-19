@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Valve.Steamworks;
+using VikingEngine.DSSWars.Data;
 using static VikingEngine.DSSWars.Map.Generate.MapBackgroundLoading;
 
 namespace VikingEngine.DSSWars.Map.Generate
@@ -21,16 +23,27 @@ namespace VikingEngine.DSSWars.Map.Generate
         bool generateSuccess =false;
         // CancellationToken cancellationToken;
         CancellationTokenSource tokenSource;
-        public MapBackgroundLoading()
+        public MapBackgroundLoading(SaveStateMeta loadMeta)
         {
+            if (loadMeta != null)
+            {
+                DssRef.storage.generateNewMaps = loadMeta.world.IsGenerated;
+                DssRef.storage.mapSize = loadMeta.world.mapSize;
+            }
+
             if (DssRef.storage.generateNewMaps)
             {
                 loadingState = LoadingState.StorageDone;
-                generateLoopUntilSuccess();
+                generateLoopUntilSuccess(loadMeta);
             }
             else
             {
                 int loadingNumber = Ref.rnd.Int(MapFileGeneratorState.MapCountPerSize) + 1;
+
+                if (loadMeta != null)
+                {
+                    loadingNumber = loadMeta.world.saveIndex;
+                }
 
                 storage = new WorldDataStorage();
 
@@ -43,7 +56,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             }
         }
 
-        void generateLoopUntilSuccess()
+        void generateLoopUntilSuccess(SaveStateMeta loadMeta)
         {
             tokenSource = new CancellationTokenSource();
             CancellationToken cancellationToken = tokenSource.Token;
@@ -53,7 +66,18 @@ namespace VikingEngine.DSSWars.Map.Generate
                 while (!abort)
                 {
                     dataGenerate = new GenerateMap();
-                    bool success = dataGenerate.Generate(DssRef.storage.mapSize, 0, false);
+
+                    ushort seed;
+                    if (loadMeta != null)
+                    {
+                        seed = loadMeta.world.seed;
+                    }
+                    else
+                    {
+                        seed = Ref.rnd.Ushort();
+                    }
+
+                    bool success = dataGenerate.Generate(DssRef.storage.mapSize, -1, false, seed);
 
                     if (success)
                     {
@@ -132,19 +156,20 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         public string ProgressString()
         {
-            string maploading = "Map loading: ";
+            //string maploading = "Map loading: ";
             if (loadingState == LoadingState.Complete)
             {
-                return maploading + "complete";
+                return string.Format(DssRef.lang.Progressbar_MapLoadingState, DssRef.lang.Progressbar_ProgressComplete);
             }
             else
             {
                 if (DssRef.storage.generateNewMaps && !generateSuccess)
                 {
-                    return "Generating: " + GenerateMap.LoadStatus.ToString() + "%. (Fails " + failCount.ToString()+ ")";
+                    return string.Format(DssRef.lang.Progressbar_MapLoadingState_GeneratingPercentage, GenerateMap.LoadStatus, failCount);//"Generating: " + GenerateMap.LoadStatus.ToString() + "%. (Fails " + failCount.ToString()+ ")";
                 }
 
-                return maploading + "part " + ((int)loadingState).ToString() + "/" + ((int)LoadingState.Complete).ToString();
+                string part = string.Format(DssRef.lang.Progressbar_MapLoadingState_LoadPart, (int)loadingState, (int)LoadingState.Complete);
+                return string.Format(DssRef.lang.Progressbar_MapLoadingState, part);
             }
         }
 
@@ -162,7 +187,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             return false;
         }
 
-        public 
+         
 
         enum LoadingState
         { 

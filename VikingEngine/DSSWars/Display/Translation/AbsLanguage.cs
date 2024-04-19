@@ -318,5 +318,23 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string GameMenu_Resume { get; }
 
         public abstract string GameMenu_ExitGame { get; }
+
+        public abstract string GameMenu_SaveState { get; }
+        public abstract string GameMenu_SaveStateWarnings { get; }
+        public abstract string GameMenu_LoadState { get; }
+        public abstract string GameMenu_ContinueFromSave { get; }
+
+        public abstract string Progressbar_MapLoadingState { get; }
+
+        public abstract string Progressbar_ProgressComplete { get; }
+
+        public abstract string Progressbar_MapLoadingState_GeneratingPercentage { get; }
+
+        public abstract string Progressbar_MapLoadingState_LoadPart { get; }
+
+        public abstract string Progressbar_SaveProgress { get; }
+        public abstract string Progressbar_LoadProgress { get; }
+
+        public abstract string Progressbar_PressAnyKey { get; }
     }
 }

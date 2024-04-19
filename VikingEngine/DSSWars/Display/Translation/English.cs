@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Map.Generate;
 
 namespace VikingEngine.DSSWars.Display.Translation
 {
@@ -1052,5 +1053,41 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// Exit to game lobby
         /// </summary>
         public override string GameMenu_ExitGame => "Exit game";
+
+        public override string GameMenu_SaveState => "Save";
+        public override string GameMenu_SaveStateWarnings => "Warning! Save files are up to 64GB in size. Save files will be lost when the game is updated.";
+        public override string GameMenu_LoadState => "Load";
+        public override string GameMenu_ContinueFromSave => "Continue from save";
+
+
+        public override string Progressbar_MapLoadingState => "Map loading: {0}";
+
+        public override string Progressbar_ProgressComplete => "complete";
+
+        /// <summary>
+        /// 0: progress in percentage, 1: fail count
+        /// </summary>
+        public override string Progressbar_MapLoadingState_GeneratingPercentage => "Generating: {0}%. (Fails {1})";
+
+
+        /// <summary>
+        /// 0: current part, 1: number of parts
+        /// </summary>
+        public override string Progressbar_MapLoadingState_LoadPart => "part {0}/{1}";
+
+        /// <summary>
+        /// 0: Percentage or Complete
+        /// </summary>
+        public override string Progressbar_SaveProgress => "Saving: {0}";
+
+        /// <summary>
+        /// 0: Percentage or Complete
+        /// </summary>
+        public override string Progressbar_LoadProgress => "Loading: {0}";
+
+        /// <summary>
+        /// Progress done, waiting for player input
+        /// </summary>
+        public override string Progressbar_PressAnyKey => "Press any key to continue";
     }
 }
