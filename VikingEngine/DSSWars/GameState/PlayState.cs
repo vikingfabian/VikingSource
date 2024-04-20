@@ -40,10 +40,11 @@ namespace VikingEngine.DSSWars
 
         bool bResourceUpdate = false;
 
-        public PlayState(bool host)
+        public PlayState(bool host, SaveStateMeta loadMeta)
             : base(true)
         {
             DssRef.state = this;
+            Ref.rnd.SetSeed(DssRef.world.metaData.seed);
 
             new Diplomacy();
             new Achievements();
@@ -59,27 +60,21 @@ namespace VikingEngine.DSSWars
             detailMap = new Map.MapLayer_Detail();
 
             Engine.Update.SetFrameRate(60);
+            events = new GameEvents();
 
-            onGameStart();
-            initStartUnits();
-            
-            new AsynchUpdateable_TryCatch(asynchGameObjectsUpdate, "DSS gameobjects update", 51);
-            new AsynchUpdateable_TryCatch(asynchAiPlayersUpdate, "DSS ai player update", 52);
-            new AsynchUpdateable_TryCatch(asynchArmyAiUpdate, "DSS army ai update", 53);
-            new AsynchUpdateable_TryCatch(asynchCullingUpdate, "DSS culling update", 54);
-            new AsynchUpdateable_TryCatch(asynchSleepObjectsUpdate, "DSS sleep objects update", 55);
-            new AsynchUpdateable_TryCatch(asynchNearObjectsUpdate, "DSS near objects update", 56);
-            new AsynchUpdateable_TryCatch(asynchMapGenerating, "DSS map gen", 57);
-            new AsynchUpdateable_TryCatch(asyncUserUpdate, "DSS user update", 58);
-            new AsynchUpdateable_TryCatch(asyncMapBorders, "DSS map borders update", 59);
-            new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60);
-            new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62);
-
-            if (StartupSettings.RunResoursesUpdate)
+            if (loadMeta == null)
             {
-                new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
+                onGameStart(true);
             }
-            isReady = host;
+            else
+            {
+                new LoadScene(loadMeta);
+            }
+        }
+
+        public void OnLoadComplete()
+        {
+            onGameStart(false);
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
@@ -136,20 +131,43 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        void onGameStart()
+        void onGameStart(bool newGame)
         {
-            events = new GameEvents();
+            events.onGameStart(newGame);
 
             DssRef.world.factionsCounter.Reset();
             while (DssRef.world.factionsCounter.Next())
             {
-                DssRef.world.factionsCounter.sel.onGameStart();
+                DssRef.world.factionsCounter.sel.onGameStart(newGame);
             }
 
             foreach (var m in DssRef.world.cities)
             {
                 m.onGameStart();
             }
+
+            if (newGame)
+            {
+                initStartUnits();
+            }
+
+            new AsynchUpdateable_TryCatch(asynchGameObjectsUpdate, "DSS gameobjects update", 51);
+            new AsynchUpdateable_TryCatch(asynchAiPlayersUpdate, "DSS ai player update", 52);
+            new AsynchUpdateable_TryCatch(asynchArmyAiUpdate, "DSS army ai update", 53);
+            new AsynchUpdateable_TryCatch(asynchCullingUpdate, "DSS culling update", 54);
+            new AsynchUpdateable_TryCatch(asynchSleepObjectsUpdate, "DSS sleep objects update", 55);
+            new AsynchUpdateable_TryCatch(asynchNearObjectsUpdate, "DSS near objects update", 56);
+            new AsynchUpdateable_TryCatch(asynchMapGenerating, "DSS map gen", 57);
+            new AsynchUpdateable_TryCatch(asyncUserUpdate, "DSS user update", 58);
+            new AsynchUpdateable_TryCatch(asyncMapBorders, "DSS map borders update", 59);
+            new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60);
+            new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62);
+
+            if (StartupSettings.RunResoursesUpdate)
+            {
+                new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
+            }
+            isReady = host;
         }
 
         void initStartUnits()
@@ -254,16 +272,6 @@ namespace VikingEngine.DSSWars
         public void pauseAction()
         {
             Ref.SetPause(!Ref.isPaused);
-            //Ref.isPaused = !Ref.isPaused;
-
-            //if (Ref.isPaused)
-            //{
-            //    Ref.GameTimeSpeed = 0f;
-            //}
-            //else
-            //{
-            //    Ref.GameTimeSpeed = 1f;
-            //}
         }
 
         

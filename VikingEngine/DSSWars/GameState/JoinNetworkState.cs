@@ -112,7 +112,7 @@ namespace VikingEngine.DSSWars
                 case Network.PacketType.rtsStartGame:
                     if (DssRef.world != null)
                     {
-                        new PlayState(false);
+                        new PlayState(false, null);
                     }
                     break;
             }

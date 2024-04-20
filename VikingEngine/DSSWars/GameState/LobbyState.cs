@@ -667,7 +667,7 @@ namespace VikingEngine.DSSWars
             playerData.inputSource = inputSource;
             DssRef.storage.checkPlayerDoublettes(0);
 
-            new StartGame(netLobby, mapBackgroundLoading);
+            new StartGame(netLobby, null, mapBackgroundLoading);
         }
 
         void startGame()
@@ -704,7 +704,7 @@ namespace VikingEngine.DSSWars
 
         void startGame_nochecks()
         {
-            new StartGame(netLobby, mapBackgroundLoading);
+            new StartGame(netLobby, null, mapBackgroundLoading);
         }
 
         void continueFromSave()
@@ -716,7 +716,7 @@ namespace VikingEngine.DSSWars
             }
             mapBackgroundLoading = new MapBackgroundLoading(DssRef.storage.meta.saveState1);
 
-            startGame_nochecks();
+            new StartGame(netLobby, DssRef.storage.meta.saveState1, mapBackgroundLoading);
         }
 
 

@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Map.Generate;
 
 namespace VikingEngine.DSSWars
@@ -18,10 +19,12 @@ namespace VikingEngine.DSSWars
         int map_start_process_done = 0;
         MapBackgroundLoading loading;
         PlayState state = null;
+        SaveStateMeta loadMeta;
 
-        public StartGame(NetworkLobby netLobby, MapBackgroundLoading loading)
+        public StartGame(NetworkLobby netLobby, SaveStateMeta loadMeta, MapBackgroundLoading loading)
             :base(false)
         {
+            this.loadMeta = loadMeta;
             Ref.music.stop(true);
             new PlaySettings();
 
@@ -61,7 +64,7 @@ namespace VikingEngine.DSSWars
 
             if (loading.Complete() && state == null)
             {
-                state = new PlayState(true);
+                state = new PlayState(true, loadMeta);
             }
 
             if (Ref.music != null)

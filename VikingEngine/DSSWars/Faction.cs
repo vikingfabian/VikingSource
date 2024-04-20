@@ -76,9 +76,9 @@ namespace VikingEngine.DSSWars
             this.parentArrayIndex = addTo.factions.Add(this);
         }
 
-        public void onGameStart()
+        public void onGameStart(bool newGame)
         {
-            player.onGameStart();
+            player.onGameStart(newGame);
         }
 
         public void initDiplomacy(WorldData world)

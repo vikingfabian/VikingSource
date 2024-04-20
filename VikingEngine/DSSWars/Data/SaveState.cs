@@ -40,9 +40,11 @@ namespace VikingEngine.DSSWars.Data
                 writeGameState(w);
                 dataReady = true;   
             });
+        }
 
-            //TODO spara metadata och ladda kartan först
-            
+        public void load()
+        {
+            complete = true;
         }
 
         public void SaveComplete(bool save, int player, bool completed, byte[] value)

@@ -144,7 +144,7 @@ namespace VikingEngine.DSSWars.Players
         {   
         }
 
-        virtual public void onGameStart() { }
+        virtual public void onGameStart(bool newGame) { }
 
         abstract public bool IsLocal { get; }
 

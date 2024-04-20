@@ -587,13 +587,16 @@ namespace VikingEngine.DSSWars.Players
             return false;
         }
 
-        public override void onGameStart()
+        public override void onGameStart(bool newGame)
         {
-            base.onGameStart();
+            base.onGameStart(newGame);
             oneSecUpdate();
-            commandPoints.value = commandPoints.max * 0.5;
-            diplomaticPoints.value = diplomaticPoints.max * 0.6;
 
+            if (newGame)
+            {
+                commandPoints.value = commandPoints.max * 0.5;
+                diplomaticPoints.value = diplomaticPoints.max * 0.6;
+            }
         }
 
         public override void oneSecUpdate()

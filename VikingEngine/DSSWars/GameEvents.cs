@@ -32,20 +32,26 @@ namespace VikingEngine.DSSWars
 
         public GameEvents()
         {
-            if (DssRef.difficulty.bossTimeSettings != BossTimeSettings.Never)
+        }
+
+        public void onGameStart(bool newGame)
+        {
+            if (newGame)
             {
-                prepareNext();
+                if (DssRef.difficulty.bossTimeSettings != BossTimeSettings.Never)
+                {
+                    prepareNext();
+                }
+
+                //Prepare secret alliances
+                var DarkFollower = DssRef.world.factions.Array[DssRef.settings.Faction_DarkFollower];
+                var SouthHara = DssRef.world.factions.Array[DssRef.settings.Faction_SouthHara];
+                var UnitedKingdom = DssRef.world.factions.Array[DssRef.settings.Faction_UnitedKingdom];
+
+                DssRef.diplomacy.SetRelationType(DarkFollower, SouthHara, RelationType.RelationType3_Ally).secret = true;
+                DssRef.diplomacy.SetRelationType(DarkFollower, UnitedKingdom, RelationType.RelationType3_Ally).secret = true;
+                DssRef.diplomacy.SetRelationType(UnitedKingdom, SouthHara, RelationType.RelationType3_Ally).secret = true;
             }
-
-            //Prepare secret alliances
-            var DarkFollower = DssRef.world.factions.Array[DssRef.settings.Faction_DarkFollower];
-            var SouthHara = DssRef.world.factions.Array[DssRef.settings.Faction_SouthHara];
-            var UnitedKingdom = DssRef.world.factions.Array[DssRef.settings.Faction_UnitedKingdom];
-
-            DssRef.diplomacy.SetRelationType(DarkFollower, SouthHara, RelationType.RelationType3_Ally).secret = true;
-            DssRef.diplomacy.SetRelationType(DarkFollower, UnitedKingdom, RelationType.RelationType3_Ally).secret = true;
-            DssRef.diplomacy.SetRelationType(UnitedKingdom, SouthHara, RelationType.RelationType3_Ally).secret = true;
-
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
