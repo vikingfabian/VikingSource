@@ -40,8 +40,15 @@ namespace VikingEngine.DSSWars.Map.Generate
             {
                 int loadingNumber = Ref.rnd.Int(MapFileGeneratorState.MapCountPerSize) + 1;
 
-                if (loadMeta != null)
+                WorldMetaData worldMeta;
+
+                if (loadMeta == null)
                 {
+                    worldMeta = new WorldMetaData(0, DssRef.storage.mapSize, loadingNumber);
+                }
+                else
+                {
+                    worldMeta = loadMeta.world;
                     loadingNumber = loadMeta.world.saveIndex;
                 }
 
@@ -52,7 +59,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     DssRef.storage.mapSize = StartupSettings.SaveLoadSpecificMap.Value;
                     loadingNumber = 1;
                 }
-                storage.loadMap(DssRef.storage.mapSize, loadingNumber);
+                storage.loadMap(worldMeta);//DssRef.storage.mapSize, loadingNumber);
             }
         }
 
@@ -67,17 +74,20 @@ namespace VikingEngine.DSSWars.Map.Generate
                 {
                     dataGenerate = new GenerateMap();
 
+                    WorldMetaData world;
                     ushort seed;
                     if (loadMeta != null)
                     {
-                        seed = loadMeta.world.seed;
+                        world = loadMeta.world;
+                        //seed = loadMeta.world.seed;
                     }
                     else
                     {
+                        world = new WorldMetaData(Ref.rnd.Ushort(), DssRef.storage.mapSize, -1);
                         seed = Ref.rnd.Ushort();
                     }
 
-                    bool success = dataGenerate.Generate(DssRef.storage.mapSize, -1, false, seed);
+                    bool success = dataGenerate.Generate(false, world);// DssRef.storage.mapSize, -1, false, seed);
 
                     if (success)
                     {

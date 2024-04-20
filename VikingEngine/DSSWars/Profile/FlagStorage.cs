@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.Profile
 
             for (int i = 0; i < ProfilesCount; ++i)
             {
-                flagDesigns.Add(new FlagAndColor(FactionType.Player, i));
+                flagDesigns.Add(new FlagAndColor(FactionType.Player, i, null));
             }
         }
 

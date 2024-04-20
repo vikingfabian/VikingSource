@@ -335,6 +335,14 @@ namespace VikingEngine
                 Min.Z + Ref.rnd.Float(Add.Z));
         }
 
+        public Color GetRandom(PcgRandom rnd)
+        {
+            return new Color(
+                Min.X + rnd.Float(Add.X),
+                Min.Y + rnd.Float(Add.Y),
+                Min.Z + rnd.Float(Add.Z));
+        }
+
         public Color GetRandomPercentPos()
         {
             return PercentPos((float)Ref.rnd.Double());

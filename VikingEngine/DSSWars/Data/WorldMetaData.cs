@@ -11,13 +11,17 @@ namespace VikingEngine.DSSWars.Data
         const int Version = 1;
 
         public ushort seed;
+        public int objSeed;
         public MapSize mapSize;
         public int saveIndex = -1;
         public bool IsGenerated => saveIndex < 0;
+        public PcgRandom objRnd;
 
         public WorldMetaData(ushort seed, MapSize mapSize, int saveIndex)
         {
             this.seed = seed;
+            objSeed = Ref.rnd.Int(100000);
+            objRnd = new PcgRandom(objSeed);
             this.mapSize = mapSize;
             this.saveIndex = saveIndex;
         }
@@ -32,6 +36,7 @@ namespace VikingEngine.DSSWars.Data
             w.Write(Version);
 
             w.Write(seed);
+            w.Write((ushort)objSeed);
             w.Write((byte)mapSize);
             w.Write((short)saveIndex);
         }
@@ -41,8 +46,15 @@ namespace VikingEngine.DSSWars.Data
             int version = r.ReadInt32();
              
             seed = r.ReadUInt16();
+            objSeed = r.ReadUInt16();
+            objRnd = new PcgRandom(objSeed);
             mapSize = (MapSize)r.ReadByte();
             saveIndex = r.ReadInt16();
+        }
+
+        public void setObjSeed(int id)
+        {
+            objRnd.SetSeed(id + objSeed);
         }
     }
 }

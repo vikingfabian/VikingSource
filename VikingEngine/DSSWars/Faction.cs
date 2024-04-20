@@ -60,8 +60,10 @@ namespace VikingEngine.DSSWars
         public Faction(WorldData addTo, FactionType factiontype)
         {
             this.factiontype = factiontype;
-            
-            initVisuals();
+
+            this.parentArrayIndex = addTo.factions.Add(this);
+
+            initVisuals(addTo.metaData);
 
             cities = new SpottedArray<GameObject.City>(8);
 
@@ -73,7 +75,7 @@ namespace VikingEngine.DSSWars
             armies = new SpottedArray<Army>(16);
             armiesCounter = armies.counter();
 
-            this.parentArrayIndex = addTo.factions.Add(this);
+            
         }
 
         public void onGameStart(bool newGame)
@@ -83,12 +85,14 @@ namespace VikingEngine.DSSWars
 
         public void initDiplomacy(WorldData world)
         {
+
             diplomaticRelations = new DiplomaticRelation[world.factions.Array.Length];
         }
 
-        public void initVisuals()
+        public void initVisuals(WorldMetaData worldMeta)
         {
-            SetProfile(new FlagAndColor(factiontype, -1));
+            worldMeta.setObjSeed(parentArrayIndex);
+            SetProfile(new FlagAndColor(factiontype, -1, worldMeta));
         }
 
         public void SetProfile(FlagAndColor profile)

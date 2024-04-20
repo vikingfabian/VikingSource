@@ -25,8 +25,8 @@ namespace VikingEngine.DSSWars.Data
         public bool complete = false;
         ObjectPointerCollection pointers;
 
-        public SaveGamestate() :
-            base(false)
+        public SaveGamestate()
+             : base(false)
         {
             
         }

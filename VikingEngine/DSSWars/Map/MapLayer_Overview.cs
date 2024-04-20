@@ -211,19 +211,19 @@ namespace VikingEngine.DSSWars.Map
                 state_Processing_Sych_Complete = 0;
 
                 borders.quedEvent();
-                factionsMap.asyncTask();//factionColorsTex.quedEvent();
+                factionsMap.asyncTask();
 
                 state_Processing_Sych_Complete = 1;
             }
         }
         public void HalfSecondUpdate()
         {
-            if (DssLib.UpdateBorders && //DssRef.world.BordersUpdated &&
+            if (DssLib.UpdateBorders && 
                 state_Processing_Sych_Complete == 1)
             {
                 DssRef.world.BordersUpdated = false;
                 borders.SetNewModel();
-                factionsMap.syncTask();//factionColorsTex.SetNewTexture();
+                factionsMap.syncTask();
 
                 state_Processing_Sych_Complete = 2;
             }

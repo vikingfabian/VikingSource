@@ -97,5 +97,10 @@ namespace VikingEngine.DSSWars.GameObject
             return Convert.ToInt32(attackDamageStructure / (attackTimePlusCoolDown / 1000.0));
         }
 
+        virtual public bool IsShip()
+        {
+            return false;
+        }
+
     }
 }

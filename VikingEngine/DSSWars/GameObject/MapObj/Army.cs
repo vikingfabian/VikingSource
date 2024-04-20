@@ -41,7 +41,7 @@ namespace VikingEngine.DSSWars.GameObject
         public float soldierRadius = 0.5f;
         BoundingSphere bound;
         //public int index;
-        public static int NextId = 0;
+        
         public int id;
        
         public int soldiersCount = 0;
@@ -60,8 +60,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Army(Faction faction, IntVector2 startPosition)
         {
-            id = ++NextId;
-            name = Data.NameGenerator.ArmyName();
+            id = ++DssRef.state.NextArmyId;
+            name = Data.NameGenerator.ArmyName(id);
             position = WP.ToWorldPos(startPosition);
             tilePos = startPosition;
 
@@ -80,6 +80,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
+            w.Write((ushort)id);
             WP.writePosXZ(w, position);
 
             w.Write((ushort)groups.Count);
@@ -94,6 +95,9 @@ namespace VikingEngine.DSSWars.GameObject
         public void readGameState(Faction faction, System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
             this.faction = faction;
+
+            id = r.ReadUInt16();
+            name = Data.NameGenerator.ArmyName(id);
             WP.readPosXZ(r, out position, out tilePos);
 
             int groupsCount = r.ReadUInt16();

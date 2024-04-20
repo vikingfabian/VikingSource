@@ -39,6 +39,7 @@ namespace VikingEngine.DSSWars
         public AbsCutScene cutScene=null;
 
         bool bResourceUpdate = false;
+        public int NextArmyId = 0;
 
         public PlayState(bool host, SaveStateMeta loadMeta)
             : base(true)
@@ -50,6 +51,8 @@ namespace VikingEngine.DSSWars
             new Achievements();
             new GameTime();
             HudLib.Init();
+
+            //Ref.rnd.SetSeed(DssRef.world.metaData.seed);
             initPlayers();
             culling = new Culling();
 

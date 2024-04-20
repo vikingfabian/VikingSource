@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.HUD;
 using VikingEngine.LootFest.Map.HDvoxel;
 
@@ -40,7 +41,7 @@ namespace VikingEngine.DSSWars
 
 
 
-        public FlagAndColor(FactionType factiontype, int index)
+        public FlagAndColor(FactionType factiontype, int index, WorldMetaData worldMeta)
         {
             this.index = index;
             
@@ -49,8 +50,8 @@ namespace VikingEngine.DSSWars
             {
                 case FactionType.DefaultAi:
                     {
-                        var color1 = AiColorRange.GetRandom();
-                        var color2 = AiColorRange.GetRandom();
+                        var color1 = AiColorRange.GetRandom(worldMeta.objRnd);
+                        var color2 = AiColorRange.GetRandom(worldMeta.objRnd);
 
                         setColor(ProfileColorType.Main, color1);
                         setColor(ProfileColorType.Detail1, color2);
@@ -59,7 +60,7 @@ namespace VikingEngine.DSSWars
                         setColor(ProfileColorType.Skin, Color.LightGray);
                         setColor(ProfileColorType.Hair, Color.DarkGray);
 
-                        flagDesign = arraylib.RandomListMember(FlagDesign.AiBanner);
+                        flagDesign = arraylib.RandomListMember(FlagDesign.AiBanner, worldMeta.objRnd);
                     }
                     break;
 
@@ -546,7 +547,7 @@ namespace VikingEngine.DSSWars
 
         public FlagAndColor Clone()
         {
-            FlagAndColor clonedData = new FlagAndColor(FactionType.Player, this.index)
+            FlagAndColor clonedData = new FlagAndColor(FactionType.Player, this.index, null)
             {
                 colors = this.colors != null ? (Color[])this.colors.Clone() : null,
                 blockColors = this.blockColors != null ? (ushort[])this.blockColors.Clone() : null,
@@ -558,8 +559,7 @@ namespace VikingEngine.DSSWars
         }
 
         public void gameStartInit()
-        {
-            
+        {           
 
             blockColors = new ushort[colors.Length];
             for (int i = 0; i < blockColors.Length; ++i)

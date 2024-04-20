@@ -20,10 +20,10 @@ namespace VikingEngine.DSSWars
             new DataStream.WriteBinaryIO(filePath, data.writeMapFile, null);
         }
 
-        public void loadMap(MapSize size, int mapIndex)
+        public void loadMap(Data.WorldMetaData worldMeta)//MapSize size, int mapIndex)
         {
             this.worldData = new WorldData();
-            this.worldData.metaData = new Data.WorldMetaData(0, size, mapIndex);
+            this.worldData.metaData = worldMeta;//new Data.WorldMetaData(0, size, mapIndex);
             //this.worldData.mapSize = size;
             //this.worldData.saveIndex = mapIndex;
             DssRef.world = this.worldData;

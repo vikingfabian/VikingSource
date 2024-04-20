@@ -37,10 +37,10 @@ namespace VikingEngine.DSSWars.Map.Generate
             new IntervalF(5, 7),
         };
         
-        public bool Generate(MapSize size, int number, bool save, ushort seed) 
+        public bool Generate(bool save, Data.WorldMetaData worldMeta)//, int number, ushort seed) 
         {
             //ushort seed = Ref.rnd.Ushort();
-            world = new WorldData(new Data.WorldMetaData(seed, size, number));
+            world = new WorldData(worldMeta);//new Data.WorldMetaData(seed, size, number));
             biomsLayout = new BiomsLayout(world.rnd);
 
             try
@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     return false;
                 }
                 LoadStatus = 70;
-                factionStartAreas(size);
+                factionStartAreas(worldMeta.mapSize);
                                 
                 if (save)
                 {

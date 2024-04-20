@@ -13,26 +13,29 @@ namespace VikingEngine.DSSWars.Data
 {
     static class NameGenerator
     {
-        public static string ArmyName()
+        static PcgRandom random = new PcgRandom();
+        
+        public static string ArmyName(int armyId)
         {
-            int namingVariant = Ref.rnd.Int(12);
+            random.SetSeed(armyId + DssRef.world.metaData.objSeed);
+            int namingVariant = random.Int(12);
 
             switch (namingVariant)
             {
                 case 0:
                     {
-                        string adjective = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Adjectives);
-                        string color = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Colors);
-                        string creature = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Creatures);
+                        string adjective = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Adjectives, random);
+                        string color = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Colors, random);
+                        string creature = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Creatures, random);
 ;
                         return $"{adjective} {color} {creature}";
                     }
 
                 case 1:
                     {
-                        string creature = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Creatures);
-                        string adjective = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Adjectives);
-                        string place = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Places);
+                        string creature = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Creatures, random);
+                        string adjective = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Adjectives, random);
+                        string place = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Places, random);
 
                         return string.Format(DssRef.lang.NameGenerator_XOfTheY, creature, $"{adjective} {place}");
                         //return $"{creature} of the {adjective} {place}";
@@ -40,25 +43,25 @@ namespace VikingEngine.DSSWars.Data
 
                 case 2:
                     {
-                        string color = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Colors);
-                        string place = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Places);
+                        string color = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Colors, random);
+                        string place = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Places, random);
 
                         return $"{color} {place}";
                     }
 
                 case 3:
                     {
-                        string adjective = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Adjectives);
-                        string color = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Colors);
-                        string place = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Places);
+                        string adjective = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Adjectives, random);
+                        string color = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Colors, random);
+                        string place = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Places, random);
 
                         return $"{adjective} {color} {place}";
                     }
 
                 case 4:
                     {
-                        string title = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Titles);
-                        string symbol = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Symbols);
+                        string title = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Titles, random);
+                        string symbol = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Symbols, random);
 
                         return string.Format(DssRef.lang.NameGenerator_XOfTheY, title, symbol);
                         //return $"{title} of the {symbol}";
@@ -66,17 +69,17 @@ namespace VikingEngine.DSSWars.Data
 
                 case 5:
                     {
-                        string title = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Titles);
-                        string creature = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Creatures);
+                        string title = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Titles, random);
+                        string creature = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Creatures, random);
 
                         return string.Format(DssRef.lang.NameGenerator_XOfTheY, title, creature);
                         //return $"{title} of the {creature}";
                     }
                 case 6:
                     {
-                        string title = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Titles);
-                        string adjective = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Adjectives);
-                        string creature = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Creatures);
+                        string title = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Titles, random);
+                        string adjective = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Adjectives, random);
+                        string creature = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Creatures, random);
 
                         return string.Format(DssRef.lang.NameGenerator_XOfTheY, title, $"{adjective} {creature}");
                         //return $"{title} of the {adjective} {creature}";
@@ -85,42 +88,42 @@ namespace VikingEngine.DSSWars.Data
                 case 7:
                     {
                        
-                        string adjective = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Adjectives);
-                        string title = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Titles);
+                        string adjective = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Adjectives, random);
+                        string title = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Titles, random);
 
                         return $"{adjective} {title}";
                     }
                 case 8:
                     {
-                        string color = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Colors);
-                        string adjective = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Adjectives);
-                        string title = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Titles);
+                        string color = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Colors, random);
+                        string adjective = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Adjectives, random);
+                        string title = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Titles, random);
 
                         return $"{color} {adjective} {title}";
                     }
 
                 case 9:
                     {
-                        string adjective = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Adjectives);
-                        string symbol = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Symbols);
-                        string title = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Titles);
+                        string adjective = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Adjectives, random);
+                        string symbol = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Symbols, random);
+                        string title = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Titles, random);
 
                         return $"{adjective} {symbol} {title}";
                     }
 
                 case 10:
                     {
-                        string color = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Colors);
-                        string symbol = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Symbols);
+                        string color = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Colors, random);
+                        string symbol = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Symbols, random);
 
                         return $"{color} {symbol}";
                     }
 
                 case 11:
                     {
-                        string adjective = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Adjectives);
-                        string color = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Colors);
-                        string symbol = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Symbols);
+                        string adjective = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Adjectives, random);
+                        string color = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Colors, random);
+                        string symbol = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Symbols, random);
 
                         return $"{adjective} {color} {symbol}";
                     }

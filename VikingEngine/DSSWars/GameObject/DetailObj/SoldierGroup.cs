@@ -201,7 +201,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             AbsSoldierData soldierData = DssRef.unitsdata.Get(soldierType);
 
-            createAllSoldiers(soldierType == UnitType.Recruit , typeData, soldiersCount);
+            createAllSoldiers(soldierType == UnitType.Recruit , (soldierData != null && soldierData.IsShip())? soldierData : typeData, soldiersCount);
 
             if (!soldiersLockedInGroup)
             {

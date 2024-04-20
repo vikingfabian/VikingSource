@@ -20,6 +20,7 @@ Retreat system
 -reassemble av flydd arme
 
 Polish
+-Delay av ai i easy mode
 -attack warning -Battle notification
 -diplomacy toggle
 -AI sök fiende armeer som passerar

@@ -50,5 +50,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return new BaseWarship();
         }
+
+        public override bool IsShip()
+        {
+            return true;
+        }
     }
 }
