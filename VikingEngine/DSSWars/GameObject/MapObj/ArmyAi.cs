@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Valve.Steamworks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.PJ.Joust;
@@ -363,12 +364,25 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write((byte)objective);
             if (objective == ArmyObjective.Attack)
             {
-
+                new ArmyAttackObjectPointer(w, attackTarget);
+            }
+            else if (objective == ArmyObjective.MoveTo)
+            {
+                WP.writeTilePos(w, walkGoal);
             }
         }
-        public void readAiState(System.IO.BinaryReader r, int version)
+        public void readAiState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
-
+            objective = (ArmyObjective)r.ReadByte();
+            if (objective == ArmyObjective.Attack)
+            {
+                pointers.pointers.Add(new ArmyAttackObjectPointer(r, this));
+            }
+            else if (objective == ArmyObjective.MoveTo)
+            {
+                walkGoal = WP.readTilePos(r);
+                adjustedWalkGoal = walkGoal;
+            }
         }
 
         public bool IdleObjetive()

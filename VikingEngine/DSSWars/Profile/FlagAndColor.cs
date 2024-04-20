@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars
         }
 
         int index;
-        public Color[] colors;
+        public Color[] colors = new Color[ColorCount];
         public ushort[] blockColors;
         public FlagDesign flagDesign;
         public List<BlockHDPair> modelColorReplace;
@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars
         public FlagAndColor(FactionType factiontype, int index)
         {
             this.index = index;
-            colors = new Color[ColorCount];
+            
 
             switch (factiontype)
             {
@@ -541,7 +541,7 @@ namespace VikingEngine.DSSWars
 
         public FlagAndColor(System.IO.BinaryReader r)
         {
-            read_old(r);
+            read(r);
         }
 
         public FlagAndColor Clone()
@@ -686,7 +686,8 @@ namespace VikingEngine.DSSWars
                 colors[i] = SaveLib.ReadColorStream_3B(r);
             }
 
-            flagDesign.read(r);
+            //flagDesign.read(r);
+            flagDesign = new FlagDesign(r);
         }
 
     }

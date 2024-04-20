@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
 namespace VikingEngine
@@ -351,6 +352,14 @@ namespace VikingEngine
         public static int SafeCount<T>(List<T> list)
         {
             return list == null ? 0 : list.Count;
+        }
+
+        public static T[] ToArray_Safe<T>(List<T> list)
+        {
+            if (list == null)
+                return null;
+
+            return list.ToArray();
         }
 
         /// <returns>Already existing item</returns>

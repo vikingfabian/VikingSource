@@ -81,8 +81,8 @@ namespace VikingEngine.DSSWars
             nextTotalGameTimeMin.Read(r);
             nextExpectedPlayerSize.Read(r);
 
-            playerMostSouthCity = IOLib.ReadObjectList<City>(r).ToArray();
-            spawnPos_Player = IOLib.ReadBinaryList<IntVector2>(r).ToArray();
+            playerMostSouthCity = arraylib.ToArray_Safe(IOLib.ReadObjectList<City>(r));
+            spawnPos_Player = arraylib.ToArray_Safe(IOLib.ReadBinaryList<IntVector2>(r));
             darkLordAvailableFactions = IOLib.ReadObjectList<Faction>(r);
             darkLordAllies = IOLib.ReadObjectList<Faction>(r);
         }

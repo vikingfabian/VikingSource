@@ -10,6 +10,7 @@ using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.PJ.Strategy;
+using VikingEngine.ToGG;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Data
@@ -22,6 +23,7 @@ namespace VikingEngine.DSSWars.Data
         DataStream.FilePath path = new DataStream.FilePath(null, "DSS_savestate_v" + Version.ToString(), ".sav");
         bool dataReady = false;
         public bool complete = false;
+        ObjectPointerCollection pointers;
 
         public SaveGamestate() :
             base(false)
@@ -44,11 +46,17 @@ namespace VikingEngine.DSSWars.Data
 
         public void load()
         {
-            complete = true;
+            //complete = true;
+            DataStream.BeginReadWrite.BinaryIO(false, path, null, readGameState, this, true);
         }
 
         public void SaveComplete(bool save, int player, bool completed, byte[] value)
         {
+            if (save == false)
+            {
+                pointers.SetPointer();
+            }
+
             complete = true;
         }
 
@@ -57,16 +65,22 @@ namespace VikingEngine.DSSWars.Data
             w.Write(Version);
 
             DssRef.storage.write(w);
+            Debug.WriteCheck(w);
             DssRef.world.writeGameState(w);
+            Debug.WriteCheck(w);
             DssRef.state.writeGameState(w);
         }
 
-        public void readGameState(System.IO.BinaryReader r, ObjectPointerCollection pointers)
+        public void readGameState(System.IO.BinaryReader r)
         {
+            pointers = new ObjectPointerCollection();
+
             int version = r.ReadInt32();
 
             DssRef.storage.read(r);
+            Debug.ReadCheck(r);
             DssRef.world.readGameState(r, version, pointers);
+            Debug.ReadCheck(r);
             DssRef.state.readGameState(r, version, pointers);
         }
 
@@ -190,10 +204,11 @@ namespace VikingEngine.DSSWars.Data
         public override void SetPointer()
         {
             army.attackTarget = (AbsMapObject)GetObject();
+            army.attackTargetFaction = army.attackTarget.faction.parentArrayIndex;
         }
     }
 
-class BattleMemberObjectPointer: AbsObjectPointer
+    class BattleMemberObjectPointer: AbsObjectPointer
     {
         BattleGroup battle;
 

@@ -329,7 +329,7 @@ namespace VikingEngine.DSSWars.GameObject
             nobelHouse = r.ReadBoolean();
 
             refreshCitySize();
-            detailObj.refreshWorkerSubtiles();
+           // detailObj.refreshWorkerSubtiles();
         }
 
         public void writeNet(System.IO.BinaryWriter w)

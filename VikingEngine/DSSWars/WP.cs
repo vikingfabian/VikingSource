@@ -91,6 +91,18 @@ namespace VikingEngine.DSSWars
             return (obj1.tilePos - obj2.tilePos).Length();
         }
 
+        public static void writeTilePos(System.IO.BinaryWriter w, IntVector2 position)
+        {
+            position.writeUshort(w);
+        }
+
+        public static IntVector2 readTilePos(System.IO.BinaryReader r)
+        {
+            var result = IntVector2.Zero;
+            result.readUshort(r);
+            return result;
+        }
+
         public static void writePosXZ(System.IO.BinaryWriter w, Vector3 position)
         {
             w.Write((Half)position.X);

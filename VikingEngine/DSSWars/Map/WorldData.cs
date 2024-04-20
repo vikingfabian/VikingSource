@@ -173,12 +173,15 @@ namespace VikingEngine.DSSWars
                 city.writeGameState(w);
             }
 
+            Debug.WriteCheck(w);
+
             foreach (var faction in factions.Array)
             {
                 if (faction != null && faction.isAlive)
                 {
                     w.Write(true);
                     faction.writeGameState(w);
+                    Debug.WriteCheck(w);
                 }
                 else
                 { 
@@ -193,11 +196,14 @@ namespace VikingEngine.DSSWars
                 city.readGameState(r, version, pointers);
             }
 
+            Debug.ReadCheck(r);
+
             for (int i = 0; i < factions.Array.Length; i++)
             {
                 if (r.ReadBoolean())
                 {
                     factions.Array[i].readGameState(r, version, pointers);
+                    Debug.ReadCheck(r);
                 }
             }
 

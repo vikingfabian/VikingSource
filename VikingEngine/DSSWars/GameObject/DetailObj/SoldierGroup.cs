@@ -95,7 +95,7 @@ namespace VikingEngine.DSSWars.GameObject
             
             recruit &= typeData.recruitTrainingTimeSec > 0;
             
-            init(typeData);
+            initPart1(typeData);
 
             //Column for column spawning
             int count = typeData.rowWidth * typeData.columnsDepth;
@@ -105,11 +105,8 @@ namespace VikingEngine.DSSWars.GameObject
             {                
                 new TrainingCompleteTimer(this);
             }
-            refreshAttackRadius(typeData);
-            refreshRotateSpeed();            
 
-            army.AddSoldierGroup(this);
-            rotation = army.rotation;
+            initPart2(typeData);
 
             if (army.faction.player.IsPlayer())
             {
@@ -117,7 +114,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        void init(AbsSoldierData typeData)
+        void initPart1(AbsSoldierData typeData)
         {
             int count = typeData.rowWidth * typeData.columnsDepth;
 
@@ -132,6 +129,15 @@ namespace VikingEngine.DSSWars.GameObject
             skirmishCount = MathExt.MultiplyInt(0.3, count);
 
             groupRadius = radius;
+        }
+
+        void initPart2(AbsSoldierData typeData)
+        { 
+            refreshAttackRadius(typeData);
+            refreshRotateSpeed();            
+
+            army.AddSoldierGroup(this);
+            rotation = army.rotation;
         }
 
         public SoldierGroup(Army army, System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
@@ -191,11 +197,11 @@ namespace VikingEngine.DSSWars.GameObject
             bool soldiersLockedInGroup = groupObjective == GroupObjective_FollowArmyObjective;
 
             AbsSoldierData typeData = DssRef.unitsdata.Get(type);
-            init(typeData);
+            initPart1(typeData);
 
             AbsSoldierData soldierData = DssRef.unitsdata.Get(soldierType);
 
-            createAllSoldiers(false, soldierData, soldiersCount);
+            createAllSoldiers(soldierType == UnitType.Recruit , typeData, soldiersCount);
 
             if (!soldiersLockedInGroup)
             {
@@ -205,6 +211,8 @@ namespace VikingEngine.DSSWars.GameObject
                     soldiersC.sel.readGameState(r, version);
                 }
             }
+
+            initPart2(typeData);
         }
 
         public void writeNet(System.IO.BinaryWriter w)

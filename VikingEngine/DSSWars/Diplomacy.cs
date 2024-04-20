@@ -500,7 +500,7 @@ namespace VikingEngine.DSSWars
         public bool read(System.IO.BinaryReader r, int version)
         {
             faction1 = r.ReadInt16();
-            if (faction1 > 0)
+            if (faction1 >= 0)
             {
                 faction2 = r.ReadInt16();
                 Relation = (RelationType)r.ReadSByte();

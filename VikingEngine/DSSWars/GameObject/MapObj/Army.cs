@@ -88,9 +88,12 @@ namespace VikingEngine.DSSWars.GameObject
             { 
                 groupsC.sel.writeGameState(w);
             }
+
+            writeAiState(w);
         }
         public void readGameState(Faction faction, System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
+            this.faction = faction;
             WP.readPosXZ(r, out position, out tilePos);
 
             int groupsCount = r.ReadUInt16();
@@ -100,6 +103,10 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             init(faction);
+
+            refreshPositions(true);
+
+            readAiState(r, version, pointers);
         }
 
         public void writeNet(System.IO.BinaryWriter w)
