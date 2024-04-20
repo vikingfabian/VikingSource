@@ -206,7 +206,7 @@ namespace VikingEngine.DSSWars.Map
 
         public void runAsyncTask()
         {
-            if (state_Processing_Sych_Complete == 2)
+            if (state_Processing_Sych_Complete == 2 && DssRef.world.BordersUpdated)
             {
                 state_Processing_Sych_Complete = 0;
 
@@ -218,7 +218,7 @@ namespace VikingEngine.DSSWars.Map
         }
         public void HalfSecondUpdate()
         {
-            if (DssLib.UpdateBorders && DssRef.world.BordersUpdated &&
+            if (DssLib.UpdateBorders && //DssRef.world.BordersUpdated &&
                 state_Processing_Sych_Complete == 1)
             {
                 DssRef.world.BordersUpdated = false;
