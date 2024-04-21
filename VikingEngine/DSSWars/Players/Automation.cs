@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -25,6 +26,30 @@ namespace VikingEngine.DSSWars.Players
         public Automation(Players.LocalPlayer player)
         {
             this.player = player;
+        }
+
+        public void writeGameState(BinaryWriter w)
+        {
+            w.Write(autoRecruit);
+            w.Write(autoExpandCity);
+            w.Write(autoNobelhouse);
+
+            foreach (var recruit in recruitAmount)
+            {
+                w.Write((byte)recruit);
+            }
+        }
+
+        public void readGameState(BinaryReader r, int version)
+        {
+            autoRecruit = r.ReadBoolean();
+            autoExpandCity = r.ReadBoolean();
+            autoNobelhouse= r.ReadBoolean();
+
+            for (int i =0;i< recruitAmount.Length;++i)
+            {
+                recruitAmount[i] = r.ReadByte();
+            }
         }
 
         bool AutoRecruitProperty(int index, bool set, bool value)

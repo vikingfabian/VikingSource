@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.GameState;
 using System;
+using System.IO;
 
 namespace VikingEngine.DSSWars.Players
 {    
@@ -50,6 +51,42 @@ namespace VikingEngine.DSSWars.Players
         SpottedArrayCounter<Army> tabArmy;
         SpottedArrayCounter<BattleGroup> tabBattle;
 
+        public override void writeGameState(BinaryWriter w)
+        {
+            base.writeGameState(w);
+
+            w.Write((short)diplomaticPoints.Int());
+            statistics.writeGameState(w);
+            if (toPlayerDiplomacies != null)
+            {
+                foreach (var tp in toPlayerDiplomacies)
+                {
+                    tp.writeGameState(w);
+                }
+            }
+            automation.writeGameState(w);
+
+            Debug.WriteCheck(w);
+        }
+
+        public override void readGameState(BinaryReader r, int version)
+        {
+            base.readGameState(r, version);
+
+            diplomaticPoints.value = r.ReadInt16();
+            statistics.readGameState(r, version);
+            if (toPlayerDiplomacies != null)
+            {
+                foreach (var tp in toPlayerDiplomacies)
+                {
+                    tp.readGameState(r, version);
+                }
+            }
+            automation.readGameState(r, version);
+
+            Debug.ReadCheck(r);
+        }
+
         public LocalPlayer(Faction faction, int playerindex, int numPlayers)
             :base(faction)
         {
@@ -85,7 +122,10 @@ namespace VikingEngine.DSSWars.Players
             new AsynchUpdateable(interactAsynchUpdate, "DSS player interact", 0);
 
             refreshNeihgborAggression();
-            toPlayerDiplomacies = new PlayerToPlayerDiplomacy[numPlayers];
+            if (numPlayers > 1)
+            {
+                toPlayerDiplomacies = new PlayerToPlayerDiplomacy[numPlayers];
+            }
             //initPlayerToPlayer(playerindex, numPlayers);
         }
 

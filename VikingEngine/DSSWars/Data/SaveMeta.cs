@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.Data
 
         DateTime saveDate;
         TimeSpan playTime;
-        int localPlayerCount;
+        public int localPlayerCount;
         int difficulty;
 
         int metaVersion = Version;

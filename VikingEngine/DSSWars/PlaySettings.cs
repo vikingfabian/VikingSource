@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
@@ -21,9 +23,14 @@ namespace VikingEngine.DSSWars
         public int AiArmyPurchase_MoneyMin_Aggresive;
         public int AiArmyPurchase_IncomeMin_Aggresive;
 
+        int aiDelayTimeSec = 0;
+        public bool AiDelay = true;
+
         public PlaySettings() 
         {
             DssRef.settings = this;
+
+            aiDelayTimeSec = DssRef.difficulty.aiDelayTimeSec;
 
             switch (DssRef.difficulty.aiAggressivity)
             {
@@ -52,6 +59,23 @@ namespace VikingEngine.DSSWars
             }
             //bool haveMoney = faction.gold >= DssLib.GroupDefaultCost * 20;
             //bool haveIncome = faction.NetIncome() >= DssLib.GroupDefaultCost * (aggresive ? 5 : 15);
+        }
+
+        public void OneSecondUpdate()
+        {                        
+            if (--aiDelayTimeSec <= 0)
+            {
+                AiDelay = false;
+            }            
+        }
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            w.Write(aiDelayTimeSec);
+        }
+        public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        {
+            aiDelayTimeSec = r.ReadInt32();
         }
     }
 }

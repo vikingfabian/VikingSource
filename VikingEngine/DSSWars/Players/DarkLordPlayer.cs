@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.LootFest.Players;
 
@@ -41,6 +43,46 @@ namespace VikingEngine.DSSWars.Players
                     maxDiplomacy = DssLib.HeadCityMaxWorkForce * 42;
                     break;
             }
+        }
+
+        public override void writeGameState(BinaryWriter w)
+        {
+            base.writeGameState(w);
+
+            w.Write(arraylib.SafeCount(darkLordAllies));
+            if (darkLordAllies != null)
+            {
+                foreach (var ally in darkLordAllies)
+                {
+                    w.Write((ushort)ally.parentArrayIndex);
+                }
+            }
+
+            w.Write(maxDiplomacy);
+            w.Write(diplomacyPoints);
+            w.Write(hasEntered);
+            w.Write(factoriesLeft);
+
+            Debug.WriteCheck(w);
+        }
+
+        public override void readGameState(BinaryReader r, int version)
+        {
+            base.readGameState(r, version);
+
+            int darkLordAlliesCount = r.ReadInt32();
+            for (int i = 0; i < darkLordAlliesCount; i++)
+            {
+                var f = DssRef.world.factions.Array[r.ReadUInt16()];
+                darkLordAllies.Add(f);
+            }
+
+            maxDiplomacy = r.ReadInt32();
+            diplomacyPoints = r.ReadInt32();
+            hasEntered = r.ReadBoolean();
+            factoriesLeft = r.ReadInt32();
+
+            Debug.ReadCheck(r);
         }
 
         public void EnterMap(Faction takeOverFaction, List<Faction> darkLordAllies)

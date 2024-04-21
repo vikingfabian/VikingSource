@@ -500,17 +500,21 @@ namespace VikingEngine.DSSWars
                 new GuiLabel(DssRef.lang.Lobby_LocalMultiplayerControllerRequired, layout);
                 for (int i = 1; i <= GameStorage.MaxLocalPlayerCount; ++i)
                 {
-                    new GuiTextButton(i.ToString(), null, new GuiAction1Arg<int>(setPlayerCount, i), false, layout);
+                    new GuiTextButton(i.ToString(), null, new GuiAction2Arg<int, bool>(setPlayerCount, i, true), false, layout);
                 }
             }
             layout.End();
         }
 
-        void setPlayerCount(int count)
+        void setPlayerCount(int count, bool menuReturn)
         {
             DssRef.storage.playerCount = count;
             refreshSplitScreen();
-            mainMenu();
+
+            if (menuReturn)
+            {
+                mainMenu();
+            }
         }
 
         void exitGame()
@@ -709,14 +713,27 @@ namespace VikingEngine.DSSWars
 
         void continueFromSave()
         {
-            if (mapBackgroundLoading != null)
+            if (DssRef.storage.meta.saveState1.localPlayerCount == DssRef.storage.playerCount)
             {
-                mapBackgroundLoading.Abort();
-                
-            }
-            mapBackgroundLoading = new MapBackgroundLoading(DssRef.storage.meta.saveState1);
+                if (mapBackgroundLoading != null)
+                {
+                    mapBackgroundLoading.Abort();
+                }
+                mapBackgroundLoading = new MapBackgroundLoading(DssRef.storage.meta.saveState1);
 
-            new StartGame(netLobby, DssRef.storage.meta.saveState1, mapBackgroundLoading);
+                new StartGame(netLobby, DssRef.storage.meta.saveState1, mapBackgroundLoading);
+            }
+            else
+            {
+                setPlayerCount(DssRef.storage.meta.saveState1.localPlayerCount, false);
+                GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_WarningTitle, menuSystem.menu);
+                {
+                    new GuiLabel(string.Format( DssRef.lang.GameMenu_Load_PlayerCountError, DssRef.storage.meta.saveState1.localPlayerCount), layout);
+                    new GuiIconTextButton(SpriteName.MenuIconResume, DssRef.lang.Hud_OK, null, mainMenu, false, layout);
+                }
+                layout.End();                
+            }
+            
         }
 
 

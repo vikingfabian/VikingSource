@@ -36,9 +36,16 @@ namespace VikingEngine.DSSWars
         public void resources_oneSecUpdate()
         {
             int income = NetIncome();
-            if (player.aggressionLevel > AbsPlayer.AggressionLevel0_Passive && player.IsAi())
-            { 
-                income=MathExt.MultiplyInt(AiPlayer.EconomyMultiplier, income);
+            if ( player.IsAi())
+            {                
+                if (DssRef.settings.AiDelay)
+                {
+                    income = MathExt.MultiplyInt(0.05, income);
+                }
+                else if (player.aggressionLevel > AbsPlayer.AggressionLevel0_Passive)
+                {
+                    income = MathExt.MultiplyInt(AiPlayer.EconomyMultiplier, income);
+                }
             }
             gold += income;
         }

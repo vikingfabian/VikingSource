@@ -104,7 +104,10 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string Hud_Back { get; }
         public abstract string Hud_AreYouSure { get; }
+
+        public abstract string Hud_OK { get; }
         public abstract string Hud_Yes { get; }
+        public abstract string Hud_No { get; }
         public abstract string Hud_XTimes { get; }
 
         public abstract string Hud_PurchaseTitle_Requirement { get; }
@@ -298,6 +301,15 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string EventMessage_FinalBattleTitle { get; }
         public abstract string EventMessage_FinalBattleText { get; }
 
+        public abstract string DifficultyDescription_AiAggression { get; }
+        public abstract string DifficultyDescription_BossSize { get; }
+        public abstract string DifficultyDescription_BossEnterTime { get; }
+        public abstract string DifficultyDescription_AiEconomy { get; }
+        public abstract string DifficultyDescription_AiDelay { get; }
+        public abstract string DifficultyDescription_DiplomacyDifficulty { get; }
+        public abstract string DifficultyDescription_MercenaryCost { get; }
+        public abstract string DifficultyDescription_HonorGuards { get; }
+        
 
         public abstract string EndScreen_VictoryTitle { get; }
 
@@ -323,6 +335,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string GameMenu_SaveStateWarnings { get; }
         public abstract string GameMenu_LoadState { get; }
         public abstract string GameMenu_ContinueFromSave { get; }
+
+        public abstract string GameMenu_Load_PlayerCountError { get; }
 
         public abstract string Progressbar_MapLoadingState { get; }
 

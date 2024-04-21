@@ -296,8 +296,11 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Submenu for when the player will make destructive choices
         /// </summary>
-        public override string Hud_AreYouSure => "Are you sure?";    
+        public override string Hud_AreYouSure => "Are you sure?";
+
+        public override string Hud_OK => "OK";
         public override string Hud_Yes => "Yes";
+        public override string Hud_No => "No";
 
         /// <summary>
         /// Mini button to repeat a purchase a number of times. E.G. "x5"
@@ -986,6 +989,15 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string EventMessage_FinalBattleText => "The dark lord has joined the battlefield. Now is your chance to destroy him!";
 
 
+        public override string DifficultyDescription_AiAggression => "Ai aggressivity: {0}.";
+        public override string DifficultyDescription_BossSize => "Boss size: {0}.";
+        public override string DifficultyDescription_BossEnterTime => "Boss enter time: {0}.";
+        public override string DifficultyDescription_AiEconomy => "Ai Economy: {0}%.";
+        public override string DifficultyDescription_AiDelay => "Ai delay: {0}.";
+        public override string DifficultyDescription_DiplomacyDifficulty => "Diplomacy difficulty: {0}.";
+        public override string DifficultyDescription_MercenaryCost => "Mercenary cost: {0}.";
+        public override string DifficultyDescription_HonorGuards => "Honor guards: {0}.";
+
 
         /// <summary>
         /// Game has ended in success.
@@ -1054,11 +1066,12 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string GameMenu_ExitGame => "Exit game";
 
-        public override string GameMenu_SaveState => "Save";
-        public override string GameMenu_SaveStateWarnings => "Warning! Save files are up to 64GB in size. Save files will be lost when the game is updated.";
+        public override string GameMenu_SaveState => "Save (beta)";
+        public override string GameMenu_SaveStateWarnings => "Warning! Save files will be lost when the game is updated.";
         public override string GameMenu_LoadState => "Load";
         public override string GameMenu_ContinueFromSave => "Continue from save";
 
+        public override string GameMenu_Load_PlayerCountError => "You must setup a matching player count to the save file: {0}";
 
         public override string Progressbar_MapLoadingState => "Map loading: {0}";
 

@@ -23,6 +23,7 @@ namespace VikingEngine.DSSWars.Data
         public BossTimeSettings bossTimeSettings = BossTimeSettings.Normal;
 
         public int aiEconomyLevel = 1;
+        public int aiDelayTimeSec = 0;
 
         public const int DiplomacyDifficultyCount = 3;
         public int diplomacyDifficulty = 1;
@@ -47,14 +48,16 @@ namespace VikingEngine.DSSWars.Data
             for (int i = 0; i < options.Length; i++)
             {
                 Difficulty difficulty = new Difficulty(i);
+
                 new GuiTextButton(options[i].ToString() + "%",
-                    "Ai aggressivity: " + TextLib.IndexDivition((int)difficulty.aiAggressivity, (int)AiAggressivity.NUM) + "." + Environment.NewLine +
-                    "Boss size: " + TextLib.IndexDivition((int)difficulty.bossSize, (int)BossSize.NUM) + "." + Environment.NewLine +
-                    "Boss enter time: " + TextLib.IndexDivition((int)difficulty.bossTimeSettings, (int)BossTimeSettings.NUM) + "." + Environment.NewLine +
-                    "Ai Economy: " + AiEconomyLevel[difficulty.aiEconomyLevel].ToString() + "%. " + Environment.NewLine +
-                    "Diplomacy difficulty: " + TextLib.IndexDivition(difficulty.diplomacyDifficulty, DiplomacyDifficultyCount) + "." + Environment.NewLine +
-                    "Mercenary cost: " + difficulty.MercenaryPurchaseCost_Start.ToString() + "." + Environment.NewLine +
-                    "Honor guards: " + TextLib.YesNo(difficulty.honorGuard) + ".",
+                    string.Format( DssRef.lang.DifficultyDescription_AiAggression, TextLib.IndexDivition((int)difficulty.aiAggressivity, (int)AiAggressivity.NUM)) + Environment.NewLine +
+                   string.Format(DssRef.lang.DifficultyDescription_BossSize,TextLib.IndexDivition((int)difficulty.bossSize, (int)BossSize.NUM)) + Environment.NewLine +
+                   string.Format(DssRef.lang.DifficultyDescription_BossEnterTime, TextLib.IndexDivition((int)difficulty.bossTimeSettings, (int)BossTimeSettings.NUM)) + Environment.NewLine +
+                   string.Format(DssRef.lang.DifficultyDescription_AiEconomy, AiEconomyLevel[difficulty.aiEconomyLevel].ToString()) + Environment.NewLine +
+                    string.Format(DssRef.lang.DifficultyDescription_AiDelay, TimeSpan.FromSeconds(difficulty.aiDelayTimeSec).ToString()) + Environment.NewLine +
+                    string.Format(DssRef.lang.DifficultyDescription_DiplomacyDifficulty, TextLib.IndexDivition(difficulty.diplomacyDifficulty, DiplomacyDifficultyCount)) + Environment.NewLine +
+                    string.Format(DssRef.lang.DifficultyDescription_MercenaryCost, difficulty.MercenaryPurchaseCost_Start.ToString() )+ Environment.NewLine +
+                   string.Format(DssRef.lang.DifficultyDescription_HonorGuards, difficulty.honorGuard? DssRef.lang.Hud_Yes : DssRef.lang.Hud_No),
 
                     new GuiAction1Arg<int>(difficultyOptionsLink, i),
                     false, layout);
@@ -93,6 +96,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 0;
                     diplomacyDifficulty = 0;
                     honorGuard = true;
+                    aiDelayTimeSec = 5 * 60;
                     break;
 
                 case 1:
@@ -102,6 +106,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 1;
                     diplomacyDifficulty = 0;
                     honorGuard = true;
+                    aiDelayTimeSec = 3 * 60;
                     break;
 
                 case 2:
@@ -111,7 +116,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 1;
                     diplomacyDifficulty = 1;
                     honorGuard = true;
-
+                    aiDelayTimeSec = 1 * 60;
                     break;
 
                 case 3: //Medium
@@ -121,6 +126,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 2;
                     diplomacyDifficulty = 1;
                     honorGuard = true;
+                    aiDelayTimeSec = 20;
                     break;
 
                 case 4:
@@ -130,6 +136,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 2;
                     diplomacyDifficulty = 1;
                     honorGuard = false;
+                    aiDelayTimeSec = 10;
                     break;
 
                 case 5:

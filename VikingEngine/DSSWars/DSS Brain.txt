@@ -1,14 +1,11 @@
 ﻿Change Log
-* Improved camera culling
-* Removed soldier Command and Command points
-* Flag painter has controller support
-* Made a menu button for "mouse only" play accessability
-* All text is localized (you wont see the difference) and AI spell checked
-* DarkFollower, SouthHara and UnitedKingdom will start with a secret alliance. Secret means that they don't share wars.
-* Servant hud error -fixed
-* Increased worker start count from 60% to 100%
-* scaleable ui
-* Doubled noble house cost and upkeep
+* Added ai delay to difficulty, reduced economy to 5% during start
+* Faster map border update 
+* SAVE (beta)!
+	To compress the data, a lot of (kinda unessesesary) detail info is lost.
+	for example; all battles will restart after load.
+	In most cases you wont notice it.
+	Expected bugs.
 
 Error
 -also path finding of a land army will often prefer water over land when the boat building will cause the travel time to take considerably longer than if it went over land

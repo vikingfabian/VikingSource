@@ -66,6 +66,8 @@ namespace VikingEngine.DSSWars.Data
 
             DssRef.storage.write(w);
             Debug.WriteCheck(w);
+            DssRef.settings.writeGameState(w);
+            Debug.WriteCheck(w);
             DssRef.world.writeGameState(w);
             Debug.WriteCheck(w);
             DssRef.state.writeGameState(w);
@@ -78,6 +80,8 @@ namespace VikingEngine.DSSWars.Data
             int version = r.ReadInt32();
 
             DssRef.storage.read(r);
+            Debug.ReadCheck(r);
+            DssRef.settings.readGameState(r, version, pointers);
             Debug.ReadCheck(r);
             DssRef.world.readGameState(r, version, pointers);
             Debug.ReadCheck(r);

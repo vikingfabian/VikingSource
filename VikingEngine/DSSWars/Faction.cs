@@ -103,15 +103,16 @@ namespace VikingEngine.DSSWars
         virtual public void writeGameState(System.IO.BinaryWriter w)
         {
             //profile.write(w);
-            
+
+            w.Write(gold);
+
             w.Write((ushort)cities.Count);
             var citiesC = cities.counter();
             while (citiesC.Next())
             {
                 w.Write((ushort)citiesC.sel.parentArrayIndex);
             }
-
-            Debug.WriteCheck(w);
+                       
 
             w.Write((ushort)armies.Count); 
             var armiesC = armiesCounter.Clone();
@@ -119,8 +120,7 @@ namespace VikingEngine.DSSWars
             { 
                 armiesC.sel.writeGameState(w); 
             }
-
-            Debug.WriteCheck(w);
+                        
 
             for (int i = 0; i < diplomaticRelations.Length; ++i)
             {
@@ -131,16 +131,17 @@ namespace VikingEngine.DSSWars
                 }
             }
             w.Write(short.MinValue);//write end
-
-            Debug.WriteCheck(w);
+                        
 
             player.writeGameState(w);
 
-            Debug.WriteCheck(w);
+            
         }
         virtual public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
             //profile = new FlagAndColor(r);
+
+            gold = r.ReadInt32();
 
             int citiesCount = r.ReadUInt16();
             for (int i = 0; i < citiesCount; i++)
@@ -151,7 +152,7 @@ namespace VikingEngine.DSSWars
                 city.setFaction(this);
             }
 
-            Debug.ReadCheck(r);
+            
 
             int armiesCount = r.ReadUInt16();
             for (int i = 0; i < armiesCount; i++)
@@ -161,8 +162,7 @@ namespace VikingEngine.DSSWars
                 //armies.Add(army);
             }
 
-            Debug.ReadCheck(r);
-
+           
             while (true)
             { 
                 DiplomaticRelation relation = new DiplomaticRelation();
@@ -176,11 +176,10 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            Debug.ReadCheck(r);
+            
 
             player.readGameState(r, version);
 
-            Debug.ReadCheck(r);
         }
 
         virtual public void writeNet(System.IO.BinaryWriter w)

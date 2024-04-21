@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,6 +44,38 @@ namespace VikingEngine.DSSWars.Data
             content.newParagraph();
             content.text(string.Format(DssRef.lang.EndGameStatistics_AlliedFactions, TextLib.LargeNumber(AlliedFactions)));
             content.text(string.Format(DssRef.lang.EndGameStatistics_ServantFactions, TextLib.LargeNumber(ServantFactions)));
+        }
+
+        public void writeGameState(BinaryWriter w)
+        {
+            w.Write(SoldiersRecruited);
+            w.Write(FriendlySoldiersLost);
+            w.Write(EnemySoldiersKilled);
+
+            w.Write((ushort)CitiesCaptured);
+            w.Write((ushort)CitiesLost);
+            w.Write((ushort)BattlesWon);
+            w.Write((ushort)BattlesLost);
+            w.Write((ushort)WarsStartedByYou);
+            w.Write((ushort)WarsStartedByEnemy);
+            w.Write((ushort)AlliedFactions);
+            w.Write((ushort)ServantFactions);
+        }
+
+        public void readGameState(BinaryReader r, int version)
+        {
+             SoldiersRecruited =r.ReadInt32();
+             FriendlySoldiersLost = r.ReadInt32();
+            EnemySoldiersKilled = r.ReadInt32();
+
+            CitiesCaptured = r.ReadUInt16();
+            CitiesLost = r.ReadUInt16();
+            BattlesWon = r.ReadUInt16();
+            BattlesLost = r.ReadUInt16();
+            WarsStartedByYou = r.ReadUInt16();
+            WarsStartedByEnemy = r.ReadUInt16();
+            AlliedFactions = r.ReadUInt16();
+            ServantFactions = r.ReadUInt16();
         }
     }
 }

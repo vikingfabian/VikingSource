@@ -245,7 +245,10 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-
+            if (DssRef.time.oneSecond)
+            { 
+                DssRef.settings.OneSecondUpdate();
+            }    
             if (DssRef.time.halfSecond)
             {
                 overviewMap.HalfSecondUpdate();

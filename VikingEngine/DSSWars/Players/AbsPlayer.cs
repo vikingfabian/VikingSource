@@ -14,7 +14,7 @@ namespace VikingEngine.DSSWars.Players
         protected const int AggressionLevel2_RandomAttacks = 2;
         protected const int AggressionLevel3_FocusedAttacks = 3;
 
-        public List<AbsPlayer> opponents = new List<AbsPlayer>(2);
+        //public List<AbsPlayer> opponents = new List<AbsPlayer>(2);
         public bool IsPlayerNeighbor = false;
         public Faction faction;
         public int aggressionLevel = AggressionLevel0_Passive;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 
@@ -41,7 +42,26 @@ namespace VikingEngine.DSSWars.Players
         const int MainArmyState_Attack = 4;
         int mainArmyState = MainArmyState_StartNew;
         int mainArmyWar = -1;
-        
+
+
+        public override void writeGameState(BinaryWriter w)
+        {
+            base.writeGameState(w);
+
+            w.Write(IsPlayerNeighbor);
+            w.Write((byte)aggressionLevel);
+            w.Write(protectedPlayer);
+
+        }
+        public override void readGameState(BinaryReader r, int version)
+        {
+            base.readGameState(r, version);
+
+            IsPlayerNeighbor = r.ReadBoolean();
+            aggressionLevel = r.ReadByte();
+            protectedPlayer = r.ReadBoolean();
+        }
+
         public AiPlayer(Faction faction)
             : base(faction)
         {
