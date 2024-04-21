@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars
         {
             w.Write(aiDelayTimeSec);
         }
-        public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             aiDelayTimeSec = r.ReadInt32();
         }

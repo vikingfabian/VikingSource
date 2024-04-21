@@ -189,11 +189,11 @@ namespace VikingEngine.DSSWars
                 }
             }
         }
-        public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             foreach (City city in cities)
             {
-                city.readGameState(r, version, pointers);
+                city.readGameState(r, subversion, pointers);
             }
 
             Debug.ReadCheck(r);
@@ -202,7 +202,7 @@ namespace VikingEngine.DSSWars
             {
                 if (r.ReadBoolean())
                 {
-                    factions.Array[i].readGameState(r, version, pointers);
+                    factions.Array[i].readGameState(r, subversion, pointers);
                     Debug.ReadCheck(r);
                 }
             }

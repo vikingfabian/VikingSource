@@ -1,6 +1,6 @@
 ﻿Change Log
-* Changed the boss events, so the dark lord warning is always 15min before the boss
-* Fixed some save crashes
+* 
+* Mercenary market that limits the available mercenaries
 
 Error
 -also path finding of a land army will often prefer water over land when the boat building will cause the travel time to take considerably longer than if it went over land
@@ -12,8 +12,9 @@ Retreat system
 -reassemble av flydd arme
 
 Polish
--x25, x100 på köpa
+-x25, x150 på köpa
 -delay på mercenaries
+-cost mercenaries på tooltip
 -I should improve the diplomacy so peace agreements are shared with allies
 -War declare, truce end messages
 -större radie på köpa till armeer
@@ -23,7 +24,7 @@ Polish
 -krig icon på karta
 -the horses dont load when paused, plus rotation error
 -dölj move path OnHud 
-
+-attack ally yes/no warning
 
 Art
 -list punkt

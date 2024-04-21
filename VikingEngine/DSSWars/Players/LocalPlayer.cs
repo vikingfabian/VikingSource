@@ -51,6 +51,15 @@ namespace VikingEngine.DSSWars.Players
         SpottedArrayCounter<Army> tabArmy;
         SpottedArrayCounter<BattleGroup> tabBattle;
 
+        public int mercenaryCost = DssRef.difficulty.MercenaryPurchaseCost_Start;
+
+        const int MercenaryMarketSoftLock1 = DssLib.MercenaryPurchaseCount * 5;
+        //const int MercenaryMarketSoftLock2 = DssLib.MercenaryPurchaseCount * 25;
+        const double MercenaryMarketAddPerSec_Speed1 = 0.5;
+        const double MercenaryMarketAddPerSec_Speed2 = 0.3;
+        //const double MercenaryMarketAddPerSec_Speed3 = 0.1;
+        public FloatingInt mercenaryMarket = new FloatingInt() { value = DssLib.MercenaryPurchaseCount * 2 };
+
         public override void writeGameState(BinaryWriter w)
         {
             base.writeGameState(w);
@@ -66,23 +75,30 @@ namespace VikingEngine.DSSWars.Players
             }
             automation.writeGameState(w);
 
+            w.Write(mercenaryCost);
+
             Debug.WriteCheck(w);
         }
 
-        public override void readGameState(BinaryReader r, int version)
+        public override void readGameState(BinaryReader r, int subversion)
         {
-            base.readGameState(r, version);
+            base.readGameState(r, subversion);
 
             diplomaticPoints.value = r.ReadInt16();
-            statistics.readGameState(r, version);
+            statistics.readGameState(r, subversion);
             if (toPlayerDiplomacies != null)
             {
                 foreach (var tp in toPlayerDiplomacies)
                 {
-                    tp.readGameState(r, version);
+                    tp.readGameState(r, subversion);
                 }
             }
-            automation.readGameState(r, version);
+            automation.readGameState(r, subversion);
+
+            if (subversion>=2)
+            { 
+                mercenaryCost = r.ReadInt32();
+            }
 
             Debug.ReadCheck(r);
         }
@@ -643,9 +659,6 @@ namespace VikingEngine.DSSWars.Players
         {
             base.oneSecUpdate();
 
-            commandPoints.setMax(DssLib.DefaultMaxCommand + DssLib.NobleHouseAddMaxCommand * faction.nobelHouseCount);
-            commandPoints.add(DssLib.DefaultCommandPerSecond + DssLib.NobleHouseAddCommand * faction.nobelHouseCount);
-
             double max = DssRef.diplomacy.DefaultMaxDiplomacy + DssRef.diplomacy.NobelHouseAddMaxDiplomacy * faction.nobelHouseCount;
             diplomaticPoints_softMax = (int)Math.Floor(max);
             diplomaticPoints.setMax(max + DssRef.diplomacy.Diplomacy_HardMax_Add);
@@ -657,6 +670,15 @@ namespace VikingEngine.DSSWars.Players
             else
             {
                 diplomaticPoints.add(DssRef.diplomacy.AddDiplomacy_AfterSoftlock_PerSecond);
+            }
+
+            if (mercenaryMarket.value < MercenaryMarketSoftLock1)
+            {
+                mercenaryMarket.value += MercenaryMarketAddPerSec_Speed1;
+            }
+            else 
+            {
+                mercenaryMarket.value += MercenaryMarketAddPerSec_Speed2;
             }
 
             if (StartupSettings.EndlessResources)

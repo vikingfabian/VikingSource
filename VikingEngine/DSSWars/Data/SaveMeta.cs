@@ -116,7 +116,5 @@ namespace VikingEngine.DSSWars.Data
 
             world = new WorldMetaData(r);
         }
-
-        
     }
 }

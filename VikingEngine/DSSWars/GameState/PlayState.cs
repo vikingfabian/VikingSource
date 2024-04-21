@@ -91,9 +91,9 @@ namespace VikingEngine.DSSWars
                 battlesC.sel.writeGameState(w);
             }
         }
-        public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
-            events.readGameState(r, version, pointers);
+            events.readGameState(r, subversion, pointers);
         }
 
         void initPlayers()

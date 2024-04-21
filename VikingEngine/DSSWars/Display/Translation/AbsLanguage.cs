@@ -269,6 +269,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string CityOption_Recruit { get; }
         public abstract string CityOption_RecruitType { get; }
         public abstract string CityOption_XMercenaries { get; }
+        public abstract string Hud_MercenaryMarket { get; }
+
+
         public abstract string CityOption_BuyXMercenaries { get; }
 
         public abstract string CityOption_Mercenaries_Description { get; }

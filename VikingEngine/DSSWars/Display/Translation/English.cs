@@ -883,6 +883,12 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string CityOption_XMercenaries => "Mercenaries: {0}";
 
+
+        /// <summary>
+        /// Indicates the number of mercenaries currently available for hire from the market
+        /// </summary>
+        public override string Hud_MercenaryMarket => "Market mercenaries for hire";
+
         /// <summary>
         /// Purchase a number of paid soldiers
         /// </summary>

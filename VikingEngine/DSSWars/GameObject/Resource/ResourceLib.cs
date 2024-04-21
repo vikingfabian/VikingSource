@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Engine;
 
 namespace VikingEngine.DSSWars.GameObject.Resource
 {
@@ -21,6 +22,10 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 case ResourceType.DiplomaticPoint:
                     return DssRef.lang.ResourceType_DiplomacyPoints;
 
+                    case ResourceType.MercenaryOnMarket:
+                        return DssRef.lang.Hud_MercenaryMarket;
+
+
                 default:
                     return "Unknown resource";
             }
@@ -38,6 +43,9 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 case ResourceType.DiplomaticPoint:
                     return SpriteName.WarsDiplomaticSub;
 
+                case ResourceType.MercenaryOnMarket:
+                    return SpriteName.WarsGroupIcon;
+
                 default:
                     return SpriteName.NO_IMAGE;
             }
@@ -51,6 +59,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         Worker,
         DiplomaticPoint,
         Item,
+        MercenaryOnMarket,
         NUM
     }
 }

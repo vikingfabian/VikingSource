@@ -52,7 +52,7 @@ namespace VikingEngine.DSSWars
         public float militaryStrength = 0;
         public bool hasDeserters = true;
 
-        public int mercenaryCost = DssRef.difficulty.MercenaryPurchaseCost_Start;
+        
 
         public Faction()
         { }
