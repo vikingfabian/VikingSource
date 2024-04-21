@@ -1,11 +1,6 @@
 ﻿Change Log
-* Added ai delay to difficulty, reduced economy to 5% during start
-* Faster map border update 
-* SAVE (beta)!
-	To compress the data, a lot of (kinda unessesesary) detail info is lost.
-	for example; all battles will restart after load.
-	In most cases you wont notice it.
-	Expected bugs.
+* Changed the boss events, so the dark lord warning is always 15min before the boss
+* Fixed some save crashes
 
 Error
 -also path finding of a land army will often prefer water over land when the boat building will cause the travel time to take considerably longer than if it went over land
@@ -17,7 +12,11 @@ Retreat system
 -reassemble av flydd arme
 
 Polish
--Delay av ai i easy mode
+-x25, x100 på köpa
+-delay på mercenaries
+-I should improve the diplomacy so peace agreements are shared with allies
+-War declare, truce end messages
+-större radie på köpa till armeer
 -attack warning -Battle notification
 -diplomacy toggle
 -AI sök fiende armeer som passerar
@@ -37,7 +36,6 @@ Art
 - Localization to 8 languages (all preparations done)
 - Polish the turd
 .             
-- (maybe) Save
 - (maybe) Battle retreat system 
 - (maybe) Mountain ridges and water reefs that block movement
 - (maybe) Visually display city guard size

@@ -108,12 +108,9 @@ namespace VikingEngine.DSSWars
                     }
                     break;
                 case EventType.DarkLordWarning:
-                    nextTotalGameTimeMin = IntervalF.NoInterval(8);
-                    break;
-                case EventType.DarkLord:
                     {
                         IntervalF[] timeMinutes =
-                           {
+                              {
                             new IntervalF(35,40),//Immediate,                            
                             new IntervalF(100,120),
                             new IntervalF(120,130),//Normal,
@@ -123,6 +120,11 @@ namespace VikingEngine.DSSWars
 
                         nextTotalGameTimeMin = timeMinutes[(int)DssRef.difficulty.bossTimeSettings];
                         nextExpectedPlayerSize = new IntervalF(DssLib.HeadCityMaxWorkForce * 4f, DssLib.HeadCityMaxWorkForce * 8f);
+                    }
+                    break;
+                case EventType.DarkLord:
+                    {
+                        nextTotalGameTimeMin = IntervalF.NoInterval(15);
                     }
                     break;
             }

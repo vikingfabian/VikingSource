@@ -228,9 +228,26 @@ namespace VikingEngine.DSSWars.Map
 #endif
         }
 
-        public PathNodeResult CurrentNode()
+        //public PathNodeResult CurrentNode()
+        //{
+        //    if (currentNodeIx < 0)
+        //    {
+        //        return new PathNodeResult(IntVector2.MinValue, false);
+        //    }
+        //    return nodes[currentNodeIx];
+        //}
+
+        public bool TryGetCurrentNode(out PathNodeResult node)
         {
-            return nodes[currentNodeIx];
+            int ix = currentNodeIx;
+
+            if (ix >= 0 && nodes.Count > 0)
+            {
+                node = nodes[ix];
+                return true;
+            }
+            node = new PathNodeResult(IntVector2.MinValue, false);
+            return false;
         }
 
         public bool nextTwoNodesAreShip()

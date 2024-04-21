@@ -43,7 +43,11 @@ namespace VikingEngine.DSSWars.Data
 
             if (r.ReadBoolean())
             {
-                saveState1 = new SaveStateMeta(r);
+                var state = new SaveStateMeta(r);
+                if (state.stateVersion == SaveGamestate.Version)
+                { 
+                    saveState1 = state;
+                }
             }
         }
     }
@@ -58,7 +62,7 @@ namespace VikingEngine.DSSWars.Data
         int difficulty;
 
         int metaVersion = Version;
-        int stateVersion= SaveGamestate.Version;
+        public int stateVersion= SaveGamestate.Version;
 
         public WorldMetaData world = null;
 
