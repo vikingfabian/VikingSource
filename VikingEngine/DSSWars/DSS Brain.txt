@@ -1,5 +1,5 @@
 ﻿Change Log
-* 
+* Added some groundwork for backward compatibility to save files
 * Mercenary market that limits the available mercenaries
 
 Error
