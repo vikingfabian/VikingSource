@@ -207,6 +207,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string Diplomacy_ServantPriceWillRise { get; }
         public abstract string Diplomacy_ServantGainAbsorbFaction { get; }
 
+        public abstract string Diplomacy_WarDeclarationTitle { get; }
+        public abstract string Diplomacy_TruceEndTitle { get; }
+
         public abstract string EndGameStatistics_Title { get; }
         public abstract string EndGameStatistics_Time { get; }
         public abstract string EndGameStatistics_SoldiersRecruited { get; }

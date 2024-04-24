@@ -1,6 +1,9 @@
 ﻿Change Log
-* Added some groundwork for backward compatibility to save files
-* Mercenary market that limits the available mercenaries
+* Save issues fixed: guard size, workforce, city names 
+* Shift+1/2/3 to backward unit tabbing
+* War declaration messages
+* Can only loose a city to a faction you are in war with
+
 
 Error
 -also path finding of a land army will often prefer water over land when the boat building will cause the travel time to take considerably longer than if it went over land
@@ -12,14 +15,15 @@ Retreat system
 -reassemble av flydd arme
 
 Polish
--x25, x150 på köpa
--delay på mercenaries
+-enbart förlora cities till fienden
+-(mercenaries cost increase bort)
+-snabbare båt bygge i strid
 -cost mercenaries på tooltip
 -I should improve the diplomacy so peace agreements are shared with allies
 -War declare, truce end messages
 -större radie på köpa till armeer
 -attack warning -Battle notification
--diplomacy toggle
+-diplomacy toggle/relation heatmap/units
 -AI sök fiende armeer som passerar
 -krig icon på karta
 -the horses dont load when paused, plus rotation error

@@ -44,10 +44,10 @@ namespace VikingEngine
             return sel != null;
         }
 
-        public bool Next_Rollover()
+        public bool Prev_Rollover()
         {
-            if (array.Count == 0) 
-            { 
+            if (array.Count == 0)
+            {
                 return false;
             }
 
@@ -56,6 +56,22 @@ namespace VikingEngine
             {
                 selIndex = -1;
                 sel = array.NextIteration(ref selIndex);
+            }
+            return sel != null;
+        }
+
+        public bool Next_Rollover()
+        {
+            if (array.Count == 0) 
+            { 
+                return false;
+            }
+
+            sel = array.PrevIteration(ref selIndex);
+            if (sel == null)
+            {
+                selIndex = array.Array.Length;
+                sel = array.PrevIteration(ref selIndex);
             }
             return sel != null;
         }
@@ -426,6 +442,15 @@ namespace VikingEngine
             throw new IndexOutOfRangeException("SpottedArray get index");
         }
 
+        public T GetIndex_Safe(int index)
+        {
+            if (index > 0 && index < Array.Length)
+            {
+                return Array[index];
+            }
+            return default(T);
+        }
+
         void updateSpottedLength()
         {
             while (SpottedLength > 0 && Array[SpottedLength - 1] == null)
@@ -443,6 +468,20 @@ namespace VikingEngine
             }
             Array = newArray;
         }
+
+        public T PrevIteration(ref int i)
+        {
+            --i;
+            for (; i >=0; --i)
+            {
+                T result = Array[i];
+                if (result != null)
+                    return result;
+            }
+
+            return default(T);
+        }
+
         public T NextIteration(ref int i)
         {
             ++i;

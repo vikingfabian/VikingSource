@@ -697,7 +697,7 @@ namespace VikingEngine.DSSWars.Battle
             {
                 foreach (var c in cities)
                 {
-                    if (c.faction != dominatingFaction)
+                    if (DssRef.diplomacy.InWar(c.faction, dominatingFaction))
                     {
                         if (c.faction.player.IsPlayer())
                         {

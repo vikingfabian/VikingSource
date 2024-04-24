@@ -614,6 +614,16 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Diplomacy_ServantGainAbsorbFaction=> "Absorb the other faction";
 
         /// <summary>
+        /// Messaage when you recieve a war declaration
+        /// </summary>
+        public override string Diplomacy_WarDeclarationTitle => "War declared!";
+
+        /// <summary>
+        /// The truce timer har run out, and you go back to war
+        /// </summary>
+        public override string Diplomacy_TruceEndTitle => "The truce has ended";
+
+        /// <summary>
         /// Stats that are shown on the end game screen. Display title.
         /// </summary>
         public override string EndGameStatistics_Title => "Stats";

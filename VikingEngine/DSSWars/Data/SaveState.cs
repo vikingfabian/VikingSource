@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.Data
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
         public const int Version = 3;
-        public const int SubVersion = 2;
+        public const int SubVersion = 3;
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
         DataStream.FilePath path = new DataStream.FilePath(null, "DSS_savestate_v" + Version.ToString(), ".sav");

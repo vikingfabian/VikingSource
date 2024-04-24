@@ -688,7 +688,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void updateFollowQue(float time)
         {
-            var leadUnit = group.soldiers[following];
+            var leadUnit = group.soldiers.GetIndex_Safe(following);
             if (leadUnit != null)
             {
                 if (distanceToUnit(leadUnit) > data.groupSpacing)
@@ -701,12 +701,13 @@ namespace VikingEngine.DSSWars.GameObject
                     state.idle = true;
                     state.walking = false;
                 }
+
+                return;
             }
-            else
-            {
-                following = -1;
-                setFreeAttack();
-            }
+            
+            following = -1;
+            setFreeAttack();
+            
         }
 
         public void setFreeAttack()

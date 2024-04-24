@@ -55,22 +55,7 @@ namespace VikingEngine.DSSWars.Display
 
             if ( selectedRelation!= null)
             {
-
-                content.Add(new RichBoxBeginTitle(2));
-                content.Add(faction.FlagTextureToHud());
-                content.Add(new RichBoxText(faction.PlayerName));
-                content.Add(new RichBoxSeperationLine());
-
-                HeadDisplay.FactionSize(faction, content, false);
-                //content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(faction.totalWorkForce));
-                //content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_TotalStrengthRating, TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
-                
-                content.newParagraph();
-                //content.text(string.Format(relation, Diplomacy.RelationString(selectedRelation.Relation)));
-
-                content.Add(new RichBoxText(DssRef.lang.Diplomacy_RelationType + ": "));
-                content.Add(new RichBoxImage(Diplomacy.RelationSprite(selectedRelation.Relation)));
-                content.Add(new RichBoxText(Diplomacy.RelationString(selectedRelation.Relation)));
+                FactionRelationDisplay(faction, selectedRelation, content);
 
                 content.newLine();
 
@@ -88,12 +73,10 @@ namespace VikingEngine.DSSWars.Display
             {
                 if (selectedRelation.Relation == RelationType.RelationTypeN2_Truce)
                 {
-                    //string truceLength = "Ends in {0} seconds";
                     int sec = Convert.ToInt32(selectedRelation.RelationEnd_GameTimeSec - Ref.TotalGameTimeSec);
                     content.text(string.Format(DssRef.lang.Diplomacy_TruceTimeLength, sec));
                 }
 
-               // string speakTerms = "Speaking terms: {0}";
                 content.text(string.Format(DssRef.lang.Diplomacy_SpeakTermIs, Diplomacy.SpeakTermsString(selectedRelation.SpeakTerms)));
 
                 if (selectedRelation.SpeakTerms > SpeakTerms.SpeakTermsN2_None &&
@@ -191,6 +174,22 @@ namespace VikingEngine.DSSWars.Display
                     content.Add(new RichBoxText(DssRef.lang.Diplomacy_LightSide));//"Is light side ally"));
                 }
             }
+        }
+
+        public static void FactionRelationDisplay(Faction faction, DiplomaticRelation relation, RichBoxContent content)
+        {
+            content.Add(new RichBoxBeginTitle(2));
+            content.Add(faction.FlagTextureToHud());
+            content.Add(new RichBoxText(faction.PlayerName));
+            content.Add(new RichBoxSeperationLine());
+
+            HeadDisplay.FactionSize(faction, content, false);
+
+            content.newParagraph();
+
+            content.Add(new RichBoxText(DssRef.lang.Diplomacy_RelationType + ": "));
+            content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation.Relation)));
+            content.Add(new RichBoxText(Diplomacy.RelationString(relation.Relation)));
         }
 
         void playerToPlayer()

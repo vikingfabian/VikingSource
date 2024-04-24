@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.GameState;
 using System;
 using System.IO;
+using Microsoft.Xna.Framework.Input;
 
 namespace VikingEngine.DSSWars.Players
 {    
@@ -240,6 +241,24 @@ namespace VikingEngine.DSSWars.Players
             {
                 DssRef.achieve.onAlly(faction, otherFaction);
             }
+
+            if (rel.Relation <= RelationType.RelationTypeN3_War)
+            {
+                string title;
+                if (previousRelation == RelationType.RelationTypeN2_Truce)
+                {
+                    title = DssRef.lang.Diplomacy_TruceEndTitle;
+                }
+                else
+                {
+                    title = DssRef.lang.Diplomacy_WarDeclarationTitle;
+                }
+
+                RichBoxContent content = new RichBoxContent();
+                hud.messages.Title(content, title);
+                DiplomacyDisplay.FactionRelationDisplay(otherFaction, rel, content);
+                Ref.update.AddSyncAction(new SyncAction1Arg<RichBoxContent>(hud.messages.Add, content));
+            }
         }
 
         //public void loadedAndReady()
@@ -284,12 +303,12 @@ namespace VikingEngine.DSSWars.Players
                     if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                     {
                         //cityBuilderTest();
-                        DssRef.state.events.TestNextEvent();
+                        //DssRef.state.events.TestNextEvent();
                         
                         //battleLineUpTest(true);
 
                         //battleLineUpTest(true);
-                        new Display.CutScene.EndScene(true);
+                        //new Display.CutScene.EndScene(true);
                     }
 
                     if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
@@ -355,11 +374,23 @@ namespace VikingEngine.DSSWars.Players
             //CITY
             if (input.NextCity.DownEvent && faction.cities.Count > 0)
             {
-                tabCity++;
-                if (tabCity >= faction.cities.Count)
+                if (Input.Keyboard.Shift)
                 {
-                    tabCity = 0;
+                    tabCity--;
+                    if (tabCity < 0)
+                    {
+                        tabCity = faction.cities.Count-1;
+                    }
                 }
+                else
+                {
+                    tabCity++;
+                    if (tabCity >= faction.cities.Count)
+                    {
+                        tabCity = 0;
+                    }
+                }
+                    
 
                 int current = 0;
                 var citiesC = faction.cities.counter();
@@ -380,22 +411,46 @@ namespace VikingEngine.DSSWars.Players
             //ARMY
             if (input.NextArmy.DownEvent)
             {
-                if (tabArmy.Next_Rollover())
+                if (Input.Keyboard.Shift)
                 {
-                    mapControls.cameraFocus = tabArmy.sel;
-                    mapSelect(tabArmy.sel);
+                    if (tabArmy.Prev_Rollover())
+                    {
+                        mapControls.cameraFocus = tabArmy.sel;
+                        mapSelect(tabArmy.sel);
 
-                    return;
+                        return;
+                    }
+                }
+                else
+                {
+                    if (tabArmy.Next_Rollover())
+                    {
+                        mapControls.cameraFocus = tabArmy.sel;
+                        mapSelect(tabArmy.sel);
+
+                        return;
+                    }
                 }
             }
 
             //BATTLE
             if (input.NextBattle.DownEvent)
             {
-                if (tabBattle.Next_Rollover())
+                if (Input.Keyboard.Shift)
                 {
-                    mapControls.cameraFocus = tabBattle.sel;
-                    return;
+                    if (tabBattle.Prev_Rollover())
+                    {
+                        mapControls.cameraFocus = tabBattle.sel;
+                        return;
+                    }
+                }
+                else
+                {
+                    if (tabBattle.Next_Rollover())
+                    {
+                        mapControls.cameraFocus = tabBattle.sel;
+                        return;
+                    }
                 }
             }
         }

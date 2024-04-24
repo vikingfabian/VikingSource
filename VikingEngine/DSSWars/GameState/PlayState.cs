@@ -146,7 +146,7 @@ namespace VikingEngine.DSSWars
 
             foreach (var m in DssRef.world.cities)
             {
-                m.onGameStart();
+                m.onGameStart(newGame);
             }
 
             if (newGame)
