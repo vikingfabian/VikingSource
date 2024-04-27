@@ -264,9 +264,22 @@ namespace VikingEngine.DSSWars
 
         }
 
+        const float AutoSaveTimeSec = 10 * 60;
+        float LastAutoSaveTime_TotalSec = 0;
+
         public void OneMinute_Update()
         { 
             bResourceUpdate = true;
+
+            if (DssRef.storage.autoSave && 
+                Ref.TotalTimeSec > LastAutoSaveTime_TotalSec + AutoSaveTimeSec)
+            {
+                if (cutScene == null)
+                {
+                    new SaveScene(true);
+                }
+                LastAutoSaveTime_TotalSec = Ref.TotalTimeSec;
+            }            
         }
 
         public override void OnDestroy()

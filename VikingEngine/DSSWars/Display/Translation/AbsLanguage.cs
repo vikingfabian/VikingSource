@@ -342,6 +342,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string GameMenu_LoadState { get; }
         public abstract string GameMenu_ContinueFromSave { get; }
 
+        public abstract string GameMenu_AutoSave { get; }
+
         public abstract string GameMenu_Load_PlayerCountError { get; }
 
         public abstract string Progressbar_MapLoadingState { get; }

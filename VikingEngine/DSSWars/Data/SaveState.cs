@@ -21,15 +21,15 @@ namespace VikingEngine.DSSWars.Data
         public const int SubVersion = 3;
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
-        DataStream.FilePath path = new DataStream.FilePath(null, "DSS_savestate_v" + Version.ToString(), ".sav");
         bool dataReady = false;
         public bool complete = false;
         ObjectPointerCollection pointers;
+        SaveStateMeta meta;
 
-        public SaveGamestate()
+        public SaveGamestate(SaveStateMeta meta)
              : base(false)
         {
-            
+            this.meta = meta;    
         }
 
         public void save()
@@ -48,11 +48,12 @@ namespace VikingEngine.DSSWars.Data
         public void load()
         {
             //complete = true;
-            DataStream.BeginReadWrite.BinaryIO(false, path, null, readGameState, this, true);
+            DataStream.BeginReadWrite.BinaryIO(false, meta.Path, null, readGameState, this, true);
         }
 
         public void SaveComplete(bool save, int player, bool completed, byte[] value)
         {
+            //TODO error handling
             if (save == false)
             {
                 pointers.SetPointer();
@@ -99,7 +100,7 @@ namespace VikingEngine.DSSWars.Data
             if (dataReady)
             { 
                 dataReady = false;
-                new WriteByteArray(path, memoryStream, this);
+                new WriteByteArray(meta.Path, memoryStream, this);
             }
         }
 
