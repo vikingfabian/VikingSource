@@ -107,7 +107,9 @@ namespace VikingEngine.DSSWars
             {
                 mapSizes.Add(new GuiOption<MapSize>(WorldData.SizeString(sz), sz));
             }
-            
+
+            var saves = DssRef.storage.meta.listSaves();
+
             GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
             {
                 if (StartupSettings.CheatActive)
@@ -115,9 +117,9 @@ namespace VikingEngine.DSSWars
                     new GuiLabel("! debug cheats !", layout);
                 }
 
-                if (DssRef.storage.meta.saveState1 != null)
+                if (arraylib.HasMembers(saves))
                 {
-                    new GuiTextButton(DssRef.lang.GameMenu_ContinueFromSave, DssRef.storage.meta.saveState1.InfoString(), continueFromSave, false, layout);
+                    new GuiTextButton(DssRef.lang.GameMenu_ContinueFromSave, saves[0].InfoString(), continueFromSave, false, layout);
                 }
                 
                new GuiLargeTextButton(DssRef.lang.Lobby_Start, null, new GuiAction(startGame), false, layout);
@@ -713,22 +715,29 @@ namespace VikingEngine.DSSWars
 
         void continueFromSave()
         {
-            if (DssRef.storage.meta.saveState1.localPlayerCount == DssRef.storage.playerCount)
+            var save = arraylib.First(DssRef.storage.meta.listSaves());
+
+            if (save == null) 
+            {
+                return;
+            }
+
+            if (save.localPlayerCount == DssRef.storage.playerCount)
             {
                 if (mapBackgroundLoading != null)
                 {
                     mapBackgroundLoading.Abort();
                 }
-                mapBackgroundLoading = new MapBackgroundLoading(DssRef.storage.meta.saveState1);
+                mapBackgroundLoading = new MapBackgroundLoading(save);
 
-                new StartGame(netLobby, DssRef.storage.meta.saveState1, mapBackgroundLoading);
+                new StartGame(netLobby, save, mapBackgroundLoading);
             }
             else
             {
-                setPlayerCount(DssRef.storage.meta.saveState1.localPlayerCount, false);
+                setPlayerCount(save.localPlayerCount, false);
                 GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_WarningTitle, menuSystem.menu);
                 {
-                    new GuiLabel(string.Format( DssRef.lang.GameMenu_Load_PlayerCountError, DssRef.storage.meta.saveState1.localPlayerCount), layout);
+                    new GuiLabel(string.Format( DssRef.lang.GameMenu_Load_PlayerCountError, save.localPlayerCount), layout);
                     new GuiIconTextButton(SpriteName.MenuIconResume, DssRef.lang.Hud_OK, null, mainMenu, false, layout);
                 }
                 layout.End();                

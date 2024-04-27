@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Content;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -6,14 +7,26 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DataStream;
 using VikingEngine.LootFest.Editor;
+using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
 namespace VikingEngine.DSSWars.Data
 {
+    
+
+
     class SaveMeta
     {
-        public SaveStateMeta saveState1 = null;
+        const int Version = 2;
 
-        const int Version = 1;
+        const int SaveStateCount = 10;
+        const int AutoSaveCount = 10;
+
+        //public SaveStateMeta[] saveStates = new SaveStateMeta[SaveStateCount];
+        //public SaveStateMeta[] autoSaveStates = new SaveStateMeta[AutoSaveCount];
+        SaveIterations saves = new SaveIterations(SaveStateCount);
+        SaveIterations autosaves = new SaveIterations(AutoSaveCount);
+
+
         DataStream.FilePath path = new DataStream.FilePath(null, "DSS_savemeta", ".sav");
 
         public void Save(DataStream.IStreamIOCallback callBack)
@@ -26,58 +39,186 @@ namespace VikingEngine.DSSWars.Data
             DataStream.DataStreamHandler.TryReadBinaryIO(path, read);
         }
 
+        public List<SaveStateMeta> listSaves()
+        {
+            List<SaveStateMeta> allSaves = new List<SaveStateMeta>();
+
+            foreach (var state in saves.saves)
+            {
+                if (state != null)
+                {
+                    allSaves.Add(state);
+                }
+            }
+            foreach (var state in autosaves.saves)
+            {
+                if (state != null)
+                {
+                    allSaves.Add(state);
+                }
+            }
+
+            var sortedSaveStates = allSaves.OrderBy(state => state.saveDate).ToList();
+
+            return sortedSaveStates;
+        }
+
+        public int NextSaveIndex(bool auto)
+        {
+           return (auto ? autosaves : saves).nextIndex;
+        }
+
+        public void AddSave(SaveStateMeta save, IStreamIOCallback callback)
+        {
+            (save.autosave ? autosaves : saves).AddSave(save);
+            Save(callback);
+        }
+
         public void write(System.IO.BinaryWriter w)
         {            
             w.Write(Version);
 
-            w.Write(saveState1 != null);
-            if (saveState1 != null)
-            {
-                saveState1.write(w);
-            }
+            saves.write(w);
+            autosaves.write(w); 
+            //writeStates(saveStates);
+            //writeStates(autoSaveStates);
+
+            //void writeStates(SaveStateMeta[] states)
+            //{ 
+            //    w.Write((byte)states.Length);
+            //    foreach (var state in states)
+            //    {
+            //        w.Write(state != null);
+            //        if (state != null)
+            //        {
+            //            state.write(w);
+            //        }
+            //    }
+            //}
         }
+
+
 
         public void read(System.IO.BinaryReader r)
         {
             int version = r.ReadInt32();
 
-            if (r.ReadBoolean())
+            if (version == 1)
             {
-                var state = new SaveStateMeta(r);
-                if (state.stateVersion == SaveGamestate.Version)
-                { 
-                    saveState1 = state;
+                if (r.ReadBoolean())
+                {
+                    var state = new SaveStateMeta(r);
+                    if (state.stateVersion == SaveGamestate.Version)
+                    {
+                        saves.saves[0] = state;
+                    }
                 }
             }
+            else
+            {
+                saves.read(r, version);
+                autosaves.read(r, version);
+
+            }
+
+        }
+    }
+
+    class SaveIterations
+    {
+        public int nextIndex = 0;
+        public SaveStateMeta[] saves;
+
+        public SaveIterations(int length)
+        {
+            saves = new SaveStateMeta[length];
+        }
+
+        public void AddSave(SaveStateMeta save)
+        {
+            saves[save.index] = save;
+            nextIndex = save.index + 1;
+            if (nextIndex >= saves.Length)
+            { 
+                nextIndex = 0;
+            }
+        }
+
+        public void write(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)nextIndex);
+            w.Write((byte)saves.Length);
+            
+            foreach (var state in saves)
+            {
+                w.Write(state != null);
+                if (state != null)
+                {
+                    state.write(w);
+                }
+            }
+        }
+        public void read(System.IO.BinaryReader r, int version)
+        {
+            nextIndex = r.ReadByte();
+            int length = r.ReadByte();
+            
+            for (int i = 0; i < length; i++)
+            {
+                if (r.ReadBoolean())
+                {
+                    var state = new SaveStateMeta(r);
+                    if (state.stateVersion == SaveGamestate.Version)
+                    {
+                        saves[i] = state;
+                    }
+                }
+            }
+
         }
     }
 
     class SaveStateMeta
     {
-        const int Version = 1;
+        const int Version = 2;
 
-        DateTime saveDate;
+        public DateTime saveDate;
         TimeSpan playTime;
         public int localPlayerCount;
         int difficulty;
 
         int metaVersion = Version;
         public int stateVersion= SaveGamestate.Version;
+        
+        public bool autosave;
+        public int index;
+        
 
         public WorldMetaData world = null;
 
-        public DataStream.FilePath Filepath => new DataStream.FilePath(null, "DSS_savestate_v" + stateVersion.ToString(), ".sav");
+        DataStream.FilePath filepath(bool auto, int index)
+        {
+           return new DataStream.FilePath(null, string.Format("DSS_{0}savestate{1}_v{2}", auto? "auto_":string.Empty, index, stateVersion), ".sav");
+        }
+
+        public DataStream.FilePath Path => filepath(autosave, index);
 
         public string InfoString()
         {
-            return string.Format(DssRef.lang.EndGameStatistics_Time, playTime) + Environment.NewLine +
-                string.Format(DssRef.lang.Settings_TotalDifficulty, difficulty) + Environment.NewLine +
+            string result = string.Format(DssRef.lang.EndGameStatistics_Time, playTime) + Environment.NewLine;
+            if (autosave)
+            {
+                result += DssRef.lang.GameMenu_AutoSave + Environment.NewLine;
+            }
+            result += string.Format(DssRef.lang.Settings_TotalDifficulty, difficulty) + Environment.NewLine +
                 DssRef.lang.Lobby_MapSizeTitle + ": " + WorldData.SizeString(world.mapSize) + Environment.NewLine +
                 string.Format(DssRef.lang.Lobby_LocalMultiplayerEdit, localPlayerCount) + Environment.NewLine +
                 " [" + saveDate.ToLongDateString() + "]";
+
+            return result;
         }
 
-        public SaveStateMeta()
+        public SaveStateMeta(bool autosave)
         {
             saveDate = DateTime.Now;
             playTime = DssRef.time.TotalIngameTime();
@@ -85,6 +226,8 @@ namespace VikingEngine.DSSWars.Data
             difficulty = DssRef.difficulty.TotalDifficulty();
             world = DssRef.world.metaData;
 
+            this.autosave = autosave;
+            this.index = DssRef.storage.meta.NextSaveIndex(autosave);
         }
         public SaveStateMeta(System.IO.BinaryReader r)
         {
@@ -92,10 +235,12 @@ namespace VikingEngine.DSSWars.Data
         }
 
         public void write(System.IO.BinaryWriter w)
-        {
+        {            
             w.Write(metaVersion);
             w.Write(stateVersion);
 
+            w.Write(autosave);
+            w.Write((byte)index);
             w.Write(saveDate.Ticks); 
             w.Write(playTime.Ticks);
             w.Write(localPlayerCount);
@@ -106,15 +251,33 @@ namespace VikingEngine.DSSWars.Data
 
         public void read(System.IO.BinaryReader r)
         {
+            
             metaVersion = r.ReadInt32();
             stateVersion = r.ReadInt32();
-            
+
+            if (metaVersion == 1)
+            {
+                autosave = false;
+            }
+            else
+            {
+                autosave = r.ReadBoolean();
+                index = r.ReadByte();
+            }
+
             saveDate = new DateTime(r.ReadInt64());
             playTime = new TimeSpan(r.ReadInt64());
             localPlayerCount = r.ReadInt32();
             difficulty = r.ReadInt16();
 
             world = new WorldMetaData(r);
+        }
+
+        public int CompareTo(SaveStateMeta other)
+        {
+            if (other == null)
+                return 1;
+            return saveDate.CompareTo(other.saveDate);
         }
     }
 }

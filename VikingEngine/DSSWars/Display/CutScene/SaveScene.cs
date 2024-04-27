@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.Engine;
+using VikingEngine.HUD.RichBox;
 using VikingEngine.Input;
 
 namespace VikingEngine.DSSWars.Display.CutScene
@@ -60,31 +61,16 @@ namespace VikingEngine.DSSWars.Display.CutScene
 
     class SaveScene : AbsSaveScene, DataStream.IStreamIOCallback
     {
+        public bool ExitGame = false;
         int holdTime = 4;
         int state_0Hold_1Save_2meta_3Done = 0;
         
         SaveGamestate saveGamestate;
-        public SaveScene() 
+        bool autoSave;
+        public SaveScene(bool auto) 
             :base()
         { 
-            //progress = new Graphics.TextG(LoadedFont.Bold, Screen.CenterScreen, Screen.TextTitleScale, Graphics.Align.CenterAll, 
-            //    string.Format(DssRef.lang.Progressbar_SaveProgress, "..."), 
-            //    Color.White, HudLib.CutContentLayer);
-            
-            //VectorRect area = VectorRect.FromCenterSize(progress.position, progress.MeasureText());
-
-            //pressAnyKey = new Graphics.TextG(LoadedFont.Regular, VectorExt.AddY(progress.position, area.Height),
-            //    Screen.TextBreadScale, Graphics.Align.CenterAll, DssRef.lang.Progressbar_PressAnyKey,
-            //    Color.White, HudLib.CutContentLayer);
-            //pressAnyKey.Visible = false;
-
-            //area.Size.Y *= 2f;
-            //area.AddHeight(Screen.IconSize);
-            //area.AddXRadius(Screen.IconSize * 2);
-
-            //bg = new Graphics.Image(SpriteName.WhiteArea, area.Position, area.Size, HudLib.CutSceneBgLayer);
-            //bg.Color = Color.Black;
-            //bg.Opacity = 0.8f;
+            this.autoSave = auto;
         }
 
         protected override string SaveString => DssRef.lang.Progressbar_SaveProgress;
@@ -97,9 +83,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
             state_0Hold_1Save_2meta_3Done++;
 
             displaySaveComplete();
-        }
-
-        
+        }        
 
         override public void Time_Update(float time)
         {
@@ -110,8 +94,8 @@ namespace VikingEngine.DSSWars.Display.CutScene
                     {
                         //Begin save
                         state_0Hold_1Save_2meta_3Done++;
-                        meta = new SaveStateMeta();
-                        saveGamestate = new SaveGamestate();
+                        meta = new SaveStateMeta(autoSave);
+                        saveGamestate = new SaveGamestate(meta);
                         saveGamestate.save();
                     }
                     break;
@@ -120,27 +104,36 @@ namespace VikingEngine.DSSWars.Display.CutScene
                     {
                         state_0Hold_1Save_2meta_3Done++;
 
-                        DssRef.storage.meta.saveState1 = meta;
-                        DssRef.storage.meta.Save(this);
-
-                        progress.TextString = string.Format(DssRef.lang.Progressbar_SaveProgress, "meta"); 
+                        DssRef.storage.meta.AddSave(meta, this);
                     }
                     break;
-                //case 2:
-
-                //    break;
+                case 2:
+                    //Wait for callback
+                    break;
 
                 case 3:
-                    if (InputLib.AnyKeyDownEvent())
-                    { 
+                    if (ExitGame)
+                    {
+                        DssRef.state.exit();
+                    }
+                    else if (autoSave)
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        content.h1(DssRef.lang.GameMenu_AutoSave);
+                        DssRef.state.localPlayers[0].hud.messages.Add(content);
+
                         Close();
                     }
+                    else
+                    {
+                        if (InputLib.AnyKeyDownEvent())
+                        {
+                            Close();
+                        }
+                    }
                     break;
-
             }
-        }
-
-        
+        }        
     }
 
     class LoadScene : AbsSaveScene
@@ -151,7 +144,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
             : base()
         {
             this.meta = load;
-            saveGamestate = new SaveGamestate();
+            saveGamestate = new SaveGamestate(load);
             saveGamestate.load();
         }
 

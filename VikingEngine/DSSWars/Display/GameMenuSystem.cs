@@ -72,7 +72,21 @@ namespace VikingEngine.DSSWars.Display
 
             if (DssRef.state.cutScene == null)
             {
-                new SaveScene();
+                new SaveScene(false);
+            }
+        }
+
+        void saveAndExit()
+        {
+            closeMenu();
+
+            if (DssRef.state.cutScene == null)
+            {
+                new SaveScene(true).ExitGame = true;
+            }
+            else
+            {
+                DssRef.state.exit();
             }
         }
 
@@ -86,7 +100,7 @@ namespace VikingEngine.DSSWars.Display
                 Ref.gamesett.soundOptions(layout);
                 new GuiSectionSeparator(layout);
 
-                new GuiDialogButton(DssRef.lang.GameMenu_ExitGame, null, new GuiAction(DssRef.state.exit), false, layout);
+                new GuiDialogButton(DssRef.lang.GameMenu_ExitGame, null, new GuiAction(saveAndExit), false, layout);
             }
             layout.End();
         }

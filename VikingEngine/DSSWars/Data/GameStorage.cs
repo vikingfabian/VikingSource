@@ -25,6 +25,7 @@ namespace VikingEngine.DSSWars.Data
        
         public MapSize mapSize = MapSize.Medium;
         public bool generateNewMaps = false;
+        public bool autoSave = true;
         public LocalPlayerStorage[] localPlayers = null;
         public Profile.FlagStorage flagStorage;
         public SaveMeta meta = null;
@@ -84,7 +85,7 @@ namespace VikingEngine.DSSWars.Data
 
         public void write(System.IO.BinaryWriter w)
         {
-            const int Version = 12;
+            const int Version = 13;
 
             w.Write(Version);
 
@@ -103,6 +104,7 @@ namespace VikingEngine.DSSWars.Data
             }
 
             w.Write(generateNewMaps);
+            w.Write(autoSave);
             DssRef.difficulty.write(w);
             
         }
@@ -134,6 +136,10 @@ namespace VikingEngine.DSSWars.Data
             if (version >= 11)
             {
                 generateNewMaps = r.ReadBoolean();
+                if (version >= 13)
+                { 
+                    autoSave = r.ReadBoolean(); 
+                }
                 DssRef.difficulty.read(r, version);
             }
             
