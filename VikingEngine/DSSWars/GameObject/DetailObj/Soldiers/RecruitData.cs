@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.GameObject
             attackRange = 0.04f;
             basehealth = MathExt.MultiplyInt(0.25, DefaultHealth);
             mainAttack = AttackType.Melee;
-            attackDamage = 20;
+            attackDamage = 5;
             attackDamageStructure = attackDamage;
             attackDamageSea = attackDamage;
             attackTimePlusCoolDown = StandardAttackAndCoolDownTime * 2f;
