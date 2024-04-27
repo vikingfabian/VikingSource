@@ -5,6 +5,7 @@
 * Shift+1/2/3 to backward unit tabbing
 * War declaration messages
 * Can only lose a city to a faction you are in war with (and not a stronger ally)
+* Recruit time 4x longer. But halved while adjacent to a city. Recruit strength is reduced to 1/4 (and is about 1/20 of a standard soldier) - in other words: They suck!
 
 ! To keep your save file, add "0" after savestate. At C:\Users\name\Documents\My Games\DSS_warparty. Example "DSS_savestate0_v3_63849417588".
 

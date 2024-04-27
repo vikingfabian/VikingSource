@@ -8,6 +8,8 @@ namespace VikingEngine.DSSWars.GameObject
 {
     class TrainingCompleteTimer : AbsInGameUpdateable
     {
+        int nextCityCheck = 15;
+        float trainingSpeed = 2f;
         Time time;
         SoldierGroup group;
         public TrainingCompleteTimer(SoldierGroup group)
@@ -20,11 +22,32 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void Time_Update(float time_ms)
         {
-            if (time.CountDownGameTime())
+            if (--nextCityCheck < 0)
+            {
+                trainingSpeed = adjacentToCity()? 2f : 1f;
+                nextCityCheck = 30;
+            }
+
+            if (time.CountDown(Ref.DeltaGameTimeMs * trainingSpeed))
             {
                 group.completeTransform(SoldierTransformType.TraningComplete);
                 DeleteMe();
             }
+        }
+
+        bool adjacentToCity()
+        {
+            var tile = DssRef.world.tileGrid.Get(group.army.tilePos);
+            var city = tile.City();
+            if (city.faction == group.army.faction)
+            {
+                if ((group.army.tilePos - city.tilePos).SideLength() <= 2)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public override bool RunDuringPause => false;
