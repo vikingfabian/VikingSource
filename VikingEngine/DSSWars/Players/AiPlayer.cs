@@ -181,6 +181,40 @@ namespace VikingEngine.DSSWars.Players
                     faction.gold += DssLib.HeadCityMaxWorkForce * 5;
                     break;
 
+                case FactionType.DyingMonger:
+                    faction.diplomaticSide = DiplomaticSide.Dark;
+                    DssRef.settings.Faction_DyingMonger = faction.parentArrayIndex;
+
+                    aggressionLevel = AggressionLevel1_RevengeOnly;
+                    faction.growthMultiplier = 4f;
+                    faction.hasDeserters = false;
+                    name = "Monger";
+                    faction.gold += DssLib.HeadCityMaxWorkForce * 1000;
+                    break;
+
+                case FactionType.DyingHate:
+                    faction.diplomaticSide = DiplomaticSide.Dark;
+                    DssRef.settings.Faction_DyingHate = faction.parentArrayIndex;
+
+                    aggressionLevel = AggressionLevel1_RevengeOnly;
+                    faction.growthMultiplier = 4f;
+                    faction.hasDeserters = false;
+                    name = "Hatu";
+                    faction.gold += DssLib.HeadCityMaxWorkForce * 1000;
+                    break;
+
+                case FactionType.DyingDestru:
+                    faction.diplomaticSide = DiplomaticSide.Dark;
+                    DssRef.settings.Faction_DyingDestru = faction.parentArrayIndex;
+
+                    aggressionLevel = AggressionLevel1_RevengeOnly;
+                    faction.growthMultiplier = 4f;
+                    faction.hasDeserters = false;
+                    name = "Destru";
+                    faction.gold += DssLib.HeadCityMaxWorkForce * 1000;
+                    break;
+
+
                 default:
                     throw new NotImplementedException("ai player " + faction.factiontype);
             }

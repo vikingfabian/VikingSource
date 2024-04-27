@@ -1010,6 +1010,14 @@ namespace VikingEngine.DSSWars
         IceRaven = 10,
         DragonSlayer = 11,
         SouthHara = 12,
+
+        DyingMonger,
+        NewMonger,
+        DyingHate,
+        NewHate,
+        DyingDestru,
+        NewDestu,
+
     }
 
     enum FactionGroupType

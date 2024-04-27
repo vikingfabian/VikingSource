@@ -51,6 +51,15 @@ namespace VikingEngine.DSSWars
                 DssRef.diplomacy.SetRelationType(DarkFollower, SouthHara, RelationType.RelationType3_Ally).secret = true;
                 DssRef.diplomacy.SetRelationType(DarkFollower, UnitedKingdom, RelationType.RelationType3_Ally).secret = true;
                 DssRef.diplomacy.SetRelationType(UnitedKingdom, SouthHara, RelationType.RelationType3_Ally).secret = true;
+
+                //Setup dying war
+                var monger = DssRef.world.factions.Array[DssRef.settings.Faction_DyingMonger];
+                var hate = DssRef.world.factions.Array[DssRef.settings.Faction_DyingHate];
+                var destru = DssRef.world.factions.Array[DssRef.settings.Faction_DyingDestru];
+
+                DssRef.diplomacy.SetRelationType(monger, hate, RelationType.RelationTypeN4_TotalWar);
+                DssRef.diplomacy.SetRelationType(monger, destru, RelationType.RelationTypeN4_TotalWar);
+                DssRef.diplomacy.SetRelationType(hate, destru, RelationType.RelationTypeN4_TotalWar);
             }
         }
 

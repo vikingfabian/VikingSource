@@ -5,6 +5,9 @@
 * Can only loose a city to a faction you are in war with
 * Recruit time 4x longer. But halved while adjacent to a city. Recruit strength is reduced to 1/4 (and is about 1/20 of a standard soldier) - in other words: They suck!
 
+* Three factions are fighting a massive, dying war in the east. This is a hidden performance test :)
+!Old saves are depricated
+
 Error
 -also path finding of a land army will often prefer water over land when the boat building will cause the travel time to take considerably longer than if it went over land
 from what i've seen, this generally only happens if the army is on a land tile immediately adjacent to water
