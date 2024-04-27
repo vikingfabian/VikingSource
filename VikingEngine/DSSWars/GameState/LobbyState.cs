@@ -119,11 +119,16 @@ namespace VikingEngine.DSSWars
 
                 if (arraylib.HasMembers(saves))
                 {
-                    new GuiTextButton(DssRef.lang.GameMenu_ContinueFromSave, saves[0].InfoString(), continueFromSave, false, layout);
+                    new GuiTextButton(DssRef.lang.GameMenu_ContinueFromSave, saves[0].InfoString(), new GuiAction1Arg<int>( continueFromSave, 0), false, layout);
                 }
                 
                new GuiLargeTextButton(DssRef.lang.Lobby_Start, null, new GuiAction(startGame), false, layout);
-                
+
+                if (arraylib.HasMembers(saves))
+                {
+                    new GuiTextButton(DssRef.lang.GameMenu_LoadState, null, listSaves, true, layout);
+                }
+
                 new GuiTextButton(string.Format(DssRef.lang.Lobby_LocalMultiplayerEdit, DssRef.storage.playerCount),
                     null, localMultiplayerMenu, true, layout);
                 
@@ -419,6 +424,17 @@ namespace VikingEngine.DSSWars
             return DssRef.storage.verticalScreenSplit;
         }
 
+        public bool autoSaveProperty(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                DssRef.storage.autoSave = value;
+                
+                DssRef.storage.Save(null);
+            }
+            return DssRef.storage.autoSave;
+        }
+
         public bool generateNewMapsProperty(int index, bool set, bool value)
         {
             if (set && DssRef.storage.generateNewMaps != value)
@@ -541,6 +557,7 @@ namespace VikingEngine.DSSWars
             GuiLayout layout = new GuiLayout(Ref.langOpt.Options_title, menuSystem.menu);
             {
                 Ref.gamesett.optionsMenu(layout);
+                new GuiCheckbox(DssRef.lang.GameMenu_AutoSave, null, autoSaveProperty, layout);
             }
             layout.End();
 
@@ -713,9 +730,24 @@ namespace VikingEngine.DSSWars
             new StartGame(netLobby, null, mapBackgroundLoading);
         }
 
-        void continueFromSave()
+        void listSaves()
         {
-            var save = arraylib.First(DssRef.storage.meta.listSaves());
+            var saves = DssRef.storage.meta.listSaves();
+
+            GuiLayout layout = new GuiLayout(DssRef.lang.GameMenu_LoadState, menuSystem.menu);
+            {
+                for (int i = 0; i < saves.Count; ++i)
+                {
+                    var save = saves[i];
+                    new GuiTextButton(save.TitleString(), save.InfoString(), new GuiAction1Arg<int>(continueFromSave, i), false, layout); 
+                }
+            }
+            layout.End();
+        }
+
+        void continueFromSave(int listIndex)
+        {
+            var save =DssRef.storage.meta.listSaves()[listIndex];
 
             if (save == null) 
             {

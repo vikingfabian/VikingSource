@@ -1,5 +1,5 @@
 ﻿Change Log
-* Save issues fixed: guard size, workforce, city names
+* Save issues fixed: guard size, workforce, city names, generated maps
 * Multiple saves, will rotate through 10 save files.
 * Auto save every 10min, and on exit game
 * Shift+1/2/3 to backward unit tabbing

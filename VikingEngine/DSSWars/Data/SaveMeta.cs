@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.Data
                 }
             }
 
-            var sortedSaveStates = allSaves.OrderBy(state => state.saveDate).ToList();
+            var sortedSaveStates = allSaves.OrderBy(state => state.saveDate).Reverse().ToList();
 
             return sortedSaveStates;
         }
@@ -203,6 +203,11 @@ namespace VikingEngine.DSSWars.Data
 
         public DataStream.FilePath Path => filepath(autosave, index);
 
+
+        public string TitleString()
+        { 
+            return (autosave? DssRef.lang.GameMenu_AutoSave : DssRef.lang.GameMenu_SaveState) + " " + index.ToString();
+        }
         public string InfoString()
         {
             string result = string.Format(DssRef.lang.EndGameStatistics_Time, playTime) + Environment.NewLine;

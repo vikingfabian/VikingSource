@@ -15,8 +15,7 @@ using VikingEngine.PJ;
 namespace VikingEngine.DSSWars.Data
 {
     class GameStorage
-    {
-        
+    {        
         public const int MaxLocalPlayerCount = 4;
         public int playerCount = 1;
         public bool verticalScreenSplit = true;
