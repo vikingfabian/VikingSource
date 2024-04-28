@@ -774,6 +774,35 @@ namespace VikingEngine.DSSWars.Map.Generate
                 region.ApplyFaction(GreenWood);
             }
 
+            if (world.metaData.mapSize >= MapSize.Medium)
+            {
+                {
+                    var faction = new Faction(world, FactionType.DyingMonger);
+
+                    region.Reset(MathExt.MultiplyInt(2, standardWorkForce));
+
+                    region.GetStartFactionRegion(collection_pullNextCity(cityCultureCollection.DryEast), world);
+                    region.ApplyFaction(faction);
+                }
+                {
+                    var faction = new Faction(world, FactionType.DyingHate);
+
+                    region.Reset(MathExt.MultiplyInt(2, standardWorkForce));
+
+                    region.GetStartFactionRegion(collection_pullNextCity(cityCultureCollection.DryEast), world);
+                    region.ApplyFaction(faction);
+                }
+                {
+                    var faction = new Faction(world, FactionType.DyingDestru);
+
+                    region.Reset(MathExt.MultiplyInt(2, standardWorkForce));
+
+                    region.GetStartFactionRegion(collection_pullNextCity(cityCultureCollection.DryEast), world);
+                    region.ApplyFaction(faction);
+                }
+
+            }
+
             {
                 var EasternEmpire = new Faction(world, FactionType.EasternEmpire);
 
@@ -828,34 +857,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 region.ApplyFaction(DragonSlayer);
             }
 
-            if (world.metaData.mapSize >= MapSize.Medium)
-            {
-                {
-                    var faction = new Faction(world, FactionType.DyingMonger);
-
-                    region.Reset(MathExt.MultiplyInt(2, standardWorkForce));
-
-                    region.GetStartFactionRegion(collection_pullNextCity(cityCultureCollection.DryEast), world);
-                    region.ApplyFaction(faction);
-                }
-                {
-                    var faction = new Faction(world, FactionType.DyingHate);
-
-                    region.Reset(MathExt.MultiplyInt(2, standardWorkForce));
-
-                    region.GetStartFactionRegion(collection_pullNextCity(cityCultureCollection.DryEast), world);
-                    region.ApplyFaction(faction);
-                }
-                {
-                    var faction = new Faction(world, FactionType.DyingDestru);
-
-                    region.Reset(MathExt.MultiplyInt(2, standardWorkForce));
-
-                    region.GetStartFactionRegion(collection_pullNextCity(cityCultureCollection.DryEast), world);
-                    region.ApplyFaction(faction);
-                }
-
-            }
+            
         }
 
         City collection_pullNextCity(List<City> collection)

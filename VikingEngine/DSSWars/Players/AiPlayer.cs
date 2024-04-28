@@ -291,6 +291,28 @@ namespace VikingEngine.DSSWars.Players
                             new SoldierGroup(mainArmy, UnitType.Viking, false);
                         }
                         break;
+
+                    case FactionType.DyingMonger:
+                    case FactionType.DyingHate:
+                    case FactionType.DyingDestru:
+                        mainArmy = startMainArmy();
+                        for (int i = 0; i < 10; ++i)
+                        {
+                            new SoldierGroup(mainArmy, UnitType.Archer, false);
+                        }
+                        for (int i = 0; i < 20; ++i)
+                        {
+                            new SoldierGroup(mainArmy, UnitType.Ballista, false);
+                        }
+                        for (int i = 0; i < 80; ++i)
+                        {
+                            new SoldierGroup(mainArmy, UnitType.Soldier, false);
+                        }
+                        for (int i = 0; i < 20; ++i)
+                        {
+                            new SoldierGroup(mainArmy, UnitType.Knight, false);
+                        }
+                        break;
                 }                
 
                 mainArmy?.OnSoldierPurchaseCompleted();
