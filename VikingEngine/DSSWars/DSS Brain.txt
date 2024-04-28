@@ -1,15 +1,5 @@
 ﻿Change Log
-* Save issues fixed: guard size, workforce, city names, generated maps
-* Multiple saves, will rotate through 10 save files.
-* Auto save every 10min, and on exit game
-* Shift+1/2/3 to backward unit tabbing
-* War declaration messages
-* Can only lose a city to a faction you are in war with (and not a stronger ally)
-* Recruit time 4x longer. But halved while adjacent to a city. Recruit strength is reduced to 1/4 (and is about 1/20 of a standard soldier) - in other words: They suck!
-
-* Three factions are fighting a massive, dying war in the east (will last for 5 minutes, medium+ map size). This is a hidden performance test :)
-
-!Old saves are depricated
+* 
 
 
 Error
