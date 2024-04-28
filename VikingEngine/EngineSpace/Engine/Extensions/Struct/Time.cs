@@ -68,6 +68,26 @@ namespace VikingEngine
             return MilliSeconds <= 0;
         }
 
+        public void write(System.IO.BinaryWriter w)
+        {
+            w.Write(MilliSeconds);
+        }
+
+        public void read(System.IO.BinaryReader r) 
+        { 
+            MilliSeconds = r.ReadSingle();
+        }
+
+        public bool CountDown_IfActive(float time)
+        {
+            if (MilliSeconds > 0)
+            {
+                MilliSeconds -= time;
+                return MilliSeconds <= 0;
+            }
+            return false;
+        }
+
         public bool CountDown_IfActive()
         {
             if (MilliSeconds > 0)

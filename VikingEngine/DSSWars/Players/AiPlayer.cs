@@ -253,22 +253,23 @@ namespace VikingEngine.DSSWars.Players
                         }
                         break;
 
-                    case FactionType.UnitedKingdom:                       
-
-                        var citiesC = faction.cities.counter();
-                        while(citiesC.Next())
+                    case FactionType.UnitedKingdom:
                         {
-                            if (citiesC.sel.CityType == CityType.Large)
+                            var citiesC = faction.cities.counter();
+                            while (citiesC.Next())
                             {
-                                IntVector2 pos = DssRef.world.GetFreeTile(citiesC.sel.tilePos);
-                                var army = faction.NewArmy(pos);
-                                
-                                for (int i = 0; i < 10; ++i)
+                                if (citiesC.sel.CityType == CityType.Large)
                                 {
-                                    new SoldierGroup(army, UnitType.HonorGuard, false);
-                                }
+                                    IntVector2 pos = DssRef.world.GetFreeTile(citiesC.sel.tilePos);
+                                    var army = faction.NewArmy(pos);
 
-                                army.OnSoldierPurchaseCompleted();
+                                    for (int i = 0; i < 10; ++i)
+                                    {
+                                        new SoldierGroup(army, UnitType.HonorGuard, false);
+                                    }
+
+                                    army.OnSoldierPurchaseCompleted();
+                                }
                             }
                         }
                         break;
@@ -295,22 +296,39 @@ namespace VikingEngine.DSSWars.Players
                     case FactionType.DyingMonger:
                     case FactionType.DyingHate:
                     case FactionType.DyingDestru:
-                        mainArmy = startMainArmy();
-                        for (int i = 0; i < 10; ++i)
                         {
-                            new SoldierGroup(mainArmy, UnitType.Archer, false);
-                        }
-                        for (int i = 0; i < 20; ++i)
-                        {
-                            new SoldierGroup(mainArmy, UnitType.Ballista, false);
-                        }
-                        for (int i = 0; i < 80; ++i)
-                        {
-                            new SoldierGroup(mainArmy, UnitType.Soldier, false);
-                        }
-                        for (int i = 0; i < 20; ++i)
-                        {
-                            new SoldierGroup(mainArmy, UnitType.Knight, false);
+                            var citiesC = faction.cities.counter();
+                            while (citiesC.Next())
+                            {
+                                if (citiesC.sel.CityType == CityType.Large)
+                                {
+                                    IntVector2 pos = DssRef.world.GetFreeTile(citiesC.sel.tilePos);
+                                    var army = faction.NewArmy(pos);
+
+                                    for (int i = 0; i < 10; ++i)
+                                    {
+                                        new SoldierGroup(army, UnitType.HonorGuard, false);
+                                    }
+                                    for (int i = 0; i < 10; ++i)
+                                    {
+                                        new SoldierGroup(army, UnitType.Archer, false);
+                                    }
+                                    for (int i = 0; i < 20; ++i)
+                                    {
+                                        new SoldierGroup(army, UnitType.Ballista, false);
+                                    }
+                                    for (int i = 0; i < 80; ++i)
+                                    {
+                                        new SoldierGroup(army, UnitType.Soldier, false);
+                                    }
+                                    for (int i = 0; i < 20; ++i)
+                                    {
+                                        new SoldierGroup(army, UnitType.Knight, false);
+                                    }
+
+                                    army.OnSoldierPurchaseCompleted();
+                                }
+                            }
                         }
                         break;
                 }                

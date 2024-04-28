@@ -266,7 +266,7 @@ namespace VikingEngine.DSSWars.GameObject
                 &&
                 tilePos != adjustedWalkGoal)
             {
-                PathFinding pf = DssRef.state.pathFindingPool.Get();//new PathFinding();
+                PathFinding pf = DssRef.state.pathFindingPool.Get();
                 {
                     newpath = pf.FindPath(tilePos, rotation, walkGoal,
                         isShip);

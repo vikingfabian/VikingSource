@@ -20,10 +20,6 @@ namespace VikingEngine.DSSWars
         public GameObject.City mainCity;
         public Vector3 SelectionCenter { get; private set; }
 
-        //public SpottedArrayCounter<GameObject.City> cityCounter;
-
-        //public SpottedArrayCounter<GameObject.City> cityAsynchMainCounter;
-        //public SpottedArrayCounter<GameObject.City> cityAsynchAiCounter;
 
         public SpottedArray<GameObject.City> cities;
 
