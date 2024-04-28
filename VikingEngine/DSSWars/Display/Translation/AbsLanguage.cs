@@ -207,6 +207,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string Diplomacy_ServantPriceWillRise { get; }
         public abstract string Diplomacy_ServantGainAbsorbFaction { get; }
 
+        public abstract string Diplomacy_WarDeclarationTitle { get; }
+        public abstract string Diplomacy_TruceEndTitle { get; }
+
         public abstract string EndGameStatistics_Title { get; }
         public abstract string EndGameStatistics_Time { get; }
         public abstract string EndGameStatistics_SoldiersRecruited { get; }
@@ -269,6 +272,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string CityOption_Recruit { get; }
         public abstract string CityOption_RecruitType { get; }
         public abstract string CityOption_XMercenaries { get; }
+        public abstract string Hud_MercenaryMarket { get; }
+
+
         public abstract string CityOption_BuyXMercenaries { get; }
 
         public abstract string CityOption_Mercenaries_Description { get; }
@@ -335,6 +341,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string GameMenu_SaveStateWarnings { get; }
         public abstract string GameMenu_LoadState { get; }
         public abstract string GameMenu_ContinueFromSave { get; }
+
+        public abstract string GameMenu_AutoSave { get; }
 
         public abstract string GameMenu_Load_PlayerCountError { get; }
 

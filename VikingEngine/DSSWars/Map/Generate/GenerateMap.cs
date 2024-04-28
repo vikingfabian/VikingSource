@@ -297,7 +297,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     growDir.Add(world.rnd.Plus_MinusF(MaxDirChange));
                     radius = Bound.Set(radius + world.rnd.Plus_MinusF(MaxRadiusChange), LandChainMinRadius, LandChainMaxRadius);
 
-                    center += growDir.Direction(linkPosDiffRange.GetRandom());
+                    center += growDir.Direction(linkPosDiffRange.GetRandom(world.rnd));
 
                     heightCenter.Add(world.rnd.Plus_MinusF(0.2f));
                     heightCenterLength = Bound.Set(heightCenterLength + world.rnd.Plus_MinusF(0.2f), 0, 0.9f);
@@ -309,7 +309,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         {
                             link = 0;
                             chainCenter = (center + startPos) * PublicConstants.Half;
-                            center = chainCenter + Rotation1D.Random().Direction(restartDistRange.GetRandom());
+                            center = chainCenter + Rotation1D.Random(world.rnd).Direction(restartDistRange.GetRandom(world.rnd));
 
                             newChain(out radius, out growDir, out chainLength, out heightCenter, out heightCenterLength);
                         }
@@ -327,11 +327,11 @@ namespace VikingEngine.DSSWars.Map.Generate
         {
 
 
-            radius = lib.SmallestValue(startRadiusRange.GetRandom(), startRadiusRange.GetRandom());
-            growDir = Rotation1D.Random();
-            chainLength = chainLengthRange.GetRandom();
+            radius = lib.SmallestValue(startRadiusRange.GetRandom(world.rnd), startRadiusRange.GetRandom(world.rnd));
+            growDir = Rotation1D.Random(world.rnd);
+            chainLength = chainLengthRange.GetRandom(world.rnd);
 
-            heightCenter = Rotation1D.Random();
+            heightCenter = Rotation1D.Random(world.rnd);
             heightCenterLength = world.rnd.Float(0.7f);
         }
         static readonly IntervalF digLinkPosDiffRange = new IntervalF(0.5f, 2);
@@ -344,7 +344,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 int depth = world.rnd.Chance(0.6f) ? 2 : 1;
                 Vector2 center = world.rnd.vector2(world.Size.X, world.Size.Y);
                 float radius = world.rnd.Float(0.6f, 4);
-                Rotation1D growDir = Rotation1D.Random();
+                Rotation1D growDir = Rotation1D.Random(world.rnd);
                 int chainLength = world.rnd.Int(5, 200);
                 //go through each link in the chain
                 for (int link = 0; link < chainLength; ++link)
@@ -377,7 +377,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     growDir.Add(world.rnd.Plus_MinusF(0.6f));
                     radius = Bound.Set(radius + world.rnd.Plus_MinusF(0.6f), 1, 6);
 
-                    center += growDir.Direction(digLinkPosDiffRange.GetRandom());
+                    center += growDir.Direction(digLinkPosDiffRange.GetRandom(world.rnd));
                 }
             }
         }
@@ -519,7 +519,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             while (world.cities.Count < totalAmount)
             {
-                IntVector2 pos = new IntVector2(cityArea.RandomPos());
+                IntVector2 pos = new IntVector2(cityArea.RandomPos(world.rnd));
                 Tile cityTile = world.tileGrid.Get(pos);
                 {
                     if (cityTile.IsLand() && cityTile.heightLevel < Height.MountainHeightStart)
@@ -774,6 +774,35 @@ namespace VikingEngine.DSSWars.Map.Generate
                 region.ApplyFaction(GreenWood);
             }
 
+            if (world.metaData.mapSize >= MapSize.Medium)
+            {
+                {
+                    var faction = new Faction(world, FactionType.DyingMonger);
+
+                    region.Reset(MathExt.MultiplyInt(2, standardWorkForce));
+
+                    region.GetStartFactionRegion(collection_pullNextCity(cityCultureCollection.DryEast), world);
+                    region.ApplyFaction(faction);
+                }
+                {
+                    var faction = new Faction(world, FactionType.DyingHate);
+
+                    region.Reset(MathExt.MultiplyInt(2, standardWorkForce));
+
+                    region.GetStartFactionRegion(collection_pullNextCity(cityCultureCollection.DryEast), world);
+                    region.ApplyFaction(faction);
+                }
+                {
+                    var faction = new Faction(world, FactionType.DyingDestru);
+
+                    region.Reset(MathExt.MultiplyInt(2, standardWorkForce));
+
+                    region.GetStartFactionRegion(collection_pullNextCity(cityCultureCollection.DryEast), world);
+                    region.ApplyFaction(faction);
+                }
+
+            }
+
             {
                 var EasternEmpire = new Faction(world, FactionType.EasternEmpire);
 
@@ -827,6 +856,8 @@ namespace VikingEngine.DSSWars.Map.Generate
                 region.GetStartFactionRegion(randomCity(), world);
                 region.ApplyFaction(DragonSlayer);
             }
+
+            
         }
 
         City collection_pullNextCity(List<City> collection)

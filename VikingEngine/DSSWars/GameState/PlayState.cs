@@ -91,9 +91,9 @@ namespace VikingEngine.DSSWars
                 battlesC.sel.writeGameState(w);
             }
         }
-        public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
-            events.readGameState(r, version, pointers);
+            events.readGameState(r, subversion, pointers);
         }
 
         void initPlayers()
@@ -146,7 +146,7 @@ namespace VikingEngine.DSSWars
 
             foreach (var m in DssRef.world.cities)
             {
-                m.onGameStart();
+                m.onGameStart(newGame);
             }
 
             if (newGame)
@@ -264,9 +264,22 @@ namespace VikingEngine.DSSWars
 
         }
 
+        const float AutoSaveTimeSec = 10 * 60;
+        float LastAutoSaveTime_TotalSec = 0;
+
         public void OneMinute_Update()
         { 
             bResourceUpdate = true;
+
+            if (DssRef.storage.autoSave && 
+                Ref.TotalTimeSec > LastAutoSaveTime_TotalSec + AutoSaveTimeSec)
+            {
+                if (cutScene == null)
+                {
+                    new SaveScene(true);
+                }
+                LastAutoSaveTime_TotalSec = Ref.TotalTimeSec;
+            }            
         }
 
         public override void OnDestroy()
@@ -344,7 +357,7 @@ namespace VikingEngine.DSSWars
             if (cutScene == null)
             {
                 DssRef.diplomacy.async_update();
-                events.asyncUpdate();
+                events.asyncUpdate(time);
             }
             return exitThreads;
         }

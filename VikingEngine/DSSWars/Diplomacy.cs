@@ -494,7 +494,7 @@ namespace VikingEngine.DSSWars
             w.Write((short)faction2);
             w.Write((sbyte)Relation);
             w.Write((sbyte)SpeakTerms);
-            w.Write(Convert.ToByte(RelationEnd_GameTimeSec));
+            w.Write(Convert.ToUInt16(RelationEnd_GameTimeSec));
         }
 
         public bool read(System.IO.BinaryReader r, int version)
@@ -505,7 +505,7 @@ namespace VikingEngine.DSSWars
                 faction2 = r.ReadInt16();
                 Relation = (RelationType)r.ReadSByte();
                 SpeakTerms = (SpeakTerms)r.ReadSByte();
-                RelationEnd_GameTimeSec = r.ReadByte();
+                RelationEnd_GameTimeSec = r.ReadUInt16();
                 return true;
             }
 

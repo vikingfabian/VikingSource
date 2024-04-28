@@ -1,13 +1,21 @@
 ﻿Change Log
-* Added ai delay to difficulty, reduced economy to 5% during start
-* Faster map border update 
-* SAVE (beta)!
-	To compress the data, a lot of (kinda unessesesary) detail info is lost.
-	for example; all battles will restart after load.
-	In most cases you wont notice it.
-	Expected bugs.
+* Save issues fixed: guard size, workforce, city names, generated maps
+* Multiple saves, will rotate through 10 save files.
+* Auto save every 10min, and on exit game
+* Shift+1/2/3 to backward unit tabbing
+* War declaration messages
+* Can only lose a city to a faction you are in war with (and not a stronger ally)
+* Recruit time 4x longer. But halved while adjacent to a city. Recruit strength is reduced to 1/4 (and is about 1/20 of a standard soldier) - in other words: They suck!
+
+* Three factions are fighting a massive, dying war in the east (will last for 5 minutes, medium+ map size). This is a hidden performance test :)
+
+!Old saves are depricated
+
 
 Error
+-craig performnance issue
+*damage to cities
+*smaller income
 -also path finding of a land army will often prefer water over land when the boat building will cause the travel time to take considerably longer than if it went over land
 from what i've seen, this generally only happens if the army is on a land tile immediately adjacent to water
 
@@ -17,14 +25,22 @@ Retreat system
 -reassemble av flydd arme
 
 Polish
--Delay av ai i easy mode
+-längre recruit träning
+-Missing file error på load
+-enbart förlora cities till fienden
+-(mercenaries cost increase bort)
+-snabbare båt bygge i strid
+-cost mercenaries på tooltip
+-I should improve the diplomacy so peace agreements are shared with allies
+-War declare, truce end messages
+-större radie på köpa till armeer
 -attack warning -Battle notification
--diplomacy toggle
+-diplomacy toggle/relation heatmap/units
 -AI sök fiende armeer som passerar
 -krig icon på karta
 -the horses dont load when paused, plus rotation error
 -dölj move path OnHud 
-
+-attack ally yes/no warning
 
 Art
 -list punkt
@@ -37,7 +53,6 @@ Art
 - Localization to 8 languages (all preparations done)
 - Polish the turd
 .             
-- (maybe) Save
 - (maybe) Battle retreat system 
 - (maybe) Mountain ridges and water reefs that block movement
 - (maybe) Visually display city guard size

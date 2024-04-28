@@ -181,6 +181,40 @@ namespace VikingEngine.DSSWars.Players
                     faction.gold += DssLib.HeadCityMaxWorkForce * 5;
                     break;
 
+                case FactionType.DyingMonger:
+                    faction.diplomaticSide = DiplomaticSide.Dark;
+                    DssRef.settings.Faction_DyingMonger = faction.parentArrayIndex;
+
+                    aggressionLevel = AggressionLevel1_RevengeOnly;
+                    faction.growthMultiplier = 4f;
+                    faction.hasDeserters = false;
+                    name = "Monger";
+                    faction.gold += DssLib.HeadCityMaxWorkForce * 1000;
+                    break;
+
+                case FactionType.DyingHate:
+                    faction.diplomaticSide = DiplomaticSide.Dark;
+                    DssRef.settings.Faction_DyingHate = faction.parentArrayIndex;
+
+                    aggressionLevel = AggressionLevel1_RevengeOnly;
+                    faction.growthMultiplier = 4f;
+                    faction.hasDeserters = false;
+                    name = "Hatu";
+                    faction.gold += DssLib.HeadCityMaxWorkForce * 1000;
+                    break;
+
+                case FactionType.DyingDestru:
+                    faction.diplomaticSide = DiplomaticSide.Dark;
+                    DssRef.settings.Faction_DyingDestru = faction.parentArrayIndex;
+
+                    aggressionLevel = AggressionLevel1_RevengeOnly;
+                    faction.growthMultiplier = 4f;
+                    faction.hasDeserters = false;
+                    name = "Destru";
+                    faction.gold += DssLib.HeadCityMaxWorkForce * 1000;
+                    break;
+
+
                 default:
                     throw new NotImplementedException("ai player " + faction.factiontype);
             }
@@ -219,22 +253,23 @@ namespace VikingEngine.DSSWars.Players
                         }
                         break;
 
-                    case FactionType.UnitedKingdom:                       
-
-                        var citiesC = faction.cities.counter();
-                        while(citiesC.Next())
+                    case FactionType.UnitedKingdom:
                         {
-                            if (citiesC.sel.CityType == CityType.Large)
+                            var citiesC = faction.cities.counter();
+                            while (citiesC.Next())
                             {
-                                IntVector2 pos = DssRef.world.GetFreeTile(citiesC.sel.tilePos);
-                                var army = faction.NewArmy(pos);
-                                
-                                for (int i = 0; i < 10; ++i)
+                                if (citiesC.sel.CityType == CityType.Large)
                                 {
-                                    new SoldierGroup(army, UnitType.HonorGuard, false);
-                                }
+                                    IntVector2 pos = DssRef.world.GetFreeTile(citiesC.sel.tilePos);
+                                    var army = faction.NewArmy(pos);
 
-                                army.OnSoldierPurchaseCompleted();
+                                    for (int i = 0; i < 10; ++i)
+                                    {
+                                        new SoldierGroup(army, UnitType.HonorGuard, false);
+                                    }
+
+                                    army.OnSoldierPurchaseCompleted();
+                                }
                             }
                         }
                         break;
@@ -255,6 +290,45 @@ namespace VikingEngine.DSSWars.Players
                         for (int i = 0; i < 5; ++i)
                         {
                             new SoldierGroup(mainArmy, UnitType.Viking, false);
+                        }
+                        break;
+
+                    case FactionType.DyingMonger:
+                    case FactionType.DyingHate:
+                    case FactionType.DyingDestru:
+                        {
+                            var citiesC = faction.cities.counter();
+                            while (citiesC.Next())
+                            {
+                                if (citiesC.sel.CityType == CityType.Large)
+                                {
+                                    IntVector2 pos = DssRef.world.GetFreeTile(citiesC.sel.tilePos);
+                                    var army = faction.NewArmy(pos);
+
+                                    for (int i = 0; i < 10; ++i)
+                                    {
+                                        new SoldierGroup(army, UnitType.HonorGuard, false);
+                                    }
+                                    for (int i = 0; i < 10; ++i)
+                                    {
+                                        new SoldierGroup(army, UnitType.Archer, false);
+                                    }
+                                    for (int i = 0; i < 20; ++i)
+                                    {
+                                        new SoldierGroup(army, UnitType.Ballista, false);
+                                    }
+                                    for (int i = 0; i < 80; ++i)
+                                    {
+                                        new SoldierGroup(army, UnitType.Soldier, false);
+                                    }
+                                    for (int i = 0; i < 20; ++i)
+                                    {
+                                        new SoldierGroup(army, UnitType.Knight, false);
+                                    }
+
+                                    army.OnSoldierPurchaseCompleted();
+                                }
+                            }
                         }
                         break;
                 }                

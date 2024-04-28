@@ -30,6 +30,8 @@ namespace VikingEngine.DSSWars
 
         public List<City> factories = new List<City>(3);
 
+        Time dyingFactionsTimer = Time.Zero;
+
         public GameEvents()
         {
         }
@@ -51,6 +53,17 @@ namespace VikingEngine.DSSWars
                 DssRef.diplomacy.SetRelationType(DarkFollower, SouthHara, RelationType.RelationType3_Ally).secret = true;
                 DssRef.diplomacy.SetRelationType(DarkFollower, UnitedKingdom, RelationType.RelationType3_Ally).secret = true;
                 DssRef.diplomacy.SetRelationType(UnitedKingdom, SouthHara, RelationType.RelationType3_Ally).secret = true;
+
+                //Setup dying war
+                dyingFactionsTimer = new Time(5, TimeUnit.Minutes);
+
+                var monger = DssRef.world.factions.Array[DssRef.settings.Faction_DyingMonger];
+                var hate = DssRef.world.factions.Array[DssRef.settings.Faction_DyingHate];
+                var destru = DssRef.world.factions.Array[DssRef.settings.Faction_DyingDestru];
+
+                DssRef.diplomacy.SetRelationType(monger, hate, RelationType.RelationTypeN4_TotalWar);
+                DssRef.diplomacy.SetRelationType(monger, destru, RelationType.RelationTypeN4_TotalWar);
+                DssRef.diplomacy.SetRelationType(hate, destru, RelationType.RelationTypeN4_TotalWar);
             }
         }
 
@@ -69,6 +82,8 @@ namespace VikingEngine.DSSWars
             IOLib.WriteBinaryList(w, spawnPos_Player);
             IOLib.WriteObjectList(w, darkLordAvailableFactions);
             IOLib.WriteObjectList(w, darkLordAllies);
+
+            dyingFactionsTimer.write(w);
         }
         public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
@@ -85,6 +100,9 @@ namespace VikingEngine.DSSWars
             spawnPos_Player = arraylib.ToArray_Safe(IOLib.ReadBinaryList<IntVector2>(r));
             darkLordAvailableFactions = IOLib.ReadObjectList<Faction>(r);
             darkLordAllies = IOLib.ReadObjectList<Faction>(r);
+
+            dyingFactionsTimer.read(r);
+            dyingFactionsTimer.MilliSeconds = Bound.Min(dyingFactionsTimer.MilliSeconds, 1);
         }
 
         void prepareNext()
@@ -108,12 +126,9 @@ namespace VikingEngine.DSSWars
                     }
                     break;
                 case EventType.DarkLordWarning:
-                    nextTotalGameTimeMin = IntervalF.NoInterval(8);
-                    break;
-                case EventType.DarkLord:
                     {
                         IntervalF[] timeMinutes =
-                           {
+                              {
                             new IntervalF(35,40),//Immediate,                            
                             new IntervalF(100,120),
                             new IntervalF(120,130),//Normal,
@@ -123,6 +138,11 @@ namespace VikingEngine.DSSWars
 
                         nextTotalGameTimeMin = timeMinutes[(int)DssRef.difficulty.bossTimeSettings];
                         nextExpectedPlayerSize = new IntervalF(DssLib.HeadCityMaxWorkForce * 4f, DssLib.HeadCityMaxWorkForce * 8f);
+                    }
+                    break;
+                case EventType.DarkLord:
+                    {
+                        nextTotalGameTimeMin = IntervalF.NoInterval(15);
                     }
                     break;
             }
@@ -266,7 +286,7 @@ namespace VikingEngine.DSSWars
             prepareNext();
         }
 
-        public void asyncUpdate()
+        public void asyncUpdate(float time)
         {
             if (DssRef.difficulty.bossTimeSettings != BossTimeSettings.Never &&
                 (
@@ -288,6 +308,25 @@ namespace VikingEngine.DSSWars
                     {
                         calcAndRunEvent();
                     }
+                }
+            }
+
+            if (dyingFactionsTimer.CountDown_IfActive(time))
+            {
+                var monger = DssRef.world.factions.Array[DssRef.settings.Faction_DyingMonger];
+                var hate = DssRef.world.factions.Array[DssRef.settings.Faction_DyingHate];
+                var destru = DssRef.world.factions.Array[DssRef.settings.Faction_DyingDestru];
+
+                var factions =  new List<Faction>() 
+                { 
+                    monger, hate, destru,
+                };
+
+                foreach (var faction in factions)
+                {
+                    faction.growthMultiplier = 0.5f;
+                    faction.gold = -10000;
+                    faction.hasDeserters = true;
                 }
             }
         }

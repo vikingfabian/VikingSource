@@ -17,18 +17,19 @@ namespace VikingEngine.DSSWars.Data
 {
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
-        public const int Version = 1;
+        public const int Version = 4;
+        public const int SubVersion = 3;
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
-        DataStream.FilePath path = new DataStream.FilePath(null, "DSS_savestate_v" + Version.ToString(), ".sav");
         bool dataReady = false;
         public bool complete = false;
         ObjectPointerCollection pointers;
+        SaveStateMeta meta;
 
-        public SaveGamestate()
+        public SaveGamestate(SaveStateMeta meta)
              : base(false)
         {
-            
+            this.meta = meta;    
         }
 
         public void save()
@@ -47,11 +48,12 @@ namespace VikingEngine.DSSWars.Data
         public void load()
         {
             //complete = true;
-            DataStream.BeginReadWrite.BinaryIO(false, path, null, readGameState, this, true);
+            DataStream.BeginReadWrite.BinaryIO(false, meta.Path, null, readGameState, this, true);
         }
 
         public void SaveComplete(bool save, int player, bool completed, byte[] value)
         {
+            //TODO error handling
             if (save == false)
             {
                 pointers.SetPointer();
@@ -62,7 +64,9 @@ namespace VikingEngine.DSSWars.Data
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            w.Write(Version);
+            //w.Write(Version);
+            //w.Write(SubVersion);
+            new SaveVersion(Version, SubVersion).write(w);
 
             DssRef.storage.write(w);
             Debug.WriteCheck(w);
@@ -77,15 +81,18 @@ namespace VikingEngine.DSSWars.Data
         {
             pointers = new ObjectPointerCollection();
 
-            int version = r.ReadInt32();
+            //int version = r.ReadInt32();
+            //int subVersion = r.ReadInt32();
+            SaveVersion version = new SaveVersion();
+            version.read(r);
 
             DssRef.storage.read(r);
             Debug.ReadCheck(r);
-            DssRef.settings.readGameState(r, version, pointers);
+            DssRef.settings.readGameState(r, version.sub, pointers);
             Debug.ReadCheck(r);
-            DssRef.world.readGameState(r, version, pointers);
+            DssRef.world.readGameState(r, version.sub, pointers);
             Debug.ReadCheck(r);
-            DssRef.state.readGameState(r, version, pointers);
+            DssRef.state.readGameState(r, version.sub, pointers);
         }
 
         public override void Time_Update(float time_ms)
@@ -93,7 +100,7 @@ namespace VikingEngine.DSSWars.Data
             if (dataReady)
             { 
                 dataReady = false;
-                new WriteByteArray(path, memoryStream, this);
+                new WriteByteArray(meta.Path, memoryStream, this);
             }
         }
 
@@ -230,6 +237,30 @@ namespace VikingEngine.DSSWars.Data
         public override void SetPointer()
         {
             battle.addPart((AbsMapObject)GetObject(), false);
+        }
+    }
+
+    struct SaveVersion
+    {
+        public int major;
+        public int sub;
+
+        public SaveVersion(int main, int sub)
+        { 
+            this.major = main;
+            this.sub = sub;
+        }
+
+        public void write(System.IO.BinaryWriter w)
+        {
+            w.Write(major);
+            w.Write(sub);
+        }
+
+        public void read(System.IO.BinaryReader r)
+        {
+            major = r.ReadInt32();
+            sub = r.ReadInt32();
         }
     }
 }

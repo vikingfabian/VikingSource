@@ -209,9 +209,9 @@ namespace VikingEngine.Engine
 
             lock (syncQue)
             {
-                foreach (var item in syncQue)
+                for (int i = 0; i < syncQue.Count;++i)
                 {
-                    item.execute();
+                    syncQue[i].execute();
                 }
                 syncQue.Clear();
             }

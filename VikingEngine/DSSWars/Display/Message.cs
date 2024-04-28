@@ -23,14 +23,24 @@ namespace VikingEngine.DSSWars.Display
             this.settings = settings;
         }
 
-        public void Add(string title, string text)
+        public void Title(RichBoxContent content, string title)
         {
-            RichBoxContent content = new RichBoxContent();
             content.Add(new RichBoxBeginTitle(2));
             content.Add(new RichBoxImage(SpriteName.cmdWarningTriangle));
             content.space();
             content.Add(new RichBoxText(title, Color.Yellow));
             content.newLine();
+        }
+
+        public void Add(string title, string text)
+        {
+            RichBoxContent content = new RichBoxContent();
+            //content.Add(new RichBoxBeginTitle(2));
+            //content.Add(new RichBoxImage(SpriteName.cmdWarningTriangle));
+            //content.space();
+            //content.Add(new RichBoxText(title, Color.Yellow));
+            //content.newLine();
+            Title(content, title);
             content.text(text);
 
             Add(content);

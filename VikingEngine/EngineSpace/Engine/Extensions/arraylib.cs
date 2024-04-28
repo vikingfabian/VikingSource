@@ -315,6 +315,15 @@ namespace VikingEngine
             }
             return default(T);
         }
+
+        public static T First<T>(List<T> list)
+        {
+            if (list != null && list.Count > 0)
+            {
+                return list[0];
+            }
+            return default(T);
+        }
         public static T PullLastMember<T>(List<T> list)
         {
             T result = list[list.Count - 1];

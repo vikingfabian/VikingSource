@@ -614,6 +614,16 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Diplomacy_ServantGainAbsorbFaction=> "Absorb the other faction";
 
         /// <summary>
+        /// Messaage when you recieve a war declaration
+        /// </summary>
+        public override string Diplomacy_WarDeclarationTitle => "War declared!";
+
+        /// <summary>
+        /// The truce timer har run out, and you go back to war
+        /// </summary>
+        public override string Diplomacy_TruceEndTitle => "The truce has ended";
+
+        /// <summary>
         /// Stats that are shown on the end game screen. Display title.
         /// </summary>
         public override string EndGameStatistics_Title => "Stats";
@@ -883,6 +893,12 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string CityOption_XMercenaries => "Mercenaries: {0}";
 
+
+        /// <summary>
+        /// Indicates the number of mercenaries currently available for hire from the market
+        /// </summary>
+        public override string Hud_MercenaryMarket => "Market mercenaries for hire";
+
         /// <summary>
         /// Purchase a number of paid soldiers
         /// </summary>
@@ -1066,10 +1082,12 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string GameMenu_ExitGame => "Exit game";
 
-        public override string GameMenu_SaveState => "Save (beta)";
+        public override string GameMenu_SaveState => "Save";
         public override string GameMenu_SaveStateWarnings => "Warning! Save files will be lost when the game is updated.";
         public override string GameMenu_LoadState => "Load";
         public override string GameMenu_ContinueFromSave => "Continue from save";
+
+        public override string GameMenu_AutoSave => "Auto save";
 
         public override string GameMenu_Load_PlayerCountError => "You must setup a matching player count to the save file: {0}";
 

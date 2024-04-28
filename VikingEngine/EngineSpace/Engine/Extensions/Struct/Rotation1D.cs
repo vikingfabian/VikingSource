@@ -255,7 +255,9 @@ namespace VikingEngine
         public static readonly Rotation1D D180 = new Rotation1D(MathHelper.Pi);
         public static readonly Rotation1D D270 = new Rotation1D(MathHelper.Pi + MathHelper.PiOver2);
         public static Rotation1D Random()
-        {  return new Rotation1D((float)(Math.PI * 2.0 * Ref.rnd.Double())); }
+        { return new Rotation1D((float)(Math.PI * 2.0 * Ref.rnd.Double())); }
+        public static Rotation1D Random(PcgRandom rnd)
+        { return new Rotation1D((float)(Math.PI * 2.0 * rnd.Double())); }
 
         public void flipX()
         {

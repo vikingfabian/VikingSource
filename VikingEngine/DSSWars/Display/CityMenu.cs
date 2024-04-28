@@ -59,13 +59,21 @@ namespace VikingEngine.DSSWars.Display
                         new RbAction2Arg<CityPurchaseOption, int>(buySoldiersTip, opt, 1),
                         canBuySoldiers(opt.unitType, 1)));
 
-                    content.Add(new RichBoxSpace());
+                    content.space();
 
-                    content.Button(string.Format(DssRef.lang.Hud_XTimes, 5),//"x5",
-                        new RbAction2Arg<UnitType, int>(city.buySoldiersAction, opt.unitType, 5, SoundLib.menuBuy),
-                        new RbAction2Arg<CityPurchaseOption, int>(buySoldiersTip, opt, 5),
-                        canBuySoldiers(opt.unitType, 5));
+                    multiBuy(5);
 
+                    content.space();
+
+                    multiBuy(25);
+
+                    void multiBuy(int multiCount)
+                    {
+                        content.Button(string.Format(DssRef.lang.Hud_XTimes, multiCount),
+                            new RbAction2Arg<UnitType, int>(city.buySoldiersAction, opt.unitType, multiCount, SoundLib.menuBuy),
+                            new RbAction2Arg<CityPurchaseOption, int>(buySoldiersTip, opt, multiCount),
+                            canBuySoldiers(opt.unitType, multiCount));
+                    }
                 }
             }
 
@@ -226,6 +234,8 @@ namespace VikingEngine.DSSWars.Display
             content.newLine();
             HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, cost, player.faction.gold);
             content.text(string.Format(DssRef.lang.Hud_Purchase_CostWillIncreaseByX, DssRef.difficulty.MercenaryPurchaseCost_Add * count));
+            content.newLine();
+            HudLib.ResourceCost(content, GameObject.Resource.ResourceType.MercenaryOnMarket, DssLib.MercenaryPurchaseCount * count, player.mercenaryMarket.Int());
 
             content.newParagraph();
             content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);

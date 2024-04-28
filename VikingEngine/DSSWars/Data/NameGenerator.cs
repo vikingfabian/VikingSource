@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.EngineSpace.Maths;
 using VikingEngine.Graphics;
 using VikingEngine.ToGG.HeroQuest.Gadgets;
@@ -137,25 +138,26 @@ namespace VikingEngine.DSSWars.Data
 
         public static string CityName(IntVector2 pos)
         {
-            
+            random.SetSeed(pos.X * 3 + pos.Y * 11 + DssRef.world.metaData.objSeed);
+
             string cityName = "";
 
             bool west = pos.X < DssRef.world.Size.X * 0.75;
             bool north = pos.Y < DssRef.world.HalfSize.Y;
 
             // Randomly decide to add a space and suffix or just append a suffix
-            if (Ref.rnd.Chance(0.6))
+            if (random.Chance(0.6))
             {
-                syllables(west, north, Ref.rnd.Int(1, 4), ref cityName);
-                townSyffix(west, north, Ref.rnd.Chance(0.4), ref cityName);
+                syllables(west, north, random.Int(1, 4), ref cityName);
+                townSyffix(west, north, random.Chance(0.4), ref cityName);
             }
             else
             {
                 //split name
-                syllables(west, north, Ref.rnd.Int(1, 3), ref cityName);
+                syllables(west, north, random.Int(1, 3), ref cityName);
                 cityName += " ";
-                syllables(west, north, Ref.rnd.Int(1, 3), ref cityName);
-                townSyffix(west, north, Ref.rnd.Chance(0.1), ref cityName);
+                syllables(west, north, random.Int(1, 3), ref cityName);
+                townSyffix(west, north, random.Chance(0.1), ref cityName);
             }
 
             return TextLib.LargeFirstLetter(cityName);
@@ -167,13 +169,13 @@ namespace VikingEngine.DSSWars.Data
 
             for (int i = 0; i < count; i++)
             {
-                if (i == 0 || Ref.rnd.Chance(0.5))
+                if (i == 0 || random.Chance(0.5))
                 {
-                    if (Ref.rnd.Chance(0.3))
+                    if (random.Chance(0.3))
                     {
                         syllables = DssRef.lang.NameGenerator_City_GeneralSyllables;//generalSyllables;
                     }
-                    else if (Ref.rnd.Chance(0.5))
+                    else if (random.Chance(0.5))
                     {
                         syllables = west ? DssRef.lang.NameGenerator_City_WestSyllables : DssRef.lang.NameGenerator_City_EastSyllables;//westSyllables : eastSyllables;
                     }
@@ -183,18 +185,18 @@ namespace VikingEngine.DSSWars.Data
                     }
                 }
 
-                cityName += arraylib.RandomListMember(syllables);
+                cityName += arraylib.RandomListMember(syllables, random);
             }
         }
 
         static void townSyffix(bool west, bool north, bool space, ref string cityName)
         {   
             List<string> suffixes;
-            if (Ref.rnd.Chance(0.3))
+            if (random.Chance(0.3))
             {
                 suffixes = DssRef.lang.NameGenerator_City_GeneralTownSuffixes;//generalTownSuffixes;
             }
-            else if (Ref.rnd.Chance(0.5))
+            else if (random.Chance(0.5))
             {
                 suffixes = west ? DssRef.lang.NameGenerator_City_WestTownSuffixes : DssRef.lang.NameGenerator_City_EastTownSuffixes;//westTownSuffixes : eastTownSuffixes;
             }
@@ -215,7 +217,7 @@ namespace VikingEngine.DSSWars.Data
             {
                 cityName += " ";
             }
-            cityName += arraylib.RandomListMember(suffixes);
+            cityName += arraylib.RandomListMember(suffixes, random);
             
         }
 

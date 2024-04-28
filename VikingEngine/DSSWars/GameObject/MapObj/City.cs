@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void generateCultureAndEconomy(WorldData world, CityCultureCollection cityCultureCollection)
         {
-            initEconomy();
+            initEconomy(true);
 
             double land = 0, water = 0, plain = 0, forest = 0, mountain = 0, dryBiom = 0;
 
@@ -321,12 +321,24 @@ namespace VikingEngine.DSSWars.GameObject
             workForce.write16bit(w);
             immigrants.write16bit(w);
             w.Write(nobelHouse);
+            w.Write((ushort)guardCount);
+            w.Write((ushort)maxGuardSize);
+
+            //detailObj.writeGameState(w);
         }
-        public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             workForce.read16bit(r);
             immigrants.read16bit(r);
             nobelHouse = r.ReadBoolean();
+
+            if (subversion >= 3)
+            {
+                guardCount = r.ReadUInt16();
+                maxGuardSize = r.ReadUInt16();
+
+                //detailObj.readGameState(r, subversion, pointers);   
+            }
 
             refreshCitySize();
            // detailObj.refreshWorkerSubtiles();
@@ -416,15 +428,18 @@ namespace VikingEngine.DSSWars.GameObject
         public bool buyMercenary(bool commit, int count)
         {
             int totalCost = 0;
+            int mercenariesCount = DssLib.MercenaryPurchaseCount * count;
 
-            if (faction.calcCost(buyMercenaryCost(count), ref totalCost))
+            if (faction.calcCost(buyMercenaryCost(count), ref totalCost) &&
+                faction.player.GetLocalPlayer().mercenaryMarket.Int() >= mercenariesCount)
             {
                 if (commit)
                 {                    
                     faction.payMoney(totalCost, true);
-                    faction.mercenaryCost += DssRef.difficulty.MercenaryPurchaseCost_Add * count;
+                    faction.player.GetLocalPlayer().mercenaryMarket.pay(mercenariesCount, true);
+                    faction.player.GetLocalPlayer().mercenaryCost += DssRef.difficulty.MercenaryPurchaseCost_Add * count;
 
-                    mercenaries += DssLib.MercenaryPurchaseCount * count;
+                    mercenaries += mercenariesCount;
                 }
                 return true;
             }
@@ -434,7 +449,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int buyMercenaryCost(int count)
         {
-            double result = MathExt.SumOfLinearIncreases(faction.mercenaryCost, DssRef.difficulty.MercenaryPurchaseCost_Add, count);
+            double result = MathExt.SumOfLinearIncreases(faction.player.GetLocalPlayer().mercenaryCost, DssRef.difficulty.MercenaryPurchaseCost_Add, count);
             return Convert.ToInt32(result);
         }
 
@@ -445,16 +460,18 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
 
-        public void onGameStart()
+        public void onGameStart(bool newGame)
         {
             groupRadius = 0.6f;
 
-            initEconomy();
+            initEconomy(newGame);
 
-            maxGuardSize = workForce.Int() / 4;
+            if (newGame)
+            {
+                maxGuardSize = workForce.Int() / 4;
 
-            guardCount = maxGuardSize;
-
+                guardCount = maxGuardSize;
+            }
             refreshCitySize();
 
             updateIncome_asynch();
@@ -472,26 +489,27 @@ namespace VikingEngine.DSSWars.GameObject
             name = Data.NameGenerator.CityName(tilePos);
         }
 
-        void initEconomy()
+        void initEconomy(bool newGame)
         {
-            switch (CityType)
+            if (newGame)
             {
-                case CityType.Small:
-                    //workForce.value = DssLib.SmallCityStartWorkForce;
-                    workForce.max = DssLib.SmallCityMaxWorkForce;
-                    break;
-                case CityType.Large:
-                    //workForce.value = DssLib.LargeCityStartWorkForce;
-                    workForce.max = DssLib.LargeCityMaxWorkForce;
-                    break;
-                default:
-                    //workForce.value = DssLib.HeadCityStartWorkForce;
-                    workForce.max = DssLib.HeadCityMaxWorkForce;
-                    nobelHouse = true;
-                    break;
+                switch (CityType)
+                {
+                    case CityType.Small:
+                       workForce.max = DssLib.SmallCityMaxWorkForce;
+                        break;
+                    case CityType.Large:
+                        //workForce.value = DssLib.LargeCityStartWorkForce;
+                        workForce.max = DssLib.LargeCityMaxWorkForce;
+                        break;
+                    default:
+                        //workForce.value = DssLib.HeadCityStartWorkForce;
+                        workForce.max = DssLib.HeadCityMaxWorkForce;
+                        nobelHouse = true;
+                        break;
+                }
+                workForce.value = workForce.max;
             }
-            workForce.value = workForce.max;
-
             int maxFit = MathExt.MultiplyInt(0.8, CityDetail.WorkersPerTile * CityDetail.HutMaxLevel * areaSize);
             maxEpandWorkSize = Bound.Max(workForce.max + ExpandWorkForce * 3, maxFit);
         }

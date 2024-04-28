@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.EngineSpace;
 using VikingEngine.Graphics;
@@ -49,7 +50,7 @@ namespace VikingEngine.DSSWars.GameObject
         public SoldierGroup inBattle = null;
 
         //int workerModelsActiveCount = 0;
-        List<WorkerData> workers= new List<WorkerData>();
+        //List<WorkerData> workers= new List<WorkerData>();
         int totalWorkerHutAndLevelCount = 0;
         //public WorkersModels workersModels = null;
         int storedAttacks = 0;
@@ -67,6 +68,15 @@ namespace VikingEngine.DSSWars.GameObject
             refreshWorkerSubtiles();
             //attack = new AttackAnimation(this);
             //onNewOwner();
+        }
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            
+        }
+        public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
+        {
+            
         }
 
         protected override DetailUnitModel initModel()

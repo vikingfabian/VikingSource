@@ -20,10 +20,6 @@ namespace VikingEngine.DSSWars
         public GameObject.City mainCity;
         public Vector3 SelectionCenter { get; private set; }
 
-        //public SpottedArrayCounter<GameObject.City> cityCounter;
-
-        //public SpottedArrayCounter<GameObject.City> cityAsynchMainCounter;
-        //public SpottedArrayCounter<GameObject.City> cityAsynchAiCounter;
 
         public SpottedArray<GameObject.City> cities;
 
@@ -52,7 +48,7 @@ namespace VikingEngine.DSSWars
         public float militaryStrength = 0;
         public bool hasDeserters = true;
 
-        public int mercenaryCost = DssRef.difficulty.MercenaryPurchaseCost_Start;
+        
 
         public Faction()
         { }
@@ -1010,6 +1006,14 @@ namespace VikingEngine.DSSWars
         IceRaven = 10,
         DragonSlayer = 11,
         SouthHara = 12,
+
+        DyingMonger,
+        NewMonger,
+        DyingHate,
+        NewHate,
+        DyingDestru,
+        NewDestu,
+
     }
 
     enum FactionGroupType

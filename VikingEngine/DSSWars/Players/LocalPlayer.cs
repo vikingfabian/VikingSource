@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.GameState;
 using System;
 using System.IO;
+using Microsoft.Xna.Framework.Input;
 
 namespace VikingEngine.DSSWars.Players
 {    
@@ -51,6 +52,15 @@ namespace VikingEngine.DSSWars.Players
         SpottedArrayCounter<Army> tabArmy;
         SpottedArrayCounter<BattleGroup> tabBattle;
 
+        public int mercenaryCost = DssRef.difficulty.MercenaryPurchaseCost_Start;
+
+        const int MercenaryMarketSoftLock1 = DssLib.MercenaryPurchaseCount * 5;
+        //const int MercenaryMarketSoftLock2 = DssLib.MercenaryPurchaseCount * 25;
+        const double MercenaryMarketAddPerSec_Speed1 = 0.5;
+        const double MercenaryMarketAddPerSec_Speed2 = 0.3;
+        //const double MercenaryMarketAddPerSec_Speed3 = 0.1;
+        public FloatingInt mercenaryMarket = new FloatingInt() { value = DssLib.MercenaryPurchaseCount * 2 };
+
         public override void writeGameState(BinaryWriter w)
         {
             base.writeGameState(w);
@@ -66,23 +76,30 @@ namespace VikingEngine.DSSWars.Players
             }
             automation.writeGameState(w);
 
+            w.Write(mercenaryCost);
+
             Debug.WriteCheck(w);
         }
 
-        public override void readGameState(BinaryReader r, int version)
+        public override void readGameState(BinaryReader r, int subversion)
         {
-            base.readGameState(r, version);
+            base.readGameState(r, subversion);
 
             diplomaticPoints.value = r.ReadInt16();
-            statistics.readGameState(r, version);
+            statistics.readGameState(r, subversion);
             if (toPlayerDiplomacies != null)
             {
                 foreach (var tp in toPlayerDiplomacies)
                 {
-                    tp.readGameState(r, version);
+                    tp.readGameState(r, subversion);
                 }
             }
-            automation.readGameState(r, version);
+            automation.readGameState(r, subversion);
+
+            if (subversion>=2)
+            { 
+                mercenaryCost = r.ReadInt32();
+            }
 
             Debug.ReadCheck(r);
         }
@@ -224,6 +241,24 @@ namespace VikingEngine.DSSWars.Players
             {
                 DssRef.achieve.onAlly(faction, otherFaction);
             }
+
+            if (rel.Relation <= RelationType.RelationTypeN3_War)
+            {
+                string title;
+                if (previousRelation == RelationType.RelationTypeN2_Truce)
+                {
+                    title = DssRef.lang.Diplomacy_TruceEndTitle;
+                }
+                else
+                {
+                    title = DssRef.lang.Diplomacy_WarDeclarationTitle;
+                }
+
+                RichBoxContent content = new RichBoxContent();
+                hud.messages.Title(content, title);
+                DiplomacyDisplay.FactionRelationDisplay(otherFaction, rel, content);
+                Ref.update.AddSyncAction(new SyncAction1Arg<RichBoxContent>(hud.messages.Add, content));
+            }
         }
 
         //public void loadedAndReady()
@@ -268,12 +303,12 @@ namespace VikingEngine.DSSWars.Players
                     if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                     {
                         //cityBuilderTest();
-                        DssRef.state.events.TestNextEvent();
+                        //DssRef.state.events.TestNextEvent();
                         
                         //battleLineUpTest(true);
 
                         //battleLineUpTest(true);
-                        new Display.CutScene.EndScene(true);
+                        //new Display.CutScene.EndScene(true);
                     }
 
                     if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
@@ -339,11 +374,23 @@ namespace VikingEngine.DSSWars.Players
             //CITY
             if (input.NextCity.DownEvent && faction.cities.Count > 0)
             {
-                tabCity++;
-                if (tabCity >= faction.cities.Count)
+                if (Input.Keyboard.Shift)
                 {
-                    tabCity = 0;
+                    tabCity--;
+                    if (tabCity < 0)
+                    {
+                        tabCity = faction.cities.Count-1;
+                    }
                 }
+                else
+                {
+                    tabCity++;
+                    if (tabCity >= faction.cities.Count)
+                    {
+                        tabCity = 0;
+                    }
+                }
+                    
 
                 int current = 0;
                 var citiesC = faction.cities.counter();
@@ -364,22 +411,46 @@ namespace VikingEngine.DSSWars.Players
             //ARMY
             if (input.NextArmy.DownEvent)
             {
-                if (tabArmy.Next_Rollover())
+                if (Input.Keyboard.Shift)
                 {
-                    mapControls.cameraFocus = tabArmy.sel;
-                    mapSelect(tabArmy.sel);
+                    if (tabArmy.Prev_Rollover())
+                    {
+                        mapControls.cameraFocus = tabArmy.sel;
+                        mapSelect(tabArmy.sel);
 
-                    return;
+                        return;
+                    }
+                }
+                else
+                {
+                    if (tabArmy.Next_Rollover())
+                    {
+                        mapControls.cameraFocus = tabArmy.sel;
+                        mapSelect(tabArmy.sel);
+
+                        return;
+                    }
                 }
             }
 
             //BATTLE
             if (input.NextBattle.DownEvent)
             {
-                if (tabBattle.Next_Rollover())
+                if (Input.Keyboard.Shift)
                 {
-                    mapControls.cameraFocus = tabBattle.sel;
-                    return;
+                    if (tabBattle.Prev_Rollover())
+                    {
+                        mapControls.cameraFocus = tabBattle.sel;
+                        return;
+                    }
+                }
+                else
+                {
+                    if (tabBattle.Next_Rollover())
+                    {
+                        mapControls.cameraFocus = tabBattle.sel;
+                        return;
+                    }
                 }
             }
         }
@@ -643,9 +714,6 @@ namespace VikingEngine.DSSWars.Players
         {
             base.oneSecUpdate();
 
-            commandPoints.setMax(DssLib.DefaultMaxCommand + DssLib.NobleHouseAddMaxCommand * faction.nobelHouseCount);
-            commandPoints.add(DssLib.DefaultCommandPerSecond + DssLib.NobleHouseAddCommand * faction.nobelHouseCount);
-
             double max = DssRef.diplomacy.DefaultMaxDiplomacy + DssRef.diplomacy.NobelHouseAddMaxDiplomacy * faction.nobelHouseCount;
             diplomaticPoints_softMax = (int)Math.Floor(max);
             diplomaticPoints.setMax(max + DssRef.diplomacy.Diplomacy_HardMax_Add);
@@ -657,6 +725,15 @@ namespace VikingEngine.DSSWars.Players
             else
             {
                 diplomaticPoints.add(DssRef.diplomacy.AddDiplomacy_AfterSoftlock_PerSecond);
+            }
+
+            if (mercenaryMarket.value < MercenaryMarketSoftLock1)
+            {
+                mercenaryMarket.value += MercenaryMarketAddPerSec_Speed1;
+            }
+            else 
+            {
+                mercenaryMarket.value += MercenaryMarketAddPerSec_Speed2;
             }
 
             if (StartupSettings.EndlessResources)

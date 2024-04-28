@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Content;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,11 @@ namespace VikingEngine.DSSWars
         public int Faction_GreenWood;
         public int Faction_DarkFollower;
         public int Faction_UnitedKingdom;
+
+        public int Faction_DyingMonger;
+        public int Faction_DyingHate;
+        public int Faction_DyingDestru;
+
 
         public int AiArmyPurchase_MoneyMin;
         public int AiArmyPurchase_IncomeMin;
@@ -73,7 +79,7 @@ namespace VikingEngine.DSSWars
         {
             w.Write(aiDelayTimeSec);
         }
-        public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             aiDelayTimeSec = r.ReadInt32();
         }
