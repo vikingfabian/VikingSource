@@ -44,6 +44,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int guardCount;
         public FloatingInt_Max workForce = new FloatingInt_Max();
         public int maxEpandWorkSize;
+        public FloatingInt damages = new FloatingInt();
         public FloatingInt immigrants = new FloatingInt();
         const double ImmigrantsRemovePerSec = 0.1;
         double workForceAddPerSec;
@@ -70,6 +71,8 @@ namespace VikingEngine.DSSWars.GameObject
             this.parentArrayIndex = index;
             readMapFile(r, version);
         }
+
+        
 
         public void generateCultureAndEconomy(WorldData world, CityCultureCollection cityCultureCollection)
         {
@@ -319,6 +322,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void writeGameState(System.IO.BinaryWriter w)
         {
             workForce.write16bit(w);
+            damages.write16bit(w);
             immigrants.write16bit(w);
             w.Write(nobelHouse);
             w.Write((ushort)guardCount);
@@ -329,6 +333,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             workForce.read16bit(r);
+            damages.read16bit(r);
             immigrants.read16bit(r);
             nobelHouse = r.ReadBoolean();
 
@@ -659,7 +664,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void updateIncome_asynch()
         {
-            income = Convert.ToInt32(workForce.Int() - upkeep);
+            income = Convert.ToInt32(Math.Floor(workForce.value - upkeep - damages.value));
         }
 
         public void onNewModel(LootFest.VoxelModelName name, Graphics.VoxelModel master)

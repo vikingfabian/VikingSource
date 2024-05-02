@@ -1,4 +1,5 @@
 ﻿Change Log
+* Soldier upkeep has increased by 60% (to battle some of the "stupid" size armies at the endgame).
 * 
 
 
@@ -38,14 +39,6 @@ Art
 -Mercenary icon
 -battle icon
 -world domination achieve
-
-#Steam Launch Roadmap
-- Localization to 8 languages (all preparations done)
-- Polish the turd
-.             
-- (maybe) Battle retreat system 
-- (maybe) Mountain ridges and water reefs that block movement
-- (maybe) Visually display city guard size
 
 #Upcoming Events
 - May 17: Game challenge competition and showcase booth

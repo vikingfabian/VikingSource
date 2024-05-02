@@ -319,16 +319,6 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     city.guardCount = 0;
 
-                    //Lost city to opponent
-                    //if (fullUpdate)
-                    //{
-                    //    city.setFaction(damageFaction);
-                    //}
-                    //else
-                    //{
-                    //    Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(city.setFaction, damageFaction));
-                    //    //new Timer.Action1ArgTrigger<Faction>(city.setFaction, damageFaction);
-                    //}
                 }
             }
         }
