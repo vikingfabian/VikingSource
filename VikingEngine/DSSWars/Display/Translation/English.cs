@@ -816,6 +816,12 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// Some soldiers will increase the ship movement speed
         /// </summary>
         public override string SoldierStats_SpeedBonusSea => "Army speed bonus on sea: {0}";
+
+        /// <summary>
+        /// Purchased soliders will start as recruits and complete their training after a few minutes.
+        /// </summary>
+        public override string SoldierStats_RecruitTrainingTimeMinutes => "Training time: {0} minutes. Will be twice as fast if the recruits are adjacent to a city.";
+
         /// <summary>
         /// Menu option to control an army. Make them stop moving.
         /// </summary>
@@ -913,6 +919,11 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string CityOption_ExpandWorkForce_IncreaseMax => "Max workforce +{0}";
         public override string CityOption_ExpandGuardSize => "Expand guard";
 
+        public override string CityOption_Damages => "Damages: {0}";
+        public override string CityOption_Repair => "Repair damages";
+        public override string CityOption_RepairGain => "Repair {0} damages";
+
+        public override string CityOption_Repair_Description => "Damages lower the number of workers you can fit.";
 
 
         /// <summary>

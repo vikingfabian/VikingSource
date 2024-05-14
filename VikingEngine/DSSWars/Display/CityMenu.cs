@@ -6,6 +6,7 @@ using Valve.Steamworks;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.Data;
 using VikingEngine.PJ;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.MoonFall;
@@ -102,14 +103,29 @@ namespace VikingEngine.DSSWars.Display
 
             content.Add(new RichBoxNewLine(true));
 
-            content.Add(new RichboxButton(new List<AbsRichBoxMember>{
+
+            if (city.damages.HasValue())
+            {
+                content.Add(new RichboxButton(new List<AbsRichBoxMember>{
+                    new RichBoxImage(SpriteName.unitEmoteLove),
+                    new RichBoxText(DssRef.lang.CityOption_Repair),
+                },
+                    new RbAction1Arg<bool>(buyRepairAction, true, SoundLib.menuBuy),
+                    new RbAction1Arg<bool>(buyRepairToolTip, true),
+                    city.buyRepair(false, true)));
+            }
+            else
+            {
+                content.Add(new RichboxButton(new List<AbsRichBoxMember>{
                     new RichBoxImage(SpriteName.WarsWorkerAdd),
                     new RichBoxText(DssRef.lang.CityOption_ExpandWorkForce),
                 },
-                new RbAction1Arg<int>(buyWorkforceAction, 1, SoundLib.menuBuy),
-                new RbAction1Arg<int>(buyWorkforceToolTip, 1),
-                city.buyWorkforce(false, 1)));
-            
+                    new RbAction1Arg<int>(buyWorkforceAction, 1, SoundLib.menuBuy),
+                    new RbAction1Arg<int>(buyWorkforceToolTip, 1),
+                    city.buyWorkforce(false, 1)));
+            }
+
+
             content.newLine();
 
             {
@@ -251,6 +267,11 @@ namespace VikingEngine.DSSWars.Display
             city.buyWorkforce(true, count);
         }
 
+        void buyRepairAction(bool all)
+        {
+            city.buyRepair(true, all);
+        }
+
         public void buyWorkforceToolTip(int count)
         {
             RichBoxContent content = new RichBoxContent();
@@ -270,6 +291,25 @@ namespace VikingEngine.DSSWars.Display
             {
                 content.Add(new RichBoxText(DssRef.lang.Hud_Purchase_MaxCapacity, Color.Red));
             }
+            player.hud.tooltip.create(player, content, true);
+        }
+
+        public void buyRepairToolTip(bool all)
+        {
+            RichBoxContent content = new RichBoxContent();
+            int count, cost;
+            city.repairCountAndCost( all, out count, out cost);
+
+            content.text(TextLib.Quote(DssRef.lang.CityOption_Repair_Description));
+            content.newLine();
+            content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
+            content.newLine();
+            HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, cost, player.faction.gold);
+            content.newLine();
+            content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
+            content.newLine();
+            content.icontext(SpriteName.unitEmoteLove, string.Format(DssRef.lang.CityOption_RepairGain, city.damages.Int()));
+            
             player.hud.tooltip.create(player, content, true);
         }
 
@@ -333,13 +373,10 @@ namespace VikingEngine.DSSWars.Display
             //content.text(DssRef.lang.Hud_Upkeep + ": " + string.Format(HudLib.OneDecimalFormat, typeData.Upkeep() / (double)unitCount));
             HudLib.Upkeep(content, typeData.Upkeep() / (double)unitCount);
 
-            //string attackStrengthAreas = "Attack strength: Land {0} | Sea {1} | City {2}";
+            
             content.text(string.Format(DssRef.lang.SoldierStats_AttackStrengthLandSeaCity, dpsCompared(typeData.DPS_land(), dpsSoldier), dpsCompared(typeData.DPS_sea(), dpsSoldier), dpsCompared(typeData.DPS_structure(), dpsSoldier)));
-
-            //content.text("Attack on sea: " + dpsCompared(typeData.DPS_sea(), dpsSoldier));
-            //content.text("Attack city: " + dpsCompared(typeData.DPS_structure(), dpsSoldier));
             content.text(string.Format( DssRef.lang.SoldierStats_Health, typeData.basehealth));
-
+            content.text(string.Format(DssRef.lang.SoldierStats_RecruitTrainingTimeMinutes, string.Format(HudLib.OneDecimalFormat, typeData.recruitTrainingTimeSec / 60.0)));
 
             speedBonus(true, typeData.ArmySpeedBonusLand);
             speedBonus(false, typeData.ArmySpeedBonusSea);

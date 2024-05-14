@@ -119,7 +119,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void refreshWorkerSubtiles()
         {
-            int goalDisplayCount = WorkersToModelsCount(city.workForce.max);
+            int goalDisplayCount = WorkersToModelsCount(city.workForceMax);
             if (goalDisplayCount > totalWorkerHutAndLevelCount)
             {
                 Task.Factory.StartNew(() =>
@@ -314,11 +314,11 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 guardHealth = GuardMaxHealth;
                 city.guardCount--;
+                city.damages.add(1.75, city.workForce.value * 0.75);
 
                 if (city.guardCount <= 0)
                 {
                     city.guardCount = 0;
-
                 }
             }
         }

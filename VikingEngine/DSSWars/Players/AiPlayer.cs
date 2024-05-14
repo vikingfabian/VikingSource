@@ -394,7 +394,14 @@ namespace VikingEngine.DSSWars.Players
                                     buySoldiers(city);
                                     break;
                                 case PurchaseOrderType_CityWorkers:
-                                    city.buyWorkforce(true, 1);
+                                    if (city.damages.HasValue())
+                                    {
+                                        city.buyRepair(true, true);
+                                    }
+                                    else
+                                    {
+                                        city.buyWorkforce(true, 1);
+                                    }
                                     break;
                                 case PurchaseOrderType_CityGuard:
                                     city.buyCityGuards(true, 1);

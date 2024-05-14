@@ -161,7 +161,7 @@ namespace VikingEngine.DSSWars.Map
             { 
                 this.city = city;
                 //Workforce är ca 300
-                int startInfluence = 20000 + city.workForce.max * 200;
+                int startInfluence = 20000 + city.workForceMax * 200;
                 Rectangle2 startArea = Rectangle2.FromCenterTileAndRadius(city.tilePos, 1);
                 ForXYLoop startloop = new ForXYLoop(startArea);
                 while(startloop.Next())

@@ -254,6 +254,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string SoldierStats_SpeedBonusLand { get; }
         public abstract string SoldierStats_SpeedBonusSea { get; }
+        public abstract string SoldierStats_RecruitTrainingTimeMinutes { get; }
 
         public abstract string ArmyOption_Halt { get; }
         public abstract string ArmyOption_Disband { get; }
@@ -280,9 +281,13 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string CityOption_Mercenaries_Description { get; }
         public abstract string CityOption_ExpandWorkForce { get; }
         public abstract string CityOption_ExpandWorkForce_IncreaseMax { get; }
-
         public abstract string CityOption_ExpandGuardSize { get; }
 
+        public abstract string CityOption_Damages { get; }
+        public abstract string CityOption_Repair { get; }
+        public abstract string CityOption_RepairGain { get; }
+
+        public abstract string CityOption_Repair_Description { get; }
 
         public abstract string FactionName_DarkLord { get; }
         public abstract string FactionName_DarkFollower { get; }

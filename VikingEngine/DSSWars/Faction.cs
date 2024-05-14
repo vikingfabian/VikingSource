@@ -496,7 +496,7 @@ namespace VikingEngine.DSSWars
 
                 while (citiesC.Next())
                 {
-                    if (largest == null || citiesC.sel.workForce.max > largest.workForce.max)
+                    if (largest == null || citiesC.sel.workForceMax > largest.workForceMax)
                     {
                         largest = citiesC.sel;
                     }

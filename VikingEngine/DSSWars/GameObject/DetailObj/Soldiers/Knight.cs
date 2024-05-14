@@ -40,6 +40,7 @@ namespace VikingEngine.DSSWars.GameObject
             goldCost = MathExt.MultiplyInt(2, DssLib.GroupDefaultCost);
             workForcePerUnit = 2;
             upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+            recruitTrainingTimeSec = MathExt.MultiplyInt(1.5, DssLib.DefalutRecruitTrainingTimeSec);
 
             modelAdjY = 0.1f;
             modelName = LootFest.VoxelModelName.war_knight;

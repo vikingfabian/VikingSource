@@ -16,6 +16,7 @@ namespace VikingEngine.DSSWars.Players
         bool autoRecruit= false;
         bool autoExpandCity = false;
         bool autoNobelhouse = false;
+        bool autoRepair = false;
         int[] recruitAmount = new int[DssLib.AvailableUnitTypes.Length];
 
         AutomationAction automationAction = AutomationAction.WaitForUpdate;
@@ -31,6 +32,7 @@ namespace VikingEngine.DSSWars.Players
         public void writeGameState(BinaryWriter w)
         {
             w.Write(autoRecruit);
+            w.Write(autoRepair);
             w.Write(autoExpandCity);
             w.Write(autoNobelhouse);
 
@@ -43,10 +45,16 @@ namespace VikingEngine.DSSWars.Players
         public void readGameState(BinaryReader r, int version)
         {
             autoRecruit = r.ReadBoolean();
+
+            if (version >= 4)
+            {
+                autoRepair = r.ReadBoolean();
+            }
+
             autoExpandCity = r.ReadBoolean();
             autoNobelhouse= r.ReadBoolean();
 
-            for (int i =0;i< recruitAmount.Length;++i)
+            for (int i =0; i< recruitAmount.Length;++i)
             {
                 recruitAmount[i] = r.ReadByte();
             }
@@ -68,6 +76,15 @@ namespace VikingEngine.DSSWars.Players
                 autoExpandCity = value;
             }
             return autoExpandCity;
+        }
+
+        bool AutoRepairCityProperty(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                autoRepair = value;
+            }
+            return autoRepair;
         }
 
         bool AutoNobelHouseProperty(int index, bool set, bool value)
@@ -104,6 +121,12 @@ namespace VikingEngine.DSSWars.Players
 
             content.newParagraph();
 
+            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
+                {
+                    new RichBoxText( DssRef.lang.CityOption_Repair),
+                }, AutoRepairCityProperty));
+
+            content.newLine();
             content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
                 {
                     new RichBoxText( DssRef.lang.CityOption_ExpandWorkForce),
@@ -150,8 +173,14 @@ namespace VikingEngine.DSSWars.Players
                         while (citiesC.Next())
                         {
                             if (citiesC.sel.CityType == type &&
-                                citiesC.sel.workForce.IsMax())
+                                citiesC.sel.isMaxWorkForce())
                             {
+                                if (autoRepair && citiesC.sel.damages.HasValue())
+                                {
+                                    cityAction = citiesC.sel;
+                                    automationAction = AutomationAction.Repair;
+                                    return;
+                                }
 
                                 if (autoNobelhouse && citiesC.sel.canBuyNobelHouse())
                                 {
@@ -221,6 +250,9 @@ namespace VikingEngine.DSSWars.Players
                 case AutomationAction.NobelHouse:
                     cityAction.buyNobelHouseAction();
                     break;
+                case AutomationAction.Repair:
+                    cityAction.buyRepair(true, true);
+                    break;
                 case AutomationAction.ExpandWorkforce:
                     cityAction.buyWorkforce(true, 1);
                     break;
@@ -232,17 +264,6 @@ namespace VikingEngine.DSSWars.Players
             cityAction = null;
             automationAction = AutomationAction.ProcessReady;
 
-            //var citiesC = player.faction.cities.counter();
-
-            //while (citiesC.Next())
-            //{
-
-            //}
-
-
-            //largeCities.Clear();
-            //mediumCities.Clear();
-            //smallCities.Clear();
         }
     }
 
@@ -252,6 +273,7 @@ namespace VikingEngine.DSSWars.Players
         ProcessReady,
 
         Recruit,
+        Repair,
         ExpandWorkforce,
         NobelHouse,
     }

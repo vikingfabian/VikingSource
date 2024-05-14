@@ -42,7 +42,10 @@ namespace VikingEngine.DSSWars.GameObject
         float upkeep;
         public int maxGuardSize;
         public int guardCount;
-        public FloatingInt_Max workForce = new FloatingInt_Max();
+
+        public FloatingInt workForce = new FloatingInt();
+        public int workForceMax = 0;
+
         public int maxEpandWorkSize;
         public FloatingInt damages = new FloatingInt();
         public FloatingInt immigrants = new FloatingInt();
@@ -333,7 +336,10 @@ namespace VikingEngine.DSSWars.GameObject
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             workForce.read16bit(r);
-            damages.read16bit(r);
+            if (subversion >= 4)
+            {
+                damages.read16bit(r);
+            }
             immigrants.read16bit(r);
             nobelHouse = r.ReadBoolean();
 
@@ -341,12 +347,9 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 guardCount = r.ReadUInt16();
                 maxGuardSize = r.ReadUInt16();
-
-                //detailObj.readGameState(r, subversion, pointers);   
             }
 
             refreshCitySize();
-           // detailObj.refreshWorkerSubtiles();
         }
 
         public void writeNet(System.IO.BinaryWriter w)
@@ -367,22 +370,22 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int expandWorkForceCost()
         {
-            return 40000 + workForce.max * 10;
+            return 40000 + workForceMax * 10;
         }
 
         public bool canExpandWorkForce(int count)
         {
-            return (workForce.max + ExpandWorkForce * count) <= maxEpandWorkSize;
+            return (workForceMax + ExpandWorkForce * count) <= maxEpandWorkSize;
         }
 
         public bool canIncreaseGuardSize(int count)
         {
-            return (maxGuardSize + ExpandGuardSize * count) <= workForce.max;
+            return (maxGuardSize + ExpandGuardSize * count) <= workForceMax;
         }
 
         public void expandWorkForce(int amount)
         {
-            workForce.max += amount;
+            workForceMax += amount;
             refreshCitySize();
             detailObj.refreshWorkerSubtiles();//updateWorkerModels();
         }
@@ -430,6 +433,46 @@ namespace VikingEngine.DSSWars.GameObject
             }
             return false;
         }
+
+        public bool buyRepair(bool commit, bool all)
+        {
+            if (damages.HasValue())
+            {
+                int totalCost;
+                int count;
+
+                repairCountAndCost(all, out totalCost, out count);
+
+                if (faction.calcCost(totalCost, ref totalCost))
+                {
+                    if (commit)
+                    {
+                        damages.value -= count;
+                        faction.payMoney(totalCost, true);
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void repairCountAndCost(bool all, out int count, out int cost)
+        {
+            const double BuyToRepair = 0.75;
+            count = damages.Int(); 
+            cost = 0;
+
+            if (count > 0)
+            {
+                if (!all && count > ExpandWorkForce)
+                { 
+                    count = ExpandWorkForce;
+                }
+
+                cost = Convert.ToInt32( ((double)expandWorkForceCost() / ExpandWorkForce * count) * BuyToRepair);
+            }
+        }
+
         public bool buyMercenary(bool commit, int count)
         {
             int totalCost = 0;
@@ -501,28 +544,28 @@ namespace VikingEngine.DSSWars.GameObject
                 switch (CityType)
                 {
                     case CityType.Small:
-                       workForce.max = DssLib.SmallCityMaxWorkForce;
+                        workForceMax = DssLib.SmallCityMaxWorkForce;
                         break;
                     case CityType.Large:
                         //workForce.value = DssLib.LargeCityStartWorkForce;
-                        workForce.max = DssLib.LargeCityMaxWorkForce;
+                        workForceMax = DssLib.LargeCityMaxWorkForce;
                         break;
                     default:
                         //workForce.value = DssLib.HeadCityStartWorkForce;
-                        workForce.max = DssLib.HeadCityMaxWorkForce;
+                        workForceMax = DssLib.HeadCityMaxWorkForce;
                         nobelHouse = true;
                         break;
                 }
-                workForce.value = workForce.max;
+                workForce.value = workForceMax;
             }
             int maxFit = MathExt.MultiplyInt(0.8, CityDetail.WorkersPerTile * CityDetail.HutMaxLevel * areaSize);
-            maxEpandWorkSize = Bound.Max(workForce.max + ExpandWorkForce * 3, maxFit);
+            maxEpandWorkSize = Bound.Max(workForceMax + ExpandWorkForce * 3, maxFit);
         }
 
         void refreshCitySize()
         {
             upkeep = GuardUpkeep(maxGuardSize);
-            workForceAddPerSec = workForce.max / 200f;
+            workForceAddPerSec = workForceMax / 200f;
 
             refreshVisualSize();
         }
@@ -533,11 +576,11 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 CityType newType;
 
-                if (workForce.max >= DssLib.HeadCityMaxWorkForce)
+                if (workForceMax >= DssLib.HeadCityMaxWorkForce)
                 {
                     newType = CityType.Head;
                 }
-                else if (workForce.max >= DssLib.LargeCityMaxWorkForce)
+                else if (workForceMax >= DssLib.LargeCityMaxWorkForce)
                 {
                     newType = CityType.Large;
                 }
@@ -571,7 +614,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     CityType = CityType.Factory;
 
-                    workForce.max += DssLib.HeadCityMaxWorkForce;
+                    workForceMax += DssLib.HeadCityMaxWorkForce;
                     detailObj.refreshModel();
 
                     if (overviewModel != null)
@@ -588,7 +631,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     CityType = CityType.Large;
 
-                    workForce.max -= DssLib.HeadCityMaxWorkForce;
+                    workForceMax -= DssLib.HeadCityMaxWorkForce;
                     detailObj.refreshModel();
 
                     if (overviewModel != null)
@@ -634,7 +677,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool hasNeededAreaSize()
         {
             int maxFit = CityDetail.WorkersPerTile * CityDetail.HutMaxLevel * areaSize;
-            return workForce.max + 2 <= maxFit;
+            return workForceMax + 2 <= maxFit;
         }
 
         void createOverViewModel()
@@ -664,7 +707,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void updateIncome_asynch()
         {
-            income = Convert.ToInt32(Math.Floor(workForce.value - upkeep - damages.value));
+            income = Convert.ToInt32(Math.Floor(workForce.value - upkeep));
         }
 
         public void onNewModel(LootFest.VoxelModelName name, Graphics.VoxelModel master)
@@ -696,7 +739,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     addWorkers *= Players.AiPlayer.EconomyMultiplier;
                 }
-                workForce.add(addWorkers);
+                workForce.add(addWorkers, workForceMax - damages.Int());
 
                 if (immigrants.HasValue())
                 {
@@ -859,10 +902,12 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                HudLib.ItemCount(args.content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.Int(), workForce.max));
-                //args.content.icontext(SpriteName.WarsWorker, string.Format(DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.Int(), workForce.max)));
+                if (damages.HasValue())
+                {
+                    args.content.icontext(SpriteName.hqBatteResultBobbleDamage, string.Format(DssRef.lang.CityOption_Damages, damages.Int()));
+                }
+                HudLib.ItemCount(args.content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.Int(), workForceMax));
                 HudLib.ItemCount(args.content,SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount,TextLib.Divition_Large(guardCount, maxGuardSize));
-                //args.content.icontext(SpriteName.WarsGuard, string.Format(DssRef.lang.Hud_GuardCount,TextLib.Divition_Large(guardCount, maxGuardSize)));
                 args.content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, string.Format(HudLib.OneDecimalFormat, strengthValue)));
                 args.content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, income));
                 args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, upkeep));
@@ -872,6 +917,7 @@ namespace VikingEngine.DSSWars.GameObject
                     args.content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.Hud_Immigrants, immigrants.Int()));
                 }
             }
+
             if (args.selected && faction == args.player.faction)
             {
                 new Display.CityMenu(args.player, this, args.content);
@@ -1230,6 +1276,11 @@ namespace VikingEngine.DSSWars.GameObject
         public override bool defeated()
         {
             return guardCount <= 0;
+        }
+
+        public bool isMaxWorkForce()
+        { 
+            return workForce.value >= workForceMax-damages.Int();
         }
 
         public override bool aliveAndBelongTo(Faction faction)

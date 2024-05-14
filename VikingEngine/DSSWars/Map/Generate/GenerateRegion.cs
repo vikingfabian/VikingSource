@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         {
             city.faction = tempFaction;
             cities.Add(city);
-            currentWorkforce += city.workForce.max;
+            currentWorkforce += city.workForceMax;
         }
 
 
