@@ -86,6 +86,30 @@ namespace VikingEngine.DSSWars.Display
 
         public bool Open { get { return menu != null; } }
 
+        public void multiplayerGameSpeedToMenu(GuiLayout layout)
+        {
+            var options = new List<GuiOption<float>>
+            {
+                new GuiOption<float>(1.0f),
+                new GuiOption<float>(1.5f),
+                new GuiOption<float>(2f),
+                new GuiOption<float>(3f),
+                new GuiOption<float>(4f),
+            };
+
+            new GuiOptionsList<float>(SpriteName.NO_IMAGE, DssRef.lang.Hud_GameSpeedButton, options, multiplayerGameSpeedProperty, layout);
+        }
+
+        float multiplayerGameSpeedProperty(bool set, float value)
+        {
+            if (set)
+            {
+                DssRef.storage.multiplayerGameSpeed = value;
+                Ref.SetGameSpeed(value);
+                DssRef.storage.Save(null);
+            }
+            return DssRef.storage.multiplayerGameSpeed;
+        }
 
         void debugMenu()
         {

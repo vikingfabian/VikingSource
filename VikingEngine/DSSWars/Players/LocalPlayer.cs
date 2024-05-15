@@ -71,7 +71,15 @@ namespace VikingEngine.DSSWars.Players
             {
                 foreach (var tp in toPlayerDiplomacies)
                 {
-                    tp.writeGameState(w);
+                    if (tp == null)
+                    {
+                        w.Write(false);
+                    }
+                    else
+                    {
+                        w.Write(true);
+                        tp.writeGameState(w);
+                    }
                 }
             }
             automation.writeGameState(w);
@@ -89,9 +97,14 @@ namespace VikingEngine.DSSWars.Players
             statistics.readGameState(r, subversion);
             if (toPlayerDiplomacies != null)
             {
-                foreach (var tp in toPlayerDiplomacies)
+                for (int i = 0; i < toPlayerDiplomacies.Length; ++i)
                 {
-                    tp.readGameState(r, subversion);
+                    if (r.ReadBoolean())
+                    {
+                        PlayerToPlayerDiplomacy tp = new PlayerToPlayerDiplomacy();
+                        tp.readGameState(r, subversion);
+                        toPlayerDiplomacies[i] = tp;
+                    }
                 }
             }
             automation.readGameState(r, subversion);
@@ -108,6 +121,7 @@ namespace VikingEngine.DSSWars.Players
             :base(faction)
         {
             faction.factiontype = FactionType.Player;
+            faction.availableForPlayer = false;
             var pStorage = DssRef.storage.localPlayers[playerindex];
             faction.SetProfile(DssRef.storage.flagStorage.flagDesigns[pStorage.profile]);
             faction.diplomaticSide = DiplomaticSide.Light;
@@ -479,7 +493,9 @@ namespace VikingEngine.DSSWars.Players
         void updateGameSpeed()
         {
            
-            if (DssRef.difficulty.allowPauseCommand && input.PauseGame.DownEvent && IsLocalHost())
+            if (DssRef.difficulty.allowPauseCommand && 
+                input.PauseGame.DownEvent && 
+                DssRef.state.localPlayers.Count == 1)//IsLocalHost())
             {
                 DssRef.state.pauseAction();
             }
@@ -488,8 +504,9 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (Ref.isPaused)
                 {
-                    Ref.isPaused = false;
-                    Ref.GameTimeSpeed = 1f;
+                    //Ref.isPaused = false;
+                    //Ref.GameTimeSpeed = 1f;
+                    Ref.SetPause(false);
                 }
                 else
                 {
@@ -498,7 +515,7 @@ namespace VikingEngine.DSSWars.Players
                         if (DssLib.GameSpeedOptions[i] == Ref.GameTimeSpeed)
                         {
                             int next = Bound.SetRollover(i + 1, 0, DssLib.GameSpeedOptions.Length - 1);
-                            Ref.GameTimeSpeed = DssLib.GameSpeedOptions[next];
+                            Ref.SetGameSpeed( DssLib.GameSpeedOptions[next]);
                             hud.needRefresh = true;
                             break;
                         }

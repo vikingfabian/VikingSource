@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Data;
 using System.Xml.Linq;
+using VikingEngine.DSSWars.Map.Generate;
 
 namespace VikingEngine.DSSWars
 {   
@@ -408,42 +409,31 @@ namespace VikingEngine.DSSWars
 
         
 
-        public Faction getNextFreeFaction(bool firstPlayer)
+        public Faction getPlayerAvailableFaction(bool firstPlayer, List<Players.LocalPlayer> players)
         {
+            const int MultiPlayerDistance = GenerateMap.HeadCityNeededFreeRadius * 8;
+
+            Rectangle2 centerArea = new Rectangle2(IntVector2.Zero, Size);
+            /// centerArea.
+            centerArea.AddWidthRadius(-Size.X / 4);
+            centerArea.AddHeightRadius(-Size.Y / 4);
+
             int loops = 0;
             while (true)
             {
-                //bool canTakeFaction = false;
                 Faction result = factions.GetRandom(Ref.rnd);
-                Rectangle2 centerArea = new Rectangle2(IntVector2.Zero, Size);
-                /// centerArea.
-                centerArea.AddWidthRadius(-Size.X / 4);
-                centerArea.AddHeightRadius(-Size.Y / 4);
-                if (result.Owner is Players.AiPlayer && result.cities.Count >= 2)
+                
+                if (result.availableForPlayer &&
+                    (centerArea.IntersectPoint(result.mainCity.tilePos) || loops >= 100))
                 {
-                    bool pick = false;
-                    if (firstPlayer)
-                    {//Make sure the player ends up in the middle of the map
-                        if (centerArea.IntersectPoint(result.mainCity.tilePos))
-                        {
-                            pick = true;
-                        }
-                    }
-                    else
-                    {//Set close to the other players, with an AI faction in between
-                        if (result.HasPlayerNeighbor())
-                        {
-                            pick = true;
-                        }
-                    }
-
-                    if (pick || loops >= 100)
+                    if (firstPlayer || loops >= 100)
                     {
-                        if (result.availableForPlayer)
-                        {
-                            //allPlayers.Remove(result.Owner);
-                            return result;
-                        }
+                        return result;
+                    }
+                    else if (!result.HasPlayerNeighbor() && 
+                        players[0].faction.mainCity.distanceTo(result.mainCity) <= MultiPlayerDistance)
+                    {
+                        return result;
                     }
                     ++loops;
                 }
@@ -474,8 +464,7 @@ namespace VikingEngine.DSSWars
         {
             return subTileGrid.array[
                 Convert.ToInt32(wp.X * TileSubDivitions + 3.5f), 
-                Convert.ToInt32(wp.Z * TileSubDivitions + 3.5f)].groundY;
-                
+                Convert.ToInt32(wp.Z * TileSubDivitions + 3.5f)].groundY;                
         }
 
         

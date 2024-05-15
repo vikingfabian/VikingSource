@@ -42,11 +42,11 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public void readGameState(BinaryReader r, int version)
+        public void readGameState(BinaryReader r, int subVersion)
         {
             autoRecruit = r.ReadBoolean();
 
-            if (version >= 4)
+            if (subVersion >= 4)
             {
                 autoRepair = r.ReadBoolean();
             }

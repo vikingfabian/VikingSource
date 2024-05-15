@@ -64,7 +64,7 @@ namespace VikingEngine.DSSWars.GameObject
         public City(int index, IntVector2 pos, CityType type, WorldData world)
         {
             this.parentArrayIndex = index;
-            
+
             this.tilePos = pos;
             this.CityType = type;
         }
@@ -75,7 +75,7 @@ namespace VikingEngine.DSSWars.GameObject
             readMapFile(r, version);
         }
 
-        
+
 
         public void generateCultureAndEconomy(WorldData world, CityCultureCollection cityCultureCollection)
         {
@@ -325,6 +325,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void writeGameState(System.IO.BinaryWriter w)
         {
             workForce.write16bit(w);
+            w.Write(Convert.ToUInt16(workForceMax));
             damages.write16bit(w);
             immigrants.write16bit(w);
             w.Write(nobelHouse);
@@ -336,6 +337,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             workForce.read16bit(r);
+            workForceMax = r.ReadUInt16();
             if (subversion >= 4)
             {
                 damages.read16bit(r);
@@ -366,7 +368,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
-       
+
 
         public int expandWorkForceCost()
         {
@@ -441,7 +443,7 @@ namespace VikingEngine.DSSWars.GameObject
                 int totalCost;
                 int count;
 
-                repairCountAndCost(all, out totalCost, out count);
+                repairCountAndCost(all, out count, out totalCost);
 
                 if (faction.calcCost(totalCost, ref totalCost))
                 {
@@ -454,6 +456,18 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
             return false;
+        }
+
+        public void burnItDown()
+        {
+            damages.value = MaxDamages();
+            //guardCount = 0;
+            workForce.value = 0;
+        }
+
+        public double MaxDamages()
+        {
+            return workForceMax * 0.75;
         }
 
         public void repairCountAndCost(bool all, out int count, out int cost)
@@ -732,26 +746,29 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void oneSecUpdate()
         {
+            double addWorkers = 0;
+
             if (battleGroup == null)
             {
-                double addWorkers = workForceAddPerSec * faction.growthMultiplier;
+                addWorkers = workForceAddPerSec * faction.growthMultiplier;
                 if (faction.player.IsAi())
                 {
                     addWorkers *= Players.AiPlayer.EconomyMultiplier;
-                }
-                workForce.add(addWorkers, workForceMax - damages.Int());
+                }                
 
                 if (immigrants.HasValue())
                 {
                     //var availableImmigrants = Math.Min(immigrants, 5);
                     var immigrantsToWork = immigrants.pull(5);//Math.Min(maxWorkForce - workForce, availableImmigrants);
-                    workForce.value += immigrantsToWork;
+                    addWorkers += immigrantsToWork;
 
                     immigrants.reduceTowardsZero(ImmigrantsRemovePerSec);
                 }
 
                 detailObj.oneSecondUpdate();
             }
+
+            workForce.add(addWorkers, workForceMax - damages.Int());
         }
 
         public void asynchGameObjectsUpdate()

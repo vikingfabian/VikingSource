@@ -56,6 +56,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         static readonly Vector2 CamCullingRadius = new Vector2(SoldierGroup.GroupSpacing * 1.4f);
         public Vector2 cullingTopLeft, cullingBottomRight;
+        bool isIdle = true;
         //IntVector2 nextGroupPlacement = IntVector2.Zero;
 
         public Army(Faction faction, IntVector2 startPosition)
@@ -409,45 +410,48 @@ namespace VikingEngine.DSSWars.GameObject
             }
             if (groups.Count > 0)
             {
-                Vector3 armyCenter = Vector3.Zero;
-                int armyCenterCount = 0;
-                var groupsC = groups.counter();
-                SoldierGroup centerGuy = null;
-                while (groupsC.Next())
+                if (fullUpdate || !isIdle)
                 {
-                    groupsC.sel.update(time, fullUpdate);
-                    if (groupsC.sel.armyLocalPlacement.Y == 0)
+                    Vector3 armyCenter = Vector3.Zero;
+                    int armyCenterCount = 0;
+                    var groupsC = groups.counter();
+                    SoldierGroup centerGuy = null;
+                    while (groupsC.Next())
                     {
-                        armyCenter += groupsC.sel.position;
-                        ++armyCenterCount;
-                        if (groupsC.sel.armyLocalPlacement.X == 0)
+                        groupsC.sel.update(time, fullUpdate);
+                        if (groupsC.sel.armyLocalPlacement.Y == 0)
                         {
-                            centerGuy = groupsC.sel;
+                            armyCenter += groupsC.sel.position;
+                            ++armyCenterCount;
+                            if (groupsC.sel.armyLocalPlacement.X == 0)
+                            {
+                                centerGuy = groupsC.sel;
+                            }
                         }
                     }
-                }
 
-                if (centerGuy != null)
-                {
-                    var newPosition = centerGuy.position;
-                    if (newPosition.X > 1 && newPosition.Z > 1)
-                    { 
-                        position=newPosition;
-                    }
-                }
-                else if (armyCenterCount > 0)
-                {
-                    var newPosition = armyCenter / armyCenterCount;
-                    if (newPosition.X > 1 && newPosition.Z > 1)
+                    if (centerGuy != null)
                     {
-                        position = newPosition;
+                        var newPosition = centerGuy.position;
+                        if (newPosition.X > 1 && newPosition.Z > 1)
+                        {
+                            position = newPosition;
+                        }
                     }
-                }
+                    else if (armyCenterCount > 0)
+                    {
+                        var newPosition = armyCenter / armyCenterCount;
+                        if (newPosition.X > 1 && newPosition.Z > 1)
+                        {
+                            position = newPosition;
+                        }
+                    }
 
-                if (overviewBanner != null && fullUpdate)
-                {
-                    updateModelsPosition();
-                    overviewBanner.Frame = isShip ? 1 : 0;
+                    if (overviewBanner != null && fullUpdate)
+                    {
+                        updateModelsPosition();
+                        overviewBanner.Frame = isShip ? 1 : 0;
+                    }
                 }
 
                 aiUpdate(fullUpdate);
@@ -579,10 +583,10 @@ namespace VikingEngine.DSSWars.GameObject
                 double speedbonus = 0;
                 float totalStrength = 0;
                 int dps;
+                bool allGropsAreIdle = true;
 
                 Vector2 minpos = VectorExt.V2Max;
                 Vector2 maxpos = VectorExt.V2Min;
-
 
                 Map.Tile tile;
                 if (DssRef.world.tileGrid.TryGet(tilePos, out tile))
@@ -603,6 +607,8 @@ namespace VikingEngine.DSSWars.GameObject
                     groupsC.sel.asynchUpdate();
                     count += groupsC.sel.soldiers.Count;
                     groupsC.sel.setBattleWalkingSpeed();
+
+                    allGropsAreIdle &= groupsC.sel.allInduvidualsAreIdle;
 
                     if (groupsC.sel.IsShip())
                     {
@@ -647,6 +653,7 @@ namespace VikingEngine.DSSWars.GameObject
                     totalStrength += (dps + unitData.basehealth * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldiers.Count;
                 }
                 
+                isIdle = allGropsAreIdle && IdleObjetive();
                 isShip = shipCount > groups.Count / 2;
                 soldierRadius = MathExt.SquareRootF(count) / 20f;
                 strengthValue = count;

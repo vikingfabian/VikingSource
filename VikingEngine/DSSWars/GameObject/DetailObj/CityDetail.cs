@@ -314,7 +314,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 guardHealth = GuardMaxHealth;
                 city.guardCount--;
-                city.damages.add(1.75, city.workForce.value * 0.75);
+                city.damages.add(1.75, city.MaxDamages());
 
                 if (city.guardCount <= 0)
                 {

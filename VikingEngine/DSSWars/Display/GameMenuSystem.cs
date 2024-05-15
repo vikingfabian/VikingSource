@@ -97,6 +97,12 @@ namespace VikingEngine.DSSWars.Display
             {  
                 new GuiTextButton(DssRef.lang.GameMenu_Resume, null, closeMenu, false, layout);
                 new GuiTextButton(DssRef.lang.GameMenu_SaveState, DssRef.lang.GameMenu_SaveStateWarnings, saveGameState, false, layout);
+
+                if (DssRef.state.IsLocalMultiplayer())
+                {
+                    multiplayerGameSpeedToMenu(layout);
+                }
+                
                 Ref.gamesett.soundOptions(layout);
                 new GuiSectionSeparator(layout);
 

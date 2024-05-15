@@ -141,31 +141,17 @@ namespace VikingEngine.DSSWars.Display
                         
                         var status = army.Status().getTypeCounts();
                         bool splitable = false;
+
                         foreach (var kv in status)
                         {
-                            splitable |= kv.Value > 1;
-                            content.newLine();
-                            content.text(string.Format(DssRef.lang.ArmyOption_XGroupsOfType, kv.Value, DssRef.unitsdata.Name(kv.Key)));//kv.Key.ToString() + " groups: " + kv.Value);
-                            content.newLine();
-                            content.Button(string.Format(DssRef.lang.ArmyOption_SendX, 1),//"Send 1",
-                                new RbAction2Arg<UnitType, int>(tradeSoldiersAction, kv.Key, 1, SoundLib.menu),
-                                null, true);
-
-                            content.space();
-
-                            content.Button(string.Format(DssRef.lang.ArmyOption_SendX, 5),//"Send 5",
-                                new RbAction2Arg<UnitType, int>(tradeSoldiersAction, kv.Key, 5, SoundLib.menu),
-                                null,
-                                kv.Value >= 5);
-
-                            content.space();
-
-                            content.Button(DssRef.lang.ArmyOption_SendAll,//"Send All",
-                               new RbAction2Arg<UnitType, int>(tradeSoldiersAction, kv.Key, kv.Value, SoundLib.menu),
-                               null, true);
-
+                            if (kv.Value > 1)
+                            { 
+                                splitable = true;
+                                break;
+                            }
                         }
-                        content.newParagraph();
+
+                        content.newLine();
 
                         if (player.hud.displays.otherArmy == null)
                         {
@@ -188,6 +174,35 @@ namespace VikingEngine.DSSWars.Display
                             new RbAction(mergeArmies, SoundLib.menu), null);
                             content.Add(allbutton);
                         }
+
+                        content.newParagraph();
+
+                        foreach (var kv in status)
+                        {
+                            content.newLine();
+                            content.text(string.Format(DssRef.lang.ArmyOption_XGroupsOfType, kv.Value, DssRef.unitsdata.Name(kv.Key)));//kv.Key.ToString() + " groups: " + kv.Value);
+                            content.newLine();
+                            content.Button(string.Format(DssRef.lang.ArmyOption_SendX, 1),//"Send 1",
+                                new RbAction2Arg<UnitType, int>(tradeSoldiersAction, kv.Key, 1, SoundLib.menu),
+                                null, true);
+
+                            content.space();
+
+                            content.Button(string.Format(DssRef.lang.ArmyOption_SendX, 5),//"Send 5",
+                                new RbAction2Arg<UnitType, int>(tradeSoldiersAction, kv.Key, 5, SoundLib.menu),
+                                null,
+                                kv.Value >= 5);
+
+                            content.space();
+
+                            content.Button(DssRef.lang.ArmyOption_SendAll,//"Send All",
+                               new RbAction2Arg<UnitType, int>(tradeSoldiersAction, kv.Key, kv.Value, SoundLib.menu),
+                               null, true);
+
+                        }
+                        
+
+                        
                     }
                     break;
             }

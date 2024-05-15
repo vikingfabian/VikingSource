@@ -68,17 +68,16 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string ProfileEditor_Hue { get; }
         public abstract string ProfileEditor_Lightness { get; }
         public abstract string ProfileEditor_NextColorType { get; }
+              
 
-       
+        public abstract string Hud_GameSpeedLabel { get; }
+        public abstract string Hud_GameSpeedButton { get; }
 
-        public abstract string Hud_GameSpeed { get; }
         public abstract string Hud_TotalIncome { get; }
 
         public abstract string Hud_Upkeep { get; }
 
         public abstract string Hud_ArmyUpkeep { get; }
-
-        //public abstract string Hud_WorkForce { get; }
 
         public abstract string Hud_GuardCount { get; }
 
@@ -286,8 +285,11 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string CityOption_Damages { get; }
         public abstract string CityOption_Repair { get; }
         public abstract string CityOption_RepairGain { get; }
-
         public abstract string CityOption_Repair_Description { get; }
+
+
+        public abstract string CityOption_BurnItDown { get; }
+        public abstract string CityOption_BurnItDown_Description { get; }
 
         public abstract string FactionName_DarkLord { get; }
         public abstract string FactionName_DarkFollower { get; }

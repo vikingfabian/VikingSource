@@ -148,13 +148,13 @@ namespace VikingEngine.DSSWars.Display
                     //content.icontext(SpriteName.WarsStrengthIcon, string.Format( DssRef.lang.Hud_TotalStrengthRating, TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
                     
 
-                    if (player.IsLocalHost() && Ref.isPaused)
+                    if (DssRef.state.IsSinglePlayer() && Ref.isPaused)
                     {
                         pauseButton();
                     }
                     else
                     {
-                        string gameSpeed = string.Format(DssRef.lang.Hud_GameSpeed, Ref.GameTimeSpeed);//"Game speed: " + Ref.GameTimeSpeed.ToString() + "x";
+                        string gameSpeed = string.Format(DssRef.lang.Hud_GameSpeedLabel, Ref.TargetGameTimeSpeed);//"Game speed: " + Ref.GameTimeSpeed.ToString() + "x";
 
                         if (DssRef.state.IsSinglePlayer())
                         {
@@ -164,15 +164,20 @@ namespace VikingEngine.DSSWars.Display
                                 for (int i = 0; i < DssLib.GameSpeedOptions.Length; i++)
                                 {
                                     content.Add(new RichboxButton(
-                                        new List<AbsRichBoxMember> { new RichBoxText(string.Format( DssRef.lang.Hud_XTimes, DssLib.GameSpeedOptions[i])) },
+                                        new List<AbsRichBoxMember> { new RichBoxText(string.Format(DssRef.lang.Hud_XTimes, DssLib.GameSpeedOptions[i])) },
                                         new RbAction1Arg<int>(gameSpeedClick, DssLib.GameSpeedOptions[i]), null, true));
                                     content.space();
                                 }
                                 //content.newLine();
                             }
                         }
+                        else
+                        {
+                            content.text(gameSpeed);
+                            content.newLine();
+                        }
 
-                        if (fullDisplay && player.IsLocalHost())
+                        if (fullDisplay && DssRef.state.IsSinglePlayer())
                         {
                             pauseButton();
                         }
@@ -267,7 +272,7 @@ namespace VikingEngine.DSSWars.Display
 
         void gameSpeedClick(int toSpeed)
         { 
-            Ref.GameTimeSpeed= toSpeed;
+            Ref.SetGameSpeed(toSpeed);
         }
     }
 }

@@ -28,6 +28,7 @@ namespace VikingEngine.DSSWars.Data
         public LocalPlayerStorage[] localPlayers = null;
         public Profile.FlagStorage flagStorage;
         public SaveMeta meta = null;
+        public float multiplayerGameSpeed = 2;
 
         public GameStorage()
         {
@@ -84,7 +85,7 @@ namespace VikingEngine.DSSWars.Data
 
         public void write(System.IO.BinaryWriter w)
         {
-            const int Version = 13;
+            const int Version = 14;
 
             w.Write(Version);
 
@@ -104,6 +105,7 @@ namespace VikingEngine.DSSWars.Data
 
             w.Write(generateNewMaps);
             w.Write(autoSave);
+            w.Write(multiplayerGameSpeed);
             DssRef.difficulty.write(w);
             
         }
@@ -138,6 +140,10 @@ namespace VikingEngine.DSSWars.Data
                 if (version >= 13)
                 { 
                     autoSave = r.ReadBoolean(); 
+                }
+                if (version >= 14)
+                {
+                    multiplayerGameSpeed = r.ReadSingle();
                 }
                 DssRef.difficulty.read(r, version);
             }

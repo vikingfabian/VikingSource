@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Valve.Steamworks;
+using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
@@ -117,9 +118,9 @@ namespace VikingEngine.DSSWars.Display
             else
             {
                 content.Add(new RichboxButton(new List<AbsRichBoxMember>{
-                    new RichBoxImage(SpriteName.WarsWorkerAdd),
-                    new RichBoxText(DssRef.lang.CityOption_ExpandWorkForce),
-                },
+                        new RichBoxImage(SpriteName.WarsWorkerAdd),
+                        new RichBoxText(DssRef.lang.CityOption_ExpandWorkForce),
+                    },
                     new RbAction1Arg<int>(buyWorkforceAction, 1, SoundLib.menuBuy),
                     new RbAction1Arg<int>(buyWorkforceToolTip, 1),
                     city.buyWorkforce(false, 1)));
@@ -127,6 +128,19 @@ namespace VikingEngine.DSSWars.Display
 
 
             content.newLine();
+
+            if (city.battleGroup == null)
+            {
+                content.Add(new RichboxButton(new List<AbsRichBoxMember>{
+                        new RichBoxImage(SpriteName.birdFireball),
+                        new RichBoxText(DssRef.lang.CityOption_BurnItDown),
+                    },
+                    new RbAction(city.burnItDown, SoundLib.menu),
+                    new RbAction(burnToolTip),
+                    true));
+
+                content.newLine();
+            }
 
             {
                 int count = 1;
@@ -151,7 +165,7 @@ namespace VikingEngine.DSSWars.Display
 
             if (!city.nobelHouse && city.canEverGetNobelHouse())
             {
-                content.Button(DssRef.lang.Building_NobleHouse,//"Nobel house",
+                content.Button(DssRef.lang.Building_NobleHouse,
                      new RbAction(city.buyNobelHouseAction, SoundLib.menuBuy),
                      new RbAction(buyNobelhouseTooltip),
                      city.canBuyNobelHouse());
@@ -294,7 +308,16 @@ namespace VikingEngine.DSSWars.Display
             player.hud.tooltip.create(player, content, true);
         }
 
-        public void buyRepairToolTip(bool all)
+        public void burnToolTip()
+        {
+            RichBoxContent content = new RichBoxContent();
+
+            content.text(DssRef.lang.CityOption_BurnItDown_Description);
+
+            player.hud.tooltip.create(player, content, true);
+        }
+
+            public void buyRepairToolTip(bool all)
         {
             RichBoxContent content = new RichBoxContent();
             int count, cost;

@@ -123,7 +123,7 @@ namespace VikingEngine.DSSWars
 
             for (var i = 0; i < playerCount; ++i)
             {
-                var startFaction = DssRef.world.getNextFreeFaction(i == 0);
+                var startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, localPlayers);
                 var local = new Players.LocalPlayer(startFaction, i, playerCount);
                 localPlayers.Add(local);
             }
@@ -170,6 +170,12 @@ namespace VikingEngine.DSSWars
             {
                 new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
             }
+
+            if (localPlayers.Count > 1)
+            {
+                Ref.SetGameSpeed(DssRef.storage.multiplayerGameSpeed);
+            }
+
             isReady = host;
         }
 
@@ -487,6 +493,11 @@ namespace VikingEngine.DSSWars
         public bool IsSinglePlayer()
         { 
             return localPlayers.Count == 1;
+        }
+
+        public bool IsLocalMultiplayer()
+        {
+            return localPlayers.Count >= 2;
         }
     }
 

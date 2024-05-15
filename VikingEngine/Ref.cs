@@ -56,8 +56,10 @@ namespace VikingEngine
         public static float TotalTimeSec, PrevTotalTimeSec;
         public static float TotalGameTimeSec, PrevTotalGameTimeSec;
         public static int TotalFrameCount = 0;
-       
-        public static float GameTimeSpeed = 1f;
+
+        
+        public static float TargetGameTimeSpeed = 1f;
+        public static float GameTimeSpeed = TargetGameTimeSpeed;
 
         public static float DeltaGameTimeMs
         {
@@ -105,7 +107,17 @@ namespace VikingEngine
             }
             else
             {
-                GameTimeSpeed = 1f;
+                GameTimeSpeed = TargetGameTimeSpeed;
+            }
+        }
+
+        public static void SetGameSpeed(float multiply)
+        { 
+            TargetGameTimeSpeed = multiply;
+
+            if (!isPaused)
+            {
+                GameTimeSpeed = TargetGameTimeSpeed;
             }
         }
     }

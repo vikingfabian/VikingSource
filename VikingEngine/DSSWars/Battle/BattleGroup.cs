@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.Battle
     class BattleGroup :AbsGameObject
     {
         const int StandardGridRadius = 20;
-        const float MaxQueTime = 5000;        
+        //const float MaxQueTime = 5000;        
         SpottedArray<AbsMapObject> members;
         SpottedArrayCounter<AbsMapObject> membersC;
         Vector2 center;
@@ -491,7 +491,7 @@ namespace VikingEngine.DSSWars.Battle
 
                 if (group.IsShip() != goalNode.water)
                 {
-                    value = group.battleQueTime < MaxQueTime? - 1: -10;//-= 1;
+                    value = group.battleQueTime < DssLib.BattleMaxQueTimeMs? - 1: -10;//-= 1;
                 }
 
                 return value;
@@ -508,7 +508,7 @@ namespace VikingEngine.DSSWars.Battle
             }
             else if (group.IsShip() != goalNode.water)
             {
-                return group.battleQueTime < MaxQueTime;
+                return group.battleQueTime < DssLib.BattleMaxQueTimeMs;
             }
             else
             {

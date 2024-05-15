@@ -153,6 +153,7 @@ namespace VikingEngine.DSSWars
                 if (DssRef.storage.playerCount > 1)
                 {
                     new GuiCheckbox(Ref.langOpt.VerticalSplitScreen, null, verticalSplitProperty, layout);
+                    menuSystem.multiplayerGameSpeedToMenu(layout);
                 }
 
                 new GuiOptionsList<MapSize>(SpriteName.NO_IMAGE, DssRef.lang.Lobby_MapSizeTitle, mapSizes, mapSizeProperty, layout);

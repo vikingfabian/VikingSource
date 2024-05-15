@@ -245,7 +245,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Current running speed of the game, compared to real time
         /// </summary>
-        public override string Hud_GameSpeed => "Game speed: {0}x";
+        public override string Hud_GameSpeedLabel => "Game speed: {0}x";
+
+        public override string Hud_GameSpeedButton => "Game speed";
 
         /// <summary>
         /// Ingame display. Unit gold production
@@ -925,6 +927,9 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string CityOption_Repair_Description => "Damages lower the number of workers you can fit.";
 
+
+        public override string CityOption_BurnItDown => "Burn it down";
+        public override string CityOption_BurnItDown_Description => "Remove the workforce and apply max damages";
 
         /// <summary>
         /// The main boss. Named after a glowing metal stone stuck in their forehead.

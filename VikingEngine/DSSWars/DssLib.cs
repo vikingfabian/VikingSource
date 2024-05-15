@@ -77,9 +77,8 @@ namespace VikingEngine.DSSWars
         public const int GroupMinCost = 20;
         public const float SoldierDefaultUpkeep = 1f;
         public const float GroupDefaultUpkeep = SoldierDefaultUpkeep * AbsSoldierData.GroupDefaultCount;
-        public const int DefalutRecruitTrainingTimeSec = 4 * 60;
-
-        
+        public const int DefalutRecruitTrainingTimeSec = 3 * 60;
+                
 
         public const float WeeklyArmyActionPoints = 0.05f; 
         public const float ArmyMoveDoubleTimeCostToFatigue = 0.1f;
@@ -97,7 +96,11 @@ namespace VikingEngine.DSSWars
 
         public static readonly int NobelHouseWorkForceReqiurement = HeadCityMaxWorkForce;
 
-#region OVERVIEW_LAYERS
+        public const float ShipBuildTimeSec = 5f;
+        public const float ShipExitTimeSec = 3f;
+        public const float BattleMaxQueTimeMs = 4000;
+
+        #region OVERVIEW_LAYERS
 
         public const float BattleIconYpos = ArmyIconMaxYpos + 0.1f;
         public const float ArmyIconMaxYpos = ArmyIconMinYpos + 0.4f;

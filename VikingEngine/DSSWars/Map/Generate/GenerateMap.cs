@@ -500,12 +500,14 @@ namespace VikingEngine.DSSWars.Map.Generate
             }
         }
 
+        public const int HeadCityNeededFreeRadius = 14;
+
         void generateCities()
         {
             int numHeadCities = world.areaTileCount / 2000;
             world.cities = new List<City>(numHeadCities);
 
-            generateCityType(CityType.Head, numHeadCities, 14);
+            generateCityType(CityType.Head, numHeadCities, HeadCityNeededFreeRadius);
             generateCityType(CityType.Large, numHeadCities * 2, 9);
             generateCityType(CityType.Small, numHeadCities * 4, 8);
         }
@@ -734,7 +736,6 @@ namespace VikingEngine.DSSWars.Map.Generate
                     if (region.currentWorkforce >= region.goalWorkForce)
                     {
                         faction.availableForPlayer = true;
-
                     }
                 }
             }

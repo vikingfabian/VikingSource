@@ -1,13 +1,21 @@
 ﻿Change Log
 * Soldier upkeep has increased by 60% (to battle some of the "stupid" size armies at the endgame).
 * City takes damage during war, can destroy up to 75% of the worker huts. Can be repaired. This is also a sneaky way to increase performance. -Experimental.
-* Knights 1.5 times longer training time
-* Recruit time on purchase hud
+* Burn it! Adds max damage to a city  -Experimental.
+* Reduced recruit training time from 4 to 3 minutes
+* Knights gained 1.5 times longer training time
+* Recruit time is viewed on purchase hud
+* Fixed multiplayer save crashes.
+* Players get better placement in multiplayer.
+* Multiplayer game speed option
+* Speed dont return to x1 after pause
+* Added a sleep mode for armies to increase performance
+* Reduced ship build time from 20 to 5 sec.
+* Reduced the time in battle the units wait before ship building 5 > 4 seconds
 
 Error
--craig performnance issue
-*damage to cities
-*smaller income
+-guard has reached maximum capasity (saknar punkt)
+-MP attack ska ta bort tidigare ally request
 -also path finding of a land army will often prefer water over land when the boat building will cause the travel time to take considerably longer than if it went over land
 from what i've seen, this generally only happens if the army is on a land tile immediately adjacent to water
 
@@ -17,9 +25,8 @@ Retreat system
 -reassemble av flydd arme
 
 Polish
--längre recruit träning
+-MP speed setting
 -Missing file error på load
--enbart förlora cities till fienden
 -(mercenaries cost increase bort)
 -snabbare båt bygge i strid
 -cost mercenaries på tooltip

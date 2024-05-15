@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.GameObject
             
             toShip = !group.IsShip();
 
-            transformTimer.Seconds = (toShip ? 20f : 6f) * group.SoldierData().ShipBuildTimeMultiplier;
+            transformTimer.Seconds = (toShip ? DssLib.ShipBuildTimeSec : DssLib.ShipExitTimeSec) * group.SoldierData().ShipBuildTimeMultiplier;
 
             AddToUpdateList();
 

@@ -64,8 +64,6 @@ namespace VikingEngine.DSSWars.Data
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            //w.Write(Version);
-            //w.Write(SubVersion);
             new SaveVersion(Version, SubVersion).write(w);
 
             DssRef.storage.write(w);
@@ -81,8 +79,6 @@ namespace VikingEngine.DSSWars.Data
         {
             pointers = new ObjectPointerCollection();
 
-            //int version = r.ReadInt32();
-            //int subVersion = r.ReadInt32();
             SaveVersion version = new SaveVersion();
             version.read(r);
 
