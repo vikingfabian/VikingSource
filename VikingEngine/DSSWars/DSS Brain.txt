@@ -1,18 +1,5 @@
 ﻿Change Log
-* Soldier upkeep has increased by 60% (to battle some of the "stupid" size armies at the endgame).
-* City takes damage during war, can destroy up to 75% of the worker huts. Can be repaired. This is also a sneaky way to increase performance. -Experimental.
-* Burn it! Adds max damage to a city  -Experimental.
-* Reduced recruit training time from 4 to 3 minutes
-* Knights gained 1.5 times longer training time
-* Recruit time is viewed on purchase hud
-* Fixed multiplayer save crashes.
-* Players get better placement in multiplayer.
-* Multiplayer game speed option
-* Speed dont return to x1 after pause
-* Added a sleep mode for armies to increase performance
-* Reduced ship build time from 20 to 5 sec.
-* Reduced the time in battle the units wait before ship building 5 > 4 seconds
-
+* 
 Error
 -guard has reached maximum capasity (saknar punkt)
 -MP attack ska ta bort tidigare ally request
