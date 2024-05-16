@@ -1,5 +1,5 @@
 ﻿Change Log
-* attacking another player removes diplomatic offerings
+* Multiplayer: attacking another player removes diplomatic offerings
 
 
 Error
