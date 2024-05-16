@@ -265,6 +265,13 @@ namespace VikingEngine.DSSWars
                     {
                         relation.SetWorseSpeakTerms(SpeakTermsOnWar_BadChance, SpeakTermsOnWar_NoneChance);
                     }
+
+                    if (defender.player.IsPlayer())
+                    {
+                        var otherPlayer = defender.player.GetLocalPlayer();
+                        var PtoP = player.toPlayerDiplomacies[otherPlayer.playerData.localPlayerIndex];
+                        PtoP.suggestingNewRelation = false;
+                    }
                 }
                 if (defender.player.IsPlayer())
                 { 

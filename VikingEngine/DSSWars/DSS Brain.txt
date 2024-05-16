@@ -1,8 +1,8 @@
 ﻿Change Log
-* 
+* attacking another player removes diplomatic offerings
+
+
 Error
--guard has reached maximum capasity (saknar punkt)
--MP attack ska ta bort tidigare ally request
 -also path finding of a land army will often prefer water over land when the boat building will cause the travel time to take considerably longer than if it went over land
 from what i've seen, this generally only happens if the army is on a land tile immediately adjacent to water
 
@@ -12,7 +12,8 @@ Retreat system
 -reassemble av flydd arme
 
 Polish
--MP speed setting
+-supress south hara war declaration message
+-En granne attackerar alltid efter en liten stund (upprepa)
 -Missing file error på load
 -(mercenaries cost increase bort)
 -snabbare båt bygge i strid

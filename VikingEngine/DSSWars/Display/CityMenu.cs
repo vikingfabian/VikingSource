@@ -360,6 +360,7 @@ namespace VikingEngine.DSSWars.Display
             else 
             {
                 content.Add(new RichBoxText(DssRef.lang.Hud_Purchase_MaxCapacity, Color.Red));
+                content.newLine();
                 content.Add(new RichBoxText(DssRef.lang.Hud_GuardCount_MustExpandCityMessage, Color.Red));
             }
 
