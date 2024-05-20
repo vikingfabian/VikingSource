@@ -32,6 +32,8 @@ namespace VikingEngine.DSSWars
 
         Time dyingFactionsTimer = Time.Zero;
 
+        Time toPeacefulCheckTimer = 2000;
+
         public GameEvents()
         {
         }
@@ -329,7 +331,19 @@ namespace VikingEngine.DSSWars
                     faction.hasDeserters = true;
                 }
             }
+
+            if (toPeacefulCheckTimer.CountDown(time))
+            {
+                toPeacefulCheckTimer = new Time(40, TimeUnit.Seconds);
+
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    p.toPeacefulCheck_asynch();
+                }
+            }
         }
+
+       
 
         void PowerCheck()
         {

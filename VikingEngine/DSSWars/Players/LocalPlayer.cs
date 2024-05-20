@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.GameState;
 using System;
 using System.IO;
 using Microsoft.Xna.Framework.Input;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Players
 {    
@@ -219,6 +220,26 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
             mainArmy.OnSoldierPurchaseCompleted();
+        }
+
+        public void toPeacefulCheck_asynch()
+        {
+            int warCount = 0;
+            float opposingPower = 0;
+
+            for (int relIx = 0; relIx < faction.diplomaticRelations.Length; ++relIx)
+            {
+                if (DssRef.diplomacy.InWar(faction, DssRef.world.factions[relIx])) // aifaction.diplomaticRelations[relIx] != null && aifaction.diplomaticRelations[relIx].Relation == RelationTypeN3_War)
+                {
+                    ++warCount;
+                    opposingPower += DssRef.world.factions[relIx].militaryStrength;
+                }
+            }
+
+            if (opposingPower > 0 && faction.militaryStrength > 0)
+            {
+
+            }
         }
 
         void refreshNeihgborAggression()
