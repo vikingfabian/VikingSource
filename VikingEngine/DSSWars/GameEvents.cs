@@ -86,8 +86,9 @@ namespace VikingEngine.DSSWars
             IOLib.WriteObjectList(w, darkLordAllies);
 
             dyingFactionsTimer.write(w);
+            w.Write(Ref.TotalGameTimeSec);
         }
-        public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
             nextEvent = (EventType)r.ReadInt32();
             eventState = (EventState)r.ReadInt32();
@@ -105,6 +106,15 @@ namespace VikingEngine.DSSWars
 
             dyingFactionsTimer.read(r);
             dyingFactionsTimer.MilliSeconds = Bound.Min(dyingFactionsTimer.MilliSeconds, 1);
+
+            if (subVersion >= 5)
+            {
+                Ref.TotalGameTimeSec = r.ReadSingle();
+            }
+            else
+            {
+                Ref.TotalGameTimeSec = eventCheckGameTimeSec - 5;
+            }
         }
 
         void prepareNext()
