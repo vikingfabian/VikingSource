@@ -224,21 +224,28 @@ namespace VikingEngine.DSSWars.Players
 
         public void toPeacefulCheck_asynch()
         {
-            int warCount = 0;
-            float opposingPower = 0;
-
-            for (int relIx = 0; relIx < faction.diplomaticRelations.Length; ++relIx)
+            if (faction.militaryStrength > 0)
             {
-                if (DssRef.diplomacy.InWar(faction, DssRef.world.factions[relIx])) // aifaction.diplomaticRelations[relIx] != null && aifaction.diplomaticRelations[relIx].Relation == RelationTypeN3_War)
+                int warCount = 0;
+                float opposingPower = 0;
+
+                for (int relIx = 0; relIx < faction.diplomaticRelations.Length; ++relIx)
                 {
-                    ++warCount;
-                    opposingPower += DssRef.world.factions[relIx].militaryStrength;
+                    if (DssRef.diplomacy.InWar(faction, DssRef.world.factions[relIx]) &&
+                        faction.player.IsAi())
+                    {
+                        ++warCount;
+                        opposingPower += DssRef.world.factions[relIx].militaryStrength;
+                    }
                 }
-            }
 
-            if (opposingPower > 0 && faction.militaryStrength > 0)
-            {
+                bool toPeaceful = true;
 
+                if (opposingPower > 0)
+                {
+                    float opposingForcePerc = opposingPower / faction.militaryStrength;
+                    toPeaceful = opposingForcePerc > DssRef.difficulty.toPeacefulPercentage;
+                }
             }
         }
 

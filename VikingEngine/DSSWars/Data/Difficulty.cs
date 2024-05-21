@@ -35,6 +35,7 @@ namespace VikingEngine.DSSWars.Data
 
         public int MercenaryPurchaseCost_Start;
         public int MercenaryPurchaseCost_Add;
+        public float toPeacefulPercentage = 1;
 
         public Difficulty(int difficulty = DefaultOption)
         {
@@ -107,6 +108,7 @@ namespace VikingEngine.DSSWars.Data
                     diplomacyDifficulty = 0;
                     honorGuard = true;
                     aiDelayTimeSec = 3 * 60;
+                    toPeacefulPercentage = 0.1f;
                     break;
 
                 case 2:
@@ -117,6 +119,7 @@ namespace VikingEngine.DSSWars.Data
                     diplomacyDifficulty = 1;
                     honorGuard = true;
                     aiDelayTimeSec = 1 * 60;
+                    toPeacefulPercentage = 0.2f;
                     break;
 
                 case 3: //Medium
@@ -127,6 +130,7 @@ namespace VikingEngine.DSSWars.Data
                     diplomacyDifficulty = 1;
                     honorGuard = true;
                     aiDelayTimeSec = 20;
+                    toPeacefulPercentage = 0.5f;
                     break;
 
                 case 4:
@@ -137,6 +141,7 @@ namespace VikingEngine.DSSWars.Data
                     diplomacyDifficulty = 1;
                     honorGuard = false;
                     aiDelayTimeSec = 10;
+                    toPeacefulPercentage = 0.75f;
                     break;
 
                 case 5:
@@ -146,6 +151,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 2;
                     diplomacyDifficulty = 1;
                     honorGuard = false;
+                    toPeacefulPercentage = 1f;
                     break;
 
                 case 6:
@@ -155,6 +161,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 3;
                     diplomacyDifficulty = 2;
                     honorGuard = false;
+                    toPeacefulPercentage = 1.5f;
                     break;
 
                 case 7: //Max
@@ -164,6 +171,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 4;
                     diplomacyDifficulty = 2;
                     honorGuard = false;
+                    toPeacefulPercentage = 2f;
                     break;
             }
 
