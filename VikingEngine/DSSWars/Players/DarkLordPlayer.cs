@@ -96,7 +96,13 @@ namespace VikingEngine.DSSWars.Players
 
             foreach (var ally in darkLordAllies)
             {
-                DssRef.diplomacy.SetRelationType(faction, ally, RelationType.RelationType3_Ally).secret = false;
+               var relation = DssRef.diplomacy.SetRelationType(faction, ally, RelationType.RelationType3_Ally);//.secret = false;
+
+                if (relation != null)
+                {
+                    relation.secret = false;
+                }
+
                 foreach (var p in DssRef.state.localPlayers)
                 {
                     DssRef.diplomacy.SetRelationType(p.faction, ally, RelationType.RelationTypeN4_TotalWar).SpeakTerms = SpeakTerms.SpeakTermsN2_None;
@@ -105,7 +111,7 @@ namespace VikingEngine.DSSWars.Players
                 if (greenwood != null)
                 {
                     DssRef.diplomacy.SetRelationType(greenwood, ally, RelationType.RelationTypeN4_TotalWar);
-                }
+                }                
             }
 
             darkLordAllies.Remove(faction);

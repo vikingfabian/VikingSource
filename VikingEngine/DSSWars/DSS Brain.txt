@@ -1,5 +1,6 @@
 ﻿Change Log
-* Multiplayer: attacking another player removes diplomatic offerings
+* Fixed: save/load event timer bug
+* Fixed boss enter crash
 
 
 Error
