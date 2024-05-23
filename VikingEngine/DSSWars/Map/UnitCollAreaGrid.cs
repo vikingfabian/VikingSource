@@ -580,16 +580,20 @@ namespace VikingEngine.DSSWars.Map
             {
                 for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
                 {
-                    if (grid.TryGet(x, y, out area) && area.armies != null)
+                    if (grid.TryGet(x, y, out area))
                     {
-                        for (int i = 0; i < area.armies.Count; ++i)
+                        var armies_sp = area.armies;
+                        if (armies_sp != null)
                         {
-                            var army = area.armies[i];
-                            if (army != ignore &&
-                                army.faction == factionFilter &&
-                                (army.tilePos - tilePos).Length() <= maxTileDistance)
+                            for (int i = 0; i < armies_sp.Count; ++i)
                             {
-                                return army;
+                                var army = armies_sp[i];
+                                if (army != ignore &&
+                                    army.faction == factionFilter &&
+                                    (army.tilePos - tilePos).Length() <= maxTileDistance)
+                                {
+                                    return army;
+                                }
                             }
                         }
                     }
