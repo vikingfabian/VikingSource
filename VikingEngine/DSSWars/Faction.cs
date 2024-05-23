@@ -314,12 +314,8 @@ namespace VikingEngine.DSSWars
 
         public void update()
         {
-            //if (player is Players.LocalPlayer)
-            //{
-            //    lib.DoNothing();
-            //}
-
             armiesCounter.Reset();
+
             while (armiesCounter.Next())
             {
                 armiesCounter.sel.update();

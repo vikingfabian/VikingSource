@@ -5,6 +5,7 @@
 * improved tooltip positioning
 * Merge all armies option
 * supresses south hara war declaration message
+* fixed max workforce save error
 
 Error
 -en knight 

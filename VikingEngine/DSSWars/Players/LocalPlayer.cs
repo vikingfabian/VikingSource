@@ -249,14 +249,9 @@ namespace VikingEngine.DSSWars.Players
                 if (opposingSize > 0)
                 {
                     float opposingSizePerc;
-                    //if (faction.cityIncome > 0)
-                    //{
-                        opposingSizePerc = opposingSize / faction.cityIncome;
-                    //}
-                    //else
-                    //{ 
-                    //    opposingForcePerc = 10;
-                    //}
+                    
+                    opposingSizePerc = opposingSize / faction.cityIncome;
+                    
                     toPeaceful = opposingSizePerc <= DssRef.difficulty.toPeacefulPercentage;
                 }
 
@@ -279,6 +274,11 @@ namespace VikingEngine.DSSWars.Players
                                     var rel = DssRef.diplomacy.GetRelationType(faction, otherfaction);
                                     if (rel >= RelationType.RelationTypeN1_Enemies && rel <= RelationType.RelationType1_Peace)
                                     {
+                                        var aiPlayer = otherfaction.player.GetAiPlayer();
+                                        if (aiPlayer.aggressionLevel <= AiPlayer.AggressionLevel1_RevengeOnly)
+                                        { 
+                                            aiPlayer.aggressionLevel = AiPlayer.AggressionLevel2_RandomAttacks;
+                                        }
                                         DssRef.diplomacy.declareWar(otherfaction, faction);
                                         return;
                                     }

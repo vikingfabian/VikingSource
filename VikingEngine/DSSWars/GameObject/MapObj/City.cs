@@ -326,6 +326,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             workForce.write16bit(w);
             w.Write(Convert.ToUInt16(workForceMax));
+            w.Write(Convert.ToUInt16(maxEpandWorkSize));
             damages.write16bit(w);
             immigrants.write16bit(w);
             w.Write(nobelHouse);
@@ -338,6 +339,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             workForce.read16bit(r);
             workForceMax = r.ReadUInt16();
+            if (subversion >= 6)
+            {
+                maxEpandWorkSize = r.ReadUInt16();
+            }
             if (subversion >= 4)
             {
                 damages.read16bit(r);
@@ -571,9 +576,14 @@ namespace VikingEngine.DSSWars.GameObject
                         break;
                 }
                 workForce.value = workForceMax;
+
+
             }
-            int maxFit = MathExt.MultiplyInt(0.8, CityDetail.WorkersPerTile * CityDetail.HutMaxLevel * areaSize);
-            maxEpandWorkSize = Bound.Max(workForceMax + ExpandWorkForce * 3, maxFit);
+            if (newGame || maxEpandWorkSize == 0)
+            {
+                int maxFit = MathExt.MultiplyInt(0.8, CityDetail.WorkersPerTile * CityDetail.HutMaxLevel * areaSize);
+                maxEpandWorkSize = Bound.Max(workForceMax + ExpandWorkForce * 3, maxFit);
+            }
         }
 
         void refreshCitySize()

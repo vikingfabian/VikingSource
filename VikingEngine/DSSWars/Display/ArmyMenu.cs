@@ -55,6 +55,15 @@ namespace VikingEngine.DSSWars.Display
                     DssRef.world.unitCollAreaGrid.collectArmies(player.faction, army.tilePos, 1,
                         tradeAbleArmies);
 
+                    for (int i = tradeAbleArmies.Count - 1; i >= 0; --i)
+                    {
+                        if (WP.birdDistance(army, tradeAbleArmies[i]) > Army.MaxTradeDistance)
+                        {
+                            tradeAbleArmies.RemoveAt(i);    
+                        }
+                    }
+
+
                     if (tradeAbleArmies.Count > 1)
                     {
                         content.newLine();
@@ -68,7 +77,7 @@ namespace VikingEngine.DSSWars.Display
 
                         foreach (var ta in tradeAbleArmies)
                         {
-                            if (ta != army && WP.birdDistance(army, ta) <= Army.MaxTradeDistance)
+                            if (ta != army)
                             {
                                 content.newLine();
                                 var tradeButton = new HUD.RichBox.RichboxButton(

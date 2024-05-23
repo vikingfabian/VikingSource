@@ -137,7 +137,7 @@ namespace VikingEngine.DSSWars.Display
                     },
                     new RbAction(city.burnItDown, SoundLib.menu),
                     new RbAction(burnToolTip),
-                    true));
+                     city.damages.value < city.MaxDamages()));
 
                 content.newLine();
             }

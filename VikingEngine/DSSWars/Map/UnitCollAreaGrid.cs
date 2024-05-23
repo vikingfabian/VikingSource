@@ -501,7 +501,7 @@ namespace VikingEngine.DSSWars.Map
             List<GameObject.Army> armies)
         {
             armies.Clear();
-            GameObject.Army prevArmy = null;
+            //GameObject.Army prevArmy = null;
 
             IntVector2 areaPos = tilePos / UnitGridSquareWidth;
             UnitCollArea area;
@@ -512,18 +512,18 @@ namespace VikingEngine.DSSWars.Map
                 {
                     if (grid.TryGet(x, y, out area))
                     {
-                        var groups_sp = area.groups;
-                        if (groups_sp != null)
+                        var armies_sp = area.armies;
+                        //var groups_sp = area.groups;
+                        if (armies_sp != null)
                         {
-                            foreach (var m in groups_sp)//crash (ändras i realtid)
+                            foreach (var m in armies_sp)//crash (ändras i realtid)
                             {
-                                if (m.army.faction == factionFilter &&
-                                    m.army != prevArmy)
+                                if (m.faction == factionFilter)
                                 {
-                                    prevArmy = m.army;
-                                    if (!armies.Contains(m.army))
+                                    //prevArmy = m.army;
+                                    if (!armies.Contains(m))
                                     {
-                                        armies.Add(m.army);
+                                        armies.Add(m);
                                     }
                                     //armies.Add(m);
                                 }
