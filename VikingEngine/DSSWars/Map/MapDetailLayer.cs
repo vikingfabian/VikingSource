@@ -20,10 +20,13 @@ namespace VikingEngine.DSSWars.Map
         public DetailLayer prevLayer;
 
         public static readonly IntervalF FullZoomRange = new IntervalF(1, 2500);
+        
 
         public const float OverviewZoomStart = 80f;
         static readonly float UnitMaxZoom = FullZoomRange.Max - 0.4f;
 
+        static readonly float TerrainMaxZoom = 200;
+        public static readonly float StartZoom= TerrainMaxZoom * 0.5f;
 
         const float CloseUpCamAngle = 0.85f;
         public const float NormalCamAngle = 0.78f;
@@ -54,9 +57,10 @@ namespace VikingEngine.DSSWars.Map
                 layers.Add(new DetailLayer(MapDetailLayerType.UnitDetail1, minZoom, maxZoom, zoomBuffer));
 
                 minZoom = maxZoom;
-                maxZoom = 200;//FullZoomRange.GetFromPercent(0.5f);
+                maxZoom = TerrainMaxZoom;//FullZoomRange.GetFromPercent(0.5f);
 
                 layers.Add(new DetailLayer(MapDetailLayerType.TerrainOverview2, minZoom, maxZoom, zoomBuffer));
+                
 
                 minZoom = maxZoom;
                 maxZoom = 450;//FullZoomRange.GetFromPercent(0.75f);

@@ -1297,7 +1297,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool isMaxWorkForce()
         { 
-            return workForce.value >= workForceMax-damages.Int();
+            return workForce.value >= workForceMax - damages.Int();
         }
 
         public override bool aliveAndBelongTo(Faction faction)

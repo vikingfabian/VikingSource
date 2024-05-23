@@ -15,6 +15,7 @@ using System;
 using System.IO;
 using Microsoft.Xna.Framework.Input;
 using VikingEngine.ToGG.MoonFall;
+using VikingEngine.ToGG;
 
 namespace VikingEngine.DSSWars.Players
 {    
@@ -224,27 +225,67 @@ namespace VikingEngine.DSSWars.Players
 
         public void toPeacefulCheck_asynch()
         {
-            if (faction.militaryStrength > 0)
+            if (faction.cityIncome > 0)
             {
                 int warCount = 0;
-                float opposingPower = 0;
+                float opposingSize = 0;
 
                 for (int relIx = 0; relIx < faction.diplomaticRelations.Length; ++relIx)
                 {
-                    if (DssRef.diplomacy.InWar(faction, DssRef.world.factions[relIx]) &&
-                        faction.player.IsAi())
+                    if (faction.diplomaticRelations[relIx] != null &&
+                        faction.diplomaticRelations[relIx].Relation <= RelationType.RelationTypeN2_Truce)
                     {
-                        ++warCount;
-                        opposingPower += DssRef.world.factions[relIx].militaryStrength;
+                        var opponent = faction.diplomaticRelations[relIx].opponent(faction);
+                        if (opponent.player.IsAi())
+                        {
+                            ++warCount;
+                            opposingSize += opponent.cityIncome;
+                        }
                     }
                 }
 
                 bool toPeaceful = true;
 
-                if (opposingPower > 0)
+                if (opposingSize > 0)
                 {
-                    float opposingForcePerc = opposingPower / faction.militaryStrength;
-                    toPeaceful = opposingForcePerc > DssRef.difficulty.toPeacefulPercentage;
+                    float opposingSizePerc;
+                    //if (faction.cityIncome > 0)
+                    //{
+                        opposingSizePerc = opposingSize / faction.cityIncome;
+                    //}
+                    //else
+                    //{ 
+                    //    opposingForcePerc = 10;
+                    //}
+                    toPeaceful = opposingSizePerc <= DssRef.difficulty.toPeacefulPercentage;
+                }
+
+                if (toPeaceful)
+                {
+                    //start a war
+                    const int MaxTrials = 10;
+
+                    for (int i = 0; i < MaxTrials; ++i)
+                    {
+                        var city = faction.cities.GetRandomUnsafe(Ref.rnd);
+                        if (city != null)
+                        {
+                            foreach (var cindex in city.neighborCities)
+                            {
+                                var otherfaction = DssRef.world.cities[cindex].faction;
+                                if (otherfaction.factiontype == FactionType.DefaultAi ||
+                                    otherfaction.factiontype == FactionType.DarkFollower)
+                                {
+                                    var rel = DssRef.diplomacy.GetRelationType(faction, otherfaction);
+                                    if (rel >= RelationType.RelationTypeN1_Enemies && rel <= RelationType.RelationType1_Peace)
+                                    {
+                                        DssRef.diplomacy.declareWar(otherfaction, faction);
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -284,7 +325,8 @@ namespace VikingEngine.DSSWars.Players
                 DssRef.achieve.onAlly(faction, otherFaction);
             }
 
-            if (rel.Relation <= RelationType.RelationTypeN3_War)
+            if (rel.Relation <= RelationType.RelationTypeN3_War &&
+                otherFaction.factiontype != FactionType.SouthHara)
             {
                 string title;
                 if (previousRelation == RelationType.RelationTypeN2_Truce)

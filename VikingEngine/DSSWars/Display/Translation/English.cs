@@ -859,6 +859,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string ArmyOption_SendToX => "Send units to {0}";
 
+        public override string ArmyOption_MergeAllArmies => "Merge all armies";
+
         /// <summary>
         /// Menu option to control an army. Options to send soldiers between armies.
         /// </summary>

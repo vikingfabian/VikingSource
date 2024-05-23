@@ -54,18 +54,31 @@ namespace VikingEngine.DSSWars.Display
                     List<GameObject.Army> tradeAbleArmies = new List<GameObject.Army>();
                     DssRef.world.unitCollAreaGrid.collectArmies(player.faction, army.tilePos, 1,
                         tradeAbleArmies);
-                    foreach (var ta in tradeAbleArmies)
+
+                    if (tradeAbleArmies.Count > 1)
                     {
-                        if (ta != army && WP.birdDistance(army, ta) <= Army.MaxTradeDistance)
+                        content.newLine();
+                        var mergeAllButton = new HUD.RichBox.RichboxButton(
+                            new List<AbsRichBoxMember>
+                            {
+                                new HUD.RichBox.RichBoxText(DssRef.lang.ArmyOption_MergeAllArmies),
+                            },
+                            new RbAction1Arg<List<GameObject.Army>>(mergeAllArmies, tradeAbleArmies, SoundLib.menu), null);
+                        content.Add(mergeAllButton);
+
+                        foreach (var ta in tradeAbleArmies)
                         {
-                            content.newLine();
-                            var tradeButton = new HUD.RichBox.RichboxButton(
-                                new List<AbsRichBoxMember>
-                                {
-                                new HUD.RichBox.RichBoxText(string.Format(DssRef.lang.ArmyOption_SendToX, ta.TypeName())),
-                                },
-                                new RbAction1Arg<Army>(startArmyTrade, ta, SoundLib.menu), null);
-                            content.Add(tradeButton);
+                            if (ta != army && WP.birdDistance(army, ta) <= Army.MaxTradeDistance)
+                            {
+                                content.newLine();
+                                var tradeButton = new HUD.RichBox.RichboxButton(
+                                    new List<AbsRichBoxMember>
+                                    {
+                                        new HUD.RichBox.RichBoxText(string.Format(DssRef.lang.ArmyOption_SendToX, ta.TypeName())),
+                                    },
+                                    new RbAction1Arg<Army>(startArmyTrade, ta, SoundLib.menu), null);
+                                    content.Add(tradeButton);
+                            }
                         }
                     }
 
@@ -228,14 +241,30 @@ namespace VikingEngine.DSSWars.Display
         void mergeArmies()
         {
             army.mergeArmies(player.hud.displays.otherArmy);
-            //if (player.selmenu().otherArmy != null)
-            //{
-            //    var status = army.Status().getTypeCounts();
-            //    foreach (var kv in status)
-            //    {
-            //        tradeSoldiersAction(otherArmy, kv.Key, kv.Value);                    
-            //    }
-            //}
+        }
+
+        void mergeAllArmies(List<GameObject.Army> tradeAbleArmies)
+        {
+            if (tradeAbleArmies.Count >= 2)
+            {
+                GameObject.Army largest = null;
+
+                foreach (var m in tradeAbleArmies)
+                {
+                    if (largest == null || m.strengthValue > largest.strengthValue)
+                    { 
+                        largest = m;
+                    }
+                }
+
+                foreach (var m in tradeAbleArmies)
+                {
+                    if (m != largest)
+                    {
+                        m.mergeArmies(largest);
+                    }
+                }
+            }
         }
 
         void tradeSoldiersAction(UnitType type, int count)

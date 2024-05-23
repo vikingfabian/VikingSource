@@ -261,6 +261,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string ArmyOption_RemoveX { get; }
         public abstract string ArmyOption_DisbandAll { get; }
         public abstract string ArmyOption_XGroupsOfType { get; }
+
+        public abstract string ArmyOption_MergeAllArmies { get; }
+
         public abstract string ArmyOption_SendToX { get; }
         public abstract string ArmyOption_SendToNewArmy { get; }
         public abstract string ArmyOption_SendX { get; }

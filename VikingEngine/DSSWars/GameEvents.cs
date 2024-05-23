@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars
 
         Time dyingFactionsTimer = Time.Zero;
 
-        Time toPeacefulCheckTimer = 2000;
+        Time toPeacefulCheckTimer = new Time(3, TimeUnit.Minutes);
 
         public GameEvents()
         {
@@ -344,7 +344,7 @@ namespace VikingEngine.DSSWars
 
             if (toPeacefulCheckTimer.CountDown(time))
             {
-                toPeacefulCheckTimer = new Time(40, TimeUnit.Seconds);
+                toPeacefulCheckTimer = new Time(4, TimeUnit.Minutes);
 
                 foreach (var p in DssRef.state.localPlayers)
                 {

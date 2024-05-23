@@ -13,6 +13,7 @@ namespace VikingEngine.DSSWars.Display
     {
         Graphics.ImageGroup images = new Graphics.ImageGroup(128);
         public bool refresh = false;
+        Vector2 size;
         public void updateMapTip(Players.LocalPlayer player, bool refreshTime)
         {
             if (player.diplomacyMap == null)
@@ -57,7 +58,20 @@ namespace VikingEngine.DSSWars.Display
                 }
                 else
                 {
-                    images.SetOffset(Input.Mouse.Position + Engine.Screen.SmallIconSizeV2);
+                    Vector2 offset = Input.Mouse.Position + Engine.Screen.SmallIconSizeV2;
+                    Vector2 maxPos = offset + size;
+
+                    if (maxPos.X > Engine.Screen.SafeArea.Right)
+                    { 
+                        offset.X = Input.Mouse.Position.X - (Engine.Screen.SmallIconSize + size.X);
+                    }
+
+                    if (maxPos.Y > Engine.Screen.SafeArea.Bottom)
+                    {
+                        offset.Y = Engine.Screen.SafeArea.Bottom - size.Y;
+                    }
+
+                    images.SetOffset(offset);
                 }                
             }
         }
@@ -195,6 +209,7 @@ namespace VikingEngine.DSSWars.Display
             Graphics.Image bg = new Graphics.Image(SpriteName.WhiteArea, area.Position, area.Size,
                 ImageLayers.Lay4);
             bg.ColorAndAlpha(Color.Black, 0.7f);
+            size = area.Size;
 
             images.Add(bg);
             images.Add(richBox);

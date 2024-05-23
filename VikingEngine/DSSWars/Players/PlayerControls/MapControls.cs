@@ -44,7 +44,7 @@ namespace VikingEngine.DSSWars.Players
         {
             this.player = player;
 
-            camera = new TopViewCamera(200, 
+            camera = new TopViewCamera(MapDetailLayerManager.StartZoom, 
                 new Vector2(MathHelper.PiOver2, Map.MapDetailLayerManager.NormalCamAngle),
                 player.playerData.view.DrawAreaF.Width, player.playerData.view.DrawAreaF.Height);
             camera.FarPlane = 800;

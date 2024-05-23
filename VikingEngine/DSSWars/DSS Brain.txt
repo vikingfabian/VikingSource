@@ -1,12 +1,13 @@
 ﻿Change Log
 * Fixed: save/load event timer bug
 * Fixed boss enter crash
-
+* A timer makes sure you should not bored by horrible peace more than a few minutes :)
+* improved tooltip positioning
+* Merge all armies option
+* supresses south hara war declaration message
 
 Error
--spelet börjar som falsk x2
-_endboss crasha multiplayer game
--tooltip hamnar utanför skärmen
+-en knight 
 -also path finding of a land army will often prefer water over land when the boat building will cause the travel time to take considerably longer than if it went over land
 from what i've seen, this generally only happens if the army is on a land tile immediately adjacent to water
 
@@ -16,15 +17,10 @@ Retreat system
 -reassemble av flydd arme
 
 Polish
--börja i mid zoom
--supress south hara war declaration message
--En granne attackerar alltid efter en liten stund (upprepa)
 -Missing file error på load
 -(mercenaries cost increase bort)
--snabbare båt bygge i strid
 -cost mercenaries på tooltip
 -I should improve the diplomacy so peace agreements are shared with allies
--War declare, truce end messages
 -större radie på köpa till armeer
 -attack warning -Battle notification
 -diplomacy toggle/relation heatmap/units
@@ -33,6 +29,7 @@ Polish
 -the horses dont load when paused, plus rotation error
 -dölj move path OnHud 
 -attack ally yes/no warning
+-burn yes/no
 
 Art
 -list punkt
