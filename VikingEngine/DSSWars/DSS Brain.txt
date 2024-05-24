@@ -1,11 +1,5 @@
 ﻿Change Log
-* Fixed: save/load event timer bug
-* Fixed boss enter crash
-* A timer makes sure you should not bored by horrible peace more than a few minutes :)
-* improved tooltip positioning
-* Merge all armies option
-* supresses south hara war declaration message
-* fixed max workforce save error
+* Disabled automation on cities that fight
 
 Error
 -en knight 
@@ -18,6 +12,8 @@ Retreat system
 -reassemble av flydd arme
 
 Polish
+-döda av faktion som bara har en soldat kvar
+
 -Missing file error på load
 -(mercenaries cost increase bort)
 -cost mercenaries på tooltip

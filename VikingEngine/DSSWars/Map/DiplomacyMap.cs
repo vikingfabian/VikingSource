@@ -85,8 +85,12 @@ namespace VikingEngine.DSSWars
             foreach (var rel in relationFlags)
             {
                 Faction faction = DssRef.world.factions[rel.faction];
-
+                if (faction!= null && faction.parentArrayIndex == 18)
+                {
+                    lib.DoNothing();
+                }
                 if (faction != null &&
+                    faction.isAlive &&
                     !faction.HasZeroUnits() &&
                     rel.inCullingView &&
                     (!player.drawUnitsView.current.DrawFullOverview || faction.displayInFullOverview || rel == selected))
