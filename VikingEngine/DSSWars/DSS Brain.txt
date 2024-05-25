@@ -1,5 +1,6 @@
 ﻿Change Log
 * Disabled automation on cities that fight
+* fixed boss save bug
 
 Error
 -en knight 

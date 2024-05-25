@@ -71,10 +71,14 @@ namespace VikingEngine.DSSWars.Players
             base.readGameState(r, version);
 
             int darkLordAlliesCount = r.ReadInt32();
-            for (int i = 0; i < darkLordAlliesCount; i++)
+            if (darkLordAlliesCount > 0)
             {
-                var f = DssRef.world.factions.Array[r.ReadUInt16()];
-                darkLordAllies.Add(f);
+                darkLordAllies = new List<Faction>(darkLordAlliesCount);
+                for (int i = 0; i < darkLordAlliesCount; i++)
+                {
+                    var f = DssRef.world.factions.Array[r.ReadUInt16()];
+                    darkLordAllies.Add(f);
+                }
             }
 
             maxDiplomacy = r.ReadInt32();
