@@ -368,8 +368,17 @@ namespace VikingEngine.DSSWars
             return exitThreads;
         }
 
+        int doubleTaskTest = 0;
+
         bool asyncUserUpdate(int id, float time)
         {
+            doubleTaskTest++;
+
+            if (doubleTaskTest > 1)
+            {
+                throw new Exception("Double task error");
+            }
+
             if (cutScene == null)
             {
                 foreach (var local in localPlayers)
@@ -377,6 +386,9 @@ namespace VikingEngine.DSSWars
                     local.asyncUserUpdate();
                 }
             }
+
+            doubleTaskTest--;
+
             return exitThreads;
 
         }

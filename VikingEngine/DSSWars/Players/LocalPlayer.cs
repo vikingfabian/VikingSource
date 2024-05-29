@@ -340,7 +340,7 @@ namespace VikingEngine.DSSWars.Players
 
                 RichBoxContent content = new RichBoxContent();
                 hud.messages.Title(content, title);
-                DiplomacyDisplay.FactionRelationDisplay(otherFaction, rel, content);
+                DiplomacyDisplay.FactionRelationDisplay(otherFaction, rel.Relation, content);
                 Ref.update.AddSyncAction(new SyncAction1Arg<RichBoxContent>(hud.messages.Add, content));
             }
         }

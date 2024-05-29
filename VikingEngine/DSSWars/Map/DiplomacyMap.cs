@@ -24,6 +24,9 @@ namespace VikingEngine.DSSWars
         bool viewFlash = true;
         Timer.Basic flashTimer = new Timer.Basic(800, true);
 
+        const int PreviousFactionsLookedAtCount = 5;
+        public List<Faction> previousFactionsLookedAt = new List<Faction>(PreviousFactionsLookedAtCount +1);
+
         public DiplomacyMap(LocalPlayer player) 
         { 
             this.player = player;
@@ -223,11 +226,18 @@ namespace VikingEngine.DSSWars
                     if (player.input.Select.DownEvent)
                     {
                         selected = currentHover;
-                        //seletionbox.Area = hoverArea;
-                        //seletionbox.Visible = true;
                         player.hud.needRefresh = true;
 
                         player.hud.displays.beginMove(2);
+
+                        var faction = DssRef.world.factions.Array[selected.faction];
+
+                        previousFactionsLookedAt.Remove(faction);
+                        if (previousFactionsLookedAt.Count > PreviousFactionsLookedAtCount)
+                        { 
+                            arraylib.RemoveLast(previousFactionsLookedAt);
+                        }
+                        previousFactionsLookedAt.Insert(0, faction);
                     }
                 }
                 else

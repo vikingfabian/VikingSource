@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.Display
 
             if ( selectedRelation!= null)
             {
-                FactionRelationDisplay(faction, selectedRelation, content);
+                FactionRelationDisplay(faction, selectedRelation.Relation, content);
 
                 content.newLine();
 
@@ -173,10 +173,31 @@ namespace VikingEngine.DSSWars.Display
                     content.ListDot();
                     content.Add(new RichBoxText(DssRef.lang.Diplomacy_LightSide));//"Is light side ally"));
                 }
+
+                if (player.diplomacyMap.previousFactionsLookedAt.Count > 1)
+                {
+                    content.newParagraph();
+                    content.h2("Their relations with others");
+
+                    for (int i = 1; i < player.diplomacyMap.previousFactionsLookedAt.Count; i++)
+                    {
+                        content.newLine();
+                        var thirdPartFaction = player.diplomacyMap.previousFactionsLookedAt[i];
+                        var relation = DssRef.diplomacy.GetRelationType(otherfaction, thirdPartFaction);
+
+                        content.Add(thirdPartFaction.FlagTextureToHud());
+                        content.Add(new RichBoxText(thirdPartFaction.PlayerName));
+
+                        content.Add(new RichBoxText(": "));
+                        content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation)));
+                        content.Add(new RichBoxText(Diplomacy.RelationString(relation)));
+                    }
+                
+                }
             }
         }
 
-        public static void FactionRelationDisplay(Faction faction, DiplomaticRelation relation, RichBoxContent content)
+        public static void FactionRelationDisplay(Faction faction, RelationType relation, RichBoxContent content)
         {
             content.Add(new RichBoxBeginTitle(2));
             content.Add(faction.FlagTextureToHud());
@@ -188,8 +209,8 @@ namespace VikingEngine.DSSWars.Display
             content.newParagraph();
 
             content.Add(new RichBoxText(DssRef.lang.Diplomacy_RelationType + ": "));
-            content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation.Relation)));
-            content.Add(new RichBoxText(Diplomacy.RelationString(relation.Relation)));
+            content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation)));
+            content.Add(new RichBoxText(Diplomacy.RelationString(relation)));
         }
 
         void playerToPlayer()

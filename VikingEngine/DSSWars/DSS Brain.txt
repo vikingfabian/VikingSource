@@ -1,5 +1,6 @@
 ﻿Change Log
-* 
+* Removed some data recycle to aviod bugs
+
 
 Error
 -inte foreach på: collectMapObjectBattles(Faction faction, IntVector2 tilePos, ref List<AbsMapObject> units, bool collectCities)
