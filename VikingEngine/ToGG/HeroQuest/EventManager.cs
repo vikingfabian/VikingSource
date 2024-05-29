@@ -18,8 +18,8 @@ namespace VikingEngine.ToGG.HeroQuest
 
         public void SendToPlayers(ToGG.Data.EventType eventType, object tag)
         {
-            var players = hqRef.players.allPlayersCounter;
-            players.Reset();
+            var players = hqRef.players.allPlayers.counter();
+          
             while (players.Next())
             {
                 players.sel.OnEvent(eventType, tag);
@@ -46,8 +46,7 @@ namespace VikingEngine.ToGG.HeroQuest
 
         public void SendToActivePlayers(ToGG.Data.EventType eventType, object tag)
         {
-            var players = hqRef.players.allPlayersCounter;
-            players.Reset();
+            var players = hqRef.players.allPlayers.counter();
             while (players.Next())
             {
                 if (players.sel.pData.teamIndex == hqRef.players.currentTeam)

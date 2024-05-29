@@ -11,28 +11,28 @@ namespace VikingEngine.LootFest.Map
         int lastMeshUpdate = 0;
 
         SpottedArray<LowResChunk> chunks = new SpottedArray<LowResChunk>(512);
-        SpottedArrayCounter<LowResChunk> meshGenCounter1, meshGenCounter2, updateCounter;
+        //SpottedArrayCounter<LowResChunk> meshGenCounter1, meshGenCounter2, updateCounter;
 
         ushort[,][, ,] preparedGrids = new ushort[3, 3][, ,];
 
         public LowResChunkCollection()
         {
-            meshGenCounter1 = new SpottedArrayCounter<LowResChunk>(chunks);
-            meshGenCounter2 = new SpottedArrayCounter<LowResChunk>(chunks);
-            updateCounter = new SpottedArrayCounter<LowResChunk>(chunks);
+            //meshGenCounter1 = new SpottedArrayCounter<LowResChunk>(chunks);
+            //meshGenCounter2 = new SpottedArrayCounter<LowResChunk>(chunks);
+            //updateCounter = new SpottedArrayCounter<LowResChunk>(chunks);
         }
 
         public void update(World world)
         {
             bool bChangesMade = false;
 
-            updateCounter.Reset();
-            while (updateCounter.Next())
+            var chunksC =chunks.counter();
+            while (chunksC.Next())
             {
-                int dist = world.smallestHeroDistanceToChunk(updateCounter.sel.index);
+                int dist = world.smallestHeroDistanceToChunk(chunksC.sel.index);
                 if (dist > World.LowResChunksRadius)
                 {
-                    updateCounter.RemoveAtCurrent();
+                    chunksC.RemoveAtCurrent();
                     bChangesMade = true;
                 }
             }
@@ -45,12 +45,12 @@ namespace VikingEngine.LootFest.Map
 
         public void add(Chunk chunk)
         {
-            var counter = meshGenCounter1.IClone();
-            while (counter.Next())
+            var chunksC = chunks.counter();
+            while (chunksC.Next())
             {
-                if (counter.GetSelection.index == chunk.Index)
+                if (chunksC.GetSelection.index == chunk.Index)
                 {
-                    counter.RemoveAtCurrent();
+                    chunksC.RemoveAtCurrent();
                     break;
                 }
             }
@@ -66,23 +66,24 @@ namespace VikingEngine.LootFest.Map
             {
                 lastMeshUpdate = changesMade;
                 meshbuilder.resetCounting();
-                meshGenCounter1.Reset();
+                var chunksC = chunks.counter();
+                var chunksC2 = chunks.counter();
 
-                while (meshGenCounter1.Next())
+                while (chunksC.Next())
                 {
-                    if (renderChunk(meshGenCounter1.sel))
+                    if (renderChunk(chunksC.sel))
                     {
-                        IntVector2 center = meshGenCounter1.sel.index;
+                        IntVector2 center = chunksC.sel.index;
                         int collected = 0;
-                        preparedGrids[1, 1] = meshGenCounter1.sel.grid;
+                        preparedGrids[1, 1] = chunksC.sel.grid;
 
-                        meshGenCounter2.Reset();
-                        while (meshGenCounter2.Next() && collected < 8)
+                        chunksC2.Reset();
+                        while (chunksC2.Next() && collected < 8)
                         {
-                            if (center.SideLength(meshGenCounter2.sel.index) == 1)
+                            if (center.SideLength(chunksC2.sel.index) == 1)
                             {
-                                IntVector2 preparePos = (meshGenCounter2.sel.index - center) + IntVector2.One;
-                                preparedGrids[preparePos.X, preparePos.Y] = meshGenCounter2.sel.grid;
+                                IntVector2 preparePos = (chunksC2.sel.index - center) + IntVector2.One;
+                                preparedGrids[preparePos.X, preparePos.Y] = chunksC2.sel.grid;
                                 collected++;
                             }
                         }

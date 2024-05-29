@@ -1,6 +1,5 @@
 ﻿Change Log
-* Disabled automation on cities that fight
-* fixed boss save bug
+* 
 
 Error
 -inte foreach på: collectMapObjectBattles(Faction faction, IntVector2 tilePos, ref List<AbsMapObject> units, bool collectCities)

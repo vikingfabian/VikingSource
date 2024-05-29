@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars
         public ModelTextureSettings FlagTexture = ModelTextureSettings.Default;
 
         public SpottedArray<Army> armies;
-        public SpottedArrayCounter<Army> armiesCounter;
+        //public SpottedArrayCounter<Army> armiesCounter;
 
         ushort nextUnitId = 0;
         public int nextArmyId = 1;
@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars
             //cityAsynchAiCounter = new SpottedArrayCounter<City>(cities);
 
             armies = new SpottedArray<Army>(16);
-            armiesCounter = armies.counter();
+            //armiesCounter = armies.counter();
 
             
         }
@@ -111,8 +111,8 @@ namespace VikingEngine.DSSWars
                        
 
             w.Write((ushort)armies.Count); 
-            var armiesC = armiesCounter.Clone();
-            while(armiesC.Next())
+            var armiesC = armies.counter();
+            while (armiesC.Next())
             { 
                 armiesC.sel.writeGameState(w); 
             }
@@ -299,7 +299,7 @@ namespace VikingEngine.DSSWars
 
         public bool HasArmyBlockingPosition(IntVector2 tilepos)
         {
-            var armyC = armiesCounter.Clone();
+            var armyC = armies.counter();
             while (armyC.Next())
             {
                 if ((armyC.sel.objective == ArmyObjective.None || armyC.sel.objective == ArmyObjective.Halt) &&
@@ -314,7 +314,7 @@ namespace VikingEngine.DSSWars
 
         public void update()
         {
-            armiesCounter.Reset();
+            var armiesCounter = armies.counter();
 
             while (armiesCounter.Next())
             {
@@ -326,7 +326,8 @@ namespace VikingEngine.DSSWars
 
         public void PauseUpdate()
         {
-            armiesCounter.Reset();
+            var armiesCounter = armies.counter();
+            
             while (armiesCounter.Next())
             {
                 armiesCounter.sel.PauseUpdate();
@@ -395,7 +396,7 @@ namespace VikingEngine.DSSWars
                     //Gain a portion of deserters on all armies
                     int totalDeserters = 0;
 
-                    armiesCounter.Reset();
+                    var armiesCounter = armies.counter();
                     while (armiesCounter.Next())
                     {
                         totalDeserters += armiesCounter.sel.desertSoldiers();
@@ -553,7 +554,7 @@ namespace VikingEngine.DSSWars
             Army closestArmy = null;
             float closestLenght = float.MaxValue;
 
-            armiesCounter.Reset();
+            var armiesCounter = armies.counter();
             while (armiesCounter.Next())
             {
                 Vector3 diff = armiesCounter.sel.position - position;

@@ -57,7 +57,7 @@ namespace VikingEngine.DSSWars
 
         public List<City> cities; 
         public SpottedArray<Faction> factions;
-        public SpottedArrayCounter<Faction> factionsCounter;
+        //public SpottedArrayCounter<Faction> factionsCounter;
 
         public bool BordersUpdated = true;
         
@@ -72,7 +72,7 @@ namespace VikingEngine.DSSWars
         public WorldData()
         {
             factions = new SpottedArray<Faction>();
-            factionsCounter = new SpottedArrayCounter<Faction>(factions);
+            //factionsCounter = new SpottedArrayCounter<Faction>(factions);
         }
 
         public WorldData(WorldMetaData metaData)//ushort seed, MapSize size)
@@ -251,7 +251,7 @@ namespace VikingEngine.DSSWars
             Debug.WriteCheck(w);
 
             factionsSz.begin(w);
-            var factionsCount = factionsCounter.Clone();
+            var factionsCount = factions.counter();
             w.Write(factions.Count);
             while (factionsCount.Next())
             {
@@ -397,8 +397,8 @@ namespace VikingEngine.DSSWars
         public Faction ClosestFactionOverview(Vector3 position)
         {
             FindMinValuePointer<Faction> distances = new FindMinValuePointer<Faction>();
-           
-            factionsCounter.Reset();
+
+            var factionsCounter = factions.counter();
             while(factionsCounter.Next())
             {
                 distances.Next((factionsCounter.sel.SelectionCenter - position).Length(), 

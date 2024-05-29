@@ -359,21 +359,21 @@ namespace VikingEngine.DSSWars.Players
 
                     if (purchaseOrder == PurchaseOrderType_MergeArmies)
                     {
-                        faction.armiesCounter.Reset();
+                        var armiesCounter = faction.armies.counter();
                         int found = 0;
                         Army army1 = null;
                         Army army2 = null;
 
-                        while (faction.armiesCounter.Next() && found < 2)
+                        while (armiesCounter.Next() && found < 2)
                         {
-                            if (faction.armiesCounter.sel.parentArrayIndex == purchaseOrderIndex1)
+                            if (armiesCounter.sel.parentArrayIndex == purchaseOrderIndex1)
                             {
-                                army1 = faction.armiesCounter.sel;
+                                army1 = armiesCounter.sel;
                                 ++found;
                             }
-                            else if (faction.armiesCounter.sel.parentArrayIndex == purchaseOrderIndex2)
+                            else if (armiesCounter.sel.parentArrayIndex == purchaseOrderIndex2)
                             {
-                                army2 = faction.armiesCounter.sel;
+                                army2 = armiesCounter.sel;
                                 ++found;
                             }
                         }
@@ -1111,7 +1111,7 @@ namespace VikingEngine.DSSWars.Players
 
         private void MergeArmiesCheck()
         {
-            var armyC = faction.armiesCounter.Clone();
+            var armyC = faction.armies.counter();
             while (armyC.Next())
             {
                 //if (armyC.sel.ai.objective == ArmyObjective.None)

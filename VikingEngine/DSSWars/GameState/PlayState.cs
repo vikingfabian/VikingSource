@@ -103,17 +103,17 @@ namespace VikingEngine.DSSWars
             new Faction(DssRef.world, FactionType.DarkLord);
             new Faction(DssRef.world, FactionType.SouthHara);
 
-            DssRef.world.factionsCounter.Reset();
-            while (DssRef.world.factionsCounter.Next())
+            var factionsCounter = DssRef.world.factions.counter();
+            while (factionsCounter.Next())
             {
-                DssRef.world.factionsCounter.sel.initDiplomacy(DssRef.world);
-                if (DssRef.world.factionsCounter.sel.factiontype == FactionType.DarkLord)
+                factionsCounter.sel.initDiplomacy(DssRef.world);
+                if (factionsCounter.sel.factiontype == FactionType.DarkLord)
                 {
-                    DssRef.settings.darkLordPlayer = new Players.DarkLordPlayer(DssRef.world.factionsCounter.sel);
+                    DssRef.settings.darkLordPlayer = new Players.DarkLordPlayer(factionsCounter.sel);
                 }
                 else
                 {
-                    new Players.AiPlayer(DssRef.world.factionsCounter.sel);
+                    new Players.AiPlayer(factionsCounter.sel);
                 }
             }
 
@@ -138,10 +138,10 @@ namespace VikingEngine.DSSWars
         {
             events.onGameStart(newGame);
 
-            DssRef.world.factionsCounter.Reset();
-            while (DssRef.world.factionsCounter.Next())
+            var factionsCounter = DssRef.world.factions.counter();
+            while (factionsCounter.Next())
             {
-                DssRef.world.factionsCounter.sel.onGameStart(newGame);
+               factionsCounter.sel.onGameStart(newGame);
             }
 
             foreach (var m in DssRef.world.cities)
@@ -183,10 +183,10 @@ namespace VikingEngine.DSSWars
         {
             if (StartupSettings.SpawnStartingArmies)
             {
-                DssRef.world.factionsCounter.Reset();
-                while (DssRef.world.factionsCounter.Next())
+                var factionsCounter = DssRef.world.factions.counter();
+                while (factionsCounter.Next())
                 {
-                    DssRef.world.factionsCounter.sel.player.createStartUnits();
+                    factionsCounter.sel.player.createStartUnits();
                 }
             }
         }
@@ -319,10 +319,10 @@ namespace VikingEngine.DSSWars
         
         void shareAllHostedObjects(Network.AbsNetworkPeer sender)
         {
-            DssRef.world.factionsCounter.Reset();
-            while (DssRef.world.factionsCounter.Next())
+            var factionsCounter = DssRef.world.factions.counter();
+            while (factionsCounter.Next())
             {
-                DssRef.world.factionsCounter.sel.shareAllHostedObjects(sender);
+                factionsCounter.sel.shareAllHostedObjects(sender);
             }
         }
 

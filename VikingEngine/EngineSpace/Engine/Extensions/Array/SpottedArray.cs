@@ -119,7 +119,7 @@ namespace VikingEngine
     {
         int index;
         public SpottedArray<T> array;
-        public T Member;
+        public T sel;
         Type type;
 
         public SpottedArrayTypeCounter(SpottedArray<T> array, Type type)
@@ -137,13 +137,13 @@ namespace VikingEngine
         {
             while (true)
             {
-                Member = array.NextIteration(ref index);
+                sel = array.NextIteration(ref index);
 
-                if (Member == null)
+                if (sel == null)
                 {
                     return false;
                 }
-                else if (Member.GetType() == type)
+                else if (sel.GetType() == type)
                 {
                     return true;
                 }
@@ -159,7 +159,7 @@ namespace VikingEngine
         public void Reset()
         {
             this.index = -1;
-            Member = default(T);
+            sel = default(T);
         }
         public void RemoveAtCurrent()
         {
@@ -177,7 +177,7 @@ namespace VikingEngine
             return clone;
         }
         public int CurrentIndex { get { return this.index; } }
-        public T GetSelection { get { return Member; } }
+        public T GetSelection { get { return sel; } }
     }
 
 

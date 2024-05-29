@@ -360,12 +360,13 @@ namespace VikingEngine.DSSWars.Map
                         var armies_sp = area.armies;
                         if (armies_sp != null)
                         {
-                            foreach (var a in armies_sp)
+                            for (int aix =0; aix< armies_sp.Count; ++aix)//each (var a in armies_sp)
                             {
-                                if (a.faction != faction && 
-                                    DssRef.diplomacy.InWar(faction, a.faction))
+                                var army = armies_sp[aix];
+                                if (army.faction != faction && 
+                                    DssRef.diplomacy.InWar(faction, army.faction))
                                 {
-                                    units.Add(a);
+                                    units.Add(army);
                                 }
                             }
                         }

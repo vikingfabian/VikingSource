@@ -128,7 +128,7 @@ namespace VikingEngine.DSSWars.Players
             faction.SetProfile(DssRef.storage.flagStorage.flagDesigns[pStorage.profile]);
             faction.diplomaticSide = DiplomaticSide.Light;
 
-            tabArmy = faction.armiesCounter.Clone();
+            tabArmy = faction.armies.counter();
             tabBattle = new SpottedArrayCounter<BattleGroup>(battles);
 
             input = new InputMap(playerindex);

@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.Battle
         const int StandardGridRadius = 20;
         //const float MaxQueTime = 5000;        
         SpottedArray<AbsMapObject> members;
-        SpottedArrayCounter<AbsMapObject> membersC;
+        //SpottedArrayCounter<AbsMapObject> membersC;
         Vector2 center;
         Rotation1D rotation;
 
@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars.Battle
             //playerJoined = new bool[DssRef.state.localPlayers.Count];
 
             members = new SpottedArray<AbsMapObject>(4);
-            membersC = new SpottedArrayCounter<AbsMapObject>(members);
+            //membersC = new SpottedArrayCounter<AbsMapObject>(members);
 
             parentArrayIndex = DssRef.state.battles.Add(this);
 
@@ -84,7 +84,7 @@ namespace VikingEngine.DSSWars.Battle
 
         public SpottedArrayCounter<AbsMapObject> MembersCounter()
         {
-            return membersC.Clone();
+            return members.counter();
         }
 
         public bool addPart(AbsMapObject m, bool atStart = true)
@@ -237,7 +237,7 @@ namespace VikingEngine.DSSWars.Battle
 
         bool allIdle()
         {
-            membersC.Reset();
+            var membersC = MembersCounter();
 
             while (membersC.Next())
             {
@@ -287,7 +287,7 @@ namespace VikingEngine.DSSWars.Battle
             bool hasBattle = false;
 
             //todo replace with player orders
-            membersC.Reset();
+            var membersC = MembersCounter();
 
             while (membersC.Next())
             {
@@ -332,7 +332,7 @@ namespace VikingEngine.DSSWars.Battle
 
             refreshUnitsGridPositions();
 
-            membersC.Reset();
+            var membersC = MembersCounter();
 
             while (membersC.Next())
             {
@@ -377,7 +377,7 @@ namespace VikingEngine.DSSWars.Battle
 
         void refreshUnitsGridPositions()
         {
-            membersC.Reset();
+            var membersC = MembersCounter();
             while (membersC.Next())
             {
                 if (membersC.sel.gameobjectType() == GameObjectType.Army)
@@ -659,7 +659,7 @@ namespace VikingEngine.DSSWars.Battle
             List<City> cities = new List<City>(2);
             Dictionary<int, float> cityDominationStrength = new Dictionary<int, float>(4);
 
-            membersC.Reset();
+            var membersC = MembersCounter();
             while (membersC.Next())
             {
                 if (membersC.sel.gameobjectType() == GameObjectType.City)
