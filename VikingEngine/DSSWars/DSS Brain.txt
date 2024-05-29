@@ -1,9 +1,18 @@
 ﻿Change Log
 * Removed some data recycle to aviod bugs
-
+* See relations between others
+! cant find the automation crash
+! missing knights bug is not solved
 
 Error
--inte foreach på: collectMapObjectBattles(Faction faction, IntVector2 tilePos, ref List<AbsMapObject> units, bool collectCities)
+- Player 2, 3, and 4 are unable to open and navigate the pause menu while using their controller
+- When opening the Steam Overlay, by pressing the home button on the controller, the game does not pause and continues to function while navigating the Steam Overlay menu.
+- When the controller is unplugged during gameplay, the game does not automatically pause.
+//- checked: "Do you use AI to generate pre-rendered content for your game?"
+
+
+
+
 -en knight 
 -also path finding of a land army will often prefer water over land when the boat building will cause the travel time to take considerably longer than if it went over land
 from what i've seen, this generally only happens if the army is on a land tile immediately adjacent to water
@@ -15,7 +24,6 @@ Retreat system
 
 Polish
 -döda av faktion som bara har en soldat kvar
-
 -Missing file error på load
 -(mercenaries cost increase bort)
 -cost mercenaries på tooltip
@@ -38,9 +46,7 @@ Art
 -world domination achieve
 
 #Upcoming Events
-- May 17: Game challenge competition and showcase booth
-- Juni 10: Steam next fest
-- August: Steam release
+- June 19: Steam release
 - Late Summer / Early Autumn: Game world championship
 
 

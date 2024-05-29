@@ -459,6 +459,11 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Diplomacy_RelationType=> "Relation";
 
         /// <summary>
+        /// Titel for list of relations other factions have with eachother
+        /// </summary>
+        public override string Diplomacy_RelationToOthers => "Their relations with others";
+
+        /// <summary>
         /// Diplomatic relation. You are in direct control over the nations resources.
         /// </summary>
         public override string Diplomacy_RelationType_Servant=> "Servant";

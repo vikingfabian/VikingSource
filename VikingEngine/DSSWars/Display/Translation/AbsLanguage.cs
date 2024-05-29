@@ -163,6 +163,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         
         public abstract string Diplomacy_RelationType { get; }
+        public abstract string Diplomacy_RelationToOthers { get; }
         public abstract string Diplomacy_RelationType_Servant { get; }
         public abstract string Diplomacy_RelationType_Ally { get; }
         public abstract string Diplomacy_RelationType_Good { get; }
