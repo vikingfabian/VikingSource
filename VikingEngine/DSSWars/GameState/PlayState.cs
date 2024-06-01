@@ -5,11 +5,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Display.CutScene;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.Input;
 using VikingEngine.ToGG.MoonFall;
 //
 
@@ -40,12 +42,14 @@ namespace VikingEngine.DSSWars
 
         bool bResourceUpdate = false;
         public int NextArmyId = 0;
+        public GameMenuSystem menuSystem;
 
         public PlayState(bool host, SaveStateMeta loadMeta)
             : base(true)
         {
             DssRef.state = this;
             Ref.rnd.SetSeed(DssRef.world.metaData.seed);
+            menuSystem = new GameMenuSystem();
 
             new Diplomacy();
             new Achievements();
@@ -205,9 +209,19 @@ namespace VikingEngine.DSSWars
                 Ref.music.Update();
             }
 
+            if (Ref.steam.inOverlay)
+            {
+                return;
+            }
+
             if (cutScene != null)
             {
                 cutScene.Time_Update(time);
+                return;
+            }
+
+            if (pauseMenuUpdate())
+            {
                 return;
             }
 
@@ -264,15 +278,37 @@ namespace VikingEngine.DSSWars
             foreach (var local in localPlayers)
             {
                 local.userUpdate();
+                if (local.input.Menu.DownEvent)
+                {
+                    menuSystem.pauseMenu();
+                }
             }
 
             Engine.ParticleHandler.Update(time);
 
         }
 
+        bool pauseMenuUpdate()
+        {
+            if (menuSystem.Open)
+            {
+                menuSystem.menuUpdate();
+                foreach (var local in localPlayers)
+                {
+                    if (local.input.Menu.DownEvent)
+                    {
+                        menuSystem.closeMenu();
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+
         const float AutoSaveTimeSec = 10 * 60;
         float LastAutoSaveTime_TotalSec = 0;
 
+        
         public void OneMinute_Update()
         { 
             bResourceUpdate = true;
@@ -308,6 +344,7 @@ namespace VikingEngine.DSSWars
             new ExitGamePlay();
         }
 
+        
         public override void NetEvent_ConnectionLost(string reason)
         {
             base.NetEvent_ConnectionLost(reason);

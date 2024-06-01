@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars.Display
                         new RichBoxImage(player.input.Menu.Icon),
                         new RichBoxText(DssRef.lang.GameMenu_Title),
                     },
-                    new RbAction(player.menuSystem.pauseMenu),
+                    new RbAction(DssRef.state.menuSystem.pauseMenu),
                     null));
 
                 content.Add(new RichBoxNewLine());

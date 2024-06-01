@@ -96,7 +96,9 @@ namespace VikingEngine.DSSWars.Data
             if (dataReady)
             { 
                 dataReady = false;
-                new WriteByteArray(meta.Path, memoryStream, this);
+                var path = meta.Path;
+                System.IO.Directory.CreateDirectory(path.CompleteDirectory);
+                new WriteByteArray(path, memoryStream, this);
             }
         }
 

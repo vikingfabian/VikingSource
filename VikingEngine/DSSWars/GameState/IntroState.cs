@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 using VikingEngine.PJ;
 using VikingEngine.DSSWars.Map.Settings;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.DSSWars
 {
@@ -23,6 +24,7 @@ namespace VikingEngine.DSSWars
         bool loadingContentComplete = false;
         bool loadingDataComplete = false;
         //bool bStorageReady = false;
+        WaitForCloudSynch  waitForCloudSynch = new WaitForCloudSynch();
 
         public IntroState(bool isReset)
             : base()
@@ -162,17 +164,18 @@ namespace VikingEngine.DSSWars
 
             DssRef.models?.sychLoading();
 
-
-            if (loadingContentComplete && loadingDataComplete)
+            if (waitForCloudSynch.update())
             {
+                if (loadingContentComplete && loadingDataComplete)
+                {
 #if PCGAME
-                Engine.Screen.ApplyScreenSettings();
+                    Engine.Screen.ApplyScreenSettings();
 #endif
-                    
-                Ref.main.criticalContentIsLoaded = true;
 
-                new GameState.ExitGamePlay();
-                //TestFileSaving();
+                    Ref.main.criticalContentIsLoaded = true;
+
+                    new GameState.ExitGamePlay();
+                }
             }
         }
 

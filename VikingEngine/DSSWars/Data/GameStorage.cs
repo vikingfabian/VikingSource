@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Xml.Schema;
+using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Profile;
 using VikingEngine.Engine;
 using VikingEngine.Input;
@@ -20,7 +21,7 @@ namespace VikingEngine.DSSWars.Data
         public int playerCount = 1;
         public bool verticalScreenSplit = true;
 
-        DataStream.FilePath path = new DataStream.FilePath(null, "DSS_gameoptions", ".set");
+        DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath, "DSS_gameoptions", ".sav");
        
         public MapSize mapSize = MapSize.Medium;
         public bool generateNewMaps = false;
@@ -52,6 +53,7 @@ namespace VikingEngine.DSSWars.Data
 
         public void Save(DataStream.IStreamIOCallback callBack)
         {
+            System.IO.Directory.CreateDirectory(path.CompleteDirectory);
             DataStream.BeginReadWrite.BinaryIO(true, path, write, null, callBack, true);
         }
 
@@ -106,8 +108,7 @@ namespace VikingEngine.DSSWars.Data
             w.Write(generateNewMaps);
             w.Write(autoSave);
             w.Write(multiplayerGameSpeed);
-            DssRef.difficulty.write(w);
-            
+            DssRef.difficulty.write(w);            
         }
         public void read(System.IO.BinaryReader r)
         {

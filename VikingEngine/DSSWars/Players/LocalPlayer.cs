@@ -25,8 +25,8 @@ namespace VikingEngine.DSSWars.Players
 
         public GameHud hud;
         public InputMap input;
+        bool inputConnected;
         
-        public GameMenuSystem menuSystem;
         public MapControls mapControls;
         public ArmyControls armyControls = null;
 
@@ -134,6 +134,8 @@ namespace VikingEngine.DSSWars.Players
             input = new InputMap(playerindex);
             input.setInputSource(pStorage.inputSource.sourceType, pStorage.inputSource.controllerIndex);
 
+            inputConnected = input.Connected;
+
             faction.profile.gameStartInit();
             faction.displayInFullOverview = true;
 
@@ -150,7 +152,7 @@ namespace VikingEngine.DSSWars.Players
             Ref.draw.AddPlayerScreen(playerData);
             drawUnitsView = new MapDetailLayerManager(playerData);
 
-            menuSystem = new GameMenuSystem(input, IsLocalHost());
+            
 
             new AsynchUpdateable(interactAsynchUpdate, "DSS player interact", 0);
 
@@ -353,10 +355,10 @@ namespace VikingEngine.DSSWars.Players
 
         public void userUpdate()
         {
-            bool openMenySystem = menuSystem.update();
             
-            if (!openMenySystem)
-            {
+            
+            //if (!openMenySystem)
+            //{
                 
                 hud.update();
 
@@ -418,7 +420,13 @@ namespace VikingEngine.DSSWars.Players
                         {
                             mapExecute();
                         }
-                    }                    
+                    }
+
+                    if (inputConnected && !input.Connected)
+                    {
+                        DssRef.state.menuSystem.controllerLost();
+                    }
+                    inputConnected = input.Connected;
                 }
                 else
                 {
@@ -435,10 +443,8 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
 
-               
-
                 updateGameSpeed();
-            }
+            //}
 
             updateObjectTabbing();
 

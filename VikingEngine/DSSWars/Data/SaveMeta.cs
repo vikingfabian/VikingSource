@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars.Data
         SaveIterations autosaves = new SaveIterations(AutoSaveCount);
 
 
-        DataStream.FilePath path = new DataStream.FilePath(null, "DSS_savemeta", ".sav");
+        DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath, "DSS_savemeta", ".sav");
 
         public void Save(DataStream.IStreamIOCallback callBack)
         {
@@ -198,7 +198,7 @@ namespace VikingEngine.DSSWars.Data
 
         DataStream.FilePath filepath(bool auto, int index)
         {
-           return new DataStream.FilePath(null, string.Format("DSS_{0}savestate{1}_v{2}", auto? "auto_":string.Empty, index, stateVersion), ".sav");
+           return new DataStream.FilePath(Ref.steam.UserCloudPath, string.Format("DSS_{0}savestate{1}_v{2}", auto? "auto_":string.Empty, index, stateVersion), ".sav");
         }
 
         public DataStream.FilePath Path => filepath(autosave, index);

@@ -14,33 +14,33 @@ namespace VikingEngine.DSSWars.Display
     class GameMenuSystem:MenuSystem
     {
         bool gameWasPaused;
-        bool localHost;
+        //bool localHost;
         Graphics.Image blackFade;
-        public GameMenuSystem(InputMap input, bool localHost)
-            :base (input, MenuType.InGame)
+        public GameMenuSystem()//, bool localHost)
+            :base (new InputMap(Engine.XGuide.LocalHostIndex), MenuType.InGame)
         { 
-            this.localHost = localHost;
+            //this.localHost = localHost;
         }
 
-        public bool update()
-        {
-            if (localHost)
-            {
-                if (Open)
-                {
-                    menuUpdate();
-                    return true;
-                }
-                else
-                {
-                    if (input.Menu.DownEvent)
-                    {
-                        pauseMenu();
-                    }
-                }
-            }
-            return false;
-        }
+        //public bool update()
+        //{
+        //    //if (localHost)
+        //    //{
+        //        if (Open)
+        //        {
+        //            menuUpdate();
+        //            return true;
+        //        }
+        //        else
+        //        {
+        //            if (input.Menu.DownEvent)
+        //            {
+        //                pauseMenu();
+        //            }
+        //        }
+        //    //}
+        //    return false;
+        //}
 
         public override void openMenu()
         {
@@ -109,6 +109,12 @@ namespace VikingEngine.DSSWars.Display
                 new GuiDialogButton(DssRef.lang.GameMenu_ExitGame, null, new GuiAction(saveAndExit), false, layout);
             }
             layout.End();
+        }
+
+        public void controllerLost()
+        {
+            pauseMenu();
+
         }
 
     }

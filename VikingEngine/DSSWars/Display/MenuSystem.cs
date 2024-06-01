@@ -44,11 +44,11 @@ namespace VikingEngine.DSSWars.Display
         {
             if (menu == null)
             {
-                VectorRect area = XGuide.GetPlayer(input.playerIndex).view.safeScreenArea;
-                if (area.Width <= 0)
-                {
-                    area = Engine.Screen.SafeArea;
-                }
+                VectorRect area = Engine.Screen.SafeArea;//XGuide.GetPlayer(input.playerIndex).view.safeScreenArea;
+                //if (area.Width <= 0)
+                //{
+                //    area = Engine.Screen.SafeArea;
+                //}
 
                 menu = new Gui(GuiStyle(menuType == MenuType.Lobby), 
                     area, 
