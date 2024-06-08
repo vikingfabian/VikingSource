@@ -1,24 +1,9 @@
-﻿To restore your save files
-Change these file endings:
-DSS_gameoptions.set > DSS_gameoptions.sav
-All FlagSave files .set > .sav
-
-All .sav files has been moved to a folder with your user id, se example:
-C:\Users\name\Documents\My Games\DSS_warparty
-to
-C:\Users\name\Documents\My Games\DSS_warparty\56474839826
-
--Delete any files inside the userid-folder before moving
-
+﻿
 Change Log
-* Cloud saves
+* 
 
 Error
-//- Player 2, 3, and 4 are unable to open and navigate the pause menu while using their controller
-/?- When opening the Steam Overlay, by pressing the home button on the controller, the game does not pause and continues to function while navigating the Steam Overlay menu.
-//- When the controller is unplugged during gameplay, the game does not automatically pause.
-//- checked: "Do you use AI to generate pre-rendered content for your game?"
-
+-For both the "Full" and "Partial" Controller Support category that appears on the store page, it's expected to have a "Developer's Recommended Configuration." For more information on how to create and publish a controller configuration, please see: https://partner.steamgames.com/doc/features/steam_controller/getting_started_for_devs
 
 
 
