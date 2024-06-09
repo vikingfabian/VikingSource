@@ -56,6 +56,17 @@ namespace VikingEngine.DSSWars.Map
             groundY = r.ReadSingle();
             mainTerrain = (TerrainMainType)r.ReadByte();
         }
+
+        public TerrainSubFoilType GetFoilType()
+        {
+            if (mainTerrain == TerrainMainType.Foil &&
+                subTerrain >= 0)
+            {
+                return (TerrainSubFoilType)subTerrain;
+            }
+
+            return TerrainSubFoilType.NUM_NONE;
+        }
     }
 
 }

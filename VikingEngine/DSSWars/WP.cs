@@ -34,9 +34,9 @@ namespace VikingEngine.DSSWars
         {
             return new IntVector2(pos.X, pos.Y);
         }
-        public static IntVector2 ToSubTilePos(Vector3 pos)
+        public static IntVector2 ToSubTilePos_Centered(IntVector2 tilePos)
         {
-            return new IntVector2(pos.X * WorldData.TileSubDivitions, pos.Z * WorldData.TileSubDivitions);
+            return new IntVector2(tilePos.X * WorldData.TileSubDivitions + WorldData.SubTileHalfWidth, tilePos.Y * WorldData.TileSubDivitions + WorldData.SubTileHalfWidth);
         }
 
         public static IntVector2 ToSubTilePos_TopLeft(IntVector2 pos)
@@ -52,12 +52,12 @@ namespace VikingEngine.DSSWars
                 tile.Y * TileDrawScale);
         }
 
-        public static Vector3 ToSubTilePos_Centered(IntVector2 subtile)
+        public static Vector3 ToSubTileWP_Centered(IntVector2 tilePos)
         {
             return new Vector3(
-                subtile.X * WorldData.SubTileWidth + WorldData.SubTileHalfWidth,
-                DssRef.world.subTileGrid.Get(subtile).groundY,
-                subtile.Y * WorldData.SubTileWidth + WorldData.SubTileHalfWidth);
+                tilePos.X * WorldData.SubTileWidth + WorldData.SubTileHalfWidth,
+                DssRef.world.subTileGrid.Get(tilePos).groundY,
+                tilePos.Y * WorldData.SubTileWidth + WorldData.SubTileHalfWidth);
         }
 
         public static void Rotation1DToQuaterion(Graphics.Mesh mesh, float rotation)

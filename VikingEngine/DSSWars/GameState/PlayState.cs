@@ -169,6 +169,7 @@ namespace VikingEngine.DSSWars
             new AsynchUpdateable_TryCatch(asyncMapBorders, "DSS map borders update", 59);
             new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60);
             new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62);
+            new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63);
 
             if (StartupSettings.RunResoursesUpdate)
             {
@@ -375,6 +376,18 @@ namespace VikingEngine.DSSWars
                     {
                         battlesC.RemoveAtCurrent();
                     }
+                }
+            }
+            return exitThreads;
+        }
+
+        bool asyncWorkUpdate(int id, float time)
+        {
+            if (cutScene == null)
+            {
+                foreach (var m in DssRef.world.cities)
+                {
+                    m.async_workUpdate();
                 }
             }
             return exitThreads;

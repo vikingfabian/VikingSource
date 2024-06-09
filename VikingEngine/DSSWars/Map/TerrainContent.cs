@@ -8,6 +8,7 @@ namespace VikingEngine.DSSWars.Map
     {
         public const int SproutMaxSize = 5;
         public const int TreeMaxSize = 100;
+        public const int TreeReadySize = 50;
 
         public void asyncFoilGroth(IntVector2 pos, SubTile subtile)
         {
@@ -158,7 +159,7 @@ namespace VikingEngine.DSSWars.Map
         Stones,
         StoneBlock,
         FarmCulture,
-        NUM
+        NUM_NONE
     }
 
     enum TerrainBuildingType
