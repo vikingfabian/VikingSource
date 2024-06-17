@@ -52,8 +52,7 @@ namespace VikingEngine.ToGG.HeroQuest.Lobby
 
         public HeroSelectScreenMember setNext(Network.AbsNetworkPeer peer)
         {
-            int non;
-            if (peer != null && !findPeer(peer, out non))
+            if (peer != null && !findPeer(peer, out _))
             {
                 if (peer.IsRemote)
                 {

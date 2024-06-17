@@ -2411,6 +2411,7 @@ namespace VikingEngine
         #endregion
 
         #region DSS WARS
+        WarsNightmareEyeGlow,
         WarsGroundTex,
         warsFoliageShadow,
 

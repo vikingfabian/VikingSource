@@ -53,7 +53,7 @@ namespace VikingEngine.ToGG
 
         //protected override void SynchedEvent()//public override void Time_Update(float time)
         // {
-        protected override void runQuedMainTask()
+        public override void runSyncAction()
         {
             if (!removed)
             {

@@ -59,10 +59,9 @@ namespace VikingEngine.ToGG.ToggEngine.Map
                 IntVector2.NegativeOne,
                 filter);
 
-            IntVector2 non;
             for (int i = result.Count - 1; i >= 0; --i)
             {
-                if (toggRef.board.InLineOfSight(center, result[i].squarePos, out non, null,
+                if (toggRef.board.InLineOfSight(center, result[i].squarePos, out _, null,
                     unitsAreObsticles, false) == false)
                 {
                     result.RemoveAt(i);

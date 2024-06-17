@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.PJ;
+using VikingEngine.ToGG.HeroQuest.Players.Ai;
 
 namespace VikingEngine.DSSWars.Display.Translation
 {
@@ -52,29 +54,29 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Players can select visual appearance and store them in a profile
         /// </summary>
-        public override string Lobby_ProfilesSelectTitle => "Select profile";
+        public override string Lobby_FlagSelectTitle => "Select flag";
 
         /// <summary>
         /// 0: Numbered 1 to 16
         /// </summary>
-        public override string Lobby_ProfileNumbered => "Profile {0}";
+        public override string Lobby_FlagNumbered => "Flag {0}";
 
         /// <summary>
         /// Game name and version number
         /// </summary>
         public override string Lobby_GameVersion => "DSS war party - ver {0}";
 
-        public override string ProfileEditor_Description => "Paint your flag and select colors for your army men.";
+        public override string FlagEditor_Description => "Paint your flag and select colors for your army men.";
 
         /// <summary>
         /// Paint tool that fills an area with a color
         /// </summary>
-        public override string ProfileEditor_Bucket => "Bucket";
+        public override string FlagEditor_Bucket => "Bucket";
 
         /// <summary>
-        /// Opens profile editor
+        /// Opens flag profile editor
         /// </summary>
-        public override string Lobby_ProfileEdit => "Edit profile";
+        public override string Lobby_FlagEdit => "Edit flag";
 
 
         public override string Lobby_WarningTitle => "Warning";
@@ -1084,6 +1086,23 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// Cutscene introduction
         /// </summary>
         public override string EndScreen_Epilogue_Text => "160 years ago";
+
+        /// <summary>
+        /// The Prologue is a short poem about the game's stroy
+        /// </summary>
+        public override string GameMenu_WatchPrologue => "Watch Prologue";
+
+        public override string Prologue_Title => "Prologue";
+
+        /// <summary>
+        /// The poem must be three lines, the fourth line will be pulled from the names translations to present the name of the boss
+        /// </summary>
+        public override List<string> Prologue_TextLines => new List<string>
+        {
+            "Dreams haunt you at night,",
+            "A prophecy of a dark future",
+            "Prepare for his arrival,",
+        };
 
         /// <summary>
         /// Ingame menu when pausing

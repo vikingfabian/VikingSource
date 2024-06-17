@@ -211,7 +211,7 @@ namespace VikingEngine.Engine
             {
                 for (int i = 0; i < syncQue.Count;++i)
                 {
-                    syncQue[i].execute();
+                    syncQue[i].runSyncAction();
                 }
                 syncQue.Clear();
             }

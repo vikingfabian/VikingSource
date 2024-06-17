@@ -25,7 +25,7 @@ namespace VikingEngine.Voxels
             designer.MakeThreadedStamp(selection, updateArea);
             //return true;
         }
-        protected override void runQuedMainTask()
+        public override void runSyncAction()
         {
         //    base.runQuedMainTask();
         //}

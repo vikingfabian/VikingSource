@@ -15,7 +15,7 @@ namespace VikingEngine.DataStream
         {
             storagePriority = true;
         }
-        protected override void runQuedStorageTask()
+        public override void runQuedStorageTask()
         {
             base.runQuedStorageTask();
             data = DataStreamHandler.Read(filePath);

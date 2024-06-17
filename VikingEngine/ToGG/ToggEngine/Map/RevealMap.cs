@@ -101,9 +101,9 @@ namespace VikingEngine.ToGG.ToggEngine.Map
             return false;
         }
 
-        protected override void runQuedMainTask()
+        public override void runSyncAction()
         {
-            base.runQuedMainTask();
+            base.runSyncAction();
 
             if (revealedSquares.Count > 0)
             {

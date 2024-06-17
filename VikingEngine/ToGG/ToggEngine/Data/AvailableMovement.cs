@@ -37,7 +37,8 @@ namespace VikingEngine.ToGG
             if (isAsynch)
             {
                 runQuedAsynchTask();//quedEvent();
-                AddToUpdateList();
+                addToSyncedUpdate();
+                //AddToUpdateList();
             }
             else
             {
@@ -109,7 +110,7 @@ namespace VikingEngine.ToGG
             }
         }
 
-        protected override void runQuedMainTask()
+        public override void runSyncAction()
         {
              player.mapControls.SetAvailableTiles(available);
         }

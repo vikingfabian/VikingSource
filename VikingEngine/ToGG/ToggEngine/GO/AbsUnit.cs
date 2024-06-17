@@ -596,9 +596,8 @@ namespace VikingEngine.ToGG.ToggEngine.GO
                 return true;
             }
 
-            IntVector2 non;
             return InProjectileRange(fromPos, target, range) &&
-                InLineOfSight(fromPos, target, terrainTarget, out non);
+                InLineOfSight(fromPos, target, terrainTarget, out _);
         }
 
         public bool InMinProjectileRange(IntVector2 target)

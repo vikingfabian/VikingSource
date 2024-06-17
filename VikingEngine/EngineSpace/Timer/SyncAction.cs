@@ -9,7 +9,7 @@ namespace VikingEngine
 {
     interface ISyncAction
     {
-        void execute();
+        void runSyncAction();
     }
     struct SyncAction : ISyncAction
     {
@@ -23,7 +23,7 @@ namespace VikingEngine
         {
             this.action = action1 + action2;
         }
-        public void execute()
+        public void runSyncAction()
         {
             action();
         }
@@ -40,7 +40,7 @@ namespace VikingEngine
             this.index = index;
         }
 
-        public void execute()
+        public void runSyncAction()
         {
             action(index);
         }
@@ -56,7 +56,7 @@ namespace VikingEngine
             this.action = action;
             this.arg1 = arg1;
         }
-        public void execute()
+        public void runSyncAction()
         {
             action(arg1);
         }
@@ -74,7 +74,7 @@ namespace VikingEngine
             this.arg1 = arg1;
             this.arg2 = arg2;
         }
-        public void execute()
+        public void runSyncAction()
         {
             action(arg1, arg2);
         }
@@ -94,7 +94,7 @@ namespace VikingEngine
             this.arg1 = arg1;
             this.arg2 = arg2;
         }
-        public void execute()
+        public void runSyncAction()
         {
             action(arg1, arg2);
         }
@@ -114,7 +114,7 @@ namespace VikingEngine
             this.arg2 = arg2;
             this.arg3 = arg3;
         }
-        public void execute()
+        public void runSyncAction()
         {
             action(arg1, arg2, arg3);
         }
@@ -136,7 +136,7 @@ namespace VikingEngine
             this.arg3 = arg3;
             this.arg4 = arg4;
         }
-        public void execute()
+        public void runSyncAction()
         {
             action(arg1, arg2, arg3, arg4);
         }
@@ -160,7 +160,7 @@ namespace VikingEngine
             this.arg4 = arg4;
             this.arg5 = arg5;
         }
-        public void execute()
+        public void runSyncAction()
         {
             action(arg1, arg2, arg3, arg4, arg5);
         }

@@ -32,7 +32,7 @@ namespace VikingEngine.DataStream
             beginStorageTask();//start();
         }
 
-        protected override void runQuedStorageTask()
+        public override void runQuedStorageTask()
         {
             List<string> files = DataStreamHandler.GetTimeMarkedStoragePaths(filePath);
             foreach (string s in files)
@@ -76,7 +76,7 @@ namespace VikingEngine.DataStream
             beginStorageTask();
             //start();
         }
-        protected override void runQuedStorageTask()
+        public override void runQuedStorageTask()
         {
             data = DataStreamHandler.Read(path);
             //if (data != null)

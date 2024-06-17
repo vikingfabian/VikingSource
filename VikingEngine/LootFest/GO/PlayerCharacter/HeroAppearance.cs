@@ -56,8 +56,9 @@ namespace VikingEngine.LootFest.GO.PlayerCharacter
             //Engine.Storage.AddToSaveQue(StartQuedProcess, false);
             addTaskToQue(MultiThreadType.Storage);
         }
-        public override void Time_Update(float time)
+        public override void runSyncAction()
         {
+            base.runSyncAction();
             callBackEvent(originalMesh, baseImage);
             //base.Time_Update(time);
         }

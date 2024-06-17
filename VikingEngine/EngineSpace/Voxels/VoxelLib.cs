@@ -862,7 +862,6 @@ namespace VikingEngine.Voxels
         public static List<byte[,,]> ReadVoxelObjectAnim(System.IO.BinaryReader r)
         {
             List<byte[, ,]> grids;
-            List<Voxel> non;
             byte saveVersion;
             int numFrames;
             IntVector3 size;
@@ -874,7 +873,7 @@ namespace VikingEngine.Voxels
                 byte[] usedMaterials = ReadUsedMaterials(r);
                 for (int frame = 0; frame < numFrames; frame++)
                 {
-                    grids.Add(Voxels.VoxelLib.ReadMaterialAndReps(r, size, usedMaterials, false, out non));
+                    grids.Add(Voxels.VoxelLib.ReadMaterialAndReps(r, size, usedMaterials, false, out _));
                 }
             }
             else

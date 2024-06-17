@@ -44,9 +44,9 @@ namespace VikingEngine.LootFest.Process
             //if (deleteOrgMesh)
             //    originalMesh.DeleteMe();
         }
-        protected override void runQuedMainTask()
+        public override void runSyncAction()
         {
-            base.runQuedMainTask();
+            base.runSyncAction();
             LfRef.modelLoad.SetMasterImage(baseImage, originalMesh);
             callback.SetCustomImage(originalMesh, (int)baseImage);
         }

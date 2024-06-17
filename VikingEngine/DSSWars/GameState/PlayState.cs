@@ -293,14 +293,25 @@ namespace VikingEngine.DSSWars
             if (menuSystem.Open)
             {
                 menuSystem.menuUpdate();
-                foreach (var local in localPlayers)
+               
+                if (closeMenuInput_AnyPlayer())
                 {
-                    if (local.input.Menu.DownEvent)
-                    {
-                        menuSystem.closeMenu();
-                    }
+                    menuSystem.closeMenu();
                 }
+                
                 return true;
+            }
+            return false;
+        }
+
+        public bool closeMenuInput_AnyPlayer()
+        {
+            foreach (var local in localPlayers)
+            {
+                if (local.input.Menu.DownEvent)
+                {
+                    return true;
+                }
             }
             return false;
         }

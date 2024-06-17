@@ -67,8 +67,8 @@ namespace VikingEngine.Input
 
             if (includeAlternative)
             {
-                SpriteName non;
-                dirMap2.ListIcons(list, out non, includeAlternative);
+                //SpriteName non;
+                dirMap2.ListIcons(list, out _, includeAlternative);
             }
         }
 
@@ -176,22 +176,21 @@ namespace VikingEngine.Input
 
             if (includeAlternative)
             {
-                SpriteName non;
                 if (dirMap2 != null)
                 {
-                    dirMap2.ListIcons(list, out non, includeAlternative);
+                    dirMap2.ListIcons(list, out _, includeAlternative);
                 }
                 if (dirMap3 != null)
                 {
-                    dirMap3.ListIcons(list, out non, includeAlternative);
+                    dirMap3.ListIcons(list, out _, includeAlternative);
                 }
                 if (dirMap4 != null)
                 {
-                    dirMap4.ListIcons(list, out non, includeAlternative);
+                    dirMap4.ListIcons(list, out _, includeAlternative);
                 }
                 if (dirMap5 != null)
                 {
-                    dirMap5.ListIcons(list, out non, includeAlternative);
+                    dirMap5.ListIcons(list, out _, includeAlternative);
                 }
 
             }

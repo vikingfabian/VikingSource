@@ -60,8 +60,8 @@ namespace VikingEngine.ToGG.Commander.Display
 
             selectionChild = images.Add(selection);
 
-            float Height; Vector2 cardSize; float non_spacing; float bgWidth;
-            ToggEngine.Display2D.StrategyCardsHud.Scale(out Height, out cardSize, out non_spacing, out bgWidth);
+            float Height; Vector2 cardSize; float bgWidth;
+            ToggEngine.Display2D.StrategyCardsHud.Scale(out Height, out cardSize, out _, out bgWidth);
 
             Vector2 spherePos = Engine.Screen.SafeArea.RightBottom;//nextPhaseButton.area.LeftBottom;
             spherePos.X -= bgWidth + HudLib.PhaseButtonsSpacing + spacing * 0.5f;

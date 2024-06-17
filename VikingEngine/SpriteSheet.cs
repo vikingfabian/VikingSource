@@ -2301,6 +2301,7 @@ namespace VikingEngine
                     add(SpriteName.WarsDarkLordBossIcon);
                     add(SpriteName.WarsFactoryIcon);
                     add(SpriteName.ColorPickerCircle);
+                    add(SpriteName.WarsNightmareEyeGlow);
                 }
 
                 currentIndex = numTilesWidth * 106;

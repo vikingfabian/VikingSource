@@ -20,9 +20,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string Lobby_LocalMultiplayerControllerRequired { get; }
         public abstract string Lobby_NextScreen { get; }
 
-        public abstract string Lobby_ProfilesSelectTitle { get; }
-        public abstract string Lobby_ProfileNumbered { get; }
-        public abstract string Lobby_ProfileEdit { get; }
+        public abstract string Lobby_FlagSelectTitle { get; }
+        public abstract string Lobby_FlagNumbered { get; }
+        public abstract string Lobby_FlagEdit { get; }
 
 
         public abstract string Lobby_WarningTitle { get; }
@@ -46,8 +46,8 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string Player_DefaultName { get; }
 
-        public abstract string ProfileEditor_Description { get; }
-        public abstract string ProfileEditor_Bucket { get; }
+        public abstract string FlagEditor_Description { get; }
+        public abstract string FlagEditor_Bucket { get; }
         public abstract string ProfileEditor_OptionsMenu { get; }
         public abstract string ProfileEditor_FlagColorsTitle { get; }        
         public abstract string ProfileEditor_MainColor { get; }
@@ -341,6 +341,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string EndScreen_Epilogue_Title { get; }
         public abstract string EndScreen_Epilogue_Text { get; }
 
+
+        public abstract string GameMenu_WatchPrologue { get; }
+        public abstract string Prologue_Title { get; }
+        public abstract List<string> Prologue_TextLines { get; }
 
         public abstract string GameMenu_Title { get; }
         public abstract string GameMenu_ContinueGame { get; }
