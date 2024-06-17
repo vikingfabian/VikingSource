@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars.GameObject
             modelName = LootFest.VoxelModelName.war_sailor;
             modelVariationCount = 2;
 
-            description = "Strong during sea warfare";
+            description = DssRef.lang.UnitType_Description_Sailor;
             icon = SpriteName.WarsUnitIcon_Viking;
         }
     }

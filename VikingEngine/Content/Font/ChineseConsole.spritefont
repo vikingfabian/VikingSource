@@ -11,14 +11,13 @@ with.
     <!--
     Modify this string to change the font that will be imported.
     -->
-    <FontName>Open Sans</FontName>
+    <FontName>Microsoft YaHei Mono</FontName>
 
     <!--
-    Open Sans
     Size is a float value, measured in points. Modify this value to change
     the size of the font.
     -->
-    <Size>25</Size>
+    <Size>24</Size>
 
     <!--
     Spacing is a float value, measured in pixels. Modify this value to change
@@ -52,60 +51,22 @@ with.
     See the documentation for more information.
     -->
     <CharacterRegions>
-
-      <!-- All EU -->
       <CharacterRegion>
-
         <Start>&#32;</Start>
-
-        <End>&#511;</End>
-
+        <End>&#512;</End>
       </CharacterRegion>
 
-      <!-- Thai -->
-      <CharacterRegion>
+		<!-- Simplified Chinese -->
+		<CharacterRegion>
+			<Start>&#x4E00;</Start>
+			<End>&#x9FFF;</End>
+		</CharacterRegion>
 
-        <Start>&#x0E00;</Start>
-
-        <End>&#x0E7F;</End>
-
-      </CharacterRegion>
-
-      <!-- Russian -->
-      <CharacterRegion>
-
-        <Start>&#x410;</Start>
-
-        <End>&#x44F;</End>
-
-      </CharacterRegion>
-
-      <!-- Most common Kanji (japanese, chinese) -->
-      <CharacterRegion>
-
-        <Start>&#x3040;</Start>
-
-        <End>&#x309F;</End>
-
-      </CharacterRegion>
-
-      <CharacterRegion>
-
-        <Start>&#x30A0;</Start>
-
-        <End>&#x30FF;</End>
-
-      </CharacterRegion>
-
-      <CharacterRegion>
-
-        <Start>&#x3000;</Start>
-
-        <End>&#x303F;</End>
-
-      </CharacterRegion>
-
-		
+		<!-- Additional CJK Characters -->
+		<CharacterRegion>
+			<Start>&#x3400;</Start>
+			<End>&#x4DBF;</End>
+		</CharacterRegion>
     </CharacterRegions>
   </Asset>
 </XnaContent>

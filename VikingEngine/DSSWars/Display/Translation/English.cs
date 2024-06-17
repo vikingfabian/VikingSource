@@ -796,6 +796,16 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string UnitType_WarshipWithUnit => "{0} warship";
 
+        public override string UnitType_Description_Soldier => "A general purpose unit.";
+        public override string UnitType_Description_Sailor => "Strong during sea warfare";
+        public override string UnitType_Description_Folkman => "Cheap untrained soldiers";
+        public override string UnitType_Description_HonorGuard => "Elite soldiers with no upkeep";
+        public override string UnitType_Description_Knight => "Strong in open field battles";
+        public override string UnitType_Description_Archer => "Only strong when protected.";
+        public override string UnitType_Description_Crossbow => "Powerful ranged soldier";
+        public override string UnitType_Description_Ballista => "Strong against cities";
+        public override string UnitType_Description_GreenSoldier => "Feared elf warrior";
+
         /// <summary>
         /// Information about a soldier type
         /// </summary>

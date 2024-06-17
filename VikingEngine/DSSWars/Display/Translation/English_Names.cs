@@ -9,11 +9,12 @@ namespace VikingEngine.DSSWars.Display.Translation
     partial class English
     {
         //The name generator create unique names for the armies by combining random words
+        //Names does not require one-to-one translations, the number of names in the lists is not important, the game will adapt is there is more or less options
 
         /// <summary>
         /// A way to merge to random words
         /// </summary>
-        public override string NameGenerator_XOfTheY => "{0} of the {1}";
+        public override string NameGenerator_AOfTheB => "{0} of the {1}";
 
         static readonly List<string> adjectives = new List<string> {
             "Valiant", "Mystic", "Dark", "Golden", "Ancient", "Frozen", "Eternal",
@@ -79,6 +80,9 @@ namespace VikingEngine.DSSWars.Display.Translation
             "Feather", "Glass", "Compass"
         };
 
+        /// <summary>
+        /// Returning static lists is important for performance
+        /// </summary>
         public override List<string> NameGenerator_Army_Adjectives => adjectives;
         public override List<string> NameGenerator_Army_Colors => colors;
         public override List<string> NameGenerator_Army_Creatures => creatures;
@@ -91,6 +95,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         * The name generator create unique names for cities by combining random syllables
         * The syllables are divided into general, north (nordic flavor), west (old english), east (asian) and south (mediterrian)
         * When localizing to a languge close to English, there is no need for a translation
+        * 
+        * The number of names in the lists is not important, the game will adapt is there is more or less options
         */
 
         static readonly List<string> generalSyllables = new List<string>
@@ -148,6 +154,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         static readonly List<string> southTownSuffixes = new List<string>
         { "polis", "ium", "os", "us", "a", "on", "ora", "aca", "es", "ae" };
 
+        /// <summary>
+        /// Returning static lists is important for performance
+        /// </summary>
         public override List<string> NameGenerator_City_GeneralSyllables => generalSyllables;
         public override List<string> NameGenerator_City_GeneralTownSuffixes => generalTownSuffixes;
         public override List<string> NameGenerator_City_NorthSyllables => northSyllables;

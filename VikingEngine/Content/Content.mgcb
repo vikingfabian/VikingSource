@@ -542,6 +542,27 @@
 /processorParam:TextureFormat=Compressed
 /build:Font/Bold.spritefont
 
+#begin Font/ChineseBold.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/ChineseBold.spritefont
+
+#begin Font/ChineseConsole.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/ChineseConsole.spritefont
+
+#begin Font/ChineseRegular.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/ChineseRegular.spritefont
+
 #begin Font/Console.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

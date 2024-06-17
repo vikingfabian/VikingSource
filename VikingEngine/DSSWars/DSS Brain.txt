@@ -1,6 +1,7 @@
 ﻿
 Change Log
 * Watch Prologue in the ingame menu
+* Tutorial
 * Added extra thread security to loading tasks
 * changed "profile" to "flag"
 
@@ -45,5 +46,14 @@ Art
 - June 19: Steam release
 - Late Summer / Early Autumn: Game world championship
 
+
+English
+Simplified Chinese
+Russian 9%
+Spanish - Spain 5%
+Portuguese-Brazil
+German
+Japanese
+French
 
 

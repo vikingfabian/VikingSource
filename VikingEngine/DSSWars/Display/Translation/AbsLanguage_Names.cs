@@ -9,7 +9,7 @@ namespace VikingEngine.DSSWars.Display.Translation
     partial class AbsLanguage
     {
 
-        public abstract string NameGenerator_XOfTheY { get; }
+        public abstract string NameGenerator_AOfTheB { get; }
 
         public abstract List<string> NameGenerator_Army_Adjectives { get; }
         public abstract List<string> NameGenerator_Army_Colors { get; }

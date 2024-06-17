@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.GameObject
             modelName = LootFest.VoxelModelName.war_archer;
             modelVariationCount = 2;
 
-            description = "Only strong when protected.";
+            description = DssRef.lang.UnitType_Description_Archer;
             icon = SpriteName.WarsUnitIcon_Archer;
         }        
     }

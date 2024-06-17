@@ -47,7 +47,7 @@ namespace VikingEngine.DSSWars.GameObject
             modelVariationCount = 3;
             hasBannerMan = false;
 
-            description = "Strong in open field battles";
+            description = DssRef.lang.UnitType_Description_Knight;
             icon = SpriteName.WarsUnitIcon_Knight;
         }
 

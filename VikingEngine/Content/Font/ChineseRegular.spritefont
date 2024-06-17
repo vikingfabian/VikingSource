@@ -11,14 +11,14 @@ with.
     <!--
     Modify this string to change the font that will be imported.
     -->
-    <FontName>Open Sans</FontName>
+    <FontName>Microsoft YaHei</FontName>
 
     <!--
     Open Sans
     Size is a float value, measured in points. Modify this value to change
     the size of the font.
     -->
-    <Size>25</Size>
+    <Size>30</Size>
 
     <!--
     Spacing is a float value, measured in pixels. Modify this value to change
@@ -105,7 +105,44 @@ with.
 
       </CharacterRegion>
 
-		
+		<!-- Full-width punctuation (Chinese) -->
+		<CharacterRegion>
+			<Start>&#xFF00;</Start>
+			<End>&#xFFEF;</End>
+		</CharacterRegion>
+		<!-- Simplified Chinese -->
+		<CharacterRegion>
+			<Start>&#x4E00;</Start>
+			<End>&#x9FFF;</End>
+		</CharacterRegion>
+		<!-- Additional characters for your specific string -->
+		<CharacterRegion>
+			<Start>&#x3000;</Start>
+			<!-- 　-->
+			<End>&#x303F;</End>
+			<!-- 〿-->
+		</CharacterRegion>
+
+		<!-- Chinese special characters -->
+		<CharacterRegion>
+			<Start>&#xFF08;</Start>
+			<!--（ -->
+			<End>&#xFF09;</End>
+			<!-- ）-->
+		</CharacterRegion>
+		<CharacterRegion>
+			<Start>&#x4E00;</Start>
+			<!-- 一 -->
+			<End>&#x9FFF;</End>
+			<!-- 龿 -->
+		</CharacterRegion>
+
+		<!-- Additional CJK Characters -->
+		<CharacterRegion>
+			<Start>&#x3400;</Start>
+			<End>&#x4DBF;</End>
+		</CharacterRegion>
+
     </CharacterRegions>
   </Asset>
 </XnaContent>

@@ -247,6 +247,18 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string UnitType_Bannerman { get; }
         public abstract string UnitType_WarshipWithUnit { get; }
 
+        public abstract string UnitType_Description_Soldier { get; }
+        public abstract string UnitType_Description_Sailor { get; }
+        public abstract string UnitType_Description_Folkman { get; }
+        public abstract string UnitType_Description_HonorGuard { get; }
+        public abstract string UnitType_Description_Knight { get; }
+        public abstract string UnitType_Description_Archer { get; }
+        public abstract string UnitType_Description_Crossbow { get; }
+        public abstract string UnitType_Description_Ballista { get; }
+        public abstract string UnitType_Description_GreenSoldier { get; }
+
+
+
         public abstract string SoldierStats_Title { get; }
         public abstract string SoldierStats_GroupCountAndSoldierCount { get; }
         public abstract string SoldierStats_AttackStrengthLandSeaCity { get; }

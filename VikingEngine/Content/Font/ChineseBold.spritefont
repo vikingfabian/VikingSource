@@ -11,14 +11,14 @@ with.
     <!--
     Modify this string to change the font that will be imported.
     -->
-    <FontName>Open Sans</FontName>
+    <FontName>Microsoft YaHei</FontName>
 
-    <!--
-    Open Sans
+    <!--    
+    Open Sans Bold
     Size is a float value, measured in points. Modify this value to change
     the size of the font.
     -->
-    <Size>25</Size>
+    <Size>30</Size>
 
     <!--
     Spacing is a float value, measured in pixels. Modify this value to change
@@ -51,61 +51,73 @@ with.
     character set. The characters are ordered according to the Unicode standard.
     See the documentation for more information.
     -->
-    <CharacterRegions>
+	
+	  <CharacterRegions>
 
-      <!-- All EU -->
-      <CharacterRegion>
+		  <!-- All EU -->
+		  <CharacterRegion>
 
-        <Start>&#32;</Start>
+			  <Start>&#32;</Start>
 
-        <End>&#511;</End>
+			  <End>&#511;</End>
 
-      </CharacterRegion>
+		  </CharacterRegion>
 
-      <!-- Thai -->
-      <CharacterRegion>
+		  <!-- Thai -->
+		  <CharacterRegion>
 
-        <Start>&#x0E00;</Start>
+			  <Start>&#x0E00;</Start>
 
-        <End>&#x0E7F;</End>
+			  <End>&#x0E7F;</End>
 
-      </CharacterRegion>
+		  </CharacterRegion>
 
-      <!-- Russian -->
-      <CharacterRegion>
+		  <!-- Russian -->
+		  <CharacterRegion>
 
-        <Start>&#x410;</Start>
+			  <Start>&#x410;</Start>
 
-        <End>&#x44F;</End>
+			  <End>&#x44F;</End>
 
-      </CharacterRegion>
+		  </CharacterRegion>
 
-      <!-- Most common Kanji (japanese, chinese) -->
-      <CharacterRegion>
+		  <!-- Most common Kanji (japanese, chinese) -->
+		  <CharacterRegion>
 
-        <Start>&#x3040;</Start>
+			  <Start>&#x3040;</Start>
 
-        <End>&#x309F;</End>
+			  <End>&#x309F;</End>
 
-      </CharacterRegion>
+		  </CharacterRegion>
 
-      <CharacterRegion>
+		  <CharacterRegion>
 
-        <Start>&#x30A0;</Start>
+			  <Start>&#x30A0;</Start>
 
-        <End>&#x30FF;</End>
+			  <End>&#x30FF;</End>
 
-      </CharacterRegion>
+		  </CharacterRegion>
 
-      <CharacterRegion>
+		  <CharacterRegion>
 
-        <Start>&#x3000;</Start>
+			  <Start>&#x3000;</Start>
 
-        <End>&#x303F;</End>
+			  <End>&#x303F;</End>
 
-      </CharacterRegion>
+		  </CharacterRegion>
 
-		
-    </CharacterRegions>
+		  <!-- Simplified Chinese -->
+		  <CharacterRegion>
+			  <Start>&#x4E00;</Start>
+			  <End>&#x9FFF;</End>
+		  </CharacterRegion>
+
+		  <!-- Additional CJK Characters -->
+		  <CharacterRegion>
+			  <Start>&#x3400;</Start>
+			  <End>&#x4DBF;</End>
+		  </CharacterRegion>
+
+	  </CharacterRegions>
   </Asset>
 </XnaContent>
