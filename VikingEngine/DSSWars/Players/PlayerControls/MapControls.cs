@@ -14,7 +14,7 @@ namespace VikingEngine.DSSWars.Players
     {
         const float CamMaxRotation = 0.5f;
         const float CamStartRotation = MathHelper.PiOver2;
-        static readonly IntervalF ZoomRange = MapDetailLayerManager.FullZoomRange;
+        IntervalF ZoomRange = MapDetailLayerManager.FullZoomRange;
 
         FloatInBound camRotation = new FloatInBound(CamStartRotation, new IntervalF(CamStartRotation - CamMaxRotation, CamStartRotation + CamMaxRotation), false);
 
@@ -69,6 +69,11 @@ namespace VikingEngine.DSSWars.Players
             {
                 controllerPointer = new Image(SpriteName.cmdPointer, player.playerData.view.DrawAreaF.Center, Engine.Screen.SmallIconSizeV2, ImageLayers.Lay1, true);
             }
+        }
+
+        public void setZoomRange(bool tutorial)
+        {
+            ZoomRange = tutorial? MapDetailLayerManager.TutorialZoomRange : MapDetailLayerManager.FullZoomRange;
         }
 
         public Vector2 XPointerPos()

@@ -371,7 +371,18 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string Progressbar_SaveProgress { get; }
         public abstract string Progressbar_LoadProgress { get; }
-
         public abstract string Progressbar_PressAnyKey { get; }
+
+        public abstract string Tutorial_MenuOption { get; }
+        public abstract string Tutorial_MissionsTitle { get; }
+        public abstract string Tutorial_Mission_BuySoldier { get; }
+        public abstract string Tutorial_Mission_MoveArmy { get; }
+
+        public abstract string Tutorial_CompleteTitle { get; }
+        public abstract string Tutorial_CompleteMessage { get; }
+
+        public abstract string Tutorial_SelectInput { get; }
+        public abstract string Tutorial_MoveInput { get; }
+
     }
 }

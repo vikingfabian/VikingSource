@@ -11,7 +11,7 @@ namespace VikingEngine.DSSWars
 {
     static class SoundLib
     {
-        public static SoundContainerBase click, back, buy, wrong, ordermove, orderstop;
+        public static SoundContainerBase click, back, buy, wrong, ordermove, orderstop, message, trophy;
 
         public static RbSoundProfile menu, menuBack, menuBuy, menuArmyHalt;
 
@@ -24,6 +24,8 @@ namespace VikingEngine.DSSWars
             wrong = new SoundContainerSingle(soundDir + "wrong", 0.6f);
             ordermove = new SoundContainerSingle(soundDir + "ordermove");
             orderstop = new SoundContainerSingle(soundDir + "orderstop");
+            message = new SoundContainerSingle(soundDir + "chat_message");
+            trophy = new SoundContainerSingle(soundDir + "trophy");
 
             menu = new RbSoundProfile(click, wrong);
             menuBack = new RbSoundProfile(back);

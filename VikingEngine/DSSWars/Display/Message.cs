@@ -48,6 +48,7 @@ namespace VikingEngine.DSSWars.Display
 
         public void Add(RichBoxContent content)
         {
+            SoundLib.message.Play(Pan.Left);
             messages.Insert(0, new Message(player, content, settings));
             UpdatePositions();
         }

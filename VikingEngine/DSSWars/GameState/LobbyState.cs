@@ -436,6 +436,17 @@ namespace VikingEngine.DSSWars
             return DssRef.storage.autoSave;
         }
 
+        public bool tutorialProperty(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                DssRef.storage.runTutorial = value;
+
+                DssRef.storage.Save(null);
+            }
+            return DssRef.storage.runTutorial;
+        }
+
         public bool generateNewMapsProperty(int index, bool set, bool value)
         {
             if (set && DssRef.storage.generateNewMaps != value)
@@ -559,6 +570,7 @@ namespace VikingEngine.DSSWars
             {
                 Ref.gamesett.optionsMenu(layout);
                 new GuiCheckbox(DssRef.lang.GameMenu_AutoSave, null, autoSaveProperty, layout);
+                new GuiCheckbox(DssRef.lang.Tutorial_MenuOption, null, tutorialProperty, layout);
             }
             layout.End();
 

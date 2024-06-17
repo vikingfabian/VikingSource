@@ -32,74 +32,77 @@ namespace VikingEngine.DSSWars.Display
                         content.newLine();
                     }
 
-                    var button = new HUD.RichBox.RichboxButton(
+                    var haltButton = new HUD.RichBox.RichboxButton(
                     new List<AbsRichBoxMember>
                     {
                         new HUD.RichBox.RichBoxText(DssRef.lang.ArmyOption_Halt),
                     },
                     new RbAction(halt), null);
-                    button.addShortCutButton(player.input.Stop, false);
-                    content.Add(button);
+                    haltButton.addShortCutButton(player.input.Stop, false);
+                    content.Add(haltButton);
 
                     content.newLine();
-                    var disbandButton = new HUD.RichBox.RichboxButton(
+
+                    if (!player.inTutorialMode)
+                    {
+                        var disbandButton = new HUD.RichBox.RichboxButton(
                         new List<AbsRichBoxMember>
                         {
                         new HUD.RichBox.RichBoxText(DssRef.lang.ArmyOption_Disband),
                         },
-                        new RbAction1Arg<string>(player.hud.displays.SetMenuState, DisbandMenuState, SoundLib.menu), 
+                        new RbAction1Arg<string>(player.hud.displays.SetMenuState, DisbandMenuState, SoundLib.menu),
                         null);
-                    content.Add(disbandButton);
+                        content.Add(disbandButton);
 
-                    List<GameObject.Army> tradeAbleArmies = new List<GameObject.Army>();
-                    DssRef.world.unitCollAreaGrid.collectArmies(player.faction, army.tilePos, 1,
-                        tradeAbleArmies);
+                        List<GameObject.Army> tradeAbleArmies = new List<GameObject.Army>();
+                        DssRef.world.unitCollAreaGrid.collectArmies(player.faction, army.tilePos, 1,
+                            tradeAbleArmies);
 
-                    for (int i = tradeAbleArmies.Count - 1; i >= 0; --i)
-                    {
-                        if (WP.birdDistance(army, tradeAbleArmies[i]) > Army.MaxTradeDistance)
+                        for (int i = tradeAbleArmies.Count - 1; i >= 0; --i)
                         {
-                            tradeAbleArmies.RemoveAt(i);    
-                        }
-                    }
-
-
-                    if (tradeAbleArmies.Count > 1)
-                    {
-                        content.newLine();
-                        var mergeAllButton = new HUD.RichBox.RichboxButton(
-                            new List<AbsRichBoxMember>
+                            if (WP.birdDistance(army, tradeAbleArmies[i]) > Army.MaxTradeDistance)
                             {
-                                new HUD.RichBox.RichBoxText(DssRef.lang.ArmyOption_MergeAllArmies),
-                            },
-                            new RbAction1Arg<List<GameObject.Army>>(mergeAllArmies, tradeAbleArmies, SoundLib.menu), null);
-                        content.Add(mergeAllButton);
-
-                        foreach (var ta in tradeAbleArmies)
-                        {
-                            if (ta != army)
-                            {
-                                content.newLine();
-                                var tradeButton = new HUD.RichBox.RichboxButton(
-                                    new List<AbsRichBoxMember>
-                                    {
-                                        new HUD.RichBox.RichBoxText(string.Format(DssRef.lang.ArmyOption_SendToX, ta.TypeName())),
-                                    },
-                                    new RbAction1Arg<Army>(startArmyTrade, ta, SoundLib.menu), null);
-                                    content.Add(tradeButton);
+                                tradeAbleArmies.RemoveAt(i);
                             }
                         }
-                    }
 
-                    content.newLine();
-                    var splitButton = new HUD.RichBox.RichboxButton(
-                        new List<AbsRichBoxMember>
+
+                        if (tradeAbleArmies.Count > 1)
                         {
-                                new HUD.RichBox.RichBoxText(DssRef.lang.ArmyOption_Divide),
-                        },
-                        new RbAction1Arg<Army>(startArmyTrade, null, SoundLib.menu), null);
-                    content.Add(splitButton);
+                            content.newLine();
+                            var mergeAllButton = new HUD.RichBox.RichboxButton(
+                                new List<AbsRichBoxMember>
+                                {
+                                new HUD.RichBox.RichBoxText(DssRef.lang.ArmyOption_MergeAllArmies),
+                                },
+                                new RbAction1Arg<List<GameObject.Army>>(mergeAllArmies, tradeAbleArmies, SoundLib.menu), null);
+                            content.Add(mergeAllButton);
 
+                            foreach (var ta in tradeAbleArmies)
+                            {
+                                if (ta != army)
+                                {
+                                    content.newLine();
+                                    var tradeButton = new HUD.RichBox.RichboxButton(
+                                        new List<AbsRichBoxMember>
+                                        {
+                                        new HUD.RichBox.RichBoxText(string.Format(DssRef.lang.ArmyOption_SendToX, ta.TypeName())),
+                                        },
+                                        new RbAction1Arg<Army>(startArmyTrade, ta, SoundLib.menu), null);
+                                    content.Add(tradeButton);
+                                }
+                            }
+                        }
+
+                        content.newLine();
+                        var splitButton = new HUD.RichBox.RichboxButton(
+                            new List<AbsRichBoxMember>
+                            {
+                                new HUD.RichBox.RichBoxText(DssRef.lang.ArmyOption_Divide),
+                            },
+                            new RbAction1Arg<Army>(startArmyTrade, null, SoundLib.menu), null);
+                        content.Add(splitButton);
+                    }
                     break;
 
                 case DisbandMenuState:

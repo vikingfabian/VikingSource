@@ -107,7 +107,8 @@ namespace VikingEngine.DSSWars.Display
 
 
             void defaultMenu(Players.LocalPlayer player, bool fullDisplay, Faction faction)
-            {
+            {                
+
                 if (player.hud.detailLevel == HudDetailLevel.Minimal)
                 {
                     flagTexture();
@@ -130,7 +131,6 @@ namespace VikingEngine.DSSWars.Display
                     {
                         gold();
 
-                        //const string TotalIncomeText = "Total income/second: ";
                         content.Add(new RichBoxImage(SpriteName.rtsIncomeTime));
                         content.space();
                         content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(faction.NetIncome())),
@@ -143,106 +143,111 @@ namespace VikingEngine.DSSWars.Display
                         content.newLine();
                     }
 
-                    FactionSize(faction, content, fullDisplay);
-                    //content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(faction.totalWorkForce));
-                    //content.icontext(SpriteName.WarsStrengthIcon, string.Format( DssRef.lang.Hud_TotalStrengthRating, TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
-                    
-
-                    if (DssRef.state.IsSinglePlayer() && Ref.isPaused)
+                    if (player.inTutorialMode)
                     {
-                        pauseButton();
+                        player.tutorial_ToHud(content);
                     }
                     else
                     {
-                        string gameSpeed = string.Format(DssRef.lang.Hud_GameSpeedLabel, Ref.TargetGameTimeSpeed);//"Game speed: " + Ref.GameTimeSpeed.ToString() + "x";
+                        FactionSize(faction, content, fullDisplay);
 
-                        if (DssRef.state.IsSinglePlayer())
-                        {
-                            input(player.input.GameSpeed, gameSpeed);
-                            if (fullDisplay)
-                            {
-                                for (int i = 0; i < DssLib.GameSpeedOptions.Length; i++)
-                                {
-                                    content.Add(new RichboxButton(
-                                        new List<AbsRichBoxMember> { new RichBoxText(string.Format(DssRef.lang.Hud_XTimes, DssLib.GameSpeedOptions[i])) },
-                                        new RbAction1Arg<int>(gameSpeedClick, DssLib.GameSpeedOptions[i]), null, true));
-                                    content.space();
-                                }
-                                //content.newLine();
-                            }
-                        }
-                        else
-                        {
-                            content.text(gameSpeed);
-                            content.newLine();
-                        }
 
-                        if (fullDisplay && DssRef.state.IsSinglePlayer())
+                        if (DssRef.state.IsSinglePlayer() && Ref.isPaused)
                         {
                             pauseButton();
                         }
-                    }
-                    if (fullDisplay && player.IsLocalHost())
-                    {
-                        gameMenuButton();
-                    }
+                        else
+                        {
+                            string gameSpeed = string.Format(DssRef.lang.Hud_GameSpeedLabel, Ref.TargetGameTimeSpeed);//"Game speed: " + Ref.GameTimeSpeed.ToString() + "x";
 
-                    if (fullDisplay)
-                    {
-                        content.newParagraph();
-                        content.Add(new RichBoxNewLine());
-                        content.Add(new RichBoxImage(SpriteName.rtsIncomeTime));
-                        content.space();
-                        content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(faction.cityIncome))));
-
-                        content.Add(new RichBoxNewLine());
-                        content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
-                        content.space();
-                        content.Add(new RichBoxText(string.Format( DssRef.lang.Hud_ArmyUpkeep, TextLib.LargeNumber(faction.armyUpkeep))));
-
-                        content.newLine();
-                        var automationButton = new HUD.RichBox.RichboxButton(
-                            new List<AbsRichBoxMember>
+                            if (DssRef.state.IsSinglePlayer())
                             {
+                                input(player.input.GameSpeed, gameSpeed);
+                                if (fullDisplay)
+                                {
+                                    for (int i = 0; i < DssLib.GameSpeedOptions.Length; i++)
+                                    {
+                                        content.Add(new RichboxButton(
+                                            new List<AbsRichBoxMember> { new RichBoxText(string.Format(DssRef.lang.Hud_XTimes, DssLib.GameSpeedOptions[i])) },
+                                            new RbAction1Arg<int>(gameSpeedClick, DssLib.GameSpeedOptions[i]), null, true));
+                                        content.space();
+                                    }
+                                    //content.newLine();
+                                }
+                            }
+                            else
+                            {
+                                content.text(gameSpeed);
+                                content.newLine();
+                            }
+
+                            if (fullDisplay && DssRef.state.IsSinglePlayer())
+                            {
+                                pauseButton();
+                            }
+                        }
+                        if (fullDisplay && player.IsLocalHost())
+                        {
+                            gameMenuButton();
+                        }
+
+                        if (fullDisplay)
+                        {
+                            content.newParagraph();
+                            content.Add(new RichBoxNewLine());
+                            content.Add(new RichBoxImage(SpriteName.rtsIncomeTime));
+                            content.space();
+                            content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(faction.cityIncome))));
+
+                            content.Add(new RichBoxNewLine());
+                            content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
+                            content.space();
+                            content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_ArmyUpkeep, TextLib.LargeNumber(faction.armyUpkeep))));
+
+                            content.newLine();
+                            var automationButton = new HUD.RichBox.RichboxButton(
+                                new List<AbsRichBoxMember>
+                                {
                                 new RichBoxImage(player.input.AutomationSetting.Icon),
                                 new RichBoxImage(SpriteName.MenuPixelIconSettings),
                                 new HUD.RichBox.RichBoxText(DssRef.lang.Automation_Title),
-                            },
-                            new RbAction1Arg<string>(player.hud.displays.SetMenuState, AutomationMenuState, SoundLib.menu),
-                            null);
-                        content.Add(automationButton);
-                        //content.Button(SpriteName.MenuPixelIconSettings, "Automation", new RbAction(DssRef.state.exit), null, true);
+                                },
+                                new RbAction1Arg<string>(player.hud.displays.SetMenuState, AutomationMenuState, SoundLib.menu),
+                                null);
+                            content.Add(automationButton);
+                            //content.Button(SpriteName.MenuPixelIconSettings, "Automation", new RbAction(DssRef.state.exit), null, true);
 
-                        //string diplomacy = "Diplomatic points: {0}/{1}({2})";
-                        content.icontext(SpriteName.WarsDiplomaticPoint, string.Format(DssRef.lang.ResourceType_DiplomacyPoints_WithSoftAndHardLimit, player.diplomaticPoints.Int(), player.diplomaticPoints_softMax, player.diplomaticPoints.max));
+                            //string diplomacy = "Diplomatic points: {0}/{1}({2})";
+                            content.icontext(SpriteName.WarsDiplomaticPoint, string.Format(DssRef.lang.ResourceType_DiplomacyPoints_WithSoftAndHardLimit, player.diplomaticPoints.Int(), player.diplomaticPoints_softMax, player.diplomaticPoints.max));
 
-                        content.icontext(SpriteName.WarsGroupIcon, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_MercenaryMarket, player.mercenaryMarket.Int()));
-                        //string command = "Command points: {0}";
-                        //content.icontext(SpriteName.WarsCommandPoint, string.Format(command, player.commandPoints.ToString()));
+                            content.icontext(SpriteName.WarsGroupIcon, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_MercenaryMarket, player.mercenaryMarket.Int()));
+                            //string command = "Command points: {0}";
+                            //content.icontext(SpriteName.WarsCommandPoint, string.Format(command, player.commandPoints.ToString()));
 
-                        content.Add(new RichBoxNewLine(true));
+                            content.Add(new RichBoxNewLine(true));
 
-                        if (player.hud.detailLevel == HudDetailLevel.Extended)
-                        {
-                            content.text(string.Format(DssRef.lang.Hud_CityCount,TextLib.LargeNumber(faction.cities.Count)));
-                            content.text(string.Format(DssRef.lang.Hud_ArmyCount, TextLib.LargeNumber(faction.armies.Count)));
+                            if (player.hud.detailLevel == HudDetailLevel.Extended)
+                            {
+                                content.text(string.Format(DssRef.lang.Hud_CityCount, TextLib.LargeNumber(faction.cities.Count)));
+                                content.text(string.Format(DssRef.lang.Hud_ArmyCount, TextLib.LargeNumber(faction.armies.Count)));
 
-                            content.ButtonDescription(player.input.NextCity, DssRef.lang.Input_NextCity);
-                            content.ButtonDescription(player.input.NextArmy, DssRef.lang.Input_NextArmy);
-                            content.ButtonDescription(player.input.NextBattle, DssRef.lang.Input_NextBattle);
+                                content.ButtonDescription(player.input.NextCity, DssRef.lang.Input_NextCity);
+                                content.ButtonDescription(player.input.NextArmy, DssRef.lang.Input_NextArmy);
+                                content.ButtonDescription(player.input.NextBattle, DssRef.lang.Input_NextBattle);
 
 
-                            content.newParagraph();
+                                content.newParagraph();
+                            }
+
+                            //if (Ref.isPaused && player.IsLocalHost())
+                            //{
+                            //    content.Button("Exit game", new RbAction(DssRef.state.exit), null, true);
+                            //}
+                            content.newLine();
+                            toggleMenu();
                         }
 
-                        //if (Ref.isPaused && player.IsLocalHost())
-                        //{
-                        //    content.Button("Exit game", new RbAction(DssRef.state.exit), null, true);
-                        //}
-                        content.newLine();
-                        toggleMenu();
                     }
-
                 }
             }
         }

@@ -258,7 +258,7 @@ namespace VikingEngine.DSSWars.Players
                     cityAction.buyWorkforce(true, 1);
                     break;
                 case AutomationAction.Recruit:
-                    cityAction.buySoldiersAction(recruitType, recruitCount);
+                    cityAction.buySoldiersAction(recruitType, recruitCount, null);
                     break;
             }
 
