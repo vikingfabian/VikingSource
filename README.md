@@ -5,4 +5,4 @@
 
 -Install MS VS C++ Redistributable for 2013
 
--Get "open sans" fonts from google and install on your computer
+-Get "open sans" fonts from google, and "Microsoft YaHei Mono" font. Install them on your computer
