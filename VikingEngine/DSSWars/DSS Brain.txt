@@ -45,6 +45,9 @@ Art
 
 
 English
+
+[*]Localization: All languages, except from English, are mashine translated.
+
 Simplified Chinese
 Russian 9%
 Spanish - Spain 5%
