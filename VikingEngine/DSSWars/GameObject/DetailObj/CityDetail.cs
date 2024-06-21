@@ -115,6 +115,8 @@ namespace VikingEngine.DSSWars.GameObject
                     //workersModels = null;
                 }
             }
+
+           
         }
 
         public void refreshWorkerSubtiles()

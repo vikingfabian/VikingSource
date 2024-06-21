@@ -34,6 +34,10 @@ namespace VikingEngine.DSSWars
         {
             return new IntVector2(pos.X, pos.Y);
         }
+        public static IntVector2 ToSubTilePos(Vector3 pos)
+        {
+            return new IntVector2(pos.X * WorldData.TileSubDivitions, pos.Z * WorldData.TileSubDivitions);
+        }
         public static IntVector2 ToSubTilePos_Centered(IntVector2 tilePos)
         {
             return new IntVector2(tilePos.X * WorldData.TileSubDivitions + WorldData.SubTileHalfWidth, tilePos.Y * WorldData.TileSubDivitions + WorldData.SubTileHalfWidth);
@@ -42,6 +46,11 @@ namespace VikingEngine.DSSWars
         public static IntVector2 ToSubTilePos_TopLeft(IntVector2 pos)
         {
             return new IntVector2(pos.X * WorldData.TileSubDivitions, pos.Y * WorldData.TileSubDivitions);
+        }
+
+        public static Vector3 WorldPosFromSubtile(IntVector2 subtilePos)
+        {
+            return new Vector3(subtilePos.X *  WorldData.SubTileWidth, 0, subtilePos.Y * WorldData.SubTileWidth);
         }
 
         public static Vector3 ToMapPos(IntVector2 tile)

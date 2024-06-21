@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars
         public GameEvents events;
         public AbsCutScene cutScene=null;
 
-        bool bResourceUpdate = false;
+        bool bResourceUpdate = true;
         public int NextArmyId = 0;
         public GameMenuSystem menuSystem;
 

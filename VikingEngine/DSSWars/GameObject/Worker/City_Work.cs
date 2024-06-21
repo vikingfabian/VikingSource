@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject.Worker;
 using VikingEngine.DSSWars.Map;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -13,6 +14,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         List<WorkerStatus> workerStatuses = new List<WorkerStatus>();
         List<WorkQueMember> workQue = new List<WorkQueMember>();
+        List<WorkerUnit> workerUnits = null;
         public void async_workUpdate()
         {
             int workTeamCount = workForce.Int() / WorkTeamSize;
@@ -25,7 +27,8 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     workerStatuses.Add(new WorkerStatus()
                     { 
-                        subTileEnd = tilePos,
+                        subTileEnd = startPos,
+                        subTileStart = startPos,
                     });
                 }
             }
@@ -44,22 +47,37 @@ namespace VikingEngine.DSSWars.GameObject
                 buildWorkQue();
             }
 
+            //Give orders to idle workers
             for (int i = 0; i < workerStatuses.Count; i++)
             {
                 if (workerStatuses[i].work == WorkType.Idle)
                 {
-                    var work = arraylib.PullLastMember(workQue);
+                    if (workQue.Count > 0)
+                    {
 
-                    var status = workerStatuses[i];
+                        var work = arraylib.PullLastMember(workQue);
 
-                    status.work = work.work;
-                    status.subTileStart = status.subTileEnd;
-                    status.subTileEnd = work.subTile;
-                    status.processTimeLengthSec = 0;
-                    status.processTimeStartStampSec = Ref.TotalGameTimeSec;
+                        var status = workerStatuses[i];
+                        {
+                            status.work = work.work;
+                            status.subTileStart = status.subTileEnd;
+                            status.subTileEnd = work.subTile;
+                            status.processTimeLengthSec = 100;
+                            status.processTimeStartStampSec = Ref.TotalGameTimeSec;
+                        }
+                        workerStatuses[i] = status;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
 
+            if (!inRender)
+            {
+                processAsynchWork();
+            }
 
             void buildWorkQue()
             {
@@ -67,34 +85,88 @@ namespace VikingEngine.DSSWars.GameObject
                 //Priority of collect
 
                 //Cirkle outward from city to find resources
-                while (workQue.Count < workTeamCount)
+                //while (workQue.Count < workTeamCount)
+                for (int radius = 1; radius < 12; ++radius)
                 {
-                    ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(tilePos, 1));
+                    ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(tilePos, radius));
+                    
                     while (cirkleLoop.Next())
                     {
-                        IntVector2 topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
-                        ForXYLoop subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
-
-                        while (subTileLoop.Next())
+                        if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
                         {
-                            var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
-                            var foil = subTile.GetFoilType();
-
-                            if (foil == Map.TerrainSubFoilType.TreeSoft ||
-                                foil == Map.TerrainSubFoilType.TreeHard)
+                            var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
+                            if (tile.IsLand())
                             {
-                                if (subTile.terrainValue >= TerrainContent.TreeReadySize)
+                                IntVector2 topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
+                                ForXYLoop subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
+
+                                while (subTileLoop.Next())
                                 {
-                                    workQue.Add(new WorkQueMember(WorkType.Gather, subTileLoop.Position));
+                                    var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
+                                    var foil = subTile.GetFoilType();
+
+                                    if (foil == Map.TerrainSubFoilType.TreeSoft ||
+                                        foil == Map.TerrainSubFoilType.TreeHard)
+                                    {
+                                        if (subTile.terrainValue >= TerrainContent.TreeReadySize)
+                                        {
+                                            workQue.Add(new WorkQueMember(WorkType.Gather, subTileLoop.Position));
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
+
+                    if (workQue.Count >= workTeamCount)
+                    {
+                        return;
+                    }
+                }
+            }
+
+            void processAsynchWork()
+            {
+                for (int i = 0; i < workerStatuses.Count; i++)
+                {
+                    var status = workerStatuses[i];
+                    if (status.work != WorkType.Idle &&
+                        Ref.TotalGameTimeSec > status.processTimeStartStampSec + status.processTimeLengthSec)
+                    {
+                        //Work complete
+                        status.WorkComplete();
+                        workerStatuses[i] = status;
+                    }
+
                 }
             }
         }
 
-        
+        void updateWorkerUnits()
+        {
+            if (workerUnits != null)
+            {
+                foreach (var w in workerUnits)
+                {
+                    w.update();
+                }
+            }
+        }
+
+        public void setWorkersInRenderState()
+        {
+            if (inRender)
+            {
+                if (workerUnits == null)
+                {
+                    workerUnits = new List<WorkerUnit>(workerStatuses.Count);
+                    for (int i = 0; i < workerStatuses.Count; i++)
+                    {
+                        workerUnits.Add(new WorkerUnit(this, workerStatuses[i], i));
+                    }
+                }
+            }
+        }        
     }
 
     struct WorkerStatus
@@ -106,6 +178,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         public IntVector2 subTileStart;
         public IntVector2 subTileEnd;
+
+        public void WorkComplete()
+        {
+            var subTile = DssRef.world.subTileGrid.Get(subTileEnd);
+            subTile.SetType(TerrainMainType.DefaultLand, 0, 0);
+
+            work = WorkType.Idle;
+        }
     }
 
     struct WorkQueMember

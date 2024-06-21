@@ -220,6 +220,14 @@ namespace VikingEngine
         {
             return MathExt.SquareRootF(v.X * v.X + v.Z * v.Z);
         }
+
+        public static double PlaneXZDistance(ref Vector3 v1, ref Vector3 v2)
+        {
+            double xDiff = v1.X - v2.X;
+            double zDiff = v1.Z - v2.Z;
+            return Math.Sqrt(xDiff * xDiff + zDiff * zDiff);
+        }
+
         public static Vector2 PlaneXZVec(this Vector3 v)
         {
             return new Vector2(v.X, v.Z);

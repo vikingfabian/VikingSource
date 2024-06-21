@@ -46,6 +46,7 @@ namespace VikingEngine.DSSWars.GameObject
         SoldierGroup,
         Soldier,
         Battle,
+        Worker,
 
         NUM_NON,
     }

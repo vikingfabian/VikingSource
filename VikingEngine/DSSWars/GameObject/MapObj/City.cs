@@ -368,10 +368,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
-        public void setRenderState(bool inRender)
-        {
-
-        }
+        //public void setRenderState(bool inRender)
+        //{
+        //    //lib.DoNothing();    
+        //}
 
 
 
@@ -743,15 +743,10 @@ namespace VikingEngine.DSSWars.GameObject
         public void update()
         {
             updateDetailLevel();
-            //if (parentArrayIndex == 50)
-            //{
-            //    lib.DoNothing();
-
-            //}
-
-            //battles.checkForUpdatedList();
-
+            
             detailObj.update(Ref.DeltaGameTimeMs, true);
+
+            updateWorkerUnits();
         }
 
         public void oneSecUpdate()
@@ -842,6 +837,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
+            setWorkersInRenderState();
             detailObj.setDetailLevel(inRender);
         }
 

@@ -56,8 +56,6 @@ namespace VikingEngine.DSSWars.GameObject
             bound.Center = VectorExt.V3XZtoV2(model.position);
             selectionArea.Center = bound.Center;
             selectionArea.Center.Y -= 0.5f;
-
-
         }
 
         public AbsDetailUnitAdvancedModel()
@@ -81,7 +79,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
-
         override public void DeleteMe()
         {
             base.DeleteMe();
@@ -93,10 +90,6 @@ namespace VikingEngine.DSSWars.GameObject
     
     class SoldierUnitAdvancedModel: AbsDetailUnitAdvancedModel
     {
-        //Graphics.Mesh ship = null;
-        
-        
-
         protected WalkingAnimation walkingAnimation;
 
         Rotation1D moveJiggle = Rotation1D.Random();
@@ -111,67 +104,13 @@ namespace VikingEngine.DSSWars.GameObject
             :base(soldier)
         {
             walkingAnimation = WalkingAnimation.Standard;
-
-            //model = soldier.group.army.faction.AutoLoadModelInstance(
-            //    soldier.data.RandomModelName(), soldier.data.modelScale,  true);
-
-            //model.position = soldier.position;
-
-            //shadowPlane = new Graphics.Mesh(LoadedMesh.plane, soldier.position,
-            //     soldier.data.ShadowModelScale(), Graphics.TextureEffectType.Flat,
-            //     SpriteName.LittleUnitShadow, Color.Black);
-            
-            //shadowPlane.Opacity = 0.5f;
-
-            //bound = new Physics.CircleBound(Vector2.Zero, soldier.data.boundRadius);
-            //selectionArea = new Circle(Vector2.Zero, 1.2f);
-
-            //if (soldier.group.isShip)
-            //{
-            //    setShip(true);
-            //}
         }
 
         override public void update(AbsSoldierUnit soldier)
         {
             base.update(soldier);
-            //model.position = soldier.position;
-
-            //shadowPlane.Position = model.position + shadowOffset;
-            //shadowPlane.Rotation = model.Rotation;
-
-            //bound.Center = VectorExt.V3XZtoV2(model.position);
-            //selectionArea.Center = bound.Center;
-            //selectionArea.Center.Y -= 0.5f;
-
-            //if (ship == null)
-            //{
-                updateAnimation(soldier);
-            //}
-            //else
-            //{
-            //    ship.Position = model.position;
-            //    ship.Rotation = model.Rotation;
-
-            //    updateShipAnimation(soldier);
-            //}
+            updateAnimation(soldier);
         }
-
-
-
-        //virtual protected void updateShipAnimation(AbsSoldierUnit soldier)
-        //{
-        //    WP.Rotation1DToQuaterion(model, soldier.rotation.Radians);
-
-        //    if (soldier.inAttackAnimation())
-        //    {
-        //        model.Frame = soldier.data.attackFrame;
-        //    }
-        //    else
-        //    {
-        //        model.Frame = soldier.data.idleFrame;
-        //    }
-        //}
 
         virtual protected void updateAnimation(AbsSoldierUnit soldier)
         {
@@ -218,34 +157,9 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        //virtual public void setShip(bool hasShip)
-        //{
-        //    if (hasShip)
-        //    {
-        //        if (ship == null)
-        //        {
-        //            ship = new Graphics.Mesh(LoadedMesh.cube_repeating, Vector3.Zero,
-        //                new Vector3(1f, 0.5f, 2f) * AbsDetailUnitData.StandardModelScale,
-        //                Graphics.TextureEffectType.Flat,
-        //                SpriteName.WhiteArea, Color.Brown, false);
-        //            ship.AddToRender(DrawGame.UnitDetailLayer);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        ship?.DeleteMe();
-        //    }
-        //}
-
         public override SoldierUnitAdvancedModel Adv()
         {
             return this;
         }
-
-        //override public void DeleteMe()
-        //{
-        //    base.DeleteMe();
-        //    ship?.DeleteMe();
-        //}
     }
 }
