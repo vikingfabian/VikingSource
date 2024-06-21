@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
             setupJavelinCommand();
 
             modelName = LootFest.VoxelModelName.war_folkman;
-            description = "Cheap untrained soldiers";
+            description = DssRef.lang.UnitType_Description_Folkman;
             icon = SpriteName.WarsUnitIcon_Folkman;
         }
     }

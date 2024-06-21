@@ -24,7 +24,7 @@ namespace VikingEngine.DataStream
             //this.start();
         }
 
-        protected override void runQuedStorageTask()
+        public override void runQuedStorageTask()
         {
             base.runQuedStorageTask();
  	        List<string> oldFiles = null;

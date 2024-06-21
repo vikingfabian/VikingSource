@@ -19,7 +19,7 @@ using VikingEngine.ToGG;
 
 namespace VikingEngine.DSSWars.Players
 {    
-    class LocalPlayer : AbsPlayer
+    partial class LocalPlayer : AbsPlayer
     {   
         public Engine.PlayerData playerData;
 
@@ -47,6 +47,10 @@ namespace VikingEngine.DSSWars.Players
 
         public PlayerToPlayerDiplomacy[] toPlayerDiplomacies = null;
         public Automation automation;
+        //public Tutorial tutorial = null;
+        //public bool inTutorialMode;
+        //public bool tutorialMission_BuySoldier = false;
+        //public bool tutorialMission_MoveArmy = false;
 
         public SpottedArray<Battle.BattleGroup> battles = new SpottedArray<Battle.BattleGroup>(4);
 
@@ -88,6 +92,8 @@ namespace VikingEngine.DSSWars.Players
 
             w.Write(mercenaryCost);
 
+            tutorial_writeGameState(w);
+
             Debug.WriteCheck(w);
         }
 
@@ -116,12 +122,17 @@ namespace VikingEngine.DSSWars.Players
                 mercenaryCost = r.ReadInt32();
             }
 
+            tutorial_readGameState(r, subversion);
+
             Debug.ReadCheck(r);
         }
 
         public LocalPlayer(Faction faction, int playerindex, int numPlayers)
             :base(faction)
         {
+            //inTutorialMode = DssRef.storage.runTutorial;
+            
+
             faction.factiontype = FactionType.Player;
             faction.availableForPlayer = false;
             var pStorage = DssRef.storage.localPlayers[playerindex];
@@ -148,11 +159,12 @@ namespace VikingEngine.DSSWars.Players
 
             mapControls = new Players.MapControls(this);
             mapControls.setCameraPos(faction.mainCity.tilePos);
+            
 
             Ref.draw.AddPlayerScreen(playerData);
             drawUnitsView = new MapDetailLayerManager(playerData);
+            InitTutorial();
 
-            
 
             new AsynchUpdateable(interactAsynchUpdate, "DSS player interact", 0);
 

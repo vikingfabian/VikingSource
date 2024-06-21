@@ -239,7 +239,7 @@ namespace VikingEngine.Sound
         public PlaySongState PlaySongState { get { return playSongState; } }
     }
 
-    class LoadAndPlaySong : StorageTask//QueAndSynch
+    class LoadAndPlaySong : StorageTask
     {
         SongData songData;
         Song song;
@@ -254,23 +254,23 @@ namespace VikingEngine.Sound
             if (fromAsynchContentLoad)
             {
                 runQuedStorageTask();//quedEvent();
-                this.AddToUpdateList();//.AddToUpdateList();
+                addToSyncedUpdate();//this.AddToUpdateList();//.AddToUpdateList();
             }
             else
             {
                 beginStorageTask();//start();
             }
         }
-        protected override void runQuedStorageTask()
+        public override void runQuedStorageTask()
         {
             base.runQuedStorageTask();
             song = Engine.LoadContent.Content.Load<Song>(songData.filePath);//RetroYay_Loop
            // return true;
         }
 
-        protected override void runQuedMainTask()
+        public override void runSyncAction()
         {
-            base.runQuedMainTask();
+            base.runSyncAction();
             onStorageComplete();
         }
 

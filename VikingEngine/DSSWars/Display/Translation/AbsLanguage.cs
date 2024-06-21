@@ -20,9 +20,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string Lobby_LocalMultiplayerControllerRequired { get; }
         public abstract string Lobby_NextScreen { get; }
 
-        public abstract string Lobby_ProfilesSelectTitle { get; }
-        public abstract string Lobby_ProfileNumbered { get; }
-        public abstract string Lobby_ProfileEdit { get; }
+        public abstract string Lobby_FlagSelectTitle { get; }
+        public abstract string Lobby_FlagNumbered { get; }
+        public abstract string Lobby_FlagEdit { get; }
 
 
         public abstract string Lobby_WarningTitle { get; }
@@ -46,8 +46,8 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string Player_DefaultName { get; }
 
-        public abstract string ProfileEditor_Description { get; }
-        public abstract string ProfileEditor_Bucket { get; }
+        public abstract string FlagEditor_Description { get; }
+        public abstract string FlagEditor_Bucket { get; }
         public abstract string ProfileEditor_OptionsMenu { get; }
         public abstract string ProfileEditor_FlagColorsTitle { get; }        
         public abstract string ProfileEditor_MainColor { get; }
@@ -247,6 +247,18 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string UnitType_Bannerman { get; }
         public abstract string UnitType_WarshipWithUnit { get; }
 
+        public abstract string UnitType_Description_Soldier { get; }
+        public abstract string UnitType_Description_Sailor { get; }
+        public abstract string UnitType_Description_Folkman { get; }
+        public abstract string UnitType_Description_HonorGuard { get; }
+        public abstract string UnitType_Description_Knight { get; }
+        public abstract string UnitType_Description_Archer { get; }
+        public abstract string UnitType_Description_Crossbow { get; }
+        public abstract string UnitType_Description_Ballista { get; }
+        public abstract string UnitType_Description_GreenSoldier { get; }
+
+
+
         public abstract string SoldierStats_Title { get; }
         public abstract string SoldierStats_GroupCountAndSoldierCount { get; }
         public abstract string SoldierStats_AttackStrengthLandSeaCity { get; }
@@ -342,6 +354,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string EndScreen_Epilogue_Text { get; }
 
 
+        public abstract string GameMenu_WatchPrologue { get; }
+        public abstract string Prologue_Title { get; }
+        public abstract List<string> Prologue_TextLines { get; }
+
         public abstract string GameMenu_Title { get; }
         public abstract string GameMenu_ContinueGame { get; }
         public abstract string GameMenu_Resume { get; }
@@ -367,7 +383,18 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string Progressbar_SaveProgress { get; }
         public abstract string Progressbar_LoadProgress { get; }
-
         public abstract string Progressbar_PressAnyKey { get; }
+
+        public abstract string Tutorial_MenuOption { get; }
+        public abstract string Tutorial_MissionsTitle { get; }
+        public abstract string Tutorial_Mission_BuySoldier { get; }
+        public abstract string Tutorial_Mission_MoveArmy { get; }
+
+        public abstract string Tutorial_CompleteTitle { get; }
+        public abstract string Tutorial_CompleteMessage { get; }
+
+        public abstract string Tutorial_SelectInput { get; }
+        public abstract string Tutorial_MoveInput { get; }
+
     }
 }

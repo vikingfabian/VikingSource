@@ -129,11 +129,10 @@ namespace VikingEngine.ToGG.ToggEngine.BattleEngine
                     }
                     else //Ranged
                     {
-                        IntVector2 non;
-
+                       
                         if (friendlySupporter.Data.WeaponStats.HasProjectileAttack &&
                             dist <= friendlySupporter.FireRangeWithModifiers(friendlySupporter.squarePos) &&
-                            friendlySupporter.InLineOfSight(friendlySupporter.squarePos, target.position, false, out non) &&
+                            friendlySupporter.InLineOfSight(friendlySupporter.squarePos, target.position, false, out _) &&
                             !friendlySupporter.bAdjacentOpponents())
                         {
                             isSupporter = true;

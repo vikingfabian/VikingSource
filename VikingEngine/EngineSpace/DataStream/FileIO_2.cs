@@ -82,7 +82,7 @@ namespace VikingEngine.DataStream
             }
         }
 
-        protected override void runQuedStorageTask()
+        public override void runQuedStorageTask()
         {
             base.runQuedStorageTask();
 

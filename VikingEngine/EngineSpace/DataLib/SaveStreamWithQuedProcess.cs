@@ -50,81 +50,143 @@ namespace VikingEngine.DataLib
         //    }
         //}
 
-        public override void runQuedTask(MultiThreadType threadType)
+        public override void runQuedStorageTask()
         {
-            switch (threadType)
+            //base.runQuedStorageTask();
+            if (save)
             {
-                case MultiThreadType.Storage:
-                    if (save)
-                    {
-                        DataStream.DataStreamHandler.Write(path, data);
-                    }
-                    else
-                    {
-                        data = DataStream.DataStreamHandler.Read(path);
+                DataStream.DataStreamHandler.Write(path, data);
+            }
+            else
+            {
+                data = DataStream.DataStreamHandler.Read(path);
 
-                        if (data == null)
-                        {
-                            Debug.LogError("Loading empty data:" + this.ToString());
-                            error = true;
-                        }
-                    }
-                    break;
-
-                case MultiThreadType.Asynch:
-                    if (storageStream)
-                    {
-                        if (save)
-                        {
-                            System.IO.MemoryStream s = new System.IO.MemoryStream();
-                            System.IO.BinaryWriter w = new System.IO.BinaryWriter(s);
-                            WriteStream(w);
-                            data = s.ToArray();
-                        }
-                        else
-                        {
-                            if (data == null)
-                            {
-                                //System.Diagnostics.Debug.WriteLine("ERR Loading empty data:" + this.ToString());
-                            }
-                            else
-                            {
-                                System.IO.MemoryStream s = new System.IO.MemoryStream(data);
-                                System.IO.BinaryReader r = new System.IO.BinaryReader(s);
-                                ReadStream(r);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (save)
-                        {
-                            data = ByteArraySaveData;
-                        }
-                        else
-                        {
-                            ByteArraySaveData = data;
-                        }
-                    }
-
-                    runQuedAsynchTask();
-
-                    processComplete = true;
-                    break;
-
-                case MultiThreadType.Main:
-                    if (processComplete)
-                    {
-                        //if (callBack != null)
-                        //{
-                        //    callBack.SaveComplete(save, -1, null, false);
-                        //}
-                        runQuedMainTask();
-                    }
-                    break;
-
+                if (data == null)
+                {
+                    Debug.LogError("Loading empty data:" + this.ToString());
+                    error = true;
+                }
             }
         }
+
+        public override void runSyncAction()
+        {
+            if (storageStream)
+            {
+                if (save)
+                {
+                    System.IO.MemoryStream s = new System.IO.MemoryStream();
+                    System.IO.BinaryWriter w = new System.IO.BinaryWriter(s);
+                    WriteStream(w);
+                    data = s.ToArray();
+                }
+                else
+                {
+                    if (data == null)
+                    {
+                        //System.Diagnostics.Debug.WriteLine("ERR Loading empty data:" + this.ToString());
+                    }
+                    else
+                    {
+                        System.IO.MemoryStream s = new System.IO.MemoryStream(data);
+                        System.IO.BinaryReader r = new System.IO.BinaryReader(s);
+                        ReadStream(r);
+                    }
+                }
+            }
+            else
+            {
+                if (save)
+                {
+                    data = ByteArraySaveData;
+                }
+                else
+                {
+                    ByteArraySaveData = data;
+                }
+            }
+
+            base.runSyncAction();
+
+            processComplete = true;
+        }
+
+
+        //public override void runQuedTask(MultiThreadType threadType)
+        //{
+        //    switch (threadType)
+        //    {
+        //        case MultiThreadType.Storage:
+        //            if (save)
+        //            {
+        //                DataStream.DataStreamHandler.Write(path, data);
+        //            }
+        //            else
+        //            {
+        //                data = DataStream.DataStreamHandler.Read(path);
+
+        //                if (data == null)
+        //                {
+        //                    Debug.LogError("Loading empty data:" + this.ToString());
+        //                    error = true;
+        //                }
+        //            }
+        //            break;
+
+        //        case MultiThreadType.Asynch:
+        //            if (storageStream)
+        //            {
+        //                if (save)
+        //                {
+        //                    System.IO.MemoryStream s = new System.IO.MemoryStream();
+        //                    System.IO.BinaryWriter w = new System.IO.BinaryWriter(s);
+        //                    WriteStream(w);
+        //                    data = s.ToArray();
+        //                }
+        //                else
+        //                {
+        //                    if (data == null)
+        //                    {
+        //                        //System.Diagnostics.Debug.WriteLine("ERR Loading empty data:" + this.ToString());
+        //                    }
+        //                    else
+        //                    {
+        //                        System.IO.MemoryStream s = new System.IO.MemoryStream(data);
+        //                        System.IO.BinaryReader r = new System.IO.BinaryReader(s);
+        //                        ReadStream(r);
+        //                    }
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (save)
+        //                {
+        //                    data = ByteArraySaveData;
+        //                }
+        //                else
+        //                {
+        //                    ByteArraySaveData = data;
+        //                }
+        //            }
+
+        //            runQuedAsynchTask();
+
+        //            processComplete = true;
+        //            break;
+
+        //        case MultiThreadType.Main:
+        //            if (processComplete)
+        //            {
+        //                //if (callBack != null)
+        //                //{
+        //                //    callBack.SaveComplete(save, -1, null, false);
+        //                //}
+        //                runSyncAction();
+        //            }
+        //            break;
+
+        //    }
+        //}
 
         //protected void beginStorageTask()
         //{

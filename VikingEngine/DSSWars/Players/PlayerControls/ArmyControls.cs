@@ -114,6 +114,8 @@ namespace VikingEngine.DSSWars.Players
                 SoundLib.ordermove.Play();
                 army.Order_MoveTo(player.mapControls.tilePosition);
             }
+
+            player.onMoveArmy();
         }
 
         enum PathFindState

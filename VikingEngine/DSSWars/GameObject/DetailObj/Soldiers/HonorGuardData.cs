@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             modelName = LootFest.VoxelModelName.little_hirdman;
             icon = SpriteName.WarsUnitIcon_Honorguard;
-            description = "";
+            description = DssRef.lang.UnitType_Description_HonorGuard;
         }
     }
 }

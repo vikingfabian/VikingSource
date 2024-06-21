@@ -26,6 +26,7 @@ namespace VikingEngine.DSSWars.Data
         public MapSize mapSize = MapSize.Medium;
         public bool generateNewMaps = false;
         public bool autoSave = true;
+        public bool runTutorial = true;
         public LocalPlayerStorage[] localPlayers = null;
         public Profile.FlagStorage flagStorage;
         public SaveMeta meta = null;
@@ -87,7 +88,7 @@ namespace VikingEngine.DSSWars.Data
 
         public void write(System.IO.BinaryWriter w)
         {
-            const int Version = 14;
+            const int Version = 15;
 
             w.Write(Version);
 
@@ -108,7 +109,9 @@ namespace VikingEngine.DSSWars.Data
             w.Write(generateNewMaps);
             w.Write(autoSave);
             w.Write(multiplayerGameSpeed);
-            DssRef.difficulty.write(w);            
+            DssRef.difficulty.write(w);   
+            
+            w.Write(runTutorial);
         }
         public void read(System.IO.BinaryReader r)
         {
@@ -139,8 +142,8 @@ namespace VikingEngine.DSSWars.Data
             {
                 generateNewMaps = r.ReadBoolean();
                 if (version >= 13)
-                { 
-                    autoSave = r.ReadBoolean(); 
+                {
+                    autoSave = r.ReadBoolean();
                 }
                 if (version >= 14)
                 {
@@ -148,7 +151,11 @@ namespace VikingEngine.DSSWars.Data
                 }
                 DssRef.difficulty.read(r, version);
             }
-            
+
+            if (version >= 15)
+            {
+                runTutorial = r.ReadBoolean();
+            }
         }
 
         public void checkPlayerDoublettes()

@@ -727,7 +727,7 @@ namespace VikingEngine.DSSWars
 
         public void Button(GuiLayout layout, IGuiAction action, bool moreArrow)
         {
-            var button = new GuiIconTextButton(SpriteName.MissingImage, string.Format( DssRef.lang.Lobby_ProfileNumbered ,index+1),
+            var button = new GuiIconTextButton(SpriteName.MissingImage, string.Format( DssRef.lang.Lobby_FlagNumbered ,index+1),
                 null, action, moreArrow, layout);
 
             button.icon.Texture = flagDesign.CreateTexture(this);

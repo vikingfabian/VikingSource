@@ -62,10 +62,10 @@ namespace VikingEngine.DSSWars.Profile
             }
             else
             {
-                content.text(DssRef.lang.ProfileEditor_Description);
+                content.text(DssRef.lang.FlagEditor_Description);
                 content.newLine();
 
-                content.icontext(state.VisualInput.FlagDesign_PaintBucket.Icon, DssRef.lang.ProfileEditor_Bucket);
+                content.icontext(state.VisualInput.FlagDesign_PaintBucket.Icon, DssRef.lang.FlagEditor_Bucket);
                 content.icontext(state.VisualInput.FlagDesign_ToggleColor_Next.Icon, DssRef.lang.ProfileEditor_NextColorType);
 
                 if (state.controllerMode)

@@ -38,7 +38,7 @@ namespace VikingEngine.DSSWars.Data
                         string adjective = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Adjectives, random);
                         string place = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Places, random);
 
-                        return string.Format(DssRef.lang.NameGenerator_XOfTheY, creature, $"{adjective} {place}");
+                        return string.Format(DssRef.lang.NameGenerator_AOfTheB, creature, $"{adjective} {place}");
                         //return $"{creature} of the {adjective} {place}";
                     }
 
@@ -64,7 +64,7 @@ namespace VikingEngine.DSSWars.Data
                         string title = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Titles, random);
                         string symbol = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Symbols, random);
 
-                        return string.Format(DssRef.lang.NameGenerator_XOfTheY, title, symbol);
+                        return string.Format(DssRef.lang.NameGenerator_AOfTheB, title, symbol);
                         //return $"{title} of the {symbol}";
                     }
 
@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.Data
                         string title = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Titles, random);
                         string creature = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Creatures, random);
 
-                        return string.Format(DssRef.lang.NameGenerator_XOfTheY, title, creature);
+                        return string.Format(DssRef.lang.NameGenerator_AOfTheB, title, creature);
                         //return $"{title} of the {creature}";
                     }
                 case 6:
@@ -82,7 +82,7 @@ namespace VikingEngine.DSSWars.Data
                         string adjective = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Adjectives, random);
                         string creature = arraylib.RandomListMember(DssRef.lang.NameGenerator_Army_Creatures, random);
 
-                        return string.Format(DssRef.lang.NameGenerator_XOfTheY, title, $"{adjective} {creature}");
+                        return string.Format(DssRef.lang.NameGenerator_AOfTheB, title, $"{adjective} {creature}");
                         //return $"{title} of the {adjective} {creature}";
                     }
 

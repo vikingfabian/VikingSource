@@ -66,6 +66,12 @@ namespace VikingEngine.DSSWars.Display
             base.closeMenu();
         }
 
+        void watchEpilogue()
+        {
+            closeMenu();
+            new CutScene.NightmarePrologue();
+        }
+
         void saveGameState()
         {
             closeMenu();
@@ -97,6 +103,8 @@ namespace VikingEngine.DSSWars.Display
             {  
                 new GuiTextButton(DssRef.lang.GameMenu_Resume, null, closeMenu, false, layout);
                 new GuiTextButton(DssRef.lang.GameMenu_SaveState, DssRef.lang.GameMenu_SaveStateWarnings, saveGameState, false, layout);
+                new GuiTextButton(DssRef.lang.GameMenu_WatchPrologue, null, watchEpilogue, false, layout);
+
 
                 if (DssRef.state.IsLocalMultiplayer())
                 {
@@ -116,6 +124,7 @@ namespace VikingEngine.DSSWars.Display
             pauseMenu();
 
         }
+
 
     }
 }

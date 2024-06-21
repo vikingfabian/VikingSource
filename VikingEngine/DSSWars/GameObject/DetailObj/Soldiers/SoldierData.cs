@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.GameObject
             modelName = LootFest.VoxelModelName.wars_soldier;
             modelVariationCount = 3;
 
-            description = "A general purpose unit.";
+            description = DssRef.lang.UnitType_Description_Soldier;
             icon = SpriteName.WarsUnitIcon_Soldier;
         }
     }

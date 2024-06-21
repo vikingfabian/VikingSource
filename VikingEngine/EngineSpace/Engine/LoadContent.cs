@@ -30,6 +30,9 @@ namespace VikingEngine.Engine
         public const string TexturePath = "Texture\\";
         public const string ModelPath = "Model\\";
 
+        static SpriteFont regular, bold, console;
+        static SpriteFont chinese_regular, chinese_bold, chinese_console;
+
         public static Color[] GetTextureData(LoadedTexture texture, Rectangle pixels)
         {
             int numPixels = pixels.Width * pixels.Height;
@@ -46,9 +49,16 @@ namespace VikingEngine.Engine
             
             //Load fonts
             Fonts = new SpriteFont[(int)LoadedFont.NUM_NON];
-            Fonts[(int)LoadedFont.Regular] = Content.Load<SpriteFont>("Font\\Regular");
-            Fonts[(int)LoadedFont.Bold] = Content.Load<SpriteFont>("Font\\Bold");
-            Fonts[(int)LoadedFont.Console] = Content.Load<SpriteFont>("Font\\Console");
+
+            regular = Content.Load<SpriteFont>("Font\\Regular");
+            bold = Content.Load<SpriteFont>("Font\\Bold");
+            console = Content.Load<SpriteFont>("Font\\Console");
+
+            chinese_regular = Content.Load<SpriteFont>("Font\\ChineseRegular");
+            chinese_bold = Content.Load<SpriteFont>("Font\\ChineseBold");
+            chinese_console = Content.Load<SpriteFont>("Font\\ChineseConsole");
+
+            setFontLanguage(FontLanguage.Western);
 
             Engine.Screen.RegularFontSize = MeasureString("XXjj", LoadedFont.Regular).Y;
             //Engine.Screen.RefreshUiSize();
@@ -58,6 +68,23 @@ namespace VikingEngine.Engine
             Textures[(int)LoadedTexture.WhiteArea] = Content.Load<Texture2D>(TexturePath + "whitearea256");
             effectList[(int)LoadedEffect.ParticleEffect] = LoadShader(LoadedEffect.ParticleEffect.ToString());
             BaseContentLoaded = true;
+        }
+
+        public static void setFontLanguage(FontLanguage fontLanguage)
+        {
+            switch (fontLanguage)
+            {
+                case FontLanguage.Western:
+                    Fonts[(int)LoadedFont.Regular] = regular;
+                    Fonts[(int)LoadedFont.Bold] = bold;
+                    Fonts[(int)LoadedFont.Console] = console;
+                    break;
+                case FontLanguage.Chinese:
+                    Fonts[(int)LoadedFont.Regular] = chinese_regular;
+                    Fonts[(int)LoadedFont.Bold] = chinese_bold;
+                    Fonts[(int)LoadedFont.Console] = chinese_console;
+                    break;
+            }
         }
        
         public static void LoadMesh(LoadedMesh name, string dir)
@@ -223,4 +250,10 @@ namespace VikingEngine
         ccgTiles,
         NUM
     };
+
+    public enum FontLanguage
+    { 
+        Western,
+        Chinese,
+    }
 }

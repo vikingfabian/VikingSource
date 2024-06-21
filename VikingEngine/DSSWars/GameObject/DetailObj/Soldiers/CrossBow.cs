@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
 
             modelName = LootFest.VoxelModelName.wars_crossbow;
 
-            description = "Powerful ranged soldier";
+            description = DssRef.lang.UnitType_Description_Crossbow;
             goldCost = MathExt.MultiplyInt(2, DssLib.GroupDefaultCost);
         }
         

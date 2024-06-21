@@ -141,7 +141,7 @@ namespace VikingEngine.DSSWars
                         new GuiTextButton(DssRef.lang.Lobby_NextScreen, null, new GuiAction1Arg<int>(nextScreenIndex, playerNum), false, layout);
                     }
                     DssRef.storage.flagStorage.flagDesigns[playerData.profile].Button(layout, new GuiAction1Arg<int>(listProfiles, playerNum), true);
-                    new GuiTextButton(DssRef.lang.Lobby_ProfileEdit, null, new GuiAction1Arg<int>( openProfileEditor, playerData.profile), false, layout);
+                    new GuiTextButton(DssRef.lang.Lobby_FlagEdit, null, new GuiAction1Arg<int>( openProfileEditor, playerData.profile), false, layout);
                     
                     if (DssRef.storage.playerCount > 1)
                     {
@@ -436,6 +436,17 @@ namespace VikingEngine.DSSWars
             return DssRef.storage.autoSave;
         }
 
+        public bool tutorialProperty(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                DssRef.storage.runTutorial = value;
+
+                DssRef.storage.Save(null);
+            }
+            return DssRef.storage.runTutorial;
+        }
+
         public bool generateNewMapsProperty(int index, bool set, bool value)
         {
             if (set && DssRef.storage.generateNewMaps != value)
@@ -543,7 +554,7 @@ namespace VikingEngine.DSSWars
 
         void listProfiles(int playerNumber)
         {
-            GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_ProfilesSelectTitle, menuSystem.menu);
+            GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_FlagSelectTitle, menuSystem.menu);
             {
                 for (int i = 0; i < DssRef.storage.flagStorage.flagDesigns.Count; ++i)
                 {
@@ -559,6 +570,7 @@ namespace VikingEngine.DSSWars
             {
                 Ref.gamesett.optionsMenu(layout);
                 new GuiCheckbox(DssRef.lang.GameMenu_AutoSave, null, autoSaveProperty, layout);
+                new GuiCheckbox(DssRef.lang.Tutorial_MenuOption, null, tutorialProperty, layout);
             }
             layout.End();
 

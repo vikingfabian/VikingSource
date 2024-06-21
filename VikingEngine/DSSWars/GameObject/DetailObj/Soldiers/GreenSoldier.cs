@@ -22,6 +22,7 @@ namespace VikingEngine.DSSWars.GameObject
             goldCost = GroupDefaultCount * 4;
 
             icon = SpriteName.WarsUnitIcon_Greensoldier;
+            description = DssRef.lang.UnitType_Description_GreenSoldier;
         }
     }
 }

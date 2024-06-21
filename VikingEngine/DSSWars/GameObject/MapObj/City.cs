@@ -950,21 +950,24 @@ namespace VikingEngine.DSSWars.GameObject
                 new Display.CityMenu(args.player, this, args.content);
             }
 
-            //Properties
-            if (nobelHouse)
+            if (!args.player.inTutorialMode)
             {
-                args.content.newLine();
-                args.content.ListDot();
-                args.content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse));
-            }
+                //Properties
+                if (nobelHouse)
+                {
+                    args.content.newLine();
+                    args.content.ListDot();
+                    args.content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse));
+                }
 
-            if (CityType == CityType.Factory)
-            {
-                args.content.newLine();
-                args.content.ListDot();
-                args.content.Add(new RichBoxImage(SpriteName.WarsFactoryIcon));
-                args.content.Add(new RichBoxText(DssRef.lang.Building_DarkFactory));
-                
+                if (CityType == CityType.Factory)
+                {
+                    args.content.newLine();
+                    args.content.ListDot();
+                    args.content.Add(new RichBoxImage(SpriteName.WarsFactoryIcon));
+                    args.content.Add(new RichBoxText(DssRef.lang.Building_DarkFactory));
+
+                }
             }
         }
 
@@ -1107,7 +1110,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void buySoldiersAction(UnitType type, int count)
+        public void buySoldiersAction(UnitType type, int count, LocalPlayer player)
         {
             Army army;
             bool success = buySoldiers(type, count, true, out army);
@@ -1117,6 +1120,11 @@ namespace VikingEngine.DSSWars.GameObject
                 if (typeData.factionUniqueType >= 0)
                 {
                     DssRef.achieve.onFactionUniquePurchase(typeData.factionUniqueType);
+                }
+
+                if (player != null)
+                {
+                    player.onBuySoldier();
                 }
             }
         }
