@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars
         }
         public static IntVector2 ToSubTilePos(Vector3 pos)
         {
-            return new IntVector2(pos.X * WorldData.TileSubDivitions, pos.Z * WorldData.TileSubDivitions);
+            return new IntVector2(pos.X * WorldData.TileSubDivitions + WorldData.HalfTileSubDivitions, pos.Z * WorldData.TileSubDivitions + WorldData.HalfTileSubDivitions);
         }
         public static IntVector2 ToSubTilePos_Centered(IntVector2 tilePos)
         {
@@ -50,7 +50,7 @@ namespace VikingEngine.DSSWars
 
         public static Vector3 WorldPosFromSubtile(IntVector2 subtilePos)
         {
-            return new Vector3(subtilePos.X *  WorldData.SubTileWidth, 0, subtilePos.Y * WorldData.SubTileWidth);
+            return new Vector3(subtilePos.X * WorldData.SubTileWidth - WorldData.TileHalfWidth, 0, subtilePos.Y * WorldData.SubTileWidth - WorldData.TileHalfWidth);
         }
 
         public static Vector3 ToMapPos(IntVector2 tile)
@@ -72,10 +72,7 @@ namespace VikingEngine.DSSWars
         public static void Rotation1DToQuaterion(Graphics.Mesh mesh, float rotation)
         {
             mesh.Rotation.QuadRotation = Quaternion.CreateFromYawPitchRoll(MathHelper.TwoPi - rotation, 0, 0);
-            //    Quaternion.Identity;
-            //Vector3 rot = Vector3.Zero;
-            //rot.X = MathHelper.TwoPi - rotation;
-            //mesh.Rotation.RotateWorld(rot);
+            
         }
 
         public static void Rotation1DToQuaterion(Graphics.AbsVoxelObj mesh, float rotation)
@@ -87,7 +84,7 @@ namespace VikingEngine.DSSWars
         public static RotationQuarterion ToQuaterion(float rotation)
         {
             RotationQuarterion rot = new RotationQuarterion(Quaternion.CreateFromYawPitchRoll(MathHelper.TwoPi - rotation, 0, 0));//RotationQuarterion.Identity;
-            //rot.RotateWorldX(MathHelper.Pi - rotation);
+            
             return rot;
         }
 

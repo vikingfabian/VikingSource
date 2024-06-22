@@ -33,6 +33,7 @@ namespace VikingEngine.DSSWars
         public const double TileWidthInKm = 0.064;
 
         public const int TileSubDivitions = 8;
+        public const int HalfTileSubDivitions = TileSubDivitions / 2;
         public const int TileSubDivitions_MaxIndex = TileSubDivitions-1;
 
         public static readonly Color WaterCol = new Color(14, 155, 246);
@@ -40,6 +41,7 @@ namespace VikingEngine.DSSWars
         public static readonly Color WaterDarkCol = new Color(0.043f, 0.486f,0.773f);
         public static readonly Color WaterDarkCol2 = ColorExt.Multiply(WaterDarkCol, 1.1f);
 
+        public static readonly float TileHalfWidth = 0.5f;
         public static readonly float SubTileWidth = 1f / TileSubDivitions;
         public static readonly Vector2 SubTileWidthV2 = new Vector2(SubTileWidth);
         public static readonly float SubTileHalfWidth = SubTileWidth * 0.5f;

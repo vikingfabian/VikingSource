@@ -17,6 +17,15 @@ namespace VikingEngine.DSSWars.GameObject
         List<WorkerUnit> workerUnits = null;
         public void async_workUpdate()
         {
+            int idleCount = 0;
+            for (int i = 0; i < workerStatuses.Count; i++)
+            {
+                if (workerStatuses[i].work == WorkType.Idle)
+                {
+                    ++idleCount;
+                }
+            }
+
             int workTeamCount = workForce.Int() / WorkTeamSize;
 
             if (workerStatuses.Count < workTeamCount)
@@ -30,17 +39,10 @@ namespace VikingEngine.DSSWars.GameObject
                         subTileEnd = startPos,
                         subTileStart = startPos,
                     });
-                }
-            }
 
-            int idleCount = 0;
-            foreach (WorkerStatus workerStatus in workerStatuses)
-            {
-                if (workerStatus.work == WorkType.Idle)
-                { 
                     ++idleCount;
                 }
-            }
+            }            
 
             if (idleCount > workQue.Count)
             {
@@ -166,7 +168,17 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
             }
-        }        
+        }
+
+        public void getWorkerStatus(int index, ref WorkerStatus status)
+        { 
+            status = workerStatuses[index];
+        }
+
+        public void setWorkerStatus(int index, ref WorkerStatus status)
+        { 
+            workerStatuses[index] = status;
+        }
     }
 
     struct WorkerStatus
@@ -183,6 +195,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             var subTile = DssRef.world.subTileGrid.Get(subTileEnd);
             subTile.SetType(TerrainMainType.DefaultLand, 0, 0);
+            DssRef.world.subTileGrid.Set(subTileEnd, subTile);
 
             work = WorkType.Idle;
         }
