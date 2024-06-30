@@ -61,6 +61,8 @@ namespace VikingEngine.DSSWars.GameObject
         public bool nobelHouse = false;
         string name = null;
 
+        IntVector2 cullingTopLeft, cullingBottomRight;
+
         public City(int index, IntVector2 pos, CityType type, WorldData world)
         {
             this.parentArrayIndex = index;
@@ -749,6 +751,11 @@ namespace VikingEngine.DSSWars.GameObject
             updateWorkerUnits();
         }
 
+        public override void asynchCullingUpdate(float time, bool bStateA)
+        {
+            DssRef.state.culling.InRender_Asynch(ref enterRender_asynch, bStateA, ref cullingTopLeft, ref cullingBottomRight);
+        }
+
         public void oneSecUpdate()
         {
             double addWorkers = 0;
@@ -763,8 +770,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (immigrants.HasValue())
                 {
-                    //var availableImmigrants = Math.Min(immigrants, 5);
-                    var immigrantsToWork = immigrants.pull(5);//Math.Min(maxWorkForce - workForce, availableImmigrants);
+                    var immigrantsToWork = immigrants.pull(5);
                     addWorkers += immigrantsToWork;
 
                     immigrants.reduceTowardsZero(ImmigrantsRemovePerSec);

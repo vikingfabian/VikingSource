@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.GameObject.Worker;
@@ -18,14 +19,43 @@ namespace VikingEngine.DSSWars.GameObject
         List<WorkerUnit> workerUnits = null;
         public void async_workUpdate()
         {
+            if (parentArrayIndex == -1 || debugTagged)
+            { 
+                lib.DoNothing();
+            }
+
             int idleCount = 0;
+            IntVector2 minpos = WP.ToSubTilePos_Centered(tilePos);
+            IntVector2 maxpos = minpos;
             for (int i = 0; i < workerStatuses.Count; i++)
             {
                 if (workerStatuses[i].work == WorkType.Idle)
                 {
                     ++idleCount;
                 }
+
+                IntVector2 pos = workerStatuses[i].subTileEnd;
+                if (pos.X < minpos.X)
+                {
+                    minpos.X = pos.X;
+                }
+                if (pos.X > maxpos.X)
+                {
+                    maxpos.X = pos.X;
+                }
+
+                if (pos.Y < minpos.Y)
+                {
+                    minpos.Y = pos.Y;
+                }
+                if (pos.Y > maxpos.Y)
+                {
+                    maxpos.Y = pos.Y;
+                }
             }
+
+            cullingTopLeft = WP.SubtileToTilePos(minpos);
+            cullingBottomRight = WP.SubtileToTilePos(maxpos);
 
             int workTeamCount = workForce.Int() / WorkTeamSize;
 
@@ -48,6 +78,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (idleCount > workQue.Count)
             {
                 buildWorkQue();
+                workQue.Sort((a, b) => a.priority.CompareTo(b.priority));
             }
 
             //Give orders to idle workers
@@ -69,7 +100,6 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     else if (workQue.Count > 0)
                     {
-
                         var work = arraylib.PullLastMember(workQue);
 
                         var status = workerStatuses[i];
@@ -100,7 +130,6 @@ namespace VikingEngine.DSSWars.GameObject
                 //Priority of collect
 
                 //Cirkle outward from city to find resources
-                //while (workQue.Count < workTeamCount)
                 for (int radius = 1; radius < 12; ++radius)
                 {
                     ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(tilePos, radius));
@@ -121,7 +150,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                                     if (subTile.mainTerrain == TerrainMainType.Resourses)
                                     {
-                                        workQue.Add(new WorkQueMember(WorkType.PickUp, subTileLoop.Position));
+                                        workQue.Add(new WorkQueMember(WorkType.PickUp, subTileLoop.Position, 5));
                                     }
                                     else
                                     {
@@ -132,7 +161,7 @@ namespace VikingEngine.DSSWars.GameObject
                                         {
                                             if (subTile.terrainAmount >= TerrainContent.TreeReadySize)
                                             {
-                                                workQue.Add(new WorkQueMember(WorkType.Gather, subTileLoop.Position));
+                                                workQue.Add(new WorkQueMember(WorkType.Gather, subTileLoop.Position, 4));
                                             }
                                         }
 
@@ -170,6 +199,14 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (workerUnits != null)
             {
+                if (workerUnits.Count < workerStatuses.Count)
+                {
+                    for (int i = workerUnits.Count; i < workerStatuses.Count; i++)
+                    {
+                        workerUnits.Add(new WorkerUnit(this, workerStatuses[i], i));
+                    }
+                }
+
                 foreach (var w in workerUnits)
                 {
                     w.update();
@@ -184,10 +221,18 @@ namespace VikingEngine.DSSWars.GameObject
                 if (workerUnits == null)
                 {
                     workerUnits = new List<WorkerUnit>(workerStatuses.Count);
-                    for (int i = 0; i < workerStatuses.Count; i++)
-                    {
-                        workerUnits.Add(new WorkerUnit(this, workerStatuses[i], i));
+                }
+            }
+            else
+            {
+                if (workerUnits != null)
+                {
+                    foreach (var w in workerUnits)
+                    { 
+                        w.DeleteMe();
                     }
+
+                    workerUnits = null;
                 }
             }
         }
@@ -210,10 +255,16 @@ namespace VikingEngine.DSSWars.GameObject
         public WorkType work;
         public IntVector2 subTile;
 
-        public WorkQueMember(WorkType work, IntVector2 subTile)
+        /// <summary>
+        /// Goes from 1:lowest to 10: highest
+        /// </summary>
+        public int priority;
+
+        public WorkQueMember(WorkType work, IntVector2 subTile, int priority)
         {
             this.work = work;
             this.subTile = subTile;
+            this.priority = priority;
         }
     }
 

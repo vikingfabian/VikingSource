@@ -123,11 +123,19 @@ namespace VikingEngine.DSSWars.GameObject
         {
             base.toHud(args);
 
+#if DEBUG
+            args.content.Button("debug tag", new HUD.RichBox.RbAction(toggleDebugTag), null, true);
+#endif
+
             if (battleGroup != null)
             {
                 args.content.icontext(SpriteName.WarsRelationWar, battleGroup.TypeName()).overrideColor = Microsoft.Xna.Framework.Color.Red;
             }
         }
 
+        void toggleDebugTag()
+        { 
+            debugTagged = !debugTagged;
+        }
     }
 }

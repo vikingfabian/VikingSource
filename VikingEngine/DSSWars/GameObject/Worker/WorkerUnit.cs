@@ -12,6 +12,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 {
     class WorkerUnit: AbsGameObject
     {
+        WalkingAnimation walkingAnimation;
         WorkerStatus status;
         int statusIndex;
         public Graphics.AbsVoxelObj model;
@@ -28,7 +29,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             model = city.faction.AutoLoadModelInstance(
                  LootFest.VoxelModelName.war_worker, AbsDetailUnitData.StandardModelScale * 0.9f, true);
 
-            model.position = WP.WorldPosFromSubtile(status.subTileStart);
+            model.position = WP.SubtileToWorldPos(status.subTileStart);
+
+            walkingAnimation = WalkingAnimation.Standard;
 
             checkForGoal(true);
 
@@ -42,7 +45,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 float speed = AbsDetailUnitData.StandardWalkingSpeed * Ref.DeltaGameTimeMs;
                 model.position += walkDir * speed;
 
-                //WalkingAnimation.Standard.update(speed, model);
+                walkingAnimation.update(speed, model);
                 updateGroudY(false);
 
                 if (VectorExt.PlaneXZDistance(ref model.position, ref goalPos) < WorldData.SubTileWidth)
@@ -63,7 +66,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         { 
             if (status.work != WorkType.Idle)
             {   
-                goalPos = WP.WorldPosFromSubtile(status.subTileEnd);
+                goalPos = WP.SubtileToWorldPos(status.subTileEnd);
                 walkDir = VectorExt.SafeNormalizeV3(goalPos - model.position);
                 WP.Rotation1DToQuaterion(model, lib.V2ToAngle(VectorExt.V3XZtoV2(walkDir)));
 
@@ -110,6 +113,11 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     }
                 }
             }
+        }
+
+        public void DeleteMe()
+        { 
+            model.DeleteMe();
         }
 
         public override GameObjectType gameobjectType()

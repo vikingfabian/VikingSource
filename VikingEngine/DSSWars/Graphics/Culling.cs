@@ -75,6 +75,21 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        public void InRender_Asynch(ref bool enterRender, bool bStateA, ref IntVector2 minpos, ref IntVector2 maxpos)
+        {
+            for (int cameraIndex = 0; cameraIndex < Ref.draw.ActivePlayerScreens.Count; ++cameraIndex)
+            {
+                var state = bStateA ? players[cameraIndex].stateA : players[cameraIndex].stateB;
+                if (state.enterArea.IntersectRect(minpos, maxpos))
+                {
+                    enterRender = true;
+                    return;
+                }
+            }
+
+            enterRender = false;
+        }
+
         public void InRender_Asynch(ref bool enterRender, bool bStateA, ref Vector2 minpos, ref Vector2 maxpos)
         {
             for (int cameraIndex = 0; cameraIndex < Ref.draw.ActivePlayerScreens.Count; ++cameraIndex)
@@ -88,26 +103,7 @@ namespace VikingEngine.DSSWars
             }
 
             enterRender = false;
-            //Map.Tile tile;
-            //if (DssRef.world.tileGrid.TryGet(pos, out tile))
-            //{
-            //    byte value = cullingStateA ? tile.renderStateA : tile.renderStateB;
-            //    if (value == NoRender)
-            //    {
-            //        enterRender = false;
-            //    }
-            //    else
-            //    {
-            //        enterRender = enterRender || value == EnterRender;
-            //    }
-            //}
         }
-
-        //public bool TileInRender(IntVector2 pos)
-        //{
-        //    var tile = DssRef.world.tileGrid.Get(pos);
-        //}
-
 
     }
     class PlayerCulling
