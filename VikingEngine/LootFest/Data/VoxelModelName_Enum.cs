@@ -681,6 +681,8 @@ namespace VikingEngine.LootFest
         fol_herbs,
         fol_farmculture,
 
+        resource_tree,
+
         #endregion
 
         NUM_NON

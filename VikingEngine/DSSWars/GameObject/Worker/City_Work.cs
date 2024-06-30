@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.GameObject.Worker;
 using VikingEngine.DSSWars.Map;
 
@@ -54,7 +55,19 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (workerStatuses[i].work == WorkType.Idle)
                 {
-                    if (workQue.Count > 0)
+                    if (workerStatuses[i].carry.amount > 0)
+                    {
+                        var status = workerStatuses[i];
+                        {
+                            status.work = WorkType.DropOff;
+                            status.subTileStart = status.subTileEnd;
+                            status.subTileEnd = WP.ToSubTilePos_Centered(tilePos);
+                            status.processTimeLengthSec = 100;
+                            status.processTimeStartStampSec = Ref.TotalGameTimeSec;
+                        }
+                        workerStatuses[i] = status;
+                    }
+                    else if (workQue.Count > 0)
                     {
 
                         var work = arraylib.PullLastMember(workQue);
@@ -105,15 +118,24 @@ namespace VikingEngine.DSSWars.GameObject
                                 while (subTileLoop.Next())
                                 {
                                     var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
-                                    var foil = subTile.GetFoilType();
 
-                                    if (foil == Map.TerrainSubFoilType.TreeSoft ||
-                                        foil == Map.TerrainSubFoilType.TreeHard)
+                                    if (subTile.mainTerrain == TerrainMainType.Resourses)
                                     {
-                                        if (subTile.terrainValue >= TerrainContent.TreeReadySize)
+                                        workQue.Add(new WorkQueMember(WorkType.PickUp, subTileLoop.Position));
+                                    }
+                                    else
+                                    {
+                                        var foil = subTile.GetFoilType();
+
+                                        if (foil == Map.TerrainSubFoilType.TreeSoft ||
+                                            foil == Map.TerrainSubFoilType.TreeHard)
                                         {
-                                            workQue.Add(new WorkQueMember(WorkType.Gather, subTileLoop.Position));
+                                            if (subTile.terrainAmount >= TerrainContent.TreeReadySize)
+                                            {
+                                                workQue.Add(new WorkQueMember(WorkType.Gather, subTileLoop.Position));
+                                            }
                                         }
+
                                     }
                                 }
                             }
@@ -136,7 +158,7 @@ namespace VikingEngine.DSSWars.GameObject
                         Ref.TotalGameTimeSec > status.processTimeStartStampSec + status.processTimeLengthSec)
                     {
                         //Work complete
-                        status.WorkComplete();
+                        status.WorkComplete(this);
                         workerStatuses[i] = status;
                     }
 
@@ -181,25 +203,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
     }
 
-    struct WorkerStatus
-    {
-        public WorkType work;
-
-        public float processTimeLengthSec;
-        public float processTimeStartStampSec;
-
-        public IntVector2 subTileStart;
-        public IntVector2 subTileEnd;
-
-        public void WorkComplete()
-        {
-            var subTile = DssRef.world.subTileGrid.Get(subTileEnd);
-            subTile.SetType(TerrainMainType.DefaultLand, 0, 0);
-            DssRef.world.subTileGrid.Set(subTileEnd, subTile);
-
-            work = WorkType.Idle;
-        }
-    }
+    
 
     struct WorkQueMember
     {
@@ -217,6 +221,7 @@ namespace VikingEngine.DSSWars.GameObject
     { 
         Idle,
         Gather,
-        Carry,
+        PickUp,
+        DropOff,
     }
 }

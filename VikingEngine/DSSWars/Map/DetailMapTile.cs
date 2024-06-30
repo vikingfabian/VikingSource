@@ -32,6 +32,9 @@ namespace VikingEngine.DSSWars.Map
                 LootFest.VoxelModelName.fol_bush1,
                 LootFest.VoxelModelName.fol_stoneblock,
                 LootFest.VoxelModelName.fol_farmculture,
+
+                LootFest.VoxelModelName.resource_tree,
+
             };
         }
 
@@ -91,7 +94,12 @@ namespace VikingEngine.DSSWars.Map
 
                     if (subTile.mainTerrain == TerrainMainType.Foil)
                     {
-                        createFoliage((TerrainSubFoilType)subTile.subTerrain, subTile.terrainValue, 
+                        createFoliage((TerrainSubFoilType)subTile.subTerrain, subTile.terrainAmount, 
+                            topCenter(ref subTile, ref subTopLeft));
+                    }
+                    else if (subTile.mainTerrain == TerrainMainType.Resourses)
+                    {
+                        createResoursePile((TerrainResourcesType)subTile.subTerrain,
                             topCenter(ref subTile, ref subTopLeft));
                     }
                     else if (subTile.mainTerrain == TerrainMainType.Building)
@@ -376,6 +384,35 @@ namespace VikingEngine.DSSWars.Map
             }
 #if DEBUG
             model.DebugName = "Building " + model.DebugName;
+#endif
+            foliage.Add(new Foliage(modelName, rnd, wp, scale));
+
+        }
+
+        void createResoursePile(TerrainResourcesType resourceType, Vector3 wp)
+        {
+            wp.X += WorldData.SubTileHalfWidth;
+            wp.Z += WorldData.SubTileHalfWidth;
+            LootFest.VoxelModelName modelName;
+            float scale = WorldData.SubTileWidth * 1.4f;
+
+            switch (resourceType)
+            {
+                case TerrainResourcesType.Wood:
+                    scale = 0.1f;
+                    modelName = LootFest.VoxelModelName.resource_tree;
+                    break;
+                
+                default:
+                    throw new NotImplementedException();
+            }
+
+            if (foliage == null)
+            {
+                foliage = new List<Foliage>(8);
+            }
+#if DEBUG
+            model.DebugName = "Resource pile " + model.DebugName;
 #endif
             foliage.Add(new Foliage(modelName, rnd, wp, scale));
 

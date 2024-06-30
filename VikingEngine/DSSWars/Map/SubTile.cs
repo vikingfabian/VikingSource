@@ -13,10 +13,10 @@ namespace VikingEngine.DSSWars.Map
         public TerrainMainType mainTerrain = TerrainMainType.NUM;
         public int subTerrain = -1;
         /// <summary>
-        /// Amount of resources that can be extracted, or other value like building size
+        /// Amount of resources that can be extracted, animation frame for resources, or other value like building size
         /// </summary>
-        public int terrainValue = 0;
-        //public int colorVariant = 0;
+        public int terrainAmount = 0;
+
         public int terrainQuality = 0;
 
         /// <summary>
@@ -31,11 +31,11 @@ namespace VikingEngine.DSSWars.Map
             this.mainTerrain = type;
         }
 
-        public void SetType(TerrainMainType main, int under, int value)
+        public void SetType(TerrainMainType main, int under, int amount)
         {
             mainTerrain = main;
             subTerrain = under;
-            terrainValue = value;
+            terrainAmount = amount;
         }
 
         public void write(System.IO.BinaryWriter w)

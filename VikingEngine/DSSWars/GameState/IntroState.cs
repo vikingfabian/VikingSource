@@ -9,6 +9,7 @@ using System.IO;
 using VikingEngine.PJ;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.SteamWrapping;
+using VikingEngine.DSSWars.GameObject.Resource;
 
 namespace VikingEngine.DSSWars
 {
@@ -98,7 +99,8 @@ namespace VikingEngine.DSSWars
             new SpriteSheet();
             LootFest.Data.Block.Init();
             FlagAndColor.Init();
-            
+            ItemPropertyColl.Init();
+
             new GameObject.AllUnits();
             new Models().loadContent();
 

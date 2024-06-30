@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars
 {
     class PlayState : Engine.GameState
     {
-        WorldResources resources = new WorldResources();
+        public WorldResources resources = new WorldResources();
 
         Map.MapLayer_Factions factionsMap;
         Map.MapLayer_Overview overviewMap;
@@ -47,6 +47,8 @@ namespace VikingEngine.DSSWars
         public PlayState(bool host, SaveStateMeta loadMeta)
             : base(true)
         {
+            
+
             DssRef.state = this;
             Ref.rnd.SetSeed(DssRef.world.metaData.seed);
             menuSystem = new GameMenuSystem();

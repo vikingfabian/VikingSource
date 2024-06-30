@@ -20,13 +20,16 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         /// <summary>
         /// Tracks time, risk and expences. Based on seconds of work.
         /// </summary>
-        public int value;
+        public int cost;
 
-        public ItemResource(ItemResourceType type, int quality, int value)
+        public int amount;
+
+        public ItemResource(ItemResourceType type, int quality, int cost, int amount)
         {
             this.type = type;
             this.quality = quality;
-            this.value = value;
+            this.cost = cost;
+            this.amount = amount;
         }
     }    
     
@@ -95,6 +98,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 
         Water,
         SaltWater,
+
+        Fuel,
         Poop,
 
         NUM

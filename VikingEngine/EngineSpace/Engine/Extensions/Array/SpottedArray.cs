@@ -266,12 +266,12 @@ namespace VikingEngine
     /// </summary>
     class SpottedArray<T>
     {
-        int mostLeftFreePosition = 0;
+        public int mostLeftFreePosition = 0;
         /// <summary>
         /// The used part of the array, can be greater than the member count
         /// </summary>
-        public int SpottedLength { get; private set; }
-        public int Count { get; private set; }
+        public int SpottedLength;
+        public int Count;
         public T[] Array;
 
         public SpottedArray()
@@ -460,7 +460,7 @@ namespace VikingEngine
             }
         }
 
-        void adjustLength()
+        public void adjustLength()
         {
             T[] newArray = new T[Array.Length * 2];
             for (int i = 0; i < Array.Length; ++i)

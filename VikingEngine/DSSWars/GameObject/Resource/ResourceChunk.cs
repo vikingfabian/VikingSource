@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,9 +9,15 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 {
     struct ResourceChunk
     {
+        public static readonly ResourceChunk Empty = new ResourceChunk() { count = 0 };
+
         public const int ChunkSize = 8;
 
+        /// <summary>
+        /// count <= 0 is a empty marker
+        /// </summary>
         public int count;
+        
         public ItemResource resource1;
         public ItemResource resource2;
         public ItemResource resource3;
@@ -103,6 +110,35 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             return result;
         }
 
+
+        public ItemResource pickUp(float maxWeight)
+        {
+            ItemResource result = ItemResource.Empty;
+
+            //for (int i = count - 1; i >= 0; --i)
+            //{
+            ItemResource item = GetResourceAtIndex(count - 1);
+            result = item;
+
+            float unitweight = ItemPropertyColl.items[(int)item.type].weight;
+            float totWeight = unitweight * item.amount;
+
+            if (totWeight > maxWeight)
+            {
+                int pick = Convert.ToInt32(maxWeight / unitweight);
+                result.amount = pick;
+                item.amount -= pick;
+                SetResourceAtIndex(count - 1, item);
+            }
+            else
+            {
+                removeAt(count - 1);
+            }
+
+            return result;
+            //}
+        }
+
         void ShiftResource(ref ItemResource current, ref ItemResource next)
         {
             if (current.type == ItemResourceType.NONE && next.type != ItemResourceType.NONE)
@@ -142,7 +178,6 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 case 7: resource8 = resource; break;
             }
         }
-
 
     }
 }

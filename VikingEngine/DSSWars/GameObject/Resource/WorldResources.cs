@@ -10,7 +10,35 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 {
     class WorldResources
     {
+        SpottedArray<ResourceChunk> resourceRegister = new SpottedArray<ResourceChunk>();
+        SpottedArrayCounter_Resource registerCounter;
+
         TerrainContent terrainContent = new TerrainContent();
+
+        public WorldResources() 
+        { 
+            registerCounter = new SpottedArrayCounter_Resource(resourceRegister);
+        }
+
+
+        public int addNew(ItemResource resource)
+        {
+            ResourceChunk newChunk = ResourceChunk.Empty;
+            newChunk.Add(resource);
+
+            var index = registerCounter.Add(newChunk);
+            return index;
+        }
+
+        public ResourceChunk get(int index)
+        { 
+            return registerCounter.array.Array[index];
+        }
+
+        public void update(int index, ref ResourceChunk resourceChunk)
+        {
+            registerCounter.array.Array[index] = resourceChunk;
+        }
 
         public void asyncUpdate()
         { 

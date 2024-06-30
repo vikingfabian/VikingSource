@@ -17,13 +17,13 @@ namespace VikingEngine.DSSWars.Map
 
                 case Map.TerrainSubFoilType.TreeHard:
                     {
-                        if (subtile.terrainValue < TreeMaxSize)
+                        if (subtile.terrainAmount < TreeMaxSize)
                         {
-                            subtile.terrainValue++;
+                            subtile.terrainAmount++;
                             DssRef.world.subTileGrid.Set(pos, subtile);
                         }
 
-                        if (Ref.rnd.Chance(0.2) && subtile.terrainValue > 20 && subtile.terrainValue < 90)
+                        if (Ref.rnd.Chance(0.2) && subtile.terrainAmount > 20 && subtile.terrainAmount < 90)
                         {
                             IntVector2 rndDir = arraylib.RandomListMember(IntVector2.Dir8Array);
                             if (Ref.rnd.Chance(0.2))
@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars.Map
 
                 case Map.TerrainSubFoilType.TreeHardSprout:
                     {
-                        if (++subtile.terrainValue > SproutMaxSize)
+                        if (++subtile.terrainAmount > SproutMaxSize)
                         {
                             subtile.SetType(Map.TerrainMainType.Foil, (int)Map.TerrainSubFoilType.TreeHard, 1);
                         }
@@ -142,6 +142,7 @@ namespace VikingEngine.DSSWars.Map
         Destroyed,
 
         Foil,
+        Resourses,
         Terrain,
         Building,
         NUM
@@ -159,6 +160,13 @@ namespace VikingEngine.DSSWars.Map
         Stones,
         StoneBlock,
         FarmCulture,
+        NUM_NONE
+    }
+
+    enum TerrainResourcesType
+    {
+        Wood,
+        Storage,
         NUM_NONE
     }
 

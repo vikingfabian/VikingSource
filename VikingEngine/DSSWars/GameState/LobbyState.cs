@@ -606,6 +606,7 @@ namespace VikingEngine.DSSWars
 
         void voxeleditor()
         {
+            Ref.music.stop(false);
             XGuide.LocalHost.inputMap = new LootFest.Players.InputMap(XGuide.LocalHost.localPlayerIndex);
             XGuide.LocalHost.inputMap.xboxSetup();
             XGuide.LocalHost.inputMap.menuInput.xboxSetup(XGuide.LocalHost.localPlayerIndex);

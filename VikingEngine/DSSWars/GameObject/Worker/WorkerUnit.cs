@@ -47,7 +47,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                 if (VectorExt.PlaneXZDistance(ref model.position, ref goalPos) < WorldData.SubTileWidth)
                 {
-                    status.WorkComplete();
+                    status.WorkComplete(city);
                     city.setWorkerStatus(statusIndex, ref status);
                     hasGoal = false;
                 }

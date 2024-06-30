@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars
         }
         public static IntVector2 ToSubTilePos_Centered(IntVector2 tilePos)
         {
-            return new IntVector2(tilePos.X * WorldData.TileSubDivitions + WorldData.SubTileHalfWidth, tilePos.Y * WorldData.TileSubDivitions + WorldData.SubTileHalfWidth);
+            return new IntVector2(tilePos.X * WorldData.TileSubDivitions + WorldData.HalfTileSubDivitions, tilePos.Y * WorldData.TileSubDivitions + WorldData.HalfTileSubDivitions);
         }
 
         public static IntVector2 ToSubTilePos_TopLeft(IntVector2 pos)
@@ -71,8 +71,7 @@ namespace VikingEngine.DSSWars
 
         public static void Rotation1DToQuaterion(Graphics.Mesh mesh, float rotation)
         {
-            mesh.Rotation.QuadRotation = Quaternion.CreateFromYawPitchRoll(MathHelper.TwoPi - rotation, 0, 0);
-            
+            mesh.Rotation.QuadRotation = Quaternion.CreateFromYawPitchRoll(MathHelper.TwoPi - rotation, 0, 0);            
         }
 
         public static void Rotation1DToQuaterion(Graphics.AbsVoxelObj mesh, float rotation)

@@ -1000,6 +1000,9 @@
 #begin VoxelModel/LfWars/party_restbar.vox
 /copy:VoxelModel/LfWars/party_restbar.vox
 
+#begin VoxelModel/LfWars/resource_tree.vox
+/copy:VoxelModel/LfWars/resource_tree.vox
+
 #begin VoxelModel/LfWars/war_archer_i2.vox
 /copy:VoxelModel/LfWars/war_archer_i2.vox
 
