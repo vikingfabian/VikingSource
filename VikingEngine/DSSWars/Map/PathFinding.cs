@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.Map
             * 4.Varje ny ruta ska till en öppen lista
             */
 
-            PathNode startNode = new PathNode(center, conv.ToDir8(startDir), startAsShip);
+            PathNode startNode = new PathNode(center, conv.ToDir8_INT(startDir), startAsShip);
             nodeGrid[center.X, center.Y] = startNode;
 
             bool endAsShip = DssRef.world.tileGrid.Get(goal).IsWater();
@@ -76,18 +76,16 @@ namespace VikingEngine.DSSWars.Map
             
             while (true)
             {
-                bool diagonal = false;
-                for (Dir8 dir = 0; dir < Dir8.NUM; dir++)
+                for (int dir = 0; dir < 8; dir++)
                 {
-                    IntVector2 pos = IntVector2.FromDir8(dir) + currentNode.Position;
+                    IntVector2 pos = IntVector2.Dir8Array[dir] + currentNode.Position;
                     if (DssRef.world.tileBounds.IntersectTilePoint(pos) && !nodeGrid[pos.X, pos.Y].HasValue)
                     {
                         //add a node to open list
-                        PathNode node = new PathNode(pos, dir, DssRef.world, currentNode, diagonal, goal, endAsShip);
+                        PathNode node = new PathNode(pos, dir, DssRef.world, currentNode, goal, endAsShip);
                         open.Add(node);
                         nodeGrid[pos.X, pos.Y] = node;
                     }
-                    diagonal = !diagonal;
                 }
 
                 var lowValue = float.MaxValue;
@@ -128,9 +126,8 @@ namespace VikingEngine.DSSWars.Map
             while (currentNode.Position != startNode.Position)
             {
                 result.Add(new PathNodeResult(currentNode.Position, currentNode.ship));
-                IntVector2 pos = currentNode.PreviousPosition;//currentNode.Position - IntVector2.FromFacing8Dir(currentNode.parentDir);
+                IntVector2 pos = currentNode.PreviousPosition;
                 currentNode = nodeGrid[pos.X, pos.Y];
-
 
                 numLoops++;
                 if (numLoops > MaxNodeLength)
@@ -150,8 +147,7 @@ namespace VikingEngine.DSSWars.Map
             {
                 for (int x = 0; x < DssRef.world.Size.X; ++x)
                 {
-                    nodeGrid[x, y] = PathNode.Empty;
-                    
+                    nodeGrid[x, y] = PathNode.Empty;                    
                 }
             }
         }
@@ -335,12 +331,12 @@ namespace VikingEngine.DSSWars.Map
         public bool waterTile;
         public bool ship;
 
-        Dir8 dir;
+        int dir8;
 
-        public PathNode(IntVector2 pos, Dir8 dir, bool ship)
+        public PathNode(IntVector2 pos, int dir8, bool ship)
         {
             this.Position = pos;
-            this.dir = dir;
+            this.dir8 = dir8;
             this.ship = ship;
             HasValue = true;
             closed = true;
@@ -350,27 +346,28 @@ namespace VikingEngine.DSSWars.Map
             PreviousPosition = pos;
             waterTile = ship;
         }
-        public PathNode init(IntVector2 pos, Dir8 dir)
+        //public PathNode init(IntVector2 pos, int dir8)
+        //{
+        //    this.Position = pos;
+        //    this.dir8 = dir8;
+
+        //    moveCost = 0;
+        //    Value = 0;
+
+        //    HasValue = true;
+        //    return this;
+        //}
+
+        public PathNode(IntVector2 pos, int dir8, WorldData world, PathNode parent, IntVector2 goalPos, bool endAsShip)
         {
             this.Position = pos;
-            this.dir = dir;
-
-            moveCost = 0;
-            Value = 0;
-
-            HasValue = true;
-            return this;
-        }
-
-        public PathNode(IntVector2 pos, Dir8 dir, WorldData world, PathNode parent, bool diagonal, IntVector2 goalPos, bool endAsShip)
-        {
-            this.Position = pos;
-            this.dir = dir;
+            this.dir8 = dir8;
             this.PreviousPosition = parent.Position;
             closed = false;
-            
-            moveCost = diagonal? MoveCostDiagonal : MoveCostStraight;
-            if (dir == parent.dir)
+
+            //Dir8 starts with North = 0 (even)
+            moveCost = lib.IsEven(dir8)? MoveCostStraight : MoveCostDiagonal;
+            if (dir8 == parent.dir8)
             { //Bonus for keeping direction
                 moveCost -= 1f;
             }
@@ -416,18 +413,6 @@ namespace VikingEngine.DSSWars.Map
             HasValue = true;
             //return this;
         }
-
-        //public void recycle()
-        //{
-        //    Closed = false;
-        //}
-
-        //public int CompareTo(PathNode other)
-        //{
-        //    int result = Value.CompareTo(other.Value);
-           
-        //    return result;
-        //}
     }
 
 }
