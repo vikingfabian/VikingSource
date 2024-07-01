@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using VikingEngine.ToGG.MoonFall.GO;
+using VikingEngine.Timer;
 
 namespace VikingEngine.DSSWars.GameObject.Worker
 {
@@ -17,10 +17,14 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         int statusIndex;
         public Graphics.AbsVoxelObj model;
 
-        bool hasGoal = false;
+        //bool hasGoal = false;
+        WorkerUnitState state = WorkerUnitState.None;
         Vector3 goalPos;
         Vector3 walkDir;
         City city;
+        float finalizeWorkTime;
+        GameTimer workAnimation = new GameTimer(0.5f, true, true);
+
         public WorkerUnit(City city, WorkerStatus status, int statusIndex)
         {
             this.city = city;
@@ -31,7 +35,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
             model.position = WP.SubtileToWorldPos(status.subTileStart);
 
-            walkingAnimation = WalkingAnimation.Standard;
+            //walkingAnimation = WalkingAnimation.Standard;
 
             checkForGoal(true);
 
@@ -40,26 +44,46 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         public void update()
         {
-            if (hasGoal)
-            {
-                float speed = AbsDetailUnitData.StandardWalkingSpeed * Ref.DeltaGameTimeMs;
-                model.position += walkDir * speed;
+            switch (state)
+            { 
+                case WorkerUnitState.HasGoal:
+                    float speed = AbsDetailUnitData.StandardWalkingSpeed * Ref.DeltaGameTimeMs;
+                    model.position += walkDir * speed;
 
-                walkingAnimation.update(speed, model);
-                updateGroudY(false);
+                    walkingAnimation.update(speed, model);
+                    updateGroudY(false);
 
-                if (VectorExt.PlaneXZDistance(ref model.position, ref goalPos) < WorldData.SubTileWidth)
-                {
-                    status.WorkComplete(city);
-                    city.setWorkerStatus(statusIndex, ref status);
-                    hasGoal = false;
-                }
+                    if (VectorExt.PlaneXZDistance(ref model.position, ref goalPos) < WorldData.SubTileWidth)
+                    {
+                        state = WorkerUnitState.FinalizeWork;
+                    }
+                    break;
+
+                case WorkerUnitState.FinalizeWork:
+                    if (status.work == WorkType.Gather)
+                    {
+                        if (workAnimation.timeOut())
+                        { 
+                            model.Frame = model.Frame == 1? 2 : 1;  
+                        }
+                    }
+
+                    finalizeWorkTime -= Ref.DeltaGameTimeSec;
+                    if (finalizeWorkTime <= 0)
+                    {
+                        status.WorkComplete(city);
+                        city.setWorkerStatus(statusIndex, ref status);
+                        //hasGoal = false;
+                        state = WorkerUnitState.None;
+                    }
+                    break;
+                    
+                case WorkerUnitState.None:
+                    city.getWorkerStatus(statusIndex, ref status);
+                    checkForGoal(false);
+                    break;
             }
-            else
-            {
-                city.getWorkerStatus(statusIndex, ref status);
-                checkForGoal(false);                
-            }
+            
         }
 
         void checkForGoal(bool onInit)
@@ -69,15 +93,24 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 goalPos = WP.SubtileToWorldPos(status.subTileEnd);
                 walkDir = VectorExt.SafeNormalizeV3(goalPos - model.position);
                 WP.Rotation1DToQuaterion(model, lib.V2ToAngle(VectorExt.V3XZtoV2(walkDir)));
+                finalizeWorkTime = status.finalizeWorkTime();
 
                 if (onInit)
                 {
                     float timePassed = Ref.TotalGameTimeSec - status.processTimeStartStampSec;
-                    float perc = timePassed / status.processTimeLengthSec;
+                    float perc = timePassed / (status.processTimeLengthSec - finalizeWorkTime);
                     model.position = model.position * (1 - perc) + goalPos * perc;
                 }
 
-                hasGoal = true;
+                if (status.work == WorkType.DropOff)
+                {
+                    walkingAnimation = WalkingAnimation.WorkerCarry;
+                }
+                else
+                {
+                    walkingAnimation = WalkingAnimation.Standard;
+                }
+                state = WorkerUnitState.HasGoal;//hasGoal = true;
             }
         }
 
@@ -128,6 +161,13 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         public override Faction GetFaction()
         {
             return city.faction;
+        }
+
+        enum WorkerUnitState
+        {
+            None,
+            HasGoal,
+            FinalizeWork,
         }
     }
 }

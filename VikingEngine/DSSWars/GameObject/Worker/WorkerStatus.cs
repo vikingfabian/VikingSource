@@ -77,10 +77,38 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     }
                     work = WorkType.Idle;
                     break;
+
                 case WorkType.DropOff:
                     carry = ItemResource.Empty;
                     work = WorkType.Idle;
                     break;
+            }
+        }
+
+        public void createWorkOrder(WorkType work, IntVector2 subTile)
+        {
+            this.work = work;
+            subTileStart = subTileEnd;
+            subTileEnd = subTile;
+            processTimeStartStampSec = Ref.TotalGameTimeSec;
+            float dist = VectorExt.Length(subTileEnd.X - subTileStart.X, subTileEnd.Y - subTileStart.Y) / WorldData.TileSubDivitions;
+            
+            processTimeLengthSec = finalizeWorkTime() + 
+                dist / (AbsDetailUnitData.StandardWalkingSpeed * 1000);
+        }
+
+        public float finalizeWorkTime()
+        {
+            switch (work)
+            {
+                case WorkType.PickUp:
+                    return 2f;
+                case WorkType.DropOff:
+                    return 1f;
+                case WorkType.Gather:
+                   return 10;
+                default:
+                    throw new NotImplementedException();
             }
         }
     }

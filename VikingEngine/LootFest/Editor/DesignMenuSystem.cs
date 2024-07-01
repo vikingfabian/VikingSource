@@ -359,6 +359,7 @@ namespace VikingEngine.LootFest.Editor
             {
                 VoxelModelName[] available = new VoxelModelName[]
                     {
+                        VoxelModelName.war_worker,
                         VoxelModelName.war_recruit,
                         VoxelModelName.wars_soldier,
                         VoxelModelName.war_archer,

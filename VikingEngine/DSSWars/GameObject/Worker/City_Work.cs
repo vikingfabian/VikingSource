@@ -89,13 +89,14 @@ namespace VikingEngine.DSSWars.GameObject
                     if (workerStatuses[i].carry.amount > 0)
                     {
                         var status = workerStatuses[i];
-                        {
-                            status.work = WorkType.DropOff;
-                            status.subTileStart = status.subTileEnd;
-                            status.subTileEnd = WP.ToSubTilePos_Centered(tilePos);
-                            status.processTimeLengthSec = 100;
-                            status.processTimeStartStampSec = Ref.TotalGameTimeSec;
-                        }
+                        status.createWorkOrder(WorkType.DropOff, WP.ToSubTilePos_Centered(tilePos));
+                        //{
+                        //    status.work = WorkType.DropOff;
+                        //    status.subTileStart = status.subTileEnd;
+                        //    status.subTileEnd = WP.ToSubTilePos_Centered(tilePos);
+                        //    status.processTimeLengthSec = 100;
+                        //    status.processTimeStartStampSec = Ref.TotalGameTimeSec;
+                        //}
                         workerStatuses[i] = status;
                     }
                     else if (workQue.Count > 0)
@@ -103,13 +104,14 @@ namespace VikingEngine.DSSWars.GameObject
                         var work = arraylib.PullLastMember(workQue);
 
                         var status = workerStatuses[i];
-                        {
-                            status.work = work.work;
-                            status.subTileStart = status.subTileEnd;
-                            status.subTileEnd = work.subTile;
-                            status.processTimeLengthSec = 100;
-                            status.processTimeStartStampSec = Ref.TotalGameTimeSec;
-                        }
+                        status.createWorkOrder(work.work, work.subTile);
+                        //{
+                        //    status.work = work.work;
+                        //    status.subTileStart = status.subTileEnd;
+                        //    status.subTileEnd = work.subTile;
+                        //    status.processTimeLengthSec = 100;
+                        //    status.processTimeStartStampSec = Ref.TotalGameTimeSec;
+                        //}
                         workerStatuses[i] = status;
                     }
                     else

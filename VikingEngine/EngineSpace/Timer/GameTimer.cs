@@ -78,10 +78,9 @@ namespace VikingEngine.Timer
             }
         }
 
-        public bool TimeOut
+        public bool timeOut()
         {
-            get
-            {
+            
                 if (active)
                 {
                     bool timeOut = totalGameTimeStampSec + goalTimeSec <= Ref.TotalGameTimeSec;
@@ -93,7 +92,7 @@ namespace VikingEngine.Timer
                 }
 
                 return true;
-            }
+            
         }
 
         /// <summary>
