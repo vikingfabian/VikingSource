@@ -160,6 +160,7 @@ namespace VikingEngine.DSSWars.Players
                     {
                         var nFaction = DssRef.world.cities[n].faction;
                         if (nFaction != faction &&
+                            nFaction.diplomaticSide != DiplomaticSide.Light &&
                             !DssRef.diplomacy.PositiveRelationWithPlayer(nFaction))
                         {
                             lock (darkLordAllies)
