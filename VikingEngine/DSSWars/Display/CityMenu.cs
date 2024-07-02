@@ -397,14 +397,14 @@ namespace VikingEngine.DSSWars.Display
             content.newParagraph();
 
             content.h2(DssRef.lang.SoldierStats_Title);
-            content.text(DssRef.lang.Hud_PurchaseTitle_Cost + ": " + string.Format(HudLib.OneDecimalFormat, opt.goldCost / (double)unitCount));
+            content.text(DssRef.lang.Hud_PurchaseTitle_Cost + ": " + TextLib.OneDecimal(opt.goldCost / (double)unitCount));
             //content.text(DssRef.lang.Hud_Upkeep + ": " + string.Format(HudLib.OneDecimalFormat, typeData.Upkeep() / (double)unitCount));
             HudLib.Upkeep(content, typeData.Upkeep() / (double)unitCount);
 
             
             content.text(string.Format(DssRef.lang.SoldierStats_AttackStrengthLandSeaCity, dpsCompared(typeData.DPS_land(), dpsSoldier), dpsCompared(typeData.DPS_sea(), dpsSoldier), dpsCompared(typeData.DPS_structure(), dpsSoldier)));
             content.text(string.Format( DssRef.lang.SoldierStats_Health, typeData.basehealth));
-            content.text(string.Format(DssRef.lang.SoldierStats_RecruitTrainingTimeMinutes, string.Format(HudLib.OneDecimalFormat, typeData.recruitTrainingTimeSec / 60.0)));
+            content.text(string.Format(DssRef.lang.SoldierStats_RecruitTrainingTimeMinutes, TextLib.OneDecimal(typeData.recruitTrainingTimeSec / 60.0)));
 
             speedBonus(true, typeData.ArmySpeedBonusLand);
             speedBonus(false, typeData.ArmySpeedBonusSea);
@@ -424,7 +424,7 @@ namespace VikingEngine.DSSWars.Display
 
         string dpsCompared(int dps, int dpsSoldier)
         {
-           return string.Format(HudLib.OneDecimalFormat, dps/(double)dpsSoldier);
+           return TextLib.OneDecimal(dps / (double)dpsSoldier);
         }
 
         

@@ -6,7 +6,7 @@ namespace VikingEngine.DSSWars
 {
     static class HudLib
     {
-        public const string OneDecimalFormat = "{0:0.0}";
+        //
         public const float HeadDisplayBgOpacity = 0.9f;
         public static float HeadDisplayWidth, HeadDisplayEdge;
 
@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars
 
         public static void Upkeep(RichBoxContent content, double value)
         {
-            string valuestring = string.Format(OneDecimalFormat, value);
+            string valuestring = TextLib.OneDecimal(value);
             content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, valuestring));
         }
         public static void Upkeep(RichBoxContent content, int value)
