@@ -150,12 +150,13 @@ namespace VikingEngine.DSSWars.Display
                     
                     content.newLine();
                     content.Add(new RichBoxTexture(player.faction.flagTexture, 1f, 0, 0.2f));
-                    content.Add(new RichBoxText(": " + string.Format(HudLib.OneDecimalFormat, attacker.strengthValue)));
+                    
+                    content.Add(new RichBoxText(": " + TextLib.OneDecimal(attacker.strengthValue)));//string.Format(HudLib.OneDecimalFormat, attacker.strengthValue)));
                     content.newLine();
                     content.text("VS.");
                     content.newLine();
                     content.Add(new RichBoxTexture(obj.GetFaction().flagTexture, 1f, 0, 0.2f));
-                    content.Add(new RichBoxText(": " + string.Format(HudLib.OneDecimalFormat, defender.strengthValue)));
+                    content.Add(new RichBoxText(": " + TextLib.OneDecimal(defender.strengthValue)));
                     content.newLine();
                 }
             }
@@ -166,7 +167,7 @@ namespace VikingEngine.DSSWars.Display
                 {
                     content.newLine();
                     content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
-                    content.Add(new RichBoxText(string.Format(HudLib.OneDecimalFormat, mapObj.strengthValue)));
+                    content.Add(new RichBoxText(TextLib.OneDecimal(mapObj.strengthValue)));
                     if (obj.gameobjectType() == GameObjectType.Army)
                     {
                         content.newLine();

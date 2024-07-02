@@ -7,6 +7,7 @@ using VikingEngine.Graphics;
 
 using System.Text;
 using System.Reflection;
+using System.Globalization;
 
 namespace VikingEngine
 {
@@ -58,6 +59,26 @@ namespace VikingEngine
                 return number.ToString();
             }
             return number.ToString("#,##0").Replace(',', ' ').Trim();
+        }
+
+        public const string OneDecimalFormat = "{0:0.0}";
+        public static string OneDecimal(double value)
+        {
+            string result= string.Format(OneDecimalFormat, value);
+
+            //CultureInfo culture = new CultureInfo("ar-SA");
+            //result = (0.1).ToString(culture);
+
+            if (result.Length > 2)
+            { 
+                int dec = result.Length - 2;
+                if (result[dec] == '٫')
+                {
+                    result = result.Substring(0, result.Length - 2) + ',' + result.Substring(result.Length - 1);
+                }
+            }
+
+            return result;  
         }
 
         public static string FirstLetters(string text, int numLetters)

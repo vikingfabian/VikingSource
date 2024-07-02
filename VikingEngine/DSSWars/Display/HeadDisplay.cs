@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using VikingEngine.HUD.RichBox;
@@ -107,7 +108,11 @@ namespace VikingEngine.DSSWars.Display
 
 
             void defaultMenu(Players.LocalPlayer player, bool fullDisplay, Faction faction)
-            {                
+            {
+#if DEBUG
+                //debugCultureFont();
+#endif
+
 
                 if (player.hud.detailLevel == HudDetailLevel.Minimal)
                 {
@@ -250,7 +255,47 @@ namespace VikingEngine.DSSWars.Display
                     }
                 }
             }
+
+            void debugCultureFont()
+            {
+                string[] cultures = new string[]
+        {
+            //"en-US",  // English (United States)
+            //"de-DE",  // German (Germany)
+            //"fr-FR",  // French (France)
+            //"de-CH",  // German (Switzerland)
+            //"pt-BR",  // Portuguese (Brazil)
+            //"it-IT",  // Italian (Italy)
+            //"es-ES",  // Spanish (Spain)
+            //"nl-NL",  // Dutch (Netherlands)
+            //"sv-SE",  // Swedish (Sweden)
+            //"da-DK",  // Danish (Denmark)
+            //"fi-FI",  // Finnish (Finland)
+            //"ru-RU",  // Russian (Russia)
+            //"zh-CN",  // Chinese (Simplified, China)
+            //"ja-JP",  // Japanese (Japan)
+            //"ko-KR",  // Korean (Korea)
+            "ar-SA",  // Arabic (Saudi Arabia)
+            //"hi-IN",  // Hindi (India)
+            //"th-TH",  // Thai (Thailand)
+            //"he-IL",  // Hebrew (Israel)
+        };
+
+
+                double number = 1234567.89;
+
+                foreach (string s in cultures) 
+                {
+                    CultureInfo culture = new CultureInfo(s);
+                    string formatted = (0.1).ToString("ar-SA");
+                   
+                    content.text(s + formatted); 
+                }
+
+            }
         }
+
+
 
         public static void FactionSize(Faction faction, RichBoxContent content, bool fullDisplay)
         {
