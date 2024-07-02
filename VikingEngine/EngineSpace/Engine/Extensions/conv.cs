@@ -86,6 +86,14 @@ namespace VikingEngine
             return (Dir8)dir8;
         }
 
+        public static int ToDir8_INT(Rotation1D rotation)
+        {
+            rotation.Add(-MathHelper.Pi / lib.Dir8Count);
+            int dir8 = Convert.ToInt32(rotation.Radians / (MathHelper.TwoPi / lib.Dir8Count));
+            dir8 %= lib.Dir8Count;
+            return dir8;
+        }
+
 
         public static Dir8 ToDir8(IntVector2 vector)
         {
