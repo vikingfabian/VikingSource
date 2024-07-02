@@ -12,6 +12,7 @@ using VikingEngine.LootFest.Editor;
 using System.Diagnostics;
 using Microsoft.Win32;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace VikingEngine
 {
@@ -51,6 +52,33 @@ namespace VikingEngine
         public MainGame()
         {
             Ref.main = this;
+
+#if DEBUG
+            //"en-US",  // English (United States)
+            //"de-DE",  // German (Germany)
+            //"fr-FR",  // French (France) /
+            //"de-CH",  // German (Switzerland)
+            //"pt-BR",  // Portuguese (Brazil)
+            //"it-IT",  // Italian (Italy)
+            //"es-ES",  // Spanish (Spain)
+            //"nl-NL",  // Dutch (Netherlands)
+            //"sv-SE",  // Swedish (Sweden)
+            //"da-DK",  // Danish (Denmark)
+            //"fi-FI",  // Finnish (Finland)
+            //"ru-RU",  // Russian (Russia)/
+            //"zh-CN",  // Chinese (Simplified, China)/
+            //"ja-JP",  // Japanese (Japan)/
+            //"ko-KR",  // Korean (Korea)
+            //"ar-SA",  // Arabic (Saudi Arabia)/
+            //"hi-IN",  // Hindi (India)
+            //"th-TH",  // Thai (Thailand)
+            //"he-IL",  // Hebrew (Israel)
+
+            //CultureInfo culture = new CultureInfo("ar-SA");
+            //CultureInfo.DefaultThreadCurrentCulture = culture;
+            //CultureInfo.DefaultThreadCurrentUICulture = culture;
+
+#endif 
 
             DebugExtensions.BlueScreen.TryCatch(init1_Construct, DebugExtensions.TryMethodType.Init1);
         }

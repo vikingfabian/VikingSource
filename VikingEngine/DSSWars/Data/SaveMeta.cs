@@ -218,7 +218,7 @@ namespace VikingEngine.DSSWars.Data
             result += string.Format(DssRef.lang.Settings_TotalDifficulty, difficulty) + Environment.NewLine +
                 DssRef.lang.Lobby_MapSizeTitle + ": " + WorldData.SizeString(world.mapSize) + Environment.NewLine +
                 string.Format(DssRef.lang.Lobby_LocalMultiplayerEdit, localPlayerCount) + Environment.NewLine +
-                " [" + saveDate.ToLongDateString() + "]";
+                " [" + Engine.LoadContent.CheckCharsSafety(saveDate.ToLongDateString(), LoadedFont.Regular) + "]";
 
             return result;
         }

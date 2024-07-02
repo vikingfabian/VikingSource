@@ -145,7 +145,7 @@ namespace VikingEngine.DSSWars.GameObject
                     args.content.Add(new RichBoxText(groups.Count.ToString()));
                     args.content.space();
                     args.content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
-                    args.content.Add(new RichBoxText(string.Format(HudLib.OneDecimalFormat, strengthValue)));
+                    args.content.Add(new RichBoxText(TextLib.OneDecimal(strengthValue)));
                     args.content.space();
                     args.content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
                     args.content.Add(new RichBoxText(TextLib.LargeNumber(upkeep)));
@@ -165,7 +165,7 @@ namespace VikingEngine.DSSWars.GameObject
                     //HudLib.ItemCount(args.content, SpriteName.WarsGroupIcon, DssRef.lang.Hud_SoldierGroupsCount, groups.Count.ToString());
                     args.content.icontext(SpriteName.WarsGroupIcon, string.Format( DssRef.lang.Hud_SoldierGroupsCount, groups.Count));
                     args.content.icontext(SpriteName.WarsSoldierIcon,string.Format(DssRef.lang.Hud_SoldierCount, TextLib.LargeNumber(count)));
-                    args.content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, string.Format(HudLib.OneDecimalFormat, strengthValue)));
+                    args.content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
                     args.content.icontext(SpriteName.rtsUpkeepTime,string.Format(DssRef.lang.Hud_Upkeep ,TextLib.LargeNumber(upkeep)));
                     if (PlatformSettings.DevBuild)
                     {
