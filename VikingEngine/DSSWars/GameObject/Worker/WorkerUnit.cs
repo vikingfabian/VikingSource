@@ -35,8 +35,6 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
             model.position = WP.SubtileToWorldPos(status.subTileStart);
 
-            //walkingAnimation = WalkingAnimation.Standard;
-
             checkForGoal(true);
 
             updateGroudY(true);
@@ -110,14 +108,14 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 {
                     walkingAnimation = WalkingAnimation.Standard;
                 }
-                state = WorkerUnitState.HasGoal;//hasGoal = true;
+                state = WorkerUnitState.HasGoal;
             }
         }
 
         const float ModelGroundYAdj = 0.02f;
         void updateGroudY(bool set)
         {
-            if (DssRef.world.unitBounds.IntersectPoint(model.position.X, model.position.Z))//position.X > 0 && position.Z>0)
+            if (DssRef.world.unitBounds.IntersectPoint(model.position.X, model.position.Z))
             {
                 float y = DssRef.world.SubTileHeight(model.position) + ModelGroundYAdj;
 
