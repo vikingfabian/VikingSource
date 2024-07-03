@@ -90,13 +90,6 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         var status = workerStatuses[i];
                         status.createWorkOrder(WorkType.DropOff, WP.ToSubTilePos_Centered(tilePos));
-                        //{
-                        //    status.work = WorkType.DropOff;
-                        //    status.subTileStart = status.subTileEnd;
-                        //    status.subTileEnd = WP.ToSubTilePos_Centered(tilePos);
-                        //    status.processTimeLengthSec = 100;
-                        //    status.processTimeStartStampSec = Ref.TotalGameTimeSec;
-                        //}
                         workerStatuses[i] = status;
                     }
                     else if (workQue.Count > 0)
@@ -105,13 +98,6 @@ namespace VikingEngine.DSSWars.GameObject
 
                         var status = workerStatuses[i];
                         status.createWorkOrder(work.work, work.subTile);
-                        //{
-                        //    status.work = work.work;
-                        //    status.subTileStart = status.subTileEnd;
-                        //    status.subTileEnd = work.subTile;
-                        //    status.processTimeLengthSec = 100;
-                        //    status.processTimeStartStampSec = Ref.TotalGameTimeSec;
-                        //}
                         workerStatuses[i] = status;
                     }
                     else
@@ -150,22 +136,37 @@ namespace VikingEngine.DSSWars.GameObject
                                 {
                                     var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
 
-                                    if (subTile.mainTerrain == TerrainMainType.Resourses)
+                                    switch (subTile.mainTerrain)
                                     {
-                                        workQue.Add(new WorkQueMember(WorkType.PickUp, subTileLoop.Position, 5));
-                                    }
-                                    else
-                                    {
-                                        var foil = subTile.GetFoilType();
+                                        case TerrainMainType.Foil:
+                                            var foil = (TerrainSubFoilType)subTile.subTerrain;
 
-                                        if (foil == Map.TerrainSubFoilType.TreeSoft ||
-                                            foil == Map.TerrainSubFoilType.TreeHard)
-                                        {
-                                            if (subTile.terrainAmount >= TerrainContent.TreeReadySize)
+                                            if (foil == Map.TerrainSubFoilType.TreeSoft ||
+                                                foil == Map.TerrainSubFoilType.TreeHard)
                                             {
-                                                workQue.Add(new WorkQueMember(WorkType.Gather, subTileLoop.Position, 4));
+                                                if (subTile.terrainAmount >= TerrainContent.TreeReadySize)
+                                                {
+                                                    if (isFreeTile(subTileLoop.Position))
+                                                    {
+                                                        workQue.Add(new WorkQueMember(WorkType.Gather, subTileLoop.Position, 4));
+                                                    }
+                                                }
                                             }
-                                        }
+                                            break;
+
+                                        case TerrainMainType.Resourses:
+                                            if (isFreeTile(subTileLoop.Position))
+                                            {
+                                                workQue.Add(new WorkQueMember(WorkType.PickUp, subTileLoop.Position, 5));
+                                            }
+                                            break;
+
+                                        case TerrainMainType.Mine:
+                                            if (isFreeTile(subTileLoop.Position))
+                                            {
+                                                workQue.Add(new WorkQueMember(WorkType.Mine, subTileLoop.Position, 4));
+                                            }
+                                            break;
 
                                     }
                                 }
@@ -178,6 +179,19 @@ namespace VikingEngine.DSSWars.GameObject
                         return;
                     }
                 }
+            }
+
+            bool isFreeTile(IntVector2 subtile)
+            {
+                for (int i = 0; i < workerStatuses.Count; ++i)
+                { 
+                    var status = workerStatuses[i];
+                    if (status.work != WorkType.Idle &&
+                        status.subTileEnd == subtile)
+                    { return false; }
+                }
+
+                return true;
             }
 
             void processAsynchWork()
@@ -274,6 +288,7 @@ namespace VikingEngine.DSSWars.GameObject
     { 
         Idle,
         Gather,
+        Mine,
         PickUp,
         DropOff,
     }

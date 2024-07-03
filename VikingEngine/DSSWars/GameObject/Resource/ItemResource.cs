@@ -66,7 +66,13 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         Clothes,
         Bag,
 
-        //Todo Ore
+        IronOre,
+        TinOre,
+        CupperOre,
+        SilverOre,
+        GoldOre,
+        MithrilOre,
+
         Iron,
         Steel,
         Tin,

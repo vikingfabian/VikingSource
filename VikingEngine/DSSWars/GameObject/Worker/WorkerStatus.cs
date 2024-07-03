@@ -27,37 +27,40 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             switch (work)
             { 
                 case WorkType.Gather:
-                    Resource.ItemResourceType resourceType;
-
-                    switch (subTile.GetFoilType())
                     {
-                        case TerrainSubFoilType.TreeHard:
-                            resourceType = Resource.ItemResourceType.HardWood;
-                            break;
+                        Resource.ItemResourceType resourceType;
 
-                        case TerrainSubFoilType.TreeSoft:
-                            resourceType = Resource.ItemResourceType.SoftWood;
-                            break;
+                        switch (subTile.GetFoilType())
+                        {
+                            case TerrainSubFoilType.TreeHard:
+                                resourceType = Resource.ItemResourceType.HardWood;
+                                break;
 
-                        default:
-                            resourceType = Resource.ItemResourceType.NONE;
-                            break;
+                            case TerrainSubFoilType.TreeSoft:
+                                resourceType = Resource.ItemResourceType.SoftWood;
+                                break;
+
+                            default:
+                                resourceType = Resource.ItemResourceType.NONE;
+                                break;
+                        }
+
+                        if (resourceType != Resource.ItemResourceType.NONE)
+                        {
+                            DssRef.state.resources.addItem(
+                                new Resource.ItemResource(
+                                    resourceType,
+                                    subTile.terrainQuality,
+                                    Convert.ToInt32(processTimeLengthSec),
+                                    subTile.terrainAmount),
+                                ref subTile.collectionPointer);
+
+                            subTile.SetType(TerrainMainType.Resourses, (int)TerrainResourcesType.Wood, 1);
+
+                            DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                        }
+                        work = WorkType.Idle;
                     }
-
-                    if (resourceType != Resource.ItemResourceType.NONE)
-                    {
-                        subTile.collectionPointer = DssRef.state.resources.addNew(
-                            new Resource.ItemResource(
-                                resourceType,
-                                subTile.terrainQuality,
-                                Convert.ToInt32(processTimeLengthSec),
-                                subTile.terrainAmount));
-
-                        subTile.SetType(TerrainMainType.Resourses, (int)TerrainResourcesType.Wood, 1);
-
-                        DssRef.world.subTileGrid.Set(subTileEnd, subTile);
-                    }
-                    work = WorkType.Idle;
                     break;
 
                 case WorkType.PickUp:
@@ -81,6 +84,19 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case WorkType.DropOff:
                     carry = ItemResource.Empty;
                     work = WorkType.Idle;
+                    break;
+
+                case WorkType.Mine:
+                    {
+                        var mineType = (TerrainMineType)subTile.subTerrain;
+                        Resource.ItemResourceType resourceType;
+                        switch (mineType)
+                        {
+                            case TerrainMineType.IronOre:
+                                resourceType = ItemResourceType.IronOre;
+                                break;
+                        }
+                    }
                     break;
             }
         }
@@ -107,6 +123,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     return 1f;
                 case WorkType.Gather:
                    return 10;
+                case WorkType.Mine:
+                    return 30;
                 default:
                     throw new NotImplementedException();
             }

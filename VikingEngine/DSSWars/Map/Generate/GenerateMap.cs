@@ -65,7 +65,6 @@ namespace VikingEngine.DSSWars.Map.Generate
                 LoadStatus = 45;
                 generateDigChains();
                 LoadStatus = 50;
-
                 setWaterHeightAndWaterHeatmap();
 
                 LoadStatus = 55;

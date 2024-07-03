@@ -92,21 +92,26 @@ namespace VikingEngine.DSSWars.Map
 
                     surfaceTexture(tile, subTile, subTopLeft);
 
-                    if (subTile.mainTerrain == TerrainMainType.Foil)
+                    switch (subTile.mainTerrain)
                     {
-                        createFoliage((TerrainSubFoilType)subTile.subTerrain, subTile.terrainAmount, 
-                            topCenter(ref subTile, ref subTopLeft));
-                    }
-                    else if (subTile.mainTerrain == TerrainMainType.Resourses)
-                    {
-                        createResoursePile((TerrainResourcesType)subTile.subTerrain,
-                            topCenter(ref subTile, ref subTopLeft));
-                    }
-                    else if (subTile.mainTerrain == TerrainMainType.Building)
-                    {
-                        createBuilding((TerrainBuildingType)subTile.subTerrain, 
-                            topCenter(ref subTile, ref subTopLeft));
-                    }
+                        case TerrainMainType.Foil:
+                            createFoliage((TerrainSubFoilType)subTile.subTerrain, subTile.terrainAmount,
+                                topCenter(ref subTile, ref subTopLeft));
+                            break;
+                        case TerrainMainType.Resourses:
+                            createResoursePile((TerrainResourcesType)subTile.subTerrain,
+                                topCenter(ref subTile, ref subTopLeft));
+                            break;
+                        case TerrainMainType.Building:
+                            createBuilding((TerrainBuildingType)subTile.subTerrain,
+                                topCenter(ref subTile, ref subTopLeft));
+                            break;
+                        case TerrainMainType.Mine:
+                            createMine((TerrainMineType)subTile.subTerrain,
+                                topCenter(ref subTile, ref subTopLeft));
+                            break;
+
+                    }                   
 
                     DssRef.world.subTileGrid.Set(
                         subTileStart.X + x, subTileStart.Y + y, 
@@ -384,6 +389,34 @@ namespace VikingEngine.DSSWars.Map
             }
 #if DEBUG
             model.DebugName = "Building " + model.DebugName;
+#endif
+            foliage.Add(new Foliage(modelName, rnd, wp, scale));
+
+        }
+
+        void createMine(TerrainMineType mineType, Vector3 wp)
+        {
+            wp.X += WorldData.SubTileHalfWidth;
+            wp.Z += WorldData.SubTileHalfWidth;
+            LootFest.VoxelModelName modelName;
+            float scale = WorldData.SubTileWidth * 1.4f;
+
+            switch (mineType)
+            {
+                case TerrainMineType.IronOre:
+                    modelName = LootFest.VoxelModelName.city_dirtwall;
+                    break;
+               
+                default:
+                    throw new NotImplementedException();
+            }
+
+            if (foliage == null)
+            {
+                foliage = new List<Foliage>(8);
+            }
+#if DEBUG
+            model.DebugName = "Mine " + model.DebugName;
 #endif
             foliage.Add(new Foliage(modelName, rnd, wp, scale));
 

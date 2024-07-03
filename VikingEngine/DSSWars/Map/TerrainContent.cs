@@ -83,10 +83,24 @@ namespace VikingEngine.DSSWars.Map
                 if (world.rnd.Chance(0.6))
                 {
                     float stonenoise = noiseMap.OctaveNoise2D(4, 0.8f, 5, -x, y);
-                    if (stonenoise > 0.6f)
+
+                    if (stonenoise > 0.1)
                     {
-                        subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.StoneBlock, 1);
-                        return;
+                        if (tile.heightLevel >= Height.MountainHeightStart)
+                        {
+                            var rndMine = world.rnd.Double();
+                            if (rndMine < 0.002)
+                            {
+                                subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.IronOre, 1);
+                                return;
+                            }
+                        }
+
+                        if (stonenoise > 0.6f)
+                        {
+                            subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.StoneBlock, 1);
+                            return;
+                        }
                     }
                     if (stonenoise < -0.5f)
                     {
@@ -135,55 +149,5 @@ namespace VikingEngine.DSSWars.Map
 
     }
 
-    enum TerrainMainType
-    {
-        DefaultLand,
-        DefaultSea,
-        Destroyed,
-
-        Foil,
-        Resourses,
-        Terrain,
-        Building,
-        NUM
-    }
-
-    enum TerrainSubFoilType
-    {
-        TreeHardSprout,
-        TreeSoftSprout,
-        TreeHard,
-        TreeSoft,
-        Bush,
-        Herbs,
-        TallGrass,
-        Stones,
-        StoneBlock,
-        FarmCulture,
-        NUM_NONE
-    }
-
-    enum TerrainResourcesType
-    {
-        Wood,
-        Storage,
-        NUM_NONE
-    }
-
-    enum TerrainBuildingType
-    {
-        DirtWall,
-        DirtTower,
-        WoodWall,
-        WoodTower,
-        StoneWall,
-        StoneTower,
-        StoneHall,
-        SmallHouse,
-        BigHouse,
-        Square,
-        CobbleStones,
-        WorkerHut,
-        NUM
-    }
+    
 }

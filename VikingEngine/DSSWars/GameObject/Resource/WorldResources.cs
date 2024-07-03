@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Map;
@@ -21,13 +22,30 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         }
 
 
-        public int addNew(ItemResource resource)
-        {
-            ResourceChunk newChunk = ResourceChunk.Empty;
-            newChunk.Add(resource);
+        //int addNew(ItemResource resource)
+        //{
+        //    ResourceChunk newChunk = ResourceChunk.Empty;
+        //    newChunk.Add(resource);
 
-            var index = registerCounter.Add(newChunk);
-            return index;
+        //    var index = registerCounter.Add(newChunk);
+        //    return index;
+        //}
+
+        public void addItem(ItemResource resource, ref int collIndex)
+        {
+            if (collIndex < 0)
+            {
+                ResourceChunk newChunk = ResourceChunk.Empty;
+                newChunk.Add(resource);
+
+                collIndex = registerCounter.Add(newChunk);
+            }
+            else
+            {
+                var chunk = registerCounter.array.Array[collIndex];
+                chunk.Add(resource);
+                registerCounter.array.Array[collIndex] = chunk;
+            }
         }
 
         public ResourceChunk get(int index)
