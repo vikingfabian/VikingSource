@@ -14,7 +14,7 @@ using Valve.Steamworks;
 namespace VikingEngine.DSSWars
 {
     /// <summary>
-    /// The first state for semi-rts, will load all content
+    /// The first state for DSS, will load all content
     /// </summary>
     class IntroState : Engine.GameState
     {
@@ -39,7 +39,6 @@ namespace VikingEngine.DSSWars
                    Align.CenterAll, "Loading...", Color.White, ImageLayers.Lay4);
 
             Ref.music = new Sound.MusicPlayer();
-            string lang = SteamAPI.SteamApps().GetCurrentGameLanguage();
 
             if (isReset)
             {

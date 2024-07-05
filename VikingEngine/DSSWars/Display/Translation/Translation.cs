@@ -33,25 +33,28 @@ namespace VikingEngine.DSSWars.Display.Translation
         public void setupLanguage(bool onContentLoad)
         {
             bool onChange = !onContentLoad;
-            if (Ref.gamesett.language == LanguageType.NONE)
-            {
-                Ref.gamesett.language = LanguageType.English;
 
-                if (Ref.steam.isInitialized)
-                {
-                    //https://partner.steamgames.com/doc/store/localization/languages
-                    string lang = SteamAPI.SteamApps().GetCurrentGameLanguage();
-                    switch (lang)
-                    {
-                        case "zh-TW":
-                        case "zh-CN":
-                            onChange = true;
-                            Ref.gamesett.language = LanguageType.Chinese;
-                            break;
+            //Steam does not work for some reason
 
-                    }
-                }
-            }
+            //if (Ref.gamesett.language == LanguageType.NONE)
+            //{
+            //    Ref.gamesett.language = LanguageType.English;
+
+            //    if (Ref.steam.isInitialized)
+            //    {
+            //        //https://partner.steamgames.com/doc/store/localization/languages
+            //        string lang = SteamAPI.SteamApps().GetCurrentGameLanguage();
+            //        switch (lang)
+            //        {
+            //            case "zh-TW":
+            //            case "zh-CN":
+            //                onChange = true;
+            //                Ref.gamesett.language = LanguageType.Chinese;
+            //                break;
+
+            //        }
+            //    }
+            //}
 
             switch (Ref.gamesett.language)
             {

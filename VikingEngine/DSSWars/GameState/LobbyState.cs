@@ -68,6 +68,11 @@ namespace VikingEngine.DSSWars
 
             new Timer.AsynchActionTrigger(load_asynch, true);
             new Timer.TimedAction0ArgTrigger(playMusic, 1000);
+
+            if (Ref.gamesett.language == LanguageType.NONE)
+            { 
+                selectLanguageMenu();
+            }
         }       
         
         void load_asynch()
