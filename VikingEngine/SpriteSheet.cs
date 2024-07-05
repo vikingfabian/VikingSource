@@ -2277,6 +2277,18 @@ namespace VikingEngine
 
                     addWithSizeDef(SpriteName.TextureHueSaturation, currentIndex, 1, 1, 45, 45);
                     addWithSizeDef(SpriteName.TextureDarknessGradient, currentIndex, 1, 1, 45, 45);
+
+                    add(SpriteName.LangButton_English, 8, 2);
+                    add(SpriteName.LangButton_Russian, 8, 2);
+                    add(SpriteName.LangButton_Spanish, 8, 2);
+                    add(SpriteName.LangButton_Portuguese, 8, 2);
+                    add(SpriteName.LangButton_German, 8, 2);
+                    add(SpriteName.LangButton_Japanese, 8, 2);
+                    add(SpriteName.LangButton_Frensh, 8, 2);
+                    add(SpriteName.LangButton_Chinese, 8, 2);
+
+
+
                 }
 
                 currentIndex = numTilesWidth * 96;

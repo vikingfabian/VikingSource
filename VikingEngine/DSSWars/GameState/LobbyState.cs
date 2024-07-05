@@ -23,6 +23,8 @@ using VikingEngine.ToGG.Commander.LevelSetup;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.ToggEngine.Map;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.GameState;
 
 namespace VikingEngine.DSSWars
 {
@@ -168,7 +170,7 @@ namespace VikingEngine.DSSWars
                 new GuiCheckbox(DssRef.lang.Settings_BossEvents, DssRef.lang.Settings_BossEvents_SandboxDescription, bossProperty, layout);
 
                 new GuiSectionSeparator(layout);
-                new GuiTextButton(Ref.langOpt.Options_title, null, new GuiAction(optionsMenu), true, layout);
+                new GuiIconTextButton(SpriteName.MenuPixelIconSettings, Ref.langOpt.Options_title, null, new GuiAction(optionsMenu), true, layout);
                 //new GuiTextButton("*Crash game*", null, crashTest, false, layout); 
                 if (PlatformSettings.DevBuild)
                 {
@@ -228,6 +230,28 @@ namespace VikingEngine.DSSWars
 
 
         //}
+        void selectLanguageMenu()
+        {
+            Translation translate = new Translation();
+            var options = translate.available();
+            GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
+            {
+                foreach (var option in options)
+                {
+                    new GuiImageButton(translate.sprite(option), null, new GuiAction1Arg<LanguageType>(selectLanguegeLink, option), false, layout);
+                }
+            }
+            layout.End();
+        }
+
+        void selectLanguegeLink(LanguageType language)
+        {
+            if (language != Ref.gamesett.language)
+            {
+                Ref.gamesett.language = language;
+                new ChangeLanguageState();
+            }
+        }
 
         void selectDifficultyMenu()
         {
@@ -568,6 +592,7 @@ namespace VikingEngine.DSSWars
         {
             GuiLayout layout = new GuiLayout(Ref.langOpt.Options_title, menuSystem.menu);
             {
+                new GuiImageButton(new Translation().sprite(Ref.gamesett.language), null, new GuiAction(selectLanguageMenu), true, layout);
                 Ref.gamesett.optionsMenu(layout);
                 new GuiCheckbox(DssRef.lang.GameMenu_AutoSave, null, autoSaveProperty, layout);
                 new GuiCheckbox(DssRef.lang.Tutorial_MenuOption, null, tutorialProperty, layout);

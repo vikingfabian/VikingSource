@@ -9,6 +9,7 @@ using System.IO;
 using VikingEngine.PJ;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.SteamWrapping;
+using Valve.Steamworks;
 
 namespace VikingEngine.DSSWars
 {
@@ -37,8 +38,8 @@ namespace VikingEngine.DSSWars
                    LoadedFont.Regular, new Vector2(Engine.Screen.Width * 0.5f, Engine.Screen.Height * 0.85f), new Vector2(Engine.Screen.TextSize * 2f),
                    Align.CenterAll, "Loading...", Color.White, ImageLayers.Lay4);
 
-            Ref.music = new Sound.MusicPlayer(); 
-
+            Ref.music = new Sound.MusicPlayer();
+            string lang = SteamAPI.SteamApps().GetCurrentGameLanguage();
 
             if (isReset)
             {
@@ -48,14 +49,9 @@ namespace VikingEngine.DSSWars
             }
             else
             {
-                new Display.Translation.Translation();
+                
 
-                //Texture2D introImageTex = Engine.LoadContent.Content.Load<Texture2D>(DssLib.ContentDir + "IntroScene");
-                //ImageAdvanced introImage = new ImageAdvanced(SpriteName.NO_IMAGE, Engine.Screen.CenterScreen,
-                //   new Vector2(Engine.Screen.Width, (float)Engine.Screen.Width / introImageTex.Width * introImageTex.Height),
-                //   ImageLayers.Background9, true);
-                //introImage.Texture = introImageTex;
-                //introImage.SetFullTextureSource();
+                
                 Engine.ParticleHandler.Init();
                 new VikingEngine.Engine.LoadBaseTextures();
                
@@ -92,8 +88,6 @@ namespace VikingEngine.DSSWars
         
         void asynchContentLoading()
         {
-            //Engine.LoadContent.LoadTextures(new List<LoadedTexture> { LoadedTexture.LF3Tiles, LoadedTexture.WhiteArea, });
-            //Engine.LoadContent.LoadTexture(LoadedTexture.SpriteSheet, VikingEngine.LootFest.LfLib.ContentFolder + "Lf3Tiles2");
             Engine.LoadContent.LoadTexture(LoadedTexture.SpriteSheet, Engine.LoadContent.TexturePath + "Lf3Tiles2");
             new SpriteSheet();
             LootFest.Data.Block.Init();
@@ -102,14 +96,6 @@ namespace VikingEngine.DSSWars
             new GameObject.AllUnits();
             new Models().loadContent();
 
-            //new GameObject.AllUnits();
-            //string ModelsDir = "Model" + DataStream.FilePath.Dir;
-            //Engine.LoadContent.LoadTexture(LoadedTexture.rtsTiles, RTSlib.ContentDir + "rtsTiles");
-            //new LoadTiles();
-            //Engine.LoadContent.LoadTexture(LoadedTexture., RtsDir + "rtsTiles");
-
-
-            //Engine.LoadContent.LoadMesh(LoadedMesh.move_arrow, ModelsDir + "move_arrow");
             Engine.LoadContent.LoadMesh(LoadedMesh.cube_repeating, Engine.LoadContent.ModelPath + "cube_repeating");
             Engine.LoadContent.LoadMesh(LoadedMesh.plane, Engine.LoadContent.ModelPath + "plane");
             Engine.LoadContent.LoadMesh(LoadedMesh.sphere, Engine.LoadContent.ModelPath + "sphere");
@@ -122,20 +108,7 @@ namespace VikingEngine.DSSWars
 
             SoundLib.LoadContent();
             Engine.LoadContent.LoadSteamVersion();
-            //Engine.LoadContent.LoadSound(LoadedSound.buy, DssLib.ContentDir + "buy");
-            //Engine.LoadContent.LoadSound(LoadedSound.HitMelee, DssLib.ContentDir + "Melee");
-            //Engine.LoadContent.LoadSound(LoadedSound.MenuSelect, DssLib.ContentDir + "Button_Clicked");
-            //Engine.LoadContent.LoadSound(LoadedSound.MenuMove, DssLib.ContentDir + "Cursor_Moved");
-            ////Engine.LoadContent.LoadSound(LoadedSound.UnitHighlight, RTSlib.ContentDir + "menumove");
-            //Engine.LoadContent.LoadSound(LoadedSound.MenuBack, DssLib.ContentDir + "Returning");
-
-            ////Engine.LoadContent.LoadSound(LoadedSound.SelectUnit, RTSlib.ContentDir + "hi_100ms");
-            ////Engine.LoadContent.LoadSound(LoadedSound.UnselectUnit, RTSlib.ContentDir + "lo_100ms");
-
-            //Engine.LoadContent.LoadSound(LoadedSound.MenuHi100MS, DssLib.ContentDir + "hi_100ms");
-            //Engine.LoadContent.LoadSound(LoadedSound.MenuLo100MS, DssLib.ContentDir + "lo_100ms");
-            //Engine.LoadContent.LoadSound(LoadedSound.out_of_ammo, DssLib.ContentDir + "out_of_ammo");
-            //Engine.LoadContent.LoadSound(LoadedSound.Heal, DssLib.ContentDir + "Heal");
+            
 
             VikingEngine.HUD.Gui.LoadContent();
 
@@ -153,6 +126,7 @@ namespace VikingEngine.DSSWars
             FlagDesign.Init();
             new Data.GameStorage().Load();
             Ref.gamesett.Load();
+            new Display.Translation.Translation().setupLanguage(true);
 
             loadingDataComplete = true;
         }
