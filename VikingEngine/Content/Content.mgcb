@@ -913,6 +913,9 @@
 #begin VoxelModel/LfWars/city_dirtwall.vox
 /copy:VoxelModel/LfWars/city_dirtwall.vox
 
+#begin VoxelModel/LfWars/city_pen.vox
+/copy:VoxelModel/LfWars/city_pen.vox
+
 #begin VoxelModel/LfWars/city_smallhouse.vox
 /copy:VoxelModel/LfWars/city_smallhouse.vox
 
@@ -979,6 +982,9 @@
 #begin VoxelModel/LfWars/fol_tree_soft.vox
 /copy:VoxelModel/LfWars/fol_tree_soft.vox
 
+#begin VoxelModel/LfWars/Hen.vox
+/copy:VoxelModel/LfWars/Hen.vox
+
 #begin VoxelModel/LfWars/horse_brown.vox
 /copy:VoxelModel/LfWars/horse_brown.vox
 
@@ -999,6 +1005,9 @@
 
 #begin VoxelModel/LfWars/party_restbar.vox
 /copy:VoxelModel/LfWars/party_restbar.vox
+
+#begin VoxelModel/LfWars/Pig.vox
+/copy:VoxelModel/LfWars/Pig.vox
 
 #begin VoxelModel/LfWars/resource_tree.vox
 /copy:VoxelModel/LfWars/resource_tree.vox

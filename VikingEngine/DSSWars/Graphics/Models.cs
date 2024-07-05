@@ -83,6 +83,7 @@ namespace VikingEngine.DSSWars
 
             loadVoxelModel(VoxelModelName.city_stonehall, false);
             loadVoxelModel(VoxelModelName.city_workerhut, false);
+            loadVoxelModel(VoxelModelName.city_pen, false);
 
             loadVoxelModel(VoxelModelName.city_cobblestone, false);
             loadVoxelModel(VoxelModelName.city_square, false);
@@ -90,6 +91,8 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.city_bighouse, false);
             //loadVoxelModel(VoxelModelName.city_tower24, false);
 
+            loadVoxelModel(VoxelModelName.Pig, false);
+            loadVoxelModel(VoxelModelName.Hen, false);
             loadVoxelModel(VoxelModelName.Arrow, true);
             loadVoxelModel(VoxelModelName.little_javelin, true);
             loadVoxelModel(VoxelModelName.little_boltarrow, true);

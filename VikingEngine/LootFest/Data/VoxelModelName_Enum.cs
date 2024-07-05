@@ -95,8 +95,8 @@ namespace VikingEngine.LootFest
         messenger,
         war_veteran,
         dummie,
-        Pig,
-        Hen,
+        
+        
         white_hen,
         chick,
         miner_pig, miner_cow,
@@ -464,6 +464,8 @@ namespace VikingEngine.LootFest
 #region LFWARS
         party_restbar,
         Arrow,
+        Pig,
+        Hen,
         little_kingman,
         little_kingorc,
         little_hirdman,
@@ -558,6 +560,7 @@ namespace VikingEngine.LootFest
         cityicon,
 
         //city_tower24,
+        city_pen,
         city_workerhut,
         city_cobblestone,
         city_square,

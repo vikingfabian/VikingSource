@@ -68,14 +68,18 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     {
                         var chunk = DssRef.state.resources.get(subTile.collectionPointer);
                         carry = chunk.pickUp(1f);
-                        DssRef.state.resources.update(subTile.collectionPointer, ref chunk);
 
-                        if (chunk.count <= 0)
+                        if (carry.type != ItemResourceType.NONE)
                         {
-                            subTile.collectionPointer = -1;
-                            subTile.mainTerrain = TerrainMainType.DefaultLand;
+                            DssRef.state.resources.update(subTile.collectionPointer, ref chunk);
 
-                            DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                            if (chunk.count <= 0)
+                            {
+                                subTile.collectionPointer = -1;
+                                subTile.mainTerrain = TerrainMainType.DefaultLand;
+
+                                DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                            }
                         }
                     }
                     work = WorkType.Idle;

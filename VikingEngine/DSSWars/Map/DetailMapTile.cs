@@ -1,12 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using VikingEngine.DSSWars.GameObject.Animal;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.Map
 {
+   
     class DetailMapTile
     {
         static readonly IntervalF FoliageCenterRange = 
@@ -46,9 +49,12 @@ namespace VikingEngine.DSSWars.Map
         IVerticeData verticeData;
         Graphics.VoxelModel model;
         List<Foliage> foliage;
+        List<AnimalData> animalData;
+        
 
         public bool add = true;
         static PcgRandom rnd = new PcgRandom();
+        //public bool isDeleted = false;
 
         public DetailMapTile(IntVector2 pos)
         {
@@ -103,7 +109,7 @@ namespace VikingEngine.DSSWars.Map
                                 topCenter(ref subTile, ref subTopLeft));
                             break;
                         case TerrainMainType.Building:
-                            createBuilding((TerrainBuildingType)subTile.subTerrain,
+                            createBuilding(tile, (TerrainBuildingType)subTile.subTerrain,
                                 topCenter(ref subTile, ref subTopLeft));
                             break;
                         case TerrainMainType.Mine:
@@ -332,7 +338,7 @@ namespace VikingEngine.DSSWars.Map
             foliage.Add(new Foliage(modelName, rnd, wp, scale));
         }
 
-        void createBuilding(TerrainBuildingType buildingType, Vector3 wp)
+        void createBuilding(Tile tile, TerrainBuildingType buildingType, Vector3 wp)
         {
             wp.X += WorldData.SubTileHalfWidth;
             wp.Z += WorldData.SubTileHalfWidth;
@@ -341,6 +347,34 @@ namespace VikingEngine.DSSWars.Map
 
             switch (buildingType)
             {
+                case TerrainBuildingType.PigPen:
+                    modelName = LootFest.VoxelModelName.city_pen;
+                    if (tile.OutOfRenderTimeOut())
+                    {
+                        if (animalData == null)
+                        {
+                            animalData = new List<AnimalData>(8);
+                        }
+                        animalData.Add(new AnimalData(wp, AnimalType.Pig));
+                        animalData.Add(new AnimalData(wp, AnimalType.Pig));
+                    }
+                    break;
+                case TerrainBuildingType.HenPen:
+                    modelName = LootFest.VoxelModelName.city_pen;
+                    if (tile.OutOfRenderTimeOut())
+                    {
+                        if (animalData == null)
+                        {
+                            animalData = new List<AnimalData>(8);
+                        }
+                        animalData.Add(new AnimalData(wp, AnimalType.Hen));
+                        animalData.Add(new AnimalData(wp, AnimalType.Hen));
+                        animalData.Add(new AnimalData(wp, AnimalType.Hen));
+                    }
+                    break;
+                case TerrainBuildingType.WorkerHut:
+                    modelName = LootFest.VoxelModelName.city_workerhut;
+                    break;
                 case TerrainBuildingType.DirtWall:
                     modelName = LootFest.VoxelModelName.city_dirtwall;
                     break;
@@ -359,11 +393,6 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainBuildingType.StoneTower:
                     modelName = LootFest.VoxelModelName.city_stonetower;
                     break;
-
-                case TerrainBuildingType.WorkerHut:
-                    modelName = LootFest.VoxelModelName.city_workerhut;
-                    break;
-               
                 case TerrainBuildingType.StoneHall:
                     modelName = LootFest.VoxelModelName.city_stonehall;
                     break;
@@ -455,6 +484,8 @@ namespace VikingEngine.DSSWars.Map
         {
             if (add)
             {
+                var tile = DssRef.world.tileGrid.Get(pos);
+
                 if (model != null)
                 {
                     model.BuildFromVerticeData(verticeData,
@@ -475,6 +506,14 @@ namespace VikingEngine.DSSWars.Map
                         m.addToRender();
                     }
                 }
+
+                if (animalData != null)
+                {
+                    foreach (var m in animalData)
+                    {
+                        m.create(tile);
+                    }
+                }
             }
             else
             {
@@ -493,6 +532,8 @@ namespace VikingEngine.DSSWars.Map
                 }
                 foliage = null;
             }
+
+            //isDeleted = true;
         }
     }
 }

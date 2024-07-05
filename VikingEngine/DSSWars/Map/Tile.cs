@@ -42,12 +42,19 @@ namespace VikingEngine.DSSWars.Map
         public int seaDistanceHeatMap = int.MinValue;
         //--
 
-        public int WorkerCount = 0;
+        //public int WorkerCount = 0;
+        
+        public float exitRenderTimeStamp_TotSec = 0;
         public byte renderStateA = Culling.NoRender;
         public byte renderStateB = Culling.NoRender;
-        public bool hasTileInRender = false; 
+        public bool hasTileInRender = false;
 
         //public bool inRender = false;
+
+        public bool OutOfRenderTimeOut()
+        { 
+            return (Ref.TotalGameTimeSec - exitRenderTimeStamp_TotSec) > 1f;
+        }
 
         public Tile()
         {

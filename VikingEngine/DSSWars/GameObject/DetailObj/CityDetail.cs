@@ -155,17 +155,38 @@ namespace VikingEngine.DSSWars.GameObject
                                         ++totalWorkerHutAndLevelCount;
 
                                         //Place farm curlutures
-                                        const int CulturesPerFarm = 2;
+                                        const int CulturesPerFarm = 3;
                                         int cultureCount = 0;
 
                                         ForXYEdgeLoop farmLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(subPos, 1));
                                         farmLoop.RandomPosition(true);
+                                        
 
                                         while (cultureCount < CulturesPerFarm)
                                         {
                                             while (farmLoop.Next())
                                             {
-                                                if (Build.BuildLib.TryAutoBuild(farmLoop.Position, TerrainMainType.Foil, (int)TerrainSubFoilType.FarmCulture))
+                                                TerrainMainType terrain;
+                                                int sub;
+                                                if (Ref.rnd.Chance(0.75))
+                                                {
+                                                    terrain = TerrainMainType.Foil;
+                                                    sub = (int)TerrainSubFoilType.FarmCulture;
+                                                }
+                                                else
+                                                {
+                                                    terrain = TerrainMainType.Building;
+                                                    if (Ref.rnd.Chance(0.4))
+                                                    {
+                                                        sub = (int)TerrainBuildingType.PigPen;
+                                                    }
+                                                    else
+                                                    {
+                                                        sub = (int)TerrainBuildingType.HenPen;
+                                                    }
+                                                }
+                                                
+                                                if (Build.BuildLib.TryAutoBuild(farmLoop.Position, terrain, sub))
                                                 {
                                                     ++cultureCount;
                                                     if (cultureCount >= CulturesPerFarm)
@@ -545,62 +566,62 @@ namespace VikingEngine.DSSWars.GameObject
         }
     }
 
-    class WorkerData
-    {
-        public IntVector2 tile;
-        public int tilePlacementIndex;
-        public int level = 1;
-        //public bool inUse;
-    }
+    //class WorkerData
+    //{
+    //    public IntVector2 tile;
+    //    public int tilePlacementIndex;
+    //    public int level = 1;
+    //    //public bool inUse;
+    //}
 
-    class WorkersModels
-    {
-        const float Scale = 0.14f;
-        const float RndOffset = Scale;
+    //class WorkersModels
+    //{
+    //    const float Scale = 0.14f;
+    //    const float RndOffset = Scale;
 
 
-        static readonly Vector2[] tilePlacements = {
-            new Vector2(-0.25f,-0.25f),
-            new Vector2( 0.25f,-0.25f),
-            new Vector2(-0.25f,0.25f),
-            new Vector2(0.25f,0.25f),
-        };
-        List< Graphics.AbsVoxelObj> modelList = new List<AbsVoxelObj>(64);
+    //    static readonly Vector2[] tilePlacements = {
+    //        new Vector2(-0.25f,-0.25f),
+    //        new Vector2( 0.25f,-0.25f),
+    //        new Vector2(-0.25f,0.25f),
+    //        new Vector2(0.25f,0.25f),
+    //    };
+    //    List< Graphics.AbsVoxelObj> modelList = new List<AbsVoxelObj>(64);
 
-        public void Refresh(City city, List<WorkerData> workers, PcgRandom rnd) 
-        {
-            while (modelList.Count < workers.Count) 
-            {
-                var model = DssRef.models.ModelInstance(VoxelModelName.war_workerhut, Scale, false);
-                model.AddToRender(DrawGame.UnitDetailLayer);
-                model.position = VectorExt.AddXZ(WP.ToMapPos(workers[modelList.Count].tile), tilePlacements[workers[modelList.Count].tilePlacementIndex]);
-                model.position.X += rnd.Plus_MinusF(RndOffset);
-                model.position.Z += rnd.Plus_MinusF(RndOffset);
+    //    public void Refresh(City city, List<WorkerData> workers, PcgRandom rnd) 
+    //    {
+    //        while (modelList.Count < workers.Count) 
+    //        {
+    //            var model = DssRef.models.ModelInstance(VoxelModelName.war_workerhut, Scale, false);
+    //            model.AddToRender(DrawGame.UnitDetailLayer);
+    //            model.position = VectorExt.AddXZ(WP.ToMapPos(workers[modelList.Count].tile), tilePlacements[workers[modelList.Count].tilePlacementIndex]);
+    //            model.position.X += rnd.Plus_MinusF(RndOffset);
+    //            model.position.Z += rnd.Plus_MinusF(RndOffset);
 
-                model.position.Y = DssRef.world.SubTileHeight(model.position);
+    //            model.position.Y = DssRef.world.SubTileHeight(model.position);
 
-                WP.Rotation1DToQuaterion(model, rnd.Float(0.17f));
+    //            WP.Rotation1DToQuaterion(model, rnd.Float(0.17f));
 
-                modelList.Add(model);
-            }
+    //            modelList.Add(model);
+    //        }
 
-            for (int i = 0; i < workers.Count; i++)
-            {
-                int frame = city.workHutStyle;
-                if (workers[i].level > 1)
-                {
-                    frame += 2;
-                }
-                modelList[i].Frame = frame;
-            }
-        }
+    //        for (int i = 0; i < workers.Count; i++)
+    //        {
+    //            int frame = city.workHutStyle;
+    //            if (workers[i].level > 1)
+    //            {
+    //                frame += 2;
+    //            }
+    //            modelList[i].Frame = frame;
+    //        }
+    //    }
 
-        public void DeleteMe()
-        {
-            foreach (var m in modelList)
-            {
-                m.DeleteMe();
-            }
-        }
-    }
+    //    public void DeleteMe()
+    //    {
+    //        foreach (var m in modelList)
+    //        {
+    //            m.DeleteMe();
+    //        }
+    //    }
+    //}
 }

@@ -43,6 +43,7 @@ namespace VikingEngine.DSSWars
         bool bResourceUpdate = true;
         public int NextArmyId = 0;
         public GameMenuSystem menuSystem;
+        Timer.Basic subTileReloadTimer = new Timer.Basic(1000,true);
 
         public PlayState(bool host, SaveStateMeta loadMeta)
             : base(true)
@@ -270,13 +271,17 @@ namespace VikingEngine.DSSWars
 
             if (DssRef.time.oneSecond)
             { 
-                DssRef.settings.OneSecondUpdate();
-                detailMap.onSecondUpdate = true;
+                DssRef.settings.OneSecondUpdate();                
             }    
             if (DssRef.time.halfSecond)
             {
                 overviewMap.HalfSecondUpdate();
             }
+            if (subTileReloadTimer.Update())
+            {
+                detailMap.onSecondUpdate = true;
+            }
+
             detailMap.update();
 
             foreach (var local in localPlayers)

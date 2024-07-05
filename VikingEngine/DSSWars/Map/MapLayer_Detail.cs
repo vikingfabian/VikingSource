@@ -78,6 +78,7 @@ namespace VikingEngine.DSSWars.Map
                 if (render == Culling.NoRender || onSecondUpdate)
                 {
                     tile.hasTileInRender = false;
+                    tile.exitRenderTimeStamp_TotSec = Ref.TotalGameTimeSec;
                     tiles[i].add = false;
                     processingTiles.Add(tiles[i]);
                     tiles.RemoveAt(i);

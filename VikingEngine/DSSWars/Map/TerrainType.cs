@@ -56,7 +56,8 @@ namespace VikingEngine.DSSWars.Map
         Square,
         CobbleStones,
         WorkerHut,
-        Pen,
+        PigPen,
+        HenPen,
         NUM
     }
 

@@ -118,6 +118,11 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             //for (int i = count - 1; i >= 0; --i)
             //{
             ItemResource item = GetResourceAtIndex(count - 1);
+            if (item.type == ItemResourceType.NONE)
+            { 
+                return item;
+            }
+            
             result = item;
 
             float unitweight = ItemPropertyColl.items[(int)item.type].weight;
