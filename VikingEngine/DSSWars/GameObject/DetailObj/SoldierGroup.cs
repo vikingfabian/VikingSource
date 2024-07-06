@@ -472,8 +472,9 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (!lockMovement)
                 {
-                    if (army.battleGroup != null &&
-                        army.battleGroup.battleState != Battle.BattleState.Battle)
+                    var battleGroup_sp = army.battleGroup;
+                    if (battleGroup_sp != null &&
+                        battleGroup_sp.battleState != Battle.BattleState.Battle)
                     {
                         update_battlePreparations(time, fullUpdate);
                         return;

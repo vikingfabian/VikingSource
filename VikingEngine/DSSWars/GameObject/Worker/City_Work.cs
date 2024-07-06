@@ -142,19 +142,39 @@ namespace VikingEngine.DSSWars.GameObject
                                         case TerrainMainType.Foil:
                                             var foil = (TerrainSubFoilType)subTile.subTerrain;
 
-                                            if (foil == Map.TerrainSubFoilType.TreeSoft ||
-                                                foil == Map.TerrainSubFoilType.TreeHard)
+                                            switch (foil)
                                             {
-                                                if (woodCollectNeed > 0 &&
-                                                    subTile.terrainAmount >= TerrainContent.TreeReadySize)
-                                                {
-                                                    if (isFreeTile(subTileLoop.Position))
+                                                case Map.TerrainSubFoilType.TreeSoft:
+                                                case Map.TerrainSubFoilType.TreeHard:
+                                                    if (woodCollectNeed > 0 &&
+                                                        subTile.terrainAmount >= TerrainContent.TreeReadySize)
                                                     {
-                                                        workQue.Add(new WorkQueMember(WorkType.Gather, subTileLoop.Position, 4));
-                                                        --woodCollectNeed;
+                                                        if (isFreeTile(subTileLoop.Position))
+                                                        {
+                                                            workQue.Add(new WorkQueMember(WorkType.Gather, subTileLoop.Position, 4));
+                                                            --woodCollectNeed;
+                                                        }
                                                     }
-                                                }
+                                                    break;
+
+                                                case TerrainSubFoilType.FarmCulture:
+                                                    if (subTile.terrainAmount == TerrainContent.FarmCulture_Empty)
+                                                    {
+                                                        if (isFreeTile(subTileLoop.Position))
+                                                        {
+                                                            workQue.Add(new WorkQueMember(WorkType.Plant, subTileLoop.Position, 5));
+                                                        }
+                                                    }
+                                                    else if (subTile.terrainAmount >= TerrainContent.FarmCulture_ReadySize)
+                                                    {
+                                                        if (isFreeTile(subTileLoop.Position))
+                                                        {
+                                                            workQue.Add(new WorkQueMember(WorkType.Gather, subTileLoop.Position, 5));
+                                                        }
+                                                    }
+                                                    break;
                                             }
+
                                             break;
 
                                         case TerrainMainType.Resourses:
@@ -290,6 +310,7 @@ namespace VikingEngine.DSSWars.GameObject
     enum WorkType
     { 
         Idle,
+        Plant,
         Gather,
         Mine,
         PickUp,

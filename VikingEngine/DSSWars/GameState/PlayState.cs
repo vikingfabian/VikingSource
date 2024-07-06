@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars
         public GameEvents events;
         public AbsCutScene cutScene=null;
 
-        bool bResourceUpdate = true;
+        bool bResourceMinuteUpdate = true;
         public int NextArmyId = 0;
         public GameMenuSystem menuSystem;
         Timer.Basic subTileReloadTimer = new Timer.Basic(1000,true);
@@ -174,10 +174,10 @@ namespace VikingEngine.DSSWars
             new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62);
             new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63);
 
-            if (StartupSettings.RunResoursesUpdate)
-            {
+            //if (StartupSettings.RunResoursesUpdate)
+            //{
                 new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
-            }
+            //}
 
             if (localPlayers.Count > 1)
             {
@@ -331,7 +331,7 @@ namespace VikingEngine.DSSWars
         
         public void OneMinute_Update()
         { 
-            bResourceUpdate = true;
+            bResourceMinuteUpdate = true;
 
             if (DssRef.storage.autoSave && 
                 Ref.TotalTimeSec > LastAutoSaveTime_TotalSec + AutoSaveTimeSec)
@@ -417,9 +417,9 @@ namespace VikingEngine.DSSWars
             if (cutScene == null)
             {
                 //Runs every minute to upate any resource progression: trees grow, food spoil, etc
-                if (bResourceUpdate || StartupSettings.DebugResoursesSuperSpeed)
+                if (bResourceMinuteUpdate || StartupSettings.DebugResoursesSuperSpeed)
                 {
-                    bResourceUpdate = false;
+                    bResourceMinuteUpdate = false;
 
                     resources.asyncUpdate();
                 }

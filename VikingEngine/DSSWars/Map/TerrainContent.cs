@@ -10,11 +10,17 @@ namespace VikingEngine.DSSWars.Map
         public const int TreeMaxSize = 100;
         public const int TreeReadySize = 50;
 
+        public const int FarmCulture_Empty = 0;
+        public const int FarmCulture_MaxSize = 5;        
+        public const int FarmCulture_ReadySize = FarmCulture_MaxSize - 1;
+        public const int FarmCulture_HalfSize = FarmCulture_ReadySize / 2;
+
         public void asyncFoilGroth(IntVector2 pos, SubTile subtile)
         {
-            switch ((Map.TerrainSubFoilType)subtile.subTerrain)
+            Map.TerrainSubFoilType foilType = (Map.TerrainSubFoilType)subtile.subTerrain;
+            switch (foilType)
             {
-
+                case Map.TerrainSubFoilType.TreeSoft:
                 case Map.TerrainSubFoilType.TreeHard:
                     {
                         if (subtile.terrainAmount < TreeMaxSize)
@@ -36,7 +42,8 @@ namespace VikingEngine.DSSWars.Map
                             {
                                 if (ntile.mainTerrain == Map.TerrainMainType.DefaultLand)
                                 {
-                                    ntile.SetType(Map.TerrainMainType.Foil, (int)Map.TerrainSubFoilType.TreeHardSprout, 1);
+                                    Map.TerrainSubFoilType sprout = foilType == Map.TerrainSubFoilType.TreeSoft ? Map.TerrainSubFoilType.TreeSoftSprout : Map.TerrainSubFoilType.TreeHardSprout;
+                                    ntile.SetType(Map.TerrainMainType.Foil, (int)sprout, 1);
 
                                     DssRef.world.subTileGrid.Set(npos, ntile);
                                 }
@@ -53,6 +60,15 @@ namespace VikingEngine.DSSWars.Map
                             subtile.SetType(Map.TerrainMainType.Foil, (int)Map.TerrainSubFoilType.TreeHard, 1);
                         }
 
+                        DssRef.world.subTileGrid.Set(pos, subtile);
+                    }
+                    break;
+
+                case TerrainSubFoilType.FarmCulture:
+                    if (subtile.terrainAmount > FarmCulture_Empty && 
+                        subtile.terrainAmount < FarmCulture_MaxSize)
+                    {
+                        subtile.terrainAmount++;
                         DssRef.world.subTileGrid.Set(pos, subtile);
                     }
                     break;

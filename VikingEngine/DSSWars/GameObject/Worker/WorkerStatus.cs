@@ -32,35 +32,42 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                         switch (subTile.GetFoilType())
                         {
-                            case TerrainSubFoilType.TreeHard:
-                                resourceType = Resource.ItemResourceType.HardWood;
-                                break;
-
                             case TerrainSubFoilType.TreeSoft:
-                                resourceType = Resource.ItemResourceType.SoftWood;
+                                gatherWood(Resource.ItemResourceType.SoftWood, ref subTile);
                                 break;
 
-                            default:
-                                resourceType = Resource.ItemResourceType.NONE;
+                            case TerrainSubFoilType.TreeHard:
+                                gatherWood(Resource.ItemResourceType.HardWood, ref subTile);
                                 break;
+
+                            case TerrainSubFoilType.FarmCulture:
+                                DssRef.state.resources.addItem(
+                                    new Resource.ItemResource(
+                                        ItemResourceType.Wheat,
+                                        subTile.terrainQuality,
+                                        Convert.ToInt32(processTimeLengthSec),
+                                        subTile.terrainAmount),
+                                    ref subTile.collectionPointer);
+
+                                subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
+                                DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                                break;
+
+                            
                         }
 
-                        if (resourceType != Resource.ItemResourceType.NONE)
-                        {
-                            DssRef.state.resources.addItem(
-                                new Resource.ItemResource(
-                                    resourceType,
-                                    subTile.terrainQuality,
-                                    Convert.ToInt32(processTimeLengthSec),
-                                    subTile.terrainAmount),
-                                ref subTile.collectionPointer);
-
-                            subTile.SetType(TerrainMainType.Resourses, (int)TerrainResourcesType.Wood, 1);
-
-                            DssRef.world.subTileGrid.Set(subTileEnd, subTile);
-                        }
-                        work = WorkType.Idle;
+                        work = WorkType.Idle;                        
                     }
+                    break;
+
+                case WorkType.Plant:
+                    if (subTile.terrainAmount == TerrainContent.FarmCulture_Empty)
+                    {
+                        subTile.terrainAmount++;
+                        DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                    }
+
+                    work = WorkType.Idle;
                     break;
 
                 case WorkType.PickUp:
@@ -113,6 +120,21 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             }
         }
 
+        void gatherWood(Resource.ItemResourceType resourceType, ref SubTile subTile)
+        {
+            DssRef.state.resources.addItem(
+                new Resource.ItemResource(
+                    resourceType,
+                    subTile.terrainQuality,
+                    Convert.ToInt32(processTimeLengthSec),
+                    subTile.terrainAmount),
+                ref subTile.collectionPointer);
+
+            subTile.SetType(TerrainMainType.Resourses, (int)TerrainResourcesType.Wood, 1);
+
+            DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+        }
+
         public void createWorkOrder(WorkType work, IntVector2 subTile)
         {
             this.work = work;
@@ -134,7 +156,20 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case WorkType.DropOff:
                     return 1f;
                 case WorkType.Gather:
-                   return 10;
+                    SubTile subTile = DssRef.world.subTileGrid.Get(subTileEnd);
+                    switch ((TerrainSubFoilType)subTile.subTerrain)
+                    { 
+                        case TerrainSubFoilType.TreeSoft:
+                            return 10;
+                        case TerrainSubFoilType.TreeHard:
+                            return 12;
+                        case TerrainSubFoilType.FarmCulture:
+                            return 20;
+                        default:
+                            throw new NotImplementedException();
+                    }
+                case WorkType.Plant:
+                    return 20;
                 case WorkType.Mine:
                     return 30;
                 default:
