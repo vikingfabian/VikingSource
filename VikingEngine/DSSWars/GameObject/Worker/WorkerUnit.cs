@@ -51,14 +51,17 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     walkingAnimation.update(speed, model);
                     updateGroudY(false);
 
-                    if (VectorExt.PlaneXZDistance(ref model.position, ref goalPos) < WorldData.SubTileWidth)
+                    if (VectorExt.PlaneXZDistance(ref model.position, ref goalPos) < 0.02f)
                     {
+                        model.position.X = goalPos.X;
+                        model.position.Z = goalPos.Z;
+                        WP.Rotation1DToQuaterion(model, MathExt.TauOver8);
                         state = WorkerUnitState.FinalizeWork;
                     }
                     break;
 
                 case WorkerUnitState.FinalizeWork:
-                    if (status.work == WorkType.Gather)
+                    if (status.work == WorkType.Gather || status.work == WorkType.Mine)
                     {
                         if (workAnimation.timeOut())
                         { 
@@ -89,6 +92,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             if (status.work != WorkType.Idle)
             {   
                 goalPos = WP.SubtileToWorldPos(status.subTileEnd);
+                goalPos.X += WorldData.SubTileWidth * 0.25f;
+                goalPos.Z += WorldData.SubTileWidth;
+
                 walkDir = VectorExt.SafeNormalizeV3(goalPos - model.position);
                 WP.Rotation1DToQuaterion(model, lib.V2ToAngle(VectorExt.V3XZtoV2(walkDir)));
                 finalizeWorkTime = status.finalizeWorkTime();

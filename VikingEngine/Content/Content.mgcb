@@ -913,6 +913,9 @@
 #begin VoxelModel/LfWars/city_dirtwall.vox
 /copy:VoxelModel/LfWars/city_dirtwall.vox
 
+#begin VoxelModel/LfWars/city_mine.vox
+/copy:VoxelModel/LfWars/city_mine.vox
+
 #begin VoxelModel/LfWars/city_pen.vox
 /copy:VoxelModel/LfWars/city_pen.vox
 

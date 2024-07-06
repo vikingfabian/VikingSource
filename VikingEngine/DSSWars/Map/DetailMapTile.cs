@@ -433,7 +433,7 @@ namespace VikingEngine.DSSWars.Map
             switch (mineType)
             {
                 case TerrainMineType.IronOre:
-                    modelName = LootFest.VoxelModelName.city_dirtwall;
+                    modelName = LootFest.VoxelModelName.city_mine;
                     break;
                
                 default:
@@ -447,7 +447,7 @@ namespace VikingEngine.DSSWars.Map
 #if DEBUG
             model.DebugName = "Mine " + model.DebugName;
 #endif
-            foliage.Add(new Foliage(modelName, rnd, wp, scale));
+            foliage.Add(new Foliage(modelName, 0, wp, scale));
 
         }
 

@@ -574,6 +574,8 @@ namespace VikingEngine.LootFest
         city_stonewall,
         city_stonetower,
 
+        city_mine,
+
         horse_white, horse_brown,
         
         stupid_board,

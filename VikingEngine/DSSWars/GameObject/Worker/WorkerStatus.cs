@@ -93,13 +93,21 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case WorkType.Mine:
                     {
                         var mineType = (TerrainMineType)subTile.subTerrain;
-                        Resource.ItemResourceType resourceType;
+                        Resource.ItemResourceType resourceType = ItemResourceType.NONE;
                         switch (mineType)
                         {
                             case TerrainMineType.IronOre:
                                 resourceType = ItemResourceType.IronOre;
                                 break;
                         }
+
+                        DssRef.state.resources.addItem(
+                                new Resource.ItemResource(
+                                    resourceType,
+                                    subTile.terrainQuality,
+                                    Convert.ToInt32(processTimeLengthSec),
+                                    10),
+                                ref subTile.collectionPointer);
                     }
                     break;
             }
