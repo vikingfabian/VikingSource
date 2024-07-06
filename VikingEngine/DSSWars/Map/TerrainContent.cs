@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map.Settings;
 
 namespace VikingEngine.DSSWars.Map
@@ -14,6 +15,16 @@ namespace VikingEngine.DSSWars.Map
         public const int FarmCulture_MaxSize = 5;        
         public const int FarmCulture_ReadySize = FarmCulture_MaxSize - 1;
         public const int FarmCulture_HalfSize = FarmCulture_ReadySize / 2;
+
+        public const int PigMaxSize = 3;
+        public const int PigMaxCount = 4;
+        const int PigMaxTotal = PigMaxSize * PigMaxCount;
+        public const int PigReady = PigMaxSize * 3;
+
+        public const int HenMaxSize = 2;
+        public const int HenMaxCount = 6;
+        const int HenMaxTotal = HenMaxSize * HenMaxCount;
+        public const int HenReady = HenMaxSize * 3;
 
         public void asyncFoilGroth(IntVector2 pos, SubTile subtile)
         {
@@ -71,6 +82,38 @@ namespace VikingEngine.DSSWars.Map
                         subtile.terrainAmount++;
                         DssRef.world.subTileGrid.Set(pos, subtile);
                     }
+                    break;
+            }
+        }
+
+        public void asyncCityProduce(IntVector2 pos, SubTile subtile)
+        {
+            Map.TerrainBuildingType buildingType = (Map.TerrainBuildingType)subtile.subTerrain;
+            switch (buildingType)
+            {
+                case TerrainBuildingType.PigPen:
+                    if (subtile.terrainAmount < PigMaxTotal)
+                    {
+                        subtile.terrainAmount++;
+                        DssRef.world.subTileGrid.Set(pos, subtile);
+                    }
+                    break;
+                case TerrainBuildingType.HenPen:
+                    if (subtile.terrainAmount > 0)
+                    {
+                        DssRef.state.resources.addItem(
+                            new ItemResource(
+                                ItemResourceType.Egg,
+                                1,
+                                subtile.terrainAmount * 4,
+                                subtile.terrainAmount),
+                            ref subtile.collectionPointer);
+                    }
+                    if (subtile.terrainAmount < HenMaxTotal)
+                    {
+                        subtile.terrainAmount++;
+                    }
+                    DssRef.world.subTileGrid.Set(pos, subtile);
                     break;
             }
         }

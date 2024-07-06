@@ -110,7 +110,7 @@ namespace VikingEngine.DSSWars.Map
                                 topCenter(ref subTile, ref subTopLeft));
                             break;
                         case TerrainMainType.Building:
-                            createBuilding(tile, (TerrainBuildingType)subTile.subTerrain,
+                            createBuilding(tile, ref subTile, (TerrainBuildingType)subTile.subTerrain,
                                 topCenter(ref subTile, ref subTopLeft));
                             break;
                         case TerrainMainType.Mine:
@@ -349,7 +349,7 @@ namespace VikingEngine.DSSWars.Map
             //addFoliage(new Foliage(modelName, rnd, wp, scale));
         }
 
-        void createBuilding(Tile tile, TerrainBuildingType buildingType, Vector3 wp)
+        void createBuilding(Tile tile, ref SubTile subTile, TerrainBuildingType buildingType, Vector3 wp)
         {
             wp.X += WorldData.SubTileHalfWidth;
             wp.Z += WorldData.SubTileHalfWidth;
@@ -360,28 +360,35 @@ namespace VikingEngine.DSSWars.Map
             {
                 case TerrainBuildingType.PigPen:
                     modelName = LootFest.VoxelModelName.city_pen;
-                    if (tile.OutOfRenderTimeOut())
-                    {
-                        if (animalData == null)
-                        {
-                            animalData = new List<AnimalData>(8);
-                        }
-                        animalData.Add(new AnimalData(wp, AnimalType.Pig));
-                        animalData.Add(new AnimalData(wp, AnimalType.Pig));
-                    }
+                    animals(tile, ref subTile, ref wp, AnimalType.Pig, TerrainContent.PigMaxSize);
+                    //if (tile.OutOfRenderTimeOut())
+                    //{
+                    //    if (animalData == null)
+                    //    {
+                    //        animalData = new List<AnimalData>(8);
+                    //    }
+
+                    //    int count = (subTile.terrainAmount + TerrainContent.PigMaxSize - 1) / TerrainContent.PigMaxSize;
+                    //    var animal = new AnimalData(wp, AnimalType.Pig);
+                    //    for (int i = 0; i < count; i++)
+                    //    {
+                    //        animalData.Add(animal);
+                    //    }
+                    //}
                     break;
                 case TerrainBuildingType.HenPen:
                     modelName = LootFest.VoxelModelName.city_pen;
-                    if (tile.OutOfRenderTimeOut())
-                    {
-                        if (animalData == null)
-                        {
-                            animalData = new List<AnimalData>(8);
-                        }
-                        animalData.Add(new AnimalData(wp, AnimalType.Hen));
-                        animalData.Add(new AnimalData(wp, AnimalType.Hen));
-                        animalData.Add(new AnimalData(wp, AnimalType.Hen));
-                    }
+                    animals(tile, ref subTile, ref wp, AnimalType.Hen, TerrainContent.HenMaxSize);
+                    //if (tile.OutOfRenderTimeOut())
+                    //{
+                    //    if (animalData == null)
+                    //    {
+                    //        animalData = new List<AnimalData>(8);
+                    //    }
+                    //    animalData.Add(new AnimalData(wp, AnimalType.Hen));
+                    //    animalData.Add(new AnimalData(wp, AnimalType.Hen));
+                    //    animalData.Add(new AnimalData(wp, AnimalType.Hen));
+                    //}
                     break;
                 case TerrainBuildingType.WorkerHut:
                     modelName = LootFest.VoxelModelName.city_workerhut;
@@ -432,6 +439,24 @@ namespace VikingEngine.DSSWars.Map
 #endif
             addFoliage(new Foliage(modelName, rnd, wp, scale));
 
+        }
+
+        void animals(Tile tile, ref SubTile subTile, ref Vector3 wp, AnimalType animalType, int animalSize)
+        {
+            if (tile.OutOfRenderTimeOut())
+            {
+                if (animalData == null)
+                {
+                    animalData = new List<AnimalData>(8);
+                }
+
+                int count = (subTile.terrainAmount + animalSize - 1) / animalSize;
+                var animal = new AnimalData(wp, animalType);
+                for (int i = 0; i < count; i++)
+                {
+                    animalData.Add(animal);
+                }
+            }
         }
 
         void createMine(TerrainMineType mineType, Vector3 wp)

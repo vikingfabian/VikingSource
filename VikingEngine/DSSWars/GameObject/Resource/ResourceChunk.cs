@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,6 +33,17 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             if (count >= 8 || resource.type == ItemResourceType.NONE)
             {
                 throw new InvalidOperationException("ResourceChunk is full or resource is invalid.");
+            }
+
+            for (int i = count - 1; i >= 0; --i)
+            {
+                var current = GetResourceAtIndex(i);
+                if (current.type == resource.type)
+                {
+                    current.merge(resource);
+                    SetResourceAtIndex(i, current);
+                    return;
+                }
             }
 
             switch (count)
@@ -115,8 +127,6 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         {
             ItemResource result = ItemResource.Empty;
 
-            //for (int i = count - 1; i >= 0; --i)
-            //{
             ItemResource item = GetResourceAtIndex(count - 1);
             if (item.type == ItemResourceType.NONE)
             { 
@@ -141,7 +151,6 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             }
 
             return result;
-            //}
         }
 
         void ShiftResource(ref ItemResource current, ref ItemResource next)

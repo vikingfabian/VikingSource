@@ -151,7 +151,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                     {
                                                         if (isFreeTile(subTileLoop.Position))
                                                         {
-                                                            workQue.Add(new WorkQueMember(WorkType.Gather, subTileLoop.Position, 4));
+                                                            workQue.Add(new WorkQueMember(WorkType.GatherFoil, subTileLoop.Position, 4));
                                                             --woodCollectNeed;
                                                         }
                                                     }
@@ -169,7 +169,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                     {
                                                         if (isFreeTile(subTileLoop.Position))
                                                         {
-                                                            workQue.Add(new WorkQueMember(WorkType.Gather, subTileLoop.Position, 5));
+                                                            workQue.Add(new WorkQueMember(WorkType.GatherFoil, subTileLoop.Position, 5));
                                                         }
                                                     }
                                                     break;
@@ -180,7 +180,7 @@ namespace VikingEngine.DSSWars.GameObject
                                         case TerrainMainType.Resourses:
                                             if (isFreeTile(subTileLoop.Position))
                                             {
-                                                workQue.Add(new WorkQueMember(WorkType.PickUp, subTileLoop.Position, 6));
+                                                workQue.Add(new WorkQueMember(WorkType.PickUpResource, subTileLoop.Position, 6));
                                             }
                                             break;
 
@@ -188,6 +188,21 @@ namespace VikingEngine.DSSWars.GameObject
                                             if (isFreeTile(subTileLoop.Position))
                                             {
                                                 workQue.Add(new WorkQueMember(WorkType.Mine, subTileLoop.Position, 5));
+                                            }
+                                            break;
+
+                                        case TerrainMainType.Building:
+                                            var building = (TerrainBuildingType)subTile.subTerrain;
+                                            if (
+                                                (
+                                                    (building == TerrainBuildingType.HenPen && subTile.terrainAmount > TerrainContent.HenReady) ||
+                                                    (building == TerrainBuildingType.PigPen && subTile.terrainAmount > TerrainContent.PigReady)
+                                                )
+                                                &&
+                                                isFreeTile(subTileLoop.Position)
+                                                )
+                                            {
+                                                workQue.Add(new WorkQueMember(WorkType.PickUpProduce, subTileLoop.Position, 5));
                                             }
                                             break;
 
@@ -311,9 +326,11 @@ namespace VikingEngine.DSSWars.GameObject
     { 
         Idle,
         Plant,
-        Gather,
+        GatherFoil,
+        GatherCityProduce,
         Mine,
-        PickUp,
+        PickUpResource,
+        PickUpProduce,
         DropOff,
     }
 }

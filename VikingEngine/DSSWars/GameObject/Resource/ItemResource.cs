@@ -31,14 +31,25 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             this.cost = cost;
             this.amount = amount;
         }
+
+        public void merge(ItemResource other)
+        {
+            quality = (quality * amount + other.quality * other.amount);
+            amount += other.amount;
+            quality /= amount;
+            cost += other.cost;
+        }
     }    
     
     enum ItemResourceType
     {
         NONE,
 
+        Hen,
+        Pig,
         Goat,
         Ox,
+        Egg,
         Milk,
         Cheese,
         Meat,

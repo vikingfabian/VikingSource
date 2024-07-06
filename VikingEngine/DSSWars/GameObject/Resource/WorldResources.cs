@@ -70,6 +70,10 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 {
                     terrainContent.asyncFoilGroth(loop.Position, subtile);
                 }
+                else if (subtile.mainTerrain == TerrainMainType.Building)
+                {
+                    terrainContent.asyncCityProduce(loop.Position, subtile);
+                }
             }
 
             

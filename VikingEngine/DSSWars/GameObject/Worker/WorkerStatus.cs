@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
             switch (work)
             { 
-                case WorkType.Gather:
+                case WorkType.GatherFoil:
                     {
                         Resource.ItemResourceType resourceType;
 
@@ -70,7 +70,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     work = WorkType.Idle;
                     break;
 
-                case WorkType.PickUp:
+                case WorkType.PickUpResource:
                     if (subTile.collectionPointer >= 0)
                     {
                         var chunk = DssRef.state.resources.get(subTile.collectionPointer);
@@ -87,6 +87,37 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                                 DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                             }
+                        }
+                    }
+                    work = WorkType.Idle;
+                    break;
+
+                case WorkType.PickUpProduce:
+                    {
+                        var building = (TerrainBuildingType)subTile.subTerrain;
+
+                        int min, size;
+                        Resource.ItemResourceType resourceType;
+
+                        if (building == TerrainBuildingType.PigPen)
+                        {
+                            resourceType = Resource.ItemResourceType.Pig;
+                            min = TerrainContent.PigReady;
+                            size = TerrainContent.PigMaxSize;
+                        }
+                        else
+                        {
+                            resourceType = Resource.ItemResourceType.Hen;
+                            min = TerrainContent.HenReady;
+                            size = TerrainContent.HenMaxSize;
+                        }
+
+                        if (subTile.terrainAmount >= min)
+                        {
+                            subTile.terrainAmount -= size;
+                            DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+
+                            carry = new ItemResource(resourceType, 1, Convert.ToInt32(processTimeLengthSec), 1);
                         }
                     }
                     work = WorkType.Idle;
@@ -151,11 +182,13 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         {
             switch (work)
             {
-                case WorkType.PickUp:
+                case WorkType.PickUpResource:
                     return 2f;
+                case WorkType.PickUpProduce:
+                    return 3f;
                 case WorkType.DropOff:
                     return 1f;
-                case WorkType.Gather:
+                case WorkType.GatherFoil:
                     SubTile subTile = DssRef.world.subTileGrid.Get(subTileEnd);
                     switch ((TerrainSubFoilType)subTile.subTerrain)
                     { 

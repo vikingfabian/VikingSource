@@ -61,7 +61,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     break;
 
                 case WorkerUnitState.FinalizeWork:
-                    if (status.work == WorkType.Gather || status.work == WorkType.Mine)
+                    if (status.work == WorkType.GatherFoil || status.work == WorkType.Mine)
                     {
                         if (workAnimation.timeOut())
                         { 
