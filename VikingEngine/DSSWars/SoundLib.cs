@@ -11,7 +11,8 @@ namespace VikingEngine.DSSWars
 {
     static class SoundLib
     {
-        public static SoundContainerBase click, back, buy, wrong, ordermove, orderstop, message, trophy;
+        public static SoundContainerBase click, back, buy, wrong, ordermove, orderstop, message, trophy,
+            woodcut, tree_falling, scythe, drop_item, pickaxe, hen, pig, pickup;
 
         public static RbSoundProfile menu, menuBack, menuBuy, menuArmyHalt;
 
@@ -27,10 +28,23 @@ namespace VikingEngine.DSSWars
             message = new SoundContainerSingle(soundDir + "chat_message");
             trophy = new SoundContainerSingle(soundDir + "trophy");
 
+
+            woodcut = new SoundContainerSingle(soundDir + "woodcut", 0.4f, 0.2f);
+            tree_falling = new SoundContainerSingle(soundDir + "tree_falling", 0.4f, 0.2f);
+            scythe = new SoundContainerSingle(soundDir + "scythe", 0.7f, 0.4f);
+            drop_item = new SoundContainerSingle(soundDir + "drop_item", 1f, 0.4f);
+            pickaxe = new SoundContainerSingle(soundDir + "pickaxe", 0.4f, 0.2f);
+            hen = new SoundContainerMultiple(new string[] { soundDir + "hen1", soundDir + "hen2" }, 0.4f, 0.4f);
+            pig = new SoundContainerSingle(soundDir + "pig", 0.4f, 0.8f);
+            pickup = new SoundContainerSingle(soundDir + "pickup", 0.6f, 0.4f);
+
+
             menu = new RbSoundProfile(click, wrong);
             menuBack = new RbSoundProfile(back);
             menuBuy = new RbSoundProfile(buy, wrong);
             menuArmyHalt = new RbSoundProfile(orderstop);
+
+
 
         }
     }

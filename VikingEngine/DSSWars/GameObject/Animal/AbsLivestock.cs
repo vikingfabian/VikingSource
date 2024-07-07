@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         const float WalkingSpeed = AbsDetailUnitData.StandardWalkingSpeed * 0.2f;
         VectorRect area;
         protected WalkingAnimation walkingAnimation;
-        Graphics.AbsVoxelObj model;
+        protected Graphics.AbsVoxelObj model;
         Tile tile;
         Time stateTime;
         Vector3 walkDir;
@@ -51,6 +51,8 @@ namespace VikingEngine.DSSWars.GameObject.Animal
                 walkState = !walkState;
                 stateTime = new Time(Ref.rnd.Float(500, 5000));
 
+                sound();
+
                 if (walkState)
                 {
                     randomWalkDir();
@@ -81,6 +83,8 @@ namespace VikingEngine.DSSWars.GameObject.Animal
             }
         }
 
+        abstract protected void sound();
+
         public override void DeleteMe()
         {
             base.DeleteMe();
@@ -100,6 +104,14 @@ namespace VikingEngine.DSSWars.GameObject.Animal
             return DssRef.models.ModelInstance(VoxelModelName.Pig, 
                 AbsDetailUnitData.StandardModelScale * 0.5f, false);
         }
+
+        protected override void sound()
+        {
+            if (Ref.rnd.Chance(0.3))
+            {
+                SoundLib.pig.Play(model.position);
+            }
+        }
     }
     class Hen : AbsLivestock
     {
@@ -112,6 +124,14 @@ namespace VikingEngine.DSSWars.GameObject.Animal
 
             return DssRef.models.ModelInstance(VoxelModelName.Hen,
                 AbsDetailUnitData.StandardModelScale * 0.3f, false);
+        }
+
+        protected override void sound()
+        {
+            if (Ref.rnd.Chance(0.1))
+            {
+                SoundLib.hen.Play(model.position);
+            }
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Audio;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,43 @@ namespace VikingEngine.Sound
         {
             Play(Pan.Center);
         }
+        public void Play(Vector3 position)
+        {
+            FindMinValue distanceFinder = new FindMinValue(true);
 
+            for (int i = 0; i < Ref.draw.ActivePlayerScreens.Count; i++)
+            {
+                Graphics.AbsCamera cam = Ref.draw.ActivePlayerScreens[i].view.Camera;
+
+                distanceFinder.Next(
+                    lib.LargestValue(
+                        Math.Abs(cam.LookTarget.X - position.X),
+                        Math.Abs(cam.LookTarget.Z - position.Z)), i);
+
+            }
+
+            const float MaxSoundDist = 4;
+            if (distanceFinder.minValue < MaxSoundDist)
+            {
+                float outvolume = volume * (1f - (distanceFinder.minValue / MaxSoundDist));
+                Graphics.AbsCamera cam = Ref.draw.ActivePlayerScreens[distanceFinder.minMemberIndex].view.Camera;
+                Vector2 diff = new Vector2(position.X - cam.LookTarget.X, position.Z - cam.LookTarget.Z);
+                Rotation1D dir = Rotation1D.FromDirection(diff);
+                dir.Add(cam.TiltX - MathHelper.PiOver2);
+                Vector2 direction = dir.Direction(diff.Length());
+
+                float pan = direction.X / MaxSoundDist;
+
+                float pitch = pitchAdd;
+                if (randomPitch != 0)
+                {
+                    pitch = Bound.Set(pitch + Ref.rnd.Plus_MinusF(randomPitch), -1, 1);
+                }
+
+                File().Play(Bound.Max(outvolume * Engine.Sound.SoundVolume, 1), pitch, pan);
+            }
+
+        }
         public void Play(Pan pan)
         {
             float pitch = pitchAdd;
@@ -59,8 +96,8 @@ namespace VikingEngine.Sound
 
         public SoundContainerMultiple(string[] filePath, float volume = 1, float randomPitch = 0, float pitchAdd = 0)
         {
-            files = new SoundEffect[files.Length];
-            for (int i = 0; i < files.Length; i++)
+            files = new SoundEffect[filePath.Length];
+            for (int i = 0; i < filePath.Length; i++)
             {
                 files[i] = LoadContent.Content.Load<SoundEffect>(filePath[i]);
             }

@@ -367,6 +367,24 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/click.wav
 
+#begin DSS/Sound/drop_item.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/drop_item.wav
+
+#begin DSS/Sound/hen1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/hen1.wav
+
+#begin DSS/Sound/hen2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/hen2.wav
+
 #begin DSS/Sound/ordermove.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -379,11 +397,47 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/orderstop.wav
 
+#begin DSS/Sound/pickaxe.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/pickaxe.wav
+
+#begin DSS/Sound/pickup.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/pickup.wav
+
+#begin DSS/Sound/pig.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/pig.wav
+
+#begin DSS/Sound/scythe.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/scythe.wav
+
+#begin DSS/Sound/tree_falling.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/tree_falling.wav
+
 #begin DSS/Sound/trophy.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/trophy.wav
+
+#begin DSS/Sound/woodcut.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/woodcut.wav
 
 #begin DSS/Sound/wrong.wav
 /importer:WavImporter

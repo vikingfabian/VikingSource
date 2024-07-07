@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.Timer;
 
 namespace VikingEngine.DSSWars.GameObject.Worker
@@ -23,7 +24,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         Vector3 walkDir;
         City city;
         float finalizeWorkTime;
-        GameTimer workAnimation = new GameTimer(0.5f, true, true);
+        GameTimer workAnimation = new GameTimer(1f, true, true);
 
         public WorkerUnit(City city, WorkerStatus status, int statusIndex)
         {
@@ -64,14 +65,60 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     if (status.work == WorkType.GatherFoil || status.work == WorkType.Mine)
                     {
                         if (workAnimation.timeOut())
-                        { 
-                            model.Frame = model.Frame == 1? 2 : 1;  
+                        {                            
+                            model.Frame = model.Frame == 1? 2 : 1;
+                            if (model.Frame == 2)
+                            {
+                                if (status.work == WorkType.GatherFoil)
+                                {
+                                    SubTile subTile = DssRef.world.subTileGrid.Get(status.subTileEnd);
+                                    switch ((TerrainSubFoilType)subTile.subTerrain)
+                                    {
+                                        case TerrainSubFoilType.TreeSoft:
+                                        case TerrainSubFoilType.TreeHard:
+                                            SoundLib.woodcut.Play(model.position);
+                                            break;
+                                        case TerrainSubFoilType.FarmCulture:
+                                            SoundLib.scythe.Play(model.position);
+                                            break;
+                                    }
+                                    
+                                }
+                                else
+                                {
+                                    SoundLib.pickaxe.Play(model.position);
+                                }
+                            }
                         }
                     }
 
                     finalizeWorkTime -= Ref.DeltaGameTimeSec;
                     if (finalizeWorkTime <= 0)
                     {
+                        switch (status.work)
+                        { 
+                            case WorkType.GatherFoil:
+                                SubTile subTile = DssRef.world.subTileGrid.Get(status.subTileEnd);
+                                switch ((TerrainSubFoilType)subTile.subTerrain)
+                                {
+                                    case TerrainSubFoilType.TreeSoft:
+                                    case TerrainSubFoilType.TreeHard:
+                                        SoundLib.tree_falling.Play(model.position);
+                                        break;
+                                }
+
+                                
+                                break;
+                            case WorkType.Plant:
+                            case WorkType.DropOff:
+                                SoundLib.drop_item.Play(model.position);
+                                break;
+                            case WorkType.PickUpResource:
+                            case WorkType.PickUpProduce:
+                                SoundLib.pickup.Play(model.position);
+                                break;
+                        }
+
                         status.WorkComplete(city);
                         city.setWorkerStatus(statusIndex, ref status);
                         //hasGoal = false;
