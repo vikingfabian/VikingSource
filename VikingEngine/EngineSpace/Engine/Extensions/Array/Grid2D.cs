@@ -128,6 +128,10 @@ namespace VikingEngine
         {
             array[position.X, position.Y] = value;
         }
+        public void SetRef(ref IntVector2 position,ref T value)
+        {
+            array[position.X, position.Y] = value;
+        }
 
         public void Set(int x, int y, T value)
         {
