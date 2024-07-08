@@ -21,161 +21,186 @@ namespace VikingEngine.DSSWars.Display
         Players.LocalPlayer player;
         City city;
 
+        public const string ResourcesMenuState = "resource";
         public CityMenu(Players.LocalPlayer player, City city, RichBoxContent content)
         {
             this.player = player;
             this.city = city;
 
-            ArmyStatus status;
-            Army recruitArmy = city.recruitToClosestArmy();
-            if (recruitArmy != null)
+            switch (player.hud.displays.CurrentMenuState)
             {
-                status = recruitArmy.Status();
-            }
-            else
-            {
-                status = new ArmyStatus();
-            }
 
-            content.h2(DssRef.lang.CityOption_Recruit);
-            foreach (var opt in city.cityPurchaseOptions)
-            {
-                if (opt.available)
-                {
-                    content.newLine();
-
-                    string recruitText = string.Format(DssRef.lang.CityOption_RecruitType, DssRef.unitsdata.Name( opt.unitType));
-                    string count = status.typeCount[(int)opt.unitType].ToString();
-                    AbsSoldierData typeData = DssRef.unitsdata.Get(opt.unitType);
-
-                    content.Add(new RichBoxText(count));
-                    content.Add(new RichBoxImage(typeData.icon));
-                    
-                    content.Add(new RichBoxSpace());
-
-                    content.Add(new RichboxButton(
-                        new List<AbsRichBoxMember>
-                        {                            
-                            new RichBoxText(recruitText),
-                        },
-                        new RbAction3Arg<UnitType, int, LocalPlayer>(city.buySoldiersAction, opt.unitType, 1, player, SoundLib.menuBuy),
-                        new RbAction2Arg<CityPurchaseOption, int>(buySoldiersTip, opt, 1),
-                        canBuySoldiers(opt.unitType, 1)));
-
-                    content.space();
-
-                    multiBuy(5);
-
-                    content.space();
-
-                    multiBuy(25);
-
-                    void multiBuy(int multiCount)
+                default:
                     {
-                        content.Button(string.Format(DssRef.lang.Hud_XTimes, multiCount),
-                            new RbAction3Arg<UnitType, int, LocalPlayer>(city.buySoldiersAction, opt.unitType, multiCount, player, SoundLib.menuBuy),
-                            new RbAction2Arg<CityPurchaseOption, int>(buySoldiersTip, opt, multiCount),
-                            canBuySoldiers(opt.unitType, multiCount));
-                    }
-                }
-            }
+                        var resourcesButton = new HUD.RichBox.RichboxButton(
+                        new List<AbsRichBoxMember>
+                        {
+                            new HUD.RichBox.RichBoxText("Resources"),
+                        },
+                        new RbAction1Arg<string>(player.hud.displays.SetMenuState, ResourcesMenuState, SoundLib.menu),
+                        null);
+                        content.Add(resourcesButton);
 
-            if (!player.inTutorialMode)
-            {
 
-                content.newLine();
+                        ArmyStatus status;
+                        Army recruitArmy = city.recruitToClosestArmy();
+                        if (recruitArmy != null)
+                        {
+                            status = recruitArmy.Status();
+                        }
+                        else
+                        {
+                            status = new ArmyStatus();
+                        }
 
-                content.icontext(SpriteName.WarsSoldierIcon, string.Format(DssRef.lang.CityOption_XMercenaries, TextLib.LargeNumber(city.mercenaries)));
+                        content.h2(DssRef.lang.CityOption_Recruit);
+                        foreach (var opt in city.cityPurchaseOptions)
+                        {
+                            if (opt.available)
+                            {
+                                content.newLine();
 
-                content.newLine();
+                                string recruitText = string.Format(DssRef.lang.CityOption_RecruitType, DssRef.unitsdata.Name(opt.unitType));
+                                string count = status.typeCount[(int)opt.unitType].ToString();
+                                AbsSoldierData typeData = DssRef.unitsdata.Get(opt.unitType);
 
-                //string importMecenariesText = "Import {0} mercenaries";
+                                content.Add(new RichBoxText(count));
+                                content.Add(new RichBoxImage(typeData.icon));
 
-                content.Add(new RichboxButton(new List<AbsRichBoxMember>{
+                                content.Add(new RichBoxSpace());
+
+                                content.Add(new RichboxButton(
+                                    new List<AbsRichBoxMember>
+                                    {
+                            new RichBoxText(recruitText),
+                                    },
+                                    new RbAction3Arg<UnitType, int, LocalPlayer>(city.buySoldiersAction, opt.unitType, 1, player, SoundLib.menuBuy),
+                                    new RbAction2Arg<CityPurchaseOption, int>(buySoldiersTip, opt, 1),
+                                    canBuySoldiers(opt.unitType, 1)));
+
+                                content.space();
+
+                                multiBuy(5);
+
+                                content.space();
+
+                                multiBuy(25);
+
+                                void multiBuy(int multiCount)
+                                {
+                                    content.Button(string.Format(DssRef.lang.Hud_XTimes, multiCount),
+                                        new RbAction3Arg<UnitType, int, LocalPlayer>(city.buySoldiersAction, opt.unitType, multiCount, player, SoundLib.menuBuy),
+                                        new RbAction2Arg<CityPurchaseOption, int>(buySoldiersTip, opt, multiCount),
+                                        canBuySoldiers(opt.unitType, multiCount));
+                                }
+                            }
+                        }
+
+                        if (!player.inTutorialMode)
+                        {
+
+                            content.newLine();
+
+                            content.icontext(SpriteName.WarsSoldierIcon, string.Format(DssRef.lang.CityOption_XMercenaries, TextLib.LargeNumber(city.mercenaries)));
+
+                            content.newLine();
+
+                            //string importMecenariesText = "Import {0} mercenaries";
+
+                            content.Add(new RichboxButton(new List<AbsRichBoxMember>{
                     new RichBoxImage(SpriteName.WarsSoldierIcon),
                     new RichBoxText( string.Format(DssRef.lang.CityOption_BuyXMercenaries, DssLib.MercenaryPurchaseCount)),
                 },
-                   new RbAction1Arg<int>(buyMercenaryAction, 1, SoundLib.menuBuy),
-                   new RbAction1Arg<int>(buyMercenaryToolTip, 1),
-                   city.buyMercenary(false, 1)));
+                               new RbAction1Arg<int>(buyMercenaryAction, 1, SoundLib.menuBuy),
+                               new RbAction1Arg<int>(buyMercenaryToolTip, 1),
+                               city.buyMercenary(false, 1)));
 
-                content.Add(new RichBoxSpace());
+                            content.Add(new RichBoxSpace());
 
-                content.Button((DssLib.MercenaryPurchaseCount * 5).ToString(),
-                   new RbAction1Arg<int>(buyMercenaryAction, 5, SoundLib.menuBuy),
-                   new RbAction1Arg<int>(buyMercenaryToolTip, 5),
-                   city.buyMercenary(false, 5));
+                            content.Button((DssLib.MercenaryPurchaseCount * 5).ToString(),
+                               new RbAction1Arg<int>(buyMercenaryAction, 5, SoundLib.menuBuy),
+                               new RbAction1Arg<int>(buyMercenaryToolTip, 5),
+                               city.buyMercenary(false, 5));
 
-                content.Add(new RichBoxNewLine(true));
+                            content.Add(new RichBoxNewLine(true));
 
 
-                if (city.damages.HasValue())
-                {
-                    content.Add(new RichboxButton(new List<AbsRichBoxMember>{
+                            if (city.damages.HasValue())
+                            {
+                                content.Add(new RichboxButton(new List<AbsRichBoxMember>{
                     new RichBoxImage(SpriteName.unitEmoteLove),
                     new RichBoxText(DssRef.lang.CityOption_Repair),
                 },
-                        new RbAction1Arg<bool>(buyRepairAction, true, SoundLib.menuBuy),
-                        new RbAction1Arg<bool>(buyRepairToolTip, true),
-                        city.buyRepair(false, true)));
-                }
-                else
-                {
-                    content.Add(new RichboxButton(new List<AbsRichBoxMember>{
+                                    new RbAction1Arg<bool>(buyRepairAction, true, SoundLib.menuBuy),
+                                    new RbAction1Arg<bool>(buyRepairToolTip, true),
+                                    city.buyRepair(false, true)));
+                            }
+                            else
+                            {
+                                content.Add(new RichboxButton(new List<AbsRichBoxMember>{
                         new RichBoxImage(SpriteName.WarsWorkerAdd),
                         new RichBoxText(DssRef.lang.CityOption_ExpandWorkForce),
                     },
-                        new RbAction1Arg<int>(buyWorkforceAction, 1, SoundLib.menuBuy),
-                        new RbAction1Arg<int>(buyWorkforceToolTip, 1),
-                        city.buyWorkforce(false, 1)));
-                }
+                                    new RbAction1Arg<int>(buyWorkforceAction, 1, SoundLib.menuBuy),
+                                    new RbAction1Arg<int>(buyWorkforceToolTip, 1),
+                                    city.buyWorkforce(false, 1)));
+                            }
 
 
-                content.newLine();
+                            content.newLine();
 
-                if (city.battleGroup == null)
-                {
-                    content.Add(new RichboxButton(new List<AbsRichBoxMember>{
+                            if (city.battleGroup == null)
+                            {
+                                content.Add(new RichboxButton(new List<AbsRichBoxMember>{
                         new RichBoxImage(SpriteName.birdFireball),
                         new RichBoxText(DssRef.lang.CityOption_BurnItDown),
                     },
-                        new RbAction(city.burnItDown, SoundLib.menu),
-                        new RbAction(burnToolTip),
-                         city.damages.value < city.MaxDamages()));
+                                    new RbAction(city.burnItDown, SoundLib.menu),
+                                    new RbAction(burnToolTip),
+                                     city.damages.value < city.MaxDamages()));
 
-                    content.newLine();
-                }
+                                content.newLine();
+                            }
 
-                {
-                    int count = 1;
-                    content.Add(new RichboxButton(new List<AbsRichBoxMember>{
+                            {
+                                int count = 1;
+                                content.Add(new RichboxButton(new List<AbsRichBoxMember>{
                         new RichBoxImage(SpriteName.WarsGuardAdd),
                         new RichBoxText( DssRef.lang.CityOption_ExpandGuardSize),
                     },
-                        new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
-                        new RbAction1Arg<int>(buyGuardSizeToolTip, count),
-                        city.buyCityGuards(false, count)));
-                }
-                content.Add(new RichBoxSpace());
-                {
-                    int count = 5;
-                    content.Button(string.Format(DssRef.lang.Hud_XTimes, count),
-                    new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
-                    new RbAction1Arg<int>(buyGuardSizeToolTip, count),
-                    city.buyCityGuards(false, count));
-                }
+                                    new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
+                                    new RbAction1Arg<int>(buyGuardSizeToolTip, count),
+                                    city.buyCityGuards(false, count)));
+                            }
+                            content.Add(new RichBoxSpace());
+                            {
+                                int count = 5;
+                                content.Button(string.Format(DssRef.lang.Hud_XTimes, count),
+                                new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
+                                new RbAction1Arg<int>(buyGuardSizeToolTip, count),
+                                city.buyCityGuards(false, count));
+                            }
 
-                content.newLine();
+                            content.newLine();
 
-                if (!city.nobelHouse && city.canEverGetNobelHouse())
-                {
-                    content.Button(DssRef.lang.Building_NobleHouse,
-                         new RbAction(city.buyNobelHouseAction, SoundLib.menuBuy),
-                         new RbAction(buyNobelhouseTooltip),
-                         city.canBuyNobelHouse());
-                }
+                            if (!city.nobelHouse && city.canEverGetNobelHouse())
+                            {
+                                content.Button(DssRef.lang.Building_NobleHouse,
+                                     new RbAction(city.buyNobelHouseAction, SoundLib.menuBuy),
+                                     new RbAction(buyNobelhouseTooltip),
+                                     city.canBuyNobelHouse());
+                            }
 
-                content.newLine();
+                            content.newLine();
+                        }
+                    }
+                    break;
+
+                case ResourcesMenuState:
+                    {
+                        city.resourcesToMenu(content);
+                    }
+                    break;
             }
         }
 

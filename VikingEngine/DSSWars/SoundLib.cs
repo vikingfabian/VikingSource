@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars
             tree_falling = new SoundContainerSingle(soundDir + "tree_falling", 0.4f, 0.2f);
             scythe = new SoundContainerSingle(soundDir + "scythe", 0.7f, 0.4f);
             drop_item = new SoundContainerSingle(soundDir + "drop_item", 1f, 0.4f);
-            pickaxe = new SoundContainerSingle(soundDir + "pickaxe", 0.4f, 0.2f);
+            pickaxe = new SoundContainerSingle(soundDir + "pickaxe", 0.6f, 0.2f);
             hen = new SoundContainerMultiple(new string[] { soundDir + "hen1", soundDir + "hen2" }, 0.4f, 0.4f);
             pig = new SoundContainerSingle(soundDir + "pig", 0.4f, 0.8f);
             pickup = new SoundContainerSingle(soundDir + "pickup", 0.6f, 0.4f);

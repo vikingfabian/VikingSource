@@ -34,6 +34,7 @@ namespace VikingEngine.DSSWars.Display
                     case AutomationMenuState:
                         player.automation.toMenu(content, fullDisplay);
                         break;
+
                 }
                 endRefresh(player.playerData.view.safeScreenArea.Position, true);
             }

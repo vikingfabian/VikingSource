@@ -145,10 +145,10 @@ namespace VikingEngine.DSSWars.Map
 
                     if (stonenoise > 0.1)
                     {
-                        if (tile.heightLevel >= Height.MountainHeightStart)
+                        if (tile.heightLevel >= Height.MineHeightStart)
                         {
                             var rndMine = world.rnd.Double();
-                            if (rndMine < 0.004)
+                            if (rndMine < 0.008)
                             {
                                 subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.IronOre, 1);
                                 return;

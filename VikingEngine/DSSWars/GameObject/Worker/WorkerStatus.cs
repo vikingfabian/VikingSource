@@ -124,6 +124,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     break;
 
                 case WorkType.DropOff:
+                    city.dropOffItem(carry);
                     carry = ItemResource.Empty;
                     work = WorkType.Idle;
                     break;
