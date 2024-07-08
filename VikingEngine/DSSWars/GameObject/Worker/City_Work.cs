@@ -114,8 +114,14 @@ namespace VikingEngine.DSSWars.GameObject
 
             void buildWorkQue()
             {
+                wood.orderCount = 0;
+                rawFood.orderCount = 0;
+                skin.orderCount = 0;
+                ore.orderCount = 0;
+
                 workQue.Clear();
-                int woodCollectNeed = workTeamCount;
+                //int woodCollectNeed = workTeamCount;
+
                 //Priority of collect
 
                 //Cirkle outward from city to find resources

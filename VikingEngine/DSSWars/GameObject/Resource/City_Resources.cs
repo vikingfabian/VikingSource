@@ -65,8 +65,14 @@ namespace VikingEngine.DSSWars.GameObject
     {
         public int amount;
         public int goalBuffer;
+        public int orderCount;
         public int trade;
         public int blacktrade;
+
+        public bool needMore()
+        {
+            return amount + orderCount < goalBuffer;
+        }
 
         public void add(ItemResource item)
         {
