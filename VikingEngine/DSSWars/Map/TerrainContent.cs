@@ -26,6 +26,8 @@ namespace VikingEngine.DSSWars.Map
         const int HenMaxTotal = HenMaxSize * HenMaxCount;
         public const int HenReady = HenMaxSize * 3;
 
+        public const int MineAmount = 10;
+
         public void asyncFoilGroth(IntVector2 pos, SubTile subtile)
         {
             Map.TerrainSubFoilType foilType = (Map.TerrainSubFoilType)subtile.subTerrain;

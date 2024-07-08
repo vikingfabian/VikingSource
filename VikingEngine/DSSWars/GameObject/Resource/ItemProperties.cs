@@ -17,6 +17,11 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             items[(int)ItemResourceType.HardWood] = new ItemProperties(1f / 20);
             items[(int)ItemResourceType.SoftWood] = new ItemProperties(1f / 30);
             items[(int)ItemResourceType.IronOre] = new ItemProperties(1f / 10);
+            items[(int)ItemResourceType.Egg] = new ItemProperties(1f / 60);
+            items[(int)ItemResourceType.Pig] = new ItemProperties(1f);
+            items[(int)ItemResourceType.Hen] = new ItemProperties(1f / 4);
+            items[(int)ItemResourceType.Wheat] = new ItemProperties(1f / 10);
+
         }
     }
 

@@ -83,8 +83,11 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                             if (chunk.count <= 0)
                             {
                                 subTile.collectionPointer = -1;
-                                subTile.mainTerrain = TerrainMainType.DefaultLand;
 
+                                if (subTile.mainTerrain == TerrainMainType.Resourses)
+                                {
+                                    subTile.mainTerrain = TerrainMainType.DefaultLand;
+                                }
                                 DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                             }
                         }
@@ -145,8 +148,10 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                     resourceType,
                                     subTile.terrainQuality,
                                     Convert.ToInt32(processTimeLengthSec),
-                                    10),
+                                    TerrainContent.MineAmount),
                                 ref subTile.collectionPointer);
+
+                        work = WorkType.Idle;
                     }
                     break;
             }

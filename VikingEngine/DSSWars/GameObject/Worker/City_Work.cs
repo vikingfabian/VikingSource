@@ -143,75 +143,113 @@ namespace VikingEngine.DSSWars.GameObject
                                 {
                                     var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
 
-                                    switch (subTile.mainTerrain)
+                                    if (subTile.collectionPointer >= 0)
                                     {
-                                        case TerrainMainType.Foil:
-                                            var foil = (TerrainSubFoilType)subTile.subTerrain;
+                                        if (isFreeTile(subTileLoop.Position))
+                                        {
+                                            workQue.Add(new WorkQueMember(WorkType.PickUpResource, subTileLoop.Position, 6));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        switch (subTile.mainTerrain)
+                                        {
+                                            case TerrainMainType.Foil:
+                                                var foil = (TerrainSubFoilType)subTile.subTerrain;
 
-                                            switch (foil)
-                                            {
-                                                case Map.TerrainSubFoilType.TreeSoft:
-                                                case Map.TerrainSubFoilType.TreeHard:
-                                                    if (woodCollectNeed > 0 &&
-                                                        subTile.terrainAmount >= TerrainContent.TreeReadySize)
-                                                    {
-                                                        if (isFreeTile(subTileLoop.Position))
+                                                switch (foil)
+                                                {
+                                                    case Map.TerrainSubFoilType.TreeSoft:
+                                                    case Map.TerrainSubFoilType.TreeHard:
+                                                        if (wood.needMore() &&
+                                                            subTile.terrainAmount >= TerrainContent.TreeReadySize)
                                                         {
-                                                            workQue.Add(new WorkQueMember(WorkType.GatherFoil, subTileLoop.Position, 4));
-                                                            --woodCollectNeed;
+                                                            if (isFreeTile(subTileLoop.Position))
+                                                            {
+                                                                workQue.Add(new WorkQueMember(WorkType.GatherFoil, subTileLoop.Position, 4));
+                                                                wood.orderCount += subTile.terrainAmount;
+                                                            }
                                                         }
-                                                    }
-                                                    break;
+                                                        break;
 
-                                                case TerrainSubFoilType.FarmCulture:
-                                                    if (subTile.terrainAmount == TerrainContent.FarmCulture_Empty)
-                                                    {
-                                                        if (isFreeTile(subTileLoop.Position))
+                                                    case TerrainSubFoilType.FarmCulture:
+                                                        if (subTile.terrainAmount == TerrainContent.FarmCulture_Empty &&
+                                                            rawFood.needMore())
                                                         {
-                                                            workQue.Add(new WorkQueMember(WorkType.Plant, subTileLoop.Position, 5));
+                                                            if (isFreeTile(subTileLoop.Position))
+                                                            {
+                                                                workQue.Add(new WorkQueMember(WorkType.Plant, subTileLoop.Position, 5));
+                                                            }
                                                         }
-                                                    }
-                                                    else if (subTile.terrainAmount >= TerrainContent.FarmCulture_ReadySize)
-                                                    {
-                                                        if (isFreeTile(subTileLoop.Position))
+                                                        else if (rawFood.needMore() &&
+                                                            subTile.terrainAmount >= TerrainContent.FarmCulture_ReadySize)
                                                         {
-                                                            workQue.Add(new WorkQueMember(WorkType.GatherFoil, subTileLoop.Position, 5));
+                                                            if (isFreeTile(subTileLoop.Position))
+                                                            {
+                                                                workQue.Add(new WorkQueMember(WorkType.GatherFoil, subTileLoop.Position, 5));
+                                                                rawFood.orderCount += subTile.terrainAmount;
+                                                            }
                                                         }
-                                                    }
-                                                    break;
-                                            }
+                                                        break;
+                                                }
 
-                                            break;
+                                                break;
 
-                                        case TerrainMainType.Resourses:
-                                            if (isFreeTile(subTileLoop.Position))
-                                            {
-                                                workQue.Add(new WorkQueMember(WorkType.PickUpResource, subTileLoop.Position, 6));
-                                            }
-                                            break;
 
-                                        case TerrainMainType.Mine:
-                                            if (isFreeTile(subTileLoop.Position))
-                                            {
-                                                workQue.Add(new WorkQueMember(WorkType.Mine, subTileLoop.Position, 5));
-                                            }
-                                            break;
 
-                                        case TerrainMainType.Building:
-                                            var building = (TerrainBuildingType)subTile.subTerrain;
-                                            if (
-                                                (
-                                                    (building == TerrainBuildingType.HenPen && subTile.terrainAmount > TerrainContent.HenReady) ||
-                                                    (building == TerrainBuildingType.PigPen && subTile.terrainAmount > TerrainContent.PigReady)
-                                                )
-                                                &&
-                                                isFreeTile(subTileLoop.Position)
-                                                )
-                                            {
-                                                workQue.Add(new WorkQueMember(WorkType.PickUpProduce, subTileLoop.Position, 5));
-                                            }
-                                            break;
+                                            case TerrainMainType.Mine:
+                                                if (ore.needMore() &&
+                                                    isFreeTile(subTileLoop.Position))
+                                                {
+                                                    workQue.Add(new WorkQueMember(WorkType.Mine, subTileLoop.Position, 5));
+                                                    ore.orderCount += TerrainContent.MineAmount;
+                                                }
+                                                break;
 
+                                            case TerrainMainType.Building:
+                                                var building = (TerrainBuildingType)subTile.subTerrain;
+
+                                                switch (building)
+                                                {
+                                                    case TerrainBuildingType.HenPen:
+                                                        if (rawFood.needMore())
+                                                        {
+                                                            if (isFreeTile(subTileLoop.Position))
+                                                            {
+                                                                workQue.Add(new WorkQueMember(WorkType.PickUpProduce, subTileLoop.Position, 5));
+                                                                rawFood.orderCount += TerrainContent.HenMaxSize;
+                                                            }
+                                                        }
+                                                        break;
+                                                    case TerrainBuildingType.PigPen:
+                                                        if (rawFood.needMore() || skin.needMore())
+                                                        {
+                                                            if (isFreeTile(subTileLoop.Position))
+                                                            {
+                                                                workQue.Add(new WorkQueMember(WorkType.PickUpProduce, subTileLoop.Position, 5));
+                                                                rawFood.orderCount += TerrainContent.PigMaxSize;
+                                                            }
+                                                        }
+                                                        break;
+                                                }
+
+                                                //if (
+                                                //    (
+                                                //        (building == TerrainBuildingType.HenPen && subTile.terrainAmount > TerrainContent.HenReady) ||
+                                                //        (building == TerrainBuildingType.PigPen && subTile.terrainAmount > TerrainContent.PigReady)
+                                                //    )
+                                                //    &&
+                                                //    (rawFood.needMore() || skin.needMore())
+                                                //    &&
+                                                //    isFreeTile(subTileLoop.Position)
+                                                //    )
+                                                //{
+                                                //    workQue.Add(new WorkQueMember(WorkType.PickUpProduce, subTileLoop.Position, 5));
+                                                //    rawFood.orderCount += TerrainContent.HenMaxSize;
+                                                //}
+                                                break;
+
+                                        }
                                     }
                                 }
                             }
