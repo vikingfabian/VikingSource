@@ -30,8 +30,9 @@ namespace VikingEngine.Engine
         public const string TexturePath = "Texture\\";
         public const string ModelPath = "Model\\";
 
-        static SpriteFont regular, bold, console;
-        static SpriteFont chinese_regular, chinese_bold, chinese_console;
+        //static SpriteFont regular, bold, console;
+        static FontLanguage currentFontLanguage = FontLanguage.NONE;
+        //static SpriteFont chinese_regular, chinese_bold, chinese_console;
 
         public static Color[] GetTextureData(LoadedTexture texture, Rectangle pixels)
         {
@@ -50,13 +51,11 @@ namespace VikingEngine.Engine
             //Load fonts
             Fonts = new SpriteFont[(int)LoadedFont.NUM_NON];
 
-            regular = Content.Load<SpriteFont>("Font\\Regular");
-            bold = Content.Load<SpriteFont>("Font\\Bold");
-            console = Content.Load<SpriteFont>("Font\\Console");
+            //regular = Content.Load<SpriteFont>("Font\\Regular");
+            //bold = Content.Load<SpriteFont>("Font\\Bold");
+            //console = Content.Load<SpriteFont>("Font\\Console");
 
-            chinese_regular = Content.Load<SpriteFont>("Font\\ChineseRegular");
-            chinese_bold = Content.Load<SpriteFont>("Font\\ChineseBold");
-            chinese_console = Content.Load<SpriteFont>("Font\\ChineseConsole");
+            
 
             setFontLanguage(FontLanguage.Western);
 
@@ -72,18 +71,40 @@ namespace VikingEngine.Engine
 
         public static void setFontLanguage(FontLanguage fontLanguage)
         {
-            switch (fontLanguage)
+            if (currentFontLanguage != fontLanguage)
             {
-                case FontLanguage.Western:
-                    Fonts[(int)LoadedFont.Regular] = regular;
-                    Fonts[(int)LoadedFont.Bold] = bold;
-                    Fonts[(int)LoadedFont.Console] = console;
-                    break;
-                case FontLanguage.Chinese:
-                    Fonts[(int)LoadedFont.Regular] = chinese_regular;
-                    Fonts[(int)LoadedFont.Bold] = chinese_bold;
-                    Fonts[(int)LoadedFont.Console] = chinese_console;
-                    break;
+                currentFontLanguage = fontLanguage;
+                switch (fontLanguage)
+                {
+                    case FontLanguage.Western:
+                        var regular = Content.Load<SpriteFont>("Font\\Regular");
+                        var bold = Content.Load<SpriteFont>("Font\\Bold");
+                        var console = Content.Load<SpriteFont>("Font\\Console");
+
+                        Fonts[(int)LoadedFont.Regular] = regular;
+                        Fonts[(int)LoadedFont.Bold] = bold;
+                        Fonts[(int)LoadedFont.Console] = console;
+                        break;
+                    case FontLanguage.Chinese:
+                        var chinese_regular = Content.Load<SpriteFont>("Font\\ChineseRegular");
+                        var chinese_bold = Content.Load<SpriteFont>("Font\\ChineseBold");
+                        var chinese_console = Content.Load<SpriteFont>("Font\\ChineseConsole");
+
+                        Fonts[(int)LoadedFont.Regular] = chinese_regular;
+                        Fonts[(int)LoadedFont.Bold] = chinese_bold;
+                        Fonts[(int)LoadedFont.Console] = chinese_console;
+                        break;
+
+                    case FontLanguage.Japanese:
+                        var japanese_regular = Content.Load<SpriteFont>("Font\\JapaneseRegular");
+                        var japanese_bold = Content.Load<SpriteFont>("Font\\JapaneseBold");
+                        var japanese_console = Content.Load<SpriteFont>("Font\\JapaneseConsole");
+
+                        Fonts[(int)LoadedFont.Regular] = japanese_regular;
+                        Fonts[(int)LoadedFont.Bold] = japanese_bold;
+                        Fonts[(int)LoadedFont.Console] = japanese_console;
+                        break;
+                }
             }
         }
        
@@ -253,7 +274,9 @@ namespace VikingEngine
 
     public enum FontLanguage
     { 
+        NONE,
         Western,
         Chinese,
+        Japanese,
     }
 }

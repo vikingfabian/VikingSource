@@ -53,77 +53,44 @@ with.
     -->
     <CharacterRegions>
 
-      <!-- All EU -->
-      <CharacterRegion>
+		<!-- All EU -->
+		<CharacterRegion>
 
-        <Start>&#32;</Start>
+			<Start>&#32;</Start>
 
-        <End>&#511;</End>
+			<End>&#511;</End>
 
-      </CharacterRegion>
+		</CharacterRegion>
+
+		<!-- Hiragana -->
+		<CharacterRegion>
+			<Start>&#x3040;</Start>
+			<End>&#x309F;</End>
+		</CharacterRegion>
+
+		<!-- Katakana -->
+		<CharacterRegion>
+			<Start>&#x30A0;</Start>
+			<End>&#x30FF;</End>
+		</CharacterRegion>
 
 
-      <!-- Most common Kanji (japanese, chinese) -->
-      <CharacterRegion>
+		<!-- CJK Symbols and Punctuation -->
+		<CharacterRegion>
+			<Start>&#x3000;</Start>
+			<End>&#x303F;</End>
+		</CharacterRegion>
 
-        <Start>&#x3040;</Start>
-
-        <End>&#x309F;</End>
-
-      </CharacterRegion>
-
-      <CharacterRegion>
-
-        <Start>&#x30A0;</Start>
-
-        <End>&#x30FF;</End>
-
-      </CharacterRegion>
-
-      <CharacterRegion>
-
-        <Start>&#x3000;</Start>
-
-        <End>&#x303F;</End>
-
-      </CharacterRegion>
-
-		<!-- Full-width punctuation (Chinese) -->
+		<!-- Full-width punctuation -->
 		<CharacterRegion>
 			<Start>&#xFF00;</Start>
 			<End>&#xFFEF;</End>
 		</CharacterRegion>
-		<!-- Simplified Chinese -->
+
+		<!-- Basic CJK Unified Ideographs -->
 		<CharacterRegion>
 			<Start>&#x4E00;</Start>
 			<End>&#x9FFF;</End>
-		</CharacterRegion>
-		<!-- Additional characters for your specific string -->
-		<CharacterRegion>
-			<Start>&#x3000;</Start>
-			<!-- 　-->
-			<End>&#x303F;</End>
-			<!-- 〿-->
-		</CharacterRegion>
-
-		<!-- Chinese special characters -->
-		<CharacterRegion>
-			<Start>&#xFF08;</Start>
-			<!--（ -->
-			<End>&#xFF09;</End>
-			<!-- ）-->
-		</CharacterRegion>
-		<CharacterRegion>
-			<Start>&#x4E00;</Start>
-			<!-- 一 -->
-			<End>&#x9FFF;</End>
-			<!-- 龿 -->
-		</CharacterRegion>
-
-		<!-- Additional CJK Characters -->
-		<CharacterRegion>
-			<Start>&#x3400;</Start>
-			<End>&#x4DBF;</End>
 		</CharacterRegion>
 
     </CharacterRegions>
