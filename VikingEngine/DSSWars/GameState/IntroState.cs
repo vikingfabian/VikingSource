@@ -92,7 +92,7 @@ namespace VikingEngine.DSSWars
             LootFest.Data.Block.Init();
             FlagAndColor.Init();
             
-            new GameObject.AllUnits();
+            
             new Models().loadContent();
 
             Engine.LoadContent.LoadMesh(LoadedMesh.cube_repeating, Engine.LoadContent.ModelPath + "cube_repeating");

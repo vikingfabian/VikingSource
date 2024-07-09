@@ -1055,6 +1055,8 @@ namespace VikingEngine.DSSWars.Display.Translation
             "Our minds are light from victory, our hearts are heavy from the weight of the fallen"
         };
 
+        public override string EndScreen_DominationVictoryQuote => "I was chosen by the Gods to dominate the world!";
+
         /// <summary>
         /// Game has ended in failure.
         /// </summary>

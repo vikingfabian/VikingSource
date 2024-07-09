@@ -176,7 +176,7 @@ namespace VikingEngine.DSSWars
                 
                 if (nextEvent == EventType.KillTheDarkLord)
                 {
-                    victory();
+                    victory(true);
                 }
             }
 
@@ -611,7 +611,7 @@ namespace VikingEngine.DSSWars
         {
             if (nextEvent != EventType.End)
             {
-                victory();
+                victory(true);
             }
         }
 
@@ -623,17 +623,25 @@ namespace VikingEngine.DSSWars
                 {
                     DssRef.achieve.UnlockAchievement(AchievementIndex.no_darklord);
                 }
-                victory();
+                victory(true);
             }
         }
 
-        void victory()
+        public void onWorldDomination()
         {
-            nextEvent = EventType.End;
-            DssRef.achieve.onVictory();
-            //DssRef.state.localPlayers[0].menuSystem.victoryScreen();
+            victory(false);
+        }
 
-            new EndScene(true);
+        void victory(bool bossVictory)
+        {
+            if (nextEvent < EventType.End)
+            {
+                nextEvent = EventType.End;
+                DssRef.achieve.onVictory();
+                //DssRef.state.localPlayers[0].menuSystem.victoryScreen();
+
+                new EndScene(true, bossVictory);
+            }
         }
 
         public void onPlayerDeath()
@@ -646,7 +654,7 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            new EndScene(false);
+            new EndScene(false, false);
         }
        
     }

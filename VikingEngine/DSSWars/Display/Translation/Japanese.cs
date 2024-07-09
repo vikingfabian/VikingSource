@@ -1050,6 +1050,8 @@ namespace VikingEngine.DSSWars.Display.Translation
     "勝利の光で心が軽くなり、犠牲者の重みで心が重い。"
 };
 
+        public override string EndScreen_DominationVictoryQuote => "私は神々に世界を支配するために選ばれた！";
+
         /// <summary>
         /// ゲームが失敗で終了しました。
         /// </summary>

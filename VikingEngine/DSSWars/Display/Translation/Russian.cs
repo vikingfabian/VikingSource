@@ -1045,6 +1045,8 @@ namespace VikingEngine.DSSWars.Display.Translation
     "Наши умы светлы от победы, наши сердца тяжелы от тяжести павших."
 };
 
+        public override string EndScreen_DominationVictoryQuote => "Меня избрали боги, чтобы властвовать над миром!";
+
         /// <summary>
         /// Игра закончилась неудачей.
         /// </summary>

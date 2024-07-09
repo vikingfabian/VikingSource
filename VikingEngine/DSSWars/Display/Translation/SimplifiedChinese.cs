@@ -1046,6 +1046,8 @@ namespace VikingEngine.DSSWars.Display.Translation
     "我们的胜利之光照亮了心灵，我们的心因失去的战士而沉重。"
 };
 
+        public override string EndScreen_DominationVictoryQuote => "我是被神选中的，来统治世界！";
+
         /// <summary>
         /// 游戏失败结束。
         /// </summary>

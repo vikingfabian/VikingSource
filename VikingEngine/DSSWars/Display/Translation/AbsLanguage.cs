@@ -337,6 +337,8 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract List<string> EndScreen_VictoryQuotes { get; }
 
+        public abstract string EndScreen_DominationVictoryQuote { get; }
+
         public abstract string EndScreen_FailTitle { get; }
 
         public abstract List<string> EndScreen_FailureQuotes { get; }

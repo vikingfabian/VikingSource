@@ -4,6 +4,7 @@ using System.IO;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest;
@@ -51,7 +52,7 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.citybanner,
             };
 
-            DssRef.unitsdata.AddModelsToLoad(loadRawModels);
+            new AllUnits().AddModelsToLoad(loadRawModels);
 
             foreach (var modelName in loadRawModels)
             {

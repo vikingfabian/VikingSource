@@ -328,6 +328,11 @@ namespace VikingEngine.DSSWars.Players
                     DssRef.world.cities[n].faction.player.onPlayerNeighborCapture(this);
                 }                
             }
+
+            if (faction.cities.Count >= DssRef.world.cities.Count - 5)
+            {
+                DssRef.state.events.onWorldDomination();
+            }
         }
 
         public override void onNewRelation(Faction otherFaction, DiplomaticRelation rel, RelationType previousRelation)

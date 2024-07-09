@@ -1045,6 +1045,8 @@ namespace VikingEngine.DSSWars.Display.Translation
     "Nuestras mentes son luz por la victoria, nuestros corazones son pesados por el peso de los caídos."
 };
 
+        public override string EndScreen_DominationVictoryQuote => "¡Fui elegido por los dioses para dominar el mundo!";
+
         /// <summary>
         /// El juego ha terminado en fracaso.
         /// </summary>
