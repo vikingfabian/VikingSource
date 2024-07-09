@@ -12,7 +12,12 @@ namespace VikingEngine.DSSWars.Display.Translation
     {
         public List<LanguageType> available()
         { 
-            return new List<LanguageType> { LanguageType.English, LanguageType.Chinese, LanguageType.Russian };
+            return new List<LanguageType> { 
+                LanguageType.English, 
+                LanguageType.Chinese, 
+                LanguageType.Russian,
+                LanguageType.Spanish,
+            };
         }
 
         public SpriteName sprite(LanguageType language)
@@ -27,6 +32,9 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                 case LanguageType.Russian:
                     return SpriteName.LangButton_Russian;
+
+                case LanguageType.Spanish:
+                    return SpriteName.LangButton_Spanish;
 
                 default:
                     throw new NotImplementedException();
@@ -66,6 +74,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                     Ref.langOpt = new HUD.OptionsLanguage_English();
                     LoadContent.setFontLanguage(FontLanguage.Western);
                     break;
+
                 case LanguageType.Chinese:
                     DssRef.lang = new SimplifiedChinese();
                     Ref.langOpt = new HUD.OptionsLanguage_SimplifiedChinese();
@@ -76,9 +85,16 @@ namespace VikingEngine.DSSWars.Display.Translation
                         Ref.gamesett.UiScale = Math.Max(Ref.gamesett.UiScale, 1.2f);
                     }
                     break;
+
                 case LanguageType.Russian:
                     DssRef.lang = new Russian();
-                    Ref.langOpt = new HUD.OptionsLanguage_English();
+                    Ref.langOpt = new HUD.OptionsLanguage_Russian();
+                    LoadContent.setFontLanguage(FontLanguage.Western);
+                    break;
+
+                case LanguageType.Spanish:
+                    DssRef.lang = new Spanish();
+                    Ref.langOpt = new HUD.OptionsLanguage_Spanish();
                     LoadContent.setFontLanguage(FontLanguage.Western);
                     break;
             }
