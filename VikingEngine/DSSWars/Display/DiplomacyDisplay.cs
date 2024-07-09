@@ -231,7 +231,7 @@ namespace VikingEngine.DSSWars.Display
                     content.Add(new RichboxButton(new List<AbsRichBoxMember>()
                         {
                             //new RichBoxImage(SpriteName.WarsRelationPeace),
-                            new RichBoxText(DssRef.lang.Hud_Cancel),
+                            new RichBoxText(Ref.langOpt.Hud_Cancel),
                         },
                         new RbAction(cancelToPlayerRelation, SoundLib.menuBuy)));
                 }

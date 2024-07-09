@@ -294,17 +294,6 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_CityCount => "City count: {0}";
         public override string Hud_ArmyCount => "Army count: {0}";
 
-        public override string Hud_Cancel => "Cancel";
-        public override string Hud_Back => "Back";
-
-        /// <summary>
-        /// Submenu for when the player will make destructive choices
-        /// </summary>
-        public override string Hud_AreYouSure => "Are you sure?";
-
-        public override string Hud_OK => "OK";
-        public override string Hud_Yes => "Yes";
-        public override string Hud_No => "No";
 
         /// <summary>
         /// Mini button to repeat a purchase a number of times. E.G. "x5"

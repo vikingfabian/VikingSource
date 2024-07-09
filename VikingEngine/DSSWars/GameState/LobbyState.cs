@@ -394,7 +394,7 @@ namespace VikingEngine.DSSWars
             GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_WarningTitle, menuSystem.menu);
             {
                 new GuiLabel(DssRef.lang.Lobby_PlayerWithoutInputWarning, layout);
-                new GuiIconTextButton(SpriteName.MenuIconResume, DssRef.lang.Hud_Back, null, mainMenu, false, layout);
+                new GuiIconTextButton(SpriteName.MenuIconResume, Ref.langOpt.Hud_Back, null, mainMenu, false, layout);
                 new GuiIconTextButton(SpriteName.MenuPixelIconPlay, DssRef.lang.Lobby_IgnoreWarning, null, startGame_nochecks, false, layout);
             }
             layout.End();
@@ -813,7 +813,7 @@ namespace VikingEngine.DSSWars
                 GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_WarningTitle, menuSystem.menu);
                 {
                     new GuiLabel(string.Format( DssRef.lang.GameMenu_Load_PlayerCountError, save.localPlayerCount), layout);
-                    new GuiIconTextButton(SpriteName.MenuIconResume, DssRef.lang.Hud_OK, null, mainMenu, false, layout);
+                    new GuiIconTextButton(SpriteName.MenuIconResume, Ref.langOpt.Hud_OK, null, mainMenu, false, layout);
                 }
                 layout.End();                
             }

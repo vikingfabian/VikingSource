@@ -289,17 +289,6 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_CityCount => "城市数量: {0}";
         public override string Hud_ArmyCount => "军队数量: {0}";
 
-        public override string Hud_Cancel => "取消";
-        public override string Hud_Back => "返回";
-
-        /// <summary>
-        /// 玩家进行破坏性选择时的子菜单
-        /// </summary>
-        public override string Hud_AreYouSure => "你确定吗？";
-
-        public override string Hud_OK => "确定";
-        public override string Hud_Yes => "是";
-        public override string Hud_No => "否";
 
         /// <summary>
         /// 重复购买次数的小按钮。例如“x5”

@@ -99,14 +99,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string Hud_CityCount { get; }
         public abstract string Hud_ArmyCount { get; }
 
-        public abstract string Hud_Cancel { get; }
-
-        public abstract string Hud_Back { get; }
-        public abstract string Hud_AreYouSure { get; }
-
-        public abstract string Hud_OK { get; }
-        public abstract string Hud_Yes { get; }
-        public abstract string Hud_No { get; }
+        
         public abstract string Hud_XTimes { get; }
 
         public abstract string Hud_PurchaseTitle_Requirement { get; }
