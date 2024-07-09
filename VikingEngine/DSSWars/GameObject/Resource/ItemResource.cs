@@ -39,6 +39,11 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             quality /= amount;
             cost += other.cost;
         }
+
+        public override string ToString()
+        {
+            return "Item: " + amount.ToString() + type.ToString();
+        }
     }    
     
     enum ItemResourceType

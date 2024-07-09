@@ -177,7 +177,7 @@ namespace VikingEngine.DSSWars.Display
                 }
             }
 
-            void updateObjectDisplay(GameObject.AbsWorldObject obj, bool selected, bool refresh)
+            void updateObjectDisplay(GameObject.AbsGameObject obj, bool selected, bool refresh)
             {
                 if (refresh)
                 {

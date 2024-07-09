@@ -974,6 +974,11 @@ namespace VikingEngine.DSSWars
             return null;    
         }
 
+        public override bool aliveAndBelongTo(Faction faction)
+        {
+            return faction == this;
+        }
+
         public override GameObjectType gameobjectType()
         {
             return GameObjectType.Faction;

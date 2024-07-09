@@ -20,6 +20,11 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         public ItemResource carry;
 
+        public override string ToString()
+        {
+            return "Worker (" + work.ToString() + "), carry (" + carry.ToString() + ")";
+        }
+
         public void WorkComplete(City city)
         {
             SubTile subTile = DssRef.world.subTileGrid.Get(subTileEnd);
@@ -58,6 +63,16 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                         work = WorkType.Idle;                        
                     }
+                    break;
+
+                case WorkType.Till:
+                    if (subTile.mainTerrain == TerrainMainType.DefaultLand)
+                    {
+                        subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.FarmCulture, 0);
+                        DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                    }
+
+                    work = WorkType.Idle;
                     break;
 
                 case WorkType.Plant:
@@ -154,6 +169,15 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         work = WorkType.Idle;
                     }
                     break;
+                case WorkType.Craft:
+                    {
+                        var building = (TerrainBuildingType)subTile.subTerrain;
+
+                        city.craftItem(building);
+
+                        work = WorkType.Idle;
+                    }
+                    break;
             }
         }
 
@@ -207,10 +231,14 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         default:
                             throw new NotImplementedException();
                     }
+                case WorkType.Till:
+                    return 30;
                 case WorkType.Plant:
                     return 20;
                 case WorkType.Mine:
                     return 30;
+                case WorkType.Craft:
+                    return 5f;
                 default:
                     throw new NotImplementedException();
             }

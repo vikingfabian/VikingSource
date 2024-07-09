@@ -51,9 +51,11 @@ English
 Simplified Chinese
 Russian 9%
 Spanish - Spain 5%
+Japanese
+
+
 Portuguese-Brazil
 German
-Japanese
 French
 
 

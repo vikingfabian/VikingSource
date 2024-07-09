@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.Worker;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.Graphics;
 using VikingEngine.ToGG;
@@ -252,7 +253,12 @@ namespace VikingEngine.DSSWars.Players
             //nearMapObjects.checkForUpdatedList();
             //nearDetailUnits.checkForUpdatedList();
 
-            if (player.drawUnitsView.current.type == MapDetailLayerType.TerrainOverview2)
+            if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.LeftControl))
+            {
+                lib.DoNothing();
+            }
+
+                if (player.drawUnitsView.current.type == MapDetailLayerType.TerrainOverview2)
             {
                 AbsMapObject intersectObj = null;
                 var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects(tilePosition, false);
@@ -294,6 +300,26 @@ namespace VikingEngine.DSSWars.Players
                             m.group.debugTagged = true;
                         }
                         break;
+                    }
+                }
+
+                bound.Radius = WorkerUnit.StandardBoundRadius;
+                var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsWorkerCities(tilePosition);
+                foreach (var m in nearMapObjects)
+                {   
+                    var city =  m.GetCity();
+                    if (city != null && city.workerUnits != null)
+                    {
+                        foreach (var worker in city.workerUnits)
+                        {
+                            bound.Center = worker.WorldPos();
+                            float? distance = ray.Intersects(bound);
+                            if (distance.HasValue)
+                            { //intersects
+                                hover.obj = worker;
+                                break;
+                            }
+                        }
                     }
                 }
             }
@@ -379,7 +405,7 @@ namespace VikingEngine.DSSWars.Players
 
             if (set)
             {
-                playerPointerPos = selection.obj.position;
+                playerPointerPos = selection.obj.WorldPos();
                 player.hud.displays.beginMove(1);
             }
             else
@@ -388,9 +414,6 @@ namespace VikingEngine.DSSWars.Players
             }
             controllerPointer.Visible = !set;
         }
-
-        
-
 
         public bool clearSelection()
         {

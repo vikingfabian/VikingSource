@@ -88,7 +88,7 @@ namespace VikingEngine.DSSWars.Display
             }
         }
 
-        void hoverTip(Players.LocalPlayer player, GameObject.AbsWorldObject obj)
+        void hoverTip(Players.LocalPlayer player, GameObject.AbsGameObject obj)
         {
             RichBoxContent content = new RichBoxContent();
 
@@ -162,7 +162,7 @@ namespace VikingEngine.DSSWars.Display
             }
             else
             {
-                var mapObj = obj as AbsMapObject;
+                var mapObj = obj.RelatedMapObject();
                 if (mapObj != null)
                 {
                     content.newLine();
@@ -174,7 +174,7 @@ namespace VikingEngine.DSSWars.Display
                         content.Add(new RichBoxImage(SpriteName.WarsGroupIcon));
                         content.space(1);
 
-                        
+
                         var typeCounts = obj.GetArmy().Status().getTypeCounts_Sorted();
 
                         foreach (var kv in typeCounts)
@@ -185,6 +185,11 @@ namespace VikingEngine.DSSWars.Display
                             content.space(2);
                         }
                     }
+                }
+                else if (obj.gameobjectType() == GameObjectType.Worker)
+                { 
+                    var worker = obj.GetWorker();
+                    worker.Tooltip(content);
                 }
             }
             //content.Add(new RichBoxSeperationLine());

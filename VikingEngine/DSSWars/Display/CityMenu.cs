@@ -32,6 +32,8 @@ namespace VikingEngine.DSSWars.Display
 
                 default:
                     {
+                        content.newLine();
+
                         var resourcesButton = new HUD.RichBox.RichboxButton(
                         new List<AbsRichBoxMember>
                         {

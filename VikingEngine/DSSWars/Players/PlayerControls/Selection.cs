@@ -13,8 +13,8 @@ namespace VikingEngine.DSSWars.Players
 {
     class Selection
     {
-        public AbsWorldObject obj = null;
-        AbsWorldObject prevObj = null;
+        public AbsGameObject obj = null;
+        AbsGameObject prevObj = null;
         public bool isNew = false;
 
         public Mesh frameModel;

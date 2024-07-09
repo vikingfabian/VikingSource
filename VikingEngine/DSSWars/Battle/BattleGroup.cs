@@ -759,6 +759,11 @@ namespace VikingEngine.DSSWars.Battle
         {
             return GameObjectType.Battle;
         }
+
+        public override bool aliveAndBelongTo(Faction faction)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     class BattleGridNode

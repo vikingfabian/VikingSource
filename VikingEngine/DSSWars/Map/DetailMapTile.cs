@@ -353,79 +353,64 @@ namespace VikingEngine.DSSWars.Map
         {
             wp.X += WorldData.SubTileHalfWidth;
             wp.Z += WorldData.SubTileHalfWidth;
-            LootFest.VoxelModelName modelName;
+            //LootFest.VoxelModelName modelName;
             float scale = WorldData.SubTileWidth * 1.4f;
 
             switch (buildingType)
             {
                 case TerrainBuildingType.PigPen:
-                    modelName = LootFest.VoxelModelName.city_pen;
                     animals(tile, ref subTile, ref wp, AnimalType.Pig, TerrainContent.PigMaxSize);
-                    //if (tile.OutOfRenderTimeOut())
-                    //{
-                    //    if (animalData == null)
-                    //    {
-                    //        animalData = new List<AnimalData>(8);
-                    //    }
-
-                    //    int count = (subTile.terrainAmount + TerrainContent.PigMaxSize - 1) / TerrainContent.PigMaxSize;
-                    //    var animal = new AnimalData(wp, AnimalType.Pig);
-                    //    for (int i = 0; i < count; i++)
-                    //    {
-                    //        animalData.Add(animal);
-                    //    }
-                    //}
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_pen, rnd, wp, scale));
                     break;
                 case TerrainBuildingType.HenPen:
-                    modelName = LootFest.VoxelModelName.city_pen;
                     animals(tile, ref subTile, ref wp, AnimalType.Hen, TerrainContent.HenMaxSize);
-                    //if (tile.OutOfRenderTimeOut())
-                    //{
-                    //    if (animalData == null)
-                    //    {
-                    //        animalData = new List<AnimalData>(8);
-                    //    }
-                    //    animalData.Add(new AnimalData(wp, AnimalType.Hen));
-                    //    animalData.Add(new AnimalData(wp, AnimalType.Hen));
-                    //    animalData.Add(new AnimalData(wp, AnimalType.Hen));
-                    //}
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_pen, rnd, wp, scale));
+
                     break;
                 case TerrainBuildingType.WorkerHut:
-                    modelName = LootFest.VoxelModelName.city_workerhut;
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workerhut, rnd, wp, scale));
                     break;
                 case TerrainBuildingType.DirtWall:
-                    modelName = LootFest.VoxelModelName.city_dirtwall;
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_dirtwall, rnd, wp, scale));
                     break;
                 case TerrainBuildingType.DirtTower:
-                    modelName = LootFest.VoxelModelName.city_dirttower;
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_dirttower, rnd, wp, scale));
                     break;
                 case TerrainBuildingType.WoodWall:
-                    modelName = LootFest.VoxelModelName.city_woodwall;
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_woodwall, rnd, wp, scale));
                     break;
                 case TerrainBuildingType.WoodTower:
-                    modelName = LootFest.VoxelModelName.city_woodtower;
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_woodtower, rnd, wp, scale));
                     break;
                 case TerrainBuildingType.StoneWall:
-                    modelName = LootFest.VoxelModelName.city_stonewall;
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_stonewall, rnd, wp, scale));
                     break;
                 case TerrainBuildingType.StoneTower:
-                    modelName = LootFest.VoxelModelName.city_stonetower;
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_stonetower, rnd, wp, scale));
                     break;
                 case TerrainBuildingType.StoneHall:
-                    modelName = LootFest.VoxelModelName.city_stonehall;
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_stonehall, rnd, wp, scale));
                     break;
                 case TerrainBuildingType.SmallHouse:
-                    modelName = LootFest.VoxelModelName.city_smallhouse;
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_smallhouse, rnd, wp, scale));
                     break;
                 case TerrainBuildingType.BigHouse:
-                    modelName = LootFest.VoxelModelName.city_bighouse;
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_bighouse, rnd, wp, scale));
                     break;
                 case TerrainBuildingType.CobbleStones:
-                    modelName = LootFest.VoxelModelName.city_cobblestone;
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_cobblestone, rnd, wp, scale));
                     break;
                 case TerrainBuildingType.Square:
-                    modelName = LootFest.VoxelModelName.city_square;
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_square, rnd, wp, scale));
                     break;
+
+                case TerrainBuildingType.Work_Cook:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 1, wp, scale));
+                    break;
+                case TerrainBuildingType.Work_Smith:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 0, wp, scale));
+                    break;
+
                 default:
                     throw new NotImplementedException();
             }
@@ -434,10 +419,10 @@ namespace VikingEngine.DSSWars.Map
             //{
             //    foliage = new List<Foliage>(8);
             //}
-#if DEBUG
-            model.DebugName = "Building " + model.DebugName;
-#endif
-            addFoliage(new Foliage(modelName, rnd, wp, scale));
+//#if DEBUG
+//            model.DebugName = "Building " + model.DebugName;
+//#endif
+            
 
         }
 

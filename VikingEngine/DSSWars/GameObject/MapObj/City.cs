@@ -780,6 +780,8 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             workForce.add(addWorkers, workForceMax - damages.Int());
+
+            water = Math.Min(water + 1, Maxwater);
         }
 
         public void asynchGameObjectsUpdate()
@@ -912,7 +914,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string TypeName()
         {
-            return DssRef.lang.UnitType_City + " (" + TextLib.IndexToString(parentArrayIndex) + ")";
+            return DssRef.lang.UnitType_City + " (" + parentArrayIndex + ")";
         }
 
         public override void toHud(Display.ObjectHudArgs args)
@@ -1274,6 +1276,14 @@ namespace VikingEngine.DSSWars.GameObject
                     else if (x == 4 && y == 4)
                     {
                         buildingType = TerrainBuildingType.Square;
+                    }
+                    else if (x == 3 && y == 4)
+                    {
+                        buildingType = TerrainBuildingType.Work_Cook;
+                    }
+                    else if (x == 5 && y == 4)
+                    {
+                        buildingType = TerrainBuildingType.Work_Smith;
                     }
                     else
                     {
