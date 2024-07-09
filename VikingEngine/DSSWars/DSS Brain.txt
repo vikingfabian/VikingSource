@@ -44,11 +44,9 @@ Art
 - Late Summer / Early Autumn: Game world championship
 
 
-English
+/English
+/Simplified Chinese
 
-[*]Localization: All languages, except from English, are mashine translated.
-
-Simplified Chinese
 Russian 9%
 Spanish - Spain 5%
 Portuguese-Brazil
