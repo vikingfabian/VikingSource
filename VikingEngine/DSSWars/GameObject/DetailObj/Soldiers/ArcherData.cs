@@ -22,11 +22,11 @@ namespace VikingEngine.DSSWars.GameObject
             targetSpotRange = attackRange + StandardTargetSpotRange;
             basehealth = DefaultHealth;
             mainAttack = AttackType.Arrow;
-            attackDamage = 50;
-            attackDamageStructure = 60;
-            attackDamageSea = 60;
+            attackDamage = 40;
+            attackDamageStructure = 50;
+            attackDamageSea = 50;
             basehealth = 50;
-            attackTimePlusCoolDown = StandardAttackAndCoolDownTime * 3f;
+            attackTimePlusCoolDown = StandardAttackAndCoolDownTime * 10f;
 
             modelName = LootFest.VoxelModelName.war_archer;
             modelVariationCount = 2;
