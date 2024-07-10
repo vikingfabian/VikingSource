@@ -448,27 +448,22 @@ namespace VikingEngine.DSSWars.Map
         {
             wp.X += WorldData.SubTileHalfWidth;
             wp.Z += WorldData.SubTileHalfWidth;
-            LootFest.VoxelModelName modelName;
+            
             float scale = WorldData.SubTileWidth * 1.4f;
 
             switch (mineType)
             {
                 case TerrainMineType.IronOre:
-                    modelName = LootFest.VoxelModelName.city_mine;
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 0, wp, scale));
                     break;
-               
+                case TerrainMineType.GoldOre:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 1, wp, scale));
+                    break;
+
                 default:
                     throw new NotImplementedException();
             }
-
-            //if (foliage == null)
-            //{
-            //    foliage = new List<Foliage>(8);
-            //}
-#if DEBUG
-            model.DebugName = "Mine " + model.DebugName;
-#endif
-            addFoliage(new Foliage(modelName, 0, wp, scale));
+            
 
         }
 

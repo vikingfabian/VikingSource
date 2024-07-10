@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         WalkingAnimation walkingAnimation;
         WorkerStatus status;
-        int statusIndex;
+        //int statusIndex;
         public Graphics.AbsVoxelObj model;
 
         WorkerUnitState state = WorkerUnitState.None;
@@ -33,11 +34,16 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         {
             this.city = city;
             this.status = status;
-            this.statusIndex = statusIndex;
+            this.parentArrayIndex = statusIndex;
             model = city.faction.AutoLoadModelInstance(
                  LootFest.VoxelModelName.war_worker, AbsDetailUnitData.StandardModelScale * 0.9f, true);
 
             model.position = WP.SubtileToWorldPos(status.subTileStart);
+
+            //if (Debug.CorruptValue(model.position))
+            //{
+            //    lib.DoNothing();
+            //}
 
             checkForGoal(true);
 
@@ -46,7 +52,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         public void update()
         {
-            if (statusIndex == 29)
+            if (parentArrayIndex == 29)
             {
                 lib.DoNothing();
             }
@@ -54,6 +60,11 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             switch (state)
             { 
                 case WorkerUnitState.HasGoal:
+                    //if (Debug.CorruptValue(model.position))
+                    //{
+                    //    lib.DoNothing();
+                    //}
+
                     float speed = AbsDetailUnitData.StandardWalkingSpeed * Ref.DeltaGameTimeMs;
                     model.position += walkDir * speed;
 
@@ -67,73 +78,85 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         WP.Rotation1DToQuaterion(model, MathExt.TauOver8);
                         state = WorkerUnitState.FinalizeWork;
                     }
+
+                    //if (Debug.CorruptValue(model.position))
+                    //{
+                    //    lib.DoNothing();
+                    //}
                     break;
 
                 case WorkerUnitState.FinalizeWork:
-                    if (status.work == WorkType.GatherFoil || 
-                        status.work == WorkType.Mine || 
-                        status.work == WorkType.Till || 
-                        status.work == WorkType.Plant ||
-                        status.work == WorkType.Craft)
+
+                    switch (status.work)
                     {
-                        if (workAnimation.timeOut())
-                        {                            
-                            model.Frame = model.Frame == 1? 2 : 1;
-                            if (model.Frame == 2)
+                        case WorkType.GatherFoil:
+                            if (workAnimation_soundframe())
                             {
-                                switch (status.work)
+                                SubTile subTile = DssRef.world.subTileGrid.Get(status.subTileEnd);
+
+                                switch ((TerrainSubFoilType)subTile.subTerrain)
                                 {
-                                    case WorkType.GatherFoil:
-                                        {
-                                            SubTile subTile = DssRef.world.subTileGrid.Get(status.subTileEnd);
-
-                                            switch ((TerrainSubFoilType)subTile.subTerrain)
-                                            {
-                                                case TerrainSubFoilType.TreeSoft:
-                                                case TerrainSubFoilType.TreeHard:
-                                                    SoundLib.woodcut.Play(model.position);
-                                                    break;
-                                                case TerrainSubFoilType.FarmCulture:
-                                                    SoundLib.scythe.Play(model.position);
-                                                    break;
-                                            }
-                                        }
+                                    case TerrainSubFoilType.TreeSoft:
+                                    case TerrainSubFoilType.TreeHard:
+                                        SoundLib.woodcut.Play(model.position);
                                         break;
-                                    case WorkType.Mine:
-                                        SoundLib.pickaxe.Play(model.position);
+                                    case TerrainSubFoilType.FarmCulture:
+                                        SoundLib.scythe.Play(model.position);
                                         break;
-                                    case WorkType.Plant:
-                                        SoundLib.genericWork.Play(model.position);
-                                        break;
-                                    case WorkType.Till:
+                                    case TerrainSubFoilType.Stones:
                                         SoundLib.dig.Play(model.position);
-                                        break;
-                                    case WorkType.Craft:
-                                        {
-                                            SubTile subTile = DssRef.world.subTileGrid.Get(status.subTileEnd);
-                                            var building = (TerrainBuildingType)subTile.subTerrain;
-
-                                            switch (building)
-                                            {
-                                                case TerrainBuildingType.Work_Cook:
-                                                    SoundLib.genericWork.Play(model.position);
-                                                    break;
-                                                case TerrainBuildingType.Work_Smith:
-                                                    SoundLib.anvil.Play(model.position);
-                                                    break;
-                                            }
-                                        }
                                         break;
                                 }
                             }
-                        }
+                            break;
+                        case WorkType.Mine:
+                            if (workAnimation_soundframe())
+                            {
+                                SoundLib.pickaxe.Play(model.position);
+                            }
+                            break;
+                        case WorkType.Plant:
+                            if (workAnimation_soundframe())
+                            {
+                                SoundLib.genericWork.Play(model.position);
+                            }
+                            break;
+                        case WorkType.Till:
+                            if (workAnimation_soundframe())
+                            {
+                                SoundLib.dig.Play(model.position);
+                            }
+                            break;
+                        case WorkType.Craft:
+                            if (workAnimation_soundframe())
+                            {
+                                SubTile subTile = DssRef.world.subTileGrid.Get(status.subTileEnd);
+                                var building = (TerrainBuildingType)subTile.subTerrain;
+
+                                switch (building)
+                                {
+                                    case TerrainBuildingType.Work_Cook:
+                                        SoundLib.genericWork.Play(model.position);
+                                        break;
+                                    case TerrainBuildingType.Work_Smith:
+                                        SoundLib.anvil.Play(model.position);
+                                        break;
+                                }
+                            }
+                            break;
+                        case WorkType.Building:
+                            if (workAnimation_soundframe())
+                            {
+                                SoundLib.hammer.Play(model.position);
+                            }
+                            break;
                     }
 
                     finalizeWorkTime -= Ref.DeltaGameTimeSec;
                     if (finalizeWorkTime <= 0)
                     {
                         switch (status.work)
-                        { 
+                        {
                             case WorkType.GatherFoil:
                                 SubTile subTile = DssRef.world.subTileGrid.Get(status.subTileEnd);
                                 switch ((TerrainSubFoilType)subTile.subTerrain)
@@ -141,6 +164,10 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                     case TerrainSubFoilType.TreeSoft:
                                     case TerrainSubFoilType.TreeHard:
                                         SoundLib.tree_falling.Play(model.position);
+                                        break;
+
+                                    case TerrainSubFoilType.Stones:
+                                        SoundLib.pickup.Play(model.position);
                                         break;
                                 }
                                 break;
@@ -155,47 +182,75 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         }
 
                         status.WorkComplete(city);
-                        city.setWorkerStatus(statusIndex, ref status);
+                        city.setWorkerStatus(parentArrayIndex, ref status);
                         state = WorkerUnitState.None;
                     }
                     break;
-                    
+
                 case WorkerUnitState.None:
-                    city.getWorkerStatus(statusIndex, ref status);
+                    city.getWorkerStatus(parentArrayIndex, ref status);
                     checkForGoal(false);
                     break;
             }
+
             
+
+        }
+
+        bool workAnimation_soundframe()
+        {
+            if (workAnimation.timeOut())
+            {
+                model.Frame = model.Frame == 1 ? 2 : 1;
+                return model.Frame == 2;
+            }
+
+            return false;
         }
 
         void checkForGoal(bool onInit)
         { 
             if (status.work != WorkType.Idle)
-            {   
-                goalPos = WP.SubtileToWorldPos(status.subTileEnd);
-                goalPos.X += WorldData.SubTileWidth * 0.25f;
-                goalPos.Z += WorldData.SubTileWidth;
-
-                walkDir = VectorExt.SafeNormalizeV3(goalPos - model.position);
-                WP.Rotation1DToQuaterion(model, lib.V2ToAngle(VectorExt.V3XZtoV2(walkDir)));
-                finalizeWorkTime = status.finalizeWorkTime();
-
-                if (onInit)
+            {
+                if (status.subTileEnd == status.subTileStart)
                 {
-                    float timePassed = Ref.TotalGameTimeSec - status.processTimeStartStampSec;
-                    float perc = timePassed / (status.processTimeLengthSec - finalizeWorkTime);
-                    model.position = model.position * (1 - perc) + goalPos * perc;
+                    finalizeWorkTime = status.finalizeWorkTime();
+                    state = WorkerUnitState.FinalizeWork;
+                }
+                else 
+                {
+                    //lib.DoNothing();
+
+                    goalPos = WP.SubtileToWorldPos(status.subTileEnd);
+                    goalPos.X += WorldData.SubTileWidth * 0.25f;
+                    goalPos.Z += WorldData.SubTileWidth;
+
+                    walkDir = VectorExt.SafeNormalizeV3(goalPos - model.position);
+                    WP.Rotation1DToQuaterion(model, lib.V2ToAngle(VectorExt.V3XZtoV2(walkDir)));
+
+                    finalizeWorkTime = status.finalizeWorkTime();
+
+                    if (onInit)
+                    {
+                        float timePassed = Ref.TotalGameTimeSec - status.processTimeStartStampSec;
+                        float perc = timePassed / (status.processTimeLengthSec - finalizeWorkTime);
+                        model.position = model.position * (1 - perc) + goalPos * perc;
+                    }
+
+                    if (status.work == WorkType.DropOff)
+                    {
+                        walkingAnimation = WalkingAnimation.WorkerCarry;
+                    }
+                    else
+                    {
+                        walkingAnimation = WalkingAnimation.Standard;
+                    }
+                    state = WorkerUnitState.HasGoal;
                 }
 
-                if (status.work == WorkType.DropOff)
-                {
-                    walkingAnimation = WalkingAnimation.WorkerCarry;
-                }
-                else
-                {
-                    walkingAnimation = WalkingAnimation.Standard;
-                }
-                state = WorkerUnitState.HasGoal;
+                
+
+                
             }
         }
 
@@ -244,6 +299,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             { 
                 content.text(string.Format(Carry, status.carry.amount, status.carry.type));
             }
+
+            const string Energy = "Energy: {0}";
+            content.text(string.Format(Energy, TextLib.OneDecimal(status.energy)));
         }
 
         public void DeleteMe()
@@ -273,7 +331,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         public override string Name()
         {
-            return "Worker (" + statusIndex.ToString() + ")";
+            return "Worker (" + parentArrayIndex.ToString() + ")";
         }
 
         public override WorkerUnit GetWorker()

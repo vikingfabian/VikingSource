@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,14 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 {
     struct WorkerStatus
     {
+        const int MaxEnergy = 400;
+        const int FoodEnergy = 100;
+
+        public const int Subwork_Craft_Food = 0;
+        public const int Subwork_Craft_Iron = 1;
+
         public WorkType work;
+        public int workSubType;
 
         public float processTimeLengthSec;
         public float processTimeStartStampSec;
@@ -19,6 +27,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         public IntVector2 subTileEnd;
 
         public ItemResource carry;
+        public float energy;
 
         public override string ToString()
         {
@@ -27,13 +36,23 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         public void WorkComplete(City city)
         {
+            energy -= processTimeLengthSec;
             SubTile subTile = DssRef.world.subTileGrid.Get(subTileEnd);
 
+            bool tryRepeatWork = false;
+
             switch (work)
-            { 
+            {
+                case WorkType.Eat:
+                    int eatAmount = (int)Math.Floor((MaxEnergy - energy) / FoodEnergy);
+                    city.food.amount -= eatAmount;
+                    energy += eatAmount * FoodEnergy;
+                    //work = WorkType.Idle;
+                    break;
+
                 case WorkType.GatherFoil:
                     {
-                        Resource.ItemResourceType resourceType;
+                        //Resource.ItemResourceType resourceType;
 
                         switch (subTile.GetFoilType())
                         {
@@ -58,10 +77,13 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                 DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                                 break;
 
-                            
+                            case TerrainSubFoilType.StoneBlock:
+                            case TerrainSubFoilType.Stones:
+                                carry = new ItemResource(ItemResourceType.Stone, 1, Convert.ToInt32(processTimeLengthSec), ItemPropertyColl.CarryStones);
+                                break;
                         }
 
-                        work = WorkType.Idle;                        
+                        //work = WorkType.Idle;                        
                     }
                     break;
 
@@ -72,7 +94,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                     }
 
-                    work = WorkType.Idle;
+                   // work = WorkType.Idle;
                     break;
 
                 case WorkType.Plant:
@@ -82,7 +104,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                     }
 
-                    work = WorkType.Idle;
+                    //work = WorkType.Idle;
                     break;
 
                 case WorkType.PickUpResource:
@@ -107,7 +129,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                             }
                         }
                     }
-                    work = WorkType.Idle;
+                    //work = WorkType.Idle;
                     break;
 
                 case WorkType.PickUpProduce:
@@ -138,13 +160,13 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                             carry = new ItemResource(resourceType, 1, Convert.ToInt32(processTimeLengthSec), 1);
                         }
                     }
-                    work = WorkType.Idle;
+                    //work = WorkType.Idle;
                     break;
 
                 case WorkType.DropOff:
                     city.dropOffItem(carry);
                     carry = ItemResource.Empty;
-                    work = WorkType.Idle;
+                    //work = WorkType.Idle;
                     break;
 
                 case WorkType.Mine:
@@ -156,6 +178,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                             case TerrainMineType.IronOre:
                                 resourceType = ItemResourceType.IronOre;
                                 break;
+                            case TerrainMineType.GoldOre:
+                                resourceType = ItemResourceType.GoldOre;
+                                break;
                         }
 
                         DssRef.state.resources.addItem(
@@ -166,18 +191,41 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                     TerrainContent.MineAmount),
                                 ref subTile.collectionPointer);
 
-                        work = WorkType.Idle;
+                        tryRepeatWork = true;
+                        //work = WorkType.Idle;
                     }
                     break;
                 case WorkType.Craft:
                     {
                         var building = (TerrainBuildingType)subTile.subTerrain;
 
-                        city.craftItem(building);
-
-                        work = WorkType.Idle;
+                        city.craftItem(building, out tryRepeatWork);
+                        //work = WorkType.Idle;
                     }
                     break;
+
+                case WorkType.Building:
+                    {
+
+                        subTile.SetType(TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, 1);
+                        DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                        bool non = false;
+                        city.craftItem(TerrainBuildingType.WorkerHut, out _);
+
+                        //work = WorkType.Idle;
+                    }
+                    break;
+            }
+
+            if (tryRepeatWork && energy > 0)
+            {
+                processTimeStartStampSec = Ref.TotalGameTimeSec;
+                processTimeLengthSec = finalizeWorkTime();
+                subTileStart = subTileEnd;
+            }
+            else
+            {
+                work = WorkType.Idle;
             }
         }
 
@@ -196,22 +244,41 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             DssRef.world.subTileGrid.Set(subTileEnd, subTile);
         }
 
-        public void createWorkOrder(WorkType work, IntVector2 subTile)
+        public void createWorkOrder(WorkType work, IntVector2 targetSubTile)
         {
             this.work = work;
             subTileStart = subTileEnd;
-            subTileEnd = subTile;
+            subTileEnd = targetSubTile;
             processTimeStartStampSec = Ref.TotalGameTimeSec;
             float dist = VectorExt.Length(subTileEnd.X - subTileStart.X, subTileEnd.Y - subTileStart.Y) / WorldData.TileSubDivitions;
             
             processTimeLengthSec = finalizeWorkTime() + 
                 dist / (AbsDetailUnitData.StandardWalkingSpeed * 1000);
+
+            switch (work)
+            {
+                case WorkType.Craft:
+                    SubTile subTile = DssRef.world.subTileGrid.Get(subTileEnd);
+                    var building = (TerrainBuildingType)subTile.subTerrain;
+                    switch (building)
+                    { 
+                        case TerrainBuildingType.Work_Cook:
+                            workSubType = Subwork_Craft_Food;
+                            break;
+                        case TerrainBuildingType.Work_Smith:
+                            workSubType = Subwork_Craft_Iron;
+                            break;
+                    }
+                    break;
+            }
         }
 
         public float finalizeWorkTime()
         {
             switch (work)
             {
+                case WorkType.Eat:
+                    return 20;
                 case WorkType.PickUpResource:
                     return 2f;
                 case WorkType.PickUpProduce:
@@ -228,6 +295,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                             return 12;
                         case TerrainSubFoilType.FarmCulture:
                             return 20;
+                        case TerrainSubFoilType.Stones:
+                        case TerrainSubFoilType.StoneBlock:
+                            return 5;
                         default:
                             throw new NotImplementedException();
                     }
@@ -239,6 +309,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     return 30;
                 case WorkType.Craft:
                     return 5f;
+                case WorkType.Building:
+                    return 40;
                 default:
                     throw new NotImplementedException();
             }

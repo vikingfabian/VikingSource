@@ -399,6 +399,12 @@ namespace VikingEngine.DSSWars.GameObject
             detailObj.refreshWorkerSubtiles();//updateWorkerModels();
         }
 
+        public void onWorkHutBuild()
+        {
+            workForceMax += AbsSoldierData.GroupDefaultCount;
+            refreshCitySize();
+        }
+
         public void expandGuardSize(int amount)
         {
             maxGuardSize += amount;

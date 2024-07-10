@@ -150,7 +150,12 @@ namespace VikingEngine.DSSWars.Map
                         if (tile.heightLevel >= Height.MineHeightStart)
                         {
                             var rndMine = world.rnd.Double();
-                            if (rndMine < 0.008)
+                            if (rndMine < 0.002)
+                            {
+                                subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.GoldOre, 1);
+                                return;
+                            }
+                            else if (rndMine < 0.01)
                             {
                                 subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.IronOre, 1);
                                 return;

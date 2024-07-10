@@ -323,6 +323,8 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
             }
+
+                lib.DoNothing();
         }
 
         void controllerHoverUpdate()
