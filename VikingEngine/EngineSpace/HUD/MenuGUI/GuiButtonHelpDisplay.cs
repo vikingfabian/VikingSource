@@ -79,6 +79,10 @@ namespace VikingEngine.HUD
                 {
                     background.Ypos = Engine.Screen.SafeArea.Bottom - background.Height;
                 }
+                if (background.Right > Engine.Screen.SafeArea.Right)
+                {
+                    background.SetRight(Engine.Screen.SafeArea.Right, true);
+                }
                 // Remember the text edge space for the text.
                 textBox.Position = background.Position + new Vector2(style.textEdgeSpace);
             }
