@@ -120,13 +120,13 @@ namespace VikingEngine.DSSWars.GameObject
                     if (workerStatuses[i].carry.amount > 0)
                     {
                         var status = workerStatuses[i];
-                        status.createWorkOrder(WorkType.DropOff, WP.ToSubTilePos_Centered(tilePos));
+                        status.createWorkOrder(this,WorkType.DropOff, -1, WP.ToSubTilePos_Centered(tilePos));
                         workerStatuses[i] = status;
                     }
                     else if (workerStatuses[i].energy < 0)
                     {
                         var status = workerStatuses[i];
-                        status.createWorkOrder(WorkType.Eat, WP.ToSubTilePos_Centered(tilePos));
+                        status.createWorkOrder(this,WorkType.Eat, -1, WP.ToSubTilePos_Centered(tilePos));
                         workerStatuses[i] = status;
                     }
                     else if (workQue.Count > 0)
@@ -134,7 +134,7 @@ namespace VikingEngine.DSSWars.GameObject
                         var work = arraylib.PullLastMember(workQue);
 
                         var status = workerStatuses[i];
-                        status.createWorkOrder(work.work, work.subTile);
+                        status.createWorkOrder(this,work.work, work.subWork, work.subTile);
                         workerStatuses[i] = status;
                     }
                     //else
@@ -341,15 +341,15 @@ namespace VikingEngine.DSSWars.GameObject
                     var nCity = DssRef.world.cities[n];
                     if (!DssRef.diplomacy.InWar(nCity.faction, faction))
                     {
-                        if (wood.needMore() && nCity.wood.canTradeAway())
+                        if (wood.needToImport() && nCity.wood.canTradeAway())
                         {
                             workQue.Add(new WorkQueMember(WorkType.LocalTrade, (int)ItemResourceType.SoftWood, WP.ToSubTilePos_Centered(nCity.tilePos), 5));
                         }
-                        if (stone.needMore() && nCity.stone.canTradeAway())
+                        if (stone.needToImport() && nCity.stone.canTradeAway())
                         {
                             workQue.Add(new WorkQueMember(WorkType.LocalTrade, (int)ItemResourceType.Stone, WP.ToSubTilePos_Centered(nCity.tilePos), 5));
                         }
-                        if (food.needMore() && nCity.food.canTradeAway())
+                        if (food.needToImport() && nCity.food.canTradeAway())
                         {
                             workQue.Add(new WorkQueMember(WorkType.LocalTrade, (int)ItemResourceType.Food, WP.ToSubTilePos_Centered(nCity.tilePos), 5));
                         }

@@ -25,6 +25,12 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             items[(int)ItemResourceType.Wheat] = new ItemProperties(1f / 10);
 
         }
+
+        public static int CarryAmount(ItemResourceType item, float maxWeight = 1f)
+        {
+            int carry = Convert.ToInt32(maxWeight / items[(int)item].weight);
+            return carry;
+        }
     }
 
     class ItemProperties

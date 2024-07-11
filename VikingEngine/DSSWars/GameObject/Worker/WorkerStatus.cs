@@ -169,6 +169,13 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     //work = WorkType.Idle;
                     break;
 
+                case WorkType.LocalTrade:
+                    ItemResourceType tradeForItem = (ItemResourceType)workSubType;
+                    var toCity = DssRef.world.tileGrid.Get(subTileEnd / WorldData.TileSubDivitions).City();
+                    ItemResource recieved = toCity.MakeTrade(tradeForItem, carry.amount);
+                    carry = recieved;
+                    break;
+
                 case WorkType.Mine:
                     {
                         var mineType = (TerrainMineType)subTile.subTerrain;
@@ -244,9 +251,10 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             DssRef.world.subTileGrid.Set(subTileEnd, subTile);
         }
 
-        public void createWorkOrder(WorkType work, IntVector2 targetSubTile)
+        public void createWorkOrder(City city, WorkType work, int subWork, IntVector2 targetSubTile)
         {
             this.work = work;
+            this.workSubType = subWork;
             subTileStart = subTileEnd;
             subTileEnd = targetSubTile;
             processTimeStartStampSec = Ref.TotalGameTimeSec;
@@ -270,6 +278,14 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                             break;
                     }
                     break;
+
+                case WorkType.LocalTrade:
+                    ItemResourceType tradeForItem = (ItemResourceType)workSubType;
+                    var toCity = DssRef.world.tileGrid.Get(targetSubTile / WorldData.TileSubDivitions).City();
+                    int goldCost = toCity.SellCost(tradeForItem);
+
+                    carry = new ItemResource(ItemResourceType.Gold, 1, 1, goldCost);
+                    break;
             }
         }
 
@@ -285,6 +301,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     return 3f;
                 case WorkType.DropOff:
                     return 1f;
+                case WorkType.LocalTrade:
+                    return 4f;
                 case WorkType.GatherFoil:
                     SubTile subTile = DssRef.world.subTileGrid.Get(subTileEnd);
                     switch ((TerrainSubFoilType)subTile.subTerrain)

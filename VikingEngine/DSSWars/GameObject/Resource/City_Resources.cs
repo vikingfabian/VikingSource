@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.PJ.Joust;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -24,17 +25,67 @@ namespace VikingEngine.DSSWars.GameObject
         int waterBuffer = 10;
         int waterSpendOrders = 0;
         
-        public SimplifiedResource wood = new SimplifiedResource() { goalBuffer = 300 };
-        public SimplifiedResource stone = new SimplifiedResource() { goalBuffer = 100 };
-        public SimplifiedResource rawFood = new SimplifiedResource() { goalBuffer = 200 };
-        public SimplifiedResource food = new SimplifiedResource() { goalBuffer = 500 };
-        public SimplifiedResource skin = new SimplifiedResource() { goalBuffer = 100 };
-        public SimplifiedResource ore = new SimplifiedResource() { goalBuffer = 100 };
-        public SimplifiedResource iron = new SimplifiedResource() { goalBuffer = 100 };
+        public SimplifiedResource wood = new SimplifiedResource() { goldValue = 1, goalBuffer = 300 };
+        public SimplifiedResource stone = new SimplifiedResource() { goldValue = 0.6f, goalBuffer = 100 };
+        public SimplifiedResource rawFood = new SimplifiedResource() { goldValue = 1, goalBuffer = 200 };
+        public SimplifiedResource food = new SimplifiedResource() { goldValue = 2, goalBuffer = 500 };
+        public SimplifiedResource skin = new SimplifiedResource() { goldValue = 4, goalBuffer = 100 };
+        public SimplifiedResource ore = new SimplifiedResource() { goldValue = 1, goalBuffer = 100 };
+        public SimplifiedResource iron = new SimplifiedResource() { goldValue = 10, goalBuffer = 100 };
 
         int tradeGold = 0;
 
+        public int SellCost(ItemResourceType itemResourceType)
+        {
+            SimplifiedResource resource;
+            switch (itemResourceType)
+            {
+                case ItemResourceType.SoftWood:
+                    resource = wood;
+                    break;
+                case ItemResourceType.Stone:
+                    resource = stone;
+                    break;
+                case ItemResourceType.Food:
+                    resource = food;
+                    break;
+                case ItemResourceType.Iron:
+                    resource = iron;
+                    break;
 
+                default:
+                    throw new NotImplementedException();
+            }
+
+            int goldCost = (int)Math.Ceiling( ItemPropertyColl.CarryAmount(itemResourceType) * resource.goldValue);
+
+            return goldCost;
+        }
+
+        public ItemResource MakeTrade(ItemResourceType itemResourceType, int payment)
+        {
+            int carry = ItemPropertyColl.CarryAmount(itemResourceType);
+            switch (itemResourceType)
+            {
+                case ItemResourceType.SoftWood:
+                    wood.amount -= carry;
+                    break;
+                case ItemResourceType.Stone:
+                    stone.amount -= carry;
+                    break;
+                case ItemResourceType.Food:
+                    food.amount -= carry;
+                    break;
+                case ItemResourceType.Iron:
+                    iron.amount -= carry;
+                    break;
+
+                default:
+                    throw new NotImplementedException();
+            }
+
+            return new ItemResource(itemResourceType, 1, payment, carry);
+        }
 
         public void dropOffItem(ItemResource item)
         {
@@ -116,14 +167,15 @@ namespace VikingEngine.DSSWars.GameObject
         }
     }
 
-    struct SimplifiedResourceCollection
-    { 
+    //struct SimplifiedResourceCollection
+    //{ 
         
-    }
+    //}
 
     struct SimplifiedResource
     {
         public int amount;
+        public float goldValue;
         public int backOrder;
         public int goalBuffer;
         public int orderQueCount;
@@ -138,6 +190,11 @@ namespace VikingEngine.DSSWars.GameObject
         public bool needMore()
         {
             return (amount + orderQueCount - backOrder) < goalBuffer;
+        }
+
+        public bool needToImport()
+        {
+            return amount < goalBuffer;
         }
 
         public bool canTradeAway()
@@ -177,11 +234,6 @@ namespace VikingEngine.DSSWars.GameObject
         public CraftBlueprint(string name, int result)
         { 
             this.name = name;
-            //this.useWater = water;
-            //this.useStone = stone;
-            //this.useWood = wood;
-            //this.useRawFood = rawfood;
-            //this.useOre = ore;
             this.resultCount = result;
         }
 

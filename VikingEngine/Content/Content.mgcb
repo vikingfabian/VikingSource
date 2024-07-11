@@ -349,29 +349,11 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/anvil.wav
 
-#begin DSS/Sound/anvil.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:DSS/Sound/anvil.wav
-
 #begin DSS/Sound/back.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/back.wav
-
-#begin DSS/Sound/back.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:DSS/Sound/back.wav
-
-#begin DSS/Sound/buy.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:DSS/Sound/buy.wav
 
 #begin DSS/Sound/buy.wav
 /importer:WavImporter
@@ -385,29 +367,11 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/chat_message.wav
 
-#begin DSS/Sound/chat_message.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:DSS/Sound/chat_message.wav
-
 #begin DSS/Sound/click.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/click.wav
-
-#begin DSS/Sound/click.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:DSS/Sound/click.wav
-
-#begin DSS/Sound/dig.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:DSS/Sound/dig.wav
 
 #begin DSS/Sound/dig.wav
 /importer:WavImporter
@@ -427,29 +391,11 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/generic_work1.wav
 
-#begin DSS/Sound/generic_work1.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:DSS/Sound/generic_work1.wav
-
 #begin DSS/Sound/generic_work2.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/generic_work2.wav
-
-#begin DSS/Sound/generic_work2.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:DSS/Sound/generic_work2.wav
-
-#begin DSS/Sound/hammer.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:DSS/Sound/hammer.wav
 
 #begin DSS/Sound/hammer.wav
 /importer:WavImporter
@@ -474,18 +420,6 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/ordermove.wav
-
-#begin DSS/Sound/ordermove.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:DSS/Sound/ordermove.wav
-
-#begin DSS/Sound/orderstop.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:DSS/Sound/orderstop.wav
 
 #begin DSS/Sound/orderstop.wav
 /importer:WavImporter
@@ -529,29 +463,11 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/trophy.wav
 
-#begin DSS/Sound/trophy.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:DSS/Sound/trophy.wav
-
 #begin DSS/Sound/woodcut.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/woodcut.wav
-
-#begin DSS/Sound/woodcut.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:DSS/Sound/woodcut.wav
-
-#begin DSS/Sound/wrong.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:DSS/Sound/wrong.wav
 
 #begin DSS/Sound/wrong.wav
 /importer:WavImporter
@@ -1081,6 +997,12 @@
 #begin VoxelModel/LfWars/city_dirtwall.vox
 /copy:VoxelModel/LfWars/city_dirtwall.vox
 
+#begin VoxelModel/LfWars/city_mine.vox
+/copy:VoxelModel/LfWars/city_mine.vox
+
+#begin VoxelModel/LfWars/city_pen.vox
+/copy:VoxelModel/LfWars/city_pen.vox
+
 #begin VoxelModel/LfWars/city_smallhouse.vox
 /copy:VoxelModel/LfWars/city_smallhouse.vox
 
@@ -1150,6 +1072,9 @@
 #begin VoxelModel/LfWars/fol_tree_soft.vox
 /copy:VoxelModel/LfWars/fol_tree_soft.vox
 
+#begin VoxelModel/LfWars/Hen.vox
+/copy:VoxelModel/LfWars/Hen.vox
+
 #begin VoxelModel/LfWars/horse_brown.vox
 /copy:VoxelModel/LfWars/horse_brown.vox
 
@@ -1170,6 +1095,9 @@
 
 #begin VoxelModel/LfWars/party_restbar.vox
 /copy:VoxelModel/LfWars/party_restbar.vox
+
+#begin VoxelModel/LfWars/Pig.vox
+/copy:VoxelModel/LfWars/Pig.vox
 
 #begin VoxelModel/LfWars/war_archer_i2.vox
 /copy:VoxelModel/LfWars/war_archer_i2.vox

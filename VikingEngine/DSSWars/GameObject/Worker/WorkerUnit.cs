@@ -70,7 +70,10 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         if (DssRef.world.tileGrid.TryGet(prevX, prevZ, out Tile tile))
                         {
                             isShip = tile.IsWater();
-                            model.Frame = status.carry.amount > 0 ? 4 : 3;
+                            if (isShip)
+                            {
+                                model.Frame = status.carry.amount > 0 ? 4 : 3;
+                            }
                         }
                     }
 
@@ -179,6 +182,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                             case WorkType.DropOff:
                                 SoundLib.drop_item.Play(model.position);
                                 break;
+                            case WorkType.LocalTrade:
+                                SoundLib.buy.Play(model.position);
+                                break;
                             case WorkType.PickUpResource:
                             case WorkType.PickUpProduce:
                                 SoundLib.pickup.Play(model.position);
@@ -241,13 +247,17 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         model.position = model.position * (1 - perc) + goalPos * perc;
                     }
 
-                    if (status.work == WorkType.DropOff)
+                    switch (status.work)
                     {
-                        walkingAnimation = WalkingAnimation.WorkerCarry;
-                    }
-                    else
-                    {
-                        walkingAnimation = WalkingAnimation.WorkerWalking;
+                        case WorkType.DropOff:
+                            walkingAnimation = WalkingAnimation.WorkerCarry;
+                            break;
+                        case WorkType.LocalTrade:
+                           walkingAnimation = WalkingAnimation.WorkerTrading;
+                            break;
+                        default:
+                            walkingAnimation = WalkingAnimation.WorkerWalking;
+                            break;
                     }
                     state = WorkerUnitState.HasGoal;
                 }
