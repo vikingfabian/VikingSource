@@ -140,6 +140,11 @@ namespace VikingEngine.DSSWars.GameObject
             return (amount + orderQueCount - backOrder) < goalBuffer;
         }
 
+        public bool canTradeAway()
+        {
+            return (amount - backOrder) >= goalBuffer;
+        }
+
         public void add(ItemResource item)
         {
             amount += item.amount;

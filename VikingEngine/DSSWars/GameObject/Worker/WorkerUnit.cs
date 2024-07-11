@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         WalkingAnimation walkingAnimation;
         WorkerStatus status;
-        //int statusIndex;
+
         public Graphics.AbsVoxelObj model;
 
         WorkerUnitState state = WorkerUnitState.None;
@@ -29,6 +29,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         City city;
         float finalizeWorkTime;
         GameTimer workAnimation = new GameTimer(1f, true, true);
+        bool isShip = false;
+        int prevX, prevZ;
 
         public WorkerUnit(City city, WorkerStatus status, int statusIndex)
         {
@@ -39,11 +41,6 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                  LootFest.VoxelModelName.war_worker, AbsDetailUnitData.StandardModelScale * 0.9f, true);
 
             model.position = WP.SubtileToWorldPos(status.subTileStart);
-
-            //if (Debug.CorruptValue(model.position))
-            //{
-            //    lib.DoNothing();
-            //}
 
             checkForGoal(true);
 
@@ -60,16 +57,27 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             switch (state)
             { 
                 case WorkerUnitState.HasGoal:
-                    //if (Debug.CorruptValue(model.position))
-                    //{
-                    //    lib.DoNothing();
-                    //}
-
+                   
                     float speed = AbsDetailUnitData.StandardWalkingSpeed * Ref.DeltaGameTimeMs;
                     model.position += walkDir * speed;
-
-                    walkingAnimation.update(speed, model);
                     updateGroudY(false);
+
+                    if (Convert.ToInt32(model.position.X) != prevX || Convert.ToInt32(model.position.Z) != prevZ)
+                    {
+                        prevX = Convert.ToInt32(model.position.X);
+                        prevZ = Convert.ToInt32(model.position.Z);
+                        //Tile tile;
+                        if (DssRef.world.tileGrid.TryGet(prevX, prevZ, out Tile tile))
+                        {
+                            isShip = tile.IsWater();
+                            model.Frame = status.carry.amount > 0 ? 4 : 3;
+                        }
+                    }
+
+                    if (!isShip)
+                    {
+                        walkingAnimation.update(speed, model);
+                    }
 
                     if (VectorExt.PlaneXZDistance(ref model.position, ref goalPos) < 0.02f)
                     {
@@ -79,10 +87,6 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         state = WorkerUnitState.FinalizeWork;
                     }
 
-                    //if (Debug.CorruptValue(model.position))
-                    //{
-                    //    lib.DoNothing();
-                    //}
                     break;
 
                 case WorkerUnitState.FinalizeWork:
@@ -243,7 +247,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     }
                     else
                     {
-                        walkingAnimation = WalkingAnimation.Standard;
+                        walkingAnimation = WalkingAnimation.WorkerWalking;
                     }
                     state = WorkerUnitState.HasGoal;
                 }

@@ -10,7 +10,9 @@ namespace VikingEngine.DSSWars.GameObject
     {
         public const float StandardMoveFrames = 0.03f;
         public static readonly WalkingAnimation Standard = new WalkingAnimation(3, 6, StandardMoveFrames);
-        public static readonly WalkingAnimation WorkerCarry = new WalkingAnimation(7, 10, StandardMoveFrames);
+        public static readonly WalkingAnimation WorkerWalking = new WalkingAnimation(5, 8, StandardMoveFrames);
+        public static readonly WalkingAnimation WorkerCarry = new WalkingAnimation(9, 12, StandardMoveFrames);
+        public static readonly WalkingAnimation WorkerTrading = new WalkingAnimation(13, 16, StandardMoveFrames);
 
         public int startframe, endFrame;
         int currentFrame;

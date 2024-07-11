@@ -117,6 +117,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         Wheat,
         Bread,
         Beer,
+        Food,
 
         Water,
         SaltWater,

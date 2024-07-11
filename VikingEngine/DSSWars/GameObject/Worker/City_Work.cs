@@ -333,12 +333,29 @@ namespace VikingEngine.DSSWars.GameObject
                             }
                         }
                     }
-
-                    //if (workQue.Count >= workTeamCount)
-                    //{
-                    //    return;
-                    //}
                 }
+
+                //Trade with neighbor cities
+                foreach (var n in neighborCities)
+                {
+                    var nCity = DssRef.world.cities[n];
+                    if (!DssRef.diplomacy.InWar(nCity.faction, faction))
+                    {
+                        if (wood.needMore() && nCity.wood.canTradeAway())
+                        {
+                            workQue.Add(new WorkQueMember(WorkType.LocalTrade, (int)ItemResourceType.SoftWood, WP.ToSubTilePos_Centered(nCity.tilePos), 5));
+                        }
+                        if (stone.needMore() && nCity.stone.canTradeAway())
+                        {
+                            workQue.Add(new WorkQueMember(WorkType.LocalTrade, (int)ItemResourceType.Stone, WP.ToSubTilePos_Centered(nCity.tilePos), 5));
+                        }
+                        if (food.needMore() && nCity.food.canTradeAway())
+                        {
+                            workQue.Add(new WorkQueMember(WorkType.LocalTrade, (int)ItemResourceType.Food, WP.ToSubTilePos_Centered(nCity.tilePos), 5));
+                        }
+                    }
+                }
+
             }
 
             bool isFreeTile(IntVector2 subtile)
@@ -430,7 +447,7 @@ namespace VikingEngine.DSSWars.GameObject
     {
         
         public WorkType work;
-        //public int subWork;
+        public int subWork;
         public IntVector2 subTile;
 
         /// <summary>
@@ -441,18 +458,18 @@ namespace VikingEngine.DSSWars.GameObject
         public WorkQueMember(WorkType work, IntVector2 subTile, int priority)
         {
             this.work = work;
-            //this.subWork = -1;
+            this.subWork = -1;
             this.subTile = subTile;
             this.priority = priority;
         }
 
-        //public WorkQueMember(WorkType work, int subWork, IntVector2 subTile, int priority)
-        //{
-        //    this.work = work;
-        //    this.subWork = subWork;
-        //    this.subTile = subTile;
-        //    this.priority = priority;
-        //}
+        public WorkQueMember(WorkType work, int subWork, IntVector2 subTile, int priority)
+        {
+            this.work = work;
+            this.subWork = subWork;
+            this.subTile = subTile;
+            this.priority = priority;
+        }
     }
 
     enum WorkType
@@ -470,5 +487,6 @@ namespace VikingEngine.DSSWars.GameObject
         DropOff,        
         Craft,
         Building,
+        LocalTrade,
     }
 }
