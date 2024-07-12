@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars
             ordermove = new SoundContainerSingle(soundDir + "ordermove");
             orderstop = new SoundContainerSingle(soundDir + "orderstop");
             message = new SoundContainerSingle(soundDir + "chat_message");
-            trophy = new SoundContainerSingle(soundDir + "trophy");
+            trophy = new SoundContainerSingle(soundDir + "trophy", 0.2f);
 
             menu = new RbSoundProfile(click, wrong);
             menuBack = new RbSoundProfile(back);
