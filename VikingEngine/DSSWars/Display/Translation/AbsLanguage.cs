@@ -323,6 +323,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string EventMessage_FinalBattleTitle { get; }
         public abstract string EventMessage_FinalBattleText { get; }
 
+        public abstract string EventMessage_DesertersTitle { get; }
+        public abstract string EventMessage_DesertersText { get; }
+
         public abstract string DifficultyDescription_AiAggression { get; }
         public abstract string DifficultyDescription_BossSize { get; }
         public abstract string DifficultyDescription_BossEnterTime { get; }

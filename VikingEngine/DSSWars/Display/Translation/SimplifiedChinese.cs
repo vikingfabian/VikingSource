@@ -1021,6 +1021,13 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string EventMessage_FinalBattleTitle => "绝望的攻击";
         public override string EventMessage_FinalBattleText => "黑暗领主已经加入战场。现在是摧毁他的机会！";
 
+        /// <summary>
+        /// 当你无法支付士兵的维持费用时士兵离开军队的消息
+        /// </summary>
+        public override string EventMessage_DesertersTitle => "逃兵！";
+        public override string EventMessage_DesertersText => "未支付薪水的士兵正在逃离你的军队";
+
+
         public override string DifficultyDescription_AiAggression => "AI攻击性: {0}。";
         public override string DifficultyDescription_BossSize => "Boss规模: {0}。";
         public override string DifficultyDescription_BossEnterTime => "Boss进入时间: {0}。";

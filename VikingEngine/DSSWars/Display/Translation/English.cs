@@ -1028,6 +1028,11 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string EventMessage_FinalBattleTitle => "A desperate attack";
         public override string EventMessage_FinalBattleText => "The dark lord has joined the battlefield. Now is your chance to destroy him!";
 
+        /// <summary>
+        /// Message when soldiers leave the army when you can't pay thier upkeep
+        /// </summary>
+        public override string EventMessage_DesertersTitle => "Deserters!";
+        public override string EventMessage_DesertersText => "Unpaid soldiers are deserting from your armies";
 
         public override string DifficultyDescription_AiAggression => "Ai aggressivity: {0}.";
         public override string DifficultyDescription_BossSize => "Boss size: {0}.";

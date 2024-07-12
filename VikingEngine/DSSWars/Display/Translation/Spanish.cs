@@ -1020,6 +1020,13 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string EventMessage_FinalBattleTitle => "Un ataque desesperado";
         public override string EventMessage_FinalBattleText => "El señor oscuro se ha unido al campo de batalla. ¡Ahora es tu oportunidad de destruirlo!";
 
+        /// <summary>
+        /// Mensaje cuando los soldados abandonan el ejército porque no puedes pagar su mantenimiento
+        /// </summary>
+        public override string EventMessage_DesertersTitle => "¡Desertores!";
+        public override string EventMessage_DesertersText => "Los soldados no pagados están desertando de tus ejércitos";
+
+
         public override string DifficultyDescription_AiAggression => "Agresividad de la IA: {0}.";
         public override string DifficultyDescription_BossSize => "Tamaño del jefe: {0}.";
         public override string DifficultyDescription_BossEnterTime => "Tiempo de aparición del jefe: {0}.";
