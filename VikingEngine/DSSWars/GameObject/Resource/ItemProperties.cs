@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             items[(int)ItemResourceType.Pig] = new ItemProperties(1f);
             items[(int)ItemResourceType.Hen] = new ItemProperties(1f / 4);
             items[(int)ItemResourceType.Wheat] = new ItemProperties(1f / 10);
-
+            items[(int)ItemResourceType.Food] = new ItemProperties(1f / 20);
         }
 
         public static int CarryAmount(ItemResourceType item, float maxWeight = 1f)
