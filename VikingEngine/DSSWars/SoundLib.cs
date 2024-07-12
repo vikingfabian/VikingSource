@@ -31,7 +31,6 @@ namespace VikingEngine.DSSWars
             menuBack = new RbSoundProfile(back);
             menuBuy = new RbSoundProfile(buy, wrong);
             menuArmyHalt = new RbSoundProfile(orderstop);
-
         }
     }
 }
