@@ -49,6 +49,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             description = DssRef.lang.UnitType_Description_Knight;
             icon = SpriteName.WarsUnitIcon_Knight;
+
+            foodPerSoldier = DssLib.SoldierDefaultFoodUpkeep * 3;
         }
 
 

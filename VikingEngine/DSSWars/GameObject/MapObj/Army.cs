@@ -57,7 +57,11 @@ namespace VikingEngine.DSSWars.GameObject
         static readonly Vector2 CamCullingRadius = new Vector2(SoldierGroup.GroupSpacing * 1.4f);
         public Vector2 cullingTopLeft, cullingBottomRight;
         bool isIdle = true;
-        //IntVector2 nextGroupPlacement = IntVector2.Zero;
+
+        //bool deserters = false;
+        public float food = 0;
+        public float foodUpkeep = 0;
+
 
         public Army(Faction faction, IntVector2 startPosition)
         {
@@ -166,7 +170,10 @@ namespace VikingEngine.DSSWars.GameObject
                     args.content.icontext(SpriteName.WarsGroupIcon, string.Format( DssRef.lang.Hud_SoldierGroupsCount, groups.Count));
                     args.content.icontext(SpriteName.WarsSoldierIcon,string.Format(DssRef.lang.Hud_SoldierCount, TextLib.LargeNumber(count)));
                     args.content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
-                    args.content.icontext(SpriteName.rtsUpkeepTime,string.Format(DssRef.lang.Hud_Upkeep ,TextLib.LargeNumber(upkeep)));
+                    //args.content.icontext(SpriteName.rtsUpkeepTime,string.Format(DssRef.lang.Hud_Upkeep ,TextLib.LargeNumber(upkeep)));
+                    args.content.text(string.Format("Food reserves: {0}", TextLib.OneDecimal(food)));
+                    args.content.text(string.Format("Food upkeep: {0}", TextLib.OneDecimal(foodUpkeep)));
+
                     if (PlatformSettings.DevBuild)
                     {
                         args.content.text("Id: " + id.ToString());
@@ -842,6 +849,24 @@ namespace VikingEngine.DSSWars.GameObject
             else
             {
                 return WP.ToWorldPos(tilePos);
+            }
+        }
+
+        public void hungerDeserters()
+        {
+            //Gain a portion of deserters on all armies
+            int totalDeserters = 0;
+
+            //var armiesCounter = armies.counter();
+            //while (armiesCounter.Next())
+            //{
+               desertSoldiers();
+            
+
+            if (faction.player.IsPlayer())
+            {
+                faction.player.GetLocalPlayer().hud.messages.Add("Deserters!", "Hungry soldiers are deserting from your armies");
+                faction.player.GetLocalPlayer().statistics.SoldiersDeserted += totalDeserters;
             }
         }
 

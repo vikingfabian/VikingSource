@@ -16,6 +16,8 @@ namespace VikingEngine.DSSWars
         int secondsToMinute = 0;
         int totalMinutes = 0;
 
+        float asyncGameObjects_Seconds = 0;
+
         public GameTime()
         {
             DssRef.time = this;
@@ -43,6 +45,7 @@ namespace VikingEngine.DSSWars
                     case 1: halfSecond = true; break;
                     case 2: 
                         oneSecond_part2 = true;
+                        asyncGameObjects_Seconds += 1f;
                         if (++secondsToMinute >= 60)
                         {
                             secondsToMinute = 0;
@@ -53,6 +56,13 @@ namespace VikingEngine.DSSWars
                     case 3: halfSecond = true; break;
                 }                
             }
+        }
+
+        public float pullAsyncGameObjects_Seconds()
+        {
+            float result = asyncGameObjects_Seconds;
+            asyncGameObjects_Seconds -= result;
+            return result;
         }
 
         public TimeSpan TotalIngameTime()

@@ -9,6 +9,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 {
     static class ResourceLib
     {
+        public const int FoodEnergy = 100;
         public static string Name(ResourceType resource)
         {
             switch (resource)

@@ -12,7 +12,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
     struct WorkerStatus
     {
         const int MaxEnergy = 400;
-        const int FoodEnergy = 100;
+        
 
         public const int Subwork_Craft_Food = 0;
         public const int Subwork_Craft_Iron = 1;
@@ -44,9 +44,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             switch (work)
             {
                 case WorkType.Eat:
-                    int eatAmount = (int)Math.Floor((MaxEnergy - energy) / FoodEnergy);
+                    int eatAmount = (int)Math.Floor((MaxEnergy - energy) / ResourceLib.FoodEnergy);
                     city.food.amount -= eatAmount;
-                    energy += eatAmount * FoodEnergy;
+                    energy += eatAmount * ResourceLib.FoodEnergy;
                     //work = WorkType.Idle;
                     break;
 

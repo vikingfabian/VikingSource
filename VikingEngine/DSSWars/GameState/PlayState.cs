@@ -45,6 +45,8 @@ namespace VikingEngine.DSSWars
         public GameMenuSystem menuSystem;
         Timer.Basic subTileReloadTimer = new Timer.Basic(1000,true);
 
+        
+
         public PlayState(bool host, SaveStateMeta loadMeta)
             : base(true)
         {
@@ -482,6 +484,8 @@ namespace VikingEngine.DSSWars
         
         bool asynchGameObjectsUpdate(int id, float time)
         {
+            float seconds = DssRef.time.pullAsyncGameObjects_Seconds();
+
             if (cutScene == null)
             {
                 foreach (var m in DssRef.world.cities)
@@ -492,7 +496,7 @@ namespace VikingEngine.DSSWars
                 var factions = DssRef.world.factions.counter();
                 while (factions.Next())
                 {
-                    factions.sel.asynchGameObjectsUpdate(time);
+                    factions.sel.asynchGameObjectsUpdate(time, seconds);
                 }
             }         
             return exitThreads;

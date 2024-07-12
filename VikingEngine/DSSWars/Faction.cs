@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars
         public float militaryStrength = 0;
         public bool hasDeserters = true;
 
-        
+
 
         public Faction()
         { }
@@ -357,10 +357,10 @@ namespace VikingEngine.DSSWars
             {
                 lib.DoNothing();
             }
-            if (Ref.rnd.Chance(0.2))
-            {
-                desertersUpdate();
-            }
+            //if (Ref.rnd.Chance(0.2))
+            //{
+            //    desertersUpdate();
+            //}
 
             if (factiontype == FactionType.SouthHara)
             {
@@ -416,7 +416,9 @@ namespace VikingEngine.DSSWars
             player.aiPlayerAsynchUpdate(time);
         }
 
-        public void asynchGameObjectsUpdate(float time)
+
+        
+        public void asynchGameObjectsUpdate(float time, float oneSecondUpdate)
         {
             float totalStrength = 0;
 
@@ -429,7 +431,7 @@ namespace VikingEngine.DSSWars
 
             militaryStrength = totalStrength;
 
-            resources_updateAsynch();
+            resources_updateAsynch(oneSecondUpdate);
         }
 
         public void asynchSleepObjectsUpdate(float time)
