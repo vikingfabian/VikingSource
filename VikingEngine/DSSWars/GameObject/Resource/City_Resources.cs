@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.HUD.RichBox;
@@ -11,13 +12,18 @@ using VikingEngine.PJ.Joust;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    partial class City : GameObject.AbsMapObject
+    partial class City
     {
-        static readonly CraftBlueprint CraftFood = new CraftBlueprint("Food", 10) { useWater = 5, useWood = 5, useRawFood = 1 };
+        static readonly CraftBlueprint CraftFood = new CraftBlueprint("Food", 40) { useWater = 5, useWood = 5, useRawFood = 1 };
         static readonly CraftBlueprint CraftIron = new CraftBlueprint("Iron", 4) { useWater = 1, useWood = 20, useOre = 2 } ;
         static readonly CraftBlueprint CraftWorkerHut = new CraftBlueprint("Worker hut", 1) { useWater = 0, useWood = 200, useStone = 40 };
 
-        const int GoldOreValue = 10;
+        MinuteStats blackMarketCosts = new MinuteStats();
+
+        const int GoldOreSellValue = 100;
+        const int IronSellValue = 5;
+        const float FoodGoldValue = 0.2f;
+        public const float FoodGoldValue_BlackMarket = FoodGoldValue * 5;
 
         //Simplified resources
         const int Maxwater = 100;
@@ -25,15 +31,15 @@ namespace VikingEngine.DSSWars.GameObject
         int waterBuffer = 10;
         int waterSpendOrders = 0;
         
-        public SimplifiedResource wood = new SimplifiedResource() { goldValue = 1, goalBuffer = 300 };
-        public SimplifiedResource stone = new SimplifiedResource() { goldValue = 0.6f, goalBuffer = 100 };
-        public SimplifiedResource rawFood = new SimplifiedResource() { goldValue = 1, goalBuffer = 200 };
-        public SimplifiedResource food = new SimplifiedResource() { goldValue = 2, goalBuffer = 500 };
+        public SimplifiedResource wood = new SimplifiedResource() { amount = 20, goldValue = 1, goalBuffer = 300 };
+        public SimplifiedResource stone = new SimplifiedResource() { amount = 20, goldValue = 0.6f, goalBuffer = 100 };
+        public SimplifiedResource rawFood = new SimplifiedResource() { amount = 50, goldValue = 1, goalBuffer = 200 };
+        public SimplifiedResource food = new SimplifiedResource() { amount = 20, goldValue = FoodGoldValue, goalBuffer = 500 };
         public SimplifiedResource skin = new SimplifiedResource() { goldValue = 4, goalBuffer = 100 };
         public SimplifiedResource ore = new SimplifiedResource() { goldValue = 1, goalBuffer = 100 };
         public SimplifiedResource iron = new SimplifiedResource() { goldValue = 10, goalBuffer = 100 };
 
-        int tradeGold = 0;
+        //int tradeGold = 0;
 
         public int SellCost(ItemResourceType itemResourceType)
         {
@@ -62,9 +68,9 @@ namespace VikingEngine.DSSWars.GameObject
             return goldCost;
         }
 
-        public ItemResource MakeTrade(ItemResourceType itemResourceType, int payment)
+        public ItemResource MakeTrade(ItemResourceType itemResourceType, int payment, float maxWeight = 1f)
         {
-            int carry = ItemPropertyColl.CarryAmount(itemResourceType);
+            int carry = ItemPropertyColl.CarryAmount(itemResourceType, maxWeight);
             switch (itemResourceType)
             {
                 case ItemResourceType.SoftWood:
@@ -103,20 +109,21 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Egg:                                   
                 case ItemResourceType.Hen:
                 case ItemResourceType.Wheat:
-                    rawFood.add(item);
+                    rawFood.add(item, 10);
                     break;
 
                 case ItemResourceType.Pig:
-                    rawFood.add(item);
+                    rawFood.add(item, 50);
                     skin.add(item);
                     break;
 
                 case ItemResourceType.IronOre:
-                    ore.add(item);
+                    //ore.add(item);
+                    faction.gold += item.amount * IronSellValue;
                     break;
 
                 case ItemResourceType.GoldOre:
-                    tradeGold += item.amount * GoldOreValue;
+                    faction.gold += item.amount * GoldOreSellValue;
                     break;
             }
         }
@@ -156,14 +163,16 @@ namespace VikingEngine.DSSWars.GameObject
             food.toMenu(content, "food");
             skin.toMenu(content, "skin");
             ore.toMenu(content, "ore");
-            iron.toMenu(content, "iron");
+            //iron.toMenu(content, "iron");
 
             content.newParagraph();
             content.h2("Crafting blueprints");
             CraftFood.toMenu(content);
             CraftIron.toMenu(content);
             CraftWorkerHut.toMenu(content);
-            content.text("1 gold ore => " + GoldOreValue.ToString() + "gold");
+            content.text("1 iron => " + IronSellValue.ToString() + "gold");
+            content.text("1 gold ore => " + GoldOreSellValue.ToString() + "gold");
+            content.text("1 food => " + ResourceLib.FoodEnergy + " energy (seconds of work)");
         }
     }
 
@@ -202,9 +211,9 @@ namespace VikingEngine.DSSWars.GameObject
             return (amount - backOrder) >= goalBuffer;
         }
 
-        public void add(ItemResource item)
+        public void add(ItemResource item, int multiply = 1)
         {
-            amount += item.amount;
+            amount += item.amount * multiply;
         }
 
         public void toMenu(RichBoxContent content, string name)
@@ -289,12 +298,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             addResources(useWater, "water", ref resources);
             addResources(useWood, "wood", ref resources);
-            addResources(useWood, "stone", ref resources);
+            addResources(useStone, "stone", ref resources);
             addResources(useRawFood, "raw food", ref resources);
             addResources(useOre, "ore", ref resources);
 
 
-            content.text(resources + " => " + resultCount.ToString());
+            content.text(resources + " => " + resultCount.ToString() + " " + name);
 
             void addResources(int count, string name, ref string resources)
             {

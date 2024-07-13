@@ -1,43 +1,39 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Timer;
-using VikingEngine.ToGG.ToggEngine.Map;
 
 namespace VikingEngine.DSSWars.GameObject.Worker
 {
-    class WorkerUnit: AbsGameObject
+    class WorkerUnit : AbsGameObject
     {
         public const float StandardBoundRadius = AbsSoldierData.StandardBoundRadius * 4f;
 
         WalkingAnimation walkingAnimation;
-        WorkerStatus status;
+        protected WorkerStatus status;
 
         public Graphics.AbsVoxelObj model;
 
         WorkerUnitState state = WorkerUnitState.None;
         Vector3 goalPos;
         Vector3 walkDir;
-        City city;
+        AbsMapObject mapObject;
         float finalizeWorkTime;
         GameTimer workAnimation = new GameTimer(1f, true, true);
         bool isShip = false;
         int prevX, prevZ;
 
-        public WorkerUnit(City city, WorkerStatus status, int statusIndex)
+        public WorkerUnit(AbsMapObject mapObject, WorkerStatus status, int statusIndex)
         {
-            this.city = city;
+            this.mapObject = mapObject;
             this.status = status;
             this.parentArrayIndex = statusIndex;
-            model = city.faction.AutoLoadModelInstance(
+            model = mapObject.GetFaction().AutoLoadModelInstance(
                  LootFest.VoxelModelName.war_worker, AbsDetailUnitData.StandardModelScale * 0.9f, true);
 
             model.position = WP.SubtileToWorldPos(status.subTileStart);
@@ -47,6 +43,21 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             updateGroudY(true);
         }
 
+        //public WorkerUnit(Army army, WorkerStatus status, int statusIndex)
+        //{
+        //    this.army = army;
+        //    this.status = status;
+        //    this.parentArrayIndex = statusIndex;
+        //    model = army.faction.AutoLoadModelInstance(
+        //         LootFest.VoxelModelName.war_worker, AbsDetailUnitData.StandardModelScale * 0.9f, true);
+
+        //    model.position = WP.SubtileToWorldPos(status.subTileStart);
+
+        //    checkForGoal(true);
+
+        //    updateGroudY(true);
+        //}
+
         public void update()
         {
             if (parentArrayIndex == 29)
@@ -55,9 +66,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             }
 
             switch (state)
-            { 
+            {
                 case WorkerUnitState.HasGoal:
-                   
+
                     float speed = AbsDetailUnitData.StandardWalkingSpeed * Ref.DeltaGameTimeMs;
                     model.position += walkDir * speed;
                     updateGroudY(false);
@@ -191,19 +202,20 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                 break;
                         }
 
-                        status.WorkComplete(city);
-                        city.setWorkerStatus(parentArrayIndex, ref status);
+                        status.WorkComplete(mapObject);
+                        mapObject.setWorkerStatus(parentArrayIndex, ref status);
                         state = WorkerUnitState.None;
                     }
                     break;
 
                 case WorkerUnitState.None:
-                    city.getWorkerStatus(parentArrayIndex, ref status);
+                    mapObject.getWorkerStatus(parentArrayIndex, ref status);
                     checkForGoal(false);
                     break;
+
             }
 
-            
+
 
         }
 
@@ -218,16 +230,23 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             return false;
         }
 
-        void checkForGoal(bool onInit)
-        { 
-            if (status.work != WorkType.Idle)
+        protected void checkForGoal(bool onInit)
+        {
+            if (status.work > WorkType.Idle)
             {
+                if (!model.Visible)
+                {
+                    //remove hidden status
+                    model.Visible = true;
+                    model.position = WP.SubtileToWorldPos(status.subTileStart);
+                }
+
                 if (status.subTileEnd == status.subTileStart)
                 {
                     finalizeWorkTime = status.finalizeWorkTime();
                     state = WorkerUnitState.FinalizeWork;
                 }
-                else 
+                else
                 {
                     //lib.DoNothing();
 
@@ -249,11 +268,13 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                     switch (status.work)
                     {
+                        case WorkType.TrossReturnToArmy:
                         case WorkType.DropOff:
                             walkingAnimation = WalkingAnimation.WorkerCarry;
                             break;
+                        case WorkType.TrossCityTrade:
                         case WorkType.LocalTrade:
-                           walkingAnimation = WalkingAnimation.WorkerTrading;
+                            walkingAnimation = WalkingAnimation.WorkerTrading;
                             break;
                         default:
                             walkingAnimation = WalkingAnimation.WorkerWalking;
@@ -261,15 +282,16 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     }
                     state = WorkerUnitState.HasGoal;
                 }
-
-                
-
-                
+            }
+            else if (status.work == WorkType.IsDeleted)
+            {
+                model.position = Vector3.Zero;
+                model.Visible = false;
             }
         }
 
         const float ModelGroundYAdj = 0.02f;
-        void updateGroudY(bool set)
+        protected void updateGroudY(bool set)
         {
             if (DssRef.world.unitBounds.IntersectPoint(model.position.X, model.position.Z))
             {
@@ -310,7 +332,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             const string Carry = "Carry: {0} {1}";
 
             if (status.carry.amount > 0)
-            { 
+            {
                 content.text(string.Format(Carry, status.carry.amount, status.carry.type));
             }
 
@@ -319,7 +341,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         }
 
         public void DeleteMe()
-        { 
+        {
             model.DeleteMe();
         }
 
@@ -330,7 +352,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         public override Faction GetFaction()
         {
-            return city.faction;
+            return mapObject.GetFaction();
         }
 
         public override Vector3 WorldPos()
@@ -340,17 +362,19 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         public override bool aliveAndBelongTo(Faction faction)
         {
-            return faction == city.faction;
+            return faction == mapObject.GetFaction();
         }
 
-        public override string Name()
-        {
-            return "Worker (" + parentArrayIndex.ToString() + ")";
-        }
+        
 
         public override WorkerUnit GetWorker()
         {
             return this;
+        }
+
+        public override string Name()
+        {
+            return mapObject.TypeName() + " Worker (" + parentArrayIndex.ToString() + ")";
         }
 
         enum WorkerUnitState
@@ -358,6 +382,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             None,
             HasGoal,
             FinalizeWork,
+
+            //Hidden,
         }
     }
 }

@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int goldCost = DssLib.GroupDefaultCost;
 
         public float upkeepPerSoldier = DssLib.SoldierDefaultUpkeep;
-        public float foodPerSoldier =  DssLib.SoldierDefaultFoodUpkeep;
+        public float energyPerSoldier =  DssLib.SoldierDefaultEnergyUpkeep;
 
         public int recruitTrainingTimeSec = DssLib.DefalutRecruitTrainingTimeSec;
 

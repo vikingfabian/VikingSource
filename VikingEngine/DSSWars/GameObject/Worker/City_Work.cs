@@ -12,11 +12,10 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City : GameObject.AbsMapObject
     {
-        const int WorkTeamSize = 8;
+        public const int WorkTeamSize = 8;
 
-        List<WorkerStatus> workerStatuses = new List<WorkerStatus>();
         List<WorkQueMember> workQue = new List<WorkQueMember>();
-        public List<WorkerUnit> workerUnits = null;
+        
 
         public void async_workUpdate()
         {        
@@ -24,6 +23,8 @@ namespace VikingEngine.DSSWars.GameObject
             { 
                 lib.DoNothing();
             }
+
+            async_blackMarketUpdate();
 
             int idleCount = 0;
             IntVector2 minpos = WP.ToSubTilePos_Centered(tilePos);
@@ -96,6 +97,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     workerStatuses.Add(new WorkerStatus()
                     { 
+                        work = WorkType.Idle,
                         energy = 50,
                         subTileEnd = startPos,
                         subTileStart = startPos,
@@ -120,13 +122,13 @@ namespace VikingEngine.DSSWars.GameObject
                     if (workerStatuses[i].carry.amount > 0)
                     {
                         var status = workerStatuses[i];
-                        status.createWorkOrder(this,WorkType.DropOff, -1, WP.ToSubTilePos_Centered(tilePos));
+                        status.createWorkOrder(WorkType.DropOff, -1, WP.ToSubTilePos_Centered(tilePos));
                         workerStatuses[i] = status;
                     }
                     else if (workerStatuses[i].energy < 0)
                     {
                         var status = workerStatuses[i];
-                        status.createWorkOrder(this,WorkType.Eat, -1, WP.ToSubTilePos_Centered(tilePos));
+                        status.createWorkOrder(WorkType.Eat, -1, WP.ToSubTilePos_Centered(tilePos));
                         workerStatuses[i] = status;
                     }
                     else if (workQue.Count > 0)
@@ -134,7 +136,7 @@ namespace VikingEngine.DSSWars.GameObject
                         var work = arraylib.PullLastMember(workQue);
 
                         var status = workerStatuses[i];
-                        status.createWorkOrder(this,work.work, work.subWork, work.subTile);
+                        status.createWorkOrder(work.work, work.subWork, work.subTile);
                         workerStatuses[i] = status;
                     }
                     //else
@@ -146,7 +148,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (!inRender)
             {
-                processAsynchWork();
+                processAsynchWork(workerStatuses);
             }
 
             void buildWorkQue()
@@ -371,74 +373,29 @@ namespace VikingEngine.DSSWars.GameObject
                 return true;
             }
 
-            void processAsynchWork()
-            {
-                for (int i = 0; i < workerStatuses.Count; i++)
-                {
-                    var status = workerStatuses[i];
-                    if (status.work != WorkType.Idle &&
-                        Ref.TotalGameTimeSec > status.processTimeStartStampSec + status.processTimeLengthSec)
-                    {
-                        //Work complete
-                        status.WorkComplete(this);
-                        workerStatuses[i] = status;
-                    }
-
-                }
-            }
+            
         }
 
-        void updateWorkerUnits()
+        protected override void onAsynchWorkComplete(ref WorkerStatus status)
         {
-            if (workerUnits != null)
-            {
-                if (workerUnits.Count < workerStatuses.Count)
-                {
-                    for (int i = workerUnits.Count; i < workerStatuses.Count; i++)
-                    {
-                        workerUnits.Add(new WorkerUnit(this, workerStatuses[i], i));
-                    }
-                }
-
-                foreach (var w in workerUnits)
-                {
-                    w.update();
-                }
-            }
+            status.WorkComplete(this);
         }
 
-        public void setWorkersInRenderState()
+        void async_blackMarketUpdate()
         {
-            if (inRender)
-            {
-                if (workerUnits == null)
-                {
-                    workerUnits = new List<WorkerUnit>(workerStatuses.Count);
-                }
-            }
-            else
-            {
-                if (workerUnits != null)
-                {
-                    foreach (var w in workerUnits)
-                    { 
-                        w.DeleteMe();
-                    }
+            float foodUpkeep = 0;
 
-                    workerUnits = null;
-                }
+            if (food.amount <= -40)
+            {
+                int buyFood = -food.amount;
+
+                int cost = (int)(buyFood * FoodGoldValue_BlackMarket);
+                faction.payMoney(cost, true);
+                blackMarketCosts.add(cost);
+                food.amount += buyFood;
             }
         }
 
-        public void getWorkerStatus(int index, ref WorkerStatus status)
-        { 
-            status = workerStatuses[index];
-        }
-
-        public void setWorkerStatus(int index, ref WorkerStatus status)
-        { 
-            workerStatuses[index] = status;
-        }
     }
 
     
@@ -474,6 +431,7 @@ namespace VikingEngine.DSSWars.GameObject
 
     enum WorkType
     { 
+        IsDeleted,
         Idle,
         Eat,
 
@@ -488,5 +446,8 @@ namespace VikingEngine.DSSWars.GameObject
         Craft,
         Building,
         LocalTrade,
+
+        TrossCityTrade,
+        TrossReturnToArmy,
     }
 }

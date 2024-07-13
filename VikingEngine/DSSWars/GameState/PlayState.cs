@@ -44,14 +44,12 @@ namespace VikingEngine.DSSWars
         public int NextArmyId = 0;
         public GameMenuSystem menuSystem;
         Timer.Basic subTileReloadTimer = new Timer.Basic(1000,true);
-
-        
+                
 
         public PlayState(bool host, SaveStateMeta loadMeta)
             : base(true)
         {
             
-
             DssRef.state = this;
             Ref.rnd.SetSeed(DssRef.world.metaData.seed);
             menuSystem = new GameMenuSystem();
@@ -248,7 +246,7 @@ namespace VikingEngine.DSSWars
                         factions.sel.update();
 
                         if (DssRef.time.oneSecond)
-                        {
+                        {                            
                             factions.sel.oneSecUpdate();
                         }
                     }
@@ -406,9 +404,21 @@ namespace VikingEngine.DSSWars
         {
             if (cutScene == null)
             {
+                float seconds = DssRef.time.pullAsyncWork_Seconds();
+
                 foreach (var m in DssRef.world.cities)
                 {
                     m.async_workUpdate();
+                }
+
+                var factions = DssRef.world.factions.counter();
+                while (factions.Next())
+                {
+                    var armiesC = factions.sel.armies.counter();
+                    while (armiesC.Next())
+                    {
+                        armiesC.sel.async_workUpdate(seconds);
+                    }
                 }
             }
             return exitThreads;
@@ -481,24 +491,28 @@ namespace VikingEngine.DSSWars
             }
             return exitThreads;
         }
-        
+
+        int asynchGameObjectsMinutes = 0;
         bool asynchGameObjectsUpdate(int id, float time)
         {
             float seconds = DssRef.time.pullAsyncGameObjects_Seconds();
 
             if (cutScene == null)
             {
+                bool minute = DssRef.time.pullMinute(ref asynchGameObjectsMinutes);
+
                 foreach (var m in DssRef.world.cities)
                 {
-                    m.asynchGameObjectsUpdate();
+                    m.asynchGameObjectsUpdate(minute);
                 }
 
                 var factions = DssRef.world.factions.counter();
                 while (factions.Next())
                 {
-                    factions.sel.asynchGameObjectsUpdate(time, seconds);
+                    factions.sel.asynchGameObjectsUpdate(time, seconds, minute);
                 }
-            }         
+
+            }
             return exitThreads;
         }
 

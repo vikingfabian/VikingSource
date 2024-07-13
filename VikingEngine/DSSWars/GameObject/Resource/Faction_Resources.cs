@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Players;
 
 namespace VikingEngine.DSSWars
@@ -77,14 +78,16 @@ namespace VikingEngine.DSSWars
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
-                float foodUpkeep = 0;
+                float energyUpkeep = 0;
                 float armyUpkeep = 0;
 
                 var groups = armiesC.sel.groups.counter();
                 while (groups.Next())
                 {
-                    groups.sel.Upkeep(ref foodUpkeep);
+                    groups.sel.Upkeep(ref energyUpkeep);
                 }
+
+                float foodUpkeep = energyUpkeep / ResourceLib.FoodEnergy;
 
                 totalArmiesUpkeep += armyUpkeep;
                 totalArmiesFoodUpkeep += foodUpkeep;

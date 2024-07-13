@@ -53,6 +53,11 @@ namespace VikingEngine.DSSWars.Display
             UpdatePositions();
         }
 
+        public bool freeSpace()
+        { 
+            return messages.Count < 3;
+        }
+
         public void Update(Vector2 position)
         {
             if (this.position != position)

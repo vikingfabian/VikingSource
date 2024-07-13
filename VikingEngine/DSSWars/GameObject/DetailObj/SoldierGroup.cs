@@ -1330,10 +1330,10 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void Upkeep(ref float food)
+        public void Upkeep(ref float energy)
         {
             var typeData = DssRef.unitsdata.Get(type);
-            food += typeData.foodPerSoldier * soldiers.Count;
+            energy += typeData.energyPerSoldier * soldiers.Count;
         }
 
         public override void DeleteMe(DeleteReason reason, bool removeFromParent)

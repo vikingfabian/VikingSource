@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DSSWars.Battle;
+using VikingEngine.DSSWars.GameObject.Worker;
 using VikingEngine.HUD.RichBox;
 //
 
@@ -112,6 +113,27 @@ namespace VikingEngine.DSSWars.GameObject
         public override Vector3 WorldPos()
         {
             return position;
+        }
+
+        protected void processAsynchWork(List<WorkerStatus> workerStatuses)
+        {
+            for (int i = 0; i < workerStatuses.Count; i++)
+            {
+                var status = workerStatuses[i];
+                if (status.work > WorkType.Idle &&
+                    Ref.TotalGameTimeSec > status.processTimeStartStampSec + status.processTimeLengthSec)
+                {
+                    //Work complete
+                    onAsynchWorkComplete(ref status);
+                    workerStatuses[i] = status;
+                }
+
+            }
+        }
+
+        virtual protected void onAsynchWorkComplete(ref WorkerStatus status)
+        {  
+            throw new NotImplementedException();
         }
         //public override bool Alive()
         //{

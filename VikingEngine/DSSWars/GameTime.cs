@@ -9,6 +9,7 @@ namespace VikingEngine.DSSWars
         const float Quarter = 0.25f;
 
         public bool oneSecond = false;
+        //public bool oneMinute = false;
         public bool oneSecond_part2 = false;
         public bool halfSecond = false;
         float second = 0;
@@ -17,6 +18,7 @@ namespace VikingEngine.DSSWars
         int totalMinutes = 0;
 
         float asyncGameObjects_Seconds = 0;
+        float asyncWork_Seconds = 0;
 
         public GameTime()
         {
@@ -46,6 +48,7 @@ namespace VikingEngine.DSSWars
                     case 2: 
                         oneSecond_part2 = true;
                         asyncGameObjects_Seconds += 1f;
+                        asyncWork_Seconds  += 1f;
                         if (++secondsToMinute >= 60)
                         {
                             secondsToMinute = 0;
@@ -58,11 +61,34 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        //public bool oneMinute()
+        //{
+        //    return secondsToMinute == 59;
+        //}
+
         public float pullAsyncGameObjects_Seconds()
         {
             float result = asyncGameObjects_Seconds;
             asyncGameObjects_Seconds -= result;
             return result;
+        }
+
+        public float pullAsyncWork_Seconds()
+        {
+            float result = asyncWork_Seconds;
+            asyncWork_Seconds -= result;
+            return result;
+        }
+
+        public bool pullMinute(ref int totalMinutes)
+        {
+            if (this.totalMinutes > totalMinutes)
+            { 
+                totalMinutes = this.totalMinutes;
+                return true;
+            }
+
+            return false;
         }
 
         public TimeSpan TotalIngameTime()

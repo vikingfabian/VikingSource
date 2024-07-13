@@ -9,6 +9,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
     static class ItemPropertyColl
     {
         public const int CarryStones = 5;
+        public const int CarryFood = 20;
         public static ItemProperties[] items;
         
         public static void Init()
@@ -23,7 +24,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             items[(int)ItemResourceType.Pig] = new ItemProperties(1f);
             items[(int)ItemResourceType.Hen] = new ItemProperties(1f / 4);
             items[(int)ItemResourceType.Wheat] = new ItemProperties(1f / 10);
-            items[(int)ItemResourceType.Food] = new ItemProperties(1f / 20);
+            items[(int)ItemResourceType.Food] = new ItemProperties(1f / CarryFood);
         }
 
         public static int CarryAmount(ItemResourceType item, float maxWeight = 1f)

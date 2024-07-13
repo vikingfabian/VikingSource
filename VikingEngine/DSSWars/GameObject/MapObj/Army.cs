@@ -46,8 +46,8 @@ namespace VikingEngine.DSSWars.GameObject
        
         public int soldiersCount = 0;
         public int upkeep;
-        public float transportSpeedLand = AbsSoldierData.StandardWalkingSpeed;
-        public float transportSpeedSea = AbsSoldierData.StandardShipSpeed;
+        public float transportSpeedLand = AbsDetailUnitData.StandardWalkingSpeed;
+        public float transportSpeedSea = AbsDetailUnitData.StandardShipSpeed;
         public bool isShip = false;
 
         public float terrainSpeedMultiplier = 1.0f;
@@ -61,6 +61,11 @@ namespace VikingEngine.DSSWars.GameObject
         //bool deserters = false;
         public float food = 0;
         public float foodUpkeep = 0;
+
+        public float foodBuffer_minutes = 1f;
+        public float friendlyAreaFoodBuffer_minutes = 5f;
+
+        public MinuteStats foodCosts = new MinuteStats();
 
 
         public Army(Faction faction, IntVector2 startPosition)
@@ -152,7 +157,7 @@ namespace VikingEngine.DSSWars.GameObject
                     args.content.Add(new RichBoxText(TextLib.OneDecimal(strengthValue)));
                     args.content.space();
                     args.content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
-                    args.content.Add(new RichBoxText(TextLib.LargeNumber(upkeep)));
+                    //args.content.Add(new RichBoxText(TextLib.LargeNumber(upkeep)));
                 }
             }
             else
@@ -173,6 +178,7 @@ namespace VikingEngine.DSSWars.GameObject
                     //args.content.icontext(SpriteName.rtsUpkeepTime,string.Format(DssRef.lang.Hud_Upkeep ,TextLib.LargeNumber(upkeep)));
                     args.content.text(string.Format("Food reserves: {0}", TextLib.OneDecimal(food)));
                     args.content.text(string.Format("Food upkeep: {0}", TextLib.OneDecimal(foodUpkeep)));
+                    args.content.icontext(SpriteName.rtsUpkeepTime, string.Format("Food costs: {0}", TextLib.OneDecimal(foodCosts.displayValue_sec)));
 
                     if (PlatformSettings.DevBuild)
                     {
@@ -388,8 +394,6 @@ namespace VikingEngine.DSSWars.GameObject
             //frameModel.SetSpriteName(hover ? SpriteName.LittleUnitSelectionDotted : SpriteName.WhiteCirkle);
         }
 
-        
-
         virtual public void update()
         {
             if (id == 1391)
@@ -401,6 +405,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (inRender)
             {
                 updateMembers(Ref.DeltaGameTimeMs, true);
+                updateWorkerUnits();
             }
 
             if (groups.Count == 0)
@@ -570,6 +575,8 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
+            setWorkersInRenderState();
+
             var groupsCounter = groups.counter();
             while (groupsCounter.Next())
             {
@@ -581,7 +588,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void asynchGameObjectsUpdate(float time)
+        public void asynchGameObjectsUpdate(float time, bool oneMinute)
         {
             if (groups.Count > 0)
             {
@@ -680,6 +687,11 @@ namespace VikingEngine.DSSWars.GameObject
 
                 cullingTopLeft = minpos - CamCullingRadius;
                 cullingBottomRight = maxpos + CamCullingRadius;
+            }
+
+            if (oneMinute)
+            {
+                foodCosts.minuteUpdate();
             }
         }
 

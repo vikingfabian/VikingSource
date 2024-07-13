@@ -258,5 +258,16 @@ namespace VikingEngine
             }
             return dir;
         }
+
+        public static void IntToUShorts(int value, out ushort high, out ushort low)
+        {
+            high = (ushort)(value >> 16); // Get the high 16 bits
+            low = (ushort)(value & 0xFFFF); // Get the low 16 bits
+        }
+
+        public static int UShortsToInt(ushort high, ushort low)
+        {
+            return (high << 16) | low;
+        }
     }
 }

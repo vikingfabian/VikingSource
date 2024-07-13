@@ -250,15 +250,8 @@ namespace VikingEngine.DSSWars.Players
 
         void mouseHoverUpdate()
         {
-            //nearMapObjects.checkForUpdatedList();
-            //nearDetailUnits.checkForUpdatedList();
 
-            if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.LeftControl))
-            {
-                lib.DoNothing();
-            }
-
-                if (player.drawUnitsView.current.type == MapDetailLayerType.TerrainOverview2)
+            if (player.drawUnitsView.current.type == MapDetailLayerType.TerrainOverview2)
             {
                 AbsMapObject intersectObj = null;
                 var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects(tilePosition, false);
@@ -304,27 +297,48 @@ namespace VikingEngine.DSSWars.Players
                 }
 
                 bound.Radius = WorkerUnit.StandardBoundRadius;
-                var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsWorkerCities(tilePosition);
+                var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects_Workers(tilePosition, false);//DssRef.world.unitCollAreaGrid.MapControlsWorkerCities(tilePosition);
                 foreach (var m in nearMapObjects)
-                {   
-                    var city =  m.GetCity();
-                    if (city != null && city.workerUnits != null)
+                {
+                    switch (m.gameobjectType())
                     {
-                        foreach (var worker in city.workerUnits)
-                        {
-                            bound.Center = worker.WorldPos();
-                            float? distance = ray.Intersects(bound);
-                            if (distance.HasValue)
-                            { //intersects
-                                hover.obj = worker;
-                                break;
+                        case GameObjectType.City:
+                            var city = m.GetCity();
+                            if (city != null && city.workerUnits != null)
+                            {
+                                foreach (var worker in city.workerUnits)
+                                {
+                                    bound.Center = worker.WorldPos();
+                                    float? distance = ray.Intersects(bound);
+                                    if (distance.HasValue)
+                                    { //intersects
+                                        hover.obj = worker;
+                                        break;
+                                    }
+                                }
                             }
-                        }
+                            break;
+                        case GameObjectType.Army:
+                            var army = m.GetArmy();
+                            if (army.workerUnits != null)
+                            {
+                                foreach (var worker in army.workerUnits)
+                                {
+                                    bound.Center = worker.WorldPos();
+                                    float? distance = ray.Intersects(bound);
+                                    if (distance.HasValue)
+                                    { //intersects
+                                        hover.obj = worker;
+                                        break;
+                                    }
+                                }
+                            }
+                            break;
                     }
                 }
             }
 
-                lib.DoNothing();
+            
         }
 
         void controllerHoverUpdate()

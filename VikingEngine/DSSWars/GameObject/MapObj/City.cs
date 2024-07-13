@@ -25,6 +25,7 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City : GameObject.AbsMapObject
     {
+        const float TaxPerWorker = 0.2f;
         public const int ExpandWorkForce = AbsSoldierData.GroupDefaultCount * 4;
         public const int ExpandGuardSize = AbsSoldierData.GroupDefaultCount;
         public const int ExpandGuardSizeCost = 12000;
@@ -739,7 +740,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void updateIncome_asynch()
         {
-            income = Convert.ToInt32(Math.Floor(workForce.value - upkeep));
+            income = Convert.ToInt32(Math.Floor(workForce.value * TaxPerWorker - upkeep - blackMarketCosts.displayValue_sec));
         }
 
         public void onNewModel(LootFest.VoxelModelName name, Graphics.VoxelModel master)
@@ -790,15 +791,17 @@ namespace VikingEngine.DSSWars.GameObject
             water = Math.Min(water + 1, Maxwater);
         }
 
-        public void asynchGameObjectsUpdate()
+        public void asynchGameObjectsUpdate(bool minute)
         {
             collectBattles_asynch();
             detailObj.asynchUpdate();
-
             //strength
             strengthValue = 2.5f * guardCount / AbsSoldierData.GroupDefaultCount;
 
-            
+            if (minute)
+            {
+                blackMarketCosts.minuteUpdate();
+            }
         }
 
         //public void dominationCheck()

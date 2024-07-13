@@ -130,46 +130,46 @@ namespace VikingEngine.DSSWars.Display
                             if (city.damages.HasValue())
                             {
                                 content.Add(new RichboxButton(new List<AbsRichBoxMember>{
-                    new RichBoxImage(SpriteName.unitEmoteLove),
-                    new RichBoxText(DssRef.lang.CityOption_Repair),
-                },
+                                        new RichBoxImage(SpriteName.unitEmoteLove),
+                                        new RichBoxText(DssRef.lang.CityOption_Repair),
+                                    },
                                     new RbAction1Arg<bool>(buyRepairAction, true, SoundLib.menuBuy),
                                     new RbAction1Arg<bool>(buyRepairToolTip, true),
                                     city.buyRepair(false, true)));
                             }
-                            else
-                            {
-                                content.Add(new RichboxButton(new List<AbsRichBoxMember>{
-                        new RichBoxImage(SpriteName.WarsWorkerAdd),
-                        new RichBoxText(DssRef.lang.CityOption_ExpandWorkForce),
-                    },
-                                    new RbAction1Arg<int>(buyWorkforceAction, 1, SoundLib.menuBuy),
-                                    new RbAction1Arg<int>(buyWorkforceToolTip, 1),
-                                    city.buyWorkforce(false, 1)));
-                            }
+                            //else
+                            //{
+                            //    content.Add(new RichboxButton(new List<AbsRichBoxMember>{
+                            //            new RichBoxImage(SpriteName.WarsWorkerAdd),
+                            //            new RichBoxText(DssRef.lang.CityOption_ExpandWorkForce),
+                            //        },
+                            //        new RbAction1Arg<int>(buyWorkforceAction, 1, SoundLib.menuBuy),
+                            //        new RbAction1Arg<int>(buyWorkforceToolTip, 1),
+                            //        city.buyWorkforce(false, 1)));
+                            //}
 
 
                             content.newLine();
 
-                            if (city.battleGroup == null)
-                            {
-                                content.Add(new RichboxButton(new List<AbsRichBoxMember>{
-                        new RichBoxImage(SpriteName.birdFireball),
-                        new RichBoxText(DssRef.lang.CityOption_BurnItDown),
-                    },
-                                    new RbAction(city.burnItDown, SoundLib.menu),
-                                    new RbAction(burnToolTip),
-                                     city.damages.value < city.MaxDamages()));
+                            //if (city.battleGroup == null)
+                            //{
+                            //    content.Add(new RichboxButton(new List<AbsRichBoxMember>{
+                            //            new RichBoxImage(SpriteName.birdFireball),
+                            //            new RichBoxText(DssRef.lang.CityOption_BurnItDown),
+                            //        },
+                            //        new RbAction(city.burnItDown, SoundLib.menu),
+                            //        new RbAction(burnToolTip),
+                            //         city.damages.value < city.MaxDamages()));
 
-                                content.newLine();
-                            }
+                            //    content.newLine();
+                            //}
 
                             {
                                 int count = 1;
                                 content.Add(new RichboxButton(new List<AbsRichBoxMember>{
-                        new RichBoxImage(SpriteName.WarsGuardAdd),
-                        new RichBoxText( DssRef.lang.CityOption_ExpandGuardSize),
-                    },
+                                        new RichBoxImage(SpriteName.WarsGuardAdd),
+                                        new RichBoxText( DssRef.lang.CityOption_ExpandGuardSize),
+                                    },
                                     new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
                                     new RbAction1Arg<int>(buyGuardSizeToolTip, count),
                                     city.buyCityGuards(false, count)));
@@ -413,7 +413,9 @@ namespace VikingEngine.DSSWars.Display
             HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Worker, typeData.workForceCount() * count, city.workForce.Int());
             content.newLine();
             content.newLine();
-            HudLib.Upkeep(content, typeData.Upkeep() * count);
+
+            content.text(string.Format("Food energy upkeep {0}", typeData.energyPerSoldier));
+            //HudLib.Upkeep(content, typeData.Upkeep() * count);
             //content.icontext(SpriteName.rtsUpkeep, DssRef.lang.Hud_Upkeep + ": " + (typeData.Upkeep() * count).ToString());
             content.newParagraph();
 
@@ -426,7 +428,7 @@ namespace VikingEngine.DSSWars.Display
             content.h2(DssRef.lang.SoldierStats_Title);
             content.text(DssRef.lang.Hud_PurchaseTitle_Cost + ": " + TextLib.OneDecimal(opt.goldCost / (double)unitCount));
             //content.text(DssRef.lang.Hud_Upkeep + ": " + string.Format(HudLib.OneDecimalFormat, typeData.Upkeep() / (double)unitCount));
-            HudLib.Upkeep(content, typeData.Upkeep() / (double)unitCount);
+            //HudLib.Upkeep(content, typeData.Upkeep() / (double)unitCount);
 
             
             content.text(string.Format(DssRef.lang.SoldierStats_AttackStrengthLandSeaCity, dpsCompared(typeData.DPS_land(), dpsSoldier), dpsCompared(typeData.DPS_sea(), dpsSoldier), dpsCompared(typeData.DPS_structure(), dpsSoldier)));

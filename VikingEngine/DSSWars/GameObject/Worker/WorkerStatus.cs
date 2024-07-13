@@ -6,14 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.GameObject.Worker
 {
     struct WorkerStatus
     {
-        const int MaxEnergy = 400;
+        public const int TrossWorkerCarryWeight = 4;
+        const int MaxEnergy = 4000;
         
-
         public const int Subwork_Craft_Food = 0;
         public const int Subwork_Craft_Iron = 1;
 
@@ -28,15 +29,35 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         public ItemResource carry;
         public float energy;
+        //public bool isDeleted;
 
         public override string ToString()
         {
             return "Worker (" + work.ToString() + "), carry (" + carry.ToString() + ")";
         }
 
-        public void WorkComplete(City city)
+        void workComplete(Army army)
         {
-            energy -= processTimeLengthSec;
+            switch (work)
+            {
+                case WorkType.TrossCityTrade:
+                    var toCity = DssRef.world.tileGrid.Get(subTileEnd / WorldData.TileSubDivitions).City();
+                    ItemResource recieved = toCity.MakeTrade(ItemResourceType.Food, carry.amount, TrossWorkerCarryWeight);
+                    carry = recieved;
+
+                    createWorkOrder(WorkType.TrossReturnToArmy, 0, WP.ToSubTilePos_Centered(army.tilePos));
+                    break;
+                case WorkType.TrossReturnToArmy:
+                    army.food += carry.amount;
+                    work = WorkType.IsDeleted;
+                    break;
+            }
+            
+        }
+
+        void workComplete(City city)
+        {
+            energy -= processTimeLengthSec * ResourceLib.WorkTeamEnergyCost;
             SubTile subTile = DssRef.world.subTileGrid.Get(subTileEnd);
 
             bool tryRepeatWork = false;
@@ -94,7 +115,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                     }
 
-                   // work = WorkType.Idle;
+                    // work = WorkType.Idle;
                     break;
 
                 case WorkType.Plant:
@@ -234,6 +255,21 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             {
                 work = WorkType.Idle;
             }
+
+        }
+
+        public void WorkComplete(AbsMapObject mapObject)
+        {
+            switch (mapObject.gameobjectType())
+            {
+                case GameObjectType.City:
+                    workComplete( mapObject.GetCity());
+                    break;
+
+                case GameObjectType.Army:
+                    workComplete(mapObject.GetArmy());
+                    break;
+            }
         }
 
         void gatherWood(Resource.ItemResourceType resourceType, ref SubTile subTile)
@@ -251,7 +287,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             DssRef.world.subTileGrid.Set(subTileEnd, subTile);
         }
 
-        public void createWorkOrder(City city, WorkType work, int subWork, IntVector2 targetSubTile)
+
+
+        public void createWorkOrder(WorkType work, int subWork, IntVector2 targetSubTile)
         {
             this.work = work;
             this.workSubType = subWork;
@@ -280,11 +318,22 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     break;
 
                 case WorkType.LocalTrade:
-                    ItemResourceType tradeForItem = (ItemResourceType)workSubType;
-                    var toCity = DssRef.world.tileGrid.Get(targetSubTile / WorldData.TileSubDivitions).City();
-                    int goldCost = toCity.SellCost(tradeForItem);
+                    {
+                        ItemResourceType tradeForItem = (ItemResourceType)workSubType;
+                        var toCity = DssRef.world.tileGrid.Get(targetSubTile / WorldData.TileSubDivitions).City();
+                        int goldCost = toCity.SellCost(tradeForItem);
 
-                    carry = new ItemResource(ItemResourceType.Gold, 1, 1, goldCost);
+                        carry = new ItemResource(ItemResourceType.Gold, 1, 1, goldCost * TrossWorkerCarryWeight);
+                    }
+                    break;
+
+                case WorkType.TrossCityTrade:
+                    {
+                        var toCity = DssRef.world.tileGrid.Get(targetSubTile / WorldData.TileSubDivitions).City();
+                        int goldCost = toCity.SellCost(ItemResourceType.Food);
+
+                        carry = new ItemResource(ItemResourceType.Gold, 1, 1, goldCost);
+                    }
                     break;
             }
         }
@@ -299,8 +348,10 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     return 2f;
                 case WorkType.PickUpProduce:
                     return 3f;
+                case WorkType.TrossReturnToArmy:
                 case WorkType.DropOff:
                     return 1f;
+                case WorkType.TrossCityTrade:
                 case WorkType.LocalTrade:
                     return 4f;
                 case WorkType.GatherFoil:
