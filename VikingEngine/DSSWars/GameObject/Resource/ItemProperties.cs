@@ -20,11 +20,22 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             items[(int)ItemResourceType.SoftWood] = new ItemProperties(1f / 30);
             items[(int)ItemResourceType.Stone] = new ItemProperties(1f / CarryStones);
             items[(int)ItemResourceType.IronOre] = new ItemProperties(1f / 10);
+            items[(int)ItemResourceType.GoldOre] = new ItemProperties(1f / 10);
             items[(int)ItemResourceType.Egg] = new ItemProperties(1f / 60);
             items[(int)ItemResourceType.Pig] = new ItemProperties(1f);
             items[(int)ItemResourceType.Hen] = new ItemProperties(1f / 4);
             items[(int)ItemResourceType.Wheat] = new ItemProperties(1f / 10);
             items[(int)ItemResourceType.Food] = new ItemProperties(1f / CarryFood);
+
+#if !DEBUG
+            for (int i = 0; i < items.Length; ++i)
+            {
+                if (items[i] == null)
+                { 
+                    items[i] = new ItemProperties(1f);
+                }
+            }
+#endif
         }
 
         public static int CarryAmount(ItemResourceType item, float maxWeight = 1f)
