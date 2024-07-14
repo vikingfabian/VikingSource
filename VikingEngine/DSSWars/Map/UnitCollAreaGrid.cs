@@ -60,11 +60,7 @@ namespace VikingEngine.DSSWars.Map
             {
                 for (int x = 0; x < grid.Size.X; ++x)
                 {
-
-                    //while (grid.LoopNextSel())
-                    //{
                     grid.array[x, y].beginProcess();
-                    //}
                 }
             }
 
@@ -93,10 +89,6 @@ namespace VikingEngine.DSSWars.Map
             }
 
             //MOVE POINTERS
-            //grid.LoopBegin();
-
-            //while (grid.LoopNextSel())
-            //{
             for (int y = 0; y < grid.Size.Y; ++y)
             {
                 for (int x = 0; x < grid.Size.X; ++x)
@@ -104,19 +96,6 @@ namespace VikingEngine.DSSWars.Map
                     grid.array[x, y].endProcess();
                 }
             }
-
-            //UnitCollArea getOrCreateArea(IntVector2 tilePos)
-            //{
-            //    tilePos /= UnitGridSquareWidth;
-            //    UnitCollArea area = grid.array[tilePos.X, tilePos.Y];
-            //    if (area. == null)
-            //    {
-            //        area = new UnitCollArea();
-            //        grid.array[tilePos.X, tilePos.Y] = area;
-            //    }
-
-            //    return area;
-            //}
         }
 
         IntVector2 previousBattleGroupCheckTilePos = IntVector2.NegativeOne;
@@ -153,17 +132,20 @@ namespace VikingEngine.DSSWars.Map
                                 }                                
                             }
 
-                            var armies_sp = area.armies;
-                            if (armies_sp != null)
+                            lock (area.armies)
                             {
-                                foreach (var m in armies_sp)
+                                //var armies_sp = area.armies;
+                                if (area.armies != null)
                                 {
-                                    if (m.battleGroup == null &&
-                                        m.tilePos.SideLength(tilePos) <= DssLib.BattleChainConflictRadius &&
-                                        m.IdleObjetive() &&
-                                       factions.Contains(m.faction))
+                                    foreach (var m in area.armies)
                                     {
-                                        battleGroupNearMapObjects.Add(m);
+                                        if (m.battleGroup == null &&
+                                            m.tilePos.SideLength(tilePos) <= DssLib.BattleChainConflictRadius &&
+                                            m.IdleObjetive() &&
+                                           factions.Contains(m.faction))
+                                        {
+                                            battleGroupNearMapObjects.Add(m);
+                                        }
                                     }
                                 }
                             }
@@ -189,10 +171,13 @@ namespace VikingEngine.DSSWars.Map
                 {
                     playerNearMapObjects.AddRange(area.cities);
                 }
-                var armies_sp = area.armies;
-                if (armies_sp != null)
+                lock (area.armies)
                 {
-                    playerNearMapObjects.AddRange(armies_sp);
+                    //var armies_sp = area.armies;
+                    if (area.armies != null)
+                    {
+                        playerNearMapObjects.AddRange(area.armies);
+                    }
                 }
             }
 
@@ -213,10 +198,14 @@ namespace VikingEngine.DSSWars.Map
                             {
                                 playerNearMapObjects.AddRange(area.cities);
                             }
-                            var armies_sp = area.armies;
-                            if (armies_sp != null)
+
+                            lock (area.armies)
                             {
-                                playerNearMapObjects.AddRange(armies_sp);
+                                //var armies_sp = area.armies;
+                                if (area.armies != null)
+                                {
+                                    playerNearMapObjects.AddRange(area.armies);
+                                }
                             }
                         }
                     }
@@ -258,12 +247,15 @@ namespace VikingEngine.DSSWars.Map
                     {
                         if (grid.TryGet(x, y, out area))
                         {
-                            var groups_sp = area.groups;
-                            if (groups_sp != null)
+                            //var groups_sp = area.groups;
+                            lock (area.groups)
                             {
-                                for (int i = 0; i < groups_sp.Count; ++i)
+                                if (area.groups != null)
                                 {
-                                    groups_sp[i].soldiers.toList(ref playerNearDetailUnits);
+                                    for (int i = 0; i < area.groups.Count; ++i)
+                                    {
+                                        area.groups[i].soldiers.toList(ref playerNearDetailUnits);
+                                    }
                                 }
                             }
                         }
@@ -287,14 +279,17 @@ namespace VikingEngine.DSSWars.Map
                 {
                     if (grid.TryGet(x, y, out area))
                     {
-                        var groups_sp = area.groups;
-                        if (groups_sp != null)
+                        //var groups_sp = area.groups;
+                        lock (area.groups)
                         {
-                            foreach (var m in groups_sp)
+                            if (area.groups != null)
                             {
-                                if (DssRef.diplomacy.InWar(faction, m.army.faction))
+                                foreach (var m in area.groups)
                                 {
-                                    groups_nearUpdate.Add(m);
+                                    if (DssRef.diplomacy.InWar(faction, m.army.faction))
+                                    {
+                                        groups_nearUpdate.Add(m);
+                                    }
                                 }
                             }
                         }
@@ -318,14 +313,17 @@ namespace VikingEngine.DSSWars.Map
                 {
                     if (grid.TryGet(x, y, out area))
                     {
-                        var groups_sp = area.groups;
-                        if (groups_sp != null)
+                        // var groups_sp = area.groups;
+                        lock (area.groups)
                         {
-                            foreach (var m in groups_sp)
+                            if (area.groups != null)
                             {
-                                if (m.army.faction != faction)
+                                foreach (var m in area.groups)
                                 {
-                                    groupsAndCities_nearUpdate.Add(m);
+                                    if (m.army.faction != faction)
+                                    {
+                                        groupsAndCities_nearUpdate.Add(m);
+                                    }
                                 }
                             }
                         }
@@ -357,16 +355,19 @@ namespace VikingEngine.DSSWars.Map
                 {
                     if (grid.TryGet(x, y, out area))
                     {
-                        var armies_sp = area.armies;
-                        if (armies_sp != null)
+                        lock (area.armies)
                         {
-                            for (int aix =0; aix< armies_sp.Count; ++aix)//each (var a in armies_sp)
+                            //var armies_sp = area.armies;
+                            if (area.armies != null)
                             {
-                                var army = armies_sp[aix];
-                                if (army.faction != faction && 
-                                    DssRef.diplomacy.InWar(faction, army.faction))
+                                for (int aix = 0; aix < area.armies.Count; ++aix)
                                 {
-                                    units.Add(army);
+                                    var army = area.armies[aix];
+                                    if (army.faction != faction &&
+                                        DssRef.diplomacy.InWar(faction, army.faction))
+                                    {
+                                        units.Add(army);
+                                    }
                                 }
                             }
                         }
@@ -403,18 +404,21 @@ namespace VikingEngine.DSSWars.Map
                 {
                     if (grid.TryGet(x, y, out area))
                     {
-                        var groups_sp = area.groups;
-                        if (groups_sp != null)
+                        // var groups_sp = area.groups;
+                        lock (area.groups)
                         {
-                            foreach (var m in groups_sp)
+                            if (area.groups != null)
                             {
-                                if (m.army.faction == faction)
+                                foreach (var m in area.groups)
                                 {
-                                    friendlyGroupsAndCities_nearUpdate.Add(m);
-                                }
-                                else
-                                {
-                                    groupsAndCities_nearUpdate.Add(m);
+                                    if (m.army.faction == faction)
+                                    {
+                                        friendlyGroupsAndCities_nearUpdate.Add(m);
+                                    }
+                                    else
+                                    {
+                                        groupsAndCities_nearUpdate.Add(m);
+                                    }
                                 }
                             }
                         }
@@ -513,20 +517,23 @@ namespace VikingEngine.DSSWars.Map
                 {
                     if (grid.TryGet(x, y, out area))
                     {
-                        var armies_sp = area.armies;
-                        //var groups_sp = area.groups;
-                        if (armies_sp != null)
+                        lock (area.armies)
                         {
-                            foreach (var m in armies_sp)//crash (ändras i realtid)
+                            //var armies_sp = area.armies;
+                            //var groups_sp = area.groups;
+                            if (area.armies != null)
                             {
-                                if (m.faction == factionFilter)
+                                foreach (var m in area.armies)//crash (ändras i realtid)
                                 {
-                                    //prevArmy = m.army;
-                                    if (!armies.Contains(m))
+                                    if (m.faction == factionFilter)
                                     {
-                                        armies.Add(m);
+                                        //prevArmy = m.army;
+                                        if (!armies.Contains(m))
+                                        {
+                                            armies.Add(m);
+                                        }
+                                        //armies.Add(m);
                                     }
-                                    //armies.Add(m);
                                 }
                             }
                         }
@@ -551,18 +558,21 @@ namespace VikingEngine.DSSWars.Map
                 {
                     if (grid.TryGet(x, y, out area))
                     {
-                        var groups_sp = area.groups;
-                        if (groups_sp != null)
+                        lock (area.groups)
                         {
-                            foreach (var m in groups_sp)//crash (ändras i realtid)
+                            //var groups_sp = area.groups;
+                            if (area.groups != null)
                             {
-                                if (m.army.faction != faction &&
-                                    m.army != prevArmy)
+                                foreach (var m in area.groups)//crash (ändras i realtid)
                                 {
-                                    prevArmy = m.army;
-                                    if (!armies.Contains(m.army))
+                                    if (m.army.faction != faction &&
+                                        m.army != prevArmy)
                                     {
-                                        armies.Add(m.army);
+                                        prevArmy = m.army;
+                                        if (!armies.Contains(m.army))
+                                        {
+                                            armies.Add(m.army);
+                                        }
                                     }
                                 }
                             }
@@ -583,17 +593,20 @@ namespace VikingEngine.DSSWars.Map
                 {
                     if (grid.TryGet(x, y, out area))
                     {
-                        var armies_sp = area.armies;
-                        if (armies_sp != null)
+                        lock (area.armies)
                         {
-                            for (int i = 0; i < armies_sp.Count; ++i)
+                            //var armies_sp = area.armies;
+                            if (area.armies != null)
                             {
-                                var army = armies_sp[i];
-                                if (army != ignore &&
-                                    army.faction == factionFilter &&
-                                    (army.tilePos - tilePos).Length() <= maxTileDistance)
+                                for (int i = 0; i < area.armies.Count; ++i)
                                 {
-                                    return army;
+                                    var army = area.armies[i];
+                                    if (army != ignore &&
+                                        army.faction == factionFilter &&
+                                        (army.tilePos - tilePos).Length() <= maxTileDistance)
+                                    {
+                                        return army;
+                                    }
                                 }
                             }
                         }
@@ -751,24 +764,26 @@ namespace VikingEngine.DSSWars.Map
                             }
                         }
                     }
-
-                    var armies_sp = area.armies;
-                    if (armies_sp != null)
+                    lock (area.armies)
                     {
-                        foreach (var army in armies_sp)
+                        //var armies_sp = area.armies;
+                        if (area.armies != null)
                         {
-                            if (army.strengthValue <= maxStrengthValue)
+                            foreach (var army in area.armies)
                             {
-                                if (factionFilter != null)
+                                if (army.strengthValue <= maxStrengthValue)
                                 {
-                                    if (army.faction == factionFilter)
+                                    if (factionFilter != null)
+                                    {
+                                        if (army.faction == factionFilter)
+                                        {
+                                            nearMapObjects.Add(army);
+                                        }
+                                    }
+                                    else if (myFaction != army.faction)
                                     {
                                         nearMapObjects.Add(army);
                                     }
-                                }
-                                else if (myFaction != army.faction)
-                                {
-                                    nearMapObjects.Add(army);
                                 }
                             }
                         }
@@ -785,20 +800,20 @@ namespace VikingEngine.DSSWars.Map
 
     class UnitCollArea
     {
-        public List<GameObject.SoldierGroup> processingGroups = null;
-        public List<GameObject.SoldierGroup> groups = null;
+        public List<GameObject.SoldierGroup> processingGroups = new List<GameObject.SoldierGroup>(16);
+        public List<GameObject.SoldierGroup> groups = new List<GameObject.SoldierGroup>(16);
 
-        public List<GameObject.Army> processingArmies = null;
-        public List<GameObject.Army> armies = null;
+        public List<GameObject.Army> processingArmies = new List<GameObject.Army>(2);//null;
+        public List<GameObject.Army> armies = new List<GameObject.Army>(2);//null;
 
         public List<GameObject.City> cities = new List<City>(2);
 
         public void processAdd(GameObject.SoldierGroup group)
         {
-            if (processingGroups == null)
-            {
-                processingGroups = new List<GameObject.SoldierGroup>(16);
-            }
+            //if (processingGroups == null)
+            //{
+            //    processingGroups = new List<GameObject.SoldierGroup>(16);
+            //}
 
             processingGroups.Add(group);
         }
@@ -821,28 +836,36 @@ namespace VikingEngine.DSSWars.Map
 
         public void endProcess()
         {
-            if (processingGroups == null || processingGroups.Count == 0)
+            processingGroups.TrimExcess();
+
+            lock (groups)
             {
-                processingGroups = null;
-                groups = null;
-            }
-            else
-            {
-                var pointer = groups;
-                groups = processingGroups;
-                processingGroups = pointer;
+                //if (processingGroups == null || processingGroups.Count == 0)
+                //{
+                //    processingGroups = null;
+                //    groups = null;
+                //}
+                //else
+                //{
+                    var pointer = groups;
+                    groups = processingGroups;
+                    processingGroups = pointer;
+                //}
             }
 
-            if (processingArmies == null || processingArmies.Count == 0)
+            lock (armies)
             {
-                processingArmies = null;
-                armies = null;
-            }
-            else
-            {
-                var pointer = armies;
-                armies = processingArmies;
-                processingArmies = pointer;
+                //if (processingArmies == null || processingArmies.Count == 0)
+                //{
+                //    processingArmies = null;
+                //    armies = null;
+                //}
+                //else
+                //{
+                    var pointer = armies;
+                    armies = processingArmies;
+                    processingArmies = pointer;
+                //}
             }
         }
     }
