@@ -44,6 +44,11 @@ Art
 - Late Summer / Early Autumn: Game world championship
 
 
+#current
+English, Simplified Chinese, Japanese, Russian, Spanish
+
+Fight for world domination in a epic scale RTS
+
 /English
 /Simplified Chinese
 /Russian 9%
