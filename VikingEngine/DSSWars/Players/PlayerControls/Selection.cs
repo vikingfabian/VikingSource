@@ -14,6 +14,7 @@ namespace VikingEngine.DSSWars.Players
     class Selection
     {
         public AbsGameObject obj = null;
+        public SelectedSubTile subTile;
         AbsGameObject prevObj = null;
         public bool isNew = false;
 
@@ -29,7 +30,7 @@ namespace VikingEngine.DSSWars.Players
         //public Army sendUnitsToArmy;
         //public bool menuStateChange = false;
 
-        public Selection(LocalPlayer player)
+        public Selection(LocalPlayer player, bool isHover)
         {
             frameModel = new Mesh(LoadedMesh.SelectSquareDotted, Vector3.Zero, Vector3.One,
                TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
@@ -37,6 +38,8 @@ namespace VikingEngine.DSSWars.Players
             //frameModel.AddToRender(DrawGame.UnitDetailLayer);
             frameModel.setVisibleCamera(player.playerData.localPlayerIndex);
             frameModel.Visible = false;
+
+            subTile = new SelectedSubTile(player, isHover);
         }
 
         public void ClearSelectionModels()
@@ -108,7 +111,6 @@ namespace VikingEngine.DSSWars.Players
         public void end()
         {
             isNew = prevObj != obj;
-
         }
 
         public bool clear()
@@ -133,18 +135,60 @@ namespace VikingEngine.DSSWars.Players
             }
 
             return false;
-            //menuState.Clear();
-            //menuStateChange = false;
+        }
+                
+    }
+
+    class SelectedSubTile
+    {
+        public bool hasSelection = false;
+        public IntVector2 subTilePos;
+        SubTile subTile;
+        Mesh model;
+        public bool isNew = false;
+
+        public SelectedSubTile(LocalPlayer player, bool isHover)
+        {
+            model = new Mesh(isHover? LoadedMesh.SelectSquareDotted : LoadedMesh.SelectSquareSolid, Vector3.Zero, new Vector3(WorldData.SubTileWidth * 1.1f),
+                TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
+
+            model.setVisibleCamera(player.playerData.localPlayerIndex);
+            model.AddToRender(DrawGame.UnitDetailLayer);
+            model.Visible = false;
         }
 
-        //public void clearSelection()
-        //{
-        //    obj = null;
-        //    frameModel.Visible = false;
-        //    guiModels.DeleteAll();
-        //    menuState.Clear();
-        //}
+        public void update(IntVector2 subTilePos)
+        {            
+            isNew = false;
 
-        
+            if (DssRef.world.subTileGrid.TryGet(subTilePos, out subTile))
+            {
+                if (this.subTilePos != subTilePos || DssRef.time.oneSecond)
+                {
+                    this.subTilePos = subTilePos;
+                    isNew = true;
+
+                    if (subTile.mainTerrain != TerrainMainType.DefaultLand &&
+                        subTile.mainTerrain != TerrainMainType.DefaultSea)
+                    {
+                        hasSelection = true;
+
+                        model.position = WP.SubtileToWorldPosXZ_Centered(subTilePos);
+                        model.position.Y = subTile.groundY;
+                    }
+                    else
+                    {
+                        hasSelection = false;
+                    }
+                }
+
+            }
+            else
+            {
+                hasSelection = false;
+            }
+
+            model.Visible = hasSelection;
+        }
     }
 }

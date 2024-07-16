@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
@@ -23,6 +25,10 @@ namespace VikingEngine.DSSWars.Players
 
         Ray ray;
         Plane groundPlane = new Plane(Vector3.UnitY, 0);
+
+        BoundingBox subTileBoundingBox = new BoundingBox();
+        static readonly Vector3 SubTileBoxSz = new Vector3(WorldData.SubTileWidth, WorldData.SubTileWidth * 3f, WorldData.SubTileWidth);
+
         SafeCollectAsynchList<AbsMapObject> nearMapObjects = new SafeCollectAsynchList<AbsMapObject>(8);
         SafeCollectAsynchList<AbsSoldierUnit> nearDetailUnits = new SafeCollectAsynchList<AbsSoldierUnit>(64);
 
@@ -54,8 +60,8 @@ namespace VikingEngine.DSSWars.Players
             camera.UseTerrainCollisions = false;
             camera.zoomChaseLengthPercentage = 0.5f;
 
-            hover = new Selection(player);
-            selection = new Selection(player);
+            hover = new Selection(player, true);
+            selection = new Selection(player, false);
             
             player.playerData.view.Camera = camera;
 
@@ -151,11 +157,14 @@ namespace VikingEngine.DSSWars.Players
 
                     IntVector2 prevTile = tilePosition;
                     tilePosition = WP.ToTilePos(mousePosition);
-                    subTilePosition = WP.ToSubTilePos(mousePosition);
+                    
+
+
                     onNewTile = prevTile != tilePosition;
 
                     hover.begin(true);
                     {
+                        subTileHoverUpdate();
                         mouseHoverUpdate();
                     }
                     hover.end();
@@ -175,12 +184,70 @@ namespace VikingEngine.DSSWars.Players
             updateCamera();
         }
 
+        
+
+        //List<Graphics.Mesh> debugmeshes = new List<Graphics.Mesh>();
+
         Vector3 screenPosToWorldPos(Vector2 screenPos)
         {
+            
             ray = camera.CastRay(screenPos, player.playerData.view.Viewport);
 
+            //Place cubes and find the exact spot of the subtile
             bool hasValue;
-            return this.camera.CastRayInto3DPlane(ray, groundPlane, out hasValue);
+            Vector3 result = this.camera.CastRayInto3DPlane(ray, groundPlane, out hasValue);
+            subTilePosition = WP.ToSubTilePos(mousePosition);
+
+            IntVector2 subTilePositionInLoop= IntVector2.Zero;
+            //IntVector2 closest = IntVector2.NegativeOne;
+            //float closestDist = float.MaxValue;
+
+            //foreach (Graphics.Mesh mesh in debugmeshes)
+            //{
+            //    mesh.position = Vector3.Zero;
+            //}
+            //int currentMesh = 0;
+            
+            SubTile subTile;
+            for (int y = 6; y >= -1; --y)
+            {
+                subTilePositionInLoop.Y = subTilePosition.Y + y;
+                for (int x = -1; x <= 1; ++x)
+                {
+                    subTilePositionInLoop.X = subTilePosition.X + x;
+
+                    Vector3 min = WP.SubtileToWorldPosXZ(subTilePositionInLoop);
+                    if (DssRef.world.subTileGrid.TryGet(subTilePositionInLoop, out subTile))
+                    {
+                        min.Y = subTile.groundY - SubTileBoxSz.Y;
+
+                        subTileBoundingBox.Min = min;
+                        subTileBoundingBox.Max = min + SubTileBoxSz;
+
+                        float? distance = ray.Intersects(subTileBoundingBox);
+                        if (distance.HasValue) 
+                        {
+                            subTilePosition = subTilePositionInLoop;
+
+                            goto exitLoop;
+                        }
+                    }
+                }
+            }
+
+            exitLoop:
+
+            if (Input.Keyboard.Ctrl)
+            {
+                lib.DoNothing();
+            }
+
+            //if (closest.X >= 0)
+            //{
+            //    subTilePosition = closest;
+            //}
+
+            return result;
         }
 
         public void asynchUpdate_depricated()
@@ -246,6 +313,18 @@ namespace VikingEngine.DSSWars.Players
         bool lookingForAttackTarget()
         {
             return selection.obj != null && selection.obj.gameobjectType() == GameObjectType.Army;
+        }
+
+        void subTileHoverUpdate()
+        {
+            if (player.drawUnitsView.current.type == MapDetailLayerType.UnitDetail1)
+            {
+                hover.subTile.update(subTilePosition);
+            }
+            else
+            {
+                hover.subTile.hasSelection = false;
+            }
         }
 
         void mouseHoverUpdate()
@@ -337,8 +416,6 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
             }
-
-            
         }
 
         void controllerHoverUpdate()

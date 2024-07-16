@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars
         }
         public static IntVector2 ToSubTilePos(Vector3 pos)
         {
-            return new IntVector2(pos.X * WorldData.TileSubDivitions + WorldData.HalfTileSubDivitions, pos.Z * WorldData.TileSubDivitions + WorldData.HalfTileSubDivitions);
+            return new IntVector2((pos.X - WorldData.SubTileHalfWidth) * WorldData.TileSubDivitions + WorldData.HalfTileSubDivitions , (pos.Z - WorldData.SubTileHalfWidth) * WorldData.TileSubDivitions + WorldData.HalfTileSubDivitions );
         }
         public static IntVector2 ToSubTilePos_Centered(IntVector2 tilePos)
         {
@@ -48,9 +48,17 @@ namespace VikingEngine.DSSWars
             return new IntVector2(pos.X * WorldData.TileSubDivitions, pos.Y * WorldData.TileSubDivitions);
         }
 
-        public static Vector3 SubtileToWorldPos(IntVector2 subtilePos)
+        public static Vector3 SubtileToWorldPosXZ(IntVector2 subtilePos)
         {
             return new Vector3(subtilePos.X * WorldData.SubTileWidth - WorldData.TileHalfWidth, 0, subtilePos.Y * WorldData.SubTileWidth - WorldData.TileHalfWidth);
+        }
+
+        public static Vector3 SubtileToWorldPosXZ_Centered(IntVector2 subtilePos)
+        {
+            return new Vector3(
+                subtilePos.X * WorldData.SubTileWidth - WorldData.TileHalfWidth + WorldData.SubTileHalfWidth, 
+                0, 
+                subtilePos.Y * WorldData.SubTileWidth - WorldData.TileHalfWidth + WorldData.SubTileHalfWidth);
         }
 
         public static IntVector2 SubtileToTilePos(IntVector2 subtilePos)

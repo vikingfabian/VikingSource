@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             model = mapObject.GetFaction().AutoLoadModelInstance(
                  LootFest.VoxelModelName.war_worker, AbsDetailUnitData.StandardModelScale * 0.9f, true);
 
-            model.position = WP.SubtileToWorldPos(status.subTileStart);
+            model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
 
             checkForGoal(true);
 
@@ -238,7 +238,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 {
                     //remove hidden status
                     model.Visible = true;
-                    model.position = WP.SubtileToWorldPos(status.subTileStart);
+                    model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
                 }
 
                 if (status.subTileEnd == status.subTileStart)
@@ -250,7 +250,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 {
                     //lib.DoNothing();
 
-                    goalPos = WP.SubtileToWorldPos(status.subTileEnd);
+                    goalPos = WP.SubtileToWorldPosXZ(status.subTileEnd);
                     goalPos.X += WorldData.SubTileWidth * 0.25f;
                     goalPos.Z += WorldData.SubTileWidth;
 

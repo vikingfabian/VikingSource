@@ -304,7 +304,7 @@ namespace VikingEngine.DSSWars.Map
             //    return playerNearMapObjects;
             //}
 
-            const int Radius = 2;
+            const int Radius = 3;
 
             for (int y = areaPos.Y - Radius; y <= areaPos.Y + Radius; ++y)
             {
