@@ -583,7 +583,7 @@ namespace VikingEngine.DSSWars.GameObject
                 var soldiers = groupsCounter.sel.soldiers.counter();
                 while (soldiers.Next())
                 {
-                    soldiers.sel.setDetailLevel(inRender_overviewLayer);
+                    soldiers.sel.setDetailLevel(inRender_detailLayer);
                 }
             }
         }
@@ -697,7 +697,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         override public void asynchCullingUpdate(float time, bool bStateA)
         {
-            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, bStateA, ref cullingTopLeft, ref cullingBottomRight);
+            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, ref cullingTopLeft, ref cullingBottomRight);
         }
 
         public void asynchSleepObjectsUpdate(float time)

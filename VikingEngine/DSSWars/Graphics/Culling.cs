@@ -60,15 +60,15 @@ namespace VikingEngine.DSSWars
             cullingStateA = !cullingStateA;
         }
 
-        public void InRender_Asynch(ref bool enterRender, IntVector2 pos)
+        public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, IntVector2 pos)
         {
             Map.Tile tile;
             if (DssRef.world.tileGrid.TryGet(pos, out tile))
             {
                 if (cullingStateA)
-                { GetRenderState_enter(ref tile.bits_renderStateA, ref enterRender); }
+                { GetRenderState_enter(ref tile.bits_renderStateA, ref enterRender_overviewLayer, ref enterRender_detailLayer); }
                 else
-                { GetRenderState_enter(ref tile.bits_renderStateB, ref enterRender); }
+                { GetRenderState_enter(ref tile.bits_renderStateB, ref enterRender_overviewLayer, ref enterRender_detailLayer); }
                 //byte value = cullingStateA ? tile.renderStateA : tile.renderStateB;
                 //if (value == NoRender)
                 //{
@@ -102,54 +102,61 @@ namespace VikingEngine.DSSWars
             //enterRender = false;
         }
 
-        public void InRender_Asynch(ref bool enterRender, bool bStateA, ref Vector2 minpos, ref Vector2 maxpos)
+        public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, bool bStateA, ref Vector2 minpos, ref Vector2 maxpos)
         {
             for (int cameraIndex = 0; cameraIndex < Ref.draw.ActivePlayerScreens.Count; ++cameraIndex)
             {
                 var state = bStateA ? players[cameraIndex].stateA : players[cameraIndex].stateB;
                 if (state.enterArea.IntersectRect(minpos, maxpos))
-                { 
-                    enterRender = true;
+                {
+                    enterRender_overviewLayer = state.overviewLayer;
+                    enterRender_detailLayer = state.detailLayer;
                     return;
                 }
             }
 
-            enterRender = false;
+            enterRender_overviewLayer = false;
+            enterRender_detailLayer = false;
         }
 
-        const byte InRenderBit = 1, EnterRenderBit = 2, TerrainOverviewLayerBit = 4, UnitDetailLayerBit = 8;
+        const byte TerrainOverview_EnterRenderBit = 1, TerrainOverview_InRenderBit = 2, UnitDetail_EnterRenderBit = 4, UnitDetail_InRenderBit = 8;
 
-        public static void SetRenderState(ref byte renderState, bool inRender, bool enterRender, bool terrainOverviewLayer, bool unitDetailLayer)
+        public static void SetRenderState(ref byte renderState, 
+            bool terrainOverviewLayer_enterRender, bool terrainOverviewLayer_inRender, 
+            bool unitDetailLayer_enterRender, bool unitDetailLayer_inRender)
         {
-            if (inRender)
+            if (terrainOverviewLayer_enterRender)
             {
-                renderState |= InRenderBit;
+                renderState |= TerrainOverview_EnterRenderBit;
             }
-            if (enterRender)
+            if (terrainOverviewLayer_inRender)
             {
-                renderState |= EnterRenderBit;
+                renderState |= TerrainOverview_InRenderBit;
             }
-            if (terrainOverviewLayer)
+            if (unitDetailLayer_enterRender)
             {
-                renderState |= TerrainOverviewLayerBit;
+                renderState |= UnitDetail_EnterRenderBit;
             }
-            if (unitDetailLayer)
+            if (unitDetailLayer_inRender)
             {
-                renderState |= UnitDetailLayerBit;
+                renderState |= UnitDetail_InRenderBit;
             }
         }
 
-        public static void GetRenderState(ref byte renderState, out bool inRender, out bool enterRender, out bool terrainOverviewLayer, out bool unitDetailLayer)
+        public static void GetRenderState(ref byte renderState, 
+            out bool terrainOverviewLayer_enterRender, out bool terrainOverviewLayer_inRender, 
+            out bool unitDetailLayer_enterRender, out bool unitDetailLayer_inRender)
         {
-            inRender = (renderState & InRenderBit) != 0;
-            enterRender = (renderState & EnterRenderBit) != 0;
-            terrainOverviewLayer = (renderState & TerrainOverviewLayerBit) != 0;
-            unitDetailLayer = (renderState & UnitDetailLayerBit) != 0;
+            terrainOverviewLayer_enterRender = (renderState & TerrainOverview_EnterRenderBit) != 0;
+            terrainOverviewLayer_inRender = (renderState & TerrainOverview_InRenderBit) != 0;
+            unitDetailLayer_enterRender = (renderState & UnitDetail_EnterRenderBit) != 0;
+            unitDetailLayer_inRender = (renderState & UnitDetail_InRenderBit) != 0;
         }
 
-        public static void GetRenderState_enter(ref byte renderState, ref bool enterRender)
+        public static void GetRenderState_enter(ref byte renderState, ref bool terrainOverviewLayer_enterRender, ref bool unitDetailLayer_enterRender)
         {
-            enterRender |= (renderState & EnterRenderBit) != 0;
+            terrainOverviewLayer_enterRender |= (renderState & TerrainOverview_EnterRenderBit) != 0;
+            unitDetailLayer_enterRender |= (renderState & UnitDetail_EnterRenderBit) != 0;
         }
 
     }
@@ -207,7 +214,11 @@ namespace VikingEngine.DSSWars
                 //}
                 PlayerCullingState state = bStateA ? stateA : stateB;
                 state.detailLayer = detailLayer.current.DrawDetailLayer;
-                state.overviewLayer = detailLayer.current.DrawOverview;
+                state.overviewLayer = detailLayer.current.DrawNormal;
+                if (detailLayer.prevLayer != null)
+                {
+                    state.overviewLayer |= detailLayer.prevLayer.DrawNormal;
+                }
                 state.async_playerViewToRenderState(bStateA, screenArea, detailLayer.current);
             }
 

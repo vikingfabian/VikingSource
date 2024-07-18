@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void asynchCullingUpdate(float time, bool bStateA)
         {
-            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, tilePos);
+            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, tilePos);
         }
         
 
@@ -56,6 +56,11 @@ namespace VikingEngine.DSSWars.GameObject
             if (enterRender_overviewLayer_async != inRender_overviewLayer)
             {
                 inRender_overviewLayer = enterRender_overviewLayer_async;
+                setInRenderState();
+            }
+            if (enterRender_detailLayer_async != inRender_detailLayer)
+            {
+                inRender_detailLayer = enterRender_detailLayer_async;
                 setInRenderState();
             }
         }

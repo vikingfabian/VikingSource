@@ -853,7 +853,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             setWorkersInRenderState();
-            detailObj.setDetailLevel(inRender_overviewLayer);
+            detailObj.setDetailLevel(inRender_detailLayer);
         }
 
         //protected override bool mayAttack(AbsMapObject otherObj)

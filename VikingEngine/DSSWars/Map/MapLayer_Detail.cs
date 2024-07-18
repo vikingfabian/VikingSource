@@ -74,7 +74,7 @@ namespace VikingEngine.DSSWars.Map
             for (int i = tiles.Count - 1; i >= 0; --i)
             {
                 var tile = DssRef.world.tileGrid.Get(tiles[i].pos);
-                byte render = DssRef.state.culling.cullingStateA ? tile.renderStateA : tile.renderStateB;
+                byte render = DssRef.state.culling.cullingStateA ? tile.bits_renderStateA : tile.bits_renderStateB;
                 if (render == Culling.NoRender || onSecondUpdate)
                 {
                     tile.hasTileInRender = false;
