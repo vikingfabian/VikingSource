@@ -59,7 +59,7 @@ namespace VikingEngine.Engine
 
             setFontLanguage(FontLanguage.Western);
 
-            Engine.Screen.RegularFontSize = MeasureString("XXjj", LoadedFont.Regular).Y;
+            Engine.Screen.RegularFontSize = MeasureString("XXjj", LoadedFont.Regular, out _).Y;
             //Engine.Screen.RefreshUiSize();
 
             Textures[0] = Content.Load<Texture2D>(TexturePath + "noimage");
@@ -146,10 +146,24 @@ namespace VikingEngine.Engine
         }
 
 
-        public static Vector2 MeasureString(string text, LoadedFont font)
+        public static Vector2 MeasureString(string text, LoadedFont font, out bool error)
         {
-            if (text == null) { return Vector2.One; }
-            return Fonts[(int)font].MeasureString(text);
+            if (text == null) 
+            { 
+                error = true;
+                return Vector2.One; 
+            }
+
+            try
+            {
+                error = false;
+                return Fonts[(int)font].MeasureString(text);
+            }
+            catch
+            {
+                error = true;
+                return new Vector2(100, 10);
+            }
         }
         /// <summary>
         /// replaces non-standard symbol and/or foreign character with '*' 

@@ -417,7 +417,7 @@ namespace VikingEngine
                 testline.Append(word);
 
                 bool tooLong =
-                    (Engine.LoadContent.MeasureString(testline.ToString(), font).X * fontSize) >=
+                    (Engine.LoadContent.MeasureString(testline.ToString(), font, out _).X * fontSize) >=
                     (lineWidth - inSpaceFirstRow);
                 if (tooLong)
                 {
@@ -556,13 +556,13 @@ namespace VikingEngine
         }
         public static bool ToLongString(string text, float sizeX, LoadedFont font, float lineWidth)
         {
-            return Engine.LoadContent.MeasureString(text, font).X * sizeX >= lineWidth;
+            return Engine.LoadContent.MeasureString(text, font, out _).X * sizeX >= lineWidth;
         }
 
         public static float TextHeight(LoadedFont font)
         {
             const string Test = "MWg";
-            return Engine.LoadContent.MeasureString(Test, font).Y;
+            return Engine.LoadContent.MeasureString(Test, font, out _).Y;
         }
         public static string FileSizeText(long bytes)
         {

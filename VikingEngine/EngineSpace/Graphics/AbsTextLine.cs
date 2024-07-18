@@ -62,7 +62,7 @@ namespace VikingEngine.Graphics
         public override bool ViewArea(VectorRect area, bool dimOut)
         {
             const string TestString = "WH";
-            float textH = Engine.LoadContent.MeasureString(TestString, Font).Y * size.Y;
+            float textH = Engine.LoadContent.MeasureString(TestString, Font, out _).Y * size.Y;
 
             bool inside = position.Y >= area.Y &&
                 (position.Y + textH) <= area.Bottom;
@@ -95,7 +95,13 @@ namespace VikingEngine.Graphics
         }
         public override Vector2 MeasureText()
         {
-            return Engine.LoadContent.MeasureString(TextString, Font) * this.Size;
+
+            Vector2 result = Engine.LoadContent.MeasureString(TextString, Font, out var error) * this.Size;
+            if (error)
+            {
+                TextString = "ERR";
+            }
+            return result;
         }
 
         public VectorRect GetArea()
