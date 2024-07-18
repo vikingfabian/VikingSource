@@ -92,7 +92,7 @@ namespace VikingEngine.DSSWars.GameObject
                 //foodCosts = newFoodCosts;
             }
 
-            if (!inRender)
+            if (!inRender_overviewLayer)
             {
                 processAsynchWork(workerStatuses);
             }

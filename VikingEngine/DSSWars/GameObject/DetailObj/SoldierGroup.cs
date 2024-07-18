@@ -335,7 +335,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         oldUnit.DeleteMe(DeleteReason.Transform, false);
 
-                        if (army.inRender)
+                        if (army.inRender_overviewLayer)
                         {
                             upgradedUnit.setDetailLevel(true);
                             upgradedUnit.update(1f, true);
@@ -448,7 +448,7 @@ namespace VikingEngine.DSSWars.GameObject
             s.position = WP.ToWorldPos(area); //temp pos
             s.parentArrayIndex = soldiers.Add(s);
 
-            if (army.inRender)
+            if (army.inRender_overviewLayer)
             {
                 s.setDetailLevel(true);
                 s.update(1f, true);
@@ -1245,7 +1245,7 @@ namespace VikingEngine.DSSWars.GameObject
                 rot = WP.ToQuaterion(rotation.radians);
             }
 
-            if (army.inRender)
+            if (army.inRender_overviewLayer)
             {
                 Vector3 moveDir_dir = VectorExt.V2toV3XZ(dir);
 
@@ -1458,7 +1458,7 @@ namespace VikingEngine.DSSWars.GameObject
                 //    lib.DoNothing();
                 //}
 
-                if (!army.inRender || lifeState == LifeState_New)
+                if (!army.inRender_overviewLayer || lifeState == LifeState_New)
                 {
                     ++lifeState;
                     position = goalWp;

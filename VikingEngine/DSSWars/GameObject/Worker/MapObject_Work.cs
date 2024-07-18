@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected void setWorkersInRenderState()
         {
-            if (inRender)
+            if (inRender_overviewLayer)
             {
                 if (workerUnits == null)
                 {

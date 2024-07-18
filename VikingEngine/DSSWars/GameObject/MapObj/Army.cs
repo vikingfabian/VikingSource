@@ -402,7 +402,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             updateDetailLevel();
 
-            if (inRender)
+            if (inRender_overviewLayer)
             {
                 updateMembers(Ref.DeltaGameTimeMs, true);
                 updateWorkerUnits();
@@ -555,7 +555,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected override void setInRenderState()
         {              
-            if (inRender)
+            if (inRender_overviewLayer)
             {
                 if (overviewBanner == null)
                 {
@@ -583,7 +583,7 @@ namespace VikingEngine.DSSWars.GameObject
                 var soldiers = groupsCounter.sel.soldiers.counter();
                 while (soldiers.Next())
                 {
-                    soldiers.sel.setDetailLevel(inRender);
+                    soldiers.sel.setDetailLevel(inRender_overviewLayer);
                 }
             }
         }
@@ -697,12 +697,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         override public void asynchCullingUpdate(float time, bool bStateA)
         {
-            DssRef.state.culling.InRender_Asynch(ref enterRender_asynch, bStateA, ref cullingTopLeft, ref cullingBottomRight);
+            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, bStateA, ref cullingTopLeft, ref cullingBottomRight);
         }
 
         public void asynchSleepObjectsUpdate(float time)
         {
-            if (!inRender)
+            if (!inRender_overviewLayer)
             {
                 updateMembers(time * Ref.GameTimeSpeed, false);
             }
@@ -751,7 +751,7 @@ namespace VikingEngine.DSSWars.GameObject
                 DSSWars.Faction.SetNewMaster(name, OverviewBannerModelName, overviewBanner, master);
             }
 
-            if (inRender)
+            if (inRender_overviewLayer)
             {
                 var groupsC = groups.counter();
                 while (groupsC.Next())
@@ -794,11 +794,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void OnNewOwner()
         {
-            if (inRender)
+            if (inRender_overviewLayer)
             {
-                inRender = false;
+                inRender_overviewLayer = false;
                 setInRenderState();
-                inRender = true;
+                inRender_overviewLayer = true;
                 setInRenderState();
             }
         }

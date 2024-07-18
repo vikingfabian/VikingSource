@@ -20,9 +20,11 @@ namespace VikingEngine.DSSWars.GameObject
         /// <summary>
         /// Pågående strider, om order ges läggs inte battle till förrän armeerna är intill varandra
         /// </summary>
-        
-        public bool enterRender_asynch = false;
-        public bool inRender = false;
+
+        public bool enterRender_overviewLayer_async = false;
+        public bool enterRender_detailLayer_async = false;
+        public bool inRender_overviewLayer = false;
+        public bool inRender_detailLayer = false;
 
         public int previousWarAgainstFaction = -1;
         public float strengthValue=-1;
@@ -40,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void asynchCullingUpdate(float time, bool bStateA)
         {
-            DssRef.state.culling.InRender_Asynch(ref enterRender_asynch, tilePos);
+            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, tilePos);
         }
         
 
@@ -51,9 +53,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected void updateDetailLevel()
         {
-            if (enterRender_asynch != inRender)
+            if (enterRender_overviewLayer_async != inRender_overviewLayer)
             {
-                inRender = enterRender_asynch;
+                inRender_overviewLayer = enterRender_overviewLayer_async;
                 setInRenderState();
             }
         }

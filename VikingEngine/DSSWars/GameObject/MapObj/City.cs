@@ -78,8 +78,6 @@ namespace VikingEngine.DSSWars.GameObject
             readMapFile(r, version);
         }
 
-
-
         public void generateCultureAndEconomy(WorldData world, CityCultureCollection cityCultureCollection)
         {
             initEconomy(true);
@@ -760,7 +758,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void asynchCullingUpdate(float time, bool bStateA)
         {
-            DssRef.state.culling.InRender_Asynch(ref enterRender_asynch, bStateA, ref cullingTopLeft, ref cullingBottomRight);
+            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, ref cullingTopLeft, ref cullingBottomRight);
         }
 
         public void oneSecUpdate()
@@ -838,7 +836,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected override void setInRenderState()
         {
-            if (inRender)
+            if (inRender_overviewLayer)
             {
                 if (overviewModel == null)
                 {
@@ -855,7 +853,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             setWorkersInRenderState();
-            detailObj.setDetailLevel(inRender);
+            detailObj.setDetailLevel(inRender_overviewLayer);
         }
 
         //protected override bool mayAttack(AbsMapObject otherObj)

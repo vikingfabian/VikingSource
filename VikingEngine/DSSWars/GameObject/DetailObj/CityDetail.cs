@@ -233,76 +233,6 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        //public void updateWorkerModels()
-        //{
-        //    if (model != null)
-        //    {
-        //        int goalDisplayCount = WorkersToModelsCount(city.workForce.max);
-        //        PcgRandom rnd = new PcgRandom(DssRef.world.TileSeed(city.tilePos.X, city.tilePos.Y));
-
-        //        if (goalDisplayCount > totalWorkerHutAndLevelCount)
-        //        {
-        //            //find available tile
-                    
-        //            ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, 1));
-        //            edgeLoop.Next();
-        //            //edgeLoop.RandomPosition(rnd);
-
-        //            while (goalDisplayCount > totalWorkerHutAndLevelCount)
-        //            {
-        //                Tile t;
-        //                if (DssRef.world.tileGrid.TryGet(edgeLoop.Position, out t) &&
-        //                        t.IsLand() && t.CityIndex == city.index &&
-        //                    (
-        //                        t.tileContent == TileContent.NONE || 
-        //                        (t.tileContent == TileContent.WorkerHut && t.WorkerCount < WorkerHutsPerTile_MaxLevel))
-        //                    )
-        //                {
-        //                    if (t.WorkerCount < WorkerHutsPerTile)
-        //                    {
-        //                        workers.Add(new WorkerData()
-        //                        {
-        //                            tile = edgeLoop.Position,
-        //                            tilePlacementIndex = t.WorkerCount,
-        //                            //inUse = false,
-        //                        });
-        //                    }
-        //                    else
-        //                    {
-        //                        for (int i = workers.Count - 1; i >= 0; i--)
-        //                        {
-        //                            if (workers[i].tile == edgeLoop.Position && workers[i].level==1)
-        //                            {
-        //                                ++workers[i].level;
-        //                                break;
-        //                            }
-        //                        }
-        //                    }
-
-        //                    t.tileContent = TileContent.WorkerHut;
-        //                    ++t.WorkerCount;
-        //                    ++totalWorkerHutAndLevelCount;
-        //                }
-        //                else
-        //                {
-        //                    bool inLoop = edgeLoop.Next();
-        //                    if (!inLoop)
-        //                    {
-        //                        edgeLoop.ExpandRadius();
-        //                    }
-        //                }
-        //            }
-        //        }
-
-        //        //if (workersModels == null)
-        //        //{
-        //        //    workersModels = new WorkersModels();
-        //        //}
-        //        workersModels.Refresh(city, workers, rnd);
-        //    }
-        //}
-
-       
         static int WorkersToModelsCount(int workers)
         {
             return (int)Math.Floor(workers / (double)WorkersPerHut);
@@ -310,16 +240,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void onNewOwner()
         {
-            //if (bannerModel != null)
-            //{
-            //    bannerModel.DeleteMe();
-            //}
-
-            //bannerModel = city.faction.AutoLoadModelInstance(
-            //   LootFest.VoxelModelName.citybanner, 0.8f);
-            //bannerModel.AddToRender(DrawGame.UnitDetailLayer);
-            //bannerModel.position = city.WorldPosition();
-
             if (model != null)
             {
                 model.DeleteMe();
@@ -520,23 +440,23 @@ namespace VikingEngine.DSSWars.GameObject
         public CityModel(City city)
             : base()
         {
-            VoxelModelName detailmodelName;
+            //VoxelModelName detailmodelName;
 
-            switch (city.CityType)
-            {
-                case CityType.Small:
-                    detailmodelName = VoxelModelName.war_town1;
-                    break;
-                case CityType.Large:
-                    detailmodelName = VoxelModelName.war_town2;
-                    break;
-                default:
-                    detailmodelName = VoxelModelName.war_town3;
-                    break;
-                case CityType.Factory:
-                    detailmodelName = VoxelModelName.war_town_factory;
-                    break;
-            }
+            //switch (city.CityType)
+            //{
+            //    case CityType.Small:
+            //        detailmodelName = VoxelModelName.war_town1;
+            //        break;
+            //    case CityType.Large:
+            //        detailmodelName = VoxelModelName.war_town2;
+            //        break;
+            //    default:
+            //        detailmodelName = VoxelModelName.war_town3;
+            //        break;
+            //    case CityType.Factory:
+            //        detailmodelName = VoxelModelName.war_town_factory;
+            //        break;
+            //}
 
             this.bound = new Physics.RectangleBound(city.WorldPositionXZ(), new Vector2(0.5f));
 

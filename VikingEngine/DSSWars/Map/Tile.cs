@@ -45,8 +45,10 @@ namespace VikingEngine.DSSWars.Map
         //public int WorkerCount = 0;
         
         public float exitRenderTimeStamp_TotSec = 0;
-        public byte renderStateA = Culling.NoRender;
-        public byte renderStateB = Culling.NoRender;
+        //public byte renderStateA = Culling.NoRender;
+        //public byte renderStateB = Culling.NoRender;
+        public byte bits_renderStateA = Culling.NoRender;
+        public byte bits_renderStateB = Culling.NoRender;
         public bool hasTileInRender = false;
 
         //public bool inRender = false;

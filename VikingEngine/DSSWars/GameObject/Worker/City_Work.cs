@@ -146,7 +146,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            if (!inRender)
+            if (!inRender_overviewLayer)
             {
                 processAsynchWork(workerStatuses);
             }

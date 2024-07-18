@@ -186,11 +186,11 @@ namespace VikingEngine.DSSWars.Display
                         }
                     }
                 }
-                else if (obj.gameobjectType() == GameObjectType.Worker)
-                { 
-                    var worker = obj.GetWorker();
-                    worker.Tooltip(content);
-                }
+                //else if (obj.gameobjectType() == GameObjectType.Worker)
+                //{ 
+                //    var worker = obj.GetWorker();
+                //    worker.Tooltip(content);
+                //}
             }
             //content.Add(new RichBoxSeperationLine());
 

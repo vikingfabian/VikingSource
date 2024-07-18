@@ -2,9 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Timer;
 
@@ -323,21 +326,48 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 }
             }
         }
-
-        public void Tooltip(RichBoxContent content)
+        public override void toHud(ObjectHudArgs args)
         {
+            //base.toHud(args);
             const string WorkType = "Work: {0}";
-            content.text(string.Format(WorkType, status.work));
+
+            
+            args.content.h2(Name()).overrideColor = Color.LightYellow;
+              
+            
+            args.content.text(string.Format(WorkType, status.work));
 
             const string Carry = "Carry: {0} {1}";
 
             if (status.carry.amount > 0)
             {
-                content.text(string.Format(Carry, status.carry.amount, status.carry.type));
+                args.content.text(string.Format(Carry, status.carry.amount, status.carry.type));
             }
 
             const string Energy = "Energy: {0}";
-            content.text(string.Format(Energy, TextLib.OneDecimal(status.energy)));
+            args.content.text(string.Format(Energy, TextLib.OneDecimal(status.energy)));
+        }
+        //public void Tooltip(RichBoxContent content)
+        //{
+        //    const string WorkType = "Work: {0}";
+        //    content.text(string.Format(WorkType, status.work));
+
+        //    const string Carry = "Carry: {0} {1}";
+
+        //    if (status.carry.amount > 0)
+        //    {
+        //        content.text(string.Format(Carry, status.carry.amount, status.carry.type));
+        //    }
+
+        //    const string Energy = "Energy: {0}";
+        //    content.text(string.Format(Energy, TextLib.OneDecimal(status.energy)));
+        //}
+        public override void selectionFrame(bool hover, Selection selection)
+        {
+            Vector3 scale = new Vector3(AbsSoldierData.StandardBoundRadius * 2f);
+            selection.BeginGroupModel();
+            selection.setGroupModel(0, model.position, scale, hover, true);
+
         }
 
         public void DeleteMe()

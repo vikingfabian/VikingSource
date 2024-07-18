@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 DeleteMe();
             }
-            else if (transformEffect && group.army.inRender)
+            else if (transformEffect && group.army.inRender_overviewLayer)
             {
                 if (transformModel == null)
                 {
