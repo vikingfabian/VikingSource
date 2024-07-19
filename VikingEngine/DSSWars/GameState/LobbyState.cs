@@ -23,6 +23,8 @@ using VikingEngine.ToGG.Commander.LevelSetup;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.ToggEngine.Map;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.GameState;
 
 namespace VikingEngine.DSSWars
 {
@@ -66,6 +68,11 @@ namespace VikingEngine.DSSWars
 
             new Timer.AsynchActionTrigger(load_asynch, true);
             new Timer.TimedAction0ArgTrigger(playMusic, 1000);
+
+            if (Ref.gamesett.language == LanguageType.NONE)
+            { 
+                selectLanguageMenu();
+            }
         }       
         
         void load_asynch()
@@ -168,7 +175,7 @@ namespace VikingEngine.DSSWars
                 new GuiCheckbox(DssRef.lang.Settings_BossEvents, DssRef.lang.Settings_BossEvents_SandboxDescription, bossProperty, layout);
 
                 new GuiSectionSeparator(layout);
-                new GuiTextButton(Ref.langOpt.Options_title, null, new GuiAction(optionsMenu), true, layout);
+                new GuiIconTextButton(SpriteName.MenuPixelIconSettings, Ref.langOpt.Options_title, null, new GuiAction(optionsMenu), true, layout);
                 //new GuiTextButton("*Crash game*", null, crashTest, false, layout); 
                 if (PlatformSettings.DevBuild)
                 {
@@ -228,6 +235,28 @@ namespace VikingEngine.DSSWars
 
 
         //}
+        void selectLanguageMenu()
+        {
+            Translation translate = new Translation();
+            var options = translate.available();
+            GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
+            {
+                foreach (var option in options)
+                {
+                    new GuiImageButton(translate.sprite(option), null, new GuiAction1Arg<LanguageType>(selectLanguegeLink, option), false, layout);
+                }
+            }
+            layout.End();
+        }
+
+        void selectLanguegeLink(LanguageType language)
+        {
+            if (language != Ref.gamesett.language)
+            {
+                Ref.gamesett.language = language;
+                new ChangeLanguageState();
+            }
+        }
 
         void selectDifficultyMenu()
         {
@@ -365,7 +394,7 @@ namespace VikingEngine.DSSWars
             GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_WarningTitle, menuSystem.menu);
             {
                 new GuiLabel(DssRef.lang.Lobby_PlayerWithoutInputWarning, layout);
-                new GuiIconTextButton(SpriteName.MenuIconResume, DssRef.lang.Hud_Back, null, mainMenu, false, layout);
+                new GuiIconTextButton(SpriteName.MenuIconResume, Ref.langOpt.Hud_Back, null, mainMenu, false, layout);
                 new GuiIconTextButton(SpriteName.MenuPixelIconPlay, DssRef.lang.Lobby_IgnoreWarning, null, startGame_nochecks, false, layout);
             }
             layout.End();
@@ -568,6 +597,7 @@ namespace VikingEngine.DSSWars
         {
             GuiLayout layout = new GuiLayout(Ref.langOpt.Options_title, menuSystem.menu);
             {
+                new GuiImageButton(new Translation().sprite(Ref.gamesett.language), null, new GuiAction(selectLanguageMenu), true, layout);
                 Ref.gamesett.optionsMenu(layout);
                 new GuiCheckbox(DssRef.lang.GameMenu_AutoSave, null, autoSaveProperty, layout);
                 new GuiCheckbox(DssRef.lang.Tutorial_MenuOption, null, tutorialProperty, layout);
@@ -784,7 +814,7 @@ namespace VikingEngine.DSSWars
                 GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_WarningTitle, menuSystem.menu);
                 {
                     new GuiLabel(string.Format( DssRef.lang.GameMenu_Load_PlayerCountError, save.localPlayerCount), layout);
-                    new GuiIconTextButton(SpriteName.MenuIconResume, DssRef.lang.Hud_OK, null, mainMenu, false, layout);
+                    new GuiIconTextButton(SpriteName.MenuIconResume, Ref.langOpt.Hud_OK, null, mainMenu, false, layout);
                 }
                 layout.End();                
             }

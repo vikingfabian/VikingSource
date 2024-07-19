@@ -5,6 +5,7 @@ using System.Text;
 using VikingEngine.Engine;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.HUD;
+using VikingEngine.DSSWars.GameObject;
 
 namespace VikingEngine
 {
@@ -13,7 +14,7 @@ namespace VikingEngine
     /// </summary>
     class GameSettings
     {
-        const int Version = 10;
+        const int Version = 11;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -28,6 +29,7 @@ namespace VikingEngine
         public bool dyslexiaFont = false;
         public Network.BannedPeers bannedPeers = new Network.BannedPeers();
         public bool graphicsHasChanged = false;
+        public LanguageType language = LanguageType.NONE;
 
         public GameSettings()
         {
@@ -59,6 +61,7 @@ namespace VikingEngine
             w.Write(Engine.Sound.SoundVolume);
             w.Write((byte)VibrationLevel);
             w.Write(UiScale);
+            w.Write((byte)language);
             w.Write(dyslexiaFont);
 
             bannedPeers.write(w);
@@ -85,6 +88,10 @@ namespace VikingEngine
             if (UiScale < 0.5f)
             {
                 UiScale = 1f;
+            }
+            if (version >= 11)
+            { 
+                language = (LanguageType)r.ReadByte(); 
             }
             dyslexiaFont = r.ReadBoolean();
             bannedPeers.read(r, version);
@@ -426,5 +433,18 @@ namespace VikingEngine
 //            Screen.ApplyScreenSettings();
 //#endif
 //        }
+    }
+
+    enum LanguageType
+    {
+        NONE = 0,
+        English,
+        Chinese,
+        Russian,
+        Spanish,
+        Portuguese,
+        German,
+        Japanese,
+        French,
     }
 }

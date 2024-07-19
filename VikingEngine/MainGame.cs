@@ -13,6 +13,7 @@ using System.Diagnostics;
 using Microsoft.Win32;
 using System.Threading.Tasks;
 using System.Globalization;
+using System.Threading;
 
 namespace VikingEngine
 {
@@ -167,6 +168,15 @@ namespace VikingEngine
             this.IsMouseVisible = true;
             base.Initialize();
 
+            int loops = 0;
+            while (Engine.Draw.graphicsDeviceManager.GraphicsDevice == null)
+            {
+                Thread.Sleep(100);
+                if (loops++ > 20)
+                {
+                    throw new Exception("Empty GraphicsDevice");
+                }
+            }
 
         }
 

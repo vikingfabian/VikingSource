@@ -654,6 +654,27 @@
 /processorParam:TextureFormat=Compressed
 /build:Font/Console.spritefont
 
+#begin Font/JapaneseBold.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/JapaneseBold.spritefont
+
+#begin Font/JapaneseConsole.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/JapaneseConsole.spritefont
+
+#begin Font/JapaneseRegular.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/JapaneseRegular.spritefont
+
 #begin Font/Regular.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

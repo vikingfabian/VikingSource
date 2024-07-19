@@ -99,14 +99,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string Hud_CityCount { get; }
         public abstract string Hud_ArmyCount { get; }
 
-        public abstract string Hud_Cancel { get; }
-
-        public abstract string Hud_Back { get; }
-        public abstract string Hud_AreYouSure { get; }
-
-        public abstract string Hud_OK { get; }
-        public abstract string Hud_Yes { get; }
-        public abstract string Hud_No { get; }
+        
         public abstract string Hud_XTimes { get; }
 
         public abstract string Hud_PurchaseTitle_Requirement { get; }
@@ -330,6 +323,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string EventMessage_FinalBattleTitle { get; }
         public abstract string EventMessage_FinalBattleText { get; }
 
+        public abstract string EventMessage_DesertersTitle { get; }
+        public abstract string EventMessage_DesertersText { get; }
+
         public abstract string DifficultyDescription_AiAggression { get; }
         public abstract string DifficultyDescription_BossSize { get; }
         public abstract string DifficultyDescription_BossEnterTime { get; }
@@ -343,6 +339,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string EndScreen_VictoryTitle { get; }
 
         public abstract List<string> EndScreen_VictoryQuotes { get; }
+
+        public abstract string EndScreen_DominationVictoryQuote { get; }
 
         public abstract string EndScreen_FailTitle { get; }
 

@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars.Display
                 if (gui.menuState.Count > 0) 
                 {
                     content.newLine();
-                    content.Button(DssRef.lang.Hud_Back, new RbAction(gui.menuBack, SoundLib.menuBack), 
+                    content.Button(Ref.langOpt.Hud_Back, new RbAction(gui.menuBack, SoundLib.menuBack), 
                         null, true);
                 }
                 endRefresh(pos, selected);

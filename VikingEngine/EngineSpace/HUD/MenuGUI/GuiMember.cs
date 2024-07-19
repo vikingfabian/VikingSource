@@ -612,8 +612,8 @@ IsPressed = false;
             GuiAction1Arg<IGuiAction> doThis = new GuiAction1Arg<IGuiAction>(DoAction, action);
             GuiLayout layout = new GuiLayout(label + "?", layoutParent.gui);
             {
-                new GuiTextButton("Yes", null, doThis, moreMenusArrow != null, layout);
-                new GuiTextButton("No", null, new GuiAction(layoutParent.gui.PopLayout), moreMenusArrow != null, layout);
+                new GuiTextButton(Ref.langOpt.Hud_Yes, null, doThis, moreMenusArrow != null, layout);
+                new GuiTextButton(Ref.langOpt.Hud_No, null, new GuiAction(layoutParent.gui.PopLayout), moreMenusArrow != null, layout);
             }
             layout.End();
         }

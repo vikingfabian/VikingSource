@@ -54,6 +54,7 @@ namespace VikingEngine.DSSWars
             Ref.rnd.SetSeed(DssRef.world.metaData.seed);
             menuSystem = new GameMenuSystem();
 
+            new GameObject.AllUnits();
             new Diplomacy();
             new Achievements();
             new GameTime();

@@ -294,17 +294,6 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_CityCount => "City count: {0}";
         public override string Hud_ArmyCount => "Army count: {0}";
 
-        public override string Hud_Cancel => "Cancel";
-        public override string Hud_Back => "Back";
-
-        /// <summary>
-        /// Submenu for when the player will make destructive choices
-        /// </summary>
-        public override string Hud_AreYouSure => "Are you sure?";
-
-        public override string Hud_OK => "OK";
-        public override string Hud_Yes => "Yes";
-        public override string Hud_No => "No";
 
         /// <summary>
         /// Mini button to repeat a purchase a number of times. E.G. "x5"
@@ -1039,6 +1028,11 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string EventMessage_FinalBattleTitle => "A desperate attack";
         public override string EventMessage_FinalBattleText => "The dark lord has joined the battlefield. Now is your chance to destroy him!";
 
+        /// <summary>
+        /// Message when soldiers leave the army when you can't pay thier upkeep
+        /// </summary>
+        public override string EventMessage_DesertersTitle => "Deserters!";
+        public override string EventMessage_DesertersText => "Unpaid soldiers are deserting from your armies";
 
         public override string DifficultyDescription_AiAggression => "Ai aggressivity: {0}.";
         public override string DifficultyDescription_BossSize => "Boss size: {0}.";
@@ -1065,6 +1059,8 @@ namespace VikingEngine.DSSWars.Display.Translation
             "Remember the journey that brought us here, dotted with the souls of the brave.",
             "Our minds are light from victory, our hearts are heavy from the weight of the fallen"
         };
+
+        public override string EndScreen_DominationVictoryQuote => "I was chosen by the Gods to dominate the world!";
 
         /// <summary>
         /// Game has ended in failure.

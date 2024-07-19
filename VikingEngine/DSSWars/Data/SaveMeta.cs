@@ -210,7 +210,8 @@ namespace VikingEngine.DSSWars.Data
         }
         public string InfoString()
         {
-            string result = string.Format(DssRef.lang.EndGameStatistics_Time, playTime) + Environment.NewLine;
+            string playTimeSafe = Engine.LoadContent.CheckCharsSafety(playTime.ToString(), LoadedFont.Regular);
+            string result = string.Format(DssRef.lang.EndGameStatistics_Time, playTimeSafe) + Environment.NewLine;
             if (autosave)
             {
                 result += DssRef.lang.GameMenu_AutoSave + Environment.NewLine;
@@ -219,6 +220,8 @@ namespace VikingEngine.DSSWars.Data
                 DssRef.lang.Lobby_MapSizeTitle + ": " + WorldData.SizeString(world.mapSize) + Environment.NewLine +
                 string.Format(DssRef.lang.Lobby_LocalMultiplayerEdit, localPlayerCount) + Environment.NewLine +
                 " [" + Engine.LoadContent.CheckCharsSafety(saveDate.ToLongDateString(), LoadedFont.Regular) + "]";
+
+
 
             return result;
         }

@@ -404,7 +404,7 @@ namespace VikingEngine.DSSWars
 
                     if (player.IsPlayer())
                     {
-                        player.GetLocalPlayer().hud.messages.Add("Deserters!", "Unpaid soldiers are deserting from your armies");
+                        player.GetLocalPlayer().hud.messages.Add(DssRef.lang.EventMessage_DesertersTitle, DssRef.lang.EventMessage_DesertersText);
                         player.GetLocalPlayer().statistics.SoldiersDeserted += totalDeserters;
                     }
                 }

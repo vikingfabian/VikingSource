@@ -208,7 +208,17 @@ namespace VikingEngine
         TextureHueSaturation,
         TextureDarknessGradient,
         ColorPickerCircle,
-       
+
+        LangButton_English,
+        LangButton_Russian,
+        LangButton_Spanish,
+        LangButton_Portuguese,
+        LangButton_German,
+        LangButton_Japanese,
+        LangButton_Frensh,
+        LangButton_Chinese,
+
+
         IconBuildArrow,
         IconBuildSelection,
         IconBuildAdd,

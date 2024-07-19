@@ -63,24 +63,6 @@ with.
 
 		  </CharacterRegion>
 
-		  <!-- Thai -->
-		  <CharacterRegion>
-
-			  <Start>&#x0E00;</Start>
-
-			  <End>&#x0E7F;</End>
-
-		  </CharacterRegion>
-
-		  <!-- Russian -->
-		  <CharacterRegion>
-
-			  <Start>&#x410;</Start>
-
-			  <End>&#x44F;</End>
-
-		  </CharacterRegion>
-
 		  <!-- Most common Kanji (japanese, chinese) -->
 		  <CharacterRegion>
 
