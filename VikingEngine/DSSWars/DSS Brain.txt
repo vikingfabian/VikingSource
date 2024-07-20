@@ -2,6 +2,10 @@
 Change Log
 * Font safe date/time display
 * Fixed asian font crashes
+* Fixed translations errors
+* Fixed errors with dark lord on ship
+* Boss intro song if you play above 100% difficulty
+* Fixed Repair cost 
 
 
 Error

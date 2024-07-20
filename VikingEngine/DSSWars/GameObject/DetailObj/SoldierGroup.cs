@@ -377,6 +377,10 @@ namespace VikingEngine.DSSWars.GameObject
 
                     refreshAttackRadius(typeData);
                 }
+                //if (type == UnitType.DarkLord)
+                //{ 
+                    
+                //}
 
                 inShipTransform = false;
             }

@@ -805,7 +805,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string UnitType_Description_Crossbow => "強力な遠隔兵士";
         public override string UnitType_Description_Ballista => "都市に対して強い";
         public override string UnitType_Description_GreenSoldier => "恐れられるエルフの戦士";
-
+        public override string UnitType_Description_DarkLord => "最終ボス";
         /// <summary>
         /// 兵士タイプの情報
         /// </summary>
@@ -1191,6 +1191,13 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Tutorial_SelectInput => "選択";
         public override string Tutorial_MoveInput => "移動コマンド";
 
+        /// <summary>
+        /// 対戦。戦闘に入る二つの軍隊を説明するテキスト
+        /// </summary>
+        public override string Hud_Versus => "VS.";
 
+        public override string Hud_WardeclarationTitle => "宣戦布告";
+
+        public override string ArmyOption_Attack => "攻撃";
     }
 }

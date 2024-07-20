@@ -253,8 +253,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string UnitType_Description_Crossbow { get; }
         public abstract string UnitType_Description_Ballista { get; }
         public abstract string UnitType_Description_GreenSoldier { get; }
-
-
+        public abstract string UnitType_Description_DarkLord { get; }
 
         public abstract string SoldierStats_Title { get; }
         public abstract string SoldierStats_GroupCountAndSoldierCount { get; }
@@ -398,5 +397,11 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string Tutorial_SelectInput { get; }
         public abstract string Tutorial_MoveInput { get; }
 
+
+        public abstract string Hud_Versus { get; }
+
+        public abstract string Hud_WardeclarationTitle { get; }
+
+        public abstract string ArmyOption_Attack { get; }
     }
 }

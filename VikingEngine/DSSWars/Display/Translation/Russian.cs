@@ -800,7 +800,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string UnitType_Description_Crossbow => "Мощный дальнобойный солдат";
         public override string UnitType_Description_Ballista => "Сильна против городов";
         public override string UnitType_Description_GreenSoldier => "Страшный эльфийский воин";
-
+        public override string UnitType_Description_DarkLord => "Последний босс";
         /// <summary>
         /// Информация о типе солдата
         /// </summary>
@@ -1185,5 +1185,14 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Tutorial_SelectInput => "Выбрать";
         public override string Tutorial_MoveInput => "Команда перемещения";
+
+        /// <summary>
+        /// Против. Текст, описывающий две армии, которые вступят в бой
+        /// </summary>
+        public override string Hud_Versus => "VS.";
+
+        public override string Hud_WardeclarationTitle => "Объявление войны";
+
+        public override string ArmyOption_Attack => "Атака";
     }
 }

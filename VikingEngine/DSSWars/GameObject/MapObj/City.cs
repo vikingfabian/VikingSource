@@ -445,12 +445,13 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (damages.HasValue())
             {
-                int totalCost;
+                int cost;
                 int count;
 
-                repairCountAndCost(all, out count, out totalCost);
+                repairCountAndCost(all, out count, out cost);
 
-                if (faction.calcCost(totalCost, ref totalCost))
+                int totalCost = 0;
+                if (faction.calcCost(cost, ref totalCost))
                 {
                     if (commit)
                     {

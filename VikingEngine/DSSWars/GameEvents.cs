@@ -186,6 +186,7 @@ namespace VikingEngine.DSSWars
 
         void RunNextEvent()
         {
+            //Is synced
             switch (nextEvent)
             {
                 case EventType.SouthShips:
@@ -599,13 +600,15 @@ namespace VikingEngine.DSSWars
 
         public void onDarkLordSpawn()
         {
-            nextEvent = EventType.KillTheDarkLord;
-
-            foreach (var p in DssRef.state.localPlayers)
+            if (nextEvent < EventType.KillTheDarkLord)
             {
-                p.hud.messages.Add(DssRef.lang.EventMessage_FinalBattleTitle, DssRef.lang.EventMessage_FinalBattleText);
-            }
+                nextEvent = EventType.KillTheDarkLord;
 
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    p.hud.messages.Add(DssRef.lang.EventMessage_FinalBattleTitle, DssRef.lang.EventMessage_FinalBattleText);
+                }
+            }
         }
         public void onDarkLorDeath()
         {

@@ -59,8 +59,8 @@ namespace VikingEngine.DSSWars.GameObject
             add(new VikingWarshipData(UnitType.VikingWarship,
                 add(new Viking())));
 
-            add(new KnightWarshipData(UnitType.DarkLordWarship,
-            add(new DarkLordData())));
+            add(new DarkLordWarshipData(UnitType.DarkLordWarship,
+                add(new DarkLordData())));
 
             var recruit = recruits[(int)UnitType.Soldier];
             add(new FolkWarshipData(UnitType.RecruitWarship,

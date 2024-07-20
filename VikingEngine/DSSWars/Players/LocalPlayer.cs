@@ -406,7 +406,7 @@ namespace VikingEngine.DSSWars.Players
                     if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                     {
                         //cityBuilderTest();
-                        //DssRef.state.events.TestNextEvent();
+                       // DssRef.state.events.TestNextEvent();
                         
                         battleLineUpTest(true);
 
@@ -661,7 +661,7 @@ namespace VikingEngine.DSSWars.Players
                 //{
                 //    new SoldierGroup(army, UnitType.Viking, false).completeTransform(SoldierTransformType.ToShip);
                 //}
-                for (int i = 0; i < 10; ++i)
+                for (int i = 0; i < 2; ++i)
                 {
                     new SoldierGroup(army, UnitType.Soldier, false);
                 }
@@ -677,8 +677,9 @@ namespace VikingEngine.DSSWars.Players
 
                     for (int i = 0; i < 10; ++i)
                     {
-                        new SoldierGroup(army, UnitType.Archer, false);
+                        new SoldierGroup(army, UnitType.Archer, false).completeTransform(SoldierTransformType.ToShip);
                     }
+                    new SoldierGroup(army, UnitType.DarkLord, false).completeTransform(SoldierTransformType.ToShip);
                     //for (int i = 0; i < 5; ++i)
                     //{
                     //    new SoldierGroup(army, UnitType.Ballista, false);

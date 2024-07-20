@@ -805,6 +805,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string UnitType_Description_Ballista => "Strong against cities";
         public override string UnitType_Description_GreenSoldier => "Feared elf warrior";
 
+        public override string UnitType_Description_DarkLord => "The final boss";
+
         /// <summary>
         /// Information about a soldier type
         /// </summary>
@@ -1197,5 +1199,15 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Tutorial_SelectInput => "Select";
         public override string Tutorial_MoveInput => "Move command";
 
+
+        
+        /// <summary>
+        /// Versus. Text describing the two armies that will go into battle
+        /// </summary>
+        public override string Hud_Versus => "VS.";
+
+        public override string Hud_WardeclarationTitle => "War declaration";
+
+        public override string ArmyOption_Attack => "Attack";
     }
 }

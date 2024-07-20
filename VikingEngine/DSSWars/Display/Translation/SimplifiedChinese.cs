@@ -799,7 +799,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string UnitType_Description_Crossbow => "强大的远程士兵。";
         public override string UnitType_Description_Ballista => "对城市很强。";
         public override string UnitType_Description_GreenSoldier => "令人畏惧的精灵战士。";
-
+        public override string UnitType_Description_DarkLord => "最终头目";
         /// <summary>
         /// 关于士兵类型的信息
         /// </summary>
@@ -1188,6 +1188,13 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Tutorial_SelectInput => "选择";
         public override string Tutorial_MoveInput => "移动命令";
 
+        /// <summary>
+        /// 对战。描述将要进入战斗的两支军队的文字
+        /// </summary>
+        public override string Hud_Versus => "VS.";
 
+        public override string Hud_WardeclarationTitle => "战争宣言";
+
+        public override string ArmyOption_Attack => "攻击";
     }
 }

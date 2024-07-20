@@ -800,7 +800,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string UnitType_Description_Crossbow => "Soldado de rango poderoso";
         public override string UnitType_Description_Ballista => "Fuerte contra ciudades";
         public override string UnitType_Description_GreenSoldier => "Temido guerrero elfo";
-
+        public override string UnitType_Description_DarkLord => "El jefe final";
         /// <summary>
         /// Información sobre un tipo de soldado
         /// </summary>
@@ -1187,6 +1187,13 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Tutorial_SelectInput => "Seleccionar";
         public override string Tutorial_MoveInput => "Comando de movimiento";
 
+        /// <summary>
+        /// Versus. Texto que describe los dos ejércitos que entrarán en batalla
+        /// </summary>
+        public override string Hud_Versus => "VS.";
 
+        public override string Hud_WardeclarationTitle => "Declaración de guerra";
+
+        public override string ArmyOption_Attack => "Atacar";
     }
 }
