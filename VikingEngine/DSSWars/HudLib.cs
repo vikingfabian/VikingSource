@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-
+using System;
+using VikingEngine.DataLib;
 using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars
@@ -104,6 +105,15 @@ namespace VikingEngine.DSSWars
         { 
             return value? SpriteName.cmdHudCheckOn : SpriteName.cmdHudCheckOff;
         }
-        
+
+        public static string Date(DateTime date)
+        { 
+            return string.Format(DssRef.lang.Hud_Date, date.Year, date.Month, date.Day);
+        }
+
+        public static string TimeSpan(TimeSpan time) 
+        { 
+            return string.Format(DssRef.lang.Hud_TimeSpan, (int)time.TotalHours, time.Minutes, time.Seconds);
+        }
     }
 }

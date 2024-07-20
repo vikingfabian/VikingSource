@@ -316,6 +316,16 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_CompareMilitaryStrength_YourToOther => "Strength: Your {0} - Their {1}";
 
         /// <summary>
+        /// Display a short string of date as Year, Month, Day
+        /// </summary>
+        public override string Hud_Date => "Y{0} M{1} D{2}";
+        
+        /// <summary>
+        /// Display a short string of timespan as Hour, Minutes, Seconds
+        /// </summary>
+        public override string Hud_TimeSpan => "H{0} M{1} S{2}";
+
+        /// <summary>
         /// Describes button input. Move to the next city.
         /// </summary>
         public override string Input_NextCity => "Next city";

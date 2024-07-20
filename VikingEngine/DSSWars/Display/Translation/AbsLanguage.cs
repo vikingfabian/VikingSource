@@ -114,6 +114,10 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string Hud_CompareMilitaryStrength_YourToOther { get; }
 
+        public abstract string Hud_Date { get; }
+
+        public abstract string Hud_TimeSpan { get; }
+
         public abstract string Input_NextCity { get; }
         public abstract string Input_NextArmy { get; }
         public abstract string Input_NextBattle { get; }

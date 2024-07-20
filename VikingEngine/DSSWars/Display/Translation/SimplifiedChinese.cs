@@ -311,6 +311,16 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_CompareMilitaryStrength_YourToOther => "力量：你的 {0} - 他们的 {1}";
 
         /// <summary>
+        /// 将日期显示为“年、月、日”的简短字符串
+        /// </summary>
+        public override string Hud_Date => "年{0} 月{1} 日{2}";
+
+        /// <summary>
+        /// 将时间跨度显示为“时、分、秒”的简短字符串
+        /// </summary>
+        public override string Hud_TimeSpan => "时{0} 分{1} 秒{2}";
+
+        /// <summary>
         /// 描述按钮输入。移动到下一个城市。
         /// </summary>
         public override string Input_NextCity => "下一个城市";
