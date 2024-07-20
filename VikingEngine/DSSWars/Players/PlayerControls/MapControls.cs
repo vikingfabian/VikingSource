@@ -319,7 +319,7 @@ namespace VikingEngine.DSSWars.Players
         {
             if (player.drawUnitsView.current.type == MapDetailLayerType.UnitDetail1)
             {
-                hover.subTile.update(subTilePosition);
+                hover.subTile.update(subTilePosition, player.faction);
             }
             else
             {
@@ -479,6 +479,21 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        public void onTileSelect(City city, SelectTileResult tileResult)
+        {
+            selection.obj = city;
+
+            switch (tileResult)
+            {
+                case SelectTileResult.CityHall:
+                    player.cityTab = Display.CityTab.Recruit;
+                    break;
+                case SelectTileResult.Resources:
+                    player.cityTab = Display.CityTab.Resources;
+                    break;
+            }
+        }
+
         public bool focusedObjectMenuState()
         {
             return selection.obj != null &&
@@ -529,8 +544,10 @@ namespace VikingEngine.DSSWars.Players
         }
 
         void updateSeletionGui()
-        {   
-            if (hover.obj != null && hover.obj != selection.obj)
+        {
+            bool viewTile = hover.subTile.viewSelection(true);//hover.obj == null);
+
+            if (!viewTile && hover.obj != null && hover.obj != selection.obj)
             {
                 hover.frameModel.Visible = true;
                 hover.obj.selectionFrame(true, hover);
@@ -541,11 +558,8 @@ namespace VikingEngine.DSSWars.Players
             }
             else
             {
-                hover.ClearSelectionModels();
-                
+                hover.ClearSelectionModels();                
             }
-
-            hover.subTile.viewSelection(hover.obj == null);
 
             if (selection.obj != null)
             {

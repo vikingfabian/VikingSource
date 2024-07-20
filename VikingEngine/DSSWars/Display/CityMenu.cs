@@ -27,6 +27,12 @@ namespace VikingEngine.DSSWars.Display
             this.player = player;
             this.city = city;
 
+            if (this.player.cityTab == CityTab.Resources)
+            {
+                player.hud.displays.SetMenuState(ResourcesMenuState);
+                this.player.cityTab = CityTab.Recruit;
+            }
+
             switch (player.hud.displays.CurrentMenuState)
             {
 
@@ -457,5 +463,12 @@ namespace VikingEngine.DSSWars.Display
         }
 
         
+    }
+
+    enum CityTab
+    { 
+        Recruit,
+        Resources,
+        Automation,
     }
 }

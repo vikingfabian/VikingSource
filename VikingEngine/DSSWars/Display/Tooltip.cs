@@ -18,18 +18,21 @@ namespace VikingEngine.DSSWars.Display
         {
             if (player.diplomacyMap == null)
             {
-                if (player.mapControls.hover.isNew || refreshTime)
+                if (player.mapControls.hover.isNew 
+                    || player.mapControls.hover.subTile.isNew 
+                    || refreshTime)
                 {
                     images.DeleteAll();
 
-                    if (player.mapControls.hover.obj != null)
-                    {
-                        hoverTip(player, player.mapControls.hover.obj);
-                    }
-                    else if (player.mapControls.hover.subTile.hasSelection)
+                    if (player.mapControls.hover.subTile.hasSelection)
                     {
                         hoverTip(player, player.mapControls.hover.subTile);
                     }
+                    else if (player.mapControls.hover.obj != null)
+                    {
+                        hoverTip(player, player.mapControls.hover.obj);
+                    }
+                    
                 }
             }
             else
@@ -96,15 +99,19 @@ namespace VikingEngine.DSSWars.Display
         {
             RichBoxContent content = new RichBoxContent();
             content.text(subTile.subTile.TypeToString());
-            switch (subTile.subTile.GeBuildingType())
-            { 
-                case Map.TerrainBuildingType.StoneHall:
-                    content.text("[]Select City");
-                    break;
-                case Map.TerrainBuildingType.Square:
-                    content.text("[]Select Resources");
-                    break;
-            }
+
+            //if (subTile.selectable(player.faction, out _))
+            //{
+                switch (subTile.selectTileResult)
+                {
+                    case Players.SelectTileResult.CityHall:
+                        content.text("[]Select City");
+                        break;
+                    case Players.SelectTileResult.Resources:
+                        content.text("[]Select Resources");
+                        break;
+                }
+            //}
             create(player, content, false);
         }
 

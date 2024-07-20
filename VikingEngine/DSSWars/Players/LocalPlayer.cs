@@ -41,16 +41,10 @@ namespace VikingEngine.DSSWars.Players
         public FloatingInt_Max diplomaticPoints = new FloatingInt_Max();
         public int diplomaticPoints_softMax;
 
-        //public int servantFactions = 0;
-        //public int warsStarted = 0;
         public Data.Statistics statistics = new Data.Statistics();
 
         public PlayerToPlayerDiplomacy[] toPlayerDiplomacies = null;
         public Automation automation;
-        //public Tutorial tutorial = null;
-        //public bool inTutorialMode;
-        //public bool tutorialMission_BuySoldier = false;
-        //public bool tutorialMission_MoveArmy = false;
 
         public SpottedArray<Battle.BattleGroup> battles = new SpottedArray<Battle.BattleGroup>(4);
 
@@ -61,11 +55,11 @@ namespace VikingEngine.DSSWars.Players
         public int mercenaryCost = DssRef.difficulty.MercenaryPurchaseCost_Start;
 
         const int MercenaryMarketSoftLock1 = DssLib.MercenaryPurchaseCount * 5;
-        //const int MercenaryMarketSoftLock2 = DssLib.MercenaryPurchaseCount * 25;
         const double MercenaryMarketAddPerSec_Speed1 = 0.5;
         const double MercenaryMarketAddPerSec_Speed2 = 0.3;
-        //const double MercenaryMarketAddPerSec_Speed3 = 0.1;
         public FloatingInt mercenaryMarket = new FloatingInt() { value = DssLib.MercenaryPurchaseCount * 2 };
+
+        public CityTab cityTab = 0;
 
         public override void writeGameState(BinaryWriter w)
         {
@@ -130,9 +124,7 @@ namespace VikingEngine.DSSWars.Players
         public LocalPlayer(Faction faction, int playerindex, int numPlayers)
             :base(faction)
         {
-            //inTutorialMode = DssRef.storage.runTutorial;
-            
-
+           
             faction.factiontype = FactionType.Player;
             faction.availableForPlayer = false;
             var pStorage = DssRef.storage.localPlayers[playerindex];
@@ -785,6 +777,15 @@ namespace VikingEngine.DSSWars.Players
 
         bool clickHover()
         {
+            if (mapControls.hover.subTile.hasSelection)//.selectable(faction, out var city))
+            {
+                SoundLib.click.Play();
+
+                mapControls.onTileSelect(mapControls.hover.subTile.city, mapControls.hover.subTile.selectTileResult);
+
+                return true;
+            }
+
             if (mapControls.hover.obj != null &&
                 mapControls.hover.obj.GetFaction() == this.faction)
             {
@@ -800,19 +801,7 @@ namespace VikingEngine.DSSWars.Players
                 return true;
             }
 
-            if (mapControls.hover.subTile.selectable(faction))
-            {
-                SoundLib.click.Play();
-
-                //mapControls.onSelect();
-
-                //if (mapControls.selection.obj.gameobjectType() == GameObjectType.Army)
-                //{
-                //    armyControls = new ArmyControls(this, (Army)mapControls.selection.obj);
-                //}
-
-                return true;
-            }
+            
 
             return false;
         }
