@@ -60,7 +60,7 @@ namespace VikingEngine.DSSWars.Map
         Work_Smith,
         PigPen,
         HenPen,
-        NUM
+        NUM_NONE
     }
 
     enum TerrainMineType

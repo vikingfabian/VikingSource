@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.GameObject
                 inRender_overviewLayer = enterRender_overviewLayer_async;
                 setInRenderState();
             }
-            if (enterRender_detailLayer_async != inRender_detailLayer)
+            else if (enterRender_detailLayer_async != inRender_detailLayer)
             {
                 inRender_detailLayer = enterRender_detailLayer_async;
                 setInRenderState();

@@ -778,7 +778,6 @@ namespace VikingEngine.DSSWars.Players
 
         public bool interactAsynchUpdate(int id, float time)
         {
-            //mapControls.asynchUpdate();
             armyControls?.asynchUpdate();
 
             return false;
@@ -791,13 +790,26 @@ namespace VikingEngine.DSSWars.Players
             {
                 SoundLib.click.Play();
 
-                //mapControls.selection.obj = mapControls.hover.obj;
                 mapControls.onSelect();
 
                 if (mapControls.selection.obj.gameobjectType() == GameObjectType.Army)
                 {
                     armyControls = new ArmyControls(this, (Army)mapControls.selection.obj);
                 }
+
+                return true;
+            }
+
+            if (mapControls.hover.subTile.selectable(faction))
+            {
+                SoundLib.click.Play();
+
+                //mapControls.onSelect();
+
+                //if (mapControls.selection.obj.gameobjectType() == GameObjectType.Army)
+                //{
+                //    armyControls = new ArmyControls(this, (Army)mapControls.selection.obj);
+                //}
 
                 return true;
             }

@@ -143,7 +143,7 @@ namespace VikingEngine.DSSWars.Players
     {
         public bool hasSelection = false;
         public IntVector2 subTilePos;
-        SubTile subTile;
+        public SubTile subTile;
         Mesh model;
         public bool isNew = false;
 
@@ -188,7 +188,28 @@ namespace VikingEngine.DSSWars.Players
                 hasSelection = false;
             }
 
-            model.Visible = hasSelection;
+            //model.Visible = hasSelection;
+        }
+
+        public void viewSelection(bool view)
+        { 
+            model.Visible = hasSelection && view;
+        }
+
+        public bool selectable(Faction playerFaction)
+        {
+            if (hasSelection)
+            {
+                if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(subTilePos), out var tile))
+                {
+                    if (tile.City().faction == playerFaction)
+                    { 
+                        
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

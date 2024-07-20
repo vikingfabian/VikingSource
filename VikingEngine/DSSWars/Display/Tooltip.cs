@@ -26,6 +26,10 @@ namespace VikingEngine.DSSWars.Display
                     {
                         hoverTip(player, player.mapControls.hover.obj);
                     }
+                    else if (player.mapControls.hover.subTile.hasSelection)
+                    {
+                        hoverTip(player, player.mapControls.hover.subTile);
+                    }
                 }
             }
             else
@@ -86,6 +90,22 @@ namespace VikingEngine.DSSWars.Display
             {
                 baseUpdate(player, hoversButton);
             }
+        }
+
+        void hoverTip(Players.LocalPlayer player, Players.SelectedSubTile subTile)
+        {
+            RichBoxContent content = new RichBoxContent();
+            content.text(subTile.subTile.TypeToString());
+            switch (subTile.subTile.GeBuildingType())
+            { 
+                case Map.TerrainBuildingType.StoneHall:
+                    content.text("[]Select City");
+                    break;
+                case Map.TerrainBuildingType.Square:
+                    content.text("[]Select Resources");
+                    break;
+            }
+            create(player, content, false);
         }
 
         void hoverTip(Players.LocalPlayer player, GameObject.AbsGameObject obj)
@@ -186,15 +206,7 @@ namespace VikingEngine.DSSWars.Display
                         }
                     }
                 }
-                //else if (obj.gameobjectType() == GameObjectType.Worker)
-                //{ 
-                //    var worker = obj.GetWorker();
-                //    worker.Tooltip(content);
-                //}
             }
-            //content.Add(new RichBoxSeperationLine());
-
-            //obj.hoverInfo(content);
 
             create(player, content, false);
         }

@@ -758,6 +758,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void asynchCullingUpdate(float time, bool bStateA)
         {
+            if (inRender_detailLayer)
+            {
+                lib.DoNothing();
+            }
             DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, ref cullingTopLeft, ref cullingBottomRight);
         }
 
@@ -1260,7 +1264,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 for (int x = 0; x < WorldData.TileSubDivitions; ++x)
                 {
-                    TerrainBuildingType buildingType = TerrainBuildingType.NUM;
+                    TerrainBuildingType buildingType = TerrainBuildingType.NUM_NONE;
 
                     bool edgeX = x == 0 || x == WorldData.TileSubDivitions_MaxIndex;
                     bool edgeY = y == 0 || y == WorldData.TileSubDivitions_MaxIndex;

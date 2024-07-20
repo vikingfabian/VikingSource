@@ -541,9 +541,11 @@ namespace VikingEngine.DSSWars.Players
             }
             else
             {
-                //hover.guiModels.DeleteAll();
                 hover.ClearSelectionModels();
+                
             }
+
+            hover.subTile.viewSelection(hover.obj == null);
 
             if (selection.obj != null)
             {

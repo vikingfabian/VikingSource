@@ -69,37 +69,28 @@ namespace VikingEngine.DSSWars
                 { GetRenderState_enter(ref tile.bits_renderStateA, ref enterRender_overviewLayer, ref enterRender_detailLayer); }
                 else
                 { GetRenderState_enter(ref tile.bits_renderStateB, ref enterRender_overviewLayer, ref enterRender_detailLayer); }
-                //byte value = cullingStateA ? tile.renderStateA : tile.renderStateB;
-                //if (value == NoRender)
-                //{
-                //    enterRender = false;
-                //}
-                //else
-                //{
-                //    enterRender |= value == EnterRender;
-                //}
+               
             }
         }
 
         public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, bool bStateA, ref IntVector2 minpos, ref IntVector2 maxpos)
         {
-            enterRender_overviewLayer = false;
-            enterRender_detailLayer = false;
+            
+            bool overviewLayer = false;
+            bool detailLayer = false;
 
             for (int cameraIndex = 0; cameraIndex < Ref.draw.ActivePlayerScreens.Count; ++cameraIndex)
             {
                 var state = bStateA ? players[cameraIndex].stateA : players[cameraIndex].stateB;
                 if (state.enterArea.IntersectRect(minpos, maxpos))
                 {
-                    enterRender_overviewLayer |= state.overviewLayer;
-                    enterRender_detailLayer |= state.detailLayer;
-
-                    //enterRender = true;
-                    //return;
+                    overviewLayer |= state.overviewLayer;
+                    detailLayer |= state.detailLayer;
                 }
             }
 
-            //enterRender = false;
+            enterRender_overviewLayer = overviewLayer;
+            enterRender_detailLayer = detailLayer;
         }
 
         public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, bool bStateA, ref Vector2 minpos, ref Vector2 maxpos)
@@ -242,6 +233,8 @@ namespace VikingEngine.DSSWars
             exitArea = enterArea;
             exitArea.AddRadius(1);
 
+            Debug.Log(DebugLogType.MSG, "state " + (bStateA ? "A " : "B ") + screenArea.ToString());
+ 
             var loopArea = exitArea;
             loopArea.size += 1;
 

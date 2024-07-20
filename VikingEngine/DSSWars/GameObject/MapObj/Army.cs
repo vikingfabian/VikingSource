@@ -405,8 +405,9 @@ namespace VikingEngine.DSSWars.GameObject
             if (inRender_overviewLayer)
             {
                 updateMembers(Ref.DeltaGameTimeMs, true);
-                updateWorkerUnits();
+               
             }
+            updateWorkerUnits();
 
             if (groups.Count == 0)
             {

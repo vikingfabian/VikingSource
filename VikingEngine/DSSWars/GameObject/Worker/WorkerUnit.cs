@@ -415,8 +415,6 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             None,
             HasGoal,
             FinalizeWork,
-
-            //Hidden,
         }
     }
 }
