@@ -267,6 +267,23 @@ namespace VikingEngine.DSSWars.Map
             return false;
         }
 
+        public bool nextNodeIsShip()
+        {
+            if (currentNodeIx >= 0)
+            {
+                return nodes[currentNodeIx].ship;
+            }
+            return false;
+        }
+        public bool nextNodeIsFeet()
+        {
+            if (currentNodeIx >= 0)
+            {
+                return !nodes[currentNodeIx].ship;
+            }
+            return false;
+        }
+
         public void NextNode()
         {
             --currentNodeIx;
@@ -379,22 +396,23 @@ namespace VikingEngine.DSSWars.Map
                 }                
             }
 
-            if (parent.ship)
-            {
-                if (!parent.waterTile && !this.waterTile)
-                {
-                    //Detta är för att armen kan vada igenom en tile med vatten
-                    parent.ship = false;
-                }
-            }
-            else
-            {
-                if (parent.waterTile && this.waterTile)
-                {
-                    parent.ship = true;
-                }
-            }
-            ship = parent.ship;
+            //if (parent.ship)
+            //{
+            //    if (!parent.waterTile && !this.waterTile)
+            //    {
+            //        //Detta är för att armen kan vada igenom en tile med vatten
+            //        parent.ship = false;
+            //    }
+            //}
+            //else
+            //{
+            //    if (parent.waterTile && this.waterTile)
+            //    {
+            //        parent.ship = true;
+            //    }
+            //}
+            //ship = parent.ship;
+            ship = this.waterTile;
 
             moveCost *= tile.TroupWalkingDistance(ship);
                

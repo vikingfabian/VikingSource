@@ -298,15 +298,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_PurchaseTitle_Cost => "Costo";
         public override string Hud_PurchaseTitle_Gain => "Ganancia";
 
-        /// <summary>
-        /// Mostrar una cadena corta de la fecha como Año, Mes, Día
-        /// </summary>
-        public override string Hud_Date => "A{0} M{1} D{2}";
-
-        /// <summary>
-        /// Mostrar una cadena corta de tiempo como Hora, Minutos, Segundos
-        /// </summary>
-        public override string Hud_TimeSpan => "H{0} M{1} S{2}";
+       
 
         /// <summary>
         /// Cuánto de un recurso se utilizará, "5 oro. (Disponible: 10)". Habrá un título de "costo" encima del texto. 0: Recurso, 1: costo, 2: disponible
@@ -318,6 +310,20 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_Purchase_MaxCapacity => "Ha alcanzado la capacidad máxima";
 
         public override string Hud_CompareMilitaryStrength_YourToOther => "Fuerza: Tu {0} - Su {1}";
+
+        /// <summary>
+        /// Mostrar una cadena corta de la fecha como Año, Mes, Día
+        /// </summary>
+        public override string Hud_Date => "A{0} M{1} D{2}";
+
+        /// <summary>
+        /// Mostrar una cadena corta de tiempo como Hora, Minutos, Segundos
+        /// </summary>
+        public override string Hud_TimeSpan => "H{0} M{1} S{2}";
+        /// <summary>
+        /// Batalla entre dos ejércitos o entre un ejército y una ciudad
+        /// </summary>
+        public override string Hud_Battle => "Batalla";
 
         /// <summary>
         /// Describe la entrada del botón. Mover a la siguiente ciudad.

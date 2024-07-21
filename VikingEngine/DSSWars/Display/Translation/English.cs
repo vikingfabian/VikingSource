@@ -326,6 +326,12 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_TimeSpan => "H{0} M{1} S{2}";
 
         /// <summary>
+        /// Battle between two armies, or army and city
+        /// </summary>
+        public override string Hud_Battle => "Battle";
+
+
+        /// <summary>
         /// Describes button input. Move to the next city.
         /// </summary>
         public override string Input_NextCity => "Next city";

@@ -15,6 +15,7 @@ namespace VikingEngine.DSSWars.Players
         Players.LocalPlayer player;
         bool autoRecruit= false;
         bool autoExpandCity = false;
+        bool autoExpandGuard = false;
         bool autoNobelhouse = false;
         bool autoRepair = false;
         int[] recruitAmount = new int[DssLib.AvailableUnitTypes.Length];
@@ -34,6 +35,7 @@ namespace VikingEngine.DSSWars.Players
             w.Write(autoRecruit);
             w.Write(autoRepair);
             w.Write(autoExpandCity);
+            w.Write(autoExpandGuard);
             w.Write(autoNobelhouse);
 
             foreach (var recruit in recruitAmount)
@@ -52,7 +54,11 @@ namespace VikingEngine.DSSWars.Players
             }
 
             autoExpandCity = r.ReadBoolean();
-            autoNobelhouse= r.ReadBoolean();
+            if (subVersion >= 8)
+            {
+                autoExpandGuard = r.ReadBoolean();
+            }
+            autoNobelhouse = r.ReadBoolean();
 
             for (int i =0; i< recruitAmount.Length;++i)
             {
@@ -76,6 +82,15 @@ namespace VikingEngine.DSSWars.Players
                 autoExpandCity = value;
             }
             return autoExpandCity;
+        }
+
+        bool AutoExpandGuardProperty(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                autoExpandGuard = value;
+            }
+            return autoExpandGuard;
         }
 
         bool AutoRepairCityProperty(int index, bool set, bool value)
@@ -139,6 +154,13 @@ namespace VikingEngine.DSSWars.Players
                 }, AutoNobelHouseProperty));
 
             content.newLine();
+            
+            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
+                {
+                    new RichBoxText( DssRef.lang.CityOption_ExpandGuardSize),
+                }, AutoExpandGuardProperty));
+
+            content.newLine();
 
             List<string> listinfo = new List<string> 
             {
@@ -180,6 +202,13 @@ namespace VikingEngine.DSSWars.Players
                                 {
                                     cityAction = citiesC.sel;
                                     automationAction = AutomationAction.Repair;
+                                    return;
+                                }
+
+                                if (autoExpandGuard && citiesC.sel.canIncreaseGuardSize(1))
+                                {
+                                    cityAction = citiesC.sel;
+                                    automationAction = AutomationAction.GuardSize;
                                     return;
                                 }
 
@@ -260,6 +289,9 @@ namespace VikingEngine.DSSWars.Players
                 case AutomationAction.Recruit:
                     cityAction.buySoldiersAction(recruitType, recruitCount, null);
                     break;
+                case AutomationAction.GuardSize:
+                    cityAction.buyCityGuards(true, 1);
+                    break;
             }
 
             cityAction = null;
@@ -277,5 +309,6 @@ namespace VikingEngine.DSSWars.Players
         Repair,
         ExpandWorkforce,
         NobelHouse,
+        GuardSize,
     }
 }

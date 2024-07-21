@@ -90,8 +90,8 @@ namespace VikingEngine.DSSWars.GameObject
                 if (path_sp.TryGetCurrentNode(out node))
                 {
 
-                    bool nextIsShipTransform = path_sp.nextTwoNodesAreShip();
-                    bool nextIsFootTransform = path_sp.nextTwoNodesAreByFeet();
+                    bool nextIsShipTransform = path_sp.nextNodeIsShip();//path_sp.nextTwoNodesAreShip();
+                    bool nextIsFootTransform = path_sp.nextNodeIsFeet();//path_sp.nextTwoNodesAreByFeet();
 
                     var prevRotation = rotation;
 

@@ -100,21 +100,32 @@ namespace VikingEngine.DSSWars.Display
         { 
             openMenu();
             GuiLayout layout = new GuiLayout(DssRef.lang.GameMenu_Title, menu);
-            {  
+            {
+                
                 new GuiTextButton(DssRef.lang.GameMenu_Resume, null, closeMenu, false, layout);
                 new GuiTextButton(DssRef.lang.GameMenu_SaveState, DssRef.lang.GameMenu_SaveStateWarnings, saveGameState, false, layout);
                 new GuiTextButton(DssRef.lang.GameMenu_WatchPrologue, null, watchEpilogue, false, layout);
-
 
                 if (DssRef.state.IsLocalMultiplayer())
                 {
                     multiplayerGameSpeedToMenu(layout);
                 }
-                
+
                 Ref.gamesett.soundOptions(layout);
                 new GuiSectionSeparator(layout);
 
                 new GuiDialogButton(DssRef.lang.GameMenu_ExitGame, null, new GuiAction(saveAndExit), false, layout);
+                
+            }
+            layout.End();
+        }
+
+        public void debugMenu()
+        {
+            openMenu();
+            GuiLayout layout = new GuiLayout("DEBUG", menu);
+            {
+                DssRef.state.localPlayers[0].debugMenu(layout);
             }
             layout.End();
         }

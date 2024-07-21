@@ -370,65 +370,19 @@ namespace VikingEngine.DSSWars.GameObject
                     else
                     {
                         typeData = SoldierData();
-                        int count = totalHealth / typeData.basehealth;
 
+                        //must count the bannerman
+                        int count = (int)Math.Ceiling(totalHealth / (double)typeData.basehealth);
+                       
                         createAllSoldiers(false, typeData, count);
                     }
 
                     refreshAttackRadius(typeData);
                 }
-                //if (type == UnitType.DarkLord)
-                //{ 
-                    
-                //}
-
+               
                 inShipTransform = false;
             }
         }
-
-        //public void completeTraining()
-        //{
-        //    if (isDeleted) return;
-
-        //    var soldiersC = soldiers.counter();
-        //    while (soldiersC.Next())
-        //    {
-        //        var oldUnit = soldiersC.sel;
-
-        //        if (oldUnit.DetailUnitType() != UnitType.BannerMan)
-        //        {
-        //            var upgradedUnit = DssRef.unitsdata.createSoldier(type, false);
-        //            upgradedUnit.initUpgrade(this);
-
-        //            oldUnit.copyDataToUpgradedUnit(upgradedUnit);
-
-        //            soldiers.Array[oldUnit.parentArrayIndex] = upgradedUnit;
-
-        //            oldUnit.DeleteMe(DeleteReason.Transform, false);
-
-        //            if (army.inRender)
-        //            {
-        //                upgradedUnit.setDetailLevel(true);
-        //                upgradedUnit.update(1f, true);
-        //            }
-        //        }
-        //    }
-        //}
-
-        //public void completeShipTransform(bool toShip)
-        //{
-        //    if (!isDeleted)
-        //    {
-        //        isShip = toShip;
-        //        var counter = soldiers.counter();
-        //        while (counter.Next())
-        //        {
-        //            counter.sel.lockMovement = false;
-        //            counter.sel.model?.Adv().setShip(toShip);
-        //        }
-        //    }
-        //    //refreshWalkSpeed();
-        //}
 
         public Vector3 armyPlacement(Vector3 center)
         {

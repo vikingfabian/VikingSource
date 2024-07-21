@@ -335,6 +335,22 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        public void enterBattle(Battle.BattleGroup battleGroup, AbsMapObject playerUnit)
+        {
+            battles.Add(battleGroup);
+            RichBoxContent content = new RichBoxContent();
+            hud.messages.Title(content, DssRef.lang.Hud_Battle);
+            content.Add(new RichboxButton(new List<AbsRichBoxMember>
+                { new RichBoxText(playerUnit.TypeName() + " - " + battleGroup.TypeName()) },
+                new RbAction1Arg<Battle.BattleGroup>(goToBattle, battleGroup)));
+            hud.messages.Add(content);
+        }
+
+        void goToBattle(Battle.BattleGroup battleGroup)
+        {
+            mapControls.cameraFocus = battleGroup;
+        }
+
         public override void onNewRelation(Faction otherFaction, DiplomaticRelation rel, RelationType previousRelation)
         {
             base.onNewRelation(otherFaction, rel, previousRelation);
@@ -467,6 +483,71 @@ namespace VikingEngine.DSSWars.Players
 
             //DssRef.state.detailMap.PlayerUpdate(mapControls.playerPointerPos, bUnitDetailLayer);
             drawUnitsView.Update();
+        }
+
+        public void debugMenu(GuiLayout layout)
+        {
+            new GuiTextButton("Next event", "skip forward in the event timer", new GuiAction(new Action(DssRef.state.events.TestNextEvent) + DssRef.state.menuSystem.closeMenu), false, layout);
+
+            UnitType[] unitTypes = DssLib.AvailableUnitTypes;
+            foreach (var type in unitTypes)
+            { 
+                new GuiTextButton("Battle test - " + type.ToString() + " (Land)", null, 
+                    new GuiAction2Arg<UnitType, bool>(battleLineTest,type,false), false, layout);
+            }
+
+            foreach (var type in unitTypes)
+            {
+                new GuiTextButton("Battle test - " + type.ToString() + " (Sea)", null,
+                    new GuiAction2Arg<UnitType, bool>(battleLineTest, type, true), false, layout);
+            }
+        }
+
+        void battleLineTest(UnitType type, bool sea)
+        {
+            DssRef.state.menuSystem.closeMenu();
+
+            Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(45));
+            Rotation1D playerRot = enemyRot.getInvert();
+
+            Faction enemyFac = DssRef.settings.darkLordPlayer.faction;
+            DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
+            
+            IntVector2 position = mapControls.tilePosition;
+
+            
+            {
+                var army = faction.NewArmy(position);
+                army.rotation = playerRot;
+                
+                for (int i = 0; i < 5; ++i)
+                {
+                   var group =  new SoldierGroup(army, UnitType.Soldier, false);
+                    if (sea)
+                    { 
+                        group.completeTransform(SoldierTransformType.ToShip);
+                    }
+                }
+
+                army.refreshPositions(true);
+            }
+            {
+                
+                var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
+                army.rotation = enemyRot;
+
+                for (int i = 0; i < 5; ++i)
+                {
+                    var group = new SoldierGroup(army, type, false);
+                    if (sea)
+                    {
+                        group.completeTransform(SoldierTransformType.ToShip);
+                    }
+                }
+                    
+                army.refreshPositions(true);               
+
+            }
         }
 
         public void asyncUserUpdate()

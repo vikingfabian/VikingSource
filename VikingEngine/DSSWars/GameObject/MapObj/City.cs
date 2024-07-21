@@ -349,6 +349,10 @@ namespace VikingEngine.DSSWars.GameObject
             }
             immigrants.read16bit(r);
             nobelHouse = r.ReadBoolean();
+            if (nobelHouse)
+            {
+                addNobelHouseFeatures();
+            }
 
             if (subversion >= 3)
             {
@@ -686,7 +690,16 @@ namespace VikingEngine.DSSWars.GameObject
             if (canBuyNobelHouse() &&
                 faction.payMoney(DssLib.NobleHouseCost, false))
             {
-                nobelHouse = true;
+                addNobelHouseFeatures();
+            }
+        }
+
+        void addNobelHouseFeatures()
+        { 
+            nobelHouse = true;
+
+            if (!HasUnitPurchaseOption(UnitType.Knight))
+            {
                 var typeData = DssRef.unitsdata.Get(UnitType.Knight);
 
                 CityPurchaseOption knightPurchase = new CityPurchaseOption()

@@ -6,10 +6,17 @@ Change Log
 * Fixed errors with dark lord on ship
 * Boss intro song if you play above 100% difficulty
 * Fixed Repair cost 
-
+* Units where lost transforming from ships - fixed
+* Added debug tools menu, press ctrl+B during gameplay
+* Change ship transform to happen on one tile change instead of two
+* Battle start clickable message
+* Nobel house knights load bug fixed
+* added the expand guard to the automation orders
 
 Error
--For both the "Full" and "Partial" Controller Support category that appears on the store page, it's expected to have a "Developer's Recommended Configuration." For more information on how to create and publish a controller configuration, please see: https://partner.steamgames.com/doc/features/steam_controller/getting_started_for_devs
+- Also playing 3+ people we couldn’t accept each others Ally requests 
+- sometimes notifications could spill over onto other players screens
+
 
 -en knight 
 -also path finding of a land army will often prefer water over land when the boat building will cause the travel time to take considerably longer than if it went over land

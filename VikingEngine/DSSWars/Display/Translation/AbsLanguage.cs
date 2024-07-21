@@ -118,6 +118,8 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string Hud_TimeSpan { get; }
 
+        public abstract string Hud_Battle { get; }
+
         public abstract string Input_NextCity { get; }
         public abstract string Input_NextArmy { get; }
         public abstract string Input_NextBattle { get; }

@@ -35,11 +35,6 @@ namespace VikingEngine.DSSWars.Display
         public void Add(string title, string text)
         {
             RichBoxContent content = new RichBoxContent();
-            //content.Add(new RichBoxBeginTitle(2));
-            //content.Add(new RichBoxImage(SpriteName.cmdWarningTriangle));
-            //content.space();
-            //content.Add(new RichBoxText(title, Color.Yellow));
-            //content.newLine();
             Title(content, title);
             content.text(text);
 
