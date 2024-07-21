@@ -150,7 +150,7 @@ namespace VikingEngine.DSSWars.Players
             faction.profile.gameStartInit();
             faction.displayInFullOverview = true;
 
-            hud = new GameHud(this);
+            hud = new GameHud(this, numPlayers);
             automation = new Automation(this);
 
             playerData = Engine.XGuide.GetPlayer(playerindex);
@@ -340,8 +340,12 @@ namespace VikingEngine.DSSWars.Players
             battles.Add(battleGroup);
             RichBoxContent content = new RichBoxContent();
             hud.messages.Title(content, DssRef.lang.Hud_Battle);
-            content.Add(new RichboxButton(new List<AbsRichBoxMember>
-                { new RichBoxText(playerUnit.TypeName() + " - " + battleGroup.TypeName()) },
+
+            var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
+            hud.messages.ControllerInputIcons(gotoBattleButtonContent);
+            gotoBattleButtonContent.Add(new RichBoxText(playerUnit.TypeName() + " - " + battleGroup.TypeName()));
+
+            content.Add(new RichboxButton(gotoBattleButtonContent,
                 new RbAction1Arg<Battle.BattleGroup>(goToBattle, battleGroup)));
             hud.messages.Add(content);
         }
@@ -360,11 +364,17 @@ namespace VikingEngine.DSSWars.Players
                 DssRef.achieve.onAlly(faction, otherFaction);
             }
 
-            if (rel.Relation <= RelationType.RelationTypeN3_War &&
+            if ((rel.Relation <= RelationType.RelationTypeN3_War &&
                 otherFaction.factiontype != FactionType.SouthHara)
+                ||
+                otherFaction.player.IsPlayer())
             {
                 string title;
-                if (previousRelation == RelationType.RelationTypeN2_Truce)
+                if (rel.Relation >= RelationType.RelationType2_Good)
+                {
+                    title = DssRef.lang.Diplomacy_RelationType;
+                }
+                else if (previousRelation == RelationType.RelationTypeN2_Truce)
                 {
                     title = DssRef.lang.Diplomacy_TruceEndTitle;
                 }
@@ -433,7 +443,7 @@ namespace VikingEngine.DSSWars.Players
                     if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                     {
                         
-                        //hud.messages.Add("message!", "Hello hello");
+                        hud.messages.Add("message!", "Hello hello");
                         //battleLineUpTest(false);
                         //mapControls.FocusObject()?.tagObject();
                     }
@@ -453,6 +463,11 @@ namespace VikingEngine.DSSWars.Players
                         {
                             mapExecute();
                         }
+                    }
+
+                    if (input.ControllerMessageClick.DownEvent)
+                    {
+                        hud.messages.onControllerClick();
                     }
 
                     if (inputConnected && !input.Connected)
@@ -480,6 +495,8 @@ namespace VikingEngine.DSSWars.Players
             //}
 
             updateObjectTabbing();
+
+            
 
             //DssRef.state.detailMap.PlayerUpdate(mapControls.playerPointerPos, bUnitDetailLayer);
             drawUnitsView.Update();
@@ -890,6 +907,7 @@ namespace VikingEngine.DSSWars.Players
         public override void onGameStart(bool newGame)
         {
             base.onGameStart(newGame);
+            hud.messages.onGameStart();
             oneSecUpdate();
 
             if (newGame)

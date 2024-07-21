@@ -785,10 +785,10 @@ namespace VikingEngine.Input
         }
     }
 
-    struct XboxButtonMap_NoAlt : IButtonMap
+    struct XboxButtonMap_TriggerAlts : IButtonMap
     {
-        public bool IsDown { get { return Input.XInput.Instance(controllerIx).IsButtonDown(button) && !altIsDown();  } }
-        public bool DownEvent { get { return Input.XInput.Instance(controllerIx).KeyDownEvent(button) && !altIsDown(); } }
+        public bool IsDown { get { return Input.XInput.Instance(controllerIx).IsButtonDown(button) && altIsDown();  } }
+        public bool DownEvent { get { return Input.XInput.Instance(controllerIx).KeyDownEvent(button) && altIsDown(); } }
         public bool DownEvent_AnyInstance
         {
             get
@@ -813,7 +813,8 @@ namespace VikingEngine.Input
         bool altIsDown()
         {
             var ins = Input.XInput.Instance(controllerIx);
-            return altIsDownForInstance(ins);
+            return ins.IsButtonDown(Buttons.LeftTrigger) == leftTrigger &&
+                ins.IsButtonDown(Buttons.RightTrigger) == rightTrigger;
         }
 
         bool altIsDownForInstance(XController ins)
@@ -841,11 +842,14 @@ namespace VikingEngine.Input
 
         int controllerIx;
         Buttons button;
+        bool leftTrigger, rightTrigger;
 
-        public XboxButtonMap_NoAlt(Buttons button, int controllerIx)
+        public XboxButtonMap_TriggerAlts(Buttons button, int controllerIx, bool leftTrigger = false, bool rightTrigger = false)
         {
             this.button = button;
             this.controllerIx = controllerIx;
+            this.leftTrigger = leftTrigger;
+            this.rightTrigger = rightTrigger;
         }
 
         public SpriteName Icon
@@ -857,6 +861,15 @@ namespace VikingEngine.Input
         }
         public void ListIcons(List<SpriteName> list)
         {
+            if (leftTrigger)
+            {
+                list.Add(SpriteName.ButtonLT);
+            }
+            if (rightTrigger)
+            {
+                list.Add(SpriteName.ButtonRT);
+            }
+
             list.Add(Icon);
         }
 

@@ -22,6 +22,7 @@ namespace VikingEngine.DSSWars
         public IButtonMap Select;
         public IButtonMap ControllerCancel;
         public IButtonMap ControllerFocus;
+        public IButtonMap ControllerMessageClick;
         public IButtonMap Execute;
         public IButtonMap Stop;
 
@@ -95,9 +96,9 @@ namespace VikingEngine.DSSWars
             dpadMove = new DirectionalXboxMap(ThumbStickType.D, false, inputSource.controllerIndex);  
             cameraTiltZoom =new DirectionalXboxMap(ThumbStickType.Right, false, inputSource.controllerIndex);
 
-            Select = new XboxButtonMap_NoAlt(Buttons.A, inputSource.controllerIndex);
-            ControllerFocus = new XboxButtonMap_NoAlt(Buttons.X, inputSource.controllerIndex);
-            ControllerCancel = new XboxButtonMap_NoAlt(Buttons.B, inputSource.controllerIndex);
+            Select = new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex);
+            ControllerFocus = new XboxButtonMap_TriggerAlts(Buttons.X, inputSource.controllerIndex);
+            ControllerCancel = new XboxButtonMap_TriggerAlts(Buttons.B, inputSource.controllerIndex);
 
             Stop = new XboxButtonMap(Buttons.DPadLeft, inputSource.controllerIndex);
             AutomationSetting = new XboxButtonMap(Buttons.Back, inputSource.controllerIndex);
@@ -105,24 +106,20 @@ namespace VikingEngine.DSSWars
             DragPan = new XboxButtonMap(Buttons.RightShoulder, inputSource.controllerIndex);
             Home = new XboxButtonMap(Buttons.DPadRight, inputSource.controllerIndex);
             Menu = new XboxButtonMap(Buttons.Start, inputSource.controllerIndex);
-            ToggleHudDetail = new XboxButtonMap_NoAlt(Buttons.Y, inputSource.controllerIndex);
+            ToggleHudDetail = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex);
 
             GameSpeed = new XboxButtonMap(Buttons.RightShoulder, inputSource.controllerIndex);
             PauseGame = new XboxButtonMap(Buttons.LeftShoulder, inputSource.controllerIndex);
 
             menuInput.xboxSetup(inputSource.controllerIndex);
 
-            NextCity = new TwoCombinedButtonsMap(
-                new XboxButtonMap(Buttons.LeftTrigger, inputSource.controllerIndex), 
-                new XboxButtonMap(Buttons.A, inputSource.controllerIndex));
+            
 
-            NextArmy = new TwoCombinedButtonsMap(
-                new XboxButtonMap(Buttons.LeftTrigger, inputSource.controllerIndex),
-                new XboxButtonMap(Buttons.X, inputSource.controllerIndex));
+            NextCity = new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex, true, false);
+            NextArmy = new XboxButtonMap_TriggerAlts(Buttons.X, inputSource.controllerIndex, true, false);
+            NextBattle = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex, true, false);
 
-            NextBattle = new TwoCombinedButtonsMap(
-                new XboxButtonMap(Buttons.LeftTrigger, inputSource.controllerIndex),
-                new XboxButtonMap(Buttons.Y, inputSource.controllerIndex));
+            ControllerMessageClick = new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex, true, true);
 
             FlagDesign_ToggleColor_Prev = new XboxButtonMap(Buttons.LeftShoulder, inputSource.controllerIndex);
             FlagDesign_ToggleColor_Next = new XboxButtonMap(Buttons.RightShoulder, inputSource.controllerIndex);
