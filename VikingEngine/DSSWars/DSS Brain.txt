@@ -1,18 +1,11 @@
 ﻿
 Change Log
-* Local multiplayer: fixed overlapping messages, added relation accepted message
-* Improved xbox layout, and added message interaction
-* A basic Keyboard key mapping in settings
-* Fixed stuck recruit save/load error
++input option on continue from save
 
 
 Error
-- soldier no type name
 -no input choise for load
-
--en knight 
--also path finding of a land army will often prefer water over land when the boat building will cause the travel time to take considerably longer than if it went over land
-from what i've seen, this generally only happens if the army is on a land tile immediately adjacent to water
+-back button in menues
 
 Retreat system
 -retreat av de sista motståndarna

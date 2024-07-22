@@ -168,7 +168,7 @@ namespace VikingEngine.DSSWars
                     
                     if (DssRef.storage.playerCount > 1)
                     {
-                        new GuiTextButton(string.Format(Ref.langOpt.InputSelect, playerData.inputSource.ToString()), null, new GuiAction2Arg<int, bool>(selectInputMenu, playerNum, false), true, layout);
+                        new GuiTextButton(string.Format(Ref.langOpt.InputSelect, playerData.inputSource.ToString()), null, new GuiAction3Arg<int, bool, int>(selectInputMenu, playerNum, false, -1), true, layout);
                     }
                     
                     new GuiSectionSeparator(layout);
@@ -463,7 +463,7 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        void selectInputMenu(int playerNumber, bool startGame)
+        void selectInputMenu(int playerNumber, bool startGame, int saveIndex)
         {
             var available = availableInput();
             GuiLayout layout = new GuiLayout(Ref.langOpt.InputSelect, menuSystem.menu);
@@ -474,11 +474,11 @@ namespace VikingEngine.DSSWars
                     {
                         if (m.IsController)
                         {
-                            new GuiIconTextButton(SpriteName.ButtonSTART, HudLib.InputName(m.sourceType), null, new GuiAction1Arg<InputSource>(selectController_startGame, m), false, layout);
+                            new GuiIconTextButton(SpriteName.ButtonSTART, HudLib.InputName(m.sourceType), null, new GuiAction2Arg<InputSource, int>(selectController_startGame, m, saveIndex), false, layout);
                         }
                         else 
                         {
-                            new GuiTextButton(HudLib.InputName(m.sourceType), null, new GuiAction1Arg<InputSource>(selectController_startGame, m), false, layout);
+                            new GuiTextButton(HudLib.InputName(m.sourceType), null, new GuiAction2Arg<InputSource, int>(selectController_startGame, m, saveIndex), false, layout);
                         }
                     }
                     else 
@@ -794,7 +794,7 @@ namespace VikingEngine.DSSWars
                 int index;
                 if (Input.XInput.KeyDownEvent_index(Buttons.Start, out index))
                 {
-                    selectController_startGame(new InputSource(InputSourceType.XController, index));
+                    selectController_startGame(new InputSource(InputSourceType.XController, index), -1);
                 }
             }
 
@@ -842,14 +842,7 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        void selectController_startGame(InputSource inputSource)
-        {
-            var playerData = DssRef.storage.localPlayers[0];
-            playerData.inputSource = inputSource;
-            DssRef.storage.checkPlayerDoublettes(0);
-
-            new StartGame(netLobby, null, mapBackgroundLoading);
-        }
+        
 
         void startGame()
         {
@@ -859,11 +852,11 @@ namespace VikingEngine.DSSWars
                 if (availableList.Count > 1)
                 {
                     controllerStartGameUpdate = true;
-                    selectInputMenu(1, true);
+                    selectInputMenu(1, true, -1);
                 }
                 else
                 {
-                    selectController_startGame(availableList[0]);
+                    selectController_startGame(availableList[0], -1);
                 }
                 return;
             }
@@ -920,7 +913,17 @@ namespace VikingEngine.DSSWars
                 }
                 mapBackgroundLoading = new MapBackgroundLoading(save);
 
-                new StartGame(netLobby, save, mapBackgroundLoading);
+                var availableList = availableInput();
+                if (availableList.Count > 1)
+                {
+                    controllerStartGameUpdate = true;
+                    selectInputMenu(1, true, listIndex);
+                }
+                else
+                {
+                    selectController_startGame(availableList[0], listIndex);
+                }
+                //new StartGame(netLobby, save, mapBackgroundLoading);
             }
             else
             {
@@ -935,7 +938,19 @@ namespace VikingEngine.DSSWars
             
         }
 
+        void selectController_startGame(InputSource inputSource, int saveIndex)
+        {
+            var playerData = DssRef.storage.localPlayers[0];
+            playerData.inputSource = inputSource;
+            DssRef.storage.checkPlayerDoublettes(0);
 
+            SaveStateMeta save = null;
+            if (saveIndex >= 0)
+            {
+                save =DssRef.storage.meta.listSaves()[saveIndex];
+            }
+            new StartGame(netLobby, save, mapBackgroundLoading);
+        }
         //public override void NetEvent_PeerJoined(Network.AbsNetworkPeer gamer)
         //{
         //    base.NetEvent_PeerJoined(gamer);
