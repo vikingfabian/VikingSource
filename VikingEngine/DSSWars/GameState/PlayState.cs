@@ -292,6 +292,10 @@ namespace VikingEngine.DSSWars
                 {
                     menuSystem.pauseMenu();
                 }
+                if (Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.B) && Keyboard.Ctrl)
+                {
+                    menuSystem.debugMenu();
+                }
             }
 
             Engine.ParticleHandler.Update(time);

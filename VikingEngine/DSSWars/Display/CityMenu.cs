@@ -33,6 +33,8 @@ namespace VikingEngine.DSSWars.Display
                 this.player.cityTab = CityTab.Recruit;
             }
 
+            content.h2(DssRef.lang.UnitType_Recruit);
+            foreach (var opt in city.cityPurchaseOptions)
             switch (player.hud.displays.CurrentMenuState)
             {
 

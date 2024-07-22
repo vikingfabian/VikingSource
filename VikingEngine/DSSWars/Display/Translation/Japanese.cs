@@ -248,7 +248,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_GameSpeedLabel => "ゲーム速度: {0}x";
 
-        public override string Hud_GameSpeedButton => "ゲーム速度";
+        public override string Input_GameSpeed => "ゲーム速度";
 
         /// <summary>
         /// ゲーム内表示。ユニットの金生産
@@ -311,6 +311,21 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_Purchase_MaxCapacity => "最大容量に達しました";
 
         public override string Hud_CompareMilitaryStrength_YourToOther => "戦力: あなた {0} - 彼ら {1}";
+
+        /// <summary>
+        /// 日付を「年、月、日」として短い文字列で表示する
+        /// </summary>
+        public override string Hud_Date => "Y{0} M{1} D{2}";
+
+        /// <summary>
+        /// 時間を「時、分、秒」として短い文字列で表示する
+        /// </summary>
+        public override string Hud_TimeSpan => "H{0} M{1} S{2}";
+
+        /// <summary>
+        /// 二つの軍隊、または軍隊と都市の間の戦闘
+        /// </summary>
+        public override string Hud_Battle => "戦闘";
 
         /// <summary>
         /// ボタン入力の説明。次の都市に移動。
@@ -795,7 +810,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string UnitType_Description_Crossbow => "強力な遠隔兵士";
         public override string UnitType_Description_Ballista => "都市に対して強い";
         public override string UnitType_Description_GreenSoldier => "恐れられるエルフの戦士";
-
+        public override string UnitType_Description_DarkLord => "最終ボス";
         /// <summary>
         /// 兵士タイプの情報
         /// </summary>
@@ -896,7 +911,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// 兵士を購入します。
         /// </summary>
-        public override string CityOption_Recruit => "徴兵";
+        public override string UnitType_Recruit => "徴兵";
 
         /// <summary>
         /// 特定のタイプの兵士を購入します。0: タイプ
@@ -1181,6 +1196,63 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Tutorial_SelectInput => "選択";
         public override string Tutorial_MoveInput => "移動コマンド";
 
+        /// <summary>
+        /// 対戦。戦闘に入る二つの軍隊を説明するテキスト
+        /// </summary>
+        public override string Hud_Versus => "VS.";
 
+        public override string Hud_WardeclarationTitle => "宣戦布告";
+
+        public override string ArmyOption_Attack => "攻撃";
+
+        /// <summary>
+        /// ゲーム設定メニュー。押したときのキーとボタンの動作を変更します
+        /// </summary>
+        public override string Settings_ButtonMapping => "ボタンマッピング";
+
+        /// <summary>
+        /// ボタン入力を説明します。HUDの情報量を拡大または縮小します
+        /// </summary>
+        public override string Input_ToggleHudDetail => "HUD詳細の切り替え";
+
+        /// <summary>
+        /// ボタン入力を説明します。マップとHUDの選択を切り替えます
+        /// </summary>
+        public override string Input_ToggleHudFocus => "メニューフォーカス";
+
+        /// <summary>
+        /// ボタン入力を説明します。最新のポップアップをクリックするショートカット
+        /// </summary>
+        public override string Input_ClickMessage => "メッセージをクリック";
+
+        /// <summary>
+        /// ボタン入力を説明します。一般的な移動方向
+        /// </summary>
+        public override string Input_Up => "上";
+
+        /// <summary>
+        /// ボタン入力を説明します。一般的な移動方向
+        /// </summary>
+        public override string Input_Down => "下";
+
+        /// <summary>
+        /// ボタン入力を説明します。一般的な移動方向
+        /// </summary>
+        public override string Input_Left => "左";
+
+        /// <summary>
+        /// ボタン入力を説明します。一般的な移動方向
+        /// </summary>
+        public override string Input_Right => "右";
+
+        /// <summary>
+        /// 入力タイプ、標準のPC入力
+        /// </summary>
+        public override string Input_Source_Keyboard => "キーボードとマウス";
+
+        /// <summary>
+        /// 入力タイプ、Xboxのような携帯型コントローラー
+        /// </summary>
+        public override string Input_Source_Controller => "コントローラー";
     }
 }

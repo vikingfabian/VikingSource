@@ -7,6 +7,7 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Network;
+using VikingEngine.ToGG;
 
 namespace VikingEngine.DSSWars.Display
 {
@@ -17,10 +18,28 @@ namespace VikingEngine.DSSWars.Display
 
         List<Message> messages = new List<Message>();
         LocalPlayer player;
-        public MessageGroup(LocalPlayer player, RichboxGuiSettings settings)
+        
+        float screenAreaBottom;
+        public MessageGroup(LocalPlayer player, int numPlayers, RichboxGuiSettings settings)
         {
             this.player = player;   
             this.settings = settings;
+        }
+
+        public void onControllerClick()
+        {
+            foreach (var m in messages)
+            {
+                if (m.onControllerClick())
+                {
+                    return;
+                }
+            }
+        }
+
+        public void onGameStart()
+        { 
+         screenAreaBottom = player.playerData.view.DrawArea.Bottom + Engine.Screen.SmallIconSize;
         }
 
         public void Title(RichBoxContent content, string title)
@@ -32,14 +51,18 @@ namespace VikingEngine.DSSWars.Display
             content.newLine();
         }
 
+        public void ControllerInputIcons(List<AbsRichBoxMember> button)
+        {
+            if (player.input.inputSource.IsController)
+            {
+                RichBoxContent.ButtonMap(player.input.ControllerMessageClick, button);
+                button.Add(new RichBoxSpace());
+            }
+        }
+
         public void Add(string title, string text)
         {
             RichBoxContent content = new RichBoxContent();
-            //content.Add(new RichBoxBeginTitle(2));
-            //content.Add(new RichBoxImage(SpriteName.cmdWarningTriangle));
-            //content.space();
-            //content.Add(new RichBoxText(title, Color.Yellow));
-            //content.newLine();
             Title(content, title);
             content.text(text);
 
@@ -82,13 +105,15 @@ namespace VikingEngine.DSSWars.Display
 
         void UpdatePositions()
         {
+            
+
             Vector2 currentPos = position;
             if (messages.Count > 0)
             {                
                 foreach (var message in messages)
                 {
                     currentPos.Y += settings.edgeWidth * 2f;
-                    currentPos = message.UpdatePoisitions(currentPos);                    
+                    currentPos = message.UpdatePoisitions(currentPos, screenAreaBottom);                    
                 }
             }
         }
@@ -134,24 +159,49 @@ namespace VikingEngine.DSSWars.Display
                     player.input.RichboxGuiSelect);
         }
 
-        public Vector2 UpdatePoisitions(Vector2 position)
+        public bool onControllerClick()
+        {
+            if (richBox.buttonGrid_Y_X.Count > 0 && richBox.buttonGrid_Y_X[0].Count > 0)
+            {
+                if (time.msPassed(200))
+                {
+                    richBox.buttonGrid_Y_X[0][0].onClick();
+                }
+                return true;
+            }
+            return false;
+        }
+
+
+            public Vector2 UpdatePoisitions(Vector2 position, float screenAreaBottom)
         {
             area.Position = position;
             bg.Area = area;
             richBox.SetOffset(area.Position + contentOffset);
-                       
+            
+            bool visible = bg.Bottom <= screenAreaBottom;
+
+            bg.Visible = visible;
+            richBox.SetVisible(visible);
 
             return area.LeftBottom;
         }
 
         public void update()
-        { 
-            interaction.update();
+        {
+            if (bg.Visible)
+            {
+                interaction.update();
+            }
         }
 
         public bool mouseOver()
         {
-            return bg.Area.IntersectPoint(Input.Mouse.Position);
+            if (bg.Visible)
+            {
+                return bg.Area.IntersectPoint(Input.Mouse.Position);
+            }
+            return false;
         }
 
         public void DeleteMe()

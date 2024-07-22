@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.GameObject.DetailObj.Soldiers;
+using VikingEngine.DSSWars.GameObject.DetailObj.Warships;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -40,7 +41,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             modelName = LootFest.VoxelModelName.wars_darklord;
             
-            description = "The final boss";
+            description = DssRef.lang.UnitType_Description_DarkLord;
         }
 
         public override AbsDetailUnit CreateUnit()
@@ -51,13 +52,51 @@ namespace VikingEngine.DSSWars.GameObject
         }
     }
 
+    class DarkLordWarshipData : KnightWarshipData
+    {
+        public DarkLordWarshipData(UnitType shipUnitType, AbsSoldierData soldierData)
+            : base(shipUnitType, soldierData)
+        {
+            
+            mainAttack = AttackType.Javelin;
+            attackTimePlusCoolDown = StandardAttackAndCoolDownTime * 2.5f;
+            attackRange = 2f;
+            attackDamage = 500;
+            attackDamageStructure = attackDamage;
+            attackDamageSea = attackDamage;
+
+            walkingSpeed *= 1.5f;
+        }
+
+        public override AbsDetailUnit CreateUnit()
+        {
+            var unit = new DarkLordWarship();
+            DssRef.settings.darkLordPlayer.darkLordUnit = unit;
+            return unit;
+        }
+    }
+
     class DarkLord : BaseSoldier
     {
         public DarkLord()
             : base()
         {
-            DssRef.settings.darkLordPlayer.darkLordUnit = this;
             DssRef.state.events.onDarkLordSpawn();
+        }
+
+        public override void onDeath(bool fullUpdate, Faction enemyFaction)
+        {
+            base.onDeath(fullUpdate, enemyFaction);
+
+            Ref.update.AddSyncAction(new SyncAction(DssRef.state.events.onDarkLorDeath));
+        }
+    }
+
+    class DarkLordWarship : BaseWarship
+    {
+        public DarkLordWarship()
+            : base()
+        {
         }
 
         public override void onDeath(bool fullUpdate, Faction enemyFaction)

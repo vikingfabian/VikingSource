@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars
             wrong = new SoundContainerSingle(soundDir + "wrong", 0.6f);
             ordermove = new SoundContainerSingle(soundDir + "ordermove");
             orderstop = new SoundContainerSingle(soundDir + "orderstop");
-            message = new SoundContainerSingle(soundDir + "chat_message");
+            message = new SoundContainerSingle(soundDir + "chat_message", 0.75f);
             trophy = new SoundContainerSingle(soundDir + "trophy", 0.2f);
 
 

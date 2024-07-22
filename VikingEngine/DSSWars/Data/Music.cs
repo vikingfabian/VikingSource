@@ -17,5 +17,6 @@ namespace VikingEngine.DSSWars.Data
         public static readonly SongData Victory = new SongData(FilePath + "we-are-heroes", false, 0.8f);
         public static readonly SongData Fail = new SongData(FilePath + "sadness-in-blue", false, 0.5f);
 
+        public static readonly SongData IAmYourDoom = new SongData(FilePath + "i am your doom", false, 0.45f);
     }
 }

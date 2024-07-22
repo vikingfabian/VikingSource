@@ -68,18 +68,17 @@ namespace VikingEngine.DSSWars.Display.CutScene
 
             content.icontext(HudLib.CheckImage(DssRef.difficulty.allowPauseCommand), DssRef.lang.Settings_AllowPause);
 
-            var time = DssRef.time.TotalIngameTime();
+            var time = HudLib.TimeSpan(DssRef.time.TotalIngameTime());
             content.text(string.Format(DssRef.lang.EndGameStatistics_Time, time));
 
             content.newParagraph();
-            content.text(DateTime.Now.ToShortDateString());
+            content.text(HudLib.Date(DateTime.Now));
             content.text(string.Format(DssRef.lang.Lobby_GameVersion, Engine.LoadContent.SteamVersion));
             
             Vector2 pos = Engine.Screen.SafeArea.CenterTop;
             pos.X -= HudLib.cutsceneGui.width * 1.5f + Engine.Screen.IconSize;
             endRefresh(pos, true);
         }
-
     }
 
 

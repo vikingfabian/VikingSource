@@ -103,11 +103,10 @@ namespace VikingEngine.DSSWars.Battle
                 if (m.faction.player.IsPlayer())
                 {
                     var player = m.faction.player.GetLocalPlayer();
-                    int ix = player.playerData.localPlayerIndex;
-                    if (newFaction)//!playerJoined[ix])
+                    //int ix = player.playerData.localPlayerIndex;
+                    if (newFaction)
                     {
-                        //playerJoined[ix] = true;
-                        player.battles.Add(this);
+                        Ref.update.AddSyncAction(new SyncAction2Arg<BattleGroup, AbsMapObject>( player.enterBattle,this, m));//.battles.Add(this);
                     }
                 }
 
@@ -752,7 +751,7 @@ namespace VikingEngine.DSSWars.Battle
 
         public override string TypeName()
         {
-            return "Battle (" + TextLib.IndexToString(parentArrayIndex) + ")";
+            return DssRef.lang.Hud_Battle + " (" + parentArrayIndex.ToString() + ")"; //return "Battle (" + TextLib.IndexToString(parentArrayIndex) + ")";
         }
 
         public override GameObjectType gameobjectType()

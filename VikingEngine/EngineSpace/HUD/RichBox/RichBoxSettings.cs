@@ -47,10 +47,18 @@ namespace VikingEngine.HUD.RichBox
             refreshIconSz();
         }
 
+        public void scaleUp(float scaleUp = 1.2f)
+        {
+            breadText.size *= scaleUp;
+            head1.size *= scaleUp;
+            head2.size *= scaleUp;
+
+            breadIconHeight = breadText.size * scaleUp;
+            titleIconHeight = breadIconHeight;
+        }
         public void refreshIconSz(float scaleUp = 1.2f)
         {
             breadIconHeight = breadText.size * scaleUp;
-
             titleIconHeight = breadIconHeight;
         }
     }

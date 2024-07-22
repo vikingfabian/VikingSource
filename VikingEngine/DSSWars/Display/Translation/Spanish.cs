@@ -245,7 +245,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_GameSpeedLabel => "Velocidad del juego: {0}x";
 
-        public override string Hud_GameSpeedButton => "Velocidad del juego";
+        public override string Input_GameSpeed => "Velocidad del juego";
 
         /// <summary>
         /// Pantalla del juego. Producción de oro por unidad
@@ -298,6 +298,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_PurchaseTitle_Cost => "Costo";
         public override string Hud_PurchaseTitle_Gain => "Ganancia";
 
+       
+
         /// <summary>
         /// Cuánto de un recurso se utilizará, "5 oro. (Disponible: 10)". Habrá un título de "costo" encima del texto. 0: Recurso, 1: costo, 2: disponible
         /// </summary>
@@ -308,6 +310,20 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_Purchase_MaxCapacity => "Ha alcanzado la capacidad máxima";
 
         public override string Hud_CompareMilitaryStrength_YourToOther => "Fuerza: Tu {0} - Su {1}";
+
+        /// <summary>
+        /// Mostrar una cadena corta de la fecha como Año, Mes, Día
+        /// </summary>
+        public override string Hud_Date => "A{0} M{1} D{2}";
+
+        /// <summary>
+        /// Mostrar una cadena corta de tiempo como Hora, Minutos, Segundos
+        /// </summary>
+        public override string Hud_TimeSpan => "H{0} M{1} S{2}";
+        /// <summary>
+        /// Batalla entre dos ejércitos o entre un ejército y una ciudad
+        /// </summary>
+        public override string Hud_Battle => "Batalla";
 
         /// <summary>
         /// Describe la entrada del botón. Mover a la siguiente ciudad.
@@ -790,7 +806,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string UnitType_Description_Crossbow => "Soldado de rango poderoso";
         public override string UnitType_Description_Ballista => "Fuerte contra ciudades";
         public override string UnitType_Description_GreenSoldier => "Temido guerrero elfo";
-
+        public override string UnitType_Description_DarkLord => "El jefe final";
         /// <summary>
         /// Información sobre un tipo de soldado
         /// </summary>
@@ -891,7 +907,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Reclutar soldados.
         /// </summary>
-        public override string CityOption_Recruit => "Reclutar";
+        public override string UnitType_Recruit => "Reclutar";
 
         /// <summary>
         /// Reclutar soldados de tipo. 0:tipo
@@ -1177,6 +1193,64 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Tutorial_SelectInput => "Seleccionar";
         public override string Tutorial_MoveInput => "Comando de movimiento";
 
+        /// <summary>
+        /// Versus. Texto que describe los dos ejércitos que entrarán en batalla
+        /// </summary>
+        public override string Hud_Versus => "VS.";
+
+        public override string Hud_WardeclarationTitle => "Declaración de guerra";
+
+        public override string ArmyOption_Attack => "Atacar";
+
+        /// <summary>
+        /// Menú de configuración del juego. Cambia lo que hacen las teclas y botones cuando se presionan
+        /// </summary>
+        public override string Settings_ButtonMapping => "Asignación de botones";
+
+        /// <summary>
+        /// Describe la entrada del botón. Expande o reduce la cantidad de información en el HUD
+        /// </summary>
+        public override string Input_ToggleHudDetail => "Alternar detalle del HUD";
+
+        /// <summary>
+        /// Describe la entrada del botón. Alterna la selección entre el mapa y el HUD
+        /// </summary>
+        public override string Input_ToggleHudFocus => "Enfoque del menú";
+
+        /// <summary>
+        /// Describe la entrada del botón. Atajo para hacer clic en la última ventana emergente
+        /// </summary>
+        public override string Input_ClickMessage => "Mensaje de clic";
+
+        /// <summary>
+        /// Describe la entrada del botón. Dirección general de movimiento
+        /// </summary>
+        public override string Input_Up => "Arriba";
+
+        /// <summary>
+        /// Describe la entrada del botón. Dirección general de movimiento
+        /// </summary>
+        public override string Input_Down => "Abajo";
+
+        /// <summary>
+        /// Describe la entrada del botón. Dirección general de movimiento
+        /// </summary>
+        public override string Input_Left => "Izquierda";
+
+        /// <summary>
+        /// Describe la entrada del botón. Dirección general de movimiento
+        /// </summary>
+        public override string Input_Right => "Derecha";
+
+        /// <summary>
+        /// Tipo de entrada, entrada estándar de PC
+        /// </summary>
+        public override string Input_Source_Keyboard => "Teclado y ratón";
+
+        /// <summary>
+        /// Tipo de entrada, controlador portátil como el que usa Xbox
+        /// </summary>
+        public override string Input_Source_Controller => "Controlador";
 
     }
 }

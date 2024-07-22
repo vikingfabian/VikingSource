@@ -124,8 +124,9 @@ namespace VikingEngine.DSSWars.Display
 
             if (attackTarget)
             {
-                content.Add(new RichBoxText("Attack:", Color.Red));
-                content.Add(new RichBoxNewLine());
+                content.h2(DssRef.lang.ArmyOption_Attack).overrideColor = Color.Red;
+                //content.Add(new RichBoxText("Attack:", Color.Red));
+                //content.Add(new RichBoxNewLine());
             }
 
             string name = obj.Name();
@@ -155,11 +156,14 @@ namespace VikingEngine.DSSWars.Display
                     content.Add(new RichBoxSeperationLine());
 
                     RelationType rel = DssRef.diplomacy.GetRelationType(player.faction, obj.GetFaction());
-                    content.h2("War declaration");
-                    content.text("Cost: " + Diplomacy.DeclareWarCost(rel) + " diplomacy points");
-                    string diplomacy = "Diplomatic points: {0}";
-                    content.text(string.Format(diplomacy, player.diplomaticPoints.ToString()));
-
+                    
+                    content.h1(DssRef.lang.Hud_WardeclarationTitle);
+                    //content.text("Cost: " + Diplomacy.DeclareWarCost(rel) + " diplomacy points");
+                    //string diplomacy = "Diplomatic points: {0}";
+                    //content.text(string.Format(diplomacy, player.diplomaticPoints.ToString()));
+                    content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
+                    content.newLine();
+                    HudLib.ResourceCost(content, GameObject.Resource.ResourceType.DiplomaticPoint, Diplomacy.DeclareWarCost(rel), player.diplomaticPoints.Int());
                     content.Add(new RichBoxSeperationLine());
                 }
                 else
@@ -173,14 +177,14 @@ namespace VikingEngine.DSSWars.Display
                 {
                     content.Add(new RichBoxBeginTitle(2));
                     content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
-                    content.Add(new RichBoxText("Strength ratings:"));
+                    content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_StrengthRating, string.Empty)));//"Strength ratings:"));
                     
                     content.newLine();
                     content.Add(new RichBoxTexture(player.faction.flagTexture, 1f, 0, 0.2f));
                     
                     content.Add(new RichBoxText(": " + TextLib.OneDecimal(attacker.strengthValue)));//string.Format(HudLib.OneDecimalFormat, attacker.strengthValue)));
                     content.newLine();
-                    content.text("VS.");
+                    content.text(DssRef.lang.Hud_Versus);
                     content.newLine();
                     content.Add(new RichBoxTexture(obj.GetFaction().flagTexture, 1f, 0, 0.2f));
                     content.Add(new RichBoxText(": " + TextLib.OneDecimal(defender.strengthValue)));

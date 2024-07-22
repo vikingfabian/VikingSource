@@ -136,13 +136,21 @@ namespace VikingEngine.DSSWars.Players
 
             input = new InputMap(playerindex);
             input.setInputSource(pStorage.inputSource.sourceType, pStorage.inputSource.controllerIndex);
+            if (pStorage.inputSource.IsController)
+            {
+                input.copyDataFrom(Ref.gamesett.controllerMap);
+            }
+            else
+            {
+                input.copyDataFrom(Ref.gamesett.keyboardMap);
+            }
 
             inputConnected = input.Connected;
 
             faction.profile.gameStartInit();
             faction.displayInFullOverview = true;
 
-            hud = new GameHud(this);
+            hud = new GameHud(this, numPlayers);
             automation = new Automation(this);
 
             playerData = Engine.XGuide.GetPlayer(playerindex);
@@ -327,6 +335,26 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        public void enterBattle(Battle.BattleGroup battleGroup, AbsMapObject playerUnit)
+        {
+            battles.Add(battleGroup);
+            RichBoxContent content = new RichBoxContent();
+            hud.messages.Title(content, DssRef.lang.Hud_Battle);
+
+            var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
+            hud.messages.ControllerInputIcons(gotoBattleButtonContent);
+            gotoBattleButtonContent.Add(new RichBoxText(playerUnit.TypeName() + " - " + battleGroup.TypeName()));
+
+            content.Add(new RichboxButton(gotoBattleButtonContent,
+                new RbAction1Arg<Battle.BattleGroup>(goToBattle, battleGroup)));
+            hud.messages.Add(content);
+        }
+
+        void goToBattle(Battle.BattleGroup battleGroup)
+        {
+            mapControls.cameraFocus = battleGroup;
+        }
+
         public override void onNewRelation(Faction otherFaction, DiplomaticRelation rel, RelationType previousRelation)
         {
             base.onNewRelation(otherFaction, rel, previousRelation);
@@ -336,11 +364,17 @@ namespace VikingEngine.DSSWars.Players
                 DssRef.achieve.onAlly(faction, otherFaction);
             }
 
-            if (rel.Relation <= RelationType.RelationTypeN3_War &&
+            if ((rel.Relation <= RelationType.RelationTypeN3_War &&
                 otherFaction.factiontype != FactionType.SouthHara)
+                ||
+                otherFaction.player.IsPlayer())
             {
                 string title;
-                if (previousRelation == RelationType.RelationTypeN2_Truce)
+                if (rel.Relation >= RelationType.RelationType2_Good)
+                {
+                    title = DssRef.lang.Diplomacy_RelationType;
+                }
+                else if (previousRelation == RelationType.RelationTypeN2_Truce)
                 {
                     title = DssRef.lang.Diplomacy_TruceEndTitle;
                 }
@@ -398,7 +432,7 @@ namespace VikingEngine.DSSWars.Players
                     if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                     {
                         //cityBuilderTest();
-                        //DssRef.state.events.TestNextEvent();
+                       // DssRef.state.events.TestNextEvent();
                         
                         battleLineUpTest(true);
 
@@ -409,7 +443,7 @@ namespace VikingEngine.DSSWars.Players
                     if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                     {
                         
-                        //hud.messages.Add("message!", "Hello hello");
+                        hud.messages.Add("message!", "Hello hello");
                         //battleLineUpTest(false);
                         //mapControls.FocusObject()?.tagObject();
                     }
@@ -429,6 +463,11 @@ namespace VikingEngine.DSSWars.Players
                         {
                             mapExecute();
                         }
+                    }
+
+                    if (input.ControllerMessageClick.DownEvent)
+                    {
+                        hud.messages.onControllerClick();
                     }
 
                     if (inputConnected && !input.Connected)
@@ -457,8 +496,75 @@ namespace VikingEngine.DSSWars.Players
 
             updateObjectTabbing();
 
+            
+
             //DssRef.state.detailMap.PlayerUpdate(mapControls.playerPointerPos, bUnitDetailLayer);
             drawUnitsView.Update();
+        }
+
+        public void debugMenu(GuiLayout layout)
+        {
+            new GuiTextButton("Next event", "skip forward in the event timer", new GuiAction(new Action(DssRef.state.events.TestNextEvent) + DssRef.state.menuSystem.closeMenu), false, layout);
+
+            UnitType[] unitTypes = DssLib.AvailableUnitTypes;
+            foreach (var type in unitTypes)
+            { 
+                new GuiTextButton("Battle test - " + type.ToString() + " (Land)", null, 
+                    new GuiAction2Arg<UnitType, bool>(battleLineTest,type,false), false, layout);
+            }
+
+            foreach (var type in unitTypes)
+            {
+                new GuiTextButton("Battle test - " + type.ToString() + " (Sea)", null,
+                    new GuiAction2Arg<UnitType, bool>(battleLineTest, type, true), false, layout);
+            }
+        }
+
+        void battleLineTest(UnitType type, bool sea)
+        {
+            DssRef.state.menuSystem.closeMenu();
+
+            Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(45));
+            Rotation1D playerRot = enemyRot.getInvert();
+
+            Faction enemyFac = DssRef.settings.darkLordPlayer.faction;
+            DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
+            
+            IntVector2 position = mapControls.tilePosition;
+
+            
+            {
+                var army = faction.NewArmy(position);
+                army.rotation = playerRot;
+                
+                for (int i = 0; i < 5; ++i)
+                {
+                   var group =  new SoldierGroup(army, UnitType.Soldier, false);
+                    if (sea)
+                    { 
+                        group.completeTransform(SoldierTransformType.ToShip);
+                    }
+                }
+
+                army.refreshPositions(true);
+            }
+            {
+                
+                var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
+                army.rotation = enemyRot;
+
+                for (int i = 0; i < 5; ++i)
+                {
+                    var group = new SoldierGroup(army, type, false);
+                    if (sea)
+                    {
+                        group.completeTransform(SoldierTransformType.ToShip);
+                    }
+                }
+                    
+                army.refreshPositions(true);               
+
+            }
         }
 
         public void asyncUserUpdate()
@@ -653,7 +759,7 @@ namespace VikingEngine.DSSWars.Players
                 //{
                 //    new SoldierGroup(army, UnitType.Viking, false).completeTransform(SoldierTransformType.ToShip);
                 //}
-                for (int i = 0; i < 10; ++i)
+                for (int i = 0; i < 2; ++i)
                 {
                     new SoldierGroup(army, UnitType.Soldier, false);
                 }
@@ -669,8 +775,9 @@ namespace VikingEngine.DSSWars.Players
 
                     for (int i = 0; i < 10; ++i)
                     {
-                        new SoldierGroup(army, UnitType.Archer, false);
+                        new SoldierGroup(army, UnitType.Archer, false).completeTransform(SoldierTransformType.ToShip);
                     }
+                    new SoldierGroup(army, UnitType.DarkLord, false).completeTransform(SoldierTransformType.ToShip);
                     //for (int i = 0; i < 5; ++i)
                     //{
                     //    new SoldierGroup(army, UnitType.Ballista, false);
@@ -809,6 +916,7 @@ namespace VikingEngine.DSSWars.Players
         public override void onGameStart(bool newGame)
         {
             base.onGameStart(newGame);
+            hud.messages.onGameStart();
             oneSecUpdate();
 
             if (newGame)

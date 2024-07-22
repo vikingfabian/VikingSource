@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Graphics;
 using VikingEngine.EngineSpace.Maths;
+using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.HUD
 {
@@ -403,6 +404,22 @@ IsPressed = false;
             get
             {
                 return GuiMemberSizeType.LargeButtonSize;
+            }
+        }
+    }
+
+    class GuiRichButton : AbsGuiButton
+    {
+        RichBoxGroup boxGroup;
+        public GuiRichButton(RichBoxSettings settings, List<AbsRichBoxMember> members, string toolTip, IGuiAction action, bool showMoreMenusArrow, GuiLayout layout)
+             : base(action, toolTip, showMoreMenusArrow, layout)
+        {
+            boxGroup = new RichBoxGroup(new Vector2(style.textEdgeSpace), size.X - style.textEdgeSpace * 2,
+                layout.TextLayer, settings, members);
+
+            foreach (var m in boxGroup.images)
+            {
+                this.AddAndUpdate(m as AbsDraw2D);
             }
         }
     }

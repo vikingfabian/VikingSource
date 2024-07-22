@@ -173,21 +173,36 @@ namespace VikingEngine.HUD.RichBox
         public void ButtonDescription(IButtonMap buttonMap, string desc)
         {
             newLine();
-            ButtonMap(buttonMap);
+            this.buttonMap(buttonMap);
             space();
             Add(new RichBoxText(desc));
         }
-        public void ButtonMap(IButtonMap buttonMap)
+        public void buttonMap(IButtonMap buttonMap)
+        {
+            ButtonMap(buttonMap, this);
+            //List<SpriteName> sprites = new List<SpriteName>(2);
+            //buttonMap.ListIcons(sprites);
+
+            //for (int i = 0; i < sprites.Count; i++)
+            //{
+            //    Add(new RichBoxImage(sprites[i]));
+            //    if (i < sprites.Count - 1)
+            //    {
+            //        Add(new RichBoxText("+"));
+            //    }
+            //}
+        }
+        public static void ButtonMap(IButtonMap buttonMap, List<AbsRichBoxMember> content )
         { 
             List<SpriteName> sprites = new List<SpriteName>(2);
             buttonMap.ListIcons(sprites);
 
             for (int i = 0; i < sprites.Count; i++)
             {
-                Add(new RichBoxImage(sprites[i]));
+                content.Add(new RichBoxImage(sprites[i]));
                 if (i < sprites.Count - 1)
                 {
-                    Add(new RichBoxText("+"));
+                    content.Add(new RichBoxText("+"));
                 }
             }
         }

@@ -245,7 +245,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_GameSpeedLabel => "Скорость игры: {0}x";
 
-        public override string Hud_GameSpeedButton => "Скорость игры";
+        public override string Input_GameSpeed => "Скорость игры";
 
         /// <summary>
         /// Отображение в игре. Производство золота юнитом
@@ -308,6 +308,21 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_Purchase_MaxCapacity => "Достигнута максимальная вместимость";
 
         public override string Hud_CompareMilitaryStrength_YourToOther => "Сила: Ваша {0} - Их {1}";
+
+        /// <summary>
+        /// Отображение короткой строки даты как Год, Месяц, День
+        /// </summary>
+        public override string Hud_Date => "Г{0} М{1} Д{2}";
+
+        /// <summary>
+        /// Отображение короткой строки временного промежутка как Часы, Минуты, Секунды
+        /// </summary>
+        public override string Hud_TimeSpan => "Ч{0} М{1} С{2}";
+
+        /// <summary>
+        /// Битва между двумя армиями или армией и городом
+        /// </summary>
+        public override string Hud_Battle => "Битва";
 
         /// <summary>
         /// Описывает ввод кнопки. Перейти к следующему городу.
@@ -790,7 +805,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string UnitType_Description_Crossbow => "Мощный дальнобойный солдат";
         public override string UnitType_Description_Ballista => "Сильна против городов";
         public override string UnitType_Description_GreenSoldier => "Страшный эльфийский воин";
-
+        public override string UnitType_Description_DarkLord => "Последний босс";
         /// <summary>
         /// Информация о типе солдата
         /// </summary>
@@ -891,7 +906,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Нанять солдат.
         /// </summary>
-        public override string CityOption_Recruit => "Нанять";
+        public override string UnitType_Recruit => "Нанять";
 
         /// <summary>
         /// Нанять солдат типа. 0:тип
@@ -1175,5 +1190,64 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Tutorial_SelectInput => "Выбрать";
         public override string Tutorial_MoveInput => "Команда перемещения";
+
+        /// <summary>
+        /// Против. Текст, описывающий две армии, которые вступят в бой
+        /// </summary>
+        public override string Hud_Versus => "VS.";
+
+        public override string Hud_WardeclarationTitle => "Объявление войны";
+
+        public override string ArmyOption_Attack => "Атака";
+
+        /// <summary>
+        /// Меню настроек игры. Измените, что делают клавиши и кнопки при нажатии
+        /// </summary>
+        public override string Settings_ButtonMapping => "Назначение кнопок";
+
+        /// <summary>
+        /// Описывает ввод кнопки. Расширяет или уменьшает количество информации на HUD
+        /// </summary>
+        public override string Input_ToggleHudDetail => "Переключить детализацию HUD";
+
+        /// <summary>
+        /// Описывает ввод кнопки. Переключает выбор между картой и HUD
+        /// </summary>
+        public override string Input_ToggleHudFocus => "Фокус меню";
+
+        /// <summary>
+        /// Описывает ввод кнопки. Ярлык для нажатия на последнее всплывающее окно
+        /// </summary>
+        public override string Input_ClickMessage => "Нажать сообщение";
+
+        /// <summary>
+        /// Описывает ввод кнопки. Общее направление движения
+        /// </summary>
+        public override string Input_Up => "Вверх";
+
+        /// <summary>
+        /// Описывает ввод кнопки. Общее направление движения
+        /// </summary>
+        public override string Input_Down => "Вниз";
+
+        /// <summary>
+        /// Описывает ввод кнопки. Общее направление движения
+        /// </summary>
+        public override string Input_Left => "Влево";
+
+        /// <summary>
+        /// Описывает ввод кнопки. Общее направление движения
+        /// </summary>
+        public override string Input_Right => "Вправо";
+
+        /// <summary>
+        /// Тип ввода, стандартный ПК ввод
+        /// </summary>
+        public override string Input_Source_Keyboard => "Клавиатура и мышь";
+
+        /// <summary>
+        /// Тип ввода, портативный контроллер, как используется на Xbox
+        /// </summary>
+        public override string Input_Source_Controller => "Контроллер";
     }
 }

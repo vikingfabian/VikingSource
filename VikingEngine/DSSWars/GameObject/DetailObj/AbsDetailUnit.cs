@@ -544,7 +544,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string TypeName()
         {
-            return DetailUnitType().ToString() + "(" + parentArrayIndex.ToString() + ")";
+            return DssRef.unitsdata.Name(DetailUnitType()) + "(" + parentArrayIndex.ToString() + ")";
         }
 
         public override string ToString()

@@ -249,7 +249,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_GameSpeedLabel => "Game speed: {0}x";
 
-        public override string Hud_GameSpeedButton => "Game speed";
+        public override string Input_GameSpeed => "Game speed";
 
         /// <summary>
         /// Ingame display. Unit gold production
@@ -314,6 +314,22 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_Purchase_MaxCapacity => "Has reached maximum capacity";
 
         public override string Hud_CompareMilitaryStrength_YourToOther => "Strength: Your {0} - Their {1}";
+
+        /// <summary>
+        /// Display a short string of date as Year, Month, Day
+        /// </summary>
+        public override string Hud_Date => "Y{0} M{1} D{2}";
+        
+        /// <summary>
+        /// Display a short string of timespan as Hour, Minutes, Seconds
+        /// </summary>
+        public override string Hud_TimeSpan => "H{0} M{1} S{2}";
+
+        /// <summary>
+        /// Battle between two armies, or army and city
+        /// </summary>
+        public override string Hud_Battle => "Battle";
+
 
         /// <summary>
         /// Describes button input. Move to the next city.
@@ -795,6 +811,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string UnitType_Description_Ballista => "Strong against cities";
         public override string UnitType_Description_GreenSoldier => "Feared elf warrior";
 
+        public override string UnitType_Description_DarkLord => "The final boss";
+
         /// <summary>
         /// Information about a soldier type
         /// </summary>
@@ -897,7 +915,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Purchase soldiers.
         /// </summary>
-        public override string CityOption_Recruit => "Recruit";
+        public override string UnitType_Recruit => "Recruit";
 
         /// <summary>
         /// Purchase soldiers of type. 0:type
@@ -1186,6 +1204,72 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Tutorial_SelectInput => "Select";
         public override string Tutorial_MoveInput => "Move command";
+
+
+        
+        /// <summary>
+        /// Versus. Text describing the two armies that will go into battle
+        /// </summary>
+        public override string Hud_Versus => "VS.";
+
+        public override string Hud_WardeclarationTitle => "War declaration";
+
+        public override string ArmyOption_Attack => "Attack";
+
+
+
+        //----
+        /// <summary>
+        /// In game settings menu. Change what keys and buttons do when pressed
+        /// </summary>
+        public override string Settings_ButtonMapping => "Key bindings";
+
+        /// <summary>
+        /// Describes button input. Expands or shrinks the amount of information on the HUD
+        /// </summary>
+        public override string Input_ToggleHudDetail => "Toggle HUD detail";
+
+        /// <summary>
+        /// Describes button input. Toggles selection between map and HUD
+        /// </summary>
+        public override string Input_ToggleHudFocus => "Menu focus";
+
+        /// <summary>
+        /// Describes button input. Shortcut to click on the latest popup
+        /// </summary>
+        public override string Input_ClickMessage => "Click message";
+
+        /// <summary>
+        /// Describes button input. General move direction
+        /// </summary>
+        public override string Input_Up => "Up";
+
+        /// <summary>
+        /// Describes button input. General move direction
+        /// </summary>
+        public override string Input_Down => "Down";
+
+        /// <summary>
+        /// Describes button input. General move direction
+        /// </summary>
+        public override string Input_Left => "Left";
+
+        /// <summary>
+        /// Describes button input. General move direction
+        /// </summary>
+        public override string Input_Right => "Right";
+
+        /// <summary>
+        /// Input type, standard PC input
+        /// </summary>
+        public override string Input_Source_Keyboard => "Keyboard & Mouse";
+
+        /// <summary>
+        /// Input type, handheld controller like the xbox uses
+        /// </summary>
+        public override string Input_Source_Controller => "Controller";
+
+
 
     }
 }

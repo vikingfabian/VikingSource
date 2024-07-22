@@ -234,13 +234,17 @@ namespace VikingEngine.DSSWars
 
         DiplomaticRelation NewRelation(Faction faction1, Faction faction2, RelationType newRelation)
         {
-            DiplomaticRelation rel;
-            SpeakTerms speakterms = (SpeakTerms)Math.Min((int)faction1.DefaultSpeakingTerms(), (int)faction2.DefaultSpeakingTerms());
-            rel = new DiplomaticRelation(faction1.parentArrayIndex, faction2.parentArrayIndex, newRelation, speakterms);
+            if (faction1 != faction2)
+            {
+                DiplomaticRelation rel;
+                SpeakTerms speakterms = (SpeakTerms)Math.Min((int)faction1.DefaultSpeakingTerms(), (int)faction2.DefaultSpeakingTerms());
+                rel = new DiplomaticRelation(faction1.parentArrayIndex, faction2.parentArrayIndex, newRelation, speakterms);
 
-            faction1.player.onNewRelation(faction2, rel, RelationType.RelationType0_Neutral);
-            faction2.player.onNewRelation(faction1, rel, RelationType.RelationType0_Neutral);
-            return rel;
+                faction1.player.onNewRelation(faction2, rel, RelationType.RelationType0_Neutral);
+                faction2.player.onNewRelation(faction1, rel, RelationType.RelationType0_Neutral);
+                return rel;
+            }
+            return null;    
         }
 
         public void declareWar(Faction attacker, Faction defender)
