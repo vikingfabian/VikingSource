@@ -245,7 +245,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_GameSpeedLabel => "Velocidad del juego: {0}x";
 
-        public override string Hud_GameSpeedButton => "Velocidad del juego";
+        public override string Input_GameSpeed => "Velocidad del juego";
 
         /// <summary>
         /// Pantalla del juego. Producción de oro por unidad
@@ -1201,5 +1201,56 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_WardeclarationTitle => "Declaración de guerra";
 
         public override string ArmyOption_Attack => "Atacar";
+
+        /// <summary>
+        /// Menú de configuración del juego. Cambia lo que hacen las teclas y botones cuando se presionan
+        /// </summary>
+        public override string Settings_ButtonMapping => "Asignación de botones";
+
+        /// <summary>
+        /// Describe la entrada del botón. Expande o reduce la cantidad de información en el HUD
+        /// </summary>
+        public override string Input_ToggleHudDetail => "Alternar detalle del HUD";
+
+        /// <summary>
+        /// Describe la entrada del botón. Alterna la selección entre el mapa y el HUD
+        /// </summary>
+        public override string Input_ToggleHudFocus => "Enfoque del menú";
+
+        /// <summary>
+        /// Describe la entrada del botón. Atajo para hacer clic en la última ventana emergente
+        /// </summary>
+        public override string Input_ClickMessage => "Mensaje de clic";
+
+        /// <summary>
+        /// Describe la entrada del botón. Dirección general de movimiento
+        /// </summary>
+        public override string Input_Up => "Arriba";
+
+        /// <summary>
+        /// Describe la entrada del botón. Dirección general de movimiento
+        /// </summary>
+        public override string Input_Down => "Abajo";
+
+        /// <summary>
+        /// Describe la entrada del botón. Dirección general de movimiento
+        /// </summary>
+        public override string Input_Left => "Izquierda";
+
+        /// <summary>
+        /// Describe la entrada del botón. Dirección general de movimiento
+        /// </summary>
+        public override string Input_Right => "Derecha";
+
+        /// <summary>
+        /// Tipo de entrada, entrada estándar de PC
+        /// </summary>
+        public override string Input_Source_Keyboard => "Teclado y ratón";
+
+        /// <summary>
+        /// Tipo de entrada, controlador portátil como el que usa Xbox
+        /// </summary>
+        public override string Input_Source_Controller => "Controlador";
+
     }
 }

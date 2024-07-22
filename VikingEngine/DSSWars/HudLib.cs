@@ -2,6 +2,7 @@
 using System;
 using VikingEngine.DataLib;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.Input;
 
 namespace VikingEngine.DSSWars
 {
@@ -23,6 +24,7 @@ namespace VikingEngine.DSSWars
         public const ImageLayers DiplomacyDisplayLayer = ImageLayers.Lay8;
 
         public static RichBoxSettings RbSettings;
+        public static RichBoxSettings RbOnGuiSettings;
 
         public static RichboxGuiSettings richboxGui;
         public static RichboxGuiSettings cutsceneGui;
@@ -37,6 +39,9 @@ namespace VikingEngine.DSSWars
             Engine.Screen.TextBreadHeight * TextToIconSz, 1.1f);
             RbSettings.head1.Font = LoadedFont.Bold;
             RbSettings.head1.Color = Color.LightGray;
+
+            RbOnGuiSettings = RbSettings;
+            RbOnGuiSettings.scaleUp(1.4f);
 
             HeadDisplayWidth = Engine.Screen.IconSize * 6;
             HeadDisplayEdge = Engine.Screen.BorderWidth;
@@ -114,6 +119,21 @@ namespace VikingEngine.DSSWars
         public static string TimeSpan(TimeSpan time) 
         { 
             return string.Format(DssRef.lang.Hud_TimeSpan, (int)time.TotalHours, time.Minutes, time.Seconds);
+        }
+
+        public static string InputName(InputSourceType input)
+        {
+            switch (input)
+            {
+                case InputSourceType.XController:
+                    return DssRef.lang.Input_Source_Controller;
+                case InputSourceType.KeyboardMouse:
+                case InputSourceType.Keyboard:
+                    return DssRef.lang.Input_Source_Keyboard;
+
+                default:
+                    return "-";
+            }
         }
     }
 }

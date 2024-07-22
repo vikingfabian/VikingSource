@@ -249,7 +249,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_GameSpeedLabel => "Game speed: {0}x";
 
-        public override string Hud_GameSpeedButton => "Game speed";
+        public override string Input_GameSpeed => "Game speed";
 
         /// <summary>
         /// Ingame display. Unit gold production
@@ -1215,5 +1215,61 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_WardeclarationTitle => "War declaration";
 
         public override string ArmyOption_Attack => "Attack";
+
+
+
+        //----
+        /// <summary>
+        /// In game settings menu. Change what keys and buttons do when pressed
+        /// </summary>
+        public override string Settings_ButtonMapping => "Key bindings";
+
+        /// <summary>
+        /// Describes button input. Expands or shrinks the amount of information on the HUD
+        /// </summary>
+        public override string Input_ToggleHudDetail => "Toggle HUD detail";
+
+        /// <summary>
+        /// Describes button input. Toggles selection between map and HUD
+        /// </summary>
+        public override string Input_ToggleHudFocus => "Menu focus";
+
+        /// <summary>
+        /// Describes button input. Shortcut to click on the latest popup
+        /// </summary>
+        public override string Input_ClickMessage => "Click message";
+
+        /// <summary>
+        /// Describes button input. General move direction
+        /// </summary>
+        public override string Input_Up => "Up";
+
+        /// <summary>
+        /// Describes button input. General move direction
+        /// </summary>
+        public override string Input_Down => "Down";
+
+        /// <summary>
+        /// Describes button input. General move direction
+        /// </summary>
+        public override string Input_Left => "Left";
+
+        /// <summary>
+        /// Describes button input. General move direction
+        /// </summary>
+        public override string Input_Right => "Right";
+
+        /// <summary>
+        /// Input type, standard PC input
+        /// </summary>
+        public override string Input_Source_Keyboard => "Keyboard & Mouse";
+
+        /// <summary>
+        /// Input type, handheld controller like the xbox uses
+        /// </summary>
+        public override string Input_Source_Controller => "Controller";
+
+
+
     }
 }

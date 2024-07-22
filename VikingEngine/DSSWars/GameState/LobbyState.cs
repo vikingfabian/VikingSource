@@ -25,6 +25,8 @@ using VikingEngine.ToGG.ToggEngine.Map;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameState;
+using VikingEngine.HUD.RichBox;
+using System.Linq;
 
 namespace VikingEngine.DSSWars
 {
@@ -42,6 +44,10 @@ namespace VikingEngine.DSSWars
         bool controllerStartGameUpdate = false;
         Graphics.TextG maploading;
         GuiLabel difficultyLevelText = null;
+
+        InputButtonType mappingFor;
+        bool inKeyMapsMenu = false;
+        List<Keys> availableKeyboardKeys;
         public LobbyState()
             :base()
         {
@@ -73,6 +79,16 @@ namespace VikingEngine.DSSWars
             { 
                 selectLanguageMenu();
             }
+
+            availableKeyboardKeys = VikingEngine.Input.Keyboard.AllKeys.ToList();
+
+            //reserved keys
+            availableKeyboardKeys.Remove(Keys.Escape);
+            availableKeyboardKeys.Remove(Keys.Enter);
+            availableKeyboardKeys.Remove(Keys.Up);
+            availableKeyboardKeys.Remove(Keys.Down);
+            availableKeyboardKeys.Remove(Keys.Left);
+            availableKeyboardKeys.Remove(Keys.Right);
         }       
         
         void load_asynch()
@@ -239,6 +255,85 @@ namespace VikingEngine.DSSWars
         //void settingsGui(GuiLayout layout)
         //{
 
+        void keyMappingMenu()
+        {
+            GuiLayout layout = new GuiLayout(DssRef.lang.Settings_ButtonMapping, menuSystem.menu);
+            {
+                new GuiTextButton(HudLib.InputName( InputSourceType.Keyboard), null, new GuiAction1Arg<bool>(keyMappingMenu_InputSource, true), true, layout);
+                //new GuiTextButton(HudLib.InputName(InputSourceType.XController), null, new GuiAction1Arg<bool>(keyMappingMenu_InputSource, false), true, layout);
+            }
+            layout.End();
+        }
+
+        void keyMappingMenu_InputSource(bool keyboard)
+        {
+            GuiLayout layout = new GuiLayout(HudLib.InputName(keyboard? InputSourceType.Keyboard : InputSourceType.XController), menuSystem.menu);
+            {
+                var map = keyboard? Ref.gamesett.keyboardMap: Ref.gamesett.controllerMap;
+                var list = map.listInputs(keyboard);
+                foreach ( var input in list ) 
+                {
+                    IButtonMap button = null;
+                    map.getset(input, ref button, false);
+                    List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>(6)
+                    {
+                        new RichBoxText(map.Name(input) + ": "),
+                    };
+                    RichBoxContent.ButtonMap(button, buttonContent);
+                    new GuiRichButton(HudLib.RbOnGuiSettings, buttonContent, null, 
+                        new GuiAction2Arg<bool, InputButtonType>(listMapOptions, keyboard, input),
+                        true, layout);
+                }
+            }
+            layout.End();
+        }
+
+        void listMapOptions(bool keyboard, InputButtonType input)
+        {
+            var map = keyboard ? Ref.gamesett.keyboardMap : Ref.gamesett.controllerMap;
+            GuiLayout layout = new GuiLayout(map.Name(input), menuSystem.menu);
+            {
+                if (keyboard)
+                {
+                    foreach (var key in availableKeyboardKeys)
+                    {
+                        var icon = Input.KeyboardButtonMap.GetKeyTile(key);
+                        if (icon != SpriteName.KeyUnknown)
+                        {
+                            new GuiImageButton(icon, null,
+                                new GuiAction1Arg<Keys>(listMapOptions_keyboardlink, key),
+                                false, layout);
+                        }
+                    }
+                }
+            }
+            layout.End();
+
+            inKeyMapsMenu = true;
+            mappingFor = input;
+            layout.OnDelete += closingOptionsMenuEvent;
+
+        }
+
+        void closedKeymapsMenu()
+        {
+            inKeyMapsMenu = false;
+        }
+
+        void listMapOptions_keyboardlink(Keys key)
+        {
+            IButtonMap buttonMap = new KeyboardButtonMap(key);
+            Ref.gamesett.keyboardMap.getset(mappingFor, ref buttonMap, true);
+
+            menuSystem.menu.PopLayout();
+            menuSystem.menu.PopLayout();
+            keyMappingMenu_InputSource(true);
+            
+        }
+        void listMapOptions_controllerlink(InputButtonType input, IButtonMap buttonmap)
+        {
+
+        }
 
         //}
         void selectLanguageMenu()
@@ -379,16 +474,16 @@ namespace VikingEngine.DSSWars
                     {
                         if (m.IsController)
                         {
-                            new GuiIconTextButton(SpriteName.ButtonSTART, m.ToString(), null, new GuiAction1Arg<InputSource>(selectController_startGame, m), false, layout);
+                            new GuiIconTextButton(SpriteName.ButtonSTART, HudLib.InputName(m.sourceType), null, new GuiAction1Arg<InputSource>(selectController_startGame, m), false, layout);
                         }
                         else 
                         {
-                            new GuiTextButton(m.ToString(), null, new GuiAction1Arg<InputSource>(selectController_startGame, m), false, layout);
+                            new GuiTextButton(HudLib.InputName(m.sourceType), null, new GuiAction1Arg<InputSource>(selectController_startGame, m), false, layout);
                         }
                     }
                     else 
                     {
-                        new GuiTextButton(m.ToString(), null, new GuiAction2Arg<int, InputSource>(selectInputClick, playerNumber, m), false, layout);
+                        new GuiTextButton(HudLib.InputName(m.sourceType), null, new GuiAction2Arg<int, InputSource>(selectInputClick, playerNumber, m), false, layout);
                     }
                 }
             }
@@ -601,9 +696,12 @@ namespace VikingEngine.DSSWars
 
         void optionsMenu()
         {
+            HudLib.Init();
             GuiLayout layout = new GuiLayout(Ref.langOpt.Options_title, menuSystem.menu);
             {
                 new GuiImageButton(new Translation().sprite(Ref.gamesett.language), null, new GuiAction(selectLanguageMenu), true, layout);
+
+                new GuiIconTextButton(SpriteName.Keyboard, DssRef.lang.Settings_ButtonMapping, null, new GuiAction(keyMappingMenu), true, layout);
                 Ref.gamesett.optionsMenu(layout);
                 new GuiCheckbox(DssRef.lang.GameMenu_AutoSave, null, autoSaveProperty, layout);
                 new GuiCheckbox(DssRef.lang.Tutorial_MenuOption, null, tutorialProperty, layout);
@@ -708,6 +806,17 @@ namespace VikingEngine.DSSWars
             if (Ref.music != null)
             {
                 Ref.music.Update();
+            }
+
+            if (inKeyMapsMenu)
+            {
+                foreach (var key in availableKeyboardKeys)
+                {
+                    if (Input.Keyboard.KeyDownEvent(key))
+                    {
+                        listMapOptions_keyboardlink(key);
+                    }
+                }
             }
         }
 

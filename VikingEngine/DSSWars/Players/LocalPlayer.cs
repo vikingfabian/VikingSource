@@ -144,6 +144,14 @@ namespace VikingEngine.DSSWars.Players
 
             input = new InputMap(playerindex);
             input.setInputSource(pStorage.inputSource.sourceType, pStorage.inputSource.controllerIndex);
+            if (pStorage.inputSource.IsController)
+            {
+                input.copyDataFrom(Ref.gamesett.controllerMap);
+            }
+            else
+            {
+                input.copyDataFrom(Ref.gamesett.keyboardMap);
+            }
 
             inputConnected = input.Connected;
 

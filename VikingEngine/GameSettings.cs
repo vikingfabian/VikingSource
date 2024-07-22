@@ -6,6 +6,8 @@ using VikingEngine.Engine;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars;
+
 
 namespace VikingEngine
 {
@@ -14,7 +16,7 @@ namespace VikingEngine
     /// </summary>
     class GameSettings
     {
-        const int Version = 11;
+        const int Version = 12 ;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -30,9 +32,15 @@ namespace VikingEngine
         public Network.BannedPeers bannedPeers = new Network.BannedPeers();
         public bool graphicsHasChanged = false;
         public LanguageType language = LanguageType.NONE;
+        public InputMap controllerMap;
+        public InputMap keyboardMap;
 
         public GameSettings()
         {
+            controllerMap = new InputMap(false);
+            controllerMap.setInputSource(Input.InputSourceType.XController, 0);
+            keyboardMap = new InputMap(true);
+            keyboardMap.setInputSource(Input.InputSourceType.KeyboardMouse, 0);
             Ref.gamesett = this;
         }
 
@@ -63,8 +71,10 @@ namespace VikingEngine
             w.Write(UiScale);
             w.Write((byte)language);
             w.Write(dyslexiaFont);
+            controllerMap.write(w);
+            keyboardMap.write(w);
 
-            bannedPeers.write(w);
+            bannedPeers.write(w);           
         }
 
         public void readEmbeddedSettingsAndVersion(System.IO.BinaryReader r)
@@ -94,6 +104,12 @@ namespace VikingEngine
                 language = (LanguageType)r.ReadByte(); 
             }
             dyslexiaFont = r.ReadBoolean();
+            if (version >= 12)
+            {
+                controllerMap.read(r);
+                keyboardMap.read(r);
+            }
+
             bannedPeers.read(r, version);
             
         }

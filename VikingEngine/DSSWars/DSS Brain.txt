@@ -4,6 +4,7 @@ Change Log
 * Improved xbox layout, and added message interaction
 
 Error
+- soldier no type name
 -no input choise for load
 
 -en knight 

@@ -248,7 +248,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_GameSpeedLabel => "ゲーム速度: {0}x";
 
-        public override string Hud_GameSpeedButton => "ゲーム速度";
+        public override string Input_GameSpeed => "ゲーム速度";
 
         /// <summary>
         /// ゲーム内表示。ユニットの金生産
@@ -1204,5 +1204,55 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_WardeclarationTitle => "宣戦布告";
 
         public override string ArmyOption_Attack => "攻撃";
+
+        /// <summary>
+        /// ゲーム設定メニュー。押したときのキーとボタンの動作を変更します
+        /// </summary>
+        public override string Settings_ButtonMapping => "ボタンマッピング";
+
+        /// <summary>
+        /// ボタン入力を説明します。HUDの情報量を拡大または縮小します
+        /// </summary>
+        public override string Input_ToggleHudDetail => "HUD詳細の切り替え";
+
+        /// <summary>
+        /// ボタン入力を説明します。マップとHUDの選択を切り替えます
+        /// </summary>
+        public override string Input_ToggleHudFocus => "メニューフォーカス";
+
+        /// <summary>
+        /// ボタン入力を説明します。最新のポップアップをクリックするショートカット
+        /// </summary>
+        public override string Input_ClickMessage => "メッセージをクリック";
+
+        /// <summary>
+        /// ボタン入力を説明します。一般的な移動方向
+        /// </summary>
+        public override string Input_Up => "上";
+
+        /// <summary>
+        /// ボタン入力を説明します。一般的な移動方向
+        /// </summary>
+        public override string Input_Down => "下";
+
+        /// <summary>
+        /// ボタン入力を説明します。一般的な移動方向
+        /// </summary>
+        public override string Input_Left => "左";
+
+        /// <summary>
+        /// ボタン入力を説明します。一般的な移動方向
+        /// </summary>
+        public override string Input_Right => "右";
+
+        /// <summary>
+        /// 入力タイプ、標準のPC入力
+        /// </summary>
+        public override string Input_Source_Keyboard => "キーボードとマウス";
+
+        /// <summary>
+        /// 入力タイプ、Xboxのような携帯型コントローラー
+        /// </summary>
+        public override string Input_Source_Controller => "コントローラー";
     }
 }

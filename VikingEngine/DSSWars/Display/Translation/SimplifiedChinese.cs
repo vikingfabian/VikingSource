@@ -245,7 +245,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_GameSpeedLabel => "游戏速度: {0}倍";
 
-        public override string Hud_GameSpeedButton => "游戏速度";
+        public override string Input_GameSpeed => "游戏速度";
 
         /// <summary>
         /// 游戏内显示。单位黄金产量
@@ -1201,5 +1201,55 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_WardeclarationTitle => "战争宣言";
 
         public override string ArmyOption_Attack => "攻击";
+
+        /// <summary>
+        /// 游戏设置菜单。更改按下时键和按钮的功能
+        /// </summary>
+        public override string Settings_ButtonMapping => "按钮映射";
+
+        /// <summary>
+        /// 描述按钮输入。扩展或缩小HUD上的信息量
+        /// </summary>
+        public override string Input_ToggleHudDetail => "切换HUD详情";
+
+        /// <summary>
+        /// 描述按钮输入。切换地图和HUD之间的选择
+        /// </summary>
+        public override string Input_ToggleHudFocus => "菜单焦点";
+
+        /// <summary>
+        /// 描述按钮输入。点击最新弹出窗口的快捷方式
+        /// </summary>
+        public override string Input_ClickMessage => "点击消息";
+
+        /// <summary>
+        /// 描述按钮输入。一般移动方向
+        /// </summary>
+        public override string Input_Up => "上";
+
+        /// <summary>
+        /// 描述按钮输入。一般移动方向
+        /// </summary>
+        public override string Input_Down => "下";
+
+        /// <summary>
+        /// 描述按钮输入。一般移动方向
+        /// </summary>
+        public override string Input_Left => "左";
+
+        /// <summary>
+        /// 描述按钮输入。一般移动方向
+        /// </summary>
+        public override string Input_Right => "右";
+
+        /// <summary>
+        /// 输入类型，标准PC输入
+        /// </summary>
+        public override string Input_Source_Keyboard => "键盘和鼠标";
+
+        /// <summary>
+        /// 输入类型，类似于Xbox使用的手持控制器
+        /// </summary>
+        public override string Input_Source_Controller => "控制器";
     }
 }

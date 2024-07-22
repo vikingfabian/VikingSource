@@ -245,7 +245,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_GameSpeedLabel => "Скорость игры: {0}x";
 
-        public override string Hud_GameSpeedButton => "Скорость игры";
+        public override string Input_GameSpeed => "Скорость игры";
 
         /// <summary>
         /// Отображение в игре. Производство золота юнитом
@@ -1199,5 +1199,55 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_WardeclarationTitle => "Объявление войны";
 
         public override string ArmyOption_Attack => "Атака";
+
+        /// <summary>
+        /// Меню настроек игры. Измените, что делают клавиши и кнопки при нажатии
+        /// </summary>
+        public override string Settings_ButtonMapping => "Назначение кнопок";
+
+        /// <summary>
+        /// Описывает ввод кнопки. Расширяет или уменьшает количество информации на HUD
+        /// </summary>
+        public override string Input_ToggleHudDetail => "Переключить детализацию HUD";
+
+        /// <summary>
+        /// Описывает ввод кнопки. Переключает выбор между картой и HUD
+        /// </summary>
+        public override string Input_ToggleHudFocus => "Фокус меню";
+
+        /// <summary>
+        /// Описывает ввод кнопки. Ярлык для нажатия на последнее всплывающее окно
+        /// </summary>
+        public override string Input_ClickMessage => "Нажать сообщение";
+
+        /// <summary>
+        /// Описывает ввод кнопки. Общее направление движения
+        /// </summary>
+        public override string Input_Up => "Вверх";
+
+        /// <summary>
+        /// Описывает ввод кнопки. Общее направление движения
+        /// </summary>
+        public override string Input_Down => "Вниз";
+
+        /// <summary>
+        /// Описывает ввод кнопки. Общее направление движения
+        /// </summary>
+        public override string Input_Left => "Влево";
+
+        /// <summary>
+        /// Описывает ввод кнопки. Общее направление движения
+        /// </summary>
+        public override string Input_Right => "Вправо";
+
+        /// <summary>
+        /// Тип ввода, стандартный ПК ввод
+        /// </summary>
+        public override string Input_Source_Keyboard => "Клавиатура и мышь";
+
+        /// <summary>
+        /// Тип ввода, портативный контроллер, как используется на Xbox
+        /// </summary>
+        public override string Input_Source_Controller => "Контроллер";
     }
 }

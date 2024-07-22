@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
@@ -16,7 +17,7 @@ namespace VikingEngine.Input
         Mouse,
         XController,
         GenericController,
-        XController_NoAlt,
+        XController_TriggerAlts,
     }
     
     interface IButtonMap
@@ -65,6 +66,9 @@ namespace VikingEngine.Input
                 case ButtonMapType.XController:
                     result = new XboxButtonMap();
                     break;
+                case ButtonMapType.XController_TriggerAlts:
+                    result = new XboxButtonMap_TriggerAlts();
+                    break;
                 //case ButtonMapType.GenericController:
                 //    result = new GenericControllerButtonMap();
                 //    break;
@@ -75,6 +79,14 @@ namespace VikingEngine.Input
             result.read(r);
             return result;
         }
+
+        public static IButtonMap Button(System.IO.BinaryReader r, int controllerIndex)
+        { 
+            var result = Button(r);
+            result.ControllerIndex = controllerIndex;
+            return result;
+        }
+
         public static IDirectionalMap Directional(System.IO.BinaryReader r)
         {
             IDirectionalMap result;
@@ -144,6 +156,15 @@ namespace VikingEngine.Input
         }
         public void read(System.IO.BinaryReader r)
         {
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() == typeof(NoButtonMap))
+            { 
+                return true;
+            }
+            return false;
         }
     }
 
@@ -471,7 +492,7 @@ namespace VikingEngine.Input
     struct KeyboardButtonMap : IButtonMap
     {        
         /* Static */
-        static private SpriteName GetKeyTile(Keys key)
+        public static SpriteName GetKeyTile(Keys key)
         {
             switch (key)
             {
@@ -643,7 +664,15 @@ namespace VikingEngine.Input
         {
             key = (Keys)r.ReadByte();
         }
-
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() == typeof(KeyboardButtonMap))
+            {
+                KeyboardButtonMap other = (KeyboardButtonMap)obj;
+                return other.key == this.key;
+            }
+            return false;
+        }
         public override string ToString()
         {
             return "Keyboard " + key.ToString() + 
@@ -783,6 +812,16 @@ namespace VikingEngine.Input
         {
             button = (Buttons)r.ReadInt32();
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() == typeof(XboxButtonMap))
+            {
+                XboxButtonMap other = (XboxButtonMap)obj;
+                return other.button == this.button;
+            }
+            return false;
+        }
     }
 
     struct XboxButtonMap_TriggerAlts : IButtonMap
@@ -873,14 +912,30 @@ namespace VikingEngine.Input
             list.Add(Icon);
         }
 
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() == typeof(XboxButtonMap_TriggerAlts))
+            {
+                XboxButtonMap_TriggerAlts other = (XboxButtonMap_TriggerAlts)obj;
+                return other.button == this.button && 
+                    other.leftTrigger == this.leftTrigger && 
+                    other.rightTrigger == this.rightTrigger ;
+            }
+            return false;
+        }
+
         public void write(System.IO.BinaryWriter w)
         {
-            w.Write((byte)ButtonMapType.XController_NoAlt);
+            w.Write((byte)ButtonMapType.XController_TriggerAlts);
             w.Write((int)button);
+            w.Write(leftTrigger);
+            w.Write(rightTrigger);
         }
         public void read(System.IO.BinaryReader r)
         {
             button = (Buttons)r.ReadInt32();
+            leftTrigger = r.ReadBoolean();
+            rightTrigger = r.ReadBoolean();
         }
     }
     //struct GenericControllerButtonMap : IButtonMap
