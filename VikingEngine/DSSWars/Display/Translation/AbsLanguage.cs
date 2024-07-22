@@ -283,7 +283,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string ArmyOption_MergeArmies { get; }
 
 
-        public abstract string CityOption_Recruit { get; }
+        public abstract string UnitType_Recruit { get; }
         public abstract string CityOption_RecruitType { get; }
         public abstract string CityOption_XMercenaries { get; }
         public abstract string Hud_MercenaryMarket { get; }

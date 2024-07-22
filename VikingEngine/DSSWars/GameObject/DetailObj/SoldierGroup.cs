@@ -201,7 +201,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             AbsSoldierData soldierData = DssRef.unitsdata.Get(soldierType);
 
-            createAllSoldiers(soldierType == UnitType.Recruit , (soldierData != null && soldierData.IsShip())? soldierData : typeData, soldiersCount);
+            if (soldierType == UnitType.Recruit)
+            {
+                new TrainingCompleteTimer(this);
+            }
+
+            createAllSoldiers(soldierType == UnitType.Recruit, (soldierData != null && soldierData.IsShip())? soldierData : typeData, soldiersCount);
 
             if (!soldiersLockedInGroup)
             {
@@ -614,7 +619,7 @@ namespace VikingEngine.DSSWars.GameObject
             //base.toHud(args);
             var typeData = DssRef.unitsdata.Get(type);
 
-            args.content.h2(typeData.unitType.ToString() + " " + DssRef.lang.UnitType_SoldierGroup);
+            args.content.h2(DssRef.unitsdata.Name( typeData.unitType) + " " + DssRef.lang.UnitType_SoldierGroup);
             args.content.newLine();
             if (args.selected && GetFaction() == args.player.faction)
             {
@@ -1463,7 +1468,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string TypeName()
         {
-            return type.ToString() + " Group(" + groupId.ToString() + ")";
+            return DssRef.unitsdata.Name(type) + " Group(" + groupId.ToString() + ")";
         }
 
         public override string ToString()

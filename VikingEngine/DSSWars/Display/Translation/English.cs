@@ -915,7 +915,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Purchase soldiers.
         /// </summary>
-        public override string CityOption_Recruit => "Recruit";
+        public override string UnitType_Recruit => "Recruit";
 
         /// <summary>
         /// Purchase soldiers of type. 0:type

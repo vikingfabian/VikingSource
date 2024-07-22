@@ -2,6 +2,9 @@
 Change Log
 * Local multiplayer: fixed overlapping messages, added relation accepted message
 * Improved xbox layout, and added message interaction
+* A basic Keyboard key mapping in settings
+* Fixed stuck recruit save/load error
+
 
 Error
 - soldier no type name

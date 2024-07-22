@@ -906,7 +906,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Нанять солдат.
         /// </summary>
-        public override string CityOption_Recruit => "Нанять";
+        public override string UnitType_Recruit => "Нанять";
 
         /// <summary>
         /// Нанять солдат типа. 0:тип

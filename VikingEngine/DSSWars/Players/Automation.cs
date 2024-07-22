@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.Players
             content.newLine();
             content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
                 {
-                    new RichBoxText( DssRef.lang.CityOption_Recruit),
+                    new RichBoxText( DssRef.lang.UnitType_Recruit),
                 }, AutoRecruitProperty));
                         
             for (int i = 0; i < DssLib.AvailableUnitTypes.Length; i++)

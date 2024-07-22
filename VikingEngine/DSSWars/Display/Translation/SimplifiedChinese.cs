@@ -906,7 +906,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// 招募士兵。
         /// </summary>
-        public override string CityOption_Recruit => "招募";
+        public override string UnitType_Recruit => "招募";
 
         /// <summary>
         /// 招募某种类型的士兵。0：类型

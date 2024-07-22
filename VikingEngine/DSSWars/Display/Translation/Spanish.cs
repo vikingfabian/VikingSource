@@ -907,7 +907,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// Reclutar soldados.
         /// </summary>
-        public override string CityOption_Recruit => "Reclutar";
+        public override string UnitType_Recruit => "Reclutar";
 
         /// <summary>
         /// Reclutar soldados de tipo. 0:tipo

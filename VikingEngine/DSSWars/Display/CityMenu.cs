@@ -37,7 +37,7 @@ namespace VikingEngine.DSSWars.Display
                 status = new ArmyStatus();
             }
 
-            content.h2(DssRef.lang.CityOption_Recruit);
+            content.h2(DssRef.lang.UnitType_Recruit);
             foreach (var opt in city.cityPurchaseOptions)
             {
                 if (opt.available)
