@@ -868,15 +868,17 @@ namespace VikingEngine.DSSWars.GameObject
         public void hungerDeserters()
         {
             //Gain a portion of deserters on all armies
-            int totalDeserters = 0;
+            int totalDeserters = desertSoldiers();
 
             //var armiesCounter = armies.counter();
             //while (armiesCounter.Next())
             //{
-               desertSoldiers();
-            
 
-            if (faction.player.IsPlayer())
+
+
+            if (totalDeserters > 0 &&
+                faction.player.IsPlayer() && 
+                faction.player.GetLocalPlayer().hud.messages.freeSpace())
             {
                 faction.player.GetLocalPlayer().hud.messages.Add("Deserters!", "Hungry soldiers are deserting from your armies");
                 faction.player.GetLocalPlayer().statistics.SoldiersDeserted += totalDeserters;

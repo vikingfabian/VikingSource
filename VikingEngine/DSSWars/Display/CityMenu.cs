@@ -27,11 +27,24 @@ namespace VikingEngine.DSSWars.Display
             this.player = player;
             this.city = city;
 
-            if (this.player.cityTab == CityTab.Resources)
+            //if (this.player.cityTab == CityTab.Resources)
+            //{
+            //    player.hud.displays.SetMenuState(ResourcesMenuState);
+            //    this.player.cityTab = CityTab.Recruit;
+            //}
+
+            content.newLine();
+            var tabs = new List<RichboxTabMember>((int)CityTab.NUM);
+            for (int i = 0; i < (int)CityTab.NUM; i++)
             {
-                player.hud.displays.SetMenuState(ResourcesMenuState);
-                this.player.cityTab = CityTab.Recruit;
+                tabs.Add(new RichboxTabMember(new List<AbsRichBoxMember>
+                {
+                    new RichBoxText(((CityTab)i).ToString())
+                }));
+
             }
+            content.Add(new RichboxTabgroup(tabs, (int)this.player.cityTab, tabClick, null, null));
+
 
             //content.h2(DssRef.lang.UnitType_Recruit);
             //foreach (var opt in city.cityPurchaseOptions)
@@ -212,6 +225,11 @@ namespace VikingEngine.DSSWars.Display
                     }
                     break;
             }
+        }
+
+        void tabClick(int tab)
+        {
+            this.player.cityTab = (CityTab)tab;
         }
 
         bool canBuySoldiers(UnitType unitType, int count)
@@ -472,5 +490,6 @@ namespace VikingEngine.DSSWars.Display
         Recruit,
         Resources,
         Automation,
+        NUM
     }
 }
