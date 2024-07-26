@@ -201,7 +201,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             AbsSoldierData soldierData = DssRef.unitsdata.Get(soldierType);
 
-            createAllSoldiers(soldierType == UnitType.Recruit , (soldierData != null && soldierData.IsShip())? soldierData : typeData, soldiersCount);
+            if (soldierType == UnitType.Recruit)
+            {
+                new TrainingCompleteTimer(this);
+            }
+
+            createAllSoldiers(soldierType == UnitType.Recruit, (soldierData != null && soldierData.IsShip())? soldierData : typeData, soldiersCount);
 
             if (!soldiersLockedInGroup)
             {
@@ -335,7 +340,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         oldUnit.DeleteMe(DeleteReason.Transform, false);
 
-                        if (army.inRender)
+                        if (army.inRender_overviewLayer)
                         {
                             upgradedUnit.setDetailLevel(true);
                             upgradedUnit.update(1f, true);
@@ -370,61 +375,19 @@ namespace VikingEngine.DSSWars.GameObject
                     else
                     {
                         typeData = SoldierData();
-                        int count = totalHealth / typeData.basehealth;
 
+                        //must count the bannerman
+                        int count = (int)Math.Ceiling(totalHealth / (double)typeData.basehealth);
+                       
                         createAllSoldiers(false, typeData, count);
                     }
 
                     refreshAttackRadius(typeData);
                 }
-
+               
                 inShipTransform = false;
             }
         }
-
-        //public void completeTraining()
-        //{
-        //    if (isDeleted) return;
-
-        //    var soldiersC = soldiers.counter();
-        //    while (soldiersC.Next())
-        //    {
-        //        var oldUnit = soldiersC.sel;
-
-        //        if (oldUnit.DetailUnitType() != UnitType.BannerMan)
-        //        {
-        //            var upgradedUnit = DssRef.unitsdata.createSoldier(type, false);
-        //            upgradedUnit.initUpgrade(this);
-
-        //            oldUnit.copyDataToUpgradedUnit(upgradedUnit);
-
-        //            soldiers.Array[oldUnit.parentArrayIndex] = upgradedUnit;
-
-        //            oldUnit.DeleteMe(DeleteReason.Transform, false);
-
-        //            if (army.inRender)
-        //            {
-        //                upgradedUnit.setDetailLevel(true);
-        //                upgradedUnit.update(1f, true);
-        //            }
-        //        }
-        //    }
-        //}
-
-        //public void completeShipTransform(bool toShip)
-        //{
-        //    if (!isDeleted)
-        //    {
-        //        isShip = toShip;
-        //        var counter = soldiers.counter();
-        //        while (counter.Next())
-        //        {
-        //            counter.sel.lockMovement = false;
-        //            counter.sel.model?.Adv().setShip(toShip);
-        //        }
-        //    }
-        //    //refreshWalkSpeed();
-        //}
 
         public Vector3 armyPlacement(Vector3 center)
         {
@@ -448,7 +411,7 @@ namespace VikingEngine.DSSWars.GameObject
             s.position = WP.ToWorldPos(area); //temp pos
             s.parentArrayIndex = soldiers.Add(s);
 
-            if (army.inRender)
+            if (army.inRender_overviewLayer)
             {
                 s.setDetailLevel(true);
                 s.update(1f, true);
@@ -657,7 +620,7 @@ namespace VikingEngine.DSSWars.GameObject
             //base.toHud(args);
             var typeData = DssRef.unitsdata.Get(type);
 
-            args.content.h2(typeData.unitType.ToString() + " " + DssRef.lang.UnitType_SoldierGroup);
+            args.content.h2(DssRef.unitsdata.Name( typeData.unitType) + " " + DssRef.lang.UnitType_SoldierGroup);
             args.content.newLine();
             if (args.selected && GetFaction() == args.player.faction)
             {
@@ -1245,7 +1208,7 @@ namespace VikingEngine.DSSWars.GameObject
                 rot = WP.ToQuaterion(rotation.radians);
             }
 
-            if (army.inRender)
+            if (army.inRender_overviewLayer)
             {
                 Vector3 moveDir_dir = VectorExt.V2toV3XZ(dir);
 
@@ -1330,10 +1293,10 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public float Upkeep()
+        public void Upkeep(ref float energy)
         {
             var typeData = DssRef.unitsdata.Get(type);
-            return typeData.upkeepPerSoldier * soldiers.Count;
+            energy += typeData.energyPerSoldier * soldiers.Count;
         }
 
         public override void DeleteMe(DeleteReason reason, bool removeFromParent)
@@ -1458,7 +1421,7 @@ namespace VikingEngine.DSSWars.GameObject
                 //    lib.DoNothing();
                 //}
 
-                if (!army.inRender || lifeState == LifeState_New)
+                if (!army.inRender_overviewLayer || lifeState == LifeState_New)
                 {
                     ++lifeState;
                     position = goalWp;
@@ -1506,7 +1469,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string TypeName()
         {
-            return type.ToString() + " Group(" + groupId.ToString() + ")";
+            return DssRef.unitsdata.Name(type) + " Group(" + groupId.ToString() + ")";
         }
 
         public override string ToString()

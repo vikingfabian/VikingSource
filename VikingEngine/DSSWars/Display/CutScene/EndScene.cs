@@ -17,15 +17,16 @@ namespace VikingEngine.DSSWars.Display.CutScene
         Graphics.Image blackout;
         Texture2D bgTex = null;
         Graphics.ImageAdvanced bgImage = null;
-        bool victory;
+        bool victory, bossVictory;
         EndSceneDisplay display;
 
         DoomEpilogue doomEpilouge;
 
-        public EndScene(bool victory)
+        public EndScene(bool victory, bool bossVictory)
             : base()
         {
             this.victory = victory;
+            this.bossVictory = bossVictory;
             VectorRect area = Screen.Area;
             area.AddRadius(5);
             blackout = new Graphics.Image(SpriteName.WhiteArea, area.Position, area.Size, HudLib.CutSceneBgLayer+1);
@@ -112,7 +113,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
 
         void initDisplay()
         {
-            display = new EndSceneDisplay(victory, watchEpilogue);
+            display = new EndSceneDisplay(victory, bossVictory, watchEpilogue);
         }
 
         public override void Close()

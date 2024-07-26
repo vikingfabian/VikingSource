@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.Players
 
         public int factoriesLeft;
 
-        public DarkLord darkLordUnit = null;
+        public AbsDetailUnit darkLordUnit = null;
 
         public DarkLordPlayer(Faction faction)
             : base(faction)
@@ -91,13 +91,17 @@ namespace VikingEngine.DSSWars.Players
 
         public void EnterMap(Faction takeOverFaction, List<Faction> darkLordAllies)
         {
+            if (DssRef.difficulty.PercDifficulty > 100)
+            {
+                Ref.music.stop(true);
+                Ref.music.PlaySong(Data.Music.IAmYourDoom, false);
+            }
+
             faction.gold = DssLib.HeadCityMaxWorkForce * 10;
 
             this.darkLordAllies = darkLordAllies;
-
             Faction greenwood = DssRef.world.factions.Array[DssRef.settings.Faction_GreenWood];
            
-
             foreach (var ally in darkLordAllies)
             {
                var relation = DssRef.diplomacy.SetRelationType(faction, ally, RelationType.RelationType3_Ally);//.secret = false;
@@ -160,6 +164,7 @@ namespace VikingEngine.DSSWars.Players
                     {
                         var nFaction = DssRef.world.cities[n].faction;
                         if (nFaction != faction &&
+                            nFaction.diplomaticSide != DiplomaticSide.Light &&
                             !DssRef.diplomacy.PositiveRelationWithPlayer(nFaction))
                         {
                             lock (darkLordAllies)

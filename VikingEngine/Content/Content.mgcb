@@ -325,6 +325,12 @@
 /processorParam:Quality=Best
 /build:DSS/Music/epic-warfare-nonloop.mp3
 
+#begin DSS/Music/i am your doom.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/i am your doom.mp3
+
 #begin DSS/Music/sadness-in-blue.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
@@ -342,6 +348,12 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:DSS/Music/we-are-heroes.mp3
+
+#begin DSS/Sound/anvil.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/anvil.wav
 
 #begin DSS/Sound/back.wav
 /importer:WavImporter
@@ -367,11 +379,35 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/click.wav
 
+#begin DSS/Sound/dig.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/dig.wav
+
 #begin DSS/Sound/drop_item.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/drop_item.wav
+
+#begin DSS/Sound/generic_work1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/generic_work1.wav
+
+#begin DSS/Sound/generic_work2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/generic_work2.wav
+
+#begin DSS/Sound/hammer.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/hammer.wav
 
 #begin DSS/Sound/hen1.wav
 /importer:WavImporter
@@ -623,6 +659,27 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Font/Console.spritefont
+
+#begin Font/JapaneseBold.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/JapaneseBold.spritefont
+
+#begin Font/JapaneseConsole.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/JapaneseConsole.spritefont
+
+#begin Font/JapaneseRegular.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/JapaneseRegular.spritefont
 
 #begin Font/Regular.spritefont
 /importer:FontDescriptionImporter
@@ -1003,6 +1060,9 @@
 #begin VoxelModel/LfWars/city_workerhut.vox
 /copy:VoxelModel/LfWars/city_workerhut.vox
 
+#begin VoxelModel/LfWars/city_workstation.vox
+/copy:VoxelModel/LfWars/city_workstation.vox
+
 #begin VoxelModel/LfWars/citybanner.vox
 /copy:VoxelModel/LfWars/citybanner.vox
 
@@ -1065,9 +1125,6 @@
 
 #begin VoxelModel/LfWars/Pig.vox
 /copy:VoxelModel/LfWars/Pig.vox
-
-#begin VoxelModel/LfWars/resource_tree.vox
-/copy:VoxelModel/LfWars/resource_tree.vox
 
 #begin VoxelModel/LfWars/war_archer_i2.vox
 /copy:VoxelModel/LfWars/war_archer_i2.vox

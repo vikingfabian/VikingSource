@@ -46,6 +46,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             description =DssRef.lang.UnitType_Description_Ballista;
             icon = SpriteName.WarsUnitIcon_Ballista;
+
+            energyPerSoldier  = DssLib.SoldierDefaultEnergyUpkeep * 2;
         }
 
         public override AbsDetailUnit CreateUnit()

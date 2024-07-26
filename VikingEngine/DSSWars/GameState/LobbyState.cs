@@ -23,6 +23,10 @@ using VikingEngine.ToGG.Commander.LevelSetup;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.ToggEngine.Map;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.GameState;
+using VikingEngine.HUD.RichBox;
+using System.Linq;
 
 namespace VikingEngine.DSSWars
 {
@@ -40,6 +44,10 @@ namespace VikingEngine.DSSWars
         bool controllerStartGameUpdate = false;
         Graphics.TextG maploading;
         GuiLabel difficultyLevelText = null;
+
+        InputButtonType mappingFor;
+        bool inKeyMapsMenu = false;
+        List<Keys> availableKeyboardKeys;
         public LobbyState()
             :base()
         {
@@ -66,6 +74,21 @@ namespace VikingEngine.DSSWars
 
             new Timer.AsynchActionTrigger(load_asynch, true);
             new Timer.TimedAction0ArgTrigger(playMusic, 1000);
+
+            if (Ref.gamesett.language == LanguageType.NONE)
+            { 
+                selectLanguageMenu();
+            }
+
+            availableKeyboardKeys = VikingEngine.Input.Keyboard.AllKeys.ToList();
+
+            //reserved keys
+            availableKeyboardKeys.Remove(Keys.Escape);
+            availableKeyboardKeys.Remove(Keys.Enter);
+            availableKeyboardKeys.Remove(Keys.Up);
+            availableKeyboardKeys.Remove(Keys.Down);
+            availableKeyboardKeys.Remove(Keys.Left);
+            availableKeyboardKeys.Remove(Keys.Right);
         }       
         
         void load_asynch()
@@ -145,7 +168,7 @@ namespace VikingEngine.DSSWars
                     
                     if (DssRef.storage.playerCount > 1)
                     {
-                        new GuiTextButton(string.Format(Ref.langOpt.InputSelect, playerData.inputSource.ToString()), null, new GuiAction2Arg<int, bool>(selectInputMenu, playerNum, false), true, layout);
+                        new GuiTextButton(string.Format(Ref.langOpt.InputSelect, playerData.inputSource.ToString()), null, new GuiAction3Arg<int, bool, int>(selectInputMenu, playerNum, false, -1), true, layout);
                     }
                     
                     new GuiSectionSeparator(layout);
@@ -168,12 +191,14 @@ namespace VikingEngine.DSSWars
                 new GuiCheckbox(DssRef.lang.Settings_BossEvents, DssRef.lang.Settings_BossEvents_SandboxDescription, bossProperty, layout);
 
                 new GuiSectionSeparator(layout);
-                new GuiTextButton(Ref.langOpt.Options_title, null, new GuiAction(optionsMenu), true, layout);
+                new GuiIconTextButton(SpriteName.MenuPixelIconSettings, Ref.langOpt.Options_title, null, new GuiAction(optionsMenu), true, layout);
                 //new GuiTextButton("*Crash game*", null, crashTest, false, layout); 
                 if (PlatformSettings.DevBuild)
                 {
                     new GuiTextButton("Map file generator", "Creates maps to play on. Takes about 10 minutes.", mapFileGenerator, false, layout);
                     new GuiLargeTextButton("Play Commander", "", new GuiAction(extra_PlayCommanderVersus), false, layout);
+                
+                    new GuiLargeTextButton("Test sound", null,new GuiAction(testsound), false, layout);    
                 }
                 new GuiTextButton("Credits", null, credits, true, layout);
 
@@ -185,7 +210,11 @@ namespace VikingEngine.DSSWars
             refreshDifficultyLevel();
         }
 
-
+        void testsound()
+        {
+            Ref.music.stop(true);
+            Ref.music.PlaySong(Data.Music.IAmYourDoom, false);
+        }
         public void credits()
         {
             GuiLayout layout = new GuiLayout("Credits", menuSystem.menu);
@@ -226,8 +255,109 @@ namespace VikingEngine.DSSWars
         //void settingsGui(GuiLayout layout)
         //{
 
+        void keyMappingMenu()
+        {
+            GuiLayout layout = new GuiLayout(DssRef.lang.Settings_ButtonMapping, menuSystem.menu);
+            {
+                new GuiTextButton(HudLib.InputName( InputSourceType.Keyboard), null, new GuiAction1Arg<bool>(keyMappingMenu_InputSource, true), true, layout);
+                //new GuiTextButton(HudLib.InputName(InputSourceType.XController), null, new GuiAction1Arg<bool>(keyMappingMenu_InputSource, false), true, layout);
+            }
+            layout.End();
+        }
+
+        void keyMappingMenu_InputSource(bool keyboard)
+        {
+            GuiLayout layout = new GuiLayout(HudLib.InputName(keyboard? InputSourceType.Keyboard : InputSourceType.XController), menuSystem.menu);
+            {
+                var map = keyboard? Ref.gamesett.keyboardMap: Ref.gamesett.controllerMap;
+                var list = map.listInputs(keyboard);
+                foreach ( var input in list ) 
+                {
+                    IButtonMap button = null;
+                    map.getset(input, ref button, false);
+                    List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>(6)
+                    {
+                        new RichBoxText(map.Name(input) + ": "),
+                    };
+                    RichBoxContent.ButtonMap(button, buttonContent);
+                    new GuiRichButton(HudLib.RbOnGuiSettings, buttonContent, null, 
+                        new GuiAction2Arg<bool, InputButtonType>(listMapOptions, keyboard, input),
+                        true, layout);
+                }
+            }
+            layout.End();
+        }
+
+        void listMapOptions(bool keyboard, InputButtonType input)
+        {
+            var map = keyboard ? Ref.gamesett.keyboardMap : Ref.gamesett.controllerMap;
+            GuiLayout layout = new GuiLayout(map.Name(input), menuSystem.menu);
+            {
+                if (keyboard)
+                {
+                    foreach (var key in availableKeyboardKeys)
+                    {
+                        var icon = Input.KeyboardButtonMap.GetKeyTile(key);
+                        if (icon != SpriteName.KeyUnknown)
+                        {
+                            new GuiImageButton(icon, null,
+                                new GuiAction1Arg<Keys>(listMapOptions_keyboardlink, key),
+                                false, layout);
+                        }
+                    }
+                }
+            }
+            layout.End();
+
+            inKeyMapsMenu = true;
+            mappingFor = input;
+            layout.OnDelete += closingOptionsMenuEvent;
+
+        }
+
+        void closedKeymapsMenu()
+        {
+            inKeyMapsMenu = false;
+        }
+
+        void listMapOptions_keyboardlink(Keys key)
+        {
+            IButtonMap buttonMap = new KeyboardButtonMap(key);
+            Ref.gamesett.keyboardMap.getset(mappingFor, ref buttonMap, true);
+
+            menuSystem.menu.PopLayout();
+            menuSystem.menu.PopLayout();
+            keyMappingMenu_InputSource(true);
+            
+        }
+        void listMapOptions_controllerlink(InputButtonType input, IButtonMap buttonmap)
+        {
+
+        }
 
         //}
+        void selectLanguageMenu()
+        {
+            Translation translate = new Translation();
+            var options = translate.available();
+            GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
+            {
+                foreach (var option in options)
+                {
+                    new GuiImageButton(translate.sprite(option), null, new GuiAction1Arg<LanguageType>(selectLanguegeLink, option), false, layout);
+                }
+            }
+            layout.End();
+        }
+
+        void selectLanguegeLink(LanguageType language)
+        {
+            if (language != Ref.gamesett.language)
+            {
+                Ref.gamesett.language = language;
+                new ChangeLanguageState();
+            }
+        }
 
         void selectDifficultyMenu()
         {
@@ -333,7 +463,7 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        void selectInputMenu(int playerNumber, bool startGame)
+        void selectInputMenu(int playerNumber, bool startGame, int saveIndex)
         {
             var available = availableInput();
             GuiLayout layout = new GuiLayout(Ref.langOpt.InputSelect, menuSystem.menu);
@@ -344,16 +474,16 @@ namespace VikingEngine.DSSWars
                     {
                         if (m.IsController)
                         {
-                            new GuiIconTextButton(SpriteName.ButtonSTART, m.ToString(), null, new GuiAction1Arg<InputSource>(selectController_startGame, m), false, layout);
+                            new GuiIconTextButton(SpriteName.ButtonSTART, HudLib.InputName(m.sourceType), null, new GuiAction2Arg<InputSource, int>(selectController_startGame, m, saveIndex), false, layout);
                         }
                         else 
                         {
-                            new GuiTextButton(m.ToString(), null, new GuiAction1Arg<InputSource>(selectController_startGame, m), false, layout);
+                            new GuiTextButton(HudLib.InputName(m.sourceType), null, new GuiAction2Arg<InputSource, int>(selectController_startGame, m, saveIndex), false, layout);
                         }
                     }
                     else 
                     {
-                        new GuiTextButton(m.ToString(), null, new GuiAction2Arg<int, InputSource>(selectInputClick, playerNumber, m), false, layout);
+                        new GuiTextButton(HudLib.InputName(m.sourceType), null, new GuiAction2Arg<int, InputSource>(selectInputClick, playerNumber, m), false, layout);
                     }
                 }
             }
@@ -365,7 +495,7 @@ namespace VikingEngine.DSSWars
             GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_WarningTitle, menuSystem.menu);
             {
                 new GuiLabel(DssRef.lang.Lobby_PlayerWithoutInputWarning, layout);
-                new GuiIconTextButton(SpriteName.MenuIconResume, DssRef.lang.Hud_Back, null, mainMenu, false, layout);
+                new GuiIconTextButton(SpriteName.MenuIconResume, Ref.langOpt.Hud_Back, null, mainMenu, false, layout);
                 new GuiIconTextButton(SpriteName.MenuPixelIconPlay, DssRef.lang.Lobby_IgnoreWarning, null, startGame_nochecks, false, layout);
             }
             layout.End();
@@ -566,8 +696,12 @@ namespace VikingEngine.DSSWars
 
         void optionsMenu()
         {
+            HudLib.Init();
             GuiLayout layout = new GuiLayout(Ref.langOpt.Options_title, menuSystem.menu);
             {
+                new GuiImageButton(new Translation().sprite(Ref.gamesett.language), null, new GuiAction(selectLanguageMenu), true, layout);
+
+                new GuiIconTextButton(SpriteName.Keyboard, DssRef.lang.Settings_ButtonMapping, null, new GuiAction(keyMappingMenu), true, layout);
                 Ref.gamesett.optionsMenu(layout);
                 new GuiCheckbox(DssRef.lang.GameMenu_AutoSave, null, autoSaveProperty, layout);
                 new GuiCheckbox(DssRef.lang.Tutorial_MenuOption, null, tutorialProperty, layout);
@@ -661,7 +795,7 @@ namespace VikingEngine.DSSWars
                 int index;
                 if (Input.XInput.KeyDownEvent_index(Buttons.Start, out index))
                 {
-                    selectController_startGame(new InputSource(InputSourceType.XController, index));
+                    selectController_startGame(new InputSource(InputSourceType.XController, index), -1);
                 }
             }
 
@@ -673,6 +807,17 @@ namespace VikingEngine.DSSWars
             if (Ref.music != null)
             {
                 Ref.music.Update();
+            }
+
+            if (inKeyMapsMenu)
+            {
+                foreach (var key in availableKeyboardKeys)
+                {
+                    if (Input.Keyboard.KeyDownEvent(key))
+                    {
+                        listMapOptions_keyboardlink(key);
+                    }
+                }
             }
         }
 
@@ -698,14 +843,7 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        void selectController_startGame(InputSource inputSource)
-        {
-            var playerData = DssRef.storage.localPlayers[0];
-            playerData.inputSource = inputSource;
-            DssRef.storage.checkPlayerDoublettes(0);
-
-            new StartGame(netLobby, null, mapBackgroundLoading);
-        }
+        
 
         void startGame()
         {
@@ -715,11 +853,11 @@ namespace VikingEngine.DSSWars
                 if (availableList.Count > 1)
                 {
                     controllerStartGameUpdate = true;
-                    selectInputMenu(1, true);
+                    selectInputMenu(1, true, -1);
                 }
                 else
                 {
-                    selectController_startGame(availableList[0]);
+                    selectController_startGame(availableList[0], -1);
                 }
                 return;
             }
@@ -776,7 +914,17 @@ namespace VikingEngine.DSSWars
                 }
                 mapBackgroundLoading = new MapBackgroundLoading(save);
 
-                new StartGame(netLobby, save, mapBackgroundLoading);
+                var availableList = availableInput();
+                if (availableList.Count > 1)
+                {
+                    controllerStartGameUpdate = true;
+                    selectInputMenu(1, true, listIndex);
+                }
+                else
+                {
+                    selectController_startGame(availableList[0], listIndex);
+                }
+                //new StartGame(netLobby, save, mapBackgroundLoading);
             }
             else
             {
@@ -784,14 +932,26 @@ namespace VikingEngine.DSSWars
                 GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_WarningTitle, menuSystem.menu);
                 {
                     new GuiLabel(string.Format( DssRef.lang.GameMenu_Load_PlayerCountError, save.localPlayerCount), layout);
-                    new GuiIconTextButton(SpriteName.MenuIconResume, DssRef.lang.Hud_OK, null, mainMenu, false, layout);
+                    new GuiIconTextButton(SpriteName.MenuIconResume, Ref.langOpt.Hud_OK, null, mainMenu, false, layout);
                 }
                 layout.End();                
             }
             
         }
 
+        void selectController_startGame(InputSource inputSource, int saveIndex)
+        {
+            var playerData = DssRef.storage.localPlayers[0];
+            playerData.inputSource = inputSource;
+            DssRef.storage.checkPlayerDoublettes(0);
 
+            SaveStateMeta save = null;
+            if (saveIndex >= 0)
+            {
+                save =DssRef.storage.meta.listSaves()[saveIndex];
+            }
+            new StartGame(netLobby, save, mapBackgroundLoading);
+        }
         //public override void NetEvent_PeerJoined(Network.AbsNetworkPeer gamer)
         //{
         //    base.NetEvent_PeerJoined(gamer);

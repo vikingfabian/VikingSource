@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject.Worker;
 using VikingEngine.Engine;
 
 namespace VikingEngine.DSSWars.GameObject.Resource
 {
     static class ResourceLib
     {
+        public const float ManDefaultEnergyCost = 1f;
+        public const float WorkTeamEnergyCost = ManDefaultEnergyCost * City.WorkTeamSize;
+        public const int FoodEnergy = 100;
         public static string Name(ResourceType resource)
         {
             switch (resource)

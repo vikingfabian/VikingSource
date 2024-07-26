@@ -6,6 +6,7 @@ using System.Text;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.Graphics;
 
 
@@ -76,6 +77,7 @@ namespace VikingEngine.DSSWars
         public const int GroupDefaultCultureCostReduction = 20;
         public const int GroupMinCost = 20;
         public const float SoldierDefaultUpkeep = 1f;
+        public const float SoldierDefaultEnergyUpkeep = ResourceLib.ManDefaultEnergyCost;
         public const float GroupDefaultUpkeep = SoldierDefaultUpkeep * AbsSoldierData.GroupDefaultCount;
         public const int DefalutRecruitTrainingTimeSec = 3 * 60;
                 

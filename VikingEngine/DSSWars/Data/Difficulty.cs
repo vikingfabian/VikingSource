@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.Data
                     string.Format(DssRef.lang.DifficultyDescription_AiDelay, TimeSpan.FromSeconds(difficulty.aiDelayTimeSec).ToString()) + Environment.NewLine +
                     string.Format(DssRef.lang.DifficultyDescription_DiplomacyDifficulty, TextLib.IndexDivition(difficulty.diplomacyDifficulty, DiplomacyDifficultyCount)) + Environment.NewLine +
                     string.Format(DssRef.lang.DifficultyDescription_MercenaryCost, difficulty.MercenaryPurchaseCost_Start.ToString() )+ Environment.NewLine +
-                   string.Format(DssRef.lang.DifficultyDescription_HonorGuards, difficulty.honorGuard? DssRef.lang.Hud_Yes : DssRef.lang.Hud_No),
+                   string.Format(DssRef.lang.DifficultyDescription_HonorGuards, difficulty.honorGuard? Ref.langOpt.Hud_Yes : Ref.langOpt.Hud_No),
 
                     new GuiAction1Arg<int>(difficultyOptionsLink, i),
                     false, layout);

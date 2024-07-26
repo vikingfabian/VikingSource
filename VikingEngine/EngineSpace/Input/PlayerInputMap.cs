@@ -32,12 +32,14 @@ namespace VikingEngine.Input
         public HUD.MenuInputMap menuInput;
 
         /* Constructors */
-        public PlayerInputMap(System.IO.BinaryReader r, int version)
-        {
-            init();
-            keyboardSetup();
-            read(r, version);
-        }
+        //public PlayerInputMap(System.IO.BinaryReader r, int version)
+        //{
+        //    init();
+        //    keyboardSetup();
+        //    //read(r, version);
+        //}
+        public PlayerInputMap()
+        { }
 
         public PlayerInputMap(int player)
         {
@@ -61,6 +63,8 @@ namespace VikingEngine.Input
 
             switch (inputSource)
             {
+                case InputSourceType.Mouse:
+                case InputSourceType.Keyboard:
                 case InputSourceType.KeyboardMouse:
                     keyboardSetup();
                     break;
@@ -94,12 +98,7 @@ namespace VikingEngine.Input
         //abstract public void ps4Setup();
         abstract public void genericControllerSetup();
 
-        public void write(System.IO.BinaryWriter w)
-        {
-        }
-        public void read(System.IO.BinaryReader r, int version)
-        {
-        }
+        
 
         //Timer.Basic steamVibratePulse = new Timer.Basic(50, true);
         //float vibrationTime = 0;

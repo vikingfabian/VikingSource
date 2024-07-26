@@ -141,12 +141,12 @@ namespace VikingEngine.DSSWars.Display
 
                 case DisbandAllMenuState:
                     content.h1(DssRef.lang.ArmyOption_DisbandAll);
-                    content.h2(DssRef.lang.Hud_AreYouSure);
+                    content.h2(Ref.langOpt.Hud_AreYouSure);
                     content.newLine();
                     var allbuttonyes = new HUD.RichBox.RichboxButton(
                         new List<AbsRichBoxMember>
                         {
-                        new HUD.RichBox.RichBoxText(DssRef.lang.Hud_Yes),
+                        new HUD.RichBox.RichBoxText(Ref.langOpt.Hud_Yes),
                         },
                         new RbAction(disbandAllYes, SoundLib.menu), 
                         null);

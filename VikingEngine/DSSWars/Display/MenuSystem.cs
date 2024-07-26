@@ -97,7 +97,7 @@ namespace VikingEngine.DSSWars.Display
                 new GuiOption<float>(4f),
             };
 
-            new GuiOptionsList<float>(SpriteName.NO_IMAGE, DssRef.lang.Hud_GameSpeedButton, options, multiplayerGameSpeedProperty, layout);
+            new GuiOptionsList<float>(SpriteName.NO_IMAGE, DssRef.lang.Input_GameSpeed, options, multiplayerGameSpeedProperty, layout);
         }
 
         float multiplayerGameSpeedProperty(bool set, float value)

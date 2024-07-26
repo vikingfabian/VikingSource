@@ -245,7 +245,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_GameSpeedLabel => "游戏速度: {0}倍";
 
-        public override string Hud_GameSpeedButton => "游戏速度";
+        public override string Input_GameSpeed => "游戏速度";
 
         /// <summary>
         /// 游戏内显示。单位黄金产量
@@ -289,17 +289,6 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_CityCount => "城市数量: {0}";
         public override string Hud_ArmyCount => "军队数量: {0}";
 
-        public override string Hud_Cancel => "取消";
-        public override string Hud_Back => "返回";
-
-        /// <summary>
-        /// 玩家进行破坏性选择时的子菜单
-        /// </summary>
-        public override string Hud_AreYouSure => "你确定吗？";
-
-        public override string Hud_OK => "确定";
-        public override string Hud_Yes => "是";
-        public override string Hud_No => "否";
 
         /// <summary>
         /// 重复购买次数的小按钮。例如“x5”
@@ -320,6 +309,21 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Hud_Purchase_MaxCapacity => "已达到最大容量";
 
         public override string Hud_CompareMilitaryStrength_YourToOther => "力量：你的 {0} - 他们的 {1}";
+
+        /// <summary>
+        /// 将日期显示为“年、月、日”的简短字符串
+        /// </summary>
+        public override string Hud_Date => "年{0} 月{1} 日{2}";
+
+        /// <summary>
+        /// 将时间跨度显示为“时、分、秒”的简短字符串
+        /// </summary>
+        public override string Hud_TimeSpan => "时{0} 分{1} 秒{2}";
+
+        /// <summary>
+        /// 两支军队之间或军队与城市之间的战斗
+        /// </summary>
+        public override string Hud_Battle => "战斗";
 
         /// <summary>
         /// 描述按钮输入。移动到下一个城市。
@@ -800,7 +804,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string UnitType_Description_Crossbow => "强大的远程士兵。";
         public override string UnitType_Description_Ballista => "对城市很强。";
         public override string UnitType_Description_GreenSoldier => "令人畏惧的精灵战士。";
-
+        public override string UnitType_Description_DarkLord => "最终头目";
         /// <summary>
         /// 关于士兵类型的信息
         /// </summary>
@@ -902,7 +906,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// 招募士兵。
         /// </summary>
-        public override string CityOption_Recruit => "招募";
+        public override string UnitType_Recruit => "招募";
 
         /// <summary>
         /// 招募某种类型的士兵。0：类型
@@ -1032,6 +1036,13 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string EventMessage_FinalBattleTitle => "绝望的攻击";
         public override string EventMessage_FinalBattleText => "黑暗领主已经加入战场。现在是摧毁他的机会！";
 
+        /// <summary>
+        /// 当你无法支付士兵的维持费用时士兵离开军队的消息
+        /// </summary>
+        public override string EventMessage_DesertersTitle => "逃兵！";
+        public override string EventMessage_DesertersText => "未支付薪水的士兵正在逃离你的军队";
+
+
         public override string DifficultyDescription_AiAggression => "AI攻击性: {0}。";
         public override string DifficultyDescription_BossSize => "Boss规模: {0}。";
         public override string DifficultyDescription_BossEnterTime => "Boss进入时间: {0}。";
@@ -1056,6 +1067,8 @@ namespace VikingEngine.DSSWars.Display.Translation
     "记住带我们到这里的旅程，充满了勇士的灵魂。",
     "我们的胜利之光照亮了心灵，我们的心因失去的战士而沉重。"
 };
+
+        public override string EndScreen_DominationVictoryQuote => "我是被神选中的，来统治世界！";
 
         /// <summary>
         /// 游戏失败结束。
@@ -1180,6 +1193,63 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Tutorial_SelectInput => "选择";
         public override string Tutorial_MoveInput => "移动命令";
 
+        /// <summary>
+        /// 对战。描述将要进入战斗的两支军队的文字
+        /// </summary>
+        public override string Hud_Versus => "VS.";
 
+        public override string Hud_WardeclarationTitle => "战争宣言";
+
+        public override string ArmyOption_Attack => "攻击";
+
+        /// <summary>
+        /// 游戏设置菜单。更改按下时键和按钮的功能
+        /// </summary>
+        public override string Settings_ButtonMapping => "按钮映射";
+
+        /// <summary>
+        /// 描述按钮输入。扩展或缩小HUD上的信息量
+        /// </summary>
+        public override string Input_ToggleHudDetail => "切换HUD详情";
+
+        /// <summary>
+        /// 描述按钮输入。切换地图和HUD之间的选择
+        /// </summary>
+        public override string Input_ToggleHudFocus => "菜单焦点";
+
+        /// <summary>
+        /// 描述按钮输入。点击最新弹出窗口的快捷方式
+        /// </summary>
+        public override string Input_ClickMessage => "点击消息";
+
+        /// <summary>
+        /// 描述按钮输入。一般移动方向
+        /// </summary>
+        public override string Input_Up => "上";
+
+        /// <summary>
+        /// 描述按钮输入。一般移动方向
+        /// </summary>
+        public override string Input_Down => "下";
+
+        /// <summary>
+        /// 描述按钮输入。一般移动方向
+        /// </summary>
+        public override string Input_Left => "左";
+
+        /// <summary>
+        /// 描述按钮输入。一般移动方向
+        /// </summary>
+        public override string Input_Right => "右";
+
+        /// <summary>
+        /// 输入类型，标准PC输入
+        /// </summary>
+        public override string Input_Source_Keyboard => "键盘和鼠标";
+
+        /// <summary>
+        /// 输入类型，类似于Xbox使用的手持控制器
+        /// </summary>
+        public override string Input_Source_Controller => "控制器";
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Valve.Steamworks;
 
 namespace VikingEngine.DSSWars.Map
 {
@@ -66,6 +67,35 @@ namespace VikingEngine.DSSWars.Map
             }
 
             return TerrainSubFoilType.NUM_NONE;
+        }
+
+        public TerrainBuildingType GeBuildingType()
+        {
+            if (mainTerrain == TerrainMainType.Building &&
+                subTerrain >= 0)
+            {
+                return (TerrainBuildingType)subTerrain;
+            }
+
+            return TerrainBuildingType.NUM_NONE;
+        }
+
+        public string TypeToString()
+        {
+           string result =  mainTerrain.ToString();
+
+            switch (mainTerrain)
+            {
+                case TerrainMainType.Building:
+                    result += " - " + ((TerrainBuildingType)subTerrain).ToString();
+                    break;
+                case TerrainMainType.Foil:
+                    result += " - " + ((TerrainSubFoilType)subTerrain).ToString();
+                    break;
+
+            }
+
+            return result;
         }
     }
 

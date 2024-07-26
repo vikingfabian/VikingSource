@@ -575,6 +575,7 @@ namespace VikingEngine.LootFest
         city_stonetower,
 
         city_mine,
+        city_workstation,
 
         horse_white, horse_brown,
         

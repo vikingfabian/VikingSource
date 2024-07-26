@@ -25,6 +25,7 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City : GameObject.AbsMapObject
     {
+        const float TaxPerWorker = 0.2f;
         public const int ExpandWorkForce = AbsSoldierData.GroupDefaultCount * 4;
         public const int ExpandGuardSize = AbsSoldierData.GroupDefaultCount;
         public const int ExpandGuardSizeCost = 12000;
@@ -76,8 +77,6 @@ namespace VikingEngine.DSSWars.GameObject
             this.parentArrayIndex = index;
             readMapFile(r, version);
         }
-
-
 
         public void generateCultureAndEconomy(WorldData world, CityCultureCollection cityCultureCollection)
         {
@@ -351,6 +350,10 @@ namespace VikingEngine.DSSWars.GameObject
             }
             immigrants.read16bit(r);
             nobelHouse = r.ReadBoolean();
+            if (nobelHouse)
+            {
+                addNobelHouseFeatures();
+            }
 
             if (subversion >= 3)
             {
@@ -397,6 +400,12 @@ namespace VikingEngine.DSSWars.GameObject
             workForceMax += amount;
             refreshCitySize();
             detailObj.refreshWorkerSubtiles();//updateWorkerModels();
+        }
+
+        public void onWorkHutBuild()
+        {
+            workForceMax += AbsSoldierData.GroupDefaultCount;
+            refreshCitySize();
         }
 
         public void expandGuardSize(int amount)
@@ -447,12 +456,13 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (damages.HasValue())
             {
-                int totalCost;
+                int cost;
                 int count;
 
-                repairCountAndCost(all, out count, out totalCost);
+                repairCountAndCost(all, out count, out cost);
 
-                if (faction.calcCost(totalCost, ref totalCost))
+                int totalCost = 0;
+                if (faction.calcCost(cost, ref totalCost))
                 {
                     if (commit)
                     {
@@ -687,7 +697,16 @@ namespace VikingEngine.DSSWars.GameObject
             if (canBuyNobelHouse() &&
                 faction.payMoney(DssLib.NobleHouseCost, false))
             {
-                nobelHouse = true;
+                addNobelHouseFeatures();
+            }
+        }
+
+        void addNobelHouseFeatures()
+        { 
+            nobelHouse = true;
+
+            if (!HasUnitPurchaseOption(UnitType.Knight))
+            {
                 var typeData = DssRef.unitsdata.Get(UnitType.Knight);
 
                 CityPurchaseOption knightPurchase = new CityPurchaseOption()
@@ -733,7 +752,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void updateIncome_asynch()
         {
-            income = Convert.ToInt32(Math.Floor(workForce.value - upkeep));
+            income = Convert.ToInt32(Math.Floor(workForce.value * TaxPerWorker - upkeep - blackMarketCosts.displayValue_sec));
         }
 
         public void onNewModel(LootFest.VoxelModelName name, Graphics.VoxelModel master)
@@ -753,7 +772,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void asynchCullingUpdate(float time, bool bStateA)
         {
-            DssRef.state.culling.InRender_Asynch(ref enterRender_asynch, bStateA, ref cullingTopLeft, ref cullingBottomRight);
+            if (inRender_detailLayer)
+            {
+                lib.DoNothing();
+            }
+            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, ref cullingTopLeft, ref cullingBottomRight);
         }
 
         public void oneSecUpdate()
@@ -780,17 +803,21 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             workForce.add(addWorkers, workForceMax - damages.Int());
+
+            water = Math.Min(water + 1, Maxwater);
         }
 
-        public void asynchGameObjectsUpdate()
+        public void asynchGameObjectsUpdate(bool minute)
         {
             collectBattles_asynch();
             detailObj.asynchUpdate();
-
             //strength
             strengthValue = 2.5f * guardCount / AbsSoldierData.GroupDefaultCount;
 
-            
+            if (minute)
+            {
+                blackMarketCosts.minuteUpdate();
+            }
         }
 
         //public void dominationCheck()
@@ -827,7 +854,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected override void setInRenderState()
         {
-            if (inRender)
+            if (inRender_overviewLayer)
             {
                 if (overviewModel == null)
                 {
@@ -844,7 +871,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             setWorkersInRenderState();
-            detailObj.setDetailLevel(inRender);
+            detailObj.setDetailLevel(inRender_detailLayer);
         }
 
         //protected override bool mayAttack(AbsMapObject otherObj)
@@ -912,7 +939,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string TypeName()
         {
-            return DssRef.lang.UnitType_City + " (" + TextLib.IndexToString(parentArrayIndex) + ")";
+            return DssRef.lang.UnitType_City + " (" + parentArrayIndex + ")";
         }
 
         public override void toHud(Display.ObjectHudArgs args)
@@ -1251,7 +1278,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 for (int x = 0; x < WorldData.TileSubDivitions; ++x)
                 {
-                    TerrainBuildingType buildingType = TerrainBuildingType.NUM;
+                    TerrainBuildingType buildingType = TerrainBuildingType.NUM_NONE;
 
                     bool edgeX = x == 0 || x == WorldData.TileSubDivitions_MaxIndex;
                     bool edgeY = y == 0 || y == WorldData.TileSubDivitions_MaxIndex;
@@ -1274,6 +1301,14 @@ namespace VikingEngine.DSSWars.GameObject
                     else if (x == 4 && y == 4)
                     {
                         buildingType = TerrainBuildingType.Square;
+                    }
+                    else if (x == 3 && y == 4)
+                    {
+                        buildingType = TerrainBuildingType.Work_Cook;
+                    }
+                    else if (x == 5 && y == 4)
+                    {
+                        buildingType = TerrainBuildingType.Work_Smith;
                     }
                     else
                     {

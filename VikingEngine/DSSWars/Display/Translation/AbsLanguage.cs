@@ -71,7 +71,7 @@ namespace VikingEngine.DSSWars.Display.Translation
               
 
         public abstract string Hud_GameSpeedLabel { get; }
-        public abstract string Hud_GameSpeedButton { get; }
+        public abstract string Input_GameSpeed { get; }
 
         public abstract string Hud_TotalIncome { get; }
 
@@ -99,14 +99,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string Hud_CityCount { get; }
         public abstract string Hud_ArmyCount { get; }
 
-        public abstract string Hud_Cancel { get; }
-
-        public abstract string Hud_Back { get; }
-        public abstract string Hud_AreYouSure { get; }
-
-        public abstract string Hud_OK { get; }
-        public abstract string Hud_Yes { get; }
-        public abstract string Hud_No { get; }
+        
         public abstract string Hud_XTimes { get; }
 
         public abstract string Hud_PurchaseTitle_Requirement { get; }
@@ -120,6 +113,12 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string Hud_Purchase_MaxCapacity { get; }
 
         public abstract string Hud_CompareMilitaryStrength_YourToOther { get; }
+
+        public abstract string Hud_Date { get; }
+
+        public abstract string Hud_TimeSpan { get; }
+
+        public abstract string Hud_Battle { get; }
 
         public abstract string Input_NextCity { get; }
         public abstract string Input_NextArmy { get; }
@@ -256,8 +255,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string UnitType_Description_Crossbow { get; }
         public abstract string UnitType_Description_Ballista { get; }
         public abstract string UnitType_Description_GreenSoldier { get; }
-
-
+        public abstract string UnitType_Description_DarkLord { get; }
 
         public abstract string SoldierStats_Title { get; }
         public abstract string SoldierStats_GroupCountAndSoldierCount { get; }
@@ -285,7 +283,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string ArmyOption_MergeArmies { get; }
 
 
-        public abstract string CityOption_Recruit { get; }
+        public abstract string UnitType_Recruit { get; }
         public abstract string CityOption_RecruitType { get; }
         public abstract string CityOption_XMercenaries { get; }
         public abstract string Hud_MercenaryMarket { get; }
@@ -330,6 +328,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string EventMessage_FinalBattleTitle { get; }
         public abstract string EventMessage_FinalBattleText { get; }
 
+        public abstract string EventMessage_DesertersTitle { get; }
+        public abstract string EventMessage_DesertersText { get; }
+
         public abstract string DifficultyDescription_AiAggression { get; }
         public abstract string DifficultyDescription_BossSize { get; }
         public abstract string DifficultyDescription_BossEnterTime { get; }
@@ -343,6 +344,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string EndScreen_VictoryTitle { get; }
 
         public abstract List<string> EndScreen_VictoryQuotes { get; }
+
+        public abstract string EndScreen_DominationVictoryQuote { get; }
 
         public abstract string EndScreen_FailTitle { get; }
 
@@ -395,6 +398,25 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string Tutorial_SelectInput { get; }
         public abstract string Tutorial_MoveInput { get; }
+
+
+        public abstract string Hud_Versus { get; }
+
+        public abstract string Hud_WardeclarationTitle { get; }
+
+        public abstract string ArmyOption_Attack { get; }
+
+        public abstract string Settings_ButtonMapping { get; }
+        public abstract string Input_ToggleHudDetail { get; }
+        public abstract string Input_ToggleHudFocus { get; }
+        public abstract string Input_ClickMessage { get; }
+        public abstract string Input_Up { get; }
+        public abstract string Input_Down { get; }
+        public abstract string Input_Left { get; }
+        public abstract string Input_Right { get; }
+        public abstract string Input_Source_Keyboard { get; }
+        public abstract string Input_Source_Controller { get; }
+
 
     }
 }

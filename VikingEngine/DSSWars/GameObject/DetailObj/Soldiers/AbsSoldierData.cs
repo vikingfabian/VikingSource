@@ -16,7 +16,10 @@ namespace VikingEngine.DSSWars.GameObject
         public ArmyPlacement ArmyFrontToBackPlacement = 0;
         protected int workForcePerUnit = 1;
         public int goldCost = DssLib.GroupDefaultCost;
+
         public float upkeepPerSoldier = DssLib.SoldierDefaultUpkeep;
+        public float energyPerSoldier =  DssLib.SoldierDefaultEnergyUpkeep;
+
         public int recruitTrainingTimeSec = DssLib.DefalutRecruitTrainingTimeSec;
 
         protected const float StandardRotatingSpeed = 6.5f;

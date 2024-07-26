@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Players;
 
 namespace VikingEngine.DSSWars
@@ -9,7 +10,7 @@ namespace VikingEngine.DSSWars
     partial class Faction
     {
         public int gold = 40;
-        public int totalWorkForce, cityIncome, armyUpkeep;
+        public int totalWorkForce, cityIncome, armyUpkeep, armyFoodUpkeep;
         public int nobelHouseCount = 0;
 
         public bool calcCost(int cost, ref int totalCost) {
@@ -50,7 +51,7 @@ namespace VikingEngine.DSSWars
             gold += income;
         }
 
-        public void resources_updateAsynch()
+        public void resources_updateAsynch(float oneSecondUpdate)
         {
             int cityIncomeCount = 0;
             int workForceCount = 0;
@@ -73,28 +74,37 @@ namespace VikingEngine.DSSWars
             nobelHouseCount = nobel;
 
             float totalArmiesUpkeep = 0;
+            float totalArmiesFoodUpkeep = 0;
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
+                float energyUpkeep = 0;
                 float armyUpkeep = 0;
 
                 var groups = armiesC.sel.groups.counter();
                 while (groups.Next())
                 {
-                    armyUpkeep += groups.sel.Upkeep();
-                    //var soldiers = groups.sel.soldiers.counter();
-                    //while (soldiers.Next())
-                    //{
-                    //    armyUpkeep += soldiers.sel.upkeep;
-                    //}
+                    groups.sel.Upkeep(ref energyUpkeep);
                 }
 
-                totalArmiesUpkeep += armyUpkeep;
-                armiesC.sel.upkeep = Convert.ToInt32(armyUpkeep);
-            }
+                float foodUpkeep = energyUpkeep / ResourceLib.FoodEnergy;
 
+                totalArmiesUpkeep += armyUpkeep;
+                totalArmiesFoodUpkeep += foodUpkeep;
+         
+                armiesC.sel.foodUpkeep = foodUpkeep;
+                armiesC.sel.food -= foodUpkeep * oneSecondUpdate;
+                if (armiesC.sel.food < -foodUpkeep * 60)
+                {
+                    Ref.update.AddSyncAction(new SyncAction(armiesC.sel.hungerDeserters));
+                }
+            }
+            
             armyUpkeep = Convert.ToInt32(totalArmiesUpkeep);
+            armyFoodUpkeep = Convert.ToInt32(totalArmiesFoodUpkeep);
         }
+
+        
 
         public int NetIncome()
         {

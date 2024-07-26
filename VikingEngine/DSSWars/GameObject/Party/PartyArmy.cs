@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars.GameObject.Party
         {
             base.setInRenderState();
 
-            if (inRender)
+            if (inRender_overviewLayer)
             {
                 if (restBarModel == null)
                 {

@@ -210,6 +210,7 @@ namespace VikingEngine.DSSWars.Data
         }
         public string InfoString()
         {
+            string playTime = HudLib.TimeSpan(this.playTime);//Engine.LoadContent.CheckCharsSafety(this.playTime.ToString(), LoadedFont.Regular);
             string result = string.Format(DssRef.lang.EndGameStatistics_Time, playTime) + Environment.NewLine;
             if (autosave)
             {
@@ -218,7 +219,10 @@ namespace VikingEngine.DSSWars.Data
             result += string.Format(DssRef.lang.Settings_TotalDifficulty, difficulty) + Environment.NewLine +
                 DssRef.lang.Lobby_MapSizeTitle + ": " + WorldData.SizeString(world.mapSize) + Environment.NewLine +
                 string.Format(DssRef.lang.Lobby_LocalMultiplayerEdit, localPlayerCount) + Environment.NewLine +
-                " [" + Engine.LoadContent.CheckCharsSafety(saveDate.ToLongDateString(), LoadedFont.Regular) + "]";
+                " [" + HudLib.Date(saveDate) + "]";
+            //" [" + Engine.LoadContent.CheckCharsSafety(saveDate.ToLongDateString(), LoadedFont.Regular) + "]";
+
+
 
             return result;
         }

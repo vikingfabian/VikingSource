@@ -9,7 +9,7 @@ namespace VikingEngine.DSSWars.Display
             : base(gui)
         { }
 
-        public void refresh(Players.LocalPlayer player, GameObject.AbsWorldObject obj, bool selected, Vector2 pos)
+        public void refresh(Players.LocalPlayer player, GameObject.AbsGameObject obj, bool selected, Vector2 pos)
         {
             interaction?.DeleteMe();
             interaction = null;
@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars.Display
                 if (gui.menuState.Count > 0) 
                 {
                     content.newLine();
-                    content.Button(DssRef.lang.Hud_Back, new RbAction(gui.menuBack, SoundLib.menuBack), 
+                    content.Button(Ref.langOpt.Hud_Back, new RbAction(gui.menuBack, SoundLib.menuBack), 
                         null, true);
                 }
                 endRefresh(pos, selected);

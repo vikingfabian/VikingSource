@@ -56,6 +56,9 @@ namespace VikingEngine.HUD.RichBox
 
         virtual public void onEnter() { }
         virtual public void onClick() { }
+
+        virtual public void getButtons(List<RichboxButton> buttons)
+        { }
     }
 
     class RichBoxNewLine : AbsRichBoxMember

@@ -46,8 +46,8 @@ namespace VikingEngine.DSSWars.GameObject
        
         public int soldiersCount = 0;
         public int upkeep;
-        public float transportSpeedLand = AbsSoldierData.StandardWalkingSpeed;
-        public float transportSpeedSea = AbsSoldierData.StandardShipSpeed;
+        public float transportSpeedLand = AbsDetailUnitData.StandardWalkingSpeed;
+        public float transportSpeedSea = AbsDetailUnitData.StandardShipSpeed;
         public bool isShip = false;
 
         public float terrainSpeedMultiplier = 1.0f;
@@ -57,7 +57,16 @@ namespace VikingEngine.DSSWars.GameObject
         static readonly Vector2 CamCullingRadius = new Vector2(SoldierGroup.GroupSpacing * 1.4f);
         public Vector2 cullingTopLeft, cullingBottomRight;
         bool isIdle = true;
-        //IntVector2 nextGroupPlacement = IntVector2.Zero;
+
+        //bool deserters = false;
+        public float food = 0;
+        public float foodUpkeep = 0;
+
+        public float foodBuffer_minutes = 1f;
+        public float friendlyAreaFoodBuffer_minutes = 5f;
+
+        public MinuteStats foodCosts = new MinuteStats();
+
 
         public Army(Faction faction, IntVector2 startPosition)
         {
@@ -148,7 +157,7 @@ namespace VikingEngine.DSSWars.GameObject
                     args.content.Add(new RichBoxText(TextLib.OneDecimal(strengthValue)));
                     args.content.space();
                     args.content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
-                    args.content.Add(new RichBoxText(TextLib.LargeNumber(upkeep)));
+                    //args.content.Add(new RichBoxText(TextLib.LargeNumber(upkeep)));
                 }
             }
             else
@@ -166,7 +175,11 @@ namespace VikingEngine.DSSWars.GameObject
                     args.content.icontext(SpriteName.WarsGroupIcon, string.Format( DssRef.lang.Hud_SoldierGroupsCount, groups.Count));
                     args.content.icontext(SpriteName.WarsSoldierIcon,string.Format(DssRef.lang.Hud_SoldierCount, TextLib.LargeNumber(count)));
                     args.content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
-                    args.content.icontext(SpriteName.rtsUpkeepTime,string.Format(DssRef.lang.Hud_Upkeep ,TextLib.LargeNumber(upkeep)));
+                    //args.content.icontext(SpriteName.rtsUpkeepTime,string.Format(DssRef.lang.Hud_Upkeep ,TextLib.LargeNumber(upkeep)));
+                    args.content.text(string.Format("Food reserves: {0}", TextLib.OneDecimal(food)));
+                    args.content.text(string.Format("Food upkeep: {0}", TextLib.OneDecimal(foodUpkeep)));
+                    args.content.icontext(SpriteName.rtsUpkeepTime, string.Format("Food costs: {0}", TextLib.OneDecimal(foodCosts.displayValue_sec)));
+
                     if (PlatformSettings.DevBuild)
                     {
                         args.content.text("Id: " + id.ToString());
@@ -381,8 +394,6 @@ namespace VikingEngine.DSSWars.GameObject
             //frameModel.SetSpriteName(hover ? SpriteName.LittleUnitSelectionDotted : SpriteName.WhiteCirkle);
         }
 
-        
-
         virtual public void update()
         {
             if (id == 1391)
@@ -391,10 +402,12 @@ namespace VikingEngine.DSSWars.GameObject
             }
             updateDetailLevel();
 
-            if (inRender)
+            if (inRender_overviewLayer)
             {
                 updateMembers(Ref.DeltaGameTimeMs, true);
+               
             }
+            updateWorkerUnits();
 
             if (groups.Count == 0)
             {
@@ -543,7 +556,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected override void setInRenderState()
         {              
-            if (inRender)
+            if (inRender_overviewLayer)
             {
                 if (overviewBanner == null)
                 {
@@ -563,18 +576,20 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
+            setWorkersInRenderState();
+
             var groupsCounter = groups.counter();
             while (groupsCounter.Next())
             {
                 var soldiers = groupsCounter.sel.soldiers.counter();
                 while (soldiers.Next())
                 {
-                    soldiers.sel.setDetailLevel(inRender);
+                    soldiers.sel.setDetailLevel(inRender_detailLayer);
                 }
             }
         }
 
-        public void asynchGameObjectsUpdate(float time)
+        public void asynchGameObjectsUpdate(float time, bool oneMinute)
         {
             if (groups.Count > 0)
             {
@@ -674,16 +689,21 @@ namespace VikingEngine.DSSWars.GameObject
                 cullingTopLeft = minpos - CamCullingRadius;
                 cullingBottomRight = maxpos + CamCullingRadius;
             }
+
+            if (oneMinute)
+            {
+                foodCosts.minuteUpdate();
+            }
         }
 
         override public void asynchCullingUpdate(float time, bool bStateA)
         {
-            DssRef.state.culling.InRender_Asynch(ref enterRender_asynch, bStateA, ref cullingTopLeft, ref cullingBottomRight);
+            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, ref cullingTopLeft, ref cullingBottomRight);
         }
 
         public void asynchSleepObjectsUpdate(float time)
         {
-            if (!inRender)
+            if (!inRender_overviewLayer)
             {
                 updateMembers(time * Ref.GameTimeSpeed, false);
             }
@@ -732,7 +752,7 @@ namespace VikingEngine.DSSWars.GameObject
                 DSSWars.Faction.SetNewMaster(name, OverviewBannerModelName, overviewBanner, master);
             }
 
-            if (inRender)
+            if (inRender_overviewLayer)
             {
                 var groupsC = groups.counter();
                 while (groupsC.Next())
@@ -775,11 +795,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void OnNewOwner()
         {
-            if (inRender)
+            if (inRender_overviewLayer)
             {
-                inRender = false;
+                inRender_overviewLayer = false;
                 setInRenderState();
-                inRender = true;
+                inRender_overviewLayer = true;
                 setInRenderState();
             }
         }
@@ -842,6 +862,26 @@ namespace VikingEngine.DSSWars.GameObject
             else
             {
                 return WP.ToWorldPos(tilePos);
+            }
+        }
+
+        public void hungerDeserters()
+        {
+            //Gain a portion of deserters on all armies
+            int totalDeserters = desertSoldiers();
+
+            //var armiesCounter = armies.counter();
+            //while (armiesCounter.Next())
+            //{
+
+
+
+            if (totalDeserters > 0 &&
+                faction.player.IsPlayer() && 
+                faction.player.GetLocalPlayer().hud.messages.freeSpace())
+            {
+                faction.player.GetLocalPlayer().hud.messages.Add("Deserters!", "Hungry soldiers are deserting from your armies");
+                faction.player.GetLocalPlayer().statistics.SoldiersDeserted += totalDeserters;
             }
         }
 

@@ -231,7 +231,7 @@ namespace VikingEngine.DSSWars.Display
                     content.Add(new RichboxButton(new List<AbsRichBoxMember>()
                         {
                             //new RichBoxImage(SpriteName.WarsRelationPeace),
-                            new RichBoxText(DssRef.lang.Hud_Cancel),
+                            new RichBoxText(Ref.langOpt.Hud_Cancel),
                         },
                         new RbAction(cancelToPlayerRelation, SoundLib.menuBuy)));
                 }
@@ -297,10 +297,12 @@ namespace VikingEngine.DSSWars.Display
             message.Add(new RichBoxImage(Diplomacy.RelationSprite(PtoP.suggestedRelation)));
             message.Add(new RichBoxText(Diplomacy.RelationString(PtoP.suggestedRelation)));
             message.newLine();
-            message.Add(new RichboxButton(new List<AbsRichBoxMember>
-                {
-                    new RichBoxText(DssRef.lang.Diplomacy_AcceptRelationOffer)
-                },
+
+            var acceptButtonContent = new List<AbsRichBoxMember>(7);
+            otherPlayer.hud.messages.ControllerInputIcons(acceptButtonContent);
+            acceptButtonContent.Add(new RichBoxText(DssRef.lang.Diplomacy_AcceptRelationOffer));
+            message.Add(new RichboxButton(
+                acceptButtonContent,
                 new RbAction(acceptToPlayerRelation)));
             otherPlayer.hud.messages.Add(message);
         }

@@ -26,6 +26,8 @@ namespace VikingEngine.DSSWars.Map
         const int HenMaxTotal = HenMaxSize * HenMaxCount;
         public const int HenReady = HenMaxSize * 3;
 
+        public const int MineAmount = 10;
+
         public void asyncFoilGroth(IntVector2 pos, SubTile subtile)
         {
             Map.TerrainSubFoilType foilType = (Map.TerrainSubFoilType)subtile.subTerrain;
@@ -145,10 +147,15 @@ namespace VikingEngine.DSSWars.Map
 
                     if (stonenoise > 0.1)
                     {
-                        if (tile.heightLevel >= Height.MountainHeightStart)
+                        if (tile.heightLevel >= Height.MineHeightStart)
                         {
                             var rndMine = world.rnd.Double();
-                            if (rndMine < 0.004)
+                            if (rndMine < 0.002)
+                            {
+                                subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.GoldOre, 1);
+                                return;
+                            }
+                            else if (rndMine < 0.01)
                             {
                                 subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.IronOre, 1);
                                 return;

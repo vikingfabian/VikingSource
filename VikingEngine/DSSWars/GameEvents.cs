@@ -176,7 +176,7 @@ namespace VikingEngine.DSSWars
                 
                 if (nextEvent == EventType.KillTheDarkLord)
                 {
-                    victory();
+                    victory(true);
                 }
             }
 
@@ -186,6 +186,7 @@ namespace VikingEngine.DSSWars
 
         void RunNextEvent()
         {
+            //Is synced
             switch (nextEvent)
             {
                 case EventType.SouthShips:
@@ -599,19 +600,21 @@ namespace VikingEngine.DSSWars
 
         public void onDarkLordSpawn()
         {
-            nextEvent = EventType.KillTheDarkLord;
-
-            foreach (var p in DssRef.state.localPlayers)
+            if (nextEvent < EventType.KillTheDarkLord)
             {
-                p.hud.messages.Add(DssRef.lang.EventMessage_FinalBattleTitle, DssRef.lang.EventMessage_FinalBattleText);
-            }
+                nextEvent = EventType.KillTheDarkLord;
 
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    p.hud.messages.Add(DssRef.lang.EventMessage_FinalBattleTitle, DssRef.lang.EventMessage_FinalBattleText);
+                }
+            }
         }
         public void onDarkLorDeath()
         {
             if (nextEvent != EventType.End)
             {
-                victory();
+                victory(true);
             }
         }
 
@@ -623,17 +626,25 @@ namespace VikingEngine.DSSWars
                 {
                     DssRef.achieve.UnlockAchievement(AchievementIndex.no_darklord);
                 }
-                victory();
+                victory(true);
             }
         }
 
-        void victory()
+        public void onWorldDomination()
         {
-            nextEvent = EventType.End;
-            DssRef.achieve.onVictory();
-            //DssRef.state.localPlayers[0].menuSystem.victoryScreen();
+            victory(false);
+        }
 
-            new EndScene(true);
+        void victory(bool bossVictory)
+        {
+            if (nextEvent < EventType.End)
+            {
+                nextEvent = EventType.End;
+                DssRef.achieve.onVictory();
+                //DssRef.state.localPlayers[0].menuSystem.victoryScreen();
+
+                new EndScene(true, bossVictory);
+            }
         }
 
         public void onPlayerDeath()
@@ -646,7 +657,7 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            new EndScene(false);
+            new EndScene(false, false);
         }
        
     }

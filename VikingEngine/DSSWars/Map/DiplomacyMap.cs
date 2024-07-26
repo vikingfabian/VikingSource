@@ -50,7 +50,7 @@ namespace VikingEngine.DSSWars
                 {
                     GameObject = factory,
                     tilePos = factory.tilePos,
-                    icon = new Graphics.Image(SpriteName.WarsFactoryIcon, Vector2.Zero, Screen.IconSizeV2, HudLib.DiplomacyDisplayLayer - 2, true),
+                    icon = new Graphics.Image(SpriteName.WarsFactoryIcon, Vector2.Zero, Screen.IconSizeV2, HudLib.DiplomacyDisplayLayer - 4, true),
                 });
             }
 
@@ -59,7 +59,7 @@ namespace VikingEngine.DSSWars
                 questFlags.Add(new QuestFlag()
                 {
                     GameObject = DssRef.settings.darkLordPlayer.darkLordUnit,
-                    icon = new Graphics.Image(SpriteName.WarsDarkLordBossIcon, Vector2.Zero, Screen.IconSizeV2, HudLib.DiplomacyDisplayLayer - 2, true),
+                    icon = new Graphics.Image(SpriteName.WarsDarkLordBossIcon, Vector2.Zero, Screen.IconSizeV2, HudLib.DiplomacyDisplayLayer - 4, true),
                 });
             }
         }

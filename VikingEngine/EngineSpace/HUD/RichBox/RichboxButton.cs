@@ -12,7 +12,7 @@ namespace VikingEngine.HUD.RichBox
     {
         protected AbsRbAction click, enter;
         protected List<AbsRichBoxMember> content;
-        Graphics.Image bgPointer;
+        protected Graphics.Image bgPointer;
         public bool enabled;
 
         public Input.IButtonMap buttonMap = null;
@@ -109,6 +109,11 @@ namespace VikingEngine.HUD.RichBox
         public override void onEnter()
         {
             enter?.actionTrigger();
+        }
+
+        public override void getButtons(List<RichboxButton> buttons)
+        {
+            buttons.Add(this);
         }
     }
 }

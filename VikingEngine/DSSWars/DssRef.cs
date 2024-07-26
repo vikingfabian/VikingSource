@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars
     static class DssRef
     {
         public static Models models;
-        public static InputMap input;
+
         public static WorldData world = null;
         public static MapSettings map = null;
         public static Diplomacy diplomacy = null;

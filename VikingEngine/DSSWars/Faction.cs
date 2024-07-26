@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars
         public float militaryStrength = 0;
         public bool hasDeserters = true;
 
-        
+
 
         public Faction()
         { }
@@ -357,10 +357,10 @@ namespace VikingEngine.DSSWars
             {
                 lib.DoNothing();
             }
-            if (Ref.rnd.Chance(0.2))
-            {
-                desertersUpdate();
-            }
+            //if (Ref.rnd.Chance(0.2))
+            //{
+            //    desertersUpdate();
+            //}
 
             if (factiontype == FactionType.SouthHara)
             {
@@ -404,7 +404,7 @@ namespace VikingEngine.DSSWars
 
                     if (player.IsPlayer())
                     {
-                        player.GetLocalPlayer().hud.messages.Add("Deserters!", "Unpaid soldiers are deserting from your armies");
+                        player.GetLocalPlayer().hud.messages.Add(DssRef.lang.EventMessage_DesertersTitle, DssRef.lang.EventMessage_DesertersText);
                         player.GetLocalPlayer().statistics.SoldiersDeserted += totalDeserters;
                     }
                 }
@@ -416,20 +416,22 @@ namespace VikingEngine.DSSWars
             player.aiPlayerAsynchUpdate(time);
         }
 
-        public void asynchGameObjectsUpdate(float time)
+
+        
+        public void asynchGameObjectsUpdate(float time, float oneSecondUpdate, bool oneMinute)
         {
             float totalStrength = 0;
 
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
-                armiesC.sel.asynchGameObjectsUpdate(time);
+                armiesC.sel.asynchGameObjectsUpdate(time, oneMinute);
                 totalStrength += armiesC.sel.strengthValue;
             }
 
             militaryStrength = totalStrength;
 
-            resources_updateAsynch();
+            resources_updateAsynch(oneSecondUpdate);
         }
 
         public void asynchSleepObjectsUpdate(float time)
@@ -972,6 +974,11 @@ namespace VikingEngine.DSSWars
             }
 
             return null;    
+        }
+
+        public override bool aliveAndBelongTo(Faction faction)
+        {
+            return faction == this;
         }
 
         public override GameObjectType gameobjectType()

@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Graphics;
 using VikingEngine.EngineSpace.Maths;
+using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.HUD
 {
@@ -407,6 +408,22 @@ IsPressed = false;
         }
     }
 
+    class GuiRichButton : AbsGuiButton
+    {
+        RichBoxGroup boxGroup;
+        public GuiRichButton(RichBoxSettings settings, List<AbsRichBoxMember> members, string toolTip, IGuiAction action, bool showMoreMenusArrow, GuiLayout layout)
+             : base(action, toolTip, showMoreMenusArrow, layout)
+        {
+            boxGroup = new RichBoxGroup(new Vector2(style.textEdgeSpace), size.X - style.textEdgeSpace * 2,
+                layout.TextLayer, settings, members);
+
+            foreach (var m in boxGroup.images)
+            {
+                this.AddAndUpdate(m as AbsDraw2D);
+            }
+        }
+    }
+
     class GuiTextButton : AbsGuiButton
     {
         //protected TextG text;
@@ -612,8 +629,8 @@ IsPressed = false;
             GuiAction1Arg<IGuiAction> doThis = new GuiAction1Arg<IGuiAction>(DoAction, action);
             GuiLayout layout = new GuiLayout(label + "?", layoutParent.gui);
             {
-                new GuiTextButton("Yes", null, doThis, moreMenusArrow != null, layout);
-                new GuiTextButton("No", null, new GuiAction(layoutParent.gui.PopLayout), moreMenusArrow != null, layout);
+                new GuiTextButton(Ref.langOpt.Hud_Yes, null, doThis, moreMenusArrow != null, layout);
+                new GuiTextButton(Ref.langOpt.Hud_No, null, new GuiAction(layoutParent.gui.PopLayout), moreMenusArrow != null, layout);
             }
             layout.End();
         }

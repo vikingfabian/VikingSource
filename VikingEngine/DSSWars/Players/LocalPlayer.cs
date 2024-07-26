@@ -41,16 +41,10 @@ namespace VikingEngine.DSSWars.Players
         public FloatingInt_Max diplomaticPoints = new FloatingInt_Max();
         public int diplomaticPoints_softMax;
 
-        //public int servantFactions = 0;
-        //public int warsStarted = 0;
         public Data.Statistics statistics = new Data.Statistics();
 
         public PlayerToPlayerDiplomacy[] toPlayerDiplomacies = null;
         public Automation automation;
-        //public Tutorial tutorial = null;
-        //public bool inTutorialMode;
-        //public bool tutorialMission_BuySoldier = false;
-        //public bool tutorialMission_MoveArmy = false;
 
         public SpottedArray<Battle.BattleGroup> battles = new SpottedArray<Battle.BattleGroup>(4);
 
@@ -61,11 +55,11 @@ namespace VikingEngine.DSSWars.Players
         public int mercenaryCost = DssRef.difficulty.MercenaryPurchaseCost_Start;
 
         const int MercenaryMarketSoftLock1 = DssLib.MercenaryPurchaseCount * 5;
-        //const int MercenaryMarketSoftLock2 = DssLib.MercenaryPurchaseCount * 25;
         const double MercenaryMarketAddPerSec_Speed1 = 0.5;
         const double MercenaryMarketAddPerSec_Speed2 = 0.3;
-        //const double MercenaryMarketAddPerSec_Speed3 = 0.1;
         public FloatingInt mercenaryMarket = new FloatingInt() { value = DssLib.MercenaryPurchaseCount * 2 };
+
+        public CityTab cityTab = 0;
 
         public override void writeGameState(BinaryWriter w)
         {
@@ -130,9 +124,7 @@ namespace VikingEngine.DSSWars.Players
         public LocalPlayer(Faction faction, int playerindex, int numPlayers)
             :base(faction)
         {
-            //inTutorialMode = DssRef.storage.runTutorial;
-            
-
+           
             faction.factiontype = FactionType.Player;
             faction.availableForPlayer = false;
             var pStorage = DssRef.storage.localPlayers[playerindex];
@@ -144,13 +136,21 @@ namespace VikingEngine.DSSWars.Players
 
             input = new InputMap(playerindex);
             input.setInputSource(pStorage.inputSource.sourceType, pStorage.inputSource.controllerIndex);
+            if (pStorage.inputSource.IsController)
+            {
+                input.copyDataFrom(Ref.gamesett.controllerMap);
+            }
+            else
+            {
+                input.copyDataFrom(Ref.gamesett.keyboardMap);
+            }
 
             inputConnected = input.Connected;
 
             faction.profile.gameStartInit();
             faction.displayInFullOverview = true;
 
-            hud = new GameHud(this);
+            hud = new GameHud(this, numPlayers);
             automation = new Automation(this);
 
             playerData = Engine.XGuide.GetPlayer(playerindex);
@@ -328,6 +328,31 @@ namespace VikingEngine.DSSWars.Players
                     DssRef.world.cities[n].faction.player.onPlayerNeighborCapture(this);
                 }                
             }
+
+            if (faction.cities.Count >= DssRef.world.cities.Count - 5)
+            {
+                DssRef.state.events.onWorldDomination();
+            }
+        }
+
+        public void enterBattle(Battle.BattleGroup battleGroup, AbsMapObject playerUnit)
+        {
+            battles.Add(battleGroup);
+            RichBoxContent content = new RichBoxContent();
+            hud.messages.Title(content, DssRef.lang.Hud_Battle);
+
+            var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
+            hud.messages.ControllerInputIcons(gotoBattleButtonContent);
+            gotoBattleButtonContent.Add(new RichBoxText(playerUnit.TypeName() + " - " + battleGroup.TypeName()));
+
+            content.Add(new RichboxButton(gotoBattleButtonContent,
+                new RbAction1Arg<Battle.BattleGroup>(goToBattle, battleGroup)));
+            hud.messages.Add(content);
+        }
+
+        void goToBattle(Battle.BattleGroup battleGroup)
+        {
+            mapControls.cameraFocus = battleGroup;
         }
 
         public override void onNewRelation(Faction otherFaction, DiplomaticRelation rel, RelationType previousRelation)
@@ -339,11 +364,17 @@ namespace VikingEngine.DSSWars.Players
                 DssRef.achieve.onAlly(faction, otherFaction);
             }
 
-            if (rel.Relation <= RelationType.RelationTypeN3_War &&
+            if ((rel.Relation <= RelationType.RelationTypeN3_War &&
                 otherFaction.factiontype != FactionType.SouthHara)
+                ||
+                otherFaction.player.IsPlayer())
             {
                 string title;
-                if (previousRelation == RelationType.RelationTypeN2_Truce)
+                if (rel.Relation >= RelationType.RelationType2_Good)
+                {
+                    title = DssRef.lang.Diplomacy_RelationType;
+                }
+                else if (previousRelation == RelationType.RelationTypeN2_Truce)
                 {
                     title = DssRef.lang.Diplomacy_TruceEndTitle;
                 }
@@ -401,9 +432,9 @@ namespace VikingEngine.DSSWars.Players
                     if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                     {
                         //cityBuilderTest();
-                        //DssRef.state.events.TestNextEvent();
+                       // DssRef.state.events.TestNextEvent();
                         
-                        //battleLineUpTest(true);
+                        battleLineUpTest(true);
 
                         //battleLineUpTest(true);
                         //new Display.CutScene.EndScene(true);
@@ -412,7 +443,7 @@ namespace VikingEngine.DSSWars.Players
                     if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                     {
                         
-                        //hud.messages.Add("message!", "Hello hello");
+                        hud.messages.Add("message!", "Hello hello");
                         //battleLineUpTest(false);
                         //mapControls.FocusObject()?.tagObject();
                     }
@@ -432,6 +463,11 @@ namespace VikingEngine.DSSWars.Players
                         {
                             mapExecute();
                         }
+                    }
+
+                    if (input.ControllerMessageClick.DownEvent)
+                    {
+                        hud.messages.onControllerClick();
                     }
 
                     if (inputConnected && !input.Connected)
@@ -460,8 +496,75 @@ namespace VikingEngine.DSSWars.Players
 
             updateObjectTabbing();
 
+            
+
             //DssRef.state.detailMap.PlayerUpdate(mapControls.playerPointerPos, bUnitDetailLayer);
             drawUnitsView.Update();
+        }
+
+        public void debugMenu(GuiLayout layout)
+        {
+            new GuiTextButton("Next event", "skip forward in the event timer", new GuiAction(new Action(DssRef.state.events.TestNextEvent) + DssRef.state.menuSystem.closeMenu), false, layout);
+
+            UnitType[] unitTypes = DssLib.AvailableUnitTypes;
+            foreach (var type in unitTypes)
+            { 
+                new GuiTextButton("Battle test - " + type.ToString() + " (Land)", null, 
+                    new GuiAction2Arg<UnitType, bool>(battleLineTest,type,false), false, layout);
+            }
+
+            foreach (var type in unitTypes)
+            {
+                new GuiTextButton("Battle test - " + type.ToString() + " (Sea)", null,
+                    new GuiAction2Arg<UnitType, bool>(battleLineTest, type, true), false, layout);
+            }
+        }
+
+        void battleLineTest(UnitType type, bool sea)
+        {
+            DssRef.state.menuSystem.closeMenu();
+
+            Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(45));
+            Rotation1D playerRot = enemyRot.getInvert();
+
+            Faction enemyFac = DssRef.settings.darkLordPlayer.faction;
+            DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
+            
+            IntVector2 position = mapControls.tilePosition;
+
+            
+            {
+                var army = faction.NewArmy(position);
+                army.rotation = playerRot;
+                
+                for (int i = 0; i < 5; ++i)
+                {
+                   var group =  new SoldierGroup(army, UnitType.Soldier, false);
+                    if (sea)
+                    { 
+                        group.completeTransform(SoldierTransformType.ToShip);
+                    }
+                }
+
+                army.refreshPositions(true);
+            }
+            {
+                
+                var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
+                army.rotation = enemyRot;
+
+                for (int i = 0; i < 5; ++i)
+                {
+                    var group = new SoldierGroup(army, type, false);
+                    if (sea)
+                    {
+                        group.completeTransform(SoldierTransformType.ToShip);
+                    }
+                }
+                    
+                army.refreshPositions(true);               
+
+            }
         }
 
         public void asyncUserUpdate()
@@ -652,37 +755,35 @@ namespace VikingEngine.DSSWars.Players
                 army.rotation = playerRot;
 
                 //int count = Ref.rnd.Int(4, 8);
-                for (int i = 0; i < 15; ++i)
+                //for (int i = 0; i < 15; ++i)
+                //{
+                //    new SoldierGroup(army, UnitType.Viking, false).completeTransform(SoldierTransformType.ToShip);
+                //}
+                for (int i = 0; i < 2; ++i)
                 {
-                    new SoldierGroup(army, UnitType.Viking, false).completeTransform(SoldierTransformType.ToShip);
-                }
-                for (int i = 0; i < 10; ++i)
-                {
-                    new SoldierGroup(army, UnitType.Soldier, false).completeTransform(SoldierTransformType.ToShip);
+                    new SoldierGroup(army, UnitType.Soldier, false);
                 }
 
                 army.refreshPositions(true);
             }
             //else
             {
-                //{
-                //    var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
-                //    army.rotation = enemyRot;
-                //    //int count = 4;//Ref.rnd.Int(4, 8);
-                //    for (int i = 0; i < 5; ++i)
-                //    {
-                //        new SoldierGroup(army, UnitType.Trollcannon, false);
-                //    }
-                //    for (int i = 0; i < 9; ++i)
-                //    {
-                //        new SoldierGroup(army, UnitType.Pikeman, false);
-                //    }
-                //    //for (int i = 0; i < 5; ++i)
-                //    //{
-                //    //    new SoldierGroup(army, UnitType.Ballista, false);
-                //    //}
-                //    army.refreshPositions(true);
-                //}
+                {
+                    var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
+                    army.rotation = enemyRot;
+                    //int count = 4;//Ref.rnd.Int(4, 8);
+
+                    for (int i = 0; i < 10; ++i)
+                    {
+                        new SoldierGroup(army, UnitType.Archer, false).completeTransform(SoldierTransformType.ToShip);
+                    }
+                    new SoldierGroup(army, UnitType.DarkLord, false).completeTransform(SoldierTransformType.ToShip);
+                    //for (int i = 0; i < 5; ++i)
+                    //{
+                    //    new SoldierGroup(army, UnitType.Ballista, false);
+                    //}
+                    army.refreshPositions(true);
+                }
 
 
                 //{
@@ -776,7 +877,6 @@ namespace VikingEngine.DSSWars.Players
 
         public bool interactAsynchUpdate(int id, float time)
         {
-            //mapControls.asynchUpdate();
             armyControls?.asynchUpdate();
 
             return false;
@@ -784,12 +884,20 @@ namespace VikingEngine.DSSWars.Players
 
         bool clickHover()
         {
+            if (mapControls.hover.subTile.hasSelection)//.selectable(faction, out var city))
+            {
+                SoundLib.click.Play();
+
+                mapControls.onTileSelect(mapControls.hover.subTile.city, mapControls.hover.subTile.selectTileResult);
+
+                return true;
+            }
+
             if (mapControls.hover.obj != null &&
                 mapControls.hover.obj.GetFaction() == this.faction)
             {
                 SoundLib.click.Play();
 
-                //mapControls.selection.obj = mapControls.hover.obj;
                 mapControls.onSelect();
 
                 if (mapControls.selection.obj.gameobjectType() == GameObjectType.Army)
@@ -800,12 +908,15 @@ namespace VikingEngine.DSSWars.Players
                 return true;
             }
 
+            
+
             return false;
         }
 
         public override void onGameStart(bool newGame)
         {
             base.onGameStart(newGame);
+            hud.messages.onGameStart();
             oneSecUpdate();
 
             if (newGame)

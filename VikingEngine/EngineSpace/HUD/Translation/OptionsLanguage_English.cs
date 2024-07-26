@@ -8,6 +8,20 @@ namespace VikingEngine.HUD
 {
     class OptionsLanguage_English : AbsOptionsLanguage
     {
+
+
+        public override string Hud_Cancel => "Cancel";
+        public override string Hud_Back => "Back";
+
+        /// <summary>
+        /// Submenu for when the player will make destructive choices
+        /// </summary>
+        public override string Hud_AreYouSure => "Are you sure?";
+
+        public override string Hud_OK => "OK";
+        public override string Hud_Yes => "Yes";
+        public override string Hud_No => "No";
+
         /// <summary>
         /// Options menu title
         /// </summary>
