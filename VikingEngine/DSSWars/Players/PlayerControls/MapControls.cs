@@ -319,7 +319,7 @@ namespace VikingEngine.DSSWars.Players
         {
             if (player.drawUnitsView.current.type == MapDetailLayerType.UnitDetail1)
             {
-                hover.subTile.update(subTilePosition, player.faction);
+                hover.subTile.update(subTilePosition, player);
             }
             else
             {

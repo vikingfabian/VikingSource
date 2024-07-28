@@ -177,6 +177,32 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        public bool MayTrade(Faction faction1, Faction faction2, out RelationType relation)
+        {
+            relation = RelationType.RelationType0_Neutral;
+
+            if (faction1 == null || faction2 == null)
+            {
+                return false;
+            }
+
+            if (faction1 == faction2)
+            {
+                return false;
+            }
+
+            DiplomaticRelation rel = faction1.diplomaticRelations[faction2.parentArrayIndex];           
+            if (rel == null)
+            {
+                return true;
+            }
+            else
+            {
+                relation = rel.Relation;
+                return rel.Relation >= RelationType.RelationType0_Neutral;
+            }
+        }
+
         public RelationType GetRelationType(int faction1, int faction2)
         {
             var faction1_pointer = DssRef.world.factions[faction1];

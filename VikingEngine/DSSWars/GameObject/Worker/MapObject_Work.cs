@@ -18,16 +18,21 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (workerUnits.Count < workerStatuses.Count)
                 {
-                    for (int i = workerUnits.Count; i < workerStatuses.Count; i++)
-                    {
-                        workerUnits.Add(new WorkerUnit(this, workerStatuses[i], i));
-                    }
+                    addMissingWorkerUnits();
                 }
 
                 foreach (var w in workerUnits)
                 {
                     w.update();
                 }
+            }
+        }
+
+        void addMissingWorkerUnits()
+        {
+            for (int i = workerUnits.Count; i < workerStatuses.Count; i++)
+            {
+                workerUnits.Add(new WorkerUnit(this, workerStatuses[i], i));
             }
         }
 
@@ -38,6 +43,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (workerUnits == null)
                 {
                     workerUnits = new List<WorkerUnit>(workerStatuses.Count);
+                    addMissingWorkerUnits();
                 }
             }
             else

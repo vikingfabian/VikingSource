@@ -404,8 +404,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (inRender_overviewLayer)
             {
-                updateMembers(Ref.DeltaGameTimeMs, true);
-               
+                updateMembers(Ref.DeltaGameTimeMs, true);               
             }
             updateWorkerUnits();
 
@@ -742,6 +741,14 @@ namespace VikingEngine.DSSWars.GameObject
             if (removeFromParent)
             {
                 faction.remove(this);
+            }
+
+            if (workerUnits != null)
+            {
+                foreach (var m in workerUnits)
+                {
+                    m.DeleteMe();
+                } 
             }
         }
 

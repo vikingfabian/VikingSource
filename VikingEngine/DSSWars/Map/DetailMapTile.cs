@@ -392,10 +392,10 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_stonehall, rnd, wp, scale));
                     break;
                 case TerrainBuildingType.SmallHouse:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_smallhouse, rnd, wp, scale));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_smallhouse, rnd, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.BigHouse:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_bighouse, rnd, wp, scale));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_bighouse, rnd, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.CobbleStones:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_cobblestone, rnd, wp, scale));

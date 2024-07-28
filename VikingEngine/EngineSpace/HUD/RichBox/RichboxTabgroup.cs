@@ -5,20 +5,22 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Graphics;
+using VikingEngine.ToGG.HeroQuest.Data.Condition;
 
 namespace VikingEngine.HUD.RichBox
 {
     class RichboxTabgroup : AbsRichBoxMember
     {
         List<RichboxTabMember> members;
-
+        public Image pointer;
         public RichboxTabgroup(List<RichboxTabMember> members, int selected, Action<int> click, Action<int> enter = null, Color? overrideBgColor = null)
         {
             this.members = members;
             for (int i = 0; i < members.Count; i++)
             {   
                 members[i].initGroup(i, selected, click, enter, overrideBgColor);
-            }
+            }            
         }
 
         public override void Create(RichBoxGroup group)
@@ -26,8 +28,16 @@ namespace VikingEngine.HUD.RichBox
             foreach (var m in members)
             {
                 m.Create(group);
-            }        
+            }
+
+            Vector2 pos = new Vector2(group.area.X -2, group.position.Y + group.lineSpacingHalf -2);
+            pointer = new Image(SpriteName.WhiteArea, pos,
+                new Vector2(group.boxWidth +4, 4), group.layer, false, group.addToRender);
+            pointer.Color = group.settings.button.BgColor;
+            group.Add(pointer);
         }
+
+        
 
         public override void getButtons(List<RichboxButton> buttons)
         {
@@ -68,6 +78,8 @@ namespace VikingEngine.HUD.RichBox
             {
                 bgPointer.Color = group.settings.buttonSecondary.BgColor;
             }
+
+            group.position.X += group.imageHeight * 0.3f;
         }
 
         

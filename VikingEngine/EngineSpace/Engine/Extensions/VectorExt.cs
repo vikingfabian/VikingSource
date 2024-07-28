@@ -218,7 +218,7 @@ namespace VikingEngine
         }
         public static float PlaneXZLength(this Vector3 v)
         {
-            return MathExt.SquareRootF(v.X * v.X + v.Z * v.Z);
+            return (float)Math.Sqrt(v.X * v.X + v.Z * v.Z);
         }
 
         public static double PlaneXZDistance(ref Vector3 v1, ref Vector3 v2)

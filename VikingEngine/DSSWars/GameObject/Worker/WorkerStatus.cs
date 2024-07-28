@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
     struct WorkerStatus
     {
         public const int TrossWorkerCarryWeight = 4;
-        const int MaxEnergy = 4000;
+        public const int MaxEnergy = 4000;
         
         public const int Subwork_Craft_Food = 0;
         public const int Subwork_Craft_Iron = 1;
@@ -109,7 +109,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     break;
 
                 case WorkType.Till:
-                    if (subTile.mainTerrain == TerrainMainType.DefaultLand)
+                    if (subTile.mainTerrain == TerrainMainType.DefaultLand ||
+                        subTile.mainTerrain == TerrainMainType.Destroyed)
                     {
                         subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.FarmCulture, 0);
                         DssRef.world.subTileGrid.Set(subTileEnd, subTile);
@@ -237,10 +238,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                         subTile.SetType(TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, 1);
                         DssRef.world.subTileGrid.Set(subTileEnd, subTile);
-                        bool non = false;
+                        
                         city.craftItem(TerrainBuildingType.WorkerHut, out _);
-
-                        //work = WorkType.Idle;
                     }
                     break;
             }

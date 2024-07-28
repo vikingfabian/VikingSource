@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.Players
             model.Visible = false;
         }
 
-        public void update(IntVector2 subTilePos, Faction playerFaction)
+        public void update(IntVector2 subTilePos, LocalPlayer player)
         {
             isNew = false;
 
@@ -41,43 +41,43 @@ namespace VikingEngine.DSSWars.Players
                 {
                     this.subTilePos = subTilePos;
                     isNew = true;
-                    selectTileResult = SelectTileResult.None;
-                    hasSelection = false;
 
-                    if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(subTilePos), out var tile))
+                    if (player.cityTab == Display.CityTab.Build)
                     {
-                        city = tile.City();
-                        if (city.faction == playerFaction)
-                        {
-                            switch (subTile.GeBuildingType())
-                            {
-                                case Map.TerrainBuildingType.StoneHall:
-                                    selectTileResult = SelectTileResult.CityHall;
-                                    break;
-                                case Map.TerrainBuildingType.Square:
-                                    selectTileResult = SelectTileResult.Resources;
-                                    break;
-                            }
-                            
-                            hasSelection = selectTileResult != SelectTileResult.None;
-                            model.position = WP.SubtileToWorldPosXZ_Centered(subTilePos);
-                            model.position.Y = subTile.groundY;
-                            return;
-                        }
-                        
+                        selectTileResult = SelectTileResult.Build;
+                        hasSelection = true;
+                        model.position = WP.SubtileToWorldPosXZ_Centered(subTilePos);
+                        model.position.Y = subTile.groundY;
+                        return;
                     }
-                    //if (subTile.mainTerrain != TerrainMainType.DefaultLand &&
-                    //    subTile.mainTerrain != TerrainMainType.DefaultSea)
-                    //{
-                    //    hasSelection = true;
+                    else
+                    {
+                        selectTileResult = SelectTileResult.None;
+                        hasSelection = false;
 
-                    //    model.position = WP.SubtileToWorldPosXZ_Centered(subTilePos);
-                    //    model.position.Y = subTile.groundY;
-                    //}
-                    //else
-                    //{
-                    //    hasSelection = false;
-                    //}
+                        if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(subTilePos), out var tile))
+                        {
+                            city = tile.City();
+                            if (city.faction == player.faction)
+                            {
+                                switch (subTile.GeBuildingType())
+                                {
+                                    case Map.TerrainBuildingType.StoneHall:
+                                        selectTileResult = SelectTileResult.CityHall;
+                                        break;
+                                    case Map.TerrainBuildingType.Square:
+                                        selectTileResult = SelectTileResult.Resources;
+                                        break;
+                                }
+
+                                hasSelection = selectTileResult != SelectTileResult.None;
+                                model.position = WP.SubtileToWorldPosXZ_Centered(subTilePos);
+                                model.position.Y = subTile.groundY;
+                                return;
+                            }
+
+                        }
+                    }
                 }
 
             }
@@ -129,6 +129,7 @@ namespace VikingEngine.DSSWars.Players
         None,
         CityHall,
         Resources,
-    
+        
+        Build,
     }
 }

@@ -258,7 +258,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                     goalPos = WP.SubtileToWorldPosXZ(status.subTileEnd);
                     goalPos.X += WorldData.SubTileWidth * 0.25f;
-                    goalPos.Z += WorldData.SubTileWidth;
+                    goalPos.Z += WorldData.SubTileWidth * 0.5f;
 
                     walkDir = VectorExt.SafeNormalizeV3(goalPos - model.position);
                     WP.Rotation1DToQuaterion(model, lib.V2ToAngle(VectorExt.V3XZtoV2(walkDir)));
