@@ -26,9 +26,9 @@ namespace VikingEngine.DSSWars.GameObject
         public const float FoodGoldValue_BlackMarket = FoodGoldValue * 5;
 
         //Simplified resources
-        const int Maxwater = 100;
+        const int Maxwater = 10;
         public int water = Maxwater;
-        int waterBuffer = 10;
+        int waterBuffer = 2;
         int waterSpendOrders = 0;
         
         public SimplifiedResource wood = new SimplifiedResource() { amount = 20, goldValue = 1, goalBuffer = 300 };
