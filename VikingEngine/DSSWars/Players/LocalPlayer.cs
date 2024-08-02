@@ -767,31 +767,34 @@ namespace VikingEngine.DSSWars.Players
                 //{
                 //    new SoldierGroup(army, UnitType.Viking, false).completeTransform(SoldierTransformType.ToShip);
                 //}
-                for (int i = 0; i < 2; ++i)
+                for (int i = 0; i < 10; ++i)
                 {
-                    new SoldierGroup(army, UnitType.Soldier, false);
+                    new SoldierGroup(army, UnitType.Soldier, false).completeTransform(SoldierTransformType.ToShip);
                 }
-
+                for (int i = 0; i < 30; ++i)
+                {
+                    new SoldierGroup(army, UnitType.Knight, false).completeTransform(SoldierTransformType.ToShip);
+                }
                 army.refreshPositions(true);
             }
             //else
             {
-                {
-                    var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
-                    army.rotation = enemyRot;
-                    //int count = 4;//Ref.rnd.Int(4, 8);
+                //{
+                //    var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
+                //    army.rotation = enemyRot;
+                //    //int count = 4;//Ref.rnd.Int(4, 8);
 
-                    for (int i = 0; i < 10; ++i)
-                    {
-                        new SoldierGroup(army, UnitType.Archer, false).completeTransform(SoldierTransformType.ToShip);
-                    }
-                    new SoldierGroup(army, UnitType.DarkLord, false).completeTransform(SoldierTransformType.ToShip);
-                    //for (int i = 0; i < 5; ++i)
-                    //{
-                    //    new SoldierGroup(army, UnitType.Ballista, false);
-                    //}
-                    army.refreshPositions(true);
-                }
+                //    for (int i = 0; i < 10; ++i)
+                //    {
+                //        new SoldierGroup(army, UnitType.Archer, false).completeTransform(SoldierTransformType.ToShip);
+                //    }
+                //    new SoldierGroup(army, UnitType.DarkLord, false).completeTransform(SoldierTransformType.ToShip);
+                //    //for (int i = 0; i < 5; ++i)
+                //    //{
+                //    //    new SoldierGroup(army, UnitType.Ballista, false);
+                //    //}
+                //    army.refreshPositions(true);
+                //}
 
 
                 //{

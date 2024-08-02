@@ -71,6 +71,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override AbsDetailUnit CreateUnit()
         {
+            
             return new BaseSoldier();
         }
 

@@ -125,12 +125,9 @@ namespace VikingEngine.DSSWars.GameObject
             if (unitDetailView)
             {
                 if (model == null)
-                {
-                    if (isDeleted)
-                    { 
-                        lib.DoNothing();
-                    }
+                {                    
                     model = initModel();
+                    
                 }
             }
             else
