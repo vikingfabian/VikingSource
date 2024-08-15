@@ -67,6 +67,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected override DetailUnitModel initModel()
         {
+            updateGroudY(true);
             if (this.parentArrayIndex == 11)
             {
                 return new KnightBannerModel(this);

@@ -560,8 +560,9 @@ namespace VikingEngine.DSSWars.Players
                 
                 var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
                 army.rotation = enemyRot;
+                int count = type == UnitType.Ballista ? 10 : 5;
 
-                for (int i = 0; i < 5; ++i)
+                for (int i = 0; i < count; ++i)
                 {
                     var group = new SoldierGroup(army, type, false);
                     if (sea)
