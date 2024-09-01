@@ -368,8 +368,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         public override void selectionFrame(bool hover, Selection selection)
         {
             Vector3 scale = new Vector3(AbsSoldierData.StandardBoundRadius * 2f);
-            selection.BeginGroupModel();
-            selection.setGroupModel(0, model.position, scale, hover, true);
+            selection.BeginGroupModel(true);
+            selection.setGroupModel(0, model.position, scale, hover, true, false);
 
         }
 

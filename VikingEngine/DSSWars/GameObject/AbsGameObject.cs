@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.Add(new RichBoxSeperationLine());
         }
 
-        abstract public bool aliveAndBelongTo(Faction faction);
+        virtual public bool aliveAndBelongTo(Faction faction) { return true; }
         //abstract public bool IsDeleted();
     }
     enum GameObjectType

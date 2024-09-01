@@ -1369,7 +1369,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return soldiers.Count > 0;
         }
-
+        
         public bool canMoveTo(IntVector2 from, IntVector2 to)
         {
             return true;
