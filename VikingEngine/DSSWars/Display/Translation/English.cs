@@ -722,6 +722,11 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string UnitType_City => "City";
 
         /// <summary>
+        /// A group selection of armies
+        /// </summary>
+        public override string UnitType_ArmyCollectionAndCount => "Army group, count: {0}";
+
+        /// <summary>
         /// Name for a specialized type of soldier. Standard front line soldier.
         /// </summary>
         public override string UnitType_Soldier => "Soldier";

@@ -35,11 +35,13 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public void toHud(Display.ObjectHudArgs args)
         {
             string name = Name();
+
             if (name != null)
             {
                 args.content.text(name).overrideColor = Color.LightYellow;
                 args.content.newLine();
             }
+
             args.content.Add(new RichBoxBeginTitle());
             args.content.Add(GetFaction().FlagTextureToHud());
             args.content.Add(new RichBoxText(TypeName()));

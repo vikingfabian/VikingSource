@@ -717,6 +717,11 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string UnitType_City => "Город";
 
         /// <summary>
+        /// Групповой выбор армий
+        /// </summary>
+        public override string UnitType_ArmyCollectionAndCount => "Группа армий, количество: {0}";
+
+        /// <summary>
         /// Название специализированного типа солдата. Стандартный солдат передовой линии.
         /// </summary>
         public override string UnitType_Soldier => "Солдат";

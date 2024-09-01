@@ -716,6 +716,11 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string UnitType_City => "城市";
 
         /// <summary>
+        /// 一组军队选择
+        /// </summary>
+        public override string UnitType_ArmyCollectionAndCount => "军队组，数量: {0}";
+
+        /// <summary>
         /// 一种专门的士兵类型。标准前线士兵。
         /// </summary>
         public override string UnitType_Soldier => "士兵";

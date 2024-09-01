@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
+using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.GO.Gadgets;
+using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -14,7 +18,7 @@ namespace VikingEngine.DSSWars.GameObject
         public List<AbsMapObject> objects = new List<AbsMapObject>(8);
 
         public MapObjectCollection(Faction faction)
-        { 
+        {
             this.faction = faction;
         }
 
@@ -36,6 +40,26 @@ namespace VikingEngine.DSSWars.GameObject
                 obj.GetArmy().hoverAndSelectInfo(guiModels, player.playerData.localPlayerIndex);
             }
 
+        }
+
+        public override void toHud(ObjectHudArgs args)
+        {
+          
+            args.content.h2(string.Format(DssRef.lang.UnitType_ArmyCollectionAndCount, objects.Count));
+
+            for (int i = 0; i < objects.Count;++i)
+            {
+                objects[i].GetArmy().toGroupHud(args.content);
+                if (i < objects.Count-1)
+                {
+                    args.content.Add(new RichBoxSeperationLine());
+                }
+            }
+        }
+
+        public void Tooltip(RichBoxContent content)
+        {
+            content.text(string.Format(DssRef.lang.UnitType_ArmyCollectionAndCount, objects.Count));
         }
 
         public override GameObjectType gameobjectType()

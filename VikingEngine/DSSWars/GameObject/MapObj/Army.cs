@@ -180,6 +180,24 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void toGroupHud(RichBoxContent content)
+        {
+            string name = Name();
+
+            if (name != null)
+            {
+                content.text(name).overrideColor = Color.LightYellow;
+                content.newLine();
+            }
+
+            content.Add(new RichBoxBeginTitle());
+            content.Add(GetFaction().FlagTextureToHud());
+            content.Add(new RichBoxText(TypeName()));
+
+            content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
+            content.Add(new RichBoxText(TextLib.OneDecimal(strengthValue)));
+        }
+
         public ArmyStatus Status()
         {
             ArmyStatus status = new ArmyStatus();
