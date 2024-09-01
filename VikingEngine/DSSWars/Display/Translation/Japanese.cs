@@ -722,6 +722,12 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string UnitType_City => "都市";
 
         /// <summary>
+        /// 軍隊のグループ選択
+        /// </summary>
+        public override string UnitType_ArmyCollectionAndCount => "軍隊グループ、数: {0}";
+
+
+        /// <summary>
         /// 特殊な兵士のタイプの名前。標準的な前線兵士。
         /// </summary>
         public override string UnitType_Soldier => "兵士";

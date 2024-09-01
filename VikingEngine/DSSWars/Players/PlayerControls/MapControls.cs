@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -33,7 +32,10 @@ namespace VikingEngine.DSSWars.Players
         SafeCollectAsynchList<AbsSoldierUnit> nearDetailUnits = new SafeCollectAsynchList<AbsSoldierUnit>(64);
 
         public Vector3 playerPointerPos = Vector3.Zero, mousePosition = Vector3.Zero;
-        
+        //Vector3 rectangleStart = Vector3.Zero, rectangleEnd = Vector3.Zero;
+        VectorRect selectWpRectangle = VectorRect.Zero;
+
+
         public IntVector2 tilePosition, subTilePosition;
         public bool onNewTile = false;
 
@@ -46,6 +48,7 @@ namespace VikingEngine.DSSWars.Players
         public bool unlockEdgePush = false;
 
         public AbsGameObject cameraFocus = null;
+        Graphics.RectangleLines selectRectangle = null;
 
         public MapControls(LocalPlayer player)
         {
@@ -149,7 +152,6 @@ namespace VikingEngine.DSSWars.Players
                 if (mouseOverHud)
                 {
                     hover.clear();
-
                 }
                 else
                 {
@@ -162,16 +164,24 @@ namespace VikingEngine.DSSWars.Players
 
                     onNewTile = prevTile != tilePosition;
 
-                    hover.begin(true);
+                    if (selectRectangle == null)
                     {
+                        //mouseHoverUpdate();
+                        hover.begin(true);
+                        {
+                            mouseHoverUpdate();
+                        }
                         subTileHoverUpdate();
-                        mouseHoverUpdate();
+                        //mouseHoverUpdate();
                     }
                     hover.end();
                 }
 
                 checkSelectionAlive();
                 selection.end();
+
+                rectangleSelectUpdate();
+
                 selection.begin(false);
 
                 updateSeletionGui();
@@ -184,9 +194,90 @@ namespace VikingEngine.DSSWars.Players
             updateCamera();
         }
 
-        
 
-        //List<Graphics.Mesh> debugmeshes = new List<Graphics.Mesh>();
+
+        void rectangleSelectUpdate()
+        {
+            if (selectRectangle == null)
+            {
+                if (Input.Keyboard.Ctrl && Input.Mouse.ButtonDownEvent(MouseButton.Left))
+                {
+                    //rectangleStart = mousePosition;
+                    //rectangleEnd = rectangleStart;
+
+                    selectWpRectangle.Position = VectorExt.V3XZtoV2(mousePosition);
+                    selectWpRectangle.Size =Vector2.Zero;
+
+                    selectRectangle = new RectangleLines(new VectorRect(Input.Mouse.Position, Vector2.Zero), 2, 0, HudLib.GUILayer);
+                }
+            }
+            else
+            {
+                //rectangleEnd = mousePosition;
+                selectWpRectangle.SetRightBottom( VectorExt.V3XZtoV2(mousePosition), true);
+                selectRectangle.rectangle.Position = player.playerData.view.From3DToScreenPos(VectorExt.V3FromXZ(selectWpRectangle.Position, 0));
+                selectRectangle.rectangle.SetRightBottom(Input.Mouse.Position, true);
+                selectRectangle.rectangle.RemoveNegativeSize();
+                selectRectangle.Refresh();
+
+                var wpRectangle_normalized = selectWpRectangle;
+                wpRectangle_normalized.RemoveNegativeSize();
+
+                if (player.drawUnitsView.current.type == MapDetailLayerType.TerrainOverview2)
+                {
+                    var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsMultiselectMapObjects(WP.ToTilePos(wpRectangle_normalized.Position), WP.ToTilePos(wpRectangle_normalized.RightBottom), player.faction);
+                    
+                    for (int i = nearMapObjects.Count - 1; i >= 0; i--)
+                    {
+                        if (!wpRectangle_normalized.IntersectPoint(VectorExt.V3XZtoV2(nearMapObjects[i].position)))
+                        {
+                            nearMapObjects.RemoveAt(i);
+                        }
+                    }
+
+                    if (hover.obj == null || hover.obj.gameobjectType() != GameObjectType.ObjectCollection)
+                    {
+                        hover.obj = new MapObjectCollection(player.faction);
+                    }
+
+                    if (nearMapObjects.Count > 0)
+                    {
+                        lib.DoNothing();
+                    }
+
+                    hover.obj.GetCollection().set(nearMapObjects);
+                }
+
+                if (!Input.Mouse.IsButtonDown(MouseButton.Left))
+                {
+                    selectRectangle.DeleteMe();
+                    selectRectangle = null;
+                    //select
+
+                    if (hover.obj != null && 
+                        hover.obj.gameobjectType() == GameObjectType.ObjectCollection
+                        )
+                    {
+                        var coll = hover.obj.GetCollection();
+                        if (coll.objects.Count > 0)
+                        {
+                            SoundLib.click.Play();
+
+                            if (coll.objects.Count == 1)
+                            {
+                                selection.obj = coll.objects[0];
+                                player.armyControls = new ArmyControls(player, coll.objects);
+                            }
+                            else
+                            {
+                                selection.obj = coll;
+                                player.armyControls = new ArmyControls(player, coll.objects);
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         Vector3 screenPosToWorldPos(Vector2 screenPos)
         {
@@ -549,10 +640,10 @@ namespace VikingEngine.DSSWars.Players
 
             if (!viewTile && hover.obj != null && hover.obj != selection.obj)
             {
-                hover.frameModel.Visible = true;
+                //hover.frameModel.Visible = true;
                 hover.obj.selectionFrame(true, hover);
 
-                hover.frameModel.Color = hover.obj.GetFaction() == player.faction? Color.White : Color.LightGray;
+                //hover.frameModel.Color = hover.obj.GetFaction() == player.faction? Color.White : Color.LightGray;
 
                 updateSelectionGui(hover);
             }
@@ -563,7 +654,7 @@ namespace VikingEngine.DSSWars.Players
 
             if (selection.obj != null)
             {
-                selection.frameModel.Visible = true;
+                //selection.frameModel.Visible = true;
                 selection.obj.selectionFrame(false, selection);
 
                 updateSelectionGui(selection);
@@ -656,7 +747,7 @@ namespace VikingEngine.DSSWars.Players
             panCamera(VectorExt.V2toV3XZ(-player.input.move.directionAndTime * panSpeed));
             if (!player.hud.hudMouseOver() && !controllerInput)
             {
-                if (hasMouseMapMoveInput())
+                if (hasMouseMapPanInput())
                 {
                     //bool hasValue;
                     Vector3 prevMousePosition = screenPosToWorldPos(Input.Mouse.Position - Input.Mouse.MoveDistance);
@@ -679,7 +770,6 @@ namespace VikingEngine.DSSWars.Players
                         panCamera(VectorExt.V2toV3XZ(-Input.Mouse.EdgePush() * Ref.DeltaTimeMs * panSpeed));
 
                     }
-
                 }
             }
 
@@ -736,9 +826,10 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        bool hasMouseMapMoveInput()
+        bool hasMouseMapPanInput()
         {
             return player.input.inputSource.HasMouse &&
+                selectRectangle == null &&
                 ((player.input.Select.IsDown && NoSelection()) || player.input.DragPan.IsDown) &&
                 Input.Mouse.bMoveInput;
         }

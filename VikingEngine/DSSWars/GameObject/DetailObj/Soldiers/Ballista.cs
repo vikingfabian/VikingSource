@@ -25,10 +25,10 @@ namespace VikingEngine.DSSWars.GameObject
             targetSpotRange = attackRange + StandardTargetSpotRange;
             basehealth = MathExt.MultiplyInt(0.5, DefaultHealth);
             mainAttack = AttackType.Ballista;
-            attackDamage = 600;
-            attackDamageStructure = 2500;
-            attackDamageSea = 500;
-            attackTimePlusCoolDown = StandardAttackAndCoolDownTime * 10f;
+            attackDamage = 300;
+            attackDamageStructure = 1500;
+            attackDamageSea = 400;
+            attackTimePlusCoolDown = StandardAttackAndCoolDownTime * 16f;
 
             maxAttackAngle = 0.07f;
             
@@ -64,6 +64,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected override DetailUnitModel initModel()
         {
+            updateGroudY(true);
             return new BallistaModel(this);
         }
     }

@@ -28,19 +28,19 @@ namespace VikingEngine.DSSWars.Players
             {
                 case BossSize.Small:
                     factoriesLeft = 2;
-                    maxDiplomacy = DssLib.HeadCityMaxWorkForce * 24;
+                    maxDiplomacy = DssLib.HeadCityMaxWorkForce * 16;
                     break;
                 case BossSize.Medium:
                     factoriesLeft = 3;
-                    maxDiplomacy = DssLib.HeadCityMaxWorkForce * 30;
+                    maxDiplomacy = DssLib.HeadCityMaxWorkForce * 22;
                     break;
                 case BossSize.Large:
                     factoriesLeft = 3;
-                    maxDiplomacy = DssLib.HeadCityMaxWorkForce * 36;
+                    maxDiplomacy = DssLib.HeadCityMaxWorkForce * 34;
                     break;
                 case BossSize.Huge:
                     factoriesLeft = 4;
-                    maxDiplomacy = DssLib.HeadCityMaxWorkForce * 42;
+                    maxDiplomacy = DssLib.HeadCityMaxWorkForce * 40;
                     break;
             }
         }

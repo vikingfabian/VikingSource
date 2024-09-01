@@ -326,7 +326,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         const float ModelGroundYAdj = 0.02f;
-        void updateGroudY(bool set)
+        protected void updateGroudY(bool set)
         {
             if (DssRef.world.unitBounds.IntersectPoint(position.X, position.Z))//position.X > 0 && position.Z>0)
             {
@@ -987,10 +987,10 @@ namespace VikingEngine.DSSWars.GameObject
             var soldiersC = group.soldiers.counter();
             int i = 0;
 
-            selection.BeginGroupModel();
+            selection.BeginGroupModel(true);
             while (soldiersC.Next())
             {
-                selection.setGroupModel(i, soldiersC.sel.position, scale, hover, soldiersC.sel == this);
+                selection.setGroupModel(i, soldiersC.sel.position, scale, hover, soldiersC.sel == this, false);
                 ++i;
             }
         }

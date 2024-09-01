@@ -552,8 +552,9 @@ namespace VikingEngine.DSSWars.Players
                 
                 var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
                 army.rotation = enemyRot;
+                int count = type == UnitType.Ballista ? 10 : 5;
 
-                for (int i = 0; i < 5; ++i)
+                for (int i = 0; i < count; ++i)
                 {
                     var group = new SoldierGroup(army, type, false);
                     if (sea)
@@ -759,31 +760,34 @@ namespace VikingEngine.DSSWars.Players
                 //{
                 //    new SoldierGroup(army, UnitType.Viking, false).completeTransform(SoldierTransformType.ToShip);
                 //}
-                for (int i = 0; i < 2; ++i)
+                for (int i = 0; i < 10; ++i)
                 {
-                    new SoldierGroup(army, UnitType.Soldier, false);
+                    new SoldierGroup(army, UnitType.Soldier, false).completeTransform(SoldierTransformType.ToShip);
                 }
-
+                for (int i = 0; i < 30; ++i)
+                {
+                    new SoldierGroup(army, UnitType.Knight, false).completeTransform(SoldierTransformType.ToShip);
+                }
                 army.refreshPositions(true);
             }
             //else
             {
-                {
-                    var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
-                    army.rotation = enemyRot;
-                    //int count = 4;//Ref.rnd.Int(4, 8);
+                //{
+                //    var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
+                //    army.rotation = enemyRot;
+                //    //int count = 4;//Ref.rnd.Int(4, 8);
 
-                    for (int i = 0; i < 10; ++i)
-                    {
-                        new SoldierGroup(army, UnitType.Archer, false).completeTransform(SoldierTransformType.ToShip);
-                    }
-                    new SoldierGroup(army, UnitType.DarkLord, false).completeTransform(SoldierTransformType.ToShip);
-                    //for (int i = 0; i < 5; ++i)
-                    //{
-                    //    new SoldierGroup(army, UnitType.Ballista, false);
-                    //}
-                    army.refreshPositions(true);
-                }
+                //    for (int i = 0; i < 10; ++i)
+                //    {
+                //        new SoldierGroup(army, UnitType.Archer, false).completeTransform(SoldierTransformType.ToShip);
+                //    }
+                //    new SoldierGroup(army, UnitType.DarkLord, false).completeTransform(SoldierTransformType.ToShip);
+                //    //for (int i = 0; i < 5; ++i)
+                //    //{
+                //    //    new SoldierGroup(army, UnitType.Ballista, false);
+                //    //}
+                //    army.refreshPositions(true);
+                //}
 
 
                 //{
@@ -897,12 +901,11 @@ namespace VikingEngine.DSSWars.Players
                 mapControls.hover.obj.GetFaction() == this.faction)
             {
                 SoundLib.click.Play();
-
                 mapControls.onSelect();
 
                 if (mapControls.selection.obj.gameobjectType() == GameObjectType.Army)
                 {
-                    armyControls = new ArmyControls(this, (Army)mapControls.selection.obj);
+                    armyControls = new ArmyControls(this, new List<AbsMapObject> { mapControls.selection.obj.GetArmy() });
                 }
 
                 return true;

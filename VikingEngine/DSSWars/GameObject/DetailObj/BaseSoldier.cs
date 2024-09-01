@@ -20,6 +20,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected override DetailUnitModel initModel()
         {
+            updateGroudY(true);
             return new SoldierUnitAdvancedModel(this);
         }
 

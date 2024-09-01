@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
 using System.Xml.Xsl;
+using Valve.Steamworks;
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Players;
@@ -134,7 +135,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string TypeName()
         {
-            return DssRef.lang.UnitType_Army + " (" + TextLib.IndexToString( parentArrayIndex) +   ")";//return "Army" + parentArrayIndex.ToString();
+            return DssRef.lang.UnitType_Army + " (" + parentArrayIndex.ToString() +   ")";//return "Army" + parentArrayIndex.ToString();
         }
 
         public override string Name()
@@ -190,6 +191,24 @@ namespace VikingEngine.DSSWars.GameObject
             {                
                 new Display.ArmyMenu(args.player, this, args.content);
             }
+        }
+
+        public void toGroupHud(RichBoxContent content)
+        {
+            string name = Name();
+
+            if (name != null)
+            {
+                content.text(name).overrideColor = Color.LightYellow;
+                content.newLine();
+            }
+
+            content.Add(new RichBoxBeginTitle());
+            content.Add(GetFaction().FlagTextureToHud());
+            content.Add(new RichBoxText(TypeName()));
+
+            content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
+            content.Add(new RichBoxText(TextLib.OneDecimal(strengthValue)));
         }
 
         public ArmyStatus Status()
@@ -386,13 +405,25 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void selectionFrame(bool hover, Selection selection)
         {
-            selection.frameModel.Position = position;
-             selection.frameModel.position.Y += 0.05f;
-            selection.frameModel.Scale = new Vector3(0.6f);
+            selectionFramePlacement(out var pos, out var scale);
 
-            selection.frameModel.LoadedMeshType = hover ? LoadedMesh.SelectCircleDotted : LoadedMesh.SelectCircleSolid;
+            selection.OneFrameModel(false, pos, scale, hover, false);
+
+            //selection.frameModel.Position = pos;
+            //selection.frameModel.Scale = scale;
+
+            //selection.frameModel.LoadedMeshType = hover ? LoadedMesh.SelectCircleDotted : LoadedMesh.SelectCircleSolid;
             //frameModel.SetSpriteName(hover ? SpriteName.LittleUnitSelectionDotted : SpriteName.WhiteCirkle);
         }
+
+        public void selectionFramePlacement(out Vector3 pos, out Vector3 scale)
+        {
+            pos = position;
+            pos.Y += 0.05f;
+            scale = new Vector3(0.6f);
+        }
+
+        
 
         virtual public void update()
         {

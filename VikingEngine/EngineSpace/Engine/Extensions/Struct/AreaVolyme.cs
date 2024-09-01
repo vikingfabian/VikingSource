@@ -734,10 +734,10 @@ namespace VikingEngine //AreaVolyme
             {
                 return Position + Size;
             }
-            set
-            {
-                Position = value - Size;
-            }
+            //set
+            //{
+            //    Position = value - Size;
+            //}
         }
         public Vector2 RightTop
         {
@@ -1215,6 +1215,26 @@ namespace VikingEngine //AreaVolyme
             }
             return pos;
         }
+
+
+        /// <summary>
+        /// Will keep the rectangle, but adjust it to have positive size values
+        /// </summary>
+        public void RemoveNegativeSize()
+        {
+            if (Size.X < 0)
+            { 
+                Position.X += Size.X;
+                Size.X = -Size.X;
+            }
+
+            if (Size.Y < 0)
+            {
+                Position.Y += Size.Y;
+                Size.Y = -Size.Y;
+            }
+        }
+
         public Dir4 ClosestTileEdge(Vector2 pos)
         {
             float leftDist = Math.Abs(pos.X - Position.X);
@@ -1274,6 +1294,17 @@ namespace VikingEngine //AreaVolyme
             else
             {
                 Position.Y = bottom - Size.Y;
+            }
+        }
+        public void SetRightBottom(Vector2 rightbottom, bool adjustWidth)
+        {
+            if (adjustWidth)
+            {
+                Size = rightbottom - Position;
+            }
+            else
+            {
+                Position = rightbottom - Size;
             }
         }
 

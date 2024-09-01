@@ -179,6 +179,9 @@ namespace VikingEngine.DSSWars.GameObject
 
                 case UnitType.PikemanWarship:
                     return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Pikeman);
+                
+                case UnitType.KnightWarship:
+                    return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Knight);
 
                 case UnitType.ArcherWarship:
                     return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Archer);

@@ -28,6 +28,40 @@ namespace VikingEngine.DSSWars.GameObject
             return isDeleted;
         }
 
+        abstract public bool aliveAndBelongTo(Faction faction);
+
+        virtual public void toHud(Display.ObjectHudArgs args)
+        {
+            string name = Name();
+
+            if (name != null)
+            {
+                args.content.text(name).overrideColor = Color.LightYellow;
+                args.content.newLine();
+            }
+
+            args.content.Add(new RichBoxBeginTitle());
+            args.content.Add(GetFaction().FlagTextureToHud());
+            args.content.Add(new RichBoxText(TypeName()));
+
+            if (PlatformSettings.DevBuild)
+            {
+                args.content.text("agg " + GetFaction().player.aggressionLevel.ToString());
+            }
+            if (GetFaction() != args.player.faction)
+            {
+                var relation = DssRef.diplomacy.GetRelationType(args.player.faction, GetFaction());
+
+                args.content.newLine();
+                args.content.Add(new RichBoxText(GetFaction().PlayerName, Color.LightYellow));
+                args.content.newLine();
+                args.content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation)));
+                args.content.Add(new RichBoxText(Diplomacy.RelationString(relation), Color.LightBlue));
+
+            }
+            args.content.Add(new RichBoxSeperationLine());
+        }
+
         
         virtual public void stateDebugText(HUD.RichBox.RichBoxContent content)
         { }

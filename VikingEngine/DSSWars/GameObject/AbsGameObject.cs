@@ -25,6 +25,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public Army GetArmy() { return null; }
 
+        virtual public MapObjectCollection GetCollection() { return null; }
+
         virtual public WorkerUnit GetWorker() { return null; }
 
         virtual public AbsMapObject RelatedMapObject() { return null; }
@@ -90,6 +92,8 @@ namespace VikingEngine.DSSWars.GameObject
         Soldier,
         Battle,
         Worker,
+
+        ObjectCollection,
 
         NUM_NON,
     }

@@ -1,11 +1,8 @@
 ﻿
-Change Log
-+input option on continue from save
-
+-Change Log-
 
 Error
--no input choise for load
--back button in menues
+-back button in menues 
 
 Retreat system
 -retreat av de sista motståndarna
@@ -43,18 +40,5 @@ Art
 #current
 English, Simplified Chinese, Japanese, Russian, Spanish
 
-Fight for world domination in a epic scale RTS
-
-/English
-/Simplified Chinese
-/Russian 9%
-
-Spanish - Spain 5%
-Japanese
-
-
-Portuguese-Brazil
-German
-French
 
 
