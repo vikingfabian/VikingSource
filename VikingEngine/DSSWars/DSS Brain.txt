@@ -1,9 +1,5 @@
 ﻿
 -Change Log-
-Ballistas DPS has been reduce by about 40%
-Fixed pathfinding crashes
-Can multiselect armies when holding CTRL
-Reduced the amount of cities the final boss will absord during entrance, by about 10%
 
 Error
 -back button in menues 
