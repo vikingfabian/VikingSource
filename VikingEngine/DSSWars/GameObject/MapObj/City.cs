@@ -872,23 +872,29 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void selectionFrame(bool hover, Selection selection)
         {
-            selection.frameModel.Position = position;
-            selection.frameModel.position.Y += 0.1f;
+            Vector3 pos = position;
+            pos.Y += 0.1f;
+            Vector3 scale;
+
+            //selection.frameModel.Position = position;
+            //selection.frameModel.position.Y += 0.1f;
             switch (CityType)
             {
                 case CityType.Small:
-                    selection.frameModel.Scale = new Vector3(0.7f);
+                    scale = new Vector3(0.7f);
                     break;
                 case CityType.Large:
-                    selection.frameModel.Scale = new Vector3(0.96f);
+                    scale = new Vector3(0.96f);
                     break;
                 default:
-                    selection.frameModel.Scale = new Vector3(1.2f);
+                    scale = new Vector3(1.2f);
                     break;
             }
+
+            selection.OneFrameModel(false, pos, scale, hover, true);
             //frameModel.Scale = new Vector3(1.2f);
             //frameModel.SetSpriteName(SpriteName.WhiteArea_LFtiles);
-            selection.frameModel.LoadedMeshType = hover ? LoadedMesh.SelectSquareDotted : LoadedMesh.SelectSquareSolid;
+            //selection.frameModel.LoadedMeshType = hover ? LoadedMesh.SelectSquareDotted : LoadedMesh.SelectSquareSolid;
         }
 
         public void respawnGuard()

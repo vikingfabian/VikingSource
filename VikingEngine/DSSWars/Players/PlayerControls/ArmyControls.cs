@@ -2,67 +2,70 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.Input;
+using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Players
-{
+{    
+
     class ArmyControls
     {
         LocalPlayer player;
-        GameObject.Army army;
-        PathVisuals pathVisuals;
-
+        
         public bool newSquare = false;
 
-        PathFindState pathState = PathFindState.None;
-        WalkingPath path = null, newPath = null;
-
-        public ArmyControls(LocalPlayer player, GameObject.Army army)
+        
+        List<ArmyControlsMember> armies;
+        
+        public ArmyControls(LocalPlayer player, List<AbsMapObject> list)
         {
             this.player = player;
-            pathVisuals = new PathVisuals(player.playerData.localPlayerIndex);
-            this.army = army;
+            armies = new List<ArmyControlsMember>(list.Count);
+            foreach (AbsMapObject item in list)
+            {
+                armies.Add(new ArmyControlsMember(player, item.GetArmy()));
+            }
+
             newSquare = true;
         }
 
         public void update()
         {
-            if (army.isDeleted)
-            {
-                player.clearSelection();
-            }
-            else
-            {
+            
                 if (player.mapControls.onNewTile)
                 {
                     newSquare = true;
                 }
 
-                if (pathState != PathFindState.None)
+                bool alive = false;
+
+                foreach (var m in armies)
+                { 
+                    m.update();
+                    alive |= m.isAlive;
+                }
+
+                if (!alive)
                 {
-                    if (pathState == PathFindState.NewPath)
-                    {
-                        path = newPath;
-                        newPath = null;
-
-                        pathVisuals.refresh(path, false, false);
-                    }
-                    else
-                    {
-                        path = null;
-                        pathVisuals.DeleteMe();
-                    }
-
-                    pathState = PathFindState.None;
+                    player.clearSelection();
+                    return;
                 }
 
                 if (player.input.Stop.DownEvent)
                 {
                     SoundLib.orderstop.Play();
-                    army.haltMovement();
+                    foreach (var m in armies)
+                    {
+                        if (m.isAlive)
+                        {
+                            m.army.haltMovement();
+                        }
+                    }
+
                 }
-            }
+            
         }
 
         public void asynchUpdate()
@@ -71,6 +74,120 @@ namespace VikingEngine.DSSWars.Players
             {
                 newSquare = false;
 
+                foreach (var m in armies)
+                {
+                    m.asynchUpdate(player);
+                }
+            }
+        }
+
+        public void clearState()
+        {
+            foreach (var m in armies)
+            {
+                m.pathVisuals.DeleteMe();
+            }
+            
+        }
+
+        public void moveOrderEffect()
+        {
+            foreach (var m in armies)
+            {
+                if (m.isAlive)
+                {
+                    new PathFlashEffect(m.pathVisuals);
+                    m.pathVisuals = new PathVisuals(player.playerData.localPlayerIndex);
+                }
+            }
+                
+        }
+
+        public void mapExecute()
+        {
+            if (player.mapControls.hover.obj != null &&
+                player.mapControls.hover.obj.GetFaction() != player.faction)
+            {
+                SoundLib.ordermove.Play();
+                foreach (var m in armies)
+                {
+                    if (m.isAlive)
+                    {
+                        m.army.Order_Attack(player.mapControls.hover.obj.RelatedMapObject());
+                    }
+                }
+            }
+            else
+            {
+                SoundLib.ordermove.Play();
+                foreach (var m in armies)
+                {
+                    if (m.isAlive)
+                    {
+                        m.army.Order_MoveTo(player.mapControls.tilePosition);
+                    }
+                }
+            }
+
+            player.onMoveArmy();
+        }
+
+        
+
+    }
+
+    class ArmyControlsMember
+    {
+        public GameObject.Army army;
+        public PathVisuals pathVisuals;
+        public WalkingPath path = null, newPath = null;
+
+        PathFindState pathState = PathFindState.None;
+
+        public bool isAlive = true;
+
+        public ArmyControlsMember(LocalPlayer player, GameObject.Army army)
+        {
+            pathVisuals = new PathVisuals(player.playerData.localPlayerIndex);
+            this.army = army;
+        }
+
+
+        public void update()
+        {
+            if (isAlive)
+            {
+                if (army.isDeleted)
+                {
+                    pathVisuals.DeleteMe();
+                    isAlive = false;
+                }
+                else if (pathState != PathFindState.None)
+                {
+                    if (pathState == PathFindState.NewPath)
+                    {
+
+                        path = newPath;
+                        newPath = null;
+
+                        pathVisuals.refresh(path, false, false);
+                    }
+                    else
+                    {
+
+                        path = null;
+                        pathVisuals.DeleteMe();
+                    }
+
+                    pathState = PathFindState.None;
+                }
+            }
+        }
+
+        public void asynchUpdate(LocalPlayer player)
+        {
+            if (pathState == PathFindState.None && isAlive)
+            {
                 if (army.tilePos != player.mapControls.tilePosition &&
                     DssRef.world.tileGrid.InBounds(player.mapControls.tilePosition))
                 {
@@ -90,40 +207,11 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public void clearState()
-        {
-            pathVisuals.DeleteMe();
-        }
-
-        public void moveOrderEffect()
-        {
-            new PathFlashEffect(pathVisuals);
-            pathVisuals = new PathVisuals(player.playerData.localPlayerIndex);
-        }
-
-        public void mapExecute()
-        {
-            if (player.mapControls.hover.obj != null &&
-                player.mapControls.hover.obj.GetFaction() != player.faction)
-            {
-                SoundLib.ordermove.Play();
-                army.Order_Attack(player.mapControls.hover.obj.RelatedMapObject());
-            }
-            else
-            {
-                SoundLib.ordermove.Play();
-                army.Order_MoveTo(player.mapControls.tilePosition);
-            }
-
-            player.onMoveArmy();
-        }
-
         enum PathFindState
         {
             None,
             NewPath,
             NoPath,
         }
-
     }
 }

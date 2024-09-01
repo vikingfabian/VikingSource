@@ -987,10 +987,10 @@ namespace VikingEngine.DSSWars.GameObject
             var soldiersC = group.soldiers.counter();
             int i = 0;
 
-            selection.BeginGroupModel();
+            selection.BeginGroupModel(true);
             while (soldiersC.Next())
             {
-                selection.setGroupModel(i, soldiersC.sel.position, scale, hover, soldiersC.sel == this);
+                selection.setGroupModel(i, soldiersC.sel.position, scale, hover, soldiersC.sel == this, false);
                 ++i;
             }
         }

@@ -24,6 +24,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public Army GetArmy() { return null; }
 
+        virtual public MapObjectCollection GetCollection() { return null; }
+
         virtual public IntVector2 TilePos() 
         { 
             throw new NotImplementedException();
@@ -46,6 +48,8 @@ namespace VikingEngine.DSSWars.GameObject
         SoldierGroup,
         Soldier,
         Battle,
+
+        ObjectCollection,
 
         NUM_NON,
     }

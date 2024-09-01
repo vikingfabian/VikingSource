@@ -144,7 +144,7 @@ namespace VikingEngine.ToGG.Commander.Display
                         Color.White, HudLib.TooltipLayer);
                     VectorRect area = VectorRect.Zero;
                     area.Size = tooltipText.MeasureText() + Engine.Screen.IconSizeV2 * 0.2f;
-                    area.RightBottom = mouseHover.toolTipStartPos(largeShpereSz);
+                    area.SetRightBottom(mouseHover.toolTipStartPos(largeShpereSz), false);
 
                     tooltipBg = new Graphics.Image(SpriteName.WhiteArea, area.Position, area.Size, ImageLayers.AbsoluteBottomLayer);
                     tooltipBg.LayerBelow(tooltipText);

@@ -901,13 +901,11 @@ namespace VikingEngine.DSSWars.Players
                 mapControls.hover.obj.GetFaction() == this.faction)
             {
                 SoundLib.click.Play();
-
-                //mapControls.selection.obj = mapControls.hover.obj;
                 mapControls.onSelect();
 
                 if (mapControls.selection.obj.gameobjectType() == GameObjectType.Army)
                 {
-                    armyControls = new ArmyControls(this, (Army)mapControls.selection.obj);
+                    armyControls = new ArmyControls(this, new List<AbsMapObject> { mapControls.selection.obj.GetArmy() });
                 }
 
                 return true;

@@ -158,6 +158,41 @@ namespace VikingEngine.DSSWars.Map
             return battleGroupNearMapObjects;
         }
 
+        public List<AbsMapObject> MapControlsMultiselectMapObjects(IntVector2 tilePosStart, IntVector2 tilePosEnd, Faction faction)
+        {
+            playerNearMapObjects.Clear();
+
+            IntVector2 areaPosStart = tilePosStart / UnitGridSquareWidth;
+            IntVector2 areaPosEnd = tilePosEnd / UnitGridSquareWidth;
+
+            UnitCollArea area;
+
+            for (int y = areaPosStart.Y; y <= areaPosEnd.Y; ++y)
+            {
+                for (int x = areaPosStart.X; x <= areaPosEnd.X; ++x)
+                {  
+                    if (grid.TryGet(x, y, out area))
+                    {
+                        lock (area.armies)
+                        {
+                            
+                                foreach (AbsMapObject obj in area.armies)
+                                {
+                                if (obj.faction == faction)
+                                {
+                                    playerNearMapObjects.Add(obj);
+                                }
+                                }
+                            
+                        }
+                    }
+                }
+            }
+
+            return playerNearMapObjects;
+        }
+
+
         public List<AbsMapObject> MapControlsNearMapObjects(IntVector2 tilePos, bool controller)
         {
             playerNearMapObjects.Clear();
@@ -265,6 +300,7 @@ namespace VikingEngine.DSSWars.Map
 
             return playerNearDetailUnits;
         }
+
 
         public List<GameObject.SoldierGroup> collectOpponentGroups(Faction faction, IntVector2 tilePos)
         {
