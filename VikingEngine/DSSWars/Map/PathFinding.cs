@@ -14,7 +14,7 @@ namespace VikingEngine.DSSWars.Map
     {
         //Represents a thread-safe last in-first out (LIFO) collection.
         private ConcurrentStack<PathFinding> pool = new ConcurrentStack<PathFinding>();
-        public PathNodePool nodePool = new PathNodePool();
+        //public PathNodePool nodePool = new PathNodePool();
 
         public PathFinding Get()
         {
@@ -37,35 +37,35 @@ namespace VikingEngine.DSSWars.Map
         }
     }
 
-    class PathNodePool
-    {
-        private ConcurrentStack<PathNode> pool = new ConcurrentStack<PathNode>();
+    //class PathNodePool
+    //{
+    //    private ConcurrentStack<PathNode> pool = new ConcurrentStack<PathNode>();
 
-        public PathNode Get()
-        {
-            if (pool.TryPop(out PathNode node))
-            {
-                return node;
-            }
-            else
-            {
-                return new PathNode();
-            }
-        }
+    //    public PathNode Get()
+    //    {
+    //        if (pool.TryPop(out PathNode node))
+    //        {
+    //            return node;
+    //        }
+    //        else
+    //        {
+    //            return new PathNode();
+    //        }
+    //    }
 
-        public void Return(PathNode node)
-        {
-            // Reset the node to a default state
-            //if (node != null)
-            //{
-            //node.recycle();
-            if (pool.Count < PathFinding.MaxNodeLength)
-            {
-                pool.Push(node);
-            }
-            //}           
-        }
-    }
+    //    public void Return(PathNode node)
+    //    {
+    //        // Reset the node to a default state
+    //        //if (node != null)
+    //        //{
+    //        //node.recycle();
+    //        if (pool.Count < PathFinding.MaxNodeLength)
+    //        {
+    //            pool.Push(node);
+    //        }
+    //        //}           
+    //    }
+    //}
 
 
     class PathFinding
@@ -97,8 +97,8 @@ namespace VikingEngine.DSSWars.Map
             * 4.Varje ny ruta ska till en öppen lista
             */
 
-            //PathNode startNode = new PathNode(center, conv.ToDir8_INT(startDir), startAsShip);
-            PathNode startNode = DssRef.state.pathFindingPool.nodePool.Get().init(center, conv.ToDir8_INT(startDir));
+            PathNode startNode = new PathNode(center, conv.ToDir8_INT(startDir), startAsShip);
+            //PathNode startNode = DssRef.state.pathFindingPool.nodePool.Get().init(center, conv.ToDir8_INT(startDir));
 
             nodeGrid[center.X, center.Y] = startNode;
 
@@ -116,7 +116,7 @@ namespace VikingEngine.DSSWars.Map
                     if (DssRef.world.tileBounds.IntersectTilePoint(pos) && !nodeGrid[pos.X, pos.Y].HasValue)
                     {
                         //add a node to open list
-                        PathNode node = DssRef.state.pathFindingPool.nodePool.Get().init(pos, dir, DssRef.world, currentNode, goal, endAsShip);
+                        PathNode node = new PathNode(pos, dir, DssRef.world, currentNode, goal, endAsShip);
                         open.Add(node);
                         nodeGrid[pos.X, pos.Y] = node;
                     }
@@ -181,7 +181,7 @@ namespace VikingEngine.DSSWars.Map
             {
                 for (int x = 0; x < DssRef.world.Size.X; ++x)
                 {
-                    DssRef.state.pathFindingPool.nodePool.Return(nodeGrid[x, y]);
+                    //DssRef.state.pathFindingPool.nodePool.Return(nodeGrid[x, y]);
                     nodeGrid[x, y] = PathNode.Empty;
                 }
             }
@@ -409,17 +409,16 @@ namespace VikingEngine.DSSWars.Map
         //    HasValue = true;
         //    return this;
         //}
-        public PathNode init(IntVector2 pos, int dir8)
-        {
-            this.Position = pos;
-            this.dir8 = dir8;
+        //public PathNode(IntVector2 pos, int dir8)
+        //{
+        //    this.Position = pos;
+        //    this.dir8 = dir8;
 
-            moveCost = 0;
-            Value = 0;
-            return this;
-        }
+        //    moveCost = 0;
+        //    Value = 0;
+        //}
 
-        public PathNode init(IntVector2 pos, int dir8, WorldData world, PathNode parent, IntVector2 goalPos, bool endAsShip)
+        public PathNode(IntVector2 pos, int dir8, WorldData world, PathNode parent, IntVector2 goalPos, bool endAsShip)
         {
             this.Position = pos;
             this.dir8 = dir8;
@@ -473,7 +472,6 @@ namespace VikingEngine.DSSWars.Map
             Value = moveCost + (Math.Abs(pos.X - goalPos.X) + Math.Abs(pos.Y - goalPos.Y)) * MoveCostStraight;
 
             HasValue = true;
-            return this;
         }
     }
 

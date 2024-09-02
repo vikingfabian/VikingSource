@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using Microsoft.Xna.Framework;
+using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Players;
@@ -30,37 +31,37 @@ namespace VikingEngine.DSSWars.GameObject
 
         abstract public bool aliveAndBelongTo(Faction faction);
 
-        virtual public void toHud(Display.ObjectHudArgs args)
-        {
-            string name = Name();
+        //virtual public void toHud(ObjectHudArgs args)
+        //{
+        //    string name = Name();
 
-            if (name != null)
-            {
-                args.content.text(name).overrideColor = Color.LightYellow;
-                args.content.newLine();
-            }
+        //    if (name != null)
+        //    {
+        //        args.content.text(name).overrideColor = Color.LightYellow;
+        //        args.content.newLine();
+        //    }
 
-            args.content.Add(new RichBoxBeginTitle());
-            args.content.Add(GetFaction().FlagTextureToHud());
-            args.content.Add(new RichBoxText(TypeName()));
+        //    args.content.Add(new RichBoxBeginTitle());
+        //    args.content.Add(GetFaction().FlagTextureToHud());
+        //    args.content.Add(new RichBoxText(TypeName()));
 
-            if (PlatformSettings.DevBuild)
-            {
-                args.content.text("agg " + GetFaction().player.aggressionLevel.ToString());
-            }
-            if (GetFaction() != args.player.faction)
-            {
-                var relation = DssRef.diplomacy.GetRelationType(args.player.faction, GetFaction());
+        //    if (PlatformSettings.DevBuild)
+        //    {
+        //        args.content.text("agg " + GetFaction().player.aggressionLevel.ToString());
+        //    }
+        //    if (GetFaction() != args.player.faction)
+        //    {
+        //        var relation = DssRef.diplomacy.GetRelationType(args.player.faction, GetFaction());
 
-                args.content.newLine();
-                args.content.Add(new RichBoxText(GetFaction().PlayerName, Color.LightYellow));
-                args.content.newLine();
-                args.content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation)));
-                args.content.Add(new RichBoxText(Diplomacy.RelationString(relation), Color.LightBlue));
+        //        args.content.newLine();
+        //        args.content.Add(new RichBoxText(GetFaction().PlayerName, Color.LightYellow));
+        //        args.content.newLine();
+        //        args.content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation)));
+        //        args.content.Add(new RichBoxText(Diplomacy.RelationString(relation), Color.LightBlue));
 
-            }
-            args.content.Add(new RichBoxSeperationLine());
-        }
+        //    }
+        //    args.content.Add(new RichBoxSeperationLine());
+        //}
 
         
         virtual public void stateDebugText(HUD.RichBox.RichBoxContent content)

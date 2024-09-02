@@ -7,6 +7,7 @@ using System.Xml.Xsl;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
@@ -143,7 +144,7 @@ namespace VikingEngine.DSSWars.GameObject
             return name;//return "Army" + parentArrayIndex.ToString();
         }
 
-        public override void toHud(Display.ObjectHudArgs args)
+        public override void toHud(ObjectHudArgs args)
         {
             base.toHud(args);
 

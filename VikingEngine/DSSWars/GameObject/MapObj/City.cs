@@ -948,8 +948,9 @@ namespace VikingEngine.DSSWars.GameObject
             return DssRef.lang.UnitType_City + " (" + parentArrayIndex + ")";
         }
 
-        public override void toHud(Display.ObjectHudArgs args)
+        public override void toHud(ObjectHudArgs args)
         {
+           
             base.toHud(args);
             if (args.player.hud.detailLevel == HudDetailLevel.Minimal)
             {   
