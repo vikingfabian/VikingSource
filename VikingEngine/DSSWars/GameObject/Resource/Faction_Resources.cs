@@ -5,6 +5,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.GameObject.Worker;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars
 {
@@ -15,6 +16,18 @@ namespace VikingEngine.DSSWars
         public int totalWorkForce, cityIncome, armyUpkeep, armyFoodUpkeep;
         public int nobelHouseCount = 0;
         TradeTemplate tradeTemplate = new TradeTemplate();
+
+        WorkTemplate work = new WorkTemplate();
+
+        public void workTab(RichBoxContent content)
+        {
+            work.toHud(content, this, null);
+        }
+
+        public void tradeTab(RichBoxContent content)
+        {
+            tradeTemplate.toHud(content, this, null);
+        }
 
         public void changeResourcePrice(float change, ItemResourceType resourceType, City city)
         {

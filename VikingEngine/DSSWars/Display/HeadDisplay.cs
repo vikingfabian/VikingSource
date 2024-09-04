@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Display
@@ -13,7 +15,7 @@ namespace VikingEngine.DSSWars.Display
     {        
         public bool fullDisplay = true;
         public const string AutomationMenuState = "auto";
-
+        static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Work, MenuTab.Trade };
         public HeadDisplay(RichboxGui gui)
             :base(gui)
         {
@@ -25,17 +27,45 @@ namespace VikingEngine.DSSWars.Display
             {
                 beginRefresh();
 
-                switch (player.hud.displays.CurrentMenuState)
+                defaultMenu(player, fullDisplay, faction);
+
+                content.newLine();
+                var tabs = new List<RichboxTabMember>((int)MenuTab.NUM);
+                foreach (var tab in Tabs)
                 {
-
-                    default:
-                        defaultMenu(player, fullDisplay, faction);
-                        break;
-                    case AutomationMenuState:
-                        player.automation.toMenu(content, fullDisplay);
-                        break;
-
+                    tabs.Add(new RichboxTabMember(new List<AbsRichBoxMember>
+                {
+                    new RichBoxText(LangLib.Tab(tab))
+                }));
                 }
+
+                content.Add(new RichboxTabgroup(tabs, (int)player.factionTab, player.factionTabClick, null, null));
+
+                switch (player.cityTab)
+                {
+                    case MenuTab.Info:
+                        infoTab();
+                        break;
+
+                    case MenuTab.Work:
+                        faction.workTab(content);
+                        break;
+
+                    case MenuTab.Trade:
+                        faction.tradeTab(content);
+                        break;
+                }
+                //switch (player.hud.displays.CurrentMenuState)
+                //{
+
+                //    default:
+                //        defaultMenu(player, fullDisplay, faction);
+                //        break;
+                //    case AutomationMenuState:
+                //        player.automation.toMenu(content, fullDisplay);
+                //        break;
+
+                //}
                 endRefresh(player.playerData.view.safeScreenArea.Position, true);
             }
 
@@ -115,16 +145,16 @@ namespace VikingEngine.DSSWars.Display
 #endif
 
 
-                if (player.hud.detailLevel == HudDetailLevel.Minimal)
-                {
-                    flagTexture();
-                    content.space();
-                    toggleMenu();
-                    content.space();
-                    compressedGoldAndIncome();
-                }
-                else
-                {
+                //if (player.hud.detailLevel == HudDetailLevel.Minimal)
+                //{
+                //    flagTexture();
+                //    content.space();
+                //    toggleMenu();
+                //    content.space();
+                //    compressedGoldAndIncome();
+                //}
+                //else
+                //{
                     this.fullDisplay = fullDisplay;
 
 
@@ -149,111 +179,116 @@ namespace VikingEngine.DSSWars.Display
                         content.newLine();
                     }
 
-                    if (player.inTutorialMode)
+                    //if (player.inTutorialMode)
+                    //{
+                    //    player.tutorial_ToHud(content);
+                    //}
+                    //else
+                    //{
+                       
+
+                    //}
+                //}
+            }
+
+            void infoTab()
+            {
+                FactionSize(faction, content, fullDisplay);
+
+
+                if (DssRef.state.IsSinglePlayer() && Ref.isPaused)
+                {
+                    pauseButton();
+                }
+                else
+                {
+                    string gameSpeed = string.Format(DssRef.lang.Hud_GameSpeedLabel, Ref.TargetGameTimeSpeed);//"Game speed: " + Ref.GameTimeSpeed.ToString() + "x";
+
+                    if (DssRef.state.IsSinglePlayer())
                     {
-                        player.tutorial_ToHud(content);
+                        input(player.input.GameSpeed, gameSpeed);
+                        if (fullDisplay)
+                        {
+                            for (int i = 0; i < DssLib.GameSpeedOptions.Length; i++)
+                            {
+                                content.Add(new RichboxButton(
+                                    new List<AbsRichBoxMember> { new RichBoxText(string.Format(DssRef.lang.Hud_XTimes, DssLib.GameSpeedOptions[i])) },
+                                    new RbAction1Arg<int>(gameSpeedClick, DssLib.GameSpeedOptions[i]), null, true));
+                                content.space();
+                            }
+                            //content.newLine();
+                        }
                     }
                     else
                     {
-                        FactionSize(faction, content, fullDisplay);
+                        content.text(gameSpeed);
+                        content.newLine();
+                    }
 
+                    if (fullDisplay && DssRef.state.IsSinglePlayer())
+                    {
+                        pauseButton();
+                    }
+                }
+                if (fullDisplay && player.IsLocalHost())
+                {
+                    gameMenuButton();
+                }
 
-                        if (DssRef.state.IsSinglePlayer() && Ref.isPaused)
+                if (fullDisplay)
+                {
+                    content.newParagraph();
+                    content.Add(new RichBoxNewLine());
+                    content.Add(new RichBoxImage(SpriteName.rtsIncomeTime));
+                    content.space();
+                    content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(faction.cityIncome))));
+
+                    content.Add(new RichBoxNewLine());
+                    content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
+                    content.space();
+                    content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_ArmyUpkeep, TextLib.LargeNumber(faction.armyUpkeep))));
+
+                    content.newLine();
+                    var automationButton = new HUD.RichBox.RichboxButton(
+                        new List<AbsRichBoxMember>
                         {
-                            pauseButton();
-                        }
-                        else
-                        {
-                            string gameSpeed = string.Format(DssRef.lang.Hud_GameSpeedLabel, Ref.TargetGameTimeSpeed);//"Game speed: " + Ref.GameTimeSpeed.ToString() + "x";
-
-                            if (DssRef.state.IsSinglePlayer())
-                            {
-                                input(player.input.GameSpeed, gameSpeed);
-                                if (fullDisplay)
-                                {
-                                    for (int i = 0; i < DssLib.GameSpeedOptions.Length; i++)
-                                    {
-                                        content.Add(new RichboxButton(
-                                            new List<AbsRichBoxMember> { new RichBoxText(string.Format(DssRef.lang.Hud_XTimes, DssLib.GameSpeedOptions[i])) },
-                                            new RbAction1Arg<int>(gameSpeedClick, DssLib.GameSpeedOptions[i]), null, true));
-                                        content.space();
-                                    }
-                                    //content.newLine();
-                                }
-                            }
-                            else
-                            {
-                                content.text(gameSpeed);
-                                content.newLine();
-                            }
-
-                            if (fullDisplay && DssRef.state.IsSinglePlayer())
-                            {
-                                pauseButton();
-                            }
-                        }
-                        if (fullDisplay && player.IsLocalHost())
-                        {
-                            gameMenuButton();
-                        }
-
-                        if (fullDisplay)
-                        {
-                            content.newParagraph();
-                            content.Add(new RichBoxNewLine());
-                            content.Add(new RichBoxImage(SpriteName.rtsIncomeTime));
-                            content.space();
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(faction.cityIncome))));
-
-                            content.Add(new RichBoxNewLine());
-                            content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
-                            content.space();
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_ArmyUpkeep, TextLib.LargeNumber(faction.armyUpkeep))));
-
-                            content.newLine();
-                            var automationButton = new HUD.RichBox.RichboxButton(
-                                new List<AbsRichBoxMember>
-                                {
                                 new RichBoxImage(player.input.AutomationSetting.Icon),
                                 new RichBoxImage(SpriteName.MenuPixelIconSettings),
                                 new HUD.RichBox.RichBoxText(DssRef.lang.Automation_Title),
-                                },
-                                new RbAction1Arg<string>(player.hud.displays.SetMenuState, AutomationMenuState, SoundLib.menu),
-                                null);
-                            content.Add(automationButton);
-                            //content.Button(SpriteName.MenuPixelIconSettings, "Automation", new RbAction(DssRef.state.exit), null, true);
+                        },
+                        new RbAction1Arg<string>(player.hud.displays.SetMenuState, AutomationMenuState, SoundLib.menu),
+                        null);
+                    content.Add(automationButton);
+                    //content.Button(SpriteName.MenuPixelIconSettings, "Automation", new RbAction(DssRef.state.exit), null, true);
 
-                            //string diplomacy = "Diplomatic points: {0}/{1}({2})";
-                            content.icontext(SpriteName.WarsDiplomaticPoint, string.Format(DssRef.lang.ResourceType_DiplomacyPoints_WithSoftAndHardLimit, player.diplomaticPoints.Int(), player.diplomaticPoints_softMax, player.diplomaticPoints.max));
+                    //string diplomacy = "Diplomatic points: {0}/{1}({2})";
+                    content.icontext(SpriteName.WarsDiplomaticPoint, string.Format(DssRef.lang.ResourceType_DiplomacyPoints_WithSoftAndHardLimit, player.diplomaticPoints.Int(), player.diplomaticPoints_softMax, player.diplomaticPoints.max));
 
-                            content.icontext(SpriteName.WarsGroupIcon, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_MercenaryMarket, player.mercenaryMarket.Int()));
-                            //string command = "Command points: {0}";
-                            //content.icontext(SpriteName.WarsCommandPoint, string.Format(command, player.commandPoints.ToString()));
+                    content.icontext(SpriteName.WarsGroupIcon, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_MercenaryMarket, player.mercenaryMarket.Int()));
+                    //string command = "Command points: {0}";
+                    //content.icontext(SpriteName.WarsCommandPoint, string.Format(command, player.commandPoints.ToString()));
 
-                            content.Add(new RichBoxNewLine(true));
+                    content.Add(new RichBoxNewLine(true));
 
-                            if (player.hud.detailLevel == HudDetailLevel.Extended)
-                            {
-                                content.text(string.Format(DssRef.lang.Hud_CityCount, TextLib.LargeNumber(faction.cities.Count)));
-                                content.text(string.Format(DssRef.lang.Hud_ArmyCount, TextLib.LargeNumber(faction.armies.Count)));
+                    if (player.hud.detailLevel == HudDetailLevel.Extended)
+                    {
+                        content.text(string.Format(DssRef.lang.Hud_CityCount, TextLib.LargeNumber(faction.cities.Count)));
+                        content.text(string.Format(DssRef.lang.Hud_ArmyCount, TextLib.LargeNumber(faction.armies.Count)));
 
-                                content.ButtonDescription(player.input.NextCity, DssRef.lang.Input_NextCity);
-                                content.ButtonDescription(player.input.NextArmy, DssRef.lang.Input_NextArmy);
-                                content.ButtonDescription(player.input.NextBattle, DssRef.lang.Input_NextBattle);
+                        content.ButtonDescription(player.input.NextCity, DssRef.lang.Input_NextCity);
+                        content.ButtonDescription(player.input.NextArmy, DssRef.lang.Input_NextArmy);
+                        content.ButtonDescription(player.input.NextBattle, DssRef.lang.Input_NextBattle);
 
 
-                                content.newParagraph();
-                            }
-
-                            //if (Ref.isPaused && player.IsLocalHost())
-                            //{
-                            //    content.Button("Exit game", new RbAction(DssRef.state.exit), null, true);
-                            //}
-                            content.newLine();
-                            toggleMenu();
-                        }
-
+                        content.newParagraph();
                     }
+
+                    //if (Ref.isPaused && player.IsLocalHost())
+                    //{
+                    //    content.Button("Exit game", new RbAction(DssRef.state.exit), null, true);
+                    //}
+                    content.newLine();
+                    toggleMenu();
                 }
             }
 
@@ -325,5 +360,7 @@ namespace VikingEngine.DSSWars.Display
         { 
             Ref.SetGameSpeed(toSpeed);
         }
+
+        
     }
 }

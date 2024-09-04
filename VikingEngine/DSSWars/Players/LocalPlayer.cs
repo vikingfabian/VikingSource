@@ -59,7 +59,18 @@ namespace VikingEngine.DSSWars.Players
         const double MercenaryMarketAddPerSec_Speed2 = 0.3;
         public FloatingInt mercenaryMarket = new FloatingInt() { value = DssLib.MercenaryPurchaseCount * 2 };
 
+        public MenuTab factionTab = 0;
         public MenuTab cityTab = 0;
+        
+
+        public void factionTabClick(int tab)
+        {
+            factionTab = (MenuTab)tab;
+        }
+        public void cityTabClick(int tab)
+        {
+            cityTab = (MenuTab)tab;
+        }
 
         public override void writeGameState(BinaryWriter w)
         {

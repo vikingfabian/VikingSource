@@ -1,5 +1,9 @@
 ﻿
 -Change Log-
+*Sale price controls
+*Work priority controls
+
+!Army worker walk to the wrong place (just visual error)
 
 Error
 -back button in menues 

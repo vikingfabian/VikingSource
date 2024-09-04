@@ -74,6 +74,7 @@ namespace VikingEngine.DSSWars
             
         }
 
+       
         public void onGameStart(bool newGame)
         {
             player.onGameStart(newGame);

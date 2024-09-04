@@ -17,7 +17,8 @@ namespace VikingEngine.DSSWars.Players
 
         public void InitTutorial() 
         {
-            inTutorialMode = DssRef.storage.runTutorial;
+            //inTutorialMode = DssRef.storage.runTutorial;
+            inTutorialMode = false;
             mapControls.setZoomRange(inTutorialMode);
         }
 
@@ -51,8 +52,6 @@ namespace VikingEngine.DSSWars.Players
                 content.newParagraph();
                 content.icontext(input.Select.Icon, DssRef.lang.Tutorial_SelectInput);
                 content.icontext(input.Execute.Icon, DssRef.lang.Tutorial_MoveInput);
-
-                
             }
         }
 

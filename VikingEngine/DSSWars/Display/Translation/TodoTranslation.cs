@@ -20,6 +20,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Resource_TypeName_Iron => "iron";
 
 
+        public string MenuTab_Info => "Info";
         public string MenuTab_Work => "Work";
         public string MenuTab_Recruit => "Recruit";
         public string MenuTab_Resources => "Resources";

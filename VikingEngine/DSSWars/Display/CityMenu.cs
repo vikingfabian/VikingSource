@@ -21,6 +21,7 @@ namespace VikingEngine.DSSWars.Display
 {
     class CityMenu
     {
+        static readonly MenuTab[] Tabs = { MenuTab.Recruit, MenuTab.Resources, MenuTab.Work, MenuTab.Trade };
         Players.LocalPlayer player;
         City city;
 
@@ -38,7 +39,7 @@ namespace VikingEngine.DSSWars.Display
 
             content.newLine();
             var tabs = new List<RichboxTabMember>((int)MenuTab.NUM);
-            for (MenuTab tab = 0; tab < MenuTab.NUM; tab++)
+            foreach (var tab in Tabs)//for (MenuTab tab = 0; tab < MenuTab.NUM; tab++)
             {
                 tabs.Add(new RichboxTabMember(new List<AbsRichBoxMember>
                 {
@@ -46,13 +47,14 @@ namespace VikingEngine.DSSWars.Display
                 }));
             }
 
-            content.Add(new RichboxTabgroup(tabs, (int)this.player.cityTab, tabClick, null, null));
+            content.Add(new RichboxTabgroup(tabs, (int)this.player.cityTab, player.cityTabClick, null, null));
 
             switch (player.cityTab)
             { 
                 case MenuTab.Work:
                     city.workTab(content);
                     break;
+
                 case MenuTab.Recruit:
                     recruitTab(content);
                     break;
@@ -254,10 +256,10 @@ namespace VikingEngine.DSSWars.Display
             city.tradeTemplate.toHud(content, city.faction, city);
         }
 
-        void tabClick(int tab)
-        {
-            this.player.cityTab = (MenuTab)tab;
-        }
+        //void tabClick(int tab)
+        //{
+        //    this.player.cityTab = (MenuTab)tab;
+        //}
 
         bool canBuySoldiers(UnitType unitType, int count)
         {
@@ -513,10 +515,11 @@ namespace VikingEngine.DSSWars.Display
     }
 
     enum MenuTab
-    { 
-        Work,
+    {         
+        Info,
         Recruit,
         Resources,
+        Work,
         Trade,
         Build,
         NUM
