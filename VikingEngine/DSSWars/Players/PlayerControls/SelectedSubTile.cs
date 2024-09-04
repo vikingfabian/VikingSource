@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.Players
                     this.subTilePos = subTilePos;
                     isNew = true;
 
-                    if (player.cityTab == Display.CityTab.Build)
+                    if (player.cityTab == Display.MenuTab.Build)
                     {
                         selectTileResult = SelectTileResult.Build;
                         hasSelection = true;

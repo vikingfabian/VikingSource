@@ -233,7 +233,7 @@ namespace VikingEngine.DSSWars
             exitArea = enterArea;
             exitArea.AddRadius(1);
 
-            Debug.Log(DebugLogType.MSG, "state " + (bStateA ? "A " : "B ") + screenArea.ToString());
+            //Debug.Log(DebugLogType.MSG, "state " + (bStateA ? "A " : "B ") + screenArea.ToString());
  
             var loopArea = exitArea;
             loopArea.size += 1;

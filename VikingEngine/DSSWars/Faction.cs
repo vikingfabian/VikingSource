@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
-
+using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.MoonFall;
@@ -47,7 +47,7 @@ namespace VikingEngine.DSSWars
 
         public float militaryStrength = 0;
         public bool hasDeserters = true;
-
+        
 
 
         public Faction()

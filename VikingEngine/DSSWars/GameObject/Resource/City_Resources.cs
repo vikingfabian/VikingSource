@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         const int GoldOreSellValue = 100;
         const int IronSellValue = 5;
-        const float FoodGoldValue = 0.2f;
+        public const float FoodGoldValue = 0.2f;
         public const float FoodGoldValue_BlackMarket = FoodGoldValue * 5;
 
         //Simplified resources
@@ -31,39 +31,43 @@ namespace VikingEngine.DSSWars.GameObject
         int waterBuffer = 2;
         int waterSpendOrders = 0;
         
-        public SimplifiedResource wood = new SimplifiedResource() { amount = 20, goldValue = 1, goalBuffer = 300 };
-        public SimplifiedResource stone = new SimplifiedResource() { amount = 20, goldValue = 0.6f, goalBuffer = 100 };
-        public SimplifiedResource rawFood = new SimplifiedResource() { amount = 50, goldValue = 1, goalBuffer = 200 };
-        public SimplifiedResource food = new SimplifiedResource() { amount = 20, goldValue = FoodGoldValue, goalBuffer = 500 };
-        public SimplifiedResource skin = new SimplifiedResource() { goldValue = 4, goalBuffer = 100 };
-        public SimplifiedResource ore = new SimplifiedResource() { goldValue = 1, goalBuffer = 100 };
-        public SimplifiedResource iron = new SimplifiedResource() { goldValue = 10, goalBuffer = 100 };
+        public SimplifiedResource wood = new SimplifiedResource() { amount = 20,  goalBuffer = 300 };
+        public SimplifiedResource stone = new SimplifiedResource() { amount = 20, goalBuffer = 100 };
+        public SimplifiedResource rawFood = new SimplifiedResource() { amount = 50, goalBuffer = 200 };
+        public SimplifiedResource food = new SimplifiedResource() { amount = 20, goalBuffer = 500 };
+        public SimplifiedResource skin = new SimplifiedResource() { goalBuffer = 100 };
+        public SimplifiedResource ore = new SimplifiedResource() { goalBuffer = 100 };
+        public SimplifiedResource iron = new SimplifiedResource() { goalBuffer = 100 };
+
+        //bool useLocalTrade
+        public TradeTemplate tradeTemplate = new TradeTemplate();
 
         //int tradeGold = 0;
 
         public int SellCost(ItemResourceType itemResourceType)
         {
-            SimplifiedResource resource;
+            TradeResource resource;
             switch (itemResourceType)
             {
+                case ItemResourceType.HardWood:
                 case ItemResourceType.SoftWood:
-                    resource = wood;
+                    resource = tradeTemplate.wood;
                     break;
                 case ItemResourceType.Stone:
-                    resource = stone;
+                    resource = tradeTemplate.stone;
                     break;
                 case ItemResourceType.Food:
-                    resource = food;
+                    resource = tradeTemplate.food;
                     break;
                 case ItemResourceType.Iron:
-                    resource = iron;
+                    resource = tradeTemplate.iron;
                     break;
 
                 default:
                     throw new NotImplementedException();
             }
 
-            int goldCost = (int)Math.Ceiling( ItemPropertyColl.CarryAmount(itemResourceType) * resource.goldValue);
+            int goldCost = (int)Math.Ceiling( ItemPropertyColl.CarryAmount(itemResourceType) * resource.price);
 
             return goldCost;
         }
@@ -149,6 +153,11 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void tradeTab()
+        { 
+            
+        }
+
         public void resourcesToMenu(RichBoxContent content)
         {
             content.Add(new RichBoxSeperationLine());
@@ -157,12 +166,12 @@ namespace VikingEngine.DSSWars.GameObject
             content.newLine();
 
             content.text("Water: " + water.ToString());
-            wood.toMenu(content, "wood");
-            stone.toMenu(content, "stone");
-            rawFood.toMenu(content, "rawFood");
-            food.toMenu(content, "food");
-            skin.toMenu(content, "skin");
-            ore.toMenu(content, "ore");
+            wood.toMenu(content, DssRef.todoLang.Resource_TypeName_Wood);
+            stone.toMenu(content, DssRef.todoLang.Resource_TypeName_Stone);
+            rawFood.toMenu(content, DssRef.todoLang.Resource_TypeName_RawFood);
+            food.toMenu(content, DssRef.todoLang.Resource_TypeName_Food);
+            skin.toMenu(content, DssRef.todoLang.Resource_TypeName_Skin);
+            ore.toMenu(content, DssRef.todoLang.Resource_TypeName_Ore);
             //iron.toMenu(content, "iron");
 
             content.newParagraph();
@@ -184,7 +193,7 @@ namespace VikingEngine.DSSWars.GameObject
     struct SimplifiedResource
     {
         public int amount;
-        public float goldValue;
+        //public float saleValue;
         public int backOrder;
         public int goalBuffer;
         public int orderQueCount;
@@ -296,12 +305,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             string resources = string.Empty;
 
-            addResources(useWater, "water", ref resources);
-            addResources(useWood, "wood", ref resources);
-            addResources(useStone, "stone", ref resources);
-            addResources(useRawFood, "raw food", ref resources);
-            addResources(useOre, "ore", ref resources);
-
+            addResources(useWater, DssRef.todoLang.Resource_TypeName_Water, ref resources);
+            addResources(useWood, DssRef.todoLang.Resource_TypeName_Wood, ref resources);
+            addResources(useStone, DssRef.todoLang.Resource_TypeName_Stone, ref resources);
+            addResources(useRawFood, DssRef.todoLang.Resource_TypeName_RawFood, ref resources);
+            addResources(useOre, DssRef.todoLang.Resource_TypeName_Ore, ref resources);
 
             content.text(resources + " => " + resultCount.ToString() + " " + name);
 

@@ -19,6 +19,7 @@ namespace VikingEngine
         
         public const string EmptyString = "";
         public const string Error = "ERR";
+        const string MaxTwoDecimalsFormat = "0.##";
         public const string TextFileEnding = ".txt"; 
         public static readonly List<char> BreakPoints = new List<char> { ' ', '+', '-', '*', '/', '^' };
         //const char NewLineChar1 = '\n';
@@ -74,19 +75,42 @@ namespace VikingEngine
         {
             string result= string.Format(OneDecimalFormat, value);
 
-            //CultureInfo culture = new CultureInfo("ar-SA");
-            //result = (0.1).ToString(culture);
+            stringSafeDecimal(ref result);
 
+            return result;  
+        }
+
+        static void stringSafeDecimal(ref string result)
+        { 
             if (result.Length > 2)
             { 
                 if (result[result.Length - 2] == '٫')
                 {
                     result = result.Replace('٫', ',');
-                    //result = result.Substring(0, result.Length - 2) + ',' + result.Substring(result.Length - 1);
                 }
             }
+        }
 
-            return result;  
+        public static string PlusMinusOneDecimal(double value)
+        {
+            string result = OneDecimal(value);
+            if (value > 0)
+            { 
+                result = "+" + result;
+            }
+            return result;
+        }
+
+        public static string PlusMinus(double value)
+        {
+            string result = value.ToString(MaxTwoDecimalsFormat);
+            stringSafeDecimal(ref result);
+
+            if (value > 0)
+            {
+                result = "+" + result;
+            }
+            return result;
         }
 
         public static string FirstLetters(string text, int numLetters)

@@ -5,7 +5,9 @@ using System.Reflection.Metadata;
 using System.Text;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Battle;
+using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
@@ -35,26 +37,33 @@ namespace VikingEngine.DSSWars.Display
             //}
 
             content.newLine();
-            var tabs = new List<RichboxTabMember>((int)CityTab.NUM);
-            for (int i = 0; i < (int)CityTab.NUM; i++)
+            var tabs = new List<RichboxTabMember>((int)MenuTab.NUM);
+            for (MenuTab tab = 0; tab < MenuTab.NUM; tab++)
             {
                 tabs.Add(new RichboxTabMember(new List<AbsRichBoxMember>
                 {
-                    new RichBoxText(((CityTab)i).ToString())
+                    new RichBoxText(LangLib.Tab(tab))
                 }));
-
             }
+
             content.Add(new RichboxTabgroup(tabs, (int)this.player.cityTab, tabClick, null, null));
 
             switch (player.cityTab)
             { 
-                case CityTab.Recruit:
+                case MenuTab.Work:
+                    city.workTab(content);
+                    break;
+                case MenuTab.Recruit:
                     recruitTab(content);
                     break;
-                case CityTab.Resources:
+
+                case MenuTab.Resources:
                     city.resourcesToMenu(content);
                     break;
 
+                case MenuTab.Trade:
+                    tradeTab(content);
+                    break;
             }
             //content.h2(DssRef.lang.UnitType_Recruit);
             //foreach (var opt in city.cityPurchaseOptions)
@@ -242,12 +251,12 @@ namespace VikingEngine.DSSWars.Display
 
         void tradeTab(RichBoxContent content)
         {
-
+            city.tradeTemplate.toHud(content, city.faction, city);
         }
 
         void tabClick(int tab)
         {
-            this.player.cityTab = (CityTab)tab;
+            this.player.cityTab = (MenuTab)tab;
         }
 
         bool canBuySoldiers(UnitType unitType, int count)
@@ -503,8 +512,9 @@ namespace VikingEngine.DSSWars.Display
         
     }
 
-    enum CityTab
+    enum MenuTab
     { 
+        Work,
         Recruit,
         Resources,
         Trade,

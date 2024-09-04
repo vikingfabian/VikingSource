@@ -577,10 +577,10 @@ namespace VikingEngine.DSSWars.Players
             switch (tileResult)
             {
                 case SelectTileResult.CityHall:
-                    player.cityTab = Display.CityTab.Recruit;
+                    player.cityTab = Display.MenuTab.Recruit;
                     break;
                 case SelectTileResult.Resources:
-                    player.cityTab = Display.CityTab.Resources;
+                    player.cityTab = Display.MenuTab.Resources;
                     break;
             }
         }

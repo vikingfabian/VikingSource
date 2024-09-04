@@ -117,7 +117,6 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-
             double percWater = water / total;
             double percForest = forest / land;
             double percPlains = plain / land;
@@ -981,11 +980,6 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            if (args.selected && faction == args.player.faction)
-            {
-                new Display.CityMenu(args.player, this, args.content);
-            }
-
             if (!args.player.inTutorialMode)
             {
                 //Properties
@@ -1005,6 +999,13 @@ namespace VikingEngine.DSSWars.GameObject
 
                 }
             }
+
+            if (args.selected && faction == args.player.faction)
+            {
+                new Display.CityMenu(args.player, this, args.content);
+            }
+
+            
         }
 
         public void AddNeighborCity(int nCityIndex)

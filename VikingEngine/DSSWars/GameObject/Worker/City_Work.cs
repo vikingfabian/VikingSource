@@ -7,28 +7,24 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.GameObject.Worker;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.GameObject
 {
     partial class City : GameObject.AbsMapObject
     {
-        int workPriority_move = 6;
-        int workPriority_wood = 4;
-        int workPriority_stone = 4;
-        int workPriority_craft_food = 8;
-        int workPriority_craft_iron = 6;
-        int workPriority_farming = 5;
-        int workPriority_mining = 5;
-        int workPriority_trading = 5;
-        int workPriority_expand_housing = 3;
-        int workPriority_expand_farms = 3;
-
+        public WorkTemplate work = new WorkTemplate();
 
         const int NoSubWork = -1;
         public const int WorkTeamSize = 8;
         TimeStamp previousWorkQueUpdate = TimeStamp.None;
         List<WorkQueMember> workQue = new List<WorkQueMember>();
-        
+
+        public void workTab(RichBoxContent content)
+        {
+            work.toHud(content, faction, this);
+        }
+
         public void async_workUpdate()
         {        
             if (parentArrayIndex == 52 || debugTagged)
@@ -188,7 +184,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     isFreeTile(subTileLoop.Position))
                                 {
                                     CraftFood.createBackOrder(this);
-                                    workQue.Add(new WorkQueMember(WorkType.Craft, NoSubWork, subTileLoop.Position, workPriority_craft_food, 0));
+                                    workQue.Add(new WorkQueMember(WorkType.Craft, NoSubWork, subTileLoop.Position, work.craft_food.value, 0));
                                 }
                                 break;
                             case TerrainBuildingType.Work_Smith:
@@ -196,7 +192,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     isFreeTile(subTileLoop.Position))
                                 {
                                     CraftIron.createBackOrder(this);
-                                    workQue.Add(new WorkQueMember(WorkType.Craft, NoSubWork, subTileLoop.Position, workPriority_craft_iron, 0));
+                                    workQue.Add(new WorkQueMember(WorkType.Craft, NoSubWork, subTileLoop.Position, work.craft_iron.value, 0));
                                 }
                                 break;
                         }
@@ -227,7 +223,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     {
                                         if (isFreeTile(subTileLoop.Position))
                                         {
-                                            workQue.Add(new WorkQueMember(WorkType.PickUpResource, NoSubWork, subTileLoop.Position, workPriority_move, distanceValue));
+                                            workQue.Add(new WorkQueMember(WorkType.PickUpResource, NoSubWork, subTileLoop.Position, work.move.value, distanceValue));
                                         }
                                     }
                                     else
@@ -246,7 +242,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                         {
                                                             if (isFreeTile(subTileLoop.Position))
                                                             {
-                                                                workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, subTileLoop.Position, workPriority_wood, distanceValue));
+                                                                workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, subTileLoop.Position, work.wood.value, distanceValue));
                                                                 wood.orderQueCount += subTile.terrainAmount;
                                                             }
                                                         }
@@ -257,7 +253,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                         if (stone.needMore() &&
                                                             isFreeTile(subTileLoop.Position))
                                                         {
-                                                            workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, subTileLoop.Position, workPriority_stone, distanceValue));
+                                                            workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, subTileLoop.Position, work.stone.value, distanceValue));
                                                             stone.orderQueCount += ItemPropertyColl.CarryStones;
                                                         }
                                                         break;
@@ -268,7 +264,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                         {
                                                             if (isFreeTile(subTileLoop.Position))
                                                             {
-                                                                workQue.Add(new WorkQueMember(WorkType.Plant, NoSubWork, subTileLoop.Position, workPriority_farming, distanceValue));
+                                                                workQue.Add(new WorkQueMember(WorkType.Plant, NoSubWork, subTileLoop.Position, work.farming.value, distanceValue));
                                                             }
                                                         }
                                                         else if (rawFood.needMore() &&
@@ -276,7 +272,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                         {
                                                             if (isFreeTile(subTileLoop.Position))
                                                             {
-                                                                workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, subTileLoop.Position, workPriority_farming, distanceValue));
+                                                                workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, subTileLoop.Position, work.farming.value, distanceValue));
                                                                 rawFood.orderQueCount += subTile.terrainAmount;
                                                             }
                                                         }
@@ -289,7 +285,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                 if (ore.needMore() &&
                                                     isFreeTile(subTileLoop.Position))
                                                 {
-                                                    workQue.Add(new WorkQueMember(WorkType.Mine, NoSubWork, subTileLoop.Position, workPriority_mining, distanceValue));
+                                                    workQue.Add(new WorkQueMember(WorkType.Mine, NoSubWork, subTileLoop.Position, work.mining.value, distanceValue));
                                                     ore.orderQueCount += TerrainContent.MineAmount;
                                                 }
                                                 break;
@@ -304,7 +300,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                         {
                                                             if (isFreeTile(subTileLoop.Position))
                                                             {
-                                                                workQue.Add(new WorkQueMember(WorkType.PickUpProduce, NoSubWork, subTileLoop.Position, workPriority_farming, distanceValue));
+                                                                workQue.Add(new WorkQueMember(WorkType.PickUpProduce, NoSubWork, subTileLoop.Position, work.farming.value, distanceValue));
                                                                 rawFood.orderQueCount += TerrainContent.HenMaxSize;
                                                             }
                                                         }
@@ -314,7 +310,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                         {
                                                             if (isFreeTile(subTileLoop.Position))
                                                             {
-                                                                workQue.Add(new WorkQueMember(WorkType.PickUpProduce, NoSubWork, subTileLoop.Position, workPriority_farming, distanceValue));
+                                                                workQue.Add(new WorkQueMember(WorkType.PickUpProduce, NoSubWork, subTileLoop.Position, work.farming.value, distanceValue));
                                                                 rawFood.orderQueCount += TerrainContent.PigMaxSize;
                                                             }
                                                         }
@@ -386,7 +382,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         if (wood.needToImport() && nCity.wood.canTradeAway())
                         {
-                            int value = distanceValue + (int)(nCity.wood.goldValue * CostPrioValue);
+                            int value = distanceValue + (int)(nCity.tradeTemplate.wood.price * CostPrioValue);
                             if (value > woodTrade.priority)
                             {
                                 woodTrade = new WorkQueMember(WorkType.LocalTrade, (int)ItemResourceType.SoftWood, WP.ToSubTilePos_Centered(nCity.tilePos), 5, value);
@@ -394,7 +390,7 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                         if (stone.needToImport() && nCity.stone.canTradeAway())
                         {
-                            int value = distanceValue + (int)(nCity.stone.goldValue * CostPrioValue);
+                            int value = distanceValue + (int)(nCity.tradeTemplate.stone.price * CostPrioValue);
                             if (value > stoneTrade.priority)
                             {
                                 stoneTrade = new WorkQueMember(WorkType.LocalTrade, (int)ItemResourceType.Stone, WP.ToSubTilePos_Centered(nCity.tilePos), 5, value);
@@ -402,7 +398,7 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                         if (food.needToImport() && nCity.food.canTradeAway())
                         {
-                            int value = distanceValue + (int)(nCity.food.goldValue * CostPrioValue);
+                            int value = distanceValue + (int)(nCity.tradeTemplate.food.price * CostPrioValue);
                             if (value > foodTrade.priority)
                             {
                                 foodTrade = new WorkQueMember(WorkType.LocalTrade, (int)ItemResourceType.Food, WP.ToSubTilePos_Centered(nCity.tilePos), 5, value);

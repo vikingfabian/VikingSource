@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.Resource;
+using VikingEngine.DSSWars.GameObject.Worker;
 using VikingEngine.DSSWars.Players;
 
 namespace VikingEngine.DSSWars
@@ -12,6 +14,30 @@ namespace VikingEngine.DSSWars
         public int gold = 40;
         public int totalWorkForce, cityIncome, armyUpkeep, armyFoodUpkeep;
         public int nobelHouseCount = 0;
+        TradeTemplate tradeTemplate = new TradeTemplate();
+
+        public void changeResourcePrice(float change, ItemResourceType resourceType, City city)
+        {
+            if (city != null)
+            {
+                city.tradeTemplate.changeResourcePrice(change, resourceType);
+            }
+            else
+            { 
+                tradeTemplate.changeResourcePrice(change, resourceType);
+            }
+        }
+        public void changeWorkPrio(int change, WorkPriorityType priorityType, City city)
+        {
+            if (city != null)
+            {
+                city.work.changeWorkPrio(change, priorityType);
+            }
+            else
+            {
+                //tradeTemplate.changeResourcePrice(change, resourceType);
+            }
+        }
 
         public bool calcCost(int cost, ref int totalCost) {
             totalCost += cost;
