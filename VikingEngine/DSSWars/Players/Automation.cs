@@ -141,11 +141,11 @@ namespace VikingEngine.DSSWars.Players
                     new RichBoxText( DssRef.lang.CityOption_Repair),
                 }, AutoRepairCityProperty));
 
-            content.newLine();
-            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
-                {
-                    new RichBoxText( DssRef.lang.CityOption_ExpandWorkForce),
-                }, AutoExpandCityProperty));
+            //content.newLine();
+            //content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
+            //    {
+            //        new RichBoxText( DssRef.lang.CityOption_ExpandWorkForce),
+            //    }, AutoExpandCityProperty));
 
             content.newLine();
             content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>

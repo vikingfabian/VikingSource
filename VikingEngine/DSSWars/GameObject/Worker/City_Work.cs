@@ -13,16 +13,16 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City : GameObject.AbsMapObject
     {
-        public WorkTemplate work = new WorkTemplate();
+        public WorkTemplate workTemplate = new WorkTemplate();
 
         const int NoSubWork = -1;
         public const int WorkTeamSize = 8;
         TimeStamp previousWorkQueUpdate = TimeStamp.None;
         List<WorkQueMember> workQue = new List<WorkQueMember>();
 
-        public void workTab(RichBoxContent content)
+        public void workTab(Players.LocalPlayer player,RichBoxContent content)
         {
-            work.toHud(content, faction, this);
+            workTemplate.toHud(player, content, faction, this);
         }
 
         public void async_workUpdate()
@@ -184,7 +184,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     isFreeTile(subTileLoop.Position))
                                 {
                                     CraftFood.createBackOrder(this);
-                                    workQue.Add(new WorkQueMember(WorkType.Craft, NoSubWork, subTileLoop.Position, work.craft_food.value, 0));
+                                    workQue.Add(new WorkQueMember(WorkType.Craft, NoSubWork, subTileLoop.Position, workTemplate.craft_food.value, 0));
                                 }
                                 break;
                             case TerrainBuildingType.Work_Smith:
@@ -192,7 +192,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     isFreeTile(subTileLoop.Position))
                                 {
                                     CraftIron.createBackOrder(this);
-                                    workQue.Add(new WorkQueMember(WorkType.Craft, NoSubWork, subTileLoop.Position, work.craft_iron.value, 0));
+                                    workQue.Add(new WorkQueMember(WorkType.Craft, NoSubWork, subTileLoop.Position, workTemplate.craft_iron.value, 0));
                                 }
                                 break;
                         }
@@ -223,7 +223,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     {
                                         if (isFreeTile(subTileLoop.Position))
                                         {
-                                            workQue.Add(new WorkQueMember(WorkType.PickUpResource, NoSubWork, subTileLoop.Position, work.move.value, distanceValue));
+                                            workQue.Add(new WorkQueMember(WorkType.PickUpResource, NoSubWork, subTileLoop.Position, workTemplate.move.value, distanceValue));
                                         }
                                     }
                                     else
@@ -242,7 +242,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                         {
                                                             if (isFreeTile(subTileLoop.Position))
                                                             {
-                                                                workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, subTileLoop.Position, work.wood.value, distanceValue));
+                                                                workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, subTileLoop.Position, workTemplate.wood.value, distanceValue));
                                                                 wood.orderQueCount += subTile.terrainAmount;
                                                             }
                                                         }
@@ -253,7 +253,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                         if (stone.needMore() &&
                                                             isFreeTile(subTileLoop.Position))
                                                         {
-                                                            workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, subTileLoop.Position, work.stone.value, distanceValue));
+                                                            workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, subTileLoop.Position, workTemplate.stone.value, distanceValue));
                                                             stone.orderQueCount += ItemPropertyColl.CarryStones;
                                                         }
                                                         break;
@@ -264,7 +264,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                         {
                                                             if (isFreeTile(subTileLoop.Position))
                                                             {
-                                                                workQue.Add(new WorkQueMember(WorkType.Plant, NoSubWork, subTileLoop.Position, work.farming.value, distanceValue));
+                                                                workQue.Add(new WorkQueMember(WorkType.Plant, NoSubWork, subTileLoop.Position, workTemplate.farming.value, distanceValue));
                                                             }
                                                         }
                                                         else if (rawFood.needMore() &&
@@ -272,7 +272,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                         {
                                                             if (isFreeTile(subTileLoop.Position))
                                                             {
-                                                                workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, subTileLoop.Position, work.farming.value, distanceValue));
+                                                                workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, subTileLoop.Position, workTemplate.farming.value, distanceValue));
                                                                 rawFood.orderQueCount += subTile.terrainAmount;
                                                             }
                                                         }
@@ -285,7 +285,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                 if (ore.needMore() &&
                                                     isFreeTile(subTileLoop.Position))
                                                 {
-                                                    workQue.Add(new WorkQueMember(WorkType.Mine, NoSubWork, subTileLoop.Position, work.mining.value, distanceValue));
+                                                    workQue.Add(new WorkQueMember(WorkType.Mine, NoSubWork, subTileLoop.Position, workTemplate.mining.value, distanceValue));
                                                     ore.orderQueCount += TerrainContent.MineAmount;
                                                 }
                                                 break;
@@ -300,7 +300,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                         {
                                                             if (isFreeTile(subTileLoop.Position))
                                                             {
-                                                                workQue.Add(new WorkQueMember(WorkType.PickUpProduce, NoSubWork, subTileLoop.Position, work.farming.value, distanceValue));
+                                                                workQue.Add(new WorkQueMember(WorkType.PickUpProduce, NoSubWork, subTileLoop.Position, workTemplate.farming.value, distanceValue));
                                                                 rawFood.orderQueCount += TerrainContent.HenMaxSize;
                                                             }
                                                         }
@@ -310,7 +310,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                         {
                                                             if (isFreeTile(subTileLoop.Position))
                                                             {
-                                                                workQue.Add(new WorkQueMember(WorkType.PickUpProduce, NoSubWork, subTileLoop.Position, work.farming.value, distanceValue));
+                                                                workQue.Add(new WorkQueMember(WorkType.PickUpProduce, NoSubWork, subTileLoop.Position, workTemplate.farming.value, distanceValue));
                                                                 rawFood.orderQueCount += TerrainContent.PigMaxSize;
                                                             }
                                                         }

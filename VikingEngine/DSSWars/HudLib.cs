@@ -1,8 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
+using System.Reflection.Metadata;
 using VikingEngine.DataLib;
+using VikingEngine.DSSWars.GameObject.Resource;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Input;
+using VikingEngine.ToGG.MoonFall;
+using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars
 {
@@ -12,7 +18,7 @@ namespace VikingEngine.DSSWars
         public const float HeadDisplayBgOpacity = 0.9f;
         public static float HeadDisplayWidth, HeadDisplayEdge;
 
-       
+        public static readonly Color OffStandardOrange = new Color(200, 128, 0);
 
         public const ImageLayers StoryContentLayer = ImageLayers.Lay1_Front;
         public const ImageLayers StoryBgLayer = ImageLayers.Lay1_Back;
@@ -139,5 +145,18 @@ namespace VikingEngine.DSSWars
                     return "-";
             }
         }
+        public static void FollowFactionButton(bool followFaction, double currentFactionValue, AbsRbAction action, Players.LocalPlayer player, RichBoxContent content)
+        {
+            var followFactionButton = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(followFaction ? "=F" : "!F") },
+                        action, new RbAction2Arg<bool, double>( player.followFactionTooltip, followFaction, currentFactionValue));//new RbAction2Arg<ItemResourceType, City>(faction.tradeFollowFactionClick, resource, city));
+            if (!followFaction)
+            {
+                followFactionButton.overrideBgColor = OffStandardOrange;
+            }
+            content.Add(followFactionButton);
+            content.space();
+        }
+
+        
     }
 }

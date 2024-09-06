@@ -13,6 +13,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         {
             switch (tab)
             {
+                case MenuTab.Info:
+                    return DssRef.todoLang.MenuTab_Info;
                 case MenuTab.Build:
                     return DssRef.todoLang.MenuTab_Build;
                 case MenuTab.Recruit:
@@ -23,6 +25,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.todoLang.MenuTab_Resources;
                 case MenuTab.Work:
                     return DssRef.todoLang.MenuTab_Work;
+                case MenuTab.Automation:
+                    return DssRef.lang.Automation_Title;
                 default:
                     throw new NotImplementedException();
             }

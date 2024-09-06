@@ -15,18 +15,18 @@ namespace VikingEngine.DSSWars
         public int gold = 40;
         public int totalWorkForce, cityIncome, armyUpkeep, armyFoodUpkeep;
         public int nobelHouseCount = 0;
-        TradeTemplate tradeTemplate = new TradeTemplate();
 
-        WorkTemplate work = new WorkTemplate();
+        public TradeTemplate tradeTemplate = new TradeTemplate();
+        public WorkTemplate workTemplate = new WorkTemplate();
 
         public void workTab(RichBoxContent content)
         {
-            work.toHud(content, this, null);
+            workTemplate.toHud(player.GetLocalPlayer(), content, this, null);
         }
 
         public void tradeTab(RichBoxContent content)
         {
-            tradeTemplate.toHud(content, this, null);
+            tradeTemplate.toHud(player.GetLocalPlayer(), content, this, null);
         }
 
         public void changeResourcePrice(float change, ItemResourceType resourceType, City city)
@@ -38,18 +38,41 @@ namespace VikingEngine.DSSWars
             else
             { 
                 tradeTemplate.changeResourcePrice(change, resourceType);
+                var cityCounter = cities.counter();
+                while (cityCounter.Next())
+                {
+                    cityCounter.sel.tradeTemplate.onFactionValueChange(tradeTemplate);
+                }
             }
         }
         public void changeWorkPrio(int change, WorkPriorityType priorityType, City city)
         {
             if (city != null)
             {
-                city.work.changeWorkPrio(change, priorityType);
+                city.workTemplate.changeWorkPrio(change, priorityType);
             }
             else
             {
+                workTemplate.changeWorkPrio(change, priorityType);
+                var cityCounter = cities.counter();
+                while (cityCounter.Next())
+                {
+                    cityCounter.sel.workTemplate.onFactionChange(workTemplate);
+                }
                 //tradeTemplate.changeResourcePrice(change, resourceType);
             }
+        }
+
+        
+
+        public void tradeFollowFactionClick(ItemResourceType resourceType, City city)
+        {
+            city.tradeTemplate.followFactionClick(resourceType, tradeTemplate);
+        }
+
+        public void workFollowFactionClick(WorkPriorityType prioType, City city)
+        {
+            city.workTemplate.followFactionClick(prioType, workTemplate);
         }
 
         public bool calcCost(int cost, ref int totalCost) {

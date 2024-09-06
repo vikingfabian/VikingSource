@@ -59,17 +59,37 @@ namespace VikingEngine.DSSWars.Players
         const double MercenaryMarketAddPerSec_Speed2 = 0.3;
         public FloatingInt mercenaryMarket = new FloatingInt() { value = DssLib.MercenaryPurchaseCount * 2 };
 
-        public MenuTab factionTab = 0;
-        public MenuTab cityTab = 0;
-        
+        public MenuTab factionTab = HeadDisplay.Tabs[0];
+        public MenuTab cityTab = CityMenu.Tabs[0];        
 
         public void factionTabClick(int tab)
         {
-            factionTab = (MenuTab)tab;
+            factionTab = HeadDisplay.Tabs[tab];
         }
         public void cityTabClick(int tab)
         {
-            cityTab = (MenuTab)tab;
+            cityTab = CityMenu.Tabs[tab];
+        }
+
+        public void followFactionTooltip(bool follows, double currentFactionValue)
+        {
+            RichBoxContent content = new RichBoxContent();
+
+            content.text(DssRef.todoLang.Hud_ToggleFollowFaction);
+            content.newParagraph();
+
+            string current;
+            if (follows)
+            {
+                current = DssRef.todoLang.Hud_FollowFaction_Yes;
+            }
+            else
+            { 
+                current = string.Format(DssRef.todoLang.Hud_FollowFaction_No, currentFactionValue);
+            }
+            content.text(current);
+
+            hud.tooltip.create(this, content, true);
         }
 
         public override void writeGameState(BinaryWriter w)

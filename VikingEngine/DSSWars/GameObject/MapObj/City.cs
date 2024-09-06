@@ -1144,6 +1144,9 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     createOverViewModel();
                 }
+
+                workTemplate.onFactionChange(faction.workTemplate);
+                tradeTemplate.onFactionValueChange(faction.tradeTemplate);
             }
         }
 

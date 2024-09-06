@@ -35,6 +35,7 @@ Art
 -Mercenary icon
 -battle icon
 -world domination achieve
+-link, no link
 
 #Upcoming Events
 - June 19: Steam release

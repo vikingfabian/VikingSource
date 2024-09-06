@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.Display
     {        
         public bool fullDisplay = true;
         public const string AutomationMenuState = "auto";
-        static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Work, MenuTab.Trade };
+        public static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Automation, MenuTab.Work, MenuTab.Trade };
         public HeadDisplay(RichboxGui gui)
             :base(gui)
         {
@@ -29,31 +29,45 @@ namespace VikingEngine.DSSWars.Display
 
                 defaultMenu(player, fullDisplay, faction);
 
-                content.newLine();
-                var tabs = new List<RichboxTabMember>((int)MenuTab.NUM);
-                foreach (var tab in Tabs)
+                if (fullDisplay)
                 {
-                    tabs.Add(new RichboxTabMember(new List<AbsRichBoxMember>
-                {
-                    new RichBoxText(LangLib.Tab(tab))
-                }));
-                }
+                    content.newLine();
+                    int tabSel = 0;
 
-                content.Add(new RichboxTabgroup(tabs, (int)player.factionTab, player.factionTabClick, null, null));
+                    var tabs = new List<RichboxTabMember>((int)MenuTab.NUM);
+                    for (int i = 0; i < Tabs.Length; ++i)
+                    {
+                        tabs.Add(new RichboxTabMember(new List<AbsRichBoxMember>
+                    {
+                        new RichBoxText(LangLib.Tab(Tabs[i]))
+                    }));
 
-                switch (player.cityTab)
-                {
-                    case MenuTab.Info:
-                        infoTab();
-                        break;
+                        if (Tabs[i] == player.factionTab)
+                        {
+                            tabSel = i;
+                        }
+                    }
 
-                    case MenuTab.Work:
-                        faction.workTab(content);
-                        break;
+                    content.Add(new RichboxTabgroup(tabs, tabSel, player.factionTabClick, null, null));
 
-                    case MenuTab.Trade:
-                        faction.tradeTab(content);
-                        break;
+                    switch (player.factionTab)
+                    {
+                        case MenuTab.Info:
+                            infoTab();
+                            break;
+
+                        case MenuTab.Automation:
+                            player.automation.toMenu(content, fullDisplay);
+                            break;
+
+                        case MenuTab.Work:
+                            faction.workTab(content);
+                            break;
+
+                        case MenuTab.Trade:
+                            faction.tradeTab(content);
+                            break;
+                    }
                 }
                 //switch (player.hud.displays.CurrentMenuState)
                 //{
@@ -249,16 +263,16 @@ namespace VikingEngine.DSSWars.Display
                     content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_ArmyUpkeep, TextLib.LargeNumber(faction.armyUpkeep))));
 
                     content.newLine();
-                    var automationButton = new HUD.RichBox.RichboxButton(
-                        new List<AbsRichBoxMember>
-                        {
-                                new RichBoxImage(player.input.AutomationSetting.Icon),
-                                new RichBoxImage(SpriteName.MenuPixelIconSettings),
-                                new HUD.RichBox.RichBoxText(DssRef.lang.Automation_Title),
-                        },
-                        new RbAction1Arg<string>(player.hud.displays.SetMenuState, AutomationMenuState, SoundLib.menu),
-                        null);
-                    content.Add(automationButton);
+                    //var automationButton = new HUD.RichBox.RichboxButton(
+                    //    new List<AbsRichBoxMember>
+                    //    {
+                    //            new RichBoxImage(player.input.AutomationSetting.Icon),
+                    //            new RichBoxImage(SpriteName.MenuPixelIconSettings),
+                    //            new HUD.RichBox.RichBoxText(DssRef.lang.Automation_Title),
+                    //    },
+                    //    new RbAction1Arg<string>(player.hud.displays.SetMenuState, AutomationMenuState, SoundLib.menu),
+                    //    null);
+                    //content.Add(automationButton);
                     //content.Button(SpriteName.MenuPixelIconSettings, "Automation", new RbAction(DssRef.state.exit), null, true);
 
                     //string diplomacy = "Diplomatic points: {0}/{1}({2})";

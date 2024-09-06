@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.Display
 {
     class CityMenu
     {
-        static readonly MenuTab[] Tabs = { MenuTab.Recruit, MenuTab.Resources, MenuTab.Work, MenuTab.Trade };
+        public static readonly MenuTab[] Tabs = { MenuTab.Recruit, MenuTab.Resources, MenuTab.Work, MenuTab.Trade };
         Players.LocalPlayer player;
         City city;
 
@@ -31,28 +31,30 @@ namespace VikingEngine.DSSWars.Display
             this.player = player;
             this.city = city;
 
-            //if (this.player.cityTab == CityTab.Resources)
-            //{
-            //    player.hud.displays.SetMenuState(ResourcesMenuState);
-            //    this.player.cityTab = CityTab.Recruit;
-            //}
-
             content.newLine();
+            
+            int tabSel = 0;
+
             var tabs = new List<RichboxTabMember>((int)MenuTab.NUM);
-            foreach (var tab in Tabs)//for (MenuTab tab = 0; tab < MenuTab.NUM; tab++)
+            for (int i = 0; i < Tabs.Length; ++i)
             {
                 tabs.Add(new RichboxTabMember(new List<AbsRichBoxMember>
+                    {
+                        new RichBoxText(LangLib.Tab(Tabs[i]))
+                    }));
+
+                if (Tabs[i] == player.cityTab)
                 {
-                    new RichBoxText(LangLib.Tab(tab))
-                }));
+                    tabSel = i;
+                }
             }
 
-            content.Add(new RichboxTabgroup(tabs, (int)this.player.cityTab, player.cityTabClick, null, null));
+            content.Add(new RichboxTabgroup(tabs, tabSel, player.cityTabClick, null, null));
 
             switch (player.cityTab)
             { 
                 case MenuTab.Work:
-                    city.workTab(content);
+                    city.workTab(player, content);
                     break;
 
                 case MenuTab.Recruit:
@@ -67,37 +69,11 @@ namespace VikingEngine.DSSWars.Display
                     tradeTab(content);
                     break;
             }
-            //content.h2(DssRef.lang.UnitType_Recruit);
-            //foreach (var opt in city.cityPurchaseOptions)
-            //switch (player.hud.displays.CurrentMenuState)
-            //{
-
-            //    default:
-                    
-            //        break;
-
-            //    case ResourcesMenuState:
-            //        {
-            //            city.resourcesToMenu(content);
-            //        }
-            //        break;
-            //}
         }
 
         void recruitTab(RichBoxContent content)
-        {
-            
+        {            
                 content.newLine();
-
-                //var resourcesButton = new HUD.RichBox.RichboxButton(
-                //new List<AbsRichBoxMember>
-                //{
-                //    new HUD.RichBox.RichBoxText("Resources"),
-                //},
-                //new RbAction1Arg<string>(player.hud.displays.SetMenuState, ResourcesMenuState, SoundLib.menu),
-                //null);
-                //content.Add(resourcesButton);
-
 
                 ArmyStatus status;
                 Army recruitArmy = city.recruitToClosestArmy();
@@ -253,7 +229,7 @@ namespace VikingEngine.DSSWars.Display
 
         void tradeTab(RichBoxContent content)
         {
-            city.tradeTemplate.toHud(content, city.faction, city);
+            city.tradeTemplate.toHud(player,content, city.faction, city);
         }
 
         //void tabClick(int tab)
@@ -522,6 +498,7 @@ namespace VikingEngine.DSSWars.Display
         Work,
         Trade,
         Build,
+        Automation,
         NUM
     }
 }
