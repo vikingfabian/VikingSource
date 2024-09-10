@@ -45,6 +45,7 @@ namespace VikingEngine.DSSWars.Players
 
         public PlayerToPlayerDiplomacy[] toPlayerDiplomacies = null;
         public Automation automation;
+        public Build.BuildControls BuildControls;
 
         public SpottedArray<Battle.BattleGroup> battles = new SpottedArray<Battle.BattleGroup>(4);
 
@@ -88,6 +89,18 @@ namespace VikingEngine.DSSWars.Players
                 current = string.Format(DssRef.todoLang.Hud_FollowFaction_No, currentFactionValue);
             }
             content.text(current);
+
+            hud.tooltip.create(this, content, true);
+        }
+
+        public void perSecondTooltip(bool minuteAverage)
+        {
+            RichBoxContent content = new RichBoxContent();
+            content.text(DssRef.todoLang.Info_PerSecond);
+            if (minuteAverage)
+            {
+                content.text(DssRef.todoLang.Info_MinuteAverage);
+            }
 
             hud.tooltip.create(this, content, true);
         }
@@ -182,6 +195,7 @@ namespace VikingEngine.DSSWars.Players
             faction.displayInFullOverview = true;
 
             hud = new GameHud(this, numPlayers);
+            BuildControls = new Build.BuildControls();
             automation = new Automation(this);
 
             playerData = Engine.XGuide.GetPlayer(playerindex);

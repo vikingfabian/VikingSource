@@ -19,6 +19,13 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Resource_TypeName_Ore => "ore";
         public string Resource_TypeName_Iron => "iron";
 
+        public string BuildingType_WorkerHut => "Worker hut";
+        public string BuildingType_Tavern => "Tavern";
+
+        public string BuildingType_PigPen => "Pig pen";
+        public string BuildingType_HenPen => "Hen pen";
+
+
 
         public string MenuTab_Info => "Info";
         public string MenuTab_Work => "Work";
@@ -26,6 +33,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string MenuTab_Resources => "Resources";
         public string MenuTab_Trade => "Trade";
         public string MenuTab_Build => "Build";
+
+        public string Build_PlaceBuilding => "Building";
+        public string Build_DestroyBuilding => "Destroy";
+        public string Build_ClearTerrain => "Clear terrain";
 
         public string Work_OrderPrioTitle => "Work priority";
         public string Work_OrderPrioDescription => "Priority goes from 1 (low) to 10 (high)";
@@ -45,5 +56,25 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string Hud_FollowFaction_Yes => "Is set to use faction global settings";
         public string Hud_FollowFaction_No => "Is set to use local settings (Global value is {0})";
+
+        public string ArmyHud_Food_Reserves_X => "Food reserves: {0}";
+        public string ArmyHud_Food_Upkeep_X => "Food upkeep: {0}";
+        public string ArmyHud_Food_Costs_X => "Food costs: {0}";
+
+        /// <summary>
+        /// A small symbol for buttons containing extra information
+        /// </summary>
+        public string Info_ButtonIcon => "i";
+
+        public string Info_PerSecond => "Displayed in Resource Per Second.";
+
+        public string Info_MinuteAverage => "The value is an average from the last minute";
+
+        /// <summary>
+        /// A small symbol for buttons that will end/close an editor
+        /// </summary>
+        public string Hud_EndSessionIcon => "X";
+
+        public string TerrainType => "Terrain type";
     }
 }

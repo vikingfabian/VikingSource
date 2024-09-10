@@ -89,7 +89,6 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string Hud_SoldierGroupsCount { get; }
 
-
         public abstract string Hud_StrengthRating { get; }
 
         public abstract string Hud_TotalStrengthRating { get; }

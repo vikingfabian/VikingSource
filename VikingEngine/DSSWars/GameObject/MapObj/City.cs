@@ -951,61 +951,71 @@ namespace VikingEngine.DSSWars.GameObject
         {
            
             base.toHud(args);
-            if (args.player.hud.detailLevel == HudDetailLevel.Minimal)
-            {   
-                args.content.Add(new RichBoxImage(SpriteName.WarsWorker));
-                args.content.Add(new RichBoxText(TextLib.LargeNumber(workForce.Int())));
-                args.content.space();
-                args.content.Add(new RichBoxImage(SpriteName.WarsGuard));
-                args.content.Add(new RichBoxText(TextLib.LargeNumber(workForce.Int())));
-                args.content.space();
-                args.content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
-                args.content.Add(new RichBoxText(TextLib.OneDecimal(strengthValue)));
+
+            if (args.selected && faction == args.player.faction)
+            {
+                CityDetailsHud(true, args.content);
+                new Display.CityMenu(args.player, this, args.content);
+            }
+            else
+            {
+                CityDetailsHud(false, args.content);
+            }
+        }
+
+        public void CityDetailsHud(bool minimal, RichBoxContent content)
+        {
+            if (minimal)
+            {
+                content.Add(new RichBoxImage(SpriteName.WarsWorker));
+                content.Add(new RichBoxText(TextLib.LargeNumber(workForce.Int())));
+                content.space();
+                content.Add(new RichBoxImage(SpriteName.WarsGuard));
+                content.Add(new RichBoxText(TextLib.Divition_Large(guardCount, maxGuardSize)));
+                content.space();
+                content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
+                content.Add(new RichBoxText(TextLib.OneDecimal(strengthValue)));
             }
             else
             {
                 if (damages.HasValue())
                 {
-                    args.content.icontext(SpriteName.hqBatteResultBobbleDamage, string.Format(DssRef.lang.CityOption_Damages, damages.Int()));
+                    content.icontext(SpriteName.hqBatteResultBobbleDamage, string.Format(DssRef.lang.CityOption_Damages, damages.Int()));
                 }
-                HudLib.ItemCount(args.content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.Int(), workForceMax));
-                HudLib.ItemCount(args.content,SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount,TextLib.Divition_Large(guardCount, maxGuardSize));
-                args.content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
-                args.content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, income));
-                args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, upkeep));
-                
+                HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.Int(), workForceMax));
+                HudLib.ItemCount(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, TextLib.Divition_Large(guardCount, maxGuardSize));
+                content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
+                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, income));
+                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, upkeep));
+
                 if (immigrants.HasValue())
                 {
-                    args.content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.Hud_Immigrants, immigrants.Int()));
+                    content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.Hud_Immigrants, immigrants.Int()));
                 }
-            }
 
-            if (!args.player.inTutorialMode)
-            {
-                //Properties
-                if (nobelHouse)
+                //if (!player.inTutorialMode)
                 {
-                    args.content.newLine();
-                    args.content.ListDot();
-                    args.content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse));
+                    //Properties
+                    if (nobelHouse)
+                    {
+                        content.newLine();
+                        content.ListDot();
+                        content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse));
+                    }
+
+                    if (CityType == CityType.Factory)
+                    {
+                        content.newLine();
+                        content.ListDot();
+                        content.Add(new RichBoxImage(SpriteName.WarsFactoryIcon));
+                        content.Add(new RichBoxText(DssRef.lang.Building_DarkFactory));
+
+                    }
                 }
-
-                if (CityType == CityType.Factory)
-                {
-                    args.content.newLine();
-                    args.content.ListDot();
-                    args.content.Add(new RichBoxImage(SpriteName.WarsFactoryIcon));
-                    args.content.Add(new RichBoxText(DssRef.lang.Building_DarkFactory));
-
-                }
-            }
-
-            if (args.selected && faction == args.player.faction)
-            {
-                new Display.CityMenu(args.player, this, args.content);
             }
 
             
+
         }
 
         public void AddNeighborCity(int nCityIndex)

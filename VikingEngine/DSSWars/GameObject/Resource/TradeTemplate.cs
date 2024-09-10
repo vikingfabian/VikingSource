@@ -33,24 +33,13 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 
         public void changeResourcePrice(float change, ItemResourceType resourceType)
         {
+            const float MinPrice = 0.1f;
             const float MaxPrice = 100;
 
             var trade = GetTradeResource(resourceType);
-            trade.price = Bound.Set(trade.price + change, 0, MaxPrice);
+            trade.price = Bound.Set(trade.price + change, MinPrice, MaxPrice);
             trade.followFaction = false;
             setTradeResource(resourceType, trade);
-            //switch (resourceType)
-            //{
-            //    case ItemResourceType.SoftWood:
-            //        wood.price = Bound.Set(wood.price + change, 0, MaxPrice);
-            //        break;
-            //    case ItemResourceType.Stone:
-            //        stone.price = Bound.Set(stone.price + change, 0, MaxPrice);
-            //        break;
-            //    case ItemResourceType.Food:
-            //        food.price = Bound.Set(food.price + change, 0, MaxPrice);
-            //        break;
-            //}
         }
 
         public void onFactionValueChange(TradeTemplate factionTemplate)

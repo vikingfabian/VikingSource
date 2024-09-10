@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.Display
 {
     class CityMenu
     {
-        public static readonly MenuTab[] Tabs = { MenuTab.Recruit, MenuTab.Resources, MenuTab.Work, MenuTab.Trade };
+        public static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Recruit, MenuTab.Resources, MenuTab.Work, MenuTab.Trade, MenuTab.Build };
         Players.LocalPlayer player;
         City city;
 
@@ -53,6 +53,9 @@ namespace VikingEngine.DSSWars.Display
 
             switch (player.cityTab)
             { 
+                case MenuTab.Info:
+                    city.CityDetailsHud(false, content);
+                    break;
                 case MenuTab.Work:
                     city.workTab(player, content);
                     break;
@@ -67,6 +70,10 @@ namespace VikingEngine.DSSWars.Display
 
                 case MenuTab.Trade:
                     tradeTab(content);
+                    break;
+
+                case MenuTab.Build:
+                    player.BuildControls.toHud(content);
                     break;
             }
         }

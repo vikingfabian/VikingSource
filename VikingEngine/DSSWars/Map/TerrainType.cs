@@ -60,6 +60,7 @@ namespace VikingEngine.DSSWars.Map
         Work_Smith,
         PigPen,
         HenPen,
+        Tavern,
         NUM_NONE
     }
 

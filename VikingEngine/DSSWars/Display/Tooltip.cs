@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.PJ.CarBall;
 
@@ -98,19 +99,44 @@ namespace VikingEngine.DSSWars.Display
         void hoverTip(Players.LocalPlayer player, Players.SelectedSubTile subTile)
         {
             RichBoxContent content = new RichBoxContent();
-            content.text(subTile.subTile.TypeToString());
+            if (subTile.selectTileResult != Players.SelectTileResult.None)
+            {
+                content.Add(new RichBoxBeginTitle(2));
+                content.Add(new RichBoxImage(player.input.Select.Icon));
 
-            //if (subTile.selectable(player.faction, out _))
-            //{
+                RichBoxText title;
                 switch (subTile.selectTileResult)
                 {
+                    case Players.SelectTileResult.Build:
+                        content.Add(new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Build_PlaceBuilding, player.BuildControls.placeBuildingType)));
+                        content.newLine();
+                        CraftBlueprint blueprint = ResourceLib.Blueprint(player.BuildControls.placeBuildingType);
+                        blueprint.toMenu(content);
+                        break;
+                    case Players.SelectTileResult.Destroy:
+                        content.Add(new RichBoxText(DssRef.todoLang.Build_DestroyBuilding));
+                        break;
+
+                    case Players.SelectTileResult.ClearTerrain:
+                        content.Add(new RichBoxText(DssRef.todoLang.Build_ClearTerrain));
+                        break;
+
                     case Players.SelectTileResult.CityHall:
-                        content.text("[]Select City");
+                        content.Add(new RichBoxText("Select City"));
                         break;
-                    case Players.SelectTileResult.Resources:
-                        content.text("[]Select Resources");
-                        break;
+                        //case Players.SelectTileResult.Resources:
+                        //    content.text("[]Select Resources");
+                        //    break;
                 }
+                //title.overrideColor = HudLib.TitleColor_Action;
+                content.newParagraph();
+             
+            }
+            content.h2(DssRef.todoLang.TerrainType).overrideColor = HudLib.TitleColor_TypeName;
+            content.text(subTile.subTile.TypeToString());
+            //if (subTile.selectable(player.faction, out _))
+            //{
+            
             //}
             create(player, content, false);
         }
@@ -124,25 +150,25 @@ namespace VikingEngine.DSSWars.Display
 
             if (attackTarget)
             {
-                content.h2(DssRef.lang.ArmyOption_Attack).overrideColor = Color.Red;
+                content.h2(DssRef.lang.ArmyOption_Attack).overrideColor = HudLib.TitleColor_Attack;
             }
 
             string name = obj.Name();
             if (name != null)
             {
-                content.text(name).overrideColor = Color.LightYellow;
+                content.text(name).overrideColor = HudLib.TitleColor_Name;
             }
-            content.h2(obj.TypeName()).overrideColor = Color.LightGray;
+            content.h2(obj.TypeName()).overrideColor = HudLib.TitleColor_TypeName;
 
             if (obj.GetFaction() != player.faction)
             {
                 var relation = DssRef.diplomacy.GetRelationType(player.faction, obj.GetFaction());
 
                 content.newLine();
-                content.Add(new RichBoxText(obj.GetFaction().PlayerName, Color.LightYellow));
+                content.Add(new RichBoxText(obj.GetFaction().PlayerName, HudLib.TitleColor_Name));
                 content.newLine();
                 content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation)));
-                content.Add(new RichBoxText(Diplomacy.RelationString(relation), Color.LightBlue));
+                content.Add(new RichBoxText(Diplomacy.RelationString(relation), HudLib.TextColor_Relation));
                 content.newLine();
                 
             }

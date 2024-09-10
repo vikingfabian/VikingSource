@@ -28,6 +28,9 @@ namespace VikingEngine.HUD.RichBox
         public Stack<AbsRichBoxMember> parentMember = new Stack<AbsRichBoxMember>();
         public List<List<RichboxButton>> buttonGrid_Y_X = new List<List<RichboxButton>>();
 
+        int tryCreatePosition = -1;
+        bool lockNewLine = false;
+
         public RichBoxGroup(Vector2 topleft, float boxWidth, ImageLayers layer, 
             RichBoxSettings settings, List<AbsRichBoxMember> content,
             bool bRemoveDeadHeightSpace = true, 
@@ -121,9 +124,12 @@ namespace VikingEngine.HUD.RichBox
 
         public void newLine()
         {
-            completeLine();
+            if (!lockNewLine)
+            {
+                completeLine();
 
-            prepLine();
+                prepLine();
+            }
         }
 
         void prepLine()
@@ -208,6 +214,34 @@ namespace VikingEngine.HUD.RichBox
             return (topleft.X + boxWidth) - position.X;
         }
 
+
+        
+        public void TryCreate_Start()
+        { 
+            addToRender = false;
+            tryCreatePosition = images.Count;
+            lockNewLine = true;
+        }
+        public void TryCreate_Complete()
+        {
+            addToRender = true;
+            lockNewLine = false;
+
+            for (int i = tryCreatePosition; i < images.Count; i++)
+            {
+                images[i].AddToRender();
+            }
+        }
+        public void TryCreate_Undo()
+        {
+            while (images.Count > tryCreatePosition)
+            { 
+                images.RemoveAt(images.Count -1);
+            }
+
+            addToRender = true;
+            lockNewLine = false;
+        }
         //float LineSpacing => imageHeight
     }
 

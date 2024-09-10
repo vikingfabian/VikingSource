@@ -45,28 +45,30 @@ namespace VikingEngine.HUD.RichBox
 
         public override void Create(RichBoxGroup group)
         {
-            Vector2 topLeft = group.position;
+            const float HoriSpace = 4;
+
+            
             float heigh = group.lineSpacingHalf;
 
             group.parentMember.Push(this);
 
-            group.position.X += 4;
+            group.TryCreate_Start();
+            createContent(out Vector2 topLeft, out Vector2 bottomRight);
 
-            createPreContent(group);
-
-            foreach (var m in content)
+            if (bottomRight.X + 4 > group.boxWidth)
             {
-                m.Create(group);
+                group.TryCreate_Undo();
+                group.newLine();
+                createContent(out topLeft, out bottomRight);
             }
-            group.position.X += 4;
+            else
+            {
+                group.TryCreate_Complete();
+            }
 
             group.parentMember.Pop();
 
-            Vector2 bottomRight = group.position;
-            if (bottomRight.Y != topLeft.Y)
-            {
-                bottomRight.X = group.RightEdgeSpace();
-            }
+            
 
             topLeft.Y -= heigh;
             bottomRight.Y += group.lineSpacingHalf;
@@ -91,6 +93,27 @@ namespace VikingEngine.HUD.RichBox
             
             group.images.Add(bgPointer);
             group.buttonGrid_Y_X.Last().Add(this);
+
+            void createContent(out Vector2 topLeft, out Vector2 bottomRight)
+            {
+                topLeft = group.position;
+
+                group.position.X += HoriSpace;
+
+                createPreContent(group);
+
+                foreach (var m in content)
+                {
+                    m.Create(group);
+                }
+                group.position.X += HoriSpace;
+
+                bottomRight = group.position;
+                if (bottomRight.Y != topLeft.Y)
+                {
+                    bottomRight.X = group.RightEdgeSpace();
+                }
+            }
         }
 
         virtual protected void createPreContent(RichBoxGroup group)
@@ -114,6 +137,14 @@ namespace VikingEngine.HUD.RichBox
         public override void getButtons(List<RichboxButton> buttons)
         {
             buttons.Add(this);
+        }
+
+        public void setGroupSelectionColor(RichBoxSettings settings, bool selected)
+        {
+            if (!selected)
+            {
+                overrideBgColor = settings.buttonSecondary.BgColor;
+            }
         }
     }
 }

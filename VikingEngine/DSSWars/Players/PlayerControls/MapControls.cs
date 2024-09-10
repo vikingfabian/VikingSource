@@ -574,15 +574,15 @@ namespace VikingEngine.DSSWars.Players
         {
             selection.obj = city;
 
-            switch (tileResult)
-            {
-                case SelectTileResult.CityHall:
-                    player.cityTab = Display.MenuTab.Recruit;
-                    break;
-                case SelectTileResult.Resources:
-                    player.cityTab = Display.MenuTab.Resources;
-                    break;
-            }
+            //switch (tileResult)
+            //{
+            //    case SelectTileResult.CityHall:
+            //        player.cityTab = Display.MenuTab.Recruit;
+            //        break;
+            //    case SelectTileResult.Resources:
+            //        player.cityTab = Display.MenuTab.Resources;
+            //        break;
+            //}
         }
 
         public bool focusedObjectMenuState()

@@ -44,7 +44,7 @@ namespace VikingEngine.DSSWars.Players
 
                     if (player.cityTab == Display.MenuTab.Build)
                     {
-                        selectTileResult = SelectTileResult.Build;
+                        selectTileResult = player.BuildControls.buildMode;
                         hasSelection = true;
                         model.position = WP.SubtileToWorldPosXZ_Centered(subTilePos);
                         model.position.Y = subTile.groundY;
@@ -65,9 +65,9 @@ namespace VikingEngine.DSSWars.Players
                                     case Map.TerrainBuildingType.StoneHall:
                                         selectTileResult = SelectTileResult.CityHall;
                                         break;
-                                    case Map.TerrainBuildingType.Square:
-                                        selectTileResult = SelectTileResult.Resources;
-                                        break;
+                                    //case Map.TerrainBuildingType.Square:
+                                    //    selectTileResult = SelectTileResult.Resources;
+                                    //    break;
                                 }
 
                                 hasSelection = selectTileResult != SelectTileResult.None;
@@ -131,5 +131,7 @@ namespace VikingEngine.DSSWars.Players
         Resources,
         
         Build,
+        ClearTerrain,
+        Destroy,
     }
 }

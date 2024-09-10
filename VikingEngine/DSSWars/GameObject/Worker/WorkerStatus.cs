@@ -295,7 +295,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             subTileStart = subTileEnd;
             subTileEnd = targetSubTile;
             processTimeStartStampSec = Ref.TotalGameTimeSec;
-            float dist = VectorExt.Length(subTileEnd.X - subTileStart.X, subTileEnd.Y - subTileStart.Y) / WorldData.TileSubDivitions;
+            float dist = VectorExt.Length(subTileEnd.X - subTileStart.X, subTileEnd.Y - subTileStart.Y) / WorldData.TileSubDivitions; //Convrst to WP length
             
             processTimeLengthSec = finalizeWorkTime() + 
                 dist / (AbsDetailUnitData.StandardWalkingSpeed * 1000);

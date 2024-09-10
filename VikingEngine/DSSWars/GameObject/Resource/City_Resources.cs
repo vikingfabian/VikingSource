@@ -14,9 +14,7 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City
     {
-        static readonly CraftBlueprint CraftFood = new CraftBlueprint("Food", 40) { useWater = 5, useWood = 5, useRawFood = 1 };
-        static readonly CraftBlueprint CraftIron = new CraftBlueprint("Iron", 4) { useWater = 1, useWood = 20, useOre = 2 } ;
-        static readonly CraftBlueprint CraftWorkerHut = new CraftBlueprint("Worker hut", 1) { useWater = 0, useWood = 200, useStone = 40 };
+        
 
         MinuteStats blackMarketCosts = new MinuteStats();
 
@@ -113,11 +111,11 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Egg:                                   
                 case ItemResourceType.Hen:
                 case ItemResourceType.Wheat:
-                    rawFood.add(item, 10);
+                    rawFood.add(item, ResourceLib.DefaultItemRawFoodAmout);
                     break;
 
                 case ItemResourceType.Pig:
-                    rawFood.add(item, 50);
+                    rawFood.add(item, ResourceLib.PigRawFoodAmout);
                     skin.add(item);
                     break;
 
@@ -139,15 +137,15 @@ namespace VikingEngine.DSSWars.GameObject
             switch (building)
             {
                 case TerrainBuildingType.Work_Cook:
-                    food.amount += CraftFood.craft(this);
-                    canCraftAgain = CraftFood.canCraft(this);
+                    food.amount += ResourceLib.CraftFood.craft(this);
+                    canCraftAgain = ResourceLib.CraftFood.canCraft(this);
                     break;
                 case TerrainBuildingType.Work_Smith:
-                    iron.amount += CraftIron.craft(this);
-                    canCraftAgain = CraftFood.canCraft(this);
+                    iron.amount += ResourceLib.CraftIron.craft(this);
+                    canCraftAgain = ResourceLib.CraftFood.canCraft(this);
                     break;
                 case TerrainBuildingType.WorkerHut:
-                    CraftWorkerHut.craft(this);
+                    ResourceLib.CraftWorkerHut.craft(this);
                     onWorkHutBuild();
                     break;
             }
@@ -176,9 +174,9 @@ namespace VikingEngine.DSSWars.GameObject
 
             content.newParagraph();
             content.h2("Crafting blueprints");
-            CraftFood.toMenu(content);
-            CraftIron.toMenu(content);
-            CraftWorkerHut.toMenu(content);
+            ResourceLib.CraftFood.toMenu(content);
+            ResourceLib.CraftIron.toMenu(content);
+            ResourceLib.CraftWorkerHut.toMenu(content);
             content.text("1 iron => " + IronSellValue.ToString() + "gold");
             content.text("1 gold ore => " + GoldOreSellValue.ToString() + "gold");
             content.text("1 food => " + ResourceLib.FoodEnergy + " energy (seconds of work)");
@@ -237,93 +235,5 @@ namespace VikingEngine.DSSWars.GameObject
         }
     }
 
-    class CraftBlueprint
-    {
-        string name;
-
-        public int useWater;
-        public int useStone;
-        public int useWood;
-        public int useRawFood;
-        public int useOre;
-
-        int resultCount;
-
-        public CraftBlueprint(string name, int result)
-        { 
-            this.name = name;
-            this.resultCount = result;
-        }
-
-        public void createBackOrder(City city)
-        {
-            city.wood.backOrder += useWood;
-            city.stone.backOrder += useStone;
-            city.rawFood.backOrder += useRawFood;
-            city.ore.backOrder += useOre;
-        }
-
-        public bool available(City city)
-        {
-            bool result = city.water >= useWater &&
-                city.wood.freeAmount() >= useWood &&
-                city.stone.freeAmount() >= useStone &&
-                city.rawFood.freeAmount() >= useRawFood &&
-                city.ore.freeAmount() >= useOre;
-
-            return result;
-        }
-
-        public bool canCraft(City city)
-        {
-            bool result = city.water >= useWater &&
-                city.wood.amount >= useWood &&
-                city.stone.amount >= useStone &&
-                city.rawFood.amount >= useRawFood &&
-                city.ore.amount >= useOre;
-
-            return result;
-        }
-
-        public int craft(City city)//ref int water,ref int wood, ref int stone, ref int rawfood, ref int ore)
-        {
-            city.water -= useWater;
-            city.wood.amount -= useWood;
-            city.stone.amount -= useStone;
-            city.rawFood.amount -= useRawFood;
-            city.ore.amount -= useOre;
-
-            if (city.stone.amount < 0 || city.wood.amount < 0)
-            { 
-                lib.DoNothing();
-            }
-
-            return resultCount;
-        }
-
-        public void toMenu(RichBoxContent content)
-        {
-            string resources = string.Empty;
-
-            addResources(useWater, DssRef.todoLang.Resource_TypeName_Water, ref resources);
-            addResources(useWood, DssRef.todoLang.Resource_TypeName_Wood, ref resources);
-            addResources(useStone, DssRef.todoLang.Resource_TypeName_Stone, ref resources);
-            addResources(useRawFood, DssRef.todoLang.Resource_TypeName_RawFood, ref resources);
-            addResources(useOre, DssRef.todoLang.Resource_TypeName_Ore, ref resources);
-
-            content.text(resources + " => " + resultCount.ToString() + " " + name);
-
-            void addResources(int count, string name, ref string resources)
-            {
-                if (count > 0)
-                {
-                    if (resources.Length > 0)
-                    {
-                        resources += " + ";
-                    }
-                    resources += count.ToString() + " " + name;
-                }
-            }
-        }
-    }
+    
 }

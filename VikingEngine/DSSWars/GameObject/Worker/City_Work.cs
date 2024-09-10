@@ -55,18 +55,18 @@ namespace VikingEngine.DSSWars.GameObject
                         break;
 
                     case WorkType.Building:
-                        CraftWorkerHut.createBackOrder(this);
+                        ResourceLib.CraftWorkerHut.createBackOrder(this);
                         break;
 
                     case WorkType.Craft:
                         switch (status.workSubType)
                         {
                             case WorkerStatus.Subwork_Craft_Food:
-                                CraftFood.createBackOrder(this);
+                                ResourceLib.CraftFood.createBackOrder(this);
                                 break;
 
                             case WorkerStatus.Subwork_Craft_Iron:
-                                CraftIron.createBackOrder(this);
+                                ResourceLib.CraftIron.createBackOrder(this);
                                 break;
                         }
                         break;
@@ -156,7 +156,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            if (!inRender_overviewLayer)
+            if (!inRender_detailLayer)
             {
                 processAsynchWork(workerStatuses);
             }
@@ -180,18 +180,18 @@ namespace VikingEngine.DSSWars.GameObject
                         switch ((TerrainBuildingType)subTile.subTerrain)
                         {
                             case TerrainBuildingType.Work_Cook:
-                                if (CraftFood.available(this) && 
+                                if (ResourceLib.CraftFood.available(this) && 
                                     isFreeTile(subTileLoop.Position))
                                 {
-                                    CraftFood.createBackOrder(this);
+                                    ResourceLib.CraftFood.createBackOrder(this);
                                     workQue.Add(new WorkQueMember(WorkType.Craft, NoSubWork, subTileLoop.Position, workTemplate.craft_food.value, 0));
                                 }
                                 break;
                             case TerrainBuildingType.Work_Smith:
-                                if (CraftIron.available(this) &&
+                                if (ResourceLib.CraftIron.available(this) &&
                                     isFreeTile(subTileLoop.Position))
                                 {
-                                    CraftIron.createBackOrder(this);
+                                    ResourceLib.CraftIron.createBackOrder(this);
                                     workQue.Add(new WorkQueMember(WorkType.Craft, NoSubWork, subTileLoop.Position, workTemplate.craft_iron.value, 0));
                                 }
                                 break;
@@ -330,11 +330,11 @@ namespace VikingEngine.DSSWars.GameObject
                                                     }
                                                     else if (workForce.value >= workForceMax && 
                                                         //idleCount < 5 && 
-                                                        CraftWorkerHut.available(this) &&
+                                                        ResourceLib.CraftWorkerHut.available(this) &&
                                                         isFreeTile(subTileLoop.Position))
                                                     {
                                                         //worker hut
-                                                        CraftWorkerHut.createBackOrder(this);
+                                                        ResourceLib.CraftWorkerHut.createBackOrder(this);
                                                         workQue.Add(new WorkQueMember(WorkType.Building, NoSubWork, subTileLoop.Position, 3, distanceValue));
                                                         waterSpendOrders += 10;
                                                     }

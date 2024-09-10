@@ -18,7 +18,16 @@ namespace VikingEngine.DSSWars
         public const float HeadDisplayBgOpacity = 0.9f;
         public static float HeadDisplayWidth, HeadDisplayEdge;
 
+        public static readonly Color TitleColor_Action = Color.LightBlue;
+        public static readonly Color TitleColor_Attack = Color.Red;
+        public static readonly Color TitleColor_Name = Color.LightYellow;
+        public static readonly Color TitleColor_TypeName = Color.LightGray;
+
+        public static readonly Color TextColor_Relation = Color.LightBlue;
+
         public static readonly Color OffStandardOrange = new Color(200, 128, 0);
+        public static readonly Color InfoBgYellow = new Color(160, 128, 0);
+        public static readonly Color InfoContentYellow = new Color(255, 255, 0);
 
         public const ImageLayers StoryContentLayer = ImageLayers.Lay1_Front;
         public const ImageLayers StoryBgLayer = ImageLayers.Lay1_Back;
@@ -157,6 +166,23 @@ namespace VikingEngine.DSSWars
             content.space();
         }
 
-        
+        public static void InfoButton(RichBoxContent content, AbsRbAction enterAction)
+        {
+            var text = new RichBoxText(DssRef.todoLang.Info_ButtonIcon);
+            text.overrideColor = InfoContentYellow;
+
+            var button = new RichboxButton(new List<AbsRichBoxMember> { 
+                new RichBoxSpace(0.5f),
+                text,
+                new RichBoxSpace(0.5f),
+            },
+            null, enterAction, true, InfoBgYellow);
+            content.Add(button);
+        }
+
+        public static void PerSecondInfo(Players.LocalPlayer player, RichBoxContent content, bool minuteAverage)
+        {
+            InfoButton(content, new RbAction1Arg<bool>(player.perSecondTooltip, minuteAverage));
+        }
     }
 }

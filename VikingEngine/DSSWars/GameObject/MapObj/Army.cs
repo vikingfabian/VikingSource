@@ -178,9 +178,11 @@ namespace VikingEngine.DSSWars.GameObject
                     args.content.icontext(SpriteName.WarsSoldierIcon,string.Format(DssRef.lang.Hud_SoldierCount, TextLib.LargeNumber(count)));
                     args.content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
                     //args.content.icontext(SpriteName.rtsUpkeepTime,string.Format(DssRef.lang.Hud_Upkeep ,TextLib.LargeNumber(upkeep)));
-                    args.content.text(string.Format("Food reserves: {0}", TextLib.OneDecimal(food)));
-                    args.content.text(string.Format("Food upkeep: {0}", TextLib.OneDecimal(foodUpkeep)));
-                    args.content.icontext(SpriteName.rtsUpkeepTime, string.Format("Food costs: {0}", TextLib.OneDecimal(foodCosts.displayValue_sec)));
+                    args.content.text(string.Format(DssRef.todoLang.ArmyHud_Food_Reserves_X, TextLib.LargeNumber((int) food )));
+                    args.content.text(string.Format(DssRef.todoLang.ArmyHud_Food_Upkeep_X, TextLib.OneDecimal(foodUpkeep)));
+                    args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.todoLang.ArmyHud_Food_Costs_X, TextLib.OneDecimal(foodCosts.displayValue_sec)));
+                    args.content.space();
+                    HudLib.PerSecondInfo(args.player, args.content, true);
 
                     if (PlatformSettings.DevBuild)
                     {
@@ -193,6 +195,8 @@ namespace VikingEngine.DSSWars.GameObject
                 new Display.ArmyMenu(args.player, this, args.content);
             }
         }
+
+       
 
         public void toGroupHud(RichBoxContent content)
         {
