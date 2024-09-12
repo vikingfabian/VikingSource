@@ -5,6 +5,7 @@
 *Build controls
 *Tavern: will feed workers (for less walking)
 *Idle workers will now spend energy
+*fixed undo crash in vox editor
 
 Error
 -back button in menues 

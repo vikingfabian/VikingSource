@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.EngineSpace.HUD.RichBox;
+using VikingEngine.LootFest;
 using VikingEngine.Sound;
 using VikingEngine.ToGG;
 
@@ -43,14 +44,13 @@ namespace VikingEngine.DSSWars
             genericWork = new SoundContainerMultiple(new string[] { soundDir + "generic_work1", soundDir + "generic_work2", }, 0.3f, 0.4f);
             hammer = new SoundContainerSingle(soundDir + "hammer", 0.6f, 0.4f);
 
-
-
             menu = new RbSoundProfile(click, wrong);
             menuBack = new RbSoundProfile(back);
             menuBuy = new RbSoundProfile(buy, wrong);
             menuArmyHalt = new RbSoundProfile(orderstop);
 
 
+            Engine.LoadContent.LoadSound(LoadedSound.out_of_ammo, soundDir + "out_of_ammo");
         }
     }
 }
