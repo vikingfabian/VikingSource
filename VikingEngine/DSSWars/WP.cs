@@ -61,6 +61,21 @@ namespace VikingEngine.DSSWars
                 subtilePos.Y * WorldData.SubTileWidth - WorldData.TileHalfWidth + WorldData.SubTileHalfWidth);
         }
 
+        public static Vector3 SubtileToWorldPosXZgroundY_Centered(IntVector2 subtilePos)
+        {
+            var result = new Vector3(
+                subtilePos.X * WorldData.SubTileWidth - WorldData.TileHalfWidth + WorldData.SubTileHalfWidth,
+                0,
+                subtilePos.Y * WorldData.SubTileWidth - WorldData.TileHalfWidth + WorldData.SubTileHalfWidth);
+
+            if (DssRef.world.subTileGrid.TryGet(subtilePos, out SubTile subTile))
+            { 
+                result.Y = subTile.groundY;
+            }
+
+            return result;
+        }
+
         public static IntVector2 SubtileToTilePos(IntVector2 subtilePos)
         {
             subtilePos.X = (subtilePos.X + WorldData.HalfTileSubDivitions) / WorldData.TileSubDivitions;

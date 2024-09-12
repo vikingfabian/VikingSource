@@ -7,19 +7,21 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.Graphics;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.GameObject.Worker
 {
     struct WorkerStatus
     {
         public const int TrossWorkerCarryWeight = 4;
-        public const int MaxEnergy = 4000;
+        public const int MaxEnergy = 500;
         
         public const int Subwork_Craft_Food = 0;
         public const int Subwork_Craft_Iron = 1;
 
         public WorkType work;
         public int workSubType;
+        public int orderId;
 
         public float processTimeLengthSec;
         public float processTimeStartStampSec;
@@ -45,7 +47,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     ItemResource recieved = toCity.MakeTrade(ItemResourceType.Food, carry.amount, TrossWorkerCarryWeight);
                     carry = recieved;
 
-                    createWorkOrder(WorkType.TrossReturnToArmy, 0, WP.ToSubTilePos_Centered(army.tilePos));
+                    createWorkOrder(WorkType.TrossReturnToArmy, 0, -1, WP.ToSubTilePos_Centered(army.tilePos));
                     break;
                 case WorkType.TrossReturnToArmy:
                     army.food += carry.amount;
@@ -236,25 +238,29 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case WorkType.Building:
                     {
 
-                        subTile.SetType(TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, 1);
+                        subTile.SetType(TerrainMainType.Building, workSubType, 1);
                         DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                         
-                        city.craftItem(TerrainBuildingType.WorkerHut, out _);
+                        city.craftItem((TerrainBuildingType)workSubType, out _);
                     }
                     break;
             }
 
             if (tryRepeatWork && energy > 0)
-            {
-                processTimeStartStampSec = Ref.TotalGameTimeSec;
+            {                
                 processTimeLengthSec = finalizeWorkTime();
                 subTileStart = subTileEnd;
             }
             else
             {
                 work = WorkType.Idle;
+                if (orderId >= 0)
+                {
+                    city.faction.player.CompleteOrderId(orderId);
+                }
             }
 
+            processTimeStartStampSec = Ref.TotalGameTimeSec;
         }
 
         public void WorkComplete(AbsMapObject mapObject)
@@ -288,10 +294,11 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
 
 
-        public void createWorkOrder(WorkType work, int subWork, IntVector2 targetSubTile)
+        public void createWorkOrder(WorkType work, int subWork, int order, IntVector2 targetSubTile)
         {
             this.work = work;
             this.workSubType = subWork;
+            this.orderId = order;
             subTileStart = subTileEnd;
             subTileEnd = targetSubTile;
             processTimeStartStampSec = Ref.TotalGameTimeSec;

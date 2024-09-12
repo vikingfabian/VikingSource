@@ -21,7 +21,6 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string BuildingType_WorkerHut => "Worker hut";
         public string BuildingType_Tavern => "Tavern";
-
         public string BuildingType_PigPen => "Pig pen";
         public string BuildingType_HenPen => "Hen pen";
 
@@ -33,6 +32,14 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string MenuTab_Resources => "Resources";
         public string MenuTab_Trade => "Trade";
         public string MenuTab_Build => "Build";
+
+        public string BuildHud_OutsideCity => "Outside city region";
+        public string BuildHud_OutsideFaction => "Outside your borders!";
+        
+        /// <summary>
+        /// Info when the square is covoered with a building or blocking terrain
+        /// </summary>
+        public string BuildHud_OccupiedTile => "Occupied tile";
 
         public string Build_PlaceBuilding => "Building";
         public string Build_DestroyBuilding => "Destroy";
@@ -53,9 +60,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Work_ExpandFarms => "Expand farms";
 
         public string Hud_ToggleFollowFaction => "Toggle follow faction settings";
-
         public string Hud_FollowFaction_Yes => "Is set to use faction global settings";
         public string Hud_FollowFaction_No => "Is set to use local settings (Global value is {0})";
+
+        public string Hud_SelectCity=>"Select City";
 
         public string ArmyHud_Food_Reserves_X => "Food reserves: {0}";
         public string ArmyHud_Food_Upkeep_X => "Food upkeep: {0}";
@@ -76,5 +84,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Hud_EndSessionIcon => "X";
 
         public string TerrainType => "Terrain type";
+
+        public string Hud_EnergyUpkeepX => "Food energy upkeep {0}";
     }
 }

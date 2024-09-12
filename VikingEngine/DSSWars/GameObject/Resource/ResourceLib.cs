@@ -21,6 +21,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         public const int DefaultItemRawFoodAmout = 10;
         public const float ManDefaultEnergyCost = 1f;
         public const float WorkTeamEnergyCost = ManDefaultEnergyCost * City.WorkTeamSize;
+        public const float WorkTeamEnergyCost_WhenIdle = WorkTeamEnergyCost * 0.5f;
         public const int FoodEnergy = 100;
         public static string Name(ResourceType resource)
         {

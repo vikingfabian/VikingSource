@@ -41,8 +41,14 @@ namespace VikingEngine.DSSWars.Players
                 {
                     this.subTilePos = subTilePos;
                     isNew = true;
+                    if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(subTilePos), out var tile))
+                    {
+                        city = tile.City();
+                    }
 
-                    if (player.cityTab == Display.MenuTab.Build)
+                    if (player.mapControls.selection.obj != null &&
+                        player.mapControls.selection.obj.gameobjectType() == GameObjectType.City &&
+                        player.cityTab == Display.MenuTab.Build)
                     {
                         selectTileResult = player.BuildControls.buildMode;
                         hasSelection = true;
@@ -55,9 +61,8 @@ namespace VikingEngine.DSSWars.Players
                         selectTileResult = SelectTileResult.None;
                         hasSelection = false;
 
-                        if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(subTilePos), out var tile))
+                        if (city != null) 
                         {
-                            city = tile.City();
                             if (city.faction == player.faction)
                             {
                                 switch (subTile.GeBuildingType())
@@ -86,6 +91,35 @@ namespace VikingEngine.DSSWars.Players
                 selectTileResult = SelectTileResult.None;
                 hasSelection = false;
             }
+        }
+
+        public MayBuildResult MayBuild(LocalPlayer player)
+        {
+            if (city != null)
+            {
+                if (city.faction.player == player)
+                {
+                    var current = subTile.GeBuildingType();
+                    if (current == TerrainBuildingType.NUM_NONE && 
+                        subTile.mainTerrain != TerrainMainType.DefaultSea)
+                    {
+                        if (player.mapControls.selection.obj == city)
+                        {
+                            return MayBuildResult.Yes;
+                        }
+                        else
+                        { 
+                            return MayBuildResult.Yes_ChangeCity;
+                        }
+                    }
+                    else
+                    { 
+                        return MayBuildResult.No_Occupied;
+                    }
+                }
+            }
+
+            return MayBuildResult.No_OutsideRegion;
         }
 
         public bool viewSelection(bool view)
@@ -133,5 +167,15 @@ namespace VikingEngine.DSSWars.Players
         Build,
         ClearTerrain,
         Destroy,
+    }
+
+    enum MayBuildResult
+    { 
+        ERR,
+        Yes,
+        Yes_ChangeCity,
+        No_OutsideRegion,
+        No_Occupied,
+
     }
 }

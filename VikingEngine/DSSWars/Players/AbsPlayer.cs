@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Players
@@ -14,17 +15,79 @@ namespace VikingEngine.DSSWars.Players
         protected const int AggressionLevel2_RandomAttacks = 2;
         protected const int AggressionLevel3_FocusedAttacks = 3;
 
-        //public List<AbsPlayer> opponents = new List<AbsPlayer>(2);
         public bool IsPlayerNeighbor = false;
         public Faction faction;
         public int aggressionLevel = AggressionLevel0_Passive;
         public bool protectedPlayer = false;
         protected bool ignorePlayerCapture = false;
 
+        public List<AbsOrder> orders = new List<AbsOrder>();
+
         public AbsPlayer(Faction faction)
         {
             this.faction = faction;
             faction.SetStartOwner(this);
+        }
+
+        public void addOrder(AbsOrder order)
+        {
+            lock (orders)
+            {
+                //Check for conflicting
+                for (int i = 0; i < orders.Count; ++i)
+                {
+                    if (order.IsConflictingOrder(orders[i]))
+                    {
+                        orders[i].DeleteMe();
+                        orders.RemoveAt(i);
+                    }
+                }
+                orders.Add(order);
+            }
+        }
+
+        public AbsOrder GetFromId(int id)
+        {
+            lock (orders)
+            {
+                foreach (AbsOrder order in orders)
+                { 
+                    if (order.id == id)
+                        return order;
+                }
+            }
+            return null;
+        }
+
+        public AbsOrder StartOrderId(int id)
+        {
+            lock (orders)
+            {
+                foreach (AbsOrder order in orders)
+                {
+                    if (order.id == id)
+                    { 
+                        order.orderStatus = OrderStatus.Started;
+                        break;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public void CompleteOrderId(int id)
+        {
+            lock (orders)
+            {
+                for (int i = 0; i < orders.Count; ++i)
+                {
+                    if (orders[i].id == id)
+                    {
+                        Ref.update.AddSyncAction(new SyncAction(orders[i].DeleteMe));
+                        orders.RemoveAt(i);
+                    }
+                }
+            }
         }
 
         virtual public void Update()
@@ -78,8 +141,6 @@ namespace VikingEngine.DSSWars.Players
                 faction.tradeAllianceWars(otherFaction);
             }
         }
-
-        
 
         public void onPlayerNeighborCapture(LocalPlayer player)
         {

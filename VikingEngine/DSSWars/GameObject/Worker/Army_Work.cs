@@ -60,7 +60,7 @@ namespace VikingEngine.DSSWars.GameObject
                         {
                             int statusIx = getOrCreateFreeWorker();
                             var status = workerStatuses[statusIx];
-                            status.createWorkOrder(WorkType.TrossCityTrade, -1, WP.ToSubTilePos_Centered(city.tilePos));
+                            status.createWorkOrder(WorkType.TrossCityTrade, -1, -1, WP.ToSubTilePos_Centered(city.tilePos));
                             foodCosts.add(status.carry.amount);
                             workerStatuses[statusIx] = status;
 

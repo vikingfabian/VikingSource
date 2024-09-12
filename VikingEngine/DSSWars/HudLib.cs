@@ -22,12 +22,14 @@ namespace VikingEngine.DSSWars
         public static readonly Color TitleColor_Attack = Color.Red;
         public static readonly Color TitleColor_Name = Color.LightYellow;
         public static readonly Color TitleColor_TypeName = Color.LightGray;
+        public static readonly Color AvailableColor = Color.LightGreen;
+        public static readonly Color NotAvailableColor = Color.Red;
 
         public static readonly Color TextColor_Relation = Color.LightBlue;
 
         public static readonly Color OffStandardOrange = new Color(200, 128, 0);
-        public static readonly Color InfoBgYellow = new Color(160, 128, 0);
-        public static readonly Color InfoContentYellow = new Color(255, 255, 0);
+        public static readonly Color InfoYellow_Dark = new Color(160, 128, 0);
+        public static readonly Color InfoYellow_Light = new Color(255, 255, 0);
 
         public const ImageLayers StoryContentLayer = ImageLayers.Lay1_Front;
         public const ImageLayers StoryBgLayer = ImageLayers.Lay1_Back;
@@ -122,7 +124,7 @@ namespace VikingEngine.DSSWars
 
         public static Color ResourceCostColor(bool hasEnough)
         { 
-            return hasEnough ? Color.LightGreen : Color.Red;
+            return hasEnough ? AvailableColor : NotAvailableColor;
         }
 
         public static SpriteName CheckImage(bool value)
@@ -169,20 +171,25 @@ namespace VikingEngine.DSSWars
         public static void InfoButton(RichBoxContent content, AbsRbAction enterAction)
         {
             var text = new RichBoxText(DssRef.todoLang.Info_ButtonIcon);
-            text.overrideColor = InfoContentYellow;
+            text.overrideColor = InfoYellow_Light;
 
             var button = new RichboxButton(new List<AbsRichBoxMember> { 
                 new RichBoxSpace(0.5f),
                 text,
                 new RichBoxSpace(0.5f),
             },
-            null, enterAction, true, InfoBgYellow);
+            null, enterAction, true, InfoYellow_Dark);
             content.Add(button);
         }
 
         public static void PerSecondInfo(Players.LocalPlayer player, RichBoxContent content, bool minuteAverage)
         {
             InfoButton(content, new RbAction1Arg<bool>(player.perSecondTooltip, minuteAverage));
+        }
+
+        public static void Description(RichBoxContent content, string description)
+        {
+            content.text("\"" + description + "\"").overrideColor = InfoYellow_Light;
         }
     }
 }

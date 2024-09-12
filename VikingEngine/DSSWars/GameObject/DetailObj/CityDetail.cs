@@ -37,7 +37,7 @@ namespace VikingEngine.DSSWars.GameObject
 
     class CityDetail : AbsDetailUnit
     {
-        const int WorkersPerHut = 30;
+        public const int WorkersPerHut = 30;
         const int WorkerHutsPerTile = 4;
         const int WorkerHutsPerTile_MaxLevel = WorkerHutsPerTile* HutMaxLevel;
         public const int WorkersPerTile = WorkersPerHut * WorkerHutsPerTile * HutMaxLevel;

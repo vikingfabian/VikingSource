@@ -63,6 +63,7 @@ namespace VikingEngine.DSSWars.GameObject
         string name = null;
 
         IntVector2 cullingTopLeft, cullingBottomRight;
+        public int cityTileRadius = 0;
 
         public City(int index, IntVector2 pos, CityType type, WorldData world)
         {

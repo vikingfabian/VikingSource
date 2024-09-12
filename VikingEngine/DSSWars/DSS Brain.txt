@@ -2,8 +2,9 @@
 -Change Log-
 *Sale price controls
 *Work priority controls
-
-!Army worker walk to the wrong place (just visual error)
+*Build controls
+*Tavern: will feed workers (for less walking)
+*Idle workers will now spend energy
 
 Error
 -back button in menues 

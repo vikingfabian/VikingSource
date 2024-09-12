@@ -737,6 +737,12 @@ namespace VikingEngine.DSSWars.Map.Generate
                         faction.availableForPlayer = true;
                     }
                 }
+#if DEBUG
+                if (c.faction == null)
+                {
+                    throw new Exception();
+                }
+#endif
             }
 
             if (world.factions.Count > DssLib.RtsMaxFactions)

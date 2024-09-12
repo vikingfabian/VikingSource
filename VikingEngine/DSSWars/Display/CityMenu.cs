@@ -442,7 +442,7 @@ namespace VikingEngine.DSSWars.Display
             var soldierData = DssRef.unitsdata.Get(UnitType.Soldier);
             int dpsSoldier = soldierData.DPS_land();
             RichBoxContent content = new RichBoxContent();
-            content.text(TextLib.Quote(typeData.description));
+            HudLib.Description(content, typeData.description);//content.text(TextLib.Quote(typeData.description));
             content.newLine();
             content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
             content.newLine();
@@ -452,7 +452,7 @@ namespace VikingEngine.DSSWars.Display
             content.newLine();
             content.newLine();
 
-            content.text(string.Format("Food energy upkeep {0}", typeData.energyPerSoldier));
+            content.text(string.Format(DssRef.todoLang.Hud_EnergyUpkeepX, typeData.energyPerSoldier));
             //HudLib.Upkeep(content, typeData.Upkeep() * count);
             //content.icontext(SpriteName.rtsUpkeep, DssRef.lang.Hud_Upkeep + ": " + (typeData.Upkeep() * count).ToString());
             content.newParagraph();

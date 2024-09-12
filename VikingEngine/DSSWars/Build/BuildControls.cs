@@ -2,10 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Build
@@ -15,18 +19,35 @@ namespace VikingEngine.DSSWars.Build
         static readonly TerrainBuildingType[] BuildingTypes = { TerrainBuildingType.Tavern, TerrainBuildingType.WorkerHut, TerrainBuildingType.PigPen, TerrainBuildingType.HenPen };
         public SelectTileResult buildMode = SelectTileResult.None;
         public TerrainBuildingType placeBuildingType = BuildingTypes[0];
-        public BuildControls() 
-        { }
+
+        LocalPlayer player;
+
+        public BuildControls(LocalPlayer player) 
+        { 
+            this.player = player;
+        }
+
+        public void onTileSelect(SelectedSubTile selectedSubTile)
+        {   
+            if (buildMode == SelectTileResult.Build)
+            {
+                var mayBuild = selectedSubTile.MayBuild(player);
+                if (mayBuild == MayBuildResult.Yes || mayBuild == MayBuildResult.Yes_ChangeCity)
+                {
+                    //create build order
+                    player.addOrder(new BuildOrder(10, true, selectedSubTile.city, selectedSubTile.subTilePos, player.BuildControls.placeBuildingType));
+                }
+            }            
+        }
 
         public void toHud(RichBoxContent content)
-        {
-            
-
+        {     
             content.newParagraph();
             foreach (var building in BuildingTypes)
             {
                 var button = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(building.ToString()) },
-                new RbAction1Arg<TerrainBuildingType>(buildingTypeClick, building));
+                new RbAction1Arg<TerrainBuildingType>(buildingTypeClick, building),
+                new RbAction1Arg<TerrainBuildingType>(buildingTooltip, building));
                 button.setGroupSelectionColor(HudLib.RbSettings, buildMode == SelectTileResult.Build && placeBuildingType == building);
                 content.Add(button);
                 content.space();
@@ -66,20 +87,25 @@ namespace VikingEngine.DSSWars.Build
         { 
             buildMode = set;
         }
+
         void buildingTypeClick(TerrainBuildingType buildingType)
         {
             buildMode = SelectTileResult.Build;
             placeBuildingType = buildingType;
         }
 
+        void buildingTooltip(TerrainBuildingType buildingType)
+        {
+            RichBoxContent content = new RichBoxContent();
+
+            content.h2(buildingType.ToString());
+
+            HudLib.Description(content, LangLib.BuildingDescription(buildingType));
+            CraftBlueprint blueprint = ResourceLib.Blueprint(buildingType);
+            blueprint.toMenu(content);
+
+            player.hud.tooltip.create(player, content, true);
+        }
         
     }
-
-    //enum BuildMode
-    //{
-    //    None,
-    //    Build,
-    //    ClearTerrain,
-    //    Destroy,
-    //}
 }

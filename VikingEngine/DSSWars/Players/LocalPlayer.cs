@@ -195,7 +195,7 @@ namespace VikingEngine.DSSWars.Players
             faction.displayInFullOverview = true;
 
             hud = new GameHud(this, numPlayers);
-            BuildControls = new Build.BuildControls();
+            BuildControls = new Build.BuildControls(this);
             automation = new Automation(this);
 
             playerData = Engine.XGuide.GetPlayer(playerindex);
@@ -873,14 +873,36 @@ namespace VikingEngine.DSSWars.Players
         }
 
         void mapSelect()
-        { 
-            bool oldselection = clearSelection();
-            
-            bool newselection = clickHover();
-
-            if (oldselection && !newselection)
+        {
+            if (cityTab == Display.MenuTab.Build &&
+                mapControls.hover.subTile.hasSelection &&
+                mapControls.selection.obj != null &&
+                mapControls.selection.obj.gameobjectType() == GameObjectType.City)
             {
-                SoundLib.back.Play();
+                BuildControls.onTileSelect(mapControls.hover.subTile);
+                
+                //    && 
+                //    player.BuildControls.buildMode == SelectTileResult.Build)
+                //{ 
+                //    var mayBuild = selectedSubTile.MayBuild(player);
+                //    if (mayBuild == MayBuildResult.Yes || mayBuild == MayBuildResult.Yes_ChangeCity)
+                //    { 
+                //        //create build order
+                //        player.addOrder(new BuildOrder(10, selectedSubTile.city, selectedSubTile.subTilePos, player.BuildControls.placeBuildingType)
+                //    }
+                //}
+            }
+            else
+            {
+
+                bool oldselection = clearSelection();
+
+                bool newselection = clickHover();
+
+                if (oldselection && !newselection)
+                {
+                    SoundLib.back.Play();
+                } 
             }
         }
 
@@ -937,7 +959,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 SoundLib.click.Play();
 
-                mapControls.onTileSelect(mapControls.hover.subTile.city, mapControls.hover.subTile.selectTileResult);
+                mapControls.onTileSelect(mapControls.hover.subTile);
 
                 return true;
             }

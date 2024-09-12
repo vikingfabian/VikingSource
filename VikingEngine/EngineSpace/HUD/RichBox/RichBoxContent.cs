@@ -38,6 +38,12 @@ namespace VikingEngine.HUD.RichBox
             return textCont;
         }
 
+        public AbsRichBoxMember AddReturn(AbsRichBoxMember member)
+        { 
+            Add(member);
+            return member;
+        }
+
         public void add(SpriteName icon, string textline)
         {
             newLine();

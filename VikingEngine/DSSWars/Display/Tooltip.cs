@@ -104,40 +104,61 @@ namespace VikingEngine.DSSWars.Display
                 content.Add(new RichBoxBeginTitle(2));
                 content.Add(new RichBoxImage(player.input.Select.Icon));
 
-                RichBoxText title;
+                RichBoxText title = null;
+                bool avaialableAction = true;
                 switch (subTile.selectTileResult)
                 {
                     case Players.SelectTileResult.Build:
-                        content.Add(new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Build_PlaceBuilding, player.BuildControls.placeBuildingType)));
+                        title = new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Build_PlaceBuilding, player.BuildControls.placeBuildingType));
+                        content.Add(title);
                         content.newLine();
                         CraftBlueprint blueprint = ResourceLib.Blueprint(player.BuildControls.placeBuildingType);
                         blueprint.toMenu(content);
+
+                        var mayBuild = player.mapControls.hover.subTile.MayBuild(player);
+                        
+                        switch (mayBuild)
+                        { 
+                            case Players.MayBuildResult.Yes_ChangeCity:
+                                content.text(DssRef.todoLang.BuildHud_OutsideCity).overrideColor = HudLib.InfoYellow_Light; 
+                                break;
+
+                            case Players.MayBuildResult.No_OutsideRegion:
+                                avaialableAction = false;
+                                content.text(DssRef.todoLang.BuildHud_OutsideFaction).overrideColor = HudLib.NotAvailableColor;
+                                break;
+
+                            case Players.MayBuildResult.No_Occupied:
+                                avaialableAction = false;
+                                content.text(DssRef.todoLang.BuildHud_OccupiedTile).overrideColor = HudLib.NotAvailableColor;
+                                break;
+                        }
+                        
                         break;
                     case Players.SelectTileResult.Destroy:
-                        content.Add(new RichBoxText(DssRef.todoLang.Build_DestroyBuilding));
+                        title = new RichBoxText(DssRef.todoLang.Build_DestroyBuilding);
+                        content.Add(title);
                         break;
 
                     case Players.SelectTileResult.ClearTerrain:
-                        content.Add(new RichBoxText(DssRef.todoLang.Build_ClearTerrain));
+                        title = new RichBoxText(DssRef.todoLang.Build_ClearTerrain);
+                        content.Add(title);
                         break;
 
                     case Players.SelectTileResult.CityHall:
-                        content.Add(new RichBoxText("Select City"));
+                        title = new RichBoxText(DssRef.todoLang.Hud_SelectCity);
+                        content.Add(title);
                         break;
-                        //case Players.SelectTileResult.Resources:
-                        //    content.text("[]Select Resources");
-                        //    break;
                 }
-                //title.overrideColor = HudLib.TitleColor_Action;
+                title.overrideColor = avaialableAction ? HudLib.TitleColor_Action: HudLib.NotAvailableColor;
+
+                content.Add(new RichBoxSeperationLine());
                 content.newParagraph();
              
             }
             content.h2(DssRef.todoLang.TerrainType).overrideColor = HudLib.TitleColor_TypeName;
             content.text(subTile.subTile.TypeToString());
-            //if (subTile.selectable(player.faction, out _))
-            //{
             
-            //}
             create(player, content, false);
         }
 

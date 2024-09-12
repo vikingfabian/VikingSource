@@ -365,10 +365,12 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainBuildingType.HenPen:
                     animals(tile, ref subTile, ref wp, AnimalType.Hen, TerrainContent.HenMaxSize);
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_pen, rnd, wp, scale));
-
                     break;
                 case TerrainBuildingType.WorkerHut:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_workerhut, rnd, wp, scale));
+                    break;
+                case TerrainBuildingType.Tavern:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_bighouse, rnd, wp, WorldData.SubTileWidth * 0.6f));
                     break;
                 case TerrainBuildingType.DirtWall:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_dirtwall, rnd, wp, scale));
@@ -414,16 +416,6 @@ namespace VikingEngine.DSSWars.Map
                 default:
                     throw new NotImplementedException();
             }
-
-            //if (foliage == null)
-            //{
-            //    foliage = new List<Foliage>(8);
-            //}
-//#if DEBUG
-//            model.DebugName = "Building " + model.DebugName;
-//#endif
-            
-
         }
 
         void animals(Tile tile, ref SubTile subTile, ref Vector3 wp, AnimalType animalType, int animalSize)

@@ -43,8 +43,7 @@ namespace VikingEngine.DSSWars
         bool bResourceMinuteUpdate = true;
         public int NextArmyId = 0;
         public GameMenuSystem menuSystem;
-        Timer.Basic subTileReloadTimer = new Timer.Basic(1000,true);
-                
+        Timer.Basic subTileReloadTimer = new Timer.Basic(1000, true);                
 
         public PlayState(bool host, SaveStateMeta loadMeta)
             : base(true)
@@ -123,6 +122,13 @@ namespace VikingEngine.DSSWars
                 {
                     new Players.AiPlayer(factionsCounter.sel);
                 }
+
+#if DEBUG
+                if (factionsCounter.sel.player == null)
+                {
+                    throw new Exception();
+                }
+#endif
             }
 
             int playerCount = DssRef.storage.playerCount;

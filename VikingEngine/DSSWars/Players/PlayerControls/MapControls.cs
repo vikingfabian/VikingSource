@@ -6,6 +6,7 @@ using System.Reflection.Metadata.Ecma335;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.Worker;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.Graphics;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.ToggEngine;
@@ -570,10 +571,29 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public void onTileSelect(City city, SelectTileResult tileResult)
+        public void onTileSelect(SelectedSubTile selectedSubTile)//City city, SelectTileResult tileResult)
         {
-            selection.obj = city;
+            //if (selection.obj != null && selection.obj.gameobjectType() == GameObjectType.City)
+            //{
+            //    if (player.cityTab == Display.MenuTab.Build)
+            //    { 
+            //        player.BuildControls.onTileSelect(selectedSubTile);
+            //    }
+            //    //    && 
+            //    //    player.BuildControls.buildMode == SelectTileResult.Build)
+            //    //{ 
+            //    //    var mayBuild = selectedSubTile.MayBuild(player);
+            //    //    if (mayBuild == MayBuildResult.Yes || mayBuild == MayBuildResult.Yes_ChangeCity)
+            //    //    { 
+            //    //        //create build order
+            //    //        player.addOrder(new BuildOrder(10, selectedSubTile.city, selectedSubTile.subTilePos, player.BuildControls.placeBuildingType)
+            //    //    }
+            //    //}
+            //}
+            
+            selection.obj = selectedSubTile.city;
 
+            
             //switch (tileResult)
             //{
             //    case SelectTileResult.CityHall:
