@@ -15,7 +15,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
     {
         public const int TrossWorkerCarryWeight = 4;
         public const int MaxEnergy = 500;
-        
+        public const int Starvation = -MaxEnergy;
+
         public const int Subwork_Craft_Food = 0;
         public const int Subwork_Craft_Iron = 1;
 

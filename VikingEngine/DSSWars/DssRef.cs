@@ -27,5 +27,6 @@ namespace VikingEngine.DSSWars
         public static Display.Translation.TodoTranslation todoLang = new Display.Translation.TodoTranslation();
         public static PlaySettings settings;
         public static Difficulty difficulty = new Difficulty();
+        //public static Data.Constants.Const Const = new Data.Constants.Const();
     }
 }

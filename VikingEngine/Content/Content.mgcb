@@ -694,6 +694,9 @@
 /processorParam:TextureFormat=Compressed
 /build:Font/Regular.spritefont
 
+#begin Modding/ModConst.txt
+/copy:Modding/ModConst.txt
+
 #begin Model/cube_repeating.fbx
 /importer:FbxImporter
 /processor:ModelProcessor

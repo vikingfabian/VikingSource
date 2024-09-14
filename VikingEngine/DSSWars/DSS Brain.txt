@@ -1,6 +1,7 @@
 ﻿
 -Change Log-
-*
+*children
+*workers are removed when recruited
 
 Error
 -back button in menues 
