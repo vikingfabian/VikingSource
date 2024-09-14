@@ -32,7 +32,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             for (int i = workerUnits.Count; i < workerStatuses.Count; i++)
             {
-                workerUnits.Add(new WorkerUnit(this, workerStatuses[i], i));
+                if (workerStatuses[i].work != WorkType.IsDeleted)
+                {
+                    workerUnits.Add(new WorkerUnit(this, workerStatuses[i], i));
+                }
             }
         }
 

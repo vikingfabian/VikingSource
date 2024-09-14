@@ -195,7 +195,7 @@ namespace VikingEngine.DSSWars.Players
                         while (citiesC.Next())
                         {
                             if (citiesC.sel.CityType == type &&
-                                citiesC.sel.isMaxWorkForce() &&
+                                citiesC.sel.isMaxHomeUsers() &&
                                 citiesC.sel.battleGroup == null)
                             {
                                 if (autoRepair && citiesC.sel.damages.HasValue())

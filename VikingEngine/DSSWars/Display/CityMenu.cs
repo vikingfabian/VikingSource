@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.Display
             switch (player.cityTab)
             { 
                 case MenuTab.Info:
-                    city.CityDetailsHud(false, content);
+                    city.CityDetailsHud(false, player, content);
                     break;
                 case MenuTab.Work:
                     city.workTab(player, content);
@@ -268,7 +268,7 @@ namespace VikingEngine.DSSWars.Display
                 content.newLine();
                 content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement);
                 content.newLine();
-                HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Worker, DssLib.NobelHouseWorkForceReqiurement, city.workForce.Int());
+                HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Worker, DssLib.NobelHouseWorkForceReqiurement, city.workForce);
                 content.newLine();
                 content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
                 content.newLine();
@@ -452,7 +452,7 @@ namespace VikingEngine.DSSWars.Display
             content.newLine();
             HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, opt.goldCost * count, player.faction.gold);
             content.newLine();
-            HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Worker, typeData.workForceCount() * count, city.workForce.Int());
+            HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Worker, typeData.workForceCount() * count, city.workForce);
             content.newLine();
             content.newLine();
 

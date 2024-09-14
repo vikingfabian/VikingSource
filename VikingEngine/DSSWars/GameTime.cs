@@ -9,7 +9,7 @@ namespace VikingEngine.DSSWars
         const float Quarter = 0.25f;
 
         public bool oneSecond = false;
-        //public bool oneMinute = false;
+        public bool oneMinute = false;
         public bool oneSecond_part2 = false;
         public bool halfSecond = false;
         float second = 0;
@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars
             oneSecond = false;
             oneSecond_part2 = false;
             halfSecond = false;
-
+            
             if (second >= Quarter)
             {
                 second -= Quarter;
@@ -45,7 +45,8 @@ namespace VikingEngine.DSSWars
                 { 
                     case 0: oneSecond = true; break;
                     case 1: halfSecond = true; break;
-                    case 2: 
+                    case 2:
+                        oneMinute = false;
                         oneSecond_part2 = true;
                         asyncGameObjects_Seconds += 1f;
                         asyncWork_Seconds  += 1f;
@@ -53,6 +54,7 @@ namespace VikingEngine.DSSWars
                         {
                             secondsToMinute = 0;
                             ++totalMinutes;
+                            oneMinute = true;
                             DssRef.state.OneMinute_Update();
                         }
                         break;

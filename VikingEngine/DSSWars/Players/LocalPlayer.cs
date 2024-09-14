@@ -72,6 +72,25 @@ namespace VikingEngine.DSSWars.Players
             cityTab = CityMenu.Tabs[tab];
         }
 
+        public void childrenTooltip(City city)
+        {
+            string childBirthRequirements = "Child birth requirements:";
+            string availableHomes = "Available homes: {0}";
+            string piece = "Peace";
+            string childToManTime = "Grown up age: {0} minutes";
+
+            RichBoxContent content = new RichBoxContent();
+            content.text(string.Format(childToManTime, 2));
+
+            content.newParagraph();
+            content.h2(childBirthRequirements);
+            content.text(string.Format(availableHomes, city.homesUnused())).overrideColor = HudLib.ResourceCostColor(city.homesUnused() > 0);
+            content.text(piece).overrideColor = HudLib.ResourceCostColor(city.battleGroup == null);
+            HudLib.ItemCount(content, DssRef.todoLang.Resource_TypeName_Food, city.food.amount.ToString()).overrideColor = HudLib.ResourceCostColor(city.food.amount > 0);
+
+            hud.tooltip.create(this, content, true);
+        }
+
         public void followFactionTooltip(bool follows, double currentFactionValue)
         {
             RichBoxContent content = new RichBoxContent();

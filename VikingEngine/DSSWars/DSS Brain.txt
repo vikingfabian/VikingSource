@@ -1,14 +1,6 @@
 ﻿
 -Change Log-
-*Sale price controls
-*Work priority controls
-*Build controls
-*Tavern: will feed workers (less walking)
-*Idle workers will now spend energy
-*fixed undo crash in vox editor
-*Economy breakdown tab
-
-!the game is kinda broken at the moment
+*
 
 Error
 -back button in menues 
@@ -41,11 +33,8 @@ Art
 -battle icon
 -world domination achieve
 -link, no link
-
-#Upcoming Events
-- June 19: Steam release
-- Late Summer / Early Autumn: Game world championship
-
+-resource icons
+-no food, no beds icons
 
 #current
 English, Simplified Chinese, Japanese, Russian, Spanish

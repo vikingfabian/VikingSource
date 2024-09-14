@@ -889,7 +889,7 @@ namespace VikingEngine.DSSWars.Players
 
         private void mainArmyBuyAtCity(City city)
         {
-            int max = Math.Min(faction.gold / DssLib.GroupDefaultCost, city.workForce.Int() / SoldierData.GroupDefaultCount);
+            int max = Math.Min(faction.gold / DssLib.GroupDefaultCost, city.workForce / SoldierData.GroupDefaultCount);
             
             if (max >= 4)
             {
@@ -911,7 +911,7 @@ namespace VikingEngine.DSSWars.Players
 
         void buyDefenceAtCity(City city)
         {   
-            int max = Math.Min(faction.gold / DssLib.GroupDefaultCost, city.workForce.Int() / SoldierData.GroupDefaultCount);
+            int max = Math.Min(faction.gold / DssLib.GroupDefaultCost, city.workForce / SoldierData.GroupDefaultCount);
 
             if (max >= 4)
             {
@@ -959,7 +959,7 @@ namespace VikingEngine.DSSWars.Players
                     {
                         city = c;
                     }
-                    else if (c.workForce.value > city.workForce.value)
+                    else if (c.workForce > city.workForce)
                     {
                         city = c;
                     }

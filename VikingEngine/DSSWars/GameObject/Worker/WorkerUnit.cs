@@ -206,6 +206,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                             case WorkType.PickUpProduce:
                                 SoundLib.pickup.Play(model.position);
                                 break;
+                            case WorkType.Exit:
+                                DeleteMe();
+                                break;
                         }
 
                         status.WorkComplete(mapObject);

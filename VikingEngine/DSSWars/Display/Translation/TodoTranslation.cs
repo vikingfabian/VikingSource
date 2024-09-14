@@ -19,6 +19,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Resource_TypeName_Ore => "ore";
         public string Resource_TypeName_Iron => "iron";
 
+         public string ResourceType_Children => "Children";
+
         public string BuildingType_WorkerHut => "Worker hut";
         public string BuildingType_Tavern => "Tavern";
         public string BuildingType_PigPen => "Pig pen";

@@ -252,6 +252,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         city.craftItem((TerrainBuildingType)workSubType, out _);
                     }
                     break;
+                case WorkType.Exit:
+                    work = WorkType.IsDeleted;
+                    break;
             }
 
             if (tryRepeatWork && energy > 0)
@@ -394,6 +397,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     return 5f;
                 case WorkType.Building:
                     return 40;
+                case WorkType.Exit:
+                    return 1;
                 default:
                     throw new NotImplementedException();
             }

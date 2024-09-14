@@ -122,6 +122,12 @@ namespace VikingEngine.DSSWars
             content.icontext(icon, text);
         }
 
+        public static RichBoxText ItemCount(RichBoxContent content, string item, string count)
+        {
+            string text = string.Format(DssRef.lang.Language_ItemCountPresentation, item, count);
+            return content.text(text);
+        }
+
         public static Color ResourceCostColor(bool hasEnough)
         { 
             return hasEnough ? AvailableColor : NotAvailableColor;
