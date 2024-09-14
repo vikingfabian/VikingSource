@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars.Players
         void complete()
         {
             faction.player.GetAiPlayer().nextDecisionTimer.Seconds = 5;
-            faction.gold = faction.armyUpkeep * 60 * 20;
+            faction.gold = 20000;
             faction.hasDeserters = true;
             DeleteMe();
         }

@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         public void update()
         {
-            if (parentArrayIndex == 29)
+            if (parentArrayIndex == 6)
             {
                 lib.DoNothing();
             }
@@ -96,11 +96,11 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         walkingAnimation.update(speed, model);
                     }
 
-                    if (VectorExt.PlaneXZDistance(ref model.position, ref goalPos) < 0.02f)
+                    if (VectorExt.PlaneXZDistance(ref model.position, ref goalPos) < speed * 4)
                     {
                         model.position.X = goalPos.X;
                         model.position.Z = goalPos.Z;
-                        WP.Rotation1DToQuaterion(model, MathExt.TauOver8);
+                        WP.Rotation1DToQuaterion(model, 2.8f);
                         state = WorkerUnitState.FinalizeWork;
                     }
 

@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.Players
         bool purchaseIsMainArmy = false;
 
         int purchaseCount =-1;
-        public static double EconomyMultiplier = 1.0;
+        //public static double EconomyMultiplier = 1.0;
         string name;
 
         //Center attack focus and buy focus on the main army
@@ -570,7 +570,7 @@ namespace VikingEngine.DSSWars.Players
                         int maxPurchaseCount = 30;
                         if (inWar)
                         {
-                            maxPurchaseCount = MathExt.MultiplyInt(EconomyMultiplier, maxPurchaseCount);
+                            maxPurchaseCount = MathExt.MultiplyInt(DssRef.difficulty.aiEconomyMultiplier, maxPurchaseCount);
                         }
                         createPurcaseOrder(city, maxPurchaseCount);
                     }

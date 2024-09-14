@@ -14,13 +14,14 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City
     {
-        
-
-        MinuteStats blackMarketCosts = new MinuteStats();
+        MinuteStats blackMarketCosts_food = new MinuteStats();
+        public MinuteStats foodProduction = new MinuteStats();
+        public MinuteStats foodSpending = new MinuteStats();
+        public MinuteStats soldResources = new MinuteStats();
 
         const int GoldOreSellValue = 100;
         const int IronSellValue = 5;
-        public const float FoodGoldValue = 0.2f;
+        public const float FoodGoldValue = 2f;
         public const float FoodGoldValue_BlackMarket = FoodGoldValue * 5;
 
         //Simplified resources
@@ -32,7 +33,7 @@ namespace VikingEngine.DSSWars.GameObject
         public SimplifiedResource wood = new SimplifiedResource() { amount = 20,  goalBuffer = 300 };
         public SimplifiedResource stone = new SimplifiedResource() { amount = 20, goalBuffer = 100 };
         public SimplifiedResource rawFood = new SimplifiedResource() { amount = 50, goalBuffer = 200 };
-        public SimplifiedResource food = new SimplifiedResource() { amount = 20, goalBuffer = 500 };
+        public SimplifiedResource food = new SimplifiedResource() { amount = 200, goalBuffer = 500 };
         public SimplifiedResource skin = new SimplifiedResource() { goalBuffer = 100 };
         public SimplifiedResource ore = new SimplifiedResource() { goalBuffer = 100 };
         public SimplifiedResource iron = new SimplifiedResource() { goalBuffer = 100 };
@@ -121,11 +122,19 @@ namespace VikingEngine.DSSWars.GameObject
 
                 case ItemResourceType.IronOre:
                     //ore.add(item);
-                    faction.gold += item.amount * IronSellValue;
+                    {
+                        var price = item.amount * IronSellValue;
+                        faction.gold += price;
+                        soldResources.add(price);
+                    }
                     break;
 
                 case ItemResourceType.GoldOre:
-                    faction.gold += item.amount * GoldOreSellValue;
+                    {
+                        var price = item.amount * GoldOreSellValue;
+                        faction.gold += price;
+                        soldResources.add(price);
+                    }
                     break;
             }
         }
@@ -137,7 +146,9 @@ namespace VikingEngine.DSSWars.GameObject
             switch (building)
             {
                 case TerrainBuildingType.Work_Cook:
-                    food.amount += ResourceLib.CraftFood.craft(this);
+                    var addFood = ResourceLib.CraftFood.craft(this);
+                    food.amount += addFood;
+                    foodProduction.add(addFood);
                     canCraftAgain = ResourceLib.CraftFood.canCraft(this);
                     break;
                 case TerrainBuildingType.Work_Smith:

@@ -64,10 +64,11 @@ namespace VikingEngine.DSSWars.GameObject
         public float food = 0;
         public float foodUpkeep = 0;
 
-        public float foodBuffer_minutes = 1f;
+        public float foodBuffer_minutes = 2f;
         public float friendlyAreaFoodBuffer_minutes = 5f;
 
-        public MinuteStats foodCosts = new MinuteStats();
+        public MinuteStats foodCosts_import = new MinuteStats();
+        public MinuteStats foodCosts_blackmarket = new MinuteStats();
 
 
         public Army(Faction faction, IntVector2 startPosition)
@@ -180,7 +181,7 @@ namespace VikingEngine.DSSWars.GameObject
                     //args.content.icontext(SpriteName.rtsUpkeepTime,string.Format(DssRef.lang.Hud_Upkeep ,TextLib.LargeNumber(upkeep)));
                     args.content.text(string.Format(DssRef.todoLang.ArmyHud_Food_Reserves_X, TextLib.LargeNumber((int) food )));
                     args.content.text(string.Format(DssRef.todoLang.ArmyHud_Food_Upkeep_X, TextLib.OneDecimal(foodUpkeep)));
-                    args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.todoLang.ArmyHud_Food_Costs_X, TextLib.OneDecimal(foodCosts.displayValue_sec)));
+                    args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.todoLang.ArmyHud_Food_Costs_X, TextLib.OneDecimal(foodCosts_import.displayValue_sec)));
                     args.content.space();
                     HudLib.PerSecondInfo(args.player, args.content, true);
 
@@ -727,7 +728,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (oneMinute)
             {
-                foodCosts.minuteUpdate();
+                foodCosts_import.minuteUpdate();
+                foodCosts_blackmarket.minuteUpdate();
             }
         }
 

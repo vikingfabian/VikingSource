@@ -41,14 +41,15 @@ namespace VikingEngine.DSSWars.GameObject
                         {
                             bufferGoal_minutes = foodBuffer_minutes;
                         }
-                        else if (food < 0)
+                        
+                        if (food < 0)
                         {
                             //black market trade
                             var cost = (int)Math.Ceiling(City.FoodGoldValue_BlackMarket * -food);
 
                             if (faction.payMoney(cost, false))
                             {
-                                foodCosts.add(cost);
+                                foodCosts_blackmarket.add(cost);
                                 food = 0;                                
                             }
                         }
@@ -61,7 +62,10 @@ namespace VikingEngine.DSSWars.GameObject
                             int statusIx = getOrCreateFreeWorker();
                             var status = workerStatuses[statusIx];
                             status.createWorkOrder(WorkType.TrossCityTrade, -1, -1, WP.ToSubTilePos_Centered(city.tilePos));
-                            foodCosts.add(status.carry.amount);
+                            if (city.faction != faction)
+                            {
+                                foodCosts_import.add(status.carry.amount);
+                            }
                             workerStatuses[statusIx] = status;
 
                             //Calc backorder 

@@ -32,6 +32,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string MenuTab_Resources => "Resources";
         public string MenuTab_Trade => "Trade";
         public string MenuTab_Build => "Build";
+        public string MenuTab_Economy => "Economy";
 
         public string BuildHud_OutsideCity => "Outside city region";
         public string BuildHud_OutsideFaction => "Outside your borders!";
@@ -86,5 +87,23 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string TerrainType => "Terrain type";
 
         public string Hud_EnergyUpkeepX => "Food energy upkeep {0}";
+
+        public string Economy_TaxIncome = "Tax income: {0}";
+        public string Economy_ImportCostsForResource = "Import costs for {0}: {1}";
+        public string Economy_BlackMarketCostsForResource = "Black market costs for {0}: {1}";
+        public string Economy_GuardUpkeep = "Guard upkeep: {0}";
+
+        public string Economy_LocalCityTrade_Export = "City trade export: {0}";
+        public string Economy_LocalCityTrade_Import = "City trade import: {0}";
+
+        public string Economy_ResourceProduction = "{0} production: {1}";
+        public string Economy_ResourceSpending = "{0} spending: {1}";
+
+        public string Economy_TaxDescription = "Tax is {0} gold per worker";
+
+        public string Economy_SoldResources = "Sold resources (iron/gold): {0}";
+
+        public string UnitType_Cities => "Cities";
+        public string UnitType_Armies => "Armies";
     }
 }

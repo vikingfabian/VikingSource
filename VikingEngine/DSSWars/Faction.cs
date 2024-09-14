@@ -381,36 +381,36 @@ namespace VikingEngine.DSSWars
         
         }
 
-        void desertersUpdate()
-        {
-            if ( gold < 0)
-            {
-                //if (factiontype == FactionType.SouthHara)
-                //{
-                //    lib.DoNothing();
-                //}
-                int payDiff = -gold + armyUpkeep;
+        //void desertersUpdate()
+        //{
+        //    if ( gold < 0)
+        //    {
+        //        //if (factiontype == FactionType.SouthHara)
+        //        //{
+        //        //    lib.DoNothing();
+        //        //}
+        //        int payDiff = -gold + armyUpkeep;
 
-                if (hasDeserters && payDiff >= armyUpkeep * 5)
-                {
+        //        if (hasDeserters && payDiff >= armyUpkeep * 5)
+        //        {
                     
-                    //Gain a portion of deserters on all armies
-                    int totalDeserters = 0;
+        //            //Gain a portion of deserters on all armies
+        //            int totalDeserters = 0;
 
-                    var armiesCounter = armies.counter();
-                    while (armiesCounter.Next())
-                    {
-                        totalDeserters += armiesCounter.sel.desertSoldiers();
-                    }
+        //            var armiesCounter = armies.counter();
+        //            while (armiesCounter.Next())
+        //            {
+        //                totalDeserters += armiesCounter.sel.desertSoldiers();
+        //            }
 
-                    if (player.IsPlayer())
-                    {
-                        player.GetLocalPlayer().hud.messages.Add(DssRef.lang.EventMessage_DesertersTitle, DssRef.lang.EventMessage_DesertersText);
-                        player.GetLocalPlayer().statistics.SoldiersDeserted += totalDeserters;
-                    }
-                }
-            }
-        }
+        //            if (player.IsPlayer())
+        //            {
+        //                player.GetLocalPlayer().hud.messages.Add(DssRef.lang.EventMessage_DesertersTitle, DssRef.lang.EventMessage_DesertersText);
+        //                player.GetLocalPlayer().statistics.SoldiersDeserted += totalDeserters;
+        //            }
+        //        }
+        //    }
+        //}
 
         public void asynchAiPlayersUpdate(float time)
         {

@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             CityStructure.Singleton.newCity = true;
 
-            if (parentArrayIndex == 52 || debugTagged)
+            if (parentArrayIndex == 160 || debugTagged)
             { 
                 lib.DoNothing();
             }
@@ -119,8 +119,12 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }            
 
-            if (idleCount > workQue.Count && previousWorkQueUpdate.secPassed(10))
+            if (idleCount > 0 && previousWorkQueUpdate.secPassed(10))
             {
+                if (parentArrayIndex == 160 || debugTagged)
+                {
+                    lib.DoNothing();
+                }
                 buildWorkQue();
                 //Last position = highest priority
                 workQue.Sort((a, b) => a.priority.CompareTo(b.priority));
@@ -207,11 +211,16 @@ namespace VikingEngine.DSSWars.GameObject
                         switch ((TerrainBuildingType)subTile.subTerrain)
                         {
                             case TerrainBuildingType.Work_Cook:
-                                if (ResourceLib.CraftFood.available(this) && 
+                                if (ResourceLib.CraftFood.available(this) &&
                                     isFreeTile(subTileLoop.Position))
                                 {
                                     //ResourceLib.CraftFood.createBackOrder(this);
                                     workQue.Add(new WorkQueMember(WorkType.Craft, NoSubWork, subTileLoop.Position, workTemplate.craft_food.value, 0));
+                                }
+                                else
+                                {
+                                    var b1 = ResourceLib.CraftFood.available(this);
+                                    var b2 = isFreeTile(subTileLoop.Position);
                                 }
                                 break;
                             case TerrainBuildingType.Work_Smith:
@@ -459,7 +468,9 @@ namespace VikingEngine.DSSWars.GameObject
                     var status = workerStatuses[i];
                     if (status.work != WorkType.Idle &&
                         status.subTileEnd == subtile)
-                    { return false; }
+                    { 
+                        return false; 
+                    }
                 }
 
                 return true;
@@ -483,7 +494,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 int cost = (int)(buyFood * FoodGoldValue_BlackMarket);
                 faction.payMoney(cost, true);
-                blackMarketCosts.add(cost);
+                blackMarketCosts_food.add(cost);
                 food.amount += buyFood;
             }
         }

@@ -69,8 +69,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case WorkType.Eat:
                     int eatAmount = (int)Math.Floor((MaxEnergy - energy) / ResourceLib.FoodEnergy);
                     city.food.amount -= eatAmount;
+                    city.foodSpending.add(eatAmount);
                     energy += eatAmount * ResourceLib.FoodEnergy;
-                    //work = WorkType.Idle;
                     break;
 
                 case WorkType.GatherFoil:
@@ -196,7 +196,15 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case WorkType.LocalTrade:
                     ItemResourceType tradeForItem = (ItemResourceType)workSubType;
                     var toCity = DssRef.world.tileGrid.Get(subTileEnd / WorldData.TileSubDivitions).City();
-                    ItemResource recieved = toCity.MakeTrade(tradeForItem, carry.amount);
+                    int payment = carry.amount;
+                    ItemResource recieved = toCity.MakeTrade(tradeForItem, payment);
+
+                    if (city.faction != toCity.faction)
+                    {
+                        city.faction.CityTradeImportCounting += payment;
+                        toCity.faction.CityTradeExportCounting += payment;
+                    }
+
                     carry = recieved;
                     break;
 

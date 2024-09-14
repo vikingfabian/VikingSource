@@ -22,6 +22,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.todoLang.MenuTab_Recruit;
                 case MenuTab.Trade:
                     return DssRef.todoLang.MenuTab_Trade;
+                case MenuTab.Economy:
+                    return DssRef.todoLang.MenuTab_Economy;
                 case MenuTab.Resources:
                     return DssRef.todoLang.MenuTab_Resources;
                 case MenuTab.Work:

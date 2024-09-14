@@ -22,19 +22,19 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 
         public TradeTemplate()
         {
-            wood = new TradeResource(1);
-            stone = new TradeResource(0.6f);
-            rawFood = new TradeResource(1);
+            wood = new TradeResource(10);
+            stone = new TradeResource(6f);
+            rawFood = new TradeResource(10);
             food = new TradeResource(City.FoodGoldValue);    
-            skin = new TradeResource(4);
-            ore = new TradeResource(1);
-            iron = new TradeResource(10);
+            skin = new TradeResource(40);
+            ore = new TradeResource(10);
+            iron = new TradeResource(100);
         }
 
         public void changeResourcePrice(float change, ItemResourceType resourceType)
         {
             const float MinPrice = 0.1f;
-            const float MaxPrice = 100;
+            const float MaxPrice = 1000;
 
             var trade = GetTradeResource(resourceType);
             trade.price = Bound.Set(trade.price + change, MinPrice, MaxPrice);

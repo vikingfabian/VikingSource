@@ -407,7 +407,7 @@ namespace VikingEngine.DSSWars.Map
                     break;
 
                 case TerrainBuildingType.Work_Cook:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 1, wp, scale));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 1, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.Work_Smith:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 0, wp, scale));

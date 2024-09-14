@@ -10,6 +10,7 @@ using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Settings;
@@ -17,15 +18,12 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest;
-using VikingEngine.LootFest.Map;
-using VikingEngine.LootFest.Players;
-using VikingEngine.ToGG;
 
 namespace VikingEngine.DSSWars.GameObject
 {
     partial class City : GameObject.AbsMapObject
     {
-        const float TaxPerWorker = 0.2f;
+        public const float TaxPerWorker = 0.2f;
         public const int ExpandWorkForce = AbsSoldierData.GroupDefaultCount * 4;
         public const int ExpandGuardSize = AbsSoldierData.GroupDefaultCount;
         public const int ExpandGuardSizeCost = 12000;
@@ -39,8 +37,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         BoundingBox bound;
 
-        public int income;
-        float upkeep;
+        //public int totalIncome;
+       
+        //float upkeep;
         public int maxGuardSize;
         public int guardCount;
 
@@ -553,7 +552,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             refreshCitySize();
 
-            updateIncome_asynch();
+            //updateIncome_asynch();
 
             position = new Vector3(tilePos.X, Tile().ModelGroundY(), tilePos.Y);
 
@@ -600,7 +599,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void refreshCitySize()
         {
-            upkeep = GuardUpkeep(maxGuardSize);
+           // upkeep = GuardUpkeep(maxGuardSize);
             workForceAddPerSec = workForceMax / 200f;
 
             refreshVisualSize();
@@ -750,9 +749,21 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void updateIncome_asynch()
+        //public void updateIncome_asynch()
+        //{
+        //    totalIncome = Convert.ToInt32(Math.Floor(workForce.value * TaxPerWorker - upkeep - blackMarketCosts.displayValue_sec));
+        //}
+
+        public CityEconomyData calcIncome_async()
         {
-            income = Convert.ToInt32(Math.Floor(workForce.value * TaxPerWorker - upkeep - blackMarketCosts.displayValue_sec));
+            return new CityEconomyData()
+            {
+                tax = workForce.value * TaxPerWorker,
+                cityGuardUpkeep = GuardUpkeep(maxGuardSize),
+                blackMarketCosts_Food = blackMarketCosts_food.displayValue_sec,
+            };
+
+            
         }
 
         public void onNewModel(LootFest.VoxelModelName name, Graphics.VoxelModel master)
@@ -816,7 +827,9 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (minute)
             {
-                blackMarketCosts.minuteUpdate();
+                blackMarketCosts_food.minuteUpdate();
+                foodProduction.minuteUpdate();
+                foodSpending.minuteUpdate();
             }
         }
 
@@ -923,10 +936,10 @@ namespace VikingEngine.DSSWars.GameObject
         }
         
        
-        public int GetWeekIncome()
-        {
-            return income;
-        }
+        //public int GetWeekIncome()
+        //{
+        //    return income;
+        //}
 
         public override bool Equals(object obj)
         {
@@ -986,8 +999,8 @@ namespace VikingEngine.DSSWars.GameObject
                 HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.Int(), workForceMax));
                 HudLib.ItemCount(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, TextLib.Divition_Large(guardCount, maxGuardSize));
                 content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
-                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, income));
-                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, upkeep));
+                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, calcIncome_async().total()));
+                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, GuardUpkeep(maxGuardSize)));
 
                 if (immigrants.HasValue())
                 {

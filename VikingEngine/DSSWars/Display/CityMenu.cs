@@ -64,6 +64,10 @@ namespace VikingEngine.DSSWars.Display
                     recruitTab(content);
                     break;
 
+                case MenuTab.Economy:
+
+                    break;
+
                 case MenuTab.Resources:
                     city.resourcesToMenu(content);
                     break;
@@ -501,6 +505,7 @@ namespace VikingEngine.DSSWars.Display
     {         
         Info,
         Recruit,
+        Economy,
         Resources,
         Work,
         Trade,
