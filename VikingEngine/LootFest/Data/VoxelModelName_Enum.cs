@@ -558,6 +558,7 @@ namespace VikingEngine.LootFest
         armybanner,
         armystand,
         cityicon,
+        buildarea,
 
         //city_tower24,
         city_pen,
@@ -573,6 +574,7 @@ namespace VikingEngine.LootFest
         city_woodtower,
         city_stonewall,
         city_stonetower,
+        city_tavern,
 
         city_mine,
         city_workstation,

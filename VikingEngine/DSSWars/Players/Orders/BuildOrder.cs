@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.Players.Orders
 
             if (bLocalPlayer)
             {
-                model = DssRef.models.ModelInstance(LootFest.VoxelModelName.city_pen, WorldData.SubTileWidth * 1.4f, false);
+                model = DssRef.models.ModelInstance(LootFest.VoxelModelName.buildarea, WorldData.SubTileWidth * 1.4f, false);
                 model.AddToRender(DrawGame.UnitDetailLayer);
                 model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTile);
             }

@@ -284,7 +284,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void toPeacefulCheck_asynch()
         {
-            if (faction.cityIncome > 0)
+            if (faction.citiesEconomy.tax() > 0)
             {
                 int warCount = 0;
                 float opposingSize = 0;
@@ -298,7 +298,7 @@ namespace VikingEngine.DSSWars.Players
                         if (opponent.player.IsAi())
                         {
                             ++warCount;
-                            opposingSize += opponent.cityIncome;
+                            opposingSize += opponent.citiesEconomy.tax();
                         }
                     }
                 }
@@ -309,7 +309,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     float opposingSizePerc;
                     
-                    opposingSizePerc = opposingSize / faction.cityIncome;
+                    opposingSizePerc = opposingSize / faction.citiesEconomy.tax();
                     
                     toPeaceful = opposingSizePerc <= DssRef.difficulty.toPeacefulPercentage;
                 }

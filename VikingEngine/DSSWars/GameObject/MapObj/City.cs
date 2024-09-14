@@ -281,6 +281,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             w.Write(Debug.Byte_OrCrash((int)CityType));
             w.Write(Debug.Ushort_OrCrash(areaSize));
+            w.Write(Debug.Byte_OrCrash(cityTileRadius));
             w.Write(Debug.Byte_OrCrash(workHutStyle));
 
             w.Write(Debug.Byte_OrCrash(neighborCities.Count));
@@ -303,7 +304,11 @@ namespace VikingEngine.DSSWars.GameObject
 
             CityType = (CityType)r.ReadByte();
             areaSize = r.ReadUInt16();
-            workHutStyle = r.ReadByte();
+            if (version >= 5)
+            {
+                cityTileRadius = r.ReadByte();
+            }
+                workHutStyle = r.ReadByte();
 
             int neighborCitiesCount = r.ReadByte();
             for (int i = 0; i < neighborCitiesCount; i++)
@@ -758,10 +763,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return new CityEconomyData()
             {
-                tax = workForce.value * TaxPerWorker,
+                workerCount = workForce.Int(),//tax = workForce.value * TaxPerWorker,
                 cityGuardUpkeep = GuardUpkeep(maxGuardSize),
                 blackMarketCosts_Food = blackMarketCosts_food.displayValue_sec,
-            };
+            }; 
 
             
         }
@@ -799,7 +804,7 @@ namespace VikingEngine.DSSWars.GameObject
                 addWorkers = workForceAddPerSec * faction.growthMultiplier;
                 if (faction.player.IsAi())
                 {
-                    addWorkers *= Players.AiPlayer.EconomyMultiplier;
+                    addWorkers *= DssRef.difficulty.aiEconomyMultiplier;
                 }                
 
                 if (immigrants.HasValue())
@@ -830,6 +835,7 @@ namespace VikingEngine.DSSWars.GameObject
                 blackMarketCosts_food.minuteUpdate();
                 foodProduction.minuteUpdate();
                 foodSpending.minuteUpdate();
+                soldResources.minuteUpdate();
             }
         }
 

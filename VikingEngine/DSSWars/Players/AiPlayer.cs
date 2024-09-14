@@ -423,7 +423,7 @@ namespace VikingEngine.DSSWars.Players
 
         void buySoldiers(City city)
         {
-            if (faction.NetIncome() > DssLib.SoldierDefaultUpkeep * purchaseCount)
+            if (faction.MoneySecDiff() > DssLib.SoldierDefaultUpkeep * purchaseCount)
             {
                 Army army;
                 switch (faction.factiontype)
@@ -514,12 +514,12 @@ namespace VikingEngine.DSSWars.Players
             if (aggresive)
             {
                 return faction.gold >= DssRef.settings.AiArmyPurchase_MoneyMin_Aggresive &&
-                    faction.NetIncome() >= DssRef.settings.AiArmyPurchase_IncomeMin_Aggresive;
+                    faction.MoneySecDiff() >= DssRef.settings.AiArmyPurchase_IncomeMin_Aggresive;
             }
             else
             {
                 return faction.gold >= DssRef.settings.AiArmyPurchase_MoneyMin &&
-                    faction.NetIncome() >= DssRef.settings.AiArmyPurchase_IncomeMin;
+                    faction.MoneySecDiff() >= DssRef.settings.AiArmyPurchase_IncomeMin;
             }
         }
 

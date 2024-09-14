@@ -3,9 +3,12 @@
 *Sale price controls
 *Work priority controls
 *Build controls
-*Tavern: will feed workers (for less walking)
+*Tavern: will feed workers (less walking)
 *Idle workers will now spend energy
 *fixed undo crash in vox editor
+*Economy breakdown tab
+
+!the game is kinda broken at the moment
 
 Error
 -back button in menues 

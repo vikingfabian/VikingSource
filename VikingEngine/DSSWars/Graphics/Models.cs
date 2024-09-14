@@ -92,6 +92,7 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.city_square, false);
             loadVoxelModel(VoxelModelName.city_smallhouse, false);
             loadVoxelModel(VoxelModelName.city_bighouse, false);
+            loadVoxelModel(VoxelModelName.city_tavern, false);
             //loadVoxelModel(VoxelModelName.city_tower24, false);
 
             loadVoxelModel(VoxelModelName.Pig, false);
@@ -108,6 +109,7 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.horse_brown, false);
             loadVoxelModel(VoxelModelName.horse_white, false);
             loadVoxelModel(VoxelModelName.wars_shipmelee, false);
+            loadVoxelModel(VoxelModelName.buildarea, false);
 
             foreach (var model in DetailMapTile.LoadModel())
             {

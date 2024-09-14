@@ -898,15 +898,15 @@ namespace VikingEngine.DSSWars
 
         public FactionSize Size()
         {
-            if (cityIncome <= DssLib.LargeCityMaxWorkForce * 2)
+            if (citiesEconomy.workerCount <= DssLib.LargeCityMaxWorkForce * 2)
             {
                 return FactionSize.Tiny;
             }
-            else if (cityIncome <= DssLib.LargeCityMaxWorkForce * 6)
+            else if (citiesEconomy.workerCount <= DssLib.LargeCityMaxWorkForce * 6)
             {
                 return FactionSize.Normal;
             }
-            else if (cityIncome <= DssLib.LargeCityMaxWorkForce * 30)
+            else if (citiesEconomy.workerCount <= DssLib.LargeCityMaxWorkForce * 30)
             {
                 return FactionSize.Big;
             }

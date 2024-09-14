@@ -121,7 +121,7 @@ namespace VikingEngine.DSSWars.Display
                 content.Add(new RichBoxText(TextLib.LargeNumber(faction.gold), negativeRed(faction.gold)));
                 content.space();
                 content.Add(new RichBoxImage(SpriteName.rtsIncome));
-                content.Add(new RichBoxText(TextLib.LargeNumber(faction.NetIncome()), negativeRed(faction.NetIncome())));
+                content.Add(new RichBoxText(TextLib.LargeNumber(faction.MoneySecDiff()), negativeRed(faction.MoneySecDiff())));
                 
             }
 
@@ -255,7 +255,7 @@ namespace VikingEngine.DSSWars.Display
                     content.Add(new RichBoxNewLine());
                     content.Add(new RichBoxImage(SpriteName.rtsIncomeTime));
                     content.space();
-                    content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(faction.cityIncome))));
+                    content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(Convert.ToInt32( faction.citiesEconomy.tax())))));
 
                     content.Add(new RichBoxNewLine());
                     content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
@@ -319,7 +319,7 @@ namespace VikingEngine.DSSWars.Display
                 content.space();
                 HudLib.PerSecondInfo(player, content, true);
 
-                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.todoLang.Economy_TaxIncome, Convert.ToInt32(faction.citiesEconomy.tax)));
+                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.todoLang.Economy_TaxIncome, Convert.ToInt32(faction.citiesEconomy.tax())));
                 content.space();
                 HudLib.InfoButton(content, new RbAction(taxInfo));
 

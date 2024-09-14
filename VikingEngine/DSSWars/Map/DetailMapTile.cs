@@ -370,7 +370,7 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_workerhut, rnd, wp, scale));
                     break;
                 case TerrainBuildingType.Tavern:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_bighouse, rnd, wp, WorldData.SubTileWidth * 0.6f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_tavern, rnd, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.DirtWall:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_dirtwall, rnd, wp, scale));

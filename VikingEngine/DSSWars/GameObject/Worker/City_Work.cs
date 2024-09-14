@@ -29,10 +29,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             CityStructure.Singleton.newCity = true;
 
-            if (parentArrayIndex == 160 || debugTagged)
-            { 
-                lib.DoNothing();
-            }
+            //if (parentArrayIndex == 160 || debugTagged)
+            //{ 
+            //    lib.DoNothing();
+            //}
 
             async_blackMarketUpdate();
 
@@ -217,11 +217,11 @@ namespace VikingEngine.DSSWars.GameObject
                                     //ResourceLib.CraftFood.createBackOrder(this);
                                     workQue.Add(new WorkQueMember(WorkType.Craft, NoSubWork, subTileLoop.Position, workTemplate.craft_food.value, 0));
                                 }
-                                else
-                                {
-                                    var b1 = ResourceLib.CraftFood.available(this);
-                                    var b2 = isFreeTile(subTileLoop.Position);
-                                }
+                                //else
+                                //{
+                                //    var b1 = ResourceLib.CraftFood.available(this);
+                                //    var b2 = isFreeTile(subTileLoop.Position);
+                                //}
                                 break;
                             case TerrainBuildingType.Work_Smith:
                                 if (ResourceLib.CraftIron.available(this) &&

@@ -214,7 +214,7 @@ namespace VikingEngine.DSSWars.Players
 
         void makeServant(Faction takeOverFaction, bool factory)
         {
-            int cost = takeOverFaction.cityIncome;
+            int cost = takeOverFaction.citiesEconomy.workerCount;
             diplomacyPoints -= cost;
             maxDiplomacy -= cost;
 

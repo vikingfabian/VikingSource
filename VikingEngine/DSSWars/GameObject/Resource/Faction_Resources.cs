@@ -121,7 +121,7 @@ namespace VikingEngine.DSSWars
             CityTradeImportCounting -= CityTradeImport;
             CityTradeExportCounting -= CityTradeExport;
 
-            double tax = citiesEconomy.tax;
+            double tax = citiesEconomy.tax();
             if (player.IsAi())
             {
                 if (DssRef.settings.AiDelay)
