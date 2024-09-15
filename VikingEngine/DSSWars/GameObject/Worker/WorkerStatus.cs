@@ -13,9 +13,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 {
     struct WorkerStatus
     {
-        public const int TrossWorkerCarryWeight = 4;
-        public const int MaxEnergy = 500;
-        public const int Starvation = -MaxEnergy;
+        //public const int TrossWorkerCarryWeight = 4;
+        //public const int MaxEnergy = 500;
+        //public const int Starvation = -MaxEnergy;
 
         public const int Subwork_Craft_Food = 0;
         public const int Subwork_Craft_Iron = 1;
@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             {
                 case WorkType.TrossCityTrade:
                     var toCity = DssRef.world.tileGrid.Get(subTileEnd / WorldData.TileSubDivitions).City();
-                    ItemResource recieved = toCity.MakeTrade(ItemResourceType.Food, carry.amount, TrossWorkerCarryWeight);
+                    ItemResource recieved = toCity.MakeTrade(ItemResourceType.Food, carry.amount, DssConst.Worker_TrossWorkerCarryWeight);
                     carry = recieved;
 
                     createWorkOrder(WorkType.TrossReturnToArmy, 0, -1, WP.ToSubTilePos_Centered(army.tilePos));
@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             switch (work)
             {
                 case WorkType.Eat:
-                    int eatAmount = (int)Math.Floor((MaxEnergy - energy) / ResourceLib.FoodEnergy);
+                    int eatAmount = (int)Math.Floor((DssConst.Worker_MaxEnergy - energy) / ResourceLib.FoodEnergy);
                     city.food.amount -= eatAmount;
                     city.foodSpending.add(eatAmount);
                     energy += eatAmount * ResourceLib.FoodEnergy;
@@ -341,7 +341,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         var toCity = DssRef.world.tileGrid.Get(targetSubTile / WorldData.TileSubDivitions).City();
                         int goldCost = toCity.SellCost(tradeForItem);
 
-                        carry = new ItemResource(ItemResourceType.Gold, 1, 1, goldCost * TrossWorkerCarryWeight);
+                        carry = new ItemResource(ItemResourceType.Gold, 1, 1, goldCost * DssConst.Worker_TrossWorkerCarryWeight);
                     }
                     break;
 
@@ -361,45 +361,48 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             switch (work)
             {
                 case WorkType.Eat:
-                    return 20;
+                    return DssConst.WorkTime_Eat;
                 case WorkType.PickUpResource:
-                    return 2f;
+                    return DssConst.WorkTime_PickUpResource;
                 case WorkType.PickUpProduce:
-                    return 3f;
-                case WorkType.TrossReturnToArmy:
-                case WorkType.DropOff:
-                    return 1f;
+                    return DssConst.WorkTime_PickUpProduce;                
                 case WorkType.TrossCityTrade:
+                    return DssConst.WorkTime_TrossCityTrade;
                 case WorkType.LocalTrade:
-                    return 4f;
+                    return DssConst.WorkTime_LocalTrade;
                 case WorkType.GatherFoil:
                     SubTile subTile = DssRef.world.subTileGrid.Get(subTileEnd);
                     switch ((TerrainSubFoilType)subTile.subTerrain)
                     { 
                         case TerrainSubFoilType.TreeSoft:
-                            return 10;
+                            return DssConst.WorkTime_GatherFoil_TreeSoft;
                         case TerrainSubFoilType.TreeHard:
-                            return 12;
+                            return DssConst.WorkTime_GatherFoil_TreeHard;
                         case TerrainSubFoilType.FarmCulture:
-                            return 20;
+                            return DssConst.WorkTime_GatherFoil_FarmCulture;
                         case TerrainSubFoilType.Stones:
                         case TerrainSubFoilType.StoneBlock:
-                            return 5;
+                            return DssConst.WorkTime_GatherFoil_Stones;
                         default:
                             throw new NotImplementedException();
                     }
                 case WorkType.Till:
-                    return 30;
+                    return DssConst.WorkTime_Till;
                 case WorkType.Plant:
-                    return 20;
+                    return DssConst.WorkTime_Plant;
                 case WorkType.Mine:
-                    return 30;
+                    return DssConst.WorkTime_Mine;
                 case WorkType.Craft:
-                    return 5f;
+                    return DssConst.WorkTime_Craft;
                 case WorkType.Building:
-                    return 40;
+                    return DssConst.WorkTime_Building;
+
+                case WorkType.TrossReturnToArmy:
+                case WorkType.DropOff:
                 case WorkType.Exit:
-                    return 1;
+                case WorkType.Starving:
+                    return 1f;
+
                 default:
                     throw new NotImplementedException();
             }

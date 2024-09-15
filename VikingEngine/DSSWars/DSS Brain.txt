@@ -1,7 +1,8 @@
 ﻿
 -Change Log-
-*children
-*workers are removed when recruited
+* children
+* workers are removed when recruited
+* workers starve to death
 
 Error
 -back button in menues 

@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.GameObject
                             workerStatuses[statusIx] = status;
 
                             //Calc backorder 
-                            float foodOrderSize = ItemPropertyColl.CarryFood * WorkerStatus.TrossWorkerCarryWeight;
+                            float foodOrderSize = ItemPropertyColl.CarryFood * DssConst.Worker_TrossWorkerCarryWeight;
                             float perc = (foodOrderSize + food) / bufferGoalFood;
 
                             if (perc > 0)

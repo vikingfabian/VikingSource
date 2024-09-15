@@ -56,6 +56,7 @@ namespace VikingEngine.DSSWars.GameObject
                         --workerStatusActiveCount;
                         break;
 
+                    case WorkType.Starving:
                     case WorkType.Exit:
                         --workerStatusActiveCount;
                         break;
@@ -119,7 +120,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         work = WorkType.Idle,
                         processTimeStartStampSec = Ref.TotalGameTimeSec,
-                        energy = WorkerStatus.MaxEnergy,
+                        energy = DssConst.Worker_MaxEnergy,
                         subTileEnd = startPos,
                         subTileStart = startPos,
                     };
@@ -180,6 +181,14 @@ namespace VikingEngine.DSSWars.GameObject
                         CityStructure.Singleton.updateIfNew(this);
                         var status = workerStatuses[i];
                         status.createWorkOrder(WorkType.Eat, -1, -1, CityStructure.Singleton.eatPosition(status.subTileEnd));
+                        workerStatuses[i] = status;
+                    }
+                    else if (workerStatuses[i].energy <= DssConst.Worker_Starvation)
+                    {
+                        --workerStatusActiveCount;
+                        --workForce;
+                        var status = workerStatuses[i];
+                        status.createWorkOrder(WorkType.Starving, -1, -1, WP.ToSubTilePos_Centered(tilePos));
                         workerStatuses[i] = status;
                     }
                     else if (workQue.Count > 0)
@@ -563,6 +572,7 @@ namespace VikingEngine.DSSWars.GameObject
         IsDeleted,
         Idle,
         Exit,
+        Starving,
         Eat,
 
         Till,

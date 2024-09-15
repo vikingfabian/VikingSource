@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.Data.Constants
                 ApplyModdedConstants(moddedType);
             }
 
-            var food = DssConst.MaxFood;
+            //var food = DssConst.MaxFood;
         }
 
         public static void ApplyModdedConstants(Type moddedType)
