@@ -1,8 +1,21 @@
 ﻿
+using VikingEngine.DSSWars.GameObject.Resource;
+using VikingEngine.DSSWars.GameObject;
+
 namespace VikingEngine.DSSWars
 {
-    public static class DssConst
+    static class DssConst
     {
+        
+        //CITY
+        public static int Maxwater = 10;
+
+        public static int GoldOreSellValue = 100;
+        public static int IronSellValue = 5;
+        public static float FoodGoldValue = 2f;
+        public static float FoodGoldValue_BlackMarket = FoodGoldValue * 5;
+
+        //WORK
         public static float WorkTime_Eat = 20;
         public static float WorkTime_PickUpResource = 2;
         public static float WorkTime_PickUpProduce = 3;
@@ -21,5 +34,14 @@ namespace VikingEngine.DSSWars
         public static int Worker_TrossWorkerCarryWeight = 4;
         public static int Worker_MaxEnergy = 500;
         public static int Worker_Starvation = -Worker_MaxEnergy;
+
+        public static int DefaultItemRawFoodAmout = 8;
+        public static int PigRawFoodAmout = 5 * DefaultItemRawFoodAmout;
+        public static float ManDefaultEnergyCost = 1f;
+        public static float WorkTeamEnergyCost = ManDefaultEnergyCost * City.WorkTeamSize;
+        public static float WorkTeamEnergyCost_WhenIdle = WorkTeamEnergyCost * 0.5f;
+        public static int FoodEnergy = 100;
+
+
     }
 }

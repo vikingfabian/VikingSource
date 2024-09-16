@@ -10,6 +10,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 {
     struct WorkTemplate
     {
+        public const int NoPrio = 0;
         const int MinPrio = 1;
         const int MaxPrio = 10;
 
@@ -18,6 +19,12 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         public WorkPriority stone = new WorkPriority(4);
         public WorkPriority craft_food = new WorkPriority(8);
         public WorkPriority craft_iron = new WorkPriority(6);
+        public WorkPriority craft_sharpstick = new WorkPriority(1);
+        public WorkPriority craft_sword = new WorkPriority(0);
+        public WorkPriority craft_bow = new WorkPriority(0);
+        public WorkPriority craft_lightarmor = new WorkPriority(1);
+        public WorkPriority craft_mediumarmor = new WorkPriority(0);
+        public WorkPriority craft_heavyarmor = new WorkPriority(0);
         public WorkPriority farming = new WorkPriority(5);
         public WorkPriority mining = new WorkPriority(5);
         public WorkPriority trading = new WorkPriority(5);
@@ -35,6 +42,15 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             stone.onFactionValueChange(factionTemplate.stone);
             craft_food.onFactionValueChange(factionTemplate.craft_food);
             craft_iron.onFactionValueChange(factionTemplate.craft_iron);
+
+            craft_sharpstick.onFactionValueChange(factionTemplate.craft_food);
+            craft_sword.onFactionValueChange(factionTemplate.craft_food);
+            craft_bow.onFactionValueChange(factionTemplate.craft_food);
+
+            craft_lightarmor.onFactionValueChange(factionTemplate.craft_food);
+            craft_mediumarmor.onFactionValueChange(factionTemplate.craft_food);
+            craft_heavyarmor.onFactionValueChange(factionTemplate.craft_food);
+
             farming.onFactionValueChange(factionTemplate.farming);
             mining.onFactionValueChange(factionTemplate.mining);
             trading.onFactionValueChange(factionTemplate.trading);
@@ -45,7 +61,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         public void changeWorkPrio(int change, WorkPriorityType priorityType)
         {
             var work = GetWorkPriority(priorityType);
-            work.value = Bound.Set(work.value + change, MinPrio, MaxPrio);
+            work.value = Bound.Set(work.value + change, NoPrio, MaxPrio);
             work.followFaction = false;
             SetWorkPriority(priorityType, work);
             //switch (priorityType)
@@ -90,6 +106,28 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             work.followFaction = !work.followFaction;
             work.onFactionValueChange(factionTemplate.GetWorkPriority(prioType));
             SetWorkPriority(prioType, work);
+        }
+        public WorkPriority GetWorkPriority(ItemResourceType item)
+        {
+            switch (item)
+            {                
+                case ItemResourceType.Food_G:
+                    return craft_food;
+                case ItemResourceType.Iron_G:
+                    return craft_iron;
+
+                case ItemResourceType.LightArmor: return craft_lightarmor;
+                case ItemResourceType.MediumArmor: return craft_mediumarmor;
+                case ItemResourceType.HeavyArmor: return craft_heavyarmor;
+
+                case ItemResourceType.SharpStick: return craft_sharpstick;
+                case ItemResourceType.Sword: return craft_sword;
+                case ItemResourceType.Bow: return craft_bow;
+
+                default:
+                    throw new NotImplementedException();
+
+            }
         }
 
         public WorkPriority GetWorkPriority(WorkPriorityType priorityType)
@@ -173,6 +211,15 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             stone.toHud(player, content, string.Format(DssRef.todoLang.Work_GatherXResource, DssRef.todoLang.Resource_TypeName_Stone), WorkPriorityType.stone, faction, city);
             craft_food.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Food), WorkPriorityType.craftFood, faction, city);
             craft_iron.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Iron), WorkPriorityType.craftIron, faction, city);
+
+            craft_sharpstick.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_SharpStick), WorkPriorityType.craftSharpStick, faction, city);
+            craft_sword.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Sword), WorkPriorityType.craftSword, faction, city);
+            craft_bow.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Bow), WorkPriorityType.craftBow, faction, city);
+            
+            craft_lightarmor.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_LightArmor), WorkPriorityType.craftLightArmor, faction, city);
+            craft_mediumarmor.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_MediumArmor), WorkPriorityType.craftMediumArmor, faction, city);
+            craft_heavyarmor.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_HeavyArmor), WorkPriorityType.craftHeavyArmor, faction, city);
+
             farming.toHud(player, content, DssRef.todoLang.Work_Farming, WorkPriorityType.farming, faction, city);
             mining.toHud(player, content, DssRef.todoLang.Work_Mining, WorkPriorityType.mining, faction, city);
             trading.toHud(player, content, DssRef.todoLang.Work_Trading, WorkPriorityType.trading, faction, city);
@@ -187,6 +234,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
     struct WorkPriority
     {
+        public static readonly WorkPriority Empty = new WorkPriority();
+
         public int value;
         public bool followFaction;
 
@@ -247,6 +296,11 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 content.space();
             }
         }
+
+        public bool HasPrio()
+        { 
+            return value > WorkTemplate.NoPrio;
+        }
     }
 
     enum WorkPriorityType
@@ -256,11 +310,20 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         stone,
         craftFood,
         craftIron,
+
+        craftSharpStick,
+        craftSword,
+        craftBow,
+
+        craftLightArmor,
+        craftMediumArmor,
+        craftHeavyArmor,
+
         farming,
         mining,
         trading,
         expandHousing,
         expandFarms,
-
+        NUM
     }
 }

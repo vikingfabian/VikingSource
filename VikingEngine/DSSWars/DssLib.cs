@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars
         public const int GroupDefaultCultureCostReduction = 20;
         public const int GroupMinCost = 20;
         public const float SoldierDefaultUpkeep = 1f;
-        public const float SoldierDefaultEnergyUpkeep = ResourceLib.ManDefaultEnergyCost;
+        public static float SoldierDefaultEnergyUpkeep = DssConst.ManDefaultEnergyCost;
         public const float GroupDefaultUpkeep = SoldierDefaultUpkeep * AbsSoldierData.GroupDefaultCount;
         public const int DefalutRecruitTrainingTimeSec = 3 * 60;
                 
@@ -159,6 +159,19 @@ namespace VikingEngine.DSSWars
         NUM
     }
 
+    enum CityCulture
+    { 
+        LargeFamilies,
+        FertileGround,
+        Archers,
+        Swordsmen,
+        AnimalBreeder,
+        Miners,
+        Woodcutters,
+        Builders,
+        FreshWater,
+
+    }
 }
 
 

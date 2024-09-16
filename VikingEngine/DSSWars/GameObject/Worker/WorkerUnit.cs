@@ -121,7 +121,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                     case TerrainSubFoilType.TreeHard:
                                         SoundLib.woodcut.Play(model.position);
                                         break;
-                                    case TerrainSubFoilType.FarmCulture:
+                                    case TerrainSubFoilType.WheatFarm:
                                         SoundLib.scythe.Play(model.position);
                                         break;
                                     case TerrainSubFoilType.StoneBlock:

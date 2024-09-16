@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.city_smallhouse, false);
             loadVoxelModel(VoxelModelName.city_bighouse, false);
             loadVoxelModel(VoxelModelName.city_tavern, false);
-            //loadVoxelModel(VoxelModelName.city_tower24, false);
+            loadVoxelModel(VoxelModelName.city_barracks, false);
 
             loadVoxelModel(VoxelModelName.Pig, false);
             loadVoxelModel(VoxelModelName.Hen, false);

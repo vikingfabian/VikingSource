@@ -18,6 +18,7 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest;
+using VikingEngine.LootFest.Map;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -639,10 +640,10 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     CityType = newType;
                     //detailObj.refreshModel();
-                    Task.Factory.StartNew(() =>
-                    {
-                        createBuildingSubtiles(DssRef.world);
-                    });
+                    //Task.Factory.StartNew(() =>
+                    //{
+                    //    createBuildingSubtiles(DssRef.world);
+                    //});
 
                     if (overviewModel != null)
                     {
@@ -871,7 +872,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             workForce = Bound.Max(workForce + addWorkers, homesTotal());
 
-            water = Math.Min(water + 1, Maxwater);
+            water.amount = Math.Min(water.amount + 1, DssConst.Maxwater);
         }
 
         public void asynchGameObjectsUpdate(bool minute)
@@ -1432,6 +1433,16 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void createStartupBarracks()
+        {
+            IntVector2 pos = WP.ToSubTilePos_TopLeft(tilePos);
+            pos.X += 4;
+            pos.Y += 5;
+            var subTile = DssRef.world.subTileGrid.Get(pos);
+            subTile.SetType(TerrainMainType.Building, (int)TerrainBuildingType.Barracks, 1);
+            DssRef.world.subTileGrid.Set(pos, subTile);
+        }
+        
         public Army recruitToClosestArmy()
         {
             return faction.ClosestFriendlyArmy(position, 1.5f);

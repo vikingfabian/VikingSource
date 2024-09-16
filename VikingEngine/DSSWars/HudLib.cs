@@ -22,6 +22,7 @@ namespace VikingEngine.DSSWars
         public static readonly Color TitleColor_Attack = Color.Red;
         public static readonly Color TitleColor_Name = Color.LightYellow;
         public static readonly Color TitleColor_TypeName = Color.LightGray;
+        public static readonly Color TitleColor_Label = new Color(0, 128, 153);
         public static readonly Color AvailableColor = Color.LightGreen;
         public static readonly Color NotAvailableColor = Color.Red;
 
@@ -196,6 +197,11 @@ namespace VikingEngine.DSSWars
         public static void Description(RichBoxContent content, string description)
         {
             content.text("\"" + description + "\"").overrideColor = InfoYellow_Light;
+        }
+
+        public static void Label(RichBoxContent content, string text)
+        {
+            content.text(text + ":").overrideColor = TitleColor_Label;
         }
     }
 }

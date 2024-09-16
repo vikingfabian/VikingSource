@@ -112,8 +112,8 @@ namespace VikingEngine.DSSWars.Display
                         title = new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Build_PlaceBuilding, player.BuildControls.placeBuildingType));
                         content.Add(title);
                         content.newLine();
-                        CraftBlueprint blueprint = ResourceLib.Blueprint(player.BuildControls.placeBuildingType);
-                        blueprint.toMenu(content);
+                        //CraftBlueprint blueprint = ResourceLib.Blueprint(player.BuildControls.placeBuildingType);
+                        player.BuildControls.placeBuildingType.blueprint.toMenu(content);
 
                         var mayBuild = player.mapControls.hover.subTile.MayBuild(player);
                         
@@ -147,6 +147,11 @@ namespace VikingEngine.DSSWars.Display
 
                     case Players.SelectTileResult.CityHall:
                         title = new RichBoxText(DssRef.todoLang.Hud_SelectCity);
+                        content.Add(title);
+                        break;
+
+                    case Players.SelectTileResult.Barracks:
+                        title = new RichBoxText(DssRef.todoLang.Hud_Conscription);
                         content.Add(title);
                         break;
                 }

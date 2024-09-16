@@ -44,7 +44,9 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         {
             return "Item: " + amount.ToString() + type.ToString();
         }
-    }    
+    }
+
+    
     
     enum ItemResourceType
     {
@@ -82,14 +84,14 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         Clothes,
         Bag,
 
-        IronOre,
+        IronOre_G,
         TinOre,
         CupperOre,
         SilverOre,
         GoldOre,
         MithrilOre,
 
-        Iron,
+        Iron_G,
         Steel,
         Tin,
         Cupper,
@@ -99,17 +101,20 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         Mithril,
         
         Bow,
-        Arrow,
+        SharpStick,
         Sword,
         Shield,
         
-        Padding,
-        Gambeson,
-        Brigandine,
-        PlateArmor,
+        LightArmor,
+        MediumArmor,
+        HeavyArmor,
+        //Padding,
+        //Gambeson,
+        //Brigandine,
+        //PlateArmor,
 
         StoneBlock,
-        Stone,
+        Stone_G,
         Clay,
         Brick,
         Pot,
@@ -117,14 +122,19 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         Wheat,
         Bread,
         Beer,
-        Food,
+        Food_G,
 
-        Water,
+        Water_G,
         SaltWater,
 
         Fuel,
         Poop,
 
-        NUM
+        NUM,
+
+        Wood_Group,
+        RawFood_Group,
+        SkinLinnen_Group,
+
     }
 }

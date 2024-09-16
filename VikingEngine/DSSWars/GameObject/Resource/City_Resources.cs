@@ -19,29 +19,74 @@ namespace VikingEngine.DSSWars.GameObject
         public MinuteStats foodSpending = new MinuteStats();
         public MinuteStats soldResources = new MinuteStats();
 
-        const int GoldOreSellValue = 100;
-        const int IronSellValue = 5;
-        public const float FoodGoldValue = 2f;
-        public const float FoodGoldValue_BlackMarket = FoodGoldValue * 5;
-
-        //Simplified resources
-        const int Maxwater = 10;
-        public int water = Maxwater;
+        //public int water = Maxwater;
         int waterBuffer = 2;
         int waterSpendOrders = 0;
-        
-        public SimplifiedResource wood = new SimplifiedResource() { amount = 20,  goalBuffer = 300 };
-        public SimplifiedResource stone = new SimplifiedResource() { amount = 20, goalBuffer = 100 };
-        public SimplifiedResource rawFood = new SimplifiedResource() { amount = 50, goalBuffer = 200 };
-        public SimplifiedResource food = new SimplifiedResource() { amount = 200, goalBuffer = 500 };
-        public SimplifiedResource skin = new SimplifiedResource() { goalBuffer = 100 };
-        public SimplifiedResource ore = new SimplifiedResource() { goalBuffer = 100 };
-        public SimplifiedResource iron = new SimplifiedResource() { goalBuffer = 100 };
+
+        public GroupedResource water = new GroupedResource() { amount = DssConst.Maxwater, goalBuffer = DssConst.Maxwater };
+        public GroupedResource wood = new GroupedResource() { amount = 20,  goalBuffer = 300 };
+        public GroupedResource stone = new GroupedResource() { amount = 20, goalBuffer = 100 };
+        public GroupedResource rawFood = new GroupedResource() { amount = 50, goalBuffer = 200 };
+        public GroupedResource food = new GroupedResource() { amount = 200, goalBuffer = 500 };
+        public GroupedResource skinLinnen = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource ore = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource iron = new GroupedResource() { goalBuffer = 100 };
 
         //bool useLocalTrade
         public TradeTemplate tradeTemplate = new TradeTemplate();
 
         //int tradeGold = 0;
+
+        public GroupedResource GetGroupedResource(ItemResourceType type)
+        {
+            switch (type)
+            {
+                case ItemResourceType.Water_G: return water;
+                case ItemResourceType.IronOre_G: return ore;
+                case ItemResourceType.Iron_G: return iron;
+                case ItemResourceType.Food_G: return food;
+                case ItemResourceType.Stone_G: return stone;
+                case ItemResourceType.Wood_Group: return wood;
+                case ItemResourceType.RawFood_Group: return rawFood;
+                case ItemResourceType.SkinLinnen_Group: return skinLinnen;
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        public void SetGroupedResource(ItemResourceType type, GroupedResource resource)
+        {
+            switch (type)
+            {
+                case ItemResourceType.Water_G:
+                    water = resource;
+                    break;
+                case ItemResourceType.IronOre_G:
+                    ore = resource;
+                    break;
+                case ItemResourceType.Iron_G:
+                    iron = resource;
+                    break;
+                case ItemResourceType.Food_G:
+                    food = resource;
+                    break;
+                case ItemResourceType.Stone_G:
+                    stone = resource;
+                    break;
+                case ItemResourceType.Wood_Group:
+                    wood = resource;
+                    break;
+                case ItemResourceType.RawFood_Group:
+                    rawFood = resource;
+                    break;
+                case ItemResourceType.SkinLinnen_Group:
+                    skinLinnen = resource;
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
 
         public int SellCost(ItemResourceType itemResourceType)
         {
@@ -52,13 +97,13 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.SoftWood:
                     resource = tradeTemplate.wood;
                     break;
-                case ItemResourceType.Stone:
+                case ItemResourceType.Stone_G:
                     resource = tradeTemplate.stone;
                     break;
-                case ItemResourceType.Food:
+                case ItemResourceType.Food_G:
                     resource = tradeTemplate.food;
                     break;
-                case ItemResourceType.Iron:
+                case ItemResourceType.Iron_G:
                     resource = tradeTemplate.iron;
                     break;
 
@@ -79,13 +124,13 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.SoftWood:
                     wood.amount -= carry;
                     break;
-                case ItemResourceType.Stone:
+                case ItemResourceType.Stone_G:
                     stone.amount -= carry;
                     break;
-                case ItemResourceType.Food:
+                case ItemResourceType.Food_G:
                     food.amount -= carry;
                     break;
-                case ItemResourceType.Iron:
+                case ItemResourceType.Iron_G:
                     iron.amount -= carry;
                     break;
 
@@ -105,25 +150,29 @@ namespace VikingEngine.DSSWars.GameObject
                     wood.add(item);
                     break;
 
-                case ItemResourceType.Stone:
+                case ItemResourceType.Stone_G:
                     stone.add(item);
                     break;
 
                 case ItemResourceType.Egg:                                   
                 case ItemResourceType.Hen:
                 case ItemResourceType.Wheat:
-                    rawFood.add(item, ResourceLib.DefaultItemRawFoodAmout);
+                    rawFood.add(item, DssConst.DefaultItemRawFoodAmout);
                     break;
 
                 case ItemResourceType.Pig:
-                    rawFood.add(item, ResourceLib.PigRawFoodAmout);
-                    skin.add(item);
+                    rawFood.add(item, DssConst.PigRawFoodAmout);
+                    skinLinnen.add(item);
                     break;
 
-                case ItemResourceType.IronOre:
+                case ItemResourceType.Linnen:
+                    skinLinnen.add(item);
+                    break;
+
+                case ItemResourceType.IronOre_G:
                     //ore.add(item);
                     {
-                        var price = item.amount * IronSellValue;
+                        var price = item.amount * DssConst.IronSellValue;
                         faction.gold += price;
                         soldResources.add(price);
                     }
@@ -131,7 +180,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 case ItemResourceType.GoldOre:
                     {
-                        var price = item.amount * GoldOreSellValue;
+                        var price = item.amount * DssConst.GoldOreSellValue;
                         faction.gold += price;
                         soldResources.add(price);
                     }
@@ -155,10 +204,10 @@ namespace VikingEngine.DSSWars.GameObject
                     iron.amount += ResourceLib.CraftIron.craft(this);
                     canCraftAgain = ResourceLib.CraftFood.canCraft(this);
                     break;
-                case TerrainBuildingType.WorkerHut:
-                    ResourceLib.CraftWorkerHut.craft(this);
-                    onWorkHutBuild();
-                    break;
+                //case TerrainBuildingType.WorkerHut:
+                //    ResourceLib.CraftWorkerHut.craft(this);
+                //    onWorkHutBuild();
+                //    break;
             }
         }
 
@@ -174,23 +223,30 @@ namespace VikingEngine.DSSWars.GameObject
             content.h1("Resources");
             content.newLine();
 
-            content.text("Water: " + water.ToString());
+            // content.text("Water: " + water.ToString());
+            water.toMenu(content, DssRef.todoLang.Resource_TypeName_Water);
             wood.toMenu(content, DssRef.todoLang.Resource_TypeName_Wood);
             stone.toMenu(content, DssRef.todoLang.Resource_TypeName_Stone);
             rawFood.toMenu(content, DssRef.todoLang.Resource_TypeName_RawFood);
             food.toMenu(content, DssRef.todoLang.Resource_TypeName_Food);
-            skin.toMenu(content, DssRef.todoLang.Resource_TypeName_Skin);
+            skinLinnen.toMenu(content, DssRef.todoLang.Resource_TypeName_SkinAndLinnen);
             ore.toMenu(content, DssRef.todoLang.Resource_TypeName_Ore);
-            //iron.toMenu(content, "iron");
-
+            
             content.newParagraph();
             content.h2("Crafting blueprints");
             ResourceLib.CraftFood.toMenu(content);
             ResourceLib.CraftIron.toMenu(content);
+            ResourceLib.CraftSharpStick.toMenu(content);
+            ResourceLib.CraftSword.toMenu(content);
+            ResourceLib.CraftBow.toMenu(content);
+            ResourceLib.CraftLightArmor.toMenu(content);
+            ResourceLib.CraftMediumArmor.toMenu(content);
+            ResourceLib.CraftHeavyArmor.toMenu(content);
+
             ResourceLib.CraftWorkerHut.toMenu(content);
-            content.text("1 iron => " + IronSellValue.ToString() + "gold");
-            content.text("1 gold ore => " + GoldOreSellValue.ToString() + "gold");
-            content.text("1 food => " + ResourceLib.FoodEnergy + " energy (seconds of work)");
+            //content.text("1 iron => " + DssConst.IronSellValue.ToString() + "gold");
+            content.text("1 gold ore => " + DssConst.GoldOreSellValue.ToString() + "gold");
+            content.text("1 food => " + DssConst.FoodEnergy + " energy (seconds of work)");
         }
     }
 
@@ -199,7 +255,7 @@ namespace VikingEngine.DSSWars.GameObject
         
     //}
 
-    struct SimplifiedResource
+    struct GroupedResource
     {
         public int amount;
         //public float saleValue;

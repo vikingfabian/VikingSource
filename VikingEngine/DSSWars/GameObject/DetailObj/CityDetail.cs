@@ -171,7 +171,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                 if (Ref.rnd.Chance(0.75))
                                                 {
                                                     terrain = TerrainMainType.Foil;
-                                                    sub = (int)TerrainSubFoilType.FarmCulture;
+                                                    sub = (int)TerrainSubFoilType.WheatFarm;
                                                 }
                                                 else
                                                 {

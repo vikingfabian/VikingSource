@@ -318,21 +318,41 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainSubFoilType.TreeHardSprout:
                     addFoliage(new Foliage(LootFest.VoxelModelName.fol_sprout, rnd, wp, 0.05f + 0.01f * sizeValue));
                     break;
-                case TerrainSubFoilType.FarmCulture:
-                    int frame = TerrainContent.FarmCulture_Empty;
-                    if (sizeValue >= TerrainContent.FarmCulture_ReadySize)
+                case TerrainSubFoilType.WheatFarm:
                     {
-                        frame = 3;
+                        int frame = TerrainContent.FarmCulture_Empty;
+                        if (sizeValue >= TerrainContent.FarmCulture_ReadySize)
+                        {
+                            frame = 3;
+                        }
+                        else if (sizeValue >= TerrainContent.FarmCulture_HalfSize)
+                        {
+                            frame = 2;
+                        }
+                        else if (sizeValue > TerrainContent.FarmCulture_Empty)
+                        {
+                            frame = 1;
+                        }
+                        addFoliage(new Foliage(LootFest.VoxelModelName.fol_farmculture, frame, wp, 0.1f));
                     }
-                    else if (sizeValue >= TerrainContent.FarmCulture_HalfSize)
+                    break;
+                case TerrainSubFoilType.LinnenFarm:
                     {
-                        frame = 2;
+                        int frame = TerrainContent.FarmCulture_Empty;
+                        if (sizeValue >= TerrainContent.FarmCulture_ReadySize)
+                        {
+                            frame = 4;
+                        }
+                        else if (sizeValue >= TerrainContent.FarmCulture_HalfSize)
+                        {
+                            frame = 2;
+                        }
+                        else if (sizeValue > TerrainContent.FarmCulture_Empty)
+                        {
+                            frame = 1;
+                        }
+                        addFoliage(new Foliage(LootFest.VoxelModelName.fol_farmculture, frame, wp, 0.1f));
                     }
-                    else if (sizeValue > TerrainContent.FarmCulture_Empty)
-                    {
-                        frame = 1;
-                    }
-                    addFoliage(new Foliage(LootFest.VoxelModelName.fol_farmculture, frame, wp, 0.1f));
                     break;
                 default:
                     throw new NotImplementedException();
@@ -371,6 +391,9 @@ namespace VikingEngine.DSSWars.Map
                     break;
                 case TerrainBuildingType.Tavern:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_tavern, rnd, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                case TerrainBuildingType.Barracks:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, rnd, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.DirtWall:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_dirtwall, rnd, wp, scale));

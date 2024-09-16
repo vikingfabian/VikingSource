@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.Graphics;
@@ -19,6 +20,12 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         public const int Subwork_Craft_Food = 0;
         public const int Subwork_Craft_Iron = 1;
+        public const int Subwork_Craft_LightArmor = 2;
+        public const int Subwork_Craft_MediumArmor = 3;
+        public const int Subwork_Craft_HeavyArmor = 4;
+        public const int Subwork_Craft_SharpStick = 5;
+        public const int Subwork_Craft_Sword = 6;
+        public const int Subwork_Craft_Bow = 7;
 
         public WorkType work;
         public int workSubType;
@@ -45,7 +52,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             {
                 case WorkType.TrossCityTrade:
                     var toCity = DssRef.world.tileGrid.Get(subTileEnd / WorldData.TileSubDivitions).City();
-                    ItemResource recieved = toCity.MakeTrade(ItemResourceType.Food, carry.amount, DssConst.Worker_TrossWorkerCarryWeight);
+                    ItemResource recieved = toCity.MakeTrade(ItemResourceType.Food_G, carry.amount, DssConst.Worker_TrossWorkerCarryWeight);
                     carry = recieved;
 
                     createWorkOrder(WorkType.TrossReturnToArmy, 0, -1, WP.ToSubTilePos_Centered(army.tilePos));
@@ -60,7 +67,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         void workComplete(City city)
         {
-            energy -= processTimeLengthSec * ResourceLib.WorkTeamEnergyCost;
+            energy -= processTimeLengthSec * DssConst.WorkTeamEnergyCost;
             SubTile subTile = DssRef.world.subTileGrid.Get(subTileEnd);
 
             bool tryRepeatWork = false;
@@ -68,10 +75,10 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             switch (work)
             {
                 case WorkType.Eat:
-                    int eatAmount = (int)Math.Floor((DssConst.Worker_MaxEnergy - energy) / ResourceLib.FoodEnergy);
+                    int eatAmount = (int)Math.Floor((DssConst.Worker_MaxEnergy - energy) / DssConst.FoodEnergy);
                     city.food.amount -= eatAmount;
                     city.foodSpending.add(eatAmount);
-                    energy += eatAmount * ResourceLib.FoodEnergy;
+                    energy += eatAmount * DssConst.FoodEnergy;
                     break;
 
                 case WorkType.GatherFoil:
@@ -88,7 +95,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                 gatherWood(Resource.ItemResourceType.HardWood, ref subTile);
                                 break;
 
-                            case TerrainSubFoilType.FarmCulture:
+                            case TerrainSubFoilType.WheatFarm:
                                 DssRef.state.resources.addItem(
                                     new Resource.ItemResource(
                                         ItemResourceType.Wheat,
@@ -101,9 +108,22 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                 DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                                 break;
 
+                            case TerrainSubFoilType.LinnenFarm:
+                                DssRef.state.resources.addItem(
+                                    new Resource.ItemResource(
+                                        ItemResourceType.Linnen,
+                                        subTile.terrainQuality,
+                                        Convert.ToInt32(processTimeLengthSec),
+                                        subTile.terrainAmount),
+                                    ref subTile.collectionPointer);
+
+                                subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
+                                DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                                break;
+
                             case TerrainSubFoilType.StoneBlock:
                             case TerrainSubFoilType.Stones:
-                                carry = new ItemResource(ItemResourceType.Stone, 1, Convert.ToInt32(processTimeLengthSec), ItemPropertyColl.CarryStones);
+                                carry = new ItemResource(ItemResourceType.Stone_G, 1, Convert.ToInt32(processTimeLengthSec), ItemPropertyColl.CarryStones);
                                 break;
                         }
 
@@ -115,7 +135,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     if (subTile.mainTerrain == TerrainMainType.DefaultLand ||
                         subTile.mainTerrain == TerrainMainType.Destroyed)
                     {
-                        subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.FarmCulture, 0);
+                        subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, 0);
                         DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                     }
 
@@ -216,7 +236,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         switch (mineType)
                         {
                             case TerrainMineType.IronOre:
-                                resourceType = ItemResourceType.IronOre;
+                                resourceType = ItemResourceType.IronOre_G;
                                 break;
                             case TerrainMineType.GoldOre:
                                 resourceType = ItemResourceType.GoldOre;
@@ -246,11 +266,13 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                 case WorkType.Building:
                     {
-
-                        subTile.SetType(TerrainMainType.Building, workSubType, 1);
+                        //subTile.SetType(TerrainMainType.Building, workSubType, 1);
+                        BuildLib.BuildOptions[workSubType].execute(city, ref subTile);
                         DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                         
-                        city.craftItem((TerrainBuildingType)workSubType, out _);
+
+
+                        //city.craftItem((TerrainBuildingType)workSubType, out _);
                     }
                     break;
                 case WorkType.Exit:
@@ -322,17 +344,17 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             switch (work)
             {
                 case WorkType.Craft:
-                    SubTile subTile = DssRef.world.subTileGrid.Get(subTileEnd);
-                    var building = (TerrainBuildingType)subTile.subTerrain;
-                    switch (building)
-                    { 
-                        case TerrainBuildingType.Work_Cook:
-                            workSubType = Subwork_Craft_Food;
-                            break;
-                        case TerrainBuildingType.Work_Smith:
-                            workSubType = Subwork_Craft_Iron;
-                            break;
-                    }
+                    //SubTile subTile = DssRef.world.subTileGrid.Get(subTileEnd);
+                    //var building = (TerrainBuildingType)subTile.subTerrain;
+                    //switch (building)
+                    //{ 
+                    //    case TerrainBuildingType.Work_Cook:
+                    //        workSubType = Subwork_Craft_Food;
+                    //        break;
+                    //    case TerrainBuildingType.Work_Smith:
+                    //        workSubType = Subwork_Craft_Iron;
+                    //        break;
+                    //}
                     break;
 
                 case WorkType.LocalTrade:
@@ -348,7 +370,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case WorkType.TrossCityTrade:
                     {
                         var toCity = DssRef.world.tileGrid.Get(targetSubTile / WorldData.TileSubDivitions).City();
-                        int goldCost = toCity.SellCost(ItemResourceType.Food);
+                        int goldCost = toCity.SellCost(ItemResourceType.Food_G);
 
                         carry = new ItemResource(ItemResourceType.Gold, 1, 1, goldCost);
                     }
@@ -378,7 +400,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                             return DssConst.WorkTime_GatherFoil_TreeSoft;
                         case TerrainSubFoilType.TreeHard:
                             return DssConst.WorkTime_GatherFoil_TreeHard;
-                        case TerrainSubFoilType.FarmCulture:
+                        case TerrainSubFoilType.WheatFarm:
+                        case TerrainSubFoilType.LinnenFarm:
                             return DssConst.WorkTime_GatherFoil_FarmCulture;
                         case TerrainSubFoilType.Stones:
                         case TerrainSubFoilType.StoneBlock:

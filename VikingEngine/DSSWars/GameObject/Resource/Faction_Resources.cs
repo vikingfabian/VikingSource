@@ -196,7 +196,7 @@ namespace VikingEngine.DSSWars
                     groups.sel.Upkeep(ref energyUpkeep);
                 }
 
-                float foodUpkeep = energyUpkeep / ResourceLib.FoodEnergy;
+                float foodUpkeep = energyUpkeep / DssConst.FoodEnergy;
 
                 //totalArmiesUpkeep += armyUpkeep;
                 foodImport += armiesC.sel.foodCosts_import.displayValue_sec;

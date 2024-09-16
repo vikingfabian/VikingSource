@@ -27,6 +27,8 @@ namespace VikingEngine.DSSWars.Players
         {
             this.faction = faction;
             faction.SetStartOwner(this);
+
+            faction.mainCity?.createStartupBarracks();
         }
 
         public void addOrder(AbsOrder order)

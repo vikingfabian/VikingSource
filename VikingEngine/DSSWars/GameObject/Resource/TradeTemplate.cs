@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             wood = new TradeResource(10);
             stone = new TradeResource(6f);
             rawFood = new TradeResource(10);
-            food = new TradeResource(City.FoodGoldValue);    
+            food = new TradeResource(DssConst.FoodGoldValue);    
             skin = new TradeResource(40);
             ore = new TradeResource(10);
             iron = new TradeResource(100);
@@ -76,9 +76,9 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             {
                 case ItemResourceType.SoftWood:
                     return wood;
-                case ItemResourceType.Stone:
+                case ItemResourceType.Stone_G:
                    return stone;
-                case ItemResourceType.Food:
+                case ItemResourceType.Food_G:
                     return food;
 
                 default:
@@ -93,10 +93,10 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 case ItemResourceType.SoftWood:
                     wood = value;
                     break;
-                case ItemResourceType.Stone:
+                case ItemResourceType.Stone_G:
                     stone = value;
                     break;
-                case ItemResourceType.Food:
+                case ItemResourceType.Food_G:
                     food = value;
                     break;
 
@@ -110,8 +110,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             content.h2(DssRef.todoLang.CityMenu_SalePricesTitle);
 
             wood.toHud(player, content, DssRef.todoLang.Resource_TypeName_Wood, ItemResourceType.SoftWood, faction, city);
-            stone.toHud(player, content, DssRef.todoLang.Resource_TypeName_Stone, ItemResourceType.Stone, faction, city);
-            food.toHud(player, content, DssRef.todoLang.Resource_TypeName_Food, ItemResourceType.Food, faction, city);
+            stone.toHud(player, content, DssRef.todoLang.Resource_TypeName_Stone, ItemResourceType.Stone_G, faction, city);
+            food.toHud(player, content, DssRef.todoLang.Resource_TypeName_Food, ItemResourceType.Food_G, faction, city);
         }
 
     }

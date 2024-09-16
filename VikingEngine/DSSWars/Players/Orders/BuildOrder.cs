@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.GameObject.Worker;
@@ -43,9 +44,9 @@ namespace VikingEngine.DSSWars.Players.Orders
     {
         City city;
         IntVector2 subTile;
-        TerrainBuildingType buildingType;
+        int buildingType;
         Graphics.AbsVoxelObj model;
-        public BuildOrder(int priority, bool bLocalPlayer, City city, IntVector2 subTile, TerrainBuildingType buildingType)
+        public BuildOrder(int priority, bool bLocalPlayer, City city, IntVector2 subTile, int buildingType)
             :base(priority)
         {
             this.city = city;
@@ -77,8 +78,8 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         public WorkQueMember createWorkQue(out CraftBlueprint blueprint)
         {
-            blueprint = ResourceLib.Blueprint(buildingType);
-            var result = new WorkQueMember(WorkType.Building, (int)buildingType, subTile, priority, 0);
+            blueprint = BuildLib.BuildOptions[buildingType].blueprint;//ResourceLib.Blueprint(buildingType);
+            var result = new WorkQueMember(WorkType.Building, buildingType, subTile, priority, 0);
             result.orderId = id;
             return result;
         }

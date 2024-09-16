@@ -1024,6 +1024,9 @@
 #begin VoxelModel/LfWars/buildarea.vox
 /copy:VoxelModel/LfWars/buildarea.vox
 
+#begin VoxelModel/LfWars/city_barracks.vox
+/copy:VoxelModel/LfWars/city_barracks.vox
+
 #begin VoxelModel/LfWars/city_bighouse.vox
 /copy:VoxelModel/LfWars/city_bighouse.vox
 

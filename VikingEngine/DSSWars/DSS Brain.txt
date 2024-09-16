@@ -1,8 +1,6 @@
 ﻿
 -Change Log-
-* children
-* workers are removed when recruited
-* workers starve to death
+
 
 Error
 -back button in menues 
@@ -40,6 +38,9 @@ Art
 
 #current
 English, Simplified Chinese, Japanese, Russian, Spanish
+
+#Real-time grand strategy
+
 
 
 

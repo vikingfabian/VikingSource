@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.Display
 {
     class CityMenu
     {
-        public static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Recruit, MenuTab.Resources, MenuTab.Work, MenuTab.Trade, MenuTab.Build };
+        public static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Conscript, MenuTab.Resources, MenuTab.Work, MenuTab.Trade, MenuTab.Build };
         Players.LocalPlayer player;
         City city;
 
@@ -60,6 +60,10 @@ namespace VikingEngine.DSSWars.Display
                     city.workTab(player, content);
                     break;
 
+                case MenuTab.Conscript:
+                    conscriptTab(player, content);
+                    break;
+
                 case MenuTab.Recruit:
                     recruitTab(content);
                     break;
@@ -80,6 +84,11 @@ namespace VikingEngine.DSSWars.Display
                     player.BuildControls.toHud(content);
                     break;
             }
+        }
+
+        void conscriptTab(LocalPlayer player, RichBoxContent content)
+        {
+            new ConscriptMenu().ToHud(player, content);
         }
 
         void recruitTab(RichBoxContent content)
@@ -504,6 +513,7 @@ namespace VikingEngine.DSSWars.Display
     enum MenuTab
     {         
         Info,
+        Conscript,
         Recruit,
         Economy,
         Resources,

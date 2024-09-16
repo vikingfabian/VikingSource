@@ -77,7 +77,8 @@ namespace VikingEngine.DSSWars.Map
                     }
                     break;
 
-                case TerrainSubFoilType.FarmCulture:
+                case TerrainSubFoilType.WheatFarm:
+                case TerrainSubFoilType.LinnenFarm:
                     if (subtile.terrainAmount > FarmCulture_Empty && 
                         subtile.terrainAmount < FarmCulture_MaxSize)
                     {

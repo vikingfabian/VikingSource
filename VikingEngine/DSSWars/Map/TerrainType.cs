@@ -31,7 +31,8 @@ namespace VikingEngine.DSSWars.Map
         TallGrass,
         Stones,
         StoneBlock,
-        FarmCulture,
+        WheatFarm,
+        LinnenFarm,
         NUM_NONE
     }
 
@@ -61,6 +62,7 @@ namespace VikingEngine.DSSWars.Map
         PigPen,
         HenPen,
         Tavern,
+        Barracks,
         NUM_NONE
     }
 

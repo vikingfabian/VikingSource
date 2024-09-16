@@ -15,14 +15,23 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Resource_TypeName_Stone => "stone";
         public string Resource_TypeName_RawFood => "raw food";
         public string Resource_TypeName_Food => "food";
-        public string Resource_TypeName_Skin => "skin";
+        public string Resource_TypeName_SkinAndLinnen => "skin and linnen";
         public string Resource_TypeName_Ore => "ore";
         public string Resource_TypeName_Iron => "iron";
 
-         public string ResourceType_Children => "Children";
+        public string Resource_TypeName_SharpStick => "Sharp stick";
+        public string Resource_TypeName_Sword => "Sword";
+        public string Resource_TypeName_Bow => "Bow";
+
+        public string Resource_TypeName_LightArmor => "Light armor";
+        public string Resource_TypeName_MediumArmor => "Medium armor";
+        public string Resource_TypeName_HeavyArmor => "Heavy armor";
+
+        public string ResourceType_Children => "Children";
 
         public string BuildingType_WorkerHut => "Worker hut";
         public string BuildingType_Tavern => "Tavern";
+        public string BuildingType_Barracks => "Barracks";
         public string BuildingType_PigPen => "Pig pen";
         public string BuildingType_HenPen => "Hen pen";
 
@@ -66,7 +75,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Hud_FollowFaction_Yes => "Is set to use faction global settings";
         public string Hud_FollowFaction_No => "Is set to use local settings (Global value is {0})";
 
-        public string Hud_SelectCity=>"Select City";
+        public string Hud_SelectCity => "Select City";
+        public string Hud_Conscription => "Conscription";
 
         public string ArmyHud_Food_Reserves_X => "Food reserves: {0}";
         public string ArmyHud_Food_Upkeep_X => "Food upkeep: {0}";

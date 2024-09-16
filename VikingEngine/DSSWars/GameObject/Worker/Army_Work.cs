@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.GameObject
                         if (food < 0)
                         {
                             //black market trade
-                            var cost = (int)Math.Ceiling(City.FoodGoldValue_BlackMarket * -food);
+                            var cost = (int)Math.Ceiling(DssConst.FoodGoldValue_BlackMarket * -food);
 
                             if (faction.payMoney(cost, false))
                             {
