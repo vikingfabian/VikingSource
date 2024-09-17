@@ -12,19 +12,19 @@ namespace VikingEngine.DSSWars.GameObject
         {
             unitType = UnitType.HonorGuard;
 
-            modelScale = StandardModelScale;
-            boundRadius = StandardBoundRadius;
+            modelScale = DssConst.Men_StandardModelScale;
+            boundRadius = DssVar.StandardBoundRadius;
 
-            walkingSpeed = StandardWalkingSpeed;
+            walkingSpeed = DssConst.Men_StandardWalkingSpeed;
             rotationSpeed = StandardRotatingSpeed;
             targetSpotRange = StandardTargetSpotRange;
             attackRange = 0.06f;
-            basehealth = DefaultHealth * 2;
+            basehealth = DssConst.Soldier_DefaultHealth * 2;
             mainAttack = AttackType.Melee;
             attackDamage = 50;
             attackDamageStructure = attackDamage;
             attackDamageSea = attackDamage;
-            attackTimePlusCoolDown = StandardAttackAndCoolDownTime * 1.5f;
+            attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 1.5f;
 
             setupJavelinCommand();
 

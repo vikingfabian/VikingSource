@@ -12,10 +12,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             unitType = UnitType.Sailor;
 
-            modelScale = StandardModelScale;
-            boundRadius = StandardBoundRadius;
+            modelScale = DssConst.Men_StandardModelScale;
+            boundRadius = DssVar.StandardBoundRadius;
 
-            walkingSpeed = StandardWalkingSpeed;
+            walkingSpeed = DssConst.Men_StandardWalkingSpeed;
             ShipBuildTimeMultiplier *= 0.75f;
             ArmySpeedBonusSea = 0.5;
             rotationSpeed = StandardRotatingSpeed;
@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars.GameObject
             attackDamage = 30;
             attackDamageStructure = 20;
             attackDamageSea = 100;
-            attackTimePlusCoolDown = StandardAttackAndCoolDownTime;
+            attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
 
             setupJavelinCommand();
             modelName = LootFest.VoxelModelName.war_sailor;

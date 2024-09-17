@@ -15,10 +15,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             unitType = UnitType.BannerMan;
 
-            modelScale = StandardModelScale * 1f;
-            boundRadius = StandardBoundRadius;
+            modelScale =DssConst.Men_StandardModelScale * 1f;
+            boundRadius = DssVar.StandardBoundRadius;
 
-            walkingSpeed = StandardWalkingSpeed;
+            walkingSpeed = DssConst.Men_StandardWalkingSpeed;
             rotationSpeed = StandardRotatingSpeed;
 
             basehealth = 50;

@@ -15,8 +15,6 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 {
     class WorkerUnit : AbsGameObject
     {
-        public const float StandardBoundRadius = AbsSoldierData.StandardBoundRadius * 4f;
-
         WalkingAnimation walkingAnimation;
         protected WorkerStatus status;
 
@@ -37,7 +35,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             this.status = status;
             this.parentArrayIndex = statusIndex;
             model = mapObject.GetFaction().AutoLoadModelInstance(
-                 LootFest.VoxelModelName.war_worker, AbsDetailUnitData.StandardModelScale * 0.9f, true);
+                 LootFest.VoxelModelName.war_worker, DssConst.Men_StandardModelScale * 0.9f, true);
 
             model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
 
@@ -72,7 +70,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             {
                 case WorkerUnitState.HasGoal:
 
-                    float speed = AbsDetailUnitData.StandardWalkingSpeed * Ref.DeltaGameTimeMs;
+                    float speed = DssConst.Men_StandardWalkingSpeed * Ref.DeltaGameTimeMs;
                     model.position += walkDir * speed;
                     updateGroudY(false);
 
@@ -168,7 +166,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                 }
                             }
                             break;
-                        case WorkType.Building:
+                        case WorkType.Build:
                             if (workAnimation_soundframe())
                             {
                                 SoundLib.hammer.Play(model.position);
@@ -224,9 +222,6 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     break;
 
             }
-
-
-
         }
 
         bool workAnimation_soundframe()
@@ -371,7 +366,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         //}
         public override void selectionFrame(bool hover, Selection selection)
         {
-            Vector3 scale = new Vector3(AbsSoldierData.StandardBoundRadius * 2f);
+            Vector3 scale = new Vector3(DssVar.StandardBoundRadius * 2f);
             selection.BeginGroupModel(true);
             selection.setGroupModel(0, model.position, scale, hover, true, false);
 

@@ -586,8 +586,8 @@ namespace VikingEngine.DSSWars.Battle
         {
             Vector2 offset = VectorExt.RotateVector(
                 new Vector2(
-                    gridPos.X * SoldierGroup.GroupSpacing, 
-                    gridPos.Y * SoldierGroup.GroupSpacing), 
+                    gridPos.X * DssVar.SoldierGroup_Spacing, 
+                    gridPos.Y * DssVar.SoldierGroup_Spacing), 
                 rotation.radians);
 
             Vector3 result = new Vector3(
@@ -615,8 +615,8 @@ namespace VikingEngine.DSSWars.Battle
             Vector2 rotatedBackOffset = VectorExt.RotateVector(new Vector2(offsetX, offsetY), -rotation.radians);
 
             var result = new IntVector2( 
-                rotatedBackOffset.X / SoldierGroup.GroupSpacing, 
-                rotatedBackOffset.Y / SoldierGroup.GroupSpacing);
+                rotatedBackOffset.X / DssVar.SoldierGroup_Spacing, 
+                rotatedBackOffset.Y / DssVar.SoldierGroup_Spacing);
             return result;  
         }
 

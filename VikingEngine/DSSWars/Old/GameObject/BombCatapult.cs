@@ -15,7 +15,7 @@
 //        {
 //            //Spec: död ko som förgiftar område
 //            modelScale = StandardModelScale * 1.8f;
-//            boundRadius = StandardBoundRadius * 2.2f;
+//            boundRadius = DssVar.StandardBoundRadius * 2.2f;
 
 //            walkingSpeed = StandardWalkingSpeed * 0.6f;
 //            rotationSpeed = StandardRotatingSpeed * 0.04f;

@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.GameObject
             secondaryAttackRange = 1.7f;
             bonusProjectiles = 2;
 
-            goldCost = GroupDefaultCount * 4;
+            goldCost = DssConst.SoldierGroup_DefaultCount * 4;
 
             icon = SpriteName.WarsUnitIcon_Greensoldier;
             description = DssRef.lang.UnitType_Description_GreenSoldier;

@@ -67,7 +67,7 @@ namespace VikingEngine.DSSWars.GameObject
                         idleCount++; 
                         break;
 
-                    case WorkType.Building:
+                    case WorkType.Build:
                         var build= BuildLib.BuildOptions[status.workSubType];
                         //var blueprint = ResourceLib.Blueprint((TerrainBuildingType)status.workSubType);
                         build.blueprint.createBackOrder(this);
@@ -476,7 +476,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                     {
                                                         //worker hut
                                                         //ResourceLib.CraftWorkerHut.createBackOrder(this);
-                                                        workQue.Add(new WorkQueMember(WorkType.Building, BuildLib.BuildWorkerHut.index, subTileLoop.Position, workTemplate.expand_housing.value, distanceValue));
+                                                        workQue.Add(new WorkQueMember(WorkType.Build, BuildLib.BuildWorkerHut.index, subTileLoop.Position, workTemplate.expand_housing.value, distanceValue));
                                                         //waterSpendOrders += 10;
                                                     }
                                                 }
@@ -645,7 +645,7 @@ namespace VikingEngine.DSSWars.GameObject
         PickUpProduce,
         DropOff,        
         Craft,
-        Building,
+        Build,
         LocalTrade,
 
         TrossCityTrade,

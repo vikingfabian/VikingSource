@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.GameObject.Conscript;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.MoonFall;
@@ -31,8 +32,7 @@ namespace VikingEngine.DSSWars.GameObject
         public float halfColDepth;
 
        
-        public const float GroupSpacing = AbsSoldierData.RowWidth * AbsSoldierData.DefaultGroupSpacing * 1.2f;
-
+        
         //public bool hasWalkingOrder = false;
         public SpottedArray<AbsSoldierUnit> soldiers;
 
@@ -61,7 +61,7 @@ namespace VikingEngine.DSSWars.GameObject
         public Rotation1D rotation;
 
         public float terrainSpeedMultiplier = 1.0f;
-        public float walkSpeed = AbsDetailUnitData.StandardWalkingSpeed;
+        public float walkSpeed = DssConst.Men_StandardWalkingSpeed;
         float rotateSpeed;
 
         public AbsGroup attacking_soldierGroupOrCity = null;
@@ -79,8 +79,32 @@ namespace VikingEngine.DSSWars.GameObject
         public bool attackState = false;
         bool isRecruit;
         public bool inShipTransform = false;
-        
-        
+        public AbsSoldierData typeData;
+        public SoldierGroup(Army army, ConscriptProfile profile)
+        {
+            this.type = UnitType.Conscript;
+            this.isRecruit = false;
+            tilePos = army.tilePos;
+
+            this.groupId = DssRef.state.nextGroupId++;
+            this.army = army;
+
+            //AbsSoldierData typeData = DssRef.unitsdata.Get(type);
+            typeData = new ConscriptedSoldierData(profile);
+
+            initPart1(typeData);
+
+            //Column for column spawning
+            int count = typeData.rowWidth * typeData.columnsDepth;
+            createAllSoldiers(false, typeData, count);
+
+            initPart2(typeData);
+
+            if (army.faction.player.IsPlayer())
+            {
+                army.faction.player.GetLocalPlayer().statistics.SoldiersRecruited += count;
+            }
+        }
 
         public SoldierGroup(Army army, UnitType type, bool recruit)
         {
@@ -91,7 +115,7 @@ namespace VikingEngine.DSSWars.GameObject
             this.groupId = DssRef.state.nextGroupId++;
             this.army = army;
 
-            AbsSoldierData typeData = DssRef.unitsdata.Get(type);
+            typeData = DssRef.unitsdata.Get(type);
             
             recruit &= typeData.recruitTrainingTimeSec > 0;
             
@@ -290,7 +314,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         IntVector2 bannerManPos()
         {
-            var typeData = DssRef.unitsdata.Get(type);
+            //var typeData = DssRef.unitsdata.Get(type);
 
             IntVector2 bannerPos;
             if (typeData.hasBannerMan)
@@ -305,10 +329,10 @@ namespace VikingEngine.DSSWars.GameObject
             return bannerPos;
         }
 
-        public AbsSoldierData SoldierData()
-        {
-            return DssRef.unitsdata.Get(type);
-        }
+        //public AbsSoldierData SoldierData()
+        //{
+        //    return DssRef.unitsdata.Get(type);
+        //}
 
         public void completeTransform(SoldierTransformType transformType)
         {
@@ -320,7 +344,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (transformType == SoldierTransformType.TraningComplete)
             {
                 isRecruit = false;
-                UnitType toType = IsShip() ? SoldierData().convertSoldierShipType : type;
+                UnitType toType = IsShip() ? typeData.convertSoldierShipType : type;
 
                 while (soldiersC.Next())
                 {
@@ -362,11 +386,11 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     soldiers.Clear();
 
-                    AbsSoldierData typeData;
+                    //AbsSoldierData typeData;
 
                     if (transformType == SoldierTransformType.ToShip)
                     {
-                        UnitType toType = isRecruit ? UnitType.RecruitWarship : SoldierData().convertSoldierShipType;
+                        UnitType toType = isRecruit ? UnitType.RecruitWarship : typeData.convertSoldierShipType;
                         var ship = createUnit(toType, false, IntVector2.Zero, WP.ToTilePos(position));
                         typeData = ship.data;
                         ship.health = totalHealth;
@@ -374,7 +398,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     else
                     {
-                        typeData = SoldierData();
+                        //typeData = SoldierData();
 
                         //must count the bannerman
                         int count = (int)Math.Ceiling(totalHealth / (double)typeData.basehealth);
@@ -392,8 +416,8 @@ namespace VikingEngine.DSSWars.GameObject
         public Vector3 armyPlacement(Vector3 center)
         {
             Vector2 offset = VectorExt.RotateVector(new Vector2(
-                armyLocalPlacement.X * GroupSpacing,
-                armyLocalPlacement.Y * GroupSpacing),
+                armyLocalPlacement.X * DssVar.SoldierGroup_Spacing,
+                armyLocalPlacement.Y * DssVar.SoldierGroup_Spacing),
                 army.rotation.radians);
 
             center.X += offset.X;
@@ -406,7 +430,16 @@ namespace VikingEngine.DSSWars.GameObject
 
         public AbsSoldierUnit createUnit(UnitType type, bool recruit, IntVector2 gridPlacement, IntVector2 area)
         {
-            var s = DssRef.unitsdata.createSoldier(type, recruit);
+            AbsSoldierUnit s;
+            if (type == UnitType.Conscript)
+            {
+                s = typeData.CreateUnit() as AbsSoldierUnit;//TODO borde ta bort konvertering
+                s.data = typeData;
+            }
+            else
+            {
+                s = DssRef.unitsdata.createSoldier(type, recruit);
+            }
             s.InitLocal(position, gridPlacement, area, this);
             s.position = WP.ToWorldPos(area); //temp pos
             s.parentArrayIndex = soldiers.Add(s);
@@ -618,7 +651,7 @@ namespace VikingEngine.DSSWars.GameObject
         public override void toHud(ObjectHudArgs args)
         {
             //base.toHud(args);
-            var typeData = DssRef.unitsdata.Get(type);
+            //var typeData = DssRef.unitsdata.Get(type);
 
             args.content.h2(DssRef.unitsdata.Name( typeData.unitType) + " " + DssRef.lang.UnitType_SoldierGroup);
             args.content.newLine();
@@ -647,7 +680,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 IntVector2 bannerPos = bannerManPos();
                 AbsSoldierUnit bannerMan = null;
-                var typeData = DssRef.unitsdata.Get(type);
+                //var typeData = DssRef.unitsdata.Get(type);
 
                 IntVector2 nextPos = IntVector2.Zero;
                 int bannerLead = -1;
@@ -1259,7 +1292,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         override public bool isMelee()
         {
-            return DssRef.unitsdata.Get(type).mainAttack == AttackType.Melee;
+            return typeData.mainAttack == AttackType.Melee;
         }
 
         public bool ScoutMovement()
@@ -1295,8 +1328,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void Upkeep(ref float energy)
         {
-            var typeData = DssRef.unitsdata.Get(type);
-            energy += typeData.energyPerSoldier * soldiers.Count;
+            //var typeData = DssRef.unitsdata.Get(type);
+            energy += this.typeData.energyPerSoldier * soldiers.Count;
         }
 
         public override void DeleteMe(DeleteReason reason, bool removeFromParent)
@@ -1464,7 +1497,7 @@ namespace VikingEngine.DSSWars.GameObject
                 return first.data;
             }
 
-            return DssRef.unitsdata.Get(type);
+            return typeData;//DssRef.unitsdata.Get(type);
         }
 
         public override string TypeName()

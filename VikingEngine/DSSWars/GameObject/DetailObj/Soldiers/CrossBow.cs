@@ -12,20 +12,20 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
             unitType = UnitType.CrossBow;
             factionUniqueType = 0;
 
-            modelScale = StandardModelScale;
-            boundRadius = StandardBoundRadius;
+            modelScale = DssConst.Men_StandardModelScale;
+            boundRadius = DssVar.StandardBoundRadius;
 
-            walkingSpeed = StandardWalkingSpeed;
+            walkingSpeed = DssConst.Men_StandardWalkingSpeed;
             rotationSpeed = StandardRotatingSpeed;
             targetSpotRange = StandardTargetSpotRange;
             attackRange = 1.7f;
             ArmyFrontToBackPlacement = ArmyPlacement.Mid;
-            basehealth = DefaultHealth;
+            basehealth = DssConst.Soldier_DefaultHealth;
             mainAttack = AttackType.Bolt;
             attackDamage = 100;
             attackDamageStructure = 80;
             attackDamageSea = 120;
-            attackTimePlusCoolDown = StandardAttackAndCoolDownTime * 4f;
+            attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 4f;
 
             modelName = LootFest.VoxelModelName.wars_crossbow;
 

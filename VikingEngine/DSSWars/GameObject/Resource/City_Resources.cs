@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.PJ.Joust;
 
@@ -32,6 +34,14 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource ore = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource iron = new GroupedResource() { goalBuffer = 100 };
 
+        public GroupedResource sharpstick = new GroupedResource() { amount = 50, goalBuffer = 100 };
+        public GroupedResource sword = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource bow = new GroupedResource() { amount = 0, goalBuffer = 100 };
+
+        public GroupedResource lightArmor = new GroupedResource() { amount = 50, goalBuffer = 100 };
+        public GroupedResource mediumArmor = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource heavyArmor = new GroupedResource() { amount = 0, goalBuffer = 100 };
+
         //bool useLocalTrade
         public TradeTemplate tradeTemplate = new TradeTemplate();
 
@@ -49,6 +59,14 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Wood_Group: return wood;
                 case ItemResourceType.RawFood_Group: return rawFood;
                 case ItemResourceType.SkinLinnen_Group: return skinLinnen;
+
+                case ItemResourceType.SharpStick: return sharpstick;
+                case ItemResourceType.Sword: return sword;
+                case ItemResourceType.Bow: return bow;
+
+                case ItemResourceType.LightArmor: return lightArmor;
+                case ItemResourceType.MediumArmor: return mediumArmor;
+                case ItemResourceType.HeavyArmor: return heavyArmor;
 
                 default:
                     throw new NotImplementedException();
@@ -83,6 +101,26 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.SkinLinnen_Group:
                     skinLinnen = resource;
                     break;
+
+                case ItemResourceType.SharpStick:
+                    sharpstick = resource;
+                    break;
+                case ItemResourceType.Sword:
+                    sword = resource;
+                    break;
+                case ItemResourceType.Bow:
+                    bow = resource;
+                    break;
+                case ItemResourceType.LightArmor:
+                    lightArmor = resource;
+                    break;
+                case ItemResourceType.MediumArmor:
+                    mediumArmor = resource;
+                    break;
+                case ItemResourceType.HeavyArmor:
+                    heavyArmor = resource;
+                    break;
+
                 default:
                     throw new NotImplementedException();
             }
@@ -216,39 +254,9 @@ namespace VikingEngine.DSSWars.GameObject
             
         }
 
-        public void resourcesToMenu(RichBoxContent content)
-        {
-            content.Add(new RichBoxSeperationLine());
+        
+    }   
 
-            content.h1("Resources");
-            content.newLine();
-
-            // content.text("Water: " + water.ToString());
-            water.toMenu(content, DssRef.todoLang.Resource_TypeName_Water);
-            wood.toMenu(content, DssRef.todoLang.Resource_TypeName_Wood);
-            stone.toMenu(content, DssRef.todoLang.Resource_TypeName_Stone);
-            rawFood.toMenu(content, DssRef.todoLang.Resource_TypeName_RawFood);
-            food.toMenu(content, DssRef.todoLang.Resource_TypeName_Food);
-            skinLinnen.toMenu(content, DssRef.todoLang.Resource_TypeName_SkinAndLinnen);
-            ore.toMenu(content, DssRef.todoLang.Resource_TypeName_Ore);
-            
-            content.newParagraph();
-            content.h2("Crafting blueprints");
-            ResourceLib.CraftFood.toMenu(content);
-            ResourceLib.CraftIron.toMenu(content);
-            ResourceLib.CraftSharpStick.toMenu(content);
-            ResourceLib.CraftSword.toMenu(content);
-            ResourceLib.CraftBow.toMenu(content);
-            ResourceLib.CraftLightArmor.toMenu(content);
-            ResourceLib.CraftMediumArmor.toMenu(content);
-            ResourceLib.CraftHeavyArmor.toMenu(content);
-
-            ResourceLib.CraftWorkerHut.toMenu(content);
-            //content.text("1 iron => " + DssConst.IronSellValue.ToString() + "gold");
-            content.text("1 gold ore => " + DssConst.GoldOreSellValue.ToString() + "gold");
-            content.text("1 food => " + DssConst.FoodEnergy + " energy (seconds of work)");
-        }
-    }
 
     //struct SimplifiedResourceCollection
     //{ 

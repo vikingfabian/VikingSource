@@ -12,19 +12,19 @@ namespace VikingEngine.DSSWars.GameObject
         {
             unitType = UnitType.Soldier;
 
-            modelScale = StandardModelScale;
-            boundRadius = StandardBoundRadius;
+            modelScale = DssConst.Men_StandardModelScale;
+            boundRadius =DssVar.StandardBoundRadius;
 
-            walkingSpeed = StandardWalkingSpeed;
+            walkingSpeed = DssConst.Men_StandardWalkingSpeed;
             rotationSpeed = StandardRotatingSpeed;
             targetSpotRange = StandardTargetSpotRange;
             attackRange = 0.04f;
-            basehealth = DefaultHealth;
+            basehealth = DssConst.Soldier_DefaultHealth;
             mainAttack = AttackType.Melee;
             attackDamage = 50;
             attackDamageStructure = attackDamage;
             attackDamageSea = attackDamage;
-            attackTimePlusCoolDown = StandardAttackAndCoolDownTime;
+            attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
 
             setupJavelinCommand();
             modelName = LootFest.VoxelModelName.wars_soldier;

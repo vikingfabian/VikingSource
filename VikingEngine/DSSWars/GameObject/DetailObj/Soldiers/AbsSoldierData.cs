@@ -6,13 +6,10 @@ namespace VikingEngine.DSSWars.GameObject
     abstract class AbsSoldierData : AbsDetailUnitData
     {
 
-        public const int RowWidth = 6;
-        public const int ColumnsDepth = 5;
-        public const int GroupDefaultCount = RowWidth * ColumnsDepth;
-
+        
         public UnitType convertSoldierShipType;
-        public int rowWidth = RowWidth;
-        public int columnsDepth = ColumnsDepth;
+        public int rowWidth =DssConst.SoldierGroup_RowWidth;
+        public int columnsDepth = DssConst.SoldierGroup_ColumnsDepth;
         public ArmyPlacement ArmyFrontToBackPlacement = 0;
         protected int workForcePerUnit = 1;
         public int goldCost = DssLib.GroupDefaultCost;
@@ -24,12 +21,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected const float StandardRotatingSpeed = 6.5f;
 
-        public const float StandardBoundRadius = 0.3f * StandardModelScale;
-        public const int DefaultHealth = 200;
-        public const float DefaultGroupSpacing = StandardBoundRadius * 3f;
+        public float groupSpacing = DssVar.DefaultGroupSpacing;
+        public float groupSpacingRndOffset = DssVar.StandardBoundRadius * 0.3f;
 
-        public float groupSpacing = DefaultGroupSpacing;
-        public float groupSpacingRndOffset = StandardBoundRadius * 0.3f;
         public float rotationSpeed;
         public float walkingWaggleAngle = 0.16f;
         public float ShipBuildTimeMultiplier = 1;

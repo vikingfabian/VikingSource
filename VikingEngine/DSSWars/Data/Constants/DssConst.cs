@@ -6,9 +6,45 @@ namespace VikingEngine.DSSWars
 {
     static class DssConst
     {
-        
+        //SOLDIER
+        public static int Soldier_DefaultHealth = 200;
+        public static float Soldier_StandardAttackAndCoolDownTime = 1600;
+        public static int SoldierGroup_RowWidth = 6;
+        public static int SoldierGroup_ColumnsDepth = 5;
+        public static int SoldierGroup_DefaultCount = SoldierGroup_RowWidth * SoldierGroup_ColumnsDepth;
+
+        //MEN
+        public static float Men_StandardModelScale = 0.06f;
+        public static float Men_StandardWalkingSpeed = 0.00018f;
+        public static float Men_StandardShipSpeed = Men_StandardWalkingSpeed * 2f;
+
+        //CONSCRIPT
+        public static int WeaponDamage_Sword = 50;
+        public static int WeaponDamage_SharpStick = 30;
+        public static int WeaponDamage_Bow = 40;
+
+        public static int ArmorHealth_None = (int)(Soldier_DefaultHealth * 0.5);
+        public static int ArmorHealth_Light = Soldier_DefaultHealth;
+        public static int ArmorHealth_Medium = (int)(Soldier_DefaultHealth * 1.5);
+        public static int ArmorHealth_Heavy = (int)(Soldier_DefaultHealth * 2);
+
+        public static float TrainingAttackSpeed_Minimal = 0.5f;
+        public static float TrainingAttackSpeed_Basic = 1f;
+        public static float TrainingAttackSpeed_Skillful = 1.5f;
+        public static float TrainingAttackSpeed_Professional = 2f;
+
+        public static float TrainingTimeSec_Minimal = 30;
+        public static float TrainingTimeSec_Basic = 60;
+        public static float TrainingTimeSec_Skillful = 120;
+        public static float TrainingTimeSec_Professional = 240;
+
+        //OTHER
+        public static float Livestock_WalkingSpeed = Men_StandardWalkingSpeed * 0.2f;
+
         //CITY
         public static int Maxwater = 10;
+        public static int ExpandWorkForce = SoldierGroup_DefaultCount * 4;
+        public static int ExpandGuardSize = SoldierGroup_DefaultCount;
 
         public static int GoldOreSellValue = 100;
         public static int IronSellValue = 5;

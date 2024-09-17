@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
 
         override public void refreshShipCarryCount()
         {
-            var data = group.SoldierData();
+            var data = group.typeData;//.SoldierData();
             soldierCount = MathExt.Div_Ceiling(this.health, data.basehealth);
             if (soldierCount > 0)
             {
@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
         public override Vector3 projectileStartPos()
         {
             Vector3 pos = position;
-            pos.Y += AbsDetailUnitData.StandardModelScale * 0.7f;
+            pos.Y += DssConst.Men_StandardModelScale * 0.7f;
             pos.X += Ref.rnd.Plus_MinusF(0.1f);
             pos.Z += Ref.rnd.Plus_MinusF(0.1f);
 

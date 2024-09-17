@@ -12,19 +12,19 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
         {
             unitType = UnitType.Pikeman;
 
-            modelScale = StandardModelScale * 1.6f;
-            boundRadius = StandardBoundRadius;
+            modelScale = DssConst.Men_StandardModelScale * 1.6f;
+            boundRadius = DssVar.StandardBoundRadius;
 
-            walkingSpeed = StandardWalkingSpeed;
+            walkingSpeed = DssConst.Men_StandardWalkingSpeed;
             rotationSpeed = StandardRotatingSpeed;
             targetSpotRange = StandardTargetSpotRange;
             attackRange = 0.055f;
-            basehealth = DefaultHealth;
+            basehealth = DssConst.Soldier_DefaultHealth;
             mainAttack = AttackType.Melee;
             attackDamage = 50;
             attackDamageStructure = attackDamage;
             attackDamageSea = attackDamage;
-            attackTimePlusCoolDown = StandardAttackAndCoolDownTime;
+            attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
 
             modelName = LootFest.VoxelModelName.wars_piker;
 

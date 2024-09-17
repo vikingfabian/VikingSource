@@ -12,24 +12,24 @@ namespace VikingEngine.DSSWars.GameObject.Worker
     {
         public const int NoPrio = 0;
         const int MinPrio = 1;
-        const int MaxPrio = 10;
+        const int MaxPrio = 5;
 
-        public WorkPriority move = new WorkPriority(6);
-        public WorkPriority wood = new WorkPriority(4);
-        public WorkPriority stone = new WorkPriority(4);
-        public WorkPriority craft_food = new WorkPriority(8);
-        public WorkPriority craft_iron = new WorkPriority(6);
+        public WorkPriority move = new WorkPriority(3);
+        public WorkPriority wood = new WorkPriority(2);
+        public WorkPriority stone = new WorkPriority(2);
+        public WorkPriority craft_food = new WorkPriority(4);
+        public WorkPriority craft_iron = new WorkPriority(3);
         public WorkPriority craft_sharpstick = new WorkPriority(1);
         public WorkPriority craft_sword = new WorkPriority(0);
         public WorkPriority craft_bow = new WorkPriority(0);
         public WorkPriority craft_lightarmor = new WorkPriority(1);
         public WorkPriority craft_mediumarmor = new WorkPriority(0);
         public WorkPriority craft_heavyarmor = new WorkPriority(0);
-        public WorkPriority farming = new WorkPriority(5);
-        public WorkPriority mining = new WorkPriority(5);
-        public WorkPriority trading = new WorkPriority(5);
-        public WorkPriority expand_housing = new WorkPriority(3);
-        public WorkPriority expand_farms = new WorkPriority(3);
+        public WorkPriority farming = new WorkPriority(2);
+        public WorkPriority mining = new WorkPriority(2);
+        public WorkPriority trading = new WorkPriority(2);
+        public WorkPriority expand_housing = new WorkPriority(1);
+        public WorkPriority expand_farms = new WorkPriority(1);
 
         public WorkTemplate()
         {
@@ -43,13 +43,13 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             craft_food.onFactionValueChange(factionTemplate.craft_food);
             craft_iron.onFactionValueChange(factionTemplate.craft_iron);
 
-            craft_sharpstick.onFactionValueChange(factionTemplate.craft_food);
-            craft_sword.onFactionValueChange(factionTemplate.craft_food);
-            craft_bow.onFactionValueChange(factionTemplate.craft_food);
+            craft_sharpstick.onFactionValueChange(factionTemplate.craft_sharpstick);
+            craft_sword.onFactionValueChange(factionTemplate.craft_sword);
+            craft_bow.onFactionValueChange(factionTemplate.craft_bow);
 
-            craft_lightarmor.onFactionValueChange(factionTemplate.craft_food);
-            craft_mediumarmor.onFactionValueChange(factionTemplate.craft_food);
-            craft_heavyarmor.onFactionValueChange(factionTemplate.craft_food);
+            craft_lightarmor.onFactionValueChange(factionTemplate.craft_lightarmor);
+            craft_mediumarmor.onFactionValueChange(factionTemplate.craft_mediumarmor);
+            craft_heavyarmor.onFactionValueChange(factionTemplate.craft_heavyarmor);
 
             farming.onFactionValueChange(factionTemplate.farming);
             mining.onFactionValueChange(factionTemplate.mining);
@@ -144,6 +144,18 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     return craft_food;
                 case WorkPriorityType.craftIron:
                     return craft_iron;
+                case WorkPriorityType.craftSharpStick:
+                    return craft_sharpstick;
+                case WorkPriorityType.craftSword:
+                    return craft_sword;
+                case WorkPriorityType.craftBow:
+                    return craft_bow;
+                case WorkPriorityType.craftLightArmor:
+                    return craft_lightarmor;
+                case WorkPriorityType.craftMediumArmor:
+                    return craft_mediumarmor;
+                case WorkPriorityType.craftHeavyArmor:
+                    return craft_heavyarmor;
                 case WorkPriorityType.farming:
                     return farming;
                 case WorkPriorityType.mining:
@@ -179,6 +191,24 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     break;
                 case WorkPriorityType.craftIron:
                     craft_iron = value;
+                    break;
+                case WorkPriorityType.craftSharpStick:
+                    craft_sharpstick = value;
+                    break;
+                case WorkPriorityType.craftSword:
+                    craft_sword = value;
+                    break;
+                case WorkPriorityType.craftBow:
+                    craft_bow = value;
+                    break;
+                case WorkPriorityType.craftLightArmor:
+                    craft_lightarmor = value;
+                    break;
+                case WorkPriorityType.craftMediumArmor:
+                    craft_mediumarmor = value;
+                    break;
+                case WorkPriorityType.craftHeavyArmor:
+                    craft_heavyarmor = value;
                     break;
                 case WorkPriorityType.farming:
                     farming = value;

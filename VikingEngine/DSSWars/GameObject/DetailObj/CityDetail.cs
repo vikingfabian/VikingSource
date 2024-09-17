@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             mainAttack = AttackType.Arrow;
             secondaryAttack = AttackType.Ballista;
-            attackDamage = AbsSoldierData.DefaultHealth;
+            attackDamage = DssConst.Soldier_DefaultHealth;
             attackDamageSea = attackDamage;
             secondaryAttackDamage = attackDamage / 2;
             attackRange = LongRangeAttack;//1f;
@@ -270,7 +270,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             nextRespawn += 1f;
 
-            float respawnTime = 10f / (city.maxGuardSize / AbsSoldierData.GroupDefaultCount);
+            float respawnTime = 10f / (city.maxGuardSize / DssConst.SoldierGroup_DefaultCount);
             if (nextRespawn >= respawnTime)
             {
                 nextRespawn -= respawnTime;

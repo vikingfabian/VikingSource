@@ -20,6 +20,15 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         public TradeResource ore;
         public TradeResource iron;
 
+        //New
+        public TradeResource sharpstick;
+        public TradeResource sword;
+        public TradeResource bow;
+
+        public TradeResource lightArmor;
+        public TradeResource mediumArmor;
+        public TradeResource heavyArmor;
+
         public TradeTemplate()
         {
             wood = new TradeResource(10);
@@ -29,17 +38,26 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             skin = new TradeResource(40);
             ore = new TradeResource(10);
             iron = new TradeResource(100);
+
+            sharpstick = new TradeResource(80);
+            sword = new TradeResource(800);
+            bow = new TradeResource(50);
+
+            lightArmor = new TradeResource(100);
+            mediumArmor = new TradeResource(500);
+            heavyArmor = new TradeResource(1200);
         }
 
         public void changeResourcePrice(float change, ItemResourceType resourceType)
         {
             const float MinPrice = 0.1f;
-            const float MaxPrice = 1000;
+            const float MaxPrice = 10000;
 
             var trade = GetTradeResource(resourceType);
             trade.price = Bound.Set(trade.price + change, MinPrice, MaxPrice);
             trade.followFaction = false;
             setTradeResource(resourceType, trade);
+
         }
 
         public void onFactionValueChange(TradeTemplate factionTemplate)
@@ -50,6 +68,14 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             skin.onFactionValueChange(factionTemplate.skin);
             ore.onFactionValueChange(factionTemplate.ore);
             iron.onFactionValueChange(factionTemplate.iron);
+
+            sharpstick.onFactionValueChange(factionTemplate.sharpstick);
+            sword.onFactionValueChange(factionTemplate.sword);
+            bow.onFactionValueChange(factionTemplate.bow);
+
+            lightArmor.onFactionValueChange(factionTemplate.lightArmor);
+            mediumArmor.onFactionValueChange(factionTemplate.mediumArmor);
+            heavyArmor.onFactionValueChange(factionTemplate.heavyArmor);
         }
 
         public void onNewOwner(TradeTemplate factionTemplate)
@@ -60,6 +86,14 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             skin.onNewOwner(factionTemplate.skin);
             ore.onNewOwner(factionTemplate.ore);
             iron.onNewOwner(factionTemplate.iron);
+
+            sharpstick.onNewOwner(factionTemplate.sharpstick);
+            sword.onNewOwner(factionTemplate.sword);
+            bow.onNewOwner(factionTemplate.bow);
+
+            lightArmor.onNewOwner(factionTemplate.lightArmor);
+            mediumArmor.onNewOwner(factionTemplate.mediumArmor);
+            heavyArmor.onNewOwner(factionTemplate.heavyArmor);
         }
 
         public void followFactionClick(ItemResourceType resourceType, TradeTemplate factionTemplate)
@@ -80,6 +114,18 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                    return stone;
                 case ItemResourceType.Food_G:
                     return food;
+                case ItemResourceType.SharpStick:
+                    return sharpstick;
+                case ItemResourceType.Sword:
+                    return sword;
+                case ItemResourceType.Bow:
+                    return bow;
+                case ItemResourceType.LightArmor:
+                    return lightArmor;
+                case ItemResourceType.MediumArmor:
+                    return mediumArmor;
+                case ItemResourceType.HeavyArmor:
+                    return heavyArmor;
 
                 default:
                     throw new NotImplementedException();
@@ -99,7 +145,24 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 case ItemResourceType.Food_G:
                     food = value;
                     break;
-
+                case ItemResourceType.SharpStick:
+                    sharpstick = value;
+                    break;
+                case ItemResourceType.Sword:
+                    sword = value;
+                    break;
+                case ItemResourceType.Bow:
+                    bow = value;
+                    break;
+                case ItemResourceType.LightArmor:
+                    lightArmor = value;
+                    break;
+                case ItemResourceType.MediumArmor:
+                    mediumArmor = value;
+                    break;
+                case ItemResourceType.HeavyArmor:
+                    heavyArmor = value;
+                    break;
                 default:
                     throw new NotImplementedException();
             }
@@ -112,6 +175,14 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             wood.toHud(player, content, DssRef.todoLang.Resource_TypeName_Wood, ItemResourceType.SoftWood, faction, city);
             stone.toHud(player, content, DssRef.todoLang.Resource_TypeName_Stone, ItemResourceType.Stone_G, faction, city);
             food.toHud(player, content, DssRef.todoLang.Resource_TypeName_Food, ItemResourceType.Food_G, faction, city);
+
+            sharpstick.toHud(player, content, DssRef.todoLang.Resource_TypeName_SharpStick, ItemResourceType.SharpStick, faction, city);
+            sword.toHud(player, content, DssRef.todoLang.Resource_TypeName_Sword, ItemResourceType.Sword, faction, city);
+            bow.toHud(player, content, DssRef.todoLang.Resource_TypeName_Bow, ItemResourceType.Bow, faction, city);
+
+            lightArmor.toHud(player, content, DssRef.todoLang.Resource_TypeName_LightArmor, ItemResourceType.LightArmor, faction, city);
+            mediumArmor.toHud(player, content, DssRef.todoLang.Resource_TypeName_MediumArmor, ItemResourceType.MediumArmor, faction, city);
+            heavyArmor.toHud(player, content, DssRef.todoLang.Resource_TypeName_HeavyArmor, ItemResourceType.HeavyArmor, faction, city);
         }
 
     }

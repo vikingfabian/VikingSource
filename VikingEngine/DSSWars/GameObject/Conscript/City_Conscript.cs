@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.GameObject.Conscript;
+using VikingEngine.DSSWars.GameObject.Resource;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 
@@ -16,107 +20,341 @@ namespace VikingEngine.DSSWars.GameObject
      * varje stad väljer conscription (och till vilken stad)
      */
 
-    //partial class City
-    //{
-    //    void conscriptTab(LocalPlayer player, RichBoxContent content)
-    //    { 
-    //        new ConscriptMenu().ToHud(player, content);
-    //    }
-    //}
+    partial class City
+    {
+        public int selectedConscript = -1;
+
+        public List<BarracksStatus> barracks = new List<BarracksStatus>();
+
+        public void async_conscriptUpdate()
+        {
+            lock (barracks)
+            {
+                for (int i = 0; i < barracks.Count; i++)
+                {
+                    BarracksStatus status = barracks[i];
+                    switch (status.active)
+                    { 
+                        case ConscriptActiveStatus.Idle:
+                            if (status.CountDownQue())
+                            {
+                                status.active = ConscriptActiveStatus.Collecting;
+                                status.inProgress = status.profile;
+                            }
+                            break;
+
+                        case ConscriptActiveStatus.Collecting:
+                            int needMen = DssConst.SoldierGroup_DefaultCount - status.menCollected;
+                            int collectMen = lib.SmallestValue(workForce, needMen);
+                            workForce -= collectMen;
+                            status.menCollected += collectMen;
+
+                            ItemResourceType weaponItem = ConscriptProfile.WeaponItem(status.inProgress.weapon);
+                            ItemResourceType armorItem = ConscriptProfile.ArmorItem(status.inProgress.armorLevel);
+                            int needEquipment =  DssConst.SoldierGroup_DefaultCount - status.equipmentCollected;
+                            int availableWeapons = GetGroupedResource(weaponItem).amount;
+                            int availableArmor;
+                            if (status.inProgress.armorLevel == ArmorLevel.None)
+                            {
+                                availableArmor = needEquipment;
+                            }
+                            else
+                            {
+                                availableArmor = GetGroupedResource(armorItem).amount;
+                            }
+
+                            int collectEquipment = lib.SmallestValue(needEquipment, availableWeapons, availableArmor);
+                            status.equipmentCollected += collectEquipment;
+                            
+                            var weapon = GetGroupedResource(weaponItem);
+                            weapon.amount -= collectEquipment;
+                            SetGroupedResource(weaponItem, weapon);
+
+                            if (status.inProgress.armorLevel != ArmorLevel.None)
+                            {
+                                var armor = GetGroupedResource(armorItem);
+                                armor.amount -= collectEquipment;
+                                SetGroupedResource(armorItem, armor);
+                            }
+
+                            if (status.menCollected == DssConst.SoldierGroup_DefaultCount &&
+                                status.equipmentCollected == DssConst.SoldierGroup_DefaultCount)
+                            {
+                                status.active = ConscriptActiveStatus.Training;
+                                status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training)));
+                            }
+                            break;
+
+                        case ConscriptActiveStatus.Training:
+                            if (status.countdown.TimeOut())
+                            {
+                                Ref.update.AddSyncAction(new SyncAction1Arg<ConscriptProfile>(conscriptArmy, status.inProgress));
+
+                                status.active = ConscriptActiveStatus.Idle;
+                                status.menCollected = 0;
+                                status.equipmentCollected = 0;
+                            }
+                            break;
+                    }
+
+                    barracks[i] = status;
+                }
+            }
+        }
+
+        public void conscriptArmy(ConscriptProfile profile)
+        {
+            Army army = recruitToClosestArmy();
+
+            if (army == null)
+            {
+                IntVector2 onTile = DssRef.world.GetFreeTile(tilePos);
+
+                army = faction.NewArmy(onTile);//new Army(faction, onTile);
+            }
+                        
+            new SoldierGroup(army, profile);
+            
+            army?.OnSoldierPurchaseCompleted();
+        }
+
+        public void createStartupBarracks()
+        {
+            if (barracks.Count == 0)
+            {
+                IntVector2 pos = WP.ToSubTilePos_TopLeft(tilePos);
+                pos.X += 4;
+                pos.Y += 5;
+                var subTile = DssRef.world.subTileGrid.Get(pos);
+                subTile.SetType(TerrainMainType.Building, (int)TerrainBuildingType.Barracks, 1);
+                DssRef.world.subTileGrid.Set(pos, subTile);
+
+                BarracksStatus newBarrack = new BarracksStatus()
+                {
+                    idAndPosition = conv.IntVector2ToInt(pos),
+                };
+
+                barracks.Add(newBarrack);
+            }
+        }
+
+        public void addBarracks(IntVector2 subPos)
+        {
+            BarracksStatus consriptProfile = new BarracksStatus()
+            {
+                idAndPosition = conv.IntVector2ToInt(subPos),
+            };
+            lock (barracks)
+            {
+                barracks.Add(consriptProfile);
+            }
+        }
+    }
 
     class ConscriptMenu
     {
+        City city;
         LocalPlayer player;
-        ConsriptProfile currentProfile = new ConsriptProfile();
+        //ConsriptProfile currentProfile = new ConsriptProfile();
 
-        public void ToHud(LocalPlayer player, RichBoxContent content)
+        public void ToHud(City city, LocalPlayer player, RichBoxContent content)
         {
+            content.newLine();
+
+            this.city = city;
             this.player = player;
 
-            content.h1(DssRef.todoLang.Hud_Conscription);
-
-            content.newParagraph();
-
-            HudLib.Label(content, "Weapon");
-            content.newLine();
-            for (MainWeapon weapon = 0; weapon < MainWeapon.NUM; weapon++)
+            
+            if (arraylib.InBound(city.barracks, city.selectedConscript))
             {
-                var button = new RichboxButton(new List<AbsRichBoxMember>{
+                BarracksStatus currentProfile = get();
+
+                content.Add(new RichBoxBeginTitle(1));
+                
+                
+                content.Add(new RichBoxText(DssRef.todoLang.Hud_Conscription + " " + currentProfile.idAndPosition.ToString()));
+                content.space();
+                content.Add(new RichboxButton(new List<AbsRichBoxMember>
+                    { new RichBoxSpace(), new RichBoxText(DssRef.todoLang.Hud_EndSessionIcon),new RichBoxSpace(), },
+                    new RbAction(() => { city.selectedConscript = -1; })));
+
+                content.newParagraph();
+
+                HudLib.Label(content, "Weapon");
+                content.newLine();
+                for (MainWeapon weapon = 0; weapon < MainWeapon.NUM; weapon++)
+                {
+                    var button = new RichboxButton(new List<AbsRichBoxMember>{
                    new RichBoxText( LangLib.Weapon(weapon))
-                }, new RbAction1Arg<MainWeapon> (weaponClick, weapon));
-                button.setGroupSelectionColor(HudLib.RbSettings, weapon == currentProfile.weapon);
-                content.Add(button);
-                content.space();
-            }
+                }, 
+                new RbAction1Arg<MainWeapon>(weaponClick, weapon),
+                new RbAction1Arg<MainWeapon>(weaponTooltip, weapon)
+                );
+                    button.setGroupSelectionColor(HudLib.RbSettings, weapon == currentProfile.profile.weapon);
+                    content.Add(button);
+                    content.space();
+                }
 
-            content.newParagraph();
+                content.newParagraph();
 
-            HudLib.Label(content, "Armor");
-            content.newLine();
-            for (ArmorLevel armorLvl = 0; armorLvl < ArmorLevel.NUM; armorLvl++)
-            {
-                var button = new RichboxButton(new List<AbsRichBoxMember>{
-                   new RichBoxText( LangLib.Armor(armorLvl))
-                }, new RbAction1Arg<ArmorLevel>(armorClick, armorLvl));
-                button.setGroupSelectionColor(HudLib.RbSettings, armorLvl == currentProfile.armorLevel);
-                content.Add(button);
-                content.space();
-            }
+                HudLib.Label(content, "Armor");
+                content.newLine();
+                for (ArmorLevel armorLvl = 0; armorLvl < ArmorLevel.NUM; armorLvl++)
+                {
+                    var button = new RichboxButton(new List<AbsRichBoxMember>{
+                       new RichBoxText( LangLib.Armor(armorLvl))
+                    }, new RbAction1Arg<ArmorLevel>(armorClick, armorLvl),
+                    new RbAction1Arg<ArmorLevel>(armorTooltip, armorLvl));
+                    button.setGroupSelectionColor(HudLib.RbSettings, armorLvl == currentProfile.profile.armorLevel);
+                    content.Add(button);
+                    content.space();
+                }
 
-            content.newParagraph();
+                content.newParagraph();
 
-            HudLib.Label(content, "Training");
-            content.newLine();
-            for (Training training = 0; training < Training.NUM; training++)
-            {
-                var button = new RichboxButton(new List<AbsRichBoxMember>{
+                HudLib.Label(content, "Training");
+                content.newLine();
+                for (TrainingLevel training = 0; training < TrainingLevel.NUM; training++)
+                {
+                    var button = new RichboxButton(new List<AbsRichBoxMember>{
                    new RichBoxText( LangLib.Training(training))
-                }, new RbAction1Arg<Training>(trainingClick, training));
-                button.setGroupSelectionColor(HudLib.RbSettings, training == currentProfile.training);
-                content.Add(button);
+                }, new RbAction1Arg<TrainingLevel>(trainingClick, training),
+                    new RbAction1Arg<TrainingLevel>(trainingTooltip, training));
+                    button.setGroupSelectionColor(HudLib.RbSettings, training == currentProfile.profile.training);
+                    content.Add(button);
+                    content.space();
+                }
+
+                content.newParagraph();
+
+                HudLib.Label(content, "Que");
                 content.space();
-            }
-
-            content.newParagraph();
-
-            HudLib.Label(content, "Que");
-            content.space();
-            HudLib.InfoButton(content, new RbAction(queInfo));
-            content.newLine();
-            for (int length = 0; length <= ConsriptProfile.MaxQue; length++)
-            {
-                var button = new RichboxButton(new List<AbsRichBoxMember>{
+                HudLib.InfoButton(content, new RbAction(queInfo));
+                content.newLine();
+                for (int length = 0; length <= BarracksStatus.MaxQue; length++)
+                {
+                    var button = new RichboxButton(new List<AbsRichBoxMember>{
                    new RichBoxText( length.ToString())
                 }, new RbAction1Arg<int>(queClick, length));
-                button.setGroupSelectionColor(HudLib.RbSettings, length == currentProfile.que);
-                content.Add(button);
-                content.space();
-            }
-            {
-                var button = new RichboxButton(new List<AbsRichBoxMember>{
+                    button.setGroupSelectionColor(HudLib.RbSettings, length == currentProfile.que);
+                    content.Add(button);
+                    content.space();
+                }
+                {
+                    var button = new RichboxButton(new List<AbsRichBoxMember>{
                    new RichBoxText( "No limit")
                 }, new RbAction1Arg<int>(queClick, 1000));
-                button.setGroupSelectionColor(HudLib.RbSettings, currentProfile.que > ConsriptProfile.MaxQue);
-                content.Add(button);
+                    button.setGroupSelectionColor(HudLib.RbSettings, currentProfile.que > BarracksStatus.MaxQue);
+                    content.Add(button);
+                }
             }
+            else
+            {
+                
+                content.h2("Select barracks");
+                if (city.barracks.Count == 0)
+                { 
+                    content.text("- Empty list -").overrideColor = HudLib.InfoYellow_Light;
+                }
 
+                for (int i = 0; i < city.barracks.Count; ++i)
+                {
+                    content.newLine();
+
+                    BarracksStatus currentProfile = city.barracks[i];
+                    var caption = new RichBoxText(
+                            LangLib.Weapon(currentProfile.profile.weapon) + ", " +
+                            LangLib.Armor(currentProfile.profile.armorLevel) + ", " +
+                            LangLib.Training(currentProfile.profile.training)
+                        );
+                    caption.overrideColor = HudLib.TitleColor_Name;
+
+                    content.Add(new RichboxButton(new List<AbsRichBoxMember>(){
+                        new RichBoxBeginTitle(2),
+                        caption,
+                        new RichBoxNewLine(),
+                        new RichBoxText(currentProfile.active.ToString())
+                    }, new RbAction1Arg<int>(selectClick, i)));
+
+                }
+            }
         }
+
+       
+
         void weaponClick(MainWeapon weapon)
         {
-            currentProfile.weapon = weapon;
+            BarracksStatus currentProfile = get();
+            currentProfile.profile.weapon = weapon;
+            set(currentProfile);
+        }
+
+        void weaponTooltip(MainWeapon weapon)
+        {
+            string WeaponDamage = "Weapon damage: {0}";
+
+            
+            RichBoxContent content = new RichBoxContent();
+            content.Add(new RichBoxText(string.Format(WeaponDamage, ConscriptProfile.WeaponDamage(weapon))));
+
+            player.hud.tooltip.create(player, content, true);
         }
         void armorClick(ArmorLevel armor)
         {
-            currentProfile.armorLevel = armor;
+            BarracksStatus currentProfile = get();
+            currentProfile.profile.armorLevel = armor;
+            set(currentProfile);
         }
-        void trainingClick(Training training)
+        void armorTooltip(ArmorLevel armor)
         {
-            currentProfile.training = training;
+            string ArmorHealth = "Armor health: {0}";
+
+            
+            RichBoxContent content = new RichBoxContent();
+            content.Add(new RichBoxText(string.Format(ArmorHealth, ConscriptProfile.ArmorHealth(armor))));
+
+            player.hud.tooltip.create(player, content, true);
+        }
+
+        void trainingClick(TrainingLevel training)
+        {
+            BarracksStatus currentProfile = get();
+            currentProfile.profile.training = training;
+            set(currentProfile);
+        }
+        void trainingTooltip(TrainingLevel training)
+        {
+            string TrainingSpeed = "Attack speed: {0}";
+            string TrainingTime = "Training time: {0}";
+
+            RichBoxContent content = new RichBoxContent();
+            content.text(string.Format(TrainingTime, new TimeLength(ConscriptProfile.TrainingTime(training)).LongString()));
+            content.text(string.Format(TrainingSpeed, TextLib.OneDecimal(ConscriptProfile.TrainingAttackSpeed(training))));
+
+            player.hud.tooltip.create(player, content, true);
         }
         void queClick(int length)
         {
+            BarracksStatus currentProfile = get();
             currentProfile.que = length;
+            set(currentProfile);
         }
+
+        void selectClick(int index)
+        {
+            city.selectedConscript = index;
+        }
+
+        BarracksStatus get()
+        {
+            return city.barracks[city.selectedConscript];
+        }
+
+        void set(BarracksStatus profile)
+        {
+            city.barracks[city.selectedConscript] = profile;
+        }
+
 
         void queInfo()
         { 
@@ -129,41 +367,5 @@ namespace VikingEngine.DSSWars.GameObject
     }
 
 
-    struct ConsriptProfile
-    {
-        public const int MaxQue = 5;
-
-        public MainWeapon weapon;
-        public ArmorLevel armorLevel;
-        
-        public Training training;
-        public int city;
-        public int que;
-    }
-
-    enum ArmorLevel
-    { 
-        None,
-        Light,
-        Medium,
-        Heavy,
-        NUM
-    }
-
-    enum MainWeapon
-    { 
-        SharpStick,
-        Sword,
-        Bow,
-        NUM
-    }
-
-    enum Training
-    { 
-        Minimal,
-        Basic,
-        Skillful,
-        Professional,
-        NUM
-    }
+    
 }

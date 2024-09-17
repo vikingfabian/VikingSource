@@ -78,7 +78,7 @@ namespace VikingEngine.DSSWars
         public const int GroupMinCost = 20;
         public const float SoldierDefaultUpkeep = 1f;
         public static float SoldierDefaultEnergyUpkeep = DssConst.ManDefaultEnergyCost;
-        public const float GroupDefaultUpkeep = SoldierDefaultUpkeep * AbsSoldierData.GroupDefaultCount;
+        public static float GroupDefaultUpkeep = SoldierDefaultUpkeep * DssConst.SoldierGroup_DefaultCount;
         public const int DefalutRecruitTrainingTimeSec = 3 * 60;
                 
 
@@ -92,11 +92,11 @@ namespace VikingEngine.DSSWars
         //public const int LargeCityStartWorkForce = AbsSoldierData.GroupDefaultCount * 6;
         //public const int HeadCityStartWorkForce = AbsSoldierData.GroupDefaultCount * 10;
 
-        public static readonly int SmallCityMaxWorkForce = Convert.ToInt32(AbsSoldierData.GroupDefaultCount * 6);
-        public static readonly int LargeCityMaxWorkForce = Convert.ToInt32(AbsSoldierData.GroupDefaultCount * 9);
-        public static readonly int HeadCityMaxWorkForce = Convert.ToInt32(AbsSoldierData.GroupDefaultCount * 15);
+        public static readonly int SmallCityStartMaxWorkForce = Convert.ToInt32(DssConst.SoldierGroup_DefaultCount * 6);
+        public static readonly int LargeCityStartMaxWorkForce = Convert.ToInt32(DssConst.SoldierGroup_DefaultCount * 9);
+        public static readonly int HeadCityStartMaxWorkForce = Convert.ToInt32(DssConst.SoldierGroup_DefaultCount * 15);
 
-        public static readonly int NobelHouseWorkForceReqiurement = HeadCityMaxWorkForce;
+        public static readonly int NobelHouseWorkForceReqiurement = HeadCityStartMaxWorkForce;
 
         public const float ShipBuildTimeSec = 5f;
         public const float ShipExitTimeSec = 3f;
@@ -170,7 +170,7 @@ namespace VikingEngine.DSSWars
         Woodcutters,
         Builders,
         FreshWater,
-
+        CrabMentality, //ingen vill bli expert
     }
 }
 

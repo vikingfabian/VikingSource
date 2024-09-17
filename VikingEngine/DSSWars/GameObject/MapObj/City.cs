@@ -25,8 +25,7 @@ namespace VikingEngine.DSSWars.GameObject
     partial class City : GameObject.AbsMapObject
     {
         public const float TaxPerWorker = 0.2f;
-        public const int ExpandWorkForce = AbsSoldierData.GroupDefaultCount * 4;
-        public const int ExpandGuardSize = AbsSoldierData.GroupDefaultCount;
+        
         public const int ExpandGuardSizeCost = 12000;
 
         //public int index;
@@ -397,12 +396,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool canExpandWorkForce(int count)
         {
-            return (workForceMax + ExpandWorkForce * count) <= maxEpandWorkSize;
+            return (workForceMax + DssConst.ExpandWorkForce * count) <= maxEpandWorkSize;
         }
 
         public bool canIncreaseGuardSize(int count)
         {
-            return (maxGuardSize + ExpandGuardSize * count) <= workForceMax;
+            return (maxGuardSize + DssConst.ExpandGuardSize * count) <= workForceMax;
         }
 
         public void expandWorkForce(int amount)
@@ -414,7 +413,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void onWorkHutBuild()
         {
-            workForceMax += AbsSoldierData.GroupDefaultCount;
+            workForceMax += DssConst.SoldierGroup_DefaultCount;
             refreshCitySize();
         }
 
@@ -434,7 +433,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (commit)
                     {
-                        expandGuardSize(ExpandGuardSize * count);
+                        expandGuardSize(DssConst.ExpandGuardSize * count);
                         faction.payMoney(totalCost, true);
                     }
                     return true;
@@ -453,7 +452,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (commit)
                     {
-                        expandWorkForce(ExpandWorkForce * count);
+                        expandWorkForce(DssConst.ExpandWorkForce * count);
                         faction.payMoney(totalCost, true);
                     }
                     return true;
@@ -505,12 +504,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (count > 0)
             {
-                if (!all && count > ExpandWorkForce)
+                if (!all && count > DssConst.ExpandWorkForce)
                 {
-                    count = ExpandWorkForce;
+                    count = DssConst.ExpandWorkForce;
                 }
 
-                cost = Convert.ToInt32(((double)expandWorkForceCost() / ExpandWorkForce * count) * BuyToRepair);
+                cost = Convert.ToInt32(((double)expandWorkForceCost() / DssConst.ExpandWorkForce * count) * BuyToRepair);
             }
         }
 
@@ -585,15 +584,15 @@ namespace VikingEngine.DSSWars.GameObject
                 switch (CityType)
                 {
                     case CityType.Small:
-                        workForceMax = DssLib.SmallCityMaxWorkForce;
+                        workForceMax = DssLib.SmallCityStartMaxWorkForce;
                         break;
                     case CityType.Large:
                         //workForce.value = DssLib.LargeCityStartWorkForce;
-                        workForceMax = DssLib.LargeCityMaxWorkForce;
+                        workForceMax = DssLib.LargeCityStartMaxWorkForce;
                         break;
                     default:
                         //workForce.value = DssLib.HeadCityStartWorkForce;
-                        workForceMax = DssLib.HeadCityMaxWorkForce;
+                        workForceMax = DssLib.HeadCityStartMaxWorkForce;
                         nobelHouse = true;
                         break;
                 }
@@ -604,7 +603,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (newGame || maxEpandWorkSize == 0)
             {
                 int maxFit = MathExt.MultiplyInt(0.8, CityDetail.WorkersPerTile * CityDetail.HutMaxLevel * areaSize);
-                maxEpandWorkSize = Bound.Max(workForceMax + ExpandWorkForce * 3, maxFit);
+                maxEpandWorkSize = Bound.Max(workForceMax + DssConst.ExpandWorkForce * 3, maxFit);
             }
         }
 
@@ -623,11 +622,11 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 CityType newType;
 
-                if (workForceMax >= DssLib.HeadCityMaxWorkForce)
+                if (workForceMax >= DssLib.HeadCityStartMaxWorkForce)
                 {
                     newType = CityType.Head;
                 }
-                else if (workForceMax >= DssLib.LargeCityMaxWorkForce)
+                else if (workForceMax >= DssLib.LargeCityStartMaxWorkForce)
                 {
                     newType = CityType.Large;
                 }
@@ -661,7 +660,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     CityType = CityType.Factory;
 
-                    workForceMax += DssLib.HeadCityMaxWorkForce;
+                    workForceMax += DssLib.HeadCityStartMaxWorkForce;
                     detailObj.refreshModel();
 
                     if (overviewModel != null)
@@ -678,7 +677,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     CityType = CityType.Large;
 
-                    workForceMax -= DssLib.HeadCityMaxWorkForce;
+                    workForceMax -= DssLib.HeadCityStartMaxWorkForce;
                     detailObj.refreshModel();
 
                     if (overviewModel != null)
@@ -880,7 +879,7 @@ namespace VikingEngine.DSSWars.GameObject
             collectBattles_asynch();
             detailObj.asynchUpdate();
             //strength
-            strengthValue = 2.5f * guardCount / AbsSoldierData.GroupDefaultCount;
+            strengthValue = 2.5f * guardCount / DssConst.SoldierGroup_DefaultCount;
 
             if (minute)
             {
@@ -1433,15 +1432,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void createStartupBarracks()
-        {
-            IntVector2 pos = WP.ToSubTilePos_TopLeft(tilePos);
-            pos.X += 4;
-            pos.Y += 5;
-            var subTile = DssRef.world.subTileGrid.Get(pos);
-            subTile.SetType(TerrainMainType.Building, (int)TerrainBuildingType.Barracks, 1);
-            DssRef.world.subTileGrid.Set(pos, subTile);
-        }
+        
         
         public Army recruitToClosestArmy()
         {

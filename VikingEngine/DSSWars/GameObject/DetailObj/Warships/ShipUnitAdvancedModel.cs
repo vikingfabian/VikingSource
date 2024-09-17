@@ -23,10 +23,10 @@ namespace VikingEngine.DSSWars.GameObject
             rightCrewPosDiff = leftCrewPosDiff;
             rightCrewPosDiff.X = -rightCrewPosDiff.X;
 
-            float crewScale = AbsSoldierData.StandardModelScale * 1.6f;
+            float crewScale = DssConst.Men_StandardModelScale * 1.6f;
 
             captain = soldier.group.army.faction.AutoLoadModelInstance(
-                LootFest.VoxelModelName.wars_captain, AbsSoldierData.StandardModelScale * 0.7f, true);
+                LootFest.VoxelModelName.wars_captain, DssConst.Men_StandardModelScale * 0.7f, true);
 
             leftcrew = soldier.group.army.faction.AutoLoadModelInstance(
                 LootFest.VoxelModelName.wars_shipcrew, crewScale, true);

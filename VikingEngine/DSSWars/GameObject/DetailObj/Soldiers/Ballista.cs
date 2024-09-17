@@ -15,20 +15,20 @@ namespace VikingEngine.DSSWars.GameObject
         {
             unitType = UnitType.Ballista;
 
-            modelScale = StandardModelScale * 2f;
-            boundRadius = StandardBoundRadius * 2.2f;
+            modelScale = DssConst.Men_StandardModelScale * 2f;
+            boundRadius =DssVar.StandardBoundRadius * 2.2f;
 
-            walkingSpeed = StandardWalkingSpeed * 0.6f;
+            walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
             ArmySpeedBonusLand = -0.5;
             rotationSpeed = StandardRotatingSpeed * 0.04f;
             attackRange = 3f;
             targetSpotRange = attackRange + StandardTargetSpotRange;
-            basehealth = MathExt.MultiplyInt(0.5, DefaultHealth);
+            basehealth = MathExt.MultiplyInt(0.5, DssConst.Soldier_DefaultHealth);
             mainAttack = AttackType.Ballista;
             attackDamage = 300;
             attackDamageStructure = 1500;
             attackDamageSea = 400;
-            attackTimePlusCoolDown = StandardAttackAndCoolDownTime * 16f;
+            attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 16f;
 
             maxAttackAngle = 0.07f;
             
@@ -37,7 +37,7 @@ namespace VikingEngine.DSSWars.GameObject
             workForcePerUnit = 2;
             goldCost = MathExt.MultiplyInt(0.9, DssLib.GroupDefaultCost);
             upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
-            groupSpacing = DefaultGroupSpacing * 2.2f;
+            groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
 
             modelName = LootFest.VoxelModelName.war_ballista;
             modelVariationCount = 2;
@@ -183,7 +183,7 @@ namespace VikingEngine.DSSWars.GameObject
             this.diff = diff;
             
             model = faction.AutoLoadModelInstance(
-               LootFest.VoxelModelName.war_worker, AbsDetailUnitData.StandardModelScale * 0.9f, true);
+               LootFest.VoxelModelName.war_worker, DssConst.Men_StandardModelScale * 0.9f, true);
         }
 
         public void onNewModel_asynch(LootFest.VoxelModelName name, Graphics.VoxelModel master)

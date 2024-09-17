@@ -12,8 +12,8 @@ namespace VikingEngine.DSSWars.GameObject
     {      
         public AbsWarShipData(UnitType shipUnitType, AbsSoldierData soldierData) 
         {
-            modelScale = StandardModelScale * 6f;
-            boundRadius = StandardBoundRadius * 6f;
+            modelScale = DssConst.Men_StandardModelScale * 6f;
+            boundRadius = DssVar.StandardBoundRadius * 6f;
             modelToShadowScale = new Vector3(0.5f, 1f, 0.8f);
 
             hasBannerMan = false;
@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.GameObject
             convertSoldierShipType = soldierData.unitType;
             soldierData.convertSoldierShipType = shipUnitType;
 
-            walkingSpeed = AbsSoldierData.StandardShipSpeed;
+            walkingSpeed = DssConst.Men_StandardShipSpeed;
             rotationSpeed = StandardRotatingSpeed * 0.4f;
             attackDamage = soldierData.attackDamageSea;
             attackDamageSea = soldierData.attackDamageSea;

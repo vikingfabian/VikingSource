@@ -21,9 +21,9 @@ namespace VikingEngine.DSSWars.GameObject
                 ProjectileHit(false, target, damage, splashCount, splashPercDamage, attacker);
             }
         }
-
-        const float PeekHeight = AbsSoldierData.StandardModelScale * 1f;
-        float speed = AbsSoldierData.StandardModelScale * 8f;
+        
+        public static float Projectile_PeekHeight;
+        float speed = DssConst.Men_StandardModelScale * 8f;
         //const float MinDistance = AbsSoldierData.StandardModelScale * 0.2f;
 
         Graphics.AbsVoxelObj model;
@@ -63,19 +63,19 @@ namespace VikingEngine.DSSWars.GameObject
                 default://case AttackType.Arrow:
                     //warsRef.sound.bow.Play(start);
                     modelName = LootFest.VoxelModelName.Arrow;
-                    scale = AbsSoldierData.StandardModelScale * 0.7f;//0.8f;
+                    scale = DssConst.Men_StandardModelScale * 0.7f;//0.8f;
                     break;
                 case AttackType.Bolt:
                     //warsRef.sound.bow.Play(start);
                     modelName = LootFest.VoxelModelName.little_boltarrow;
-                    scale = AbsSoldierData.StandardModelScale * 0.5f;
+                    scale = DssConst.Men_StandardModelScale * 0.5f;
                     speed *= 1.5f;
                     linear = true;
                     break;
                 case AttackType.Cannonball:
                     //warsRef.sound.rocket.Play(start);
                     modelName = LootFest.VoxelModelName.war_cannonball;
-                    scale = AbsSoldierData.StandardModelScale * 0.4f;
+                    scale = DssConst.Men_StandardModelScale * 0.4f;
                     linear = false;
                     fireParticles = true;
                     break;
@@ -94,7 +94,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case AttackType.Ballista:
                     //warsRef.sound.catapult.Play(start);
                     modelName = LootFest.VoxelModelName.war_ballista_proj;
-                    scale = AbsSoldierData.StandardModelScale * 1.2f;
+                    scale = DssConst.Men_StandardModelScale * 1.2f;
                     linear = true;
                     break;
                 case AttackType.KnifeThrow:
@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case AttackType.Javelin:
                    // warsRef.sound.javelin.Play(start);
                     modelName = LootFest.VoxelModelName.little_javelin;
-                    scale = AbsSoldierData.StandardModelScale * 1f;//0.8f;
+                    scale = DssConst.Men_StandardModelScale * 1f;//0.8f;
                     linear = true;
                     break;
             }
@@ -175,7 +175,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (!linear)
             {
                 float percDist = dist / totalDistance;
-                model.position.Y += (float)Math.Sin(percDist * MathHelper.Pi) * PeekHeight;
+                model.position.Y += (float)Math.Sin(percDist * MathHelper.Pi) * Projectile_PeekHeight;
             }
 
             if (rotatingSpeed != 0)
@@ -197,7 +197,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (fireParticles)
                 {
-                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, Ref.rnd.Vector3_Sq(model.position, AbsSoldierData.StandardModelScale * 1f));
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, Ref.rnd.Vector3_Sq(model.position, DssConst.Men_StandardModelScale * 1f));
                     Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, model.position);
 
                 }

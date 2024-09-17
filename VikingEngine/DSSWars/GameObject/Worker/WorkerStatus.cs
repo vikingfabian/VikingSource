@@ -264,10 +264,10 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     }
                     break;
 
-                case WorkType.Building:
+                case WorkType.Build:
                     {
                         //subTile.SetType(TerrainMainType.Building, workSubType, 1);
-                        BuildLib.BuildOptions[workSubType].execute(city, ref subTile);
+                        BuildLib.BuildOptions[workSubType].execute_async(city, subTileEnd, ref subTile);
                         DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                         
 
@@ -339,7 +339,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             float dist = VectorExt.Length(subTileEnd.X - subTileStart.X, subTileEnd.Y - subTileStart.Y) / WorldData.TileSubDivitions; //Convrst to WP length
             
             processTimeLengthSec = finalizeWorkTime() + 
-                dist / (AbsDetailUnitData.StandardWalkingSpeed * 1000);
+                dist / (DssConst.Men_StandardWalkingSpeed * 1000);
 
             switch (work)
             {
@@ -417,7 +417,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     return DssConst.WorkTime_Mine;
                 case WorkType.Craft:
                     return DssConst.WorkTime_Craft;
-                case WorkType.Building:
+                case WorkType.Build:
                     return DssConst.WorkTime_Building;
 
                 case WorkType.TrossReturnToArmy:

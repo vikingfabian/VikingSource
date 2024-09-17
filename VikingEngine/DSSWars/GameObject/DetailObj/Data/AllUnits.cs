@@ -67,7 +67,7 @@ namespace VikingEngine.DSSWars.GameObject
                 recruit));
 
             int defaultDps = DssRef.unitsdata.Get(UnitType.Soldier).DPS_land();
-            AverageGroupStrength = AbsSoldierData.GroupDefaultCount * (defaultDps + HealthToStrengthConvertion * AbsSoldierData.DefaultHealth) ;
+            AverageGroupStrength = DssConst.SoldierGroup_DefaultCount * (defaultDps + HealthToStrengthConvertion * DssConst.Soldier_DefaultHealth) ;
         }
 
         public void AddModelsToLoad(List<VoxelModelName> modelNames)
@@ -213,6 +213,7 @@ namespace VikingEngine.DSSWars.GameObject
         //King = 34,
         //KingsGuard = 35,
         Recruit =0,
+        Conscript = 31,
         Soldier =1,
         Sailor =2,
         Folkman =3,

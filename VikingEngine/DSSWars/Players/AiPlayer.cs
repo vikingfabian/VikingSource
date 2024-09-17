@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 1.5f;
                     name = DssRef.lang.FactionName_DarkFollower;
                     faction.displayInFullOverview = true;
-                    faction.gold += DssLib.HeadCityMaxWorkForce * 10;
+                    faction.gold += DssLib.HeadCityStartMaxWorkForce * 10;
                     break;
 
                 case FactionType.UnitedKingdom:
@@ -178,7 +178,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.hasDeserters = false;
                     name = DssRef.lang.FactionName_SouthHara;
                     faction.displayInFullOverview = true;
-                    faction.gold += DssLib.HeadCityMaxWorkForce * 5;
+                    faction.gold += DssLib.HeadCityStartMaxWorkForce * 5;
                     break;
 
                 case FactionType.DyingMonger:
@@ -189,7 +189,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
                     name = "Monger";
-                    faction.gold += DssLib.HeadCityMaxWorkForce * 1000;
+                    faction.gold += DssLib.HeadCityStartMaxWorkForce * 1000;
                     break;
 
                 case FactionType.DyingHate:
@@ -200,7 +200,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
                     name = "Hatu";
-                    faction.gold += DssLib.HeadCityMaxWorkForce * 1000;
+                    faction.gold += DssLib.HeadCityStartMaxWorkForce * 1000;
                     break;
 
                 case FactionType.DyingDestru:
@@ -211,7 +211,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
                     name = "Destru";
-                    faction.gold += DssLib.HeadCityMaxWorkForce * 1000;
+                    faction.gold += DssLib.HeadCityStartMaxWorkForce * 1000;
                     break;
 
 
@@ -889,7 +889,7 @@ namespace VikingEngine.DSSWars.Players
 
         private void mainArmyBuyAtCity(City city)
         {
-            int max = Math.Min(faction.gold / DssLib.GroupDefaultCost, city.workForce / SoldierData.GroupDefaultCount);
+            int max = Math.Min(faction.gold / DssLib.GroupDefaultCost, city.workForce / DssConst.SoldierGroup_DefaultCount);
             
             if (max >= 4)
             {
@@ -911,7 +911,7 @@ namespace VikingEngine.DSSWars.Players
 
         void buyDefenceAtCity(City city)
         {   
-            int max = Math.Min(faction.gold / DssLib.GroupDefaultCost, city.workForce / SoldierData.GroupDefaultCount);
+            int max = Math.Min(faction.gold / DssLib.GroupDefaultCost, city.workForce / DssConst.SoldierGroup_DefaultCount);
 
             if (max >= 4)
             {

@@ -11,17 +11,17 @@ namespace VikingEngine.DSSWars.GameObject
         {
             unitType = UnitType.Spearman;
 
-            modelScale = StandardModelScale;
-            boundRadius = StandardBoundRadius;
+            modelScale = DssConst.Men_StandardModelScale;
+            boundRadius = DssVar.StandardBoundRadius;
 
-            walkingSpeed = StandardWalkingSpeed * 0.8f;
+            walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.8f;
             rotationSpeed = StandardRotatingSpeed * 0.5f;
             targetSpotRange = StandardTargetSpotRange;
             attackRange = 0.06f;
-            basehealth = DefaultHealth;
+            basehealth = DssConst.Soldier_DefaultHealth;
             mainAttack = AttackType.Melee;
             attackDamage = 5;
-            attackTimePlusCoolDown = StandardAttackAndCoolDownTime * 1.5f;
+            attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 1.5f;
 
             modelName = LootFest.VoxelModelName.war_spearman;
 

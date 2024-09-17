@@ -20,8 +20,8 @@ namespace VikingEngine.DSSWars.GameObject
        // const int SoldierAiState_Idle = 3;
        // const int SoldierAiState_ReGroup = 4;
 
-        protected const float GoalReachDist_GROUP = AbsSoldierData.StandardBoundRadius * 2f;
-        protected const float GoalReachDist_WhenColliding = GoalReachDist_GROUP * 3f;
+        protected static float GoalReachDist_GROUP = DssVar.StandardBoundRadius * 2f;
+        protected static float GoalReachDist_WhenColliding = GoalReachDist_GROUP * 3f;
         //const float GoalReachDist_Induvidual = AbsSoldierData.StandardBoundRadius * 0.04f;
 
         //const float FleeMinDistanceToGoal = AbsSoldierData.StandardBoundRadius * 8;

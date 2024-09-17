@@ -15,10 +15,10 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
             upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 0.8f;
             recruitTrainingTimeSec = MathExt.MultiplyInt(0.5, DssLib.DefalutRecruitTrainingTimeSec);
 
-            modelScale = StandardModelScale;
-            boundRadius = StandardBoundRadius;
+            modelScale = DssConst.Men_StandardModelScale;
+            boundRadius = DssVar.StandardBoundRadius;
 
-            walkingSpeed = StandardWalkingSpeed * 1.2f;
+            walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.2f;
             ArmySpeedBonusLand = 0.2;
             rotationSpeed = StandardRotatingSpeed * 1.2f;
             targetSpotRange = StandardTargetSpotRange;
@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
             attackDamage = 30;
             attackDamageStructure = attackDamage;
             attackDamageSea = attackDamage;
-            attackTimePlusCoolDown = StandardAttackAndCoolDownTime;
+            attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
 
             setupJavelinCommand();
 

@@ -40,6 +40,7 @@ namespace VikingEngine.DSSWars
                    Align.CenterAll, "Loading...", Color.White, ImageLayers.Lay4);
 
             Ref.music = new Sound.MusicPlayer();
+            DssVar.UpdateConstants();
 
             if (isReset)
             {

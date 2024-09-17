@@ -1,0 +1,75 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace VikingEngine.DSSWars.Data
+{
+    struct TimeLength
+    {
+        public float seconds;
+        // Constructor to initialize milliseconds
+        public TimeLength(float seconds)
+        {
+            this.seconds = seconds;
+        }
+
+        public float Minutes
+        {
+            get { return seconds / TimeExt.MinuteInSeconds; }
+        }
+
+        // Override ToString method to display seconds and milliseconds
+        public string LongString()
+        {
+            if (seconds < TimeExt.MinuteInSeconds)
+            {
+                return ((int)seconds).ToString() + " seconds";
+            }
+            else
+            {
+                // Calculate minutes and remaining seconds
+                int minutes = (int)seconds / TimeExt.MinuteInSeconds;
+                float remainingSeconds = (int)Math.Ceiling( seconds % TimeExt.MinuteInSeconds);
+                return $"{minutes} minutes " + remainingSeconds + " seconds";
+            }
+        }
+
+        public string ShortString()
+        {
+            // Calculate minutes and remaining seconds
+            int minutes = (int)seconds / TimeExt.MinuteInSeconds;
+            int remainingSeconds = (int)(seconds % TimeExt.MinuteInSeconds);
+
+            // Format the output as "MM:SS" with leading zeros
+            return $"{minutes:D2}:{remainingSeconds:D2}";
+        }
+    }
+
+    struct TimeInGameCountdown
+    {
+        TimeLength length;
+        public float endTimeSec;
+
+        public TimeInGameCountdown(TimeLength length)
+            :this()
+        { 
+            this.start(length);
+        }
+        public void start(TimeLength length)
+        { 
+            this.length = length;
+            endTimeSec = Ref.TotalGameTimeSec + length.seconds;
+        }
+        public bool TimeOut()
+        {
+            return Ref.TotalGameTimeSec >= endTimeSec;
+        }
+
+        public TimeLength RemainingLength()
+        {
+           return new TimeLength(Bound.Min(endTimeSec - Ref.TotalGameTimeSec, 0));
+        }
+    }
+}

@@ -9,19 +9,19 @@ namespace VikingEngine.DSSWars.GameObject
 {
     abstract class AbsDetailUnitData
     {
-        public const float StandardWalkingSpeed = 0.00018f;
-        public const float StandardShipSpeed = StandardWalkingSpeed * 2f;
-        protected const float StandardAttackAndCoolDownTime = 1600;
+        
+        
+
+
         protected const float StandardTargetSpotRange = 3;
-        public const float StandardModelScale = 0.06f;
+        
         public const float SpotEnemyLengh = 1.5f;
 
         public LootFest.VoxelModelName modelName;
         public int modelVariationCount = 1;
         public float modelScale;
         public float modelAdjY = 0;
-        public float boundRadius;
-        
+        public float boundRadius;       
 
         public float attackRange;
         public float secondaryAttackRange;
@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool scoutMovement = false;
 
         public float walkingSpeed;
-        public float shipSpeed = StandardShipSpeed;
+        public float shipSpeed = DssConst.Men_StandardShipSpeed;
 
         public int idleFrame = 0, idleBlinkFrame = 1, attackFrame = 2;
         public float attackFrameTime = 400;

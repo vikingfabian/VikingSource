@@ -14,7 +14,7 @@
 //        protected override void initData()
 //        {
 //            modelScale = StandardModelScale * 0.85f;
-//            boundRadius = StandardBoundRadius * 0.85f;
+//            boundRadius = DssVar.StandardBoundRadius * 0.85f;
 
 //            walkingSpeed = StandardWalkingSpeed * 1.5f;
 //            rotationSpeed = StandardRotatingSpeed;

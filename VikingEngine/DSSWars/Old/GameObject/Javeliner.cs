@@ -15,7 +15,7 @@
 //        {
 //            //bygger skyttetorn som extra kort
 //            modelScale = StandardModelScale * 0.8f;
-//            boundRadius = StandardBoundRadius * 0.8f;
+//            boundRadius = DssVar.StandardBoundRadius * 0.8f;
 
 //            walkingSpeed = StandardWalkingSpeed * 1.05f;
 //            rotationSpeed = StandardRotatingSpeed;

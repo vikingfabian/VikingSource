@@ -48,15 +48,15 @@ namespace VikingEngine.DSSWars.GameObject
        
         public int soldiersCount = 0;
         public int upkeep;
-        public float transportSpeedLand = AbsDetailUnitData.StandardWalkingSpeed;
-        public float transportSpeedSea = AbsDetailUnitData.StandardShipSpeed;
+        public float transportSpeedLand = DssConst.Men_StandardWalkingSpeed;
+        public float transportSpeedSea = DssConst.Men_StandardShipSpeed;
         public bool isShip = false;
 
         public float terrainSpeedMultiplier = 1.0f;
         public IntVector2 positionBeforeBattle;
         string name;
 
-        static readonly Vector2 CamCullingRadius = new Vector2(SoldierGroup.GroupSpacing * 1.4f);
+        static readonly Vector2 CamCullingRadius = new Vector2(DssVar.SoldierGroup_Spacing * 1.4f);
         public Vector2 cullingTopLeft, cullingBottomRight;
         bool isIdle = true;
 
@@ -654,7 +654,7 @@ namespace VikingEngine.DSSWars.GameObject
                
                 while (groupsC.Next())
                 {
-                    var unitData = DssRef.unitsdata.Get(groupsC.sel.type);
+                    var unitData = groupsC.sel.typeData; //DssRef.unitsdata.Get(groupsC.sel.type);
                     groupsC.sel.asynchUpdate();
                     count += groupsC.sel.soldiers.Count;
                     groupsC.sel.setBattleWalkingSpeed();
@@ -716,8 +716,8 @@ namespace VikingEngine.DSSWars.GameObject
                     speedbonus *= 0.5;
                 }
                 speedbonus += 1;
-                transportSpeedLand = Convert.ToSingle(AbsSoldierData.StandardWalkingSpeed * speedbonus);
-                transportSpeedSea = Convert.ToSingle(AbsSoldierData.StandardShipSpeed * speedbonus);
+                transportSpeedLand = Convert.ToSingle(DssConst.Men_StandardWalkingSpeed * speedbonus);
+                transportSpeedSea = Convert.ToSingle(DssConst.Men_StandardShipSpeed * speedbonus);
                 collectBattles_asynch();
 
                 strengthValue = totalStrength / AllUnits.AverageGroupStrength;

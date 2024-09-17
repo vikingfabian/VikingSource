@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.GameObject
             walkingAnimation.randomStartFrame();
             this.movedir = movedir;
             model = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_deserter,
-                AbsDetailUnitData.StandardModelScale,
+                DssConst.Men_StandardModelScale,
                 false);
             model.AddToRender(DrawGame.UnitDetailLayer);
 
@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void Time_Update(float time_ms)
         {
-            float speed = AbsDetailUnitData.StandardWalkingSpeed * 1.2f * time_ms;
+            float speed = DssConst.Men_StandardWalkingSpeed * 1.2f * time_ms;
             model.position += speed * movedir ;
 
             walkingAnimation.update(speed, model);

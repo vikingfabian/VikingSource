@@ -14,19 +14,19 @@ namespace VikingEngine.DSSWars.GameObject
         {
             unitType = UnitType.DarkLord;
 
-            modelScale = StandardModelScale;
-            boundRadius = StandardBoundRadius;
+            modelScale = DssConst.Men_StandardModelScale;
+            boundRadius = DssVar.StandardBoundRadius;
 
-            walkingSpeed = StandardWalkingSpeed;
+            walkingSpeed = DssConst.Men_StandardWalkingSpeed;
             rotationSpeed = StandardRotatingSpeed;
             targetSpotRange = StandardTargetSpotRange;
             attackRange = 0.02f;
-            basehealth = DefaultHealth * 4;
+            basehealth = DssConst.Soldier_DefaultHealth * 4;
             mainAttack = AttackType.Melee;
             attackDamage = 500;
             attackDamageStructure = attackDamage;
             attackDamageSea = attackDamage;
-            attackTimePlusCoolDown = StandardAttackAndCoolDownTime * 0.5f;
+            attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.5f;
             hasBannerMan = false;
 
             workForcePerUnit = 0;
@@ -59,7 +59,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             
             mainAttack = AttackType.Javelin;
-            attackTimePlusCoolDown = StandardAttackAndCoolDownTime * 2.5f;
+            attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 2.5f;
             attackRange = 2f;
             attackDamage = 500;
             attackDamageStructure = attackDamage;

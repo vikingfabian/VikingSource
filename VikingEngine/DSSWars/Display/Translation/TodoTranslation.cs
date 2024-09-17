@@ -35,6 +35,11 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_PigPen => "Pig pen";
         public string BuildingType_HenPen => "Hen pen";
 
+        public string BuildingType_WorkerHut_DescriptionLimitX => "Expands worker limit with {0}";
+        public string BuildingType_Tavern_Description => "Workers may eat here";
+        public string BuildingType_Barracks_Description => "Uses men and equipment to recruit soldiers";
+        public string BuildingType_PigPen_Description => "Produces pigs, which give food and skin";
+        public string BuildingType_HenPen_Description => "Produces hens and eggs, which give food";
 
 
         public string MenuTab_Info => "Info";

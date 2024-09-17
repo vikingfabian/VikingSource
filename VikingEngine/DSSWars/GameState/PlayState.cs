@@ -420,6 +420,7 @@ namespace VikingEngine.DSSWars
                 foreach (var m in DssRef.world.cities)
                 {
                     m.async_workUpdate();
+                    m.async_conscriptUpdate();
                 }
 
                 var factions = DssRef.world.factions.counter();

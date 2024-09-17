@@ -15,7 +15,7 @@
 //        {
 //            modelScale = StandardModelScale * 1.5f;
 //            modelToShadowScale *= 0.7f;
-//            boundRadius = StandardBoundRadius;
+//            boundRadius = DssVar.StandardBoundRadius;
 
 //            walkingSpeed = StandardWalkingSpeed;
 //            rotationSpeed = StandardRotatingSpeed;

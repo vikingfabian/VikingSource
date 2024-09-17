@@ -13,35 +13,6 @@ namespace VikingEngine
         public static Dir4 ToDir4(Vector2 dir, bool SouthIsPositive)
         {
             return ToDir4(dir.X, dir.Y, SouthIsPositive);
-            //if (dir == Vector2.Zero) { return Dir4.NUM_NON; }
-            //if (Math.Abs(dir.X) > Math.Abs(dir.Y))
-            //{
-            //    if (dir.X > 0)
-            //    {
-            //        return Dir4.E;
-            //    }
-            //    else
-            //    {
-            //        return Dir4.W;
-            //    }
-            //}
-            //else
-            //{
-            //    if (dir.Y > 0)
-            //    {
-            //        if (SouthIsPositive)
-            //            return Dir4.S;
-            //        else
-            //            return Dir4.N;
-            //    }
-            //    else
-            //    {
-            //        if (SouthIsPositive)
-            //            return Dir4.N;
-            //        else
-            //            return Dir4.S;
-            //    }
-            //}
         }
 
         public static Dir4 ToDir4(float x, float y, bool SouthIsPositive)
@@ -158,9 +129,6 @@ namespace VikingEngine
         public static Dir8 RadiansToDir8(float angle)
         {
             return lib.WrapDir((Dir8)Convert.ToInt16(angle / MathHelper.PiOver4));
-            //int outVal = (int) SetBoundsRollover(Convert.ToInt16(angle / MathHelper.PiOver4),
-            //    0, (int)Dir8.NUM - 1);
-            //return (Dir8)(outVal);
         }
 
         public static Rotation1D ToRadians(Dir8 dir)
@@ -268,6 +236,19 @@ namespace VikingEngine
         public static int UShortsToInt(ushort high, ushort low)
         {
             return (high << 16) | low;
+        }
+
+        public static IntVector2 IntToIntVector2(int value)
+        {
+            return new IntVector2(
+                value >> 16, // Get the high 16 bits
+                value & 0xFFFF // Get the low 16 bits
+                );
+        }
+
+        public static int IntVector2ToInt(IntVector2 value)
+        {
+            return (value.X << 16) | value.Y;
         }
     }
 }

@@ -12,27 +12,27 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
         {
             unitType = UnitType.Trollcannon;
 
-            modelScale = StandardModelScale * 1.6f;
-            boundRadius = StandardBoundRadius;
+            modelScale = DssConst.Men_StandardModelScale * 1.6f;
+            boundRadius = DssVar.StandardBoundRadius;
 
-            walkingSpeed = StandardWalkingSpeed * 0.6f;
+            walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
             ArmySpeedBonusLand = -0.5;
             rotationSpeed = StandardRotatingSpeed;
             targetSpotRange = StandardTargetSpotRange;
             attackRange = 3f;
-            basehealth = DefaultHealth * 4;
+            basehealth = DssConst.Soldier_DefaultHealth * 4;
             mainAttack = AttackType.Cannonball;
             attackDamage = 500;
             attackDamageStructure = 2500;
             attackDamageSea = 600;
             splashDamageCount = 3;
-            attackTimePlusCoolDown = StandardAttackAndCoolDownTime * 10f;
+            attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 10f;
 
             maxAttackAngle = 0.07f;
 
             rowWidth = 3;
             columnsDepth = 2;
-            groupSpacing = DefaultGroupSpacing * 2.2f;
+            groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
 
             workForcePerUnit = 0;
             goldCost = MathExt.MultiplyInt(2, DssLib.GroupDefaultCost);

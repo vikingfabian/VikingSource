@@ -12,21 +12,21 @@ namespace VikingEngine.DSSWars.GameObject
         {
             unitType = UnitType.Archer;
 
-            modelScale = StandardModelScale * 0.9f;
-            boundRadius = StandardBoundRadius * 0.9f;
+            modelScale = DssConst.Men_StandardModelScale * 0.9f;
+            boundRadius = DssVar.StandardBoundRadius * 0.9f;
 
-            walkingSpeed = StandardWalkingSpeed * 1.05f;
+            walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.05f;
             rotationSpeed = StandardRotatingSpeed;
             attackRange = 1.7f;
             ArmyFrontToBackPlacement =  ArmyPlacement.Mid;
             targetSpotRange = attackRange + StandardTargetSpotRange;
-            basehealth = DefaultHealth;
+            basehealth =    DssConst.Soldier_DefaultHealth;
             mainAttack = AttackType.Arrow;
             attackDamage = 40;
             attackDamageStructure = 50;
             attackDamageSea = 50;
             basehealth = 50;
-            attackTimePlusCoolDown = StandardAttackAndCoolDownTime * 10f;
+            attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 10f;
 
             modelName = LootFest.VoxelModelName.war_archer;
             modelVariationCount = 2;

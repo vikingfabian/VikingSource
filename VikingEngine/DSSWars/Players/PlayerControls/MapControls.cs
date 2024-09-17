@@ -467,7 +467,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
 
-                bound.Radius = WorkerUnit.StandardBoundRadius;
+                bound.Radius = DssVar.Worker_StandardBoundRadius;
                 var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsNearMapObjects_Workers(tilePosition, false);//DssRef.world.unitCollAreaGrid.MapControlsWorkerCities(tilePosition);
                 foreach (var m in nearMapObjects)
                 {

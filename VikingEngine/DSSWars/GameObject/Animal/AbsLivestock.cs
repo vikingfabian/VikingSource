@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
 {
     abstract class AbsLivestock : AbsUpdateable
     {
-        const float WalkingSpeed = AbsDetailUnitData.StandardWalkingSpeed * 0.2f;
+        
         VectorRect area;
         protected WalkingAnimation walkingAnimation;
         protected Graphics.AbsVoxelObj model;
@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
 
             if (walkState)
             {
-                float speed = WalkingSpeed * Ref.DeltaGameTimeMs;
+                float speed =DssConst.Livestock_WalkingSpeed * Ref.DeltaGameTimeMs;
                 model.position += walkDir * speed;
                 walkingAnimation.update(speed, model);
 
@@ -101,8 +101,8 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         {
             walkingAnimation = new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames);
 
-            return DssRef.models.ModelInstance(VoxelModelName.Pig, 
-                AbsDetailUnitData.StandardModelScale * 0.5f, false);
+            return DssRef.models.ModelInstance(VoxelModelName.Pig,
+                DssConst.Men_StandardModelScale * 0.5f, false);
         }
 
         protected override void sound()
@@ -123,7 +123,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
             walkingAnimation = new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 0.25f);
 
             return DssRef.models.ModelInstance(VoxelModelName.Hen,
-                AbsDetailUnitData.StandardModelScale * 0.3f, false);
+                DssConst.Men_StandardModelScale * 0.3f, false);
         }
 
         protected override void sound()

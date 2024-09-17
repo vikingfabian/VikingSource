@@ -79,7 +79,7 @@ namespace VikingEngine.DSSWars.Players.Orders
         public WorkQueMember createWorkQue(out CraftBlueprint blueprint)
         {
             blueprint = BuildLib.BuildOptions[buildingType].blueprint;//ResourceLib.Blueprint(buildingType);
-            var result = new WorkQueMember(WorkType.Building, buildingType, subTile, priority, 0);
+            var result = new WorkQueMember(WorkType.Build, buildingType, subTile, priority, 0);
             result.orderId = id;
             return result;
         }

@@ -25,7 +25,7 @@
 //            //kort för att sätta eld på grisarna
 
 //            modelScale = StandardModelScale * 0.9f;
-//            boundRadius = StandardBoundRadius * 0.9f;
+//            boundRadius = DssVar.StandardBoundRadius * 0.9f;
 
 //            walkingSpeed = FarmerWalkingSpeed;
 //            rotationSpeed = StandardRotatingSpeed;
@@ -133,7 +133,7 @@
 //        protected override void initData()
 //        {
 //            modelScale = StandardModelScale * 0.45f;
-//            boundRadius = StandardBoundRadius * 0.6f;
+//            boundRadius = DssVar.StandardBoundRadius * 0.6f;
 
 //            walkingSpeed = Farmer.FarmerWalkingSpeed * 1.4f;
 //            rotationSpeed = StandardRotatingSpeed;

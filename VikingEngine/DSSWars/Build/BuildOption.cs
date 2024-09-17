@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.CSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.Conscript;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
 
@@ -52,16 +54,28 @@ namespace VikingEngine.DSSWars.Build
             return TextLib.Error;
         }
 
-        public void execute(City city, ref SubTile subTile)
+        public void execute_async(City city, IntVector2 subPos, ref SubTile subTile)
         {
             switch (type)
             {
                 case BuildOptionType.Building:
                     subTile.SetType(TerrainMainType.Building, subType, 1);
 
-                    if ((TerrainBuildingType)subType == TerrainBuildingType.WorkerHut)
-                    {                        
-                        city.onWorkHutBuild();
+                    switch ((TerrainBuildingType)subType)
+                    {
+                        case TerrainBuildingType.WorkerHut:
+                            city.onWorkHutBuild();
+                            break;
+
+                        case TerrainBuildingType.Barracks:
+                            Ref.update.AddSyncAction(new SyncAction1Arg<IntVector2>(city.addBarracks, subPos));
+                            //BarracksStatus consriptProfile = new BarracksStatus()
+                            //{
+                            //    idAndPosition = conv.IntVector2ToInt(subPos),
+                            //};
+
+                            //city.barracks.Add(consriptProfile);
+                            break;
                     }
                     break;
                 case BuildOptionType.Farm:

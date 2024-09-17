@@ -64,7 +64,7 @@ namespace VikingEngine.DSSWars.GameObject
             leftCrewPosDiff = new Vector3(-0.076f, 0.12f, -0.05f);
 
             mainAttack = AttackType.Javelin;
-            attackTimePlusCoolDown = StandardAttackAndCoolDownTime * 2.5f;
+            attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 2.5f;
             attackRange = 1f;
 
             walkingSpeed *= 1.5f;

@@ -259,13 +259,13 @@ namespace VikingEngine.DSSWars.Display
 
                                 var typeCounts = obj.GetArmy().Status().getTypeCounts_Sorted();
 
-                                foreach (var kv in typeCounts)
-                                {
-                                    AbsSoldierData typeData = DssRef.unitsdata.Get(kv.Key);
-                                    content.Add(new RichBoxText(kv.Value.ToString()));
-                                    content.Add(new RichBoxImage(typeData.icon));
-                                    content.space(2);
-                                }
+                                //foreach (var kv in typeCounts)
+                                //{
+                                //    AbsSoldierData typeData = DssRef.unitsdata.Get(kv.Key);
+                                //    content.Add(new RichBoxText(kv.Value.ToString()));
+                                //    content.Add(new RichBoxImage(typeData.icon));
+                                //    content.space(2);
+                                //}
                             }
                         }
                         break;

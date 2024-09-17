@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.Conscript;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
 
@@ -39,14 +40,14 @@ namespace VikingEngine.DSSWars.Display.Translation
             }
         }
 
-        public static string Training(Training training)
+        public static string Training(TrainingLevel training)
         {
             switch (training)
             {
-                case GameObject.Training.Minimal: return "Minimal";
-                case GameObject.Training.Basic: return "Basic";
-                case GameObject.Training.Skillful: return "Skillful";
-                case GameObject.Training.Professional: return "Professional";
+                case TrainingLevel.Minimal: return "Minimal";
+                case TrainingLevel.Basic: return "Basic";
+                case TrainingLevel.Skillful: return "Skillful";
+                case TrainingLevel.Professional: return "Professional";
 
 
                 default:
@@ -86,15 +87,15 @@ namespace VikingEngine.DSSWars.Display.Translation
             switch (buildingType)
             { 
                 case TerrainBuildingType.Tavern:
-                    return "Workers may eat here";
+                    return DssRef.todoLang.BuildingType_Tavern_Description;
                 case TerrainBuildingType.PigPen:
-                    return "Produces pigs, which give food and skin";
+                    return DssRef.todoLang.BuildingType_PigPen_Description;
                 case TerrainBuildingType.HenPen:
-                    return "Produces hens and eggs, which give food";
+                    return DssRef.todoLang.BuildingType_HenPen_Description;
                 case TerrainBuildingType.WorkerHut:
-                    return string.Format( "Expands worker limit with {0}", GameObject.CityDetail.WorkersPerHut);
+                    return string.Format(DssRef.todoLang.BuildingType_WorkerHut_DescriptionLimitX, GameObject.CityDetail.WorkersPerHut);
                 case TerrainBuildingType.Barracks:
-                    return "Uses men and equipment to recruit soldiers";
+                    return DssRef.todoLang.BuildingType_Barracks_Description;
 
                 default:
                     throw new NotImplementedException();
@@ -114,8 +115,6 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case ItemResourceType.Wood_Group: return DssRef.todoLang.Resource_TypeName_Wood;
                 case ItemResourceType.RawFood_Group: return DssRef.todoLang.Resource_TypeName_RawFood;
                 case ItemResourceType.SkinLinnen_Group: return DssRef.todoLang.Resource_TypeName_SkinAndLinnen;
-
-
 
                 default:
                     throw new NotImplementedException();

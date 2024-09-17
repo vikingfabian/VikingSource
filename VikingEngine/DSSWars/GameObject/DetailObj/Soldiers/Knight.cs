@@ -15,27 +15,27 @@ namespace VikingEngine.DSSWars.GameObject
         {
             unitType = UnitType.Knight;
 
-            modelScale = StandardModelScale * 1.8f;
-            boundRadius = StandardBoundRadius;
+            modelScale = DssConst.Men_StandardModelScale * 1.8f;
+            boundRadius = DssVar.StandardBoundRadius;
 
             idleFrame = 0;
             attackFrame = 1;
 
-            walkingSpeed = StandardWalkingSpeed * 2f;
+            walkingSpeed = DssConst.Men_StandardWalkingSpeed * 2f;
             ArmySpeedBonusLand = 0.8;
             rotationSpeed = StandardRotatingSpeed * 2f;
             targetSpotRange = StandardTargetSpotRange;
             attackRange = 0.06f;
-            basehealth = DefaultHealth * 3;
+            basehealth = DssConst.Soldier_DefaultHealth * 3;
             mainAttack = AttackType.Melee;
             attackDamage = 120;
             attackDamageStructure = 30;
             attackDamageSea = 20;
-            attackTimePlusCoolDown = StandardAttackAndCoolDownTime * 0.8f;
+            attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.8f;
 
             rowWidth = 4;
             columnsDepth = 3;
-            groupSpacing = DefaultGroupSpacing * 1.4f;
+            groupSpacing = DssVar.DefaultGroupSpacing * 1.4f;
 
             goldCost = MathExt.MultiplyInt(2, DssLib.GroupDefaultCost);
             workForcePerUnit = 2;
@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.GameObject
            : base(soldier)
         {
           
-           horsemodel = DssRef.models.ModelInstance(Ref.rnd.Chance(0.2)? VoxelModelName.horse_white : VoxelModelName.horse_brown, AbsDetailUnitData.StandardModelScale * 1.6f,false);
+           horsemodel = DssRef.models.ModelInstance(Ref.rnd.Chance(0.2)? VoxelModelName.horse_white : VoxelModelName.horse_brown, DssConst.Men_StandardModelScale * 1.6f,false);
            horsemodel.AddToRender(DrawGame.UnitDetailLayer);
 
            walkingAnimation = new WalkingAnimation(1, 6, WalkingAnimation.StandardMoveFrames*2f);

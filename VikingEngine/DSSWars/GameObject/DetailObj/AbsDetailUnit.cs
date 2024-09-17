@@ -41,7 +41,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         //public Vector3 position;
 
-        const float AsynchCollisionGroupRadius = AbsSoldierData.StandardBoundRadius * 2f;
+        
         protected Vector2 collisionForce = Vector2.Zero;
         const int CollGroupSize = 8;
 
@@ -222,7 +222,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected void collisionGroupCheck(AbsDetailUnit unit, float distance)
         {
-            if (distance < AsynchCollisionGroupRadius)
+            if (distance < DssVar.Men_AsynchCollisionGroupRadius)
             {
                 if (collisionGroup.processList.Count < CollGroupSize)
                 {
@@ -508,7 +508,7 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public Vector3 projectileStartPos()
         {
             Vector3 pos = position;
-            pos.Y += AbsDetailUnitData.StandardModelScale * 0.6f;
+            pos.Y += DssConst.Men_StandardModelScale * 0.6f;
             return pos;
         }
 

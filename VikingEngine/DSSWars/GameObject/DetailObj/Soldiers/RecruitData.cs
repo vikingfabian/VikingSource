@@ -15,19 +15,19 @@ namespace VikingEngine.DSSWars.GameObject
             unitType = UnitType.Recruit;
             recruitForType = recruitFor.unitType;
 
-            modelScale = StandardModelScale * 0.9f;
-            boundRadius = StandardBoundRadius * 0.9f;
+            modelScale = DssConst.Men_StandardModelScale * 0.9f;
+            boundRadius = DssVar.StandardBoundRadius * 0.9f;
 
-            walkingSpeed = StandardWalkingSpeed;
+            walkingSpeed = DssConst.Men_StandardWalkingSpeed;
             rotationSpeed = StandardRotatingSpeed;
             targetSpotRange = StandardTargetSpotRange;
             attackRange = 0.04f;
-            basehealth = MathExt.MultiplyInt(0.25, DefaultHealth);
+            basehealth = MathExt.MultiplyInt(0.25, DssConst.Soldier_DefaultHealth);
             mainAttack = AttackType.Melee;
             attackDamage = 5;
             attackDamageStructure = attackDamage;
             attackDamageSea = attackDamage;
-            attackTimePlusCoolDown = StandardAttackAndCoolDownTime * 2f;
+            attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 2f;
 
             groupSpacing = recruitFor.groupSpacing;
             ArmyFrontToBackPlacement = recruitFor.ArmyFrontToBackPlacement;
