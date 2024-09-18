@@ -34,11 +34,11 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource ore = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource iron = new GroupedResource() { goalBuffer = 100 };
 
-        public GroupedResource sharpstick = new GroupedResource() { amount = 50, goalBuffer = 100 };
+        public GroupedResource sharpstick = new GroupedResource() { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
         public GroupedResource sword = new GroupedResource() { amount = 0, goalBuffer = 100 };
         public GroupedResource bow = new GroupedResource() { amount = 0, goalBuffer = 100 };
 
-        public GroupedResource lightArmor = new GroupedResource() { amount = 50, goalBuffer = 100 };
+        public GroupedResource lightArmor = new GroupedResource() { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
         public GroupedResource mediumArmor = new GroupedResource() { amount = 0, goalBuffer = 100 };
         public GroupedResource heavyArmor = new GroupedResource() { amount = 0, goalBuffer = 100 };
 
@@ -226,28 +226,29 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void craftItem(TerrainBuildingType building, out bool canCraftAgain)
-        {
-            canCraftAgain = false;
+        //public void craftItem(TerrainBuildingType building, out bool canCraftAgain)
+        //{
+        //    canCraftAgain = false;
 
-            switch (building)
-            {
-                case TerrainBuildingType.Work_Cook:
-                    var addFood = ResourceLib.CraftFood.craft(this);
-                    food.amount += addFood;
-                    foodProduction.add(addFood);
-                    canCraftAgain = ResourceLib.CraftFood.canCraft(this);
-                    break;
-                case TerrainBuildingType.Work_Smith:
-                    iron.amount += ResourceLib.CraftIron.craft(this);
-                    canCraftAgain = ResourceLib.CraftFood.canCraft(this);
-                    break;
-                //case TerrainBuildingType.WorkerHut:
-                //    ResourceLib.CraftWorkerHut.craft(this);
-                //    onWorkHutBuild();
-                //    break;
-            }
-        }
+        //    switch (building)
+        //    {
+        //        case TerrainBuildingType.Work_Cook:
+        //            var addFood = ResourceLib.CraftFood.craft(this);
+        //            food.amount += addFood;
+        //            foodProduction.add(addFood);
+        //            canCraftAgain = ResourceLib.CraftFood.canCraft(this);
+        //            break;
+        //        case TerrainBuildingType.Work_Smith:
+        //            iron.amount += ResourceLib.CraftIron.craft(this);
+        //            canCraftAgain = ResourceLib.CraftFood.canCraft(this);
+        //            break;
+        //    }
+        //}
+
+        //public void craftBuild(TerrainBuildingType building)
+        //{
+
+        //}
 
         public void tradeTab()
         { 

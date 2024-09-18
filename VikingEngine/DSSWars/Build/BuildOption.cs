@@ -69,12 +69,14 @@ namespace VikingEngine.DSSWars.Build
 
                         case TerrainBuildingType.Barracks:
                             Ref.update.AddSyncAction(new SyncAction1Arg<IntVector2>(city.addBarracks, subPos));
-                            //BarracksStatus consriptProfile = new BarracksStatus()
-                            //{
-                            //    idAndPosition = conv.IntVector2ToInt(subPos),
-                            //};
+                            break;
 
-                            //city.barracks.Add(consriptProfile);
+                        case TerrainBuildingType.Postal:
+                            Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, bool>(city.addDelivery, subPos, false));
+                            break;
+
+                        case TerrainBuildingType.Recruitment:
+                            Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, bool>(city.addDelivery, subPos, true));
                             break;
                     }
                     break;

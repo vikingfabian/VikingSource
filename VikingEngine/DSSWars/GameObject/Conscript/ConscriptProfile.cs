@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.LootFest.Data;
 
 namespace VikingEngine.DSSWars.GameObject.Conscript
 {
@@ -37,6 +39,68 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             return false;
         }
 
+        
+        public TimeLength TimeLength()
+        {
+            return new TimeLength(ConscriptProfile.TrainingTime(inProgress.training));
+        }
+
+        public string activeStringOf(ConscriptActiveStatus status)
+        {
+            string result = null;
+
+           
+            switch (status)
+            {
+                case ConscriptActiveStatus.Idle:
+                    result = DssRef.todoLang.Hud_Idle;
+                    break;
+                case ConscriptActiveStatus.CollectingEquipment:
+                    {
+                        var progress = string.Format(DssRef.todoLang.Language_CollectProgress, equipmentCollected, DssConst.SoldierGroup_DefaultCount);
+                        result = string.Format(DssRef.todoLang.Conscription_Status_CollectingEquipment, progress);
+                    }
+                    break;
+                case ConscriptActiveStatus.CollectingMen:
+                    {
+                        var progress = string.Format(DssRef.todoLang.Language_CollectProgress, menCollected, DssConst.SoldierGroup_DefaultCount);
+                        result = string.Format(DssRef.todoLang.Conscription_Status_CollectingMen, progress);
+                    }
+                    break;
+            }
+            
+
+            return result;
+        }
+
+        public string shortActiveString()
+        {
+            string result = null;
+            if (active == ConscriptActiveStatus.Training)
+            {
+                result = string.Format(DssRef.todoLang.Conscription_Status_Training, countdown.RemainingLength().ShortString());
+            }
+            else
+            { 
+                result = activeStringOf(active) + ", " + string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Hud_Que, que <= MaxQue? que.ToString() : DssRef.todoLang.Hud_NoLimit);
+            }
+            
+            return result;
+        }
+
+        public string longTimeProgress()
+        {
+            string remaining;
+            if (active == ConscriptActiveStatus.Training)
+            {
+                remaining = countdown.RemainingLength().LongString();
+            }
+            else
+            {
+                remaining = TimeLength().LongString();
+            }
+            return string.Format(DssRef.todoLang.Conscription_Status_Training, remaining);
+        }
     }
 
     struct ConscriptProfile
@@ -150,7 +214,8 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
     enum ConscriptActiveStatus
     { 
         Idle,
-        Collecting,
+        CollectingEquipment,
+        CollectingMen,
         Training,
     }
 }

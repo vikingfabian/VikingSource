@@ -62,6 +62,8 @@ namespace VikingEngine.DSSWars.Map
         PigPen,
         HenPen,
         Tavern,
+        Postal,
+        Recruitment,
         Barracks,
         NUM_NONE
     }

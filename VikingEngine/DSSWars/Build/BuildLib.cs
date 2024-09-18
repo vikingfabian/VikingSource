@@ -15,6 +15,9 @@ namespace VikingEngine.DSSWars.Build
         public static readonly BuildOption[] BuildOptions =
             {
                 BuildWorkerHut,
+                new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.Postal, ResourceLib.CraftPostal),
+                new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.Recruitment, ResourceLib.CraftRecruitment),
+
                 new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.Barracks, ResourceLib.CraftBarracks),
                 new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.Tavern, ResourceLib.CraftTavern),
                 

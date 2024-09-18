@@ -151,7 +151,7 @@ namespace VikingEngine.DSSWars.Display
                         break;
 
                     case Players.SelectTileResult.Barracks:
-                        title = new RichBoxText(DssRef.todoLang.Hud_Conscription);
+                        title = new RichBoxText(DssRef.todoLang.Conscription_Title);
                         content.Add(title);
                         break;
                 }

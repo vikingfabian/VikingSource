@@ -64,13 +64,15 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case MenuTab.Build:
                     return DssRef.todoLang.MenuTab_Build;
                 case MenuTab.Conscript:
-                    return DssRef.todoLang.Hud_Conscription;
+                    return DssRef.todoLang.Conscription_Title;
                 case MenuTab.Recruit:
                     return DssRef.todoLang.MenuTab_Recruit;
                 case MenuTab.Trade:
                     return DssRef.todoLang.MenuTab_Trade;
                 case MenuTab.Economy:
                     return DssRef.todoLang.MenuTab_Economy;
+                case MenuTab.Delivery:
+                    return DssRef.todoLang.MenuTab_Delivery;
                 case MenuTab.Resources:
                     return DssRef.todoLang.MenuTab_Resources;
                 case MenuTab.Work:
@@ -94,6 +96,10 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.todoLang.BuildingType_HenPen_Description;
                 case TerrainBuildingType.WorkerHut:
                     return string.Format(DssRef.todoLang.BuildingType_WorkerHut_DescriptionLimitX, GameObject.CityDetail.WorkersPerHut);
+                case TerrainBuildingType.Postal:
+                    return DssRef.todoLang.BuildingType_Postal_Description;
+                case TerrainBuildingType.Recruitment:
+                    return DssRef.todoLang.BuildingType_Recruitment_Description;
                 case TerrainBuildingType.Barracks:
                     return DssRef.todoLang.BuildingType_Barracks_Description;
 

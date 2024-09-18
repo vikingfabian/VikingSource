@@ -173,7 +173,7 @@ namespace VikingEngine.DSSWars.Players
             foreach (var m in listinfo)
             {
                 content.newLine();
-                content.ListDot();
+                content.BulletPoint();
                 content.Add(new RichBoxText(m));
             }
 

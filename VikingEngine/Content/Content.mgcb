@@ -1045,6 +1045,12 @@
 #begin VoxelModel/LfWars/city_pen.vox
 /copy:VoxelModel/LfWars/city_pen.vox
 
+#begin VoxelModel/LfWars/city_postal.vox
+/copy:VoxelModel/LfWars/city_postal.vox
+
+#begin VoxelModel/LfWars/city_recruitment.vox
+/copy:VoxelModel/LfWars/city_recruitment.vox
+
 #begin VoxelModel/LfWars/city_smallhouse.vox
 /copy:VoxelModel/LfWars/city_smallhouse.vox
 

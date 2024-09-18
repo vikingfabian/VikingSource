@@ -66,6 +66,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         IntVector2 cullingTopLeft, cullingBottomRight;
         public int cityTileRadius = 0;
+        public CityCulture Culture = CityCulture.NUM_NONE;
 
         public City(int index, IntVector2 pos, CityType type, WorldData world)
         {
@@ -1084,14 +1085,14 @@ namespace VikingEngine.DSSWars.GameObject
                     if (nobelHouse)
                     {
                         content.newLine();
-                        content.ListDot();
+                        content.BulletPoint();
                         content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse));
                     }
 
                     if (CityType == CityType.Factory)
                     {
                         content.newLine();
-                        content.ListDot();
+                        content.BulletPoint();
                         content.Add(new RichBoxImage(SpriteName.WarsFactoryIcon));
                         content.Add(new RichBoxText(DssRef.lang.Building_DarkFactory));
 

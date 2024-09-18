@@ -18,14 +18,14 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         //public const int MaxEnergy = 500;
         //public const int Starvation = -MaxEnergy;
 
-        public const int Subwork_Craft_Food = 0;
-        public const int Subwork_Craft_Iron = 1;
-        public const int Subwork_Craft_LightArmor = 2;
-        public const int Subwork_Craft_MediumArmor = 3;
-        public const int Subwork_Craft_HeavyArmor = 4;
-        public const int Subwork_Craft_SharpStick = 5;
-        public const int Subwork_Craft_Sword = 6;
-        public const int Subwork_Craft_Bow = 7;
+        //public const int Subwork_Craft_Food = 0;
+        //public const int Subwork_Craft_Iron = 1;
+        //public const int Subwork_Craft_LightArmor = 2;
+        //public const int Subwork_Craft_MediumArmor = 3;
+        //public const int Subwork_Craft_HeavyArmor = 4;
+        //public const int Subwork_Craft_SharpStick = 5;
+        //public const int Subwork_Craft_Sword = 6;
+        //public const int Subwork_Craft_Bow = 7;
 
         public WorkType work;
         public int workSubType;
@@ -257,9 +257,33 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     break;
                 case WorkType.Craft:
                     {
-                        var building = (TerrainBuildingType)subTile.subTerrain;
+                        //var building = (TerrainBuildingType)subTile.subTerrain;
+                        //case TerrainBuildingType.Work_Cook:
+                        //    var addFood = ResourceLib.CraftFood.craft(this);
+                        //    food.amount += addFood;
+                        //    foodProduction.add(addFood);
+                        //    canCraftAgain = ResourceLib.CraftFood.canCraft(this);
+                        //    break;
+                        //case TerrainBuildingType.Work_Smith:
+                        //    iron.amount += ResourceLib.CraftIron.craft(this);
+                        //    canCraftAgain = ResourceLib.CraftFood.canCraft(this);
+                        //    break;
 
-                        city.craftItem(building, out tryRepeatWork);
+                        ItemResourceType item = (ItemResourceType)workSubType;
+                        var bp = ResourceLib.Blueprint(item);
+                        var add = bp.craft(city);
+
+                        if (item == ItemResourceType.Food_G)
+                        {
+                            city.foodProduction.add(add);
+                        }
+
+                        var cityResources = city.GetGroupedResource(item);
+                        cityResources.amount += add;
+                        city.SetGroupedResource(item, cityResources);
+
+                        tryRepeatWork = bp.canCraft(city);
+                        //city.craftItem(building, out tryRepeatWork);
                         //work = WorkType.Idle;
                     }
                     break;
@@ -326,8 +350,44 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             DssRef.world.subTileGrid.Set(subTileEnd, subTile);
         }
 
+        public bool checkAvailableAndBackOrder(WorkType work, int subWork, City city)
+        {
+            switch (work)
+            {
+                case WorkType.Craft:
+                    {
+                        ItemResourceType item = (ItemResourceType)subWork;
+                        var bp = ResourceLib.Blueprint(item);
+                        if (bp.available(city))
+                        {
+                            bp.createBackOrder(city);
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
 
+                case WorkType.Build:
+                    {
+                        var bp = BuildLib.BuildOptions[subWork].blueprint;
+                        if (bp.available(city))
+                        {
+                            bp.createBackOrder(city);
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
 
+                 default:
+                    return true;
+            }
+        }
+        
         public void createWorkOrder(WorkType work, int subWork, int order, IntVector2 targetSubTile)
         {
             this.work = work;

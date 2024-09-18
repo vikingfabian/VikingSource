@@ -38,6 +38,8 @@ namespace VikingEngine.DSSWars.GameObject
             int idleCount = 0;
             IntVector2 minpos = WP.ToSubTilePos_Centered(tilePos);
             IntVector2 maxpos = minpos;
+
+            water.clearOrders();
             wood.clearOrders();
             stone.clearOrders();
             rawFood.clearOrders();
@@ -66,45 +68,47 @@ namespace VikingEngine.DSSWars.GameObject
                     case WorkType.Idle: 
                         idleCount++; 
                         break;
-
-                    case WorkType.Build:
-                        var build= BuildLib.BuildOptions[status.workSubType];
-                        //var blueprint = ResourceLib.Blueprint((TerrainBuildingType)status.workSubType);
-                        build.blueprint.createBackOrder(this);
+                    default:
+                        status.checkAvailableAndBackOrder(status.work, status.workSubType, this);
                         break;
+                    //case WorkType.Build:
+                    //    var build= BuildLib.BuildOptions[status.workSubType];
+                    //    //var blueprint = ResourceLib.Blueprint((TerrainBuildingType)status.workSubType);
+                    //    build.blueprint.createBackOrder(this);
+                    //    break;
 
-                    case WorkType.Craft:
-                        switch (status.workSubType)
-                        {
-                            case WorkerStatus.Subwork_Craft_Food:
-                                ResourceLib.CraftFood.createBackOrder(this);
-                                break;
+                    //case WorkType.Craft:
+                    //    switch (status.workSubType)
+                    //    {
+                    //        case WorkerStatus.Subwork_Craft_Food:
+                    //            ResourceLib.CraftFood.createBackOrder(this);
+                    //            break;
 
-                            case WorkerStatus.Subwork_Craft_Iron:
-                                ResourceLib.CraftIron.createBackOrder(this);
-                                break;
+                    //        case WorkerStatus.Subwork_Craft_Iron:
+                    //            ResourceLib.CraftIron.createBackOrder(this);
+                    //            break;
 
-                            case WorkerStatus.Subwork_Craft_SharpStick:
-                                ResourceLib.CraftIron.createBackOrder(this);
-                                break;
-                            case WorkerStatus.Subwork_Craft_Sword:
-                                ResourceLib.CraftIron.createBackOrder(this);
-                                break;
-                            case WorkerStatus.Subwork_Craft_Bow:
-                                ResourceLib.CraftIron.createBackOrder(this);
-                                break;
+                    //        case WorkerStatus.Subwork_Craft_SharpStick:
+                    //            ResourceLib.CraftIron.createBackOrder(this);
+                    //            break;
+                    //        case WorkerStatus.Subwork_Craft_Sword:
+                    //            ResourceLib.CraftIron.createBackOrder(this);
+                    //            break;
+                    //        case WorkerStatus.Subwork_Craft_Bow:
+                    //            ResourceLib.CraftIron.createBackOrder(this);
+                    //            break;
 
-                            case WorkerStatus.Subwork_Craft_LightArmor:
-                                ResourceLib.CraftIron.createBackOrder(this);
-                                break;
-                            case WorkerStatus.Subwork_Craft_MediumArmor:
-                                ResourceLib.CraftIron.createBackOrder(this);
-                                break;
-                            case WorkerStatus.Subwork_Craft_HeavyArmor:
-                                ResourceLib.CraftIron.createBackOrder(this);
-                                break;
-                        }
-                        break;
+                    //        case WorkerStatus.Subwork_Craft_LightArmor:
+                    //            ResourceLib.CraftIron.createBackOrder(this);
+                    //            break;
+                    //        case WorkerStatus.Subwork_Craft_MediumArmor:
+                    //            ResourceLib.CraftIron.createBackOrder(this);
+                    //            break;
+                    //        case WorkerStatus.Subwork_Craft_HeavyArmor:
+                    //            ResourceLib.CraftIron.createBackOrder(this);
+                    //            break;
+                    //    }
+                    //    break;
                 }
 
                 IntVector2 pos = status.subTileEnd;
@@ -170,7 +174,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (idleCount > 0 && previousWorkQueUpdate.secPassed(10))
             {
-                if (parentArrayIndex == 160 || debugTagged)
+                if (parentArrayIndex == 311 || debugTagged)
                 {
                     lib.DoNothing();
                 }
@@ -217,14 +221,16 @@ namespace VikingEngine.DSSWars.GameObject
                     else if (workQue.Count > 0)
                     {
                         var work = arraylib.PullLastMember(workQue);
-
                         var status = workerStatuses[i];
-                        status.createWorkOrder(work.work, work.subWork, work.orderId, work.subTile);
-                        workerStatuses[i] = status;
-
-                        if (work.orderId >= 0)
+                        if (status.checkAvailableAndBackOrder(work.work, work.subWork, this))
                         {
-                            faction.player.StartOrderId(work.orderId);
+                            status.createWorkOrder(work.work, work.subWork, work.orderId, work.subTile);
+                            workerStatuses[i] = status;
+
+                            if (work.orderId >= 0)
+                            {
+                                faction.player.StartOrderId(work.orderId);
+                            }
                         }
                     }
                     else
@@ -247,7 +253,7 @@ namespace VikingEngine.DSSWars.GameObject
                 ForXYLoop subTileLoop;
                                 
                 workQue.Clear();
-
+                int emptyLandExpansions = workerStatuses.Count / 2; 
                 //Find orders
                 lock (faction.player.orders)
                 {
@@ -275,17 +281,17 @@ namespace VikingEngine.DSSWars.GameObject
                         switch ((TerrainBuildingType)subTile.subTerrain)
                         {
                             case TerrainBuildingType.Work_Cook:
-                                if (ResourceLib.CraftFood.available(this) &&
+                                if (ResourceLib.CraftFood.canCraft(this) &&
                                     isFreeTile(subTileLoop.Position))
                                 {
                                     //ResourceLib.CraftFood.createBackOrder(this);
-                                    workQue.Add(new WorkQueMember(WorkType.Craft, NoSubWork, subTileLoop.Position, workTemplate.craft_food.value, 0));
+                                    workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Food_G, subTileLoop.Position, workTemplate.craft_food.value, 0));
                                 }
-                                //else
-                                //{
-                                //    var b1 = ResourceLib.CraftFood.available(this);
-                                //    var b2 = isFreeTile(subTileLoop.Position);
-                                //}
+                                else
+                                {
+                                    var b1 = ResourceLib.CraftFood.available(this);
+                                    var b2 = isFreeTile(subTileLoop.Position);
+                                }
                                 break;
                             case TerrainBuildingType.Work_Smith:
                                 
@@ -462,8 +468,9 @@ namespace VikingEngine.DSSWars.GameObject
 
                                             case TerrainMainType.Destroyed:
                                             case TerrainMainType.DefaultLand:
-                                                //if (waterBuffer + waterSpendOrders < water)
+                                                if (emptyLandExpansions > 0)
                                                 {
+                                                    --emptyLandExpansions;
                                                     if (rawFood.needMore() && isFreeTile(subTileLoop.Position))
                                                     {
                                                         workQue.Add(new WorkQueMember(WorkType.Till, NoSubWork, subTileLoop.Position, workTemplate.expand_farms.value, distanceValue));

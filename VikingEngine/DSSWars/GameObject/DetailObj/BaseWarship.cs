@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
 
         override public void refreshShipCarryCount()
         {
-            var data = group.typeData;//.SoldierData();
+            var data = group.typeCurrentData;//.SoldierData();
             soldierCount = MathExt.Div_Ceiling(this.health, data.basehealth);
             if (soldierCount > 0)
             {

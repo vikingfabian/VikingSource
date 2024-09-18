@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Display
 {
     class CityMenu
     {
-        public static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Conscript, MenuTab.Resources, MenuTab.Work, MenuTab.Trade, MenuTab.Build };
+        public static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Conscript, MenuTab.Resources, MenuTab.Work, MenuTab.Delivery, MenuTab.Trade, MenuTab.Build };
         Players.LocalPlayer player;
         City city;
 
@@ -57,12 +57,13 @@ namespace VikingEngine.DSSWars.Display
                 case MenuTab.Info:
                     city.CityDetailsHud(false, player, content);
                     break;
+
                 case MenuTab.Work:
                     city.workTab(player, content);
                     break;
 
                 case MenuTab.Conscript:
-                    conscriptTab(player, content);
+                    conscriptTab(content);
                     break;
 
                 case MenuTab.Recruit:
@@ -71,6 +72,10 @@ namespace VikingEngine.DSSWars.Display
 
                 case MenuTab.Economy:
 
+                    break;
+
+                case MenuTab.Delivery:
+                    deliveryTab(content);
                     break;
 
                 case MenuTab.Resources:
@@ -165,9 +170,14 @@ namespace VikingEngine.DSSWars.Display
             player.hud.tooltip.create(player, content, true);
         }
 
-        void conscriptTab(LocalPlayer player, RichBoxContent content)
+        void conscriptTab(RichBoxContent content)
         {
             new ConscriptMenu().ToHud(city, player, content);
+        }
+
+        void deliveryTab(RichBoxContent content)
+        {
+            
         }
 
         void recruitTab(RichBoxContent content)
@@ -377,12 +387,12 @@ namespace VikingEngine.DSSWars.Display
             //string upkeep = "upkeep +{0}";
 
 
-            content.ListDot();
+            content.BulletPoint();
             content.Add(new RichBoxImage(SpriteName.WarsDiplomaticAddTime));
             content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
             content.newLine();
 
-            content.ListDot();
+            content.BulletPoint();
             content.Add(new RichBoxImage(SpriteName.WarsDiplomaticPoint));
             content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.NobelHouseAddMaxDiplomacy)));
             content.newLine();
@@ -392,7 +402,7 @@ namespace VikingEngine.DSSWars.Display
             //content.Add(new RichBoxText(string.Format(addCommand, commandSec)));
             //content.newLine();
 
-            content.ListDot();
+            content.BulletPoint();
             content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
             content.newLine();
 
@@ -598,6 +608,7 @@ namespace VikingEngine.DSSWars.Display
         Resources,
         Work,
         Trade,
+        Delivery,
         Build,
         Automation,
         NUM

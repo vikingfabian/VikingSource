@@ -31,12 +31,16 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string BuildingType_WorkerHut => "Worker hut";
         public string BuildingType_Tavern => "Tavern";
+        public string BuildingType_Postal => "Postal service";
+        public string BuildingType_Recruitment => "Recruiting center";
         public string BuildingType_Barracks => "Barracks";
         public string BuildingType_PigPen => "Pig pen";
         public string BuildingType_HenPen => "Hen pen";
 
         public string BuildingType_WorkerHut_DescriptionLimitX => "Expands worker limit with {0}";
         public string BuildingType_Tavern_Description => "Workers may eat here";
+        public string BuildingType_Postal_Description => "Send resources to other cities";
+        public string BuildingType_Recruitment_Description => "Send men to other cities";
         public string BuildingType_Barracks_Description => "Uses men and equipment to recruit soldiers";
         public string BuildingType_PigPen_Description => "Produces pigs, which give food and skin";
         public string BuildingType_HenPen_Description => "Produces hens and eggs, which give food";
@@ -49,6 +53,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string MenuTab_Trade => "Trade";
         public string MenuTab_Build => "Build";
         public string MenuTab_Economy => "Economy";
+        public string MenuTab_Delivery => "Delivery";
 
         public string BuildHud_OutsideCity => "Outside city region";
         public string BuildHud_OutsideFaction => "Outside your borders!";
@@ -80,8 +85,21 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Hud_FollowFaction_Yes => "Is set to use faction global settings";
         public string Hud_FollowFaction_No => "Is set to use local settings (Global value is {0})";
 
+        public string Hud_Idle => "Idle";
+        public string Hud_NoLimit => "No limit";
+
+
+        public string Hud_Que => "Que";
+
+        /// <summary>
+        /// 0: current parts, 1: needed number of parts
+        /// </summary>
+        public string Language_CollectProgress => "{0}/{1}";
         public string Hud_SelectCity => "Select City";
-        public string Hud_Conscription => "Conscription";
+        public string Conscription_Title => "Conscription";
+        public string Conscription_Status_CollectingEquipment => "Collecting equipment: {0}";
+        public string Conscription_Status_CollectingMen => "Collecting men: {0}";
+        public string Conscription_Status_Training => "Training: {0}";
 
         public string ArmyHud_Food_Reserves_X => "Food reserves: {0}";
         public string ArmyHud_Food_Upkeep_X => "Food upkeep: {0}";
@@ -122,5 +140,28 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string UnitType_Cities => "Cities";
         public string UnitType_Armies => "Armies";
+
+        public string CityCulture_LargeFamilies => "Large families";
+        public string CityCulture_FertileGround => "Fertile grounds";
+        public string CityCulture_Archers => "Skilled archers";
+        public string CityCulture_Warriors => "Warriors";
+        public string CityCulture_AnimalBreeder => "Animal breeders";
+        public string CityCulture_Miners => "Miner";
+        public string CityCulture_Woodcutters => "Lumbermen";
+        public string CityCulture_Builders => "Builders";
+        public string CityCulture_CrabMentality => "Crab mentality"; //ingen vill bli expert
+        public string CityCulture_DeepWell => "Deep well";
+
+        public string CityCulture_LargeFamilies_Description => "Increased child birth";
+        public string CityCulture_FertileGround_Description => "Crops give more";
+        public string CityCulture_Archers_Description => "Produces skilled archers";
+        public string CityCulture_Warriors_Description => "Produces skilled melee fighters";
+        public string CityCulture_AnimalBreeder_Description => "Animals give more resources";
+        public string CityCulture_Miners_Description => "Mines more ore";
+        public string CityCulture_Woodcutters_Description => "Trees give more wood";
+        public string CityCulture_Builders_Description => "Fast at building";
+        public string CityCulture_CrabMentality_Description => "Cost less energy"; //ingen vill bli expert
+        public string CityCulture_DeepWell_Description => "Water replenish faster";
+
     }
 }

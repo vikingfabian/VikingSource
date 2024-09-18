@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject.Conscript;
 using VikingEngine.ToGG.MoonFall.GO;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -91,6 +92,32 @@ namespace VikingEngine.DSSWars.GameObject
             modelName = LootFest.VoxelModelName.wars_folk_ship;
             captainPosDiff = new Vector3(-0.05f, 0.18f, -.27f);
             leftCrewPosDiff = new Vector3(-0.076f, 0.12f, 0.065f);
+        }
+    }
+
+    class ConscriptedWarshipData : AbsWarShipData
+    {
+        public ConscriptedWarshipData(AbsSoldierData soldierData, ConscriptProfile profile)
+            : base( UnitType.ConscriptWarship, soldierData)
+        {
+            switch (profile.weapon)
+            {
+                case MainWeapon.SharpStick:
+                    modelName = LootFest.VoxelModelName.wars_folk_ship;
+                    captainPosDiff = new Vector3(-0.05f, 0.18f, -.27f);
+                    leftCrewPosDiff = new Vector3(-0.076f, 0.12f, 0.065f);
+                    break;
+                case MainWeapon.Sword:
+                    modelName = LootFest.VoxelModelName.wars_soldier_ship;
+                    captainPosDiff = new Vector3(0, 0.28f, -.3f);
+                    leftCrewPosDiff = new Vector3(-0.076f, 0.14f, 0.07f);
+                    break;
+                case MainWeapon.Bow:
+                    modelName = LootFest.VoxelModelName.wars_archer_ship;
+                    captainPosDiff = new Vector3(0, 0.28f, -.3f);
+                    leftCrewPosDiff = new Vector3(-0.076f, 0.14f, 0.07f);
+                    break;
+            }
         }
     }
 }

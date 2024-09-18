@@ -106,7 +106,6 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             1,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.Water_G, 0),
         new UseResource(ItemResourceType.Wood_Group, 200),
         new UseResource(ItemResourceType.Stone_G, 40)
             }
@@ -117,9 +116,27 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             1,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.Water_G, 0),
         new UseResource(ItemResourceType.Wood_Group, 100),
         new UseResource(ItemResourceType.Stone_G, 20)
+            }
+        );
+
+        public static readonly CraftBlueprint CraftPostal = new CraftBlueprint(
+           DssRef.todoLang.BuildingType_Postal,
+           1,
+           new UseResource[]
+           {
+        new UseResource(ItemResourceType.Wood_Group, 100),
+           }
+       ); 
+
+        public static readonly CraftBlueprint CraftRecruitment = new CraftBlueprint(
+            DssRef.todoLang.BuildingType_Recruitment,
+            1,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.Wood_Group, 50),
+        new UseResource(ItemResourceType.SkinLinnen_Group, 50)
             }
         );
 
@@ -128,7 +145,6 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             1,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.Water_G, 0),
         new UseResource(ItemResourceType.Wood_Group, 100),
         new UseResource(ItemResourceType.Stone_G, 20)
             }
@@ -218,6 +234,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         {
             switch (item)
             {
+                case ItemResourceType.Food_G: return CraftFood;
+
                 case ItemResourceType.Iron_G: return CraftIron;
                 case ItemResourceType.LightArmor: return CraftLightArmor;
                 case ItemResourceType.MediumArmor: return CraftMediumArmor;

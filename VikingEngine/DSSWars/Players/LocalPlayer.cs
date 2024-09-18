@@ -224,13 +224,11 @@ namespace VikingEngine.DSSWars.Players
             mapControls = new Players.MapControls(this);
             mapControls.setCameraPos(faction.mainCity.tilePos);
             
-
             Ref.draw.AddPlayerScreen(playerData);
             drawUnitsView = new MapDetailLayerManager(playerData);
             InitTutorial();
 
-
-            new AsynchUpdateable(interactAsynchUpdate, "DSS player interact", 0);
+            new AsynchUpdateable(interactAsynchUpdate, "DSS player interact", playerindex);
 
             refreshNeihgborAggression();
             if (numPlayers > 1)
@@ -899,17 +897,6 @@ namespace VikingEngine.DSSWars.Players
                 mapControls.selection.obj.gameobjectType() == GameObjectType.City)
             {
                 BuildControls.onTileSelect(mapControls.hover.subTile);
-                
-                //    && 
-                //    player.BuildControls.buildMode == SelectTileResult.Build)
-                //{ 
-                //    var mayBuild = selectedSubTile.MayBuild(player);
-                //    if (mayBuild == MayBuildResult.Yes || mayBuild == MayBuildResult.Yes_ChangeCity)
-                //    { 
-                //        //create build order
-                //        player.addOrder(new BuildOrder(10, selectedSubTile.city, selectedSubTile.subTilePos, player.BuildControls.placeBuildingType)
-                //    }
-                //}
             }
             else
             {

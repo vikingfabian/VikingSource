@@ -115,6 +115,23 @@ namespace VikingEngine.DSSWars.GameObject
             return soldier;
         }
 
+        public AbsSoldierUnit createSoldier(AbsSoldierData data)
+        {
+            //AbsSoldierData data;
+            //if (recruit)
+            //{
+            //    data = recruits[(int)type];
+            //}
+            //else
+            //{
+            //    data = soldiers[(int)type];
+            //}
+            var soldier = data.CreateUnit() as AbsSoldierUnit;//TODO borde ta bort konvertering
+            soldier.data = data;
+
+            return soldier;
+        }
+
         public string Name(UnitType type)
         {
             switch (type)
@@ -214,6 +231,7 @@ namespace VikingEngine.DSSWars.GameObject
         //KingsGuard = 35,
         Recruit =0,
         Conscript = 31,
+        ConscriptWarship = 32,
         Soldier =1,
         Sailor =2,
         Folkman =3,

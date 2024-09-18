@@ -654,7 +654,7 @@ namespace VikingEngine.DSSWars.GameObject
                
                 while (groupsC.Next())
                 {
-                    var unitData = groupsC.sel.typeData; //DssRef.unitsdata.Get(groupsC.sel.type);
+                    var unitData = groupsC.sel.typeCurrentData; //DssRef.unitsdata.Get(groupsC.sel.type);
                     groupsC.sel.asynchUpdate();
                     count += groupsC.sel.soldiers.Count;
                     groupsC.sel.setBattleWalkingSpeed();

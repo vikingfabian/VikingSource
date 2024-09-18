@@ -198,11 +198,11 @@ namespace VikingEngine.DSSWars
         {
             if (StartupSettings.SpawnStartingArmies)
             {
-                var factionsCounter = DssRef.world.factions.counter();
-                while (factionsCounter.Next())
-                {
-                    factionsCounter.sel.player.createStartUnits();
-                }
+                //var factionsCounter = DssRef.world.factions.counter();
+                //while (factionsCounter.Next())
+                //{
+                //    factionsCounter.sel.player.createStartUnits();
+                //}
             }
         }
 
@@ -456,7 +456,7 @@ namespace VikingEngine.DSSWars
             if (cutScene == null)
             {
                 DssRef.diplomacy.async_update();
-                events.asyncUpdate(time);
+                //events.asyncUpdate(time);
             }
             return exitThreads;
         }

@@ -70,6 +70,12 @@ namespace VikingEngine.DSSWars.Players
                                     case Map.TerrainBuildingType.StoneHall:
                                         selectTileResult = SelectTileResult.CityHall;
                                         break;
+                                    case Map.TerrainBuildingType.Postal:
+                                        selectTileResult = SelectTileResult.Postal;
+                                        break;
+                                    case Map.TerrainBuildingType.Recruitment:
+                                        selectTileResult = SelectTileResult.Recruitment;
+                                        break;
                                     case Map.TerrainBuildingType.Barracks:
                                         selectTileResult = SelectTileResult.Barracks;
                                         break;
@@ -165,8 +171,11 @@ namespace VikingEngine.DSSWars.Players
     { 
         None,
         CityHall,
+        Postal,
+        Recruitment,
         Barracks,
-        Resources,
+
+        //Resources,
         
         Build,
         ClearTerrain,

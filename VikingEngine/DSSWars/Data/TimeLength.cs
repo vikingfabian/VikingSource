@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars.Data
 
     struct TimeInGameCountdown
     {
-        TimeLength length;
+        public TimeLength length;
         public float endTimeSec;
 
         public TimeInGameCountdown(TimeLength length)

@@ -38,20 +38,15 @@ namespace VikingEngine.DSSWars.GameObject
                         case ConscriptActiveStatus.Idle:
                             if (status.CountDownQue())
                             {
-                                status.active = ConscriptActiveStatus.Collecting;
+                                status.active++;
                                 status.inProgress = status.profile;
                             }
                             break;
 
-                        case ConscriptActiveStatus.Collecting:
-                            int needMen = DssConst.SoldierGroup_DefaultCount - status.menCollected;
-                            int collectMen = lib.SmallestValue(workForce, needMen);
-                            workForce -= collectMen;
-                            status.menCollected += collectMen;
-
+                        case ConscriptActiveStatus.CollectingEquipment:
                             ItemResourceType weaponItem = ConscriptProfile.WeaponItem(status.inProgress.weapon);
                             ItemResourceType armorItem = ConscriptProfile.ArmorItem(status.inProgress.armorLevel);
-                            int needEquipment =  DssConst.SoldierGroup_DefaultCount - status.equipmentCollected;
+                            int needEquipment = DssConst.SoldierGroup_DefaultCount - status.equipmentCollected;
                             int availableWeapons = GetGroupedResource(weaponItem).amount;
                             int availableArmor;
                             if (status.inProgress.armorLevel == ArmorLevel.None)
@@ -65,7 +60,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                             int collectEquipment = lib.SmallestValue(needEquipment, availableWeapons, availableArmor);
                             status.equipmentCollected += collectEquipment;
-                            
+
                             var weapon = GetGroupedResource(weaponItem);
                             weapon.amount -= collectEquipment;
                             SetGroupedResource(weaponItem, weapon);
@@ -77,10 +72,21 @@ namespace VikingEngine.DSSWars.GameObject
                                 SetGroupedResource(armorItem, armor);
                             }
 
-                            if (status.menCollected == DssConst.SoldierGroup_DefaultCount &&
-                                status.equipmentCollected == DssConst.SoldierGroup_DefaultCount)
+                            if (status.equipmentCollected == DssConst.SoldierGroup_DefaultCount)
                             {
-                                status.active = ConscriptActiveStatus.Training;
+                                status.active++;
+                            }
+                            break;
+
+                        case ConscriptActiveStatus.CollectingMen:
+                            int needMen = DssConst.SoldierGroup_DefaultCount - status.menCollected;
+                            int collectMen = lib.SmallestValue(workForce, needMen);
+                            workForce -= collectMen;
+                            status.menCollected += collectMen;
+
+                            if (status.menCollected == DssConst.SoldierGroup_DefaultCount)
+                            {
+                                status.active++;
                                 status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training)));
                             }
                             break;
@@ -91,6 +97,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 Ref.update.AddSyncAction(new SyncAction1Arg<ConscriptProfile>(conscriptArmy, status.inProgress));
 
                                 status.active = ConscriptActiveStatus.Idle;
+                                
                                 status.menCollected = 0;
                                 status.equipmentCollected = 0;
                             }
@@ -132,7 +139,9 @@ namespace VikingEngine.DSSWars.GameObject
                 BarracksStatus newBarrack = new BarracksStatus()
                 {
                     idAndPosition = conv.IntVector2ToInt(pos),
+                    //que = 2,
                 };
+                newBarrack.profile.armorLevel = ArmorLevel.Light;
 
                 barracks.Add(newBarrack);
             }
@@ -172,7 +181,7 @@ namespace VikingEngine.DSSWars.GameObject
                 content.Add(new RichBoxBeginTitle(1));
                 
                 
-                content.Add(new RichBoxText(DssRef.todoLang.Hud_Conscription + " " + currentProfile.idAndPosition.ToString()));
+                content.Add(new RichBoxText(DssRef.todoLang.Conscription_Title + " " + currentProfile.idAndPosition.ToString()));
                 content.space();
                 content.Add(new RichboxButton(new List<AbsRichBoxMember>
                     { new RichBoxSpace(), new RichBoxText(DssRef.todoLang.Hud_EndSessionIcon),new RichBoxSpace(), },
@@ -227,25 +236,50 @@ namespace VikingEngine.DSSWars.GameObject
 
                 content.newParagraph();
 
-                HudLib.Label(content, "Que");
+                HudLib.Label(content, DssRef.todoLang.Hud_Que);
                 content.space();
                 HudLib.InfoButton(content, new RbAction(queInfo));
                 content.newLine();
                 for (int length = 0; length <= BarracksStatus.MaxQue; length++)
                 {
                     var button = new RichboxButton(new List<AbsRichBoxMember>{
-                   new RichBoxText( length.ToString())
-                }, new RbAction1Arg<int>(queClick, length));
+                       new RichBoxText( length.ToString())
+                    }, new RbAction1Arg<int>(queClick, length));
                     button.setGroupSelectionColor(HudLib.RbSettings, length == currentProfile.que);
                     content.Add(button);
                     content.space();
                 }
                 {
                     var button = new RichboxButton(new List<AbsRichBoxMember>{
-                   new RichBoxText( "No limit")
-                }, new RbAction1Arg<int>(queClick, 1000));
+                       new RichBoxText(DssRef.todoLang.Hud_NoLimit)
+                    }, new RbAction1Arg<int>(queClick, 1000));
                     button.setGroupSelectionColor(HudLib.RbSettings, currentProfile.que > BarracksStatus.MaxQue);
                     content.Add(button);
+                }
+
+                if (currentProfile.active != ConscriptActiveStatus.Idle)
+                {
+                    content.newParagraph();
+                    content.Add(new RichBoxSeperationLine());
+                    {
+                        content.newLine();
+                        content.BulletPoint();
+                        var text = new RichBoxText(currentProfile.activeStringOf(ConscriptActiveStatus.CollectingEquipment));
+                        text.overrideColor = currentProfile.active > ConscriptActiveStatus.CollectingEquipment ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                        content.Add(text);
+                    }
+                    {
+                        content.newLine();
+                        content.BulletPoint();
+                        var text = new RichBoxText(currentProfile.activeStringOf(ConscriptActiveStatus.CollectingMen));
+                        text.overrideColor = currentProfile.active > ConscriptActiveStatus.CollectingMen ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                        content.Add(text);
+                    }
+                    {
+                        content.newLine();
+                        content.BulletPoint();
+                        content.Add(new RichBoxText(currentProfile.longTimeProgress()));
+                    }
                 }
             }
             else
@@ -273,7 +307,7 @@ namespace VikingEngine.DSSWars.GameObject
                         new RichBoxBeginTitle(2),
                         caption,
                         new RichBoxNewLine(),
-                        new RichBoxText(currentProfile.active.ToString())
+                        new RichBoxText(currentProfile.shortActiveString())
                     }, new RbAction1Arg<int>(selectClick, i)));
 
                 }
@@ -320,6 +354,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             BarracksStatus currentProfile = get();
             currentProfile.profile.training = training;
+            
             set(currentProfile);
         }
         void trainingTooltip(TrainingLevel training)

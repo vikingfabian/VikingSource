@@ -593,6 +593,16 @@ namespace VikingEngine.DSSWars.Players
             
             selection.obj = selectedSubTile.city;
 
+            switch (selectedSubTile.selectTileResult)
+            {
+                case SelectTileResult.Barracks:
+                    player.cityTab = Display.MenuTab.Conscript;
+                    break;
+                case SelectTileResult.Postal:
+                case SelectTileResult.Recruitment:
+                    player.cityTab = Display.MenuTab.Delivery;
+                    break;
+            }
             
             //switch (tileResult)
             //{

@@ -222,7 +222,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         {
             content.newLine();
             content.Add(new RichBoxText(name));
-            content.space();
+            content.newLine();
 
             if (city != null)
             {

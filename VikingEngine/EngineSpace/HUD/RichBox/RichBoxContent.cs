@@ -122,7 +122,7 @@ namespace VikingEngine.HUD.RichBox
             return result;
         }
 
-        public RichBoxImage ListDot()
+        public RichBoxImage BulletPoint()
         {
             var dot =new  RichBoxImage(SpriteName.WhiteArea, 0.4f, 1f, 2f);
             dot.color = Color.DarkGray;

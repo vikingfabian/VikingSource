@@ -16,8 +16,7 @@ namespace VikingEngine.DSSWars.Build
 {
     class BuildControls
     {
-        //static readonly TerrainBuildingType[] BuildingTypes = { TerrainBuildingType.Barracks, TerrainBuildingType.Tavern, TerrainBuildingType.WorkerHut, TerrainBuildingType.PigPen, TerrainBuildingType.HenPen };
-        
+         
         public SelectTileResult buildMode = SelectTileResult.None;
         public BuildOption placeBuildingType = BuildLib.BuildOptions[0];
 
@@ -55,20 +54,20 @@ namespace VikingEngine.DSSWars.Build
             }
            
             content.newLine();
-            {
-                var button = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Build_DestroyBuilding) },
-                    new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.Destroy));
-                button.setGroupSelectionColor(HudLib.RbSettings, buildMode == SelectTileResult.Destroy);
-                content.Add(button);
-                content.space();
-            }
-            {
-                var button = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Build_ClearTerrain) },
-                    new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.ClearTerrain));
-                button.setGroupSelectionColor(HudLib.RbSettings, buildMode == SelectTileResult.ClearTerrain);
-                content.Add(button);
-                content.space();
-            }
+            //{
+            //    var button = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Build_DestroyBuilding) },
+            //        new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.Destroy));
+            //    button.setGroupSelectionColor(HudLib.RbSettings, buildMode == SelectTileResult.Destroy);
+            //    content.Add(button);
+            //    content.space();
+            //}
+            //{
+            //    var button = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Build_ClearTerrain) },
+            //        new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.ClearTerrain));
+            //    button.setGroupSelectionColor(HudLib.RbSettings, buildMode == SelectTileResult.ClearTerrain);
+            //    content.Add(button);
+            //    content.space();
+            //}
 
             if (buildMode != SelectTileResult.None)
             {
@@ -99,7 +98,7 @@ namespace VikingEngine.DSSWars.Build
         {
             RichBoxContent content = new RichBoxContent();
 
-            content.h2(index.ToString());
+            //content.h2(index.ToString());
             var build = BuildLib.BuildOptions[index];
 
             HudLib.Description(content, build.Description());

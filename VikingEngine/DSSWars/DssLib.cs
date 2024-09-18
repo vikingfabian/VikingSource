@@ -164,13 +164,14 @@ namespace VikingEngine.DSSWars
         LargeFamilies,
         FertileGround,
         Archers,
-        Swordsmen,
+        Warriors,
         AnimalBreeder,
         Miners,
         Woodcutters,
         Builders,
-        FreshWater,
         CrabMentality, //ingen vill bli expert
+        DeepWell,
+        NUM_NONE
     }
 }
 

@@ -392,6 +392,12 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainBuildingType.Tavern:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_tavern, rnd, wp, WorldData.SubTileWidth * 1f));
                     break;
+                case TerrainBuildingType.Postal:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, rnd, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                case TerrainBuildingType.Recruitment:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_recruitment, rnd, wp, WorldData.SubTileWidth * 1f));
+                    break;
                 case TerrainBuildingType.Barracks:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, rnd, wp, WorldData.SubTileWidth * 1f));
                     break;
