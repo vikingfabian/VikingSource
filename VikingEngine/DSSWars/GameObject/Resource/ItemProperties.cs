@@ -21,12 +21,21 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             items[(int)ItemResourceType.Stone_G] = new ItemProperties(1f / CarryStones);
             items[(int)ItemResourceType.IronOre_G] = new ItemProperties(1f / 10);
             items[(int)ItemResourceType.GoldOre] = new ItemProperties(1f / 10);
+            items[(int)ItemResourceType.Iron_G] = new ItemProperties(1f / 5);
             items[(int)ItemResourceType.Egg] = new ItemProperties(1f / 60);
             items[(int)ItemResourceType.Pig] = new ItemProperties(1f);
             items[(int)ItemResourceType.Hen] = new ItemProperties(1f / 4);
             items[(int)ItemResourceType.Wheat] = new ItemProperties(1f / 10);
+            items[(int)ItemResourceType.Linnen] = new ItemProperties(1f / 10);
             items[(int)ItemResourceType.Food_G] = new ItemProperties(1f / CarryFood);
 
+            items[(int)ItemResourceType.LightArmor] = new ItemProperties(1f / 10);
+            items[(int)ItemResourceType.MediumArmor] = new ItemProperties(1f / 5);
+            items[(int)ItemResourceType.HeavyArmor] = new ItemProperties(1f / 3);
+
+            items[(int)ItemResourceType.SharpStick] = new ItemProperties(1f / 10);
+            items[(int)ItemResourceType.Sword] = new ItemProperties(1f / 5);
+            items[(int)ItemResourceType.Bow] = new ItemProperties(1f / 10);
 #if !DEBUG
             for (int i = 0; i < items.Length; ++i)
             {

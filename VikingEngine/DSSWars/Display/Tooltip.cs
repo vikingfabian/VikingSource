@@ -150,6 +150,14 @@ namespace VikingEngine.DSSWars.Display
                         content.Add(title);
                         break;
 
+                    case Players.SelectTileResult.Postal:
+                        title = new RichBoxText(DssRef.todoLang.BuildingType_Postal);
+                        content.Add(title);
+                        break;
+                    case Players.SelectTileResult.Recruitment:
+                        title = new RichBoxText(DssRef.todoLang.BuildingType_Recruitment);
+                        content.Add(title);
+                        break;
                     case Players.SelectTileResult.Barracks:
                         title = new RichBoxText(DssRef.todoLang.Conscription_Title);
                         content.Add(title);

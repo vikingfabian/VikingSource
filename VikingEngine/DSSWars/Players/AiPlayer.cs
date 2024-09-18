@@ -423,6 +423,8 @@ namespace VikingEngine.DSSWars.Players
 
         void buySoldiers(City city)
         {
+            return;
+
             if (faction.MoneySecDiff() > DssLib.SoldierDefaultUpkeep * purchaseCount)
             {
                 Army army;

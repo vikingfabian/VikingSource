@@ -1,6 +1,9 @@
 ﻿
 -Change Log-
-
+*Conscripted soldiers has replaced Recruiting
+*Six new items to craft
+*Cities have better economy (as long as they have trees)
+!Enemies dont fight back
 
 Error
 -back button in menues 
