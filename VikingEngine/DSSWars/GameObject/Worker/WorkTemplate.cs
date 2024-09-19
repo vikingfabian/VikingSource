@@ -256,7 +256,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             expand_housing.toHud(player, content, DssRef.todoLang.Work_ExpandHousing, WorkPriorityType.expandHousing, faction, city);
             expand_farms.toHud(player, content, DssRef.todoLang.Work_ExpandFarms, WorkPriorityType.expandFarms, faction, city);
 
-            content.text(DssRef.todoLang.Work_OrderPrioDescription).overrideColor = Color.DarkGray;
+            HudLib.Description( content, string.Format(DssRef.todoLang.Work_OrderPrioDescription, MaxPrio));
         }
 
         

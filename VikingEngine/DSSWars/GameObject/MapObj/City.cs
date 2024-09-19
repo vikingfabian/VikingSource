@@ -349,6 +349,7 @@ namespace VikingEngine.DSSWars.GameObject
                 opt.write(w);
             }
 
+            w.Write(Debug.Byte_OrCrash((int)Culture));
         }
 
         public void readMapFile(System.IO.BinaryReader r, int version)
@@ -378,6 +379,10 @@ namespace VikingEngine.DSSWars.GameObject
                 cityPurchaseOptions.Add(cityPurchase);
             }
 
+            if (version >= 6)
+            {
+                Culture = (CityCulture)r.ReadByte();
+            }
         }
 
         public void writeGameState(System.IO.BinaryWriter w)

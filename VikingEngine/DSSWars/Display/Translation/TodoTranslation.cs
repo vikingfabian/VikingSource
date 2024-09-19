@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Build_ClearTerrain => "Clear terrain";
 
         public string Work_OrderPrioTitle => "Work priority";
-        public string Work_OrderPrioDescription => "Priority goes from 1 (low) to 10 (high)";
+        public string Work_OrderPrioDescription => "Priority goes from 1 (low) to {0} (high)";
 
         public string Work_Move => "Move items";
 

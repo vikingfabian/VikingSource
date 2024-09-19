@@ -124,15 +124,15 @@ namespace VikingEngine.DSSWars.Players
         {
             content.h1(DssRef.lang.Automation_Title);
             content.newLine();
-            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
-                {
-                    new RichBoxText( DssRef.lang.UnitType_Recruit),
-                }, AutoRecruitProperty));
+            //content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
+            //    {
+            //        new RichBoxText( DssRef.lang.UnitType_Recruit),
+            //    }, AutoRecruitProperty));
                         
-            for (int i = 0; i < DssLib.AvailableUnitTypes.Length; i++)
-            {
-                content.PlusMinusInt(SpriteName.WarsGroupIcon, DssLib.AvailableUnitTypes[i].ToString(), RecruitAmountProperty, i);
-            }
+            //for (int i = 0; i < DssLib.AvailableUnitTypes.Length; i++)
+            //{
+            //    content.PlusMinusInt(SpriteName.WarsGroupIcon, DssLib.AvailableUnitTypes[i].ToString(), RecruitAmountProperty, i);
+            //}
 
             content.newParagraph();
 
@@ -140,12 +140,6 @@ namespace VikingEngine.DSSWars.Players
                 {
                     new RichBoxText( DssRef.lang.CityOption_Repair),
                 }, AutoRepairCityProperty));
-
-            //content.newLine();
-            //content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
-            //    {
-            //        new RichBoxText( DssRef.lang.CityOption_ExpandWorkForce),
-            //    }, AutoExpandCityProperty));
 
             content.newLine();
             content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
