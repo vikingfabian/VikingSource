@@ -174,7 +174,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (idleCount > 0 && previousWorkQueUpdate.secPassed(10))
             {
-                if (parentArrayIndex == 311 || debugTagged)
+                if (parentArrayIndex == -1 || debugTagged)
                 {
                     lib.DoNothing();
                 }
@@ -194,20 +194,20 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         --workerStatusActiveCount;
                         var status = workerStatuses[i];
-                        status.createWorkOrder(WorkType.Exit, -1, -1, WP.ToSubTilePos_Centered(tilePos));
+                        status.createWorkOrder(WorkType.Exit, -1, -1, WP.ToSubTilePos_Centered(tilePos), this);
                         workerStatuses[i] = status;
                     }
                     else if (workerStatuses[i].carry.amount > 0)
                     {
                         var status = workerStatuses[i];
-                        status.createWorkOrder(WorkType.DropOff, -1, -1, WP.ToSubTilePos_Centered(tilePos));
+                        status.createWorkOrder(WorkType.DropOff, -1, -1, WP.ToSubTilePos_Centered(tilePos), this);
                         workerStatuses[i] = status;
                     }
                     else if (workerStatuses[i].energy < 0 && (food.amount > 0 || faction.gold > 0))
                     {
                         CityStructure.Singleton.updateIfNew(this);
                         var status = workerStatuses[i];
-                        status.createWorkOrder(WorkType.Eat, -1, -1, CityStructure.Singleton.eatPosition(status.subTileEnd));
+                        status.createWorkOrder(WorkType.Eat, -1, -1, CityStructure.Singleton.eatPosition(status.subTileEnd), this);
                         workerStatuses[i] = status;
                     }
                     else if (workerStatuses[i].energy <= DssConst.Worker_Starvation)
@@ -215,23 +215,30 @@ namespace VikingEngine.DSSWars.GameObject
                         --workerStatusActiveCount;
                         --workForce;
                         var status = workerStatuses[i];
-                        status.createWorkOrder(WorkType.Starving, -1, -1, WP.ToSubTilePos_Centered(tilePos));
+                        status.createWorkOrder(WorkType.Starving, -1, -1, WP.ToSubTilePos_Centered(tilePos), this);
                         workerStatuses[i] = status;
                     }
                     else if (workQue.Count > 0)
                     {
-                        var work = arraylib.PullLastMember(workQue);
                         var status = workerStatuses[i];
-                        if (status.checkAvailableAndBackOrder(work.work, work.subWork, this))
-                        {
-                            status.createWorkOrder(work.work, work.subWork, work.orderId, work.subTile);
-                            workerStatuses[i] = status;
 
-                            if (work.orderId >= 0)
+                        do
+                        {
+                            var work = arraylib.PullLastMember(workQue);
+
+                            if (status.checkAvailableAndBackOrder(work.work, work.subWork, this))
                             {
-                                faction.player.StartOrderId(work.orderId);
+                                status.createWorkOrder(work.work, work.subWork, work.orderId, work.subTile, this);
+                                workerStatuses[i] = status;
+
+                                if (work.orderId >= 0)
+                                {
+                                    faction.player.StartOrderId(work.orderId);
+                                }
+                                break;
                             }
                         }
+                        while (workQue.Count > 0);
                     }
                     else
                     {
@@ -246,6 +253,16 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 processAsynchWork(workerStatuses);
             }
+
+            //void pullNextAvailableWork(out )
+            //{
+            //    var work = arraylib.PullLastMember(workQue);
+            //    var status = workerStatuses[i];
+            //    if (status.checkAvailableAndBackOrder(work.work, work.subWork, this))
+            //    {
+
+            //    }
+            //}
 
             void buildWorkQue()
             {
@@ -343,12 +360,10 @@ namespace VikingEngine.DSSWars.GameObject
                                 {
                                     var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
 
-                                    if (subTile.collectionPointer >= 0)
+                                    if (subTile.collectionPointer >= 0 &&
+                                        isFreeTile(subTileLoop.Position))
                                     {
-                                        if (isFreeTile(subTileLoop.Position))
-                                        {
-                                            workQue.Add(new WorkQueMember(WorkType.PickUpResource, NoSubWork, subTileLoop.Position, workTemplate.move.value, distanceValue));
-                                        }
+                                        workQue.Add(new WorkQueMember(WorkType.PickUpResource, NoSubWork, subTileLoop.Position, workTemplate.move.value, distanceValue));
                                     }
                                     else
                                     {

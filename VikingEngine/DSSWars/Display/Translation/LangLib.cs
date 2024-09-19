@@ -126,5 +126,24 @@ namespace VikingEngine.DSSWars.Display.Translation
                     throw new NotImplementedException();
             }
         }
+
+        public static string CityCulture(CityCulture cityCulture, bool title)
+        {
+            switch (cityCulture)
+            {
+                case DSSWars.CityCulture.AnimalBreeder: return title ? DssRef.todoLang.CityCulture_AnimalBreeder : DssRef.todoLang.CityCulture_AnimalBreeder_Description;
+                case DSSWars.CityCulture.Archers: return title ? DssRef.todoLang.CityCulture_Archers : DssRef.todoLang.CityCulture_Archers_Description;
+                case DSSWars.CityCulture.Builders: return title ? DssRef.todoLang.CityCulture_Builders : DssRef.todoLang.CityCulture_Builders_Description;
+                case DSSWars.CityCulture.CrabMentality: return title ? DssRef.todoLang.CityCulture_CrabMentality : DssRef.todoLang.CityCulture_CrabMentality_Description;
+                case DSSWars.CityCulture.DeepWell: return title ? DssRef.todoLang.CityCulture_DeepWell : DssRef.todoLang.CityCulture_DeepWell_Description;
+                case DSSWars.CityCulture.FertileGround: return title ? DssRef.todoLang.CityCulture_FertileGround : DssRef.todoLang.CityCulture_FertileGround_Description;
+                case DSSWars.CityCulture.LargeFamilies: return title ? DssRef.todoLang.CityCulture_LargeFamilies : DssRef.todoLang.CityCulture_LargeFamilies_Description;
+                case DSSWars.CityCulture.Miners: return title ? DssRef.todoLang.CityCulture_Miners : DssRef.todoLang.CityCulture_Miners_Description;
+                case DSSWars.CityCulture.Warriors: return title ? DssRef.todoLang.CityCulture_Warriors : DssRef.todoLang.CityCulture_Warriors_Description;
+                case DSSWars.CityCulture.Woodcutters: return title ? DssRef.todoLang.CityCulture_Woodcutters : DssRef.todoLang.CityCulture_Woodcutters_Description;
+
+                default: throw new NotImplementedException();
+            }
+        }
     }
 }

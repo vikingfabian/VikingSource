@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Display.Component;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject.Conscript;
 using VikingEngine.DSSWars.GameObject.Resource;
@@ -119,8 +120,23 @@ namespace VikingEngine.DSSWars.GameObject
 
                 army = faction.NewArmy(onTile);//new Army(faction, onTile);
             }
-                        
-            new SoldierGroup(army, profile);
+
+            SoldierProfile soldierProfile = new SoldierProfile()
+            {
+                conscript = profile,
+                skillBonus = 1,
+            };
+
+            if (Culture == CityCulture.Archers && soldierProfile.RangedUnit())
+            {
+                soldierProfile.skillBonus = 1.2f;
+            }
+            else if (Culture == CityCulture.Warriors && !soldierProfile.RangedUnit())
+            {
+                soldierProfile.skillBonus = 1.2f;
+            }
+
+            new SoldierGroup(army, soldierProfile);
             
             army?.OnSoldierPurchaseCompleted();
         }
@@ -160,246 +176,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
     }
 
-    class ConscriptMenu
-    {
-        City city;
-        LocalPlayer player;
-        //ConsriptProfile currentProfile = new ConsriptProfile();
-
-        public void ToHud(City city, LocalPlayer player, RichBoxContent content)
-        {
-            content.newLine();
-
-            this.city = city;
-            this.player = player;
-
-            
-            if (arraylib.InBound(city.barracks, city.selectedConscript))
-            {
-                BarracksStatus currentProfile = get();
-
-                content.Add(new RichBoxBeginTitle(1));
-                
-                
-                content.Add(new RichBoxText(DssRef.todoLang.Conscription_Title + " " + currentProfile.idAndPosition.ToString()));
-                content.space();
-                content.Add(new RichboxButton(new List<AbsRichBoxMember>
-                    { new RichBoxSpace(), new RichBoxText(DssRef.todoLang.Hud_EndSessionIcon),new RichBoxSpace(), },
-                    new RbAction(() => { city.selectedConscript = -1; })));
-
-                content.newParagraph();
-
-                HudLib.Label(content, "Weapon");
-                content.newLine();
-                for (MainWeapon weapon = 0; weapon < MainWeapon.NUM; weapon++)
-                {
-                    var button = new RichboxButton(new List<AbsRichBoxMember>{
-                   new RichBoxText( LangLib.Weapon(weapon))
-                }, 
-                new RbAction1Arg<MainWeapon>(weaponClick, weapon),
-                new RbAction1Arg<MainWeapon>(weaponTooltip, weapon)
-                );
-                    button.setGroupSelectionColor(HudLib.RbSettings, weapon == currentProfile.profile.weapon);
-                    content.Add(button);
-                    content.space();
-                }
-
-                content.newParagraph();
-
-                HudLib.Label(content, "Armor");
-                content.newLine();
-                for (ArmorLevel armorLvl = 0; armorLvl < ArmorLevel.NUM; armorLvl++)
-                {
-                    var button = new RichboxButton(new List<AbsRichBoxMember>{
-                       new RichBoxText( LangLib.Armor(armorLvl))
-                    }, new RbAction1Arg<ArmorLevel>(armorClick, armorLvl),
-                    new RbAction1Arg<ArmorLevel>(armorTooltip, armorLvl));
-                    button.setGroupSelectionColor(HudLib.RbSettings, armorLvl == currentProfile.profile.armorLevel);
-                    content.Add(button);
-                    content.space();
-                }
-
-                content.newParagraph();
-
-                HudLib.Label(content, "Training");
-                content.newLine();
-                for (TrainingLevel training = 0; training < TrainingLevel.NUM; training++)
-                {
-                    var button = new RichboxButton(new List<AbsRichBoxMember>{
-                   new RichBoxText( LangLib.Training(training))
-                }, new RbAction1Arg<TrainingLevel>(trainingClick, training),
-                    new RbAction1Arg<TrainingLevel>(trainingTooltip, training));
-                    button.setGroupSelectionColor(HudLib.RbSettings, training == currentProfile.profile.training);
-                    content.Add(button);
-                    content.space();
-                }
-
-                content.newParagraph();
-
-                HudLib.Label(content, DssRef.todoLang.Hud_Que);
-                content.space();
-                HudLib.InfoButton(content, new RbAction(queInfo));
-                content.newLine();
-                for (int length = 0; length <= BarracksStatus.MaxQue; length++)
-                {
-                    var button = new RichboxButton(new List<AbsRichBoxMember>{
-                       new RichBoxText( length.ToString())
-                    }, new RbAction1Arg<int>(queClick, length));
-                    button.setGroupSelectionColor(HudLib.RbSettings, length == currentProfile.que);
-                    content.Add(button);
-                    content.space();
-                }
-                {
-                    var button = new RichboxButton(new List<AbsRichBoxMember>{
-                       new RichBoxText(DssRef.todoLang.Hud_NoLimit)
-                    }, new RbAction1Arg<int>(queClick, 1000));
-                    button.setGroupSelectionColor(HudLib.RbSettings, currentProfile.que > BarracksStatus.MaxQue);
-                    content.Add(button);
-                }
-
-                if (currentProfile.active != ConscriptActiveStatus.Idle)
-                {
-                    content.newParagraph();
-                    content.Add(new RichBoxSeperationLine());
-                    {
-                        content.newLine();
-                        content.BulletPoint();
-                        var text = new RichBoxText(currentProfile.activeStringOf(ConscriptActiveStatus.CollectingEquipment));
-                        text.overrideColor = currentProfile.active > ConscriptActiveStatus.CollectingEquipment ? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                        content.Add(text);
-                    }
-                    {
-                        content.newLine();
-                        content.BulletPoint();
-                        var text = new RichBoxText(currentProfile.activeStringOf(ConscriptActiveStatus.CollectingMen));
-                        text.overrideColor = currentProfile.active > ConscriptActiveStatus.CollectingMen ? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                        content.Add(text);
-                    }
-                    {
-                        content.newLine();
-                        content.BulletPoint();
-                        content.Add(new RichBoxText(currentProfile.longTimeProgress()));
-                    }
-                }
-            }
-            else
-            {
-                
-                content.h2("Select barracks");
-                if (city.barracks.Count == 0)
-                { 
-                    content.text("- Empty list -").overrideColor = HudLib.InfoYellow_Light;
-                }
-
-                for (int i = 0; i < city.barracks.Count; ++i)
-                {
-                    content.newLine();
-
-                    BarracksStatus currentProfile = city.barracks[i];
-                    var caption = new RichBoxText(
-                            LangLib.Weapon(currentProfile.profile.weapon) + ", " +
-                            LangLib.Armor(currentProfile.profile.armorLevel) + ", " +
-                            LangLib.Training(currentProfile.profile.training)
-                        );
-                    caption.overrideColor = HudLib.TitleColor_Name;
-
-                    content.Add(new RichboxButton(new List<AbsRichBoxMember>(){
-                        new RichBoxBeginTitle(2),
-                        caption,
-                        new RichBoxNewLine(),
-                        new RichBoxText(currentProfile.shortActiveString())
-                    }, new RbAction1Arg<int>(selectClick, i)));
-
-                }
-            }
-        }
-
-       
-
-        void weaponClick(MainWeapon weapon)
-        {
-            BarracksStatus currentProfile = get();
-            currentProfile.profile.weapon = weapon;
-            set(currentProfile);
-        }
-
-        void weaponTooltip(MainWeapon weapon)
-        {
-            string WeaponDamage = "Weapon damage: {0}";
-
-            
-            RichBoxContent content = new RichBoxContent();
-            content.Add(new RichBoxText(string.Format(WeaponDamage, ConscriptProfile.WeaponDamage(weapon))));
-
-            player.hud.tooltip.create(player, content, true);
-        }
-        void armorClick(ArmorLevel armor)
-        {
-            BarracksStatus currentProfile = get();
-            currentProfile.profile.armorLevel = armor;
-            set(currentProfile);
-        }
-        void armorTooltip(ArmorLevel armor)
-        {
-            string ArmorHealth = "Armor health: {0}";
-
-            
-            RichBoxContent content = new RichBoxContent();
-            content.Add(new RichBoxText(string.Format(ArmorHealth, ConscriptProfile.ArmorHealth(armor))));
-
-            player.hud.tooltip.create(player, content, true);
-        }
-
-        void trainingClick(TrainingLevel training)
-        {
-            BarracksStatus currentProfile = get();
-            currentProfile.profile.training = training;
-            
-            set(currentProfile);
-        }
-        void trainingTooltip(TrainingLevel training)
-        {
-            string TrainingSpeed = "Attack speed: {0}";
-            string TrainingTime = "Training time: {0}";
-
-            RichBoxContent content = new RichBoxContent();
-            content.text(string.Format(TrainingTime, new TimeLength(ConscriptProfile.TrainingTime(training)).LongString()));
-            content.text(string.Format(TrainingSpeed, TextLib.OneDecimal(ConscriptProfile.TrainingAttackSpeed(training))));
-
-            player.hud.tooltip.create(player, content, true);
-        }
-        void queClick(int length)
-        {
-            BarracksStatus currentProfile = get();
-            currentProfile.que = length;
-            set(currentProfile);
-        }
-
-        void selectClick(int index)
-        {
-            city.selectedConscript = index;
-        }
-
-        BarracksStatus get()
-        {
-            return city.barracks[city.selectedConscript];
-        }
-
-        void set(BarracksStatus profile)
-        {
-            city.barracks[city.selectedConscript] = profile;
-        }
-
-
-        void queInfo()
-        { 
-            RichBoxContent content = new RichBoxContent();
-
-            content.text("Will keep traning soldiers until the que is empty");
-
-            player.hud.tooltip.create(player, content, true);
-        }
-    }
+    
 
 
     

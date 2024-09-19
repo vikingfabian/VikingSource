@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
            1,
            new UseResource[]
            {
-        new UseResource(ItemResourceType.Wood_Group, 100),
+        new UseResource(ItemResourceType.Wood_Group, 60),
            }
        ); 
 
@@ -136,7 +136,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             new UseResource[]
             {
         new UseResource(ItemResourceType.Wood_Group, 50),
-        new UseResource(ItemResourceType.SkinLinnen_Group, 50)
+        new UseResource(ItemResourceType.SkinLinnen_Group, 10)
             }
         );
 

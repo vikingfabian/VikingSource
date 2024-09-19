@@ -7,6 +7,8 @@ using Valve.Steamworks;
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.Conscript;
+using VikingEngine.DSSWars.GameObject.Delivery;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD;
@@ -177,7 +179,7 @@ namespace VikingEngine.DSSWars.Display
 
         void deliveryTab(RichBoxContent content)
         {
-            
+            new DeliveryMenu().ToHud(city, player, content);
         }
 
         void recruitTab(RichBoxContent content)

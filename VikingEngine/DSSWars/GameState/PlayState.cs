@@ -421,6 +421,7 @@ namespace VikingEngine.DSSWars
                 {
                     m.async_workUpdate();
                     m.async_conscriptUpdate();
+                    m.async_deliveryUpdate();
                 }
 
                 var factions = DssRef.world.factions.counter();

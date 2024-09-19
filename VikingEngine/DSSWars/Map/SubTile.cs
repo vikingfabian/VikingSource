@@ -92,7 +92,9 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainMainType.Foil:
                     result += " - " + ((TerrainSubFoilType)subTerrain).ToString();
                     break;
-
+                case TerrainMainType.Mine:
+                    result += " - " + ((TerrainMineType)subTerrain).ToString();
+                    break;
             }
 
             return result;

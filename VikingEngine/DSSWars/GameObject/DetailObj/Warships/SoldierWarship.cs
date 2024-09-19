@@ -97,10 +97,10 @@ namespace VikingEngine.DSSWars.GameObject
 
     class ConscriptedWarshipData : AbsWarShipData
     {
-        public ConscriptedWarshipData(AbsSoldierData soldierData, ConscriptProfile profile)
+        public ConscriptedWarshipData(AbsSoldierData soldierData, SoldierProfile profile)
             : base( UnitType.ConscriptWarship, soldierData)
         {
-            switch (profile.weapon)
+            switch (profile.conscript.weapon)
             {
                 case MainWeapon.SharpStick:
                     modelName = LootFest.VoxelModelName.wars_folk_ship;

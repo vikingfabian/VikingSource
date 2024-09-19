@@ -83,7 +83,7 @@ namespace VikingEngine.DSSWars.GameObject
         public AbsSoldierData typeSoldierData;
         public AbsSoldierData typeShipData;
 
-        public SoldierGroup(Army army, ConscriptProfile profile)
+        public SoldierGroup(Army army, SoldierProfile profile)
         {
             this.type = UnitType.Conscript;
             this.isRecruit = false;

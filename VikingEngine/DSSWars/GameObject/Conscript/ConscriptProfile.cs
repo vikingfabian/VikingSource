@@ -103,6 +103,17 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         }
     }
 
+    struct SoldierProfile
+    {
+        public ConscriptProfile conscript;
+        public float skillBonus;
+
+        public bool RangedUnit()
+        {
+            return conscript.weapon == MainWeapon.Bow;
+        }
+    }
+
     struct ConscriptProfile
     {
         public MainWeapon weapon;

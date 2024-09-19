@@ -21,9 +21,10 @@ namespace VikingEngine.DSSWars.GameObject
                     addMissingWorkerUnits();
                 }
 
+                var city = GetCity();
                 foreach (var w in workerUnits)
                 {
-                    w.update();
+                    w.update(city);
                 }
             }
         }

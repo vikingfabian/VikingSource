@@ -16,6 +16,25 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City
     {
+        public static readonly ItemResourceType[] MovableCityResourceTypes =
+        {
+             ItemResourceType.Wood_Group,
+             ItemResourceType.Stone_G,
+             ItemResourceType.RawFood_Group,
+             ItemResourceType.Food_G,
+             ItemResourceType.SkinLinnen_Group,
+             ItemResourceType.IronOre_G,
+             ItemResourceType.Iron_G,
+
+             ItemResourceType.SharpStick,
+             ItemResourceType.Sword,
+             ItemResourceType.Bow,
+
+             ItemResourceType.LightArmor,
+             ItemResourceType.MediumArmor,
+             ItemResourceType.HeavyArmor,
+        };
+
         MinuteStats blackMarketCosts_food = new MinuteStats();
         public MinuteStats foodProduction = new MinuteStats();
         public MinuteStats foodSpending = new MinuteStats();
@@ -192,13 +211,18 @@ namespace VikingEngine.DSSWars.GameObject
                     stone.add(item);
                     break;
 
-                case ItemResourceType.Egg:                                   
-                case ItemResourceType.Hen:
                 case ItemResourceType.Wheat:
                     rawFood.add(item, DssConst.DefaultItemRawFoodAmout);
                     break;
 
+                case ItemResourceType.Egg:                                   
+                case ItemResourceType.Hen:
+                    animalResourceBonus(ref item);
+                    rawFood.add(item, DssConst.DefaultItemRawFoodAmout);
+                    break;
+
                 case ItemResourceType.Pig:
+                    animalResourceBonus(ref item);
                     rawFood.add(item, DssConst.PigRawFoodAmout);
                     skinLinnen.add(item);
                     break;
@@ -226,6 +250,13 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        void animalResourceBonus(ref ItemResource item)
+        {
+            if (Culture == CityCulture.AnimalBreeder)
+            {
+                item.amount *= 2;
+            }
+        }
         //public void craftItem(TerrainBuildingType building, out bool canCraftAgain)
         //{
         //    canCraftAgain = false;

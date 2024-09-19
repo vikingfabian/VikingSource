@@ -9,7 +9,7 @@ namespace VikingEngine.DSSWars.GameObject
 {
     class ConscriptedSoldierData : AbsSoldierData
     {
-        public ConscriptedSoldierData(ConscriptProfile profile)
+        public ConscriptedSoldierData(SoldierProfile profile)
         {
             unitType = UnitType.Conscript;
 
@@ -21,15 +21,15 @@ namespace VikingEngine.DSSWars.GameObject
             targetSpotRange = StandardTargetSpotRange;
                         
            
-            basehealth = ConscriptProfile.ArmorHealth(profile.armorLevel);
+            basehealth = ConscriptProfile.ArmorHealth(profile.conscript.armorLevel);
 
-            attackDamage = ConscriptProfile.WeaponDamage(profile.weapon);
+            attackDamage = Convert.ToInt32(ConscriptProfile.WeaponDamage(profile.conscript.weapon) * profile.skillBonus);
             attackDamageStructure = attackDamage;
             attackDamageSea = attackDamage;
 
             attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
 
-            switch (profile.weapon)
+            switch (profile.conscript.weapon)
             {
                 case MainWeapon.SharpStick:
                     mainAttack = AttackType.Melee;
@@ -55,16 +55,8 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
             }
 
-            attackTimePlusCoolDown /= ConscriptProfile.TrainingAttackSpeed(profile.training);
-
-            //attacksPerSec = 1 / attackTimePlusCoolDown
-
-
-            //setupJavelinCommand();
-            //modelName = LootFest.VoxelModelName.wars_soldier;
-
-
-            //description = DssRef.lang.UnitType_Description_Soldier;
+            attackTimePlusCoolDown /= ConscriptProfile.TrainingAttackSpeed(profile.conscript.training);
+            attackTimePlusCoolDown /= profile.skillBonus;
 
         }
     }

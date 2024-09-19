@@ -105,6 +105,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string ArmyHud_Food_Upkeep_X => "Food upkeep: {0}";
         public string ArmyHud_Food_Costs_X => "Food costs: {0}";
 
+        //public string _Title => "Conscription";
+
         /// <summary>
         /// A small symbol for buttons containing extra information
         /// </summary>

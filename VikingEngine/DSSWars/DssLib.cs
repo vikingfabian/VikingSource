@@ -92,9 +92,9 @@ namespace VikingEngine.DSSWars
         //public const int LargeCityStartWorkForce = AbsSoldierData.GroupDefaultCount * 6;
         //public const int HeadCityStartWorkForce = AbsSoldierData.GroupDefaultCount * 10;
 
-        public static readonly int SmallCityStartMaxWorkForce = Convert.ToInt32(DssConst.SoldierGroup_DefaultCount * 6);
-        public static readonly int LargeCityStartMaxWorkForce = Convert.ToInt32(DssConst.SoldierGroup_DefaultCount * 9);
-        public static readonly int HeadCityStartMaxWorkForce = Convert.ToInt32(DssConst.SoldierGroup_DefaultCount * 15);
+        public static readonly int SmallCityStartMaxWorkForce = Convert.ToInt32(DssConst.SoldierGroup_DefaultCount * 5);
+        public static readonly int LargeCityStartMaxWorkForce = Convert.ToInt32(DssConst.SoldierGroup_DefaultCount * 7);
+        public static readonly int HeadCityStartMaxWorkForce = Convert.ToInt32(DssConst.SoldierGroup_DefaultCount * 10);
 
         public static readonly int NobelHouseWorkForceReqiurement = HeadCityStartMaxWorkForce;
 
@@ -161,15 +161,15 @@ namespace VikingEngine.DSSWars
 
     enum CityCulture
     { 
-        LargeFamilies,
-        FertileGround,
-        Archers,
-        Warriors,
-        AnimalBreeder,
-        Miners,
-        Woodcutters,
-        Builders,
-        CrabMentality, //ingen vill bli expert
+        LargeFamilies,//
+        FertileGround,//
+        Archers,//
+        Warriors,//
+        AnimalBreeder,//
+        Miners,//
+        Woodcutters,//
+        Builders,//
+        CrabMentality,// //ingen vill bli expert
         DeepWell,
         NUM_NONE
     }

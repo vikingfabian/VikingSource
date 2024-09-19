@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
             model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
 
-            checkForGoal(true);
+            checkForGoal(true, mapObject.GetCity());
 
             updateGroudY(true);
         }
@@ -59,7 +59,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         //    updateGroudY(true);
         //}
 
-        public void update()
+        public void update(City city)
         {
             if (parentArrayIndex == 6)
             {
@@ -218,7 +218,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                 case WorkerUnitState.None:
                     mapObject.getWorkerStatus(parentArrayIndex, ref status);
-                    checkForGoal(false);
+                    checkForGoal(false, city);
                     break;
 
             }
@@ -235,7 +235,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             return false;
         }
 
-        protected void checkForGoal(bool onInit)
+        protected void checkForGoal(bool onInit, City city)
         {
             if (status.work > WorkType.Idle)
             {
@@ -248,7 +248,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                 if (status.subTileEnd == status.subTileStart)
                 {
-                    finalizeWorkTime = status.finalizeWorkTime();
+                    finalizeWorkTime = status.finalizeWorkTime(city);
                     state = WorkerUnitState.FinalizeWork;
                 }
                 else
@@ -262,7 +262,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     walkDir = VectorExt.SafeNormalizeV3(goalPos - model.position);
                     WP.Rotation1DToQuaterion(model, lib.V2ToAngle(VectorExt.V3XZtoV2(walkDir)));
 
-                    finalizeWorkTime = status.finalizeWorkTime();
+                    finalizeWorkTime = status.finalizeWorkTime(city);
 
                     if (onInit)
                     {

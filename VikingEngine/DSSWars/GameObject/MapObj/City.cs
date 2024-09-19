@@ -125,7 +125,6 @@ namespace VikingEngine.DSSWars.GameObject
             double percForest = forest / land;
             double percPlains = plain / land;
             double percMountain = mountain / land;
-
             double percDry = dryBiom / land;
 
             workHutStyle = percMountain > 0.5 ? 0 : 1;
@@ -277,6 +276,56 @@ namespace VikingEngine.DSSWars.GameObject
                 cityCultureCollection.NorthSea.Add(this);
             }
 
+            //    enum CityCulture
+            //{
+            //    LargeFamilies,
+            //    FertileGround,
+            //    Archers,
+            //    Warriors,
+            //    AnimalBreeder,
+            //    Miners,
+            //    Woodcutters,
+            //    Builders,
+            //    CrabMentality, //ingen vill bli expert
+            //    DeepWell,
+            //    NUM_NONE
+            //}
+            CityCulture[] GeneralCultures = 
+            {
+                CityCulture.LargeFamilies,
+                CityCulture.Archers,
+                CityCulture.Warriors,
+                CityCulture.AnimalBreeder,
+                CityCulture.Builders,
+                CityCulture.CrabMentality,
+            };
+
+            if (world.rnd.Chance(0.3))
+            {
+                //Area specific culture
+                if (percDry > 0.05 && percDry < 0.7 && percPlains >= 0.1)
+                {
+                    Culture = CityCulture.FertileGround;
+                }
+                else if (percForest >= 0.7)
+                {
+                    Culture = CityCulture.Woodcutters;
+                }
+                else if (percMountain > 0.5)
+                {
+                    Culture = CityCulture.Miners;
+                }
+                else if (dryBiom <= 1)
+                {
+                    Culture = CityCulture.DeepWell;
+                }
+
+            }
+
+            if (Culture == CityCulture.NUM_NONE)
+            {
+                Culture = arraylib.RandomListMember(GeneralCultures, world.rnd); 
+            }
         }
 
         public void writeMapFile(System.IO.BinaryWriter w)
@@ -808,7 +857,12 @@ namespace VikingEngine.DSSWars.GameObject
                 food.amount > 0 &&
                 homeUsers() < homesTotal())
             {
-                return workForce / 200.0 * faction.growthMultiplier;
+                var result = workForce / 200.0 * faction.growthMultiplier;
+                if (Culture == CityCulture.LargeFamilies)
+                {
+                    result *= 2;
+                }
+                return result;
             }
             return 0;
         }
@@ -872,7 +926,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             workForce = Bound.Max(workForce + addWorkers, homesTotal());
 
-            water.amount = Math.Min(water.amount + 1, DssConst.Maxwater);
+            int waterAddPerSec = 1;
+            if (Culture == CityCulture.DeepWell)
+            {
+                waterAddPerSec = 2;
+            }
+            water.amount = Math.Min(water.amount + waterAddPerSec, DssConst.Maxwater);
         }
 
         public void asynchGameObjectsUpdate(bool minute)
@@ -1074,6 +1133,16 @@ namespace VikingEngine.DSSWars.GameObject
                 content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, calcIncome_async().total()));
                 content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, GuardUpkeep(maxGuardSize)));
 
+                content.text(string.Format("Culture: {0}", Display.Translation.LangLib.CityCulture(Culture, true)));
+                content.space();
+                HudLib.InfoButton(content, new RbAction(()=>
+                {
+                    RichBoxContent content = new RichBoxContent();
+                    content.text(Display.Translation.LangLib.CityCulture(Culture, false));
+
+                    player.hud.tooltip.create(player, content, true);
+                }));//cultureToolTip));
+
                 if (immigrants.HasValue())
                 {
                     content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.Hud_Immigrants, immigrants.Int()));
@@ -1103,6 +1172,9 @@ namespace VikingEngine.DSSWars.GameObject
             
 
         }
+
+       // void cultureToolTip()
+        
 
         public void AddNeighborCity(int nCityIndex)
         {

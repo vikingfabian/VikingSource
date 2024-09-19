@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     ItemResource recieved = toCity.MakeTrade(ItemResourceType.Food_G, carry.amount, DssConst.Worker_TrossWorkerCarryWeight);
                     carry = recieved;
 
-                    createWorkOrder(WorkType.TrossReturnToArmy, 0, -1, WP.ToSubTilePos_Centered(army.tilePos));
+                    createWorkOrder(WorkType.TrossReturnToArmy, 0, -1, WP.ToSubTilePos_Centered(army.tilePos), null);
                     break;
                 case WorkType.TrossReturnToArmy:
                     army.food += carry.amount;
@@ -65,9 +65,23 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             
         }
 
+        int farmGrowthMultiplier(int terrainAmount, City city)
+        {
+            if (city.Culture == CityCulture.FertileGround)
+            {
+                return terrainAmount * 2;
+            }
+            return terrainAmount;
+        }
+
         void workComplete(City city)
         {
-            energy -= processTimeLengthSec * DssConst.WorkTeamEnergyCost;
+            float energyCost = processTimeLengthSec * DssConst.WorkTeamEnergyCost;
+            if (city.Culture == CityCulture.CrabMentality)
+            {
+                energyCost *= 0.5f;
+            }
+            energy -= energyCost;
             SubTile subTile = DssRef.world.subTileGrid.Get(subTileEnd);
 
             bool tryRepeatWork = false;
@@ -88,34 +102,44 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         switch (subTile.GetFoilType())
                         {
                             case TerrainSubFoilType.TreeSoft:
-                                gatherWood(Resource.ItemResourceType.SoftWood, ref subTile);
+                                gatherWood(Resource.ItemResourceType.SoftWood, ref subTile, city);
                                 break;
 
                             case TerrainSubFoilType.TreeHard:
-                                gatherWood(Resource.ItemResourceType.HardWood, ref subTile);
+                                gatherWood(Resource.ItemResourceType.HardWood, ref subTile, city);
                                 break;
 
                             case TerrainSubFoilType.WheatFarm:
-                                DssRef.state.resources.addItem(
-                                    new Resource.ItemResource(
+                                carry = new Resource.ItemResource(
                                         ItemResourceType.Wheat,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
-                                        subTile.terrainAmount),
-                                    ref subTile.collectionPointer);
+                                        farmGrowthMultiplier(subTile.terrainAmount, city));
+                                //DssRef.state.resources.addItem(
+                                //    new Resource.ItemResource(
+                                //        ItemResourceType.Wheat,
+                                //        subTile.terrainQuality,
+                                //        Convert.ToInt32(processTimeLengthSec),
+                                //        farmGrowthMultiplier(subTile.terrainAmount, city)),
+                                //    ref subTile.collectionPointer);
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
                                 DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                                 break;
 
                             case TerrainSubFoilType.LinnenFarm:
-                                DssRef.state.resources.addItem(
-                                    new Resource.ItemResource(
+                                carry = new Resource.ItemResource(
                                         ItemResourceType.Linnen,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
-                                        subTile.terrainAmount),
-                                    ref subTile.collectionPointer);
+                                        farmGrowthMultiplier(subTile.terrainAmount, city));
+                                //DssRef.state.resources.addItem(
+                                //    new Resource.ItemResource(
+                                //        ItemResourceType.Linnen,
+                                //        subTile.terrainQuality,
+                                //        Convert.ToInt32(processTimeLengthSec),
+                                //        farmGrowthMultiplier(subTile.terrainAmount, city)),
+                                //    ref subTile.collectionPointer);
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
                                 DssRef.world.subTileGrid.Set(subTileEnd, subTile);
@@ -231,6 +255,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                 case WorkType.Mine:
                     {
+                        //TODO placera mining i en deposit
                         var mineType = (TerrainMineType)subTile.subTerrain;
                         Resource.ItemResourceType resourceType = ItemResourceType.NONE;
                         switch (mineType)
@@ -243,16 +268,27 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                 break;
                         }
 
-                        DssRef.state.resources.addItem(
-                                new Resource.ItemResource(
-                                    resourceType,
-                                    subTile.terrainQuality,
-                                    Convert.ToInt32(processTimeLengthSec),
-                                    TerrainContent.MineAmount),
-                                ref subTile.collectionPointer);
+                        int amount = TerrainContent.MineAmount;
+                        if (city.Culture == CityCulture.Miners)
+                        {
+                            amount *= 2;
+                        }
 
-                        tryRepeatWork = true;
-                        //work = WorkType.Idle;
+                        carry = new ItemResource(
+                            resourceType,
+                            subTile.terrainQuality,
+                            Convert.ToInt32(processTimeLengthSec),
+                            amount);
+                        //DssRef.state.resources.addItem(
+                        //        new Resource.ItemResource(
+                        //            resourceType,
+                        //            subTile.terrainQuality,
+                        //            Convert.ToInt32(processTimeLengthSec),
+                        //            TerrainContent.MineAmount),
+                        //        ref subTile.collectionPointer);
+
+                        //tryRepeatWork = true;
+
                     }
                     break;
                 case WorkType.Craft:
@@ -306,7 +342,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
             if (tryRepeatWork && energy > 0)
             {                
-                processTimeLengthSec = finalizeWorkTime();
+                processTimeLengthSec = finalizeWorkTime(city);
                 subTileStart = subTileEnd;
             }
             else
@@ -335,14 +371,20 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             }
         }
 
-        void gatherWood(Resource.ItemResourceType resourceType, ref SubTile subTile)
+        void gatherWood(Resource.ItemResourceType resourceType, ref SubTile subTile, City city)
         {
+            int amount = subTile.terrainAmount;
+            if (city.Culture == CityCulture.Woodcutters)
+            {
+                amount *= 2;
+            }
+
             DssRef.state.resources.addItem(
                 new Resource.ItemResource(
                     resourceType,
                     subTile.terrainQuality,
                     Convert.ToInt32(processTimeLengthSec),
-                    subTile.terrainAmount),
+                    amount),
                 ref subTile.collectionPointer);
 
             subTile.SetType(TerrainMainType.Resourses, (int)TerrainResourcesType.Wood, 1);
@@ -388,7 +430,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             }
         }
         
-        public void createWorkOrder(WorkType work, int subWork, int order, IntVector2 targetSubTile)
+        public void createWorkOrder(WorkType work, int subWork, int order, IntVector2 targetSubTile, City city)
         {
             this.work = work;
             this.workSubType = subWork;
@@ -397,9 +439,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             subTileEnd = targetSubTile;
             processTimeStartStampSec = Ref.TotalGameTimeSec;
             float dist = VectorExt.Length(subTileEnd.X - subTileStart.X, subTileEnd.Y - subTileStart.Y) / WorldData.TileSubDivitions; //Convrst to WP length
-            
-            processTimeLengthSec = finalizeWorkTime() + 
-                dist / (DssConst.Men_StandardWalkingSpeed * 1000);
+
+            processTimeLengthSec = finalizeWorkTime(city) +
+                dist / DssVar.Men_StandardWalkingSpeed_PerSec;//(DssConst.Men_StandardWalkingSpeed * 1000);
 
             switch (work)
             {
@@ -438,7 +480,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             }
         }
 
-        public float finalizeWorkTime()
+        public float finalizeWorkTime(City city)
         {
             switch (work)
             {
@@ -478,6 +520,10 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case WorkType.Craft:
                     return DssConst.WorkTime_Craft;
                 case WorkType.Build:
+                    if (city.Culture == CityCulture.Builders)
+                    {
+                        return DssConst.WorkTime_Building * 0.5f;
+                    }
                     return DssConst.WorkTime_Building;
 
                 case WorkType.TrossReturnToArmy:
