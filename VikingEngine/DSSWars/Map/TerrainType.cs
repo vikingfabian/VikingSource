@@ -26,6 +26,7 @@ namespace VikingEngine.DSSWars.Map
         TreeSoftSprout,
         TreeHard,
         TreeSoft,
+        DryWood,
         Bush,
         Herbs,
         TallGrass,

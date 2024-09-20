@@ -298,6 +298,7 @@ namespace VikingEngine.DSSWars.GameObject
                 CityCulture.AnimalBreeder,
                 CityCulture.Builders,
                 CityCulture.CrabMentality,
+                CityCulture.Networker,
             };
 
             if (world.rnd.Chance(0.3))

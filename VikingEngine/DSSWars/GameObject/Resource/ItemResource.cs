@@ -69,6 +69,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         
         SoftWood,
         HardWood,
+        DryWood,
         Planks,
         Barrel,
         Box,

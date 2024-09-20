@@ -118,7 +118,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        protected override void onAsynchWorkComplete(ref WorkerStatus status)
+        protected override void onWorkComplete_async(ref WorkerStatus status)
         {
             status.WorkComplete(this);
         }

@@ -44,9 +44,9 @@ namespace VikingEngine.DSSWars.Players.Orders
     {
         City city;
         IntVector2 subTile;
-        int buildingType;
+        BuildAndExpandType buildingType;
         Graphics.AbsVoxelObj model;
-        public BuildOrder(int priority, bool bLocalPlayer, City city, IntVector2 subTile, int buildingType)
+        public BuildOrder(int priority, bool bLocalPlayer, City city, IntVector2 subTile, BuildAndExpandType buildingType)
             :base(priority)
         {
             this.city = city;
@@ -78,8 +78,9 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         public WorkQueMember createWorkQue(out CraftBlueprint blueprint)
         {
-            blueprint = BuildLib.BuildOptions[buildingType].blueprint;//ResourceLib.Blueprint(buildingType);
-            var result = new WorkQueMember(WorkType.Build, buildingType, subTile, priority, 0);
+            int type = (int)buildingType;
+            blueprint = BuildLib.BuildOptions[type].blueprint;//ResourceLib.Blueprint(buildingType);
+            var result = new WorkQueMember(WorkType.Build, type, subTile, priority, 0);
             result.orderId = id;
             return result;
         }

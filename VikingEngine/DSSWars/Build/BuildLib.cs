@@ -8,24 +8,51 @@ using VikingEngine.DSSWars.Map;
 
 namespace VikingEngine.DSSWars.Build
 {
+    enum BuildAndExpandType
+    {
+        WorkerHuts,
+        Postal,
+        Recruitment,
+        Barracks,
+        Tavern,
+        WheatFarms,
+        LinnenFarms,
+        PigFarms,
+        HenFarms,
+        
+        NUM
+    }
     static class BuildLib
     {
-        public static readonly BuildOption BuildWorkerHut = new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.WorkerHut, ResourceLib.CraftWorkerHut);
+        //public static readonly BuildOption BuildWorkerHut = new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.WorkerHut, ResourceLib.CraftWorkerHut);
 
-        public static readonly BuildOption[] BuildOptions =
-            {
-                BuildWorkerHut,
-                new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.Postal, ResourceLib.CraftPostal),
-                new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.Recruitment, ResourceLib.CraftRecruitment),
+        public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM];
+            //{
+            //    BuildWorkerHut,
+            //    new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.Postal, ResourceLib.CraftPostal),
+            //    new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.Recruitment, ResourceLib.CraftRecruitment),
 
-                new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.Barracks, ResourceLib.CraftBarracks),
-                new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.Tavern, ResourceLib.CraftTavern),
+            //    new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.Barracks, ResourceLib.CraftBarracks),
+            //    new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.Tavern, ResourceLib.CraftTavern),
                 
-                new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.PigPen, ResourceLib.CraftPigPen),
-                new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.HenPen, ResourceLib.CraftHenPen),
-                new BuildOption(BuildOptionType.Farm, (int)TerrainSubFoilType.WheatFarm, ResourceLib.CraftFarm),
-                new BuildOption(BuildOptionType.Farm, (int)TerrainSubFoilType.LinnenFarm, ResourceLib.CraftFarm),
-            };
+            //    new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.PigPen, ResourceLib.CraftPigPen),
+            //    new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.HenPen, ResourceLib.CraftHenPen),
+            //    new BuildOption(BuildOptionType.Farm, (int)TerrainSubFoilType.WheatFarm, ResourceLib.CraftFarm),
+            //    new BuildOption(BuildOptionType.Farm, (int)TerrainSubFoilType.LinnenFarm, ResourceLib.CraftFarm),
+            //};
+
+        public static void Init()
+        {
+            new BuildOption(BuildAndExpandType.WorkerHuts, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, ResourceLib.CraftWorkerHut);
+            new BuildOption(BuildAndExpandType.Postal, TerrainMainType.Building, (int)TerrainBuildingType.Postal, ResourceLib.CraftPostal);
+            new BuildOption(BuildAndExpandType.Recruitment, TerrainMainType.Building, (int)TerrainBuildingType.Recruitment, ResourceLib.CraftRecruitment);
+            
+            new BuildOption(BuildAndExpandType., TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, ResourceLib.CraftWorkerHut);
+            new BuildOption(BuildAndExpandType.WorkerHuts, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, ResourceLib.CraftWorkerHut);
+            new BuildOption(BuildAndExpandType.WorkerHuts, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, ResourceLib.CraftWorkerHut);
+
+        }
+
         public static bool CanAutoBuildHere(ref SubTile subTile)
         {
             if (subTile.mainTerrain == TerrainMainType.DefaultLand ||
@@ -59,4 +86,6 @@ namespace VikingEngine.DSSWars.Build
             return false;
         }
     }
+
+
 }

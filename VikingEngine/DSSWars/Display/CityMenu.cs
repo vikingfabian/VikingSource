@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.Display
 {
     class CityMenu
     {
-        public static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Conscript, MenuTab.Resources, MenuTab.Work, MenuTab.Delivery, MenuTab.Trade, MenuTab.Build };
+        public static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Conscript, MenuTab.Resources, MenuTab.Work, MenuTab.Delivery, MenuTab.Build };
         Players.LocalPlayer player;
         City city;
 

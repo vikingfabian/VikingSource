@@ -314,6 +314,9 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainSubFoilType.TreeSoft:
                     addFoliage(new Foliage(LootFest.VoxelModelName.fol_tree_soft, rnd, wp, 0.03f + 0.0012f * sizeValue));
                     break;
+                case TerrainSubFoilType.DryWood:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.Arrow, rnd, wp, 0.12f));
+                    break;
                 case TerrainSubFoilType.TreeSoftSprout:
                 case TerrainSubFoilType.TreeHardSprout:
                     addFoliage(new Foliage(LootFest.VoxelModelName.fol_sprout, rnd, wp, 0.05f + 0.01f * sizeValue));

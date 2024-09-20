@@ -109,6 +109,10 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                 gatherWood(Resource.ItemResourceType.HardWood, ref subTile, city);
                                 break;
 
+                            case TerrainSubFoilType.DryWood:
+                                gatherWood(Resource.ItemResourceType.DryWood, ref subTile, city);
+                                break;
+
                             case TerrainSubFoilType.WheatFarm:
                                 carry = new Resource.ItemResource(
                                         ItemResourceType.Wheat,
@@ -502,6 +506,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                             return DssConst.WorkTime_GatherFoil_TreeSoft;
                         case TerrainSubFoilType.TreeHard:
                             return DssConst.WorkTime_GatherFoil_TreeHard;
+                        case TerrainSubFoilType.DryWood:
+                            return DssConst.WorkTime_GatherFoil_DryWood;
                         case TerrainSubFoilType.WheatFarm:
                         case TerrainSubFoilType.LinnenFarm:
                             return DssConst.WorkTime_GatherFoil_FarmCulture;

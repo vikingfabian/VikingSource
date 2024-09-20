@@ -16,7 +16,6 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         City city;
         LocalPlayer player;
         ProgressQue que = new ProgressQue();
-        //ConsriptProfile currentProfile = new ConsriptProfile();
 
         public void ToHud(City city, LocalPlayer player, RichBoxContent content)
         {
@@ -41,7 +40,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
                 content.newParagraph();
 
-                HudLib.Label(content, "Weapon");
+                HudLib.Label(content, DssRef.todoLang.Conscript_WeaponTitle);
                 content.newLine();
                 for (MainWeapon weapon = 0; weapon < MainWeapon.NUM; weapon++)
                 {
@@ -58,7 +57,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
                 content.newParagraph();
 
-                HudLib.Label(content, "Armor");
+                HudLib.Label(content, DssRef.todoLang.Conscript_ArmorTitle);
                 content.newLine();
                 for (ArmorLevel armorLvl = 0; armorLvl < ArmorLevel.NUM; armorLvl++)
                 {
@@ -73,9 +72,14 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
                 content.newParagraph();
 
-                HudLib.Label(content, "Training");
+                HudLib.Label(content, DssRef.todoLang.Conscript_TrainingTitle);
                 content.newLine();
-                for (TrainingLevel training = 0; training < TrainingLevel.NUM; training++)
+                TrainingLevel maxLevel = TrainingLevel.Professional;
+                if (city.Culture == CityCulture.CrabMentality)
+                {
+                    maxLevel = TrainingLevel.Basic;
+                }
+                for (TrainingLevel training = 0; training <= maxLevel; training++)
                 {
                     var button = new RichboxButton(new List<AbsRichBoxMember>{
                    new RichBoxText( LangLib.Training(training))
@@ -118,10 +122,10 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             else
             {
 
-                content.h2("Select barracks");
+                content.h2(DssRef.todoLang.Conscript_SelectBuilding);
                 if (city.barracks.Count == 0)
                 {
-                    content.text("- Empty list -").overrideColor = HudLib.InfoYellow_Light;
+                    content.text(DssRef.todoLang.Hud_EmptyList).overrideColor = HudLib.InfoYellow_Light;
                 }
 
                 for (int i = 0; i < city.barracks.Count; ++i)
@@ -147,8 +151,6 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             }
         }
 
-
-
         void weaponClick(MainWeapon weapon)
         {
             BarracksStatus currentProfile = get();
@@ -158,11 +160,9 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
         void weaponTooltip(MainWeapon weapon)
         {
-            string WeaponDamage = "Weapon damage: {0}";
-
 
             RichBoxContent content = new RichBoxContent();
-            content.Add(new RichBoxText(string.Format(WeaponDamage, ConscriptProfile.WeaponDamage(weapon))));
+            content.Add(new RichBoxText(string.Format(DssRef.todoLang.Conscript_WeaponDamage, ConscriptProfile.WeaponDamage(weapon))));
 
             player.hud.tooltip.create(player, content, true);
         }
@@ -174,11 +174,11 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         }
         void armorTooltip(ArmorLevel armor)
         {
-            string ArmorHealth = "Armor health: {0}";
 
-
-            RichBoxContent content = new RichBoxContent();
-            content.Add(new RichBoxText(string.Format(ArmorHealth, ConscriptProfile.ArmorHealth(armor))));
+            RichBoxContent content = new RichBoxContent
+            {
+                new RichBoxText(string.Format(DssRef.todoLang.Conscript_ArmorHealth, ConscriptProfile.ArmorHealth(armor)))
+            };
 
             player.hud.tooltip.create(player, content, true);
         }
@@ -192,12 +192,10 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         }
         void trainingTooltip(TrainingLevel training)
         {
-            string TrainingSpeed = "Attack speed: {0}";
-            string TrainingTime = "Training time: {0}";
 
             RichBoxContent content = new RichBoxContent();
-            content.text(string.Format(TrainingTime, new TimeLength(ConscriptProfile.TrainingTime(training)).LongString()));
-            content.text(string.Format(TrainingSpeed, TextLib.OneDecimal(ConscriptProfile.TrainingAttackSpeed(training))));
+            content.text(string.Format(DssRef.todoLang.Conscript_TrainingTime, new TimeLength(ConscriptProfile.TrainingTime(training)).LongString()));
+            content.text(string.Format(DssRef.todoLang.Conscript_TrainingSpeed, TextLib.OneDecimal(ConscriptProfile.TrainingAttackSpeed(training))));
 
             player.hud.tooltip.create(player, content, true);
         }

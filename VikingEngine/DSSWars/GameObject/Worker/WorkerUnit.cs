@@ -115,6 +115,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                                 switch ((TerrainSubFoilType)subTile.subTerrain)
                                 {
+                                    case TerrainSubFoilType.DryWood:
                                     case TerrainSubFoilType.TreeSoft:
                                     case TerrainSubFoilType.TreeHard:
                                         SoundLib.woodcut.Play(model.position);
@@ -183,6 +184,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                 SubTile subTile = DssRef.world.subTileGrid.Get(status.subTileEnd);
                                 switch ((TerrainSubFoilType)subTile.subTerrain)
                                 {
+                                    case TerrainSubFoilType.DryWood:
                                     case TerrainSubFoilType.TreeSoft:
                                     case TerrainSubFoilType.TreeHard:
                                         SoundLib.tree_falling.Play(model.position);

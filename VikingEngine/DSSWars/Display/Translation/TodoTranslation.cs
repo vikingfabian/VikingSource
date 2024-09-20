@@ -19,6 +19,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Resource_TypeName_Ore => "ore";
         public string Resource_TypeName_Iron => "iron";
 
+        
         public string Resource_TypeName_SharpStick => "Sharp stick";
         public string Resource_TypeName_Sword => "Sword";
         public string Resource_TypeName_Bow => "Bow";
@@ -91,12 +92,24 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string Hud_Que => "Que";
 
+        public string Hud_EmptyList => "- Empty list -";
+
         /// <summary>
         /// 0: current parts, 1: needed number of parts
         /// </summary>
         public string Language_CollectProgress => "{0}/{1}";
         public string Hud_SelectCity => "Select City";
         public string Conscription_Title => "Conscription";
+        public string Conscript_WeaponTitle => "Weapon";
+        public string Conscript_ArmorTitle => "Weapon";
+        public string Conscript_TrainingTitle => "Weapon";
+        public string Conscript_SelectBuilding => "Select barracks";
+
+        public string Conscript_WeaponDamage = "Weapon damage: {0}";
+        public string Conscript_ArmorHealth = "Armor health: {0}";
+        public string Conscript_TrainingSpeed = "Attack speed: {0}";
+        public string Conscript_TrainingTime = "Training time: {0}";
+
         public string Conscription_Status_CollectingEquipment => "Collecting equipment: {0}";
         public string Conscription_Status_CollectingMen => "Collecting men: {0}";
         public string Conscription_Status_Training => "Training: {0}";
@@ -153,6 +166,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string CityCulture_Builders => "Builders";
         public string CityCulture_CrabMentality => "Crab mentality"; //ingen vill bli expert
         public string CityCulture_DeepWell => "Deep well";
+        public string CityCulture_Networker => "Networker";
 
         public string CityCulture_LargeFamilies_Description => "Increased child birth";
         public string CityCulture_FertileGround_Description => "Crops give more";
@@ -162,8 +176,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string CityCulture_Miners_Description => "Mines more ore";
         public string CityCulture_Woodcutters_Description => "Trees give more wood";
         public string CityCulture_Builders_Description => "Fast at building";
-        public string CityCulture_CrabMentality_Description => "Cost less energy"; //ingen vill bli expert
+        public string CityCulture_CrabMentality_Description => "Work cost less energy. Cannot produce high skill soldiers."; //ingen vill bli expert
         public string CityCulture_DeepWell_Description => "Water replenish faster";
+        public string CityCulture_Networker_Description => "Efficient postal service";
 
     }
 }

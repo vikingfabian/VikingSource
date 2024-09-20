@@ -131,14 +131,14 @@ namespace VikingEngine.DSSWars.GameObject
                     Ref.TotalGameTimeSec > status.processTimeStartStampSec + status.processTimeLengthSec)
                 {
                     //Work complete
-                    onAsynchWorkComplete(ref status);
+                    onWorkComplete_async(ref status);
                     workerStatuses[i] = status;
                 }
 
             }
         }
 
-        virtual protected void onAsynchWorkComplete(ref WorkerStatus status)
+        virtual protected void onWorkComplete_async(ref WorkerStatus status)
         {  
             throw new NotImplementedException();
         }

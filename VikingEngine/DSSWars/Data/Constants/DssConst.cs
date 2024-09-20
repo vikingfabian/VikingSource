@@ -60,6 +60,7 @@ namespace VikingEngine.DSSWars
         public static float WorkTime_LocalTrade = WorkTime_TrossCityTrade;
         public static float WorkTime_GatherFoil_TreeSoft = 10;
         public static float WorkTime_GatherFoil_TreeHard = 12;
+        public static float WorkTime_GatherFoil_DryWood = 5;
         public static float WorkTime_GatherFoil_FarmCulture = 20;
         public static float WorkTime_GatherFoil_Stones = 5;
         public static float WorkTime_Till = 30;

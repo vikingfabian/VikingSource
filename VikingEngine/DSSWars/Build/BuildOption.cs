@@ -14,28 +14,30 @@ namespace VikingEngine.DSSWars.Build
 {
     class BuildOption
     {
-        public BuildOptionType type;
+        //public BuildOptionType type;
         public int subType;
+        public BuildAndExpandType buildType;
         public CraftBlueprint blueprint;
-        static int NextIndex = 0;
-        public int index;
+        public TerrainMainType mainType;
+        //static int NextIndex = 0;
+        //public int index;
 
-        public BuildOption(BuildOptionType type, int subType, CraftBlueprint blueprint)
+        public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, CraftBlueprint blueprint)
         {
-            index = NextIndex;
-            ++NextIndex;
-
-            this.type = type;
-            this.subType = subType;
+            this.buildType = buildType;
             this.blueprint = blueprint;
+            this.mainType = mainType;
+            this.subType = subType;
+
+            BuildLib.BuildOptions[(int)buildType] = this;
         }
         public string Label()
         {
-            switch (type)
+            switch (mainType)
             {
-                case BuildOptionType.Building:
+                case TerrainMainType.Building:
                     return ((TerrainBuildingType)subType).ToString();
-                case BuildOptionType.Farm:
+                case TerrainMainType.Foil:
                     return ((TerrainSubFoilType)subType).ToString();
             }
 
@@ -43,11 +45,11 @@ namespace VikingEngine.DSSWars.Build
         }
         public string Description()
         {
-            switch (type)
+            switch (mainType)
             {
-                case BuildOptionType.Building:
+                case TerrainMainType.Building:
                     return LangLib.BuildingDescription((TerrainBuildingType)subType);
-                case BuildOptionType.Farm:
+                case TerrainMainType.Foil:
                     return "Grow a resource";
             }
 
@@ -56,41 +58,43 @@ namespace VikingEngine.DSSWars.Build
 
         public void execute_async(City city, IntVector2 subPos, ref SubTile subTile)
         {
-            switch (type)
+            //switch (type)
+            //{
+            //    case BuildOptionType.Building:
+                    subTile.SetType(mainType, subType, 1);
+
+            if (mainType == TerrainMainType.Building)
             {
-                case BuildOptionType.Building:
-                    subTile.SetType(TerrainMainType.Building, subType, 1);
+                switch ((TerrainBuildingType)subType)
+                {
+                    case TerrainBuildingType.WorkerHut:
+                        city.onWorkHutBuild();
+                        break;
 
-                    switch ((TerrainBuildingType)subType)
-                    {
-                        case TerrainBuildingType.WorkerHut:
-                            city.onWorkHutBuild();
-                            break;
+                    case TerrainBuildingType.Barracks:
+                        Ref.update.AddSyncAction(new SyncAction1Arg<IntVector2>(city.addBarracks, subPos));
+                        break;
 
-                        case TerrainBuildingType.Barracks:
-                            Ref.update.AddSyncAction(new SyncAction1Arg<IntVector2>(city.addBarracks, subPos));
-                            break;
+                    case TerrainBuildingType.Postal:
+                        Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, bool>(city.addDelivery, subPos, false));
+                        break;
 
-                        case TerrainBuildingType.Postal:
-                            Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, bool>(city.addDelivery, subPos, false));
-                            break;
-
-                        case TerrainBuildingType.Recruitment:
-                            Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, bool>(city.addDelivery, subPos, true));
-                            break;
-                    }
-                    break;
-                case BuildOptionType.Farm:
-                    subTile.SetType(TerrainMainType.Foil, subType, 1);
-                    break;
+                    case TerrainBuildingType.Recruitment:
+                        Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, bool>(city.addDelivery, subPos, true));
+                        break;
+                }
             }
+            //    case BuildOptionType.Farm:
+            //        subTile.SetType(TerrainMainType.Foil, subType, 1);
+            //        break;
+            //}
             blueprint.craft(city);
         }
     }
 
-    enum BuildOptionType
-    {
-        Building,
-        Farm,
-    }
+    //enum BuildOptionType
+    //{
+    //    Building,
+    //    Farm,
+    //}
 }

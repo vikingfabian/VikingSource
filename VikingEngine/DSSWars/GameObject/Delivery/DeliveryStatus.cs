@@ -107,7 +107,12 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
         {
             City othercity = DssRef.world.cities[toCity];
             float distance = VectorExt.Length((othercity.tilePos - from.tilePos).Vec);
-            return new TimeLength(distance / DssVar.Men_StandardWalkingSpeed_PerSec);
+            float time = distance / DssVar.Men_StandardWalkingSpeed_PerSec;
+            if (from.Culture == CityCulture.Networker)
+            {
+                time *= 0.5f;
+            }
+            return new TimeLength(time);
         }
 
     }

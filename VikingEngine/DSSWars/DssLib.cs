@@ -14,6 +14,8 @@ namespace VikingEngine.DSSWars
 {
     static class DssLib
     {
+        public const bool UseLocalTrading = false;
+
         public static readonly string ContentDir = "DSS" + DataStream.FilePath.Dir;
         public static readonly string StoryContentDir = ContentDir + "Story" + DataStream.FilePath.Dir;
 
@@ -170,7 +172,8 @@ namespace VikingEngine.DSSWars
         Woodcutters,//
         Builders,//
         CrabMentality,// //ingen vill bli expert
-        DeepWell,
+        DeepWell,//
+        Networker,
         NUM_NONE
     }
 }

@@ -202,6 +202,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             switch (item.type)
             {
+                case ItemResourceType.DryWood:
                 case ItemResourceType.SoftWood:
                 case  ItemResourceType.HardWood:
                     wood.add(item);
@@ -232,7 +233,6 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
 
                 case ItemResourceType.IronOre_G:
-                    //ore.add(item);
                     {
                         var price = item.amount * DssConst.IronSellValue;
                         faction.gold += price;

@@ -141,7 +141,9 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case DSSWars.CityCulture.Miners: return title ? DssRef.todoLang.CityCulture_Miners : DssRef.todoLang.CityCulture_Miners_Description;
                 case DSSWars.CityCulture.Warriors: return title ? DssRef.todoLang.CityCulture_Warriors : DssRef.todoLang.CityCulture_Warriors_Description;
                 case DSSWars.CityCulture.Woodcutters: return title ? DssRef.todoLang.CityCulture_Woodcutters : DssRef.todoLang.CityCulture_Woodcutters_Description;
-                
+                case DSSWars.CityCulture.Networker: return title ? DssRef.todoLang.CityCulture_Networker : DssRef.todoLang.CityCulture_Networker_Description;
+
+
                 default: return TextLib.Error;
             }
         }

@@ -11,6 +11,8 @@ namespace VikingEngine.DSSWars.Map
         public const int TreeMaxSize = 100;
         public const int TreeReadySize = 50;
 
+        //public const int DryWoodSize = 20;
+
         public const int FarmCulture_Empty = 0;
         public const int FarmCulture_MaxSize = 5;        
         public const int FarmCulture_ReadySize = FarmCulture_MaxSize - 1;
@@ -102,15 +104,20 @@ namespace VikingEngine.DSSWars.Map
                     }
                     break;
                 case TerrainBuildingType.HenPen:
+                    const int EggGroupCount = 5;
+
                     if (subtile.terrainAmount > 0)
                     {
-                        DssRef.state.resources.addItem(
-                            new ItemResource(
-                                ItemResourceType.Egg,
-                                1,
-                                subtile.terrainAmount * 4,
-                                subtile.terrainAmount),
-                            ref subtile.collectionPointer);
+                        if (Ref.rnd.Chance(1.0 / EggGroupCount))
+                        {
+                            DssRef.state.resources.addItem(
+                                new ItemResource(
+                                    ItemResourceType.Egg,
+                                    1,
+                                    subtile.terrainAmount * 4,
+                                    subtile.terrainAmount * EggGroupCount),
+                                ref subtile.collectionPointer);
+                        }
                     }
                     if (subtile.terrainAmount < HenMaxTotal)
                     {
@@ -204,9 +211,23 @@ namespace VikingEngine.DSSWars.Map
                     if (treenoise < percTree && treenoise < world.rnd.Double(percTree * 2f))
                     {
                         int size = (int)((1.0 - Math.Min(treenoise, world.rnd.Double())) * TreeMaxSize);
+                                                
+                        TerrainSubFoilType treeType;
+                        if (world.rnd.Chance(biom.percDryWood))
+                        {
+                            treeType = TerrainSubFoilType.DryWood;
+                            size /= 3;
+                        }
+                        else if (world.rnd.Chance(biom.percSoftTree))
+                        {
+                            treeType = TerrainSubFoilType.TreeSoft;
+                        }
+                        else
+                        {
+                            treeType = TerrainSubFoilType.TreeHard;
+                        }
 
-                        bool soft = world.rnd.Chance(biom.percSoftTree);
-                        subTile.SetType(TerrainMainType.Foil, (int)(soft? TerrainSubFoilType.TreeSoft : TerrainSubFoilType.TreeHard), size);
+                        subTile.SetType(TerrainMainType.Foil, (int)treeType, size);
                     }
 
                 }
