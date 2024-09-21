@@ -158,6 +158,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                                 switch (building)
                                 {
+                                    case TerrainBuildingType.Brewery:
                                     case TerrainBuildingType.Work_Cook:
                                         SoundLib.genericWork.Play(model.position);
                                         break;

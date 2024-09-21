@@ -310,21 +310,26 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         //    break;
 
                         ItemResourceType item = (ItemResourceType)workSubType;
-                        var bp = ResourceLib.Blueprint(item);
-                        var add = bp.craft(city);
+                        ResourceLib.Blueprint(item, out var bp1, out var bp2);
+                        //var bp = ResourceLib.Blueprint(item);
 
-                        if (item == ItemResourceType.Food_G)
+                        int add = bp1.tryCraft(city);
+                        if (add == 0 && bp2 != null)
                         {
-                            city.foodProduction.add(add);
+                            add = bp2.tryCraft(city);
                         }
 
-                        var cityResources = city.GetGroupedResource(item);
-                        cityResources.amount += add;
-                        city.SetGroupedResource(item, cityResources);
+                        if (add > 0)
+                        {
+                            if (item == ItemResourceType.Food_G)
+                            {
+                                city.foodProduction.add(add);
+                            }
 
-                        tryRepeatWork = bp.canCraft(city);
-                        //city.craftItem(building, out tryRepeatWork);
-                        //work = WorkType.Idle;
+                            city.AddGroupedResource(item, add);
+
+                            tryRepeatWork = bp1.canCraft(city);
+                        }
                     }
                     break;
 
@@ -403,10 +408,15 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case WorkType.Craft:
                     {
                         ItemResourceType item = (ItemResourceType)subWork;
-                        var bp = ResourceLib.Blueprint(item);
-                        if (bp.available(city))
+                       ResourceLib.Blueprint(item, out var bp1, out var bp2);
+                        if (bp1.available(city))
                         {
-                            bp.createBackOrder(city);
+                            bp1.createBackOrder(city);
+                            return true;
+                        }
+                        else if (bp2 != null && bp2.available(city))
+                        {
+                            bp2.createBackOrder(city);
                             return true;
                         }
                         else
@@ -515,7 +525,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         case TerrainSubFoilType.StoneBlock:
                             return DssConst.WorkTime_GatherFoil_Stones;
                         default:
-                            throw new NotImplementedException();
+                            return -1;//throw new NotImplementedException();
                     }
                 case WorkType.Till:
                     return DssConst.WorkTime_Till;

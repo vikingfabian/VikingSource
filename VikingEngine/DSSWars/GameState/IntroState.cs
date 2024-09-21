@@ -11,6 +11,7 @@ using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.SteamWrapping;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.GameObject.Resource;
+using VikingEngine.DSSWars.Build;
 
 namespace VikingEngine.DSSWars
 {
@@ -81,7 +82,7 @@ namespace VikingEngine.DSSWars
 
                 new MapSettings();
                 Map.Tile.Init();
-            
+                BuildLib.Init();
                 //new Network.Session();
             }
         }

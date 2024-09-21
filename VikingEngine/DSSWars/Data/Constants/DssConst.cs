@@ -1,6 +1,7 @@
 ﻿
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.GameObject;
+using System;
 
 namespace VikingEngine.DSSWars
 {
@@ -42,6 +43,16 @@ namespace VikingEngine.DSSWars
         public static float Livestock_WalkingSpeed = Men_StandardWalkingSpeed * 0.2f;
 
         //CITY
+        public static int SmallCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 5);
+        public static int LargeCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 7);
+        public static int HeadCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 10);
+
+        public static int Maxwater_SmallCity = 5;
+        public static int Maxwater_LargeCity= 8;
+        public static int Maxwater_HeadCity = 10;
+
+        public static int Maxwater_RandomAdd = 2;
+
         public static int Maxwater = 10;
         public static int ExpandWorkForce = SoldierGroup_DefaultCount * 4;
         public static int ExpandGuardSize = SoldierGroup_DefaultCount;

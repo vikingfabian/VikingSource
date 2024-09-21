@@ -331,14 +331,16 @@ namespace VikingEngine.DSSWars.Display
                 content.space();
                 HudLib.PerSecondInfo(player, content, false);
 
-                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.todoLang.Economy_LocalCityTrade_Export, faction.CityTradeExport));
-                content.space();
-                HudLib.PerSecondInfo(player, content, false);
+                if (DssLib.UseLocalTrading)
+                {
+                    content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.todoLang.Economy_LocalCityTrade_Export, faction.CityTradeExport));
+                    content.space();
+                    HudLib.PerSecondInfo(player, content, false);
 
-                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.todoLang.Economy_LocalCityTrade_Import, faction.CityTradeImport));
-                content.space();
-                HudLib.PerSecondInfo(player, content, false);
-
+                    content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.todoLang.Economy_LocalCityTrade_Import, faction.CityTradeImport));
+                    content.space();
+                    HudLib.PerSecondInfo(player, content, false);
+                }
                 content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.todoLang.Economy_SoldResources, faction.CitySoldResources));
                 content.space();
                 HudLib.PerSecondInfo(player, content, false);

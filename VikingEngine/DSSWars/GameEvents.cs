@@ -134,7 +134,7 @@ namespace VikingEngine.DSSWars
                         };
 
                         nextTotalGameTimeMin = timeMinutes[(int)DssRef.difficulty.bossTimeSettings];
-                        nextExpectedPlayerSize = new IntervalF(DssLib.HeadCityStartMaxWorkForce * 2f, DssLib.HeadCityStartMaxWorkForce * 4f);
+                        nextExpectedPlayerSize = new IntervalF(DssConst.HeadCityStartMaxWorkForce * 2f, DssConst.HeadCityStartMaxWorkForce * 4f);
                     }
                     break;
                 case EventType.DarkLordWarning:
@@ -149,7 +149,7 @@ namespace VikingEngine.DSSWars
                         };
 
                         nextTotalGameTimeMin = timeMinutes[(int)DssRef.difficulty.bossTimeSettings];
-                        nextExpectedPlayerSize = new IntervalF(DssLib.HeadCityStartMaxWorkForce * 4f, DssLib.HeadCityStartMaxWorkForce * 8f);
+                        nextExpectedPlayerSize = new IntervalF(DssConst.HeadCityStartMaxWorkForce * 4f, DssConst.HeadCityStartMaxWorkForce * 8f);
                     }
                     break;
                 case EventType.DarkLord:

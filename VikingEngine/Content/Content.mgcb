@@ -1093,6 +1093,9 @@
 #begin VoxelModel/LfWars/cityicon.vox
 /copy:VoxelModel/LfWars/cityicon.vox
 
+#begin VoxelModel/LfWars/decor_statue.vox
+/copy:VoxelModel/LfWars/decor_statue.vox
+
 #begin VoxelModel/LfWars/fo_stone1.vox
 /copy:VoxelModel/LfWars/fo_stone1.vox
 
@@ -1116,6 +1119,9 @@
 
 #begin VoxelModel/LfWars/fol_tallgrass.vox
 /copy:VoxelModel/LfWars/fol_tallgrass.vox
+
+#begin VoxelModel/LfWars/fol_tree_dry.vox
+/copy:VoxelModel/LfWars/fol_tree_dry.vox
 
 #begin VoxelModel/LfWars/fol_tree_hard.vox
 /copy:VoxelModel/LfWars/fol_tree_hard.vox

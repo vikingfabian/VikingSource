@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Text;
+using System.Xml.Linq;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Display.Translation;
@@ -97,11 +98,14 @@ namespace VikingEngine.DSSWars.Display
         {
             content.Add(new RichBoxSeperationLine());
 
-            content.h1("Resources");
+            content.h1(DssRef.todoLang.MenuTab_Resources);
             content.newLine();
 
             // content.text("Water: " + water.ToString());
-            city.water.toMenu(content, DssRef.todoLang.Resource_TypeName_Water);
+            //city.water.toMenu(content, DssRef.todoLang.Resource_TypeName_Water);
+            
+            content.text(DssRef.todoLang.Resource_TypeName_Water + ": " + string.Format(DssRef.todoLang.Language_CollectProgress, city.water.amount, city.maxWater));
+            city.beer.toMenu(content, DssRef.todoLang.Resource_TypeName_Beer);
             city.wood.toMenu(content, DssRef.todoLang.Resource_TypeName_Wood);
             city.stone.toMenu(content, DssRef.todoLang.Resource_TypeName_Stone);
             city.rawFood.toMenu(content, DssRef.todoLang.Resource_TypeName_RawFood);
@@ -111,7 +115,10 @@ namespace VikingEngine.DSSWars.Display
             content.newParagraph();
 
             city.food.toMenu(content, DssRef.todoLang.Resource_TypeName_Food);
-            blueprintButton(player, content, ResourceLib.CraftFood);
+            blueprintButton(player, content, ResourceLib.CraftFood1, ResourceLib.CraftFood2);
+
+            city.food.toMenu(content, DssRef.todoLang.Resource_TypeName_Beer);
+            blueprintButton(player, content, ResourceLib.CraftBeer);
 
             city.iron.toMenu(content, DssRef.todoLang.Resource_TypeName_Iron);
             blueprintButton(player, content, ResourceLib.CraftIron);
@@ -135,39 +142,34 @@ namespace VikingEngine.DSSWars.Display
             blueprintButton(player, content, ResourceLib.CraftHeavyArmor);
 
             content.newParagraph();
-            //content.h2("Crafting blueprints");
-            //ResourceLib.CraftFood.toMenu(content);
-            //ResourceLib.CraftIron.toMenu(content);
-            //ResourceLib.CraftSharpStick.toMenu(content);
-            //ResourceLib.CraftSword.toMenu(content);
-            //ResourceLib.CraftBow.toMenu(content);
-            //ResourceLib.CraftLightArmor.toMenu(content);
-            //ResourceLib.CraftMediumArmor.toMenu(content);
-            //ResourceLib.CraftHeavyArmor.toMenu(content);
-
-            //ResourceLib.CraftWorkerHut.toMenu(content);
-            //content.text("1 iron => " + DssConst.IronSellValue.ToString() + "gold");
+            
             content.text("1 gold ore => " + DssConst.GoldOreSellValue.ToString() + "gold");
             content.text("1 food => " + DssConst.FoodEnergy + " energy (seconds of work)");
         }
 
-        void blueprintButton(LocalPlayer player, RichBoxContent content, CraftBlueprint blueprint)
+        void blueprintButton(LocalPlayer player, RichBoxContent content, CraftBlueprint blueprint, CraftBlueprint optionalBp = null)
         {
             content.space();
 
-            RichBoxText B = new RichBoxText(" B ");
+            RichBoxText B = new RichBoxText(DssRef.todoLang.Blueprint_LetterSymbol);
             B.overrideColor = Color.Blue;
 
             content.Add(new RichboxButton(new List<AbsRichBoxMember> { B },
-               null, new RbAction1Arg<CraftBlueprint>(blueprintTooltip, blueprint)));
+               null, new RbAction2Arg<CraftBlueprint, CraftBlueprint>(blueprintTooltip, blueprint, optionalBp)));
+
         }
 
-        void blueprintTooltip(CraftBlueprint blueprint)
+        void blueprintTooltip(CraftBlueprint blueprint, CraftBlueprint optionalBp)
         {
             //hover
             RichBoxContent content = new RichBoxContent();
-            content.h2("Craft blueprint");
+            content.h2(DssRef.todoLang.Blueprint_Title);
             blueprint.toMenu(content);
+            if (optionalBp != null)
+            { 
+                content.newLine();
+                optionalBp.toMenu(content);
+            }
 
             player.hud.tooltip.create(player, content, true);
         }

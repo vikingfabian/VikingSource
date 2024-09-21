@@ -15,8 +15,8 @@ namespace VikingEngine.DSSWars.Map
         Foil,
         Mine,
         Resourses,
-        //Terrain,
         Building,
+        Decor,
         NUM
     }
 
@@ -58,6 +58,7 @@ namespace VikingEngine.DSSWars.Map
         Square,
         CobbleStones,
         WorkerHut,
+        Brewery,
         Work_Cook,
         Work_Smith,
         PigPen,
@@ -66,6 +67,13 @@ namespace VikingEngine.DSSWars.Map
         Postal,
         Recruitment,
         Barracks,
+        
+        NUM_NONE
+    }
+
+    enum TerrainDecorType
+    {
+        Statue_ThePlayer,
         NUM_NONE
     }
 

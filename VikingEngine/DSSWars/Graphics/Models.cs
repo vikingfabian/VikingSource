@@ -97,6 +97,8 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.city_recruitment, false);
             loadVoxelModel(VoxelModelName.city_barracks, false);
 
+            loadVoxelModel(VoxelModelName.decor_statue, false);
+
             loadVoxelModel(VoxelModelName.Pig, false);
             loadVoxelModel(VoxelModelName.Hen, false);
             loadVoxelModel(VoxelModelName.Arrow, true);

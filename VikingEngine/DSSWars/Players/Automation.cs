@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.HUD.RichBox;
 
@@ -12,9 +13,19 @@ namespace VikingEngine.DSSWars.Players
 {
     class Automation
     {
+        static readonly Build.BuildAndExpandType[] AutoBuildOptions =
+            {
+                Build.BuildAndExpandType.WorkerHuts,
+                Build.BuildAndExpandType.WheatFarms,
+                Build.BuildAndExpandType.LinnenFarms,
+                Build.BuildAndExpandType.PigPen,
+                Build.BuildAndExpandType.HenPen,
+            };
+
         Players.LocalPlayer player;
         bool autoRecruit= false;
-        bool autoExpandCity = false;
+        bool autoBuild = false;
+        bool autoBuild_intelligent = true;
         bool autoExpandGuard = false;
         bool autoNobelhouse = false;
         bool autoRepair = false;
@@ -25,6 +36,8 @@ namespace VikingEngine.DSSWars.Players
         UnitType recruitType = UnitType.NULL;
         int recruitCount = 0;
 
+        Build.BuildAndExpandType autoBuildType = Build.BuildAndExpandType.WorkerHuts;
+
         public Automation(Players.LocalPlayer player)
         {
             this.player = player;
@@ -32,38 +45,35 @@ namespace VikingEngine.DSSWars.Players
 
         public void writeGameState(BinaryWriter w)
         {
-            w.Write(autoRecruit);
+            //w.Write(autoRecruit);
             w.Write(autoRepair);
-            w.Write(autoExpandCity);
+            w.Write(autoBuild);
+            w.Write(autoBuild_intelligent);
+            w.Write((byte)autoBuildType);
             w.Write(autoExpandGuard);
             w.Write(autoNobelhouse);
 
-            foreach (var recruit in recruitAmount)
-            {
-                w.Write((byte)recruit);
-            }
+            //foreach (var recruit in recruitAmount)
+            //{
+            //    w.Write((byte)recruit);
+            //}
         }
 
         public void readGameState(BinaryReader r, int subVersion)
         {
-            autoRecruit = r.ReadBoolean();
+            //autoRecruit = r.ReadBoolean();
 
-            if (subVersion >= 4)
-            {
-                autoRepair = r.ReadBoolean();
-            }
-
-            autoExpandCity = r.ReadBoolean();
-            if (subVersion >= 8)
-            {
-                autoExpandGuard = r.ReadBoolean();
-            }
+            autoRepair = r.ReadBoolean();
+            autoBuild = r.ReadBoolean();
+            autoBuild_intelligent = r.ReadBoolean();
+            autoBuildType = (Build.BuildAndExpandType)r.ReadByte();
+            autoExpandGuard = r.ReadBoolean();            
             autoNobelhouse = r.ReadBoolean();
 
-            for (int i =0; i< recruitAmount.Length;++i)
-            {
-                recruitAmount[i] = r.ReadByte();
-            }
+            //for (int i =0; i< recruitAmount.Length;++i)
+            //{
+            //    recruitAmount[i] = r.ReadByte();
+            //}
         }
 
         bool AutoRecruitProperty(int index, bool set, bool value)
@@ -75,13 +85,21 @@ namespace VikingEngine.DSSWars.Players
             return autoRecruit;
         }
 
-        bool AutoExpandCityProperty(int index, bool set, bool value)
+        bool AutoBuildProperty(int index, bool set, bool value)
         {
             if (set)
             {
-                autoExpandCity = value;
+                autoBuild = value;
             }
-            return autoExpandCity;
+            return autoBuild;
+        }
+        bool AutoBuildIntelligentProperty(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                autoBuild_intelligent = value;
+            }
+            return autoBuild_intelligent;
         }
 
         bool AutoExpandGuardProperty(int index, bool set, bool value)
@@ -128,12 +146,36 @@ namespace VikingEngine.DSSWars.Players
             //    {
             //        new RichBoxText( DssRef.lang.UnitType_Recruit),
             //    }, AutoRecruitProperty));
-                        
+
             //for (int i = 0; i < DssLib.AvailableUnitTypes.Length; i++)
             //{
             //    content.PlusMinusInt(SpriteName.WarsGroupIcon, DssLib.AvailableUnitTypes[i].ToString(), RecruitAmountProperty, i);
             //}
 
+            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
+                {
+                    new RichBoxText( DssRef.todoLang.CityOption_AutoBuild),
+                }, AutoBuildProperty));
+            content.newLine();
+
+            if (autoBuild)
+            {
+                content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
+                {
+                    new RichBoxText(DssRef.todoLang.CityOption_AutoBuild_Intelligent),
+                }, AutoBuildIntelligentProperty));
+
+                content.newLine();
+                foreach (var opt in AutoBuildOptions)
+                {
+                    var optButton = new RichboxButton(new List<AbsRichBoxMember> {
+                    new RichBoxText(BuildLib.BuildOptions[(int)opt].Label())
+                    }, new RbAction1Arg<Build.BuildAndExpandType>(selectBuildOption, opt));
+                        optButton.setGroupSelectionColor(HudLib.RbSettings, opt == autoBuildType);
+                    content.Add(optButton);
+                    content.space();
+                }
+            }
             content.newParagraph();
 
             content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
@@ -213,7 +255,7 @@ namespace VikingEngine.DSSWars.Players
                                     return;
                                 }
 
-                                if (autoExpandCity && citiesC.sel.canExpandWorkForce(1))
+                                if (autoBuild && citiesC.sel.canExpandWorkForce(1))
                                 {
                                     cityAction = citiesC.sel;
                                     automationAction = AutomationAction.ExpandWorkforce;
@@ -267,6 +309,11 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        void selectBuildOption(Build.BuildAndExpandType opt)
+        {
+            autoBuildType = opt;
+        }
+
         public void oneSecondUpdate()
         {
             switch (automationAction)
@@ -277,12 +324,12 @@ namespace VikingEngine.DSSWars.Players
                 case AutomationAction.Repair:
                     cityAction.buyRepair(true, true);
                     break;
-                case AutomationAction.ExpandWorkforce:
-                    cityAction.buyWorkforce(true, 1);
-                    break;
-                case AutomationAction.Recruit:
-                    cityAction.buySoldiersAction(recruitType, recruitCount, null);
-                    break;
+                //case AutomationAction.ExpandWorkforce:
+                //    cityAction.buyWorkforce(true, 1);
+                //    break;
+                //case AutomationAction.Recruit:
+                //    cityAction.buySoldiersAction(recruitType, recruitCount, null);
+                //    break;
                 case AutomationAction.GuardSize:
                     cityAction.buyCityGuards(true, 1);
                     break;
@@ -291,6 +338,19 @@ namespace VikingEngine.DSSWars.Players
             cityAction = null;
             automationAction = AutomationAction.ProcessReady;
 
+        }
+
+        public Build.BuildAndExpandType AutoExpandType(out bool intelligent)
+        {
+            intelligent = autoBuild_intelligent;
+            if (autoBuild)
+            {
+                return autoBuildType;
+            }
+            else
+            { 
+                return Build.BuildAndExpandType.NUM_NONE;
+            }
         }
     }
 

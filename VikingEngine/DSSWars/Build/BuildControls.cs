@@ -18,13 +18,19 @@ namespace VikingEngine.DSSWars.Build
     {
          
         public SelectTileResult buildMode = SelectTileResult.None;
-        public BuildOption placeBuildingType = BuildLib.BuildOptions[0];
+        //public BuildOption placeBuildingType = BuildLib.BuildOptions[0];
+        public BuildAndExpandType placeBuildingType = BuildAndExpandType.WorkerHuts;
 
         LocalPlayer player;
 
         public BuildControls(LocalPlayer player) 
         { 
             this.player = player;
+        }
+
+        public BuildOption placeBuildingOption()
+        {
+            return BuildLib.BuildOptions[(int)placeBuildingType];
         }
 
         public void onTileSelect(SelectedSubTile selectedSubTile)
@@ -35,7 +41,7 @@ namespace VikingEngine.DSSWars.Build
                 if (mayBuild == MayBuildResult.Yes || mayBuild == MayBuildResult.Yes_ChangeCity)
                 {
                     //create build order
-                    player.addOrder(new BuildOrder(10, true, selectedSubTile.city, selectedSubTile.subTilePos, player.BuildControls.placeBuildingType.index));
+                    player.addOrder(new BuildOrder(10, true, selectedSubTile.city, selectedSubTile.subTilePos, placeBuildingType));
                 }
             }            
         }
@@ -43,11 +49,11 @@ namespace VikingEngine.DSSWars.Build
         public void toHud(RichBoxContent content)
         {     
             content.newParagraph();
-            foreach (var opt in BuildLib.BuildOptions)
+            foreach (var opt in BuildLib.AvailableBuildTypes)
             {
-                var button = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(opt.Label()) },
-                new RbAction1Arg<int>(buildingTypeClick, opt.index),
-                new RbAction1Arg<int>(buildingTooltip, opt.index));
+                var button = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(BuildLib.BuildOptions[(int)opt].Label()) },
+                new RbAction1Arg<BuildAndExpandType>(buildingTypeClick, opt),
+                new RbAction1Arg<BuildAndExpandType>(buildingTooltip, opt));
                 button.setGroupSelectionColor(HudLib.RbSettings, buildMode == SelectTileResult.Build && placeBuildingType == opt);
                 content.Add(button);
                 content.space();
@@ -88,18 +94,18 @@ namespace VikingEngine.DSSWars.Build
             buildMode = set;
         }
 
-        void buildingTypeClick(int index)
+        void buildingTypeClick(BuildAndExpandType type)
         {
             buildMode = SelectTileResult.Build;
-            placeBuildingType = BuildLib.BuildOptions[index];
+            placeBuildingType = type;
         }
 
-        void buildingTooltip(int index)
+        void buildingTooltip(BuildAndExpandType type)
         {
             RichBoxContent content = new RichBoxContent();
 
             //content.h2(index.ToString());
-            var build = BuildLib.BuildOptions[index];
+            var build = BuildLib.BuildOptions[(int)type];
 
             HudLib.Description(content, build.Description());
             //CraftBlueprint blueprint = ResourceLib.Blueprint(index);

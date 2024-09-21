@@ -16,6 +16,7 @@ using System.IO;
 using Microsoft.Xna.Framework.Input;
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.ToGG;
+using VikingEngine.DSSWars.Build;
 
 namespace VikingEngine.DSSWars.Players
 {    
@@ -235,6 +236,22 @@ namespace VikingEngine.DSSWars.Players
             {
                 toPlayerDiplomacies = new PlayerToPlayerDiplomacy[numPlayers];
             }
+
+            if (StartupSettings.EndlessResources)
+            {
+                foreach (var c in faction.cities.Array)
+                {
+                    if (c != null)
+                    {
+                        foreach (var type in City.MovableCityResourceTypes)
+                        {
+                            var res = c.GetGroupedResource(type);
+                            res.amount += 1000;
+                            c.SetGroupedResource(type, res);
+                        }
+                    }
+                }
+            }
             //initPlayerToPlayer(playerindex, numPlayers);
         }
 
@@ -352,8 +369,9 @@ namespace VikingEngine.DSSWars.Players
                                     {
                                         var aiPlayer = otherfaction.player.GetAiPlayer();
                                         if (aiPlayer.aggressionLevel <= AiPlayer.AggressionLevel1_RevengeOnly)
-                                        { 
+                                        {
                                             aiPlayer.aggressionLevel = AiPlayer.AggressionLevel2_RandomAttacks;
+                                            aiPlayer.refreshAggression();
                                         }
                                         DssRef.diplomacy.declareWar(otherfaction, faction);
                                         return;
@@ -567,19 +585,33 @@ namespace VikingEngine.DSSWars.Players
         public void debugMenu(GuiLayout layout)
         {
             new GuiTextButton("Next event", "skip forward in the event timer", new GuiAction(new Action(DssRef.state.events.TestNextEvent) + DssRef.state.menuSystem.closeMenu), false, layout);
+            new GuiTextButton("1000 resources", "add 1000 of all resources to all cities", new GuiAction(new Action(debugAddResources) + DssRef.state.menuSystem.closeMenu), false, layout);
 
-            UnitType[] unitTypes = DssLib.AvailableUnitTypes;
-            foreach (var type in unitTypes)
-            { 
-                new GuiTextButton("Battle test - " + type.ToString() + " (Land)", null, 
-                    new GuiAction2Arg<UnitType, bool>(battleLineTest,type,false), false, layout);
-            }
+            //UnitType[] unitTypes = DssLib.AvailableUnitTypes;
+            //foreach (var type in unitTypes)
+            //{ 
+            //    new GuiTextButton("Battle test - " + type.ToString() + " (Land)", null, 
+            //        new GuiAction2Arg<UnitType, bool>(battleLineTest,type,false), false, layout);
+            //}
 
-            foreach (var type in unitTypes)
+            //foreach (var type in unitTypes)
+            //{
+            //    new GuiTextButton("Battle test - " + type.ToString() + " (Sea)", null,
+            //        new GuiAction2Arg<UnitType, bool>(battleLineTest, type, true), false, layout);
+            //}
+        }
+
+        void debugAddResources()
+        {
+            foreach (var c in DssRef.world.cities)
             {
-                new GuiTextButton("Battle test - " + type.ToString() + " (Sea)", null,
-                    new GuiAction2Arg<UnitType, bool>(battleLineTest, type, true), false, layout);
-            }
+                foreach (var type in City.MovableCityResourceTypes)
+                {
+                    var res = c.GetGroupedResource(type);
+                    res.amount += 1000;
+                    c.SetGroupedResource(type, res);
+                }
+            } 
         }
 
         void battleLineTest(UnitType type, bool sea)
@@ -1040,6 +1072,11 @@ namespace VikingEngine.DSSWars.Players
             }
 
             automation.oneSecondUpdate();
+        }
+
+        public override BuildAndExpandType AutoExpandType(City city, out bool intelligent)
+        {
+            return automation.AutoExpandType(out intelligent);
         }
 
         public bool IsLocalHost()

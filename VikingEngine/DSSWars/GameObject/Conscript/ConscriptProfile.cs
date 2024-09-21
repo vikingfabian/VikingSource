@@ -101,6 +101,8 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             }
             return string.Format(DssRef.todoLang.Conscription_Status_Training, remaining);
         }
+
+
     }
 
     struct SoldierProfile

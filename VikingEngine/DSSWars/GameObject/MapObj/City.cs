@@ -640,20 +640,28 @@ namespace VikingEngine.DSSWars.GameObject
                 switch (CityType)
                 {
                     case CityType.Small:
-                        workForceMax = DssLib.SmallCityStartMaxWorkForce;
+                        workForceMax = DssConst.SmallCityStartMaxWorkForce;
+                        maxWater = DssConst.Maxwater_SmallCity;
                         break;
                     case CityType.Large:
                         //workForce.value = DssLib.LargeCityStartWorkForce;
-                        workForceMax = DssLib.LargeCityStartMaxWorkForce;
+                        workForceMax = DssConst.LargeCityStartMaxWorkForce;
+                        maxWater = DssConst.Maxwater_LargeCity;
                         break;
                     default:
                         //workForce.value = DssLib.HeadCityStartWorkForce;
-                        workForceMax = DssLib.HeadCityStartMaxWorkForce;
+                        workForceMax = DssConst.HeadCityStartMaxWorkForce;
+                        maxWater = DssConst.Maxwater_HeadCity;
                         nobelHouse = true;
                         break;
                 }
                 workForce = (int)(workForceMax * 0.75);
+                maxWater += Ref.rnd.Int(DssConst.Maxwater_RandomAdd + 1);
 
+                if (Culture == CityCulture.DeepWell)
+                {
+                    maxWater += DssConst.Maxwater_SmallCity;
+                }
 
             }
             if (newGame || maxEpandWorkSize == 0)
@@ -678,11 +686,11 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 CityType newType;
 
-                if (workForceMax >= DssLib.HeadCityStartMaxWorkForce)
+                if (workForceMax >= DssConst.HeadCityStartMaxWorkForce)
                 {
                     newType = CityType.Head;
                 }
-                else if (workForceMax >= DssLib.LargeCityStartMaxWorkForce)
+                else if (workForceMax >= DssConst.LargeCityStartMaxWorkForce)
                 {
                     newType = CityType.Large;
                 }
@@ -716,7 +724,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     CityType = CityType.Factory;
 
-                    workForceMax += DssLib.HeadCityStartMaxWorkForce;
+                    workForceMax += DssConst.HeadCityStartMaxWorkForce;
                     detailObj.refreshModel();
 
                     if (overviewModel != null)
@@ -733,7 +741,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     CityType = CityType.Large;
 
-                    workForceMax -= DssLib.HeadCityStartMaxWorkForce;
+                    workForceMax -= DssConst.HeadCityStartMaxWorkForce;
                     detailObj.refreshModel();
 
                     if (overviewModel != null)
@@ -937,7 +945,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 waterAddPerSec = 2;
             }
-            water.amount = Math.Min(water.amount + waterAddPerSec, DssConst.Maxwater);
+            water.amount = Math.Min(water.amount + waterAddPerSec, maxWater);
         }
 
         public void asynchGameObjectsUpdate(bool minute)

@@ -18,6 +18,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         public WorkPriority wood = new WorkPriority(2);
         public WorkPriority stone = new WorkPriority(2);
         public WorkPriority craft_food = new WorkPriority(4);
+        public WorkPriority craft_beer = new WorkPriority(1);
         public WorkPriority craft_iron = new WorkPriority(3);
         public WorkPriority craft_sharpstick = new WorkPriority(1);
         public WorkPriority craft_sword = new WorkPriority(0);
@@ -28,8 +29,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         public WorkPriority farming = new WorkPriority(2);
         public WorkPriority mining = new WorkPriority(2);
         public WorkPriority trading = new WorkPriority(2);
-        public WorkPriority expand_housing = new WorkPriority(1);
-        public WorkPriority expand_farms = new WorkPriority(1);
+        public WorkPriority autoBuild = new WorkPriority(1);
 
         public WorkTemplate()
         {
@@ -41,6 +41,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             wood.onFactionValueChange(factionTemplate.wood);
             stone.onFactionValueChange(factionTemplate.stone);
             craft_food.onFactionValueChange(factionTemplate.craft_food);
+            craft_beer.onFactionValueChange(factionTemplate.craft_food);
             craft_iron.onFactionValueChange(factionTemplate.craft_iron);
 
             craft_sharpstick.onFactionValueChange(factionTemplate.craft_sharpstick);
@@ -54,8 +55,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             farming.onFactionValueChange(factionTemplate.farming);
             mining.onFactionValueChange(factionTemplate.mining);
             trading.onFactionValueChange(factionTemplate.trading);
-            expand_housing.onFactionValueChange(factionTemplate.expand_housing);
-            expand_farms.onFactionValueChange(factionTemplate.expand_farms);
+            autoBuild.onFactionValueChange(factionTemplate.autoBuild);
         }
 
         public void changeWorkPrio(int change, WorkPriorityType priorityType)
@@ -64,40 +64,6 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             work.value = Bound.Set(work.value + change, NoPrio, MaxPrio);
             work.followFaction = false;
             SetWorkPriority(priorityType, work);
-            //switch (priorityType)
-            //{
-            //    case WorkPriorityType.move:
-            //        move.value = Bound.Set(move.value + change, MinPrio, MaxPrio);
-            //        break;
-            //    case WorkPriorityType.wood:
-            //        wood.value = Bound.Set(wood.value + change, MinPrio, MaxPrio);
-            //        break;
-            //    case WorkPriorityType.stone:
-            //        stone.value = Bound.Set(stone.value + change, MinPrio, MaxPrio);
-            //        break;
-            //    case WorkPriorityType.craftFood:
-            //        craft_food.value = Bound.Set(craft_food.value + change, MinPrio, MaxPrio);
-            //        break;
-            //    case WorkPriorityType.craftIron:
-            //        craft_iron.value = Bound.Set(craft_iron.value + change, MinPrio, MaxPrio);
-            //        break;
-            //    case WorkPriorityType.farming:
-            //        farming.value = Bound.Set(farming.value + change, MinPrio, MaxPrio);
-            //        break;
-            //    case WorkPriorityType.mining:
-            //        mining.value = Bound.Set(mining.value + change, MinPrio, MaxPrio);
-            //        break;
-            //    case WorkPriorityType.trading:
-            //        trading.value = Bound.Set(trading.value + change, MinPrio, MaxPrio);
-            //        break;
-            //    case WorkPriorityType.expandHousing:
-            //        expand_housing.value = Bound.Set(expand_housing.value + change, MinPrio, MaxPrio);
-            //        break;
-            //    case WorkPriorityType.expandFarms:
-            //        expand_farms.value = Bound.Set(expand_farms.value + change, MinPrio, MaxPrio);
-            //        break;
-
-            //}
         }
 
         public void followFactionClick(WorkPriorityType prioType, WorkTemplate factionTemplate)
@@ -142,6 +108,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     return stone;
                 case WorkPriorityType.craftFood:
                     return craft_food;
+                case WorkPriorityType.craftBeer:
+                    return craft_beer;
                 case WorkPriorityType.craftIron:
                     return craft_iron;
                 case WorkPriorityType.craftSharpStick:
@@ -162,10 +130,10 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                    return mining;
                 case WorkPriorityType.trading:
                     return trading;
-                case WorkPriorityType.expandHousing:
-                    return expand_housing;
-                case WorkPriorityType.expandFarms:
-                    return expand_farms;
+                case WorkPriorityType.autoBuild:
+                    return autoBuild;
+                //case WorkPriorityType.expandFarms:
+                //    return expand_farms;
 
                 default:
                     throw new NotImplementedException();
@@ -188,6 +156,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     break;
                 case WorkPriorityType.craftFood:
                     craft_food = value;
+                    break;
+                case WorkPriorityType.craftBeer:
+                    craft_beer = value;
                     break;
                 case WorkPriorityType.craftIron:
                     craft_iron = value;
@@ -219,11 +190,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case WorkPriorityType.trading:
                     trading = value;
                     break;
-                case WorkPriorityType.expandHousing:
-                    expand_housing = value;
-                    break;
-                case WorkPriorityType.expandFarms:
-                    expand_farms = value;
+                case WorkPriorityType.autoBuild:
+                    autoBuild = value;
                     break;
 
 
@@ -240,6 +208,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             wood.toHud(player, content, string.Format(DssRef.todoLang.Work_GatherXResource, DssRef.todoLang.Resource_TypeName_Wood), WorkPriorityType.wood, faction, city);
             stone.toHud(player, content, string.Format(DssRef.todoLang.Work_GatherXResource, DssRef.todoLang.Resource_TypeName_Stone), WorkPriorityType.stone, faction, city);
             craft_food.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Food), WorkPriorityType.craftFood, faction, city);
+            craft_beer.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Beer), WorkPriorityType.craftBeer, faction, city);
             craft_iron.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Iron), WorkPriorityType.craftIron, faction, city);
 
             craft_sharpstick.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_SharpStick), WorkPriorityType.craftSharpStick, faction, city);
@@ -252,9 +221,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
             farming.toHud(player, content, DssRef.todoLang.Work_Farming, WorkPriorityType.farming, faction, city);
             mining.toHud(player, content, DssRef.todoLang.Work_Mining, WorkPriorityType.mining, faction, city);
-            trading.toHud(player, content, DssRef.todoLang.Work_Trading, WorkPriorityType.trading, faction, city);
-            expand_housing.toHud(player, content, DssRef.todoLang.Work_ExpandHousing, WorkPriorityType.expandHousing, faction, city);
-            expand_farms.toHud(player, content, DssRef.todoLang.Work_ExpandFarms, WorkPriorityType.expandFarms, faction, city);
+            //trading.toHud(player, content, DssRef.todoLang.Work_Trading, WorkPriorityType.trading, faction, city);
+            autoBuild.toHud(player, content, DssRef.todoLang.Work_AutoBuild, WorkPriorityType.autoBuild, faction, city);
+            //expand_farms.toHud(player, content, DssRef.todoLang.Work_ExpandFarms, WorkPriorityType.expandFarms, faction, city);
 
             HudLib.Description( content, string.Format(DssRef.todoLang.Work_OrderPrioDescription, MaxPrio));
         }
@@ -339,6 +308,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         wood,
         stone,
         craftFood,
+        craftBeer,
+
         craftIron,
 
         craftSharpStick,
@@ -352,7 +323,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         farming,
         mining,
         trading,
-        expandHousing,
+        autoBuild,
         expandFarms,
         NUM
     }

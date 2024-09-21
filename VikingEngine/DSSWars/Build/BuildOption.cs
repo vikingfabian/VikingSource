@@ -15,10 +15,11 @@ namespace VikingEngine.DSSWars.Build
     class BuildOption
     {
         //public BuildOptionType type;
-        public int subType;
+        
         public BuildAndExpandType buildType;
         public CraftBlueprint blueprint;
         public TerrainMainType mainType;
+        public int subType;
         //static int NextIndex = 0;
         //public int index;
 
@@ -39,6 +40,8 @@ namespace VikingEngine.DSSWars.Build
                     return ((TerrainBuildingType)subType).ToString();
                 case TerrainMainType.Foil:
                     return ((TerrainSubFoilType)subType).ToString();
+                case TerrainMainType.Decor:
+                    return "Statue";
             }
 
             return TextLib.Error;
@@ -50,7 +53,9 @@ namespace VikingEngine.DSSWars.Build
                 case TerrainMainType.Building:
                     return LangLib.BuildingDescription((TerrainBuildingType)subType);
                 case TerrainMainType.Foil:
-                    return "Grow a resource";
+                    return DssRef.todoLang.BuildingType_Farm_Description;
+                case TerrainMainType.Decor:
+                    return DssRef.todoLang.BuildingType_Decor_Description;
             }
 
             return TextLib.Error;

@@ -113,9 +113,25 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         {
             foreach (var r in resources)
             {
+                city.AddGroupedResource(r.type, -r.amount);
+            }
+
+            return resultCount;
+        }
+
+        public int tryCraft(City city)
+        {
+            foreach (var r in resources)
+            {
                 var res = city.GetGroupedResource(r.type);
-                res.amount -= r.amount;
-                city.SetGroupedResource(r.type, res);
+                if (res.amount < r.amount)
+                {
+                    return 0;
+                }
+            }
+            foreach (var r in resources)
+            {
+                city.AddGroupedResource(r.type, -r.amount);
             }
 
             return resultCount;

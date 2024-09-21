@@ -94,11 +94,9 @@ namespace VikingEngine.DSSWars
         //public const int LargeCityStartWorkForce = AbsSoldierData.GroupDefaultCount * 6;
         //public const int HeadCityStartWorkForce = AbsSoldierData.GroupDefaultCount * 10;
 
-        public static readonly int SmallCityStartMaxWorkForce = Convert.ToInt32(DssConst.SoldierGroup_DefaultCount * 5);
-        public static readonly int LargeCityStartMaxWorkForce = Convert.ToInt32(DssConst.SoldierGroup_DefaultCount * 7);
-        public static readonly int HeadCityStartMaxWorkForce = Convert.ToInt32(DssConst.SoldierGroup_DefaultCount * 10);
+        
 
-        public static readonly int NobelHouseWorkForceReqiurement = HeadCityStartMaxWorkForce;
+        public static readonly int NobelHouseWorkForceReqiurement = DssConst.HeadCityStartMaxWorkForce;
 
         public const float ShipBuildTimeSec = 5f;
         public const float ShipExitTimeSec = 3f;

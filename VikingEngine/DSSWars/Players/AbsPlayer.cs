@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Players
         protected bool ignorePlayerCapture = false;
 
         public List<AbsOrder> orders = new List<AbsOrder>();
-
+        abstract public Build.BuildAndExpandType AutoExpandType(City city, out bool intelligent);
         public AbsPlayer(Faction faction)
         {
             this.faction = faction;
@@ -195,6 +195,8 @@ namespace VikingEngine.DSSWars.Players
                         }
                     }
                 }
+
+                player.GetAiPlayer().refreshAggression();
 
                 var relation = DssRef.diplomacy.GetOrCreateRelation(faction, player.faction);
                 relation.SetWorseSpeakTerms(DssRef.diplomacy.SpeakTermsOnNeigbor_BadChance, DssRef.diplomacy.SpeakTermsOnNeigbor_NoneChance);

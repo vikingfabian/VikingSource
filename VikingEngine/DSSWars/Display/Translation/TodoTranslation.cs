@@ -10,11 +10,15 @@ namespace VikingEngine.DSSWars.Display.Translation
     {
         public string CityMenu_SalePricesTitle => "Sale prices";
 
+        public string Blueprint_Title = "Blueprint";
+        public string Blueprint_LetterSymbol = "BP";
+
         public string Resource_TypeName_Water => "water";
         public string Resource_TypeName_Wood => "wood";
         public string Resource_TypeName_Stone => "stone";
         public string Resource_TypeName_RawFood => "raw food";
         public string Resource_TypeName_Food => "food";
+        public string Resource_TypeName_Beer => "beer";
         public string Resource_TypeName_SkinAndLinnen => "skin and linnen";
         public string Resource_TypeName_Ore => "ore";
         public string Resource_TypeName_Iron => "iron";
@@ -32,20 +36,27 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string BuildingType_WorkerHut => "Worker hut";
         public string BuildingType_Tavern => "Tavern";
+        public string BuildingType_Brewery => "Brewery";
         public string BuildingType_Postal => "Postal service";
         public string BuildingType_Recruitment => "Recruiting center";
         public string BuildingType_Barracks => "Barracks";
         public string BuildingType_PigPen => "Pig pen";
         public string BuildingType_HenPen => "Hen pen";
+        public string DecorType_Statue => "Statue";
 
         public string BuildingType_WorkerHut_DescriptionLimitX => "Expands worker limit with {0}";
         public string BuildingType_Tavern_Description => "Workers may eat here";
+        public string BuildingType_Tavern_Brewery => "Beer production.";
         public string BuildingType_Postal_Description => "Send resources to other cities";
         public string BuildingType_Recruitment_Description => "Send men to other cities";
         public string BuildingType_Barracks_Description => "Uses men and equipment to recruit soldiers";
         public string BuildingType_PigPen_Description => "Produces pigs, which give food and skin";
         public string BuildingType_HenPen_Description => "Produces hens and eggs, which give food";
+        public string BuildingType_Decor_Description => "Decoration";
+        public string BuildingType_Farm_Description => "Grow a resource";
 
+        public string BuildingType_Cook_Description => "Food crafting station";
+        public string BuildingType_Smith_Description => "Item crafting station";
 
         public string MenuTab_Info => "Info";
         public string MenuTab_Work => "Work";
@@ -79,8 +90,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Work_Mining => "Mining";
         public string Work_Trading => "Tradeing";
 
-        public string Work_ExpandHousing => "Expand housing";
-        public string Work_ExpandFarms => "Expand farms";
+        public string Work_AutoBuild => "Auto build and expand";
+        //public string Work_ExpandFarms => "Expand farms";
 
         public string Hud_ToggleFollowFaction => "Toggle follow faction settings";
         public string Hud_FollowFaction_Yes => "Is set to use faction global settings";
@@ -97,7 +108,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// 0: current parts, 1: needed number of parts
         /// </summary>
-        public string Language_CollectProgress => "{0}/{1}";
+        public string Language_CollectProgress => "{0} / {1}";
         public string Hud_SelectCity => "Select City";
         public string Conscription_Title => "Conscription";
         public string Conscript_WeaponTitle => "Weapon";
@@ -180,5 +191,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string CityCulture_DeepWell_Description => "Water replenish faster";
         public string CityCulture_Networker_Description => "Efficient postal service";
 
+
+        public string CityOption_AutoBuild => "Auto expand";
+        public string CityOption_AutoBuild_Intelligent => "Intelligent, build only when needed";
     }
 }

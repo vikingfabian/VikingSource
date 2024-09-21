@@ -700,15 +700,15 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         void factionStartAreas(MapSize mapSize)
         {
-            int goalWorkForce = DssLib.HeadCityStartMaxWorkForce + DssLib.LargeCityStartMaxWorkForce + DssLib.SmallCityStartMaxWorkForce;
+            int goalWorkForce = DssConst.HeadCityStartMaxWorkForce + DssConst.LargeCityStartMaxWorkForce + DssConst.SmallCityStartMaxWorkForce;
 
             if (mapSize >= MapSize.Epic)
             {
-                goalWorkForce += DssLib.HeadCityStartMaxWorkForce;
+                goalWorkForce += DssConst.HeadCityStartMaxWorkForce;
             }
             else if (mapSize >= MapSize.Huge)
             {
-                goalWorkForce += DssLib.LargeCityStartMaxWorkForce;
+                goalWorkForce += DssConst.LargeCityStartMaxWorkForce;
             }
 
             

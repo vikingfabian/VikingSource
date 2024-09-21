@@ -581,6 +581,7 @@ namespace VikingEngine.LootFest
 
         city_mine,
         city_workstation,
+        city_brewery,
 
         horse_white, horse_brown,
         
@@ -684,6 +685,7 @@ namespace VikingEngine.LootFest
 
         fol_tree_hard,
         fol_tree_soft,
+        fol_tree_dry,
         fol_sprout,
         fo_stone1,
         fol_bush1,
@@ -693,6 +695,8 @@ namespace VikingEngine.LootFest
         fol_farmculture,
 
         resource_tree,
+
+        decor_statue,
 
         #endregion
 

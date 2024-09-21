@@ -270,7 +270,7 @@ namespace VikingEngine.DSSWars.GameObject
                 ForXYLoop subTileLoop;
                                 
                 workQue.Clear();
-                int emptyLandExpansions = workerStatuses.Count / 2; 
+                int emptyLandExpansions = 2;// workerStatuses.Count / 8; 
                 //Find orders
                 lock (faction.player.orders)
                 {
@@ -287,61 +287,61 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 //Look for city work
-                topleft = WP.ToSubTilePos_TopLeft(tilePos);
-                subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
-                while (subTileLoop.Next())
-                {
-                    var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
+                //topleft = WP.ToSubTilePos_TopLeft(tilePos);
+                //subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
+                //while (subTileLoop.Next())
+                //{
+                //    var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
 
-                    if (subTile.mainTerrain == TerrainMainType.Building)
-                    {
-                        switch ((TerrainBuildingType)subTile.subTerrain)
-                        {
-                            case TerrainBuildingType.Work_Cook:
-                                if (ResourceLib.CraftFood.canCraft(this) &&
-                                    isFreeTile(subTileLoop.Position))
-                                {
-                                    //ResourceLib.CraftFood.createBackOrder(this);
-                                    workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Food_G, subTileLoop.Position, workTemplate.craft_food.value, 0));
-                                }
-                                else
-                                {
-                                    var b1 = ResourceLib.CraftFood.available(this);
-                                    var b2 = isFreeTile(subTileLoop.Position);
-                                }
-                                break;
-                            case TerrainBuildingType.Work_Smith:
+                //    if (subTile.mainTerrain == TerrainMainType.Building)
+                //    {
+                //        switch ((TerrainBuildingType)subTile.subTerrain)
+                //        {
+                //            case TerrainBuildingType.Work_Cook:
+                //                if (ResourceLib.CraftFood.canCraft(this) &&
+                //                    isFreeTile(subTileLoop.Position))
+                //                {
+                //                    //ResourceLib.CraftFood.createBackOrder(this);
+                //                    workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Food_G, subTileLoop.Position, workTemplate.craft_food.value, 0));
+                //                }
+                //                else
+                //                {
+                //                    var b1 = ResourceLib.CraftFood.available(this);
+                //                    var b2 = isFreeTile(subTileLoop.Position);
+                //                }
+                //                break;
+                //            case TerrainBuildingType.Work_Smith:
                                 
-                                int topPrioValue = WorkTemplate.NoPrio;
-                                ItemResourceType topItem = ItemResourceType.NONE;
-                                WorkPriority topPrio = WorkPriority.Empty;
+                //                int topPrioValue = WorkTemplate.NoPrio;
+                //                ItemResourceType topItem = ItemResourceType.NONE;
+                //                WorkPriority topPrio = WorkPriority.Empty;
 
-                                foreach (var item in SmithTypes)
-                                {
-                                    var template = workTemplate.GetWorkPriority(item);
-                                    if (template.value > topPrioValue &&
-                                         ResourceLib.Blueprint(item).available(this))
-                                    {
-                                        topPrioValue = template.value;
-                                        topItem = item;
-                                        topPrio = template;
-                                    }
-                                }
+                //                foreach (var item in SmithTypes)
+                //                {
+                //                    var template = workTemplate.GetWorkPriority(item);
+                //                    if (template.value > topPrioValue &&
+                //                         ResourceLib.Blueprint(item).available(this))
+                //                    {
+                //                        topPrioValue = template.value;
+                //                        topItem = item;
+                //                        topPrio = template;
+                //                    }
+                //                }
 
-                                if (topPrioValue > WorkTemplate.NoPrio &&
-                                    isFreeTile(subTileLoop.Position))
-                                {
-                                    workQue.Add(new WorkQueMember(WorkType.Craft, (int)topItem, subTileLoop.Position, topPrioValue, 0));
-                                }
+                //                if (topPrioValue > WorkTemplate.NoPrio &&
+                //                    isFreeTile(subTileLoop.Position))
+                //                {
+                //                    workQue.Add(new WorkQueMember(WorkType.Craft, (int)topItem, subTileLoop.Position, topPrioValue, 0));
+                //                }
 
 
-                                break;
-                        }
-                    }
-                }
+                //                break;
+                //        }
+                //    }
+                //}
 
                 //Cirkle outward from city to find resources
-                for (int radius = 1; radius <= cityTileRadius; ++radius)
+                for (int radius = 0; radius <= cityTileRadius; ++radius)
                 {
                     int distanceValue = -radius;
                     ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(tilePos, radius));
@@ -481,6 +481,58 @@ namespace VikingEngine.DSSWars.GameObject
                                                             }
                                                         }
                                                         break;
+                                                    case TerrainBuildingType.Work_Cook:
+                                                        if ((ResourceLib.CraftFood2.canCraft(this) ||ResourceLib.CraftFood1.canCraft(this)) &&
+                                                            isFreeTile(subTileLoop.Position))
+                                                        {
+                                                            //ResourceLib.CraftFood.createBackOrder(this);
+                                                            workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Food_G, subTileLoop.Position, workTemplate.craft_food.value, 0));
+                                                        }
+                                                        //else
+                                                        //{
+                                                        //    var b1 = ResourceLib.CraftFood.available(this);
+                                                        //    var b2 = isFreeTile(subTileLoop.Position);
+                                                        //}
+                                                        break;
+                                                    case TerrainBuildingType.Work_Smith:
+
+                                                        int topPrioValue = WorkTemplate.NoPrio;
+                                                        ItemResourceType topItem = ItemResourceType.NONE;
+                                                        WorkPriority topPrio = WorkPriority.Empty;
+
+                                                        foreach (var item in SmithTypes)
+                                                        {
+                                                            var template = workTemplate.GetWorkPriority(item);
+                                                            if (template.value > topPrioValue)
+                                                            {
+                                                                ResourceLib.Blueprint(item, out var bp1, out var bp2);
+                                                                if (bp1.available(this))
+                                                                {
+
+                                                                    topPrioValue = template.value;
+                                                                    topItem = item;
+                                                                    topPrio = template;
+                                                                }
+                                                            }
+                                                        }
+
+                                                        if (topPrioValue > WorkTemplate.NoPrio &&
+                                                            isFreeTile(subTileLoop.Position))
+                                                        {
+                                                            workQue.Add(new WorkQueMember(WorkType.Craft, (int)topItem, subTileLoop.Position, topPrioValue, 0));
+                                                        }
+
+
+                                                        break;
+                                                    case TerrainBuildingType.Brewery:
+                                                        if (workTemplate.craft_beer.HasPrio() &&
+                                                            beer.needMore() &&
+                                                            ResourceLib.CraftBrewery.canCraft(this) &&
+                                                            isFreeTile(subTileLoop.Position))
+                                                        {
+                                                            workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Beer, subTileLoop.Position, workTemplate.craft_beer.value, 0));
+                                                        }
+                                                        break;
                                                 }
 
                                                 break;
@@ -491,20 +543,51 @@ namespace VikingEngine.DSSWars.GameObject
                                                 {
                                                     --emptyLandExpansions;
 
-                                                    if (workTemplate.expand_farms.HasPrio() && 
-                                                        rawFood.needMore() && 
-                                                        isFreeTile(subTileLoop.Position))
+                                                    var autoBuild = faction.player.AutoExpandType(this, out bool intelligent);
+                                                    if (autoBuild != BuildAndExpandType.NUM_NONE)
                                                     {
-                                                        workQue.Add(new WorkQueMember(WorkType.Till, NoSubWork, subTileLoop.Position, workTemplate.expand_farms.value, distanceValue));
-                                                        waterSpendOrders += 10;
+                                                        bool intelligentCheck = true;
+                                                        if (intelligent)
+                                                        {
+                                                            switch (autoBuild)
+                                                            {
+                                                                case BuildAndExpandType.WorkerHuts:
+                                                                    intelligentCheck = workForce >= workForceMax;
+                                                                    break;
+                                                                case BuildAndExpandType.WheatFarms:
+                                                                case BuildAndExpandType.HenPen:
+                                                                    intelligentCheck = rawFood.needMore();
+                                                                    break;
+                                                                case BuildAndExpandType.PigPen:
+                                                                    intelligentCheck = rawFood.needMore() || skinLinnen.needMore();
+                                                                    break;
+                                                                case BuildAndExpandType.LinnenFarms:
+                                                                    intelligentCheck = skinLinnen.needMore();
+                                                                    break;
+                                                            }
+                                                        }
+
+                                                        if (BuildLib.BuildOptions[(int)autoBuild].blueprint.available(this) &&//ResourceLib.CraftWorkerHut.available(this) &&
+                                                            isFreeTile(subTileLoop.Position))
+                                                        {
+                                                            workQue.Add(new WorkQueMember(WorkType.Build, (int)autoBuild, subTileLoop.Position, workTemplate.autoBuild.value, distanceValue));
+                                                        }
                                                     }
-                                                    else if (workTemplate.expand_housing.HasPrio() &&
-                                                        workForce >= workForceMax && 
-                                                        ResourceLib.CraftWorkerHut.available(this) &&
-                                                        isFreeTile(subTileLoop.Position))
-                                                    {
-                                                        workQue.Add(new WorkQueMember(WorkType.Build, BuildLib.BuildWorkerHut.index, subTileLoop.Position, workTemplate.expand_housing.value, distanceValue));
-                                                    }
+
+                                                    //if (workTemplate.expand_farms.HasPrio() && 
+                                                    //    rawFood.needMore() && 
+                                                    //    isFreeTile(subTileLoop.Position))
+                                                    //{
+                                                    //    workQue.Add(new WorkQueMember(WorkType.Till, NoSubWork, subTileLoop.Position, workTemplate.expand_farms.value, distanceValue));
+                                                    //    waterSpendOrders += 10;
+                                                    //}
+                                                    //else if (workTemplate.autoBuild.HasPrio() &&
+                                                    //    workForce >= workForceMax && 
+                                                    //    ResourceLib.CraftWorkerHut.available(this) &&
+                                                    //    isFreeTile(subTileLoop.Position))
+                                                    //{
+                                                    //    workQue.Add(new WorkQueMember(WorkType.Build, (int)BuildAndExpandType.WorkerHuts, subTileLoop.Position, workTemplate.autoBuild.value, distanceValue));
+                                                    //}
                                                 }
                                                 break;
 

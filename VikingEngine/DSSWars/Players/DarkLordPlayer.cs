@@ -28,19 +28,19 @@ namespace VikingEngine.DSSWars.Players
             {
                 case BossSize.Small:
                     factoriesLeft = 2;
-                    maxDiplomacy = DssLib.HeadCityStartMaxWorkForce * 16;
+                    maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 16;
                     break;
                 case BossSize.Medium:
                     factoriesLeft = 3;
-                    maxDiplomacy = DssLib.HeadCityStartMaxWorkForce * 22;
+                    maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 22;
                     break;
                 case BossSize.Large:
                     factoriesLeft = 3;
-                    maxDiplomacy = DssLib.HeadCityStartMaxWorkForce * 34;
+                    maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 34;
                     break;
                 case BossSize.Huge:
                     factoriesLeft = 4;
-                    maxDiplomacy = DssLib.HeadCityStartMaxWorkForce * 40;
+                    maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 40;
                     break;
             }
         }
@@ -97,7 +97,7 @@ namespace VikingEngine.DSSWars.Players
                 Ref.music.PlaySong(Data.Music.IAmYourDoom, false);
             }
 
-            faction.gold = DssLib.HeadCityStartMaxWorkForce * 10;
+            faction.gold = DssConst.HeadCityStartMaxWorkForce * 10;
 
             this.darkLordAllies = darkLordAllies;
             Faction greenwood = DssRef.world.factions.Array[DssRef.settings.Faction_GreenWood];
@@ -188,7 +188,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (maxDiplomacy > 0)
                 {
-                    diplomacyPoints += DssLib.HeadCityStartMaxWorkForce / 20;
+                    diplomacyPoints += DssConst.HeadCityStartMaxWorkForce / 20;
 
                     if (diplomacyPoints >= 0)
                     {

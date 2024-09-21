@@ -102,6 +102,12 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.todoLang.BuildingType_Recruitment_Description;
                 case TerrainBuildingType.Barracks:
                     return DssRef.todoLang.BuildingType_Barracks_Description;
+                case TerrainBuildingType.Work_Cook:
+                    return DssRef.todoLang.BuildingType_Cook_Description;
+                case TerrainBuildingType.Work_Smith:
+                    return DssRef.todoLang.BuildingType_Smith_Description;
+                case TerrainBuildingType.Brewery:
+                    return DssRef.todoLang.BuildingType_Tavern_Brewery;
 
                 default:
                     throw new NotImplementedException();
@@ -114,6 +120,7 @@ namespace VikingEngine.DSSWars.Display.Translation
             switch (item)
             {
                 case ItemResourceType.Water_G: return DssRef.todoLang.Resource_TypeName_Water;
+                case ItemResourceType.Beer: return DssRef.todoLang.Resource_TypeName_Beer;
                 case ItemResourceType.IronOre_G: return DssRef.todoLang.Resource_TypeName_Ore;
                 case ItemResourceType.Iron_G: return DssRef.todoLang.Resource_TypeName_Iron;
                 case ItemResourceType.Food_G: return DssRef.todoLang.Resource_TypeName_Food;

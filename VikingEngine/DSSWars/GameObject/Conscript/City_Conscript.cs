@@ -95,7 +95,7 @@ namespace VikingEngine.DSSWars.GameObject
                         case ConscriptActiveStatus.Training:
                             if (status.countdown.TimeOut())
                             {
-                                Ref.update.AddSyncAction(new SyncAction1Arg<ConscriptProfile>(conscriptArmy, status.inProgress));
+                                Ref.update.AddSyncAction(new SyncAction2Arg<ConscriptProfile, int>(conscriptArmy, status.inProgress, 1));
 
                                 status.active = ConscriptActiveStatus.Idle;
                                 
@@ -110,7 +110,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void conscriptArmy(ConscriptProfile profile)
+        public void conscriptArmy(ConscriptProfile profile, int count)
         {
             Army army = recruitToClosestArmy();
 
@@ -136,8 +136,10 @@ namespace VikingEngine.DSSWars.GameObject
                 soldierProfile.skillBonus = 1.2f;
             }
 
-            new SoldierGroup(army, soldierProfile);
-            
+            for (int i = 0; i < count; i++)
+            {
+                new SoldierGroup(army, soldierProfile);
+            }
             army?.OnSoldierPurchaseCompleted();
         }
 

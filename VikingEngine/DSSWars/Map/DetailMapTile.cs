@@ -29,6 +29,8 @@ namespace VikingEngine.DSSWars.Map
             {
                 LootFest.VoxelModelName.fol_tree_hard,
                 LootFest.VoxelModelName.fol_tree_soft,
+                LootFest.VoxelModelName.fol_tree_dry,
+
                 LootFest.VoxelModelName.fo_stone1,
                 LootFest.VoxelModelName.fol_sprout,
                 LootFest.VoxelModelName.fol_tallgrass,
@@ -117,7 +119,10 @@ namespace VikingEngine.DSSWars.Map
                             createMine((TerrainMineType)subTile.subTerrain,
                                 topCenter(ref subTile, ref subTopLeft));
                             break;
-
+                        case TerrainMainType.Decor:
+                            createDecor(tile, ref subTile, (TerrainDecorType)subTile.subTerrain,
+                                topCenter(ref subTile, ref subTopLeft));
+                            break;
                     }                   
 
                     DssRef.world.subTileGrid.Set(
@@ -315,7 +320,7 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.fol_tree_soft, rnd, wp, 0.03f + 0.0012f * sizeValue));
                     break;
                 case TerrainSubFoilType.DryWood:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.Arrow, rnd, wp, 0.12f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.fol_tree_dry, rnd, wp, 0.12f));
                     break;
                 case TerrainSubFoilType.TreeSoftSprout:
                 case TerrainSubFoilType.TreeHardSprout:
@@ -444,7 +449,23 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainBuildingType.Work_Smith:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 0, wp, scale));
                     break;
+                case TerrainBuildingType.Brewery:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 2, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
 
+        void createDecor(Tile tile, ref SubTile subTile, TerrainDecorType decorType, Vector3 wp)
+        {
+            wp.X += WorldData.SubTileHalfWidth;
+            wp.Z += WorldData.SubTileHalfWidth;
+
+            switch (decorType) {
+                case  TerrainDecorType.Statue_ThePlayer:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.decor_statue, 0, wp, WorldData.SubTileWidth * 1f));
+                    break;
                 default:
                     throw new NotImplementedException();
             }

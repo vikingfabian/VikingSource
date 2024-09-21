@@ -22,6 +22,7 @@ namespace VikingEngine.DSSWars.GameObject
              ItemResourceType.Stone_G,
              ItemResourceType.RawFood_Group,
              ItemResourceType.Food_G,
+             ItemResourceType.Beer,
              ItemResourceType.SkinLinnen_Group,
              ItemResourceType.IronOre_G,
              ItemResourceType.Iron_G,
@@ -44,11 +45,15 @@ namespace VikingEngine.DSSWars.GameObject
         int waterBuffer = 2;
         int waterSpendOrders = 0;
 
-        public GroupedResource water = new GroupedResource() { amount = DssConst.Maxwater, goalBuffer = DssConst.Maxwater };
+        public int maxWater;
+        static readonly GroupedResource NothingResource = new GroupedResource() { amount = 100000 };
+
+        public GroupedResource water = new GroupedResource();
         public GroupedResource wood = new GroupedResource() { amount = 20,  goalBuffer = 300 };
         public GroupedResource stone = new GroupedResource() { amount = 20, goalBuffer = 100 };
         public GroupedResource rawFood = new GroupedResource() { amount = 50, goalBuffer = 200 };
         public GroupedResource food = new GroupedResource() { amount = 200, goalBuffer = 500 };
+        public GroupedResource beer = new GroupedResource() { amount = 0, goalBuffer = 200 };
         public GroupedResource skinLinnen = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource ore = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource iron = new GroupedResource() { goalBuffer = 100 };
@@ -66,6 +71,63 @@ namespace VikingEngine.DSSWars.GameObject
 
         //int tradeGold = 0;
 
+        public void AddGroupedResource(ItemResourceType type, int add)
+        {
+            switch (type)
+            {
+                case ItemResourceType.Water_G:
+                    water.amount += add;
+                    break;
+                case ItemResourceType.IronOre_G:
+                    ore.amount += add;
+                    break;
+                case ItemResourceType.Iron_G:
+                    iron.amount += add;
+                    break;
+                case ItemResourceType.Food_G:
+                    food.amount += add;
+                    break;
+                case ItemResourceType.Beer:
+                    beer.amount += add;
+                    break;
+                case ItemResourceType.Stone_G:
+                    stone.amount += add;
+                    break;
+                case ItemResourceType.Wood_Group:
+                    wood.amount += add;
+                    break;
+                case ItemResourceType.RawFood_Group:
+                    rawFood.amount += add;
+                    break;
+                case ItemResourceType.SkinLinnen_Group:
+                    skinLinnen.amount += add;
+                    break;
+                case ItemResourceType.SharpStick:
+                    sharpstick.amount += add;
+                    break;
+                case ItemResourceType.Sword:
+                    sword.amount += add;
+                    break;
+                case ItemResourceType.Bow:
+                    bow.amount += add;
+                    break;
+                case ItemResourceType.LightArmor:
+                    lightArmor.amount += add;
+                    break;
+                case ItemResourceType.MediumArmor:
+                    mediumArmor.amount += add;
+                    break;
+                case ItemResourceType.HeavyArmor:
+                    heavyArmor.amount += add;
+                    break;
+                case ItemResourceType.NONE:
+                    return;
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
         public GroupedResource GetGroupedResource(ItemResourceType type)
         {
             switch (type)
@@ -73,6 +135,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Water_G: return water;
                 case ItemResourceType.IronOre_G: return ore;
                 case ItemResourceType.Iron_G: return iron;
+                case ItemResourceType.Beer: return beer;
                 case ItemResourceType.Food_G: return food;
                 case ItemResourceType.Stone_G: return stone;
                 case ItemResourceType.Wood_Group: return wood;
@@ -86,6 +149,8 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.LightArmor: return lightArmor;
                 case ItemResourceType.MediumArmor: return mediumArmor;
                 case ItemResourceType.HeavyArmor: return heavyArmor;
+
+                case ItemResourceType.NONE: return NothingResource;
 
                 default:
                     throw new NotImplementedException();
@@ -107,6 +172,9 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case ItemResourceType.Food_G:
                     food = resource;
+                    break;
+                case ItemResourceType.Beer:
+                    beer = resource;
                     break;
                 case ItemResourceType.Stone_G:
                     stone = resource;
@@ -139,6 +207,9 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.HeavyArmor:
                     heavyArmor = resource;
                     break;
+
+                case ItemResourceType.NONE:
+                    return;
 
                 default:
                     throw new NotImplementedException();
