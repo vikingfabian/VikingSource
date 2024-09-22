@@ -1,6 +1,8 @@
 ﻿
 -Change Log-
-* Save finally works! (not properly tested)
+* Fixed black market bug
+* expand city guard button is back
+!barrack bug, lock in settings, should display that more clearly
 
 Error
 -back button in menues 
@@ -11,6 +13,10 @@ Retreat system
 -reassemble av flydd arme
 
 Polish
+-Knights conscript nobel house
+
+
+
 -döda av faktion som bara har en soldat kvar
 -Missing file error på load
 -(mercenaries cost increase bort)
@@ -35,6 +41,7 @@ Art
 -link, no link
 -resource icons
 -no food, no beds icons
+-culture icon
 
 #current
 English, Simplified Chinese, Japanese, Russian, Spanish

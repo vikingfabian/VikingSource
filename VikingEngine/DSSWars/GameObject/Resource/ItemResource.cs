@@ -24,6 +24,17 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 
         public int amount;
 
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)type);
+            w.Write((ushort)amount);
+        }
+        public void readGameState(System.IO.BinaryReader r, int subversion)
+        {
+            type = (ItemResourceType)r.ReadByte();
+            amount = r.ReadUInt16();
+        }
+
         public ItemResource(ItemResourceType type, int quality, int cost, int amount)
         {
             this.type = type;

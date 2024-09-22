@@ -28,6 +28,27 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         public ItemResource resource7;
         public ItemResource resource8;
 
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)count);
+
+            for (int i = 0; i < count; i++)
+            {
+                GetResourceAtIndex(i).writeGameState(w);
+            }
+        }
+        public void readGameState(System.IO.BinaryReader r, int subversion)
+        {
+            count = r.ReadByte();
+
+            for (int i = 0; i < count; i++)
+            {
+                var item = new ItemResource();
+                item.readGameState(r, subversion);
+                SetResourceAtIndex(i, item);
+            }
+        }
+
         public void Add(ItemResource resource)
         {
             if (count >= 8 || resource.type == ItemResourceType.NONE)

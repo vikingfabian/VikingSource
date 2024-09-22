@@ -92,6 +92,27 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
                 content.newParagraph();
 
+                HudLib.Label(content, DssRef.todoLang.Conscript_SpecializationTitle);
+                content.space();
+                HudLib.InfoButton(content, new RbAction(() =>
+                {
+                    RichBoxContent content = new RichBoxContent();
+                    content.text(string.Format(DssRef.todoLang.Conscript_SpecializationDescription, TextLib.PercentText(DssConst.Conscript_SpecializePercentage)));
+                    player.hud.tooltip.create(player, content, true);
+                }));
+                content.newLine();
+                for (SpecializationType specialization = 0; specialization < SpecializationType.NUM; specialization++)
+                {
+                    var button = new RichboxButton(new List<AbsRichBoxMember>{
+                       new RichBoxText( LangLib.SpecializationTypeName(specialization))
+                    }, new RbAction1Arg<SpecializationType>(specializationClick, specialization));
+                    button.setGroupSelectionColor(HudLib.RbSettings, specialization == currentStatus.profile.specialization);
+                    content.Add(button);
+                    content.space();
+                }
+
+                content.newParagraph();
+
                 que.toHud(player, content, queClick, currentStatus.que);
 
                 if (currentStatus.active != ConscriptActiveStatus.Idle)
@@ -149,6 +170,13 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
                 }
             }
+        }
+
+        void specializationClick(SpecializationType specialization)
+        {
+            BarracksStatus currentProfile = get();
+            currentProfile.profile.specialization = specialization;
+            set(currentProfile);
         }
 
         void weaponClick(MainWeapon weapon)

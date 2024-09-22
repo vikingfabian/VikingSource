@@ -437,5 +437,25 @@ namespace VikingEngine
         {
             return repeate / 2.0 * (2 * initialValue + (repeate - 1) * increase);
         }
+
+        public static float AddPercentage(float value, float add)
+        { 
+            return value + value * add;
+        }
+
+        public static float SubtractPercentage(float value, float sub)
+        {
+            return value - value * sub;
+        }
+
+        public static int AddPercentage(int value, float add)
+        {
+            return value + Convert.ToInt32(value * add);
+        }
+
+        public static int SubtractPercentage(int value, float sub)
+        {
+            return value - Convert.ToInt32(value * sub);
+        }
     }
 }

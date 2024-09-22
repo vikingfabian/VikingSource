@@ -72,6 +72,30 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
             }
 
+            switch (profile.conscript.specialization)
+            {
+                case SpecializationType.Field:
+                    attackDamage = MathExt.AddPercentage(attackDamage, DssConst.Conscript_SpecializePercentage);
+                    attackDamageSea = MathExt.SubtractPercentage(attackDamageSea, DssConst.Conscript_SpecializePercentage);                   
+                    attackDamageStructure = MathExt.SubtractPercentage(attackDamageStructure, DssConst.Conscript_SpecializePercentage);
+                    break;
+                case SpecializationType.Sea:
+                    attackDamage = MathExt.SubtractPercentage(attackDamage, DssConst.Conscript_SpecializePercentage);
+                    attackDamageSea = MathExt.AddPercentage(attackDamageSea, DssConst.Conscript_SpecializePercentage);                    
+                    attackDamageStructure = MathExt.SubtractPercentage(attackDamageStructure, DssConst.Conscript_SpecializePercentage);
+
+                    if (!profile.RangedUnit())
+                    { 
+                        modelName = LootFest.VoxelModelName.wars_viking_ship;
+                    }
+                    break;
+                case SpecializationType.Siege:
+                    attackDamage = MathExt.SubtractPercentage(attackDamage, DssConst.Conscript_SpecializePercentage);
+                    attackDamageSea = MathExt.SubtractPercentage(attackDamageSea, DssConst.Conscript_SpecializePercentage);
+                    attackDamageStructure = MathExt.AddPercentage(attackDamageStructure, DssConst.Conscript_SpecializePercentage);
+                    break;
+            }
+
             attackTimePlusCoolDown /= ConscriptProfile.TrainingAttackSpeed(profile.conscript.training);
             attackTimePlusCoolDown /= profile.skillBonus;
 

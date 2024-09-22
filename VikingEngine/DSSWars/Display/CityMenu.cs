@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.Display
 {
     class CityMenu
     {
-        public static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Conscript, MenuTab.Resources, MenuTab.Work, MenuTab.Delivery, MenuTab.Build };
+        public static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Conscript, MenuTab.Resources, MenuTab.BlackMarket, MenuTab.Work, MenuTab.Delivery, MenuTab.Build };
         Players.LocalPlayer player;
         City city;
 
@@ -59,6 +59,7 @@ namespace VikingEngine.DSSWars.Display
             { 
                 case MenuTab.Info:
                     city.CityDetailsHud(false, player, content);
+                    purchaseOptions(content);
                     break;
 
                 case MenuTab.Work:
@@ -73,8 +74,8 @@ namespace VikingEngine.DSSWars.Display
                     recruitTab(content);
                     break;
 
-                case MenuTab.Economy:
-
+                case MenuTab.BlackMarket:
+                    BlackMarketResources.ToHud(player, content, city);
                     break;
 
                 case MenuTab.Delivery:
@@ -117,8 +118,8 @@ namespace VikingEngine.DSSWars.Display
             city.res_food.toMenu(content, DssRef.todoLang.Resource_TypeName_Food);
             blueprintButton(player, content, ResourceLib.CraftFood1, ResourceLib.CraftFood2);
 
-            city.res_food.toMenu(content, DssRef.todoLang.Resource_TypeName_Beer);
-            blueprintButton(player, content, ResourceLib.CraftBeer);
+            //city.res_food.toMenu(content, DssRef.todoLang.Resource_TypeName_Beer);
+            //blueprintButton(player, content, ResourceLib.CraftBeer);
 
             city.res_iron.toMenu(content, DssRef.todoLang.Resource_TypeName_Iron);
             blueprintButton(player, content, ResourceLib.CraftIron);
@@ -145,6 +146,67 @@ namespace VikingEngine.DSSWars.Display
             
             content.text("1 gold ore => " + DssConst.GoldOreSellValue.ToString() + "gold");
             content.text("1 food => " + DssConst.FoodEnergy + " energy (seconds of work)");
+        }
+
+        void purchaseOptions(RichBoxContent content)
+        {
+            if (city.battleGroup == null)
+            {
+                if (city.damages.HasValue())
+                {
+                    content.Add(new RichboxButton(new List<AbsRichBoxMember>{
+                                    new RichBoxImage(SpriteName.unitEmoteLove),
+                                    new RichBoxText(DssRef.lang.CityOption_Repair),
+                                },
+                        new RbAction1Arg<bool>(buyRepairAction, true, SoundLib.menuBuy),
+                        new RbAction1Arg<bool>(buyRepairToolTip, true),
+                        city.buyRepair(false, true)));
+                }
+
+                content.newLine();
+
+                //if (city.battleGroup == null)
+                //{
+                //    content.Add(new RichboxButton(new List<AbsRichBoxMember>{
+                //            new RichBoxImage(SpriteName.birdFireball),
+                //            new RichBoxText(DssRef.lang.CityOption_BurnItDown),
+                //        },
+                //        new RbAction(city.burnItDown, SoundLib.menu),
+                //        new RbAction(burnToolTip),
+                //         city.damages.value < city.MaxDamages()));
+
+                //    content.newLine();
+                //}
+
+                {
+                    int count = 1;
+                    content.Add(new RichboxButton(new List<AbsRichBoxMember>{
+                                    new RichBoxImage(SpriteName.WarsGuardAdd),
+                                    new RichBoxText( DssRef.lang.CityOption_ExpandGuardSize),
+                                },
+                        new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
+                        new RbAction1Arg<int>(buyGuardSizeToolTip, count),
+                        city.buyCityGuards(false, count)));
+                }
+                content.Add(new RichBoxSpace());
+                {
+                    int count = 5;
+                    content.Button(string.Format(DssRef.lang.Hud_XTimes, count),
+                    new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
+                    new RbAction1Arg<int>(buyGuardSizeToolTip, count),
+                    city.buyCityGuards(false, count));
+                }
+
+                content.newLine();
+
+                if (!city.nobelHouse && city.canEverGetNobelHouse())
+                {
+                    content.Button(DssRef.lang.Building_NobleHouse,
+                            new RbAction(city.buyNobelHouseAction, SoundLib.menuBuy),
+                            new RbAction(buyNobelhouseTooltip),
+                            city.canBuyNobelHouse());
+                }
+            }
         }
 
         void blueprintButton(LocalPlayer player, RichBoxContent content, CraftBlueprint blueprint, CraftBlueprint optionalBp = null)
@@ -612,6 +674,7 @@ namespace VikingEngine.DSSWars.Display
         Resources,
         Work,
         Trade,
+        BlackMarket,
         Delivery,
         Build,
         Automation,

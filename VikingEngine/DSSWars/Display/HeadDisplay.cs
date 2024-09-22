@@ -369,7 +369,7 @@ namespace VikingEngine.DSSWars.Display
             void taxInfo()
             {
                 RichBoxContent content = new RichBoxContent();
-                content.text(string.Format(DssRef.todoLang.Economy_TaxDescription, City.TaxPerWorker));
+                content.text(string.Format(DssRef.todoLang.Economy_TaxDescription, DssConst.TaxPerWorker));
                 content.newParagraph();
                 content.text(DssRef.todoLang.Info_PerSecond);
                 player.hud.tooltip.create(player, content, true);

@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City : GameObject.AbsMapObject
     {
-        public const float TaxPerWorker = 0.2f;
+        
         
         public const int ExpandGuardSizeCost = 12000;
 

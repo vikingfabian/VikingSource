@@ -357,8 +357,18 @@ namespace VikingEngine.DSSWars.GameObject
             
         }
 
-        
+
+
+        public void blackMarketPurchase(ItemResourceType resourceType, int count, int cost)
+        {
+            if (faction.payMoney(cost * count, false))
+            {
+                AddGroupedResource(resourceType, count);
+            }
+        }
     }   
+
+    
 
 
     //struct SimplifiedResourceCollection

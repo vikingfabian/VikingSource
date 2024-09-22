@@ -95,29 +95,5 @@ namespace VikingEngine.DSSWars.GameObject
         }
     }
 
-    class ConscriptedWarshipData : AbsWarShipData
-    {
-        public ConscriptedWarshipData(AbsSoldierData soldierData, SoldierProfile profile)
-            : base( UnitType.ConscriptWarship, soldierData)
-        {
-            switch (profile.conscript.weapon)
-            {
-                case MainWeapon.SharpStick:
-                    modelName = LootFest.VoxelModelName.wars_folk_ship;
-                    captainPosDiff = new Vector3(-0.05f, 0.18f, -.27f);
-                    leftCrewPosDiff = new Vector3(-0.076f, 0.12f, 0.065f);
-                    break;
-                case MainWeapon.Sword:
-                    modelName = LootFest.VoxelModelName.wars_soldier_ship;
-                    captainPosDiff = new Vector3(0, 0.28f, -.3f);
-                    leftCrewPosDiff = new Vector3(-0.076f, 0.14f, 0.07f);
-                    break;
-                case MainWeapon.Bow:
-                    modelName = LootFest.VoxelModelName.wars_archer_ship;
-                    captainPosDiff = new Vector3(0, 0.28f, -.3f);
-                    leftCrewPosDiff = new Vector3(-0.076f, 0.14f, 0.07f);
-                    break;
-            }
-        }
-    }
+    
 }

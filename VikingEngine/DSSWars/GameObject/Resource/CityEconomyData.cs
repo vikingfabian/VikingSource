@@ -8,7 +8,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 {
     struct CityEconomyData
     {
-        public float tax() { return workerCount * City.TaxPerWorker; }
+        public float tax() { return workerCount * DssConst.TaxPerWorker; }
         public int workerCount;
         public float cityGuardUpkeep;
         public float blackMarketCosts_Food;

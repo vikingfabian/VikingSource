@@ -100,10 +100,12 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Hud_Idle => "Idle";
         public string Hud_NoLimit => "No limit";
 
-
+        public string Hud_None => "None";
         public string Hud_Que => "Que";
 
         public string Hud_EmptyList => "- Empty list -";
+
+        public string Hud_BlackMarket => "Black market";
 
         /// <summary>
         /// 0: current parts, 1: needed number of parts
@@ -114,6 +116,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Conscript_WeaponTitle => "Weapon";
         public string Conscript_ArmorTitle => "Weapon";
         public string Conscript_TrainingTitle => "Weapon";
+
+        public string Conscript_SpecializationTitle => "Specialization";
+        public string Conscript_SpecializationDescription => "Will increase attack in one area, and reduce all others, by {0}";
         public string Conscript_SelectBuilding => "Select barracks";
 
         public string Conscript_WeaponDamage = "Weapon damage: {0}";
@@ -194,5 +199,8 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string CityOption_AutoBuild => "Auto expand";
         public string CityOption_AutoBuild_Intelligent => "Intelligent, build only when needed";
+
+        public string Hud_PurchaseTitle_Resources => "Buy resources";
+        public string Hud_PurchaseTitle_CurrentlyOwn=> "You own";
     }
 }

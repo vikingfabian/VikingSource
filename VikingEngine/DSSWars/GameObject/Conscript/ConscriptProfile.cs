@@ -188,13 +188,14 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         public MainWeapon weapon;
         public ArmorLevel armorLevel;
         public TrainingLevel training;
-
+        public SpecializationType specialization;
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
             w.Write((byte)weapon);
             w.Write((byte)armorLevel);
             w.Write((byte)training);
+            w.Write((byte)specialization);
         }
 
         public void readGameState(System.IO.BinaryReader r)
@@ -202,6 +203,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             weapon = (MainWeapon)r.ReadByte();
             armorLevel = (ArmorLevel)r.ReadByte(); 
             training = (TrainingLevel)r.ReadByte();
+            specialization = (SpecializationType)r.ReadByte();
         }
 
         //make these static
@@ -303,6 +305,16 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         Skillful,
         Professional,
         NUM
+    }
+
+    enum SpecializationType
+    { 
+        None,
+        Field,
+        Sea,
+        Siege,
+        NUM,
+        Viking,
     }
 
     enum ConscriptActiveStatus

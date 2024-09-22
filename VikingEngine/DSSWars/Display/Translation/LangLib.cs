@@ -55,6 +55,23 @@ namespace VikingEngine.DSSWars.Display.Translation
             }
         }
 
+        public static string SpecializationTypeName(SpecializationType specialization)
+        {
+            switch (specialization)
+            {
+                case SpecializationType.None: return DssRef.todoLang.Hud_None;
+                case SpecializationType.Field: return "Open field";
+                case SpecializationType.Sea: return "Ship";
+                case SpecializationType.Siege: return "Siege";
+                case SpecializationType.Viking: return "Viking";
+
+
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
         public static string Tab(MenuTab tab)
         {
             switch (tab)
@@ -69,6 +86,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.todoLang.MenuTab_Recruit;
                 case MenuTab.Trade:
                     return DssRef.todoLang.MenuTab_Trade;
+                case MenuTab.BlackMarket:
+                    return DssRef.todoLang.Hud_BlackMarket;
                 case MenuTab.Economy:
                     return DssRef.todoLang.MenuTab_Economy;
                 case MenuTab.Delivery:
