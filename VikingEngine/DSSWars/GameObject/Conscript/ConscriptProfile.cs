@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.LootFest.Data;
+using VikingEngine.ToGG.ToggEngine;
 
 namespace VikingEngine.DSSWars.GameObject.Conscript
 {
@@ -24,6 +26,60 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         public int idAndPosition;
         public int que;
 
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)active);
+            profile.writeGameState(w);
+            if (active != ConscriptActiveStatus.Idle)
+            {
+                inProgress.writeGameState(w);
+            }
+            switch (active)
+            {
+                case ConscriptActiveStatus.CollectingEquipment:
+                    w.Write((byte)equipmentCollected);
+                    break;
+
+                case ConscriptActiveStatus.CollectingMen:
+                    w.Write((byte)menCollected);
+                    break;
+
+                case ConscriptActiveStatus.Training:
+                    countdown.writeGameState(w);
+                    break;
+            }
+            w.Write(idAndPosition);
+            w.Write((byte)que);
+        }
+
+        public void readGameState(System.IO.BinaryReader r)
+        {
+            active = (ConscriptActiveStatus)r.ReadByte();
+            profile.readGameState(r);
+            if (active != ConscriptActiveStatus.Idle)
+            {
+                inProgress.readGameState(r);
+            }
+            switch (active)
+            {
+                case ConscriptActiveStatus.CollectingEquipment:
+                    equipmentCollected = r.ReadByte();
+                    break;
+
+                case ConscriptActiveStatus.CollectingMen:
+                    equipmentCollected = DssConst.SoldierGroup_DefaultCount;
+                    menCollected = r.ReadByte();
+                    break;
+
+                case ConscriptActiveStatus.Training:
+                    equipmentCollected = DssConst.SoldierGroup_DefaultCount;
+                    menCollected = DssConst.SoldierGroup_DefaultCount;
+                    countdown.readGameState(r);
+                    break;
+            }
+            idAndPosition = r.ReadInt32();
+            que = r.ReadByte();
+        }
         public bool CountDownQue()
         {
             if (que > 0)
@@ -114,6 +170,17 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         {
             return conscript.weapon == MainWeapon.Bow;
         }
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            conscript.writeGameState(w);
+            SaveLib.WriteFloatMultiplier(skillBonus, w);
+        }
+        public void readGameState(System.IO.BinaryReader r)
+        {
+            conscript.readGameState(r);
+            skillBonus = SaveLib.ReadFloatMultiplier(r);
+        }
     }
 
     struct ConscriptProfile
@@ -121,7 +188,21 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         public MainWeapon weapon;
         public ArmorLevel armorLevel;
         public TrainingLevel training;
-       
+
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)weapon);
+            w.Write((byte)armorLevel);
+            w.Write((byte)training);
+        }
+
+        public void readGameState(System.IO.BinaryReader r)
+        {
+            weapon = (MainWeapon)r.ReadByte();
+            armorLevel = (ArmorLevel)r.ReadByte(); 
+            training = (TrainingLevel)r.ReadByte();
+        }
 
         //make these static
         public static int WeaponDamage(MainWeapon weapon)

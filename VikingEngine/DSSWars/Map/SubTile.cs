@@ -41,21 +41,27 @@ namespace VikingEngine.DSSWars.Map
 
         public void write(System.IO.BinaryWriter w)
         {
-            w.Write(color.R);
-            w.Write(color.G);
-            w.Write(color.B);
-            w.Write(groundY);
+            //w.Write(color.R);
+            //w.Write(color.G);
+            //w.Write(color.B);
+            //w.Write(groundY);
             w.Write((byte)mainTerrain);
+            w.Write((byte)subTerrain);
+            w.Write((byte)terrainAmount);
+            w.Write(collectionPointer);
         }
 
         public void read(System.IO.BinaryReader r, int version)
         {
-            byte rValue = r.ReadByte();
-            byte gValue = r.ReadByte();
-            byte bValue = r.ReadByte();
-            color = new Color(rValue, gValue, bValue);
-            groundY = r.ReadSingle();
+            //byte rValue = r.ReadByte();
+            //byte gValue = r.ReadByte();
+            //byte bValue = r.ReadByte();
+            //color = new Color(rValue, gValue, bValue);
+            //groundY = r.ReadSingle();
             mainTerrain = (TerrainMainType)r.ReadByte();
+            subTerrain = r.ReadByte();
+            terrainAmount = r.ReadByte();
+            collectionPointer = r.ReadInt32();
         }
 
         public TerrainSubFoilType GetFoilType()

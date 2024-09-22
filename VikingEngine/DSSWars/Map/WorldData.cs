@@ -171,6 +171,15 @@ namespace VikingEngine.DSSWars
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
+            
+            subTileGrid.LoopBegin();
+            while (subTileGrid.LoopNext())
+            {
+                subTileGrid.LoopValueGet().write(w);
+            }
+
+            Debug.WriteCheck(w);
+
             foreach (City city in cities)
             {
                 city.writeGameState(w);
@@ -191,9 +200,22 @@ namespace VikingEngine.DSSWars
                     w.Write(false); 
                 }
             }
+
+            Debug.WriteCheck(w);
+            
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
+            subTileGrid.LoopBegin();
+            while (subTileGrid.LoopNext())
+            {
+                SubTile st = subTileGrid.LoopValueGet();
+                st.read(r, subversion);
+                subTileGrid.LoopValueSet(st);
+            }
+
+            Debug.ReadCheck(r);
+
             foreach (City city in cities)
             {
                 city.readGameState(r, subversion, pointers);
@@ -210,8 +232,11 @@ namespace VikingEngine.DSSWars
                 }
             }
 
+            Debug.ReadCheck(r);
+
+            
         }
-        
+
 
         public void writeMapFile(System.IO.BinaryWriter w)
         {
@@ -219,7 +244,7 @@ namespace VikingEngine.DSSWars
             DebugWriteSize citiesSz = new DebugWriteSize();
             DebugWriteSize factionsSz = new DebugWriteSize();
 
-            const int SaveMapVersion = 6;
+            const int SaveMapVersion = 7;
             w.Write(SaveMapVersion);
 
             w.Write(metaData.seed);

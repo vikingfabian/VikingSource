@@ -38,7 +38,7 @@ namespace VikingEngine.DSSWars.Display.Component
             {
                 var button = new RichboxButton(new List<AbsRichBoxMember>{
                        new RichBoxText(DssRef.todoLang.Hud_NoLimit)
-                    }, new RbAction1Arg<int>(queClick, 1000));
+                    }, new RbAction1Arg<int>(queClick, 255));
                 button.setGroupSelectionColor(HudLib.RbSettings, currentQue > BarracksStatus.MaxQue);
                 content.Add(button);
             }

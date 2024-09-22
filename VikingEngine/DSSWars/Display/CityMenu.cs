@@ -104,41 +104,41 @@ namespace VikingEngine.DSSWars.Display
             // content.text("Water: " + water.ToString());
             //city.water.toMenu(content, DssRef.todoLang.Resource_TypeName_Water);
             
-            content.text(DssRef.todoLang.Resource_TypeName_Water + ": " + string.Format(DssRef.todoLang.Language_CollectProgress, city.water.amount, city.maxWater));
-            city.beer.toMenu(content, DssRef.todoLang.Resource_TypeName_Beer);
-            city.wood.toMenu(content, DssRef.todoLang.Resource_TypeName_Wood);
-            city.stone.toMenu(content, DssRef.todoLang.Resource_TypeName_Stone);
-            city.rawFood.toMenu(content, DssRef.todoLang.Resource_TypeName_RawFood);
-            city.skinLinnen.toMenu(content, DssRef.todoLang.Resource_TypeName_SkinAndLinnen);
-            city.ore.toMenu(content, DssRef.todoLang.Resource_TypeName_Ore);
+            content.text(DssRef.todoLang.Resource_TypeName_Water + ": " + string.Format(DssRef.todoLang.Language_CollectProgress, city.res_water.amount, city.maxWater));
+            city.res_beer.toMenu(content, DssRef.todoLang.Resource_TypeName_Beer);
+            city.res_wood.toMenu(content, DssRef.todoLang.Resource_TypeName_Wood);
+            city.res_stone.toMenu(content, DssRef.todoLang.Resource_TypeName_Stone);
+            city.res_rawFood.toMenu(content, DssRef.todoLang.Resource_TypeName_RawFood);
+            city.res_skinLinnen.toMenu(content, DssRef.todoLang.Resource_TypeName_SkinAndLinnen);
+            city.res_ore.toMenu(content, DssRef.todoLang.Resource_TypeName_Ore);
 
             content.newParagraph();
 
-            city.food.toMenu(content, DssRef.todoLang.Resource_TypeName_Food);
+            city.res_food.toMenu(content, DssRef.todoLang.Resource_TypeName_Food);
             blueprintButton(player, content, ResourceLib.CraftFood1, ResourceLib.CraftFood2);
 
-            city.food.toMenu(content, DssRef.todoLang.Resource_TypeName_Beer);
+            city.res_food.toMenu(content, DssRef.todoLang.Resource_TypeName_Beer);
             blueprintButton(player, content, ResourceLib.CraftBeer);
 
-            city.iron.toMenu(content, DssRef.todoLang.Resource_TypeName_Iron);
+            city.res_iron.toMenu(content, DssRef.todoLang.Resource_TypeName_Iron);
             blueprintButton(player, content, ResourceLib.CraftIron);
 
-            city.sharpstick.toMenu(content, DssRef.todoLang.Resource_TypeName_SharpStick);
+            city.res_sharpstick.toMenu(content, DssRef.todoLang.Resource_TypeName_SharpStick);
             blueprintButton(player, content, ResourceLib.CraftSharpStick);
 
-            city.sword.toMenu(content, DssRef.todoLang.Resource_TypeName_Sword);
+            city.res_sword.toMenu(content, DssRef.todoLang.Resource_TypeName_Sword);
             blueprintButton(player, content, ResourceLib.CraftSword);
 
-            city.bow.toMenu(content, DssRef.todoLang.Resource_TypeName_Bow);
+            city.res_bow.toMenu(content, DssRef.todoLang.Resource_TypeName_Bow);
             blueprintButton(player, content, ResourceLib.CraftBow);
 
-            city.lightArmor.toMenu(content, DssRef.todoLang.Resource_TypeName_LightArmor);
+            city.res_lightArmor.toMenu(content, DssRef.todoLang.Resource_TypeName_LightArmor);
             blueprintButton(player, content, ResourceLib.CraftLightArmor);
 
-            city.mediumArmor.toMenu(content, DssRef.todoLang.Resource_TypeName_MediumArmor);
+            city.res_mediumArmor.toMenu(content, DssRef.todoLang.Resource_TypeName_MediumArmor);
             blueprintButton(player, content, ResourceLib.CraftMediumArmor);
 
-            city.heavyArmor.toMenu(content, DssRef.todoLang.Resource_TypeName_HeavyArmor);
+            city.res_heavyArmor.toMenu(content, DssRef.todoLang.Resource_TypeName_HeavyArmor);
             blueprintButton(player, content, ResourceLib.CraftHeavyArmor);
 
             content.newParagraph();
@@ -451,37 +451,37 @@ namespace VikingEngine.DSSWars.Display
         }
 
 
-        void buyWorkforceAction(int count)
-        {
-            city.buyWorkforce(true, count);
-        }
+        //void buyWorkforceAction(int count)
+        //{
+        //    city.buyWorkforce(true, count);
+        //}
 
         void buyRepairAction(bool all)
         {
             city.buyRepair(true, all);
         }
 
-        public void buyWorkforceToolTip(int count)
-        {
-            RichBoxContent content = new RichBoxContent();
-            if (city.canExpandWorkForce(count))
-            {
-                content.text(TextLib.Quote(DssRef.lang.ResourceType_Workers_Description));
-                content.newLine();
-                content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
-                content.newLine();
-                HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, city.expandWorkForceCost()* count, player.faction.gold);
-                content.newLine();
-                content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
-                content.newLine();
-                content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.CityOption_ExpandWorkForce_IncreaseMax, DssConst.ExpandWorkForce * count));
-            }
-            else 
-            {
-                content.Add(new RichBoxText(DssRef.lang.Hud_Purchase_MaxCapacity, Color.Red));
-            }
-            player.hud.tooltip.create(player, content, true);
-        }
+        //public void buyWorkforceToolTip(int count)
+        //{
+        //    RichBoxContent content = new RichBoxContent();
+        //    if (city.canExpandWorkForce(count))
+        //    {
+        //        content.text(TextLib.Quote(DssRef.lang.ResourceType_Workers_Description));
+        //        content.newLine();
+        //        content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
+        //        content.newLine();
+        //        HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, city.expandWorkForceCost()* count, player.faction.gold);
+        //        content.newLine();
+        //        content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
+        //        content.newLine();
+        //        content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.CityOption_ExpandWorkForce_IncreaseMax, DssConst.ExpandWorkForce * count));
+        //    }
+        //    else 
+        //    {
+        //        content.Add(new RichBoxText(DssRef.lang.Hud_Purchase_MaxCapacity, Color.Red));
+        //    }
+        //    player.hud.tooltip.create(player, content, true);
+        //}
 
         public void burnToolTip()
         {

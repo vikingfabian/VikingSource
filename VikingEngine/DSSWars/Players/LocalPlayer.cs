@@ -17,6 +17,8 @@ using Microsoft.Xna.Framework.Input;
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.ToGG;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Players.Orders;
+using VikingEngine.DSSWars.Data;
 
 namespace VikingEngine.DSSWars.Players
 {    
@@ -87,7 +89,7 @@ namespace VikingEngine.DSSWars.Players
             content.h2(childBirthRequirements);
             content.text(string.Format(availableHomes, city.homesUnused())).overrideColor = HudLib.ResourceCostColor(city.homesUnused() > 0);
             content.text(piece).overrideColor = HudLib.ResourceCostColor(city.battleGroup == null);
-            HudLib.ItemCount(content, DssRef.todoLang.Resource_TypeName_Food, city.food.amount.ToString()).overrideColor = HudLib.ResourceCostColor(city.food.amount > 0);
+            HudLib.ItemCount(content, DssRef.todoLang.Resource_TypeName_Food, city.res_food.amount.ToString()).overrideColor = HudLib.ResourceCostColor(city.res_food.amount > 0);
 
             hud.tooltip.create(this, content, true);
         }
@@ -152,12 +154,18 @@ namespace VikingEngine.DSSWars.Players
 
             tutorial_writeGameState(w);
 
+            w.Write((ushort)orders.Count);
+            foreach (var order in orders)
+            {
+                order.writeGameState(w);
+            }
+
             Debug.WriteCheck(w);
         }
 
-        public override void readGameState(BinaryReader r, int subversion)
+        public override void readGameState(BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
-            base.readGameState(r, subversion);
+            base.readGameState(r, subversion, pointers);
 
             diplomaticPoints.value = r.ReadInt16();
             statistics.readGameState(r, subversion);
@@ -182,6 +190,13 @@ namespace VikingEngine.DSSWars.Players
 
             tutorial_readGameState(r, subversion);
 
+            int ordersCount = r.ReadUInt16();
+            for (int i = 0; i < ordersCount; i++)
+            {
+                BuildOrder order = new BuildOrder();
+                order.readGameState(r, subversion, pointers);
+                orders.Add(order);
+            }
             Debug.ReadCheck(r);
         }
 

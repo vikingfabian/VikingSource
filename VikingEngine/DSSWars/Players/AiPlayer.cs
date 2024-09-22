@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.Conscript;
 using VikingEngine.DSSWars.GameObject.Resource;
@@ -56,9 +57,9 @@ namespace VikingEngine.DSSWars.Players
             w.Write(protectedPlayer);
 
         }
-        public override void readGameState(BinaryReader r, int version)
+        public override void readGameState(BinaryReader r, int version, ObjectPointerCollection pointers)
         {
-            base.readGameState(r, version);
+            base.readGameState(r, version, pointers);
 
             IsPlayerNeighbor = r.ReadBoolean();
             aggressionLevel = r.ReadByte();
@@ -428,10 +429,10 @@ namespace VikingEngine.DSSWars.Players
                                     {
                                         city.buyRepair(true, true);
                                     }
-                                    else
-                                    {
-                                        city.buyWorkforce(true, 1);
-                                    }
+                                    //else
+                                    //{
+                                    //    city.buyWorkforce(true, 1);
+                                    //}
                                     break;
                                 case PurchaseOrderType_CityGuard:
                                     city.buyCityGuards(true, 1);
@@ -449,11 +450,11 @@ namespace VikingEngine.DSSWars.Players
         {
             BuildAndExpandType result;
             intelligent = false;
-            if (city.rawFood.needMore())
+            if (city.res_rawFood.needMore())
             {
                 result = BuildAndExpandType.WheatFarms;
             }
-            else if (city.skinLinnen.needMore())
+            else if (city.res_skinLinnen.needMore())
             {
                 result = BuildAndExpandType.LinnenFarms;
             }

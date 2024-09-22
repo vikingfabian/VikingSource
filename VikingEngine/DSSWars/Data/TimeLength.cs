@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.LootFest.Data;
 
 namespace VikingEngine.DSSWars.Data
 {
@@ -53,12 +54,12 @@ namespace VikingEngine.DSSWars.Data
         public float endTimeSec;
 
         public TimeInGameCountdown(TimeLength length)
-            :this()
-        { 
+            : this()
+        {
             this.start(length);
         }
         public void start(TimeLength length)
-        { 
+        {
             this.length = length;
             endTimeSec = Ref.TotalGameTimeSec + length.seconds;
         }
@@ -69,7 +70,21 @@ namespace VikingEngine.DSSWars.Data
 
         public TimeLength RemainingLength()
         {
-           return new TimeLength(Bound.Min(endTimeSec - Ref.TotalGameTimeSec, 0));
+            return new TimeLength(Bound.Min(endTimeSec - Ref.TotalGameTimeSec, 0));
+        }
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            w.Write((ushort)Bound.Min(RemainingLength().seconds, 0));
+        }
+
+        public void readGameState(System.IO.BinaryReader r)
+        {
+            float remaining = r.ReadUInt16();
+            if (remaining > 0)
+            {
+                start(new TimeLength(remaining));
+            }
         }
     }
 }

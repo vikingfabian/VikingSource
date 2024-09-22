@@ -66,9 +66,9 @@ namespace VikingEngine.DSSWars.Players
             Debug.WriteCheck(w);
         }
 
-        public override void readGameState(BinaryReader r, int version)
+        public override void readGameState(BinaryReader r, int version, ObjectPointerCollection pointers)
         {
-            base.readGameState(r, version);
+            base.readGameState(r, version, pointers);
 
             int darkLordAlliesCount = r.ReadInt32();
             if (darkLordAlliesCount > 0)

@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int workForce = 0;
         public int workForceMax = 0;
 
-        public int maxEpandWorkSize;
+        //public int maxEpandWorkSize;
         public FloatingInt damages = new FloatingInt();
         public FloatingInt immigrants = new FloatingInt();
         const double ImmigrantsRemovePerSec = 0.1;
@@ -344,11 +344,11 @@ namespace VikingEngine.DSSWars.GameObject
                 w.Write(Debug.Ushort_OrCrash(n));
             }
 
-            w.Write(Debug.Byte_OrCrash(cityPurchaseOptions.Count));
-            foreach (var opt in cityPurchaseOptions)
-            {
-                opt.write(w);
-            }
+            //w.Write(Debug.Byte_OrCrash(cityPurchaseOptions.Count));
+            //foreach (var opt in cityPurchaseOptions)
+            //{
+            //    opt.write(w);
+            //}
 
             w.Write(Debug.Byte_OrCrash((int)Culture));
         }
@@ -371,13 +371,16 @@ namespace VikingEngine.DSSWars.GameObject
                 neighborCities.Add(r.ReadUInt16());
             }
 
-            int cityPurchaseOptionsCount = r.ReadByte();
-            cityPurchaseOptions = new List<CityPurchaseOption>(cityPurchaseOptionsCount);
-            for (int i = 0; i < cityPurchaseOptionsCount; ++i)
+            if (version <= 6)
             {
-                CityPurchaseOption cityPurchase = new CityPurchaseOption();
-                cityPurchase.read(r);
-                cityPurchaseOptions.Add(cityPurchase);
+                int cityPurchaseOptionsCount = r.ReadByte();
+                cityPurchaseOptions = new List<CityPurchaseOption>(cityPurchaseOptionsCount);
+                for (int i = 0; i < cityPurchaseOptionsCount; ++i)
+                {
+                    CityPurchaseOption cityPurchase = new CityPurchaseOption();
+                    cityPurchase.read(r);
+                    cityPurchaseOptions.Add(cityPurchase);
+                }
             }
 
             if (version >= 6)
@@ -391,28 +394,41 @@ namespace VikingEngine.DSSWars.GameObject
             //workForce.write16bit(w);
             w.Write(Convert.ToUInt16(workForce));
             w.Write(Convert.ToUInt16(workForceMax));
-            w.Write(Convert.ToUInt16(maxEpandWorkSize));
+            childrenAge0.write16bit(w);
+            w.Write((ushort)childrenAge1);
+
+            //w.Write(Convert.ToUInt16(maxEpandWorkSize));
             damages.write16bit(w);
             immigrants.write16bit(w);
             w.Write(nobelHouse);
             w.Write((ushort)guardCount);
             w.Write((ushort)maxGuardSize);
 
-            //detailObj.writeGameState(w);
+            w.Write((byte)maxWater);
+            workTemplate.writeGameState(w, true);
+
+            w.Write((ushort)barracks.Count);
+            foreach (var barracks in barracks)
+            { 
+                barracks.writeGameState(w);
+            }
+
+            w.Write((ushort)deliveryServices.Count);
+            foreach (var delivery in deliveryServices)
+            { 
+                delivery.writeGameState(w);
+            }
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             //workForce.read16bit(r);
             workForce = r.ReadUInt16();
             workForceMax = r.ReadUInt16();
-            if (subversion >= 6)
-            {
-                maxEpandWorkSize = r.ReadUInt16();
-            }
-            if (subversion >= 4)
-            {
-                damages.read16bit(r);
-            }
+            childrenAge0.read16bit(r);
+            childrenAge1 = r.ReadUInt16();
+            //maxEpandWorkSize = r.ReadUInt16();
+           
+            damages.read16bit(r);
             immigrants.read16bit(r);
             nobelHouse = r.ReadBoolean();
             if (nobelHouse)
@@ -420,13 +436,29 @@ namespace VikingEngine.DSSWars.GameObject
                 addNobelHouseFeatures();
             }
 
-            if (subversion >= 3)
+            guardCount = r.ReadUInt16();
+            maxGuardSize = r.ReadUInt16();
+
+            maxWater = r.ReadByte();
+            workTemplate.readGameState(r, subversion, true);
+
+            refreshCitySize();     
+            
+            int barracksCount = r.ReadUInt16();
+            for (int i = 0; i < barracksCount; i++)
             {
-                guardCount = r.ReadUInt16();
-                maxGuardSize = r.ReadUInt16();
+                var barrack = new Conscript.BarracksStatus();
+                barrack.readGameState(r);
+                barracks.Add(barrack);
             }
 
-            refreshCitySize();
+            int deliveryServicesCount = r.ReadUInt16();
+            for (int i = 0;  i < deliveryServicesCount;  i++)
+            {
+                Delivery.DeliveryStatus status = new Delivery.DeliveryStatus();
+                status.readGameState(r);
+                deliveryServices.Add(status);
+            }
         }
 
         public void writeNet(System.IO.BinaryWriter w)
@@ -438,22 +470,16 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
-        //public void setRenderState(bool inRender)
-        //{
-        //    //lib.DoNothing();    
-        //}
-
-
 
         public int expandWorkForceCost()
         {
             return 40000 + workForceMax * 10;
         }
 
-        public bool canExpandWorkForce(int count)
-        {
-            return (workForceMax + DssConst.ExpandWorkForce * count) <= maxEpandWorkSize;
-        }
+        //public bool canExpandWorkForce(int count)
+        //{
+        //    return (workForceMax + DssConst.ExpandWorkForce * count) <= maxEpandWorkSize;
+        //}
 
         public bool canIncreaseGuardSize(int count)
         {
@@ -498,24 +524,24 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        public bool buyWorkforce(bool commit, int count)
-        {
-            if (canExpandWorkForce(count))
-            {
-                int totalCost = 0;
+        //public bool buyWorkforce(bool commit, int count)
+        //{
+        //    if (canExpandWorkForce(count))
+        //    {
+        //        int totalCost = 0;
 
-                if (faction.calcCost(expandWorkForceCost() * count, ref totalCost))
-                {
-                    if (commit)
-                    {
-                        expandWorkForce(DssConst.ExpandWorkForce * count);
-                        faction.payMoney(totalCost, true);
-                    }
-                    return true;
-                }
-            }
-            return false;
-        }
+        //        if (faction.calcCost(expandWorkForceCost() * count, ref totalCost))
+        //        {
+        //            if (commit)
+        //            {
+        //                expandWorkForce(DssConst.ExpandWorkForce * count);
+        //                faction.payMoney(totalCost, true);
+        //            }
+        //            return true;
+        //        }
+        //    }
+        //    return false;
+        //}
 
         public bool buyRepair(bool commit, bool all)
         {
@@ -664,11 +690,11 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
             }
-            if (newGame || maxEpandWorkSize == 0)
-            {
-                int maxFit = MathExt.MultiplyInt(0.8, CityDetail.WorkersPerTile * CityDetail.HutMaxLevel * areaSize);
-                maxEpandWorkSize = Bound.Max(workForceMax + DssConst.ExpandWorkForce * 3, maxFit);
-            }
+            //if (newGame || maxEpandWorkSize == 0)
+            //{
+            //    int maxFit = MathExt.MultiplyInt(0.8, CityDetail.WorkersPerTile * CityDetail.HutMaxLevel * areaSize);
+            //    maxEpandWorkSize = Bound.Max(workForceMax + DssConst.ExpandWorkForce * 3, maxFit);
+            //}
         }
 
         void refreshCitySize()
@@ -763,7 +789,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool canEverGetNobelHouse()
         {
-            return maxEpandWorkSize >= DssLib.NobelHouseWorkForceReqiurement;
+            return true;//maxEpandWorkSize >= DssLib.NobelHouseWorkForceReqiurement;
         }
 
         public void buyNobelHouseAction()
@@ -868,7 +894,7 @@ namespace VikingEngine.DSSWars.GameObject
         public double childAddPerSec()
         {
             if (battleGroup == null &&
-                food.amount > 0 &&
+                res_food.amount > 0 &&
                 homeUsers() < homesTotal())
             {
                 var result = workForce / 200.0 * faction.growthMultiplier;
@@ -945,7 +971,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 waterAddPerSec = 2;
             }
-            water.amount = Math.Min(water.amount + waterAddPerSec, maxWater);
+            res_water.amount = Math.Min(res_water.amount + waterAddPerSec, maxWater);
         }
 
         public void asynchGameObjectsUpdate(bool minute)

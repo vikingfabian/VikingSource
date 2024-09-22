@@ -255,12 +255,12 @@ namespace VikingEngine.DSSWars.Players
                                     return;
                                 }
 
-                                if (autoBuild && citiesC.sel.canExpandWorkForce(1))
-                                {
-                                    cityAction = citiesC.sel;
-                                    automationAction = AutomationAction.ExpandWorkforce;
-                                    return;
-                                }
+                                //if (autoBuild && citiesC.sel.canExpandWorkForce(1))
+                                //{
+                                //    cityAction = citiesC.sel;
+                                //    automationAction = AutomationAction.ExpandWorkforce;
+                                //    return;
+                                //}
 
                                 if (autoRecruit)
                                 {

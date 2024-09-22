@@ -9,8 +9,25 @@ namespace VikingEngine.DSSWars.GameObject
 {
     class ConscriptedSoldierData : AbsSoldierData
     {
+        public SoldierProfile profile;
+
         public ConscriptedSoldierData(SoldierProfile profile)
         {
+            init(profile);
+        }
+
+        public ConscriptedSoldierData(System.IO.BinaryReader r)
+        {
+            SoldierProfile profile = new SoldierProfile();
+            profile.readGameState(r);
+
+            init(profile);
+        }
+
+        void init(SoldierProfile profile)
+        {
+            this.profile = profile;
+
             unitType = UnitType.Conscript;
 
             modelScale = DssConst.Men_StandardModelScale;
@@ -19,8 +36,8 @@ namespace VikingEngine.DSSWars.GameObject
             walkingSpeed = DssConst.Men_StandardWalkingSpeed;
             rotationSpeed = StandardRotatingSpeed;
             targetSpotRange = StandardTargetSpotRange;
-                        
-           
+
+
             basehealth = ConscriptProfile.ArmorHealth(profile.conscript.armorLevel);
 
             attackDamage = Convert.ToInt32(ConscriptProfile.WeaponDamage(profile.conscript.weapon) * profile.skillBonus);
@@ -58,6 +75,15 @@ namespace VikingEngine.DSSWars.GameObject
             attackTimePlusCoolDown /= ConscriptProfile.TrainingAttackSpeed(profile.conscript.training);
             attackTimePlusCoolDown /= profile.skillBonus;
 
+        }
+
+        override public void writeGameState(System.IO.BinaryWriter w)
+        {
+            profile.writeGameState(w);
+        }
+        override public void readGameState(System.IO.BinaryReader r)
+        {
+            profile.readGameState(r);
         }
     }
 }

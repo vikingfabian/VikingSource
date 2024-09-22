@@ -1,12 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Text.RegularExpressions;
+using System.Xml.Linq;
+using VikingEngine.DSSWars.Data;
 
 namespace VikingEngine.DSSWars.GameObject
 {
     abstract class AbsSoldierData : AbsDetailUnitData
-    {
-
-        
+    {        
         public UnitType convertSoldierShipType;
         public int rowWidth =DssConst.SoldierGroup_RowWidth;
         public int columnsDepth = DssConst.SoldierGroup_ColumnsDepth;
@@ -98,6 +99,15 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public bool IsShip()
         {
             return false;
+        }
+
+        virtual public void writeGameState(System.IO.BinaryWriter w)
+        {
+           throw new NotImplementedException();
+        }
+        virtual public void readGameState(System.IO.BinaryReader r)
+        {
+           throw new NotImplementedException();
         }
 
     }

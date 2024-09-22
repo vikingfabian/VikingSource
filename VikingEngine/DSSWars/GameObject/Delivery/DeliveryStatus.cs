@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameObject.Conscript;
 using VikingEngine.DSSWars.GameObject.Resource;
 
 namespace VikingEngine.DSSWars.GameObject.Delivery
@@ -17,12 +18,57 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
         public int recieverMax;
         public int idAndPosition;
         public int que;
-        public int itemsCollected;
+        //public int itemsCollected;
         public DeliveryProfile profile;
         public DeliveryProfile inProgress;
 
-        public Resource.ItemResource nextDelivery;
+        //public Resource.ItemResource nextDelivery;
         public TimeInGameCountdown countdown;
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)active);
+            
+            w.Write((ushort)senderMin); 
+            w.Write((ushort)recieverMax);
+
+            profile.writeGameState(w);
+            if (active != DeliveryActiveStatus.Idle)
+            {
+                inProgress.writeGameState(w);
+            }
+            switch (active)
+            {
+                case DeliveryActiveStatus.Delivering:
+                    //itemsCollected = 
+                    countdown.writeGameState(w);
+                    break;
+            }
+            w.Write(idAndPosition);
+            w.Write((byte)que);
+        }
+
+        public void readGameState(System.IO.BinaryReader r)
+        {
+            active = (DeliveryActiveStatus)r.ReadByte();
+
+            senderMin = r.ReadUInt16();
+            recieverMax = r.ReadUInt16();
+
+            profile.readGameState(r);
+            if (active != DeliveryActiveStatus.Idle)
+            {
+                inProgress.readGameState(r);
+            }
+            switch (active)
+            {                
+                case DeliveryActiveStatus.Delivering:
+                    countdown.readGameState(r);
+                    break;
+            }
+            idAndPosition = r.ReadInt32();
+            que = r.ReadByte();
+        }
 
         public bool CanSend(City city)
         {
@@ -102,6 +148,18 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
     {
         public int toCity;
         public ItemResourceType type;
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            w.Write((short)toCity);
+            w.Write((byte)type);
+        }
+
+        public void readGameState(System.IO.BinaryReader r)
+        {
+            toCity = r.ReadInt16();
+            type = (ItemResourceType)r.ReadByte();
+        }
 
         public static TimeLength DeliveryTime(City from, int toCity)
         {

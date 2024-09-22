@@ -90,7 +90,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             {
                 case WorkType.Eat:
                     int eatAmount = (int)Math.Floor((DssConst.Worker_MaxEnergy - energy) / DssConst.FoodEnergy);
-                    city.food.amount -= eatAmount;
+                    city.res_food.amount -= eatAmount;
                     city.foodSpending.add(eatAmount);
                     energy += eatAmount * DssConst.FoodEnergy;
                     break;

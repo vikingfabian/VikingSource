@@ -2,7 +2,9 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Security.AccessControl;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.HUD.RichBox;
 
@@ -33,6 +35,46 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         public WorkTemplate()
         {
+        }
+
+        public void writeGameState(System.IO.BinaryWriter w, bool isCity)
+        {
+            move.writeGameState(w, isCity);
+            wood.writeGameState(w, isCity);
+            stone.writeGameState(w, isCity);
+            craft_food.writeGameState(w, isCity);
+            craft_beer.writeGameState(w, isCity);
+            craft_iron.writeGameState(w, isCity);
+            craft_sharpstick.writeGameState(w, isCity);
+            craft_sword.writeGameState(w, isCity);
+            craft_bow.writeGameState(w, isCity);
+            craft_lightarmor.writeGameState(w, isCity);
+            craft_mediumarmor.writeGameState(w, isCity);
+            craft_heavyarmor.writeGameState(w, isCity);
+            farming.writeGameState(w, isCity);
+            mining.writeGameState(w, isCity);
+            trading.writeGameState(w, isCity);
+            autoBuild.writeGameState(w, isCity);
+
+        }
+        public void readGameState(System.IO.BinaryReader r, int subversion, bool isCity)
+        {
+            move.readGameState(r, subversion, isCity);
+            wood.readGameState(r, subversion, isCity);
+            stone.readGameState(r, subversion, isCity);
+            craft_food.readGameState(r, subversion, isCity);
+            craft_beer.readGameState(r, subversion, isCity);
+            craft_iron.readGameState(r, subversion, isCity);
+            craft_sharpstick.readGameState(r, subversion, isCity);
+            craft_sword.readGameState(r, subversion, isCity);
+            craft_bow.readGameState(r, subversion, isCity);
+            craft_lightarmor.readGameState(r, subversion, isCity);
+            craft_mediumarmor.readGameState(r, subversion, isCity);
+            craft_heavyarmor.readGameState(r, subversion, isCity);
+            farming.readGameState(r, subversion, isCity);
+            mining.readGameState(r, subversion, isCity);
+            trading.readGameState(r, subversion, isCity);
+            autoBuild.readGameState(r, subversion, isCity);
         }
 
         public void onFactionChange(WorkTemplate factionTemplate)
@@ -293,6 +335,23 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         new RbAction3Arg<int, WorkPriorityType, City>(faction.changeWorkPrio, change, priorityType, city)));
 
                 content.space();
+            }
+        }
+
+        public void writeGameState(System.IO.BinaryWriter w, bool isCity)
+        {
+            w.Write((byte)value);
+            if (isCity)
+            {
+                w.Write(followFaction);
+            }
+        }
+        public void readGameState(System.IO.BinaryReader r, int subversion, bool isCity)
+        {
+            value = r.ReadByte();
+            if (isCity)
+            {
+                followFaction = r.ReadBoolean();
             }
         }
 

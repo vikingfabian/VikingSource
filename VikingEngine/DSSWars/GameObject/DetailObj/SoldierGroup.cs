@@ -178,8 +178,13 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            w.Write((byte)type);
-            w.Write((byte)FirstSoldierData().unitType);
+            //w.Write((byte)type);
+            //w.Write((byte)FirstSoldierData().unitType);
+            
+            typeSoldierData.writeGameState(w);
+            w.Write(IsShip());
+
+            //typeCurrentData = typeSoldierData;
 
             armyLocalPlacement.writeShort(w);
 
@@ -208,8 +213,15 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
-            type = (UnitType)r.ReadByte();
-            UnitType soldierType = (UnitType)r.ReadByte();
+            //type = (UnitType)r.ReadByte();
+            //UnitType soldierType = (UnitType)r.ReadByte();
+            
+            var data = new ConscriptedSoldierData(r);
+            typeSoldierData = data;
+            typeShipData = new ConscriptedWarshipData(typeSoldierData, data.profile);
+
+            bool isShip = r.ReadBoolean();
+            typeCurrentData = isShip? typeShipData : typeSoldierData;
 
             armyLocalPlacement.readShort(r);
 
@@ -226,17 +238,17 @@ namespace VikingEngine.DSSWars.GameObject
             int soldiersCount = r.ReadByte();
             bool soldiersLockedInGroup = groupObjective == GroupObjective_FollowArmyObjective;
 
-            AbsSoldierData typeData = DssRef.unitsdata.Get(type);
-            initPart1(typeData);
+            //AbsSoldierData typeData = DssRef.unitsdata.Get(type);
+            initPart1(typeCurrentData);
 
-            AbsSoldierData soldierData = DssRef.unitsdata.Get(soldierType);
+            //AbsSoldierData soldierData = DssRef.unitsdata.Get(soldierType);
 
-            if (soldierType == UnitType.Recruit)
-            {
-                new TrainingCompleteTimer(this);
-            }
+            //if (soldierType == UnitType.Recruit)
+            //{
+            //    new TrainingCompleteTimer(this);
+            //}
 
-            createAllSoldiers(soldierType == UnitType.Recruit, (soldierData != null && soldierData.IsShip())? soldierData : typeData, soldiersCount);
+            createAllSoldiers(false, typeCurrentData, soldiersCount);
 
             if (!soldiersLockedInGroup)
             {
@@ -247,7 +259,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            initPart2(typeData);
+            initPart2(typeCurrentData);
         }
 
         public void writeNet(System.IO.BinaryWriter w)

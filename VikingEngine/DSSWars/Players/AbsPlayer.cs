@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
@@ -99,7 +100,7 @@ namespace VikingEngine.DSSWars.Players
         {
 
         }
-        virtual public void readGameState(System.IO.BinaryReader r, int version)
+        virtual public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
 
         }

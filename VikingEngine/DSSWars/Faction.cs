@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -99,8 +100,6 @@ namespace VikingEngine.DSSWars
         }
         virtual public void writeGameState(System.IO.BinaryWriter w)
         {
-            //profile.write(w);
-
             w.Write(gold);
 
             w.Write((ushort)cities.Count);
@@ -127,17 +126,14 @@ namespace VikingEngine.DSSWars
                     diplomaticRelations[i].write(w);
                 }
             }
-            w.Write(short.MinValue);//write end
-                        
-
+            w.Write(short.MinValue);
             player.writeGameState(w);
 
-            
-        }
-        virtual public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
-        {
-            //profile = new FlagAndColor(r);
+            workTemplate.writeGameState(w, false);
 
+        }
+        virtual public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
+        {
             gold = r.ReadInt32();
 
             int citiesCount = r.ReadUInt16();
@@ -155,7 +151,7 @@ namespace VikingEngine.DSSWars
             for (int i = 0; i < armiesCount; i++)
             {
                 var army = new Army();
-                army.readGameState(this, r, version, pointers);
+                army.readGameState(this, r, subVersion, pointers);
                 //armies.Add(army);
             }
 
@@ -163,7 +159,7 @@ namespace VikingEngine.DSSWars
             while (true)
             { 
                 DiplomaticRelation relation = new DiplomaticRelation();
-                if (relation.read(r, version))
+                if (relation.read(r, subVersion))
                 {
                     relation.addToFactions();
                 }
@@ -175,8 +171,9 @@ namespace VikingEngine.DSSWars
 
             
 
-            player.readGameState(r, version);
+            player.readGameState(r, subVersion, pointers);
 
+            workTemplate.readGameState(r, subVersion, false);
         }
 
         virtual public void writeNet(System.IO.BinaryWriter w)

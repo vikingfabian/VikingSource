@@ -39,12 +39,12 @@ namespace VikingEngine.DSSWars.GameObject
             IntVector2 minpos = WP.ToSubTilePos_Centered(tilePos);
             IntVector2 maxpos = minpos;
 
-            water.clearOrders();
-            wood.clearOrders();
-            stone.clearOrders();
-            rawFood.clearOrders();
-            skinLinnen.clearOrders();
-            ore.clearOrders();
+            res_water.clearOrders();
+            res_wood.clearOrders();
+            res_stone.clearOrders();
+            res_rawFood.clearOrders();
+            res_skinLinnen.clearOrders();
+            res_ore.clearOrders();
             //waterSpendOrders = 0;
             
 
@@ -203,7 +203,7 @@ namespace VikingEngine.DSSWars.GameObject
                         status.createWorkOrder(WorkType.DropOff, -1, -1, WP.ToSubTilePos_Centered(tilePos), this);
                         workerStatuses[i] = status;
                     }
-                    else if (workerStatuses[i].energy < 0 && (food.amount > 0 || faction.gold > 0))
+                    else if (workerStatuses[i].energy < 0 && (res_food.amount > 0 || faction.gold > 0))
                     {
                         CityStructure.Singleton.updateIfNew(this);
                         var status = workerStatuses[i];
@@ -378,13 +378,13 @@ namespace VikingEngine.DSSWars.GameObject
                                                     case Map.TerrainSubFoilType.TreeHard:
                                                     case Map.TerrainSubFoilType.DryWood:
                                                         if (workTemplate.wood.HasPrio() &&
-                                                            wood.needMore() &&
+                                                            res_wood.needMore() &&
                                                             (foil == TerrainSubFoilType.DryWood || subTile.terrainAmount >= TerrainContent.TreeReadySize))
                                                         {
                                                             if (isFreeTile(subTileLoop.Position))
                                                             {
                                                                 workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, subTileLoop.Position, workTemplate.wood.value, distanceValue));
-                                                                wood.orderQueCount += subTile.terrainAmount;
+                                                                res_wood.orderQueCount += subTile.terrainAmount;
                                                             }
                                                         }
                                                         break;
@@ -392,18 +392,18 @@ namespace VikingEngine.DSSWars.GameObject
                                                     case Map.TerrainSubFoilType.StoneBlock:
                                                     case Map.TerrainSubFoilType.Stones:
                                                         if (workTemplate.stone.HasPrio() &&
-                                                            stone.needMore() &&
+                                                            res_stone.needMore() &&
                                                             isFreeTile(subTileLoop.Position))
                                                         {
                                                             workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, subTileLoop.Position, workTemplate.stone.value, distanceValue));
-                                                            stone.orderQueCount += ItemPropertyColl.CarryStones;
+                                                            res_stone.orderQueCount += ItemPropertyColl.CarryStones;
                                                         }
                                                         break;
 
                                                     case TerrainSubFoilType.WheatFarm:
                                                         if (workTemplate.farming.HasPrio() && 
                                                             subTile.terrainAmount == TerrainContent.FarmCulture_Empty &&
-                                                            rawFood.needMore())
+                                                            res_rawFood.needMore())
                                                         {
                                                             if (isFreeTile(subTileLoop.Position))
                                                             {
@@ -411,13 +411,13 @@ namespace VikingEngine.DSSWars.GameObject
                                                             }
                                                         }
                                                         else if (workTemplate.farming.HasPrio() && 
-                                                            rawFood.needMore() &&
+                                                            res_rawFood.needMore() &&
                                                             subTile.terrainAmount >= TerrainContent.FarmCulture_ReadySize)
                                                         {
                                                             if (isFreeTile(subTileLoop.Position))
                                                             {
                                                                 workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, subTileLoop.Position, workTemplate.farming.value, distanceValue));
-                                                                rawFood.orderQueCount += subTile.terrainAmount;
+                                                                res_rawFood.orderQueCount += subTile.terrainAmount;
                                                             }
                                                         }
                                                         break;
@@ -425,20 +425,20 @@ namespace VikingEngine.DSSWars.GameObject
                                                     case TerrainSubFoilType.LinnenFarm:
                                                         if (workTemplate.farming.HasPrio() &&
                                                             subTile.terrainAmount == TerrainContent.FarmCulture_Empty &&
-                                                            skinLinnen.needMore())
+                                                            res_skinLinnen.needMore())
                                                         {
                                                             if (isFreeTile(subTileLoop.Position))
                                                             {
                                                                 workQue.Add(new WorkQueMember(WorkType.Plant, NoSubWork, subTileLoop.Position, workTemplate.farming.value, distanceValue));
                                                             }
                                                         }
-                                                        else if (skinLinnen.needMore() &&
+                                                        else if (res_skinLinnen.needMore() &&
                                                             subTile.terrainAmount >= TerrainContent.FarmCulture_ReadySize)
                                                         {
                                                             if (isFreeTile(subTileLoop.Position))
                                                             {
                                                                 workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, subTileLoop.Position, workTemplate.farming.value, distanceValue));
-                                                                rawFood.orderQueCount += subTile.terrainAmount;
+                                                                res_rawFood.orderQueCount += subTile.terrainAmount;
                                                             }
                                                         }
                                                         break;
@@ -448,11 +448,11 @@ namespace VikingEngine.DSSWars.GameObject
 
                                             case TerrainMainType.Mine:
                                                 if (workTemplate.mining.HasPrio() &&
-                                                    ore.needMore() &&
+                                                    res_ore.needMore() &&
                                                     isFreeTile(subTileLoop.Position))
                                                 {
                                                     workQue.Add(new WorkQueMember(WorkType.Mine, NoSubWork, subTileLoop.Position, workTemplate.mining.value, distanceValue));
-                                                    ore.orderQueCount += TerrainContent.MineAmount;
+                                                    res_ore.orderQueCount += TerrainContent.MineAmount;
                                                 }
                                                 break;
 
@@ -462,22 +462,22 @@ namespace VikingEngine.DSSWars.GameObject
                                                 switch (building)
                                                 {
                                                     case TerrainBuildingType.HenPen:
-                                                        if (workTemplate.farming.HasPrio() && rawFood.needMore() && subTile.terrainAmount > TerrainContent.HenReady)
+                                                        if (workTemplate.farming.HasPrio() && res_rawFood.needMore() && subTile.terrainAmount > TerrainContent.HenReady)
                                                         {
                                                             if (isFreeTile(subTileLoop.Position))
                                                             {
                                                                 workQue.Add(new WorkQueMember(WorkType.PickUpProduce, NoSubWork, subTileLoop.Position, workTemplate.farming.value, distanceValue));
-                                                                rawFood.orderQueCount += TerrainContent.HenMaxSize;
+                                                                res_rawFood.orderQueCount += TerrainContent.HenMaxSize;
                                                             }
                                                         }
                                                         break;
                                                     case TerrainBuildingType.PigPen:
-                                                        if (workTemplate.farming.HasPrio() && (rawFood.needMore() || skinLinnen.needMore()) && subTile.terrainAmount > TerrainContent.PigReady)
+                                                        if (workTemplate.farming.HasPrio() && (res_rawFood.needMore() || res_skinLinnen.needMore()) && subTile.terrainAmount > TerrainContent.PigReady)
                                                         {
                                                             if (isFreeTile(subTileLoop.Position))
                                                             {
                                                                 workQue.Add(new WorkQueMember(WorkType.PickUpProduce, NoSubWork, subTileLoop.Position, workTemplate.farming.value, distanceValue));
-                                                                rawFood.orderQueCount += TerrainContent.PigMaxSize;
+                                                                res_rawFood.orderQueCount += TerrainContent.PigMaxSize;
                                                             }
                                                         }
                                                         break;
@@ -526,7 +526,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                         break;
                                                     case TerrainBuildingType.Brewery:
                                                         if (workTemplate.craft_beer.HasPrio() &&
-                                                            beer.needMore() &&
+                                                            res_beer.needMore() &&
                                                             ResourceLib.CraftBrewery.canCraft(this) &&
                                                             isFreeTile(subTileLoop.Position))
                                                         {
@@ -556,13 +556,13 @@ namespace VikingEngine.DSSWars.GameObject
                                                                     break;
                                                                 case BuildAndExpandType.WheatFarms:
                                                                 case BuildAndExpandType.HenPen:
-                                                                    intelligentCheck = rawFood.needMore();
+                                                                    intelligentCheck = res_rawFood.needMore();
                                                                     break;
                                                                 case BuildAndExpandType.PigPen:
-                                                                    intelligentCheck = rawFood.needMore() || skinLinnen.needMore();
+                                                                    intelligentCheck = res_rawFood.needMore() || res_skinLinnen.needMore();
                                                                     break;
                                                                 case BuildAndExpandType.LinnenFarms:
-                                                                    intelligentCheck = skinLinnen.needMore();
+                                                                    intelligentCheck = res_skinLinnen.needMore();
                                                                     break;
                                                             }
                                                         }
@@ -633,7 +633,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 distanceValue += (int)relation * RelationPrioValue;
                             }
 
-                            if (wood.needToImport() && nCity.wood.canTradeAway())
+                            if (res_wood.needToImport() && nCity.res_wood.canTradeAway())
                             {
                                 int value = distanceValue + (int)(nCity.tradeTemplate.wood.price * CostPrioValue);
                                 if (value > woodTrade.priority)
@@ -641,7 +641,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     woodTrade = new WorkQueMember(WorkType.LocalTrade, (int)ItemResourceType.SoftWood, WP.ToSubTilePos_Centered(nCity.tilePos), 5, value);
                                 }
                             }
-                            if (stone.needToImport() && nCity.stone.canTradeAway())
+                            if (res_stone.needToImport() && nCity.res_stone.canTradeAway())
                             {
                                 int value = distanceValue + (int)(nCity.tradeTemplate.stone.price * CostPrioValue);
                                 if (value > stoneTrade.priority)
@@ -649,7 +649,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     stoneTrade = new WorkQueMember(WorkType.LocalTrade, (int)ItemResourceType.Stone_G, WP.ToSubTilePos_Centered(nCity.tilePos), 5, value);
                                 }
                             }
-                            if (food.needToImport() && nCity.food.canTradeAway())
+                            if (res_food.needToImport() && nCity.res_food.canTradeAway())
                             {
                                 int value = distanceValue + (int)(nCity.tradeTemplate.food.price * CostPrioValue);
                                 if (value > foodTrade.priority)
@@ -702,14 +702,14 @@ namespace VikingEngine.DSSWars.GameObject
         {
             //float foodUpkeep = 0;
 
-            if (food.amount <= -40)
+            if (res_food.amount <= -40)
             {
-                int buyFood = -food.amount;
+                int buyFood = -res_food.amount;
 
                 int cost = (int)(buyFood * DssConst.FoodGoldValue_BlackMarket);
                 faction.payMoney(cost, true);
                 blackMarketCosts_food.add(cost);
-                food.amount += buyFood;
+                res_food.amount += buyFood;
             }
         }
 

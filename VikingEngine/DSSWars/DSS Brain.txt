@@ -1,13 +1,6 @@
 ﻿
 -Change Log-
-* Removed local trade, didnt work and needs another approach
-* Removed recruit automation
-* Changed automation options for building/expanding 
-* +1 city culture
-* +4 to build options 
-* Ai will produce armies
-* Dry wood resource
-* Water limit represent the city size
+* Save finally works! (not properly tested)
 
 Error
 -back button in menues 
