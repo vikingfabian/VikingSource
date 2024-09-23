@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars.GameObject
              ItemResourceType.RawFood_Group,
              ItemResourceType.Food_G,
              ItemResourceType.Beer,
-             ItemResourceType.SkinLinnen_Group,
+             ItemResourceType.SkinLinen_Group,
              ItemResourceType.IronOre_G,
              ItemResourceType.Iron_G,
 
@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource res_bow = new GroupedResource() { amount = 0, goalBuffer = 100 };
 
         public GroupedResource res_lightArmor = new GroupedResource() { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
-        public GroupedResource res_mediumArmor = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource res_mediumArmor = new GroupedResource() { amount = 2, goalBuffer = 100 };
         public GroupedResource res_heavyArmor = new GroupedResource() { amount = 0, goalBuffer = 100 };
 
         //bool useLocalTrade
@@ -99,7 +99,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.RawFood_Group:
                     res_rawFood.amount += add;
                     break;
-                case ItemResourceType.SkinLinnen_Group:
+                case ItemResourceType.SkinLinen_Group:
                     res_skinLinnen.amount += add;
                     break;
                 case ItemResourceType.SharpStick:
@@ -140,7 +140,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Stone_G: return res_stone;
                 case ItemResourceType.Wood_Group: return res_wood;
                 case ItemResourceType.RawFood_Group: return res_rawFood;
-                case ItemResourceType.SkinLinnen_Group: return res_skinLinnen;
+                case ItemResourceType.SkinLinen_Group: return res_skinLinnen;
 
                 case ItemResourceType.SharpStick: return res_sharpstick;
                 case ItemResourceType.Sword: return res_sword;
@@ -185,7 +185,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.RawFood_Group:
                     res_rawFood = resource;
                     break;
-                case ItemResourceType.SkinLinnen_Group:
+                case ItemResourceType.SkinLinen_Group:
                     res_skinLinnen = resource;
                     break;
 
@@ -304,11 +304,12 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
 
                 case ItemResourceType.IronOre_G:
-                    {
-                        var price = item.amount * DssConst.IronSellValue;
-                        faction.gold += price;
-                        soldResources.add(price);
-                    }
+                    res_ore.add(item, 1);
+                    //{
+                    //    var price = item.amount * DssConst.IronSellValue;
+                    //    faction.gold += price;
+                    //    soldResources.add(price);
+                    //}
                     break;
 
                 case ItemResourceType.GoldOre:

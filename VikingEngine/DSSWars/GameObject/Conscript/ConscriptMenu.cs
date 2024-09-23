@@ -31,7 +31,6 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
                 content.Add(new RichBoxBeginTitle(1));
 
-
                 content.Add(new RichBoxText(DssRef.todoLang.Conscription_Title + " " + currentStatus.idAndPosition.ToString()));
                 content.space();
                 content.Add(new RichboxButton(new List<AbsRichBoxMember>
@@ -177,6 +176,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             BarracksStatus currentProfile = get();
             currentProfile.profile.specialization = specialization;
             set(currentProfile);
+
         }
 
         void weaponClick(MainWeapon weapon)
@@ -247,6 +247,8 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         void set(BarracksStatus profile)
         {
             city.barracks[city.selectedConscript] = profile;
+
+            city.onConscriptChange();
         }
 
 

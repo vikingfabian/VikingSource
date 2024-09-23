@@ -432,7 +432,8 @@ namespace VikingEngine.DSSWars.GameObject
                                                                 workQue.Add(new WorkQueMember(WorkType.Plant, NoSubWork, subTileLoop.Position, workTemplate.farming.value, distanceValue));
                                                             }
                                                         }
-                                                        else if (res_skinLinnen.needMore() &&
+                                                        else if (workTemplate.farming.HasPrio() &&
+                                                            res_skinLinnen.needMore() &&
                                                             subTile.terrainAmount >= TerrainContent.FarmCulture_ReadySize)
                                                         {
                                                             if (isFreeTile(subTileLoop.Position))
@@ -482,7 +483,8 @@ namespace VikingEngine.DSSWars.GameObject
                                                         }
                                                         break;
                                                     case TerrainBuildingType.Work_Cook:
-                                                        if ((ResourceLib.CraftFood2.canCraft(this) ||ResourceLib.CraftFood1.canCraft(this)) &&
+                                                        if (workTemplate.craft_food.HasPrio() &&
+                                                            (ResourceLib.CraftFood2.canCraft(this) ||ResourceLib.CraftFood1.canCraft(this)) &&
                                                             isFreeTile(subTileLoop.Position))
                                                         {
                                                             //ResourceLib.CraftFood.createBackOrder(this);
@@ -567,27 +569,13 @@ namespace VikingEngine.DSSWars.GameObject
                                                             }
                                                         }
 
-                                                        if (BuildLib.BuildOptions[(int)autoBuild].blueprint.available(this) &&//ResourceLib.CraftWorkerHut.available(this) &&
+                                                        if (BuildLib.BuildOptions[(int)autoBuild].blueprint.available(this) &&
                                                             isFreeTile(subTileLoop.Position))
                                                         {
                                                             workQue.Add(new WorkQueMember(WorkType.Build, (int)autoBuild, subTileLoop.Position, workTemplate.autoBuild.value, distanceValue));
                                                         }
                                                     }
 
-                                                    //if (workTemplate.expand_farms.HasPrio() && 
-                                                    //    rawFood.needMore() && 
-                                                    //    isFreeTile(subTileLoop.Position))
-                                                    //{
-                                                    //    workQue.Add(new WorkQueMember(WorkType.Till, NoSubWork, subTileLoop.Position, workTemplate.expand_farms.value, distanceValue));
-                                                    //    waterSpendOrders += 10;
-                                                    //}
-                                                    //else if (workTemplate.autoBuild.HasPrio() &&
-                                                    //    workForce >= workForceMax && 
-                                                    //    ResourceLib.CraftWorkerHut.available(this) &&
-                                                    //    isFreeTile(subTileLoop.Position))
-                                                    //{
-                                                    //    workQue.Add(new WorkQueMember(WorkType.Build, (int)BuildAndExpandType.WorkerHuts, subTileLoop.Position, workTemplate.autoBuild.value, distanceValue));
-                                                    //}
                                                 }
                                                 break;
 

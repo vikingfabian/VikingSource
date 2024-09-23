@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             Resource(Cost_Food, ItemResourceType.Food_G, DssRef.todoLang.Resource_TypeName_Food);
             Resource(Cost_Wood, ItemResourceType.Wood_Group, DssRef.todoLang.Resource_TypeName_Wood);
             Resource(Cost_Stone, ItemResourceType.Stone_G, DssRef.todoLang.Resource_TypeName_Stone);
-            Resource(Cost_SkinAndLinnen, ItemResourceType.SkinLinnen_Group, DssRef.todoLang.Resource_TypeName_SkinAndLinnen);
+            Resource(Cost_SkinAndLinnen, ItemResourceType.SkinLinen_Group, DssRef.todoLang.Resource_TypeName_SkinAndLinen);
             Resource(Cost_Iron, ItemResourceType.Iron_G, DssRef.todoLang.Resource_TypeName_Iron);
 
             void Resource(int cost, ItemResourceType resourceType, string name)

@@ -14,7 +14,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
     {
         public const int NoPrio = 0;
         const int MinPrio = 1;
-        const int MaxPrio = 5;
+        public const int MaxPrio = 5;
 
         public WorkPriority move = new WorkPriority(3);
         public WorkPriority wood = new WorkPriority(2);
@@ -100,10 +100,10 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             autoBuild.onFactionValueChange(factionTemplate.autoBuild);
         }
 
-        public void changeWorkPrio(int change, WorkPriorityType priorityType)
+        public void setWorkPrio(int set, WorkPriorityType priorityType)
         {
             var work = GetWorkPriority(priorityType);
-            work.value = Bound.Set(work.value + change, NoPrio, MaxPrio);
+            work.value = set;//Bound.Set(work.value + set, NoPrio, MaxPrio);
             work.followFaction = false;
             SetWorkPriority(priorityType, work);
         }
@@ -298,7 +298,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         {
             content.newLine();
             content.Add(new RichBoxText(name));
-            content.Add(new RichBoxTab(0.5f));
+            content.Add(new RichBoxTab(0.4f));
+            
 
             if (city != null)
             {
@@ -317,25 +318,34 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 //content.space();
             }
 
+            for (int prio = 0; prio <= WorkTemplate.MaxPrio; prio++)
             {
-                int change = -1;
-                content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(TextLib.PlusMinus(change)) },
-                        new RbAction3Arg<int, WorkPriorityType, City>(faction.changeWorkPrio, change, priorityType, city)));
-
                 content.space();
+                var button =  new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(prio.ToString()) }, new RbAction3Arg<int, WorkPriorityType, City>(faction.setWorkPrio, prio, priorityType, city));
+                button.setGroupSelectionColor(HudLib.RbSettings, prio == value);
+                content.Add(button);
+
             }
 
-            content.Add(new RichBoxText(value.ToString()));
+            //{
+            //    int change = -1;
+            //    content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(TextLib.PlusMinus(change)) },
+            //            new RbAction3Arg<int, WorkPriorityType, City>(faction.changeWorkPrio, change, priorityType, city)));
 
-            content.space();
+            //    content.space();
+            //}
 
-            {
-                int change = 1;
-                content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(TextLib.PlusMinus(change)) },
-                        new RbAction3Arg<int, WorkPriorityType, City>(faction.changeWorkPrio, change, priorityType, city)));
+            //content.Add(new RichBoxText(value.ToString()));
 
-                content.space();
-            }
+            //content.space();
+
+            //{
+            //    int change = 1;
+            //    content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(TextLib.PlusMinus(change)) },
+            //            new RbAction3Arg<int, WorkPriorityType, City>(faction.changeWorkPrio, change, priorityType, city)));
+
+            //    content.space();
+            //}
         }
 
         public void writeGameState(System.IO.BinaryWriter w, bool isCity)

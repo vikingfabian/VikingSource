@@ -24,89 +24,125 @@ namespace VikingEngine.DSSWars.GameObject
     partial class City
     {
         public int selectedConscript = -1;
-
         public List<BarracksStatus> barracks = new List<BarracksStatus>();
+        Time conscriptDelay = Time.Zero;
 
-        public void async_conscriptUpdate()
+        public void async_conscriptUpdate(float time)
         {
+            if (conscriptDelay.HasTime)
+            {
+                conscriptDelay.CountDown(time);
+            }
+
             lock (barracks)
             {
                 for (int i = 0; i < barracks.Count; i++)
                 {
                     BarracksStatus status = barracks[i];
-                    switch (status.active)
-                    { 
-                        case ConscriptActiveStatus.Idle:
-                            if (status.CountDownQue())
-                            {
-                                status.active++;
-                                status.inProgress = status.profile;
-                            }
-                            break;
+                    if (i != selectedConscript || !conscriptDelay.HasTime || status.active == ConscriptActiveStatus.Training)
+                    {
+                        switch (status.active)
+                        {
+                            case ConscriptActiveStatus.Idle:
+                                if (status.CountDownQue())
+                                {
+                                    status.active++;
+                                    status.inProgress = status.profile;
+                                    status.menCollected = 0;
+                                    status.equipmentCollected = 0;
+                                }
+                                break;
 
-                        case ConscriptActiveStatus.CollectingEquipment:
-                            ItemResourceType weaponItem = ConscriptProfile.WeaponItem(status.inProgress.weapon);
-                            ItemResourceType armorItem = ConscriptProfile.ArmorItem(status.inProgress.armorLevel);
-                            int needEquipment = DssConst.SoldierGroup_DefaultCount - status.equipmentCollected;
-                            int availableWeapons = GetGroupedResource(weaponItem).amount;
-                            int availableArmor;
-                            if (status.inProgress.armorLevel == ArmorLevel.None)
-                            {
-                                availableArmor = needEquipment;
-                            }
-                            else
-                            {
-                                availableArmor = GetGroupedResource(armorItem).amount;
-                            }
+                            case ConscriptActiveStatus.CollectingEquipment:
+                                ItemResourceType weaponItem = ConscriptProfile.WeaponItem(status.inProgress.weapon);
+                                ItemResourceType armorItem = ConscriptProfile.ArmorItem(status.inProgress.armorLevel);
+                                int needEquipment = DssConst.SoldierGroup_DefaultCount - status.equipmentCollected;
+                                int availableWeapons = GetGroupedResource(weaponItem).amount;
+                                int availableArmor;
+                                if (status.inProgress.armorLevel == ArmorLevel.None)
+                                {
+                                    availableArmor = needEquipment;
+                                }
+                                else
+                                {
+                                    availableArmor = GetGroupedResource(armorItem).amount;
+                                }
 
-                            int collectEquipment = lib.SmallestValue(needEquipment, availableWeapons, availableArmor);
-                            status.equipmentCollected += collectEquipment;
+                                int collectEquipment = lib.SmallestValue(needEquipment, availableWeapons, availableArmor);
+                                status.equipmentCollected += collectEquipment;
 
-                            var weapon = GetGroupedResource(weaponItem);
-                            weapon.amount -= collectEquipment;
-                            SetGroupedResource(weaponItem, weapon);
+                                AddGroupedResource(weaponItem, -collectEquipment);
 
-                            if (status.inProgress.armorLevel != ArmorLevel.None)
-                            {
-                                var armor = GetGroupedResource(armorItem);
-                                armor.amount -= collectEquipment;
-                                SetGroupedResource(armorItem, armor);
-                            }
+                                if (status.inProgress.armorLevel != ArmorLevel.None)
+                                {
+                                    AddGroupedResource(armorItem, -collectEquipment);
+                                }
 
-                            if (status.equipmentCollected == DssConst.SoldierGroup_DefaultCount)
-                            {
-                                status.active++;
-                            }
-                            break;
+                                if (status.equipmentCollected == DssConst.SoldierGroup_DefaultCount)
+                                {
+                                    status.active++;
+                                }
+                                break;
 
-                        case ConscriptActiveStatus.CollectingMen:
-                            int needMen = DssConst.SoldierGroup_DefaultCount - status.menCollected;
-                            int collectMen = lib.SmallestValue(workForce, needMen);
-                            workForce -= collectMen;
-                            status.menCollected += collectMen;
+                            case ConscriptActiveStatus.CollectingMen:
+                                int needMen = DssConst.SoldierGroup_DefaultCount - status.menCollected;
+                                int collectMen = lib.SmallestValue(workForce, needMen);
+                                workForce -= collectMen;
+                                status.menCollected += collectMen;
 
-                            if (status.menCollected == DssConst.SoldierGroup_DefaultCount)
-                            {
-                                status.active++;
-                                status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training)));
-                            }
-                            break;
+                                if (status.menCollected == DssConst.SoldierGroup_DefaultCount)
+                                {
+                                    status.active++;
+                                    status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training)));
+                                }
+                                break;
 
-                        case ConscriptActiveStatus.Training:
-                            if (status.countdown.TimeOut())
-                            {
-                                Ref.update.AddSyncAction(new SyncAction2Arg<ConscriptProfile, int>(conscriptArmy, status.inProgress, 1));
+                            case ConscriptActiveStatus.Training:
+                                if (status.countdown.TimeOut())
+                                {
+                                    Ref.update.AddSyncAction(new SyncAction2Arg<ConscriptProfile, int>(conscriptArmy, status.inProgress, 1));
 
-                                status.active = ConscriptActiveStatus.Idle;
-                                
-                                status.menCollected = 0;
-                                status.equipmentCollected = 0;
-                            }
-                            break;
+                                    status.active = ConscriptActiveStatus.Idle;
+
+                                    status.menCollected = 0;
+                                    status.equipmentCollected = 0;
+                                }
+                                break;
+                        }
                     }
-
                     barracks[i] = status;
                 }
+            }
+        }
+
+        public void onConscriptChange()
+        {
+            lock (barracks)
+            {
+                conscriptDelay.Seconds = 1;
+
+                BarracksStatus status = barracks[selectedConscript];
+                if (status.active == ConscriptActiveStatus.CollectingEquipment ||
+                    status.active == ConscriptActiveStatus.CollectingMen)
+                {
+                    //return items
+                    ItemResourceType weaponItem = ConscriptProfile.WeaponItem(status.inProgress.weapon);
+                    ItemResourceType armorItem = ConscriptProfile.ArmorItem(status.inProgress.armorLevel);
+
+                    AddGroupedResource(weaponItem, status.equipmentCollected);
+
+                    if (status.inProgress.armorLevel != ArmorLevel.None)
+                    {
+                        AddGroupedResource(armorItem, status.equipmentCollected);
+                    }
+
+                    workForce += status.menCollected;
+
+                    status.active = ConscriptActiveStatus.Idle;
+
+                    barracks[selectedConscript] = status;
+                }
+
             }
         }
 

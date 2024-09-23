@@ -296,7 +296,7 @@ namespace VikingEngine.DSSWars.Players
             var mainArmy = faction.NewArmy(onTile);
             for (int i = 0; i < 5; ++i)
             {
-                new SoldierGroup(mainArmy, UnitType.Soldier, false);
+                new SoldierGroup(mainArmy, DssLib.SoldierProfile_Standard);//mainArmy, UnitType.Soldier, false);
             }
 
             if (IsPlayer() && DssRef.difficulty.honorGuard)
@@ -312,10 +312,11 @@ namespace VikingEngine.DSSWars.Players
                         var army = faction.NewArmy(onTile);
                         for (int i = 0; i < 3; ++i)
                         {
-                            new SoldierGroup(army, UnitType.HonorGuard, false);
+                            new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard);//UnitType.HonorGuard, false);
                             --guardCount;
                         }
                         army.OnSoldierPurchaseCompleted();
+                        army.setMaxFood();
                         if (guardCount <= 3)
                         {
                             break;
@@ -325,10 +326,11 @@ namespace VikingEngine.DSSWars.Players
 
                 for (int i = 0; i < guardCount; ++i)
                 {
-                    new SoldierGroup(mainArmy, UnitType.HonorGuard, false);
+                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_HonorGuard);
                 }
             }
             mainArmy.OnSoldierPurchaseCompleted();
+            mainArmy.setMaxFood();
         }
 
         public void toPeacefulCheck_asynch()

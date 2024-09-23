@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Data;
 using VikingEngine.ToGG.ToggEngine;
 
@@ -190,6 +191,42 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         public TrainingLevel training;
         public SpecializationType specialization;
 
+        public string TypeName()
+        {
+            switch (specialization)
+            {
+                case SpecializationType.HonorGuard:
+                    return DssRef.lang.UnitType_HonorGuard;
+                case SpecializationType.Viking:
+                    return DssRef.lang.UnitType_Viking;
+                case SpecializationType.Green:
+                    return DssRef.lang.UnitType_GreenSoldier;
+
+                default:
+                    switch (weapon)
+                    {
+                        case MainWeapon.Bow:
+                            return DssRef.lang.UnitType_Archer;
+                        case MainWeapon.SharpStick:
+                            return DssRef.lang.UnitType_Folkman;
+                        case MainWeapon.Sword:
+                            return DssRef.lang.UnitType_Soldier;
+
+                        default:
+                            return TextLib.Error;
+                    }
+            }
+        }
+
+        public void toHud(RichBoxContent content)
+        {
+            content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Conscript_WeaponTitle, LangLib.Weapon(weapon)));
+            content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Conscript_ArmorTitle, LangLib.Armor(armorLevel)));
+            content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Conscript_TrainingTitle, LangLib.Training(training)));
+            content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Conscript_SpecializationTitle, LangLib.SpecializationTypeName(specialization)));
+
+        }
+
         public void writeGameState(System.IO.BinaryWriter w)
         {
             w.Write((byte)weapon);
@@ -314,7 +351,10 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         Sea,
         Siege,
         NUM,
+        Traditional,
         Viking,
+        HonorGuard,
+        Green,
     }
 
     enum ConscriptActiveStatus

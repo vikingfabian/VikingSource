@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Display.Component;
+using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
@@ -35,7 +36,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                 content.space();
                 content.Add(new RichboxButton(new List<AbsRichBoxMember>
                     { new RichBoxSpace(), new RichBoxText(DssRef.todoLang.Hud_EndSessionIcon),new RichBoxSpace(), },
-                    new RbAction(() => { city.selectedConscript = -1; })));
+                    new RbAction(() => { city.selectedDelivery = -1; })));
 
                 content.newLine();
                 HudLib.Description(content, string.Format("Will send {0} at a time", DssConst.CityDeliveryCount));
@@ -49,7 +50,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                     foreach (var item in City.MovableCityResourceTypes)
                     {
                         var button = new RichboxButton(new List<AbsRichBoxMember>{
-                               new RichBoxText( item.ToString())
+                               new RichBoxText(LangLib.Item(item))
                             }, new RbAction1Arg<ItemResourceType>(itemClick, item));
                         button.setGroupSelectionColor(HudLib.RbSettings, item == currentStatus.profile.type);
                         content.Add(button);

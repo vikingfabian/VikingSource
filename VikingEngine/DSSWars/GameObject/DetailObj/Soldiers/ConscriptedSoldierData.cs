@@ -9,8 +9,6 @@ namespace VikingEngine.DSSWars.GameObject
 {
     class ConscriptedSoldierData : AbsSoldierData
     {
-        public SoldierProfile profile;
-
         public ConscriptedSoldierData(SoldierProfile profile)
         {
             init(profile);
@@ -66,7 +64,7 @@ namespace VikingEngine.DSSWars.GameObject
                     ArmyFrontToBackPlacement = ArmyPlacement.Mid;
                     attackRange = 1.7f;
                     modelName = LootFest.VoxelModelName.war_archer;
-                    modelVariationCount = 3;
+                    modelVariationCount = 2;
                     icon = SpriteName.WarsUnitIcon_Archer;
                     attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 10f;
                     break;
@@ -79,20 +77,47 @@ namespace VikingEngine.DSSWars.GameObject
                     attackDamageSea = MathExt.SubtractPercentage(attackDamageSea, DssConst.Conscript_SpecializePercentage);                   
                     attackDamageStructure = MathExt.SubtractPercentage(attackDamageStructure, DssConst.Conscript_SpecializePercentage);
                     break;
+
+                case SpecializationType.Viking:
                 case SpecializationType.Sea:
                     attackDamage = MathExt.SubtractPercentage(attackDamage, DssConst.Conscript_SpecializePercentage);
-                    attackDamageSea = MathExt.AddPercentage(attackDamageSea, DssConst.Conscript_SpecializePercentage);                    
+                    float seaDamagePerc = profile.conscript.specialization == SpecializationType.Sea ?
+                        DssConst.Conscript_SpecializePercentage : DssConst.Conscript_SpecializePercentage * 3f;
+                    attackDamageSea = MathExt.AddPercentage(attackDamageSea, seaDamagePerc);                    
                     attackDamageStructure = MathExt.SubtractPercentage(attackDamageStructure, DssConst.Conscript_SpecializePercentage);
+                    modelVariationCount = 1;
 
                     if (!profile.RangedUnit())
                     { 
-                        modelName = LootFest.VoxelModelName.wars_viking_ship;
+                        modelName = LootFest.VoxelModelName.war_sailor;
+                        icon = SpriteName.WarsUnitIcon_Viking;
                     }
                     break;
+                
                 case SpecializationType.Siege:
                     attackDamage = MathExt.SubtractPercentage(attackDamage, DssConst.Conscript_SpecializePercentage);
                     attackDamageSea = MathExt.SubtractPercentage(attackDamageSea, DssConst.Conscript_SpecializePercentage);
                     attackDamageStructure = MathExt.AddPercentage(attackDamageStructure, DssConst.Conscript_SpecializePercentage);
+                    break;
+
+                case SpecializationType.HonorGuard:
+                    energyPerSoldier = 0;
+                    modelName = LootFest.VoxelModelName.little_hirdman;
+                    modelVariationCount = 1;
+                    icon = SpriteName.WarsUnitIcon_Honorguard;
+                    break;
+
+                case SpecializationType.Traditional:
+                    energyPerSoldier *= 0.5f;
+                    break;
+
+                case SpecializationType.Green:
+                    secondaryAttack = AttackType.Arrow;
+                    secondaryAttackDamage = 100;
+                    secondaryAttackRange = 1.7f;
+                    bonusProjectiles = 2;
+                    icon = SpriteName.WarsUnitIcon_Greensoldier;
+                    
                     break;
             }
 

@@ -16,6 +16,13 @@ namespace VikingEngine.DSSWars.GameObject
 
         float foodBackOrderTimeSec = 0;
 
+        public void setMaxFood()
+        {
+            float energy = DssLib.SoldierDefaultEnergyUpkeep * DssConst.SoldierGroup_DefaultCount * groups.Count;
+            float bufferGoalFood = friendlyAreaFoodBuffer_minutes * TimeExt.MinuteInSeconds * energy;
+            food = bufferGoalFood;
+        }
+
         public void async_workUpdate(float seconds)
         {
             if (seconds > 0)
@@ -54,8 +61,7 @@ namespace VikingEngine.DSSWars.GameObject
                             }
                         }
 
-                        //float foodTime = lib.SafeDiv( food , foodUpkeep);
-                        float bufferGoalFood = bufferGoal_minutes * 60f * foodUpkeep;
+                        float bufferGoalFood = bufferGoal_minutes * TimeExt.MinuteInSeconds * foodUpkeep;
 
                         if (bufferGoal_minutes > 0 && food < bufferGoalFood)
                         {
@@ -110,9 +116,6 @@ namespace VikingEngine.DSSWars.GameObject
                         return i;
                     }
                 }
-
-
-               
                 workerStatuses.Add(new WorkerStatus() { subTileEnd = WP.ToSubTilePos_Centered(tilePos)});
                 return workerStatuses.Count -1;
             }

@@ -1,8 +1,16 @@
 ﻿
 -Change Log-
 * Fixed black market bug
-* expand city guard button is back
-!barrack bug, lock in settings, should display that more clearly
+* Expand city guard button is back
+* Fixed conscript bugs
+* Starting armies
+* Faction unique soldiers are back
+* Fixed soldier tooltip
+* Fixed iron ore
+* Army food to save
+* Work prio ui update
+* Fixed delivery stuck select
+* Banners represent skill level
 
 Error
 -back button in menues 

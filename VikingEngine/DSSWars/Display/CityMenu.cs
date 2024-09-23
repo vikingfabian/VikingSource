@@ -110,7 +110,7 @@ namespace VikingEngine.DSSWars.Display
             city.res_wood.toMenu(content, DssRef.todoLang.Resource_TypeName_Wood);
             city.res_stone.toMenu(content, DssRef.todoLang.Resource_TypeName_Stone);
             city.res_rawFood.toMenu(content, DssRef.todoLang.Resource_TypeName_RawFood);
-            city.res_skinLinnen.toMenu(content, DssRef.todoLang.Resource_TypeName_SkinAndLinnen);
+            city.res_skinLinnen.toMenu(content, DssRef.todoLang.Resource_TypeName_SkinAndLinen);
             city.res_ore.toMenu(content, DssRef.todoLang.Resource_TypeName_Ore);
 
             content.newParagraph();

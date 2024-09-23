@@ -122,7 +122,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             init(true);
         }
-        
+
+        public override string TypeName()
+        {
+            return group.typeSoldierData.profile.conscript.TypeName();
+        }
+
         override public void netShareUnit()
         {
             //var w = beginWriteAddUnit(player);

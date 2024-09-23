@@ -541,7 +541,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string TypeName()
         {
-            return DssRef.unitsdata.Name(DetailUnitType()) + "(" + parentArrayIndex.ToString() + ")";
+            return TextLib.Error;//((ConscriptedSoldierData)Data()).profile.conscript.TypeName() + "(" + parentArrayIndex.ToString() + ")";
         }
 
         public override string ToString()

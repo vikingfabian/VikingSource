@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             1,
             new UseResource[]
             {
-                new UseResource(ItemResourceType.SkinLinnen_Group, 1),
+                new UseResource(ItemResourceType.SkinLinen_Group, 1),
                 new UseResource(ItemResourceType.Iron_G, 3),
             }
         );
@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             new UseResource[]
             {
                 new UseResource(ItemResourceType.Wood_Group, 2),
-                new UseResource(ItemResourceType.SkinLinnen_Group, 2),
+                new UseResource(ItemResourceType.SkinLinen_Group, 2),
             }
         );
 
@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             1,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.SkinLinnen_Group, 4),
+        new UseResource(ItemResourceType.SkinLinen_Group, 4),
             }
         );
 
@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             1,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.SkinLinnen_Group, 4),
+        new UseResource(ItemResourceType.SkinLinen_Group, 4),
         new UseResource(ItemResourceType.Iron_G, 2),
             }
         );
@@ -108,7 +108,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             1,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.SkinLinnen_Group, 2),
+        new UseResource(ItemResourceType.SkinLinen_Group, 2),
         new UseResource(ItemResourceType.Iron_G, 6),
             }
         );
@@ -158,7 +158,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             new UseResource[]
             {
         new UseResource(ItemResourceType.Wood_Group, 50),
-        new UseResource(ItemResourceType.SkinLinnen_Group, 10)
+        new UseResource(ItemResourceType.SkinLinen_Group, 10)
             }
         );
 

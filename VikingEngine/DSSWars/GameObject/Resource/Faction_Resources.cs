@@ -63,15 +63,15 @@ namespace VikingEngine.DSSWars
                 }
             }
         }
-        public void changeWorkPrio(int change, WorkPriorityType priorityType, City city)
+        public void setWorkPrio(int set, WorkPriorityType priorityType, City city)
         {
             if (city != null)
             {
-                city.workTemplate.changeWorkPrio(change, priorityType);
+                city.workTemplate.setWorkPrio(set, priorityType);
             }
             else
             {
-                workTemplate.changeWorkPrio(change, priorityType);
+                workTemplate.setWorkPrio(set, priorityType);
                 var cityCounter = cities.counter();
                 while (cityCounter.Next())
                 {

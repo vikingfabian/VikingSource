@@ -104,8 +104,10 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             writeAiState(w);
+
+            w.Write(food);
         }
-        public void readGameState(Faction faction, System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        public void readGameState(Faction faction, System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
             this.faction = faction;
 
@@ -116,14 +118,19 @@ namespace VikingEngine.DSSWars.GameObject
             int groupsCount = r.ReadUInt16();
             for (int i = 0; i < groupsCount; i++)
             {
-                SoldierGroup group = new SoldierGroup(this, r, version, pointers);               
+                SoldierGroup group = new SoldierGroup(this, r, subVersion, pointers);               
             }
 
             init(faction);
 
             refreshPositions(true);
 
-            readAiState(r, version, pointers);
+            readAiState(r, subVersion, pointers);
+
+            if (subVersion >= 11)
+            { 
+                food = r.ReadSingle();
+            }
         }
 
         public void writeNet(System.IO.BinaryWriter w)

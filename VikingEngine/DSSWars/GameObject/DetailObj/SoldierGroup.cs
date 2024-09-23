@@ -677,15 +677,16 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void toHud(ObjectHudArgs args)
         {
-            //base.toHud(args);
-            //var typeData = DssRef.unitsdata.Get(type);
+            var typeData = typeSoldierData.profile.conscript;
 
-            args.content.h2(DssRef.unitsdata.Name( typeCurrentData.unitType) + " " + DssRef.lang.UnitType_SoldierGroup);
+            args.content.h2(typeData.TypeName() + " " + DssRef.lang.UnitType_SoldierGroup);
             args.content.newLine();
-            if (args.selected && GetFaction() == args.player.faction)
-            {
-                new Display.GroupMenu(args.player, this, args.content);
-            }
+            typeData.toHud(args.content);
+            args.content.newLine();
+            //if (args.selected && GetFaction() == args.player.faction)
+            //{
+            //    new Display.GroupMenu(args.player, this, args.content);
+            //}
         }
 
         public bool soldiersShouldFollowWalkingOrder()
@@ -1529,7 +1530,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string TypeName()
         {
-            return DssRef.unitsdata.Name(type) + " Group(" + groupId.ToString() + ")";
+            return typeSoldierData.profile.conscript.TypeName() + " Group(" + groupId.ToString() + ")";
         }
 
         public override string ToString()

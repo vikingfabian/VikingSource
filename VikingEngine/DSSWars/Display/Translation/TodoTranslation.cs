@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Resource_TypeName_RawFood => "raw food";
         public string Resource_TypeName_Food => "food";
         public string Resource_TypeName_Beer => "beer";
-        public string Resource_TypeName_SkinAndLinnen => "skin and linnen";
+        public string Resource_TypeName_SkinAndLinen => "skin and linen";
         public string Resource_TypeName_Ore => "ore";
         public string Resource_TypeName_Iron => "iron";
 
@@ -114,8 +114,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Hud_SelectCity => "Select City";
         public string Conscription_Title => "Conscription";
         public string Conscript_WeaponTitle => "Weapon";
-        public string Conscript_ArmorTitle => "Weapon";
-        public string Conscript_TrainingTitle => "Weapon";
+        public string Conscript_ArmorTitle => "Armor";
+        public string Conscript_TrainingTitle => "Training";
 
         public string Conscript_SpecializationTitle => "Specialization";
         public string Conscript_SpecializationDescription => "Will increase attack in one area, and reduce all others, by {0}";

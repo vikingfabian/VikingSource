@@ -3,6 +3,7 @@ using System;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameObject.Conscript;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -38,6 +39,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool hasBannerMan = true;
         public string description;
 
+        public SoldierProfile profile;
         public UnitType unitType;
 
         public bool Command_Javelin=false;

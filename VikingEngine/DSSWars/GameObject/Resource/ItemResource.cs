@@ -146,7 +146,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 
         Wood_Group,
         RawFood_Group,
-        SkinLinnen_Group,
+        SkinLinen_Group,
         Men,
     }
 }

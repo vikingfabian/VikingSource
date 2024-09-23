@@ -64,11 +64,13 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case SpecializationType.Sea: return "Ship";
                 case SpecializationType.Siege: return "Siege";
                 case SpecializationType.Viking: return "Viking";
-
+                case SpecializationType.HonorGuard: return "Honor guard";
+                case SpecializationType.Green: return "Green soldier";
+                case SpecializationType.Traditional: return "Traditional";
 
 
                 default:
-                    throw new NotImplementedException();
+                    return TextLib.Error;
             }
         }
 
@@ -146,10 +148,24 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case ItemResourceType.Stone_G: return DssRef.todoLang.Resource_TypeName_Stone;
                 case ItemResourceType.Wood_Group: return DssRef.todoLang.Resource_TypeName_Wood;
                 case ItemResourceType.RawFood_Group: return DssRef.todoLang.Resource_TypeName_RawFood;
-                case ItemResourceType.SkinLinnen_Group: return DssRef.todoLang.Resource_TypeName_SkinAndLinnen;
+                case ItemResourceType.SkinLinen_Group: return DssRef.todoLang.Resource_TypeName_SkinAndLinen;
+
+                case ItemResourceType.SharpStick:
+                    return DssRef.todoLang.Resource_TypeName_SharpStick;
+                case ItemResourceType.Sword:
+                    return DssRef.todoLang.Resource_TypeName_Sword;
+                case ItemResourceType.Bow:
+                    return DssRef.todoLang.Resource_TypeName_Bow;
+
+                case ItemResourceType.LightArmor:
+                    return DssRef.todoLang.Resource_TypeName_LightArmor;
+                case ItemResourceType.MediumArmor:
+                    return DssRef.todoLang.Resource_TypeName_MediumArmor;
+                case ItemResourceType.HeavyArmor:
+                    return DssRef.todoLang.Resource_TypeName_HeavyArmor;
 
                 default:
-                    throw new NotImplementedException();
+                    return TextLib.Error;
             }
         }
 

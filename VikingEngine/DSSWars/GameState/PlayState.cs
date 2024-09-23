@@ -202,11 +202,11 @@ namespace VikingEngine.DSSWars
         {
             if (StartupSettings.SpawnStartingArmies)
             {
-                //var factionsCounter = DssRef.world.factions.counter();
-                //while (factionsCounter.Next())
-                //{
-                //    factionsCounter.sel.player.createStartUnits();
-                //}
+                var factionsCounter = DssRef.world.factions.counter();
+                while (factionsCounter.Next())
+                {
+                    factionsCounter.sel.player.createStartUnits();
+                }
             }
         }
 
@@ -424,7 +424,7 @@ namespace VikingEngine.DSSWars
                 foreach (var m in DssRef.world.cities)
                 {
                     m.async_workUpdate();
-                    m.async_conscriptUpdate();
+                    m.async_conscriptUpdate(time);
                     m.async_deliveryUpdate();
                 }
 

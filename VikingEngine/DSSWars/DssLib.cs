@@ -6,6 +6,7 @@ using System.Text;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.Conscript;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.Graphics;
 
@@ -53,6 +54,60 @@ namespace VikingEngine.DSSWars
         //public const double DefaultDiplomacyPerSecond = 1.0 / 60.0;
         //public const double NobelHouseAddDiplomacy = 1.0 / 240.0;
         //public const double NobelHouseAddMaxDiplomacy = 0.25;
+
+
+        public static readonly SoldierProfile SoldierProfile_Standard = new SoldierProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.Sword,
+                armorLevel = ArmorLevel.Medium,
+                training = TrainingLevel.Basic,
+                specialization = SpecializationType.Traditional,
+            }
+        };
+
+        
+        public static readonly SoldierProfile SoldierProfile_StandardArcher = new SoldierProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.Bow,
+                armorLevel = ArmorLevel.Light,
+                training = TrainingLevel.Basic,
+                specialization = SpecializationType.Traditional,
+            }
+        };
+        public static readonly SoldierProfile SoldierProfile_HonorGuard = new SoldierProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.Sword,
+                armorLevel = ArmorLevel.Heavy,
+                training = TrainingLevel.Professional,
+                specialization = SpecializationType.HonorGuard,
+            }
+        };
+        public static readonly SoldierProfile SoldierProfile_GreenSoldier = new SoldierProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.Sword,
+                armorLevel = ArmorLevel.Medium,
+                training = TrainingLevel.Professional,
+                specialization = SpecializationType.Green,
+            }
+        };
+        public static readonly SoldierProfile SoldierProfile_Viking= new SoldierProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.Sword,
+                armorLevel = ArmorLevel.Medium,
+                training = TrainingLevel.Skillful,
+                specialization = SpecializationType.Viking,
+            }
+        };
 
         public const int TruceTimeSec = 180;
 

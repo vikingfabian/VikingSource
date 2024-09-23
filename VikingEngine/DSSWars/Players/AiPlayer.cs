@@ -280,7 +280,7 @@ namespace VikingEngine.DSSWars.Players
                         mainArmy = startMainArmy();
                         for (int i = 0; i < 5; ++i)
                         {
-                            new SoldierGroup(mainArmy, UnitType.Soldier, false);
+                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_Standard);//, UnitType.Soldier, false);
                         }
                         break;
 
@@ -296,10 +296,11 @@ namespace VikingEngine.DSSWars.Players
 
                                     for (int i = 0; i < 10; ++i)
                                     {
-                                        new SoldierGroup(army, UnitType.HonorGuard, false);
+                                        new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard);
                                     }
 
                                     army.OnSoldierPurchaseCompleted();
+                                    army.setMaxFood();
                                 }
                             }
                         }
@@ -309,7 +310,7 @@ namespace VikingEngine.DSSWars.Players
                         mainArmy = startMainArmy();
                         for (int i = 0; i < 5; ++i)
                         {
-                            new SoldierGroup(mainArmy, UnitType.GreenSoldier, false);
+                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_GreenSoldier);//UnitType.GreenSoldier, false);
                         }
                         break;
 
@@ -320,7 +321,7 @@ namespace VikingEngine.DSSWars.Players
                         mainArmy = startMainArmy();
                         for (int i = 0; i < 5; ++i)
                         {
-                            new SoldierGroup(mainArmy, UnitType.Viking, false);
+                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_Viking);
                         }
                         break;
 
@@ -338,33 +339,38 @@ namespace VikingEngine.DSSWars.Players
 
                                     for (int i = 0; i < 10; ++i)
                                     {
-                                        new SoldierGroup(army, UnitType.HonorGuard, false);
+                                        new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard);//UnitType.HonorGuard, false);
                                     }
-                                    for (int i = 0; i < 10; ++i)
+                                    for (int i = 0; i < 30; ++i)
                                     {
-                                        new SoldierGroup(army, UnitType.Archer, false);
+                                        new SoldierGroup(army, DssLib.SoldierProfile_StandardArcher); //UnitType.Archer, false);
                                     }
-                                    for (int i = 0; i < 20; ++i)
+                                    //for (int i = 0; i < 20; ++i)
+                                    //{
+                                    //    new SoldierGroup(army, UnitType.Ballista, false);
+                                    //}
+                                    for (int i = 0; i < 100; ++i)
                                     {
-                                        new SoldierGroup(army, UnitType.Ballista, false);
+                                        new SoldierGroup(army, DssLib.SoldierProfile_Standard); //UnitType.Soldier, false);
                                     }
-                                    for (int i = 0; i < 80; ++i)
-                                    {
-                                        new SoldierGroup(army, UnitType.Soldier, false);
-                                    }
-                                    for (int i = 0; i < 20; ++i)
-                                    {
-                                        new SoldierGroup(army, UnitType.Knight, false);
-                                    }
+                                    //for (int i = 0; i < 20; ++i)
+                                    //{
+                                    //    new SoldierGroup(army, UnitType.Knight, false);
+                                    //}
 
                                     army.OnSoldierPurchaseCompleted();
+                                    army.setMaxFood();
                                 }
                             }
                         }
                         break;
-                }                
+                }
 
-                mainArmy?.OnSoldierPurchaseCompleted();
+                if (mainArmy != null)
+                {
+                    mainArmy.OnSoldierPurchaseCompleted();
+                    mainArmy.setMaxFood();
+                }
             }
 
             Army startMainArmy()
