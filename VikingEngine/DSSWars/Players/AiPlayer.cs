@@ -452,33 +452,35 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public override BuildAndExpandType AutoExpandType(City city, out bool intelligent)
+        public override void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType building, out bool intelligent)
         {
-            BuildAndExpandType result;
+            building = BuildAndExpandType.NUM_NONE;
             intelligent = false;
+            work = false;
+
             if (city.res_rawFood.needMore())
             {
-                result = BuildAndExpandType.WheatFarms;
+                building = BuildAndExpandType.WheatFarms;
             }
             else if (city.res_skinLinnen.needMore())
             {
-                result = BuildAndExpandType.LinnenFarms;
+                building = BuildAndExpandType.LinnenFarms;
             }
             else if (city.barracks.Count < 2)
             {
-                result = BuildAndExpandType.Barracks;
+                building = BuildAndExpandType.Barracks;
             }
             else if (city.deliveryServices.Count < 2)
-            { 
-                result = BuildAndExpandType.Postal;
+            {
+                building = BuildAndExpandType.Postal;
             }
             else 
             {
                 intelligent = true;
-                result = BuildAndExpandType.WorkerHuts;
+                work = true;
             }
 
-            return result;
+            //return result;
         }
 
         public override void oneSecUpdate()

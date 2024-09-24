@@ -72,6 +72,11 @@ namespace VikingEngine.DSSWars.GameObject
             isDeleted = true;
         }
 
+        protected void debugTagButton(RichBoxContent content)
+        {
+            content.Button(string.Format("debug tag ({0})", debugTagged), new HUD.RichBox.RbAction(AddDebugTag), null, true);
+        }
+
         virtual public void AddDebugTag()
         {
             lib.Invert(ref debugTagged);

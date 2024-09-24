@@ -546,7 +546,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string ToString()
         {
-            string groupName = group == null? "" : " group(" + group.groupId.ToString() + ")";
+            string groupName = group == null? "" : " group(" + group.parentArrayIndex.ToString() + ")";
             return DetailUnitType().ToString() + "(" + parentArrayIndex.ToString() + ")" + groupName + " p" + " area(" + tilePos.X.ToString() + "," + tilePos.Y.ToString() + ")";
         }
     }

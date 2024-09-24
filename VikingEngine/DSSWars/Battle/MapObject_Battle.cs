@@ -124,7 +124,8 @@ namespace VikingEngine.DSSWars.GameObject
             base.toHud(args);
 
 #if DEBUG
-            args.content.Button("debug tag", new HUD.RichBox.RbAction(toggleDebugTag), null, true);
+            debugTagButton(args.content);
+            //args.content.Button("debug tag", new HUD.RichBox.RbAction(AddDebugTag), null, true);
 #endif
 
             if (battleGroup != null)
@@ -133,9 +134,9 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        void toggleDebugTag()
-        { 
-            debugTagged = !debugTagged;
-        }
+        //void toggleDebugTag()
+        //{
+        //    debugTagged = !debugTagged;
+        //}
     }
 }

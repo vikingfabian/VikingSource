@@ -125,7 +125,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string TypeName()
         {
-            return group.typeSoldierData.profile.conscript.TypeName();
+            return group.typeSoldierData.profile.conscript.TypeName() + " (" + parentArrayIndex.ToString() + ")";
         }
 
         override public void netShareUnit()

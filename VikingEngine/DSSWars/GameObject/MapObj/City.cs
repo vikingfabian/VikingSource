@@ -68,6 +68,34 @@ namespace VikingEngine.DSSWars.GameObject
         public int cityTileRadius = 0;
         public CityCulture Culture = CityCulture.NUM_NONE;
 
+        
+        public Build.BuildAndExpandType autoExpandFarmType = Build.BuildAndExpandType.WheatFarms;
+        bool autoBuild_Work = false;
+        bool autoBuild_Farm = false;
+
+        public void AutoExpandType(out bool work, out Build.BuildAndExpandType farm)
+        {
+            work = autoBuild_Work;
+            farm = autoBuild_Farm ? autoExpandFarmType : Build.BuildAndExpandType.NUM_NONE;
+        }
+
+        public bool AutoBuildWorkProperty(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                autoBuild_Work = value;
+            }
+            return autoBuild_Work;
+        }
+        public bool AutoBuildFarmProperty(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                autoBuild_Farm = value;
+            }
+            return autoBuild_Farm;
+        }
+
         public City(int index, IntVector2 pos, CityType type, WorldData world)
         {
             this.parentArrayIndex = index;
@@ -418,6 +446,12 @@ namespace VikingEngine.DSSWars.GameObject
             { 
                 delivery.writeGameState(w);
             }
+
+
+            w.Write(autoBuild_Work);
+            w.Write(autoBuild_Farm);
+            w.Write((byte)autoExpandFarmType);
+        
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
@@ -427,7 +461,7 @@ namespace VikingEngine.DSSWars.GameObject
             childrenAge0.read16bit(r);
             childrenAge1 = r.ReadUInt16();
             //maxEpandWorkSize = r.ReadUInt16();
-           
+
             damages.read16bit(r);
             immigrants.read16bit(r);
             nobelHouse = r.ReadBoolean();
@@ -442,8 +476,9 @@ namespace VikingEngine.DSSWars.GameObject
             maxWater = r.ReadByte();
             workTemplate.readGameState(r, subversion, true);
 
-            refreshCitySize();     
-            
+            refreshCitySize();
+
+            barracks.Clear();
             int barracksCount = r.ReadUInt16();
             for (int i = 0; i < barracksCount; i++)
             {
@@ -452,12 +487,20 @@ namespace VikingEngine.DSSWars.GameObject
                 barracks.Add(barrack);
             }
 
+            deliveryServices.Clear();
             int deliveryServicesCount = r.ReadUInt16();
-            for (int i = 0;  i < deliveryServicesCount;  i++)
+            for (int i = 0; i < deliveryServicesCount; i++)
             {
                 Delivery.DeliveryStatus status = new Delivery.DeliveryStatus();
                 status.readGameState(r);
                 deliveryServices.Add(status);
+            }
+
+            if (subversion >= 12)
+            {
+                autoBuild_Work = r.ReadBoolean();
+                autoBuild_Farm = r.ReadBoolean();
+                autoExpandFarmType = (Build.BuildAndExpandType)r.ReadByte();
             }
         }
 

@@ -167,7 +167,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string Economy_TaxDescription = "Tax is {0} gold per worker";
 
-        public string Economy_SoldResources = "Sold resources (iron/gold): {0}";
+        public string Economy_SoldResources = "Sold resources (gold ore): {0}";
 
         public string UnitType_Cities => "Cities";
         public string UnitType_Armies => "Armies";
@@ -196,9 +196,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string CityCulture_DeepWell_Description => "Water replenish faster";
         public string CityCulture_Networker_Description => "Efficient postal service";
 
+        public string CityOption_AutoBuild_Work => "Auto expand workforce";
+        public string CityOption_AutoBuild_Farm => "Auto expand farms";
 
-        public string CityOption_AutoBuild => "Auto expand";
-        public string CityOption_AutoBuild_Intelligent => "Intelligent, build only when needed";
+        //public string CityOption_AutoBuild_Intelligent => "Intelligent, build only when needed";
 
         public string Hud_PurchaseTitle_Resources => "Buy resources";
         public string Hud_PurchaseTitle_CurrentlyOwn=> "You own";

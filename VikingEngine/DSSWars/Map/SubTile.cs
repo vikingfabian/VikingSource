@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Valve.Steamworks;
+using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Players;
+using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Map
 {
@@ -62,6 +65,46 @@ namespace VikingEngine.DSSWars.Map
             subTerrain = r.ReadByte();
             terrainAmount = r.ReadByte();
             collectionPointer = r.ReadInt32();
+        }
+
+        public bool MayBuild()
+        {
+            switch (mainTerrain)
+            {
+                case TerrainMainType.Building:
+                case TerrainMainType.DefaultSea:
+                    return false;
+
+                case TerrainMainType.Foil:
+                    switch ((TerrainSubFoilType)subTerrain)
+                    {
+                        case TerrainSubFoilType.LinenFarm:
+                        case TerrainSubFoilType.WheatFarm:
+                            return false;
+                        
+                    }
+                    break;
+
+
+            }
+
+            return true;
+            //if (mainTerrain == TerrainMainType.Foil &&
+            //    subTerrain >= 0)
+            //{
+            //    return (TerrainSubFoilType)subTerrain;
+            //}
+
+            //var current = GeBuildingType();
+            //if (current == TerrainBuildingType.NUM_NONE &&
+            //    mainTerrain != TerrainMainType.DefaultSea)
+            //{
+            //    return true;
+            //}
+            //else
+            //{
+            //    return false;//MayBuildResult.No_Occupied;
+            //}
         }
 
         public TerrainSubFoilType GetFoilType()

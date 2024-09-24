@@ -23,13 +23,26 @@ namespace VikingEngine.DSSWars.Players
         protected bool ignorePlayerCapture = false;
 
         public List<AbsOrder> orders = new List<AbsOrder>();
-        abstract public Build.BuildAndExpandType AutoExpandType(City city, out bool intelligent);
+        abstract public void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType buildType, out bool intelligent);
         public AbsPlayer(Faction faction)
         {
             this.faction = faction;
             faction.SetStartOwner(this);
 
             faction.mainCity?.createStartupBarracks();
+        }
+
+        public bool orderConflictingSubTile(IntVector2 subTilePos)
+        {
+            for (int i = 0; i < orders.Count; ++i)
+            {
+                if (orders[i].IsBuildOnSubTile(subTilePos))//order.IsConflictingOrder(orders[i]))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public void addOrder(AbsOrder order)

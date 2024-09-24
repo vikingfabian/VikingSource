@@ -1,16 +1,11 @@
 ﻿
 -Change Log-
-* Fixed black market bug
-* Expand city guard button is back
-* Fixed conscript bugs
-* Starting armies
-* Faction unique soldiers are back
-* Fixed soldier tooltip
-* Fixed iron ore
-* Army food to save
-* Work prio ui update
-* Fixed delivery stuck select
-* Banners represent skill level
+*Clickable barracks, deliveries
+*Fixed barracks and deliveries save bug
+*fixed idle soldiers bug
+*Induvidual expand automation to cities
+
+!avsluta inte strid position förrän i detalj view
 
 Error
 -back button in menues 
@@ -22,8 +17,6 @@ Retreat system
 
 Polish
 -Knights conscript nobel house
-
-
 
 -döda av faktion som bara har en soldat kvar
 -Missing file error på load

@@ -122,7 +122,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             attackTimePlusCoolDown /= ConscriptProfile.TrainingAttackSpeed(profile.conscript.training);
-            attackTimePlusCoolDown /= profile.skillBonus;
+            attackTimePlusCoolDown /= 1f + profile.skillBonus;
 
         }
 

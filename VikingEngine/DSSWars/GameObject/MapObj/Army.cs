@@ -440,15 +440,23 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void update()
         {
-            if (id == 1391)
+            if (debugTagged || id == -1)
             {
                 lib.DoNothing();
             }
             updateDetailLevel();
 
-            if (inRender_overviewLayer)
+            if (inRender_detailLayer)
             {
                 updateMembers(Ref.DeltaGameTimeMs, true);               
+            }
+            if (inRender_overviewLayer)
+            {
+                if (overviewBanner != null)
+                {
+                    updateModelsPosition();
+                    overviewBanner.Frame = isShip ? 1 : 0;
+                }
             }
             updateWorkerUnits();
 
@@ -460,10 +468,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         void updateMembers(float time, bool fullUpdate)
         {
-            if (id == 1)
-            {
-                lib.DoNothing();
-            }
+            //if (id == 1)
+            //{
+            //    lib.DoNothing();
+            //}
             if (groups.Count > 0)
             {
                 if (fullUpdate || !isIdle)
@@ -503,11 +511,7 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                     }
 
-                    if (overviewBanner != null && fullUpdate)
-                    {
-                        updateModelsPosition();
-                        overviewBanner.Frame = isShip ? 1 : 0;
-                    }
+                    
                 }
 
                 aiUpdate(fullUpdate);
@@ -747,7 +751,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void asynchSleepObjectsUpdate(float time)
         {
-            if (!inRender_overviewLayer)
+            if (!inRender_detailLayer)
             {
                 updateMembers(time * Ref.GameTimeSpeed, false);
             }
@@ -804,7 +808,7 @@ namespace VikingEngine.DSSWars.GameObject
                 DSSWars.Faction.SetNewMaster(name, OverviewBannerModelName, overviewBanner, master);
             }
 
-            if (inRender_overviewLayer)
+            if (inRender_detailLayer)
             {
                 var groupsC = groups.counter();
                 while (groupsC.Next())
@@ -847,6 +851,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void OnNewOwner()
         {
+            if (inRender_detailLayer)
+            {
+                inRender_detailLayer = false;
+                setInRenderState();
+                inRender_detailLayer = true;
+                setInRenderState();
+            }
+
             if (inRender_overviewLayer)
             {
                 inRender_overviewLayer = false;

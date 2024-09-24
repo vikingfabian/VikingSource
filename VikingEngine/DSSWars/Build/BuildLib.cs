@@ -74,7 +74,7 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.Smith, TerrainMainType.Building, (int)TerrainBuildingType.Work_Smith, ResourceLib.CraftSmith);
 
             new BuildOption(BuildAndExpandType.WheatFarms, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, ResourceLib.CraftFarm);
-            new BuildOption(BuildAndExpandType.LinnenFarms, TerrainMainType.Foil, (int)TerrainSubFoilType.LinnenFarm, ResourceLib.CraftFarm);
+            new BuildOption(BuildAndExpandType.LinnenFarms, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarm, ResourceLib.CraftFarm);
 
             new BuildOption(BuildAndExpandType.Statue_ThePlayer, TerrainMainType.Decor, (int)TerrainDecorType.Statue_ThePlayer, ResourceLib.CraftStatue);
 

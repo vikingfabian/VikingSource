@@ -458,11 +458,11 @@ namespace VikingEngine.DSSWars.Players
                     if (distance.HasValue)
                     { //intersects
                         hover.obj = m;
-                        if (Input.Mouse.ButtonDownEvent(MouseButton.Left))
-                        {
-                            m.debugTagged = true;
-                            m.group.debugTagged = true;
-                        }
+                        //if (Input.Mouse.ButtonDownEvent(MouseButton.Left))
+                        //{
+                        //    m.debugTagged = true;
+                        //    m.group.debugTagged = true;
+                        //}
                         break;
                     }
                 }
@@ -596,12 +596,35 @@ namespace VikingEngine.DSSWars.Players
             switch (selectedSubTile.selectTileResult)
             {
                 case SelectTileResult.Barracks:
-                    player.cityTab = Display.MenuTab.Conscript;
+                    {
+                        player.cityTab = Display.MenuTab.Conscript;
+                        int id = conv.IntVector2ToInt(selectedSubTile.subTilePos);
+                        for (int i = 0; i < selectedSubTile.city.barracks.Count; ++i)
+                        {
+                            if (selectedSubTile.city.barracks[i].idAndPosition == id)
+                            {
+                                selectedSubTile.city.selectedConscript = i; break;
+                            }
+                        }
+                    }
                     break;
-                case SelectTileResult.Postal:
                 case SelectTileResult.Recruitment:
-                    player.cityTab = Display.MenuTab.Delivery;
+                case SelectTileResult.Postal:
+                    {
+                        player.cityTab = Display.MenuTab.Delivery;
+                        int id = conv.IntVector2ToInt(selectedSubTile.subTilePos);
+                        for (int i = 0; i < selectedSubTile.city.deliveryServices.Count; ++i)
+                        {
+                            if (selectedSubTile.city.deliveryServices[i].idAndPosition == id)
+                            {
+                                selectedSubTile.city.selectedDelivery = i; break;
+                            }
+                        }
+                    }
                     break;
+                //case SelectTileResult.:
+                //    player.cityTab = Display.MenuTab.Delivery;
+                //    break;
             }
             
             //switch (tileResult)

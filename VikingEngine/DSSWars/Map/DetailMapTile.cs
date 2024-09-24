@@ -344,7 +344,7 @@ namespace VikingEngine.DSSWars.Map
                         addFoliage(new Foliage(LootFest.VoxelModelName.fol_farmculture, frame, wp, 0.1f));
                     }
                     break;
-                case TerrainSubFoilType.LinnenFarm:
+                case TerrainSubFoilType.LinenFarm:
                     {
                         int frame = TerrainContent.FarmCulture_Empty;
                         if (sizeValue >= TerrainContent.FarmCulture_ReadySize)

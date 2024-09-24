@@ -13,14 +13,14 @@ namespace VikingEngine.DSSWars.Players
 {
     class Automation
     {
-        static readonly Build.BuildAndExpandType[] AutoBuildOptions =
-            {
-                Build.BuildAndExpandType.WorkerHuts,
-                Build.BuildAndExpandType.WheatFarms,
-                Build.BuildAndExpandType.LinnenFarms,
-                Build.BuildAndExpandType.PigPen,
-                Build.BuildAndExpandType.HenPen,
-            };
+        //static readonly Build.BuildAndExpandType[] AutoBuildOptions =
+        //    {
+        //        Build.BuildAndExpandType.WorkerHuts,
+        //        Build.BuildAndExpandType.WheatFarms,
+        //        Build.BuildAndExpandType.LinnenFarms,
+        //        Build.BuildAndExpandType.PigPen,
+        //        Build.BuildAndExpandType.HenPen,
+        //    };
 
         Players.LocalPlayer player;
         bool autoRecruit= false;
@@ -152,31 +152,31 @@ namespace VikingEngine.DSSWars.Players
             //    content.PlusMinusInt(SpriteName.WarsGroupIcon, DssLib.AvailableUnitTypes[i].ToString(), RecruitAmountProperty, i);
             //}
 
-            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
-                {
-                    new RichBoxText( DssRef.todoLang.CityOption_AutoBuild),
-                }, AutoBuildProperty));
-            content.newLine();
+            //content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
+            //    {
+            //        new RichBoxText( DssRef.todoLang.CityOption_AutoBuild),
+            //    }, AutoBuildProperty));
+            //content.newLine();
 
-            if (autoBuild)
-            {
-                content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
-                {
-                    new RichBoxText(DssRef.todoLang.CityOption_AutoBuild_Intelligent),
-                }, AutoBuildIntelligentProperty));
+            //if (autoBuild)
+            //{
+            //    content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
+            //    {
+            //        new RichBoxText(DssRef.todoLang.CityOption_AutoBuild_Intelligent),
+            //    }, AutoBuildIntelligentProperty));
 
-                content.newLine();
-                foreach (var opt in AutoBuildOptions)
-                {
-                    var optButton = new RichboxButton(new List<AbsRichBoxMember> {
-                    new RichBoxText(BuildLib.BuildOptions[(int)opt].Label())
-                    }, new RbAction1Arg<Build.BuildAndExpandType>(selectBuildOption, opt));
-                        optButton.setGroupSelectionColor(HudLib.RbSettings, opt == autoBuildType);
-                    content.Add(optButton);
-                    content.space();
-                }
-            }
-            content.newParagraph();
+            //    content.newLine();
+            //    foreach (var opt in AutoBuildOptions)
+            //    {
+            //        var optButton = new RichboxButton(new List<AbsRichBoxMember> {
+            //        new RichBoxText(BuildLib.BuildOptions[(int)opt].Label())
+            //        }, new RbAction1Arg<Build.BuildAndExpandType>(selectBuildOption, opt));
+            //            optButton.setGroupSelectionColor(HudLib.RbSettings, opt == autoBuildType);
+            //        content.Add(optButton);
+            //        content.space();
+            //    }
+            //}
+            //content.newParagraph();
 
             content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
                 {

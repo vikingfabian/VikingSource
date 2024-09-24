@@ -1091,9 +1091,10 @@ namespace VikingEngine.DSSWars.Players
             automation.oneSecondUpdate();
         }
 
-        public override BuildAndExpandType AutoExpandType(City city, out bool intelligent)
+        public override void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType farm, out bool intelligent)
         {
-            return automation.AutoExpandType(out intelligent);
+            intelligent = true;
+            city.AutoExpandType(out work, out farm);
         }
 
         public bool IsLocalHost()

@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.GameObject
         public IntVector2 tilePos;
         public IntVector2 armyLocalPlacement = IntVector2.Zero;
         
-        public int groupId;
+        //public int groupId;
 
         public UnitType type;
         //public int projectileHits = 0;
@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.GameObject
             this.isRecruit = false;
             tilePos = army.tilePos;
 
-            this.groupId = DssRef.state.nextGroupId++;
+            //this.groupId = DssRef.state.nextGroupId++;
             this.army = army;
 
             //AbsSoldierData typeData = DssRef.unitsdata.Get(type);
@@ -118,7 +118,7 @@ namespace VikingEngine.DSSWars.GameObject
             this.isRecruit = recruit;
             tilePos = army.tilePos;
 
-            this.groupId = DssRef.state.nextGroupId++;
+            //this.groupId = DssRef.state.nextGroupId++;
             this.army = army;
 
             typeCurrentData = DssRef.unitsdata.Get(type);
@@ -679,8 +679,13 @@ namespace VikingEngine.DSSWars.GameObject
         {
             var typeData = typeSoldierData.profile.conscript;
 
-            args.content.h2(typeData.TypeName() + " " + DssRef.lang.UnitType_SoldierGroup);
+            args.content.h2(typeData.TypeName() + " " + DssRef.lang.UnitType_SoldierGroup + " (" + parentArrayIndex.ToString() + ")").overrideColor = HudLib.TitleColor_TypeName;
             args.content.newLine();
+
+#if DEBUG
+            debugTagButton(args.content);
+            //args.content.Button("debug tag", new HUD.RichBox.RbAction(AddDebugTag), null, true);
+#endif
             typeData.toHud(args.content);
             args.content.newLine();
             //if (args.selected && GetFaction() == args.player.faction)
@@ -1154,10 +1159,10 @@ namespace VikingEngine.DSSWars.GameObject
         public void setWalkNode(IntVector2 area,
             bool nextIsFootTransform, bool nextIsShipTransform)
         {
-            if (groupId== 5152)
-            {
-                lib.DoNothing();
-            }
+            //if (parentArrayIndex== 5152)
+            //{
+            //    lib.DoNothing();
+            //}
 
             walkingOrderTo = area;
             Vector3 areaCenter = WP.ToWorldPos(area);
@@ -1269,7 +1274,7 @@ namespace VikingEngine.DSSWars.GameObject
                 rot = WP.ToQuaterion(rotation.radians);
             }
 
-            if (army.inRender_overviewLayer)
+            if (army.inRender_detailLayer)
             {
                 Vector3 moveDir_dir = VectorExt.V2toV3XZ(dir);
 
@@ -1482,7 +1487,7 @@ namespace VikingEngine.DSSWars.GameObject
                 //    lib.DoNothing();
                 //}
 
-                if (!army.inRender_overviewLayer || lifeState == LifeState_New)
+                if (!army.inRender_detailLayer || lifeState == LifeState_New)
                 {
                     ++lifeState;
                     position = goalWp;
@@ -1530,12 +1535,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string TypeName()
         {
-            return typeSoldierData.profile.conscript.TypeName() + " Group(" + groupId.ToString() + ")";
+            return typeSoldierData.profile.conscript.TypeName() + " Group(" + parentArrayIndex.ToString() + ")";
         }
 
         public override string ToString()
         {
-            return "Group " + type.ToString() + " x" + soldiers.Count.ToString() + ", id" + groupId.ToString();
+            return "Group " + type.ToString() + " x" + soldiers.Count.ToString() + ", id" + parentArrayIndex.ToString();
         }
     }    
 

@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars.Map
         Stones,
         StoneBlock,
         WheatFarm,
-        LinnenFarm,
+        LinenFarm,
         NUM_NONE
     }
 

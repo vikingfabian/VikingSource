@@ -131,7 +131,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                 DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                                 break;
 
-                            case TerrainSubFoilType.LinnenFarm:
+                            case TerrainSubFoilType.LinenFarm:
                                 carry = new Resource.ItemResource(
                                         ItemResourceType.Linnen,
                                         subTile.terrainQuality,
@@ -519,7 +519,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         case TerrainSubFoilType.DryWood:
                             return DssConst.WorkTime_GatherFoil_DryWood;
                         case TerrainSubFoilType.WheatFarm:
-                        case TerrainSubFoilType.LinnenFarm:
+                        case TerrainSubFoilType.LinenFarm:
                             return DssConst.WorkTime_GatherFoil_FarmCulture;
                         case TerrainSubFoilType.Stones:
                         case TerrainSubFoilType.StoneBlock:

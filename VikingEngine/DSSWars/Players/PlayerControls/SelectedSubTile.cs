@@ -108,9 +108,8 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (city.faction.player == player)
                 {
-                    var current = subTile.GeBuildingType();
-                    if (current == TerrainBuildingType.NUM_NONE && 
-                        subTile.mainTerrain != TerrainMainType.DefaultSea)
+                    //var current = subTile.GeBuildingType();
+                    if (subTile.MayBuild())
                     {
                         if (player.mapControls.selection.obj == city)
                         {
@@ -130,6 +129,8 @@ namespace VikingEngine.DSSWars.Players
 
             return MayBuildResult.No_OutsideRegion;
         }
+
+
 
         public bool viewSelection(bool view)
         {

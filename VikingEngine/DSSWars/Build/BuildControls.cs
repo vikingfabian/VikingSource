@@ -6,17 +6,26 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.Resource;
+using VikingEngine.DSSWars.GameObject.Worker;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Build
 {
     class BuildControls
     {
-         
+        static readonly Build.BuildAndExpandType[] AutoBuildOptions =
+           {
+                Build.BuildAndExpandType.WheatFarms,
+                Build.BuildAndExpandType.LinnenFarms,
+                Build.BuildAndExpandType.PigPen,
+                Build.BuildAndExpandType.HenPen,
+            };
         public SelectTileResult buildMode = SelectTileResult.None;
         //public BuildOption placeBuildingType = BuildLib.BuildOptions[0];
         public BuildAndExpandType placeBuildingType = BuildAndExpandType.WorkerHuts;
@@ -41,12 +50,50 @@ namespace VikingEngine.DSSWars.Build
                 if (mayBuild == MayBuildResult.Yes || mayBuild == MayBuildResult.Yes_ChangeCity)
                 {
                     //create build order
-                    player.addOrder(new BuildOrder(10, true, selectedSubTile.city, selectedSubTile.subTilePos, placeBuildingType));
+                    player.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, selectedSubTile.city, selectedSubTile.subTilePos, placeBuildingType));
                 }
             }            
         }
 
-        public void toHud(RichBoxContent content)
+        public void autoPlaceBuilding(City city, int count)
+        {
+            IntVector2 topleft;
+            ForXYLoop subTileLoop;
+
+            for (int radius = 1; radius <= city.cityTileRadius; ++radius)
+            {
+                int distanceValue = -radius;
+                ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+
+                while (cirkleLoop.Next())
+                {
+                    if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
+                    {
+                        var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
+                        if (tile.CityIndex == city.parentArrayIndex && tile.IsLand())
+                        {
+                            topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
+                            subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
+
+                            while (subTileLoop.Next())
+                            {
+                                var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
+
+                                if (subTile.MayBuild() &&
+                                    !player.orderConflictingSubTile(subTileLoop.Position))
+                                {
+                                    player.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType));
+                                    if (--count <= 0)
+                                    { return; }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public void toHud(LocalPlayer player, RichBoxContent content, City city)
         {     
             content.newParagraph();
             foreach (var opt in BuildLib.AvailableBuildTypes)
@@ -59,22 +106,8 @@ namespace VikingEngine.DSSWars.Build
                 content.space();
             }
            
-            content.newLine();
-            //{
-            //    var button = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Build_DestroyBuilding) },
-            //        new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.Destroy));
-            //    button.setGroupSelectionColor(HudLib.RbSettings, buildMode == SelectTileResult.Destroy);
-            //    content.Add(button);
-            //    content.space();
-            //}
-            //{
-            //    var button = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Build_ClearTerrain) },
-            //        new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.ClearTerrain));
-            //    button.setGroupSelectionColor(HudLib.RbSettings, buildMode == SelectTileResult.ClearTerrain);
-            //    content.Add(button);
-            //    content.space();
-            //}
-
+            //content.newLine();
+            
             if (buildMode != SelectTileResult.None)
             {
                 var button = new RichboxButton(new List<AbsRichBoxMember> { 
@@ -87,6 +120,82 @@ namespace VikingEngine.DSSWars.Build
                 content.Add(button);
                 content.space();
             }
+
+            int orderLength = 0;
+            foreach (var m in player.orders)
+            {
+                if (m.GetWorkOrder(city) != null)
+                {
+                    orderLength++;
+                }
+            }
+            content.newParagraph();
+            content.Button("Auto place", new RbAction(() =>
+            {
+                autoPlaceBuilding(city, 1);
+            }), null, buildMode == SelectTileResult.Build);
+            content.space();
+            content.Button(string.Format(DssRef.lang.Hud_XTimes, 4), new RbAction(() =>
+            {
+                autoPlaceBuilding(city, 4);
+            }), null, buildMode == SelectTileResult.Build);
+
+            content.newLine();
+            content.Button("Clear build orders", new RbAction(() =>
+            {
+                for (int i = player.orders.Count-1; i>=0; --i)
+                {
+                    if (player.orders[i].GetWorkOrder(city) != null)
+                    {
+                        player.orders[i].DeleteMe();
+                        player.orders.RemoveAt(i);
+                    }
+                }
+            }), null, orderLength > 0);
+
+
+            content.newParagraph();
+            content.text(string.Format( "Build order que: {0}", orderLength)).overrideColor = HudLib.InfoYellow_Light;
+
+            content.Add(new RichBoxSeperationLine());
+
+            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
+                {
+                    new RichBoxText( DssRef.todoLang.CityOption_AutoBuild_Work),
+                }, city.AutoBuildWorkProperty));
+            content.newLine();
+
+            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
+                {
+                    new RichBoxText( DssRef.todoLang.CityOption_AutoBuild_Farm),
+                }, city.AutoBuildFarmProperty));
+            //if (autoBuild)
+            //{
+            //content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
+            //{
+            //    new RichBoxText(DssRef.todoLang.CityOption_AutoBuild_Intelligent),
+            //}, AutoBuildIntelligentProperty));
+
+            if (city.AutoBuildFarmProperty(0, false, false))
+            {
+                content.newLine();
+
+                foreach (var opt in AutoBuildOptions)
+                {
+                    var optButton = new RichboxButton(new List<AbsRichBoxMember> {
+                    new RichBoxText(BuildLib.BuildOptions[(int)opt].Label())
+                    }, new RbAction(() =>
+                    {
+                        city.autoExpandFarmType = opt;
+                    }));
+                    optButton.setGroupSelectionColor(HudLib.RbSettings, opt == city.autoExpandFarmType);
+                    content.Add(optButton);
+                    content.space();
+                }
+            }
+
+            content.newParagraph();
+            city.workTemplate.autoBuild.toHud(player, content, DssRef.todoLang.Work_OrderPrioTitle, WorkPriorityType.autoBuild, player.faction, city);
         }
 
         void modeClick(SelectTileResult set)

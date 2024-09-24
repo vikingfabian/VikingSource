@@ -91,7 +91,7 @@ namespace VikingEngine.DSSWars.Display
                     break;
 
                 case MenuTab.Build:
-                    player.BuildControls.toHud(content);
+                    player.BuildControls.toHud(player, content, city);
                     break;
             }
         }

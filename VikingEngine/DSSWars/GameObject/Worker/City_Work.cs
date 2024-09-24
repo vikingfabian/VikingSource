@@ -422,7 +422,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                         }
                                                         break;
 
-                                                    case TerrainSubFoilType.LinnenFarm:
+                                                    case TerrainSubFoilType.LinenFarm:
                                                         if (workTemplate.farming.HasPrio() &&
                                                             subTile.terrainAmount == TerrainContent.FarmCulture_Empty &&
                                                             res_skinLinnen.needMore())
@@ -545,34 +545,37 @@ namespace VikingEngine.DSSWars.GameObject
                                                 {
                                                     --emptyLandExpansions;
 
-                                                    var autoBuild = faction.player.AutoExpandType(this, out bool intelligent);
-                                                    if (autoBuild != BuildAndExpandType.NUM_NONE)
-                                                    {
-                                                        bool intelligentCheck = true;
-                                                        if (intelligent)
-                                                        {
-                                                            switch (autoBuild)
-                                                            {
-                                                                case BuildAndExpandType.WorkerHuts:
-                                                                    intelligentCheck = workForce >= workForceMax;
-                                                                    break;
-                                                                case BuildAndExpandType.WheatFarms:
-                                                                case BuildAndExpandType.HenPen:
-                                                                    intelligentCheck = res_rawFood.needMore();
-                                                                    break;
-                                                                case BuildAndExpandType.PigPen:
-                                                                    intelligentCheck = res_rawFood.needMore() || res_skinLinnen.needMore();
-                                                                    break;
-                                                                case BuildAndExpandType.LinnenFarms:
-                                                                    intelligentCheck = res_skinLinnen.needMore();
-                                                                    break;
-                                                            }
-                                                        }
+                                                   faction.player.AutoExpandType(this, out bool work, out var buildType, out bool intelligent);
+                                                    
+                                                    bool intelligentCheck = true;
 
-                                                        if (BuildLib.BuildOptions[(int)autoBuild].blueprint.available(this) &&
+                                                    if (work && workForce >= workForceMax)
+                                                    {
+                                                        buildType = BuildAndExpandType.WorkerHuts;
+                                                    }
+                                                    else if (intelligent)
+                                                    {
+                                                        switch (buildType)
+                                                        {
+                                                            case BuildAndExpandType.WheatFarms:
+                                                            case BuildAndExpandType.HenPen:
+                                                                intelligentCheck = res_rawFood.needMore();
+                                                                break;
+                                                            case BuildAndExpandType.PigPen:
+                                                                intelligentCheck = res_rawFood.needMore() || res_skinLinnen.needMore();
+                                                                break;
+                                                            case BuildAndExpandType.LinnenFarms:
+                                                                intelligentCheck = res_skinLinnen.needMore();
+                                                                break;
+                                                        }
+                                                    }
+
+                                                    if (buildType != BuildAndExpandType.NUM_NONE)
+                                                    {
+                                                        if (BuildLib.BuildOptions[(int)buildType].blueprint.available(this) &&
                                                             isFreeTile(subTileLoop.Position))
                                                         {
-                                                            workQue.Add(new WorkQueMember(WorkType.Build, (int)autoBuild, subTileLoop.Position, workTemplate.autoBuild.value, distanceValue));
+                                                            workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, subTileLoop.Position, workTemplate.autoBuild.value, distanceValue));
                                                         }
                                                     }
 
