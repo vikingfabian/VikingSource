@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars
             hen = new SoundContainerMultiple(new string[] { soundDir + "hen1", soundDir + "hen2" }, 0.4f, 0.4f);
             pig = new SoundContainerSingle(soundDir + "pig", 0.4f, 0.8f);
             pickup = new SoundContainerSingle(soundDir + "pickup", 0.6f, 0.4f);
-            anvil = new SoundContainerSingle(soundDir + "anvil", 0.6f, 0.4f);
+            anvil = new SoundContainerSingle(soundDir + "anvil", 0.45f, 0.4f);
             dig = new SoundContainerSingle(soundDir + "dig", 0.3f, 0.4f);
             genericWork = new SoundContainerMultiple(new string[] { soundDir + "generic_work1", soundDir + "generic_work2", }, 0.3f, 0.4f);
             hammer = new SoundContainerSingle(soundDir + "hammer", 0.6f, 0.4f);

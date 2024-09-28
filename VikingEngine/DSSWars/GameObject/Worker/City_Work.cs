@@ -557,14 +557,14 @@ namespace VikingEngine.DSSWars.GameObject
                                                     {
                                                         switch (buildType)
                                                         {
-                                                            case BuildAndExpandType.WheatFarms:
+                                                            case BuildAndExpandType.WheatFarm:
                                                             case BuildAndExpandType.HenPen:
                                                                 intelligentCheck = res_rawFood.needMore();
                                                                 break;
                                                             case BuildAndExpandType.PigPen:
                                                                 intelligentCheck = res_rawFood.needMore() || res_skinLinnen.needMore();
                                                                 break;
-                                                            case BuildAndExpandType.LinnenFarms:
+                                                            case BuildAndExpandType.LinenFarm:
                                                                 intelligentCheck = res_skinLinnen.needMore();
                                                                 break;
                                                         }

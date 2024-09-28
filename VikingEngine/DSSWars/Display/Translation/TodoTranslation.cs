@@ -11,7 +11,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string CityMenu_SalePricesTitle => "Sale prices";
 
         public string Blueprint_Title = "Blueprint";
-        public string Blueprint_LetterSymbol = "BP";
+        //public string /*Blueprint_LetterSymbol*/ = "BP";
 
         public string Resource_TypeName_Water => "water";
         public string Resource_TypeName_Wood => "wood";
@@ -81,6 +81,10 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string Work_OrderPrioTitle => "Work priority";
         public string Work_OrderPrioDescription => "Priority goes from 1 (low) to {0} (high)";
+
+        public string Work_OrderPrio_No => "No priority. Will not be worked on.";
+        public string Work_OrderPrio_Min => "Minimum priority.";
+        public string Work_OrderPrio_Max => "Maximum priority.";
 
         public string Work_Move => "Move items";
 

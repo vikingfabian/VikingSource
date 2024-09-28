@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.GameObject
         public CityCulture Culture = CityCulture.NUM_NONE;
 
         
-        public Build.BuildAndExpandType autoExpandFarmType = Build.BuildAndExpandType.WheatFarms;
+        public Build.BuildAndExpandType autoExpandFarmType = Build.BuildAndExpandType.WheatFarm;
         bool autoBuild_Work = false;
         bool autoBuild_Farm = false;
 
@@ -433,6 +433,7 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write((ushort)maxGuardSize);
 
             w.Write((byte)maxWater);
+            w.Write(Debug.Byte_OrCrash((int)(waterAddPerSec * 20)));
             workTemplate.writeGameState(w, true);
 
             w.Write((ushort)barracks.Count);
@@ -474,6 +475,10 @@ namespace VikingEngine.DSSWars.GameObject
             maxGuardSize = r.ReadUInt16();
 
             maxWater = r.ReadByte();
+            if (subversion >= 13)
+            {
+                waterAddPerSec = r.ReadByte() / 20f;
+            }
             workTemplate.readGameState(r, subversion, true);
 
             refreshCitySize();
@@ -687,8 +692,6 @@ namespace VikingEngine.DSSWars.GameObject
             }
             refreshCitySize();
 
-            //updateIncome_asynch();
-
             position = new Vector3(tilePos.X, Tile().ModelGroundY(), tilePos.Y);
 
             detailObj = new CityDetail(this);
@@ -710,42 +713,31 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     case CityType.Small:
                         workForceMax = DssConst.SmallCityStartMaxWorkForce;
-                        maxWater = DssConst.Maxwater_SmallCity;
+                        waterAddPerSec = DssConst.WaterAdd_SmallCity;
                         break;
                     case CityType.Large:
-                        //workForce.value = DssLib.LargeCityStartWorkForce;
                         workForceMax = DssConst.LargeCityStartMaxWorkForce;
-                        maxWater = DssConst.Maxwater_LargeCity;
+                        waterAddPerSec = DssConst.WaterAdd_LargeCity;
                         break;
                     default:
-                        //workForce.value = DssLib.HeadCityStartWorkForce;
                         workForceMax = DssConst.HeadCityStartMaxWorkForce;
-                        maxWater = DssConst.Maxwater_HeadCity;
+                        waterAddPerSec = DssConst.WaterAdd_HeadCity;
                         nobelHouse = true;
                         break;
                 }
                 workForce = (int)(workForceMax * 0.75);
-                maxWater += Ref.rnd.Int(DssConst.Maxwater_RandomAdd + 1);
+                waterAddPerSec += Ref.rnd.Float(DssConst.WaterAdd_RandomAdd);
 
                 if (Culture == CityCulture.DeepWell)
                 {
-                    maxWater += DssConst.Maxwater_SmallCity;
+                    waterAddPerSec += DssConst.WaterAdd_SmallCity;
                 }
 
             }
-            //if (newGame || maxEpandWorkSize == 0)
-            //{
-            //    int maxFit = MathExt.MultiplyInt(0.8, CityDetail.WorkersPerTile * CityDetail.HutMaxLevel * areaSize);
-            //    maxEpandWorkSize = Bound.Max(workForceMax + DssConst.ExpandWorkForce * 3, maxFit);
-            //}
         }
 
         void refreshCitySize()
         {
-            // upkeep = GuardUpkeep(maxGuardSize);
-            //workForceAddPerSec = workForceMax / 200f;
-            //workForceAddPerSec = workForceMax / 200f;
-
             refreshVisualSize();
         }
 
@@ -1009,12 +1001,13 @@ namespace VikingEngine.DSSWars.GameObject
 
             workForce = Bound.Max(workForce + addWorkers, homesTotal());
 
-            int waterAddPerSec = 1;
-            if (Culture == CityCulture.DeepWell)
-            {
-                waterAddPerSec = 2;
-            }
-            res_water.amount = Math.Min(res_water.amount + waterAddPerSec, maxWater);
+            //int waterAddPerSec = 1;
+            //if (Culture == CityCulture.DeepWell)
+            //{
+            //    waterAddPerSec = 2;
+            //}
+            nextWater.value += waterAddPerSec;
+            res_water.amount = Math.Min(res_water.amount + nextWater.pull(), maxWater);
         }
 
         public void asynchGameObjectsUpdate(bool minute)

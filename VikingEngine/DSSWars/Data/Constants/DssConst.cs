@@ -50,11 +50,16 @@ namespace VikingEngine.DSSWars
         public static int LargeCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 7);
         public static int HeadCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 10);
 
-        public static int Maxwater_SmallCity = 5;
-        public static int Maxwater_LargeCity= 8;
-        public static int Maxwater_HeadCity = 10;
+        //public static int Maxwater_SmallCity = 5;
+        //public static int Maxwater_LargeCity= 8;
+        //public static int Maxwater_HeadCity = 10;
 
-        public static int Maxwater_RandomAdd = 2;
+        //public static int Maxwater_RandomAdd = 2;
+
+        public static float WaterAdd_SmallCity = 0.5f;
+        public static float WaterAdd_LargeCity = 0.8f;
+        public static float WaterAdd_HeadCity = 1f;
+        public static float WaterAdd_RandomAdd = 0.25f; 
 
         public static int Maxwater = 10;
         public static int ExpandWorkForce = SoldierGroup_DefaultCount * 4;

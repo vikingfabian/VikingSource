@@ -37,10 +37,12 @@ namespace VikingEngine.DSSWars.Display
                     var tabs = new List<RichboxTabMember>((int)MenuTab.NUM);
                     for (int i = 0; i < Tabs.Length; ++i)
                     {
+                        var text = new RichBoxText(LangLib.Tab(Tabs[i]));
+                        text.overrideColor = HudLib.RbSettings.tabSelected.Color;
                         tabs.Add(new RichboxTabMember(new List<AbsRichBoxMember>
-                    {
-                        new RichBoxText(LangLib.Tab(Tabs[i]))
-                    }));
+                        {
+                            text
+                        }));
 
                         if (Tabs[i] == player.factionTab)
                         {
@@ -129,13 +131,15 @@ namespace VikingEngine.DSSWars.Display
             {
                 if (DssRef.difficulty.allowPauseCommand)
                 {
-                    content.Add(new RichboxButton(new List<AbsRichBoxMember>
+                    var button = new RichboxButton(new List<AbsRichBoxMember>
                     {
                         new RichBoxImage(player.input.PauseGame.Icon),
                         new RichBoxText(Ref.isPaused? DssRef.lang.Input_ResumePaused : DssRef.lang.Input_Pause),
                     },
                     new RbAction(DssRef.state.pauseAction),
-                    null));
+                    null);
+                    button.setGroupSelectionColor(HudLib.RbSettings, Ref.isPaused);
+                    content.Add(button);
 
                     content.Add(new RichBoxNewLine());
                 }
@@ -212,10 +216,13 @@ namespace VikingEngine.DSSWars.Display
                         {
                             for (int i = 0; i < DssLib.GameSpeedOptions.Length; i++)
                             {
-                                content.Add(new RichboxButton(
-                                    new List<AbsRichBoxMember> { new RichBoxText(string.Format(DssRef.lang.Hud_XTimes, DssLib.GameSpeedOptions[i])) },
-                                    new RbAction1Arg<int>(gameSpeedClick, DssLib.GameSpeedOptions[i]), null, true));
-                                content.space();
+                                var button = new RichboxButton(
+                                     new List<AbsRichBoxMember> { new RichBoxText(string.Format(DssRef.lang.Hud_XTimes, DssLib.GameSpeedOptions[i])) },
+                                     new RbAction1Arg<int>(gameSpeedClick, DssLib.GameSpeedOptions[i]), null, true);
+                                button.setGroupSelectionColor(HudLib.RbSettings, Ref.TargetGameTimeSpeed == DssLib.GameSpeedOptions[i]);
+                                content.Add(button);
+                                content.space(); 
+                                
                             }
                             //content.newLine();
                         }
@@ -251,18 +258,18 @@ namespace VikingEngine.DSSWars.Display
 
                 if (fullDisplay)
                 {
-                    content.newParagraph();
-                    content.Add(new RichBoxNewLine());
-                    content.Add(new RichBoxImage(SpriteName.rtsIncomeTime));
-                    content.space();
-                    content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(Convert.ToInt32( faction.citiesEconomy.tax())))));
+                    //content.newParagraph();
+                    //content.Add(new RichBoxNewLine());
+                    //content.Add(new RichBoxImage(SpriteName.rtsIncomeTime));
+                    //content.space();
+                    //content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(Convert.ToInt32( faction.citiesEconomy.tax())))));
 
-                    content.Add(new RichBoxNewLine());
-                    content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
-                    content.space();
-                    //content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_ArmyUpkeep, TextLib.LargeNumber(faction.armyUpkeep))));
+                    //content.Add(new RichBoxNewLine());
+                    //content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
+                    //content.space();
+                    ////content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_ArmyUpkeep, TextLib.LargeNumber(faction.armyUpkeep))));
 
-                    content.newLine();
+                    //content.newLine();
                     //var automationButton = new HUD.RichBox.RichboxButton(
                     //    new List<AbsRichBoxMember>
                     //    {
@@ -278,7 +285,7 @@ namespace VikingEngine.DSSWars.Display
                     //string diplomacy = "Diplomatic points: {0}/{1}({2})";
                     content.icontext(SpriteName.WarsDiplomaticPoint, string.Format(DssRef.lang.ResourceType_DiplomacyPoints_WithSoftAndHardLimit, player.diplomaticPoints.Int(), player.diplomaticPoints_softMax, player.diplomaticPoints.max));
 
-                    content.icontext(SpriteName.WarsGroupIcon, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_MercenaryMarket, player.mercenaryMarket.Int()));
+                    //content.icontext(SpriteName.WarsGroupIcon, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_MercenaryMarket, player.mercenaryMarket.Int()));
                     //string command = "Command points: {0}";
                     //content.icontext(SpriteName.WarsCommandPoint, string.Format(command, player.commandPoints.ToString()));
 

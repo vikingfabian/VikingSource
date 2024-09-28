@@ -30,6 +30,7 @@ namespace VikingEngine.HUD.RichBox
 
         int tryCreatePosition = -1;
         bool lockNewLine = false;
+        public float groupScale = 1f;
 
         public RichBoxGroup(Vector2 topleft, float boxWidth, ImageLayers layer, 
             RichBoxSettings settings, List<AbsRichBoxMember> content,
@@ -72,6 +73,13 @@ namespace VikingEngine.HUD.RichBox
             maxArea.Width = maxWidth;
 
             finalizeArea(useDynamicWidth, content);
+        }
+
+        public void setScale(float newScale)
+        {
+            lineSpacing = lineSpacing / groupScale * newScale;
+            lineSpacingHalf = lineSpacing / 2;
+            groupScale = newScale;
         }
 
         public TextFormat Format()
@@ -160,7 +168,7 @@ namespace VikingEngine.HUD.RichBox
         void setHeight(float imageHeight)
         {
             this.imageHeight = MathExt.Round(imageHeight);
-            lineSpacing =  MathExt.RoundAndEven(imageHeight + Engine.Screen.IconSize * 0.12f);
+            lineSpacing =  MathExt.RoundAndEven(imageHeight + Engine.Screen.IconSize * 0.12f) * groupScale;
             lineSpacingHalf = lineSpacing / 2;
         }
 

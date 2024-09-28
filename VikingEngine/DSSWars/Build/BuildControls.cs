@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.ToGG.HeroQuest.Display;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Build
@@ -21,8 +22,8 @@ namespace VikingEngine.DSSWars.Build
     {
         static readonly Build.BuildAndExpandType[] AutoBuildOptions =
            {
-                Build.BuildAndExpandType.WheatFarms,
-                Build.BuildAndExpandType.LinnenFarms,
+                Build.BuildAndExpandType.WheatFarm,
+                Build.BuildAndExpandType.LinenFarm,
                 Build.BuildAndExpandType.PigPen,
                 Build.BuildAndExpandType.HenPen,
             };
@@ -94,17 +95,48 @@ namespace VikingEngine.DSSWars.Build
         }
 
         public void toHud(LocalPlayer player, RichBoxContent content, City city)
-        {     
+        {
             content.newParagraph();
+
+            content.Add(new RichBoxScale(2.1f)); 
             foreach (var opt in BuildLib.AvailableBuildTypes)
             {
-                var button = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(BuildLib.BuildOptions[(int)opt].Label()) },
+                var button = new RichboxButton(new List<AbsRichBoxMember> {
+                    
+                    new RichBoxImage(BuildLib.BuildOptions[(int)opt].sprite),
+
+                },
                 new RbAction1Arg<BuildAndExpandType>(buildingTypeClick, opt),
-                new RbAction1Arg<BuildAndExpandType>(buildingTooltip, opt));
+                new RbAction1Arg<BuildAndExpandType>((BuildAndExpandType type) =>
+                {
+                    RichBoxContent content = new RichBoxContent();
+
+                    content.h2(BuildLib.BuildOptions[(int)type].Label()).overrideColor = HudLib.TitleColor_TypeName;
+                    var build = BuildLib.BuildOptions[(int)type];
+
+                    HudLib.Description(content, build.Description());
+                    //CraftBlueprint blueprint = ResourceLib.Blueprint(index);
+                    build.blueprint.toMenu(content, city);
+
+                    player.hud.tooltip.create(player, content, true);
+                }, opt));
+                
                 button.setGroupSelectionColor(HudLib.RbSettings, buildMode == SelectTileResult.Build && placeBuildingType == opt);
                 content.Add(button);
                 content.space();
             }
+            content.Add(new RichBoxScale(1));
+
+            content.newParagraph();
+            //foreach (var opt in BuildLib.AvailableBuildTypes)
+            //{
+            //    var button = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(BuildLib.BuildOptions[(int)opt].Label()) },
+            //    new RbAction1Arg<BuildAndExpandType>(buildingTypeClick, opt),
+            //    new RbAction1Arg<BuildAndExpandType>(buildingTooltip, opt));
+            //    button.setGroupSelectionColor(HudLib.RbSettings, buildMode == SelectTileResult.Build && placeBuildingType == opt);
+            //    content.Add(button);
+            //    content.space();
+            //}
            
             //content.newLine();
             
@@ -158,7 +190,9 @@ namespace VikingEngine.DSSWars.Build
             content.text(string.Format( "Build order que: {0}", orderLength)).overrideColor = HudLib.InfoYellow_Light;
 
             content.Add(new RichBoxSeperationLine());
+            content.h2(DssRef.lang.Automation_Title);
 
+            content.newLine();
             content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
                 {
                     new RichBoxText( DssRef.todoLang.CityOption_AutoBuild_Work),
@@ -195,6 +229,7 @@ namespace VikingEngine.DSSWars.Build
             }
 
             content.newParagraph();
+            
             city.workTemplate.autoBuild.toHud(player, content, DssRef.todoLang.Work_OrderPrioTitle, WorkPriorityType.autoBuild, player.faction, city);
         }
 
@@ -209,19 +244,19 @@ namespace VikingEngine.DSSWars.Build
             placeBuildingType = type;
         }
 
-        void buildingTooltip(BuildAndExpandType type)
-        {
-            RichBoxContent content = new RichBoxContent();
+        //void buildingTooltip(BuildAndExpandType type)
+        //{
+        //    RichBoxContent content = new RichBoxContent();
 
-            //content.h2(index.ToString());
-            var build = BuildLib.BuildOptions[(int)type];
+        //    content.h2(BuildLib.BuildOptions[(int)type].Label()).overrideColor=HudLib.TitleColor_TypeName;
+        //    var build = BuildLib.BuildOptions[(int)type];
 
-            HudLib.Description(content, build.Description());
-            //CraftBlueprint blueprint = ResourceLib.Blueprint(index);
-            build.blueprint.toMenu(content);
+        //    HudLib.Description(content, build.Description());
+        //    //CraftBlueprint blueprint = ResourceLib.Blueprint(index);
+        //    build.blueprint.toMenu(content, city);
 
-            player.hud.tooltip.create(player, content, true);
-        }
+        //    player.hud.tooltip.create(player, content, true);
+        //}
         
     }
 

@@ -1,11 +1,9 @@
 ﻿
 -Change Log-
-*Clickable barracks, deliveries
-*Fixed barracks and deliveries save bug
-*fixed idle soldiers bug
-*Induvidual expand automation to cities
+*Some polish on the hud
+*Changed water to differ in add speed
 
-!avsluta inte strid position förrän i detalj view
+!avslutar inte strid position förrän i detalj view
 
 Error
 -back button in menues 

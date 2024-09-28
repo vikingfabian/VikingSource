@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
@@ -45,7 +46,9 @@ namespace VikingEngine.DSSWars.GameObject
         int waterBuffer = 2;
         int waterSpendOrders = 0;
 
-        public int maxWater;
+        public int maxWater = DssConst.Maxwater;
+        FloatingInt nextWater = new FloatingInt();
+        public float waterAddPerSec;
         static readonly GroupedResource Res_Nothing = new GroupedResource() { amount = 100000 };
 
         public GroupedResource res_water = new GroupedResource();
@@ -299,7 +302,7 @@ namespace VikingEngine.DSSWars.GameObject
                     res_skinLinnen.add(item);
                     break;
 
-                case ItemResourceType.Linnen:
+                case ItemResourceType.Linen:
                     res_skinLinnen.add(item);
                     break;
 
@@ -423,9 +426,11 @@ namespace VikingEngine.DSSWars.GameObject
             amount += item.amount * multiply;
         }
 
-        public void toMenu(RichBoxContent content, string name)
+        public void toMenu(RichBoxContent content, ItemResourceType item)
         {
-            content.text(name + ": " + amount.ToString());
+            content.newLine();
+            content.Add(new RichBoxImage(ResourceLib.Icon(item)));
+            content.Add(new RichBoxText( LangLib.Item(item) + ": " + amount.ToString()));
         }
 
         public void clearOrders()

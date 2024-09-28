@@ -42,9 +42,12 @@ namespace VikingEngine.DSSWars.Display
             var tabs = new List<RichboxTabMember>((int)MenuTab.NUM);
             for (int i = 0; i < Tabs.Length; ++i)
             {
+                var text = new RichBoxText(LangLib.Tab(Tabs[i]));
+                text.overrideColor = HudLib.RbSettings.tabSelected.Color;
+
                 tabs.Add(new RichboxTabMember(new List<AbsRichBoxMember>
                     {
-                        new RichBoxText(LangLib.Tab(Tabs[i]))
+                        text
                     }));
 
                 if (Tabs[i] == player.cityTab)
@@ -97,49 +100,50 @@ namespace VikingEngine.DSSWars.Display
         }
         public void resourcesToMenu(RichBoxContent content)
         {
-            content.Add(new RichBoxSeperationLine());
+            //content.Add(new RichBoxSeperationLine());
 
             content.h1(DssRef.todoLang.MenuTab_Resources);
             content.newLine();
 
             // content.text("Water: " + water.ToString());
             //city.water.toMenu(content, DssRef.todoLang.Resource_TypeName_Water);
-            
-            content.text(DssRef.todoLang.Resource_TypeName_Water + ": " + string.Format(DssRef.todoLang.Language_CollectProgress, city.res_water.amount, city.maxWater));
-            city.res_beer.toMenu(content, DssRef.todoLang.Resource_TypeName_Beer);
-            city.res_wood.toMenu(content, DssRef.todoLang.Resource_TypeName_Wood);
-            city.res_stone.toMenu(content, DssRef.todoLang.Resource_TypeName_Stone);
-            city.res_rawFood.toMenu(content, DssRef.todoLang.Resource_TypeName_RawFood);
-            city.res_skinLinnen.toMenu(content, DssRef.todoLang.Resource_TypeName_SkinAndLinen);
-            city.res_ore.toMenu(content, DssRef.todoLang.Resource_TypeName_Ore);
+            content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
+            content.Add(new RichBoxText( DssRef.todoLang.Resource_TypeName_Water + ": " + string.Format(DssRef.todoLang.Language_CollectProgress, city.res_water.amount, city.maxWater)));
+            content.Add(new RichBoxTab(0.4f));
+            content.Add(new RichBoxImage(SpriteName.WarsResource_WaterAdd));
+            content.Add(new RichBoxText(TextLib.OneDecimal(city.waterAddPerSec)));
+
+            city.res_beer.toMenu(content, ItemResourceType.Beer);
+            city.res_wood.toMenu(content,  ItemResourceType.Wood_Group);
+            city.res_stone.toMenu(content,  ItemResourceType.Stone_G);
+            city.res_rawFood.toMenu(content, ItemResourceType.RawFood_Group);
+            city.res_skinLinnen.toMenu(content,  ItemResourceType.SkinLinen_Group);
+            city.res_ore.toMenu(content, ItemResourceType.IronOre_G);
 
             content.newParagraph();
 
-            city.res_food.toMenu(content, DssRef.todoLang.Resource_TypeName_Food);
+            city.res_food.toMenu(content,  ItemResourceType.Food_G);
             blueprintButton(player, content, ResourceLib.CraftFood1, ResourceLib.CraftFood2);
 
-            //city.res_food.toMenu(content, DssRef.todoLang.Resource_TypeName_Beer);
-            //blueprintButton(player, content, ResourceLib.CraftBeer);
-
-            city.res_iron.toMenu(content, DssRef.todoLang.Resource_TypeName_Iron);
+            city.res_iron.toMenu(content, ItemResourceType.Iron_G);
             blueprintButton(player, content, ResourceLib.CraftIron);
 
-            city.res_sharpstick.toMenu(content, DssRef.todoLang.Resource_TypeName_SharpStick);
+            city.res_sharpstick.toMenu(content, ItemResourceType.SharpStick);
             blueprintButton(player, content, ResourceLib.CraftSharpStick);
 
-            city.res_sword.toMenu(content, DssRef.todoLang.Resource_TypeName_Sword);
+            city.res_sword.toMenu(content, ItemResourceType.Sword);
             blueprintButton(player, content, ResourceLib.CraftSword);
 
-            city.res_bow.toMenu(content, DssRef.todoLang.Resource_TypeName_Bow);
+            city.res_bow.toMenu(content, ItemResourceType.Bow);
             blueprintButton(player, content, ResourceLib.CraftBow);
 
-            city.res_lightArmor.toMenu(content, DssRef.todoLang.Resource_TypeName_LightArmor);
+            city.res_lightArmor.toMenu(content, ItemResourceType.LightArmor);
             blueprintButton(player, content, ResourceLib.CraftLightArmor);
 
-            city.res_mediumArmor.toMenu(content, DssRef.todoLang.Resource_TypeName_MediumArmor);
+            city.res_mediumArmor.toMenu(content, ItemResourceType.MediumArmor);
             blueprintButton(player, content, ResourceLib.CraftMediumArmor);
 
-            city.res_heavyArmor.toMenu(content, DssRef.todoLang.Resource_TypeName_HeavyArmor);
+            city.res_heavyArmor.toMenu(content, ItemResourceType.HeavyArmor);
             blueprintButton(player, content, ResourceLib.CraftHeavyArmor);
 
             content.newParagraph();
@@ -211,12 +215,14 @@ namespace VikingEngine.DSSWars.Display
 
         void blueprintButton(LocalPlayer player, RichBoxContent content, CraftBlueprint blueprint, CraftBlueprint optionalBp = null)
         {
-            content.space();
+            content.Add(new RichBoxTab(0.8f));
 
-            RichBoxText B = new RichBoxText(DssRef.todoLang.Blueprint_LetterSymbol);
-            B.overrideColor = Color.Blue;
+            //RichBoxText B = new RichBoxText(DssRef.todoLang.Blueprint_LetterSymbol);
+            //B.overrideColor = Color.Blue;
 
-            content.Add(new RichboxButton(new List<AbsRichBoxMember> { B },
+            content.Add(new RichboxButton(new List<AbsRichBoxMember> { 
+                new RichBoxImage(SpriteName.WarsBluePrint)
+            },
                null, new RbAction2Arg<CraftBlueprint, CraftBlueprint>(blueprintTooltip, blueprint, optionalBp)));
 
         }
@@ -226,11 +232,11 @@ namespace VikingEngine.DSSWars.Display
             //hover
             RichBoxContent content = new RichBoxContent();
             content.h2(DssRef.todoLang.Blueprint_Title);
-            blueprint.toMenu(content);
+            blueprint.toMenu(content, city);
             if (optionalBp != null)
             { 
                 content.newLine();
-                optionalBp.toMenu(content);
+                optionalBp.toMenu(content, city);
             }
 
             player.hud.tooltip.create(player, content, true);

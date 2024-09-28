@@ -33,7 +33,7 @@ namespace VikingEngine.HUD.RichBox
             Vector2 pos = new Vector2(group.area.X -2, group.position.Y + group.lineSpacingHalf -2);
             pointer = new Image(SpriteName.WhiteArea, pos,
                 new Vector2(group.boxWidth +4, 4), group.layer, false, group.addToRender);
-            pointer.Color = group.settings.button.BgColor;
+            pointer.Color = group.settings.tabSelected.BgColor;
             group.Add(pointer);
         }
 
@@ -74,9 +74,13 @@ namespace VikingEngine.HUD.RichBox
         public override void Create(RichBoxGroup group)
         {
             base.Create(group);
-            if (!this.selected)
+            if (this.selected)
             {
-                bgPointer.Color = group.settings.buttonSecondary.BgColor;
+                bgPointer.Color = group.settings.tabSelected.BgColor;
+            }
+            else
+            {
+                bgPointer.Color = group.settings.tabNotSelected.BgColor;
             }
 
             group.position.X += group.imageHeight * 0.3f;

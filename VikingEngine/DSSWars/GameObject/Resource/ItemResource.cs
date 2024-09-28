@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         Coal, 
         Tar,
 
-        Linnen,
+        Linen,
         Wool,
         Rope,
         Cloth,

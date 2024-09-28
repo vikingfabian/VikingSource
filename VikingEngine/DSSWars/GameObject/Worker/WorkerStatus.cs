@@ -133,7 +133,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                             case TerrainSubFoilType.LinenFarm:
                                 carry = new Resource.ItemResource(
-                                        ItemResourceType.Linnen,
+                                        ItemResourceType.Linen,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
                                         farmGrowthMultiplier(subTile.terrainAmount, city));

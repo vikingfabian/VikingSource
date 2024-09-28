@@ -460,11 +460,11 @@ namespace VikingEngine.DSSWars.Players
 
             if (city.res_rawFood.needMore())
             {
-                building = BuildAndExpandType.WheatFarms;
+                building = BuildAndExpandType.WheatFarm;
             }
             else if (city.res_skinLinnen.needMore())
             {
-                building = BuildAndExpandType.LinnenFarms;
+                building = BuildAndExpandType.LinenFarm;
             }
             else if (city.barracks.Count < 2)
             {

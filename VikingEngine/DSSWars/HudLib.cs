@@ -61,6 +61,14 @@ namespace VikingEngine.DSSWars
             Engine.Screen.TextBreadHeight * TextToIconSz, 1.1f);
             RbSettings.head1.Font = LoadedFont.Bold;
             RbSettings.head1.Color = Color.LightGray;
+            //RbSettings.tabSelected.BgColor = new Color(126, 56, 23);
+            //RbSettings.tabSelected.Color = new Color(222, 156, 125);
+            //RbSettings.tabNotSelected.BgColor = new Color(114, 73, 53);
+            //RbSettings.tabNotSelected.Color = RbSettings.tabSelected.Color;
+            RbSettings.tabSelected.BgColor = new Color(53, 158, 209);//new Color(121,110,233);
+            RbSettings.tabSelected.Color = new Color(3, 0, 46);
+            RbSettings.tabNotSelected.BgColor = new Color(36, 107, 142); //new Color(99,96,146);
+            RbSettings.tabNotSelected.Color = RbSettings.tabSelected.Color;
 
             RbOnGuiSettings = RbSettings;
             RbOnGuiSettings.scaleUp(1.4f);

@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             items[(int)ItemResourceType.Pig] = new ItemProperties(1f);
             items[(int)ItemResourceType.Hen] = new ItemProperties(1f / 4);
             items[(int)ItemResourceType.Wheat] = new ItemProperties(1f / 10);
-            items[(int)ItemResourceType.Linnen] = new ItemProperties(1f / 10);
+            items[(int)ItemResourceType.Linen] = new ItemProperties(1f / 10);
             items[(int)ItemResourceType.Food_G] = new ItemProperties(1f / CarryFood);
 
             items[(int)ItemResourceType.LightArmor] = new ItemProperties(1f / 10);

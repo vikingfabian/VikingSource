@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Net;
 using System.Security.AccessControl;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject.Resource;
@@ -13,7 +14,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
     struct WorkTemplate
     {
         public const int NoPrio = 0;
-        const int MinPrio = 1;
+        public const int MinPrio = 1;
         public const int MaxPrio = 5;
 
         public WorkPriority move = new WorkPriority(3);
@@ -321,7 +322,40 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             for (int prio = 0; prio <= WorkTemplate.MaxPrio; prio++)
             {
                 content.space();
-                var button =  new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(prio.ToString()) }, new RbAction3Arg<int, WorkPriorityType, City>(faction.setWorkPrio, prio, priorityType, city));
+
+                string prioText = null;
+                switch (prio)
+                {
+                    case WorkTemplate.NoPrio:
+                        prioText = DssRef.todoLang.Work_OrderPrio_No;
+                        break;
+
+                    case WorkTemplate.MinPrio:
+                        prioText = DssRef.todoLang.Work_OrderPrio_Min;
+                        break;
+
+                    case WorkTemplate.MaxPrio:
+                        prioText = DssRef.todoLang.Work_OrderPrio_Max;
+                        break;
+                }
+
+                AbsRbAction hover = null;
+                if (prioText != null)
+                {
+                    hover = new RbAction(() =>
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        content.text(prioText);
+
+                        player.hud.tooltip.create(player, content, true);
+                    });
+                }
+
+                var button =  new RichboxButton(new List<AbsRichBoxMember> {
+                    new RichBoxText(prio.ToString()) 
+                }, 
+                new RbAction3Arg<int, WorkPriorityType, City>(faction.setWorkPrio, prio, priorityType, city), 
+                hover);
                 button.setGroupSelectionColor(HudLib.RbSettings, prio == value);
                 content.Add(button);
 

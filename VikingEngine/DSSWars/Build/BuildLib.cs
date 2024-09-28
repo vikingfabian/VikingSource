@@ -18,8 +18,8 @@ namespace VikingEngine.DSSWars.Build
         Brewery,
         Cook,
         Smith,
-        WheatFarms,
-        LinnenFarms,
+        WheatFarm,
+        LinenFarm,
         PigPen,
         HenPen,
         Statue_ThePlayer,
@@ -28,8 +28,7 @@ namespace VikingEngine.DSSWars.Build
     }
     static class BuildLib
     {
-        //public static readonly BuildOption BuildWorkerHut = new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.WorkerHut, ResourceLib.CraftWorkerHut);
-
+       
         public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
         public static readonly BuildAndExpandType[] AvailableBuildTypes = {
             BuildAndExpandType.WorkerHuts,
@@ -42,41 +41,29 @@ namespace VikingEngine.DSSWars.Build
             BuildAndExpandType.Smith,
             BuildAndExpandType.PigPen,
             BuildAndExpandType.HenPen,
-            BuildAndExpandType.WheatFarms,
-            BuildAndExpandType.LinnenFarms,
+            BuildAndExpandType.WheatFarm,
+            BuildAndExpandType.LinenFarm,
             BuildAndExpandType.Statue_ThePlayer
         };
-        //{
-        //    BuildWorkerHut,
-        //    new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.Postal, ResourceLib.CraftPostal),
-        //    new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.Recruitment, ResourceLib.CraftRecruitment),
-
-        //    new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.Barracks, ResourceLib.CraftBarracks),
-        //    new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.Tavern, ResourceLib.CraftTavern),
-
-        //    new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.PigPen, ResourceLib.CraftPigPen),
-        //    new BuildOption(BuildOptionType.Building, (int)TerrainBuildingType.HenPen, ResourceLib.CraftHenPen),
-        //    new BuildOption(BuildOptionType.Farm, (int)TerrainSubFoilType.WheatFarm, ResourceLib.CraftFarm),
-        //    new BuildOption(BuildOptionType.Farm, (int)TerrainSubFoilType.LinnenFarm, ResourceLib.CraftFarm),
-        //};
+       
 
         public static void Init()
         {
-            new BuildOption(BuildAndExpandType.WorkerHuts, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, ResourceLib.CraftWorkerHut);
-            new BuildOption(BuildAndExpandType.Postal, TerrainMainType.Building, (int)TerrainBuildingType.Postal, ResourceLib.CraftPostal);
-            new BuildOption(BuildAndExpandType.Recruitment, TerrainMainType.Building, (int)TerrainBuildingType.Recruitment, ResourceLib.CraftRecruitment);            
-            new BuildOption(BuildAndExpandType.Barracks, TerrainMainType.Building, (int)TerrainBuildingType.Barracks, ResourceLib.CraftBarracks);
-            new BuildOption(BuildAndExpandType.Tavern, TerrainMainType.Building, (int)TerrainBuildingType.Tavern, ResourceLib.CraftTavern);
-            new BuildOption(BuildAndExpandType.Brewery, TerrainMainType.Building, (int)TerrainBuildingType.Brewery, ResourceLib.CraftBrewery);
-            new BuildOption(BuildAndExpandType.PigPen, TerrainMainType.Building, (int)TerrainBuildingType.PigPen, ResourceLib.CraftPigPen);
-            new BuildOption(BuildAndExpandType.HenPen, TerrainMainType.Building, (int)TerrainBuildingType.HenPen, ResourceLib.CraftHenPen);
-            new BuildOption(BuildAndExpandType.Cook, TerrainMainType.Building, (int)TerrainBuildingType.Work_Cook, ResourceLib.CraftCook);
-            new BuildOption(BuildAndExpandType.Smith, TerrainMainType.Building, (int)TerrainBuildingType.Work_Smith, ResourceLib.CraftSmith);
+            new BuildOption(BuildAndExpandType.WorkerHuts, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, SpriteName.WarsBuild_WorkerHuts, ResourceLib.CraftWorkerHut);
+            new BuildOption(BuildAndExpandType.Postal, TerrainMainType.Building, (int)TerrainBuildingType.Postal, SpriteName.WarsBuild_Postal, ResourceLib.CraftPostal);
+            new BuildOption(BuildAndExpandType.Recruitment, TerrainMainType.Building, (int)TerrainBuildingType.Recruitment, SpriteName.WarsBuild_Recruitment, ResourceLib.CraftRecruitment);            
+            new BuildOption(BuildAndExpandType.Barracks, TerrainMainType.Building, (int)TerrainBuildingType.Barracks, SpriteName.WarsBuild_Barracks, ResourceLib.CraftBarracks);
+            new BuildOption(BuildAndExpandType.Tavern, TerrainMainType.Building, (int)TerrainBuildingType.Tavern, SpriteName.WarsBuild_Tavern, ResourceLib.CraftTavern);
+            new BuildOption(BuildAndExpandType.Brewery, TerrainMainType.Building, (int)TerrainBuildingType.Brewery, SpriteName.WarsBuild_Brewery, ResourceLib.CraftBrewery);
+            new BuildOption(BuildAndExpandType.PigPen, TerrainMainType.Building, (int)TerrainBuildingType.PigPen, SpriteName.WarsBuild_PigPen, ResourceLib.CraftPigPen);
+            new BuildOption(BuildAndExpandType.HenPen, TerrainMainType.Building, (int)TerrainBuildingType.HenPen, SpriteName.WarsBuild_HenPen, ResourceLib.CraftHenPen);
+            new BuildOption(BuildAndExpandType.Cook, TerrainMainType.Building, (int)TerrainBuildingType.Work_Cook, SpriteName.WarsBuild_Cook, ResourceLib.CraftCook);
+            new BuildOption(BuildAndExpandType.Smith, TerrainMainType.Building, (int)TerrainBuildingType.Work_Smith, SpriteName.WarsBuild_Smith, ResourceLib.CraftSmith);
 
-            new BuildOption(BuildAndExpandType.WheatFarms, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, ResourceLib.CraftFarm);
-            new BuildOption(BuildAndExpandType.LinnenFarms, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarm, ResourceLib.CraftFarm);
+            new BuildOption(BuildAndExpandType.WheatFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, SpriteName.WarsBuild_WheatFarms, ResourceLib.CraftFarm);
+            new BuildOption(BuildAndExpandType.LinenFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarm, SpriteName.WarsBuild_LinenFarms, ResourceLib.CraftFarm);
 
-            new BuildOption(BuildAndExpandType.Statue_ThePlayer, TerrainMainType.Decor, (int)TerrainDecorType.Statue_ThePlayer, ResourceLib.CraftStatue);
+            new BuildOption(BuildAndExpandType.Statue_ThePlayer, TerrainMainType.Decor, (int)TerrainDecorType.Statue_ThePlayer, SpriteName.WarsBuild_Statue, ResourceLib.CraftStatue);
 
         }
 
