@@ -8,6 +8,7 @@ using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.ToGG;
 
 namespace VikingEngine.DSSWars.GameObject.Delivery
 {
@@ -47,17 +48,25 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                 {
                     HudLib.Label(content, "Item");
                     content.newLine();
+                    content.Add(new RichBoxScale(1.6f));
                     foreach (var item in City.MovableCityResourceTypes)
                     {
                         var button = new RichboxButton(new List<AbsRichBoxMember>{
-                               new RichBoxText(LangLib.Item(item))
-                            }, new RbAction1Arg<ItemResourceType>(itemClick, item));
+                                new RichBoxImage(ResourceLib.Icon(item))   
+                            //new RichBoxText(LangLib.Item(item))
+                            }, new RbAction1Arg<ItemResourceType>(itemClick, item), new RbAction(()=> 
+                           {
+                               RichBoxContent content = new RichBoxContent();
+                               content.text(LangLib.Item(item)).overrideColor = HudLib.TitleColor_TypeName;
+                           }));
                         button.setGroupSelectionColor(HudLib.RbSettings, item == currentStatus.profile.type);
                         content.Add(button);
                         content.space();
                     }
+                    
                 }
                 content.newParagraph();
+                content.Add(new RichBoxScale());
 
                 HudLib.Label(content, "To city");
                 content.newLine();
@@ -68,7 +77,16 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                     {
                         var button = new RichboxButton(new List<AbsRichBoxMember>{
                             new RichBoxText(cities_c.sel.TypeName())
-                            }, new RbAction1Arg<int>(cityClick, cities_c.sel.parentArrayIndex));
+                            }, new RbAction1Arg<int>(cityClick, cities_c.sel.parentArrayIndex), new RbAction1Arg<City>((City toCity)=>
+                            {
+                                RichBoxContent content = new RichBoxContent();
+                                content.h2(toCity.Name()).overrideColor = HudLib.TitleColor_Name;
+                                var time = DeliveryProfile.DeliveryTime(city, toCity, out float distance);
+                                content.text(string.Format("Distance: {0}", TextLib.OneDecimal(distance)));
+                                content.text(string.Format("Delivery time: {0}", time.LongString()));
+
+                                player.hud.tooltip.create(player, content, true);
+                            }, cities_c.sel));
                         button.setGroupSelectionColor(HudLib.RbSettings, cities_c.sel.parentArrayIndex == currentStatus.profile.toCity);
                         content.Add(button);
                         content.space();

@@ -15,6 +15,7 @@ using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.GO.Gadgets;
+using VikingEngine.PJ.Joust;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -68,7 +69,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 status.active++;
                                 //City othercity = DssRef.world.cities[status.inProgress.toCity];
                                 //float distance = VectorExt.Length((othercity.tilePos - tilePos).Vec);
-                                status.countdown = new TimeInGameCountdown(DeliveryProfile.DeliveryTime(this,status.inProgress.toCity) );
+                                status.countdown = new TimeInGameCountdown(DeliveryProfile.DeliveryTime(this, DssRef.world.cities[status.inProgress.toCity], out _));
                             }
                             break;
                         case DeliveryActiveStatus.Delivering:

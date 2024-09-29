@@ -2,6 +2,8 @@
 -Change Log-
 *Some polish on the hud
 *Changed water to differ in add speed
+*Icons
+
 
 !avslutar inte strid position förrän i detalj view
 

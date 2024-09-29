@@ -19,6 +19,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         protected WorkerStatus status;
 
         public Graphics.AbsVoxelObj model;
+        Graphics.Mesh resourceModel;
 
         WorkerUnitState state = WorkerUnitState.None;
         Vector3 goalPos;
@@ -43,21 +44,6 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
             updateGroudY(true);
         }
-
-        //public WorkerUnit(Army army, WorkerStatus status, int statusIndex)
-        //{
-        //    this.army = army;
-        //    this.status = status;
-        //    this.parentArrayIndex = statusIndex;
-        //    model = army.faction.AutoLoadModelInstance(
-        //         LootFest.VoxelModelName.war_worker, AbsDetailUnitData.StandardModelScale * 0.9f, true);
-
-        //    model.position = WP.SubtileToWorldPos(status.subTileStart);
-
-        //    checkForGoal(true);
-
-        //    updateGroudY(true);
-        //}
 
         public void update(City city)
         {
@@ -290,6 +276,22 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     }
                     state = WorkerUnitState.HasGoal;
                 }
+
+                if (status.carry.amount > 0)
+                {
+                    if (resourceModel == null)
+                    {
+                        resourceModel = new Graphics.Mesh(LoadedMesh.plane, Vector3.Zero,
+                            new Vector3(DssConst.Men_StandardModelScale * 0.6f), Graphics.TextureEffectType.Flat, SpriteName.NO_IMAGE, Color.White);
+                        resourceModel.Rotation = DssLib.FaceCameraRotation;
+                    }
+                    resourceModel.SetSpriteName(Resource.ResourceLib.Icon(status.carry.type));
+                }
+                else
+                { 
+                    resourceModel?.DeleteMe();
+                    resourceModel = null;
+                }
             }
             else if (status.work == WorkType.IsDeleted)
             {
@@ -330,6 +332,14 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     }
                 }
             }
+
+            if (resourceModel != null)
+            {
+                Vector3 posDiff = new Vector3(0, DssConst.Men_StandardModelScale * 1.2f, DssConst.Men_StandardModelScale * 0.25f);
+                //resourceModel.Rotation = model.Rotation;
+                resourceModel.position = model.Rotation.TranslateAlongAxis(
+                posDiff, model.position);
+            }
         }
         public override void toHud(ObjectHudArgs args)
         {
@@ -352,21 +362,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             const string Energy = "Energy: {0}";
             args.content.text(string.Format(Energy, TextLib.OneDecimal(status.energy)));
         }
-        //public void Tooltip(RichBoxContent content)
-        //{
-        //    const string WorkType = "Work: {0}";
-        //    content.text(string.Format(WorkType, status.work));
-
-        //    const string Carry = "Carry: {0} {1}";
-
-        //    if (status.carry.amount > 0)
-        //    {
-        //        content.text(string.Format(Carry, status.carry.amount, status.carry.type));
-        //    }
-
-        //    const string Energy = "Energy: {0}";
-        //    content.text(string.Format(Energy, TextLib.OneDecimal(status.energy)));
-        //}
+        
         public override void selectionFrame(bool hover, Selection selection)
         {
             Vector3 scale = new Vector3(DssVar.StandardBoundRadius * 2f);
@@ -378,6 +374,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         public void DeleteMe()
         {
             model.DeleteMe();
+            resourceModel?.DeleteMe();
         }
 
         public override GameObjectType gameobjectType()
@@ -399,8 +396,6 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         {
             return faction == mapObject.GetFaction();
         }
-
-        
 
         public override WorkerUnit GetWorker()
         {

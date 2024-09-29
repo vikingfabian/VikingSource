@@ -138,7 +138,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
             }
             else
             {
-                remaining = DeliveryProfile.DeliveryTime(from, profile.toCity).LongString();
+                remaining = DeliveryProfile.DeliveryTime(from, DssRef.world.cities[profile.toCity], out _).LongString();
             }
             return string.Format("Delivering {0}", remaining);
         }
@@ -161,10 +161,10 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
             type = (ItemResourceType)r.ReadByte();
         }
 
-        public static TimeLength DeliveryTime(City from, int toCity)
+        public static TimeLength DeliveryTime(City from, City othercity, out float distance)//int toCity)
         {
-            City othercity = DssRef.world.cities[toCity];
-            float distance = VectorExt.Length((othercity.tilePos - from.tilePos).Vec);
+            //City othercity = DssRef.world.cities[toCity];
+            distance = VectorExt.Length((othercity.tilePos - from.tilePos).Vec);
             float time = distance / DssVar.Men_StandardWalkingSpeed_PerSec;
             if (from.Culture == CityCulture.Networker)
             {

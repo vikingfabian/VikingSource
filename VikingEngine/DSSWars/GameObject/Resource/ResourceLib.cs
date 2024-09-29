@@ -332,6 +332,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                     return SpriteName.WarsResource_LightArmor;
                 case ItemResourceType.Linen:
                     return SpriteName.WarsResource_Linen;
+                case ItemResourceType.Hen:
                 case ItemResourceType.Pig:
                     return SpriteName.WarsResource_RawMeat;
                 case ItemResourceType.RawFood_Group:
@@ -348,6 +349,9 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                     return SpriteName.WarsResource_Water;
                 case ItemResourceType.Wheat:
                     return SpriteName.WarsResource_Wheat;
+                case ItemResourceType.DryWood:
+                case ItemResourceType.SoftWood:
+                case ItemResourceType.HardWood:
                 case ItemResourceType.Wood_Group:
                     return SpriteName.WarsResource_Wood;
               
