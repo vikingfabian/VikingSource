@@ -9,7 +9,7 @@ using VikingEngine.LootFest;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class KnightData : AbsSoldierData
+    class KnightData : AbsSoldierProfile
     {
         public KnightData() 
         {

@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class HonorGuardData : AbsSoldierData
+    class HonorGuardData : AbsSoldierProfile
     {
         public HonorGuardData()
         {

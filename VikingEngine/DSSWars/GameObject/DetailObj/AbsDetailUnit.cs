@@ -208,9 +208,9 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (canTargetUnit(unit))
                 {
-                    var data = Data();
+                    var data = Profile();
                     
-                    if (!data.restrictAngle || anglediff <= data.angle)
+                    if (!data.restrictTargetAngle || anglediff <= data.targetAngle)
                     {
                         closestOpponent = unit;
                         closestOpponentDistance = distance;
@@ -266,7 +266,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int missingHealth
         {
-            get { return Data().basehealth - health; }
+            get { return Profile().basehealth - health; }
         }
 
         virtual public void onDeath(bool fullUpdate, Faction enemyFaction)
@@ -458,7 +458,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public float DPS()
         {
-            return Data().attackDamage / TimeExt.MillsSecToSec(Data().attackTimePlusCoolDown);
+            return Profile().attackDamage / TimeExt.MillsSecToSec(Profile().attackTimePlusCoolDown);
         }
 
         public bool Alive()
@@ -534,10 +534,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public int MaxHealth()
         {
-            return Data().basehealth;
+            return Profile().basehealth;
         }
         
-        abstract public AbsDetailUnitData Data();
+        abstract public AbsDetailUnitProfile Profile();
 
         public override string TypeName()
         {

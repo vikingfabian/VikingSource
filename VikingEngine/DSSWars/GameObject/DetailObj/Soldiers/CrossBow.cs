@@ -5,7 +5,7 @@
 
 namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
 {
-    class CrossBow : AbsSoldierData
+    class CrossBow : AbsSoldierProfile
     {
         public CrossBow() 
         {

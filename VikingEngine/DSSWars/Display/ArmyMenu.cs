@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars.Display
                         foreach (var kv in status)
                         {
                             content.newLine();
-                            content.text(string.Format(DssRef.lang.ArmyOption_XGroupsOfType, kv.Value, DssRef.unitsdata.Name(kv.Key)));//kv.Key.ToString() + " groups: " + kv.Value);
+                            content.text(string.Format(DssRef.lang.ArmyOption_XGroupsOfType, kv.Value, DssRef.profile.Name(kv.Key)));//kv.Key.ToString() + " groups: " + kv.Value);
                             content.newLine();
                             content.Button(string.Format(DssRef.lang.ArmyOption_RemoveX, 1),//"Remove 1",
                                 new RbAction2Arg<UnitType, int>(army.disbandSoldiersAction, kv.Key, 1, SoundLib.menu),
@@ -205,7 +205,7 @@ namespace VikingEngine.DSSWars.Display
                         foreach (var kv in status)
                         {
                             content.newLine();
-                            content.text(string.Format(DssRef.lang.ArmyOption_XGroupsOfType, kv.Value, DssRef.unitsdata.Name(kv.Key)));//kv.Key.ToString() + " groups: " + kv.Value);
+                            content.text(string.Format(DssRef.lang.ArmyOption_XGroupsOfType, kv.Value, DssRef.profile.Name(kv.Key)));//kv.Key.ToString() + " groups: " + kv.Value);
                             content.newLine();
                             content.Button(string.Format(DssRef.lang.ArmyOption_SendX, 1),//"Send 1",
                                 new RbAction2Arg<UnitType, int>(tradeSoldiersAction, kv.Key, 1, SoundLib.menu),

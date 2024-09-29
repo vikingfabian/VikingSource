@@ -274,9 +274,9 @@ namespace VikingEngine.DSSWars.Display
                 {
                     content.newLine();
 
-                    string recruitText = string.Format(DssRef.lang.CityOption_RecruitType, DssRef.unitsdata.Name(opt.unitType));
+                    string recruitText = string.Format(DssRef.lang.CityOption_RecruitType, DssRef.profile.Name(opt.unitType));
                     string count = status.typeCount[(int)opt.unitType].ToString();
-                    AbsSoldierData typeData = DssRef.unitsdata.Get(opt.unitType);
+                    AbsSoldierProfile typeData = DssRef.profile.Get(opt.unitType);
 
                     content.Add(new RichBoxText(count));
                     content.Add(new RichBoxImage(typeData.icon));
@@ -612,8 +612,8 @@ namespace VikingEngine.DSSWars.Display
 
         public void buySoldiersTip(CityPurchaseOption opt, int count)
         {
-            var typeData = DssRef.unitsdata.Get(opt.unitType);
-            var soldierData = DssRef.unitsdata.Get(UnitType.Soldier);
+            var typeData = DssRef.profile.Get(opt.unitType);
+            var soldierData = DssRef.profile.Get(UnitType.Soldier);
             int dpsSoldier = soldierData.DPS_land();
             RichBoxContent content = new RichBoxContent();
             HudLib.Description(content, typeData.description);//content.text(TextLib.Quote(typeData.description));

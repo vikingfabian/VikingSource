@@ -21,9 +21,9 @@ namespace VikingEngine.DSSWars.GameObject
     //    }
     //}
 
-    class SoldierWarshipData: AbsWarShipData
+    class SoldierWarshipData: AbsWarShipProfile
     {
-        public SoldierWarshipData(UnitType shipUnitType, AbsSoldierData soldierData)
+        public SoldierWarshipData(UnitType shipUnitType, AbsSoldierProfile soldierData)
             :base(shipUnitType, soldierData)
         {
             
@@ -33,9 +33,9 @@ namespace VikingEngine.DSSWars.GameObject
         }
     }
 
-    class ArcherWarshipData : AbsWarShipData
+    class ArcherWarshipData : AbsWarShipProfile
     {
-        public ArcherWarshipData(UnitType shipUnitType, AbsSoldierData soldierData)
+        public ArcherWarshipData(UnitType shipUnitType, AbsSoldierProfile soldierData)
             :base(shipUnitType, soldierData)
         {
             modelName = LootFest.VoxelModelName.wars_archer_ship;
@@ -44,9 +44,9 @@ namespace VikingEngine.DSSWars.GameObject
         }
     }
 
-    class BallistaWarshipData : AbsWarShipData
+    class BallistaWarshipData : AbsWarShipProfile
     {
-        public BallistaWarshipData(UnitType shipUnitType, AbsSoldierData soldierData)
+        public BallistaWarshipData(UnitType shipUnitType, AbsSoldierProfile soldierData)
             : base(shipUnitType, soldierData)
         {
             modelName = LootFest.VoxelModelName.wars_ballista_ship;
@@ -55,9 +55,9 @@ namespace VikingEngine.DSSWars.GameObject
         }
     }
 
-    class VikingWarshipData : AbsWarShipData
+    class VikingWarshipData : AbsWarShipProfile
     {
-        public VikingWarshipData(UnitType shipUnitType, AbsSoldierData soldierData)
+        public VikingWarshipData(UnitType shipUnitType, AbsSoldierProfile soldierData)
             : base(shipUnitType, soldierData)
         {
             modelName = LootFest.VoxelModelName.wars_viking_ship;
@@ -72,9 +72,9 @@ namespace VikingEngine.DSSWars.GameObject
         }
     }
 
-    class KnightWarshipData : AbsWarShipData
+    class KnightWarshipData : AbsWarShipProfile
     {
-        public KnightWarshipData(UnitType shipUnitType, AbsSoldierData soldierData)
+        public KnightWarshipData(UnitType shipUnitType, AbsSoldierProfile soldierData)
             : base(shipUnitType, soldierData)
         {
             modelName = LootFest.VoxelModelName.wars_knight_ship;
@@ -84,9 +84,9 @@ namespace VikingEngine.DSSWars.GameObject
         }
     }
 
-    class FolkWarshipData : AbsWarShipData
+    class FolkWarshipData : AbsWarShipProfile
     {
-        public FolkWarshipData(UnitType shipUnitType, AbsSoldierData soldierData)
+        public FolkWarshipData(UnitType shipUnitType, AbsSoldierProfile soldierData)
             : base(shipUnitType, soldierData)
         {
             modelName = LootFest.VoxelModelName.wars_folk_ship;

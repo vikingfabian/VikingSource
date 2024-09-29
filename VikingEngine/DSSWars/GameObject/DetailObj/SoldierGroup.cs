@@ -79,9 +79,9 @@ namespace VikingEngine.DSSWars.GameObject
         public bool attackState = false;
         bool isRecruit;
         public bool inShipTransform = false;
-        public AbsSoldierData typeCurrentData;
-        public AbsSoldierData typeSoldierData;
-        public AbsSoldierData typeShipData;
+        public AbsSoldierProfile typeCurrentData;
+        public AbsSoldierProfile typeSoldierData;
+        public AbsSoldierProfile typeShipData;
 
         public SoldierGroup(Army army, SoldierProfile profile)
         {
@@ -121,7 +121,7 @@ namespace VikingEngine.DSSWars.GameObject
             //this.groupId = DssRef.state.nextGroupId++;
             this.army = army;
 
-            typeCurrentData = DssRef.unitsdata.Get(type);
+            typeCurrentData = DssRef.profile.Get(type);
             
             recruit &= typeCurrentData.recruitTrainingTimeSec > 0;
             
@@ -144,7 +144,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        void initPart1(AbsSoldierData typeData)
+        void initPart1(AbsSoldierProfile typeData)
         {
             int count = typeData.rowWidth * typeData.columnsDepth;
 
@@ -161,7 +161,7 @@ namespace VikingEngine.DSSWars.GameObject
             groupRadius = radius;
         }
 
-        void initPart2(AbsSoldierData typeData)
+        void initPart2(AbsSoldierProfile typeData)
         { 
             refreshAttackRadius(typeData);
             refreshRotateSpeed();            
@@ -271,7 +271,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
-        void refreshAttackRadius(AbsSoldierData typeData)
+        void refreshAttackRadius(AbsSoldierProfile typeData)
         {
             if (typeData.bonusProjectiles > 0)
             {
@@ -287,7 +287,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        private void createAllSoldiers(bool recruit, AbsSoldierData typeData, int count)
+        private void createAllSoldiers(bool recruit, AbsSoldierProfile typeData, int count)
         {
             int xStart = -typeData.rowWidth / 2;
             IntVector2 bannerPos = bannerManPos();
@@ -465,7 +465,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                s = DssRef.unitsdata.createSoldier(type, recruit);
+                s = DssRef.profile.createSoldier(type, recruit);
             }
             s.InitLocal(position, gridPlacement, area, this);
             s.position = WP.ToWorldPos(area); //temp pos
@@ -1328,15 +1328,15 @@ namespace VikingEngine.DSSWars.GameObject
             return typeCurrentData.mainAttack == AttackType.Melee;
         }
 
-        public bool ScoutMovement()
-        {
-            AbsSoldierUnit s = FirstSoldier();
-            if (s == null)
-            {
-                return false;
-            }
-            return s.data.scoutMovement;
-        }
+        //public bool ScoutMovement()
+        //{
+        //    AbsSoldierUnit s = FirstSoldier();
+        //    if (s == null)
+        //    {
+        //        return false;
+        //    }
+        //    return s.data.scoutMovement;
+        //}
 
         //public IntVector2 targetArea()
         //{
@@ -1522,7 +1522,7 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        public AbsSoldierData FirstSoldierData()
+        public AbsSoldierProfile FirstSoldierData()
         {
             var first = soldiers.First();
             if (first != null)

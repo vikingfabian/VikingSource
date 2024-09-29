@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class SailorData : AbsSoldierData
+    class SailorData : AbsSoldierProfile
     {
         public SailorData() 
         {

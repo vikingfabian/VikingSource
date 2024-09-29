@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
 {
-    class TrollCannon : AbsSoldierData
+    class TrollCannon : AbsSoldierProfile
     {
         public TrollCannon()
         {
@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
             attackDamage = 500;
             attackDamageStructure = 2500;
             attackDamageSea = 600;
-            splashDamageCount = 3;
+            //splashDamageCount = 3;
             attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 10f;
 
             maxAttackAngle = 0.07f;

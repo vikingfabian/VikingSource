@@ -14,26 +14,26 @@ using VikingEngine.ToGG.HeroQuest.Data.Condition;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class CityDetailData : AbsDetailUnitData
-    {
-        public const float ShortRangeAttack = 1.5f;
-        public const float LongRangeAttack = 3.01f;
-        public CityDetailData()
-        {
-            mainAttack = AttackType.Arrow;
-            secondaryAttack = AttackType.Ballista;
-            attackDamage = DssConst.Soldier_DefaultHealth;
-            attackDamageSea = attackDamage;
-            secondaryAttackDamage = attackDamage / 2;
-            attackRange = LongRangeAttack;//1f;
-            targetSpotRange = StandardTargetSpotRange;
-        }
+    //class CityDetailProfile : AbsDetailUnitProfile
+    //{
+    //    public const float ShortRangeAttack = 1.5f;
+    //    public const float LongRangeAttack = 3.01f;
+    //    public CityDetailProfile()
+    //    {
+    //        mainAttack = AttackType.Arrow;
+    //        secondaryAttack = AttackType.Ballista;
+    //        attackDamage = DssConst.Soldier_DefaultHealth;
+    //        attackDamageSea = attackDamage;
+    //        secondaryAttackDamage = attackDamage / 2;
+    //        attackRange = LongRangeAttack;
+    //        targetSpotRange = StandardTargetSpotRange;
+    //    }
 
-        public override AbsDetailUnit CreateUnit()
-        {
-            throw new NotImplementedException();
-        }
-    }
+    //    public override AbsDetailUnit CreateUnit()
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
 
     class CityDetail : AbsDetailUnit
     {
@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars.GameObject
         const int GuardMaxHealth = 80;
         int guardHealth = GuardMaxHealth;
         float nextRespawn = 0;
-        CityDetailData data;
+        //CityDetailData data;
         public SoldierGroup inBattle = null;
 
         //int workerModelsActiveCount = 0;
@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars.GameObject
         int storedAttacks = 0;
         public CityDetail(City city)
         {
-            data = new CityDetailData();
+            //data = new CityDetailProfile();
             this.city = city;
             position = city.position;
             
@@ -278,6 +278,8 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        float nextArrowCooldown;
+
         public override void update(float time, bool fullUpdate)
         {
             if (city.debugTagged)
@@ -285,9 +287,10 @@ namespace VikingEngine.DSSWars.GameObject
                 lib.DoNothing();
             }
 
-            if (IsAttacking)
-            {   
-                updateAttack(time);
+            if (nextArrowCooldown > 0)//IsAttacking)
+            {
+                //updateAttack(time);
+                nextArrowCooldown -= time;
             }
             else
             {
@@ -305,10 +308,10 @@ namespace VikingEngine.DSSWars.GameObject
                 if (attackTarget_sp != null && guards > 0)
                 {
                     float dist = spaceBetweenUnits(attackTarget_sp);
-                    if (dist <= data.attackRange)
+                    if (dist <= DssRef.profile.city.attackRange)
                     {
-                        bool shortDist = dist < CityDetailData.ShortRangeAttack;
-                        data.attackTimePlusCoolDown = 50000f / guards;
+                        bool shortDist = dist < CityDetailProfile.ShortRangeAttack;
+                        nextArrowCooldown = 50000f / guards;
 
                         if (shortDist)
                         {
@@ -419,9 +422,9 @@ namespace VikingEngine.DSSWars.GameObject
             return city.TypeName() + " -detail obj";
         }
 
-        public override AbsDetailUnitData Data()
+        public override AbsDetailUnitProfile Profile()
         {
-            return data;
+            return DssRef.profile.city;
         }
 
         public override GameObjectType gameobjectType()
@@ -440,29 +443,8 @@ namespace VikingEngine.DSSWars.GameObject
         public CityModel(City city)
             : base()
         {
-            //VoxelModelName detailmodelName;
-
-            //switch (city.CityType)
-            //{
-            //    case CityType.Small:
-            //        detailmodelName = VoxelModelName.war_town1;
-            //        break;
-            //    case CityType.Large:
-            //        detailmodelName = VoxelModelName.war_town2;
-            //        break;
-            //    default:
-            //        detailmodelName = VoxelModelName.war_town3;
-            //        break;
-            //    case CityType.Factory:
-            //        detailmodelName = VoxelModelName.war_town_factory;
-            //        break;
-            //}
-
+          
             this.bound = new Physics.RectangleBound(city.WorldPositionXZ(), new Vector2(0.5f));
-
-            //model = DssRef.models.ModelInstance(detailmodelName, 1f, false);
-            //model.AddToRender(DrawGame.UnitDetailLayer);
-            //model.position = city.position;
 
             bannerModel = city.faction.AutoLoadModelInstance(
                BannerModelName, 0.6f);

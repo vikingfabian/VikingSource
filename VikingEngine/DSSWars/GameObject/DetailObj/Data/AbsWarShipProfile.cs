@@ -8,9 +8,9 @@ using VikingEngine.DSSWars.GameObject.DetailObj.Warships;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    abstract class AbsWarShipData : AbsSoldierData
+    abstract class AbsWarShipProfile : AbsSoldierProfile
     {      
-        public AbsWarShipData(UnitType shipUnitType, AbsSoldierData soldierData) 
+        public AbsWarShipProfile(UnitType shipUnitType, AbsSoldierProfile soldierData) 
         {
             modelScale = DssConst.Men_StandardModelScale * 6f;
             boundRadius = DssVar.StandardBoundRadius * 6f;

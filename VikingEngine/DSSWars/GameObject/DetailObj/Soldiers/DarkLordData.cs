@@ -8,7 +8,7 @@ using VikingEngine.DSSWars.GameObject.DetailObj.Warships;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class DarkLordData : AbsSoldierData
+    class DarkLordData : AbsSoldierProfile
     {
         public DarkLordData()
         {
@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.GameObject
 
     class DarkLordWarshipData : KnightWarshipData
     {
-        public DarkLordWarshipData(UnitType shipUnitType, AbsSoldierData soldierData)
+        public DarkLordWarshipData(UnitType shipUnitType, AbsSoldierProfile soldierData)
             : base(shipUnitType, soldierData)
         {
             

@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (target != null)
             {
-                var data = Data();
+                var data = Profile();
 
                 attackCooldownTime.MilliSeconds = data.attackTimePlusCoolDown;
                 prevAttackTime = attackCooldownTime.MilliSeconds;
@@ -112,11 +112,11 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (mainAttack)
                     {
-                        Projectile.ProjectileAttack(fullUpdate, this, data.mainAttack, target, damage, data.splashDamageCount, data.percSplashDamage );
+                        Projectile.ProjectileAttack(fullUpdate, this, data.mainAttack, target, damage);
                     }
                     else
                     {
-                        Projectile.ProjectileAttack(fullUpdate, this, data.secondaryAttack, target, damage, 0, 0);
+                        Projectile.ProjectileAttack(fullUpdate, this, data.secondaryAttack, target, damage);
                     }
                 }
             }

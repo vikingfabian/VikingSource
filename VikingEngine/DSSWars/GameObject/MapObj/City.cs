@@ -161,7 +161,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             foreach (var type in DssLib.AvailableUnitTypes)
             {
-                var typeData = DssRef.unitsdata.Get(type);
+                var typeData = DssRef.profile.Get(type);
 
                 CityPurchaseOption cityPurchase = new CityPurchaseOption()
                 {
@@ -842,7 +842,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (!HasUnitPurchaseOption(UnitType.Knight))
             {
-                var typeData = DssRef.unitsdata.Get(UnitType.Knight);
+                var typeData = DssRef.profile.Get(UnitType.Knight);
 
                 CityPurchaseOption knightPurchase = new CityPurchaseOption()
                 {
@@ -1400,7 +1400,7 @@ namespace VikingEngine.DSSWars.GameObject
             bool success = buySoldiers(type, count, true, out army);
             if (success)
             {
-                var typeData = DssRef.unitsdata.Get(type);
+                var typeData = DssRef.profile.Get(type);
                 if (typeData.factionUniqueType >= 0)
                 {
                     DssRef.achieve.onFactionUniquePurchase(typeData.factionUniqueType);
@@ -1415,7 +1415,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool buySoldiers(UnitType type, int count, bool commit, out Army army, bool ignoreCityPurchaseOptions = false)
         {//todo check 0 count
-            var typeData = DssRef.unitsdata.Get(type);
+            var typeData = DssRef.profile.Get(type);
 
             int workersTotCost = typeData.workForceCount() * count;
             int moneyTotCost;            

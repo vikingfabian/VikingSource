@@ -254,7 +254,7 @@ namespace VikingEngine.DSSWars.Players
 
         void addStartCitiesBuyOption(UnitType unitType)
         {
-            var typeData = DssRef.unitsdata.Get(unitType);
+            var typeData = DssRef.profile.Get(unitType);
             var citiesC = faction.cities.counter();
 
             while (citiesC.Next())

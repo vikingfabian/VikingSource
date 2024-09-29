@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.GameObject
         public TrainingCompleteTimer(SoldierGroup group)
             : base(true)
         {
-            var typeData = DssRef.unitsdata.Get(group.type);
+            var typeData = DssRef.profile.Get(group.type);
             time = new Time(typeData.recruitTrainingTimeSec, TimeUnit.Seconds);
             this.group = group;
         }

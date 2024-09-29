@@ -14,12 +14,16 @@ namespace VikingEngine.DSSWars.GameObject
         public static float AverageGroupStrength;
         public const float HealthToStrengthConvertion = 0.5f;
 
-        AbsSoldierData[] soldiers = new AbsSoldierData[(int)UnitType.NUM];
-        AbsSoldierData[] recruits = new AbsSoldierData[(int)UnitType.NUM];
+        AbsSoldierProfile[] soldiers = new AbsSoldierProfile[(int)UnitType.NUM];
+        AbsSoldierProfile[] recruits = new AbsSoldierProfile[(int)UnitType.NUM];
+
+        public CityDetailProfile city;
 
         public AllUnits()
         {
-            DssRef.unitsdata = this;
+            DssRef.profile = this;
+
+            city = new CityDetailProfile();
 
             add(new FolkWarshipData(UnitType.FolkWarship, 
                 add(new FolkManData())));
@@ -66,7 +70,7 @@ namespace VikingEngine.DSSWars.GameObject
             add(new FolkWarshipData(UnitType.RecruitWarship,
                 recruit));
 
-            int defaultDps = DssRef.unitsdata.Get(UnitType.Soldier).DPS_land();
+            int defaultDps = DssRef.profile.Get(UnitType.Soldier).DPS_land();
             AverageGroupStrength = DssConst.SoldierGroup_DefaultCount * (defaultDps + HealthToStrengthConvertion * DssConst.Soldier_DefaultHealth) ;
         }
 
@@ -84,7 +88,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        AbsSoldierData add(AbsSoldierData soldier)
+        AbsSoldierProfile add(AbsSoldierProfile soldier)
         {
             soldiers[(int)soldier.unitType] = soldier;
 
@@ -93,14 +97,14 @@ namespace VikingEngine.DSSWars.GameObject
             return soldier;
         }
 
-        public AbsSoldierData Get(UnitType type)
+        public AbsSoldierProfile Get(UnitType type)
         {
             return soldiers[(int)type];
         }
 
         public AbsSoldierUnit createSoldier(UnitType type, bool recruit)
         {
-            AbsSoldierData data;
+            AbsSoldierProfile data;
             if (recruit)
             {
                 data = recruits[(int)type];
@@ -115,7 +119,7 @@ namespace VikingEngine.DSSWars.GameObject
             return soldier;
         }
 
-        public AbsSoldierUnit createSoldier(AbsSoldierData data)
+        public AbsSoldierUnit createSoldier(AbsSoldierProfile data)
         {
             //AbsSoldierData data;
             //if (recruit)

@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class SpearmanData : AbsSoldierData
+    class SpearmanData : AbsSoldierProfile
     {
         public SpearmanData()
         {
@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             idleBlinkFrame = 0;
             //shieldDamageReduction = 4;
-            turnTowardsDamage = true;
+            //turnTowardsDamage = true;
         }
     }
 }

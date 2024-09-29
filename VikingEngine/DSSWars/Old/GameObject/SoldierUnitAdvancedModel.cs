@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public void onNewModel(LootFest.VoxelModelName name,
             Graphics.VoxelModel master, AbsDetailUnit unit)
         {
-            DSSWars.Faction.SetNewMaster(name, unit.Data().modelName, model, master);
+            DSSWars.Faction.SetNewMaster(name, unit.Profile().modelName, model, master);
         }
 
         virtual public void update(AbsSoldierUnit soldier)

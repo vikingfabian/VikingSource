@@ -9,7 +9,7 @@ using VikingEngine.ToGG.MoonFall.GO;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class BallistaData : AbsSoldierData
+    class BallistaData : AbsSoldierProfile
     {
         public BallistaData()
         {

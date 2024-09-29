@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars
         public static Achievements achieve = null;
         public static PlayState state;
         
-        public static GameObject.AllUnits unitsdata;
+        public static GameObject.AllUnits profile;
         public static GameTime time;
         public static Display.Translation.AbsLanguage lang;
         public static Display.Translation.TodoTranslation todoLang = new Display.Translation.TodoTranslation();

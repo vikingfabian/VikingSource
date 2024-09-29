@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
 {
-     class Pikeman : AbsSoldierData
+     class Pikeman : AbsSoldierProfile
     {
         public Pikeman()
         {

@@ -8,9 +8,9 @@ using VikingEngine.DSSWars.GameObject.Conscript;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class ConscriptedWarshipData : AbsWarShipData
+    class ConscriptedWarshipData : AbsWarShipProfile
     {
-        public ConscriptedWarshipData(AbsSoldierData soldierData, SoldierProfile profile)
+        public ConscriptedWarshipData(AbsSoldierProfile soldierData, SoldierProfile profile)
             : base(UnitType.ConscriptWarship, soldierData)
         {
             if (profile.conscript.specialization == SpecializationType.Sea)

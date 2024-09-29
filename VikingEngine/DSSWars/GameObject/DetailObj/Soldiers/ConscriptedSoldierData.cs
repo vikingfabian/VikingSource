@@ -7,7 +7,7 @@ using VikingEngine.DSSWars.GameObject.Conscript;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class ConscriptedSoldierData : AbsSoldierData
+    class ConscriptedSoldierData : AbsSoldierProfile
     {
         public ConscriptedSoldierData(SoldierProfile profile)
         {

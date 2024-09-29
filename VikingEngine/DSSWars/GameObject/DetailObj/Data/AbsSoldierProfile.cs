@@ -7,7 +7,7 @@ using VikingEngine.DSSWars.GameObject.Conscript;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    abstract class AbsSoldierData : AbsDetailUnitData
+    abstract class AbsSoldierProfile : AbsDetailUnitProfile
     {        
         public UnitType convertSoldierShipType;
         public int rowWidth =DssConst.SoldierGroup_RowWidth;

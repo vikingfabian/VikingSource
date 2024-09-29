@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int bonusProjectiles = 0;
         
 
-        public AbsSoldierData data;
+        public AbsSoldierProfile data;
 
         virtual public void copyDataToUpgradedUnit(AbsSoldierUnit upgradeUnit)
         {
@@ -967,7 +967,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected override bool canTargetUnit(AbsDetailUnit unit)
         {
-            if (unit.Data().canBeAttackTarget)
+            if (unit.Profile().canBeAttackTarget)
             {
                 if (unit.IsStructure())
                 {
@@ -1043,7 +1043,7 @@ namespace VikingEngine.DSSWars.GameObject
             group.AddDebugTag();
         }
 
-        public override AbsDetailUnitData Data()
+        public override AbsDetailUnitProfile Profile()
         {
             return data;
         }

@@ -7,10 +7,10 @@ using VikingEngine.DSSWars.GameObject.DetailObj.Soldiers;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class RecruitData : AbsSoldierData
+    class RecruitData : AbsSoldierProfile
     {
         public UnitType recruitForType;
-        public RecruitData(AbsSoldierData recruitFor)
+        public RecruitData(AbsSoldierProfile recruitFor)
         {
             unitType = UnitType.Recruit;
             recruitForType = recruitFor.unitType;
