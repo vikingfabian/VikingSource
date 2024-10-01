@@ -2345,6 +2345,7 @@ namespace VikingEngine
                     add(SpriteName.WarsResource_HeavyArmor);
                     add(SpriteName.WarsResource_IronOre);
                     add(SpriteName.WarsResource_GoldOre);
+                    add(SpriteName.WarsResource_Ballista);
                 }
 
                 currentIndex = numTilesWidth * 97;
@@ -2363,6 +2364,8 @@ namespace VikingEngine
                     currentIndex += 3;
                     add(SpriteName.WarsBuild_Postal, 3, 3);
                     add(SpriteName.WarsBuild_Recruitment, 3, 3);
+                    add(SpriteName.WarsBuild_Nobelhouse, 3, 3);
+                    add(SpriteName.WarsBuild_Carpenter, 3, 3);
                 }
 
                 currentIndex = numTilesWidth * 106;

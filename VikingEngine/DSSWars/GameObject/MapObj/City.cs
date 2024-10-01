@@ -62,12 +62,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         public float ai_armyDefenceValue = 0;
         public bool nobelHouse = false;
+        public bool hasBuilding_carpenter = false;
         string name = null;
 
         IntVector2 cullingTopLeft, cullingBottomRight;
         public int cityTileRadius = 0;
         public CityCulture Culture = CityCulture.NUM_NONE;
 
+        
         
         public Build.BuildAndExpandType autoExpandFarmType = Build.BuildAndExpandType.WheatFarm;
         bool autoBuild_Work = false;
@@ -436,8 +438,8 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(Debug.Byte_OrCrash((int)(waterAddPerSec * 20)));
             workTemplate.writeGameState(w, true);
 
-            w.Write((ushort)barracks.Count);
-            foreach (var barracks in barracks)
+            w.Write((ushort)conscriptBuildings.Count);
+            foreach (var barracks in conscriptBuildings)
             { 
                 barracks.writeGameState(w);
             }
@@ -483,13 +485,13 @@ namespace VikingEngine.DSSWars.GameObject
 
             refreshCitySize();
 
-            barracks.Clear();
-            int barracksCount = r.ReadUInt16();
-            for (int i = 0; i < barracksCount; i++)
+            conscriptBuildings.Clear();
+            int conscriptBuildingsCount = r.ReadUInt16();
+            for (int i = 0; i < conscriptBuildingsCount; i++)
             {
                 var barrack = new Conscript.BarracksStatus();
-                barrack.readGameState(r);
-                barracks.Add(barrack);
+                barrack.readGameState(r, subversion);
+                conscriptBuildings.Add(barrack);
             }
 
             deliveryServices.Clear();

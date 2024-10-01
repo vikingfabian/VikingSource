@@ -578,10 +578,10 @@ namespace VikingEngine.LootFest
         city_postal,
         city_recruitment,
         city_barracks,
-
         city_mine,
         city_workstation,
-        city_brewery,
+        city_carpenter,
+        city_nobelhouse,
 
         horse_white, horse_brown,
         

@@ -137,6 +137,9 @@ namespace VikingEngine.DSSWars.Display
             city.res_bow.toMenu(content, ItemResourceType.Bow);
             blueprintButton(player, content, ResourceLib.CraftBow);
 
+            city.res_ballista.toMenu(content, ItemResourceType.Ballista);
+            blueprintButton(player, content, ResourceLib.CraftBallista);
+
             city.res_lightArmor.toMenu(content, ItemResourceType.LightArmor);
             blueprintButton(player, content, ResourceLib.CraftLightArmor);
 
@@ -231,12 +234,23 @@ namespace VikingEngine.DSSWars.Display
         {
             //hover
             RichBoxContent content = new RichBoxContent();
-            content.h2(DssRef.todoLang.Blueprint_Title);
+            content.h2(DssRef.todoLang.Blueprint_Title).overrideColor = HudLib.TitleColor_TypeName;
             blueprint.toMenu(content, city);
             if (optionalBp != null)
             { 
                 content.newLine();
                 optionalBp.toMenu(content, city);
+            }
+
+            if (blueprint.requirement != CraftRequirement.None)
+            {
+                content.newLine();
+                HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
+                content.newLine();
+                content.BulletPoint();
+                RichBoxText requirement1 = new RichBoxText(DssRef.todoLang.BuildingType_Carpenter);
+                requirement1.overrideColor = city.hasBuilding_carpenter? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                content.Add(requirement1);
             }
 
             player.hud.tooltip.create(player, content, true);
@@ -453,12 +467,7 @@ namespace VikingEngine.DSSWars.Display
 
             //string addDiplomacy = "1 diplomacy point per {0} seconds";
             int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.NobelHouseAddDiplomacy * 3600);
-            //string addDiplomacyMax = "+{0} to diplomacy point max limit";
-            //string addCommand = "1 command point per {0} seconds";
-            //int commandSec = Convert.ToInt32(DssLib.NobelHouseAddCommand * 3600);
-            //string upkeep = "upkeep +{0}";
-
-
+            
             content.BulletPoint();
             content.Add(new RichBoxImage(SpriteName.WarsDiplomaticAddTime));
             content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
@@ -468,11 +477,6 @@ namespace VikingEngine.DSSWars.Display
             content.Add(new RichBoxImage(SpriteName.WarsDiplomaticPoint));
             content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.NobelHouseAddMaxDiplomacy)));
             content.newLine();
-
-            //content.ListDot();
-            //content.Add(new RichBoxImage(SpriteName.WarsCommandAddTime));
-            //content.Add(new RichBoxText(string.Format(addCommand, commandSec)));
-            //content.newLine();
 
             content.BulletPoint();
             content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse_UnlocksKnight));

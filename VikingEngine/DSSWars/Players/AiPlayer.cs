@@ -466,7 +466,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 building = BuildAndExpandType.LinenFarm;
             }
-            else if (city.barracks.Count < 2)
+            else if (city.conscriptBuildings.Count < 2)
             {
                 building = BuildAndExpandType.Barracks;
             }

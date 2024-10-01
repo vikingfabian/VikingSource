@@ -381,21 +381,21 @@ namespace VikingEngine.DSSWars.Map
         {
             wp.X += WorldData.SubTileHalfWidth;
             wp.Z += WorldData.SubTileHalfWidth;
-            //LootFest.VoxelModelName modelName;
-            float scale = WorldData.SubTileWidth * 1.4f;
+
+            //float scale = WorldData.SubTileWidth * 1.4f;
 
             switch (buildingType)
             {
                 case TerrainBuildingType.PigPen:
                     animals(tile, ref subTile, ref wp, AnimalType.Pig, TerrainContent.PigMaxSize);
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_pen, rnd, wp, scale));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
                 case TerrainBuildingType.HenPen:
                     animals(tile, ref subTile, ref wp, AnimalType.Hen, TerrainContent.HenMaxSize);
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_pen, rnd, wp, scale));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
                 case TerrainBuildingType.WorkerHut:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workerhut, rnd, wp, scale));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workerhut, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
                 case TerrainBuildingType.Tavern:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_tavern, rnd, wp, WorldData.SubTileWidth * 1f));
@@ -410,25 +410,25 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, rnd, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.DirtWall:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_dirtwall, rnd, wp, scale));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_dirtwall, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
                 case TerrainBuildingType.DirtTower:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_dirttower, rnd, wp, scale));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_dirttower, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
                 case TerrainBuildingType.WoodWall:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_woodwall, rnd, wp, scale));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_woodwall, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
                 case TerrainBuildingType.WoodTower:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_woodtower, rnd, wp, scale));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_woodtower, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
                 case TerrainBuildingType.StoneWall:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_stonewall, rnd, wp, scale));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_stonewall, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
                 case TerrainBuildingType.StoneTower:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_stonetower, rnd, wp, scale));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_stonetower, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
                 case TerrainBuildingType.StoneHall:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_stonehall, rnd, wp, scale));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_stonehall, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
                 case TerrainBuildingType.SmallHouse:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_smallhouse, rnd, wp, WorldData.SubTileWidth * 1f));
@@ -437,21 +437,29 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_bighouse, rnd, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.CobbleStones:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_cobblestone, rnd, wp, scale));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_cobblestone, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
                 case TerrainBuildingType.Square:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_square, rnd, wp, scale));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_square, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
 
                 case TerrainBuildingType.Work_Cook:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 1, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.Work_Smith:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 0, wp, scale));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 0, wp, WorldData.SubTileWidth * 1.4f));
                     break;
                 case TerrainBuildingType.Brewery:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 2, wp, WorldData.SubTileWidth * 1f));
                     break;
+
+                case TerrainBuildingType.Carpenter:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_carpenter, 0, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                case TerrainBuildingType.Nobelhouse:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_nobelhouse, 1, wp, WorldData.SubTileWidth * 1f));
+                    break;
+
                 default:
                     throw new NotImplementedException();
             }

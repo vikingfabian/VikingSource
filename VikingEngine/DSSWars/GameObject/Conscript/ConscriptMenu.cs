@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             this.player = player;
 
 
-            if (arraylib.InBound(city.barracks, city.selectedConscript))
+            if (arraylib.InBound(city.conscriptBuildings, city.selectedConscript))
             {
                 BarracksStatus currentStatus = get();
 
@@ -143,16 +143,16 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             {
 
                 content.h2(DssRef.todoLang.Conscript_SelectBuilding);
-                if (city.barracks.Count == 0)
+                if (city.conscriptBuildings.Count == 0)
                 {
                     content.text(DssRef.todoLang.Hud_EmptyList).overrideColor = HudLib.InfoYellow_Light;
                 }
 
-                for (int i = 0; i < city.barracks.Count; ++i)
+                for (int i = 0; i < city.conscriptBuildings.Count; ++i)
                 {
                     content.newLine();
 
-                    BarracksStatus currentProfile = city.barracks[i];
+                    BarracksStatus currentProfile = city.conscriptBuildings[i];
                     var caption = new RichBoxText(
                             LangLib.Weapon(currentProfile.profile.weapon) + ", " +
                             LangLib.Armor(currentProfile.profile.armorLevel) + ", " +
@@ -241,12 +241,12 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
         BarracksStatus get()
         {
-            return city.barracks[city.selectedConscript];
+            return city.conscriptBuildings[city.selectedConscript];
         }
 
         void set(BarracksStatus profile)
         {
-            city.barracks[city.selectedConscript] = profile;
+            city.conscriptBuildings[city.selectedConscript] = profile;
 
             city.onConscriptChange();
         }

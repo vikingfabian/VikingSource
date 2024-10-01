@@ -23,6 +23,7 @@ namespace VikingEngine.DSSWars
         public static int WeaponDamage_Sword = 50;
         public static int WeaponDamage_SharpStick = 30;
         public static int WeaponDamage_Bow = 40;
+        public static int WeaponDamage_Ballista = 300;
 
         public static int ArmorHealth_None = (int)(Soldier_DefaultHealth * 0.5);
         public static int ArmorHealth_Light = Soldier_DefaultHealth;

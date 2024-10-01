@@ -21,11 +21,18 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
         public ConscriptProfile inProgress;
         public TimeInGameCountdown countdown;
+        public bool nobelmen;
         public int menCollected;
         public int equipmentCollected;
 
         public int idAndPosition;
         public int que;
+
+        public BarracksStatus(bool nobelmen)
+            :this()
+        { 
+            this.nobelmen = nobelmen;
+        }
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
@@ -49,11 +56,12 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     countdown.writeGameState(w);
                     break;
             }
+            w.Write(nobelmen);
             w.Write(idAndPosition);
             w.Write((byte)que);
         }
 
-        public void readGameState(System.IO.BinaryReader r)
+        public void readGameState(System.IO.BinaryReader r, int subVersion)
         {
             active = (ConscriptActiveStatus)r.ReadByte();
             profile.readGameState(r);
@@ -77,6 +85,10 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     menCollected = DssConst.SoldierGroup_DefaultCount;
                     countdown.readGameState(r);
                     break;
+            }
+            if (subVersion >= 13)
+            { 
+                nobelmen = r.ReadBoolean();
             }
             idAndPosition = r.ReadInt32();
             que = r.ReadByte();
@@ -112,20 +124,21 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 case ConscriptActiveStatus.Idle:
                     result = DssRef.todoLang.Hud_Idle;
                     break;
+
                 case ConscriptActiveStatus.CollectingEquipment:
                     {
                         var progress = string.Format(DssRef.todoLang.Language_CollectProgress, equipmentCollected, DssConst.SoldierGroup_DefaultCount);
                         result = string.Format(DssRef.todoLang.Conscription_Status_CollectingEquipment, progress);
                     }
                     break;
+
                 case ConscriptActiveStatus.CollectingMen:
                     {
                         var progress = string.Format(DssRef.todoLang.Language_CollectProgress, menCollected, DssConst.SoldierGroup_DefaultCount);
                         result = string.Format(DssRef.todoLang.Conscription_Status_CollectingMen, progress);
                     }
                     break;
-            }
-            
+            }            
 
             return result;
         }
@@ -251,6 +264,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 case MainWeapon.SharpStick: return DssConst.WeaponDamage_SharpStick;
                 case MainWeapon.Sword: return DssConst.WeaponDamage_Sword;
                 case MainWeapon.Bow: return DssConst.WeaponDamage_Bow;
+                case MainWeapon.Ballista: return DssConst.WeaponDamage_Ballista;
 
                 default: throw new NotImplementedException();
             }
@@ -263,6 +277,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 case MainWeapon.SharpStick: return Resource.ItemResourceType.SharpStick;
                 case MainWeapon.Sword: return Resource.ItemResourceType.Sword;
                 case MainWeapon.Bow: return Resource.ItemResourceType.Bow;
+                case MainWeapon.Ballista: return Resource.ItemResourceType.Ballista;
 
                 default: throw new NotImplementedException();
             }
@@ -332,6 +347,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         SharpStick,
         Sword,
         Bow,
+        Ballista,
         NUM
     }
 

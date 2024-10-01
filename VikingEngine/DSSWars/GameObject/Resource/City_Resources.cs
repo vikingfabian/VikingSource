@@ -64,6 +64,7 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource res_sharpstick = new GroupedResource() { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
         public GroupedResource res_sword = new GroupedResource() { amount = 0, goalBuffer = 100 };
         public GroupedResource res_bow = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource res_ballista = new GroupedResource() { amount = 0, goalBuffer = 100 };
 
         public GroupedResource res_lightArmor = new GroupedResource() { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
         public GroupedResource res_mediumArmor = new GroupedResource() { amount = 2, goalBuffer = 100 };
@@ -78,6 +79,9 @@ namespace VikingEngine.DSSWars.GameObject
         {
             switch (type)
             {
+                case ItemResourceType.Gold:
+                    faction.gold += add;
+                    break;
                 case ItemResourceType.Water_G:
                     res_water.amount += add;
                     break;
@@ -114,6 +118,9 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Bow:
                     res_bow.amount += add;
                     break;
+                case ItemResourceType.Ballista:
+                    res_ballista.amount += add;
+                    break;
                 case ItemResourceType.LightArmor:
                     res_lightArmor.amount += add;
                     break;
@@ -135,6 +142,9 @@ namespace VikingEngine.DSSWars.GameObject
         {
             switch (type)
             {
+                case ItemResourceType.Gold:
+                    return new GroupedResource() { amount = faction.gold };
+
                 case ItemResourceType.Water_G: return res_water;
                 case ItemResourceType.IronOre_G: return res_ore;
                 case ItemResourceType.Iron_G: return res_iron;
@@ -148,6 +158,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.SharpStick: return res_sharpstick;
                 case ItemResourceType.Sword: return res_sword;
                 case ItemResourceType.Bow: return res_bow;
+                case ItemResourceType.Ballista: return res_ballista;
 
                 case ItemResourceType.LightArmor: return res_lightArmor;
                 case ItemResourceType.MediumArmor: return res_mediumArmor;
@@ -201,6 +212,9 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Bow:
                     res_bow = resource;
                     break;
+                case ItemResourceType.Ballista:
+                    res_ballista = resource;
+                    break;
                 case ItemResourceType.LightArmor:
                     res_lightArmor = resource;
                     break;
@@ -211,6 +225,7 @@ namespace VikingEngine.DSSWars.GameObject
                     res_heavyArmor = resource;
                     break;
 
+                case ItemResourceType.Gold:
                 case ItemResourceType.NONE:
                     return;
 

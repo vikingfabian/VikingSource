@@ -2483,6 +2483,8 @@ namespace VikingEngine
         WarsBuild_PigPen,
         WarsBuild_HenPen,
         WarsBuild_Statue,
+        WarsBuild_Carpenter,
+        WarsBuild_Nobelhouse,
 
         WarsResource_LightArmor,
         WarsResource_MediumArmor,
@@ -2490,6 +2492,7 @@ namespace VikingEngine
         WarsResource_Sharpstick,
         WarsResource_Sword,
         WarsResource_Bow,
+        WarsResource_Ballista,
         WarsResource_Beer,
         WarsResource_Iron,
         WarsResource_IronOre,

@@ -42,6 +42,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_Barracks => "Barracks";
         public string BuildingType_PigPen => "Pig pen";
         public string BuildingType_HenPen => "Hen pen";
+        public string BuildingType_Carpenter => "Carpenter";
+        //public string BuildingType_Nobelhouse => "";
         public string DecorType_Statue => "Statue";
 
         public string BuildingType_WorkerHut_DescriptionLimitX => "Expands worker limit with {0}";
@@ -57,6 +59,9 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string BuildingType_Cook_Description => "Food crafting station";
         public string BuildingType_Smith_Description => "Item crafting station";
+        public string BuildingType_Carpenter_Description => "Wood crafting station";
+
+        public string BuildingType_Nobelhouse_Description => "Home for knights and diplomats";
 
         public string MenuTab_Info => "Info";
         public string MenuTab_Work => "Work";
