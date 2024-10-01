@@ -14,8 +14,8 @@ namespace VikingEngine.DSSWars.GameObject
         public static float AverageGroupStrength;
         public const float HealthToStrengthConvertion = 0.5f;
 
-        AbsSoldierProfile[] soldiers = new AbsSoldierProfile[(int)UnitType.NUM];
-        AbsSoldierProfile[] recruits = new AbsSoldierProfile[(int)UnitType.NUM];
+        //AbsSoldierProfile[] soldiers = new AbsSoldierProfile[(int)UnitType.NUM];
+        //AbsSoldierProfile[] recruits = new AbsSoldierProfile[(int)UnitType.NUM];
 
         public CityDetailProfile city;
 
@@ -25,57 +25,76 @@ namespace VikingEngine.DSSWars.GameObject
 
             city = new CityDetailProfile();
 
-            add(new FolkWarshipData(UnitType.FolkWarship, 
-                add(new FolkManData())));
+            //add(new FolkWarshipData(UnitType.FolkWarship, 
+            //    add(new FolkManData())));
 
-            add(new SoldierWarshipData(UnitType.SoldierWarship,
-                add(new SoldierData())));
+            //add(new SoldierWarshipData(UnitType.SoldierWarship,
+            //    add(new SoldierData())));
 
-            add(new SoldierWarshipData(UnitType.HonorGuardWarship,
-                add(new HonorGuardData())));
+            //add(new SoldierWarshipData(UnitType.HonorGuardWarship,
+            //    add(new HonorGuardData())));
 
-            add(new VikingWarshipData(UnitType.SailorWarship, 
-                add(new SailorData())));
+            //add(new VikingWarshipData(UnitType.SailorWarship, 
+            //    add(new SailorData())));
 
-            add(new KnightWarshipData(UnitType.KnightWarship,
-                add(new KnightData())));
-           
-            add(new ArcherWarshipData(UnitType.ArcherWarship,
-                add(new ArcherData())));
-            
-            add(new BallistaWarshipData(UnitType.BallistaWarship,
-                add(new BallistaData())));
+            //add(new KnightWarshipData(UnitType.KnightWarship,
+            //    add(new KnightData())));
 
-            add(new BannerManData());
+            //add(new ArcherWarshipData(UnitType.ArcherWarship,
+            //    add(new ArcherData())));
 
-            add(new SoldierWarshipData(UnitType.PikemanWarship,
-                add(new Pikeman())));
+            //add(new BallistaWarshipData(UnitType.BallistaWarship,
+            //    add(new BallistaData())));
 
-            add(new ArcherWarshipData(UnitType.CrossbowWarship,
-                add(new CrossBow())));
+            //add(new BannerManData());
 
-            add(new BallistaWarshipData(UnitType.TrollcannonWarship,
-                add(new TrollCannon())));
+            //add(new SoldierWarshipData(UnitType.PikemanWarship,
+            //    add(new Pikeman())));
 
-            add(new KnightWarshipData(UnitType.GreenWarship,
-                add(new GreenSoldier())));
+            //add(new ArcherWarshipData(UnitType.CrossbowWarship,
+            //    add(new CrossBow())));
 
-            add(new VikingWarshipData(UnitType.VikingWarship,
-                add(new Viking())));
+            //add(new BallistaWarshipData(UnitType.TrollcannonWarship,
+            //    add(new TrollCannon())));
 
-            add(new DarkLordWarshipData(UnitType.DarkLordWarship,
-                add(new DarkLordData())));
+            //add(new KnightWarshipData(UnitType.GreenWarship,
+            //    add(new GreenSoldier())));
 
-            var recruit = recruits[(int)UnitType.Soldier];
-            add(new FolkWarshipData(UnitType.RecruitWarship,
-                recruit));
+            //add(new VikingWarshipData(UnitType.VikingWarship,
+            //    add(new Viking())));
 
-            int defaultDps = DssRef.profile.Get(UnitType.Soldier).DPS_land();
+            //add(new DarkLordWarshipData(UnitType.DarkLordWarship,
+            //    add(new DarkLordData())));
+
+            //var recruit = recruits[(int)UnitType.Soldier];
+            //add(new FolkWarshipData(UnitType.RecruitWarship,
+            //    recruit));
+
+            int defaultAttackDamage = 50;
+            int defaultDps = Convert.ToInt32(defaultAttackDamage / (DssConst.Soldier_StandardAttackAndCoolDownTime / 1000.0));
+            //int defaultDps = DssRef.profile.Get(UnitType.Soldier).DPS_land();
             AverageGroupStrength = DssConst.SoldierGroup_DefaultCount * (defaultDps + HealthToStrengthConvertion * DssConst.Soldier_DefaultHealth) ;
         }
 
         public void AddModelsToLoad(List<VoxelModelName> modelNames)
         {
+            modelNames.AddRange(
+              new List<VoxelModelName>() {
+                LootFest.VoxelModelName.wars_soldier,
+                LootFest.VoxelModelName.wars_soldier_i2,
+                LootFest.VoxelModelName.wars_soldier_i3,
+
+                LootFest.VoxelModelName.war_folkman,
+                LootFest.VoxelModelName.war_sailor,
+                LootFest.VoxelModelName.war_sailor_i2,
+
+                LootFest.VoxelModelName.war_archer,
+                LootFest.VoxelModelName.war_archer_i2,
+
+                LootFest.VoxelModelName.little_hirdman,
+
+            });
+
             foreach (var s in soldiers)
             {
                 if (s != null)
@@ -88,36 +107,36 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        AbsSoldierProfile add(AbsSoldierProfile soldier)
-        {
-            soldiers[(int)soldier.unitType] = soldier;
+        //AbsSoldierProfile add(AbsSoldierProfile soldier)
+        //{
+        //    soldiers[(int)soldier.unitType] = soldier;
 
-            recruits[(int)soldier.unitType] = new RecruitData(soldier);
+        //    recruits[(int)soldier.unitType] = new RecruitData(soldier);
 
-            return soldier;
-        }
+        //    return soldier;
+        //}
 
-        public AbsSoldierProfile Get(UnitType type)
-        {
-            return soldiers[(int)type];
-        }
+        //public AbsSoldierProfile Get(UnitType type)
+        //{
+        //    return soldiers[(int)type];
+        //}
 
-        public AbsSoldierUnit createSoldier(UnitType type, bool recruit)
-        {
-            AbsSoldierProfile data;
-            if (recruit)
-            {
-                data = recruits[(int)type];
-            }
-            else
-            {
-                data = soldiers[(int)type];
-            }
-            var soldier = data.CreateUnit() as AbsSoldierUnit;//TODO borde ta bort konvertering
-            soldier.data = data;
+        //public AbsSoldierUnit createSoldier(UnitType type, bool recruit)
+        //{
+        //    AbsSoldierProfile data;
+        //    if (recruit)
+        //    {
+        //        data = recruits[(int)type];
+        //    }
+        //    else
+        //    {
+        //        data = soldiers[(int)type];
+        //    }
+        //    var soldier = data.CreateUnit() as AbsSoldierUnit;//TODO borde ta bort konvertering
+        //    soldier.data = data;
 
-            return soldier;
-        }
+        //    return soldier;
+        //}
 
         public AbsSoldierUnit createSoldier(AbsSoldierProfile data)
         {

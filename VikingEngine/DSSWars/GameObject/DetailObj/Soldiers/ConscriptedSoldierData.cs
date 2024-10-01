@@ -85,11 +85,12 @@ namespace VikingEngine.DSSWars.GameObject
                         DssConst.Conscript_SpecializePercentage : DssConst.Conscript_SpecializePercentage * 3f;
                     attackDamageSea = MathExt.AddPercentage(attackDamageSea, seaDamagePerc);                    
                     attackDamageStructure = MathExt.SubtractPercentage(attackDamageStructure, DssConst.Conscript_SpecializePercentage);
-                    modelVariationCount = 1;
+                    
 
                     if (!profile.RangedUnit())
                     { 
                         modelName = LootFest.VoxelModelName.war_sailor;
+                        modelVariationCount = 2;
                         icon = SpriteName.WarsUnitIcon_Viking;
                     }
                     break;
