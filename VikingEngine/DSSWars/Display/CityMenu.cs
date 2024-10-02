@@ -134,6 +134,12 @@ namespace VikingEngine.DSSWars.Display
             city.res_sword.toMenu(content, ItemResourceType.Sword);
             blueprintButton(player, content, ResourceLib.CraftSword);
 
+            city.res_twohandsword.toMenu(content, ItemResourceType.TwoHandSword);
+            blueprintButton(player, content, ResourceLib.CraftTwoHandSword);
+
+            city.res_knightslance.toMenu(content, ItemResourceType.KnightsLance);
+            blueprintButton(player, content, ResourceLib.CraftKnightsLance);
+
             city.res_bow.toMenu(content, ItemResourceType.Bow);
             blueprintButton(player, content, ResourceLib.CraftBow);
 

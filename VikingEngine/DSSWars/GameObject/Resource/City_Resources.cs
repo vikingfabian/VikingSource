@@ -28,9 +28,12 @@ namespace VikingEngine.DSSWars.GameObject
              ItemResourceType.IronOre_G,
              ItemResourceType.Iron_G,
 
-             ItemResourceType.SharpStick,
              ItemResourceType.Sword,
+             ItemResourceType.SharpStick,
+             ItemResourceType.TwoHandSword,
+             ItemResourceType.KnightsLance,
              ItemResourceType.Bow,
+             ItemResourceType.Ballista,            
 
              ItemResourceType.LightArmor,
              ItemResourceType.MediumArmor,
@@ -63,6 +66,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public GroupedResource res_sharpstick = new GroupedResource() { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
         public GroupedResource res_sword = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource res_twohandsword = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource res_knightslance = new GroupedResource() { amount = 0, goalBuffer = 100 };
         public GroupedResource res_bow = new GroupedResource() { amount = 0, goalBuffer = 100 };
         public GroupedResource res_ballista = new GroupedResource() { amount = 0, goalBuffer = 100 };
 
@@ -115,6 +120,12 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Sword:
                     res_sword.amount += add;
                     break;
+                case ItemResourceType.TwoHandSword:
+                    res_twohandsword.amount += add;
+                    break;
+                case ItemResourceType.KnightsLance:
+                    res_knightslance.amount += add;
+                    break;
                 case ItemResourceType.Bow:
                     res_bow.amount += add;
                     break;
@@ -157,6 +168,8 @@ namespace VikingEngine.DSSWars.GameObject
 
                 case ItemResourceType.SharpStick: return res_sharpstick;
                 case ItemResourceType.Sword: return res_sword;
+                case ItemResourceType.TwoHandSword: return res_twohandsword;
+                case ItemResourceType.KnightsLance: return res_knightslance;
                 case ItemResourceType.Bow: return res_bow;
                 case ItemResourceType.Ballista: return res_ballista;
 
@@ -208,6 +221,12 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case ItemResourceType.Sword:
                     res_sword = resource;
+                    break;
+                case ItemResourceType.TwoHandSword:
+                    res_twohandsword = resource;
+                    break;
+                case ItemResourceType.KnightsLance:
+                    res_knightslance = resource;
                     break;
                 case ItemResourceType.Bow:
                     res_bow = resource;

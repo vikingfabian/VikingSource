@@ -20,8 +20,11 @@ namespace VikingEngine.DSSWars
         public static float Men_StandardShipSpeed = Men_StandardWalkingSpeed * 2f;
 
         //CONSCRIPT
-        public static int WeaponDamage_Sword = 50;
         public static int WeaponDamage_SharpStick = 30;
+        public static int WeaponDamage_Sword = 50;
+        public static int WeaponDamage_TwoHandSword = 100;
+        public static int WeaponDamage_KnigtsLance = 120;
+
         public static int WeaponDamage_Bow = 40;
         public static int WeaponDamage_Ballista = 300;
 
@@ -39,6 +42,8 @@ namespace VikingEngine.DSSWars
         public static float TrainingTimeSec_Basic = 60;
         public static float TrainingTimeSec_Skillful = 120;
         public static float TrainingTimeSec_Professional = 240;
+
+        public static float TrainingTimeSec_NobelmenAdd = 120;
 
         public static float Conscript_SpecializePercentage = 0.5f;
 

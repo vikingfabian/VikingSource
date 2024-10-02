@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 if (status.menCollected == DssConst.SoldierGroup_DefaultCount)
                                 {
                                     status.active++;
-                                    status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training)));
+                                    status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training, status.nobelmen)));
                                 }
                                 break;
 

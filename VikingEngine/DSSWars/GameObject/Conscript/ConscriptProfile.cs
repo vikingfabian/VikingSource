@@ -29,9 +29,13 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         public int que;
 
         public BarracksStatus(bool nobelmen)
-            :this()
-        { 
+            : this()
+        {
             this.nobelmen = nobelmen;
+            if (nobelmen)
+            {
+                profile.weapon = MainWeapon.KnightsLance;
+            }
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
@@ -111,7 +115,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         
         public TimeLength TimeLength()
         {
-            return new TimeLength(ConscriptProfile.TrainingTime(inProgress.training));
+            return new TimeLength(ConscriptProfile.TrainingTime(inProgress.training, nobelmen));
         }
 
         public string activeStringOf(ConscriptActiveStatus status)
@@ -231,6 +235,31 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             }
         }
 
+        public SpecializationType[] avaialableSpecializations()
+        {
+            SpecializationType[] specializationTypes;
+            if (weapon == MainWeapon.TwoHandSword)
+            {
+                specializationTypes = new SpecializationType[] { SpecializationType.AntiCavalry };
+            }
+            else if (weapon == MainWeapon.Ballista)
+            {
+                specializationTypes = new SpecializationType[] { SpecializationType.Siege };
+            }
+            else
+            {
+                specializationTypes = new SpecializationType[]
+                    {
+                            SpecializationType.None,
+                            SpecializationType.Field,
+                            SpecializationType.Sea,
+                            SpecializationType.Siege,
+                    };
+            }
+
+            return specializationTypes;
+        }
+
         public void toHud(RichBoxContent content)
         {
             content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Conscript_WeaponTitle, LangLib.Weapon(weapon)));
@@ -263,6 +292,8 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             {
                 case MainWeapon.SharpStick: return DssConst.WeaponDamage_SharpStick;
                 case MainWeapon.Sword: return DssConst.WeaponDamage_Sword;
+                case MainWeapon.TwoHandSword: return DssConst.WeaponDamage_TwoHandSword;
+                case MainWeapon.KnightsLance: return DssConst.WeaponDamage_KnigtsLance;
                 case MainWeapon.Bow: return DssConst.WeaponDamage_Bow;
                 case MainWeapon.Ballista: return DssConst.WeaponDamage_Ballista;
 
@@ -276,6 +307,8 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             {
                 case MainWeapon.SharpStick: return Resource.ItemResourceType.SharpStick;
                 case MainWeapon.Sword: return Resource.ItemResourceType.Sword;
+                case MainWeapon.TwoHandSword: return Resource.ItemResourceType.TwoHandSword;
+                case MainWeapon.KnightsLance: return Resource.ItemResourceType.KnightsLance;
                 case MainWeapon.Bow: return Resource.ItemResourceType.Bow;
                 case MainWeapon.Ballista: return Resource.ItemResourceType.Ballista;
 
@@ -319,17 +352,33 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             }
         }
 
-        public static float TrainingTime(TrainingLevel training)
+        public static float TrainingTime(TrainingLevel training, bool nobelMen)
         {
+            float result;
             switch (training)
             {
-                case TrainingLevel.Minimal: return DssConst.TrainingTimeSec_Minimal;
-                case TrainingLevel.Basic: return DssConst.TrainingTimeSec_Basic;
-                case TrainingLevel.Skillful: return DssConst.TrainingTimeSec_Skillful;
-                case TrainingLevel.Professional: return DssConst.TrainingTimeSec_Professional;
+                case TrainingLevel.Minimal: 
+                    result = DssConst.TrainingTimeSec_Minimal;
+                    break;
+                case TrainingLevel.Basic:
+                    result = DssConst.TrainingTimeSec_Basic;
+                    break;
+                case TrainingLevel.Skillful:
+                    result = DssConst.TrainingTimeSec_Skillful;
+                    break; 
+                case TrainingLevel.Professional:
+                    result = DssConst.TrainingTimeSec_Professional;
+                    break;
                 
                 default: throw new NotImplementedException();
             }
+
+            if (nobelMen)
+            {
+                result += DssConst.TrainingTimeSec_NobelmenAdd;
+            }
+
+            return result;
         }
     }
 
@@ -347,6 +396,8 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         SharpStick,
         Sword,
         Bow,
+        TwoHandSword,
+        KnightsLance,
         Ballista,
         NUM
     }
@@ -371,6 +422,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         Viking,
         HonorGuard,
         Green,
+        AntiCavalry,
     }
 
     enum ConscriptActiveStatus
