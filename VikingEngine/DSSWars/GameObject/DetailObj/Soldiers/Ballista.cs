@@ -9,52 +9,52 @@ using VikingEngine.ToGG.MoonFall.GO;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class BallistaData : AbsSoldierProfile
-    {
-        public BallistaData()
-        {
-            unitType = UnitType.Ballista;
+    //class BallistaData : AbsSoldierProfile
+    //{
+    //    public BallistaData()
+    //    {
+    //        unitType = UnitType.Ballista;
 
-            modelScale = DssConst.Men_StandardModelScale * 2f;
-            boundRadius =DssVar.StandardBoundRadius * 2.2f;
+    //        modelScale = DssConst.Men_StandardModelScale * 2f;
+    //        boundRadius =DssVar.StandardBoundRadius * 2.2f;
 
-            walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
-            ArmySpeedBonusLand = -0.5;
-            rotationSpeed = StandardRotatingSpeed * 0.04f;
-            attackRange = 3f;
-            targetSpotRange = attackRange + StandardTargetSpotRange;
-            basehealth = MathExt.MultiplyInt(0.5, DssConst.Soldier_DefaultHealth);
-            mainAttack = AttackType.Ballista;
-            attackDamage = 300;
-            attackDamageStructure = 1500;
-            attackDamageSea = 400;
-            attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 16f;
+    //        walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
+    //        ArmySpeedBonusLand = -0.5;
+    //        rotationSpeed = StandardRotatingSpeed * 0.04f;
+    //        attackRange = 3f;
+    //        targetSpotRange = attackRange + StandardTargetSpotRange;
+    //        basehealth = MathExt.MultiplyInt(0.5, DssConst.Soldier_DefaultHealth);
+    //        mainAttack = AttackType.Ballista;
+    //        attackDamage = 300;
+    //        attackDamageStructure = 1500;
+    //        attackDamageSea = 400;
+    //        attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 16f;
 
-            maxAttackAngle = 0.07f;
+    //        maxAttackAngle = 0.07f;
             
-            rowWidth = 3;
-            columnsDepth = 2;
-            workForcePerUnit = 2;
-            goldCost = MathExt.MultiplyInt(0.9, DssLib.GroupDefaultCost);
-            upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
-            groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
+    //        rowWidth = 3;
+    //        columnsDepth = 2;
+    //        workForcePerUnit = 2;
+    //        goldCost = MathExt.MultiplyInt(0.9, DssLib.GroupDefaultCost);
+    //        upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+    //        groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
 
-            modelName = LootFest.VoxelModelName.war_ballista;
-            modelVariationCount = 2;
-            hasBannerMan = false;
-            ArmyFrontToBackPlacement = ArmyPlacement.Back;
+    //        modelName = LootFest.VoxelModelName.war_ballista;
+    //        modelVariationCount = 2;
+    //        hasBannerMan = false;
+    //        ArmyFrontToBackPlacement = ArmyPlacement.Back;
 
-            description =DssRef.lang.UnitType_Description_Ballista;
-            icon = SpriteName.WarsUnitIcon_Ballista;
+    //        description =DssRef.lang.UnitType_Description_Ballista;
+    //        icon = SpriteName.WarsUnitIcon_Ballista;
 
-            energyPerSoldier  = DssLib.SoldierDefaultEnergyUpkeep * 2;
-        }
+    //        energyPerSoldier  = DssLib.SoldierDefaultEnergyUpkeep * 2;
+    //    }
 
-        public override AbsDetailUnit CreateUnit()
-        {
-            return new Ballista();
-        }
-    }
+    //    public override AbsDetailUnit CreateUnit()
+    //    {
+    //        return new Ballista();
+    //    }
+    //}
 
     class Ballista : BaseSoldier
     {
@@ -82,10 +82,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             workers = new WarmashineWorkerCollection();
 
+            float scale = soldier.Profile().modelScale;
+
             workers.Add(soldier.GetFaction(),
-                soldier.data.modelScale * Xdiff, soldier.data.modelScale * Zdiff);
+                scale * Xdiff, scale * Zdiff);
             workers.Add(soldier.GetFaction(),
-                soldier.data.modelScale * -Xdiff, soldier.data.modelScale * Zdiff);
+                scale * -Xdiff, scale * Zdiff);
         }
 
         public override void onNewModel(VoxelModelName name, VoxelModel master, AbsDetailUnit unit)

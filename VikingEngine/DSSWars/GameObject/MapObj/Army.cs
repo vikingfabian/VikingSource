@@ -588,7 +588,7 @@ namespace VikingEngine.DSSWars.GameObject
                 var soldier = groupsC.sel.FirstSoldier();
                 if (soldier != null)
                 {
-                    if (soldier.data.ArmyFrontToBackPlacement == armyPlacement)
+                    if (soldier.soldierData.ArmyFrontToBackPlacement == armyPlacement)
                     {
                         IntVector2 result = nextGroupPlacementIndex;
                         result.X = TogglePlacementX(nextGroupPlacementIndex.X);// PlacementX[result.X];
@@ -665,7 +665,7 @@ namespace VikingEngine.DSSWars.GameObject
                
                 while (groupsC.Next())
                 {
-                    var unitData = groupsC.sel.typeCurrentData; //DssRef.unitsdata.Get(groupsC.sel.type);
+                    var unitProfile = groupsC.sel.typeCurrentData; //DssRef.unitsdata.Get(groupsC.sel.type);
                     groupsC.sel.asynchUpdate();
                     count += groupsC.sel.soldiers.Count;
                     groupsC.sel.setBattleWalkingSpeed();
@@ -675,21 +675,21 @@ namespace VikingEngine.DSSWars.GameObject
                     if (groupsC.sel.IsShip())
                     {
                         ++shipCount;
-                        dps = unitData.DPS_sea();
+                        dps = groupsC.sel.soldierData.DPS_sea();
 
                         if (notBattle)                       
                         {
-                            speedbonus += unitData.ArmySpeedBonusSea;
+                            speedbonus += unitProfile.ArmySpeedBonusSea;
                             groupsC.sel.walkSpeed = transportSpeedSea;
                         }
                     }
                     else
                     {
-                        dps = unitData.DPS_land();
+                        dps = groupsC.sel.soldierData.DPS_land();
 
                         if (notBattle)
                         {
-                            speedbonus += unitData.ArmySpeedBonusLand;
+                            speedbonus += unitProfile.ArmySpeedBonusLand;
                             groupsC.sel.walkSpeed = transportSpeedLand;
                         }
                     }
@@ -712,7 +712,7 @@ namespace VikingEngine.DSSWars.GameObject
                         maxpos.Y = groupsC.sel.position.Z;
                     }
 
-                    totalStrength += (dps + unitData.basehealth * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldiers.Count;
+                    totalStrength += (dps + groupsC.sel.soldierData.basehealth * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldiers.Count;
                 }
                 
                 isIdle = allGropsAreIdle && IdleObjetive();
@@ -866,11 +866,6 @@ namespace VikingEngine.DSSWars.GameObject
                 inRender_overviewLayer = true;
                 setInRenderState();
             }
-        }
-
-        public override bool isMelee()
-        {
-            throw new NotImplementedException();
         }
 
         public override bool defeatedBy(Faction attacker)

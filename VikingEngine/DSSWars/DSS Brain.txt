@@ -4,6 +4,8 @@
 *Changed water to differ in add speed
 *Icons
 
+!Prev save files are broken
+
 
 !avslutar inte strid position förrän i detalj view
 

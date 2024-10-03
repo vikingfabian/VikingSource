@@ -157,7 +157,7 @@ namespace VikingEngine.DSSWars.GameObject
                 army = faction.NewArmy(onTile);//new Army(faction, onTile);
             }
 
-            SoldierProfile soldierProfile = new SoldierProfile()
+            SoldierConscriptProfile soldierProfile = new SoldierConscriptProfile()
             {
                 conscript = profile,
                 skillBonus = 1,

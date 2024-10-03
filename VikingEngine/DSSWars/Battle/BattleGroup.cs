@@ -160,7 +160,7 @@ namespace VikingEngine.DSSWars.Battle
                         var soldier = groupsC.sel.FirstSoldier();
                         if (soldier != null)
                         {
-                            if (soldier.data.ArmyFrontToBackPlacement == armyPlacement)
+                            if (soldier.soldierData.ArmyFrontToBackPlacement == armyPlacement)
                             {
                                 IntVector2 result = nextGroupPlacementIndex;
                                 result.X = Army.TogglePlacementX(nextGroupPlacementIndex.X);// PlacementX[result.X];

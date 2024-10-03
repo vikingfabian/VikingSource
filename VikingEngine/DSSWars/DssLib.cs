@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars
         //public const double NobelHouseAddMaxDiplomacy = 0.25;
 
 
-        public static readonly SoldierProfile SoldierProfile_Standard = new SoldierProfile()
+        public static readonly SoldierConscriptProfile SoldierProfile_Standard = new SoldierConscriptProfile()
         {
             conscript = new ConscriptProfile()
             {
@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars
         };
 
         
-        public static readonly SoldierProfile SoldierProfile_StandardArcher = new SoldierProfile()
+        public static readonly SoldierConscriptProfile SoldierProfile_StandardArcher = new SoldierConscriptProfile()
         {
             conscript = new ConscriptProfile()
             {
@@ -78,7 +78,7 @@ namespace VikingEngine.DSSWars
                 specialization = SpecializationType.Traditional,
             }
         };
-        public static readonly SoldierProfile SoldierProfile_HonorGuard = new SoldierProfile()
+        public static readonly SoldierConscriptProfile SoldierProfile_HonorGuard = new SoldierConscriptProfile()
         {
             conscript = new ConscriptProfile()
             {
@@ -88,7 +88,7 @@ namespace VikingEngine.DSSWars
                 specialization = SpecializationType.HonorGuard,
             }
         };
-        public static readonly SoldierProfile SoldierProfile_GreenSoldier = new SoldierProfile()
+        public static readonly SoldierConscriptProfile SoldierProfile_GreenSoldier = new SoldierConscriptProfile()
         {
             conscript = new ConscriptProfile()
             {
@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars
                 specialization = SpecializationType.Green,
             }
         };
-        public static readonly SoldierProfile SoldierProfile_Viking= new SoldierProfile()
+        public static readonly SoldierConscriptProfile SoldierProfile_Viking= new SoldierConscriptProfile()
         {
             conscript = new ConscriptProfile()
             {

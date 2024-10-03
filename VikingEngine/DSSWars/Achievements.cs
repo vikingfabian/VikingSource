@@ -76,7 +76,7 @@ namespace VikingEngine.DSSWars
                     var groupsC = armiesC.sel.groups.counter();
                     while (groupsC.Next())
                     {
-                        if (groupsC.sel.type == GameObject.UnitType.HonorGuard)
+                        if (groupsC.sel.soldierConscript.conscript.specialization == GameObject.Conscript.SpecializationType.HonorGuard)//.type == GameObject.UnitType.HonorGuard)
                         {
                             UnlockAchievement(AchievementIndex.honorguards);
                             return;

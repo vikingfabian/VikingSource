@@ -9,17 +9,16 @@ namespace VikingEngine.DSSWars.GameObject
 {
     abstract class AbsSoldierProfile : AbsDetailUnitProfile
     {        
-        public UnitType convertSoldierShipType;
+        //public UnitType /*convertSoldierShipType*/;
         public int rowWidth =DssConst.SoldierGroup_RowWidth;
         public int columnsDepth = DssConst.SoldierGroup_ColumnsDepth;
-        public ArmyPlacement ArmyFrontToBackPlacement = 0;
+
         protected int workForcePerUnit = 1;
         public int goldCost = DssLib.GroupDefaultCost;
 
         public float upkeepPerSoldier = DssLib.SoldierDefaultUpkeep;
-        public float energyPerSoldier =  DssLib.SoldierDefaultEnergyUpkeep;
-
-        public int recruitTrainingTimeSec = DssLib.DefalutRecruitTrainingTimeSec;
+        
+        //public int recruitTrainingTimeSec = DssLib.DefalutRecruitTrainingTimeSec;
 
         protected const float StandardRotatingSpeed = 6.5f;
 
@@ -34,12 +33,11 @@ namespace VikingEngine.DSSWars.GameObject
         
         public Vector3 modelToShadowScale = new Vector3(0.4f, 1f, 0.32f);
 
-        public bool canAttackCharacters = true;
-        public bool canAttackStructure = true;
+        
         public bool hasBannerMan = true;
         public string description;
 
-        public SoldierProfile profile;
+        //public SoldierProfile profile;
         public UnitType unitType;
 
         public bool Command_Javelin=false;
@@ -50,28 +48,27 @@ namespace VikingEngine.DSSWars.GameObject
         public double ArmySpeedBonusLand = 0;
         public double ArmySpeedBonusSea = 0;
 
-        public Vector3 captainPosDiff;
-        public Vector3 leftCrewPosDiff;
+        //public Vector3 captainPosDiff;
+        //public Vector3 leftCrewPosDiff;
         public int factionUniqueType = -1;
 
-        public SpriteName icon = SpriteName.MissingImage;
+        
 
         public Vector3 ShadowModelScale()
         {
             return modelToShadowScale * modelScale;
         }
 
-        public void setupJavelinCommand()
-        {
-            Command_Javelin = true;
-            secondaryAttack = AttackType.Javelin;
-            secondaryAttackDamage = 100;
-            secondaryAttackRange = 1f;
-        }
+        //public void setupJavelinCommand()
+        //{
+        //    Command_Javelin = true;
+        //    secondaryAttack = AttackType.Javelin;
+        //    secondaryAttackDamage = 100;
+        //    secondaryAttackRange = 1f;
+        //}
 
-        public override AbsDetailUnit CreateUnit()
-        {
-            
+        public override AbsSoldierUnit CreateUnit()
+        {            
             return new BaseSoldier();
         }
 
@@ -85,18 +82,7 @@ namespace VikingEngine.DSSWars.GameObject
             return Convert.ToInt32(rowWidth * columnsDepth * upkeepPerSoldier);
         }
 
-        public int DPS_land()
-        {
-            return Convert.ToInt32(attackDamage / (attackTimePlusCoolDown / 1000.0));
-        }
-        public int DPS_sea()
-        {
-            return Convert.ToInt32(attackDamageSea / (attackTimePlusCoolDown / 1000.0));
-        }
-        public int DPS_structure()
-        {
-            return Convert.ToInt32(attackDamageStructure / (attackTimePlusCoolDown / 1000.0));
-        }
+        
 
         virtual public bool IsShip()
         {

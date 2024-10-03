@@ -58,10 +58,10 @@ namespace VikingEngine.DSSWars.GameObject
         public int mercenaries = 0;
 
         public CityDetail detailObj;
-        public List<CityPurchaseOption> cityPurchaseOptions;
+        //public List<CityPurchaseOption> cityPurchaseOptions;
 
         public float ai_armyDefenceValue = 0;
-        public bool nobelHouse = false;
+        //public bool nobelHouse = false;
         string name = null;
 
         IntVector2 cullingTopLeft, cullingBottomRight;
@@ -157,135 +157,135 @@ namespace VikingEngine.DSSWars.GameObject
 
             workHutStyle = percMountain > 0.5 ? 0 : 1;
 
-            cityPurchaseOptions = new List<CityPurchaseOption>();
+            //cityPurchaseOptions = new List<CityPurchaseOption>();
 
-            foreach (var type in DssLib.AvailableUnitTypes)
-            {
-                var typeData = DssRef.profile.Get(type);
+            //foreach (var type in DssLib.AvailableUnitTypes)
+            //{
+            //    var typeData = DssRef.profile.Get(type);
 
-                CityPurchaseOption cityPurchase = new CityPurchaseOption()
-                {
-                    unitType = type,
-                    goldCost = typeData.goldCost,
-                };
+            //    CityPurchaseOption cityPurchase = new CityPurchaseOption()
+            //    {
+            //        unitType = type,
+            //        goldCost = typeData.goldCost,
+            //    };
 
-                switch (type)
-                {
-                    case UnitType.Soldier:
-                        if (water <= 2)
-                        {
-                            if (percPlains >= 0.75)
-                            {
-                                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 4;
-                            }
-                            else if (percPlains >= 0.5)
-                            {
-                                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 2;
-                            }
-                            else if (percPlains >= 0.25)
-                            {
-                                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
-                            }
-                        }
-                        break;
+            //    switch (type)
+            //    {
+            //        case UnitType.Soldier:
+            //            if (water <= 2)
+            //            {
+            //                if (percPlains >= 0.75)
+            //                {
+            //                    cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 4;
+            //                }
+            //                else if (percPlains >= 0.5)
+            //                {
+            //                    cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 2;
+            //                }
+            //                else if (percPlains >= 0.25)
+            //                {
+            //                    cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
+            //                }
+            //            }
+            //            break;
 
-                    case UnitType.Archer:
-                        if (percWater < 0.5)
-                        {
-                            if (percForest >= 0.75)
-                            {
-                                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 4;
-                            }
-                            else if (percForest >= 0.40)
-                            {
-                                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 2;
-                            }
-                            else if (percForest >= 0.1)
-                            {
-                                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
-                            }
-                        }
-                        break;
+            //        case UnitType.Archer:
+            //            if (percWater < 0.5)
+            //            {
+            //                if (percForest >= 0.75)
+            //                {
+            //                    cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 4;
+            //                }
+            //                else if (percForest >= 0.40)
+            //                {
+            //                    cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 2;
+            //                }
+            //                else if (percForest >= 0.1)
+            //                {
+            //                    cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
+            //                }
+            //            }
+            //            break;
 
-                    case UnitType.Sailor:
-                        cityPurchase.available = percWater >= 0.25;
+            //        case UnitType.Sailor:
+            //            cityPurchase.available = percWater >= 0.25;
 
-                        if (percWater >= 0.60)
-                        {
-                            cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 4;
-                        }
-                        else if (percWater >= 0.50)
-                        {
-                            cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 2;
-                        }
-                        else if (percWater >= 0.40)
-                        {
-                            cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
-                        }
-                        break;
+            //            if (percWater >= 0.60)
+            //            {
+            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 4;
+            //            }
+            //            else if (percWater >= 0.50)
+            //            {
+            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 2;
+            //            }
+            //            else if (percWater >= 0.40)
+            //            {
+            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
+            //            }
+            //            break;
 
-                    case UnitType.Folkman:
-                        if (this.CityType == CityType.Small)
-                        {
-                            cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
-                        }
-                        else if (this.CityType == CityType.Large)
-                        {
-                            cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction / 2;
-                        }
+            //        case UnitType.Folkman:
+            //            if (this.CityType == CityType.Small)
+            //            {
+            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
+            //            }
+            //            else if (this.CityType == CityType.Large)
+            //            {
+            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction / 2;
+            //            }
 
-                        if (percPlains >= 0.7)
-                        {
-                            cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
-                        }
-                        else if (percPlains >= 0.4)
-                        {
-                            cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction / 2;
-                        }
-                        break;
+            //            if (percPlains >= 0.7)
+            //            {
+            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
+            //            }
+            //            else if (percPlains >= 0.4)
+            //            {
+            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction / 2;
+            //            }
+            //            break;
 
-                    case UnitType.Knight:
-                        cityPurchase.available = this.CityType >= CityType.Head;
-                        //if (this.CityType == CityType.Head)
-                        //{
-                        //    cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 2;
-                        //}
+            //        case UnitType.Knight:
+            //            cityPurchase.available = this.CityType >= CityType.Head;
+            //            //if (this.CityType == CityType.Head)
+            //            //{
+            //            //    cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 2;
+            //            //}
 
-                        if (percPlains >= 0.5)
-                        {
-                            cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
-                        }
+            //            if (percPlains >= 0.5)
+            //            {
+            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
+            //            }
 
-                        if (percWater >= 0.30)
-                        {
-                            cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
-                        }
-                        break;
+            //            if (percWater >= 0.30)
+            //            {
+            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
+            //            }
+            //            break;
 
-                    case UnitType.Ballista:
-                        cityPurchase.available = forest > 0;
+            //        case UnitType.Ballista:
+            //            cityPurchase.available = forest > 0;
 
-                        if (forest >= 8 && mountain >= 8)
-                        {
-                            cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 4;
-                        }
-                        else if (forest >= 4 && mountain >= 4)
-                        {
-                            cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 2;
-                        }
-                        else if (forest >= 2 && mountain >= 2)
-                        {
-                            cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
-                        }
-                        break;
-                }
+            //            if (forest >= 8 && mountain >= 8)
+            //            {
+            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 4;
+            //            }
+            //            else if (forest >= 4 && mountain >= 4)
+            //            {
+            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 2;
+            //            }
+            //            else if (forest >= 2 && mountain >= 2)
+            //            {
+            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
+            //            }
+            //            break;
+            //    }
 
-                if (cityPurchase.available)
-                {
-                    cityPurchase.goldCost = Bound.Min(cityPurchase.goldCost, DssLib.GroupMinCost);
-                    cityPurchaseOptions.Add(cityPurchase);
-                }
-            }
+            //    if (cityPurchase.available)
+            //    {
+            //        cityPurchase.goldCost = Bound.Min(cityPurchase.goldCost, DssLib.GroupMinCost);
+            //        cityPurchaseOptions.Add(cityPurchase);
+            //    }
+            //}
 
             //Collect cultures
             double percX = tilePos.X / (double)world.Size.X;
@@ -399,17 +399,17 @@ namespace VikingEngine.DSSWars.GameObject
                 neighborCities.Add(r.ReadUInt16());
             }
 
-            if (version <= 6)
-            {
-                int cityPurchaseOptionsCount = r.ReadByte();
-                cityPurchaseOptions = new List<CityPurchaseOption>(cityPurchaseOptionsCount);
-                for (int i = 0; i < cityPurchaseOptionsCount; ++i)
-                {
-                    CityPurchaseOption cityPurchase = new CityPurchaseOption();
-                    cityPurchase.read(r);
-                    cityPurchaseOptions.Add(cityPurchase);
-                }
-            }
+            //if (version <= 6)
+            //{
+            //    int cityPurchaseOptionsCount = r.ReadByte();
+            //    cityPurchaseOptions = new List<CityPurchaseOption>(cityPurchaseOptionsCount);
+            //    for (int i = 0; i < cityPurchaseOptionsCount; ++i)
+            //    {
+            //        CityPurchaseOption cityPurchase = new CityPurchaseOption();
+            //        cityPurchase.read(r);
+            //        cityPurchaseOptions.Add(cityPurchase);
+            //    }
+            //}
 
             if (version >= 6)
             {
@@ -428,7 +428,7 @@ namespace VikingEngine.DSSWars.GameObject
             //w.Write(Convert.ToUInt16(maxEpandWorkSize));
             damages.write16bit(w);
             immigrants.write16bit(w);
-            w.Write(nobelHouse);
+            //w.Write(nobelHouse);
             w.Write((ushort)guardCount);
             w.Write((ushort)maxGuardSize);
 
@@ -465,11 +465,11 @@ namespace VikingEngine.DSSWars.GameObject
 
             damages.read16bit(r);
             immigrants.read16bit(r);
-            nobelHouse = r.ReadBoolean();
-            if (nobelHouse)
-            {
-                addNobelHouseFeatures();
-            }
+            //nobelHouse = r.ReadBoolean();
+            //if (nobelHouse)
+            //{
+            //    addNobelHouseFeatures();
+            //}
 
             guardCount = r.ReadUInt16();
             maxGuardSize = r.ReadUInt16();
@@ -722,7 +722,7 @@ namespace VikingEngine.DSSWars.GameObject
                     default:
                         workForceMax = DssConst.HeadCityStartMaxWorkForce;
                         waterAddPerSec = DssConst.WaterAdd_HeadCity;
-                        nobelHouse = true;
+                        //nobelHouse = true;
                         break;
                 }
                 workForce = (int)(workForceMax * 0.75);
@@ -815,44 +815,44 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public bool canBuyNobelHouse()
-        {
-            return !nobelHouse &&
-                workForce >= DssLib.NobelHouseWorkForceReqiurement &&
-                faction.gold >= DssLib.NobleHouseCost;
-        }
+        //public bool canBuyNobelHouse()
+        //{
+        //    return !nobelHouse &&
+        //        workForce >= DssLib.NobelHouseWorkForceReqiurement &&
+        //        faction.gold >= DssLib.NobleHouseCost;
+        //}
 
         public bool canEverGetNobelHouse()
         {
             return true;//maxEpandWorkSize >= DssLib.NobelHouseWorkForceReqiurement;
         }
 
-        public void buyNobelHouseAction()
-        {
-            if (canBuyNobelHouse() &&
-                faction.payMoney(DssLib.NobleHouseCost, false))
-            {
-                addNobelHouseFeatures();
-            }
-        }
+        //public void buyNobelHouseAction()
+        //{
+        //    if (canBuyNobelHouse() &&
+        //        faction.payMoney(DssLib.NobleHouseCost, false))
+        //    {
+        //        addNobelHouseFeatures();
+        //    }
+        //}
 
-        void addNobelHouseFeatures()
-        {
-            nobelHouse = true;
+        //void addNobelHouseFeatures()
+        //{
+        //    nobelHouse = true;
 
-            if (!HasUnitPurchaseOption(UnitType.Knight))
-            {
-                var typeData = DssRef.profile.Get(UnitType.Knight);
+        //    if (!HasUnitPurchaseOption(UnitType.Knight))
+        //    {
+        //        var typeData = DssRef.profile.Get(UnitType.Knight);
 
-                CityPurchaseOption knightPurchase = new CityPurchaseOption()
-                {
-                    unitType = UnitType.Knight,
-                    goldCost = typeData.goldCost,
-                };
+        //        CityPurchaseOption knightPurchase = new CityPurchaseOption()
+        //        {
+        //            unitType = UnitType.Knight,
+        //            goldCost = typeData.goldCost,
+        //        };
 
-                cityPurchaseOptions.Add(knightPurchase);
-            }
-        }
+        //        cityPurchaseOptions.Add(knightPurchase);
+        //    }
+        //}
 
         public bool hasNeededAreaSize()
         {
@@ -1227,12 +1227,12 @@ namespace VikingEngine.DSSWars.GameObject
                 //if (!player.inTutorialMode)
                 {
                     //Properties
-                    if (nobelHouse)
-                    {
-                        content.newLine();
-                        content.BulletPoint();
-                        content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse));
-                    }
+                    //if (nobelHouse)
+                    //{
+                    //    content.newLine();
+                    //    content.BulletPoint();
+                    //    content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse));
+                    //}
 
                     if (CityType == CityType.Factory)
                     {
@@ -1338,18 +1338,18 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        public bool HasUnitPurchaseOption(UnitType type)
-        {
-            foreach (var m in cityPurchaseOptions)
-            {
-                if (m.unitType == type)
-                {
-                    return m.available;
-                }
-            }
+        //public bool HasUnitPurchaseOption(UnitType type)
+        //{
+        //    foreach (var m in cityPurchaseOptions)
+        //    {
+        //        if (m.unitType == type)
+        //        {
+        //            return m.available;
+        //        }
+        //    }
 
-            return false;   
-        }
+        //    return false;   
+        //}
 
         public override void setFaction(Faction faction)
         {
@@ -1394,88 +1394,88 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void buySoldiersAction(UnitType type, int count, LocalPlayer player)
-        {
-            Army army;
-            bool success = buySoldiers(type, count, true, out army);
-            if (success)
-            {
-                var typeData = DssRef.profile.Get(type);
-                if (typeData.factionUniqueType >= 0)
-                {
-                    DssRef.achieve.onFactionUniquePurchase(typeData.factionUniqueType);
-                }
+        //public void buySoldiersAction(UnitType type, int count, LocalPlayer player)
+        //{
+        //    Army army;
+        //    bool success = buySoldiers(type, count, true, out army);
+        //    if (success)
+        //    {
+        //        var typeData = DssRef.profile.Get(type);
+        //        if (typeData.factionUniqueType >= 0)
+        //        {
+        //            DssRef.achieve.onFactionUniquePurchase(typeData.factionUniqueType);
+        //        }
 
-                if (player != null)
-                {
-                    player.onBuySoldier();
-                }
-            }
-        }
+        //        if (player != null)
+        //        {
+        //            player.onBuySoldier();
+        //        }
+        //    }
+        //}
 
-        public bool buySoldiers(UnitType type, int count, bool commit, out Army army, bool ignoreCityPurchaseOptions = false)
-        {//todo check 0 count
-            var typeData = DssRef.profile.Get(type);
+        //public bool buySoldiers(UnitType type, int count, bool commit, out Army army, bool ignoreCityPurchaseOptions = false)
+        //{//todo check 0 count
+        //    var typeData = DssRef.profile.Get(type);
 
-            int workersTotCost = typeData.workForceCount() * count;
-            int moneyTotCost;            
+        //    int workersTotCost = typeData.workForceCount() * count;
+        //    int moneyTotCost;            
 
-            if (ignoreCityPurchaseOptions)
-            {
-                moneyTotCost = typeData.goldCost * count;
-            }
-            else
-            {
-                CityPurchaseOption opt = null;
-                foreach (var m in cityPurchaseOptions)
-                {
-                    if (m.unitType == type)
-                    {
-                        opt = m;
-                        break;
-                    }
-                }
+        //    if (ignoreCityPurchaseOptions)
+        //    {
+        //        moneyTotCost = typeData.goldCost * count;
+        //    }
+        //    else
+        //    {
+        //        CityPurchaseOption opt = null;
+        //        foreach (var m in cityPurchaseOptions)
+        //        {
+        //            if (m.unitType == type)
+        //            {
+        //                opt = m;
+        //                break;
+        //            }
+        //        }
 
-                if (opt == null)
-                {
-                    army = null;
-                    return false;
-                }
+        //        if (opt == null)
+        //        {
+        //            army = null;
+        //            return false;
+        //        }
 
-                moneyTotCost = opt.goldCost * count;
-            }
+        //        moneyTotCost = opt.goldCost * count;
+        //    }
 
-            army = null;
+        //    army = null;
 
-            bool success = spendMenForDrafting(workersTotCost, false) &&//workForce.value >= workersTotCost &&
-               faction.gold >= moneyTotCost;
+        //    bool success = spendMenForDrafting(workersTotCost, false) &&//workForce.value >= workersTotCost &&
+        //       faction.gold >= moneyTotCost;
 
 
-            if (success && commit)
-            {
-                faction.payMoney(moneyTotCost, true);
-                //workForce.pay(workersTotCost, true);
-                spendMenForDrafting(workersTotCost, true);
+        //    if (success && commit)
+        //    {
+        //        faction.payMoney(moneyTotCost, true);
+        //        //workForce.pay(workersTotCost, true);
+        //        spendMenForDrafting(workersTotCost, true);
 
-                army = recruitToClosestArmy();
+        //        army = recruitToClosestArmy();
 
-                if (army == null)
-                {
-                    IntVector2 onTile = DssRef.world.GetFreeTile(tilePos);
+        //        if (army == null)
+        //        {
+        //            IntVector2 onTile = DssRef.world.GetFreeTile(tilePos);
 
-                    army = faction.NewArmy(onTile);//new Army(faction, onTile);
-                }
+        //            army = faction.NewArmy(onTile);//new Army(faction, onTile);
+        //        }
 
-                for (int i = 0; i < count; i++)
-                {
-                    new SoldierGroup(army, type, !StartupSettings.SkipRecruitTime);
-                }
+        //        for (int i = 0; i < count; i++)
+        //        {
+        //            new SoldierGroup(army, type, !StartupSettings.SkipRecruitTime);
+        //        }
 
-                army?.OnSoldierPurchaseCompleted();
+        //        army?.OnSoldierPurchaseCompleted();
 
-            }
-            return success;
-        }
+        //    }
+        //    return success;
+        //}
 
         bool spendMenForDrafting(int menCount, bool commit)
         { 
@@ -1591,11 +1591,6 @@ namespace VikingEngine.DSSWars.GameObject
         public override City GetCity()
         {
             return this;
-        }
-
-        public override bool isMelee()
-        {
-            return false;
         }
 
         public override bool defeatedBy(Faction attacker)

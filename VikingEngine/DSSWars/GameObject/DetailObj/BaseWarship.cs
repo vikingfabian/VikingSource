@@ -41,7 +41,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
         {
             base.takeDamage(damageAmount, attackDir, damageFaction, fullUpdate);
             refreshShipCarryCount();
-            model?.displayHealth(health / (float)data.basehealth);
+            model?.displayHealth(health / (float)profile.basehealth);
         }
 
         public override bool IsShipType()
@@ -52,7 +52,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
         protected override DetailUnitModel initModel()
         {
             var model = new ShipUnitAdvancedModel(this);
-            model.displayHealth(health / (float)data.basehealth);
+            model.displayHealth(health / (float)profile.basehealth);
             return model;
         }
         public override Vector3 projectileStartPos()

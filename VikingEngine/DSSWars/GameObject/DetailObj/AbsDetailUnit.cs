@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
+using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -41,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         //public Vector3 position;
 
-        
+        public SoldierData soldierData;
         protected Vector2 collisionForce = Vector2.Zero;
         const int CollGroupSize = 8;
 
@@ -266,7 +267,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int missingHealth
         {
-            get { return Profile().basehealth - health; }
+            get { return soldierData.basehealth - health; }
         }
 
         virtual public void onDeath(bool fullUpdate, Faction enemyFaction)
@@ -458,7 +459,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public float DPS()
         {
-            return Profile().attackDamage / TimeExt.MillsSecToSec(Profile().attackTimePlusCoolDown);
+            return soldierData.attackDamage / TimeExt.MillsSecToSec(soldierData.attackTimePlusCoolDown);
         }
 
         public bool Alive()
@@ -534,7 +535,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public int MaxHealth()
         {
-            return Profile().basehealth;
+            return soldierData.basehealth;
         }
         
         abstract public AbsDetailUnitProfile Profile();

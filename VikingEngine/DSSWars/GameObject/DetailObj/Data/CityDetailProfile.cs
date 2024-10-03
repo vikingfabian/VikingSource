@@ -12,16 +12,16 @@ namespace VikingEngine.DSSWars.GameObject
         public const float LongRangeAttack = 3.01f;
         public CityDetailProfile()
         {
-            mainAttack = AttackType.Arrow;
-            secondaryAttack = AttackType.Ballista;
-            attackDamage = DssConst.Soldier_DefaultHealth;
-            attackDamageSea = attackDamage;
-            secondaryAttackDamage = attackDamage / 2;
-            attackRange = LongRangeAttack;
+            data.mainAttack = AttackType.Arrow;
+            data.secondaryAttack = AttackType.Ballista;
+            data.attackDamage = DssConst.Soldier_DefaultHealth;
+            data.attackDamageSea = data.attackDamage;
+            data.secondaryAttackDamage = data.attackDamage / 2;
+            data.attackRange = LongRangeAttack;
             targetSpotRange = StandardTargetSpotRange;
         }
 
-        public override AbsDetailUnit CreateUnit()
+        public override AbsSoldierUnit CreateUnit()
         {
             throw new NotImplementedException();
         }

@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars.GameObject
             //AbsSoldierData typeData = FirstSoldierData();
             
             //TODO pick subtile
-            walkSpeed = typeCurrentData.walkingSpeed * terrainSpeedMultiplier;
+            walkSpeed = soldierData.walkingSpeed * terrainSpeedMultiplier;
         }
     }
 }

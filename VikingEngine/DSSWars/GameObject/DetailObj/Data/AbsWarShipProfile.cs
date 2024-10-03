@@ -10,7 +10,7 @@ namespace VikingEngine.DSSWars.GameObject
 {
     abstract class AbsWarShipProfile : AbsSoldierProfile
     {      
-        public AbsWarShipProfile(UnitType shipUnitType, AbsSoldierProfile soldierData) 
+        public AbsWarShipProfile(UnitType shipUnitType) 
         {
             modelScale = DssConst.Men_StandardModelScale * 6f;
             boundRadius = DssVar.StandardBoundRadius * 6f;
@@ -22,31 +22,31 @@ namespace VikingEngine.DSSWars.GameObject
             
             this.unitType = shipUnitType;
 
-            convertSoldierShipType = soldierData.unitType;
-            soldierData.convertSoldierShipType = shipUnitType;
+            //convertSoldierShipType = soldierData.unitType;
+            //soldierData.convertSoldierShipType = shipUnitType;
 
-            walkingSpeed = DssConst.Men_StandardShipSpeed;
+            //walkingSpeed = DssConst.Men_StandardShipSpeed;
             rotationSpeed = StandardRotatingSpeed * 0.4f;
-            attackDamage = soldierData.attackDamageSea;
-            attackDamageSea = soldierData.attackDamageSea;
-            attackDamageStructure = soldierData.attackDamageStructure;
-            attackTimePlusCoolDown = soldierData.attackTimePlusCoolDown;
+            //attackDamage = soldierData.attackDamageSea;
+            //attackDamageSea = soldierData.attackDamageSea;
+            //attackDamageStructure = soldierData.attackDamageStructure;
+            //attackTimePlusCoolDown = soldierData.attackTimePlusCoolDown;
 
-            mainAttack = soldierData.mainAttack;
+            //mainAttack = soldierData.mainAttack;
 
-            if (mainAttack == AttackType.Melee)
-            {
-                attackRange = 0.15f;
-            }
-            else
-            { 
-                attackRange = soldierData.attackRange;
-            }
+            //if (mainAttack == AttackType.Melee)
+            //{
+            //    attackRange = 0.15f;
+            //}
+            //else
+            //{ 
+            //    attackRange = soldierData.attackRange;
+            //}
 
-            basehealth = soldierData.rowWidth * soldierData.columnsDepth * soldierData.basehealth;
+            //basehealth = soldierData.rowWidth * soldierData.columnsDepth * soldierData.basehealth;
         }
 
-        public override AbsDetailUnit CreateUnit()
+        public override AbsSoldierUnit CreateUnit()
         {
             return new BaseWarship();
         }

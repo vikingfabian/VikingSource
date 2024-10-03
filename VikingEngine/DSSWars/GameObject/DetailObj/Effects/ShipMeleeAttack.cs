@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars.GameObject
             this.ship = ship;
 
             int frame = Ref.rnd.Int(2);
-            Vector3 offset = ship.data.leftCrewPosDiff;
+            Vector3 offset = ship.profile.leftCrewPosDiff;
             offset.Y -= 0.03f;
             offset.X -= 0.08f;
             
@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.GameObject
                 frame += 2;
             }
 
-            posDiff = ship.data.modelScale * offset;
+            posDiff = ship.profile.modelScale * offset;
 
             model = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_shipmelee, DssConst.Men_StandardModelScale * 2f, false);
             model.Frame = frame;

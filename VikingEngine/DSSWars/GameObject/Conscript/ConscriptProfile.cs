@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Data;
 using VikingEngine.ToGG.ToggEngine;
@@ -162,7 +163,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
     }
 
-    struct SoldierProfile
+    struct SoldierConscriptProfile
     {
         public ConscriptProfile conscript;
         public float skillBonus;
@@ -181,6 +182,154 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         {
             conscript.readGameState(r);
             skillBonus = SaveLib.ReadFloatMultiplier(r);
+        }
+
+        public SoldierData init(AbsSoldierProfile profile)
+        {
+            SoldierData result = profile.data;
+
+            result.basehealth = ConscriptProfile.ArmorHealth(conscript.armorLevel);
+
+            result.attackDamage = Convert.ToInt32(ConscriptProfile.WeaponDamage(conscript.weapon) * skillBonus);
+            result.attackDamageStructure = result.attackDamage;
+            result.attackDamageSea = result.attackDamage;
+
+            result.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
+
+            switch (conscript.weapon)
+            {
+                case MainWeapon.SharpStick:
+                    result.mainAttack = AttackType.Melee;
+                    result.attackRange = 0.03f;
+                    result.modelName = LootFest.VoxelModelName.war_folkman;
+                    result.icon = SpriteName.WarsUnitIcon_Folkman;
+                    break;
+                case MainWeapon.Sword:
+                    result.mainAttack = AttackType.Melee;
+                    result.attackRange = 0.04f;
+                    result.modelName = LootFest.VoxelModelName.wars_soldier;
+                    result.modelVariationCount = 3;
+                    result.icon = SpriteName.WarsUnitIcon_Soldier;
+                    break;
+                case MainWeapon.Bow:
+                    result.mainAttack = AttackType.Arrow;
+                    result.ArmyFrontToBackPlacement = ArmyPlacement.Mid;
+                    result.attackRange = 1.7f;
+                    result.modelName = LootFest.VoxelModelName.war_archer;
+                    result.modelVariationCount = 2;
+                    result.icon = SpriteName.WarsUnitIcon_Archer;
+                    result.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 10f;
+                    break;
+
+
+            }
+
+            switch (conscript.specialization)
+            {
+                case SpecializationType.Field:
+                    result.attackDamage = MathExt.AddPercentage(result.attackDamage, DssConst.Conscript_SpecializePercentage);
+                    result.attackDamageSea = MathExt.SubtractPercentage(result.attackDamageSea, DssConst.Conscript_SpecializePercentage);
+                    result.attackDamageStructure = MathExt.SubtractPercentage(result.attackDamageStructure, DssConst.Conscript_SpecializePercentage);
+                    break;
+
+                case SpecializationType.Viking:
+                case SpecializationType.Sea:
+                    result.attackDamage = MathExt.SubtractPercentage(result.attackDamage, DssConst.Conscript_SpecializePercentage);
+                    float seaDamagePerc = conscript.specialization == SpecializationType.Sea ?
+                        DssConst.Conscript_SpecializePercentage : DssConst.Conscript_SpecializePercentage * 3f;
+                    result.attackDamageSea = MathExt.AddPercentage(result.attackDamageSea, seaDamagePerc);
+                    result.attackDamageStructure = MathExt.SubtractPercentage(result.attackDamageStructure, DssConst.Conscript_SpecializePercentage);
+
+
+                    if (!RangedUnit())
+                    {
+                        result.modelName = LootFest.VoxelModelName.war_sailor;
+                        result.modelVariationCount = 2;
+                        result.icon = SpriteName.WarsUnitIcon_Viking;
+                    }
+                    break;
+
+                case SpecializationType.Siege:
+                    result.attackDamage = MathExt.SubtractPercentage(result.attackDamage, DssConst.Conscript_SpecializePercentage);
+                    result.attackDamageSea = MathExt.SubtractPercentage(result.attackDamageSea, DssConst.Conscript_SpecializePercentage);
+                    result.attackDamageStructure = MathExt.AddPercentage(result.attackDamageStructure, DssConst.Conscript_SpecializePercentage);
+                    break;
+
+                case SpecializationType.HonorGuard:
+                    result.energyPerSoldier = 0;
+                    result.modelName = LootFest.VoxelModelName.little_hirdman;
+                    result.modelVariationCount = 1;
+                    result.icon = SpriteName.WarsUnitIcon_Honorguard;
+                    break;
+
+                case SpecializationType.Traditional:
+                    result.energyPerSoldier *= 0.5f;
+                    break;
+
+                case SpecializationType.Green:
+                    result.secondaryAttack = AttackType.Arrow;
+                    result.secondaryAttackDamage = 100;
+                    result.secondaryAttackRange = 1.7f;
+                    result.bonusProjectiles = 2;
+                    result.icon = SpriteName.WarsUnitIcon_Greensoldier;
+
+                    break;
+            }
+
+            result.attackTimePlusCoolDown /= ConscriptProfile.TrainingAttackSpeed(conscript.training);
+            result.attackTimePlusCoolDown /= 1f + skillBonus;
+
+
+            return result;
+        }
+
+        public SoldierData bannermanSetup(SoldierData soldierData)
+        {
+            soldierData.canAttackCharacters = false;
+            soldierData.canAttackStructure = false;
+
+            soldierData.modelName = LootFest.VoxelModelName.war_bannerman;
+            soldierData.modelVariationCount = 1;
+
+            return soldierData;
+        }
+
+        public void shipSetup(ref SoldierData soldierData)
+        {
+            soldierData.walkingSpeed = DssConst.Men_StandardShipSpeed;
+
+            if (conscript.specialization == SpecializationType.Sea)
+            {
+                if (!RangedUnit())
+                {
+                    soldierData.modelName = LootFest.VoxelModelName.wars_viking_ship;
+
+
+                    soldierData.mainAttack = AttackType.Javelin;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 2.5f;
+                    soldierData.attackRange = 1f;
+                }
+                soldierData.walkingSpeed *= 1.5f;
+            }
+
+            if (soldierData.modelName != LootFest.VoxelModelName.wars_viking_ship)
+            {
+                switch (conscript.weapon)
+                {
+                    case MainWeapon.SharpStick:
+                        soldierData.modelName = LootFest.VoxelModelName.wars_folk_ship;
+
+                        break;
+                    case MainWeapon.Sword:
+                        soldierData.modelName = LootFest.VoxelModelName.wars_soldier_ship;
+
+                        break;
+                    case MainWeapon.Bow:
+                        soldierData.modelName = LootFest.VoxelModelName.wars_archer_ship;
+
+                        break;
+                }
+            }
         }
     }
 

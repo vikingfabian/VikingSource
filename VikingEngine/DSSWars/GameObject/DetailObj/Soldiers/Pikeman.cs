@@ -6,30 +6,30 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
 {
-     class Pikeman : AbsSoldierProfile
-    {
-        public Pikeman()
-        {
-            unitType = UnitType.Pikeman;
+    // class Pikeman : AbsSoldierProfile
+    //{
+    //    public Pikeman()
+    //    {
+    //        unitType = UnitType.Pikeman;
 
-            modelScale = DssConst.Men_StandardModelScale * 1.6f;
-            boundRadius = DssVar.StandardBoundRadius;
+    //        modelScale = DssConst.Men_StandardModelScale * 1.6f;
+    //        boundRadius = DssVar.StandardBoundRadius;
 
-            walkingSpeed = DssConst.Men_StandardWalkingSpeed;
-            rotationSpeed = StandardRotatingSpeed;
-            targetSpotRange = StandardTargetSpotRange;
-            attackRange = 0.055f;
-            basehealth = DssConst.Soldier_DefaultHealth;
-            mainAttack = AttackType.Melee;
-            attackDamage = 50;
-            attackDamageStructure = attackDamage;
-            attackDamageSea = attackDamage;
-            attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
+    //        walkingSpeed = DssConst.Men_StandardWalkingSpeed;
+    //        rotationSpeed = StandardRotatingSpeed;
+    //        targetSpotRange = StandardTargetSpotRange;
+    //        attackRange = 0.055f;
+    //        basehealth = DssConst.Soldier_DefaultHealth;
+    //        mainAttack = AttackType.Melee;
+    //        attackDamage = 50;
+    //        attackDamageStructure = attackDamage;
+    //        attackDamageSea = attackDamage;
+    //        attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
 
-            modelName = LootFest.VoxelModelName.wars_piker;
+    //        modelName = LootFest.VoxelModelName.wars_piker;
 
-            description = DssRef.lang.UnitType_Description_Soldier;
-            icon = SpriteName.WarsUnitIcon_Pikeman;
-        }
-    }
+    //        description = DssRef.lang.UnitType_Description_Soldier;
+    //        icon = SpriteName.WarsUnitIcon_Pikeman;
+    //    }
+    //}
 }

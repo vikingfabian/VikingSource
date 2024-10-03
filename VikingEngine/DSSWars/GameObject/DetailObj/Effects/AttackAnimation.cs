@@ -73,32 +73,29 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (target != null)
             {
-                var data = Profile();
-
-                attackCooldownTime.MilliSeconds = data.attackTimePlusCoolDown;
+                attackCooldownTime.MilliSeconds = soldierData.attackTimePlusCoolDown;
                 prevAttackTime = attackCooldownTime.MilliSeconds;
-                attackFrameTime.MilliSeconds = data.attackFrameTime;
-
-                
+                attackFrameTime.MilliSeconds = Profile().attackFrameTime;
+                               
 
                 int damage;
                 if (mainAttack)
                 {
                     if (target.DetailUnitType() == UnitType.City)
                     {
-                        damage = data.attackDamageStructure;
+                        damage = soldierData.attackDamageStructure;
                     }
                     else
                     {
-                        damage = data.attackDamage;
+                        damage = soldierData.attackDamage;
                     }
                 }
                 else
                 {
-                    damage = data.secondaryAttackDamage;
+                    damage = soldierData.secondaryAttackDamage;
                 }
 
-                if (data.mainAttack == AttackType.Melee && mainAttack)
+                if (soldierData.mainAttack == AttackType.Melee && mainAttack)
                 {
                     attackDir = angleToUnit(target);
 
@@ -112,11 +109,11 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (mainAttack)
                     {
-                        Projectile.ProjectileAttack(fullUpdate, this, data.mainAttack, target, damage);
+                        Projectile.ProjectileAttack(fullUpdate, this, soldierData.mainAttack, target, damage);
                     }
                     else
                     {
-                        Projectile.ProjectileAttack(fullUpdate, this, data.secondaryAttack, target, damage);
+                        Projectile.ProjectileAttack(fullUpdate, this, soldierData.secondaryAttack, target, damage);
                     }
                 }
             }

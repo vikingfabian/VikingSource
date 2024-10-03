@@ -64,17 +64,17 @@ namespace VikingEngine.DSSWars.GameObject
         public AbsDetailUnitAdvancedModel(AbsSoldierUnit soldier)
         {
             model = soldier.group.army.faction.AutoLoadModelInstance(
-                soldier.data.RandomModelName(), soldier.data.modelScale, true);
+                soldier.profile.RandomModelName(), soldier.profile.modelScale, true);
 
             model.position = soldier.position;
 
             shadowPlane = new Graphics.Mesh(LoadedMesh.plane, soldier.position,
-                 soldier.data.ShadowModelScale(), Graphics.TextureEffectType.Flat,
+                 soldier.profile.ShadowModelScale(), Graphics.TextureEffectType.Flat,
                  SpriteName.LittleUnitShadow, Color.Black);
 
             shadowPlane.Opacity = 0.5f;
 
-            bound = new Physics.CircleBound(Vector2.Zero, soldier.data.boundRadius);
+            bound = new Physics.CircleBound(Vector2.Zero, soldier.profile.boundRadius);
             selectionArea = new Circle(Vector2.Zero, 1.2f);
 
         }
@@ -122,9 +122,9 @@ namespace VikingEngine.DSSWars.GameObject
                 walkingAnimation.update(move, model);
 
                 float jiggleAdd = 0f;
-                if (soldier.data.walkingWaggleAngle > 0)
+                if (soldier.profile.walkingWaggleAngle > 0)
                 {
-                    jiggleAdd = moveJiggle.Direction(soldier.data.walkingWaggleAngle).X;
+                    jiggleAdd = moveJiggle.Direction(soldier.profile.walkingWaggleAngle).X;
                 }
                 WP.Rotation1DToQuaterion(model, soldier.rotation.Radians + jiggleAdd);
             }
@@ -132,7 +132,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (soldier.inAttackAnimation())
                 {
-                    model.Frame =soldier.data.attackFrame;
+                    model.Frame =soldier.profile.attackFrame;
                 }
                 else
                 {
@@ -150,7 +150,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
 
 
-                    model.Frame = inBlinkFrame ? soldier.data.idleBlinkFrame : soldier.data.idleFrame;
+                    model.Frame = inBlinkFrame ? soldier.profile.idleBlinkFrame : soldier.profile.idleFrame;
                 }
 
                 WP.Rotation1DToQuaterion(model, soldier.rotation.Radians);
