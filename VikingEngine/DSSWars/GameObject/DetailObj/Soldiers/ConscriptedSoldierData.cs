@@ -59,6 +59,13 @@ namespace VikingEngine.DSSWars.GameObject
                     modelVariationCount = 3;
                     icon = SpriteName.WarsUnitIcon_Soldier;
                     break;
+                case MainWeapon.TwoHandSword:
+                    mainAttack = AttackType.Melee;
+                    attackRange = 0.08f;
+                    modelName = LootFest.VoxelModelName.wars_twohand;
+                    modelVariationCount = 1;
+                    icon = SpriteName.WarsUnitIcon_Soldier;
+                    break;
                 case MainWeapon.Bow:
                     mainAttack = AttackType.Arrow;
                     ArmyFrontToBackPlacement = ArmyPlacement.Mid;

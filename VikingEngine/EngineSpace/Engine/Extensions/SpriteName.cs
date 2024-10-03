@@ -2460,6 +2460,7 @@ namespace VikingEngine
         WarsFactoryIcon,
 
         WarsUnitIcon_Soldier,
+        WarsUnitIcon_TwoHand,
         WarsUnitIcon_Archer,
         WarsUnitIcon_Ballista,
         WarsUnitIcon_Knight,
@@ -2508,6 +2509,8 @@ namespace VikingEngine
         WarsResource_Water,
         WarsResource_WaterAdd,        
         WarsResource_SkinAndLinen,
+        WarsResource_TwoHandSword,
+        WarsResource_KnightsLance,
 
         WarsHome,
         WarsDelivery,

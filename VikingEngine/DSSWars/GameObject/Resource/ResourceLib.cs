@@ -419,7 +419,11 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 case ItemResourceType.HardWood:
                 case ItemResourceType.Wood_Group:
                     return SpriteName.WarsResource_Wood;
-              
+                case ItemResourceType.TwoHandSword:
+                    return SpriteName.WarsResource_TwoHandSword;
+                case ItemResourceType.KnightsLance:
+                    return SpriteName.WarsResource_KnightsLance;
+
                 default:
                     return SpriteName.NO_IMAGE;
             }

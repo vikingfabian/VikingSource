@@ -494,6 +494,7 @@ namespace VikingEngine.LootFest
         wars_soldier,
         wars_soldier_i2,
         wars_soldier_i3,
+        wars_twohand,
         war_archer,
         war_archer_i2,
         little_longswordman,
