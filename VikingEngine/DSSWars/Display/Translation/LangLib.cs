@@ -33,13 +33,10 @@ namespace VikingEngine.DSSWars.Display.Translation
             {
                 case MainWeapon.SharpStick: return DssRef.todoLang.Resource_TypeName_SharpStick;
                 case MainWeapon.Sword: return DssRef.todoLang.Resource_TypeName_Sword;
-                case MainWeapon.TwoHandSword: return DssRef.todoLang.Resource_TypeName_TwoHandSword;
-                case MainWeapon.KnightsLance: return DssRef.todoLang.Resource_TypeName_KnightsLance;
                 case MainWeapon.Bow: return DssRef.todoLang.Resource_TypeName_Bow;
-                case MainWeapon.Ballista: return DssRef.lang.UnitType_Ballista;
 
                 default:
-                    return TextLib.Error;
+                    throw new NotImplementedException();
             }
         }
 
@@ -70,7 +67,6 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case SpecializationType.HonorGuard: return "Honor guard";
                 case SpecializationType.Green: return "Green soldier";
                 case SpecializationType.Traditional: return "Traditional";
-                case SpecializationType.AntiCavalry: return "Anti cavalry";
 
 
                 default:
@@ -164,10 +160,6 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.todoLang.Resource_TypeName_SharpStick;
                 case ItemResourceType.Sword:
                     return DssRef.todoLang.Resource_TypeName_Sword;
-                case ItemResourceType.TwoHandSword:
-                    return DssRef.todoLang.Resource_TypeName_TwoHandSword;
-                case ItemResourceType.KnightsLance:
-                    return DssRef.todoLang.Resource_TypeName_KnightsLance;
                 case ItemResourceType.Bow:
                     return DssRef.todoLang.Resource_TypeName_Bow;
                 case ItemResourceType.Ballista:

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,18 +13,6 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 {
     class ConscriptMenu
     {
-        static readonly MainWeapon[] DefaultWeapons = {
-            MainWeapon.SharpStick,
-            MainWeapon.Sword,
-            MainWeapon.Bow,
-            MainWeapon.Ballista,
-        };
-
-        static readonly MainWeapon[] NobelWeapons = {
-            MainWeapon.TwoHandSword,
-            MainWeapon.KnightsLance,
-        };
-
         City city;
         LocalPlayer player;
         ProgressQue que = new ProgressQue();
@@ -44,8 +31,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
                 content.Add(new RichBoxBeginTitle(1));
 
-                string typeName = currentStatus.nobelmen? DssRef.lang.Building_NobleHouse : DssRef.todoLang.BuildingType_Barracks;
-                content.Add(new RichBoxText(typeName + " " + currentStatus.idAndPosition.ToString()));
+                content.Add(new RichBoxText(DssRef.todoLang.Conscription_Title + " " + currentStatus.idAndPosition.ToString()));
                 content.space();
                 content.Add(new RichboxButton(new List<AbsRichBoxMember>
                     { new RichBoxSpace(), new RichBoxText(DssRef.todoLang.Hud_EndSessionIcon),new RichBoxSpace(), },
@@ -55,16 +41,14 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
                 HudLib.Label(content, DssRef.todoLang.Conscript_WeaponTitle);
                 content.newLine();
-                MainWeapon[] weapons = currentStatus.nobelmen? NobelWeapons : DefaultWeapons;
-                //for (MainWeapon weapon = 0; weapon < MainWeapon.NUM; weapon++)
-                foreach (var weapon in weapons)
+                for (MainWeapon weapon = 0; weapon < MainWeapon.NUM; weapon++)
                 {
                     var button = new RichboxButton(new List<AbsRichBoxMember>{
-                       new RichBoxText( LangLib.Weapon(weapon))
-                    },
-                    new RbAction1Arg<MainWeapon>(weaponClick, weapon),
-                    new RbAction1Arg<MainWeapon>(weaponTooltip, weapon)
-                    );
+                   new RichBoxText( LangLib.Weapon(weapon))
+                },
+                new RbAction1Arg<MainWeapon>(weaponClick, weapon),
+                new RbAction1Arg<MainWeapon>(weaponTooltip, weapon)
+                );
                     button.setGroupSelectionColor(HudLib.RbSettings, weapon == currentStatus.profile.weapon);
                     content.Add(button);
                     content.space();
@@ -89,19 +73,17 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
                 HudLib.Label(content, DssRef.todoLang.Conscript_TrainingTitle);
                 content.newLine();
-                TrainingLevel minLevel = currentStatus.nobelmen? TrainingLevel.Basic : TrainingLevel.Minimal;
-                
                 TrainingLevel maxLevel = TrainingLevel.Professional;
                 if (city.Culture == CityCulture.CrabMentality)
                 {
                     maxLevel = TrainingLevel.Basic;
                 }
-                for (TrainingLevel training = minLevel; training <= maxLevel; training++)
+                for (TrainingLevel training = 0; training <= maxLevel; training++)
                 {
                     var button = new RichboxButton(new List<AbsRichBoxMember>{
-                        new RichBoxText( LangLib.Training(training))
-                    }, new RbAction1Arg<TrainingLevel>(trainingClick, training),
-                    new RbAction2Arg<TrainingLevel, bool>(trainingTooltip, training, currentStatus.nobelmen));
+                   new RichBoxText( LangLib.Training(training))
+                }, new RbAction1Arg<TrainingLevel>(trainingClick, training),
+                    new RbAction1Arg<TrainingLevel>(trainingTooltip, training));
                     button.setGroupSelectionColor(HudLib.RbSettings, training == currentStatus.profile.training);
                     content.Add(button);
                     content.space();
@@ -118,28 +100,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     player.hud.tooltip.create(player, content, true);
                 }));
                 content.newLine();
-
-                SpecializationType[] specializationTypes = currentStatus.profile.avaialableSpecializations();
-                //if (currentStatus.profile.weapon == MainWeapon.TwoHandSword)
-                //{
-                //    specializationTypes = new SpecializationType[] { SpecializationType.AntiCavalry };
-                //}
-                //else if (currentStatus.profile.weapon == MainWeapon.Ballista)
-                //{
-                //    specializationTypes = new SpecializationType[] { SpecializationType.Siege };
-                //}
-                //else
-                //{
-                //    specializationTypes = new SpecializationType[]
-                //        {
-                //            SpecializationType.None,
-                //            SpecializationType.Field,
-                //            SpecializationType.Sea,
-                //            SpecializationType.Siege,
-                //        };
-                //}
-
-                foreach (var specialization in specializationTypes)//for (SpecializationType specialization = 0; specialization < SpecializationType.NUM; specialization++)
+                for (SpecializationType specialization = 0; specialization < SpecializationType.NUM; specialization++)
                 {
                     var button = new RichboxButton(new List<AbsRichBoxMember>{
                        new RichBoxText( LangLib.SpecializationTypeName(specialization))
@@ -257,11 +218,11 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
             set(currentProfile);
         }
-        void trainingTooltip(TrainingLevel training, bool nobel)
+        void trainingTooltip(TrainingLevel training)
         {
 
             RichBoxContent content = new RichBoxContent();
-            content.text(string.Format(DssRef.todoLang.Conscript_TrainingTime, new TimeLength(ConscriptProfile.TrainingTime(training, nobel)).LongString()));
+            content.text(string.Format(DssRef.todoLang.Conscript_TrainingTime, new TimeLength(ConscriptProfile.TrainingTime(training)).LongString()));
             content.text(string.Format(DssRef.todoLang.Conscript_TrainingSpeed, TextLib.OneDecimal(ConscriptProfile.TrainingAttackSpeed(training))));
 
             player.hud.tooltip.create(player, content, true);
@@ -285,12 +246,6 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
         void set(BarracksStatus profile)
         {
-            var spec = profile.profile.avaialableSpecializations();
-            if (!spec.Contains(profile.profile.specialization))
-            {
-                profile.profile.specialization = spec[0];
-            }
-
             city.conscriptBuildings[city.selectedConscript] = profile;
 
             city.onConscriptChange();

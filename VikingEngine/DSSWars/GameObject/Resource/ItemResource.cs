@@ -144,8 +144,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         Poop,
         
         Ballista,
-        KnightsLance,
-        TwoHandSword,
+
 
         NUM,
 

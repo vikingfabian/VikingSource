@@ -76,7 +76,6 @@ namespace VikingEngine.DSSWars.Players
                                     case Map.TerrainBuildingType.Recruitment:
                                         selectTileResult = SelectTileResult.Recruitment;
                                         break;
-                                    case Map.TerrainBuildingType.Nobelhouse:
                                     case Map.TerrainBuildingType.Barracks:
                                         selectTileResult = SelectTileResult.Barracks;
                                         break;

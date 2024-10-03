@@ -80,30 +80,6 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             }
         );
 
-        public static readonly CraftBlueprint CraftKnightsLance = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-            DssRef.todoLang.Resource_TypeName_KnightsLance,
-            1,
-            new UseResource[]
-            {
-                new UseResource(ItemResourceType.Gold, 60),
-                new UseResource(ItemResourceType.RawFood_Group, 20),
-                new UseResource(ItemResourceType.Wood_Group, 5),
-                new UseResource(ItemResourceType.Iron_G, 5),
-            }
-        );
-
-        public static readonly CraftBlueprint CraftTwoHandSword = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-            DssRef.todoLang.Resource_TypeName_TwoHandSword,
-            1,
-            new UseResource[]
-            {
-                new UseResource(ItemResourceType.SkinLinen_Group, 1),
-                new UseResource(ItemResourceType.Iron_G, 6),
-            }
-        );
-
         public static readonly CraftBlueprint CraftBow = new CraftBlueprint(
             SpriteName.WarsResource_Bow,
             DssRef.todoLang.Resource_TypeName_Bow,
@@ -302,7 +278,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             {
                 new UseResource(ItemResourceType.Gold, 500),
                 new UseResource(ItemResourceType.Wood_Group, 100),
-                new UseResource(ItemResourceType.Stone_G, 200)
+                new UseResource(ItemResourceType.Stone_G, 60)
             }
         );
 

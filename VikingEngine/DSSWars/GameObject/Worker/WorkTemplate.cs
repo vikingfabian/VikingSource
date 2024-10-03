@@ -25,8 +25,6 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         public WorkPriority craft_iron = new WorkPriority(3);
         public WorkPriority craft_sharpstick = new WorkPriority(1);
         public WorkPriority craft_sword = new WorkPriority(0);
-        public WorkPriority craft_twohandsword = new WorkPriority(0);
-        public WorkPriority craft_knightslance = new WorkPriority(0);
         public WorkPriority craft_bow = new WorkPriority(0);
         public WorkPriority craft_ballista= new WorkPriority(0);
         public WorkPriority craft_lightarmor = new WorkPriority(1);
@@ -52,11 +50,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             craft_sharpstick.writeGameState(w, isCity);
             craft_sword.writeGameState(w, isCity);
             craft_bow.writeGameState(w, isCity);
-
-            craft_twohandsword.writeGameState(w, isCity);
-            craft_knightslance.writeGameState(w, isCity);            
             craft_ballista.writeGameState(w, isCity);
-
             craft_lightarmor.writeGameState(w, isCity);
             craft_mediumarmor.writeGameState(w, isCity);
             craft_heavyarmor.writeGameState(w, isCity);
@@ -77,11 +71,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             craft_sharpstick.readGameState(r, subversion, isCity);
             craft_sword.readGameState(r, subversion, isCity);
             craft_bow.readGameState(r, subversion, isCity);
-            
             if (subversion >= 13)
             {
-                craft_twohandsword.readGameState(r, subversion, isCity);
-                craft_knightslance.readGameState(r, subversion, isCity);
                 craft_ballista.readGameState(r, subversion, isCity);
             }
             craft_lightarmor.readGameState(r, subversion, isCity);
@@ -104,8 +95,6 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
             craft_sharpstick.onFactionValueChange(factionTemplate.craft_sharpstick);
             craft_sword.onFactionValueChange(factionTemplate.craft_sword);
-            craft_twohandsword.onFactionValueChange(factionTemplate.craft_twohandsword);
-            craft_knightslance.onFactionValueChange(factionTemplate.craft_knightslance);
             craft_bow.onFactionValueChange(factionTemplate.craft_bow);
             craft_ballista.onFactionValueChange(factionTemplate.craft_ballista);
 
@@ -149,8 +138,6 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                 case ItemResourceType.SharpStick: return craft_sharpstick;
                 case ItemResourceType.Sword: return craft_sword;
-                case ItemResourceType.TwoHandSword: return craft_twohandsword;
-                case ItemResourceType.KnightsLance: return craft_knightslance;
                 case ItemResourceType.Bow: return craft_bow;
                 case ItemResourceType.Ballista: return craft_ballista;
 
@@ -180,10 +167,6 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     return craft_sharpstick;
                 case WorkPriorityType.craftSword:
                     return craft_sword;
-                case WorkPriorityType.craftTwoHandSword:
-                    return craft_twohandsword;
-                case WorkPriorityType.craftKnightsLance:
-                    return craft_knightslance;
                 case WorkPriorityType.craftBow:
                     return craft_bow;
                 case WorkPriorityType.craftBallista:
@@ -239,12 +222,6 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case WorkPriorityType.craftSword:
                     craft_sword = value;
                     break;
-                case WorkPriorityType.craftTwoHandSword:
-                    craft_twohandsword = value;
-                    break;
-                case WorkPriorityType.craftKnightsLance:
-                    craft_knightslance = value;
-                    break;
                 case WorkPriorityType.craftBow:
                     craft_bow = value;
                     break;
@@ -292,8 +269,6 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
             craft_sharpstick.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_SharpStick), WorkPriorityType.craftSharpStick, faction, city);
             craft_sword.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Sword), WorkPriorityType.craftSword, faction, city);
-            craft_twohandsword.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_TwoHandSword), WorkPriorityType.craftTwoHandSword, faction, city);
-            craft_knightslance.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_KnightsLance), WorkPriorityType.craftKnightsLance, faction, city);
             craft_bow.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Bow), WorkPriorityType.craftBow, faction, city);
             craft_ballista.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.lang.UnitType_Ballista), WorkPriorityType.craftBallista, faction, city);
 
@@ -439,8 +414,6 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         trading,
         autoBuild,
         expandFarms,
-        craftTwoHandSword,
-        craftKnightsLance,
         NUM
     }
 }

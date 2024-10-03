@@ -26,8 +26,6 @@ namespace VikingEngine.DSSWars.Display.Translation
         
         public string Resource_TypeName_SharpStick => "Sharp stick";
         public string Resource_TypeName_Sword => "Sword";
-        public string Resource_TypeName_KnightsLance => "Knight's lance";        
-        public string Resource_TypeName_TwoHandSword => "Zweihänder";
         public string Resource_TypeName_Bow => "Bow";
 
         public string Resource_TypeName_LightArmor => "Light armor";

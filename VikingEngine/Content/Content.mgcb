@@ -1297,9 +1297,6 @@
 #begin VoxelModel/LfWars/wars_trollcannon.vox
 /copy:VoxelModel/LfWars/wars_trollcannon.vox
 
-#begin VoxelModel/LfWars/wars_twohand.vox
-/copy:VoxelModel/LfWars/wars_twohand.vox
-
 #begin VoxelModel/LfWars/wars_viking_ship.vox
 /copy:VoxelModel/LfWars/wars_viking_ship.vox
 
