@@ -346,6 +346,17 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                         soldierData.modelName = LootFest.VoxelModelName.wars_archer_ship;
 
                         break;
+
+                    case MainWeapon.TwoHandSword:
+                    case MainWeapon.KnightsLance:
+                        soldierData.modelName = LootFest.VoxelModelName.wars_knight_ship;
+                        break;
+
+                    case MainWeapon.Ballista:
+                        soldierData.modelName = LootFest.VoxelModelName.wars_ballista_ship;
+                        break;
+
+                        default: throw new NotImplementedException();
                 }
             }
         }
@@ -500,6 +511,8 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
     {
         SharpStick,
         Sword,
+        TwoHandSword,
+        KnightsLance,
         Bow,
         Ballista,
         NUM
