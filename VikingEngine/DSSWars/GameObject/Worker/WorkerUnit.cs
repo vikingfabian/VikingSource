@@ -335,10 +335,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
             if (resourceModel != null)
             {
-                Vector3 posDiff = new Vector3(0, DssConst.Men_StandardModelScale * 1.2f, DssConst.Men_StandardModelScale * 0.25f);
-                //resourceModel.Rotation = model.Rotation;
                 resourceModel.position = model.Rotation.TranslateAlongAxis(
-                posDiff, model.position);
+                DssVar.WorkerUnit_ResourcePosDiff, model.position);
             }
         }
         public override void toHud(ObjectHudArgs args)

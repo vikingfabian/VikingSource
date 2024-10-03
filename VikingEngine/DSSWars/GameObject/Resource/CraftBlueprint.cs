@@ -14,22 +14,17 @@ namespace VikingEngine.DSSWars.GameObject.Resource
     {
         SpriteName icon;
         string name;
-
-        //public int useWater;
-        //public int useStone;
-        //public int useWood;
-        //public int useRawFood;
-        //public int useOre;
         UseResource[] resources;
-
         int resultCount;
+        public CraftRequirement requirement;
 
-        public CraftBlueprint(SpriteName icon, string name, int result, UseResource[] resources)
+        public CraftBlueprint(SpriteName icon, string name, int result, UseResource[] resources, CraftRequirement requirement = CraftRequirement.None)
         {
             this.icon = icon;
             this.name = name;
             this.resultCount = result;
             this.resources = resources;
+            this.requirement = requirement;
         }
 
         public void createBackOrder(City city)
@@ -157,10 +152,13 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         { 
             this.type = type;
             this.amount = amount;
-        }
-
-       
+        }       
     }
 
+    enum CraftRequirement
+    { 
+        None = 0,
+        Carpenter,
+    }
     
 }

@@ -494,6 +494,7 @@ namespace VikingEngine.LootFest
         wars_soldier,
         wars_soldier_i2,
         wars_soldier_i3,
+        wars_twohand,
         war_archer,
         war_archer_i2,
         little_longswordman,
@@ -578,10 +579,10 @@ namespace VikingEngine.LootFest
         city_postal,
         city_recruitment,
         city_barracks,
-
         city_mine,
         city_workstation,
-        city_brewery,
+        city_carpenter,
+        city_nobelhouse,
 
         horse_white, horse_brown,
         

@@ -134,8 +134,17 @@ namespace VikingEngine.DSSWars.Display
             city.res_sword.toMenu(content, ItemResourceType.Sword);
             blueprintButton(player, content, ResourceLib.CraftSword);
 
+            city.res_twohandsword.toMenu(content, ItemResourceType.TwoHandSword);
+            blueprintButton(player, content, ResourceLib.CraftTwoHandSword);
+
+            city.res_knightslance.toMenu(content, ItemResourceType.KnightsLance);
+            blueprintButton(player, content, ResourceLib.CraftKnightsLance);
+
             city.res_bow.toMenu(content, ItemResourceType.Bow);
             blueprintButton(player, content, ResourceLib.CraftBow);
+
+            city.res_ballista.toMenu(content, ItemResourceType.Ballista);
+            blueprintButton(player, content, ResourceLib.CraftBallista);
 
             city.res_lightArmor.toMenu(content, ItemResourceType.LightArmor);
             blueprintButton(player, content, ResourceLib.CraftLightArmor);
@@ -231,12 +240,23 @@ namespace VikingEngine.DSSWars.Display
         {
             //hover
             RichBoxContent content = new RichBoxContent();
-            content.h2(DssRef.todoLang.Blueprint_Title);
+            content.h2(DssRef.todoLang.Blueprint_Title).overrideColor = HudLib.TitleColor_TypeName;
             blueprint.toMenu(content, city);
             if (optionalBp != null)
             { 
                 content.newLine();
                 optionalBp.toMenu(content, city);
+            }
+
+            if (blueprint.requirement != CraftRequirement.None)
+            {
+                content.newLine();
+                HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
+                content.newLine();
+                content.BulletPoint();
+                RichBoxText requirement1 = new RichBoxText(DssRef.todoLang.BuildingType_Carpenter);
+                requirement1.overrideColor = city.hasBuilding_carpenter? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                content.Add(requirement1);
             }
 
             player.hud.tooltip.create(player, content, true);

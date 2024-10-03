@@ -64,6 +64,9 @@ namespace VikingEngine.DSSWars.Map
                                             case TerrainBuildingType.Tavern:
                                                 FoodSpots_workupdate.Add(subTileLoop.Position);
                                                 break;
+                                            case TerrainBuildingType.Carpenter:
+                                                city.hasBuilding_carpenter = true;
+                                                break;
                                         }
                                         break;
                                 }

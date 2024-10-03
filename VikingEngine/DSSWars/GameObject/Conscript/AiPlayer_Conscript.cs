@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars.Players
         void setupConscriptAi_async(City city)
         {
             
-            if (city.barracks.Count > 0)
+            if (city.conscriptBuildings.Count > 0)
             {
                 MainWeapon weapon = 0;
                 ArmorLevel armorLevel = ArmorLevel.None;
@@ -57,11 +57,11 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
 
-                lock (city.barracks)
+                lock (city.conscriptBuildings)
                 {
-                    if (city.barracks.Count > 0)
+                    if (city.conscriptBuildings.Count > 0)
                     {
-                        city.barracks[0] = new BarracksStatus() 
+                        city.conscriptBuildings[0] = new BarracksStatus() 
                         { 
                             profile = new ConscriptProfile()
                             { 
@@ -94,11 +94,11 @@ namespace VikingEngine.DSSWars.Players
 
             ConscriptProfile profile = new ConscriptProfile();
 
-            lock (city.barracks)
+            lock (city.conscriptBuildings)
             {
-                if (city.barracks.Count > 0)
+                if (city.conscriptBuildings.Count > 0)
                 {
-                    profile = city.barracks[0].profile;
+                    profile = city.conscriptBuildings[0].profile;
                 }
             }
 
@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars.Players
             int availableArmors = city.GetGroupedResource(armorItem).amount / DssConst.SoldierGroup_DefaultCount;
             int availableMen = (city.workForce / DssConst.SoldierGroup_DefaultCount) - 1;
 
-            int get = lib.SmallestValue(availableArmors, availableWeapons, availableMen, city.barracks.Count * 2);
+            int get = lib.SmallestValue(availableArmors, availableWeapons, availableMen, city.conscriptBuildings.Count * 2);
 
             
 

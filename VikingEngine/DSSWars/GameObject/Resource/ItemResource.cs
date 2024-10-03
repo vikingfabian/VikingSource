@@ -113,6 +113,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         Mithril,
         
         Bow,
+        
         SharpStick,
         Sword,
         Shield,
@@ -141,6 +142,10 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 
         Fuel,
         Poop,
+        
+        Ballista,
+        KnightsLance,
+        TwoHandSword,
 
         NUM,
 

@@ -2460,6 +2460,7 @@ namespace VikingEngine
         WarsFactoryIcon,
 
         WarsUnitIcon_Soldier,
+        WarsUnitIcon_TwoHand,
         WarsUnitIcon_Archer,
         WarsUnitIcon_Ballista,
         WarsUnitIcon_Knight,
@@ -2483,6 +2484,8 @@ namespace VikingEngine
         WarsBuild_PigPen,
         WarsBuild_HenPen,
         WarsBuild_Statue,
+        WarsBuild_Carpenter,
+        WarsBuild_Nobelhouse,
 
         WarsResource_LightArmor,
         WarsResource_MediumArmor,
@@ -2490,6 +2493,7 @@ namespace VikingEngine
         WarsResource_Sharpstick,
         WarsResource_Sword,
         WarsResource_Bow,
+        WarsResource_Ballista,
         WarsResource_Beer,
         WarsResource_Iron,
         WarsResource_IronOre,
@@ -2505,6 +2509,8 @@ namespace VikingEngine
         WarsResource_Water,
         WarsResource_WaterAdd,        
         WarsResource_SkinAndLinen,
+        WarsResource_TwoHandSword,
+        WarsResource_KnightsLance,
 
         WarsHome,
         WarsDelivery,
