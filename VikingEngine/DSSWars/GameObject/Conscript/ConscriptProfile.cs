@@ -228,6 +228,13 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     result.modelVariationCount = 3;
                     result.icon = SpriteName.WarsUnitIcon_Soldier;
                     break;
+                case MainWeapon.TwoHandSword:
+                    result.mainAttack = AttackType.Melee;
+                    result.attackRange = 0.08f;
+                    result.modelName = LootFest.VoxelModelName.wars_twohand;
+                    result.modelVariationCount = 1;
+                    result.icon = SpriteName.WarsUnitIcon_Soldier;
+                    break;
                 case MainWeapon.Bow:
                     result.mainAttack = AttackType.Arrow;
                     result.ArmyFrontToBackPlacement = ArmyPlacement.Mid;
@@ -237,8 +244,6 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     result.icon = SpriteName.WarsUnitIcon_Archer;
                     result.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 10f;
                     break;
-
-
             }
 
             switch (conscript.specialization)
