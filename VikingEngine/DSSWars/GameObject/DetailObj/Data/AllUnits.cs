@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using VikingEngine.DSSWars.GameObject.DetailObj.Soldiers;
 using VikingEngine.LootFest;
+using VikingEngine.LootFest.BlockMap.Level;
 using VikingEngine.ToGG.MoonFall.GO;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -18,12 +19,14 @@ namespace VikingEngine.DSSWars.GameObject
         //AbsSoldierProfile[] recruits = new AbsSoldierProfile[(int)UnitType.NUM];
         AbsSoldierProfile[] profiles = new AbsSoldierProfile[(int)UnitType.NUM];
         public CityDetailProfile city;
+        public BannerManProfile bannerman;
 
         public AllUnits()
         {
             DssRef.profile = this;
 
             city = new CityDetailProfile();
+            bannerman = new BannerManProfile();
 
             add(new ConscriptedSoldierProfile());
             add(new ConscriptedWarshipData());
@@ -84,6 +87,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             modelNames.AddRange(
               new List<VoxelModelName>() {
+                LootFest.VoxelModelName.war_bannerman,
+
                 LootFest.VoxelModelName.wars_soldier,
                 LootFest.VoxelModelName.wars_soldier_i2,
                 LootFest.VoxelModelName.wars_soldier_i3,
@@ -94,8 +99,14 @@ namespace VikingEngine.DSSWars.GameObject
 
                 LootFest.VoxelModelName.war_archer,
                 LootFest.VoxelModelName.war_archer_i2,
-
                 LootFest.VoxelModelName.little_hirdman,
+
+                LootFest.VoxelModelName.wars_soldier_ship,
+                LootFest.VoxelModelName.wars_archer_ship,
+                LootFest.VoxelModelName.wars_folk_ship,
+                LootFest.VoxelModelName.wars_viking_ship,
+                LootFest.VoxelModelName.wars_ballista_ship,
+                LootFest.VoxelModelName.wars_knight_ship,
 
             });
 

@@ -146,7 +146,7 @@ namespace VikingEngine.DSSWars
         {
             //int cityIncomeCount = 0;
             int workForceCount = 0;
-            int nobel = 0;
+            //int nobel = 0;
             var citiesC = cities.counter();
             CityEconomyData newCitiesEconomy = new CityEconomyData();
             float citiesFoodProduce = 0;
@@ -164,16 +164,16 @@ namespace VikingEngine.DSSWars
                 citiesFoodSpend += citiesC.sel.foodSpending.displayValue_sec;
                 soldResources += citiesC.sel.soldResources.displayValue_sec;
 
-                if (citiesC.sel.nobelHouse)
-                {
-                    ++nobel;
-                }
+                //if (citiesC.sel.nobelHouse)
+                //{
+                //    ++nobel;
+                //}
             }
 
             totalWorkForce = workForceCount;
             citiesEconomy = newCitiesEconomy;
             //cityIncome = newCitiesEconomy.total();
-            nobelHouseCount = nobel;
+            //nobelHouseCount = nobel;
 
             CityFoodProduction = Convert.ToInt32(citiesFoodProduce);
             CityFoodSpending = Convert.ToInt32(citiesFoodSpend);

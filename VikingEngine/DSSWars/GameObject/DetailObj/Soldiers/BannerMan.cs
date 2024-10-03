@@ -9,6 +9,14 @@ using VikingEngine.LootFest;
 
 namespace VikingEngine.DSSWars.GameObject
 {
+    class BannerManProfile : ConscriptedSoldierProfile
+    {
+        public override AbsSoldierUnit CreateUnit()
+        {
+            return new BannerMan();
+        }
+    }
+
     //class BannerManData : AbsSoldierProfile
     //{
     //    public BannerManData()

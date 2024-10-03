@@ -73,9 +73,9 @@ namespace VikingEngine.DSSWars.Display
                     conscriptTab(content);
                     break;
 
-                case MenuTab.Recruit:
-                    recruitTab(content);
-                    break;
+                //case MenuTab.Recruit:
+                //    recruitTab(content);
+                //    break;
 
                 case MenuTab.BlackMarket:
                     BlackMarketResources.ToHud(player, content, city);
@@ -203,13 +203,13 @@ namespace VikingEngine.DSSWars.Display
 
                 content.newLine();
 
-                if (!city.nobelHouse && city.canEverGetNobelHouse())
-                {
-                    content.Button(DssRef.lang.Building_NobleHouse,
-                            new RbAction(city.buyNobelHouseAction, SoundLib.menuBuy),
-                            new RbAction(buyNobelhouseTooltip),
-                            city.canBuyNobelHouse());
-                }
+                //if (!city.nobelHouse && city.canEverGetNobelHouse())
+                //{
+                //    content.Button(DssRef.lang.Building_NobleHouse,
+                //            new RbAction(city.buyNobelHouseAction, SoundLib.menuBuy),
+                //            new RbAction(buyNobelhouseTooltip),
+                //            city.canBuyNobelHouse());
+                //}
             }
         }
 
@@ -252,161 +252,161 @@ namespace VikingEngine.DSSWars.Display
             new DeliveryMenu().ToHud(city, player, content);
         }
 
-        void recruitTab(RichBoxContent content)
-        {            
-            content.newLine();
+        //void recruitTab(RichBoxContent content)
+        //{            
+        //    content.newLine();
 
-            ArmyStatus status;
-            Army recruitArmy = city.recruitToClosestArmy();
-            if (recruitArmy != null)
-            {
-                status = recruitArmy.Status();
-            }
-            else
-            {
-                status = new ArmyStatus();
-            }
+        //    ArmyStatus status;
+        //    Army recruitArmy = city.recruitToClosestArmy();
+        //    if (recruitArmy != null)
+        //    {
+        //        status = recruitArmy.Status();
+        //    }
+        //    else
+        //    {
+        //        status = new ArmyStatus();
+        //    }
 
-            content.h2(DssRef.lang.UnitType_Recruit);
-            foreach (var opt in city.cityPurchaseOptions)
-            {
-                if (opt.available)
-                {
-                    content.newLine();
+        //    content.h2(DssRef.lang.UnitType_Recruit);
+        //    foreach (var opt in city.cityPurchaseOptions)
+        //    {
+        //        if (opt.available)
+        //        {
+        //            content.newLine();
 
-                    string recruitText = string.Format(DssRef.lang.CityOption_RecruitType, DssRef.profile.Name(opt.unitType));
-                    string count = status.typeCount[(int)opt.unitType].ToString();
-                    AbsSoldierProfile typeData = DssRef.profile.Get(opt.unitType);
+        //            string recruitText = string.Format(DssRef.lang.CityOption_RecruitType, DssRef.profile.Name(opt.unitType));
+        //            string count = status.typeCount[(int)opt.unitType].ToString();
+        //            AbsSoldierProfile typeData = DssRef.profile.Get(opt.unitType);
 
-                    content.Add(new RichBoxText(count));
-                    content.Add(new RichBoxImage(typeData.icon));
+        //            content.Add(new RichBoxText(count));
+        //            content.Add(new RichBoxImage(typeData.icon));
 
-                    content.Add(new RichBoxSpace());
+        //            content.Add(new RichBoxSpace());
 
-                    content.Add(new RichboxButton(
-                        new List<AbsRichBoxMember>
-                        {
-                        new RichBoxText(recruitText),
-                        },
-                        new RbAction3Arg<UnitType, int, LocalPlayer>(city.buySoldiersAction, opt.unitType, 1, player, SoundLib.menuBuy),
-                        new RbAction2Arg<CityPurchaseOption, int>(buySoldiersTip, opt, 1),
-                        canBuySoldiers(opt.unitType, 1)));
+        //            content.Add(new RichboxButton(
+        //                new List<AbsRichBoxMember>
+        //                {
+        //                new RichBoxText(recruitText),
+        //                },
+        //                new RbAction3Arg<UnitType, int, LocalPlayer>(city.buySoldiersAction, opt.unitType, 1, player, SoundLib.menuBuy),
+        //                new RbAction2Arg<CityPurchaseOption, int>(buySoldiersTip, opt, 1),
+        //                canBuySoldiers(opt.unitType, 1)));
 
-                    content.space();
-                    multiBuy(5);
+        //            content.space();
+        //            multiBuy(5);
 
-                    content.space();
+        //            content.space();
 
-                    multiBuy(25);
+        //            multiBuy(25);
 
-                    void multiBuy(int multiCount)
-                    {
-                        content.Button(string.Format(DssRef.lang.Hud_XTimes, multiCount),
-                            new RbAction3Arg<UnitType, int, LocalPlayer>(city.buySoldiersAction, opt.unitType, multiCount, player, SoundLib.menuBuy),
-                            new RbAction2Arg<CityPurchaseOption, int>(buySoldiersTip, opt, multiCount),
-                            canBuySoldiers(opt.unitType, multiCount));
-                    }
-                }
-            }
+        //            void multiBuy(int multiCount)
+        //            {
+        //                content.Button(string.Format(DssRef.lang.Hud_XTimes, multiCount),
+        //                    new RbAction3Arg<UnitType, int, LocalPlayer>(city.buySoldiersAction, opt.unitType, multiCount, player, SoundLib.menuBuy),
+        //                    new RbAction2Arg<CityPurchaseOption, int>(buySoldiersTip, opt, multiCount),
+        //                    canBuySoldiers(opt.unitType, multiCount));
+        //            }
+        //        }
+        //    }
 
-            if (!player.inTutorialMode)
-            {
-                content.newLine();
+        //    if (!player.inTutorialMode)
+        //    {
+        //        content.newLine();
 
-                content.icontext(SpriteName.WarsSoldierIcon, string.Format(DssRef.lang.CityOption_XMercenaries, TextLib.LargeNumber(city.mercenaries)));
+        //        content.icontext(SpriteName.WarsSoldierIcon, string.Format(DssRef.lang.CityOption_XMercenaries, TextLib.LargeNumber(city.mercenaries)));
 
-                content.newLine();
+        //        content.newLine();
 
-                //string importMecenariesText = "Import {0} mercenaries";
+        //        //string importMecenariesText = "Import {0} mercenaries";
 
-                content.Add(new RichboxButton(new List<AbsRichBoxMember>{
-                new RichBoxImage(SpriteName.WarsSoldierIcon),
-                new RichBoxText( string.Format(DssRef.lang.CityOption_BuyXMercenaries, DssLib.MercenaryPurchaseCount)),
-            },
-                    new RbAction1Arg<int>(buyMercenaryAction, 1, SoundLib.menuBuy),
-                    new RbAction1Arg<int>(buyMercenaryToolTip, 1),
-                    city.buyMercenary(false, 1)));
+        //        content.Add(new RichboxButton(new List<AbsRichBoxMember>{
+        //        new RichBoxImage(SpriteName.WarsSoldierIcon),
+        //        new RichBoxText( string.Format(DssRef.lang.CityOption_BuyXMercenaries, DssLib.MercenaryPurchaseCount)),
+        //    },
+        //            new RbAction1Arg<int>(buyMercenaryAction, 1, SoundLib.menuBuy),
+        //            new RbAction1Arg<int>(buyMercenaryToolTip, 1),
+        //            city.buyMercenary(false, 1)));
 
-                content.Add(new RichBoxSpace());
+        //        content.Add(new RichBoxSpace());
 
-                content.Button((DssLib.MercenaryPurchaseCount * 5).ToString(),
-                    new RbAction1Arg<int>(buyMercenaryAction, 5, SoundLib.menuBuy),
-                    new RbAction1Arg<int>(buyMercenaryToolTip, 5),
-                    city.buyMercenary(false, 5));
+        //        content.Button((DssLib.MercenaryPurchaseCount * 5).ToString(),
+        //            new RbAction1Arg<int>(buyMercenaryAction, 5, SoundLib.menuBuy),
+        //            new RbAction1Arg<int>(buyMercenaryToolTip, 5),
+        //            city.buyMercenary(false, 5));
 
-                content.Add(new RichBoxNewLine(true));
-
-
-                if (city.damages.HasValue())
-                {
-                    content.Add(new RichboxButton(new List<AbsRichBoxMember>{
-                                    new RichBoxImage(SpriteName.unitEmoteLove),
-                                    new RichBoxText(DssRef.lang.CityOption_Repair),
-                                },
-                        new RbAction1Arg<bool>(buyRepairAction, true, SoundLib.menuBuy),
-                        new RbAction1Arg<bool>(buyRepairToolTip, true),
-                        city.buyRepair(false, true)));
-                }
-                //else
-                //{
-                //    content.Add(new RichboxButton(new List<AbsRichBoxMember>{
-                //            new RichBoxImage(SpriteName.WarsWorkerAdd),
-                //            new RichBoxText(DssRef.lang.CityOption_ExpandWorkForce),
-                //        },
-                //        new RbAction1Arg<int>(buyWorkforceAction, 1, SoundLib.menuBuy),
-                //        new RbAction1Arg<int>(buyWorkforceToolTip, 1),
-                //        city.buyWorkforce(false, 1)));
-                //}
+        //        content.Add(new RichBoxNewLine(true));
 
 
-                content.newLine();
+        //        if (city.damages.HasValue())
+        //        {
+        //            content.Add(new RichboxButton(new List<AbsRichBoxMember>{
+        //                            new RichBoxImage(SpriteName.unitEmoteLove),
+        //                            new RichBoxText(DssRef.lang.CityOption_Repair),
+        //                        },
+        //                new RbAction1Arg<bool>(buyRepairAction, true, SoundLib.menuBuy),
+        //                new RbAction1Arg<bool>(buyRepairToolTip, true),
+        //                city.buyRepair(false, true)));
+        //        }
+        //        //else
+        //        //{
+        //        //    content.Add(new RichboxButton(new List<AbsRichBoxMember>{
+        //        //            new RichBoxImage(SpriteName.WarsWorkerAdd),
+        //        //            new RichBoxText(DssRef.lang.CityOption_ExpandWorkForce),
+        //        //        },
+        //        //        new RbAction1Arg<int>(buyWorkforceAction, 1, SoundLib.menuBuy),
+        //        //        new RbAction1Arg<int>(buyWorkforceToolTip, 1),
+        //        //        city.buyWorkforce(false, 1)));
+        //        //}
 
-                //if (city.battleGroup == null)
-                //{
-                //    content.Add(new RichboxButton(new List<AbsRichBoxMember>{
-                //            new RichBoxImage(SpriteName.birdFireball),
-                //            new RichBoxText(DssRef.lang.CityOption_BurnItDown),
-                //        },
-                //        new RbAction(city.burnItDown, SoundLib.menu),
-                //        new RbAction(burnToolTip),
-                //         city.damages.value < city.MaxDamages()));
 
-                //    content.newLine();
-                //}
+        //        content.newLine();
 
-                {
-                    int count = 1;
-                    content.Add(new RichboxButton(new List<AbsRichBoxMember>{
-                                    new RichBoxImage(SpriteName.WarsGuardAdd),
-                                    new RichBoxText( DssRef.lang.CityOption_ExpandGuardSize),
-                                },
-                        new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
-                        new RbAction1Arg<int>(buyGuardSizeToolTip, count),
-                        city.buyCityGuards(false, count)));
-                }
-                content.Add(new RichBoxSpace());
-                {
-                    int count = 5;
-                    content.Button(string.Format(DssRef.lang.Hud_XTimes, count),
-                    new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
-                    new RbAction1Arg<int>(buyGuardSizeToolTip, count),
-                    city.buyCityGuards(false, count));
-                }
+        //        //if (city.battleGroup == null)
+        //        //{
+        //        //    content.Add(new RichboxButton(new List<AbsRichBoxMember>{
+        //        //            new RichBoxImage(SpriteName.birdFireball),
+        //        //            new RichBoxText(DssRef.lang.CityOption_BurnItDown),
+        //        //        },
+        //        //        new RbAction(city.burnItDown, SoundLib.menu),
+        //        //        new RbAction(burnToolTip),
+        //        //         city.damages.value < city.MaxDamages()));
 
-                content.newLine();
+        //        //    content.newLine();
+        //        //}
 
-                if (!city.nobelHouse && city.canEverGetNobelHouse())
-                {
-                    content.Button(DssRef.lang.Building_NobleHouse,
-                            new RbAction(city.buyNobelHouseAction, SoundLib.menuBuy),
-                            new RbAction(buyNobelhouseTooltip),
-                            city.canBuyNobelHouse());
-                }
+        //        {
+        //            int count = 1;
+        //            content.Add(new RichboxButton(new List<AbsRichBoxMember>{
+        //                            new RichBoxImage(SpriteName.WarsGuardAdd),
+        //                            new RichBoxText( DssRef.lang.CityOption_ExpandGuardSize),
+        //                        },
+        //                new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
+        //                new RbAction1Arg<int>(buyGuardSizeToolTip, count),
+        //                city.buyCityGuards(false, count)));
+        //        }
+        //        content.Add(new RichBoxSpace());
+        //        {
+        //            int count = 5;
+        //            content.Button(string.Format(DssRef.lang.Hud_XTimes, count),
+        //            new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
+        //            new RbAction1Arg<int>(buyGuardSizeToolTip, count),
+        //            city.buyCityGuards(false, count));
+        //        }
 
-                content.newLine();
-            }
+        //        content.newLine();
+
+        //        if (!city.nobelHouse && city.canEverGetNobelHouse())
+        //        {
+        //            content.Button(DssRef.lang.Building_NobleHouse,
+        //                    new RbAction(city.buyNobelHouseAction, SoundLib.menuBuy),
+        //                    new RbAction(buyNobelhouseTooltip),
+        //                    city.canBuyNobelHouse());
+        //        }
+
+        //        content.newLine();
+        //    }
             
-        }
+        //}
 
         void tradeTab(RichBoxContent content)
         {
@@ -418,105 +418,105 @@ namespace VikingEngine.DSSWars.Display
         //    this.player.cityTab = (MenuTab)tab;
         //}
 
-        bool canBuySoldiers(UnitType unitType, int count)
-        {
-            Army army;
-            return city.buySoldiers(unitType, count, false, out army);
-        }
+        //bool canBuySoldiers(UnitType unitType, int count)
+        //{
+        //    Army army;
+        //    return city.buySoldiers(unitType, count, false, out army);
+        //}
        
-        void buyNobelhouseTooltip()
-        {
-            RichBoxContent content = new RichBoxContent(); 
+        //void buyNobelhouseTooltip()
+        //{
+        //    RichBoxContent content = new RichBoxContent(); 
 
-            if (city.nobelHouse)
-            {
-                content.h2(DssRef.lang.Building_IsBuilt);
-            }
-            else
-            {
-                content.h2(DssRef.lang.Building_BuildAction);
-                content.newLine();
-                content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement);
-                content.newLine();
-                HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Worker, DssLib.NobelHouseWorkForceReqiurement, city.workForce);
-                content.newLine();
-                content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
-                content.newLine();
-                HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, DssLib.NobleHouseCost, player.faction.gold);
-                HudLib.Upkeep(content, Convert.ToInt32(DssLib.NobleHouseUpkeep));
-                content.newLine();
-                content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
+        //    if (city.nobelHouse)
+        //    {
+        //        content.h2(DssRef.lang.Building_IsBuilt);
+        //    }
+        //    else
+        //    {
+        //        content.h2(DssRef.lang.Building_BuildAction);
+        //        content.newLine();
+        //        content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement);
+        //        content.newLine();
+        //        HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Worker, DssLib.NobelHouseWorkForceReqiurement, city.workForce);
+        //        content.newLine();
+        //        content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
+        //        content.newLine();
+        //        HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, DssLib.NobleHouseCost, player.faction.gold);
+        //        HudLib.Upkeep(content, Convert.ToInt32(DssLib.NobleHouseUpkeep));
+        //        content.newLine();
+        //        content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
                 
-            }
+        //    }
 
-            content.newLine();
+        //    content.newLine();
 
-            //string addDiplomacy = "1 diplomacy point per {0} seconds";
-            int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.NobelHouseAddDiplomacy * 3600);
-            //string addDiplomacyMax = "+{0} to diplomacy point max limit";
-            //string addCommand = "1 command point per {0} seconds";
-            //int commandSec = Convert.ToInt32(DssLib.NobelHouseAddCommand * 3600);
-            //string upkeep = "upkeep +{0}";
+        //    //string addDiplomacy = "1 diplomacy point per {0} seconds";
+        //    int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.NobelHouseAddDiplomacy * 3600);
+        //    //string addDiplomacyMax = "+{0} to diplomacy point max limit";
+        //    //string addCommand = "1 command point per {0} seconds";
+        //    //int commandSec = Convert.ToInt32(DssLib.NobelHouseAddCommand * 3600);
+        //    //string upkeep = "upkeep +{0}";
 
 
-            content.BulletPoint();
-            content.Add(new RichBoxImage(SpriteName.WarsDiplomaticAddTime));
-            content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
-            content.newLine();
+        //    content.BulletPoint();
+        //    content.Add(new RichBoxImage(SpriteName.WarsDiplomaticAddTime));
+        //    content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
+        //    content.newLine();
 
-            content.BulletPoint();
-            content.Add(new RichBoxImage(SpriteName.WarsDiplomaticPoint));
-            content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.NobelHouseAddMaxDiplomacy)));
-            content.newLine();
+        //    content.BulletPoint();
+        //    content.Add(new RichBoxImage(SpriteName.WarsDiplomaticPoint));
+        //    content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.NobelHouseAddMaxDiplomacy)));
+        //    content.newLine();
 
-            //content.ListDot();
-            //content.Add(new RichBoxImage(SpriteName.WarsCommandAddTime));
-            //content.Add(new RichBoxText(string.Format(addCommand, commandSec)));
-            //content.newLine();
+        //    //content.ListDot();
+        //    //content.Add(new RichBoxImage(SpriteName.WarsCommandAddTime));
+        //    //content.Add(new RichBoxText(string.Format(addCommand, commandSec)));
+        //    //content.newLine();
 
-            content.BulletPoint();
-            content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
-            content.newLine();
+        //    content.BulletPoint();
+        //    content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
+        //    content.newLine();
 
-            //content.ListDot();
-            //content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
-            //HudLib.Upkeep(content, Convert.ToInt32(DssLib.NobelHouseUpkeep), true);
-            //content.Add(new RichBoxText(string.Format(upkeep, DssLib.NobelHouseUpkeep)));
-            content.newLine();
+        //    //content.ListDot();
+        //    //content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
+        //    //HudLib.Upkeep(content, Convert.ToInt32(DssLib.NobelHouseUpkeep), true);
+        //    //content.Add(new RichBoxText(string.Format(upkeep, DssLib.NobelHouseUpkeep)));
+        //    content.newLine();
 
-            player.hud.tooltip.create(player, content, true);
+        //    player.hud.tooltip.create(player, content, true);
         
         
-        }
+        //}
 
 
-        void buyMercenaryAction(int count)
-        {
-            city.buyMercenary(true, count);
-        }
+        //void buyMercenaryAction(int count)
+        //{
+        //    city.buyMercenary(true, count);
+        //}
 
-        public void buyMercenaryToolTip(int count)
-        {
-            RichBoxContent content = new RichBoxContent();
+        //public void buyMercenaryToolTip(int count)
+        //{
+        //    RichBoxContent content = new RichBoxContent();
 
-            int cost = city.buyMercenaryCost(count);
+        //    int cost = city.buyMercenaryCost(count);
 
-            content.text(TextLib.Quote(DssRef.lang.CityOption_Mercenaries_Description));
-            content.newLine();
-            content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
-            content.newLine();
-            HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, cost, player.faction.gold);
-            content.text(string.Format(DssRef.lang.Hud_Purchase_CostWillIncreaseByX, DssRef.difficulty.MercenaryPurchaseCost_Add * count));
-            content.newLine();
-            HudLib.ResourceCost(content, GameObject.Resource.ResourceType.MercenaryOnMarket, DssLib.MercenaryPurchaseCount * count, player.mercenaryMarket.Int());
+        //    content.text(TextLib.Quote(DssRef.lang.CityOption_Mercenaries_Description));
+        //    content.newLine();
+        //    content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
+        //    content.newLine();
+        //    HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, cost, player.faction.gold);
+        //    content.text(string.Format(DssRef.lang.Hud_Purchase_CostWillIncreaseByX, DssRef.difficulty.MercenaryPurchaseCost_Add * count));
+        //    content.newLine();
+        //    HudLib.ResourceCost(content, GameObject.Resource.ResourceType.MercenaryOnMarket, DssLib.MercenaryPurchaseCount * count, player.mercenaryMarket.Int());
 
-            content.newParagraph();
-            content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
-            content.newLine();
-            content.icontext(SpriteName.WarsSoldierIcon, string.Format(DssRef.lang.CityOption_XMercenaries, DssLib.MercenaryPurchaseCount * count));
+        //    content.newParagraph();
+        //    content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
+        //    content.newLine();
+        //    content.icontext(SpriteName.WarsSoldierIcon, string.Format(DssRef.lang.CityOption_XMercenaries, DssLib.MercenaryPurchaseCount * count));
             
-            player.hud.tooltip.create(player, content, true);
-        }
+        //    player.hud.tooltip.create(player, content, true);
+        //}
 
 
         //void buyWorkforceAction(int count)
@@ -610,58 +610,58 @@ namespace VikingEngine.DSSWars.Display
             player.hud.tooltip.create(player, content, true);
         }
 
-        public void buySoldiersTip(CityPurchaseOption opt, int count)
-        {
-            var typeData = DssRef.profile.Get(opt.unitType);
-            var soldierData = DssRef.profile.Get(UnitType.Soldier);
-            int dpsSoldier = soldierData.DPS_land();
-            RichBoxContent content = new RichBoxContent();
-            HudLib.Description(content, typeData.description);//content.text(TextLib.Quote(typeData.description));
-            content.newLine();
-            content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
-            content.newLine();
-            HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, opt.goldCost * count, player.faction.gold);
-            content.newLine();
-            HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Worker, typeData.workForceCount() * count, city.workForce);
-            content.newLine();
-            content.newLine();
+        //public void buySoldiersTip(CityPurchaseOption opt, int count)
+        //{
+        //    var typeData = DssRef.profile.Get(opt.unitType);
+        //    var soldierData = DssRef.profile.Get(UnitType.Soldier);
+        //    int dpsSoldier = soldierData.DPS_land();
+        //    RichBoxContent content = new RichBoxContent();
+        //    HudLib.Description(content, typeData.description);//content.text(TextLib.Quote(typeData.description));
+        //    content.newLine();
+        //    content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
+        //    content.newLine();
+        //    HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, opt.goldCost * count, player.faction.gold);
+        //    content.newLine();
+        //    HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Worker, typeData.workForceCount() * count, city.workForce);
+        //    content.newLine();
+        //    content.newLine();
 
-            content.text(string.Format(DssRef.todoLang.Hud_EnergyUpkeepX, typeData.energyPerSoldier));
-            //HudLib.Upkeep(content, typeData.Upkeep() * count);
-            //content.icontext(SpriteName.rtsUpkeep, DssRef.lang.Hud_Upkeep + ": " + (typeData.Upkeep() * count).ToString());
-            content.newParagraph();
+        //    content.text(string.Format(DssRef.todoLang.Hud_EnergyUpkeepX, typeData.energyPerSoldier));
+        //    //HudLib.Upkeep(content, typeData.Upkeep() * count);
+        //    //content.icontext(SpriteName.rtsUpkeep, DssRef.lang.Hud_Upkeep + ": " + (typeData.Upkeep() * count).ToString());
+        //    content.newParagraph();
 
-            content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
-            int unitCount = typeData.rowWidth * typeData.columnsDepth;
-            //string countText = "{0} groups, a total of {1} units";
-            content.text(string.Format(DssRef.lang.SoldierStats_GroupCountAndSoldierCount, count, unitCount * count));
-            content.newParagraph();
+        //    content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
+        //    int unitCount = typeData.rowWidth * typeData.columnsDepth;
+        //    //string countText = "{0} groups, a total of {1} units";
+        //    content.text(string.Format(DssRef.lang.SoldierStats_GroupCountAndSoldierCount, count, unitCount * count));
+        //    content.newParagraph();
 
-            content.h2(DssRef.lang.SoldierStats_Title);
-            content.text(DssRef.lang.Hud_PurchaseTitle_Cost + ": " + TextLib.OneDecimal(opt.goldCost / (double)unitCount));
-            //content.text(DssRef.lang.Hud_Upkeep + ": " + string.Format(HudLib.OneDecimalFormat, typeData.Upkeep() / (double)unitCount));
-            //HudLib.Upkeep(content, typeData.Upkeep() / (double)unitCount);
+        //    content.h2(DssRef.lang.SoldierStats_Title);
+        //    content.text(DssRef.lang.Hud_PurchaseTitle_Cost + ": " + TextLib.OneDecimal(opt.goldCost / (double)unitCount));
+        //    //content.text(DssRef.lang.Hud_Upkeep + ": " + string.Format(HudLib.OneDecimalFormat, typeData.Upkeep() / (double)unitCount));
+        //    //HudLib.Upkeep(content, typeData.Upkeep() / (double)unitCount);
 
             
-            content.text(string.Format(DssRef.lang.SoldierStats_AttackStrengthLandSeaCity, dpsCompared(typeData.DPS_land(), dpsSoldier), dpsCompared(typeData.DPS_sea(), dpsSoldier), dpsCompared(typeData.DPS_structure(), dpsSoldier)));
-            content.text(string.Format( DssRef.lang.SoldierStats_Health, typeData.basehealth));
-            content.text(string.Format(DssRef.lang.SoldierStats_RecruitTrainingTimeMinutes, TextLib.OneDecimal(typeData.recruitTrainingTimeSec / 60.0)));
+        //    content.text(string.Format(DssRef.lang.SoldierStats_AttackStrengthLandSeaCity, dpsCompared(typeData.DPS_land(), dpsSoldier), dpsCompared(typeData.DPS_sea(), dpsSoldier), dpsCompared(typeData.DPS_structure(), dpsSoldier)));
+        //    content.text(string.Format( DssRef.lang.SoldierStats_Health, typeData.basehealth));
+        //    content.text(string.Format(DssRef.lang.SoldierStats_RecruitTrainingTimeMinutes, TextLib.OneDecimal(typeData.recruitTrainingTimeSec / 60.0)));
 
-            speedBonus(true, typeData.ArmySpeedBonusLand);
-            speedBonus(false, typeData.ArmySpeedBonusSea);
+        //    speedBonus(true, typeData.ArmySpeedBonusLand);
+        //    speedBonus(false, typeData.ArmySpeedBonusSea);
 
 
-            player.hud.tooltip.create(player, content, true);
+        //    player.hud.tooltip.create(player, content, true);
 
-            void speedBonus(bool land, double bonus)
-            {
-                if (bonus != 0)
-                {                    
-                    string bonusText = land? DssRef.lang.SoldierStats_SpeedBonusLand : DssRef.lang.SoldierStats_SpeedBonusSea;
-                    content.text(string.Format(bonusText, TextLib.PercentAddText((float)bonus)));
-                }
-            }
-        }
+        //    void speedBonus(bool land, double bonus)
+        //    {
+        //        if (bonus != 0)
+        //        {                    
+        //            string bonusText = land? DssRef.lang.SoldierStats_SpeedBonusLand : DssRef.lang.SoldierStats_SpeedBonusSea;
+        //            content.text(string.Format(bonusText, TextLib.PercentAddText((float)bonus)));
+        //        }
+        //    }
+        //}
 
         string dpsCompared(int dps, int dpsSoldier)
         {

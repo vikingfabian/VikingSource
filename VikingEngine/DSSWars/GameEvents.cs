@@ -223,17 +223,17 @@ namespace VikingEngine.DSSWars
                                 int count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
                                 for (int i = 0; i < count; ++i)
                                 {
-                                    new SoldierGroup(army, UnitType.Pikeman, false);
+                                    //new SoldierGroup(army, UnitType.Pikeman, false);
                                 }
                                 count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
                                 for (int i = 0; i < count; ++i)
                                 {
-                                    new SoldierGroup(army, UnitType.Sailor, false);
+                                    //new SoldierGroup(army, UnitType.Sailor, false);
                                 }
                                 count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
                                 for (int i = 0; i < count; ++i)
                                 {
-                                    new SoldierGroup(army, UnitType.CrossBow, false);
+                                    //new SoldierGroup(army, UnitType.CrossBow, false);
                                 }
                                 army.refreshPositions(true);
 

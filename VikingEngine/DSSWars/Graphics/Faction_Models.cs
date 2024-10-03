@@ -183,7 +183,7 @@ namespace VikingEngine.DSSWars
 
     class FactionModelBuilder : Voxels.ModelBuilder
     {
-        static readonly IntVector3 TroopBannerStart = new IntVector3(1, 44, 2);
+        static readonly IntVector3 TroopBannerStart = new IntVector3(3, 44, 2);
         static readonly IntVector3 HorseBannerStart = new IntVector3(3, 50, 0);
         static readonly IntVector3 CityBannerStart = new IntVector3(6, 44, 0);
         static readonly IntVector3 ArmyBannerStart = new IntVector3(1, 0, 1);

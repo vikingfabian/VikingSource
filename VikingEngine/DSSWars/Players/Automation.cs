@@ -23,13 +23,13 @@ namespace VikingEngine.DSSWars.Players
         //    };
 
         Players.LocalPlayer player;
-        bool autoRecruit= false;
+        //bool autoRecruit= false;
         bool autoBuild = false;
         bool autoBuild_intelligent = true;
         bool autoExpandGuard = false;
-        bool autoNobelhouse = false;
+        //bool autoNobelhouse = false;
         bool autoRepair = false;
-        int[] recruitAmount = new int[DssLib.AvailableUnitTypes.Length];
+        //int[] recruitAmount = new int[DssLib.AvailableUnitTypes.Length];
 
         AutomationAction automationAction = AutomationAction.WaitForUpdate;
         City cityAction = null;
@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.Players
             w.Write(autoBuild_intelligent);
             w.Write((byte)autoBuildType);
             w.Write(autoExpandGuard);
-            w.Write(autoNobelhouse);
+            //w.Write(autoNobelhouse);
 
             //foreach (var recruit in recruitAmount)
             //{
@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.Players
             autoBuild_intelligent = r.ReadBoolean();
             autoBuildType = (Build.BuildAndExpandType)r.ReadByte();
             autoExpandGuard = r.ReadBoolean();            
-            autoNobelhouse = r.ReadBoolean();
+            //autoNobelhouse = r.ReadBoolean();
 
             //for (int i =0; i< recruitAmount.Length;++i)
             //{
@@ -76,14 +76,14 @@ namespace VikingEngine.DSSWars.Players
             //}
         }
 
-        bool AutoRecruitProperty(int index, bool set, bool value)
-        {
-            if (set)
-            {
-                autoRecruit = value;
-            }
-            return autoRecruit;
-        }
+        //bool AutoRecruitProperty(int index, bool set, bool value)
+        //{
+        //    if (set)
+        //    {
+        //        autoRecruit = value;
+        //    }
+        //    return autoRecruit;
+        //}
 
         bool AutoBuildProperty(int index, bool set, bool value)
         {
@@ -120,23 +120,23 @@ namespace VikingEngine.DSSWars.Players
             return autoRepair;
         }
 
-        bool AutoNobelHouseProperty(int index, bool set, bool value)
-        {
-            if (set)
-            {
-                autoNobelhouse = value;
-            }
-            return autoNobelhouse;
-        }
+        //bool AutoNobelHouseProperty(int index, bool set, bool value)
+        //{
+        //    if (set)
+        //    {
+        //        autoNobelhouse = value;
+        //    }
+        //    return autoNobelhouse;
+        //}
 
-        int RecruitAmountProperty(int index, bool set, int value)
-        {
-            if (set)
-            {
-                recruitAmount[index] = Bound.Set(value, 0, 100);
-            }
-            return recruitAmount[index];
-        }
+        //int RecruitAmountProperty(int index, bool set, int value)
+        //{
+        //    if (set)
+        //    {
+        //        recruitAmount[index] = Bound.Set(value, 0, 100);
+        //    }
+        //    return recruitAmount[index];
+        //}
 
         public void toMenu(RichBoxContent content, bool fullDisplay)
         {
@@ -184,12 +184,12 @@ namespace VikingEngine.DSSWars.Players
                 }, AutoRepairCityProperty));
 
             content.newLine();
-            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
-                {
-                    new RichBoxText(string.Format( DssRef.lang.HudAction_BuyItem, DssRef.lang.Building_NobleHouse)),
-                }, AutoNobelHouseProperty));
+            //content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
+            //    {
+            //        new RichBoxText(string.Format( DssRef.lang.HudAction_BuyItem, DssRef.lang.Building_NobleHouse)),
+            //    }, AutoNobelHouseProperty));
 
-            content.newLine();
+            //content.newLine();
             
             content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
                 {
@@ -248,12 +248,12 @@ namespace VikingEngine.DSSWars.Players
                                     return;
                                 }
 
-                                if (autoNobelhouse && citiesC.sel.canBuyNobelHouse())
-                                {
-                                    cityAction = citiesC.sel;
-                                    automationAction = AutomationAction.NobelHouse;
-                                    return;
-                                }
+                                //if (autoNobelhouse && citiesC.sel.canBuyNobelHouse())
+                                //{
+                                //    cityAction = citiesC.sel;
+                                //    automationAction = AutomationAction.NobelHouse;
+                                //    return;
+                                //}
 
                                 //if (autoBuild && citiesC.sel.canExpandWorkForce(1))
                                 //{
@@ -262,46 +262,46 @@ namespace VikingEngine.DSSWars.Players
                                 //    return;
                                 //}
 
-                                if (autoRecruit)
-                                {
-                                    const int RecruitChunk = 5;
-                                    var army = citiesC.sel.recruitToClosestArmy();
-                                    Dictionary<UnitType, int> typeCount = null;
-                                    if (army != null)
-                                    {
-                                        typeCount = army.Status().getTypeCounts();
-                                    }
+                                //if (autoRecruit)
+                                //{
+                                //    const int RecruitChunk = 5;
+                                //    var army = citiesC.sel.recruitToClosestArmy();
+                                //    Dictionary<UnitType, int> typeCount = null;
+                                //    if (army != null)
+                                //    {
+                                //        typeCount = army.Status().getTypeCounts();
+                                //    }
 
-                                    for (int maxCount = RecruitChunk; maxCount <= 100; maxCount += RecruitChunk)
-                                    {
-                                        for (int i = 0; i < DssLib.AvailableUnitTypes.Length; i++)
-                                        {
-                                            recruitCount = Bound.Max(recruitAmount[i], maxCount);
+                                //    for (int maxCount = RecruitChunk; maxCount <= 100; maxCount += RecruitChunk)
+                                //    {
+                                //        for (int i = 0; i < DssLib.AvailableUnitTypes.Length; i++)
+                                //        {
+                                //            recruitCount = Bound.Max(recruitAmount[i], maxCount);
 
-                                            var unitType = DssLib.AvailableUnitTypes[i];
+                                //            var unitType = DssLib.AvailableUnitTypes[i];
 
-                                            if (recruitCount > 0 && 
-                                                citiesC.sel.HasUnitPurchaseOption(unitType))
-                                            {
+                                //            if (recruitCount > 0 && 
+                                //                citiesC.sel.HasUnitPurchaseOption(unitType))
+                                //            {
                                                 
-                                                int current = 0;
-                                                if (typeCount != null)
-                                                {
-                                                    typeCount.TryGetValue(unitType, out current);
-                                                }
+                                //                int current = 0;
+                                //                if (typeCount != null)
+                                //                {
+                                //                    typeCount.TryGetValue(unitType, out current);
+                                //                }
 
-                                                if (current < recruitCount)
-                                                {
-                                                    cityAction = citiesC.sel;
-                                                    recruitType = unitType;
-                                                    recruitCount = Bound.Max(recruitAmount[i] - current, RecruitChunk);
-                                                    automationAction = AutomationAction.Recruit;
-                                                    return;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
+                                //                if (current < recruitCount)
+                                //                {
+                                //                    cityAction = citiesC.sel;
+                                //                    recruitType = unitType;
+                                //                    recruitCount = Bound.Max(recruitAmount[i] - current, RecruitChunk);
+                                //                    automationAction = AutomationAction.Recruit;
+                                //                    return;
+                                //                }
+                                //            }
+                                //        }
+                                //    }
+                                //}
                             }
                         }
                     }
@@ -318,9 +318,9 @@ namespace VikingEngine.DSSWars.Players
         {
             switch (automationAction)
             {
-                case AutomationAction.NobelHouse:
-                    cityAction.buyNobelHouseAction();
-                    break;
+                //case AutomationAction.NobelHouse:
+                //    cityAction.buyNobelHouseAction();
+                //    break;
                 case AutomationAction.Repair:
                     cityAction.buyRepair(true, true);
                     break;
@@ -362,7 +362,7 @@ namespace VikingEngine.DSSWars.Players
         Recruit,
         Repair,
         ExpandWorkforce,
-        NobelHouse,
+        /*NobelHouse*/
         GuardSize,
     }
 }

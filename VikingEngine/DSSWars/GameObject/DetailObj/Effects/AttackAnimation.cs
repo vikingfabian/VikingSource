@@ -103,7 +103,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         new ShipMeleeAttack(GetSoldierUnit(), attackDir);
                     }
-                    target.takeDamage(damage, attackDir, group.army.faction, fullUpdate);
+                    target.takeDamage(damage, attackDir, GetFaction(), fullUpdate);
                 }
                 else
                 {

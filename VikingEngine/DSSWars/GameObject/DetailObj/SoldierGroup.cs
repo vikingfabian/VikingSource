@@ -317,7 +317,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (bannerPos.Equals(x, y))
                     {
                         var bannerData = soldierConscript.bannermanSetup(soldierData);
-                        unit = createUnit(typeProfile, new IntVector2(x + xStart, y), tilePos, ref bannerData);
+                        unit = createUnit(DssRef.profile.bannerman, new IntVector2(x + xStart, y), tilePos, ref bannerData);
                     }
                     else
                     {
@@ -376,11 +376,15 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     soldiers.Clear();
 
+                    //soldierData = soldierConscript.init(typeCurrentData);
                     if (transformType == SoldierTransformType.ToShip)
                     {
                         typeCurrentData = typeShipData;
                         soldierData = soldierConscript.init(typeCurrentData);
-                        var ship = createUnit(typeShipData, IntVector2.Zero, WP.ToTilePos(position), ref soldierData);
+                        var shipData = soldierData;
+                        soldierConscript.shipSetup(ref shipData);
+
+                        var ship = createUnit(typeShipData, IntVector2.Zero, WP.ToTilePos(position), ref shipData);
                             
                         ship.health = totalHealth;
                         ship.refreshShipCarryCount();
@@ -388,8 +392,8 @@ namespace VikingEngine.DSSWars.GameObject
                     else
                     {
                         typeCurrentData = typeSoldierData;
-                        SoldierData data = soldierConscript.init(typeCurrentData);
-                        int count = (int)Math.Ceiling(totalHealth / (double)data.basehealth);
+                        soldierData = soldierConscript.init(typeCurrentData);
+                        int count = (int)Math.Ceiling(totalHealth / (double)soldierData.basehealth);
                        
                         createAllSoldiers(typeCurrentData, count);
                     }

@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public void onNewModel(LootFest.VoxelModelName name,
             Graphics.VoxelModel master, AbsDetailUnit unit)
         {
-            DSSWars.Faction.SetNewMaster(name, unit.Profile().modelName, model, master);
+            DSSWars.Faction.SetNewMaster(name, unit.soldierData.modelName, model, master);
         }
 
         virtual public void update(AbsSoldierUnit soldier)
@@ -63,18 +63,22 @@ namespace VikingEngine.DSSWars.GameObject
 
         public AbsDetailUnitAdvancedModel(AbsSoldierUnit soldier)
         {
+            if (soldier.group.typeCurrentData.IsShip())
+            { 
+                    lib.DoNothing();
+            }
             model = soldier.group.army.faction.AutoLoadModelInstance(
-                soldier.profile.RandomModelName(), soldier.profile.modelScale, true);
+                soldier.soldierData.RandomModelName(), soldier.SoldierProfile().modelScale, true);
 
             model.position = soldier.position;
 
             shadowPlane = new Graphics.Mesh(LoadedMesh.plane, soldier.position,
-                 soldier.profile.ShadowModelScale(), Graphics.TextureEffectType.Flat,
+                 soldier.SoldierProfile().ShadowModelScale(), Graphics.TextureEffectType.Flat,
                  SpriteName.LittleUnitShadow, Color.Black);
 
             shadowPlane.Opacity = 0.5f;
 
-            bound = new Physics.CircleBound(Vector2.Zero, soldier.profile.boundRadius);
+            bound = new Physics.CircleBound(Vector2.Zero, soldier.SoldierProfile().boundRadius);
             selectionArea = new Circle(Vector2.Zero, 1.2f);
 
         }
@@ -83,7 +87,6 @@ namespace VikingEngine.DSSWars.GameObject
         {
             base.DeleteMe();
             shadowPlane?.DeleteMe();
-
         }
     }
 
@@ -122,9 +125,9 @@ namespace VikingEngine.DSSWars.GameObject
                 walkingAnimation.update(move, model);
 
                 float jiggleAdd = 0f;
-                if (soldier.profile.walkingWaggleAngle > 0)
+                if (soldier.SoldierProfile().walkingWaggleAngle > 0)
                 {
-                    jiggleAdd = moveJiggle.Direction(soldier.profile.walkingWaggleAngle).X;
+                    jiggleAdd = moveJiggle.Direction(soldier.SoldierProfile().walkingWaggleAngle).X;
                 }
                 WP.Rotation1DToQuaterion(model, soldier.rotation.Radians + jiggleAdd);
             }
@@ -132,7 +135,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (soldier.inAttackAnimation())
                 {
-                    model.Frame =soldier.profile.attackFrame;
+                    model.Frame =soldier.SoldierProfile().attackFrame;
                 }
                 else
                 {
@@ -150,7 +153,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
 
 
-                    model.Frame = inBlinkFrame ? soldier.profile.idleBlinkFrame : soldier.profile.idleFrame;
+                    model.Frame = inBlinkFrame ? soldier.SoldierProfile().idleBlinkFrame : soldier.SoldierProfile().idleFrame;
                 }
 
                 WP.Rotation1DToQuaterion(model, soldier.rotation.Radians);

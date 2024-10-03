@@ -120,15 +120,15 @@ namespace VikingEngine.DSSWars
         public const float CityDominationRadius = BattleConflictRadius + 1.5f;
 
 
-        public static readonly UnitType[] AvailableUnitTypes = new UnitType[]
-            {
-                UnitType.Folkman,
-                UnitType.Soldier,
-                UnitType.Sailor,
-                UnitType.Knight,
-                UnitType.Archer,
-                UnitType.Ballista,
-            };
+        //public static readonly UnitType[] AvailableUnitTypes = new UnitType[]
+        //    {
+        //        UnitType.Folkman,
+        //        UnitType.Soldier,
+        //        UnitType.Sailor,
+        //        UnitType.Knight,
+        //        UnitType.Archer,
+        //        UnitType.Ballista,
+        //    };
 
         public const int GroupDefaultCost = 340;
         public const int GroupDefaultCultureCostReduction = 20;

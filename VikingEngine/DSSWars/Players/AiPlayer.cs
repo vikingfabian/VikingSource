@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     faction.growthMultiplier = 0.75f;
                     name = DssRef.lang.FactionName_Greenwood;
-                    addStartCitiesBuyOption(UnitType.GreenSoldier);
+                    //addStartCitiesBuyOption(UnitType.GreenSoldier);
                     break;
 
                 case FactionType.EasternEmpire:
@@ -142,35 +142,35 @@ namespace VikingEngine.DSSWars.Players
                     faction.diplomaticSide = DiplomaticSide.Light;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     name = DssRef.lang.FactionName_NordicRealm;
-                    addStartCitiesBuyOption(UnitType.Viking);
+                    //addStartCitiesBuyOption(UnitType.Viking);
                     break;
 
                 case FactionType.BearClaw:
                     faction.grouptype = FactionGroupType.Nordic;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     name = DssRef.lang.FactionName_BearClaw;
-                    addStartCitiesBuyOption(UnitType.Viking);
+                    //addStartCitiesBuyOption(UnitType.Viking);
                     break;
 
                 case FactionType.NordicSpur:
                     faction.grouptype = FactionGroupType.Nordic;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     name = DssRef.lang.FactionName_NordicSpur;
-                    addStartCitiesBuyOption(UnitType.Viking);
+                    //addStartCitiesBuyOption(UnitType.Viking);
                     break;
 
                 case FactionType.IceRaven:
                     faction.grouptype = FactionGroupType.Nordic;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     name = DssRef.lang.FactionName_IceRaven;
-                    addStartCitiesBuyOption(UnitType.Viking);
+                    //addStartCitiesBuyOption(UnitType.Viking);
                     break;
 
                 case FactionType.DragonSlayer:
                     faction.grouptype = FactionGroupType.Nordic;
                     aggressionLevel = Ref.rnd.Chance(0.4) ? AggressionLevel2_RandomAttacks : AggressionLevel1_RevengeOnly;
                     name = DssRef.lang.FactionName_Dragonslayer;
-                    addStartCitiesBuyOption(UnitType.CrossBow);
+                    //addStartCitiesBuyOption(UnitType.CrossBow);
                     break;
 
                 case FactionType.SouthHara:
@@ -252,20 +252,20 @@ namespace VikingEngine.DSSWars.Players
 
 
 
-        void addStartCitiesBuyOption(UnitType unitType)
-        {
-            var typeData = DssRef.profile.Get(unitType);
-            var citiesC = faction.cities.counter();
+        //void addStartCitiesBuyOption(UnitType unitType)
+        //{
+        //    var typeData = DssRef.profile.Get(unitType);
+        //    var citiesC = faction.cities.counter();
 
-            while (citiesC.Next())
-            {
-                citiesC.sel.cityPurchaseOptions.Add(new CityPurchaseOption()
-                {
-                    unitType = unitType,
-                    goldCost = typeData.goldCost,
-                });
-            }
-        }
+        //    while (citiesC.Next())
+        //    {
+        //        citiesC.sel.cityPurchaseOptions.Add(new CityPurchaseOption()
+        //        {
+        //            unitType = unitType,
+        //            goldCost = typeData.goldCost,
+        //        });
+        //    }
+        //}
         
         public override void createStartUnits()
         {

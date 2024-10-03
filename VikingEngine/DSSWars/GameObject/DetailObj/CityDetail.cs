@@ -308,7 +308,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (attackTarget_sp != null && guards > 0)
                 {
                     float dist = spaceBetweenUnits(attackTarget_sp);
-                    if (dist <= DssRef.profile.city.attackRange)
+                    if (dist <= DssRef.profile.city.data.attackRange)
                     {
                         bool shortDist = dist < CityDetailProfile.ShortRangeAttack;
                         nextArrowCooldown = 50000f / guards;
