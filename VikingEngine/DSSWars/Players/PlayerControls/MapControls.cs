@@ -599,9 +599,9 @@ namespace VikingEngine.DSSWars.Players
                     {
                         player.cityTab = Display.MenuTab.Conscript;
                         int id = conv.IntVector2ToInt(selectedSubTile.subTilePos);
-                        for (int i = 0; i < selectedSubTile.city.barracks.Count; ++i)
+                        for (int i = 0; i < selectedSubTile.city.conscriptBuildings.Count; ++i)
                         {
-                            if (selectedSubTile.city.barracks[i].idAndPosition == id)
+                            if (selectedSubTile.city.conscriptBuildings[i].idAndPosition == id)
                             {
                                 selectedSubTile.city.selectedConscript = i; break;
                             }

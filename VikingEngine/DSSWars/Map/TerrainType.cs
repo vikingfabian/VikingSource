@@ -67,6 +67,8 @@ namespace VikingEngine.DSSWars.Map
         Postal,
         Recruitment,
         Barracks,
+        Carpenter,
+        Nobelhouse,
         
         NUM_NONE
     }

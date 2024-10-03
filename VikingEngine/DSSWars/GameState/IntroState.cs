@@ -82,7 +82,7 @@ namespace VikingEngine.DSSWars
 
                 new MapSettings();
                 Map.Tile.Init();
-                BuildLib.Init();
+                
                 //new Network.Session();
             }
         }

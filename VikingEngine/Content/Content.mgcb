@@ -1030,6 +1030,9 @@
 #begin VoxelModel/LfWars/city_bighouse.vox
 /copy:VoxelModel/LfWars/city_bighouse.vox
 
+#begin VoxelModel/LfWars/city_carpenter.vox
+/copy:VoxelModel/LfWars/city_carpenter.vox
+
 #begin VoxelModel/LfWars/city_cobblestone.vox
 /copy:VoxelModel/LfWars/city_cobblestone.vox
 
@@ -1041,6 +1044,9 @@
 
 #begin VoxelModel/LfWars/city_mine.vox
 /copy:VoxelModel/LfWars/city_mine.vox
+
+#begin VoxelModel/LfWars/city_nobelhouse.vox
+/copy:VoxelModel/LfWars/city_nobelhouse.vox
 
 #begin VoxelModel/LfWars/city_pen.vox
 /copy:VoxelModel/LfWars/city_pen.vox
@@ -1290,6 +1296,9 @@
 
 #begin VoxelModel/LfWars/wars_trollcannon.vox
 /copy:VoxelModel/LfWars/wars_trollcannon.vox
+
+#begin VoxelModel/LfWars/wars_twohand.vox
+/copy:VoxelModel/LfWars/wars_twohand.vox
 
 #begin VoxelModel/LfWars/wars_viking_ship.vox
 /copy:VoxelModel/LfWars/wars_viking_ship.vox

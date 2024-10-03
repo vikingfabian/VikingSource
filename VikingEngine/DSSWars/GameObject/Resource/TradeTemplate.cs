@@ -23,6 +23,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         //New
         public TradeResource sharpstick;
         public TradeResource sword;
+        //public TradeResource twoHandSword;
+        //public TradeResource knightsLance;
         public TradeResource bow;
 
         public TradeResource lightArmor;

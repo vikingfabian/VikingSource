@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Valve.Steamworks;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.Engine;
 
 namespace VikingEngine.DSSWars.Display.Translation
@@ -114,6 +115,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                     break;
             }
 
+            BuildLib.Init();
             //if (onChange && onContentLoad)
             //{ 
             //    Ref.

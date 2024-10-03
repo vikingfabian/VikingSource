@@ -79,7 +79,11 @@ namespace VikingEngine.DSSWars.Build
                         break;
 
                     case TerrainBuildingType.Barracks:
-                        Ref.update.AddSyncAction(new SyncAction1Arg<IntVector2>(city.addBarracks, subPos));
+                        Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, bool>(city.addBarracks, subPos, false));
+                        break;
+
+                    case TerrainBuildingType.Nobelhouse:
+                        Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, bool>(city.addBarracks, subPos, true));
                         break;
 
                     case TerrainBuildingType.Postal:

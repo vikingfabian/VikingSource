@@ -113,9 +113,32 @@ namespace VikingEngine.DSSWars.Build
 
                     content.h2(BuildLib.BuildOptions[(int)type].Label()).overrideColor = HudLib.TitleColor_TypeName;
                     var build = BuildLib.BuildOptions[(int)type];
-
+                    
                     HudLib.Description(content, build.Description());
-                    //CraftBlueprint blueprint = ResourceLib.Blueprint(index);
+
+                    content.newLine();
+                    switch (type)
+                    { 
+                        case BuildAndExpandType.Nobelhouse:
+                            int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.NobelHouseAddDiplomacy * 3600);
+
+                            content.BulletPoint();
+                            content.Add(new RichBoxImage(SpriteName.WarsDiplomaticAddTime));
+                            content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
+                            content.newLine();
+
+                            content.BulletPoint();
+                            content.Add(new RichBoxImage(SpriteName.WarsDiplomaticPoint));
+                            content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.NobelHouseAddMaxDiplomacy)));
+                            content.newLine();
+
+                            content.BulletPoint();
+                            content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
+                            content.newLine();
+
+                            break;
+                    }
+
                     build.blueprint.toMenu(content, city);
 
                     player.hud.tooltip.create(player, content, true);
@@ -128,18 +151,7 @@ namespace VikingEngine.DSSWars.Build
             content.Add(new RichBoxScale(1));
 
             content.newParagraph();
-            //foreach (var opt in BuildLib.AvailableBuildTypes)
-            //{
-            //    var button = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(BuildLib.BuildOptions[(int)opt].Label()) },
-            //    new RbAction1Arg<BuildAndExpandType>(buildingTypeClick, opt),
-            //    new RbAction1Arg<BuildAndExpandType>(buildingTooltip, opt));
-            //    button.setGroupSelectionColor(HudLib.RbSettings, buildMode == SelectTileResult.Build && placeBuildingType == opt);
-            //    content.Add(button);
-            //    content.space();
-            //}
-           
-            //content.newLine();
-            
+                       
             if (buildMode != SelectTileResult.None)
             {
                 var button = new RichboxButton(new List<AbsRichBoxMember> { 

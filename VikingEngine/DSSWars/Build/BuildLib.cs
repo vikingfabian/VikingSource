@@ -14,15 +14,18 @@ namespace VikingEngine.DSSWars.Build
         Postal,
         Recruitment,
         Barracks,
+        Nobelhouse,
         Tavern,
         Brewery,
         Cook,
         Smith,
+        Carpenter,
         WheatFarm,
         LinenFarm,
         PigPen,
         HenPen,
         Statue_ThePlayer,
+
         
         NUM_NONE,
     }
@@ -33,12 +36,14 @@ namespace VikingEngine.DSSWars.Build
         public static readonly BuildAndExpandType[] AvailableBuildTypes = {
             BuildAndExpandType.WorkerHuts,
             BuildAndExpandType.Barracks,
+            BuildAndExpandType.Nobelhouse,
             BuildAndExpandType.Postal,
             BuildAndExpandType.Recruitment,
             BuildAndExpandType.Tavern,
             BuildAndExpandType.Brewery,
             BuildAndExpandType.Cook,
             BuildAndExpandType.Smith,
+            BuildAndExpandType.Carpenter,
             BuildAndExpandType.PigPen,
             BuildAndExpandType.HenPen,
             BuildAndExpandType.WheatFarm,
@@ -51,14 +56,16 @@ namespace VikingEngine.DSSWars.Build
         {
             new BuildOption(BuildAndExpandType.WorkerHuts, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, SpriteName.WarsBuild_WorkerHuts, ResourceLib.CraftWorkerHut);
             new BuildOption(BuildAndExpandType.Postal, TerrainMainType.Building, (int)TerrainBuildingType.Postal, SpriteName.WarsBuild_Postal, ResourceLib.CraftPostal);
-            new BuildOption(BuildAndExpandType.Recruitment, TerrainMainType.Building, (int)TerrainBuildingType.Recruitment, SpriteName.WarsBuild_Recruitment, ResourceLib.CraftRecruitment);            
+            new BuildOption(BuildAndExpandType.Recruitment, TerrainMainType.Building, (int)TerrainBuildingType.Recruitment, SpriteName.WarsBuild_Recruitment, ResourceLib.CraftRecruitment);
             new BuildOption(BuildAndExpandType.Barracks, TerrainMainType.Building, (int)TerrainBuildingType.Barracks, SpriteName.WarsBuild_Barracks, ResourceLib.CraftBarracks);
+            new BuildOption(BuildAndExpandType.Nobelhouse, TerrainMainType.Building, (int)TerrainBuildingType.Nobelhouse, SpriteName.WarsBuild_Nobelhouse, ResourceLib.CraftNobelHouse);
             new BuildOption(BuildAndExpandType.Tavern, TerrainMainType.Building, (int)TerrainBuildingType.Tavern, SpriteName.WarsBuild_Tavern, ResourceLib.CraftTavern);
             new BuildOption(BuildAndExpandType.Brewery, TerrainMainType.Building, (int)TerrainBuildingType.Brewery, SpriteName.WarsBuild_Brewery, ResourceLib.CraftBrewery);
             new BuildOption(BuildAndExpandType.PigPen, TerrainMainType.Building, (int)TerrainBuildingType.PigPen, SpriteName.WarsBuild_PigPen, ResourceLib.CraftPigPen);
             new BuildOption(BuildAndExpandType.HenPen, TerrainMainType.Building, (int)TerrainBuildingType.HenPen, SpriteName.WarsBuild_HenPen, ResourceLib.CraftHenPen);
             new BuildOption(BuildAndExpandType.Cook, TerrainMainType.Building, (int)TerrainBuildingType.Work_Cook, SpriteName.WarsBuild_Cook, ResourceLib.CraftCook);
             new BuildOption(BuildAndExpandType.Smith, TerrainMainType.Building, (int)TerrainBuildingType.Work_Smith, SpriteName.WarsBuild_Smith, ResourceLib.CraftSmith);
+            new BuildOption(BuildAndExpandType.Carpenter, TerrainMainType.Building, (int)TerrainBuildingType.Carpenter, SpriteName.WarsBuild_Carpenter, ResourceLib.CraftCarpenter);
 
             new BuildOption(BuildAndExpandType.WheatFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, SpriteName.WarsBuild_WheatFarms, ResourceLib.CraftFarm);
             new BuildOption(BuildAndExpandType.LinenFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarm, SpriteName.WarsBuild_LinenFarms, ResourceLib.CraftFarm);

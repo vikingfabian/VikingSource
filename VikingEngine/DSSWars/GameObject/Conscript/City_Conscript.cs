@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.GameObject
     partial class City
     {
         public int selectedConscript = -1;
-        public List<BarracksStatus> barracks = new List<BarracksStatus>();
+        public List<BarracksStatus> conscriptBuildings = new List<BarracksStatus>();
         Time conscriptDelay = Time.Zero;
 
         public void async_conscriptUpdate(float time)
@@ -34,11 +34,11 @@ namespace VikingEngine.DSSWars.GameObject
                 conscriptDelay.CountDown(time);
             }
 
-            lock (barracks)
+            lock (conscriptBuildings)
             {
-                for (int i = 0; i < barracks.Count; i++)
+                for (int i = 0; i < conscriptBuildings.Count; i++)
                 {
-                    BarracksStatus status = barracks[i];
+                    BarracksStatus status = conscriptBuildings[i];
                     if (i != selectedConscript || !conscriptDelay.HasTime || status.active == ConscriptActiveStatus.Training)
                     {
                         switch (status.active)
@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 if (status.menCollected == DssConst.SoldierGroup_DefaultCount)
                                 {
                                     status.active++;
-                                    status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training)));
+                                    status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training, status.nobelmen)));
                                 }
                                 break;
 
@@ -110,18 +110,18 @@ namespace VikingEngine.DSSWars.GameObject
                                 break;
                         }
                     }
-                    barracks[i] = status;
+                    conscriptBuildings[i] = status;
                 }
             }
         }
 
         public void onConscriptChange()
         {
-            lock (barracks)
+            lock (conscriptBuildings)
             {
                 conscriptDelay.Seconds = 1;
 
-                BarracksStatus status = barracks[selectedConscript];
+                BarracksStatus status = conscriptBuildings[selectedConscript];
                 if (status.active == ConscriptActiveStatus.CollectingEquipment ||
                     status.active == ConscriptActiveStatus.CollectingMen)
                 {
@@ -140,7 +140,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     status.active = ConscriptActiveStatus.Idle;
 
-                    barracks[selectedConscript] = status;
+                    conscriptBuildings[selectedConscript] = status;
                 }
 
             }
@@ -154,7 +154,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 IntVector2 onTile = DssRef.world.GetFreeTile(tilePos);
 
-                army = faction.NewArmy(onTile);//new Army(faction, onTile);
+                army = faction.NewArmy(onTile);
             }
 
             SoldierConscriptProfile soldierProfile = new SoldierConscriptProfile()
@@ -181,7 +181,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void createStartupBarracks()
         {
-            if (barracks.Count == 0)
+            if (conscriptBuildings.Count == 0)
             {
                 IntVector2 pos = WP.ToSubTilePos_TopLeft(tilePos);
                 pos.X += 4;
@@ -192,24 +192,25 @@ namespace VikingEngine.DSSWars.GameObject
 
                 BarracksStatus newBarrack = new BarracksStatus()
                 {
+                    nobelmen = false,
                     idAndPosition = conv.IntVector2ToInt(pos),
-                    //que = 2,
                 };
                 newBarrack.profile.armorLevel = ArmorLevel.Light;
 
-                barracks.Add(newBarrack);
+                conscriptBuildings.Add(newBarrack);
             }
         }
 
-        public void addBarracks(IntVector2 subPos)
+        public void addBarracks(IntVector2 subPos, bool nobelmen)
         {
             BarracksStatus consriptProfile = new BarracksStatus()
             {
+                nobelmen = nobelmen,
                 idAndPosition = conv.IntVector2ToInt(subPos),
             };
-            lock (barracks)
+            lock (conscriptBuildings)
             {
-                barracks.Add(consriptProfile);
+                conscriptBuildings.Add(consriptProfile);
             }
         }
     }

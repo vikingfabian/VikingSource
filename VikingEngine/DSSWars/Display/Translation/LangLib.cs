@@ -33,10 +33,13 @@ namespace VikingEngine.DSSWars.Display.Translation
             {
                 case MainWeapon.SharpStick: return DssRef.todoLang.Resource_TypeName_SharpStick;
                 case MainWeapon.Sword: return DssRef.todoLang.Resource_TypeName_Sword;
+                case MainWeapon.TwoHandSword: return DssRef.todoLang.Resource_TypeName_TwoHandSword;
+                case MainWeapon.KnightsLance: return DssRef.todoLang.Resource_TypeName_KnightsLance;
                 case MainWeapon.Bow: return DssRef.todoLang.Resource_TypeName_Bow;
+                case MainWeapon.Ballista: return DssRef.lang.UnitType_Ballista;
 
                 default:
-                    throw new NotImplementedException();
+                    return TextLib.Error;
             }
         }
 
@@ -67,6 +70,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case SpecializationType.HonorGuard: return "Honor guard";
                 case SpecializationType.Green: return "Green soldier";
                 case SpecializationType.Traditional: return "Traditional";
+                case SpecializationType.AntiCavalry: return "Anti cavalry";
 
 
                 default:
@@ -127,11 +131,15 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.todoLang.BuildingType_Cook_Description;
                 case TerrainBuildingType.Work_Smith:
                     return DssRef.todoLang.BuildingType_Smith_Description;
+                case TerrainBuildingType.Carpenter:
+                    return DssRef.todoLang.BuildingType_Carpenter_Description;
+                case TerrainBuildingType.Nobelhouse:
+                    return DssRef.todoLang.BuildingType_Nobelhouse_Description;
                 case TerrainBuildingType.Brewery:
                     return DssRef.todoLang.BuildingType_Tavern_Brewery;
 
                 default:
-                    throw new NotImplementedException();
+                    return TextLib.Error;
             }
         }
 
@@ -140,6 +148,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         {
             switch (item)
             {
+                case ItemResourceType.Gold: return DssRef.lang.ResourceType_Gold;
+
                 case ItemResourceType.Water_G: return DssRef.todoLang.Resource_TypeName_Water;
                 case ItemResourceType.Beer: return DssRef.todoLang.Resource_TypeName_Beer;
                 case ItemResourceType.IronOre_G: return DssRef.todoLang.Resource_TypeName_Ore;
@@ -154,8 +164,14 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.todoLang.Resource_TypeName_SharpStick;
                 case ItemResourceType.Sword:
                     return DssRef.todoLang.Resource_TypeName_Sword;
+                case ItemResourceType.TwoHandSword:
+                    return DssRef.todoLang.Resource_TypeName_TwoHandSword;
+                case ItemResourceType.KnightsLance:
+                    return DssRef.todoLang.Resource_TypeName_KnightsLance;
                 case ItemResourceType.Bow:
                     return DssRef.todoLang.Resource_TypeName_Bow;
+                case ItemResourceType.Ballista:
+                    return DssRef.lang.UnitType_Ballista;
 
                 case ItemResourceType.LightArmor:
                     return DssRef.todoLang.Resource_TypeName_LightArmor;
