@@ -277,26 +277,31 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     state = WorkerUnitState.HasGoal;
                 }
 
-                if (status.carry.amount > 0)
-                {
-                    if (resourceModel == null)
-                    {
-                        resourceModel = new Graphics.Mesh(LoadedMesh.plane, Vector3.Zero,
-                            new Vector3(DssConst.Men_StandardModelScale * 0.6f), Graphics.TextureEffectType.Flat, SpriteName.NO_IMAGE, Color.White);
-                        resourceModel.Rotation = DssLib.FaceCameraRotation;
-                    }
-                    resourceModel.SetSpriteName(Resource.ResourceLib.Icon(status.carry.type));
-                }
-                else
-                { 
-                    resourceModel?.DeleteMe();
-                    resourceModel = null;
-                }
+                refreshCarry();
             }
             else if (status.work == WorkType.IsDeleted)
             {
                 model.position = Vector3.Zero;
                 model.Visible = false;
+            }
+        }
+
+        void refreshCarry()
+        {
+            if (status.carry.amount > 0)
+            {
+                if (resourceModel == null)
+                {
+                    resourceModel = new Graphics.Mesh(LoadedMesh.plane, Vector3.Zero,
+                        new Vector3(DssConst.Men_StandardModelScale * 0.6f), Graphics.TextureEffectType.Flat, SpriteName.NO_IMAGE, Color.White);
+                    resourceModel.Rotation = DssLib.FaceCameraRotation;
+                }
+                resourceModel.SetSpriteName(Resource.ResourceLib.Icon(status.carry.type));
+            }
+            else
+            {
+                resourceModel?.DeleteMe();
+                resourceModel = null;
             }
         }
 

@@ -63,10 +63,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public AbsDetailUnitAdvancedModel(AbsSoldierUnit soldier)
         {
-            if (soldier.group.typeCurrentData.IsShip())
-            { 
-                    lib.DoNothing();
-            }
+            //if (soldier.group.typeCurrentData.IsShip())
+            //{ 
+            //        lib.DoNothing();
+            //}
             model = soldier.group.army.faction.AutoLoadModelInstance(
                 soldier.soldierData.RandomModelName(), soldier.SoldierProfile().modelScale, true);
 

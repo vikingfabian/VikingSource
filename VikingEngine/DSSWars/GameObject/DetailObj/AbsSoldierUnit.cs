@@ -133,6 +133,24 @@ namespace VikingEngine.DSSWars.GameObject
             init(true);
         }
 
+        public void setDetailLevel(bool unitDetailView)
+        {
+            Debug.CrashIfThreaded();
+            if (unitDetailView)
+            {
+                if (model == null)
+                {
+                    model = initModel();
+                    model.update(this);
+                }
+            }
+            else
+            {
+                model?.DeleteMe();
+                model = null;
+            }
+        }
+
         public override string TypeName()
         {
             return group.soldierConscript.conscript.TypeName() + " (" + parentArrayIndex.ToString() + ")";

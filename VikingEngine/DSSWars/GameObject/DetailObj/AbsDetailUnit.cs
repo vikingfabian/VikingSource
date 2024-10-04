@@ -119,24 +119,24 @@ namespace VikingEngine.DSSWars.GameObject
         abstract public void update(float time, bool fullUpdate);
 
         abstract public void asynchUpdate();
-        
-        public void setDetailLevel(bool unitDetailView)
-        {
-            Debug.CrashIfThreaded();
-            if (unitDetailView)
-            {
-                if (model == null)
-                {                    
-                    model = initModel();
-                    
-                }
-            }
-            else
-            {
-                model?.DeleteMe();
-                model = null;
-            }
-        }
+
+        //public void setDetailLevel(bool unitDetailView)
+        //{
+        //    Debug.CrashIfThreaded();
+        //    if (unitDetailView)
+        //    {
+        //        if (model == null)
+        //        {
+        //            model = initModel();
+        //            model.update(this);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        model?.DeleteMe();
+        //        model = null;
+        //    }
+        //}
 
         abstract protected DetailUnitModel initModel();
 

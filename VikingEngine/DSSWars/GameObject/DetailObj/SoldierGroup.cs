@@ -188,7 +188,8 @@ namespace VikingEngine.DSSWars.GameObject
             //w.Write((byte)type);
             //w.Write((byte)FirstSoldierData().unitType);
             
-            typeSoldierData.writeGameState(w);
+            //typeSoldierData.writeGameState(w);
+            soldierConscript.writeGameState(w);
             w.Write(IsShip());
 
             //typeCurrentData = typeSoldierData;
@@ -218,8 +219,14 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
         }
+
         public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
+            this.type = UnitType.Conscript;
+            typeSoldierData = DssRef.profile.Get(type);
+            typeShipData = DssRef.profile.Get(UnitType.ConscriptWarship);
+
+            typeCurrentData = typeSoldierData;
             //type = (UnitType)r.ReadByte();
             //UnitType soldierType = (UnitType)r.ReadByte();
             soldierConscript.readGameState(r);
