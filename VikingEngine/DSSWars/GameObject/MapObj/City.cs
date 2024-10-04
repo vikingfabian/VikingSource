@@ -1566,7 +1566,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     else if (x == 5 && y == 4)
                     {
-                        buildingType = TerrainBuildingType.Work_Smith;
+                        buildingType = TerrainBuildingType.Work_Bench;
                     }
                     else
                     {

@@ -446,6 +446,11 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainBuildingType.Work_Cook:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 1, wp, WorldData.SubTileWidth * 1f));
                     break;
+
+                case TerrainBuildingType.Work_Bench:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 2, wp, WorldData.SubTileWidth * 0.6f));
+                    break;
+
                 case TerrainBuildingType.Work_Smith:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 0, wp, WorldData.SubTileWidth * 1.4f));
                     break;
@@ -508,6 +513,9 @@ namespace VikingEngine.DSSWars.Map
             {
                 case TerrainMineType.IronOre:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 0, wp, scale));
+                    break;
+                case TerrainMineType.Coal:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 1, wp, scale));
                     break;
                 case TerrainMineType.GoldOre:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 1, wp, scale));

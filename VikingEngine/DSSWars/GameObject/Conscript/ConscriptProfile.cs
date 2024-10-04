@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32.SafeHandles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -176,8 +177,6 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             }
             return string.Format(DssRef.todoLang.Conscription_Status_Training, remaining);
         }
-
-
     }
 
     struct SoldierConscriptProfile
@@ -201,6 +200,20 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             skillBonus = SaveLib.ReadFloatMultiplier(r);
         }
 
+        public UnitType unitType()
+        {
+            switch (conscript.weapon)
+            {
+                case MainWeapon.Ballista:
+                    return UnitType.ConscriptWarmashine;
+                case MainWeapon.KnightsLance:
+                    return UnitType.ConscriptCavalry;
+
+                default:
+                    return UnitType.Conscript;
+            }
+        }
+
         public SoldierData init(AbsSoldierProfile profile)
         {
             SoldierData result = profile.data;
@@ -221,6 +234,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     result.modelName = LootFest.VoxelModelName.war_folkman;
                     result.icon = SpriteName.WarsUnitIcon_Folkman;
                     break;
+
                 case MainWeapon.Sword:
                     result.mainAttack = AttackType.Melee;
                     result.attackRange = 0.04f;
@@ -228,6 +242,30 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     result.modelVariationCount = 3;
                     result.icon = SpriteName.WarsUnitIcon_Soldier;
                     break;
+
+                case MainWeapon.TwoHandSword:
+                    result.mainAttack = AttackType.Melee;
+                    result.attackRange = 0.08f;
+                    result.modelName = LootFest.VoxelModelName.wars_twohand;
+                    result.modelVariationCount = 1;
+                    result.icon = SpriteName.WarsUnitIcon_TwoHand;
+                    break;
+
+                case MainWeapon.KnightsLance:
+                    result.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 2f;
+                    result.attackRange = 0.06f;
+                    result.basehealth *= 3;
+                    result.mainAttack = AttackType.Melee;
+                    //result.attackDamage = 120;
+                    result.attackDamageStructure = Convert.ToInt32(30 * skillBonus);
+                    result.attackDamageSea = Convert.ToInt32(20 * skillBonus);
+                    result.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.8f;
+                    result.modelName = LootFest.VoxelModelName.war_knight;
+                    result.modelVariationCount = 3;
+                    result.icon = SpriteName.WarsUnitIcon_Knight;
+                    result.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 3;
+                    break;
+
                 case MainWeapon.Bow:
                     result.mainAttack = AttackType.Arrow;
                     result.ArmyFrontToBackPlacement = ArmyPlacement.Mid;
@@ -238,7 +276,26 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     result.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 10f;
                     break;
 
+                case MainWeapon.Ballista:
+                    result.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
+                    result.attackRange = WarmashineProfile.BallistaRange;
 
+                    result.basehealth = MathExt.MultiplyInt(0.5, result.basehealth);
+                    result.mainAttack = AttackType.Ballista;
+                    //result.attackDamage = 300;
+                    result.attackDamageStructure = Convert.ToInt32(1500 * skillBonus);
+                    //result.attackDamageSea = 400;
+                    result.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 16f;
+
+                    result.modelName = LootFest.VoxelModelName.war_ballista;
+                    result.modelVariationCount = 2;
+
+                    result.ArmyFrontToBackPlacement = ArmyPlacement.Back;
+
+                    result.icon = SpriteName.WarsUnitIcon_Ballista;
+
+                    result.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
+                    break;
             }
 
             switch (conscript.specialization)
@@ -256,7 +313,6 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                         DssConst.Conscript_SpecializePercentage : DssConst.Conscript_SpecializePercentage * 3f;
                     result.attackDamageSea = MathExt.AddPercentage(result.attackDamageSea, seaDamagePerc);
                     result.attackDamageStructure = MathExt.SubtractPercentage(result.attackDamageStructure, DssConst.Conscript_SpecializePercentage);
-
 
                     if (!RangedUnit())
                     {
@@ -289,7 +345,6 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     result.secondaryAttackRange = 1.7f;
                     result.bonusProjectiles = 2;
                     result.icon = SpriteName.WarsUnitIcon_Greensoldier;
-
                     break;
             }
 

@@ -60,6 +60,7 @@ namespace VikingEngine.DSSWars.Map
         WorkerHut,
         Brewery,
         Work_Cook,
+        Work_Bench,
         Work_Smith,
         PigPen,
         HenPen,
@@ -82,6 +83,7 @@ namespace VikingEngine.DSSWars.Map
     enum TerrainMineType
     {
         Stones,
+        Coal,
         StoneBlock,
         IronOre,
         TinOre,

@@ -20,6 +20,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         public WorkPriority move = new WorkPriority(3);
         public WorkPriority wood = new WorkPriority(2);
         public WorkPriority stone = new WorkPriority(2);
+        public WorkPriority craft_fuel = new WorkPriority(4);
         public WorkPriority craft_food = new WorkPriority(4);
         public WorkPriority craft_beer = new WorkPriority(1);
         public WorkPriority craft_iron = new WorkPriority(3);
@@ -46,6 +47,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             move.writeGameState(w, isCity);
             wood.writeGameState(w, isCity);
             stone.writeGameState(w, isCity);
+            craft_fuel.writeGameState(w, isCity);
             craft_food.writeGameState(w, isCity);
             craft_beer.writeGameState(w, isCity);
             craft_iron.writeGameState(w, isCity);
@@ -71,6 +73,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             move.readGameState(r, subversion, isCity);
             wood.readGameState(r, subversion, isCity);
             stone.readGameState(r, subversion, isCity);
+            craft_fuel.readGameState(r, subversion, isCity);
             craft_food.readGameState(r, subversion, isCity);
             craft_beer.readGameState(r, subversion, isCity);
             craft_iron.readGameState(r, subversion, isCity);
@@ -98,8 +101,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             move.onFactionValueChange(factionTemplate.move);
             wood.onFactionValueChange(factionTemplate.wood);
             stone.onFactionValueChange(factionTemplate.stone);
+            craft_fuel.onFactionValueChange(factionTemplate.craft_fuel);
             craft_food.onFactionValueChange(factionTemplate.craft_food);
-            craft_beer.onFactionValueChange(factionTemplate.craft_food);
+            craft_beer.onFactionValueChange(factionTemplate.craft_beer);
             craft_iron.onFactionValueChange(factionTemplate.craft_iron);
 
             craft_sharpstick.onFactionValueChange(factionTemplate.craft_sharpstick);
@@ -137,7 +141,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         public WorkPriority GetWorkPriority(ItemResourceType item)
         {
             switch (item)
-            {                
+            {
+                case ItemResourceType.Fuel_G:
+                    return craft_fuel;
                 case ItemResourceType.Food_G:
                     return craft_food;
                 case ItemResourceType.Iron_G:
@@ -170,6 +176,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                    return wood;
                 case WorkPriorityType.stone:
                     return stone;
+                case WorkPriorityType.craftFuel:
+                    return craft_fuel;
                 case WorkPriorityType.craftFood:
                     return craft_food;
                 case WorkPriorityType.craftBeer:
@@ -223,6 +231,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     break;
                 case WorkPriorityType.stone:
                     stone = value;
+                    break;
+                case WorkPriorityType.craftFuel:
+                    craft_fuel = value;
                     break;
                 case WorkPriorityType.craftFood:
                     craft_food = value;
@@ -287,6 +298,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             wood.toHud(player, content, string.Format(DssRef.todoLang.Work_GatherXResource, DssRef.todoLang.Resource_TypeName_Wood), WorkPriorityType.wood, faction, city);
             stone.toHud(player, content, string.Format(DssRef.todoLang.Work_GatherXResource, DssRef.todoLang.Resource_TypeName_Stone), WorkPriorityType.stone, faction, city);
             craft_food.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Food), WorkPriorityType.craftFood, faction, city);
+            craft_fuel.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Fuel), WorkPriorityType.craftFuel, faction, city);
             craft_beer.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Beer), WorkPriorityType.craftBeer, faction, city);
             craft_iron.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Iron), WorkPriorityType.craftIron, faction, city);
 
@@ -420,6 +432,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         move,
         wood,
         stone,
+        craftFuel,
         craftFood,
         craftBeer,
 

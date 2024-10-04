@@ -1,8 +1,14 @@
 ﻿
 -Change Log-
 *Some polish on the hud
+*Soldier performace improvements
 *Changed water to differ in add speed
 *Icons
+*Ballista, zweihänder and cavalry units added
+*Fuel resource
+*work bench
+*Coal mining
+*Number of mines is reduced to 50%
 
 !Prev save files are broken
 

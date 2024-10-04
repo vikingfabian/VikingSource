@@ -14,7 +14,8 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City : GameObject.AbsMapObject
     {
-        static readonly ItemResourceType[] SmithTypes = { ItemResourceType.Iron_G, ItemResourceType.LightArmor, ItemResourceType.MediumArmor, ItemResourceType.HeavyArmor, ItemResourceType.SharpStick, ItemResourceType.Sword, ItemResourceType.Bow };
+        static readonly ItemResourceType[] IronCraftTypes = { ItemResourceType.Iron_G, ItemResourceType.MediumArmor, ItemResourceType.HeavyArmor, ItemResourceType.Sword, ItemResourceType.TwoHandSword, ItemResourceType.KnightsLance };
+        static readonly ItemResourceType[] BenchCraftTypes = { ItemResourceType.Fuel_G, ItemResourceType.LightArmor, ItemResourceType.SharpStick, ItemResourceType.Bow };
         public WorkTemplate workTemplate = new WorkTemplate();
 
         const int NoSubWork = -1;
@@ -490,27 +491,24 @@ namespace VikingEngine.DSSWars.GameObject
                                                             //ResourceLib.CraftFood.createBackOrder(this);
                                                             workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Food_G, subTileLoop.Position, workTemplate.craft_food.value, 0));
                                                         }
-                                                        //else
-                                                        //{
-                                                        //    var b1 = ResourceLib.CraftFood.available(this);
-                                                        //    var b2 = isFreeTile(subTileLoop.Position);
-                                                        //}
                                                         break;
+                                                    case TerrainBuildingType.Work_Bench:                                                        
                                                     case TerrainBuildingType.Work_Smith:
 
                                                         int topPrioValue = WorkTemplate.NoPrio;
                                                         ItemResourceType topItem = ItemResourceType.NONE;
                                                         WorkPriority topPrio = WorkPriority.Empty;
 
-                                                        foreach (var item in SmithTypes)
+                                                        ItemResourceType[] types = building == TerrainBuildingType.Work_Bench? BenchCraftTypes : IronCraftTypes;
+
+                                                        foreach (var item in types)
                                                         {
                                                             var template = workTemplate.GetWorkPriority(item);
                                                             if (template.value > topPrioValue)
                                                             {
                                                                 ResourceLib.Blueprint(item, out var bp1, out var bp2);
-                                                                if (bp1.available(this))
+                                                                if (bp1.available(this) && GetGroupedResource(item).needMore())
                                                                 {
-
                                                                     topPrioValue = template.value;
                                                                     topItem = item;
                                                                     topPrio = template;
@@ -686,7 +684,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected override void onWorkComplete_async(ref WorkerStatus status)
         {
-            status.WorkComplete(this);
+            status.WorkComplete(this, false);
         }
 
         void async_blackMarketUpdate()

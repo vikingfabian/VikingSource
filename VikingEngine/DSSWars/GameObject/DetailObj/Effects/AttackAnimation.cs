@@ -88,6 +88,13 @@ namespace VikingEngine.DSSWars.GameObject
                     else
                     {
                         damage = soldierData.attackDamage;
+
+                        if (group != null &&
+                            group.soldierConscript.conscript.specialization == Conscript.SpecializationType.AntiCavalry && 
+                            target.DetailUnitType() == UnitType.ConscriptCavalry)
+                        {
+                            damage = MathExt.MultiplyInt(DssConst.AntiCavalryBonusMultiply, damage);
+                        }
                     }
                 }
                 else
@@ -107,6 +114,11 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else
                 {
+                    if (target.soldierData.arrowWeakness)
+                    {
+                        damage = MathExt.MultiplyInt(DssConst.ArrowWeaknessBonusMultiply, damage);
+                    }
+
                     if (mainAttack)
                     {
                         Projectile.ProjectileAttack(fullUpdate, this, soldierData.mainAttack, target, damage);

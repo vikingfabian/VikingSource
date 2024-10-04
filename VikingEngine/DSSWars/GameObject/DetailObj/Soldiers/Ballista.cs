@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.GameObject
     //        attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 16f;
 
     //        maxAttackAngle = 0.07f;
-            
+
     //        rowWidth = 3;
     //        columnsDepth = 2;
     //        workForcePerUnit = 2;
@@ -55,6 +55,43 @@ namespace VikingEngine.DSSWars.GameObject
     //        return new Ballista();
     //    }
     //}
+
+    class WarmashineProfile : ConscriptedSoldierProfile
+    {
+        public const float BallistaRange = 3;
+        public WarmashineProfile() 
+            :base()
+        {
+            unitType = UnitType.ConscriptWarmashine;
+            modelScale = DssConst.Men_StandardModelScale * 2f;
+            boundRadius = DssVar.StandardBoundRadius * 2.2f;
+
+            //walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
+            ArmySpeedBonusLand = -0.5;
+            rotationSpeed = StandardRotatingSpeed * 0.04f;
+            
+            targetSpotRange = BallistaRange + StandardTargetSpotRange;
+            
+            maxAttackAngle = 0.07f;
+
+            rowWidth = 3;
+            columnsDepth = 2;
+            workForcePerUnit = 2;
+            goldCost = MathExt.MultiplyInt(0.9, DssLib.GroupDefaultCost);
+            upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+            groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
+
+            hasBannerMan = false;
+            
+            description = DssRef.lang.UnitType_Description_Ballista;
+
+            
+        }
+        public override AbsSoldierUnit CreateUnit()
+        {
+            return new Ballista();
+        }
+    }
 
     class Ballista : BaseSoldier
     {

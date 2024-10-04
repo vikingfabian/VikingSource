@@ -140,7 +140,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         Water_G,
         SaltWater,
 
-        Fuel,
+        Fuel_G,
         Poop,
         
         Ballista,

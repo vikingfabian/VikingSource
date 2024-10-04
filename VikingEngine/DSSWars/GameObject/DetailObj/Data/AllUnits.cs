@@ -15,8 +15,6 @@ namespace VikingEngine.DSSWars.GameObject
         public static float AverageGroupStrength;
         public const float HealthToStrengthConvertion = 0.5f;
 
-        //AbsSoldierProfile[] soldiers = new AbsSoldierProfile[(int)UnitType.NUM];
-        //AbsSoldierProfile[] recruits = new AbsSoldierProfile[(int)UnitType.NUM];
         AbsSoldierProfile[] profiles = new AbsSoldierProfile[(int)UnitType.NUM];
         public CityDetailProfile city;
         public BannerManProfile bannerman;
@@ -31,7 +29,8 @@ namespace VikingEngine.DSSWars.GameObject
             add(new ConscriptedSoldierProfile());
             add(new ConscriptedWarshipData());
 
-
+            add(new WarmashineProfile());
+            add(new CavalryProfile());
             //add(new FolkWarshipData(UnitType.FolkWarship, 
             //    add(new FolkManData())));
 

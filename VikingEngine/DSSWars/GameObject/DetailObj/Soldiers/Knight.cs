@@ -56,15 +56,53 @@ namespace VikingEngine.DSSWars.GameObject
 
     //    public override AbsDetailUnit CreateUnit()
     //    {
-            
+
     //        return new Knight();
     //    }
     //}
+
+    class CavalryProfile : ConscriptedSoldierProfile
+    {
+        public CavalryProfile()
+            :base()
+        {
+            unitType = UnitType.ConscriptCavalry;
+
+            modelScale = DssConst.Men_StandardModelScale * 1.8f;
+            boundRadius = DssVar.StandardBoundRadius;
+
+            idleFrame = 0;
+            attackFrame = 1;
+            
+            ArmySpeedBonusLand = 0.8;
+            rotationSpeed = StandardRotatingSpeed * 2f;
+            targetSpotRange = StandardTargetSpotRange;
+                        
+            rowWidth = 4;
+            columnsDepth = 3;
+            groupSpacing = DssVar.DefaultGroupSpacing * 1.4f;
+
+            goldCost = MathExt.MultiplyInt(2, DssLib.GroupDefaultCost);
+            workForcePerUnit = 2;
+            upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+            
+            modelAdjY = 0.1f;
+            hasBannerMan = false;
+
+            description = DssRef.lang.UnitType_Description_Knight;
+        }
+
+        public override AbsSoldierUnit CreateUnit()
+        {
+            return new Knight();
+        }
+    }
     class Knight : BaseSoldier
     {
         public Knight()
             : base()
-        {            
+        {    
+            
         }
 
         protected override DetailUnitModel initModel()

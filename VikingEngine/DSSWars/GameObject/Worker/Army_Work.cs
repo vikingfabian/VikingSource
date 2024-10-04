@@ -123,7 +123,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected override void onWorkComplete_async(ref WorkerStatus status)
         {
-            status.WorkComplete(this);
+            status.WorkComplete(this, false);
         }
     }
 }

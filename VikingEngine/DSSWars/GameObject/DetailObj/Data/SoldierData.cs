@@ -9,6 +9,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
     struct SoldierData
     {
         public int basehealth=0;
+        public bool arrowWeakness = false;
         public AttackType mainAttack=0;
         public AttackType secondaryAttack = 0;
         public int bonusProjectiles = 0;

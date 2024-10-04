@@ -6,6 +6,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
@@ -57,28 +58,6 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case WorkerUnitState.HasGoal:
 
                     float speed = DssConst.Men_StandardWalkingSpeed * Ref.DeltaGameTimeMs;
-                    model.position += walkDir * speed;
-                    updateGroudY(false);
-
-                    if (Convert.ToInt32(model.position.X) != prevX || Convert.ToInt32(model.position.Z) != prevZ)
-                    {
-                        prevX = Convert.ToInt32(model.position.X);
-                        prevZ = Convert.ToInt32(model.position.Z);
-                        //Tile tile;
-                        if (DssRef.world.tileGrid.TryGet(prevX, prevZ, out Tile tile))
-                        {
-                            isShip = tile.IsWater();
-                            if (isShip)
-                            {
-                                model.Frame = status.carry.amount > 0 ? 4 : 3;
-                            }
-                        }
-                    }
-
-                    if (!isShip)
-                    {
-                        walkingAnimation.update(speed, model);
-                    }
 
                     if (VectorExt.PlaneXZDistance(ref model.position, ref goalPos) < speed * 4)
                     {
@@ -86,6 +65,33 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         model.position.Z = goalPos.Z;
                         WP.Rotation1DToQuaterion(model, 2.8f);
                         state = WorkerUnitState.FinalizeWork;
+                        //refreshCarryModel();
+                    }
+                    else
+                    {
+                        model.position += walkDir * speed;
+                        updateGroudY(false);
+
+                        if (Convert.ToInt32(model.position.X) != prevX || Convert.ToInt32(model.position.Z) != prevZ)
+                        {
+                            prevX = Convert.ToInt32(model.position.X);
+                            prevZ = Convert.ToInt32(model.position.Z);
+                            //Tile tile;
+                            if (DssRef.world.tileGrid.TryGet(prevX, prevZ, out Tile tile))
+                            {
+                                isShip = tile.IsWater();
+                                if (isShip)
+                                {
+                                    model.Frame = status.carry.amount > 0 ? 4 : 3;
+                                }
+                            }
+                        }
+
+                        if (!isShip)
+                        {
+                            walkingAnimation.update(speed, model);
+                        }
+
                     }
 
                     break;
@@ -145,6 +151,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                 switch (building)
                                 {
                                     case TerrainBuildingType.Brewery:
+                                    case TerrainBuildingType.Work_Bench:
                                     case TerrainBuildingType.Work_Cook:
                                         SoundLib.genericWork.Play(model.position);
                                         break;
@@ -152,6 +159,16 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                         SoundLib.anvil.Play(model.position);
                                         break;
                                 }
+                            }
+
+                            if (resourceModel != null)
+                            {
+                                //resourceModel.Rotation.RotateWorldX(Ref.DeltaTimeMs * 0.001f);
+                            }
+                            else
+                            { 
+                                refreshCarryModel();
+                                updateGroudY(false);
                             }
                             break;
                         case WorkType.Build:
@@ -183,8 +200,12 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                 }
                                 break;
                             case WorkType.Plant:
+                                SoundLib.drop_item.Play(model.position);
+                                break;
                             case WorkType.DropOff:
                                 SoundLib.drop_item.Play(model.position);
+
+                                
                                 break;
                             case WorkType.LocalTrade:
                                 SoundLib.buy.Play(model.position);
@@ -199,9 +220,10 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                 break;
                         }
 
-                        status.WorkComplete(mapObject);
+                        status.WorkComplete(mapObject, true);
                         mapObject.setWorkerStatus(parentArrayIndex, ref status);
                         state = WorkerUnitState.None;
+                        refreshCarryModel();
                     }
                     break;
 
@@ -239,6 +261,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 {
                     finalizeWorkTime = status.finalizeWorkTime(city);
                     state = WorkerUnitState.FinalizeWork;
+                    //refreshCarryModel();
                 }
                 else
                 {
@@ -277,7 +300,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     state = WorkerUnitState.HasGoal;
                 }
 
-                refreshCarry();
+                refreshCarryModel();
             }
             else if (status.work == WorkType.IsDeleted)
             {
@@ -286,17 +309,37 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             }
         }
 
-        void refreshCarry()
+        void refreshCarryModel()
         {
+            SpriteName sprite = SpriteName.NO_IMAGE;
+            bool hasImage;
             if (status.carry.amount > 0)
+            {
+                hasImage = true;
+                sprite = Resource.ResourceLib.Icon(status.carry.type);
+            }
+            else if (status.work == WorkType.Craft && state == WorkerUnitState.FinalizeWork)
+            {
+                hasImage = true;
+                ItemResourceType item = (ItemResourceType)status.workSubType;
+                sprite = ResourceLib.Icon(item);
+            }
+            else
+            { 
+                hasImage = false;
+            }
+
+            if (hasImage)
             {
                 if (resourceModel == null)
                 {
                     resourceModel = new Graphics.Mesh(LoadedMesh.plane, Vector3.Zero,
-                        new Vector3(DssConst.Men_StandardModelScale * 0.6f), Graphics.TextureEffectType.Flat, SpriteName.NO_IMAGE, Color.White);
+                        new Vector3(DssConst.Men_StandardModelScale * 0.6f), Graphics.TextureEffectType.Flat, SpriteName.NO_IMAGE, Color.White, false);
+                    resourceModel.AddToRender(DrawGame.UnitDetailLayer);
                     resourceModel.Rotation = DssLib.FaceCameraRotation;
                 }
-                resourceModel.SetSpriteName(Resource.ResourceLib.Icon(status.carry.type));
+
+                resourceModel.SetSpriteName(sprite);
             }
             else
             {

@@ -15,6 +15,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string Resource_TypeName_Water => "water";
         public string Resource_TypeName_Wood => "wood";
+        public string Resource_TypeName_Fuel => "fuel";
         public string Resource_TypeName_Stone => "stone";
         public string Resource_TypeName_RawFood => "raw food";
         public string Resource_TypeName_Food => "food";
@@ -44,6 +45,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_Barracks => "Barracks";
         public string BuildingType_PigPen => "Pig pen";
         public string BuildingType_HenPen => "Hen pen";
+        public string BuildingType_WorkBench => "Work bench";
         public string BuildingType_Carpenter => "Carpenter";
         //public string BuildingType_Nobelhouse => "";
         public string DecorType_Statue => "Statue";
@@ -60,7 +62,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_Farm_Description => "Grow a resource";
 
         public string BuildingType_Cook_Description => "Food crafting station";
-        public string BuildingType_Smith_Description => "Item crafting station";
+        public string BuildingType_Bench_Description => "Item crafting station";
+        public string BuildingType_Smith_Description => "Metal crafting station";
         public string BuildingType_Carpenter_Description => "Wood crafting station";
 
         public string BuildingType_Nobelhouse_Description => "Home for knights and diplomats";

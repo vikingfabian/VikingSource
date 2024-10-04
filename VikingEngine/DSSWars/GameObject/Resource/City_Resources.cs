@@ -20,6 +20,7 @@ namespace VikingEngine.DSSWars.GameObject
         public static readonly ItemResourceType[] MovableCityResourceTypes =
         {
              ItemResourceType.Wood_Group,
+             ItemResourceType.Fuel_G,
              ItemResourceType.Stone_G,
              ItemResourceType.RawFood_Group,
              ItemResourceType.Food_G,
@@ -55,7 +56,8 @@ namespace VikingEngine.DSSWars.GameObject
         static readonly GroupedResource Res_Nothing = new GroupedResource() { amount = 100000 };
 
         public GroupedResource res_water = new GroupedResource();
-        public GroupedResource res_wood = new GroupedResource() { amount = 20,  goalBuffer = 300 };
+        public GroupedResource res_wood = new GroupedResource() { amount = 20, goalBuffer = 300 };
+        public GroupedResource res_fuel = new GroupedResource() { amount = 20, goalBuffer = 300 };
         public GroupedResource res_stone = new GroupedResource() { amount = 20, goalBuffer = 100 };
         public GroupedResource res_rawFood = new GroupedResource() { amount = 50, goalBuffer = 200 };
         public GroupedResource res_food = new GroupedResource() { amount = 200, goalBuffer = 500 };
@@ -107,6 +109,9 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case ItemResourceType.Wood_Group:
                     res_wood.amount += add;
+                    break;
+                case ItemResourceType.Fuel_G:
+                    res_fuel.amount += add;
                     break;
                 case ItemResourceType.RawFood_Group:
                     res_rawFood.amount += add;
@@ -163,6 +168,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Food_G: return res_food;
                 case ItemResourceType.Stone_G: return res_stone;
                 case ItemResourceType.Wood_Group: return res_wood;
+                case ItemResourceType.Fuel_G: return res_fuel;
                 case ItemResourceType.RawFood_Group: return res_rawFood;
                 case ItemResourceType.SkinLinen_Group: return res_skinLinnen;
 
@@ -208,6 +214,9 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case ItemResourceType.Wood_Group:
                     res_wood = resource;
+                    break;
+                case ItemResourceType.Fuel_G:
+                    res_fuel = resource;
                     break;
                 case ItemResourceType.RawFood_Group:
                     res_rawFood = resource;
@@ -306,56 +315,76 @@ namespace VikingEngine.DSSWars.GameObject
             return new ItemResource(itemResourceType, 1, payment, carry);
         }
 
-        public void dropOffItem(ItemResource item)
+        public void dropOffItem(ItemResource item, out ItemResource convert1, out ItemResource convert2)
         {
+            convert1 = item;
+            convert2 = ItemResource.Empty;
+
             switch (item.type)
             {
                 case ItemResourceType.DryWood:
                 case ItemResourceType.SoftWood:
                 case  ItemResourceType.HardWood:
-                    res_wood.add(item);
+                    convert1.type = ItemResourceType.Wood_Group;
                     break;
 
-                case ItemResourceType.Stone_G:
-                    res_stone.add(item);
+                case ItemResourceType.Coal:
+                    convert1.type = ItemResourceType.Fuel_G;
                     break;
+
+                //case ItemResourceType.Stone_G:
+                //    res_stone.add(item);
+                //    break;
 
                 case ItemResourceType.Wheat:
-                    res_rawFood.add(item, DssConst.DefaultItemRawFoodAmout);
+                    convert1.type = ItemResourceType.RawFood_Group;
+                    convert1.amount = DssConst.DefaultItemRawFoodAmout;
+                    //res_rawFood.add(item, DssConst.DefaultItemRawFoodAmout);
                     break;
 
                 case ItemResourceType.Egg:                                   
                 case ItemResourceType.Hen:
+                    convert1.type = ItemResourceType.RawFood_Group;
+                    convert1.amount = DssConst.DefaultItemRawFoodAmout;
                     animalResourceBonus(ref item);
-                    res_rawFood.add(item, DssConst.DefaultItemRawFoodAmout);
+                    //res_rawFood.add(item, DssConst.DefaultItemRawFoodAmout);
                     break;
 
                 case ItemResourceType.Pig:
+                    convert1.type = ItemResourceType.RawFood_Group;
+                    convert1.amount = DssConst.PigRawFoodAmout;
                     animalResourceBonus(ref item);
-                    res_rawFood.add(item, DssConst.PigRawFoodAmout);
-                    res_skinLinnen.add(item);
+                    //res_rawFood.add(item, DssConst.PigRawFoodAmout);
+
+                    convert2 = new ItemResource(ItemResourceType.SkinLinen_Group, 1, 1, convert1.amount);
+
+                    //res_skinLinnen.add(item);
                     break;
 
                 case ItemResourceType.Linen:
-                    res_skinLinnen.add(item);
+                    convert1.type = ItemResourceType.SkinLinen_Group;
                     break;
 
-                case ItemResourceType.IronOre_G:
-                    res_ore.add(item, 1);
-                    //{
-                    //    var price = item.amount * DssConst.IronSellValue;
-                    //    faction.gold += price;
-                    //    soldResources.add(price);
-                    //}
-                    break;
+                //case ItemResourceType.IronOre_G:
+                //    res_ore.add(item, 1);
+                //    break;
 
                 case ItemResourceType.GoldOre:
                     {
-                        var price = item.amount * DssConst.GoldOreSellValue;
+                        var price = convert1.amount * DssConst.GoldOreSellValue;
                         faction.gold += price;
                         soldResources.add(price);
+
+                        convert1.type = ItemResourceType.Gold;
+                        convert1.amount = price;
                     }
                     break;
+            }
+
+            AddGroupedResource(convert1.type, convert1.amount);
+            if (convert2.amount > 0)
+            {
+                AddGroupedResource(convert2.type, convert2.amount);
             }
         }
 

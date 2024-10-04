@@ -11,6 +11,10 @@ namespace VikingEngine.DSSWars.GameObject
 {
     class BannerManProfile : ConscriptedSoldierProfile
     {
+        public BannerManProfile():base() 
+        {
+            unitType = UnitType.BannerMan;
+        }
         public override AbsSoldierUnit CreateUnit()
         {
             return new BannerMan();

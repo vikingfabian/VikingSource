@@ -74,7 +74,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             return terrainAmount;
         }
 
-        void workComplete(City city)
+        void workComplete(City city, bool visualUnit)
         {
             float energyCost = processTimeLengthSec * DssConst.WorkTeamEnergyCost;
             if (city.Culture == CityCulture.CrabMentality)
@@ -237,9 +237,13 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     break;
 
                 case WorkType.DropOff:
-                    city.dropOffItem(carry);
+                    city.dropOffItem(carry, out ItemResource convert1, out ItemResource convert2);
                     carry = ItemResource.Empty;
-                    //work = WorkType.Idle;
+
+                    if (visualUnit)
+                    {
+                        new ResourceEffect(convert1.type, convert1.amount, VectorExt.AddY( WP.SubtileToWorldPosXZgroundY_Centered(subTileEnd), 0.08f));
+                    }
                     break;
 
                 case WorkType.LocalTrade:
@@ -266,6 +270,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         {
                             case TerrainMineType.IronOre:
                                 resourceType = ItemResourceType.IronOre_G;
+                                break;
+                            case TerrainMineType.Coal:
+                                resourceType = ItemResourceType.Coal;
                                 break;
                             case TerrainMineType.GoldOre:
                                 resourceType = ItemResourceType.GoldOre;
@@ -366,12 +373,12 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             processTimeStartStampSec = Ref.TotalGameTimeSec;
         }
 
-        public void WorkComplete(AbsMapObject mapObject)
+        public void WorkComplete(AbsMapObject mapObject, bool visualUnit)
         {
             switch (mapObject.gameobjectType())
             {
                 case GameObjectType.City:
-                    workComplete( mapObject.GetCity());
+                    workComplete( mapObject.GetCity(), visualUnit);
                     break;
 
                 case GameObjectType.Army:

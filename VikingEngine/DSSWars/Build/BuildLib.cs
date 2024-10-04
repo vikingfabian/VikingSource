@@ -18,6 +18,7 @@ namespace VikingEngine.DSSWars.Build
         Tavern,
         Brewery,
         Cook,
+        WorkBench,
         Smith,
         Carpenter,
         WheatFarm,
@@ -42,6 +43,7 @@ namespace VikingEngine.DSSWars.Build
             BuildAndExpandType.Tavern,
             BuildAndExpandType.Brewery,
             BuildAndExpandType.Cook,
+            BuildAndExpandType.WorkBench,
             BuildAndExpandType.Smith,
             BuildAndExpandType.Carpenter,
             BuildAndExpandType.PigPen,
@@ -64,6 +66,7 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.PigPen, TerrainMainType.Building, (int)TerrainBuildingType.PigPen, SpriteName.WarsBuild_PigPen, ResourceLib.CraftPigPen);
             new BuildOption(BuildAndExpandType.HenPen, TerrainMainType.Building, (int)TerrainBuildingType.HenPen, SpriteName.WarsBuild_HenPen, ResourceLib.CraftHenPen);
             new BuildOption(BuildAndExpandType.Cook, TerrainMainType.Building, (int)TerrainBuildingType.Work_Cook, SpriteName.WarsBuild_Cook, ResourceLib.CraftCook);
+            new BuildOption(BuildAndExpandType.WorkBench, TerrainMainType.Building, (int)TerrainBuildingType.Work_Bench, SpriteName.NO_IMAGE, ResourceLib.CraftWorkBench);
             new BuildOption(BuildAndExpandType.Smith, TerrainMainType.Building, (int)TerrainBuildingType.Work_Smith, SpriteName.WarsBuild_Smith, ResourceLib.CraftSmith);
             new BuildOption(BuildAndExpandType.Carpenter, TerrainMainType.Building, (int)TerrainBuildingType.Carpenter, SpriteName.WarsBuild_Carpenter, ResourceLib.CraftCarpenter);
 

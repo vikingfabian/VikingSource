@@ -129,6 +129,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.todoLang.BuildingType_Barracks_Description;
                 case TerrainBuildingType.Work_Cook:
                     return DssRef.todoLang.BuildingType_Cook_Description;
+                case TerrainBuildingType.Work_Bench:
+                    return DssRef.todoLang.BuildingType_Bench_Description;
                 case TerrainBuildingType.Work_Smith:
                     return DssRef.todoLang.BuildingType_Smith_Description;
                 case TerrainBuildingType.Carpenter:
@@ -157,6 +159,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case ItemResourceType.Food_G: return DssRef.todoLang.Resource_TypeName_Food;
                 case ItemResourceType.Stone_G: return DssRef.todoLang.Resource_TypeName_Stone;
                 case ItemResourceType.Wood_Group: return DssRef.todoLang.Resource_TypeName_Wood;
+                case ItemResourceType.Fuel_G: return DssRef.todoLang.Resource_TypeName_Fuel;
                 case ItemResourceType.RawFood_Group: return DssRef.todoLang.Resource_TypeName_RawFood;
                 case ItemResourceType.SkinLinen_Group: return DssRef.todoLang.Resource_TypeName_SkinAndLinen;
 

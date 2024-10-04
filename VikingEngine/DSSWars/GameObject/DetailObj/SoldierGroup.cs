@@ -78,7 +78,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int groupObjective = GroupObjective_FollowArmyObjective;
         public bool attackState = false;
-        bool isRecruit;
+        //bool isRecruit;
         public bool inShipTransform = false;
 
         public AbsSoldierProfile typeCurrentData;
@@ -91,32 +91,35 @@ namespace VikingEngine.DSSWars.GameObject
 
         public SoldierGroup(Army army, SoldierConscriptProfile conscript)
         {
-            this.type = UnitType.Conscript;
-            this.soldierConscript = conscript;
-            this.isRecruit = false;
-            tilePos = army.tilePos;
+            soldierConscript = conscript;
+            initPart1();
 
-            //this.groupId = DssRef.state.nextGroupId++;
+            tilePos = army.tilePos;
             this.army = army;
 
             //AbsSoldierData typeData = DssRef.unitsdata.Get(type);
-            typeSoldierData = DssRef.profile.Get(type);//new ConscriptedSoldierData();
-            typeShipData = DssRef.profile.Get(UnitType.ConscriptWarship);
 
-            typeCurrentData = typeSoldierData;
-
-            initPart1(typeCurrentData);
+            initPart2(typeCurrentData);
 
             //Column for column spawning
             int count = typeCurrentData.rowWidth * typeCurrentData.columnsDepth;
             createAllSoldiers(typeCurrentData, count);
 
-            initPart2(typeCurrentData);
+            initPart3(typeCurrentData);
 
             if (army.faction.player.IsPlayer())
             {
                 army.faction.player.GetLocalPlayer().statistics.SoldiersRecruited += count;
             }
+        }
+
+        private void initPart1()
+        {
+            type = soldierConscript.unitType();
+            typeSoldierData = DssRef.profile.Get(type);//new ConscriptedSoldierData();
+            typeShipData = DssRef.profile.Get(UnitType.ConscriptWarship);
+
+            typeCurrentData = typeSoldierData;
         }
 
         //public SoldierGroup(Army army, UnitType type, bool recruit)
@@ -129,9 +132,9 @@ namespace VikingEngine.DSSWars.GameObject
         //    this.army = army;
 
         //    typeCurrentData = DssRef.profile.Get(type);
-            
+
         //    recruit &= typeCurrentData.recruitTrainingTimeSec > 0;
-            
+
         //    initPart1(typeCurrentData);
 
         //    //Column for column spawning
@@ -151,7 +154,7 @@ namespace VikingEngine.DSSWars.GameObject
         //    }
         //}
 
-        void initPart1(AbsSoldierProfile typeData)
+        void initPart2(AbsSoldierProfile typeData)
         {
             int count = typeData.rowWidth * typeData.columnsDepth;
 
@@ -168,7 +171,7 @@ namespace VikingEngine.DSSWars.GameObject
             groupRadius = radius;
         }
 
-        void initPart2(AbsSoldierProfile typeData)
+        void initPart3(AbsSoldierProfile typeData)
         { 
             refreshAttackRadius(typeData);
             refreshRotateSpeed();            
@@ -222,20 +225,13 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
-            this.type = UnitType.Conscript;
-            typeSoldierData = DssRef.profile.Get(type);
-            typeShipData = DssRef.profile.Get(UnitType.ConscriptWarship);
-
-            typeCurrentData = typeSoldierData;
-            //type = (UnitType)r.ReadByte();
-            //UnitType soldierType = (UnitType)r.ReadByte();
             soldierConscript.readGameState(r);
-            //var data = new ConscriptedSoldierData(r);
-            //typeSoldierData = data;
-            //typeShipData = new ConscriptedWarshipData(typeSoldierData, data.profile);
+
+            initPart1();
 
             bool isShip = r.ReadBoolean();
             typeCurrentData = isShip? typeShipData : typeSoldierData;
+
 
             armyLocalPlacement.readShort(r);
 
@@ -253,7 +249,7 @@ namespace VikingEngine.DSSWars.GameObject
             bool soldiersLockedInGroup = groupObjective == GroupObjective_FollowArmyObjective;
 
             //AbsSoldierData typeData = DssRef.unitsdata.Get(type);
-            initPart1(typeCurrentData);
+            initPart2(typeCurrentData);
 
             //AbsSoldierData soldierData = DssRef.unitsdata.Get(soldierType);
 
@@ -273,7 +269,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            initPart2(typeCurrentData);
+            initPart3(typeCurrentData);
         }
 
         public void writeNet(System.IO.BinaryWriter w)

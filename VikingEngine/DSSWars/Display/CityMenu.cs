@@ -115,6 +115,7 @@ namespace VikingEngine.DSSWars.Display
 
             city.res_beer.toMenu(content, ItemResourceType.Beer);
             city.res_wood.toMenu(content,  ItemResourceType.Wood_Group);
+            city.res_fuel.toMenu(content, ItemResourceType.Fuel_G);
             city.res_stone.toMenu(content,  ItemResourceType.Stone_G);
             city.res_rawFood.toMenu(content, ItemResourceType.RawFood_Group);
             city.res_skinLinnen.toMenu(content,  ItemResourceType.SkinLinen_Group);
