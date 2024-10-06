@@ -2486,6 +2486,10 @@ namespace VikingEngine
         WarsBuild_Statue,
         WarsBuild_Carpenter,
         WarsBuild_Nobelhouse,
+        WarsBuild_WorkBench,
+        WarsBuild_CoalPit,
+        WarsBuild_Pavement,
+        WarsBuild_PavementFlowers,
 
         WarsResource_LightArmor,
         WarsResource_MediumArmor,
@@ -2501,6 +2505,7 @@ namespace VikingEngine
         WarsResource_RawFood,
         WarsResource_Food,
         WarsResource_Wood,
+        WarsResource_Fuel,
         WarsResource_Wheat,
         WarsResource_Linen,
         WarsResource_Egg,

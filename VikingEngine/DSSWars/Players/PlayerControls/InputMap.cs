@@ -78,7 +78,7 @@ namespace VikingEngine.DSSWars
 
         override public void keyboardSetup()
         {
-            ControllerCancel = new NoButtonMap();
+            //ControllerCancel = new NoButtonMap();
             ControllerFocus = new NoButtonMap();
             ControllerMessageClick = new NoButtonMap();
 

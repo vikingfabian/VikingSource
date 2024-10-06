@@ -1048,6 +1048,9 @@
 #begin VoxelModel/LfWars/city_nobelhouse.vox
 /copy:VoxelModel/LfWars/city_nobelhouse.vox
 
+#begin VoxelModel/LfWars/city_pavement.vox
+/copy:VoxelModel/LfWars/city_pavement.vox
+
 #begin VoxelModel/LfWars/city_pen.vox
 /copy:VoxelModel/LfWars/city_pen.vox
 

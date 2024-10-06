@@ -78,7 +78,7 @@ namespace VikingEngine.DSSWars
         public static int IronSellValue = 5;
         public static int FoodGoldValue = 2;
         public static int FoodGoldValue_BlackMarket = FoodGoldValue * 5;
-        public static int CityDeliveryCount = 10;
+        public static int CityDeliveryCount = 30;
 
         //WORK
         public static float WorkTime_Eat = 20;

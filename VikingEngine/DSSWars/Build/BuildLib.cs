@@ -18,6 +18,7 @@ namespace VikingEngine.DSSWars.Build
         Tavern,
         Brewery,
         Cook,
+        CoalPit,
         WorkBench,
         Smith,
         Carpenter,
@@ -26,8 +27,9 @@ namespace VikingEngine.DSSWars.Build
         PigPen,
         HenPen,
         Statue_ThePlayer,
+        Pavement,
+        PavementFlower,
 
-        
         NUM_NONE,
     }
     static class BuildLib
@@ -43,6 +45,7 @@ namespace VikingEngine.DSSWars.Build
             BuildAndExpandType.Tavern,
             BuildAndExpandType.Brewery,
             BuildAndExpandType.Cook,
+            BuildAndExpandType.CoalPit,
             BuildAndExpandType.WorkBench,
             BuildAndExpandType.Smith,
             BuildAndExpandType.Carpenter,
@@ -50,6 +53,8 @@ namespace VikingEngine.DSSWars.Build
             BuildAndExpandType.HenPen,
             BuildAndExpandType.WheatFarm,
             BuildAndExpandType.LinenFarm,
+            BuildAndExpandType.Pavement,
+            BuildAndExpandType.PavementFlower,
             BuildAndExpandType.Statue_ThePlayer
         };
        
@@ -66,13 +71,16 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.PigPen, TerrainMainType.Building, (int)TerrainBuildingType.PigPen, SpriteName.WarsBuild_PigPen, ResourceLib.CraftPigPen);
             new BuildOption(BuildAndExpandType.HenPen, TerrainMainType.Building, (int)TerrainBuildingType.HenPen, SpriteName.WarsBuild_HenPen, ResourceLib.CraftHenPen);
             new BuildOption(BuildAndExpandType.Cook, TerrainMainType.Building, (int)TerrainBuildingType.Work_Cook, SpriteName.WarsBuild_Cook, ResourceLib.CraftCook);
-            new BuildOption(BuildAndExpandType.WorkBench, TerrainMainType.Building, (int)TerrainBuildingType.Work_Bench, SpriteName.NO_IMAGE, ResourceLib.CraftWorkBench);
+            new BuildOption(BuildAndExpandType.CoalPit, TerrainMainType.Building, (int)TerrainBuildingType.Work_CoalPit, SpriteName.WarsBuild_CoalPit, ResourceLib.CraftCoalPit);
+            new BuildOption(BuildAndExpandType.WorkBench, TerrainMainType.Building, (int)TerrainBuildingType.Work_Bench, SpriteName.WarsBuild_WorkBench, ResourceLib.CraftWorkBench);
             new BuildOption(BuildAndExpandType.Smith, TerrainMainType.Building, (int)TerrainBuildingType.Work_Smith, SpriteName.WarsBuild_Smith, ResourceLib.CraftSmith);
             new BuildOption(BuildAndExpandType.Carpenter, TerrainMainType.Building, (int)TerrainBuildingType.Carpenter, SpriteName.WarsBuild_Carpenter, ResourceLib.CraftCarpenter);
 
             new BuildOption(BuildAndExpandType.WheatFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, SpriteName.WarsBuild_WheatFarms, ResourceLib.CraftFarm);
             new BuildOption(BuildAndExpandType.LinenFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarm, SpriteName.WarsBuild_LinenFarms, ResourceLib.CraftFarm);
 
+            new BuildOption(BuildAndExpandType.Pavement, TerrainMainType.Decor, (int)TerrainDecorType.Pavement, SpriteName.WarsBuild_Pavement, ResourceLib.CraftPavement);
+            new BuildOption(BuildAndExpandType.PavementFlower, TerrainMainType.Decor, (int)TerrainDecorType.PavementFlower, SpriteName.WarsBuild_PavementFlowers, ResourceLib.CraftPavementFlower);
             new BuildOption(BuildAndExpandType.Statue_ThePlayer, TerrainMainType.Decor, (int)TerrainDecorType.Statue_ThePlayer, SpriteName.WarsBuild_Statue, ResourceLib.CraftStatue);
 
         }

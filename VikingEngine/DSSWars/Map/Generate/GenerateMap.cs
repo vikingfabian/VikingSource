@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.HUD.RichBox;
@@ -128,7 +129,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             }
         }
 
-        public void postLoadGenerate_Part2(WorldData world)
+        public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
         {
             this.world = world;
             world.rnd = new PcgRandom(world.metaData.seed);
@@ -136,9 +137,12 @@ namespace VikingEngine.DSSWars.Map.Generate
             Task.Factory.StartNew(() =>
             {
                 //generateSubTileFoliage();
-                foreach (var c in world.cities)
+                if (loadMeta == null)
                 {
-                    c.createBuildingSubtiles(world);
+                    foreach (var c in world.cities)
+                    {
+                        c.createBuildingSubtiles(world);
+                    }
                 }
 
                 postComplete = true;
@@ -1024,6 +1028,16 @@ namespace VikingEngine.DSSWars.Map.Generate
         public List<City> DryEast = new List<City>();
         public List<City> NorthSea = new List<City>();
 
+        public static readonly CityCulture[] GeneralCultures =
+            {
+                CityCulture.LargeFamilies,
+                CityCulture.Archers,
+                CityCulture.Warriors,
+                CityCulture.AnimalBreeder,
+                CityCulture.Builders,
+                CityCulture.CrabMentality,
+                CityCulture.Networker,
+            };
     }
 
 }

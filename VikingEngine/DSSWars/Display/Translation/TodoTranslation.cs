@@ -47,12 +47,12 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_HenPen => "Hen pen";
         public string BuildingType_WorkBench => "Work bench";
         public string BuildingType_Carpenter => "Carpenter";
-        //public string BuildingType_Nobelhouse => "";
         public string DecorType_Statue => "Statue";
+        public string DecorType_Pavement => "Pavement";
 
         public string BuildingType_WorkerHut_DescriptionLimitX => "Expands worker limit with {0}";
         public string BuildingType_Tavern_Description => "Workers may eat here";
-        public string BuildingType_Tavern_Brewery => "Beer production.";
+        public string BuildingType_Tavern_Brewery => "Beer production";
         public string BuildingType_Postal_Description => "Send resources to other cities";
         public string BuildingType_Recruitment_Description => "Send men to other cities";
         public string BuildingType_Barracks_Description => "Uses men and equipment to recruit soldiers";
@@ -63,10 +63,12 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string BuildingType_Cook_Description => "Food crafting station";
         public string BuildingType_Bench_Description => "Item crafting station";
+        public string BuildingType_Smith => "Smith";
         public string BuildingType_Smith_Description => "Metal crafting station";
         public string BuildingType_Carpenter_Description => "Wood crafting station";
 
         public string BuildingType_Nobelhouse_Description => "Home for knights and diplomats";
+        public string BuildingType_CoalPit_Description => "Efficient fuel production";
 
         public string MenuTab_Info => "Info";
         public string MenuTab_Work => "Work";
@@ -168,6 +170,10 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string Hud_EnergyUpkeepX => "Food energy upkeep {0}";
 
+        public string Hud_CopySetup => "Copy setup";
+        public string Hud_Paste => "Paste";
+
+
         public string Economy_TaxIncome = "Tax income: {0}";
         public string Economy_ImportCostsForResource = "Import costs for {0}: {1}";
         public string Economy_BlackMarketCostsForResource = "Black market costs for {0}: {1}";
@@ -186,6 +192,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string UnitType_Cities => "Cities";
         public string UnitType_Armies => "Armies";
 
+        public string UnitType_FootKnight => "Longsword knight";
+        public string UnitType_CavalryKnight => "Cavalry knight";
+
         public string CityCulture_LargeFamilies => "Large families";
         public string CityCulture_FertileGround => "Fertile grounds";
         public string CityCulture_Archers => "Skilled archers";
@@ -197,6 +206,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string CityCulture_CrabMentality => "Crab mentality"; //ingen vill bli expert
         public string CityCulture_DeepWell => "Deep well";
         public string CityCulture_Networker => "Networker";
+        public string CityCulture_PitMasters => "Pit masters";
 
         public string CityCulture_LargeFamilies_Description => "Increased child birth";
         public string CityCulture_FertileGround_Description => "Crops give more";
@@ -209,6 +219,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string CityCulture_CrabMentality_Description => "Work cost less energy. Cannot produce high skill soldiers."; //ingen vill bli expert
         public string CityCulture_DeepWell_Description => "Water replenish faster";
         public string CityCulture_Networker_Description => "Efficient postal service";
+        public string CityCulture_PitMasters_Description => "Higher fuel production";
 
         public string CityOption_AutoBuild_Work => "Auto expand workforce";
         public string CityOption_AutoBuild_Farm => "Auto expand farms";

@@ -12,7 +12,7 @@ namespace VikingEngine.DSSWars.GameObject
     {      
         public AbsWarShipProfile(UnitType shipUnitType) 
         {
-            modelScale = DssConst.Men_StandardModelScale * 6f;
+            //modelScale = DssConst.Men_StandardModelScale * 6f;
             boundRadius = DssVar.StandardBoundRadius * 6f;
             modelToShadowScale = new Vector3(0.5f, 1f, 0.8f);
 

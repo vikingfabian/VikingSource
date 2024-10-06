@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars
         public static bool RunAI = PlatformSettings.DevBuild ? true :
            true;//DO NOT CHANGE
 
-        public static bool EndlessResources = PlatformSettings.DevBuild ? false : 
+        public static bool EndlessResources = PlatformSettings.DevBuild ? true : 
             false;//DO NOT CHANGE    
 
         public static bool EndlessDiplomacy = PlatformSettings.DevBuild ? false :
@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars
         public static MapSize? SaveLoadSpecificMap = PlatformSettings.DevBuild ? null :
             null;//DO NOT CHANGE
 
-        public static bool BlockBackgroundLoading = PlatformSettings.DevBuild ? true :
+        public static bool BlockBackgroundLoading = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE
 
         //public const bool Trailer = true;

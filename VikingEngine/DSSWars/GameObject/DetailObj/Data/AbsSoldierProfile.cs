@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Vector3 ShadowModelScale()
         {
-            return modelToShadowScale * modelScale;
+            return modelToShadowScale * DssConst.Men_StandardModelScale;
         }
 
         //public void setupJavelinCommand()

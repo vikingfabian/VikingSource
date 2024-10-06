@@ -113,9 +113,7 @@ namespace VikingEngine.DSSWars.Display
             content.Add(new RichBoxImage(SpriteName.WarsResource_WaterAdd));
             content.Add(new RichBoxText(TextLib.OneDecimal(city.waterAddPerSec)));
 
-            city.res_beer.toMenu(content, ItemResourceType.Beer);
-            city.res_wood.toMenu(content,  ItemResourceType.Wood_Group);
-            city.res_fuel.toMenu(content, ItemResourceType.Fuel_G);
+            city.res_wood.toMenu(content,  ItemResourceType.Wood_Group);            
             city.res_stone.toMenu(content,  ItemResourceType.Stone_G);
             city.res_rawFood.toMenu(content, ItemResourceType.RawFood_Group);
             city.res_skinLinnen.toMenu(content,  ItemResourceType.SkinLinen_Group);
@@ -123,8 +121,16 @@ namespace VikingEngine.DSSWars.Display
 
             content.newParagraph();
 
-            city.res_food.toMenu(content,  ItemResourceType.Food_G);
+            city.res_food.toMenu(content, ItemResourceType.Food_G);
             blueprintButton(player, content, ResourceLib.CraftFood1, ResourceLib.CraftFood2);
+            
+            city.res_fuel.toMenu(content, ItemResourceType.Fuel_G);
+            blueprintButton(player, content, ResourceLib.CraftFuel1, null, true);
+            content.space();
+            blueprintButton(player, content, ResourceLib.CraftCharcoal);
+
+            city.res_beer.toMenu(content, ItemResourceType.Beer);
+            blueprintButton(player, content, ResourceLib.CraftBeer);
 
             city.res_iron.toMenu(content, ItemResourceType.Iron_G);
             blueprintButton(player, content, ResourceLib.CraftIron);
@@ -223,12 +229,10 @@ namespace VikingEngine.DSSWars.Display
             }
         }
 
-        void blueprintButton(LocalPlayer player, RichBoxContent content, CraftBlueprint blueprint, CraftBlueprint optionalBp = null)
+        void blueprintButton(LocalPlayer player, RichBoxContent content, CraftBlueprint blueprint, CraftBlueprint optionalBp = null, bool roomForAnotherButton = false)
         {
-            content.Add(new RichBoxTab(0.8f));
-
-            //RichBoxText B = new RichBoxText(DssRef.todoLang.Blueprint_LetterSymbol);
-            //B.overrideColor = Color.Blue;
+            
+            content.Add(new RichBoxTab(0.65f));//roomForAnotherButton? 0.65f : 0.8f));
 
             content.Add(new RichboxButton(new List<AbsRichBoxMember> { 
                 new RichBoxImage(SpriteName.WarsBluePrint)
@@ -255,8 +259,30 @@ namespace VikingEngine.DSSWars.Display
                 HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
                 content.newLine();
                 content.BulletPoint();
-                RichBoxText requirement1 = new RichBoxText(DssRef.todoLang.BuildingType_Carpenter);
-                requirement1.overrideColor = city.hasBuilding_carpenter? HudLib.AvailableColor : HudLib.NotAvailableColor;
+
+                string reqText;
+                bool available;
+                switch (blueprint.requirement)
+                {
+                    case CraftRequirement.Carpenter:
+                        reqText = DssRef.todoLang.BuildingType_Carpenter;
+                        available = city.hasBuilding_carpenter;
+                        break;
+                    case CraftRequirement.Brewery:
+                        reqText = DssRef.todoLang.BuildingType_Brewery;
+                        available = city.hasBuilding_brewery;
+                        break;
+                    case CraftRequirement.Smith:
+                        reqText = DssRef.todoLang.BuildingType_Smith;
+                        available = city.hasBuilding_smith;
+                        break;
+                    
+                    default:
+                        throw new NotImplementedException();
+                }
+
+                RichBoxText requirement1 = new RichBoxText(reqText);
+                requirement1.overrideColor = available ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                 content.Add(requirement1);
             }
 

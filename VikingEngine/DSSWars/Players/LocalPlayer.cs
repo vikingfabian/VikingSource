@@ -19,6 +19,8 @@ using VikingEngine.ToGG;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameObject.Delivery;
+using VikingEngine.DSSWars.GameObject.Conscript;
 
 namespace VikingEngine.DSSWars.Players
 {    
@@ -64,8 +66,10 @@ namespace VikingEngine.DSSWars.Players
         public FloatingInt mercenaryMarket = new FloatingInt() { value = DssLib.MercenaryPurchaseCount * 2 };
 
         public MenuTab factionTab = HeadDisplay.Tabs[0];
-        public MenuTab cityTab = CityMenu.Tabs[0];        
+        public MenuTab cityTab = CityMenu.Tabs[0];
 
+        public DeliveryStatus menDeliveryCopy, itemDeliveryCopy;
+        public ConscriptProfile soldierConscriptCopy, knightConscriptCopy;
         public void factionTabClick(int tab)
         {
             factionTab = HeadDisplay.Tabs[tab];
@@ -73,6 +77,14 @@ namespace VikingEngine.DSSWars.Players
         public void cityTabClick(int tab)
         {
             cityTab = CityMenu.Tabs[tab];
+        }
+
+        public bool InBuildOrdersMode()
+        {
+            return cityTab == Display.MenuTab.Build &&
+                mapControls.selection.obj != null &&
+                mapControls.selection.obj.gameobjectType() == GameObjectType.City &&
+                BuildControls.buildMode != SelectTileResult.None;                        
         }
 
         public void childrenTooltip(City city)
@@ -268,6 +280,18 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
             //initPlayerToPlayer(playerindex, numPlayers);
+
+            menDeliveryCopy = new DeliveryStatus();
+            menDeliveryCopy.defaultSetup(true);
+
+            itemDeliveryCopy = new DeliveryStatus();
+            menDeliveryCopy.defaultSetup(false);
+
+            soldierConscriptCopy = new ConscriptProfile();
+            soldierConscriptCopy.defaultSetup(false);
+
+            knightConscriptCopy = new ConscriptProfile();
+            knightConscriptCopy.defaultSetup(true);
         }
 
         public void initPlayerToPlayer(int playerindex, int numPlayers)
@@ -587,6 +611,12 @@ namespace VikingEngine.DSSWars.Players
                         }
                     }
                 }
+
+                if (input.ControllerCancel.DownEvent && InBuildOrdersMode())
+                {
+                    BuildControls.buildMode = SelectTileResult.None;
+                }
+            
 
                 updateGameSpeed();
             //}
@@ -940,10 +970,12 @@ namespace VikingEngine.DSSWars.Players
 
         void mapSelect()
         {
-            if (cityTab == Display.MenuTab.Build &&
+            if (//cityTab == Display.MenuTab.Build &&
                 mapControls.hover.subTile.hasSelection &&
-                mapControls.selection.obj != null &&
-                mapControls.selection.obj.gameobjectType() == GameObjectType.City)
+                InBuildOrdersMode()
+                )
+                //mapControls.selection.obj != null &&
+                //mapControls.selection.obj.gameobjectType() == GameObjectType.City)
             {
                 BuildControls.onTileSelect(mapControls.hover.subTile);
             }

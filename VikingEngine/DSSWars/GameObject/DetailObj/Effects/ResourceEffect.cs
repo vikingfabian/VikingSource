@@ -21,10 +21,23 @@ namespace VikingEngine.DSSWars.GameObject
 
         Graphics.RenderTargetBillboard model;
 
-        public ResourceEffect(ItemResourceType item, int add, Vector3 pos)
+        public ResourceEffect(ItemResourceType item, int add, Vector3 pos, ResourceEffectType type)
             :base(true)
         {
-            //const int TexWidth = 32;
+            string text;
+            Color textCol;
+
+            if (type == ResourceEffectType.Add)
+            {
+                text = TextLib.PlusMinus(add);
+                textCol = add > 0 ? HudLib.AvailableColor: HudLib.NotAvailableColor;
+            }
+            else
+            {
+                text = add.ToString();
+                textCol = Color.White;
+            }
+
             Graphics.TextG value = new Graphics.TextG(LoadedFont.Bold, Vector2.Zero, Vector2.One, Graphics.Align.Zero,
                 TextLib.PlusMinus(add), HudLib.AvailableColor, ImageLayers.Lay0, false);
             Vector2 sz = value.MeasureText();
@@ -41,6 +54,17 @@ namespace VikingEngine.DSSWars.GameObject
             model.Rotation = toggLib.PlaneTowardsCam;
             model.images = new List<Graphics.AbsDraw> { value, img };
 
+            if (type == ResourceEffectType.Deliver)
+            {
+                Graphics.Image deliverIcon = new Graphics.Image(SpriteName.WarsDelivery, Vector2.Zero, img.size,
+                    ImageLayers.Lay0, false, false);
+                value.Xpos += deliverIcon.Width;
+                img.Xpos += deliverIcon.Width;
+                sz.X +=deliverIcon.Width;
+
+                model.images.Add(deliverIcon);
+            }
+            
             model.createTexture(sz, model.images, null);
             model.setModelSizeFromTexWidth();
 
@@ -71,5 +95,11 @@ namespace VikingEngine.DSSWars.GameObject
             base.DeleteMe();
             model.DeleteMe();
         }
+    }
+
+    enum ResourceEffectType
+    { 
+        Add,
+        Deliver,
     }
 }

@@ -139,6 +139,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.todoLang.BuildingType_Nobelhouse_Description;
                 case TerrainBuildingType.Brewery:
                     return DssRef.todoLang.BuildingType_Tavern_Brewery;
+                case TerrainBuildingType.Work_CoalPit:
+                    return DssRef.todoLang.BuildingType_CoalPit_Description;
 
                 default:
                     return TextLib.Error;
@@ -203,6 +205,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case DSSWars.CityCulture.Warriors: return title ? DssRef.todoLang.CityCulture_Warriors : DssRef.todoLang.CityCulture_Warriors_Description;
                 case DSSWars.CityCulture.Woodcutters: return title ? DssRef.todoLang.CityCulture_Woodcutters : DssRef.todoLang.CityCulture_Woodcutters_Description;
                 case DSSWars.CityCulture.Networker: return title ? DssRef.todoLang.CityCulture_Networker : DssRef.todoLang.CityCulture_Networker_Description;
+                case DSSWars.CityCulture.PitMasters: return title ? DssRef.todoLang.CityCulture_PitMasters : DssRef.todoLang.CityCulture_PitMasters_Description;
 
 
                 default: return TextLib.Error;

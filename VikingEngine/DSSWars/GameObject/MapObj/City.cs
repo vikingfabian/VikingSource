@@ -63,6 +63,8 @@ namespace VikingEngine.DSSWars.GameObject
         public float ai_armyDefenceValue = 0;
         //public bool nobelHouse = false;
         public bool hasBuilding_carpenter = false;
+        public bool hasBuilding_brewery = false;
+        public bool hasBuilding_smith = false;
         string name = null;
 
         IntVector2 cullingTopLeft, cullingBottomRight;
@@ -159,135 +161,6 @@ namespace VikingEngine.DSSWars.GameObject
 
             workHutStyle = percMountain > 0.5 ? 0 : 1;
 
-            //cityPurchaseOptions = new List<CityPurchaseOption>();
-
-            //foreach (var type in DssLib.AvailableUnitTypes)
-            //{
-            //    var typeData = DssRef.profile.Get(type);
-
-            //    CityPurchaseOption cityPurchase = new CityPurchaseOption()
-            //    {
-            //        unitType = type,
-            //        goldCost = typeData.goldCost,
-            //    };
-
-            //    switch (type)
-            //    {
-            //        case UnitType.Soldier:
-            //            if (water <= 2)
-            //            {
-            //                if (percPlains >= 0.75)
-            //                {
-            //                    cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 4;
-            //                }
-            //                else if (percPlains >= 0.5)
-            //                {
-            //                    cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 2;
-            //                }
-            //                else if (percPlains >= 0.25)
-            //                {
-            //                    cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
-            //                }
-            //            }
-            //            break;
-
-            //        case UnitType.Archer:
-            //            if (percWater < 0.5)
-            //            {
-            //                if (percForest >= 0.75)
-            //                {
-            //                    cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 4;
-            //                }
-            //                else if (percForest >= 0.40)
-            //                {
-            //                    cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 2;
-            //                }
-            //                else if (percForest >= 0.1)
-            //                {
-            //                    cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
-            //                }
-            //            }
-            //            break;
-
-            //        case UnitType.Sailor:
-            //            cityPurchase.available = percWater >= 0.25;
-
-            //            if (percWater >= 0.60)
-            //            {
-            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 4;
-            //            }
-            //            else if (percWater >= 0.50)
-            //            {
-            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 2;
-            //            }
-            //            else if (percWater >= 0.40)
-            //            {
-            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
-            //            }
-            //            break;
-
-            //        case UnitType.Folkman:
-            //            if (this.CityType == CityType.Small)
-            //            {
-            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
-            //            }
-            //            else if (this.CityType == CityType.Large)
-            //            {
-            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction / 2;
-            //            }
-
-            //            if (percPlains >= 0.7)
-            //            {
-            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
-            //            }
-            //            else if (percPlains >= 0.4)
-            //            {
-            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction / 2;
-            //            }
-            //            break;
-
-            //        case UnitType.Knight:
-            //            cityPurchase.available = this.CityType >= CityType.Head;
-            //            //if (this.CityType == CityType.Head)
-            //            //{
-            //            //    cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 2;
-            //            //}
-
-            //            if (percPlains >= 0.5)
-            //            {
-            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
-            //            }
-
-            //            if (percWater >= 0.30)
-            //            {
-            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
-            //            }
-            //            break;
-
-            //        case UnitType.Ballista:
-            //            cityPurchase.available = forest > 0;
-
-            //            if (forest >= 8 && mountain >= 8)
-            //            {
-            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 4;
-            //            }
-            //            else if (forest >= 4 && mountain >= 4)
-            //            {
-            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction * 2;
-            //            }
-            //            else if (forest >= 2 && mountain >= 2)
-            //            {
-            //                cityPurchase.goldCost -= DssLib.GroupDefaultCultureCostReduction;
-            //            }
-            //            break;
-            //    }
-
-            //    if (cityPurchase.available)
-            //    {
-            //        cityPurchase.goldCost = Bound.Min(cityPurchase.goldCost, DssLib.GroupMinCost);
-            //        cityPurchaseOptions.Add(cityPurchase);
-            //    }
-            //}
 
             //Collect cultures
             double percX = tilePos.X / (double)world.Size.X;
@@ -306,30 +179,7 @@ namespace VikingEngine.DSSWars.GameObject
                 cityCultureCollection.NorthSea.Add(this);
             }
 
-            //    enum CityCulture
-            //{
-            //    LargeFamilies,
-            //    FertileGround,
-            //    Archers,
-            //    Warriors,
-            //    AnimalBreeder,
-            //    Miners,
-            //    Woodcutters,
-            //    Builders,
-            //    CrabMentality, //ingen vill bli expert
-            //    DeepWell,
-            //    NUM_NONE
-            //}
-            CityCulture[] GeneralCultures = 
-            {
-                CityCulture.LargeFamilies,
-                CityCulture.Archers,
-                CityCulture.Warriors,
-                CityCulture.AnimalBreeder,
-                CityCulture.Builders,
-                CityCulture.CrabMentality,
-                CityCulture.Networker,
-            };
+            
 
             if (world.rnd.Chance(0.3))
             {
@@ -338,7 +188,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     Culture = CityCulture.FertileGround;
                 }
-                else if (percForest >= 0.7)
+                else if (percForest >= 0.8)
                 {
                     Culture = CityCulture.Woodcutters;
                 }
@@ -350,12 +200,16 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     Culture = CityCulture.DeepWell;
                 }
+                else if (percForest >= 0.1)
+                {
+                    Culture = CityCulture.PitMasters;
+                }
 
             }
 
             if (Culture == CityCulture.NUM_NONE)
             {
-                Culture = arraylib.RandomListMember(GeneralCultures, world.rnd); 
+                Culture = arraylib.RandomListMember(CityCultureCollection.GeneralCultures, world.rnd); 
             }
         }
 
@@ -374,11 +228,6 @@ namespace VikingEngine.DSSWars.GameObject
                 w.Write(Debug.Ushort_OrCrash(n));
             }
 
-            //w.Write(Debug.Byte_OrCrash(cityPurchaseOptions.Count));
-            //foreach (var opt in cityPurchaseOptions)
-            //{
-            //    opt.write(w);
-            //}
 
             w.Write(Debug.Byte_OrCrash((int)Culture));
         }
@@ -401,18 +250,6 @@ namespace VikingEngine.DSSWars.GameObject
                 neighborCities.Add(r.ReadUInt16());
             }
 
-            //if (version <= 6)
-            //{
-            //    int cityPurchaseOptionsCount = r.ReadByte();
-            //    cityPurchaseOptions = new List<CityPurchaseOption>(cityPurchaseOptionsCount);
-            //    for (int i = 0; i < cityPurchaseOptionsCount; ++i)
-            //    {
-            //        CityPurchaseOption cityPurchase = new CityPurchaseOption();
-            //        cityPurchase.read(r);
-            //        cityPurchaseOptions.Add(cityPurchase);
-            //    }
-            //}
-
             if (version >= 6)
             {
                 Culture = (CityCulture)r.ReadByte();
@@ -421,22 +258,25 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            //workForce.write16bit(w);
             w.Write(Convert.ToUInt16(workForce));
             w.Write(Convert.ToUInt16(workForceMax));
             childrenAge0.write16bit(w);
             w.Write((ushort)childrenAge1);
 
-            //w.Write(Convert.ToUInt16(maxEpandWorkSize));
             damages.write16bit(w);
             immigrants.write16bit(w);
-            //w.Write(nobelHouse);
             w.Write((ushort)guardCount);
             w.Write((ushort)maxGuardSize);
 
             w.Write((byte)maxWater);
             w.Write(Debug.Byte_OrCrash((int)(waterAddPerSec * 20)));
             workTemplate.writeGameState(w, true);
+
+            w.Write((short)res_water.amount);
+            foreach (var type in MovableCityResourceTypes)
+            {
+                GetGroupedResource(type).writeGameState(w);
+            }
 
             w.Write((ushort)conscriptBuildings.Count);
             foreach (var barracks in conscriptBuildings)
@@ -449,8 +289,7 @@ namespace VikingEngine.DSSWars.GameObject
             { 
                 delivery.writeGameState(w);
             }
-
-
+            
             w.Write(autoBuild_Work);
             w.Write(autoBuild_Farm);
             w.Write((byte)autoExpandFarmType);
@@ -458,30 +297,29 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
-            //workForce.read16bit(r);
             workForce = r.ReadUInt16();
             workForceMax = r.ReadUInt16();
             childrenAge0.read16bit(r);
             childrenAge1 = r.ReadUInt16();
-            //maxEpandWorkSize = r.ReadUInt16();
 
             damages.read16bit(r);
             immigrants.read16bit(r);
-            //nobelHouse = r.ReadBoolean();
-            //if (nobelHouse)
-            //{
-            //    addNobelHouseFeatures();
-            //}
 
             guardCount = r.ReadUInt16();
             maxGuardSize = r.ReadUInt16();
 
             maxWater = r.ReadByte();
-            if (subversion >= 13)
-            {
-                waterAddPerSec = r.ReadByte() / 20f;
-            }
+            waterAddPerSec = r.ReadByte() / 20f;
+            
             workTemplate.readGameState(r, subversion, true);
+
+            res_water.amount = r.ReadInt16();
+            foreach (var type in MovableCityResourceTypes)
+            {
+                GroupedResource resource = new GroupedResource();
+                resource.readGameState(r, subversion);
+                SetGroupedResource(type, resource);
+            }
 
             refreshCitySize();
 
@@ -503,12 +341,10 @@ namespace VikingEngine.DSSWars.GameObject
                 deliveryServices.Add(status);
             }
 
-            if (subversion >= 12)
-            {
                 autoBuild_Work = r.ReadBoolean();
                 autoBuild_Farm = r.ReadBoolean();
                 autoExpandFarmType = (Build.BuildAndExpandType)r.ReadByte();
-            }
+            
         }
 
         public void writeNet(System.IO.BinaryWriter w)

@@ -698,7 +698,7 @@ namespace VikingEngine.LootFest
         resource_tree,
 
         decor_statue,
-
+        city_pavement,
         #endregion
 
         NUM_NON

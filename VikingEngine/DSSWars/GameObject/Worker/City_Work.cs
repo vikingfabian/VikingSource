@@ -489,7 +489,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                             isFreeTile(subTileLoop.Position))
                                                         {
                                                             //ResourceLib.CraftFood.createBackOrder(this);
-                                                            workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Food_G, subTileLoop.Position, workTemplate.craft_food.value, 0));
+                                                            workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Food_G, subTileLoop.Position, workTemplate.craft_food.value, distanceValue));
                                                         }
                                                         break;
                                                     case TerrainBuildingType.Work_Bench:                                                        
@@ -499,7 +499,18 @@ namespace VikingEngine.DSSWars.GameObject
                                                         ItemResourceType topItem = ItemResourceType.NONE;
                                                         WorkPriority topPrio = WorkPriority.Empty;
 
-                                                        ItemResourceType[] types = building == TerrainBuildingType.Work_Bench? BenchCraftTypes : IronCraftTypes;
+                                                        int prioAdd = 0;
+                                                        ItemResourceType[] types;
+
+                                                        if (building == TerrainBuildingType.Work_Bench)
+                                                        {
+                                                            types = BenchCraftTypes;
+                                                            prioAdd = -5000;
+                                                        }
+                                                        else
+                                                        {
+                                                            types = IronCraftTypes;
+                                                        }
 
                                                         foreach (var item in types)
                                                         {
@@ -519,18 +530,27 @@ namespace VikingEngine.DSSWars.GameObject
                                                         if (topPrioValue > WorkTemplate.NoPrio &&
                                                             isFreeTile(subTileLoop.Position))
                                                         {
-                                                            workQue.Add(new WorkQueMember(WorkType.Craft, (int)topItem, subTileLoop.Position, topPrioValue, 0));
+                                                            workQue.Add(new WorkQueMember(WorkType.Craft, (int)topItem, subTileLoop.Position, topPrioValue, distanceValue + prioAdd));
                                                         }
-
-
                                                         break;
+
+                                                    case TerrainBuildingType.Work_CoalPit:
+                                                        if (workTemplate.craft_fuel.HasPrio() &&
+                                                           res_fuel.needMore() &&
+                                                           ResourceLib.CraftCharcoal.canCraft(this) &&
+                                                           isFreeTile(subTileLoop.Position))
+                                                        {
+                                                            workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Coal, subTileLoop.Position, workTemplate.craft_fuel.value, distanceValue));
+                                                        }
+                                                        break;
+
                                                     case TerrainBuildingType.Brewery:
                                                         if (workTemplate.craft_beer.HasPrio() &&
                                                             res_beer.needMore() &&
                                                             ResourceLib.CraftBrewery.canCraft(this) &&
                                                             isFreeTile(subTileLoop.Position))
                                                         {
-                                                            workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Beer, subTileLoop.Position, workTemplate.craft_beer.value, 0));
+                                                            workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Beer, subTileLoop.Position, workTemplate.craft_beer.value, distanceValue));
                                                         }
                                                         break;
                                                 }

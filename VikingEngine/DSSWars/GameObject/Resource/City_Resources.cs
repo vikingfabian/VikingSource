@@ -17,6 +17,9 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City
     {
+        /// <remarks>
+        /// Changing the list will corrupt the save files!
+        /// </remarks>
         public static readonly ItemResourceType[] MovableCityResourceTypes =
         {
              ItemResourceType.Wood_Group,

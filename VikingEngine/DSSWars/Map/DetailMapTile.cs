@@ -208,7 +208,8 @@ namespace VikingEngine.DSSWars.Map
 
             
             if (subTile.mainTerrain != TerrainMainType.Foil &&
-                subTile.mainTerrain != TerrainMainType.Building)
+                subTile.mainTerrain != TerrainMainType.Building &&
+                subTile.mainTerrain != TerrainMainType.Decor)
             {
                 switch (col.Texture)
                 {
@@ -440,15 +441,17 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_cobblestone, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
                 case TerrainBuildingType.Square:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_square, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_square, rnd, wp, WorldData.SubTileWidth * 1.1f));
                     break;
-
                 case TerrainBuildingType.Work_Cook:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 1, wp, WorldData.SubTileWidth * 1f));
                     break;
-
                 case TerrainBuildingType.Work_Bench:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 2, wp, WorldData.SubTileWidth * 0.6f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 3, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+
+                case TerrainBuildingType.Work_CoalPit:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 4, wp, WorldData.SubTileWidth * 1.2f));
                     break;
 
                 case TerrainBuildingType.Work_Smith:
@@ -476,9 +479,16 @@ namespace VikingEngine.DSSWars.Map
             wp.Z += WorldData.SubTileHalfWidth;
 
             switch (decorType) {
-                case  TerrainDecorType.Statue_ThePlayer:
+                case TerrainDecorType.Pavement:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_pavement, 0, wp, WorldData.SubTileWidth * 1.3f));
+                    break;
+                case TerrainDecorType.PavementFlower:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_pavement, 1, wp, WorldData.SubTileWidth * 1.3f));
+                    break;
+                case TerrainDecorType.Statue_ThePlayer:
                     addFoliage(new Foliage(LootFest.VoxelModelName.decor_statue, 0, wp, WorldData.SubTileWidth * 1f));
                     break;
+               
                 default:
                     throw new NotImplementedException();
             }
@@ -515,7 +525,7 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 0, wp, scale));
                     break;
                 case TerrainMineType.Coal:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 1, wp, scale));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 2, wp, scale));
                     break;
                 case TerrainMineType.GoldOre:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 1, wp, scale));

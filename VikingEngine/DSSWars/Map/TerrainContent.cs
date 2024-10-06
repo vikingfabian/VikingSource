@@ -168,7 +168,7 @@ namespace VikingEngine.DSSWars.Map
                                 subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.Coal, 1);
                                 return;
                             }
-                            else if (rndMine < 0.005)
+                            else if (rndMine < 0.0065)
                             {
                                 subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.IronOre, 1);
                                 return;

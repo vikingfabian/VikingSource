@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.GameObject
             //        lib.DoNothing();
             //}
             model = soldier.group.army.faction.AutoLoadModelInstance(
-                soldier.soldierData.RandomModelName(), soldier.SoldierProfile().modelScale, true);
+                soldier.soldierData.RandomModelName(), soldier.soldierData.modelScale, true);
 
             model.position = soldier.position;
 

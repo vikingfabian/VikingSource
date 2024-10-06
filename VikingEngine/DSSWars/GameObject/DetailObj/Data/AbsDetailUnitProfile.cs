@@ -10,14 +10,14 @@ namespace VikingEngine.DSSWars.GameObject
 {
     abstract class AbsDetailUnitProfile
     {
-        public SoldierData data;
+        public SoldierData data = new SoldierData();
 
         protected const float StandardTargetSpotRange = 3;
         
         public const float SpotEnemyLengh = 1.5f;
 
         
-        public float modelScale;
+        //public float modelScale;
         public float modelAdjY = 0;
         public float boundRadius;       
 

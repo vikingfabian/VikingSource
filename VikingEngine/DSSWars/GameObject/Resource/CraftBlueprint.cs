@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             foreach (var r in resources)
             {
                 var res = city.GetGroupedResource(r.type);
-                if (res.freeAmount() < r.amount)
+                if (res.amount < r.amount)
                 {
                     return false;
                 }
@@ -159,6 +159,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
     { 
         None = 0,
         Carpenter,
+        Brewery,
+        Smith,
     }
     
 }

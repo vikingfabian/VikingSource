@@ -66,7 +66,7 @@ namespace VikingEngine.DSSWars.GameObject
         public BannerManModel(AbsSoldierUnit soldier)
             : base(soldier)
         {
-            banner = new Banner(soldier.GetFaction(), soldier.Profile().modelScale, (int)soldier.group.soldierConscript.conscript.training);
+            banner = new Banner(soldier.GetFaction(), soldier.soldierData.modelScale, (int)soldier.group.soldierConscript.conscript.training);
         }
 
         //protected override void updateShipAnimation(AbsSoldierUnit soldier)

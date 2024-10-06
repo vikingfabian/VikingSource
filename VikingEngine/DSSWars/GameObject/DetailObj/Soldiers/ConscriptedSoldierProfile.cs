@@ -14,7 +14,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             unitType = UnitType.Conscript;
 
-            modelScale = DssConst.Men_StandardModelScale;
+           
             boundRadius = DssVar.StandardBoundRadius;
 
            // walkingSpeed = DssConst.Men_StandardWalkingSpeed;

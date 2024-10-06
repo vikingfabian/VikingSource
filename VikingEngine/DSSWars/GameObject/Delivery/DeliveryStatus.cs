@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject.Conscript;
 using VikingEngine.DSSWars.GameObject.Resource;
+using VikingEngine.DSSWars.Players;
 
 namespace VikingEngine.DSSWars.GameObject.Delivery
 {
@@ -24,6 +25,30 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
 
         //public Resource.ItemResource nextDelivery;
         public TimeInGameCountdown countdown;
+
+        public void useSetup(DeliveryStatus setup, LocalPlayer player)
+        {
+            senderMin = setup.senderMin;
+            recieverMax = setup.recieverMax;
+            profile = setup.profile;
+
+            checkCity(player);
+        }
+
+        public void checkCity(LocalPlayer player)
+        {
+            var citiesC = player.faction.cities.counter();
+
+            while (citiesC.Next())
+            {
+                if (citiesC.sel.parentArrayIndex == profile.toCity)
+                {
+                    return;
+                }
+            }
+
+            profile.toCity = -1;
+        }
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
@@ -72,13 +97,13 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
 
         public bool CanSend(City city)
         {
-            if (inProgress.type == ItemResourceType.Men)
+            if (profile.type == ItemResourceType.Men)
             {
                 return city.workForce - senderMin >= DssConst.CityDeliveryCount;
             }
             else
             {
-                return city.GetGroupedResource(inProgress.type).amount - senderMin >= DssConst.CityDeliveryCount;
+                return city.GetGroupedResource(profile.type).amount - senderMin >= DssConst.CityDeliveryCount;
             }
         }
 
@@ -142,6 +167,14 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
             }
             return string.Format("Delivering {0}", remaining);
         }
+
+        public void defaultSetup(bool recruitment)
+        {
+            senderMin = 100;
+            recieverMax = 200;
+            profile.toCity = -1;
+            profile.type = recruitment ? ItemResourceType.Men : ItemResourceType.Food_G;
+        }
     }
 
     struct DeliveryProfile
@@ -178,7 +211,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
     enum DeliveryActiveStatus
     {
         Idle,
-        CollectingItems,
+        //CollectingItems,
         Delivering,
     }
 }

@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.GameObject
             :base()
         {
             unitType = UnitType.ConscriptWarmashine;
-            modelScale = DssConst.Men_StandardModelScale * 2f;
+            
             boundRadius = DssVar.StandardBoundRadius * 2.2f;
 
             //walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
@@ -119,7 +119,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             workers = new WarmashineWorkerCollection();
 
-            float scale = soldier.Profile().modelScale;
+            float scale = soldier.soldierData.modelScale;
 
             workers.Add(soldier.GetFaction(),
                 scale * Xdiff, scale * Zdiff);
@@ -213,7 +213,7 @@ namespace VikingEngine.DSSWars.GameObject
 
     class WarmashineWorker
     {
-        WalkingAnimation walkingAnimation = WalkingAnimation.Standard;
+        WalkingAnimation walkingAnimation = WalkingAnimation.WorkerWalking;
         Graphics.AbsVoxelObj model;
         Vector3 diff;
 

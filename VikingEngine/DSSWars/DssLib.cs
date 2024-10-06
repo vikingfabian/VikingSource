@@ -37,6 +37,7 @@ namespace VikingEngine.DSSWars
         public const int RtsMaxFactions = 2000;
 
         public static readonly RotationQuarterion FaceCameraRotation = new RotationQuarterion(Quaternion.CreateFromYawPitchRoll(0, 1.2f, 0f));
+        public static readonly RotationQuarterion FaceForwardRotation = new RotationQuarterion(Quaternion.CreateFromYawPitchRoll(0, MathExt.TauOver4, 0f));
         public static readonly RotationQuarterion OverviewIconRotation = new RotationQuarterion(Quaternion.CreateFromYawPitchRoll(-0.4f, 0f, 0f));
         public static readonly RotationQuarterion BannerRotation = new RotationQuarterion(Quaternion.CreateFromYawPitchRoll(-0.3f, 0f, 0f));
 
@@ -227,6 +228,7 @@ namespace VikingEngine.DSSWars
         CrabMentality,// //ingen vill bli expert
         DeepWell,//
         Networker,
+        PitMasters,
         NUM_NONE
     }
 }

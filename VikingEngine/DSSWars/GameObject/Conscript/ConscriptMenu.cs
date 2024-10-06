@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display.Component;
 using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.GameObject.Delivery;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 
@@ -120,26 +121,9 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 content.newLine();
 
                 SpecializationType[] specializationTypes = currentStatus.profile.avaialableSpecializations();
-                //if (currentStatus.profile.weapon == MainWeapon.TwoHandSword)
-                //{
-                //    specializationTypes = new SpecializationType[] { SpecializationType.AntiCavalry };
-                //}
-                //else if (currentStatus.profile.weapon == MainWeapon.Ballista)
-                //{
-                //    specializationTypes = new SpecializationType[] { SpecializationType.Siege };
-                //}
-                //else
-                //{
-                //    specializationTypes = new SpecializationType[]
-                //        {
-                //            SpecializationType.None,
-                //            SpecializationType.Field,
-                //            SpecializationType.Sea,
-                //            SpecializationType.Siege,
-                //        };
-                //}
+                
 
-                foreach (var specialization in specializationTypes)//for (SpecializationType specialization = 0; specialization < SpecializationType.NUM; specialization++)
+                foreach (var specialization in specializationTypes)
                 {
                     var button = new RichboxButton(new List<AbsRichBoxMember>{
                        new RichBoxText( LangLib.SpecializationTypeName(specialization))
@@ -151,7 +135,41 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
                 content.newParagraph();
 
+
                 que.toHud(player, content, queClick, currentStatus.que);
+
+
+                content.newParagraph();
+                content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Hud_CopySetup) },
+                    new RbAction(() =>
+                    {
+                        if (currentStatus.nobelmen)
+                        {
+                            player.knightConscriptCopy = currentStatus.inProgress;
+                        }
+                        else
+                        {
+                            player.soldierConscriptCopy = currentStatus.inProgress;
+                        }
+                    }, SoundLib.menu)));
+                content.space();
+                content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Hud_Paste) },
+                    new RbAction(() =>
+                    {
+                        BarracksStatus currentStatus = get();
+
+                        if (currentStatus.nobelmen)
+                        {
+                            currentStatus.profile = player.knightConscriptCopy;
+                        }
+                        else
+                        {
+                            currentStatus.profile = player.soldierConscriptCopy;
+                        }
+
+                        set(currentStatus);
+
+                    }, SoundLib.menu)));
 
                 if (currentStatus.active != ConscriptActiveStatus.Idle)
                 {
@@ -171,6 +189,8 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                         text.overrideColor = currentStatus.active > ConscriptActiveStatus.CollectingMen ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                         content.Add(text);
                     }
+
+                    if (currentStatus.active == ConscriptActiveStatus.Training)
                     {
                         content.newLine();
                         content.BulletPoint();

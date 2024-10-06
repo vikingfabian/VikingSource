@@ -23,8 +23,10 @@ namespace VikingEngine.DSSWars.Map.Generate
         bool generateSuccess =false;
         // CancellationToken cancellationToken;
         CancellationTokenSource tokenSource;
+        SaveStateMeta loadMeta;
         public MapBackgroundLoading(SaveStateMeta loadMeta)
         {
+            this.loadMeta = loadMeta;
             if (loadMeta != null)
             {
                 DssRef.storage.generateNewMaps = loadMeta.world.IsGenerated;
@@ -141,7 +143,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 {
                     loadingState = LoadingState.Post2Started;
                     postGenerate = new Map.Generate.GenerateMap();
-                    postGenerate.postLoadGenerate_Part2(DssRef.world);
+                    postGenerate.postLoadGenerate_Part2(DssRef.world, loadMeta);
                 }
                 //loadingState = LoadingState.Complete;
             }

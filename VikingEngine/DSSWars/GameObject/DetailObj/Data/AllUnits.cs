@@ -26,6 +26,8 @@ namespace VikingEngine.DSSWars.GameObject
             city = new CityDetailProfile();
             bannerman = new BannerManProfile();
 
+            add(bannerman);
+
             add(new ConscriptedSoldierProfile());
             add(new ConscriptedWarshipData());
 
@@ -93,11 +95,22 @@ namespace VikingEngine.DSSWars.GameObject
                 LootFest.VoxelModelName.wars_soldier_i3,
 
                 LootFest.VoxelModelName.war_folkman,
+
                 LootFest.VoxelModelName.war_sailor,
                 LootFest.VoxelModelName.war_sailor_i2,
 
+                LootFest.VoxelModelName.wars_twohand,
+
+                LootFest.VoxelModelName.war_knight,
+                LootFest.VoxelModelName.war_knight_i2,
+                LootFest.VoxelModelName.war_knight_i3,
+
                 LootFest.VoxelModelName.war_archer,
                 LootFest.VoxelModelName.war_archer_i2,
+
+                LootFest.VoxelModelName.war_ballista,
+                LootFest.VoxelModelName.war_ballista_i2,
+
                 LootFest.VoxelModelName.little_hirdman,
 
                 LootFest.VoxelModelName.wars_soldier_ship,

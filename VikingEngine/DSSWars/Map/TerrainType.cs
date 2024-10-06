@@ -61,6 +61,7 @@ namespace VikingEngine.DSSWars.Map
         Brewery,
         Work_Cook,
         Work_Bench,
+        Work_CoalPit,
         Work_Smith,
         PigPen,
         HenPen,
@@ -76,6 +77,8 @@ namespace VikingEngine.DSSWars.Map
 
     enum TerrainDecorType
     {
+        Pavement,
+        PavementFlower,
         Statue_ThePlayer,
         NUM_NONE
     }

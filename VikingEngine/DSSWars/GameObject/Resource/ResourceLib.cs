@@ -10,13 +10,24 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 {
     static class ResourceLib
     {
-        public static readonly CraftBlueprint CraftFuel = new CraftBlueprint(
+        public static readonly CraftBlueprint CraftFuel1 = new CraftBlueprint(
             SpriteName.NO_IMAGE,
             DssRef.todoLang.Resource_TypeName_Fuel,
             5,
             new UseResource[]
             {
                 new UseResource(ItemResourceType.Wood_Group, 5),
+            }
+        );
+
+        public static readonly CraftBlueprint CraftCharcoal = new CraftBlueprint(
+            SpriteName.NO_IMAGE,
+            DssRef.todoLang.Resource_TypeName_Fuel,
+            25,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Fuel_G, 10),
+                new UseResource(ItemResourceType.Wood_Group, 10),
             }
         );
 
@@ -53,7 +64,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 new UseResource(ItemResourceType.Water_G, 5),
                 new UseResource(ItemResourceType.Fuel_G, 1),
                 new UseResource(ItemResourceType.RawFood_Group, 1)
-           }
+           }, 
+           CraftRequirement.Brewery
        );
 
         public static readonly CraftBlueprint CraftIron = new CraftBlueprint(
@@ -65,7 +77,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 new UseResource(ItemResourceType.Water_G, 1),
                 new UseResource(ItemResourceType.Fuel_G, 30),
                 new UseResource(ItemResourceType.IronOre_G, 2)
-            }
+            },
+            CraftRequirement.Smith
         );
 
         public static readonly CraftBlueprint CraftSharpStick = new CraftBlueprint(
@@ -87,7 +100,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             {
                 new UseResource(ItemResourceType.SkinLinen_Group, 1),
                 new UseResource(ItemResourceType.Iron_G, 3),
-            }
+            },
+            CraftRequirement.Smith
         );
 
         public static readonly CraftBlueprint CraftKnightsLance = new CraftBlueprint(
@@ -100,7 +114,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 new UseResource(ItemResourceType.RawFood_Group, 20),
                 new UseResource(ItemResourceType.Wood_Group, 5),
                 new UseResource(ItemResourceType.Iron_G, 5),
-            }
+            },
+            CraftRequirement.Smith
         );
 
         public static readonly CraftBlueprint CraftTwoHandSword = new CraftBlueprint(
@@ -111,7 +126,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             {
                 new UseResource(ItemResourceType.SkinLinen_Group, 1),
                 new UseResource(ItemResourceType.Iron_G, 6),
-            }
+            },
+            CraftRequirement.Smith
         );
 
         public static readonly CraftBlueprint CraftBow = new CraftBlueprint(
@@ -156,7 +172,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             {
         new UseResource(ItemResourceType.SkinLinen_Group, 4),
         new UseResource(ItemResourceType.Iron_G, 2),
-            }
+            },
+            CraftRequirement.Smith
         );
 
         public static readonly CraftBlueprint CraftHeavyArmor = new CraftBlueprint(
@@ -167,7 +184,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             {
         new UseResource(ItemResourceType.SkinLinen_Group, 2),
         new UseResource(ItemResourceType.Iron_G, 6),
-            }
+            },
+            CraftRequirement.Smith
         );
 
         public static readonly CraftBlueprint CraftWorkerHut = new CraftBlueprint(
@@ -304,6 +322,16 @@ namespace VikingEngine.DSSWars.GameObject.Resource
            }
         );
 
+        public static readonly CraftBlueprint CraftCoalPit = new CraftBlueprint(
+            SpriteName.NO_IMAGE,
+           DssRef.todoLang.BuildingType_WorkBench,
+           1,
+           new UseResource[]
+           {
+               new UseResource(ItemResourceType.Stone_G, 30),
+           }
+        );
+
         public static readonly CraftBlueprint CraftCarpenter = new CraftBlueprint(
             SpriteName.NO_IMAGE,
            DssRef.todoLang.BuildingType_Carpenter,
@@ -327,6 +355,26 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             }
         );
 
+        public static readonly CraftBlueprint CraftPavement = new CraftBlueprint(
+            SpriteName.NO_IMAGE,
+           DssRef.todoLang.DecorType_Pavement + " A",
+           1,
+           new UseResource[]
+           {
+               new UseResource(ItemResourceType.Stone_G, 20),
+           }
+       );
+        public static readonly CraftBlueprint CraftPavementFlower = new CraftBlueprint(
+            SpriteName.NO_IMAGE,
+           DssRef.todoLang.DecorType_Pavement + " B",
+           1,
+           new UseResource[]
+           {
+                new UseResource(ItemResourceType.RawFood_Group, 5),
+               new UseResource(ItemResourceType.Stone_G, 20),
+           }
+       );
+
         public static readonly CraftBlueprint CraftStatue = new CraftBlueprint(
             SpriteName.NO_IMAGE,
            DssRef.todoLang.DecorType_Statue,
@@ -337,12 +385,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                new UseResource(ItemResourceType.Iron_G, 50),
            }
        );
-        //public const int DefaultItemRawFoodAmout = 8;
-        //public const int PigRawFoodAmout = 5 * DefaultItemRawFoodAmout;
-        //public const float ManDefaultEnergyCost = 1f;
-        //public const float WorkTeamEnergyCost = ManDefaultEnergyCost * City.WorkTeamSize;
-        //public const float WorkTeamEnergyCost_WhenIdle = WorkTeamEnergyCost * 0.5f;
-        //public const int FoodEnergy = 100;
+     
+
         public static string Name(ResourceType resource)
         {
             switch (resource)
@@ -440,6 +484,9 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 case ItemResourceType.HardWood:
                 case ItemResourceType.Wood_Group:
                     return SpriteName.WarsResource_Wood;
+                case ItemResourceType.Coal:
+                case ItemResourceType.Fuel_G:
+                    return SpriteName.WarsResource_Fuel;
                 case ItemResourceType.TwoHandSword:
                     return SpriteName.WarsResource_TwoHandSword;
                 case ItemResourceType.KnightsLance:
@@ -454,7 +501,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         {
             switch (item)
             {
-                case ItemResourceType.Fuel_G: bp1 = CraftFuel; bp2 = null; break;
+                case ItemResourceType.Fuel_G: bp1 = CraftFuel1; bp2 = null; break;
+                case ItemResourceType.Coal: bp1 = CraftCharcoal; bp2 = null; break;
                 case ItemResourceType.Food_G: bp1 = CraftFood1; bp2 = CraftFood2; break;
                 case ItemResourceType.Beer: bp1 = CraftBeer; bp2 = null; break;
 
@@ -465,6 +513,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 
                 case ItemResourceType.SharpStick: bp1 = CraftSharpStick; bp2 = null; break;
                 case ItemResourceType.Sword: bp1 = CraftSword; bp2 = null; break;
+                case ItemResourceType.TwoHandSword: bp1 = CraftTwoHandSword; bp2 = null; break;
+                case ItemResourceType.KnightsLance: bp1 = CraftKnightsLance; bp2 = null; break;
                 case ItemResourceType.Bow: bp1 = CraftBow; bp2 = null; break;
                 case ItemResourceType.Ballista: bp1 = CraftBallista; bp2 = null; break;
 

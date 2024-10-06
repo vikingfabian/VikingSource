@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -61,12 +62,12 @@ namespace VikingEngine.DSSWars.Players.Orders
         City city;
         IntVector2 subTile;
         BuildAndExpandType buildingType;
-        Graphics.AbsVoxelObj model;
+        Mesh icon;
+        AbsVoxelObj model;
 
         public BuildOrder()
         { }
         public BuildOrder(int priority, bool bLocalPlayer, City city, IntVector2 subTile, BuildAndExpandType buildingType)
-            //:base(priority)
         {
             baseInit(priority);
             this.city = city;
@@ -84,6 +85,15 @@ namespace VikingEngine.DSSWars.Players.Orders
             model = DssRef.models.ModelInstance(LootFest.VoxelModelName.buildarea, WorldData.SubTileWidth * 1.4f, false);
             model.AddToRender(DrawGame.UnitDetailLayer);
             model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTile);
+
+            Vector3 iconPos = model.position;
+            iconPos.Y += model.scale.Y * 6f;
+            iconPos.Z += model.scale.Y * 0.15f;
+
+            icon = new Mesh(LoadedMesh.plane, iconPos, model.scale * 9.6f, TextureEffectType.Flat, Build.BuildLib.BuildOptions[(int)buildingType].sprite, Color.White, false);
+            icon.Opacity = 0.8f;
+            icon.Rotation = DssLib.FaceForwardRotation;
+            icon.AddToRender(DrawGame.UnitDetailLayer);
         }
 
         override public void writeGameState(System.IO.BinaryWriter w)
@@ -110,6 +120,7 @@ namespace VikingEngine.DSSWars.Players.Orders
             Debug.CrashIfThreaded();
 
             model.DeleteMe();
+            icon.DeleteMe();
         }
         public override BuildOrder GetWorkOrder(City city)
         {

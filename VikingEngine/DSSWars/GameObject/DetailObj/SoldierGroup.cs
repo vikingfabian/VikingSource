@@ -428,7 +428,9 @@ namespace VikingEngine.DSSWars.GameObject
             AbsSoldierUnit s;
             
             s = typeProfile.CreateUnit();
+            s.UnitType = typeProfile.unitType;
             s.soldierData = data;
+          
             
             s.InitLocal(position, gridPlacement, area, this);
             s.position = WP.ToWorldPos(area); //temp pos

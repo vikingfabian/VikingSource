@@ -67,6 +67,12 @@ namespace VikingEngine.DSSWars.Map
                                             case TerrainBuildingType.Carpenter:
                                                 city.hasBuilding_carpenter = true;
                                                 break;
+                                            case TerrainBuildingType.Brewery:
+                                                city.hasBuilding_brewery = true;
+                                                break;
+                                            case TerrainBuildingType.Work_Smith:
+                                                city.hasBuilding_smith = true;
+                                                break;
                                         }
                                         break;
                                 }

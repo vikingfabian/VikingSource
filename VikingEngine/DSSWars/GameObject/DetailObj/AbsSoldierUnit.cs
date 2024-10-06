@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int bonusProjectiles = 0;
 
-        UnitType UnitType;
+        public UnitType UnitType;
         //override public AbsSoldierProfile profile()
         //{ 
         //    return DssRef.profile.Get(UnitType);

@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 0;
                     diplomacyDifficulty = 0;
                     honorGuard = true;
-                    aiDelayTimeSec = 5 * 60;
+                    aiDelayTimeSec = 30 * TimeExt.MinuteInSeconds;
                     toPeacefulPercentage = 0.01f;
                     break;
 
@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 1;
                     diplomacyDifficulty = 0;
                     honorGuard = true;
-                    aiDelayTimeSec = 3 * 60;
+                    aiDelayTimeSec = 15 * TimeExt.MinuteInSeconds;
                     toPeacefulPercentage = 0.05f;
                     break;
 
@@ -120,7 +120,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 1;
                     diplomacyDifficulty = 1;
                     honorGuard = true;
-                    aiDelayTimeSec = 1 * 60;
+                    aiDelayTimeSec = 5 * TimeExt.MinuteInSeconds;
                     toPeacefulPercentage = 0.1f;
                     break;
 

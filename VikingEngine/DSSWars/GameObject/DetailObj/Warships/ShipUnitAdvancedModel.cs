@@ -45,9 +45,9 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
             }
 
-            captainPosDiff = soldier.Profile().modelScale * captainPosDiff;//new Vector3(-0.05f, 0.18f, -.27f);
+            captainPosDiff = soldier.soldierData.modelScale * captainPosDiff;//new Vector3(-0.05f, 0.18f, -.27f);
 
-            leftCrewPosDiff = soldier.Profile().modelScale * leftCrewPosDiff;//new Vector3(-0.076f, 0.12f, 0.065f);
+            leftCrewPosDiff = soldier.soldierData.modelScale * leftCrewPosDiff;//new Vector3(-0.076f, 0.12f, 0.065f);
             rightCrewPosDiff = leftCrewPosDiff;
             rightCrewPosDiff.X = -rightCrewPosDiff.X;
 

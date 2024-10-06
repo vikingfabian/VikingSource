@@ -2288,6 +2288,7 @@ namespace VikingEngine
                     add(SpriteName.LangButton_Chinese, 8, 2);
                     add(SpriteName.WarsBluePrint, 2, 2);
                     add(SpriteName.WarsUnitIcon_TwoHand, 2, 2);
+
                 }
 
                 currentIndex = numTilesWidth * 96;
@@ -2348,6 +2349,7 @@ namespace VikingEngine
                     add(SpriteName.WarsResource_Ballista);
                     add(SpriteName.WarsResource_TwoHandSword);
                     add(SpriteName.WarsResource_KnightsLance);
+                    add(SpriteName.WarsResource_Fuel);
                 }
 
                 currentIndex = numTilesWidth * 97;
@@ -2368,6 +2370,10 @@ namespace VikingEngine
                     add(SpriteName.WarsBuild_Recruitment, 3, 3);
                     add(SpriteName.WarsBuild_Nobelhouse, 3, 3);
                     add(SpriteName.WarsBuild_Carpenter, 3, 3);
+                    add(SpriteName.WarsBuild_WorkBench, 3, 3);
+                    add(SpriteName.WarsBuild_CoalPit, 3, 3);
+                    add(SpriteName.WarsBuild_Pavement, 3, 3);
+                    add(SpriteName.WarsBuild_PavementFlowers, 3, 3);
                 }
 
                 currentIndex = numTilesWidth * 106;

@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             unitType = UnitType.ConscriptCavalry;
 
-            modelScale = DssConst.Men_StandardModelScale * 1.8f;
+            //modelScale = DssConst.Men_StandardModelScale * 1.5f;
             boundRadius = DssVar.StandardBoundRadius;
 
             idleFrame = 0;
@@ -127,7 +127,7 @@ namespace VikingEngine.DSSWars.GameObject
            : base(soldier)
         {
           
-           horsemodel = DssRef.models.ModelInstance(Ref.rnd.Chance(0.2)? VoxelModelName.horse_white : VoxelModelName.horse_brown, DssConst.Men_StandardModelScale * 1.6f,false);
+           horsemodel = DssRef.models.ModelInstance(Ref.rnd.Chance(0.2)? VoxelModelName.horse_white : VoxelModelName.horse_brown, DssConst.Men_StandardModelScale * 1.5f,false);
            horsemodel.AddToRender(DrawGame.UnitDetailLayer);
 
            walkingAnimation = new WalkingAnimation(1, 6, WalkingAnimation.StandardMoveFrames*2f);
@@ -188,7 +188,7 @@ namespace VikingEngine.DSSWars.GameObject
         public KnightBannerModel(AbsSoldierUnit soldier)
             : base(soldier)
         {
-            banner = new HorseBanner(soldier.GetFaction(), soldier.Profile().modelScale);
+            banner = new HorseBanner(soldier.GetFaction(), soldier.soldierData.modelScale);
         }
 
         //protected override void updateShipAnimation(AbsSoldierUnit soldier)

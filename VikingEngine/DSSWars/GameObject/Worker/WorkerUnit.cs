@@ -65,6 +65,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         model.position.Z = goalPos.Z;
                         WP.Rotation1DToQuaterion(model, 2.8f);
                         state = WorkerUnitState.FinalizeWork;
+                        updateGroudY(true);
                         //refreshCarryModel();
                     }
                     else
@@ -163,12 +164,12 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                             if (resourceModel != null)
                             {
-                                //resourceModel.Rotation.RotateWorldX(Ref.DeltaTimeMs * 0.001f);
+                                resourceModel.Rotation.RotateAxis(new Vector3(0, 0, Ref.DeltaTimeMs * 0.0014f));
                             }
                             else
                             { 
                                 refreshCarryModel();
-                                updateGroudY(false);
+                                //updateGroudY(false);
                             }
                             break;
                         case WorkType.Build:
@@ -338,7 +339,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     resourceModel.AddToRender(DrawGame.UnitDetailLayer);
                     resourceModel.Rotation = DssLib.FaceCameraRotation;
                 }
-
+                updateResourceModel();
                 resourceModel.SetSpriteName(sprite);
             }
             else
@@ -383,10 +384,16 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
             if (resourceModel != null)
             {
-                resourceModel.position = model.Rotation.TranslateAlongAxis(
-                DssVar.WorkerUnit_ResourcePosDiff, model.position);
+                updateResourceModel();
             }
         }
+
+        void updateResourceModel()
+        {
+            resourceModel.position = model.Rotation.TranslateAlongAxis(
+                DssVar.WorkerUnit_ResourcePosDiff, model.position);
+        }
+
         public override void toHud(ObjectHudArgs args)
         {
             //base.toHud(args);

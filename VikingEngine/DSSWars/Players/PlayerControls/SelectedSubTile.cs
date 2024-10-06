@@ -46,14 +46,17 @@ namespace VikingEngine.DSSWars.Players
                         city = tile.City();
                     }
 
-                    if (player.mapControls.selection.obj != null &&
-                        player.mapControls.selection.obj.gameobjectType() == GameObjectType.City &&
-                        player.cityTab == Display.MenuTab.Build)
+                    if (player.InBuildOrdersMode())
+                        //player.mapControls.selection.obj != null &&
+                        //player.mapControls.selection.obj.gameobjectType() == GameObjectType.City &&
+                        //player.cityTab == Display.MenuTab.Build)
                     {
                         selectTileResult = player.BuildControls.buildMode;
                         hasSelection = true;
                         model.position = WP.SubtileToWorldPosXZ_Centered(subTilePos);
                         model.position.Y = subTile.groundY;
+
+                        
                         return;
                     }
                     else

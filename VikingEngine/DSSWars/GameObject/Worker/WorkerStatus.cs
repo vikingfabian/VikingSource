@@ -242,7 +242,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                     if (visualUnit)
                     {
-                        new ResourceEffect(convert1.type, convert1.amount, VectorExt.AddY( WP.SubtileToWorldPosXZgroundY_Centered(subTileEnd), 0.08f));
+                        new ResourceEffect(convert1.type, convert1.amount, VectorExt.AddY( WP.SubtileToWorldPosXZgroundY_Centered(subTileEnd), 0.08f), ResourceEffectType.Add);
                     }
                     break;
 
@@ -290,36 +290,15 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                             subTile.terrainQuality,
                             Convert.ToInt32(processTimeLengthSec),
                             amount);
-                        //DssRef.state.resources.addItem(
-                        //        new Resource.ItemResource(
-                        //            resourceType,
-                        //            subTile.terrainQuality,
-                        //            Convert.ToInt32(processTimeLengthSec),
-                        //            TerrainContent.MineAmount),
-                        //        ref subTile.collectionPointer);
-
-                        //tryRepeatWork = true;
 
                     }
                     break;
                 case WorkType.Craft:
                     {
-                        //var building = (TerrainBuildingType)subTile.subTerrain;
-                        //case TerrainBuildingType.Work_Cook:
-                        //    var addFood = ResourceLib.CraftFood.craft(this);
-                        //    food.amount += addFood;
-                        //    foodProduction.add(addFood);
-                        //    canCraftAgain = ResourceLib.CraftFood.canCraft(this);
-                        //    break;
-                        //case TerrainBuildingType.Work_Smith:
-                        //    iron.amount += ResourceLib.CraftIron.craft(this);
-                        //    canCraftAgain = ResourceLib.CraftFood.canCraft(this);
-                        //    break;
-
+                       
                         ItemResourceType item = (ItemResourceType)workSubType;
                         ResourceLib.Blueprint(item, out var bp1, out var bp2);
-                        //var bp = ResourceLib.Blueprint(item);
-
+                        
                         int add = bp1.tryCraft(city);
                         if (add == 0 && bp2 != null)
                         {
@@ -332,23 +311,31 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                             {
                                 city.foodProduction.add(add);
                             }
+                            if (item == ItemResourceType.Fuel_G || item == ItemResourceType.Coal)
+                            { 
+                                item = ItemResourceType.Fuel_G;
+                                if (city.Culture == CityCulture.PitMasters)
+                                {
+                                    add *= 2;
+                                }
+                            }
 
                             city.AddGroupedResource(item, add);
 
                             tryRepeatWork = bp1.canCraft(city);
+
+                            if (visualUnit)
+                            {
+                                new ResourceEffect(item, add, VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(subTileEnd), 0.08f), ResourceEffectType.Add);
+                            }
                         }
                     }
                     break;
 
                 case WorkType.Build:
                     {
-                        //subTile.SetType(TerrainMainType.Building, workSubType, 1);
                         BuildLib.BuildOptions[workSubType].execute_async(city, subTileEnd, ref subTile);
                         DssRef.world.subTileGrid.Set(subTileEnd, subTile);
-                        
-
-
-                        //city.craftItem((TerrainBuildingType)workSubType, out _);
                     }
                     break;
                 case WorkType.Exit:
@@ -415,7 +402,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case WorkType.Craft:
                     {
                         ItemResourceType item = (ItemResourceType)subWork;
-                       ResourceLib.Blueprint(item, out var bp1, out var bp2);
+                        ResourceLib.Blueprint(item, out var bp1, out var bp2);
                         if (bp1.available(city))
                         {
                             bp1.createBackOrder(city);

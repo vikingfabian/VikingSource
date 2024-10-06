@@ -208,6 +208,13 @@ namespace VikingEngine.DSSWars.GameObject
                 nobelmen = nobelmen,
                 idAndPosition = conv.IntVector2ToInt(subPos),
             };
+
+            consriptProfile.profile.defaultSetup(nobelmen);
+            //if (nobelmen)
+            //{
+            //    consriptProfile.profile.training = TrainingLevel.Basic;
+            //}
+
             lock (conscriptBuildings)
             {
                 conscriptBuildings.Add(consriptProfile);

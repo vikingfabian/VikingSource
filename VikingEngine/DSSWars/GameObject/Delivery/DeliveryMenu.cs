@@ -109,9 +109,43 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                     que.toHud(player, content, queClick, currentStatus.que);
                 }
 
-                if (currentStatus.active != DeliveryActiveStatus.Idle)
+                content.newParagraph();
+                content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Hud_CopySetup) },
+                    new RbAction(() =>
+                    {
+                        if (currentStatus.Recruitment())
+                        {
+                            player.menDeliveryCopy = currentStatus;
+                        }
+                        else
+                        {
+                            player.itemDeliveryCopy = currentStatus;
+                        }
+                    }, SoundLib.menu)));
+                content.space();
+                content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Hud_Paste) },
+                    new RbAction(() =>
+                    {
+                        DeliveryStatus currentStatus = get();
+
+                        if (currentStatus.Recruitment())
+                        {
+                            currentStatus.useSetup(player.menDeliveryCopy, player);
+                        }
+                        else
+                        {
+                            currentStatus.useSetup(player.itemDeliveryCopy, player);
+                        }
+
+                        set(currentStatus);
+
+                    }, SoundLib.menu)));
+
+                bool isSending = currentStatus.active == DeliveryActiveStatus.Delivering;
+
+                if (isSending || currentStatus.que > 0)
                 {
-                    bool isSending = currentStatus.active == DeliveryActiveStatus.Delivering;
+                    
                     content.newParagraph();
                     content.Add(new RichBoxSeperationLine());
                     {
@@ -128,6 +162,8 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                         text.overrideColor = isSending || currentStatus.CanRecieve() ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                         content.Add(text);
                     }
+
+                    if (isSending)
                     {
                         content.newLine();
                         content.BulletPoint();

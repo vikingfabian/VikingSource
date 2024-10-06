@@ -1,17 +1,22 @@
 ﻿
 -Change Log-
-*Some polish on the hud
-*Soldier performace improvements
-*Changed water to differ in add speed
-*Icons
-*Ballista, zweihänder and cavalry units added
-*Fuel resource
-*work bench
-*Coal mining
-*Number of mines is reduced to 50%
+* Some polish on the hud
+* Soldier performace improvements
+* Changed water to differ in add speed
+* Icons
+* Ballista, zweihänder and cavalry units added
+* Fuel resource
+* work bench
+* Coal mining
+* Charcoal Pit
+* Number of mines is reduced by 40%
+* new CityCulture: PitMasters
+* increased and improved the ai idle timer on easy difficulty
+* fixed save bugs
+* more decor buildings
 
 !Prev save files are broken
-
+!The events are still not working
 
 !avslutar inte strid position förrän i detalj view
 

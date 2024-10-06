@@ -100,6 +100,7 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.city_nobelhouse, false);
 
             loadVoxelModel(VoxelModelName.decor_statue, false);
+            loadVoxelModel(VoxelModelName.city_pavement, false);
 
             loadVoxelModel(VoxelModelName.Pig, false);
             loadVoxelModel(VoxelModelName.Hen, false);
