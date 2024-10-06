@@ -161,14 +161,14 @@ namespace VikingEngine.DSSWars.GameObject
             soldiers = new SpottedArray<AbsSoldierUnit>(count);
             halfColDepth = typeData.columnsDepth * -0.5f;
 
-            Vector2 boxSz = new Vector2(
-                (typeData.rowWidth - 1) * typeData.groupSpacing,
-                (typeData.columnsDepth - 1) * typeData.groupSpacing);
-            float radius = boxSz.Length() * 0.5f;
+            //Vector2 boxSz = new Vector2(
+            //    (typeData.rowWidth - 1) * typeData.groupSpacing,
+            //    (typeData.columnsDepth - 1) * typeData.groupSpacing);
+            //float radius = boxSz.Length() * 0.5f;
 
             skirmishCount = MathExt.MultiplyInt(0.3, count);
 
-            groupRadius = radius;
+            groupRadius = 0.2f;
         }
 
         void initPart3(AbsSoldierProfile typeData)

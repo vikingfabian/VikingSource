@@ -33,7 +33,9 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
 
         public void useSetup(DeliveryStatus setup, LocalPlayer player)
         {
+            useSenderMin = setup.useSenderMin;
             senderMin = setup.senderMin;
+            useRecieverMax = setup.useRecieverMax;
             recieverMax = setup.recieverMax;
             profile = setup.profile;
 
@@ -110,27 +112,32 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
 
         public bool CanSend(City city)
         {
+            int min = useSenderMin ? senderMin : 0;
             if (profile.type == ItemResourceType.Men)
             {
-                return city.workForce - senderMin >= DssConst.CityDeliveryCount;
+                return city.workForce - min >= DssConst.CityDeliveryCount;
             }
             else
             {
-                return city.GetGroupedResource(profile.type).amount - senderMin >= DssConst.CityDeliveryCount;
+                return city.GetGroupedResource(profile.type).amount - min >= DssConst.CityDeliveryCount;
             }
         }
 
         public bool CanRecieve()
         {
-            City city = DssRef.world.cities[inProgress.toCity];
-            if (inProgress.type == ItemResourceType.Men)
+            if (useRecieverMax)
             {
-                return city.workForce < recieverMax;
+                City city = DssRef.world.cities[inProgress.toCity];
+                if (inProgress.type == ItemResourceType.Men)
+                {
+                    return city.workForce < recieverMax;
+                }
+                else
+                {
+                    return city.GetGroupedResource(inProgress.type).amount < recieverMax;
+                }
             }
-            else
-            {
-                return city.GetGroupedResource(inProgress.type).amount < recieverMax;
-            }
+            return true;
         }
 
         public bool CountDownQue()

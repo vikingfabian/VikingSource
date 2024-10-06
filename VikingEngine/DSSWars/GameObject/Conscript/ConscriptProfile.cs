@@ -225,6 +225,11 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
         public SoldierData init(AbsSoldierProfile profile)
         {
+            if (skillBonus <= 0)
+            {
+                skillBonus = 1;
+            }
+
             SoldierData soldierData = profile.data;
 
             soldierData.basehealth = ConscriptProfile.ArmorHealth(conscript.armorLevel);

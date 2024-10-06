@@ -1,11 +1,6 @@
 ﻿
 -Change Log-
-* Reduced diplomacy gain by half.
-* Optimized the work que
-* Stockpile menu
-* Save bug fixes
-* Flags are not locked to saves anymore
-* Menu polish
+* Fixed idle soldiers, and zero damage bug
 
 Error
 -back button in menues 
