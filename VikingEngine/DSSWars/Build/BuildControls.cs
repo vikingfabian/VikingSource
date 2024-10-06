@@ -111,8 +111,9 @@ namespace VikingEngine.DSSWars.Build
                 {
                     RichBoxContent content = new RichBoxContent();
 
-                    content.h2(BuildLib.BuildOptions[(int)type].Label()).overrideColor = HudLib.TitleColor_TypeName;
                     var build = BuildLib.BuildOptions[(int)type];
+                    content.h2(build.Label()).overrideColor = HudLib.TitleColor_TypeName;
+                    
                     
                     HudLib.Description(content, build.Description());
 

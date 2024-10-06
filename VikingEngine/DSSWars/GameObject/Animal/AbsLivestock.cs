@@ -12,8 +12,7 @@ using VikingEngine.LootFest.Map;
 namespace VikingEngine.DSSWars.GameObject.Animal
 {
     abstract class AbsLivestock : AbsUpdateable
-    {
-        
+    {        
         VectorRect area;
         protected WalkingAnimation walkingAnimation;
         protected Graphics.AbsVoxelObj model;

@@ -733,7 +733,7 @@ namespace VikingEngine.DSSWars
         {
             
             int ix = playerNumber - 1;
-            var playerData = DssRef.storage.localPlayers[ix];
+            LocalPlayerStorage playerData = DssRef.storage.localPlayers[ix];
             playerData.inputSource = InputSource.DefaultPC;
             DssRef.storage.checkPlayerDoublettes(playerNumber - 1);
             

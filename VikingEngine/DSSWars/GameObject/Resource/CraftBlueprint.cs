@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 
@@ -12,17 +14,21 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 {
     class CraftBlueprint
     {
-        SpriteName icon;
-        string name;
+        //SpriteName icon;
+        //string name;
         UseResource[] resources;
-        int resultCount;
+        CraftResultType resultType;
+        int resultSubType;
+        int resultAmount;
+
         public CraftRequirement requirement;
 
-        public CraftBlueprint(SpriteName icon, string name, int result, UseResource[] resources, CraftRequirement requirement = CraftRequirement.None)
+        public CraftBlueprint(CraftResultType resultType, int resultSubType, int resultAmount, UseResource[] resources, CraftRequirement requirement = CraftRequirement.None)
         {
-            this.icon = icon;
-            this.name = name;
-            this.resultCount = result;
+            //this.icon = icon;
+            this.resultType = resultType;
+            this.resultSubType = resultSubType;
+            this.resultAmount = resultAmount;
             this.resources = resources;
             this.requirement = requirement;
         }
@@ -70,7 +76,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 city.AddGroupedResource(r.type, -r.amount);
             }
 
-            return resultCount;
+            return resultAmount;
         }
 
         public int tryCraft(City city)
@@ -88,7 +94,33 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 city.AddGroupedResource(r.type, -r.amount);
             }
 
-            return resultCount;
+            return resultAmount;
+        }
+
+        string name()
+        {
+            switch (resultType)
+            {
+                case CraftResultType.Resource:
+                    return LangLib.Item((ItemResourceType)resultSubType);
+                case CraftResultType.Building:
+                    return BuildLib.BuildOptions[resultSubType].Label();
+            }
+
+            return TextLib.Error;
+        }
+
+        SpriteName icon()
+        {
+            switch (resultType)
+            {
+                case CraftResultType.Resource:
+                    return ResourceLib.Icon((ItemResourceType)resultSubType);
+                case CraftResultType.Building:
+                    return BuildLib.BuildOptions[resultSubType].sprite;
+            }
+
+            return SpriteName.NO_IMAGE;
         }
 
         public void toMenu(RichBoxContent content, City city)
@@ -107,16 +139,16 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             var arrow = new RichBoxImage(SpriteName.pjNumArrowR);
             arrow.color = Color.CornflowerBlue;
             content.Add(arrow);
-            content.Add(new RichBoxText(resultCount.ToString()));
-            if (icon != SpriteName.NO_IMAGE)
-            {
-                content.Add(new RichBoxImage(icon));
-            }
-            else
-            {
-                content.space();
-            }
-            content.Add(new RichBoxText(name));
+            content.Add(new RichBoxText(resultAmount.ToString()));
+            //if (icon() != SpriteName.NO_IMAGE)
+            //{
+                content.Add(new RichBoxImage(icon()));
+            //}
+            //else
+            //{
+            //    content.space();
+            //}
+            content.Add(new RichBoxText(name()));
 
             content.newLine();
 
@@ -162,5 +194,10 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         Brewery,
         Smith,
     }
-    
+
+    enum CraftResultType
+    {
+        Resource,
+        Building,
+    }
 }

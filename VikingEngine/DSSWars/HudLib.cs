@@ -23,6 +23,7 @@ namespace VikingEngine.DSSWars
         public static readonly Color TitleColor_Name = Color.LightYellow;
         public static readonly Color TitleColor_TypeName = Color.LightGray;
         public static readonly Color TitleColor_Label = new Color(0, 128, 153);
+        public static readonly Color TitleColor_Label_Dark = new Color(0, 63, 76);
         public static readonly Color AvailableColor = Color.LightGreen;
         public static readonly Color NotAvailableColor = Color.Red;
 
@@ -210,6 +211,19 @@ namespace VikingEngine.DSSWars
         public static void Label(RichBoxContent content, string text)
         {
             content.text(text + ":").overrideColor = TitleColor_Label;
+        }
+
+        public static void CloseButton(RichBoxContent content, AbsRbAction click)
+        {
+            RichBoxText x = new RichBoxText(DssRef.todoLang.Hud_EndSessionIcon);
+            x.overrideColor = Color.White;
+
+           var button = new RichboxButton(new List<AbsRichBoxMember>
+                    { new RichBoxSpace(), x,new RichBoxSpace(), },
+                    click);
+            button.overrideBgColor = Color.DarkRed;
+
+            content.Add(button);
         }
     }
 }

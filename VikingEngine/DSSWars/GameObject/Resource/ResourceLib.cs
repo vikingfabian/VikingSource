@@ -10,9 +10,9 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 {
     static class ResourceLib
     {
-        public static readonly CraftBlueprint CraftFuel1 = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-            DssRef.todoLang.Resource_TypeName_Fuel,
+        public static readonly CraftBlueprint CraftFuel1 = new CraftBlueprint(  
+            CraftResultType.Resource,
+            (int)ItemResourceType.Fuel_G,
             5,
             new UseResource[]
             {
@@ -21,8 +21,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftCharcoal = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-            DssRef.todoLang.Resource_TypeName_Fuel,
+            CraftResultType.Resource,
+            (int)ItemResourceType.Fuel_G,
             25,
             new UseResource[]
             {
@@ -32,8 +32,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftFood1 = new CraftBlueprint(
-            SpriteName.WarsResource_Food,
-            DssRef.todoLang.Resource_TypeName_Food,
+            CraftResultType.Resource,
+            (int)ItemResourceType.Food_G,
             25,
             new UseResource[]
             {
@@ -44,8 +44,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftFood2 = new CraftBlueprint(
-            SpriteName.WarsResource_Food,
-            DssRef.todoLang.Resource_TypeName_Food,
+            CraftResultType.Resource,
+            (int)ItemResourceType.Food_G,
             25,
             new UseResource[]
             {
@@ -56,8 +56,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftBeer = new CraftBlueprint(
-            SpriteName.WarsResource_Beer,
-           DssRef.todoLang.Resource_TypeName_Beer,
+            CraftResultType.Resource,
+            (int)ItemResourceType.Beer,
            10,
            new UseResource[]
            {
@@ -69,8 +69,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
        );
 
         public static readonly CraftBlueprint CraftIron = new CraftBlueprint(
-             SpriteName.WarsResource_Iron,
-            DssRef.todoLang.Resource_TypeName_Iron,
+            CraftResultType.Resource,
+            (int)ItemResourceType.Iron_G,
             4,
             new UseResource[]
             {
@@ -82,8 +82,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftSharpStick = new CraftBlueprint(
-            SpriteName.WarsResource_Sharpstick,
-            DssRef.todoLang.Resource_TypeName_SharpStick,
+            CraftResultType.Resource,
+            (int)ItemResourceType.SharpStick,
             1,
             new UseResource[]
             {
@@ -93,8 +93,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftSword = new CraftBlueprint(
-            SpriteName.WarsResource_Sword,
-            DssRef.todoLang.Resource_TypeName_Sword,
+            CraftResultType.Resource,
+            (int)ItemResourceType.Sword,
             1,
             new UseResource[]
             {
@@ -105,8 +105,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftKnightsLance = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-            DssRef.todoLang.Resource_TypeName_KnightsLance,
+            CraftResultType.Resource,
+            (int)ItemResourceType.KnightsLance,
             1,
             new UseResource[]
             {
@@ -119,8 +119,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftTwoHandSword = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-            DssRef.todoLang.Resource_TypeName_TwoHandSword,
+            CraftResultType.Resource,
+            (int)ItemResourceType.TwoHandSword,
             1,
             new UseResource[]
             {
@@ -131,8 +131,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftBow = new CraftBlueprint(
-            SpriteName.WarsResource_Bow,
-            DssRef.todoLang.Resource_TypeName_Bow,
+            CraftResultType.Resource,
+            (int)ItemResourceType.Bow,
             1,
             new UseResource[]
             {
@@ -142,8 +142,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftBallista = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-            DssRef.lang.UnitType_Ballista,
+            CraftResultType.Resource,
+            (int)ItemResourceType.Ballista,
             1,
             new UseResource[]
             {
@@ -155,8 +155,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftLightArmor = new CraftBlueprint(
-            SpriteName.WarsResource_LightArmor,
-            DssRef.todoLang.Resource_TypeName_LightArmor,
+            CraftResultType.Resource,
+            (int)ItemResourceType.LightArmor,
             1,
             new UseResource[]
             {
@@ -165,8 +165,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftMediumArmor = new CraftBlueprint(
-            SpriteName.WarsResource_MediumArmor,
-            DssRef.todoLang.Resource_TypeName_MediumArmor,
+            CraftResultType.Resource,
+            (int)ItemResourceType.MediumArmor,
             1,
             new UseResource[]
             {
@@ -177,8 +177,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftHeavyArmor = new CraftBlueprint(
-            SpriteName.WarsResource_HeavyArmor,
-            DssRef.todoLang.Resource_TypeName_HeavyArmor,
+            CraftResultType.Resource,
+            (int)ItemResourceType.HeavyArmor,
             1,
             new UseResource[]
             {
@@ -189,8 +189,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftWorkerHut = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-            DssRef.todoLang.BuildingType_WorkerHut,
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.WorkerHuts,
             1,
             new UseResource[]
             {
@@ -200,8 +200,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftTavern = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-            DssRef.todoLang.BuildingType_Tavern,
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.Tavern,
             1,
             new UseResource[]
             {
@@ -211,8 +211,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftBrewery = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-           DssRef.todoLang.BuildingType_Brewery,
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.Brewery,
            1,
            new UseResource[]
            {
@@ -222,8 +222,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
        );
 
         public static readonly CraftBlueprint CraftPostal = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-           DssRef.todoLang.BuildingType_Postal,
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.Postal,
            1,
            new UseResource[]
            {
@@ -232,8 +232,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
        ); 
 
         public static readonly CraftBlueprint CraftRecruitment = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-            DssRef.todoLang.BuildingType_Recruitment,
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.Recruitment,
             1,
             new UseResource[]
             {
@@ -243,8 +243,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftBarracks = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-            DssRef.todoLang.BuildingType_Barracks,
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.Barracks,
             1,
             new UseResource[]
             {
@@ -254,8 +254,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftPigPen = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-            DssRef.todoLang.BuildingType_PigPen,
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.PigPen,
             1,
             new UseResource[]
             {
@@ -266,8 +266,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftHenPen = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-            DssRef.todoLang.BuildingType_HenPen,
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.HenPen,
             1,
             new UseResource[]
             {
@@ -278,8 +278,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftFarm = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-            DssRef.todoLang.BuildingType_Barracks,
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.WheatFarm,
             1,
             new UseResource[]
             {
@@ -289,8 +289,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftSmith = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-           DssRef.todoLang.BuildingType_HenPen,
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.Smith,
            1,
            new UseResource[]
            {
@@ -300,8 +300,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
        );
 
         public static readonly CraftBlueprint CraftCook = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-           DssRef.todoLang.BuildingType_HenPen,
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.Cook,
            1,
            new UseResource[]
            {
@@ -312,8 +312,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftWorkBench = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-           DssRef.todoLang.BuildingType_WorkBench,
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.WorkBench,
            1,
            new UseResource[]
            {
@@ -323,8 +323,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftCoalPit = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-           DssRef.todoLang.BuildingType_WorkBench,
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.CoalPit,
            1,
            new UseResource[]
            {
@@ -333,8 +333,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftCarpenter = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-           DssRef.todoLang.BuildingType_Carpenter,
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.Carpenter,
            1,
            new UseResource[]
            {
@@ -344,8 +344,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftNobelHouse = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-            DssRef.lang.Building_NobleHouse,
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.Nobelhouse,
             1,
             new UseResource[]
             {
@@ -356,8 +356,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
 
         public static readonly CraftBlueprint CraftPavement = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-           DssRef.todoLang.DecorType_Pavement + " A",
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.Pavement,
            1,
            new UseResource[]
            {
@@ -365,8 +365,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
            }
        );
         public static readonly CraftBlueprint CraftPavementFlower = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-           DssRef.todoLang.DecorType_Pavement + " B",
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.PavementFlower,
            1,
            new UseResource[]
            {
@@ -376,8 +376,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
        );
 
         public static readonly CraftBlueprint CraftStatue = new CraftBlueprint(
-            SpriteName.NO_IMAGE,
-           DssRef.todoLang.DecorType_Statue,
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.Statue_ThePlayer,
            1,
            new UseResource[]
            {
@@ -385,7 +385,17 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                new UseResource(ItemResourceType.Iron_G, 50),
            }
        );
-     
+
+
+        public static readonly CraftBlueprint ConvertGoldOre = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.Gold,
+           1,
+           new UseResource[]
+           {
+               new UseResource(ItemResourceType.GoldOre, 1),
+           }
+       );
 
         public static string Name(ResourceType resource)
         {

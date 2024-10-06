@@ -66,7 +66,7 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource res_food = new GroupedResource() { amount = 200, goalBuffer = 500 };
         public GroupedResource res_beer = new GroupedResource() { amount = 0, goalBuffer = 200 };
         public GroupedResource res_skinLinnen = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_ore = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_ironore = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_iron = new GroupedResource() { goalBuffer = 100 };
 
         public GroupedResource res_sharpstick = new GroupedResource() { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
@@ -96,7 +96,7 @@ namespace VikingEngine.DSSWars.GameObject
                     res_water.amount += add;
                     break;
                 case ItemResourceType.IronOre_G:
-                    res_ore.amount += add;
+                    res_ironore.amount += add;
                     break;
                 case ItemResourceType.Iron_G:
                     res_iron.amount += add;
@@ -163,9 +163,11 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 case ItemResourceType.Gold:
                     return new GroupedResource() { amount = faction.gold };
+                case ItemResourceType.GoldOre:
+                    return new GroupedResource() { amount = 1 };
 
                 case ItemResourceType.Water_G: return res_water;
-                case ItemResourceType.IronOre_G: return res_ore;
+                case ItemResourceType.IronOre_G: return res_ironore;
                 case ItemResourceType.Iron_G: return res_iron;
                 case ItemResourceType.Beer: return res_beer;
                 case ItemResourceType.Food_G: return res_food;
@@ -201,7 +203,7 @@ namespace VikingEngine.DSSWars.GameObject
                     res_water = resource;
                     break;
                 case ItemResourceType.IronOre_G:
-                    res_ore = resource;
+                    res_ironore = resource;
                     break;
                 case ItemResourceType.Iron_G:
                     res_iron = resource;

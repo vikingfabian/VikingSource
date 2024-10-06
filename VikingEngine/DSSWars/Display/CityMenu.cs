@@ -15,6 +15,7 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Data;
+using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.LootFest.Map;
 using VikingEngine.PJ;
 using VikingEngine.ToGG;
@@ -28,8 +29,9 @@ namespace VikingEngine.DSSWars.Display
         public static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Conscript, MenuTab.Resources, MenuTab.BlackMarket, MenuTab.Work, MenuTab.Delivery, MenuTab.Build };
         Players.LocalPlayer player;
         City city;
+        static readonly int[] StockPileControls = { 100, 1000 };
 
-        public const string ResourcesMenuState = "resource";
+        //public const string ResourcesMenuState = "resource";
         public CityMenu(Players.LocalPlayer player, City city, RichBoxContent content)
         {
             this.player = player;
@@ -100,72 +102,175 @@ namespace VikingEngine.DSSWars.Display
         }
         public void resourcesToMenu(RichBoxContent content)
         {
-            //content.Add(new RichBoxSeperationLine());
-
-            content.h1(DssRef.todoLang.MenuTab_Resources);
-            content.newLine();
-
-            // content.text("Water: " + water.ToString());
-            //city.water.toMenu(content, DssRef.todoLang.Resource_TypeName_Water);
-            content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
-            content.Add(new RichBoxText( DssRef.todoLang.Resource_TypeName_Water + ": " + string.Format(DssRef.todoLang.Language_CollectProgress, city.res_water.amount, city.maxWater)));
-            content.Add(new RichBoxTab(0.4f));
-            content.Add(new RichBoxImage(SpriteName.WarsResource_WaterAdd));
-            content.Add(new RichBoxText(TextLib.OneDecimal(city.waterAddPerSec)));
-
-            city.res_wood.toMenu(content,  ItemResourceType.Wood_Group);            
-            city.res_stone.toMenu(content,  ItemResourceType.Stone_G);
-            city.res_rawFood.toMenu(content, ItemResourceType.RawFood_Group);
-            city.res_skinLinnen.toMenu(content,  ItemResourceType.SkinLinen_Group);
-            city.res_ore.toMenu(content, ItemResourceType.IronOre_G);
-
+            for (ResourcesSubTab resourcesSubTab = 0; resourcesSubTab < ResourcesSubTab.NUM; ++resourcesSubTab)
+            {
+                string text = null;
+                switch (resourcesSubTab)
+                {
+                    case ResourcesSubTab.Overview:
+                        text = DssRef.todoLang.Resource_Tab_Overview;
+                        break;
+                    case ResourcesSubTab.Stockpile:
+                        text = DssRef.todoLang.Resource_Tab_Stockpile;
+                        break;
+                }
+                var subTab = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(text) },
+                    new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) => { 
+                        player.resourcesSubTab = resourcesSubTab; 
+                    }, resourcesSubTab, SoundLib.menu));
+                subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
+                content.Add(subTab);
+                content.space();
+            }
             content.newParagraph();
 
-            city.res_food.toMenu(content, ItemResourceType.Food_G);
-            blueprintButton(player, content, ResourceLib.CraftFood1, ResourceLib.CraftFood2);
-            
-            city.res_fuel.toMenu(content, ItemResourceType.Fuel_G);
-            blueprintButton(player, content, ResourceLib.CraftFuel1, null, true);
-            content.space();
-            blueprintButton(player, content, ResourceLib.CraftCharcoal);
+            switch (player.resourcesSubTab)
+            {
+                case ResourcesSubTab.Overview:
+                    content.h1(DssRef.todoLang.MenuTab_Resources);
+                    content.newLine();
 
-            city.res_beer.toMenu(content, ItemResourceType.Beer);
-            blueprintButton(player, content, ResourceLib.CraftBeer);
+                    content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
+                    content.Add(new RichBoxText(DssRef.todoLang.Resource_TypeName_Water + ": " + string.Format(DssRef.todoLang.Language_CollectProgress, city.res_water.amount, city.maxWater)));
+                    content.Add(new RichBoxTab(0.4f));
+                    content.Add(new RichBoxImage(SpriteName.WarsResource_WaterAdd));
+                    content.Add(new RichBoxText(TextLib.OneDecimal(city.waterAddPerSec)));
 
-            city.res_iron.toMenu(content, ItemResourceType.Iron_G);
-            blueprintButton(player, content, ResourceLib.CraftIron);
+                    city.res_wood.toMenu(content, ItemResourceType.Wood_Group);
+                    city.res_stone.toMenu(content, ItemResourceType.Stone_G);
+                    city.res_rawFood.toMenu(content, ItemResourceType.RawFood_Group);
+                    city.res_skinLinnen.toMenu(content, ItemResourceType.SkinLinen_Group);
+                    city.res_ironore.toMenu(content, ItemResourceType.IronOre_G);
 
-            city.res_sharpstick.toMenu(content, ItemResourceType.SharpStick);
-            blueprintButton(player, content, ResourceLib.CraftSharpStick);
+                    content.newParagraph();
 
-            city.res_sword.toMenu(content, ItemResourceType.Sword);
-            blueprintButton(player, content, ResourceLib.CraftSword);
+                    city.res_food.toMenu(content, ItemResourceType.Food_G);
+                    blueprintButton(player, content, ResourceLib.CraftFood1, ResourceLib.CraftFood2);
 
-            city.res_twohandsword.toMenu(content, ItemResourceType.TwoHandSword);
-            blueprintButton(player, content, ResourceLib.CraftTwoHandSword);
+                    city.res_fuel.toMenu(content, ItemResourceType.Fuel_G);
+                    blueprintButton(player, content, ResourceLib.CraftFuel1, null, true);
+                    content.space();
+                    blueprintButton(player, content, ResourceLib.CraftCharcoal);
 
-            city.res_knightslance.toMenu(content, ItemResourceType.KnightsLance);
-            blueprintButton(player, content, ResourceLib.CraftKnightsLance);
+                    city.res_beer.toMenu(content, ItemResourceType.Beer);
+                    blueprintButton(player, content, ResourceLib.CraftBeer);
 
-            city.res_bow.toMenu(content, ItemResourceType.Bow);
-            blueprintButton(player, content, ResourceLib.CraftBow);
+                    city.res_iron.toMenu(content, ItemResourceType.Iron_G);
+                    blueprintButton(player, content, ResourceLib.CraftIron);
 
-            city.res_ballista.toMenu(content, ItemResourceType.Ballista);
-            blueprintButton(player, content, ResourceLib.CraftBallista);
+                    city.res_sharpstick.toMenu(content, ItemResourceType.SharpStick);
+                    blueprintButton(player, content, ResourceLib.CraftSharpStick);
 
-            city.res_lightArmor.toMenu(content, ItemResourceType.LightArmor);
-            blueprintButton(player, content, ResourceLib.CraftLightArmor);
+                    city.res_sword.toMenu(content, ItemResourceType.Sword);
+                    blueprintButton(player, content, ResourceLib.CraftSword);
 
-            city.res_mediumArmor.toMenu(content, ItemResourceType.MediumArmor);
-            blueprintButton(player, content, ResourceLib.CraftMediumArmor);
+                    city.res_twohandsword.toMenu(content, ItemResourceType.TwoHandSword);
+                    blueprintButton(player, content, ResourceLib.CraftTwoHandSword);
 
-            city.res_heavyArmor.toMenu(content, ItemResourceType.HeavyArmor);
-            blueprintButton(player, content, ResourceLib.CraftHeavyArmor);
+                    city.res_knightslance.toMenu(content, ItemResourceType.KnightsLance);
+                    blueprintButton(player, content, ResourceLib.CraftKnightsLance);
 
-            content.newParagraph();
-            
-            content.text("1 gold ore => " + DssConst.GoldOreSellValue.ToString() + "gold");
-            content.text("1 food => " + DssConst.FoodEnergy + " energy (seconds of work)");
+                    city.res_bow.toMenu(content, ItemResourceType.Bow);
+                    blueprintButton(player, content, ResourceLib.CraftBow);
+
+                    city.res_ballista.toMenu(content, ItemResourceType.Ballista);
+                    blueprintButton(player, content, ResourceLib.CraftBallista);
+
+                    city.res_lightArmor.toMenu(content, ItemResourceType.LightArmor);
+                    blueprintButton(player, content, ResourceLib.CraftLightArmor);
+
+                    city.res_mediumArmor.toMenu(content, ItemResourceType.MediumArmor);
+                    blueprintButton(player, content, ResourceLib.CraftMediumArmor);
+
+                    city.res_heavyArmor.toMenu(content, ItemResourceType.HeavyArmor);
+                    blueprintButton(player, content, ResourceLib.CraftHeavyArmor);
+
+                    content.newParagraph();
+
+                    ResourceLib.ConvertGoldOre.toMenu(content, city);
+                    //content.text("1 gold ore => " + DssConst.GoldOreSellValue.ToString() + "gold");
+                    {
+                        //content.text("1 food => " + DssConst.FoodEnergy + " energy (seconds of work)");
+                        content.Add(new RichBoxText(1.ToString()));
+                        content.Add(new RichBoxImage(ResourceLib.Icon(ItemResourceType.Food_G)));
+                        content.Add(new RichBoxText(DssRef.todoLang.Resource_TypeName_Food));
+                        var arrow = new RichBoxImage(SpriteName.pjNumArrowR);
+                        arrow.color = Color.CornflowerBlue;
+                        content.Add(arrow);
+                        content.Add(new RichBoxText(string.Format(DssRef.todoLang.Hud_EnergyAmount, DssConst.FoodEnergy)));
+                    }
+                    break;
+
+                case ResourcesSubTab.Stockpile:
+                    content.h1(DssRef.todoLang.Resource_Tab_Stockpile);
+                    HudLib.Description(content, "Set goal amount for storage of resources, this will inform workers on what to prioritize");
+
+                    stockpile(ItemResourceType.Wood_Group);
+                    stockpile(ItemResourceType.Stone_G);
+                    stockpile(ItemResourceType.RawFood_Group);
+                    stockpile(ItemResourceType.SkinLinen_Group);
+                    stockpile(ItemResourceType.IronOre_G);
+                    content.newParagraph();
+                    stockpile(ItemResourceType.Food_G);
+                    stockpile(ItemResourceType.Fuel_G);
+                    stockpile(ItemResourceType.Beer);
+                    stockpile(ItemResourceType.Iron_G);
+                    stockpile(ItemResourceType.Sword);
+                    stockpile(ItemResourceType.TwoHandSword);
+                    stockpile(ItemResourceType.KnightsLance);
+                    stockpile(ItemResourceType.Bow);
+                    stockpile(ItemResourceType.Ballista);
+                    stockpile(ItemResourceType.LightArmor);
+                    stockpile(ItemResourceType.MediumArmor);
+                    stockpile(ItemResourceType.HeavyArmor);
+
+                    break;
+            }
+
+            void stockpile(ItemResourceType item)
+            {
+                var res = city.GetGroupedResource(item);
+
+                content.newLine();
+                content.Add(new RichBoxImage(ResourceLib.Icon(item)));
+                content.space();
+                //content.Add(new RichBoxText(LangLib.Item(item) + ": "));
+                RbAction hover = new RbAction(() => {
+                    RichBoxContent content = new RichBoxContent();
+                    content.Add(new RichBoxText(LangLib.Item(item)));
+                    player.hud.tooltip.create(player, content, true);
+                });
+                //content.newLine();
+                for (int i = StockPileControls.Length - 1; i >= 0; i--)
+                {
+                    int change = -StockPileControls[i];
+                    content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(TextLib.PlusMinus(change)) },
+                        new RbAction1Arg<int>((int change) => {
+                            var res = city.GetGroupedResource(item);
+                            res.goalBuffer += change;
+                            city.SetGroupedResource(item, res);
+
+                        }, change, SoundLib.menu), hover));
+
+                    content.space();
+                }
+
+                content.Add(new RichBoxText(res.goalBuffer.ToString()));
+
+                for (int i = 0; i < StockPileControls.Length; i++)
+                {
+                    content.space();
+
+                    int change = StockPileControls[i];
+                    content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(TextLib.PlusMinus(change)) },
+                        new RbAction1Arg<int>((int change) => {
+                            var res = city.GetGroupedResource(item);
+                            res.goalBuffer += change;
+                            city.SetGroupedResource(item, res);
+
+                        }, change, SoundLib.menu), hover));
+                }
+            }
         }
 
         void purchaseOptions(RichBoxContent content)
@@ -731,6 +836,13 @@ namespace VikingEngine.DSSWars.Display
         Delivery,
         Build,
         Automation,
+        NUM
+    }
+
+    enum ResourcesSubTab
+    { 
+        Overview,
+        Stockpile,
         NUM
     }
 }

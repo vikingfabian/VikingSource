@@ -43,14 +43,16 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             {
                 BarracksStatus currentStatus = get();
 
+                content.Add(new RichBoxImage(
+                            new SoldierConscriptProfile() { conscript = currentStatus.profile }.Icon()
+                            ));
+                content.space();
                 content.Add(new RichBoxBeginTitle(1));
 
                 string typeName = currentStatus.nobelmen? DssRef.lang.Building_NobleHouse : DssRef.todoLang.BuildingType_Barracks;
                 content.Add(new RichBoxText(typeName + " " + currentStatus.idAndPosition.ToString()));
                 content.space();
-                content.Add(new RichboxButton(new List<AbsRichBoxMember>
-                    { new RichBoxSpace(), new RichBoxText(DssRef.todoLang.Hud_EndSessionIcon),new RichBoxSpace(), },
-                    new RbAction(() => { city.selectedConscript = -1; })));
+                 HudLib.CloseButton(content,new RbAction(() => { city.selectedConscript = -1; }));
 
                 content.newParagraph();
 
@@ -214,18 +216,27 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     BarracksStatus currentProfile = city.conscriptBuildings[i];
                     var caption = new RichBoxText(
                             LangLib.Weapon(currentProfile.profile.weapon) + ", " +
-                            LangLib.Armor(currentProfile.profile.armorLevel) + ", " +
-                            LangLib.Training(currentProfile.profile.training)
+                            LangLib.Armor(currentProfile.profile.armorLevel)
                         );
                     caption.overrideColor = HudLib.TitleColor_Name;
 
+                    var info = new RichBoxText(
+                            currentProfile.shortActiveString()
+                        );
+                    info.overrideColor = HudLib.InfoYellow_Light;
+
                     content.Add(new RichboxButton(new List<AbsRichBoxMember>(){
-                        new RichBoxBeginTitle(2),
-                        caption,
+                        new RichBoxImage(
+                            new SoldierConscriptProfile(){ conscript = currentProfile.profile }.Icon()
+                            ),
+                        new RichBoxSpace(),
+                        caption,  
                         new RichBoxNewLine(),
-                        new RichBoxText(currentProfile.shortActiveString())
+                        info,
                     }, new RbAction1Arg<int>(selectClick, i)));
 
+                    //content.text(currentProfile.shortActiveString()).overrideColor = HudLib.InfoYellow_Light;
+                       
                 }
             }
         }
@@ -247,9 +258,12 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
         void weaponTooltip(MainWeapon weapon)
         {
-
             RichBoxContent content = new RichBoxContent();
             content.Add(new RichBoxText(string.Format(DssRef.todoLang.Conscript_WeaponDamage, ConscriptProfile.WeaponDamage(weapon))));
+            content.newParagraph();
+            content.h2(DssRef.todoLang.Hud_Available);
+            var item = ConscriptProfile.WeaponItem(weapon);
+            city.GetGroupedResource(item).toMenu(content, item);
 
             player.hud.tooltip.create(player, content, true);
         }
@@ -266,6 +280,14 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             {
                 new RichBoxText(string.Format(DssRef.todoLang.Conscript_ArmorHealth, ConscriptProfile.ArmorHealth(armor)))
             };
+
+            if (armor != ArmorLevel.None)
+            {
+                content.newParagraph();
+                content.h2(DssRef.todoLang.Hud_Available);
+                var item = ConscriptProfile.ArmorItem(armor);
+                city.GetGroupedResource(item).toMenu(content, item);
+            }
 
             player.hud.tooltip.create(player, content, true);
         }

@@ -218,6 +218,11 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             }
         }
 
+        public SpriteName Icon()
+        {
+           return init(DssRef.profile.bannerman).icon;
+        }
+
         public SoldierData init(AbsSoldierProfile profile)
         {
             SoldierData soldierData = profile.data;

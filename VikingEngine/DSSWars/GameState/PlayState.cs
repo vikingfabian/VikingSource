@@ -340,7 +340,7 @@ namespace VikingEngine.DSSWars
             return false;
         }
 
-        const float AutoSaveTimeSec = 10 * 60;
+        const float AutoSaveTimeSec = 20 * TimeExt.MinuteInSeconds;
         float LastAutoSaveTime_TotalSec = 0;
 
         

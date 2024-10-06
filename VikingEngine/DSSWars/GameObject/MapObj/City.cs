@@ -337,7 +337,7 @@ namespace VikingEngine.DSSWars.GameObject
             for (int i = 0; i < deliveryServicesCount; i++)
             {
                 Delivery.DeliveryStatus status = new Delivery.DeliveryStatus();
-                status.readGameState(r);
+                status.readGameState(r, subversion);
                 deliveryServices.Add(status);
             }
 
@@ -532,7 +532,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             position = new Vector3(tilePos.X, Tile().ModelGroundY(), tilePos.Y);
 
-            detailObj = new CityDetail(this);
+            detailObj = new CityDetail(this, newGame);
 
             float iconScale = IconScale();
 
@@ -560,7 +560,6 @@ namespace VikingEngine.DSSWars.GameObject
                     default:
                         workForceMax = DssConst.HeadCityStartMaxWorkForce;
                         waterAddPerSec = DssConst.WaterAdd_HeadCity;
-                        //nobelHouse = true;
                         break;
                 }
                 workForce = (int)(workForceMax * 0.75);

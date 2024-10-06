@@ -36,26 +36,27 @@ namespace VikingEngine.DSSWars.Build
         }
         public string Label()
         {
-            switch (mainType)
-            {
-                case TerrainMainType.Building:
-                    return ((TerrainBuildingType)subType).ToString();
-                case TerrainMainType.Foil:
-                    return ((TerrainSubFoilType)subType).ToString();
-                case TerrainMainType.Decor:
-                    switch ((TerrainDecorType)subType)
-                    {
-                        case TerrainDecorType.Pavement:
-                            return DssRef.todoLang.DecorType_Pavement + " A";
-                        case TerrainDecorType.PavementFlower:
-                            return DssRef.todoLang.DecorType_Pavement + " B";
-                        case TerrainDecorType.Statue_ThePlayer:
-                            return DssRef.todoLang.DecorType_Statue;
-                    }
-                    break;
-            }
+            return LangLib.TerrainName(mainType, subType);
+            //switch (mainType)
+            //{
+            //    case TerrainMainType.Building:
+            //        return ((TerrainBuildingType)subType).ToString();
+            //    case TerrainMainType.Foil:
+            //        return ((TerrainSubFoilType)subType).ToString();
+            //    case TerrainMainType.Decor:
+            //        switch ((TerrainDecorType)subType)
+            //        {
+            //            case TerrainDecorType.Pavement:
+            //                return DssRef.todoLang.DecorType_Pavement + " A";
+            //            case TerrainDecorType.PavementFlower:
+            //                return DssRef.todoLang.DecorType_Pavement + " B";
+            //            case TerrainDecorType.Statue_ThePlayer:
+            //                return DssRef.todoLang.DecorType_Statue;
+            //        }
+            //        break;
+            //}
 
-            return TextLib.Error;
+            //return TextLib.Error;
         }
         public string Description()
         {

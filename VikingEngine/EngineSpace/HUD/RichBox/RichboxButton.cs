@@ -45,6 +45,12 @@ namespace VikingEngine.HUD.RichBox
 
         public override void Create(RichBoxGroup group)
         {
+            if (content.Count > 1)
+            {
+                lib.DoNothing();
+            }
+
+
             const float HoriSpace = 4;
 
             
@@ -53,13 +59,13 @@ namespace VikingEngine.HUD.RichBox
             group.parentMember.Push(this);
 
             group.TryCreate_Start();
-            createContent(out Vector2 topLeft, out Vector2 bottomRight);
+            createContent(out Vector2 topLeft, out Vector2 bottomRight, out bool multiline);
 
             if (bottomRight.X + 4 > group.boxWidth)
             {
                 group.TryCreate_Undo();
                 group.newLine();
-                createContent(out topLeft, out bottomRight);
+                createContent(out topLeft, out bottomRight, out multiline);
             }
             else
             {
@@ -68,12 +74,13 @@ namespace VikingEngine.HUD.RichBox
 
             group.parentMember.Pop();
 
-            
-
             topLeft.Y -= heigh;
             bottomRight.Y += group.lineSpacingHalf;
 
             VectorRect area = VectorRect.FromTwoPoints(topLeft, bottomRight);
+
+            if (multiline) area.Width = group.boxWidth;
+
             area.AddXRadius(2);
             area.AddYRadius(-2);
             bgPointer = new Image(SpriteName.WhiteArea_LFtiles, area.Position, area.Size, group.layer + 1);
@@ -94,8 +101,11 @@ namespace VikingEngine.HUD.RichBox
             group.images.Add(bgPointer);
             group.buttonGrid_Y_X.Last().Add(this);
 
-            void createContent(out Vector2 topLeft, out Vector2 bottomRight)
+            void createContent(out Vector2 topLeft, out Vector2 bottomRight, out bool multilineContent)
             {
+                multilineContent = false;
+                float prevY = group.position.Y;
+                bool newLine = false;
                 topLeft = group.position;
 
                 group.position.X += HoriSpace;
@@ -105,6 +115,20 @@ namespace VikingEngine.HUD.RichBox
                 foreach (var m in content)
                 {
                     m.Create(group);
+
+                    if (newLine)
+                    {
+                       
+                        multilineContent = true;
+                    }
+                    if (prevY < group.position.Y)
+
+                    {
+                        //multiline button
+                        //area.Width = group.boxWidth;
+                        group.position.X += HoriSpace;
+                        newLine = true;
+                    }
                 }
                 group.position.X += HoriSpace;
 

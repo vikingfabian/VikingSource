@@ -9,12 +9,13 @@ using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace VikingEngine.DSSWars.GameObject.Delivery
 {
     class DeliveryMenu
     {
-        static readonly int[] BoundControls = { 10, 100 };
+        static readonly int[] BoundControls = { 10, 100, 1000 };
         City city;
         LocalPlayer player;
         ProgressQue que = new ProgressQue();
@@ -40,6 +41,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                     new RbAction(() => { city.selectedDelivery = -1; })));
 
                 content.newLine();
+                HudLib.Description(content, DssRef.todoLang.BuildingType_Postal_Description);
                 HudLib.Description(content, string.Format("Will send {0} at a time", DssConst.CityDeliveryCount));
 
                 content.newParagraph();
@@ -54,11 +56,28 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                         var button = new RichboxButton(new List<AbsRichBoxMember>{
                                 new RichBoxImage(ResourceLib.Icon(item))   
                             //new RichBoxText(LangLib.Item(item))
-                            }, new RbAction1Arg<ItemResourceType>(itemClick, item), new RbAction(()=> 
-                           {
-                               RichBoxContent content = new RichBoxContent();
-                               content.text(LangLib.Item(item)).overrideColor = HudLib.TitleColor_TypeName;
-                           }));
+                            }, 
+                            
+                            new RbAction1Arg<ItemResourceType>(itemClick, item), 
+                            
+                            new RbAction(()=> 
+                               {
+                                   RichBoxContent content = new RichBoxContent();
+
+                                   content.h2(DssRef.todoLang.Delivery_ThisCity);
+                                   city.GetGroupedResource(item).toMenu(content, item);
+
+                                   if (currentStatus.profile.toCity >= 0)
+                                   { 
+                                        content.newParagraph();
+                                       content.h2(DssRef.todoLang.Delivery_RecieveingCity);
+                                       DssRef.world.cities[currentStatus.profile.toCity].GetGroupedResource(item).toMenu(content, item);
+                                   }
+                                   
+                                   //content.text(LangLib.Item(item)).overrideColor = HudLib.TitleColor_TypeName;
+
+                                   player.hud.tooltip.create(player, content, true);
+                               }));
                         button.setGroupSelectionColor(HudLib.RbSettings, item == currentStatus.profile.type);
                         content.Add(button);
                         content.space();
@@ -92,15 +111,20 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                         content.space();
                     }
                 }
-
                 content.newParagraph();
 
-                HudLib.Label(content, "Sender minimum cap");
+                var minLabel = new RichBoxText("Sender minimum cap" + ":");
+                minLabel.overrideColor = HudLib.TitleColor_Label_Dark;
+                content.Add(new RichboxCheckbox(new List<AbsRichBoxMember> { minLabel },
+                    UseSenderMinProperty));
                 boundsToHud(content, currentStatus, true);
 
                 content.newParagraph();
 
-                HudLib.Label(content, "Reciever maximum cap");
+                var maxLabel = new RichBoxText("Reciever maximum cap" + ":");
+                maxLabel.overrideColor = HudLib.TitleColor_Label_Dark;
+                content.Add(new RichboxCheckbox(new List<AbsRichBoxMember> { maxLabel },
+                    UseRecieverMaxProperty));
                 boundsToHud(content, currentStatus, false);
 
                 if (currentStatus.profile.toCity >= 0)
@@ -220,6 +244,18 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
         void boundsToHud(RichBoxContent content, DeliveryStatus currentStatus, bool minCap)
         {
             content.newLine();
+            int current;
+
+            if (minCap)
+            {   
+                current = currentStatus.senderMin;
+            }
+            else
+            {
+                current = currentStatus.recieverMax;
+            }
+
+            
             for (int i = BoundControls.Length - 1; i >= 0; i--)
             {
                 int change = -BoundControls[i];
@@ -229,7 +265,6 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                 content.space();
             }
 
-            int current = minCap ? currentStatus.senderMin : currentStatus.recieverMax;
             content.Add(new RichBoxText(current.ToString()));
             content.space();
 
@@ -241,6 +276,28 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
 
                 content.space();
             }
+        }
+
+        bool UseSenderMinProperty(int index, bool _set, bool value)
+        {
+            DeliveryStatus currentStatus = get();
+            if (_set)
+            {
+                currentStatus.useSenderMin = value;
+                set(currentStatus);
+            }
+            return currentStatus.useSenderMin;
+        }
+
+        bool UseRecieverMaxProperty(int index, bool _set, bool value)
+        {
+            DeliveryStatus currentStatus = get();
+            if (_set)
+            {
+                currentStatus.useRecieverMax = value;
+                set(currentStatus);
+            }
+            return currentStatus.useRecieverMax;
         }
 
         void changeResourcePrice(int change, bool minCap)

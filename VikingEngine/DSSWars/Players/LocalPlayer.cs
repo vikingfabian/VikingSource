@@ -67,6 +67,7 @@ namespace VikingEngine.DSSWars.Players
 
         public MenuTab factionTab = HeadDisplay.Tabs[0];
         public MenuTab cityTab = CityMenu.Tabs[0];
+        public ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview;
 
         public DeliveryStatus menDeliveryCopy, itemDeliveryCopy;
         public ConscriptProfile soldierConscriptCopy, knightConscriptCopy;

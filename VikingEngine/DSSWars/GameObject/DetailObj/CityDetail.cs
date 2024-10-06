@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.GameObject
         int totalWorkerHutAndLevelCount = 0;
         //public WorkersModels workersModels = null;
         int storedAttacks = 0;
-        public CityDetail(City city)
+        public CityDetail(City city, bool newGame)
         {
             //data = new CityDetailProfile();
             this.city = city;
@@ -65,9 +65,11 @@ namespace VikingEngine.DSSWars.GameObject
             health = 10000;
             radius = 0.7f;
 
-            refreshWorkerSubtiles();
-            //attack = new AttackAnimation(this);
-            //onNewOwner();
+
+            if (newGame)
+            {
+                refreshWorkerSubtiles();
+            }
         }
 
         public void writeGameState(System.IO.BinaryWriter w)

@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.Conscript;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.LootFest.GO;
 
 namespace VikingEngine.DSSWars.Display.Translation
 {
@@ -47,11 +50,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         {
             switch (training)
             {
-                case TrainingLevel.Minimal: return "Minimal";
-                case TrainingLevel.Basic: return "Basic";
-                case TrainingLevel.Skillful: return "Skillful";
-                case TrainingLevel.Professional: return "Professional";
-
+                case TrainingLevel.Minimal: return DssRef.todoLang.Conscript_Training_Minimal;
+                case TrainingLevel.Basic: return DssRef.todoLang.Conscript_Training_Basic;
+                case TrainingLevel.Skillful: return DssRef.todoLang.Conscript_Training_Skillful;
+                case TrainingLevel.Professional: return DssRef.todoLang.Conscript_Training_Professional;
 
                 default:
                     throw new NotImplementedException();
@@ -63,15 +65,20 @@ namespace VikingEngine.DSSWars.Display.Translation
             switch (specialization)
             {
                 case SpecializationType.None: return DssRef.todoLang.Hud_None;
-                case SpecializationType.Field: return "Open field";
-                case SpecializationType.Sea: return "Ship";
-                case SpecializationType.Siege: return "Siege";
-                case SpecializationType.Viking: return "Viking";
-                case SpecializationType.HonorGuard: return "Honor guard";
-                case SpecializationType.Green: return "Green soldier";
-                case SpecializationType.Traditional: return "Traditional";
-                case SpecializationType.AntiCavalry: return "Anti cavalry";
-
+                case SpecializationType.Field: return DssRef.todoLang.Conscript_Specialization_Field;
+                case SpecializationType.Sea:
+                    return DssRef.todoLang.Conscript_Specialization_Sea;
+                case SpecializationType.Siege:
+                    return DssRef.todoLang.Conscript_Specialization_Siege;
+                case SpecializationType.Viking:
+                    return DssRef.lang.UnitType_Viking;
+                case SpecializationType.HonorGuard:
+                    return DssRef.lang.UnitType_HonorGuard;
+                case SpecializationType.Green: return DssRef.lang.UnitType_GreenSoldier;
+                case SpecializationType.Traditional:
+                    return DssRef.todoLang.Conscript_Specialization_Traditional;
+                case SpecializationType.AntiCavalry:
+                    return DssRef.todoLang.Conscript_Specialization_AntiCavalry;
 
                 default:
                     return TextLib.Error;
@@ -107,6 +114,132 @@ namespace VikingEngine.DSSWars.Display.Translation
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        //public static string BuildingName(BuildAndExpandType buildingType)
+        //{
+        //    switch (buildingType)
+        //    {
+        //        case BuildAndExpandType.Barracks:
+        //             return DssRef.todoLang.BuildingType_Barracks;
+
+        //        case BuildAndExpandType.Brewery:
+        //            return DssRef.todoLang.BuildingType_Brewery;
+        //        case BuildAndExpandType.Carpenter:
+        //            return DssRef.todoLang.BuildingType_Carpenter;
+        //        case BuildAndExpandType.CoalPit:
+        //            return DssRef.todoLang.BuildingType_CoalPit;
+        //        case BuildAndExpandType.Cook:
+        //            return DssRef.todoLang.BuildingType_Cook;
+        //        case BuildAndExpandType.HenPen:
+        //            return DssRef.todoLang.BuildingType_HenPen;
+        //        case BuildAndExpandType.LinenFarm:
+        //            return string.Format(DssRef.todoLang.BuildingType_ResourceFarm, DssRef.todoLang.Resource_TypeName_Linen);
+        //        case BuildAndExpandType.Nobelhouse:
+        //            return DssRef.lang.Building_NobleHouse;
+        //        case BuildAndExpandType.Pavement:
+        //            return DssRef.todoLang.DecorType_Pavement + " A";
+        //        case BuildAndExpandType.PavementFlower:
+        //            return DssRef.todoLang.DecorType_Pavement + " B";
+        //        case BuildAndExpandType.PigPen:
+        //            return DssRef.todoLang.BuildingType_PigPen;
+        //        case BuildAndExpandType.Postal:
+        //            return DssRef.todoLang.BuildingType_Postal;
+        //        case BuildAndExpandType.Recruitment:
+        //            return DssRef.todoLang.BuildingType_Recruitment;
+        //        case BuildAndExpandType.Smith:
+        //            return DssRef.todoLang.BuildingType_Smith;
+        //        case BuildAndExpandType.Statue_ThePlayer:
+        //            return DssRef.todoLang.DecorType_Statue;
+        //        case BuildAndExpandType.Tavern:
+        //            return DssRef.todoLang.BuildingType_Tavern;
+        //        case BuildAndExpandType.WheatFarm:
+        //            return string.Format(DssRef.todoLang.BuildingType_ResourceFarm, DssRef.todoLang.Resource_TypeName_Wheat);
+        //        case BuildAndExpandType.WorkBench:
+        //            return DssRef.todoLang.BuildingType_WorkBench;
+        //        case BuildAndExpandType.WorkerHuts:
+        //            return DssRef.todoLang.BuildingType_WorkerHut;
+
+        //        default:
+        //            return TextLib.Error;
+        //    }
+        //}
+
+        public static string TerrainName(TerrainMainType mainType, int subType)
+        {
+            switch (mainType)
+            {
+                case TerrainMainType.Building:
+                    switch ((TerrainBuildingType)subType)
+                    { 
+                        case TerrainBuildingType.Barracks:
+                            return DssRef.todoLang.BuildingType_Barracks;
+                        case TerrainBuildingType.Brewery:
+                            return DssRef.todoLang.BuildingType_Brewery;
+                        case TerrainBuildingType.Carpenter:
+                            return DssRef.todoLang.BuildingType_Carpenter;
+                        case TerrainBuildingType.Work_CoalPit:
+                            return DssRef.todoLang.BuildingType_CoalPit;
+                        case TerrainBuildingType.Work_Cook:
+                            return DssRef.todoLang.BuildingType_Cook;
+                        case TerrainBuildingType.HenPen:
+                            return DssRef.todoLang.BuildingType_HenPen;
+                        case TerrainBuildingType.Nobelhouse:
+                            return DssRef.lang.Building_NobleHouse;
+                        case TerrainBuildingType.PigPen:
+                            return DssRef.todoLang.BuildingType_PigPen;
+                        case TerrainBuildingType.Postal:
+                            return DssRef.todoLang.BuildingType_Postal;
+                        case TerrainBuildingType.Recruitment:
+                            return DssRef.todoLang.BuildingType_Recruitment;
+                        case TerrainBuildingType.Work_Smith:
+                            return DssRef.todoLang.BuildingType_Smith;
+                        case TerrainBuildingType.Tavern:
+                            return DssRef.todoLang.BuildingType_Tavern;
+                        case TerrainBuildingType.Work_Bench:
+                            return DssRef.todoLang.BuildingType_WorkBench;
+                        case TerrainBuildingType.WorkerHut:
+                            return DssRef.todoLang.BuildingType_WorkerHut;
+
+                        default:
+                            return DssRef.todoLang.BuildingType_DefaultName;
+                    }
+
+                case TerrainMainType.Foil:
+                    switch ((TerrainSubFoilType)subType)
+                    {
+                        case TerrainSubFoilType.TreeHard:
+                        case TerrainSubFoilType.TreeSoft:
+                        case TerrainSubFoilType.DryWood:
+                            return DssRef.todoLang.Resource_TypeName_Wood;
+
+                        case TerrainSubFoilType.StoneBlock:
+                        case TerrainSubFoilType.Stones:
+                            return DssRef.todoLang.Resource_TypeName_Stone;
+
+                        case TerrainSubFoilType.LinenFarm:
+                            return string.Format(DssRef.todoLang.BuildingType_ResourceFarm, DssRef.todoLang.Resource_TypeName_Linen);
+
+                        case TerrainSubFoilType.WheatFarm:
+                            return string.Format(DssRef.todoLang.BuildingType_ResourceFarm, DssRef.todoLang.Resource_TypeName_Wheat);
+                    }
+                    break;
+
+                case TerrainMainType.Decor:
+                    switch ((TerrainDecorType)subType)
+                    {
+                        case TerrainDecorType.Pavement:
+                            return DssRef.todoLang.DecorType_Pavement + " A";
+                        case TerrainDecorType.PavementFlower:
+                            return DssRef.todoLang.DecorType_Pavement + " B";
+                        case TerrainDecorType.Statue_ThePlayer:
+                            return DssRef.todoLang.DecorType_Statue;
+                    }
+                    break;
+            }
+
+
+            return TextLib.Error;
         }
 
         public static string BuildingDescription(TerrainBuildingType buildingType)
@@ -152,11 +285,12 @@ namespace VikingEngine.DSSWars.Display.Translation
         {
             switch (item)
             {
+                case ItemResourceType.GoldOre: return DssRef.todoLang.Resource_TypeName_GoldOre;
                 case ItemResourceType.Gold: return DssRef.lang.ResourceType_Gold;
 
                 case ItemResourceType.Water_G: return DssRef.todoLang.Resource_TypeName_Water;
                 case ItemResourceType.Beer: return DssRef.todoLang.Resource_TypeName_Beer;
-                case ItemResourceType.IronOre_G: return DssRef.todoLang.Resource_TypeName_Ore;
+                case ItemResourceType.IronOre_G: return DssRef.todoLang.Resource_TypeName_IronOre;
                 case ItemResourceType.Iron_G: return DssRef.todoLang.Resource_TypeName_Iron;
                 case ItemResourceType.Food_G: return DssRef.todoLang.Resource_TypeName_Food;
                 case ItemResourceType.Stone_G: return DssRef.todoLang.Resource_TypeName_Stone;

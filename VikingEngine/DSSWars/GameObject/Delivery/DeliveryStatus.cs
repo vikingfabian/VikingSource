@@ -15,8 +15,13 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
         public const int MaxQue = 20;
 
         public DeliveryActiveStatus active;
+        
+        public bool useSenderMin;
         public int senderMin;
+
+        public bool useRecieverMax;
         public int recieverMax;
+       
         public int idAndPosition;
         public int que;
         //public int itemsCollected;
@@ -54,6 +59,9 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
         {
             w.Write((byte)active);
             
+            w.Write(useSenderMin);
+            w.Write(useRecieverMax);
+
             w.Write((ushort)senderMin); 
             w.Write((ushort)recieverMax);
 
@@ -65,7 +73,6 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
             switch (active)
             {
                 case DeliveryActiveStatus.Delivering:
-                    //itemsCollected = 
                     countdown.writeGameState(w);
                     break;
             }
@@ -73,9 +80,15 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
             w.Write((byte)que);
         }
 
-        public void readGameState(System.IO.BinaryReader r)
+        public void readGameState(System.IO.BinaryReader r, int subVersion)
         {
             active = (DeliveryActiveStatus)r.ReadByte();
+
+            if (subVersion >= 14)
+            { 
+                useSenderMin = r.ReadBoolean();
+                useRecieverMax = r.ReadBoolean();
+            }
 
             senderMin = r.ReadUInt16();
             recieverMax = r.ReadUInt16();

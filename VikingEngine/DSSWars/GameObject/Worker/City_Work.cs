@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.GameObject
             res_stone.clearOrders();
             res_rawFood.clearOrders();
             res_skinLinnen.clearOrders();
-            res_ore.clearOrders();
+            res_ironore.clearOrders();
             //waterSpendOrders = 0;
             
 
@@ -179,7 +179,9 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     lib.DoNothing();
                 }
-                buildWorkQue();
+
+                CityStructure.Singleton.updateIfNew(this, workerStatuses.Count);
+                buildWorkQue2();
                 //Last position = highest priority
                 workQue.Sort((a, b) => a.priority.CompareTo(b.priority));
 
@@ -206,7 +208,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     else if (workerStatuses[i].energy < 0 && (res_food.amount > 0 || faction.gold > 0))
                     {
-                        CityStructure.Singleton.updateIfNew(this);
+                        CityStructure.Singleton.updateIfNew(this, workerStatuses.Count);
                         var status = workerStatuses[i];
                         status.createWorkOrder(WorkType.Eat, -1, -1, CityStructure.Singleton.eatPosition(status.subTileEnd), this);
                         workerStatuses[i] = status;
@@ -254,16 +256,292 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 processAsynchWork(workerStatuses);
             }
+                        
+            void buildWorkQue2()
+            {
+                IntVector2 center = WP.ToSubTilePos_Centered(tilePos);
 
-            //void pullNextAvailableWork(out )
-            //{
-            //    var work = arraylib.PullLastMember(workQue);
-            //    var status = workerStatuses[i];
-            //    if (status.checkAvailableAndBackOrder(work.work, work.subWork, this))
-            //    {
+                workQue.Clear();
 
-            //    }
-            //}
+                //ORDERS
+                lock (faction.player.orders)
+                {
+                    for (int i = 0; i < faction.player.orders.Count; ++i)
+                    {
+                        var workOrder = faction.player.orders[i].GetWorkOrder(this);
+                        if (workOrder != null)
+                        {
+                            workQue.Add(workOrder.createWorkQue(out CraftBlueprint orderBluePrint));
+                        }
+                    }
+                }
+
+                //PICK UP
+                if (workTemplate.move.HasPrio())
+                {
+                    foreach (var pos in CityStructure.Singleton.ResourceOnGround)
+                    {
+                        if (isFreeTile(pos))
+                        {
+                            int distanceValue = -center.SideLength(pos);
+                            workQue.Add(new WorkQueMember(WorkType.PickUpResource, NoSubWork, pos, workTemplate.move.value, distanceValue));
+                        }
+                    }
+                }
+
+                //WOOD
+                if (workTemplate.wood.HasPrio() &&
+                        res_wood.needMore())
+                {
+                    foreach (var pos in CityStructure.Singleton.Trees)
+                    {
+                        if (isFreeTile(pos))
+                        {
+                            int distanceValue = -center.SideLength(pos);
+                            workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, pos, workTemplate.wood.value, distanceValue));
+                        }
+                    }
+                }
+
+                //STONE
+                if (workTemplate.stone.HasPrio() &&
+                    res_stone.needMore())
+                {
+                    foreach (var pos in CityStructure.Singleton.Stones)
+                    {
+                        if (isFreeTile(pos))
+                        {
+                            int distanceValue = -center.SideLength(pos);
+                            workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, pos, workTemplate.stone.value, distanceValue));
+                            //res_stone.orderQueCount += ItemPropertyColl.CarryStones;
+                        }
+                    }
+                }
+
+                //FARMS
+                if (workTemplate.farming.HasPrio())
+                {
+                    foreach (var pos in CityStructure.Singleton.FarmPlant)
+                    {
+                        bool needMore = false;
+
+                        var subTile = DssRef.world.subTileGrid.Get(pos);
+                        switch (subTile.GetFoilType())
+                        {
+                            case TerrainSubFoilType.LinenFarm:
+                                needMore = res_skinLinnen.needMore();
+                                break;
+                            case TerrainSubFoilType.WheatFarm:
+                                needMore = res_rawFood.needMore();
+                                break;
+                        }
+
+                        if (needMore && isFreeTile(pos))
+                        {
+                            int distanceValue = -center.SideLength(pos);
+                            workQue.Add(new WorkQueMember(WorkType.Plant, NoSubWork, pos, workTemplate.farming.value, distanceValue));
+                        }
+                    }
+
+                    foreach (var pos in CityStructure.Singleton.FarmGather)
+                    {
+                        bool needMore = false;
+
+                        var subTile = DssRef.world.subTileGrid.Get(pos);
+                        switch (subTile.GetFoilType())
+                        {
+                            case TerrainSubFoilType.LinenFarm:
+                                needMore = res_skinLinnen.needMore();
+                                break;
+                            case TerrainSubFoilType.WheatFarm:
+                                needMore = res_rawFood.needMore();
+                                break;
+                        }
+
+                        if (needMore && isFreeTile(pos))
+                        {
+                            int distanceValue = -center.SideLength(pos);
+                            workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, pos, workTemplate.farming.value, distanceValue));
+                        }
+                    }
+                }
+
+                //MINING
+                if (workTemplate.mining.HasPrio())
+                {
+                    foreach (var pos in CityStructure.Singleton.Mines)
+                    {
+                        bool needMore = true;
+
+                        var subTile = DssRef.world.subTileGrid.Get(pos);
+                        switch ((TerrainMineType)subTile.subTerrain)
+                        {
+                            case TerrainMineType.IronOre:
+                                needMore = res_ironore.needMore();
+                                break;
+                            case TerrainMineType.Coal:
+                                needMore = res_fuel.needMore();
+                                break;
+                        }
+
+                        if (needMore && isFreeTile(pos))
+                        {
+                            int distanceValue = -center.SideLength(pos);
+                            workQue.Add(new WorkQueMember(WorkType.Mine, NoSubWork, pos, workTemplate.mining.value, distanceValue));
+                        }
+                    }
+                }
+
+                //ANIMALS
+                if (workTemplate.farming.HasPrio())
+                {
+                    foreach (var pos in CityStructure.Singleton.AnimalPens)
+                    {
+                        bool needMore = true;
+
+                        var subTile = DssRef.world.subTileGrid.Get(pos);
+                        switch (subTile.GeBuildingType())
+                        {
+                            case TerrainBuildingType.HenPen:
+                                needMore = res_rawFood.needMore();
+                                break;
+                            case TerrainBuildingType.PigPen:
+                                needMore = res_rawFood.needMore() || res_skinLinnen.needMore();
+                                break;
+                        }
+
+                        if (needMore && isFreeTile(pos))
+                        {
+                            int distanceValue = -center.SideLength(pos);
+                            workQue.Add(new WorkQueMember(WorkType.PickUpProduce, NoSubWork, pos, workTemplate.farming.value, distanceValue));
+                        }
+                    }
+                }
+
+                //CRAFT
+                foreach (var pos in CityStructure.Singleton.CraftStation)
+                {
+                    int distanceValue = -center.SideLength(pos);
+                    var subTile = DssRef.world.subTileGrid.Get(pos);
+                    var building = subTile.GeBuildingType();
+                    switch (building)
+                    {
+                        case TerrainBuildingType.Work_Cook:
+                            if (workTemplate.craft_food.HasPrio() &&
+                                (ResourceLib.CraftFood2.canCraft(this) || ResourceLib.CraftFood1.canCraft(this)) &&
+                                isFreeTile(pos))
+                            {
+                                workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Food_G, pos, workTemplate.craft_food.value, distanceValue));
+                            }
+                            break;
+
+                        case TerrainBuildingType.Work_Bench:
+                        case TerrainBuildingType.Work_Smith:
+
+                            int topPrioValue = WorkTemplate.NoPrio;
+                            ItemResourceType topItem = ItemResourceType.NONE;
+                            WorkPriority topPrio = WorkPriority.Empty;
+
+                            int prioAdd = 0;
+                            ItemResourceType[] types;
+
+                            if (building == TerrainBuildingType.Work_Bench)
+                            {
+                                types = BenchCraftTypes;
+                                prioAdd = -5000;
+                            }
+                            else
+                            {
+                                types = IronCraftTypes;
+                            }
+
+                            foreach (var item in types)
+                            {
+                                var template = workTemplate.GetWorkPriority(item);
+                                if (template.value > topPrioValue)
+                                {
+                                    ResourceLib.Blueprint(item, out var bp1, out var bp2);
+                                    if (bp1.available(this) && GetGroupedResource(item).needMore())
+                                    {
+                                        topPrioValue = template.value;
+                                        topItem = item;
+                                        topPrio = template;
+                                    }
+                                }
+                            }
+
+                            if (topPrioValue > WorkTemplate.NoPrio &&
+                                isFreeTile(pos))
+                            {
+                                workQue.Add(new WorkQueMember(WorkType.Craft, (int)topItem, pos, topPrioValue, distanceValue + prioAdd));
+                            }
+                            break;
+
+                        case TerrainBuildingType.Work_CoalPit:
+                            if (workTemplate.craft_fuel.HasPrio() &&
+                               res_fuel.needMore() &&
+                               ResourceLib.CraftCharcoal.canCraft(this) &&
+                               isFreeTile(pos))
+                            {
+                                workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Coal, pos, workTemplate.craft_fuel.value, distanceValue));
+                            }
+                            break;
+
+                        case TerrainBuildingType.Brewery:
+                            if (workTemplate.craft_beer.HasPrio() &&
+                                res_beer.needMore() &&
+                                ResourceLib.CraftBrewery.canCraft(this) &&
+                                isFreeTile(pos))
+                            {
+                                workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Beer, pos, workTemplate.craft_beer.value, distanceValue));
+                            }
+                            break;
+                    }
+                }
+
+
+                //EMPTY
+                foreach (var pos in CityStructure.Singleton.EmptyLand)
+                {
+                    faction.player.AutoExpandType(this, out bool work, out var buildType, out bool intelligent);
+
+                    bool intelligentCheck = true;
+
+                    if (work && workForce >= workForceMax)
+                    {
+                        buildType = BuildAndExpandType.WorkerHuts;
+                    }
+                    else if (intelligent)
+                    {
+                        switch (buildType)
+                        {
+                            case BuildAndExpandType.WheatFarm:
+                            case BuildAndExpandType.HenPen:
+                                intelligentCheck = res_rawFood.needMore();
+                                break;
+                            case BuildAndExpandType.PigPen:
+                                intelligentCheck = res_rawFood.needMore() || res_skinLinnen.needMore();
+                                break;
+                            case BuildAndExpandType.LinenFarm:
+                                intelligentCheck = res_skinLinnen.needMore();
+                                break;
+                        }
+                    }
+
+                    if (buildType != BuildAndExpandType.NUM_NONE)
+                    {
+                        if (BuildLib.BuildOptions[(int)buildType].blueprint.available(this) &&
+                            isFreeTile(pos))
+                        {
+                            int distanceValue = -center.SideLength(pos);
+                            workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, pos, workTemplate.autoBuild.value, distanceValue));
+                        }
+                    }
+                }
+
+
+            }
+
 
             void buildWorkQue()
             {
@@ -450,11 +728,11 @@ namespace VikingEngine.DSSWars.GameObject
 
                                             case TerrainMainType.Mine:
                                                 if (workTemplate.mining.HasPrio() &&
-                                                    res_ore.needMore() &&
+                                                    res_ironore.needMore() &&
                                                     isFreeTile(subTileLoop.Position))
                                                 {
                                                     workQue.Add(new WorkQueMember(WorkType.Mine, NoSubWork, subTileLoop.Position, workTemplate.mining.value, distanceValue));
-                                                    res_ore.orderQueCount += TerrainContent.MineAmount;
+                                                    res_ironore.orderQueCount += TerrainContent.MineAmount;
                                                 }
                                                 break;
 

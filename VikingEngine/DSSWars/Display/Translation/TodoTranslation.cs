@@ -12,7 +12,8 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string Blueprint_Title = "Blueprint";
         //public string /*Blueprint_LetterSymbol*/ = "BP";
-
+        public string Resource_Tab_Overview = "Overview";
+        public string Resource_Tab_Stockpile = "Stockpile";
         public string Resource_TypeName_Water => "water";
         public string Resource_TypeName_Wood => "wood";
         public string Resource_TypeName_Fuel => "fuel";
@@ -20,8 +21,11 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Resource_TypeName_RawFood => "raw food";
         public string Resource_TypeName_Food => "food";
         public string Resource_TypeName_Beer => "beer";
+        public string Resource_TypeName_Wheat => "wheat";
+        public string Resource_TypeName_Linen => "linen";
         public string Resource_TypeName_SkinAndLinen => "skin and linen";
-        public string Resource_TypeName_Ore => "ore";
+        public string Resource_TypeName_IronOre => "iron ore";
+        public string Resource_TypeName_GoldOre => "gold ore";
         public string Resource_TypeName_Iron => "iron";
 
         
@@ -37,6 +41,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string ResourceType_Children => "Children";
 
+        public string BuildingType_DefaultName => "Building";
         public string BuildingType_WorkerHut => "Worker hut";
         public string BuildingType_Tavern => "Tavern";
         public string BuildingType_Brewery => "Brewery";
@@ -47,8 +52,13 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_HenPen => "Hen pen";
         public string BuildingType_WorkBench => "Work bench";
         public string BuildingType_Carpenter => "Carpenter";
+        public string BuildingType_CoalPit => "Charcoal pit";
         public string DecorType_Statue => "Statue";
         public string DecorType_Pavement => "Pavement";
+        public string BuildingType_Smith => "Smith";
+        public string BuildingType_Cook => "Cook";
+
+        public string BuildingType_ResourceFarm => "{0} farm";
 
         public string BuildingType_WorkerHut_DescriptionLimitX => "Expands worker limit with {0}";
         public string BuildingType_Tavern_Description => "Workers may eat here";
@@ -63,7 +73,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string BuildingType_Cook_Description => "Food crafting station";
         public string BuildingType_Bench_Description => "Item crafting station";
-        public string BuildingType_Smith => "Smith";
+        
         public string BuildingType_Smith_Description => "Metal crafting station";
         public string BuildingType_Carpenter_Description => "Wood crafting station";
 
@@ -142,6 +152,18 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Conscript_TrainingSpeed = "Attack speed: {0}";
         public string Conscript_TrainingTime = "Training time: {0}";
 
+        public string Conscript_Training_Minimal => "Minimal";
+        public string Conscript_Training_Basic => "Basic";
+        public string Conscript_Training_Skillful => "Skillful";
+        public string Conscript_Training_Professional => "Professional";
+
+        public string Conscript_Specialization_Field => "Open field";
+        public string Conscript_Specialization_Sea => "Ship";
+        public string Conscript_Specialization_Siege => "Siege";
+        public string Conscript_Specialization_Traditional => "Traditional";
+        public string Conscript_Specialization_AntiCavalry => "Anti cavalry";
+
+
         public string Conscription_Status_CollectingEquipment => "Collecting equipment: {0}";
         public string Conscription_Status_CollectingMen => "Collecting men: {0}";
         public string Conscription_Status_Training => "Training: {0}";
@@ -149,6 +171,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string ArmyHud_Food_Reserves_X => "Food reserves: {0}";
         public string ArmyHud_Food_Upkeep_X => "Food upkeep: {0}";
         public string ArmyHud_Food_Costs_X => "Food costs: {0}";
+
+
+        public string Delivery_ThisCity => "This city";
+        public string Delivery_RecieveingCity => "Recieveing city";
 
         //public string _Title => "Conscription";
 
@@ -170,8 +196,12 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string Hud_EnergyUpkeepX => "Food energy upkeep {0}";
 
+        public string Hud_EnergyAmount => "{0} energy (seconds of work)";
+
         public string Hud_CopySetup => "Copy setup";
         public string Hud_Paste => "Paste";
+
+        public string Hud_Available => "Available";
 
 
         public string Economy_TaxIncome = "Tax income: {0}";
