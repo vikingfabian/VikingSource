@@ -12,9 +12,6 @@ using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Data;
 using VikingEngine.ToGG.ToggEngine;
-#pragma warning disable RSEXPERIMENTAL003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-using static Microsoft.CodeAnalysis.CSharp.SyntaxTokenParser;
-#pragma warning restore RSEXPERIMENTAL003 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
 namespace VikingEngine.DSSWars.GameObject.Conscript
 {

@@ -22,7 +22,8 @@ namespace VikingEngine.DSSWars.Players
         public bool protectedPlayer = false;
         protected bool ignorePlayerCapture = false;
 
-        public List<AbsOrder> orders = new List<AbsOrder>();
+        //public List<AbsOrder> orders = new List<AbsOrder>();
+        public Orders.Orders orders;
         abstract public void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType buildType, out bool intelligent);
         public AbsPlayer(Faction faction)
         {
@@ -32,79 +33,7 @@ namespace VikingEngine.DSSWars.Players
             faction.mainCity?.createStartupBarracks();
         }
 
-        public bool orderConflictingSubTile(IntVector2 subTilePos)
-        {
-            for (int i = 0; i < orders.Count; ++i)
-            {
-                if (orders[i].IsBuildOnSubTile(subTilePos))//order.IsConflictingOrder(orders[i]))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public void addOrder(AbsOrder order)
-        {
-            lock (orders)
-            {
-                //Check for conflicting
-                for (int i = 0; i < orders.Count; ++i)
-                {
-                    if (order.IsConflictingOrder(orders[i]))
-                    {
-                        orders[i].DeleteMe();
-                        orders.RemoveAt(i);
-                    }
-                }
-                orders.Add(order);
-            }
-        }
-
-        public AbsOrder GetFromId(int id)
-        {
-            lock (orders)
-            {
-                foreach (AbsOrder order in orders)
-                { 
-                    if (order.id == id)
-                        return order;
-                }
-            }
-            return null;
-        }
-
-        public AbsOrder StartOrderId(int id)
-        {
-            lock (orders)
-            {
-                foreach (AbsOrder order in orders)
-                {
-                    if (order.id == id)
-                    { 
-                        order.orderStatus = OrderStatus.Started;
-                        break;
-                    }
-                }
-            }
-            return null;
-        }
-
-        public void CompleteOrderId(int id)
-        {
-            lock (orders)
-            {
-                for (int i = 0; i < orders.Count; ++i)
-                {
-                    if (orders[i].id == id)
-                    {
-                        Ref.update.AddSyncAction(new SyncAction(orders[i].DeleteMe));
-                        orders.RemoveAt(i);
-                    }
-                }
-            }
-        }
+       
 
         virtual public void Update()
         { }

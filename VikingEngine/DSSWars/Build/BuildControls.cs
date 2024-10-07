@@ -50,8 +50,16 @@ namespace VikingEngine.DSSWars.Build
                 var mayBuild = selectedSubTile.MayBuild(player);
                 if (mayBuild == MayBuildResult.Yes || mayBuild == MayBuildResult.Yes_ChangeCity)
                 {
-                    //create build order
-                    player.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, selectedSubTile.city, selectedSubTile.subTilePos, placeBuildingType));
+                    //var conflictingOrder = player.orders.orderOnSubTile(selectedSubTile.subTilePos);
+                    //if (conflictingOrder == null)
+                    //{
+                        //create build order
+                        player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, selectedSubTile.city, selectedSubTile.subTilePos, placeBuildingType), true);
+                    //}
+                    //else
+                    //{ 
+                        
+                    //}
                 }
             }            
         }
@@ -80,10 +88,15 @@ namespace VikingEngine.DSSWars.Build
                             {
                                 var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
 
-                                if (subTile.MayBuild() &&
-                                    !player.orderConflictingSubTile(subTileLoop.Position))
+                                
+                                if (subTile.MayBuild()
+                                    &&
+                                    !player.orders.orderConflictingSubTile(subTileLoop.Position))
                                 {
-                                    player.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType));
+                                    //var conflictingOrder = player.orders.orderOnSubTile(subTileLoop.Position);
+                                    //if (conflictingOrder == null)
+                                    //{
+                                    player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType), false);
                                     if (--count <= 0)
                                     { return; }
                                 }
@@ -167,7 +180,7 @@ namespace VikingEngine.DSSWars.Build
             }
 
             int orderLength = 0;
-            foreach (var m in player.orders)
+            foreach (var m in player.orders.orders)
             {
                 if (m.GetWorkOrder(city) != null)
                 {
@@ -175,7 +188,7 @@ namespace VikingEngine.DSSWars.Build
                 }
             }
             content.newParagraph();
-            content.Button("Auto place", new RbAction(() =>
+            content.Button(DssRef.todoLang.Build_AutoPlace, new RbAction(() =>
             {
                 autoPlaceBuilding(city, 1);
             }), null, buildMode == SelectTileResult.Build);
@@ -186,21 +199,14 @@ namespace VikingEngine.DSSWars.Build
             }), null, buildMode == SelectTileResult.Build);
 
             content.newLine();
-            content.Button("Clear build orders", new RbAction(() =>
+            content.Button(DssRef.todoLang.Build_ClearOrders, new RbAction(() =>
             {
-                for (int i = player.orders.Count-1; i>=0; --i)
-                {
-                    if (player.orders[i].GetWorkOrder(city) != null)
-                    {
-                        player.orders[i].DeleteMe();
-                        player.orders.RemoveAt(i);
-                    }
-                }
+                player.orders.clearAll(city);
             }), null, orderLength > 0);
 
 
             content.newParagraph();
-            content.text(string.Format( "Build order que: {0}", orderLength)).overrideColor = HudLib.InfoYellow_Light;
+            content.text(string.Format(DssRef.todoLang.Build_OrderQue, orderLength)).overrideColor = HudLib.InfoYellow_Light;
 
             content.Add(new RichBoxSeperationLine());
             content.h2(DssRef.lang.Automation_Title);

@@ -42,13 +42,13 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
 
                 content.newLine();
                 HudLib.Description(content, DssRef.todoLang.BuildingType_Postal_Description);
-                HudLib.Description(content, string.Format("Will send {0} at a time", DssConst.CityDeliveryCount));
+                HudLib.Description(content, string.Format(DssRef.todoLang.Deliver_WillSendXInfo, DssConst.CityDeliveryCount));
 
                 content.newParagraph();
 
                 if (!currentStatus.Recruitment())
                 {
-                    HudLib.Label(content, "Item");
+                    HudLib.Label(content, DssRef.todoLang.Resource);
                     content.newLine();
                     content.Add(new RichBoxScale(1.6f));
                     foreach (var item in City.MovableCityResourceTypes)
@@ -56,24 +56,24 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                         var button = new RichboxButton(new List<AbsRichBoxMember>{
                                 new RichBoxImage(ResourceLib.Icon(item))   
                             //new RichBoxText(LangLib.Item(item))
-                            }, 
-                            
-                            new RbAction1Arg<ItemResourceType>(itemClick, item), 
-                            
-                            new RbAction(()=> 
+                            },
+
+                            new RbAction1Arg<ItemResourceType>(itemClick, item),
+
+                            new RbAction(() =>
                                {
                                    RichBoxContent content = new RichBoxContent();
 
-                                   content.h2(DssRef.todoLang.Delivery_ThisCity);
+                                   content.h2(DssRef.todoLang.Hud_ThisCity);
                                    city.GetGroupedResource(item).toMenu(content, item);
 
                                    if (currentStatus.profile.toCity >= 0)
-                                   { 
-                                        content.newParagraph();
-                                       content.h2(DssRef.todoLang.Delivery_RecieveingCity);
+                                   {
+                                       content.newParagraph();
+                                       content.h2(DssRef.todoLang.Hud_RecieveingCity);
                                        DssRef.world.cities[currentStatus.profile.toCity].GetGroupedResource(item).toMenu(content, item);
                                    }
-                                   
+
                                    //content.text(LangLib.Item(item)).overrideColor = HudLib.TitleColor_TypeName;
 
                                    player.hud.tooltip.create(player, content, true);
@@ -82,12 +82,12 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                         content.Add(button);
                         content.space();
                     }
-                    
+
                 }
                 content.newParagraph();
                 content.Add(new RichBoxScale());
 
-                HudLib.Label(content, "To city");
+                HudLib.Label(content, DssRef.todoLang.Hud_RecieveingCity);
                 content.newLine();
                 var cities_c = city.faction.cities.counter();
                 while (cities_c.Next())
@@ -96,13 +96,13 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                     {
                         var button = new RichboxButton(new List<AbsRichBoxMember>{
                             new RichBoxText(cities_c.sel.TypeName())
-                            }, new RbAction1Arg<int>(cityClick, cities_c.sel.parentArrayIndex), new RbAction1Arg<City>((City toCity)=>
+                            }, new RbAction1Arg<int>(cityClick, cities_c.sel.parentArrayIndex), new RbAction1Arg<City>((City toCity) =>
                             {
                                 RichBoxContent content = new RichBoxContent();
                                 content.h2(toCity.Name()).overrideColor = HudLib.TitleColor_Name;
                                 var time = DeliveryProfile.DeliveryTime(city, toCity, out float distance);
-                                content.text(string.Format("Distance: {0}", TextLib.OneDecimal(distance)));
-                                content.text(string.Format("Delivery time: {0}", time.LongString()));
+                                content.text(string.Format(DssRef.todoLang.Delivery_DistanceX, TextLib.OneDecimal(distance)));
+                                content.text(string.Format(DssRef.todoLang.Delivery_DeliveryTimeX, time.LongString()));
 
                                 player.hud.tooltip.create(player, content, true);
                             }, cities_c.sel));
@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                 }
                 content.newParagraph();
 
-                var minLabel = new RichBoxText("Sender minimum cap" + ":");
+                var minLabel = new RichBoxText(DssRef.todoLang.Delivery_SenderMinimumCap + ":");
                 minLabel.overrideColor = HudLib.TitleColor_Label_Dark;
                 content.Add(new RichboxCheckbox(new List<AbsRichBoxMember> { minLabel },
                     UseSenderMinProperty));
@@ -121,7 +121,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
 
                 content.newParagraph();
 
-                var maxLabel = new RichBoxText("Reciever maximum cap" + ":");
+                var maxLabel = new RichBoxText(DssRef.todoLang.Delivery_RecieverMaximumCap + ":");
                 maxLabel.overrideColor = HudLib.TitleColor_Label_Dark;
                 content.Add(new RichboxCheckbox(new List<AbsRichBoxMember> { maxLabel },
                     UseRecieverMaxProperty));
@@ -169,20 +169,20 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
 
                 if (isSending || currentStatus.que > 0)
                 {
-                    
+
                     content.newParagraph();
                     content.Add(new RichBoxSeperationLine());
                     {
                         content.newLine();
                         content.BulletPoint();
-                        var text = new RichBoxText("Items ready");
+                        var text = new RichBoxText(DssRef.todoLang.Delivery_ItemsReady);
                         text.overrideColor = isSending || currentStatus.CanSend(city) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                         content.Add(text);
                     }
                     {
                         content.newLine();
                         content.BulletPoint();
-                        var text = new RichBoxText("Reciever ready");
+                        var text = new RichBoxText(DssRef.todoLang.Delivery_RecieverReady);
                         text.overrideColor = isSending || currentStatus.CanRecieve() ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                         content.Add(text);
                     }
@@ -198,40 +198,50 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
             else
             {
 
-                content.h2("Select delivery service");
+                content.h2(DssRef.todoLang.Delivery_ListTitle);
                 if (city.deliveryServices.Count == 0)
                 {
-                    content.text("- Empty list -").overrideColor = HudLib.InfoYellow_Light;
+                    //EMPTY
+                    content.text(DssRef.todoLang.Hud_EmptyList).overrideColor = HudLib.InfoYellow_Light;
+                    content.newParagraph();
+                    content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement);
+                    content.Add(new RichBoxImage(SpriteName.WarsBuild_Postal));
+                    content.Add(new RichBoxText(DssRef.todoLang.BuildingType_Postal));
+                    content.text(DssRef.todoLang.Hud_RequirementOr);
+                    content.Add(new RichBoxImage(SpriteName.WarsBuild_Recruitment));
+                    content.Add(new RichBoxText(DssRef.todoLang.BuildingType_Recruitment));
                 }
-
-                for (int i = 0; i < city.deliveryServices.Count; ++i)
+                else
                 {
-                    content.newLine();
-
-                    DeliveryStatus currentProfile = city.deliveryServices[i];
-
-                    string title;
-                    if (currentProfile.Recruitment())
+                    for (int i = 0; i < city.deliveryServices.Count; ++i)
                     {
-                        title = DssRef.todoLang.BuildingType_Recruitment;
-                    }
-                    else
-                    {
-                        title = DssRef.todoLang.BuildingType_Postal + ": " + currentProfile.profile.type.ToString();
-                    }
+                        content.newLine();
 
-                    var caption = new RichBoxText(
-                            title
-                        );
-                    caption.overrideColor = HudLib.TitleColor_Name;
+                        DeliveryStatus currentProfile = city.deliveryServices[i];
 
-                    content.Add(new RichboxButton(new List<AbsRichBoxMember>(){
+                        string title;
+                        if (currentProfile.Recruitment())
+                        {
+                            title = DssRef.todoLang.BuildingType_Recruitment;
+                        }
+                        else
+                        {
+                            title = DssRef.todoLang.BuildingType_Postal + ": " + currentProfile.profile.type.ToString();
+                        }
+
+                        var caption = new RichBoxText(
+                                title
+                            );
+                        caption.overrideColor = HudLib.TitleColor_Name;
+
+                        content.Add(new RichboxButton(new List<AbsRichBoxMember>(){
                         new RichBoxBeginTitle(2),
                         caption,
                         new RichBoxNewLine(),
                         new RichBoxText(currentProfile.shortActiveString())
                     }, new RbAction1Arg<int>(selectClick, i)));
 
+                    }
                 }
             }
         }

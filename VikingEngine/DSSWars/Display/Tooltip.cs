@@ -5,6 +5,7 @@ using System.Text;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.Resource;
+using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.PJ.CarBall;
 
@@ -25,8 +26,14 @@ namespace VikingEngine.DSSWars.Display
                 {
                     images.DeleteAll();
 
-                    if (player.mapControls.hover.subTile.hasSelection)
+                    var order = player.orders.orderOnSubTile(player.mapControls.hover.subTile.subTilePos);
+                    if (order != null)
                     {
+                        hoverTip(player, order);
+                    }
+                    else if (player.mapControls.hover.subTile.hasSelection)
+                    {
+                        //SUBTILE tooltip
                         hoverTip(player, player.mapControls.hover.subTile);
                     }
                     else if (player.mapControls.hover.obj != null)
@@ -94,6 +101,12 @@ namespace VikingEngine.DSSWars.Display
             {
                 baseUpdate(player, hoversButton);
             }
+        }
+
+        void hoverTip(Players.LocalPlayer player, AbsOrder order)
+        {
+            RichBoxContent content = order.ToHud();
+            create(player, content, false);
         }
 
         void hoverTip(Players.LocalPlayer player, Players.SelectedSubTile subTile)

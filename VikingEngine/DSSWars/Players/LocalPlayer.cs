@@ -90,18 +90,13 @@ namespace VikingEngine.DSSWars.Players
 
         public void childrenTooltip(City city)
         {
-            string childBirthRequirements = "Child birth requirements:";
-            string availableHomes = "Available homes: {0}";
-            string piece = "Peace";
-            string childToManTime = "Grown up age: {0} minutes";
-
             RichBoxContent content = new RichBoxContent();
-            content.text(string.Format(childToManTime, 2));
+            content.text(string.Format(DssRef.todoLang.WorkForce_ChildToManTime, 2));
 
             content.newParagraph();
-            content.h2(childBirthRequirements);
-            content.text(string.Format(availableHomes, city.homesUnused())).overrideColor = HudLib.ResourceCostColor(city.homesUnused() > 0);
-            content.text(piece).overrideColor = HudLib.ResourceCostColor(city.battleGroup == null);
+            content.h2(DssRef.todoLang.WorkForce_ChildBirthRequirements);
+            content.text(string.Format(DssRef.todoLang.WorkForce_AvailableHomes, city.homesUnused())).overrideColor = HudLib.ResourceCostColor(city.homesUnused() > 0);
+            content.text(DssRef.todoLang.WorkForce_Peace).overrideColor = HudLib.ResourceCostColor(city.battleGroup == null);
             HudLib.ItemCount(content, DssRef.todoLang.Resource_TypeName_Food, city.res_food.amount.ToString()).overrideColor = HudLib.ResourceCostColor(city.res_food.amount > 0);
 
             hud.tooltip.create(this, content, true);
@@ -111,7 +106,7 @@ namespace VikingEngine.DSSWars.Players
         {
             RichBoxContent content = new RichBoxContent();
 
-            content.text(DssRef.todoLang.Hud_ToggleFollowFaction);
+            content.h2(DssRef.todoLang.Hud_ToggleFollowFaction).overrideColor = HudLib.TitleColor_Action;
             content.newParagraph();
 
             string current;
@@ -123,7 +118,7 @@ namespace VikingEngine.DSSWars.Players
             { 
                 current = string.Format(DssRef.todoLang.Hud_FollowFaction_No, currentFactionValue);
             }
-            content.text(current);
+            content.text(current).overrideColor = HudLib.InfoYellow_Light;
 
             hud.tooltip.create(this, content, true);
         }
@@ -167,11 +162,12 @@ namespace VikingEngine.DSSWars.Players
 
             tutorial_writeGameState(w);
 
-            w.Write((ushort)orders.Count);
-            foreach (var order in orders)
-            {
-                order.writeGameState(w);
-            }
+            orders.writeGameState(w);
+            //w.Write((ushort)orders.orders.Count);
+            //foreach (var order in orders.orders)
+            //{
+            //    order.writeGameState(w);
+            //}
 
             Debug.WriteCheck(w);
         }
@@ -203,20 +199,22 @@ namespace VikingEngine.DSSWars.Players
 
             tutorial_readGameState(r, subversion);
 
-            int ordersCount = r.ReadUInt16();
-            for (int i = 0; i < ordersCount; i++)
-            {
-                BuildOrder order = new BuildOrder();
-                order.readGameState(r, subversion, pointers);
-                orders.Add(order);
-            }
+            orders.readGameState(r, subversion, pointers);
+            //int ordersCount = r.ReadUInt16();
+            //for (int i = 0; i < ordersCount; i++)
+            //{
+            //    BuildOrder order = new BuildOrder();
+            //    order.readGameState(r, subversion, pointers);
+            //    orders.Add(order);
+            //}
             Debug.ReadCheck(r);
         }
 
         public LocalPlayer(Faction faction, int playerindex, int numPlayers)
             :base(faction)
         {
-           
+            orders = new Orders.Orders();
+
             faction.factiontype = FactionType.Player;
             faction.availableForPlayer = false;
             var pStorage = DssRef.storage.localPlayers[playerindex];
@@ -293,6 +291,8 @@ namespace VikingEngine.DSSWars.Players
 
             knightConscriptCopy = new ConscriptProfile();
             knightConscriptCopy.defaultSetup(true);
+
+
         }
 
         public void initPlayerToPlayer(int playerindex, int numPlayers)

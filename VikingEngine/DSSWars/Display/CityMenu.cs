@@ -82,7 +82,7 @@ namespace VikingEngine.DSSWars.Display
                     break;
 
                 case MenuTab.Work:
-                    city.workTab(player, content);
+                    city.workTemplate.toHud(player, content, city.faction, city);
                     break;
 
                 case MenuTab.Conscript:
@@ -237,7 +237,7 @@ namespace VikingEngine.DSSWars.Display
                     stockpile(ItemResourceType.MediumArmor);
                     stockpile(ItemResourceType.HeavyArmor);
 
-                    HudLib.Description(content, "Set goal amount for storage of resources, this will inform the workers when to work on another resource");
+                    HudLib.Description(content, DssRef.todoLang.Resource_StockPile_Info);
 
                     break;
             }

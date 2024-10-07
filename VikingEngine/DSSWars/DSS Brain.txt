@@ -2,6 +2,17 @@
 -Change Log-
 * 
 
+#Todo#
+Build, ta bort, tooltip på order
+Gruppera soldattyp för att kunna dela upp armeer
+Deliver effect
+Tutorial
+Controller support
+Event, nya tider, fixa special figurer (dark lord)
+Översätt
+Ljud
+Video
+
 Error
 -back button in menues 
 

@@ -11,9 +11,11 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string CityMenu_SalePricesTitle => "Sale prices";
 
         public string Blueprint_Title = "Blueprint";
-        //public string /*Blueprint_LetterSymbol*/ = "BP";
         public string Resource_Tab_Overview = "Overview";
         public string Resource_Tab_Stockpile = "Stockpile";
+
+        public string Resource => "Resource";
+        public string Resource_StockPile_Info => "Set goal amount for storage of resources, this will inform the workers when to work on another resource";
         public string Resource_TypeName_Water => "water";
         public string Resource_TypeName_Wood => "wood";
         public string Resource_TypeName_Fuel => "fuel";
@@ -101,6 +103,11 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Build_DestroyBuilding => "Destroy";
         public string Build_ClearTerrain => "Clear terrain";
 
+        public string Build_ClearOrders => "Clear build orders";
+        public string Build_Order => "Build order";
+        public string Build_OrderQue => "Build order que: {0}";
+        public string Build_AutoPlace => "Auto place";
+
         public string Work_OrderPrioTitle => "Work priority";
         public string Work_OrderPrioDescription => "Priority goes from 1 (low) to {0} (high)";
 
@@ -130,6 +137,11 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Hud_Que => "Que";
 
         public string Hud_EmptyList => "- Empty list -";
+        
+        /// <summary>
+        /// To view optional requirement in a list
+        /// </summary>
+        public string Hud_RequirementOr => "- or -";
 
         public string Hud_BlackMarket => "Black market";
 
@@ -173,8 +185,16 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string ArmyHud_Food_Costs_X => "Food costs: {0}";
 
 
-        public string Delivery_ThisCity => "This city";
-        public string Delivery_RecieveingCity => "Recieveing city";
+        public string Deliver_WillSendXInfo => "Will send {0} at a time";
+        public string Delivery_ListTitle => "Select delivery service";
+        public string Delivery_DistanceX => "Distance: {0}";
+        public string Delivery_DeliveryTimeX => "Delivery time: {0}";
+        public string Delivery_SenderMinimumCap => "Sender minimum cap";
+        public string Delivery_RecieverMaximumCap => "Reciever maximum cap";
+        public string Delivery_ItemsReady => "Items ready";
+        public string Delivery_RecieverReady => "Reciever ready";
+        public string Hud_ThisCity => "This city";
+        public string Hud_RecieveingCity => "Recieveing city";
 
         //public string _Title => "Conscription";
 
@@ -203,6 +223,10 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string Hud_Available => "Available";
 
+        public string WorkForce_ChildBirthRequirements = "Child birth requirements:";
+        public string WorkForce_AvailableHomes = "Available homes: {0}";
+        public string WorkForce_Peace = "Peace";
+        public string WorkForce_ChildToManTime = "Grown up age: {0} minutes";
 
         public string Economy_TaxIncome = "Tax income: {0}";
         public string Economy_ImportCostsForResource = "Import costs for {0}: {1}";

@@ -8,6 +8,7 @@ using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.GameObject.Worker;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -23,10 +24,10 @@ namespace VikingEngine.DSSWars.GameObject
         TimeStamp previousWorkQueUpdate = TimeStamp.None;
         List<WorkQueMember> workQue = new List<WorkQueMember>();
 
-        public void workTab(Players.LocalPlayer player,RichBoxContent content)
-        {
-            workTemplate.toHud(player, content, faction, this);
-        }
+        //public void workTab(Players.LocalPlayer player,RichBoxContent content)
+        //{
+            
+        //}
 
         public void async_workUpdate()
         {
@@ -236,7 +237,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                                 if (work.orderId >= 0)
                                 {
-                                    faction.player.StartOrderId(work.orderId);
+                                    faction.player.orders.StartOrderId(work.orderId);
                                 }
                                 break;
                             }
@@ -264,14 +265,17 @@ namespace VikingEngine.DSSWars.GameObject
                 workQue.Clear();
 
                 //ORDERS
-                lock (faction.player.orders)
+                if (faction.player.orders != null)
                 {
-                    for (int i = 0; i < faction.player.orders.Count; ++i)
+                    lock (faction.player.orders)
                     {
-                        var workOrder = faction.player.orders[i].GetWorkOrder(this);
-                        if (workOrder != null)
+                        for (int i = 0; i < faction.player.orders.orders.Count; ++i)
                         {
-                            workQue.Add(workOrder.createWorkQue(out CraftBlueprint orderBluePrint));
+                            var workOrder = faction.player.orders.orders[i].GetWorkOrder(this);
+                            if (workOrder != null)
+                            {
+                                workQue.Add(workOrder.createWorkQue(out CraftBlueprint orderBluePrint));
+                            }
                         }
                     }
                 }
@@ -553,9 +557,9 @@ namespace VikingEngine.DSSWars.GameObject
                 //Find orders
                 lock (faction.player.orders)
                 {
-                    for (int i = 0; i < faction.player.orders.Count; ++i)
+                    for (int i = 0; i < faction.player.orders.orders.Count; ++i)
                     {
-                       var workOrder = faction.player.orders[i].GetWorkOrder(this);
+                       var workOrder = faction.player.orders.orders[i].GetWorkOrder(this);
                         if (workOrder != null)
                         {
                             workQue.Add(workOrder.createWorkQue(out CraftBlueprint orderBluePrint));

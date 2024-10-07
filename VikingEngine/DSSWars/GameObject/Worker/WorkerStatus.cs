@@ -353,7 +353,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 work = WorkType.Idle;
                 if (orderId >= 0)
                 {
-                    city.faction.player.CompleteOrderId(orderId);
+                    city.faction.player.orders.CompleteOrderId(orderId);
                 }
             }
 

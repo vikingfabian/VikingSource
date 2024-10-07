@@ -11,6 +11,7 @@ using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.GameObject.Worker;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.Graphics;
+using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Players.Orders
@@ -24,8 +25,11 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         //public AbsOrder(int priority)
         //{
-            
+
         //}
+
+        virtual public void onAdd()
+        { }
 
         public void baseInit(int priority)
         { 
@@ -46,6 +50,11 @@ namespace VikingEngine.DSSWars.Players.Orders
         abstract public bool IsConflictingOrder(AbsOrder other);
 
         virtual public void DeleteMe() { }
+
+        virtual public RichBoxContent ToHud()
+        {
+            throw new NotImplementedException();
+        }
 
         virtual public void writeGameState(System.IO.BinaryWriter w)
         {       
@@ -74,14 +83,15 @@ namespace VikingEngine.DSSWars.Players.Orders
             this.subTile = subTile;
             this.buildingType = buildingType;
 
-            if (bLocalPlayer)
-            {
-                init();
-            }
+            //if (bLocalPlayer)
+            //{
+            //    init();
+            //}
         }
 
-        void init()
-        { 
+        public override void onAdd()
+        {
+            
             model = DssRef.models.ModelInstance(LootFest.VoxelModelName.buildarea, WorldData.SubTileWidth * 1.4f, false);
             model.AddToRender(DrawGame.UnitDetailLayer);
             model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTile);
@@ -94,6 +104,15 @@ namespace VikingEngine.DSSWars.Players.Orders
             icon.Opacity = 0.8f;
             icon.Rotation = DssLib.FaceForwardRotation;
             icon.AddToRender(DrawGame.UnitDetailLayer);
+        }
+
+        public override RichBoxContent ToHud()
+        {
+            RichBoxContent content = new RichBoxContent();
+            content.h2(DssRef.todoLang.Build_Order);
+            BuildLib.BuildOptions[(int)buildingType].blueprint.toMenu(content, city);
+
+            return content;
         }
 
         override public void writeGameState(System.IO.BinaryWriter w)
@@ -112,7 +131,8 @@ namespace VikingEngine.DSSWars.Players.Orders
             subTile.read(r);
             buildingType = (BuildAndExpandType)r.ReadByte();
 
-            init();
+            onAdd();
+            //init();
         }
 
         override public void DeleteMe()
