@@ -37,12 +37,25 @@ namespace VikingEngine.DSSWars.Display
                     var tabs = new List<RichboxTabMember>((int)MenuTab.NUM);
                     for (int i = 0; i < Tabs.Length; ++i)
                     {
-                        var text = new RichBoxText(LangLib.Tab(Tabs[i]));
+                        var text = new RichBoxText(LangLib.Tab(Tabs[i], out string description));
                         text.overrideColor = HudLib.RbSettings.tabSelected.Color;
+
+                        AbsRbAction enter = null;
+                        if (description != null)
+                        {
+                            enter = new RbAction(() =>
+                            {
+                                RichBoxContent content = new RichBoxContent();
+                                content.text(description).overrideColor = HudLib.InfoYellow_Light;
+
+                                player.hud.tooltip.create(player, content, true);
+                            });
+                        }
+
                         tabs.Add(new RichboxTabMember(new List<AbsRichBoxMember>
                         {
                             text
-                        }));
+                        }, enter));
 
                         if (Tabs[i] == player.factionTab)
                         {

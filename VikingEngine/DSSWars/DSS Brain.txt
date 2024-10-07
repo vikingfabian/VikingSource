@@ -1,6 +1,6 @@
 ﻿
 -Change Log-
-* Fixed idle soldiers, and zero damage bug
+* 
 
 Error
 -back button in menues 

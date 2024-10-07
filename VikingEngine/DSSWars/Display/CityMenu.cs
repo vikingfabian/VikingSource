@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars.Display
 {
     class CityMenu
     {
-        public static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Conscript, MenuTab.Resources, MenuTab.BlackMarket, MenuTab.Work, MenuTab.Delivery, MenuTab.Build };
+        public static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Resources, MenuTab.BlackMarket, MenuTab.Work, MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript };
         Players.LocalPlayer player;
         City city;
         static readonly int[] StockPileControls = { 100, 1000 };
@@ -44,13 +44,25 @@ namespace VikingEngine.DSSWars.Display
             var tabs = new List<RichboxTabMember>((int)MenuTab.NUM);
             for (int i = 0; i < Tabs.Length; ++i)
             {
-                var text = new RichBoxText(LangLib.Tab(Tabs[i]));
+                var text = new RichBoxText(LangLib.Tab(Tabs[i], out string description));
                 text.overrideColor = HudLib.RbSettings.tabSelected.Color;
+
+                AbsRbAction enter = null;
+                if (description != null)
+                {
+                    enter = new RbAction(() =>
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        content.text(description).overrideColor = HudLib.InfoYellow_Light;
+
+                        player.hud.tooltip.create(player, content, true);
+                    });
+                }
 
                 tabs.Add(new RichboxTabMember(new List<AbsRichBoxMember>
                     {
                         text
-                    }));
+                    }, enter));
 
                 if (Tabs[i] == player.cityTab)
                 {
@@ -59,6 +71,8 @@ namespace VikingEngine.DSSWars.Display
             }
 
             content.Add(new RichboxTabgroup(tabs, tabSel, player.cityTabClick, null, null));
+
+            content.newLine();
 
             switch (player.cityTab)
             { 
@@ -203,8 +217,7 @@ namespace VikingEngine.DSSWars.Display
 
                 case ResourcesSubTab.Stockpile:
                     content.h1(DssRef.todoLang.Resource_Tab_Stockpile);
-                    HudLib.Description(content, "Set goal amount for storage of resources, this will inform workers on what to prioritize");
-
+               
                     stockpile(ItemResourceType.Wood_Group);
                     stockpile(ItemResourceType.Stone_G);
                     stockpile(ItemResourceType.RawFood_Group);
@@ -224,11 +237,17 @@ namespace VikingEngine.DSSWars.Display
                     stockpile(ItemResourceType.MediumArmor);
                     stockpile(ItemResourceType.HeavyArmor);
 
+                    HudLib.Description(content, "Set goal amount for storage of resources, this will inform the workers when to work on another resource");
+
                     break;
             }
 
             void stockpile(ItemResourceType item)
             {
+                const int MinBound = 0;
+                const int MaxBound = 20000;
+
+
                 var res = city.GetGroupedResource(item);
 
                 content.newLine();
@@ -247,7 +266,7 @@ namespace VikingEngine.DSSWars.Display
                     content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(TextLib.PlusMinus(change)) },
                         new RbAction1Arg<int>((int change) => {
                             var res = city.GetGroupedResource(item);
-                            res.goalBuffer += change;
+                            res.goalBuffer = Bound.Set(res.goalBuffer + change, MinBound, MaxBound);
                             city.SetGroupedResource(item, res);
 
                         }, change, SoundLib.menu), hover));
@@ -265,7 +284,7 @@ namespace VikingEngine.DSSWars.Display
                     content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(TextLib.PlusMinus(change)) },
                         new RbAction1Arg<int>((int change) => {
                             var res = city.GetGroupedResource(item);
-                            res.goalBuffer += change;
+                            res.goalBuffer = Bound.Set(res.goalBuffer + change, MinBound, MaxBound);
                             city.SetGroupedResource(item, res);
 
                         }, change, SoundLib.menu), hover));

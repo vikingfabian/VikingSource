@@ -85,31 +85,41 @@ namespace VikingEngine.DSSWars.Display.Translation
             }
         }
 
-        public static string Tab(MenuTab tab)
+        public static string Tab(MenuTab tab, out string description)
         {
             switch (tab)
             {
                 case MenuTab.Info:
+                    description = null;
                     return DssRef.todoLang.MenuTab_Info;
                 case MenuTab.Build:
+                    description = "Place buildings in your city";
                     return DssRef.todoLang.MenuTab_Build;
                 case MenuTab.Conscript:
+                    description = DssRef.todoLang.BuildingType_Barracks_Description;
                     return DssRef.todoLang.Conscription_Title;
-                case MenuTab.Recruit:
-                    return DssRef.todoLang.MenuTab_Recruit;
+                //case MenuTab.Recruit:
+                //    return DssRef.todoLang.MenuTab_Recruit;
                 case MenuTab.Trade:
+                    description = null;
                     return DssRef.todoLang.MenuTab_Trade;
                 case MenuTab.BlackMarket:
+                    description = "Get any resource, for a high price";
                     return DssRef.todoLang.Hud_BlackMarket;
                 case MenuTab.Economy:
+                    description = null;
                     return DssRef.todoLang.MenuTab_Economy;
                 case MenuTab.Delivery:
+                    description = DssRef.todoLang.BuildingType_Postal_Description;
                     return DssRef.todoLang.MenuTab_Delivery;
                 case MenuTab.Resources:
+                    description = "All the available resources in the city's stockpile";
                     return DssRef.todoLang.MenuTab_Resources;
                 case MenuTab.Work:
+                    description = "Tell your crew what to work on";
                     return DssRef.todoLang.MenuTab_Work;
                 case MenuTab.Automation:
+                    description = "Remove some micro management";
                     return DssRef.lang.Automation_Title;
                 default:
                     throw new NotImplementedException();

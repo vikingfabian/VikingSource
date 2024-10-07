@@ -206,37 +206,43 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 content.h2(DssRef.todoLang.Conscript_SelectBuilding);
                 if (city.conscriptBuildings.Count == 0)
                 {
+                    //EMPTY
                     content.text(DssRef.todoLang.Hud_EmptyList).overrideColor = HudLib.InfoYellow_Light;
+                    content.newParagraph();
+                    content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement);
+                    new RichBoxImage(SpriteName.WarsBuild_Barracks);
                 }
-
-                for (int i = 0; i < city.conscriptBuildings.Count; ++i)
+                else
                 {
-                    content.newLine();
+                    for (int i = 0; i < city.conscriptBuildings.Count; ++i)
+                    {
+                        content.newLine();
 
-                    BarracksStatus currentProfile = city.conscriptBuildings[i];
-                    var caption = new RichBoxText(
-                            LangLib.Weapon(currentProfile.profile.weapon) + ", " +
-                            LangLib.Armor(currentProfile.profile.armorLevel)
-                        );
-                    caption.overrideColor = HudLib.TitleColor_Name;
+                        BarracksStatus currentProfile = city.conscriptBuildings[i];
+                        var caption = new RichBoxText(
+                                LangLib.Weapon(currentProfile.profile.weapon) + ", " +
+                                LangLib.Armor(currentProfile.profile.armorLevel)
+                            );
+                        caption.overrideColor = HudLib.TitleColor_Name;
 
-                    var info = new RichBoxText(
-                            currentProfile.shortActiveString()
-                        );
-                    info.overrideColor = HudLib.InfoYellow_Light;
+                        var info = new RichBoxText(
+                                currentProfile.shortActiveString()
+                            );
+                        info.overrideColor = HudLib.InfoYellow_Light;
 
-                    content.Add(new RichboxButton(new List<AbsRichBoxMember>(){
+                        content.Add(new RichboxButton(new List<AbsRichBoxMember>(){
                         new RichBoxImage(
                             new SoldierConscriptProfile(){ conscript = currentProfile.profile }.Icon()
                             ),
                         new RichBoxSpace(),
-                        caption,  
+                        caption,
                         new RichBoxNewLine(),
                         info,
                     }, new RbAction1Arg<int>(selectClick, i)));
 
-                    //content.text(currentProfile.shortActiveString()).overrideColor = HudLib.InfoYellow_Light;
-                       
+                        //content.text(currentProfile.shortActiveString()).overrideColor = HudLib.InfoYellow_Light;
+
+                    }
                 }
             }
         }

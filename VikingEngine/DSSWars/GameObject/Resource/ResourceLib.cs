@@ -349,7 +349,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             1,
             new UseResource[]
             {
-                new UseResource(ItemResourceType.Gold, 500),
+                new UseResource(ItemResourceType.Gold, 5000),
                 new UseResource(ItemResourceType.Wood_Group, 100),
                 new UseResource(ItemResourceType.Stone_G, 200)
             }

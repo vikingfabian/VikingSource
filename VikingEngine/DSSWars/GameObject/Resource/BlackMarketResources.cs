@@ -42,6 +42,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 
                 RichboxButton button = new RichboxButton(new List<AbsRichBoxMember>
                 {
+                    new RichBoxImage(ResourceLib.Icon(resourceType)),
                     new RichBoxText(name),
                 },
                 new RbAction3Arg<ItemResourceType, int, int>(city.blackMarketPurchase, resourceType, count, cost, SoundLib.menuBuy),
@@ -77,7 +78,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                         content.newParagraph();
 
                         content.h2(DssRef.todoLang.Hud_PurchaseTitle_CurrentlyOwn);
-                        content.text(name + " " + city.GetGroupedResource(resourceType).amount.ToString());
+                        city.GetGroupedResource(resourceType).toMenu(content, resourceType);
+                        //content.text(name + " " + city.GetGroupedResource(resourceType).amount.ToString());
 
                         player.hud.tooltip.create(player, content, true);
 

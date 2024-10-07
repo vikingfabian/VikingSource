@@ -50,10 +50,11 @@ namespace VikingEngine.HUD.RichBox
         bool selected;
         //int index;
 
-        public RichboxTabMember(List<AbsRichBoxMember> content)
+        public RichboxTabMember(List<AbsRichBoxMember> content, AbsRbAction enterAction = null)
         {
             this.content = content;
             this.enabled = true;
+            this.enter = enterAction;
         }
 
         public void initGroup(int index, int selectedIx, Action<int> click, Action<int> enter, Color? overrideBgColor)
