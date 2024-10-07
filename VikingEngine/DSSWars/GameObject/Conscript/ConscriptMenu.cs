@@ -209,11 +209,16 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     //EMPTY
                     content.text(DssRef.todoLang.Hud_EmptyList).overrideColor = HudLib.InfoYellow_Light;
                     content.newParagraph();
-                    content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement);
+                    content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement).overrideColor = HudLib.TitleColor_Label;
+                    content.newLine();
                     content.Add( new RichBoxImage(SpriteName.WarsBuild_Barracks));
+                    content.space();
                     content.Add(new RichBoxText(DssRef.todoLang.BuildingType_Barracks));
+                    content.newLine();
                     content.text(DssRef.todoLang.Hud_RequirementOr);
+                    content.newLine();
                     content.Add(new RichBoxImage(SpriteName.WarsBuild_Nobelhouse));
+                    content.space();
                     content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse));
                 }
                 else

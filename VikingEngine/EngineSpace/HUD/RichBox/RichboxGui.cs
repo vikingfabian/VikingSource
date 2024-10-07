@@ -91,8 +91,9 @@ namespace VikingEngine.HUD.RichBox
             }
         }
 
-        public void updateMove()
+        public void updateMove(out bool refresh)
         {
+            refresh = false;
             if (input.RichboxGuiUseMove && lockInput <= 0)
             {
                 if (movePos_part >= 0 && parts[movePos_part].canMoveInteract())
@@ -164,11 +165,17 @@ namespace VikingEngine.HUD.RichBox
 
                     if (movePos_part >= 0 && input.RichboxGuiSelect.DownEvent)
                     {
-                        parts[movePos_part].interaction.hover.onClick();//.click?.actionTrigger();
+                        parts[movePos_part].interaction.hover.onClick();
+                        refresh = true;
                     }
                 }
             }
             --lockInput;
+        }
+
+        public Vector2 controllerSelectionPos()
+        {
+            return parts[movePos_part].interaction.hover.area().Position;
         }
 
         public void clearMoveSelection()

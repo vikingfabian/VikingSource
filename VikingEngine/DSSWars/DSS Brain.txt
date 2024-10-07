@@ -3,15 +3,18 @@
 * 
 
 #Todo#
-Build, ta bort, tooltip på order
+
 Gruppera soldattyp för att kunna dela upp armeer
 Deliver effect
 Tutorial
 Controller support
 Event, nya tider, fixa special figurer (dark lord)
+avbryta byggjobb
 Översätt
+reducera ai delay omn man attackerar
 Ljud
 Video
+split screen
 
 Error
 -back button in menues 

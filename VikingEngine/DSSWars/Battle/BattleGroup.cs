@@ -183,6 +183,7 @@ namespace VikingEngine.DSSWars.Battle
 
         public bool async_update(float time)
         {
+
             switch (battleState)
             { 
                 case BattleState.Prepare:

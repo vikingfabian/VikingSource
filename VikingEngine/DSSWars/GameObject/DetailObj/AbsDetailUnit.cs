@@ -188,6 +188,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             var nextAttackTarget_sp= nextAttackTarget;
+            nextAttackTarget = null;
             if (nextAttackTarget_sp != null && !nextAttackTarget_sp.defeatedBy(GetFaction()))
             {
                 attackTarget = nextAttackTarget_sp;

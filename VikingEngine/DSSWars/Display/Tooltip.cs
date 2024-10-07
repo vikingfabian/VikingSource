@@ -63,7 +63,10 @@ namespace VikingEngine.DSSWars.Display
                     {
                         if (menuToolTip)
                         {
-                            images.SetOffset(VectorExt.AddX(player.hud.displays.headDisplay.area.RightBottom, 10));
+                            images.SetOffset(new Vector2(
+                                player.hud.displays.headDisplay.area.Right + 10,
+                                player.hud.displays.controllerSelectionPos().Y)
+                                );
                         }
                         else
                         {

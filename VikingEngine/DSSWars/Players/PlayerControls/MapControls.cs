@@ -110,7 +110,8 @@ namespace VikingEngine.DSSWars.Players
                 
                 if (focusedObjectMenuState())
                 {
-                    player.hud.displays.updateMove();
+                    player.hud.displays.updateMove(out bool bRefresh);
+                    player.hud.needRefresh |= bRefresh;
 
                     if (player.input.ControllerFocus.DownEvent)
                     {

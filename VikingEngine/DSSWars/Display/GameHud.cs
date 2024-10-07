@@ -74,7 +74,8 @@ namespace VikingEngine.DSSWars.Display
 
         public void updateMenuFocus()
         {
-            displays.updateMove();
+            displays.updateMove(out bool bRefresh);
+            needRefresh |= bRefresh;
 
             if (player.input.AutomationSetting.DownEvent ||
                 player.input.ControllerCancel.DownEvent)

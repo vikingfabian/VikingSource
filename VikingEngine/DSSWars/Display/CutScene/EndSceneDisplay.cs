@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
 
         public void update()
         {
-            center.updateMove();
+            center.updateMove(out _);
             center.update();
         }
 

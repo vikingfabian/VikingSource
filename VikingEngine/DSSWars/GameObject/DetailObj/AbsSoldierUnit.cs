@@ -958,6 +958,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void groupAttackTarget_asynch()
         {
+
             AbsDetailUnit closestOpponent = null;
             float closestOpponentDistance = float.MaxValue;
             var attacking_sp = group.attacking_soldierGroupOrCity;

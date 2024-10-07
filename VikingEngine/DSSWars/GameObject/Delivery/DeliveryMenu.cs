@@ -204,11 +204,16 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                     //EMPTY
                     content.text(DssRef.todoLang.Hud_EmptyList).overrideColor = HudLib.InfoYellow_Light;
                     content.newParagraph();
-                    content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement);
+                    content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement).overrideColor = HudLib.TitleColor_Label;
+                    content.newLine();
                     content.Add(new RichBoxImage(SpriteName.WarsBuild_Postal));
+                    content.space();
                     content.Add(new RichBoxText(DssRef.todoLang.BuildingType_Postal));
+                    content.newLine();
                     content.text(DssRef.todoLang.Hud_RequirementOr);
+                    content.newLine();
                     content.Add(new RichBoxImage(SpriteName.WarsBuild_Recruitment));
+                    content.space();
                     content.Add(new RichBoxText(DssRef.todoLang.BuildingType_Recruitment));
                 }
                 else

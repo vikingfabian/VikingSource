@@ -347,6 +347,10 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public void asynchFindBattleTarget()
         {
+            if (city.debugTagged)
+            {
+                lib.DoNothing();
+            }
             AbsDetailUnit closestOpponent = null;
             float closestOpponentDistance = float.MaxValue;
 

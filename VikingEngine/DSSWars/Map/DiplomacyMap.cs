@@ -253,7 +253,7 @@ namespace VikingEngine.DSSWars
 
             if (selected != null)
             {               
-                player.hud.displays.updateMove();
+                player.hud.displays.updateMove(out _);
 
                 if (player.input.ControllerCancel.DownEvent)
                 {
