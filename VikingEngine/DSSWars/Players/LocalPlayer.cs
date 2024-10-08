@@ -530,8 +530,8 @@ namespace VikingEngine.DSSWars.Players
 
         public void userUpdate()
         {
-            
-            
+
+            bool menuFocusState = mapControls.focusedObjectMenuState();
             //if (!openMenySystem)
             //{
                 
@@ -583,11 +583,11 @@ namespace VikingEngine.DSSWars.Players
 
                 if (input.inputSource.IsController)
                 {
-                    if (!mapControls.focusedObjectMenuState() && 
+                    if (!menuFocusState && 
                         !hud.menuFocus &&
-                        input.Select.DownEvent)    
+                        (input.Select.DownEvent || input.ControllerFocus.DownEvent))    
                     {
-                        if (mapControls.selection.obj == null)
+                        if (mapControls.selection.obj == null || mapControls.hover.obj != null)
                         {
                             mapSelect();
                         }

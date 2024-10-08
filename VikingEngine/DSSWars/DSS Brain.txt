@@ -5,42 +5,21 @@
 * Increased farms to give x5 resources
 
 #Todo#
-stäng tutorial
+
 Gruppera soldattyp för att kunna dela upp armeer
-Deliver effect
-Tutorial
 Controller support
 Event, nya tider, fixa special figurer (dark lord)
-avbryta byggjobb
 Översätt
-reducera ai delay omn man attackerar
-Ljud
 Video
 split screen
+
+
+--Efter release polish--
+Deliver effect
+avbryta byggjobb
+reducera ai delay omn man attackerar
+Ljud
 wipe av city settings vid takeover 
-
-#tutorial
-zoom in on a city
-select resource tab, collect x wood and x stone
-
-new tab, increase sharp stick work
-
-new tab, build linen
-collect x linnen
-increase light armor work
-
-new tab conscript
-build conscript
-que up two armies with light armor and stick
-
-zoom out
-select move army
-
-zoom out to diplomatic view,
-create good relations w neighbor
-
->end
--add start soldiers (and conscripts)
 
 Error
 -back button in menues 

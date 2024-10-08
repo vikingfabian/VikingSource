@@ -75,7 +75,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             id = ++DssRef.state.NextArmyId;
             name = Data.NameGenerator.ArmyName(id);
-            position = WP.ToWorldPos(startPosition);
+            position = WP.ToMapPos(startPosition);
             tilePos = startPosition;
 
             init(faction);
@@ -198,7 +198,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
             }
-            if (args.selected && faction == args.player.faction)
+            if (/*args.selected &&*/ faction == args.player.faction)
             {                
                 new Display.ArmyMenu(args.player, this, args.content);
             }
@@ -960,6 +960,11 @@ namespace VikingEngine.DSSWars.GameObject
         public bool Is(int index, int faction)
         {
             return this.parentArrayIndex == index && this.faction.parentArrayIndex == faction;
+        }
+
+        public override bool CanMenuFocus()
+        {
+            return true;
         }
     }
     enum ArmyPlacement

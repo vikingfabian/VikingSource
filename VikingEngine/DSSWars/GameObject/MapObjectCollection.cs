@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -108,5 +109,17 @@ namespace VikingEngine.DSSWars.GameObject
             }
             this.objects.AddRange(newObjects);
         }
+
+        public override Vector3 WorldPos()
+        {
+            Vector3 result = new Vector3();
+            for (int i = 0; i < objects.Count; i++)
+            {
+                result += objects[i].WorldPos();
+            }
+            return result / objects.Count;
+        }
+
+        
     }
 }

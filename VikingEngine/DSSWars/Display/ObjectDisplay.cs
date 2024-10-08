@@ -19,6 +19,13 @@ namespace VikingEngine.DSSWars.Display
             if (obj != null)
             {
                 beginRefresh();
+                if (obj.CanMenuFocus() && player.input.inputSource.IsController)
+                {
+                    content.Add(new HUD.RichBox.RichBoxImage(player.input.ControllerFocus.Icon));
+                    content.Add(new HUD.RichBox.RichBoxText(":"));
+                    content.newLine();
+                }
+
                 obj.toHud(new ObjectHudArgs(gui, content, player, selected));
                 if (gui.menuState.Count > 0) 
                 {

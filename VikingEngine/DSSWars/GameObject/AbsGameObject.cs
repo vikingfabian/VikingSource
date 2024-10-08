@@ -79,7 +79,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             args.content.Add(new RichBoxSeperationLine());
         }
-
+        virtual public bool CanMenuFocus() { return false; }
         virtual public bool aliveAndBelongTo(Faction faction) { return true; }
         //abstract public bool IsDeleted();
     }

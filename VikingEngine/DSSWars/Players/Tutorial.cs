@@ -79,36 +79,36 @@ namespace VikingEngine.DSSWars.Players
         //    }
         //}
 
-        public void onMoveArmy()
-        {
-            //if (inTutorialMode && !tutorialMission_MoveArmy)
-            //{
-            //    tutorialMission_MoveArmy = true;
-            //    hud.needRefresh = true;
-            //    SoundLib.trophy.Play();
-            //    checkTutorialComplete();
-            //}
-        }
+        //public void onMoveArmy()
+        //{
+        //    //if (inTutorialMode && !tutorialMission_MoveArmy)
+        //    //{
+        //    //    tutorialMission_MoveArmy = true;
+        //    //    hud.needRefresh = true;
+        //    //    SoundLib.trophy.Play();
+        //    //    checkTutorialComplete();
+        //    //}
+        //}
 
-        void checkTutorialComplete()
-        {
-            //if (tutorialMission_BuySoldier && tutorialMission_MoveArmy)
-            //{
-            //    new TimedAction0ArgTrigger(completeTutorial, 1000);        
-            //}
-        }
+        //void checkTutorialComplete()
+        //{
+        //    //if (tutorialMission_BuySoldier && tutorialMission_MoveArmy)
+        //    //{
+        //    //    new TimedAction0ArgTrigger(completeTutorial, 1000);        
+        //    //}
+        //}
 
-        void completeTutorial()
-        {
-            //inTutorialMode = false;
-            mapControls.setZoomRange(false);
-            hud.messages.Add(DssRef.lang.Tutorial_CompleteTitle, DssRef.lang.Tutorial_CompleteMessage);
+        //void completeTutorial()
+        //{
+        //    //inTutorialMode = false;
+        //    mapControls.setZoomRange(false);
+        //    hud.messages.Add(DssRef.lang.Tutorial_CompleteTitle, DssRef.lang.Tutorial_CompleteMessage);
 
-            DssRef.storage.runTutorial = false;
-            DssRef.storage.Save(null);
+        //    DssRef.storage.runTutorial = false;
+        //    DssRef.storage.Save(null);
 
-            tutorial = null;
-        }
+        //    tutorial = null;
+        //}
 
         
 

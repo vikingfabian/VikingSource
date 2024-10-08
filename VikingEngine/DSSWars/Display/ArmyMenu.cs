@@ -25,12 +25,7 @@ namespace VikingEngine.DSSWars.Display
             {
 
                 default:
-                    if (player.input.inputSource.IsController)
-                    {
-                        content.Add(new HUD.RichBox.RichBoxImage(player.input.ControllerFocus.Icon));
-                        content.Add(new HUD.RichBox.RichBoxText(":"));
-                        content.newLine();
-                    }
+                    
 
                     var haltButton = new HUD.RichBox.RichboxButton(
                     new List<AbsRichBoxMember>

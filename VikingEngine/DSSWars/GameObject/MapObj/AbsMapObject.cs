@@ -142,6 +142,8 @@ namespace VikingEngine.DSSWars.GameObject
         {  
             throw new NotImplementedException();
         }
+
+        
         //public override bool Alive()
         //{
         //    return !isDeleted;

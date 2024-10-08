@@ -1006,7 +1006,7 @@ namespace VikingEngine.DSSWars.GameObject
            
             base.toHud(args);
 
-            if (args.selected && faction == args.player.faction)
+            if (/*args.selected && */ faction == args.player.faction)
             {
                 CityDetailsHud(true, args.player, args.content);
                 new Display.CityMenu(args.player, this, args.content);
@@ -1440,7 +1440,10 @@ namespace VikingEngine.DSSWars.GameObject
             return guardCount <= 0;
         }
 
-        
+        public override bool CanMenuFocus()
+        {
+            return true;
+        }
 
         public override bool aliveAndBelongTo(Faction faction)
         {

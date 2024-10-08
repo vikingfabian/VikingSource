@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
 
-            player.onMoveArmy();
+            //player.onMoveArmy();
         }
 
         
