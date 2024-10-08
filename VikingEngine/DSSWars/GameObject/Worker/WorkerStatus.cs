@@ -67,6 +67,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         int farmGrowthMultiplier(int terrainAmount, City city)
         {
+            terrainAmount *= 5;
             if (city.Culture == CityCulture.FertileGround)
             {
                 return terrainAmount * 2;

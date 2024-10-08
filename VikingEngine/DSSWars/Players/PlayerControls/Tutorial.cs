@@ -348,7 +348,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 case TutorialMission.MoveArmy:
                     if (!moveArmy_ZoomOut)
                     {
-                        if (player.drawUnitsView.current.DrawOverview)
+                        if (player.drawUnitsView.current.DrawNormal)
                         {
                             moveArmy_ZoomOut = true;
                             onPartSuccess();
@@ -373,7 +373,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 case TutorialMission.Diplomatics:
                     if (!diplomatics_ZoomOut)
                     {
-                        if (player.drawUnitsView.current.DrawFullOverview)
+                        if (player.drawUnitsView.current.DrawOverview)
                         {
                             diplomatics_ZoomOut = true;
                             onPartSuccess();

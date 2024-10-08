@@ -1,6 +1,8 @@
 ﻿
 -Change Log-
 * Tutorial, it is hardcoded to always start in this version
+* Menu polish
+* Increased farms to give x5 resources
 
 #Todo#
 stäng tutorial
