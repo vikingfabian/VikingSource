@@ -1,9 +1,9 @@
 ﻿
 -Change Log-
-* 
+* Tutorial, it is hardcoded to always start in this version
 
 #Todo#
-
+stäng tutorial
 Gruppera soldattyp för att kunna dela upp armeer
 Deliver effect
 Tutorial
@@ -15,6 +15,30 @@ reducera ai delay omn man attackerar
 Ljud
 Video
 split screen
+wipe av city settings vid takeover 
+
+#tutorial
+zoom in on a city
+select resource tab, collect x wood and x stone
+
+new tab, increase sharp stick work
+
+new tab, build linen
+collect x linnen
+increase light armor work
+
+new tab conscript
+build conscript
+que up two armies with light armor and stick
+
+zoom out
+select move army
+
+zoom out to diplomatic view,
+create good relations w neighbor
+
+>end
+-add start soldiers (and conscripts)
 
 Error
 -back button in menues 

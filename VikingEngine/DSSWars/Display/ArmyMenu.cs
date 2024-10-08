@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars.Display
 
                     content.newLine();
 
-                    if (!player.inTutorialMode)
+                    if (player.tutorial == null)
                     {
                         var disbandButton = new HUD.RichBox.RichboxButton(
                         new List<AbsRichBoxMember>

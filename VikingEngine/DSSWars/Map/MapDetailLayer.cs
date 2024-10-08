@@ -61,7 +61,7 @@ namespace VikingEngine.DSSWars.Map
 
                 layers.Add(new DetailLayer(MapDetailLayerType.TerrainOverview2, minZoom, maxZoom, zoomBuffer));
 
-                TutorialZoomRange = new IntervalF(minZoom + zoomBuffer, maxZoom - zoomBuffer);
+                TutorialZoomRange = new IntervalF(FullZoomRange.Min, maxZoom - zoomBuffer);
 
                 minZoom = maxZoom;
                 maxZoom = 450;//FullZoomRange.GetFromPercent(0.75f);

@@ -44,7 +44,7 @@ namespace VikingEngine.DSSWars.Players
         Graphics.Image controllerPointer;
 
         public Selection hover;
-        public Selection selection;//
+        public Selection selection;
         bool controllerInput;
         public bool unlockEdgePush = false;
 

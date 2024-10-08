@@ -282,5 +282,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string Hud_PurchaseTitle_Resources => "Buy resources";
         public string Hud_PurchaseTitle_CurrentlyOwn=> "You own";
+
+        public string Tutorial_EndTutorial => "End tutorial";
     }
 }

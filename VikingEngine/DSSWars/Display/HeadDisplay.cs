@@ -27,9 +27,16 @@ namespace VikingEngine.DSSWars.Display
             {
                 beginRefresh();
 
+                //if (player.tutorial != null)
+                //{
+                //    player.tutorial.tutorial_ToHud(content);
+                //    content.Add(new RichBoxSeperationLine());
+                //    content.newParagraph();
+                //}
+
                 defaultMenu(player, fullDisplay, faction);
 
-                if (fullDisplay)
+                if (fullDisplay && player.tutorial == null)
                 {
                     content.newLine();
                     int tabSel = 0;
@@ -266,8 +273,6 @@ namespace VikingEngine.DSSWars.Display
             {
                 FactionSize(faction, content, fullDisplay);
 
-
-                
 
                 if (fullDisplay)
                 {

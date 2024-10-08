@@ -68,10 +68,13 @@ namespace VikingEngine.DSSWars
         }
 
         public void OneSecondUpdate()
-        {                        
-            if (--aiDelayTimeSec <= 0)
+        {
+            if (DssRef.state.localPlayers[0].tutorial == null)
             {
-                AiDelay = false;
+                if (--aiDelayTimeSec <= 0)
+                {
+                    AiDelay = false;
+                }
             }            
         }
 

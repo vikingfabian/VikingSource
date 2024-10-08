@@ -30,10 +30,13 @@ namespace VikingEngine.DSSWars.Players
             this.faction = faction;
             faction.SetStartOwner(this);
 
-            faction.mainCity?.createStartupBarracks();
+            createStartupBarracks();
         }
 
-       
+        public void createStartupBarracks()
+        { 
+            faction.mainCity?.createStartupBarracks();
+        }
 
         virtual public void Update()
         { }

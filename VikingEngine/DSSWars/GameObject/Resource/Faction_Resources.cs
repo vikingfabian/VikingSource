@@ -72,12 +72,16 @@ namespace VikingEngine.DSSWars
             else
             {
                 workTemplate.setWorkPrio(set, priorityType);
-                var cityCounter = cities.counter();
-                while (cityCounter.Next())
-                {
-                    cityCounter.sel.workTemplate.onFactionChange(workTemplate);
-                }
-                //tradeTemplate.changeResourcePrice(change, resourceType);
+                refreshCityWork();
+            }
+        }
+
+        public void refreshCityWork()
+        { 
+            var cityCounter = cities.counter();
+            while (cityCounter.Next())
+            {
+                cityCounter.sel.workTemplate.onFactionChange(workTemplate);
             }
         }
 

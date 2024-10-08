@@ -70,7 +70,7 @@ namespace VikingEngine.DSSWars.Players.Orders
     {
         City city;
         IntVector2 subTile;
-        BuildAndExpandType buildingType;
+        public BuildAndExpandType buildingType;
         Mesh icon;
         AbsVoxelObj model;
 

@@ -60,7 +60,7 @@ namespace VikingEngine.DSSWars
             HudLib.Init();
 
             //Ref.rnd.SetSeed(DssRef.world.metaData.seed);
-            initPlayers();
+            initPlayers(loadMeta == null);
             culling = new Culling();
 
             this.host = host;
@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars
             events.readGameState(r, subversion, pointers);
         }
 
-        void initPlayers()
+        void initPlayers(bool newGame)
         {
             //Players.AiPlayer.EconomyMultiplier = Difficulty.AiEconomyLevel[DssRef.difficulty.aiEconomyLevel] / 100.0;
 
@@ -142,7 +142,7 @@ namespace VikingEngine.DSSWars
             for (var i = 0; i < playerCount; ++i)
             {
                 var startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, localPlayers);
-                var local = new Players.LocalPlayer(startFaction, i, playerCount);
+                var local = new Players.LocalPlayer(startFaction, i, playerCount, newGame);
                 localPlayers.Add(local);
             }
 
@@ -167,7 +167,7 @@ namespace VikingEngine.DSSWars
                 m.onGameStart(newGame);
             }
 
-            if (newGame)
+            if (newGame && !DssRef.storage.runTutorial)
             {
                 initStartUnits();
             }
@@ -184,12 +184,8 @@ namespace VikingEngine.DSSWars
             new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60);
             new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62);
             new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63);
-
-            //if (StartupSettings.RunResoursesUpdate)
-            //{
-                new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
-            //}
-
+            new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
+            
             if (localPlayers.Count > 1)
             {
                 Ref.SetGameSpeed(DssRef.storage.multiplayerGameSpeed);

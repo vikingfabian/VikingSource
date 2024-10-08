@@ -27,6 +27,63 @@ namespace VikingEngine.DSSWars.Map
 
         public bool newCity = true;
 
+        public void setupTutorialMap(City city)
+        {
+            IntVector2 topleft;
+            ForXYLoop subTileLoop;
+
+            int wood = 2;
+            int stone = 2;
+
+            for (int radius = 2; radius <= city.cityTileRadius; ++radius)
+            {
+                ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+
+                while (cirkleLoop.Next())
+                {
+                    if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
+                    {
+                        var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
+                        if (tile.CityIndex == city.parentArrayIndex && tile.IsLand())
+                        {
+                            topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
+                            subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
+
+                            while (subTileLoop.Next())
+                            {
+                                var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
+
+                                switch (subTile.mainTerrain)
+                                {
+                                    
+                                    case TerrainMainType.Destroyed:
+                                    case TerrainMainType.DefaultLand:
+                                        if (wood > 0)
+                                        {
+                                            --wood;
+                                            subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.DryWood, TerrainContent.TreeReadySize);
+                                            DssRef.world.subTileGrid.Set(subTileLoop.Position, subTile);
+                                        }
+                                        else 
+                                        {
+                                            
+                                            subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.Stones, 1);
+                                            DssRef.world.subTileGrid.Set(subTileLoop.Position, subTile);
+                                            if (--stone <= 0)
+                                            {
+                                                return;
+                                            }
+                                        }
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
         public void updateIfNew(City city, int workerCount)
         {
             if (newCity)

@@ -185,6 +185,7 @@ namespace VikingEngine.DSSWars.Display
                     Vector2 pos = displays.headDisplay.area.LeftBottom;
                     pos.Y += Engine.Screen.BorderWidth * 2f;
                     displays.objectDisplay.refresh(player, obj, selected, pos);
+
                 }
             }
         }

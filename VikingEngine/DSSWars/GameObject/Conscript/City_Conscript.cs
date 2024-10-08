@@ -181,7 +181,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void createStartupBarracks()
         {
-            if (conscriptBuildings.Count == 0)
+            if (conscriptBuildings.Count == 0 &&
+                !DssRef.storage.runTutorial)
             {
                 IntVector2 pos = WP.ToSubTilePos_TopLeft(tilePos);
                 pos.X += 4;

@@ -26,7 +26,8 @@ namespace VikingEngine.DSSWars.Display
 {
     class CityMenu
     {
-        public static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Resources, MenuTab.BlackMarket, MenuTab.Work, MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript };
+        public static readonly List<MenuTab> Tabs = new List<MenuTab>() { 
+            MenuTab.Info, MenuTab.Resources, MenuTab.BlackMarket, MenuTab.Work, MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript };
         Players.LocalPlayer player;
         City city;
         static readonly int[] StockPileControls = { 100, 1000 };
@@ -42,9 +43,11 @@ namespace VikingEngine.DSSWars.Display
             int tabSel = 0;
 
             var tabs = new List<RichboxTabMember>((int)MenuTab.NUM);
-            for (int i = 0; i < Tabs.Length; ++i)
+
+            List<MenuTab> availableTabs =player.AvailableCityTabs();//player.tutorial != null ? player.tutorial.cityTabs : Tabs;
+            for (int i = 0; i < availableTabs.Count; ++i)
             {
-                var text = new RichBoxText(LangLib.Tab(Tabs[i], out string description));
+                var text = new RichBoxText(LangLib.Tab(availableTabs[i], out string description));
                 text.overrideColor = HudLib.RbSettings.tabSelected.Color;
 
                 AbsRbAction enter = null;
@@ -64,7 +67,7 @@ namespace VikingEngine.DSSWars.Display
                         text
                     }, enter));
 
-                if (Tabs[i] == player.cityTab)
+                if (availableTabs[i] == player.cityTab)
                 {
                     tabSel = i;
                 }
@@ -116,27 +119,31 @@ namespace VikingEngine.DSSWars.Display
         }
         public void resourcesToMenu(RichBoxContent content)
         {
-            for (ResourcesSubTab resourcesSubTab = 0; resourcesSubTab < ResourcesSubTab.NUM; ++resourcesSubTab)
+            if (player.tutorial == null)
             {
-                string text = null;
-                switch (resourcesSubTab)
+                for (ResourcesSubTab resourcesSubTab = 0; resourcesSubTab < ResourcesSubTab.NUM; ++resourcesSubTab)
                 {
-                    case ResourcesSubTab.Overview:
-                        text = DssRef.todoLang.Resource_Tab_Overview;
-                        break;
-                    case ResourcesSubTab.Stockpile:
-                        text = DssRef.todoLang.Resource_Tab_Stockpile;
-                        break;
+                    string text = null;
+                    switch (resourcesSubTab)
+                    {
+                        case ResourcesSubTab.Overview:
+                            text = DssRef.todoLang.Resource_Tab_Overview;
+                            break;
+                        case ResourcesSubTab.Stockpile:
+                            text = DssRef.todoLang.Resource_Tab_Stockpile;
+                            break;
+                    }
+                    var subTab = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(text) },
+                        new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
+                        {
+                            player.resourcesSubTab = resourcesSubTab;
+                        }, resourcesSubTab, SoundLib.menu));
+                    subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
+                    content.Add(subTab);
+                    content.space();
                 }
-                var subTab = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(text) },
-                    new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) => { 
-                        player.resourcesSubTab = resourcesSubTab; 
-                    }, resourcesSubTab, SoundLib.menu));
-                subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
-                content.Add(subTab);
-                content.space();
+                content.newParagraph();
             }
-            content.newParagraph();
 
             switch (player.resourcesSubTab)
             {

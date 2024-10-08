@@ -77,7 +77,12 @@ namespace VikingEngine.DSSWars.Players
         }
         public void cityTabClick(int tab)
         {
-            cityTab = CityMenu.Tabs[tab];
+            cityTab = AvailableCityTabs()[tab];
+        }
+
+        public List<MenuTab> AvailableCityTabs()
+        { 
+            return tutorial != null ? tutorial.cityTabs : CityMenu.Tabs;
         }
 
         public bool InBuildOrdersMode()
@@ -210,7 +215,7 @@ namespace VikingEngine.DSSWars.Players
             Debug.ReadCheck(r);
         }
 
-        public LocalPlayer(Faction faction, int playerindex, int numPlayers)
+        public LocalPlayer(Faction faction, int playerindex, int numPlayers, bool newGame)
             :base(faction)
         {
             orders = new Orders.Orders();
@@ -253,7 +258,7 @@ namespace VikingEngine.DSSWars.Players
             
             Ref.draw.AddPlayerScreen(playerData);
             drawUnitsView = new MapDetailLayerManager(playerData);
-            InitTutorial();
+            InitTutorial(newGame);
 
             new AsynchUpdateable(interactAsynchUpdate, "DSS player interact", playerindex);
 
@@ -516,7 +521,12 @@ namespace VikingEngine.DSSWars.Players
         //{ }
 
         override public void Update()
-        { }
+        {
+            if (tutorial != null)
+            {
+                tutorial.update();
+            }
+        }
 
         public void userUpdate()
         {

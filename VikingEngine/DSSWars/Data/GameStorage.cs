@@ -169,6 +169,8 @@ namespace VikingEngine.DSSWars.Data
             {
                 runTutorial = r.ReadBoolean();
             }
+
+            runTutorial = true;
         }
 
         public void checkPlayerDoublettes()
