@@ -581,20 +581,32 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
 
-                if (input.inputSource.IsController)
+
+            //menuFocusState |= mapControls.focusedObjectMenuState();
+
+            if (input.inputSource.IsController)
                 {
                     if (!menuFocusState && 
                         !hud.menuFocus &&
                         (input.Select.DownEvent || input.ControllerFocus.DownEvent))    
                     {
-                        if (mapControls.selection.obj == null || mapControls.hover.obj != null)
-                        {
-                            mapSelect();
-                        }
-                        else
+                        if (armyControls != null && 
+                            (mapControls.hover.obj == null || mapControls.armyMayAttackHoverObj()))
                         {
                             mapExecute();
                         }
+                        else
+                        {
+                            mapSelect();
+                        }
+                        //if (mapControls.selection.obj == null || mapControls.hover.obj != null)
+                        //{
+                        //    mapSelect();
+                        //}
+                        //else
+                        //{
+                        //    mapExecute();
+                        //}
                     }
 
                     if (input.ControllerMessageClick.DownEvent)
@@ -996,6 +1008,15 @@ namespace VikingEngine.DSSWars.Players
                 bool oldselection = clearSelection();
 
                 bool newselection = clickHover();
+
+                if (newselection && input.inputSource.IsController)
+                {
+                    if (input.ControllerFocus.DownEvent || mapControls.focusedObjectMenuState())
+                    {
+                        mapControls.setObjectMenuFocus(true);
+                    }
+                }
+
 
                 if (oldselection && !newselection)
                 {

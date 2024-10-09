@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.Display
                         content.Add(title);
                         content.newLine();
                         //CraftBlueprint blueprint = ResourceLib.Blueprint(player.BuildControls.placeBuildingType);
-                        player.BuildControls.placeBuildingOption().blueprint.toMenu(content, player.mapControls.selection.obj.GetCity());
+                        player.BuildControls.placeBuildingOption().blueprint.toMenu(content, subTile.city);
 
                         var mayBuild = player.mapControls.hover.subTile.MayBuild(player);
                         

@@ -5,7 +5,7 @@
 * Increased farms to give x5 resources
 
 #Todo#
-
+räkna om worker unit move/sec, de missar sina mål
 Gruppera soldattyp för att kunna dela upp armeer
 Controller support
 Event, nya tider, fixa special figurer (dark lord)
@@ -15,6 +15,8 @@ split screen
 
 
 --Efter release polish--
+
+
 Deliver effect
 avbryta byggjobb
 reducera ai delay omn man attackerar

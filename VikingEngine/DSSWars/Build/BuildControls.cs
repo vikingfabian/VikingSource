@@ -261,6 +261,7 @@ namespace VikingEngine.DSSWars.Build
         {
             buildMode = SelectTileResult.Build;
             placeBuildingType = type;
+            player.mapControls.setObjectMenuFocus(false);
         }
 
         //void buildingTooltip(BuildAndExpandType type)

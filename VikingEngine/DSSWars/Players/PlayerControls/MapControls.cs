@@ -528,6 +528,12 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        public bool armyMayAttackHoverObj()
+        {
+            return player.mapControls.hover.obj != null &&
+                 player.mapControls.hover.obj.GetFaction() != player.faction;
+        }
+
         void controllerHoverUpdate()
         {
             if (player.drawUnitsView.current.type == MapDetailLayerType.TerrainOverview2)
@@ -651,13 +657,7 @@ namespace VikingEngine.DSSWars.Players
         public void onSelect()
         {
             selection.obj = hover.obj;
-            if (controllerInput)
-            {                
-                if (player.input.ControllerFocus.DownEvent || focusedObjectMenuState())
-                {
-                    setObjectMenuFocus(true);
-                }
-            }
+            
         }
 
         public void onTileSelect(SelectedSubTile selectedSubTile)//City city, SelectTileResult tileResult)
@@ -734,7 +734,7 @@ namespace VikingEngine.DSSWars.Players
                 selection.menuFocus;
         }
 
-        void setObjectMenuFocus(bool set)
+        public void setObjectMenuFocus(bool set)
         {
             //if (!set )//&& selection.obj.gameobjectType() == GameObjectType.City)
             //{
@@ -750,7 +750,7 @@ namespace VikingEngine.DSSWars.Players
 
             if (set)
             {
-                playerPointerPos = selection.obj.WorldPos();
+                //playerPointerPos = selection.obj.WorldPos();
                 player.hud.displays.beginMove(1);
             }
             else
