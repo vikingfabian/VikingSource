@@ -586,9 +586,11 @@ namespace VikingEngine.DSSWars.Players
 
             if (input.inputSource.IsController)
                 {
+
+                bool friendlyHoverObj = mapControls.hover.obj != null && mapControls.hover.obj.GetFaction() == faction;
                     if (!menuFocusState && 
                         !hud.menuFocus &&
-                        (input.Select.DownEvent || input.ControllerFocus.DownEvent))    
+                        (input.Select.DownEvent || (friendlyHoverObj && input.ControllerFocus.DownEvent)))    
                     {
                         if (armyControls != null && 
                             (mapControls.hover.obj == null || mapControls.armyMayAttackHoverObj()))
