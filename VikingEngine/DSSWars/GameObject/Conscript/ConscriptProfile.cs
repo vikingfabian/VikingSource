@@ -215,6 +215,46 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             }
         }
 
+        public UnitFilterType filterType()
+        {
+            switch (conscript.specialization)
+            {
+                default:
+                    switch (conscript.weapon)
+                    {
+                        case MainWeapon.SharpStick:
+                            return UnitFilterType.SharpStick;
+                        case MainWeapon.Sword:
+                            return UnitFilterType.Sword;
+                        case MainWeapon.Pike:
+                            return UnitFilterType.Pike;
+                        case MainWeapon.TwoHandSword:
+                            return UnitFilterType.TwohandSword;
+                        case MainWeapon.KnightsLance:
+                            return UnitFilterType.Knight;
+                        case MainWeapon.Bow:
+                            return UnitFilterType.Bow;
+                        case MainWeapon.CrossBow:
+                            return UnitFilterType.CrossBow;
+                        case MainWeapon.Ballista:
+                            return UnitFilterType.Ballista;
+
+                        default:
+                            throw  new NotImplementedException();
+
+                    }
+
+                case SpecializationType.Green:
+                    return UnitFilterType.GreenSoldier;
+                case SpecializationType.HonorGuard:
+                    return UnitFilterType.HonourGuard;
+                case SpecializationType.Viking:
+                    return UnitFilterType.Viking;
+                case SpecializationType.DarkLord:
+                    return UnitFilterType.DarkLord;
+            }
+        }
+
         public SpriteName Icon()
         {
            return init(DssRef.profile.bannerman).icon;
@@ -230,7 +270,6 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             SoldierData soldierData = profile.data;
 
             soldierData.basehealth = ConscriptProfile.ArmorHealth(conscript.armorLevel);
-
             soldierData.attackDamage = Convert.ToInt32(ConscriptProfile.WeaponDamage(conscript.weapon) * skillBonus);
             soldierData.attackDamageStructure = soldierData.attackDamage;
             soldierData.attackDamageSea = soldierData.attackDamage;
@@ -254,7 +293,19 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     soldierData.icon = SpriteName.WarsUnitIcon_Soldier;
                     break;
 
+                case MainWeapon.Pike:
+                    soldierData.arrowWeakness = true;
+                    soldierData.mainAttack = AttackType.Melee;
+                    soldierData.attackRange = 0.055f;
+                    soldierData.modelName = LootFest.VoxelModelName.wars_piker;
+                    soldierData.modelVariationCount = 1;
+                    soldierData.modelScale *= 1.6f;
+                    soldierData.icon = SpriteName.WarsUnitIcon_Pikeman;
+                    conscript.specialization = SpecializationType.AntiCavalry;
+                    break;
+
                 case MainWeapon.TwoHandSword:
+                    soldierData.arrowWeakness = true;
                     soldierData.mainAttack = AttackType.Melee;
                     soldierData.attackRange = 0.08f;
                     soldierData.modelName = LootFest.VoxelModelName.wars_twohand;
@@ -289,15 +340,23 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 10f;
                     break;
 
+                case MainWeapon.CrossBow:
+                    soldierData.mainAttack = AttackType.Bolt;
+                    soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Mid;
+                    soldierData.attackRange = 1.7f;
+                    soldierData.modelName = LootFest.VoxelModelName.wars_crossbow;
+                    soldierData.modelVariationCount = 1;
+                    soldierData.icon = SpriteName.LittleUnitIconCrossBowman;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 15f;
+                    break;
+
                 case MainWeapon.Ballista:
                     soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
                     soldierData.attackRange = WarmashineProfile.BallistaRange;
 
                     soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
                     soldierData.mainAttack = AttackType.Ballista;
-                    //result.attackDamage = 300;
                     soldierData.attackDamageStructure = Convert.ToInt32(1500 * skillBonus);
-                    //result.attackDamageSea = 400;
                     soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 16f;
 
                     soldierData.modelName = LootFest.VoxelModelName.war_ballista;
@@ -361,6 +420,13 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     soldierData.bonusProjectiles = 2;
                     soldierData.icon = SpriteName.WarsUnitIcon_Greensoldier;
                     break;
+
+                case SpecializationType.DarkLord:
+                    soldierData.modelScale = DssConst.Men_StandardModelScale;
+                    soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed;
+                    soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Back;
+                    soldierData.basehealth = DssConst.Soldier_DefaultHealth * 4;
+                    break;
             }
 
             soldierData.attackTimePlusCoolDown /= ConscriptProfile.TrainingAttackSpeed(conscript.training);
@@ -384,25 +450,42 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
         public void shipSetup(ref SoldierData soldierData)
         {
+            soldierData.modelName = LootFest.VoxelModelName.NUM_NON;
+
             soldierData.walkingSpeed = DssConst.Men_StandardShipSpeed;
 
             soldierData.modelScale = DssConst.Men_StandardModelScale * 6f;
 
-            if (conscript.specialization == SpecializationType.Sea)
+            switch (conscript.specialization)
             {
-                if (!RangedUnit())
-                {
-                    soldierData.modelName = LootFest.VoxelModelName.wars_viking_ship;
+                case SpecializationType.Viking:
+                    if (!RangedUnit())
+                    {
+                        soldierData.modelName = LootFest.VoxelModelName.wars_viking_ship;
 
+                        soldierData.mainAttack = AttackType.Javelin;
+                        soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 2.5f;
+                        soldierData.attackRange = 1f;
+                    }
+                    soldierData.walkingSpeed *= 1.5f;
+                    break;
+
+                case SpecializationType.DarkLord:
+                    soldierData.modelName = LootFest.VoxelModelName.wars_knight_ship;
 
                     soldierData.mainAttack = AttackType.Javelin;
                     soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 2.5f;
-                    soldierData.attackRange = 1f;
-                }
-                soldierData.walkingSpeed *= 1.5f;
+                    soldierData.attackRange = 2f;
+
+                    soldierData.attackDamage = 500;
+                    soldierData.attackDamageStructure = soldierData.attackDamage;
+                    soldierData.attackDamageSea = soldierData.attackDamage;
+
+                    soldierData.walkingSpeed *= 1.5f;
+                    break;
             }
 
-            if (soldierData.modelName != LootFest.VoxelModelName.wars_viking_ship)
+            if (soldierData.modelName == LootFest.VoxelModelName.NUM_NON)
             {
                 switch (conscript.weapon)
                 {
@@ -410,14 +493,27 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                         soldierData.modelName = LootFest.VoxelModelName.wars_folk_ship;
 
                         break;
+                    case MainWeapon.Pike:
                     case MainWeapon.Sword:
                         soldierData.modelName = LootFest.VoxelModelName.wars_soldier_ship;
-
                         break;
+
+                    case MainWeapon.CrossBow:
                     case MainWeapon.Bow:
                         soldierData.modelName = LootFest.VoxelModelName.wars_archer_ship;
-
                         break;
+
+                    case MainWeapon.Ballista:
+                        soldierData.modelName = LootFest.VoxelModelName.wars_ballista_ship;
+                        break;
+
+                    case MainWeapon.TwoHandSword:
+                    case MainWeapon.KnightsLance:
+                        soldierData.modelName = LootFest.VoxelModelName.wars_knight_ship;
+                        break;
+
+                    default:
+                        throw new NotImplementedException();
                 }
             }
         }
@@ -454,16 +550,22 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     return DssRef.lang.UnitType_Viking;
                 case SpecializationType.Green:
                     return DssRef.lang.UnitType_GreenSoldier;
+                case SpecializationType.DarkLord:
+                    return DssRef.lang.UnitType_DarkLord;
 
                 default:
                     switch (weapon)
                     {
                         case MainWeapon.Bow:
                             return DssRef.lang.UnitType_Archer;
+                        case MainWeapon.CrossBow:
+                            return DssRef.lang.UnitType_Crossbow;
                         case MainWeapon.Ballista:
                             return DssRef.lang.UnitType_Ballista;
                         case MainWeapon.SharpStick:
                             return DssRef.lang.UnitType_Folkman;
+                        case MainWeapon.Pike:
+                            return DssRef.lang.UnitType_Pikeman;
                         case MainWeapon.Sword:
                             return DssRef.lang.UnitType_Soldier;
                         case MainWeapon.KnightsLance:
@@ -535,9 +637,11 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             {
                 case MainWeapon.SharpStick: return DssConst.WeaponDamage_SharpStick;
                 case MainWeapon.Sword: return DssConst.WeaponDamage_Sword;
+                case MainWeapon.Pike: return DssConst.WeaponDamage_Pike;
                 case MainWeapon.TwoHandSword: return DssConst.WeaponDamage_TwoHandSword;
                 case MainWeapon.KnightsLance: return DssConst.WeaponDamage_KnigtsLance;
                 case MainWeapon.Bow: return DssConst.WeaponDamage_Bow;
+                case MainWeapon.CrossBow: return DssConst.WeaponDamage_CrossBow;
                 case MainWeapon.Ballista: return DssConst.WeaponDamage_Ballista;
 
                 default: throw new NotImplementedException();
@@ -638,7 +742,9 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
     {
         SharpStick,
         Sword,
+        Pike,
         Bow,
+        CrossBow,
         TwoHandSword,
         KnightsLance,
         Ballista,
@@ -666,6 +772,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         HonorGuard,
         Green,
         AntiCavalry,
+        DarkLord,
     }
 
     enum ConscriptActiveStatus

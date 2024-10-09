@@ -284,6 +284,18 @@ namespace VikingEngine.DSSWars.Players
                         }
                         break;
 
+                    case FactionType.DarkFollower:
+                        mainArmy = startMainArmy();
+                        for (int i = 0; i < 5; ++i)
+                        {
+                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_Pikeman);
+                        }
+                        for (int i = 0; i < 5; ++i)
+                        {
+                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_CrossbowMan);
+                        }
+                        break;
+
                     case FactionType.UnitedKingdom:
                         {
                             var citiesC = faction.cities.counter();
@@ -341,22 +353,22 @@ namespace VikingEngine.DSSWars.Players
                                     {
                                         new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard);//UnitType.HonorGuard, false);
                                     }
-                                    for (int i = 0; i < 30; ++i)
+                                    for (int i = 0; i < 20; ++i)
                                     {
                                         new SoldierGroup(army, DssLib.SoldierProfile_StandardArcher); //UnitType.Archer, false);
                                     }
-                                    //for (int i = 0; i < 20; ++i)
-                                    //{
-                                    //    new SoldierGroup(army, UnitType.Ballista, false);
-                                    //}
-                                    for (int i = 0; i < 100; ++i)
+                                    for (int i = 0; i < 20; ++i)
+                                    {
+                                        new SoldierGroup(army, DssLib.SoldierProfile_StandardBallista);
+                                    }
+                                    for (int i = 0; i < 60; ++i)
                                     {
                                         new SoldierGroup(army, DssLib.SoldierProfile_Standard); //UnitType.Soldier, false);
                                     }
-                                    //for (int i = 0; i < 20; ++i)
-                                    //{
-                                    //    new SoldierGroup(army, UnitType.Knight, false);
-                                    //}
+                                    for (int i = 0; i < 20; ++i)
+                                    {
+                                        new SoldierGroup(army, DssLib.SoldierProfile_Knight);
+                                    }
 
                                     army.OnSoldierPurchaseCompleted();
                                     army.setMaxFood();

@@ -71,6 +71,52 @@ namespace VikingEngine.DSSWars.Players
 
         public DeliveryStatus menDeliveryCopy, itemDeliveryCopy;
         public ConscriptProfile soldierConscriptCopy, knightConscriptCopy;
+
+        public PlayerControls.Tutorial tutorial = null;
+
+        public void InitTutorial(bool newGame)
+        {
+            if (newGame && DssRef.storage.runTutorial)
+            {
+                tutorial = new PlayerControls.Tutorial(this);
+            }
+            //inTutorialMode = false;
+            //mapControls.setZoomRange(inTutorialMode);
+        }
+
+        public void tutorial_writeGameState(BinaryWriter w)
+        {
+            //w.Write(inTutorialMode);
+            //w.Write((int)tutorialMission);
+            //w.Write(tutorialMission_BuySoldier);
+            //w.Write(tutorialMission_MoveArmy);
+            if (tutorial != null)
+            {
+                w.Write(true);
+                tutorial.tutorial_writeGameState(w);
+            }
+            else
+            { w.Write(false); }
+        }
+
+        public void tutorial_readGameState(BinaryReader r, int subversion)
+        {
+            if (subversion >= 7)
+            {
+                bool inTutorialMode = r.ReadBoolean();
+                if (subversion < 15)
+                {
+                    bool non1 = r.ReadBoolean();
+                    bool non2 = r.ReadBoolean();
+                }
+
+                if (inTutorialMode)
+                {
+                    tutorial = new PlayerControls.Tutorial(this);
+                    tutorial.tutorial_readGameState(r, subversion);
+                }
+            }
+        }
         public void factionTabClick(int tab)
         {
             factionTab = HeadDisplay.Tabs[tab];
@@ -365,7 +411,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void toPeacefulCheck_asynch()
         {
-            if (faction.citiesEconomy.tax() > 0)
+            if (faction.citiesEconomy.tax() > 0 && !DssRef.settings.AiDelay)
             {
                 int warCount = 0;
                 float opposingSize = 0;

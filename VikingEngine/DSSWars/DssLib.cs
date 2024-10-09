@@ -68,7 +68,39 @@ namespace VikingEngine.DSSWars
             }
         };
 
-        
+        public static readonly SoldierConscriptProfile SoldierProfile_Sailor = new SoldierConscriptProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.Sword,
+                armorLevel = ArmorLevel.Medium,
+                training = TrainingLevel.Skillful,
+                specialization = SpecializationType.Sea,
+            }
+        };
+
+        public static readonly SoldierConscriptProfile SoldierProfile_Pikeman = new SoldierConscriptProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.Pike,
+                armorLevel = ArmorLevel.Heavy,
+                training = TrainingLevel.Basic,
+                specialization = SpecializationType.AntiCavalry,
+            }
+        };
+
+        public static readonly SoldierConscriptProfile SoldierProfile_Knight = new SoldierConscriptProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.KnightsLance,
+                armorLevel = ArmorLevel.Heavy,
+                training = TrainingLevel.Skillful,
+                specialization = SpecializationType.Traditional,
+            }
+        };
+
         public static readonly SoldierConscriptProfile SoldierProfile_StandardArcher = new SoldierConscriptProfile()
         {
             conscript = new ConscriptProfile()
@@ -79,6 +111,29 @@ namespace VikingEngine.DSSWars
                 specialization = SpecializationType.Traditional,
             }
         };
+
+        public static readonly SoldierConscriptProfile SoldierProfile_StandardBallista = new SoldierConscriptProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.Ballista,
+                armorLevel = ArmorLevel.Light,
+                training = TrainingLevel.Basic,
+                specialization = SpecializationType.Siege,
+            }
+        };
+
+        public static readonly SoldierConscriptProfile SoldierProfile_CrossbowMan = new SoldierConscriptProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.CrossBow,
+                armorLevel = ArmorLevel.Medium,
+                training = TrainingLevel.Basic,
+                specialization = SpecializationType.Traditional,
+            }
+        };
+
         public static readonly SoldierConscriptProfile SoldierProfile_HonorGuard = new SoldierConscriptProfile()
         {
             conscript = new ConscriptProfile()

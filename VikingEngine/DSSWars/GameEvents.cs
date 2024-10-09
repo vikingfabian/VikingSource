@@ -126,11 +126,11 @@ namespace VikingEngine.DSSWars
                     {
                         IntervalF[] timeMinutes =
                             {
-                            new IntervalF(5,8),//Immediate,                           
-                            new IntervalF(20,30),
-                            new IntervalF(30,40),//Normal,
-                            new IntervalF(40,60),
-                            new IntervalF(60,80),//VeryLate,
+                            new IntervalF(60,80),//Immediate,                           
+                            new IntervalF(70,100),
+                            new IntervalF(130,140),//Normal,
+                            new IntervalF(140,160),
+                            new IntervalF(160,180),//VeryLate,
                         };
 
                         nextTotalGameTimeMin = timeMinutes[(int)DssRef.difficulty.bossTimeSettings];
@@ -141,11 +141,11 @@ namespace VikingEngine.DSSWars
                     {
                         IntervalF[] timeMinutes =
                               {
-                            new IntervalF(35,40),//Immediate,                            
-                            new IntervalF(100,120),
-                            new IntervalF(120,130),//Normal,
-                            new IntervalF(130,270),
-                            new IntervalF(170,350),//VeryLate,
+                            new IntervalF(135,140),//Immediate,                            
+                            new IntervalF(200,220),
+                            new IntervalF(220,230),//Normal,
+                            new IntervalF(230,370),
+                            new IntervalF(270,450),//VeryLate,
                         };
 
                         nextTotalGameTimeMin = timeMinutes[(int)DssRef.difficulty.bossTimeSettings];
@@ -154,7 +154,7 @@ namespace VikingEngine.DSSWars
                     break;
                 case EventType.DarkLord:
                     {
-                        nextTotalGameTimeMin = IntervalF.NoInterval(15);
+                        nextTotalGameTimeMin = IntervalF.NoInterval(30);
                     }
                     break;
             }
@@ -223,17 +223,17 @@ namespace VikingEngine.DSSWars
                                 int count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
                                 for (int i = 0; i < count; ++i)
                                 {
-                                    //new SoldierGroup(army, UnitType.Pikeman, false);
+                                    new SoldierGroup(army, DssLib.SoldierProfile_Pikeman);
                                 }
                                 count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
                                 for (int i = 0; i < count; ++i)
                                 {
-                                    //new SoldierGroup(army, UnitType.Sailor, false);
+                                    new SoldierGroup(army, DssLib.SoldierProfile_Sailor);
                                 }
                                 count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
                                 for (int i = 0; i < count; ++i)
                                 {
-                                    //new SoldierGroup(army, UnitType.CrossBow, false);
+                                    new SoldierGroup(army, DssLib.SoldierProfile_CrossbowMan);
                                 }
                                 army.refreshPositions(true);
 
@@ -345,7 +345,7 @@ namespace VikingEngine.DSSWars
 
             if (toPeacefulCheckTimer.CountDown(time))
             {
-                toPeacefulCheckTimer = new Time(4, TimeUnit.Minutes);
+                toPeacefulCheckTimer = new Time(15, TimeUnit.Minutes);
 
                 foreach (var p in DssRef.state.localPlayers)
                 {
@@ -372,8 +372,8 @@ namespace VikingEngine.DSSWars
             }
 
             float time;
-            System.Diagnostics.Debug.WriteLine("Player work force: " + totalWorkForce);
-            System.Diagnostics.Debug.WriteLine("Expected work force: " + nextExpectedPlayerSize.ToString());
+            //System.Diagnostics.Debug.WriteLine("Player work force: " + totalWorkForce);
+            //System.Diagnostics.Debug.WriteLine("Expected work force: " + nextExpectedPlayerSize.ToString());
             if (totalWorkForce < nextExpectedPlayerSize.Min)
             {
                 time = nextTotalGameTimeMin.Max;
@@ -594,7 +594,7 @@ namespace VikingEngine.DSSWars
             {
                 DssRef.settings.darkLordPlayer.factoriesLeft = 0;
                 nextEvent = EventType.DarkLordInPerson;
-                //Ref.update.AddSyncAction(new SyncAction(RunNextEvent));
+                Ref.update.AddSyncAction(new SyncAction(RunNextEvent));
             }
         }
 

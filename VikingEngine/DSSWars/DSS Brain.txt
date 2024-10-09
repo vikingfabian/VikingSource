@@ -1,12 +1,15 @@
 ﻿
 -Change Log-
-* Tutorial, it is hardcoded to always start in this version
-* Menu polish
-* Increased farms to give x5 resources
+* Fixed workers that walk off
+* Controller support
+* unit filter repaired
+* repaired specialized enemy units (except trollcannon)
+* repaired events
+* added one hour to all events
+* reduced neighbor ai war declarations
 
 #Todo#
-räkna om worker unit move/sec, de missar sina mål
-Gruppera soldattyp för att kunna dela upp armeer
+Factories
 Controller support
 Event, nya tider, fixa special figurer (dark lord)
 Översätt
@@ -15,8 +18,9 @@ split screen
 
 
 --Efter release polish--
-
-
+#Todo#
+Factories modeller
+Producering av special enheter (tex green soldiers)
 Deliver effect
 avbryta byggjobb
 reducera ai delay omn man attackerar

@@ -30,6 +30,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         GameTimer workAnimation = new GameTimer(1f, true, true);
         bool isShip = false;
         int prevX, prevZ;
+        float walkDist_beforeRefresh = 0f;
 
         public WorkerUnit(AbsMapObject mapObject, WorkerStatus status, int statusIndex)
         {
@@ -58,6 +59,12 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case WorkerUnitState.HasGoal:
 
                     float speed = DssConst.Men_StandardWalkingSpeed * Ref.DeltaGameTimeMs;
+                    walkDist_beforeRefresh += speed;
+
+                    if (walkDist_beforeRefresh > 0.5f)
+                    {
+                        refreshGoalDir();
+                    }
 
                     if (VectorExt.PlaneXZDistance(ref model.position, ref goalPos) < speed * 4)
                     {
@@ -66,7 +73,6 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         WP.Rotation1DToQuaterion(model, 2.8f);
                         state = WorkerUnitState.FinalizeWork;
                         updateGroudY(true);
-                        //refreshCarryModel();
                     }
                     else
                     {
@@ -268,12 +274,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 {
                     //lib.DoNothing();
 
-                    goalPos = WP.SubtileToWorldPosXZ(status.subTileEnd);
-                    goalPos.X += WorldData.SubTileWidth * 0.25f;
-                    goalPos.Z += WorldData.SubTileWidth * 0.5f;
-
-                    walkDir = VectorExt.SafeNormalizeV3(goalPos - model.position);
-                    WP.Rotation1DToQuaterion(model, lib.V2ToAngle(VectorExt.V3XZtoV2(walkDir)));
+                    refreshGoalDir();
 
                     finalizeWorkTime = status.finalizeWorkTime(city);
 
@@ -308,6 +309,17 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 model.position = Vector3.Zero;
                 model.Visible = false;
             }
+        }
+
+        void refreshGoalDir()
+        {
+            walkDist_beforeRefresh = 0;
+            goalPos = WP.SubtileToWorldPosXZ(status.subTileEnd);
+            goalPos.X += WorldData.SubTileWidth * 0.25f;
+            goalPos.Z += WorldData.SubTileWidth * 0.5f;
+
+            walkDir = VectorExt.SafeNormalizeV3(goalPos - model.position);
+            WP.Rotation1DToQuaterion(model, lib.V2ToAngle(VectorExt.V3XZtoV2(walkDir)));
         }
 
         void refreshCarryModel()

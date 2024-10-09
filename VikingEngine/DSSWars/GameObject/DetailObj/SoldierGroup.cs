@@ -117,7 +117,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             type = soldierConscript.unitType();
             typeSoldierData = DssRef.profile.Get(type);//new ConscriptedSoldierData();
-            typeShipData = DssRef.profile.Get(UnitType.ConscriptWarship);
+            typeShipData = DssRef.profile.Get(typeSoldierData.ShipType());
 
             typeCurrentData = typeSoldierData;
         }

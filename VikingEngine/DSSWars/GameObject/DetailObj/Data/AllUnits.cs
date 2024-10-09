@@ -33,6 +33,9 @@ namespace VikingEngine.DSSWars.GameObject
 
             add(new WarmashineProfile());
             add(new CavalryProfile());
+
+            add(new DarkLordProfile());
+            add(new DarkLordWarshipData());
             //add(new FolkWarshipData(UnitType.FolkWarship, 
             //    add(new FolkManData())));
 
@@ -94,6 +97,8 @@ namespace VikingEngine.DSSWars.GameObject
                 LootFest.VoxelModelName.wars_soldier_i2,
                 LootFest.VoxelModelName.wars_soldier_i3,
 
+                LootFest.VoxelModelName.wars_piker,
+
                 LootFest.VoxelModelName.war_folkman,
 
                 LootFest.VoxelModelName.war_sailor,
@@ -108,6 +113,8 @@ namespace VikingEngine.DSSWars.GameObject
                 LootFest.VoxelModelName.war_archer,
                 LootFest.VoxelModelName.war_archer_i2,
 
+                LootFest.VoxelModelName.wars_crossbow,
+
                 LootFest.VoxelModelName.war_ballista,
                 LootFest.VoxelModelName.war_ballista_i2,
 
@@ -120,6 +127,7 @@ namespace VikingEngine.DSSWars.GameObject
                 LootFest.VoxelModelName.wars_ballista_ship,
                 LootFest.VoxelModelName.wars_knight_ship,
 
+                 LootFest.VoxelModelName.wars_darklord,
             });
 
             //foreach (var s in soldiers)
@@ -146,6 +154,41 @@ namespace VikingEngine.DSSWars.GameObject
         public AbsSoldierProfile Get(UnitType type)
         {
             return profiles[(int)type];
+        }
+
+        public static SpriteName UnitFilterIcon(UnitFilterType filterType)
+        {
+            switch (filterType)
+            {
+                case UnitFilterType.SharpStick:
+                    return SpriteName.WarsUnitIcon_Folkman;
+                case UnitFilterType.Sword:
+                    return SpriteName.WarsUnitIcon_Soldier;
+                case UnitFilterType.Pike:
+                    return SpriteName.WarsUnitIcon_Pikeman;
+                case UnitFilterType.TwohandSword:
+                    return SpriteName.WarsUnitIcon_TwoHand;
+                case UnitFilterType.Knight:
+                    return SpriteName.WarsUnitIcon_Knight;
+                case UnitFilterType.Bow:
+                    return SpriteName.WarsUnitIcon_Archer;
+                case UnitFilterType.CrossBow:
+                    return SpriteName.LittleUnitIconCrossBowman;
+                case UnitFilterType.Ballista:
+                    return SpriteName.WarsUnitIcon_Ballista;
+
+                case UnitFilterType.GreenSoldier:
+                    return SpriteName.WarsUnitIcon_Greensoldier;
+                case UnitFilterType.HonourGuard:
+                    return SpriteName.WarsUnitIcon_Honorguard;
+                case UnitFilterType.Viking:
+                    return SpriteName.WarsUnitIcon_Viking;
+                case UnitFilterType.DarkLord:
+                    return SpriteName.WarsDarkLordBossIcon;
+
+                default:
+                    return SpriteName.NO_IMAGE;
+            }
         }
 
         //public AbsSoldierUnit createSoldier(UnitType type, bool recruit)
@@ -246,7 +289,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         //        case UnitType.PikemanWarship:
         //            return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Pikeman);
-                
+
         //        case UnitType.KnightWarship:
         //            return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Knight);
 
@@ -274,6 +317,24 @@ namespace VikingEngine.DSSWars.GameObject
         //}
     }
 
+    enum UnitFilterType
+    { 
+        SharpStick,
+        Sword,
+        Pike,
+        TwohandSword,
+        Knight,
+        Bow,
+        CrossBow,
+        Ballista,
+
+        HonourGuard,
+        Viking,
+        GreenSoldier,
+        DarkLord,
+        NUM
+    }
+
     enum UnitType
     {
         NULL = -1,
@@ -285,7 +346,8 @@ namespace VikingEngine.DSSWars.GameObject
         BannerMan = 2,
         ConscriptCavalry = 3,
         ConscriptWarmashine = 4,
-
+        DarkLordWarship = 5,
+        DarkLord = 6,
         //Soldier =1,
         //Sailor =2,
         //Folkman =3,

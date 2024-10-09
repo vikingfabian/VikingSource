@@ -82,7 +82,11 @@ namespace VikingEngine.DSSWars.GameObject
             return Convert.ToInt32(rowWidth * columnsDepth * upkeepPerSoldier);
         }
 
-        
+        virtual public UnitType ShipType()
+        {
+            return UnitType.ConscriptWarship;
+        }
+
 
         virtual public bool IsShip()
         {

@@ -215,7 +215,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
 
-                if (player.input.ControllerCancel.DownEvent)
+                if (controllerInput && player.input.ControllerCancel.DownEvent)
                 {
                     player.hud.displays.clearMoveSelection();
                     player.clearSelection();
@@ -740,26 +740,32 @@ namespace VikingEngine.DSSWars.Players
             //{
             //    return;
             //}
-            if (set && !selection.obj.CanMenuFocus())
+            if (controllerInput)
             {
-                return;
-            }
 
-            selection.menuFocus = set;
-            player.hud.displays.objectDisplay.viewOutLine(set);
+                if (set && !selection.obj.CanMenuFocus())
+                {
+                    return;
+                }
 
-            if (set)
-            {
-                //playerPointerPos = selection.obj.WorldPos();
-                player.hud.displays.beginMove(1);
-            }
-            else
-            {
-                player.hud.displays.clearMoveSelection();
-            }
-            controllerPointer.Visible = !set;
+                selection.menuFocus = set;
+                player.hud.displays.objectDisplay.viewOutLine(set);
 
-            player.hud.needRefresh = true;
+                if (set)
+                {
+                    //playerPointerPos = selection.obj.WorldPos();
+                    player.hud.displays.beginMove(1);
+                }
+                else
+                {
+                    player.hud.displays.clearMoveSelection();
+                }
+
+
+                controllerPointer.Visible = !set;
+
+                player.hud.needRefresh = true;
+            }
         }
 
         public bool clearSelection()

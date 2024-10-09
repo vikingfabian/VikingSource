@@ -457,7 +457,7 @@ namespace VikingEngine.DSSWars
             if (cutScene == null)
             {
                 DssRef.diplomacy.async_update();
-                //events.asyncUpdate(time);
+                events.asyncUpdate(time);
             }
             return exitThreads;
         }

@@ -85,6 +85,9 @@ namespace VikingEngine.DSSWars.Display.Translation
             }
         }
 
+
+       
+
         public static string Tab(MenuTab tab, out string description)
         {
             switch (tab)
@@ -93,18 +96,16 @@ namespace VikingEngine.DSSWars.Display.Translation
                     description = null;
                     return DssRef.todoLang.MenuTab_Info;
                 case MenuTab.Build:
-                    description = "Place buildings in your city";
+                    description = DssRef.todoLang.MenuTab_Build_Description;
                     return DssRef.todoLang.MenuTab_Build;
                 case MenuTab.Conscript:
                     description = DssRef.todoLang.BuildingType_Barracks_Description;
                     return DssRef.todoLang.Conscription_Title;
-                //case MenuTab.Recruit:
-                //    return DssRef.todoLang.MenuTab_Recruit;
                 case MenuTab.Trade:
                     description = null;
                     return DssRef.todoLang.MenuTab_Trade;
                 case MenuTab.BlackMarket:
-                    description = "Get any resource, for a high price";
+                    description = DssRef.todoLang.MenuTab_BlackMarket_Description;
                     return DssRef.todoLang.Hud_BlackMarket;
                 case MenuTab.Economy:
                     description = null;
@@ -113,13 +114,13 @@ namespace VikingEngine.DSSWars.Display.Translation
                     description = DssRef.todoLang.BuildingType_Postal_Description;
                     return DssRef.todoLang.MenuTab_Delivery;
                 case MenuTab.Resources:
-                    description = "All the available resources in the city's stockpile";
+                    description = DssRef.todoLang.MenuTab_Resources_Description;
                     return DssRef.todoLang.MenuTab_Resources;
                 case MenuTab.Work:
-                    description = "Tell your crew what to work on";
+                    description = DssRef.todoLang.MenuTab_Work_Description;
                     return DssRef.todoLang.MenuTab_Work;
                 case MenuTab.Automation:
-                    description = "Remove some micro management";
+                    description = DssRef.todoLang.MenuTab_Automation_Description;
                     return DssRef.lang.Automation_Title;
                 default:
                     throw new NotImplementedException();
@@ -353,6 +354,35 @@ namespace VikingEngine.DSSWars.Display.Translation
 
 
                 default: return TextLib.Error;
+            }
+        }
+
+        public static string UnitFilterName(UnitFilterType filterType)
+        {
+            switch (filterType)
+            {
+                case UnitFilterType.SharpStick:
+                    return DssRef.todoLang.Resource_TypeName_SharpStick;
+                case UnitFilterType.Sword:
+                    return DssRef.todoLang.Resource_TypeName_Sword;
+                case UnitFilterType.TwohandSword:
+                    return DssRef.todoLang.UnitType_FootKnight;
+                case UnitFilterType.Knight:
+                    return DssRef.todoLang.UnitType_CavalryKnight;
+                case UnitFilterType.Bow:
+                    return DssRef.lang.UnitType_Archer;
+                case UnitFilterType.Ballista:
+                    return DssRef.lang.UnitType_Ballista;
+
+                case UnitFilterType.GreenSoldier:
+                    return DssRef.lang.FactionName_Greenwood;
+                case UnitFilterType.HonourGuard:
+                    return DssRef.lang.UnitType_HonorGuard;
+                case UnitFilterType.Viking:
+                    return DssRef.lang.UnitType_Viking;
+
+                default:
+                    return TextLib.Error;
             }
         }
     }

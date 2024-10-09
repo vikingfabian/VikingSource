@@ -91,6 +91,12 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string MenuTab_Economy => "Economy";
         public string MenuTab_Delivery => "Delivery";
 
+        public string MenuTab_Build_Description => "Place buildings in your city";
+        public string MenuTab_BlackMarket_Description => "Place buildings in your city";
+        public string MenuTab_Resources_Description => "Place buildings in your city";
+        public string MenuTab_Work_Description => "Place buildings in your city";
+        public string MenuTab_Automation_Description => "Place buildings in your city";
+
         public string BuildHud_OutsideCity => "Outside city region";
         public string BuildHud_OutsideFaction => "Outside your borders!";
         
@@ -262,6 +268,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string CityCulture_Networker => "Networker";
         public string CityCulture_PitMasters => "Pit masters";
 
+
+        public string CityCulture_CultureIsX => "Culture: {0}";
         public string CityCulture_LargeFamilies_Description => "Increased child birth";
         public string CityCulture_FertileGround_Description => "Crops give more";
         public string CityCulture_Archers_Description => "Produces skilled archers";
@@ -284,5 +292,20 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Hud_PurchaseTitle_CurrentlyOwn=> "You own";
 
         public string Tutorial_EndTutorial => "End tutorial";
+        public string Tutorial_MissionX => "Mission {0}";
+        public string Tutorial_CollectXAmountOfY => "Collect {0} {1}";
+        public string Tutorial_SelectTabX => "Select tab: {0}";
+        public string Tutorial_IncreasePriorityOnX => "Increase the priority on: {0}";
+        public string Tutorial_PlaceBuildOrder => "Place build order: {0}";
+        public string Tutorial_ZoomInput => "Zoom";
+
+        public string Tutorial_SelectACity => "Select a city";
+        public string Tutorial_ZoomInWorkers => "Zoom in to see the workers";
+        public string Tutorial_CreateSoldiers => "Create two soldier groups with the equipment: {0} and {1}";
+        public string Tutorial_ZoomOutOverview => "Zoom out, to map overview";
+        public string Tutorial_ZoomOutDiplomacy => "Zoom out, to diplomacy view";
+        public string Tutorial_ImproveRelations => "Improve your relations with a neihbor faction";
+        public string Tutorial_MissionComplete_Title => "Mission complete!";
+        public string Tutorial_MissionComplete_Unlocks => "New controls has been unlocked";
     }
 }

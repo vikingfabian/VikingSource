@@ -8,23 +8,23 @@ namespace VikingEngine.DSSWars.GameObject
 {
     class ArmyStatus
     {
-        public int[] typeCount = new int[(int)UnitType.NUM];
+        public int[] typeCount = new int[(int)UnitFilterType.NUM];
 
-        public Dictionary<UnitType, int> getTypeCounts()
+        public Dictionary<UnitFilterType, int> getTypeCounts()
         {
-            Dictionary<UnitType, int> result = new Dictionary<UnitType, int>();
+            Dictionary<UnitFilterType, int> result = new Dictionary<UnitFilterType, int>();
             for (int i = 0; i < typeCount.Length; i++) 
             {
                 if (typeCount[i] > 0)
                 {
-                    result.Add((UnitType)i, typeCount[i]);
+                    result.Add((UnitFilterType)i, typeCount[i]);
                 }
             }
 
             return result;
         }
 
-        public List<KeyValuePair<UnitType, int>> getTypeCounts_Sorted()
+        public List<KeyValuePair<UnitFilterType, int>> getTypeCounts_Sorted()
         {
             var counts = getTypeCounts();
             var sortedList = counts.ToList();

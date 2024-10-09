@@ -230,7 +230,7 @@ namespace VikingEngine.DSSWars.GameObject
             var groupsCounter = groups.counter();
             while (groupsCounter.Next())
             {
-                ++status.typeCount[(int)groupsCounter.sel.type];
+                ++status.typeCount[(int)groupsCounter.sel.soldierConscript.filterType()];
             }
 
             return status;
@@ -258,7 +258,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void tradeSoldiersAction(ref Army toArmy, UnitType type, int count)
+        public void tradeSoldiersAction(ref Army toArmy, UnitFilterType type, int count)
         {
             if (
                 toArmy != null &&
@@ -278,13 +278,13 @@ namespace VikingEngine.DSSWars.GameObject
             tradeSoldiersTo(type, count, toArmy);
         }
 
-        public void tradeSoldiersTo(UnitType type, int count, Army toArmy)
+        public void tradeSoldiersTo(UnitFilterType type, int count, Army toArmy)
         {
             var groupsCounter = groups.counter();
 
             while (groupsCounter.Next())
             {
-                if (groupsCounter.sel.type == type)
+                if (groupsCounter.sel.soldierConscript.filterType() == type)
                 {
                     groupsCounter.sel.army = toArmy;
                     toArmy.AddSoldierGroup(groupsCounter.sel);
@@ -314,12 +314,12 @@ namespace VikingEngine.DSSWars.GameObject
             toArmy.onArmyMerge();
         }
 
-        public void disbandSoldiersAction(UnitType type, int count)
+        public void disbandSoldiersAction(UnitFilterType type, int count)
         {
             var groupsCounter = groups.counter();
             while (groupsCounter.Next())
             {
-                if (groupsCounter.sel.type == type)
+                if (groupsCounter.sel.soldierConscript.filterType() == type)
                 {
                     groupsCounter.sel.DeleteMe(DeleteReason.Disband, false);
                     //groupsCounter.sel.onDisband(false);

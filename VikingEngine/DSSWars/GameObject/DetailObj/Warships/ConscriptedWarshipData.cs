@@ -48,6 +48,17 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
-        
+        public override AbsSoldierUnit CreateUnit()
+        {
+
+            AbsSoldierUnit result = base.CreateUnit();
+            //if (result.group.soldierConscript.conscript.specialization == SpecializationType.DarkLord)
+            //{
+            //    DssRef.settings.darkLordPlayer.darkLordUnit = result;
+            //}
+            return result;
+        }
+
+
     }
 }

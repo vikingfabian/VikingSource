@@ -1046,7 +1046,7 @@ namespace VikingEngine.DSSWars.GameObject
                 content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, calcIncome_async().total()));
                 content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, GuardUpkeep(maxGuardSize)));
 
-                content.text(string.Format("Culture: {0}", Display.Translation.LangLib.CityCulture(Culture, true)));
+                content.text(string.Format(DssRef.todoLang.CityCulture_CultureIsX, Display.Translation.LangLib.CityCulture(Culture, true)));
                 content.space();
                 HudLib.InfoButton(content, new RbAction(()=>
                 {
