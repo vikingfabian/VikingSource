@@ -38,6 +38,13 @@ namespace VikingEngine.DSSWars.Display
 
                 if (fullDisplay && player.tutorial == null)
                 {
+                    if (player.input.inputSource.IsController)
+                    {
+                        content.Add(new HUD.RichBox.RichBoxImage(player.input.ControllerFocus.Icon));
+                        content.Add(new HUD.RichBox.RichBoxText(":"));
+                        content.newLine();
+                    }
+
                     content.newLine();
                     int tabSel = 0;
 

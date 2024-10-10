@@ -53,7 +53,7 @@ namespace VikingEngine.DSSWars.Display
             displays.clearState();
         }
 
-        void setHeadMenuFocus(bool set)
+        public void setHeadMenuFocus(bool set)
         {
             if (menuFocus != set)
             {

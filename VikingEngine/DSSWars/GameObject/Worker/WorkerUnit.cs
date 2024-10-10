@@ -406,21 +406,21 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 DssVar.WorkerUnit_ResourcePosDiff, model.position);
         }
 
-        public string WorkType = "Work: {0}";
-        public string Carry = "Carry: {0} {1}";
-        public string Energy = "Energy: {0}";
+        public string WorkerHud_WorkType = "Work: {0}";
+        public string WorkerHud_Carry = "Carry: {0} {1}";
+        public string WorkerHud_Energy = "Energy: {0}";
         public override void toHud(ObjectHudArgs args)
         {
             
             args.content.h2(Name()).overrideColor = Color.LightYellow;
-            args.content.text(string.Format(WorkType, status.work));
+            args.content.text(string.Format(WorkerHud_WorkType, status.work));
 
             if (status.carry.amount > 0)
             {
-                args.content.text(string.Format(Carry, status.carry.amount, status.carry.type));
+                args.content.text(string.Format(WorkerHud_Carry, status.carry.amount, status.carry.type));
             }
 
-            args.content.text(string.Format(Energy, TextLib.OneDecimal(status.energy)));
+            args.content.text(string.Format(WorkerHud_Energy, TextLib.OneDecimal(status.energy)));
         }
         
         public override void selectionFrame(bool hover, Selection selection)

@@ -1,13 +1,6 @@
 ﻿
 -Change Log-
-* Fixed workers that walk off
-* Controller support
-* repaired unit filter 
-* repaired specialized enemy units (except trollcannon)
-* repaired events and boss
-* added one hour to all events (3-4 hours for a full game now)
-* reduced neighbor ai war declarations
-* some bug fixes
+
 
 
 #Todo#

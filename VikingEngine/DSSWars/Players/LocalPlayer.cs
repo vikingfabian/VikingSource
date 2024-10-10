@@ -583,11 +583,11 @@ namespace VikingEngine.DSSWars.Players
                 
                 hud.update();
 
-                if (hud.menuFocus)
-                {
-                    hud.updateMenuFocus();
-                }
-                else
+                //if (hud.menuFocus)
+                //{
+                //    hud.updateMenuFocus();
+                //}
+                //else
                 {
                     mapControls.update(hud.mouseOver);
 

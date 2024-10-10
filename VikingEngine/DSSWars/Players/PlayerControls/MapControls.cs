@@ -170,14 +170,21 @@ namespace VikingEngine.DSSWars.Players
                     tilePosition = WP.ToTilePos(mousePosition);
                     onNewTile = prevTile != tilePosition;
 
-                    if (focusedObjectMenuState())
+                    if (focusedObjectMenuState() || player.hud.menuFocus)
                     {
                         player.hud.displays.updateMove(out bool bRefresh);
                         player.hud.needRefresh |= bRefresh;
 
                         if (player.input.ControllerFocus.DownEvent)
                         {
-                            setObjectMenuFocus(false);
+                            if (player.hud.menuFocus)
+                            {
+                                setHeadMenuFocus(false);
+                            }
+                            else
+                            {
+                                setObjectMenuFocus(false);
+                            }
                         }
                     }
                     else
@@ -186,11 +193,15 @@ namespace VikingEngine.DSSWars.Players
                         {
                             if (controllerInput)
                             {
-                                if (selection.obj != null)
+                                if (player.input.ControllerFocus.DownEvent)
                                 {
-                                    if (player.input.ControllerFocus.DownEvent)
+                                    if (selection.obj != null)
                                     {
                                         setObjectMenuFocus(true);
+                                    }
+                                    else if (hover.obj == null)
+                                    {
+                                        setHeadMenuFocus(true);
                                     }
                                 }
 
@@ -734,6 +745,28 @@ namespace VikingEngine.DSSWars.Players
                 selection.menuFocus;
         }
 
+        public void setHeadMenuFocus(bool set)
+        {
+            player.hud.setHeadMenuFocus(set);
+            //player.hud.displays.headDisplay.viewOutLine(set);
+
+            //if (set)
+            //{
+            //    //playerPointerPos = selection.obj.WorldPos();
+            //    player.hud.displays.beginMove(1);
+            //}
+            //else
+            //{
+            //    player.hud.displays.clearMoveSelection();
+            //}
+
+
+            //controllerPointer.Visible = !set;
+
+            //player.hud.needRefresh = true;
+
+        }
+        
         public void setObjectMenuFocus(bool set)
         {
             //if (!set )//&& selection.obj.gameobjectType() == GameObjectType.City)
