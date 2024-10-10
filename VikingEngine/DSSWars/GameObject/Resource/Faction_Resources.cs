@@ -212,7 +212,14 @@ namespace VikingEngine.DSSWars
                 armiesC.sel.food -= foodUpkeep * oneSecondUpdate;
                 if (armiesC.sel.food < -foodUpkeep * 60)
                 {
-                    Ref.update.AddSyncAction(new SyncAction(armiesC.sel.hungerDeserters));
+                    if (hasDeserters)
+                    {
+                        Ref.update.AddSyncAction(new SyncAction(armiesC.sel.hungerDeserters));
+                    }
+                    else
+                    {
+                        armiesC.sel.setMaxFood();
+                    }
                 }
             }
             

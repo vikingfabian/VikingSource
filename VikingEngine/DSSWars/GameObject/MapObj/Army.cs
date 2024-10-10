@@ -638,6 +638,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void asynchGameObjectsUpdate(float time, bool oneMinute)
         {
+            if (faction.factiontype == FactionType.SouthHara)
+            {
+                lib.DoNothing();
+            }
+
+
             if (groups.Count > 0)
             {
                 int count = 0;
@@ -671,6 +677,7 @@ namespace VikingEngine.DSSWars.GameObject
                     groupsC.sel.setBattleWalkingSpeed();
 
                     allGropsAreIdle &= groupsC.sel.allInduvidualsAreIdle;
+                    int health = 0;
 
                     if (groupsC.sel.IsShip())
                     {
@@ -682,6 +689,12 @@ namespace VikingEngine.DSSWars.GameObject
                             speedbonus += unitProfile.ArmySpeedBonusSea;
                             groupsC.sel.walkSpeed = transportSpeedSea;
                         }
+
+                        var first = groupsC.sel.FirstSoldier();
+                        if (first != null)
+                        {
+                            health = first.health;
+                        }
                     }
                     else
                     {
@@ -692,6 +705,8 @@ namespace VikingEngine.DSSWars.GameObject
                             speedbonus += unitProfile.ArmySpeedBonusLand;
                             groupsC.sel.walkSpeed = transportSpeedLand;
                         }
+
+                        health = groupsC.sel.soldierData.basehealth;
                     }
 
                     if (groupsC.sel.position.X < minpos.X)
@@ -712,13 +727,13 @@ namespace VikingEngine.DSSWars.GameObject
                         maxpos.Y = groupsC.sel.position.Z;
                     }
 
-                    totalStrength += (dps + groupsC.sel.soldierData.basehealth * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldiers.Count;
+                    totalStrength += (dps + health * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldiers.Count;
                 }
                 
                 isIdle = allGropsAreIdle && IdleObjetive();
                 isShip = shipCount > groups.Count / 2;
                 soldierRadius = MathExt.SquareRootF(count) / 20f;
-                strengthValue = count;
+                this.strengthValue = count;
                 soldiersCount = count;
                 tilePos = WP.ToTilePos(position);
                 speedbonus /= groups.Count;

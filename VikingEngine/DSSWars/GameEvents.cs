@@ -165,23 +165,32 @@ namespace VikingEngine.DSSWars
 
         public void TestNextEvent()
         {
-            if (nextEvent <= EventType.DarkLord)
+            if (DssRef.settings.AiDelay)
             {
-                PowerCheck();
-                calcAndRunEvent();
+                DssRef.settings.AiDelay = false;
+                DssRef.state.localPlayers[0].hud.messages.Add(
+                        "Test event", "Removed AI delay");
             }
-            else 
+            else
             {
-                nextEvent++;
-                
-                if (nextEvent == EventType.KillTheDarkLord)
+                if (nextEvent <= EventType.DarkLord)
                 {
-                    victory(true);
+                    PowerCheck();
+                    calcAndRunEvent();
                 }
-            }
+                else
+                {
+                    nextEvent++;
 
-            DssRef.state.localPlayers[0].hud.messages.Add(
-                    "Test event", nextEvent.ToString());
+                    if (nextEvent == EventType.KillTheDarkLord)
+                    {
+                        victory(true);
+                    }
+                }
+
+                DssRef.state.localPlayers[0].hud.messages.Add(
+                        "Test event", nextEvent.ToString());
+            }
         }
 
         void RunNextEvent()
@@ -302,6 +311,7 @@ namespace VikingEngine.DSSWars
         public void asyncUpdate(float time)
         {
             if (DssRef.difficulty.bossTimeSettings != BossTimeSettings.Never &&
+                !DssRef.settings.AiDelay &&
                 (
                 nextEvent == EventType.SouthShips ||
                 nextEvent == EventType.DarkLordWarning ||

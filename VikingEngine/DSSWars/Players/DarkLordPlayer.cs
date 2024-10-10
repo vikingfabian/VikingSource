@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.Conscript;
 using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Players
@@ -140,15 +141,15 @@ namespace VikingEngine.DSSWars.Players
             hasEntered = true;
         }
 
-        public override void Update()
-        {
-            base.Update();
+        //public override void Update()
+        //{
+        //    base.Update();
 
-            if (hasEntered)
-            { 
+        //    if (hasEntered)
+        //    { 
                 
-            }
-        }
+        //    }
+        //}
 
         public override void aiPlayerAsynchUpdate(float time)
         {
@@ -225,6 +226,24 @@ namespace VikingEngine.DSSWars.Players
                 --factoriesLeft;
                 takeOverFaction.mainCity.setFactoryType(true);
             }
+        }
+
+        protected override bool buySoldiers(City city, bool aggresive, bool commit)
+        {
+            bool result = base.buySoldiers(city, aggresive, commit);
+
+            if (commit && DssRef.state.events.nextEvent == EventType.DarkLordInPerson)
+            {
+                city.conscriptArmy(DssLib.SoldierProfile_HonorGuard.conscript, 4);
+
+                ConscriptProfile profile = new ConscriptProfile();
+                profile.specialization = SpecializationType.DarkLord;
+                city.conscriptArmy(profile, 1);
+
+                DssRef.state.events.nextEvent = EventType.KillTheDarkLord;
+            }
+
+            return result;
         }
     }
 

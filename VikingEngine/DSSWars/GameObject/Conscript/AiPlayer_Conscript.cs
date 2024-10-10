@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars.Players
 
         //}
 
-        bool buySoldiers(City city, bool aggresive, bool commit)
+        virtual protected bool buySoldiers(City city, bool aggresive, bool commit)
         {
             if (!aggresive && city.workForce < city.workForceMax - DssConst.SoldierGroup_DefaultCount)
             {
@@ -110,8 +110,6 @@ namespace VikingEngine.DSSWars.Players
             int availableMen = (city.workForce / DssConst.SoldierGroup_DefaultCount) - 1;
 
             int get = lib.SmallestValue(availableArmors, availableWeapons, availableMen, city.conscriptBuildings.Count * 2);
-
-            
 
             if (commit && get > 0)
             {

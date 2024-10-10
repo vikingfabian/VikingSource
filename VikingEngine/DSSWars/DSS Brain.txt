@@ -2,23 +2,25 @@
 -Change Log-
 * Fixed workers that walk off
 * Controller support
-* unit filter repaired
+* repaired unit filter 
 * repaired specialized enemy units (except trollcannon)
-* repaired events
-* added one hour to all events
+* repaired events and boss
+* added one hour to all events (3-4 hours for a full game now)
 * reduced neighbor ai war declarations
+* some bug fixes
+
 
 #Todo#
+worker hud
 Factories
 Controller support
-Event, nya tider, fixa special figurer (dark lord)
 Översätt
 Video
 split screen
 
 
 --Efter release polish--
-#Todo#
+tydlig ikon för objekt meny typ
 Factories modeller
 Producering av special enheter (tex green soldiers)
 Deliver effect
@@ -26,6 +28,7 @@ avbryta byggjobb
 reducera ai delay omn man attackerar
 Ljud
 wipe av city settings vid takeover 
+army speed bonus
 
 Error
 -back button in menues 

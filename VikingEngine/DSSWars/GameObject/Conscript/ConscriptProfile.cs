@@ -203,6 +203,10 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
         public UnitType unitType()
         {
+            if (conscript.specialization == SpecializationType.DarkLord)
+            {
+                return UnitType.DarkLord;
+            }
             switch (conscript.weapon)
             {
                 case MainWeapon.Ballista:
@@ -426,6 +430,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed;
                     soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Back;
                     soldierData.basehealth = DssConst.Soldier_DefaultHealth * 4;
+                    soldierData.modelName = LootFest.VoxelModelName.wars_darklord;
                     break;
             }
 

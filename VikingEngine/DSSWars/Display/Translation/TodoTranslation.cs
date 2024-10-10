@@ -132,6 +132,31 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Work_AutoBuild => "Auto build and expand";
         //public string Work_ExpandFarms => "Expand farms";
 
+
+        //enum WorkType
+        //{
+        //    IsDeleted,
+        //    Idle,
+        //    Exit,
+        //    Starving,
+        //    Eat,
+
+        //    Till,
+        //    Plant,
+        //    GatherFoil,
+        //    GatherCityProduce,
+        //    Mine,
+        //    PickUpResource,
+        //    PickUpProduce,
+        //    DropOff,
+        //    Craft,
+        //    Build,
+        //    LocalTrade,
+
+        //    TrossCityTrade,
+        //    TrossReturnToArmy,
+        //}
+
         public string Hud_ToggleFollowFaction => "Toggle follow faction settings";
         public string Hud_FollowFaction_Yes => "Is set to use faction global settings";
         public string Hud_FollowFaction_No => "Is set to use local settings (Global value is {0})";

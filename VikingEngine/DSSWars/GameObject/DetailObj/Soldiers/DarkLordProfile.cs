@@ -17,6 +17,7 @@ namespace VikingEngine.DSSWars.GameObject
             //modelScale = DssConst.Men_StandardModelScale;
             boundRadius = DssVar.StandardBoundRadius;
 
+
             //walkingSpeed = DssConst.Men_StandardWalkingSpeed;
             rotationSpeed = StandardRotatingSpeed;
             targetSpotRange = StandardTargetSpotRange;
@@ -84,6 +85,7 @@ namespace VikingEngine.DSSWars.GameObject
         public DarkLordWarshipData() 
             :base()
         {
+            unitType = UnitType.DarkLordWarship;
         }
 
         public override AbsSoldierUnit CreateUnit()

@@ -406,25 +406,20 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 DssVar.WorkerUnit_ResourcePosDiff, model.position);
         }
 
+        public string WorkType = "Work: {0}";
+        public string Carry = "Carry: {0} {1}";
+        public string Energy = "Energy: {0}";
         public override void toHud(ObjectHudArgs args)
         {
-            //base.toHud(args);
-            const string WorkType = "Work: {0}";
-
             
             args.content.h2(Name()).overrideColor = Color.LightYellow;
-              
-            
             args.content.text(string.Format(WorkType, status.work));
-
-            const string Carry = "Carry: {0} {1}";
 
             if (status.carry.amount > 0)
             {
                 args.content.text(string.Format(Carry, status.carry.amount, status.carry.type));
             }
 
-            const string Energy = "Energy: {0}";
             args.content.text(string.Format(Energy, TextLib.OneDecimal(status.energy)));
         }
         
