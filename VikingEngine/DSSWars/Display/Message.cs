@@ -3,6 +3,9 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using VikingEngine.DSSWars.Battle;
+using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
@@ -18,7 +21,7 @@ namespace VikingEngine.DSSWars.Display
 
         List<Message> messages = new List<Message>();
         LocalPlayer player;
-        
+        TimeInGameCountdown cityLowFoodMessageCooldown = new TimeInGameCountdown(new TimeLength(20));
         float screenAreaBottom;
         public MessageGroup(LocalPlayer player, int numPlayers, RichboxGuiSettings settings)
         {
@@ -58,6 +61,34 @@ namespace VikingEngine.DSSWars.Display
                 RichBoxContent.ButtonMap(player.input.ControllerMessageClick, button);
                 button.Add(new RichBoxSpace());
             }
+        }
+
+        public void cityLowFoodMessage(City city)
+        {
+            if (cityLowFoodMessageCooldown.TimeOut())
+            {
+                cityLowFoodMessageCooldown.start();
+
+                RichBoxContent content = new RichBoxContent();
+                Title(content, DssRef.lang.Message_CityOutOfFood_Title);
+                content.text(DssRef.lang.Message_CityOutOfFood_Text);
+
+                content.newParagraph();
+
+                var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
+                ControllerInputIcons(gotoBattleButtonContent);
+                gotoBattleButtonContent.Add(new RichBoxText(city.TypeName()));
+
+                content.Add(new RichboxButton(gotoBattleButtonContent,
+                    new RbAction1Arg<City>(goToCity, city)));
+
+                Add(content);
+            }
+        }
+
+        void goToCity(City city)
+        {
+            player.mapControls.cameraFocus = city;
         }
 
         public void Add(string title, string text)

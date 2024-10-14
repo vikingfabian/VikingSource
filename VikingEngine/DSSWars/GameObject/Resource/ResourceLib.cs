@@ -277,7 +277,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             }
         );
 
-        public static readonly CraftBlueprint CraftFarm = new CraftBlueprint(
+        public static readonly CraftBlueprint CraftWheatFarm = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.WheatFarm,
             1,
@@ -288,6 +288,18 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             }
         );
 
+        public static readonly CraftBlueprint CraftLinenFarm = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.LinenFarm,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.RawFood_Group, 4),
+                new UseResource(ItemResourceType.Water_G, 5),
+            }
+        );
+
+        public const int CraftSmith_IronUse = 10;
         public static readonly CraftBlueprint CraftSmith = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Smith,
@@ -295,7 +307,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
            new UseResource[]
            {
                new UseResource(ItemResourceType.Wood_Group, 10),
-               new UseResource(ItemResourceType.Iron_G, 10),
+               new UseResource(ItemResourceType.Iron_G, CraftSmith_IronUse),
            }
        );
 

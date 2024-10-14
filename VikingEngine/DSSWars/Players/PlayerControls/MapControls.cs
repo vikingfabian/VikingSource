@@ -189,6 +189,8 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     {
+                        panInput();
+
                         if (selectRectangle == null)
                         {
                             if (controllerInput)
@@ -205,7 +207,7 @@ namespace VikingEngine.DSSWars.Players
                                     }
                                 }
 
-                                panInput();
+                                
                             }
                             //mouseHoverUpdate();
                             hover.begin(true);
@@ -720,6 +722,8 @@ namespace VikingEngine.DSSWars.Players
                                 selectedSubTile.city.selectedDelivery = i; break;
                             }
                         }
+
+                        //setObjectMenuFocus(true);
                     }
                     break;
                 //case SelectTileResult.:

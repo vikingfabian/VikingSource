@@ -72,7 +72,7 @@ namespace VikingEngine.DSSWars.GameObject
             return this;
         }
 
-        public override bool aliveAndBelongTo(Faction faction)
+        public override bool aliveAndBelongTo(int faction)
         {
             for (int i = objects.Count - 1; i >= 0; i--)
             {

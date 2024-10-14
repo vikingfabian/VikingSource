@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.Graphics;
@@ -44,6 +45,44 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         public override string ToString()
         {
             return "Worker (" + work.ToString() + "), carry (" + carry.ToString() + ")";
+        }
+
+        public string workString()
+        {
+            switch (work)
+            {
+                case WorkType.Build:
+                    return string.Format(DssRef.lang.WorkerStatus_BuildX, BuildLib.BuildOptions[workSubType].Label());
+                case WorkType.Craft:
+                    return string.Format(DssRef.lang.Work_CraftX, LangLib.Item( (ItemResourceType)workSubType));
+                
+                case WorkType.DropOff:
+                    return DssRef.lang.WorkerStatus_DropOff;
+                    
+                case WorkType.Eat:
+                    return DssRef.lang.WorkerStatus_Eat;
+                case WorkType.GatherFoil:
+                    return DssRef.lang.WorkerStatus_Gather;
+                case WorkType.Idle:
+                    return DssRef.lang.Hud_Idle;
+                case WorkType.Mine:
+                    return DssRef.lang.Work_Mining;
+                case WorkType.PickUpProduce:
+                case WorkType.PickUpResource:
+                    return DssRef.lang.WorkerStatus_PickUpResource;
+                case WorkType.Plant:
+                    return DssRef.lang.WorkerStatus_Plant;
+                case WorkType.Till:
+                    return DssRef.lang.WorkerStatus_Till;
+                case WorkType.Starving:
+                case WorkType.Exit:
+                    return DssRef.lang.WorkerStatus_Exit;
+                case WorkType.TrossReturnToArmy:
+                    return DssRef.lang.WorkerStatus_TrossReturnToArmy;
+
+                default:
+                    return TextLib.Error;
+            }
         }
 
         void workComplete(Army army)
@@ -352,6 +391,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             else
             {
                 work = WorkType.Idle;
+                
                 if (orderId >= 0)
                 {
                     city.faction.player.orders.CompleteOrderId(orderId);

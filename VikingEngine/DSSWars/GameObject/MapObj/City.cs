@@ -10,6 +10,7 @@ using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.Conscript;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
@@ -24,8 +25,6 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City : GameObject.AbsMapObject
     {
-        
-        
         public const int ExpandGuardSizeCost = 12000;
 
         //public int index;
@@ -81,6 +80,23 @@ namespace VikingEngine.DSSWars.GameObject
         {
             work = autoBuild_Work;
             farm = autoBuild_Farm ? autoExpandFarmType : Build.BuildAndExpandType.NUM_NONE;
+        }
+
+        public void haltConscriptAndDelivery()
+        {
+            for (int i = 0; i < conscriptBuildings.Count; i++)
+            {
+                BarracksStatus status = conscriptBuildings[i];
+                status.halt(this);
+                conscriptBuildings[i] = status;
+            }
+
+            for (int i = 0; i < deliveryServices.Count; i++)
+            {
+                var delivery = deliveryServices[i];
+                delivery.halt();
+                deliveryServices[i] = delivery;
+            }
         }
 
         public bool AutoBuildWorkProperty(int index, bool set, bool value)
@@ -570,6 +586,7 @@ namespace VikingEngine.DSSWars.GameObject
                     waterAddPerSec += DssConst.WaterAdd_SmallCity;
                 }
 
+                defaultResourceBuffer();
             }
         }
 
@@ -806,7 +823,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void oneSecUpdate()
         {
-            const int MinWorkforce = 4;
+            const int MinWorkforce = 8;
+
+            if (parentArrayIndex == 65)
+            {
+                lib.DoNothing();
+            }
 
             int addWorkers = 0;
 
@@ -845,6 +867,15 @@ namespace VikingEngine.DSSWars.GameObject
             //}
             nextWater.value += waterAddPerSec;
             res_water.amount = Math.Min(res_water.amount + nextWater.pull(), maxWater);
+
+            if (starving)
+            { 
+                starving = false;
+                if (faction.player.IsPlayer())
+                {
+                    faction.player.GetLocalPlayer().hud.messages.cityLowFoodMessage(this);
+                }
+            }
         }
 
         public void asynchGameObjectsUpdate(bool minute)
@@ -1036,7 +1067,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     content.icontext(SpriteName.hqBatteResultBobbleDamage, string.Format(DssRef.lang.CityOption_Damages, damages.Int()));
                 }
-                HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.todoLang.ResourceType_Children, children().ToString());
+                HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Children, children().ToString());
                 content.space();
                 HudLib.InfoButton(content, new RbAction1Arg<City>(player.childrenTooltip, this));
 
@@ -1046,7 +1077,7 @@ namespace VikingEngine.DSSWars.GameObject
                 content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, calcIncome_async().total()));
                 content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, GuardUpkeep(maxGuardSize)));
 
-                content.text(string.Format(DssRef.todoLang.CityCulture_CultureIsX, Display.Translation.LangLib.CityCulture(Culture, true)));
+                content.text(string.Format(DssRef.lang.CityCulture_CultureIsX, Display.Translation.LangLib.CityCulture(Culture, true)));
                 content.space();
                 HudLib.InfoButton(content, new RbAction(()=>
                 {
@@ -1445,9 +1476,9 @@ namespace VikingEngine.DSSWars.GameObject
             return true;
         }
 
-        public override bool aliveAndBelongTo(Faction faction)
+        public override bool aliveAndBelongTo(int faction)
         {
-            return this.faction == faction;
+            return this.faction.parentArrayIndex == faction;
         }
 
         public override GameObjectType gameobjectType()

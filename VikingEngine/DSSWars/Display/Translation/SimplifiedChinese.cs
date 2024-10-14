@@ -1256,5 +1256,303 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// 输入类型，类似于Xbox使用的手持控制器
         /// </summary>
         public override string Input_Source_Controller => "控制器";
+
+        /* #### --------------- ##### */
+        /* #### RESOURCE UPDATE ##### */
+        /* #### --------------- ##### */
+
+        public override string CityMenu_SalePricesTitle => "销售价格";
+        public override string Blueprint_Title => "蓝图";
+        public override string Resource_Tab_Overview => "概览";
+        public override string Resource_Tab_Stockpile => "储备";
+
+        public override string Resource => "资源";
+        public override string Resource_StockPile_Info => "为资源储备设置目标量，这将通知工人何时开始处理另一种资源。";
+        public override string Resource_TypeName_Water => "水";
+        public override string Resource_TypeName_Wood => "木材";
+        public override string Resource_TypeName_Fuel => "燃料";
+        public override string Resource_TypeName_Stone => "石头";
+        public override string Resource_TypeName_RawFood => "生食";
+        public override string Resource_TypeName_Food => "食物";
+        public override string Resource_TypeName_Beer => "啤酒";
+        public override string Resource_TypeName_Wheat => "小麦";
+        public override string Resource_TypeName_Linen => "亚麻布";
+        public override string Resource_TypeName_SkinAndLinen => "皮革和亚麻";
+        public override string Resource_TypeName_IronOre => "铁矿石";
+        public override string Resource_TypeName_GoldOre => "金矿石";
+        public override string Resource_TypeName_Iron => "铁";
+
+        public override string Resource_TypeName_SharpStick => "尖棍";
+        public override string Resource_TypeName_Sword => "剑";
+        public override string Resource_TypeName_KnightsLance => "骑士的长矛";
+        public override string Resource_TypeName_TwoHandSword => "双手剑";
+        public override string Resource_TypeName_Bow => "弓";
+
+        public override string Resource_TypeName_LightArmor => "轻甲";
+        public override string Resource_TypeName_MediumArmor => "中甲";
+        public override string Resource_TypeName_HeavyArmor => "重甲";
+
+        public override string ResourceType_Children => "儿童";
+
+        public override string BuildingType_DefaultName => "建筑";
+        public override string BuildingType_WorkerHut => "工人小屋";
+        public override string BuildingType_Tavern => "酒馆";
+        public override string BuildingType_Brewery => "酿酒厂";
+        public override string BuildingType_Postal => "邮政服务";
+        public override string BuildingType_Recruitment => "招募中心";
+        public override string BuildingType_Barracks => "兵营";
+        public override string BuildingType_PigPen => "猪圈";
+        public override string BuildingType_HenPen => "鸡舍";
+        public override string BuildingType_WorkBench => "工作台";
+        public override string BuildingType_Carpenter => "木匠";
+        public override string BuildingType_CoalPit => "煤矿";
+        public override string DecorType_Statue => "雕像";
+        public override string DecorType_Pavement => "铺路";
+        public override string BuildingType_Smith => "铁匠铺";
+        public override string BuildingType_Cook => "厨师";
+        public override string BuildingType_Storage => "仓库";
+
+        public override string BuildingType_ResourceFarm => "{0}农场";
+
+        public override string BuildingType_WorkerHut_DescriptionLimitX => "工人上限增加{0}";
+        public override string BuildingType_Tavern_Description => "工人可以在这里用餐";
+        public override string BuildingType_Tavern_Brewery => "啤酒生产";
+        public override string BuildingType_Postal_Description => "向其他城市发送资源";
+        public override string BuildingType_Recruitment_Description => "向其他城市派遣士兵";
+        public override string BuildingType_Barracks_Description => "使用人力和装备招募士兵";
+        public override string BuildingType_PigPen_Description => "生产猪肉，提供食物和皮革";
+        public override string BuildingType_HenPen_Description => "生产鸡肉和鸡蛋，提供食物";
+        public override string BuildingType_Decor_Description => "装饰";
+        public override string BuildingType_Farm_Description => "种植资源";
+
+        public override string BuildingType_Cook_Description => "食物加工站";
+        public override string BuildingType_Bench_Description => "物品制作站";
+
+        public override string BuildingType_Smith_Description => "金属加工站";
+        public override string BuildingType_Carpenter_Description => "木材加工站";
+
+        public override string BuildingType_Nobelhouse_Description => "骑士和外交官的住所";
+        public override string BuildingType_CoalPit_Description => "高效的燃料生产";
+        public override string BuildingType_Storage_Description => "资源储存点";
+
+        public override string MenuTab_Info => "信息";
+        public override string MenuTab_Work => "工作";
+        public override string MenuTab_Recruit => "招募";
+        public override string MenuTab_Resources => "资源";
+        public override string MenuTab_Trade => "贸易";
+        public override string MenuTab_Build => "建造";
+        public override string MenuTab_Economy => "经济";
+        public override string MenuTab_Delivery => "配送";
+
+        public override string MenuTab_Build_Description => "在城市中放置建筑物";
+        public override string MenuTab_BlackMarket_Description => "在城市中放置建筑物";
+        public override string MenuTab_Resources_Description => "在城市中放置建筑物";
+        public override string MenuTab_Work_Description => "在城市中放置建筑物";
+        public override string MenuTab_Automation_Description => "在城市中放置建筑物";
+
+        public override string BuildHud_OutsideCity => "城市区域外";
+        public override string BuildHud_OutsideFaction => "超出你的边界！";
+
+        public override string BuildHud_OccupiedTile => "已占用地块";
+
+        public override string Build_PlaceBuilding => "建造";
+        public override string Build_DestroyBuilding => "摧毁";
+        public override string Build_ClearTerrain => "清理地形";
+
+        public override string Build_ClearOrders => "清除建筑命令";
+        public override string Build_Order => "建筑命令";
+        public override string Build_OrderQue => "建筑命令队列: {0}";
+        public override string Build_AutoPlace => "自动放置";
+
+        public override string Work_OrderPrioTitle => "工作优先级";
+        public override string Work_OrderPrioDescription => "优先级从1（低）到{0}（高）";
+
+        public override string Work_OrderPrio_No => "无优先级。不进行此工作。";
+        public override string Work_OrderPrio_Min => "最低优先级。";
+        public override string Work_OrderPrio_Max => "最高优先级。";
+
+        public override string Work_Move => "移动物品";
+
+        public override string Work_GatherXResource => "收集{0}";
+        public override string Work_CraftX => "制作{0}";
+        public override string Work_Farming => "农业";
+        public override string Work_Mining => "采矿";
+        public override string Work_Trading => "贸易";
+
+        public override string Work_AutoBuild => "自动建造和扩展";
+
+        public override string WorkerHud_WorkType => "工作状态: {0}";
+        public override string WorkerHud_Carry => "搬运: {0} {1}";
+        public override string WorkerHud_Energy => "能量: {0}";
+        public override string WorkerStatus_Exit => "离开劳动力";
+        public override string WorkerStatus_Eat => "吃饭";
+        public override string WorkerStatus_Till => "耕作";
+        public override string WorkerStatus_Plant => "种植";
+        public override string WorkerStatus_Gather => "收集";
+        public override string WorkerStatus_PickUpResource => "拾取资源";
+        public override string WorkerStatus_DropOff => "放下";
+        public override string WorkerStatus_BuildX => "建造{0}";
+        public override string WorkerStatus_TrossReturnToArmy => "返回军队";
+
+        public override string Hud_ToggleFollowFaction => "切换跟随派系设置";
+        public override string Hud_FollowFaction_Yes => "已设置为使用派系的全局设置";
+        public override string Hud_FollowFaction_No => "已设置为使用本地设置（全局值为{0}）";
+
+        public override string Hud_Idle => "闲置";
+        public override string Hud_NoLimit => "无限制";
+
+        public override string Hud_None => "无";
+        public override string Hud_Queue => "队列";
+
+        public override string Hud_EmptyList => "- 空列表 -";
+
+        public override string Hud_RequirementOr => "- 或 -";
+
+        public override string Hud_BlackMarket => "黑市";
+
+        public override string Language_CollectProgress => "{0} / {1}";
+        public override string Hud_SelectCity => "选择城市";
+        public override string Conscription_Title => "征兵";
+        public override string Conscript_WeaponTitle => "武器";
+        public override string Conscript_ArmorTitle => "盔甲";
+        public override string Conscript_TrainingTitle => "训练";
+
+        public override string Conscript_SpecializationTitle => "专精";
+        public override string Conscript_SpecializationDescription => "将提高某个领域的攻击力，同时降低所有其他领域的攻击力，幅度为{0}";
+        public override string Conscript_SelectBuilding => "选择兵营";
+
+        public override string Conscript_WeaponDamage => "武器伤害: {0}";
+        public override string Conscript_ArmorHealth => "盔甲耐久: {0}";
+        public override string Conscript_TrainingSpeed => "攻击速度: {0}";
+        public override string Conscript_TrainingTime => "训练时间: {0}";
+
+        public override string Conscript_Training_Minimal => "最低限度";
+        public override string Conscript_Training_Basic => "基础";
+        public override string Conscript_Training_Skillful => "熟练";
+        public override string Conscript_Training_Professional => "专业";
+
+        public override string Conscript_Specialization_Field => "平原";
+        public override string Conscript_Specialization_Sea => "海战";
+        public override string Conscript_Specialization_Siege => "攻城";
+        public override string Conscript_Specialization_Traditional => "传统";
+        public override string Conscript_Specialization_AntiCavalry => "反骑兵";
+
+        public override string Conscription_Status_CollectingEquipment => "收集装备: {0}";
+        public override string Conscription_Status_CollectingMen => "集结士兵: {0}";
+        public override string Conscription_Status_Training => "训练中: {0}";
+
+        public override string ArmyHud_Food_Reserves_X => "食物储备: {0}";
+        public override string ArmyHud_Food_Upkeep_X => "食物维持: {0}";
+        public override string ArmyHud_Food_Costs_X => "食物成本: {0}";
+
+        public override string Deliver_WillSendXInfo => "每次发送{0}";
+        public override string Delivery_ListTitle => "选择配送服务";
+        public override string Delivery_DistanceX => "距离: {0}";
+        public override string Delivery_DeliveryTimeX => "配送时间: {0}";
+        public override string Delivery_SenderMinimumCap => "发送者的最低容量";
+        public override string Delivery_RecieverMaximumCap => "接收者的最大容量";
+        public override string Delivery_ItemsReady => "物品已准备好";
+        public override string Delivery_RecieverReady => "接收者已准备好";
+        public override string Hud_ThisCity => "本城市";
+        public override string Hud_RecieveingCity => "接收城市";
+
+        public override string Info_ButtonIcon => "i";
+
+        public override string Info_PerSecond => "以每秒资源显示。";
+
+        public override string Info_MinuteAverage => "此值是过去一分钟的平均值。";
+
+        public override string Message_CityOutOfFood_Title => "食物短缺";
+        public override string Message_CityOutOfFood_Text => "将从黑市购买昂贵的食物。当你的钱用完时，工人将会饿死。";
+
+        public override string Hud_EndSessionIcon => "X";
+
+        public override string TerrainType => "地形类型";
+
+        public override string Hud_EnergyUpkeepX => "食物能量维持 {0}";
+
+        public override string Hud_EnergyAmount => "{0} 能量（工作秒数）";
+
+        public override string Hud_CopySetup => "复制设置";
+        public override string Hud_Paste => "粘贴";
+
+        public override string Hud_Available => "可用";
+
+        public override string WorkForce_ChildBirthRequirements => "生育条件:";
+        public override string WorkForce_AvailableHomes => "可用住房: {0}";
+        public override string WorkForce_Peace => "和平";
+        public override string WorkForce_ChildToManTime => "成年时间: {0} 分钟";
+
+        public override string Economy_TaxIncome => "税收收入: {0}";
+        public override string Economy_ImportCostsForResource => "{0}的进口成本: {1}";
+        public override string Economy_BlackMarketCostsForResource => "{0}的黑市价格: {1}";
+        public override string Economy_GuardUpkeep => "守卫维护费用: {0}";
+
+        public override string Economy_LocalCityTrade_Export => "城市贸易出口: {0}";
+        public override string Economy_LocalCityTrade_Import => "城市贸易进口: {0}";
+
+        public override string Economy_ResourceProduction => "{0}生产: {1}";
+        public override string Economy_ResourceSpending => "{0}支出: {1}";
+
+        public override string Economy_TaxDescription => "每个工人的税收为{0}金币";
+
+        public override string Economy_SoldResources => "已售资源（金矿石）: {0}";
+
+        public override string UnitType_Cities => "城市";
+        public override string UnitType_Armies => "军队";
+        public override string UnitType_Worker => "工人";
+
+        public override string UnitType_FootKnight => "长剑骑士";
+        public override string UnitType_CavalryKnight => "骑兵骑士";
+
+        public override string CityCulture_LargeFamilies => "大家庭";
+        public override string CityCulture_FertileGround => "肥沃的土地";
+        public override string CityCulture_Archers => "熟练弓箭手";
+        public override string CityCulture_Warriors => "战士";
+        public override string CityCulture_AnimalBreeder => "动物饲养者";
+        public override string CityCulture_Miners => "矿工";
+        public override string CityCulture_Woodcutters => "伐木工";
+        public override string CityCulture_Builders => "建筑工人";
+        public override string CityCulture_CrabMentality => "蟹心态";
+        public override string CityCulture_DeepWell => "深井";
+        public override string CityCulture_Networker => "网络专家";
+        public override string CityCulture_PitMasters => "燃料大师";
+
+        public override string CityCulture_CultureIsX => "文化: {0}";
+        public override string CityCulture_LargeFamilies_Description => "提高出生率";
+        public override string CityCulture_FertileGround_Description => "农作物产量增加";
+        public override string CityCulture_Archers_Description => "生产熟练的弓箭手";
+        public override string CityCulture_Warriors_Description => "生产熟练的近战士兵";
+        public override string CityCulture_AnimalBreeder_Description => "动物提供更多资源";
+        public override string CityCulture_Miners_Description => "矿石产量增加";
+        public override string CityCulture_Woodcutters_Description => "树木产量增加";
+        public override string CityCulture_Builders_Description => "建筑速度更快";
+        public override string CityCulture_CrabMentality_Description => "工作消耗的能量减少。无法生产高技能的士兵。";
+        public override string CityCulture_DeepWell_Description => "水的补充速度更快";
+        public override string CityCulture_Networker_Description => "高效的邮政服务";
+        public override string CityCulture_PitMasters_Description => "更高的燃料产量";
+
+        public override string CityOption_AutoBuild_Work => "自动扩展劳动力";
+        public override string CityOption_AutoBuild_Farm => "自动扩展农场";
+
+        public override string Hud_PurchaseTitle_Resources => "购买资源";
+        public override string Hud_PurchaseTitle_CurrentlyOwn => "你拥有";
+
+        public override string Tutorial_EndTutorial => "结束教程";
+        public override string Tutorial_MissionX => "任务{0}";
+        public override string Tutorial_CollectXAmountOfY => "收集{0}{1}";
+        public override string Tutorial_SelectTabX => "选择标签: {0}";
+        public override string Tutorial_IncreasePriorityOnX => "提高{0}的优先级";
+        public override string Tutorial_PlaceBuildOrder => "下达建筑指令: {0}";
+        public override string Tutorial_ZoomInput => "缩放";
+
+        public override string Tutorial_SelectACity => "选择一座城市";
+        public override string Tutorial_ZoomInWorkers => "放大查看工人";
+        public override string Tutorial_CreateSoldiers => "使用此装备创建两支士兵单位: {0}。{1}。";
+        public override string Tutorial_ZoomOutOverview => "缩小，查看地图概况";
+        public override string Tutorial_ZoomOutDiplomacy => "缩小，查看外交视图";
+        public override string Tutorial_ImproveRelations => "改善与你邻近派系的关系";
+        public override string Tutorial_MissionComplete_Title => "任务完成！";
+        public override string Tutorial_MissionComplete_Unlocks => "新功能已解锁";
     }
 }

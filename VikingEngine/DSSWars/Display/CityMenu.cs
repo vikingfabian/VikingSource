@@ -127,10 +127,10 @@ namespace VikingEngine.DSSWars.Display
                     switch (resourcesSubTab)
                     {
                         case ResourcesSubTab.Overview:
-                            text = DssRef.todoLang.Resource_Tab_Overview;
+                            text = DssRef.lang.Resource_Tab_Overview;
                             break;
                         case ResourcesSubTab.Stockpile:
-                            text = DssRef.todoLang.Resource_Tab_Stockpile;
+                            text = DssRef.lang.Resource_Tab_Stockpile;
                             break;
                     }
                     var subTab = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(text) },
@@ -148,11 +148,11 @@ namespace VikingEngine.DSSWars.Display
             switch (player.resourcesSubTab)
             {
                 case ResourcesSubTab.Overview:
-                    content.h1(DssRef.todoLang.MenuTab_Resources);
+                    content.h1(DssRef.lang.MenuTab_Resources);
                     content.newLine();
 
                     content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
-                    content.Add(new RichBoxText(DssRef.todoLang.Resource_TypeName_Water + ": " + string.Format(DssRef.todoLang.Language_CollectProgress, city.res_water.amount, city.maxWater)));
+                    content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Water + ": " + string.Format(DssRef.lang.Language_CollectProgress, city.res_water.amount, city.maxWater)));
                     content.Add(new RichBoxTab(0.4f));
                     content.Add(new RichBoxImage(SpriteName.WarsResource_WaterAdd));
                     content.Add(new RichBoxText(TextLib.OneDecimal(city.waterAddPerSec)));
@@ -214,16 +214,16 @@ namespace VikingEngine.DSSWars.Display
                         //content.text("1 food => " + DssConst.FoodEnergy + " energy (seconds of work)");
                         content.Add(new RichBoxText(1.ToString()));
                         content.Add(new RichBoxImage(ResourceLib.Icon(ItemResourceType.Food_G)));
-                        content.Add(new RichBoxText(DssRef.todoLang.Resource_TypeName_Food));
+                        content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Food));
                         var arrow = new RichBoxImage(SpriteName.pjNumArrowR);
                         arrow.color = Color.CornflowerBlue;
                         content.Add(arrow);
-                        content.Add(new RichBoxText(string.Format(DssRef.todoLang.Hud_EnergyAmount, DssConst.FoodEnergy)));
+                        content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_EnergyAmount, DssConst.FoodEnergy)));
                     }
                     break;
 
                 case ResourcesSubTab.Stockpile:
-                    content.h1(DssRef.todoLang.Resource_Tab_Stockpile);
+                    content.h1(DssRef.lang.Resource_Tab_Stockpile);
                
                     stockpile(ItemResourceType.Wood_Group);
                     stockpile(ItemResourceType.Stone_G);
@@ -244,7 +244,7 @@ namespace VikingEngine.DSSWars.Display
                     stockpile(ItemResourceType.MediumArmor);
                     stockpile(ItemResourceType.HeavyArmor);
 
-                    HudLib.Description(content, DssRef.todoLang.Resource_StockPile_Info);
+                    HudLib.Description(content, DssRef.lang.Resource_StockPile_Info);
 
                     break;
             }
@@ -305,6 +305,7 @@ namespace VikingEngine.DSSWars.Display
             {
                 if (city.damages.HasValue())
                 {
+                    content.newLine();
                     content.Add(new RichboxButton(new List<AbsRichBoxMember>{
                                     new RichBoxImage(SpriteName.unitEmoteLove),
                                     new RichBoxText(DssRef.lang.CityOption_Repair),
@@ -376,7 +377,7 @@ namespace VikingEngine.DSSWars.Display
         {
             //hover
             RichBoxContent content = new RichBoxContent();
-            content.h2(DssRef.todoLang.Blueprint_Title).overrideColor = HudLib.TitleColor_TypeName;
+            content.h2(DssRef.lang.Blueprint_Title).overrideColor = HudLib.TitleColor_TypeName;
             blueprint.toMenu(content, city);
             if (optionalBp != null)
             { 
@@ -396,15 +397,15 @@ namespace VikingEngine.DSSWars.Display
                 switch (blueprint.requirement)
                 {
                     case CraftRequirement.Carpenter:
-                        reqText = DssRef.todoLang.BuildingType_Carpenter;
+                        reqText = DssRef.lang.BuildingType_Carpenter;
                         available = city.hasBuilding_carpenter;
                         break;
                     case CraftRequirement.Brewery:
-                        reqText = DssRef.todoLang.BuildingType_Brewery;
+                        reqText = DssRef.lang.BuildingType_Brewery;
                         available = city.hasBuilding_brewery;
                         break;
                     case CraftRequirement.Smith:
-                        reqText = DssRef.todoLang.BuildingType_Smith;
+                        reqText = DssRef.lang.BuildingType_Smith;
                         available = city.hasBuilding_smith;
                         break;
                     
@@ -804,7 +805,7 @@ namespace VikingEngine.DSSWars.Display
         //    content.newLine();
         //    content.newLine();
 
-        //    content.text(string.Format(DssRef.todoLang.Hud_EnergyUpkeepX, typeData.energyPerSoldier));
+        //    content.text(string.Format(DssRef.lang.Hud_EnergyUpkeepX, typeData.energyPerSoldier));
         //    //HudLib.Upkeep(content, typeData.Upkeep() * count);
         //    //content.icontext(SpriteName.rtsUpkeep, DssRef.lang.Hud_Upkeep + ": " + (typeData.Upkeep() * count).ToString());
         //    content.newParagraph();

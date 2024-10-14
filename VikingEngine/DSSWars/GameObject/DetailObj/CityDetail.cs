@@ -37,6 +37,8 @@ namespace VikingEngine.DSSWars.GameObject
 
     class CityDetail : AbsDetailUnit
     {
+        public const float ShortRangeAttack = 1.5f;
+        public const float LongRangeAttack = 3.01f;
         public const int WorkersPerHut = 30;
         const int WorkerHutsPerTile = 4;
         const int WorkerHutsPerTile_MaxLevel = WorkerHutsPerTile* HutMaxLevel;
@@ -65,6 +67,13 @@ namespace VikingEngine.DSSWars.GameObject
             health = 10000;
             radius = 0.7f;
 
+            soldierData.mainAttack = AttackType.Arrow;
+            soldierData.secondaryAttack = AttackType.Ballista;
+            soldierData.attackDamage = DssConst.Soldier_DefaultHealth;
+            soldierData.attackDamageSea = soldierData.attackDamage;
+            soldierData.secondaryAttackDamage = soldierData.attackDamage / 2;
+            soldierData.attackRange = LongRangeAttack;
+            //targetSpotRange = StandardTargetSpotRange;
 
             if (newGame)
             {
@@ -385,9 +394,9 @@ namespace VikingEngine.DSSWars.GameObject
             return this.GetFaction() == attacker;
         }
 
-        public override bool aliveAndBelongTo(Faction faction)
+        public override bool aliveAndBelongTo(int faction)
         {
-            return this.GetFaction() == faction;
+            return this.GetFaction().parentArrayIndex == faction;
         }
 
         public override bool IsShipType()

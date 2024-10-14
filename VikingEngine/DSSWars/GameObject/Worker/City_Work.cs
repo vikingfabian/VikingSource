@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars.GameObject
         public const int WorkTeamSize = 8;
         TimeStamp previousWorkQueUpdate = TimeStamp.None;
         List<WorkQueMember> workQue = new List<WorkQueMember>();
-
+        bool starving = false;
         //public void workTab(Players.LocalPlayer player,RichBoxContent content)
         //{
             
@@ -1001,6 +1001,8 @@ namespace VikingEngine.DSSWars.GameObject
                 faction.payMoney(cost, true);
                 blackMarketCosts_food.add(cost);
                 res_food.amount += buyFood;
+
+                starving = true;
             }
         }
 
@@ -1042,7 +1044,7 @@ namespace VikingEngine.DSSWars.GameObject
         Till,
         Plant,
         GatherFoil,
-        GatherCityProduce,
+        //GatherCityProduce,
         Mine,
         PickUpResource,
         PickUpProduce,

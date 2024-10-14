@@ -14,7 +14,7 @@ namespace VikingEngine.DSSWars.Display.Component
     {
         public void toHud(LocalPlayer player, RichBoxContent content, Action<int> queClick, int currentQue)
         {
-            HudLib.Label(content, DssRef.todoLang.Hud_Que);
+            HudLib.Label(content, DssRef.lang.Hud_Queue);
             content.space();
             HudLib.InfoButton(content, new RbAction(()=> {
                 {
@@ -37,7 +37,7 @@ namespace VikingEngine.DSSWars.Display.Component
             }
             {
                 var button = new RichboxButton(new List<AbsRichBoxMember>{
-                       new RichBoxText(DssRef.todoLang.Hud_NoLimit)
+                       new RichBoxText(DssRef.lang.Hud_NoLimit)
                     }, new RbAction1Arg<int>(queClick, 255));
                 button.setGroupSelectionColor(HudLib.RbSettings, currentQue > BarracksStatus.MaxQue);
                 content.Add(button);

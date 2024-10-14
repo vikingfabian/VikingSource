@@ -6,6 +6,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
@@ -25,7 +26,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         WorkerUnitState state = WorkerUnitState.None;
         Vector3 goalPos;
         Vector3 walkDir;
-        AbsMapObject mapObject;
+        AbsMapObject parentMapObject;
         float finalizeWorkTime;
         GameTimer workAnimation = new GameTimer(1f, true, true);
         bool isShip = false;
@@ -34,7 +35,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         public WorkerUnit(AbsMapObject mapObject, WorkerStatus status, int statusIndex)
         {
-            this.mapObject = mapObject;
+            this.parentMapObject = mapObject;
             this.status = status;
             this.parentArrayIndex = statusIndex;
             model = mapObject.GetFaction().AutoLoadModelInstance(
@@ -72,6 +73,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         model.position.Z = goalPos.Z;
                         WP.Rotation1DToQuaterion(model, 2.8f);
                         state = WorkerUnitState.FinalizeWork;
+                        model.Frame = 0;
                         updateGroudY(true);
                     }
                     else
@@ -227,15 +229,15 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                 break;
                         }
 
-                        status.WorkComplete(mapObject, true);
-                        mapObject.setWorkerStatus(parentArrayIndex, ref status);
+                        status.WorkComplete(parentMapObject, true);
+                        parentMapObject.setWorkerStatus(parentArrayIndex, ref status);
                         state = WorkerUnitState.None;
                         refreshCarryModel();
                     }
                     break;
 
                 case WorkerUnitState.None:
-                    mapObject.getWorkerStatus(parentArrayIndex, ref status);
+                    parentMapObject.getWorkerStatus(parentArrayIndex, ref status);
                     checkForGoal(false, city);
                     break;
 
@@ -406,21 +408,19 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 DssVar.WorkerUnit_ResourcePosDiff, model.position);
         }
 
-        public string WorkerHud_WorkType = "Work: {0}";
-        public string WorkerHud_Carry = "Carry: {0} {1}";
-        public string WorkerHud_Energy = "Energy: {0}";
+        
         public override void toHud(ObjectHudArgs args)
         {
             
             args.content.h2(Name()).overrideColor = Color.LightYellow;
-            args.content.text(string.Format(WorkerHud_WorkType, status.work));
+            args.content.text(string.Format(DssRef.lang.WorkerHud_WorkType, status.workString()));
 
             if (status.carry.amount > 0)
             {
-                args.content.text(string.Format(WorkerHud_Carry, status.carry.amount, status.carry.type));
+                args.content.text(string.Format(DssRef.lang.WorkerHud_Carry, status.carry.amount, LangLib.Item( status.carry.type)));
             }
 
-            args.content.text(string.Format(WorkerHud_Energy, TextLib.OneDecimal(status.energy)));
+            args.content.text(string.Format(DssRef.lang.WorkerHud_Energy, TextLib.OneDecimal(status.energy)));
         }
         
         public override void selectionFrame(bool hover, Selection selection)
@@ -444,7 +444,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         public override Faction GetFaction()
         {
-            return mapObject.GetFaction();
+            return parentMapObject.GetFaction();
         }
 
         public override Vector3 WorldPos()
@@ -454,7 +454,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         public override bool aliveAndBelongTo(Faction faction)
         {
-            return faction == mapObject.GetFaction();
+            return faction == parentMapObject.GetFaction();
         }
 
         public override WorkerUnit GetWorker()
@@ -464,7 +464,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         public override string Name()
         {
-            return mapObject.TypeName() + " Worker (" + parentArrayIndex.ToString() + ")";
+            return parentMapObject.TypeName() + " " +  DssRef.lang.UnitType_Worker +" (" + parentArrayIndex.ToString() + ")";
         }
 
         enum WorkerUnitState

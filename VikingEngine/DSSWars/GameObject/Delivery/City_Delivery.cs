@@ -26,6 +26,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void async_deliveryUpdate()
         {
+            if (debugTagged)
+            {
+                lib.DoNothing();
+            }
+
             lock (deliveryServices)
             {
                 for (int i = 0; i < deliveryServices.Count; i++)

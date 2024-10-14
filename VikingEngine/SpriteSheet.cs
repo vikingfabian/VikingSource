@@ -2494,6 +2494,10 @@ namespace VikingEngine
                 add(SpriteName.hqTutorial2, HqTutorialSz.X, HqTutorialSz.Y);
                 add(SpriteName.hqTutorial3, HqTutorialSz.X, HqTutorialSz.Y);
 
+                add(SpriteName.warsWorkerPromoHammer, 6, 6);
+                add(SpriteName.warsWorkerPromoBox, 6, 6);
+
+
             }
 
             currentIndex = numTilesWidth * 118;

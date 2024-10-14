@@ -186,7 +186,7 @@ namespace VikingEngine.DSSWars
 
         public static void InfoButton(RichBoxContent content, AbsRbAction enterAction)
         {
-            var text = new RichBoxText(DssRef.todoLang.Info_ButtonIcon);
+            var text = new RichBoxText(DssRef.lang.Info_ButtonIcon);
             text.overrideColor = InfoYellow_Light;
 
             var button = new RichboxButton(new List<AbsRichBoxMember> { 
@@ -215,7 +215,7 @@ namespace VikingEngine.DSSWars
 
         public static void CloseButton(RichBoxContent content, AbsRbAction click)
         {
-            RichBoxText x = new RichBoxText(DssRef.todoLang.Hud_EndSessionIcon);
+            RichBoxText x = new RichBoxText(DssRef.lang.Hud_EndSessionIcon);
             x.overrideColor = Color.White;
 
            var button = new RichboxButton(new List<AbsRichBoxMember>

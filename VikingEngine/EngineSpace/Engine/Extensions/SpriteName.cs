@@ -2424,6 +2424,9 @@ namespace VikingEngine
         WarsNightmareEyeGlow,
         WarsGroundTex,
         warsFoliageShadow,
+        warsWorkerPromoHammer,
+        warsWorkerPromoBox,
+
 
         WarsRelationAlly,
         WarsRelationGood,

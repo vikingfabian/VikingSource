@@ -122,27 +122,28 @@ namespace VikingEngine.DSSWars.GameObject
                 conscriptDelay.Seconds = 1;
 
                 BarracksStatus status = conscriptBuildings[selectedConscript];
-                if (status.active == ConscriptActiveStatus.CollectingEquipment ||
-                    status.active == ConscriptActiveStatus.CollectingMen)
-                {
-                    //return items
-                    ItemResourceType weaponItem = ConscriptProfile.WeaponItem(status.inProgress.weapon);
-                    ItemResourceType armorItem = ConscriptProfile.ArmorItem(status.inProgress.armorLevel);
+                status.returnItems(this);
+                //if (status.active == ConscriptActiveStatus.CollectingEquipment ||
+                //    status.active == ConscriptActiveStatus.CollectingMen)
+                //{
+                //    //return items
+                //    ItemResourceType weaponItem = ConscriptProfile.WeaponItem(status.inProgress.weapon);
+                //    ItemResourceType armorItem = ConscriptProfile.ArmorItem(status.inProgress.armorLevel);
 
-                    AddGroupedResource(weaponItem, status.equipmentCollected);
+                //    AddGroupedResource(weaponItem, status.equipmentCollected);
 
-                    if (status.inProgress.armorLevel != ArmorLevel.None)
-                    {
-                        AddGroupedResource(armorItem, status.equipmentCollected);
-                    }
+                //    if (status.inProgress.armorLevel != ArmorLevel.None)
+                //    {
+                //        AddGroupedResource(armorItem, status.equipmentCollected);
+                //    }
 
-                    workForce += status.menCollected;
+                //    workForce += status.menCollected;
 
-                    status.active = ConscriptActiveStatus.Idle;
+                //    status.active = ConscriptActiveStatus.Idle;
 
-                    conscriptBuildings[selectedConscript] = status;
-                }
-
+                   
+                //}
+                conscriptBuildings[selectedConscript] = status;
             }
         }
 

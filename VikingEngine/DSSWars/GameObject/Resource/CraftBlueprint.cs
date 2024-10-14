@@ -69,6 +69,22 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             return true;
         }
 
+        public int canCraftCount(City city)
+        {
+            int min = int.MaxValue;
+            foreach (var r in resources)
+            {
+                var res = city.GetGroupedResource(r.type);
+                if (res.amount < r.amount)
+                {
+                    return 0;
+                }
+
+                min = lib.SmallestValue( res.amount / r.amount, min);
+            }
+            return min;
+        }
+
         public int craft(City city)
         {
             foreach (var r in resources)

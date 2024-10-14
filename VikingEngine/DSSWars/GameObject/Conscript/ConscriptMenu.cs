@@ -49,14 +49,14 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 content.space();
                 content.Add(new RichBoxBeginTitle(1));
 
-                string typeName = currentStatus.nobelmen? DssRef.lang.Building_NobleHouse : DssRef.todoLang.BuildingType_Barracks;
+                string typeName = currentStatus.nobelmen? DssRef.lang.Building_NobleHouse : DssRef.lang.BuildingType_Barracks;
                 content.Add(new RichBoxText(typeName + " " + currentStatus.idAndPosition.ToString()));
                 content.space();
                  HudLib.CloseButton(content,new RbAction(() => { city.selectedConscript = -1; }));
 
                 content.newParagraph();
 
-                HudLib.Label(content, DssRef.todoLang.Conscript_WeaponTitle);
+                HudLib.Label(content, DssRef.lang.Conscript_WeaponTitle);
                 content.newLine();
                 MainWeapon[] weapons = currentStatus.nobelmen? NobelWeapons : DefaultWeapons;
                 //for (MainWeapon weapon = 0; weapon < MainWeapon.NUM; weapon++)
@@ -75,7 +75,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
                 content.newParagraph();
 
-                HudLib.Label(content, DssRef.todoLang.Conscript_ArmorTitle);
+                HudLib.Label(content, DssRef.lang.Conscript_ArmorTitle);
                 content.newLine();
                 for (ArmorLevel armorLvl = 0; armorLvl < ArmorLevel.NUM; armorLvl++)
                 {
@@ -90,7 +90,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
                 content.newParagraph();
 
-                HudLib.Label(content, DssRef.todoLang.Conscript_TrainingTitle);
+                HudLib.Label(content, DssRef.lang.Conscript_TrainingTitle);
                 content.newLine();
                 TrainingLevel minLevel = currentStatus.nobelmen? TrainingLevel.Basic : TrainingLevel.Minimal;
                 
@@ -112,12 +112,12 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
                 content.newParagraph();
 
-                HudLib.Label(content, DssRef.todoLang.Conscript_SpecializationTitle);
+                HudLib.Label(content, DssRef.lang.Conscript_SpecializationTitle);
                 content.space();
                 HudLib.InfoButton(content, new RbAction(() =>
                 {
                     RichBoxContent content = new RichBoxContent();
-                    content.text(string.Format(DssRef.todoLang.Conscript_SpecializationDescription, TextLib.PercentText(DssConst.Conscript_SpecializePercentage)));
+                    content.text(string.Format(DssRef.lang.Conscript_SpecializationDescription, TextLib.PercentText(DssConst.Conscript_SpecializePercentage)));
                     player.hud.tooltip.create(player, content, true);
                 }));
                 content.newLine();
@@ -142,7 +142,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
 
                 content.newParagraph();
-                content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Hud_CopySetup) },
+                content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(DssRef.lang.Hud_CopySetup) },
                     new RbAction(() =>
                     {
                         if (currentStatus.nobelmen)
@@ -155,7 +155,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                         }
                     }, SoundLib.menu)));
                 content.space();
-                content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Hud_Paste) },
+                content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(DssRef.lang.Hud_Paste) },
                     new RbAction(() =>
                     {
                         BarracksStatus currentStatus = get();
@@ -203,19 +203,19 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             else
             {
 
-                content.h2(DssRef.todoLang.Conscript_SelectBuilding);
+                content.h2(DssRef.lang.Conscript_SelectBuilding);
                 if (city.conscriptBuildings.Count == 0)
                 {
                     //EMPTY
-                    content.text(DssRef.todoLang.Hud_EmptyList).overrideColor = HudLib.InfoYellow_Light;
+                    content.text(DssRef.lang.Hud_EmptyList).overrideColor = HudLib.InfoYellow_Light;
                     content.newParagraph();
                     content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement).overrideColor = HudLib.TitleColor_Label;
                     content.newLine();
                     content.Add( new RichBoxImage(SpriteName.WarsBuild_Barracks));
                     content.space();
-                    content.Add(new RichBoxText(DssRef.todoLang.BuildingType_Barracks));
+                    content.Add(new RichBoxText(DssRef.lang.BuildingType_Barracks));
                     content.newLine();
-                    content.text(DssRef.todoLang.Hud_RequirementOr);
+                    content.text(DssRef.lang.Hud_RequirementOr);
                     content.newLine();
                     content.Add(new RichBoxImage(SpriteName.WarsBuild_Nobelhouse));
                     content.space();
@@ -274,9 +274,9 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         void weaponTooltip(MainWeapon weapon)
         {
             RichBoxContent content = new RichBoxContent();
-            content.Add(new RichBoxText(string.Format(DssRef.todoLang.Conscript_WeaponDamage, ConscriptProfile.WeaponDamage(weapon))));
+            content.Add(new RichBoxText(string.Format(DssRef.lang.Conscript_WeaponDamage, ConscriptProfile.WeaponDamage(weapon))));
             content.newParagraph();
-            content.h2(DssRef.todoLang.Hud_Available);
+            content.h2(DssRef.lang.Hud_Available);
             var item = ConscriptProfile.WeaponItem(weapon);
             city.GetGroupedResource(item).toMenu(content, item);
 
@@ -293,13 +293,13 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
             RichBoxContent content = new RichBoxContent
             {
-                new RichBoxText(string.Format(DssRef.todoLang.Conscript_ArmorHealth, ConscriptProfile.ArmorHealth(armor)))
+                new RichBoxText(string.Format(DssRef.lang.Conscript_ArmorHealth, ConscriptProfile.ArmorHealth(armor)))
             };
 
             if (armor != ArmorLevel.None)
             {
                 content.newParagraph();
-                content.h2(DssRef.todoLang.Hud_Available);
+                content.h2(DssRef.lang.Hud_Available);
                 var item = ConscriptProfile.ArmorItem(armor);
                 city.GetGroupedResource(item).toMenu(content, item);
             }
@@ -318,8 +318,8 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         {
 
             RichBoxContent content = new RichBoxContent();
-            content.text(string.Format(DssRef.todoLang.Conscript_TrainingTime, new TimeLength(ConscriptProfile.TrainingTime(training, nobel)).LongString()));
-            content.text(string.Format(DssRef.todoLang.Conscript_TrainingSpeed, TextLib.OneDecimal(ConscriptProfile.TrainingAttackSpeed(training))));
+            content.text(string.Format(DssRef.lang.Conscript_TrainingTime, new TimeLength(ConscriptProfile.TrainingTime(training, nobel)).LongString()));
+            content.text(string.Format(DssRef.lang.Conscript_TrainingSpeed, TextLib.OneDecimal(ConscriptProfile.TrainingAttackSpeed(training))));
 
             player.hud.tooltip.create(player, content, true);
         }

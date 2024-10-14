@@ -464,35 +464,10 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public override void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType building, out bool intelligent)
+        public override void onGameStart(bool newGame)
         {
-            building = BuildAndExpandType.NUM_NONE;
-            intelligent = false;
-            work = false;
-
-            if (city.res_rawFood.needMore())
-            {
-                building = BuildAndExpandType.WheatFarm;
-            }
-            else if (city.res_skinLinnen.needMore())
-            {
-                building = BuildAndExpandType.LinenFarm;
-            }
-            else if (city.conscriptBuildings.Count < 2)
-            {
-                building = BuildAndExpandType.Barracks;
-            }
-            else if (city.deliveryServices.Count < 2)
-            {
-                building = BuildAndExpandType.Postal;
-            }
-            else 
-            {
-                intelligent = true;
-                work = true;
-            }
-
-            //return result;
+            base.onGameStart(newGame);
+            
         }
 
         public override void oneSecUpdate()
@@ -501,127 +476,6 @@ namespace VikingEngine.DSSWars.Players
             ignorePlayerCapture = false;
         }
 
-        //void buySoldiers(City city)
-        //{
-        //    MainWeapon[] conscriptWeaponPrioOrder =
-        //    {
-        //        MainWeapon.Sword,
-        //        MainWeapon.Bow,
-        //        MainWeapon.SharpStick
-        //    };
-
-        //    ArmorLevel[] conscriptArmorPrioOrder =
-        //    {
-        //        ArmorLevel.Heavy,
-        //        ArmorLevel.Medium,
-        //        ArmorLevel.Light,
-        //    };
-        //    if (city.barracks.Count > 0)
-        //    {
-        //        ItemResourceType weaponItem = ConscriptProfile.WeaponItem(status.inProgress.weapon);
-        //    }
-
-        //    return;
-
-        //    if (faction.MoneySecDiff() > DssLib.SoldierDefaultUpkeep * purchaseCount)
-        //    {
-        //        Army army;
-        //        switch (faction.factiontype)
-        //        {
-        //            case FactionType.DarkLord:
-        //                {
-        //                    int cannons = MathExt.MultiplyInt(Ref.rnd.Double(0.0, 0.6), purchaseCount);
-        //                    int archers = MathExt.MultiplyInt(Ref.rnd.Double(0.0, 0.4), purchaseCount);
-        //                    int soldiers = purchaseCount - cannons * 2 - archers;
-
-        //                    city.buySoldiers(UnitType.Trollcannon, cannons, true, out army, true);
-        //                    city.buySoldiers(UnitType.CrossBow, archers, true, out army, true);
-        //                    city.buySoldiers(UnitType.Pikeman, soldiers, true, out army, true);
-
-        //                    if (DssRef.state.events.nextEvent == EventType.DarkLordInPerson)
-        //                    {
-        //                        city.buySoldiers(UnitType.HonorGuard, 6, true, out army, true);
-        //                        city.buySoldiers(UnitType.DarkLord, 1, true, out army, true);
-        //                    }
-        //                }
-        //                break;
-
-        //            case FactionType.GreenWood:
-        //                city.buySoldiers(UnitType.GreenSoldier, purchaseCount, true, out army, true);
-        //                break;
-
-        //            case FactionType.NordicRealm:
-        //            case FactionType.BearClaw:
-        //            case FactionType.NordicSpur:
-        //            case FactionType.IceRaven:
-        //                city.buySoldiers(UnitType.Viking, purchaseCount, true, out army, true);
-        //                break;
-
-        //            default:
-        //                switch (purchaseOrderFocus)
-        //                {
-        //                    case PurchaseOrderFocus_QuickDefend:
-        //                        city.buySoldiers(UnitType.Folkman, purchaseCount, true, out army);
-        //                        break;
-
-        //                    case PurchaseOrderFocus_Defend:
-        //                        if (!city.buySoldiers(UnitType.Knight, purchaseCount / 2, true, out army))
-        //                        {
-        //                            city.buySoldiers(UnitType.Soldier, purchaseCount, true, out army);
-        //                        }
-        //                        break;
-
-        //                    case PurchaseOrderFocus_AttackCity:
-        //                        {
-        //                            int ballistas = MathExt.MultiplyInt(Ref.rnd.Double(0.0, 0.6), purchaseCount);
-        //                            int archers = MathExt.MultiplyInt(Ref.rnd.Double(0.0, 0.4), purchaseCount);
-        //                            int soldiers = purchaseCount - ballistas - archers;
-
-        //                            city.buySoldiers(UnitType.Ballista, ballistas, true, out army);
-        //                            city.buySoldiers(UnitType.Archer, archers, true, out army);
-        //                            city.buySoldiers(UnitType.Soldier, soldiers, true, out army);
-        //                        }
-        //                        break;
-
-        //                    default:
-        //                        {
-        //                            int knights = MathExt.MultiplyInt(Ref.rnd.Double(0.0, 0.8), purchaseCount);
-        //                            int ballistas = MathExt.MultiplyInt(Ref.rnd.Double(0.0, 0.2), purchaseCount);
-        //                            int archers = MathExt.MultiplyInt(Ref.rnd.Double(0.0, 0.2), purchaseCount);
-        //                            int soldiers = purchaseCount - ballistas - archers - knights * 2;
-
-        //                            city.buySoldiers(UnitType.Knight, knights, true, out army);
-        //                            city.buySoldiers(UnitType.Ballista, ballistas, true, out army);
-        //                            city.buySoldiers(UnitType.Archer, archers, true, out army);
-        //                            city.buySoldiers(UnitType.Soldier, soldiers, true, out army);
-        //                        }
-        //                        break;
-        //                }
-        //                break;
-        //        }
-        //        purchaseOrderFocus = PurchaseOrderFocus_None;
-
-        //        if (purchaseIsMainArmy)
-        //        {
-        //            mainArmy = army;
-        //            purchaseIsMainArmy = false;
-        //        }
-        //    }
-        //}
-
-        //bool haveIncomeForArmyPurchase(bool aggresive)
-        //{
-        //    if (aggresive)
-        //    {
-        //        return faction.gold >= DssRef.settings.AiArmyPurchase_MoneyMin_Aggresive &&
-        //            faction.MoneySecDiff() >= DssRef.settings.AiArmyPurchase_IncomeMin_Aggresive;
-        //    }
-        //    else
-        //    {
-        //        return faction.gold >= DssRef.settings.AiArmyPurchase_MoneyMin &&
-        //            faction.MoneySecDiff() >= DssRef.settings.AiArmyPurchase_IncomeMin;
-        //    }
-        //}
 
         override public void aiPlayerAsynchUpdate(float time)
         {
@@ -642,7 +496,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                     
                 }
-                if (faction.factiontype == FactionType.SouthHara)
+                if (faction.parentArrayIndex == 443)//faction.factiontype == FactionType.SouthHara)
                 { 
                     lib.DoNothing();
                 }
@@ -655,7 +509,8 @@ namespace VikingEngine.DSSWars.Players
                 bool inWar = aggressionLevel >= AggressionLevel2_RandomAttacks ||
                     (aggressionLevel == AggressionLevel1_RevengeOnly && wars.Count > 0);
 
-                
+                refreshWorkPriority_async(inWar);
+
                 if (inWar && Ref.rnd.Chance(aggressionLevel == AggressionLevel2_RandomAttacks ? 0.05 : 0.3) &&
                     !mainArmyLockedInTravel())
                 {

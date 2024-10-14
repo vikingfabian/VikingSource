@@ -74,6 +74,8 @@ namespace VikingEngine.DSSWars.Players
 
         public PlayerControls.Tutorial tutorial = null;
 
+        
+
         public void InitTutorial(bool newGame)
         {
             if (newGame && DssRef.storage.runTutorial)
@@ -142,13 +144,13 @@ namespace VikingEngine.DSSWars.Players
         public void childrenTooltip(City city)
         {
             RichBoxContent content = new RichBoxContent();
-            content.text(string.Format(DssRef.todoLang.WorkForce_ChildToManTime, 2));
+            content.text(string.Format(DssRef.lang.WorkForce_ChildToManTime, 2));
 
             content.newParagraph();
-            content.h2(DssRef.todoLang.WorkForce_ChildBirthRequirements);
-            content.text(string.Format(DssRef.todoLang.WorkForce_AvailableHomes, city.homesUnused())).overrideColor = HudLib.ResourceCostColor(city.homesUnused() > 0);
-            content.text(DssRef.todoLang.WorkForce_Peace).overrideColor = HudLib.ResourceCostColor(city.battleGroup == null);
-            HudLib.ItemCount(content, DssRef.todoLang.Resource_TypeName_Food, city.res_food.amount.ToString()).overrideColor = HudLib.ResourceCostColor(city.res_food.amount > 0);
+            content.h2(DssRef.lang.WorkForce_ChildBirthRequirements);
+            content.text(string.Format(DssRef.lang.WorkForce_AvailableHomes, city.homesUnused())).overrideColor = HudLib.ResourceCostColor(city.homesUnused() > 0);
+            content.text(DssRef.lang.WorkForce_Peace).overrideColor = HudLib.ResourceCostColor(city.battleGroup == null);
+            HudLib.ItemCount(content, DssRef.lang.Resource_TypeName_Food, city.res_food.amount.ToString()).overrideColor = HudLib.ResourceCostColor(city.res_food.amount > 0);
 
             hud.tooltip.create(this, content, true);
         }
@@ -157,17 +159,17 @@ namespace VikingEngine.DSSWars.Players
         {
             RichBoxContent content = new RichBoxContent();
 
-            content.h2(DssRef.todoLang.Hud_ToggleFollowFaction).overrideColor = HudLib.TitleColor_Action;
+            content.h2(DssRef.lang.Hud_ToggleFollowFaction).overrideColor = HudLib.TitleColor_Action;
             content.newParagraph();
 
             string current;
             if (follows)
             {
-                current = DssRef.todoLang.Hud_FollowFaction_Yes;
+                current = DssRef.lang.Hud_FollowFaction_Yes;
             }
             else
             { 
-                current = string.Format(DssRef.todoLang.Hud_FollowFaction_No, currentFactionValue);
+                current = string.Format(DssRef.lang.Hud_FollowFaction_No, currentFactionValue);
             }
             content.text(current).overrideColor = HudLib.InfoYellow_Light;
 
@@ -177,10 +179,10 @@ namespace VikingEngine.DSSWars.Players
         public void perSecondTooltip(bool minuteAverage)
         {
             RichBoxContent content = new RichBoxContent();
-            content.text(DssRef.todoLang.Info_PerSecond);
+            content.text(DssRef.lang.Info_PerSecond);
             if (minuteAverage)
             {
-                content.text(DssRef.todoLang.Info_MinuteAverage);
+                content.text(DssRef.lang.Info_MinuteAverage);
             }
 
             hud.tooltip.create(this, content, true);
@@ -454,8 +456,8 @@ namespace VikingEngine.DSSWars.Players
                             foreach (var cindex in city.neighborCities)
                             {
                                 var otherfaction = DssRef.world.cities[cindex].faction;
-                                if (otherfaction.factiontype == FactionType.DefaultAi ||
-                                    otherfaction.factiontype == FactionType.DarkFollower)
+                                if ((otherfaction.factiontype == FactionType.DefaultAi ||  otherfaction.factiontype == FactionType.DarkFollower) &&
+                                    otherfaction.armies.Count > 0)
                                 {
                                     var rel = DssRef.diplomacy.GetRelationType(faction, otherfaction);
                                     if (rel >= RelationType.RelationTypeN1_Enemies && rel <= RelationType.RelationType1_Peace)
@@ -566,16 +568,21 @@ namespace VikingEngine.DSSWars.Players
         //public void loadedAndReady()
         //{ }
 
-        override public void Update()
+        //override public void Update()
+        //{
+        //    if (tutorial != null)
+        //    {
+        //        tutorial.update();
+        //    }
+        //}
+
+        public void userUpdate()
         {
+
             if (tutorial != null)
             {
                 tutorial.update();
             }
-        }
-
-        public void userUpdate()
-        {
 
             bool menuFocusState = mapControls.focusedObjectMenuState();
             //if (!openMenySystem)

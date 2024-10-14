@@ -1260,5 +1260,304 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// 入力タイプ、Xboxのような携帯型コントローラー
         /// </summary>
         public override string Input_Source_Controller => "コントローラー";
+
+
+        /* #### --------------- ##### */
+        /* #### RESOURCE UPDATE ##### */
+        /* #### --------------- ##### */
+
+        public override string CityMenu_SalePricesTitle => "販売価格";
+        public override string Blueprint_Title => "設計図";
+        public override string Resource_Tab_Overview => "概要";
+        public override string Resource_Tab_Stockpile => "備蓄";
+
+        public override string Resource => "資源";
+        public override string Resource_StockPile_Info => "資源の備蓄量を設定し、次にどの資源に取り掛かるかを労働者に指示します。";
+        public override string Resource_TypeName_Water => "水";
+        public override string Resource_TypeName_Wood => "木材";
+        public override string Resource_TypeName_Fuel => "燃料";
+        public override string Resource_TypeName_Stone => "石材";
+        public override string Resource_TypeName_RawFood => "生の食料";
+        public override string Resource_TypeName_Food => "食料";
+        public override string Resource_TypeName_Beer => "ビール";
+        public override string Resource_TypeName_Wheat => "小麦";
+        public override string Resource_TypeName_Linen => "リネン";
+        public override string Resource_TypeName_SkinAndLinen => "皮とリネン";
+        public override string Resource_TypeName_IronOre => "鉄鉱石";
+        public override string Resource_TypeName_GoldOre => "金鉱石";
+        public override string Resource_TypeName_Iron => "鉄";
+
+        public override string Resource_TypeName_SharpStick => "尖った棒";
+        public override string Resource_TypeName_Sword => "剣";
+        public override string Resource_TypeName_KnightsLance => "騎士の槍";
+        public override string Resource_TypeName_TwoHandSword => "両手剣";
+        public override string Resource_TypeName_Bow => "弓";
+
+        public override string Resource_TypeName_LightArmor => "軽装甲";
+        public override string Resource_TypeName_MediumArmor => "中装甲";
+        public override string Resource_TypeName_HeavyArmor => "重装甲";
+
+        public override string ResourceType_Children => "子供";
+
+        public override string BuildingType_DefaultName => "建物";
+        public override string BuildingType_WorkerHut => "労働者の小屋";
+        public override string BuildingType_Tavern => "居酒屋";
+        public override string BuildingType_Brewery => "醸造所";
+        public override string BuildingType_Postal => "郵便サービス";
+        public override string BuildingType_Recruitment => "募集センター";
+        public override string BuildingType_Barracks => "兵舎";
+        public override string BuildingType_PigPen => "豚小屋";
+        public override string BuildingType_HenPen => "鶏小屋";
+        public override string BuildingType_WorkBench => "作業台";
+        public override string BuildingType_Carpenter => "大工";
+        public override string BuildingType_CoalPit => "石炭採掘場";
+        public override string DecorType_Statue => "彫像";
+        public override string DecorType_Pavement => "舗装";
+        public override string BuildingType_Smith => "鍛冶屋";
+        public override string BuildingType_Cook => "料理人";
+        public override string BuildingType_Storage => "倉庫";
+
+        public override string BuildingType_ResourceFarm => "{0}農場";
+
+        public override string BuildingType_WorkerHut_DescriptionLimitX => "労働者の上限を{0}増やします";
+        public override string BuildingType_Tavern_Description => "労働者はここで食事ができます";
+        public override string BuildingType_Tavern_Brewery => "ビールの生産";
+        public override string BuildingType_Postal_Description => "他の都市に資源を送ります";
+        public override string BuildingType_Recruitment_Description => "他の都市に兵士を送ります";
+        public override string BuildingType_Barracks_Description => "兵士の募集に必要な人員と装備を使用します";
+        public override string BuildingType_PigPen_Description => "豚を飼育し、食料と皮を提供します";
+        public override string BuildingType_HenPen_Description => "鶏と卵を生産し、食料を提供します";
+        public override string BuildingType_Decor_Description => "装飾";
+        public override string BuildingType_Farm_Description => "資源を育てます";
+
+        public override string BuildingType_Cook_Description => "食料を加工する場所";
+        public override string BuildingType_Bench_Description => "アイテムを作成する場所";
+
+        public override string BuildingType_Smith_Description => "金属加工所";
+        public override string BuildingType_Carpenter_Description => "木工所";
+
+        public override string BuildingType_Nobelhouse_Description => "騎士と外交官の家";
+        public override string BuildingType_CoalPit_Description => "効率的な燃料生産";
+        public override string BuildingType_Storage_Description => "資源の集積所";
+
+        public override string MenuTab_Info => "情報";
+        public override string MenuTab_Work => "仕事";
+        public override string MenuTab_Recruit => "徴兵";
+        public override string MenuTab_Resources => "資源";
+        public override string MenuTab_Trade => "貿易";
+        public override string MenuTab_Build => "建設";
+        public override string MenuTab_Economy => "経済";
+        public override string MenuTab_Delivery => "配送";
+
+        public override string MenuTab_Build_Description => "都市に建物を配置します";
+        public override string MenuTab_BlackMarket_Description => "都市に建物を配置します";
+        public override string MenuTab_Resources_Description => "都市に建物を配置します";
+        public override string MenuTab_Work_Description => "都市に建物を配置します";
+        public override string MenuTab_Automation_Description => "都市に建物を配置します";
+
+        public override string BuildHud_OutsideCity => "都市の外の領域です";
+        public override string BuildHud_OutsideFaction => "領土の外です！";
+
+        public override string BuildHud_OccupiedTile => "占有されたタイル";
+
+        public override string Build_PlaceBuilding => "建設";
+        public override string Build_DestroyBuilding => "破壊";
+        public override string Build_ClearTerrain => "地形を整地";
+
+        public override string Build_ClearOrders => "建設命令をクリア";
+        public override string Build_Order => "建設命令";
+        public override string Build_OrderQue => "建設命令キュー: {0}";
+        public override string Build_AutoPlace => "自動配置";
+
+        public override string Work_OrderPrioTitle => "作業優先度";
+        public override string Work_OrderPrioDescription => "優先度は1（低）から{0}（高）までです";
+
+        public override string Work_OrderPrio_No => "優先度なし。作業されません。";
+        public override string Work_OrderPrio_Min => "最小優先度。";
+        public override string Work_OrderPrio_Max => "最大優先度。";
+
+        public override string Work_Move => "アイテムを移動";
+
+        public override string Work_GatherXResource => "{0}を集める";
+        public override string Work_CraftX => "{0}を作成";
+        public override string Work_Farming => "農業";
+        public override string Work_Mining => "採掘";
+        public override string Work_Trading => "取引";
+
+        public override string Work_AutoBuild => "自動建設と拡張";
+
+        public override string WorkerHud_WorkType => "作業状況: {0}";
+        public override string WorkerHud_Carry => "持ち運び: {0} {1}";
+        public override string WorkerHud_Energy => "エネルギー: {0}";
+        public override string WorkerStatus_Exit => "労働力を離れる";
+        public override string WorkerStatus_Eat => "食べる";
+        public override string WorkerStatus_Till => "耕す";
+        public override string WorkerStatus_Plant => "植える";
+        public override string WorkerStatus_Gather => "集める";
+        public override string WorkerStatus_PickUpResource => "資源を拾う";
+        public override string WorkerStatus_DropOff => "納品";
+        public override string WorkerStatus_BuildX => "{0}を建設";
+        public override string WorkerStatus_TrossReturnToArmy => "軍隊に戻る";
+
+        public override string Hud_ToggleFollowFaction => "派閥設定を追従する";
+        public override string Hud_FollowFaction_Yes => "派閥のグローバル設定に従っています";
+        public override string Hud_FollowFaction_No => "ローカル設定を使用しています（グローバル値は{0}です）";
+
+        public override string Hud_Idle => "待機中";
+        public override string Hud_NoLimit => "制限なし";
+
+        public override string Hud_None => "なし";
+        public override string Hud_Queue => "キュー";
+
+        public override string Hud_EmptyList => "- 空のリスト -";
+
+        public override string Hud_RequirementOr => "- または -";
+
+        public override string Hud_BlackMarket => "ブラックマーケット";
+
+        public override string Language_CollectProgress => "{0} / {1}";
+        public override string Hud_SelectCity => "都市を選択";
+        public override string Conscription_Title => "徴兵";
+        public override string Conscript_WeaponTitle => "武器";
+        public override string Conscript_ArmorTitle => "鎧";
+        public override string Conscript_TrainingTitle => "訓練";
+
+        public override string Conscript_SpecializationTitle => "専門化";
+        public override string Conscript_SpecializationDescription => "特定の分野で攻撃力が{0}増加し、他のすべての分野が減少します";
+        public override string Conscript_SelectBuilding => "兵舎を選択";
+
+        public override string Conscript_WeaponDamage => "武器のダメージ: {0}";
+        public override string Conscript_ArmorHealth => "鎧の耐久力: {0}";
+        public override string Conscript_TrainingSpeed => "攻撃速度: {0}";
+        public override string Conscript_TrainingTime => "訓練時間: {0}";
+
+        public override string Conscript_Training_Minimal => "最低限";
+        public override string Conscript_Training_Basic => "基本";
+        public override string Conscript_Training_Skillful => "熟練";
+        public override string Conscript_Training_Professional => "専門的";
+
+        public override string Conscript_Specialization_Field => "平原";
+        public override string Conscript_Specialization_Sea => "海";
+        public override string Conscript_Specialization_Siege => "攻城";
+        public override string Conscript_Specialization_Traditional => "伝統的";
+        public override string Conscript_Specialization_AntiCavalry => "対騎兵";
+
+        public override string Conscription_Status_CollectingEquipment => "装備を集めています: {0}";
+        public override string Conscription_Status_CollectingMen => "兵士を集めています: {0}";
+        public override string Conscription_Status_Training => "訓練中: {0}";
+
+        public override string ArmyHud_Food_Reserves_X => "食料備蓄: {0}";
+        public override string ArmyHud_Food_Upkeep_X => "食料維持: {0}";
+        public override string ArmyHud_Food_Costs_X => "食料コスト: {0}";
+
+        public override string Deliver_WillSendXInfo => "{0}ずつ送信されます";
+        public override string Delivery_ListTitle => "配送サービスを選択";
+        public override string Delivery_DistanceX => "距離: {0}";
+        public override string Delivery_DeliveryTimeX => "配送時間: {0}";
+        public override string Delivery_SenderMinimumCap => "送信者の最低限の上限";
+        public override string Delivery_RecieverMaximumCap => "受信者の最大上限";
+        public override string Delivery_ItemsReady => "準備ができているアイテム";
+        public override string Delivery_RecieverReady => "受信者が準備完了";
+        public override string Hud_ThisCity => "この都市";
+        public override string Hud_RecieveingCity => "受信都市";
+
+        public override string Info_ButtonIcon => "i";
+
+        public override string Info_PerSecond => "毎秒あたりの資源で表示されます。";
+
+        public override string Info_MinuteAverage => "この値は、過去1分の平均値です。";
+
+        public override string Message_CityOutOfFood_Title => "食料が不足しています";
+        public override string Message_CityOutOfFood_Text => "ブラックマーケットから高価な食料が購入されます。資金が尽きると労働者は餓死します。";
+
+        public override string Hud_EndSessionIcon => "X";
+
+        public override string TerrainType => "地形の種類";
+
+        public override string Hud_EnergyUpkeepX => "食料エネルギー維持 {0}";
+
+        public override string Hud_EnergyAmount => "{0} エネルギー（作業時間）";
+
+        public override string Hud_CopySetup => "設定をコピー";
+        public override string Hud_Paste => "貼り付け";
+
+        public override string Hud_Available => "利用可能";
+
+        public override string WorkForce_ChildBirthRequirements => "出生要件:";
+        public override string WorkForce_AvailableHomes => "利用可能な住居: {0}";
+        public override string WorkForce_Peace => "平和";
+        public override string WorkForce_ChildToManTime => "成人年齢: {0} 分";
+
+        public override string Economy_TaxIncome => "税収: {0}";
+        public override string Economy_ImportCostsForResource => "{0}の輸入コスト: {1}";
+        public override string Economy_BlackMarketCostsForResource => "{0}のブラックマーケットコスト: {1}";
+        public override string Economy_GuardUpkeep => "警備の維持: {0}";
+
+        public override string Economy_LocalCityTrade_Export => "都市間貿易の輸出: {0}";
+        public override string Economy_LocalCityTrade_Import => "都市間貿易の輸入: {0}";
+
+        public override string Economy_ResourceProduction => "{0}の生産: {1}";
+        public override string Economy_ResourceSpending => "{0}の消費: {1}";
+
+        public override string Economy_TaxDescription => "労働者1人あたり{0}ゴールドの税金";
+
+        public override string Economy_SoldResources => "販売された資源（金鉱石）: {0}";
+
+        public override string UnitType_Cities => "都市";
+        public override string UnitType_Armies => "軍隊";
+        public override string UnitType_Worker => "労働者";
+
+        public override string UnitType_FootKnight => "剣士騎士";
+        public override string UnitType_CavalryKnight => "騎馬騎士";
+
+        public override string CityCulture_LargeFamilies => "大家族";
+        public override string CityCulture_FertileGround => "肥沃な大地";
+        public override string CityCulture_Archers => "熟練した弓兵";
+        public override string CityCulture_Warriors => "戦士";
+        public override string CityCulture_AnimalBreeder => "動物の飼育者";
+        public override string CityCulture_Miners => "鉱夫";
+        public override string CityCulture_Woodcutters => "木こり";
+        public override string CityCulture_Builders => "建設者";
+        public override string CityCulture_CrabMentality => "蟹マインド";
+        public override string CityCulture_DeepWell => "深い井戸";
+        public override string CityCulture_Networker => "ネットワーカー";
+        public override string CityCulture_PitMasters => "燃料生産者";
+
+        public override string CityCulture_CultureIsX => "文化: {0}";
+        public override string CityCulture_LargeFamilies_Description => "出生率が上昇します";
+        public override string CityCulture_FertileGround_Description => "作物の収穫量が増えます";
+        public override string CityCulture_Archers_Description => "熟練した弓兵を生産します";
+        public override string CityCulture_Warriors_Description => "熟練した近接戦闘兵を生産します";
+        public override string CityCulture_AnimalBreeder_Description => "動物がより多くの資源を提供します";
+        public override string CityCulture_Miners_Description => "鉱石の採掘量が増えます";
+        public override string CityCulture_Woodcutters_Description => "木材の生産量が増えます";
+        public override string CityCulture_Builders_Description => "建設が速くなります";
+        public override string CityCulture_CrabMentality_Description => "労働に必要なエネルギーが減少します。熟練した兵士を生産できません。";
+        public override string CityCulture_DeepWell_Description => "水の再生速度が速くなります";
+        public override string CityCulture_Networker_Description => "効率的な郵便サービス";
+        public override string CityCulture_PitMasters_Description => "燃料生産量が増加します";
+
+        public override string CityOption_AutoBuild_Work => "労働力の自動拡大";
+        public override string CityOption_AutoBuild_Farm => "農場の自動拡大";
+
+        public override string Hud_PurchaseTitle_Resources => "資源を購入";
+        public override string Hud_PurchaseTitle_CurrentlyOwn => "現在所有";
+
+        public override string Tutorial_EndTutorial => "チュートリアルを終了";
+        public override string Tutorial_MissionX => "ミッション{0}";
+        public override string Tutorial_CollectXAmountOfY => "{0}を{1}集める";
+        public override string Tutorial_SelectTabX => "タブを選択: {0}";
+        public override string Tutorial_IncreasePriorityOnX => "{0}の優先度を上げる";
+        public override string Tutorial_PlaceBuildOrder => "{0}の建設指示を出す";
+        public override string Tutorial_ZoomInput => "ズーム";
+
+        public override string Tutorial_SelectACity => "都市を選択";
+        public override string Tutorial_ZoomInWorkers => "労働者にズームイン";
+        public override string Tutorial_CreateSoldiers => "次の装備で兵士ユニットを2つ作成: {0}。{1}。";
+        public override string Tutorial_ZoomOutOverview => "ズームアウトしてマップの概要を表示";
+        public override string Tutorial_ZoomOutDiplomacy => "ズームアウトして外交ビューを表示";
+        public override string Tutorial_ImproveRelations => "隣接する派閥との関係を改善";
+        public override string Tutorial_MissionComplete_Title => "ミッション完了！";
+        public override string Tutorial_MissionComplete_Unlocks => "新しい操作がアンロックされました";
     }
 }

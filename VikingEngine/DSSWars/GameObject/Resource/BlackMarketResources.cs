@@ -13,21 +13,42 @@ namespace VikingEngine.DSSWars.GameObject.Resource
     {
         static readonly int[] PurchaseCount = { 20, 100, 500 };
 
+        static int Cost_RawFood = DssConst.FoodGoldValue_BlackMarket - 4;
         static int Cost_Food = DssConst.FoodGoldValue_BlackMarket;
         static int Cost_Wood = 50;
         static int Cost_Stone = 30;
         static int Cost_SkinAndLinnen = 50;
         static int Cost_Iron = 500;
 
+        public static void AiPurchaseWood(City city, Faction faction)
+        {
+            int count = 5;
+            if (faction.payMoney(count * Cost_Wood, false))
+            {
+                city.res_wood.amount += count;
+            }
+        }
+        public static bool AiPurchaseIron(City city, Faction faction)
+        {
+            int count = ResourceLib.CraftSmith_IronUse;
+            if (faction.payMoney(count * Cost_Iron, false))
+            {
+                city.res_iron.amount += count;
+                return true;
+            }
+            return false;
+        }
+
         public static void ToHud(LocalPlayer player, RichBoxContent content, City city)
         {
-            content.h2(DssRef.todoLang.Hud_PurchaseTitle_Resources);
+            content.h2(DssRef.lang.Hud_PurchaseTitle_Resources);
 
-            Resource(Cost_Food, ItemResourceType.Food_G, DssRef.todoLang.Resource_TypeName_Food);
-            Resource(Cost_Wood, ItemResourceType.Wood_Group, DssRef.todoLang.Resource_TypeName_Wood);
-            Resource(Cost_Stone, ItemResourceType.Stone_G, DssRef.todoLang.Resource_TypeName_Stone);
-            Resource(Cost_SkinAndLinnen, ItemResourceType.SkinLinen_Group, DssRef.todoLang.Resource_TypeName_SkinAndLinen);
-            Resource(Cost_Iron, ItemResourceType.Iron_G, DssRef.todoLang.Resource_TypeName_Iron);
+            Resource(Cost_RawFood, ItemResourceType.RawFood_Group, DssRef.lang.Resource_TypeName_RawFood);
+            Resource(Cost_Food, ItemResourceType.Food_G, DssRef.lang.Resource_TypeName_Food);
+            Resource(Cost_Wood, ItemResourceType.Wood_Group, DssRef.lang.Resource_TypeName_Wood);
+            Resource(Cost_Stone, ItemResourceType.Stone_G, DssRef.lang.Resource_TypeName_Stone);
+            Resource(Cost_SkinAndLinnen, ItemResourceType.SkinLinen_Group, DssRef.lang.Resource_TypeName_SkinAndLinen);
+            Resource(Cost_Iron, ItemResourceType.Iron_G, DssRef.lang.Resource_TypeName_Iron);
 
             void Resource(int cost, ItemResourceType resourceType, string name)
             {
@@ -77,7 +98,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                         
                         content.newParagraph();
 
-                        content.h2(DssRef.todoLang.Hud_PurchaseTitle_CurrentlyOwn);
+                        content.h2(DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn);
                         city.GetGroupedResource(resourceType).toMenu(content, resourceType);
                         //content.text(name + " " + city.GetGroupedResource(resourceType).amount.ToString());
 

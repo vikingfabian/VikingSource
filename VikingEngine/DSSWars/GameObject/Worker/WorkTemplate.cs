@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         public WorkPriority craft_mediumarmor = new WorkPriority(0);
         public WorkPriority craft_heavyarmor = new WorkPriority(0);
         public WorkPriority farming = new WorkPriority(2);
-        public WorkPriority mining = new WorkPriority(2);
+        public WorkPriority mining = new WorkPriority(3);
         public WorkPriority trading = new WorkPriority(2);
         public WorkPriority autoBuild = new WorkPriority(1);
 
@@ -121,6 +121,34 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             mining.onFactionValueChange(factionTemplate.mining);
             trading.onFactionValueChange(factionTemplate.trading);
             autoBuild.onFactionValueChange(factionTemplate.autoBuild);
+        }
+
+        public void setAllToFollowFaction()
+        {
+            move.followFaction = true;
+
+            wood.followFaction = true;
+            stone.followFaction = true;
+            craft_fuel.followFaction = true;
+            craft_food.followFaction = true;
+            craft_beer.followFaction = true;
+            craft_iron.followFaction = true;
+
+            craft_sharpstick.followFaction = true;
+            craft_sword.followFaction = true;
+            craft_twohandsword.followFaction = true;
+            craft_knightslance.followFaction = true;
+            craft_bow.followFaction = true;
+            craft_ballista.followFaction = true;
+
+            craft_lightarmor.followFaction = true;
+            craft_mediumarmor.followFaction = true;
+            craft_heavyarmor.followFaction = true;
+
+            farming.followFaction = true;
+            mining.followFaction = true;
+            trading.followFaction = true;
+            autoBuild.followFaction = true;
         }
 
         public void setWorkPrio(int set, WorkPriorityType priorityType)
@@ -292,34 +320,34 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         public void toHud(Players.LocalPlayer player, RichBoxContent content, Faction faction, City city)
         {
-            content.h2(DssRef.todoLang.Work_OrderPrioTitle);
+            content.h2(DssRef.lang.Work_OrderPrioTitle);
             
-            move.toHud(player, content, DssRef.todoLang.Work_Move, WorkPriorityType.move, faction, city);
-            wood.toHud(player, content, string.Format(DssRef.todoLang.Work_GatherXResource, DssRef.todoLang.Resource_TypeName_Wood), WorkPriorityType.wood, faction, city);
-            stone.toHud(player, content, string.Format(DssRef.todoLang.Work_GatherXResource, DssRef.todoLang.Resource_TypeName_Stone), WorkPriorityType.stone, faction, city);
-            craft_food.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Food), WorkPriorityType.craftFood, faction, city);
-            craft_fuel.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Fuel), WorkPriorityType.craftFuel, faction, city);
-            craft_beer.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Beer), WorkPriorityType.craftBeer, faction, city);
-            craft_iron.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Iron), WorkPriorityType.craftIron, faction, city);
+            move.toHud(player, content, DssRef.lang.Work_Move, WorkPriorityType.move, faction, city);
+            wood.toHud(player, content, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Wood), WorkPriorityType.wood, faction, city);
+            stone.toHud(player, content, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Stone), WorkPriorityType.stone, faction, city);
+            craft_food.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Food), WorkPriorityType.craftFood, faction, city);
+            craft_fuel.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Fuel), WorkPriorityType.craftFuel, faction, city);
+            craft_beer.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Beer), WorkPriorityType.craftBeer, faction, city);
+            craft_iron.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Iron), WorkPriorityType.craftIron, faction, city);
 
-            craft_sharpstick.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_SharpStick), WorkPriorityType.craftSharpStick, faction, city);
-            craft_sword.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Sword), WorkPriorityType.craftSword, faction, city);
-            craft_twohandsword.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_TwoHandSword), WorkPriorityType.craftTwoHandSword, faction, city);
-            craft_knightslance.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_KnightsLance), WorkPriorityType.craftKnightsLance, faction, city);
-            craft_bow.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Bow), WorkPriorityType.craftBow, faction, city);
-            craft_ballista.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.lang.UnitType_Ballista), WorkPriorityType.craftBallista, faction, city);
+            craft_sharpstick.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_SharpStick), WorkPriorityType.craftSharpStick, faction, city);
+            craft_sword.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Sword), WorkPriorityType.craftSword, faction, city);
+            craft_twohandsword.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_TwoHandSword), WorkPriorityType.craftTwoHandSword, faction, city);
+            craft_knightslance.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_KnightsLance), WorkPriorityType.craftKnightsLance, faction, city);
+            craft_bow.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Bow), WorkPriorityType.craftBow, faction, city);
+            craft_ballista.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.UnitType_Ballista), WorkPriorityType.craftBallista, faction, city);
 
-            craft_lightarmor.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_LightArmor), WorkPriorityType.craftLightArmor, faction, city);
-            craft_mediumarmor.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_MediumArmor), WorkPriorityType.craftMediumArmor, faction, city);
-            craft_heavyarmor.toHud(player, content, string.Format(DssRef.todoLang.Work_CraftX, DssRef.todoLang.Resource_TypeName_HeavyArmor), WorkPriorityType.craftHeavyArmor, faction, city);
+            craft_lightarmor.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_LightArmor), WorkPriorityType.craftLightArmor, faction, city);
+            craft_mediumarmor.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_MediumArmor), WorkPriorityType.craftMediumArmor, faction, city);
+            craft_heavyarmor.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HeavyArmor), WorkPriorityType.craftHeavyArmor, faction, city);
 
-            farming.toHud(player, content, DssRef.todoLang.Work_Farming, WorkPriorityType.farming, faction, city);
-            mining.toHud(player, content, DssRef.todoLang.Work_Mining, WorkPriorityType.mining, faction, city);
-            //trading.toHud(player, content, DssRef.todoLang.Work_Trading, WorkPriorityType.trading, faction, city);
-            autoBuild.toHud(player, content, DssRef.todoLang.Work_AutoBuild, WorkPriorityType.autoBuild, faction, city);
-            //expand_farms.toHud(player, content, DssRef.todoLang.Work_ExpandFarms, WorkPriorityType.expandFarms, faction, city);
+            farming.toHud(player, content, DssRef.lang.Work_Farming, WorkPriorityType.farming, faction, city);
+            mining.toHud(player, content, DssRef.lang.Work_Mining, WorkPriorityType.mining, faction, city);
+            //trading.toHud(player, content, DssRef.lang.Work_Trading, WorkPriorityType.trading, faction, city);
+            autoBuild.toHud(player, content, DssRef.lang.Work_AutoBuild, WorkPriorityType.autoBuild, faction, city);
+            //expand_farms.toHud(player, content, DssRef.lang.Work_ExpandFarms, WorkPriorityType.expandFarms, faction, city);
 
-            HudLib.Description( content, string.Format(DssRef.todoLang.Work_OrderPrioDescription, MaxPrio));
+            HudLib.Description( content, string.Format(DssRef.lang.Work_OrderPrioDescription, MaxPrio));
         }
 
         
@@ -368,15 +396,15 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 switch (prio)
                 {
                     case WorkTemplate.NoPrio:
-                        prioText = DssRef.todoLang.Work_OrderPrio_No;
+                        prioText = DssRef.lang.Work_OrderPrio_No;
                         break;
 
                     case WorkTemplate.MinPrio:
-                        prioText = DssRef.todoLang.Work_OrderPrio_Min;
+                        prioText = DssRef.lang.Work_OrderPrio_Min;
                         break;
 
                     case WorkTemplate.MaxPrio:
-                        prioText = DssRef.todoLang.Work_OrderPrio_Max;
+                        prioText = DssRef.lang.Work_OrderPrio_Max;
                         break;
                 }
 
@@ -419,6 +447,18 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             {
                 followFaction = r.ReadBoolean();
             }
+        }
+
+        public void addPrio(int add)
+        {
+            followFaction = false;
+            value = Bound.Set(value + add, 0, WorkTemplate.MaxPrio);
+        }
+
+        public void addPrio_belowMax(int add)
+        {
+            followFaction = false;
+            value = Bound.Set(value + add, 0, WorkTemplate.MaxPrio -1);
         }
 
         public bool HasPrio()

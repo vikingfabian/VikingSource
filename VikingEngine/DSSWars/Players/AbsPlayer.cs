@@ -178,7 +178,9 @@ namespace VikingEngine.DSSWars.Players
         abstract public string Name { get; }
 
         virtual public void OnCityCapture(City city)
-        {}
+        {
+            
+        }
     }
 
     

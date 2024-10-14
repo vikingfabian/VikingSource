@@ -266,10 +266,6 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            if (factiontype == FactionType.SouthHara)
-            {
-                lib.DoNothing();
-            }
 
             if (!cities.Contains(city))
             {
@@ -278,6 +274,10 @@ namespace VikingEngine.DSSWars
                 if (!duringStartUp)
                 {
                     player.OnCityCapture(city);
+
+                    city.workTemplate.setAllToFollowFaction();
+                    city.workTemplate.onFactionChange(workTemplate);
+                    city.defaultResourceBuffer();
 
                     if (mainCity == null || mainCity.faction != this)
                     {

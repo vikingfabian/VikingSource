@@ -133,46 +133,46 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         public void tutorial_ToHud(RichBoxContent content)
         {
             content.h1(DssRef.lang.Tutorial_MissionsTitle).overrideColor = HudLib.TitleColor_Label;
-            content.h2(string.Format(DssRef.todoLang.Tutorial_MissionX, ((int)tutorialMission) +1)).overrideColor = HudLib.InfoYellow_Light;
+            content.h2(string.Format(DssRef.lang.Tutorial_MissionX, ((int)tutorialMission) +1)).overrideColor = HudLib.InfoYellow_Light;
 
             switch (tutorialMission)
             {
                 case TutorialMission.CollectResources:
-                    content.icontext(HudLib.CheckImage(collectResources_selectCity), DssRef.todoLang.Tutorial_SelectACity);
-                    content.icontext(HudLib.CheckImage(collectResources_zoomIn), DssRef.todoLang.Tutorial_ZoomInWorkers);
-                    content.icontext(HudLib.CheckImage(collectResources_selectTab), string.Format(DssRef.todoLang.Tutorial_SelectTabX, DssRef.todoLang.MenuTab_Resources));
-                    content.icontext(HudLib.CheckImage(collectResources_collectwood), string.Format(DssRef.todoLang.Tutorial_CollectXAmountOfY, CollectWoodStoneAmount, DssRef.todoLang.Resource_TypeName_Wood));
-                    content.icontext(HudLib.CheckImage(collectResources_collectstone), string.Format(DssRef.todoLang.Tutorial_CollectXAmountOfY, CollectWoodStoneAmount, DssRef.todoLang.Resource_TypeName_Stone));
+                    content.icontext(HudLib.CheckImage(collectResources_selectCity), DssRef.lang.Tutorial_SelectACity);
+                    content.icontext(HudLib.CheckImage(collectResources_zoomIn), DssRef.lang.Tutorial_ZoomInWorkers);
+                    content.icontext(HudLib.CheckImage(collectResources_selectTab), string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources));
+                    content.icontext(HudLib.CheckImage(collectResources_collectwood), string.Format(DssRef.lang.Tutorial_CollectXAmountOfY, CollectWoodStoneAmount, DssRef.lang.Resource_TypeName_Wood));
+                    content.icontext(HudLib.CheckImage(collectResources_collectstone), string.Format(DssRef.lang.Tutorial_CollectXAmountOfY, CollectWoodStoneAmount, DssRef.lang.Resource_TypeName_Stone));
                     break;
                 case TutorialMission.SharpStickWork:
-                    content.icontext(HudLib.CheckImage(sharpStickWork_selectTab), string.Format(DssRef.todoLang.Tutorial_SelectTabX, DssRef.todoLang.MenuTab_Work));
-                    content.icontext(HudLib.CheckImage(sharpStickWork_setPrio), string.Format(DssRef.todoLang.Tutorial_IncreasePriorityOnX, DssRef.todoLang.Resource_TypeName_SharpStick));
+                    content.icontext(HudLib.CheckImage(sharpStickWork_selectTab), string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Work));
+                    content.icontext(HudLib.CheckImage(sharpStickWork_setPrio), string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.lang.Resource_TypeName_SharpStick));
                     break;
                 case TutorialMission.Linen:
-                    content.icontext(HudLib.CheckImage(linen_selectTab), string.Format(DssRef.todoLang.Tutorial_SelectTabX, DssRef.todoLang.MenuTab_Build));
-                    content.icontext(HudLib.CheckImage(linen_build), string.Format(DssRef.todoLang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.LinenFarm].Label()));
-                    content.icontext(HudLib.CheckImage(linen_armorWork), string.Format(DssRef.todoLang.Tutorial_IncreasePriorityOnX, DssRef.todoLang.Resource_TypeName_LightArmor));
-                    content.icontext(HudLib.CheckImage(linen_collect), string.Format(DssRef.todoLang.Tutorial_CollectXAmountOfY, CollectLinenAmount, DssRef.todoLang.Resource_TypeName_SkinAndLinen));
+                    content.icontext(HudLib.CheckImage(linen_selectTab), string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Build));
+                    content.icontext(HudLib.CheckImage(linen_build), string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.LinenFarm].Label()));
+                    content.icontext(HudLib.CheckImage(linen_armorWork), string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.lang.Resource_TypeName_LightArmor));
+                    content.icontext(HudLib.CheckImage(linen_collect), string.Format(DssRef.lang.Tutorial_CollectXAmountOfY, CollectLinenAmount, DssRef.lang.Resource_TypeName_SkinAndLinen));
                     break;
                 case TutorialMission.ConscriptArmy:
-                    content.icontext(HudLib.CheckImage(conscriptArmy_build), string.Format(DssRef.todoLang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Barracks].Label()));
-                    content.icontext(HudLib.CheckImage(conscriptArmy_selectTab), string.Format(DssRef.todoLang.Tutorial_SelectTabX, DssRef.todoLang.Conscription_Title));
-                    content.icontext(HudLib.CheckImage(conscriptArmy_createArmy), string.Format(DssRef.todoLang.Tutorial_CreateSoldiers, DssRef.todoLang.Resource_TypeName_SharpStick, DssRef.todoLang.Resource_TypeName_LightArmor));
+                    content.icontext(HudLib.CheckImage(conscriptArmy_build), string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Barracks].Label()));
+                    content.icontext(HudLib.CheckImage(conscriptArmy_selectTab), string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.Conscription_Title));
+                    content.icontext(HudLib.CheckImage(conscriptArmy_createArmy), string.Format(DssRef.lang.Tutorial_CreateSoldiers, DssRef.lang.Resource_TypeName_SharpStick, DssRef.lang.Resource_TypeName_LightArmor));
                     break;
                 case TutorialMission.MoveArmy:
-                    content.icontext(HudLib.CheckImage(moveArmy_ZoomOut), DssRef.todoLang.Tutorial_ZoomOutOverview);
+                    content.icontext(HudLib.CheckImage(moveArmy_ZoomOut), DssRef.lang.Tutorial_ZoomOutOverview);
                     content.icontext(HudLib.CheckImage(moveArmy_SelectMove), DssRef.lang.Tutorial_Mission_MoveArmy);
                     break;
                 case TutorialMission.Diplomatics:
-                    content.icontext(HudLib.CheckImage(diplomatics_ZoomOut),  DssRef.todoLang.Tutorial_ZoomOutDiplomacy);
-                    content.icontext(HudLib.CheckImage(diplomatics_goodRelation), DssRef.todoLang.Tutorial_ImproveRelations);
+                    content.icontext(HudLib.CheckImage(diplomatics_ZoomOut),  DssRef.lang.Tutorial_ZoomOutDiplomacy);
+                    content.icontext(HudLib.CheckImage(diplomatics_goodRelation), DssRef.lang.Tutorial_ImproveRelations);
                     break;
 
             }
 
             content.newParagraph();
             content.icontext(player.input.Select.Icon, DssRef.lang.Tutorial_SelectInput);            
-            content.icontext(player.input.inputSource.IsController? player.input.cameraTiltZoom.Icon : SpriteName.MouseScroll, DssRef.todoLang.Tutorial_ZoomInput);
+            content.icontext(player.input.inputSource.IsController? player.input.cameraTiltZoom.Icon : SpriteName.MouseScroll, DssRef.lang.Tutorial_ZoomInput);
             if (tutorialMission == TutorialMission.MoveArmy)
             {
                 content.icontext(player.input.Execute.Icon, DssRef.lang.Tutorial_MoveInput);
@@ -465,8 +465,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     refreshLimits();
 
                     RichBoxContent content = new RichBoxContent();
-                    content.h1(DssRef.todoLang.Tutorial_MissionComplete_Title).overrideColor = HudLib.InfoYellow_Light;
-                    content.text(DssRef.todoLang.Tutorial_MissionComplete_Unlocks);
+                    content.h1(DssRef.lang.Tutorial_MissionComplete_Title).overrideColor = HudLib.InfoYellow_Light;
+                    content.text(DssRef.lang.Tutorial_MissionComplete_Unlocks);
                     player.hud.messages.Add(content);
                 }
             }

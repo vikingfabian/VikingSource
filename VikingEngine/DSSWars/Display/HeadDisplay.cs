@@ -114,6 +114,7 @@ namespace VikingEngine.DSSWars.Display
 
                 //}
                 endRefresh(player.playerData.view.safeScreenArea.Position, true);
+                viewOutLine(player.hud.menuFocus);
             }
 
             void toggleMenu()
@@ -341,39 +342,39 @@ namespace VikingEngine.DSSWars.Display
             void economyTab()
             {                
 
-                content.h2(DssRef.todoLang.UnitType_Cities);
+                content.h2(DssRef.lang.UnitType_Cities);
 
-                content.text(string.Format(DssRef.todoLang.Economy_ResourceProduction, DssRef.todoLang.Resource_TypeName_Food, faction.CityFoodProduction));
+                content.text(string.Format(DssRef.lang.Economy_ResourceProduction, DssRef.lang.Resource_TypeName_Food, faction.CityFoodProduction));
                 content.space();
                 HudLib.PerSecondInfo(player, content, true);
 
-                content.text(string.Format(DssRef.todoLang.Economy_ResourceSpending, DssRef.todoLang.Resource_TypeName_Food, faction.CityFoodSpending));
+                content.text(string.Format(DssRef.lang.Economy_ResourceSpending, DssRef.lang.Resource_TypeName_Food, faction.CityFoodSpending));
                 content.space();
                 HudLib.PerSecondInfo(player, content, true);
 
-                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.todoLang.Economy_TaxIncome, Convert.ToInt32(faction.citiesEconomy.tax())));
+                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Economy_TaxIncome, Convert.ToInt32(faction.citiesEconomy.tax())));
                 content.space();
                 HudLib.InfoButton(content, new RbAction(taxInfo));
 
-                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.todoLang.Economy_BlackMarketCostsForResource, DssRef.todoLang.Resource_TypeName_Food, Convert.ToInt32(faction.citiesEconomy.blackMarketCosts_Food)));
+                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Economy_BlackMarketCostsForResource, DssRef.lang.Resource_TypeName_Food, Convert.ToInt32(faction.citiesEconomy.blackMarketCosts_Food)));
                 content.space();
                 HudLib.PerSecondInfo(player, content, true);
 
-                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.todoLang.Economy_GuardUpkeep, Convert.ToInt32(faction.citiesEconomy.cityGuardUpkeep)));
+                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Economy_GuardUpkeep, Convert.ToInt32(faction.citiesEconomy.cityGuardUpkeep)));
                 content.space();
                 HudLib.PerSecondInfo(player, content, false);
 
                 if (DssLib.UseLocalTrading)
                 {
-                    content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.todoLang.Economy_LocalCityTrade_Export, faction.CityTradeExport));
+                    content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Economy_LocalCityTrade_Export, faction.CityTradeExport));
                     content.space();
                     HudLib.PerSecondInfo(player, content, false);
 
-                    content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.todoLang.Economy_LocalCityTrade_Import, faction.CityTradeImport));
+                    content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Economy_LocalCityTrade_Import, faction.CityTradeImport));
                     content.space();
                     HudLib.PerSecondInfo(player, content, false);
                 }
-                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.todoLang.Economy_SoldResources, faction.CitySoldResources));
+                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Economy_SoldResources, faction.CitySoldResources));
                 content.space();
                 HudLib.PerSecondInfo(player, content, false);
 
@@ -383,17 +384,17 @@ namespace VikingEngine.DSSWars.Display
                 //
 
                 content.newParagraph();
-                content.h2(DssRef.todoLang.UnitType_Armies);
+                content.h2(DssRef.lang.UnitType_Armies);
 
-                content.text(string.Format(DssRef.todoLang.Economy_ResourceSpending, DssRef.todoLang.Resource_TypeName_Food, faction.armyFoodUpkeep));
+                content.text(string.Format(DssRef.lang.Economy_ResourceSpending, DssRef.lang.Resource_TypeName_Food, faction.armyFoodUpkeep));
                 content.space();
                 HudLib.PerSecondInfo(player, content, false);
 
-                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.todoLang.Economy_ImportCostsForResource, DssRef.todoLang.Resource_TypeName_Food, Convert.ToInt32(faction.armyFoodImportCost)));
+                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Economy_ImportCostsForResource, DssRef.lang.Resource_TypeName_Food, Convert.ToInt32(faction.armyFoodImportCost)));
                 content.space();
                 HudLib.PerSecondInfo(player, content, true);
 
-                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.todoLang.Economy_BlackMarketCostsForResource, DssRef.todoLang.Resource_TypeName_Food, Convert.ToInt32(faction.armyFoodBlackMarketCost)));
+                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Economy_BlackMarketCostsForResource, DssRef.lang.Resource_TypeName_Food, Convert.ToInt32(faction.armyFoodBlackMarketCost)));
                 content.space();
                 HudLib.PerSecondInfo(player, content, true);
             }
@@ -401,9 +402,9 @@ namespace VikingEngine.DSSWars.Display
             void taxInfo()
             {
                 RichBoxContent content = new RichBoxContent();
-                content.text(string.Format(DssRef.todoLang.Economy_TaxDescription, DssConst.TaxPerWorker));
+                content.text(string.Format(DssRef.lang.Economy_TaxDescription, DssConst.TaxPerWorker));
                 content.newParagraph();
-                content.text(DssRef.todoLang.Info_PerSecond);
+                content.text(DssRef.lang.Info_PerSecond);
                 player.hud.tooltip.create(player, content, true);
             }
 

@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars.Players.Orders
         public override RichBoxContent ToHud()
         {
             RichBoxContent content = new RichBoxContent();
-            content.h2(DssRef.todoLang.Build_Order);
+            content.h2(DssRef.lang.Build_Order);
             BuildLib.BuildOptions[(int)buildingType].blueprint.toMenu(content, city);
 
             return content;

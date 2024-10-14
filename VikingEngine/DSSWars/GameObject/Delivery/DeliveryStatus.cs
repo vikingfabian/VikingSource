@@ -31,6 +31,11 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
         //public Resource.ItemResource nextDelivery;
         public TimeInGameCountdown countdown;
 
+        public void halt()
+        {
+            que = 0;
+        }
+
         public void useSetup(DeliveryStatus setup, LocalPlayer player)
         {
             useSenderMin = setup.useSenderMin;
@@ -127,14 +132,14 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
         {
             if (useRecieverMax)
             {
-                City city = DssRef.world.cities[inProgress.toCity];
-                if (inProgress.type == ItemResourceType.Men)
+                City city = DssRef.world.cities[profile.toCity];
+                if (profile.type == ItemResourceType.Men)
                 {
                     return city.workForce < recieverMax;
                 }
                 else
                 {
-                    return city.GetGroupedResource(inProgress.type).amount < recieverMax;
+                    return city.GetGroupedResource(profile.type).amount < recieverMax;
                 }
             }
             return true;
@@ -169,7 +174,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
             }
             else
             {
-                result = active.ToString() + ", " + string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Hud_Que, que <= MaxQue ? que.ToString() : DssRef.todoLang.Hud_NoLimit);
+                result = active.ToString() + ", " + string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_Queue, que <= MaxQue ? que.ToString() : DssRef.lang.Hud_NoLimit);
             }
 
             return result;

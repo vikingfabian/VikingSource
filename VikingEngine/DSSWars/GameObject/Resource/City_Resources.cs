@@ -85,6 +85,29 @@ namespace VikingEngine.DSSWars.GameObject
 
         //int tradeGold = 0;
 
+        public void defaultResourceBuffer()
+        {
+            res_wood.goalBuffer = 300;
+            res_fuel.goalBuffer = 300;
+            res_stone.goalBuffer = 200;
+            res_rawFood.goalBuffer = 200;
+            res_food.goalBuffer = 500;
+            res_beer.goalBuffer = 200;
+            res_skinLinnen.goalBuffer = 100;
+            res_ironore.goalBuffer = 100;
+            res_iron.goalBuffer = 100;
+            res_sharpstick.goalBuffer = 100;
+            res_sword.goalBuffer = 100;
+            res_twohandsword.goalBuffer = 100;
+            res_knightslance.goalBuffer = 100;
+            res_bow.goalBuffer = 100;
+            res_ballista.goalBuffer = 100;
+            res_lightArmor.goalBuffer = 100;
+            res_mediumArmor.goalBuffer = 100;
+            res_heavyArmor.goalBuffer = 100;
+
+        }
+
         public void AddGroupedResource(ItemResourceType type, int add)
         {
             switch (type)
@@ -505,6 +528,11 @@ namespace VikingEngine.DSSWars.GameObject
         { 
             backOrder = 0;
             orderQueCount = 0;
+        }
+
+        public override string ToString()
+        {
+            return $"Grouped resource {amount}/{goalBuffer}";
         }
     }
 

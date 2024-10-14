@@ -203,10 +203,18 @@ namespace VikingEngine.HUD.RichBox
                     }
                     else
                     {
-                        var interaction = parts[movePos_part].interaction;
+                        var menuPart = parts[movePos_part];
+                        var interaction = menuPart.interaction;
                         if (interaction != null)
                         {
-                            interaction.hover = parts[movePos_part].richBox.buttonGrid_Y_X[movePos_grid.Y][movePos_grid.X];
+                            if (Bound.SetToArray(ref movePos_grid.Y, menuPart.richBox.buttonGrid_Y_X.Count))
+                            {
+                                if (Bound.SetToArray(ref movePos_grid.X, menuPart.richBox.buttonGrid_Y_X[movePos_grid.Y].Count))
+                                {
+                                    interaction.hover =  menuPart.richBox.buttonGrid_Y_X[movePos_grid.Y][movePos_grid.X];
+                                }
+                            }
+                            
                             interaction.refreshSelectOutline();
                         }
                     }

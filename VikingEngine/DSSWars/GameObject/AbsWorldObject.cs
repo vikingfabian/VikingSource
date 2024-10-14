@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.GameObject
             return isDeleted;
         }
 
-        abstract public bool aliveAndBelongTo(Faction faction);
+        abstract public bool aliveAndBelongTo(int faction);
 
         //virtual public void toHud(ObjectHudArgs args)
         //{

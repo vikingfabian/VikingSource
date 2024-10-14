@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject.Delivery;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
+using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Data;
 using VikingEngine.ToGG.ToggEngine;
@@ -38,6 +39,38 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             if (nobelmen)
             {
                 profile.weapon = MainWeapon.KnightsLance;
+            }
+        }
+
+        public void halt(City city)
+        {
+            que = 0;
+
+            returnItems(city);
+
+        }
+
+        public void returnItems(City city)
+        {
+            if (active == ConscriptActiveStatus.CollectingEquipment ||
+                    active == ConscriptActiveStatus.CollectingMen)
+            {
+                //return items
+                ItemResourceType weaponItem = ConscriptProfile.WeaponItem(inProgress.weapon);
+                ItemResourceType armorItem = ConscriptProfile.ArmorItem(inProgress.armorLevel);
+
+                city.AddGroupedResource(weaponItem, equipmentCollected);
+
+                if (inProgress.armorLevel != ArmorLevel.None)
+                {
+                    city.AddGroupedResource(armorItem, equipmentCollected);
+                }
+
+                city.workForce += menCollected;
+
+                active = ConscriptActiveStatus.Idle;
+
+                //city.conscriptBuildings[selectedConscript] = status;
             }
         }
 
@@ -129,20 +162,20 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             switch (status)
             {
                 case ConscriptActiveStatus.Idle:
-                    result = DssRef.todoLang.Hud_Idle;
+                    result = DssRef.lang.Hud_Idle;
                     break;
 
                 case ConscriptActiveStatus.CollectingEquipment:
                     {
-                        var progress = string.Format(DssRef.todoLang.Language_CollectProgress, equipmentCollected, DssConst.SoldierGroup_DefaultCount);
-                        result = string.Format(DssRef.todoLang.Conscription_Status_CollectingEquipment, progress);
+                        var progress = string.Format(DssRef.lang.Language_CollectProgress, equipmentCollected, DssConst.SoldierGroup_DefaultCount);
+                        result = string.Format(DssRef.lang.Conscription_Status_CollectingEquipment, progress);
                     }
                     break;
 
                 case ConscriptActiveStatus.CollectingMen:
                     {
-                        var progress = string.Format(DssRef.todoLang.Language_CollectProgress, menCollected, DssConst.SoldierGroup_DefaultCount);
-                        result = string.Format(DssRef.todoLang.Conscription_Status_CollectingMen, progress);
+                        var progress = string.Format(DssRef.lang.Language_CollectProgress, menCollected, DssConst.SoldierGroup_DefaultCount);
+                        result = string.Format(DssRef.lang.Conscription_Status_CollectingMen, progress);
                     }
                     break;
             }            
@@ -155,11 +188,11 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             string result = null;
             if (active == ConscriptActiveStatus.Training)
             {
-                result = string.Format(DssRef.todoLang.Conscription_Status_Training, countdown.RemainingLength().ShortString());
+                result = string.Format(DssRef.lang.Conscription_Status_Training, countdown.RemainingLength().ShortString());
             }
             else
             { 
-                result = activeStringOf(active) + ", " + string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Hud_Que, que <= MaxQue? que.ToString() : DssRef.todoLang.Hud_NoLimit);
+                result = activeStringOf(active) + ", " + string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_Queue, que <= MaxQue? que.ToString() : DssRef.lang.Hud_NoLimit);
             }
             
             return result;
@@ -176,7 +209,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             {
                 remaining = TimeLength().LongString();
             }
-            return string.Format(DssRef.todoLang.Conscription_Status_Training, remaining);
+            return string.Format(DssRef.lang.Conscription_Status_Training, remaining);
         }
     }
 
@@ -574,9 +607,9 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                         case MainWeapon.Sword:
                             return DssRef.lang.UnitType_Soldier;
                         case MainWeapon.KnightsLance:
-                            return DssRef.todoLang.UnitType_CavalryKnight;
+                            return DssRef.lang.UnitType_CavalryKnight;
                         case MainWeapon.TwoHandSword:
-                            return DssRef.todoLang.UnitType_FootKnight;
+                            return DssRef.lang.UnitType_FootKnight;
 
 
                         default:
@@ -612,10 +645,10 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
         public void toHud(RichBoxContent content)
         {
-            content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Conscript_WeaponTitle, LangLib.Weapon(weapon)));
-            content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Conscript_ArmorTitle, LangLib.Armor(armorLevel)));
-            content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Conscript_TrainingTitle, LangLib.Training(training)));
-            content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Conscript_SpecializationTitle, LangLib.SpecializationTypeName(specialization)));
+            content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_WeaponTitle, LangLib.Weapon(weapon)));
+            content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_ArmorTitle, LangLib.Armor(armorLevel)));
+            content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_TrainingTitle, LangLib.Training(training)));
+            content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_SpecializationTitle, LangLib.SpecializationTypeName(specialization)));
 
         }
 

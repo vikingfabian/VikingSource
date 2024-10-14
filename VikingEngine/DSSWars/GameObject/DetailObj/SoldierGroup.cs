@@ -1389,7 +1389,7 @@ namespace VikingEngine.DSSWars.GameObject
             return soldiers.Count == 0;
         }
 
-        public override bool aliveAndBelongTo(Faction faction)
+        public override bool aliveAndBelongTo(int faction)
         {
             return soldiers.Count > 0;
         }

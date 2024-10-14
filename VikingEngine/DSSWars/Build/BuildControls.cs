@@ -170,7 +170,7 @@ namespace VikingEngine.DSSWars.Build
             {
                 var button = new RichboxButton(new List<AbsRichBoxMember> { 
                     new RichBoxSpace(),
-                    new RichBoxText(DssRef.todoLang.Hud_EndSessionIcon),
+                    new RichBoxText(DssRef.lang.Hud_EndSessionIcon),
                     new RichBoxSpace(),
                     },
                     new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.None));
@@ -188,7 +188,7 @@ namespace VikingEngine.DSSWars.Build
                 }
             }
             content.newParagraph();
-            content.Button(DssRef.todoLang.Build_AutoPlace, new RbAction(() =>
+            content.Button(DssRef.lang.Build_AutoPlace, new RbAction(() =>
             {
                 autoPlaceBuilding(city, 1);
             }), null, buildMode == SelectTileResult.Build);
@@ -199,14 +199,14 @@ namespace VikingEngine.DSSWars.Build
             }), null, buildMode == SelectTileResult.Build);
 
             content.newLine();
-            content.Button(DssRef.todoLang.Build_ClearOrders, new RbAction(() =>
+            content.Button(DssRef.lang.Build_ClearOrders, new RbAction(() =>
             {
                 player.orders.clearAll(city);
             }), null, orderLength > 0);
 
 
             content.newParagraph();
-            content.text(string.Format(DssRef.todoLang.Build_OrderQue, orderLength)).overrideColor = HudLib.InfoYellow_Light;
+            content.text(string.Format(DssRef.lang.Build_OrderQue, orderLength)).overrideColor = HudLib.InfoYellow_Light;
 
             content.Add(new RichBoxSeperationLine());
             content.h2(DssRef.lang.Automation_Title);
@@ -214,19 +214,19 @@ namespace VikingEngine.DSSWars.Build
             content.newLine();
             content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
                 {
-                    new RichBoxText( DssRef.todoLang.CityOption_AutoBuild_Work),
+                    new RichBoxText( DssRef.lang.CityOption_AutoBuild_Work),
                 }, city.AutoBuildWorkProperty));
             content.newLine();
 
             content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
                 {
-                    new RichBoxText( DssRef.todoLang.CityOption_AutoBuild_Farm),
+                    new RichBoxText( DssRef.lang.CityOption_AutoBuild_Farm),
                 }, city.AutoBuildFarmProperty));
             //if (autoBuild)
             //{
             //content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
             //{
-            //    new RichBoxText(DssRef.todoLang.CityOption_AutoBuild_Intelligent),
+            //    new RichBoxText(DssRef.lang.CityOption_AutoBuild_Intelligent),
             //}, AutoBuildIntelligentProperty));
 
             if (city.AutoBuildFarmProperty(0, false, false))
@@ -249,7 +249,7 @@ namespace VikingEngine.DSSWars.Build
 
             content.newParagraph();
             
-            city.workTemplate.autoBuild.toHud(player, content, DssRef.todoLang.Work_OrderPrioTitle, WorkPriorityType.autoBuild, player.faction, city);
+            city.workTemplate.autoBuild.toHud(player, content, DssRef.lang.Work_OrderPrioTitle, WorkPriorityType.autoBuild, player.faction, city);
         }
 
         void modeClick(SelectTileResult set)

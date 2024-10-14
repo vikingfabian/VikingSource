@@ -172,19 +172,19 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 
         public void toHud(Players.LocalPlayer player, RichBoxContent content, Faction faction, City city)
         {
-            content.h2(DssRef.todoLang.CityMenu_SalePricesTitle);
+            content.h2(DssRef.lang.CityMenu_SalePricesTitle);
 
-            wood.toHud(player, content, DssRef.todoLang.Resource_TypeName_Wood, ItemResourceType.SoftWood, faction, city);
-            stone.toHud(player, content, DssRef.todoLang.Resource_TypeName_Stone, ItemResourceType.Stone_G, faction, city);
-            food.toHud(player, content, DssRef.todoLang.Resource_TypeName_Food, ItemResourceType.Food_G, faction, city);
+            wood.toHud(player, content, DssRef.lang.Resource_TypeName_Wood, ItemResourceType.SoftWood, faction, city);
+            stone.toHud(player, content, DssRef.lang.Resource_TypeName_Stone, ItemResourceType.Stone_G, faction, city);
+            food.toHud(player, content, DssRef.lang.Resource_TypeName_Food, ItemResourceType.Food_G, faction, city);
 
-            sharpstick.toHud(player, content, DssRef.todoLang.Resource_TypeName_SharpStick, ItemResourceType.SharpStick, faction, city);
-            sword.toHud(player, content, DssRef.todoLang.Resource_TypeName_Sword, ItemResourceType.Sword, faction, city);
-            bow.toHud(player, content, DssRef.todoLang.Resource_TypeName_Bow, ItemResourceType.Bow, faction, city);
+            sharpstick.toHud(player, content, DssRef.lang.Resource_TypeName_SharpStick, ItemResourceType.SharpStick, faction, city);
+            sword.toHud(player, content, DssRef.lang.Resource_TypeName_Sword, ItemResourceType.Sword, faction, city);
+            bow.toHud(player, content, DssRef.lang.Resource_TypeName_Bow, ItemResourceType.Bow, faction, city);
 
-            lightArmor.toHud(player, content, DssRef.todoLang.Resource_TypeName_LightArmor, ItemResourceType.LightArmor, faction, city);
-            mediumArmor.toHud(player, content, DssRef.todoLang.Resource_TypeName_MediumArmor, ItemResourceType.MediumArmor, faction, city);
-            heavyArmor.toHud(player, content, DssRef.todoLang.Resource_TypeName_HeavyArmor, ItemResourceType.HeavyArmor, faction, city);
+            lightArmor.toHud(player, content, DssRef.lang.Resource_TypeName_LightArmor, ItemResourceType.LightArmor, faction, city);
+            mediumArmor.toHud(player, content, DssRef.lang.Resource_TypeName_MediumArmor, ItemResourceType.MediumArmor, faction, city);
+            heavyArmor.toHud(player, content, DssRef.lang.Resource_TypeName_HeavyArmor, ItemResourceType.HeavyArmor, faction, city);
         }
 
     }

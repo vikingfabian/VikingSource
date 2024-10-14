@@ -154,7 +154,7 @@ namespace VikingEngine.DSSWars.Players
 
             //content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
             //    {
-            //        new RichBoxText( DssRef.todoLang.CityOption_AutoBuild),
+            //        new RichBoxText( DssRef.lang.CityOption_AutoBuild),
             //    }, AutoBuildProperty));
             //content.newLine();
 
@@ -162,7 +162,7 @@ namespace VikingEngine.DSSWars.Players
             //{
             //    content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
             //    {
-            //        new RichBoxText(DssRef.todoLang.CityOption_AutoBuild_Intelligent),
+            //        new RichBoxText(DssRef.lang.CityOption_AutoBuild_Intelligent),
             //    }, AutoBuildIntelligentProperty));
 
             //    content.newLine();

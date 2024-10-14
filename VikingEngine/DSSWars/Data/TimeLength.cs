@@ -61,6 +61,11 @@ namespace VikingEngine.DSSWars.Data
         public void start(TimeLength length)
         {
             this.length = length;
+            start();//endTimeSec = Ref.TotalGameTimeSec + length.seconds;
+        }
+
+        public void start()
+        { 
             endTimeSec = Ref.TotalGameTimeSec + length.seconds;
         }
         public bool TimeOut()

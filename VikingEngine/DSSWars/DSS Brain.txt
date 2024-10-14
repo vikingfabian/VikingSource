@@ -1,18 +1,22 @@
 ﻿
 -Change Log-
+* fully translated
 
 
 
 #Todo#
-worker hud
-Factories
-Controller support
-Översätt
+nya achievements
 Video
-split screen
+
 
 
 --Efter release polish--
+out of food warning på armeer
+storage house
+factions utan soldater ska inte deklarera krig
+pilar med resurser från delivery
+resurs nått max stock ikon
+arbetare går för långt
 tydlig ikon för objekt meny typ
 Factories modeller
 Producering av special enheter (tex green soldiers)
@@ -22,6 +26,10 @@ reducera ai delay omn man attackerar
 Ljud
 wipe av city settings vid takeover 
 army speed bonus
+ai använder pengar
+city economy
+bog iron, ineffektiv järn samlande
+
 
 Error
 -back button in menues 
@@ -32,7 +40,7 @@ Retreat system
 -reassemble av flydd arme
 
 Polish
--Knights conscript nobel house
+
 
 -döda av faktion som bara har en soldat kvar
 -Missing file error på load

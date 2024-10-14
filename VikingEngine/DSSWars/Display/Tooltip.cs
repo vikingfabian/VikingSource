@@ -125,7 +125,7 @@ namespace VikingEngine.DSSWars.Display
                 switch (subTile.selectTileResult)
                 {
                     case Players.SelectTileResult.Build:
-                        title = new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Build_PlaceBuilding, player.BuildControls.placeBuildingType));
+                        title = new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Build_PlaceBuilding, player.BuildControls.placeBuildingType));
                         content.Add(title);
                         content.newLine();
                         //CraftBlueprint blueprint = ResourceLib.Blueprint(player.BuildControls.placeBuildingType);
@@ -136,46 +136,46 @@ namespace VikingEngine.DSSWars.Display
                         switch (mayBuild)
                         { 
                             case Players.MayBuildResult.Yes_ChangeCity:
-                                content.text(DssRef.todoLang.BuildHud_OutsideCity).overrideColor = HudLib.InfoYellow_Light; 
+                                content.text(DssRef.lang.BuildHud_OutsideCity).overrideColor = HudLib.InfoYellow_Light; 
                                 break;
 
                             case Players.MayBuildResult.No_OutsideRegion:
                                 avaialableAction = false;
-                                content.text(DssRef.todoLang.BuildHud_OutsideFaction).overrideColor = HudLib.NotAvailableColor;
+                                content.text(DssRef.lang.BuildHud_OutsideFaction).overrideColor = HudLib.NotAvailableColor;
                                 break;
 
                             case Players.MayBuildResult.No_Occupied:
                                 avaialableAction = false;
-                                content.text(DssRef.todoLang.BuildHud_OccupiedTile).overrideColor = HudLib.NotAvailableColor;
+                                content.text(DssRef.lang.BuildHud_OccupiedTile).overrideColor = HudLib.NotAvailableColor;
                                 break;
                         }
                         
                         break;
                     case Players.SelectTileResult.Destroy:
-                        title = new RichBoxText(DssRef.todoLang.Build_DestroyBuilding);
+                        title = new RichBoxText(DssRef.lang.Build_DestroyBuilding);
                         content.Add(title);
                         break;
 
                     case Players.SelectTileResult.ClearTerrain:
-                        title = new RichBoxText(DssRef.todoLang.Build_ClearTerrain);
+                        title = new RichBoxText(DssRef.lang.Build_ClearTerrain);
                         content.Add(title);
                         break;
 
                     case Players.SelectTileResult.CityHall:
-                        title = new RichBoxText(DssRef.todoLang.Hud_SelectCity);
+                        title = new RichBoxText(DssRef.lang.Hud_SelectCity);
                         content.Add(title);
                         break;
 
                     case Players.SelectTileResult.Postal:
-                        title = new RichBoxText(DssRef.todoLang.BuildingType_Postal);
+                        title = new RichBoxText(DssRef.lang.BuildingType_Postal);
                         content.Add(title);
                         break;
                     case Players.SelectTileResult.Recruitment:
-                        title = new RichBoxText(DssRef.todoLang.BuildingType_Recruitment);
+                        title = new RichBoxText(DssRef.lang.BuildingType_Recruitment);
                         content.Add(title);
                         break;
                     case Players.SelectTileResult.Barracks:
-                        title = new RichBoxText(DssRef.todoLang.Conscription_Title);
+                        title = new RichBoxText(DssRef.lang.Conscription_Title);
                         content.Add(title);
                         break;
                 }
@@ -185,7 +185,7 @@ namespace VikingEngine.DSSWars.Display
                 content.newParagraph();
              
             }
-            content.h2(DssRef.todoLang.TerrainType).overrideColor = HudLib.TitleColor_TypeName;
+            content.h2(DssRef.lang.TerrainType).overrideColor = HudLib.TitleColor_TypeName;
             content.text(subTile.subTile.TypeToString());
             
             create(player, content, false);

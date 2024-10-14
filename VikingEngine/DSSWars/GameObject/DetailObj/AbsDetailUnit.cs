@@ -477,7 +477,7 @@ namespace VikingEngine.DSSWars.GameObject
             return health <= 0;
         }
 
-        override public bool aliveAndBelongTo(Faction faction) 
+        override public bool aliveAndBelongTo(int faction) 
         { 
             return health > 0;
         }

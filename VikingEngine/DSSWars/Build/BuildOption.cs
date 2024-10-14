@@ -47,11 +47,11 @@ namespace VikingEngine.DSSWars.Build
             //        switch ((TerrainDecorType)subType)
             //        {
             //            case TerrainDecorType.Pavement:
-            //                return DssRef.todoLang.DecorType_Pavement + " A";
+            //                return DssRef.lang.DecorType_Pavement + " A";
             //            case TerrainDecorType.PavementFlower:
-            //                return DssRef.todoLang.DecorType_Pavement + " B";
+            //                return DssRef.lang.DecorType_Pavement + " B";
             //            case TerrainDecorType.Statue_ThePlayer:
-            //                return DssRef.todoLang.DecorType_Statue;
+            //                return DssRef.lang.DecorType_Statue;
             //        }
             //        break;
             //}
@@ -65,9 +65,9 @@ namespace VikingEngine.DSSWars.Build
                 case TerrainMainType.Building:
                     return LangLib.BuildingDescription((TerrainBuildingType)subType);
                 case TerrainMainType.Foil:
-                    return DssRef.todoLang.BuildingType_Farm_Description;
+                    return DssRef.lang.BuildingType_Farm_Description;
                 case TerrainMainType.Decor:
-                    return DssRef.todoLang.BuildingType_Decor_Description;
+                    return DssRef.lang.BuildingType_Decor_Description;
             }
 
             return TextLib.Error;
