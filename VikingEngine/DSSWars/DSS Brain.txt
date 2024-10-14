@@ -1,16 +1,21 @@
 ﻿
 -Change Log-
 * fully translated
-
-
+* will reduce ai delay when player declare war (so they can respond)
+* reduced the issue of soldiers being stuck behind water in battle
 
 #Todo#
-nya achievements
-Video
-
-
 
 --Efter release polish--
+nya achievements
+
+-1 statue
+-many statues
+-produce knights (max armor/training)
+-army with all unit types
+-deliver food to starving city
+-create an archer with archer culture and a soldier with warrior culture
+
 out of food warning på armeer
 storage house
 factions utan soldater ska inte deklarera krig

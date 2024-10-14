@@ -286,6 +286,7 @@ namespace VikingEngine.DSSWars
                     var player = attacker.player.GetLocalPlayer();
                     ++player.statistics.WarsStartedByYou;
                     player.diplomaticPoints.pay(cost, true);
+                    DssRef.settings.OnPlayerDeclareWar();
 
                     if (prevRelation >= RelationType.RelationType1_Peace)
                     {

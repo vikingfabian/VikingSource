@@ -34,10 +34,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool asynchFindBattleTarget(BattleGroup battle)
         {
-            if (army.id == 2072)
-            {
-                lib.DoNothing();
-            }
+            //if (army.id == 2072)
+            //{
+            //    lib.DoNothing();
+            //}
 
             refreshAttacking();
 

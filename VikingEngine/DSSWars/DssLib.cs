@@ -211,7 +211,7 @@ namespace VikingEngine.DSSWars
 
         public const float ShipBuildTimeSec = 5f;
         public const float ShipExitTimeSec = 3f;
-        public const float BattleMaxQueTimeMs = 4000;
+        public const float BattleMaxQueTimeMs = 2000;
 
         #region OVERVIEW_LAYERS
 

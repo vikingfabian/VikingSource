@@ -30,6 +30,7 @@ namespace VikingEngine.DSSWars
         public int AiArmyPurchase_IncomeMin_Aggresive;
 
         int aiDelayTimeSec = 0;
+      
         public bool AiDelay = true;
 
         public PlaySettings() 
@@ -76,6 +77,18 @@ namespace VikingEngine.DSSWars
                     AiDelay = false;
                 }
             }            
+        }
+
+        public void OnPlayerDeclareWar()
+        {
+            const int DelayReduceToSec = 10;
+            if (AiDelay)
+            {
+                if (aiDelayTimeSec > DelayReduceToSec)
+                { 
+                    aiDelayTimeSec = DelayReduceToSec;
+                }
+            }
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
