@@ -7,14 +7,16 @@
 * fixed workers overshooting their goals
 * tooltip improvements
 
-#Todo#
-sockpile icon
+#Todo (nästa patch)#
+storage house
+bog iron, ineffektiv järn samlande
+
 
 --Efter release polish--
 nya achievements
 
 out of food warning på armeer
-storage house
+
 pilar med resurser från delivery
 tydlig ikon för objekt meny typ
 Factories modeller
@@ -24,7 +26,6 @@ avbryta byggjobb
 Ljud
 army speed bonus
 city economy
-bog iron, ineffektiv järn samlande
 visa antal byggnader i bygg meny
 training skill icon
 

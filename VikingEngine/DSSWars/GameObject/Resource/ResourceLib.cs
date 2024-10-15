@@ -210,6 +210,17 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             }
         );
 
+        public static readonly CraftBlueprint CraftStorehouse = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.StoreHouse,
+           1,
+           new UseResource[]
+           {
+                new UseResource(ItemResourceType.Wood_Group, 60),
+                new UseResource(ItemResourceType.Stone_G, 40)
+           }
+       );
+
         public static readonly CraftBlueprint CraftBrewery = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Brewery,

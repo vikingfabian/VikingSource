@@ -14,6 +14,7 @@ namespace VikingEngine.DSSWars.Map
         public static readonly CityStructure Singleton = new CityStructure();
 
         public List<IntVector2> FoodSpots_workupdate = new List<IntVector2>(4);
+        public List<IntVector2> StoragePoints_workupdate = new List<IntVector2>(4);
         public List<IntVector2> Trees = new List<IntVector2>(20);
         public List<IntVector2> Stones = new List<IntVector2>(20);
         public List<IntVector2> FarmPlant = new List<IntVector2>(20);
@@ -101,6 +102,7 @@ namespace VikingEngine.DSSWars.Map
             IntVector2 topleft;
             ForXYLoop subTileLoop;
             FoodSpots_workupdate.Clear();
+            StoragePoints_workupdate.Clear();
             Trees.Clear();
             Stones.Clear();
             FarmPlant.Clear();
@@ -112,7 +114,9 @@ namespace VikingEngine.DSSWars.Map
             ResourceOnGround.Clear();
             nobelHouseCount = 0;
 
-            FoodSpots_workupdate.Add(WP.ToSubTilePos_Centered(city.tilePos));
+            IntVector2 cityHall = WP.ToSubTilePos_Centered(city.tilePos);
+            FoodSpots_workupdate.Add(cityHall);
+            StoragePoints_workupdate.Add(cityHall);
 
             //Cirkle outward from city to find resources
             for (int radius = 0; radius <= city.cityTileRadius; ++radius)
@@ -208,6 +212,9 @@ namespace VikingEngine.DSSWars.Map
                                             case TerrainBuildingType.Tavern:
                                                 FoodSpots_workupdate.Add(subTileLoop.Position);
                                                 break;
+                                            case TerrainBuildingType.StoreHouse:
+                                                StoragePoints_workupdate.Add(subTileLoop.Position);
+                                                break;
                                             case TerrainBuildingType.Carpenter:
                                                 city.hasBuilding_carpenter = true;
                                                 CraftStation.Add(subTileLoop.Position);
@@ -257,6 +264,24 @@ namespace VikingEngine.DSSWars.Map
                 int dist = workerSubtile.SideLength(pos);
                 if (dist < closestDist)
                 { 
+                    closestDist = dist;
+                    result = pos;
+                }
+            }
+
+            return result;
+        }
+
+        public IntVector2 storePosition(IntVector2 workerSubtile)
+        {
+            int closestDist = int.MaxValue;
+            IntVector2 result = IntVector2.MinValue;
+
+            foreach (var pos in StoragePoints_workupdate)
+            {
+                int dist = workerSubtile.SideLength(pos);
+                if (dist < closestDist)
+                {
                     closestDist = dist;
                     result = pos;
                 }
