@@ -13,35 +13,6 @@ namespace VikingEngine
         public static Dir4 ToDir4(Vector2 dir, bool SouthIsPositive)
         {
             return ToDir4(dir.X, dir.Y, SouthIsPositive);
-            //if (dir == Vector2.Zero) { return Dir4.NUM_NON; }
-            //if (Math.Abs(dir.X) > Math.Abs(dir.Y))
-            //{
-            //    if (dir.X > 0)
-            //    {
-            //        return Dir4.E;
-            //    }
-            //    else
-            //    {
-            //        return Dir4.W;
-            //    }
-            //}
-            //else
-            //{
-            //    if (dir.Y > 0)
-            //    {
-            //        if (SouthIsPositive)
-            //            return Dir4.S;
-            //        else
-            //            return Dir4.N;
-            //    }
-            //    else
-            //    {
-            //        if (SouthIsPositive)
-            //            return Dir4.N;
-            //        else
-            //            return Dir4.S;
-            //    }
-            //}
         }
 
         public static Dir4 ToDir4(float x, float y, bool SouthIsPositive)
@@ -84,6 +55,14 @@ namespace VikingEngine
             int dir8 = Convert.ToInt32(rotation.Radians / (MathHelper.TwoPi / lib.Dir8Count));
             dir8 %= lib.Dir8Count;
             return (Dir8)dir8;
+        }
+
+        public static int ToDir8_INT(Rotation1D rotation)
+        {
+            rotation.Add(-MathHelper.Pi / lib.Dir8Count);
+            int dir8 = Convert.ToInt32(rotation.Radians / (MathHelper.TwoPi / lib.Dir8Count));
+            dir8 %= lib.Dir8Count;
+            return dir8;
         }
 
 
@@ -150,9 +129,6 @@ namespace VikingEngine
         public static Dir8 RadiansToDir8(float angle)
         {
             return lib.WrapDir((Dir8)Convert.ToInt16(angle / MathHelper.PiOver4));
-            //int outVal = (int) SetBoundsRollover(Convert.ToInt16(angle / MathHelper.PiOver4),
-            //    0, (int)Dir8.NUM - 1);
-            //return (Dir8)(outVal);
         }
 
         public static Rotation1D ToRadians(Dir8 dir)
@@ -249,6 +225,30 @@ namespace VikingEngine
                     break;
             }
             return dir;
+        }
+
+        public static void IntToUShorts(int value, out ushort high, out ushort low)
+        {
+            high = (ushort)(value >> 16); // Get the high 16 bits
+            low = (ushort)(value & 0xFFFF); // Get the low 16 bits
+        }
+
+        public static int UShortsToInt(ushort high, ushort low)
+        {
+            return (high << 16) | low;
+        }
+
+        public static IntVector2 IntToIntVector2(int value)
+        {
+            return new IntVector2(
+                value >> 16, // Get the high 16 bits
+                value & 0xFFFF // Get the low 16 bits
+                );
+        }
+
+        public static int IntVector2ToInt(IntVector2 value)
+        {
+            return (value.X << 16) | value.Y;
         }
     }
 }

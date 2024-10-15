@@ -19,7 +19,7 @@
 //        {
 //            //Special, explodera
 //            modelScale = StandardModelScale * 1f;
-//            boundRadius = StandardBoundRadius * 1f;
+//            boundRadius = DssVar.StandardBoundRadius * 1f;
 
 //            walkingSpeed = StandardWalkingSpeed;
 //            rotationSpeed = StandardRotatingSpeed * 0.8f;

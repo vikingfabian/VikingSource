@@ -21,10 +21,12 @@ namespace VikingEngine.DSSWars
         public static Achievements achieve = null;
         public static PlayState state;
         
-        public static GameObject.AllUnits unitsdata;
+        public static GameObject.AllUnits profile;
         public static GameTime time;
         public static Display.Translation.AbsLanguage lang;
+        public static Display.Translation.TodoTranslation todoLang = new Display.Translation.TodoTranslation();
         public static PlaySettings settings;
         public static Difficulty difficulty = new Difficulty();
+        //public static Data.Constants.Const Const = new Data.Constants.Const();
     }
 }

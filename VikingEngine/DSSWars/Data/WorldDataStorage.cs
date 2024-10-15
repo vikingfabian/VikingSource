@@ -23,9 +23,7 @@ namespace VikingEngine.DSSWars
         public void loadMap(Data.WorldMetaData worldMeta)//MapSize size, int mapIndex)
         {
             this.worldData = new WorldData();
-            this.worldData.metaData = worldMeta;//new Data.WorldMetaData(0, size, mapIndex);
-            //this.worldData.mapSize = size;
-            //this.worldData.saveIndex = mapIndex;
+            this.worldData.metaData = worldMeta;
             DssRef.world = this.worldData;
             var filePath = mapfilePath(worldData.metaData.mapSize, worldData.metaData.saveIndex, false);
             readTask = new DataStream.ReadBinaryIO(filePath, worldData.readMapFile, this);

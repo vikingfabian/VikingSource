@@ -95,8 +95,8 @@ namespace VikingEngine.LootFest
         messenger,
         war_veteran,
         dummie,
-        Pig,
-        Hen,
+        
+        
         white_hen,
         chick,
         miner_pig, miner_cow,
@@ -464,6 +464,8 @@ namespace VikingEngine.LootFest
 #region LFWARS
         party_restbar,
         Arrow,
+        Pig,
+        Hen,
         little_kingman,
         little_kingorc,
         little_hirdman,
@@ -492,6 +494,7 @@ namespace VikingEngine.LootFest
         wars_soldier,
         wars_soldier_i2,
         wars_soldier_i3,
+        wars_twohand,
         war_archer,
         war_archer_i2,
         little_longswordman,
@@ -556,8 +559,10 @@ namespace VikingEngine.LootFest
         armybanner,
         armystand,
         cityicon,
+        buildarea,
 
         //city_tower24,
+        city_pen,
         city_workerhut,
         city_cobblestone,
         city_square,
@@ -570,6 +575,14 @@ namespace VikingEngine.LootFest
         city_woodtower,
         city_stonewall,
         city_stonetower,
+        city_tavern,
+        city_postal,
+        city_recruitment,
+        city_barracks,
+        city_mine,
+        city_workstation,
+        city_carpenter,
+        city_nobelhouse,
 
         horse_white, horse_brown,
         
@@ -673,6 +686,7 @@ namespace VikingEngine.LootFest
 
         fol_tree_hard,
         fol_tree_soft,
+        fol_tree_dry,
         fol_sprout,
         fo_stone1,
         fol_bush1,
@@ -681,6 +695,10 @@ namespace VikingEngine.LootFest
         fol_herbs,
         fol_farmculture,
 
+        resource_tree,
+
+        decor_statue,
+        city_pavement,
         #endregion
 
         NUM_NON

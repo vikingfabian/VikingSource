@@ -73,32 +73,36 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (target != null)
             {
-                var data = Data();
-
-                attackCooldownTime.MilliSeconds = data.attackTimePlusCoolDown;
+                attackCooldownTime.MilliSeconds = soldierData.attackTimePlusCoolDown;
                 prevAttackTime = attackCooldownTime.MilliSeconds;
-                attackFrameTime.MilliSeconds = data.attackFrameTime;
-
-                
+                attackFrameTime.MilliSeconds = Profile().attackFrameTime;
+                               
 
                 int damage;
                 if (mainAttack)
                 {
                     if (target.DetailUnitType() == UnitType.City)
                     {
-                        damage = data.attackDamageStructure;
+                        damage = soldierData.attackDamageStructure;
                     }
                     else
                     {
-                        damage = data.attackDamage;
+                        damage = soldierData.attackDamage;
+
+                        if (group != null &&
+                            group.soldierConscript.conscript.specialization == Conscript.SpecializationType.AntiCavalry && 
+                            target.DetailUnitType() == UnitType.ConscriptCavalry)
+                        {
+                            damage = MathExt.MultiplyInt(DssConst.AntiCavalryBonusMultiply, damage);
+                        }
                     }
                 }
                 else
                 {
-                    damage = data.secondaryAttackDamage;
+                    damage = soldierData.secondaryAttackDamage;
                 }
 
-                if (data.mainAttack == AttackType.Melee && mainAttack)
+                if (soldierData.mainAttack == AttackType.Melee && mainAttack)
                 {
                     attackDir = angleToUnit(target);
 
@@ -106,17 +110,22 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         new ShipMeleeAttack(GetSoldierUnit(), attackDir);
                     }
-                    target.takeDamage(damage, attackDir, group.army.faction, fullUpdate);
+                    target.takeDamage(damage, attackDir, GetFaction(), fullUpdate);
                 }
                 else
                 {
+                    if (target.soldierData.arrowWeakness)
+                    {
+                        damage = MathExt.MultiplyInt(DssConst.ArrowWeaknessBonusMultiply, damage);
+                    }
+
                     if (mainAttack)
                     {
-                        Projectile.ProjectileAttack(fullUpdate, this, data.mainAttack, target, damage, data.splashDamageCount, data.percSplashDamage );
+                        Projectile.ProjectileAttack(fullUpdate, this, soldierData.mainAttack, target, damage);
                     }
                     else
                     {
-                        Projectile.ProjectileAttack(fullUpdate, this, data.secondaryAttack, target, damage, 0, 0);
+                        Projectile.ProjectileAttack(fullUpdate, this, soldierData.secondaryAttack, target, damage);
                     }
                 }
             }

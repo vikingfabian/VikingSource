@@ -89,7 +89,6 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string Hud_SoldierGroupsCount { get; }
 
-
         public abstract string Hud_StrengthRating { get; }
 
         public abstract string Hud_TotalStrengthRating { get; }
@@ -420,5 +419,303 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string Input_Source_Controller { get; }
 
 
+        /* #### --------------- ##### */
+        /* #### RESOURCE UPDATE ##### */
+        /* #### --------------- ##### */
+
+
+        public abstract string CityMenu_SalePricesTitle { get; }
+        public abstract string Blueprint_Title { get; }
+        public abstract string Resource_Tab_Overview { get; }
+        public abstract string Resource_Tab_Stockpile { get; }
+
+        public abstract string Resource { get; }
+        public abstract string Resource_StockPile_Info { get; }
+        public abstract string Resource_TypeName_Water { get; }
+        public abstract string Resource_TypeName_Wood { get; }
+        public abstract string Resource_TypeName_Fuel { get; }
+        public abstract string Resource_TypeName_Stone { get; }
+        public abstract string Resource_TypeName_RawFood { get; }
+        public abstract string Resource_TypeName_Food { get; }
+        public abstract string Resource_TypeName_Beer { get; }
+        public abstract string Resource_TypeName_Wheat { get; }
+        public abstract string Resource_TypeName_Linen { get; }
+        public abstract string Resource_TypeName_SkinAndLinen { get; }
+        public abstract string Resource_TypeName_IronOre { get; }
+        public abstract string Resource_TypeName_GoldOre { get; }
+        public abstract string Resource_TypeName_Iron { get; }
+
+        public abstract string Resource_TypeName_SharpStick { get; }
+        public abstract string Resource_TypeName_Sword { get; }
+        public abstract string Resource_TypeName_KnightsLance { get; }
+        public abstract string Resource_TypeName_TwoHandSword { get; }
+        public abstract string Resource_TypeName_Bow { get; }
+
+        public abstract string Resource_TypeName_LightArmor { get; }
+        public abstract string Resource_TypeName_MediumArmor { get; }
+        public abstract string Resource_TypeName_HeavyArmor { get; }
+
+        public abstract string ResourceType_Children { get; }
+
+        public abstract string BuildingType_DefaultName { get; }
+        public abstract string BuildingType_WorkerHut { get; }
+        public abstract string BuildingType_Tavern { get; }
+        public abstract string BuildingType_Brewery { get; }
+        public abstract string BuildingType_Postal { get; }
+        public abstract string BuildingType_Recruitment { get; }
+        public abstract string BuildingType_Barracks { get; }
+        public abstract string BuildingType_PigPen { get; }
+        public abstract string BuildingType_HenPen { get; }
+        public abstract string BuildingType_WorkBench { get; }
+        public abstract string BuildingType_Carpenter { get; }
+        public abstract string BuildingType_CoalPit { get; }
+        public abstract string DecorType_Statue { get; }
+        public abstract string DecorType_Pavement { get; }
+        public abstract string BuildingType_Smith { get; }
+        public abstract string BuildingType_Cook { get; }
+        public abstract string BuildingType_Storage { get; }
+
+        public abstract string BuildingType_ResourceFarm { get; }
+
+        public abstract string BuildingType_WorkerHut_DescriptionLimitX { get; }
+        public abstract string BuildingType_Tavern_Description { get; }
+        public abstract string BuildingType_Tavern_Brewery { get; }
+        public abstract string BuildingType_Postal_Description { get; }
+        public abstract string BuildingType_Recruitment_Description { get; }
+        public abstract string BuildingType_Barracks_Description { get; }
+        public abstract string BuildingType_PigPen_Description { get; }
+        public abstract string BuildingType_HenPen_Description { get; }
+        public abstract string BuildingType_Decor_Description { get; }
+        public abstract string BuildingType_Farm_Description { get; }
+
+        public abstract string BuildingType_Cook_Description { get; }
+        public abstract string BuildingType_Bench_Description { get; }
+
+        public abstract string BuildingType_Smith_Description { get; }
+        public abstract string BuildingType_Carpenter_Description { get; }
+
+        public abstract string BuildingType_Nobelhouse_Description { get; }
+        public abstract string BuildingType_CoalPit_Description { get; }
+        public abstract string BuildingType_Storage_Description { get; }
+
+        public abstract string MenuTab_Info { get; }
+        public abstract string MenuTab_Work { get; }
+        public abstract string MenuTab_Recruit { get; }
+        public abstract string MenuTab_Resources { get; }
+        public abstract string MenuTab_Trade { get; }
+        public abstract string MenuTab_Build { get; }
+        public abstract string MenuTab_Economy { get; }
+        public abstract string MenuTab_Delivery { get; }
+
+        public abstract string MenuTab_Build_Description { get; }
+        public abstract string MenuTab_BlackMarket_Description { get; }
+        public abstract string MenuTab_Resources_Description { get; }
+        public abstract string MenuTab_Work_Description { get; }
+        public abstract string MenuTab_Automation_Description { get; }
+
+        public abstract string BuildHud_OutsideCity { get; }
+        public abstract string BuildHud_OutsideFaction { get; }
+
+        public abstract string BuildHud_OccupiedTile { get; }
+
+        public abstract string Build_PlaceBuilding { get; }
+        public abstract string Build_DestroyBuilding { get; }
+        public abstract string Build_ClearTerrain { get; }
+
+        public abstract string Build_ClearOrders { get; }
+        public abstract string Build_Order { get; }
+        public abstract string Build_OrderQue { get; }
+        public abstract string Build_AutoPlace { get; }
+
+        public abstract string Work_OrderPrioTitle { get; }
+        public abstract string Work_OrderPrioDescription { get; }
+
+        public abstract string Work_OrderPrio_No { get; }
+        public abstract string Work_OrderPrio_Min { get; }
+        public abstract string Work_OrderPrio_Max { get; }
+
+        public abstract string Work_Move { get; }
+
+        public abstract string Work_GatherXResource { get; }
+        public abstract string Work_CraftX { get; }
+        public abstract string Work_Farming { get; }
+        public abstract string Work_Mining { get; }
+        public abstract string Work_Trading { get; }
+
+        public abstract string Work_AutoBuild { get; }
+
+        public abstract string WorkerHud_WorkType { get; }
+        public abstract string WorkerHud_Carry { get; }
+        public abstract string WorkerHud_Energy { get; }
+        public abstract string WorkerStatus_Exit { get; }
+        public abstract string WorkerStatus_Eat { get; }
+        public abstract string WorkerStatus_Till { get; }
+        public abstract string WorkerStatus_Plant { get; }
+        public abstract string WorkerStatus_Gather { get; }
+        public abstract string WorkerStatus_PickUpResource { get; }
+        public abstract string WorkerStatus_DropOff { get; }
+        public abstract string WorkerStatus_BuildX { get; }
+        public abstract string WorkerStatus_TrossReturnToArmy { get; }
+
+        public abstract string Hud_ToggleFollowFaction { get; }
+        public abstract string Hud_FollowFaction_Yes { get; }
+        public abstract string Hud_FollowFaction_No { get; }
+
+        public abstract string Hud_Idle { get; }
+        public abstract string Hud_NoLimit { get; }
+
+        public abstract string Hud_None { get; }
+        public abstract string Hud_Queue { get; }
+
+        public abstract string Hud_EmptyList { get; }
+
+        public abstract string Hud_RequirementOr { get; }
+
+        public abstract string Hud_BlackMarket { get; }
+
+        public abstract string Language_CollectProgress { get; }
+        public abstract string Hud_SelectCity { get; }
+        public abstract string Conscription_Title { get; }
+        public abstract string Conscript_WeaponTitle { get; }
+        public abstract string Conscript_ArmorTitle { get; }
+        public abstract string Conscript_TrainingTitle { get; }
+
+        public abstract string Conscript_SpecializationTitle { get; }
+        public abstract string Conscript_SpecializationDescription { get; }
+        public abstract string Conscript_SelectBuilding { get; }
+
+        public abstract string Conscript_WeaponDamage { get; }
+        public abstract string Conscript_ArmorHealth { get; }
+        public abstract string Conscript_TrainingSpeed { get; }
+        public abstract string Conscript_TrainingTime { get; }
+
+        public abstract string Conscript_Training_Minimal { get; }
+        public abstract string Conscript_Training_Basic { get; }
+        public abstract string Conscript_Training_Skillful { get; }
+        public abstract string Conscript_Training_Professional { get; }
+
+        public abstract string Conscript_Specialization_Field { get; }
+        public abstract string Conscript_Specialization_Sea { get; }
+        public abstract string Conscript_Specialization_Siege { get; }
+        public abstract string Conscript_Specialization_Traditional { get; }
+        public abstract string Conscript_Specialization_AntiCavalry { get; }
+
+        public abstract string Conscription_Status_CollectingEquipment { get; }
+        public abstract string Conscription_Status_CollectingMen { get; }
+        public abstract string Conscription_Status_Training { get; }
+
+        public abstract string ArmyHud_Food_Reserves_X { get; }
+        public abstract string ArmyHud_Food_Upkeep_X { get; }
+        public abstract string ArmyHud_Food_Costs_X { get; }
+
+        public abstract string Deliver_WillSendXInfo { get; }
+        public abstract string Delivery_ListTitle { get; }
+        public abstract string Delivery_DistanceX { get; }
+        public abstract string Delivery_DeliveryTimeX { get; }
+        public abstract string Delivery_SenderMinimumCap { get; }
+        public abstract string Delivery_RecieverMaximumCap { get; }
+        public abstract string Delivery_ItemsReady { get; }
+        public abstract string Delivery_RecieverReady { get; }
+        public abstract string Hud_ThisCity { get; }
+        public abstract string Hud_RecieveingCity { get; }
+
+        public abstract string Info_ButtonIcon { get; }
+
+        public abstract string Info_PerSecond { get; }
+
+        public abstract string Info_MinuteAverage { get; }
+
+        public abstract string Message_CityOutOfFood_Title { get; }
+        public abstract string Message_CityOutOfFood_Text { get; }
+
+        public abstract string Hud_EndSessionIcon { get; }
+
+        public abstract string TerrainType { get; }
+
+        public abstract string Hud_EnergyUpkeepX { get; }
+
+        public abstract string Hud_EnergyAmount { get; }
+
+        public abstract string Hud_CopySetup { get; }
+        public abstract string Hud_Paste { get; }
+
+        public abstract string Hud_Available { get; }
+
+        public abstract string WorkForce_ChildBirthRequirements { get; }
+        public abstract string WorkForce_AvailableHomes { get; }
+        public abstract string WorkForce_Peace { get; }
+        public abstract string WorkForce_ChildToManTime { get; }
+
+        public abstract string Economy_TaxIncome { get; }
+        public abstract string Economy_ImportCostsForResource { get; }
+        public abstract string Economy_BlackMarketCostsForResource { get; }
+        public abstract string Economy_GuardUpkeep { get; }
+
+        public abstract string Economy_LocalCityTrade_Export { get; }
+        public abstract string Economy_LocalCityTrade_Import { get; }
+
+        public abstract string Economy_ResourceProduction { get; }
+        public abstract string Economy_ResourceSpending { get; }
+
+        public abstract string Economy_TaxDescription { get; }
+
+        public abstract string Economy_SoldResources { get; }
+
+        public abstract string UnitType_Cities { get; }
+        public abstract string UnitType_Armies { get; }
+        public abstract string UnitType_Worker { get; }
+
+        public abstract string UnitType_FootKnight { get; }
+        public abstract string UnitType_CavalryKnight { get; }
+
+        public abstract string CityCulture_LargeFamilies { get; }
+        public abstract string CityCulture_FertileGround { get; }
+        public abstract string CityCulture_Archers { get; }
+        public abstract string CityCulture_Warriors { get; }
+        public abstract string CityCulture_AnimalBreeder { get; }
+        public abstract string CityCulture_Miners { get; }
+        public abstract string CityCulture_Woodcutters { get; }
+        public abstract string CityCulture_Builders { get; }
+        public abstract string CityCulture_CrabMentality { get; }
+        public abstract string CityCulture_DeepWell { get; }
+        public abstract string CityCulture_Networker { get; }
+        public abstract string CityCulture_PitMasters { get; }
+
+        public abstract string CityCulture_CultureIsX { get; }
+        public abstract string CityCulture_LargeFamilies_Description { get; }
+        public abstract string CityCulture_FertileGround_Description { get; }
+        public abstract string CityCulture_Archers_Description { get; }
+        public abstract string CityCulture_Warriors_Description { get; }
+        public abstract string CityCulture_AnimalBreeder_Description { get; }
+        public abstract string CityCulture_Miners_Description { get; }
+        public abstract string CityCulture_Woodcutters_Description { get; }
+        public abstract string CityCulture_Builders_Description { get; }
+        public abstract string CityCulture_CrabMentality_Description { get; }
+        public abstract string CityCulture_DeepWell_Description { get; }
+        public abstract string CityCulture_Networker_Description { get; }
+        public abstract string CityCulture_PitMasters_Description { get; }
+
+        public abstract string CityOption_AutoBuild_Work { get; }
+        public abstract string CityOption_AutoBuild_Farm { get; }
+
+        public abstract string Hud_PurchaseTitle_Resources { get; }
+        public abstract string Hud_PurchaseTitle_CurrentlyOwn { get; }
+
+        public abstract string Tutorial_EndTutorial { get; }
+        public abstract string Tutorial_MissionX { get; }
+        public abstract string Tutorial_CollectXAmountOfY { get; }
+        public abstract string Tutorial_SelectTabX { get; }
+        public abstract string Tutorial_IncreasePriorityOnX { get; }
+        public abstract string Tutorial_PlaceBuildOrder { get; }
+        public abstract string Tutorial_ZoomInput { get; }
+
+        public abstract string Tutorial_SelectACity { get; }
+        public abstract string Tutorial_ZoomInWorkers { get; }
+        public abstract string Tutorial_CreateSoldiers { get; }
+        public abstract string Tutorial_ZoomOutOverview { get; }
+        public abstract string Tutorial_ZoomOutDiplomacy { get; }
+        public abstract string Tutorial_ImproveRelations { get; }
+        public abstract string Tutorial_MissionComplete_Title { get; }
+        public abstract string Tutorial_MissionComplete_Unlocks { get; }
     }
 }

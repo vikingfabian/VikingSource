@@ -56,6 +56,9 @@ namespace VikingEngine.HUD.RichBox
 
         virtual public void onEnter() { }
         virtual public void onClick() { }
+
+        virtual public void getButtons(List<RichboxButton> buttons)
+        { }
     }
 
     class RichBoxNewLine : AbsRichBoxMember
@@ -192,7 +195,7 @@ namespace VikingEngine.HUD.RichBox
             float addL = spaceScaleFrom * addLeftSpace;
             float addR = spaceScaleFrom * addRightSpace;
 
-            Vector2 sz = boxsize * scale;
+            Vector2 sz = boxsize * scale * group.groupScale;
             float totalW = addL + sz.X + addR;
 
             if (group.RightEdgeSpace() < totalW)
@@ -281,6 +284,21 @@ namespace VikingEngine.HUD.RichBox
         public override void Create(RichBoxGroup group)
         {
             group.position.X += spaces * group.imageHeight * 0.3f;
+        }
+    }
+
+    class RichBoxScale : AbsRichBoxMember
+    {
+        float scale;
+
+        public RichBoxScale(float scale = 1f)
+        {
+            this.scale = scale;
+        }
+
+        public override void Create(RichBoxGroup group)
+        {
+            group.setScale(scale);
         }
     }
 

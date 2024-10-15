@@ -18,6 +18,6 @@ namespace VikingEngine.DSSWars.GameObject
         
         
 
-        abstract public bool isMelee();
+        //abstract public bool isMelee();
     }
 }

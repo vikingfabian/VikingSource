@@ -91,8 +91,9 @@ namespace VikingEngine.HUD.RichBox
             }
         }
 
-        public void updateMove()
+        public void updateMove(out bool refresh)
         {
+            refresh = false;
             if (input.RichboxGuiUseMove && lockInput <= 0)
             {
                 if (movePos_part >= 0 && parts[movePos_part].canMoveInteract())
@@ -164,11 +165,17 @@ namespace VikingEngine.HUD.RichBox
 
                     if (movePos_part >= 0 && input.RichboxGuiSelect.DownEvent)
                     {
-                        parts[movePos_part].interaction.hover.onClick();//.click?.actionTrigger();
+                        parts[movePos_part].interaction.hover.onClick();
+                        refresh = true;
                     }
                 }
             }
             --lockInput;
+        }
+
+        public Vector2 controllerSelectionPos()
+        {
+            return parts[movePos_part].interaction.hover.area().Position;
         }
 
         public void clearMoveSelection()
@@ -196,8 +203,20 @@ namespace VikingEngine.HUD.RichBox
                     }
                     else
                     {
-                        parts[movePos_part].interaction.hover = parts[movePos_part].richBox.buttonGrid_Y_X[movePos_grid.Y][movePos_grid.X];
-                        parts[movePos_part].interaction.refreshSelectOutline();
+                        var menuPart = parts[movePos_part];
+                        var interaction = menuPart.interaction;
+                        if (interaction != null)
+                        {
+                            if (Bound.SetToArray(ref movePos_grid.Y, menuPart.richBox.buttonGrid_Y_X.Count))
+                            {
+                                if (Bound.SetToArray(ref movePos_grid.X, menuPart.richBox.buttonGrid_Y_X[movePos_grid.Y].Count))
+                                {
+                                    interaction.hover =  menuPart.richBox.buttonGrid_Y_X[movePos_grid.Y][movePos_grid.X];
+                                }
+                            }
+                            
+                            interaction.refreshSelectOutline();
+                        }
                     }
                 }
             }

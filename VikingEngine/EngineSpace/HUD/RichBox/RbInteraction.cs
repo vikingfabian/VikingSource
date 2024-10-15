@@ -22,11 +22,12 @@ namespace VikingEngine.HUD.RichBox
            
             foreach (var m in content)
             {
-                RichboxButton button = m as RichboxButton;
-                if (button != null)
-                {
-                    buttons.Add(button);
-                }
+                m.getButtons(buttons);
+                //RichboxButton button = m as RichboxButton;
+                //if (button != null)
+                //{
+                //    buttons.Add(button);
+                //}
             }
         }
 

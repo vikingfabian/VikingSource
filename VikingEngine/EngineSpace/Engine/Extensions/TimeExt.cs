@@ -7,10 +7,10 @@ namespace VikingEngine
 {
     static class TimeExt
     {
-        public const int SecondInMs = 1000;
-        public const float MsToSec = 1f / SecondInMs;
+        public const int SecondToMs = 1000;
+        public const float MsToSec = 1f / SecondToMs;
         public const int MinuteInSeconds = 60;
-        const int MinuteInMs = SecondInMs * MinuteInSeconds;
+        const int MinuteInMs = SecondToMs * MinuteInSeconds;
 
         public static float MinutesToMS(float min)
         {
@@ -19,7 +19,7 @@ namespace VikingEngine
 
         public static float SecondsToMS(float sec)
         {
-            return sec * SecondInMs;
+            return sec * SecondToMs;
         }
 
         public static float SecondsToHours(float sec)
@@ -29,7 +29,7 @@ namespace VikingEngine
 
         public static float MillsSecToSec(float ms)
         {
-            return ms / SecondInMs;
+            return ms / SecondToMs;
         }
 
         public static float ValuePerSec_toMs(float value)

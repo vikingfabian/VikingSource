@@ -14,8 +14,9 @@ namespace VikingEngine.DSSWars.Players
 {
     class Selection
     {
-        public AbsWorldObject obj = null;
-        AbsWorldObject prevObj = null;
+        public AbsGameObject obj = null;
+        public SelectedSubTile subTile;
+        AbsGameObject prevObj = null;
         public bool isNew = false;
 
         //public Mesh frameModel;
@@ -32,7 +33,7 @@ namespace VikingEngine.DSSWars.Players
         //public Army sendUnitsToArmy;
         //public bool menuStateChange = false;
 
-        public Selection(LocalPlayer player)
+        public Selection(LocalPlayer player, bool isHover)
         {
             playerCam = player.playerData.localPlayerIndex;
             //frameModel = new Mesh(LoadedMesh.SelectSquareDotted, Vector3.Zero, Vector3.One,
@@ -41,6 +42,8 @@ namespace VikingEngine.DSSWars.Players
             //frameModel.AddToRender(DrawGame.UnitDetailLayer);
             //frameModel.setVisibleCamera(player.playerData.localPlayerIndex);
             //frameModel.Visible = false;
+
+            subTile = new SelectedSubTile(player, isHover);
         }
 
         public void ClearSelectionModels()
@@ -137,7 +140,6 @@ namespace VikingEngine.DSSWars.Players
         public void end()
         {
             isNew = prevObj != obj;
-
         }
 
         public bool clear()
@@ -162,18 +164,9 @@ namespace VikingEngine.DSSWars.Players
             }
 
             return false;
-            //menuState.Clear();
-            //menuStateChange = false;
         }
-
-        //public void clearSelection()
-        //{
-        //    obj = null;
-        //    frameModel.Visible = false;
-        //    guiModels.DeleteAll();
-        //    menuState.Clear();
-        //}
-
-        
+                
     }
+
+    
 }

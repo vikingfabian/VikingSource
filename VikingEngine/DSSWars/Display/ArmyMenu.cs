@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.MoonFall;
@@ -25,12 +26,7 @@ namespace VikingEngine.DSSWars.Display
             {
 
                 default:
-                    if (player.input.inputSource.IsController)
-                    {
-                        content.Add(new HUD.RichBox.RichBoxImage(player.input.ControllerFocus.Icon));
-                        content.Add(new HUD.RichBox.RichBoxText(":"));
-                        content.newLine();
-                    }
+                    
 
                     var haltButton = new HUD.RichBox.RichboxButton(
                     new List<AbsRichBoxMember>
@@ -43,7 +39,7 @@ namespace VikingEngine.DSSWars.Display
 
                     content.newLine();
 
-                    if (!player.inTutorialMode)
+                    if (player.tutorial == null)
                     {
                         var disbandButton = new HUD.RichBox.RichboxButton(
                         new List<AbsRichBoxMember>
@@ -107,22 +103,23 @@ namespace VikingEngine.DSSWars.Display
 
                 case DisbandMenuState:
                     {
-                        content.h2(DssRef.lang.ArmyOption_Disband);
-                        var status = army.Status().getTypeCounts();
+                        content.h2(DssRef.lang.ArmyOption_Disband).overrideColor = HudLib.TitleColor_Label;
+                        var status = army.Status().getTypeCounts(army.faction);
 
                         foreach (var kv in status)
                         {
                             content.newLine();
-                            content.text(string.Format(DssRef.lang.ArmyOption_XGroupsOfType, kv.Value, DssRef.unitsdata.Name(kv.Key)));//kv.Key.ToString() + " groups: " + kv.Value);
+                            content.Add(new RichBoxImage(AllUnits.UnitFilterIcon(kv.Key)));
+                            content.Add(new RichBoxText(string.Format(DssRef.lang.ArmyOption_XGroupsOfType, kv.Value, LangLib.UnitFilterName(kv.Key))));//kv.Key.ToString() + " groups: " + kv.Value);
                             content.newLine();
                             content.Button(string.Format(DssRef.lang.ArmyOption_RemoveX, 1),//"Remove 1",
-                                new RbAction2Arg<UnitType, int>(army.disbandSoldiersAction, kv.Key, 1, SoundLib.menu),
+                                new RbAction2Arg<UnitFilterType, int>(army.disbandSoldiersAction, kv.Key, 1, SoundLib.menu),
                                 null, true);
 
                             content.space();
 
                             content.Button(string.Format(DssRef.lang.ArmyOption_RemoveX, 5),//"Remove 5",
-                                new RbAction2Arg<UnitType, int>(army.disbandSoldiersAction, kv.Key, 5, SoundLib.menu),
+                                new RbAction2Arg<UnitFilterType, int>(army.disbandSoldiersAction, kv.Key, 5, SoundLib.menu),
                                 null,
                                 kv.Value >= 5);
 
@@ -136,6 +133,8 @@ namespace VikingEngine.DSSWars.Display
                             new RbAction1Arg<string>(player.hud.displays.SetMenuState, DisbandAllMenuState, SoundLib.menu), 
                             null);
                         content.Add(allbutton);
+
+                        content.newParagraph();
                     }
                     break;
 
@@ -157,14 +156,14 @@ namespace VikingEngine.DSSWars.Display
                     {
                         if (player.hud.displays.otherArmy == null)
                         {
-                            content.h2(DssRef.lang.ArmyOption_SendToNewArmy);
+                            content.h2(DssRef.lang.ArmyOption_SendToNewArmy).overrideColor = HudLib.TitleColor_Label;
                         }
                         else
                         {
-                            content.h2(string.Format(DssRef.lang.ArmyOption_SendToX, player.hud.displays.otherArmy.TypeName()));//"Send units to " + player.hud.displays.otherArmy.TypeName());
+                            content.h2(string.Format(DssRef.lang.ArmyOption_SendToX, player.hud.displays.otherArmy.TypeName())).overrideColor = HudLib.TitleColor_Label;
                         }
                         
-                        var status = army.Status().getTypeCounts();
+                        var status = army.Status().getTypeCounts(army.faction);
                         bool splitable = false;
 
                         foreach (var kv in status)
@@ -205,29 +204,30 @@ namespace VikingEngine.DSSWars.Display
                         foreach (var kv in status)
                         {
                             content.newLine();
-                            content.text(string.Format(DssRef.lang.ArmyOption_XGroupsOfType, kv.Value, DssRef.unitsdata.Name(kv.Key)));//kv.Key.ToString() + " groups: " + kv.Value);
+                            content.Add(new RichBoxImage(AllUnits.UnitFilterIcon(kv.Key)));
+                            content.Add(new RichBoxText(string.Format(DssRef.lang.ArmyOption_XGroupsOfType, kv.Value, LangLib.UnitFilterName(kv.Key))));//kv.Key.ToString() + " groups: " + kv.Value);
                             content.newLine();
                             content.Button(string.Format(DssRef.lang.ArmyOption_SendX, 1),//"Send 1",
-                                new RbAction2Arg<UnitType, int>(tradeSoldiersAction, kv.Key, 1, SoundLib.menu),
+                                new RbAction2Arg<UnitFilterType, int>(tradeSoldiersAction, kv.Key, 1, SoundLib.menu),
                                 null, true);
 
                             content.space();
 
                             content.Button(string.Format(DssRef.lang.ArmyOption_SendX, 5),//"Send 5",
-                                new RbAction2Arg<UnitType, int>(tradeSoldiersAction, kv.Key, 5, SoundLib.menu),
+                                new RbAction2Arg<UnitFilterType, int>(tradeSoldiersAction, kv.Key, 5, SoundLib.menu),
                                 null,
                                 kv.Value >= 5);
 
                             content.space();
 
                             content.Button(DssRef.lang.ArmyOption_SendAll,//"Send All",
-                               new RbAction2Arg<UnitType, int>(tradeSoldiersAction, kv.Key, kv.Value, SoundLib.menu),
+                               new RbAction2Arg<UnitFilterType, int>(tradeSoldiersAction, kv.Key, kv.Value, SoundLib.menu),
                                null, true);
 
                         }
-                        
 
-                        
+                        content.newParagraph();
+
                     }
                     break;
             }
@@ -238,7 +238,7 @@ namespace VikingEngine.DSSWars.Display
         {
             player.hud.displays.otherArmy = null;
 
-            var status = army.Status().getTypeCounts();
+            var status = army.Status().getTypeCounts(army.faction);
             foreach (var kv in status)
             {
                 if (kv.Value > 1)
@@ -279,7 +279,7 @@ namespace VikingEngine.DSSWars.Display
             }
         }
 
-        void tradeSoldiersAction(UnitType type, int count)
+        void tradeSoldiersAction(UnitFilterType type, int count)
         {
             army.tradeSoldiersAction(ref player.hud.displays.otherArmy, type, count);            
         }

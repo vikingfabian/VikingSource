@@ -23,6 +23,13 @@ namespace VikingEngine
             return (int)pullValue;
         }
 
+        public int pull()
+        {
+            double pullValue = Math.Floor(value);
+            value -= pullValue;
+            return (int)pullValue;
+        }
+
         public bool pay(int amount, bool allowDept)
         {
             if (allowDept || value >= amount)

@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.Map.Settings
                 new TileColor(new Color(208,207,148), SurfaceTextureType.Sand),
                 new TileColor(new Color(40, 43, 19), SurfaceTextureType.None), 
                 new TileColor(new Color(75, 76, 73), SurfaceTextureType.None),
-                1.1f, 0.6f
+                1.1f, 0.6f, 0
                 );
 
             bioms[(int)BiomType.Green] = new Biom(
@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars.Map.Settings
                 new TileColor(new Color(255,254,181), SurfaceTextureType.Sand),
                 new TileColor(new Color(8, 71, 6), SurfaceTextureType.None), 
                 new TileColor(new Color(73, 76, 73), SurfaceTextureType.None),
-                1f, 0.25f
+                1f, 0.25f, 0
                 );
 
             bioms[(int)BiomType.YellowDry] = new Biom(
@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.Map.Settings
                 new TileColor(new Color(255,237,130), SurfaceTextureType.Sand), 
                 new TileColor(new Color(80, 60, 2), SurfaceTextureType.None), 
                 new TileColor(new Color(81, 79, 68), SurfaceTextureType.None),
-                0.6f, 0
+                0.5f, 0, 0.6f
                 );
 
             bioms[(int)BiomType.RedDry] = new Biom(
@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.Map.Settings
                new TileColor(new Color(255,220,130), SurfaceTextureType.Sand),
                 new TileColor(new Color(60, 33, 9), SurfaceTextureType.None), 
                 new TileColor(new Color(90, 79, 65), SurfaceTextureType.None),
-                0.75f, 0
+                0.6f, 0, 0.5f
                 );
 
             bioms[(int)BiomType.Frozen] = new Biom(
@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.Map.Settings
                 new TileColor(new Color(197, 242, 242), SurfaceTextureType.Sand), 
                 new TileColor(new Color(40, 53, 47), SurfaceTextureType.None), 
                 new TileColor(new Color(97, 114, 114), SurfaceTextureType.None),
-                1.3f, 0.8f
+                1.3f, 0.8f, 0.2f
                 );
         }
     }
@@ -66,15 +66,17 @@ namespace VikingEngine.DSSWars.Map.Settings
         public TileColor brightCoast;
         public float percTree;
         public float percSoftTree;
+        public float percDryWood;
 
         public SurfaceTextureType textureType = SurfaceTextureType.None;
 
         public Biom(TileColor mainCol, 
             TileColor brightCoast, TileColor darkGradient, TileColor mountain,
-            float percTree, float percSoftTree)
+            float percTree, float percSoftTree, float percDryWood)
         {
             this.percTree = percTree;
             this.percSoftTree = percSoftTree;
+            this.percDryWood = percDryWood;
             this.brightCoast = brightCoast;
             //Under water coastal color
             for (int height = 0; height <= Height.LowWaterHeight; height++)

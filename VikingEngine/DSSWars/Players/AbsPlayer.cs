@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Players
@@ -14,17 +16,26 @@ namespace VikingEngine.DSSWars.Players
         protected const int AggressionLevel2_RandomAttacks = 2;
         protected const int AggressionLevel3_FocusedAttacks = 3;
 
-        //public List<AbsPlayer> opponents = new List<AbsPlayer>(2);
         public bool IsPlayerNeighbor = false;
         public Faction faction;
         public int aggressionLevel = AggressionLevel0_Passive;
         public bool protectedPlayer = false;
         protected bool ignorePlayerCapture = false;
 
+        //public List<AbsOrder> orders = new List<AbsOrder>();
+        public Orders.Orders orders;
+        abstract public void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType buildType, out bool intelligent);
         public AbsPlayer(Faction faction)
         {
             this.faction = faction;
             faction.SetStartOwner(this);
+
+            createStartupBarracks();
+        }
+
+        public void createStartupBarracks()
+        { 
+            faction.mainCity?.createStartupBarracks();
         }
 
         virtual public void Update()
@@ -34,7 +45,7 @@ namespace VikingEngine.DSSWars.Players
         {
 
         }
-        virtual public void readGameState(System.IO.BinaryReader r, int version)
+        virtual public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
 
         }
@@ -78,8 +89,6 @@ namespace VikingEngine.DSSWars.Players
                 faction.tradeAllianceWars(otherFaction);
             }
         }
-
-        
 
         public void onPlayerNeighborCapture(LocalPlayer player)
         {
@@ -133,6 +142,8 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
 
+                player.GetAiPlayer().refreshAggression();
+
                 var relation = DssRef.diplomacy.GetOrCreateRelation(faction, player.faction);
                 relation.SetWorseSpeakTerms(DssRef.diplomacy.SpeakTermsOnNeigbor_BadChance, DssRef.diplomacy.SpeakTermsOnNeigbor_NoneChance);
 
@@ -167,7 +178,9 @@ namespace VikingEngine.DSSWars.Players
         abstract public string Name { get; }
 
         virtual public void OnCityCapture(City city)
-        {}
+        {
+            
+        }
     }
 
     

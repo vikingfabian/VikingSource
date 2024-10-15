@@ -1,10 +1,11 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
-
+using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.MoonFall;
@@ -47,8 +48,8 @@ namespace VikingEngine.DSSWars
 
         public float militaryStrength = 0;
         public bool hasDeserters = true;
-
         
+
 
         public Faction()
         { }
@@ -74,6 +75,7 @@ namespace VikingEngine.DSSWars
             
         }
 
+       
         public void onGameStart(bool newGame)
         {
             player.onGameStart(newGame);
@@ -98,8 +100,6 @@ namespace VikingEngine.DSSWars
         }
         virtual public void writeGameState(System.IO.BinaryWriter w)
         {
-            //profile.write(w);
-
             w.Write(gold);
 
             w.Write((ushort)cities.Count);
@@ -126,17 +126,14 @@ namespace VikingEngine.DSSWars
                     diplomaticRelations[i].write(w);
                 }
             }
-            w.Write(short.MinValue);//write end
-                        
-
+            w.Write(short.MinValue);
             player.writeGameState(w);
 
-            
-        }
-        virtual public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
-        {
-            //profile = new FlagAndColor(r);
+            workTemplate.writeGameState(w, false);
 
+        }
+        virtual public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
+        {
             gold = r.ReadInt32();
 
             int citiesCount = r.ReadUInt16();
@@ -154,7 +151,7 @@ namespace VikingEngine.DSSWars
             for (int i = 0; i < armiesCount; i++)
             {
                 var army = new Army();
-                army.readGameState(this, r, version, pointers);
+                army.readGameState(this, r, subVersion, pointers);
                 //armies.Add(army);
             }
 
@@ -162,7 +159,7 @@ namespace VikingEngine.DSSWars
             while (true)
             { 
                 DiplomaticRelation relation = new DiplomaticRelation();
-                if (relation.read(r, version))
+                if (relation.read(r, subVersion))
                 {
                     relation.addToFactions();
                 }
@@ -174,8 +171,9 @@ namespace VikingEngine.DSSWars
 
             
 
-            player.readGameState(r, version);
+            player.readGameState(r, subVersion, pointers);
 
+            workTemplate.readGameState(r, subVersion, false);
         }
 
         virtual public void writeNet(System.IO.BinaryWriter w)
@@ -268,10 +266,6 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            if (factiontype == FactionType.SouthHara)
-            {
-                lib.DoNothing();
-            }
 
             if (!cities.Contains(city))
             {
@@ -280,6 +274,10 @@ namespace VikingEngine.DSSWars
                 if (!duringStartUp)
                 {
                     player.OnCityCapture(city);
+
+                    city.workTemplate.setAllToFollowFaction();
+                    city.workTemplate.onFactionChange(workTemplate);
+                    city.defaultResourceBuffer();
 
                     if (mainCity == null || mainCity.faction != this)
                     {
@@ -357,10 +355,10 @@ namespace VikingEngine.DSSWars
             {
                 lib.DoNothing();
             }
-            if (Ref.rnd.Chance(0.2))
-            {
-                desertersUpdate();
-            }
+            //if (Ref.rnd.Chance(0.2))
+            //{
+            //    desertersUpdate();
+            //}
 
             if (factiontype == FactionType.SouthHara)
             {
@@ -380,56 +378,58 @@ namespace VikingEngine.DSSWars
         
         }
 
-        void desertersUpdate()
-        {
-            if ( gold < 0)
-            {
-                //if (factiontype == FactionType.SouthHara)
-                //{
-                //    lib.DoNothing();
-                //}
-                int payDiff = -gold + armyUpkeep;
+        //void desertersUpdate()
+        //{
+        //    if ( gold < 0)
+        //    {
+        //        //if (factiontype == FactionType.SouthHara)
+        //        //{
+        //        //    lib.DoNothing();
+        //        //}
+        //        int payDiff = -gold + armyUpkeep;
 
-                if (hasDeserters && payDiff >= armyUpkeep * 5)
-                {
+        //        if (hasDeserters && payDiff >= armyUpkeep * 5)
+        //        {
                     
-                    //Gain a portion of deserters on all armies
-                    int totalDeserters = 0;
+        //            //Gain a portion of deserters on all armies
+        //            int totalDeserters = 0;
 
-                    var armiesCounter = armies.counter();
-                    while (armiesCounter.Next())
-                    {
-                        totalDeserters += armiesCounter.sel.desertSoldiers();
-                    }
+        //            var armiesCounter = armies.counter();
+        //            while (armiesCounter.Next())
+        //            {
+        //                totalDeserters += armiesCounter.sel.desertSoldiers();
+        //            }
 
-                    if (player.IsPlayer())
-                    {
-                        player.GetLocalPlayer().hud.messages.Add(DssRef.lang.EventMessage_DesertersTitle, DssRef.lang.EventMessage_DesertersText);
-                        player.GetLocalPlayer().statistics.SoldiersDeserted += totalDeserters;
-                    }
-                }
-            }
-        }
+        //            if (player.IsPlayer())
+        //            {
+        //                player.GetLocalPlayer().hud.messages.Add(DssRef.lang.EventMessage_DesertersTitle, DssRef.lang.EventMessage_DesertersText);
+        //                player.GetLocalPlayer().statistics.SoldiersDeserted += totalDeserters;
+        //            }
+        //        }
+        //    }
+        //}
 
         public void asynchAiPlayersUpdate(float time)
         {
             player.aiPlayerAsynchUpdate(time);
         }
 
-        public void asynchGameObjectsUpdate(float time)
+
+        
+        public void asynchGameObjectsUpdate(float time, float oneSecondUpdate, bool oneMinute)
         {
             float totalStrength = 0;
 
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
-                armiesC.sel.asynchGameObjectsUpdate(time);
+                armiesC.sel.asynchGameObjectsUpdate(time, oneMinute);
                 totalStrength += armiesC.sel.strengthValue;
             }
 
             militaryStrength = totalStrength;
 
-            resources_updateAsynch();
+            resources_updateAsynch(oneSecondUpdate);
         }
 
         public void asynchSleepObjectsUpdate(float time)
@@ -895,15 +895,15 @@ namespace VikingEngine.DSSWars
 
         public FactionSize Size()
         {
-            if (cityIncome <= DssLib.LargeCityMaxWorkForce * 2)
+            if (citiesEconomy.workerCount <= DssConst.LargeCityStartMaxWorkForce * 2)
             {
                 return FactionSize.Tiny;
             }
-            else if (cityIncome <= DssLib.LargeCityMaxWorkForce * 6)
+            else if (citiesEconomy.workerCount <= DssConst.LargeCityStartMaxWorkForce * 6)
             {
                 return FactionSize.Normal;
             }
-            else if (cityIncome <= DssLib.LargeCityMaxWorkForce * 30)
+            else if (citiesEconomy.workerCount <= DssConst.LargeCityStartMaxWorkForce * 30)
             {
                 return FactionSize.Big;
             }
@@ -972,6 +972,11 @@ namespace VikingEngine.DSSWars
             }
 
             return null;    
+        }
+
+        public override bool aliveAndBelongTo(Faction faction)
+        {
+            return faction == this;
         }
 
         public override GameObjectType gameobjectType()

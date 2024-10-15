@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.GameObject
             
             toShip = !group.IsShip();
 
-            transformTimer.Seconds = (toShip ? DssLib.ShipBuildTimeSec : DssLib.ShipExitTimeSec) * group.SoldierData().ShipBuildTimeMultiplier;
+            transformTimer.Seconds = (toShip ? DssLib.ShipBuildTimeSec : DssLib.ShipExitTimeSec) * group.typeCurrentData.ShipBuildTimeMultiplier;
 
             AddToUpdateList();
 
@@ -69,18 +69,18 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 DeleteMe();
             }
-            else if (transformEffect && group.army.inRender)
+            else if (transformEffect && group.army.inRender_detailLayer)
             {
                 if (transformModel == null)
                 {
-                    transformModel = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_shipbuild, AbsDetailUnitData.StandardModelScale * 2f, false);
+                    transformModel = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_shipbuild, DssConst.Men_StandardModelScale * 2f, false);
 
                     //transformIcon = new Graphics.Mesh(LoadedMesh.cube_repeating, group.position,
                     //    new Vector3(AbsDetailUnitData.StandardModelScale * 2f), Graphics.TextureEffectType.Flat,
                     //        SpriteName.WhiteArea, Color.Brown, false);
                     
 
-                    loadingModel = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_loading_anim, AbsDetailUnitData.StandardModelScale * 2f, false);
+                    loadingModel = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_loading_anim, DssConst.Men_StandardModelScale * 2f, false);
                     transformModel.Frame = toShip? 0 : 1;
                     
 

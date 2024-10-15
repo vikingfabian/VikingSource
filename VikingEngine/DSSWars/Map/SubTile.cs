@@ -2,6 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Valve.Steamworks;
+using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Players;
+using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Map
 {
@@ -13,10 +17,10 @@ namespace VikingEngine.DSSWars.Map
         public TerrainMainType mainTerrain = TerrainMainType.NUM;
         public int subTerrain = -1;
         /// <summary>
-        /// Amount of resources that can be extracted, or other value like building size
+        /// Amount of resources that can be extracted, animation frame for resources, or other value like building size
         /// </summary>
-        public int terrainValue = 0;
-        //public int colorVariant = 0;
+        public int terrainAmount = 0;
+
         public int terrainQuality = 0;
 
         /// <summary>
@@ -31,30 +35,118 @@ namespace VikingEngine.DSSWars.Map
             this.mainTerrain = type;
         }
 
-        public void SetType(TerrainMainType main, int under, int value)
+        public void SetType(TerrainMainType main, int under, int amount)
         {
             mainTerrain = main;
             subTerrain = under;
-            terrainValue = value;
+            terrainAmount = amount;
         }
 
         public void write(System.IO.BinaryWriter w)
         {
-            w.Write(color.R);
-            w.Write(color.G);
-            w.Write(color.B);
-            w.Write(groundY);
+            //w.Write(color.R);
+            //w.Write(color.G);
+            //w.Write(color.B);
+            //w.Write(groundY);
             w.Write((byte)mainTerrain);
+            w.Write((byte)subTerrain);
+            w.Write((byte)terrainAmount);
+            w.Write(collectionPointer);
         }
 
         public void read(System.IO.BinaryReader r, int version)
         {
-            byte rValue = r.ReadByte();
-            byte gValue = r.ReadByte();
-            byte bValue = r.ReadByte();
-            color = new Color(rValue, gValue, bValue);
-            groundY = r.ReadSingle();
+            //byte rValue = r.ReadByte();
+            //byte gValue = r.ReadByte();
+            //byte bValue = r.ReadByte();
+            //color = new Color(rValue, gValue, bValue);
+            //groundY = r.ReadSingle();
             mainTerrain = (TerrainMainType)r.ReadByte();
+            subTerrain = r.ReadByte();
+            terrainAmount = r.ReadByte();
+            collectionPointer = r.ReadInt32();
+        }
+
+        public bool MayBuild()
+        {
+            switch (mainTerrain)
+            {
+                case TerrainMainType.Building:
+                case TerrainMainType.DefaultSea:
+                    return false;
+
+                case TerrainMainType.Foil:
+                    switch ((TerrainSubFoilType)subTerrain)
+                    {
+                        case TerrainSubFoilType.LinenFarm:
+                        case TerrainSubFoilType.WheatFarm:
+                            return false;
+                        
+                    }
+                    break;
+
+
+            }
+
+            return true;
+            //if (mainTerrain == TerrainMainType.Foil &&
+            //    subTerrain >= 0)
+            //{
+            //    return (TerrainSubFoilType)subTerrain;
+            //}
+
+            //var current = GeBuildingType();
+            //if (current == TerrainBuildingType.NUM_NONE &&
+            //    mainTerrain != TerrainMainType.DefaultSea)
+            //{
+            //    return true;
+            //}
+            //else
+            //{
+            //    return false;//MayBuildResult.No_Occupied;
+            //}
+        }
+
+        public TerrainSubFoilType GetFoilType()
+        {
+            if (mainTerrain == TerrainMainType.Foil &&
+                subTerrain >= 0)
+            {
+                return (TerrainSubFoilType)subTerrain;
+            }
+
+            return TerrainSubFoilType.NUM_NONE;
+        }
+
+        public TerrainBuildingType GeBuildingType()
+        {
+            if (mainTerrain == TerrainMainType.Building &&
+                subTerrain >= 0)
+            {
+                return (TerrainBuildingType)subTerrain;
+            }
+
+            return TerrainBuildingType.NUM_NONE;
+        }
+
+        public string TypeToString()
+        {
+           string result =  mainTerrain.ToString();
+
+            switch (mainTerrain)
+            {
+                case TerrainMainType.Building:
+                    result += " - " + ((TerrainBuildingType)subTerrain).ToString();
+                    break;
+                case TerrainMainType.Foil:
+                    result += " - " + ((TerrainSubFoilType)subTerrain).ToString();
+                    break;
+                case TerrainMainType.Mine:
+                    result += " - " + ((TerrainMineType)subTerrain).ToString();
+                    break;
+            }
+
+            return result;
         }
     }
 

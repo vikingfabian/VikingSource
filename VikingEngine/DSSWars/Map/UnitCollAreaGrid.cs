@@ -193,6 +193,59 @@ namespace VikingEngine.DSSWars.Map
         }
 
 
+        public List<AbsMapObject> MapControlsWorkerCities(IntVector2 tilePos)
+        {
+            const int MinCityCount = 6;
+            UnitCollArea area;
+            IntVector2 areaPos = tilePos / UnitGridSquareWidth;
+            playerNearMapObjects.Clear();
+            checkArea(areaPos); //adding center tile
+
+            int radius = 1;
+
+            while (playerNearMapObjects.Count < MinCityCount)
+            {
+                ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(areaPos, radius));
+                while (loop.Next())
+                {
+                    checkArea(loop.Position);
+                }
+
+                ++radius;
+            }
+
+            //if (false)
+            //{
+            //    int find = 138;
+            //    //find specific city
+            //    for (int y = 0; y < grid.Size.Y; ++y)
+            //    {
+            //        for (int x = 0; x < grid.Size.X; ++x)
+            //        {
+            //            foreach (var c in grid.array[x, y].cities)
+            //            {
+            //                if (c.parentArrayIndex == find)
+            //                { 
+            //                    lib.DoNothing();
+            //                    break;
+            //                }
+            //            }
+                       
+            //        }
+            //    }
+            //}
+
+            return playerNearMapObjects;
+
+            void checkArea(IntVector2 pos)
+            {
+                if (grid.TryGet(pos, out area))
+                {
+                    playerNearMapObjects.AddRange(area.cities);
+                }
+            }
+        }
+
         public List<AbsMapObject> MapControlsNearMapObjects(IntVector2 tilePos, bool controller)
         {
             playerNearMapObjects.Clear();
@@ -244,6 +297,58 @@ namespace VikingEngine.DSSWars.Map
                             }
                         }
                     }
+                }
+            }
+
+            return playerNearMapObjects;
+        }
+
+        public List<AbsMapObject> MapControlsNearMapObjects_Workers(IntVector2 tilePos, bool controller)
+        {
+            playerNearMapObjects.Clear();
+
+            IntVector2 areaPos = tilePos / UnitGridSquareWidth;
+            UnitCollArea area;
+
+            //if (grid.TryGet(areaPos.X, areaPos.Y, out area))
+            //{
+            //    if (area.cities != null)
+            //    {
+            //        playerNearMapObjects.AddRange(area.cities);
+            //    }
+            //    var armies_sp = area.armies;
+            //    if (armies_sp != null)
+            //    {
+            //        playerNearMapObjects.AddRange(armies_sp);
+            //    }
+            //}
+
+            //if (!controller && playerNearMapObjects.Count > 0)
+            //{
+            //    return playerNearMapObjects;
+            //}
+
+            const int Radius = 3;
+
+            for (int y = areaPos.Y - Radius; y <= areaPos.Y + Radius; ++y)
+            {
+                for (int x = areaPos.X - Radius; x <= areaPos.X + Radius; ++x)
+                {
+                    //if (x != areaPos.X || y != areaPos.Y)
+                    //{
+                        if (grid.TryGet(x, y, out area))
+                        {
+                            if (area.cities != null)
+                            {
+                                playerNearMapObjects.AddRange(area.cities);
+                            }
+                            var armies_sp = area.armies;
+                            if (armies_sp != null)
+                            {
+                                playerNearMapObjects.AddRange(armies_sp);
+                            }
+                        }
+                    //}
                 }
             }
 

@@ -11,7 +11,13 @@ namespace VikingEngine.HUD.RichBox
         public TextFormat breadText;
         public TextFormat head1, head2;
         public TextFormat button;
+        public TextFormat buttonSecondary;
         public TextFormat buttonDisabled;
+
+        public TextFormat tabSelected;
+        public TextFormat tabNotSelected;
+
+
         public SpriteName checkOn, checkOff;
 
         public float breadIconHeight, titleIconHeight;
@@ -24,6 +30,12 @@ namespace VikingEngine.HUD.RichBox
             buttonDisabled = button;
             buttonDisabled.BgColor = ColorExt.Mix(Color.DarkGray, button.BgColor, 0.6f);
             buttonDisabled.Color = ColorExt.Mix(Color.DarkGray, button.Color, 0.6f);
+
+            buttonSecondary = button;
+            buttonSecondary.BgColor = ColorExt.Mix(Color.LightGray, button.BgColor, 0.5f);
+
+            tabSelected = button;
+            tabNotSelected = buttonSecondary;
 
             head2 = breadText;
             head2.size *= TitleSizeUp;

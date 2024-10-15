@@ -10,6 +10,7 @@ namespace VikingEngine.DSSWars.Map.Settings
         public const int DeepWaterHeight = 0;
         public const int LowWaterHeight = 1;
         public const int MinLandHeight = 2;
+        public const int MineHeightStart = 5;
         public const int MountainHeightStart = 6;
         public const int MaxHeight = 7;
 

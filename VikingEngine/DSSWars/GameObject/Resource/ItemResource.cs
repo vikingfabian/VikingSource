@@ -20,22 +20,54 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         /// <summary>
         /// Tracks time, risk and expences. Based on seconds of work.
         /// </summary>
-        public int value;
+        public int cost;
 
-        public ItemResource(ItemResourceType type, int quality, int value)
+        public int amount;
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)type);
+            w.Write((ushort)amount);
+        }
+        public void readGameState(System.IO.BinaryReader r, int subversion)
+        {
+            type = (ItemResourceType)r.ReadByte();
+            amount = r.ReadUInt16();
+        }
+
+        public ItemResource(ItemResourceType type, int quality, int cost, int amount)
         {
             this.type = type;
             this.quality = quality;
-            this.value = value;
+            this.cost = cost;
+            this.amount = amount;
         }
-    }    
+
+        public void merge(ItemResource other)
+        {
+            quality = (quality * amount + other.quality * other.amount);
+            amount += other.amount;
+            quality /= amount;
+            cost += other.cost;
+        }
+
+        public override string ToString()
+        {
+            return "Item: " + amount.ToString() + type.ToString();
+        }
+    }
+
+    
     
     enum ItemResourceType
     {
         NONE,
 
+        Hen,
+        Pig,
         Goat,
         Ox,
+        Egg,
         Milk,
         Cheese,
         Meat,
@@ -48,6 +80,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         
         SoftWood,
         HardWood,
+        DryWood,
         Planks,
         Barrel,
         Box,
@@ -56,15 +89,21 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         Coal, 
         Tar,
 
-        Linnen,
+        Linen,
         Wool,
         Rope,
         Cloth,
         Clothes,
         Bag,
 
-        //Todo Ore
-        Iron,
+        IronOre_G,
+        TinOre,
+        CupperOre,
+        SilverOre,
+        GoldOre,
+        MithrilOre,
+
+        Iron_G,
         Steel,
         Tin,
         Cupper,
@@ -74,17 +113,21 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         Mithril,
         
         Bow,
-        Arrow,
+        
+        SharpStick,
         Sword,
         Shield,
         
-        Padding,
-        Gambeson,
-        Brigandine,
-        PlateArmor,
+        LightArmor,
+        MediumArmor,
+        HeavyArmor,
+        //Padding,
+        //Gambeson,
+        //Brigandine,
+        //PlateArmor,
 
         StoneBlock,
-        Stone,
+        Stone_G,
         Clay,
         Brick,
         Pot,
@@ -92,11 +135,23 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         Wheat,
         Bread,
         Beer,
+        Food_G,
 
-        Water,
+        Water_G,
         SaltWater,
-        Poop,
 
-        NUM
+        Fuel_G,
+        Poop,
+        
+        Ballista,
+        KnightsLance,
+        TwoHandSword,
+
+        NUM,
+
+        Wood_Group,
+        RawFood_Group,
+        SkinLinen_Group,
+        Men,
     }
 }

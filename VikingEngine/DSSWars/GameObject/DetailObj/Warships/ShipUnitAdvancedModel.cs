@@ -17,16 +17,44 @@ namespace VikingEngine.DSSWars.GameObject
         public ShipUnitAdvancedModel(AbsSoldierUnit soldier)
             : base(soldier)
         {
-            captainPosDiff = soldier.data.modelScale * soldier.data.captainPosDiff;//new Vector3(-0.05f, 0.18f, -.27f);
+            switch (soldier.soldierData.modelName)
+            {
+                case LootFest.VoxelModelName.wars_soldier_ship:
+                    captainPosDiff = new Vector3(0, 0.28f, -.3f);
+                    leftCrewPosDiff = new Vector3(-0.076f, 0.14f, 0.07f);
+                    break;
+                case LootFest.VoxelModelName.wars_archer_ship:
+                    captainPosDiff = new Vector3(0, 0.28f, -.3f);
+                    leftCrewPosDiff = new Vector3(-0.076f, 0.14f, 0.07f);
+                    break;
+                case LootFest.VoxelModelName.wars_folk_ship:
+                    captainPosDiff = new Vector3(-0.05f, 0.18f, -.27f);
+                    leftCrewPosDiff = new Vector3(-0.076f, 0.12f, 0.065f);
+                    break;
+                case LootFest.VoxelModelName.wars_viking_ship:
+                    captainPosDiff = new Vector3(0.05f, 0.12f, -0.34f);
+                    leftCrewPosDiff = new Vector3(-0.076f, 0.12f, -0.05f);
+                    break;
+                case LootFest.VoxelModelName.wars_ballista_ship:
+                    captainPosDiff = new Vector3(0, 0.14f, -0.05f);
+                    leftCrewPosDiff = new Vector3(-0.076f, 0.14f, 0.00f);
+                    break;
+                case LootFest.VoxelModelName.wars_knight_ship:
+                    captainPosDiff = new Vector3(0, 0.34f, -.3f);
+                    leftCrewPosDiff = new Vector3(-0.076f, 0.17f, 0.06f);
+                    break;
+            }
 
-            leftCrewPosDiff = soldier.data.modelScale * soldier.data.leftCrewPosDiff;//new Vector3(-0.076f, 0.12f, 0.065f);
+            captainPosDiff = soldier.soldierData.modelScale * captainPosDiff;//new Vector3(-0.05f, 0.18f, -.27f);
+
+            leftCrewPosDiff = soldier.soldierData.modelScale * leftCrewPosDiff;//new Vector3(-0.076f, 0.12f, 0.065f);
             rightCrewPosDiff = leftCrewPosDiff;
             rightCrewPosDiff.X = -rightCrewPosDiff.X;
 
-            float crewScale = AbsSoldierData.StandardModelScale * 1.6f;
+            float crewScale = DssConst.Men_StandardModelScale * 1.6f;
 
             captain = soldier.group.army.faction.AutoLoadModelInstance(
-                LootFest.VoxelModelName.wars_captain, AbsSoldierData.StandardModelScale * 0.7f, true);
+                LootFest.VoxelModelName.wars_captain, DssConst.Men_StandardModelScale * 0.7f, true);
 
             leftcrew = soldier.group.army.faction.AutoLoadModelInstance(
                 LootFest.VoxelModelName.wars_shipcrew, crewScale, true);

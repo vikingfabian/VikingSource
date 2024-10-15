@@ -1,12 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using VikingEngine.DSSWars.GameObject.Animal;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.Map
 {
+   
     class DetailMapTile
     {
         static readonly IntervalF FoliageCenterRange = 
@@ -25,6 +29,8 @@ namespace VikingEngine.DSSWars.Map
             {
                 LootFest.VoxelModelName.fol_tree_hard,
                 LootFest.VoxelModelName.fol_tree_soft,
+                LootFest.VoxelModelName.fol_tree_dry,
+
                 LootFest.VoxelModelName.fo_stone1,
                 LootFest.VoxelModelName.fol_sprout,
                 LootFest.VoxelModelName.fol_tallgrass,
@@ -32,6 +38,9 @@ namespace VikingEngine.DSSWars.Map
                 LootFest.VoxelModelName.fol_bush1,
                 LootFest.VoxelModelName.fol_stoneblock,
                 LootFest.VoxelModelName.fol_farmculture,
+
+                LootFest.VoxelModelName.resource_tree,
+
             };
         }
 
@@ -43,9 +52,12 @@ namespace VikingEngine.DSSWars.Map
         IVerticeData verticeData;
         Graphics.VoxelModel model;
         List<Foliage> foliage;
+        List<AnimalData> animalData;
+        
 
         public bool add = true;
         static PcgRandom rnd = new PcgRandom();
+        //public bool isDeleted = false;
 
         public DetailMapTile(IntVector2 pos)
         {
@@ -89,16 +101,29 @@ namespace VikingEngine.DSSWars.Map
 
                     surfaceTexture(tile, subTile, subTopLeft);
 
-                    if (subTile.mainTerrain == TerrainMainType.Foil)
+                    switch (subTile.mainTerrain)
                     {
-                        createFoliage((TerrainSubFoilType)subTile.subTerrain, subTile.terrainValue, 
-                            topCenter(ref subTile, ref subTopLeft));
-                    }
-                    else if (subTile.mainTerrain == TerrainMainType.Building)
-                    {
-                        createBuilding((TerrainBuildingType)subTile.subTerrain, 
-                            topCenter(ref subTile, ref subTopLeft));
-                    }
+                        case TerrainMainType.Foil:
+                            createFoliage((TerrainSubFoilType)subTile.subTerrain, subTile.terrainAmount,
+                                topCenter(ref subTile, ref subTopLeft));
+                            break;
+                        case TerrainMainType.Resourses:
+                            createResoursePile((TerrainResourcesType)subTile.subTerrain,
+                                topCenter(ref subTile, ref subTopLeft));
+                            break;
+                        case TerrainMainType.Building:
+                            createBuilding(tile, ref subTile, (TerrainBuildingType)subTile.subTerrain,
+                                topCenter(ref subTile, ref subTopLeft));
+                            break;
+                        case TerrainMainType.Mine:
+                            createMine((TerrainMineType)subTile.subTerrain,
+                                topCenter(ref subTile, ref subTopLeft));
+                            break;
+                        case TerrainMainType.Decor:
+                            createDecor(tile, ref subTile, (TerrainDecorType)subTile.subTerrain,
+                                topCenter(ref subTile, ref subTopLeft));
+                            break;
+                    }                   
 
                     DssRef.world.subTileGrid.Set(
                         subTileStart.X + x, subTileStart.Y + y, 
@@ -183,7 +208,8 @@ namespace VikingEngine.DSSWars.Map
 
             
             if (subTile.mainTerrain != TerrainMainType.Foil &&
-                subTile.mainTerrain != TerrainMainType.Building)
+                subTile.mainTerrain != TerrainMainType.Building &&
+                subTile.mainTerrain != TerrainMainType.Decor)
             {
                 switch (col.Texture)
                 {
@@ -268,123 +294,294 @@ namespace VikingEngine.DSSWars.Map
             wp.X += FoliageCenterRange.GetRandom(rnd);
             wp.Z += FoliageCenterRange.GetRandom(rnd);
 
-            LootFest.VoxelModelName modelName;
-            float scale = 0.12f;
+            //LootFest.VoxelModelName modelName;
+            //float scale = 0.12f;
 
             switch (type)
             {
                 case TerrainSubFoilType.TallGrass:
-                    modelName = LootFest.VoxelModelName.fol_tallgrass;
+                    addFoliage(new Foliage(LootFest.VoxelModelName.fol_tallgrass, rnd, wp, 0.12f));
                     break;
                 case TerrainSubFoilType.StoneBlock:
-                    modelName = LootFest.VoxelModelName.fol_stoneblock;
+                    addFoliage(new Foliage(LootFest.VoxelModelName.fol_stoneblock, rnd, wp, 0.12f));
                     break;
                 case TerrainSubFoilType.Bush:
-                    modelName = LootFest.VoxelModelName.fol_bush1;
+                    addFoliage(new Foliage(LootFest.VoxelModelName.fol_bush1, rnd, wp, 0.12f));
                     break;
                 case TerrainSubFoilType.Herbs:
-                    modelName = LootFest.VoxelModelName.fol_herbs;
+                    addFoliage(new Foliage(LootFest.VoxelModelName.fol_herbs, rnd, wp, 0.12f));
                     break;
                 case TerrainSubFoilType.Stones:
-                    modelName = LootFest.VoxelModelName.fo_stone1;
+                    addFoliage(new Foliage(LootFest.VoxelModelName.fo_stone1, rnd, wp, 0.12f));
                     break;
                 case TerrainSubFoilType.TreeHard:
-                    modelName = LootFest.VoxelModelName.fol_tree_hard;
-                    scale = 0.03f + 0.0012f * sizeValue;
+                    addFoliage(new Foliage(LootFest.VoxelModelName.fol_tree_hard, rnd, wp, 0.03f + 0.0012f * sizeValue));
                     break;
                 case TerrainSubFoilType.TreeSoft:
-                    modelName = LootFest.VoxelModelName.fol_tree_soft;
-                    scale = 0.03f + 0.0012f * sizeValue;
+                    addFoliage(new Foliage(LootFest.VoxelModelName.fol_tree_soft, rnd, wp, 0.03f + 0.0012f * sizeValue));
                     break;
+                case TerrainSubFoilType.DryWood:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.fol_tree_dry, rnd, wp, 0.12f));
+                    break;
+                case TerrainSubFoilType.TreeSoftSprout:
                 case TerrainSubFoilType.TreeHardSprout:
-                    modelName = LootFest.VoxelModelName.fol_sprout;
-                    scale = 0.05f + 0.01f * sizeValue;
+                    addFoliage(new Foliage(LootFest.VoxelModelName.fol_sprout, rnd, wp, 0.05f + 0.01f * sizeValue));
                     break;
-                case TerrainSubFoilType.FarmCulture:
-                    scale = 0.1f;
-                    modelName = LootFest.VoxelModelName.fol_farmculture;
+                case TerrainSubFoilType.WheatFarm:
+                    {
+                        int frame = TerrainContent.FarmCulture_Empty;
+                        if (sizeValue >= TerrainContent.FarmCulture_ReadySize)
+                        {
+                            frame = 3;
+                        }
+                        else if (sizeValue >= TerrainContent.FarmCulture_HalfSize)
+                        {
+                            frame = 2;
+                        }
+                        else if (sizeValue > TerrainContent.FarmCulture_Empty)
+                        {
+                            frame = 1;
+                        }
+                        addFoliage(new Foliage(LootFest.VoxelModelName.fol_farmculture, frame, wp, 0.1f));
+                    }
+                    break;
+                case TerrainSubFoilType.LinenFarm:
+                    {
+                        int frame = TerrainContent.FarmCulture_Empty;
+                        if (sizeValue >= TerrainContent.FarmCulture_ReadySize)
+                        {
+                            frame = 4;
+                        }
+                        else if (sizeValue >= TerrainContent.FarmCulture_HalfSize)
+                        {
+                            frame = 2;
+                        }
+                        else if (sizeValue > TerrainContent.FarmCulture_Empty)
+                        {
+                            frame = 1;
+                        }
+                        addFoliage(new Foliage(LootFest.VoxelModelName.fol_farmculture, frame, wp, 0.1f));
+                    }
                     break;
                 default:
                     throw new NotImplementedException();
             }
 
-            if (foliage == null)
-            {
-                foliage = new List<Foliage>(8);
-            }
+            //if (foliage == null)
+            //{
+            //    foliage = new List<Foliage>(8);
+            //}
 
-#if DEBUG
-            model.DebugName = "Map foliage " + model.DebugName;
-#endif
-            foliage.Add(new Foliage(modelName, rnd, wp, scale));
+//#if DEBUG
+//            model.DebugName = "Map foliage " + model.DebugName;
+//#endif
+            //addFoliage(new Foliage(modelName, rnd, wp, scale));
         }
 
-        void createBuilding(TerrainBuildingType buildingType, Vector3 wp)
+        void createBuilding(Tile tile, ref SubTile subTile, TerrainBuildingType buildingType, Vector3 wp)
+        {
+            wp.X += WorldData.SubTileHalfWidth;
+            wp.Z += WorldData.SubTileHalfWidth;
+
+            //float scale = WorldData.SubTileWidth * 1.4f;
+
+            switch (buildingType)
+            {
+                case TerrainBuildingType.PigPen:
+                    animals(tile, ref subTile, ref wp, AnimalType.Pig, TerrainContent.PigMaxSize);
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.HenPen:
+                    animals(tile, ref subTile, ref wp, AnimalType.Hen, TerrainContent.HenMaxSize);
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.WorkerHut:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workerhut, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.Tavern:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_tavern, rnd, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                case TerrainBuildingType.Postal:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, rnd, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                case TerrainBuildingType.Recruitment:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_recruitment, rnd, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                case TerrainBuildingType.Barracks:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, rnd, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                case TerrainBuildingType.DirtWall:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_dirtwall, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.DirtTower:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_dirttower, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.WoodWall:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_woodwall, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.WoodTower:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_woodtower, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.StoneWall:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_stonewall, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.StoneTower:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_stonetower, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.StoneHall:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_stonehall, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.SmallHouse:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_smallhouse, rnd, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                case TerrainBuildingType.BigHouse:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_bighouse, rnd, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                case TerrainBuildingType.CobbleStones:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_cobblestone, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.Square:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_square, rnd, wp, WorldData.SubTileWidth * 1.1f));
+                    break;
+                case TerrainBuildingType.Work_Cook:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 1, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                case TerrainBuildingType.Work_Bench:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 3, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+
+                case TerrainBuildingType.Work_CoalPit:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 4, wp, WorldData.SubTileWidth * 1.2f));
+                    break;
+
+                case TerrainBuildingType.Work_Smith:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 0, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.Brewery:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 2, wp, WorldData.SubTileWidth * 1f));
+                    break;
+
+                case TerrainBuildingType.Carpenter:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_carpenter, 0, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                case TerrainBuildingType.Nobelhouse:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_nobelhouse, 1, wp, WorldData.SubTileWidth * 1.3f));
+                    break;
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        void createDecor(Tile tile, ref SubTile subTile, TerrainDecorType decorType, Vector3 wp)
+        {
+            wp.X += WorldData.SubTileHalfWidth;
+            wp.Z += WorldData.SubTileHalfWidth;
+
+            switch (decorType) {
+                case TerrainDecorType.Pavement:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_pavement, 0, wp, WorldData.SubTileWidth * 1.3f));
+                    break;
+                case TerrainDecorType.PavementFlower:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_pavement, 1, wp, WorldData.SubTileWidth * 1.3f));
+                    break;
+                case TerrainDecorType.Statue_ThePlayer:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.decor_statue, 0, wp, WorldData.SubTileWidth * 1f));
+                    break;
+               
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        void animals(Tile tile, ref SubTile subTile, ref Vector3 wp, AnimalType animalType, int animalSize)
+        {
+            if (tile.OutOfRenderTimeOut())
+            {
+                if (animalData == null)
+                {
+                    animalData = new List<AnimalData>(8);
+                }
+
+                int count = (subTile.terrainAmount + animalSize - 1) / animalSize;
+                var animal = new AnimalData(wp, animalType);
+                for (int i = 0; i < count; i++)
+                {
+                    animalData.Add(animal);
+                }
+            }
+        }
+
+        void createMine(TerrainMineType mineType, Vector3 wp)
+        {
+            wp.X += WorldData.SubTileHalfWidth;
+            wp.Z += WorldData.SubTileHalfWidth;
+            
+            float scale = WorldData.SubTileWidth * 1.4f;
+
+            switch (mineType)
+            {
+                case TerrainMineType.IronOre:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 0, wp, scale));
+                    break;
+                case TerrainMineType.Coal:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 2, wp, scale));
+                    break;
+                case TerrainMineType.GoldOre:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 1, wp, scale));
+                    break;
+
+                default:
+                    throw new NotImplementedException();
+            }
+            
+
+        }
+
+        void createResoursePile(TerrainResourcesType resourceType, Vector3 wp)
         {
             wp.X += WorldData.SubTileHalfWidth;
             wp.Z += WorldData.SubTileHalfWidth;
             LootFest.VoxelModelName modelName;
             float scale = WorldData.SubTileWidth * 1.4f;
 
-            switch (buildingType)
+            switch (resourceType)
             {
-                case TerrainBuildingType.DirtWall:
-                    modelName = LootFest.VoxelModelName.city_dirtwall;
+                case TerrainResourcesType.Wood:
+                    scale = 0.1f;
+                    modelName = LootFest.VoxelModelName.resource_tree;
                     break;
-                case TerrainBuildingType.DirtTower:
-                    modelName = LootFest.VoxelModelName.city_dirttower;
-                    break;
-                case TerrainBuildingType.WoodWall:
-                    modelName = LootFest.VoxelModelName.city_woodwall;
-                    break;
-                case TerrainBuildingType.WoodTower:
-                    modelName = LootFest.VoxelModelName.city_woodtower;
-                    break;
-                case TerrainBuildingType.StoneWall:
-                    modelName = LootFest.VoxelModelName.city_stonewall;
-                    break;
-                case TerrainBuildingType.StoneTower:
-                    modelName = LootFest.VoxelModelName.city_stonetower;
-                    break;
-
-                case TerrainBuildingType.WorkerHut:
-                    modelName = LootFest.VoxelModelName.city_workerhut;
-                    break;
-               
-                case TerrainBuildingType.StoneHall:
-                    modelName = LootFest.VoxelModelName.city_stonehall;
-                    break;
-                case TerrainBuildingType.SmallHouse:
-                    modelName = LootFest.VoxelModelName.city_smallhouse;
-                    break;
-                case TerrainBuildingType.BigHouse:
-                    modelName = LootFest.VoxelModelName.city_bighouse;
-                    break;
-                case TerrainBuildingType.CobbleStones:
-                    modelName = LootFest.VoxelModelName.city_cobblestone;
-                    break;
-                case TerrainBuildingType.Square:
-                    modelName = LootFest.VoxelModelName.city_square;
-                    break;
+                
                 default:
                     throw new NotImplementedException();
             }
 
+            //if (foliage == null)
+            //{
+            //    foliage = new List<Foliage>(8);
+            //}
+#if DEBUG
+            model.DebugName = "Resource pile " + model.DebugName;
+#endif
+            addFoliage(new Foliage(modelName, rnd, wp, scale));
+
+        }
+
+        void addFoliage(Foliage f)
+        {
             if (foliage == null)
             {
                 foliage = new List<Foliage>(8);
             }
-#if DEBUG
-            model.DebugName = "Building " + model.DebugName;
-#endif
-            foliage.Add(new Foliage(modelName, rnd, wp, scale));
-
+            foliage.Add(f);
         }
 
         public void synchToRender()
         {
             if (add)
             {
+                var tile = DssRef.world.tileGrid.Get(pos);
+
                 if (model != null)
                 {
                     model.BuildFromVerticeData(verticeData,
@@ -405,6 +602,14 @@ namespace VikingEngine.DSSWars.Map
                         m.addToRender();
                     }
                 }
+
+                if (animalData != null)
+                {
+                    foreach (var m in animalData)
+                    {
+                        m.create(tile);
+                    }
+                }
             }
             else
             {
@@ -423,6 +628,8 @@ namespace VikingEngine.DSSWars.Map
                 }
                 foliage = null;
             }
+
+            //isDeleted = true;
         }
     }
 }

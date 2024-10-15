@@ -10,6 +10,8 @@ using VikingEngine.PJ;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.SteamWrapping;
 using Valve.Steamworks;
+using VikingEngine.DSSWars.GameObject.Resource;
+using VikingEngine.DSSWars.Build;
 
 namespace VikingEngine.DSSWars
 {
@@ -39,6 +41,7 @@ namespace VikingEngine.DSSWars
                    Align.CenterAll, "Loading...", Color.White, ImageLayers.Lay4);
 
             Ref.music = new Sound.MusicPlayer();
+            DssVar.UpdateConstants();
 
             if (isReset)
             {
@@ -79,7 +82,7 @@ namespace VikingEngine.DSSWars
 
                 new MapSettings();
                 Map.Tile.Init();
-            
+                
                 //new Network.Session();
             }
         }
@@ -91,7 +94,8 @@ namespace VikingEngine.DSSWars
             new SpriteSheet();
             LootFest.Data.Block.Init();
             FlagAndColor.Init();
-            
+            ItemPropertyColl.Init();
+
             
             new Models().loadContent();
 

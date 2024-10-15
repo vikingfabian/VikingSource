@@ -9,21 +9,21 @@ namespace VikingEngine.DSSWars.GameObject
     class Projectile : AbsUpdateable
     {
         public static void ProjectileAttack(bool fullUpdate, AbsDetailUnit attacker,
-            AttackType type, AbsDetailUnit target, int damage, int splashCount, float splashPercDamage)
+            AttackType type, AbsDetailUnit target, int damage) /*int splashCount, float splashPercDamage)*/
         {
             if (fullUpdate)
             {
                 new Projectile(attacker.projectileStartPos(), attacker,
-                    type, target, damage, splashCount, splashPercDamage);
+                    type, target, damage);
             }
             else
             {
-                ProjectileHit(false, target, damage, splashCount, splashPercDamage, attacker);
+                ProjectileHit(false, target, damage, attacker);
             }
         }
-
-        const float PeekHeight = AbsSoldierData.StandardModelScale * 1f;
-        float speed = AbsSoldierData.StandardModelScale * 8f;
+        
+        public static float Projectile_PeekHeight;
+        float speed = DssConst.Men_StandardModelScale * 8f;
         //const float MinDistance = AbsSoldierData.StandardModelScale * 0.2f;
 
         Graphics.AbsVoxelObj model;
@@ -45,15 +45,15 @@ namespace VikingEngine.DSSWars.GameObject
         Vector3 blankTarget;
 
         public Projectile(Vector3 start, AbsDetailUnit fromAttack, AttackType type, 
-            AbsDetailUnit target, int damage, int splashCount, float splashPercDamage)
+            AbsDetailUnit target, int damage)
             : base(true)
         {
             this.fromAttack = fromAttack;
             this.target = target;
             this.damage = damage;
             
-            this.splashCount = splashCount;
-            this.splashPercDamage = splashPercDamage; 
+            //this.splashCount = splashCount;
+            //this.splashPercDamage = splashPercDamage; 
             
             LootFest.VoxelModelName modelName;
             float scale;
@@ -63,19 +63,19 @@ namespace VikingEngine.DSSWars.GameObject
                 default://case AttackType.Arrow:
                     //warsRef.sound.bow.Play(start);
                     modelName = LootFest.VoxelModelName.Arrow;
-                    scale = AbsSoldierData.StandardModelScale * 0.7f;//0.8f;
+                    scale = DssConst.Men_StandardModelScale * 0.7f;//0.8f;
                     break;
                 case AttackType.Bolt:
                     //warsRef.sound.bow.Play(start);
                     modelName = LootFest.VoxelModelName.little_boltarrow;
-                    scale = AbsSoldierData.StandardModelScale * 0.5f;
+                    scale = DssConst.Men_StandardModelScale * 0.5f;
                     speed *= 1.5f;
                     linear = true;
                     break;
                 case AttackType.Cannonball:
                     //warsRef.sound.rocket.Play(start);
                     modelName = LootFest.VoxelModelName.war_cannonball;
-                    scale = AbsSoldierData.StandardModelScale * 0.4f;
+                    scale = DssConst.Men_StandardModelScale * 0.4f;
                     linear = false;
                     fireParticles = true;
                     break;
@@ -94,7 +94,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case AttackType.Ballista:
                     //warsRef.sound.catapult.Play(start);
                     modelName = LootFest.VoxelModelName.war_ballista_proj;
-                    scale = AbsSoldierData.StandardModelScale * 1.2f;
+                    scale = DssConst.Men_StandardModelScale * 1.2f;
                     linear = true;
                     break;
                 case AttackType.KnifeThrow:
@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case AttackType.Javelin:
                    // warsRef.sound.javelin.Play(start);
                     modelName = LootFest.VoxelModelName.little_javelin;
-                    scale = AbsSoldierData.StandardModelScale * 1f;//0.8f;
+                    scale = DssConst.Men_StandardModelScale * 1f;//0.8f;
                     linear = true;
                     break;
             }
@@ -175,7 +175,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (!linear)
             {
                 float percDist = dist / totalDistance;
-                model.position.Y += (float)Math.Sin(percDist * MathHelper.Pi) * PeekHeight;
+                model.position.Y += (float)Math.Sin(percDist * MathHelper.Pi) * Projectile_PeekHeight;
             }
 
             if (rotatingSpeed != 0)
@@ -197,7 +197,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (fireParticles)
                 {
-                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, Ref.rnd.Vector3_Sq(model.position, AbsSoldierData.StandardModelScale * 1f));
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, Ref.rnd.Vector3_Sq(model.position, DssConst.Men_StandardModelScale * 1f));
                     Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, model.position);
 
                 }
@@ -208,29 +208,29 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (target != null)
             {
-                ProjectileHit(true, target, damage, splashCount, splashPercDamage, fromAttack);
+                ProjectileHit(true, target, damage, /*splashCount, splashPercDamage,*/ fromAttack);
             }
         }
 
         public static void ProjectileHit(bool fullUpdate, AbsDetailUnit target, int damage,
-            int splashCount, float splashPercDamage,
+            //int splashCount, float splashPercDamage,
             AbsDetailUnit fromAttack)
         {
 
             target.takeDamage(damage, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate);
-            if (splashCount > 0 && target.IsSoldierUnit())
-            {
-                int splashDamage = Convert.ToInt32(splashPercDamage * damage);
+            //if (splashCount > 0 && target.IsSoldierUnit())
+            //{
+            //    int splashDamage = Convert.ToInt32(splashPercDamage * damage);
 
-                for (int i = 0; i < splashCount; i++)
-                {
-                    var target2 = target.group.soldiers.GetRandomUnsafe(Ref.rnd);
-                    if (target2 != null)
-                    {
-                        target2.takeDamage(splashDamage, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate);
-                    }
-                }
-            }
+            //    for (int i = 0; i < splashCount; i++)
+            //    {
+            //        var target2 = target.group.soldiers.GetRandomUnsafe(Ref.rnd);
+            //        if (target2 != null)
+            //        {
+            //            target2.takeDamage(splashDamage, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate);
+            //        }
+            //    }
+            //}
             
         }
 

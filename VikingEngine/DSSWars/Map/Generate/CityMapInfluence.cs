@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Valve.Steamworks;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.LootFest.Map;
 
 namespace VikingEngine.DSSWars.Map
@@ -86,11 +87,18 @@ namespace VikingEngine.DSSWars.Map
             inflenceMap.LoopBegin();
             while (inflenceMap.LoopNext())
             {
-                if (inflenceMap.LoopValueGet().city < 0)
+                if (inflenceMap.LoopValueGet().city == null)
                 {
                     throw new Exception();
                 }
-                world.tileGrid.Get(inflenceMap.LoopPosition).CityIndex = inflenceMap.LoopValueGet().city;
+
+                var city = inflenceMap.LoopValueGet().city;
+                world.tileGrid.Get(inflenceMap.LoopPosition).CityIndex = city.parentArrayIndex;
+                var r = inflenceMap.LoopPosition.SideLength(city.tilePos);
+                if (city.cityTileRadius < r)
+                { 
+                    city.cityTileRadius = r;
+                }
             }
         }
 
@@ -106,10 +114,10 @@ namespace VikingEngine.DSSWars.Map
 
                     Dictionary<int, int> cityInfluence = new Dictionary<int, int>();
                     var inf = inflenceMap.Get(loop.Position);
-                    cityInfluence.Add(inf.city, 1);
+                    cityInfluence.Add(inf.city.parentArrayIndex, 1);
 
                     int mostInfluence = 1;
-                    int mostInfluenceCity = inf.city;
+                    int mostInfluenceCity = inf.city.parentArrayIndex;
 
                     foreach (var dir in IntVector2.Dir8Array)
                     {
@@ -117,13 +125,13 @@ namespace VikingEngine.DSSWars.Map
                         if (world.tileGrid.Get(npos).IsLand())
                         {
                             var city = inflenceMap.Get(npos).city;
-                            if (cityInfluence.ContainsKey(city))
+                            if (cityInfluence.ContainsKey(city.parentArrayIndex))
                             {
-                                ++cityInfluence[city];
+                                ++cityInfluence[city.parentArrayIndex];
                             }
                             else
                             {
-                                cityInfluence.Add(city, 1);
+                                cityInfluence.Add(city.parentArrayIndex, 1);
                             }
                         }
                     }
@@ -137,7 +145,7 @@ namespace VikingEngine.DSSWars.Map
                         }
                     }
 
-                    inf.city = mostInfluenceCity;
+                    inf.city = world.cities[ mostInfluenceCity];
                 }
             }
 
@@ -146,7 +154,7 @@ namespace VikingEngine.DSSWars.Map
 
         class Influence
         {
-            public int city = -1;
+            public City city = null;
             public int influence = 0;
             public bool locked = false;
         }
@@ -167,7 +175,7 @@ namespace VikingEngine.DSSWars.Map
                 while(startloop.Next())
                 {
                     var inf = inflenceMap.Get(startloop.Position);
-                    inf.city = city.parentArrayIndex;
+                    inf.city = city;
                     inf.influence = startInfluence;
                     inf.locked = true;  
                 }
@@ -185,7 +193,7 @@ namespace VikingEngine.DSSWars.Map
                     Influence inf;
                     if (inflenceMap.TryGet(loop.Position, out inf))
                     {
-                        if (inf.city == city.parentArrayIndex)
+                        if (inf.city == city)
                         {
                             int influence = inf.influence;
                             int support = 0;
@@ -196,7 +204,7 @@ namespace VikingEngine.DSSWars.Map
                                 var npos = loop.Position + dir;
                                 if (inflenceMap.TryGet(npos, out adjInf))
                                 {
-                                    if (adjInf.city == city.parentArrayIndex)
+                                    if (adjInf.city == city)
                                     {
                                         support++;
                                     }
@@ -228,9 +236,9 @@ namespace VikingEngine.DSSWars.Map
                                         int cost = world.tileGrid.Get(npos).heightSett().influenceCost + adjInf.influence;
                                         cost += Convert.ToInt32(length * length) * 10;
 
-                                        if (adjInf.city < 0 || cost < influence)
+                                        if (adjInf.city == null || cost < influence)
                                         {
-                                            adjInf.city = city.parentArrayIndex;
+                                            adjInf.city = city;
                                             adjInf.influence = influence - Math.Max(cost, 0);
                                             madeInflence = true;
                                         }

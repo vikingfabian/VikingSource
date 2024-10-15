@@ -2286,8 +2286,8 @@ namespace VikingEngine
                     add(SpriteName.LangButton_Japanese, 8, 2);
                     add(SpriteName.LangButton_Frensh, 8, 2);
                     add(SpriteName.LangButton_Chinese, 8, 2);
-
-
+                    add(SpriteName.WarsBluePrint, 2, 2);
+                    add(SpriteName.WarsUnitIcon_TwoHand, 2, 2);
 
                 }
 
@@ -2314,6 +2314,66 @@ namespace VikingEngine
                     add(SpriteName.WarsFactoryIcon);
                     add(SpriteName.ColorPickerCircle);
                     add(SpriteName.WarsNightmareEyeGlow);
+                    currentIndex += 1;
+                    add(SpriteName.WarsResource_MediumArmor);
+                    currentIndex += 2;
+                    add(SpriteName.WarsResource_Sharpstick);
+                    add(SpriteName.WarsResource_Sword);
+                    currentIndex += 1;
+                    add(SpriteName.WarsResource_Bow);
+                    currentIndex += 8;
+                    add(SpriteName.WarsDelivery);
+                    add(SpriteName.WarsTrade);
+                    add(SpriteName.WarsResource_Beer);
+                    add(SpriteName.WarsResource_Iron);
+                    currentIndex += 9;
+                    add(SpriteName.WarsResource_SkinAndLinen);
+                    currentIndex += 5;
+                    add(SpriteName.WarsResource_Stone);
+                    currentIndex += 2;
+                    add(SpriteName.WarsResource_RawMeat);
+                    currentIndex += 5;
+                    add(SpriteName.WarsHome);
+                    add(SpriteName.WarsResource_Water);
+                    add(SpriteName.WarsResource_WaterAdd);
+                    add(SpriteName.WarsResource_Wood);
+                    add(SpriteName.WarsResource_Food);
+                    add(SpriteName.WarsResource_RawFood);
+                    add(SpriteName.WarsResource_Linen);
+                    add(SpriteName.WarsResource_Wheat);
+                    add(SpriteName.WarsResource_Egg);
+                    add(SpriteName.WarsResource_LightArmor);
+                    add(SpriteName.WarsResource_HeavyArmor);
+                    add(SpriteName.WarsResource_IronOre);
+                    add(SpriteName.WarsResource_GoldOre);
+                    add(SpriteName.WarsResource_Ballista);
+                    add(SpriteName.WarsResource_TwoHandSword);
+                    add(SpriteName.WarsResource_KnightsLance);
+                    add(SpriteName.WarsResource_Fuel);
+                }
+
+                currentIndex = numTilesWidth * 97;
+                {
+                    add(SpriteName.WarsBuild_Barracks, 3, 3);
+                    add(SpriteName.WarsBuild_Brewery, 3, 3);
+                    add(SpriteName.WarsBuild_Tavern, 3, 3);
+                    add(SpriteName.WarsBuild_LinenFarms, 3, 3);
+                    add(SpriteName.WarsBuild_WheatFarms, 3, 3);
+                    add(SpriteName.WarsBuild_WorkerHuts, 3, 3);
+                    add(SpriteName.WarsBuild_Smith, 3, 3);
+                    add(SpriteName.WarsBuild_Cook, 3, 3);
+                    add(SpriteName.WarsBuild_Statue, 3, 3);
+                    add(SpriteName.WarsBuild_HenPen, 3, 3);
+                    add(SpriteName.WarsBuild_PigPen, 3, 3);
+                    currentIndex += 3;
+                    add(SpriteName.WarsBuild_Postal, 3, 3);
+                    add(SpriteName.WarsBuild_Recruitment, 3, 3);
+                    add(SpriteName.WarsBuild_Nobelhouse, 3, 3);
+                    add(SpriteName.WarsBuild_Carpenter, 3, 3);
+                    add(SpriteName.WarsBuild_WorkBench, 3, 3);
+                    add(SpriteName.WarsBuild_CoalPit, 3, 3);
+                    add(SpriteName.WarsBuild_Pavement, 3, 3);
+                    add(SpriteName.WarsBuild_PavementFlowers, 3, 3);
                 }
 
                 currentIndex = numTilesWidth * 106;
@@ -2433,6 +2493,10 @@ namespace VikingEngine
                 add(SpriteName.hqTutorial1, HqTutorialSz.X, HqTutorialSz.Y);
                 add(SpriteName.hqTutorial2, HqTutorialSz.X, HqTutorialSz.Y);
                 add(SpriteName.hqTutorial3, HqTutorialSz.X, HqTutorialSz.Y);
+
+                add(SpriteName.warsWorkerPromoHammer, 6, 6);
+                add(SpriteName.warsWorkerPromoBox, 6, 6);
+
 
             }
 

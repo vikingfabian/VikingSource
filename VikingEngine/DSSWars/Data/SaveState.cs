@@ -17,8 +17,8 @@ namespace VikingEngine.DSSWars.Data
 {
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
-        public const int Version = 4;
-        public const int SubVersion = 8;
+        public const int Version = 6;
+        public const int SubVersion = 16;
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
         bool dataReady = false;
@@ -66,7 +66,7 @@ namespace VikingEngine.DSSWars.Data
         {
             new SaveVersion(Version, SubVersion).write(w);
 
-            DssRef.storage.write(w);
+            DssRef.storage.write(w, true);
             Debug.WriteCheck(w);
             DssRef.settings.writeGameState(w);
             Debug.WriteCheck(w);
@@ -82,7 +82,7 @@ namespace VikingEngine.DSSWars.Data
             SaveVersion version = new SaveVersion();
             version.read(r);
 
-            DssRef.storage.read(r);
+            DssRef.storage.read(r, true);
             Debug.ReadCheck(r);
             DssRef.settings.readGameState(r, version.sub, pointers);
             Debug.ReadCheck(r);

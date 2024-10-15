@@ -149,6 +149,17 @@ namespace VikingEngine
             return value;
         }
 
+        public static bool SetToArray(ref int index, int length)
+        {
+            if (length == 0)
+                return false;
+
+            if (index < 0) { index = 0; }
+            else if (index >= length) { index = length -1; }
+
+            return true;
+        }
+
         public static int ExMax(int index, int exMax)
         {
             if (index < 0) { return 0; }

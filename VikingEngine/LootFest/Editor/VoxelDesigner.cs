@@ -923,10 +923,10 @@ namespace VikingEngine.LootFest.Editor
         {
             storeUndoableAction();
 
-            if (to.HasMaterial())
-            {
-                to.material = swapMaterialFrom.material;
-            }
+            //if (to.HasMaterial())
+            //{
+            //    to.material = swapMaterialFrom.material;
+            //}
             ushort swapTo = to.BlockValue;
             if (HasSelection)
             {

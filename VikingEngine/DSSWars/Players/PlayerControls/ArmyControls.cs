@@ -105,8 +105,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void mapExecute()
         {
-            if (player.mapControls.hover.obj != null &&
-                player.mapControls.hover.obj.GetFaction() != player.faction)
+            if (player.mapControls.armyMayAttackHoverObj())
             {
                 SoundLib.ordermove.Play();
                 foreach (var m in armies)
@@ -129,7 +128,7 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
 
-            player.onMoveArmy();
+            //player.onMoveArmy();
         }
 
         

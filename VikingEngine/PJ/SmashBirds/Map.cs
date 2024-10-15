@@ -81,7 +81,7 @@ namespace VikingEngine.PJ.SmashBirds
 
         void physicsSetup()
         {
-            TilePerSec = tileWidth / TimeExt.SecondInMs;
+            TilePerSec = tileWidth / TimeExt.SecondToMs;
             DefaultWalkingSpeed = 10f * TilePerSec;
             Gravity = tileWidth * 0.0012f;
             JumpForceGravity = Gravity * 0.1f;

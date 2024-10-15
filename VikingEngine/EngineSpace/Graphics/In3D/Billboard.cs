@@ -11,7 +11,7 @@ namespace VikingEngine.Graphics
         public bool FaceCamera = true;
 
         public Billboard2D(Vector3 pos, SpriteName sprite, float scale, bool addToRender)
-            :base(LoadedMesh.plane, pos, new Vector3(scale), TextureEffectType.Flat, sprite, Color.White, true)
+            :base(LoadedMesh.plane, pos, new Vector3(scale), TextureEffectType.Flat, sprite, Color.White, addToRender)
         {
         }
         public override void Draw(int cameraIndex)

@@ -9,7 +9,7 @@ namespace VikingEngine.DSSWars.Display
             : base(gui)
         { }
 
-        public void refresh(Players.LocalPlayer player, GameObject.AbsWorldObject obj, bool selected, Vector2 pos)
+        public void refresh(Players.LocalPlayer player, GameObject.AbsGameObject obj, bool selected, Vector2 pos)
         {
             interaction?.DeleteMe();
             interaction = null;
@@ -19,6 +19,13 @@ namespace VikingEngine.DSSWars.Display
             if (obj != null)
             {
                 beginRefresh();
+                if (obj.CanMenuFocus() && player.input.inputSource.IsController)
+                {
+                    content.Add(new HUD.RichBox.RichBoxImage(player.input.ControllerFocus.Icon));
+                    content.Add(new HUD.RichBox.RichBoxText(":"));
+                    content.newLine();
+                }
+
                 obj.toHud(new ObjectHudArgs(gui, content, player, selected));
                 if (gui.menuState.Count > 0) 
                 {

@@ -1,8 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
+using System.Reflection.Metadata;
 using VikingEngine.DataLib;
+using VikingEngine.DSSWars.GameObject.Resource;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Input;
+using VikingEngine.ToGG.MoonFall;
+using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars
 {
@@ -12,7 +18,20 @@ namespace VikingEngine.DSSWars
         public const float HeadDisplayBgOpacity = 0.9f;
         public static float HeadDisplayWidth, HeadDisplayEdge;
 
-       
+        public static readonly Color TitleColor_Action = Color.LightBlue;
+        public static readonly Color TitleColor_Attack = Color.Red;
+        public static readonly Color TitleColor_Name = Color.LightYellow;
+        public static readonly Color TitleColor_TypeName = Color.LightGray;
+        public static readonly Color TitleColor_Label = new Color(0, 128, 153);
+        public static readonly Color TitleColor_Label_Dark = new Color(0, 63, 76);
+        public static readonly Color AvailableColor = Color.LightGreen;
+        public static readonly Color NotAvailableColor = Color.Red;
+
+        public static readonly Color TextColor_Relation = Color.LightBlue;
+
+        public static readonly Color OffStandardOrange = new Color(200, 128, 0);
+        public static readonly Color InfoYellow_Dark = new Color(160, 128, 0);
+        public static readonly Color InfoYellow_Light = new Color(255, 255, 0);
 
         public const ImageLayers StoryContentLayer = ImageLayers.Lay1_Front;
         public const ImageLayers StoryBgLayer = ImageLayers.Lay1_Back;
@@ -43,6 +62,14 @@ namespace VikingEngine.DSSWars
             Engine.Screen.TextBreadHeight * TextToIconSz, 1.1f);
             RbSettings.head1.Font = LoadedFont.Bold;
             RbSettings.head1.Color = Color.LightGray;
+            //RbSettings.tabSelected.BgColor = new Color(126, 56, 23);
+            //RbSettings.tabSelected.Color = new Color(222, 156, 125);
+            //RbSettings.tabNotSelected.BgColor = new Color(114, 73, 53);
+            //RbSettings.tabNotSelected.Color = RbSettings.tabSelected.Color;
+            RbSettings.tabSelected.BgColor = new Color(53, 158, 209);//new Color(121,110,233);
+            RbSettings.tabSelected.Color = new Color(3, 0, 46);
+            RbSettings.tabNotSelected.BgColor = new Color(36, 107, 142); //new Color(99,96,146);
+            RbSettings.tabNotSelected.Color = RbSettings.tabSelected.Color;
 
             RbOnGuiSettings = RbSettings;
             RbOnGuiSettings.scaleUp(1.4f);
@@ -105,9 +132,15 @@ namespace VikingEngine.DSSWars
             content.icontext(icon, text);
         }
 
+        public static RichBoxText ItemCount(RichBoxContent content, string item, string count)
+        {
+            string text = string.Format(DssRef.lang.Language_ItemCountPresentation, item, count);
+            return content.text(text);
+        }
+
         public static Color ResourceCostColor(bool hasEnough)
         { 
-            return hasEnough ? Color.LightGreen : Color.Red;
+            return hasEnough ? AvailableColor : NotAvailableColor;
         }
 
         public static SpriteName CheckImage(bool value)
@@ -138,6 +171,59 @@ namespace VikingEngine.DSSWars
                 default:
                     return "-";
             }
+        }
+        public static void FollowFactionButton(bool followFaction, double currentFactionValue, AbsRbAction action, Players.LocalPlayer player, RichBoxContent content)
+        {
+            var followFactionButton = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(followFaction ? "=F" : "!F") },
+                        action, new RbAction2Arg<bool, double>( player.followFactionTooltip, followFaction, currentFactionValue));//new RbAction2Arg<ItemResourceType, City>(faction.tradeFollowFactionClick, resource, city));
+            if (!followFaction)
+            {
+                followFactionButton.overrideBgColor = OffStandardOrange;
+            }
+            content.Add(followFactionButton);
+            content.space();
+        }
+
+        public static void InfoButton(RichBoxContent content, AbsRbAction enterAction)
+        {
+            var text = new RichBoxText(DssRef.lang.Info_ButtonIcon);
+            text.overrideColor = InfoYellow_Light;
+
+            var button = new RichboxButton(new List<AbsRichBoxMember> { 
+                new RichBoxSpace(0.5f),
+                text,
+                new RichBoxSpace(0.5f),
+            },
+            null, enterAction, true, InfoYellow_Dark);
+            content.Add(button);
+        }
+
+        public static void PerSecondInfo(Players.LocalPlayer player, RichBoxContent content, bool minuteAverage)
+        {
+            InfoButton(content, new RbAction1Arg<bool>(player.perSecondTooltip, minuteAverage));
+        }
+
+        public static void Description(RichBoxContent content, string description)
+        {
+            content.text("\"" + description + "\"").overrideColor = InfoYellow_Light;
+        }
+
+        public static void Label(RichBoxContent content, string text)
+        {
+            content.text(text + ":").overrideColor = TitleColor_Label;
+        }
+
+        public static void CloseButton(RichBoxContent content, AbsRbAction click)
+        {
+            RichBoxText x = new RichBoxText(DssRef.lang.Hud_EndSessionIcon);
+            x.overrideColor = Color.White;
+
+           var button = new RichboxButton(new List<AbsRichBoxMember>
+                    { new RichBoxSpace(), x,new RichBoxSpace(), },
+                    click);
+            button.overrideBgColor = Color.DarkRed;
+
+            content.Add(button);
         }
     }
 }

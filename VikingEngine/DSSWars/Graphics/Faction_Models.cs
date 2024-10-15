@@ -183,7 +183,7 @@ namespace VikingEngine.DSSWars
 
     class FactionModelBuilder : Voxels.ModelBuilder
     {
-        static readonly IntVector3 TroopBannerStart = new IntVector3(1, 44, 2);
+        static readonly IntVector3 TroopBannerStart = new IntVector3(3, 44, 2);
         static readonly IntVector3 HorseBannerStart = new IntVector3(3, 50, 0);
         static readonly IntVector3 CityBannerStart = new IntVector3(6, 44, 0);
         static readonly IntVector3 ArmyBannerStart = new IntVector3(1, 0, 1);
@@ -245,7 +245,9 @@ namespace VikingEngine.DSSWars
             switch (name)
             {
                 case VoxelModelName.banner:
-                    addFlagTexture(faction, copy, TroopBannerStart, true);
+                    addFlagTexture(faction, copy, TroopBannerStart, true, 1);
+                    addFlagTexture(faction, copy, TroopBannerStart, true, 2);
+                    addFlagTexture(faction, copy, TroopBannerStart, true, 3);
                     break;
                 case VoxelModelName.horsebanner:
                     addFlagTexture(faction, copy, HorseBannerStart, true);
@@ -281,7 +283,7 @@ namespace VikingEngine.DSSWars
         //    faction.onNewModel(name, model);
         //}
 
-        void addFlagTexture(Faction faction, VoxelObjGridDataAnimHD grid, IntVector3 start, bool standing, int frame =0)
+        void addFlagTexture(Faction faction, VoxelObjGridDataAnimHD grid, IntVector3 start, bool standing, int frame = 0)
         {
             var gridData = grid.Frames[frame];
 

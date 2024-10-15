@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.HUD.RichBox;
@@ -65,7 +66,6 @@ namespace VikingEngine.DSSWars.Map.Generate
                 LoadStatus = 45;
                 generateDigChains();
                 LoadStatus = 50;
-
                 setWaterHeightAndWaterHeatmap();
 
                 LoadStatus = 55;
@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             }
         }
 
-        public void postLoadGenerate_Part2(WorldData world)
+        public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
         {
             this.world = world;
             world.rnd = new PcgRandom(world.metaData.seed);
@@ -137,9 +137,12 @@ namespace VikingEngine.DSSWars.Map.Generate
             Task.Factory.StartNew(() =>
             {
                 //generateSubTileFoliage();
-                foreach (var c in world.cities)
+                if (loadMeta == null)
                 {
-                    c.createBuildingSubtiles(world);
+                    foreach (var c in world.cities)
+                    {
+                        c.createBuildingSubtiles(world);
+                    }
                 }
 
                 postComplete = true;
@@ -701,15 +704,15 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         void factionStartAreas(MapSize mapSize)
         {
-            int goalWorkForce = DssLib.HeadCityMaxWorkForce + DssLib.LargeCityMaxWorkForce + DssLib.SmallCityMaxWorkForce;
+            int goalWorkForce = DssConst.HeadCityStartMaxWorkForce + DssConst.LargeCityStartMaxWorkForce + DssConst.SmallCityStartMaxWorkForce;
 
             if (mapSize >= MapSize.Epic)
             {
-                goalWorkForce += DssLib.HeadCityMaxWorkForce;
+                goalWorkForce += DssConst.HeadCityStartMaxWorkForce;
             }
             else if (mapSize >= MapSize.Huge)
             {
-                goalWorkForce += DssLib.LargeCityMaxWorkForce;
+                goalWorkForce += DssConst.LargeCityStartMaxWorkForce;
             }
 
             
@@ -738,6 +741,12 @@ namespace VikingEngine.DSSWars.Map.Generate
                         faction.availableForPlayer = true;
                     }
                 }
+#if DEBUG
+                if (c.faction == null)
+                {
+                    throw new Exception();
+                }
+#endif
             }
 
             if (world.factions.Count > DssLib.RtsMaxFactions)
@@ -1019,6 +1028,16 @@ namespace VikingEngine.DSSWars.Map.Generate
         public List<City> DryEast = new List<City>();
         public List<City> NorthSea = new List<City>();
 
+        public static readonly CityCulture[] GeneralCultures =
+            {
+                CityCulture.LargeFamilies,
+                CityCulture.Archers,
+                CityCulture.Warriors,
+                CityCulture.AnimalBreeder,
+                CityCulture.Builders,
+                CityCulture.CrabMentality,
+                CityCulture.Networker,
+            };
     }
 
 }

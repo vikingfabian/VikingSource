@@ -12,16 +12,16 @@ namespace VikingEngine.DSSWars.GameObject
     {
         //static readonly Graphics.TextureEffect HumanBloodCol = new Graphics.TextureEffect(Graphics.TextureEffectType.Flat, SpriteName.WhiteArea, Color.DarkRed);
         //static readonly Graphics.TextureEffect OrcBloodCol = new Graphics.TextureEffect(Graphics.TextureEffectType.Flat, SpriteName.WhiteArea, new Color(0, 50, 0));
-        const float BloodRadius = AbsSoldierData.StandardModelScale * 0.1f;
+        static float BloodRadius = DssConst.Men_StandardModelScale * 0.1f;
 
         public static void ViewDamage(AbsDetailUnit reciever, int damageAmount, Rotation1D attackDir)
         {
             Vector3 startPos = reciever.position;
-            startPos.Y += AbsSoldierData.StandardModelScale * 0.01f;
+            startPos.Y += DssConst.Men_StandardModelScale * 0.01f;
             int particleCount = reciever.Alive() ? damageAmount / 4 : damageAmount;
             // Graphics.TextureEffect col = reciever.faction == Faction.Human ? HumanBloodCol : OrcBloodCol;
             Vector3 pos = reciever.position;
-            pos.Y += AbsSoldierData.StandardModelScale;
+            pos.Y += DssConst.Men_StandardModelScale;
             Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.DssDamage, pos, BloodRadius, particleCount);
             //if (reciever.Alive())
             //{
@@ -47,12 +47,12 @@ namespace VikingEngine.DSSWars.GameObject
 
     class BloodBlock : AbsInGameUpdateable
     {
-        const float FadeDownSpeed = AbsSoldierData.StandardModelScale * 0.01f;
-        const float Gravity = AbsSoldierData.StandardModelScale * -0.006f;
-        const float BlockScale = AbsSoldierData.StandardModelScale * 0.1f;
-        const float MinSpeed = AbsSoldierData.StandardModelScale * 0.004f;
+        public static float Blood_FadeDownSpeed;
+        public static float Blood_Gravity;
+        public static float Blood_BlockScale;
+        public static float Blood_MinSpeed;
         //const float GroundY = BlockScale * 0.5f + 0.1f;
-        const float RemovalY = -BlockScale;
+        static float RemovalY = -Blood_BlockScale;
 
         Graphics.Mesh model;
         Velocity velocity;
@@ -64,15 +64,23 @@ namespace VikingEngine.DSSWars.GameObject
             :base(true)
         {
             this.groundY = groundY;
-            model = new Graphics.Mesh(LoadedMesh.cube_repeating, pos, new Vector3(BlockScale), 
+            model = new Graphics.Mesh(LoadedMesh.cube_repeating, pos, new Vector3(Blood_BlockScale), 
                 Graphics.TextureEffectType.Flat, SpriteName.WhiteArea_LFtiles, Color.Red);
-            float speed = Ref.rnd.Float(0.001f, 0.003f) * AbsSoldierData.StandardModelScale;
+            float speed = Ref.rnd.Float(0.001f, 0.003f) * DssConst.Men_StandardModelScale;
             if (onDeath)
             {
                 speed *= 1.6f;
             }
             velocity.Set(dir, speed);
-            velocity.Y = Ref.rnd.Plus_MinusF(0.01f) * AbsSoldierData.StandardModelScale;
+            velocity.Y = Ref.rnd.Plus_MinusF(0.01f) * DssConst.Men_StandardModelScale;
+        }
+
+        public static void UpdateConstants()
+        {
+            Blood_FadeDownSpeed = DssConst.Men_StandardModelScale * 0.01f;
+            Blood_Gravity = DssConst.Men_StandardModelScale * -0.006f;
+            Blood_BlockScale = DssConst.Men_StandardModelScale * 0.1f;
+            Blood_MinSpeed = DssConst.Men_StandardModelScale * 0.004f;
         }
 
         public override void Time_Update(float time_ms)
@@ -84,7 +92,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else if (velocity.Value == Vector3.Zero)
             { //state 3: fade out
-                model.Y -= FadeDownSpeed * time_ms;
+                model.Y -= Blood_FadeDownSpeed * time_ms;
 
                 if (model.Y < RemovalY)
                 {
@@ -97,7 +105,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (Ref.TimePassed16ms)
                     {
-                        velocity.Y += Gravity;
+                        velocity.Y += Blood_Gravity;
                     }
                 }
                 else
@@ -108,7 +116,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (Ref.TimePassed16ms)
                     {
                         velocity.Value *= 0.9f;
-                        if (velocity.PlaneLength() < MinSpeed)
+                        if (velocity.PlaneLength() < Blood_MinSpeed)
                         {
                             velocity.Value = Vector3.Zero;
                         }

@@ -11,14 +11,14 @@ using VikingEngine.DSSWars.Display.CutScene;
 
 namespace VikingEngine.DSSWars.Display
 {
-    class GameMenuSystem:MenuSystem
+    class GameMenuSystem : MenuSystem
     {
         bool gameWasPaused;
         //bool localHost;
         Graphics.Image blackFade;
         public GameMenuSystem()//, bool localHost)
-            :base (new InputMap(Engine.XGuide.LocalHostIndex), MenuType.InGame)
-        { 
+            : base(new InputMap(Engine.XGuide.LocalHostIndex), MenuType.InGame)
+        {
             //this.localHost = localHost;
         }
 
@@ -59,7 +59,7 @@ namespace VikingEngine.DSSWars.Display
         }
 
         public override void closeMenu()
-        {   
+        {
             Ref.SetPause(gameWasPaused);
             blackFade?.DeleteMe();
             blackFade = null;
@@ -97,12 +97,17 @@ namespace VikingEngine.DSSWars.Display
         }
 
         public void pauseMenu()
-        { 
+        {
             openMenu();
             GuiLayout layout = new GuiLayout(DssRef.lang.GameMenu_Title, menu);
             {
-                
+
                 new GuiTextButton(DssRef.lang.GameMenu_Resume, null, closeMenu, false, layout);
+                if (DssRef.storage.runTutorial)
+                {
+                    new GuiDialogButton(DssRef.lang.Tutorial_EndTutorial, null, new GuiAction(endTutorial),
+                        false, layout);
+                }
                 new GuiTextButton(DssRef.lang.GameMenu_SaveState, DssRef.lang.GameMenu_SaveStateWarnings, saveGameState, false, layout);
                 new GuiTextButton(DssRef.lang.GameMenu_WatchPrologue, null, watchEpilogue, false, layout);
 
@@ -115,9 +120,18 @@ namespace VikingEngine.DSSWars.Display
                 new GuiSectionSeparator(layout);
 
                 new GuiDialogButton(DssRef.lang.GameMenu_ExitGame, null, new GuiAction(saveAndExit), false, layout);
-                
+
             }
             layout.End();
+        }
+
+        void endTutorial()
+        {
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                p.tutorial?.EndTutorial();
+            }
+            closeMenu();
         }
 
         public void debugMenu()

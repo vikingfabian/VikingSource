@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.Conscript;
+using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
 
 
 namespace VikingEngine.DSSWars.Players
 {
-    class AiPlayer : AbsPlayer
+    partial class AiPlayer : AbsPlayer
     {
         public Time nextDecisionTimer = new Time(1000);
 
@@ -30,7 +34,7 @@ namespace VikingEngine.DSSWars.Players
         bool purchaseIsMainArmy = false;
 
         int purchaseCount =-1;
-        public static double EconomyMultiplier = 1.0;
+        //public static double EconomyMultiplier = 1.0;
         string name;
 
         //Center attack focus and buy focus on the main army
@@ -53,9 +57,9 @@ namespace VikingEngine.DSSWars.Players
             w.Write(protectedPlayer);
 
         }
-        public override void readGameState(BinaryReader r, int version)
+        public override void readGameState(BinaryReader r, int version, ObjectPointerCollection pointers)
         {
-            base.readGameState(r, version);
+            base.readGameState(r, version, pointers);
 
             IsPlayerNeighbor = r.ReadBoolean();
             aggressionLevel = r.ReadByte();
@@ -107,7 +111,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 1.5f;
                     name = DssRef.lang.FactionName_DarkFollower;
                     faction.displayInFullOverview = true;
-                    faction.gold += DssLib.HeadCityMaxWorkForce * 10;
+                    faction.gold += DssConst.HeadCityStartMaxWorkForce * 10;
                     break;
 
                 case FactionType.UnitedKingdom:
@@ -125,7 +129,7 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     faction.growthMultiplier = 0.75f;
                     name = DssRef.lang.FactionName_Greenwood;
-                    addStartCitiesBuyOption(UnitType.GreenSoldier);
+                    //addStartCitiesBuyOption(UnitType.GreenSoldier);
                     break;
 
                 case FactionType.EasternEmpire:
@@ -138,35 +142,35 @@ namespace VikingEngine.DSSWars.Players
                     faction.diplomaticSide = DiplomaticSide.Light;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     name = DssRef.lang.FactionName_NordicRealm;
-                    addStartCitiesBuyOption(UnitType.Viking);
+                    //addStartCitiesBuyOption(UnitType.Viking);
                     break;
 
                 case FactionType.BearClaw:
                     faction.grouptype = FactionGroupType.Nordic;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     name = DssRef.lang.FactionName_BearClaw;
-                    addStartCitiesBuyOption(UnitType.Viking);
+                    //addStartCitiesBuyOption(UnitType.Viking);
                     break;
 
                 case FactionType.NordicSpur:
                     faction.grouptype = FactionGroupType.Nordic;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     name = DssRef.lang.FactionName_NordicSpur;
-                    addStartCitiesBuyOption(UnitType.Viking);
+                    //addStartCitiesBuyOption(UnitType.Viking);
                     break;
 
                 case FactionType.IceRaven:
                     faction.grouptype = FactionGroupType.Nordic;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     name = DssRef.lang.FactionName_IceRaven;
-                    addStartCitiesBuyOption(UnitType.Viking);
+                    //addStartCitiesBuyOption(UnitType.Viking);
                     break;
 
                 case FactionType.DragonSlayer:
                     faction.grouptype = FactionGroupType.Nordic;
                     aggressionLevel = Ref.rnd.Chance(0.4) ? AggressionLevel2_RandomAttacks : AggressionLevel1_RevengeOnly;
                     name = DssRef.lang.FactionName_Dragonslayer;
-                    addStartCitiesBuyOption(UnitType.CrossBow);
+                    //addStartCitiesBuyOption(UnitType.CrossBow);
                     break;
 
                 case FactionType.SouthHara:
@@ -178,7 +182,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.hasDeserters = false;
                     name = DssRef.lang.FactionName_SouthHara;
                     faction.displayInFullOverview = true;
-                    faction.gold += DssLib.HeadCityMaxWorkForce * 5;
+                    faction.gold += DssConst.HeadCityStartMaxWorkForce * 5;
                     break;
 
                 case FactionType.DyingMonger:
@@ -189,7 +193,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
                     name = "Monger";
-                    faction.gold += DssLib.HeadCityMaxWorkForce * 1000;
+                    faction.gold += DssConst.HeadCityStartMaxWorkForce * 1000;
                     break;
 
                 case FactionType.DyingHate:
@@ -200,7 +204,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
                     name = "Hatu";
-                    faction.gold += DssLib.HeadCityMaxWorkForce * 1000;
+                    faction.gold += DssConst.HeadCityStartMaxWorkForce * 1000;
                     break;
 
                 case FactionType.DyingDestru:
@@ -211,7 +215,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
                     name = "Destru";
-                    faction.gold += DssLib.HeadCityMaxWorkForce * 1000;
+                    faction.gold += DssConst.HeadCityStartMaxWorkForce * 1000;
                     break;
 
 
@@ -219,22 +223,49 @@ namespace VikingEngine.DSSWars.Players
                     throw new NotImplementedException("ai player " + faction.factiontype);
             }
 
+            refreshAggression();
         }
 
-        void addStartCitiesBuyOption(UnitType unitType)
+        public void refreshAggression()
         {
-            var typeData = DssRef.unitsdata.Get(unitType);
-            var citiesC = faction.cities.counter();
-
-            while (citiesC.Next())
+            int prioAdd = 0;
+            if (aggressionLevel >= AggressionLevel2_RandomAttacks)
             {
-                citiesC.sel.cityPurchaseOptions.Add(new CityPurchaseOption()
-                {
-                    unitType = unitType,
-                    goldCost = typeData.goldCost,
-                });
+                faction.workTemplate.craft_heavyarmor.value = 5;
             }
+            else if (aggressionLevel == AggressionLevel1_RevengeOnly)
+            {
+                prioAdd = -1;
+            }
+            else
+            {
+                prioAdd = -2;
+            }
+
+            faction.workTemplate.craft_mediumarmor.value = 4 + prioAdd;
+            faction.workTemplate.craft_lightarmor.value = 3 + prioAdd;
+
+            faction.workTemplate.craft_sword.value = 5 + prioAdd;
+            faction.workTemplate.craft_bow.value = 4 + prioAdd;
+            faction.workTemplate.craft_sharpstick.value = 3 + prioAdd;
         }
+
+
+
+        //void addStartCitiesBuyOption(UnitType unitType)
+        //{
+        //    var typeData = DssRef.profile.Get(unitType);
+        //    var citiesC = faction.cities.counter();
+
+        //    while (citiesC.Next())
+        //    {
+        //        citiesC.sel.cityPurchaseOptions.Add(new CityPurchaseOption()
+        //        {
+        //            unitType = unitType,
+        //            goldCost = typeData.goldCost,
+        //        });
+        //    }
+        //}
         
         public override void createStartUnits()
         {
@@ -249,7 +280,19 @@ namespace VikingEngine.DSSWars.Players
                         mainArmy = startMainArmy();
                         for (int i = 0; i < 5; ++i)
                         {
-                            new SoldierGroup(mainArmy, UnitType.Soldier, false);
+                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_Standard);//, UnitType.Soldier, false);
+                        }
+                        break;
+
+                    case FactionType.DarkFollower:
+                        mainArmy = startMainArmy();
+                        for (int i = 0; i < 5; ++i)
+                        {
+                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_Pikeman);
+                        }
+                        for (int i = 0; i < 5; ++i)
+                        {
+                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_CrossbowMan);
                         }
                         break;
 
@@ -265,10 +308,11 @@ namespace VikingEngine.DSSWars.Players
 
                                     for (int i = 0; i < 10; ++i)
                                     {
-                                        new SoldierGroup(army, UnitType.HonorGuard, false);
+                                        new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard);
                                     }
 
                                     army.OnSoldierPurchaseCompleted();
+                                    army.setMaxFood();
                                 }
                             }
                         }
@@ -278,7 +322,7 @@ namespace VikingEngine.DSSWars.Players
                         mainArmy = startMainArmy();
                         for (int i = 0; i < 5; ++i)
                         {
-                            new SoldierGroup(mainArmy, UnitType.GreenSoldier, false);
+                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_GreenSoldier);//UnitType.GreenSoldier, false);
                         }
                         break;
 
@@ -289,7 +333,7 @@ namespace VikingEngine.DSSWars.Players
                         mainArmy = startMainArmy();
                         for (int i = 0; i < 5; ++i)
                         {
-                            new SoldierGroup(mainArmy, UnitType.Viking, false);
+                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_Viking);
                         }
                         break;
 
@@ -307,33 +351,38 @@ namespace VikingEngine.DSSWars.Players
 
                                     for (int i = 0; i < 10; ++i)
                                     {
-                                        new SoldierGroup(army, UnitType.HonorGuard, false);
-                                    }
-                                    for (int i = 0; i < 10; ++i)
-                                    {
-                                        new SoldierGroup(army, UnitType.Archer, false);
+                                        new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard);//UnitType.HonorGuard, false);
                                     }
                                     for (int i = 0; i < 20; ++i)
                                     {
-                                        new SoldierGroup(army, UnitType.Ballista, false);
-                                    }
-                                    for (int i = 0; i < 80; ++i)
-                                    {
-                                        new SoldierGroup(army, UnitType.Soldier, false);
+                                        new SoldierGroup(army, DssLib.SoldierProfile_StandardArcher); //UnitType.Archer, false);
                                     }
                                     for (int i = 0; i < 20; ++i)
                                     {
-                                        new SoldierGroup(army, UnitType.Knight, false);
+                                        new SoldierGroup(army, DssLib.SoldierProfile_StandardBallista);
+                                    }
+                                    for (int i = 0; i < 60; ++i)
+                                    {
+                                        new SoldierGroup(army, DssLib.SoldierProfile_Standard); //UnitType.Soldier, false);
+                                    }
+                                    for (int i = 0; i < 20; ++i)
+                                    {
+                                        new SoldierGroup(army, DssLib.SoldierProfile_Knight);
                                     }
 
                                     army.OnSoldierPurchaseCompleted();
+                                    army.setMaxFood();
                                 }
                             }
                         }
                         break;
-                }                
+                }
 
-                mainArmy?.OnSoldierPurchaseCompleted();
+                if (mainArmy != null)
+                {
+                    mainArmy.OnSoldierPurchaseCompleted();
+                    mainArmy.setMaxFood();
+                }
             }
 
             Army startMainArmy()
@@ -391,17 +440,17 @@ namespace VikingEngine.DSSWars.Players
                             switch (purchaseOrder)
                             {
                                 case PurchaseOrderType_Army:
-                                    buySoldiers(city);
+                                    buySoldiers(city, true, true);
                                     break;
                                 case PurchaseOrderType_CityWorkers:
                                     if (city.damages.HasValue())
                                     {
                                         city.buyRepair(true, true);
                                     }
-                                    else
-                                    {
-                                        city.buyWorkforce(true, 1);
-                                    }
+                                    //else
+                                    //{
+                                    //    city.buyWorkforce(true, 1);
+                                    //}
                                     break;
                                 case PurchaseOrderType_CityGuard:
                                     city.buyCityGuards(true, 1);
@@ -415,113 +464,18 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        public override void onGameStart(bool newGame)
+        {
+            base.onGameStart(newGame);
+            
+        }
+
         public override void oneSecUpdate()
         {
             base.oneSecUpdate();
             ignorePlayerCapture = false;
         }
 
-        void buySoldiers(City city)
-        {
-            if (faction.NetIncome() > DssLib.SoldierDefaultUpkeep * purchaseCount)
-            {
-                Army army;
-                switch (faction.factiontype)
-                {
-                    case FactionType.DarkLord:
-                        {
-                            int cannons = MathExt.MultiplyInt(Ref.rnd.Double(0.0, 0.6), purchaseCount);
-                            int archers = MathExt.MultiplyInt(Ref.rnd.Double(0.0, 0.4), purchaseCount);
-                            int soldiers = purchaseCount - cannons * 2 - archers;
-
-                            city.buySoldiers(UnitType.Trollcannon, cannons, true, out army, true);
-                            city.buySoldiers(UnitType.CrossBow, archers, true, out army, true);
-                            city.buySoldiers(UnitType.Pikeman, soldiers, true, out army, true);
-
-                            if (DssRef.state.events.nextEvent == EventType.DarkLordInPerson)
-                            {
-                                city.buySoldiers(UnitType.HonorGuard, 6, true, out army, true);
-                                city.buySoldiers(UnitType.DarkLord, 1, true, out army, true);
-                            }
-                        }
-                        break;
-
-                    case FactionType.GreenWood:
-                        city.buySoldiers(UnitType.GreenSoldier, purchaseCount, true, out army, true);
-                        break;
-
-                    case FactionType.NordicRealm:
-                    case FactionType.BearClaw:
-                    case FactionType.NordicSpur:
-                    case FactionType.IceRaven:
-                        city.buySoldiers(UnitType.Viking, purchaseCount, true, out army, true);
-                        break;
-
-                    default:
-                        switch (purchaseOrderFocus)
-                        {
-                            case PurchaseOrderFocus_QuickDefend:
-                                city.buySoldiers(UnitType.Folkman, purchaseCount, true, out army);
-                                break;
-
-                            case PurchaseOrderFocus_Defend:
-                                if (!city.buySoldiers(UnitType.Knight, purchaseCount / 2, true, out army))
-                                {
-                                    city.buySoldiers(UnitType.Soldier, purchaseCount, true, out army);
-                                }
-                                break;
-
-                            case PurchaseOrderFocus_AttackCity:
-                                {
-                                    int ballistas = MathExt.MultiplyInt(Ref.rnd.Double(0.0, 0.6), purchaseCount);
-                                    int archers = MathExt.MultiplyInt(Ref.rnd.Double(0.0, 0.4), purchaseCount);
-                                    int soldiers = purchaseCount - ballistas - archers;
-
-                                    city.buySoldiers(UnitType.Ballista, ballistas, true, out army);
-                                    city.buySoldiers(UnitType.Archer, archers, true, out army);
-                                    city.buySoldiers(UnitType.Soldier, soldiers, true, out army);
-                                }
-                                break;
-
-                            default:
-                                {
-                                    int knights = MathExt.MultiplyInt(Ref.rnd.Double(0.0, 0.8), purchaseCount);
-                                    int ballistas = MathExt.MultiplyInt(Ref.rnd.Double(0.0, 0.2), purchaseCount);
-                                    int archers = MathExt.MultiplyInt(Ref.rnd.Double(0.0, 0.2), purchaseCount);
-                                    int soldiers = purchaseCount - ballistas - archers - knights * 2;
-
-                                    city.buySoldiers(UnitType.Knight, knights, true, out army);
-                                    city.buySoldiers(UnitType.Ballista, ballistas, true, out army);
-                                    city.buySoldiers(UnitType.Archer, archers, true, out army);
-                                    city.buySoldiers(UnitType.Soldier, soldiers, true, out army);
-                                }
-                                break;
-                        }
-                        break;
-                }
-                purchaseOrderFocus = PurchaseOrderFocus_None;
-
-                if (purchaseIsMainArmy)
-                {
-                    mainArmy = army;
-                    purchaseIsMainArmy = false;
-                }
-            }
-        }
-
-        bool haveIncomeForArmyPurchase(bool aggresive)
-        {
-            if (aggresive)
-            {
-                return faction.gold >= DssRef.settings.AiArmyPurchase_MoneyMin_Aggresive &&
-                    faction.NetIncome() >= DssRef.settings.AiArmyPurchase_IncomeMin_Aggresive;
-            }
-            else
-            {
-                return faction.gold >= DssRef.settings.AiArmyPurchase_MoneyMin &&
-                    faction.NetIncome() >= DssRef.settings.AiArmyPurchase_IncomeMin;
-            }
-        }
 
         override public void aiPlayerAsynchUpdate(float time)
         {
@@ -542,7 +496,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                     
                 }
-                if (faction.factiontype == FactionType.SouthHara)
+                if (faction.parentArrayIndex == 443)//faction.factiontype == FactionType.SouthHara)
                 { 
                     lib.DoNothing();
                 }
@@ -555,22 +509,23 @@ namespace VikingEngine.DSSWars.Players
                 bool inWar = aggressionLevel >= AggressionLevel2_RandomAttacks ||
                     (aggressionLevel == AggressionLevel1_RevengeOnly && wars.Count > 0);
 
-                
+                refreshWorkPriority_async(inWar);
+
                 if (inWar && Ref.rnd.Chance(aggressionLevel == AggressionLevel2_RandomAttacks ? 0.05 : 0.3) &&
                     !mainArmyLockedInTravel())
                 {
                     mainArmy_AsyncUpdate(wars);
                 }
-                else if (protect && haveIncomeForArmyPurchase(inWar))
+                else if (protect) //&& buySoldiers(//haveIncomeForArmyPurchase(inWar))
                 {
                     City city = faction.cities.GetRandomSafe(Ref.rnd);
 
-                    if (city != null)
+                    if (city != null && buySoldiers(city, inWar, false))
                     {
                         int maxPurchaseCount = 30;
                         if (inWar)
                         {
-                            maxPurchaseCount = MathExt.MultiplyInt(EconomyMultiplier, maxPurchaseCount);
+                            maxPurchaseCount = MathExt.MultiplyInt(DssRef.difficulty.aiEconomyMultiplier, maxPurchaseCount);
                         }
                         createPurcaseOrder(city, maxPurchaseCount);
                     }
@@ -689,47 +644,38 @@ namespace VikingEngine.DSSWars.Players
             {
                 //bool haveIncome = faction.NetIncome() >= 0 &&
                 //    faction.gold >= DssLib.GroupDefaultCost * 5;
-                if (haveIncomeForArmyPurchase(true))
+                City city = null;
+                city = cityCloseToCityInDanger(cityInDanger());
+
+                if (city != null)
                 {
-                    //Start fresh
-                    mainArmy = null;
-                    City city = null;
+                    purchaseOrderFocus = PurchaseOrderFocus_Defend;
+                }
+                else
+                {
+                    int war = findMainWar(wars);
 
-                    //Begin with defence check
-                    city = cityCloseToCityInDanger(cityInDanger());
-
-                    if (city != null)
+                    if (war >= 0)
                     {
-                        purchaseOrderFocus = PurchaseOrderFocus_Defend;
+                        //find close city
+                        city = cityCloseToOpponent(war);
                     }
                     else
                     {
-                        int war = findMainWar(wars);
-
-                        if (war >= 0)
-                        {
-                            //find close city
-                            city = cityCloseToOpponent(war);
-                        }
-                        else
-                        {
-                            city = cityCloseToNewTarget();
-                        }
-                        purchaseOrderFocus = PurchaseOrderFocus_AttackCity;
+                        city = cityCloseToNewTarget();
                     }
+                    purchaseOrderFocus = PurchaseOrderFocus_AttackCity;
+                }
 
-                    //todo, baka in i neighbors om de passerar vatten
-
-                    if (city == null)
-                    {
-                        return;
-                    }
-
-                    if (city != null)
-                    {
-                        nextDecisionTimer.MilliSeconds += Ref.rnd.Int(4000, 15000);
-                        mainArmyBuyAtCity(city);
-                    }
+                //if (haveIncomeForArmyPurchase(true))
+                if (city != null && buySoldiers(city, true, false))
+                {
+                    //Start fresh
+                    mainArmy = null;
+                    
+                    nextDecisionTimer.MilliSeconds += Ref.rnd.Int(4000, 15000);
+                    mainArmyBuyAtCity(city);
+                    
                 }
                 else
                 {
@@ -889,14 +835,14 @@ namespace VikingEngine.DSSWars.Players
 
         private void mainArmyBuyAtCity(City city)
         {
-            int max = Math.Min(faction.gold / DssLib.GroupDefaultCost, city.workForce.Int() / SoldierData.GroupDefaultCount);
+            //int max = Math.Min(faction.gold / DssLib.GroupDefaultCost, city.workForce / DssConst.SoldierGroup_DefaultCount);
             
-            if (max >= 4)
-            {
-                purchaseCount = Ref.rnd.Int(MathExt.MultiplyInt(0.5, max), max);
+            //if (max >= 4)
+            //{
+            //    purchaseCount = Ref.rnd.Int(MathExt.MultiplyInt(0.5, max), max);
 
-                if (purchaseCount >= 4)
-                {
+            //    if (purchaseCount >= 4)
+            //    {
                     mainArmyState = MainArmyState_BuySoldiers;
 
                     purchaseIsMainArmy = true;
@@ -904,27 +850,29 @@ namespace VikingEngine.DSSWars.Players
                     purchaseOrderIndex1 = city.parentArrayIndex;
 
                     collectLooseArmies(city.tilePos);
-                }
+            //    }
 
-            }
+            //}
         }
 
         void buyDefenceAtCity(City city)
         {   
-            int max = Math.Min(faction.gold / DssLib.GroupDefaultCost, city.workForce.Int() / SoldierData.GroupDefaultCount);
+            //int max = Math.Min(faction.gold / DssLib.GroupDefaultCost, city.workForce / DssConst.SoldierGroup_DefaultCount);
 
-            if (max >= 4)
-            {
-                purchaseCount = Ref.rnd.Int(MathExt.MultiplyInt(0.3, max), MathExt.MultiplyInt(0.6, max));
+            //if (max >= 4)
+            //{
+            //    purchaseCount = Ref.rnd.Int(MathExt.MultiplyInt(0.3, max), MathExt.MultiplyInt(0.6, max));
 
-                if (purchaseCount >= 4)
+            //    if (purchaseCount >= 4)
+            //    {
+                if (buySoldiers(city, true, false))
                 {
                     purchaseOrder = PurchaseOrderType_Army;
                     purchaseOrderFocus = PurchaseOrderFocus_QuickDefend;
                     purchaseOrderIndex1 = city.parentArrayIndex;
                 }
 
-            }
+            //}
         }
 
         void collectLooseArmies(IntVector2 toPos)
@@ -959,7 +907,7 @@ namespace VikingEngine.DSSWars.Players
                     {
                         city = c;
                     }
-                    else if (c.workForce.value > city.workForce.value)
+                    else if (c.workForce > city.workForce)
                     {
                         city = c;
                     }
@@ -1200,7 +1148,7 @@ namespace VikingEngine.DSSWars.Players
 
         AbsMapObject AttackFaction(Army army, Faction opponent)
         {
-            if (army != null)
+            if (!DssRef.settings.AiDelay && army != null)
             {
                 var areaPos = UnitCollAreaGrid.ToAreaPos(army.tilePos);
                 DssRef.world.unitCollAreaGrid.collectCitiesAndArmies(areaPos, 2, army.strengthValue * 0.8f, DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate,
@@ -1217,7 +1165,7 @@ namespace VikingEngine.DSSWars.Players
 
         City AttackRamdom(Army army)
         {
-            if (army != null)
+            if (!DssRef.settings.AiDelay && army != null)
             {
                 var areaPos = UnitCollAreaGrid.ToAreaPos(army.tilePos);
 

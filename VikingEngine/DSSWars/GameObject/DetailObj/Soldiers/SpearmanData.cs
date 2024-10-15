@@ -5,29 +5,29 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class SpearmanData : AbsSoldierData
-    {
-        public SpearmanData()
-        {
-            unitType = UnitType.Spearman;
+    //class SpearmanData : AbsSoldierProfile
+    //{
+    //    public SpearmanData()
+    //    {
+    //        unitType = UnitType.Spearman;
 
-            modelScale = StandardModelScale;
-            boundRadius = StandardBoundRadius;
+    //        modelScale = DssConst.Men_StandardModelScale;
+    //        boundRadius = DssVar.StandardBoundRadius;
 
-            walkingSpeed = StandardWalkingSpeed * 0.8f;
-            rotationSpeed = StandardRotatingSpeed * 0.5f;
-            targetSpotRange = StandardTargetSpotRange;
-            attackRange = 0.06f;
-            basehealth = DefaultHealth;
-            mainAttack = AttackType.Melee;
-            attackDamage = 5;
-            attackTimePlusCoolDown = StandardAttackAndCoolDownTime * 1.5f;
+    //        walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.8f;
+    //        rotationSpeed = StandardRotatingSpeed * 0.5f;
+    //        targetSpotRange = StandardTargetSpotRange;
+    //        attackRange = 0.06f;
+    //        basehealth = DssConst.Soldier_DefaultHealth;
+    //        mainAttack = AttackType.Melee;
+    //        attackDamage = 5;
+    //        attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 1.5f;
 
-            modelName = LootFest.VoxelModelName.war_spearman;
+    //        modelName = LootFest.VoxelModelName.war_spearman;
 
-            idleBlinkFrame = 0;
-            //shieldDamageReduction = 4;
-            turnTowardsDamage = true;
-        }
-    }
+    //        idleBlinkFrame = 0;
+    //        //shieldDamageReduction = 4;
+    //        //turnTowardsDamage = true;
+    //    }
+    //}
 }

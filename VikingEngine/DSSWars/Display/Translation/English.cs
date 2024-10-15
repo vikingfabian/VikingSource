@@ -1275,6 +1275,301 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Input_Source_Controller => "Controller";
 
 
+        /* #### --------------- ##### */
+        /* #### RESOURCE UPDATE ##### */
+        /* #### --------------- ##### */
+        public override string CityMenu_SalePricesTitle => "Sale prices";
+        public override string Blueprint_Title => "Blueprint";
+        public override string Resource_Tab_Overview => "Overview";
+        public override string Resource_Tab_Stockpile => "Stockpile";
 
+        public override string Resource => "Resource";
+        public override string Resource_StockPile_Info => "Set a goal amount for storage of resources; this will inform the workers when to work on another resource.";
+        public override string Resource_TypeName_Water => "water";
+        public override string Resource_TypeName_Wood => "wood";
+        public override string Resource_TypeName_Fuel => "fuel";
+        public override string Resource_TypeName_Stone => "stone";
+        public override string Resource_TypeName_RawFood => "raw food";
+        public override string Resource_TypeName_Food => "food";
+        public override string Resource_TypeName_Beer => "beer";
+        public override string Resource_TypeName_Wheat => "wheat";
+        public override string Resource_TypeName_Linen => "linen";
+        public override string Resource_TypeName_SkinAndLinen => "skin and linen";
+        public override string Resource_TypeName_IronOre => "iron ore";
+        public override string Resource_TypeName_GoldOre => "gold ore";
+        public override string Resource_TypeName_Iron => "iron";
+
+        public override string Resource_TypeName_SharpStick => "Sharp stick";
+        public override string Resource_TypeName_Sword => "Sword";
+        public override string Resource_TypeName_KnightsLance => "Knight's lance";
+        public override string Resource_TypeName_TwoHandSword => "Zweihänder";
+        public override string Resource_TypeName_Bow => "Bow";
+
+        public override string Resource_TypeName_LightArmor => "Light armor";
+        public override string Resource_TypeName_MediumArmor => "Medium armor";
+        public override string Resource_TypeName_HeavyArmor => "Heavy armor";
+
+        public override string ResourceType_Children => "Children";
+
+        public override string BuildingType_DefaultName => "Building";
+        public override string BuildingType_WorkerHut => "Worker hut";
+        public override string BuildingType_Tavern => "Tavern";
+        public override string BuildingType_Brewery => "Brewery";
+        public override string BuildingType_Postal => "Postal service";
+        public override string BuildingType_Recruitment => "Recruitment center";
+        public override string BuildingType_Barracks => "Barracks";
+        public override string BuildingType_PigPen => "Pig pen";
+        public override string BuildingType_HenPen => "Hen pen";
+        public override string BuildingType_WorkBench => "Work bench";
+        public override string BuildingType_Carpenter => "Carpenter";
+        public override string BuildingType_CoalPit => "Charcoal pit";
+        public override string DecorType_Statue => "Statue";
+        public override string DecorType_Pavement => "Pavement";
+        public override string BuildingType_Smith => "Smith";
+        public override string BuildingType_Cook => "Cook";
+        public override string BuildingType_Storage => "Storehouse";
+
+        public override string BuildingType_ResourceFarm => "{0} farm";
+
+        public override string BuildingType_WorkerHut_DescriptionLimitX => "Expands worker limit with {0}";
+        public override string BuildingType_Tavern_Description => "Workers may eat here";
+        public override string BuildingType_Tavern_Brewery => "Beer production";
+        public override string BuildingType_Postal_Description => "Send resources to other cities";
+        public override string BuildingType_Recruitment_Description => "Send men to other cities";
+        public override string BuildingType_Barracks_Description => "Uses men and equipment to recruit soldiers";
+        public override string BuildingType_PigPen_Description => "Produces pigs, which give food and skin";
+        public override string BuildingType_HenPen_Description => "Produces hens and eggs, which give food";
+        public override string BuildingType_Decor_Description => "Decoration";
+        public override string BuildingType_Farm_Description => "Grow a resource";
+
+        public override string BuildingType_Cook_Description => "Food crafting station";
+        public override string BuildingType_Bench_Description => "Item crafting station";
+
+        public override string BuildingType_Smith_Description => "Metal crafting station";
+        public override string BuildingType_Carpenter_Description => "Wood crafting station";
+
+        public override string BuildingType_Nobelhouse_Description => "Home for knights and diplomats";
+        public override string BuildingType_CoalPit_Description => "Efficient fuel production";
+        public override string BuildingType_Storage_Description => "Dropoff point for resources";
+
+        public override string MenuTab_Info => "Info";
+        public override string MenuTab_Work => "Work";
+        public override string MenuTab_Recruit => "Recruit";
+        public override string MenuTab_Resources => "Resources";
+        public override string MenuTab_Trade => "Trade";
+        public override string MenuTab_Build => "Build";
+        public override string MenuTab_Economy => "Economy";
+        public override string MenuTab_Delivery => "Delivery";
+
+        public override string MenuTab_Build_Description => "Place buildings in your city";
+        public override string MenuTab_BlackMarket_Description => "Place buildings in your city";
+        public override string MenuTab_Resources_Description => "Place buildings in your city";
+        public override string MenuTab_Work_Description => "Place buildings in your city";
+        public override string MenuTab_Automation_Description => "Place buildings in your city";
+
+        public override string BuildHud_OutsideCity => "Outside city region";
+        public override string BuildHud_OutsideFaction => "Outside your borders!";
+
+        public override string BuildHud_OccupiedTile => "Occupied tile";
+
+        public override string Build_PlaceBuilding => "Building";
+        public override string Build_DestroyBuilding => "Destroy";
+        public override string Build_ClearTerrain => "Clear terrain";
+
+        public override string Build_ClearOrders => "Clear build orders";
+        public override string Build_Order => "Build order";
+        public override string Build_OrderQue => "Build order que: {0}";
+        public override string Build_AutoPlace => "Auto place";
+
+        public override string Work_OrderPrioTitle => "Work priority";
+        public override string Work_OrderPrioDescription => "Priority goes from 1 (low) to {0} (high)";
+
+        public override string Work_OrderPrio_No => "No priority. Will not be worked on.";
+        public override string Work_OrderPrio_Min => "Minimum priority.";
+        public override string Work_OrderPrio_Max => "Maximum priority.";
+
+        public override string Work_Move => "Move items";
+
+        public override string Work_GatherXResource => "Gather {0}";
+        public override string Work_CraftX => "Craft {0}";
+        public override string Work_Farming => "Farming";
+        public override string Work_Mining => "Mining";
+        public override string Work_Trading => "Tradeing";
+
+        public override string Work_AutoBuild => "Auto build and expand";
+
+        public override string WorkerHud_WorkType => "Work status: {0}";
+        public override string WorkerHud_Carry => "Carry: {0} {1}";
+        public override string WorkerHud_Energy => "Energy: {0}";
+        public override string WorkerStatus_Exit => "Leave workforce";
+        public override string WorkerStatus_Eat => "Eat";
+        public override string WorkerStatus_Till => "Till";
+        public override string WorkerStatus_Plant => "Plant";
+        public override string WorkerStatus_Gather => "Gather";
+        public override string WorkerStatus_PickUpResource => "Pick up resource";
+        public override string WorkerStatus_DropOff => "Drop off";
+        public override string WorkerStatus_BuildX => "Build {0}";
+        public override string WorkerStatus_TrossReturnToArmy => "Return to army";
+
+        public override string Hud_ToggleFollowFaction => "Toggle follow faction settings";
+        public override string Hud_FollowFaction_Yes => "Is set to use faction global settings";
+        public override string Hud_FollowFaction_No => "Is set to use local settings (Global value is {0})";
+
+        public override string Hud_Idle => "Idle";
+        public override string Hud_NoLimit => "No limit";
+
+        public override string Hud_None => "None";
+        public override string Hud_Queue => "Queue";
+
+        public override string Hud_EmptyList => "- Empty list -";
+
+        public override string Hud_RequirementOr => "- or -";
+
+        public override string Hud_BlackMarket => "Black market";
+
+        public override string Language_CollectProgress => "{0} / {1}";
+        public override string Hud_SelectCity => "Select City";
+        public override string Conscription_Title => "Conscription";
+        public override string Conscript_WeaponTitle => "Weapon";
+        public override string Conscript_ArmorTitle => "Armor";
+        public override string Conscript_TrainingTitle => "Training";
+
+        public override string Conscript_SpecializationTitle => "Specialization";
+        public override string Conscript_SpecializationDescription => "Will increase attack in one area, and reduce all others, by {0}";
+        public override string Conscript_SelectBuilding => "Select barracks";
+
+        public override string Conscript_WeaponDamage => "Weapon damage: {0}";
+        public override string Conscript_ArmorHealth => "Armor health: {0}";
+        public override string Conscript_TrainingSpeed => "Attack speed: {0}";
+        public override string Conscript_TrainingTime => "Training time: {0}";
+
+        public override string Conscript_Training_Minimal => "Minimal";
+        public override string Conscript_Training_Basic => "Basic";
+        public override string Conscript_Training_Skillful => "Skillful";
+        public override string Conscript_Training_Professional => "Professional";
+
+        public override string Conscript_Specialization_Field => "Open field";
+        public override string Conscript_Specialization_Sea => "Ship";
+        public override string Conscript_Specialization_Siege => "Siege";
+        public override string Conscript_Specialization_Traditional => "Traditional";
+        public override string Conscript_Specialization_AntiCavalry => "Anti cavalry";
+
+        public override string Conscription_Status_CollectingEquipment => "Collecting equipment: {0}";
+        public override string Conscription_Status_CollectingMen => "Collecting men: {0}";
+        public override string Conscription_Status_Training => "Training: {0}";
+
+        public override string ArmyHud_Food_Reserves_X => "Food reserves: {0}";
+        public override string ArmyHud_Food_Upkeep_X => "Food upkeep: {0}";
+        public override string ArmyHud_Food_Costs_X => "Food costs: {0}";
+
+        public override string Deliver_WillSendXInfo => "Will send {0} at a time";
+        public override string Delivery_ListTitle => "Select delivery service";
+        public override string Delivery_DistanceX => "Distance: {0}";
+        public override string Delivery_DeliveryTimeX => "Delivery time: {0}";
+        public override string Delivery_SenderMinimumCap => "Sender minimum cap";
+        public override string Delivery_RecieverMaximumCap => "Receiver maximum cap";
+        public override string Delivery_ItemsReady => "Items ready";
+        public override string Delivery_RecieverReady => "Receiver ready";
+        public override string Hud_ThisCity => "This city";
+        public override string Hud_RecieveingCity => "Receiving city";
+
+        public override string Info_ButtonIcon => "i";
+
+        public override string Info_PerSecond => "Displayed in Resource Per Second.";
+
+        public override string Info_MinuteAverage => "The value is an average from the last minute";
+
+        public override string Message_CityOutOfFood_Title => "Out of food";
+        public override string Message_CityOutOfFood_Text => "Expensive food will be purchased from the black market. Workers will starve when your money runs out.";
+
+        public override string Hud_EndSessionIcon => "X";
+
+        public override string TerrainType => "Terrain type";
+
+        public override string Hud_EnergyUpkeepX => "Food energy upkeep {0}";
+
+        public override string Hud_EnergyAmount => "{0} energy (seconds of work)";
+
+        public override string Hud_CopySetup => "Copy setup";
+        public override string Hud_Paste => "Paste";
+
+        public override string Hud_Available => "Available";
+
+        public override string WorkForce_ChildBirthRequirements => "Child birth requirements:";
+        public override string WorkForce_AvailableHomes => "Available homes: {0}";
+        public override string WorkForce_Peace => "Peace";
+        public override string WorkForce_ChildToManTime => "Grown up age: {0} minutes";
+
+        public override string Economy_TaxIncome => "Tax income: {0}";
+        public override string Economy_ImportCostsForResource => "Import costs for {0}: {1}";
+        public override string Economy_BlackMarketCostsForResource => "Black market costs for {0}: {1}";
+        public override string Economy_GuardUpkeep => "Guard upkeep: {0}";
+
+        public override string Economy_LocalCityTrade_Export => "City trade export: {0}";
+        public override string Economy_LocalCityTrade_Import => "City trade import: {0}";
+
+        public override string Economy_ResourceProduction => "{0} production: {1}";
+        public override string Economy_ResourceSpending => "{0} spending: {1}";
+
+        public override string Economy_TaxDescription => "Tax is {0} gold per worker";
+
+        public override string Economy_SoldResources => "Sold resources (gold ore): {0}";
+
+        public override string UnitType_Cities => "Cities";
+        public override string UnitType_Armies => "Armies";
+        public override string UnitType_Worker => "Worker";
+
+        public override string UnitType_FootKnight => "Longsword knight";
+        public override string UnitType_CavalryKnight => "Cavalry knight";
+
+        public override string CityCulture_LargeFamilies => "Large families";
+        public override string CityCulture_FertileGround => "Fertile grounds";
+        public override string CityCulture_Archers => "Skilled archers";
+        public override string CityCulture_Warriors => "Warriors";
+        public override string CityCulture_AnimalBreeder => "Animal breeders";
+        public override string CityCulture_Miners => "Miners";
+        public override string CityCulture_Woodcutters => "Lumbermen";
+        public override string CityCulture_Builders => "Builders";
+        public override string CityCulture_CrabMentality => "Crab mentality";
+        public override string CityCulture_DeepWell => "Deep well";
+        public override string CityCulture_Networker => "Networker";
+        public override string CityCulture_PitMasters => "Pit masters";
+
+        public override string CityCulture_CultureIsX => "Culture: {0}";
+        public override string CityCulture_LargeFamilies_Description => "Increased child birth";
+        public override string CityCulture_FertileGround_Description => "Crops give more";
+        public override string CityCulture_Archers_Description => "Produces skilled archers";
+        public override string CityCulture_Warriors_Description => "Produces skilled melee fighters";
+        public override string CityCulture_AnimalBreeder_Description => "Animals give more resources";
+        public override string CityCulture_Miners_Description => "Mines more ore";
+        public override string CityCulture_Woodcutters_Description => "Trees give more wood";
+        public override string CityCulture_Builders_Description => "Fast at building";
+        public override string CityCulture_CrabMentality_Description => "Work cost less energy. Cannot produce high-skill soldiers.";
+        public override string CityCulture_DeepWell_Description => "Water replenish faster";
+        public override string CityCulture_Networker_Description => "Efficient postal service";
+        public override string CityCulture_PitMasters_Description => "Higher fuel production";
+
+        public override string CityOption_AutoBuild_Work => "Auto expand workforce";
+        public override string CityOption_AutoBuild_Farm => "Auto expand farms";
+
+        public override string Hud_PurchaseTitle_Resources => "Buy resources";
+        public override string Hud_PurchaseTitle_CurrentlyOwn => "You own";
+
+        public override string Tutorial_EndTutorial => "End tutorial";
+        public override string Tutorial_MissionX => "Mission {0}";
+        public override string Tutorial_CollectXAmountOfY => "Collect {0} {1}";
+        public override string Tutorial_SelectTabX => "Select tab: {0}";
+        public override string Tutorial_IncreasePriorityOnX => "Increase the priority on: {0}";
+        public override string Tutorial_PlaceBuildOrder => "Place build order: {0}";
+        public override string Tutorial_ZoomInput => "Zoom";
+
+        public override string Tutorial_SelectACity => "Select a city";
+        public override string Tutorial_ZoomInWorkers => "Zoom in to see the workers";
+        public override string Tutorial_CreateSoldiers => "Create two soldier units with this equipment: {0}. {1}.";
+        public override string Tutorial_ZoomOutOverview => "Zoom out, to map overview";
+        public override string Tutorial_ZoomOutDiplomacy => "Zoom out, to diplomacy view";
+        public override string Tutorial_ImproveRelations => "Improve your relations with a neighbor faction";
+        public override string Tutorial_MissionComplete_Title => "Mission complete!";
+        public override string Tutorial_MissionComplete_Unlocks => "New controls have been unlocked";
     }
 }

@@ -33,6 +33,7 @@ namespace VikingEngine.DSSWars
         public const double TileWidthInKm = 0.064;
 
         public const int TileSubDivitions = 8;
+        public const int HalfTileSubDivitions = TileSubDivitions / 2;
         public const int TileSubDivitions_MaxIndex = TileSubDivitions-1;
 
         public static readonly Color WaterCol = new Color(14, 155, 246);
@@ -40,6 +41,7 @@ namespace VikingEngine.DSSWars
         public static readonly Color WaterDarkCol = new Color(0.043f, 0.486f,0.773f);
         public static readonly Color WaterDarkCol2 = ColorExt.Multiply(WaterDarkCol, 1.1f);
 
+        public static readonly float TileHalfWidth = 0.5f;
         public static readonly float SubTileWidth = 1f / TileSubDivitions;
         public static readonly Vector2 SubTileWidthV2 = new Vector2(SubTileWidth);
         public static readonly float SubTileHalfWidth = SubTileWidth * 0.5f;
@@ -169,6 +171,15 @@ namespace VikingEngine.DSSWars
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
+            
+            subTileGrid.LoopBegin();
+            while (subTileGrid.LoopNext())
+            {
+                subTileGrid.LoopValueGet().write(w);
+            }
+
+            Debug.WriteCheck(w);
+
             foreach (City city in cities)
             {
                 city.writeGameState(w);
@@ -189,9 +200,22 @@ namespace VikingEngine.DSSWars
                     w.Write(false); 
                 }
             }
+
+            Debug.WriteCheck(w);
+            
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
+            subTileGrid.LoopBegin();
+            while (subTileGrid.LoopNext())
+            {
+                SubTile st = subTileGrid.LoopValueGet();
+                st.read(r, subversion);
+                subTileGrid.LoopValueSet(st);
+            }
+
+            Debug.ReadCheck(r);
+
             foreach (City city in cities)
             {
                 city.readGameState(r, subversion, pointers);
@@ -208,8 +232,11 @@ namespace VikingEngine.DSSWars
                 }
             }
 
+            Debug.ReadCheck(r);
+
+            
         }
-        
+
 
         public void writeMapFile(System.IO.BinaryWriter w)
         {
@@ -217,7 +244,7 @@ namespace VikingEngine.DSSWars
             DebugWriteSize citiesSz = new DebugWriteSize();
             DebugWriteSize factionsSz = new DebugWriteSize();
 
-            const int SaveMapVersion = 4;
+            const int SaveMapVersion = 7;
             w.Write(SaveMapVersion);
 
             w.Write(metaData.seed);

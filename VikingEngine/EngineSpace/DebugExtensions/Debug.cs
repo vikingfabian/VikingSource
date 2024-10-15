@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using VikingEngine.DebugExtensions;
+using Microsoft.Xna.Framework;
 
 namespace VikingEngine
 {
@@ -11,6 +12,15 @@ namespace VikingEngine
     {
         public static VikingEngine.DataStream.FilePath logFilePath;
         static OutputWindow OutputWindow = null;
+
+        public static bool CorruptValue(float value)
+        { 
+            return float.IsNaN(value) || float.IsInfinity(value);
+        }
+        public static bool CorruptValue(Vector3 value)
+        {
+            return CorruptValue(value.X) || CorruptValue(value.Y) || CorruptValue(value.Z);
+        }
         
         public static void ToggleOutput()
         {

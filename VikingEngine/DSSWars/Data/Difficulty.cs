@@ -23,6 +23,7 @@ namespace VikingEngine.DSSWars.Data
         public BossTimeSettings bossTimeSettings = BossTimeSettings.Normal;
 
         public int aiEconomyLevel = 1;
+        public double aiEconomyMultiplier = 1.0;
         public int aiDelayTimeSec = 0;
 
         public const int DiplomacyDifficultyCount = 3;
@@ -97,7 +98,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 0;
                     diplomacyDifficulty = 0;
                     honorGuard = true;
-                    aiDelayTimeSec = 5 * 60;
+                    aiDelayTimeSec = 30 * TimeExt.MinuteInSeconds;
                     toPeacefulPercentage = 0.01f;
                     break;
 
@@ -108,7 +109,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 1;
                     diplomacyDifficulty = 0;
                     honorGuard = true;
-                    aiDelayTimeSec = 3 * 60;
+                    aiDelayTimeSec = 15 * TimeExt.MinuteInSeconds;
                     toPeacefulPercentage = 0.05f;
                     break;
 
@@ -119,7 +120,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 1;
                     diplomacyDifficulty = 1;
                     honorGuard = true;
-                    aiDelayTimeSec = 1 * 60;
+                    aiDelayTimeSec = 5 * TimeExt.MinuteInSeconds;
                     toPeacefulPercentage = 0.1f;
                     break;
 
@@ -180,6 +181,8 @@ namespace VikingEngine.DSSWars.Data
 
             MercenaryPurchaseCost_Start = 3500 + mediumOffset * 500;
             MercenaryPurchaseCost_Add = 100 + mediumOffset * 20;
+
+            aiEconomyMultiplier = AiEconomyLevel[aiEconomyLevel] / 100.0;
         }
 
         public void write(System.IO.BinaryWriter w)

@@ -61,7 +61,7 @@ namespace VikingEngine.DSSWars.Map
 
                 layers.Add(new DetailLayer(MapDetailLayerType.TerrainOverview2, minZoom, maxZoom, zoomBuffer));
 
-                TutorialZoomRange = new IntervalF(minZoom + zoomBuffer, maxZoom - zoomBuffer);
+                TutorialZoomRange = new IntervalF(FullZoomRange.Min, maxZoom - zoomBuffer);
 
                 minZoom = maxZoom;
                 maxZoom = 450;//FullZoomRange.GetFromPercent(0.75f);
@@ -121,7 +121,7 @@ namespace VikingEngine.DSSWars.Map
             if (prevLayer != null)
             {
                 prevLayer.opacity = 1f;
-                if (current.DrawCloseUp)
+                if (current.DrawDetailLayer)
                 {
                     prevLayer.opacity = 1.75f;
                 }
@@ -175,7 +175,7 @@ namespace VikingEngine.DSSWars.Map
         public const float NormalCamAngle = 0.78f;
         const float OverviewCamAngle = 0.65f;
 
-        public bool DrawCloseUp, DrawNormalAndClose, DrawNormal, DrawOverview, DrawFullOverview;
+        public bool DrawDetailLayer, DrawNormalAndClose, DrawNormal, DrawOverview, DrawFullOverview;
         //public float CloseUpTransparentsy, NormalAndCloseTransparentsy, NormalTransparentsy, OverviewTransparentsy, OverviewAndFactionsTransparentsy, FactionsTransparentsy;
 
         public float goalCamAngle;
@@ -196,7 +196,7 @@ namespace VikingEngine.DSSWars.Map
                 case MapDetailLayerType.UnitDetail1:
                     //CloseUp
                     goalCamAngle = CloseUpCamAngle;
-                    DrawCloseUp = true;
+                    DrawDetailLayer = true;
                    
                     break;
 
@@ -209,7 +209,7 @@ namespace VikingEngine.DSSWars.Map
                     goalCamAngle = OverviewCamAngle;
                     DrawOverview = true;
                     DrawFullOverview = false;
-                    DrawCloseUp = false;                  
+                    DrawDetailLayer = false;                  
                     break;
 
                 case MapDetailLayerType.FullOverview4:

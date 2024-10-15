@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars.Data
         //    {
         //        levelPerc *= 1.25;
         //    }
-            
+
         //    if (!allowPauseCommand)
         //    {
         //        levelPerc *= 1.5;
@@ -85,10 +85,13 @@ namespace VikingEngine.DSSWars.Data
 
         //    return levelPerc;
         //}
-
         public void write(System.IO.BinaryWriter w)
         {
-            const int Version = 15;
+            write(w, false);
+        }
+        public void write(System.IO.BinaryWriter w, bool gamestate = false)
+        {
+            const int Version = 16;
 
             w.Write(Version);
 
@@ -99,11 +102,13 @@ namespace VikingEngine.DSSWars.Data
 
             w.Write((int)mapSize);
 
-            w.Write(verticalScreenSplit);
-
-            for (int i = 0; i < MaxLocalPlayerCount; ++i)
+            if (!gamestate)
             {
-                localPlayers[i].write(w);
+                w.Write(verticalScreenSplit);
+                for (int i = 0; i < MaxLocalPlayerCount; ++i)
+                {
+                    localPlayers[i].write(w);
+                }
             }
 
             w.Write(generateNewMaps);
@@ -113,7 +118,12 @@ namespace VikingEngine.DSSWars.Data
             
             w.Write(runTutorial);
         }
+
         public void read(System.IO.BinaryReader r)
+        {
+            read(r, false);
+        }
+        public void read(System.IO.BinaryReader r, bool gamestate)
         {
             int version = r.ReadInt32();
             if (version <= 4)
@@ -131,11 +141,14 @@ namespace VikingEngine.DSSWars.Data
             }
             mapSize = (MapSize)r.ReadInt32();
 
-            verticalScreenSplit = r.ReadBoolean();
-
-            for (int i = 0; i < MaxLocalPlayerCount; ++i)
+            if (!gamestate || version < 16)
             {
-                localPlayers[i].read(r, version);
+                verticalScreenSplit = r.ReadBoolean();
+
+                for (int i = 0; i < MaxLocalPlayerCount; ++i)
+                {
+                    localPlayers[i].read(r, version);
+                }
             }
 
             if (version >= 11)
@@ -155,6 +168,11 @@ namespace VikingEngine.DSSWars.Data
             if (version >= 15)
             {
                 runTutorial = r.ReadBoolean();
+            }
+            
+            if (version < 16)
+            {
+                runTutorial = true;
             }
         }
 
