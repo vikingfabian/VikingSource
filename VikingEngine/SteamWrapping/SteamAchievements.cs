@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 #if PCGAME
 using Valve.Steamworks;
+using VikingEngine.DSSWars;
 
 namespace VikingEngine.SteamWrapping
 {
@@ -23,8 +24,8 @@ namespace VikingEngine.SteamWrapping
         {
             this.enumValue = enumValue;
             this.idString = idString;
-            name = "";
-            description = "";
+            name = null;
+            description = null;
             achieved = false;
             iconImage = 0;
         }
@@ -63,42 +64,39 @@ namespace VikingEngine.SteamWrapping
                 }
             }
 
-            //            if (PlatformSettings.RunProgram == StartProgram.Wars)
-            //            {
-            //#if DSS
-            //                achievements = new SteamAchievementData[(int)Wars.AchievementIndex.NUM_ACHIEVEMENTS];
-
-            //                for (Wars.AchievementIndex ix = 0; ix < Wars.AchievementIndex.NUM_ACHIEVEMENTS; ++ix)
-            //                {
-            //                    var achivement = new SteamAchievementData((int)ix, ix.ToString());
-            //                    achievements[achivement.enumValue] = achivement;
-            //                }
-            //#endif
-            //            }
-
             UserAchievementStoredCallback = new SteamCallback<UserAchievementStored_t>(OnUserAchievementStored, false);
 
-            //achievements = new SteamAchievementData[names.Count];
-            
-
-            //for (int i = 0; i < achievements.Length; ++i)
-            //{
-            //    achievements[i] = new SteamAchievementData(names[i]);
-            //}
-
-            //RequestStats();
         }
 
         /* Novelty methods */
         public bool SetAchievement(int enumValue)
+        {   
+            var achievement = achievements[enumValue];
+            if (!achievement.achieved)
+            {
+                achievement.achieved = true;
+                achievements[enumValue] = achievement;
+
+                if (isInitialized)
+                {
+                    SteamAPI.SteamUserStats().SetAchievement(achievement.idString);
+                    return SteamAPI.SteamUserStats().StoreStats();
+                }
+                
+            }
+         
+            return false;
+        }
+
+        public bool SetAchievement_async(int enumValue)
         {
             if (isInitialized)
             {
                 var achievement = achievements[enumValue];
                 if (!achievement.achieved)
                 {
-                    SteamAPI.SteamUserStats().SetAchievement(achievement.idString);
-                    return SteamAPI.SteamUserStats().StoreStats();
+                    Ref.update.AddSyncAction(new SyncAction(() => { SetAchievement(enumValue); }));
+                    return true;
                 }
             }
 
@@ -135,8 +133,6 @@ namespace VikingEngine.SteamWrapping
             }
         }
 
-        
-
         /// <summary>
         /// Called any time we attempt to request stats
         /// </summary>
@@ -159,8 +155,6 @@ namespace VikingEngine.SteamWrapping
             }
         }
 
-       
-
         /// <summary>
         /// Called any time achievements are succesfully stored on Steam
         /// </summary>
@@ -173,7 +167,5 @@ namespace VikingEngine.SteamWrapping
             }
         }
     }
-
-   
 }
 #endif

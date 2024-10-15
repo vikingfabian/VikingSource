@@ -233,6 +233,8 @@ namespace VikingEngine.DSSWars.GameObject
                 ++status.typeCount[(int)groupsCounter.sel.soldierConscript.filterType()];
             }
 
+            
+
             return status;
         }
 
@@ -250,7 +252,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (otherArmy != null && otherArmy != this)
             {
-                var status = Status().getTypeCounts();
+                var status = Status().getTypeCounts(faction);
                 foreach (var kv in status)
                 {
                     tradeSoldiersAction(ref otherArmy, kv.Key, kv.Value);

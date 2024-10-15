@@ -218,10 +218,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         public ConscriptProfile conscript;
         public float skillBonus;
 
-        public bool RangedUnit()
-        {
-            return conscript.weapon == MainWeapon.Bow;
-        }
+        
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
@@ -424,7 +421,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     soldierData.attackDamageSea = MathExt.AddPercentage(soldierData.attackDamageSea, seaDamagePerc);
                     soldierData.attackDamageStructure = MathExt.SubtractPercentage(soldierData.attackDamageStructure, DssConst.Conscript_SpecializePercentage);
 
-                    if (!RangedUnit())
+                    if (!conscript.RangedUnit())
                     {
                         soldierData.modelName = LootFest.VoxelModelName.war_sailor;
                         soldierData.modelVariationCount = 2;
@@ -497,7 +494,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             switch (conscript.specialization)
             {
                 case SpecializationType.Viking:
-                    if (!RangedUnit())
+                    if (!conscript.RangedUnit())
                     {
                         soldierData.modelName = LootFest.VoxelModelName.wars_viking_ship;
 
@@ -568,6 +565,10 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         //{
 
         //}
+        public bool RangedUnit()
+        {
+            return weapon == MainWeapon.Bow || weapon == MainWeapon.CrossBow || weapon == MainWeapon.Ballista;
+        }
 
         public void defaultSetup(bool nobelmen)
         {

@@ -80,30 +80,47 @@ namespace VikingEngine.DSSWars.Build
             //    case BuildOptionType.Building:
             subTile.SetType(mainType, subType, 1);
 
-            if (mainType == TerrainMainType.Building)
+            switch (mainType)
             {
-                switch ((TerrainBuildingType)subType)
-                {
-                    case TerrainBuildingType.WorkerHut:
-                        city.onWorkHutBuild();
-                        break;
+                case TerrainMainType.Building:
 
-                    case TerrainBuildingType.Barracks:
-                        Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, bool>(city.addBarracks, subPos, false));
-                        break;
+                    {
+                        switch ((TerrainBuildingType)subType)
+                        {
+                            case TerrainBuildingType.WorkerHut:
+                                city.onWorkHutBuild();
+                                break;
 
-                    case TerrainBuildingType.Nobelhouse:
-                        Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, bool>(city.addBarracks, subPos, true));
-                        break;
+                            case TerrainBuildingType.Barracks:
+                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, bool>(city.addBarracks, subPos, false));
+                                break;
 
-                    case TerrainBuildingType.Postal:
-                        Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, bool>(city.addDelivery, subPos, false));
-                        break;
+                            case TerrainBuildingType.Nobelhouse:
+                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, bool>(city.addBarracks, subPos, true));
+                                break;
 
-                    case TerrainBuildingType.Recruitment:
-                        Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, bool>(city.addDelivery, subPos, true));
-                        break;
-                }
+                            case TerrainBuildingType.Postal:
+                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, bool>(city.addDelivery, subPos, false));
+                                break;
+
+                            case TerrainBuildingType.Recruitment:
+                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, bool>(city.addDelivery, subPos, true));
+                                break;
+                        }
+                    }
+                    break;
+
+                case TerrainMainType.Decor:
+                    bool statue = false;
+                    switch ((TerrainDecorType)subType)
+                    {
+                        case TerrainDecorType.Statue_ThePlayer:
+                            statue = true;
+                            break;
+                    }
+
+                    DssRef.state.progress.onDecorBuild_async(statue);
+                    break;
             }
             //    case BuildOptionType.Farm:
             //        subTile.SetType(TerrainMainType.Foil, subType, 1);
