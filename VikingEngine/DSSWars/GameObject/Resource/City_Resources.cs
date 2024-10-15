@@ -11,6 +11,7 @@ using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.PJ.Joust;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -517,11 +518,40 @@ namespace VikingEngine.DSSWars.GameObject
             amount += item.amount * multiply;
         }
 
-        public void toMenu(RichBoxContent content, ItemResourceType item)
+        public void toMenu(RichBoxContent content, ItemResourceType item, ref bool reachedBuffer)
         {
             content.newLine();
+            
             content.Add(new RichBoxImage(ResourceLib.Icon(item)));
             content.Add(new RichBoxText( LangLib.Item(item) + ": " + amount.ToString()));
+
+            if (item != ItemResourceType.Water_G && item != ItemResourceType.Gold)
+            {
+                var icon = new RichBoxImage(SpriteName.EditorForwardArrow);
+                if (amount >= goalBuffer)
+                {
+                    reachedBuffer = true;
+
+                    icon.color = Color.Orange;
+                }
+                content.Add(icon);
+            }
+            
+        }
+
+        public static void BufferIconInfo(RichBoxContent content)
+        {
+            content.newLine();
+
+            var icon = new RichBoxImage(SpriteName.EditorForwardArrow);
+            icon.color = Color.OrangeRed;
+            content.Add(icon);
+
+            //content.space();
+
+            var text = new RichBoxText(": " + DssRef.todoLang.Resource_ReachedStockpile);
+            text.overrideColor = HudLib.InfoYellow_Light;
+            content.Add(text);
         }
 
         public void clearOrders()

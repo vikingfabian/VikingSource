@@ -15,19 +15,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 {
     struct WorkerStatus
     {
-        //public const int TrossWorkerCarryWeight = 4;
-        //public const int MaxEnergy = 500;
-        //public const int Starvation = -MaxEnergy;
-
-        //public const int Subwork_Craft_Food = 0;
-        //public const int Subwork_Craft_Iron = 1;
-        //public const int Subwork_Craft_LightArmor = 2;
-        //public const int Subwork_Craft_MediumArmor = 3;
-        //public const int Subwork_Craft_HeavyArmor = 4;
-        //public const int Subwork_Craft_SharpStick = 5;
-        //public const int Subwork_Craft_Sword = 6;
-        //public const int Subwork_Craft_Bow = 7;
-
+        
         public WorkType work;
         public int workSubType;
         public int orderId;
@@ -394,7 +382,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 
                 if (orderId >= 0)
                 {
-                    city.faction.player.orders.CompleteOrderId(orderId);
+                    city.faction.player?.orders.CompleteOrderId(orderId);
                 }
             }
 

@@ -99,7 +99,12 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                         content.newParagraph();
 
                         content.h2(DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn);
-                        city.GetGroupedResource(resourceType).toMenu(content, resourceType);
+                        bool reachedBuffer = false;
+                        city.GetGroupedResource(resourceType).toMenu(content, resourceType, ref reachedBuffer);
+                        if (reachedBuffer)
+                        {
+                            GroupedResource.BufferIconInfo(content);
+                        }
                         //content.text(name + " " + city.GetGroupedResource(resourceType).amount.ToString());
 
                         player.hud.tooltip.create(player, content, true);

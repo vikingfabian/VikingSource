@@ -283,7 +283,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     if (onInit)
                     {
                         float timePassed = Ref.TotalGameTimeSec - status.processTimeStartStampSec;
-                        float perc = timePassed / (status.processTimeLengthSec - finalizeWorkTime);
+                        float perc = Bound.Set(timePassed / (status.processTimeLengthSec - finalizeWorkTime), 0, 1);
                         model.position = model.position * (1 - perc) + goalPos * perc;
                     }
 

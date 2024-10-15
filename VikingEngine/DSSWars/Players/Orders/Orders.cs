@@ -115,6 +115,7 @@ namespace VikingEngine.DSSWars.Players.Orders
                     {
                         Ref.update.AddSyncAction(new SyncAction(orders[i].DeleteMe));
                         orders.RemoveAt(i);
+                        break;
                     }
                 }
             }

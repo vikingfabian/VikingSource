@@ -65,13 +65,15 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                                    RichBoxContent content = new RichBoxContent();
 
                                    content.h2(DssRef.lang.Hud_ThisCity);
-                                   city.GetGroupedResource(item).toMenu(content, item);
+                                   bool reachedBuffer = false;
+
+                                   city.GetGroupedResource(item).toMenu(content, item, ref reachedBuffer);
 
                                    if (currentStatus.profile.toCity >= 0)
                                    {
                                        content.newParagraph();
                                        content.h2(DssRef.lang.Hud_RecieveingCity);
-                                       DssRef.world.cities[currentStatus.profile.toCity].GetGroupedResource(item).toMenu(content, item);
+                                       DssRef.world.cities[currentStatus.profile.toCity].GetGroupedResource(item).toMenu(content, item, ref reachedBuffer);
                                    }
 
                                    //content.text(LangLib.Item(item)).overrideColor = HudLib.TitleColor_TypeName;

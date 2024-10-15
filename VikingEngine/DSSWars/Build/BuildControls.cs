@@ -154,6 +154,9 @@ namespace VikingEngine.DSSWars.Build
                     }
 
                     build.blueprint.toMenu(content, city);
+                    content.Add(new RichBoxSeperationLine());
+                    content.h2(DssRef.lang.MenuTab_Resources).overrideColor = HudLib.TitleColor_Label;
+                    build.blueprint.listResources(content, city);
 
                     player.hud.tooltip.create(player, content, true);
                 }, opt));

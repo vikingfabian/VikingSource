@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -129,7 +130,8 @@ namespace VikingEngine.DSSWars.Display
                         content.Add(title);
                         content.newLine();
                         //CraftBlueprint blueprint = ResourceLib.Blueprint(player.BuildControls.placeBuildingType);
-                        player.BuildControls.placeBuildingOption().blueprint.toMenu(content, subTile.city);
+                        var bp = player.BuildControls.placeBuildingOption().blueprint;
+                        bp.toMenu(content, subTile.city);
 
                         var mayBuild = player.mapControls.hover.subTile.MayBuild(player);
                         
@@ -149,7 +151,12 @@ namespace VikingEngine.DSSWars.Display
                                 content.text(DssRef.lang.BuildHud_OccupiedTile).overrideColor = HudLib.NotAvailableColor;
                                 break;
                         }
-                        
+
+                        content.Add(new RichBoxSeperationLine());
+                        content.newParagraph();
+                        content.h2(DssRef.lang.MenuTab_Resources).overrideColor = HudLib.TitleColor_Label;
+                        bp.listResources(content, subTile.city);
+
                         break;
                     case Players.SelectTileResult.Destroy:
                         title = new RichBoxText(DssRef.lang.Build_DestroyBuilding);

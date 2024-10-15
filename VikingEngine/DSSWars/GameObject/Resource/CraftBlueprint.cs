@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.ToGG.HeroQuest.HeroStrategy;
 
 namespace VikingEngine.DSSWars.GameObject.Resource
 {
@@ -141,7 +142,6 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 
         public void toMenu(RichBoxContent content, City city)
         {
-            //string resourcesString = string.Empty;
             content.newLine();
             bool first = true;
             bool available;
@@ -155,15 +155,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             var arrow = new RichBoxImage(SpriteName.pjNumArrowR);
             arrow.color = Color.CornflowerBlue;
             content.Add(arrow);
-            content.Add(new RichBoxText(resultAmount.ToString()));
-            //if (icon() != SpriteName.NO_IMAGE)
-            //{
-                content.Add(new RichBoxImage(icon()));
-            //}
-            //else
-            //{
-            //    content.space();
-            //}
+            content.Add(new RichBoxText(resultAmount.ToString()));            
+            content.Add(new RichBoxImage(icon()));           
             content.Add(new RichBoxText(name()));
 
             content.newLine();
@@ -187,6 +180,34 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                     content.Add(new RichBoxImage(sprite));
                     content.Add(new RichBoxText(name));
                 }
+            }
+        }
+
+        public void listResources(RichBoxContent content, City city, CraftBlueprint optionalBp = null)
+        {
+            bool reachedBuffer = false;
+            content.newLine();
+            foreach (var r in resources)
+            {
+               var cityResource = city.GetGroupedResource(r.type);
+               cityResource.toMenu(content, r.type, ref reachedBuffer);               
+            }
+
+            if (optionalBp != null)
+            {
+                foreach (var r in optionalBp.resources)
+                {
+                    if (!resources.Contains(r))
+                    {
+                        var cityResource = city.GetGroupedResource(r.type);
+                        cityResource.toMenu(content, r.type, ref reachedBuffer);
+                    }
+                }
+            }
+
+            if (reachedBuffer)
+            {
+                GroupedResource.BufferIconInfo(content);
             }
         }
     }

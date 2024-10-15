@@ -3,38 +3,29 @@
 * fully translated
 * will reduce ai delay when player declare war (so they can respond)
 * reduced the issue of soldiers being stuck behind water in battle
+* fixed workers overshooting their goals
+* tooltip improvements
 
 #Todo#
+sockpile icon
 
 --Efter release polish--
 nya achievements
 
--1 statue
--many statues
--produce knights (max armor/training)
--army with all unit types
--deliver food to starving city
--create an archer with archer culture and a soldier with warrior culture
-
 out of food warning på armeer
 storage house
-factions utan soldater ska inte deklarera krig
 pilar med resurser från delivery
-resurs nått max stock ikon
-arbetare går för långt
 tydlig ikon för objekt meny typ
 Factories modeller
 Producering av special enheter (tex green soldiers)
 Deliver effect
 avbryta byggjobb
-reducera ai delay omn man attackerar
 Ljud
-wipe av city settings vid takeover 
 army speed bonus
-ai använder pengar
 city economy
 bog iron, ineffektiv järn samlande
-
+visa antal byggnader i bygg meny
+training skill icon
 
 Error
 -back button in menues 

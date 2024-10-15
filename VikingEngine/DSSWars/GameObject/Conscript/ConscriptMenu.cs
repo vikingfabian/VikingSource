@@ -276,10 +276,16 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             RichBoxContent content = new RichBoxContent();
             content.Add(new RichBoxText(string.Format(DssRef.lang.Conscript_WeaponDamage, ConscriptProfile.WeaponDamage(weapon))));
             content.newParagraph();
-            content.h2(DssRef.lang.Hud_Available);
+            content.h2(DssRef.lang.Hud_Available).overrideColor = HudLib.TitleColor_Label;
             var item = ConscriptProfile.WeaponItem(weapon);
-            city.GetGroupedResource(item).toMenu(content, item);
 
+            bool reachedBuffer = false;
+            city.GetGroupedResource(item).toMenu(content, item, ref reachedBuffer);
+
+            if (reachedBuffer)
+            {
+                GroupedResource.BufferIconInfo(content);
+            }
             player.hud.tooltip.create(player, content, true);
         }
         void armorClick(ArmorLevel armor)
@@ -299,9 +305,15 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             if (armor != ArmorLevel.None)
             {
                 content.newParagraph();
-                content.h2(DssRef.lang.Hud_Available);
+                content.h2(DssRef.lang.Hud_Available).overrideColor = HudLib.TitleColor_Label;
                 var item = ConscriptProfile.ArmorItem(armor);
-                city.GetGroupedResource(item).toMenu(content, item);
+
+                bool reachedBuffer = false;
+                city.GetGroupedResource(item).toMenu(content, item, ref reachedBuffer);
+                if (reachedBuffer)
+                {
+                    GroupedResource.BufferIconInfo(content);
+                }
             }
 
             player.hud.tooltip.create(player, content, true);
