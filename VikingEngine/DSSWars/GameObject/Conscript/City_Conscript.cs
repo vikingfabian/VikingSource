@@ -106,6 +106,22 @@ namespace VikingEngine.DSSWars.GameObject
 
                                     status.menCollected = 0;
                                     status.equipmentCollected = 0;
+
+                                    if (status.inProgress.weapon == MainWeapon.KnightsLance &&
+                                        status.inProgress.armorLevel == ArmorLevel.Heavy &&
+                                        status.inProgress.training == TrainingLevel.Professional)
+                                    {
+                                        DssRef.achieve.UnlockAchievement_async(AchievementIndex.elite_knights);
+                                    }
+
+                                    if (Culture == CityCulture.Archers && status.inProgress.RangedUnit())
+                                    {
+                                        DssRef.state.progress.onCultureBuild(true);
+                                    }
+                                    else if (Culture == CityCulture.Warriors && !status.inProgress.RangedUnit())
+                                    {
+                                        DssRef.state.progress.onCultureBuild(false);
+                                    }
                                 }
                                 break;
                         }
@@ -164,11 +180,11 @@ namespace VikingEngine.DSSWars.GameObject
                 skillBonus = 1,
             };
 
-            if (Culture == CityCulture.Archers && soldierProfile.RangedUnit())
+            if (Culture == CityCulture.Archers && soldierProfile.conscript.RangedUnit())
             {
                 soldierProfile.skillBonus = 1.2f;
             }
-            else if (Culture == CityCulture.Warriors && !soldierProfile.RangedUnit())
+            else if (Culture == CityCulture.Warriors && !soldierProfile.conscript.RangedUnit())
             {
                 soldierProfile.skillBonus = 1.2f;
             }

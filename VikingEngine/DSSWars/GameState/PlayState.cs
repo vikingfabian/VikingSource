@@ -38,6 +38,7 @@ namespace VikingEngine.DSSWars
         public bool PartyMode = false;   
         bool exitThreads = false;
         public GameEvents events;
+        public Progress progress = new Progress();
         public AbsCutScene cutScene=null;
 
         bool bResourceMinuteUpdate = true;
@@ -90,21 +91,19 @@ namespace VikingEngine.DSSWars
         public void writeGameState(System.IO.BinaryWriter w)
         {
             resources.writeGameState(w);
-
             events.writeGameState(w);
-
-            //w.Write((ushort)battles.Count);
-            //var battlesC = battles.counter();
-            //while (battlesC.Next())
-            //{
-            //    battlesC.sel.writeGameState(w);
-            //}
+            
+            progress.writeGameState(w);
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             resources.readGameState(r, subversion);
-
             events.readGameState(r, subversion, pointers);
+
+            if (subversion >= 16)
+            {
+                progress.readGameState(r, subversion, pointers);
+            }
         }
 
         void initPlayers(bool newGame)

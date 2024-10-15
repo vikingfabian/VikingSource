@@ -106,11 +106,19 @@ namespace VikingEngine.DSSWars.GameObject
                                 else
                                 {
                                     var resource = othercity.GetGroupedResource(status.inProgress.type);
+
+                                    if (status.inProgress.type == ItemResourceType.Food_G &&
+                                        resource.amount <= 2 &&
+                                        faction.player.IsPlayer())
+                                    {
+                                        DssRef.achieve.UnlockAchievement_async(AchievementIndex.deliver_food);
+                                    }
+                                    
                                     resource.amount += DssConst.CityDeliveryCount;
                                     othercity.SetGroupedResource(status.inProgress.type, resource);
-                                }
 
-                                
+
+                                }
                                 status.active = DeliveryActiveStatus.Idle;
                             }
                             break;

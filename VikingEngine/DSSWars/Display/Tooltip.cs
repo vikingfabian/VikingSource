@@ -287,8 +287,8 @@ namespace VikingEngine.DSSWars.Display
                                 content.Add(new RichBoxImage(SpriteName.WarsGroupIcon));
                                 content.space(1);
 
-
-                                var typeCounts = obj.GetArmy().Status().getTypeCounts_Sorted();
+                                var army = obj.GetArmy();
+                                var typeCounts = army.Status().getTypeCounts_Sorted(army.faction);
 
                                 foreach (var kv in typeCounts)
                                 {

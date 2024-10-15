@@ -860,6 +860,14 @@ namespace VikingEngine.DSSWars.GameObject
 
             workForce = Bound.Max(workForce + addWorkers, homesTotal());
 
+            if (workForce > Achievements.LargePopulationCount &&
+                 !DssRef.achieve.largePopulation &&
+                 faction.player.IsPlayer())
+            {
+                DssRef.achieve.largePopulation = true;
+                DssRef.achieve.UnlockAchievement(AchievementIndex.large_population);
+            }
+
             //int waterAddPerSec = 1;
             //if (Culture == CityCulture.DeepWell)
             //{

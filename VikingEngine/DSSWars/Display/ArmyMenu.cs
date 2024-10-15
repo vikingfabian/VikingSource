@@ -104,7 +104,7 @@ namespace VikingEngine.DSSWars.Display
                 case DisbandMenuState:
                     {
                         content.h2(DssRef.lang.ArmyOption_Disband).overrideColor = HudLib.TitleColor_Label;
-                        var status = army.Status().getTypeCounts();
+                        var status = army.Status().getTypeCounts(army.faction);
 
                         foreach (var kv in status)
                         {
@@ -163,7 +163,7 @@ namespace VikingEngine.DSSWars.Display
                             content.h2(string.Format(DssRef.lang.ArmyOption_SendToX, player.hud.displays.otherArmy.TypeName())).overrideColor = HudLib.TitleColor_Label;
                         }
                         
-                        var status = army.Status().getTypeCounts();
+                        var status = army.Status().getTypeCounts(army.faction);
                         bool splitable = false;
 
                         foreach (var kv in status)
@@ -238,7 +238,7 @@ namespace VikingEngine.DSSWars.Display
         {
             player.hud.displays.otherArmy = null;
 
-            var status = army.Status().getTypeCounts();
+            var status = army.Status().getTypeCounts(army.faction);
             foreach (var kv in status)
             {
                 if (kv.Value > 1)

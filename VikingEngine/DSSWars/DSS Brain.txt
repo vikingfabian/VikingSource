@@ -3,6 +3,7 @@
 * fully translated
 * will reduce ai delay when player declare war (so they can respond)
 * reduced the issue of soldiers being stuck behind water in battle
+* seven new achievements
 * fixed workers overshooting their goals
 * tooltip improvements
 
