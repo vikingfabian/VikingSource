@@ -15,6 +15,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 {
     static class LangLib
     {
+
         public static string Armor(ArmorLevel level)
         {
             switch (level)
@@ -204,7 +205,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                         case TerrainBuildingType.Recruitment:
                             return DssRef.lang.BuildingType_Recruitment;
                         case TerrainBuildingType.Work_Smith:
-                            return DssRef.lang.BuildingType_Smith;
+                            return DssRef.lang.BuildingType_Smith;                       
                         case TerrainBuildingType.Tavern:
                             return DssRef.lang.BuildingType_Tavern;
                         case TerrainBuildingType.Work_Bench:
@@ -233,6 +234,19 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                         case TerrainSubFoilType.WheatFarm:
                             return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat);
+                    }
+                    break;
+
+                case TerrainMainType.Mine:
+                    switch ((TerrainMineType)subType)
+                    {
+                        case TerrainMineType.IronOre:
+                            return string.Format(DssRef.todoLang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Iron);
+                        case TerrainMineType.Coal:
+                            return string.Format(DssRef.todoLang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Coal);
+                        case TerrainMineType.GoldOre:
+                            return string.Format(DssRef.todoLang.BuildingType_ResourceMine, DssRef.lang.ResourceType_Gold);
+                        
                     }
                     break;
 

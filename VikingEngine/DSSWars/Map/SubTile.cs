@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Valve.Steamworks;
+using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.LootFest.Players;
@@ -131,22 +132,28 @@ namespace VikingEngine.DSSWars.Map
 
         public string TypeToString()
         {
-           string result =  mainTerrain.ToString();
+            return LangLib.TerrainName(mainTerrain, subTerrain);
+           //string result =  mainTerrain.ToString();
 
-            switch (mainTerrain)
-            {
-                case TerrainMainType.Building:
-                    result += " - " + ((TerrainBuildingType)subTerrain).ToString();
-                    break;
-                case TerrainMainType.Foil:
-                    result += " - " + ((TerrainSubFoilType)subTerrain).ToString();
-                    break;
-                case TerrainMainType.Mine:
-                    result += " - " + ((TerrainMineType)subTerrain).ToString();
-                    break;
-            }
+           // switch (mainTerrain)
+           // {
+           //     case TerrainMainType.Building:
+           //         switch ((TerrainBuildingType)subTerrain)
+           //         { 
+                        
+           //         }
 
-            return result;
+           //         result += " - " + ((TerrainBuildingType)subTerrain).ToString();
+           //         break;
+           //     case TerrainMainType.Foil:
+           //         result += " - " + ((TerrainSubFoilType)subTerrain).ToString();
+           //         break;
+           //     case TerrainMainType.Mine:
+           //         result += " - " + ((TerrainMineType)subTerrain).ToString();
+           //         break;
+           // }
+
+           // return result;
         }
     }
 
