@@ -1,4 +1,32 @@
 ﻿
+##Path 2.0 TODO##
+Squads ska kunna väljas, flyttas, frigöras från army
+-blir map objects (sub army squad), kan flyttas från overview(?)
+arme center, startar från den mest centrala, icke frigjorda gruppen
+Arme ska kunna låsa position på squads (kanske ha en fram/bak, vänster/höger grovindelad struktur)
+Arme ska flyttas i columner
+Squads ska path finda seperat, även enskila soldater
+Squads position i armen måste bli dynamisk
+*center, left, right body, left/right flank / scout, front, body, second, behind
+Lägg till lågt vatten nära land
+Byggnader är hinder, kan klättras över
+Soldater letar upp sin position i gruppen
+Grupprörelser är olika effektiva beroende på träning
+Tydlig state på soldater
+
+Strid: ta bort grid
+Strid: lås collisions för stridande, så friendlies inte kan passera
+Archers ska kunna skjuta och fly igenom friendlies
+
+(path finding på arbetare)
+vägar, täd collisions, och hinder
+
+optimera path finding med tile-trängsel
+squad som punkt (utanför detail)
+arme som punkt (utanför overview)
+soldat recycle?
+
+
 -Change Log-
 * fully translated
 * will reduce ai delay when player declare war (so they can respond)

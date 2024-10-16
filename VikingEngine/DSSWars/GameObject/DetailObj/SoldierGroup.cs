@@ -50,8 +50,11 @@ namespace VikingEngine.DSSWars.GameObject
         public Vector3 goalWp;
 
         public IntVector2 tilePos;
+
+        //center, left, right / scout, front, second, behind
         public IntVector2 armyLocalPlacement = IntVector2.Zero;
-        
+        public IntVector2 armyLocalPlacement2 = IntVector2.Zero;
+
         //public int groupId;
 
         public UnitType type;
@@ -1439,11 +1442,6 @@ namespace VikingEngine.DSSWars.GameObject
 
                 armyLocalPlacement = newLocalPlacement;
                 goalWp = armyPlacement(army.position);
-
-                //if (currentArmyPosition.X < 2 && currentArmyPosition.Z < 2)
-                //{
-                //    lib.DoNothing();
-                //}
 
                 if (!army.inRender_detailLayer || lifeState == LifeState_New)
                 {
