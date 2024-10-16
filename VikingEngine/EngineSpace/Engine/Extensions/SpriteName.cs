@@ -2524,6 +2524,9 @@ namespace VikingEngine
         WarsDelivery,
         WarsTrade,
         WarsBluePrint,
+        WarsStockpileAdd,
+        WarsStockpileStop,
+
 
         #endregion
 

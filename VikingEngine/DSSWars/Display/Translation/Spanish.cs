@@ -1555,6 +1555,26 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Tutorial_ImproveRelations => "Mejora tus relaciones con una facción vecina";
         public override string Tutorial_MissionComplete_Title => "¡Misión completada!";
         public override string Tutorial_MissionComplete_Unlocks => "Nuevos controles desbloqueados";
-    
-}
+
+        //patch1
+        public override string Resource_ReachedStockpile => "Objetivo de reserva alcanzado";
+
+        public override string BuildingType_ResourceMine => "Mina de {0}";
+
+        public override string Resource_TypeName_BogIron => "Hierro de pantano";
+
+        public override string Resource_TypeName_Coal => "Carbón";
+
+        public override string Language_XUpkeepIsY => "Mantenimiento de {0}: {1}";
+        public override string Language_XCountIsY => "Conteo de {0}: {1}";
+
+        public override string Message_ArmyOutOfFood_Text => "Se comprará comida cara del mercado negro. Los soldados hambrientos desertarán cuando se acabe tu dinero.";
+
+        public override string Info_ArmyFood => "Los ejércitos reabastecerán comida de la ciudad amiga más cercana. Se puede comprar comida de otras facciones. En regiones hostiles, la comida solo puede comprarse en el mercado negro.";
+
+        public override string FactionName_Monger => "Mercader";
+        public override string FactionName_Hatu => "Hatu";
+        public override string FactionName_Destru => "Destru";
+
+    }
 }

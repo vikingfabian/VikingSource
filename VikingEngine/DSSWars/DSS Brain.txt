@@ -16,7 +16,6 @@
 
 #Todo#
 Stockpile icon
-Sista översättningen
 
 
 --Efter release polish--

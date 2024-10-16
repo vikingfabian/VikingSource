@@ -1554,5 +1554,25 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Tutorial_ImproveRelations => "改善与你邻近派系的关系";
         public override string Tutorial_MissionComplete_Title => "任务完成！";
         public override string Tutorial_MissionComplete_Unlocks => "新功能已解锁";
+
+        //patch1
+        public override string Resource_ReachedStockpile => "达到库存目标缓冲";
+
+        public override string BuildingType_ResourceMine => "{0}矿";
+
+        public override string Resource_TypeName_BogIron => "沼泽铁";
+
+        public override string Resource_TypeName_Coal => "煤炭";
+
+        public override string Language_XUpkeepIsY => "{0} 维护费用：{1}";
+        public override string Language_XCountIsY => "{0} 计数：{1}";
+
+        public override string Message_ArmyOutOfFood_Text => "将从黑市购买昂贵的食物。当你的钱用完时，饥饿的士兵将会逃离。";
+
+        public override string Info_ArmyFood => "军队将从最近的友好城市补充食物。可以从其他派系购买食物。在敌对区域，食物只能从黑市购买。";
+
+        public override string FactionName_Monger => "贩夫";
+        public override string FactionName_Hatu => "哈图";
+        public override string FactionName_Destru => "德斯特鲁";
     }
 }

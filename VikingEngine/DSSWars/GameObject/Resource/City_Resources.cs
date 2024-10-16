@@ -523,17 +523,13 @@ namespace VikingEngine.DSSWars.GameObject
             content.newLine();
             
             content.Add(new RichBoxImage(ResourceLib.Icon(item)));
-            content.Add(new RichBoxText( LangLib.Item(item) + ": " + amount.ToString()));
+            content.Add(new RichBoxText( LangLib.Item(item) + ": " + TextLib.LargeNumber(amount)));
 
             if (item != ItemResourceType.Water_G && item != ItemResourceType.Gold)
             {
-                var icon = new RichBoxImage(SpriteName.EditorForwardArrow);
-                if (amount >= goalBuffer)
-                {
-                    reachedBuffer = true;
-
-                    icon.color = Color.Orange;
-                }
+                bool reached = amount >= goalBuffer;
+                reachedBuffer |= reached;
+                var icon = new RichBoxImage(reached ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd);
                 content.Add(icon);
             }
             
@@ -543,8 +539,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             content.newLine();
 
-            var icon = new RichBoxImage(SpriteName.EditorForwardArrow);
-            icon.color = Color.OrangeRed;
+            var icon = new RichBoxImage(SpriteName.WarsStockpileStop);
+            //icon.color = Color.OrangeRed;
             content.Add(icon);
 
             //content.space();

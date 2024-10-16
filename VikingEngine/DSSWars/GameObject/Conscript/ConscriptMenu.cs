@@ -285,10 +285,10 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             bool reachedBuffer = false;
             city.GetGroupedResource(item).toMenu(content, item, ref reachedBuffer);
 
-            if (reachedBuffer)
-            {
-                GroupedResource.BufferIconInfo(content);
-            }
+            //if (reachedBuffer)
+            //{
+            //    GroupedResource.BufferIconInfo(content);
+            //}
             player.hud.tooltip.create(player, content, true);
         }
         void armorClick(ArmorLevel armor)
@@ -313,10 +313,10 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
                 bool reachedBuffer = false;
                 city.GetGroupedResource(item).toMenu(content, item, ref reachedBuffer);
-                if (reachedBuffer)
-                {
-                    GroupedResource.BufferIconInfo(content);
-                }
+                //if (reachedBuffer)
+                //{
+                //    GroupedResource.BufferIconInfo(content);
+                //}
             }
 
             player.hud.tooltip.create(player, content, true);

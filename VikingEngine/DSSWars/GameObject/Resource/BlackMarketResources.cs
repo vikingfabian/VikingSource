@@ -101,10 +101,10 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                         content.h2(DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn);
                         bool reachedBuffer = false;
                         city.GetGroupedResource(resourceType).toMenu(content, resourceType, ref reachedBuffer);
-                        if (reachedBuffer)
-                        {
-                            GroupedResource.BufferIconInfo(content);
-                        }
+                        //if (reachedBuffer)
+                        //{
+                        //    GroupedResource.BufferIconInfo(content);
+                        //}
                         //content.text(name + " " + city.GetGroupedResource(resourceType).amount.ToString());
 
                         player.hud.tooltip.create(player, content, true);

@@ -1571,5 +1571,25 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Tutorial_ImproveRelations => "Improve your relations with a neighbor faction";
         public override string Tutorial_MissionComplete_Title => "Mission complete!";
         public override string Tutorial_MissionComplete_Unlocks => "New controls have been unlocked";
+
+        //patch1
+        public override string Resource_ReachedStockpile => "Reached stockpile goal buffer";
+
+        public override string BuildingType_ResourceMine => "{0} mine";
+
+        public override string Resource_TypeName_BogIron => "Bog iron";
+
+        public override string Resource_TypeName_Coal => "Coal";
+
+        public override string Language_XUpkeepIsY => "{0} upkeep: {1}";
+        public override string Language_XCountIsY => "{0} count: {1}";
+
+        public override string Message_ArmyOutOfFood_Text => "Expensive food will be purchased from the black market. Hungry soldiers will desert when your money runs out.";
+
+        public override string Info_ArmyFood => "Armies will restock food from the closest friendly city. Food can be purchased from other factions. In hostile regions, food can only be purchased from the black market.";
+
+        public override string FactionName_Monger => "Monger";
+        public override string FactionName_Hatu => "Hatu";
+        public override string FactionName_Destru => "Destru";
     }
 }

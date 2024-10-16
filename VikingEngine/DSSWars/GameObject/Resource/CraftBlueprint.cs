@@ -205,10 +205,10 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 }
             }
 
-            if (reachedBuffer)
-            {
-                GroupedResource.BufferIconInfo(content);
-            }
+            //if (reachedBuffer)
+            //{
+            //    GroupedResource.BufferIconInfo(content);
+            //}
         }
     }
 

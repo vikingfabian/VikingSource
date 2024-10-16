@@ -212,10 +212,10 @@ namespace VikingEngine.DSSWars.Display
                     city.res_heavyArmor.toMenu(content, ItemResourceType.HeavyArmor, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftHeavyArmor);
 
-                    if (reachedBuffer)
-                    {
-                        GroupedResource.BufferIconInfo(content);
-                    }
+                    //if (reachedBuffer)
+                    //{
+                    //    GroupedResource.BufferIconInfo(content);
+                    //}
                     content.Add(new RichBoxSeperationLine());
 
                     ResourceLib.ConvertGoldOre.toMenu(content, city);
@@ -270,11 +270,11 @@ namespace VikingEngine.DSSWars.Display
                 var res = city.GetGroupedResource(item);
 
                 content.newLine();
-                var icon = new RichBoxImage(SpriteName.EditorForwardArrow);
-                if (res.amount >= res.goalBuffer)
-                {
-                    icon.color = Color.OrangeRed;
-                }
+                var icon = new RichBoxImage(res.amount >= res.goalBuffer ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd);
+                //if (res.amount >= res.goalBuffer)
+                //{
+                //    icon.color = Color.OrangeRed;
+                //}
                 content.Add(icon);
                 content.Add(new RichBoxImage(ResourceLib.Icon(item)));
                 content.space();
