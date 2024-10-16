@@ -212,7 +212,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 
         public static readonly CraftBlueprint CraftStorehouse = new CraftBlueprint(
            CraftResultType.Building,
-           (int)Build.BuildAndExpandType.StoreHouse,
+           (int)Build.BuildAndExpandType.Storehouse,
            1,
            new UseResource[]
            {

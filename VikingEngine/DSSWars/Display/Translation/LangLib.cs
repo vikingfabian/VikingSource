@@ -186,6 +186,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                     { 
                         case TerrainBuildingType.Barracks:
                             return DssRef.lang.BuildingType_Barracks;
+                        case TerrainBuildingType.Bank:
+                            return DssRef.todoLang.BuildingType_Bank;
                         case TerrainBuildingType.Brewery:
                             return DssRef.lang.BuildingType_Brewery;
                         case TerrainBuildingType.Carpenter:
@@ -206,6 +208,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                             return DssRef.lang.BuildingType_Recruitment;
                         case TerrainBuildingType.Work_Smith:
                             return DssRef.lang.BuildingType_Smith;                       
+                        case TerrainBuildingType.Storehouse:
+                            return DssRef.lang.BuildingType_Storage;
                         case TerrainBuildingType.Tavern:
                             return DssRef.lang.BuildingType_Tavern;
                         case TerrainBuildingType.Work_Bench:

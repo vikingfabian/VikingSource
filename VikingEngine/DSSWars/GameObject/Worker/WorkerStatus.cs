@@ -147,14 +147,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
                                         farmGrowthMultiplier(subTile.terrainAmount, city));
-                                //DssRef.state.resources.addItem(
-                                //    new Resource.ItemResource(
-                                //        ItemResourceType.Wheat,
-                                //        subTile.terrainQuality,
-                                //        Convert.ToInt32(processTimeLengthSec),
-                                //        farmGrowthMultiplier(subTile.terrainAmount, city)),
-                                //    ref subTile.collectionPointer);
-
+                                
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
                                 DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                                 break;
@@ -165,14 +158,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
                                         farmGrowthMultiplier(subTile.terrainAmount, city));
-                                //DssRef.state.resources.addItem(
-                                //    new Resource.ItemResource(
-                                //        ItemResourceType.Linnen,
-                                //        subTile.terrainQuality,
-                                //        Convert.ToInt32(processTimeLengthSec),
-                                //        farmGrowthMultiplier(subTile.terrainAmount, city)),
-                                //    ref subTile.collectionPointer);
-
+                                
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
                                 DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                                 break;
@@ -181,6 +167,12 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                             case TerrainSubFoilType.Stones:
                                 carry = new ItemResource(ItemResourceType.Stone_G, 1, Convert.ToInt32(processTimeLengthSec), ItemPropertyColl.CarryStones);
                                 break;
+
+                            case TerrainSubFoilType.BogIron:
+                                carry = new ItemResource(ItemResourceType.IronOre_G, 1, Convert.ToInt32(processTimeLengthSec), TerrainContent.MineAmount);
+                                break;
+
+
                         }
 
                         //work = WorkType.Idle;                        
@@ -547,6 +539,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         case TerrainSubFoilType.Stones:
                         case TerrainSubFoilType.StoneBlock:
                             return DssConst.WorkTime_GatherFoil_Stones;
+
+                        case TerrainSubFoilType.BogIron:
+                            return DssConst.WorkTime_BogIron;
                         default:
                             return -1;//throw new NotImplementedException();
                     }

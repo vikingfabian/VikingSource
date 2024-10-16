@@ -75,7 +75,7 @@ namespace VikingEngine.DSSWars.Map
         Barracks,
         Carpenter,
         Nobelhouse,
-        StoreHouse,
+        Storehouse,
         Bank,
         
         NUM_NONE

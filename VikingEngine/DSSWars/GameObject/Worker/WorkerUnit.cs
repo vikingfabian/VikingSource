@@ -127,6 +127,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                     case TerrainSubFoilType.StoneBlock:
                                         SoundLib.pickaxe.Play(model.position);
                                         break;
+                                    case TerrainSubFoilType.BogIron:
                                     case TerrainSubFoilType.Stones:
                                         SoundLib.dig.Play(model.position);
                                         break;

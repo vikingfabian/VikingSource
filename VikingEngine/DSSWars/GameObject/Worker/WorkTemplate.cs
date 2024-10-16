@@ -34,6 +34,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         public WorkPriority craft_mediumarmor = new WorkPriority(0);
         public WorkPriority craft_heavyarmor = new WorkPriority(0);
         public WorkPriority farming = new WorkPriority(2);
+        public WorkPriority bogiron = new WorkPriority(1);
         public WorkPriority mining = new WorkPriority(3);
         public WorkPriority trading = new WorkPriority(2);
         public WorkPriority autoBuild = new WorkPriority(1);
@@ -67,6 +68,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             trading.writeGameState(w, isCity);
             autoBuild.writeGameState(w, isCity);
 
+            bogiron.writeGameState(w, isCity);
+
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, bool isCity)
         {
@@ -94,6 +97,12 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             mining.readGameState(r, subversion, isCity);
             trading.readGameState(r, subversion, isCity);
             autoBuild.readGameState(r, subversion, isCity);
+            
+            if (subversion >= 17)
+            {
+                bogiron.readGameState(r, subversion, isCity);
+            }
+
         }
 
         public void onFactionChange(WorkTemplate factionTemplate)
@@ -118,6 +127,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             craft_heavyarmor.onFactionValueChange(factionTemplate.craft_heavyarmor);
 
             farming.onFactionValueChange(factionTemplate.farming);
+            bogiron.onFactionValueChange(factionTemplate.bogiron);
             mining.onFactionValueChange(factionTemplate.mining);
             trading.onFactionValueChange(factionTemplate.trading);
             autoBuild.onFactionValueChange(factionTemplate.autoBuild);
@@ -146,6 +156,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             craft_heavyarmor.followFaction = true;
 
             farming.followFaction = true;
+            bogiron.followFaction = true;
             mining.followFaction = true;
             trading.followFaction = true;
             autoBuild.followFaction = true;
@@ -232,6 +243,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     return craft_heavyarmor;
                 case WorkPriorityType.farming:
                     return farming;
+                case WorkPriorityType.bogiron:
+                    return bogiron;
                 case WorkPriorityType.mining:
                    return mining;
                 case WorkPriorityType.trading:
@@ -305,6 +318,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case WorkPriorityType.mining:
                     mining = value;
                     break;
+                case WorkPriorityType.bogiron:
+                    bogiron = value;
+                    break;
                 case WorkPriorityType.trading:
                     trading = value;
                     break;
@@ -342,10 +358,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             craft_heavyarmor.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HeavyArmor), WorkPriorityType.craftHeavyArmor, faction, city);
 
             farming.toHud(player, content, DssRef.lang.Work_Farming, WorkPriorityType.farming, faction, city);
+            bogiron.toHud(player, content, DssRef.todoLang.Resource_TypeName_BogIron, WorkPriorityType.bogiron, faction, city);
             mining.toHud(player, content, DssRef.lang.Work_Mining, WorkPriorityType.mining, faction, city);
-            //trading.toHud(player, content, DssRef.lang.Work_Trading, WorkPriorityType.trading, faction, city);
             autoBuild.toHud(player, content, DssRef.lang.Work_AutoBuild, WorkPriorityType.autoBuild, faction, city);
-            //expand_farms.toHud(player, content, DssRef.lang.Work_ExpandFarms, WorkPriorityType.expandFarms, faction, city);
 
             HudLib.Description( content, string.Format(DssRef.lang.Work_OrderPrioDescription, MaxPrio));
         }
@@ -488,6 +503,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         craftHeavyArmor,
 
         farming,
+        bogiron,
         mining,
         trading,
         autoBuild,

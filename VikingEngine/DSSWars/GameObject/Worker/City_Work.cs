@@ -372,6 +372,19 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 //MINING
+                if (workTemplate.bogiron.HasPrio() &&
+                    res_ironore.needMore())
+                {
+                    foreach (var pos in CityStructure.Singleton.BogIron)
+                    {                       
+                        if (isFreeTile(pos))
+                        {
+                            int distanceValue = -center.SideLength(pos);
+                            workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, pos, workTemplate.bogiron.value, distanceValue));
+                        }
+                    }
+                }
+
                 if (workTemplate.mining.HasPrio())
                 {
                     foreach (var pos in CityStructure.Singleton.Mines)

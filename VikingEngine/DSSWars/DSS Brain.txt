@@ -7,9 +7,13 @@
 * fixed workers overshooting their goals
 * tooltip improvements
 
+
+* Bog iron, inefficient iron collecting
+* Storehouse, workers may drop their resources here
+
 #Todo (nästa patch)#
-storage house
-bog iron, ineffektiv järn samlande
+model-storage house
+model-bog iron, ineffektiv järn samlande
 
 
 --Efter release polish--

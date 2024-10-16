@@ -404,7 +404,7 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainBuildingType.Tavern:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_tavern, rnd, wp, WorldData.SubTileWidth * 1f));
                     break;
-                case TerrainBuildingType.StoreHouse:
+                case TerrainBuildingType.Storehouse:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_stonehall, rnd, wp, WorldData.SubTileWidth * 0.6f));
                     break;
                 case TerrainBuildingType.Postal:

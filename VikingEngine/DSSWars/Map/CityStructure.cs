@@ -20,6 +20,7 @@ namespace VikingEngine.DSSWars.Map
         public List<IntVector2> FarmPlant = new List<IntVector2>(20);
         public List<IntVector2> FarmGather = new List<IntVector2>(20);
         public List<IntVector2> AnimalPens = new List<IntVector2>(20);
+        public List<IntVector2> BogIron = new List<IntVector2>(20);
         public List<IntVector2> Mines = new List<IntVector2>(20);
         public List<IntVector2> CraftStation = new List<IntVector2>(20);
         public List<IntVector2> EmptyLand = new List<IntVector2>(2);
@@ -108,6 +109,7 @@ namespace VikingEngine.DSSWars.Map
             FarmPlant.Clear();
             FarmGather.Clear();
             AnimalPens.Clear();
+            BogIron.Clear();
             Mines.Clear();
             CraftStation.Clear();
             EmptyLand.Clear();
@@ -183,6 +185,12 @@ namespace VikingEngine.DSSWars.Map
                                                     FarmGather.Add(subTileLoop.Position);
                                                 }
                                                 break;
+                                            case TerrainSubFoilType.BogIron:
+                                                if (BogIron.Count < workerCount)
+                                                {
+                                                    BogIron.Add(subTileLoop.Position);
+                                                }
+                                                break;
                                         }
 
                                         break;
@@ -212,7 +220,7 @@ namespace VikingEngine.DSSWars.Map
                                             case TerrainBuildingType.Tavern:
                                                 FoodSpots_workupdate.Add(subTileLoop.Position);
                                                 break;
-                                            case TerrainBuildingType.StoreHouse:
+                                            case TerrainBuildingType.Storehouse:
                                                 StoragePoints_workupdate.Add(subTileLoop.Position);
                                                 break;
                                             case TerrainBuildingType.Carpenter:

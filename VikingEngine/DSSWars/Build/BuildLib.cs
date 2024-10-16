@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.Build
         Barracks,
         Nobelhouse,
         Tavern,
-        StoreHouse,
+        Storehouse,
         Brewery,
         Cook,
         CoalPit,
@@ -44,7 +44,7 @@ namespace VikingEngine.DSSWars.Build
             BuildAndExpandType.Postal,
             BuildAndExpandType.Recruitment,
             BuildAndExpandType.Tavern,
-            BuildAndExpandType.StoreHouse,
+            BuildAndExpandType.Storehouse,
             BuildAndExpandType.Brewery,
             BuildAndExpandType.Cook,
             BuildAndExpandType.CoalPit,
@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.Barracks, TerrainMainType.Building, (int)TerrainBuildingType.Barracks, SpriteName.WarsBuild_Barracks, ResourceLib.CraftBarracks);
             new BuildOption(BuildAndExpandType.Nobelhouse, TerrainMainType.Building, (int)TerrainBuildingType.Nobelhouse, SpriteName.WarsBuild_Nobelhouse, ResourceLib.CraftNobelHouse);
             new BuildOption(BuildAndExpandType.Tavern, TerrainMainType.Building, (int)TerrainBuildingType.Tavern, SpriteName.WarsBuild_Tavern, ResourceLib.CraftTavern);
-            new BuildOption(BuildAndExpandType.StoreHouse, TerrainMainType.Building, (int)TerrainBuildingType.StoreHouse, SpriteName.WarsBuild_Tavern, ResourceLib.CraftStorehouse);
+            new BuildOption(BuildAndExpandType.Storehouse, TerrainMainType.Building, (int)TerrainBuildingType.Storehouse, SpriteName.WarsBuild_Tavern, ResourceLib.CraftStorehouse);
             new BuildOption(BuildAndExpandType.Brewery, TerrainMainType.Building, (int)TerrainBuildingType.Brewery, SpriteName.WarsBuild_Brewery, ResourceLib.CraftBrewery);
             new BuildOption(BuildAndExpandType.PigPen, TerrainMainType.Building, (int)TerrainBuildingType.PigPen, SpriteName.WarsBuild_PigPen, ResourceLib.CraftPigPen);
             new BuildOption(BuildAndExpandType.HenPen, TerrainMainType.Building, (int)TerrainBuildingType.HenPen, SpriteName.WarsBuild_HenPen, ResourceLib.CraftHenPen);
