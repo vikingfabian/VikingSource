@@ -1460,7 +1460,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string Info_MinuteAverage => "Значение представляет собой среднее за последнюю минуту.";
 
-        public override string Message_CityOutOfFood_Title => "Закончилась еда";
+        public override string Message_OutOfFood_Title => "Закончилась еда";
         public override string Message_CityOutOfFood_Text => "Дорогостоящая еда будет куплена на черном рынке. Рабочие будут умирать от голода, когда у вас закончатся деньги.";
 
         public override string Hud_EndSessionIcon => "X";

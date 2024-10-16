@@ -8,6 +8,7 @@ using VikingEngine.Graphics;
 using System.Text;
 using System.Reflection;
 using System.Globalization;
+using VikingEngine.Input;
 
 namespace VikingEngine
 {
@@ -16,11 +17,11 @@ namespace VikingEngine
         /// <summary>
         /// "\"
         /// </summary>
-        
+
         public const string EmptyString = "";
         public const string Error = "ERR";
         const string MaxTwoDecimalsFormat = "0.##";
-        public const string TextFileEnding = ".txt"; 
+        public const string TextFileEnding = ".txt";
         public static readonly List<char> BreakPoints = new List<char> { ' ', '+', '-', '*', '/', '^' };
         //const char NewLineChar1 = '\n';
         //const char NewLineChar2 = '\r';
@@ -64,7 +65,7 @@ namespace VikingEngine
         public static string LargeNumber(int number)
         {
             if (Math.Abs(number) < 1000)
-            { 
+            {
                 return number.ToString();
             }
             return number.ToString(NoDecimals, ThounsandSeperatorSpaceFormat).Trim();
@@ -73,17 +74,17 @@ namespace VikingEngine
         public const string OneDecimalFormat = "{0:0.0}";
         public static string OneDecimal(double value)
         {
-            string result= string.Format(OneDecimalFormat, value);
+            string result = string.Format(OneDecimalFormat, value);
 
             stringSafeDecimal(ref result);
 
-            return result;  
+            return result;
         }
 
         static void stringSafeDecimal(ref string result)
-        { 
+        {
             if (result.Length > 2)
-            { 
+            {
                 if (result[result.Length - 2] == '٫')
                 {
                     result = result.Replace('٫', ',');
@@ -95,7 +96,7 @@ namespace VikingEngine
         {
             string result = OneDecimal(value);
             if (value > 0)
-            { 
+            {
                 result = "+" + result;
             }
             return result;
@@ -128,7 +129,7 @@ namespace VikingEngine
                 return text.Remove(numLetters - 2, text.Length - numLetters + 2) + DotDotDot;
             }
             return text;
-            
+
         }
 
         public static string PluralEnding(string text, int count)
@@ -147,7 +148,7 @@ namespace VikingEngine
 
         public static string IndexDivition(int index, int length)
         {
-            return (index+1).ToString() + "/" + length.ToString();
+            return (index + 1).ToString() + "/" + length.ToString();
         }
 
         public static string Divition_Large(int value, int dividedBy)
@@ -169,8 +170,18 @@ namespace VikingEngine
         {
             if (text.Length <= 1)
                 return text;
-            return (text.Remove(1, text.Length -1)).ToUpper() + text.Remove(0, 1);
+            return string.Concat(text[0].ToString().ToUpper(), text.AsSpan(1));//(text.Remove(1, text.Length - 1)).ToUpper() + text.Remove(0, 1);
         }
+
+        //public static string FirstCharToUpper(this string input)
+        //{
+        //    switch (input)
+        //    {
+        //        null => throw new ArgumentNullException(nameof(input)),
+        //        "" => throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input)),
+        //        _ => string.Concat(input[0].ToString().ToUpper(), input.AsSpan(1))
+        //    }
+        //}
 
         public static string PercentText(float percent)
         {

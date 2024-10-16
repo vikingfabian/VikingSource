@@ -245,6 +245,9 @@ namespace VikingEngine.DSSWars.Map
                     }
                 }
             }
+
+            //Complete
+            city.nobelHouse_buildingCount = nobelHouseCount;
         }
 
         public IntVector2 eatPosition(IntVector2 workerSubtile)

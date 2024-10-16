@@ -1463,7 +1463,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string Info_MinuteAverage => "El valor es un promedio del último minuto";
 
-        public override string Message_CityOutOfFood_Title => "Sin comida";
+        public override string Message_OutOfFood_Title => "Sin comida";
         public override string Message_CityOutOfFood_Text => "Se comprará comida cara en el mercado negro. Los trabajadores morirán de hambre cuando se acabe tu dinero.";
 
         public override string Hud_EndSessionIcon => "X";

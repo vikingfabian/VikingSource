@@ -334,6 +334,11 @@ namespace VikingEngine.DSSWars
 
         public void oneSecUpdate()
         {
+            if (nobelHouseCount > 0)
+            { 
+                lib.DoNothing();
+            }
+            nobelHouseCount = 0;
             resources_oneSecUpdate();
             player.oneSecUpdate();
 
@@ -343,26 +348,14 @@ namespace VikingEngine.DSSWars
                 if (citiesC.sel.faction == this)
                 {
                     citiesC.sel.oneSecUpdate();
+                    nobelHouseCount += citiesC.sel.nobelHouse_buildingCount;
+                    
                 }
                 else
                 {
                     citiesC.RemoveAtCurrent();
                     refreshMainCity();
                 }
-            }
-
-            if (!player.IsAi())
-            {
-                lib.DoNothing();
-            }
-            //if (Ref.rnd.Chance(0.2))
-            //{
-            //    desertersUpdate();
-            //}
-
-            if (factiontype == FactionType.SouthHara)
-            {
-                lib.DoNothing();
             }
 
             if (armies.Count == 0 && cities.Count == 0)
@@ -378,43 +371,10 @@ namespace VikingEngine.DSSWars
         
         }
 
-        //void desertersUpdate()
-        //{
-        //    if ( gold < 0)
-        //    {
-        //        //if (factiontype == FactionType.SouthHara)
-        //        //{
-        //        //    lib.DoNothing();
-        //        //}
-        //        int payDiff = -gold + armyUpkeep;
-
-        //        if (hasDeserters && payDiff >= armyUpkeep * 5)
-        //        {
-                    
-        //            //Gain a portion of deserters on all armies
-        //            int totalDeserters = 0;
-
-        //            var armiesCounter = armies.counter();
-        //            while (armiesCounter.Next())
-        //            {
-        //                totalDeserters += armiesCounter.sel.desertSoldiers();
-        //            }
-
-        //            if (player.IsPlayer())
-        //            {
-        //                player.GetLocalPlayer().hud.messages.Add(DssRef.lang.EventMessage_DesertersTitle, DssRef.lang.EventMessage_DesertersText);
-        //                player.GetLocalPlayer().statistics.SoldiersDeserted += totalDeserters;
-        //            }
-        //        }
-        //    }
-        //}
-
         public void asynchAiPlayersUpdate(float time)
         {
             player.aiPlayerAsynchUpdate(time);
         }
-
-
         
         public void asynchGameObjectsUpdate(float time, float oneSecondUpdate, bool oneMinute)
         {

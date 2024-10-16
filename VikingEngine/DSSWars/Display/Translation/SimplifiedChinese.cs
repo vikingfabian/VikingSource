@@ -1462,7 +1462,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string Info_MinuteAverage => "此值是过去一分钟的平均值。";
 
-        public override string Message_CityOutOfFood_Title => "食物短缺";
+        public override string Message_OutOfFood_Title => "食物短缺";
         public override string Message_CityOutOfFood_Text => "将从黑市购买昂贵的食物。当你的钱用完时，工人将会饿死。";
 
         public override string Hud_EndSessionIcon => "X";

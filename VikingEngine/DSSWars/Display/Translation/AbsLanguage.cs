@@ -625,7 +625,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string Info_MinuteAverage { get; }
 
-        public abstract string Message_CityOutOfFood_Title { get; }
+        public abstract string Message_OutOfFood_Title { get; }
         public abstract string Message_CityOutOfFood_Text { get; }
 
         public abstract string Hud_EndSessionIcon { get; }

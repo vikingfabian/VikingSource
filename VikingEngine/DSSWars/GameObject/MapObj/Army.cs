@@ -187,7 +187,17 @@ namespace VikingEngine.DSSWars.GameObject
                     args.content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
                     //args.content.icontext(SpriteName.rtsUpkeepTime,string.Format(DssRef.lang.Hud_Upkeep ,TextLib.LargeNumber(upkeep)));
                     args.content.text(string.Format(DssRef.lang.ArmyHud_Food_Reserves_X, TextLib.LargeNumber((int) food )));
+                    args.content.space();
+                    HudLib.InfoButton(args.content, new RbAction(() =>
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        HudLib.Description(content, DssRef.todoLang.Info_ArmyFood);
+                        args.player.hud.tooltip.create(args.player, content, true);
+                    }));
                     args.content.text(string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.OneDecimal(foodUpkeep)));
+                    args.content.space();
+                    HudLib.PerSecondInfo(args.player, args.content, false);
+
                     args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.ArmyHud_Food_Costs_X, TextLib.OneDecimal(foodCosts_import.displayValue_sec)));
                     args.content.space();
                     HudLib.PerSecondInfo(args.player, args.content, true);
@@ -688,7 +698,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         if (notBattle)                       
                         {
-                            speedbonus += unitProfile.ArmySpeedBonusSea;
+                            speedbonus += groupsC.sel.soldierConscript.conscript.armySpeedBonus(false);//unitProfile.ArmySpeedBonusSea;
                             groupsC.sel.walkSpeed = transportSpeedSea;
                         }
 
@@ -704,7 +714,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         if (notBattle)
                         {
-                            speedbonus += unitProfile.ArmySpeedBonusLand;
+                            speedbonus += groupsC.sel.soldierConscript.conscript.armySpeedBonus(true);//unitProfile.ArmySpeedBonusLand;
                             groupsC.sel.walkSpeed = transportSpeedLand;
                         }
 

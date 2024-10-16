@@ -1467,7 +1467,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string Info_MinuteAverage => "この値は、過去1分の平均値です。";
 
-        public override string Message_CityOutOfFood_Title => "食料が不足しています";
+        public override string Message_OutOfFood_Title => "食料が不足しています";
         public override string Message_CityOutOfFood_Text => "ブラックマーケットから高価な食料が購入されます。資金が尽きると労働者は餓死します。";
 
         public override string Hud_EndSessionIcon => "X";

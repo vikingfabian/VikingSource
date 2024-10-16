@@ -362,6 +362,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     soldierData.modelScale *= 1.5f;
                     soldierData.icon = SpriteName.WarsUnitIcon_Knight;
                     soldierData.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 3;
+                    //soldierData.ArmySpeedBonusLand = 0.8;
                     break;
 
                 case MainWeapon.Bow:
@@ -561,13 +562,32 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         public TrainingLevel training;
         public SpecializationType specialization;
 
-        //public void useSetup(ConscriptProfile setup)
-        //{
-
-        //}
         public bool RangedUnit()
         {
             return weapon == MainWeapon.Bow || weapon == MainWeapon.CrossBow || weapon == MainWeapon.Ballista;
+        }
+
+        public double armySpeedBonus(bool land)
+        {
+            if (land)
+            {
+                switch (weapon)
+                {
+                    case MainWeapon.KnightsLance:
+                        return 0.8;
+                    case MainWeapon.Ballista:
+                        return -0.5;
+                }
+            }
+            else
+            {
+                if (specialization == SpecializationType.Sea)
+                    return 0.4;
+                else if (specialization == SpecializationType.Viking)
+                    return 0.6;
+            }
+
+            return 0;
         }
 
         public void defaultSetup(bool nobelmen)

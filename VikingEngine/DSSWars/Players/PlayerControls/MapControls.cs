@@ -33,7 +33,6 @@ namespace VikingEngine.DSSWars.Players
         SafeCollectAsynchList<AbsSoldierUnit> nearDetailUnits = new SafeCollectAsynchList<AbsSoldierUnit>(64);
 
         public Vector3 playerPointerPos = Vector3.Zero, mousePosition = Vector3.Zero;
-        //Vector3 rectangleStart = Vector3.Zero, rectangleEnd = Vector3.Zero;
         VectorRect selectWpRectangle = VectorRect.Zero;
 
 
@@ -189,7 +188,10 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     {
-                        panInput();
+                        if (controllerInput)
+                        {
+                            panInput();
+                        }
 
                         if (selectRectangle == null)
                         {

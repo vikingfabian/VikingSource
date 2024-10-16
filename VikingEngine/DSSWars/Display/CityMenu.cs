@@ -148,7 +148,7 @@ namespace VikingEngine.DSSWars.Display
             switch (player.resourcesSubTab)
             {
                 case ResourcesSubTab.Overview:
-                    content.h1(DssRef.lang.MenuTab_Resources);
+                    content.h1(DssRef.lang.MenuTab_Resources).overrideColor = HudLib.TitleColor_Label;
                     content.newLine();
 
                     content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
@@ -233,8 +233,8 @@ namespace VikingEngine.DSSWars.Display
                     break;
 
                 case ResourcesSubTab.Stockpile:
-                    content.h1(DssRef.lang.Resource_Tab_Stockpile);
-               
+                    content.h1(DssRef.lang.Resource_Tab_Stockpile).overrideColor = HudLib.TitleColor_Label;
+
                     stockpile(ItemResourceType.Wood_Group);
                     stockpile(ItemResourceType.Stone_G);
                     stockpile(ItemResourceType.RawFood_Group);

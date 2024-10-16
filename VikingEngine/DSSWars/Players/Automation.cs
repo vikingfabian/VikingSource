@@ -140,8 +140,8 @@ namespace VikingEngine.DSSWars.Players
 
         public void toMenu(RichBoxContent content, bool fullDisplay)
         {
-            content.h1(DssRef.lang.Automation_Title);
-            content.newLine();
+            //content.h1(DssRef.lang.Automation_Title);
+            content.newParagraph();
             //content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
             //    {
             //        new RichBoxText( DssRef.lang.UnitType_Recruit),

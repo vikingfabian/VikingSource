@@ -320,7 +320,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         public void toHud(Players.LocalPlayer player, RichBoxContent content, Faction faction, City city)
         {
-            content.h2(DssRef.lang.Work_OrderPrioTitle);
+            content.h2(DssRef.lang.Work_OrderPrioTitle).overrideColor = HudLib.TitleColor_Label;
             
             move.toHud(player, content, DssRef.lang.Work_Move, WorkPriorityType.move, faction, city);
             wood.toHud(player, content, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Wood), WorkPriorityType.wood, faction, city);

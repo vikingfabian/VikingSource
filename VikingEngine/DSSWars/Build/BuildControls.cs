@@ -150,6 +150,11 @@ namespace VikingEngine.DSSWars.Build
                             content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
                             content.newLine();
 
+                            content.BulletPoint();
+                            content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
+                            content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_Upkeep, DssLib.NobleHouseUpkeep)));
+
+                            content.newParagraph();
                             break;
                     }
 
@@ -211,8 +216,11 @@ namespace VikingEngine.DSSWars.Build
             content.newParagraph();
             content.text(string.Format(DssRef.lang.Build_OrderQue, orderLength)).overrideColor = HudLib.InfoYellow_Light;
 
+           
             content.Add(new RichBoxSeperationLine());
-            content.h2(DssRef.lang.Automation_Title);
+
+            //--Automation
+            content.h2(DssRef.lang.Automation_Title).overrideColor = HudLib.TitleColor_Label;
 
             content.newLine();
             content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
@@ -225,12 +233,7 @@ namespace VikingEngine.DSSWars.Build
                 {
                     new RichBoxText( DssRef.lang.CityOption_AutoBuild_Farm),
                 }, city.AutoBuildFarmProperty));
-            //if (autoBuild)
-            //{
-            //content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
-            //{
-            //    new RichBoxText(DssRef.lang.CityOption_AutoBuild_Intelligent),
-            //}, AutoBuildIntelligentProperty));
+            
 
             if (city.AutoBuildFarmProperty(0, false, false))
             {

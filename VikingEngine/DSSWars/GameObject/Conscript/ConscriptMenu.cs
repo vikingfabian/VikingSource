@@ -50,7 +50,10 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 content.Add(new RichBoxBeginTitle(1));
 
                 string typeName = currentStatus.nobelmen? DssRef.lang.Building_NobleHouse : DssRef.lang.BuildingType_Barracks;
-                content.Add(new RichBoxText(typeName + " " + currentStatus.idAndPosition.ToString()));
+                var title = new RichBoxText(typeName + " " + currentStatus.idAndPosition.ToString());
+                title.overrideColor = HudLib.TitleColor_TypeName;
+                content.Add(title);
+                //content.Add(new RichBoxText(typeName + " " + currentStatus.idAndPosition.ToString()));
                 content.space();
                  HudLib.CloseButton(content,new RbAction(() => { city.selectedConscript = -1; }));
 
@@ -203,7 +206,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             else
             {
 
-                content.h2(DssRef.lang.Conscript_SelectBuilding);
+                content.h2(DssRef.lang.Conscript_SelectBuilding).overrideColor = HudLib.TitleColor_Action;
                 if (city.conscriptBuildings.Count == 0)
                 {
                     //EMPTY

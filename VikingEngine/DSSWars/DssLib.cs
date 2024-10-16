@@ -260,6 +260,15 @@ namespace VikingEngine.DSSWars
         NUM
     }
 
+    enum AiConscript
+    { 
+        Default,
+        Orcs,
+        Green,
+        Viking,
+        DragonSlayer,
+    }
+
     enum BossSize
     {
         Small,

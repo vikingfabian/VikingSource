@@ -362,8 +362,11 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                 case WorkType.Build:
                     {
-                        BuildLib.BuildOptions[workSubType].execute_async(city, subTileEnd, ref subTile);
-                        DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                        if (orderIsActive(city))
+                        {
+                            BuildLib.BuildOptions[workSubType].execute_async(city, subTileEnd, ref subTile);
+                            DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                        }
                     }
                     break;
                 case WorkType.Exit:
@@ -387,6 +390,27 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             }
 
             processTimeStartStampSec = Ref.TotalGameTimeSec;
+
+        }
+
+        public void cancelWork()
+        {
+            work = WorkType.Idle;
+            processTimeStartStampSec = Ref.TotalGameTimeSec;
+        }
+
+        public bool orderIsActive(City city)
+        {
+            if (orderId >= 0)
+            {
+                if (city.faction.player.orders != null)
+                {
+                   return city.faction.player.orders.GetFromId(orderId) != null;
+                }
+            }
+           
+            return true;
+            
         }
 
         public void WorkComplete(AbsMapObject mapObject, bool visualUnit)

@@ -41,7 +41,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 
         public static void ToHud(LocalPlayer player, RichBoxContent content, City city)
         {
-            content.h2(DssRef.lang.Hud_PurchaseTitle_Resources);
+            content.h2(DssRef.lang.Hud_PurchaseTitle_Resources).overrideColor = HudLib.TitleColor_Label;
 
             Resource(Cost_RawFood, ItemResourceType.RawFood_Group, DssRef.lang.Resource_TypeName_RawFood);
             Resource(Cost_Food, ItemResourceType.Food_G, DssRef.lang.Resource_TypeName_Food);

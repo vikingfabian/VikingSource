@@ -11,14 +11,11 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class Army
     {
-        //public List<WorkerUnit> workerUnits = null;
-        //List<WorkerStatus> workerStatuses = new List<WorkerStatus>();
-
         float foodBackOrderTimeSec = 0;
 
         public void setMaxFood()
         {
-            float energy = DssLib.SoldierDefaultEnergyUpkeep * DssConst.SoldierGroup_DefaultCount * groups.Count;
+            float energy = DssLib.SoldierDefaultEnergyUpkeep / DssConst.FoodEnergy * DssConst.SoldierGroup_DefaultCount * groups.Count;
             float bufferGoalFood = friendlyAreaFoodBuffer_minutes * TimeExt.MinuteInSeconds * energy;
             food = bufferGoalFood;
         }
@@ -27,7 +24,6 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (seconds > 0)
             {
-                //float newFoodCosts = 0;
 
                 if (foodBackOrderTimeSec > 0)
                 {
@@ -51,6 +47,14 @@ namespace VikingEngine.DSSWars.GameObject
                         
                         if (food < 0)
                         {
+                            if (faction.player.IsPlayer())
+                            {
+                                Ref.update.AddSyncAction(new SyncAction(() =>
+                                {
+                                    faction.player.GetLocalPlayer().hud.messages.armyLowFoodMessage(this);
+                                }));
+                            }
+
                             //black market trade
                             var cost = (int)Math.Ceiling(DssConst.FoodGoldValue_BlackMarket * -food);
 
@@ -82,24 +86,9 @@ namespace VikingEngine.DSSWars.GameObject
                             {
                                 foodBackOrderTimeSec += status.processTimeLengthSec * perc * 0.8f;
                             }
-                            //}
-                            //else if (perc > 0.5)
-                            //{
-                            //    foodBackOrderTimeSec += status.processTimeLengthSec * 0.5f;
-                            //}
-                            //else if (perc > 0.2)
-                            //{
-                            //    foodBackOrderTimeSec += status.processTimeLengthSec * 0.2f;
-                            //}
-                            //else if (perc > 0.05)
-                            //{
-                            //    foodBackOrderTimeSec += status.processTimeLengthSec * 0.2f;
-                            //}
                         }
                     }
                 }
-
-                //foodCosts = newFoodCosts;
             }
 
             if (!inRender_detailLayer)

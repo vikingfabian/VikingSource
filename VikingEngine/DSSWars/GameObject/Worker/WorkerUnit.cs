@@ -75,6 +75,13 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         state = WorkerUnitState.FinalizeWork;
                         model.Frame = 0;
                         updateGroudY(true);
+
+                        if (status.work == WorkType.Build && !status.orderIsActive(city))
+                        {
+                            state = WorkerUnitState.None;
+                            status.cancelWork();
+                            parentMapObject.setWorkerStatus(parentArrayIndex, ref status);
+                        }                    
                     }
                     else
                     {
@@ -270,12 +277,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 {
                     finalizeWorkTime = status.finalizeWorkTime(city);
                     state = WorkerUnitState.FinalizeWork;
-                    //refreshCarryModel();
                 }
                 else
                 {
-                    //lib.DoNothing();
-
                     refreshGoalDir();
 
                     finalizeWorkTime = status.finalizeWorkTime(city);
@@ -283,8 +287,17 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     if (onInit)
                     {
                         float timePassed = Ref.TotalGameTimeSec - status.processTimeStartStampSec;
-                        float perc = Bound.Set(timePassed / (status.processTimeLengthSec - finalizeWorkTime), 0, 1);
-                        model.position = model.position * (1 - perc) + goalPos * perc;
+                        float walkingPerc = timePassed / (status.processTimeLengthSec - finalizeWorkTime);
+
+                        if (walkingPerc >= 1)
+                        {
+                            model.position = goalPos;
+                            finalizeWorkTime = status.processTimeLengthSec - timePassed;
+                        }
+                        else
+                        {
+                            model.position = model.position * (1 - walkingPerc) + goalPos * walkingPerc;
+                        }
                     }
 
                     switch (status.work)

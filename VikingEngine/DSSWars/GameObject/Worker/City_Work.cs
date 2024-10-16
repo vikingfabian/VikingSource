@@ -993,7 +993,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             //float foodUpkeep = 0;
 
-            if (res_food.amount <= -40)
+            if (res_food.amount <= -10)
             {
                 int buyFood = -res_food.amount;
 

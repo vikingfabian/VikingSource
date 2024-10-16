@@ -6,35 +6,40 @@
 * seven new achievements
 * fixed workers overshooting their goals
 * tooltip improvements
+* sea specialization give ship speed bonus
+* repaired nobel house upkeep
+* menu polish
+* repaired map pan
+* can cancel build order
+* out of food warning on armies
+* repaired ai unique soldiers (achievement still broken)
 
 #Todo#
-sockpile icon
+Stockpile icon
+Sista översättningen
+
 
 --Efter release polish--
-nya achievements
 
-out of food warning på armeer
-storage house
 pilar med resurser från delivery
 tydlig ikon för objekt meny typ
 Factories modeller
-Producering av special enheter (tex green soldiers)
 Deliver effect
-avbryta byggjobb
 Ljud
-army speed bonus
 city economy
-bog iron, ineffektiv järn samlande
 visa antal byggnader i bygg meny
 training skill icon
 
+
 Error
 -back button in menues 
+
 
 Retreat system
 -retreat av de sista motståndarna
 -light taunt units (slingers, light cavalry)
 -reassemble av flydd arme
+
 
 Polish
 
