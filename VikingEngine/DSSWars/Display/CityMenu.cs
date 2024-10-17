@@ -119,7 +119,7 @@ namespace VikingEngine.DSSWars.Display
         }
         public void resourcesToMenu(RichBoxContent content)
         {
-            if (player.tutorial == null)
+            if (player.tutorial == null || player.tutorial.DisplayStockpile())
             {
                 for (ResourcesSubTab resourcesSubTab = 0; resourcesSubTab < ResourcesSubTab.NUM; ++resourcesSubTab)
                 {

@@ -12,6 +12,7 @@ using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Input;
+using VikingEngine.PJ;
 using VikingEngine.Timer;
 using VikingEngine.ToGG;
 
@@ -20,34 +21,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
     
     class Tutorial
     {
-        //# tutorial
-        //    zoom in on a city
-        //    select resource tab, collect x wood and x stone
-
-        //new tab, increase sharp stick work
-
-        //new tab, build linen
-        //collect x linnen
-        //increase light armor work
-
-        //new tab conscript
-        //build conscript
-        //que up two armies with light armor and stick
-
-        //zoom out
-        //select move army
-
-        //zoom out to diplomatic view,
-        //create good relations w neighbor
-
-        //>end
-        //-add start soldiers(and conscripts)
         enum TutorialMission
         {
             CollectResources,
             SharpStickWork,
             Linen,
             ConscriptArmy,
+            CollectFood,
             MoveArmy,
             Diplomatics,
             End,
@@ -74,6 +54,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         bool conscriptArmy_selectTab = false;
         bool conscriptArmy_createArmy = false;
 
+        bool CollectFood_foodblueprint = false;
+        bool CollectFood_buildfoodproduction = false;
+        bool CollectFood_buildfuelproduction = false;
+        bool CollectFood_builcook = false;
+        bool CollectFood_increasefoodbuffer = false;
+        bool CollectFood_reachfoodamount = false;
+
         bool moveArmy_ZoomOut = false;
         //bool moveArmy_Select = false;
         bool moveArmy_SelectMove = false;
@@ -81,12 +68,20 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         bool diplomatics_ZoomOut = false;
         bool diplomatics_goodRelation = false;
 
+//        (hide tavern)
+//-look at the food blueprint
+//-build something that produces raw food
+//-build something that produces fuel
+//-build a food crafting station
+//-increase the food buffer limit
+//-reach a stockpile of X food
+//*The workers will move to the city hall for food
 
         LocalPlayer player;
         TutorialMission tutorialMission = 0;
         Display.TutorialDisplay display;
 
-        public List<MenuTab> cityTabs; //=  { MenuTab.Info, MenuTab.Resources, MenuTab.BlackMarket, MenuTab.Work, MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript };
+        public List<MenuTab> cityTabs;
 
         public Tutorial(LocalPlayer player)
         {
@@ -128,6 +123,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
         }
 
+        public bool DisplayStockpile()
+        { 
+            return tutorialMission >= TutorialMission.CollectFood;
+        }
         
 
         public void tutorial_ToHud(RichBoxContent content)
@@ -154,11 +153,30 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.icontext(HudLib.CheckImage(linen_armorWork), string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.lang.Resource_TypeName_LightArmor));
                     content.icontext(HudLib.CheckImage(linen_collect), string.Format(DssRef.lang.Tutorial_CollectXAmountOfY, CollectLinenAmount, DssRef.lang.Resource_TypeName_SkinAndLinen));
                     break;
+               
                 case TutorialMission.ConscriptArmy:
                     content.icontext(HudLib.CheckImage(conscriptArmy_build), string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Barracks].Label()));
                     content.icontext(HudLib.CheckImage(conscriptArmy_selectTab), string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.Conscription_Title));
                     content.icontext(HudLib.CheckImage(conscriptArmy_createArmy), string.Format(DssRef.lang.Tutorial_CreateSoldiers, DssRef.lang.Resource_TypeName_SharpStick, DssRef.lang.Resource_TypeName_LightArmor));
                     break;
+
+                case TutorialMission.CollectFood:
+                    string BuildSomething = "Build something that produces {0}";
+                    content.icontext(HudLib.CheckImage(CollectFood_foodblueprint), "Look at the food blueprint");//-look at the food blueprint
+                    content.icontext(HudLib.CheckImage(CollectFood_foodblueprint), string.Format(BuildSomething, DssRef.lang.Resource_TypeName_RawFood));//-build something that produces raw food
+                    //-build something that produces fuel
+                    //-build a food crafting station
+                    //-increase the food buffer limit
+                    //-reach a stockpile of X food
+                    //*The workers will move to the city hall for food
+                    //bool  = false;
+                    //bool CollectFood_buildfoodproduction = false;
+                    //bool CollectFood_buildfuelproduction = false;
+                    //bool CollectFood_builcook = false;
+                    //bool CollectFood_increasefoodbuffer = false;
+                    //bool CollectFood_reachfoodamount = false;
+                    break;
+                
                 case TutorialMission.MoveArmy:
                     content.icontext(HudLib.CheckImage(moveArmy_ZoomOut), DssRef.lang.Tutorial_ZoomOutOverview);
                     content.icontext(HudLib.CheckImage(moveArmy_SelectMove), DssRef.lang.Tutorial_Mission_MoveArmy);

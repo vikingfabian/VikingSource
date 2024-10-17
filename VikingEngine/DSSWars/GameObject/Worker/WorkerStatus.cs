@@ -385,7 +385,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 
                 if (orderId >= 0)
                 {
-                    city.faction.player?.orders.CompleteOrderId(orderId);
+                    city.faction.player.orders?.CompleteOrderId(orderId);
                 }
             }
 
