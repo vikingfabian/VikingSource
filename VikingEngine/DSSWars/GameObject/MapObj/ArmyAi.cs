@@ -313,7 +313,7 @@ namespace VikingEngine.DSSWars.GameObject
             clearObjective();
             objective = ArmyObjective.Halt;
 
-            tilePos = WP.ToTilePos(position);
+            //tilePos = WP.ToTilePos(position);
             setWalkNode(tilePos, false, false);
 
         }

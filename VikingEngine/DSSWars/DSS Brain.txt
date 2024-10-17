@@ -7,12 +7,14 @@ Arme ska kunna låsa position på squads (kanske ha en fram/bak, vänster/höger
 Arme ska flyttas i columner
 Squads ska path finda seperat, även enskila soldater
 Squads position i armen måste bli dynamisk
+(ska kanske flytta på linje vid korta förflyttningar, även shift val)
 *center, left, right body, left/right flank / scout, front, body, second, behind
 Lägg till lågt vatten nära land
 Byggnader är hinder, kan klättras över
 Soldater letar upp sin position i gruppen
 Grupprörelser är olika effektiva beroende på träning
 Tydlig state på soldater
+
 
 Strid: ta bort grid
 Strid: lås collisions för stridande, så friendlies inte kan passera

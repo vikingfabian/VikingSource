@@ -39,7 +39,13 @@ namespace VikingEngine.DSSWars.Display
             this.city = city;
 
             content.newLine();
-            
+
+#if DEBUG
+            content.Button("*soldier", new RbAction(()=> { city.debugConscript(MainWeapon.Sword); }) , null, true);
+            content.Button("*archer", new RbAction(() => { city.debugConscript(MainWeapon.Bow); }), null, true);
+            content.Button("*ballista", new RbAction(() => { city.debugConscript(MainWeapon.Ballista); }), null, true);
+#endif
+
             int tabSel = 0;
 
             var tabs = new List<RichboxTabMember>((int)MenuTab.NUM);

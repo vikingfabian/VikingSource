@@ -32,9 +32,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         public float halfColDepth;
 
-       
-        
-        //public bool hasWalkingOrder = false;
         public SpottedArray<AbsSoldierUnit> soldiers;
 
         public Army army;
@@ -53,8 +50,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         //center, left, right / scout, front, second, behind
         public IntVector2 armyLocalPlacement = IntVector2.Zero;
-        public IntVector2 armyLocalPlacement2 = IntVector2.Zero;
-
+        public IntVector2 armyGridPlacement2 = IntVector2.Zero;
+        //public Vector2 armyGoalWP;
         //public int groupId;
 
         public UnitType type;
@@ -94,11 +91,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public SoldierGroup(Army army, SoldierConscriptProfile conscript)
         {
+            this.army = army;
             soldierConscript = conscript;
             initPart1();
 
             tilePos = army.tilePos;
-            this.army = army;
+           
 
             //AbsSoldierData typeData = DssRef.unitsdata.Get(type);
 
@@ -123,6 +121,31 @@ namespace VikingEngine.DSSWars.GameObject
             typeShipData = DssRef.profile.Get(typeSoldierData.ShipType());
 
             typeCurrentData = typeSoldierData;
+
+            armyGridPlacement2 = army.nextArmyPlacement(soldierConscript.conscript.DefaultArmyRow());
+            //armyLocalPlacement2.Y = soldierConscript.conscript.DefaultArmyRow();
+            //switch (armyLocalPlacement2.Y)
+            //{ 
+            //    case Army.Row_Body:
+            //        armyLocalPlacement2.X = nextLeftRight(ref army.nextLeftRightOnBodyRow);
+            //        break;
+            //    case Army.Row_Second:
+            //        armyLocalPlacement2.X = nextLeftRight(ref army.nextLeftRightOnSecondRow);
+            //        break;
+            //    case Army.Row_Behind:
+            //        armyLocalPlacement2.X = nextLeftRight(ref army.nextLeftRightOnBehindRow);
+            //        break;
+            //}
+
+            //int nextLeftRight(ref int rowLeftRight)
+            //{ 
+            //    int result = rowLeftRight;
+            //    if (--rowLeftRight <= -2)
+            //    {
+            //        rowLeftRight = 1;
+            //    }
+            //    return result;
+            //}
         }
 
         //public SoldierGroup(Army army, UnitType type, bool recruit)
@@ -448,7 +471,10 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         public void update(float time, bool fullUpdate)
-        {   
+        {
+            return;
+
+            //OLD
             if (debugTagged)//groupId == 1611)
             {
                 lib.DoNothing();
@@ -646,6 +672,54 @@ namespace VikingEngine.DSSWars.GameObject
 
 #if DEBUG
             debugTagButton(args.content);
+
+            //args.content.text($"column {armyGridPlacement2.X}");
+            //args.content.text($"row {armyGridPlacement2.Y}");
+            args.content.Add(new RichBoxSeperationLine());
+
+            for (int y = 0; y < ArmyPlacementGrid.RowsCount; y++)
+            {
+                int rowY = y - ArmyPlacementGrid.PosYAdd;
+
+                string name;
+                switch (rowY)
+                {
+                    case ArmyPlacementGrid.Row_Front:
+                        name = "Front";
+                        break;
+                    default:
+                        name = "Body";
+                        break;
+                    case ArmyPlacementGrid.Row_Second:
+                        name = "Second";
+                        break;
+                    case ArmyPlacementGrid.Row_Behind:
+                        name = "Behind";
+                        break;
+
+                }
+
+                args.content.newLine();
+                args.content.Add(new RichBoxText(name));
+                args.content.Add(new RichBoxTab(0.3f));
+                for (int x = 0; x < ArmyPlacementGrid.ColsCount; x++)
+                {
+                    args.content.space();
+
+                    int colX = x - ArmyPlacementGrid.PosXAdd;
+                    
+                    string caption = colX == 0 ? " C " : TextLib.PlusMinus(colX);
+                    var button = new RichboxButton(new List<AbsRichBoxMember> {
+                        new RichBoxText(caption)
+                    },
+                    new RbAction2Arg<int, int>(setNewArmyPlacement, colX, rowY), null);
+
+                    button.setGroupSelectionColor(HudLib.RbSettings, armyGridPlacement2.X == colX && armyGridPlacement2.Y == rowY);
+                    args.content.Add(button);
+                }
+
+            }
+            args.content.Add(new RichBoxSeperationLine());
             //args.content.Button("debug tag", new HUD.RichBox.RbAction(AddDebugTag), null, true);
 #endif
             soldierConscript.conscript.toHud(args.content);
@@ -654,6 +728,14 @@ namespace VikingEngine.DSSWars.GameObject
             //{
             //    new Display.GroupMenu(args.player, this, args.content);
             //}
+        }
+
+        void setNewArmyPlacement(int colX, int rowY)
+        { 
+            armyGridPlacement2.X = colX;
+            armyGridPlacement2.Y = rowY;
+
+            army.refreshPositions(false);
         }
 
         public bool soldiersShouldFollowWalkingOrder()
@@ -1118,35 +1200,36 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
-        public void setWalkNode(IntVector2 area,
-            bool nextIsFootTransform, bool nextIsShipTransform)
-        {
-            //if (parentArrayIndex== 5152)
-            //{
-            //    lib.DoNothing();
-            //}
+        //public void setWalkNode(IntVector2 area,
+        //    bool nextIsFootTransform, bool nextIsShipTransform)
+        //{
+        //    //if (parentArrayIndex== 5152)
+        //    //{
+        //    //    lib.DoNothing();
+        //    //}
 
-            walkingOrderTo = area;
-            Vector3 areaCenter = WP.ToWorldPos(area);
-            goalWp = armyPlacement(areaCenter);
+        //    walkingOrderTo = area;
+        //    Vector3 areaCenter = WP.ToWorldPos(area);
+        //    //goalWp = armyPlacement(areaCenter);
 
-            if ((nextIsFootTransform && IsShip()) ||
-                (nextIsShipTransform && !IsShip()))
-            {
-                if (!inShipTransform)
-                {
-                    inShipTransform = true;
-                    new ShipTransform(this, false);
-                }
-            }
 
-        }
+        //    if ((nextIsFootTransform && IsShip()) ||
+        //        (nextIsShipTransform && !IsShip()))
+        //    {
+        //        if (!inShipTransform)
+        //        {
+        //            inShipTransform = true;
+        //            new ShipTransform(this, false);
+        //        }
+        //    }
+
+        //}
 
         public void bumpWalkToNode(IntVector2 nodePos)
         {
             walkingOrderTo = nodePos;
             Vector3 areaCenter = WP.ToWorldPos(walkingOrderTo);
-            goalWp = armyPlacement(areaCenter);
+            //goalWp = armyPlacement(areaCenter);
         }
 
         public void setGroundY()
@@ -1435,13 +1518,31 @@ namespace VikingEngine.DSSWars.GameObject
             army.stateDebugText(content);
         }
 
+        public void setArmyPlacement2(Vector3 wp)
+        {
+            goalWp = wp;
+
+            //if (!army.inRender_detailLayer || lifeState == LifeState_New)
+            {
+                ++lifeState;
+                position = goalWp;
+                setGroundY();
+            }
+
+            var soldiersC = soldiers.counter();
+            while (soldiersC.Next())
+            {
+                soldiersC.sel.firstUpdate();
+            }
+        }
+
         public void SetArmyPlacement(IntVector2 newLocalPlacement, bool onPurchase)
         {
             if (armyLocalPlacement != newLocalPlacement ||  onPurchase)
             {
 
-                armyLocalPlacement = newLocalPlacement;
-                goalWp = armyPlacement(army.position);
+                //armyLocalPlacement = newLocalPlacement;
+                //goalWp = armyPlacement(army.position);
 
                 if (!army.inRender_detailLayer || lifeState == LifeState_New)
                 {

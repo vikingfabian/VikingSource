@@ -19,6 +19,8 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class Army : AbsMapObject
     {
+       
+
         public const float MaxTradeDistance = 3;
 
         const int GroupsWidth_Size1 = 5;
@@ -38,7 +40,7 @@ namespace VikingEngine.DSSWars.GameObject
         //public SpottedArrayCounter<SoldierGroup> groupsCounter;
 
         protected Graphics.AbsVoxelObj overviewBanner;
-       
+
         public Rotation1D rotation = Rotation1D.D180.Add(Ref.rnd.Plus_MinusF(0.8f));
         public float soldierRadius = 0.5f;
         BoundingSphere bound;
@@ -70,7 +72,7 @@ namespace VikingEngine.DSSWars.GameObject
         public MinuteStats foodCosts_import = new MinuteStats();
         public MinuteStats foodCosts_blackmarket = new MinuteStats();
 
-
+        
         public Army(Faction faction, IntVector2 startPosition)
         {
             id = ++DssRef.state.NextArmyId;
@@ -506,22 +508,22 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                     }
 
-                    if (centerGuy != null)
-                    {
-                        var newPosition = centerGuy.position;
-                        if (newPosition.X > 1 && newPosition.Z > 1)
-                        {
-                            position = newPosition;
-                        }
-                    }
-                    else if (armyCenterCount > 0)
-                    {
-                        var newPosition = armyCenter / armyCenterCount;
-                        if (newPosition.X > 1 && newPosition.Z > 1)
-                        {
-                            position = newPosition;
-                        }
-                    }
+                    //if (centerGuy != null)
+                    //{
+                    //    var newPosition = centerGuy.position;
+                    //    if (newPosition.X > 1 && newPosition.Z > 1)
+                    //    {
+                    //        position = newPosition;
+                    //    }
+                    //}
+                    //else if (armyCenterCount > 0)
+                    //{
+                    //    var newPosition = armyCenter / armyCenterCount;
+                    //    if (newPosition.X > 1 && newPosition.Z > 1)
+                    //    {
+                    //        position = newPosition;
+                    //    }
+                    //}
 
                     
                 }
@@ -539,13 +541,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void refreshPositions(bool onPurchase)
         {
-            int width = groupsWidth();
+            refreshGroupPlacements2(tilePos, onPurchase);
+            //int width = groupsWidth();
 
-            IntVector2 nextGroupPlacementIndex = IntVector2.Zero;
+            //IntVector2 nextGroupPlacementIndex = IntVector2.Zero;
 
-            refreshPositionsFor(ArmyPlacement.Front, ref nextGroupPlacementIndex, width, onPurchase);
-            refreshPositionsFor(ArmyPlacement.Mid, ref nextGroupPlacementIndex, width, onPurchase);
-            refreshPositionsFor(ArmyPlacement.Back, ref nextGroupPlacementIndex, width, onPurchase);
+            //refreshPositionsFor(ArmyPlacement.Front, ref nextGroupPlacementIndex, width, onPurchase);
+            //refreshPositionsFor(ArmyPlacement.Mid, ref nextGroupPlacementIndex, width, onPurchase);
+            //refreshPositionsFor(ArmyPlacement.Back, ref nextGroupPlacementIndex, width, onPurchase);
         }
 
         public int groupsWidth()
@@ -747,7 +750,9 @@ namespace VikingEngine.DSSWars.GameObject
                 soldierRadius = MathExt.SquareRootF(count) / 20f;
                 this.strengthValue = count;
                 soldiersCount = count;
-                tilePos = WP.ToTilePos(position);
+                
+                //Endbart ändra när arme är i rörelse, måste följa center person
+                //tilePos = WP.ToTilePos(position);
                 speedbonus /= groups.Count;
                 if (speedbonus < 0)
                 {
@@ -862,11 +867,13 @@ namespace VikingEngine.DSSWars.GameObject
             diff.Y -= position.Z;
             rotation = Rotation1D.FromDirection(diff);
 
-            var groupsC = groups.counter();
-            while (groupsC.Next())
-            {
-                groupsC.sel.setWalkNode(area, nextIsFootTransform, nextIsShipTransform);                
-            }
+            refreshGroupPlacements2(area, false);
+
+            //var groupsC = groups.counter();
+            //while (groupsC.Next())
+            //{
+            //    groupsC.sel.setWalkNode(area, nextIsFootTransform, nextIsShipTransform);                
+            //}
         }
 
         public override void setFaction(Faction faction)

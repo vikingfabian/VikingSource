@@ -11,6 +11,7 @@ using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.PJ.Joust.DropItem;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -190,6 +191,34 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             for (int i = 0; i < count; i++)
+            {
+                new SoldierGroup(army, soldierProfile);
+            }
+            army?.OnSoldierPurchaseCompleted();
+        }
+
+        public void debugConscript(MainWeapon weapon)
+        {
+            Army army = recruitToClosestArmy();
+
+            if (army == null)
+            {
+                IntVector2 onTile = DssRef.world.GetFreeTile(tilePos);
+
+                army = faction.NewArmy(onTile);
+            }
+
+            SoldierConscriptProfile soldierProfile = new SoldierConscriptProfile()
+            {
+                conscript = new ConscriptProfile() {
+                    weapon = weapon,
+                    armorLevel = ArmorLevel.Medium,
+                    training = TrainingLevel.Basic,
+                },
+                skillBonus = 1,
+            };
+
+            for (int i = 0; i < 1; i++)
             {
                 new SoldierGroup(army, soldierProfile);
             }

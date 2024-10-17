@@ -567,6 +567,20 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             return weapon == MainWeapon.Bow || weapon == MainWeapon.CrossBow || weapon == MainWeapon.Ballista;
         }
 
+        public int DefaultArmyRow()
+        {
+            switch (weapon)
+            {
+                case MainWeapon.Bow:
+                case MainWeapon.CrossBow:
+                    return ArmyPlacementGrid.Row_Second;
+                case MainWeapon.Ballista:
+                    return ArmyPlacementGrid.Row_Behind;
+                default:
+                    return ArmyPlacementGrid.Row_Body;
+            }
+        }
+
         public double armySpeedBonus(bool land)
         {
             if (land)
