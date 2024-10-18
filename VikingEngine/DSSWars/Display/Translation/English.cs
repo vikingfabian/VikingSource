@@ -1545,7 +1545,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string CityCulture_Woodcutters_Description => "Trees give more wood";
         public override string CityCulture_Builders_Description => "Fast at building";
         public override string CityCulture_CrabMentality_Description => "Work cost less energy. Cannot produce high-skill soldiers.";
-        public override string CityCulture_DeepWell_Description => "Water replenish faster";
+        public override string CityCulture_DeepWell_Description => "Water replenishes faster";
         public override string CityCulture_Networker_Description => "Efficient postal service";
         public override string CityCulture_PitMasters_Description => "Higher fuel production";
 

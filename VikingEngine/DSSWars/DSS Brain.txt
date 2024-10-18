@@ -1,16 +1,12 @@
 ﻿
 -Change Log-
+Extended tutorial: food production
+Cities will start with 10 iron, don't spent it all in one place ;)
+
 
 #Todo#
-food craft tutorial
 (hide tavern)
--look at the food blueprint
--build something that produces raw food
--build something that produces fuel
--build a food crafting station
--increase the food buffer limit
--reach a stockpile of X food
-*The workers will move to the city hall for food
+
 
 --Efter release polish--
 sound limit per time

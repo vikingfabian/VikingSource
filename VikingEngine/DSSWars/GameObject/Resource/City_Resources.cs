@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource res_beer = new GroupedResource() { amount = 0, goalBuffer = 200 };
         public GroupedResource res_skinLinnen = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_ironore = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_iron = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_iron = new GroupedResource() { amount = 10, goalBuffer = 100 };
 
         public GroupedResource res_sharpstick = new GroupedResource() { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
         public GroupedResource res_sword = new GroupedResource() { amount = 0, goalBuffer = 100 };
@@ -85,14 +85,14 @@ namespace VikingEngine.DSSWars.GameObject
         public TradeTemplate tradeTemplate = new TradeTemplate();
 
         //int tradeGold = 0;
-
+        public const int DefaultFoodBuffer = 500;
         public void defaultResourceBuffer()
         {
             res_wood.goalBuffer = 300;
             res_fuel.goalBuffer = 300;
             res_stone.goalBuffer = 200;
             res_rawFood.goalBuffer = 200;
-            res_food.goalBuffer = 500;
+            res_food.goalBuffer = DefaultFoodBuffer;
             res_beer.goalBuffer = 200;
             res_skinLinnen.goalBuffer = 100;
             res_ironore.goalBuffer = 100;

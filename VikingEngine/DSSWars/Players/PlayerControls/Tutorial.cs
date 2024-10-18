@@ -54,6 +54,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         bool conscriptArmy_selectTab = false;
         bool conscriptArmy_createArmy = false;
 
+        bool CollectFood_selecttab = false;
         bool CollectFood_foodblueprint = false;
         bool CollectFood_buildfoodproduction = false;
         bool CollectFood_buildfuelproduction = false;
@@ -82,6 +83,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         Display.TutorialDisplay display;
 
         public List<MenuTab> cityTabs;
+        const int ReachFoodBuffer = City.DefaultFoodBuffer + 100;
 
         public Tutorial(LocalPlayer player)
         {
@@ -162,19 +164,33 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                 case TutorialMission.CollectFood:
                     string BuildSomething = "Build something that produces {0}";
-                    content.icontext(HudLib.CheckImage(CollectFood_foodblueprint), "Look at the food blueprint");//-look at the food blueprint
-                    content.icontext(HudLib.CheckImage(CollectFood_foodblueprint), string.Format(BuildSomething, DssRef.lang.Resource_TypeName_RawFood));//-build something that produces raw food
-                    //-build something that produces fuel
-                    //-build a food crafting station
-                    //-increase the food buffer limit
-                    //-reach a stockpile of X food
-                    //*The workers will move to the city hall for food
-                    //bool  = false;
-                    //bool CollectFood_buildfoodproduction = false;
-                    //bool CollectFood_buildfuelproduction = false;
-                    //bool CollectFood_builcook = false;
-                    //bool CollectFood_increasefoodbuffer = false;
-                    //bool CollectFood_reachfoodamount = false;
+                    string BuildCraft = "Build a crafting station for: {0}";
+                    string IncreaseBufferLimit = "Increase buffer limit for: {0}";
+                    string CollectFoodStockpile = "Reach a stockpile of {0} food";
+                    string LookAtFoodBlueprint = "Look at the food blueprint";
+                    string CollectFood_Info1 = "The workers will walk to the city hall for food";
+                    string CollectFood_Info2 = "The army sends tross workers to collect food";
+
+                    content.icontext(HudLib.CheckImage(CollectFood_selecttab), string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources));
+                    content.icontext(HudLib.CheckImage(CollectFood_foodblueprint), LookAtFoodBlueprint);//-look at the food blueprint
+                    content.icontext(HudLib.CheckImage(CollectFood_buildfoodproduction), string.Format(BuildSomething, DssRef.lang.Resource_TypeName_RawFood));//-build something that produces raw food
+                    content.icontext(HudLib.CheckImage(CollectFood_buildfuelproduction), string.Format(BuildSomething, DssRef.lang.Resource_TypeName_Fuel));//-build something that produces fuel
+                    content.icontext(HudLib.CheckImage(CollectFood_builcook), string.Format(BuildCraft, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
+                    content.icontext(HudLib.CheckImage(CollectFood_increasefoodbuffer), string.Format(IncreaseBufferLimit, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
+                    content.icontext(HudLib.CheckImage(CollectFood_reachfoodamount), string.Format(CollectFoodStockpile, ReachFoodBuffer));//-build a food crafting station
+
+                    content.newLine();
+                    content.BulletPoint();
+                    var info1 = new RichBoxText(CollectFood_Info1);
+                    info1.overrideColor = HudLib.InfoYellow_Light;
+                    content.Add(info1);
+
+                    content.newLine();
+                    content.BulletPoint();
+                    var info2 = new RichBoxText(CollectFood_Info2);
+                    info1.overrideColor = HudLib.InfoYellow_Light;
+                    content.Add(info2);
+
                     break;
                 
                 case TutorialMission.MoveArmy:
@@ -358,6 +374,106 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
                     
                     break;
+
+                case TutorialMission.CollectFood:
+                    //bool CollectFood_increasefoodbuffer = false;
+                    //bool CollectFood_reachfoodamount = false;
+                    if (!CollectFood_selecttab)
+                    {
+                        if (player.cityTab == Display.MenuTab.Resources)
+                        {
+                            CollectFood_selecttab = true;
+
+                            onPartSuccess();
+                        }
+                    }
+                    if (!CollectFood_foodblueprint)
+                    {
+                        if (player.hud.tooltip.tooltip_id == Tooltip.Food_BlueprintId &&
+                            player.hud.tooltip.tooltip_id_timesec >= 2)
+                        {
+                            CollectFood_foodblueprint = true;
+
+                            onPartSuccess();
+                        }
+                    }
+                    if (!CollectFood_buildfoodproduction)
+                    {
+                        foreach (var order in player.orders.orders)
+                        {
+                            if (order is BuildOrder)
+                            {
+                                switch (((BuildOrder)order).buildingType)
+                                {
+                                    case Build.BuildAndExpandType.HenPen:
+                                    case Build.BuildAndExpandType.PigPen:
+                                    case Build.BuildAndExpandType.WheatFarm:
+                                        CollectFood_buildfoodproduction = true;
+                                        onPartSuccess();
+                                        break;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    if (!CollectFood_buildfuelproduction)
+                    {
+                        foreach (var order in player.orders.orders)
+                        {
+                            if (order is BuildOrder)
+                            {
+                                switch (((BuildOrder)order).buildingType)
+                                {
+                                    case Build.BuildAndExpandType.CoalPit:
+                                        CollectFood_buildfuelproduction = true;
+                                        onPartSuccess();
+                                        break;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    if (!CollectFood_builcook)
+                    {
+                        foreach (var order in player.orders.orders)
+                        {
+                            if (order is BuildOrder)
+                            {
+                                switch (((BuildOrder)order).buildingType)
+                                {
+                                    case Build.BuildAndExpandType.Cook:
+                                        CollectFood_builcook = true;
+                                        onPartSuccess();
+                                        break;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    if (!CollectFood_increasefoodbuffer)
+                    {
+                        if (player.mapControls.selection.obj is City &&
+                            player.mapControls.selection.obj.GetCity().res_food.goalBuffer > City.DefaultFoodBuffer)
+                        {
+                            CollectFood_increasefoodbuffer = true;
+
+                            onPartSuccess();
+                        }
+                    }
+
+                    if (!CollectFood_reachfoodamount)
+                    {
+                        if (player.mapControls.selection.obj is City &&
+                            player.mapControls.selection.obj.GetCity().res_food.amount >= ReachFoodBuffer)
+                        {
+                            CollectFood_reachfoodamount = true;
+
+                            onPartSuccess();
+                        }
+                    }
+
+                    break;
+              
                 case TutorialMission.MoveArmy:
                     if (!moveArmy_ZoomOut)
                     {
@@ -442,6 +558,15 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     missionComplete = conscriptArmy_build &&
                         conscriptArmy_selectTab &&
                         conscriptArmy_createArmy;
+                    break;
+                case TutorialMission.CollectFood:
+                    missionComplete = CollectFood_selecttab &&
+                        CollectFood_foodblueprint &&
+                        CollectFood_buildfoodproduction &&
+                        CollectFood_buildfuelproduction &&
+                        CollectFood_builcook &&
+                        CollectFood_increasefoodbuffer &&
+                        CollectFood_reachfoodamount;
                     break;
                 case TutorialMission.MoveArmy:
                     missionComplete = moveArmy_ZoomOut &&

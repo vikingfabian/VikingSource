@@ -23,6 +23,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         int resultAmount;
 
         public CraftRequirement requirement;
+        public int tooltipId = -1;
 
         public CraftBlueprint(CraftResultType resultType, int resultSubType, int resultAmount, UseResource[] resources, CraftRequirement requirement = CraftRequirement.None)
         {

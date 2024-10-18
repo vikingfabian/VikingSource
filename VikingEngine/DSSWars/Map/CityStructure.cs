@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars.Map
             IntVector2 topleft;
             ForXYLoop subTileLoop;
 
-            int wood = 2;
+            int wood = 4;
             int stone = 2;
 
             for (int radius = 2; radius <= city.cityTileRadius; ++radius)
