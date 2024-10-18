@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             {
                 new UseResource(ItemResourceType.Fuel_G, 10),
                 new UseResource(ItemResourceType.Wood_Group, 10),
-            }
+            }, CraftRequirement.CoalPit
         );
 
         public static readonly CraftBlueprint CraftFood1 = new CraftBlueprint(

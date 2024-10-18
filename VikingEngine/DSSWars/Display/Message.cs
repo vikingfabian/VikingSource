@@ -95,7 +95,7 @@ namespace VikingEngine.DSSWars.Display
 
                 RichBoxContent content = new RichBoxContent();
                 Title(content, DssRef.lang.Message_OutOfFood_Title);
-                content.text(DssRef.todoLang.Message_ArmyOutOfFood_Text);
+                content.text(DssRef.lang.Message_ArmyOutOfFood_Text);
 
                 content.newParagraph();
 

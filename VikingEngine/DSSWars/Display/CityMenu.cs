@@ -426,7 +426,11 @@ namespace VikingEngine.DSSWars.Display
                         reqText = DssRef.lang.BuildingType_Smith;
                         available = city.hasBuilding_smith;
                         break;
-                    
+                    case CraftRequirement.CoalPit:
+                        reqText = DssRef.lang.BuildingType_CoalPit;
+                        available = city.coalpit_buildingCount > 0;
+                        break;
+
                     default:
                         throw new NotImplementedException();
                 }
@@ -441,7 +445,7 @@ namespace VikingEngine.DSSWars.Display
             content.h2(DssRef.lang.MenuTab_Resources).overrideColor = HudLib.TitleColor_Label;
             blueprint.listResources(content, city, optionalBp);
 
-            player.hud.tooltip.create(player, content, true);
+            player.hud.tooltip.create(player, content, true, blueprint.tooltipId);
         }
 
         void conscriptTab(RichBoxContent content)

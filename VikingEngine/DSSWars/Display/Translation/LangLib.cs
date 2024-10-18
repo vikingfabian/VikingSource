@@ -241,11 +241,11 @@ namespace VikingEngine.DSSWars.Display.Translation
                     switch ((TerrainMineType)subType)
                     {
                         case TerrainMineType.IronOre:
-                            return string.Format(DssRef.todoLang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Iron);
+                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Iron);
                         case TerrainMineType.Coal:
-                            return string.Format(DssRef.todoLang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Coal);
+                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Coal);
                         case TerrainMineType.GoldOre:
-                            return string.Format(DssRef.todoLang.BuildingType_ResourceMine, DssRef.lang.ResourceType_Gold);
+                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.ResourceType_Gold);
                         
                     }
                     break;

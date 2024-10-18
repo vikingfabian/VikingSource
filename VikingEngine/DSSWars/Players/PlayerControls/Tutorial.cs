@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.Worker;
@@ -85,6 +86,28 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         public List<MenuTab> cityTabs;
         const int ReachFoodBuffer = City.DefaultFoodBuffer + 100;
 
+        public BuildAndExpandType[] AvailableBuildTypes = {
+            BuildAndExpandType.WorkerHuts,
+            BuildAndExpandType.Barracks,
+      
+            //BuildAndExpandType.Postal,
+            //BuildAndExpandType.Recruitment,
+            //BuildAndExpandType.Tavern,
+            BuildAndExpandType.Brewery,
+            BuildAndExpandType.Cook,
+            BuildAndExpandType.CoalPit,
+            BuildAndExpandType.WorkBench,
+            BuildAndExpandType.Smith,
+            //BuildAndExpandType.Carpenter,
+            BuildAndExpandType.PigPen,
+            BuildAndExpandType.HenPen,
+            BuildAndExpandType.WheatFarm,
+            BuildAndExpandType.LinenFarm,
+            //BuildAndExpandType.Pavement,
+            //BuildAndExpandType.PavementFlower,
+            //BuildAndExpandType.Statue_ThePlayer
+        };
+
         public Tutorial(LocalPlayer player)
         {
             this.player = player;
@@ -163,32 +186,32 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     break;
 
                 case TutorialMission.CollectFood:
-                    string BuildSomething = "Build something that produces {0}";
-                    string BuildCraft = "Build a crafting station for: {0}";
-                    string IncreaseBufferLimit = "Increase buffer limit for: {0}";
-                    string CollectFoodStockpile = "Reach a stockpile of {0} food";
-                    string LookAtFoodBlueprint = "Look at the food blueprint";
-                    string CollectFood_Info1 = "The workers will walk to the city hall for food";
-                    string CollectFood_Info2 = "The army sends tross workers to collect food";
+                    
 
                     content.icontext(HudLib.CheckImage(CollectFood_selecttab), string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources));
-                    content.icontext(HudLib.CheckImage(CollectFood_foodblueprint), LookAtFoodBlueprint);//-look at the food blueprint
-                    content.icontext(HudLib.CheckImage(CollectFood_buildfoodproduction), string.Format(BuildSomething, DssRef.lang.Resource_TypeName_RawFood));//-build something that produces raw food
-                    content.icontext(HudLib.CheckImage(CollectFood_buildfuelproduction), string.Format(BuildSomething, DssRef.lang.Resource_TypeName_Fuel));//-build something that produces fuel
-                    content.icontext(HudLib.CheckImage(CollectFood_builcook), string.Format(BuildCraft, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
-                    content.icontext(HudLib.CheckImage(CollectFood_increasefoodbuffer), string.Format(IncreaseBufferLimit, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
-                    content.icontext(HudLib.CheckImage(CollectFood_reachfoodamount), string.Format(CollectFoodStockpile, ReachFoodBuffer));//-build a food crafting station
+                    content.icontext(HudLib.CheckImage(CollectFood_foodblueprint), DssRef.todoLang.LookAtFoodBlueprint);//-look at the food blueprint
+                    content.icontext(HudLib.CheckImage(CollectFood_buildfoodproduction), string.Format(DssRef.todoLang.BuildSomething, DssRef.lang.Resource_TypeName_RawFood));//-build something that produces raw food
+                    content.icontext(HudLib.CheckImage(CollectFood_buildfuelproduction), string.Format(DssRef.todoLang.BuildSomething, DssRef.lang.Resource_TypeName_Fuel));//-build something that produces fuel
+                    content.icontext(HudLib.CheckImage(CollectFood_builcook), string.Format(DssRef.todoLang.BuildCraft, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
+                    content.icontext(HudLib.CheckImage(CollectFood_increasefoodbuffer), string.Format(DssRef.todoLang.IncreaseBufferLimit, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
+                    content.icontext(HudLib.CheckImage(CollectFood_reachfoodamount), string.Format(DssRef.todoLang.CollectFoodStockpile, ReachFoodBuffer));//-build a food crafting station
 
                     content.newLine();
                     content.BulletPoint();
-                    var info1 = new RichBoxText(CollectFood_Info1);
+                    var info0 = new RichBoxText(DssRef.todoLang.CollectFood_Info0);
+                    info0.overrideColor = HudLib.InfoYellow_Light;
+                    content.Add(info0);
+
+                    content.newLine();
+                    content.BulletPoint();
+                    var info1 = new RichBoxText(DssRef.todoLang.CollectFood_Info1);
                     info1.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info1);
 
                     content.newLine();
                     content.BulletPoint();
-                    var info2 = new RichBoxText(CollectFood_Info2);
-                    info1.overrideColor = HudLib.InfoYellow_Light;
+                    var info2 = new RichBoxText(DssRef.todoLang.CollectFood_Info2);
+                    info2.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info2);
 
                     break;
@@ -399,8 +422,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
                     if (!CollectFood_buildfoodproduction)
                     {
-                        foreach (var order in player.orders.orders)
+                        for (int i = player.orders.orders.Count -1; i>=0; --i)//each (var order in player.orders.orders)
                         {
+                            var order = player.orders.orders[i];
                             if (order is BuildOrder)
                             {
                                 switch (((BuildOrder)order).buildingType)
@@ -418,8 +442,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
                     if (!CollectFood_buildfuelproduction)
                     {
-                        foreach (var order in player.orders.orders)
+                        for (int i = player.orders.orders.Count - 1; i >= 0; --i)//each (var order in player.orders.orders)
                         {
+                            var order = player.orders.orders[i];
                             if (order is BuildOrder)
                             {
                                 switch (((BuildOrder)order).buildingType)
@@ -435,8 +460,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
                     if (!CollectFood_builcook)
                     {
-                        foreach (var order in player.orders.orders)
+                        for (int i = player.orders.orders.Count - 1; i >= 0; --i)//each (var order in player.orders.orders)
                         {
+                            var order = player.orders.orders[i];
                             if (order is BuildOrder)
                             {
                                 switch (((BuildOrder)order).buildingType)

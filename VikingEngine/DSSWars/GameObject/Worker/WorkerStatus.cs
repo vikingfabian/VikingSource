@@ -350,7 +350,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                             city.AddGroupedResource(item, add);
 
-                            tryRepeatWork = bp1.canCraft(city);
+                            tryRepeatWork = city.GetGroupedResource(item).needMore() && bp1.canCraft(city);
 
                             if (visualUnit)
                             {

@@ -231,6 +231,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         Carpenter,
         Brewery,
         Smith,
+        CoalPit,
     }
 
     enum CraftResultType

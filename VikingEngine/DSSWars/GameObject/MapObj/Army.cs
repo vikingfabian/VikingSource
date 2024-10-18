@@ -191,7 +191,7 @@ namespace VikingEngine.DSSWars.GameObject
                     HudLib.InfoButton(args.content, new RbAction(() =>
                     {
                         RichBoxContent content = new RichBoxContent();
-                        HudLib.Description(content, DssRef.todoLang.Info_ArmyFood);
+                        HudLib.Description(content, DssRef.lang.Info_ArmyFood);
                         args.player.hud.tooltip.create(args.player, content, true);
                     }));
                     args.content.text(string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.OneDecimal(foodUpkeep)));

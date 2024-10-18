@@ -1284,7 +1284,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Resource_Tab_Stockpile => "Stockpile";
 
         public override string Resource => "Resource";
-        public override string Resource_StockPile_Info => "Set a goal amount for storage of resources; this will inform the workers when to work on another resource.";
+        public override string Resource_StockPile_Info => "Set a goal amount for storage of resources; this will inform the workers when to work on other resources.";
         public override string Resource_TypeName_Water => "water";
         public override string Resource_TypeName_Wood => "wood";
         public override string Resource_TypeName_Fuel => "fuel";
@@ -1591,5 +1591,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string FactionName_Monger => "Monger";
         public override string FactionName_Hatu => "Hatu";
         public override string FactionName_Destru => "Destru";
+
+        //patch2
+
     }
 }

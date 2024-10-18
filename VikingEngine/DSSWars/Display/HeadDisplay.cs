@@ -378,9 +378,9 @@ namespace VikingEngine.DSSWars.Display
                 content.space();
                 HudLib.PerSecondInfo(player, content, false);
                 
-                content.icontext(SpriteName.WarsBuild_Nobelhouse, string.Format(DssRef.todoLang.Language_XCountIsY, DssRef.lang.Building_NobleHouse, faction.nobelHouseCount));
+                content.icontext(SpriteName.WarsBuild_Nobelhouse, string.Format(DssRef.lang.Language_XCountIsY, DssRef.lang.Building_NobleHouse, faction.nobelHouseCount));
 
-                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.todoLang.Language_XUpkeepIsY, DssRef.lang.Building_NobleHouse, DssLib.NobleHouseUpkeep * faction.nobelHouseCount));
+                content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Language_XUpkeepIsY, DssRef.lang.Building_NobleHouse, DssLib.NobleHouseUpkeep * faction.nobelHouseCount));
                 content.space();
                 HudLib.PerSecondInfo(player, content, false);
                 //

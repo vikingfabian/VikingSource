@@ -2,13 +2,17 @@
 -Change Log-
 Extended tutorial: food production
 Cities will start with 10 iron, don't spent it all in one place ;)
+Fixed the runaway production of fuel
+Removed the tavern
+Fixed some crashes, spelling errors
 
 
 #Todo#
-(hide tavern)
+översätt
 
 
 --Efter release polish--
+ "produces 20 raw food in 4 minutes, and requires 30sec of work per cycle" 
 sound limit per time
 pilar med resurser från delivery
 tydlig ikon för objekt meny typ

@@ -64,6 +64,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool hasBuilding_carpenter = false;
         public bool hasBuilding_brewery = false;
         public bool hasBuilding_smith = false;
+        public int coalpit_buildingCount = 0;
         public int nobelHouse_buildingCount = 0;
         string name = null;
 

@@ -500,7 +500,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool needMore()
         {
-            return (amount + orderQueCount - backOrder) < goalBuffer;
+            return amount < goalBuffer;
         }
 
         public bool needToImport()
@@ -545,7 +545,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             //content.space();
 
-            var text = new RichBoxText(": " + DssRef.todoLang.Resource_ReachedStockpile);
+            var text = new RichBoxText(": " + DssRef.lang.Resource_ReachedStockpile);
             text.overrideColor = HudLib.InfoYellow_Light;
             content.Add(text);
         }

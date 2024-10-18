@@ -111,6 +111,8 @@ namespace VikingEngine.DSSWars.Map
             EmptyLand.Clear();
             ResourceOnGround.Clear();
             nobelHouseCount = 0;
+            int coalPitCount = 0;
+
 
             FoodSpots_workupdate.Add(WP.ToSubTilePos_Centered(city.tilePos));
 
@@ -216,9 +218,14 @@ namespace VikingEngine.DSSWars.Map
                                                 city.hasBuilding_brewery = true;
                                                 CraftStation.Add(subTileLoop.Position);
                                                 break;
+                                            
+                                            case TerrainBuildingType.Work_CoalPit:
+                                                ++coalPitCount;
+                                                CraftStation.Add(subTileLoop.Position);
+                                                break;
+
                                             case TerrainBuildingType.Work_Cook:
                                             case TerrainBuildingType.Work_Bench:
-                                            case TerrainBuildingType.Work_CoalPit:
                                                 CraftStation.Add(subTileLoop.Position);
                                                 break;
                                             case TerrainBuildingType.Work_Smith:
@@ -248,6 +255,7 @@ namespace VikingEngine.DSSWars.Map
 
             //Complete
             city.nobelHouse_buildingCount = nobelHouseCount;
+            city.coalpit_buildingCount = coalPitCount;
         }
 
         public IntVector2 eatPosition(IntVector2 workerSubtile)

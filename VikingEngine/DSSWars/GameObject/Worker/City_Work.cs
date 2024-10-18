@@ -433,6 +433,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         case TerrainBuildingType.Work_Cook:
                             if (workTemplate.craft_food.HasPrio() &&
+                                res_food.needMore() &&
                                 (ResourceLib.CraftFood2.canCraft(this) || ResourceLib.CraftFood1.canCraft(this)) &&
                                 isFreeTile(pos))
                             {
@@ -471,6 +472,7 @@ namespace VikingEngine.DSSWars.GameObject
                                         topPrioValue = template.value;
                                         topItem = item;
                                         topPrio = template;
+                                        //res_fuel
                                     }
                                 }
                             }

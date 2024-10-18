@@ -111,8 +111,11 @@ namespace VikingEngine.DSSWars.Build
         {
             content.newParagraph();
 
-            content.Add(new RichBoxScale(2.1f)); 
-            foreach (var opt in BuildLib.AvailableBuildTypes)
+            content.Add(new RichBoxScale(2.1f));
+
+            BuildAndExpandType[] available = player.tutorial == null ? BuildLib.AvailableBuildTypes : player.tutorial.AvailableBuildTypes;
+
+            foreach (var opt in available)
             {
                 var button = new RichboxButton(new List<AbsRichBoxMember> {
                     
