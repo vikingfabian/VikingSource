@@ -27,7 +27,10 @@ namespace VikingEngine.DSSWars.Data
 
         public int AlliedFactions = 0;
         public int ServantFactions = 0;
-        
+
+        int decorBuilt = 0;
+        int statuesBuilt = 0;
+
 
         public void ToHud(RichBoxContent content)
         {
@@ -44,6 +47,26 @@ namespace VikingEngine.DSSWars.Data
             content.newParagraph();
             content.text(string.Format(DssRef.lang.EndGameStatistics_AlliedFactions, TextLib.LargeNumber(AlliedFactions)));
             content.text(string.Format(DssRef.lang.EndGameStatistics_ServantFactions, TextLib.LargeNumber(ServantFactions)));
+            content.newParagraph();
+            content.text(string.Format(DssRef.todoLang.EndGameStatistics_StatuesBuilt, statuesBuilt));
+            content.text(string.Format(DssRef.todoLang.EndGameStatistics_DecorsBuilt, decorBuilt));
+
+        }
+
+        public void onDecorBuild_async(bool statue)
+        {
+            decorBuilt++;
+            if (statue)
+            {
+                DssRef.achieve.UnlockAchievement_async(AchievementIndex.statue);
+                statuesBuilt++;
+            }
+
+            if (decorBuilt >= Achievements.DecorationsTotalCount &&
+                statuesBuilt >= Achievements.DecorationsStatueCount)
+            {
+                DssRef.achieve.UnlockAchievement_async(AchievementIndex.decorations);
+            }
         }
 
         public void writeGameState(BinaryWriter w)
@@ -60,9 +83,12 @@ namespace VikingEngine.DSSWars.Data
             w.Write((ushort)WarsStartedByEnemy);
             w.Write((ushort)AlliedFactions);
             w.Write((ushort)ServantFactions);
+
+            w.Write((ushort)decorBuilt);
+            w.Write((ushort)statuesBuilt);
         }
 
-        public void readGameState(BinaryReader r, int version)
+        public void readGameState(BinaryReader r, int subVersion)
         {
              SoldiersRecruited =r.ReadInt32();
              FriendlySoldiersLost = r.ReadInt32();
@@ -76,6 +102,12 @@ namespace VikingEngine.DSSWars.Data
             WarsStartedByEnemy = r.ReadUInt16();
             AlliedFactions = r.ReadUInt16();
             ServantFactions = r.ReadUInt16();
+
+            if (subVersion >= 17)
+            {
+                decorBuilt = r.ReadUInt16();
+                statuesBuilt = r.ReadUInt16();
+            }
         }
     }
 }

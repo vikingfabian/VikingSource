@@ -219,6 +219,28 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public bool needMore(ItemResourceType type)
+        {
+            switch (type)
+            {
+                case ItemResourceType.Wheat:
+                case ItemResourceType.Egg:
+                case ItemResourceType.Hen:
+                    return res_rawFood.needMore();
+
+                case ItemResourceType.Pig:
+                    return res_food.needMore() || res_skinLinnen.needMore();
+
+                case ItemResourceType.DryWood:
+                case ItemResourceType.SoftWood:
+                case ItemResourceType.HardWood:
+                    return res_wood.needMore();
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
         public void SetGroupedResource(ItemResourceType type, GroupedResource resource)
         {
             switch (type)

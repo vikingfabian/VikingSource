@@ -217,7 +217,7 @@ namespace VikingEngine.DSSWars.Display
                     //    GroupedResource.BufferIconInfo(content);
                     //}
                     content.Add(new RichBoxSeperationLine());
-
+                    GroupedResource.BufferIconInfo(content);
                     ResourceLib.ConvertGoldOre.toMenu(content, city);
                     //content.text("1 gold ore => " + DssConst.GoldOreSellValue.ToString() + "gold");
                     {
@@ -257,7 +257,7 @@ namespace VikingEngine.DSSWars.Display
                     stockpile(ItemResourceType.HeavyArmor);
 
                     HudLib.Description(content, DssRef.lang.Resource_StockPile_Info);
-
+                    GroupedResource.BufferIconInfo(content);
                     break;
             }
 

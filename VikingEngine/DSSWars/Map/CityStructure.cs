@@ -137,10 +137,10 @@ namespace VikingEngine.DSSWars.Map
 
                                 if (subTile.collectionPointer >= 0)
                                 {
-                                    if (ResourceOnGround.Count < workerCount)
-                                    { 
+                                    //if (ResourceOnGround.Count < workerCount)
+                                    //{ 
                                         ResourceOnGround.Add(subTileLoop.Position);
-                                    }
+                                    //}
                                 }
 
                                 switch (subTile.mainTerrain)

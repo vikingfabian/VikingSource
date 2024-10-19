@@ -286,10 +286,20 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     foreach (var pos in CityStructure.Singleton.ResourceOnGround)
                     {
-                        if (isFreeTile(pos))
+                        var subTile = DssRef.world.subTileGrid.Get(pos);
+
+                        if (subTile.collectionPointer >= 0)
                         {
-                            int distanceValue = -center.SideLength(pos);
-                            workQue.Add(new WorkQueMember(WorkType.PickUpResource, NoSubWork, pos, workTemplate.move.value, distanceValue));
+                            var chunk = DssRef.state.resources.get(subTile.collectionPointer);
+                            var resource = chunk.peek();
+
+                            //var stockpile = GetGroupedResource(resource.type);
+
+                            if (needMore(resource.type) && isFreeTile(pos))
+                            {
+                                int distanceValue = -center.SideLength(pos);
+                                workQue.Add(new WorkQueMember(WorkType.PickUpResource, NoSubWork, pos, workTemplate.move.value, distanceValue));
+                            }
                         }
                     }
                 }
@@ -501,6 +511,16 @@ namespace VikingEngine.DSSWars.GameObject
                                 isFreeTile(pos))
                             {
                                 workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Beer, pos, workTemplate.craft_beer.value, distanceValue));
+                            }
+                            break;
+
+                        case TerrainBuildingType.Carpenter:
+                            if (workTemplate.craft_ballista.HasPrio() &&
+                                res_ballista.needMore()&&
+                                ResourceLib.CraftBallista.canCraft(this) &&
+                                isFreeTile(pos))
+                            {
+                                workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Ballista, pos, workTemplate.craft_ballista.value, distanceValue));
                             }
                             break;
                     }

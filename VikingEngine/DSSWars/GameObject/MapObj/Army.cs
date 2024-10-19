@@ -77,6 +77,7 @@ namespace VikingEngine.DSSWars.GameObject
             name = Data.NameGenerator.ArmyName(id);
             position = WP.ToMapPos(startPosition);
             tilePos = startPosition;
+            setMaxFood();
 
             init(faction);
         }
@@ -955,12 +956,6 @@ namespace VikingEngine.DSSWars.GameObject
         {
             //Gain a portion of deserters on all armies
             int totalDeserters = desertSoldiers();
-
-            //var armiesCounter = armies.counter();
-            //while (armiesCounter.Next())
-            //{
-
-
 
             if (totalDeserters > 0 &&
                 faction.player.IsPlayer() && 

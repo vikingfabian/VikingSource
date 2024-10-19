@@ -2353,6 +2353,7 @@ namespace VikingEngine
 
                     add(SpriteName.WarsStockpileAdd);
                     add(SpriteName.WarsStockpileStop);
+                    add(SpriteName.WarsResource_LinenCloth);
                 }
 
                 currentIndex = numTilesWidth * 97;

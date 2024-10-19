@@ -1,13 +1,15 @@
 ﻿
 -Change Log-
-Remade the linen and soldier production part of the tutorial
-
+Items are not collected from the ground if the stockpile is full 
+Statues/decorations on end screen statistics
+Repaired ballista crafting
+save fix for game time played 
 
 #Todo#
 översätt
 
-
 --Efter release polish--
+long bow, bättre båge för carpenter
  "produces 20 raw food in 4 minutes, and requires 30sec of work per cycle" 
 sound limit per time
 pilar med resurser från delivery
@@ -18,7 +20,7 @@ Ljud
 city economy
 visa antal byggnader i bygg meny
 training skill icon
-
+menu scroll
 
 Error
 -back button in menues 

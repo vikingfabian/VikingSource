@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void setMaxFood()
         {
-            float energy = DssLib.SoldierDefaultEnergyUpkeep / DssConst.FoodEnergy * DssConst.SoldierGroup_DefaultCount * groups.Count;
+            float energy = DssLib.SoldierDefaultEnergyUpkeep / DssConst.FoodEnergy * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);
             float bufferGoalFood = friendlyAreaFoodBuffer_minutes * TimeExt.MinuteInSeconds * energy;
             food = bufferGoalFood;
         }
@@ -45,25 +45,7 @@ namespace VikingEngine.DSSWars.GameObject
                             bufferGoal_minutes = foodBuffer_minutes;
                         }
                         
-                        if (food < 0)
-                        {
-                            if (faction.player.IsPlayer())
-                            {
-                                Ref.update.AddSyncAction(new SyncAction(() =>
-                                {
-                                    faction.player.GetLocalPlayer().hud.messages.armyLowFoodMessage(this);
-                                }));
-                            }
-
-                            //black market trade
-                            var cost = (int)Math.Ceiling(DssConst.FoodGoldValue_BlackMarket * -food);
-
-                            if (faction.payMoney(cost, false))
-                            {
-                                foodCosts_blackmarket.add(cost);
-                                food = 0;                                
-                            }
-                        }
+                        
 
                         float bufferGoalFood = bufferGoal_minutes * TimeExt.MinuteInSeconds * foodUpkeep;
 
@@ -86,6 +68,26 @@ namespace VikingEngine.DSSWars.GameObject
                             {
                                 foodBackOrderTimeSec += status.processTimeLengthSec * perc * 0.8f;
                             }
+                        }
+                    }
+
+                    if (food < 0)
+                    {
+                        if (faction.player.IsPlayer())
+                        {
+                            Ref.update.AddSyncAction(new SyncAction(() =>
+                            {
+                                faction.player.GetLocalPlayer().hud.messages.armyLowFoodMessage(this);
+                            }));
+                        }
+
+                        //black market trade
+                        var cost = (int)Math.Ceiling(DssConst.FoodGoldValue_BlackMarket * -food);
+
+                        if (faction.payMoney(cost, false))
+                        {
+                            foodCosts_blackmarket.add(cost);
+                            food = 0;
                         }
                     }
                 }

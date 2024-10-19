@@ -493,7 +493,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 case ItemResourceType.SharpStick:
                     return SpriteName.WarsResource_Sharpstick;
                 case ItemResourceType.SkinLinen_Group:
-                    return SpriteName.WarsResource_SkinAndLinen;
+                    return SpriteName.WarsResource_LinenCloth;
                 case ItemResourceType.Stone_G:
                     return SpriteName.WarsResource_Stone;
                 case ItemResourceType.Sword:

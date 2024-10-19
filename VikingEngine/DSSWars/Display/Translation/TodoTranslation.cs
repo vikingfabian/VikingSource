@@ -21,6 +21,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string CollectFood_Info1 = "The workers will walk to the city hall to eat";
         public string CollectFood_Info2 = "The army sends tross workers to collect food";
         public string CollectFood_Info0 = "Want full control of the workers? Set all work priorities to zero, and then just activate one at a time.";
+
+        public string EndGameStatistics_DecorsBuilt => "Decorations built: {0}";
+        public string EndGameStatistics_StatuesBuilt => "Statues built: {0}";
+
     }
 
 }

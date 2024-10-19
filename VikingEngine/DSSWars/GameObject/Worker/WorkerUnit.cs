@@ -248,6 +248,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     checkForGoal(false, city);
                     break;
 
+
+
             }
         }
 
@@ -323,6 +325,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             {
                 model.position = Vector3.Zero;
                 model.Visible = false;
+                resourceModel?.DeleteMe();
+                resourceModel = null;
             }
         }
 

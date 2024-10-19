@@ -174,6 +174,12 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             return result;
         }
 
+        public ItemResource peek()
+        {
+            ItemResource item = GetResourceAtIndex(count - 1);
+            return item;
+        }
+
         void ShiftResource(ref ItemResource current, ref ItemResource next)
         {
             if (current.type == ItemResourceType.NONE && next.type != ItemResourceType.NONE)

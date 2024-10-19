@@ -15,24 +15,26 @@ namespace VikingEngine.DSSWars.Data
        
         bool archerCultureBuild = false;
         bool warriorCultureBuild = false;
-        int decorBuilt = 0;
-        int statuesBuilt = 0;
+        //int decorBuilt = 0;
+        //int statuesBuilt = 0;
 
-        public void onDecorBuild_async(bool statue)
-        { 
-            decorBuilt++;
-            if (statue)
-            {
-                DssRef.achieve.UnlockAchievement_async(AchievementIndex.statue);
-                statuesBuilt++;
-            }
 
-            if (decorBuilt >= Achievements.DecorationsTotalCount &&
-                statuesBuilt >= Achievements.DecorationsStatueCount)
-            {
-                DssRef.achieve.UnlockAchievement_async(AchievementIndex.decorations);
-            }
-        }
+
+        //public void onDecorBuild_async(bool statue)
+        //{
+        //    decorBuilt++;
+        //    if (statue)
+        //    {
+        //        DssRef.achieve.UnlockAchievement_async(AchievementIndex.statue);
+        //        statuesBuilt++;
+        //    }
+
+        //    if (decorBuilt >= Achievements.DecorationsTotalCount &&
+        //        statuesBuilt >= Achievements.DecorationsStatueCount)
+        //    {
+        //        DssRef.achieve.UnlockAchievement_async(AchievementIndex.decorations);
+        //    }
+        //}
 
         public void onCultureBuild(bool archer)
         {
@@ -41,7 +43,7 @@ namespace VikingEngine.DSSWars.Data
                 archerCultureBuild = true;
             }
             else
-            { 
+            {
                 warriorCultureBuild = true;
             }
 
@@ -51,21 +53,18 @@ namespace VikingEngine.DSSWars.Data
             }
         }
 
-
-
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            w.Write((ushort)decorBuilt);
-            w.Write((ushort)statuesBuilt);
-
             w.Write(archerCultureBuild);
             w.Write(warriorCultureBuild);
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
-            decorBuilt = r.ReadUInt16();
-            statuesBuilt = r.ReadUInt16();
-
+            if (subversion <= 16)
+            {
+                int decorBuilt = r.ReadUInt16();
+                int statuesBuilt = r.ReadUInt16();
+            }
             archerCultureBuild = r.ReadBoolean();
             warriorCultureBuild = r.ReadBoolean();
         }
