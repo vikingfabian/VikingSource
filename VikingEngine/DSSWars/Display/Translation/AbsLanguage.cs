@@ -440,7 +440,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string Resource_TypeName_Beer { get; }
         public abstract string Resource_TypeName_Wheat { get; }
         public abstract string Resource_TypeName_Linen { get; }
-        public abstract string Resource_TypeName_SkinAndLinen { get; }
+        //public abstract string Resource_TypeName_SkinAndLinen { get; }
         public abstract string Resource_TypeName_IronOre { get; }
         public abstract string Resource_TypeName_GoldOre { get; }
         public abstract string Resource_TypeName_Iron { get; }

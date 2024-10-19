@@ -1277,7 +1277,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Resource_TypeName_Beer => "啤酒";
         public override string Resource_TypeName_Wheat => "小麦";
         public override string Resource_TypeName_Linen => "亚麻布";
-        public override string Resource_TypeName_SkinAndLinen => "皮革和亚麻";
+        //public override string Resource_TypeName_SkinAndLinen => "皮革和亚麻";
         public override string Resource_TypeName_IronOre => "铁矿石";
         public override string Resource_TypeName_GoldOre => "金矿石";
         public override string Resource_TypeName_Iron => "铁";

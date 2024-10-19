@@ -1294,7 +1294,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Resource_TypeName_Beer => "beer";
         public override string Resource_TypeName_Wheat => "wheat";
         public override string Resource_TypeName_Linen => "linen";
-        public override string Resource_TypeName_SkinAndLinen => "skin and linen";
+        //public override string Resource_TypeName_SkinAndLinen => "skin and linen";
         public override string Resource_TypeName_IronOre => "iron ore";
         public override string Resource_TypeName_GoldOre => "gold ore";
         public override string Resource_TypeName_Iron => "iron";

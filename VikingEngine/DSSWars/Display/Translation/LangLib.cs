@@ -339,7 +339,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                 case ItemResourceType.Linen:
                 case ItemResourceType.SkinLinen_Group: 
-                    return DssRef.lang.Resource_TypeName_SkinAndLinen;
+                    return DssRef.lang.Resource_TypeName_Linen;
 
                 case ItemResourceType.SharpStick:
                     return DssRef.lang.Resource_TypeName_SharpStick;

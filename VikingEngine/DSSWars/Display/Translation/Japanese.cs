@@ -1282,7 +1282,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Resource_TypeName_Beer => "ビール";
         public override string Resource_TypeName_Wheat => "小麦";
         public override string Resource_TypeName_Linen => "リネン";
-        public override string Resource_TypeName_SkinAndLinen => "皮とリネン";
+        //public override string Resource_TypeName_SkinAndLinen => "皮とリネン";
         public override string Resource_TypeName_IronOre => "鉄鉱石";
         public override string Resource_TypeName_GoldOre => "金鉱石";
         public override string Resource_TypeName_Iron => "鉄";

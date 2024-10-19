@@ -1,10 +1,6 @@
 ﻿
 -Change Log-
-Extended tutorial: food production
-Cities will start with 10 iron, don't spent it all in one place ;)
-Fixed the runaway production of fuel
-Removed the tavern
-Fixed some crashes, spelling errors
+Remade the linen and soldier production part of the tutorial
 
 
 #Todo#
