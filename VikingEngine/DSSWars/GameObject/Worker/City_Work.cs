@@ -29,6 +29,7 @@ namespace VikingEngine.DSSWars.GameObject
         //{
             
         //}
+        static List<int> idleWorkers = new List<int>(64);
 
         public void async_workUpdate()
         {
@@ -72,7 +73,7 @@ namespace VikingEngine.DSSWars.GameObject
                         idleCount++; 
                         break;
                     default:
-                        status.checkAvailableAndBackOrder(status.work, status.workSubType, this);
+                        checkAvailableAndBackOrder(status.work, status.workSubType);
                         break;
                     //case WorkType.Build:
                     //    var build= BuildLib.BuildOptions[status.workSubType];
@@ -190,6 +191,8 @@ namespace VikingEngine.DSSWars.GameObject
                 previousWorkQueUpdate.setNow();
             }
 
+            idleWorkers.Clear();
+
             //Give orders to idle workers
             for (int i = 0; i < workerStatuses.Count; i++)
             {
@@ -224,36 +227,93 @@ namespace VikingEngine.DSSWars.GameObject
                         status.createWorkOrder(WorkType.Starving, -1, -1, WP.ToSubTilePos_Centered(tilePos), this);
                         workerStatuses[i] = status;
                     }
-                    else if (workQue.Count > 0)
+                    else//else if (workQue.Count > 0)
                     {
+                        idleWorkers.Add(i);
                         var status = workerStatuses[i];
 
-                        do
-                        {
-                            var work = arraylib.PullLastMember(workQue);
+                        //do
+                        //{
+                        //    var work = arraylib.PullLastMember(workQue);
 
-                            if (status.checkAvailableAndBackOrder(work.work, work.subWork, this))
-                            {
-                                status.createWorkOrder(work.work, work.subWork, work.orderId, work.subTile, this);
-                                workerStatuses[i] = status;
+                        //    if (checkAvailableAndBackOrder(work.work, work.subWork))
+                        //    {
+                        //        status.createWorkOrder(work.work, work.subWork, work.orderId, work.subTile, this);
+                        //        workerStatuses[i] = status;
 
-                                if (work.orderId >= 0)
-                                {
-                                    faction.player.orders?.StartOrderId(work.orderId);
-                                }
-                                break;
-                            }
-                        }
-                        while (workQue.Count > 0);
+                        //        if (work.orderId >= 0)
+                        //        {
+                        //            faction.player.orders?.StartOrderId(work.orderId);
+                        //        }
+                        //        break;
+                        //    }
+                        //}
+                        //while (workQue.Count > 0);
                     }
-                    else
-                    {
-                        var worker = workerStatuses[i];
-                        worker.energy -= (Ref.TotalGameTimeSec - worker.processTimeStartStampSec) * DssConst.WorkTeamEnergyCost_WhenIdle;
-                        worker.processTimeStartStampSec = Ref.TotalGameTimeSec;
-                    }
+                    //else
+                    //{
+                    //    var worker = workerStatuses[i];
+                    //    worker.energy -= (Ref.TotalGameTimeSec - worker.processTimeStartStampSec) * DssConst.WorkTeamEnergyCost_WhenIdle;
+                    //    worker.processTimeStartStampSec = Ref.TotalGameTimeSec;
+                    //}
                 }
             }
+
+            while (workQue.Count > 0 && idleWorkers.Count > 0)
+            {
+                var work = arraylib.PullLastMember(workQue);
+
+                if (checkAvailableAndBackOrder(work.work, work.subWork))
+                {
+                    int bestWorkerListIx = -1;
+                    int bestvalue = int.MaxValue;
+
+                    //Find best suited worker (currently distance)
+                    for (int i = 0; i < idleWorkers.Count; ++i)//foreach (int i in idleWorkers)
+                    {
+                        var worderIx = idleWorkers[i];
+                        var worker = workerStatuses[worderIx];
+                        var distance =  work.subTile.SideLength(worker.subTileEnd);
+                        if (distance < bestvalue)
+                        { 
+                            bestvalue = distance;
+                            bestWorkerListIx = i;
+                        }
+                    }
+
+                    if (bestWorkerListIx == -1)
+                    {
+                        throw new Exception();
+                    }
+
+                    {//Assign job
+                        var worderIx = idleWorkers[bestWorkerListIx];
+                        idleWorkers.RemoveAt(bestWorkerListIx);
+
+                        var status = workerStatuses[worderIx];
+                        status.createWorkOrder(work.work, work.subWork, work.orderId, work.subTile, this);
+                        workerStatuses[worderIx] = status;
+
+                        if (work.orderId >= 0)
+                        {
+                            faction.player.orders?.StartOrderId(work.orderId);
+                        }
+                    }
+                   
+                }
+            }
+
+            //Set remaning workers to wait
+            foreach (var workerIx in idleWorkers)
+            {
+                var worker = workerStatuses[workerIx];
+                worker.energy -= (Ref.TotalGameTimeSec - worker.processTimeStartStampSec) * DssConst.WorkTeamEnergyCost_WhenIdle;
+                worker.processTimeStartStampSec = Ref.TotalGameTimeSec;
+                workerStatuses[workerIx] = worker;  
+            }
+
+
+           
 
             if (!inRender_detailLayer)
             {
@@ -1077,6 +1137,49 @@ namespace VikingEngine.DSSWars.GameObject
                 res_food.amount += buyFood;
 
                 starving = true;
+            }
+        }
+
+        bool checkAvailableAndBackOrder(WorkType work, int subWork)
+        {
+            switch (work)
+            {
+                case WorkType.Craft:
+                    {
+                        ItemResourceType item = (ItemResourceType)subWork;
+                        ResourceLib.Blueprint(item, out var bp1, out var bp2);
+                        if (bp1.available(this))
+                        {
+                            bp1.createBackOrder(this);
+                            return true;
+                        }
+                        else if (bp2 != null && bp2.available(this))
+                        {
+                            bp2.createBackOrder(this);
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+
+                case WorkType.Build:
+                    {
+                        var bp = BuildLib.BuildOptions[subWork].blueprint;
+                        if (bp.available(this))
+                        {
+                            bp.createBackOrder(this);
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+
+                default:
+                    return true;
             }
         }
 

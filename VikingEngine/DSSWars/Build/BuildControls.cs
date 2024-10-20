@@ -139,21 +139,21 @@ namespace VikingEngine.DSSWars.Build
                         case BuildAndExpandType.Nobelhouse:
                             int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.NobelHouseAddDiplomacy * 3600);
 
-                            content.BulletPoint();
+                            HudLib.BulletPoint(content);
                             content.Add(new RichBoxImage(SpriteName.WarsDiplomaticAddTime));
                             content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
                             content.newLine();
 
-                            content.BulletPoint();
+                            HudLib.BulletPoint(content);
                             content.Add(new RichBoxImage(SpriteName.WarsDiplomaticPoint));
                             content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.NobelHouseAddMaxDiplomacy)));
                             content.newLine();
 
-                            content.BulletPoint();
+                            HudLib.BulletPoint(content);
                             content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
                             content.newLine();
 
-                            content.BulletPoint();
+                            HudLib.BulletPoint(content);
                             content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
                             content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_Upkeep, DssLib.NobleHouseUpkeep)));
 
@@ -258,7 +258,7 @@ namespace VikingEngine.DSSWars.Build
 
             content.newParagraph();
             
-            city.workTemplate.autoBuild.toHud(player, content, DssRef.lang.Work_OrderPrioTitle, WorkPriorityType.autoBuild, player.faction, city);
+            city.workTemplate.autoBuild.toHud(player, content, DssRef.lang.Work_OrderPrioTitle, SpriteName.MenuPixelIconSettings, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, player.faction, city);
         }
 
         void modeClick(SelectTileResult set)

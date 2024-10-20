@@ -440,48 +440,6 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             DssRef.world.subTileGrid.Set(subTileEnd, subTile);
         }
 
-        public bool checkAvailableAndBackOrder(WorkType work, int subWork, City city)
-        {
-            switch (work)
-            {
-                case WorkType.Craft:
-                    {
-                        ItemResourceType item = (ItemResourceType)subWork;
-                        ResourceLib.Blueprint(item, out var bp1, out var bp2);
-                        if (bp1.available(city))
-                        {
-                            bp1.createBackOrder(city);
-                            return true;
-                        }
-                        else if (bp2 != null && bp2.available(city))
-                        {
-                            bp2.createBackOrder(city);
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-
-                case WorkType.Build:
-                    {
-                        var bp = BuildLib.BuildOptions[subWork].blueprint;
-                        if (bp.available(city))
-                        {
-                            bp.createBackOrder(city);
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-
-                 default:
-                    return true;
-            }
-        }
         
         public void createWorkOrder(WorkType work, int subWork, int order, IntVector2 targetSubTile, City city)
         {

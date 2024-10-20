@@ -278,6 +278,8 @@ namespace VikingEngine.DSSWars.Display.Translation
             { 
                 case TerrainBuildingType.Tavern:
                     return DssRef.lang.BuildingType_Tavern_Description;
+                case TerrainBuildingType.Storehouse:
+                    return DssRef.todoLang.BuildingType_Storehourse_Description;
                 case TerrainBuildingType.PigPen:
                     return DssRef.lang.BuildingType_PigPen_Description;
                 case TerrainBuildingType.HenPen:
@@ -304,6 +306,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.lang.BuildingType_Tavern_Brewery;
                 case TerrainBuildingType.Work_CoalPit:
                     return DssRef.lang.BuildingType_CoalPit_Description;
+                case TerrainBuildingType.Bank:
+                    return DssRef.todoLang.BuildingType_Bank_Description;
 
                 default:
                     return TextLib.Error;
@@ -356,6 +360,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.lang.Resource_TypeName_KnightsLance;
                 case ItemResourceType.Bow:
                     return DssRef.lang.Resource_TypeName_Bow;
+                case ItemResourceType.LongBow:
+                    return DssRef.todoLang.Resource_TypeName_Longbow;
                 case ItemResourceType.Ballista:
                     return DssRef.lang.UnitType_Ballista;
 

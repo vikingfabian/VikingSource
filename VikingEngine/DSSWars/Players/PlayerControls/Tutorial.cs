@@ -219,19 +219,19 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.icontext(HudLib.CheckImage(CollectFood_reachfoodamount), string.Format(DssRef.todoLang.CollectItemStockpile, ReachFoodBuffer, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
 
                     content.newLine();
-                    content.BulletPoint();
+                    HudLib.BulletPoint(content);
                     var info0 = new RichBoxText(DssRef.todoLang.CollectFood_Info0);
                     info0.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info0);
 
                     content.newLine();
-                    content.BulletPoint();
+                    HudLib.BulletPoint(content);
                     var info1 = new RichBoxText(DssRef.todoLang.CollectFood_Info1);
                     info1.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info1);
 
                     content.newLine();
-                    content.BulletPoint();
+                    HudLib.BulletPoint(content);
                     var info2 = new RichBoxText(DssRef.todoLang.CollectFood_Info2);
                     info2.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info2);

@@ -2426,7 +2426,9 @@ namespace VikingEngine
         warsFoliageShadow,
         warsWorkerPromoHammer,
         warsWorkerPromoBox,
-
+        warsCheckYes,
+        warsCheckNo,
+        warsBulletPoint,
 
         WarsRelationAlly,
         WarsRelationGood,
@@ -2437,10 +2439,29 @@ namespace VikingEngine
         WarsRelationTotalWar,
         WarsRelationFlagOutline,
         WarsRelationFlag,
-
+        
+        WarsMapIcon,
+        WarsGovernmentIcon,
         WarsStrengthIcon,
         WarsGroupIcon,
         WarsSoldierIcon,
+        WarsBattleIcon,
+        WarsCultureIcon,
+        WarsWorkMove,
+        WarsWorkCollect,
+        WarsWorkMine,
+        WarsWorkFarm,
+        WarsFollowFactionYes,
+        WarsFollowFactionNo,
+        WarsBogIron,
+
+
+        WarsUnitLevelMinimal,
+        WarsUnitLevelBasic,
+        WarsUnitLevelSkillful,
+        WarsUnitLevelProfessional,
+        WarsUnitLevelMaster,
+        WarsUnitLevelLegend,
 
         WarsCommandPoint,
         WarsCommandAdd,
@@ -2458,6 +2479,9 @@ namespace VikingEngine
         WarsWorker,
         WarsWorkerAdd,
         WarsWorkerSub,
+        WarsHammer,
+        WarsHammerAdd,
+        WarsHammerSub,
 
         WarsDarkLordBossIcon,
         WarsFactoryIcon,
@@ -2474,11 +2498,14 @@ namespace VikingEngine
         WarsUnitIcon_Greensoldier,
         WarsUnitIcon_Folkman,
 
+        WarsCityHall,
         WarsBuild_WorkerHuts,
         WarsBuild_Postal,
         WarsBuild_Recruitment,
         WarsBuild_Barracks,
         WarsBuild_Tavern,
+        WarsBuild_Storehouse,
+        WarsBuild_Bank,
         WarsBuild_Brewery,
         WarsBuild_Cook,
         WarsBuild_Smith,
@@ -2500,6 +2527,7 @@ namespace VikingEngine
         WarsResource_Sharpstick,
         WarsResource_Sword,
         WarsResource_Bow,
+        WarsResource_Longbow,
         WarsResource_Ballista,
         WarsResource_Beer,
         WarsResource_Iron,
@@ -2507,6 +2535,8 @@ namespace VikingEngine
         WarsResource_GoldOre,
         WarsResource_RawFood,
         WarsResource_Food,
+        WarsResource_FoodAdd,
+        WarsResource_FoodSub,
         WarsResource_Wood,
         WarsResource_Fuel,
         WarsResource_Wheat,
@@ -2525,8 +2555,12 @@ namespace VikingEngine
         WarsDelivery,
         WarsTrade,
         WarsBluePrint,
+        WarsStockpileAdd_Protected,
         WarsStockpileAdd,
         WarsStockpileStop,
+
+        WarsProtectedStockpileOn,
+        WarsProtectedStockpileOff,
 
 
         #endregion

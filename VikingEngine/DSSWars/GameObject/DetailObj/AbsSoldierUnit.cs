@@ -155,6 +155,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return group.soldierConscript.conscript.TypeName() + " (" + parentArrayIndex.ToString() + ")";
         }
+        public override SpriteName TypeIcon()
+        {
+            return group.TypeIcon();
+        }
 
         override public void netShareUnit()
         {

@@ -209,7 +209,7 @@ namespace VikingEngine.DSSWars.Players
             foreach (var m in listinfo)
             {
                 content.newLine();
-                content.BulletPoint();
+                HudLib.BulletPoint(content);
                 content.Add(new RichBoxText(m));
             }
 

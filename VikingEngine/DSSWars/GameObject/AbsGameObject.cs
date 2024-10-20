@@ -43,6 +43,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public string TypeName() { return null; }
 
+        virtual public SpriteName TypeIcon() { return SpriteName.NO_IMAGE; }
+
         virtual public string Name() { return null; }
 
         virtual public void selectionGui(Players.LocalPlayer player, Graphics.ImageGroup guiModels)
@@ -60,6 +62,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             args.content.Add(new RichBoxBeginTitle());
             args.content.Add(GetFaction().FlagTextureToHud());
+            args.content.Add(new RichBoxImage(TypeIcon()));
             args.content.Add(new RichBoxText(TypeName()));
 
             if (PlatformSettings.DevBuild)

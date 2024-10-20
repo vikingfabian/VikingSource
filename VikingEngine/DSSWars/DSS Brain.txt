@@ -5,6 +5,10 @@
 * Bog iron, inefficient iron collecting
 * Storehouse, workers may drop their resources here
 * Tavern, workers may eat here
+* new icons
+* workers will get the closest work
+
+
 
 #Todo#
 översätt
@@ -18,7 +22,8 @@ model-bog iron, ineffektiv järn samlande
 
 --Efter release polish--
 
-
+-culture icon
+-war icon
  "produces 20 raw food in 4 minutes, and requires 30sec of work per cycle" 
  ● If You can, be more specific on what resource is produced by a building in the
 “building” menu: personally it wasn’t so intuitive for all the buildings.
@@ -39,7 +44,7 @@ menu scroll
 
 Error
 -back button in menues 
-
+-list punkt
 
 Retreat system
 -retreat av de sista motståndarna
@@ -66,15 +71,9 @@ Polish
 -burn yes/no
 
 Art
--list punkt
--checkbox art
--Mercenary icon
--battle icon
--world domination achieve
--link, no link
--resource icons
--no food, no beds icons
--culture icon
+
+
+
 
 #current
 English, Simplified Chinese, Japanese, Russian, Spanish

@@ -546,6 +546,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                         break;
 
                     case MainWeapon.CrossBow:
+                    case MainWeapon.Longbow:
                     case MainWeapon.Bow:
                         soldierData.modelName = LootFest.VoxelModelName.wars_archer_ship;
                         break;

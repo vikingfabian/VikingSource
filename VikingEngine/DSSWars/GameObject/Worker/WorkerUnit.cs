@@ -381,7 +381,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             }
         }
 
-        const float ModelGroundYAdj = 0.02f;
+        const float ModelGroundYAdj = 0.06f;
         protected void updateGroudY(bool set)
         {
             if (DssRef.world.unitBounds.IntersectPoint(model.position.X, model.position.Z))

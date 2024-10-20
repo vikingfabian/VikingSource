@@ -31,6 +31,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_Bank => "Bank";
         public string BuildingType_Bank_Description => "Send gold to other cities";
 
+        public string BuildingType_Storehourse_Description => "Workers may drop items here";
+
         public string Resource_TypeName_Longbow => "longbow";
     }
 

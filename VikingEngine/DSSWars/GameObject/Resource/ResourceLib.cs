@@ -460,7 +460,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                     return SpriteName.rtsUpkeep;
 
                 case ResourceType.Worker:
-                    return SpriteName.WarsWorkerSub;
+                    return SpriteName.WarsWorker;
 
                 case ResourceType.DiplomaticPoint:
                     return SpriteName.WarsDiplomaticSub;
@@ -506,6 +506,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                     return SpriteName.WarsResource_LightArmor;
                 case ItemResourceType.Linen:
                     return SpriteName.WarsResource_Linen;
+                case ItemResourceType.LongBow:
+                    return SpriteName.WarsResource_Longbow;
                 case ItemResourceType.Hen:
                 case ItemResourceType.Pig:
                     return SpriteName.WarsResource_RawMeat;

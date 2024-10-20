@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars.Display
     class CityMenu
     {
         public static readonly List<MenuTab> Tabs = new List<MenuTab>() { 
-            MenuTab.Info, MenuTab.Resources, MenuTab.BlackMarket, MenuTab.Work, MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript };
+            MenuTab.Info, MenuTab.Resources, MenuTab.Work, MenuTab.BlackMarket, MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript };
         Players.LocalPlayer player;
         City city;
         static readonly int[] StockPileControls = { 100, 1000 };
@@ -201,11 +201,14 @@ namespace VikingEngine.DSSWars.Display
                     city.res_longbow.toMenu(content, ItemResourceType.LongBow, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftLongBow);
 
+                    //content.icontext(SpriteName.WarsResource_Longbow, DssRef.todoLang.Resource_TypeName_Longbow);
+
                     city.res_ballista.toMenu(content, ItemResourceType.Ballista, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftBallista);
 
                     content.Add(new RichBoxSeperationLine());
 
+                    
                     city.res_lightArmor.toMenu(content, ItemResourceType.LightArmor, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftLightArmor);
 
@@ -215,6 +218,10 @@ namespace VikingEngine.DSSWars.Display
                     city.res_heavyArmor.toMenu(content, ItemResourceType.HeavyArmor, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftHeavyArmor);
 
+
+
+                    city.res_longbow.toMenu(content, ItemResourceType.LongBow, ref reachedBuffer);
+                    blueprintButton(player, content, ResourceLib.CraftLongBow);
                     //if (reachedBuffer)
                     //{
                     //    GroupedResource.BufferIconInfo(content);
@@ -412,7 +419,7 @@ namespace VikingEngine.DSSWars.Display
                 content.newLine();
                 HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
                 content.newLine();
-                content.BulletPoint();
+                HudLib.BulletPoint(content);
 
                 string reqText;
                 bool available;
@@ -669,12 +676,12 @@ namespace VikingEngine.DSSWars.Display
         //    //string upkeep = "upkeep +{0}";
 
 
-        //    content.BulletPoint();
+        //    HudLib.BulletPoint(content);
         //    content.Add(new RichBoxImage(SpriteName.WarsDiplomaticAddTime));
         //    content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
         //    content.newLine();
 
-        //    content.BulletPoint();
+        //    HudLib.BulletPoint(content);
         //    content.Add(new RichBoxImage(SpriteName.WarsDiplomaticPoint));
         //    content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.NobelHouseAddMaxDiplomacy)));
         //    content.newLine();
@@ -684,7 +691,7 @@ namespace VikingEngine.DSSWars.Display
         //    //content.Add(new RichBoxText(string.Format(addCommand, commandSec)));
         //    //content.newLine();
 
-        //    content.BulletPoint();
+        //    HudLib.BulletPoint(content);
         //    content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
         //    content.newLine();
 

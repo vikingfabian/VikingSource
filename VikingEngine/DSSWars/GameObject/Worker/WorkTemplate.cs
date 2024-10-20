@@ -349,30 +349,31 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         {
             content.h2(DssRef.lang.Work_OrderPrioTitle).overrideColor = HudLib.TitleColor_Label;
             
-            move.toHud(player, content, DssRef.lang.Work_Move, WorkPriorityType.move, faction, city);
-            wood.toHud(player, content, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Wood), WorkPriorityType.wood, faction, city);
-            stone.toHud(player, content, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Stone), WorkPriorityType.stone, faction, city);
-            craft_food.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Food), WorkPriorityType.craftFood, faction, city);
-            craft_fuel.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Fuel), WorkPriorityType.craftFuel, faction, city);
-            craft_beer.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Beer), WorkPriorityType.craftBeer, faction, city);
-            craft_iron.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Iron), WorkPriorityType.craftIron, faction, city);
+            move.toHud(player, content, DssRef.lang.Work_Move, SpriteName.WarsWorkMove, SpriteName.WarsBuild_Storehouse, WorkPriorityType.move, faction, city);
+            wood.toHud(player, content, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Wood), SpriteName.WarsWorkCollect, SpriteName.WarsResource_Wood, WorkPriorityType.wood, faction, city);
+            stone.toHud(player, content, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Stone), SpriteName.WarsWorkCollect, SpriteName.WarsResource_Stone, WorkPriorityType.stone, faction, city);
+            craft_food.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Food), SpriteName.WarsHammer, SpriteName.WarsResource_Food, WorkPriorityType.craftFood, faction, city);
+            craft_fuel.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Fuel), SpriteName.WarsHammer, SpriteName.WarsResource_Fuel, WorkPriorityType.craftFuel, faction, city);
+            craft_beer.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Beer), SpriteName.WarsHammer, SpriteName.WarsResource_Beer, WorkPriorityType.craftBeer, faction, city);
+            craft_iron.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Iron), SpriteName.WarsHammer, SpriteName.WarsResource_Iron, WorkPriorityType.craftIron, faction, city);
 
-            craft_sharpstick.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_SharpStick), WorkPriorityType.craftSharpStick, faction, city);
-            craft_sword.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Sword), WorkPriorityType.craftSword, faction, city);
-            craft_twohandsword.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_TwoHandSword), WorkPriorityType.craftTwoHandSword, faction, city);
-            craft_knightslance.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_KnightsLance), WorkPriorityType.craftKnightsLance, faction, city);
-            craft_bow.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Bow), WorkPriorityType.craftBow, faction, city);
-            craft_longbow.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Longbow), WorkPriorityType.craftBow, faction, city);
-            craft_ballista.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.UnitType_Ballista), WorkPriorityType.craftBallista, faction, city);
+            craft_sharpstick.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_SharpStick), SpriteName.WarsHammer, SpriteName.WarsResource_Sharpstick, WorkPriorityType.craftSharpStick, faction, city);
+            craft_sword.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Sword), SpriteName.WarsHammer, SpriteName.WarsResource_Sword, WorkPriorityType.craftSword, faction, city);
+            craft_twohandsword.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_TwoHandSword), SpriteName.WarsHammer, SpriteName.WarsResource_TwoHandSword, WorkPriorityType.craftTwoHandSword, faction, city);
+            craft_knightslance.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_KnightsLance), SpriteName.WarsHammer, SpriteName.WarsResource_KnightsLance, WorkPriorityType.craftKnightsLance, faction, city);
+            craft_bow.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Bow), SpriteName.WarsHammer, SpriteName.WarsResource_Bow, WorkPriorityType.craftBow, faction, city);
+            craft_longbow.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Longbow), SpriteName.WarsHammer, SpriteName.WarsResource_Longbow, WorkPriorityType.craftBow, faction, city);
+            craft_ballista.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.UnitType_Ballista), SpriteName.WarsHammer, SpriteName.WarsResource_Ballista, WorkPriorityType.craftBallista, faction, city);
 
-            craft_lightarmor.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_LightArmor), WorkPriorityType.craftLightArmor, faction, city);
-            craft_mediumarmor.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_MediumArmor), WorkPriorityType.craftMediumArmor, faction, city);
-            craft_heavyarmor.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HeavyArmor), WorkPriorityType.craftHeavyArmor, faction, city);
+            craft_lightarmor.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_LightArmor), SpriteName.WarsHammer, SpriteName.WarsResource_LightArmor, WorkPriorityType.craftLightArmor, faction, city);
+            craft_mediumarmor.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_MediumArmor), SpriteName.WarsHammer, SpriteName.WarsResource_MediumArmor, WorkPriorityType.craftMediumArmor, faction, city);
+            craft_heavyarmor.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HeavyArmor), SpriteName.WarsHammer, SpriteName.WarsResource_HeavyArmor, WorkPriorityType.craftHeavyArmor, faction, city);
 
-            farming.toHud(player, content, DssRef.lang.Work_Farming, WorkPriorityType.farming, faction, city);
-            bogiron.toHud(player, content, DssRef.lang.Resource_TypeName_BogIron, WorkPriorityType.bogiron, faction, city);
-            mining.toHud(player, content, DssRef.lang.Work_Mining, WorkPriorityType.mining, faction, city);
-            autoBuild.toHud(player, content, DssRef.lang.Work_AutoBuild, WorkPriorityType.autoBuild, faction, city);
+            farming.toHud(player, content, DssRef.lang.Work_Farming, SpriteName.WarsWorkFarm, SpriteName.NO_IMAGE, WorkPriorityType.farming, faction, city);
+            bogiron.toHud(player, content, DssRef.lang.Resource_TypeName_BogIron, SpriteName.WarsWorkCollect, SpriteName.WarsResource_IronOre, WorkPriorityType.bogiron, faction, city);
+            mining.toHud(player, content, DssRef.lang.Work_Mining, SpriteName.WarsWorkMine, SpriteName.NO_IMAGE, WorkPriorityType.mining, faction, city);
+            autoBuild.toHud(player, content, DssRef.lang.Work_AutoBuild, SpriteName.MenuPixelIconSettings, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, faction, city);
+            //SpriteName.MenuPixelIconSettings
 
             HudLib.Description( content, string.Format(DssRef.lang.Work_OrderPrioDescription, MaxPrio));
         }
@@ -401,11 +402,25 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             }
         }
 
-        public void toHud(Players.LocalPlayer player, RichBoxContent content, string name, WorkPriorityType priorityType, Faction faction, City city)
+        public void toHud(Players.LocalPlayer player, RichBoxContent content, string name, SpriteName sprite1, SpriteName sprite2, WorkPriorityType priorityType, Faction faction, City city)
         {
-            content.newLine();
-            content.Add(new RichBoxText(name));
-            content.Add(new RichBoxTab(0.4f));
+            content.newLine(); 
+            var infoContent = new List<AbsRichBoxMember>(2);
+            infoContent.Add(new RichBoxImage(sprite1));
+            if (sprite2 != SpriteName.NO_IMAGE)
+            {
+                infoContent.Add(new RichBoxImage(sprite2));
+            }
+            var infoButton = new RichboxButton(infoContent, null, new RbAction(() =>
+            {
+                RichBoxContent content = new RichBoxContent();
+                content.Add(new RichBoxText(name));
+                player.hud.tooltip.create(player, content, true);
+            }));
+            infoButton.overrideBgColor = HudLib.InfoYellow_BG;
+
+            content.Add(infoButton);
+            content.Add(new RichBoxTab(0.25f));
             
             if (city != null)
             {                
