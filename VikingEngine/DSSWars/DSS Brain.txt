@@ -1,12 +1,15 @@
 ﻿
 -Change Log-
-
+* longbow weapon
+* normal bow power reduction to about 60%
+* Bog iron, inefficient iron collecting
+* Storehouse, workers may drop their resources here
+* Tavern, workers may eat here
 
 #Todo#
 översätt
 
-* Bog iron, inefficient iron collecting
-* Storehouse, workers may drop their resources here
+
 
 #Todo (nästa patch)#
 model-storage house
@@ -14,13 +17,15 @@ model-bog iron, ineffektiv järn samlande
 
 
 --Efter release polish--
-long bow, bättre båge för carpenter
+
+
  "produces 20 raw food in 4 minutes, and requires 30sec of work per cycle" 
  ● If You can, be more specific on what resource is produced by a building in the
 “building” menu: personally it wasn’t so intuitive for all the buildings.
 
+
+
 sound limit per time
-out of food warning på armeer
 
 pilar med resurser från delivery
 tydlig ikon för objekt meny typ

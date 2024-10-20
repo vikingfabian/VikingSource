@@ -40,6 +40,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case MainWeapon.TwoHandSword: return DssRef.lang.Resource_TypeName_TwoHandSword;
                 case MainWeapon.KnightsLance: return DssRef.lang.Resource_TypeName_KnightsLance;
                 case MainWeapon.Bow: return DssRef.lang.Resource_TypeName_Bow;
+                case MainWeapon.Longbow: return DssRef.todoLang.Resource_TypeName_Longbow;
                 case MainWeapon.Ballista: return DssRef.lang.UnitType_Ballista;
 
                 default:

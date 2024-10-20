@@ -198,6 +198,9 @@ namespace VikingEngine.DSSWars.Display
                     city.res_bow.toMenu(content, ItemResourceType.Bow, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftBow);
 
+                    city.res_longbow.toMenu(content, ItemResourceType.LongBow, ref reachedBuffer);
+                    blueprintButton(player, content, ResourceLib.CraftLongBow);
+
                     city.res_ballista.toMenu(content, ItemResourceType.Ballista, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftBallista);
 
@@ -250,6 +253,7 @@ namespace VikingEngine.DSSWars.Display
                     stockpile(ItemResourceType.TwoHandSword);
                     stockpile(ItemResourceType.KnightsLance);
                     stockpile(ItemResourceType.Bow);
+                    stockpile(ItemResourceType.LongBow);
                     stockpile(ItemResourceType.Ballista);
                     content.Add(new RichBoxSeperationLine());
                     stockpile(ItemResourceType.LightArmor);

@@ -38,6 +38,7 @@ namespace VikingEngine.DSSWars.GameObject
              ItemResourceType.TwoHandSword,
              ItemResourceType.KnightsLance,
              ItemResourceType.Bow,
+             ItemResourceType.LongBow,
              ItemResourceType.Ballista,            
 
              ItemResourceType.LightArmor,
@@ -75,6 +76,7 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource res_twohandsword = new GroupedResource() { amount = 0, goalBuffer = 100 };
         public GroupedResource res_knightslance = new GroupedResource() { amount = 0, goalBuffer = 100 };
         public GroupedResource res_bow = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource res_longbow = new GroupedResource() { amount = 0, goalBuffer = 100 };
         public GroupedResource res_ballista = new GroupedResource() { amount = 0, goalBuffer = 100 };
 
         public GroupedResource res_lightArmor = new GroupedResource() { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
@@ -102,6 +104,7 @@ namespace VikingEngine.DSSWars.GameObject
             res_twohandsword.goalBuffer = 100;
             res_knightslance.goalBuffer = 100;
             res_bow.goalBuffer = 100;
+            res_longbow.goalBuffer = 100;
             res_ballista.goalBuffer = 100;
             res_lightArmor.goalBuffer = 100;
             res_mediumArmor.goalBuffer = 100;
@@ -161,6 +164,9 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Bow:
                     res_bow.amount += add;
                     break;
+                case ItemResourceType.LongBow:
+                    res_longbow.amount += add;
+                    break;
                 case ItemResourceType.Ballista:
                     res_ballista.amount += add;
                     break;
@@ -206,6 +212,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.TwoHandSword: return res_twohandsword;
                 case ItemResourceType.KnightsLance: return res_knightslance;
                 case ItemResourceType.Bow: return res_bow;
+                case ItemResourceType.LongBow: return res_longbow;
                 case ItemResourceType.Ballista: return res_ballista;
 
                 case ItemResourceType.LightArmor: return res_lightArmor;
@@ -290,6 +297,9 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case ItemResourceType.Bow:
                     res_bow = resource;
+                    break;
+                case ItemResourceType.LongBow:
+                    res_longbow = resource;
                     break;
                 case ItemResourceType.Ballista:
                     res_ballista = resource;

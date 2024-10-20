@@ -29,6 +29,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         public WorkPriority craft_twohandsword = new WorkPriority(0);
         public WorkPriority craft_knightslance = new WorkPriority(0);
         public WorkPriority craft_bow = new WorkPriority(0);
+        public WorkPriority craft_longbow = new WorkPriority(0);
         public WorkPriority craft_ballista= new WorkPriority(0);
         public WorkPriority craft_lightarmor = new WorkPriority(1);
         public WorkPriority craft_mediumarmor = new WorkPriority(0);
@@ -69,6 +70,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             autoBuild.writeGameState(w, isCity);
 
             bogiron.writeGameState(w, isCity);
+            craft_longbow.writeGameState(w, isCity);
 
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, bool isCity)
@@ -98,9 +100,10 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             trading.readGameState(r, subversion, isCity);
             autoBuild.readGameState(r, subversion, isCity);
             
-            if (subversion >= 17)
+            if (subversion >= 18)
             {
                 bogiron.readGameState(r, subversion, isCity);
+                craft_longbow.readGameState(r, subversion, isCity);
             }
 
         }
@@ -120,6 +123,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             craft_twohandsword.onFactionValueChange(factionTemplate.craft_twohandsword);
             craft_knightslance.onFactionValueChange(factionTemplate.craft_knightslance);
             craft_bow.onFactionValueChange(factionTemplate.craft_bow);
+            craft_longbow.onFactionValueChange(factionTemplate.craft_longbow);
             craft_ballista.onFactionValueChange(factionTemplate.craft_ballista);
 
             craft_lightarmor.onFactionValueChange(factionTemplate.craft_lightarmor);
@@ -149,6 +153,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             craft_twohandsword.followFaction = true;
             craft_knightslance.followFaction = true;
             craft_bow.followFaction = true;
+            craft_longbow.followFaction = true;
             craft_ballista.followFaction = true;
 
             craft_lightarmor.followFaction = true;
@@ -197,6 +202,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case ItemResourceType.TwoHandSword: return craft_twohandsword;
                 case ItemResourceType.KnightsLance: return craft_knightslance;
                 case ItemResourceType.Bow: return craft_bow;
+                case ItemResourceType.LongBow: return craft_longbow;
                 case ItemResourceType.Ballista: return craft_ballista;
 
                 default:
@@ -233,6 +239,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     return craft_knightslance;
                 case WorkPriorityType.craftBow:
                     return craft_bow;
+                case WorkPriorityType.craftLongbow:
+                    return craft_longbow;
                 case WorkPriorityType.craftBallista:
                     return craft_ballista;
                 case WorkPriorityType.craftLightArmor:
@@ -300,6 +308,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case WorkPriorityType.craftBow:
                     craft_bow = value;
                     break;
+                case WorkPriorityType.craftLongbow:
+                    craft_longbow = value;
+                    break;
                 case WorkPriorityType.craftBallista:
                     craft_ballista = value;
                     break;
@@ -351,6 +362,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             craft_twohandsword.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_TwoHandSword), WorkPriorityType.craftTwoHandSword, faction, city);
             craft_knightslance.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_KnightsLance), WorkPriorityType.craftKnightsLance, faction, city);
             craft_bow.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Bow), WorkPriorityType.craftBow, faction, city);
+            craft_longbow.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Longbow), WorkPriorityType.craftBow, faction, city);
             craft_ballista.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.UnitType_Ballista), WorkPriorityType.craftBallista, faction, city);
 
             craft_lightarmor.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_LightArmor), WorkPriorityType.craftLightArmor, faction, city);
@@ -358,7 +370,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             craft_heavyarmor.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HeavyArmor), WorkPriorityType.craftHeavyArmor, faction, city);
 
             farming.toHud(player, content, DssRef.lang.Work_Farming, WorkPriorityType.farming, faction, city);
-            bogiron.toHud(player, content, DssRef.todoLang.Resource_TypeName_BogIron, WorkPriorityType.bogiron, faction, city);
+            bogiron.toHud(player, content, DssRef.lang.Resource_TypeName_BogIron, WorkPriorityType.bogiron, faction, city);
             mining.toHud(player, content, DssRef.lang.Work_Mining, WorkPriorityType.mining, faction, city);
             autoBuild.toHud(player, content, DssRef.lang.Work_AutoBuild, WorkPriorityType.autoBuild, faction, city);
 
@@ -496,6 +508,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         craftSharpStick,
         craftSword,
         craftBow,
+        craftLongbow,
         craftBallista,
 
         craftLightArmor,

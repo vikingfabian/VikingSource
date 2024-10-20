@@ -105,7 +105,7 @@ namespace VikingEngine.DSSWars
         {
             conscript = new ConscriptProfile()
             {
-                weapon = MainWeapon.Bow,
+                weapon = MainWeapon.Longbow,
                 armorLevel = ArmorLevel.Light,
                 training = TrainingLevel.Basic,
                 specialization = SpecializationType.Traditional,

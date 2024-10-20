@@ -289,10 +289,35 @@ namespace VikingEngine.DSSWars.GameObject
             workTemplate.writeGameState(w, true);
 
             w.Write((short)res_water.amount);
-            foreach (var type in MovableCityResourceTypes)
-            {
-                GetGroupedResource(type).writeGameState(w);
-            }
+
+
+            res_wood.writeGameState(w); //ItemResourceType.Wood_Group,
+            res_fuel.writeGameState(w); // ItemResourceType.Fuel_G,
+            res_stone.writeGameState(w); // ItemResourceType.Stone_G,
+            res_rawFood.writeGameState(w); // ItemResourceType.RawFood_Group,
+            res_food.writeGameState(w); // ItemResourceType.Food_G,
+            res_beer.writeGameState(w); // ItemResourceType.Beer,
+            res_skinLinnen.writeGameState(w); // ItemResourceType.SkinLinen_Group,
+            res_ironore.writeGameState(w); // ItemResourceType.IronOre_G,
+            res_iron.writeGameState(w); // ItemResourceType.Iron_G,
+
+            res_sword.writeGameState(w); // ItemResourceType.Sword,
+            res_sharpstick.writeGameState(w); // ItemResourceType.SharpStick,
+            res_twohandsword.writeGameState(w); // ItemResourceType.TwoHandSword,
+            res_knightslance.writeGameState(w); // ItemResourceType.KnightsLance,
+            res_bow.writeGameState(w); // ItemResourceType.Bow,
+            res_longbow.writeGameState(w); // ItemResourceType.LongBow,
+            res_ballista.writeGameState(w); // ItemResourceType.Ballista,            
+
+            res_lightArmor.writeGameState(w); // ItemResourceType.LightArmor,
+            res_mediumArmor.writeGameState(w); // ItemResourceType.MediumArmor,
+            res_heavyArmor.writeGameState(w); // ItemResourceType.HeavyArmor,
+
+            res_longbow.writeGameState(w);
+            //foreach (var type in MovableCityResourceTypes)
+            //{
+            //    GetGroupedResource(type).writeGameState(w);
+            //}
 
             w.Write((ushort)conscriptBuildings.Count);
             foreach (var barracks in conscriptBuildings)

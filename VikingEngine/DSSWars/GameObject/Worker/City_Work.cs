@@ -17,6 +17,7 @@ namespace VikingEngine.DSSWars.GameObject
     {
         static readonly ItemResourceType[] IronCraftTypes = { ItemResourceType.Iron_G, ItemResourceType.MediumArmor, ItemResourceType.HeavyArmor, ItemResourceType.Sword, ItemResourceType.TwoHandSword, ItemResourceType.KnightsLance };
         static readonly ItemResourceType[] BenchCraftTypes = { ItemResourceType.Fuel_G, ItemResourceType.LightArmor, ItemResourceType.SharpStick, ItemResourceType.Bow };
+        static readonly ItemResourceType[] CarpenterCraftTypes = { ItemResourceType.SharpStick, ItemResourceType.Bow, ItemResourceType.LongBow, ItemResourceType.Ballista };
         public WorkTemplate workTemplate = new WorkTemplate();
 
         const int NoSubWork = -1;
@@ -466,46 +467,52 @@ namespace VikingEngine.DSSWars.GameObject
                             break;
 
                         case TerrainBuildingType.Work_Bench:
+                            craftBench(pos, distanceValue, BenchCraftTypes, -5000);
+                            break;
                         case TerrainBuildingType.Work_Smith:
 
-                            int topPrioValue = WorkTemplate.NoPrio;
-                            ItemResourceType topItem = ItemResourceType.NONE;
-                            WorkPriority topPrio = WorkPriority.Empty;
+                            craftBench(pos, distanceValue, IronCraftTypes);
+                            //int topPrioValue = WorkTemplate.NoPrio;
+                            //ItemResourceType topItem = ItemResourceType.NONE;
+                            //WorkPriority topPrio = WorkPriority.Empty;
 
-                            int prioAdd = 0;
-                            ItemResourceType[] types;
+                            //int prioAdd = 0;
+                            //ItemResourceType[] types;
 
-                            if (building == TerrainBuildingType.Work_Bench)
-                            {
-                                types = BenchCraftTypes;
-                                prioAdd = -5000;
-                            }
-                            else
-                            {
-                                types = IronCraftTypes;
-                            }
+                            //switch  (building)
+                            //{
+                            //    case TerrainBuildingType.Work_Bench:
+                            //{
+                            //    types = BenchCraftTypes;
+                            //    prioAdd = -5000;
+                            //}
+                            //        break;
+                            // case 
+                            //{
+                            //    types = IronCraftTypes;
+                            //}
 
-                            foreach (var item in types)
-                            {
-                                var template = workTemplate.GetWorkPriority(item);
-                                if (template.value > topPrioValue)
-                                {
-                                    ResourceLib.Blueprint(item, out var bp1, out var bp2);
-                                    if (bp1.available(this) && GetGroupedResource(item).needMore())
-                                    {
-                                        topPrioValue = template.value;
-                                        topItem = item;
-                                        topPrio = template;
-                                        //res_fuel
-                                    }
-                                }
-                            }
+                            //foreach (var item in types)
+                            //{
+                            //    var template = workTemplate.GetWorkPriority(item);
+                            //    if (template.value > topPrioValue)
+                            //    {
+                            //        ResourceLib.Blueprint(item, out var bp1, out var bp2);
+                            //        if (bp1.available(this) && GetGroupedResource(item).needMore())
+                            //        {
+                            //            topPrioValue = template.value;
+                            //            topItem = item;
+                            //            topPrio = template;
+                            //            //res_fuel
+                            //        }
+                            //    }
+                            //}
 
-                            if (topPrioValue > WorkTemplate.NoPrio &&
-                                isFreeTile(pos))
-                            {
-                                workQue.Add(new WorkQueMember(WorkType.Craft, (int)topItem, pos, topPrioValue, distanceValue + prioAdd));
-                            }
+                            //if (topPrioValue > WorkTemplate.NoPrio &&
+                            //    isFreeTile(pos))
+                            //{
+                            //    workQue.Add(new WorkQueMember(WorkType.Craft, (int)topItem, pos, topPrioValue, distanceValue + prioAdd));
+                            //}
                             break;
 
                         case TerrainBuildingType.Work_CoalPit:
@@ -529,13 +536,14 @@ namespace VikingEngine.DSSWars.GameObject
                             break;
 
                         case TerrainBuildingType.Carpenter:
-                            if (workTemplate.craft_ballista.HasPrio() &&
-                                res_ballista.needMore()&&
-                                ResourceLib.CraftBallista.canCraft(this) &&
-                                isFreeTile(pos))
-                            {
-                                workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Ballista, pos, workTemplate.craft_ballista.value, distanceValue));
-                            }
+                            craftBench(pos, distanceValue, CarpenterCraftTypes);
+                            //if (workTemplate.craft_ballista.HasPrio() &&
+                            //    res_ballista.needMore()&&
+                            //    ResourceLib.CraftBallista.canCraft(this) &&
+                            //    isFreeTile(pos))
+                            //{
+                            //    workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Ballista, pos, workTemplate.craft_ballista.value, distanceValue));
+                            //}
                             break;
                     }
                 }
@@ -577,6 +585,35 @@ namespace VikingEngine.DSSWars.GameObject
                             int distanceValue = -center.SideLength(pos);
                             workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, pos, workTemplate.autoBuild.value, distanceValue));
                         }
+                    }
+                }
+
+
+                void craftBench(IntVector2 pos, int distanceValue, ItemResourceType[] types, int prioAdd = 0)
+                {
+                    int topPrioValue = WorkTemplate.NoPrio;
+                    ItemResourceType topItem = ItemResourceType.NONE;
+                    WorkPriority topPrio = WorkPriority.Empty;
+
+                    foreach (var item in types)
+                    {
+                        var template = workTemplate.GetWorkPriority(item);
+                        if (template.value > topPrioValue)
+                        {
+                            ResourceLib.Blueprint(item, out var bp1, out var bp2);
+                            if (bp1.available(this) && GetGroupedResource(item).needMore())
+                            {
+                                topPrioValue = template.value;
+                                topItem = item;
+                                topPrio = template;
+                            }
+                        }
+                    }
+
+                    if (topPrioValue > WorkTemplate.NoPrio &&
+                        isFreeTile(pos))
+                    {
+                        workQue.Add(new WorkQueMember(WorkType.Craft, (int)topItem, pos, topPrioValue, distanceValue + prioAdd));
                     }
                 }
 

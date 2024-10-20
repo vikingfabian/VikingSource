@@ -576,6 +576,8 @@ namespace VikingEngine.LootFest
         city_stonewall,
         city_stonetower,
         city_tavern,
+        city_storehouse,
+        city_bank,
         city_postal,
         city_recruitment,
         city_barracks,

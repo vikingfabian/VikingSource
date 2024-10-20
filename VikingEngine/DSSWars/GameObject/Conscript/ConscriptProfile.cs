@@ -267,6 +267,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                         case MainWeapon.KnightsLance:
                             return UnitFilterType.Knight;
                         case MainWeapon.Bow:
+                        case MainWeapon.Longbow:
                             return UnitFilterType.Bow;
                         case MainWeapon.CrossBow:
                             return UnitFilterType.CrossBow;
@@ -366,6 +367,16 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     break;
 
                 case MainWeapon.Bow:
+                    soldierData.mainAttack = AttackType.Arrow;
+                    soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Mid;
+                    soldierData.attackRange = 1.3f;
+                    soldierData.modelName = LootFest.VoxelModelName.war_archer;
+                    soldierData.modelVariationCount = 2;
+                    soldierData.icon = SpriteName.WarsUnitIcon_Archer;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 10f;
+                    break;
+
+                case MainWeapon.Longbow:
                     soldierData.mainAttack = AttackType.Arrow;
                     soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Mid;
                     soldierData.attackRange = 1.7f;
@@ -616,6 +627,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     switch (weapon)
                     {
                         case MainWeapon.Bow:
+                        case MainWeapon.Longbow:
                             return DssRef.lang.UnitType_Archer;
                         case MainWeapon.CrossBow:
                             return DssRef.lang.UnitType_Crossbow;
@@ -700,6 +712,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 case MainWeapon.TwoHandSword: return DssConst.WeaponDamage_TwoHandSword;
                 case MainWeapon.KnightsLance: return DssConst.WeaponDamage_KnigtsLance;
                 case MainWeapon.Bow: return DssConst.WeaponDamage_Bow;
+                case MainWeapon.Longbow: return DssConst.WeaponDamage_Longbow;
                 case MainWeapon.CrossBow: return DssConst.WeaponDamage_CrossBow;
                 case MainWeapon.Ballista: return DssConst.WeaponDamage_Ballista;
 
@@ -716,6 +729,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 case MainWeapon.TwoHandSword: return Resource.ItemResourceType.TwoHandSword;
                 case MainWeapon.KnightsLance: return Resource.ItemResourceType.KnightsLance;
                 case MainWeapon.Bow: return Resource.ItemResourceType.Bow;
+                case MainWeapon.Longbow: return Resource.ItemResourceType.LongBow;
                 case MainWeapon.Ballista: return Resource.ItemResourceType.Ballista;
 
                 default: throw new NotImplementedException();
@@ -807,6 +821,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         TwoHandSword,
         KnightsLance,
         Ballista,
+        Longbow,
         NUM
     }
 

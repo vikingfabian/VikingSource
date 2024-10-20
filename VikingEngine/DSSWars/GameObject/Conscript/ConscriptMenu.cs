@@ -19,6 +19,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             MainWeapon.SharpStick,
             MainWeapon.Sword,
             MainWeapon.Bow,
+            MainWeapon.Longbow,
             MainWeapon.Ballista,
         };
 

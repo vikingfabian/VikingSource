@@ -1024,6 +1024,9 @@
 #begin VoxelModel/LfWars/buildarea.vox
 /copy:VoxelModel/LfWars/buildarea.vox
 
+#begin VoxelModel/LfWars/city_bank.vox
+/copy:VoxelModel/LfWars/city_bank.vox
+
 #begin VoxelModel/LfWars/city_barracks.vox
 /copy:VoxelModel/LfWars/city_barracks.vox
 
@@ -1074,6 +1077,9 @@
 
 #begin VoxelModel/LfWars/city_stonewall.vox
 /copy:VoxelModel/LfWars/city_stonewall.vox
+
+#begin VoxelModel/LfWars/city_storehouse.vox
+/copy:VoxelModel/LfWars/city_storehouse.vox
 
 #begin VoxelModel/LfWars/city_tavern.vox
 /copy:VoxelModel/LfWars/city_tavern.vox

@@ -141,6 +141,16 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 new UseResource(ItemResourceType.SkinLinen_Group, 2),
             }
         );
+        public static readonly CraftBlueprint CraftLongBow = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.Bow,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Wood_Group, 4),
+                new UseResource(ItemResourceType.SkinLinen_Group, 3),
+            }, CraftRequirement.Carpenter
+        );
 
         public static readonly CraftBlueprint CraftBallista = new CraftBlueprint(
             CraftResultType.Resource,
