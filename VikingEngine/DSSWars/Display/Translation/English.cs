@@ -1284,7 +1284,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Resource_Tab_Stockpile => "Stockpile";
 
         public override string Resource => "Resource";
-        public override string Resource_StockPile_Info => "Set a goal amount for storage of resources; this will inform the workers when to work on another resource.";
+        public override string Resource_StockPile_Info => "Set a goal amount for storage of resources; this will inform the workers when to work on other resources.";
         public override string Resource_TypeName_Water => "water";
         public override string Resource_TypeName_Wood => "wood";
         public override string Resource_TypeName_Fuel => "fuel";
@@ -1294,7 +1294,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Resource_TypeName_Beer => "beer";
         public override string Resource_TypeName_Wheat => "wheat";
         public override string Resource_TypeName_Linen => "linen";
-        public override string Resource_TypeName_SkinAndLinen => "skin and linen";
+        //public override string Resource_TypeName_SkinAndLinen => "skin and linen";
         public override string Resource_TypeName_IronOre => "iron ore";
         public override string Resource_TypeName_GoldOre => "gold ore";
         public override string Resource_TypeName_Iron => "iron";
@@ -1479,7 +1479,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string Info_MinuteAverage => "The value is an average from the last minute";
 
-        public override string Message_CityOutOfFood_Title => "Out of food";
+        public override string Message_OutOfFood_Title => "Out of food";
         public override string Message_CityOutOfFood_Text => "Expensive food will be purchased from the black market. Workers will starve when your money runs out.";
 
         public override string Hud_EndSessionIcon => "X";
@@ -1545,7 +1545,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string CityCulture_Woodcutters_Description => "Trees give more wood";
         public override string CityCulture_Builders_Description => "Fast at building";
         public override string CityCulture_CrabMentality_Description => "Work cost less energy. Cannot produce high-skill soldiers.";
-        public override string CityCulture_DeepWell_Description => "Water replenish faster";
+        public override string CityCulture_DeepWell_Description => "Water replenishes faster";
         public override string CityCulture_Networker_Description => "Efficient postal service";
         public override string CityCulture_PitMasters_Description => "Higher fuel production";
 
@@ -1571,5 +1571,28 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Tutorial_ImproveRelations => "Improve your relations with a neighbor faction";
         public override string Tutorial_MissionComplete_Title => "Mission complete!";
         public override string Tutorial_MissionComplete_Unlocks => "New controls have been unlocked";
+
+        //patch1
+        public override string Resource_ReachedStockpile => "Reached stockpile goal buffer";
+
+        public override string BuildingType_ResourceMine => "{0} mine";
+
+        public override string Resource_TypeName_BogIron => "Bog iron";
+
+        public override string Resource_TypeName_Coal => "Coal";
+
+        public override string Language_XUpkeepIsY => "{0} upkeep: {1}";
+        public override string Language_XCountIsY => "{0} count: {1}";
+
+        public override string Message_ArmyOutOfFood_Text => "Expensive food will be purchased from the black market. Hungry soldiers will desert when your money runs out.";
+
+        public override string Info_ArmyFood => "Armies will restock food from the closest friendly city. Food can be purchased from other factions. In hostile regions, food can only be purchased from the black market.";
+
+        public override string FactionName_Monger => "Monger";
+        public override string FactionName_Hatu => "Hatu";
+        public override string FactionName_Destru => "Destru";
+
+        //patch2
+
     }
 }

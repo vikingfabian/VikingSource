@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars.GameObject
             sz.X += sz.Y;
 
             model = new Graphics.RenderTargetBillboard(pos,
-                DssConst.Men_StandardModelScale * 1f, false);
+                DssConst.Men_StandardModelScale * 1.5f, false);
             model.AddToRender(DrawGame.UnitDetailLayer);
             model.FaceCamera = false;
             model.Rotation = toggLib.PlaneTowardsCam;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.DSSWars.Data;
 
 namespace VikingEngine.DSSWars
 {
@@ -100,5 +101,20 @@ namespace VikingEngine.DSSWars
 
             return timeSpan;
         }
+
+        public void setTotalTime(TimeSpan time)
+        {
+            totalMinutes = (int)time.TotalMinutes;
+            secondsToMinute = time.Seconds;
+        }
+
+        //public void writeGameState(System.IO.BinaryWriter w)
+        //{
+            
+        //}
+        //public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
+        //{
+            
+        //}
     }
 }

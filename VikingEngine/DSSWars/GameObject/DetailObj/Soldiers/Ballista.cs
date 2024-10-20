@@ -67,7 +67,7 @@ namespace VikingEngine.DSSWars.GameObject
             boundRadius = DssVar.StandardBoundRadius * 2.2f;
 
             //walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
-            ArmySpeedBonusLand = -0.5;
+            //ArmySpeedBonusLand = -0.5;
             rotationSpeed = StandardRotatingSpeed * 0.04f;
             
             targetSpotRange = BallistaRange + StandardTargetSpotRange;

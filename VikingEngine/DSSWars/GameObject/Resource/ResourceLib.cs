@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject.Worker;
 using VikingEngine.Engine;
 
@@ -28,7 +29,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             {
                 new UseResource(ItemResourceType.Fuel_G, 10),
                 new UseResource(ItemResourceType.Wood_Group, 10),
-            }
+            }, CraftRequirement.CoalPit
         );
 
         public static readonly CraftBlueprint CraftFood1 = new CraftBlueprint(
@@ -41,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 new UseResource(ItemResourceType.Fuel_G, 5),
                 new UseResource(ItemResourceType.RawFood_Group, 25)
             }
-        );
+        ) { tooltipId = Tooltip.Food_BlueprintId };
 
         public static readonly CraftBlueprint CraftFood2 = new CraftBlueprint(
             CraftResultType.Resource,
@@ -53,9 +54,9 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 new UseResource(ItemResourceType.Fuel_G, 5),
                 new UseResource(ItemResourceType.RawFood_Group, 25)
             }
-        );
+        ) { tooltipId = Tooltip.Food_BlueprintId };
 
-        public static readonly CraftBlueprint CraftBeer = new CraftBlueprint(
+    public static readonly CraftBlueprint CraftBeer = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.Beer,
            10,
@@ -503,7 +504,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 case ItemResourceType.SharpStick:
                     return SpriteName.WarsResource_Sharpstick;
                 case ItemResourceType.SkinLinen_Group:
-                    return SpriteName.WarsResource_SkinAndLinen;
+                    return SpriteName.WarsResource_LinenCloth;
                 case ItemResourceType.Stone_G:
                     return SpriteName.WarsResource_Stone;
                 case ItemResourceType.Sword:

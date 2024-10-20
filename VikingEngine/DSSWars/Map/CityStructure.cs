@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.Map
             IntVector2 topleft;
             ForXYLoop subTileLoop;
 
-            int wood = 2;
+            int wood = 4;
             int stone = 2;
 
             for (int radius = 2; radius <= city.cityTileRadius; ++radius)
@@ -115,6 +115,8 @@ namespace VikingEngine.DSSWars.Map
             EmptyLand.Clear();
             ResourceOnGround.Clear();
             nobelHouseCount = 0;
+            int coalPitCount = 0;
+
 
             IntVector2 cityHall = WP.ToSubTilePos_Centered(city.tilePos);
             FoodSpots_workupdate.Add(cityHall);
@@ -141,10 +143,10 @@ namespace VikingEngine.DSSWars.Map
 
                                 if (subTile.collectionPointer >= 0)
                                 {
-                                    if (ResourceOnGround.Count < workerCount)
-                                    { 
+                                    //if (ResourceOnGround.Count < workerCount)
+                                    //{ 
                                         ResourceOnGround.Add(subTileLoop.Position);
-                                    }
+                                    //}
                                 }
 
                                 switch (subTile.mainTerrain)
@@ -231,9 +233,14 @@ namespace VikingEngine.DSSWars.Map
                                                 city.hasBuilding_brewery = true;
                                                 CraftStation.Add(subTileLoop.Position);
                                                 break;
+                                            
+                                            case TerrainBuildingType.Work_CoalPit:
+                                                ++coalPitCount;
+                                                CraftStation.Add(subTileLoop.Position);
+                                                break;
+
                                             case TerrainBuildingType.Work_Cook:
                                             case TerrainBuildingType.Work_Bench:
-                                            case TerrainBuildingType.Work_CoalPit:
                                                 CraftStation.Add(subTileLoop.Position);
                                                 break;
                                             case TerrainBuildingType.Work_Smith:
@@ -260,6 +267,10 @@ namespace VikingEngine.DSSWars.Map
                     }
                 }
             }
+
+            //Complete
+            city.nobelHouse_buildingCount = nobelHouseCount;
+            city.coalpit_buildingCount = coalPitCount;
         }
 
         public IntVector2 eatPosition(IntVector2 workerSubtile)

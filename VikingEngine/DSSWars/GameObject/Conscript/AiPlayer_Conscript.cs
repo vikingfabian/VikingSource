@@ -116,6 +116,43 @@ namespace VikingEngine.DSSWars.Players
                 city.AddGroupedResource(weaponItem, -get * DssConst.SoldierGroup_DefaultCount);
                 city.AddGroupedResource(armorItem, -get * DssConst.SoldierGroup_DefaultCount);
 
+                switch (aiConscript)
+                { 
+                    case AiConscript.Orcs:
+                        switch (weaponItem)
+                        { 
+                            case ItemResourceType.Bow:
+                                profile.weapon = MainWeapon.CrossBow;
+                                break;
+                            case ItemResourceType.Sword:
+                                profile.weapon = MainWeapon.Pike;
+                                break;
+                        }
+                        break;
+
+                    case AiConscript.Viking:
+                        profile.specialization = SpecializationType.Viking;
+                        break;
+
+                    case AiConscript.DragonSlayer:
+                        switch (weaponItem)
+                        {
+                            case ItemResourceType.Bow:
+                                profile.weapon = MainWeapon.CrossBow;
+                                break;
+                            case ItemResourceType.Sword:
+                                profile.weapon = MainWeapon.Ballista;
+                                break;
+                        }
+                        profile.specialization = SpecializationType.Siege;
+                        break;
+
+                    case AiConscript.Green:
+                        profile.specialization = SpecializationType.Green;
+                        profile.training = TrainingLevel.Skillful;
+                        break;
+                }
+
                 city.conscriptArmy(profile, get);
             }
 

@@ -130,8 +130,8 @@ namespace VikingEngine.DSSWars.Players
                 building = BuildAndExpandType.Barracks;
             }
             else if (((!city.hasBuilding_smith && city.res_ironore.amount > ResourceLowBuffer) ||
-                city.res_ironore.amount >= city.res_ironore.goalBuffer)
-                    && Ref.rnd.Chance(0.6)
+                (city.res_ironore.amount >= city.res_ironore.goalBuffer)
+                    && Ref.rnd.Chance(0.02))
                 )
             {
                 if (city.res_iron.amount < ResourceLib.CraftSmith_IronUse)

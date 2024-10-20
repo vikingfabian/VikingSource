@@ -89,6 +89,7 @@ namespace VikingEngine.DSSWars.Data
             DssRef.world.readGameState(r, version.sub, pointers);
             Debug.ReadCheck(r);
             DssRef.state.readGameState(r, version.sub, pointers);
+            DssRef.time.setTotalTime(meta.playTime);
         }
 
         public override void Time_Update(float time_ms)

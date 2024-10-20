@@ -2519,11 +2519,15 @@ namespace VikingEngine
         WarsResource_SkinAndLinen,
         WarsResource_TwoHandSword,
         WarsResource_KnightsLance,
+        WarsResource_LinenCloth,
 
         WarsHome,
         WarsDelivery,
         WarsTrade,
         WarsBluePrint,
+        WarsStockpileAdd,
+        WarsStockpileStop,
+
 
         #endregion
 

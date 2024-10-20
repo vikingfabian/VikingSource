@@ -72,7 +72,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                     Ref.update.AddSyncAction(new SyncAction(() =>
                                                     {
                                                         new ResourceEffect(status.inProgress.type, DssConst.CityDeliveryCount,
-                                                           WP.SubtileToWorldPosXZgroundY_Centered(conv.IntToIntVector2(status.idAndPosition)),
+                                                           VectorExt.AddY( WP.SubtileToWorldPosXZgroundY_Centered(conv.IntToIntVector2(status.idAndPosition)), DssConst.Men_StandardModelScale * 2f),
                                                            ResourceEffectType.Deliver);
                                                     }));
                                                 }

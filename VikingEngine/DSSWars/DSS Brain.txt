@@ -1,12 +1,9 @@
 ﻿
 -Change Log-
-* fully translated
-* will reduce ai delay when player declare war (so they can respond)
-* reduced the issue of soldiers being stuck behind water in battle
-* seven new achievements
-* fixed workers overshooting their goals
-* tooltip improvements
 
+
+#Todo#
+översätt
 
 * Bog iron, inefficient iron collecting
 * Storehouse, workers may drop their resources here
@@ -17,29 +14,33 @@ model-bog iron, ineffektiv järn samlande
 
 
 --Efter release polish--
-nya achievements
+long bow, bättre båge för carpenter
+ "produces 20 raw food in 4 minutes, and requires 30sec of work per cycle" 
+ ● If You can, be more specific on what resource is produced by a building in the
+“building” menu: personally it wasn’t so intuitive for all the buildings.
 
+sound limit per time
 out of food warning på armeer
 
 pilar med resurser från delivery
 tydlig ikon för objekt meny typ
 Factories modeller
-Producering av special enheter (tex green soldiers)
 Deliver effect
-avbryta byggjobb
 Ljud
-army speed bonus
 city economy
 visa antal byggnader i bygg meny
 training skill icon
+menu scroll
 
 Error
 -back button in menues 
+
 
 Retreat system
 -retreat av de sista motståndarna
 -light taunt units (slingers, light cavalry)
 -reassemble av flydd arme
+
 
 Polish
 

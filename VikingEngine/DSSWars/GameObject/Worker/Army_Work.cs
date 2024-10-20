@@ -11,14 +11,11 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class Army
     {
-        //public List<WorkerUnit> workerUnits = null;
-        //List<WorkerStatus> workerStatuses = new List<WorkerStatus>();
-
         float foodBackOrderTimeSec = 0;
 
         public void setMaxFood()
         {
-            float energy = DssLib.SoldierDefaultEnergyUpkeep * DssConst.SoldierGroup_DefaultCount * groups.Count;
+            float energy = DssLib.SoldierDefaultEnergyUpkeep / DssConst.FoodEnergy * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);
             float bufferGoalFood = friendlyAreaFoodBuffer_minutes * TimeExt.MinuteInSeconds * energy;
             food = bufferGoalFood;
         }
@@ -27,7 +24,6 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (seconds > 0)
             {
-                //float newFoodCosts = 0;
 
                 if (foodBackOrderTimeSec > 0)
                 {
@@ -49,17 +45,7 @@ namespace VikingEngine.DSSWars.GameObject
                             bufferGoal_minutes = foodBuffer_minutes;
                         }
                         
-                        if (food < 0)
-                        {
-                            //black market trade
-                            var cost = (int)Math.Ceiling(DssConst.FoodGoldValue_BlackMarket * -food);
-
-                            if (faction.payMoney(cost, false))
-                            {
-                                foodCosts_blackmarket.add(cost);
-                                food = 0;                                
-                            }
-                        }
+                        
 
                         float bufferGoalFood = bufferGoal_minutes * TimeExt.MinuteInSeconds * foodUpkeep;
 
@@ -82,24 +68,29 @@ namespace VikingEngine.DSSWars.GameObject
                             {
                                 foodBackOrderTimeSec += status.processTimeLengthSec * perc * 0.8f;
                             }
-                            //}
-                            //else if (perc > 0.5)
-                            //{
-                            //    foodBackOrderTimeSec += status.processTimeLengthSec * 0.5f;
-                            //}
-                            //else if (perc > 0.2)
-                            //{
-                            //    foodBackOrderTimeSec += status.processTimeLengthSec * 0.2f;
-                            //}
-                            //else if (perc > 0.05)
-                            //{
-                            //    foodBackOrderTimeSec += status.processTimeLengthSec * 0.2f;
-                            //}
+                        }
+                    }
+
+                    if (food < 0)
+                    {
+                        if (faction.player.IsPlayer())
+                        {
+                            Ref.update.AddSyncAction(new SyncAction(() =>
+                            {
+                                faction.player.GetLocalPlayer().hud.messages.armyLowFoodMessage(this);
+                            }));
+                        }
+
+                        //black market trade
+                        var cost = (int)Math.Ceiling(DssConst.FoodGoldValue_BlackMarket * -food);
+
+                        if (faction.payMoney(cost, false))
+                        {
+                            foodCosts_blackmarket.add(cost);
+                            food = 0;
                         }
                     }
                 }
-
-                //foodCosts = newFoodCosts;
             }
 
             if (!inRender_detailLayer)

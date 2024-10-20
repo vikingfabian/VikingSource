@@ -2350,6 +2350,10 @@ namespace VikingEngine
                     add(SpriteName.WarsResource_TwoHandSword);
                     add(SpriteName.WarsResource_KnightsLance);
                     add(SpriteName.WarsResource_Fuel);
+
+                    add(SpriteName.WarsStockpileAdd);
+                    add(SpriteName.WarsStockpileStop);
+                    add(SpriteName.WarsResource_LinenCloth);
                 }
 
                 currentIndex = numTilesWidth * 97;

@@ -183,7 +183,7 @@ namespace VikingEngine.DSSWars.Data
         const int Version = 2;
 
         public DateTime saveDate;
-        TimeSpan playTime;
+        public TimeSpan playTime;
         public int localPlayerCount;
         int difficulty;
 

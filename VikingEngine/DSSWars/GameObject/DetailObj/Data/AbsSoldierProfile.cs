@@ -45,8 +45,8 @@ namespace VikingEngine.DSSWars.GameObject
         /// <summary>
         /// Add to basic speed, +1 is double, -1 is half (percentage is halved)
         /// </summary>
-        public double ArmySpeedBonusLand = 0;
-        public double ArmySpeedBonusSea = 0;
+        //public double ArmySpeedBonusLand = 0;
+        //public double ArmySpeedBonusSea = 0;
 
         //public Vector3 captainPosDiff;
         //public Vector3 leftCrewPosDiff;

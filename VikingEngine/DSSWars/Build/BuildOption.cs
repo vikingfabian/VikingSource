@@ -119,7 +119,10 @@ namespace VikingEngine.DSSWars.Build
                             break;
                     }
 
-                    DssRef.state.progress.onDecorBuild_async(statue);
+                    if (city.faction.player.IsPlayer())
+                    {
+                        city.faction.player.GetLocalPlayer().statistics.onDecorBuild_async(statue);
+                    }
                     break;
             }
             //    case BuildOptionType.Farm:

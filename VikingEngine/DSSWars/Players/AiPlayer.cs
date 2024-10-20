@@ -47,6 +47,7 @@ namespace VikingEngine.DSSWars.Players
         int mainArmyState = MainArmyState_StartNew;
         int mainArmyWar = -1;
 
+        AiConscript aiConscript = AiConscript.Default;
 
         public override void writeGameState(BinaryWriter w)
         {
@@ -97,6 +98,7 @@ namespace VikingEngine.DSSWars.Players
                     break;
 
                 case FactionType.DarkLord:
+                    aiConscript = AiConscript.Orcs;
                     faction.diplomaticSide = DiplomaticSide.Dark;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     faction.growthMultiplier = 1.5f;
@@ -105,6 +107,7 @@ namespace VikingEngine.DSSWars.Players
                     break;
 
                 case FactionType.DarkFollower:
+                    aiConscript = AiConscript.Orcs;
                     faction.diplomaticSide = DiplomaticSide.Dark;
                     DssRef.settings.Faction_DarkFollower = faction.parentArrayIndex;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
@@ -123,6 +126,7 @@ namespace VikingEngine.DSSWars.Players
                     break;
 
                 case FactionType.GreenWood:
+                    aiConscript = AiConscript.Green;
                     faction.diplomaticSide = DiplomaticSide.Light;
                     DssRef.settings.Faction_GreenWood = faction.parentArrayIndex;
 
@@ -146,6 +150,7 @@ namespace VikingEngine.DSSWars.Players
                     break;
 
                 case FactionType.BearClaw:
+                    aiConscript = AiConscript.Viking;
                     faction.grouptype = FactionGroupType.Nordic;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     name = DssRef.lang.FactionName_BearClaw;
@@ -153,6 +158,7 @@ namespace VikingEngine.DSSWars.Players
                     break;
 
                 case FactionType.NordicSpur:
+                    aiConscript = AiConscript.Viking;
                     faction.grouptype = FactionGroupType.Nordic;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     name = DssRef.lang.FactionName_NordicSpur;
@@ -160,6 +166,7 @@ namespace VikingEngine.DSSWars.Players
                     break;
 
                 case FactionType.IceRaven:
+                    aiConscript = AiConscript.Viking;
                     faction.grouptype = FactionGroupType.Nordic;
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     name = DssRef.lang.FactionName_IceRaven;
@@ -167,6 +174,7 @@ namespace VikingEngine.DSSWars.Players
                     break;
 
                 case FactionType.DragonSlayer:
+                    aiConscript = AiConscript.DragonSlayer;
                     faction.grouptype = FactionGroupType.Nordic;
                     aggressionLevel = Ref.rnd.Chance(0.4) ? AggressionLevel2_RandomAttacks : AggressionLevel1_RevengeOnly;
                     name = DssRef.lang.FactionName_Dragonslayer;
@@ -174,6 +182,7 @@ namespace VikingEngine.DSSWars.Players
                     break;
 
                 case FactionType.SouthHara:
+                    aiConscript = AiConscript.Orcs;
                     faction.diplomaticSide = DiplomaticSide.Dark;
                     DssRef.settings.Faction_SouthHara = faction.parentArrayIndex;
 
@@ -192,7 +201,7 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
-                    name = "Monger";
+                    name = DssRef.lang.FactionName_Monger;
                     faction.gold += DssConst.HeadCityStartMaxWorkForce * 1000;
                     break;
 
@@ -203,7 +212,7 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
-                    name = "Hatu";
+                    name = DssRef.lang.FactionName_Hatu;
                     faction.gold += DssConst.HeadCityStartMaxWorkForce * 1000;
                     break;
 
@@ -214,7 +223,7 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
-                    name = "Destru";
+                    name = DssRef.lang.FactionName_Destru;
                     faction.gold += DssConst.HeadCityStartMaxWorkForce * 1000;
                     break;
 

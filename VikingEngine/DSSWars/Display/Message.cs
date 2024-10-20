@@ -21,12 +21,30 @@ namespace VikingEngine.DSSWars.Display
 
         List<Message> messages = new List<Message>();
         LocalPlayer player;
-        TimeInGameCountdown cityLowFoodMessageCooldown = new TimeInGameCountdown(new TimeLength(20));
+
+        static readonly TimeLength FoodWarningTimeout = new TimeLength(120);
+
+        TimeInGameCountdown cityLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
+        TimeInGameCountdown armyLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
         float screenAreaBottom;
         public MessageGroup(LocalPlayer player, int numPlayers, RichboxGuiSettings settings)
         {
             this.player = player;   
             this.settings = settings;
+        }
+
+        public void blockFoodWarning(bool block)
+        {
+            if (block)
+            {
+                cityLowFoodMessageCooldown.start(new TimeLength(100000));
+                armyLowFoodMessageCooldown.start(new TimeLength(100000));
+            }
+            else
+            {
+                cityLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
+                armyLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
+            }
         }
 
         public void onControllerClick()
@@ -70,7 +88,7 @@ namespace VikingEngine.DSSWars.Display
                 cityLowFoodMessageCooldown.start();
 
                 RichBoxContent content = new RichBoxContent();
-                Title(content, DssRef.lang.Message_CityOutOfFood_Title);
+                Title(content, DssRef.lang.Message_OutOfFood_Title);
                 content.text(DssRef.lang.Message_CityOutOfFood_Text);
 
                 content.newParagraph();
@@ -80,13 +98,36 @@ namespace VikingEngine.DSSWars.Display
                 gotoBattleButtonContent.Add(new RichBoxText(city.TypeName()));
 
                 content.Add(new RichboxButton(gotoBattleButtonContent,
-                    new RbAction1Arg<City>(goToCity, city)));
+                    new RbAction1Arg<AbsGameObject>(goToMapObject, city)));
 
                 Add(content);
             }
         }
 
-        void goToCity(City city)
+        public void armyLowFoodMessage(Army army)
+        {
+            if (armyLowFoodMessageCooldown.TimeOut())
+            {
+                armyLowFoodMessageCooldown.start();
+
+                RichBoxContent content = new RichBoxContent();
+                Title(content, DssRef.lang.Message_OutOfFood_Title);
+                content.text(DssRef.lang.Message_ArmyOutOfFood_Text);
+
+                content.newParagraph();
+
+                var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
+                ControllerInputIcons(gotoBattleButtonContent);
+                gotoBattleButtonContent.Add(new RichBoxText(army.TypeName()));
+
+                content.Add(new RichboxButton(gotoBattleButtonContent,
+                    new RbAction1Arg<AbsGameObject>(goToMapObject, army)));
+
+                Add(content);
+            }
+        }
+
+        void goToMapObject(AbsGameObject city)
         {
             player.mapControls.cameraFocus = city;
         }

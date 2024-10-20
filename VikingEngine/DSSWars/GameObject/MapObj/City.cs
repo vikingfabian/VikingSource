@@ -64,14 +64,14 @@ namespace VikingEngine.DSSWars.GameObject
         public bool hasBuilding_carpenter = false;
         public bool hasBuilding_brewery = false;
         public bool hasBuilding_smith = false;
+        public int coalpit_buildingCount = 0;
+        public int nobelHouse_buildingCount = 0;
         string name = null;
 
         IntVector2 cullingTopLeft, cullingBottomRight;
         public int cityTileRadius = 0;
         public CityCulture Culture = CityCulture.NUM_NONE;
 
-        
-        
         public Build.BuildAndExpandType autoExpandFarmType = Build.BuildAndExpandType.WheatFarm;
         bool autoBuild_Work = false;
         bool autoBuild_Farm = false;

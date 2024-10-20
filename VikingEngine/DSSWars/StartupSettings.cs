@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -12,7 +13,7 @@ namespace VikingEngine.DSSWars
         public static bool SpawnStartingArmies = PlatformSettings.DevBuild ? true :
             true;//DO NOT CHANGE
         
-        public static bool RunAI = PlatformSettings.DevBuild ? false :
+        public static bool RunAI = PlatformSettings.DevBuild ? true :
            true;//DO NOT CHANGE
 
         public static bool EndlessResources = PlatformSettings.DevBuild ? false : 

@@ -34,7 +34,9 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                 content.Add(new RichBoxBeginTitle(1));
 
                 string typeName = currentStatus.Recruitment() ? DssRef.lang.BuildingType_Recruitment : DssRef.lang.BuildingType_Postal;
-                content.Add(new RichBoxText(typeName + " " + currentStatus.idAndPosition.ToString()));
+                var title = new RichBoxText(typeName + " " + currentStatus.idAndPosition.ToString());
+                title.overrideColor = HudLib.TitleColor_TypeName;
+                content.Add(title);
                 content.space();
                 content.Add(new RichboxButton(new List<AbsRichBoxMember>
                     { new RichBoxSpace(), new RichBoxText(DssRef.lang.Hud_EndSessionIcon),new RichBoxSpace(), },
@@ -200,7 +202,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
             else
             {
 
-                content.h2(DssRef.lang.Delivery_ListTitle);
+                content.h2(DssRef.lang.Delivery_ListTitle).overrideColor = HudLib.TitleColor_Action;
                 if (city.deliveryServices.Count == 0)
                 {
                     //EMPTY

@@ -37,13 +37,12 @@ namespace VikingEngine.DSSWars.Build
     {
        
         public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
-        public static readonly BuildAndExpandType[] AvailableBuildTypes = {
+        public static readonly List<BuildAndExpandType> AvailableBuildTypes = new List<BuildAndExpandType> {
             BuildAndExpandType.WorkerHuts,
             BuildAndExpandType.Barracks,
             BuildAndExpandType.Nobelhouse,
             BuildAndExpandType.Postal,
             BuildAndExpandType.Recruitment,
-            BuildAndExpandType.Tavern,
             BuildAndExpandType.Storehouse,
             BuildAndExpandType.Brewery,
             BuildAndExpandType.Cook,

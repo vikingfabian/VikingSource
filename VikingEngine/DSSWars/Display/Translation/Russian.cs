@@ -1275,7 +1275,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Resource_TypeName_Beer => "пиво";
         public override string Resource_TypeName_Wheat => "пшеница";
         public override string Resource_TypeName_Linen => "лен";
-        public override string Resource_TypeName_SkinAndLinen => "кожа и лен";
+        //public override string Resource_TypeName_SkinAndLinen => "кожа и лен";
         public override string Resource_TypeName_IronOre => "железная руда";
         public override string Resource_TypeName_GoldOre => "золотая руда";
         public override string Resource_TypeName_Iron => "железо";
@@ -1460,7 +1460,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string Info_MinuteAverage => "Значение представляет собой среднее за последнюю минуту.";
 
-        public override string Message_CityOutOfFood_Title => "Закончилась еда";
+        public override string Message_OutOfFood_Title => "Закончилась еда";
         public override string Message_CityOutOfFood_Text => "Дорогостоящая еда будет куплена на черном рынке. Рабочие будут умирать от голода, когда у вас закончатся деньги.";
 
         public override string Hud_EndSessionIcon => "X";
@@ -1551,6 +1551,26 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Tutorial_ZoomOutDiplomacy => "Уменьшите масштаб для дипломатического обзора";
         public override string Tutorial_ImproveRelations => "Улучшите отношения с соседней фракцией";
         public override string Tutorial_MissionComplete_Title => "Задание выполнено!";
-        public override string Tutorial_MissionComplete_Unlocks => "Новые функции разблокированы"; 
+        public override string Tutorial_MissionComplete_Unlocks => "Новые функции разблокированы";
+
+        //patch1
+        public override string Resource_ReachedStockpile => "Достигнут резервный запас цели";
+
+        public override string BuildingType_ResourceMine => "{0} шахта";
+
+        public override string Resource_TypeName_BogIron => "Болотная железная руда";
+
+        public override string Resource_TypeName_Coal => "Уголь";
+
+        public override string Language_XUpkeepIsY => "{0} содержание: {1}";
+        public override string Language_XCountIsY => "{0} количество: {1}";
+
+        public override string Message_ArmyOutOfFood_Text => "Дорогая еда будет закупаться на черном рынке. Голодные солдаты дезертируют, когда закончатся деньги.";
+
+        public override string Info_ArmyFood => "Армии будут пополнять запасы еды из ближайшего дружественного города. Пищу можно покупать у других фракций. Во враждебных регионах еду можно купить только на черном рынке.";
+
+        public override string FactionName_Monger => "Торговец";
+        public override string FactionName_Hatu => "Хату";
+        public override string FactionName_Destru => "Дестру";
     }
 }

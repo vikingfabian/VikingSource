@@ -119,7 +119,7 @@ namespace VikingEngine.DSSWars.Display
         }
         public void resourcesToMenu(RichBoxContent content)
         {
-            if (player.tutorial == null)
+            if (player.tutorial == null || player.tutorial.DisplayStockpile())
             {
                 for (ResourcesSubTab resourcesSubTab = 0; resourcesSubTab < ResourcesSubTab.NUM; ++resourcesSubTab)
                 {
@@ -148,7 +148,7 @@ namespace VikingEngine.DSSWars.Display
             switch (player.resourcesSubTab)
             {
                 case ResourcesSubTab.Overview:
-                    content.h1(DssRef.lang.MenuTab_Resources);
+                    content.h1(DssRef.lang.MenuTab_Resources).overrideColor = HudLib.TitleColor_Label;
                     content.newLine();
 
                     content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
@@ -212,12 +212,12 @@ namespace VikingEngine.DSSWars.Display
                     city.res_heavyArmor.toMenu(content, ItemResourceType.HeavyArmor, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftHeavyArmor);
 
-                    if (reachedBuffer)
-                    {
-                        GroupedResource.BufferIconInfo(content);
-                    }
+                    //if (reachedBuffer)
+                    //{
+                    //    GroupedResource.BufferIconInfo(content);
+                    //}
                     content.Add(new RichBoxSeperationLine());
-
+                    GroupedResource.BufferIconInfo(content);
                     ResourceLib.ConvertGoldOre.toMenu(content, city);
                     //content.text("1 gold ore => " + DssConst.GoldOreSellValue.ToString() + "gold");
                     {
@@ -233,8 +233,8 @@ namespace VikingEngine.DSSWars.Display
                     break;
 
                 case ResourcesSubTab.Stockpile:
-                    content.h1(DssRef.lang.Resource_Tab_Stockpile);
-               
+                    content.h1(DssRef.lang.Resource_Tab_Stockpile).overrideColor = HudLib.TitleColor_Label;
+
                     stockpile(ItemResourceType.Wood_Group);
                     stockpile(ItemResourceType.Stone_G);
                     stockpile(ItemResourceType.RawFood_Group);
@@ -257,7 +257,7 @@ namespace VikingEngine.DSSWars.Display
                     stockpile(ItemResourceType.HeavyArmor);
 
                     HudLib.Description(content, DssRef.lang.Resource_StockPile_Info);
-
+                    GroupedResource.BufferIconInfo(content);
                     break;
             }
 
@@ -270,11 +270,11 @@ namespace VikingEngine.DSSWars.Display
                 var res = city.GetGroupedResource(item);
 
                 content.newLine();
-                var icon = new RichBoxImage(SpriteName.EditorForwardArrow);
-                if (res.amount >= res.goalBuffer)
-                {
-                    icon.color = Color.OrangeRed;
-                }
+                var icon = new RichBoxImage(res.amount >= res.goalBuffer ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd);
+                //if (res.amount >= res.goalBuffer)
+                //{
+                //    icon.color = Color.OrangeRed;
+                //}
                 content.Add(icon);
                 content.Add(new RichBoxImage(ResourceLib.Icon(item)));
                 content.space();
@@ -426,7 +426,11 @@ namespace VikingEngine.DSSWars.Display
                         reqText = DssRef.lang.BuildingType_Smith;
                         available = city.hasBuilding_smith;
                         break;
-                    
+                    case CraftRequirement.CoalPit:
+                        reqText = DssRef.lang.BuildingType_CoalPit;
+                        available = city.coalpit_buildingCount > 0;
+                        break;
+
                     default:
                         throw new NotImplementedException();
                 }
@@ -441,7 +445,7 @@ namespace VikingEngine.DSSWars.Display
             content.h2(DssRef.lang.MenuTab_Resources).overrideColor = HudLib.TitleColor_Label;
             blueprint.listResources(content, city, optionalBp);
 
-            player.hud.tooltip.create(player, content, true);
+            player.hud.tooltip.create(player, content, true, blueprint.tooltipId);
         }
 
         void conscriptTab(RichBoxContent content)

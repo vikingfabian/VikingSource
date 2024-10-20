@@ -23,6 +23,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         int resultAmount;
 
         public CraftRequirement requirement;
+        public int tooltipId = -1;
 
         public CraftBlueprint(CraftResultType resultType, int resultSubType, int resultAmount, UseResource[] resources, CraftRequirement requirement = CraftRequirement.None)
         {
@@ -205,10 +206,10 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 }
             }
 
-            if (reachedBuffer)
-            {
-                GroupedResource.BufferIconInfo(content);
-            }
+            //if (reachedBuffer)
+            //{
+            //    GroupedResource.BufferIconInfo(content);
+            //}
         }
     }
 
@@ -230,6 +231,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         Carpenter,
         Brewery,
         Smith,
+        CoalPit,
     }
 
     enum CraftResultType
