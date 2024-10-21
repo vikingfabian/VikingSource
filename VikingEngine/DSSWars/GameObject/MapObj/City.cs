@@ -589,6 +589,7 @@ namespace VikingEngine.DSSWars.GameObject
             groupRadius = 0.6f;
 
             initEconomy(newGame);
+            CalcRecruitToTile();
 
             if (newGame)
             {
@@ -1517,7 +1518,7 @@ namespace VikingEngine.DSSWars.GameObject
         
         public Army recruitToClosestArmy()
         {
-            return faction.ClosestFriendlyArmy(position, 1.5f);
+            return faction.ClosestFriendlyArmy(position, 2.6f);
         }
 
         public override City GetCity()

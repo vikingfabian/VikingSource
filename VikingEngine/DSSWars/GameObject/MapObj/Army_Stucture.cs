@@ -122,7 +122,7 @@ namespace VikingEngine.DSSWars.GameObject
             //army.armyColumnWidth
 
             Vector2 relPos = new Vector2();
-            Vector2 centerWp = walkToPos.Vec + VectorExt.V2Half;
+            Vector2 centerWp = walkToPos.Vec;
 
             column(Col_Center + PosXAdd, relPos, out float largestWidth, -0.5f);
 

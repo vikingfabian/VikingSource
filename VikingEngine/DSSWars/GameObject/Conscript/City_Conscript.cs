@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int selectedConscript = -1;
         public List<BarracksStatus> conscriptBuildings = new List<BarracksStatus>();
         Time conscriptDelay = Time.Zero;
-
+        IntVector2 recruitToTile;
         public void async_conscriptUpdate(float time)
         {
             if (conscriptDelay.HasTime)
@@ -170,9 +170,9 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (army == null)
             {
-                IntVector2 onTile = DssRef.world.GetFreeTile(tilePos);
+                //IntVector2 onTile = DssRef.world.GetFreeTile(tilePos);
 
-                army = faction.NewArmy(onTile);
+                army = faction.NewArmy(recruitToTile);
             }
 
             SoldierConscriptProfile soldierProfile = new SoldierConscriptProfile()
@@ -203,9 +203,9 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (army == null)
             {
-                IntVector2 onTile = DssRef.world.GetFreeTile(tilePos);
+                //IntVector2 onTile = DssRef.world.GetFreeTile(tilePos);
 
-                army = faction.NewArmy(onTile);
+                army = faction.NewArmy(recruitToTile);
             }
 
             SoldierConscriptProfile soldierProfile = new SoldierConscriptProfile()
@@ -223,6 +223,44 @@ namespace VikingEngine.DSSWars.GameObject
                 new SoldierGroup(army, soldierProfile);
             }
             army?.OnSoldierPurchaseCompleted();
+        }
+
+        public void CalcRecruitToTile()
+        {
+            foreach (IntVector2 dir in IntVector2.Dir4Array)
+            {
+                IntVector2 pos = tilePos + dir * 2;
+                Tile t = DssRef.world.tileGrid.Get(pos);
+                if (t.IsLand())
+                {
+                    recruitToTile = pos;
+                    return;
+                }
+            }
+
+            ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(tilePos, 2));
+
+            while (edgeLoop.Next())
+            {
+                Tile t = DssRef.world.tileGrid.Get(edgeLoop.Position);
+                if (t.IsLand())
+                {
+                    recruitToTile = edgeLoop.Position;
+                    return;
+                }
+            }
+            foreach (IntVector2 dir in IntVector2.Dir4Array)
+            {
+                IntVector2 pos = tilePos + dir;
+                Tile t = DssRef.world.tileGrid.Get(pos);
+                if (t.IsLand())
+                {
+                    recruitToTile = pos;
+                    return;
+                }
+            }
+            Debug.LogError("GetFreeTile" + tilePos.ToString());
+            recruitToTile = tilePos;
         }
 
         public void createStartupBarracks()
