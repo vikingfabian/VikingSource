@@ -243,6 +243,9 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.HardWood:
                     return res_wood.needMore();
 
+                case ItemResourceType.NONE:
+                    return false;
+
                 default:
                     throw new NotImplementedException();
             }
