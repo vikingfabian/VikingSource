@@ -16,6 +16,7 @@
 
 
 #Todo (nästa patch)#
+ändra work prio till: food farming, fuel farming, linen farming
 max distance på delivery
 model-storage house
 model-bog iron, ineffektiv järn samlande

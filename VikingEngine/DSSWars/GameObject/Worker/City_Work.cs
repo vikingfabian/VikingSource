@@ -31,19 +31,19 @@ namespace VikingEngine.DSSWars.GameObject
         //}
         static List<int> idleWorkers = new List<int>(64);
 
-        bool resourceHasSafeGuard(ref GroupedResource resource,ref WorkPriority work)
-        {
-            return work.safeguard && resource.amount <= DssConst.WorkSafeGuardAmount;
-        }
+        //bool resourceHasSafeGuard(ref GroupedResource resource,ref WorkPriority work)
+        //{
+        //    return work.safeguard && resource.amount <= DssConst.WorkSafeGuardAmount;
+        //}
 
-        int resourceSafeGuardPrio(ref GroupedResource resource, ref WorkPriority work)
-        {
-            if (work.safeguard && resource.amount <= DssConst.WorkSafeGuardAmount)
-            {
-                return WorkTemplate.SafeGuardPrio;
-            }
-            return work.value;
-        }
+        //int resourceSafeGuardPrio(ref GroupedResource resource, ref WorkPriority work)
+        //{
+        //    if (work.safeguard && resource.amount <= DssConst.WorkSafeGuardAmount)
+        //    {
+        //        return WorkTemplate.SafeGuardPrio;
+        //    }
+        //    return work.value;
+        //}
 
         public void async_workUpdate()
         {
@@ -340,8 +340,10 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 //PICK UP
-                if (workTemplate.move.HasPrio() ||
-                    resourceHasSafeGuard(ref res_food, ref workTemplate.farming))
+                if (workTemplate.move.HasPrio()
+                    //||
+                    //resourceHasSafeGuard(ref res_food, ref workTemplate.farming)
+                    )
                 {
                     foreach (var pos in CityStructure.Singleton.ResourceOnGround)
                     {

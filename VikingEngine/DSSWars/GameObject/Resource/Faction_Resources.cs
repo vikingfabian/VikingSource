@@ -76,18 +76,18 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public void setWorkPrioSafeGuard(bool set, WorkPriorityType priorityType, City city)
-        {
-            if (city != null)
-            {
-                city.workTemplate.setWorkPrioSafeGuard(set, priorityType);
-            }
-            else
-            {
-                workTemplate.setWorkPrioSafeGuard(set, priorityType);
-                refreshCityWork();
-            }
-        }
+        //public void setWorkPrioSafeGuard(bool set, WorkPriorityType priorityType, City city)
+        //{
+        //    if (city != null)
+        //    {
+        //        city.workTemplate.setWorkPrioSafeGuard(set, priorityType);
+        //    }
+        //    else
+        //    {
+        //        workTemplate.setWorkPrioSafeGuard(set, priorityType);
+        //        refreshCityWork();
+        //    }
+        //}
 
         public void refreshCityWork()
         { 

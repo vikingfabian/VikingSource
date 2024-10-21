@@ -83,6 +83,12 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource res_mediumArmor = new GroupedResource() { amount = 2, goalBuffer = 100 };
         public GroupedResource res_heavyArmor = new GroupedResource() { amount = 0, goalBuffer = 100 };
 
+        public bool res_wood_safeguard = true;
+        public bool res_fuel_safeguard = true;
+        public bool res_rawfood_safeguard = true;
+        public bool res_food_safeguard = true;
+
+
         //bool useLocalTrade
         public TradeTemplate tradeTemplate = new TradeTemplate();
 

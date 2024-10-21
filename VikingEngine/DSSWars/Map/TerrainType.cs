@@ -35,6 +35,8 @@ namespace VikingEngine.DSSWars.Map
         WheatFarm,
         LinenFarm,
         BogIron,
+        HempFarm,
+        RapeSeedFarm,
         NUM_NONE
     }
 

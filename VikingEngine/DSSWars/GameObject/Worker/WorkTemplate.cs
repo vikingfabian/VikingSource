@@ -18,28 +18,28 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         public const int MaxPrio = 5;
         public const int SafeGuardPrio = MaxPrio + 1;
 
-        public WorkPriority move = new WorkPriority(3, false);
-        public WorkPriority wood = new WorkPriority(2, true);
-        public WorkPriority stone = new WorkPriority(2, false);
-        public WorkPriority craft_fuel = new WorkPriority(4, true);
-        public WorkPriority craft_food = new WorkPriority(4, true);
-        public WorkPriority craft_beer = new WorkPriority(1, false);
-        public WorkPriority craft_iron = new WorkPriority(3, false);
-        public WorkPriority craft_sharpstick = new WorkPriority(1, false);
-        public WorkPriority craft_sword = new WorkPriority(0, false);
-        public WorkPriority craft_twohandsword = new WorkPriority(0, false);
-        public WorkPriority craft_knightslance = new WorkPriority(0, false);
-        public WorkPriority craft_bow = new WorkPriority(0, false);
-        public WorkPriority craft_longbow = new WorkPriority(0, false);
-        public WorkPriority craft_ballista= new WorkPriority(0, false);
-        public WorkPriority craft_lightarmor = new WorkPriority(1, false);
-        public WorkPriority craft_mediumarmor = new WorkPriority(0, false);
-        public WorkPriority craft_heavyarmor = new WorkPriority(0, false);
-        public WorkPriority farming = new WorkPriority(2, true);
-        public WorkPriority bogiron = new WorkPriority(1, false);
-        public WorkPriority mining = new WorkPriority(3, false);
-        public WorkPriority trading = new WorkPriority(2, false);
-        public WorkPriority autoBuild = new WorkPriority(1, false);
+        public WorkPriority move = new WorkPriority(3);
+        public WorkPriority wood = new WorkPriority(2);
+        public WorkPriority stone = new WorkPriority(2);
+        public WorkPriority craft_fuel = new WorkPriority(4);
+        public WorkPriority craft_food = new WorkPriority(4);
+        public WorkPriority craft_beer = new WorkPriority(1);
+        public WorkPriority craft_iron = new WorkPriority(3);
+        public WorkPriority craft_sharpstick = new WorkPriority(1);
+        public WorkPriority craft_sword = new WorkPriority(0);
+        public WorkPriority craft_twohandsword = new WorkPriority(0);
+        public WorkPriority craft_knightslance = new WorkPriority(0);
+        public WorkPriority craft_bow = new WorkPriority(0);
+        public WorkPriority craft_longbow = new WorkPriority(0);
+        public WorkPriority craft_ballista= new WorkPriority(0);
+        public WorkPriority craft_lightarmor = new WorkPriority(1);
+        public WorkPriority craft_mediumarmor = new WorkPriority(0);
+        public WorkPriority craft_heavyarmor = new WorkPriority(0);
+        public WorkPriority farming = new WorkPriority(2);
+        public WorkPriority bogiron = new WorkPriority(1);
+        public WorkPriority mining = new WorkPriority(3);
+        public WorkPriority trading = new WorkPriority(2);
+        public WorkPriority autoBuild = new WorkPriority(1);
 
         public WorkTemplate()
         {

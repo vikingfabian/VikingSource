@@ -258,7 +258,7 @@ namespace VikingEngine.DSSWars.Build
 
             content.newParagraph();
             
-            city.workTemplate.autoBuild.toHud(player, content, DssRef.lang.Work_OrderPrioTitle, SpriteName.MenuPixelIconSettings, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, player.faction, city, false);
+            city.workTemplate.autoBuild.toHud(player, content, DssRef.lang.Work_OrderPrioTitle, SpriteName.MenuPixelIconSettings, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, player.faction, city);
         }
 
         void modeClick(SelectTileResult set)
