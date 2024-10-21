@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Valve.Steamworks;
+using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Players.Orders;
@@ -14,9 +16,13 @@ namespace VikingEngine.DSSWars.Display
 {
     class Tooltip
     {
+        public const int Food_BlueprintId = 1;
+
         Graphics.ImageGroup images = new Graphics.ImageGroup(128);
         public bool refresh = false;
         Vector2 size;
+        public int tooltip_id = int.MinValue;
+        public int tooltip_id_timesec;
         public void updateMapTip(Players.LocalPlayer player, bool refreshTime)
         {
             if (player.diplomacyMap == null)
@@ -126,7 +132,7 @@ namespace VikingEngine.DSSWars.Display
                 switch (subTile.selectTileResult)
                 {
                     case Players.SelectTileResult.Build:
-                        title = new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Build_PlaceBuilding, player.BuildControls.placeBuildingType));
+                        title = new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Build_PlaceBuilding, BuildLib.BuildOptions[(int)player.BuildControls.placeBuildingType].Label()));
                         content.Add(title);
                         content.newLine();
                         //CraftBlueprint blueprint = ResourceLib.Blueprint(player.BuildControls.placeBuildingType);
@@ -310,7 +316,7 @@ namespace VikingEngine.DSSWars.Display
             create(player, content, false);
         }
 
-        public void create(Players.LocalPlayer player, List<AbsRichBoxMember> content, bool menuToolTip)
+        public void create(Players.LocalPlayer player, List<AbsRichBoxMember> content, bool menuToolTip, int tooltip_id = -1)
         {
             images.DeleteAll();
 
@@ -332,6 +338,13 @@ namespace VikingEngine.DSSWars.Display
             images.Add(richBox);
 
             baseUpdate(player, menuToolTip);
+
+            ++tooltip_id_timesec;
+            if (this.tooltip_id != tooltip_id)
+            { 
+                this.tooltip_id = tooltip_id;
+                tooltip_id_timesec = 0;
+            }
         }
     }
 }

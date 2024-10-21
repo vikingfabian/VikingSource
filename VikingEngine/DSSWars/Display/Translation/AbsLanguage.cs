@@ -440,7 +440,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string Resource_TypeName_Beer { get; }
         public abstract string Resource_TypeName_Wheat { get; }
         public abstract string Resource_TypeName_Linen { get; }
-        public abstract string Resource_TypeName_SkinAndLinen { get; }
+        //public abstract string Resource_TypeName_SkinAndLinen { get; }
         public abstract string Resource_TypeName_IronOre { get; }
         public abstract string Resource_TypeName_GoldOre { get; }
         public abstract string Resource_TypeName_Iron { get; }
@@ -717,5 +717,18 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string Tutorial_ImproveRelations { get; }
         public abstract string Tutorial_MissionComplete_Title { get; }
         public abstract string Tutorial_MissionComplete_Unlocks { get; }
+
+        //patch1
+        public abstract string Resource_ReachedStockpile { get; }
+        public abstract string BuildingType_ResourceMine { get; }
+        public abstract string Resource_TypeName_BogIron { get; }
+        public abstract string Resource_TypeName_Coal { get; }
+        public abstract string Language_XUpkeepIsY { get; }
+        public abstract string Language_XCountIsY { get; }
+        public abstract string Message_ArmyOutOfFood_Text { get; }
+        public abstract string Info_ArmyFood { get; }
+        public abstract string FactionName_Monger { get; }
+        public abstract string FactionName_Hatu { get; }
+        public abstract string FactionName_Destru { get; }
     }
 }

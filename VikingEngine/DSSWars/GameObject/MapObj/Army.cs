@@ -79,6 +79,7 @@ namespace VikingEngine.DSSWars.GameObject
             name = Data.NameGenerator.ArmyName(id);
             position = WP.ToMapPos(startPosition);
             tilePos = startPosition;
+            setMaxFood();
 
             init(faction);
         }
@@ -149,6 +150,11 @@ namespace VikingEngine.DSSWars.GameObject
             return DssRef.lang.UnitType_Army + " (" + parentArrayIndex.ToString() +   ")";//return "Army" + parentArrayIndex.ToString();
         }
 
+        public override SpriteName TypeIcon()
+        {
+            return SpriteName.WarsUnitIcon_Soldier;
+        }
+
         public override string Name()
         {
             return name;//return "Army" + parentArrayIndex.ToString();
@@ -193,7 +199,7 @@ namespace VikingEngine.DSSWars.GameObject
                     HudLib.InfoButton(args.content, new RbAction(() =>
                     {
                         RichBoxContent content = new RichBoxContent();
-                        HudLib.Description(content, DssRef.todoLang.Info_ArmyFood);
+                        HudLib.Description(content, DssRef.lang.Info_ArmyFood);
                         args.player.hud.tooltip.create(args.player, content, true);
                     }));
                     args.content.text(string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.OneDecimal(foodUpkeep)));
@@ -962,12 +968,6 @@ namespace VikingEngine.DSSWars.GameObject
         {
             //Gain a portion of deserters on all armies
             int totalDeserters = desertSoldiers();
-
-            //var armiesCounter = armies.counter();
-            //while (armiesCounter.Next())
-            //{
-
-
 
             if (totalDeserters > 0 &&
                 faction.player.IsPlayer() && 

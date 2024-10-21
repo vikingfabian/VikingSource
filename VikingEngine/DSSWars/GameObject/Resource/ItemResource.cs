@@ -113,6 +113,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         Mithril,
         
         Bow,
+        LongBow,
         
         SharpStick,
         Sword,
@@ -147,11 +148,12 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         KnightsLance,
         TwoHandSword,
 
-        NUM,
-
         Wood_Group,
         RawFood_Group,
         SkinLinen_Group,
         Men,
+        
+
+        NUM,
     }
 }

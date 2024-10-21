@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars
         public static readonly Color OffStandardOrange = new Color(200, 128, 0);
         public static readonly Color InfoYellow_Dark = new Color(160, 128, 0);
         public static readonly Color InfoYellow_Light = new Color(255, 255, 0);
-
+        public static readonly Color InfoYellow_BG = new Color(80, 64, 0);
         public const ImageLayers StoryContentLayer = ImageLayers.Lay1_Front;
         public const ImageLayers StoryBgLayer = ImageLayers.Lay1_Back;
 
@@ -62,6 +62,8 @@ namespace VikingEngine.DSSWars
             Engine.Screen.TextBreadHeight * TextToIconSz, 1.1f);
             RbSettings.head1.Font = LoadedFont.Bold;
             RbSettings.head1.Color = Color.LightGray;
+            RbSettings.checkOn = SpriteName.warsCheckYes;
+            RbSettings.checkOff = SpriteName.warsCheckNo;
             //RbSettings.tabSelected.BgColor = new Color(126, 56, 23);
             //RbSettings.tabSelected.Color = new Color(222, 156, 125);
             //RbSettings.tabNotSelected.BgColor = new Color(114, 73, 53);
@@ -145,7 +147,7 @@ namespace VikingEngine.DSSWars
 
         public static SpriteName CheckImage(bool value)
         { 
-            return value? SpriteName.cmdHudCheckOn : SpriteName.cmdHudCheckOff;
+            return value? SpriteName.warsCheckYes : SpriteName.warsCheckNo;
         }
 
         public static string Date(DateTime date)
@@ -224,6 +226,14 @@ namespace VikingEngine.DSSWars
             button.overrideBgColor = Color.DarkRed;
 
             content.Add(button);
+        }
+
+        public static RichBoxImage BulletPoint(RichBoxContent content)
+        {
+            var dot = new RichBoxImage(SpriteName.warsBulletPoint, 0.8f, 0f, 0.3f);
+            //dot.color = Color.DarkGray;
+            content.Add(dot);
+            return dot;
         }
     }
 }

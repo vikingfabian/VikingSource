@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject.Worker;
 using VikingEngine.Engine;
 
@@ -28,7 +29,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             {
                 new UseResource(ItemResourceType.Fuel_G, 10),
                 new UseResource(ItemResourceType.Wood_Group, 10),
-            }
+            }, CraftRequirement.CoalPit
         );
 
         public static readonly CraftBlueprint CraftFood1 = new CraftBlueprint(
@@ -41,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 new UseResource(ItemResourceType.Fuel_G, 5),
                 new UseResource(ItemResourceType.RawFood_Group, 25)
             }
-        );
+        ) { tooltipId = Tooltip.Food_BlueprintId };
 
         public static readonly CraftBlueprint CraftFood2 = new CraftBlueprint(
             CraftResultType.Resource,
@@ -53,9 +54,9 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 new UseResource(ItemResourceType.Fuel_G, 5),
                 new UseResource(ItemResourceType.RawFood_Group, 25)
             }
-        );
+        ) { tooltipId = Tooltip.Food_BlueprintId };
 
-        public static readonly CraftBlueprint CraftBeer = new CraftBlueprint(
+    public static readonly CraftBlueprint CraftBeer = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.Beer,
            10,
@@ -140,6 +141,16 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 new UseResource(ItemResourceType.SkinLinen_Group, 2),
             }
         );
+        public static readonly CraftBlueprint CraftLongBow = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.Bow,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Wood_Group, 4),
+                new UseResource(ItemResourceType.SkinLinen_Group, 3),
+            }, CraftRequirement.Carpenter
+        );
 
         public static readonly CraftBlueprint CraftBallista = new CraftBlueprint(
             CraftResultType.Resource,
@@ -209,6 +220,17 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 new UseResource(ItemResourceType.Stone_G, 20)
             }
         );
+
+        public static readonly CraftBlueprint CraftStorehouse = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.Storehouse,
+           1,
+           new UseResource[]
+           {
+                new UseResource(ItemResourceType.Wood_Group, 60),
+                new UseResource(ItemResourceType.Stone_G, 40)
+           }
+       );
 
         public static readonly CraftBlueprint CraftBrewery = new CraftBlueprint(
             CraftResultType.Building,
@@ -438,7 +460,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                     return SpriteName.rtsUpkeep;
 
                 case ResourceType.Worker:
-                    return SpriteName.WarsWorkerSub;
+                    return SpriteName.WarsWorker;
 
                 case ResourceType.DiplomaticPoint:
                     return SpriteName.WarsDiplomaticSub;
@@ -484,6 +506,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                     return SpriteName.WarsResource_LightArmor;
                 case ItemResourceType.Linen:
                     return SpriteName.WarsResource_Linen;
+                case ItemResourceType.LongBow:
+                    return SpriteName.WarsResource_Longbow;
                 case ItemResourceType.Hen:
                 case ItemResourceType.Pig:
                     return SpriteName.WarsResource_RawMeat;
@@ -492,7 +516,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 case ItemResourceType.SharpStick:
                     return SpriteName.WarsResource_Sharpstick;
                 case ItemResourceType.SkinLinen_Group:
-                    return SpriteName.WarsResource_SkinAndLinen;
+                    return SpriteName.WarsResource_LinenCloth;
                 case ItemResourceType.Stone_G:
                     return SpriteName.WarsResource_Stone;
                 case ItemResourceType.Sword:

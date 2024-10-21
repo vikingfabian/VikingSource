@@ -14,11 +14,13 @@ namespace VikingEngine.DSSWars.Map
         public static readonly CityStructure Singleton = new CityStructure();
 
         public List<IntVector2> FoodSpots_workupdate = new List<IntVector2>(4);
+        public List<IntVector2> StoragePoints_workupdate = new List<IntVector2>(4);
         public List<IntVector2> Trees = new List<IntVector2>(20);
         public List<IntVector2> Stones = new List<IntVector2>(20);
         public List<IntVector2> FarmPlant = new List<IntVector2>(20);
         public List<IntVector2> FarmGather = new List<IntVector2>(20);
         public List<IntVector2> AnimalPens = new List<IntVector2>(20);
+        public List<IntVector2> BogIron = new List<IntVector2>(20);
         public List<IntVector2> Mines = new List<IntVector2>(20);
         public List<IntVector2> CraftStation = new List<IntVector2>(20);
         public List<IntVector2> EmptyLand = new List<IntVector2>(2);
@@ -32,7 +34,7 @@ namespace VikingEngine.DSSWars.Map
             IntVector2 topleft;
             ForXYLoop subTileLoop;
 
-            int wood = 2;
+            int wood = 4;
             int stone = 2;
 
             for (int radius = 2; radius <= city.cityTileRadius; ++radius)
@@ -101,18 +103,24 @@ namespace VikingEngine.DSSWars.Map
             IntVector2 topleft;
             ForXYLoop subTileLoop;
             FoodSpots_workupdate.Clear();
+            StoragePoints_workupdate.Clear();
             Trees.Clear();
             Stones.Clear();
             FarmPlant.Clear();
             FarmGather.Clear();
             AnimalPens.Clear();
+            BogIron.Clear();
             Mines.Clear();
             CraftStation.Clear();
             EmptyLand.Clear();
             ResourceOnGround.Clear();
             nobelHouseCount = 0;
+            int coalPitCount = 0;
 
-            FoodSpots_workupdate.Add(WP.ToSubTilePos_Centered(city.tilePos));
+
+            IntVector2 cityHall = WP.ToSubTilePos_Centered(city.tilePos);
+            FoodSpots_workupdate.Add(cityHall);
+            StoragePoints_workupdate.Add(cityHall);
 
             //Cirkle outward from city to find resources
             for (int radius = 0; radius <= city.cityTileRadius; ++radius)
@@ -135,10 +143,10 @@ namespace VikingEngine.DSSWars.Map
 
                                 if (subTile.collectionPointer >= 0)
                                 {
-                                    if (ResourceOnGround.Count < workerCount)
-                                    { 
+                                    //if (ResourceOnGround.Count < workerCount)
+                                    //{ 
                                         ResourceOnGround.Add(subTileLoop.Position);
-                                    }
+                                    //}
                                 }
 
                                 switch (subTile.mainTerrain)
@@ -179,6 +187,12 @@ namespace VikingEngine.DSSWars.Map
                                                     FarmGather.Add(subTileLoop.Position);
                                                 }
                                                 break;
+                                            case TerrainSubFoilType.BogIron:
+                                                if (BogIron.Count < workerCount)
+                                                {
+                                                    BogIron.Add(subTileLoop.Position);
+                                                }
+                                                break;
                                         }
 
                                         break;
@@ -208,6 +222,9 @@ namespace VikingEngine.DSSWars.Map
                                             case TerrainBuildingType.Tavern:
                                                 FoodSpots_workupdate.Add(subTileLoop.Position);
                                                 break;
+                                            case TerrainBuildingType.Storehouse:
+                                                StoragePoints_workupdate.Add(subTileLoop.Position);
+                                                break;
                                             case TerrainBuildingType.Carpenter:
                                                 city.hasBuilding_carpenter = true;
                                                 CraftStation.Add(subTileLoop.Position);
@@ -216,9 +233,14 @@ namespace VikingEngine.DSSWars.Map
                                                 city.hasBuilding_brewery = true;
                                                 CraftStation.Add(subTileLoop.Position);
                                                 break;
+                                            
+                                            case TerrainBuildingType.Work_CoalPit:
+                                                ++coalPitCount;
+                                                CraftStation.Add(subTileLoop.Position);
+                                                break;
+
                                             case TerrainBuildingType.Work_Cook:
                                             case TerrainBuildingType.Work_Bench:
-                                            case TerrainBuildingType.Work_CoalPit:
                                                 CraftStation.Add(subTileLoop.Position);
                                                 break;
                                             case TerrainBuildingType.Work_Smith:
@@ -248,6 +270,7 @@ namespace VikingEngine.DSSWars.Map
 
             //Complete
             city.nobelHouse_buildingCount = nobelHouseCount;
+            city.coalpit_buildingCount = coalPitCount;
         }
 
         public IntVector2 eatPosition(IntVector2 workerSubtile)
@@ -260,6 +283,24 @@ namespace VikingEngine.DSSWars.Map
                 int dist = workerSubtile.SideLength(pos);
                 if (dist < closestDist)
                 { 
+                    closestDist = dist;
+                    result = pos;
+                }
+            }
+
+            return result;
+        }
+
+        public IntVector2 storePosition(IntVector2 workerSubtile)
+        {
+            int closestDist = int.MaxValue;
+            IntVector2 result = IntVector2.MinValue;
+
+            foreach (var pos in StoragePoints_workupdate)
+            {
+                int dist = workerSubtile.SideLength(pos);
+                if (dist < closestDist)
+                {
                     closestDist = dist;
                     result = pos;
                 }

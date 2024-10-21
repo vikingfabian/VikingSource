@@ -363,6 +363,9 @@ namespace VikingEngine.DSSWars.Map
                         addFoliage(new Foliage(LootFest.VoxelModelName.fol_farmculture, frame, wp, 0.1f));
                     }
                     break;
+                case TerrainSubFoilType.BogIron:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 0, wp, 0.08f));
+                    break;
                 default:
                     throw new NotImplementedException();
             }
@@ -399,7 +402,10 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_workerhut, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
                 case TerrainBuildingType.Tavern:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_tavern, rnd, wp, WorldData.SubTileWidth * 1f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_tavern, rnd, wp, WorldData.SubTileWidth * 0.9f));
+                    break;
+                case TerrainBuildingType.Storehouse:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_storehouse, rnd, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.Postal:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, rnd, wp, WorldData.SubTileWidth * 1f));
@@ -467,6 +473,7 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainBuildingType.Nobelhouse:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_nobelhouse, 1, wp, WorldData.SubTileWidth * 1.3f));
                     break;
+
 
                 default:
                     throw new NotImplementedException();

@@ -1595,6 +1595,11 @@ namespace VikingEngine.DSSWars.GameObject
             return soldierConscript.conscript.TypeName() + " Group(" + parentArrayIndex.ToString() + ")";
         }
 
+        public override SpriteName TypeIcon()
+        {
+            return AllUnits.UnitFilterIcon( soldierConscript.filterType());
+        }
+
         public override string ToString()
         {
             return "Group " + type.ToString() + " x" + soldiers.Count.ToString() + ", id" + parentArrayIndex.ToString();

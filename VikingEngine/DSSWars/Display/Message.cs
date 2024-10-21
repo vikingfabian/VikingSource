@@ -21,13 +21,30 @@ namespace VikingEngine.DSSWars.Display
 
         List<Message> messages = new List<Message>();
         LocalPlayer player;
-        TimeInGameCountdown cityLowFoodMessageCooldown = new TimeInGameCountdown(new TimeLength(40));
-        TimeInGameCountdown armyLowFoodMessageCooldown = new TimeInGameCountdown(new TimeLength(40));
+
+        static readonly TimeLength FoodWarningTimeout = new TimeLength(120);
+
+        TimeInGameCountdown cityLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
+        TimeInGameCountdown armyLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
         float screenAreaBottom;
         public MessageGroup(LocalPlayer player, int numPlayers, RichboxGuiSettings settings)
         {
             this.player = player;   
             this.settings = settings;
+        }
+
+        public void blockFoodWarning(bool block)
+        {
+            if (block)
+            {
+                cityLowFoodMessageCooldown.start(new TimeLength(100000));
+                armyLowFoodMessageCooldown.start(new TimeLength(100000));
+            }
+            else
+            {
+                cityLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
+                armyLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
+            }
         }
 
         public void onControllerClick()
@@ -95,7 +112,7 @@ namespace VikingEngine.DSSWars.Display
 
                 RichBoxContent content = new RichBoxContent();
                 Title(content, DssRef.lang.Message_OutOfFood_Title);
-                content.text(DssRef.todoLang.Message_ArmyOutOfFood_Text);
+                content.text(DssRef.lang.Message_ArmyOutOfFood_Text);
 
                 content.newParagraph();
 

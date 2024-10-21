@@ -2288,7 +2288,11 @@ namespace VikingEngine
                     add(SpriteName.LangButton_Chinese, 8, 2);
                     add(SpriteName.WarsBluePrint, 2, 2);
                     add(SpriteName.WarsUnitIcon_TwoHand, 2, 2);
-
+                    add(SpriteName.WarsBattleIcon, 2, 2);
+                    add(SpriteName.WarsWorker, 2, 2);
+                    add(SpriteName.WarsWorkerAdd, 2, 2);
+                    add(SpriteName.WarsWorkerSub, 2, 2);
+                    add(SpriteName.WarsBogIron, 2, 2);
                 }
 
                 currentIndex = numTilesWidth * 96;
@@ -2306,9 +2310,9 @@ namespace VikingEngine
 
                     add(SpriteName.WarsGuard);
                     add(SpriteName.WarsGuardAdd);
-                    add(SpriteName.WarsWorker);
-                    add(SpriteName.WarsWorkerAdd);
-                    add(SpriteName.WarsWorkerSub);
+                    add(SpriteName.WarsHammer);
+                    add(SpriteName.WarsHammerAdd);
+                    add(SpriteName.WarsHammerSub);
 
                     add(SpriteName.WarsDarkLordBossIcon);
                     add(SpriteName.WarsFactoryIcon);
@@ -2321,7 +2325,8 @@ namespace VikingEngine
                     add(SpriteName.WarsResource_Sword);
                     currentIndex += 1;
                     add(SpriteName.WarsResource_Bow);
-                    currentIndex += 8;
+                    add(SpriteName.WarsResource_Longbow);
+                    currentIndex += 7;
                     add(SpriteName.WarsDelivery);
                     add(SpriteName.WarsTrade);
                     add(SpriteName.WarsResource_Beer);
@@ -2350,6 +2355,41 @@ namespace VikingEngine
                     add(SpriteName.WarsResource_TwoHandSword);
                     add(SpriteName.WarsResource_KnightsLance);
                     add(SpriteName.WarsResource_Fuel);
+
+                    add(SpriteName.WarsStockpileAdd);
+                    add(SpriteName.WarsStockpileStop);
+                    add(SpriteName.WarsResource_LinenCloth);
+
+                    add(SpriteName.WarsProtectedStockpileOn);
+                    add(SpriteName.WarsProtectedStockpileOff);
+                    add(SpriteName.WarsStockpileAdd_Protected);
+                    add(SpriteName.warsCheckYes);
+                    add(SpriteName.warsCheckNo);
+                    add(SpriteName.WarsCultureIcon);
+                    currentIndex += 3;
+                    add(SpriteName.warsBulletPoint);
+                    currentIndex++;
+                    
+                    add(SpriteName.WarsMapIcon);
+                    add(SpriteName.WarsGovernmentIcon);
+                    add(SpriteName.WarsResource_FoodAdd);
+                    add(SpriteName.WarsResource_FoodSub);
+
+                    add(SpriteName.WarsWorkMove);
+                    add(SpriteName.WarsWorkCollect);
+                    add(SpriteName.WarsWorkMine);
+                    add(SpriteName.WarsWorkFarm);
+                    add(SpriteName.WarsFollowFactionYes);
+                    add(SpriteName.WarsFollowFactionNo);
+                    add(SpriteName.WarsUnitLevelLegend);
+                    add(SpriteName.WarsUnitLevelMaster);
+                    add(SpriteName.WarsUnitLevelProfessional);
+                    add(SpriteName.WarsUnitLevelSkillful);
+                    add(SpriteName.WarsUnitLevelBasic);
+                    add(SpriteName.WarsUnitLevelMinimal);
+
+
+
                 }
 
                 currentIndex = numTilesWidth * 97;
@@ -2374,6 +2414,9 @@ namespace VikingEngine
                     add(SpriteName.WarsBuild_CoalPit, 3, 3);
                     add(SpriteName.WarsBuild_Pavement, 3, 3);
                     add(SpriteName.WarsBuild_PavementFlowers, 3, 3);
+                    add(SpriteName.WarsBuild_Bank, 3, 3);
+                    add(SpriteName.WarsBuild_Storehouse, 3, 3);
+                    add(SpriteName.WarsCityHall, 3, 3);
                 }
 
                 currentIndex = numTilesWidth * 106;

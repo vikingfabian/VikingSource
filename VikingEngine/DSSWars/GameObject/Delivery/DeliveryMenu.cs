@@ -178,14 +178,14 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                     content.Add(new RichBoxSeperationLine());
                     {
                         content.newLine();
-                        content.BulletPoint();
+                        HudLib.BulletPoint(content);
                         var text = new RichBoxText(DssRef.lang.Delivery_ItemsReady);
                         text.overrideColor = isSending || currentStatus.CanSend(city) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                         content.Add(text);
                     }
                     {
                         content.newLine();
-                        content.BulletPoint();
+                        HudLib.BulletPoint(content);
                         var text = new RichBoxText(DssRef.lang.Delivery_RecieverReady);
                         text.overrideColor = isSending || currentStatus.CanRecieve() ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                         content.Add(text);
@@ -194,7 +194,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                     if (isSending)
                     {
                         content.newLine();
-                        content.BulletPoint();
+                        HudLib.BulletPoint(content);
                         content.Add(new RichBoxText(currentStatus.longTimeProgress(city)));
                     }
                 }

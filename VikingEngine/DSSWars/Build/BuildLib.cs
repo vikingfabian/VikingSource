@@ -16,6 +16,7 @@ namespace VikingEngine.DSSWars.Build
         Barracks,
         Nobelhouse,
         Tavern,
+        Storehouse,
         Brewery,
         Cook,
         CoalPit,
@@ -36,13 +37,14 @@ namespace VikingEngine.DSSWars.Build
     {
        
         public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
-        public static readonly BuildAndExpandType[] AvailableBuildTypes = {
+        public static readonly List<BuildAndExpandType> AvailableBuildTypes = new List<BuildAndExpandType> {
             BuildAndExpandType.WorkerHuts,
             BuildAndExpandType.Barracks,
             BuildAndExpandType.Nobelhouse,
             BuildAndExpandType.Postal,
             BuildAndExpandType.Recruitment,
             BuildAndExpandType.Tavern,
+            BuildAndExpandType.Storehouse,
             BuildAndExpandType.Brewery,
             BuildAndExpandType.Cook,
             BuildAndExpandType.CoalPit,
@@ -67,6 +69,7 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.Barracks, TerrainMainType.Building, (int)TerrainBuildingType.Barracks, SpriteName.WarsBuild_Barracks, ResourceLib.CraftBarracks);
             new BuildOption(BuildAndExpandType.Nobelhouse, TerrainMainType.Building, (int)TerrainBuildingType.Nobelhouse, SpriteName.WarsBuild_Nobelhouse, ResourceLib.CraftNobelHouse);
             new BuildOption(BuildAndExpandType.Tavern, TerrainMainType.Building, (int)TerrainBuildingType.Tavern, SpriteName.WarsBuild_Tavern, ResourceLib.CraftTavern);
+            new BuildOption(BuildAndExpandType.Storehouse, TerrainMainType.Building, (int)TerrainBuildingType.Storehouse, SpriteName.WarsBuild_Storehouse, ResourceLib.CraftStorehouse);
             new BuildOption(BuildAndExpandType.Brewery, TerrainMainType.Building, (int)TerrainBuildingType.Brewery, SpriteName.WarsBuild_Brewery, ResourceLib.CraftBrewery);
             new BuildOption(BuildAndExpandType.PigPen, TerrainMainType.Building, (int)TerrainBuildingType.PigPen, SpriteName.WarsBuild_PigPen, ResourceLib.CraftPigPen);
             new BuildOption(BuildAndExpandType.HenPen, TerrainMainType.Building, (int)TerrainBuildingType.HenPen, SpriteName.WarsBuild_HenPen, ResourceLib.CraftHenPen);

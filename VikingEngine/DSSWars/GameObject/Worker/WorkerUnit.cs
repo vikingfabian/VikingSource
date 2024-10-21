@@ -134,6 +134,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                     case TerrainSubFoilType.StoneBlock:
                                         SoundLib.pickaxe.Play(model.position);
                                         break;
+                                    case TerrainSubFoilType.BogIron:
                                     case TerrainSubFoilType.Stones:
                                         SoundLib.dig.Play(model.position);
                                         break;
@@ -248,6 +249,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     checkForGoal(false, city);
                     break;
 
+
+
             }
         }
 
@@ -323,6 +326,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             {
                 model.position = Vector3.Zero;
                 model.Visible = false;
+                resourceModel?.DeleteMe();
+                resourceModel = null;
             }
         }
 
@@ -376,7 +381,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             }
         }
 
-        const float ModelGroundYAdj = 0.02f;
+        const float ModelGroundYAdj = 0.06f;
         protected void updateGroudY(bool set)
         {
             if (DssRef.world.unitBounds.IntersectPoint(model.position.X, model.position.Z))

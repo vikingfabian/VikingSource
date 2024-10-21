@@ -174,6 +174,15 @@ namespace VikingEngine.DSSWars.Map
                                 return;
                             }
                         }
+                        else
+                        {
+                            var rndBog = world.rnd.Double();
+                            if (rndBog < 0.003)
+                            {
+                                subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.BogIron, 1);
+                                return;
+                            }
+                        }
 
                         if (stonenoise > 0.6f)
                         {

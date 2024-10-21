@@ -19,6 +19,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             MainWeapon.SharpStick,
             MainWeapon.Sword,
             MainWeapon.Bow,
+            MainWeapon.Longbow,
             MainWeapon.Ballista,
         };
 
@@ -182,14 +183,14 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     content.Add(new RichBoxSeperationLine());
                     {
                         content.newLine();
-                        content.BulletPoint();
+                        HudLib.BulletPoint(content);
                         var text = new RichBoxText(currentStatus.activeStringOf(ConscriptActiveStatus.CollectingEquipment));
                         text.overrideColor = currentStatus.active > ConscriptActiveStatus.CollectingEquipment ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                         content.Add(text);
                     }
                     {
                         content.newLine();
-                        content.BulletPoint();
+                        HudLib.BulletPoint(content);
                         var text = new RichBoxText(currentStatus.activeStringOf(ConscriptActiveStatus.CollectingMen));
                         text.overrideColor = currentStatus.active > ConscriptActiveStatus.CollectingMen ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                         content.Add(text);
@@ -198,7 +199,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     if (currentStatus.active == ConscriptActiveStatus.Training)
                     {
                         content.newLine();
-                        content.BulletPoint();
+                        HudLib.BulletPoint(content);
                         content.Add(new RichBoxText(currentStatus.longTimeProgress()));
                     }
                 }
@@ -285,10 +286,10 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             bool reachedBuffer = false;
             city.GetGroupedResource(item).toMenu(content, item, ref reachedBuffer);
 
-            if (reachedBuffer)
-            {
-                GroupedResource.BufferIconInfo(content);
-            }
+            //if (reachedBuffer)
+            //{
+            //    GroupedResource.BufferIconInfo(content);
+            //}
             player.hud.tooltip.create(player, content, true);
         }
         void armorClick(ArmorLevel armor)
@@ -313,10 +314,10 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
                 bool reachedBuffer = false;
                 city.GetGroupedResource(item).toMenu(content, item, ref reachedBuffer);
-                if (reachedBuffer)
-                {
-                    GroupedResource.BufferIconInfo(content);
-                }
+                //if (reachedBuffer)
+                //{
+                //    GroupedResource.BufferIconInfo(content);
+                //}
             }
 
             player.hud.tooltip.create(player, content, true);

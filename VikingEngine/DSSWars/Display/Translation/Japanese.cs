@@ -1282,7 +1282,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Resource_TypeName_Beer => "ビール";
         public override string Resource_TypeName_Wheat => "小麦";
         public override string Resource_TypeName_Linen => "リネン";
-        public override string Resource_TypeName_SkinAndLinen => "皮とリネン";
+        //public override string Resource_TypeName_SkinAndLinen => "皮とリネン";
         public override string Resource_TypeName_IronOre => "鉄鉱石";
         public override string Resource_TypeName_GoldOre => "金鉱石";
         public override string Resource_TypeName_Iron => "鉄";
@@ -1559,5 +1559,25 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string Tutorial_ImproveRelations => "隣接する派閥との関係を改善";
         public override string Tutorial_MissionComplete_Title => "ミッション完了！";
         public override string Tutorial_MissionComplete_Unlocks => "新しい操作がアンロックされました";
+
+        //patch1
+        public override string Resource_ReachedStockpile => "ストックパイル目標に到達";
+
+        public override string BuildingType_ResourceMine => "{0}鉱山";
+
+        public override string Resource_TypeName_BogIron => "湿地鉄";
+
+        public override string Resource_TypeName_Coal => "石炭";
+
+        public override string Language_XUpkeepIsY => "{0}の維持費：{1}";
+        public override string Language_XCountIsY => "{0}の数：{1}";
+
+        public override string Message_ArmyOutOfFood_Text => "高価な食料はブラックマーケットから購入されます。お金がなくなると、飢えた兵士は脱走します。";
+
+        public override string Info_ArmyFood => "軍隊は最も近い友好都市から食料を補給します。他の派閥から食料を購入することもできます。敵対地域では、食料をブラックマーケットからしか購入できません。";
+
+        public override string FactionName_Monger => "商人";
+        public override string FactionName_Hatu => "ハツ";
+        public override string FactionName_Destru => "デストル";
     }
 }

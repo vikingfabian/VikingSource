@@ -40,6 +40,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case MainWeapon.TwoHandSword: return DssRef.lang.Resource_TypeName_TwoHandSword;
                 case MainWeapon.KnightsLance: return DssRef.lang.Resource_TypeName_KnightsLance;
                 case MainWeapon.Bow: return DssRef.lang.Resource_TypeName_Bow;
+                case MainWeapon.Longbow: return DssRef.todoLang.Resource_TypeName_Longbow;
                 case MainWeapon.Ballista: return DssRef.lang.UnitType_Ballista;
 
                 default:
@@ -186,6 +187,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                     { 
                         case TerrainBuildingType.Barracks:
                             return DssRef.lang.BuildingType_Barracks;
+                        case TerrainBuildingType.Bank:
+                            return DssRef.todoLang.BuildingType_Bank;
                         case TerrainBuildingType.Brewery:
                             return DssRef.lang.BuildingType_Brewery;
                         case TerrainBuildingType.Carpenter:
@@ -206,6 +209,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                             return DssRef.lang.BuildingType_Recruitment;
                         case TerrainBuildingType.Work_Smith:
                             return DssRef.lang.BuildingType_Smith;                       
+                        case TerrainBuildingType.Storehouse:
+                            return DssRef.lang.BuildingType_Storage;
                         case TerrainBuildingType.Tavern:
                             return DssRef.lang.BuildingType_Tavern;
                         case TerrainBuildingType.Work_Bench:
@@ -241,11 +246,11 @@ namespace VikingEngine.DSSWars.Display.Translation
                     switch ((TerrainMineType)subType)
                     {
                         case TerrainMineType.IronOre:
-                            return string.Format(DssRef.todoLang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Iron);
+                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Iron);
                         case TerrainMineType.Coal:
-                            return string.Format(DssRef.todoLang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Coal);
+                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Coal);
                         case TerrainMineType.GoldOre:
-                            return string.Format(DssRef.todoLang.BuildingType_ResourceMine, DssRef.lang.ResourceType_Gold);
+                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.ResourceType_Gold);
                         
                     }
                     break;
@@ -273,6 +278,8 @@ namespace VikingEngine.DSSWars.Display.Translation
             { 
                 case TerrainBuildingType.Tavern:
                     return DssRef.lang.BuildingType_Tavern_Description;
+                case TerrainBuildingType.Storehouse:
+                    return DssRef.todoLang.BuildingType_Storehourse_Description;
                 case TerrainBuildingType.PigPen:
                     return DssRef.lang.BuildingType_PigPen_Description;
                 case TerrainBuildingType.HenPen:
@@ -299,6 +306,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.lang.BuildingType_Tavern_Brewery;
                 case TerrainBuildingType.Work_CoalPit:
                     return DssRef.lang.BuildingType_CoalPit_Description;
+                case TerrainBuildingType.Bank:
+                    return DssRef.todoLang.BuildingType_Bank_Description;
 
                 default:
                     return TextLib.Error;
@@ -339,7 +348,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                 case ItemResourceType.Linen:
                 case ItemResourceType.SkinLinen_Group: 
-                    return DssRef.lang.Resource_TypeName_SkinAndLinen;
+                    return DssRef.lang.Resource_TypeName_Linen;
 
                 case ItemResourceType.SharpStick:
                     return DssRef.lang.Resource_TypeName_SharpStick;
@@ -351,6 +360,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.lang.Resource_TypeName_KnightsLance;
                 case ItemResourceType.Bow:
                     return DssRef.lang.Resource_TypeName_Bow;
+                case ItemResourceType.LongBow:
+                    return DssRef.todoLang.Resource_TypeName_Longbow;
                 case ItemResourceType.Ballista:
                     return DssRef.lang.UnitType_Ballista;
 

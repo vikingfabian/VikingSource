@@ -147,14 +147,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
                                         farmGrowthMultiplier(subTile.terrainAmount, city));
-                                //DssRef.state.resources.addItem(
-                                //    new Resource.ItemResource(
-                                //        ItemResourceType.Wheat,
-                                //        subTile.terrainQuality,
-                                //        Convert.ToInt32(processTimeLengthSec),
-                                //        farmGrowthMultiplier(subTile.terrainAmount, city)),
-                                //    ref subTile.collectionPointer);
-
+                                
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
                                 DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                                 break;
@@ -165,14 +158,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
                                         farmGrowthMultiplier(subTile.terrainAmount, city));
-                                //DssRef.state.resources.addItem(
-                                //    new Resource.ItemResource(
-                                //        ItemResourceType.Linnen,
-                                //        subTile.terrainQuality,
-                                //        Convert.ToInt32(processTimeLengthSec),
-                                //        farmGrowthMultiplier(subTile.terrainAmount, city)),
-                                //    ref subTile.collectionPointer);
-
+                                
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
                                 DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                                 break;
@@ -181,6 +167,12 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                             case TerrainSubFoilType.Stones:
                                 carry = new ItemResource(ItemResourceType.Stone_G, 1, Convert.ToInt32(processTimeLengthSec), ItemPropertyColl.CarryStones);
                                 break;
+
+                            case TerrainSubFoilType.BogIron:
+                                carry = new ItemResource(ItemResourceType.IronOre_G, 1, Convert.ToInt32(processTimeLengthSec), TerrainContent.MineAmount);
+                                break;
+
+
                         }
 
                         //work = WorkType.Idle;                        
@@ -350,7 +342,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                             city.AddGroupedResource(item, add);
 
-                            tryRepeatWork = bp1.canCraft(city);
+                            tryRepeatWork = city.GetGroupedResource(item).needMore() && bp1.canCraft(city);
 
                             if (visualUnit)
                             {
@@ -385,7 +377,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 
                 if (orderId >= 0)
                 {
-                    city.faction.player?.orders.CompleteOrderId(orderId);
+                    city.faction.player.orders?.CompleteOrderId(orderId);
                 }
             }
 
@@ -448,48 +440,6 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             DssRef.world.subTileGrid.Set(subTileEnd, subTile);
         }
 
-        public bool checkAvailableAndBackOrder(WorkType work, int subWork, City city)
-        {
-            switch (work)
-            {
-                case WorkType.Craft:
-                    {
-                        ItemResourceType item = (ItemResourceType)subWork;
-                        ResourceLib.Blueprint(item, out var bp1, out var bp2);
-                        if (bp1.available(city))
-                        {
-                            bp1.createBackOrder(city);
-                            return true;
-                        }
-                        else if (bp2 != null && bp2.available(city))
-                        {
-                            bp2.createBackOrder(city);
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-
-                case WorkType.Build:
-                    {
-                        var bp = BuildLib.BuildOptions[subWork].blueprint;
-                        if (bp.available(city))
-                        {
-                            bp.createBackOrder(city);
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-
-                 default:
-                    return true;
-            }
-        }
         
         public void createWorkOrder(WorkType work, int subWork, int order, IntVector2 targetSubTile, City city)
         {
@@ -571,6 +521,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                         case TerrainSubFoilType.Stones:
                         case TerrainSubFoilType.StoneBlock:
                             return DssConst.WorkTime_GatherFoil_Stones;
+
+                        case TerrainSubFoilType.BogIron:
+                            return DssConst.WorkTime_BogIron;
                         default:
                             return -1;//throw new NotImplementedException();
                     }

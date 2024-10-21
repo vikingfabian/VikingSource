@@ -201,7 +201,7 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
-                    name = DssRef.todoLang.FactionName_Monger;
+                    name = DssRef.lang.FactionName_Monger;
                     faction.gold += DssConst.HeadCityStartMaxWorkForce * 1000;
                     break;
 
@@ -212,7 +212,7 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
-                    name = DssRef.todoLang.FactionName_Hatu;
+                    name = DssRef.lang.FactionName_Hatu;
                     faction.gold += DssConst.HeadCityStartMaxWorkForce * 1000;
                     break;
 
@@ -223,7 +223,7 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
-                    name = DssRef.todoLang.FactionName_Destru;
+                    name = DssRef.lang.FactionName_Destru;
                     faction.gold += DssConst.HeadCityStartMaxWorkForce * 1000;
                     break;
 

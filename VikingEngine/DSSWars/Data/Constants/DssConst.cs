@@ -26,7 +26,8 @@ namespace VikingEngine.DSSWars
         public static int WeaponDamage_TwoHandSword = 100;
         public static int WeaponDamage_KnigtsLance = 120;
 
-        public static int WeaponDamage_Bow = 40;
+        public static int WeaponDamage_Bow = 30;
+        public static int WeaponDamage_Longbow = 50;
         public static int WeaponDamage_CrossBow = 100;
         public static int WeaponDamage_Ballista = 300;
 
@@ -96,6 +97,7 @@ namespace VikingEngine.DSSWars
         public static float WorkTime_Till = 30;
         public static float WorkTime_Plant = 20;
         public static float WorkTime_Mine = 30;
+        public static float WorkTime_BogIron = WorkTime_Mine * 2;
         public static float WorkTime_Craft = 2;
         public static float WorkTime_Building = 40;
 

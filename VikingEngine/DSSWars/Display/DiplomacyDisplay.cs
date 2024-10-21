@@ -170,7 +170,7 @@ namespace VikingEngine.DSSWars.Display
                 if (againstDark)
                 {
                     content.newLine();
-                    content.BulletPoint();
+                    HudLib.BulletPoint(content);
                     content.Add(new RichBoxText(DssRef.lang.Diplomacy_LightSide));//"Is light side ally"));
                 }
 
@@ -511,7 +511,7 @@ namespace VikingEngine.DSSWars.Display
             content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement);
             content.newLine();
             
-            content.BulletPoint();
+            HudLib.BulletPoint(content);
             {
                //string militaryStrength = "{0}x stronger military power";
                 content.Add(new RichBoxText(string.Format(DssRef.lang.Diplomacy_ServantRequirement_XStrongerMilitary, Diplomacy.MiltitaryStrengthXServant)));
@@ -525,13 +525,13 @@ namespace VikingEngine.DSSWars.Display
                 //content.text(faction.player.Name + ": " + Convert.ToInt32(faction.militaryStrength));
                 content.newLine();
             }
-            content.BulletPoint();
+            HudLib.BulletPoint(content);
             {
                 string militaryStrength = DssRef.lang.Diplomacy_ServantRequirement_HopelessWar;
                 content.Add(new RichBoxText(militaryStrength, HudLib.ResourceCostColor(hasStrongerFoe())));
                 content.newLine();
             }
-            content.BulletPoint();
+            HudLib.BulletPoint(content);
             {
                 string militaryStrength = DssRef.lang.Diplomacy_ServantRequirement_MaxCities;
                 content.Add(new RichBoxText(string.Format(militaryStrength, DssRef.diplomacy.ServantMaxCities), HudLib.ResourceCostColor(otherfaction.cities.Count <= DssRef.diplomacy.ServantMaxCities)));

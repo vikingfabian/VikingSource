@@ -38,6 +38,7 @@ namespace VikingEngine.DSSWars.GameObject
              ItemResourceType.TwoHandSword,
              ItemResourceType.KnightsLance,
              ItemResourceType.Bow,
+             ItemResourceType.LongBow,
              ItemResourceType.Ballista,            
 
              ItemResourceType.LightArmor,
@@ -68,13 +69,14 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource res_beer = new GroupedResource() { amount = 0, goalBuffer = 200 };
         public GroupedResource res_skinLinnen = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_ironore = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_iron = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_iron = new GroupedResource() { amount = 10, goalBuffer = 100 };
 
         public GroupedResource res_sharpstick = new GroupedResource() { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
         public GroupedResource res_sword = new GroupedResource() { amount = 0, goalBuffer = 100 };
         public GroupedResource res_twohandsword = new GroupedResource() { amount = 0, goalBuffer = 100 };
         public GroupedResource res_knightslance = new GroupedResource() { amount = 0, goalBuffer = 100 };
         public GroupedResource res_bow = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource res_longbow = new GroupedResource() { amount = 0, goalBuffer = 100 };
         public GroupedResource res_ballista = new GroupedResource() { amount = 0, goalBuffer = 100 };
 
         public GroupedResource res_lightArmor = new GroupedResource() { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
@@ -85,14 +87,14 @@ namespace VikingEngine.DSSWars.GameObject
         public TradeTemplate tradeTemplate = new TradeTemplate();
 
         //int tradeGold = 0;
-
+        public const int DefaultFoodBuffer = 500;
         public void defaultResourceBuffer()
         {
             res_wood.goalBuffer = 300;
             res_fuel.goalBuffer = 300;
             res_stone.goalBuffer = 200;
             res_rawFood.goalBuffer = 200;
-            res_food.goalBuffer = 500;
+            res_food.goalBuffer = DefaultFoodBuffer;
             res_beer.goalBuffer = 200;
             res_skinLinnen.goalBuffer = 100;
             res_ironore.goalBuffer = 100;
@@ -102,6 +104,7 @@ namespace VikingEngine.DSSWars.GameObject
             res_twohandsword.goalBuffer = 100;
             res_knightslance.goalBuffer = 100;
             res_bow.goalBuffer = 100;
+            res_longbow.goalBuffer = 100;
             res_ballista.goalBuffer = 100;
             res_lightArmor.goalBuffer = 100;
             res_mediumArmor.goalBuffer = 100;
@@ -161,6 +164,9 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Bow:
                     res_bow.amount += add;
                     break;
+                case ItemResourceType.LongBow:
+                    res_longbow.amount += add;
+                    break;
                 case ItemResourceType.Ballista:
                     res_ballista.amount += add;
                     break;
@@ -206,6 +212,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.TwoHandSword: return res_twohandsword;
                 case ItemResourceType.KnightsLance: return res_knightslance;
                 case ItemResourceType.Bow: return res_bow;
+                case ItemResourceType.LongBow: return res_longbow;
                 case ItemResourceType.Ballista: return res_ballista;
 
                 case ItemResourceType.LightArmor: return res_lightArmor;
@@ -213,6 +220,28 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.HeavyArmor: return res_heavyArmor;
 
                 case ItemResourceType.NONE: return Res_Nothing;
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        public bool needMore(ItemResourceType type)
+        {
+            switch (type)
+            {
+                case ItemResourceType.Wheat:
+                case ItemResourceType.Egg:
+                case ItemResourceType.Hen:
+                    return res_rawFood.needMore();
+
+                case ItemResourceType.Pig:
+                    return res_food.needMore() || res_skinLinnen.needMore();
+
+                case ItemResourceType.DryWood:
+                case ItemResourceType.SoftWood:
+                case ItemResourceType.HardWood:
+                    return res_wood.needMore();
 
                 default:
                     throw new NotImplementedException();
@@ -268,6 +297,9 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case ItemResourceType.Bow:
                     res_bow = resource;
+                    break;
+                case ItemResourceType.LongBow:
+                    res_longbow = resource;
                     break;
                 case ItemResourceType.Ballista:
                     res_ballista = resource;
@@ -500,7 +532,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool needMore()
         {
-            return (amount + orderQueCount - backOrder) < goalBuffer;
+            return amount < goalBuffer;
         }
 
         public bool needToImport()
@@ -523,17 +555,13 @@ namespace VikingEngine.DSSWars.GameObject
             content.newLine();
             
             content.Add(new RichBoxImage(ResourceLib.Icon(item)));
-            content.Add(new RichBoxText( LangLib.Item(item) + ": " + amount.ToString()));
+            content.Add(new RichBoxText( LangLib.Item(item) + ": " + TextLib.LargeNumber(amount)));
 
             if (item != ItemResourceType.Water_G && item != ItemResourceType.Gold)
             {
-                var icon = new RichBoxImage(SpriteName.EditorForwardArrow);
-                if (amount >= goalBuffer)
-                {
-                    reachedBuffer = true;
-
-                    icon.color = Color.Orange;
-                }
+                bool reached = amount >= goalBuffer;
+                reachedBuffer |= reached;
+                var icon = new RichBoxImage(reached ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd);
                 content.Add(icon);
             }
             
@@ -543,13 +571,13 @@ namespace VikingEngine.DSSWars.GameObject
         {
             content.newLine();
 
-            var icon = new RichBoxImage(SpriteName.EditorForwardArrow);
-            icon.color = Color.OrangeRed;
+            var icon = new RichBoxImage(SpriteName.WarsStockpileStop);
+            //icon.color = Color.OrangeRed;
             content.Add(icon);
 
             //content.space();
 
-            var text = new RichBoxText(": " + DssRef.todoLang.Resource_ReachedStockpile);
+            var text = new RichBoxText(": " + DssRef.lang.Resource_ReachedStockpile);
             text.overrideColor = HudLib.InfoYellow_Light;
             content.Add(text);
         }

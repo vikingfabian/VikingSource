@@ -107,12 +107,17 @@ namespace VikingEngine.DSSWars.Players
         {
             if (player.mapControls.armyMayAttackHoverObj())
             {
-                SoundLib.ordermove.Play();
-                foreach (var m in armies)
+                var target = player.mapControls.hover.obj.RelatedMapObject();
+                if (target != null)
                 {
-                    if (m.isAlive)
+                    SoundLib.ordermove.Play();
+                    foreach (var m in armies)
                     {
-                        m.army.Order_Attack(player.mapControls.hover.obj.RelatedMapObject());
+                        if (m.isAlive)
+                        {
+
+                            m.army.Order_Attack(target);
+                        }
                     }
                 }
             }
@@ -127,12 +132,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
             }
-
-            //player.onMoveArmy();
         }
-
-        
-
     }
 
     class ArmyControlsMember

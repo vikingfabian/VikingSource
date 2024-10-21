@@ -30,26 +30,37 @@ soldat recycle?
 
 
 -Change Log-
-* fully translated
-* will reduce ai delay when player declare war (so they can respond)
-* reduced the issue of soldiers being stuck behind water in battle
-* seven new achievements
-* fixed workers overshooting their goals
-* tooltip improvements
-* sea specialization give ship speed bonus
-* repaired nobel house upkeep
-* menu polish
-* repaired map pan
-* can cancel build order
-* out of food warning on armies
-* repaired ai unique soldiers (achievement still broken)
+* longbow weapon
+* normal bow power reduction to about 60%
+* Bog iron, inefficient iron collecting
+* Storehouse, workers may drop their resources here
+* Tavern, workers may eat here
+* new icons
+* workers will get the closest work
+
+
 
 #Todo#
-Stockpile icon
-Sista översättningen
+översätt
+
+
+
+#Todo (nästa patch)#
+model-storage house
+model-bog iron, ineffektiv järn samlande
 
 
 --Efter release polish--
+
+-culture icon
+-war icon
+ "produces 20 raw food in 4 minutes, and requires 30sec of work per cycle" 
+ ● If You can, be more specific on what resource is produced by a building in the
+“building” menu: personally it wasn’t so intuitive for all the buildings.
+
+
+
+sound limit per time
 
 pilar med resurser från delivery
 tydlig ikon för objekt meny typ
@@ -59,11 +70,11 @@ Ljud
 city economy
 visa antal byggnader i bygg meny
 training skill icon
-
+menu scroll
 
 Error
 -back button in menues 
-
+-list punkt
 
 Retreat system
 -retreat av de sista motståndarna
@@ -90,15 +101,9 @@ Polish
 -burn yes/no
 
 Art
--list punkt
--checkbox art
--Mercenary icon
--battle icon
--world domination achieve
--link, no link
--resource icons
--no food, no beds icons
--culture icon
+
+
+
 
 #current
 English, Simplified Chinese, Japanese, Russian, Spanish
