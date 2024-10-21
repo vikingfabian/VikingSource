@@ -75,7 +75,6 @@ namespace VikingEngine.DSSWars.GameObject
 
     class ArmyPlacementGrid
     {
-        //public const int Row_Scout = -1;
         public const int Row_Front = -1;
         public const int Row_Body = 0;
         public const int Row_Second = 1;
@@ -150,7 +149,7 @@ namespace VikingEngine.DSSWars.GameObject
                     grid[colindex, row].nextPlacement(centerWp, army.rotation, _relPos, centerPan, army.armyColumnWidth, out cellSize, false);
                     largestWidth = lib.LargestValue(largestWidth, cellSize.X);
 
-                    _relPos.Y += cellSize.Y;
+                    _relPos.Y += cellSize.Y + DssVar.SoldierGroup_GridExtraSpacing;
                 }
 
                 comumnWidth[colindex] = largestWidth;
@@ -191,7 +190,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (frontRow)
                 {
-                    topleft.Y -= cellSize.Y;
+                    topleft.Y -= cellSize.Y + DssVar.SoldierGroup_GridExtraSpacing;
                 }
 
                 int colX = 0;
