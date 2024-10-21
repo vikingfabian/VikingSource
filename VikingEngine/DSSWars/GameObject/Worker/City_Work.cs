@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.GameObject
         public WorkTemplate workTemplate = new WorkTemplate();
 
         const int NoSubWork = -1;
-        public const int WorkTeamSize = 8;
+        public const int WorkTeamSize = 6;
         TimeStamp previousWorkQueUpdate = TimeStamp.None;
         List<WorkQueMember> workQue = new List<WorkQueMember>();
         bool starving = false;
@@ -30,6 +30,20 @@ namespace VikingEngine.DSSWars.GameObject
             
         //}
         static List<int> idleWorkers = new List<int>(64);
+
+        bool resourceHasSafeGuard(ref GroupedResource resource,ref WorkPriority work)
+        {
+            return work.safeguard && resource.amount <= DssConst.WorkSafeGuardAmount;
+        }
+
+        int resourceSafeGuardPrio(ref GroupedResource resource, ref WorkPriority work)
+        {
+            if (work.safeguard && resource.amount <= DssConst.WorkSafeGuardAmount)
+            {
+                return WorkTemplate.SafeGuardPrio;
+            }
+            return work.value;
+        }
 
         public void async_workUpdate()
         {
@@ -231,24 +245,6 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         idleWorkers.Add(i);
                         var status = workerStatuses[i];
-
-                        //do
-                        //{
-                        //    var work = arraylib.PullLastMember(workQue);
-
-                        //    if (checkAvailableAndBackOrder(work.work, work.subWork))
-                        //    {
-                        //        status.createWorkOrder(work.work, work.subWork, work.orderId, work.subTile, this);
-                        //        workerStatuses[i] = status;
-
-                        //        if (work.orderId >= 0)
-                        //        {
-                        //            faction.player.orders?.StartOrderId(work.orderId);
-                        //        }
-                        //        break;
-                        //    }
-                        //}
-                        //while (workQue.Count > 0);
                     }
                     //else
                     //{
@@ -344,7 +340,8 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 //PICK UP
-                if (workTemplate.move.HasPrio())
+                if (workTemplate.move.HasPrio() ||
+                    resourceHasSafeGuard(ref res_food, ref workTemplate.farming))
                 {
                     foreach (var pos in CityStructure.Singleton.ResourceOnGround)
                     {

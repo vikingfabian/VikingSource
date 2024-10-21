@@ -24,16 +24,17 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string EndGameStatistics_DecorsBuilt => "Decorations built: {0}";
         public string EndGameStatistics_StatuesBuilt => "Statues built: {0}";
-
-
-        //public string BuildingType_Storehouse => "Storehouse";
-        //public string BuildingType_Stockhouse_Description => "Drop off point for resources";
-        public string BuildingType_Bank => "Bank";
-        public string BuildingType_Bank_Description => "Send gold to other cities";
-
+        
         public string BuildingType_Storehourse_Description => "Workers may drop items here";
 
         public string Resource_TypeName_Longbow => "longbow";
+
+
+        //MAYBE
+        public string BuildingType_Bank => "Bank";
+        public string BuildingType_Bank_Description => "Send gold to other cities";
+
+        public string Delivery_AutoReciever_Description => "Will send to the city with lowest amount of resources";
     }
 
 }

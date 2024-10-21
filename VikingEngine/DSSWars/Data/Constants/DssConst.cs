@@ -112,6 +112,6 @@ namespace VikingEngine.DSSWars
         public static float WorkTeamEnergyCost_WhenIdle = WorkTeamEnergyCost * 0.5f;
         public static int FoodEnergy = 100;
 
-
+        public static int WorkSafeGuardAmount = 10;
     }
 }

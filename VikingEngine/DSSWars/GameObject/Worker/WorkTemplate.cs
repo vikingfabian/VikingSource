@@ -16,29 +16,30 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         public const int NoPrio = 0;
         public const int MinPrio = 1;
         public const int MaxPrio = 5;
+        public const int SafeGuardPrio = MaxPrio + 1;
 
-        public WorkPriority move = new WorkPriority(3);
-        public WorkPriority wood = new WorkPriority(2);
-        public WorkPriority stone = new WorkPriority(2);
-        public WorkPriority craft_fuel = new WorkPriority(4);
-        public WorkPriority craft_food = new WorkPriority(4);
-        public WorkPriority craft_beer = new WorkPriority(1);
-        public WorkPriority craft_iron = new WorkPriority(3);
-        public WorkPriority craft_sharpstick = new WorkPriority(1);
-        public WorkPriority craft_sword = new WorkPriority(0);
-        public WorkPriority craft_twohandsword = new WorkPriority(0);
-        public WorkPriority craft_knightslance = new WorkPriority(0);
-        public WorkPriority craft_bow = new WorkPriority(0);
-        public WorkPriority craft_longbow = new WorkPriority(0);
-        public WorkPriority craft_ballista= new WorkPriority(0);
-        public WorkPriority craft_lightarmor = new WorkPriority(1);
-        public WorkPriority craft_mediumarmor = new WorkPriority(0);
-        public WorkPriority craft_heavyarmor = new WorkPriority(0);
-        public WorkPriority farming = new WorkPriority(2);
-        public WorkPriority bogiron = new WorkPriority(1);
-        public WorkPriority mining = new WorkPriority(3);
-        public WorkPriority trading = new WorkPriority(2);
-        public WorkPriority autoBuild = new WorkPriority(1);
+        public WorkPriority move = new WorkPriority(3, false);
+        public WorkPriority wood = new WorkPriority(2, true);
+        public WorkPriority stone = new WorkPriority(2, false);
+        public WorkPriority craft_fuel = new WorkPriority(4, true);
+        public WorkPriority craft_food = new WorkPriority(4, true);
+        public WorkPriority craft_beer = new WorkPriority(1, false);
+        public WorkPriority craft_iron = new WorkPriority(3, false);
+        public WorkPriority craft_sharpstick = new WorkPriority(1, false);
+        public WorkPriority craft_sword = new WorkPriority(0, false);
+        public WorkPriority craft_twohandsword = new WorkPriority(0, false);
+        public WorkPriority craft_knightslance = new WorkPriority(0, false);
+        public WorkPriority craft_bow = new WorkPriority(0, false);
+        public WorkPriority craft_longbow = new WorkPriority(0, false);
+        public WorkPriority craft_ballista= new WorkPriority(0, false);
+        public WorkPriority craft_lightarmor = new WorkPriority(1, false);
+        public WorkPriority craft_mediumarmor = new WorkPriority(0, false);
+        public WorkPriority craft_heavyarmor = new WorkPriority(0, false);
+        public WorkPriority farming = new WorkPriority(2, true);
+        public WorkPriority bogiron = new WorkPriority(1, false);
+        public WorkPriority mining = new WorkPriority(3, false);
+        public WorkPriority trading = new WorkPriority(2, false);
+        public WorkPriority autoBuild = new WorkPriority(1, false);
 
         public WorkTemplate()
         {
@@ -174,7 +175,13 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             work.followFaction = false;
             SetWorkPriority(priorityType, work);
         }
-
+        //public void setWorkPrioSafeGuard(bool set, WorkPriorityType priorityType)
+        //{
+        //    var work = GetWorkPriority(priorityType);
+        //    work.safeguard = set;//Bound.Set(work.value + set, NoPrio, MaxPrio);
+        //    work.followFaction = false;
+        //    SetWorkPriority(priorityType, work);
+        //}
         public void followFactionClick(WorkPriorityType prioType, WorkTemplate factionTemplate)
         {
             var work = GetWorkPriority(prioType);
@@ -369,7 +376,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             craft_mediumarmor.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_MediumArmor), SpriteName.WarsHammer, SpriteName.WarsResource_MediumArmor, WorkPriorityType.craftMediumArmor, faction, city);
             craft_heavyarmor.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HeavyArmor), SpriteName.WarsHammer, SpriteName.WarsResource_HeavyArmor, WorkPriorityType.craftHeavyArmor, faction, city);
 
-            farming.toHud(player, content, DssRef.lang.Work_Farming, SpriteName.WarsWorkFarm, SpriteName.NO_IMAGE, WorkPriorityType.farming, faction, city);
+            farming.toHud(player, content, DssRef.lang.Work_Farming, SpriteName.WarsWorkFarm, SpriteName.WarsResource_RawFood, WorkPriorityType.farming, faction, city);
             bogiron.toHud(player, content, DssRef.lang.Resource_TypeName_BogIron, SpriteName.WarsWorkCollect, SpriteName.WarsResource_IronOre, WorkPriorityType.bogiron, faction, city);
             mining.toHud(player, content, DssRef.lang.Work_Mining, SpriteName.WarsWorkMine, SpriteName.NO_IMAGE, WorkPriorityType.mining, faction, city);
             autoBuild.toHud(player, content, DssRef.lang.Work_AutoBuild, SpriteName.MenuPixelIconSettings, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, faction, city);
@@ -387,10 +394,12 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         public int value;
         public bool followFaction;
+        //public bool safeguard;
 
-        public WorkPriority(int defaultVal)
+        public WorkPriority(int defaultVal)//, bool safeguard)
         {
             followFaction = true;
+            //this.safeguard = safeguard;
             value = defaultVal; 
         }
 
@@ -399,12 +408,13 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             if (followFaction)
             {
                 value = factionTemplate.value;
+              //  safeguard = factionTemplate.safeguard;
             }
         }
 
-        public void toHud(Players.LocalPlayer player, RichBoxContent content, string name, SpriteName sprite1, SpriteName sprite2, WorkPriorityType priorityType, Faction faction, City city)
+        public void toHud(Players.LocalPlayer player, RichBoxContent content, string name, SpriteName sprite1, SpriteName sprite2, WorkPriorityType priorityType, Faction faction, City city)//, bool allowSafeGuard)
         {
-            content.newLine(); 
+            content.newLine();
             var infoContent = new List<AbsRichBoxMember>(2);
             infoContent.Add(new RichBoxImage(sprite1));
             if (sprite2 != SpriteName.NO_IMAGE)
@@ -420,14 +430,14 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             infoButton.overrideBgColor = HudLib.InfoYellow_BG;
 
             content.Add(infoButton);
-            content.Add(new RichBoxTab(0.25f));
-            
+            content.Add(new RichBoxTab(0.2f));
+
             if (city != null)
-            {                
+            {
                 HudLib.FollowFactionButton(followFaction,
                     faction.workTemplate.GetWorkPriority(priorityType).value,
                     new RbAction2Arg<WorkPriorityType, City>(faction.workFollowFactionClick, priorityType, city),
-                    player,content);
+                    player, content);
             }
 
             for (int prio = 0; prio <= WorkTemplate.MaxPrio; prio++)
@@ -462,24 +472,34 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     });
                 }
 
-                var button =  new RichboxButton(new List<AbsRichBoxMember> {
-                    new RichBoxText(prio.ToString()) 
-                }, 
-                new RbAction3Arg<int, WorkPriorityType, City>(faction.setWorkPrio, prio, priorityType, city), 
+                var button = new RichboxButton(new List<AbsRichBoxMember> {
+                    new RichBoxText(prio.ToString())
+                },
+                new RbAction3Arg<int, WorkPriorityType, City>(faction.setWorkPrio, prio, priorityType, city),
                 hover);
                 button.setGroupSelectionColor(HudLib.RbSettings, prio == value);
                 content.Add(button);
 
             }
 
-        }
+            //if (allowSafeGuard)
+            //{
+            //    content.space();
+            //    content.Add(new RichboxButton(new List<AbsRichBoxMember> {
+            //        new RichBoxImage(safeguard? SpriteName.WarsProtectedStockpileOn : SpriteName.WarsProtectedStockpileOff),
+            //    },
+            //    new RbAction3Arg<bool, WorkPriorityType, City>(faction.setWorkPrioSafeGuard, !safeguard, priorityType, city),
+            //    player.WorkSafeguardTooltip));
 
+            //}
+        }
         public void writeGameState(System.IO.BinaryWriter w, bool isCity)
         {
             w.Write((byte)value);
             if (isCity)
             {
-                w.Write(followFaction);
+                EightBit eightBit = new EightBit(followFaction, false);
+                eightBit.write(w);
             }
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, bool isCity)
@@ -487,7 +507,15 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             value = r.ReadByte();
             if (isCity)
             {
-                followFaction = r.ReadBoolean();
+                if (subversion < 20)
+                {//old
+                    followFaction = r.ReadBoolean();
+                }
+                else
+                {
+                    EightBit eightBit = new EightBit(r);
+                    followFaction = eightBit.Get(0);
+                }
             }
         }
 

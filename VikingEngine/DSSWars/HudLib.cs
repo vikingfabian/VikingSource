@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars
         public static readonly Color OffStandardOrange = new Color(200, 128, 0);
         public static readonly Color InfoYellow_Dark = new Color(160, 128, 0);
         public static readonly Color InfoYellow_Light = new Color(255, 255, 0);
-        public static readonly Color InfoYellow_BG = new Color(80, 64, 0);
+        public static readonly Color InfoYellow_BG = new Color(40, 32, 0);
         public const ImageLayers StoryContentLayer = ImageLayers.Lay1_Front;
         public const ImageLayers StoryBgLayer = ImageLayers.Lay1_Back;
 
@@ -176,7 +176,7 @@ namespace VikingEngine.DSSWars
         }
         public static void FollowFactionButton(bool followFaction, double currentFactionValue, AbsRbAction action, Players.LocalPlayer player, RichBoxContent content)
         {
-            var followFactionButton = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(followFaction ? "=F" : "!F") },
+            var followFactionButton = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxImage(followFaction ? SpriteName.WarsFollowFactionYes : SpriteName.WarsFollowFactionNo) },
                         action, new RbAction2Arg<bool, double>( player.followFactionTooltip, followFaction, currentFactionValue));//new RbAction2Arg<ItemResourceType, City>(faction.tradeFollowFactionClick, resource, city));
             if (!followFaction)
             {

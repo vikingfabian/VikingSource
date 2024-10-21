@@ -204,6 +204,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
 
     struct DeliveryProfile
     {
+        const int ToCityAuto = short.MaxValue;
         public int toCity;
         public ItemResourceType type;
 

@@ -7,8 +7,8 @@
 * Tavern, workers may eat here
 * new icons
 * workers will get the closest work
-
-
+* changed work team size from 8 to 6, so you get exactly 5 workers per hut
+* work safe guard option
 
 #Todo#
 översätt
@@ -16,6 +16,7 @@
 
 
 #Todo (nästa patch)#
+max distance på delivery
 model-storage house
 model-bog iron, ineffektiv järn samlande
 
