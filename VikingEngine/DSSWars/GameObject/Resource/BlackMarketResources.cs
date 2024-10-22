@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.GO.Gadgets;
 
 namespace VikingEngine.DSSWars.GameObject.Resource
 {
@@ -100,7 +101,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 
                         content.h2(DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn);
                         bool reachedBuffer = false;
-                        city.GetGroupedResource(resourceType).toMenu(content, resourceType, ref reachedBuffer);
+                        bool safeGuard = city.foodSafeGuardIsActive(resourceType);
+                        city.GetGroupedResource(resourceType).toMenu(content, resourceType, safeGuard, ref reachedBuffer);
                         //if (reachedBuffer)
                         //{
                         //    GroupedResource.BufferIconInfo(content);

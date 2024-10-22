@@ -155,7 +155,7 @@ namespace VikingEngine.DSSWars.Players
             hud.tooltip.create(this, content, true);
         }
 
-        public RbAction WorkSafeguardTooltip;
+        //public RbAction WorkSafeguardTooltip;
         
 
         public void followFactionTooltip(bool follows, double currentFactionValue)
@@ -348,12 +348,6 @@ namespace VikingEngine.DSSWars.Players
             knightConscriptCopy = new ConscriptProfile();
             knightConscriptCopy.defaultSetup(true);
 
-            WorkSafeguardTooltip = new RbAction(() =>
-            {
-                RichBoxContent content = new RichBoxContent();
-                content.text(string.Format("Safe guard. Will maximize the priority if the resource count falls below {0}", DssConst.WorkSafeGuardAmount)).overrideColor = HudLib.InfoYellow_Light;
-                hud.tooltip.create(this, content, true);
-            });
         }
 
         public void initPlayerToPlayer(int playerindex, int numPlayers)

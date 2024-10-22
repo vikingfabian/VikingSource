@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
@@ -191,7 +192,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             foreach (var r in resources)
             {
                var cityResource = city.GetGroupedResource(r.type);
-               cityResource.toMenu(content, r.type, ref reachedBuffer);               
+                bool safeGuard = city.foodSafeGuardIsActive(r.type);
+                cityResource.toMenu(content, r.type, safeGuard, ref reachedBuffer);               
             }
 
             if (optionalBp != null)
@@ -201,7 +203,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                     if (!resources.Contains(r))
                     {
                         var cityResource = city.GetGroupedResource(r.type);
-                        cityResource.toMenu(content, r.type, ref reachedBuffer);
+                        bool safeGuard = city.foodSafeGuardIsActive(r.type);
+                        cityResource.toMenu(content, r.type, safeGuard, ref reachedBuffer);
                     }
                 }
             }

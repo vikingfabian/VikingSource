@@ -83,10 +83,43 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource res_mediumArmor = new GroupedResource() { amount = 2, goalBuffer = 100 };
         public GroupedResource res_heavyArmor = new GroupedResource() { amount = 0, goalBuffer = 100 };
 
-        public bool res_wood_safeguard = true;
-        public bool res_fuel_safeguard = true;
-        public bool res_rawfood_safeguard = true;
         public bool res_food_safeguard = true;
+
+        public bool foodSafeGuardIsActive(ItemResourceType item)
+        {
+            bool food = foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
+            switch (item)
+            {
+                case ItemResourceType.Food_G:
+                    return food;
+                case ItemResourceType.Fuel_G:
+                    return fuelSafeGuard;
+                case ItemResourceType.RawFood_Group:
+                    return rawFoodSafeGuard;
+                case ItemResourceType.Wood_Group:
+                    return woodSafeGuard;
+            }
+
+            return false;
+        }
+
+        public bool foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard)
+        {
+            if (res_food.amount <= DssConst.WorkSafeGuardAmount)
+            {
+                fuelSafeGuard = res_fuel.amount <= DssConst.WorkSafeGuardAmount;
+                rawFoodSafeGuard = res_rawFood.amount <= DssConst.WorkSafeGuardAmount;
+                woodSafeGuard = fuelSafeGuard && res_wood.amount <= DssConst.WorkSafeGuardAmount;
+                return true;
+            }
+            else
+            {
+                fuelSafeGuard = false;
+                rawFoodSafeGuard = false;
+                woodSafeGuard = false;
+                return false;
+            }
+        }
 
 
         //bool useLocalTrade
@@ -232,21 +265,37 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public bool needMore(ItemResourceType type)
+        public bool needMore(ItemResourceType type, bool rawfoodSafeGuard, bool woodSafeGuard, out bool usesSafeGuard)
         {
+            usesSafeGuard = false;
             switch (type)
             {
                 case ItemResourceType.Wheat:
                 case ItemResourceType.Egg:
                 case ItemResourceType.Hen:
+                    if (rawfoodSafeGuard)
+                    { 
+                        usesSafeGuard = true;
+                        return true;
+                    }
                     return res_rawFood.needMore();
 
                 case ItemResourceType.Pig:
+                    if (rawfoodSafeGuard)
+                    {
+                        usesSafeGuard = true;
+                        return true;
+                    }
                     return res_food.needMore() || res_skinLinnen.needMore();
 
                 case ItemResourceType.DryWood:
                 case ItemResourceType.SoftWood:
                 case ItemResourceType.HardWood:
+                    if (woodSafeGuard)
+                    {
+                        usesSafeGuard = true;
+                        return true;
+                    }
                     return res_wood.needMore();
 
                 case ItemResourceType.NONE:
@@ -559,7 +608,7 @@ namespace VikingEngine.DSSWars.GameObject
             amount += item.amount * multiply;
         }
 
-        public void toMenu(RichBoxContent content, ItemResourceType item, ref bool reachedBuffer)
+        public void toMenu(RichBoxContent content, ItemResourceType item, bool safeGuard, ref bool reachedBuffer)
         {
             content.newLine();
             
@@ -570,7 +619,20 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 bool reached = amount >= goalBuffer;
                 reachedBuffer |= reached;
-                var icon = new RichBoxImage(reached ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd);
+                SpriteName stockIcon;
+                if (safeGuard)
+                {
+                    stockIcon = SpriteName.WarsStockpileAdd_Protected;
+                }
+                else if (reached)
+                {
+                    stockIcon = SpriteName.WarsStockpileStop;
+                }
+                else
+                {
+                    stockIcon = SpriteName.WarsStockpileAdd;
+                }
+                var icon = new RichBoxImage(stockIcon);
                 content.Add(icon);
             }
             

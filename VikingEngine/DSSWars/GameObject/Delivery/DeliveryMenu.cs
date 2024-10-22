@@ -69,13 +69,16 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                                    content.h2(DssRef.lang.Hud_ThisCity);
                                    bool reachedBuffer = false;
 
-                                   city.GetGroupedResource(item).toMenu(content, item, ref reachedBuffer);
+                                   bool safeGuard = city.foodSafeGuardIsActive(item);
+
+
+                                   city.GetGroupedResource(item).toMenu(content, item, safeGuard, ref reachedBuffer);
 
                                    if (currentStatus.profile.toCity >= 0)
                                    {
                                        content.newParagraph();
                                        content.h2(DssRef.lang.Hud_RecieveingCity);
-                                       DssRef.world.cities[currentStatus.profile.toCity].GetGroupedResource(item).toMenu(content, item, ref reachedBuffer);
+                                       DssRef.world.cities[currentStatus.profile.toCity].GetGroupedResource(item).toMenu(content, item, safeGuard, ref reachedBuffer);
                                    }
 
                                    //content.text(LangLib.Item(item)).overrideColor = HudLib.TitleColor_TypeName;

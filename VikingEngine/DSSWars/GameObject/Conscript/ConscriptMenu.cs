@@ -284,7 +284,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             var item = ConscriptProfile.WeaponItem(weapon);
 
             bool reachedBuffer = false;
-            city.GetGroupedResource(item).toMenu(content, item, ref reachedBuffer);
+            city.GetGroupedResource(item).toMenu(content, item, false, ref reachedBuffer);
 
             //if (reachedBuffer)
             //{
@@ -313,7 +313,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 var item = ConscriptProfile.ArmorItem(armor);
 
                 bool reachedBuffer = false;
-                city.GetGroupedResource(item).toMenu(content, item, ref reachedBuffer);
+                city.GetGroupedResource(item).toMenu(content, item, false, ref reachedBuffer);
                 //if (reachedBuffer)
                 //{
                 //    GroupedResource.BufferIconInfo(content);

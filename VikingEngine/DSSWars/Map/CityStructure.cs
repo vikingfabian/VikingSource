@@ -178,6 +178,8 @@ namespace VikingEngine.DSSWars.Map
 
                                             case TerrainSubFoilType.WheatFarm:                                                
                                             case TerrainSubFoilType.LinenFarm:
+                                            case TerrainSubFoilType.RapeSeedFarm:
+                                            case TerrainSubFoilType.HempFarm:
                                                 if (subTile.terrainAmount == TerrainContent.FarmCulture_Empty)
                                                 {
                                                     FarmPlant.Add(subTileLoop.Position);

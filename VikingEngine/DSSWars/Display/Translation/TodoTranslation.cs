@@ -35,6 +35,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_Bank_Description => "Send gold to other cities";
 
         public string Delivery_AutoReciever_Description => "Will send to the city with lowest amount of resources";
+
+        public string Hud_On => "On";
+        public string Hud_Off => "Off";
+
     }
 
 }

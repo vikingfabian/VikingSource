@@ -481,17 +481,6 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 content.Add(button);
 
             }
-
-            //if (allowSafeGuard)
-            //{
-            //    content.space();
-            //    content.Add(new RichboxButton(new List<AbsRichBoxMember> {
-            //        new RichBoxImage(safeguard? SpriteName.WarsProtectedStockpileOn : SpriteName.WarsProtectedStockpileOff),
-            //    },
-            //    new RbAction3Arg<bool, WorkPriorityType, City>(faction.setWorkPrioSafeGuard, !safeguard, priorityType, city),
-            //    player.WorkSafeguardTooltip));
-
-            //}
         }
         public void writeGameState(System.IO.BinaryWriter w, bool isCity)
         {
