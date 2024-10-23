@@ -279,7 +279,11 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (bestWorkerListIx == -1)
                     {
+#if DEBUG
                         throw new Exception();
+#else
+                        return;
+#endif
                     }
 
                     {//Assign job
@@ -308,9 +312,6 @@ namespace VikingEngine.DSSWars.GameObject
                 workerStatuses[workerIx] = worker;  
             }
 
-
-           
-
             if (!inRender_detailLayer)
             {
                 processAsynchWork(workerStatuses);
@@ -323,8 +324,8 @@ namespace VikingEngine.DSSWars.GameObject
 
 
                 bool foodSafeGuard = foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
-                int fuelSpots = 0;
-                int foodspots = 0;
+                //int fuelSpots = 0;
+                //int foodspots = 0;
 
                 var orders_sp = faction.player.orders;
 
@@ -368,7 +369,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 //WOOD
-                fuelSpots += CityStructure.Singleton.Trees.Count;
+                //fuelSpots += CityStructure.Singleton.Trees.Count;
                 if ( (workTemplate.wood.HasPrio() && res_wood.needMore()) || woodSafeGuard)
                 {
                     foreach (var pos in CityStructure.Singleton.Trees)
@@ -396,7 +397,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 //FARMS
-                if (workTemplate.farming.HasPrio() || rawFoodSafeGuard || fuelSafeGuard)
+                if (workTemplate.farm_food.HasPrio() || rawFoodSafeGuard || fuelSafeGuard)
                 {
                     foreach (var pos in CityStructure.Singleton.FarmPlant)
                     {
@@ -409,17 +410,17 @@ namespace VikingEngine.DSSWars.GameObject
                                 needMore = res_skinLinnen.needMore();
                                 break;
                             case TerrainSubFoilType.WheatFarm:
-                                ++foodspots;
+                                //++foodspots;
                                 safeGuard = rawFoodSafeGuard;
                                 needMore = res_rawFood.needMore();
                                 break;
                             case TerrainSubFoilType.RapeSeedFarm:
-                                ++fuelSpots;
+                                //++fuelSpots;
                                 safeGuard = fuelSafeGuard;
                                 needMore = res_fuel.needMore();
                                 break;
                             case TerrainSubFoilType.HempFarm:
-                                ++fuelSpots;
+                                //++fuelSpots;
                                 safeGuard = fuelSafeGuard;
                                 needMore = res_fuel.needMore() || res_skinLinnen.needMore() || fuelSafeGuard;
                                 break;
@@ -428,7 +429,7 @@ namespace VikingEngine.DSSWars.GameObject
                         if ((needMore || safeGuard) && isFreeTile(pos))
                         {
                             int distanceValue = -center.SideLength(pos);
-                            workQue.Add(new WorkQueMember(WorkType.Plant, NoSubWork, pos, safeGuard? WorkTemplate.SafeGuardPrio : workTemplate.farming.value, distanceValue));
+                            workQue.Add(new WorkQueMember(WorkType.Plant, NoSubWork, pos, safeGuard? WorkTemplate.SafeGuardPrio : workTemplate.farm_food.value, distanceValue));
                         }
                     }
 
@@ -444,17 +445,17 @@ namespace VikingEngine.DSSWars.GameObject
                                 needMore = res_skinLinnen.needMore();
                                 break;
                             case TerrainSubFoilType.WheatFarm:
-                                ++foodspots;
+                                //++foodspots;
                                 safeGuard = rawFoodSafeGuard;
                                 needMore = res_rawFood.needMore();
                                 break;
                             case TerrainSubFoilType.RapeSeedFarm:
-                                ++fuelSpots;
+                                //++fuelSpots;
                                 safeGuard = fuelSafeGuard;
                                 needMore = res_fuel.needMore();
                                 break;
                             case TerrainSubFoilType.HempFarm:
-                                ++fuelSpots;
+                                //++fuelSpots;
                                 safeGuard = fuelSafeGuard;
                                 needMore = res_fuel.needMore() || res_skinLinnen.needMore() || fuelSafeGuard;
                                 break;
@@ -463,7 +464,7 @@ namespace VikingEngine.DSSWars.GameObject
                         if ((needMore || safeGuard) && isFreeTile(pos))
                         {
                             int distanceValue = -center.SideLength(pos);
-                            workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, pos, safeGuard ? WorkTemplate.SafeGuardPrio : workTemplate.farming.value, distanceValue));
+                            workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, pos, safeGuard ? WorkTemplate.SafeGuardPrio : workTemplate.farm_food.value, distanceValue));
                         }
                     }
                 }
@@ -496,7 +497,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 needMore = res_ironore.needMore();
                                 break;
                             case TerrainMineType.Coal:
-                                ++fuelSpots;
+                                //++fuelSpots;
                                 safeGuard = fuelSafeGuard;
                                 needMore = res_fuel.needMore();
                                 break;
@@ -511,8 +512,8 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 //ANIMALS
-                foodspots += CityStructure.Singleton.AnimalPens.Count;
-                if (workTemplate.farming.HasPrio() || rawFoodSafeGuard)
+                //foodspots += CityStructure.Singleton.AnimalPens.Count;
+                if (workTemplate.farm_food.HasPrio() || rawFoodSafeGuard)
                 {
                     foreach (var pos in CityStructure.Singleton.AnimalPens)
                     {
@@ -532,7 +533,7 @@ namespace VikingEngine.DSSWars.GameObject
                         if ((needMore || rawFoodSafeGuard) && isFreeTile(pos))
                         {
                             int distanceValue = -center.SideLength(pos);
-                            workQue.Add(new WorkQueMember(WorkType.PickUpProduce, NoSubWork, pos, rawFoodSafeGuard ? WorkTemplate.SafeGuardPrio : workTemplate.farming.value, distanceValue));
+                            workQue.Add(new WorkQueMember(WorkType.PickUpProduce, NoSubWork, pos, rawFoodSafeGuard ? WorkTemplate.SafeGuardPrio : workTemplate.farm_food.value, distanceValue));
                         }
                     }
                 }
@@ -597,14 +598,14 @@ namespace VikingEngine.DSSWars.GameObject
 
                     bool intelligentCheck = true;
 
-                    if (fuelSafeGuard && fuelSpots < 4)
+                    if (fuelSafeGuard && CityStructure.Singleton.fuelSpots < 4)
                     {
-                        ++fuelSpots;
+                        ++CityStructure.Singleton.fuelSpots;
                         buildType = BuildAndExpandType.RapeSeedFarm;
                     }
-                    else if (rawFoodSafeGuard && foodspots < 4)
+                    else if (rawFoodSafeGuard && CityStructure.Singleton.foodspots < 4)
                     {
-                        ++foodspots;
+                        ++CityStructure.Singleton.foodspots;
                         buildType = BuildAndExpandType.WheatFarm;
                     }
                     else if (work && workForce >= workForceMax)

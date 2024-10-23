@@ -9,6 +9,7 @@
 * workers will get the closest work
 * changed work team size from 8 to 6, so you get exactly 5 workers per hut
 * resources safe guard option
+* new work prio: food farming, fuel farming, linen farming
 
 #Todo#
 översätt
@@ -16,7 +17,7 @@
 
 
 #Todo (nästa patch)#
-ändra work prio till: food farming, fuel farming, linen farming
+
 max distance på delivery
 
 

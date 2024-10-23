@@ -35,7 +35,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         public WorkPriority craft_lightarmor = new WorkPriority(1);
         public WorkPriority craft_mediumarmor = new WorkPriority(0);
         public WorkPriority craft_heavyarmor = new WorkPriority(0);
-        public WorkPriority farming = new WorkPriority(2);
+        public WorkPriority farm_food = new WorkPriority(2);
+        public WorkPriority farm_fuel = new WorkPriority(2);
+        public WorkPriority farm_linen = new WorkPriority(1);
         public WorkPriority bogiron = new WorkPriority(1);
         public WorkPriority mining = new WorkPriority(3);
         public WorkPriority trading = new WorkPriority(2);
@@ -65,13 +67,16 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             craft_lightarmor.writeGameState(w, isCity);
             craft_mediumarmor.writeGameState(w, isCity);
             craft_heavyarmor.writeGameState(w, isCity);
-            farming.writeGameState(w, isCity);
+            farm_food.writeGameState(w, isCity);
             mining.writeGameState(w, isCity);
             trading.writeGameState(w, isCity);
             autoBuild.writeGameState(w, isCity);
 
             bogiron.writeGameState(w, isCity);
             craft_longbow.writeGameState(w, isCity);
+
+            farm_fuel.writeGameState(w, isCity);
+            farm_linen.writeGameState(w, isCity);
 
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, bool isCity)
@@ -86,7 +91,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             craft_sharpstick.readGameState(r, subversion, isCity);
             craft_sword.readGameState(r, subversion, isCity);
             craft_bow.readGameState(r, subversion, isCity);
-            
+
             if (subversion >= 13)
             {
                 craft_twohandsword.readGameState(r, subversion, isCity);
@@ -96,17 +101,21 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             craft_lightarmor.readGameState(r, subversion, isCity);
             craft_mediumarmor.readGameState(r, subversion, isCity);
             craft_heavyarmor.readGameState(r, subversion, isCity);
-            farming.readGameState(r, subversion, isCity);
+            farm_food.readGameState(r, subversion, isCity);
             mining.readGameState(r, subversion, isCity);
             trading.readGameState(r, subversion, isCity);
             autoBuild.readGameState(r, subversion, isCity);
-            
+
             if (subversion >= 18)
             {
                 bogiron.readGameState(r, subversion, isCity);
                 craft_longbow.readGameState(r, subversion, isCity);
             }
-
+            if (subversion >= 20)
+            {
+                farm_fuel.readGameState(r, subversion, isCity);
+                farm_linen.readGameState(r, subversion, isCity);
+            }
         }
 
         public void onFactionChange(WorkTemplate factionTemplate)
@@ -131,7 +140,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             craft_mediumarmor.onFactionValueChange(factionTemplate.craft_mediumarmor);
             craft_heavyarmor.onFactionValueChange(factionTemplate.craft_heavyarmor);
 
-            farming.onFactionValueChange(factionTemplate.farming);
+            farm_food.onFactionValueChange(factionTemplate.farm_food);
             bogiron.onFactionValueChange(factionTemplate.bogiron);
             mining.onFactionValueChange(factionTemplate.mining);
             trading.onFactionValueChange(factionTemplate.trading);
@@ -161,7 +170,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             craft_mediumarmor.followFaction = true;
             craft_heavyarmor.followFaction = true;
 
-            farming.followFaction = true;
+            farm_food.followFaction = true;
+            farm_fuel.followFaction = true;
+            farm_linen.followFaction = true;
             bogiron.followFaction = true;
             mining.followFaction = true;
             trading.followFaction = true;
@@ -256,8 +267,12 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     return craft_mediumarmor;
                 case WorkPriorityType.craftHeavyArmor:
                     return craft_heavyarmor;
-                case WorkPriorityType.farming:
-                    return farming;
+                case WorkPriorityType.farmfood:
+                    return farm_food;
+                case WorkPriorityType.farmfuel:
+                    return farm_fuel;
+                case WorkPriorityType.farmlinen:
+                    return farm_linen;
                 case WorkPriorityType.bogiron:
                     return bogiron;
                 case WorkPriorityType.mining:
@@ -330,8 +345,14 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case WorkPriorityType.craftHeavyArmor:
                     craft_heavyarmor = value;
                     break;
-                case WorkPriorityType.farming:
-                    farming = value;
+                case WorkPriorityType.farmfood:
+                    farm_food = value;
+                    break;
+                case WorkPriorityType.farmfuel:
+                    farm_fuel = value;
+                    break;
+                case WorkPriorityType.farmlinen:
+                    farm_linen = value;
                     break;
                 case WorkPriorityType.mining:
                     mining = value;
@@ -376,7 +397,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             craft_mediumarmor.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_MediumArmor), SpriteName.WarsHammer, SpriteName.WarsResource_MediumArmor, WorkPriorityType.craftMediumArmor, faction, city);
             craft_heavyarmor.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HeavyArmor), SpriteName.WarsHammer, SpriteName.WarsResource_HeavyArmor, WorkPriorityType.craftHeavyArmor, faction, city);
 
-            farming.toHud(player, content, DssRef.lang.Work_Farming, SpriteName.WarsWorkFarm, SpriteName.WarsResource_RawFood, WorkPriorityType.farming, faction, city);
+            farm_food.toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Food, SpriteName.WarsWorkFarm, SpriteName.WarsResource_RawFood, WorkPriorityType.farmfood, faction, city);
+            farm_fuel.toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Fuel, SpriteName.WarsWorkFarm, SpriteName.WarsResource_Fuel, WorkPriorityType.farmfuel, faction, city);
+            farm_linen.toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Linen, SpriteName.WarsWorkFarm, SpriteName.WarsResource_LinenCloth, WorkPriorityType.farmlinen, faction, city);
             bogiron.toHud(player, content, DssRef.lang.Resource_TypeName_BogIron, SpriteName.WarsWorkCollect, SpriteName.WarsResource_IronOre, WorkPriorityType.bogiron, faction, city);
             mining.toHud(player, content, DssRef.lang.Work_Mining, SpriteName.WarsWorkMine, SpriteName.NO_IMAGE, WorkPriorityType.mining, faction, city);
             autoBuild.toHud(player, content, DssRef.lang.Work_AutoBuild, SpriteName.MenuPixelIconSettings, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, faction, city);
@@ -547,7 +570,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         craftMediumArmor,
         craftHeavyArmor,
 
-        farming,
+        farmfood,
+        farmfuel,
+        farmlinen,
         bogiron,
         mining,
         trading,
