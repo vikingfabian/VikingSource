@@ -106,7 +106,7 @@ Art
 
 
 #current
-English, Simplified Chinese, Japanese, Russian, Spanish
+English, Simplified Chinese, Japanese, Russian, Spanish (latin america)
 
 #Real-time grand strategy
 

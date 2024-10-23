@@ -11,13 +11,15 @@ namespace VikingEngine.DSSWars.GameObject
     partial class Army
     {
         //*center, left, right body, left/right flank / scout, front, body, second, behind
-        
+        public const int MinColumnWidth = 2;
+        public const int MaxColumnWidth = 8;
+
         int nextLeftRightOnFrontRow = 0;
         int nextLeftRightOnBodyRow = 0;
         int nextLeftRightOnSecondRow = 0;
         int nextLeftRightOnBehindRow = 0;
 
-        public int armyColumnWidth = 2;
+        public int armyColumnWidth = MinColumnWidth;
 
         public IntVector2 nextArmyPlacement(int row)
         {
@@ -47,6 +49,12 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 return result;
             }
+        }
+
+        public void armyColumnWidthClick(int w)
+        {
+            armyColumnWidth = w;
+            refreshGroupPlacements2(tilePos, false);
         }
 
         void refreshGroupPlacements2(IntVector2 walkToTilePos, bool onPurchase)

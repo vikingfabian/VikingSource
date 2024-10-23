@@ -10,6 +10,7 @@ using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.MoonFall;
+using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -76,6 +77,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int lifeState = LifeState_New;
 
+        public GroupState state = GroupState.Idle;
         public int groupObjective = GroupObjective_FollowArmyObjective;
         public bool attackState = false;
         //bool isRecruit;
@@ -367,7 +369,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         void refreshRotateSpeed()
         {
-            rotateSpeed = (float)Math.Abs(Math.Atan2(walkSpeed, groupRadius));
+            float muliply = 1.6f - 0.15f * (int)soldierConscript.conscript.training;
+            rotateSpeed = (float)Math.Abs(Math.Atan2(walkSpeed * muliply, groupRadius));
         }
 
         IntVector2 bannerManPos()
@@ -472,6 +475,54 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void update(float time, bool fullUpdate)
         {
+            if (soldiers.Count > 0)
+            {
+                switch (state)
+                {
+                    case GroupState.Idle:
+                        return;
+
+                    case GroupState.FindArmyPlacement:
+                        //Test walk straight
+                        if (updateWalking(goalWp, true, army.rotation, time))
+                        { 
+                            state = GroupState.GoingIdle; 
+                        }
+                        break;
+                }
+
+                //if (induvidualUpdate)
+                //{
+                //    var soldiersC = soldiers.counter();
+                //    while (soldiersC.Next())
+                //    {
+                //        soldiersC.sel.update(time, fullUpdate);
+                //    }
+                //}
+                //else
+
+                bool allIdle = true;
+
+                if (state == GroupState.Idle)
+                { 
+                    //Passive check of souroundings
+                }
+                else
+                {
+                    var soldiersC = soldiers.counter();
+                    while (soldiersC.Next())
+                    {
+                        soldiersC.sel.update2(time);
+                        allIdle &= soldiersC.sel.state2 == SoldierState2.idle;
+                    }
+                }
+
+                if (allIdle && state == GroupState.GoingIdle)
+                { 
+                    state = GroupState.Idle;
+                }
+            }
+
             return;
 
             //OLD
@@ -673,6 +724,18 @@ namespace VikingEngine.DSSWars.GameObject
 #if DEBUG
             debugTagButton(args.content);
 
+            HudLib.Label(args.content, "Army column width");
+            args.content.newLine();
+            for (int w = Army.MinColumnWidth; w <= Army.MaxColumnWidth; w += 2)
+            {
+                var button = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(w.ToString()) },
+                    new RbAction1Arg<int>(army.armyColumnWidthClick, w, SoundLib.menu));
+                button.setGroupSelectionColor(HudLib.RbSettings, w == army.armyColumnWidth);
+                args.content.Add(button);
+                args.content.space();
+            }
+
+            args.content.newLine();
             //args.content.text($"column {armyGridPlacement2.X}");
             //args.content.text($"row {armyGridPlacement2.Y}");
             args.content.Add(new RichBoxSeperationLine());
@@ -1523,17 +1586,29 @@ namespace VikingEngine.DSSWars.GameObject
             goalWp = wp;
 
             //if (!army.inRender_detailLayer || lifeState == LifeState_New)
+            if (lifeState == LifeState_New)
             {
                 ++lifeState;
                 position = goalWp;
                 setGroundY();
-            }
 
-            var soldiersC = soldiers.counter();
-            while (soldiersC.Next())
-            {
-                soldiersC.sel.firstUpdate();
+                var soldiersC = soldiers.counter();
+                while (soldiersC.Next())
+                {
+                    soldiersC.sel.firstUpdate();
+                }
             }
+            else
+            { //TODO ersätt med "new state" flagga
+                var soldiersC = soldiers.counter();
+                while (soldiersC.Next())
+                {
+                    soldiersC.sel.wakeUp2();
+                }
+            }
+            state = GroupState.FindArmyPlacement;
+
+            
         }
 
         public void SetArmyPlacement(IntVector2 newLocalPlacement, bool onPurchase)
@@ -1610,6 +1685,14 @@ namespace VikingEngine.DSSWars.GameObject
     {
         Hold,
         Normal,
+    }
+
+    enum GroupState
+    { 
+        Idle,
+        FindArmyPlacement,
+        GoingIdle,
+        //Rotate,
     }
 
     //enum GroupObjective
