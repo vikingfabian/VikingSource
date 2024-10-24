@@ -1579,5 +1579,23 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string FactionName_Monger => "商人";
         public override string FactionName_Hatu => "ハツ";
         public override string FactionName_Destru => "デストル";
+
+        //patch2
+        public override string Tutorial_BuildSomething => "{0} を生産するものを建設する";
+        public override string Tutorial_BuildCraft => "{0} のためのクラフトステーションを建設する";
+        public override string Tutorial_IncreaseBufferLimit => "{0} のバッファリミットを増加する";
+
+        /// <summary>
+        /// 0: count, 1: item type
+        /// </summary>
+        public override string Tutorial_CollectItemStockpile => "{0} {1} のストックパイルに達する";
+        public override string Tutorial_LookAtFoodBlueprint => "食品の設計図を見る";
+        public override string Tutorial_CollectFood_Info1 => "労働者は市役所に食事に行く";
+        public override string Tutorial_CollectFood_Info2 => "軍は支援労働者を派遣して食料を集める";
+        public override string Tutorial_CollectFood_Info0 => "労働者を完全にコントロールしたいですか？全ての作業優先度をゼロに設定し、一つずつアクティブにする。";
+
+        public override string EndGameStatistics_DecorsBuilt => "建てられた装飾：{0}";
+        public override string EndGameStatistics_StatuesBuilt => "建てられた像：{0}";
+
     }
 }

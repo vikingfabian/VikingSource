@@ -1572,5 +1572,23 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string FactionName_Monger => "Торговец";
         public override string FactionName_Hatu => "Хату";
         public override string FactionName_Destru => "Дестру";
+
+        //patch2
+        public override string Tutorial_BuildSomething => "Постройте что-то, что производит {0}";
+        public override string Tutorial_BuildCraft => "Постройте мастерскую для: {0}";
+        public override string Tutorial_IncreaseBufferLimit => "Увеличьте буферный лимит для: {0}";
+
+        /// <summary>
+        /// 0: count, 1: item type
+        /// </summary>
+        public override string Tutorial_CollectItemStockpile => "Достигните запаса {0} {1}";
+        public override string Tutorial_LookAtFoodBlueprint => "Посмотрите на чертежи еды";
+        public override string Tutorial_CollectFood_Info1 => "Рабочие пойдут в ратушу, чтобы поесть";
+        public override string Tutorial_CollectFood_Info2 => "Армия отправляет поддерживающих работников для сбора еды";
+        public override string Tutorial_CollectFood_Info0 => "Хотите полный контроль над рабочими? Установите все приоритеты работы на ноль, а затем активируйте по одному.";
+
+        public override string EndGameStatistics_DecorsBuilt => "Построено декораций: {0}";
+        public override string EndGameStatistics_StatuesBuilt => "Построено статуй: {0}";
+
     }
 }
