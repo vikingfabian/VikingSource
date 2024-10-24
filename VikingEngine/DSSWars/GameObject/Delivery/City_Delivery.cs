@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Valve.Steamworks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display.Component;
 using VikingEngine.DSSWars.Display.Translation;
@@ -40,44 +41,49 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         case DeliveryActiveStatus.Idle:
                             {
-                                if (status.que > 0 && status.profile.toCity > 0)
+                                if (status.que > 0 && 
+                                    status.profile.toCity > 0 &&
+                                    status.CanSend(this))
                                 {
-                                    City othercity = DssRef.world.cities[status.profile.toCity];
+                                    City othercity = findOtherCity(ref status);//DssRef.world.cities[status.profile.toCity];
 
-                                    if (othercity.faction == this.faction)
+                                    if (othercity != null && 
+                                        othercity.faction == this.faction )
                                     {
                                         //if ()
+                                        //{
+                                        //Collecting Items:
+                                        //if (status.CanSend(this) &&
+                                        //    status.CountDownQue())
+                                        //{
+                                        if (status.CountDownQue())
                                         {
-                                            //Collecting Items:
-                                            if (status.CanSend(this) && status.CanRecieve() &&
-                                                status.CountDownQue())
+                                            status.inProgress = status.profile;
+
+                                            if (status.inProgress.type == ItemResourceType.Men)
                                             {
-                                                status.inProgress = status.profile;
+                                                workForce -= DssConst.CityDeliveryCount;
+                                            }
+                                            else
+                                            {
+                                                var resource = GetGroupedResource(status.inProgress.type);
+                                                resource.amount -= DssConst.CityDeliveryCount;
+                                                SetGroupedResource(status.inProgress.type, resource);
+                                            }
 
-                                                if (status.inProgress.type == ItemResourceType.Men)
+                                            status.active++;
+                                            status.countdown = new TimeInGameCountdown(DeliveryProfile.DeliveryTime(this, othercity, out _));
+                                            if (inRender_detailLayer)
+                                            {
+                                                Ref.update.AddSyncAction(new SyncAction(() =>
                                                 {
-                                                    workForce -= DssConst.CityDeliveryCount;
-                                                }
-                                                else
-                                                {
-                                                    var resource = GetGroupedResource(status.inProgress.type);
-                                                    resource.amount -= DssConst.CityDeliveryCount;
-                                                    SetGroupedResource(status.inProgress.type, resource);
-                                                }
-
-                                                status.active++;
-                                                status.countdown = new TimeInGameCountdown(DeliveryProfile.DeliveryTime(this, DssRef.world.cities[status.inProgress.toCity], out _));
-                                                if (inRender_detailLayer)
-                                                {
-                                                    Ref.update.AddSyncAction(new SyncAction(() =>
-                                                    {
-                                                        new ResourceEffect(status.inProgress.type, DssConst.CityDeliveryCount,
-                                                           VectorExt.AddY( WP.SubtileToWorldPosXZgroundY_Centered(conv.IntToIntVector2(status.idAndPosition)), DssConst.Men_StandardModelScale * 2f),
-                                                           ResourceEffectType.Deliver);
-                                                    }));
-                                                }
+                                                    new ResourceEffect(status.inProgress.type, DssConst.CityDeliveryCount,
+                                                       VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(conv.IntToIntVector2(status.idAndPosition)), DssConst.Men_StandardModelScale * 2f),
+                                                       ResourceEffectType.Deliver);
+                                                }));
                                             }
                                         }
+                                       // }
                                     }
                                 }
                             }
@@ -88,7 +94,7 @@ namespace VikingEngine.DSSWars.GameObject
                         case DeliveryActiveStatus.Delivering:
                             if (status.countdown.TimeOut())
                             {
-                                City othercity = DssRef.world.cities[status.inProgress.toCity];
+                                City othercity = DssRef.world.cities[status.inProgress.ToCity()];
                                 if (status.inProgress.type == ItemResourceType.Men)
                                 {
                                     if (othercity.workForce + DssConst.CityDeliveryCount > othercity.workForceMax)
@@ -127,6 +133,49 @@ namespace VikingEngine.DSSWars.GameObject
                     deliveryServices[i] = status;
                 }
             }
+
+            City findOtherCity(ref DeliveryStatus status)
+            {
+                if (status.profile.toCity == DeliveryProfile.ToCityAuto)
+                {
+                    int minAmount = int.MaxValue;
+                    City city = null;
+
+                    var citiesC = faction.cities.counter();
+                    while (citiesC.Next())
+                    {
+                        if (citiesC.sel != this && tilePos.SideLength(citiesC.sel.tilePos) <= DssConst.DeliveryMaxDistance)
+                        {
+                            if (status.CanRecieve(citiesC.sel.parentArrayIndex, out int hasAmount))
+                            {
+                                if (hasAmount < minAmount)
+                                {
+                                    minAmount = hasAmount;
+                                    city = citiesC.sel;
+                                }
+                            }
+                        }
+                    }
+
+                    if (city != null)
+                    {
+                        status.profile.autoCity = city.parentArrayIndex;
+                    }
+                    return city;
+                }
+                else
+                {
+                    if (status.CanRecieve())
+                    {
+                        return DssRef.world.cities[status.profile.toCity];
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+
+            }
         }
 
         public void addDelivery(IntVector2 subPos, bool recruitment)
@@ -143,6 +192,8 @@ namespace VikingEngine.DSSWars.GameObject
                 deliveryServices.Add(deliveryStatus);
             }
         }
+
+        
         
     }
 }

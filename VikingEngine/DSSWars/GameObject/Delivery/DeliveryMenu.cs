@@ -78,7 +78,16 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                                    {
                                        content.newParagraph();
                                        content.h2(DssRef.lang.Hud_RecieveingCity);
-                                       DssRef.world.cities[currentStatus.profile.toCity].GetGroupedResource(item).toMenu(content, item, safeGuard, ref reachedBuffer);
+                                       if (currentStatus.profile.toCity == DeliveryProfile.ToCityAuto)
+                                       {
+
+                                       }
+                                       else
+                                       {
+                                            DssRef.world.cities[currentStatus.profile.toCity].GetGroupedResource(item).toMenu(content, item, safeGuard, ref reachedBuffer);
+                                       }
+
+                                       //
                                    }
 
                                    //content.text(LangLib.Item(item)).overrideColor = HudLib.TitleColor_TypeName;
@@ -99,7 +108,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                 var cities_c = city.faction.cities.counter();
                 while (cities_c.Next())
                 {
-                    if (cities_c.sel != city)
+                    if (cities_c.sel != city && city.tilePos.SideLength(cities_c.sel.tilePos) <= DssConst.DeliveryMaxDistance)
                     {
                         var button = new RichboxButton(new List<AbsRichBoxMember>{
                             new RichBoxText(cities_c.sel.TypeName())
@@ -118,6 +127,22 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                         content.space();
                     }
                 }
+
+                //AUTO
+                {
+                    var button = new RichboxButton(new List<AbsRichBoxMember>{
+                            new RichBoxImage(SpriteName.MenuPixelIconSettings)
+                            }, new RbAction1Arg<int>(cityClick, DeliveryProfile.ToCityAuto), new RbAction(() =>
+                            {
+                                RichBoxContent content = new RichBoxContent();
+                                content.h2(DssRef.lang.Automation_Title).overrideColor = HudLib.TitleColor_Name;
+                                content.text(DssRef.todoLang.Delivery_AutoReciever_Description).overrideColor = HudLib.InfoYellow_Light;
+                                player.hud.tooltip.create(player, content, true);
+                            }));
+                    button.setGroupSelectionColor(HudLib.RbSettings, DeliveryProfile.ToCityAuto == currentStatus.profile.toCity);
+                    content.Add(button);
+                }
+
                 content.newParagraph();
 
                 var minLabel = new RichBoxText(DssRef.lang.Delivery_SenderMinimumCap + ":");
@@ -192,10 +217,16 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                         var text = new RichBoxText(DssRef.lang.Delivery_RecieverReady);
                         text.overrideColor = isSending || currentStatus.CanRecieve() ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                         content.Add(text);
+
+                        if (isSending && currentStatus.inProgress.toCity == DeliveryProfile.ToCityAuto)
+                        {
+                            content.Add(new RichBoxText(" - " + DssRef.world.cities[currentStatus.inProgress.autoCity].TypeName()));
+                        }
                     }
 
                     if (isSending)
-                    {
+                    {                        
+
                         content.newLine();
                         HudLib.BulletPoint(content);
                         content.Add(new RichBoxText(currentStatus.longTimeProgress(city)));

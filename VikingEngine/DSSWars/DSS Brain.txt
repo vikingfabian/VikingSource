@@ -10,6 +10,8 @@
 * changed work team size from 8 to 6, so you get exactly 5 workers per hut
 * resources safe guard option
 * new work prio: food farming, fuel farming, linen farming
+* Delivery has a max distance of 80 tiles
+* Delivery Auto city option
 
 #Todo#
 översätt
@@ -18,13 +20,10 @@
 
 #Todo (nästa patch)#
 
-max distance på delivery
-
 
 
 --Efter release polish--
 
--culture icon
 -war icon
  "produces 20 raw food in 4 minutes, and requires 30sec of work per cycle" 
  ● If You can, be more specific on what resource is produced by a building in the
@@ -46,7 +45,6 @@ menu scroll
 
 Error
 -back button in menues 
--list punkt
 
 Retreat system
 -retreat av de sista motståndarna

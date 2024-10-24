@@ -55,6 +55,7 @@ namespace VikingEngine.DSSWars
 
         //OTHER
         public static float Livestock_WalkingSpeed = Men_StandardWalkingSpeed * 0.2f;
+        public static int DeliveryMaxDistance = 80;
 
         //CITY
         public static float TaxPerWorker = 0.1f;
