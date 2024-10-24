@@ -48,8 +48,8 @@ namespace VikingEngine.DSSWars.Data
             content.text(string.Format(DssRef.lang.EndGameStatistics_AlliedFactions, TextLib.LargeNumber(AlliedFactions)));
             content.text(string.Format(DssRef.lang.EndGameStatistics_ServantFactions, TextLib.LargeNumber(ServantFactions)));
             content.newParagraph();
-            content.text(string.Format(DssRef.todoLang.EndGameStatistics_StatuesBuilt, statuesBuilt));
-            content.text(string.Format(DssRef.todoLang.EndGameStatistics_DecorsBuilt, decorBuilt));
+            content.text(string.Format(DssRef.lang.EndGameStatistics_StatuesBuilt, statuesBuilt));
+            content.text(string.Format(DssRef.lang.EndGameStatistics_DecorsBuilt, decorBuilt));
 
         }
 

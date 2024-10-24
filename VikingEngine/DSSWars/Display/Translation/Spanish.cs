@@ -1576,5 +1576,22 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string FactionName_Hatu => "Hatu";
         public override string FactionName_Destru => "Destru";
 
+        //patch2
+        public override string Tutorial_BuildSomething => "Construye algo que produzca {0}";
+        public override string Tutorial_BuildCraft => "Construye una estación de artesanía para: {0}";
+        public override string Tutorial_IncreaseBufferLimit => "Aumenta el límite de buffer para: {0}";
+
+        /// <summary>
+        /// 0: count, 1: item type
+        /// </summary>
+        public override string Tutorial_CollectItemStockpile => "Alcanza un almacén de {0} {1}";
+        public override string Tutorial_LookAtFoodBlueprint => "Mira el plano de comida";
+        public override string Tutorial_CollectFood_Info1 => "Los trabajadores irán al ayuntamiento a comer";
+        public override string Tutorial_CollectFood_Info2 => "El ejército envía trabajadores de apoyo para recolectar comida";
+        public override string Tutorial_CollectFood_Info0 => "¿Quieres control total sobre los trabajadores? Establece todas las prioridades de trabajo en cero y luego activa una a la vez.";
+
+        public override string EndGameStatistics_DecorsBuilt => "Decoraciones construidas: {0}";
+        public override string EndGameStatistics_StatuesBuilt => "Estatuas construidas: {0}";
+
     }
 }

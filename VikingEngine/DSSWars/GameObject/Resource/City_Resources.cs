@@ -302,7 +302,11 @@ namespace VikingEngine.DSSWars.GameObject
                     return false;
 
                 default:
+#if DEBUG
                     throw new NotImplementedException();
+#else
+                    return false;
+#endif
             }
         }
 
