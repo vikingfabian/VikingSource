@@ -28,6 +28,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_Storehourse_Description => "Workers may drop items here";
 
         public string Resource_TypeName_Longbow => "longbow";
+        public string Resource_TypeName_Rapeseed => "rapeseed";
+        public string Resource_TypeName_Hemp => "hemp";
 
 
         //MAYBE

@@ -239,6 +239,11 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                         case TerrainSubFoilType.WheatFarm:
                             return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat);
+
+                        case TerrainSubFoilType.RapeSeedFarm:
+                            return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.todoLang.Resource_TypeName_Rapeseed);
+                        case TerrainSubFoilType.HempFarm:
+                            return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.todoLang.Resource_TypeName_Hemp);
                     }
                     break;
 
