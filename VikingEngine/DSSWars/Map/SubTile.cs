@@ -81,6 +81,8 @@ namespace VikingEngine.DSSWars.Map
                     {
                         case TerrainSubFoilType.LinenFarm:
                         case TerrainSubFoilType.WheatFarm:
+                        case TerrainSubFoilType.RapeSeedFarm:
+                        case TerrainSubFoilType.HempFarm:
                             return false;
                         
                     }

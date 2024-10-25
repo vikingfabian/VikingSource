@@ -295,7 +295,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             {
         new UseResource(ItemResourceType.Water_G, 2),
         new UseResource(ItemResourceType.Wood_Group, 20),
-        new UseResource(ItemResourceType.RawFood_Group, DssConst.DefaultItemRawFoodAmout)
+        new UseResource(ItemResourceType.RawFood_Group, DssConst.DefaultItemRawFoodAmount)
             }
         );
 

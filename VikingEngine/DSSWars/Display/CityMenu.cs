@@ -182,7 +182,7 @@ namespace VikingEngine.DSSWars.Display
                     new RbAction(() =>
                     {
                         RichBoxContent content = new RichBoxContent();
-                        content.text(string.Format("Safe guard. Will maximize the priority, of the food production chain, if it falls below {0}.", DssConst.WorkSafeGuardAmount)).overrideColor = HudLib.InfoYellow_Light;
+                        content.text(string.Format(DssRef.todoLang.Resource_FoodSafeGuard_Description, DssConst.WorkSafeGuardAmount)).overrideColor = HudLib.InfoYellow_Light;
                         content.text(city.res_food_safeguard? DssRef.todoLang.Hud_On : DssRef.todoLang.Hud_Off);
                         player.hud.tooltip.create(player, content, true);
                     })));
@@ -246,7 +246,11 @@ namespace VikingEngine.DSSWars.Display
                     //    GroupedResource.BufferIconInfo(content);
                     //}
                     content.Add(new RichBoxSeperationLine());
-                    GroupedResource.BufferIconInfo(content);
+                    GroupedResource.BufferIconInfo(content, false);
+                    if (foodSafeGuard)
+                    {
+                        GroupedResource.BufferIconInfo(content, true);
+                    }
                     ResourceLib.ConvertGoldOre.toMenu(content, city);
                     //content.text("1 gold ore => " + DssConst.GoldOreSellValue.ToString() + "gold");
                     {
@@ -287,7 +291,7 @@ namespace VikingEngine.DSSWars.Display
                     stockpile(ItemResourceType.HeavyArmor);
 
                     HudLib.Description(content, DssRef.lang.Resource_StockPile_Info);
-                    GroupedResource.BufferIconInfo(content);
+                    GroupedResource.BufferIconInfo(content, false);
                     break;
             }
 

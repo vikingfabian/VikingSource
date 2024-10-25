@@ -32,6 +32,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Resource_TypeName_Hemp => "hemp";
 
 
+        public string Resource_FoodSafeGuard_Description => "Safe guard. Will maximize the priority, of the food production chain, if it falls below {0}.";
+        public string Resource_FoodSafeGuard_Active => "Safe guard is active.";
+
+
         //MAYBE
         public string BuildingType_Bank => "Bank";
         public string BuildingType_Bank_Description => "Send gold to other cities";

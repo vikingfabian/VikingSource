@@ -1,11 +1,13 @@
 ﻿
 -Change Log-
-Removes build orders when city is lost
+* Removes build orders when city is lost
+
+
 * longbow weapon
 * normal bow power reduction to about 60%
 * Bog iron, inefficient iron collecting
 * Storehouse, workers may drop their resources here
-* Tavern, workers may eat here
+* Tavern is back! workers may eat here
 * new icons
 * workers will get the closest work
 * changed work team size from 8 to 6, so you get exactly 5 workers per hut
@@ -13,15 +15,11 @@ Removes build orders when city is lost
 * new work prio: food farming, fuel farming, linen farming
 * Delivery has a max distance of 80 tiles
 * Delivery Auto city option
-* Prepping farms costs one water
-
-#Todo#
-översätt
+* planting farms costs one water
 
 
-
-#Todo (nästa patch)#
-
+#Todo (xmas patch)#
+Bog iron info
 
 
 --Efter release polish--

@@ -355,6 +355,11 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case ItemResourceType.SkinLinen_Group: 
                     return DssRef.lang.Resource_TypeName_Linen;
 
+                case ItemResourceType.Rapeseed:
+                    return DssRef.todoLang.Resource_TypeName_Rapeseed;
+                case ItemResourceType.Hemp:
+                    return DssRef.todoLang.Resource_TypeName_Hemp;
+
                 case ItemResourceType.SharpStick:
                     return DssRef.lang.Resource_TypeName_SharpStick;
                 case ItemResourceType.Sword:

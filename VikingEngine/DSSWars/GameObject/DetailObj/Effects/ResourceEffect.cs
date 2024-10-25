@@ -26,7 +26,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             string text;
             Color textCol;
-
+            if (add == 0)
+            { 
+            lib.DoNothing();
+                }
             if (type == ResourceEffectType.Add)
             {
                 text = TextLib.PlusMinus(add);

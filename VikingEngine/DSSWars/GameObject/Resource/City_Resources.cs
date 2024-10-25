@@ -153,6 +153,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void AddGroupedResource(ItemResourceType type, int add)
         {
+            if (add == 0)
+            { 
+                lib.DoNothing();
+            }
+
             switch (type)
             {
                 case ItemResourceType.Gold:
@@ -451,6 +456,7 @@ namespace VikingEngine.DSSWars.GameObject
                     convert1.type = ItemResourceType.Wood_Group;
                     break;
 
+                
                 case ItemResourceType.Coal:
                     convert1.type = ItemResourceType.Fuel_G;
                     break;
@@ -461,14 +467,14 @@ namespace VikingEngine.DSSWars.GameObject
 
                 case ItemResourceType.Wheat:
                     convert1.type = ItemResourceType.RawFood_Group;
-                    convert1.amount = DssConst.DefaultItemRawFoodAmout;
+                    convert1.amount = DssConst.DefaultItemRawFoodAmount;
                     //res_rawFood.add(item, DssConst.DefaultItemRawFoodAmout);
                     break;
 
                 case ItemResourceType.Egg:                                   
                 case ItemResourceType.Hen:
                     convert1.type = ItemResourceType.RawFood_Group;
-                    convert1.amount = DssConst.DefaultItemRawFoodAmout;
+                    convert1.amount = DssConst.DefaultItemRawFoodAmount;
                     animalResourceBonus(ref item);
                     //res_rawFood.add(item, DssConst.DefaultItemRawFoodAmout);
                     break;
@@ -487,6 +493,20 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Linen:
                     convert1.type = ItemResourceType.SkinLinen_Group;
                     break;
+
+                case ItemResourceType.Rapeseed:
+                    convert1.type = ItemResourceType.Fuel_G;
+                    convert1.amount = DssConst.DefaultItemFuelAmount;
+                    break;
+
+                case ItemResourceType.Hemp:
+                    convert1.type = ItemResourceType.SkinLinen_Group;
+                    convert1.amount = DssConst.HempFuelAmount;
+
+                    convert2.type = ItemResourceType.Fuel_G;
+                    convert2.amount = DssConst.HempFuelAmount;
+                    break;
+
 
                 //case ItemResourceType.IronOre_G:
                 //    res_ore.add(item, 1);
@@ -642,17 +662,27 @@ namespace VikingEngine.DSSWars.GameObject
             
         }
 
-        public static void BufferIconInfo(RichBoxContent content)
+        public static void BufferIconInfo(RichBoxContent content, bool safeguard)
         {
             content.newLine();
+            SpriteName sprite;
+            string textstring;
+            if (safeguard)
+            {
+                sprite = SpriteName.WarsStockpileAdd_Protected;
+                textstring = DssRef.todoLang.Resource_FoodSafeGuard_Active;
+            }
+            else
+            {
+                sprite = SpriteName.WarsStockpileStop;
+                textstring = DssRef.lang.Resource_ReachedStockpile;
+            }
 
-            var icon = new RichBoxImage(SpriteName.WarsStockpileStop);
-            //icon.color = Color.OrangeRed;
+
+            var icon = new RichBoxImage(sprite);
             content.Add(icon);
 
-            //content.space();
-
-            var text = new RichBoxText(": " + DssRef.lang.Resource_ReachedStockpile);
+            var text = new RichBoxText(": " + textstring);
             text.overrideColor = HudLib.InfoYellow_Light;
             content.Add(text);
         }

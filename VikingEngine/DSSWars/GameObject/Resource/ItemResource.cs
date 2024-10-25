@@ -131,10 +131,11 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         Stone_G,
         Clay,
         Brick,
-        Pot,
+
+        Hemp,
 
         Wheat,
-        Bread,
+        Rapeseed,
         Beer,
         Food_G,
 
@@ -153,6 +154,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         SkinLinen_Group,
         Men,
         
+
 
         NUM,
     }

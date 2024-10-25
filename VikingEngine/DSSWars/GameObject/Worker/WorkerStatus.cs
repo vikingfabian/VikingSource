@@ -163,6 +163,28 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                 DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                                 break;
 
+                            case TerrainSubFoilType.RapeSeedFarm:
+                                carry = new Resource.ItemResource(
+                                        ItemResourceType.Hemp,
+                                        subTile.terrainQuality,
+                                        Convert.ToInt32(processTimeLengthSec),
+                                        farmGrowthMultiplier(subTile.terrainAmount, city));
+
+                                subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
+                                DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                                break;
+
+                            case TerrainSubFoilType.HempFarm:
+                                carry = new Resource.ItemResource(
+                                        ItemResourceType.Rapeseed,
+                                        subTile.terrainQuality,
+                                        Convert.ToInt32(processTimeLengthSec),
+                                        farmGrowthMultiplier(subTile.terrainAmount, city));
+
+                                subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
+                                DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                                break;
+
                             case TerrainSubFoilType.StoneBlock:
                             case TerrainSubFoilType.Stones:
                                 carry = new ItemResource(ItemResourceType.Stone_G, 1, Convert.ToInt32(processTimeLengthSec), ItemPropertyColl.CarryStones);
@@ -263,7 +285,12 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                     if (visualUnit)
                     {
-                        new ResourceEffect(convert1.type, convert1.amount, VectorExt.AddY( WP.SubtileToWorldPosXZgroundY_Centered(subTileEnd), 0.08f), ResourceEffectType.Add);
+                        Vector3 pos = VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(subTileEnd), 0.08f);
+                        new ResourceEffect(convert1.type, convert1.amount, pos, ResourceEffectType.Add);
+                        if (convert2.amount > 0)
+                        {
+                            new ResourceEffect(convert2.type, convert2.amount, VectorExt.AddY(pos, 0.08f), ResourceEffectType.Add);
+                        }
                     }
                     break;
 
