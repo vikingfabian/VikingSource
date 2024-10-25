@@ -436,6 +436,8 @@ namespace VikingEngine.DSSWars
             {
                 refreshMainCity();                     
             }
+
+            player.orders?.refreshAvailable(this);
         }
 
         public void refreshMainCity()

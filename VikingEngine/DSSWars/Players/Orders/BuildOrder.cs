@@ -56,6 +56,8 @@ namespace VikingEngine.DSSWars.Players.Orders
             throw new NotImplementedException();
         }
 
+        virtual public bool refreshAvailable(Faction faction) { return true; }
+
         virtual public void writeGameState(System.IO.BinaryWriter w)
         {       
             w.Write((byte)priority);
@@ -168,6 +170,11 @@ namespace VikingEngine.DSSWars.Players.Orders
         public override bool IsConflictingOrder(AbsOrder other)
         {
             return other.IsBuildOnSubTile(subTile);
+        }
+
+        public override bool refreshAvailable(Faction faction)
+        {
+            return city.faction == faction;
         }
     }
 

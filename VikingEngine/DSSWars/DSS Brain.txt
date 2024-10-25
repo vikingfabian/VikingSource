@@ -1,6 +1,6 @@
 ﻿
 -Change Log-
-
+Removes build orders when city is lost
 
 #Todo#
 översätt

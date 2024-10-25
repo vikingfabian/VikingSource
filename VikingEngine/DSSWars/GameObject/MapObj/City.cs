@@ -1231,21 +1231,15 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (this.faction != faction)
             {
-                if (this.faction != null)
-                {
-                    this.faction.remove(this);
-                }
-
+                Faction prevOwner = this.faction;
                 this.faction = faction;
                 faction.AddCity(this, false);
-
+                if (prevOwner != null)
+                {
+                    prevOwner.remove(this);
+                }
                 OnNewOwner();
             }
-
-            //if (guardCount <= 0)
-            //{
-            //    guardCount = 1;
-            //}
         }
 
         override public void OnNewOwner()

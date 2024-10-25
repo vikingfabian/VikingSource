@@ -14,6 +14,18 @@ namespace VikingEngine.DSSWars.Players.Orders
     {
         public List<AbsOrder> orders = new List<AbsOrder>();
 
+        public void refreshAvailable(Faction faction)
+        {
+            for (int i = orders.Count - 1; i >= 0; --i)
+            {
+                if (!orders[i].refreshAvailable(faction))
+                {
+                    orders[i].DeleteMe();
+                    orders.RemoveAt(i);
+                }
+            }
+        }
+
         public AbsOrder orderOnSubTile(IntVector2 subTilePos)
         {
             for (int i = 0; i < orders.Count; ++i)
