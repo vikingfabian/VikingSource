@@ -685,5 +685,17 @@ namespace VikingEngine
             value.Y = Convert.ToInt32(value.Y);
             return value;
         }
+
+        public static bool IsMovingCloser(Vector2 point1_pos, Vector2 point1_movedir, Vector2 point2_pos)
+        {
+            float initialDistance = Vector2.Distance(point1_pos, point2_pos);
+
+            float stepSize = 0.001f; 
+            Vector2 newPoint1_pos = point1_pos + point1_movedir * stepSize;
+
+            float newDistance = Vector2.Distance(newPoint1_pos, point2_pos);
+
+            return newDistance < initialDistance;
+        }
     }
 }

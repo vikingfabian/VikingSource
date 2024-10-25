@@ -374,7 +374,7 @@ namespace VikingEngine.DSSWars.Players
             var mainArmy = faction.NewArmy(onTile);
             for (int i = 0; i < 5; ++i)
             {
-                new SoldierGroup(mainArmy, DssLib.SoldierProfile_Standard);//mainArmy, UnitType.Soldier, false);
+                new SoldierGroup(mainArmy, DssLib.SoldierProfile_Standard, mainArmy.position);//mainArmy, UnitType.Soldier, false);
             }
 
             if (IsPlayer() && DssRef.difficulty.honorGuard)
@@ -390,7 +390,7 @@ namespace VikingEngine.DSSWars.Players
                         var army = faction.NewArmy(onTile);
                         for (int i = 0; i < 3; ++i)
                         {
-                            new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard);//UnitType.HonorGuard, false);
+                            new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard, army.position);//UnitType.HonorGuard, false);
                             --guardCount;
                         }
                         army.OnSoldierPurchaseCompleted();
@@ -404,7 +404,7 @@ namespace VikingEngine.DSSWars.Players
 
                 for (int i = 0; i < guardCount; ++i)
                 {
-                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_HonorGuard);
+                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_HonorGuard, mainArmy.position);
                 }
             }
             mainArmy.OnSoldierPurchaseCompleted();

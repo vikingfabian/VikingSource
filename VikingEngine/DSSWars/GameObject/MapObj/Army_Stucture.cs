@@ -59,29 +59,31 @@ namespace VikingEngine.DSSWars.GameObject
 
         void refreshGroupPlacements2(IntVector2 walkToTilePos, bool finalNode)
         {
-            if (finalNode)
+            //if (finalNode)
+            //{
+            bool columnStructure = !finalNode;
+
+            ArmyPlacementGrid placementGrid = new ArmyPlacementGrid();
+
+            var groupsC = groups.counter();
+
+            while (groupsC.Next())
             {
-                ArmyPlacementGrid placementGrid = new ArmyPlacementGrid();
-
-                var groupsC = groups.counter();
-
-                while (groupsC.Next())
-                {
-                    placementGrid.add(groupsC.sel);
-                }
-
-                placementGrid.calcPositions(this, walkToTilePos);
+                placementGrid.add(groupsC.sel);
             }
-            else
-            {
-                var wp = WP.ToWorldPos(walkToTilePos);
-                var groupsC = groups.counter();
 
-                while (groupsC.Next())
-                {
-                    groupsC.sel.setArmyPlacement2(wp);
-                }
-            }
+            placementGrid.calcPositions(this, walkToTilePos, columnStructure);
+            //}
+            //else
+            //{
+            //    var wp = WP.ToWorldPos(walkToTilePos);
+            //    var groupsC = groups.counter();
+
+            //    while (groupsC.Next())
+            //    {
+            //        groupsC.sel.setArmyPlacement2(wp);
+            //    }
+            //}
         }
 
         void refreshGroupPlacements2_onMidNode(IntVector2 walkToTilePos)
@@ -127,15 +129,16 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
-        public void calcPositions(Army army, IntVector2 walkToPos)
+        public void calcPositions(Army army, IntVector2 walkToPos, bool columnStructure)
         {
             if (army.groups.Count == 0) return;
 
-           // Debug.Log("--- Calc posotions for " + army.TypeName());
+            // Debug.Log("--- Calc posotions for " + army.TypeName());
 
             //army.position
             //army.rotation
             //army.armyColumnWidth
+            int columnWidth = columnStructure ? 1 : army.armyColumnWidth;
 
             Vector2 relPos = new Vector2();
             Vector2 centerWp = walkToPos.Vec;
@@ -159,11 +162,11 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 largestWidth = 0;
                 Vector2 cellSize;
-                grid[colindex, 0].nextPlacement(centerWp, army.rotation, _relPos, centerPan, army.armyColumnWidth, out cellSize, true);
+                grid[colindex, 0].nextPlacement(centerWp, army.rotation, _relPos, centerPan, columnWidth, out cellSize, true);
 
                 for (int row = 1; row < RowsCount; row++)
                 {
-                    grid[colindex, row].nextPlacement(centerWp, army.rotation, _relPos, centerPan, army.armyColumnWidth, out cellSize, false);
+                    grid[colindex, row].nextPlacement(centerWp, army.rotation, _relPos, centerPan, columnWidth, out cellSize, false);
                     largestWidth = lib.LargestValue(largestWidth, cellSize.X);
 
                     _relPos.Y += cellSize.Y + DssVar.SoldierGroup_GridExtraSpacing;

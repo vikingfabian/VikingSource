@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -153,7 +154,8 @@ namespace VikingEngine.DSSWars.Players
                         break;
                 }
 
-                city.conscriptArmy(profile, get);
+                
+                city.conscriptArmy(profile, city.defaultConscriptPos(), get);
             }
 
             return get > 0;

@@ -232,17 +232,17 @@ namespace VikingEngine.DSSWars
                                 int count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
                                 for (int i = 0; i < count; ++i)
                                 {
-                                    new SoldierGroup(army, DssLib.SoldierProfile_Pikeman);
+                                    new SoldierGroup(army, DssLib.SoldierProfile_Pikeman, army.position);
                                 }
                                 count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
                                 for (int i = 0; i < count; ++i)
                                 {
-                                    new SoldierGroup(army, DssLib.SoldierProfile_Sailor);
+                                    new SoldierGroup(army, DssLib.SoldierProfile_Sailor, army.position);
                                 }
                                 count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
                                 for (int i = 0; i < count; ++i)
                                 {
-                                    new SoldierGroup(army, DssLib.SoldierProfile_CrossbowMan);
+                                    new SoldierGroup(army, DssLib.SoldierProfile_CrossbowMan, army.position);
                                 }
                                 army.refreshPositions(true);
 

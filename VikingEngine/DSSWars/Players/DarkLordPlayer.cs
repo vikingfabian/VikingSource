@@ -234,11 +234,11 @@ namespace VikingEngine.DSSWars.Players
 
             if (commit && DssRef.state.events.nextEvent == EventType.DarkLordInPerson)
             {
-                city.conscriptArmy(DssLib.SoldierProfile_HonorGuard.conscript, 4);
+                city.conscriptArmy(DssLib.SoldierProfile_HonorGuard.conscript, city.defaultConscriptPos(), 4);
 
                 ConscriptProfile profile = new ConscriptProfile();
                 profile.specialization = SpecializationType.DarkLord;
-                city.conscriptArmy(profile, 1);
+                city.conscriptArmy(profile, city.defaultConscriptPos(), 1);
 
                 DssRef.state.events.nextEvent = EventType.KillTheDarkLord;
             }

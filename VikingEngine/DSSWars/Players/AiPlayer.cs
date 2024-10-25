@@ -289,7 +289,7 @@ namespace VikingEngine.DSSWars.Players
                         mainArmy = startMainArmy();
                         for (int i = 0; i < 5; ++i)
                         {
-                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_Standard);//, UnitType.Soldier, false);
+                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_Standard, mainArmy.position);//, UnitType.Soldier, false);
                         }
                         break;
 
@@ -297,11 +297,11 @@ namespace VikingEngine.DSSWars.Players
                         mainArmy = startMainArmy();
                         for (int i = 0; i < 5; ++i)
                         {
-                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_Pikeman);
+                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_Pikeman, mainArmy.position);
                         }
                         for (int i = 0; i < 5; ++i)
                         {
-                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_CrossbowMan);
+                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_CrossbowMan, mainArmy.position);
                         }
                         break;
 
@@ -317,7 +317,7 @@ namespace VikingEngine.DSSWars.Players
 
                                     for (int i = 0; i < 10; ++i)
                                     {
-                                        new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard);
+                                        new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard, army.position);
                                     }
 
                                     army.OnSoldierPurchaseCompleted();
@@ -331,7 +331,7 @@ namespace VikingEngine.DSSWars.Players
                         mainArmy = startMainArmy();
                         for (int i = 0; i < 5; ++i)
                         {
-                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_GreenSoldier);//UnitType.GreenSoldier, false);
+                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_GreenSoldier, mainArmy.position);//UnitType.GreenSoldier, false);
                         }
                         break;
 
@@ -342,7 +342,7 @@ namespace VikingEngine.DSSWars.Players
                         mainArmy = startMainArmy();
                         for (int i = 0; i < 5; ++i)
                         {
-                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_Viking);
+                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_Viking, mainArmy.position);
                         }
                         break;
 
@@ -360,23 +360,23 @@ namespace VikingEngine.DSSWars.Players
 
                                     for (int i = 0; i < 10; ++i)
                                     {
-                                        new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard);//UnitType.HonorGuard, false);
+                                        new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard, army.position);//UnitType.HonorGuard, false);
                                     }
                                     for (int i = 0; i < 20; ++i)
                                     {
-                                        new SoldierGroup(army, DssLib.SoldierProfile_StandardArcher); //UnitType.Archer, false);
+                                        new SoldierGroup(army, DssLib.SoldierProfile_StandardArcher, army.position); //UnitType.Archer, false);
                                     }
                                     for (int i = 0; i < 20; ++i)
                                     {
-                                        new SoldierGroup(army, DssLib.SoldierProfile_StandardBallista);
+                                        new SoldierGroup(army, DssLib.SoldierProfile_StandardBallista, army.position);
                                     }
                                     for (int i = 0; i < 60; ++i)
                                     {
-                                        new SoldierGroup(army, DssLib.SoldierProfile_Standard); //UnitType.Soldier, false);
+                                        new SoldierGroup(army, DssLib.SoldierProfile_Standard, army.position); //UnitType.Soldier, false);
                                     }
                                     for (int i = 0; i < 20; ++i)
                                     {
-                                        new SoldierGroup(army, DssLib.SoldierProfile_Knight);
+                                        new SoldierGroup(army, DssLib.SoldierProfile_Knight, army.position);
                                     }
 
                                     army.OnSoldierPurchaseCompleted();

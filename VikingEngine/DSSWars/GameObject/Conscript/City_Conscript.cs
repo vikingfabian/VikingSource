@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
@@ -101,7 +103,8 @@ namespace VikingEngine.DSSWars.GameObject
                             case ConscriptActiveStatus.Training:
                                 if (status.countdown.TimeOut())
                                 {
-                                    Ref.update.AddSyncAction(new SyncAction2Arg<ConscriptProfile, int>(conscriptArmy, status.inProgress, 1));
+                                    Vector3 startPos = WP.SubtileToWorldPosXZgroundY_Centered(conv.IntToIntVector2(status.idAndPosition));
+                                    Ref.update.AddSyncAction(new SyncAction3Arg<ConscriptProfile, Vector3, int>(conscriptArmy, status.inProgress, startPos, 1));
 
                                     status.active = ConscriptActiveStatus.Idle;
 
@@ -130,6 +133,21 @@ namespace VikingEngine.DSSWars.GameObject
                     conscriptBuildings[i] = status;
                 }
             }
+        }
+
+        public Vector3 defaultConscriptPos()
+        {
+            Vector3 startPos;
+            if (conscriptBuildings.Count > 0)
+            {
+                startPos = WP.SubtileToWorldPosXZgroundY_Centered(conv.IntToIntVector2(conscriptBuildings[0].idAndPosition));
+            }
+            else
+            {
+                startPos = WP.ToWorldPos(tilePos);
+            }
+
+            return startPos;
         }
 
         public void onConscriptChange()
@@ -164,7 +182,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void conscriptArmy(ConscriptProfile profile, int count)
+        public void conscriptArmy(ConscriptProfile profile, Vector3 startPos, int count)
         {
             Army army = recruitToClosestArmy();
 
@@ -190,9 +208,10 @@ namespace VikingEngine.DSSWars.GameObject
                 soldierProfile.skillBonus = 1.2f;
             }
 
+            
             for (int i = 0; i < count; i++)
             {
-                new SoldierGroup(army, soldierProfile);
+                new SoldierGroup(army, soldierProfile, startPos);
             }
             army?.OnSoldierPurchaseCompleted();
         }
@@ -218,9 +237,10 @@ namespace VikingEngine.DSSWars.GameObject
                 skillBonus = 1,
             };
 
+            Vector3 startPos = WP.ToWorldPos(tilePos);
             for (int i = 0; i < 6; i++)
             {
-                new SoldierGroup(army, soldierProfile);
+                new SoldierGroup(army, soldierProfile, startPos);
             }
             army?.OnSoldierPurchaseCompleted();
         }

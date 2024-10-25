@@ -15,13 +15,12 @@ Soldater letar upp sin position i gruppen
 Grupprörelser är olika effektiva beroende på träning
 Tydlig state på soldater
 
-
 Strid: ta bort grid
 Strid: lås collisions för stridande, så friendlies inte kan passera
 Archers ska kunna skjuta och fly igenom friendlies
 
 (path finding på arbetare)
-vägar, täd collisions, och hinder
+vägar, träd collisions, och hinder
 
 optimera path finding med tile-trängsel
 squad som punkt (utanför detail)
@@ -43,7 +42,7 @@ soldat recycle?
 #Todo#
 översätt
 
-
+https://soniccharge.com/synplant2 (audio convert)
 
 #Todo (nästa patch)#
 model-storage house

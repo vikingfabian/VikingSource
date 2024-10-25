@@ -27,12 +27,13 @@ namespace VikingEngine.DSSWars.GameObject
     {
         public static Physics.CircleBound GroupBound, OtherBound;
         public static Physics.CircleBound WalkDirBound;
-
+        static float WalkDirCheckLength;
         public static void Init()
         { 
             GroupBound = new Physics.CircleBound(DssVar.SoldierGroup_CollisionRadius);
             OtherBound = new Physics.CircleBound(DssVar.SoldierGroup_CollisionRadius);
             WalkDirBound = new Physics.CircleBound(DssVar.SoldierGroup_MoveCollisionRadius);
+            WalkDirCheckLength = DssVar.SoldierGroup_CollisionRadius * 0.9f;
         }
 
         public const int GroupObjective_FollowArmyObjective = 0;
@@ -106,13 +107,16 @@ namespace VikingEngine.DSSWars.GameObject
         public SoldierData soldierData;
         public bool isShip = false;
 
-        public SoldierGroup(Army army, SoldierConscriptProfile conscript)
+        Graphics.Mesh collisionModel;
+
+        public SoldierGroup(Army army, SoldierConscriptProfile conscript, Vector3 startPos)
         {
             this.army = army;
             soldierConscript = conscript;
             initPart1();
 
-            tilePos = army.tilePos;
+            position = startPos;
+            tilePos = WP.ToTilePos(position);
 
 
             //AbsSoldierData typeData = DssRef.unitsdata.Get(type);
@@ -141,6 +145,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         private void initPart1()
         {
+            collisionModel = new Graphics.Mesh(LoadedMesh.SelectCircleSolid, position, new Vector3(WalkDirBound.radius * 2f), TextureEffectType.Flat, SpriteName.WhiteArea, Color.HotPink, false);
+            collisionModel.AddToRender(DrawGame.UnitDetailLayer);
+
             type = soldierConscript.unitType();
             typeSoldierData = DssRef.profile.Get(type);//new ConscriptedSoldierData();
             typeShipData = DssRef.profile.Get(typeSoldierData.ShipType());
@@ -558,55 +565,62 @@ namespace VikingEngine.DSSWars.GameObject
             //if (soldiers soldiers.Count > 0)
             
             
-                switch (state)
-                {
-                    case GroupState.Idle:
-                        return;
+            switch (state)
+            {
+                case GroupState.Idle:
+                    return;
 
-                    case GroupState.FindArmyPlacement:                        
-                        if (updateWalking(goalWp, true, army.rotation, time))
-                        { 
-                            state = GroupState.GoingIdle; 
-                        }
-                        break;
-                }
-
-                //if (induvidualUpdate)
-                //{
-                //    var soldiersC = soldiers.counter();
-                //    while (soldiersC.Next())
-                //    {
-                //        soldiersC.sel.update(time, fullUpdate);
-                //    }
-                //}
-                //else
-
-                bool allIdle = true;
-
-                if (state == GroupState.Idle)
-                { 
-                    //Passive check of souroundings
-                }
-                else
-                {
-                    if (soldiers != null)
+                case GroupState.FindArmyPlacement:
+                    if (isWalkingIntoOtherGroup)
                     {
-                        var soldiersC = soldiers.counter();
-                        while (soldiersC.Next())
+                        //queueu, holding position
+                    }
+                    else
+                    {
+                        if (updateWalking(goalWp, true, army.rotation, time))
                         {
-                            soldiersC.sel.update2(time);
-                            allIdle &= soldiersC.sel.state2 == SoldierState2.idle;
+                            state = GroupState.GoingIdle;
                         }
                     }
-                }
+                    break;
+            }
 
-                if (allIdle && state == GroupState.GoingIdle)
-                { 
-                    state = GroupState.Idle;
+            //if (induvidualUpdate)
+            //{
+            //    var soldiersC = soldiers.counter();
+            //    while (soldiersC.Next())
+            //    {
+            //        soldiersC.sel.update(time, fullUpdate);
+            //    }
+            //}
+            //else
+
+            bool allIdle = true;
+
+            if (state == GroupState.Idle)
+            { 
+                //Passive check of souroundings
+            }
+            else
+            {
+                if (soldiers != null)
+                {
+                    var soldiersC = soldiers.counter();
+                    while (soldiersC.Next())
+                    {
+                        soldiersC.sel.update2(time);
+                        allIdle &= soldiersC.sel.state2 == SoldierState2.idle;
+                    }
                 }
+            }
+
+            if (allIdle && state == GroupState.GoingIdle)
+            { 
+                state = GroupState.Idle;
+            }
             
 
-            return;
+        return;
 
             //OLD
             if (debugTagged)//groupId == 1611)
@@ -1277,22 +1291,57 @@ namespace VikingEngine.DSSWars.GameObject
 
         void collsionUpate_async()
         {
-            DssRef.world.unitCollAreaGrid.collectArmies(tilePos, ArmiesColl_asyncupdate);
-            foreach (var army in ArmiesColl_asyncupdate)
-            {
-                var groupC = army.groups.counter();
-                while (groupC.Next())
-                {
-                    if (groupC.sel != this)
-                    {
+            Vector2 diff = new Vector2(
+                goalWp.X - position.X,
+                goalWp.Z - position.Z);
 
+            Vector2 norm = VectorExt.Normalize(diff, out float l);
+
+            if (l > WorldData.SubTileWidth)
+            {
+                Vector2 center = new Vector2(position.X, position.Z);
+                WalkDirBound.center = center + norm * WalkDirCheckLength;
+
+                collisionModel.Visible = true;
+                collisionModel.Color = Color.HotPink;
+                collisionModel.position = VectorExt.V2toV3XZ(WalkDirBound.center, position.Y);
+
+                DssRef.world.unitCollAreaGrid.collectArmies(tilePos, ArmiesColl_asyncupdate);
+                foreach (var army in ArmiesColl_asyncupdate)
+                {
+                    var groupC = army.groups.counter();
+                    while (groupC.Next())
+                    {
+                        if (groupC.sel != this)
+                        {
+                            OtherBound.center = VectorExt.V3XZtoV2(groupC.sel.position);
+                            if (WalkDirBound.Intersect(OtherBound))
+                            {
+                                if (
+                                    !VectorExt.IsMovingCloser(center, norm, OtherBound.center) || 
+                                    (groupC.sel.state == GroupState.Idle && l > DssVar.DefaultGroupSpacing * 2)
+                                    )
+                                {
+                                    //Ignore and walk through
+                                }
+                                else
+                                {
+                                    collisionModel.Color = Color.Red;
+                                    isWalkingIntoOtherGroup = true;
+                                    return;
+                                }
+                            }
+                        }
                     }
                 }
             }
+
+            isWalkingIntoOtherGroup = false;
         }
 
         public void asynchUpdate()
         {
+            collisionModel.Visible = false; 
             if (state != GroupState.Idle)
             {
                 tilePos = WP.ToTilePos(position);
@@ -1695,12 +1744,12 @@ namespace VikingEngine.DSSWars.GameObject
         {
             goalWp = wp;
 
-            bool onSpawn = false;
+            //bool onSpawn = false;
             if (lifeState == LifeState_New)
             {
-                onSpawn = true;
+                //onSpawn = true;
                 ++lifeState;
-                position = goalWp;
+                //position = goalWp;
 
                 if (army.inRender_detailLayer)
                 {
@@ -1711,18 +1760,18 @@ namespace VikingEngine.DSSWars.GameObject
             if (soldiers != null)
             {
                 //if (!army.inRender_detailLayer || lifeState == LifeState_New)
-                if (onSpawn) 
-                {
+                //if (onSpawn) 
+                //{
                     
-                }
-                else
-                { 
+                //}
+                //else
+                //{ 
                     var soldiersC = soldiers.counter();
                     while (soldiersC.Next())
                     {
                         soldiersC.sel.wakeUp2();
                     }
-                }
+                //}
                 
 
             }
