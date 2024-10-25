@@ -1,5 +1,6 @@
 ﻿
 -Change Log-
+Removes build orders when city is lost
 * longbow weapon
 * normal bow power reduction to about 60%
 * Bog iron, inefficient iron collecting
@@ -13,7 +14,6 @@
 * Delivery has a max distance of 80 tiles
 * Delivery Auto city option
 * Prepping farms costs one water
-
 
 #Todo#
 översätt
