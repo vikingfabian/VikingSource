@@ -54,30 +54,39 @@ namespace VikingEngine.DSSWars.GameObject
         public void armyColumnWidthClick(int w)
         {
             armyColumnWidth = w;
-            refreshGroupPlacements2(tilePos, false);
+            refreshGroupPlacements2(tilePos, true);
         }
 
-        void refreshGroupPlacements2(IntVector2 walkToTilePos, bool onPurchase)
+        void refreshGroupPlacements2(IntVector2 walkToTilePos, bool finalNode)
         {
-            ArmyPlacementGrid placementGrid = new ArmyPlacementGrid();
-
-            var groupsC = groups.counter();
-
-            while (groupsC.Next())
+            if (finalNode)
             {
-                placementGrid.add(groupsC.sel);
+                ArmyPlacementGrid placementGrid = new ArmyPlacementGrid();
+
+                var groupsC = groups.counter();
+
+                while (groupsC.Next())
+                {
+                    placementGrid.add(groupsC.sel);
+                }
+
+                placementGrid.calcPositions(this, walkToTilePos);
             }
+            else
+            {
+                var wp = WP.ToWorldPos(walkToTilePos);
+                var groupsC = groups.counter();
 
-            placementGrid.calcPositions(this, walkToTilePos);
+                while (groupsC.Next())
+                {
+                    groupsC.sel.setArmyPlacement2(wp);
+                }
+            }
+        }
 
-            //if (onPurchase)
-            //{ //måste optimeras
-            //    groupsC.Reset();
-            //    while (groupsC.Next())
-            //    {
-            //        groupsC.sel.groupObjective = SoldierGroup.GroupObjective_FindArmyPlacement;
-            //    }
-            //}
+        void refreshGroupPlacements2_onMidNode(IntVector2 walkToTilePos)
+        {
+            
         }
     }
 

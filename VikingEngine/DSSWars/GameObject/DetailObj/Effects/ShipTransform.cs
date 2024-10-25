@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             this.group = group;
             
-            toShip = !group.IsShip();
+            toShip = !group.isShip;
 
             transformTimer.Seconds = (toShip ? DssLib.ShipBuildTimeSec : DssLib.ShipExitTimeSec) * group.typeCurrentData.ShipBuildTimeMultiplier;
 

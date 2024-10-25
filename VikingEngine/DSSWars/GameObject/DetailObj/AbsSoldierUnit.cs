@@ -378,9 +378,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (state2 == SoldierState2.idle)
             {
                 state2 = SoldierState2.wakeup;
-
-                stateTime = reactionTime;
-                
+                stateTime = reactionTime;                
             }
         }
 
@@ -392,6 +390,12 @@ namespace VikingEngine.DSSWars.GameObject
             state.walking = false;
             state.idle = true;
             model?.update(this);
+
+            if (group.state != GroupState.Idle)
+            {
+                state2 = SoldierState2.wakeup;
+                stateTime = 0;
+            }
         }
 
         public void setReGroupState()
@@ -829,7 +833,6 @@ namespace VikingEngine.DSSWars.GameObject
             Vector3 walkDir = goal - position;
             walkDir.Y = 0;
 
-            
 
             float l = walkDir.Length();
             if (l > 0.0001f)
@@ -1100,15 +1103,19 @@ namespace VikingEngine.DSSWars.GameObject
         {
             Vector3 scale = new Vector3(radius * 2f);
 
+            var soldier_sp = group.soldiers;
 
-            var soldiersC = group.soldiers.counter();
-            int i = 0;
-
-            selection.BeginGroupModel(true);
-            while (soldiersC.Next())
+            if (soldier_sp != null)
             {
-                selection.setGroupModel(i, soldiersC.sel.position, scale, hover, soldiersC.sel == this, false);
-                ++i;
+                var soldiersC = soldier_sp.counter();
+                int i = 0;
+
+                selection.BeginGroupModel(true);
+                while (soldiersC.Next())
+                {
+                    selection.setGroupModel(i, soldiersC.sel.position, scale, hover, soldiersC.sel == this, false);
+                    ++i;
+                }
             }
         }
 

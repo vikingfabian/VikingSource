@@ -495,7 +495,7 @@ namespace VikingEngine.DSSWars.Battle
 
                 value += nextDist - currentDist; //Moving away from center is more points
 
-                if (group.IsShip() != goalNode.water)
+                if (group.isShip != goalNode.water)
                 {
                     value = group.battleQueTime < DssLib.BattleMaxQueTimeMs? - 1: -10;//-= 1;
                 }
@@ -512,7 +512,7 @@ namespace VikingEngine.DSSWars.Battle
             {
                 return false;
             }
-            else if (group.IsShip() != goalNode.water)
+            else if (group.isShip != goalNode.water)
             {
                 if (group.battleQueTime < DssLib.BattleMaxQueTimeMs)
                 {
@@ -542,7 +542,7 @@ namespace VikingEngine.DSSWars.Battle
 
             group.setBattleNode(goalNode.worldPos);
 
-            if (group.IsShip() != goalNode.water)
+            if (group.isShip != goalNode.water)
             {
                 Tile tile;
                 if (DssRef.world.tileGrid.TryGet(group.tilePos, out tile))

@@ -383,6 +383,13 @@ namespace VikingEngine.DSSWars.Map
             else return TypeToWalkingMultiplier[heightLevel];
         }
 
+        public float TerrainSpeedMultiplier(out bool isLand)
+        {
+            isLand = IsLand();
+            if (isLand) return TypeToWalkingMultiplier[heightLevel];
+            else return TypeToShipTravelMultiplier[heightLevel];
+        }
+
         public bool IsLand() { return heightLevel > Height.LowWaterHeight; }
         public bool IsWater() { return heightLevel <= Height.LowWaterHeight; }
         

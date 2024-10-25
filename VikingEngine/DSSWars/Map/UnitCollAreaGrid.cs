@@ -394,7 +394,7 @@ namespace VikingEngine.DSSWars.Map
                                 {
                                     for (int i = 0; i < area.groups.Count; ++i)
                                     {
-                                        area.groups[i].soldiers.toList(ref playerNearDetailUnits);
+                                        area.groups[i].soldiers?.toList(ref playerNearDetailUnits);
                                     }
                                 }
                             }
@@ -587,7 +587,7 @@ namespace VikingEngine.DSSWars.Map
             //return groupsAndCities_nearUpdate;
         }
 
-        
+
 
         //public Faction CityDomination(City city)
         //{
@@ -643,12 +643,42 @@ namespace VikingEngine.DSSWars.Map
         //    return DssRef.world.factions.Array[strongestFaction];
         //}
 
+        public void collectArmies(IntVector2 tilePos, List<GameObject.Army> armies)
+        {
+            armies.Clear();
+
+            IntVector2 areaPos = tilePos / UnitGridSquareWidth;
+            UnitCollArea area;
+
+            for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
+            {
+                for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
+                {
+                    if (grid.TryGet(x, y, out area))
+                    {
+                        lock (area.armies)
+                        {
+                            if (area.armies != null)
+                            {
+                                foreach (var m in area.armies)
+                                {
+                                    if (!armies.Contains(m))
+                                    {
+                                        armies.Add(m);
+                                    }                                    
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         public void collectArmies(Faction factionFilter, IntVector2 tilePos, int areaRadius,
             List<GameObject.Army> armies)
         {
             armies.Clear();
-            //GameObject.Army prevArmy = null;
-
+            
             IntVector2 areaPos = tilePos / UnitGridSquareWidth;
             UnitCollArea area;
 

@@ -17,11 +17,6 @@ namespace VikingEngine.DSSWars.GameObject
         public bool debugTagged = false;
         public bool isDeleted = false;
         
-
-        
-
-       
-
         abstract public bool defeatedBy(Faction attacker);
 
         virtual public bool defeated()
@@ -92,5 +87,6 @@ namespace VikingEngine.DSSWars.GameObject
         EmptyGroup,
         Disband,
         Desert,
+        CameraCulling,
     }
 }

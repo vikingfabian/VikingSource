@@ -23,6 +23,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool waitForRegroup = false;
         float stateTime = 0;
         public IntVector2 walkGoal, adjustedWalkGoal;
+        public IntVector2 nextNodePos;
         public AbsMapObject attackTarget = null;
         public int attackTargetFaction;
 
@@ -92,10 +93,12 @@ namespace VikingEngine.DSSWars.GameObject
 
                     bool nextIsShipTransform = path_sp.nextNodeIsShip();//path_sp.nextTwoNodesAreShip();
                     bool nextIsFootTransform = path_sp.nextNodeIsFeet();//path_sp.nextTwoNodesAreByFeet();
-
+                    
                     var prevRotation = rotation;
 
-                    setWalkNode(node.position, nextIsFootTransform, nextIsShipTransform);
+                    bool finalNode = path_sp.NodeCountLeft() <= 2;
+                    setWalkNode(node.position, finalNode, nextIsFootTransform, nextIsShipTransform);
+                    
                     if (nextIsShipTransform ||
                         nextIsFootTransform ||
                         Rotation1D.AngleDifference_Absolute(prevRotation.radians, rotation.Radians) >= MathExt.TauOver8)
@@ -229,7 +232,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void refreshNextWalkingNode()
         {
-
+            return;
             if (battleGroup != null)
             {
                 return;
@@ -250,13 +253,14 @@ namespace VikingEngine.DSSWars.GameObject
                     walkPos = node.position;
                 }
             }
+            nextNodePos = walkPos;
+            refreshGroupPlacements2(walkPos, !path_sp.HasMoreNodes());
+            //var groupC = groups.counter();
+            //while (groupC.Next())
+            //{
+            //    groupC.sel.bumpWalkToNode(walkPos);
+            //}
 
-            var groupC = groups.counter();
-            while (groupC.Next())
-            {
-                groupC.sel.bumpWalkToNode(walkPos);
-            }
-            
             stateTime = 0;
         }
 
@@ -314,7 +318,7 @@ namespace VikingEngine.DSSWars.GameObject
             objective = ArmyObjective.Halt;
 
             //tilePos = WP.ToTilePos(position);
-            setWalkNode(tilePos, false, false);
+            setWalkNode(tilePos, true, false, false);
 
         }
 

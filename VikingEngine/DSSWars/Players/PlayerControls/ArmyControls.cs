@@ -34,37 +34,37 @@ namespace VikingEngine.DSSWars.Players
         public void update()
         {
             
-                if (player.mapControls.onNewTile)
-                {
-                    newSquare = true;
-                }
+            if (player.mapControls.onNewTile)
+            {
+                newSquare = true;
+            }
 
-                bool alive = false;
+            bool alive = false;
 
+            foreach (var m in armies)
+            { 
+                m.update();
+                alive |= m.isAlive;
+            }
+
+            if (!alive)
+            {
+                player.clearSelection();
+                return;
+            }
+
+            if (player.input.Stop.DownEvent)
+            {
+                SoundLib.orderstop.Play();
                 foreach (var m in armies)
-                { 
-                    m.update();
-                    alive |= m.isAlive;
-                }
-
-                if (!alive)
                 {
-                    player.clearSelection();
-                    return;
-                }
-
-                if (player.input.Stop.DownEvent)
-                {
-                    SoundLib.orderstop.Play();
-                    foreach (var m in armies)
+                    if (m.isAlive)
                     {
-                        if (m.isAlive)
-                        {
-                            m.army.haltMovement();
-                        }
+                        m.army.haltMovement();
                     }
-
                 }
+
+            }
             
         }
 
