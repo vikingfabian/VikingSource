@@ -14,6 +14,8 @@ namespace VikingEngine.DSSWars.Players.Orders
     {
         public List<AbsOrder> orders = new List<AbsOrder>();
 
+        
+
         public AbsOrder orderOnSubTile(IntVector2 subTilePos)
         {
             for (int i = 0; i < orders.Count; ++i)

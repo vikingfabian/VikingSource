@@ -17,8 +17,8 @@ namespace VikingEngine.DSSWars.Map
         public List<IntVector2> StoragePoints_workupdate = new List<IntVector2>(4);
         public List<IntVector2> Trees = new List<IntVector2>(20);
         public List<IntVector2> Stones = new List<IntVector2>(20);
-        public List<IntVector2> FarmPlant = new List<IntVector2>(20);
-        public List<IntVector2> FarmGather = new List<IntVector2>(20);
+        public List<SubTileWork> Farms = new List<SubTileWork>(20);
+        //public List<IntVector2> FarmGather = new List<IntVector2>(20);
         public List<IntVector2> AnimalPens = new List<IntVector2>(20);
         public List<IntVector2> BogIron = new List<IntVector2>(20);
         public List<IntVector2> Mines = new List<IntVector2>(20);
@@ -107,8 +107,8 @@ namespace VikingEngine.DSSWars.Map
             StoragePoints_workupdate.Clear();
             Trees.Clear();
             Stones.Clear();
-            FarmPlant.Clear();
-            FarmGather.Clear();
+            Farms.Clear();
+            //FarmGather.Clear();
             AnimalPens.Clear();
             BogIron.Clear();
             Mines.Clear();
@@ -120,7 +120,7 @@ namespace VikingEngine.DSSWars.Map
             fuelSpots = 0;
             foodspots = 0;
 
-        IntVector2 cityHall = WP.ToSubTilePos_Centered(city.tilePos);
+            IntVector2 cityHall = WP.ToSubTilePos_Centered(city.tilePos);
             FoodSpots_workupdate.Add(cityHall);
             StoragePoints_workupdate.Add(cityHall);
 
@@ -285,11 +285,11 @@ namespace VikingEngine.DSSWars.Map
             {
                 if (subTile.terrainAmount == TerrainContent.FarmCulture_Empty)
                 {
-                    FarmPlant.Add(subTileLoop.Position);
+                    Farms.Add(new SubTileWork(subTileLoop.Position, WorkType.Plant));
                 }
                 else if (subTile.terrainAmount >= TerrainContent.FarmCulture_ReadySize)
                 {
-                    FarmGather.Add(subTileLoop.Position);
+                    Farms.Add(new SubTileWork(subTileLoop.Position, WorkType.GatherFoil));//FarmGather.Add(subTileLoop.Position);
                 }
             }
         }
@@ -328,6 +328,18 @@ namespace VikingEngine.DSSWars.Map
             }
 
             return result;
+        }
+    }
+
+    struct SubTileWork
+    {
+        public IntVector2 subtile;
+        public WorkType workType;
+
+        public SubTileWork(IntVector2 subtile, WorkType workType)
+        { 
+            this.subtile = subtile;
+            this.workType = workType;
         }
     }
 }

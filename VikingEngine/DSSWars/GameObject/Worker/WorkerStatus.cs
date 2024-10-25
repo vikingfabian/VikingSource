@@ -195,6 +195,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     {
                         subTile.terrainAmount++;
                         DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                        city.res_water.amount -= DssConst.PlantWaterCost;
                     }
 
                     //work = WorkType.Idle;
@@ -452,7 +453,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             float dist = VectorExt.Length(subTileEnd.X - subTileStart.X, subTileEnd.Y - subTileStart.Y) / WorldData.TileSubDivitions; //Convrst to WP length
 
             processTimeLengthSec = finalizeWorkTime(city) +
-                dist / DssVar.Men_StandardWalkingSpeed_PerSec;//(DssConst.Men_StandardWalkingSpeed * 1000);
+                dist / DssVar.Men_StandardWalkingSpeed_PerSec;
 
             switch (work)
             {

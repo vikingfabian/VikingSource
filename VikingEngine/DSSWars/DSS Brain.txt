@@ -12,6 +12,8 @@
 * new work prio: food farming, fuel farming, linen farming
 * Delivery has a max distance of 80 tiles
 * Delivery Auto city option
+* Prepping farms costs one water
+
 
 #Todo#
 översätt

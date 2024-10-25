@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             Graphics.TextG value = new Graphics.TextG(LoadedFont.Bold, Vector2.Zero, Vector2.One, Graphics.Align.Zero,
-                TextLib.PlusMinus(add), HudLib.AvailableColor, ImageLayers.Lay0, false);
+                text, textCol, ImageLayers.Lay0, false);
             Vector2 sz = value.MeasureText();
 
             Graphics.Image img = new Graphics.Image(ResourceLib.Icon(item), new Vector2( sz.X, 0), new Vector2(sz.Y),
