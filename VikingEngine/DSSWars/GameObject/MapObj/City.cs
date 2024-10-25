@@ -306,7 +306,6 @@ namespace VikingEngine.DSSWars.GameObject
             res_twohandsword.writeGameState(w); // ItemResourceType.TwoHandSword,
             res_knightslance.writeGameState(w); // ItemResourceType.KnightsLance,
             res_bow.writeGameState(w); // ItemResourceType.Bow,
-            res_longbow.writeGameState(w); // ItemResourceType.LongBow,
             res_ballista.writeGameState(w); // ItemResourceType.Ballista,            
 
             res_lightArmor.writeGameState(w); // ItemResourceType.LightArmor,
@@ -371,7 +370,6 @@ namespace VikingEngine.DSSWars.GameObject
             res_twohandsword.readGameState(r, subversion); // ItemResourceType.TwoHandSword,
             res_knightslance.readGameState(r, subversion); // ItemResourceType.KnightsLance,
             res_bow.readGameState(r, subversion); // ItemResourceType.Bow,
-            res_longbow.readGameState(r, subversion); // ItemResourceType.LongBow,
             res_ballista.readGameState(r, subversion); // ItemResourceType.Ballista,            
 
             res_lightArmor.readGameState(r, subversion); // ItemResourceType.LightArmor,
