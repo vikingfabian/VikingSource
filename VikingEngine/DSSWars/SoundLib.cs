@@ -12,7 +12,9 @@ namespace VikingEngine.DSSWars
 {
     static class SoundLib
     {
-        public static SoundContainerBase click, back, buy, wrong, ordermove, orderstop, message, trophy,
+        public static SoundContainerBase click, back, buy, wrong, 
+            select_army, select_city, select_faction,
+            ordermove, orderstop, message, trophy,
             woodcut, tree_falling, scythe, drop_item, pickaxe, hen, pig, pickup,
             anvil, dig, genericWork, hammer;
 
@@ -25,6 +27,11 @@ namespace VikingEngine.DSSWars
             back = new SoundContainerSingle(soundDir + "back");
             buy = new SoundContainerSingle(soundDir + "buy");
             wrong = new SoundContainerSingle(soundDir + "wrong", 0.6f);
+
+            select_army = new SoundContainerSingle(soundDir + "select_army");
+            select_city = new SoundContainerSingle(soundDir + "select_city");
+            select_faction = new SoundContainerSingle(soundDir + "select_faction");
+
             ordermove = new SoundContainerSingle(soundDir + "ordermove");
             orderstop = new SoundContainerSingle(soundDir + "orderstop");
             message = new SoundContainerSingle(soundDir + "chat_message", 0.75f);

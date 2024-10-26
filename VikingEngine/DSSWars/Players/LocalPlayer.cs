@@ -1146,9 +1146,21 @@ namespace VikingEngine.DSSWars.Players
                 SoundLib.click.Play();
                 mapControls.onSelect();
 
-                if (mapControls.selection.obj.gameobjectType() == GameObjectType.Army)
+                switch (mapControls.selection.obj.gameobjectType())
                 {
-                    armyControls = new ArmyControls(this, new List<AbsMapObject> { mapControls.selection.obj.GetArmy() });
+                    case GameObjectType.Army:
+                        SoundLib.select_army.Play();
+                        {
+                            armyControls = new ArmyControls(this, new List<AbsMapObject> { mapControls.selection.obj.GetArmy() });
+                        }
+                        break;
+                    case GameObjectType.City:
+                        SoundLib.select_city.Play();
+                        break;
+
+                    //case GameObjectType.Faction:
+                    //    SoundLib.select_faction.Play();
+                    //    break;
                 }
 
                 return true;

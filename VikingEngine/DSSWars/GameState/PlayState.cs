@@ -303,6 +303,11 @@ namespace VikingEngine.DSSWars
                 }
             }
 
+            if (Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Escape) && !menuSystem.Open)
+            {
+                menuSystem.pauseMenu();
+            }
+
             Engine.ParticleHandler.Update(time);
 
         }

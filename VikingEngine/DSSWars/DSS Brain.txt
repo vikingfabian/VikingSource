@@ -1,21 +1,6 @@
 ﻿
 -Change Log-
-* Removes build orders when city is lost
-
-
-* longbow weapon
-* normal bow power reduction to about 60%
-* Bog iron, inefficient iron collecting
-* Storehouse, workers may drop their resources here
-* Tavern is back! workers may eat here
-* new icons
-* workers will get the closest work
-* changed work team size from 8 to 6, so you get exactly 5 workers per hut
-* resources safe guard option
-* new work prio: food farming, fuel farming, linen farming
-* Delivery has a max distance of 80 tiles
-* Delivery Auto city option
-* planting farms costs one water
+Sounds
 
 
 #Todo (xmas patch)#
@@ -23,7 +8,7 @@ Bog iron info
 
 
 --Efter release polish--
-
+-deliver que copy
 -war icon
  "produces 20 raw food in 4 minutes, and requires 30sec of work per cycle" 
  ● If You can, be more specific on what resource is produced by a building in the
@@ -42,6 +27,8 @@ city economy
 visa antal byggnader i bygg meny
 training skill icon
 menu scroll
+
+manuballista (hand ballista)
 
 Error
 -back button in menues 

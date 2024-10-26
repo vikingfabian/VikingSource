@@ -361,6 +361,30 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/back.wav
 
+#begin DSS/Sound/ballista_large.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ballista_large.wav
+
+#begin DSS/Sound/ballista_small.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ballista_small.wav
+
+#begin DSS/Sound/bow1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/bow1.wav
+
+#begin DSS/Sound/bow2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/bow2.wav
+
 #begin DSS/Sound/buy.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -409,6 +433,12 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/hammer.wav
 
+#begin DSS/Sound/heavy_sword.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/heavy_sword.wav
+
 #begin DSS/Sound/hen1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -420,6 +450,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/hen2.wav
+
+#begin DSS/Sound/load_ballista.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/load_ballista.wav
 
 #begin DSS/Sound/ordermove.wav
 /importer:WavImporter
@@ -462,6 +498,42 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/scythe.wav
+
+#begin DSS/Sound/select_army.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/select_army.wav
+
+#begin DSS/Sound/select_city.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/select_city.wav
+
+#begin DSS/Sound/select_faction.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/select_faction.wav
+
+#begin DSS/Sound/spear.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/spear.wav
+
+#begin DSS/Sound/sword1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/sword1.wav
+
+#begin DSS/Sound/sword2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/sword2.wav
 
 #begin DSS/Sound/tree_falling.wav
 /importer:WavImporter
