@@ -422,20 +422,23 @@ namespace VikingEngine.DSSWars
             {
                 float seconds = DssRef.time.pullAsyncWork_Seconds();
 
-                foreach (var m in DssRef.world.cities)
+                if (!Ref.isPaused)
                 {
-                    m.async_workUpdate();
-                    m.async_conscriptUpdate(time);
-                    m.async_deliveryUpdate();
-                }
-
-                var factions = DssRef.world.factions.counter();
-                while (factions.Next())
-                {
-                    var armiesC = factions.sel.armies.counter();
-                    while (armiesC.Next())
+                    foreach (var m in DssRef.world.cities)
                     {
-                        armiesC.sel.async_workUpdate(seconds);
+                        m.async_workUpdate();
+                        m.async_conscriptUpdate(time);
+                        m.async_deliveryUpdate();
+                    }
+
+                    var factions = DssRef.world.factions.counter();
+                    while (factions.Next())
+                    {
+                        var armiesC = factions.sel.armies.counter();
+                        while (armiesC.Next())
+                        {
+                            armiesC.sel.async_workUpdate(seconds);
+                        }
                     }
                 }
             }

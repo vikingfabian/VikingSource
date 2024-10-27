@@ -675,7 +675,7 @@ namespace VikingEngine.DSSWars.Players
             
         }
 
-        public void onTileSelect(SelectedSubTile selectedSubTile)//City city, SelectTileResult tileResult)
+        public void onTileSelect(SelectedSubTile selectedSubTile, bool sameMapObject)//City city, SelectTileResult tileResult)
         {
             //if (selection.obj != null && selection.obj.gameobjectType() == GameObjectType.City)
             //{
@@ -697,7 +697,10 @@ namespace VikingEngine.DSSWars.Players
             if (selection.obj != selectedSubTile.city)
             {
                 selection.obj = selectedSubTile.city;
-                SoundLib.select_city.Play();
+                if (!sameMapObject)
+                {
+                    SoundLib.select_city.Play();
+                }
             }
 
             switch (selectedSubTile.selectTileResult)

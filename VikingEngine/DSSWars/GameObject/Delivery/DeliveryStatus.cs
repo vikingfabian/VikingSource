@@ -49,6 +49,11 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
 
         public void checkCity(LocalPlayer player)
         {
+            if (profile.toCity == DeliveryProfile.ToCityAuto)
+            {
+                return;
+            }
+
             var citiesC = player.faction.cities.counter();
 
             while (citiesC.Next())

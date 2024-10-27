@@ -105,7 +105,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard)
         {
-            if (res_food.amount <= DssConst.WorkSafeGuardAmount)
+            if (res_food_safeguard && res_food.amount <= DssConst.WorkSafeGuardAmount)
             {
                 fuelSafeGuard = res_fuel.amount <= DssConst.WorkSafeGuardAmount;
                 rawFoodSafeGuard = res_rawFood.amount <= DssConst.WorkSafeGuardAmount;

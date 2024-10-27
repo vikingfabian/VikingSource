@@ -1051,21 +1051,24 @@ namespace VikingEngine.DSSWars.Players
 
         void mapSelect()
         {
-            if (//cityTab == Display.MenuTab.Build &&
-                mapControls.hover.subTile.hasSelection &&
-                InBuildOrdersMode()
-                )
-                //mapControls.selection.obj != null &&
-                //mapControls.selection.obj.gameobjectType() == GameObjectType.City)
+            if (mapControls.hover.subTile.hasSelection && InBuildOrdersMode())
             {
                 BuildControls.onTileSelect(mapControls.hover.subTile);
             }
             else
             {
-
+                bool sameMapObject = mapControls.selection.obj != null;
+                if (mapControls.hover.subTile.hasSelection)
+                {
+                    sameMapObject &= mapControls.selection.obj == mapControls.hover.subTile.city;
+                }
+                else
+                {
+                    sameMapObject &= mapControls.hover.obj == mapControls.selection.obj;
+                }
                 bool oldselection = clearSelection();
 
-                bool newselection = clickHover();
+                bool newselection = clickHover(sameMapObject);
 
                 if (newselection && input.inputSource.IsController)
                 {
@@ -1085,10 +1088,11 @@ namespace VikingEngine.DSSWars.Players
 
         void mapSelect(AbsWorldObject mapObject)
         {
+            bool sameMapObject = mapControls.selection.obj != null && mapObject == mapControls.selection.obj;
             clearSelection();
 
             mapControls.hover.obj = mapObject;
-            clickHover();
+            clickHover(sameMapObject);
 
         }
         
@@ -1099,8 +1103,7 @@ namespace VikingEngine.DSSWars.Players
             if (armyControls != null)
             {
                 armyControls.clearState();
-                armyControls = null;
-                
+                armyControls = null;                
             }
 
             bClear = mapControls.clearSelection();
@@ -1130,13 +1133,14 @@ namespace VikingEngine.DSSWars.Players
             return false;
         }
 
-        bool clickHover()
+        bool clickHover(bool sameMapObject)
         {
             if (mapControls.hover.subTile.hasSelection)//.selectable(faction, out var city))
             {
+
                 SoundLib.click.Play();
 
-                mapControls.onTileSelect(mapControls.hover.subTile);
+                mapControls.onTileSelect(mapControls.hover.subTile, sameMapObject);
 
                 return true;
             }

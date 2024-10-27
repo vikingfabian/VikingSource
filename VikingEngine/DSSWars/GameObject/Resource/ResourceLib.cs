@@ -574,6 +574,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 case ItemResourceType.TwoHandSword: bp1 = CraftTwoHandSword; bp2 = null; break;
                 case ItemResourceType.KnightsLance: bp1 = CraftKnightsLance; bp2 = null; break;
                 case ItemResourceType.Bow: bp1 = CraftBow; bp2 = null; break;
+                case ItemResourceType.LongBow: bp1 = CraftLongBow; bp2 = null; break;
                 case ItemResourceType.Ballista: bp1 = CraftBallista; bp2 = null; break;
 
                 default: throw new NotImplementedException();
