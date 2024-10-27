@@ -258,17 +258,17 @@ namespace VikingEngine
         public void soundOptions(GuiLayout layout)
         {
             volumeOptions(layout);
-            if (Ref.music != null)
-            {
-                if (Ref.music.hasMusicQue())
-                {
-                    new GuiTextButton("Next song", null, Ref.music.nextRandomSong, false, layout);
-                }
-                //if (Ref.music.IsPlaying())
-                //{
-                //    new GuiDelegateLabel(SongTitleProperty, layout);
-                //}
-            }
+            //if (Ref.music != null)
+            //{
+            //    if (Ref.music.hasMusicQue())
+            //    {
+            //        new GuiTextButton("Next song", null, Ref.music.nextRandomSong, false, layout);
+            //    }
+            //    //if (Ref.music.IsPlaying())
+            //    //{
+            //    //    new GuiDelegateLabel(SongTitleProperty, layout);
+            //    //}
+            //}
         }
 
         void volumeOptions(GuiLayout layout)

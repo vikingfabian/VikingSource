@@ -69,6 +69,33 @@ namespace VikingEngine.DSSWars
             tabHoverAction = new RbSoundAction(menutabHover);
 
             Engine.LoadContent.LoadSound(LoadedSound.out_of_ammo, soundDir + "out_of_ammo");
+
+
+
+            string MusicFolder = DssLib.ContentDir + "Music\\";
+            Ref.music.SetPlaylist(new List<Sound.SongData>
+            {
+                new Sound.SongData(MusicFolder + "BBaaB_loop", true, 0.3f),
+                new Sound.SongData(MusicFolder + "Gargoyle_loop", true, 0.3f),
+                //new Sound.SongData(MusicFolder + "RM 1 - Introversion", false, 1f), // too much intro
+                new Sound.SongData(MusicFolder + "RM 10 - Incubation", false, 0.3f),
+                new Sound.SongData(MusicFolder + "RM 2 - Arcane Benevolence", false, 0.3f),
+                new Sound.SongData(MusicFolder + "RM 3 - Left in Autumn", false, 0.13f),
+                new Sound.SongData(MusicFolder + "RM 4 - Warhogs", false, 0.2f),
+                new Sound.SongData(MusicFolder + "RM 5 - Suddenly Empty", false, 0.15f),
+                new Sound.SongData(MusicFolder + "RM 6 - Auderesne", false, 0.4f),
+                new Sound.SongData(MusicFolder + "RM 7 - For Eternity", false, 0.25f),
+                new Sound.SongData(MusicFolder + "RM 8 - Asynchronous Flanking", false, 0.15f),
+                new Sound.SongData(MusicFolder + "RM 9 - Weeping Bedlam", false, 0.18f),
+                //new Sound.SongData(MusicFolder + "YesIAmYourGodHQ", true, 1f),
+
+                new Sound.SongData(MusicFolder + "ancient space", false, 0.3f),
+                new Sound.SongData(MusicFolder + "digital battleground", false, 0.2f),
+                new Sound.SongData(MusicFolder + "echoes of valor", false, 0.18f),
+                new Sound.SongData(MusicFolder + "Pixelated Battlefields", false, 0.15f),
+
+            },
+            PlatformSettings.PlayMusic);
         }
     }
 }

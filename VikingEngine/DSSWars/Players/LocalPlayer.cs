@@ -558,6 +558,7 @@ namespace VikingEngine.DSSWars.Players
                 else
                 {
                     title = DssRef.lang.Diplomacy_WarDeclarationTitle;
+                    Ref.music.OnGameEvent();
                 }
 
                 RichBoxContent content = new RichBoxContent();

@@ -154,6 +154,7 @@ namespace VikingEngine.DSSWars
         void onGameStart(bool newGame)
         {
             events.onGameStart(newGame);
+            Ref.music.OnGameStart();
 
             var factionsCounter = DssRef.world.factions.counter();
             while (factionsCounter.Next())

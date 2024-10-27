@@ -138,6 +138,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             player.faction.refreshCityWork();
 
             refreshLimits();
+            new TimedAction0ArgTrigger(song, 3000);
+        }
+
+        public void song()
+        {
+            Ref.music.PlaySong(Data.Music.Tutorial, true);
         }
 
         void refreshLimits()

@@ -37,6 +37,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Resource_FoodSafeGuard_Description => "Safe guard. Will maximize the priority, of the food production chain, if it falls below {0}.";
         public string Resource_FoodSafeGuard_Active => "Safe guard is active.";
 
+        public string GameMenu_NextSong => "Next song";
 
         //MAYBE
         public string BuildingType_Bank => "Bank";
