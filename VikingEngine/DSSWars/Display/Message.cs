@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars.Display
                 gotoBattleButtonContent.Add(new RichBoxText(city.TypeName()));
 
                 content.Add(new RichboxButton(gotoBattleButtonContent,
-                    new RbAction1Arg<AbsGameObject>(goToMapObject, city)));
+                    new RbAction1Arg<AbsGameObject>(goToMapObject, city, SoundLib.menu)));
 
                 Add(content);
             }
@@ -121,7 +121,7 @@ namespace VikingEngine.DSSWars.Display
                 gotoBattleButtonContent.Add(new RichBoxText(army.TypeName()));
 
                 content.Add(new RichboxButton(gotoBattleButtonContent,
-                    new RbAction1Arg<AbsGameObject>(goToMapObject, army)));
+                    new RbAction1Arg<AbsGameObject>(goToMapObject, army, SoundLib.menu)));
 
                 Add(content);
             }

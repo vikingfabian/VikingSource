@@ -104,6 +104,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (set)
             {
                 autoBuild_Work = value;
+                (value? SoundLib.click : SoundLib.back).Play();
             }
             return autoBuild_Work;
         }
@@ -112,6 +113,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (set)
             {
                 autoBuild_Farm = value;
+                (value ? SoundLib.click : SoundLib.back).Play();
             }
             return autoBuild_Farm;
         }

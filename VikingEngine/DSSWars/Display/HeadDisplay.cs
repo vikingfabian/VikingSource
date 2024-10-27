@@ -30,13 +30,6 @@ namespace VikingEngine.DSSWars.Display
             {
                 beginRefresh();
 
-                //if (player.tutorial != null)
-                //{
-                //    player.tutorial.tutorial_ToHud(content);
-                //    content.Add(new RichBoxSeperationLine());
-                //    content.newParagraph();
-                //}
-
                 defaultMenu(player, fullDisplay, faction);
 
                 if (fullDisplay && player.tutorial == null)
@@ -80,7 +73,7 @@ namespace VikingEngine.DSSWars.Display
                         }
                     }
 
-                    content.Add(new RichboxTabgroup(tabs, tabSel, player.factionTabClick, null, null));
+                    content.Add(new RichboxTabgroup(tabs, tabSel, player.factionTabClick, null, SoundLib.menutab, null, null));
 
                     switch (player.factionTab)
                     {

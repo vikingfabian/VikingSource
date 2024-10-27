@@ -4,6 +4,7 @@ Sounds
 
 
 #Todo (xmas patch)#
+Skip language crashes game
 Bog iron info
 
 

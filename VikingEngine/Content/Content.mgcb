@@ -385,6 +385,18 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/bow2.wav
 
+#begin DSS/Sound/button_hover1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/button_hover1.wav
+
+#begin DSS/Sound/button_hover2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/button_hover2.wav
+
 #begin DSS/Sound/buy.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -450,6 +462,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/hen2.wav
+
+#begin DSS/Sound/hover_disabled.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/hover_disabled.wav
 
 #begin DSS/Sound/load_ballista.wav
 /importer:WavImporter
@@ -534,6 +552,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/sword2.wav
+
+#begin DSS/Sound/tab_click.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/tab_click.wav
+
+#begin DSS/Sound/tab_hover.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/tab_hover.wav
 
 #begin DSS/Sound/tree_falling.wav
 /importer:WavImporter

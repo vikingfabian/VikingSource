@@ -694,8 +694,11 @@ namespace VikingEngine.DSSWars.Players
             //    //    }
             //    //}
             //}
-            
-            selection.obj = selectedSubTile.city;
+            if (selection.obj != selectedSubTile.city)
+            {
+                selection.obj = selectedSubTile.city;
+                SoundLib.select_city.Play();
+            }
 
             switch (selectedSubTile.selectTileResult)
             {

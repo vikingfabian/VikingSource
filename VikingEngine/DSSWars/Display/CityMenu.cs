@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.Display
                 }
             }
 
-            content.Add(new RichboxTabgroup(tabs, tabSel, player.cityTabClick, null, null));
+            content.Add(new RichboxTabgroup(tabs, tabSel, player.cityTabClick, null, SoundLib.menutab, null, null));
 
             content.newLine();
 
@@ -137,7 +137,7 @@ namespace VikingEngine.DSSWars.Display
                         new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                         {
                             player.resourcesSubTab = resourcesSubTab;
-                        }, resourcesSubTab, SoundLib.menu));
+                        }, resourcesSubTab, SoundLib.menutab));
                     subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
                     content.Add(subTab);
                     content.space();

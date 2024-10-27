@@ -390,7 +390,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             craft_twohandsword.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_TwoHandSword), SpriteName.WarsHammer, SpriteName.WarsResource_TwoHandSword, WorkPriorityType.craftTwoHandSword, faction, city);
             craft_knightslance.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_KnightsLance), SpriteName.WarsHammer, SpriteName.WarsResource_KnightsLance, WorkPriorityType.craftKnightsLance, faction, city);
             craft_bow.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Bow), SpriteName.WarsHammer, SpriteName.WarsResource_Bow, WorkPriorityType.craftBow, faction, city);
-            craft_longbow.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Longbow), SpriteName.WarsHammer, SpriteName.WarsResource_Longbow, WorkPriorityType.craftBow, faction, city);
+            craft_longbow.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Longbow), SpriteName.WarsHammer, SpriteName.WarsResource_Longbow, WorkPriorityType.craftLongbow, faction, city);
             craft_ballista.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.UnitType_Ballista), SpriteName.WarsHammer, SpriteName.WarsResource_Ballista, WorkPriorityType.craftBallista, faction, city);
 
             craft_lightarmor.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_LightArmor), SpriteName.WarsHammer, SpriteName.WarsResource_LightArmor, WorkPriorityType.craftLightArmor, faction, city);
@@ -459,7 +459,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             {
                 HudLib.FollowFactionButton(followFaction,
                     faction.workTemplate.GetWorkPriority(priorityType).value,
-                    new RbAction2Arg<WorkPriorityType, City>(faction.workFollowFactionClick, priorityType, city),
+                    new RbAction2Arg<WorkPriorityType, City>(faction.workFollowFactionClick, priorityType, city, followFaction? SoundLib.menuBack : SoundLib.menu),
                     player, content);
             }
 
@@ -498,7 +498,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 var button = new RichboxButton(new List<AbsRichBoxMember> {
                     new RichBoxText(prio.ToString())
                 },
-                new RbAction3Arg<int, WorkPriorityType, City>(faction.setWorkPrio, prio, priorityType, city),
+                new RbAction3Arg<int, WorkPriorityType, City>(faction.setWorkPrio, prio, priorityType, city, SoundLib.menu),
                 hover);
                 button.setGroupSelectionColor(HudLib.RbSettings, prio == value);
                 content.Add(button);

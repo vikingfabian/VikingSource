@@ -24,6 +24,9 @@ namespace VikingEngine.DSSWars.Build
            {
                 Build.BuildAndExpandType.WheatFarm,
                 Build.BuildAndExpandType.LinenFarm,
+                Build.BuildAndExpandType.RapeSeedFarm,
+                Build.BuildAndExpandType.HempFarm,
+
                 Build.BuildAndExpandType.PigPen,
                 Build.BuildAndExpandType.HenPen,
             };
@@ -122,7 +125,7 @@ namespace VikingEngine.DSSWars.Build
                     new RichBoxImage(BuildLib.BuildOptions[(int)opt].sprite),
 
                 },
-                new RbAction1Arg<BuildAndExpandType>(buildingTypeClick, opt),
+                new RbAction1Arg<BuildAndExpandType>(buildingTypeClick, opt, SoundLib.menu),
                 new RbAction1Arg<BuildAndExpandType>((BuildAndExpandType type) =>
                 {
                     RichBoxContent content = new RichBoxContent();
@@ -184,7 +187,7 @@ namespace VikingEngine.DSSWars.Build
                     new RichBoxText(DssRef.lang.Hud_EndSessionIcon),
                     new RichBoxSpace(),
                     },
-                    new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.None));
+                    new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.None, SoundLib.menuBack));
                 button.setGroupSelectionColor(HudLib.RbSettings, false);
                 content.Add(button);
                 content.space();
@@ -202,18 +205,18 @@ namespace VikingEngine.DSSWars.Build
             content.Button(DssRef.lang.Build_AutoPlace, new RbAction(() =>
             {
                 autoPlaceBuilding(city, 1);
-            }), null, buildMode == SelectTileResult.Build);
+            }, SoundLib.menuBuy), null, buildMode == SelectTileResult.Build);
             content.space();
             content.Button(string.Format(DssRef.lang.Hud_XTimes, 4), new RbAction(() =>
             {
                 autoPlaceBuilding(city, 4);
-            }), null, buildMode == SelectTileResult.Build);
+            }, SoundLib.menuBuy), null, buildMode == SelectTileResult.Build);
 
             content.newLine();
             content.Button(DssRef.lang.Build_ClearOrders, new RbAction(() =>
             {
                 player.orders.clearAll(city);
-            }), null, orderLength > 0);
+            }, SoundLib.menuBack), null, orderLength > 0);
 
 
             content.newParagraph();
@@ -244,12 +247,16 @@ namespace VikingEngine.DSSWars.Build
 
                 foreach (var opt in AutoBuildOptions)
                 {
+                    var build = BuildLib.BuildOptions[(int)opt];
+
                     var optButton = new RichboxButton(new List<AbsRichBoxMember> {
-                    new RichBoxText(BuildLib.BuildOptions[(int)opt].Label())
+                        new RichBoxImage(build.sprite),
+                        new RichBoxSpace(),
+                        new RichBoxText(build.Label())
                     }, new RbAction(() =>
                     {
                         city.autoExpandFarmType = opt;
-                    }));
+                    }, SoundLib.menu));
                     optButton.setGroupSelectionColor(HudLib.RbSettings, opt == city.autoExpandFarmType);
                     content.Add(optButton);
                     content.space();

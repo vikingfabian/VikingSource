@@ -8,7 +8,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 {
     class TodoTranslation
     {
-        
+
         //public string Tutorial_BuildSomething => "Build something that produces {0}";
         //public string Tutorial_BuildCraft => "Build a crafting station for: {0}";
         //public string Tutorial_IncreaseBufferLimit => "Increase buffer limit for: {0}";
@@ -24,7 +24,9 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         //public string EndGameStatistics_DecorsBuilt => "Decorations built: {0}";
         //public string EndGameStatistics_StatuesBuilt => "Statues built: {0}";
-        
+
+        public string Automation_queue_description => "Will keep repeating until the que is empty";
+
         public string BuildingType_Storehourse_Description => "Workers may drop items here";
 
         public string Resource_TypeName_Longbow => "longbow";

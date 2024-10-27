@@ -285,6 +285,8 @@ namespace VikingEngine.HUD.RichBox
         int index;
         protected float bgAlpha;
 
+        bool firstUpdate = true;
+
         public RichboxGuiPart(RichboxGui gui)
         {
             this.gui = gui;
@@ -306,6 +308,7 @@ namespace VikingEngine.HUD.RichBox
             {
                 return interaction.update();
             }
+            firstUpdate = false;
             return false;
         }
 
@@ -365,7 +368,7 @@ namespace VikingEngine.HUD.RichBox
             {
                 bg.Opacity = bgAlpha;
             }
-
+            firstUpdate = true;
             gui.onRefresh(this);
         }
 

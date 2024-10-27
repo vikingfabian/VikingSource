@@ -38,9 +38,10 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                 title.overrideColor = HudLib.TitleColor_TypeName;
                 content.Add(title);
                 content.space();
-                content.Add(new RichboxButton(new List<AbsRichBoxMember>
-                    { new RichBoxSpace(), new RichBoxText(DssRef.lang.Hud_EndSessionIcon),new RichBoxSpace(), },
-                    new RbAction(() => { city.selectedDelivery = -1; })));
+                HudLib.CloseButton(content, new RbAction(() => { city.selectedDelivery = -1; }, SoundLib.menuBack));
+                //content.Add(new RichboxButton(new List<AbsRichBoxMember>
+                //    { new RichBoxSpace(), new RichBoxText(DssRef.lang.Hud_EndSessionIcon),new RichBoxSpace(), },
+                //    new RbAction(() => { city.selectedDelivery = -1; }, SoundLib.menuBack)));
 
                 content.newLine();
                 HudLib.Description(content, DssRef.lang.BuildingType_Postal_Description);
@@ -60,7 +61,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                             //new RichBoxText(LangLib.Item(item))
                             },
 
-                            new RbAction1Arg<ItemResourceType>(itemClick, item),
+                            new RbAction1Arg<ItemResourceType>(itemClick, item, SoundLib.menu),
 
                             new RbAction(() =>
                                {
@@ -112,7 +113,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                     {
                         var button = new RichboxButton(new List<AbsRichBoxMember>{
                             new RichBoxText(cities_c.sel.TypeName())
-                            }, new RbAction1Arg<int>(cityClick, cities_c.sel.parentArrayIndex), new RbAction1Arg<City>((City toCity) =>
+                            }, new RbAction1Arg<int>(cityClick, cities_c.sel.parentArrayIndex, SoundLib.menu), new RbAction1Arg<City>((City toCity) =>
                             {
                                 RichBoxContent content = new RichBoxContent();
                                 content.h2(toCity.Name()).overrideColor = HudLib.TitleColor_Name;
@@ -132,7 +133,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                 {
                     var button = new RichboxButton(new List<AbsRichBoxMember>{
                             new RichBoxImage(SpriteName.MenuPixelIconSettings)
-                            }, new RbAction1Arg<int>(cityClick, DeliveryProfile.ToCityAuto), new RbAction(() =>
+                            }, new RbAction1Arg<int>(cityClick, DeliveryProfile.ToCityAuto, SoundLib.menu), new RbAction(() =>
                             {
                                 RichBoxContent content = new RichBoxContent();
                                 content.h2(DssRef.lang.Automation_Title).overrideColor = HudLib.TitleColor_Name;
@@ -282,7 +283,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                         caption,
                         new RichBoxNewLine(),
                         new RichBoxText(currentProfile.shortActiveString())
-                    }, new RbAction1Arg<int>(selectClick, i)));
+                    }, new RbAction1Arg<int>(selectClick, i, SoundLib.menu)));
 
                     }
                 }

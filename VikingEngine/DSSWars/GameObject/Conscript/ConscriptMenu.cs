@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 content.Add(title);
                 //content.Add(new RichBoxText(typeName + " " + currentStatus.idAndPosition.ToString()));
                 content.space();
-                 HudLib.CloseButton(content,new RbAction(() => { city.selectedConscript = -1; }));
+                 HudLib.CloseButton(content,new RbAction(() => { city.selectedConscript = -1; }, SoundLib.menuBack));
 
                 content.newParagraph();
 
@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     var button = new RichboxButton(new List<AbsRichBoxMember>{
                        new RichBoxText( LangLib.Weapon(weapon))
                     },
-                    new RbAction1Arg<MainWeapon>(weaponClick, weapon),
+                    new RbAction1Arg<MainWeapon>(weaponClick, weapon, SoundLib.menu),
                     new RbAction1Arg<MainWeapon>(weaponTooltip, weapon)
                     );
                     button.setGroupSelectionColor(HudLib.RbSettings, weapon == currentStatus.profile.weapon);
@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 {
                     var button = new RichboxButton(new List<AbsRichBoxMember>{
                        new RichBoxText( LangLib.Armor(armorLvl))
-                    }, new RbAction1Arg<ArmorLevel>(armorClick, armorLvl),
+                    }, new RbAction1Arg<ArmorLevel>(armorClick, armorLvl, SoundLib.menu),
                     new RbAction1Arg<ArmorLevel>(armorTooltip, armorLvl));
                     button.setGroupSelectionColor(HudLib.RbSettings, armorLvl == currentStatus.profile.armorLevel);
                     content.Add(button);
@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 {
                     var button = new RichboxButton(new List<AbsRichBoxMember>{
                         new RichBoxText( LangLib.Training(training))
-                    }, new RbAction1Arg<TrainingLevel>(trainingClick, training),
+                    }, new RbAction1Arg<TrainingLevel>(trainingClick, training, SoundLib.menu),
                     new RbAction2Arg<TrainingLevel, bool>(trainingTooltip, training, currentStatus.nobelmen));
                     button.setGroupSelectionColor(HudLib.RbSettings, training == currentStatus.profile.training);
                     content.Add(button);
@@ -133,7 +133,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 {
                     var button = new RichboxButton(new List<AbsRichBoxMember>{
                        new RichBoxText( LangLib.SpecializationTypeName(specialization))
-                    }, new RbAction1Arg<SpecializationType>(specializationClick, specialization));
+                    }, new RbAction1Arg<SpecializationType>(specializationClick, specialization, SoundLib.menu));
                     button.setGroupSelectionColor(HudLib.RbSettings, specialization == currentStatus.profile.specialization);
                     content.Add(button);
                     content.space();
@@ -251,7 +251,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                         caption,
                         new RichBoxNewLine(),
                         info,
-                    }, new RbAction1Arg<int>(selectClick, i)));
+                    }, new RbAction1Arg<int>(selectClick, i, SoundLib.menu)));
 
                         //content.text(currentProfile.shortActiveString()).overrideColor = HudLib.InfoYellow_Light;
 
