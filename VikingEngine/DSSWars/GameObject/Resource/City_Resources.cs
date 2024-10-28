@@ -122,10 +122,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
 
-        //bool useLocalTrade
         public TradeTemplate tradeTemplate = new TradeTemplate();
-
-        //int tradeGold = 0;
         public const int DefaultFoodBuffer = 500;
         public void defaultResourceBuffer()
         {
@@ -455,39 +452,29 @@ namespace VikingEngine.DSSWars.GameObject
                 case  ItemResourceType.HardWood:
                     convert1.type = ItemResourceType.Wood_Group;
                     break;
-
                 
                 case ItemResourceType.Coal:
                     convert1.type = ItemResourceType.Fuel_G;
                     break;
 
-                //case ItemResourceType.Stone_G:
-                //    res_stone.add(item);
-                //    break;
-
                 case ItemResourceType.Wheat:
                     convert1.type = ItemResourceType.RawFood_Group;
                     convert1.amount = DssConst.DefaultItemRawFoodAmount;
-                    //res_rawFood.add(item, DssConst.DefaultItemRawFoodAmout);
                     break;
 
                 case ItemResourceType.Egg:                                   
                 case ItemResourceType.Hen:
                     convert1.type = ItemResourceType.RawFood_Group;
-                    convert1.amount = DssConst.DefaultItemRawFoodAmount;
+                    convert1.amount = DssConst.HenRawFoodAmout;
                     animalResourceBonus(ref item);
-                    //res_rawFood.add(item, DssConst.DefaultItemRawFoodAmout);
                     break;
 
                 case ItemResourceType.Pig:
                     convert1.type = ItemResourceType.RawFood_Group;
                     convert1.amount = DssConst.PigRawFoodAmout;
                     animalResourceBonus(ref item);
-                    //res_rawFood.add(item, DssConst.PigRawFoodAmout);
 
                     convert2 = new ItemResource(ItemResourceType.SkinLinen_Group, 1, 1, convert1.amount);
-
-                    //res_skinLinnen.add(item);
                     break;
 
                 case ItemResourceType.Linen:
@@ -506,11 +493,6 @@ namespace VikingEngine.DSSWars.GameObject
                     convert2.type = ItemResourceType.Fuel_G;
                     convert2.amount = DssConst.HempFuelAmount;
                     break;
-
-
-                //case ItemResourceType.IronOre_G:
-                //    res_ore.add(item, 1);
-                //    break;
 
                 case ItemResourceType.GoldOre:
                     {
@@ -538,36 +520,11 @@ namespace VikingEngine.DSSWars.GameObject
                 item.amount *= 2;
             }
         }
-        //public void craftItem(TerrainBuildingType building, out bool canCraftAgain)
-        //{
-        //    canCraftAgain = false;
-
-        //    switch (building)
-        //    {
-        //        case TerrainBuildingType.Work_Cook:
-        //            var addFood = ResourceLib.CraftFood.craft(this);
-        //            food.amount += addFood;
-        //            foodProduction.add(addFood);
-        //            canCraftAgain = ResourceLib.CraftFood.canCraft(this);
-        //            break;
-        //        case TerrainBuildingType.Work_Smith:
-        //            iron.amount += ResourceLib.CraftIron.craft(this);
-        //            canCraftAgain = ResourceLib.CraftFood.canCraft(this);
-        //            break;
-        //    }
-        //}
-
-        //public void craftBuild(TerrainBuildingType building)
-        //{
-
-        //}
-
+        
         public void tradeTab()
         { 
             
         }
-
-
 
         public void blackMarketPurchase(ItemResourceType resourceType, int count, int cost)
         {
@@ -578,23 +535,13 @@ namespace VikingEngine.DSSWars.GameObject
         }
     }   
 
-    
-
-
-    //struct SimplifiedResourceCollection
-    //{ 
-        
-    //}
 
     struct GroupedResource
     {
         public int amount;
-        //public float saleValue;
         public int backOrder;
         public int goalBuffer;
         public int orderQueCount;
-        //public int trade;
-        //public int blacktrade;
 
         public void writeGameState(System.IO.BinaryWriter w)
         {

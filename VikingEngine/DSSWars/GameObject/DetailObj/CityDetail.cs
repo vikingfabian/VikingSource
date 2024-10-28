@@ -166,7 +166,7 @@ namespace VikingEngine.DSSWars.GameObject
                                         ++totalWorkerHutAndLevelCount;
 
                                         //Place farm curlutures
-                                        const int CulturesPerFarm = 3;
+                                        const int CulturesPerFarm = 8;
                                         int cultureCount = 0;
 
                                         ForXYEdgeLoop farmLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(subPos, 1));

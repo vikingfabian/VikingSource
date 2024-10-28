@@ -44,11 +44,7 @@ namespace VikingEngine.DSSWars.Map
         }
 
         public void write(System.IO.BinaryWriter w)
-        {
-            //w.Write(color.R);
-            //w.Write(color.G);
-            //w.Write(color.B);
-            //w.Write(groundY);
+        {            
             w.Write((byte)mainTerrain);
             w.Write((byte)subTerrain);
             w.Write((byte)terrainAmount);
@@ -56,16 +52,26 @@ namespace VikingEngine.DSSWars.Map
         }
 
         public void read(System.IO.BinaryReader r, int version)
-        {
-            //byte rValue = r.ReadByte();
-            //byte gValue = r.ReadByte();
-            //byte bValue = r.ReadByte();
-            //color = new Color(rValue, gValue, bValue);
-            //groundY = r.ReadSingle();
+        {            
             mainTerrain = (TerrainMainType)r.ReadByte();
             subTerrain = r.ReadByte();
             terrainAmount = r.ReadByte();
             collectionPointer = r.ReadInt32();
+        }
+
+        public bool EqualSaveData(ref SubTile other)
+        {
+            return  terrainAmount == other.terrainAmount && 
+                mainTerrain == other.mainTerrain && 
+                subTerrain == other.subTerrain &&
+                collectionPointer == other.collectionPointer;            
+        }
+
+        public void copySaveDataFrom(ref SubTile other)
+        { 
+            this.terrainAmount = other.terrainAmount;
+            this.mainTerrain = other.mainTerrain;
+            this.subTerrain = other.subTerrain;
         }
 
         public bool MayBuild()
@@ -92,22 +98,6 @@ namespace VikingEngine.DSSWars.Map
             }
 
             return true;
-            //if (mainTerrain == TerrainMainType.Foil &&
-            //    subTerrain >= 0)
-            //{
-            //    return (TerrainSubFoilType)subTerrain;
-            //}
-
-            //var current = GeBuildingType();
-            //if (current == TerrainBuildingType.NUM_NONE &&
-            //    mainTerrain != TerrainMainType.DefaultSea)
-            //{
-            //    return true;
-            //}
-            //else
-            //{
-            //    return false;//MayBuildResult.No_Occupied;
-            //}
         }
 
         public TerrainSubFoilType GetFoilType()
@@ -135,27 +125,6 @@ namespace VikingEngine.DSSWars.Map
         public string TypeToString()
         {
             return LangLib.TerrainName(mainTerrain, subTerrain);
-           //string result =  mainTerrain.ToString();
-
-           // switch (mainTerrain)
-           // {
-           //     case TerrainMainType.Building:
-           //         switch ((TerrainBuildingType)subTerrain)
-           //         { 
-                        
-           //         }
-
-           //         result += " - " + ((TerrainBuildingType)subTerrain).ToString();
-           //         break;
-           //     case TerrainMainType.Foil:
-           //         result += " - " + ((TerrainSubFoilType)subTerrain).ToString();
-           //         break;
-           //     case TerrainMainType.Mine:
-           //         result += " - " + ((TerrainMineType)subTerrain).ToString();
-           //         break;
-           // }
-
-           // return result;
         }
     }
 

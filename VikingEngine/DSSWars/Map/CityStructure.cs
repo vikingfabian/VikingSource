@@ -97,9 +97,9 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        public void update(City city, int workerCount)
+        public void update(City city, int workerCount, int emptyLandExpansions = 2)
         {
-            int emptyLandExpansions = 2;
+            //int emptyLandExpansions = 2;
 
             IntVector2 topleft;
             ForXYLoop subTileLoop;

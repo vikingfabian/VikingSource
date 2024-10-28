@@ -15,9 +15,7 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City : GameObject.AbsMapObject
     {
-        static readonly ItemResourceType[] IronCraftTypes = { ItemResourceType.Iron_G, ItemResourceType.MediumArmor, ItemResourceType.HeavyArmor, ItemResourceType.Sword, ItemResourceType.TwoHandSword, ItemResourceType.KnightsLance };
-        static readonly ItemResourceType[] BenchCraftTypes = { ItemResourceType.Fuel_G, ItemResourceType.LightArmor, ItemResourceType.SharpStick, ItemResourceType.Bow };
-        static readonly ItemResourceType[] CarpenterCraftTypes = { ItemResourceType.SharpStick, ItemResourceType.Bow, ItemResourceType.LongBow, ItemResourceType.Ballista };
+        
         public WorkTemplate workTemplate = new WorkTemplate();
 
         const int NoSubWork = -1;
@@ -513,11 +511,11 @@ namespace VikingEngine.DSSWars.GameObject
                             break;
 
                         case TerrainBuildingType.Work_Bench:
-                            craftBench(pos, distanceValue, BenchCraftTypes, -5000);
+                            craftBench(pos, distanceValue, ResourceLib.BenchCraftTypes, -5000);
                             break;
                         case TerrainBuildingType.Work_Smith:
 
-                            craftBench(pos, distanceValue, IronCraftTypes);
+                            craftBench(pos, distanceValue, ResourceLib.SmithCraftTypes);
                             break;
 
                         case TerrainBuildingType.Work_CoalPit:
@@ -541,7 +539,7 @@ namespace VikingEngine.DSSWars.GameObject
                             break;
 
                         case TerrainBuildingType.Carpenter:
-                            craftBench(pos, distanceValue, CarpenterCraftTypes);
+                            craftBench(pos, distanceValue, ResourceLib.CarpenterCraftTypes);
                             break;
                     }
                 }
@@ -725,6 +723,23 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             
+        }
+
+        public void checkPlayerFuelAccess_OnGamestart_async()
+        {
+            const int FuelFarmCount = 10;
+            int fuelType = (int)TerrainSubFoilType.RapeSeedFarm;
+
+            CityStructure structure = new CityStructure();
+            structure.update(this, 32, FuelFarmCount);
+            if (structure.fuelSpots <= 8)
+            {
+                int count = Math.Min(structure.EmptyLand.Count, FuelFarmCount);
+                for (int i = 0; i < count; ++i) 
+                {
+                    BuildLib.TryAutoBuild(structure.EmptyLand[i], TerrainMainType.Foil, fuelType);
+                }                
+            }
         }
 
         protected override void onWorkComplete_async(ref WorkerStatus status)

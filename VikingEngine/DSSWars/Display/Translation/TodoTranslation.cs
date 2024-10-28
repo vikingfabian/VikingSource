@@ -43,10 +43,23 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_Bank => "Bank";
         public string BuildingType_Bank_Description => "Send gold to other cities";
 
+        /// <summary>
+        /// Title for describing the production cycle of farms
+        /// </summary>
+        public string BuildHud_PerCycle => "Per cycle";
+        public string BuildHud_MayCraft => "May craft";
+        public string BuildHud_WorkTime => "Work time: {0}";
+        public string BuildHud_GrowTime => "Grow time: {0}";
+        public string BuildHud_Produce => "Poduce:";
+
+
         public string Delivery_AutoReciever_Description => "Will send to the city with lowest amount of resources";
 
         public string Hud_On => "On";
         public string Hud_Off => "Off";
+
+        public string Hud_Time_Seconds => "{0} seconds";
+        public string Hud_Time_Minutes => "{0} minutes";
 
     }
 

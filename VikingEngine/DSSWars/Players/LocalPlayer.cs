@@ -21,6 +21,7 @@ using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject.Delivery;
 using VikingEngine.DSSWars.GameObject.Conscript;
+using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.Players
 {    
@@ -1186,6 +1187,18 @@ namespace VikingEngine.DSSWars.Players
             {
                 commandPoints.value = commandPoints.max * 0.5;
                 diplomaticPoints.value = diplomaticPoints.max * 0.6;
+            }
+
+            if (DssRef.difficulty.resourcesStartHelp)
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    var citiesC = faction.cities.counter();
+                    while (citiesC.Next())
+                    {
+                        citiesC.sel.checkPlayerFuelAccess_OnGamestart_async();
+                    }
+                });
             }
         }
 

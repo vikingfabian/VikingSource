@@ -241,6 +241,10 @@ namespace VikingEngine
         {
             return loop.Next();
         }
+        public void LoopUndoToPrev()
+        {
+            loop.UndoToPrevious();
+        }
 
         public bool LoopNextSel()
         {

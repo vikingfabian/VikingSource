@@ -2388,7 +2388,8 @@ namespace VikingEngine
                     add(SpriteName.WarsUnitLevelBasic);
                     add(SpriteName.WarsUnitLevelMinimal);
 
-
+                    add(SpriteName.WarsResource_Rapeseed);
+                    add(SpriteName.WarsResource_Hemp);
 
                 }
 
@@ -2417,6 +2418,8 @@ namespace VikingEngine
                     add(SpriteName.WarsBuild_Bank, 3, 3);
                     add(SpriteName.WarsBuild_Storehouse, 3, 3);
                     add(SpriteName.WarsCityHall, 3, 3);
+                    add(SpriteName.WarsBuild_RapeseedFarms, 3, 3);
+                    add(SpriteName.WarsBuild_HempFarms, 3, 3);
                 }
 
                 currentIndex = numTilesWidth * 106;

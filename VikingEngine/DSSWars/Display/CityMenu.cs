@@ -315,7 +315,8 @@ namespace VikingEngine.DSSWars.Display
                 //content.Add(new RichBoxText(LangLib.Item(item) + ": "));
                 RbAction hover = new RbAction(() => {
                     RichBoxContent content = new RichBoxContent();
-                    content.Add(new RichBoxText(LangLib.Item(item)));
+                    bool buffer = false;
+                    city.GetGroupedResource(item).toMenu(content, item, false, ref buffer);//content.Add(new RichBoxText(LangLib.Item(item)));
                     player.hud.tooltip.create(player, content, true);
                 });
                 //content.newLine();

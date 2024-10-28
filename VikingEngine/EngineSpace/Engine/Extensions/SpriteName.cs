@@ -2511,6 +2511,8 @@ namespace VikingEngine
         WarsBuild_Smith,
         WarsBuild_WheatFarms,
         WarsBuild_LinenFarms,
+        WarsBuild_RapeseedFarms,
+        WarsBuild_HempFarms,
         WarsBuild_PigPen,
         WarsBuild_HenPen,
         WarsBuild_Statue,
@@ -2550,6 +2552,8 @@ namespace VikingEngine
         WarsResource_TwoHandSword,
         WarsResource_KnightsLance,
         WarsResource_LinenCloth,
+        WarsResource_Rapeseed,
+        WarsResource_Hemp,
 
         WarsHome,
         WarsDelivery,

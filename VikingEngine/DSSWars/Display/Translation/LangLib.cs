@@ -274,7 +274,7 @@ namespace VikingEngine.DSSWars.Display.Translation
             }
 
 
-            return TextLib.Error;
+            return TextLib.Error + " (" + mainType.ToString() + " " + subType.ToString()+ ")";
         }
 
         public static string BuildingDescription(TerrainBuildingType buildingType)

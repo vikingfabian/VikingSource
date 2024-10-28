@@ -169,13 +169,50 @@ namespace VikingEngine.DSSWars
         //    return faction;
         //}
 
+        bool subTileHasRepeatValue(ref SubTile subtile)
+        {
+            return subtile.mainTerrain == TerrainMainType.DefaultLand || subtile.mainTerrain == TerrainMainType.DefaultSea;
+        }
+
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            
             subTileGrid.LoopBegin();
             while (subTileGrid.LoopNext())
             {
-                subTileGrid.LoopValueGet().write(w);
+                var subtile = subTileGrid.LoopValueGet();
+                subtile.write(w);
+
+                if (subTileHasRepeatValue(ref subtile))
+                {
+                    //Find repeats
+                    int repeating = 0;
+
+                    while (true)
+                    {
+                        if (subTileGrid.LoopNext())
+                        {
+                            var nexttile = subTileGrid.LoopValueGet();
+                            if (subtile.EqualSaveData(ref nexttile))
+                            {
+                                ++repeating;
+                            }
+                            else
+                            {
+                                subTileGrid.LoopUndoToPrev();
+                                //end loop
+                                DataStreamLib.WriteGrowingBitShiftValue(w, repeating);
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            //end loop, and final position on map
+                            DataStreamLib.WriteGrowingBitShiftValue(w, repeating);
+                            break;
+                        }
+                    }                    
+                }
+                
             }
 
             Debug.WriteCheck(w);
@@ -206,14 +243,38 @@ namespace VikingEngine.DSSWars
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
-            subTileGrid.LoopBegin();
-            while (subTileGrid.LoopNext())
+            if (subversion >= 22)
             {
-                SubTile st = subTileGrid.LoopValueGet();
-                st.read(r, subversion);
-                subTileGrid.LoopValueSet(st);
-            }
+                subTileGrid.LoopBegin();
+                while (subTileGrid.LoopNext())
+                {
+                    SubTile subtile = subTileGrid.LoopValueGet();
+                    subtile.read(r, subversion);
+                    subTileGrid.LoopValueSet(subtile);
 
+                    if (subTileHasRepeatValue(ref subtile))
+                    {
+                        int repeating = DataStreamLib.ReadGrowingBitShiftValue(r);
+                        for (int i = 0; i < repeating; i++)
+                        {
+                            subTileGrid.LoopNext();
+                            SubTile nexttile = subTileGrid.LoopValueGet();
+                            nexttile.copySaveDataFrom(ref subtile);
+                            subTileGrid.LoopValueSet(nexttile);
+                        }
+                    }   
+                }
+            }
+            else
+            {
+                subTileGrid.LoopBegin();
+                while (subTileGrid.LoopNext())
+                {
+                    SubTile st = subTileGrid.LoopValueGet();
+                    st.read(r, subversion);
+                    subTileGrid.LoopValueSet(st);
+                }
+            }
             Debug.ReadCheck(r);
 
             foreach (City city in cities)

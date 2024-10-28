@@ -165,7 +165,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                             case TerrainSubFoilType.RapeSeedFarm:
                                 carry = new Resource.ItemResource(
-                                        ItemResourceType.Hemp,
+                                        ItemResourceType.Rapeseed,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
                                         farmGrowthMultiplier(subTile.terrainAmount, city));
@@ -176,7 +176,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                             case TerrainSubFoilType.HempFarm:
                                 carry = new Resource.ItemResource(
-                                        ItemResourceType.Rapeseed,
+                                        ItemResourceType.Hemp,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
                                         farmGrowthMultiplier(subTile.terrainAmount, city));
@@ -370,7 +370,27 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                             city.AddGroupedResource(item, add);
 
-                            tryRepeatWork = city.GetGroupedResource(item).needMore() && bp1.canCraft(city);
+
+                            if (city.debugTagged && item == ItemResourceType.Food_G)
+                            {
+                                lib.DoNothing();
+                            }
+
+                            tryRepeatWork = false;
+
+                            if (city.GetGroupedResource(item).needMore())
+                            {
+                                if (bp1.canCraft(city))
+                                {
+                                    tryRepeatWork = true;
+                                }
+                                else if (bp2 !=null && bp2.canCraft(city))
+                                {
+                                    tryRepeatWork = true;
+                                }
+                            }
+
+                            
 
                             if (visualUnit)
                             {
@@ -545,6 +565,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                             return DssConst.WorkTime_GatherFoil_DryWood;
                         case TerrainSubFoilType.WheatFarm:
                         case TerrainSubFoilType.LinenFarm:
+                        case TerrainSubFoilType.RapeSeedFarm:
+                        case TerrainSubFoilType.HempFarm:
                             return DssConst.WorkTime_GatherFoil_FarmCulture;
                         case TerrainSubFoilType.Stones:
                         case TerrainSubFoilType.StoneBlock:

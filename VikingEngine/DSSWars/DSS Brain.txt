@@ -1,9 +1,17 @@
 ﻿
 -Change Log-
-
-
+* Much smaller save files
+* Easier food management
+ - cities start with more farms (8 instead of 3)
+ - food blueprint require 25% less water and fuel, per food
+ - max water is increased to 12
+ - water add is increased by 5% on large cities and 40% on small (adding a lot of growth potensial)
+ - bio fuel is added to desert cities (on < 100% difficulty)
+* Better build info
+* Animals has been reduced to about 1/5 of their food production
 
 #Todo (xmas patch)#
+dölj carry amount
 Skip language crashes game
 Bog iron info
 
@@ -11,10 +19,7 @@ Bog iron info
 --Efter release polish--
 -deliver que copy
 -war icon
- "produces 20 raw food in 4 minutes, and requires 30sec of work per cycle" 
- ● If You can, be more specific on what resource is produced by a building in the
-“building” menu: personally it wasn’t so intuitive for all the buildings.
-
+ 
 
 
 sound limit per time

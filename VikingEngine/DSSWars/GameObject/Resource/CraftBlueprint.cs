@@ -142,9 +142,12 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             return SpriteName.NO_IMAGE;
         }
 
-        public void toMenu(RichBoxContent content, City city)
+        public void toMenu(RichBoxContent content, City city, bool newLine = true)
         {
-            content.newLine();
+            if (newLine)
+            {
+                content.newLine();
+            }
             bool first = true;
             bool available;
             foreach (var r in resources)

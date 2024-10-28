@@ -11,6 +11,10 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 {
     static class ResourceLib
     {
+        public static readonly ItemResourceType[] SmithCraftTypes = { ItemResourceType.Iron_G, ItemResourceType.MediumArmor, ItemResourceType.HeavyArmor, ItemResourceType.Sword, ItemResourceType.TwoHandSword, ItemResourceType.KnightsLance };
+        public static readonly ItemResourceType[] BenchCraftTypes = { ItemResourceType.Fuel_G, ItemResourceType.LightArmor, ItemResourceType.SharpStick, ItemResourceType.Bow };
+        public static readonly ItemResourceType[] CarpenterCraftTypes = { ItemResourceType.SharpStick, ItemResourceType.Bow, ItemResourceType.LongBow, ItemResourceType.Ballista };
+
         public static readonly CraftBlueprint CraftFuel1 = new CraftBlueprint(  
             CraftResultType.Resource,
             (int)ItemResourceType.Fuel_G,
@@ -32,27 +36,31 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             }, CraftRequirement.CoalPit
         );
 
+        const int FoodWaterUsage = 3;
+        const int FoodCraftAmount = 20;
+
+
         public static readonly CraftBlueprint CraftFood1 = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.Food_G,
-            25,
+            FoodCraftAmount,
             new UseResource[]
             {
-                new UseResource(ItemResourceType.Water_G, 5),
-                new UseResource(ItemResourceType.Fuel_G, 5),
-                new UseResource(ItemResourceType.RawFood_Group, 25)
+                new UseResource(ItemResourceType.Water_G, FoodWaterUsage),
+                new UseResource(ItemResourceType.Fuel_G, FoodWaterUsage),
+                new UseResource(ItemResourceType.RawFood_Group, FoodCraftAmount)
             }
         ) { tooltipId = Tooltip.Food_BlueprintId };
 
         public static readonly CraftBlueprint CraftFood2 = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.Food_G,
-            25,
+            FoodCraftAmount,
             new UseResource[]
             {
-                new UseResource(ItemResourceType.Beer, 5),
-                new UseResource(ItemResourceType.Fuel_G, 5),
-                new UseResource(ItemResourceType.RawFood_Group, 25)
+                new UseResource(ItemResourceType.Beer, FoodWaterUsage),
+                new UseResource(ItemResourceType.Fuel_G, FoodWaterUsage),
+                new UseResource(ItemResourceType.RawFood_Group, FoodCraftAmount)
             }
         ) { tooltipId = Tooltip.Food_BlueprintId };
 
@@ -143,7 +151,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         );
         public static readonly CraftBlueprint CraftLongBow = new CraftBlueprint(
             CraftResultType.Resource,
-            (int)ItemResourceType.Bow,
+            (int)ItemResourceType.LongBow,
             1,
             new UseResource[]
             {
@@ -520,9 +528,13 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                     return SpriteName.WarsResource_Linen;
                 case ItemResourceType.LongBow:
                     return SpriteName.WarsResource_Longbow;
+                case ItemResourceType.Hemp:
+                    return SpriteName.WarsResource_Hemp;
                 case ItemResourceType.Hen:
                 case ItemResourceType.Pig:
                     return SpriteName.WarsResource_RawMeat;
+                case ItemResourceType.Rapeseed:
+                    return SpriteName.WarsResource_Rapeseed;
                 case ItemResourceType.RawFood_Group:
                     return SpriteName.WarsResource_RawFood;
                 case ItemResourceType.SharpStick:
@@ -580,19 +592,6 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 default: throw new NotImplementedException();
             }
         }
-        //public static CraftBlueprint Blueprint(Map.TerrainBuildingType buildingType)
-        //{
-        //    switch (buildingType)
-        //    {
-        //        case Map.TerrainBuildingType.HenPen: return CraftHenPen;
-        //        case Map.TerrainBuildingType.PigPen: return CraftPigPen;
-        //        case Map.TerrainBuildingType.Tavern: return CraftTavern;
-        //        case Map.TerrainBuildingType.Barracks: return CraftBarracks;
-        //        case Map.TerrainBuildingType.WorkerHut: return CraftWorkerHut;
-
-        //            default: throw new NotImplementedException();
-        //    }              
-        //}
 }
 
     enum ResourceType

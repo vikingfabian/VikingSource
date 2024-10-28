@@ -331,7 +331,7 @@ namespace VikingEngine.DSSWars.Display
 
             Graphics.Image bg = new Graphics.Image(SpriteName.WhiteArea, area.Position, area.Size,
                 ImageLayers.Lay4);
-            bg.ColorAndAlpha(Color.Black, 0.7f);
+            bg.ColorAndAlpha(Color.Black, 0.95f);
             size = area.Size;
 
             images.Add(bg);

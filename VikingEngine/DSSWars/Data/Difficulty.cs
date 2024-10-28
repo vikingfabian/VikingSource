@@ -30,6 +30,7 @@ namespace VikingEngine.DSSWars.Data
         public int diplomacyDifficulty = 1;
 
         public bool honorGuard = true;
+        public bool resourcesStartHelp = false;
 
         public bool allowPauseCommand = true;
         public bool boss = true;
@@ -98,6 +99,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 0;
                     diplomacyDifficulty = 0;
                     honorGuard = true;
+                    resourcesStartHelp = true;
                     aiDelayTimeSec = 30 * TimeExt.MinuteInSeconds;
                     toPeacefulPercentage = 0.01f;
                     break;
@@ -109,6 +111,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 1;
                     diplomacyDifficulty = 0;
                     honorGuard = true;
+                    resourcesStartHelp = true;
                     aiDelayTimeSec = 15 * TimeExt.MinuteInSeconds;
                     toPeacefulPercentage = 0.05f;
                     break;
@@ -120,6 +123,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 1;
                     diplomacyDifficulty = 1;
                     honorGuard = true;
+                    resourcesStartHelp = true;
                     aiDelayTimeSec = 5 * TimeExt.MinuteInSeconds;
                     toPeacefulPercentage = 0.1f;
                     break;

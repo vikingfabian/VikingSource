@@ -70,6 +70,25 @@ namespace VikingEngine
             return result;
         }
 
+        public void UndoToPrevious()
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                nextPos.X--;
+                if (nextPos.X < min.X)
+                {
+                    nextPos.X = max.X;
+                    nextPos.Y--;
+                    //if (nextPos.Y < min.Y)
+                    //{
+                    //    throw new Exception();
+                    //}
+                }
+            }
+
+            Next();
+        }
+
         public bool AtRight
         {
             get { return Position.X == max.X; }

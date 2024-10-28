@@ -57,8 +57,9 @@ namespace VikingEngine.DSSWars.Build
             BuildAndExpandType.HenPen,
             BuildAndExpandType.WheatFarm,
             BuildAndExpandType.LinenFarm,
-            BuildAndExpandType.HempFarm,
             BuildAndExpandType.RapeSeedFarm,
+            BuildAndExpandType.HempFarm,
+            
 
             BuildAndExpandType.Pavement,
             BuildAndExpandType.PavementFlower,
@@ -86,8 +87,8 @@ namespace VikingEngine.DSSWars.Build
 
             new BuildOption(BuildAndExpandType.WheatFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, SpriteName.WarsBuild_WheatFarms, ResourceLib.CraftWheatFarm);
             new BuildOption(BuildAndExpandType.LinenFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarm, SpriteName.WarsBuild_LinenFarms, ResourceLib.CraftLinenFarm);
-            new BuildOption(BuildAndExpandType.HempFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarm, SpriteName.WarsBuild_LinenFarms, ResourceLib.CraftHempFarm);
-            new BuildOption(BuildAndExpandType.RapeSeedFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarm, SpriteName.WarsBuild_LinenFarms, ResourceLib.CraftRapeseedFarm);
+            new BuildOption(BuildAndExpandType.HempFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarm, SpriteName.WarsBuild_HempFarms, ResourceLib.CraftHempFarm);
+            new BuildOption(BuildAndExpandType.RapeSeedFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarm, SpriteName.WarsBuild_RapeseedFarms, ResourceLib.CraftRapeseedFarm);
 
             new BuildOption(BuildAndExpandType.Pavement, TerrainMainType.Decor, (int)TerrainDecorType.Pavement, SpriteName.WarsBuild_Pavement, ResourceLib.CraftPavement);
             new BuildOption(BuildAndExpandType.PavementFlower, TerrainMainType.Decor, (int)TerrainDecorType.PavementFlower, SpriteName.WarsBuild_PavementFlowers, ResourceLib.CraftPavementFlower);
