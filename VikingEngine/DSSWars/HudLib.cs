@@ -9,6 +9,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.Input;
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.LootFest.Players;
+using VikingEngine.DSSWars.Display.Translation;
 
 namespace VikingEngine.DSSWars
 {
@@ -109,12 +110,29 @@ namespace VikingEngine.DSSWars
             if (icon != SpriteName.NO_IMAGE)
             {
                 content.Add(new RichBoxImage(icon));
+                content.space(0.5f);
             }
 
             string text = string.Format(DssRef.lang.Hud_Purchase_ResourceCostOfAvailable,
                 GameObject.Resource.ResourceLib.Name(resource), TextLib.LargeNumber(needResource), TextLib.LargeNumber(hasResource));
 
             content.Add( new RichBoxText(text, ResourceCostColor(hasResource >= needResource)));
+        }
+
+        public static void ResourceCost(RichBoxContent content, GameObject.Resource.ItemResourceType resource, int needResource, int hasResource)
+        {
+            SpriteName icon = ResourceLib.Icon( resource);
+
+            if (icon != SpriteName.NO_IMAGE)
+            {
+                content.Add(new RichBoxImage(icon));
+                content.space(0.5f);
+            }
+
+            string text = string.Format(DssRef.lang.Hud_Purchase_ResourceCostOfAvailable,
+                LangLib.Item(resource), TextLib.LargeNumber(needResource), TextLib.LargeNumber(hasResource));
+
+            content.Add(new RichBoxText(text, ResourceCostColor(hasResource >= needResource)));
         }
 
         public static void Upkeep(RichBoxContent content, double value)

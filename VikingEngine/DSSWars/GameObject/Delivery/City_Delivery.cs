@@ -16,6 +16,7 @@ using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.GO.Gadgets;
+using VikingEngine.LootFest.Players;
 using VikingEngine.PJ.Joust;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -175,6 +176,49 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
+            }
+        }
+
+        public void toggleDeliveryStop()
+        {
+            if (arraylib.InBound(deliveryServices, selectedDelivery))
+            {
+                DeliveryStatus currentStatus = deliveryServices[selectedDelivery];
+                currentStatus.que = currentStatus.que > 0 ? 0 : 100;
+                deliveryServices[selectedDelivery] = currentStatus;
+            }
+        }
+
+        public void copyDelivery(LocalPlayer player)
+        {
+            if (arraylib.InBound(deliveryServices, selectedDelivery))
+            {
+                DeliveryStatus currentStatus = deliveryServices[selectedDelivery];
+                if (currentStatus.Recruitment())
+                {
+                    player.menDeliveryCopy = currentStatus;
+                }
+                else
+                {
+                    player.itemDeliveryCopy = currentStatus;
+                }
+            }
+        }
+
+        public void pasteDelivery(LocalPlayer player)
+        {
+            if (arraylib.InBound(deliveryServices, selectedDelivery))
+            {
+                DeliveryStatus currentStatus = deliveryServices[selectedDelivery];
+                if (currentStatus.Recruitment())
+                {
+                    currentStatus.useSetup(player.menDeliveryCopy, player);
+                }
+                else
+                {
+                    currentStatus.useSetup(player.itemDeliveryCopy, player);
+                }
+                deliveryServices[selectedDelivery] = currentStatus;
             }
         }
 

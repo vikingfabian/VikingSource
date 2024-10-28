@@ -2429,6 +2429,17 @@ namespace VikingEngine
         warsCheckYes,
         warsCheckNo,
         warsBulletPoint,
+        warsResourceChunkAvailable,
+
+        warsFolder_carton,
+        warsFolder_white,
+        warsFolder_orange,
+        warsFolder_yellow,
+        warsFolder_green,
+        warsFolder_pink,
+        warsFolder_blue,
+        warsFolder_cyan,
+        
 
         WarsRelationAlly,
         WarsRelationGood,

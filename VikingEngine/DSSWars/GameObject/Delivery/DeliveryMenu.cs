@@ -167,36 +167,18 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                 }
 
                 content.newParagraph();
-                content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(DssRef.lang.Hud_CopySetup) },
-                    new RbAction(() =>
-                    {
-                        if (currentStatus.Recruitment())
-                        {
-                            player.menDeliveryCopy = currentStatus;
-                        }
-                        else
-                        {
-                            player.itemDeliveryCopy = currentStatus;
-                        }
-                    }, SoundLib.menu)));
+                content.Add(new RichboxButton(new List<AbsRichBoxMember> {
+                    new RichBoxImage(player.input.Copy.Icon),
+                    new RichBoxSpace(0.5f),
+                    new RichBoxText(DssRef.lang.Hud_CopySetup) },
+                    new RbAction1Arg<LocalPlayer>(city.copyDelivery, player, SoundLib.menu)));
                 content.space();
-                content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(DssRef.lang.Hud_Paste) },
-                    new RbAction(() =>
-                    {
-                        DeliveryStatus currentStatus = get();
-
-                        if (currentStatus.Recruitment())
-                        {
-                            currentStatus.useSetup(player.menDeliveryCopy, player);
-                        }
-                        else
-                        {
-                            currentStatus.useSetup(player.itemDeliveryCopy, player);
-                        }
-
-                        set(currentStatus);
-
-                    }, SoundLib.menu)));
+                content.Add(new RichboxButton(new List<AbsRichBoxMember> { 
+                    new RichBoxImage(player.input.Paste.Icon),
+                    new RichBoxSpace(0.5f),
+                    new RichBoxText(DssRef.lang.Hud_Paste) 
+                },
+                    new RbAction1Arg<LocalPlayer>(city.pasteDelivery, player, SoundLib.menu)));
 
                 bool isSending = currentStatus.active == DeliveryActiveStatus.Delivering;
 

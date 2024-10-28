@@ -589,60 +589,44 @@ namespace VikingEngine.DSSWars.Players
             }
 
             bool menuFocusState = mapControls.focusedObjectMenuState();
-            //if (!openMenySystem)
-            //{
+           
                 
-                hud.update();
+            hud.update();
 
-                //if (hud.menuFocus)
-                //{
-                //    hud.updateMenuFocus();
-                //}
-                //else
+                
+            mapControls.update(hud.mouseOver);
+
+            if (input.AutomationSetting.DownEvent)
+            {
+                hud.OpenAutomationMenu();
+            }                
+
+            updateDiplomacy();
+
+            if (armyControls != null)
+            {
+                armyControls.update();
+            }
+            else
+            {
+                updateMapShortCuts();
+            }
+
+            if (PlatformSettings.DevBuild)
+            {
+                if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {
-                    mapControls.update(hud.mouseOver);
-
-                    if (input.AutomationSetting.DownEvent)
-                    {
-                        hud.OpenAutomationMenu();
-                    }
+                    battleLineUpTest(true);
                 }
 
-                updateDiplomacy();
-
-                if (armyControls != null)
-                {                    
-                    armyControls.update();
-                    
+                if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
+                {                        
+                    hud.messages.Add("message!", "Hello hello");
                 }
-
-                if (PlatformSettings.DevBuild)
-                {
-                    if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
-                    {
-                        //cityBuilderTest();
-                       // DssRef.state.events.TestNextEvent();
-                        
-                        battleLineUpTest(true);
-
-                        //battleLineUpTest(true);
-                        //new Display.CutScene.EndScene(true);
-                    }
-
-                    if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
-                    {
-                        
-                        hud.messages.Add("message!", "Hello hello");
-                        //battleLineUpTest(false);
-                        //mapControls.FocusObject()?.tagObject();
-                    }
-                }
-
-
-            //menuFocusState |= mapControls.focusedObjectMenuState();
+            }
 
             if (input.inputSource.IsController)
-                {
+            {
 
                 bool friendlyHoverObj = mapControls.hover.obj != null && mapControls.hover.obj.GetFaction() == faction;
                     if (!menuFocusState && 
@@ -658,14 +642,6 @@ namespace VikingEngine.DSSWars.Players
                         {
                             mapSelect();
                         }
-                        //if (mapControls.selection.obj == null || mapControls.hover.obj != null)
-                        //{
-                        //    mapSelect();
-                        //}
-                        //else
-                        //{
-                        //    mapExecute();
-                        //}
                     }
 
                     if (input.ControllerMessageClick.DownEvent)
@@ -701,7 +677,7 @@ namespace VikingEngine.DSSWars.Players
             
 
                 updateGameSpeed();
-            //}
+            
 
             updateObjectTabbing();
 
@@ -709,6 +685,60 @@ namespace VikingEngine.DSSWars.Players
 
             //DssRef.state.detailMap.PlayerUpdate(mapControls.playerPointerPos, bUnitDetailLayer);
             drawUnitsView.Update();
+        }
+
+        void updateMapShortCuts()
+        {
+            if (drawUnitsView.current.DrawDetailLayer)
+            {
+                //mapControls.hover.subTile.subTile.
+                //lib.DoNothing();
+            }
+            
+            if (mapControls.selection.obj != null && 
+                mapControls.selection.obj.gameobjectType() == GameObjectType.City)
+            {
+                var city = mapControls.selection.obj.GetCity();
+                switch (cityTab)
+                {
+                    case MenuTab.Delivery:
+                        if (input.Stop.DownEvent)
+                        {
+                            city.toggleDeliveryStop();
+                            hud.needRefresh = true;
+                        }
+                        if (input.Copy.DownEvent)
+                        {
+                            city.copyDelivery(this);
+                            SoundLib.click.Play();
+                        }
+                        if (input.Paste.DownEvent)
+                        {
+                            city.pasteDelivery(this);
+                            SoundLib.click.Play();
+                            hud.needRefresh = true;
+                        }
+                        break;
+                    case MenuTab.Conscript:
+                        if (input.Stop.DownEvent)
+                        {
+                            city.toggleConscriptStop();
+                            hud.needRefresh = true;
+                        }
+                        if (input.Copy.DownEvent)
+                        {
+                            city.copyConscript(this);
+                            SoundLib.click.Play();
+                        }
+                        if (input.Paste.DownEvent)
+                        {
+                            city.pasteConscript(this);
+                            SoundLib.click.Play();
+                            hud.needRefresh = true;
+                        }
+                        break;
+                }
+            }
         }
 
         public void debugMenu(GuiLayout layout)

@@ -7,6 +7,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display.Component;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject.Conscript;
+using VikingEngine.DSSWars.GameObject.Delivery;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
@@ -128,6 +129,51 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     conscriptBuildings[i] = status;
                 }
+            }
+        }
+
+        public void toggleConscriptStop()
+        {
+            if (arraylib.InBound(conscriptBuildings, selectedConscript))
+            {
+                BarracksStatus currentStatus = conscriptBuildings[selectedConscript];
+                currentStatus.que = currentStatus.que > 0? 0 : 100;
+                conscriptBuildings[selectedConscript] = currentStatus;
+            }
+        }
+
+        public void copyConscript(LocalPlayer player)
+        {
+            if (arraylib.InBound(conscriptBuildings, selectedConscript))
+            {
+                BarracksStatus currentStatus = conscriptBuildings[selectedConscript];
+                if (currentStatus.nobelmen)
+                {
+                    player.knightConscriptCopy = currentStatus.profile;
+                }
+                else
+                {
+                    player.soldierConscriptCopy = currentStatus.profile;
+                }
+            }
+        }
+
+        public void pasteConscript(LocalPlayer player)
+        {
+            if (arraylib.InBound(conscriptBuildings, selectedConscript))
+            {
+                BarracksStatus currentStatus = conscriptBuildings[selectedConscript];
+                
+                if (currentStatus.nobelmen)
+                {
+                    currentStatus.profile = player.knightConscriptCopy;
+                }
+                else
+                {
+                    currentStatus.profile = player.soldierConscriptCopy;
+                }
+
+                conscriptBuildings[selectedConscript] = currentStatus;
             }
         }
 

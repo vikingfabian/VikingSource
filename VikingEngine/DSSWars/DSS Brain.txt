@@ -1,14 +1,6 @@
 ﻿
 -Change Log-
-* Much smaller save files
-* Easier food management
- - cities start with more farms (8 instead of 3)
- - food blueprint require 25% less water and fuel, per food
- - max water is increased to 12
- - water add is increased by 5% on large cities and 40% on small (adding a lot of growth potensial)
- - bio fuel is added to desert cities (on < 100% difficulty)
-* Better build info
-* Animals has been reduced to about 1/5 of their food production
+
 
 #Todo (xmas patch)#
 dölj carry amount
@@ -17,18 +9,12 @@ Bog iron info
 
 
 --Efter release polish--
--deliver que copy
+
 -war icon
  
 
-
-sound limit per time
-
 pilar med resurser från delivery
-tydlig ikon för objekt meny typ
 Factories modeller
-Deliver effect
-Ljud
 city economy
 visa antal byggnader i bygg meny
 training skill icon

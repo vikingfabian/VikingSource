@@ -25,7 +25,10 @@ namespace VikingEngine.DSSWars.Display.Component
                     player.hud.tooltip.create(player, content, true);
                 }
             }));
+
             content.newLine();
+            content.Add(new RichBoxImage(player.input.Stop.Icon));
+            content.space();
             for (int length = 0; length <= BarracksStatus.MaxQue; length++)
             {
                 var button = new RichboxButton(new List<AbsRichBoxMember>{

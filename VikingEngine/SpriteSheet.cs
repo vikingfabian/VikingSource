@@ -2391,6 +2391,18 @@ namespace VikingEngine
                     add(SpriteName.WarsResource_Rapeseed);
                     add(SpriteName.WarsResource_Hemp);
 
+
+                    add(SpriteName.warsFolder_carton);
+                    add(SpriteName.warsFolder_white);
+                    add(SpriteName.warsFolder_orange);
+                    add(SpriteName.warsFolder_yellow);
+                    add(SpriteName.warsFolder_green);
+                    add(SpriteName.warsFolder_pink);
+                    add(SpriteName.warsFolder_blue);
+                    add(SpriteName.warsFolder_cyan);
+
+                    add(SpriteName.warsResourceChunkAvailable);
+
                 }
 
                 currentIndex = numTilesWidth * 97;

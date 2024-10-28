@@ -801,7 +801,7 @@ namespace VikingEngine.DSSWars.Display
             player.hud.tooltip.create(player, content, true);
         }
 
-            public void buyRepairToolTip(bool all)
+        public void buyRepairToolTip(bool all)
         {
             RichBoxContent content = new RichBoxContent();
             int count, cost;
