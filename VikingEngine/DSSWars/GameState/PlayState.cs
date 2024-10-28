@@ -214,6 +214,7 @@ namespace VikingEngine.DSSWars
         public override void Time_Update(float time)
         {
             base.Time_Update(time);
+            Sound.SoundStackManager.Update();
 
             if (Ref.music != null)
             {

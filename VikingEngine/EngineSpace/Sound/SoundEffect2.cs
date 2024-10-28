@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Audio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,8 +12,36 @@ using VikingEngine.PJ;
 
 namespace VikingEngine.Sound
 {
+    static class SoundStackManager
+    {
+        const float StackTimeRamgeMs = 300;
+        const int MaxSoundStack = 2;
+
+        static float time = 0;
+        static int stack = 0;
+
+        public static void Update()
+        {
+            time += Ref.DeltaTimeMs;
+            if (time > StackTimeRamgeMs)
+            {
+                time = 0;
+                stack = 0;
+            }
+        }
+
+        public static bool Available()
+        { 
+            return stack++ <= MaxSoundStack;
+        }
+    }
+
+
     abstract class SoundContainerBase
     {
+        
+        
+        
         protected float volume = 1;
         protected float randomPitch = 0;
         protected float pitchAdd = 0;
@@ -25,41 +54,44 @@ namespace VikingEngine.Sound
         }
         public void Play(Vector3 position)
         {
-            FindMinValue distanceFinder = new FindMinValue(true);
-
-            for (int i = 0; i < Ref.draw.ActivePlayerScreens.Count; i++)
+            if (SoundStackManager.Available())
             {
-                Graphics.AbsCamera cam = Ref.draw.ActivePlayerScreens[i].view.Camera;
+                FindMinValue distanceFinder = new FindMinValue(true);
 
-                distanceFinder.Next(
-                    lib.LargestValue(
-                        Math.Abs(cam.LookTarget.X - position.X),
-                        Math.Abs(cam.LookTarget.Z - position.Z)), i);
-
-            }
-
-            const float MaxSoundDist = 4;
-            if (distanceFinder.minValue < MaxSoundDist)
-            {
-                float outvolume = volume * (1f - (distanceFinder.minValue / MaxSoundDist));
-                Graphics.AbsCamera cam = Ref.draw.ActivePlayerScreens[distanceFinder.minMemberIndex].view.Camera;
-                Vector2 diff = new Vector2(position.X - cam.LookTarget.X, position.Z - cam.LookTarget.Z);
-                Rotation1D dir = Rotation1D.FromDirection(diff);
-                dir.Add(cam.TiltX - MathHelper.PiOver2);
-                Vector2 direction = dir.Direction(diff.Length());
-
-                float pan = direction.X / MaxSoundDist;
-
-                float pitch = pitchAdd;
-                if (randomPitch != 0)
+                for (int i = 0; i < Ref.draw.ActivePlayerScreens.Count; i++)
                 {
-                    pitch = Bound.Set(pitch + Ref.rnd.Plus_MinusF(randomPitch), -1, 1);
+                    Graphics.AbsCamera cam = Ref.draw.ActivePlayerScreens[i].view.Camera;
+
+                    distanceFinder.Next(
+                        lib.LargestValue(
+                            Math.Abs(cam.LookTarget.X - position.X),
+                            Math.Abs(cam.LookTarget.Z - position.Z)), i);
+
                 }
 
-                File().Play(Bound.Max(outvolume * Engine.Sound.SoundVolume, 1), pitch, pan);
-            }
+                const float MaxSoundDist = 4;
+                if (distanceFinder.minValue < MaxSoundDist)
+                {
+                    float outvolume = volume * (1f - (distanceFinder.minValue / MaxSoundDist));
+                    Graphics.AbsCamera cam = Ref.draw.ActivePlayerScreens[distanceFinder.minMemberIndex].view.Camera;
+                    Vector2 diff = new Vector2(position.X - cam.LookTarget.X, position.Z - cam.LookTarget.Z);
+                    Rotation1D dir = Rotation1D.FromDirection(diff);
+                    dir.Add(cam.TiltX - MathHelper.PiOver2);
+                    Vector2 direction = dir.Direction(diff.Length());
 
+                    float pan = direction.X / MaxSoundDist;
+
+                    float pitch = pitchAdd;
+                    if (randomPitch != 0)
+                    {
+                        pitch = Bound.Set(pitch + Ref.rnd.Plus_MinusF(randomPitch), -1, 1);
+                    }
+
+                    File().Play(Bound.Max(outvolume * Engine.Sound.SoundVolume, 1), pitch, pan);
+                }
+            }
         }
+        
         public void Play(Pan pan)
         {
             float pitch = pitchAdd;
