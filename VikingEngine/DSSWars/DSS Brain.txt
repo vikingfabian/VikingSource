@@ -1,6 +1,6 @@
 ﻿
 -Change Log-
-
+* hover a building and press B, will start build mode
 
 #Todo (xmas patch)#
 dölj carry amount
@@ -9,7 +9,7 @@ Bog iron info
 
 
 --Efter release polish--
-
+-fixa menu minimize
 -war icon
  
 

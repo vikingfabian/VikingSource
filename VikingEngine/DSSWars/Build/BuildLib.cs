@@ -96,6 +96,19 @@ namespace VikingEngine.DSSWars.Build
 
         }
 
+        public static BuildAndExpandType BuildTypeFromTerrain(TerrainMainType main, int sub)
+        { 
+            foreach (BuildOption buildOption in BuildOptions)
+            {
+                if (buildOption.mainType == main && buildOption.subType == sub)
+                { 
+                    return buildOption.buildType;
+                }
+            }
+
+            return BuildAndExpandType.NUM_NONE;
+        }
+
         public static bool CanAutoBuildHere(ref SubTile subTile)
         {
             if (subTile.mainTerrain == TerrainMainType.DefaultLand ||

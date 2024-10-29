@@ -181,19 +181,31 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void toggleDeliveryStop()
         {
-            if (arraylib.InBound(deliveryServices, selectedDelivery))
+            toggleDeliveryStop(selectedDelivery);
+        }
+
+        public bool toggleDeliveryStop(int index)
+        {
+            if (arraylib.InBound(deliveryServices, index))
             {
-                DeliveryStatus currentStatus = deliveryServices[selectedDelivery];
+                DeliveryStatus currentStatus = deliveryServices[index];
                 currentStatus.que = currentStatus.que > 0 ? 0 : 100;
-                deliveryServices[selectedDelivery] = currentStatus;
+                deliveryServices[index] = currentStatus;
+                return currentStatus.que > 0;
             }
+            return false;
         }
 
         public void copyDelivery(LocalPlayer player)
         {
-            if (arraylib.InBound(deliveryServices, selectedDelivery))
+            copyDelivery(player, selectedDelivery);
+        }
+
+        public void copyDelivery(LocalPlayer player, int index)
+        {
+            if (arraylib.InBound(deliveryServices, index))
             {
-                DeliveryStatus currentStatus = deliveryServices[selectedDelivery];
+                DeliveryStatus currentStatus = deliveryServices[index];
                 if (currentStatus.Recruitment())
                 {
                     player.menDeliveryCopy = currentStatus;
@@ -207,9 +219,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void pasteDelivery(LocalPlayer player)
         {
-            if (arraylib.InBound(deliveryServices, selectedDelivery))
+            pasteDelivery(player, selectedDelivery);
+        }
+
+        public void pasteDelivery(LocalPlayer player, int index)
+        {
+            if (arraylib.InBound(deliveryServices, index))
             {
-                DeliveryStatus currentStatus = deliveryServices[selectedDelivery];
+                DeliveryStatus currentStatus = deliveryServices[index];
                 if (currentStatus.Recruitment())
                 {
                     currentStatus.useSetup(player.menDeliveryCopy, player);
@@ -218,7 +235,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     currentStatus.useSetup(player.itemDeliveryCopy, player);
                 }
-                deliveryServices[selectedDelivery] = currentStatus;
+                deliveryServices[index] = currentStatus;
             }
         }
 
@@ -237,7 +254,32 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        
-        
+
+        public int deliveryIxFromSubTile(IntVector2 subTilePos)
+        {
+            int id = conv.IntVector2ToInt(subTilePos);
+            for (int i = 0; i < deliveryServices.Count; ++i)
+            {
+                if (deliveryServices[i].idAndPosition == id)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        public bool GetDelivery(IntVector2 subTilePos, out DeliveryStatus status)
+        {
+            var index = deliveryIxFromSubTile(subTilePos);
+            if (arraylib.InBound(deliveryServices, index))
+            {
+                status = deliveryServices[index];
+                return true;
+            }
+
+            status = new DeliveryStatus();
+            return false;
+        }
     }
 }

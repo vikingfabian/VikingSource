@@ -313,8 +313,8 @@ namespace VikingEngine.DSSWars.Display
 
                     content.Add(new RichBoxNewLine(true));
 
-                    if (player.hud.detailLevel == HudDetailLevel.Extended)
-                    {
+                    //if (player.hud.detailLevel == HudDetailLevel.Extended)
+                    //{
                         content.text(string.Format(DssRef.lang.Hud_CityCount, TextLib.LargeNumber(faction.cities.Count)));
                         content.text(string.Format(DssRef.lang.Hud_ArmyCount, TextLib.LargeNumber(faction.armies.Count)));
 
@@ -322,9 +322,12 @@ namespace VikingEngine.DSSWars.Display
                         content.ButtonDescription(player.input.NextArmy, DssRef.lang.Input_NextArmy);
                         content.ButtonDescription(player.input.NextBattle, DssRef.lang.Input_NextBattle);
 
+                        content.ButtonDescription(player.input.Build, DssRef.todoLang.Input_Build);
+                        content.ButtonDescription(player.input.Copy, DssRef.lang.Hud_CopySetup);
+                        content.ButtonDescription(player.input.Paste, DssRef.lang.Hud_Paste);
 
                         content.newParagraph();
-                    }
+                    //}
 
                     //if (Ref.isPaused && player.IsLocalHost())
                     //{

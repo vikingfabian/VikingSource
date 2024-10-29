@@ -141,6 +141,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             craft_heavyarmor.onFactionValueChange(factionTemplate.craft_heavyarmor);
 
             farm_food.onFactionValueChange(factionTemplate.farm_food);
+            farm_fuel.onFactionValueChange(factionTemplate.farm_food);
+            farm_linen.onFactionValueChange(factionTemplate.farm_food);
             bogiron.onFactionValueChange(factionTemplate.bogiron);
             mining.onFactionValueChange(factionTemplate.mining);
             trading.onFactionValueChange(factionTemplate.trading);

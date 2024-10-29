@@ -2430,6 +2430,7 @@ namespace VikingEngine
         warsCheckNo,
         warsBulletPoint,
         warsResourceChunkAvailable,
+        warsResourceChunkNotAvailable,
 
         warsFolder_carton,
         warsFolder_white,

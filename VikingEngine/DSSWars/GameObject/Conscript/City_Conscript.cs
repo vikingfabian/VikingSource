@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
@@ -134,19 +135,31 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void toggleConscriptStop()
         {
-            if (arraylib.InBound(conscriptBuildings, selectedConscript))
+            toggleConscriptStop(selectedConscript);
+        }
+
+        public bool toggleConscriptStop(int index)
+        {
+            if (arraylib.InBound(conscriptBuildings, index))
             {
-                BarracksStatus currentStatus = conscriptBuildings[selectedConscript];
+                BarracksStatus currentStatus = conscriptBuildings[index];
                 currentStatus.que = currentStatus.que > 0? 0 : 100;
-                conscriptBuildings[selectedConscript] = currentStatus;
+                conscriptBuildings[index] = currentStatus;
+                return currentStatus.que > 0;
             }
+            return false;
         }
 
         public void copyConscript(LocalPlayer player)
         {
-            if (arraylib.InBound(conscriptBuildings, selectedConscript))
+            copyConscript(player, selectedConscript);
+        }
+
+        public void copyConscript(LocalPlayer player, int index)
+        {
+            if (arraylib.InBound(conscriptBuildings, index))
             {
-                BarracksStatus currentStatus = conscriptBuildings[selectedConscript];
+                BarracksStatus currentStatus = conscriptBuildings[index];
                 if (currentStatus.nobelmen)
                 {
                     player.knightConscriptCopy = currentStatus.profile;
@@ -160,9 +173,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void pasteConscript(LocalPlayer player)
         {
-            if (arraylib.InBound(conscriptBuildings, selectedConscript))
+            pasteConscript(player, selectedConscript);
+        }
+
+        public void pasteConscript(LocalPlayer player, int index)
+        {
+            if (arraylib.InBound(conscriptBuildings, index))
             {
-                BarracksStatus currentStatus = conscriptBuildings[selectedConscript];
+                BarracksStatus currentStatus = conscriptBuildings[index];
                 
                 if (currentStatus.nobelmen)
                 {
@@ -173,9 +191,24 @@ namespace VikingEngine.DSSWars.GameObject
                     currentStatus.profile = player.soldierConscriptCopy;
                 }
 
-                conscriptBuildings[selectedConscript] = currentStatus;
+                conscriptBuildings[index] = currentStatus;
             }
         }
+
+        //public void toggleConscriptStop()
+        //{
+        //    toggleConscriptStop(selectedConscript);
+        //}
+
+        //public void toggleConscriptStop(int index)
+        //{
+        //    if (arraylib.InBound(deliveryServices, index))
+        //    {
+        //        DeliveryStatus currentStatus = deliveryServices[index];
+        //        currentStatus.que = currentStatus.que > 0 ? 0 : 100;
+        //        deliveryServices[index] = currentStatus;
+        //    }
+        //}
 
         public void onConscriptChange()
         {
@@ -284,10 +317,32 @@ namespace VikingEngine.DSSWars.GameObject
                 conscriptBuildings.Add(consriptProfile);
             }
         }
-    }
 
-    
+        public int conscriptIxFromSubTile(IntVector2 subTilePos)
+        {
+            int id = conv.IntVector2ToInt(subTilePos);
+            for (int i = 0; i < conscriptBuildings.Count; ++i)
+            {
+                if (conscriptBuildings[i].idAndPosition == id)
+                {
+                    return i;
+                }
+            }
 
+            return -1;
+        }
 
-    
+        public bool GetConscript(IntVector2 subTilePos, out BarracksStatus status)
+        {
+            var index = conscriptIxFromSubTile(subTilePos);
+            if (arraylib.InBound(conscriptBuildings, index))
+            {
+                status = conscriptBuildings[index];
+                return true;
+            }
+
+            status = new BarracksStatus();
+            return false;
+        }
+    }   
 }

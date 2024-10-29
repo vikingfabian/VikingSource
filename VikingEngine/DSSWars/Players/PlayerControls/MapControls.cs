@@ -705,31 +705,37 @@ namespace VikingEngine.DSSWars.Players
 
             switch (selectedSubTile.selectTileResult)
             {
-                case SelectTileResult.Barracks:
+                case SelectTileResult.Conscript:
                     {
                         player.cityTab = Display.MenuTab.Conscript;
-                        int id = conv.IntVector2ToInt(selectedSubTile.subTilePos);
-                        for (int i = 0; i < selectedSubTile.city.conscriptBuildings.Count; ++i)
-                        {
-                            if (selectedSubTile.city.conscriptBuildings[i].idAndPosition == id)
-                            {
-                                selectedSubTile.city.selectedConscript = i; break;
-                            }
-                        }
+                        selectedSubTile.city.selectedConscript = selectedSubTile.city.conscriptIxFromSubTile(selectedSubTile.subTilePos);
+
+
+
+                        //int id = conv.IntVector2ToInt(selectedSubTile.subTilePos);
+                        //for (int i = 0; i < selectedSubTile.city.conscriptBuildings.Count; ++i)
+                        //{
+                        //    if (selectedSubTile.city.conscriptBuildings[i].idAndPosition == id)
+                        //    {
+                        //        selectedSubTile.city.selectedConscript = i; break;
+                        //    }
+                        //}
                     }
                     break;
                 case SelectTileResult.Recruitment:
                 case SelectTileResult.Postal:
                     {
                         player.cityTab = Display.MenuTab.Delivery;
-                        int id = conv.IntVector2ToInt(selectedSubTile.subTilePos);
-                        for (int i = 0; i < selectedSubTile.city.deliveryServices.Count; ++i)
-                        {
-                            if (selectedSubTile.city.deliveryServices[i].idAndPosition == id)
-                            {
-                                selectedSubTile.city.selectedDelivery = i; break;
-                            }
-                        }
+                        selectedSubTile.city.selectedDelivery = selectedSubTile.city.deliveryIxFromSubTile(selectedSubTile.subTilePos);
+
+                        //int id = conv.IntVector2ToInt(selectedSubTile.subTilePos);
+                        //for (int i = 0; i < selectedSubTile.city.deliveryServices.Count; ++i)
+                        //{
+                        //    if (selectedSubTile.city.deliveryServices[i].idAndPosition == id)
+                        //    {
+                        //        selectedSubTile.city.selectedDelivery = i; break;
+                        //    }
+                        //}
 
                         //setObjectMenuFocus(true);
                     }

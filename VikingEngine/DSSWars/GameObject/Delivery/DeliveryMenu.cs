@@ -171,14 +171,15 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                     new RichBoxImage(player.input.Copy.Icon),
                     new RichBoxSpace(0.5f),
                     new RichBoxText(DssRef.lang.Hud_CopySetup) },
-                    new RbAction1Arg<LocalPlayer>(city.copyDelivery, player, SoundLib.menu)));
+                new RbAction1Arg<LocalPlayer>(city.copyDelivery, player, SoundLib.menuCopy)));
+
                 content.space();
                 content.Add(new RichboxButton(new List<AbsRichBoxMember> { 
                     new RichBoxImage(player.input.Paste.Icon),
                     new RichBoxSpace(0.5f),
                     new RichBoxText(DssRef.lang.Hud_Paste) 
                 },
-                    new RbAction1Arg<LocalPlayer>(city.pasteDelivery, player, SoundLib.menu)));
+                new RbAction1Arg<LocalPlayer>(city.pasteDelivery, player, SoundLib.menuPaste)));
 
                 bool isSending = currentStatus.active == DeliveryActiveStatus.Delivering;
 

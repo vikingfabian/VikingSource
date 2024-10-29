@@ -10,6 +10,7 @@ using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject.Delivery;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.GameObject.Resource;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Data;
 using VikingEngine.ToGG.ToggEngine;
@@ -210,6 +211,54 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 remaining = TimeLength().LongString();
             }
             return string.Format(DssRef.lang.Conscription_Status_Training, remaining);
+        }
+
+        public void tooltip(LocalPlayer player, City city, RichBoxContent content)
+        {
+
+            ItemResourceType weaponItem = ConscriptProfile.WeaponItem(profile.weapon);
+            bool hasWeapons = city.GetGroupedResource(weaponItem).amount >= DssConst.SoldierGroup_DefaultCount;
+
+            bool hasArmor = true;
+            ItemResourceType armorItem = ItemResourceType.NONE;
+            if (profile.armorLevel != ArmorLevel.None)
+            {
+                armorItem = ConscriptProfile.ArmorItem(profile.armorLevel);
+                hasArmor = city.GetGroupedResource(armorItem).amount >= DssConst.SoldierGroup_DefaultCount;
+            }
+
+            bool hasMen = city.workForce >= DssConst.SoldierGroup_DefaultCount;
+
+            bool available = hasWeapons && hasArmor && hasMen;
+
+            content.Add(new RichBoxImage(available ? SpriteName.warsResourceChunkAvailable : SpriteName.warsResourceChunkNotAvailable));
+            content.space(0.5f);
+            content.Add(new RichBoxImage(
+                            new SoldierConscriptProfile() { conscript = profile }.Icon()
+                            ));
+            //ItemResourceType weaponitem = ConscriptProfile.WeaponItem(profile.weapon);
+            content.Add(new RichBoxImage(ResourceLib.Icon(weaponItem)));
+
+            if (profile.armorLevel != ArmorLevel.None)
+            {
+                //ItemResourceType armoritem = ConscriptProfile.ArmorItem(profile.armorLevel);
+                content.Add(new RichBoxImage(ResourceLib.Icon(armorItem)));
+            }
+            content.Add(new RichBoxImage((SpriteName)((int)SpriteName.WarsUnitLevelMinimal + (int)profile.training)));
+
+            content.newLine();
+            content.Add(new RichBoxImage(player.input.Stop.Icon));
+            content.space(0.5f);
+            content.Add(new RichBoxText(shortActiveString()));
+
+            content.newLine();
+            content.Add(new RichBoxImage(player.input.Copy.Icon));
+            content.space(0.5f);
+            content.Add(new RichBoxText(DssRef.lang.Hud_CopySetup));
+            content.space(2);
+            content.Add(new RichBoxImage(player.input.Paste.Icon));
+            content.space(0.5f);
+            content.Add(new RichBoxText(DssRef.lang.Hud_Paste));
         }
     }
 

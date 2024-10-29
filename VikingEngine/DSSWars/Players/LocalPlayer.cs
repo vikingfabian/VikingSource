@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.Players
 
         public PlayerToPlayerDiplomacy[] toPlayerDiplomacies = null;
         public Automation automation;
-        public Build.BuildControls BuildControls;
+        public Build.BuildControls buildControls;
 
         public SpottedArray<Battle.BattleGroup> battles = new SpottedArray<Battle.BattleGroup>(4);
 
@@ -139,7 +139,7 @@ namespace VikingEngine.DSSWars.Players
             return cityTab == Display.MenuTab.Build &&
                 mapControls.selection.obj != null &&
                 mapControls.selection.obj.gameobjectType() == GameObjectType.City &&
-                BuildControls.buildMode != SelectTileResult.None;                        
+                buildControls.buildMode != SelectTileResult.None;                        
         }
 
         public void childrenTooltip(City city)
@@ -298,7 +298,7 @@ namespace VikingEngine.DSSWars.Players
             faction.displayInFullOverview = true;
 
             hud = new GameHud(this, numPlayers);
-            BuildControls = new Build.BuildControls(this);
+            buildControls = new Build.BuildControls(this);
             automation = new Automation(this);
 
             playerData = Engine.XGuide.GetPlayer(playerindex);
@@ -672,7 +672,7 @@ namespace VikingEngine.DSSWars.Players
 
                 if (input.ControllerCancel.DownEvent && InBuildOrdersMode())
                 {
-                    BuildControls.buildMode = SelectTileResult.None;
+                    buildControls.buildMode = SelectTileResult.None;
                 }
             
 
@@ -687,14 +687,130 @@ namespace VikingEngine.DSSWars.Players
             drawUnitsView.Update();
         }
 
+        void setBuildMode(City city, BuildAndExpandType type)
+        {
+            mapSelect(city);
+            cityTab = MenuTab.Build;
+            if (type != BuildAndExpandType.NUM_NONE)
+            {
+                buildControls.buildMode = SelectTileResult.Build;
+                buildControls.placeBuildingType = type;
+            }
+        }
+
         void updateMapShortCuts()
         {
             if (drawUnitsView.current.DrawDetailLayer)
             {
-                //mapControls.hover.subTile.subTile.
-                //lib.DoNothing();
+                if (input.Build.DownEvent)
+                {
+                    var build = BuildLib.BuildTypeFromTerrain(mapControls.hover.subTile.subTile.mainTerrain, mapControls.hover.subTile.subTile.subTerrain);
+                    setBuildMode(mapControls.hover.subTile.city, build);
+                    return;
+                }
+
+                bool inHotkeyRepeceptiveMenu = mapControls.selection.obj != null &&
+                    mapControls.selection.obj.gameobjectType() == GameObjectType.City &&
+                    (cityTab == MenuTab.Delivery || cityTab == MenuTab.Conscript);
+
+                if (!inHotkeyRepeceptiveMenu)
+                {
+                    switch (mapControls.hover.subTile.subTile.mainTerrain)
+                    {
+                        case TerrainMainType.Building:
+
+                            switch ((TerrainBuildingType)mapControls.hover.subTile.subTile.subTerrain)
+                            {
+                                case TerrainBuildingType.Recruitment:
+                                case TerrainBuildingType.Postal:
+                                    if (input.Copy.DownEvent)
+                                    {
+                                        int ix = mapControls.hover.subTile.city.deliveryIxFromSubTile(mapControls.hover.subTile.subTilePos);
+                                        mapControls.hover.subTile.city.copyDelivery(this, ix);
+                                        SoundLib.copy.Play();
+                                    }
+                                    if (input.Paste.DownEvent)
+                                    {
+                                        int ix = mapControls.hover.subTile.city.deliveryIxFromSubTile(mapControls.hover.subTile.subTilePos);
+                                        mapControls.hover.subTile.city.pasteDelivery(this, ix);
+                                        SoundLib.paste.Play();
+                                    }
+                                    if (input.Stop.DownEvent)
+                                    {
+                                        int ix = mapControls.hover.subTile.city.deliveryIxFromSubTile(mapControls.hover.subTile.subTilePos);
+                                        bool start = mapControls.hover.subTile.city.toggleDeliveryStop(ix);
+                                        (start? SoundLib.start : SoundLib.stop).Play();
+                                    }
+                                    break;
+
+                                case TerrainBuildingType.Nobelhouse:
+                                case TerrainBuildingType.Barracks:
+                                    if (input.Copy.DownEvent)
+                                    {
+                                        int ix = mapControls.hover.subTile.city.conscriptIxFromSubTile(mapControls.hover.subTile.subTilePos);
+                                        mapControls.hover.subTile.city.copyConscript(this, ix);
+                                        SoundLib.copy.Play();
+                                    }
+                                    if (input.Paste.DownEvent)
+                                    {
+                                        int ix = mapControls.hover.subTile.city.conscriptIxFromSubTile(mapControls.hover.subTile.subTilePos);
+                                        mapControls.hover.subTile.city.pasteConscript(this, ix);
+                                        SoundLib.paste.Play();
+                                    }
+                                    if (input.Stop.DownEvent)
+                                    {
+                                        int ix = mapControls.hover.subTile.city.conscriptIxFromSubTile(mapControls.hover.subTile.subTilePos);
+                                        bool start = mapControls.hover.subTile.city.toggleConscriptStop(ix);
+                                        (start ? SoundLib.start : SoundLib.stop).Play();
+                                        hud.needRefresh = true;
+                                    }
+                                    break;
+                            }
+                            break;
+                    }
+                }
+                //            //    case TerrainBuildingType.Recruitment:
+                //            //        build = BuildAndExpandType.Recruitment;
+                //            //        break;
+                //            //    case TerrainBuildingType.PigPen:
+                //            //        build = BuildAndExpandType.PigPen;
+                //            //        break;
+                //            //    case TerrainBuildingType.HenPen:
+                //            //        build = BuildAndExpandType.HenPen;
+                //            //        break;
+                //            //    case TerrainBuildingType.Barracks:
+                //            //        build = BuildAndExpandType.Barracks;
+                //            //        break;
+                //            //    case TerrainBuildingType.Brewery:
+                //            //        build = BuildAndExpandType.Brewery;
+                //            //        break;
+                //            //    case TerrainBuildingType.Carpenter:
+                //            //        build = BuildAndExpandType.Carpenter;
+                //            //        break;
+                //            //    case TerrainBuildingType.Nobelhouse:
+                //            //        build = BuildAndExpandType.Nobelhouse;
+                //            //        break;
+                //            //    case TerrainBuildingType.Storehouse:
+                //            //        build = BuildAndExpandType.Storehouse;
+                //            //        break;
+                //            //    case TerrainBuildingType.Tavern:
+                //            //        build = BuildAndExpandType.Tavern;
+                //            //        break;
+                //            //    case TerrainBuildingType.WorkerHut:
+                //            //        build = BuildAndExpandType.WorkerHuts;
+                //            //        break;
+                //            //    case TerrainBuildingType.Work_Bench:
+                //            //        build = BuildAndExpandType.WorkBench;
+                //            //        break;
+
+                //            //}
+
+                //            setBuildMode(mapControls.hover.subTile.city, build);
+                //        }
+                //}
+
             }
-            
+
             if (mapControls.selection.obj != null && 
                 mapControls.selection.obj.gameobjectType() == GameObjectType.City)
             {
@@ -704,36 +820,38 @@ namespace VikingEngine.DSSWars.Players
                     case MenuTab.Delivery:
                         if (input.Stop.DownEvent)
                         {
-                            city.toggleDeliveryStop();
+                            bool start = city.toggleDeliveryStop(city.selectedDelivery);
                             hud.needRefresh = true;
+                            (start ? SoundLib.start : SoundLib.stop).Play();
                         }
                         if (input.Copy.DownEvent)
                         {
                             city.copyDelivery(this);
-                            SoundLib.click.Play();
+                            SoundLib.copy.Play();
                         }
                         if (input.Paste.DownEvent)
                         {
                             city.pasteDelivery(this);
-                            SoundLib.click.Play();
+                            SoundLib.paste.Play();
                             hud.needRefresh = true;
                         }
                         break;
                     case MenuTab.Conscript:
                         if (input.Stop.DownEvent)
                         {
-                            city.toggleConscriptStop();
+                            bool start = city.toggleConscriptStop(city.selectedConscript);
                             hud.needRefresh = true;
+                            (start ? SoundLib.start : SoundLib.stop).Play();
                         }
                         if (input.Copy.DownEvent)
                         {
                             city.copyConscript(this);
-                            SoundLib.click.Play();
+                            SoundLib.copy.Play();
                         }
                         if (input.Paste.DownEvent)
                         {
                             city.pasteConscript(this);
-                            SoundLib.click.Play();
+                            SoundLib.paste.Play();
                             hud.needRefresh = true;
                         }
                         break;
@@ -1084,7 +1202,7 @@ namespace VikingEngine.DSSWars.Players
         {
             if (mapControls.hover.subTile.hasSelection && InBuildOrdersMode())
             {
-                BuildControls.onTileSelect(mapControls.hover.subTile);
+                buildControls.onTileSelect(mapControls.hover.subTile);
             }
             else
             {

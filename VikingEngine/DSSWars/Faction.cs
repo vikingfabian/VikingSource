@@ -8,6 +8,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.Data;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
@@ -56,6 +57,14 @@ namespace VikingEngine.DSSWars
 
         public Faction(WorldData addTo, FactionType factiontype)
         {
+            if (factiontype == FactionType.DefaultAi)
+            {
+                if (addTo.availableGenericAiTypes.Count > 0)
+                {
+                    factiontype = arraylib.RandomListMemberPop(addTo.availableGenericAiTypes, addTo.metaData.objRnd);
+                }
+            }
+
             this.factiontype = factiontype;
 
             this.parentArrayIndex = addTo.factions.Add(this);
@@ -223,7 +232,7 @@ namespace VikingEngine.DSSWars
         void onNewOwner()
         {
             if (!textureLoaded)
-                FlagTexture.ColorAndAlpha = profile.getColor(ProfileColorType.Main).ToVector4();
+                FlagTexture.ColorAndAlpha = profile.col0_Main.ToVector4();
 
             var citiesC = cities.counter();
             while (citiesC.Next())
@@ -889,7 +898,7 @@ namespace VikingEngine.DSSWars
         {
                 if (player == null)
                     return ColorExt.Error;
-                return player.faction.profile.getColor(ProfileColorType.Main);
+                return player.faction.profile.col0_Main;
             
         }
 
@@ -978,12 +987,30 @@ namespace VikingEngine.DSSWars
         DyingDestru,
         NewDestu,
 
+        //Generic ai
+        Starshield,
+
+        //Mountain
+        Bluepeak,
+
+        //Horse
+        Hoft,
+        RiverStallion,
+        Sivo,
+
     }
 
     enum FactionGroupType
     {
         Other,
         Nordic,
+    }
+
+    enum FactionFlavorType
+    {
+        Other,
+        Horse,
+        Mountain,
     }
 
     enum DiplomaticSide

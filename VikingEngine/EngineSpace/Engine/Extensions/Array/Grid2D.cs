@@ -18,6 +18,9 @@ namespace VikingEngine
         public T[,] array;
         public T sel;
 
+        public Grid2D()
+        { }
+
         public Grid2D(int size)
             :this(new IntVector2(size))
         {
@@ -30,6 +33,13 @@ namespace VikingEngine
         }
 
         public Grid2D(IntVector2 size)
+        {
+            this.size = size;
+            array = new T[size.X, size.Y];
+        }
+
+
+        public void initGrid(IntVector2 size)
         {
             this.size = size;
             array = new T[size.X, size.Y];

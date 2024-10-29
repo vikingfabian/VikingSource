@@ -517,6 +517,12 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/click.wav
 
+#begin DSS/Sound/copy.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/copy.wav
+
 #begin DSS/Sound/dig.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -595,6 +601,12 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/out_of_ammo.wav
 
+#begin DSS/Sound/paste.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/paste.wav
+
 #begin DSS/Sound/pickaxe.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -642,6 +654,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/spear.wav
+
+#begin DSS/Sound/start.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/start.wav
+
+#begin DSS/Sound/stop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stop.wav
 
 #begin DSS/Sound/sword1.wav
 /importer:WavImporter

@@ -74,26 +74,30 @@ namespace VikingEngine.DSSWars.Players
             faction.profile.gameStartInit();
 
             switch (faction.factiontype)
-            {
+            {               
+                case FactionType.Starshield:
+                    defaultSetup();
+                    name = "Starshield";
+                    break;
+                case FactionType.Bluepeak:
+                    defaultSetup();
+                    name = "Blue peak";
+                    break;
+                case FactionType.Hoft:
+                    defaultSetup();
+                    name = "Hoft";
+                    break;
+                case FactionType.RiverStallion:
+                    defaultSetup();
+                    name = "River Stallion";
+                    break;
+                case FactionType.Sivo:
+                    defaultSetup();
+                    name = "Sivo";
+                    break;
+
                 case FactionType.DefaultAi:
-                    var chance = Ref.rnd.Double();
-                    if (chance < 0.08)
-                    {
-                        aggressionLevel = AggressionLevel3_FocusedAttacks;
-                    }
-                    else if (chance < 0.25)
-                    {
-                        aggressionLevel = AggressionLevel2_RandomAttacks;
-                    }
-                    else if (chance < 0.4)
-                    {
-                        aggressionLevel = AggressionLevel1_RevengeOnly;
-                    }
-                    else
-                    {
-                        aggressionLevel = AggressionLevel0_Passive;
-                    }
-                    
+                    defaultSetup();
                     name = string.Format(DssRef.lang.FactionName_GenericAi, faction.parentArrayIndex);
                     break;
 
@@ -233,6 +237,27 @@ namespace VikingEngine.DSSWars.Players
             }
 
             refreshAggression();
+
+            void defaultSetup()
+            {
+                var chance = Ref.rnd.Double();
+                if (chance < 0.08)
+                {
+                    aggressionLevel = AggressionLevel3_FocusedAttacks;
+                }
+                else if (chance < 0.25)
+                {
+                    aggressionLevel = AggressionLevel2_RandomAttacks;
+                }
+                else if (chance < 0.4)
+                {
+                    aggressionLevel = AggressionLevel1_RevengeOnly;
+                }
+                else
+                {
+                    aggressionLevel = AggressionLevel0_Passive;
+                }
+            }
         }
 
         public void refreshAggression()

@@ -189,7 +189,7 @@ namespace VikingEngine.DSSWars.Profile
         void debugPrintArray()
         {
             state.profile.PrintFlagColors();
-            state.file.dataGrid.Print();
+            state.file.Print();
             
         }
 

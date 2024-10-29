@@ -7,6 +7,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject.Conscript;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.GameObject.Delivery
 {
@@ -153,26 +154,35 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
 
         public bool CanRecieve(int cityIx, out int recieverHasAmount)
         {
-            City city = DssRef.world.cities[cityIx];
-            if (profile.type == ItemResourceType.Men)
+            if (arraylib.InBound(DssRef.world.cities, cityIx))
             {
-                recieverHasAmount = city.workForce;
+                City city = DssRef.world.cities[cityIx];
+                if (profile.type == ItemResourceType.Men)
+                {
+                    recieverHasAmount = city.workForce;
+                }
+                else
+                {
+                    recieverHasAmount = city.GetGroupedResource(profile.type).amount;
+
+                }
+
+                if (useRecieverMax)
+                {
+                    return recieverHasAmount < recieverMax;
+                }
+
+                return true;
+
             }
             else
             {
-                recieverHasAmount = city.GetGroupedResource(profile.type).amount;
-                
+                recieverHasAmount = 0;
+                return false;
             }
-
-            if (useRecieverMax)
-            {
-                return recieverHasAmount < recieverMax;
-            }
-
-            return true;
         }
 
-            public bool CountDownQue()
+        public bool CountDownQue()
         {
             if (que > 0)
             {
@@ -226,6 +236,33 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
             recieverMax = 200;
             profile.toCity = -1;
             profile.type = recruitment ? ItemResourceType.Men : ItemResourceType.Food_G;
+        }
+
+        public void tooltip(LocalPlayer player, City city, RichBoxContent content)
+        {
+            
+            if (profile.type == ItemResourceType.Men)
+            {                
+                HudLib.ResourceCost(content, ItemResourceType.Men, DssConst.SoldierGroup_DefaultCount, city.workForce );
+            }
+            else
+            {
+                HudLib.ResourceCost(content, profile.type, DssConst.SoldierGroup_DefaultCount, city.GetGroupedResource(profile.type).amount);
+            }
+
+            content.newLine();
+            content.Add(new RichBoxImage(player.input.Stop.Icon));
+            content.space(0.5f);
+            content.Add(new RichBoxText(shortActiveString()));
+
+            content.newLine();
+            content.Add(new RichBoxImage(player.input.Copy.Icon));
+            content.space(0.5f);
+            content.Add(new RichBoxText(DssRef.lang.Hud_CopySetup));
+            content.space(2);
+            content.Add(new RichBoxImage(player.input.Paste.Icon));
+            content.space(0.5f);
+            content.Add(new RichBoxText(DssRef.lang.Hud_Paste));
         }
     }
 

@@ -13,13 +13,14 @@ namespace VikingEngine.DSSWars
 {
     static class SoundLib
     {
-        public static SoundContainerBase click, hover, hover_disabled, clicktab, hovertab, back, buy, wrong, 
+        public static SoundContainerBase click, hover, hover_disabled, clicktab, hovertab, back, buy, wrong,
+            copy, paste, start, stop,
             select_army, select_city, select_faction,
             ordermove, orderstop, message, trophy,
             woodcut, tree_falling, scythe, drop_item, pickaxe, hen, pig, pickup,
             anvil, dig, genericWork, hammer;
 
-        public static RbSoundProfile menu, menuHover, menutab, menutabHover, menuBack, menuBuy, menuArmyHalt;
+        public static RbSoundProfile menu, menuHover, menutab, menutabHover, menuBack, menuBuy, menuArmyHalt, menuCopy, menuPaste, menuStart, menuStop;
 
         public static RbSoundAction buttonHoverAction, tabHoverAction;
 
@@ -34,6 +35,11 @@ namespace VikingEngine.DSSWars
             back = new SoundContainerSingle(soundDir + "back", 0.05f);
             buy = new SoundContainerSingle(soundDir + "buy");
             wrong = new SoundContainerSingle(soundDir + "wrong", 0.6f);
+
+            copy = new SoundContainerSingle(soundDir + "copy", 1f);
+            paste = new SoundContainerSingle(soundDir + "paste", 1f);
+            start = new SoundContainerSingle(soundDir + "start", 0.6f);
+            stop = new SoundContainerSingle(soundDir + "stop", 0.8f);
 
             select_army = new SoundContainerSingle(soundDir + "select_army", 0.25f, 0.1f);
             select_city = new SoundContainerSingle(soundDir + "select_city", 0.06f, 0.1f);
@@ -64,6 +70,10 @@ namespace VikingEngine.DSSWars
             menuBack = new RbSoundProfile(back);
             menuBuy = new RbSoundProfile(buy, wrong);
             menuArmyHalt = new RbSoundProfile(orderstop);
+            menuCopy = new RbSoundProfile(copy);
+            menuPaste = new RbSoundProfile(paste);
+            menuStart = new RbSoundProfile(start);
+            menuStop = new RbSoundProfile(stop);
 
             buttonHoverAction = new RbSoundAction(menuHover);
             tabHoverAction = new RbSoundAction(menutabHover);

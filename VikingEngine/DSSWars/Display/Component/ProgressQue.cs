@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars.Display.Component
             {
                 var button = new RichboxButton(new List<AbsRichBoxMember>{
                        new RichBoxText( length.ToString())
-                    }, new RbAction1Arg<int>(queClick, length, SoundLib.menu));
+                    }, new RbAction1Arg<int>(queClick, length, length == 0? SoundLib.menuStop : SoundLib.menuStart));
                 button.setGroupSelectionColor(HudLib.RbSettings, length == currentQue);
                 content.Add(button);
                 content.space();
@@ -41,7 +41,7 @@ namespace VikingEngine.DSSWars.Display.Component
             {
                 var button = new RichboxButton(new List<AbsRichBoxMember>{
                        new RichBoxText(DssRef.lang.Hud_NoLimit)
-                    }, new RbAction1Arg<int>(queClick, 255, SoundLib.menu));
+                    }, new RbAction1Arg<int>(queClick, 255, SoundLib.menuStart));
                 button.setGroupSelectionColor(HudLib.RbSettings, currentQue > BarracksStatus.MaxQue);
                 content.Add(button);
             }

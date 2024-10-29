@@ -196,13 +196,13 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     new RichBoxImage(player.input.Copy.Icon),
                     new RichBoxSpace(0.5f),
                     new RichBoxText(DssRef.lang.Hud_CopySetup) },
-                    new RbAction1Arg<LocalPlayer>(city.copyConscript, player, SoundLib.menu)));
+                    new RbAction1Arg<LocalPlayer>(city.copyConscript, player, SoundLib.menuCopy)));
                 content.space();
                 content.Add(new RichboxButton(new List<AbsRichBoxMember> {
                     new RichBoxImage(player.input.Paste.Icon),
                     new RichBoxSpace(0.5f),
                     new RichBoxText(DssRef.lang.Hud_Paste) },
-                    new RbAction1Arg<LocalPlayer>(city.pasteConscript, player, SoundLib.menu)));
+                    new RbAction1Arg<LocalPlayer>(city.pasteConscript, player, SoundLib.menuPaste)));
 
                 if (currentStatus.active != ConscriptActiveStatus.Idle)
                 {

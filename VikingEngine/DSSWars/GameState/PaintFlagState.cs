@@ -328,7 +328,7 @@ namespace VikingEngine.DSSWars
 
         public void moveOption(IntVector2 dir)
         {
-            file.dataGrid.MoveEveryThing(dir);
+            file.MoveEveryThing(dir);
             updateImageGrid();
         }
 
@@ -395,7 +395,7 @@ namespace VikingEngine.DSSWars
             imageGrid.LoopBegin();
             while (imageGrid.LoopNext())
             {
-                imageGrid.LoopValueGet().Color = profile.colors[file.dataGrid.Get(imageGrid.LoopPosition)];
+                imageGrid.LoopValueGet().Color = profile.getColor((ProfileColorType) file.Get(imageGrid.LoopPosition));
                 setTexturePos(imageGrid.LoopPosition);
             }
         }
@@ -413,7 +413,7 @@ namespace VikingEngine.DSSWars
         {
             if (bBucket)
             {
-                byte prev = file.dataGrid.Get(gridPosition);
+                byte prev = file.Get(gridPosition);
                 if (prev != (byte)color)
                 {
                     bucket(prev, (byte)color, gridPosition);
@@ -422,7 +422,7 @@ namespace VikingEngine.DSSWars
             }
             else
             {
-                file.dataGrid.Set(gridPosition, (byte)color);
+                file.Set(gridPosition, (byte)color);
                 imageGrid.Get(gridPosition).Color = profile.getColor(color);
                 setTexturePos(gridPosition);
             }
@@ -430,14 +430,14 @@ namespace VikingEngine.DSSWars
 
         void bucket(byte fromColor, byte toColor, IntVector2 pos)
         {
-            byte prev = file.dataGrid.Get(pos);
+            byte prev = file.Get(pos);
             if (prev == fromColor)
             {
-                file.dataGrid.Set(pos, toColor);
+                file.Set(pos, toColor);
                 foreach (IntVector2 dir in IntVector2.Dir4Array)
                 {
                     IntVector2 neighbor = dir + pos;
-                    if (file.dataGrid.InBounds(neighbor))
+                    if (file.InBounds(neighbor))
                     {
                         bucket(fromColor, toColor, neighbor);
                     }

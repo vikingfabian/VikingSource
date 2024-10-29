@@ -61,6 +61,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Hud_Time_Seconds => "{0} seconds";
         public string Hud_Time_Minutes => "{0} minutes";
 
+
+        public string Input_Build => "Build";
     }
 
 }

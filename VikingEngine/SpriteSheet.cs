@@ -2402,6 +2402,7 @@ namespace VikingEngine
                     add(SpriteName.warsFolder_cyan);
 
                     add(SpriteName.warsResourceChunkAvailable);
+                    add(SpriteName.warsResourceChunkNotAvailable);
 
                 }
 

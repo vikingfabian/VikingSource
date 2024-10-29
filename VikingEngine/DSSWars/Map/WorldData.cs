@@ -71,6 +71,16 @@ namespace VikingEngine.DSSWars
         //public int evilFactionIndex=-1;
         public bool abortLoad = false;
 
+        public List<FactionType> availableGenericAiTypes = new List<FactionType>
+        {
+             
+            FactionType.Starshield,
+            FactionType.Bluepeak,
+            FactionType.Hoft,
+            FactionType.RiverStallion,
+            FactionType.Sivo,
+        };
+
         public WorldData()
         {
             factions = new SpottedArray<Faction>();
@@ -366,6 +376,8 @@ namespace VikingEngine.DSSWars
            int version = r.ReadInt32();
 
             metaData.seed = r.ReadUInt16();
+            //rnd = new PcgRandom(metaData.seed);
+
             Size.read(r);
             refreshSize();
             ForXYLoop loop = new ForXYLoop(Size);
