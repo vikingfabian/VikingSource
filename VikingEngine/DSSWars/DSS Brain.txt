@@ -1,10 +1,11 @@
 ﻿
 -Change Log-
-* hover a building and press B, will start build mode
+* 40 new named factions, and they have some variations in ai
 
 #Todo (xmas patch)#
+translate faction names
 dölj carry amount
-Skip language crashes game
+new game - Skip language crashes game
 Bog iron info
 
 

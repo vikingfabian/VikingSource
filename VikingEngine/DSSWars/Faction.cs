@@ -998,6 +998,52 @@ namespace VikingEngine.DSSWars
         RiverStallion,
         Sivo,
 
+        AelthrenConclave,
+        VrakasundEnclave,
+        Tormürd,
+        ElderysFyrd,
+        Hólmgar,
+        RûnothalOrder,
+        GrimwardEotain,
+        SkaeldraHaim,
+        MordwynnCompact,
+        AethmireSovren,
+
+        //
+        ThurlanKin,
+        ValestennOrder,
+        Mournfold,
+        OrentharTribes,
+        SkarnVael,
+        Glimmerfell,
+        BleakwaterFold,
+        Oathmaeren,
+        Elderforge,
+        MarhollowCartel,
+        //
+
+        TharvaniDominion,
+        KystraAscendancy,
+        GildenmarkUnion,
+        AurecanEmpire,
+        BronzeReach,
+        ElbrethGuild,
+        ValosianSenate,
+        IronmarchCompact,
+        KaranthCollective,
+        VerdicAlliance,
+
+        //
+        OrokhCircles,
+        TannagHorde,
+        BraghkRaiders,
+        ThurvanniStonekeepers,
+        KolvrenHunters,
+        JorathBloodbound,
+        UlrethSkycallers,
+        GharjaRavagers,
+        RavkanShield,
+        FenskaarTidewalkers,
     }
 
     enum FactionGroupType
@@ -1011,6 +1057,14 @@ namespace VikingEngine.DSSWars
         Other,
         Horse,
         Mountain,
+        Noble,
+        Sea,
+        Forest,
+        Mystical,
+        Warrior,
+        People,
+        Desert,
+        City,
     }
 
     enum DiplomaticSide

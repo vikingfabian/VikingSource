@@ -69,8 +69,7 @@ namespace VikingEngine.DSSWars.Players
 
         public AiPlayer(Faction faction)
             : base(faction)
-        {
-            
+        {            
             faction.profile.gameStartInit();
 
             switch (faction.factiontype)
@@ -95,6 +94,174 @@ namespace VikingEngine.DSSWars.Players
                     defaultSetup();
                     name = "Sivo";
                     break;
+
+                case FactionType.AelthrenConclave:
+                    defaultSetup();
+                    name = "Aelthren Conclave";
+                    break;
+                case FactionType.VrakasundEnclave:
+                    defaultSetup();
+                    name = "Vrakasund Enclave";
+                    break;
+                case FactionType.Tormürd:
+                    defaultSetup();
+                    name = "Tormürd";
+                    break;
+                case FactionType.ElderysFyrd:
+                    defaultSetup();
+                    name = "Elderys Fyrd";
+                    break;
+                case FactionType.Hólmgar:
+                    defaultSetup();
+                    name = "Hólmgar";
+                    break;
+                case FactionType.RûnothalOrder:
+                    defaultSetup();
+                    name = "Rûnothal Order";
+                    break;
+
+                case FactionType.GrimwardEotain:
+                    defaultSetup();
+                    name = "Grimward Eotain";
+                    break;
+                case FactionType.SkaeldraHaim:
+                    defaultSetup();
+                    name = "Skaeldra Haim";
+                    break;
+                case FactionType.MordwynnCompact:
+                    defaultSetup();
+                    name = "Mordwynn Compact";
+                    break;
+                case FactionType.AethmireSovren:
+                    defaultSetup();
+                    name = "Aethmire Sovren";
+                    break;
+
+                 case FactionType.ThurlanKin:
+                    defaultSetup();
+                    name = "Thurlan Kin";
+                    break;
+                case FactionType.ValestennOrder:
+                    defaultSetup();
+                    name = "Valestenn Order";
+                    break;
+                case FactionType.Mournfold:
+                    defaultSetup();
+                    name = "Mournfold";
+                    break;
+                case FactionType.OrentharTribes:
+                    defaultSetup();
+                    name = "Orenthar Tribes";
+                    break;
+                case FactionType.SkarnVael:
+                    defaultSetup();
+                    name = "Skarn Vael";
+                    break;
+                case FactionType.Glimmerfell:
+                    defaultSetup();
+                    name = "Glimmerfell";
+                    break;
+                case FactionType.BleakwaterFold:
+                    defaultSetup();
+                    name = "Bleakwater Fold";
+                    break;
+                case FactionType.Oathmaeren:
+                    defaultSetup();
+                    name = "Oathmaeren";
+                    break;
+                case FactionType.Elderforge:
+                    defaultSetup();
+                    name = "Elderforge";
+                    break;
+                case FactionType.MarhollowCartel:
+                    defaultSetup();
+                    name = "Marhollow Cartel";
+                    break;
+
+
+                case FactionType.TharvaniDominion:
+                    defaultSetup();
+                    name = "Tharvani Dominion";
+                    break;
+                case FactionType.KystraAscendancy:
+                    defaultSetup();
+                    name = "Kystra Ascendancy";
+                    break;
+                case FactionType.GildenmarkUnion:
+                    defaultSetup();
+                    name = "Gildenmark Union";
+                    break;
+                case FactionType.AurecanEmpire:
+                    defaultSetup();
+                    name = "Aurecan Empire";
+                    break;
+                case FactionType.BronzeReach:
+                    defaultSetup();
+                    name = "Bronze Reach";
+                    break;
+                case FactionType.ElbrethGuild:
+                    defaultSetup();
+                    name = "Elbreth Guild";
+                    break;
+                case FactionType.ValosianSenate:
+                    defaultSetup();
+                    name = "Valosian Senate";
+                    break;
+                case FactionType.IronmarchCompact:
+                    defaultSetup();
+                    name = "Ironmarch Compact";
+                    break;
+                case FactionType.KaranthCollective:
+                    defaultSetup();
+                    name = "Karanth Collective";
+                    break;
+                case FactionType.VerdicAlliance:
+                    defaultSetup();
+                    name = "Verdic Alliance";
+                    break;
+
+                case FactionType.OrokhCircles:
+                    defaultSetup();
+                    name = "Orokh Circles";
+                    break;
+                case FactionType.TannagHorde:
+                    defaultSetup();
+                    name = "Tannag Horde";
+                    break;
+                case FactionType.BraghkRaiders:
+                    defaultSetup();
+                    name = "Braghk Raiders";
+                    break;
+                case FactionType.ThurvanniStonekeepers:
+                    defaultSetup();
+                    name = "Thurvanni Stonekeepers";
+                    break;
+                case FactionType.KolvrenHunters:
+                    defaultSetup();
+                    name = "Kolvren Hunters";
+                    break;
+                case FactionType.JorathBloodbound:
+                    defaultSetup();
+                    name = "Jorath Bloodbound";
+                    break;
+                case FactionType.UlrethSkycallers:
+                    defaultSetup();
+                    name = "Ulreth Skycallers";
+                    break;
+                case FactionType.GharjaRavagers:
+                    defaultSetup();
+                    name = "Ghar'ja Ravagers";
+                    break;
+                case FactionType.RavkanShield:
+                    defaultSetup();
+                    name = "Ravkan Shield";
+                    break;
+                case FactionType.FenskaarTidewalkers:
+                    defaultSetup();
+                    name = "Fenskaar Tidewalkers";
+                    break;
+
+
 
                 case FactionType.DefaultAi:
                     defaultSetup();
@@ -241,6 +408,15 @@ namespace VikingEngine.DSSWars.Players
             void defaultSetup()
             {
                 var chance = Ref.rnd.Double();
+                if (faction.profile.factionFlavorType == FactionFlavorType.Other)
+                {
+                    chance *= 1.5f;
+                }
+                else
+                {
+                    chance *= 0.75f;
+                }
+
                 if (chance < 0.08)
                 {
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
@@ -257,6 +433,35 @@ namespace VikingEngine.DSSWars.Players
                 {
                     aggressionLevel = AggressionLevel0_Passive;
                 }
+
+                switch (faction.profile.factionFlavorType)
+                { 
+                    case FactionFlavorType.Mountain:
+                        faction.mainCity.res_iron.amount += 100;
+                        faction.mainCity.res_sword.amount += 60;
+                        faction.mainCity.res_heavyArmor.amount += 60;
+                        break;
+
+                    case FactionFlavorType.Forest:
+                        faction.diplomaticSide = DiplomaticSide.Light;
+                        aggressionLevel = AggressionLevel1_RevengeOnly;
+                        faction.growthMultiplier = 0.75f;
+                        aiConscript = AiConscript.Green;
+                        break;
+
+                    case FactionFlavorType.Mystical:
+                        faction.diplomaticSide = DiplomaticSide.Dark;
+                        faction.growthMultiplier = 1.2f;
+                        break;
+
+                    case FactionFlavorType.Warrior:
+                        aggressionLevel = Bound.Max(aggressionLevel + 1, AggressionLevel3_FocusedAttacks);
+                        break;
+
+                    
+                }
+
+                
             }
         }
 
@@ -311,13 +516,94 @@ namespace VikingEngine.DSSWars.Players
                 switch (faction.factiontype)
                 {
                     default:
-                        mainArmy = startMainArmy();
-                        for (int i = 0; i < 5; ++i)
+                        switch (faction.profile.factionFlavorType)
                         {
-                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_Standard);//, UnitType.Soldier, false);
-                        }
-                        break;
+                            default:
+                                mainArmy = startMainArmy();
+                                for (int i = 0; i < 5; ++i)
+                                {
+                                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_Standard);//, UnitType.Soldier, false);
+                                }
+                                break;
 
+                            case FactionFlavorType.Mystical:
+                                mainArmy = startMainArmy();
+                                for (int i = 0; i < 3; ++i)
+                                {
+                                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_Pikeman);
+                                }
+                                for (int i = 0; i < 2; ++i)
+                                {
+                                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_CrossbowMan);
+                                }
+                                break;
+
+                            case FactionFlavorType.Sea:
+                                mainArmy = startMainArmy();
+                                for (int i = 0; i < 5; ++i)
+                                {
+                                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_Sailor);
+                                }
+                                break;
+
+                            case FactionFlavorType.Mountain:
+                                mainArmy = startMainArmy();
+                                for (int i = 0; i < 5; ++i)
+                                {
+                                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_Dwarf);
+                                }
+                                break;
+
+                            case FactionFlavorType.Horse:
+                                mainArmy = startMainArmy();
+                                for (int i = 0; i < 5; ++i)
+                                {
+                                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_Knight);
+                                }
+                                break;
+
+                            case FactionFlavorType.Noble:
+                                mainArmy = startMainArmy();
+                                for (int i = 0; i < 5; ++i)
+                                {
+                                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_FootKnight);
+                                }
+                                break;
+
+                            case FactionFlavorType.City:
+                                mainArmy = startMainArmy();
+                                for (int i = 0; i < 3; ++i)
+                                {
+                                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_Standard);
+                                }
+                                for (int i = 0; i < 3; ++i)
+                                {
+                                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_StandardBallista);
+                                }
+                                break;
+
+                            case FactionFlavorType.Forest:
+                                mainArmy = startMainArmy();
+                                for (int i = 0; i < 4; ++i)
+                                {
+                                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_GreenSoldier);
+                                }
+                                break;
+
+                            case FactionFlavorType.People:
+                                mainArmy = startMainArmy();
+                                for (int i = 0; i < 6; ++i)
+                                {
+                                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_Farmer);
+                                }
+                                for (int i = 0; i < 2; ++i)
+                                {
+                                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_StandardArcher);
+                                }
+                                break;
+                        }
+
+                        break;
                     case FactionType.DarkFollower:
                         mainArmy = startMainArmy();
                         for (int i = 0; i < 5; ++i)

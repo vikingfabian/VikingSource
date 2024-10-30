@@ -56,6 +56,16 @@ namespace VikingEngine.DSSWars
         //public const double NobelHouseAddDiplomacy = 1.0 / 240.0;
         //public const double NobelHouseAddMaxDiplomacy = 0.25;
 
+        public static readonly SoldierConscriptProfile SoldierProfile_Farmer = new SoldierConscriptProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.SharpStick,
+                armorLevel = ArmorLevel.Light,
+                training = TrainingLevel.Basic,
+                specialization = SpecializationType.Traditional,
+            }
+        };
 
         public static readonly SoldierConscriptProfile SoldierProfile_Standard = new SoldierConscriptProfile()
         {
@@ -64,6 +74,17 @@ namespace VikingEngine.DSSWars
                 weapon = MainWeapon.Sword,
                 armorLevel = ArmorLevel.Medium,
                 training = TrainingLevel.Basic,
+                specialization = SpecializationType.Traditional,
+            }
+        };
+
+        public static readonly SoldierConscriptProfile SoldierProfile_Dwarf = new SoldierConscriptProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.Sword,
+                armorLevel = ArmorLevel.Heavy,
+                training = TrainingLevel.Skillful,
                 specialization = SpecializationType.Traditional,
             }
         };
@@ -95,6 +116,17 @@ namespace VikingEngine.DSSWars
             conscript = new ConscriptProfile()
             {
                 weapon = MainWeapon.KnightsLance,
+                armorLevel = ArmorLevel.Heavy,
+                training = TrainingLevel.Skillful,
+                specialization = SpecializationType.Traditional,
+            }
+        };
+
+        public static readonly SoldierConscriptProfile SoldierProfile_FootKnight = new SoldierConscriptProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.TwoHandSword,
                 armorLevel = ArmorLevel.Heavy,
                 training = TrainingLevel.Skillful,
                 specialization = SpecializationType.Traditional,

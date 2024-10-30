@@ -73,12 +73,55 @@ namespace VikingEngine.DSSWars
 
         public List<FactionType> availableGenericAiTypes = new List<FactionType>
         {
-             
-            FactionType.Starshield,
-            FactionType.Bluepeak,
-            FactionType.Hoft,
-            FactionType.RiverStallion,
-            FactionType.Sivo,
+            FactionType.Starshield,//
+            FactionType.Bluepeak,//
+            FactionType.Hoft,//
+            FactionType.RiverStallion,//
+            FactionType.Sivo,//
+            FactionType.AelthrenConclave,//
+            FactionType.VrakasundEnclave,//
+            FactionType.Tormürd,//
+            FactionType.ElderysFyrd,//
+            FactionType.Hólmgar,//
+            FactionType.RûnothalOrder,//
+            
+            FactionType.GrimwardEotain,//
+            FactionType.SkaeldraHaim,//
+            FactionType.MordwynnCompact,//
+            FactionType.AethmireSovren,//
+            FactionType.ThurlanKin,//
+            FactionType.ValestennOrder,//
+            FactionType.Mournfold,//
+            FactionType.OrentharTribes,//
+            FactionType.SkarnVael,//
+            FactionType.Glimmerfell,//
+
+            FactionType.BleakwaterFold,//
+            FactionType.Oathmaeren,//
+            FactionType.Elderforge,//
+            FactionType.MarhollowCartel,//
+            FactionType.TharvaniDominion,//
+            FactionType.KystraAscendancy,//
+            FactionType.GildenmarkUnion,//
+            FactionType.AurecanEmpire,//
+            FactionType.BronzeReach,//
+            FactionType.ElbrethGuild,//
+            FactionType.ValosianSenate,//
+            FactionType.IronmarchCompact,//
+            FactionType.KaranthCollective,//
+            FactionType.VerdicAlliance,//
+
+            FactionType.OrokhCircles,//
+            FactionType.TannagHorde,//
+            FactionType.BraghkRaiders,//
+            FactionType.ThurvanniStonekeepers,//
+            FactionType.KolvrenHunters,//
+            FactionType.JorathBloodbound,//
+            FactionType.UlrethSkycallers,//
+            FactionType.GharjaRavagers,//
+            FactionType.RavkanShield,//
+            FactionType.FenskaarTidewalkers,//
+
         };
 
         public WorldData()
