@@ -989,11 +989,7 @@ namespace VikingEngine.DSSWars
 
         //Generic ai
         Starshield,
-
-        //Mountain
         Bluepeak,
-
-        //Horse
         Hoft,
         RiverStallion,
         Sivo,
@@ -1009,7 +1005,6 @@ namespace VikingEngine.DSSWars
         MordwynnCompact,
         AethmireSovren,
 
-        //
         ThurlanKin,
         ValestennOrder,
         Mournfold,
@@ -1020,8 +1015,7 @@ namespace VikingEngine.DSSWars
         Oathmaeren,
         Elderforge,
         MarhollowCartel,
-        //
-
+        
         TharvaniDominion,
         KystraAscendancy,
         GildenmarkUnion,
@@ -1033,7 +1027,6 @@ namespace VikingEngine.DSSWars
         KaranthCollective,
         VerdicAlliance,
 
-        //
         OrokhCircles,
         TannagHorde,
         BraghkRaiders,

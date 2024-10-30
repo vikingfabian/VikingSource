@@ -323,8 +323,18 @@ namespace VikingEngine.DSSWars
         Builders,//
         CrabMentality,// //ingen vill bli expert
         DeepWell,//
-        Networker,
-        PitMasters,
+        Networker,//
+        PitMasters,//
+
+        Stonemason,//
+        Brewmaster,//
+        Weavers,//
+        SiegeEngineer,
+        Armorsmith,//
+        Nobelmen,//
+        Seafaring,//
+        Backtrader,//
+
         NUM_NONE
     }
 }

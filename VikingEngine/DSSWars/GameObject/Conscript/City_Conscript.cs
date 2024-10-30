@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -116,14 +117,23 @@ namespace VikingEngine.DSSWars.GameObject
                                         DssRef.achieve.UnlockAchievement_async(AchievementIndex.elite_knights);
                                     }
 
-                                    if (Culture == CityCulture.Archers && status.inProgress.RangedUnit())
-                                    {
-                                        DssRef.state.progress.onCultureBuild(true);
+                                    switch (Culture)
+                                    { 
+                                        case CityCulture.Archers:
+                                            DssRef.state.progress.onCultureBuild(true);
+                                            break;
+                                        case CityCulture.Warriors:
+                                            DssRef.state.progress.onCultureBuild(false);
+                                            break;
                                     }
-                                    else if (Culture == CityCulture.Warriors && !status.inProgress.RangedUnit())
-                                    {
-                                        DssRef.state.progress.onCultureBuild(false);
-                                    }
+                                    //if (Culture == CityCulture.Archers && status.inProgress.RangedManUnit())
+                                    //{
+                                    //    DssRef.state.progress.onCultureBuild(true);
+                                    //}
+                                    //else if (Culture == CityCulture.Warriors && status.inProgress.MeleeSoldier())
+                                    //{
+                                    //    DssRef.state.progress.onCultureBuild(false);
+                                    //}
                                 }
                                 break;
                         }
@@ -259,15 +269,35 @@ namespace VikingEngine.DSSWars.GameObject
                 skillBonus = 1,
             };
 
-            if (Culture == CityCulture.Archers && soldierProfile.conscript.RangedUnit())
+            switch (Culture)
             {
-                soldierProfile.skillBonus = 1.2f;
-            }
-            else if (Culture == CityCulture.Warriors && !soldierProfile.conscript.RangedUnit())
-            {
-                soldierProfile.skillBonus = 1.2f;
-            }
+                case CityCulture.Archers:
+                    if (soldierProfile.conscript.RangedManUnit())
+                    {
+                        soldierProfile.skillBonus = 1.2f;
+                    }
+                    break;
+                case CityCulture.Warriors:
+                    if (soldierProfile.conscript.MeleeSoldier())
+                    {
+                        soldierProfile.skillBonus = 1.2f;
+                    }
+                    break;
+                case CityCulture.Nobelmen:
+                    if (soldierProfile.conscript.KnightUnit())
+                    {
+                        soldierProfile.skillBonus = 1.2f;
+                    }
+                    break;
+                case CityCulture.Seafaring:
+                    if (soldierProfile.conscript.specialization == SpecializationType.Sea)
+                    {
+                        soldierProfile.skillBonus = 1.2f;
+                    }
+                    break;
 
+            }
+            
             for (int i = 0; i < count; i++)
             {
                 new SoldierGroup(army, soldierProfile);

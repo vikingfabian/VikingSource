@@ -1100,15 +1100,17 @@ namespace VikingEngine.DSSWars.GameObject
         {
            
             base.toHud(args);
-
-            if (/*args.selected && */ faction == args.player.faction)
+            if (args.ShowFull)
             {
-                CityDetailsHud(true, args.player, args.content);
-                new Display.CityMenu(args.player, this, args.content);
-            }
-            else
-            {
-                CityDetailsHud(false, args.player, args.content);
+                if (faction == args.player.faction)
+                {
+                    CityDetailsHud(true, args.player, args.content);
+                    new Display.CityMenu(args.player, this, args.content);
+                }
+                else
+                {
+                    CityDetailsHud(false, args.player, args.content);
+                }
             }
         }
 

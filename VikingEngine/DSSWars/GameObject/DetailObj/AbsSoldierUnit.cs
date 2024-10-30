@@ -8,6 +8,7 @@ using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -1037,9 +1038,12 @@ namespace VikingEngine.DSSWars.GameObject
         {
             base.toHud(args);
 
-            group.toHud(args);
+            if (args.ShowFull)
+            {
+                group.toHud(args);
 
-            stateDebugText(args.content);
+                stateDebugText(args.content);
+            }
         }
 
         public override void stateDebugText(RichBoxContent content)

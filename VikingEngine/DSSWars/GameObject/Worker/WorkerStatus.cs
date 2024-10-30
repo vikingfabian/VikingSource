@@ -187,7 +187,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                             case TerrainSubFoilType.StoneBlock:
                             case TerrainSubFoilType.Stones:
-                                carry = new ItemResource(ItemResourceType.Stone_G, 1, Convert.ToInt32(processTimeLengthSec), ItemPropertyColl.CarryStones);
+                                carry = new ItemResource(ItemResourceType.Stone_G, city.Culture == CityCulture.Stonemason? 8 : 4, Convert.ToInt32(processTimeLengthSec), ItemPropertyColl.CarryStones);
                                 break;
 
                             case TerrainSubFoilType.BogIron:
@@ -355,18 +355,57 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                         if (add > 0)
                         {
-                            if (item == ItemResourceType.Food_G)
+                            switch (item)
                             {
-                                city.foodProduction.add(add);
+                                case ItemResourceType.Food_G:
+                                    city.foodProduction.add(add);
+                                    break;
+
+                                case ItemResourceType.Fuel_G:
+                                case ItemResourceType.Coal:
+                                    item = ItemResourceType.Fuel_G;
+                                    if (city.Culture == CityCulture.PitMasters)
+                                    {
+                                        add *= 2;
+                                    }
+                                    break;
+
+                                case ItemResourceType.Beer:
+                                    if (city.Culture == CityCulture.Brewmaster)
+                                    {
+                                        add += add / 2;
+                                    }
+                                    break;
+
+                                case ItemResourceType.LightArmor:
+                                    if (city.Culture == CityCulture.Weavers)
+                                    {
+                                        add += 1;
+                                    }
+                                    break;
+
+                                case ItemResourceType.MediumArmor:
+                                case ItemResourceType.HeavyArmor:
+                                    if (city.Culture == CityCulture.Armorsmith)
+                                    {
+                                        add += 1;
+                                    }
+                                    break;
+
                             }
-                            if (item == ItemResourceType.Fuel_G || item == ItemResourceType.Coal)
-                            { 
-                                item = ItemResourceType.Fuel_G;
-                                if (city.Culture == CityCulture.PitMasters)
-                                {
-                                    add *= 2;
-                                }
-                            }
+
+                            //if (item == ItemResourceType.Food_G)
+                            //{
+                            //    city.foodProduction.add(add);
+                            //}
+                            //if (item == ItemResourceType.Fuel_G || item == ItemResourceType.Coal)
+                            //{ 
+                            //    item = ItemResourceType.Fuel_G;
+                            //    if (city.Culture == CityCulture.PitMasters)
+                            //    {
+                            //        add *= 2;
+                            //    }
+                            //}
 
                             city.AddGroupedResource(item, add);
 

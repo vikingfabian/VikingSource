@@ -76,189 +76,189 @@ namespace VikingEngine.DSSWars.Players
             {               
                 case FactionType.Starshield:
                     defaultSetup();
-                    name = "Starshield";
+                    name = DssRef.todoLang.FactionName_Starshield;
                     break;
                 case FactionType.Bluepeak:
                     defaultSetup();
-                    name = "Blue peak";
+                    name = DssRef.todoLang.FactionName_Bluepeak;
                     break;
                 case FactionType.Hoft:
                     defaultSetup();
-                    name = "Hoft";
+                    name = DssRef.todoLang.FactionName_Hoft;
                     break;
                 case FactionType.RiverStallion:
                     defaultSetup();
-                    name = "River Stallion";
+                    name = DssRef.todoLang.FactionName_RiverStallion;
                     break;
                 case FactionType.Sivo:
                     defaultSetup();
-                    name = "Sivo";
+                    name = DssRef.todoLang.FactionName_Sivo;
                     break;
 
                 case FactionType.AelthrenConclave:
                     defaultSetup();
-                    name = "Aelthren Conclave";
+                    name = DssRef.todoLang.FactionName_AelthrenConclave;
                     break;
                 case FactionType.VrakasundEnclave:
                     defaultSetup();
-                    name = "Vrakasund Enclave";
+                    name = DssRef.todoLang.FactionName_VrakasundEnclave;
                     break;
                 case FactionType.Tormürd:
                     defaultSetup();
-                    name = "Tormürd";
+                    name = DssRef.todoLang.FactionName_Tormürd;
                     break;
                 case FactionType.ElderysFyrd:
                     defaultSetup();
-                    name = "Elderys Fyrd";
+                    name = DssRef.todoLang.FactionName_ElderysFyrd;
                     break;
                 case FactionType.Hólmgar:
                     defaultSetup();
-                    name = "Hólmgar";
+                    name = DssRef.todoLang.FactionName_Hólmgar;
                     break;
                 case FactionType.RûnothalOrder:
                     defaultSetup();
-                    name = "Rûnothal Order";
+                    name = DssRef.todoLang.FactionName_RûnothalOrder;
                     break;
 
                 case FactionType.GrimwardEotain:
                     defaultSetup();
-                    name = "Grimward Eotain";
+                    name = DssRef.todoLang.FactionName_GrimwardEotain;
                     break;
                 case FactionType.SkaeldraHaim:
                     defaultSetup();
-                    name = "Skaeldra Haim";
+                    name = DssRef.todoLang.FactionName_SkaeldraHaim;
                     break;
                 case FactionType.MordwynnCompact:
                     defaultSetup();
-                    name = "Mordwynn Compact";
+                    name = DssRef.todoLang.FactionName_MordwynnCompact;
                     break;
                 case FactionType.AethmireSovren:
                     defaultSetup();
-                    name = "Aethmire Sovren";
+                    name = DssRef.todoLang.FactionName_AethmireSovren;
                     break;
 
                  case FactionType.ThurlanKin:
                     defaultSetup();
-                    name = "Thurlan Kin";
+                    name = DssRef.todoLang.FactionName_ThurlanKin;
                     break;
                 case FactionType.ValestennOrder:
                     defaultSetup();
-                    name = "Valestenn Order";
+                    name = DssRef.todoLang.FactionName_ValestennOrder;
                     break;
                 case FactionType.Mournfold:
                     defaultSetup();
-                    name = "Mournfold";
+                    name = DssRef.todoLang.FactionName_Mournfold;
                     break;
                 case FactionType.OrentharTribes:
                     defaultSetup();
-                    name = "Orenthar Tribes";
+                    name = DssRef.todoLang.FactionName_OrentharTribes;
                     break;
                 case FactionType.SkarnVael:
                     defaultSetup();
-                    name = "Skarn Vael";
+                    name = DssRef.todoLang.FactionName_SkarnVael;
                     break;
                 case FactionType.Glimmerfell:
                     defaultSetup();
-                    name = "Glimmerfell";
+                    name = DssRef.todoLang.FactionName_Glimmerfell;
                     break;
                 case FactionType.BleakwaterFold:
                     defaultSetup();
-                    name = "Bleakwater Fold";
+                    name = DssRef.todoLang.FactionName_BleakwaterFold;
                     break;
                 case FactionType.Oathmaeren:
                     defaultSetup();
-                    name = "Oathmaeren";
+                    name = DssRef.todoLang.FactionName_Oathmaeren;
                     break;
                 case FactionType.Elderforge:
                     defaultSetup();
-                    name = "Elderforge";
+                    name = DssRef.todoLang.FactionName_Elderforge;
                     break;
                 case FactionType.MarhollowCartel:
                     defaultSetup();
-                    name = "Marhollow Cartel";
+                    name = DssRef.todoLang.FactionName_MarhollowCartel;
                     break;
 
 
                 case FactionType.TharvaniDominion:
                     defaultSetup();
-                    name = "Tharvani Dominion";
+                    name = DssRef.todoLang.FactionName_TharvaniDominion;
                     break;
                 case FactionType.KystraAscendancy:
                     defaultSetup();
-                    name = "Kystra Ascendancy";
+                    name = DssRef.todoLang.FactionName_KystraAscendancy;
                     break;
                 case FactionType.GildenmarkUnion:
                     defaultSetup();
-                    name = "Gildenmark Union";
+                    name = DssRef.todoLang.FactionName_GildenmarkUnion;
                     break;
                 case FactionType.AurecanEmpire:
                     defaultSetup();
-                    name = "Aurecan Empire";
+                    name = DssRef.todoLang.FactionName_AurecanEmpire;
                     break;
                 case FactionType.BronzeReach:
                     defaultSetup();
-                    name = "Bronze Reach";
+                    name = DssRef.todoLang.FactionName_BronzeReach;
                     break;
                 case FactionType.ElbrethGuild:
                     defaultSetup();
-                    name = "Elbreth Guild";
+                    name = DssRef.todoLang.FactionName_ElbrethGuild;
                     break;
                 case FactionType.ValosianSenate:
                     defaultSetup();
-                    name = "Valosian Senate";
+                    name = DssRef.todoLang.FactionName_ValosianSenate;
                     break;
                 case FactionType.IronmarchCompact:
                     defaultSetup();
-                    name = "Ironmarch Compact";
+                    name = DssRef.todoLang.FactionName_IronmarchCompact;
                     break;
                 case FactionType.KaranthCollective:
                     defaultSetup();
-                    name = "Karanth Collective";
+                    name = DssRef.todoLang.FactionName_KaranthCollective;
                     break;
                 case FactionType.VerdicAlliance:
                     defaultSetup();
-                    name = "Verdic Alliance";
+                    name = DssRef.todoLang.FactionName_VerdicAlliance;
                     break;
 
                 case FactionType.OrokhCircles:
                     defaultSetup();
-                    name = "Orokh Circles";
+                    name = DssRef.todoLang.FactionName_OrokhCircles;
                     break;
                 case FactionType.TannagHorde:
                     defaultSetup();
-                    name = "Tannag Horde";
+                    name = DssRef.todoLang.FactionName_TannagHorde;
                     break;
                 case FactionType.BraghkRaiders:
                     defaultSetup();
-                    name = "Braghk Raiders";
+                    name = DssRef.todoLang.FactionName_BraghkRaiders;
                     break;
                 case FactionType.ThurvanniStonekeepers:
                     defaultSetup();
-                    name = "Thurvanni Stonekeepers";
+                    name = DssRef.todoLang.FactionName_ThurvanniStonekeepers;
                     break;
                 case FactionType.KolvrenHunters:
                     defaultSetup();
-                    name = "Kolvren Hunters";
+                    name = DssRef.todoLang.FactionName_KolvrenHunters;
                     break;
                 case FactionType.JorathBloodbound:
                     defaultSetup();
-                    name = "Jorath Bloodbound";
+                    name = DssRef.todoLang.FactionName_JorathBloodbound;
                     break;
                 case FactionType.UlrethSkycallers:
                     defaultSetup();
-                    name = "Ulreth Skycallers";
+                    name = DssRef.todoLang.FactionName_UlrethSkycallers;
                     break;
                 case FactionType.GharjaRavagers:
                     defaultSetup();
-                    name = "Ghar'ja Ravagers";
+                    name = DssRef.todoLang.FactionName_GharjaRavagers;
                     break;
                 case FactionType.RavkanShield:
                     defaultSetup();
-                    name = "Ravkan Shield";
+                    name = DssRef.todoLang.FactionName_RavkanShield;
                     break;
                 case FactionType.FenskaarTidewalkers:
                     defaultSetup();
-                    name = "Fenskaar Tidewalkers";
+                    name = DssRef.todoLang.FactionName_FenskaarTidewalkers;
                     break;
 
 

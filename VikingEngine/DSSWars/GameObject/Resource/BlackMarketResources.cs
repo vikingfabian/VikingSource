@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         static int Cost_RawFood = DssConst.FoodGoldValue_BlackMarket - 4;
         static int Cost_Food = DssConst.FoodGoldValue_BlackMarket;
         static int Cost_Wood = 50;
-        static int Cost_Stone = 30;
+        static int Cost_Stone = 60;
         static int Cost_SkinAndLinnen = 50;
         static int Cost_Iron = 500;
 
@@ -40,16 +40,25 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             return false;
         }
 
+        static int CostMultiply(City city, int cost)
+        {
+            if (city.Culture == CityCulture.Backtrader)
+            {
+                return cost / 2;
+            }
+            return cost;
+        }
+
         public static void ToHud(LocalPlayer player, RichBoxContent content, City city)
         {
             content.h2(DssRef.lang.Hud_PurchaseTitle_Resources).overrideColor = HudLib.TitleColor_Label;
 
-            Resource(Cost_RawFood, ItemResourceType.RawFood_Group, DssRef.lang.Resource_TypeName_RawFood);
-            Resource(Cost_Food, ItemResourceType.Food_G, DssRef.lang.Resource_TypeName_Food);
-            Resource(Cost_Wood, ItemResourceType.Wood_Group, DssRef.lang.Resource_TypeName_Wood);
-            Resource(Cost_Stone, ItemResourceType.Stone_G, DssRef.lang.Resource_TypeName_Stone);
-            Resource(Cost_SkinAndLinnen, ItemResourceType.SkinLinen_Group, DssRef.lang.Resource_TypeName_Linen);
-            Resource(Cost_Iron, ItemResourceType.Iron_G, DssRef.lang.Resource_TypeName_Iron);
+            Resource(CostMultiply(city, Cost_RawFood), ItemResourceType.RawFood_Group, DssRef.lang.Resource_TypeName_RawFood);
+            Resource(CostMultiply(city, Cost_Food), ItemResourceType.Food_G, DssRef.lang.Resource_TypeName_Food);
+            Resource(CostMultiply(city, Cost_Wood), ItemResourceType.Wood_Group, DssRef.lang.Resource_TypeName_Wood);
+            Resource(CostMultiply(city, Cost_Stone), ItemResourceType.Stone_G, DssRef.lang.Resource_TypeName_Stone);
+            Resource(CostMultiply(city, Cost_SkinAndLinnen), ItemResourceType.SkinLinen_Group, DssRef.lang.Resource_TypeName_Linen);
+            Resource(CostMultiply(city, Cost_Iron), ItemResourceType.Iron_G, DssRef.lang.Resource_TypeName_Iron);
 
             void Resource(int cost, ItemResourceType resourceType, string name)
             {

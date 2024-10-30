@@ -313,11 +313,11 @@
 #begin DSS/Map/map_sz5_i9.map
 /copy:DSS/Map/map_sz5_i9.map
 
-#begin DSS/Music/ancient space.mp3
-/importer:Mp3Importer
+#begin DSS/Music/ancient space.ogg
+/importer:OggImporter
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/ancient space.mp3
+/build:DSS/Music/ancient space.ogg
 
 #begin DSS/Music/BBaaB_loop.mp3
 /importer:Mp3Importer
@@ -403,11 +403,11 @@
 /processorParam:Quality=Best
 /build:DSS/Music/RM 4 - Warhogs.mp3
 
-#begin DSS/Music/RM 5 - Suddenly Empty.mp3
-/importer:Mp3Importer
+#begin DSS/Music/RM 5 - Suddenly Empty.ogg
+/importer:OggImporter
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/RM 5 - Suddenly Empty.mp3
+/build:DSS/Music/RM 5 - Suddenly Empty.ogg
 
 #begin DSS/Music/RM 6 - Auderesne.mp3
 /importer:Mp3Importer

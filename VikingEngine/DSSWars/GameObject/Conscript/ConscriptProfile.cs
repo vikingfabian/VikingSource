@@ -628,6 +628,26 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             return weapon == MainWeapon.Bow || weapon == MainWeapon.CrossBow || weapon == MainWeapon.Ballista;
         }
 
+        public bool RangedManUnit()
+        {
+            return weapon == MainWeapon.Bow || weapon == MainWeapon.CrossBow;
+        }
+
+        public bool MeleeSoldier()
+        {
+            return weapon == MainWeapon.SharpStick || weapon == MainWeapon.Sword || weapon == MainWeapon.TwoHandSword;
+        }
+
+        public bool KnightUnit()
+        {
+            return weapon == MainWeapon.TwoHandSword || weapon == MainWeapon.KnightsLance;
+        }
+
+        public bool Warmashine()
+        {
+            return weapon == MainWeapon.Ballista;
+        }
+
         public double armySpeedBonus(bool land)
         {
             if (land)

@@ -1,9 +1,11 @@
-﻿
--Change Log-
-* 40 new named factions, and they have some variations in ai
+﻿-Change Log-
+* 8 new city cultures (must generate new maps to see them)
+* changed stone collecting from 1 to 4
+* doubled stone price on black market
+* repaired toggle hud detail "U"
+
 
 #Todo (xmas patch)#
-translate faction names
 dölj carry amount
 new game - Skip language crashes game
 Bog iron info
