@@ -33,6 +33,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Resource_TypeName_Rapeseed => "rapeseed";
         public string Resource_TypeName_Hemp => "hemp";
 
+        public string Resource_BogIronDescription => "Mining iron is more efficient than using bog iron.";
+
 
         public string Resource_FoodSafeGuard_Description => "Safe guard. Will maximize the priority of the food production chain, if it falls below {0}.";
         public string Resource_FoodSafeGuard_Active => "Safe guard is active.";

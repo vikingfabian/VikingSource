@@ -403,7 +403,14 @@ namespace VikingEngine.DSSWars.Work
             farm_food.toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Food, SpriteName.WarsWorkFarm, SpriteName.WarsResource_RawFood, WorkPriorityType.farmfood, faction, city);
             farm_fuel.toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Fuel, SpriteName.WarsWorkFarm, SpriteName.WarsResource_Fuel, WorkPriorityType.farmfuel, faction, city);
             farm_linen.toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Linen, SpriteName.WarsWorkFarm, SpriteName.WarsResource_LinenCloth, WorkPriorityType.farmlinen, faction, city);
+            
             bogiron.toHud(player, content, DssRef.lang.Resource_TypeName_BogIron, SpriteName.WarsWorkCollect, SpriteName.WarsResource_IronOre, WorkPriorityType.bogiron, faction, city);
+            content.space();
+            HudLib.InfoButton(content, new RbAction(() => {
+                RichBoxContent content = new RichBoxContent();
+                content.text(DssRef.todoLang.Resource_BogIronDescription);
+                player.hud.tooltip.create(player, content, true);
+            }));
             mining.toHud(player, content, DssRef.lang.Work_Mining, SpriteName.WarsWorkMine, SpriteName.NO_IMAGE, WorkPriorityType.mining, faction, city);
             autoBuild.toHud(player, content, DssRef.lang.Work_AutoBuild, SpriteName.MenuPixelIconSettings, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, faction, city);
             //SpriteName.MenuPixelIconSettings
@@ -514,6 +521,10 @@ namespace VikingEngine.DSSWars.Work
             if (isCity)
             {
                 EightBit eightBit = new EightBit(followFaction, false);
+                //if (followFaction)
+                //{
+                //    followFaction = eightBit.Get(0);
+                //}
                 eightBit.write(w);
             }
         }
@@ -530,6 +541,11 @@ namespace VikingEngine.DSSWars.Work
                 {
                     EightBit eightBit = new EightBit(r);
                     followFaction = eightBit.Get(0);
+
+                    //if (followFaction)
+                    //{
+                    //    lib.DoNothing();
+                    //}
                 }
             }
         }

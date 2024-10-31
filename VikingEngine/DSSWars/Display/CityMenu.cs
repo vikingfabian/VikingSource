@@ -239,8 +239,8 @@ namespace VikingEngine.DSSWars.Display
 
 
 
-                    city.res_longbow.toMenu(content, ItemResourceType.LongBow, false, ref reachedBuffer);
-                    blueprintButton(player, content, ResourceLib.CraftLongBow);
+                    //city.res_longbow.toMenu(content, ItemResourceType.LongBow, false, ref reachedBuffer);
+                    //blueprintButton(player, content, ResourceLib.CraftLongBow);
                     //if (reachedBuffer)
                     //{
                     //    GroupedResource.BufferIconInfo(content);
