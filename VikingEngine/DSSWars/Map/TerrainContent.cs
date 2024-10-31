@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
-using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map.Settings;
+using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars.Map
 {

@@ -7,15 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display.Translation;
-using VikingEngine.DSSWars.GameObject.Delivery;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
-using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Data;
 using VikingEngine.ToGG.ToggEngine;
 
-namespace VikingEngine.DSSWars.GameObject.Conscript
+namespace VikingEngine.DSSWars.Conscript
 {
     struct BarracksStatus
     {
@@ -128,7 +128,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     break;
             }
             if (subVersion >= 13)
-            { 
+            {
                 nobelmen = r.ReadBoolean();
             }
             idAndPosition = r.ReadInt32();
@@ -139,7 +139,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             if (que > 0)
             {
                 if (que <= MaxQue)
-                { 
+                {
                     --que;
                 }
 
@@ -149,7 +149,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             return false;
         }
 
-        
+
         public TimeLength TimeLength()
         {
             return new TimeLength(ConscriptProfile.TrainingTime(inProgress.training, nobelmen));
@@ -159,7 +159,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         {
             string result = null;
 
-           
+
             switch (status)
             {
                 case ConscriptActiveStatus.Idle:
@@ -179,7 +179,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                         result = string.Format(DssRef.lang.Conscription_Status_CollectingMen, progress);
                     }
                     break;
-            }            
+            }
 
             return result;
         }
@@ -192,10 +192,10 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 result = string.Format(DssRef.lang.Conscription_Status_Training, countdown.RemainingLength().ShortString());
             }
             else
-            { 
-                result = activeStringOf(active) + ", " + string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_Queue, que <= MaxQue? que.ToString() : DssRef.lang.Hud_NoLimit);
+            {
+                result = activeStringOf(active) + ", " + string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_Queue, que <= MaxQue ? que.ToString() : DssRef.lang.Hud_NoLimit);
             }
-            
+
             return result;
         }
 
@@ -267,7 +267,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         public ConscriptProfile conscript;
         public float skillBonus;
 
-        
+
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
@@ -324,7 +324,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                             return UnitFilterType.Ballista;
 
                         default:
-                            throw  new NotImplementedException();
+                            throw new NotImplementedException();
 
                     }
 
@@ -341,7 +341,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
         public SpriteName Icon()
         {
-           return init(DssRef.profile.bannerman).icon;
+            return init(DssRef.profile.bannerman).icon;
         }
 
         public SoldierData init(AbsSoldierProfile profile)
@@ -766,7 +766,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
         public void readGameState(System.IO.BinaryReader r)
         {
             weapon = (MainWeapon)r.ReadByte();
-            armorLevel = (ArmorLevel)r.ReadByte(); 
+            armorLevel = (ArmorLevel)r.ReadByte();
             training = (TrainingLevel)r.ReadByte();
             specialization = (SpecializationType)r.ReadByte();
         }
@@ -847,7 +847,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             float result;
             switch (training)
             {
-                case TrainingLevel.Minimal: 
+                case TrainingLevel.Minimal:
                     result = DssConst.TrainingTimeSec_Minimal;
                     break;
                 case TrainingLevel.Basic:
@@ -855,11 +855,11 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     break;
                 case TrainingLevel.Skillful:
                     result = DssConst.TrainingTimeSec_Skillful;
-                    break; 
+                    break;
                 case TrainingLevel.Professional:
                     result = DssConst.TrainingTimeSec_Professional;
                     break;
-                
+
                 default: throw new NotImplementedException();
             }
 
@@ -905,7 +905,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
     }
 
     enum SpecializationType
-    { 
+    {
         None,
         Field,
         Sea,
@@ -920,7 +920,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
     }
 
     enum ConscriptActiveStatus
-    { 
+    {
         Idle,
         CollectingEquipment,
         CollectingMen,

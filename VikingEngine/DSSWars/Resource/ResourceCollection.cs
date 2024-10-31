@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VikingEngine.DSSWars.GameObject.Resource
+namespace VikingEngine.DSSWars.Resource
 {
     class ResourceCollection : List<ResourceChunk>
     {
@@ -22,12 +22,12 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             // If all chunks are full or there are no chunks, create a new one
             var newChunk = new ResourceChunk();
             newChunk.Add(resource);
-            this.Add(newChunk);
+            Add(newChunk);
         }
 
         public void Add(List<ResourceChunk> collection)
         {
-            this.AddRange(collection);
+            AddRange(collection);
         }
 
         public bool HasResources(ItemResourceType resourceType, int minQuality, int count)

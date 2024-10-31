@@ -4,25 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.GameObject.Conscript;
-using VikingEngine.DSSWars.GameObject.Resource;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 
-namespace VikingEngine.DSSWars.GameObject.Delivery
+namespace VikingEngine.DSSWars.Delivery
 {
     struct DeliveryStatus
     {
         public const int MaxQue = 20;
 
         public DeliveryActiveStatus active;
-        
+
         public bool useSenderMin;
         public int senderMin;
 
         public bool useRecieverMax;
         public int recieverMax;
-       
+
         public int idAndPosition;
         public int que;
         //public int itemsCollected;
@@ -71,11 +71,11 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
         public void writeGameState(System.IO.BinaryWriter w)
         {
             w.Write((byte)active);
-            
+
             w.Write(useSenderMin);
             w.Write(useRecieverMax);
 
-            w.Write((ushort)senderMin); 
+            w.Write((ushort)senderMin);
             w.Write((ushort)recieverMax);
 
             profile.writeGameState(w);
@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
             active = (DeliveryActiveStatus)r.ReadByte();
 
             if (subVersion >= 14)
-            { 
+            {
                 useSenderMin = r.ReadBoolean();
                 useRecieverMax = r.ReadBoolean();
             }
@@ -112,7 +112,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                 inProgress.readGameState(r, subVersion);
             }
             switch (active)
-            {                
+            {
                 case DeliveryActiveStatus.Delivering:
                     countdown.readGameState(r);
                     break;
@@ -240,10 +240,10 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
 
         public void tooltip(LocalPlayer player, City city, RichBoxContent content)
         {
-            
+
             if (profile.type == ItemResourceType.Men)
-            {                
-                HudLib.ResourceCost(content, ItemResourceType.Men, DssConst.SoldierGroup_DefaultCount, city.workForce );
+            {
+                HudLib.ResourceCost(content, ItemResourceType.Men, DssConst.SoldierGroup_DefaultCount, city.workForce);
             }
             else
             {
@@ -308,7 +308,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                 return toCity;
             }
         }
-    
+
 
         public static TimeLength DeliveryTime(City from, City othercity, out float distance)//int toCity)
         {

@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.GameObject.Worker;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Input;
 using VikingEngine.PJ;
@@ -19,7 +19,7 @@ using VikingEngine.ToGG;
 
 namespace VikingEngine.DSSWars.Players.PlayerControls
 {
-    
+
     class Tutorial
     {
         enum TutorialMission
@@ -297,7 +297,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     {
                         if (player.mapControls.selection.obj is City)
                         {
-                            if (player.mapControls.selection.obj.GetCity().GetGroupedResource(GameObject.Resource.ItemResourceType.Wood_Group).amount >= CollectWoodStoneAmount)
+                            if (player.mapControls.selection.obj.GetCity().GetGroupedResource(ItemResourceType.Wood_Group).amount >= CollectWoodStoneAmount)
                             {
                                 player.faction.workTemplate.move.value = 2;
                                 player.faction.workTemplate.wood.value = 2;
@@ -315,7 +315,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     {
                         if (player.mapControls.selection.obj is City)
                         {
-                            if (player.mapControls.selection.obj.GetCity().GetGroupedResource(GameObject.Resource.ItemResourceType.Stone_G).amount >= CollectWoodStoneAmount)
+                            if (player.mapControls.selection.obj.GetCity().GetGroupedResource(ItemResourceType.Stone_G).amount >= CollectWoodStoneAmount)
                             {
                                 collectResources_collectstone = true;
                                 onPartSuccess();
@@ -360,7 +360,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     {
                         if (player.mapControls.selection.obj is City)
                         {
-                            if (player.mapControls.selection.obj.GetCity().GetGroupedResource(GameObject.Resource.ItemResourceType.SkinLinen_Group).amount >= CollectLinenAmount)
+                            if (player.mapControls.selection.obj.GetCity().GetGroupedResource(ItemResourceType.SkinLinen_Group).amount >= CollectLinenAmount)
                             {
                                 linen_collect = true;
                                 onPartSuccess();

@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.GO.Gadgets;
 
-namespace VikingEngine.DSSWars.GameObject.Resource
+namespace VikingEngine.DSSWars.Resource
 {
     static class BlackMarketResources
     {
@@ -63,7 +64,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             void Resource(int cost, ItemResourceType resourceType, string name)
             {
                 int count = 1;
-                int non =0;
+                int non = 0;
 
                 content.newLine();
 
@@ -86,7 +87,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 {
                     count = c;
                     RichboxButton xbutton = new RichboxButton(new List<AbsRichBoxMember>
-                    {   
+                    {
                         new RichBoxText(string.Format(DssRef.lang.Hud_XTimes, count)),
                     },
                     new RbAction3Arg<ItemResourceType, int, int>(city.blackMarketPurchase, resourceType, count, cost, SoundLib.menuBuy),
@@ -105,7 +106,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                         content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
                         content.newLine();
                         HudLib.ResourceCost(content, ResourceType.Gold, cost * count, player.faction.gold);
-                        
+
                         content.newParagraph();
 
                         content.h2(DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn);
@@ -125,6 +126,6 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             }
         }
 
-        
+
     }
 }

@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VikingEngine.DSSWars.GameObject.Resource
+namespace VikingEngine.DSSWars.Resource
 {
     static class ItemPropertyColl
     {
         public const int CarryStones = 5;
         public const int CarryFood = 20;
         public static ItemProperties[] items;
-        
+
         public static void Init()
         {
             items = new ItemProperties[(int)ItemResourceType.NUM];
@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         public float weight;
 
         public ItemProperties(float weight)
-        { 
+        {
             this.weight = weight;
         }
     }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.LootFest.GO.PickUp;
@@ -555,7 +556,7 @@ namespace VikingEngine.DSSWars.Display
         {
             content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
             content.newLine();
-            HudLib.ResourceCost(content, GameObject.Resource.ResourceType.DiplomaticPoint, cost, player.diplomaticPoints.Int());
+            HudLib.ResourceCost(content, ResourceType.DiplomaticPoint, cost, player.diplomaticPoints.Int());
             content.newLine();
         }
     }

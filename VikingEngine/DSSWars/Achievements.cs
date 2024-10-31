@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.ToGG.MoonFall;
 
@@ -100,7 +101,7 @@ namespace VikingEngine.DSSWars
                     var groupsC = armiesC.sel.groups.counter();
                     while (groupsC.Next())
                     {
-                        if (groupsC.sel.soldierConscript.conscript.specialization == GameObject.Conscript.SpecializationType.HonorGuard)//.type == GameObject.UnitType.HonorGuard)
+                        if (groupsC.sel.soldierConscript.conscript.specialization == SpecializationType.HonorGuard)//.type == GameObject.UnitType.HonorGuard)
                         {
                             UnlockAchievement(AchievementIndex.honorguards);
                             return;

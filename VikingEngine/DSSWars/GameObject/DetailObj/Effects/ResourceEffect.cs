@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.GameObject.Resource;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.ToGG;
 
 namespace VikingEngine.DSSWars.GameObject

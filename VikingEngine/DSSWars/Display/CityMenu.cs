@@ -6,12 +6,12 @@ using System.Text;
 using System.Xml.Linq;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Battle;
+using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.GameObject.Conscript;
-using VikingEngine.DSSWars.GameObject.Delivery;
-using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Data;
@@ -811,7 +811,7 @@ namespace VikingEngine.DSSWars.Display
             content.newLine();
             content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
             content.newLine();
-            HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, cost, player.faction.gold);
+            HudLib.ResourceCost(content, ResourceType.Gold, cost, player.faction.gold);
             content.newLine();
             content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
             content.newLine();
@@ -832,7 +832,7 @@ namespace VikingEngine.DSSWars.Display
             {
                 content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
                 content.newLine();
-                HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, City.ExpandGuardSizeCost * count, player.faction.gold);
+                HudLib.ResourceCost(content, ResourceType.Gold, City.ExpandGuardSizeCost * count, player.faction.gold);
                 content.newLine();
                 //content.icontext(SpriteName.rtsUpkeepTime, "Upkeep +" + city.GuardUpkeep(City.ExpandGuardSize * count).ToString());
                 HudLib.Upkeep(content, city.GuardUpkeep(DssConst.ExpandGuardSize * count));

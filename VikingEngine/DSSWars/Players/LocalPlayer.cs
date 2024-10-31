@@ -19,12 +19,12 @@ using VikingEngine.ToGG;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.GameObject.Delivery;
-using VikingEngine.DSSWars.GameObject.Conscript;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Delivery;
 
 namespace VikingEngine.DSSWars.Players
-{    
+{
     partial class LocalPlayer : AbsPlayer
     {   
         public Engine.PlayerData playerData;

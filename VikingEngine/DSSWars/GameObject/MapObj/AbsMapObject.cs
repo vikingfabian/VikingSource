@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DSSWars.Battle;
-using VikingEngine.DSSWars.GameObject.Worker;
+using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 //
 

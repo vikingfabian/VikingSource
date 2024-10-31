@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Display;
-using VikingEngine.DSSWars.GameObject.Worker;
 using VikingEngine.Engine;
 
-namespace VikingEngine.DSSWars.GameObject.Resource
+namespace VikingEngine.DSSWars.Resource
 {
     static class ResourceLib
     {
@@ -15,7 +14,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         public static readonly ItemResourceType[] BenchCraftTypes = { ItemResourceType.Fuel_G, ItemResourceType.LightArmor, ItemResourceType.SharpStick, ItemResourceType.Bow };
         public static readonly ItemResourceType[] CarpenterCraftTypes = { ItemResourceType.SharpStick, ItemResourceType.Bow, ItemResourceType.LongBow, ItemResourceType.Ballista };
 
-        public static readonly CraftBlueprint CraftFuel1 = new CraftBlueprint(  
+        public static readonly CraftBlueprint CraftFuel1 = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.Fuel_G,
             5,
@@ -50,7 +49,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 new UseResource(ItemResourceType.Fuel_G, FoodWaterUsage),
                 new UseResource(ItemResourceType.RawFood_Group, FoodCraftAmount)
             }
-        ) { tooltipId = Tooltip.Food_BlueprintId };
+        )
+        { tooltipId = Tooltip.Food_BlueprintId };
 
         public static readonly CraftBlueprint CraftFood2 = new CraftBlueprint(
             CraftResultType.Resource,
@@ -62,20 +62,21 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 new UseResource(ItemResourceType.Fuel_G, FoodWaterUsage),
                 new UseResource(ItemResourceType.RawFood_Group, FoodCraftAmount)
             }
-        ) { tooltipId = Tooltip.Food_BlueprintId };
+        )
+        { tooltipId = Tooltip.Food_BlueprintId };
 
-    public static readonly CraftBlueprint CraftBeer = new CraftBlueprint(
-            CraftResultType.Resource,
-            (int)ItemResourceType.Beer,
-           10,
-           new UseResource[]
-           {
+        public static readonly CraftBlueprint CraftBeer = new CraftBlueprint(
+                CraftResultType.Resource,
+                (int)ItemResourceType.Beer,
+               10,
+               new UseResource[]
+               {
                 new UseResource(ItemResourceType.Water_G, 5),
                 new UseResource(ItemResourceType.Fuel_G, 1),
                 new UseResource(ItemResourceType.RawFood_Group, 1)
-           }, 
-           CraftRequirement.Brewery
-       );
+               },
+               CraftRequirement.Brewery
+           );
 
         public static readonly CraftBlueprint CraftIron = new CraftBlueprint(
             CraftResultType.Resource,
@@ -259,7 +260,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
            {
         new UseResource(ItemResourceType.Wood_Group, 60),
            }
-       ); 
+       );
 
         public static readonly CraftBlueprint CraftRecruitment = new CraftBlueprint(
             CraftResultType.Building,
@@ -592,10 +593,10 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 default: throw new NotImplementedException();
             }
         }
-}
+    }
 
     enum ResourceType
-    { 
+    {
         Gold,
         Worker,
         DiplomaticPoint,

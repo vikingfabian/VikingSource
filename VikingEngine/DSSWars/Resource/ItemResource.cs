@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VikingEngine.DSSWars.GameObject.Resource
+namespace VikingEngine.DSSWars.Resource
 {
     struct ItemResource
     {
@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 
         public void merge(ItemResource other)
         {
-            quality = (quality * amount + other.quality * other.amount);
+            quality = quality * amount + other.quality * other.amount;
             amount += other.amount;
             quality /= amount;
             cost += other.cost;

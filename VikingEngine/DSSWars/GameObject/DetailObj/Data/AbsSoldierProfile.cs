@@ -3,7 +3,7 @@ using System;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.GameObject.Conscript;
+using VikingEngine.DSSWars.Conscript;
 
 namespace VikingEngine.DSSWars.GameObject
 {

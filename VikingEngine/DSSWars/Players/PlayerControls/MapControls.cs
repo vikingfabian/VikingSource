@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.GameObject.Worker;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.Graphics;

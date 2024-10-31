@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Map;
 
-namespace VikingEngine.DSSWars.GameObject.Resource
+namespace VikingEngine.DSSWars.Resource
 {
     class WorldResources
     {
@@ -17,8 +17,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 
         TerrainContent terrainContent = new TerrainContent();
 
-        public WorldResources() 
-        { 
+        public WorldResources()
+        {
             registerCounter = new SpottedArrayCounter_Resource(resourceRegister);
         }
 
@@ -42,14 +42,14 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 resourceRegister.Array[i] = chunk;
             }
         }
-            //int addNew(ItemResource resource)
-            //{
-            //    ResourceChunk newChunk = ResourceChunk.Empty;
-            //    newChunk.Add(resource);
+        //int addNew(ItemResource resource)
+        //{
+        //    ResourceChunk newChunk = ResourceChunk.Empty;
+        //    newChunk.Add(resource);
 
-            //    var index = registerCounter.Add(newChunk);
-            //    return index;
-            //}
+        //    var index = registerCounter.Add(newChunk);
+        //    return index;
+        //}
 
         public void addItem(ItemResource resource, ref int collIndex)
         {
@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         }
 
         public ResourceChunk get(int index)
-        { 
+        {
             return resourceRegister.Array[index];
         }
 
@@ -79,14 +79,14 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         }
 
         public void asyncUpdate()
-        { 
+        {
             ForXYLoop loop = new ForXYLoop(DssRef.world.subTileGrid.Size);
 
             while (loop.Next())
             {
-               var subtile = DssRef.world.subTileGrid.Get(loop.Position);
+                var subtile = DssRef.world.subTileGrid.Get(loop.Position);
 
-                if (subtile.mainTerrain == Map.TerrainMainType.Foil)
+                if (subtile.mainTerrain == TerrainMainType.Foil)
                 {
                     terrainContent.asyncFoilGroth(loop.Position, subtile);
                 }
@@ -96,7 +96,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 }
             }
 
-            
+
         }
 
     }

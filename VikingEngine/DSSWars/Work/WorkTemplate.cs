@@ -6,10 +6,11 @@ using System.ComponentModel;
 using System.Net;
 using System.Security.AccessControl;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.GameObject.Resource;
+using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 
-namespace VikingEngine.DSSWars.GameObject.Worker
+namespace VikingEngine.DSSWars.Work
 {
     struct WorkTemplate
     {
@@ -31,7 +32,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         public WorkPriority craft_knightslance = new WorkPriority(0);
         public WorkPriority craft_bow = new WorkPriority(0);
         public WorkPriority craft_longbow = new WorkPriority(0);
-        public WorkPriority craft_ballista= new WorkPriority(0);
+        public WorkPriority craft_ballista = new WorkPriority(0);
         public WorkPriority craft_lightarmor = new WorkPriority(1);
         public WorkPriority craft_mediumarmor = new WorkPriority(0);
         public WorkPriority craft_heavyarmor = new WorkPriority(0);
@@ -61,7 +62,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             craft_bow.writeGameState(w, isCity);
 
             craft_twohandsword.writeGameState(w, isCity);
-            craft_knightslance.writeGameState(w, isCity);            
+            craft_knightslance.writeGameState(w, isCity);
             craft_ballista.writeGameState(w, isCity);
 
             craft_lightarmor.writeGameState(w, isCity);
@@ -238,7 +239,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case WorkPriorityType.move:
                     return move;
                 case WorkPriorityType.wood:
-                   return wood;
+                    return wood;
                 case WorkPriorityType.stone:
                     return stone;
                 case WorkPriorityType.craftFuel:
@@ -278,7 +279,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case WorkPriorityType.bogiron:
                     return bogiron;
                 case WorkPriorityType.mining:
-                   return mining;
+                    return mining;
                 case WorkPriorityType.trading:
                     return trading;
                 case WorkPriorityType.autoBuild:
@@ -378,7 +379,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         public void toHud(Players.LocalPlayer player, RichBoxContent content, Faction faction, City city)
         {
             content.h2(DssRef.lang.Work_OrderPrioTitle).overrideColor = HudLib.TitleColor_Label;
-            
+
             move.toHud(player, content, DssRef.lang.Work_Move, SpriteName.WarsWorkMove, SpriteName.WarsBuild_Storehouse, WorkPriorityType.move, faction, city);
             wood.toHud(player, content, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Wood), SpriteName.WarsWorkCollect, SpriteName.WarsResource_Wood, WorkPriorityType.wood, faction, city);
             stone.toHud(player, content, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Stone), SpriteName.WarsWorkCollect, SpriteName.WarsResource_Stone, WorkPriorityType.stone, faction, city);
@@ -407,10 +408,10 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             autoBuild.toHud(player, content, DssRef.lang.Work_AutoBuild, SpriteName.MenuPixelIconSettings, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, faction, city);
             //SpriteName.MenuPixelIconSettings
 
-            HudLib.Description( content, string.Format(DssRef.lang.Work_OrderPrioDescription, MaxPrio));
+            HudLib.Description(content, string.Format(DssRef.lang.Work_OrderPrioDescription, MaxPrio));
         }
 
-        
+
     }
 
     struct WorkPriority
@@ -425,7 +426,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         {
             followFaction = true;
             //this.safeguard = safeguard;
-            value = defaultVal; 
+            value = defaultVal;
         }
 
         public void onFactionValueChange(WorkPriority factionTemplate)
@@ -433,7 +434,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             if (followFaction)
             {
                 value = factionTemplate.value;
-              //  safeguard = factionTemplate.safeguard;
+                //  safeguard = factionTemplate.safeguard;
             }
         }
 
@@ -461,7 +462,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             {
                 HudLib.FollowFactionButton(followFaction,
                     faction.workTemplate.GetWorkPriority(priorityType).value,
-                    new RbAction2Arg<WorkPriorityType, City>(faction.workFollowFactionClick, priorityType, city, followFaction? SoundLib.menuBack : SoundLib.menu),
+                    new RbAction2Arg<WorkPriorityType, City>(faction.workFollowFactionClick, priorityType, city, followFaction ? SoundLib.menuBack : SoundLib.menu),
                     player, content);
             }
 
@@ -542,11 +543,11 @@ namespace VikingEngine.DSSWars.GameObject.Worker
         public void addPrio_belowMax(int add)
         {
             followFaction = false;
-            value = Bound.Set(value + add, 0, WorkTemplate.MaxPrio -1);
+            value = Bound.Set(value + add, 0, WorkTemplate.MaxPrio - 1);
         }
 
         public bool HasPrio()
-        { 
+        {
             return value > WorkTemplate.NoPrio;
         }
     }

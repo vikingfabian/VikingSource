@@ -6,16 +6,17 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Display.Translation;
-using VikingEngine.DSSWars.GameObject.Resource;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.Graphics;
 using VikingEngine.ToGG.MoonFall;
 
-namespace VikingEngine.DSSWars.GameObject.Worker
+namespace VikingEngine.DSSWars.Work
 {
     struct WorkerStatus
     {
-        
+
         public WorkType work;
         public int workSubType;
         public int orderId;
@@ -42,11 +43,11 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case WorkType.Build:
                     return string.Format(DssRef.lang.WorkerStatus_BuildX, BuildLib.BuildOptions[workSubType].Label());
                 case WorkType.Craft:
-                    return string.Format(DssRef.lang.Work_CraftX, LangLib.Item( (ItemResourceType)workSubType));
-                
+                    return string.Format(DssRef.lang.Work_CraftX, LangLib.Item((ItemResourceType)workSubType));
+
                 case WorkType.DropOff:
                     return DssRef.lang.WorkerStatus_DropOff;
-                    
+
                 case WorkType.Eat:
                     return DssRef.lang.WorkerStatus_Eat;
                 case WorkType.GatherFoil:
@@ -89,7 +90,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     work = WorkType.IsDeleted;
                     break;
             }
-            
+
         }
 
         int farmGrowthMultiplier(int terrainAmount, City city)
@@ -147,7 +148,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
                                         farmGrowthMultiplier(subTile.terrainAmount, city));
-                                
+
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
                                 DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                                 break;
@@ -158,7 +159,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
                                         farmGrowthMultiplier(subTile.terrainAmount, city));
-                                
+
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
                                 DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                                 break;
@@ -187,7 +188,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                             case TerrainSubFoilType.StoneBlock:
                             case TerrainSubFoilType.Stones:
-                                carry = new ItemResource(ItemResourceType.Stone_G, city.Culture == CityCulture.Stonemason? 8 : 4, Convert.ToInt32(processTimeLengthSec), ItemPropertyColl.CarryStones);
+                                carry = new ItemResource(ItemResourceType.Stone_G, city.Culture == CityCulture.Stonemason ? 8 : 4, Convert.ToInt32(processTimeLengthSec), ItemPropertyColl.CarryStones);
                                 break;
 
                             case TerrainSubFoilType.BogIron:
@@ -343,10 +344,10 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     break;
                 case WorkType.Craft:
                     {
-                       
+
                         ItemResourceType item = (ItemResourceType)workSubType;
                         ResourceLib.Blueprint(item, out var bp1, out var bp2);
-                        
+
                         int add = bp1.tryCraft(city);
                         if (add == 0 && bp2 != null)
                         {
@@ -423,13 +424,13 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                 {
                                     tryRepeatWork = true;
                                 }
-                                else if (bp2 !=null && bp2.canCraft(city))
+                                else if (bp2 != null && bp2.canCraft(city))
                                 {
                                     tryRepeatWork = true;
                                 }
                             }
 
-                            
+
 
                             if (visualUnit)
                             {
@@ -454,14 +455,14 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             }
 
             if (tryRepeatWork && energy > 0)
-            {                
+            {
                 processTimeLengthSec = finalizeWorkTime(city);
                 subTileStart = subTileEnd;
             }
             else
             {
                 work = WorkType.Idle;
-                
+
                 if (orderId >= 0)
                 {
                     city.faction.player.orders?.CompleteOrderId(orderId);
@@ -484,12 +485,12 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             {
                 if (city.faction.player.orders != null)
                 {
-                   return city.faction.player.orders.GetFromId(orderId) != null;
+                    return city.faction.player.orders.GetFromId(orderId) != null;
                 }
             }
-           
+
             return true;
-            
+
         }
 
         public void WorkComplete(AbsMapObject mapObject, bool visualUnit)
@@ -497,7 +498,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             switch (mapObject.gameobjectType())
             {
                 case GameObjectType.City:
-                    workComplete( mapObject.GetCity(), visualUnit);
+                    workComplete(mapObject.GetCity(), visualUnit);
                     break;
 
                 case GameObjectType.Army:
@@ -527,12 +528,12 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             DssRef.world.subTileGrid.Set(subTileEnd, subTile);
         }
 
-        
+
         public void createWorkOrder(WorkType work, int subWork, int order, IntVector2 targetSubTile, City city)
         {
             this.work = work;
-            this.workSubType = subWork;
-            this.orderId = order;
+            workSubType = subWork;
+            orderId = order;
             subTileStart = subTileEnd;
             subTileEnd = targetSubTile;
             processTimeStartStampSec = Ref.TotalGameTimeSec;
@@ -587,7 +588,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case WorkType.PickUpResource:
                     return DssConst.WorkTime_PickUpResource;
                 case WorkType.PickUpProduce:
-                    return DssConst.WorkTime_PickUpProduce;                
+                    return DssConst.WorkTime_PickUpProduce;
                 case WorkType.TrossCityTrade:
                     return DssConst.WorkTime_TrossCityTrade;
                 case WorkType.LocalTrade:
@@ -595,7 +596,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 case WorkType.GatherFoil:
                     SubTile subTile = DssRef.world.subTileGrid.Get(subTileEnd);
                     switch ((TerrainSubFoilType)subTile.subTerrain)
-                    { 
+                    {
                         case TerrainSubFoilType.TreeSoft:
                             return DssConst.WorkTime_GatherFoil_TreeSoft;
                         case TerrainSubFoilType.TreeHard:
