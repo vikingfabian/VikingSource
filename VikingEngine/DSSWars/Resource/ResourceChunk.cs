@@ -6,7 +6,7 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VikingEngine.DSSWars.GameObject.Resource
+namespace VikingEngine.DSSWars.Resource
 {
     struct ResourceChunk
     {
@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         /// count <= 0 is a empty marker
         /// </summary>
         public int count;
-        
+
         public ItemResource resource1;
         public ItemResource resource2;
         public ItemResource resource3;
@@ -150,10 +150,10 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 
             ItemResource item = GetResourceAtIndex(count - 1);
             if (item.type == ItemResourceType.NONE)
-            { 
+            {
                 return item;
             }
-            
+
             result = item;
 
             float unitweight = ItemPropertyColl.items[(int)item.type].weight;

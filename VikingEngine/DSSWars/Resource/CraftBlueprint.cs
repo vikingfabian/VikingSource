@@ -7,12 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.HeroQuest.HeroStrategy;
 
-namespace VikingEngine.DSSWars.GameObject.Resource
+namespace VikingEngine.DSSWars.Resource
 {
     class CraftBlueprint
     {
@@ -44,7 +45,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 res.backOrder += r.amount;
                 city.SetGroupedResource(r.type, res);
             }
-            
+
         }
         public bool available(City city)
         {
@@ -83,7 +84,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                     return 0;
                 }
 
-                min = lib.SmallestValue( res.amount / r.amount, min);
+                min = lib.SmallestValue(res.amount / r.amount, min);
             }
             return min;
         }
@@ -160,8 +161,8 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             var arrow = new RichBoxImage(SpriteName.pjNumArrowR);
             arrow.color = Color.CornflowerBlue;
             content.Add(arrow);
-            content.Add(new RichBoxText(resultAmount.ToString()));            
-            content.Add(new RichBoxImage(icon()));           
+            content.Add(new RichBoxText(resultAmount.ToString()));
+            content.Add(new RichBoxImage(icon()));
             content.Add(new RichBoxText(name()));
 
             content.newLine();
@@ -179,7 +180,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                     var countText = new RichBoxText(count.ToString());
                     //if (!available)
                     //{ 
-                        countText.overrideColor = available? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                    countText.overrideColor = available ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                     //}
                     content.Add(countText);
                     content.Add(new RichBoxImage(sprite));
@@ -194,9 +195,9 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             content.newLine();
             foreach (var r in resources)
             {
-               var cityResource = city.GetGroupedResource(r.type);
+                var cityResource = city.GetGroupedResource(r.type);
                 bool safeGuard = city.foodSafeGuardIsActive(r.type);
-                cityResource.toMenu(content, r.type, safeGuard, ref reachedBuffer);               
+                cityResource.toMenu(content, r.type, safeGuard, ref reachedBuffer);
             }
 
             if (optionalBp != null)
@@ -225,14 +226,14 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         public int amount;
 
         public UseResource(ItemResourceType type, int amount)
-        { 
+        {
             this.type = type;
             this.amount = amount;
-        }       
+        }
     }
 
     enum CraftRequirement
-    { 
+    {
         None = 0,
         Carpenter,
         Brewery,

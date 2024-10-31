@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VikingEngine.DSSWars.GameObject.Resource
+namespace VikingEngine.DSSWars.Resource
 {
     //internal class SpottedArrayCounter_Resource
     //{
@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 
             array.Array[placementIndex] = obj;
             array.SpottedLength = lib.LargestValue(array.SpottedLength, placementIndex + 1);
-            
+
             ++array.Count;
 
             array.mostLeftFreePosition = placementIndex + 1;
@@ -62,7 +62,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 
         public void Reset()
         {
-            this.selIndex = -1;
+            selIndex = -1;
             sel = ResourceChunk.Empty;
         }
 
@@ -86,6 +86,6 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         }
 
 
-        public int CurrentIndex { get { return this.selIndex; } }
+        public int CurrentIndex { get { return selIndex; } }
     }
 }

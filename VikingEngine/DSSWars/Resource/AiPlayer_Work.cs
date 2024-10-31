@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.GameObject.Resource;
-using VikingEngine.DSSWars.GameObject.Worker;
+using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Work;
 
 namespace VikingEngine.DSSWars.Players
 {

@@ -10,8 +10,8 @@ using VikingEngine.PJ;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.SteamWrapping;
 using Valve.Steamworks;
-using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars
 {

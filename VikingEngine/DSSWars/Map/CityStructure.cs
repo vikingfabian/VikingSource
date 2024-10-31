@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.GameObject.Resource;
-using VikingEngine.DSSWars.GameObject.Worker;
 
 namespace VikingEngine.DSSWars.Map
 {

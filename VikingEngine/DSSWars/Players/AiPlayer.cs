@@ -4,8 +4,6 @@ using System.IO;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.GameObject.Conscript;
-using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
 
 

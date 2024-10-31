@@ -5,10 +5,10 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
-using VikingEngine.DSSWars.GameObject.Resource;
-using VikingEngine.DSSWars.GameObject.Worker;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
+using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.GameObject

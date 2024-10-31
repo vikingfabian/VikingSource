@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 using VikingEngine.DataLib;
-using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Input;
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.LootFest.Players;
 using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars
 {
@@ -103,9 +103,9 @@ namespace VikingEngine.DSSWars
             };
         }
 
-        public static void ResourceCost(RichBoxContent content, GameObject.Resource.ResourceType resource, int needResource, int hasResource)
+        public static void ResourceCost(RichBoxContent content, ResourceType resource, int needResource, int hasResource)
         {
-            SpriteName icon = GameObject.Resource.ResourceLib.PayIcon(resource);
+            SpriteName icon = ResourceLib.PayIcon(resource);
 
             if (icon != SpriteName.NO_IMAGE)
             {
@@ -114,12 +114,12 @@ namespace VikingEngine.DSSWars
             }
 
             string text = string.Format(DssRef.lang.Hud_Purchase_ResourceCostOfAvailable,
-                GameObject.Resource.ResourceLib.Name(resource), TextLib.LargeNumber(needResource), TextLib.LargeNumber(hasResource));
+                ResourceLib.Name(resource), TextLib.LargeNumber(needResource), TextLib.LargeNumber(hasResource));
 
             content.Add( new RichBoxText(text, ResourceCostColor(hasResource >= needResource)));
         }
 
-        public static void ResourceCost(RichBoxContent content, GameObject.Resource.ItemResourceType resource, int needResource, int hasResource)
+        public static void ResourceCost(RichBoxContent content, ItemResourceType resource, int needResource, int hasResource)
         {
             SpriteName icon = ResourceLib.Icon( resource);
 

@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display.Component;
 using VikingEngine.DSSWars.Display.Translation;
-using VikingEngine.DSSWars.GameObject.Delivery;
-using VikingEngine.DSSWars.GameObject.Resource;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.GO.Gadgets;
 
-namespace VikingEngine.DSSWars.GameObject.Conscript
+namespace VikingEngine.DSSWars.Conscript
 {
     class ConscriptMenu
     {
@@ -52,24 +52,24 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 content.space();
                 content.Add(new RichBoxBeginTitle(1));
 
-                string typeName = currentStatus.nobelmen? DssRef.lang.Building_NobleHouse : DssRef.lang.BuildingType_Barracks;
+                string typeName = currentStatus.nobelmen ? DssRef.lang.Building_NobleHouse : DssRef.lang.BuildingType_Barracks;
                 var title = new RichBoxText(typeName + " " + currentStatus.idAndPosition.ToString());
                 title.overrideColor = HudLib.TitleColor_TypeName;
                 content.Add(title);
                 //content.Add(new RichBoxText(typeName + " " + currentStatus.idAndPosition.ToString()));
                 content.space();
-                 HudLib.CloseButton(content,new RbAction(() => { city.selectedConscript = -1; }, SoundLib.menuBack));
+                HudLib.CloseButton(content, new RbAction(() => { city.selectedConscript = -1; }, SoundLib.menuBack));
 
                 content.newParagraph();
 
                 HudLib.Label(content, DssRef.lang.Conscript_WeaponTitle);
                 content.newLine();
-                MainWeapon[] weapons = currentStatus.nobelmen? NobelWeapons : DefaultWeapons;
+                MainWeapon[] weapons = currentStatus.nobelmen ? NobelWeapons : DefaultWeapons;
                 //for (MainWeapon weapon = 0; weapon < MainWeapon.NUM; weapon++)
                 foreach (var weapon in weapons)
                 {
                     ItemResourceType item = ConscriptProfile.WeaponItem(weapon);
-                    var buttonContent = new List<AbsRichBoxMember>(3) { 
+                    var buttonContent = new List<AbsRichBoxMember>(3) {
                         new RichBoxImage(ResourceLib.Icon(item)),
                        new RichBoxText( LangLib.Weapon(weapon))
                     };
@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     ItemResourceType item = ConscriptProfile.ArmorItem(armorLvl);
 
                     if (city.GetGroupedResource(item).amount >= DssConst.SoldierGroup_DefaultCount)
-                    { 
+                    {
                         buttonContent.Add(new RichBoxImage(SpriteName.warsResourceChunkAvailable));
                     }
                     if (armorLvl != ArmorLevel.None)
@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     }
                     buttonContent.Add(new RichBoxText(LangLib.Armor(armorLvl)));
 
-                    var button = new RichboxButton(buttonContent, 
+                    var button = new RichboxButton(buttonContent,
                         new RbAction1Arg<ArmorLevel>(armorClick, armorLvl, SoundLib.menu),
                     new RbAction1Arg<ArmorLevel>(armorTooltip, armorLvl));
                     button.setGroupSelectionColor(HudLib.RbSettings, armorLvl == currentStatus.profile.armorLevel);
@@ -119,8 +119,8 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
                 HudLib.Label(content, DssRef.lang.Conscript_TrainingTitle);
                 content.newLine();
-                TrainingLevel minLevel = currentStatus.nobelmen? TrainingLevel.Basic : TrainingLevel.Minimal;
-                
+                TrainingLevel minLevel = currentStatus.nobelmen ? TrainingLevel.Basic : TrainingLevel.Minimal;
+
                 TrainingLevel maxLevel = TrainingLevel.Professional;
                 if (city.Culture == CityCulture.CrabMentality)
                 {
@@ -151,7 +151,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 content.newLine();
 
                 SpecializationType[] specializationTypes = currentStatus.profile.avaialableSpecializations();
-                
+
 
                 foreach (var specialization in specializationTypes)
                 {
@@ -242,7 +242,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                     content.newParagraph();
                     content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement).overrideColor = HudLib.TitleColor_Label;
                     content.newLine();
-                    content.Add( new RichBoxImage(SpriteName.WarsBuild_Barracks));
+                    content.Add(new RichBoxImage(SpriteName.WarsBuild_Barracks));
                     content.space();
                     content.Add(new RichBoxText(DssRef.lang.BuildingType_Barracks));
                     content.newLine();
@@ -309,7 +309,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             content.newParagraph();
             var item = ConscriptProfile.WeaponItem(weapon);
             var res = city.GetGroupedResource(item);
-           
+
             content.h2(DssRef.lang.Hud_Available).overrideColor = HudLib.TitleColor_Label;
             bool reachedBuffer = false;
             res.toMenu(content, item, false, ref reachedBuffer);

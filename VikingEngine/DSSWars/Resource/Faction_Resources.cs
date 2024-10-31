@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.GameObject.Resource;
-using VikingEngine.DSSWars.GameObject.Worker;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.MoonFall;
 

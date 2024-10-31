@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.GameObject.Resource;
-using VikingEngine.DSSWars.GameObject.Worker;
+using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Work;
 
 
 namespace VikingEngine.DSSWars.GameObject

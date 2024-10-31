@@ -4,8 +4,8 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using Microsoft.Xna.Framework;
-using VikingEngine.DSSWars.GameObject.Worker;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Players;
 //

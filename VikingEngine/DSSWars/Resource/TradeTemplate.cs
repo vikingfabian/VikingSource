@@ -6,9 +6,10 @@ using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.HUD.RichBox;
 
-namespace VikingEngine.DSSWars.GameObject.Resource
+namespace VikingEngine.DSSWars.Resource
 {
     struct TradeTemplate
     {
@@ -36,7 +37,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
             wood = new TradeResource(10);
             stone = new TradeResource(6f);
             rawFood = new TradeResource(10);
-            food = new TradeResource(DssConst.FoodGoldValue);    
+            food = new TradeResource(DssConst.FoodGoldValue);
             skin = new TradeResource(40);
             ore = new TradeResource(10);
             iron = new TradeResource(100);
@@ -81,7 +82,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         }
 
         public void onNewOwner(TradeTemplate factionTemplate)
-        { 
+        {
             wood.onNewOwner(factionTemplate.wood);
             stone.onNewOwner(factionTemplate.stone);
             rawFood.onNewOwner(factionTemplate.rawFood);
@@ -113,7 +114,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 case ItemResourceType.SoftWood:
                     return wood;
                 case ItemResourceType.Stone_G:
-                   return stone;
+                    return stone;
                 case ItemResourceType.Food_G:
                     return food;
                 case ItemResourceType.SharpStick:
@@ -199,17 +200,17 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         public bool followFaction;
 
         public TradeResource(float price)
-        { 
+        {
             followFaction = true;
             this.price = price;
-            this.willPurchase = true;
-            this.willSell = true;
+            willPurchase = true;
+            willSell = true;
         }
 
         public void onFactionValueChange(TradeResource factionTemplate)
         {
             if (followFaction)
-            { 
+            {
                 price = factionTemplate.price;
             }
         }
@@ -236,14 +237,14 @@ namespace VikingEngine.DSSWars.GameObject.Resource
                 //}
                 //content.Add(followFactionButton);
                 //content.space();
-                
+
                 HudLib.FollowFactionButton(followFaction,
                     faction.tradeTemplate.GetTradeResource(resource).price,
                     new RbAction2Arg<ItemResourceType, City>(faction.tradeFollowFactionClick, resource, city),
-                    player,content);
+                    player, content);
             }
 
-            for (int i = PriceControls.Length - 1; i >= 0; i--) 
+            for (int i = PriceControls.Length - 1; i >= 0; i--)
             {
                 float change = -PriceControls[i];
                 content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(TextLib.PlusMinus(change)) },

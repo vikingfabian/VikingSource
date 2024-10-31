@@ -7,13 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Display.Translation;
-using VikingEngine.DSSWars.GameObject.Resource;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Timer;
 
-namespace VikingEngine.DSSWars.GameObject.Worker
+namespace VikingEngine.DSSWars.Work
 {
     class WorkerUnit : AbsGameObject
     {
@@ -35,9 +36,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         public WorkerUnit(AbsMapObject mapObject, WorkerStatus status, int statusIndex)
         {
-            this.parentMapObject = mapObject;
+            parentMapObject = mapObject;
             this.status = status;
-            this.parentArrayIndex = statusIndex;
+            parentArrayIndex = statusIndex;
             model = mapObject.GetFaction().AutoLoadModelInstance(
                  LootFest.VoxelModelName.war_worker, DssConst.Men_StandardModelScale * 0.9f, true);
 
@@ -81,7 +82,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                             state = WorkerUnitState.None;
                             status.cancelWork();
                             parentMapObject.setWorkerStatus(parentArrayIndex, ref status);
-                        }                    
+                        }
                     }
                     else
                     {
@@ -183,7 +184,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                 resourceModel.Rotation.RotateAxis(new Vector3(0, 0, Ref.DeltaTimeMs * 0.0014f));
                             }
                             else
-                            { 
+                            {
                                 refreshCarryModel();
                                 //updateGroudY(false);
                             }
@@ -223,7 +224,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                             case WorkType.DropOff:
                                 SoundLib.drop_item.Play(model.position);
 
-                                
+
                                 break;
                             case WorkType.LocalTrade:
                                 SoundLib.buy.Play(model.position);
@@ -359,7 +360,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 sprite = ResourceLib.Icon(item);
             }
             else
-            { 
+            {
                 hasImage = false;
             }
 
@@ -389,9 +390,9 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             {
                 float y = DssRef.world.SubTileHeight(model.position) + ModelGroundYAdj;
 
-                if (y < Map.Tile.UnitMinY)
+                if (y < Tile.UnitMinY)
                 {
-                    y = Map.Tile.UnitMinY;
+                    y = Tile.UnitMinY;
                 }
 
                 if (y != model.position.Y)
@@ -427,21 +428,21 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                 DssVar.WorkerUnit_ResourcePosDiff, model.position);
         }
 
-        
+
         public override void toHud(ObjectHudArgs args)
         {
-            
+
             args.content.h2(Name()).overrideColor = Color.LightYellow;
             args.content.text(string.Format(DssRef.lang.WorkerHud_WorkType, status.workString()));
 
             if (status.carry.amount > 0)
             {
-                args.content.text(string.Format(DssRef.lang.WorkerHud_Carry, status.carry.amount, LangLib.Item( status.carry.type)));
+                args.content.text(string.Format(DssRef.lang.WorkerHud_Carry, status.carry.amount, LangLib.Item(status.carry.type)));
             }
 
             args.content.text(string.Format(DssRef.lang.WorkerHud_Energy, TextLib.OneDecimal(status.energy)));
         }
-        
+
         public override void selectionFrame(bool hover, Selection selection)
         {
             Vector3 scale = new Vector3(DssVar.StandardBoundRadius * 2f);
@@ -483,7 +484,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
         public override string Name()
         {
-            return parentMapObject.TypeName() + " " +  DssRef.lang.UnitType_Worker +" (" + parentArrayIndex.ToString() + ")";
+            return parentMapObject.TypeName() + " " + DssRef.lang.UnitType_Worker + " (" + parentArrayIndex.ToString() + ")";
         }
 
         enum WorkerUnitState

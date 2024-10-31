@@ -6,9 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.GameObject.Conscript;
-using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars.Build
 {

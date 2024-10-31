@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Text;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.GameObject.Conscript;
-using VikingEngine.DSSWars.GameObject.Delivery;
-using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Players.Orders;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.PJ.CarBall;
 
@@ -273,7 +273,7 @@ namespace VikingEngine.DSSWars.Display
                     content.h1(DssRef.lang.Hud_WardeclarationTitle);
                     content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
                     content.newLine();
-                    HudLib.ResourceCost(content, GameObject.Resource.ResourceType.DiplomaticPoint, Diplomacy.DeclareWarCost(rel), player.diplomaticPoints.Int());
+                    HudLib.ResourceCost(content, ResourceType.DiplomaticPoint, Diplomacy.DeclareWarCost(rel), player.diplomaticPoints.Int());
                     content.Add(new RichBoxSeperationLine());
                 }
                 else

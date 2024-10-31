@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Display.Component;
 using VikingEngine.DSSWars.Display.Translation;
-using VikingEngine.DSSWars.GameObject.Resource;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace VikingEngine.DSSWars.GameObject.Delivery
+namespace VikingEngine.DSSWars.Delivery
 {
     class DeliveryMenu
     {
@@ -85,7 +86,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                                        }
                                        else
                                        {
-                                            DssRef.world.cities[currentStatus.profile.toCity].GetGroupedResource(item).toMenu(content, item, safeGuard, ref reachedBuffer);
+                                           DssRef.world.cities[currentStatus.profile.toCity].GetGroupedResource(item).toMenu(content, item, safeGuard, ref reachedBuffer);
                                        }
 
                                        //
@@ -113,7 +114,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                     {
                         var button = new RichboxButton(new List<AbsRichBoxMember>{
                             new RichBoxText(cities_c.sel.TypeName())
-                            }, new RbAction1Arg<int>(cityClick, cities_c.sel.parentArrayIndex, SoundLib.menu), new RbAction1Arg<City>((City toCity) =>
+                            }, new RbAction1Arg<int>(cityClick, cities_c.sel.parentArrayIndex, SoundLib.menu), new RbAction1Arg<City>((toCity) =>
                             {
                                 RichBoxContent content = new RichBoxContent();
                                 content.h2(toCity.Name()).overrideColor = HudLib.TitleColor_Name;
@@ -174,10 +175,10 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                 new RbAction1Arg<LocalPlayer>(city.copyDelivery, player, SoundLib.menuCopy)));
 
                 content.space();
-                content.Add(new RichboxButton(new List<AbsRichBoxMember> { 
+                content.Add(new RichboxButton(new List<AbsRichBoxMember> {
                     new RichBoxImage(player.input.Paste.Icon),
                     new RichBoxSpace(0.5f),
-                    new RichBoxText(DssRef.lang.Hud_Paste) 
+                    new RichBoxText(DssRef.lang.Hud_Paste)
                 },
                 new RbAction1Arg<LocalPlayer>(city.pasteDelivery, player, SoundLib.menuPaste)));
 
@@ -209,7 +210,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                     }
 
                     if (isSending)
-                    {                        
+                    {
 
                         content.newLine();
                         HudLib.BulletPoint(content);
@@ -284,7 +285,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
             int current;
 
             if (minCap)
-            {   
+            {
                 current = currentStatus.senderMin;
             }
             else
@@ -292,7 +293,7 @@ namespace VikingEngine.DSSWars.GameObject.Delivery
                 current = currentStatus.recieverMax;
             }
 
-            
+
             for (int i = BoundControls.Length - 1; i >= 0; i--)
             {
                 int change = -BoundControls[i];
