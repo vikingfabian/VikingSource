@@ -294,6 +294,12 @@ namespace VikingEngine.DSSWars.GameObject
                         soldierProfile.skillBonus = 1.2f;
                     }
                     break;
+                case CityCulture.SiegeEngineer:
+                    if (soldierProfile.conscript.Warmashine())
+                    {
+                        soldierProfile.skillBonus = 1.2f;
+                    }
+                    break;
 
             }
             

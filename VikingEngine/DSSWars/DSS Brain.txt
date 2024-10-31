@@ -3,12 +3,14 @@
 * changed stone collecting from 1 to 4
 * doubled stone price on black market
 * repaired toggle hud detail "U"
-
+* all songs are converted to OGG
+* 3 new songs
+* some sound balancing
 
 #Todo (xmas patch)#
+city tag
 dölj carry amount
 new game - Skip language crashes game
-Bog iron info
 
 
 --Efter release polish--

@@ -74,7 +74,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string CityCulture_Weavers => "Weavers";
         public string CityCulture_Weavers_Description => "Improved light armor production";
 
-        public string CityCulture_SiegeEngineer => "SiegeEngineer";
+        public string CityCulture_SiegeEngineer => "Siege engineer";
         public string CityCulture_SiegeEngineer_Description => "More powerful warmashines";
 
         public string CityCulture_Armorsmith => "Armorsmith";

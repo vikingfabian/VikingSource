@@ -196,9 +196,7 @@ namespace VikingEngine.DSSWars.GameObject
             else if (percWater >= 0.25 && percY <= 0.25)
             {
                 cityCultureCollection.NorthSea.Add(this);
-            }
-
-            
+            }            
 
             if (world.rnd.Chance(0.3))
             {
@@ -215,6 +213,10 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     Culture = CityCulture.Miners;
                 }
+                else if (percMountain > 0.3)
+                {
+                    Culture = CityCulture.Stonemason;
+                }
                 else if (dryBiom <= 1)
                 {
                     Culture = CityCulture.DeepWell;
@@ -223,7 +225,10 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     Culture = CityCulture.PitMasters;
                 }
-
+                else if (percWater >= 0.25)
+                {
+                    Culture = CityCulture.Seafaring;
+                }
             }
 
             if (Culture == CityCulture.NUM_NONE)

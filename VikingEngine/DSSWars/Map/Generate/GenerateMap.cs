@@ -1037,6 +1037,13 @@ namespace VikingEngine.DSSWars.Map.Generate
                 CityCulture.Builders,
                 CityCulture.CrabMentality,
                 CityCulture.Networker,
+                CityCulture.Brewmaster,
+
+                CityCulture.Weavers,
+                CityCulture.SiegeEngineer,
+                CityCulture.Armorsmith,
+                CityCulture.Nobelmen,
+                CityCulture.Backtrader,
             };
     }
 
