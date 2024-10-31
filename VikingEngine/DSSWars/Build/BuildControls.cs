@@ -24,6 +24,9 @@ namespace VikingEngine.DSSWars.Build
            {
                 Build.BuildAndExpandType.WheatFarm,
                 Build.BuildAndExpandType.LinenFarm,
+                Build.BuildAndExpandType.RapeSeedFarm,
+                Build.BuildAndExpandType.HempFarm,
+
                 Build.BuildAndExpandType.PigPen,
                 Build.BuildAndExpandType.HenPen,
             };
@@ -93,9 +96,6 @@ namespace VikingEngine.DSSWars.Build
                                     &&
                                     !player.orders.orderConflictingSubTile(subTileLoop.Position))
                                 {
-                                    //var conflictingOrder = player.orders.orderOnSubTile(subTileLoop.Position);
-                                    //if (conflictingOrder == null)
-                                    //{
                                     player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType), false);
                                     if (--count <= 0)
                                     { return; }
@@ -122,15 +122,16 @@ namespace VikingEngine.DSSWars.Build
                     new RichBoxImage(BuildLib.BuildOptions[(int)opt].sprite),
 
                 },
-                new RbAction1Arg<BuildAndExpandType>(buildingTypeClick, opt),
+                new RbAction1Arg<BuildAndExpandType>(buildingTypeClick, opt, SoundLib.menu),
                 new RbAction1Arg<BuildAndExpandType>((BuildAndExpandType type) =>
                 {
                     RichBoxContent content = new RichBoxContent();
 
                     var build = BuildLib.BuildOptions[(int)type];
-                    content.h2(build.Label()).overrideColor = HudLib.TitleColor_TypeName;
-                    
-                    
+                    content.h2( TextLib.LargeFirstLetter(build.Label()) ).overrideColor = HudLib.TitleColor_TypeName;
+                    build.blueprint.toMenu(content, city);
+
+                    content.Add(new RichBoxSeperationLine());
                     HudLib.Description(content, build.Description());
 
                     content.newLine();
@@ -157,11 +158,236 @@ namespace VikingEngine.DSSWars.Build
                             content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
                             content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_Upkeep, DssLib.NobleHouseUpkeep)));
 
-                            content.newParagraph();
                             break;
+                        case BuildAndExpandType.WheatFarm:
+                            content.h2(DssRef.todoLang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.BuildHud_GrowTime, string.Format(DssRef.todoLang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize -1))));
+                            
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.BuildHud_WorkTime, string.Format(DssRef.todoLang.Hud_Time_Seconds, DssConst.WorkTime_Plant + DssConst.WorkTime_GatherFoil_FarmCulture))));
+
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(string.Format( DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
+                            content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
+                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Water));
+
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(DssRef.todoLang.BuildHud_Produce));
+                            content.space();
+                            content.Add(new RichBoxText(DssConst.DefaultItemRawFoodAmount.ToString()));
+                            content.Add(new RichBoxImage(SpriteName.WarsResource_RawFood));
+                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_RawFood));
+
+                            //content.Add(new RichBoxImage(SpriteName.pjNumPlus));
+                            break;
+
+                        case BuildAndExpandType.LinenFarm:
+                            content.h2(DssRef.todoLang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.BuildHud_GrowTime, string.Format(DssRef.todoLang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize - 1))));
+
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.BuildHud_WorkTime, string.Format(DssRef.todoLang.Hud_Time_Seconds, DssConst.WorkTime_Plant + DssConst.WorkTime_GatherFoil_FarmCulture))));
+
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
+                            content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
+                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Water));
+
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(DssRef.todoLang.BuildHud_Produce));
+                            content.space();
+                            content.Add(new RichBoxText(TerrainContent.FarmCulture_ReadySize.ToString()));
+                            content.Add(new RichBoxImage(SpriteName.WarsResource_LinenCloth));
+                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Linen));
+
+                            //content.Add(new RichBoxImage(SpriteName.pjNumPlus));
+                            break;
+
+                        case BuildAndExpandType.RapeSeedFarm:
+                            content.h2(DssRef.todoLang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.BuildHud_GrowTime, string.Format(DssRef.todoLang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize - 1))));
+
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.BuildHud_WorkTime, string.Format(DssRef.todoLang.Hud_Time_Seconds, DssConst.WorkTime_Plant + DssConst.WorkTime_GatherFoil_FarmCulture))));
+
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
+                            content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
+                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Water));
+
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(DssRef.todoLang.BuildHud_Produce));
+                            content.space();
+                            content.Add(new RichBoxText(DssConst.DefaultItemFuelAmount.ToString()));
+                            content.Add(new RichBoxImage(SpriteName.WarsResource_Fuel));
+                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Fuel));
+
+                            //content.Add(new RichBoxImage(SpriteName.pjNumPlus));
+                            break;
+
+                        case BuildAndExpandType.HempFarm:
+                            content.h2(DssRef.todoLang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.BuildHud_GrowTime, string.Format(DssRef.todoLang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize - 1))));
+
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.BuildHud_WorkTime, string.Format(DssRef.todoLang.Hud_Time_Seconds, DssConst.WorkTime_Plant + DssConst.WorkTime_GatherFoil_FarmCulture))));
+
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
+                            content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
+                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Water));
+
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(DssRef.todoLang.BuildHud_Produce));
+                            content.space();
+                            content.Add(new RichBoxText(DssConst.HempFuelAmount.ToString()));
+                            content.Add(new RichBoxImage(SpriteName.WarsResource_Fuel));
+                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Fuel));
+                            content.Add(new RichBoxImage(SpriteName.pjNumPlus));
+                            content.Add(new RichBoxText(DssConst.HempFuelAmount.ToString()));
+                            content.Add(new RichBoxImage(SpriteName.WarsResource_LinenCloth));
+                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Linen));
+                            break;
+
+                        case BuildAndExpandType.HenPen:
+                            content.h2(DssRef.todoLang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.BuildHud_GrowTime, string.Format(DssRef.todoLang.Hud_Time_Minutes, TerrainContent.HenReady - 1))));
+
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.BuildHud_WorkTime, string.Format(DssRef.todoLang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce + DssConst.WorkTime_PickUpResource))));
+
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(DssRef.todoLang.BuildHud_Produce));
+                            content.space();
+                            content.Add(new RichBoxText((DssConst.HenRawFoodAmout * 2).ToString()));
+                            content.Add(new RichBoxImage(SpriteName.WarsResource_RawFood));
+                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_RawFood));
+
+                            //content.Add(new RichBoxImage(SpriteName.pjNumPlus));
+                            break;
+
+                        case BuildAndExpandType.PigPen:
+                            content.h2(DssRef.todoLang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.BuildHud_GrowTime, string.Format(DssRef.todoLang.Hud_Time_Minutes, TerrainContent.PigReady - 1))));
+
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.BuildHud_WorkTime, string.Format(DssRef.todoLang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce))));
+
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(DssRef.todoLang.BuildHud_Produce));
+                            content.space();
+                            content.Add(new RichBoxText(DssConst.PigRawFoodAmout.ToString()));
+                            content.Add(new RichBoxImage(SpriteName.WarsResource_RawFood));
+                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_RawFood));
+                            content.Add(new RichBoxImage(SpriteName.pjNumPlus));
+                            content.Add(new RichBoxText(DssConst.PigRawFoodAmout.ToString()));
+                            content.Add(new RichBoxImage(SpriteName.WarsResource_LinenCloth));
+                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Linen));
+                            break;
+
+                        case BuildAndExpandType.Brewery:
+                            content.h2(DssRef.todoLang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
+                            content.newLine();
+                            content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
+                            content.space();
+                            ResourceLib.CraftBeer.toMenu(content, city, false);
+                            break;
+
+                        case BuildAndExpandType.Cook:
+                            content.h2(DssRef.todoLang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
+                            
+                            content.newLine();
+                            content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
+                            content.space();
+                            ResourceLib.CraftFood1.toMenu(content, city, false);
+
+                            content.newLine();
+                            content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
+                            content.space();
+                            ResourceLib.CraftFood2.toMenu(content, city, false);
+
+                            break;
+
+                        case BuildAndExpandType.Carpenter:
+                            content.h2(DssRef.todoLang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
+
+                            foreach (var m in ResourceLib.CarpenterCraftTypes)
+                            {
+                                content.newLine();
+                                content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
+                                content.space();
+                                ResourceLib.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
+                                bp1.toMenu(content, city, false);
+                            }
+                            
+                            break;
+
+                        case BuildAndExpandType.WorkBench:
+                            content.h2(DssRef.todoLang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
+
+                            foreach (var m in ResourceLib.BenchCraftTypes)
+                            {
+                                content.newLine();
+                                content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
+                                content.space();
+                                ResourceLib.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
+                                bp1.toMenu(content, city, false);
+                            }
+
+                            break;
+
+                        case BuildAndExpandType.Smith:
+                            content.h2(DssRef.todoLang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
+
+                            foreach (var m in ResourceLib.SmithCraftTypes)
+                            {
+                                content.newLine();
+                                content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
+                                content.space();
+                                ResourceLib.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
+                                bp1.toMenu(content, city, false);
+                            }
+                            break;
+
+                        case BuildAndExpandType.CoalPit:
+                            content.h2(DssRef.todoLang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
+                            content.newLine();
+                            content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
+                            content.space();
+                            ResourceLib.CraftCharcoal.toMenu(content, city, false);
+                            break;
+
                     }
 
-                    build.blueprint.toMenu(content, city);
+                    
                     content.Add(new RichBoxSeperationLine());
                     content.h2(DssRef.lang.MenuTab_Resources).overrideColor = HudLib.TitleColor_Label;
                     build.blueprint.listResources(content, city);
@@ -184,7 +410,7 @@ namespace VikingEngine.DSSWars.Build
                     new RichBoxText(DssRef.lang.Hud_EndSessionIcon),
                     new RichBoxSpace(),
                     },
-                    new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.None));
+                    new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.None, SoundLib.menuBack));
                 button.setGroupSelectionColor(HudLib.RbSettings, false);
                 content.Add(button);
                 content.space();
@@ -202,18 +428,18 @@ namespace VikingEngine.DSSWars.Build
             content.Button(DssRef.lang.Build_AutoPlace, new RbAction(() =>
             {
                 autoPlaceBuilding(city, 1);
-            }), null, buildMode == SelectTileResult.Build);
+            }, SoundLib.menuBuy), null, buildMode == SelectTileResult.Build);
             content.space();
             content.Button(string.Format(DssRef.lang.Hud_XTimes, 4), new RbAction(() =>
             {
                 autoPlaceBuilding(city, 4);
-            }), null, buildMode == SelectTileResult.Build);
+            }, SoundLib.menuBuy), null, buildMode == SelectTileResult.Build);
 
             content.newLine();
             content.Button(DssRef.lang.Build_ClearOrders, new RbAction(() =>
             {
                 player.orders.clearAll(city);
-            }), null, orderLength > 0);
+            }, SoundLib.menuBack), null, orderLength > 0);
 
 
             content.newParagraph();
@@ -244,12 +470,16 @@ namespace VikingEngine.DSSWars.Build
 
                 foreach (var opt in AutoBuildOptions)
                 {
+                    var build = BuildLib.BuildOptions[(int)opt];
+
                     var optButton = new RichboxButton(new List<AbsRichBoxMember> {
-                    new RichBoxText(BuildLib.BuildOptions[(int)opt].Label())
+                        new RichBoxImage(build.sprite),
+                        new RichBoxSpace(),
+                        new RichBoxText(build.Label())
                     }, new RbAction(() =>
                     {
                         city.autoExpandFarmType = opt;
-                    }));
+                    }, SoundLib.menu));
                     optButton.setGroupSelectionColor(HudLib.RbSettings, opt == city.autoExpandFarmType);
                     content.Add(optButton);
                     content.space();

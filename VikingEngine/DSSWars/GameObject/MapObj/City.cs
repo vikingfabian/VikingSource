@@ -104,6 +104,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (set)
             {
                 autoBuild_Work = value;
+                (value? SoundLib.click : SoundLib.back).Play();
             }
             return autoBuild_Work;
         }
@@ -112,6 +113,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (set)
             {
                 autoBuild_Farm = value;
+                (value ? SoundLib.click : SoundLib.back).Play();
             }
             return autoBuild_Farm;
         }
@@ -306,7 +308,6 @@ namespace VikingEngine.DSSWars.GameObject
             res_twohandsword.writeGameState(w); // ItemResourceType.TwoHandSword,
             res_knightslance.writeGameState(w); // ItemResourceType.KnightsLance,
             res_bow.writeGameState(w); // ItemResourceType.Bow,
-            res_longbow.writeGameState(w); // ItemResourceType.LongBow,
             res_ballista.writeGameState(w); // ItemResourceType.Ballista,            
 
             res_lightArmor.writeGameState(w); // ItemResourceType.LightArmor,
@@ -371,7 +372,6 @@ namespace VikingEngine.DSSWars.GameObject
             res_twohandsword.readGameState(r, subversion); // ItemResourceType.TwoHandSword,
             res_knightslance.readGameState(r, subversion); // ItemResourceType.KnightsLance,
             res_bow.readGameState(r, subversion); // ItemResourceType.Bow,
-            res_longbow.readGameState(r, subversion); // ItemResourceType.LongBow,
             res_ballista.readGameState(r, subversion); // ItemResourceType.Ballista,            
 
             res_lightArmor.readGameState(r, subversion); // ItemResourceType.LightArmor,
@@ -1101,15 +1101,17 @@ namespace VikingEngine.DSSWars.GameObject
         {
            
             base.toHud(args);
-
-            if (/*args.selected && */ faction == args.player.faction)
+            if (args.ShowFull)
             {
-                CityDetailsHud(true, args.player, args.content);
-                new Display.CityMenu(args.player, this, args.content);
-            }
-            else
-            {
-                CityDetailsHud(false, args.player, args.content);
+                if (faction == args.player.faction)
+                {
+                    CityDetailsHud(true, args.player, args.content);
+                    new Display.CityMenu(args.player, this, args.content);
+                }
+                else
+                {
+                    CityDetailsHud(false, args.player, args.content);
+                }
             }
         }
 
@@ -1288,21 +1290,15 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (this.faction != faction)
             {
-                if (this.faction != null)
-                {
-                    this.faction.remove(this);
-                }
-
+                Faction prevOwner = this.faction;
                 this.faction = faction;
                 faction.AddCity(this, false);
-
+                if (prevOwner != null)
+                {
+                    prevOwner.remove(this);
+                }
                 OnNewOwner();
             }
-
-            //if (guardCount <= 0)
-            //{
-            //    guardCount = 1;
-            //}
         }
 
         override public void OnNewOwner()

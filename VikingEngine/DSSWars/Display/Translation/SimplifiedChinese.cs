@@ -1574,5 +1574,22 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string FactionName_Monger => "贩夫";
         public override string FactionName_Hatu => "哈图";
         public override string FactionName_Destru => "德斯特鲁";
+
+        //patch2
+        public override string Tutorial_BuildSomething => "建造一个可以生产 {0} 的设施";
+        public override string Tutorial_BuildCraft => "为 {0} 建造一个工艺站";
+        public override string Tutorial_IncreaseBufferLimit => "增加 {0} 的缓冲区限制";
+
+        /// <summary>
+        /// 0: count, 1: item type
+        /// </summary>
+        public override string Tutorial_CollectItemStockpile => "达到 {0} {1} 的库存量";
+        public override string Tutorial_LookAtFoodBlueprint => "查看食物蓝图";
+        public override string Tutorial_CollectFood_Info1 => "工人会走到市政厅吃东西";
+        public override string Tutorial_CollectFood_Info2 => "军队派遣支援工人收集食物";
+        public override string Tutorial_CollectFood_Info0 => "想完全控制工人？将所有工作优先级设为零，然后一次激活一个。";
+
+        public override string EndGameStatistics_DecorsBuilt => "建造的装饰：{0}";
+        public override string EndGameStatistics_StatuesBuilt => "建造的雕像：{0}";
     }
 }

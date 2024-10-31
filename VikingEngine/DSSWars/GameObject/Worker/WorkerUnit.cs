@@ -218,6 +218,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                 break;
                             case WorkType.Plant:
                                 SoundLib.drop_item.Play(model.position);
+                                new ResourceEffect(ItemResourceType.Water_G, -DssConst.PlantWaterCost, model.position, ResourceEffectType.Add);
                                 break;
                             case WorkType.DropOff:
                                 SoundLib.drop_item.Play(model.position);

@@ -8,8 +8,10 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display.Component;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject.Delivery;
+using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.GO.Gadgets;
 
 namespace VikingEngine.DSSWars.GameObject.Conscript
 {
@@ -56,7 +58,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 content.Add(title);
                 //content.Add(new RichBoxText(typeName + " " + currentStatus.idAndPosition.ToString()));
                 content.space();
-                 HudLib.CloseButton(content,new RbAction(() => { city.selectedConscript = -1; }));
+                 HudLib.CloseButton(content,new RbAction(() => { city.selectedConscript = -1; }, SoundLib.menuBack));
 
                 content.newParagraph();
 
@@ -66,10 +68,19 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 //for (MainWeapon weapon = 0; weapon < MainWeapon.NUM; weapon++)
                 foreach (var weapon in weapons)
                 {
-                    var button = new RichboxButton(new List<AbsRichBoxMember>{
+                    ItemResourceType item = ConscriptProfile.WeaponItem(weapon);
+                    var buttonContent = new List<AbsRichBoxMember>(3) { 
+                        new RichBoxImage(ResourceLib.Icon(item)),
                        new RichBoxText( LangLib.Weapon(weapon))
-                    },
-                    new RbAction1Arg<MainWeapon>(weaponClick, weapon),
+                    };
+
+                    if (city.GetGroupedResource(item).amount >= DssConst.SoldierGroup_DefaultCount)
+                    {
+                        buttonContent.Insert(0, new RichBoxImage(SpriteName.warsResourceChunkAvailable));
+                    }
+
+                    var button = new RichboxButton(buttonContent,
+                    new RbAction1Arg<MainWeapon>(weaponClick, weapon, SoundLib.menu),
                     new RbAction1Arg<MainWeapon>(weaponTooltip, weapon)
                     );
                     button.setGroupSelectionColor(HudLib.RbSettings, weapon == currentStatus.profile.weapon);
@@ -83,9 +94,21 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 content.newLine();
                 for (ArmorLevel armorLvl = 0; armorLvl < ArmorLevel.NUM; armorLvl++)
                 {
-                    var button = new RichboxButton(new List<AbsRichBoxMember>{
-                       new RichBoxText( LangLib.Armor(armorLvl))
-                    }, new RbAction1Arg<ArmorLevel>(armorClick, armorLvl),
+                    var buttonContent = new List<AbsRichBoxMember>(3);
+                    ItemResourceType item = ConscriptProfile.ArmorItem(armorLvl);
+
+                    if (city.GetGroupedResource(item).amount >= DssConst.SoldierGroup_DefaultCount)
+                    { 
+                        buttonContent.Add(new RichBoxImage(SpriteName.warsResourceChunkAvailable));
+                    }
+                    if (armorLvl != ArmorLevel.None)
+                    {
+                        buttonContent.Add(new RichBoxImage(ResourceLib.Icon(item)));
+                    }
+                    buttonContent.Add(new RichBoxText(LangLib.Armor(armorLvl)));
+
+                    var button = new RichboxButton(buttonContent, 
+                        new RbAction1Arg<ArmorLevel>(armorClick, armorLvl, SoundLib.menu),
                     new RbAction1Arg<ArmorLevel>(armorTooltip, armorLvl));
                     button.setGroupSelectionColor(HudLib.RbSettings, armorLvl == currentStatus.profile.armorLevel);
                     content.Add(button);
@@ -106,8 +129,9 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 for (TrainingLevel training = minLevel; training <= maxLevel; training++)
                 {
                     var button = new RichboxButton(new List<AbsRichBoxMember>{
+                        new RichBoxImage((SpriteName)((int)SpriteName.WarsUnitLevelMinimal + (int)training)),
                         new RichBoxText( LangLib.Training(training))
-                    }, new RbAction1Arg<TrainingLevel>(trainingClick, training),
+                    }, new RbAction1Arg<TrainingLevel>(trainingClick, training, SoundLib.menu),
                     new RbAction2Arg<TrainingLevel, bool>(trainingTooltip, training, currentStatus.nobelmen));
                     button.setGroupSelectionColor(HudLib.RbSettings, training == currentStatus.profile.training);
                     content.Add(button);
@@ -133,10 +157,32 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 {
                     var button = new RichboxButton(new List<AbsRichBoxMember>{
                        new RichBoxText( LangLib.SpecializationTypeName(specialization))
-                    }, new RbAction1Arg<SpecializationType>(specializationClick, specialization));
+                    }, new RbAction1Arg<SpecializationType>(specializationClick, specialization, SoundLib.menu));
                     button.setGroupSelectionColor(HudLib.RbSettings, specialization == currentStatus.profile.specialization);
                     content.Add(button);
                     content.space();
+                }
+
+                content.newParagraph();
+                content.h2(DssRef.lang.Hud_PurchaseTitle_Cost).overrideColor = HudLib.TitleColor_Label;
+
+                content.newLine();
+                HudLib.BulletPoint(content);
+                HudLib.ResourceCost(content, ResourceType.Worker, DssConst.SoldierGroup_DefaultCount, city.workForce);
+
+                content.newLine();
+                HudLib.BulletPoint(content);
+                var weaponItem = ConscriptProfile.WeaponItem(currentStatus.profile.weapon);
+                var weaponRes = city.GetGroupedResource(weaponItem);
+                HudLib.ResourceCost(content, weaponItem, DssConst.SoldierGroup_DefaultCount, weaponRes.amount);
+
+                if (currentStatus.profile.armorLevel != ArmorLevel.None)
+                {
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    var armorItem = ConscriptProfile.ArmorItem(currentStatus.profile.armorLevel);
+                    var armorRes = city.GetGroupedResource(armorItem);
+                    HudLib.ResourceCost(content, armorItem, DssConst.SoldierGroup_DefaultCount, armorRes.amount);
                 }
 
                 content.newParagraph();
@@ -146,36 +192,17 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
 
 
                 content.newParagraph();
-                content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(DssRef.lang.Hud_CopySetup) },
-                    new RbAction(() =>
-                    {
-                        if (currentStatus.nobelmen)
-                        {
-                            player.knightConscriptCopy = currentStatus.inProgress;
-                        }
-                        else
-                        {
-                            player.soldierConscriptCopy = currentStatus.inProgress;
-                        }
-                    }, SoundLib.menu)));
+                content.Add(new RichboxButton(new List<AbsRichBoxMember> {
+                    new RichBoxImage(player.input.Copy.Icon),
+                    new RichBoxSpace(0.5f),
+                    new RichBoxText(DssRef.lang.Hud_CopySetup) },
+                    new RbAction1Arg<LocalPlayer>(city.copyConscript, player, SoundLib.menuCopy)));
                 content.space();
-                content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(DssRef.lang.Hud_Paste) },
-                    new RbAction(() =>
-                    {
-                        BarracksStatus currentStatus = get();
-
-                        if (currentStatus.nobelmen)
-                        {
-                            currentStatus.profile = player.knightConscriptCopy;
-                        }
-                        else
-                        {
-                            currentStatus.profile = player.soldierConscriptCopy;
-                        }
-
-                        set(currentStatus);
-
-                    }, SoundLib.menu)));
+                content.Add(new RichboxButton(new List<AbsRichBoxMember> {
+                    new RichBoxImage(player.input.Paste.Icon),
+                    new RichBoxSpace(0.5f),
+                    new RichBoxText(DssRef.lang.Hud_Paste) },
+                    new RbAction1Arg<LocalPlayer>(city.pasteConscript, player, SoundLib.menuPaste)));
 
                 if (currentStatus.active != ConscriptActiveStatus.Idle)
                 {
@@ -251,7 +278,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                         caption,
                         new RichBoxNewLine(),
                         info,
-                    }, new RbAction1Arg<int>(selectClick, i)));
+                    }, new RbAction1Arg<int>(selectClick, i, SoundLib.menu)));
 
                         //content.text(currentProfile.shortActiveString()).overrideColor = HudLib.InfoYellow_Light;
 
@@ -280,11 +307,12 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
             RichBoxContent content = new RichBoxContent();
             content.Add(new RichBoxText(string.Format(DssRef.lang.Conscript_WeaponDamage, ConscriptProfile.WeaponDamage(weapon))));
             content.newParagraph();
-            content.h2(DssRef.lang.Hud_Available).overrideColor = HudLib.TitleColor_Label;
             var item = ConscriptProfile.WeaponItem(weapon);
-
+            var res = city.GetGroupedResource(item);
+           
+            content.h2(DssRef.lang.Hud_Available).overrideColor = HudLib.TitleColor_Label;
             bool reachedBuffer = false;
-            city.GetGroupedResource(item).toMenu(content, item, ref reachedBuffer);
+            res.toMenu(content, item, false, ref reachedBuffer);
 
             //if (reachedBuffer)
             //{
@@ -313,7 +341,7 @@ namespace VikingEngine.DSSWars.GameObject.Conscript
                 var item = ConscriptProfile.ArmorItem(armor);
 
                 bool reachedBuffer = false;
-                city.GetGroupedResource(item).toMenu(content, item, ref reachedBuffer);
+                city.GetGroupedResource(item).toMenu(content, item, false, ref reachedBuffer);
                 //if (reachedBuffer)
                 //{
                 //    GroupedResource.BufferIconInfo(content);

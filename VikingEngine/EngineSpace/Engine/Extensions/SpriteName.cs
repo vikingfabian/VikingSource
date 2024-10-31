@@ -2429,6 +2429,18 @@ namespace VikingEngine
         warsCheckYes,
         warsCheckNo,
         warsBulletPoint,
+        warsResourceChunkAvailable,
+        warsResourceChunkNotAvailable,
+
+        warsFolder_carton,
+        warsFolder_white,
+        warsFolder_orange,
+        warsFolder_yellow,
+        warsFolder_green,
+        warsFolder_pink,
+        warsFolder_blue,
+        warsFolder_cyan,
+        
 
         WarsRelationAlly,
         WarsRelationGood,
@@ -2511,6 +2523,8 @@ namespace VikingEngine
         WarsBuild_Smith,
         WarsBuild_WheatFarms,
         WarsBuild_LinenFarms,
+        WarsBuild_RapeseedFarms,
+        WarsBuild_HempFarms,
         WarsBuild_PigPen,
         WarsBuild_HenPen,
         WarsBuild_Statue,
@@ -2550,6 +2564,8 @@ namespace VikingEngine
         WarsResource_TwoHandSword,
         WarsResource_KnightsLance,
         WarsResource_LinenCloth,
+        WarsResource_Rapeseed,
+        WarsResource_Hemp,
 
         WarsHome,
         WarsDelivery,

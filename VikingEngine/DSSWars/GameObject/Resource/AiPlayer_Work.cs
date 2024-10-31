@@ -41,14 +41,14 @@ namespace VikingEngine.DSSWars.Players
 
                     adjustWorkToBuffer(ref city.res_iron, ref city.workTemplate.craft_iron);
 
-                    adjustWorkToBuffer(ref city.res_rawFood, ref city.workTemplate.farming);
+                    adjustWorkToBuffer(ref city.res_rawFood, ref city.workTemplate.farm_food);
 
                     //adjustWorkToBuffer(ref city.res_wood, ref city.workTemplate.wood);
 
                     if (city.res_food.amount <= 0)
                     {
                         city.workTemplate.craft_food.value = 5;
-                        city.workTemplate.farming.value = 4;
+                        city.workTemplate.farm_food.value = 4;
                     }
                     if (city.res_wood.amount <= 0)
                     {

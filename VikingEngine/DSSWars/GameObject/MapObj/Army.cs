@@ -216,11 +216,13 @@ namespace VikingEngine.DSSWars.GameObject
                         args.content.text("Id: " + id.ToString());
                     }
                 }
+
+                if (faction == args.player.faction)
+                {
+                    new Display.ArmyMenu(args.player, this, args.content);
+                }
             }
-            if (/*args.selected &&*/ faction == args.player.faction)
-            {                
-                new Display.ArmyMenu(args.player, this, args.content);
-            }
+            
         }
 
        

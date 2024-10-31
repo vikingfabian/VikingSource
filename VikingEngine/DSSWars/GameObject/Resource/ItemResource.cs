@@ -57,8 +57,6 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         }
     }
 
-    
-    
     enum ItemResourceType
     {
         NONE,
@@ -72,12 +70,12 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         Cheese,
         Meat,
 
-        RawLeather, 
+        RawLeather,
         Leather,
 
         WoodShoe,
         LeatherShoe,
-        
+
         SoftWood,
         HardWood,
         DryWood,
@@ -86,7 +84,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         Box,
         Wheel,
         Wagon,
-        Coal, 
+        Coal,
         Tar,
 
         Linen,
@@ -111,21 +109,17 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         Silver,
         Gold,
         Mithril,
-        
+
         Bow,
         LongBow,
-        
+
         SharpStick,
         Sword,
         Shield,
-        
+
         LightArmor,
         MediumArmor,
         HeavyArmor,
-        //Padding,
-        //Gambeson,
-        //Brigandine,
-        //PlateArmor,
 
         StoneBlock,
         Stone_G,
@@ -143,7 +137,7 @@ namespace VikingEngine.DSSWars.GameObject.Resource
 
         Fuel_G,
         Poop,
-        
+
         Ballista,
         KnightsLance,
         TwoHandSword,
@@ -152,8 +146,110 @@ namespace VikingEngine.DSSWars.GameObject.Resource
         RawFood_Group,
         SkinLinen_Group,
         Men,
-        
+        Rapeseed,
+        Hemp,
 
         NUM,
     }
+
+    //enum ItemResourceType
+    //{
+    //    NONE,
+
+    //    Hen,
+    //    Pig,
+    //    Goat,
+    //    Ox,
+    //    Egg,
+    //    Milk,
+    //    Cheese,
+    //    Meat,
+
+    //    RawLeather, 
+    //    Leather,
+
+    //    WoodShoe,
+    //    LeatherShoe,
+
+    //    SoftWood,
+    //    HardWood,
+    //    DryWood,
+    //    Planks,
+    //    Barrel,
+    //    Box,
+    //    Wheel,
+    //    Wagon,
+    //    Coal, 
+    //    Tar,
+
+    //    Linen,
+    //    Wool,
+    //    Rope,
+    //    Cloth,
+    //    Clothes,
+    //    Bag,
+
+    //    IronOre_G,
+    //    TinOre,
+    //    CupperOre,
+    //    SilverOre,
+    //    GoldOre,
+    //    MithrilOre,
+
+    //    Iron_G,
+    //    Steel,
+    //    Tin,
+    //    Cupper,
+    //    LongBow,
+    //    Silver,
+    //    Gold,
+    //    Mithril,
+
+    //    Bow,
+
+
+    //    SharpStick,
+    //    Sword,
+    //    Shield,
+
+    //    LightArmor,
+    //    MediumArmor,
+    //    HeavyArmor,
+    //    //Padding,
+    //    //Gambeson,
+    //    //Brigandine,
+    //    //PlateArmor,
+
+    //    StoneBlock,
+    //    Stone_G,
+    //    Clay,
+    //    Brick,
+
+    //    Hemp,
+
+    //    Wheat,
+    //    Rapeseed,
+    //    RES_,
+    //    Beer,
+    //    Food_G,
+
+    //    Water_G,
+    //    SaltWater,
+
+    //    Fuel_G,
+    //    Poop,
+
+    //    Ballista,
+    //    KnightsLance,
+    //    TwoHandSword,
+
+    //    Wood_Group,
+    //    RawFood_Group,
+    //    SkinLinen_Group,
+    //    Men,
+
+
+
+    //    NUM,
+    //}
 }

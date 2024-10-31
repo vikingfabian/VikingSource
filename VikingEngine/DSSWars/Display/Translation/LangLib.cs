@@ -239,6 +239,11 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                         case TerrainSubFoilType.WheatFarm:
                             return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat);
+
+                        case TerrainSubFoilType.RapeSeedFarm:
+                            return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.todoLang.Resource_TypeName_Rapeseed);
+                        case TerrainSubFoilType.HempFarm:
+                            return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.todoLang.Resource_TypeName_Hemp);
                     }
                     break;
 
@@ -269,7 +274,7 @@ namespace VikingEngine.DSSWars.Display.Translation
             }
 
 
-            return TextLib.Error;
+            return TextLib.Error + " (" + mainType.ToString() + " " + subType.ToString()+ ")";
         }
 
         public static string BuildingDescription(TerrainBuildingType buildingType)
@@ -350,6 +355,11 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case ItemResourceType.SkinLinen_Group: 
                     return DssRef.lang.Resource_TypeName_Linen;
 
+                case ItemResourceType.Rapeseed:
+                    return DssRef.todoLang.Resource_TypeName_Rapeseed;
+                case ItemResourceType.Hemp:
+                    return DssRef.todoLang.Resource_TypeName_Hemp;
+
                 case ItemResourceType.SharpStick:
                     return DssRef.lang.Resource_TypeName_SharpStick;
                 case ItemResourceType.Sword:
@@ -395,7 +405,24 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case DSSWars.CityCulture.PitMasters: return title ? DssRef.lang.CityCulture_PitMasters : DssRef.lang.CityCulture_PitMasters_Description;
 
 
-                default: return TextLib.Error;
+                case DSSWars.CityCulture.Stonemason:
+                    return title ? DssRef.todoLang.CityCulture_Stonemason : DssRef.todoLang.CityCulture_Stonemason_Description;
+                case DSSWars.CityCulture.Brewmaster:
+                    return title ? DssRef.todoLang.CityCulture_Brewmaster : DssRef.todoLang.CityCulture_Brewmaster_Description;
+                case DSSWars.CityCulture.Weavers:
+                    return title ? DssRef.todoLang.CityCulture_Weavers : DssRef.todoLang.CityCulture_Weavers_Description;
+                case DSSWars.CityCulture.SiegeEngineer:
+                    return title ? DssRef.todoLang.CityCulture_SiegeEngineer : DssRef.todoLang.CityCulture_SiegeEngineer_Description;
+                case DSSWars.CityCulture.Armorsmith:
+                    return title ? DssRef.todoLang.CityCulture_Armorsmith : DssRef.todoLang.CityCulture_Armorsmith_Description;
+                case DSSWars.CityCulture.Nobelmen:
+                    return title ? DssRef.todoLang.CityCulture_Nobelmen : DssRef.todoLang.CityCulture_Nobelmen_Description;
+                case DSSWars.CityCulture.Seafaring:
+                    return title ? DssRef.todoLang.CityCulture_Seafaring : DssRef.todoLang.CityCulture_Seafaring_Description;
+                case DSSWars.CityCulture.Backtrader:
+                    return title ? DssRef.todoLang.CityCulture_Backtrader : DssRef.todoLang.CityCulture_Backtrader_Description;
+
+                default : return TextLib.Error;
             }
         }
 

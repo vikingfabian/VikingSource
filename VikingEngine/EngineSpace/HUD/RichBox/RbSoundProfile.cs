@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Engine;
+using VikingEngine.HUD.RichBox;
 using VikingEngine.Sound;
 
 namespace VikingEngine.EngineSpace.HUD.RichBox
 {
-    //abstract class RbSoundProfileBase
-    //{
-    //    public static readonly RbEmptySound Empty = new RbEmptySound();
-    //    abstract public void onActionTrigger(bool enabled);
-    //}
 
-    class RbSoundProfile//: RbSoundProfileBase
+    class RbSoundProfile
     {
         SoundContainerBase yes;
         SoundContainerBase no;
@@ -37,10 +34,17 @@ namespace VikingEngine.EngineSpace.HUD.RichBox
         }
     }
 
-    //class RbEmptySound: RbSoundProfileBase
-    //{
-    //    public override void onActionTrigger(bool enabled)
-    //    {//Do nothing
-    //    }
-    //}
+
+    class RbSoundAction : AbsRbAction
+    {
+        public RbSoundAction(RbSoundProfile sound)
+        {
+            this.sound = sound;
+        }
+
+        public override void actionTrigger()
+        {
+            sound?.onActionTrigger(enabled);
+        }
+    }
 }

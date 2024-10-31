@@ -25,6 +25,8 @@ namespace VikingEngine.DSSWars.Build
         Carpenter,
         WheatFarm,
         LinenFarm,
+        HempFarm,
+        RapeSeedFarm,
         PigPen,
         HenPen,
         Statue_ThePlayer,
@@ -55,6 +57,10 @@ namespace VikingEngine.DSSWars.Build
             BuildAndExpandType.HenPen,
             BuildAndExpandType.WheatFarm,
             BuildAndExpandType.LinenFarm,
+            BuildAndExpandType.RapeSeedFarm,
+            BuildAndExpandType.HempFarm,
+            
+
             BuildAndExpandType.Pavement,
             BuildAndExpandType.PavementFlower,
             BuildAndExpandType.Statue_ThePlayer
@@ -81,11 +87,26 @@ namespace VikingEngine.DSSWars.Build
 
             new BuildOption(BuildAndExpandType.WheatFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, SpriteName.WarsBuild_WheatFarms, ResourceLib.CraftWheatFarm);
             new BuildOption(BuildAndExpandType.LinenFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarm, SpriteName.WarsBuild_LinenFarms, ResourceLib.CraftLinenFarm);
+            new BuildOption(BuildAndExpandType.HempFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarm, SpriteName.WarsBuild_HempFarms, ResourceLib.CraftHempFarm);
+            new BuildOption(BuildAndExpandType.RapeSeedFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarm, SpriteName.WarsBuild_RapeseedFarms, ResourceLib.CraftRapeseedFarm);
 
             new BuildOption(BuildAndExpandType.Pavement, TerrainMainType.Decor, (int)TerrainDecorType.Pavement, SpriteName.WarsBuild_Pavement, ResourceLib.CraftPavement);
             new BuildOption(BuildAndExpandType.PavementFlower, TerrainMainType.Decor, (int)TerrainDecorType.PavementFlower, SpriteName.WarsBuild_PavementFlowers, ResourceLib.CraftPavementFlower);
             new BuildOption(BuildAndExpandType.Statue_ThePlayer, TerrainMainType.Decor, (int)TerrainDecorType.Statue_ThePlayer, SpriteName.WarsBuild_Statue, ResourceLib.CraftStatue);
 
+        }
+
+        public static BuildAndExpandType BuildTypeFromTerrain(TerrainMainType main, int sub)
+        { 
+            foreach (BuildOption buildOption in BuildOptions)
+            {
+                if (buildOption.mainType == main && buildOption.subType == sub)
+                { 
+                    return buildOption.buildType;
+                }
+            }
+
+            return BuildAndExpandType.NUM_NONE;
         }
 
         public static bool CanAutoBuildHere(ref SubTile subTile)

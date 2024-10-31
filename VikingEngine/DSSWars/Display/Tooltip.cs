@@ -7,6 +7,8 @@ using Valve.Steamworks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.Conscript;
+using VikingEngine.DSSWars.GameObject.Delivery;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.HUD.RichBox;
@@ -132,11 +134,11 @@ namespace VikingEngine.DSSWars.Display
                 switch (subTile.selectTileResult)
                 {
                     case Players.SelectTileResult.Build:
-                        title = new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Build_PlaceBuilding, BuildLib.BuildOptions[(int)player.BuildControls.placeBuildingType].Label()));
+                        title = new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Build_PlaceBuilding, BuildLib.BuildOptions[(int)player.buildControls.placeBuildingType].Label()));
                         content.Add(title);
                         content.newLine();
                         //CraftBlueprint blueprint = ResourceLib.Blueprint(player.BuildControls.placeBuildingType);
-                        var bp = player.BuildControls.placeBuildingOption().blueprint;
+                        var bp = player.buildControls.placeBuildingOption().blueprint;
                         bp.toMenu(content, subTile.city);
 
                         var mayBuild = player.mapControls.hover.subTile.MayBuild(player);
@@ -180,16 +182,40 @@ namespace VikingEngine.DSSWars.Display
                         break;
 
                     case Players.SelectTileResult.Postal:
-                        title = new RichBoxText(DssRef.lang.BuildingType_Postal);
-                        content.Add(title);
+                        {
+                            title = new RichBoxText(DssRef.lang.BuildingType_Postal);                            
+                            content.Add(title);
+
+                            content.newLine();
+                            if (subTile.city.GetDelivery(subTile.subTilePos, out DeliveryStatus status))
+                            {
+                                status.tooltip(player, subTile.city, content);
+                            }
+                        }
                         break;
                     case Players.SelectTileResult.Recruitment:
-                        title = new RichBoxText(DssRef.lang.BuildingType_Recruitment);
-                        content.Add(title);
+                        {
+                            title = new RichBoxText(DssRef.lang.BuildingType_Recruitment);
+                            content.Add(title);
+
+                            content.newLine();
+                            if (subTile.city.GetDelivery(subTile.subTilePos, out DeliveryStatus status))
+                            {
+                                status.tooltip(player, subTile.city, content);
+                            }
+                        }
                         break;
-                    case Players.SelectTileResult.Barracks:
-                        title = new RichBoxText(DssRef.lang.Conscription_Title);
-                        content.Add(title);
+                    case Players.SelectTileResult.Conscript:
+                        {
+                            title = new RichBoxText(DssRef.lang.Conscription_Title);
+                            content.Add(title);
+
+                            content.newLine();
+                            if (subTile.city.GetConscript(subTile.subTilePos, out BarracksStatus status))
+                            {
+                                status.tooltip(player, subTile.city, content);
+                            }
+                        }
                         break;
                 }
                 title.overrideColor = avaialableAction ? HudLib.TitleColor_Action: HudLib.NotAvailableColor;
@@ -331,7 +357,7 @@ namespace VikingEngine.DSSWars.Display
 
             Graphics.Image bg = new Graphics.Image(SpriteName.WhiteArea, area.Position, area.Size,
                 ImageLayers.Lay4);
-            bg.ColorAndAlpha(Color.Black, 0.7f);
+            bg.ColorAndAlpha(Color.Black, 0.95f);
             size = area.Size;
 
             images.Add(bg);

@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display.Component;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject.Conscript;
+using VikingEngine.DSSWars.GameObject.Delivery;
 using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
@@ -118,14 +119,23 @@ namespace VikingEngine.DSSWars.GameObject
                                         DssRef.achieve.UnlockAchievement_async(AchievementIndex.elite_knights);
                                     }
 
-                                    if (Culture == CityCulture.Archers && status.inProgress.RangedUnit())
-                                    {
-                                        DssRef.state.progress.onCultureBuild(true);
+                                    switch (Culture)
+                                    { 
+                                        case CityCulture.Archers:
+                                            DssRef.state.progress.onCultureBuild(true);
+                                            break;
+                                        case CityCulture.Warriors:
+                                            DssRef.state.progress.onCultureBuild(false);
+                                            break;
                                     }
-                                    else if (Culture == CityCulture.Warriors && !status.inProgress.RangedUnit())
-                                    {
-                                        DssRef.state.progress.onCultureBuild(false);
-                                    }
+                                    //if (Culture == CityCulture.Archers && status.inProgress.RangedManUnit())
+                                    //{
+                                    //    DssRef.state.progress.onCultureBuild(true);
+                                    //}
+                                    //else if (Culture == CityCulture.Warriors && status.inProgress.MeleeSoldier())
+                                    //{
+                                    //    DssRef.state.progress.onCultureBuild(false);
+                                    //}
                                 }
                                 break;
                         }
@@ -134,6 +144,83 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
         }
+
+        public void toggleConscriptStop()
+        {
+            toggleConscriptStop(selectedConscript);
+        }
+
+        public bool toggleConscriptStop(int index)
+        {
+            if (arraylib.InBound(conscriptBuildings, index))
+            {
+                BarracksStatus currentStatus = conscriptBuildings[index];
+                currentStatus.que = currentStatus.que > 0? 0 : 100;
+                conscriptBuildings[index] = currentStatus;
+                return currentStatus.que > 0;
+            }
+            return false;
+        }
+
+        public void copyConscript(LocalPlayer player)
+        {
+            copyConscript(player, selectedConscript);
+        }
+
+        public void copyConscript(LocalPlayer player, int index)
+        {
+            if (arraylib.InBound(conscriptBuildings, index))
+            {
+                BarracksStatus currentStatus = conscriptBuildings[index];
+                if (currentStatus.nobelmen)
+                {
+                    player.knightConscriptCopy = currentStatus.profile;
+                }
+                else
+                {
+                    player.soldierConscriptCopy = currentStatus.profile;
+                }
+            }
+        }
+
+        public void pasteConscript(LocalPlayer player)
+        {
+            pasteConscript(player, selectedConscript);
+        }
+
+        public void pasteConscript(LocalPlayer player, int index)
+        {
+            if (arraylib.InBound(conscriptBuildings, index))
+            {
+                BarracksStatus currentStatus = conscriptBuildings[index];
+                
+                if (currentStatus.nobelmen)
+                {
+                    currentStatus.profile = player.knightConscriptCopy;
+                }
+                else
+                {
+                    currentStatus.profile = player.soldierConscriptCopy;
+                }
+
+                conscriptBuildings[index] = currentStatus;
+            }
+        }
+
+        //public void toggleConscriptStop()
+        //{
+        //    toggleConscriptStop(selectedConscript);
+        //}
+
+        //public void toggleConscriptStop(int index)
+        //{
+        //    if (arraylib.InBound(deliveryServices, index))
+        //    {
+        //        DeliveryStatus currentStatus = deliveryServices[index];
+        //        currentStatus.que = currentStatus.que > 0 ? 0 : 100;
+        //        deliveryServices[index] = currentStatus;
+        //    }
+        //}
 
         public Vector3 defaultConscriptPos()
         {
@@ -199,15 +286,35 @@ namespace VikingEngine.DSSWars.GameObject
                 skillBonus = 1,
             };
 
-            if (Culture == CityCulture.Archers && soldierProfile.conscript.RangedUnit())
+            switch (Culture)
             {
-                soldierProfile.skillBonus = 1.2f;
-            }
-            else if (Culture == CityCulture.Warriors && !soldierProfile.conscript.RangedUnit())
-            {
-                soldierProfile.skillBonus = 1.2f;
-            }
+                case CityCulture.Archers:
+                    if (soldierProfile.conscript.RangedManUnit())
+                    {
+                        soldierProfile.skillBonus = 1.2f;
+                    }
+                    break;
+                case CityCulture.Warriors:
+                    if (soldierProfile.conscript.MeleeSoldier())
+                    {
+                        soldierProfile.skillBonus = 1.2f;
+                    }
+                    break;
+                case CityCulture.Nobelmen:
+                    if (soldierProfile.conscript.KnightUnit())
+                    {
+                        soldierProfile.skillBonus = 1.2f;
+                    }
+                    break;
+                case CityCulture.Seafaring:
+                    if (soldierProfile.conscript.specialization == SpecializationType.Sea)
+                    {
+                        soldierProfile.skillBonus = 1.2f;
+                    }
+                    break;
 
+            }
+            
             
             for (int i = 0; i < count; i++)
             {
@@ -325,10 +432,32 @@ namespace VikingEngine.DSSWars.GameObject
                 conscriptBuildings.Add(consriptProfile);
             }
         }
-    }
 
-    
+        public int conscriptIxFromSubTile(IntVector2 subTilePos)
+        {
+            int id = conv.IntVector2ToInt(subTilePos);
+            for (int i = 0; i < conscriptBuildings.Count; ++i)
+            {
+                if (conscriptBuildings[i].idAndPosition == id)
+                {
+                    return i;
+                }
+            }
 
+            return -1;
+        }
 
-    
+        public bool GetConscript(IntVector2 subTilePos, out BarracksStatus status)
+        {
+            var index = conscriptIxFromSubTile(subTilePos);
+            if (arraylib.InBound(conscriptBuildings, index))
+            {
+                status = conscriptBuildings[index];
+                return true;
+            }
+
+            status = new BarracksStatus();
+            return false;
+        }
+    }   
 }

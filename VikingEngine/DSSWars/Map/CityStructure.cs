@@ -17,8 +17,8 @@ namespace VikingEngine.DSSWars.Map
         public List<IntVector2> StoragePoints_workupdate = new List<IntVector2>(4);
         public List<IntVector2> Trees = new List<IntVector2>(20);
         public List<IntVector2> Stones = new List<IntVector2>(20);
-        public List<IntVector2> FarmPlant = new List<IntVector2>(20);
-        public List<IntVector2> FarmGather = new List<IntVector2>(20);
+        public List<SubTileWork> Farms = new List<SubTileWork>(20);
+        //public List<IntVector2> FarmGather = new List<IntVector2>(20);
         public List<IntVector2> AnimalPens = new List<IntVector2>(20);
         public List<IntVector2> BogIron = new List<IntVector2>(20);
         public List<IntVector2> Mines = new List<IntVector2>(20);
@@ -26,7 +26,8 @@ namespace VikingEngine.DSSWars.Map
         public List<IntVector2> EmptyLand = new List<IntVector2>(2);
         public List<IntVector2> ResourceOnGround = new List<IntVector2>(20);
         int nobelHouseCount = 0;
-
+        public int fuelSpots = 0;
+        public int foodspots = 0;
         public bool newCity = true;
 
         public void setupTutorialMap(City city)
@@ -96,9 +97,9 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        public void update(City city, int workerCount)
+        public void update(City city, int workerCount, int emptyLandExpansions = 2)
         {
-            int emptyLandExpansions = 2;
+            //int emptyLandExpansions = 2;
 
             IntVector2 topleft;
             ForXYLoop subTileLoop;
@@ -106,8 +107,8 @@ namespace VikingEngine.DSSWars.Map
             StoragePoints_workupdate.Clear();
             Trees.Clear();
             Stones.Clear();
-            FarmPlant.Clear();
-            FarmGather.Clear();
+            Farms.Clear();
+            //FarmGather.Clear();
             AnimalPens.Clear();
             BogIron.Clear();
             Mines.Clear();
@@ -116,7 +117,8 @@ namespace VikingEngine.DSSWars.Map
             ResourceOnGround.Clear();
             nobelHouseCount = 0;
             int coalPitCount = 0;
-
+            fuelSpots = 0;
+            foodspots = 0;
 
             IntVector2 cityHall = WP.ToSubTilePos_Centered(city.tilePos);
             FoodSpots_workupdate.Add(cityHall);
@@ -139,7 +141,7 @@ namespace VikingEngine.DSSWars.Map
 
                             while (subTileLoop.Next())
                             {
-                                var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
+                                SubTile subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
 
                                 if (subTile.collectionPointer >= 0)
                                 {
@@ -164,6 +166,7 @@ namespace VikingEngine.DSSWars.Map
                                                 if (Trees.Count < workerCount &&
                                                     (foil == TerrainSubFoilType.DryWood || subTile.terrainAmount >= TerrainContent.TreeReadySize))
                                                 {
+                                                    ++fuelSpots;
                                                     Trees.Add(subTileLoop.Position);
                                                 }
                                                 break;
@@ -176,17 +179,21 @@ namespace VikingEngine.DSSWars.Map
                                                 }
                                                 break;
 
-                                            case TerrainSubFoilType.WheatFarm:                                                
-                                            case TerrainSubFoilType.LinenFarm:
-                                                if (subTile.terrainAmount == TerrainContent.FarmCulture_Empty)
-                                                {
-                                                    FarmPlant.Add(subTileLoop.Position);
-                                                }
-                                                else if (subTile.terrainAmount >= TerrainContent.FarmCulture_ReadySize)
-                                                {
-                                                    FarmGather.Add(subTileLoop.Position);
-                                                }
+                                            case TerrainSubFoilType.WheatFarm:
+                                                ++foodspots;
+                                                farming(ref subTile);
                                                 break;
+
+                                            case TerrainSubFoilType.LinenFarm:
+                                                farming(ref subTile);
+                                                break;
+
+                                            case TerrainSubFoilType.RapeSeedFarm:
+                                            case TerrainSubFoilType.HempFarm:
+                                                ++fuelSpots;
+                                                farming(ref subTile);
+                                                break;
+
                                             case TerrainSubFoilType.BogIron:
                                                 if (BogIron.Count < workerCount)
                                                 {
@@ -207,12 +214,14 @@ namespace VikingEngine.DSSWars.Map
                                         switch (building)
                                         {
                                             case TerrainBuildingType.HenPen:
+                                                ++foodspots;
                                                 if (subTile.terrainAmount > TerrainContent.HenReady)
                                                 { 
                                                     AnimalPens.Add(subTileLoop.Position);
                                                 }
                                                 break;
                                             case TerrainBuildingType.PigPen:
+                                                ++foodspots;
                                                 if (subTile.terrainAmount > TerrainContent.PigReady)
                                                 {
                                                     AnimalPens.Add(subTileLoop.Position);
@@ -271,6 +280,18 @@ namespace VikingEngine.DSSWars.Map
             //Complete
             city.nobelHouse_buildingCount = nobelHouseCount;
             city.coalpit_buildingCount = coalPitCount;
+
+            void farming(ref SubTile subTile)
+            {
+                if (subTile.terrainAmount == TerrainContent.FarmCulture_Empty)
+                {
+                    Farms.Add(new SubTileWork(subTileLoop.Position, WorkType.Plant));
+                }
+                else if (subTile.terrainAmount >= TerrainContent.FarmCulture_ReadySize)
+                {
+                    Farms.Add(new SubTileWork(subTileLoop.Position, WorkType.GatherFoil));//FarmGather.Add(subTileLoop.Position);
+                }
+            }
         }
 
         public IntVector2 eatPosition(IntVector2 workerSubtile)
@@ -307,6 +328,18 @@ namespace VikingEngine.DSSWars.Map
             }
 
             return result;
+        }
+    }
+
+    struct SubTileWork
+    {
+        public IntVector2 subtile;
+        public WorkType workType;
+
+        public SubTileWork(IntVector2 subtile, WorkType workType)
+        { 
+            this.subtile = subtile;
+            this.workType = workType;
         }
     }
 }

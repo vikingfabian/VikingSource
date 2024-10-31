@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -730,5 +731,22 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string FactionName_Monger { get; }
         public abstract string FactionName_Hatu { get; }
         public abstract string FactionName_Destru { get; }
+
+        //Patch2
+        public abstract string Tutorial_BuildSomething { get; }
+        public abstract string Tutorial_BuildCraft { get; }
+        public abstract string Tutorial_IncreaseBufferLimit { get; }
+
+        /// <summary>
+        /// 0: count, 1: item type
+        /// </summary>
+        public abstract string Tutorial_CollectItemStockpile { get; }
+        public abstract string Tutorial_LookAtFoodBlueprint { get; }
+        public abstract string Tutorial_CollectFood_Info1 { get; }
+        public abstract string Tutorial_CollectFood_Info2 { get; }
+        public abstract string Tutorial_CollectFood_Info0 { get; }
+
+        public abstract string EndGameStatistics_DecorsBuilt { get; }
+        public abstract string EndGameStatistics_StatuesBuilt { get; }
     }
 }

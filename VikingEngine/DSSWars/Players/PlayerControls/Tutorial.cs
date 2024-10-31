@@ -138,6 +138,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             player.faction.refreshCityWork();
 
             refreshLimits();
+            new TimedAction0ArgTrigger(song, 3000);
+        }
+
+        public void song()
+        {
+            Ref.music.PlaySong(Data.Music.Tutorial, true);
         }
 
         void refreshLimits()
@@ -199,8 +205,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.icontext(HudLib.CheckImage(weaponsArmor_selectTab), string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Work));
                     content.icontext(HudLib.CheckImage(weaponsArmor_setWeaponPrio), string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.lang.Resource_TypeName_SharpStick));
                     content.icontext(HudLib.CheckImage(weaponsArmor_setArmorPrio), string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.lang.Resource_TypeName_LightArmor));
-                    content.icontext(HudLib.CheckImage(weaponsArmor_produceWeapons), string.Format(DssRef.todoLang.CollectItemStockpile, CollectWeaponArmorAmount, DssRef.lang.Resource_TypeName_SharpStick));
-                    content.icontext(HudLib.CheckImage(weaponsArmor_produceArmor), string.Format(DssRef.todoLang.CollectItemStockpile, CollectWeaponArmorAmount, DssRef.lang.Resource_TypeName_LightArmor));
+                    content.icontext(HudLib.CheckImage(weaponsArmor_produceWeapons), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, CollectWeaponArmorAmount, DssRef.lang.Resource_TypeName_SharpStick));
+                    content.icontext(HudLib.CheckImage(weaponsArmor_produceArmor), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, CollectWeaponArmorAmount, DssRef.lang.Resource_TypeName_LightArmor));
                     break;
 
                 case TutorialMission.ConscriptArmy:
@@ -211,28 +217,28 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                 case TutorialMission.CollectFood:
                     content.icontext(HudLib.CheckImage(CollectFood_selecttab), string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources));
-                    content.icontext(HudLib.CheckImage(CollectFood_foodblueprint), DssRef.todoLang.LookAtFoodBlueprint);//-look at the food blueprint
-                    content.icontext(HudLib.CheckImage(CollectFood_buildfoodproduction), string.Format(DssRef.todoLang.BuildSomething, DssRef.lang.Resource_TypeName_RawFood));//-build something that produces raw food
-                    content.icontext(HudLib.CheckImage(CollectFood_buildfuelproduction), string.Format(DssRef.todoLang.BuildSomething, DssRef.lang.Resource_TypeName_Fuel));//-build something that produces fuel
-                    content.icontext(HudLib.CheckImage(CollectFood_builcook), string.Format(DssRef.todoLang.BuildCraft, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
-                    content.icontext(HudLib.CheckImage(CollectFood_increasefoodbuffer), string.Format(DssRef.todoLang.IncreaseBufferLimit, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
-                    content.icontext(HudLib.CheckImage(CollectFood_reachfoodamount), string.Format(DssRef.todoLang.CollectItemStockpile, ReachFoodBuffer, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
+                    content.icontext(HudLib.CheckImage(CollectFood_foodblueprint), DssRef.lang.Tutorial_LookAtFoodBlueprint);//-look at the food blueprint
+                    content.icontext(HudLib.CheckImage(CollectFood_buildfoodproduction), string.Format(DssRef.lang.Tutorial_BuildSomething, DssRef.lang.Resource_TypeName_RawFood));//-build something that produces raw food
+                    content.icontext(HudLib.CheckImage(CollectFood_buildfuelproduction), string.Format(DssRef.lang.Tutorial_BuildSomething, DssRef.lang.Resource_TypeName_Fuel));//-build something that produces fuel
+                    content.icontext(HudLib.CheckImage(CollectFood_builcook), string.Format(DssRef.lang.Tutorial_BuildCraft, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
+                    content.icontext(HudLib.CheckImage(CollectFood_increasefoodbuffer), string.Format(DssRef.lang.Tutorial_IncreaseBufferLimit, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
+                    content.icontext(HudLib.CheckImage(CollectFood_reachfoodamount), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, ReachFoodBuffer, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
 
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    var info0 = new RichBoxText(DssRef.todoLang.CollectFood_Info0);
+                    var info0 = new RichBoxText(DssRef.lang.Tutorial_CollectFood_Info0);
                     info0.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info0);
 
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    var info1 = new RichBoxText(DssRef.todoLang.CollectFood_Info1);
+                    var info1 = new RichBoxText(DssRef.lang.Tutorial_CollectFood_Info1);
                     info1.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info1);
 
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    var info2 = new RichBoxText(DssRef.todoLang.CollectFood_Info2);
+                    var info2 = new RichBoxText(DssRef.lang.Tutorial_CollectFood_Info2);
                     info2.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info2);
 

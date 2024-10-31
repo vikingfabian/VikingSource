@@ -154,6 +154,7 @@ namespace VikingEngine.DSSWars
         void onGameStart(bool newGame)
         {
             events.onGameStart(newGame);
+            Ref.music.OnGameStart();
 
             var factionsCounter = DssRef.world.factions.counter();
             while (factionsCounter.Next())
@@ -213,6 +214,7 @@ namespace VikingEngine.DSSWars
         public override void Time_Update(float time)
         {
             base.Time_Update(time);
+            Sound.SoundStackManager.Update();
 
             if (Ref.music != null)
             {
@@ -303,6 +305,11 @@ namespace VikingEngine.DSSWars
                 }
             }
 
+            if (Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Escape) && !menuSystem.Open)
+            {
+                menuSystem.pauseMenu();
+            }
+
             Engine.ParticleHandler.Update(time);
 
         }
@@ -335,7 +342,7 @@ namespace VikingEngine.DSSWars
             return false;
         }
 
-        const float AutoSaveTimeSec = 20 * TimeExt.MinuteInSeconds;
+        const float AutoSaveTimeSec = 15 * TimeExt.MinuteInSeconds;
         float LastAutoSaveTime_TotalSec = 0;
 
         
@@ -416,20 +423,23 @@ namespace VikingEngine.DSSWars
             {
                 float seconds = DssRef.time.pullAsyncWork_Seconds();
 
-                foreach (var m in DssRef.world.cities)
+                if (!Ref.isPaused)
                 {
-                    m.async_workUpdate();
-                    m.async_conscriptUpdate(time);
-                    m.async_deliveryUpdate();
-                }
-
-                var factions = DssRef.world.factions.counter();
-                while (factions.Next())
-                {
-                    var armiesC = factions.sel.armies.counter();
-                    while (armiesC.Next())
+                    foreach (var m in DssRef.world.cities)
                     {
-                        armiesC.sel.async_workUpdate(seconds);
+                        m.async_workUpdate();
+                        m.async_conscriptUpdate(time);
+                        m.async_deliveryUpdate();
+                    }
+
+                    var factions = DssRef.world.factions.counter();
+                    while (factions.Next())
+                    {
+                        var armiesC = factions.sel.armies.counter();
+                        while (armiesC.Next())
+                        {
+                            armiesC.sel.async_workUpdate(seconds);
+                        }
                     }
                 }
             }

@@ -65,22 +65,25 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.Add(new RichBoxImage(TypeIcon()));
             args.content.Add(new RichBoxText(TypeName()));
 
-            if (PlatformSettings.DevBuild)
+            if (args.ShowFull)
             {
-                args.content.text("agg " + GetFaction().player.aggressionLevel.ToString());
-            }
-            if (GetFaction() != args.player.faction)
-            {
-                var relation = DssRef.diplomacy.GetRelationType(args.player.faction, GetFaction());
+                if (PlatformSettings.DevBuild)
+                {
+                    args.content.text("agg " + GetFaction().player.aggressionLevel.ToString());
+                }
+                if (GetFaction() != args.player.faction)
+                {
+                    var relation = DssRef.diplomacy.GetRelationType(args.player.faction, GetFaction());
 
-                args.content.newLine();
-                args.content.Add(new RichBoxText(GetFaction().PlayerName, Color.LightYellow));
-                args.content.newLine();
-                args.content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation)));
-                args.content.Add(new RichBoxText(Diplomacy.RelationString(relation), Color.LightBlue));
+                    args.content.newLine();
+                    args.content.Add(new RichBoxText(GetFaction().PlayerName, Color.LightYellow));
+                    args.content.newLine();
+                    args.content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation)));
+                    args.content.Add(new RichBoxText(Diplomacy.RelationString(relation), Color.LightBlue));
 
+                }
+                args.content.Add(new RichBoxSeperationLine());
             }
-            args.content.Add(new RichBoxSeperationLine());
         }
         virtual public bool CanMenuFocus() { return false; }
         virtual public bool aliveAndBelongTo(Faction faction) { return true; }

@@ -83,10 +83,46 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource res_mediumArmor = new GroupedResource() { amount = 2, goalBuffer = 100 };
         public GroupedResource res_heavyArmor = new GroupedResource() { amount = 0, goalBuffer = 100 };
 
-        //bool useLocalTrade
-        public TradeTemplate tradeTemplate = new TradeTemplate();
+        public bool res_food_safeguard = true;
 
-        //int tradeGold = 0;
+        public bool foodSafeGuardIsActive(ItemResourceType item)
+        {
+            bool food = foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
+            switch (item)
+            {
+                case ItemResourceType.Food_G:
+                    return food;
+                case ItemResourceType.Fuel_G:
+                    return fuelSafeGuard;
+                case ItemResourceType.RawFood_Group:
+                    return rawFoodSafeGuard;
+                case ItemResourceType.Wood_Group:
+                    return woodSafeGuard;
+            }
+
+            return false;
+        }
+
+        public bool foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard)
+        {
+            if (res_food_safeguard && res_food.amount <= DssConst.WorkSafeGuardAmount)
+            {
+                fuelSafeGuard = res_fuel.amount <= DssConst.WorkSafeGuardAmount;
+                rawFoodSafeGuard = res_rawFood.amount <= DssConst.WorkSafeGuardAmount;
+                woodSafeGuard = fuelSafeGuard && res_wood.amount <= DssConst.WorkSafeGuardAmount;
+                return true;
+            }
+            else
+            {
+                fuelSafeGuard = false;
+                rawFoodSafeGuard = false;
+                woodSafeGuard = false;
+                return false;
+            }
+        }
+
+
+        public TradeTemplate tradeTemplate = new TradeTemplate();
         public const int DefaultFoodBuffer = 500;
         public void defaultResourceBuffer()
         {
@@ -114,6 +150,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void AddGroupedResource(ItemResourceType type, int add)
         {
+            if (add == 0)
+            { 
+                lib.DoNothing();
+            }
+
             switch (type)
             {
                 case ItemResourceType.Gold:
@@ -226,25 +267,48 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public bool needMore(ItemResourceType type)
+        public bool needMore(ItemResourceType type, bool rawfoodSafeGuard, bool woodSafeGuard, out bool usesSafeGuard)
         {
+            usesSafeGuard = false;
             switch (type)
             {
                 case ItemResourceType.Wheat:
                 case ItemResourceType.Egg:
                 case ItemResourceType.Hen:
+                    if (rawfoodSafeGuard)
+                    { 
+                        usesSafeGuard = true;
+                        return true;
+                    }
                     return res_rawFood.needMore();
 
                 case ItemResourceType.Pig:
+                    if (rawfoodSafeGuard)
+                    {
+                        usesSafeGuard = true;
+                        return true;
+                    }
                     return res_food.needMore() || res_skinLinnen.needMore();
 
                 case ItemResourceType.DryWood:
                 case ItemResourceType.SoftWood:
                 case ItemResourceType.HardWood:
+                    if (woodSafeGuard)
+                    {
+                        usesSafeGuard = true;
+                        return true;
+                    }
                     return res_wood.needMore();
 
+                case ItemResourceType.NONE:
+                    return false;
+
                 default:
+#if DEBUG
                     throw new NotImplementedException();
+#else
+                    return false;
+#endif
             }
         }
 
@@ -388,47 +452,47 @@ namespace VikingEngine.DSSWars.GameObject
                 case  ItemResourceType.HardWood:
                     convert1.type = ItemResourceType.Wood_Group;
                     break;
-
+                
                 case ItemResourceType.Coal:
                     convert1.type = ItemResourceType.Fuel_G;
                     break;
 
-                //case ItemResourceType.Stone_G:
-                //    res_stone.add(item);
-                //    break;
-
                 case ItemResourceType.Wheat:
                     convert1.type = ItemResourceType.RawFood_Group;
-                    convert1.amount = DssConst.DefaultItemRawFoodAmout;
-                    //res_rawFood.add(item, DssConst.DefaultItemRawFoodAmout);
+                    convert1.amount = DssConst.DefaultItemRawFoodAmount;
                     break;
 
                 case ItemResourceType.Egg:                                   
                 case ItemResourceType.Hen:
                     convert1.type = ItemResourceType.RawFood_Group;
-                    convert1.amount = DssConst.DefaultItemRawFoodAmout;
+                    convert1.amount = DssConst.HenRawFoodAmout;
                     animalResourceBonus(ref item);
-                    //res_rawFood.add(item, DssConst.DefaultItemRawFoodAmout);
                     break;
 
                 case ItemResourceType.Pig:
                     convert1.type = ItemResourceType.RawFood_Group;
                     convert1.amount = DssConst.PigRawFoodAmout;
                     animalResourceBonus(ref item);
-                    //res_rawFood.add(item, DssConst.PigRawFoodAmout);
 
                     convert2 = new ItemResource(ItemResourceType.SkinLinen_Group, 1, 1, convert1.amount);
-
-                    //res_skinLinnen.add(item);
                     break;
 
                 case ItemResourceType.Linen:
                     convert1.type = ItemResourceType.SkinLinen_Group;
                     break;
 
-                //case ItemResourceType.IronOre_G:
-                //    res_ore.add(item, 1);
-                //    break;
+                case ItemResourceType.Rapeseed:
+                    convert1.type = ItemResourceType.Fuel_G;
+                    convert1.amount = DssConst.DefaultItemFuelAmount;
+                    break;
+
+                case ItemResourceType.Hemp:
+                    convert1.type = ItemResourceType.SkinLinen_Group;
+                    convert1.amount = DssConst.HempFuelAmount;
+
+                    convert2.type = ItemResourceType.Fuel_G;
+                    convert2.amount = DssConst.HempFuelAmount;
+                    break;
 
                 case ItemResourceType.GoldOre:
                     {
@@ -456,36 +520,11 @@ namespace VikingEngine.DSSWars.GameObject
                 item.amount *= 2;
             }
         }
-        //public void craftItem(TerrainBuildingType building, out bool canCraftAgain)
-        //{
-        //    canCraftAgain = false;
-
-        //    switch (building)
-        //    {
-        //        case TerrainBuildingType.Work_Cook:
-        //            var addFood = ResourceLib.CraftFood.craft(this);
-        //            food.amount += addFood;
-        //            foodProduction.add(addFood);
-        //            canCraftAgain = ResourceLib.CraftFood.canCraft(this);
-        //            break;
-        //        case TerrainBuildingType.Work_Smith:
-        //            iron.amount += ResourceLib.CraftIron.craft(this);
-        //            canCraftAgain = ResourceLib.CraftFood.canCraft(this);
-        //            break;
-        //    }
-        //}
-
-        //public void craftBuild(TerrainBuildingType building)
-        //{
-
-        //}
-
+        
         public void tradeTab()
         { 
             
         }
-
-
 
         public void blackMarketPurchase(ItemResourceType resourceType, int count, int cost)
         {
@@ -496,23 +535,13 @@ namespace VikingEngine.DSSWars.GameObject
         }
     }   
 
-    
-
-
-    //struct SimplifiedResourceCollection
-    //{ 
-        
-    //}
 
     struct GroupedResource
     {
         public int amount;
-        //public float saleValue;
         public int backOrder;
         public int goalBuffer;
         public int orderQueCount;
-        //public int trade;
-        //public int blacktrade;
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
@@ -550,7 +579,7 @@ namespace VikingEngine.DSSWars.GameObject
             amount += item.amount * multiply;
         }
 
-        public void toMenu(RichBoxContent content, ItemResourceType item, ref bool reachedBuffer)
+        public void toMenu(RichBoxContent content, ItemResourceType item, bool safeGuard, ref bool reachedBuffer)
         {
             content.newLine();
             
@@ -561,23 +590,46 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 bool reached = amount >= goalBuffer;
                 reachedBuffer |= reached;
-                var icon = new RichBoxImage(reached ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd);
+                SpriteName stockIcon;
+                if (safeGuard)
+                {
+                    stockIcon = SpriteName.WarsStockpileAdd_Protected;
+                }
+                else if (reached)
+                {
+                    stockIcon = SpriteName.WarsStockpileStop;
+                }
+                else
+                {
+                    stockIcon = SpriteName.WarsStockpileAdd;
+                }
+                var icon = new RichBoxImage(stockIcon);
                 content.Add(icon);
             }
             
         }
 
-        public static void BufferIconInfo(RichBoxContent content)
+        public static void BufferIconInfo(RichBoxContent content, bool safeguard)
         {
             content.newLine();
+            SpriteName sprite;
+            string textstring;
+            if (safeguard)
+            {
+                sprite = SpriteName.WarsStockpileAdd_Protected;
+                textstring = DssRef.todoLang.Resource_FoodSafeGuard_Active;
+            }
+            else
+            {
+                sprite = SpriteName.WarsStockpileStop;
+                textstring = DssRef.lang.Resource_ReachedStockpile;
+            }
 
-            var icon = new RichBoxImage(SpriteName.WarsStockpileStop);
-            //icon.color = Color.OrangeRed;
+
+            var icon = new RichBoxImage(sprite);
             content.Add(icon);
 
-            //content.space();
-
-            var text = new RichBoxText(": " + DssRef.lang.Resource_ReachedStockpile);
+            var text = new RichBoxText(": " + textstring);
             text.overrideColor = HudLib.InfoYellow_Light;
             content.Add(text);
         }

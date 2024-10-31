@@ -65,27 +65,6 @@ namespace VikingEngine.Engine
             //return null;
         }
 
-        //public static SoundEffectInstance PlayLoopedSound(LoadedSound whichSound, float vol)
-        //{
-
-        //    SoundEffect fx = LoadContent.Sound(whichSound);
-        //    SoundEffectInstance instance = fx.CreateInstance();
-        //    instance.Volume = vol;
-        //    instance.IsLooped = true;
-        //    instance.Play();
-
-        //    return instance;
-        //}
-
-        //public static SoundEffectInstance PlayLoopedSound(SoundEffect fx, float vol)
-        //{
-        //    SoundEffectInstance instance = fx.CreateInstance();
-        //    instance.Volume = vol;
-        //    instance.IsLooped = true;
-        //    instance.Play();
-
-        //    return instance;
-        //}
         public static void SetInstancePan(SoundEffectInstance ins, Vector2 screenPosition)
         {
             ins.Pan = Pan.PositionToPan(screenPosition.X, 0, Engine.Screen.Width).Value;
@@ -239,12 +218,7 @@ namespace VikingEngine.Engine
                 
             }
         }
-        //public static int PlayMusic(LoadedSong whichSong, bool loop)
-        //{
-        //    currentSong = LoadContent.Music(whichSong);
-        //    return PlayMusic(currentSong, loop);
-        //}
-
+       
         public static bool IsPlaying
         {
             get { return Microsoft.Xna.Framework.Media.MediaPlayer.State == Microsoft.Xna.Framework.Media.MediaState.Playing; }

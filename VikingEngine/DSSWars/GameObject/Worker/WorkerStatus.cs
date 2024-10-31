@@ -163,9 +163,31 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                                 DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                                 break;
 
+                            case TerrainSubFoilType.RapeSeedFarm:
+                                carry = new Resource.ItemResource(
+                                        ItemResourceType.Rapeseed,
+                                        subTile.terrainQuality,
+                                        Convert.ToInt32(processTimeLengthSec),
+                                        farmGrowthMultiplier(subTile.terrainAmount, city));
+
+                                subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
+                                DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                                break;
+
+                            case TerrainSubFoilType.HempFarm:
+                                carry = new Resource.ItemResource(
+                                        ItemResourceType.Hemp,
+                                        subTile.terrainQuality,
+                                        Convert.ToInt32(processTimeLengthSec),
+                                        farmGrowthMultiplier(subTile.terrainAmount, city));
+
+                                subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
+                                DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                                break;
+
                             case TerrainSubFoilType.StoneBlock:
                             case TerrainSubFoilType.Stones:
-                                carry = new ItemResource(ItemResourceType.Stone_G, 1, Convert.ToInt32(processTimeLengthSec), ItemPropertyColl.CarryStones);
+                                carry = new ItemResource(ItemResourceType.Stone_G, city.Culture == CityCulture.Stonemason? 8 : 4, Convert.ToInt32(processTimeLengthSec), ItemPropertyColl.CarryStones);
                                 break;
 
                             case TerrainSubFoilType.BogIron:
@@ -195,6 +217,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                     {
                         subTile.terrainAmount++;
                         DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                        city.res_water.amount -= DssConst.PlantWaterCost;
                     }
 
                     //work = WorkType.Idle;
@@ -262,7 +285,12 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                     if (visualUnit)
                     {
-                        new ResourceEffect(convert1.type, convert1.amount, VectorExt.AddY( WP.SubtileToWorldPosXZgroundY_Centered(subTileEnd), 0.08f), ResourceEffectType.Add);
+                        Vector3 pos = VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(subTileEnd), 0.08f);
+                        new ResourceEffect(convert1.type, convert1.amount, pos, ResourceEffectType.Add);
+                        if (convert2.amount > 0)
+                        {
+                            new ResourceEffect(convert2.type, convert2.amount, VectorExt.AddY(pos, 0.08f), ResourceEffectType.Add);
+                        }
                     }
                     break;
 
@@ -327,22 +355,81 @@ namespace VikingEngine.DSSWars.GameObject.Worker
 
                         if (add > 0)
                         {
-                            if (item == ItemResourceType.Food_G)
+                            switch (item)
                             {
-                                city.foodProduction.add(add);
+                                case ItemResourceType.Food_G:
+                                    city.foodProduction.add(add);
+                                    break;
+
+                                case ItemResourceType.Fuel_G:
+                                case ItemResourceType.Coal:
+                                    item = ItemResourceType.Fuel_G;
+                                    if (city.Culture == CityCulture.PitMasters)
+                                    {
+                                        add *= 2;
+                                    }
+                                    break;
+
+                                case ItemResourceType.Beer:
+                                    if (city.Culture == CityCulture.Brewmaster)
+                                    {
+                                        add += add / 2;
+                                    }
+                                    break;
+
+                                case ItemResourceType.LightArmor:
+                                    if (city.Culture == CityCulture.Weavers)
+                                    {
+                                        add += 1;
+                                    }
+                                    break;
+
+                                case ItemResourceType.MediumArmor:
+                                case ItemResourceType.HeavyArmor:
+                                    if (city.Culture == CityCulture.Armorsmith)
+                                    {
+                                        add += 1;
+                                    }
+                                    break;
+
                             }
-                            if (item == ItemResourceType.Fuel_G || item == ItemResourceType.Coal)
-                            { 
-                                item = ItemResourceType.Fuel_G;
-                                if (city.Culture == CityCulture.PitMasters)
-                                {
-                                    add *= 2;
-                                }
-                            }
+
+                            //if (item == ItemResourceType.Food_G)
+                            //{
+                            //    city.foodProduction.add(add);
+                            //}
+                            //if (item == ItemResourceType.Fuel_G || item == ItemResourceType.Coal)
+                            //{ 
+                            //    item = ItemResourceType.Fuel_G;
+                            //    if (city.Culture == CityCulture.PitMasters)
+                            //    {
+                            //        add *= 2;
+                            //    }
+                            //}
 
                             city.AddGroupedResource(item, add);
 
-                            tryRepeatWork = city.GetGroupedResource(item).needMore() && bp1.canCraft(city);
+
+                            if (city.debugTagged && item == ItemResourceType.Food_G)
+                            {
+                                lib.DoNothing();
+                            }
+
+                            tryRepeatWork = false;
+
+                            if (city.GetGroupedResource(item).needMore())
+                            {
+                                if (bp1.canCraft(city))
+                                {
+                                    tryRepeatWork = true;
+                                }
+                                else if (bp2 !=null && bp2.canCraft(city))
+                                {
+                                    tryRepeatWork = true;
+                                }
+                            }
+
+                            
 
                             if (visualUnit)
                             {
@@ -452,7 +539,7 @@ namespace VikingEngine.DSSWars.GameObject.Worker
             float dist = VectorExt.Length(subTileEnd.X - subTileStart.X, subTileEnd.Y - subTileStart.Y) / WorldData.TileSubDivitions; //Convrst to WP length
 
             processTimeLengthSec = finalizeWorkTime(city) +
-                dist / DssVar.Men_StandardWalkingSpeed_PerSec;//(DssConst.Men_StandardWalkingSpeed * 1000);
+                dist / DssVar.Men_StandardWalkingSpeed_PerSec;
 
             switch (work)
             {
@@ -517,6 +604,8 @@ namespace VikingEngine.DSSWars.GameObject.Worker
                             return DssConst.WorkTime_GatherFoil_DryWood;
                         case TerrainSubFoilType.WheatFarm:
                         case TerrainSubFoilType.LinenFarm:
+                        case TerrainSubFoilType.RapeSeedFarm:
+                        case TerrainSubFoilType.HempFarm:
                             return DssConst.WorkTime_GatherFoil_FarmCulture;
                         case TerrainSubFoilType.Stones:
                         case TerrainSubFoilType.StoneBlock:

@@ -55,6 +55,7 @@ namespace VikingEngine.DSSWars
 
         //OTHER
         public static float Livestock_WalkingSpeed = Men_StandardWalkingSpeed * 0.2f;
+        public static int DeliveryMaxDistance = 80;
 
         //CITY
         public static float TaxPerWorker = 0.1f;
@@ -68,12 +69,12 @@ namespace VikingEngine.DSSWars
 
         //public static int Maxwater_RandomAdd = 2;
 
-        public static float WaterAdd_SmallCity = 0.5f;
-        public static float WaterAdd_LargeCity = 0.8f;
-        public static float WaterAdd_HeadCity = 1f;
+        public static float WaterAdd_SmallCity = 0.7f;
+        public static float WaterAdd_LargeCity = 0.9f;
+        public static float WaterAdd_HeadCity = 1.1f;
         public static float WaterAdd_RandomAdd = 0.25f; 
 
-        public static int Maxwater = 10;
+        public static int Maxwater = 12;
         public static int ExpandWorkForce = SoldierGroup_DefaultCount * 4;
         public static int ExpandGuardSize = SoldierGroup_DefaultCount;
 
@@ -105,13 +106,20 @@ namespace VikingEngine.DSSWars
         public static int Worker_MaxEnergy = 500;
         public static int Worker_Starvation = -Worker_MaxEnergy;
 
-        public static int DefaultItemRawFoodAmout = 8;
-        public static int PigRawFoodAmout = 5 * DefaultItemRawFoodAmout;
+        public static int DefaultItemRawFoodAmount = 8;
+        public static int DefaultItemFuelAmount = 8;
+        public static int HempFuelAmount = 5;
+
+        public static int HenRawFoodAmout = 5;
+        public static int EggRawFoodAmout = 3;
+
+        public static int PigRawFoodAmout = 6;
         public static float ManDefaultEnergyCost = 1f;
         public static float WorkTeamEnergyCost = ManDefaultEnergyCost * City.WorkTeamSize;
         public static float WorkTeamEnergyCost_WhenIdle = WorkTeamEnergyCost * 0.5f;
         public static int FoodEnergy = 100;
+        public static int PlantWaterCost = 1;
 
-
+        public static int WorkSafeGuardAmount = 10;
     }
 }

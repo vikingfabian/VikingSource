@@ -30,79 +30,75 @@ namespace VikingEngine.DSSWars.Display
             {
                 beginRefresh();
 
-                //if (player.tutorial != null)
-                //{
-                //    player.tutorial.tutorial_ToHud(content);
-                //    content.Add(new RichBoxSeperationLine());
-                //    content.newParagraph();
-                //}
-
                 defaultMenu(player, fullDisplay, faction);
 
-                if (fullDisplay && player.tutorial == null)
+                if (player.hud.detailLevel == HudDetailLevel.Normal)
                 {
-                    if (player.input.inputSource.IsController)
+                    if (fullDisplay && player.tutorial == null)
                     {
-                        content.Add(new HUD.RichBox.RichBoxImage(player.input.ControllerFocus.Icon));
-                        content.Add(new HUD.RichBox.RichBoxText(":"));
-                        content.newLine();
-                    }
-
-                    content.newLine();
-                    int tabSel = 0;
-
-                    var tabs = new List<RichboxTabMember>((int)MenuTab.NUM);
-                    for (int i = 0; i < Tabs.Length; ++i)
-                    {
-                        var text = new RichBoxText(LangLib.Tab(Tabs[i], out string description));
-                        text.overrideColor = HudLib.RbSettings.tabSelected.Color;
-
-                        AbsRbAction enter = null;
-                        if (description != null)
+                        if (player.input.inputSource.IsController)
                         {
-                            enter = new RbAction(() =>
-                            {
-                                RichBoxContent content = new RichBoxContent();
-                                content.text(description).overrideColor = HudLib.InfoYellow_Light;
-
-                                player.hud.tooltip.create(player, content, true);
-                            });
+                            content.Add(new HUD.RichBox.RichBoxImage(player.input.ControllerFocus.Icon));
+                            content.Add(new HUD.RichBox.RichBoxText(":"));
+                            content.newLine();
                         }
 
-                        tabs.Add(new RichboxTabMember(new List<AbsRichBoxMember>
+                        content.newLine();
+                        int tabSel = 0;
+
+                        var tabs = new List<RichboxTabMember>((int)MenuTab.NUM);
+                        for (int i = 0; i < Tabs.Length; ++i)
+                        {
+                            var text = new RichBoxText(LangLib.Tab(Tabs[i], out string description));
+                            text.overrideColor = HudLib.RbSettings.tabSelected.Color;
+
+                            AbsRbAction enter = null;
+                            if (description != null)
+                            {
+                                enter = new RbAction(() =>
+                                {
+                                    RichBoxContent content = new RichBoxContent();
+                                    content.text(description).overrideColor = HudLib.InfoYellow_Light;
+
+                                    player.hud.tooltip.create(player, content, true);
+                                });
+                            }
+
+                            tabs.Add(new RichboxTabMember(new List<AbsRichBoxMember>
                         {
                             text
                         }, enter));
 
-                        if (Tabs[i] == player.factionTab)
-                        {
-                            tabSel = i;
+                            if (Tabs[i] == player.factionTab)
+                            {
+                                tabSel = i;
+                            }
                         }
-                    }
 
-                    content.Add(new RichboxTabgroup(tabs, tabSel, player.factionTabClick, null, null));
+                        content.Add(new RichboxTabgroup(tabs, tabSel, player.factionTabClick, null, SoundLib.menutab, null, null));
 
-                    switch (player.factionTab)
-                    {
-                        case MenuTab.Info:
-                            infoTab();
-                            break;
+                        switch (player.factionTab)
+                        {
+                            case MenuTab.Info:
+                                infoTab();
+                                break;
 
-                        case MenuTab.Economy:
-                            economyTab();
-                            break;
+                            case MenuTab.Economy:
+                                economyTab();
+                                break;
 
-                        case MenuTab.Automation:
-                            player.automation.toMenu(content, fullDisplay);
-                            break;
+                            case MenuTab.Automation:
+                                player.automation.toMenu(content, fullDisplay);
+                                break;
 
-                        case MenuTab.Work:
-                            faction.workTab(content);
-                            break;
+                            case MenuTab.Work:
+                                faction.workTab(content);
+                                break;
 
-                        case MenuTab.Trade:
-                            faction.tradeTab(content);
-                            break;
+                            case MenuTab.Trade:
+                                faction.tradeTab(content);
+                                break;
+                        }
                     }
                 }
                 //switch (player.hud.displays.CurrentMenuState)
@@ -153,7 +149,7 @@ namespace VikingEngine.DSSWars.Display
                 content.Add(new RichBoxImage(SpriteName.rtsMoney));
                 content.Add(new RichBoxText(TextLib.LargeNumber(faction.gold), negativeRed(faction.gold)));
                 content.space();
-                content.Add(new RichBoxImage(SpriteName.rtsIncome));
+                content.Add(new RichBoxImage(SpriteName.rtsIncomeTime));
                 content.Add(new RichBoxText(TextLib.LargeNumber(faction.MoneySecDiff()), negativeRed(faction.MoneySecDiff())));
                 
             }
@@ -193,44 +189,39 @@ namespace VikingEngine.DSSWars.Display
 
             void defaultMenu(Players.LocalPlayer player, bool fullDisplay, Faction faction)
             {
-#if DEBUG
-                //debugCultureFont();
-#endif
-
-
-                //if (player.hud.detailLevel == HudDetailLevel.Minimal)
-                //{
-                //    flagTexture();
-                //    content.space();
-                //    toggleMenu();
-                //    content.space();
-                //    compressedGoldAndIncome();
-                //}
-                //else
-                //{
-                    this.fullDisplay = fullDisplay;
-
-
-                    content.Add(new RichBoxBeginTitle(2));
+                if (player.hud.detailLevel == HudDetailLevel.Minimal)
+                {
                     flagTexture();
-                    content.Add(new RichBoxText(faction.PlayerName));
-                    content.Add(new RichBoxNewLine());
+                    compressedGoldAndIncome();
+                    content.Add(new RichBoxTab(0.8f));
+                    toggleMenu();
+                    return;
+                }
 
-                    if (fullDisplay)
-                    {
-                        gold();
 
-                        content.Add(new RichBoxImage(SpriteName.rtsIncomeTime));
-                        content.space();
-                        content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(faction.MoneySecDiff())),
-                                negativeRed(faction.MoneySecDiff())));
-                        content.newLine();
-                    }
-                    else
-                    {
-                        compressedGoldAndIncome();
-                        content.newLine();
-                    }
+                this.fullDisplay = fullDisplay;
+
+
+                content.Add(new RichBoxBeginTitle(2));
+                flagTexture();
+                content.Add(new RichBoxText(faction.PlayerName));
+                content.Add(new RichBoxNewLine());
+
+                if (fullDisplay)
+                {
+                    gold();
+
+                    content.Add(new RichBoxImage(SpriteName.rtsIncomeTime));
+                    content.space();
+                    content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(faction.MoneySecDiff())),
+                            negativeRed(faction.MoneySecDiff())));
+                    content.newLine();
+                }
+                else
+                {
+                    compressedGoldAndIncome();
+                    content.newLine();
+                }
 
                 if (DssRef.state.IsSinglePlayer() && Ref.isPaused)
                 {
@@ -320,8 +311,8 @@ namespace VikingEngine.DSSWars.Display
 
                     content.Add(new RichBoxNewLine(true));
 
-                    if (player.hud.detailLevel == HudDetailLevel.Extended)
-                    {
+                    //if (player.hud.detailLevel == HudDetailLevel.Extended)
+                    //{
                         content.text(string.Format(DssRef.lang.Hud_CityCount, TextLib.LargeNumber(faction.cities.Count)));
                         content.text(string.Format(DssRef.lang.Hud_ArmyCount, TextLib.LargeNumber(faction.armies.Count)));
 
@@ -329,9 +320,12 @@ namespace VikingEngine.DSSWars.Display
                         content.ButtonDescription(player.input.NextArmy, DssRef.lang.Input_NextArmy);
                         content.ButtonDescription(player.input.NextBattle, DssRef.lang.Input_NextBattle);
 
+                        content.ButtonDescription(player.input.Build, DssRef.todoLang.Input_Build);
+                        content.ButtonDescription(player.input.Copy, DssRef.lang.Hud_CopySetup);
+                        content.ButtonDescription(player.input.Paste, DssRef.lang.Hud_Paste);
 
                         content.newParagraph();
-                    }
+                    //}
 
                     //if (Ref.isPaused && player.IsLocalHost())
                     //{
