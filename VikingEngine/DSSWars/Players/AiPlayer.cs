@@ -260,6 +260,88 @@ namespace VikingEngine.DSSWars.Players
                     break;
 
 
+                case FactionType.HroldaniStormguard:
+                    defaultSetup();
+                    name = DssRef.todoLang.FactionName_HroldaniStormguard;
+                    break;
+                case FactionType.SkirnirWolfkin:
+                    defaultSetup();
+                    name = DssRef.todoLang.FactionName_SkirnirWolfkin;
+                    break;
+                case FactionType.ThalgarBearclaw:
+                    defaultSetup();
+                    name = DssRef.todoLang.FactionName_ThalgarBearclaw;
+                    break;
+                case FactionType.VarnokRimeguard:
+                    defaultSetup();
+                    name = DssRef.todoLang.FactionName_VarnokRimeguard;
+                    break;
+                case FactionType.KorrakFirehand:
+                    defaultSetup();
+                    name = DssRef.todoLang.FactionName_KorrakFirehand;
+                    break;
+                case FactionType.MoongladeGat:
+                    defaultSetup();
+                    name = DssRef.todoLang.FactionName_MoongladeGat;
+                    break;
+                case FactionType.DraskarSons:
+                    defaultSetup();
+                    name = DssRef.todoLang.FactionName_DraskarSons;
+                    break;
+                case FactionType.YrdenFlamekeepers:
+                    defaultSetup();
+                    name = DssRef.todoLang.FactionName_YrdenFlamekeepers;
+                    break;
+                case FactionType.BrundirWarhorns:
+                    defaultSetup();
+                    name = DssRef.todoLang.FactionName_BrundirWarhorns;
+                    break;
+                case FactionType.OltunBonecarvers:
+                    defaultSetup();
+                    name = DssRef.todoLang.FactionName_OltunBonecarvers;
+                    break;
+
+                case FactionType.HaskariEmber:
+                    defaultSetup();
+                    name = DssRef.todoLang.FactionName_HaskariEmber;
+                    break;
+                case FactionType.ZalfrikThunderborn:
+                    defaultSetup();
+                    name = DssRef.todoLang.FactionName_ZalfrikThunderborn;
+                    break;
+                case FactionType.BjorunStonetender:
+                    defaultSetup();
+                    name = DssRef.todoLang.FactionName_BjorunStonetender;
+                    break;
+                case FactionType.MyrdarrIcewalkers:
+                    defaultSetup();
+                    name = DssRef.todoLang.FactionName_MyrdarrIcewalkers;
+                    break;
+                case FactionType.SkelvikSpear:
+                    defaultSetup();
+                    name = DssRef.todoLang.FactionName_SkelvikSpear;
+                    break;
+                case FactionType.VaragThroatcallers:
+                    defaultSetup();
+                    name = DssRef.todoLang.FactionName_VaragThroatcallers;
+                    break;
+                case FactionType.Durakai:
+                    defaultSetup();
+                    name = DssRef.todoLang.FactionName_Durakai;
+                    break;
+                case FactionType.FjornfellWarhowl:
+                    defaultSetup();
+                    name = DssRef.todoLang.FactionName_FjornfellWarhowl;
+                    break;
+                case FactionType.AshgroveWard:
+                    defaultSetup();
+                    name = DssRef.todoLang.FactionName_AshgroveWard;
+                    break;
+                case FactionType.HragmarHorncarvers:
+                    defaultSetup();
+                    name = DssRef.todoLang.FactionName_HragmarHorncarvers;
+                    break;
+
 
                 case FactionType.DefaultAi:
                     defaultSetup();

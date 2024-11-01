@@ -6,12 +6,19 @@
 * all songs are converted to OGG
 * 3 new songs
 * some sound balancing
+* All ai flags can be accessed by pressing Ctrl+B in the flag painter
+* Improved flag painter tools
+* 20 new named factions
+
 
 #Todo (xmas patch)#
+cultures: lawbiding
 city tag
 dölj carry amount
 new game - Skip language crashes game
 
+
+//ShowGamepadTextInput
 
 --Efter release polish--
 -fixa menu minimize

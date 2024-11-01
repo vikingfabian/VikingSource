@@ -78,7 +78,7 @@ namespace VikingEngine.DSSWars
                 DssRef.state.localPlayers[cameraIndex].bUnitDetailLayer_buffer = false;
                 Engine.PlayerData p = ActivePlayerScreens[cameraIndex];
                 //p.view.Viewport
-                p.view.Camera.RecalculateMatrices();
+                //p.view.Camera.RecalculateMatrices();
 
                 Map.MapDetailLayerManager drawUnits = Map.MapDetailLayerManager.CameraIndexToView[cameraIndex];
                 if (drawUnits.prevLayer != null)

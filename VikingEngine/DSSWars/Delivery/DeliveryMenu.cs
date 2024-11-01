@@ -112,9 +112,16 @@ namespace VikingEngine.DSSWars.Delivery
                 {
                     if (cities_c.sel != city && city.tilePos.SideLength(cities_c.sel.tilePos) <= DssConst.DeliveryMaxDistance)
                     {
-                        var button = new RichboxButton(new List<AbsRichBoxMember>{
-                            new RichBoxText(cities_c.sel.TypeName())
-                            }, new RbAction1Arg<int>(cityClick, cities_c.sel.parentArrayIndex, SoundLib.menu), new RbAction1Arg<City>((toCity) =>
+                        var buttonContent = new RichBoxContent();
+                        cities_c.sel.tagToHud(buttonContent);
+                        if (buttonContent.Count > 0)
+                        {
+                            buttonContent.space();
+                        }
+                        buttonContent.Add(new RichBoxText(cities_c.sel.TypeName()));
+
+                        var button = new RichboxButton(buttonContent, 
+                            new RbAction1Arg<int>(cityClick, cities_c.sel.parentArrayIndex, SoundLib.menu), new RbAction1Arg<City>((toCity) =>
                             {
                                 RichBoxContent content = new RichBoxContent();
                                 content.h2(toCity.Name()).overrideColor = HudLib.TitleColor_Name;

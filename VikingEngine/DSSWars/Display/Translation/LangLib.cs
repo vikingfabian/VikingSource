@@ -97,6 +97,9 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case MenuTab.Info:
                     description = null;
                     return DssRef.lang.MenuTab_Info;
+                case MenuTab.Tag:
+                    description = null;
+                    return DssRef.todoLang.MenuTab_Tag;
                 case MenuTab.Build:
                     description = DssRef.lang.MenuTab_Build_Description;
                     return DssRef.lang.MenuTab_Build;

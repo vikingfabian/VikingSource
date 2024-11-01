@@ -42,6 +42,7 @@ namespace VikingEngine.DSSWars.Players
 
         public Rectangle2 cullingTileArea = Rectangle2.ZeroOne;
         public DiplomacyMap diplomacyMap = null;
+        public CityTagMap cityTagMap = null;
 
         public FloatingInt_Max commandPoints = new FloatingInt_Max();
         public FloatingInt_Max diplomaticPoints = new FloatingInt_Max();
@@ -601,7 +602,7 @@ namespace VikingEngine.DSSWars.Players
                 hud.OpenAutomationMenu();
             }                
 
-            updateDiplomacy();
+            
 
             if (armyControls != null)
             {
@@ -685,6 +686,8 @@ namespace VikingEngine.DSSWars.Players
 
             //DssRef.state.detailMap.PlayerUpdate(mapControls.playerPointerPos, bUnitDetailLayer);
             drawUnitsView.Update();
+            playerData.view.Camera.RecalculateMatrices();
+            updateMapOverlays();
         }
 
         void setBuildMode(City city, BuildAndExpandType type)
@@ -1032,7 +1035,7 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        void updateDiplomacy()
+        void updateMapOverlays()
         {
             if (drawUnitsView.current.DrawOverview)
             {
@@ -1049,6 +1052,23 @@ namespace VikingEngine.DSSWars.Players
                 {
                     diplomacyMap.DeleteMe();
                     diplomacyMap = null;
+                }
+            }
+
+            if (drawUnitsView.current.DrawNormal)
+            {
+                if (cityTagMap == null)
+                { 
+                    cityTagMap = new CityTagMap(this);
+                }
+                cityTagMap.update();
+            }
+            else
+            {
+                if (cityTagMap != null)
+                { 
+                    cityTagMap.DeleteMe();
+                    cityTagMap = null;
                 }
             }
         }
@@ -1347,6 +1367,12 @@ namespace VikingEngine.DSSWars.Players
                         citiesC.sel.checkPlayerFuelAccess_OnGamestart_async();
                     }
                 });
+            }
+
+            if (newGame)
+            { 
+                faction.mainCity.tagBack = CityTagBack.Carton;
+                faction.mainCity.tagArt = CityTagArt.IconFaction;
             }
         }
 

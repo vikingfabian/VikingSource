@@ -517,35 +517,57 @@ namespace VikingEngine.DSSWars.Work
         }
         public void writeGameState(System.IO.BinaryWriter w, bool isCity)
         {
-            w.Write((byte)value);
+
             if (isCity)
             {
                 EightBit eightBit = new EightBit(followFaction, false);
-                //if (followFaction)
-                //{
-                //    followFaction = eightBit.Get(0);
-                //}
                 eightBit.write(w);
+
+                if (!followFaction)
+                {
+                    w.Write((byte)value);
+                }
+            }
+            else
+            {
+                w.Write((byte)value);
             }
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, bool isCity)
         {
-            value = r.ReadByte();
-            if (isCity)
+            if (subversion < 23)
             {
-                if (subversion < 20)
-                {//old
-                    followFaction = r.ReadBoolean();
+                //old
+                value = r.ReadByte();
+                if (isCity)
+                {
+                    if (subversion < 20)
+                    {//old
+                        followFaction = r.ReadBoolean();
+                    }
+                    else
+                    {
+                        EightBit eightBit = new EightBit(r);
+                        followFaction = eightBit.Get(0);
+                    }
                 }
-                else
+            }
+            else
+            {
+                //new
+                if (isCity)
                 {
                     EightBit eightBit = new EightBit(r);
                     followFaction = eightBit.Get(0);
 
-                    //if (followFaction)
-                    //{
-                    //    lib.DoNothing();
-                    //}
+                    if (!followFaction)
+                    {
+                        value = r.ReadByte();
+                    }
+                }
+                else
+                {
+                    value = r.ReadByte();
                 }
             }
         }

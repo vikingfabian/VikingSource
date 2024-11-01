@@ -4,22 +4,38 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Engine;
+using VikingEngine.LootFest.Map;
+using VikingEngine.PJ.Bagatelle;
 
 namespace VikingEngine.DSSWars.Data
 {
     static class CityTag
     {
-        //public static readonly Dictionary<int, SpriteName> TagArtOptions = new Dictionary<int, SpriteName>
-        //{
-        //    { 0, SpriteName.NO_IMAGE },
-        //    { CityTagArt.ItemResourceTypeGold, SpriteName.NO_IMAGE },
-        //    { 2, SpriteName.NO_IMAGE },
-        //    { 3, SpriteName.NO_IMAGE },
-        //    { 4, SpriteName.NO_IMAGE },
-        //    { 5, SpriteName.NO_IMAGE },
-        //    { 6, SpriteName.NO_IMAGE },
+        public static SpriteName BackSprite(CityTagBack back)
+        {
+            switch (back)
+            {
+                case CityTagBack.White: 
+                    return SpriteName.warsFolder_white;
+                case CityTagBack.Carton: 
+                    return SpriteName.warsFolder_carton;
+                case CityTagBack.Yellow:
+                    return SpriteName.warsFolder_yellow;
+                case CityTagBack.Orange:
+                    return SpriteName.warsFolder_orange;
+                case CityTagBack.Pink:
+                    return SpriteName.warsFolder_pink;
+                case CityTagBack.Cyan:
+                    return SpriteName.warsFolder_cyan;
+                case CityTagBack.Blue:
+                    return SpriteName.warsFolder_blue;
+                case CityTagBack.Green:
+                    return SpriteName.warsFolder_green;
 
-        //};
+                default: return SpriteName.NO_IMAGE;
+            }
+        }
 
         public static SpriteName ArtSprite(CityTagArt art)
         {
@@ -119,7 +135,7 @@ namespace VikingEngine.DSSWars.Data
                     case CityTagArt.IconState: return SpriteName.NO_IMAGE;
                     case CityTagArt.IconBed: return SpriteName.NO_IMAGE;
                     case CityTagArt.IconMap: return SpriteName.NO_IMAGE;
-                    case CityTagArt.IconFaction: return SpriteName.NO_IMAGE;
+                    case CityTagArt.IconFaction: return SpriteName.WarsFollowFactionYes;
                     case CityTagArt.IconThumbsUp: return SpriteName.NO_IMAGE;
                     case CityTagArt.IconThumbsDown: return SpriteName.NO_IMAGE;
                     case CityTagArt.IconHeart: return SpriteName.NO_IMAGE;
@@ -152,9 +168,16 @@ namespace VikingEngine.DSSWars.Data
 
     enum CityTagBack
     { 
+        NONE,
         White,
         Carton,
-
+        Yellow,
+        Orange,
+        Pink,
+        Cyan,
+        Blue,
+        Green,
+        NUM,
     }
     //add(SpriteName.warsFolder_carton);
     //add(SpriteName.warsFolder_white);
@@ -264,6 +287,7 @@ namespace VikingEngine.DSSWars.Data
         NumExpression,
         NumEqual,
         NumArrow,
-    
+
+        NUM    
     }
 }

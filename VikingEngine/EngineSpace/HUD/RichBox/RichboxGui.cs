@@ -64,7 +64,7 @@ namespace VikingEngine.HUD.RichBox
             menuStateHasChange = true;
         }
 
-        public bool update()
+        virtual public bool update()
         {
             bool interaction = false;
             foreach (var p in parts)

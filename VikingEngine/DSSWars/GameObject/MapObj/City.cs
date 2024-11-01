@@ -77,6 +77,9 @@ namespace VikingEngine.DSSWars.GameObject
         bool autoBuild_Work = false;
         bool autoBuild_Farm = false;
 
+        public CityTagBack tagBack = CityTagBack.NONE;
+        public CityTagArt tagArt = CityTagArt.None;
+
         public void AutoExpandType(out bool work, out Build.BuildAndExpandType farm)
         {
             work = autoBuild_Work;
@@ -341,7 +344,12 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(autoBuild_Work);
             w.Write(autoBuild_Farm);
             w.Write((byte)autoExpandFarmType);
-        
+
+            w.Write((byte)tagBack);
+            if (tagBack != CityTagBack.NONE)
+            {
+                w.Write((ushort)tagArt);
+            }
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
@@ -415,10 +423,18 @@ namespace VikingEngine.DSSWars.GameObject
                 deliveryServices.Add(status);
             }
 
-                autoBuild_Work = r.ReadBoolean();
-                autoBuild_Farm = r.ReadBoolean();
-                autoExpandFarmType = (Build.BuildAndExpandType)r.ReadByte();
-            
+            autoBuild_Work = r.ReadBoolean();
+            autoBuild_Farm = r.ReadBoolean();
+            autoExpandFarmType = (Build.BuildAndExpandType)r.ReadByte();
+
+            if (subversion >= 23)
+            {
+                tagBack = (CityTagBack)r.ReadByte();
+                if (tagBack != CityTagBack.NONE)
+                {
+                    tagArt = (CityTagArt)r.ReadUInt16();
+                }
+            }
         }
 
         public void writeNet(System.IO.BinaryWriter w)
@@ -1097,9 +1113,25 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return DssRef.lang.UnitType_City + " (" + parentArrayIndex + ")";
         }
-        public override SpriteName TypeIcon()
+        //public override SpriteName TypeIcon()
+        //{
+        //    return SpriteName.WarsCityHall;
+        //}
+
+        public override void TypeIcon(RichBoxContent content)
         {
-            return SpriteName.WarsCityHall;
+            content.Add(new RichBoxImage( SpriteName.WarsCityHall));
+            tagToHud(content);
+        }
+
+        public void tagToHud(RichBoxContent content)
+        {
+            if (tagBack != CityTagBack.NONE)
+            {
+                content.Add(new RichBoxOverlapImage(
+                    new RichBoxImage(Data.CityTag.BackSprite(tagBack)),
+                    Data.CityTag.ArtSprite(tagArt), Vector2.Zero, 0.8f));
+            }
         }
 
         public override void toHud(ObjectHudArgs args)

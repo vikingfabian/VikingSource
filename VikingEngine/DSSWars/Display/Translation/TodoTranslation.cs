@@ -61,9 +61,15 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string Hud_Time_Seconds => "{0} seconds";
         public string Hud_Time_Minutes => "{0} minutes";
+        public string Hud_Undo => "Undo";
+        public string Hud_Redo => "Redo";
 
+        public string MenuTab_Tag => "Tag";
 
         public string Input_Build => "Build";
+
+        public string FlagEditor_ClearAll => "Clear all";
+        
 
         public string CityCulture_Stonemason => "Stonemason";
         public string CityCulture_Stonemason_Description => "Improved stone collecting";
@@ -143,6 +149,28 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string FactionName_GharjaRavagers=> "Ghar'ja Ravagers";
         public string FactionName_RavkanShield=> "Ravkan Shield";
         public string FactionName_FenskaarTidewalkers=> "Fenskaar Tidewalkers";
+
+
+        public string FactionName_HroldaniStormguard => "Hroldani Stormguard";
+        public string FactionName_SkirnirWolfkin => "Skirnir Wolfkin";
+        public string FactionName_ThalgarBearclaw => "Thalgar Bearclaw";
+        public string FactionName_VarnokRimeguard => "Varnok Rimeguard";
+        public string FactionName_KorrakFirehand => "Korrak Firehand";
+        public string FactionName_MoongladeGat => "Moonglade Gat";
+        public string FactionName_DraskarSons => "Draskar Sons";
+        public string FactionName_YrdenFlamekeepers => "Yrden Flamekeepers";
+        public string FactionName_BrundirWarhorns => "Brundir Warhorns";
+        public string FactionName_OltunBonecarvers => "Oltun Bonecarvers";
+        public string FactionName_HaskariEmber => "Haskari Ember";
+        public string FactionName_ZalfrikThunderborn => "Zalfrik Thunderborn";
+        public string FactionName_BjorunStonetender => "Bjorun Stonetender";
+        public string FactionName_MyrdarrIcewalkers => "Myrdarr Icewalkers";
+        public string FactionName_SkelvikSpear => "Skelvik Spear";
+        public string FactionName_VaragThroatcallers => "Varag Throatcallers";
+        public string FactionName_Durakai => "Durakai";
+        public string FactionName_FjornfellWarhowl => "Fjornfell Warhowl";
+        public string FactionName_AshgroveWard => "Ashgrove Ward";
+        public string FactionName_HragmarHorncarvers => "Hragmar Horncarvers";
     }
 
 }

@@ -214,6 +214,9 @@ namespace VikingEngine.HUD.RichBox
         abstract protected Image createImg(RichBoxGroup group, Vector2 center, Vector2 sz);
 
         abstract protected Rectangle SourceRect();
+        abstract public float Layer { get; }
+        abstract public Vector2 Center { get; }
+        abstract public Vector2 Size { get; }
     }
 
     class RichBoxImage : AbsRichBoxImage
@@ -226,9 +229,6 @@ namespace VikingEngine.HUD.RichBox
             : base(scale, addLeftSpace, addRightSpace)
         {
             this.sprite = sprite;
-            //this.scale = scale;
-            //this.addLeftSpace = addLeftSpace;
-            //this.addRightSpace = addRightSpace;
         }
 
         override protected Image createImg(RichBoxGroup group, Vector2 center, Vector2 sz)
@@ -245,6 +245,60 @@ namespace VikingEngine.HUD.RichBox
         {
             return DataLib.SpriteCollection.Get(sprite).Source;
         }
+
+
+        public override float Layer => pointer.PaintLayer;
+        public override Vector2 Center => pointer.position;
+        public override Vector2 Size => pointer.size;
+    }
+
+    class RichBoxOverlapImage : AbsRichBoxImage
+    {
+        SpriteName sprite;
+        public Color? color;
+        public Image pointer;
+
+        AbsRichBoxImage masterImage;
+        Vector2 percOffset;
+
+        public RichBoxOverlapImage(AbsRichBoxImage masterImage, 
+            SpriteName sprite, Vector2 percOffset, float scale = 1f)
+            : base(scale, 0, 0)
+        {
+            this.masterImage = masterImage;
+            this.percOffset = percOffset;
+            this.sprite = sprite;
+        }
+
+        public override void Create(RichBoxGroup group)
+        {
+            masterImage.Create(group);
+            //base.Create(group);
+            pointer = createImg(group, masterImage.Center, masterImage.Size * scale);
+        }
+
+        override protected Image createImg(RichBoxGroup group, Vector2 center, Vector2 sz)
+        {
+            pointer = new Image(sprite, center, sz, group.layer, true, group.addToRender);
+            pointer.position += masterImage.Size * percOffset;
+            pointer.PaintLayer = masterImage.Layer - PublicConstants.LayerMinDiff;
+            group.Add(pointer);
+
+            if (color.HasValue)
+            {
+                pointer.Color = color.Value;
+            }
+            return pointer;
+        }
+
+        protected override Rectangle SourceRect()
+        {
+            return DataLib.SpriteCollection.Get(sprite).Source;
+        }
+
+        public override float Layer => masterImage.Layer;
+        public override Vector2 Center => masterImage.Center;
+        public override Vector2 Size =>masterImage.Size;
     }
 
     class RichBoxTexture : AbsRichBoxImage
@@ -270,6 +324,10 @@ namespace VikingEngine.HUD.RichBox
         {
             return new Rectangle(0, 0, tex.Width, tex.Height);
         }
+
+        public override float Layer =>  pointer.PaintLayer;
+        public override Vector2 Center => pointer.position;
+        public override Vector2 Size => pointer.size;
     }
 
     class RichBoxSpace : AbsRichBoxMember

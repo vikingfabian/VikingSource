@@ -1036,6 +1036,28 @@ namespace VikingEngine.DSSWars
         GharjaRavagers,
         RavkanShield,
         FenskaarTidewalkers,
+
+        HroldaniStormguard,
+        SkirnirWolfkin,
+        ThalgarBearclaw,
+        VarnokRimeguard,
+        KorrakFirehand,
+        MoongladeGat,
+        DraskarSons,
+        YrdenFlamekeepers,
+        BrundirWarhorns,
+        OltunBonecarvers,
+
+        HaskariEmber,
+        ZalfrikThunderborn,
+        BjorunStonetender,
+        MyrdarrIcewalkers,
+        SkelvikSpear,
+        VaragThroatcallers,
+        Durakai,
+        FjornfellWarhowl,
+        AshgroveWard,
+        HragmarHorncarvers,
     }
 
     enum FactionGroupType
