@@ -1,16 +1,5 @@
 ﻿-Change Log-
-* 9 new city cultures (must generate new maps to see them)
-* changed stone collecting from 1 to 4
-* doubled stone price on black market
-* repaired toggle hud detail "U"
-* all songs are converted to OGG
-* 3 new songs
-* some sound balancing
-* All ai flags can be accessed by pressing Ctrl+B in the flag painter
-* Improved flag painter tools
-* 20 new named factions
-* city tagging
-* more dynamic size on ai factions (must generate new maps to see them)
+* 
 
 #Todo (xmas patch)#
 new maps

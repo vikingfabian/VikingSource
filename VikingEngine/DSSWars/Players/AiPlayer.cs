@@ -32,7 +32,6 @@ namespace VikingEngine.DSSWars.Players
         bool purchaseIsMainArmy = false;
 
         int purchaseCount =-1;
-        //public static double EconomyMultiplier = 1.0;
         string name;
 
         //Center attack focus and buy focus on the main army
@@ -483,7 +482,7 @@ namespace VikingEngine.DSSWars.Players
                     throw new NotImplementedException("ai player " + faction.factiontype);
             }
 
-            refreshAggression();
+            
 
             void defaultSetup()
             {
@@ -847,10 +846,6 @@ namespace VikingEngine.DSSWars.Players
                                     {
                                         city.buyRepair(true, true);
                                     }
-                                    //else
-                                    //{
-                                    //    city.buyWorkforce(true, 1);
-                                    //}
                                     break;
                                 case PurchaseOrderType_CityGuard:
                                     city.buyCityGuards(true, 1);
@@ -867,7 +862,10 @@ namespace VikingEngine.DSSWars.Players
         public override void onGameStart(bool newGame)
         {
             base.onGameStart(newGame);
-            
+            if (newGame)
+            {
+                refreshAggression();
+            }
         }
 
         public override void oneSecUpdate()
@@ -896,7 +894,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                     
                 }
-                if (faction.parentArrayIndex == 443)//faction.factiontype == FactionType.SouthHara)
+                if (faction.parentArrayIndex == 443)
                 { 
                     lib.DoNothing();
                 }
@@ -916,7 +914,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     mainArmy_AsyncUpdate(wars);
                 }
-                else if (protect) //&& buySoldiers(//haveIncomeForArmyPurchase(inWar))
+                else if (protect) 
                 {
                     City city = faction.cities.GetRandomSafe(Ref.rnd);
 
