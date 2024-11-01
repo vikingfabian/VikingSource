@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars.Data
                 case CityTagBack.Green:
                     return SpriteName.warsFolder_green;
 
-                default: return SpriteName.NO_IMAGE;
+                default: return SpriteName.BluePrintSquareFull;
             }
         }
 
@@ -127,38 +127,37 @@ namespace VikingEngine.DSSWars.Data
             {
                 switch (art)
                 {
-                    case CityTagArt.IconBuild: return SpriteName.NO_IMAGE;
-                    case CityTagArt.IconMovebox: return SpriteName.NO_IMAGE;
-                    case CityTagArt.IconHandCollect: return SpriteName.NO_IMAGE;
-                    case CityTagArt.IconMine: return SpriteName.NO_IMAGE;
-                    case CityTagArt.IconDig: return SpriteName.NO_IMAGE;
-                    case CityTagArt.IconState: return SpriteName.NO_IMAGE;
-                    case CityTagArt.IconBed: return SpriteName.NO_IMAGE;
-                    case CityTagArt.IconMap: return SpriteName.NO_IMAGE;
-                    case CityTagArt.IconFaction: return SpriteName.WarsFollowFactionYes;
-                    case CityTagArt.IconThumbsUp: return SpriteName.NO_IMAGE;
-                    case CityTagArt.IconThumbsDown: return SpriteName.NO_IMAGE;
-                    case CityTagArt.IconHeart: return SpriteName.NO_IMAGE;
+                    case CityTagArt.IconBuild: return SpriteName.WarsHammer;
+                    case CityTagArt.IconMovebox: return SpriteName.WarsWorkMove;
+                    case CityTagArt.IconHandCollect: return SpriteName.WarsWorkCollect;
+                    case CityTagArt.IconMine: return SpriteName.WarsWorkMine;
+                    case CityTagArt.IconDig: return SpriteName.WarsWorkFarm;
+                    case CityTagArt.IconBed: return SpriteName.WarsBedIcon;
+                    case CityTagArt.IconMap: return SpriteName.WarsMapIcon;
+                    case CityTagArt.IconFaction: return SpriteName.WarsGovernmentIcon;
+                    case CityTagArt.IconThumbsUp: return SpriteName.unitEmoteThumbUp;
+                    case CityTagArt.IconThumbsDown: return SpriteName.unitEmoteThumbDown;
+                    case CityTagArt.IconHeart: return SpriteName.unitEmoteLove;
                 }
             }
             else
             {
                 switch (art)
                 {
-                    case CityTagArt.Num0: return SpriteName.NO_IMAGE;
-                    case CityTagArt.Num1: return SpriteName.NO_IMAGE;
-                    case CityTagArt.Num2: return SpriteName.NO_IMAGE;
-                    case CityTagArt.Num3: return SpriteName.NO_IMAGE;
-                    case CityTagArt.Num4: return SpriteName.NO_IMAGE;
-                    case CityTagArt.Num5: return SpriteName.NO_IMAGE;
-                    case CityTagArt.Num6: return SpriteName.NO_IMAGE;
-                    case CityTagArt.Num7: return SpriteName.NO_IMAGE;
-                    case CityTagArt.Num8: return SpriteName.NO_IMAGE;
-                    case CityTagArt.Num9: return SpriteName.NO_IMAGE;
-                    case CityTagArt.NumQuestion: return SpriteName.NO_IMAGE;
-                    case CityTagArt.NumExpression: return SpriteName.NO_IMAGE;
-                    case CityTagArt.NumEqual: return SpriteName.NO_IMAGE;
-                    case CityTagArt.NumArrow: return SpriteName.NO_IMAGE;
+                    case CityTagArt.Num0: return SpriteName.pjNum0;
+                    case CityTagArt.Num1: return SpriteName.pjNum1;
+                    case CityTagArt.Num2: return SpriteName.pjNum2;
+                    case CityTagArt.Num3: return SpriteName.pjNum3;
+                    case CityTagArt.Num4: return SpriteName.pjNum4;
+                    case CityTagArt.Num5: return SpriteName.pjNum5;
+                    case CityTagArt.Num6: return SpriteName.pjNum6;
+                    case CityTagArt.Num7: return SpriteName.pjNum7;
+                    case CityTagArt.Num8: return SpriteName.pjNum8;
+                    case CityTagArt.Num9: return SpriteName.pjNum9;
+                    case CityTagArt.NumQuestion: return SpriteName.pjNumQuestion;
+                    case CityTagArt.NumExpression: return SpriteName.pjNumExpression;
+                    case CityTagArt.NumEqual: return SpriteName.pjNumEquals;
+                    case CityTagArt.NumArrow: return SpriteName.pjNumArrowR;
                 }
             }
 
@@ -264,7 +263,7 @@ namespace VikingEngine.DSSWars.Data
         IconHandCollect,
         IconMine,
         IconDig,
-        IconState,
+        //IconState,
         IconBed,
         IconMap,
         IconFaction,

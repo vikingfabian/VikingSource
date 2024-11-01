@@ -349,7 +349,7 @@ namespace VikingEngine.DSSWars.Display
                 content.space();
                 HudLib.PerSecondInfo(player, content, true);
 
-                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Economy_TaxIncome, Convert.ToInt32(faction.citiesEconomy.tax())));
+                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Economy_TaxIncome, Convert.ToInt32(faction.citiesEconomy.tax(null))));
                 content.space();
                 HudLib.InfoButton(content, new RbAction(taxInfo));
 

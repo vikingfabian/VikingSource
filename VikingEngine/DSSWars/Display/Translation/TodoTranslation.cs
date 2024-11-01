@@ -95,6 +95,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string CityCulture_Backtrader => "Backtrader";
         public string CityCulture_Backtrader_Description => "Cheaper black market";
 
+        public string CityCulture_Lawbiding => "Lawbiding";
+        public string CityCulture_Lawbiding_Description => "Gain more tax. No black market.";
 
 
         /// <summary>

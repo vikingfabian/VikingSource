@@ -333,6 +333,7 @@ namespace VikingEngine.DSSWars
         Nobelmen,//.
         Seafaring,//.
         Backtrader,//.
+        Lawbiding,//.
 
         NUM_NONE
     }

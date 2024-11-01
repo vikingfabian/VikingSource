@@ -715,13 +715,12 @@ namespace VikingEngine.DSSWars.Map.Generate
                 goalWorkForce += DssConst.LargeCityStartMaxWorkForce;
             }
 
-            
+            bool useRandomEmpires = mapSize >= MapSize.Medium;
+            IntervalF randomEmpiresSizeMulti = new IntervalF(1.5f, 2f + (mapSize - MapSize.Medium));
+
+
             namedFactionsOnMap(goalWorkForce);
 
-            //if (mapSize >= MapSize.Huge)
-            //{
-            //    goalIncome += DssLib.HeadCityBasicIncome;
-            //}
 
             foreach (City c in world.cities)
             {
@@ -729,14 +728,20 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                 if (c.faction == null)
                 {
-                    region.Reset(goalWorkForce);
+                    float size = goalWorkForce;
+                    bool rndEmpire = useRandomEmpires && world.rnd.Chance(0.25);
+                    if (rndEmpire)
+                    { 
+                        size *= randomEmpiresSizeMulti.GetRandom(world.rnd);
+                    }
+                    region.Reset((int)size);
                     region.GetStartFactionRegion(c, world);
 
                     var faction = new Faction(world, FactionType.DefaultAi);
                     
                     region.ApplyFaction(faction);
 
-                    if (region.currentWorkforce >= region.goalWorkForce)
+                    if (region.currentWorkforce >= region.goalWorkForce && !rndEmpire)
                     {
                         faction.availableForPlayer = true;
                     }
@@ -1044,6 +1049,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 CityCulture.Armorsmith,
                 CityCulture.Nobelmen,
                 CityCulture.Backtrader,
+                CityCulture.Lawbiding,
             };
     }
 

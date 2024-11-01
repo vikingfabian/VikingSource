@@ -1,5 +1,5 @@
 ﻿-Change Log-
-* 8 new city cultures (must generate new maps to see them)
+* 9 new city cultures (must generate new maps to see them)
 * changed stone collecting from 1 to 4
 * doubled stone price on black market
 * repaired toggle hud detail "U"
@@ -9,11 +9,11 @@
 * All ai flags can be accessed by pressing Ctrl+B in the flag painter
 * Improved flag painter tools
 * 20 new named factions
-
+* city tagging
+* more dynamic size on ai factions (must generate new maps to see them)
 
 #Todo (xmas patch)#
-cultures: lawbiding
-city tag
+new maps
 dölj carry amount
 new game - Skip language crashes game
 

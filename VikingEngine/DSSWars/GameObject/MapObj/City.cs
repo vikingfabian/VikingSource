@@ -21,6 +21,7 @@ using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Map;
+using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -1178,18 +1179,10 @@ namespace VikingEngine.DSSWars.GameObject
                 HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce, workForceMax));
                 HudLib.ItemCount(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, TextLib.Divition_Large(guardCount, maxGuardSize));
                 content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
-                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, calcIncome_async().total()));
+                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, calcIncome_async().total(this)));
                 content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, GuardUpkeep(maxGuardSize)));
 
-                content.icontext(SpriteName.WarsCultureIcon, string.Format(DssRef.lang.CityCulture_CultureIsX, Display.Translation.LangLib.CityCulture(Culture, true)));
-                content.space();
-                HudLib.InfoButton(content, new RbAction(()=>
-                {
-                    RichBoxContent content = new RichBoxContent();
-                    content.text(Display.Translation.LangLib.CityCulture(Culture, false));
-
-                    player.hud.tooltip.create(player, content, true);
-                }));//cultureToolTip));
+                cultureToHud(player, content);
 
                 if (immigrants.HasValue())
                 {
@@ -1219,6 +1212,19 @@ namespace VikingEngine.DSSWars.GameObject
 
             
 
+        }
+
+        public void cultureToHud(LocalPlayer player, RichBoxContent content)
+        {
+            content.icontext(SpriteName.WarsCultureIcon, string.Format(DssRef.lang.CityCulture_CultureIsX, Display.Translation.LangLib.CityCulture(Culture, true)));
+            content.space();
+            HudLib.InfoButton(content, new RbAction(() =>
+            {
+                RichBoxContent content = new RichBoxContent();
+                content.text(Display.Translation.LangLib.CityCulture(Culture, false));
+
+                player.hud.tooltip.create(player, content, true);
+            }));//cultureToolTip));
         }
 
        // void cultureToolTip()

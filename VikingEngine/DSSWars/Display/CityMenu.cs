@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars.Display
     class CityMenu
     {
         public static readonly List<MenuTab> Tabs = new List<MenuTab>() { 
-            MenuTab.Info, MenuTab.Tag, MenuTab.Resources, MenuTab.Work, MenuTab.BlackMarket, MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript };
+            MenuTab.Info, MenuTab.Resources, MenuTab.Work, MenuTab.BlackMarket, MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript, MenuTab.Tag };
         Players.LocalPlayer player;
         City city;
         static readonly int[] StockPileControls = { 100, 1000 };
@@ -120,13 +120,21 @@ namespace VikingEngine.DSSWars.Display
         public void tagsToMenu(RichBoxContent content)
         {
             for (CityTagBack back = CityTagBack.NONE; back < CityTagBack.NUM; back++)
-            { 
-                 var button = new RichboxButton(new List<AbsRichBoxMember> { 
+            {
+                var button = new RichboxButton(new List<AbsRichBoxMember> {
                     new RichBoxImage(Data.CityTag.BackSprite(back))
                 }, new RbAction1Arg<CityTagBack>((CityTagBack back) => { city.tagBack = back; }, back));
                 button.setGroupSelectionColor(HudLib.RbSettings, back == city.tagBack);
                 content.Add(button);
-                content.space();
+
+                if (back == CityTagBack.NONE)
+                {
+                    content.newLine();
+                }
+                else
+                {
+                    content.space();
+                }
             }
 
             if (city.tagBack != CityTagBack.NONE)

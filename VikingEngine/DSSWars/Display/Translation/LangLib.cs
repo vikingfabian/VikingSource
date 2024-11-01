@@ -424,8 +424,10 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return title ? DssRef.todoLang.CityCulture_Seafaring : DssRef.todoLang.CityCulture_Seafaring_Description;
                 case DSSWars.CityCulture.Backtrader:
                     return title ? DssRef.todoLang.CityCulture_Backtrader : DssRef.todoLang.CityCulture_Backtrader_Description;
+                case DSSWars.CityCulture.Lawbiding:
+                    return title ? DssRef.todoLang.CityCulture_Lawbiding : DssRef.todoLang.CityCulture_Lawbiding_Description;
 
-                default : return TextLib.Error;
+                default: return TextLib.Error;
             }
         }
 

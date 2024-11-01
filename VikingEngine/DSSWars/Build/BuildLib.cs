@@ -45,8 +45,9 @@ namespace VikingEngine.DSSWars.Build
             BuildAndExpandType.Nobelhouse,
             BuildAndExpandType.Postal,
             BuildAndExpandType.Recruitment,
-            BuildAndExpandType.Tavern,
+            
             BuildAndExpandType.Storehouse,
+            BuildAndExpandType.Tavern,
             BuildAndExpandType.Brewery,
             BuildAndExpandType.Cook,
             BuildAndExpandType.CoalPit,
