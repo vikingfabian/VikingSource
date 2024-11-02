@@ -1,79 +1,32 @@
-﻿
-##Path 2.0 TODO##
-Squads ska kunna väljas, flyttas, frigöras från army
--blir map objects (sub army squad), kan flyttas från overview(?)
-arme center, startar från den mest centrala, icke frigjorda gruppen
-Arme ska kunna låsa position på squads (kanske ha en fram/bak, vänster/höger grovindelad struktur)
-Arme ska flyttas i columner
-Squads ska path finda seperat, även enskila soldater
-Squads position i armen måste bli dynamisk
-(ska kanske flytta på linje vid korta förflyttningar, även shift val)
-*center, left, right body, left/right flank / scout, front, body, second, behind
-Lägg till lågt vatten nära land
-Byggnader är hinder, kan klättras över
-Soldater letar upp sin position i gruppen
-Grupprörelser är olika effektiva beroende på träning
-Tydlig state på soldater
+﻿-Change Log-
+* view tags checkbox
+* save on exit option
+* can pick build type from build orders (B key)
+* Fixed stuck tooltips
 
-Strid: ta bort grid
-Strid: lås collisions för stridande, så friendlies inte kan passera
-Archers ska kunna skjuta och fly igenom friendlies
-
-(path finding på arbetare)
-vägar, träd collisions, och hinder
-
-optimera path finding med tile-trängsel
-squad som punkt (utanför detail)
-arme som punkt (utanför overview)
-soldat recycle?
+#Todo (xmas patch)#
+new maps
+dölj carry amount
+new game - Skip language crashes game
 
 
--Change Log-
-* longbow weapon
-* normal bow power reduction to about 60%
-* Bog iron, inefficient iron collecting
-* Storehouse, workers may drop their resources here
-* Tavern, workers may eat here
-* new icons
-* workers will get the closest work
-
-
-
-#Todo#
-översätt
-
-https://soniccharge.com/synplant2 (audio convert)
-
-#Todo (nästa patch)#
-model-storage house
-model-bog iron, ineffektiv järn samlande
-
+//ShowGamepadTextInput
 
 --Efter release polish--
-
--culture icon
 -war icon
- "produces 20 raw food in 4 minutes, and requires 30sec of work per cycle" 
- ● If You can, be more specific on what resource is produced by a building in the
-“building” menu: personally it wasn’t so intuitive for all the buildings.
-
-
-
-sound limit per time
+ 
 
 pilar med resurser från delivery
-tydlig ikon för objekt meny typ
 Factories modeller
-Deliver effect
-Ljud
 city economy
 visa antal byggnader i bygg meny
 training skill icon
 menu scroll
 
+manuballista (hand ballista)
+
 Error
 -back button in menues 
--list punkt
 
 Retreat system
 -retreat av de sista motståndarna
@@ -105,7 +58,7 @@ Art
 
 
 #current
-English, Simplified Chinese, Japanese, Russian, Spanish (latin america)
+English, Simplified Chinese, Japanese, Russian, Spanish
 
 #Real-time grand strategy
 

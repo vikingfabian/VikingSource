@@ -151,10 +151,14 @@ namespace VikingEngine.DSSWars.GameObject
             return DssRef.lang.UnitType_Army + " (" + parentArrayIndex.ToString() +   ")";//return "Army" + parentArrayIndex.ToString();
         }
 
-        public override SpriteName TypeIcon()
+        public override void TypeIcon(RichBoxContent content)
         {
-            return SpriteName.WarsUnitIcon_Soldier;
+            content.Add(new RichBoxImage(SpriteName.WarsUnitIcon_Soldier));
         }
+        //public override SpriteName TypeIcon()
+        //{
+        //    return SpriteName.WarsUnitIcon_Soldier;
+        //}
 
         public override string Name()
         {

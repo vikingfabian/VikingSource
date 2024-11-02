@@ -52,6 +52,12 @@ namespace VikingEngine.DSSWars.Resource
 
         public static void ToHud(LocalPlayer player, RichBoxContent content, City city)
         {
+            if (city.Culture == CityCulture.Lawbiding)
+            {
+                city.cultureToHud(player, content);
+                return;
+            }
+
             content.h2(DssRef.lang.Hud_PurchaseTitle_Resources).overrideColor = HudLib.TitleColor_Label;
 
             Resource(CostMultiply(city, Cost_RawFood), ItemResourceType.RawFood_Group, DssRef.lang.Resource_TypeName_RawFood);

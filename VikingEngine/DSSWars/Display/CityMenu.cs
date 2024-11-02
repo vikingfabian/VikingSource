@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
@@ -27,12 +28,10 @@ namespace VikingEngine.DSSWars.Display
     class CityMenu
     {
         public static readonly List<MenuTab> Tabs = new List<MenuTab>() { 
-            MenuTab.Info, MenuTab.Resources, MenuTab.Work, MenuTab.BlackMarket, MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript };
+            MenuTab.Info, MenuTab.Resources, MenuTab.Work, MenuTab.BlackMarket, MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript, MenuTab.Tag };
         Players.LocalPlayer player;
         City city;
         static readonly int[] StockPileControls = { 100, 1000 };
-
-        //public const string ResourcesMenuState = "resource";
         public CityMenu(Players.LocalPlayer player, City city, RichBoxContent content)
         {
             this.player = player;
@@ -50,7 +49,7 @@ namespace VikingEngine.DSSWars.Display
 
             var tabs = new List<RichboxTabMember>((int)MenuTab.NUM);
 
-            List<MenuTab> availableTabs =player.AvailableCityTabs();//player.tutorial != null ? player.tutorial.cityTabs : Tabs;
+            List<MenuTab> availableTabs =player.AvailableCityTabs();
             for (int i = 0; i < availableTabs.Count; ++i)
             {
                 var text = new RichBoxText(LangLib.Tab(availableTabs[i], out string description));
@@ -90,6 +89,10 @@ namespace VikingEngine.DSSWars.Display
                     purchaseOptions(content);
                     break;
 
+                case MenuTab.Tag:
+                    tagsToMenu(content);
+                    break;
+
                 case MenuTab.Work:
                     city.workTemplate.toHud(player, content, city.faction, city);
                     break;
@@ -97,10 +100,6 @@ namespace VikingEngine.DSSWars.Display
                 case MenuTab.Conscript:
                     conscriptTab(content);
                     break;
-
-                //case MenuTab.Recruit:
-                //    recruitTab(content);
-                //    break;
 
                 case MenuTab.BlackMarket:
                     BlackMarketResources.ToHud(player, content, city);
@@ -123,6 +122,46 @@ namespace VikingEngine.DSSWars.Display
                     break;
             }
         }
+
+        public void tagsToMenu(RichBoxContent content)
+        {
+            content.newLine();
+            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Tag_ViewOnMap) }, DssRef.storage.TagsOnMapProperty));
+            content.newParagraph();
+
+            for (CityTagBack back = CityTagBack.NONE; back < CityTagBack.NUM; back++)
+            {
+                var button = new RichboxButton(new List<AbsRichBoxMember> {
+                    new RichBoxImage(Data.CityTag.BackSprite(back))
+                }, new RbAction1Arg<CityTagBack>((CityTagBack back) => { city.tagBack = back; }, back));
+                button.setGroupSelectionColor(HudLib.RbSettings, back == city.tagBack);
+                content.Add(button);
+
+                if (back == CityTagBack.NONE)
+                {
+                    content.newLine();
+                }
+                else
+                {
+                    content.space();
+                }
+            }
+
+            if (city.tagBack != CityTagBack.NONE)
+            {
+                content.newParagraph();
+                for (CityTagArt art = CityTagArt.None; art < CityTagArt.NUM; art++)
+                {
+                    var button = new RichboxButton(new List<AbsRichBoxMember> {
+                    new RichBoxImage(Data.CityTag.ArtSprite(art))
+                    }, new RbAction1Arg<CityTagArt>((CityTagArt art) => { city.tagArt = art; }, art));
+                    button.setGroupSelectionColor(HudLib.RbSettings, art == city.tagArt);
+                    content.Add(button);
+                    content.space();
+                }
+            }
+        }
+
         public void resourcesToMenu(RichBoxContent content)
         {
             if (player.tutorial == null || player.tutorial.DisplayStockpile())
@@ -176,8 +215,8 @@ namespace VikingEngine.DSSWars.Display
 
                     city.res_food.toMenu(content, ItemResourceType.Food_G, foodSafeGuard, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftFood1, ResourceLib.CraftFood2);
-                    //if (allowSafeGuard)
-                    //{
+                    
+
                     content.space();
                     content.Add(new RichboxButton(new List<AbsRichBoxMember> {
                             new RichBoxImage(city.res_food_safeguard? SpriteName.WarsProtectedStockpileOn : SpriteName.WarsProtectedStockpileOff),
@@ -193,7 +232,6 @@ namespace VikingEngine.DSSWars.Display
                         player.hud.tooltip.create(player, content, true);
                     })));
 
-                    //}
 
                     city.res_fuel.toMenu(content, ItemResourceType.Fuel_G, fuelSafeGuard, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftFuel1, null, true);
@@ -226,14 +264,11 @@ namespace VikingEngine.DSSWars.Display
                     city.res_longbow.toMenu(content, ItemResourceType.LongBow, false, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftLongBow);
 
-                    //content.icontext(SpriteName.WarsResource_Longbow, DssRef.todoLang.Resource_TypeName_Longbow);
-
                     city.res_ballista.toMenu(content, ItemResourceType.Ballista, false, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftBallista);
 
                     content.Add(new RichBoxSeperationLine());
-
-                    
+                                        
                     city.res_lightArmor.toMenu(content, ItemResourceType.LightArmor, false, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftLightArmor);
 
@@ -244,13 +279,6 @@ namespace VikingEngine.DSSWars.Display
                     blueprintButton(player, content, ResourceLib.CraftHeavyArmor);
 
 
-
-                    //city.res_longbow.toMenu(content, ItemResourceType.LongBow, false, ref reachedBuffer);
-                    //blueprintButton(player, content, ResourceLib.CraftLongBow);
-                    //if (reachedBuffer)
-                    //{
-                    //    GroupedResource.BufferIconInfo(content);
-                    //}
                     content.Add(new RichBoxSeperationLine());
                     GroupedResource.BufferIconInfo(content, false);
                     if (foodSafeGuard)
@@ -258,9 +286,7 @@ namespace VikingEngine.DSSWars.Display
                         GroupedResource.BufferIconInfo(content, true);
                     }
                     ResourceLib.ConvertGoldOre.toMenu(content, city);
-                    //content.text("1 gold ore => " + DssConst.GoldOreSellValue.ToString() + "gold");
                     {
-                        //content.text("1 food => " + DssConst.FoodEnergy + " energy (seconds of work)");
                         content.Add(new RichBoxText(1.ToString()));
                         content.Add(new RichBoxImage(ResourceLib.Icon(ItemResourceType.Food_G)));
                         content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Food));
@@ -921,6 +947,7 @@ namespace VikingEngine.DSSWars.Display
     enum MenuTab
     {         
         Info,
+        Tag,
         Conscript,
         Recruit,
         Economy,

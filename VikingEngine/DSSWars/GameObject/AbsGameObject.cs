@@ -43,7 +43,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public string TypeName() { return null; }
 
-        virtual public SpriteName TypeIcon() { return SpriteName.NO_IMAGE; }
+
+        virtual public void TypeIcon(RichBoxContent content) {  }
 
         virtual public string Name() { return null; }
 
@@ -62,7 +63,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             args.content.Add(new RichBoxBeginTitle());
             args.content.Add(GetFaction().FlagTextureToHud());
-            args.content.Add(new RichBoxImage(TypeIcon()));
+            TypeIcon(args.content);
             args.content.Add(new RichBoxText(TypeName()));
 
             if (args.ShowFull)

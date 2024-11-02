@@ -97,6 +97,9 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case MenuTab.Info:
                     description = null;
                     return DssRef.lang.MenuTab_Info;
+                case MenuTab.Tag:
+                    description = null;
+                    return DssRef.todoLang.MenuTab_Tag;
                 case MenuTab.Build:
                     description = DssRef.lang.MenuTab_Build_Description;
                     return DssRef.lang.MenuTab_Build;
@@ -421,8 +424,10 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return title ? DssRef.todoLang.CityCulture_Seafaring : DssRef.todoLang.CityCulture_Seafaring_Description;
                 case DSSWars.CityCulture.Backtrader:
                     return title ? DssRef.todoLang.CityCulture_Backtrader : DssRef.todoLang.CityCulture_Backtrader_Description;
+                case DSSWars.CityCulture.Lawbiding:
+                    return title ? DssRef.todoLang.CityCulture_Lawbiding : DssRef.todoLang.CityCulture_Lawbiding_Description;
 
-                default : return TextLib.Error;
+                default: return TextLib.Error;
             }
         }
 

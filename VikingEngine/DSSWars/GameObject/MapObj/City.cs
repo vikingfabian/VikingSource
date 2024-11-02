@@ -21,6 +21,7 @@ using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Map;
+using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -76,6 +77,9 @@ namespace VikingEngine.DSSWars.GameObject
         public Build.BuildAndExpandType autoExpandFarmType = Build.BuildAndExpandType.WheatFarm;
         bool autoBuild_Work = false;
         bool autoBuild_Farm = false;
+
+        public CityTagBack tagBack = CityTagBack.NONE;
+        public CityTagArt tagArt = CityTagArt.None;
 
         public void AutoExpandType(out bool work, out Build.BuildAndExpandType farm)
         {
@@ -196,9 +200,7 @@ namespace VikingEngine.DSSWars.GameObject
             else if (percWater >= 0.25 && percY <= 0.25)
             {
                 cityCultureCollection.NorthSea.Add(this);
-            }
-
-            
+            }            
 
             if (world.rnd.Chance(0.3))
             {
@@ -215,6 +217,10 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     Culture = CityCulture.Miners;
                 }
+                else if (percMountain > 0.3)
+                {
+                    Culture = CityCulture.Stonemason;
+                }
                 else if (dryBiom <= 1)
                 {
                     Culture = CityCulture.DeepWell;
@@ -223,7 +229,10 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     Culture = CityCulture.PitMasters;
                 }
-
+                else if (percWater >= 0.25)
+                {
+                    Culture = CityCulture.Seafaring;
+                }
             }
 
             if (Culture == CityCulture.NUM_NONE)
@@ -336,7 +345,12 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(autoBuild_Work);
             w.Write(autoBuild_Farm);
             w.Write((byte)autoExpandFarmType);
-        
+
+            w.Write((byte)tagBack);
+            if (tagBack != CityTagBack.NONE)
+            {
+                w.Write((ushort)tagArt);
+            }
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
@@ -410,10 +424,18 @@ namespace VikingEngine.DSSWars.GameObject
                 deliveryServices.Add(status);
             }
 
-                autoBuild_Work = r.ReadBoolean();
-                autoBuild_Farm = r.ReadBoolean();
-                autoExpandFarmType = (Build.BuildAndExpandType)r.ReadByte();
-            
+            autoBuild_Work = r.ReadBoolean();
+            autoBuild_Farm = r.ReadBoolean();
+            autoExpandFarmType = (Build.BuildAndExpandType)r.ReadByte();
+
+            if (subversion >= 23)
+            {
+                tagBack = (CityTagBack)r.ReadByte();
+                if (tagBack != CityTagBack.NONE)
+                {
+                    tagArt = (CityTagArt)r.ReadUInt16();
+                }
+            }
         }
 
         public void writeNet(System.IO.BinaryWriter w)
@@ -1093,9 +1115,25 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return DssRef.lang.UnitType_City + " (" + parentArrayIndex + ")";
         }
-        public override SpriteName TypeIcon()
+        //public override SpriteName TypeIcon()
+        //{
+        //    return SpriteName.WarsCityHall;
+        //}
+
+        public override void TypeIcon(RichBoxContent content)
         {
-            return SpriteName.WarsCityHall;
+            content.Add(new RichBoxImage( SpriteName.WarsCityHall));
+            tagToHud(content);
+        }
+
+        public void tagToHud(RichBoxContent content)
+        {
+            if (tagBack != CityTagBack.NONE)
+            {
+                content.Add(new RichBoxOverlapImage(
+                    new RichBoxImage(Data.CityTag.BackSprite(tagBack)),
+                    Data.CityTag.ArtSprite(tagArt), Vector2.Zero, 0.8f));
+            }
         }
 
         public override void toHud(ObjectHudArgs args)
@@ -1142,18 +1180,10 @@ namespace VikingEngine.DSSWars.GameObject
                 HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce, workForceMax));
                 HudLib.ItemCount(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, TextLib.Divition_Large(guardCount, maxGuardSize));
                 content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
-                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, calcIncome_async().total()));
+                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, calcIncome_async().total(this)));
                 content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, GuardUpkeep(maxGuardSize)));
 
-                content.icontext(SpriteName.WarsCultureIcon, string.Format(DssRef.lang.CityCulture_CultureIsX, Display.Translation.LangLib.CityCulture(Culture, true)));
-                content.space();
-                HudLib.InfoButton(content, new RbAction(()=>
-                {
-                    RichBoxContent content = new RichBoxContent();
-                    content.text(Display.Translation.LangLib.CityCulture(Culture, false));
-
-                    player.hud.tooltip.create(player, content, true);
-                }));//cultureToolTip));
+                cultureToHud(player, content);
 
                 if (immigrants.HasValue())
                 {
@@ -1183,6 +1213,19 @@ namespace VikingEngine.DSSWars.GameObject
 
             
 
+        }
+
+        public void cultureToHud(LocalPlayer player, RichBoxContent content)
+        {
+            content.icontext(SpriteName.WarsCultureIcon, string.Format(DssRef.lang.CityCulture_CultureIsX, Display.Translation.LangLib.CityCulture(Culture, true)));
+            content.space();
+            HudLib.InfoButton(content, new RbAction(() =>
+            {
+                RichBoxContent content = new RichBoxContent();
+                content.text(Display.Translation.LangLib.CityCulture(Culture, false));
+
+                player.hud.tooltip.create(player, content, true);
+            }));//cultureToolTip));
         }
 
        // void cultureToolTip()

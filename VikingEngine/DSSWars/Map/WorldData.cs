@@ -71,58 +71,7 @@ namespace VikingEngine.DSSWars
         //public int evilFactionIndex=-1;
         public bool abortLoad = false;
 
-        public List<FactionType> availableGenericAiTypes = new List<FactionType>
-        {
-            FactionType.Starshield,//
-            FactionType.Bluepeak,//
-            FactionType.Hoft,//
-            FactionType.RiverStallion,//
-            FactionType.Sivo,//
-            FactionType.AelthrenConclave,//
-            FactionType.VrakasundEnclave,//
-            FactionType.Tormürd,//
-            FactionType.ElderysFyrd,//
-            FactionType.Hólmgar,//
-            FactionType.RûnothalOrder,//
-            
-            FactionType.GrimwardEotain,//
-            FactionType.SkaeldraHaim,//
-            FactionType.MordwynnCompact,//
-            FactionType.AethmireSovren,//
-            FactionType.ThurlanKin,//
-            FactionType.ValestennOrder,//
-            FactionType.Mournfold,//
-            FactionType.OrentharTribes,//
-            FactionType.SkarnVael,//
-            FactionType.Glimmerfell,//
-
-            FactionType.BleakwaterFold,//
-            FactionType.Oathmaeren,//
-            FactionType.Elderforge,//
-            FactionType.MarhollowCartel,//
-            FactionType.TharvaniDominion,//
-            FactionType.KystraAscendancy,//
-            FactionType.GildenmarkUnion,//
-            FactionType.AurecanEmpire,//
-            FactionType.BronzeReach,//
-            FactionType.ElbrethGuild,//
-            FactionType.ValosianSenate,//
-            FactionType.IronmarchCompact,//
-            FactionType.KaranthCollective,//
-            FactionType.VerdicAlliance,//
-
-            FactionType.OrokhCircles,//
-            FactionType.TannagHorde,//
-            FactionType.BraghkRaiders,//
-            FactionType.ThurvanniStonekeepers,//
-            FactionType.KolvrenHunters,//
-            FactionType.JorathBloodbound,//
-            FactionType.UlrethSkycallers,//
-            FactionType.GharjaRavagers,//
-            FactionType.RavkanShield,//
-            FactionType.FenskaarTidewalkers,//
-
-        };
+        public List<FactionType> availableGenericAiTypes = AvailableGenericAiTypes();
 
         public WorldData()
         {
@@ -722,6 +671,103 @@ namespace VikingEngine.DSSWars
         {
             x = Bound.Set(x, ExtraBoundRadius, DssRef.world.Size.X - ExtraBoundRadius);
             z = Bound.Set(z, ExtraBoundRadius, DssRef.world.Size.Y - ExtraBoundRadius);
+        }
+        public static List<FactionType> NamedAiTypes()
+        {
+            return new List<FactionType>
+            {
+                FactionType.DarkLord,
+                FactionType.DarkFollower,
+                FactionType.UnitedKingdom,
+                FactionType.GreenWood,
+                FactionType.EasternEmpire,
+                FactionType.NordicRealm,
+                FactionType.BearClaw,
+                FactionType.NordicSpur,
+                FactionType.IceRaven,
+                FactionType.DragonSlayer,
+                FactionType.SouthHara,
+                FactionType.DyingMonger,
+                FactionType.DyingHate,
+                FactionType.DyingDestru,
+            };
+        }
+        public static List<FactionType> AvailableGenericAiTypes()
+        {
+            return new List<FactionType>
+            {
+                FactionType.Starshield,//
+                FactionType.Bluepeak,//
+                FactionType.Hoft,//
+                FactionType.RiverStallion,//
+                FactionType.Sivo,//
+                FactionType.AelthrenConclave,//
+                FactionType.VrakasundEnclave,//
+                FactionType.Tormürd,//
+                FactionType.ElderysFyrd,//
+                FactionType.Hólmgar,//
+                FactionType.RûnothalOrder,//
+            
+                FactionType.GrimwardEotain,//
+                FactionType.SkaeldraHaim,//
+                FactionType.MordwynnCompact,//
+                FactionType.AethmireSovren,//
+                FactionType.ThurlanKin,//
+                FactionType.ValestennOrder,//
+                FactionType.Mournfold,//
+                FactionType.OrentharTribes,//
+                FactionType.SkarnVael,//
+                FactionType.Glimmerfell,//
+
+                FactionType.BleakwaterFold,//
+                FactionType.Oathmaeren,//
+                FactionType.Elderforge,//
+                FactionType.MarhollowCartel,//
+                FactionType.TharvaniDominion,//
+                FactionType.KystraAscendancy,//
+                FactionType.GildenmarkUnion,//
+                FactionType.AurecanEmpire,//
+                FactionType.BronzeReach,//
+                FactionType.ElbrethGuild,//
+                FactionType.ValosianSenate,//
+                FactionType.IronmarchCompact,//
+                FactionType.KaranthCollective,//
+                FactionType.VerdicAlliance,//
+
+                FactionType.OrokhCircles,//
+                FactionType.TannagHorde,//
+                FactionType.BraghkRaiders,//
+                FactionType.ThurvanniStonekeepers,//
+                FactionType.KolvrenHunters,//
+                FactionType.JorathBloodbound,//
+                FactionType.UlrethSkycallers,//
+                FactionType.GharjaRavagers,//
+                FactionType.RavkanShield,//
+                FactionType.FenskaarTidewalkers,//
+
+                FactionType.HroldaniStormguard,
+                FactionType.SkirnirWolfkin,
+                FactionType.ThalgarBearclaw,
+                FactionType.VarnokRimeguard,
+                FactionType.KorrakFirehand,
+                FactionType.MoongladeGat,
+                FactionType.DraskarSons,
+                FactionType.YrdenFlamekeepers,
+                FactionType.BrundirWarhorns,
+                FactionType.OltunBonecarvers,
+
+                FactionType.HaskariEmber,
+                FactionType.ZalfrikThunderborn,
+                FactionType.BjorunStonetender,
+                FactionType.MyrdarrIcewalkers,
+                FactionType.SkelvikSpear,
+                FactionType.VaragThroatcallers,
+                FactionType.Durakai,
+                FactionType.FjornfellWarhowl,
+                FactionType.AshgroveWard,
+                FactionType.HragmarHorncarvers,
+
+            };
         }
 
     }

@@ -2366,7 +2366,9 @@ namespace VikingEngine
                     add(SpriteName.warsCheckYes);
                     add(SpriteName.warsCheckNo);
                     add(SpriteName.WarsCultureIcon);
-                    currentIndex += 3;
+                    add(SpriteName.WarsResource_FoodEmpty);
+                    add(SpriteName.WarsBedIcon);
+                    currentIndex += 1;
                     add(SpriteName.warsBulletPoint);
                     currentIndex++;
                     

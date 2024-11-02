@@ -42,6 +42,7 @@ namespace VikingEngine.DSSWars.Players
 
         public Rectangle2 cullingTileArea = Rectangle2.ZeroOne;
         public DiplomacyMap diplomacyMap = null;
+        public CityTagMap cityTagMap = null;
 
         public FloatingInt_Max commandPoints = new FloatingInt_Max();
         public FloatingInt_Max diplomaticPoints = new FloatingInt_Max();
@@ -416,7 +417,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void toPeacefulCheck_asynch()
         {
-            if (faction.citiesEconomy.tax() > 0 && !DssRef.settings.AiDelay)
+            if (faction.citiesEconomy.tax(null) > 0 && !DssRef.settings.AiDelay)
             {
                 int warCount = 0;
                 float opposingSize = 0;
@@ -430,7 +431,7 @@ namespace VikingEngine.DSSWars.Players
                         if (opponent.player.IsAi())
                         {
                             ++warCount;
-                            opposingSize += opponent.citiesEconomy.tax();
+                            opposingSize += opponent.citiesEconomy.tax(null);
                         }
                     }
                 }
@@ -441,7 +442,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     float opposingSizePerc;
                     
-                    opposingSizePerc = opposingSize / faction.citiesEconomy.tax();
+                    opposingSizePerc = opposingSize / faction.citiesEconomy.tax(null);
                     
                     toPeaceful = opposingSizePerc <= DssRef.difficulty.toPeacefulPercentage;
                 }
@@ -601,7 +602,7 @@ namespace VikingEngine.DSSWars.Players
                 hud.OpenAutomationMenu();
             }                
 
-            updateDiplomacy();
+            
 
             if (armyControls != null)
             {
@@ -685,6 +686,8 @@ namespace VikingEngine.DSSWars.Players
 
             //DssRef.state.detailMap.PlayerUpdate(mapControls.playerPointerPos, bUnitDetailLayer);
             drawUnitsView.Update();
+            playerData.view.Camera.RecalculateMatrices();
+            updateMapOverlays();
         }
 
         void setBuildMode(City city, BuildAndExpandType type)
@@ -704,6 +707,13 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (input.Build.DownEvent)
                 {
+                    var order = orders.orderOnSubTile(mapControls.hover.subTile.subTilePos) as BuildOrder;
+                    if ( order != null)
+                    {
+                        setBuildMode(mapControls.hover.subTile.city, order.buildingType);
+                        return;
+                    }                    
+
                     var build = BuildLib.BuildTypeFromTerrain(mapControls.hover.subTile.subTile.mainTerrain, mapControls.hover.subTile.subTile.subTerrain);
                     setBuildMode(mapControls.hover.subTile.city, build);
                     return;
@@ -1032,7 +1042,7 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        void updateDiplomacy()
+        void updateMapOverlays()
         {
             if (drawUnitsView.current.DrawOverview)
             {
@@ -1049,6 +1059,23 @@ namespace VikingEngine.DSSWars.Players
                 {
                     diplomacyMap.DeleteMe();
                     diplomacyMap = null;
+                }
+            }
+
+            if (drawUnitsView.current.DrawNormal)
+            {
+                if (cityTagMap == null)
+                { 
+                    cityTagMap = new CityTagMap(this);
+                }
+                cityTagMap.update();
+            }
+            else
+            {
+                if (cityTagMap != null)
+                { 
+                    cityTagMap.DeleteMe();
+                    cityTagMap = null;
                 }
             }
         }
@@ -1347,6 +1374,12 @@ namespace VikingEngine.DSSWars.Players
                         citiesC.sel.checkPlayerFuelAccess_OnGamestart_async();
                     }
                 });
+            }
+
+            if (newGame)
+            { 
+                faction.mainCity.tagBack = CityTagBack.Carton;
+                faction.mainCity.tagArt = CityTagArt.IconFaction;
             }
         }
 

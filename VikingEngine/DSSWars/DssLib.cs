@@ -325,14 +325,15 @@ namespace VikingEngine.DSSWars
         Networker,//
         PitMasters,//
 
-        Stonemason,//
-        Brewmaster,//
-        Weavers,//
-        SiegeEngineer,
-        Armorsmith,//
-        Nobelmen,//
-        Seafaring,//
-        Backtrader,//
+        Stonemason,//.
+        Brewmaster,//.
+        Weavers,//.
+        SiegeEngineer,//.
+        Armorsmith,//.
+        Nobelmen,//.
+        Seafaring,//.
+        Backtrader,//.
+        Lawbiding,//.
 
         NUM_NONE
     }

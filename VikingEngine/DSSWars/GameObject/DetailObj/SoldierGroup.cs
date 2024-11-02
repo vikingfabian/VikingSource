@@ -1841,9 +1841,14 @@ namespace VikingEngine.DSSWars.GameObject
             return soldierConscript.conscript.TypeName() + " Group(" + parentArrayIndex.ToString() + ")";
         }
 
-        public override SpriteName TypeIcon()
+        //public override SpriteName TypeIcon()
+        //{
+        //    return AllUnits.UnitFilterIcon( soldierConscript.filterType());
+        //}
+
+        public override void TypeIcon(RichBoxContent content)
         {
-            return AllUnits.UnitFilterIcon( soldierConscript.filterType());
+            content.Add(new RichBoxImage(AllUnits.UnitFilterIcon(soldierConscript.filterType())));
         }
 
         public override string ToString()

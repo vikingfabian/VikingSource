@@ -2463,10 +2463,12 @@ namespace VikingEngine
         WarsWorkCollect,
         WarsWorkMine,
         WarsWorkFarm,
+        //WarsMapIcon,
+        //WarsFactionIcon,
         WarsFollowFactionYes,
         WarsFollowFactionNo,
         WarsBogIron,
-
+        WarsBedIcon,
 
         WarsUnitLevelMinimal,
         WarsUnitLevelBasic,
@@ -2551,6 +2553,7 @@ namespace VikingEngine
         WarsResource_Food,
         WarsResource_FoodAdd,
         WarsResource_FoodSub,
+        WarsResource_FoodEmpty,
         WarsResource_Wood,
         WarsResource_Fuel,
         WarsResource_Wheat,
