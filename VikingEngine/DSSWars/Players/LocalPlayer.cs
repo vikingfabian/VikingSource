@@ -819,6 +819,15 @@ namespace VikingEngine.DSSWars.Players
                 //        }
                 //}
 
+#if DEBUG
+                if (VikingEngine.Input.Keyboard.KeyDownEvent(Keys.P))
+                {
+                    var subtile = DssRef.world.subTileGrid.Get(mapControls.hover.subTile.subTilePos);
+                    subtile.SetType(TerrainMainType.Building, (int)TerrainBuildingType.StoneWall, 1);
+                    DssRef.world.subTileGrid.Set(mapControls.hover.subTile.subTilePos, subtile);
+                }
+#endif
+
             }
 
             if (mapControls.selection.obj != null && 

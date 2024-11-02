@@ -126,6 +126,11 @@ namespace VikingEngine.DSSWars.Map
         {
             return LangLib.TerrainName(mainTerrain, subTerrain);
         }
+
+        public bool IsWater()
+        {
+            return mainTerrain == TerrainMainType.DefaultSea;
+        }
     }
 
 }

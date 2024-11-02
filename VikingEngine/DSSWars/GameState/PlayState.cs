@@ -10,6 +10,7 @@ using VikingEngine.DSSWars.Display.CutScene;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.Input;
 using VikingEngine.ToGG.MoonFall;
@@ -27,7 +28,8 @@ namespace VikingEngine.DSSWars
 
         public Culling culling;
         public PathFindingPool pathFindingPool = new PathFindingPool();
-        
+        public DetailPathFindingPool detailPathFindingPool = new DetailPathFindingPool();
+
         public int nextGroupId = 0;
         public List<Players.LocalPlayer> localPlayers;
         

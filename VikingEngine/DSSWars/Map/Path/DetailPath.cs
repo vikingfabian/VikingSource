@@ -1,33 +1,35 @@
-﻿using System;
+﻿
+//#define VISUAL_NODES
+using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using VikingEngine.LootFest.Map;
-using VikingEngine.PJ;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using VikingEngine.Timer;
 
-namespace VikingEngine.DSSWars.Map
+namespace VikingEngine.DSSWars.Map.Path
 {
-    //TODO heatmap för vatten
 
-    class PathFindingPool
+    class DetailPathFindingPool
     {
         //Represents a thread-safe last in-first out (LIFO) collection.
-        private ConcurrentStack<PathFinding> pool = new ConcurrentStack<PathFinding>();
+        private ConcurrentStack<DetailPathFinding> pool = new ConcurrentStack<DetailPathFinding>();
 
-        public PathFinding Get()
+        public DetailPathFinding Get()
         {
-            if (pool.TryPop(out PathFinding path))
+            if (pool.TryPop(out DetailPathFinding path))
             {
                 return path;
             }
             else
             {
-                return new PathFinding();
+                return new DetailPathFinding();
             }
         }
 
-        public void Return(PathFinding path)
+        public void Return(DetailPathFinding path)
         {
             // Reset the node to a default state
 
@@ -36,21 +38,22 @@ namespace VikingEngine.DSSWars.Map
         }
     }
 
-
-
-    class PathFinding
+    class DetailPathFinding
     {
         public const int MaxNodeLength = 30000;
+        const int MaxTileRadius = 64 * WorldData.TileSubDivitions;
 
-        List<PathNode> open = new List<PathNode>();
-
-        PathNode[,] nodeGrid;
-        public PathFinding()
+        List<DetailPathNode> open = new List<DetailPathNode>();
+        Rectangle2 area;
+        //IntVector2 gridOffset;
+        DetailPathNode[,] nodeGrid;
+        public DetailPathFinding()
         {
-            nodeGrid = new PathNode[DssRef.world.Size.X, DssRef.world.Size.Y];
+            Rectangle2 area = Rectangle2.FromCenterTileAndRadius(IntVector2.Zero, MaxTileRadius);
+            nodeGrid = new DetailPathNode[area.Width, area.Height];
         }
 
-        public WalkingPath FindPath(IntVector2 center, Rotation1D startDir, IntVector2 goal, bool startAsShip)
+        public DetailWalkingPath FindPath(IntVector2 center, Rotation1D startDir, IntVector2 goal, bool startAsShip)
         {
             /*
             * Path finding algorithm
@@ -67,12 +70,17 @@ namespace VikingEngine.DSSWars.Map
             * 4.Varje ny ruta ska till en öppen lista
             */
 
-            PathNode startNode = new PathNode(center, conv.ToDir8_INT(startDir), startAsShip);
+            
+            area = Rectangle2.FromCenterTileAndRadius(center, MaxTileRadius);
+            area.SetBounds(DssRef.world.subTileGrid.Area);
+            //gridOffset = area.pos
 
-            nodeGrid[center.X, center.Y] = startNode;
+            DetailPathNode startNode = new DetailPathNode(center, conv.ToDir8_INT(startDir), startAsShip);
 
-            bool endAsShip = DssRef.world.tileGrid.Get(goal).IsWater();
-            PathNode currentNode = startNode;
+            nodeGrid[center.X - area.pos.X, center.Y - area.pos.Y] = startNode;
+
+            bool endAsShip = DssRef.world.subTileGrid.Get(goal).IsWater();
+            DetailPathNode currentNode = startNode;
 
             int numLoops = 0;
 
@@ -82,12 +90,12 @@ namespace VikingEngine.DSSWars.Map
                 for (int dir = 0; dir < 8; dir++)
                 {
                     IntVector2 pos = IntVector2.Dir8Array[dir] + currentNode.Position;
-                    if (DssRef.world.tileBounds.IntersectTilePoint(pos) && !nodeGrid[pos.X, pos.Y].HasValue)
+                    if (area.IntersectTilePoint(pos) && !nodeGrid[pos.X - area.pos.X, pos.Y - area.pos.Y].HasValue)
                     {
                         //add a node to open list
-                        PathNode node = new PathNode(pos, dir, DssRef.world, currentNode, goal, endAsShip);
+                        DetailPathNode node = new DetailPathNode(pos, dir, DssRef.world, currentNode, goal, endAsShip);
                         open.Add(node);
-                        nodeGrid[pos.X, pos.Y] = node;
+                        nodeGrid[pos.X - area.pos.X, pos.Y - area.pos.Y] = node;
                     }
                 }
 
@@ -109,7 +117,7 @@ namespace VikingEngine.DSSWars.Map
                 }
 
                 currentNode.closed = true;
-                nodeGrid[currentNode.Position.X, currentNode.Position.Y] = currentNode;
+                nodeGrid[currentNode.Position.X - area.pos.X, currentNode.Position.Y - area.pos.Y] = currentNode;
 
                 if (currentNode.Position == goal)
                 {
@@ -123,45 +131,53 @@ namespace VikingEngine.DSSWars.Map
                 }
             }
 
-            List<PathNodeResult> result = new List<PathNodeResult>();
-
+            List<DetailPathNodeResult> result = new List<DetailPathNodeResult>();
+            bool blocked = false;
 
             while (currentNode.Position != startNode.Position)
             {
-                result.Add(new PathNodeResult(currentNode.Position, currentNode.ship));
+                if (currentNode.ship == startAsShip)
+                {
+                    result.Add(new DetailPathNodeResult(currentNode.Position, currentNode.ship));
+                    
+                    numLoops++;
+                    if (numLoops > MaxNodeLength)
+                        throw new EndlessLoopException("");
+                }
+                else
+                {
+                    result.Clear();
+                    blocked = true;
+                }
+
                 IntVector2 pos = currentNode.PreviousPosition;
-                currentNode = nodeGrid[pos.X, pos.Y];
-
-                numLoops++;
-                if (numLoops > MaxNodeLength)
-                    throw new EndlessLoopException("");
-
+                currentNode = nodeGrid[pos.X - area.pos.X, pos.Y - area.pos.Y];
             }
 
 
-            return new WalkingPath(result);
+            return new DetailWalkingPath(goal, result, blocked);
         }
 
         public void recycle()
         {
             open.Clear();
 
-            for (int y = 0; y < DssRef.world.Size.Y; ++y)
+            for (int y = 0; y < area.size.Y; ++y)
             {
-                for (int x = 0; x < DssRef.world.Size.X; ++x)
+                for (int x = 0; x < area.size.X; ++x)
                 {
-                    nodeGrid[x, y] = PathNode.Empty;
+                    nodeGrid[x, y] = DetailPathNode.Empty;
                 }
             }
         }
     }
 
-    struct PathNodeResult
+    struct DetailPathNodeResult
     {
         public bool ship;
         public IntVector2 position;
 
-        public PathNodeResult(IntVector2 position, bool ship)
+        public DetailPathNodeResult(IntVector2 position, bool ship)
         {
             this.position = position;
             this.ship = ship;
@@ -173,16 +189,18 @@ namespace VikingEngine.DSSWars.Map
         }
     }
 
-    class WalkingPath
+    class DetailWalkingPath
     {
 #if VISUAL_NODES
         List<Graphics.Mesh> nodeImages;
 #endif
         const int IgnoreDirChangeTimes = 10;
-        const float NodeMinDistance = 0.3f;
+        static readonly float NodeMinDistance = 0.3f * WorldData.SubTileWidth;
 
         public int currentNodeIx;
-        public List<PathNodeResult> nodes;
+        public IntVector2 goal;
+        public List<DetailPathNodeResult> nodes;
+        public bool blockedPath;
 
         public Vector2 DirToNextNode(Vector2 myPos, out bool complete, out bool ship)
         {
@@ -198,26 +216,67 @@ namespace VikingEngine.DSSWars.Map
             return diff;
         }
 
-        public WalkingPath(List<PathNodeResult> nodes)
+        public Vector3 NextNodeWp(Vector3 myPos, out bool complete, out bool ship)
         {
+            complete = currentNodeIx < 0;
+            if (complete)
+            {
+                ship = false;
+                return  WP.SubtileToWorldPosXZ(goal);
+            }
+
+            ship = nodes[currentNodeIx].ship;
+            IntVector2 to = nodes[currentNodeIx].position;
+            Vector3 toWp = WP.SubtileToWorldPosXZ(to);
+            Vector2 diff = new Vector2( toWp.X - myPos.X, toWp.Z - myPos.Z);
+            if (diff.Length() <= NodeMinDistance)
+            {
+                --currentNodeIx;
+            }
+            
+            
+            return toWp;
+        }
+
+        public DetailWalkingPath(IntVector2 goal, List<DetailPathNodeResult> nodes, bool blockedPath)
+        {
+            this.goal = goal;
             this.nodes = nodes;
+            this.blockedPath = blockedPath;
             currentNodeIx = nodes.Count - 1;
 
 #if VISUAL_NODES
-            nodeImages = new List<Graphics.Mesh>();
-            foreach (Vector2 n in nodes)
-            {
-                Vector3 pos = WorldPosition.V2toV3(n);
-                WorldPosition wp = new WorldPosition(pos);
-                wp.SetFromGroundY(2);
-                nodeImages.Add(new Graphics.Mesh(LoadedMesh.cube_repeating, wp.ToWorldPos(), 
-                    new Graphics.TextureEffect( Graphics.TextureEffectType.Flat, SpriteName.ControllerB), 0.4f));
-            }
-
+            Ref.update.AddSyncAction(new SyncAction(createVisuals));
 #endif
         }
 
-        public bool TryGetCurrentNode(out PathNodeResult node)
+#if VISUAL_NODES
+        void createVisuals()
+        {
+            nodeImages = new List<Graphics.Mesh>();
+            foreach (var n in nodes)
+            {
+                Vector3 pos = WP.SubtileToWorldPosXZgroundY_Centered(n.position);
+                pos.Y += WorldData.SubTileHalfWidth;
+                var mesh = new Graphics.Mesh(LoadedMesh.cube_repeating, pos,
+                   new Vector3(WorldData.SubTileHalfWidth), Graphics.TextureEffectType.Flat, SpriteName.KeyArrowRight, Color.Pink, false);
+                mesh.AddToRender(DrawGame.UnitDetailLayer);
+                nodeImages.Add(mesh);
+            }
+
+            new TimedAction0ArgTrigger(deleteVisuals, 5000);
+        }
+
+        void deleteVisuals()
+        {
+            foreach (var img in nodeImages)
+            { 
+                img.DeleteMe();
+            }
+        }
+#endif
+
+        public bool TryGetCurrentNode(out DetailPathNodeResult node)
         {
             int ix = currentNodeIx;
 
@@ -226,7 +285,7 @@ namespace VikingEngine.DSSWars.Map
                 node = nodes[ix];
                 return true;
             }
-            node = new PathNodeResult(IntVector2.MinValue, false);
+            node = new DetailPathNodeResult(IntVector2.MinValue, false);
             return false;
         }
 
@@ -297,12 +356,14 @@ namespace VikingEngine.DSSWars.Map
         }
     }
 
-    struct PathNode 
+    struct DetailPathNode
     {
         const float MoveCostStraight = 10f;
         const float MoveCostDiagonal = 14f;
 
-        public static readonly PathNode Empty = new PathNode();
+        const float MoveCostWall = 20;
+
+        public static readonly DetailPathNode Empty = new DetailPathNode();
 
         public float Value;
         float moveCost;
@@ -317,7 +378,7 @@ namespace VikingEngine.DSSWars.Map
 
         int dir8;
 
-        public PathNode(IntVector2 pos, int dir8, bool ship)
+        public DetailPathNode(IntVector2 pos, int dir8, bool ship)
         {
             this.Position = pos;
             this.dir8 = dir8;
@@ -331,7 +392,7 @@ namespace VikingEngine.DSSWars.Map
             waterTile = ship;
         }
 
-        public PathNode(IntVector2 pos, int dir8, WorldData world, PathNode parent, IntVector2 goalPos, bool endAsShip)
+        public DetailPathNode(IntVector2 pos, int dir8, WorldData world, DetailPathNode parent, IntVector2 goalPos, bool endAsShip)
         {
             this.Position = pos;
             this.dir8 = dir8;
@@ -344,7 +405,14 @@ namespace VikingEngine.DSSWars.Map
                 moveCost -= 1f;
             }
 
-            Tile tile = world.tileGrid.Get(pos);
+            SubTile subtile = world.subTileGrid.Get(pos);
+            if (subtile.mainTerrain == TerrainMainType.Building &&
+                subtile.subTerrain == (int)TerrainBuildingType.StoneWall)
+            {
+                moveCost *= MoveCostWall;
+            }
+
+            Tile tile = world.tileGrid.Get(pos / WorldData.TileSubDivitions);
             waterTile = tile.IsWater();
 
             if (waterTile != parent.waterTile)
@@ -355,7 +423,7 @@ namespace VikingEngine.DSSWars.Map
                 }
                 else
                 {
-                    moveCost += MoveCostStraight * 16;
+                    moveCost += MoveCostStraight * 64;
                 }
             }
             ship = this.waterTile;
@@ -369,6 +437,4 @@ namespace VikingEngine.DSSWars.Map
             HasValue = true;
         }
     }
-
 }
-
