@@ -1,5 +1,8 @@
 ﻿-Change Log-
-* 
+* view tags checkbox
+* save on exit option
+* can pick build type from build orders (B key)
+* Fixed stuck tooltips
 
 #Todo (xmas patch)#
 new maps
@@ -10,7 +13,6 @@ new game - Skip language crashes game
 //ShowGamepadTextInput
 
 --Efter release polish--
--fixa menu minimize
 -war icon
  
 

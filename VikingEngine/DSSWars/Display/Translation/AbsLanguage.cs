@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string ProfileEditor_MoveImageDown { get; }
         public abstract string ProfileEditor_DiscardAndExit { get; }
         public abstract string ProfileEditor_DiscardAndExitDescription { get; }
-        public abstract string ProfileEditor_SaveAndExit { get; }
+        public abstract string Hud_SaveAndExit { get; }
         public abstract string ProfileEditor_Hue { get; }
         public abstract string ProfileEditor_Lightness { get; }
         public abstract string ProfileEditor_NextColorType { get; }

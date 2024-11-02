@@ -27,6 +27,7 @@ namespace VikingEngine.DSSWars.Data
         public bool generateNewMaps = false;
         public bool autoSave = true;
         public bool runTutorial = true;
+        public bool viewTagsOnMap = true;
         public LocalPlayerStorage[] localPlayers = null;
         public Profile.FlagStorage flagStorage;
         public SaveMeta meta = null;
@@ -91,7 +92,7 @@ namespace VikingEngine.DSSWars.Data
         }
         public void write(System.IO.BinaryWriter w, bool gamestate = false)
         {
-            const int Version = 16;
+            const int Version = 17;
 
             w.Write(Version);
 
@@ -117,6 +118,8 @@ namespace VikingEngine.DSSWars.Data
             DssRef.difficulty.write(w);   
             
             w.Write(runTutorial);
+
+            w.Write(viewTagsOnMap);
         }
 
         public void read(System.IO.BinaryReader r)
@@ -174,6 +177,11 @@ namespace VikingEngine.DSSWars.Data
             {
                 runTutorial = true;
             }
+
+            if (version >= 17)
+            {
+                viewTagsOnMap = r.ReadBoolean();
+            }
         }
 
         public void checkPlayerDoublettes()
@@ -217,6 +225,16 @@ namespace VikingEngine.DSSWars.Data
                     localPlayers[i].inputSource = InputSource.Empty;
                 }
             }
+        }
+
+        public bool TagsOnMapProperty(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                viewTagsOnMap = value;
+                (value ? SoundLib.click : SoundLib.back).Play();
+            }
+            return viewTagsOnMap;
         }
     }
 

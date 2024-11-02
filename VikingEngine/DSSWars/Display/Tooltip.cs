@@ -21,12 +21,18 @@ namespace VikingEngine.DSSWars.Display
         public const int Food_BlueprintId = 1;
 
         Graphics.ImageGroup images = new Graphics.ImageGroup(128);
+        bool current_menuToolTip;
         public bool refresh = false;
         Vector2 size;
         public int tooltip_id = int.MinValue;
         public int tooltip_id_timesec;
         public void updateMapTip(Players.LocalPlayer player, bool refreshTime)
         {
+            if (current_menuToolTip && images.HasMembers)
+            {
+                images.DeleteAll();
+                current_menuToolTip = false;
+            }
             if (player.diplomacyMap == null)
             {
                 if (player.mapControls.hover.isNew 
@@ -345,6 +351,7 @@ namespace VikingEngine.DSSWars.Display
         public void create(Players.LocalPlayer player, List<AbsRichBoxMember> content, bool menuToolTip, int tooltip_id = -1)
         {
             images.DeleteAll();
+            current_menuToolTip = menuToolTip;
 
             float edge = Engine.Screen.BorderWidth;
             float width = Engine.Screen.IconSize * 8;

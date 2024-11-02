@@ -707,6 +707,13 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (input.Build.DownEvent)
                 {
+                    var order = orders.orderOnSubTile(mapControls.hover.subTile.subTilePos) as BuildOrder;
+                    if ( order != null)
+                    {
+                        setBuildMode(mapControls.hover.subTile.city, order.buildingType);
+                        return;
+                    }                    
+
                     var build = BuildLib.BuildTypeFromTerrain(mapControls.hover.subTile.subTile.mainTerrain, mapControls.hover.subTile.subTile.subTerrain);
                     setBuildMode(mapControls.hover.subTile.city, build);
                     return;

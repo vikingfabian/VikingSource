@@ -227,7 +227,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// In player profile editor. Save changes and close editor
         /// </summary>
-        public override string ProfileEditor_SaveAndExit => "Save and Exit";
+        public override string Hud_SaveAndExit => "Save and Exit";
 
         /// <summary>
         /// In player profile editor. Part of the Hue, Saturation and Lightness color options.

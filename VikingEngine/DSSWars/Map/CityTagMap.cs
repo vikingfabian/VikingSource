@@ -21,25 +21,26 @@ namespace VikingEngine.DSSWars.Map
 
         public void update()
         {
-            
-
             int tagIndex = 0;
-            citiesC.Reset();
-            while (citiesC.Next())
-            {
-                if (citiesC.sel.tagBack != Data.CityTagBack.NONE)
-                {
-                    
-                    if (cityTags.Count <= tagIndex)
-                    {
-                        cityTags.Add(new CityTag());
-                    }
 
-                    cityTags[tagIndex].update(player, citiesC.sel);
-                    tagIndex++;
+            if (DssRef.storage.viewTagsOnMap)
+            {
+                citiesC.Reset();
+                while (citiesC.Next())
+                {
+                    if (citiesC.sel.tagBack != Data.CityTagBack.NONE)
+                    {
+
+                        if (cityTags.Count <= tagIndex)
+                        {
+                            cityTags.Add(new CityTag());
+                        }
+
+                        cityTags[tagIndex].update(player, citiesC.sel);
+                        tagIndex++;
+                    }
                 }
             }
-
             while (cityTags.Count > tagIndex)
             {
                 arraylib.PullLastMember(cityTags).DeleteMe();

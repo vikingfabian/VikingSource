@@ -119,6 +119,10 @@ namespace VikingEngine.DSSWars.Display
 
         public void tagsToMenu(RichBoxContent content)
         {
+            content.newLine();
+            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Tag_ViewOnMap) }, DssRef.storage.TagsOnMapProperty));
+            content.newParagraph();
+
             for (CityTagBack back = CityTagBack.NONE; back < CityTagBack.NUM; back++)
             {
                 var button = new RichboxButton(new List<AbsRichBoxMember> {

@@ -131,7 +131,7 @@ namespace VikingEngine.DSSWars.Profile
                     content.newLine();
                     content.Button(state.controllerMode ? SpriteName.ButtonBACK : SpriteName.NO_IMAGE, DssRef.lang.ProfileEditor_DiscardAndExit, new RbAction(state.discardAndExit), null, true);
                     content.newLine();
-                    content.Button(state.controllerMode ? SpriteName.ButtonSTART : SpriteName.NO_IMAGE, DssRef.lang.ProfileEditor_SaveAndExit, new RbAction(state.saveAndExit), null, true);
+                    content.Button(state.controllerMode ? SpriteName.ButtonSTART : SpriteName.NO_IMAGE, DssRef.lang.Hud_SaveAndExit, new RbAction(state.saveAndExit), null, true);
                     content.newLine();
                 }
                 endRefresh(Engine.Screen.SafeArea.Position, true);

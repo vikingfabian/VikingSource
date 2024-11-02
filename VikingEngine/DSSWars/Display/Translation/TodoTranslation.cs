@@ -64,7 +64,11 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Hud_Undo => "Undo";
         public string Hud_Redo => "Redo";
 
+        public string Tag_ViewOnMap => "View tags on map";
+
         public string MenuTab_Tag => "Tag";
+
+
 
         public string Input_Build => "Build";
 
