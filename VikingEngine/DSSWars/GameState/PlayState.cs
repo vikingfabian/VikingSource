@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Headers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -53,6 +54,32 @@ namespace VikingEngine.DSSWars
         {
             
             DssRef.state = this;
+            this.host = host;
+            Engine.Update.SetFrameRate(60);
+            //int seed;
+            //if (loadMeta == null)
+            //{
+            //    seed = DssRef.world.metaData.seed;
+            //}
+            //else
+            //{
+            //    seed = loadMeta.worldmeta.seed;
+            //}
+
+
+            if (loadMeta == null)
+            {
+                initGameState(true);
+                onGameStart(true);
+            }
+            else
+            {
+                new LoadScene(loadMeta);
+            }
+        }
+
+        public void initGameState(bool newGame)
+        {
             Ref.rnd.SetSeed(DssRef.world.metaData.seed);
             menuSystem = new GameMenuSystem();
 
@@ -63,26 +90,15 @@ namespace VikingEngine.DSSWars
             HudLib.Init();
 
             //Ref.rnd.SetSeed(DssRef.world.metaData.seed);
-            initPlayers(loadMeta == null);
+            initPlayers(newGame);
             culling = new Culling();
-
-            this.host = host;
 
             factionsMap = new MapLayer_Factions();
             overviewMap = new Map.MapLayer_Overview(factionsMap);
             detailMap = new Map.MapLayer_Detail();
 
-            Engine.Update.SetFrameRate(60);
+            
             events = new GameEvents();
-
-            if (loadMeta == null)
-            {
-                onGameStart(true);
-            }
-            else
-            {
-                new LoadScene(loadMeta);
-            }
 
              
         }
@@ -117,6 +133,12 @@ namespace VikingEngine.DSSWars
             new Faction(DssRef.world, FactionType.DarkLord);
             new Faction(DssRef.world, FactionType.SouthHara);
 
+            int playerCount = DssRef.storage.playerCount;
+            int playerIndex = 0;
+            localPlayers = new List<Players.LocalPlayer>(playerCount);
+            Engine.Screen.SetupSplitScreen(playerCount, !DssRef.storage.verticalScreenSplit);
+
+
             var factionsCounter = DssRef.world.factions.counter();
             while (factionsCounter.Next())
             {
@@ -124,6 +146,11 @@ namespace VikingEngine.DSSWars
                 if (factionsCounter.sel.factiontype == FactionType.DarkLord)
                 {
                     DssRef.settings.darkLordPlayer = new Players.DarkLordPlayer(factionsCounter.sel);
+                }
+                else if (factionsCounter.sel.factiontype == FactionType.Player)
+                {
+                    var local = new Players.LocalPlayer(factionsCounter.sel, playerIndex, playerCount, newGame);
+                    localPlayers.Add(local);
                 }
                 else
                 {
@@ -138,15 +165,15 @@ namespace VikingEngine.DSSWars
 #endif
             }
 
-            int playerCount = DssRef.storage.playerCount;
-            localPlayers = new List<Players.LocalPlayer>(playerCount);
-            Engine.Screen.SetupSplitScreen(playerCount, !DssRef.storage.verticalScreenSplit);
 
-            for (var i = 0; i < playerCount; ++i)
+            if (newGame)
             {
-                var startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, localPlayers);
-                var local = new Players.LocalPlayer(startFaction, i, playerCount, newGame);
-                localPlayers.Add(local);
+                for (var i = 0; i < playerCount; ++i)
+                {
+                    var startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, localPlayers);
+                    var local = new Players.LocalPlayer(startFaction, i, playerCount, newGame);
+                    localPlayers.Add(local);
+                }
             }
 
             for (var i = 0; i < playerCount; ++i)

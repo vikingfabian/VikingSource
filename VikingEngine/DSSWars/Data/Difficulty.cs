@@ -21,6 +21,7 @@ namespace VikingEngine.DSSWars.Data
         public AiAggressivity aiAggressivity = AiAggressivity.Medium;
         public BossSize bossSize = BossSize.Medium;
         public BossTimeSettings bossTimeSettings = BossTimeSettings.Normal;
+        
 
         public int aiEconomyLevel = 1;
         public double aiEconomyMultiplier = 1.0;
@@ -38,6 +39,9 @@ namespace VikingEngine.DSSWars.Data
         public int MercenaryPurchaseCost_Start;
         public int MercenaryPurchaseCost_Add;
         public float toPeacefulPercentage;
+
+        public double resourceMultiplyChance = 0;
+        public bool resourceMultiplyDecrease;
 
         public Difficulty(int difficulty = DefaultOption)
         {
@@ -97,6 +101,8 @@ namespace VikingEngine.DSSWars.Data
                     bossSize = BossSize.Small;
                     bossTimeSettings = BossTimeSettings.VeryLate;
                     aiEconomyLevel = 0;
+                    resourceMultiplyChance = 0.5;
+                    resourceMultiplyDecrease = true;
                     diplomacyDifficulty = 0;
                     honorGuard = true;
                     resourcesStartHelp = true;
@@ -109,6 +115,8 @@ namespace VikingEngine.DSSWars.Data
                     bossSize = BossSize.Small;
                     bossTimeSettings = BossTimeSettings.Late;
                     aiEconomyLevel = 1;
+                    resourceMultiplyChance = 0.25;
+                    resourceMultiplyDecrease = true;
                     diplomacyDifficulty = 0;
                     honorGuard = true;
                     resourcesStartHelp = true;
@@ -121,10 +129,12 @@ namespace VikingEngine.DSSWars.Data
                     bossSize = BossSize.Medium;
                     bossTimeSettings = BossTimeSettings.Late;
                     aiEconomyLevel = 1;
+                    resourceMultiplyChance = 0.25;
+                    resourceMultiplyDecrease = true;
                     diplomacyDifficulty = 1;
                     honorGuard = true;
                     resourcesStartHelp = true;
-                    aiDelayTimeSec = 5 * TimeExt.MinuteInSeconds;
+                    aiDelayTimeSec = 8 * TimeExt.MinuteInSeconds;
                     toPeacefulPercentage = 0.1f;
                     break;
 
@@ -135,7 +145,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 2;
                     diplomacyDifficulty = 1;
                     honorGuard = true;
-                    aiDelayTimeSec = 20;
+                    aiDelayTimeSec = 30;
                     toPeacefulPercentage = 0.2f;
                     break;
 
@@ -165,6 +175,9 @@ namespace VikingEngine.DSSWars.Data
                     bossSize = BossSize.Huge;
                     bossTimeSettings = BossTimeSettings.Early;
                     aiEconomyLevel = 3;
+
+                    resourceMultiplyChance = 0.25;
+                    resourceMultiplyDecrease = false;
                     diplomacyDifficulty = 2;
                     honorGuard = false;
                     toPeacefulPercentage = 1.5f;
@@ -175,6 +188,10 @@ namespace VikingEngine.DSSWars.Data
                     bossSize = BossSize.Huge;
                     bossTimeSettings = BossTimeSettings.Immediate;
                     aiEconomyLevel = 4;
+
+
+                    resourceMultiplyChance = 0.5;
+                    resourceMultiplyDecrease = false;
                     diplomacyDifficulty = 2;
                     honorGuard = false;
                     toPeacefulPercentage = 2f;
@@ -206,4 +223,11 @@ namespace VikingEngine.DSSWars.Data
         }
 
     }
+
+    //enum AiResourceMultiplyType
+    //{ 
+    //    None,
+    //    Add,
+    //    Remove,
+    //}
 }

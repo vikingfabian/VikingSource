@@ -393,10 +393,10 @@ namespace VikingEngine.DSSWars.GameObject
             res_mediumArmor.readGameState(r, subversion); // ItemResourceType.MediumArmor,
             res_heavyArmor.readGameState(r, subversion); // ItemResourceType.HeavyArmor,
 
-            if (subversion >= 19)
-            {
+            //if (subversion >= 19 && subversion != SaveGamestate.MergeVersion)
+            //{
                 res_longbow.readGameState(r, subversion);
-            }
+            //}
             //foreach (var type in MovableCityResourceTypes)
             //{
             //    GroupedResource resource = new GroupedResource();
@@ -428,14 +428,14 @@ namespace VikingEngine.DSSWars.GameObject
             autoBuild_Farm = r.ReadBoolean();
             autoExpandFarmType = (Build.BuildAndExpandType)r.ReadByte();
 
-            if (subversion >= 23)
-            {
+            //if (subversion >= 23 && subversion != SaveGamestate.MergeVersion)
+            //{
                 tagBack = (CityTagBack)r.ReadByte();
                 if (tagBack != CityTagBack.NONE)
                 {
                     tagArt = (CityTagArt)r.ReadUInt16();
                 }
-            }
+            //}
         }
 
         public void writeNet(System.IO.BinaryWriter w)

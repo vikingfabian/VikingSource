@@ -342,6 +342,7 @@ namespace VikingEngine.DSSWars.Players
                     break;
 
 
+                case FactionType.Player:
                 case FactionType.DefaultAi:
                     defaultSetup();
                     name = string.Format(DssRef.lang.FactionName_GenericAi, faction.parentArrayIndex);

@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.Map
         public float groundY;
         //public FoilType foil = FoilType.None;
         public TerrainMainType mainTerrain = TerrainMainType.NUM;
-        public int subTerrain = -1;
+        public int subTerrain = byte.MaxValue;
         /// <summary>
         /// Amount of resources that can be extracted, animation frame for resources, or other value like building size
         /// </summary>
@@ -43,20 +43,95 @@ namespace VikingEngine.DSSWars.Map
             terrainAmount = amount;
         }
 
-        public void write(System.IO.BinaryWriter w)
-        {            
-            w.Write((byte)mainTerrain);
-            w.Write((byte)subTerrain);
-            w.Write((byte)terrainAmount);
-            w.Write(collectionPointer);
+        const int EqMainTerrainIx = 0;
+        const int EqSubterrainIx = 1;
+        const int EqTerrainAmountIx = 2;
+        const int EqCollectionPointerIx = 3;
+
+
+        public void write(System.IO.BinaryWriter w, ref SubTile previous)
+        {
+
+            //TODO check repeats with previous, use eightbit
+            bool eqMainTerrain = mainTerrain == previous.mainTerrain;
+            bool eqSubterrain = subTerrain == previous.subTerrain;
+            bool eqTerrainAmount = terrainAmount == previous.terrainAmount;
+            bool eqCollectionPointer = collectionPointer == previous.collectionPointer;
+
+            EightBit reapeats = new EightBit();
+            reapeats.Set(EqMainTerrainIx, eqMainTerrain);
+            reapeats.Set(EqSubterrainIx, eqSubterrain);
+            reapeats.Set(EqTerrainAmountIx, eqTerrainAmount);
+            reapeats.Set(EqCollectionPointerIx, eqCollectionPointer);
+
+            reapeats.write(w);
+
+            if (!eqMainTerrain)
+            {
+                w.Write((byte)mainTerrain);
+            }
+
+            if (!eqSubterrain)
+            {
+                w.Write(Debug.Byte_OrCrash(subTerrain));
+            }
+
+            if (!eqTerrainAmount)
+            {
+                w.Write((byte)terrainAmount);
+            }
+
+            if (!eqCollectionPointer)
+            {
+                w.Write(collectionPointer);
+            }
+
+            w.Write(groundY);
+            SaveLib.WriteColorStream_3B(w, color);
         }
 
-        public void read(System.IO.BinaryReader r, int version)
-        {            
-            mainTerrain = (TerrainMainType)r.ReadByte();
-            subTerrain = r.ReadByte();
-            terrainAmount = r.ReadByte();
-            collectionPointer = r.ReadInt32();
+        public void read(System.IO.BinaryReader r, ref SubTile previous, int version)
+        {
+            EightBit reapeats = new EightBit(r);
+
+            if (reapeats.Get(EqMainTerrainIx))
+            {
+                mainTerrain = previous.mainTerrain;
+            }
+            else
+            {
+                mainTerrain = (TerrainMainType)r.ReadByte();
+            }
+
+            if (reapeats.Get(EqSubterrainIx))
+            {
+                subTerrain = previous.subTerrain;
+            }
+            else
+            {
+                subTerrain = r.ReadByte();
+            }
+
+            if (reapeats.Get(EqTerrainAmountIx))
+            {
+                terrainAmount = previous.terrainAmount;
+            }
+            else
+            {
+                terrainAmount = r.ReadByte();
+            }
+
+            if (reapeats.Get(EqCollectionPointerIx))
+            {
+                collectionPointer = previous.collectionPointer;
+            }
+            else
+            {
+                collectionPointer = r.ReadInt32();
+            }
+
+            groundY = r.ReadSingle();
+            color = SaveLib.ReadColorStream_3B(r);
         }
 
         public bool EqualSaveData(ref SubTile other)
@@ -64,7 +139,8 @@ namespace VikingEngine.DSSWars.Map
             return  terrainAmount == other.terrainAmount && 
                 mainTerrain == other.mainTerrain && 
                 subTerrain == other.subTerrain &&
-                collectionPointer == other.collectionPointer;            
+                collectionPointer == other.collectionPointer &&
+                groundY == other.groundY;            
         }
 
         public void copySaveDataFrom(ref SubTile other)
@@ -72,6 +148,8 @@ namespace VikingEngine.DSSWars.Map
             this.terrainAmount = other.terrainAmount;
             this.mainTerrain = other.mainTerrain;
             this.subTerrain = other.subTerrain;
+            this.groundY = other.groundY;
+            this.color = other.color;
         }
 
         public bool MayBuild()

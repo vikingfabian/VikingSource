@@ -142,6 +142,10 @@ namespace VikingEngine
            : this(value1, value2, value3, false, false, false, false, false)
         { }
 
+        public EightBit(bool value1, bool value2, bool value3, bool value4)
+           : this(value1, value2, value3, value4, false, false, false, false)
+        { }
+
         public EightBit(bool value1, bool value2, bool value3, bool value4, bool value5, bool value6, bool value7, bool value8)
         {
             bitArray = 0;

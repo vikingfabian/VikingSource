@@ -258,13 +258,7 @@ namespace VikingEngine.DSSWars.Players
             tutorial_readGameState(r, subversion);
 
             orders.readGameState(r, subversion, pointers);
-            //int ordersCount = r.ReadUInt16();
-            //for (int i = 0; i < ordersCount; i++)
-            //{
-            //    BuildOrder order = new BuildOrder();
-            //    order.readGameState(r, subversion, pointers);
-            //    orders.Add(order);
-            //}
+           
             Debug.ReadCheck(r);
         }
 
@@ -392,7 +386,7 @@ namespace VikingEngine.DSSWars.Players
                     {
                         onTile = DssRef.world.GetFreeTile(citiesC.sel.tilePos);
                         var army = faction.NewArmy(onTile);
-                        for (int i = 0; i < 3; ++i)
+                        for (int i = 0; i < 4; ++i)
                         {
                             new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard, army.position);//UnitType.HonorGuard, false);
                             --guardCount;

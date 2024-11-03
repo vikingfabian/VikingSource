@@ -9,6 +9,7 @@ using Valve.Steamworks;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.LootFest.Data;
 using VikingEngine.PJ.Strategy;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.MoonFall;
@@ -17,14 +18,16 @@ namespace VikingEngine.DSSWars.Data
 {
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
-        public const int Version = 6;
-        public const int SubVersion = 24;
+        public const int Version = 7;
+        public const int SubVersion = 28; 
+        //public const int MergeVersion = 26;
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
         bool dataReady = false;
         public bool complete = false;
         ObjectPointerCollection pointers;
         SaveStateMeta meta;
+        public WorldData worldData;
 
         public SaveGamestate(SaveStateMeta meta)
              : base(false)
@@ -66,6 +69,14 @@ namespace VikingEngine.DSSWars.Data
         {
             new SaveVersion(Version, SubVersion).write(w);
 
+            //META
+            meta.write(w);
+            Debug.WriteCheck(w);
+
+            //WORLD
+            DssRef.world.writeMapFile(w);
+
+            //STATE
             DssRef.storage.write(w, true);
             Debug.WriteCheck(w);
             DssRef.settings.writeGameState(w);
@@ -82,6 +93,20 @@ namespace VikingEngine.DSSWars.Data
             SaveVersion version = new SaveVersion();
             version.read(r);
 
+            //META            
+            meta.read(r);
+            Debug.ReadCheck(r);
+            
+            //WORLD
+            worldData = new WorldData();
+            worldData.metaData = meta.worldmeta;
+            worldData.readMapFile(r);
+            DssRef.world = worldData;
+            
+
+            DssRef.state.initGameState(false);
+
+            //STATE
             DssRef.storage.read(r, true);
             Debug.ReadCheck(r);
             DssRef.settings.readGameState(r, version.sub, pointers);

@@ -13,7 +13,6 @@ namespace VikingEngine.DSSWars.Map.Generate
 {
     class MapBackgroundLoading
     {
-
         WorldDataStorage storage;
         LoadingState loadingState = 0;
         bool abort = false;
@@ -21,16 +20,23 @@ namespace VikingEngine.DSSWars.Map.Generate
         GenerateMap postGenerate;
         int failCount = 0;
         bool generateSuccess =false;
-        // CancellationToken cancellationToken;
         CancellationTokenSource tokenSource;
         SaveStateMeta loadMeta;
+
         public MapBackgroundLoading(SaveStateMeta loadMeta)
         {
             this.loadMeta = loadMeta;
             if (loadMeta != null)
             {
-                DssRef.storage.generateNewMaps = loadMeta.world.IsGenerated;
-                DssRef.storage.mapSize = loadMeta.world.mapSize;
+                
+
+                DssRef.storage.generateNewMaps = loadMeta.worldmeta.IsGenerated;
+                DssRef.storage.mapSize = loadMeta.worldmeta.mapSize;
+
+                //if (loadMeta.metaVersion >= 3)
+                //{
+
+                //}
             }
 
             if (DssRef.storage.generateNewMaps)
@@ -50,8 +56,8 @@ namespace VikingEngine.DSSWars.Map.Generate
                 }
                 else
                 {
-                    worldMeta = loadMeta.world;
-                    loadingNumber = loadMeta.world.saveIndex;
+                    worldMeta = loadMeta.worldmeta;
+                    loadingNumber = loadMeta.worldmeta.saveIndex;
                 }
 
                 storage = new WorldDataStorage();
@@ -80,7 +86,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     ushort seed;
                     if (loadMeta != null)
                     {
-                        world = loadMeta.world;
+                        world = loadMeta.worldmeta;
                         //seed = loadMeta.world.seed;
                     }
                     else
@@ -187,6 +193,11 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         public bool Complete()
         {
+            if (loadMeta != null && loadMeta.metaVersion >= 3)
+            { 
+                return true;
+            }
+
             if (loadingState == LoadingState.Complete)
             {
                 if (!DssRef.storage.generateNewMaps)

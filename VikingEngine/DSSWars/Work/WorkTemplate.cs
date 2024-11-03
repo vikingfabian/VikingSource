@@ -107,16 +107,16 @@ namespace VikingEngine.DSSWars.Work
             trading.readGameState(r, subversion, isCity);
             autoBuild.readGameState(r, subversion, isCity);
 
-            if (subversion >= 18)
-            {
+            //if (subversion >= 18 && subversion != SaveGamestate.MergeVersion)
+            //{
                 bogiron.readGameState(r, subversion, isCity);
                 craft_longbow.readGameState(r, subversion, isCity);
-            }
-            if (subversion >= 20)
-            {
+            //}
+            //if (subversion >= 20 && subversion != SaveGamestate.MergeVersion)
+            //{
                 farm_fuel.readGameState(r, subversion, isCity);
                 farm_linen.readGameState(r, subversion, isCity);
-            }
+            //}
         }
 
         public void onFactionChange(WorkTemplate factionTemplate)
@@ -535,25 +535,25 @@ namespace VikingEngine.DSSWars.Work
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, bool isCity)
         {
-            if (subversion < 23)
-            {
-                //old
-                value = r.ReadByte();
-                if (isCity)
-                {
-                    if (subversion < 20)
-                    {//old
-                        followFaction = r.ReadBoolean();
-                    }
-                    else
-                    {
-                        EightBit eightBit = new EightBit(r);
-                        followFaction = eightBit.Get(0);
-                    }
-                }
-            }
-            else
-            {
+            //if (subversion < 23 || subversion == SaveGamestate.MergeVersion)
+            //{
+            //    //old
+            //    value = r.ReadByte();
+            //    if (isCity)
+            //    {
+            //        if (subversion < 20 || subversion == SaveGamestate.MergeVersion)
+            //        {//old
+            //            followFaction = r.ReadBoolean();
+            //        }
+            //        else
+            //        {
+            //            EightBit eightBit = new EightBit(r);
+            //            followFaction = eightBit.Get(0);
+            //        }
+            //    }
+            //}
+            //else
+            //{
                 //new
                 if (isCity)
                 {
@@ -569,7 +569,7 @@ namespace VikingEngine.DSSWars.Work
                 {
                     value = r.ReadByte();
                 }
-            }
+            //}
         }
 
         public void addPrio(int add)

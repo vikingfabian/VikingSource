@@ -288,13 +288,13 @@ namespace VikingEngine.DSSWars.Delivery
         {
             toCity = r.ReadInt16();
             type = (ItemResourceType)r.ReadByte();
-            if (subVersion >= 21)
-            {
+            //if (subVersion >= 21 && subVersion != SaveGamestate.MergeVersion)
+            //{
                 if (toCity == ToCityAuto)
                 {
                     autoCity = r.ReadInt16();
                 }
-            }
+            //}
         }
 
         public int ToCity()

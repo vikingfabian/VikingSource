@@ -171,7 +171,7 @@ namespace VikingEngine.DSSWars.Map
 
                                             case Map.TerrainSubFoilType.StoneBlock:
                                             case Map.TerrainSubFoilType.Stones:
-                                                if (Trees.Count < workerCount)
+                                                if (Stones.Count < workerCount)
                                                 {
                                                     Stones.Add(subTileLoop.Position);
                                                 }
