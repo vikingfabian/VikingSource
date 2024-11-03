@@ -2437,6 +2437,28 @@ namespace VikingEngine
                     add(SpriteName.WarsBuild_HempFarms, 3, 3);
                 }
 
+                currentIndex = numTilesWidth * 100;
+                {
+                    add(SpriteName.WarsSpcializeField);
+                    add(SpriteName.WarsSpcializeSea);
+                    add(SpriteName.WarsSpcializeAntiCavalry);
+                    add(SpriteName.WarsSpcializeSiege);
+                    add(SpriteName.warsArmyTag_Lightning);
+                    add(SpriteName.warsArmyTag_Fire);
+                    add(SpriteName.warsArmyTag_Shield);
+                    add(SpriteName.warsArmyTag_Hit);
+                    add(SpriteName.warsArmyTag_Retreat);
+                    add(SpriteName.warsArmyTag_HitExpress);
+                    add(SpriteName.warsArmyTag_GoldShield);
+                    add(SpriteName.WarsSpcializeTradition);
+                    add(SpriteName.warsArmyTag_Return);
+                    add(SpriteName.warsArmyTag_RoundShield);
+                    add(SpriteName.warsArmyTag_BrokenShield);   
+                    add(SpriteName.warsArmyTag_Anchor);
+                }
+
+                    
+
                 currentIndex = numTilesWidth * 106;
                 {
                     currentIndex += 2;

@@ -2441,6 +2441,18 @@ namespace VikingEngine
         warsFolder_blue,
         warsFolder_cyan,
         
+        warsArmyTag_Lightning,
+        warsArmyTag_Fire,
+        warsArmyTag_Shield,
+        warsArmyTag_GoldShield,
+        warsArmyTag_BrokenShield,
+        warsArmyTag_RoundShield,
+        warsArmyTag_Hit,
+        warsArmyTag_HitExpress,
+        warsArmyTag_Retreat,
+        warsArmyTag_Return,
+        warsArmyTag_Anchor,
+
 
         WarsRelationAlly,
         WarsRelationGood,
@@ -2511,6 +2523,12 @@ namespace VikingEngine
         WarsUnitIcon_Viking,
         WarsUnitIcon_Greensoldier,
         WarsUnitIcon_Folkman,
+
+        WarsSpcializeField,
+        WarsSpcializeSea,
+        WarsSpcializeAntiCavalry,
+        WarsSpcializeSiege,
+        WarsSpcializeTradition,
 
         WarsCityHall,
         WarsBuild_WorkerHuts,
