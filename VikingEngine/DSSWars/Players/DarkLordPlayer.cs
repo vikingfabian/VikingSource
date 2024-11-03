@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.GameObject.Conscript;
 using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Players

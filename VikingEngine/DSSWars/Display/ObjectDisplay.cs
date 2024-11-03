@@ -53,5 +53,7 @@ namespace VikingEngine.DSSWars.Display
             this.player = player;
             this.selected = selected;
         }
+
+        public bool ShowFull => player.hud.detailLevel == HudDetailLevel.Normal;
     }
 }

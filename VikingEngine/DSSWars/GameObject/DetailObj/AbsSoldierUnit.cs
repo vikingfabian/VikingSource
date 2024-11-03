@@ -8,6 +8,7 @@ using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -155,7 +156,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return group.soldierConscript.conscript.TypeName() + " (" + parentArrayIndex.ToString() + ")";
         }
-
+        public override void TypeIcon(RichBoxContent content)
+        {
+            group.TypeIcon(content);
+        }
         override public void netShareUnit()
         {
             //var w = beginWriteAddUnit(player);
@@ -1033,9 +1037,12 @@ namespace VikingEngine.DSSWars.GameObject
         {
             base.toHud(args);
 
-            group.toHud(args);
+            if (args.ShowFull)
+            {
+                group.toHud(args);
 
-            stateDebugText(args.content);
+                stateDebugText(args.content);
+            }
         }
 
         public override void stateDebugText(RichBoxContent content)

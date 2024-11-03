@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 using VikingEngine.DataLib;
-using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Input;
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.LootFest.Players;
+using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars
 {
@@ -32,7 +33,7 @@ namespace VikingEngine.DSSWars
         public static readonly Color OffStandardOrange = new Color(200, 128, 0);
         public static readonly Color InfoYellow_Dark = new Color(160, 128, 0);
         public static readonly Color InfoYellow_Light = new Color(255, 255, 0);
-
+        public static readonly Color InfoYellow_BG = new Color(40, 32, 0);
         public const ImageLayers StoryContentLayer = ImageLayers.Lay1_Front;
         public const ImageLayers StoryBgLayer = ImageLayers.Lay1_Back;
 
@@ -62,6 +63,8 @@ namespace VikingEngine.DSSWars
             Engine.Screen.TextBreadHeight * TextToIconSz, 1.1f);
             RbSettings.head1.Font = LoadedFont.Bold;
             RbSettings.head1.Color = Color.LightGray;
+            RbSettings.checkOn = SpriteName.warsCheckYes;
+            RbSettings.checkOff = SpriteName.warsCheckNo;
             //RbSettings.tabSelected.BgColor = new Color(126, 56, 23);
             //RbSettings.tabSelected.Color = new Color(222, 156, 125);
             //RbSettings.tabNotSelected.BgColor = new Color(114, 73, 53);
@@ -100,19 +103,36 @@ namespace VikingEngine.DSSWars
             };
         }
 
-        public static void ResourceCost(RichBoxContent content, GameObject.Resource.ResourceType resource, int needResource, int hasResource)
+        public static void ResourceCost(RichBoxContent content, ResourceType resource, int needResource, int hasResource)
         {
-            SpriteName icon = GameObject.Resource.ResourceLib.PayIcon(resource);
+            SpriteName icon = ResourceLib.PayIcon(resource);
 
             if (icon != SpriteName.NO_IMAGE)
             {
                 content.Add(new RichBoxImage(icon));
+                content.space(0.5f);
             }
 
             string text = string.Format(DssRef.lang.Hud_Purchase_ResourceCostOfAvailable,
-                GameObject.Resource.ResourceLib.Name(resource), TextLib.LargeNumber(needResource), TextLib.LargeNumber(hasResource));
+                ResourceLib.Name(resource), TextLib.LargeNumber(needResource), TextLib.LargeNumber(hasResource));
 
             content.Add( new RichBoxText(text, ResourceCostColor(hasResource >= needResource)));
+        }
+
+        public static void ResourceCost(RichBoxContent content, ItemResourceType resource, int needResource, int hasResource)
+        {
+            SpriteName icon = ResourceLib.Icon( resource);
+
+            if (icon != SpriteName.NO_IMAGE)
+            {
+                content.Add(new RichBoxImage(icon));
+                content.space(0.5f);
+            }
+
+            string text = string.Format(DssRef.lang.Hud_Purchase_ResourceCostOfAvailable,
+                LangLib.Item(resource), TextLib.LargeNumber(needResource), TextLib.LargeNumber(hasResource));
+
+            content.Add(new RichBoxText(text, ResourceCostColor(hasResource >= needResource)));
         }
 
         public static void Upkeep(RichBoxContent content, double value)
@@ -145,7 +165,7 @@ namespace VikingEngine.DSSWars
 
         public static SpriteName CheckImage(bool value)
         { 
-            return value? SpriteName.cmdHudCheckOn : SpriteName.cmdHudCheckOff;
+            return value? SpriteName.warsCheckYes : SpriteName.warsCheckNo;
         }
 
         public static string Date(DateTime date)
@@ -174,7 +194,7 @@ namespace VikingEngine.DSSWars
         }
         public static void FollowFactionButton(bool followFaction, double currentFactionValue, AbsRbAction action, Players.LocalPlayer player, RichBoxContent content)
         {
-            var followFactionButton = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(followFaction ? "=F" : "!F") },
+            var followFactionButton = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxImage(followFaction ? SpriteName.WarsFollowFactionYes : SpriteName.WarsFollowFactionNo) },
                         action, new RbAction2Arg<bool, double>( player.followFactionTooltip, followFaction, currentFactionValue));//new RbAction2Arg<ItemResourceType, City>(faction.tradeFollowFactionClick, resource, city));
             if (!followFaction)
             {
@@ -224,6 +244,14 @@ namespace VikingEngine.DSSWars
             button.overrideBgColor = Color.DarkRed;
 
             content.Add(button);
+        }
+
+        public static RichBoxImage BulletPoint(RichBoxContent content)
+        {
+            var dot = new RichBoxImage(SpriteName.warsBulletPoint, 0.8f, 0f, 0.3f);
+            //dot.color = Color.DarkGray;
+            content.Add(dot);
+            return dot;
         }
     }
 }

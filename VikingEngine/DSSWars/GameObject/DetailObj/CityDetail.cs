@@ -166,7 +166,7 @@ namespace VikingEngine.DSSWars.GameObject
                                         ++totalWorkerHutAndLevelCount;
 
                                         //Place farm curlutures
-                                        const int CulturesPerFarm = 3;
+                                        const int CulturesPerFarm = 8;
                                         int cultureCount = 0;
 
                                         ForXYEdgeLoop farmLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(subPos, 1));
@@ -281,10 +281,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             nextRespawn += 1f;
 
-            float respawnTime = 10f / (city.maxGuardSize / DssConst.SoldierGroup_DefaultCount);
+            const int respawnTime = 5;
+            //float respawnTime = 10f / (city.maxGuardSize / DssConst.SoldierGroup_DefaultCount);
             if (nextRespawn >= respawnTime)
             {
-                nextRespawn -= respawnTime;
+                nextRespawn = 0;
                 city.respawnGuard();
             }
         }

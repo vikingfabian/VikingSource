@@ -313,41 +313,191 @@
 #begin DSS/Map/map_sz5_i9.map
 /copy:DSS/Map/map_sz5_i9.map
 
-#begin DSS/Music/dramatic-opener-nonloop.mp3
-/importer:Mp3Importer
+#begin DSS/Music/ancient space.ogg
+/importer:OggImporter
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/dramatic-opener-nonloop.mp3
+/build:DSS/Music/ancient space.ogg
 
-#begin DSS/Music/epic-warfare-nonloop.mp3
-/importer:Mp3Importer
+#begin DSS/Music/BBaaB_loop.ogg
+/importer:OggImporter
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/epic-warfare-nonloop.mp3
+/build:DSS/Music/BBaaB_loop.ogg
 
-#begin DSS/Music/i am your doom.mp3
-/importer:Mp3Importer
+#begin DSS/Music/digital battleground.ogg
+/importer:OggImporter
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/i am your doom.mp3
+/build:DSS/Music/digital battleground.ogg
 
-#begin DSS/Music/sadness-in-blue.mp3
-/importer:Mp3Importer
+#begin DSS/Music/dramatic-opener-nonloop.ogg
+/importer:OggImporter
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/sadness-in-blue.mp3
+/build:DSS/Music/dramatic-opener-nonloop.ogg
 
-#begin DSS/Music/shadow-hunter-nonloop.mp3
-/importer:Mp3Importer
+#begin DSS/Music/dramatic-opener-nonloop.ogg
+/importer:OggImporter
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/shadow-hunter-nonloop.mp3
+/build:DSS/Music/dramatic-opener-nonloop.ogg
 
-#begin DSS/Music/we-are-heroes.mp3
-/importer:Mp3Importer
+#begin DSS/Music/Dreamscape Adventures.ogg
+/importer:OggImporter
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/we-are-heroes.mp3
+/build:DSS/Music/Dreamscape Adventures.ogg
+
+#begin DSS/Music/Dreamscape Adventures.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/Dreamscape Adventures.ogg
+
+#begin DSS/Music/DSS - The Game Begins.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/DSS - The Game Begins.ogg
+
+#begin DSS/Music/echoes of valor.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/echoes of valor.ogg
+
+#begin DSS/Music/epic-warfare-nonloop.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/epic-warfare-nonloop.ogg
+
+#begin DSS/Music/Gargoyle_loop.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/Gargoyle_loop.ogg
+
+#begin DSS/Music/i am your doom.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/i am your doom.ogg
+
+#begin DSS/Music/Pixelated Battlefields.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/Pixelated Battlefields.ogg
+
+#begin DSS/Music/RM 1 - Introversion.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/RM 1 - Introversion.ogg
+
+#begin DSS/Music/RM 10 - Incubation.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/RM 10 - Incubation.ogg
+
+#begin DSS/Music/RM 2 - Arcane Benevolence.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/RM 2 - Arcane Benevolence.ogg
+
+#begin DSS/Music/RM 3 - Left in Autumn.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/RM 3 - Left in Autumn.ogg
+
+#begin DSS/Music/RM 4 - Warhogs.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/RM 4 - Warhogs.ogg
+
+#begin DSS/Music/RM 5 - Suddenly Empty.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/RM 5 - Suddenly Empty.ogg
+
+#begin DSS/Music/RM 5 - Suddenly Empty.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/RM 5 - Suddenly Empty.ogg
+
+#begin DSS/Music/RM 6 - Auderesne.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/RM 6 - Auderesne.ogg
+
+#begin DSS/Music/RM 7 - For Eternity.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/RM 7 - For Eternity.ogg
+
+#begin DSS/Music/RM 8 - Asynchronous Flanking.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/RM 8 - Asynchronous Flanking.ogg
+
+#begin DSS/Music/RM 9 - Weeping Bedlam.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/RM 9 - Weeping Bedlam.ogg
+
+#begin DSS/Music/sadness-in-blue.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/sadness-in-blue.ogg
+
+#begin DSS/Music/shadow-hunter-nonloop.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/shadow-hunter-nonloop.ogg
+
+#begin DSS/Music/Shadows of Conflict.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/Shadows of Conflict.ogg
+
+#begin DSS/Music/Shadows of Conflict.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/Shadows of Conflict.ogg
+
+#begin DSS/Music/Veil of Time.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/Veil of Time.ogg
+
+#begin DSS/Music/Veil of Time.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/Veil of Time.ogg
+
+#begin DSS/Music/we-are-heroes.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/we-are-heroes.ogg
 
 #begin DSS/Sound/anvil.wav
 /importer:WavImporter
@@ -360,6 +510,42 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/back.wav
+
+#begin DSS/Sound/ballista_large.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ballista_large.wav
+
+#begin DSS/Sound/ballista_small.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ballista_small.wav
+
+#begin DSS/Sound/bow1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/bow1.wav
+
+#begin DSS/Sound/bow2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/bow2.wav
+
+#begin DSS/Sound/button_hover1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/button_hover1.wav
+
+#begin DSS/Sound/button_hover2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/button_hover2.wav
 
 #begin DSS/Sound/buy.wav
 /importer:WavImporter
@@ -378,6 +564,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/click.wav
+
+#begin DSS/Sound/copy.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/copy.wav
 
 #begin DSS/Sound/dig.wav
 /importer:WavImporter
@@ -409,6 +601,12 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/hammer.wav
 
+#begin DSS/Sound/heavy_sword.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/heavy_sword.wav
+
 #begin DSS/Sound/hen1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -420,6 +618,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/hen2.wav
+
+#begin DSS/Sound/hover_disabled.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/hover_disabled.wav
+
+#begin DSS/Sound/load_ballista.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/load_ballista.wav
 
 #begin DSS/Sound/ordermove.wav
 /importer:WavImporter
@@ -438,6 +648,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/out_of_ammo.wav
+
+#begin DSS/Sound/paste.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/paste.wav
 
 #begin DSS/Sound/pickaxe.wav
 /importer:WavImporter
@@ -462,6 +678,66 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/scythe.wav
+
+#begin DSS/Sound/select_army.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/select_army.wav
+
+#begin DSS/Sound/select_city.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/select_city.wav
+
+#begin DSS/Sound/select_faction.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/select_faction.wav
+
+#begin DSS/Sound/spear.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/spear.wav
+
+#begin DSS/Sound/start.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/start.wav
+
+#begin DSS/Sound/stop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/stop.wav
+
+#begin DSS/Sound/sword1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/sword1.wav
+
+#begin DSS/Sound/sword2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/sword2.wav
+
+#begin DSS/Sound/tab_click.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/tab_click.wav
+
+#begin DSS/Sound/tab_hover.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/tab_hover.wav
 
 #begin DSS/Sound/tree_falling.wav
 /importer:WavImporter
@@ -1024,6 +1300,9 @@
 #begin VoxelModel/LfWars/buildarea.vox
 /copy:VoxelModel/LfWars/buildarea.vox
 
+#begin VoxelModel/LfWars/city_bank.vox
+/copy:VoxelModel/LfWars/city_bank.vox
+
 #begin VoxelModel/LfWars/city_barracks.vox
 /copy:VoxelModel/LfWars/city_barracks.vox
 
@@ -1074,6 +1353,9 @@
 
 #begin VoxelModel/LfWars/city_stonewall.vox
 /copy:VoxelModel/LfWars/city_stonewall.vox
+
+#begin VoxelModel/LfWars/city_storehouse.vox
+/copy:VoxelModel/LfWars/city_storehouse.vox
 
 #begin VoxelModel/LfWars/city_tavern.vox
 /copy:VoxelModel/LfWars/city_tavern.vox

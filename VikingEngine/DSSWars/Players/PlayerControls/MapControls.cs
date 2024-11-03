@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.GameObject.Worker;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.Graphics;
@@ -675,7 +674,7 @@ namespace VikingEngine.DSSWars.Players
             
         }
 
-        public void onTileSelect(SelectedSubTile selectedSubTile)//City city, SelectTileResult tileResult)
+        public void onTileSelect(SelectedSubTile selectedSubTile, bool sameMapObject)//City city, SelectTileResult tileResult)
         {
             //if (selection.obj != null && selection.obj.gameobjectType() == GameObjectType.City)
             //{
@@ -694,36 +693,48 @@ namespace VikingEngine.DSSWars.Players
             //    //    }
             //    //}
             //}
-            
-            selection.obj = selectedSubTile.city;
+            if (selection.obj != selectedSubTile.city)
+            {
+                selection.obj = selectedSubTile.city;
+                if (!sameMapObject)
+                {
+                    SoundLib.select_city.Play();
+                }
+            }
 
             switch (selectedSubTile.selectTileResult)
             {
-                case SelectTileResult.Barracks:
+                case SelectTileResult.Conscript:
                     {
                         player.cityTab = Display.MenuTab.Conscript;
-                        int id = conv.IntVector2ToInt(selectedSubTile.subTilePos);
-                        for (int i = 0; i < selectedSubTile.city.conscriptBuildings.Count; ++i)
-                        {
-                            if (selectedSubTile.city.conscriptBuildings[i].idAndPosition == id)
-                            {
-                                selectedSubTile.city.selectedConscript = i; break;
-                            }
-                        }
+                        selectedSubTile.city.selectedConscript = selectedSubTile.city.conscriptIxFromSubTile(selectedSubTile.subTilePos);
+
+
+
+                        //int id = conv.IntVector2ToInt(selectedSubTile.subTilePos);
+                        //for (int i = 0; i < selectedSubTile.city.conscriptBuildings.Count; ++i)
+                        //{
+                        //    if (selectedSubTile.city.conscriptBuildings[i].idAndPosition == id)
+                        //    {
+                        //        selectedSubTile.city.selectedConscript = i; break;
+                        //    }
+                        //}
                     }
                     break;
                 case SelectTileResult.Recruitment:
                 case SelectTileResult.Postal:
                     {
                         player.cityTab = Display.MenuTab.Delivery;
-                        int id = conv.IntVector2ToInt(selectedSubTile.subTilePos);
-                        for (int i = 0; i < selectedSubTile.city.deliveryServices.Count; ++i)
-                        {
-                            if (selectedSubTile.city.deliveryServices[i].idAndPosition == id)
-                            {
-                                selectedSubTile.city.selectedDelivery = i; break;
-                            }
-                        }
+                        selectedSubTile.city.selectedDelivery = selectedSubTile.city.deliveryIxFromSubTile(selectedSubTile.subTilePos);
+
+                        //int id = conv.IntVector2ToInt(selectedSubTile.subTilePos);
+                        //for (int i = 0; i < selectedSubTile.city.deliveryServices.Count; ++i)
+                        //{
+                        //    if (selectedSubTile.city.deliveryServices[i].idAndPosition == id)
+                        //    {
+                        //        selectedSubTile.city.selectedDelivery = i; break;
+                        //    }
+                        //}
 
                         //setObjectMenuFocus(true);
                     }

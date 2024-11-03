@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.GameObject.Conscript;
-using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.LootFest.GO;
 
 namespace VikingEngine.DSSWars.Display.Translation
@@ -40,6 +40,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case MainWeapon.TwoHandSword: return DssRef.lang.Resource_TypeName_TwoHandSword;
                 case MainWeapon.KnightsLance: return DssRef.lang.Resource_TypeName_KnightsLance;
                 case MainWeapon.Bow: return DssRef.lang.Resource_TypeName_Bow;
+                case MainWeapon.Longbow: return DssRef.todoLang.Resource_TypeName_Longbow;
                 case MainWeapon.Ballista: return DssRef.lang.UnitType_Ballista;
 
                 default:
@@ -96,6 +97,9 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case MenuTab.Info:
                     description = null;
                     return DssRef.lang.MenuTab_Info;
+                case MenuTab.Tag:
+                    description = null;
+                    return DssRef.todoLang.MenuTab_Tag;
                 case MenuTab.Build:
                     description = DssRef.lang.MenuTab_Build_Description;
                     return DssRef.lang.MenuTab_Build;
@@ -186,6 +190,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                     { 
                         case TerrainBuildingType.Barracks:
                             return DssRef.lang.BuildingType_Barracks;
+                        case TerrainBuildingType.Bank:
+                            return DssRef.todoLang.BuildingType_Bank;
                         case TerrainBuildingType.Brewery:
                             return DssRef.lang.BuildingType_Brewery;
                         case TerrainBuildingType.Carpenter:
@@ -206,6 +212,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                             return DssRef.lang.BuildingType_Recruitment;
                         case TerrainBuildingType.Work_Smith:
                             return DssRef.lang.BuildingType_Smith;                       
+                        case TerrainBuildingType.Storehouse:
+                            return DssRef.lang.BuildingType_Storage;
                         case TerrainBuildingType.Tavern:
                             return DssRef.lang.BuildingType_Tavern;
                         case TerrainBuildingType.Work_Bench:
@@ -234,6 +242,11 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                         case TerrainSubFoilType.WheatFarm:
                             return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat);
+
+                        case TerrainSubFoilType.RapeSeedFarm:
+                            return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.todoLang.Resource_TypeName_Rapeseed);
+                        case TerrainSubFoilType.HempFarm:
+                            return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.todoLang.Resource_TypeName_Hemp);
                     }
                     break;
 
@@ -264,7 +277,7 @@ namespace VikingEngine.DSSWars.Display.Translation
             }
 
 
-            return TextLib.Error;
+            return TextLib.Error + " (" + mainType.ToString() + " " + subType.ToString()+ ")";
         }
 
         public static string BuildingDescription(TerrainBuildingType buildingType)
@@ -273,6 +286,8 @@ namespace VikingEngine.DSSWars.Display.Translation
             { 
                 case TerrainBuildingType.Tavern:
                     return DssRef.lang.BuildingType_Tavern_Description;
+                case TerrainBuildingType.Storehouse:
+                    return DssRef.todoLang.BuildingType_Storehourse_Description;
                 case TerrainBuildingType.PigPen:
                     return DssRef.lang.BuildingType_PigPen_Description;
                 case TerrainBuildingType.HenPen:
@@ -299,6 +314,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.lang.BuildingType_Tavern_Brewery;
                 case TerrainBuildingType.Work_CoalPit:
                     return DssRef.lang.BuildingType_CoalPit_Description;
+                case TerrainBuildingType.Bank:
+                    return DssRef.todoLang.BuildingType_Bank_Description;
 
                 default:
                     return TextLib.Error;
@@ -341,6 +358,11 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case ItemResourceType.SkinLinen_Group: 
                     return DssRef.lang.Resource_TypeName_Linen;
 
+                case ItemResourceType.Rapeseed:
+                    return DssRef.todoLang.Resource_TypeName_Rapeseed;
+                case ItemResourceType.Hemp:
+                    return DssRef.todoLang.Resource_TypeName_Hemp;
+
                 case ItemResourceType.SharpStick:
                     return DssRef.lang.Resource_TypeName_SharpStick;
                 case ItemResourceType.Sword:
@@ -351,6 +373,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.lang.Resource_TypeName_KnightsLance;
                 case ItemResourceType.Bow:
                     return DssRef.lang.Resource_TypeName_Bow;
+                case ItemResourceType.LongBow:
+                    return DssRef.todoLang.Resource_TypeName_Longbow;
                 case ItemResourceType.Ballista:
                     return DssRef.lang.UnitType_Ballista;
 
@@ -383,6 +407,25 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case DSSWars.CityCulture.Networker: return title ? DssRef.lang.CityCulture_Networker : DssRef.lang.CityCulture_Networker_Description;
                 case DSSWars.CityCulture.PitMasters: return title ? DssRef.lang.CityCulture_PitMasters : DssRef.lang.CityCulture_PitMasters_Description;
 
+
+                case DSSWars.CityCulture.Stonemason:
+                    return title ? DssRef.todoLang.CityCulture_Stonemason : DssRef.todoLang.CityCulture_Stonemason_Description;
+                case DSSWars.CityCulture.Brewmaster:
+                    return title ? DssRef.todoLang.CityCulture_Brewmaster : DssRef.todoLang.CityCulture_Brewmaster_Description;
+                case DSSWars.CityCulture.Weavers:
+                    return title ? DssRef.todoLang.CityCulture_Weavers : DssRef.todoLang.CityCulture_Weavers_Description;
+                case DSSWars.CityCulture.SiegeEngineer:
+                    return title ? DssRef.todoLang.CityCulture_SiegeEngineer : DssRef.todoLang.CityCulture_SiegeEngineer_Description;
+                case DSSWars.CityCulture.Armorsmith:
+                    return title ? DssRef.todoLang.CityCulture_Armorsmith : DssRef.todoLang.CityCulture_Armorsmith_Description;
+                case DSSWars.CityCulture.Nobelmen:
+                    return title ? DssRef.todoLang.CityCulture_Nobelmen : DssRef.todoLang.CityCulture_Nobelmen_Description;
+                case DSSWars.CityCulture.Seafaring:
+                    return title ? DssRef.todoLang.CityCulture_Seafaring : DssRef.todoLang.CityCulture_Seafaring_Description;
+                case DSSWars.CityCulture.Backtrader:
+                    return title ? DssRef.todoLang.CityCulture_Backtrader : DssRef.todoLang.CityCulture_Backtrader_Description;
+                case DSSWars.CityCulture.Lawbiding:
+                    return title ? DssRef.todoLang.CityCulture_Lawbiding : DssRef.todoLang.CityCulture_Lawbiding_Description;
 
                 default: return TextLib.Error;
             }

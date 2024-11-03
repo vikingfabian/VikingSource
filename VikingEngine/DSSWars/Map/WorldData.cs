@@ -71,6 +71,8 @@ namespace VikingEngine.DSSWars
         //public int evilFactionIndex=-1;
         public bool abortLoad = false;
 
+        public List<FactionType> availableGenericAiTypes = AvailableGenericAiTypes();
+
         public WorldData()
         {
             factions = new SpottedArray<Faction>();
@@ -169,13 +171,50 @@ namespace VikingEngine.DSSWars
         //    return faction;
         //}
 
+        bool subTileHasRepeatValue(ref SubTile subtile)
+        {
+            return subtile.mainTerrain == TerrainMainType.DefaultLand || subtile.mainTerrain == TerrainMainType.DefaultSea;
+        }
+
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            
             subTileGrid.LoopBegin();
             while (subTileGrid.LoopNext())
             {
-                subTileGrid.LoopValueGet().write(w);
+                var subtile = subTileGrid.LoopValueGet();
+                subtile.write(w);
+
+                if (subTileHasRepeatValue(ref subtile))
+                {
+                    //Find repeats
+                    int repeating = 0;
+
+                    while (true)
+                    {
+                        if (subTileGrid.LoopNext())
+                        {
+                            var nexttile = subTileGrid.LoopValueGet();
+                            if (subtile.EqualSaveData(ref nexttile))
+                            {
+                                ++repeating;
+                            }
+                            else
+                            {
+                                subTileGrid.LoopUndoToPrev();
+                                //end loop
+                                DataStreamLib.WriteGrowingBitShiftValue(w, repeating);
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            //end loop, and final position on map
+                            DataStreamLib.WriteGrowingBitShiftValue(w, repeating);
+                            break;
+                        }
+                    }                    
+                }
+                
             }
 
             Debug.WriteCheck(w);
@@ -206,14 +245,38 @@ namespace VikingEngine.DSSWars
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
-            subTileGrid.LoopBegin();
-            while (subTileGrid.LoopNext())
+            if (subversion >= 22)
             {
-                SubTile st = subTileGrid.LoopValueGet();
-                st.read(r, subversion);
-                subTileGrid.LoopValueSet(st);
-            }
+                subTileGrid.LoopBegin();
+                while (subTileGrid.LoopNext())
+                {
+                    SubTile subtile = subTileGrid.LoopValueGet();
+                    subtile.read(r, subversion);
+                    subTileGrid.LoopValueSet(subtile);
 
+                    if (subTileHasRepeatValue(ref subtile))
+                    {
+                        int repeating = DataStreamLib.ReadGrowingBitShiftValue(r);
+                        for (int i = 0; i < repeating; i++)
+                        {
+                            subTileGrid.LoopNext();
+                            SubTile nexttile = subTileGrid.LoopValueGet();
+                            nexttile.copySaveDataFrom(ref subtile);
+                            subTileGrid.LoopValueSet(nexttile);
+                        }
+                    }   
+                }
+            }
+            else
+            {
+                subTileGrid.LoopBegin();
+                while (subTileGrid.LoopNext())
+                {
+                    SubTile st = subTileGrid.LoopValueGet();
+                    st.read(r, subversion);
+                    subTileGrid.LoopValueSet(st);
+                }
+            }
             Debug.ReadCheck(r);
 
             foreach (City city in cities)
@@ -305,6 +368,8 @@ namespace VikingEngine.DSSWars
            int version = r.ReadInt32();
 
             metaData.seed = r.ReadUInt16();
+            //rnd = new PcgRandom(metaData.seed);
+
             Size.read(r);
             refreshSize();
             ForXYLoop loop = new ForXYLoop(Size);
@@ -606,6 +671,103 @@ namespace VikingEngine.DSSWars
         {
             x = Bound.Set(x, ExtraBoundRadius, DssRef.world.Size.X - ExtraBoundRadius);
             z = Bound.Set(z, ExtraBoundRadius, DssRef.world.Size.Y - ExtraBoundRadius);
+        }
+        public static List<FactionType> NamedAiTypes()
+        {
+            return new List<FactionType>
+            {
+                FactionType.DarkLord,
+                FactionType.DarkFollower,
+                FactionType.UnitedKingdom,
+                FactionType.GreenWood,
+                FactionType.EasternEmpire,
+                FactionType.NordicRealm,
+                FactionType.BearClaw,
+                FactionType.NordicSpur,
+                FactionType.IceRaven,
+                FactionType.DragonSlayer,
+                FactionType.SouthHara,
+                FactionType.DyingMonger,
+                FactionType.DyingHate,
+                FactionType.DyingDestru,
+            };
+        }
+        public static List<FactionType> AvailableGenericAiTypes()
+        {
+            return new List<FactionType>
+            {
+                FactionType.Starshield,//
+                FactionType.Bluepeak,//
+                FactionType.Hoft,//
+                FactionType.RiverStallion,//
+                FactionType.Sivo,//
+                FactionType.AelthrenConclave,//
+                FactionType.VrakasundEnclave,//
+                FactionType.Tormürd,//
+                FactionType.ElderysFyrd,//
+                FactionType.Hólmgar,//
+                FactionType.RûnothalOrder,//
+            
+                FactionType.GrimwardEotain,//
+                FactionType.SkaeldraHaim,//
+                FactionType.MordwynnCompact,//
+                FactionType.AethmireSovren,//
+                FactionType.ThurlanKin,//
+                FactionType.ValestennOrder,//
+                FactionType.Mournfold,//
+                FactionType.OrentharTribes,//
+                FactionType.SkarnVael,//
+                FactionType.Glimmerfell,//
+
+                FactionType.BleakwaterFold,//
+                FactionType.Oathmaeren,//
+                FactionType.Elderforge,//
+                FactionType.MarhollowCartel,//
+                FactionType.TharvaniDominion,//
+                FactionType.KystraAscendancy,//
+                FactionType.GildenmarkUnion,//
+                FactionType.AurecanEmpire,//
+                FactionType.BronzeReach,//
+                FactionType.ElbrethGuild,//
+                FactionType.ValosianSenate,//
+                FactionType.IronmarchCompact,//
+                FactionType.KaranthCollective,//
+                FactionType.VerdicAlliance,//
+
+                FactionType.OrokhCircles,//
+                FactionType.TannagHorde,//
+                FactionType.BraghkRaiders,//
+                FactionType.ThurvanniStonekeepers,//
+                FactionType.KolvrenHunters,//
+                FactionType.JorathBloodbound,//
+                FactionType.UlrethSkycallers,//
+                FactionType.GharjaRavagers,//
+                FactionType.RavkanShield,//
+                FactionType.FenskaarTidewalkers,//
+
+                FactionType.HroldaniStormguard,
+                FactionType.SkirnirWolfkin,
+                FactionType.ThalgarBearclaw,
+                FactionType.VarnokRimeguard,
+                FactionType.KorrakFirehand,
+                FactionType.MoongladeGat,
+                FactionType.DraskarSons,
+                FactionType.YrdenFlamekeepers,
+                FactionType.BrundirWarhorns,
+                FactionType.OltunBonecarvers,
+
+                FactionType.HaskariEmber,
+                FactionType.ZalfrikThunderborn,
+                FactionType.BjorunStonetender,
+                FactionType.MyrdarrIcewalkers,
+                FactionType.SkelvikSpear,
+                FactionType.VaragThroatcallers,
+                FactionType.Durakai,
+                FactionType.FjornfellWarhowl,
+                FactionType.AshgroveWard,
+                FactionType.HragmarHorncarvers,
+
+            };
         }
 
     }

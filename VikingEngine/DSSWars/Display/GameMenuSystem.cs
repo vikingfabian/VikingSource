@@ -96,6 +96,20 @@ namespace VikingEngine.DSSWars.Display
             }
         }
 
+        void exit()
+        {
+            closeMenu();
+
+            //if (DssRef.state.cutScene == null)
+            //{
+            //    new SaveScene(true).ExitGame = true;
+            //}
+            //else
+            //{
+                DssRef.state.exit();
+            //}
+        }
+
         public void pauseMenu()
         {
             openMenu();
@@ -103,6 +117,7 @@ namespace VikingEngine.DSSWars.Display
             {
 
                 new GuiTextButton(DssRef.lang.GameMenu_Resume, null, closeMenu, false, layout);
+
                 if (DssRef.storage.runTutorial)
                 {
                     new GuiDialogButton(DssRef.lang.Tutorial_EndTutorial, null, new GuiAction(endTutorial),
@@ -115,11 +130,13 @@ namespace VikingEngine.DSSWars.Display
                 {
                     multiplayerGameSpeedToMenu(layout);
                 }
+                new GuiTextButton(DssRef.todoLang.GameMenu_NextSong, null, new GuiAction(() => { Ref.music.debugNext(); closeMenu(); }), false, layout);
 
                 Ref.gamesett.soundOptions(layout);
                 new GuiSectionSeparator(layout);
+                new GuiDialogButton(DssRef.lang.GameMenu_ExitGame, null, new GuiAction(exit), false, layout);
 
-                new GuiDialogButton(DssRef.lang.GameMenu_ExitGame, null, new GuiAction(saveAndExit), false, layout);
+                new GuiDialogButton(DssRef.lang.Hud_SaveAndExit, null, new GuiAction(saveAndExit), false, layout);
 
             }
             layout.End();

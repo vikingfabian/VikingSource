@@ -199,7 +199,7 @@ namespace VikingEngine.DSSWars.Display
     { 
         Minimal,
         Normal,
-        Extended,
+        //Extended,
         NUM
     }
 }

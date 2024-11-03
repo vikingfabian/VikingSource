@@ -148,6 +148,15 @@ namespace VikingEngine.DSSWars.GameObject
             return DssRef.lang.UnitType_Army + " (" + parentArrayIndex.ToString() +   ")";//return "Army" + parentArrayIndex.ToString();
         }
 
+        public override void TypeIcon(RichBoxContent content)
+        {
+            content.Add(new RichBoxImage(SpriteName.WarsUnitIcon_Soldier));
+        }
+        //public override SpriteName TypeIcon()
+        //{
+        //    return SpriteName.WarsUnitIcon_Soldier;
+        //}
+
         public override string Name()
         {
             return name;//return "Army" + parentArrayIndex.ToString();
@@ -208,11 +217,13 @@ namespace VikingEngine.DSSWars.GameObject
                         args.content.text("Id: " + id.ToString());
                     }
                 }
+
+                if (faction == args.player.faction)
+                {
+                    new Display.ArmyMenu(args.player, this, args.content);
+                }
             }
-            if (/*args.selected &&*/ faction == args.player.faction)
-            {                
-                new Display.ArmyMenu(args.player, this, args.content);
-            }
+            
         }
 
        

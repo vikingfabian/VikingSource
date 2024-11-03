@@ -7,19 +7,21 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DataStream;
+using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.GameObject.Conscript;
-using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Map;
+using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -76,6 +78,9 @@ namespace VikingEngine.DSSWars.GameObject
         bool autoBuild_Work = false;
         bool autoBuild_Farm = false;
 
+        public CityTagBack tagBack = CityTagBack.NONE;
+        public CityTagArt tagArt = CityTagArt.None;
+
         public void AutoExpandType(out bool work, out Build.BuildAndExpandType farm)
         {
             work = autoBuild_Work;
@@ -104,6 +109,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (set)
             {
                 autoBuild_Work = value;
+                (value? SoundLib.click : SoundLib.back).Play();
             }
             return autoBuild_Work;
         }
@@ -112,6 +118,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (set)
             {
                 autoBuild_Farm = value;
+                (value ? SoundLib.click : SoundLib.back).Play();
             }
             return autoBuild_Farm;
         }
@@ -193,9 +200,7 @@ namespace VikingEngine.DSSWars.GameObject
             else if (percWater >= 0.25 && percY <= 0.25)
             {
                 cityCultureCollection.NorthSea.Add(this);
-            }
-
-            
+            }            
 
             if (world.rnd.Chance(0.3))
             {
@@ -212,6 +217,10 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     Culture = CityCulture.Miners;
                 }
+                else if (percMountain > 0.3)
+                {
+                    Culture = CityCulture.Stonemason;
+                }
                 else if (dryBiom <= 1)
                 {
                     Culture = CityCulture.DeepWell;
@@ -220,7 +229,10 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     Culture = CityCulture.PitMasters;
                 }
-
+                else if (percWater >= 0.25)
+                {
+                    Culture = CityCulture.Seafaring;
+                }
             }
 
             if (Culture == CityCulture.NUM_NONE)
@@ -289,10 +301,34 @@ namespace VikingEngine.DSSWars.GameObject
             workTemplate.writeGameState(w, true);
 
             w.Write((short)res_water.amount);
-            foreach (var type in MovableCityResourceTypes)
-            {
-                GetGroupedResource(type).writeGameState(w);
-            }
+
+
+            res_wood.writeGameState(w); //ItemResourceType.Wood_Group,
+            res_fuel.writeGameState(w); // ItemResourceType.Fuel_G,
+            res_stone.writeGameState(w); // ItemResourceType.Stone_G,
+            res_rawFood.writeGameState(w); // ItemResourceType.RawFood_Group,
+            res_food.writeGameState(w); // ItemResourceType.Food_G,
+            res_beer.writeGameState(w); // ItemResourceType.Beer,
+            res_skinLinnen.writeGameState(w); // ItemResourceType.SkinLinen_Group,
+            res_ironore.writeGameState(w); // ItemResourceType.IronOre_G,
+            res_iron.writeGameState(w); // ItemResourceType.Iron_G,
+
+            res_sword.writeGameState(w); // ItemResourceType.Sword,
+            res_sharpstick.writeGameState(w); // ItemResourceType.SharpStick,
+            res_twohandsword.writeGameState(w); // ItemResourceType.TwoHandSword,
+            res_knightslance.writeGameState(w); // ItemResourceType.KnightsLance,
+            res_bow.writeGameState(w); // ItemResourceType.Bow,
+            res_ballista.writeGameState(w); // ItemResourceType.Ballista,            
+
+            res_lightArmor.writeGameState(w); // ItemResourceType.LightArmor,
+            res_mediumArmor.writeGameState(w); // ItemResourceType.MediumArmor,
+            res_heavyArmor.writeGameState(w); // ItemResourceType.HeavyArmor,
+
+            res_longbow.writeGameState(w);
+            //foreach (var type in MovableCityResourceTypes)
+            //{
+            //    GetGroupedResource(type).writeGameState(w);
+            //}
 
             w.Write((ushort)conscriptBuildings.Count);
             foreach (var barracks in conscriptBuildings)
@@ -309,7 +345,12 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(autoBuild_Work);
             w.Write(autoBuild_Farm);
             w.Write((byte)autoExpandFarmType);
-        
+
+            w.Write((byte)tagBack);
+            if (tagBack != CityTagBack.NONE)
+            {
+                w.Write((ushort)tagArt);
+            }
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
@@ -330,12 +371,38 @@ namespace VikingEngine.DSSWars.GameObject
             workTemplate.readGameState(r, subversion, true);
 
             res_water.amount = r.ReadInt16();
-            foreach (var type in MovableCityResourceTypes)
+
+            res_wood.readGameState(r, subversion); //ItemResourceType.Wood_Group,
+            res_fuel.readGameState(r, subversion); // ItemResourceType.Fuel_G,
+            res_stone.readGameState(r, subversion); // ItemResourceType.Stone_G,
+            res_rawFood.readGameState(r, subversion); // ItemResourceType.RawFood_Group,
+            res_food.readGameState(r, subversion); // ItemResourceType.Food_G,
+            res_beer.readGameState(r, subversion); // ItemResourceType.Beer,
+            res_skinLinnen.readGameState(r, subversion); // ItemResourceType.SkinLinen_Group,
+            res_ironore.readGameState(r, subversion); // ItemResourceType.IronOre_G,
+            res_iron.readGameState(r, subversion); // ItemResourceType.Iron_G,
+
+            res_sword.readGameState(r, subversion); // ItemResourceType.Sword,
+            res_sharpstick.readGameState(r, subversion); // ItemResourceType.SharpStick,
+            res_twohandsword.readGameState(r, subversion); // ItemResourceType.TwoHandSword,
+            res_knightslance.readGameState(r, subversion); // ItemResourceType.KnightsLance,
+            res_bow.readGameState(r, subversion); // ItemResourceType.Bow,
+            res_ballista.readGameState(r, subversion); // ItemResourceType.Ballista,            
+
+            res_lightArmor.readGameState(r, subversion); // ItemResourceType.LightArmor,
+            res_mediumArmor.readGameState(r, subversion); // ItemResourceType.MediumArmor,
+            res_heavyArmor.readGameState(r, subversion); // ItemResourceType.HeavyArmor,
+
+            if (subversion >= 19)
             {
-                GroupedResource resource = new GroupedResource();
-                resource.readGameState(r, subversion);
-                SetGroupedResource(type, resource);
+                res_longbow.readGameState(r, subversion);
             }
+            //foreach (var type in MovableCityResourceTypes)
+            //{
+            //    GroupedResource resource = new GroupedResource();
+            //    resource.readGameState(r, subversion);
+            //    SetGroupedResource(type, resource);
+            //}
 
             refreshCitySize();
 
@@ -352,15 +419,23 @@ namespace VikingEngine.DSSWars.GameObject
             int deliveryServicesCount = r.ReadUInt16();
             for (int i = 0; i < deliveryServicesCount; i++)
             {
-                Delivery.DeliveryStatus status = new Delivery.DeliveryStatus();
+                DeliveryStatus status = new Delivery.DeliveryStatus();
                 status.readGameState(r, subversion);
                 deliveryServices.Add(status);
             }
 
-                autoBuild_Work = r.ReadBoolean();
-                autoBuild_Farm = r.ReadBoolean();
-                autoExpandFarmType = (Build.BuildAndExpandType)r.ReadByte();
-            
+            autoBuild_Work = r.ReadBoolean();
+            autoBuild_Farm = r.ReadBoolean();
+            autoExpandFarmType = (Build.BuildAndExpandType)r.ReadByte();
+
+            if (subversion >= 23)
+            {
+                tagBack = (CityTagBack)r.ReadByte();
+                if (tagBack != CityTagBack.NONE)
+                {
+                    tagArt = (CityTagArt)r.ReadUInt16();
+                }
+            }
         }
 
         public void writeNet(System.IO.BinaryWriter w)
@@ -1039,20 +1114,42 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return DssRef.lang.UnitType_City + " (" + parentArrayIndex + ")";
         }
+        //public override SpriteName TypeIcon()
+        //{
+        //    return SpriteName.WarsCityHall;
+        //}
+
+        public override void TypeIcon(RichBoxContent content)
+        {
+            content.Add(new RichBoxImage( SpriteName.WarsCityHall));
+            tagToHud(content);
+        }
+
+        public void tagToHud(RichBoxContent content)
+        {
+            if (tagBack != CityTagBack.NONE)
+            {
+                content.Add(new RichBoxOverlapImage(
+                    new RichBoxImage(Data.CityTag.BackSprite(tagBack)),
+                    Data.CityTag.ArtSprite(tagArt), Vector2.Zero, 0.8f));
+            }
+        }
 
         public override void toHud(ObjectHudArgs args)
         {
            
             base.toHud(args);
-
-            if (/*args.selected && */ faction == args.player.faction)
+            if (args.ShowFull)
             {
-                CityDetailsHud(true, args.player, args.content);
-                new Display.CityMenu(args.player, this, args.content);
-            }
-            else
-            {
-                CityDetailsHud(false, args.player, args.content);
+                if (faction == args.player.faction)
+                {
+                    CityDetailsHud(true, args.player, args.content);
+                    new Display.CityMenu(args.player, this, args.content);
+                }
+                else
+                {
+                    CityDetailsHud(false, args.player, args.content);
+                }
             }
         }
 
@@ -1075,25 +1172,17 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     content.icontext(SpriteName.hqBatteResultBobbleDamage, string.Format(DssRef.lang.CityOption_Damages, damages.Int()));
                 }
-                HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Children, children().ToString());
+                HudLib.ItemCount(content, SpriteName.WarsWorkerAdd, DssRef.lang.ResourceType_Children, children().ToString());
                 content.space();
                 HudLib.InfoButton(content, new RbAction1Arg<City>(player.childrenTooltip, this));
 
                 HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce, workForceMax));
                 HudLib.ItemCount(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, TextLib.Divition_Large(guardCount, maxGuardSize));
                 content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
-                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, calcIncome_async().total()));
+                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, calcIncome_async().total(this)));
                 content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, GuardUpkeep(maxGuardSize)));
 
-                content.text(string.Format(DssRef.lang.CityCulture_CultureIsX, Display.Translation.LangLib.CityCulture(Culture, true)));
-                content.space();
-                HudLib.InfoButton(content, new RbAction(()=>
-                {
-                    RichBoxContent content = new RichBoxContent();
-                    content.text(Display.Translation.LangLib.CityCulture(Culture, false));
-
-                    player.hud.tooltip.create(player, content, true);
-                }));//cultureToolTip));
+                cultureToHud(player, content);
 
                 if (immigrants.HasValue())
                 {
@@ -1106,14 +1195,14 @@ namespace VikingEngine.DSSWars.GameObject
                     //if (nobelHouse)
                     //{
                     //    content.newLine();
-                    //    content.BulletPoint();
+                    //    HudLib.BulletPoint(content);
                     //    content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse));
                     //}
 
                     if (CityType == CityType.Factory)
                     {
                         content.newLine();
-                        content.BulletPoint();
+                        HudLib.BulletPoint(content);
                         content.Add(new RichBoxImage(SpriteName.WarsFactoryIcon));
                         content.Add(new RichBoxText(DssRef.lang.Building_DarkFactory));
 
@@ -1123,6 +1212,19 @@ namespace VikingEngine.DSSWars.GameObject
 
             
 
+        }
+
+        public void cultureToHud(LocalPlayer player, RichBoxContent content)
+        {
+            content.icontext(SpriteName.WarsCultureIcon, string.Format(DssRef.lang.CityCulture_CultureIsX, Display.Translation.LangLib.CityCulture(Culture, true)));
+            content.space();
+            HudLib.InfoButton(content, new RbAction(() =>
+            {
+                RichBoxContent content = new RichBoxContent();
+                content.text(Display.Translation.LangLib.CityCulture(Culture, false));
+
+                player.hud.tooltip.create(player, content, true);
+            }));//cultureToolTip));
         }
 
        // void cultureToolTip()

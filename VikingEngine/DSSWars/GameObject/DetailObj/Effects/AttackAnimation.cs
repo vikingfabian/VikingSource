@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -90,7 +91,7 @@ namespace VikingEngine.DSSWars.GameObject
                         damage = soldierData.attackDamage;
 
                         if (group != null &&
-                            group.soldierConscript.conscript.specialization == Conscript.SpecializationType.AntiCavalry && 
+                            group.soldierConscript.conscript.specialization == SpecializationType.AntiCavalry && 
                             target.DetailUnitType() == UnitType.ConscriptCavalry)
                         {
                             damage = MathExt.MultiplyInt(DssConst.AntiCavalryBonusMultiply, damage);

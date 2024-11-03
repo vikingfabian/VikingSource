@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
-using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map.Settings;
+using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars.Map
 {
@@ -81,6 +81,8 @@ namespace VikingEngine.DSSWars.Map
 
                 case TerrainSubFoilType.WheatFarm:
                 case TerrainSubFoilType.LinenFarm:
+                case TerrainSubFoilType.RapeSeedFarm:
+                case TerrainSubFoilType.HempFarm:
                     if (subtile.terrainAmount > FarmCulture_Empty && 
                         subtile.terrainAmount < FarmCulture_MaxSize)
                     {
@@ -171,6 +173,15 @@ namespace VikingEngine.DSSWars.Map
                             else if (rndMine < 0.0065)
                             {
                                 subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.IronOre, 1);
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            var rndBog = world.rnd.Double();
+                            if (rndBog < 0.003)
+                            {
+                                subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.BogIron, 1);
                                 return;
                             }
                         }

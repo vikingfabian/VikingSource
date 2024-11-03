@@ -223,7 +223,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// En el editor de perfil del jugador. Guardar cambios y cerrar el editor
         /// </summary>
-        public override string ProfileEditor_SaveAndExit => "Guardar y salir";
+        public override string Hud_SaveAndExit => "Guardar y salir";
 
         /// <summary>
         /// En el editor de perfil del jugador. Parte de las opciones de color de Tono, Saturación y Luminosidad.

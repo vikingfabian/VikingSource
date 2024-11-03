@@ -328,45 +328,76 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.fol_sprout, rnd, wp, 0.05f + 0.01f * sizeValue));
                     break;
                 case TerrainSubFoilType.WheatFarm:
-                    {
-                        int frame = TerrainContent.FarmCulture_Empty;
-                        if (sizeValue >= TerrainContent.FarmCulture_ReadySize)
-                        {
-                            frame = 3;
-                        }
-                        else if (sizeValue >= TerrainContent.FarmCulture_HalfSize)
-                        {
-                            frame = 2;
-                        }
-                        else if (sizeValue > TerrainContent.FarmCulture_Empty)
-                        {
-                            frame = 1;
-                        }
-                        addFoliage(new Foliage(LootFest.VoxelModelName.fol_farmculture, frame, wp, 0.1f));
-                    }
+                    farm(3);
+                    //{
+                    //    int frame = TerrainContent.FarmCulture_Empty;
+                    //    if (sizeValue >= TerrainContent.FarmCulture_ReadySize)
+                    //    {
+                    //        frame = 3;
+                    //    }
+                    //    else if (sizeValue >= TerrainContent.FarmCulture_HalfSize)
+                    //    {
+                    //        frame = 2;
+                    //    }
+                    //    else if (sizeValue > TerrainContent.FarmCulture_Empty)
+                    //    {
+                    //        frame = 1;
+                    //    }
+                    //    addFoliage(new Foliage(LootFest.VoxelModelName.fol_farmculture, frame, wp, 0.1f));
+                    //}
                     break;
                 case TerrainSubFoilType.LinenFarm:
-                    {
-                        int frame = TerrainContent.FarmCulture_Empty;
-                        if (sizeValue >= TerrainContent.FarmCulture_ReadySize)
-                        {
-                            frame = 4;
-                        }
-                        else if (sizeValue >= TerrainContent.FarmCulture_HalfSize)
-                        {
-                            frame = 2;
-                        }
-                        else if (sizeValue > TerrainContent.FarmCulture_Empty)
-                        {
-                            frame = 1;
-                        }
-                        addFoliage(new Foliage(LootFest.VoxelModelName.fol_farmculture, frame, wp, 0.1f));
-                    }
+                    farm(4);
+                    //{
+                        
+                        //int frame = TerrainContent.FarmCulture_Empty;
+                        //if (sizeValue >= TerrainContent.FarmCulture_ReadySize)
+                        //{
+                        //    frame = 4;
+                        //}
+                        //else if (sizeValue >= TerrainContent.FarmCulture_HalfSize)
+                        //{
+                        //    frame = 2;
+                        //}
+                        //else if (sizeValue > TerrainContent.FarmCulture_Empty)
+                        //{
+                        //    frame = 1;
+                        //}
+                        //addFoliage(new Foliage(LootFest.VoxelModelName.fol_farmculture, frame, wp, 0.1f));
+                    //}
+                    break;
+                case TerrainSubFoilType.HempFarm:
+                    farm(6);
+                    break;
+                case TerrainSubFoilType.RapeSeedFarm:
+                    farm(5);
+                    break;
+
+                case TerrainSubFoilType.BogIron:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 0, wp, 0.08f));
                     break;
                 default:
                     throw new NotImplementedException();
             }
 
+
+            void farm(int readyFrame)
+            {
+                int frame = TerrainContent.FarmCulture_Empty;
+                if (sizeValue >= TerrainContent.FarmCulture_ReadySize)
+                {
+                    frame = readyFrame;
+                }
+                else if (sizeValue >= TerrainContent.FarmCulture_HalfSize)
+                {
+                    frame = 2;
+                }
+                else if (sizeValue > TerrainContent.FarmCulture_Empty)
+                {
+                    frame = 1;
+                }
+                addFoliage(new Foliage(LootFest.VoxelModelName.fol_farmculture, frame, wp, 0.1f));
+            }
             //if (foliage == null)
             //{
             //    foliage = new List<Foliage>(8);
@@ -399,7 +430,10 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_workerhut, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
                 case TerrainBuildingType.Tavern:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_tavern, rnd, wp, WorldData.SubTileWidth * 1f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_tavern, rnd, wp, WorldData.SubTileWidth * 0.9f));
+                    break;
+                case TerrainBuildingType.Storehouse:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_storehouse, rnd, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.Postal:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, rnd, wp, WorldData.SubTileWidth * 1f));
@@ -467,6 +501,7 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainBuildingType.Nobelhouse:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_nobelhouse, 1, wp, WorldData.SubTileWidth * 1.3f));
                     break;
+
 
                 default:
                     throw new NotImplementedException();

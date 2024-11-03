@@ -21,8 +21,6 @@ namespace VikingEngine.DSSWars.Data
         const int SaveStateCount = 10;
         const int AutoSaveCount = 10;
 
-        //public SaveStateMeta[] saveStates = new SaveStateMeta[SaveStateCount];
-        //public SaveStateMeta[] autoSaveStates = new SaveStateMeta[AutoSaveCount];
         SaveIterations saves = new SaveIterations(SaveStateCount);
         SaveIterations autosaves = new SaveIterations(AutoSaveCount);
 
@@ -80,21 +78,6 @@ namespace VikingEngine.DSSWars.Data
 
             saves.write(w);
             autosaves.write(w); 
-            //writeStates(saveStates);
-            //writeStates(autoSaveStates);
-
-            //void writeStates(SaveStateMeta[] states)
-            //{ 
-            //    w.Write((byte)states.Length);
-            //    foreach (var state in states)
-            //    {
-            //        w.Write(state != null);
-            //        if (state != null)
-            //        {
-            //            state.write(w);
-            //        }
-            //    }
-            //}
         }
 
 

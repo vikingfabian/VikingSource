@@ -28,6 +28,10 @@ namespace VikingEngine.DSSWars
         public IButtonMap ControllerMessageClick;
         public IButtonMap Execute;
         public IButtonMap Stop;
+        public IButtonMap Copy;
+        public IButtonMap Paste;
+        public IButtonMap Build;
+
 
         public IButtonMap DragPan;
         public IButtonMap NextArmy;
@@ -98,6 +102,9 @@ namespace VikingEngine.DSSWars
             
             //Home = new KeyboardButtonMap(Keys.Home);
             Stop = new KeyboardButtonMap(Keys.H);
+            Copy = new KeyboardButtonMap(Keys.C);
+            Paste = new KeyboardButtonMap(Keys.V);
+            Build = new KeyboardButtonMap(Keys.B);
             AutomationSetting = new KeyboardButtonMap(Keys.I);
 
             Menu = new KeyboardButtonMap(Keys.Escape);

@@ -1,30 +1,37 @@
-﻿
--Change Log-
-Removes build orders when city is lost
+﻿-Change Log-
+* view city tags checkbox
+* save on exit option
+* can pick build type from build orders (B key)
+* Fixed stuck tooltips
+* Ai resource collecting is affected by difficulty level
+* player get one more honor guard
+* added a few more minutes ai delay
+* improved stone gather algorithm
+* city guard replenish faster
 
-#Todo#
-översätt
+#Todo (xmas patch)#
+new maps
+dölj carry amount
+new game - Skip language crashes game
+
+
+//ShowGamepadTextInput
 
 --Efter release polish--
-long bow, bättre båge för carpenter
- "produces 20 raw food in 4 minutes, and requires 30sec of work per cycle" 
- ● If You can, be more specific on what resource is produced by a building in the
-“building” menu: personally it wasn’t so intuitive for all the buildings.
+-war icon
+ 
 
-sound limit per time
 pilar med resurser från delivery
-tydlig ikon för objekt meny typ
 Factories modeller
-Deliver effect
-Ljud
 city economy
 visa antal byggnader i bygg meny
 training skill icon
 menu scroll
 
+manuballista (hand ballista)
+
 Error
 -back button in menues 
-
 
 Retreat system
 -retreat av de sista motståndarna
@@ -51,15 +58,9 @@ Polish
 -burn yes/no
 
 Art
--list punkt
--checkbox art
--Mercenary icon
--battle icon
--world domination achieve
--link, no link
--resource icons
--no food, no beds icons
--culture icon
+
+
+
 
 #current
 English, Simplified Chinese, Japanese, Russian, Spanish

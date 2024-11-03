@@ -6,12 +6,13 @@ using System.Text;
 using System.Xml.Linq;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Battle;
+using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.GameObject.Conscript;
-using VikingEngine.DSSWars.GameObject.Delivery;
-using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Data;
@@ -27,12 +28,10 @@ namespace VikingEngine.DSSWars.Display
     class CityMenu
     {
         public static readonly List<MenuTab> Tabs = new List<MenuTab>() { 
-            MenuTab.Info, MenuTab.Resources, MenuTab.BlackMarket, MenuTab.Work, MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript };
+            MenuTab.Info, MenuTab.Resources, MenuTab.Work, MenuTab.BlackMarket, MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript, MenuTab.Tag };
         Players.LocalPlayer player;
         City city;
         static readonly int[] StockPileControls = { 100, 1000 };
-
-        //public const string ResourcesMenuState = "resource";
         public CityMenu(Players.LocalPlayer player, City city, RichBoxContent content)
         {
             this.player = player;
@@ -44,7 +43,7 @@ namespace VikingEngine.DSSWars.Display
 
             var tabs = new List<RichboxTabMember>((int)MenuTab.NUM);
 
-            List<MenuTab> availableTabs =player.AvailableCityTabs();//player.tutorial != null ? player.tutorial.cityTabs : Tabs;
+            List<MenuTab> availableTabs =player.AvailableCityTabs();
             for (int i = 0; i < availableTabs.Count; ++i)
             {
                 var text = new RichBoxText(LangLib.Tab(availableTabs[i], out string description));
@@ -73,7 +72,7 @@ namespace VikingEngine.DSSWars.Display
                 }
             }
 
-            content.Add(new RichboxTabgroup(tabs, tabSel, player.cityTabClick, null, null));
+            content.Add(new RichboxTabgroup(tabs, tabSel, player.cityTabClick, null, SoundLib.menutab, null, null));
 
             content.newLine();
 
@@ -84,6 +83,10 @@ namespace VikingEngine.DSSWars.Display
                     purchaseOptions(content);
                     break;
 
+                case MenuTab.Tag:
+                    tagsToMenu(content);
+                    break;
+
                 case MenuTab.Work:
                     city.workTemplate.toHud(player, content, city.faction, city);
                     break;
@@ -91,10 +94,6 @@ namespace VikingEngine.DSSWars.Display
                 case MenuTab.Conscript:
                     conscriptTab(content);
                     break;
-
-                //case MenuTab.Recruit:
-                //    recruitTab(content);
-                //    break;
 
                 case MenuTab.BlackMarket:
                     BlackMarketResources.ToHud(player, content, city);
@@ -113,10 +112,50 @@ namespace VikingEngine.DSSWars.Display
                     break;
 
                 case MenuTab.Build:
-                    player.BuildControls.toHud(player, content, city);
+                    player.buildControls.toHud(player, content, city);
                     break;
             }
         }
+
+        public void tagsToMenu(RichBoxContent content)
+        {
+            content.newLine();
+            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Tag_ViewOnMap) }, DssRef.storage.TagsOnMapProperty));
+            content.newParagraph();
+
+            for (CityTagBack back = CityTagBack.NONE; back < CityTagBack.NUM; back++)
+            {
+                var button = new RichboxButton(new List<AbsRichBoxMember> {
+                    new RichBoxImage(Data.CityTag.BackSprite(back))
+                }, new RbAction1Arg<CityTagBack>((CityTagBack back) => { city.tagBack = back; }, back));
+                button.setGroupSelectionColor(HudLib.RbSettings, back == city.tagBack);
+                content.Add(button);
+
+                if (back == CityTagBack.NONE)
+                {
+                    content.newLine();
+                }
+                else
+                {
+                    content.space();
+                }
+            }
+
+            if (city.tagBack != CityTagBack.NONE)
+            {
+                content.newParagraph();
+                for (CityTagArt art = CityTagArt.None; art < CityTagArt.NUM; art++)
+                {
+                    var button = new RichboxButton(new List<AbsRichBoxMember> {
+                    new RichBoxImage(Data.CityTag.ArtSprite(art))
+                    }, new RbAction1Arg<CityTagArt>((CityTagArt art) => { city.tagArt = art; }, art));
+                    button.setGroupSelectionColor(HudLib.RbSettings, art == city.tagArt);
+                    content.Add(button);
+                    content.space();
+                }
+            }
+        }
+
         public void resourcesToMenu(RichBoxContent content)
         {
             if (player.tutorial == null || player.tutorial.DisplayStockpile())
@@ -137,7 +176,7 @@ namespace VikingEngine.DSSWars.Display
                         new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                         {
                             player.resourcesSubTab = resourcesSubTab;
-                        }, resourcesSubTab, SoundLib.menu));
+                        }, resourcesSubTab, SoundLib.menutab));
                     subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
                     content.Add(subTab);
                     content.space();
@@ -158,70 +197,90 @@ namespace VikingEngine.DSSWars.Display
                     content.Add(new RichBoxText(TextLib.OneDecimal(city.waterAddPerSec)));
 
                     bool reachedBuffer = false;
+                    var foodSafeGuard = city.foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
 
-                    city.res_wood.toMenu(content, ItemResourceType.Wood_Group, ref reachedBuffer);
-                    city.res_stone.toMenu(content, ItemResourceType.Stone_G, ref reachedBuffer);
-                    city.res_rawFood.toMenu(content, ItemResourceType.RawFood_Group, ref reachedBuffer);
-                    city.res_skinLinnen.toMenu(content, ItemResourceType.SkinLinen_Group, ref reachedBuffer);
-                    city.res_ironore.toMenu(content, ItemResourceType.IronOre_G, ref reachedBuffer);
+                    city.res_wood.toMenu(content, ItemResourceType.Wood_Group, woodSafeGuard, ref reachedBuffer);
+                    city.res_stone.toMenu(content, ItemResourceType.Stone_G, false, ref reachedBuffer);
+                    city.res_rawFood.toMenu(content, ItemResourceType.RawFood_Group, rawFoodSafeGuard, ref reachedBuffer);
+                    city.res_skinLinnen.toMenu(content, ItemResourceType.SkinLinen_Group, false, ref reachedBuffer);
+                    city.res_ironore.toMenu(content, ItemResourceType.IronOre_G, false, ref reachedBuffer);
 
                     content.Add(new RichBoxSeperationLine());
 
-                    city.res_food.toMenu(content, ItemResourceType.Food_G, ref reachedBuffer);
+                    city.res_food.toMenu(content, ItemResourceType.Food_G, foodSafeGuard, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftFood1, ResourceLib.CraftFood2);
+                    
 
-                    city.res_fuel.toMenu(content, ItemResourceType.Fuel_G, ref reachedBuffer);
+                    content.space();
+                    content.Add(new RichboxButton(new List<AbsRichBoxMember> {
+                            new RichBoxImage(city.res_food_safeguard? SpriteName.WarsProtectedStockpileOn : SpriteName.WarsProtectedStockpileOff),
+                        },
+                    new RbAction(() =>{
+                        city.res_food_safeguard = !city.res_food_safeguard;
+                    }),
+                    new RbAction(() =>
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        content.text(string.Format(DssRef.todoLang.Resource_FoodSafeGuard_Description, DssConst.WorkSafeGuardAmount)).overrideColor = HudLib.InfoYellow_Light;
+                        content.text(city.res_food_safeguard? DssRef.todoLang.Hud_On : DssRef.todoLang.Hud_Off);
+                        player.hud.tooltip.create(player, content, true);
+                    })));
+
+
+                    city.res_fuel.toMenu(content, ItemResourceType.Fuel_G, fuelSafeGuard, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftFuel1, null, true);
                     content.space();
                     blueprintButton(player, content, ResourceLib.CraftCharcoal);
 
-                    city.res_beer.toMenu(content, ItemResourceType.Beer, ref reachedBuffer);
+                    city.res_beer.toMenu(content, ItemResourceType.Beer, false, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftBeer);
 
-                    city.res_iron.toMenu(content, ItemResourceType.Iron_G, ref reachedBuffer);
+                    city.res_iron.toMenu(content, ItemResourceType.Iron_G, false, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftIron);
 
                     content.Add(new RichBoxSeperationLine());
 
-                    city.res_sharpstick.toMenu(content, ItemResourceType.SharpStick, ref reachedBuffer);
+                    city.res_sharpstick.toMenu(content, ItemResourceType.SharpStick, false, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftSharpStick);
 
-                    city.res_sword.toMenu(content, ItemResourceType.Sword, ref reachedBuffer);
+                    city.res_sword.toMenu(content, ItemResourceType.Sword, false, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftSword);
 
-                    city.res_twohandsword.toMenu(content, ItemResourceType.TwoHandSword, ref reachedBuffer);
+                    city.res_twohandsword.toMenu(content, ItemResourceType.TwoHandSword, false, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftTwoHandSword);
 
-                    city.res_knightslance.toMenu(content, ItemResourceType.KnightsLance, ref reachedBuffer);
+                    city.res_knightslance.toMenu(content, ItemResourceType.KnightsLance, false, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftKnightsLance);
 
-                    city.res_bow.toMenu(content, ItemResourceType.Bow, ref reachedBuffer);
+                    city.res_bow.toMenu(content, ItemResourceType.Bow, false, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftBow);
 
-                    city.res_ballista.toMenu(content, ItemResourceType.Ballista, ref reachedBuffer);
+                    city.res_longbow.toMenu(content, ItemResourceType.LongBow, false, ref reachedBuffer);
+                    blueprintButton(player, content, ResourceLib.CraftLongBow);
+
+                    city.res_ballista.toMenu(content, ItemResourceType.Ballista, false, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftBallista);
 
                     content.Add(new RichBoxSeperationLine());
-
-                    city.res_lightArmor.toMenu(content, ItemResourceType.LightArmor, ref reachedBuffer);
+                                        
+                    city.res_lightArmor.toMenu(content, ItemResourceType.LightArmor, false, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftLightArmor);
 
-                    city.res_mediumArmor.toMenu(content, ItemResourceType.MediumArmor, ref reachedBuffer);
+                    city.res_mediumArmor.toMenu(content, ItemResourceType.MediumArmor, false, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftMediumArmor);
 
-                    city.res_heavyArmor.toMenu(content, ItemResourceType.HeavyArmor, ref reachedBuffer);
+                    city.res_heavyArmor.toMenu(content, ItemResourceType.HeavyArmor, false, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftHeavyArmor);
 
-                    //if (reachedBuffer)
-                    //{
-                    //    GroupedResource.BufferIconInfo(content);
-                    //}
+
                     content.Add(new RichBoxSeperationLine());
-                    GroupedResource.BufferIconInfo(content);
-                    ResourceLib.ConvertGoldOre.toMenu(content, city);
-                    //content.text("1 gold ore => " + DssConst.GoldOreSellValue.ToString() + "gold");
+                    GroupedResource.BufferIconInfo(content, false);
+                    if (foodSafeGuard)
                     {
-                        //content.text("1 food => " + DssConst.FoodEnergy + " energy (seconds of work)");
+                        GroupedResource.BufferIconInfo(content, true);
+                    }
+                    ResourceLib.ConvertGoldOre.toMenu(content, city);
+                    {
                         content.Add(new RichBoxText(1.ToString()));
                         content.Add(new RichBoxImage(ResourceLib.Icon(ItemResourceType.Food_G)));
                         content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Food));
@@ -250,6 +309,7 @@ namespace VikingEngine.DSSWars.Display
                     stockpile(ItemResourceType.TwoHandSword);
                     stockpile(ItemResourceType.KnightsLance);
                     stockpile(ItemResourceType.Bow);
+                    stockpile(ItemResourceType.LongBow);
                     stockpile(ItemResourceType.Ballista);
                     content.Add(new RichBoxSeperationLine());
                     stockpile(ItemResourceType.LightArmor);
@@ -257,7 +317,7 @@ namespace VikingEngine.DSSWars.Display
                     stockpile(ItemResourceType.HeavyArmor);
 
                     HudLib.Description(content, DssRef.lang.Resource_StockPile_Info);
-                    GroupedResource.BufferIconInfo(content);
+                    GroupedResource.BufferIconInfo(content, false);
                     break;
             }
 
@@ -281,7 +341,8 @@ namespace VikingEngine.DSSWars.Display
                 //content.Add(new RichBoxText(LangLib.Item(item) + ": "));
                 RbAction hover = new RbAction(() => {
                     RichBoxContent content = new RichBoxContent();
-                    content.Add(new RichBoxText(LangLib.Item(item)));
+                    bool buffer = false;
+                    city.GetGroupedResource(item).toMenu(content, item, false, ref buffer);//content.Add(new RichBoxText(LangLib.Item(item)));
                     player.hud.tooltip.create(player, content, true);
                 });
                 //content.newLine();
@@ -408,7 +469,7 @@ namespace VikingEngine.DSSWars.Display
                 content.newLine();
                 HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
                 content.newLine();
-                content.BulletPoint();
+                HudLib.BulletPoint(content);
 
                 string reqText;
                 bool available;
@@ -665,12 +726,12 @@ namespace VikingEngine.DSSWars.Display
         //    //string upkeep = "upkeep +{0}";
 
 
-        //    content.BulletPoint();
+        //    HudLib.BulletPoint(content);
         //    content.Add(new RichBoxImage(SpriteName.WarsDiplomaticAddTime));
         //    content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
         //    content.newLine();
 
-        //    content.BulletPoint();
+        //    HudLib.BulletPoint(content);
         //    content.Add(new RichBoxImage(SpriteName.WarsDiplomaticPoint));
         //    content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.NobelHouseAddMaxDiplomacy)));
         //    content.newLine();
@@ -680,7 +741,7 @@ namespace VikingEngine.DSSWars.Display
         //    //content.Add(new RichBoxText(string.Format(addCommand, commandSec)));
         //    //content.newLine();
 
-        //    content.BulletPoint();
+        //    HudLib.BulletPoint(content);
         //    content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
         //    content.newLine();
 
@@ -766,7 +827,7 @@ namespace VikingEngine.DSSWars.Display
             player.hud.tooltip.create(player, content, true);
         }
 
-            public void buyRepairToolTip(bool all)
+        public void buyRepairToolTip(bool all)
         {
             RichBoxContent content = new RichBoxContent();
             int count, cost;
@@ -776,7 +837,7 @@ namespace VikingEngine.DSSWars.Display
             content.newLine();
             content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
             content.newLine();
-            HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, cost, player.faction.gold);
+            HudLib.ResourceCost(content, ResourceType.Gold, cost, player.faction.gold);
             content.newLine();
             content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
             content.newLine();
@@ -797,7 +858,7 @@ namespace VikingEngine.DSSWars.Display
             {
                 content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
                 content.newLine();
-                HudLib.ResourceCost(content, GameObject.Resource.ResourceType.Gold, City.ExpandGuardSizeCost * count, player.faction.gold);
+                HudLib.ResourceCost(content, ResourceType.Gold, City.ExpandGuardSizeCost * count, player.faction.gold);
                 content.newLine();
                 //content.icontext(SpriteName.rtsUpkeepTime, "Upkeep +" + city.GuardUpkeep(City.ExpandGuardSize * count).ToString());
                 HudLib.Upkeep(content, city.GuardUpkeep(DssConst.ExpandGuardSize * count));
@@ -880,6 +941,7 @@ namespace VikingEngine.DSSWars.Display
     enum MenuTab
     {         
         Info,
+        Tag,
         Conscript,
         Recruit,
         Economy,

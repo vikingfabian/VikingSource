@@ -5,9 +5,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.Data;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
@@ -56,6 +56,14 @@ namespace VikingEngine.DSSWars
 
         public Faction(WorldData addTo, FactionType factiontype)
         {
+            if (factiontype == FactionType.DefaultAi)
+            {
+                if (addTo.availableGenericAiTypes.Count > 0)
+                {
+                    factiontype = arraylib.RandomListMemberPop(addTo.availableGenericAiTypes, addTo.metaData.objRnd);
+                }
+            }
+
             this.factiontype = factiontype;
 
             this.parentArrayIndex = addTo.factions.Add(this);
@@ -223,7 +231,7 @@ namespace VikingEngine.DSSWars
         void onNewOwner()
         {
             if (!textureLoaded)
-                FlagTexture.ColorAndAlpha = profile.getColor(ProfileColorType.Main).ToVector4();
+                FlagTexture.ColorAndAlpha = profile.col0_Main.ToVector4();
 
             var citiesC = cities.counter();
             while (citiesC.Next())
@@ -889,7 +897,7 @@ namespace VikingEngine.DSSWars
         {
                 if (player == null)
                     return ColorExt.Error;
-                return player.faction.profile.getColor(ProfileColorType.Main);
+                return player.faction.profile.col0_Main;
             
         }
 
@@ -978,12 +986,99 @@ namespace VikingEngine.DSSWars
         DyingDestru,
         NewDestu,
 
+        //Generic ai
+        Starshield,
+        Bluepeak,
+        Hoft,
+        RiverStallion,
+        Sivo,
+
+        AelthrenConclave,
+        VrakasundEnclave,
+        Tormürd,
+        ElderysFyrd,
+        Hólmgar,
+        RûnothalOrder,
+        GrimwardEotain,
+        SkaeldraHaim,
+        MordwynnCompact,
+        AethmireSovren,
+
+        ThurlanKin,
+        ValestennOrder,
+        Mournfold,
+        OrentharTribes,
+        SkarnVael,
+        Glimmerfell,
+        BleakwaterFold,
+        Oathmaeren,
+        Elderforge,
+        MarhollowCartel,
+        
+        TharvaniDominion,
+        KystraAscendancy,
+        GildenmarkUnion,
+        AurecanEmpire,
+        BronzeReach,
+        ElbrethGuild,
+        ValosianSenate,
+        IronmarchCompact,
+        KaranthCollective,
+        VerdicAlliance,
+
+        OrokhCircles,
+        TannagHorde,
+        BraghkRaiders,
+        ThurvanniStonekeepers,
+        KolvrenHunters,
+        JorathBloodbound,
+        UlrethSkycallers,
+        GharjaRavagers,
+        RavkanShield,
+        FenskaarTidewalkers,
+
+        HroldaniStormguard,
+        SkirnirWolfkin,
+        ThalgarBearclaw,
+        VarnokRimeguard,
+        KorrakFirehand,
+        MoongladeGat,
+        DraskarSons,
+        YrdenFlamekeepers,
+        BrundirWarhorns,
+        OltunBonecarvers,
+
+        HaskariEmber,
+        ZalfrikThunderborn,
+        BjorunStonetender,
+        MyrdarrIcewalkers,
+        SkelvikSpear,
+        VaragThroatcallers,
+        Durakai,
+        FjornfellWarhowl,
+        AshgroveWard,
+        HragmarHorncarvers,
     }
 
     enum FactionGroupType
     {
         Other,
         Nordic,
+    }
+
+    enum FactionFlavorType
+    {
+        Other,
+        Horse,
+        Mountain,
+        Noble,
+        Sea,
+        Forest,
+        Mystical,
+        Warrior,
+        People,
+        Desert,
+        City,
     }
 
     enum DiplomaticSide

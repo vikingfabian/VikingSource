@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.Players
                         //player.mapControls.selection.obj.gameobjectType() == GameObjectType.City &&
                         //player.cityTab == Display.MenuTab.Build)
                     {
-                        selectTileResult = player.BuildControls.buildMode;
+                        selectTileResult = player.buildControls.buildMode;
                         hasSelection = true;
                         model.position = WP.SubtileToWorldPosXZ_Centered(subTilePos);
                         model.position.Y = subTile.groundY;
@@ -81,7 +81,7 @@ namespace VikingEngine.DSSWars.Players
                                         break;
                                     case Map.TerrainBuildingType.Nobelhouse:
                                     case Map.TerrainBuildingType.Barracks:
-                                        selectTileResult = SelectTileResult.Barracks;
+                                        selectTileResult = SelectTileResult.Conscript;
                                         break;
                                         //case Map.TerrainBuildingType.Square:
                                         //    selectTileResult = SelectTileResult.Resources;
@@ -178,7 +178,7 @@ namespace VikingEngine.DSSWars.Players
         CityHall,
         Postal,
         Recruitment,
-        Barracks,
+        Conscript,
 
         //Resources,
         

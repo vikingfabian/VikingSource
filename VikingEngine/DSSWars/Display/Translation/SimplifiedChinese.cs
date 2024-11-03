@@ -223,7 +223,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// 在玩家配置文件编辑器中。保存更改并关闭编辑器
         /// </summary>
-        public override string ProfileEditor_SaveAndExit => "保存并退出";
+        public override string Hud_SaveAndExit => "保存并退出";
 
         /// <summary>
         /// 在玩家配置文件编辑器中。色调、饱和度和亮度颜色选项的一部分。

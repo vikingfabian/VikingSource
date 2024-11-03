@@ -287,10 +287,10 @@ namespace VikingEngine.DSSWars
         {
             var gridData = grid.Frames[frame];
 
-            var flagLoop = faction.profile.flagDesign.dataGrid.LoopInstance();
+            var flagLoop = faction.profile.flagDesign.LoopInstance();
             while (flagLoop.Next())
             {
-                byte colId = faction.profile.flagDesign.dataGrid.Get(flagLoop.Position);
+                byte colId = faction.profile.flagDesign.Get(flagLoop.Position);
                 var blockCol = faction.profile.blockColors[colId];
 
                 IntVector3 gridPos = start;

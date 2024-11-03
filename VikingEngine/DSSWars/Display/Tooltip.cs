@@ -5,10 +5,12 @@ using System.Collections.Generic;
 using System.Text;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Players.Orders;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.PJ.CarBall;
 
@@ -19,12 +21,18 @@ namespace VikingEngine.DSSWars.Display
         public const int Food_BlueprintId = 1;
 
         Graphics.ImageGroup images = new Graphics.ImageGroup(128);
+        bool current_menuToolTip;
         public bool refresh = false;
         Vector2 size;
         public int tooltip_id = int.MinValue;
         public int tooltip_id_timesec;
         public void updateMapTip(Players.LocalPlayer player, bool refreshTime)
         {
+            if (current_menuToolTip && images.HasMembers)
+            {
+                images.DeleteAll();
+                current_menuToolTip = false;
+            }
             if (player.diplomacyMap == null)
             {
                 if (player.mapControls.hover.isNew 
@@ -132,11 +140,11 @@ namespace VikingEngine.DSSWars.Display
                 switch (subTile.selectTileResult)
                 {
                     case Players.SelectTileResult.Build:
-                        title = new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Build_PlaceBuilding, BuildLib.BuildOptions[(int)player.BuildControls.placeBuildingType].Label()));
+                        title = new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Build_PlaceBuilding, BuildLib.BuildOptions[(int)player.buildControls.placeBuildingType].Label()));
                         content.Add(title);
                         content.newLine();
                         //CraftBlueprint blueprint = ResourceLib.Blueprint(player.BuildControls.placeBuildingType);
-                        var bp = player.BuildControls.placeBuildingOption().blueprint;
+                        var bp = player.buildControls.placeBuildingOption().blueprint;
                         bp.toMenu(content, subTile.city);
 
                         var mayBuild = player.mapControls.hover.subTile.MayBuild(player);
@@ -180,16 +188,40 @@ namespace VikingEngine.DSSWars.Display
                         break;
 
                     case Players.SelectTileResult.Postal:
-                        title = new RichBoxText(DssRef.lang.BuildingType_Postal);
-                        content.Add(title);
+                        {
+                            title = new RichBoxText(DssRef.lang.BuildingType_Postal);                            
+                            content.Add(title);
+
+                            content.newLine();
+                            if (subTile.city.GetDelivery(subTile.subTilePos, out DeliveryStatus status))
+                            {
+                                status.tooltip(player, subTile.city, content);
+                            }
+                        }
                         break;
                     case Players.SelectTileResult.Recruitment:
-                        title = new RichBoxText(DssRef.lang.BuildingType_Recruitment);
-                        content.Add(title);
+                        {
+                            title = new RichBoxText(DssRef.lang.BuildingType_Recruitment);
+                            content.Add(title);
+
+                            content.newLine();
+                            if (subTile.city.GetDelivery(subTile.subTilePos, out DeliveryStatus status))
+                            {
+                                status.tooltip(player, subTile.city, content);
+                            }
+                        }
                         break;
-                    case Players.SelectTileResult.Barracks:
-                        title = new RichBoxText(DssRef.lang.Conscription_Title);
-                        content.Add(title);
+                    case Players.SelectTileResult.Conscript:
+                        {
+                            title = new RichBoxText(DssRef.lang.Conscription_Title);
+                            content.Add(title);
+
+                            content.newLine();
+                            if (subTile.city.GetConscript(subTile.subTilePos, out BarracksStatus status))
+                            {
+                                status.tooltip(player, subTile.city, content);
+                            }
+                        }
                         break;
                 }
                 title.overrideColor = avaialableAction ? HudLib.TitleColor_Action: HudLib.NotAvailableColor;
@@ -247,7 +279,7 @@ namespace VikingEngine.DSSWars.Display
                     content.h1(DssRef.lang.Hud_WardeclarationTitle);
                     content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
                     content.newLine();
-                    HudLib.ResourceCost(content, GameObject.Resource.ResourceType.DiplomaticPoint, Diplomacy.DeclareWarCost(rel), player.diplomaticPoints.Int());
+                    HudLib.ResourceCost(content, ResourceType.DiplomaticPoint, Diplomacy.DeclareWarCost(rel), player.diplomaticPoints.Int());
                     content.Add(new RichBoxSeperationLine());
                 }
                 else
@@ -319,6 +351,7 @@ namespace VikingEngine.DSSWars.Display
         public void create(Players.LocalPlayer player, List<AbsRichBoxMember> content, bool menuToolTip, int tooltip_id = -1)
         {
             images.DeleteAll();
+            current_menuToolTip = menuToolTip;
 
             float edge = Engine.Screen.BorderWidth;
             float width = Engine.Screen.IconSize * 8;
@@ -331,7 +364,7 @@ namespace VikingEngine.DSSWars.Display
 
             Graphics.Image bg = new Graphics.Image(SpriteName.WhiteArea, area.Position, area.Size,
                 ImageLayers.Lay4);
-            bg.ColorAndAlpha(Color.Black, 0.7f);
+            bg.ColorAndAlpha(Color.Black, 0.95f);
             size = area.Size;
 
             images.Add(bg);

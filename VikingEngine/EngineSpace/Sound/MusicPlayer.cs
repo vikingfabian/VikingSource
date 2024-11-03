@@ -9,6 +9,8 @@ namespace VikingEngine.Sound
     class MusicPlayer
     {
         public IntervalF LoopTimesRange = new IntervalF(2, 3);
+        public IntervalF DelayBetweenSongs_minutes = new IntervalF(5, 8);
+        public float currentDelay = 0;
         PcgRandom random = new PcgRandom();
         public static float MasterVolume = 1f;
         public static float SongVolumeAdjust = 1f;
@@ -22,14 +24,40 @@ namespace VikingEngine.Sound
         public bool playingFromPlayList = true;
 
         public bool keepPlaying = true;
+        public bool useDelay = true;
+
 
         public MusicPlayer()
         {
             //lib.DoNothing();
         }
 
+        /// <summary>
+        /// Skips a part of the delay
+        /// </summary>
+        public void OnGameEvent()
+        {
+            if (currentDelay <= TimeExt.MinutesToMS(3))
+            {
+                currentDelay = 0;
+            }
+        }
+
+        public void OnGameStart()
+        {
+            nextRandomSong();
+            currentDelay = new IntervalF(5000, 8000).GetRandom();
+        }
+
+        public void debugNext() 
+        {
+            nextRandomSong();
+            currentDelay = 0;
+        }
+
         public void nextRandomSong()
         {
+            currentDelay = TimeExt.MinutesToMS(DelayBetweenSongs_minutes.GetRandom());
             keepPlaying = true;
             playSongState = PlaySongState.LoadingSong;
             if (shuffleSongsLeftToPlay <= 0)
@@ -94,6 +122,8 @@ namespace VikingEngine.Sound
 
         public void PlaySong(SongData songdata, bool isAsynch, bool autoplay = true)
         {
+            currentDelay = 0; // TimeExt.MinutesToMS(DelayBetweenSongs_minutes.GetRandom());
+
             if (PlatformSettings.PlayMusic)
             {
                 if (autoplay)
@@ -121,6 +151,15 @@ namespace VikingEngine.Sound
             {
                 switch (playSongState)
                 {
+                    case PlaySongState.Delay:
+                        currentDelay -= Ref.DeltaTimeMs;
+
+                        if (currentDelay < 0)
+                        {
+                            beginNextSong();
+                        }
+                        break;
+
                     case PlaySongState.Playing:
                         if (playList != null)
                         {
@@ -136,12 +175,12 @@ namespace VikingEngine.Sound
                         {
                             if (MediaPlayer.Volume <= 0 || MediaPlayer.State != MediaState.Playing || (!currentSong.seamlessLoop && playTime.TimeOut))
                             {
-                                beginNextSong();
+                                onSongComplete();
                             }
                         }
                         else
                         {
-                            beginNextSong();
+                            onSongComplete();
                         }
                         break;
                     case PlaySongState.FadeIn:
@@ -154,6 +193,18 @@ namespace VikingEngine.Sound
 
                         break;
                 }
+            }
+        }
+
+        void onSongComplete()
+        {
+            if (useDelay)
+            {
+                playSongState = PlaySongState.Delay;
+            }
+            else
+            {
+                beginNextSong();
             }
         }
 
@@ -323,6 +374,7 @@ namespace VikingEngine.Sound
     enum PlaySongState
     {
         Stopped,
+        Delay,
         Playing,
         LoadingSong,
         FadeOut,

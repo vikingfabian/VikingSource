@@ -226,7 +226,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// <summary>
         /// プレイヤープロファイルエディタにて。変更を保存してエディタを閉じます
         /// </summary>
-        public override string ProfileEditor_SaveAndExit => "保存して終了";
+        public override string Hud_SaveAndExit => "保存して終了";
 
         /// <summary>
         /// プレイヤープロファイルエディタにて。色相、彩度、明度のカラーオプションの一部。

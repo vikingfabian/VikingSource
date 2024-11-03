@@ -51,7 +51,7 @@ namespace VikingEngine.HUD.RichBox
             Add(new RichBoxText(textline));
         }
 
-        public void space(int spaces = 1)
+        public void space(float spaces = 1f)
         { 
             Add(new RichBoxSpace(spaces));
         }

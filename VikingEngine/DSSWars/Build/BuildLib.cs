@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.GameObject.Resource;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars.Build
 {
@@ -16,6 +16,7 @@ namespace VikingEngine.DSSWars.Build
         Barracks,
         Nobelhouse,
         Tavern,
+        Storehouse,
         Brewery,
         Cook,
         CoalPit,
@@ -24,6 +25,8 @@ namespace VikingEngine.DSSWars.Build
         Carpenter,
         WheatFarm,
         LinenFarm,
+        HempFarm,
+        RapeSeedFarm,
         PigPen,
         HenPen,
         Statue_ThePlayer,
@@ -42,6 +45,9 @@ namespace VikingEngine.DSSWars.Build
             BuildAndExpandType.Nobelhouse,
             BuildAndExpandType.Postal,
             BuildAndExpandType.Recruitment,
+            
+            BuildAndExpandType.Storehouse,
+            BuildAndExpandType.Tavern,
             BuildAndExpandType.Brewery,
             BuildAndExpandType.Cook,
             BuildAndExpandType.CoalPit,
@@ -52,6 +58,10 @@ namespace VikingEngine.DSSWars.Build
             BuildAndExpandType.HenPen,
             BuildAndExpandType.WheatFarm,
             BuildAndExpandType.LinenFarm,
+            BuildAndExpandType.RapeSeedFarm,
+            BuildAndExpandType.HempFarm,
+            
+
             BuildAndExpandType.Pavement,
             BuildAndExpandType.PavementFlower,
             BuildAndExpandType.Statue_ThePlayer
@@ -66,6 +76,7 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.Barracks, TerrainMainType.Building, (int)TerrainBuildingType.Barracks, SpriteName.WarsBuild_Barracks, ResourceLib.CraftBarracks);
             new BuildOption(BuildAndExpandType.Nobelhouse, TerrainMainType.Building, (int)TerrainBuildingType.Nobelhouse, SpriteName.WarsBuild_Nobelhouse, ResourceLib.CraftNobelHouse);
             new BuildOption(BuildAndExpandType.Tavern, TerrainMainType.Building, (int)TerrainBuildingType.Tavern, SpriteName.WarsBuild_Tavern, ResourceLib.CraftTavern);
+            new BuildOption(BuildAndExpandType.Storehouse, TerrainMainType.Building, (int)TerrainBuildingType.Storehouse, SpriteName.WarsBuild_Storehouse, ResourceLib.CraftStorehouse);
             new BuildOption(BuildAndExpandType.Brewery, TerrainMainType.Building, (int)TerrainBuildingType.Brewery, SpriteName.WarsBuild_Brewery, ResourceLib.CraftBrewery);
             new BuildOption(BuildAndExpandType.PigPen, TerrainMainType.Building, (int)TerrainBuildingType.PigPen, SpriteName.WarsBuild_PigPen, ResourceLib.CraftPigPen);
             new BuildOption(BuildAndExpandType.HenPen, TerrainMainType.Building, (int)TerrainBuildingType.HenPen, SpriteName.WarsBuild_HenPen, ResourceLib.CraftHenPen);
@@ -77,11 +88,26 @@ namespace VikingEngine.DSSWars.Build
 
             new BuildOption(BuildAndExpandType.WheatFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, SpriteName.WarsBuild_WheatFarms, ResourceLib.CraftWheatFarm);
             new BuildOption(BuildAndExpandType.LinenFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarm, SpriteName.WarsBuild_LinenFarms, ResourceLib.CraftLinenFarm);
+            new BuildOption(BuildAndExpandType.HempFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarm, SpriteName.WarsBuild_HempFarms, ResourceLib.CraftHempFarm);
+            new BuildOption(BuildAndExpandType.RapeSeedFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarm, SpriteName.WarsBuild_RapeseedFarms, ResourceLib.CraftRapeseedFarm);
 
             new BuildOption(BuildAndExpandType.Pavement, TerrainMainType.Decor, (int)TerrainDecorType.Pavement, SpriteName.WarsBuild_Pavement, ResourceLib.CraftPavement);
             new BuildOption(BuildAndExpandType.PavementFlower, TerrainMainType.Decor, (int)TerrainDecorType.PavementFlower, SpriteName.WarsBuild_PavementFlowers, ResourceLib.CraftPavementFlower);
             new BuildOption(BuildAndExpandType.Statue_ThePlayer, TerrainMainType.Decor, (int)TerrainDecorType.Statue_ThePlayer, SpriteName.WarsBuild_Statue, ResourceLib.CraftStatue);
 
+        }
+
+        public static BuildAndExpandType BuildTypeFromTerrain(TerrainMainType main, int sub)
+        { 
+            foreach (BuildOption buildOption in BuildOptions)
+            {
+                if (buildOption.mainType == main && buildOption.subType == sub)
+                { 
+                    return buildOption.buildType;
+                }
+            }
+
+            return BuildAndExpandType.NUM_NONE;
         }
 
         public static bool CanAutoBuildHere(ref SubTile subTile)

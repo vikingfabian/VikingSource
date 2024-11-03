@@ -34,9 +34,15 @@ namespace VikingEngine.DSSWars.Map
         StoneBlock,
         WheatFarm,
         LinenFarm,
+        BogIron,
+        HempFarm,
+        RapeSeedFarm,
         NUM_NONE
     }
 
+    /// <summary>
+    /// Creates a stockpile of resources
+    /// </summary>
     enum TerrainResourcesType
     {
         Wood,
@@ -71,6 +77,8 @@ namespace VikingEngine.DSSWars.Map
         Barracks,
         Carpenter,
         Nobelhouse,
+        Storehouse,
+        Bank,
         
         NUM_NONE
     }

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.GameObject.Resource;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.ToGG;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -26,7 +26,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             string text;
             Color textCol;
-
+            if (add == 0)
+            { 
+            lib.DoNothing();
+                }
             if (type == ResourceEffectType.Add)
             {
                 text = TextLib.PlusMinus(add);
@@ -39,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             Graphics.TextG value = new Graphics.TextG(LoadedFont.Bold, Vector2.Zero, Vector2.One, Graphics.Align.Zero,
-                TextLib.PlusMinus(add), HudLib.AvailableColor, ImageLayers.Lay0, false);
+                text, textCol, ImageLayers.Lay0, false);
             Vector2 sz = value.MeasureText();
 
             Graphics.Image img = new Graphics.Image(ResourceLib.Icon(item), new Vector2( sz.X, 0), new Vector2(sz.Y),

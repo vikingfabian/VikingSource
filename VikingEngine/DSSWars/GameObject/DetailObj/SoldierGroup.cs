@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display;
-using VikingEngine.DSSWars.GameObject.Conscript;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
@@ -1494,6 +1494,16 @@ namespace VikingEngine.DSSWars.GameObject
         public override string TypeName()
         {
             return soldierConscript.conscript.TypeName() + " Group(" + parentArrayIndex.ToString() + ")";
+        }
+
+        //public override SpriteName TypeIcon()
+        //{
+        //    return AllUnits.UnitFilterIcon( soldierConscript.filterType());
+        //}
+
+        public override void TypeIcon(RichBoxContent content)
+        {
+            content.Add(new RichBoxImage(AllUnits.UnitFilterIcon(soldierConscript.filterType())));
         }
 
         public override string ToString()

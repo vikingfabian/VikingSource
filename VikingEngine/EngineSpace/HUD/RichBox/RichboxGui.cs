@@ -64,7 +64,7 @@ namespace VikingEngine.HUD.RichBox
             menuStateHasChange = true;
         }
 
-        public bool update()
+        virtual public bool update()
         {
             bool interaction = false;
             foreach (var p in parts)
@@ -283,12 +283,17 @@ namespace VikingEngine.HUD.RichBox
         protected RichboxGui gui;
         Graphics.RectangleLines outLine;
         int index;
+        protected float bgAlpha;
+
+        bool firstUpdate = true;
 
         public RichboxGuiPart(RichboxGui gui)
         {
             this.gui = gui;
+
             bg = new Graphics.Image(SpriteName.WhiteArea, Vector2.Zero, Vector2.Zero, gui.settings.bglayer);
-            bg.ColorAndAlpha(gui.settings.bgCol, gui.settings.bgAlpha);
+            bgAlpha = gui.settings.bgAlpha;
+            bg.ColorAndAlpha(gui.settings.bgCol, bgAlpha);
         }
 
         public void DeleteMe()
@@ -303,6 +308,7 @@ namespace VikingEngine.HUD.RichBox
             {
                 return interaction.update();
             }
+            firstUpdate = false;
             return false;
         }
 
@@ -360,9 +366,9 @@ namespace VikingEngine.HUD.RichBox
             }
             else
             {
-                bg.Opacity = gui.settings.bgAlpha;
+                bg.Opacity = bgAlpha;
             }
-
+            firstUpdate = true;
             gui.onRefresh(this);
         }
 

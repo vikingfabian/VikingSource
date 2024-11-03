@@ -107,6 +107,7 @@ namespace VikingEngine.DSSWars.Players
             if (set)
             {
                 autoExpandGuard = value;
+                (value ? SoundLib.click : SoundLib.back).Play();
             }
             return autoExpandGuard;
         }
@@ -116,6 +117,7 @@ namespace VikingEngine.DSSWars.Players
             if (set)
             {
                 autoRepair = value;
+                (value ? SoundLib.click : SoundLib.back).Play();
             }
             return autoRepair;
         }
@@ -209,7 +211,7 @@ namespace VikingEngine.DSSWars.Players
             foreach (var m in listinfo)
             {
                 content.newLine();
-                content.BulletPoint();
+                HudLib.BulletPoint(content);
                 content.Add(new RichBoxText(m));
             }
 

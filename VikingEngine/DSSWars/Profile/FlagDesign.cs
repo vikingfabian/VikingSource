@@ -6,7 +6,7 @@ using VikingEngine.ToGG.HeroQuest.Data;
 
 namespace VikingEngine.DSSWars
 {
-    class FlagDesign
+    class FlagDesign : Grid2D<byte>
     {
         public static FlagDesign[] AiBanner;
         public static FlagDesign PlayerGriffin;
@@ -124,7 +124,7 @@ namespace VikingEngine.DSSWars
             };
 
             var AiBanner5 = new FlagDesign(banner5);
-            AiBanner5.dataGrid.FromArray(banner5);
+            AiBanner5.FromArray(banner5);
 
             byte[] banner6 = new byte[]
            {
@@ -147,7 +147,7 @@ namespace VikingEngine.DSSWars
             };
 
             var AiBanner6 = new FlagDesign(banner6);
-            AiBanner6.dataGrid.FromArray(banner6);
+            AiBanner6.FromArray(banner6);
 
             AiBanner = new FlagDesign[] {
                 AiBanner1,
@@ -199,18 +199,20 @@ namespace VikingEngine.DSSWars
 
         }
 
-        public Grid2D<byte> dataGrid;
+        //public Grid2D<byte> dataGrid;
 
         public FlagDesign(System.IO.BinaryReader r)
+            :base()
         {
             basicInit();
             read(r);
         }
 
         public FlagDesign(byte[] bytearray)
+            : base()
         {
             basicInit();
-            dataGrid.FromArray(bytearray);
+            this.FromArray(bytearray);
         }
 
         public FlagDesign()
@@ -237,33 +239,33 @@ namespace VikingEngine.DSSWars
                 1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,
             };
 
-            dataGrid.FromArray(swordBanner);
+            this.FromArray(swordBanner);
         }
 
         void basicInit()
         {
-            dataGrid = new Grid2D<byte>(DssLib.UserHeraldicWidth);
+            initGrid(new IntVector2( DssLib.UserHeraldicWidth));
         }
 
         public void write(System.IO.BinaryWriter w)
         {
-            w.Write(dataGrid.ToArray());
+            w.Write(ToArray());
         }
 
         public void read(System.IO.BinaryReader r)
         {
-            byte[] array = new byte[dataGrid.Size.Area()];
+            byte[] array = new byte[Size.Area()];
             r.Read(array, 0, array.Length);
-            dataGrid.FromArray(array);
+            FromArray(array);
         }
 
         public Color[] toColorArray(FlagAndColor factionVisual)
         {
-            byte[] dataArray = dataGrid.ToArray();
+            byte[] dataArray = ToArray();
             Color[] result = new Color[dataArray.Length];
             for (int i = 0; i < dataArray.Length; ++i)
             {
-                result[i] = factionVisual.colors[dataArray[i]];
+                result[i] = factionVisual.getColor((ProfileColorType) dataArray[i]);
             }
 
             return result;
@@ -276,12 +278,12 @@ namespace VikingEngine.DSSWars
             texture.SetData(toColorArray(factionVisual));
             return texture; 
         }
-
-        public FlagDesign Clone()
+        
+        public FlagDesign CloneFlag()
         {
             FlagDesign result = new FlagDesign();
-            //result.colors = (Color[])this.colors.Clone();
-            result.dataGrid = this.dataGrid.Clone();
+
+            result.array = (byte[,])array.Clone();
 
             return result;
         }
@@ -296,7 +298,7 @@ namespace VikingEngine.DSSWars
             //    }
             //}
 
-            return this.dataGrid.EqualData(other.dataGrid);
+            return EqualData(other);
         }
     }
 

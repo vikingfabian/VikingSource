@@ -225,6 +225,7 @@ namespace VikingEngine.DSSWars
 
                     if (player.input.Select.DownEvent)
                     {
+                        SoundLib.select_faction.Play();
                         selected = currentHover;
                         player.hud.needRefresh = true;
 
