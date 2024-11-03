@@ -1,8 +1,13 @@
 ﻿-Change Log-
-* view tags checkbox
+* view city tags checkbox
 * save on exit option
 * can pick build type from build orders (B key)
 * Fixed stuck tooltips
+* Ai resource collecting is affected by difficulty level
+* player get one more honor guard
+* added a few more minutes ai delay
+* improved stone gather algorithm
+* city guard replenish faster
 
 #Todo (xmas patch)#
 new maps

@@ -392,7 +392,7 @@ namespace VikingEngine.DSSWars.Players
                     {
                         onTile = DssRef.world.GetFreeTile(citiesC.sel.tilePos);
                         var army = faction.NewArmy(onTile);
-                        for (int i = 0; i < 3; ++i)
+                        for (int i = 0; i < 4; ++i)
                         {
                             new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard);//UnitType.HonorGuard, false);
                             --guardCount;
