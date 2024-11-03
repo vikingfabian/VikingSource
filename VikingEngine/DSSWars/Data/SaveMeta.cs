@@ -180,21 +180,21 @@ namespace VikingEngine.DSSWars.Data
 
     class SaveStateMeta
     {
-        const int Version = 2;
+        const int Version = 3;
 
         public DateTime saveDate;
         public TimeSpan playTime;
         public int localPlayerCount;
         int difficulty;
 
-        int metaVersion = Version;
+        public int metaVersion = Version;
         public int stateVersion= SaveGamestate.Version;
         
         public bool autosave;
         public int index;
         
 
-        public WorldMetaData world = null;
+        public WorldMetaData worldmeta = null;
 
         DataStream.FilePath filepath(bool auto, int index)
         {
@@ -217,7 +217,7 @@ namespace VikingEngine.DSSWars.Data
                 result += DssRef.lang.GameMenu_AutoSave + Environment.NewLine;
             }
             result += string.Format(DssRef.lang.Settings_TotalDifficulty, difficulty) + Environment.NewLine +
-                DssRef.lang.Lobby_MapSizeTitle + ": " + WorldData.SizeString(world.mapSize) + Environment.NewLine +
+                DssRef.lang.Lobby_MapSizeTitle + ": " + WorldData.SizeString(worldmeta.mapSize) + Environment.NewLine +
                 string.Format(DssRef.lang.Lobby_LocalMultiplayerEdit, localPlayerCount) + Environment.NewLine +
                 " [" + HudLib.Date(saveDate) + "]";
             //" [" + Engine.LoadContent.CheckCharsSafety(saveDate.ToLongDateString(), LoadedFont.Regular) + "]";
@@ -233,7 +233,7 @@ namespace VikingEngine.DSSWars.Data
             playTime = DssRef.time.TotalIngameTime();
             localPlayerCount = DssRef.state.localPlayers.Count;
             difficulty = DssRef.difficulty.TotalDifficulty();
-            world = DssRef.world.metaData;
+            worldmeta = DssRef.world.metaData;
 
             this.autosave = autosave;
             this.index = DssRef.storage.meta.NextSaveIndex(autosave);
@@ -255,7 +255,7 @@ namespace VikingEngine.DSSWars.Data
             w.Write(localPlayerCount);
             w.Write((short)difficulty);
 
-            world.write(w);
+            worldmeta.write(w);
         }
 
         public void read(System.IO.BinaryReader r)
@@ -279,7 +279,7 @@ namespace VikingEngine.DSSWars.Data
             localPlayerCount = r.ReadInt32();
             difficulty = r.ReadInt16();
 
-            world = new WorldMetaData(r);
+            worldmeta = new WorldMetaData(r);
         }
 
         public int CompareTo(SaveStateMeta other)

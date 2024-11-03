@@ -75,6 +75,7 @@ namespace VikingEngine.DSSWars.Players
 
             switch (faction.factiontype)
             {
+                case FactionType.Player:
                 case FactionType.DefaultAi:
                     var chance = Ref.rnd.Double();
                     if (chance < 0.08)

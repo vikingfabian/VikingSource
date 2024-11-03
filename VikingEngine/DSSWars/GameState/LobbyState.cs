@@ -935,7 +935,7 @@ namespace VikingEngine.DSSWars
                 {
                     mapBackgroundLoading.Abort();
                 }
-                mapBackgroundLoading = new MapBackgroundLoading(save);
+                //mapBackgroundLoading = new MapBackgroundLoading(save);
 
                 var availableList = availableInput();
                 if (availableList.Count > 1)

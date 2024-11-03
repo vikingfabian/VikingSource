@@ -253,13 +253,7 @@ namespace VikingEngine.DSSWars.Players
             tutorial_readGameState(r, subversion);
 
             orders.readGameState(r, subversion, pointers);
-            //int ordersCount = r.ReadUInt16();
-            //for (int i = 0; i < ordersCount; i++)
-            //{
-            //    BuildOrder order = new BuildOrder();
-            //    order.readGameState(r, subversion, pointers);
-            //    orders.Add(order);
-            //}
+           
             Debug.ReadCheck(r);
         }
 

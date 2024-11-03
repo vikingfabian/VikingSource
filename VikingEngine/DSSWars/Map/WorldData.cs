@@ -240,9 +240,9 @@ namespace VikingEngine.DSSWars
 
         public void writeMapFile(System.IO.BinaryWriter w)
         {
-            DebugWriteSize tilesSz = new DebugWriteSize();
-            DebugWriteSize citiesSz = new DebugWriteSize();
-            DebugWriteSize factionsSz = new DebugWriteSize();
+            //DebugWriteSize tilesSz = new DebugWriteSize();
+            //DebugWriteSize citiesSz = new DebugWriteSize();
+            //DebugWriteSize factionsSz = new DebugWriteSize();
 
             const int SaveMapVersion = 7;
             w.Write(SaveMapVersion);
@@ -252,32 +252,32 @@ namespace VikingEngine.DSSWars
 
             if (abortLoad) return;
             
-            tilesSz.begin(w);
+            //tilesSz.begin(w);
             ForXYLoop loop = new ForXYLoop(Size);
             while (loop.Next())
             {
                 var tile = tileGrid.Get(loop.Position);
                 tile.writeMapFile(w);
             }
-            tilesSz.end(w);
+            //tilesSz.end(w);
 
             if (abortLoad) return;
 
             Debug.WriteCheck(w);
 
-            citiesSz.begin(w);
+            //citiesSz.begin(w);
             w.Write(cities.Count);
             foreach (var m in cities)
             {
                 m.writeMapFile(w);
             }
-            citiesSz.end(w);
+            //citiesSz.end(w);
 
             if (abortLoad) return;
 
             Debug.WriteCheck(w);
 
-            factionsSz.begin(w);
+            //factionsSz.begin(w);
             var factionsCount = factions.counter();
             w.Write(factions.Count);
             while (factionsCount.Next())
@@ -285,7 +285,7 @@ namespace VikingEngine.DSSWars
                 w.Write((byte)factionsCount.sel.factiontype);
                 factionsCount.sel.writeMapFile(w);
             }
-            factionsSz.end(w);
+            //factionsSz.end(w);
 
             Debug.WriteCheck(w);
 

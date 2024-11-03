@@ -110,26 +110,29 @@ namespace VikingEngine.DSSWars.Map
 
         public void writeMapFile(System.IO.BinaryWriter w)
         {
-            w.Write(Debug.Ushort_OrCrash(CityIndex));//(ushort)CityIndex);
-            w.Write(Debug.Byte_OrCrash((byte)biom));//(byte)biom);
-            w.Write(Debug.Byte_OrCrash(heightLevel));//(byte)heightLevel);
-            w.Write(Debug.Byte_OrCrash((int)tileContent));//(byte)tileContent);
-            w.Write(Debug.Ushort_OrCrash(BorderCount));//(ushort)BorderCount);
+            w.Write(Debug.Ushort_OrCrash(CityIndex));
+            w.Write(Debug.Byte_OrCrash((byte)biom));
+            w.Write(Debug.Byte_OrCrash(heightLevel));
+            w.Write(Debug.Byte_OrCrash((int)tileContent));
+            w.Write(Debug.Ushort_OrCrash(BorderCount));
 
-            w.Write(Debug.Short_OrCrash(BorderRegion_North));//(short)BorderRegion_North);
-            w.Write(Debug.Short_OrCrash(BorderRegion_East));//(short)BorderRegion_East);
-            w.Write(Debug.Short_OrCrash(BorderRegion_South));//(short)BorderRegion_South);
-            w.Write(Debug.Short_OrCrash(BorderRegion_West));//(short)BorderRegion_West);
+            w.Write(Debug.Short_OrCrash(BorderRegion_North));
+            w.Write(Debug.Short_OrCrash(BorderRegion_East));
+            w.Write(Debug.Short_OrCrash(BorderRegion_South));
+            w.Write(Debug.Short_OrCrash(BorderRegion_West));
         }
 
         public void readMapFile(System.IO.BinaryReader r, int version)
         {
+            //TODO optimera med att spara bool för repeat av vanliga värden
             CityIndex = r.ReadUInt16();
             biom = (BiomType)r.ReadByte();
             heightLevel = r.ReadByte();
             tileContent = (TileContent)r.ReadByte();
             BorderCount = r.ReadUInt16();
 
+            //TODO optimera med att spara bytebools för icke NO, och tilecontent == city
+            //Spara inte border count
             BorderRegion_North = r.ReadInt16();
             BorderRegion_East = r.ReadInt16();
             BorderRegion_South = r.ReadInt16();
@@ -431,6 +434,6 @@ namespace VikingEngine.DSSWars.Map
     {
         NONE,
         City,
-        WorkerHut,
+        //WorkerHut,
     }
 }
