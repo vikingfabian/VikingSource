@@ -1,13 +1,7 @@
 ﻿-Change Log-
-* view city tags checkbox
-* save on exit option
-* can pick build type from build orders (B key)
-* Fixed stuck tooltips
-* Ai resource collecting is affected by difficulty level
-* player get one more honor guard
-* added a few more minutes ai delay
-* improved stone gather algorithm
-* city guard replenish faster
+* Updated save system to include both map file and meta data - for maximized backward compatibility in the future
+* Save files are about four times larger now (200MB for large map)
+*
 
 #Todo (xmas patch)#
 new maps
