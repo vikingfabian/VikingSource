@@ -19,7 +19,8 @@ namespace VikingEngine.DSSWars.Data
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
         public const int Version = 6;
-        public const int SubVersion = 26;
+        public const int SubVersion = 27; //city builder = v24, retail = v17, retail update = v26
+        public const int MergeVersion = 26;
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
         bool dataReady = false;
@@ -93,14 +94,11 @@ namespace VikingEngine.DSSWars.Data
             version.read(r);
 
             //META
-            if (version.sub >= 25)
+            if (version.sub >= 26)
             {
                 meta.read(r);
                 Debug.ReadCheck(r);
-            }
-
-            if (version.sub >= 26)
-            {
+            
                 //WORLD
                 worldData = new WorldData();
                 worldData.metaData = meta.worldmeta;

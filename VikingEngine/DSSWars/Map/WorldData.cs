@@ -245,7 +245,7 @@ namespace VikingEngine.DSSWars
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
-            if (subversion >= 22)
+            if (subversion >= 22  && subversion != SaveGamestate.MergeVersion)
             {
                 subTileGrid.LoopBegin();
                 while (subTileGrid.LoopNext())
