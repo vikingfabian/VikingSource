@@ -430,11 +430,11 @@ namespace VikingEngine.DSSWars.GameObject
 
             //if (subversion >= 23 && subversion != SaveGamestate.MergeVersion)
             //{
-                tagBack = (CityTagBack)r.ReadByte();
-                if (tagBack != CityTagBack.NONE)
-                {
-                    tagArt = (CityTagArt)r.ReadUInt16();
-                }
+            tagBack = (CityTagBack)r.ReadByte();
+            if (tagBack != CityTagBack.NONE)
+            {
+                tagArt = (CityTagArt)r.ReadUInt16();
+            }
             //}
         }
 
@@ -445,6 +445,12 @@ namespace VikingEngine.DSSWars.GameObject
         public void readNet(System.IO.BinaryReader r)
         {
 
+        }
+
+        override public void tagSprites(out SpriteName back, out SpriteName art)
+        {
+            back = Data.CityTag.BackSprite(tagBack);
+            art = Data.CityTag.ArtSprite(tagArt);
         }
 
 
@@ -1125,15 +1131,7 @@ namespace VikingEngine.DSSWars.GameObject
             tagToHud(content);
         }
 
-        public void tagToHud(RichBoxContent content)
-        {
-            if (tagBack != CityTagBack.NONE)
-            {
-                content.Add(new RichBoxOverlapImage(
-                    new RichBoxImage(Data.CityTag.BackSprite(tagBack)),
-                    Data.CityTag.ArtSprite(tagArt), Vector2.Zero, 0.8f));
-            }
-        }
+        
 
         public override void toHud(ObjectHudArgs args)
         {

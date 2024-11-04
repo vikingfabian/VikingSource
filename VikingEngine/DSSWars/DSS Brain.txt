@@ -1,7 +1,8 @@
 ﻿-Change Log-
 * Updated save system to include both map file and meta data - for maximized backward compatibility in the future
 * Save files are about four times larger now (200MB for large map)
-*
+* Army tags
+* Army menu update
 
 #Todo (xmas patch)#
 new maps
@@ -13,13 +14,10 @@ new game - Skip language crashes game
 
 --Efter release polish--
 -war icon
- 
-
 pilar med resurser från delivery
 Factories modeller
 city economy
 visa antal byggnader i bygg meny
-training skill icon
 menu scroll
 
 manuballista (hand ballista)
@@ -49,17 +47,13 @@ Polish
 -the horses dont load when paused, plus rotation error
 -dölj move path OnHud 
 -attack ally yes/no warning
--burn yes/no
 
 Art
-
-
 
 
 #current
 English, Simplified Chinese, Japanese, Russian, Spanish
 
-#Real-time grand strategy
 
 
 

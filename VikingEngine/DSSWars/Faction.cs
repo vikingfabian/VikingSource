@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Data;
@@ -108,6 +109,9 @@ namespace VikingEngine.DSSWars
         }
         virtual public void writeGameState(System.IO.BinaryWriter w)
         {
+            Debug.WriteCheck(w);
+
+            w.Write((ushort)factiontype);
             w.Write(gold);
 
             w.Write((ushort)cities.Count);
@@ -116,16 +120,16 @@ namespace VikingEngine.DSSWars
             {
                 w.Write((ushort)citiesC.sel.parentArrayIndex);
             }
-                       
 
+            Debug.WriteCheck(w);
             w.Write((ushort)armies.Count); 
             var armiesC = armies.counter();
             while (armiesC.Next())
             { 
                 armiesC.sel.writeGameState(w); 
             }
-                        
 
+            Debug.WriteCheck(w);
             for (int i = 0; i < diplomaticRelations.Length; ++i)
             {
                 if (diplomaticRelations[i] != null &&
@@ -135,13 +139,18 @@ namespace VikingEngine.DSSWars
                 }
             }
             w.Write(short.MinValue);
+
+            Debug.WriteCheck(w);
             player.writeGameState(w);
 
+            Debug.WriteCheck(w);
             workTemplate.writeGameState(w, false);
 
         }
         virtual public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
+            Debug.ReadCheck(r);
+            factiontype = (FactionType)r.ReadUInt16();
             gold = r.ReadInt32();
 
             int citiesCount = r.ReadUInt16();
@@ -153,8 +162,7 @@ namespace VikingEngine.DSSWars
                 city.setFaction(this);
             }
 
-            
-
+            Debug.ReadCheck(r);
             int armiesCount = r.ReadUInt16();
             for (int i = 0; i < armiesCount; i++)
             {
@@ -163,7 +171,7 @@ namespace VikingEngine.DSSWars
                 //armies.Add(army);
             }
 
-           
+            Debug.ReadCheck(r);
             while (true)
             { 
                 DiplomaticRelation relation = new DiplomaticRelation();
@@ -177,10 +185,24 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            
+            //if (factiontype == FactionType.Player)
+            //{
+            //    LocalPlayer player = new LocalPlayer(this);
+            //    player.readGameState(r, subVersion, pointers);
+            //    pointers.localPlayers.Add(player);
+            //}
+            //else
+            //{
+            Debug.ReadCheck(r);
+            if ((factiontype == FactionType.Player) != player.IsPlayer())
+            {
+                throw new Exception();
+            }
 
             player.readGameState(r, subVersion, pointers);
+            
 
+            Debug.ReadCheck(r);
             workTemplate.readGameState(r, subVersion, false);
         }
 

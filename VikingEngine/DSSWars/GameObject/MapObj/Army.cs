@@ -70,7 +70,8 @@ namespace VikingEngine.DSSWars.GameObject
         public MinuteStats foodCosts_import = new MinuteStats();
         public MinuteStats foodCosts_blackmarket = new MinuteStats();
 
-
+        public CityTagBack tagBack = CityTagBack.NONE;
+        public ArmyTagArt tagArt = ArmyTagArt.None;
         public Army(Faction faction, IntVector2 startPosition)
         {
             id = ++DssRef.state.NextArmyId;
@@ -107,6 +108,13 @@ namespace VikingEngine.DSSWars.GameObject
             writeAiState(w);
 
             w.Write(food);
+
+            w.Write((byte)tagBack);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+            if (tagBack != CityTagBack.NONE)
+            {
+                w.Write((ushort)tagArt);
+            }
         }
         public void readGameState(Faction faction, System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
@@ -128,9 +136,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             readAiState(r, subVersion, pointers);
 
-            if (subVersion >= 11)
-            { 
-                food = r.ReadSingle();
+            food = r.ReadSingle();
+            
+            tagBack = (CityTagBack)r.ReadByte();
+            if (tagBack != CityTagBack.NONE)
+            {
+                tagArt = (ArmyTagArt)r.ReadUInt16();
             }
         }
 
@@ -143,6 +154,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
+        override public void tagSprites(out SpriteName back, out SpriteName art)
+        {
+            back = Data.CityTag.BackSprite(tagBack);
+            art = Data.CityTag.ArtSprite(tagArt);
+        }
+
         public override string TypeName()
         {
             return DssRef.lang.UnitType_Army + " (" + parentArrayIndex.ToString() +   ")";//return "Army" + parentArrayIndex.ToString();
@@ -151,6 +168,7 @@ namespace VikingEngine.DSSWars.GameObject
         public override void TypeIcon(RichBoxContent content)
         {
             content.Add(new RichBoxImage(SpriteName.WarsUnitIcon_Soldier));
+            tagToHud(content);
         }
         //public override SpriteName TypeIcon()
         //{
@@ -168,8 +186,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (args.player.hud.detailLevel == Display.HudDetailLevel.Minimal)
             {
-                if (args.gui.menuState.Count == 0)
-                {
+                //if (args.gui.menuState.Count == 0)
+                //{
                     args.content.Add(new RichBoxImage(SpriteName.WarsGroupIcon));
                     args.content.Add(new RichBoxText(groups.Count.ToString()));
                     args.content.space();
@@ -178,55 +196,66 @@ namespace VikingEngine.DSSWars.GameObject
                     args.content.space();
                     args.content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
                     //args.content.Add(new RichBoxText(TextLib.LargeNumber(upkeep)));
-                }
+                //}
             }
             else
             {
-                int count = 0;
+               
+                //if (args.gui.menuState.Count == 0)
+                //{
 
-                var groupsCounter= groups.counter();
-                while (groupsCounter.Next())
-                {
-                    count += groupsCounter.sel.soldiers.Count;
-                }
-                if (args.gui.menuState.Count == 0)
-                {
-                    //HudLib.ItemCount(args.content, SpriteName.WarsGroupIcon, DssRef.lang.Hud_SoldierGroupsCount, groups.Count.ToString());
-                    args.content.icontext(SpriteName.WarsGroupIcon, string.Format( DssRef.lang.Hud_SoldierGroupsCount, groups.Count));
-                    args.content.icontext(SpriteName.WarsSoldierIcon,string.Format(DssRef.lang.Hud_SoldierCount, TextLib.LargeNumber(count)));
-                    args.content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
-                    //args.content.icontext(SpriteName.rtsUpkeepTime,string.Format(DssRef.lang.Hud_Upkeep ,TextLib.LargeNumber(upkeep)));
-                    args.content.text(string.Format(DssRef.lang.ArmyHud_Food_Reserves_X, TextLib.LargeNumber((int) food )));
-                    args.content.space();
-                    HudLib.InfoButton(args.content, new RbAction(() =>
-                    {
-                        RichBoxContent content = new RichBoxContent();
-                        HudLib.Description(content, DssRef.lang.Info_ArmyFood);
-                        args.player.hud.tooltip.create(args.player, content, true);
-                    }));
-                    args.content.text(string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.OneDecimal(foodUpkeep)));
-                    args.content.space();
-                    HudLib.PerSecondInfo(args.player, args.content, false);
-
-                    args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.ArmyHud_Food_Costs_X, TextLib.OneDecimal(foodCosts_import.displayValue_sec)));
-                    args.content.space();
-                    HudLib.PerSecondInfo(args.player, args.content, true);
-
-                    if (PlatformSettings.DevBuild)
-                    {
-                        args.content.text("Id: " + id.ToString());
-                    }
-                }
+                //}
 
                 if (faction == args.player.faction)
                 {
                     new Display.ArmyMenu(args.player, this, args.content);
                 }
+                else
+                {
+                    basicInfoHud(args);
+                }
             }
             
         }
 
-       
+        public void basicInfoHud(ObjectHudArgs args)
+        {
+            //int count = 0;
+
+            //var groupsCounter = groups.counter();
+            //while (groupsCounter.Next())
+            //{
+            //    count += groupsCounter.sel.soldiers.Count;
+            //}
+
+            //HudLib.ItemCount(args.content, SpriteName.WarsGroupIcon, DssRef.lang.Hud_SoldierGroupsCount, groups.Count.ToString());
+            args.content.icontext(SpriteName.WarsGroupIcon, string.Format(DssRef.lang.Hud_SoldierGroupsCount, groups.Count));
+            args.content.icontext(SpriteName.WarsSoldierIcon, string.Format(DssRef.lang.Hud_SoldierCount, TextLib.LargeNumber(soldiersCount)));
+            args.content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
+            //args.content.icontext(SpriteName.rtsUpkeepTime,string.Format(DssRef.lang.Hud_Upkeep ,TextLib.LargeNumber(upkeep)));
+            args.content.text(string.Format(DssRef.lang.ArmyHud_Food_Reserves_X, TextLib.LargeNumber((int)food)));
+            args.content.space();
+            HudLib.InfoButton(args.content, new RbAction(() =>
+            {
+                RichBoxContent content = new RichBoxContent();
+                HudLib.Description(content, DssRef.lang.Info_ArmyFood);
+                args.player.hud.tooltip.create(args.player, content, true);
+            }));
+            args.content.text(string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.OneDecimal(foodUpkeep)));
+            args.content.space();
+            HudLib.PerSecondInfo(args.player, args.content, false);
+
+            args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.ArmyHud_Food_Costs_X, TextLib.OneDecimal(foodCosts_import.displayValue_sec)));
+            args.content.space();
+            HudLib.PerSecondInfo(args.player, args.content, true);
+
+            if (PlatformSettings.DevBuild)
+            {
+                args.content.text("Id: " + id.ToString());
+            }
+        }
+
+
 
         public void toGroupHud(RichBoxContent content)
         {

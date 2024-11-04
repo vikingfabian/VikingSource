@@ -127,6 +127,13 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case MenuTab.Automation:
                     description = DssRef.lang.MenuTab_Automation_Description;
                     return DssRef.lang.Automation_Title;
+                case MenuTab.Divide:
+                    description = null;
+                    return DssRef.lang.ArmyOption_Divide;
+                case MenuTab.Disband:
+                    description = null;
+                    return DssRef.lang.ArmyOption_Disband;
+
                 default:
                     throw new NotImplementedException();
             }
