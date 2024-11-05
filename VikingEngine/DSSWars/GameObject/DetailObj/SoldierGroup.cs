@@ -496,20 +496,26 @@ namespace VikingEngine.DSSWars.GameObject
             return s;
         }
 
-        Vector3 walkingGoalWp()
+        Vector3 walkingGoalWp(out bool shiptransform)
         {
             var path_sp = path;
             if (path_sp != null && path_sp.NodeCountLeft() > 1)
             {
-               Vector3 result = path_sp.NextNodeWp(position, out bool complete, out bool ship);
+               Vector3 result = path_sp.NextNodeWp(position, out bool complete, out shiptransform);
                return result;
             }
 
+            shiptransform = isShip;
             return goalWp;
         }
 
         public void update(float time, bool fullUpdate)
         {
+            if (inShipTransform)
+            {
+                return;
+            }
+
             switch (state)
             {
                 case GroupState.Idle:
@@ -554,10 +560,23 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (move)
                     { 
-                        if (updateWalking(walkingGoalWp(), true, army.rotation, time))
+                        if (updateWalking(walkingGoalWp(out bool shipTransform), true, army.rotation, time))
                         {
                             state = GroupState.GoingIdle;
                             waitTime = 0;
+                        }
+
+                        if (shipTransform != isShip)
+                        {
+                            //    if ((nextIsFootTransform && IsShip()) ||
+                            //        (nextIsShipTransform && !IsShip()))
+                            //    {
+                            if (!inShipTransform)
+                            {
+                                inShipTransform = true;
+                                new ShipTransform(this, true);
+                            }
+                            //    }
                         }
                     }
                     break;
@@ -1396,11 +1415,12 @@ namespace VikingEngine.DSSWars.GameObject
         }
         void calcPath(IntVector2 goal)
         {
-            
+            bool endAsShip = DssRef.world.tileGrid.Get(army.adjustedWalkGoal).IsWater();
+
             DetailPathFinding pf = DssRef.state.detailPathFindingPool.Get();
             {
                 path = pf.FindPath(WP.ToSubTilePos(position), rotation, goal,
-                    isShip);
+                    isShip, endAsShip);
             }
             DssRef.state.detailPathFindingPool.Return(pf);
 

@@ -808,11 +808,12 @@ namespace VikingEngine.DSSWars.GameObject
                             groupsC.sel.walkSpeed = transportSpeedSea;
                         }
 
-                        var first = groupsC.sel.FirstSoldier();
-                        if (first != null)
-                        {
-                            health = first.health;
-                        }
+                        //var first = groupsC.sel.FirstSoldier();
+                        //if (first != null)
+                        //{
+                        //TODO ship health
+                            health = groupsC.sel.soldierData.basehealth;
+                        //}
                     }
                     else
                     {

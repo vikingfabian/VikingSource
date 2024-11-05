@@ -1,5 +1,5 @@
 ﻿
-//#define VISUAL_NODES
+#define VISUAL_NODES
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Concurrent;
@@ -53,7 +53,7 @@ namespace VikingEngine.DSSWars.Map.Path
             nodeGrid = new DetailPathNode[area.Width, area.Height];
         }
 
-        public DetailWalkingPath FindPath(IntVector2 center, Rotation1D startDir, IntVector2 goal, bool startAsShip)
+        public DetailWalkingPath FindPath(IntVector2 center, Rotation1D startDir, IntVector2 goal, bool startAsShip, bool endAsShip)
         {
             /*
             * Path finding algorithm
@@ -79,7 +79,7 @@ namespace VikingEngine.DSSWars.Map.Path
 
             nodeGrid[center.X - area.pos.X, center.Y - area.pos.Y] = startNode;
 
-            bool endAsShip = DssRef.world.subTileGrid.Get(goal).IsWater();
+            //bool endAsShip = DssRef.world.subTileGrid.Get(goal).IsWater();
             DetailPathNode currentNode = startNode;
 
             int numLoops = 0;
@@ -136,7 +136,7 @@ namespace VikingEngine.DSSWars.Map.Path
 
             while (currentNode.Position != startNode.Position)
             {
-                if (currentNode.ship == startAsShip)
+                if (currentNode.ship == startAsShip || currentNode.ship == endAsShip)
                 {
                     result.Add(new DetailPathNodeResult(currentNode.Position, currentNode.ship));
                     
