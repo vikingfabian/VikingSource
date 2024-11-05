@@ -103,7 +103,7 @@ namespace VikingEngine.DSSWars
             aiPlayerAsynchUpdate_wars_withplayer.Clear();
             for (int relIx = 0; relIx < aifaction.diplomaticRelations.Length; ++relIx)
             {
-                if (InWar(aifaction, DssRef.world.factions[relIx])) // aifaction.diplomaticRelations[relIx] != null && aifaction.diplomaticRelations[relIx].Relation == RelationTypeN3_War)
+                if (InWar(aifaction, DssRef.world.factions[relIx])) 
                 {
                     if (DssRef.world.factions[relIx].player.IsPlayer())
                     {

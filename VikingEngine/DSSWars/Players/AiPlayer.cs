@@ -514,34 +514,37 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel0_Passive;
                 }
 
-                switch (faction.profile.factionFlavorType)
-                { 
-                    case FactionFlavorType.Mountain:
-                        faction.mainCity.res_iron.amount += 100;
-                        faction.mainCity.res_sword.amount += 60;
-                        faction.mainCity.res_heavyArmor.amount += 60;
-                        break;
+                if (faction.mainCity != null)
+                {
+                    switch (faction.profile.factionFlavorType)
+                    {
+                        case FactionFlavorType.Mountain:
 
-                    case FactionFlavorType.Forest:
-                        faction.diplomaticSide = DiplomaticSide.Light;
-                        aggressionLevel = AggressionLevel1_RevengeOnly;
-                        faction.growthMultiplier = 0.75f;
-                        aiConscript = AiConscript.Green;
-                        break;
+                            faction.mainCity.res_iron.amount += 100;
+                            faction.mainCity.res_sword.amount += 60;
+                            faction.mainCity.res_heavyArmor.amount += 60;
+                            break;
 
-                    case FactionFlavorType.Mystical:
-                        faction.diplomaticSide = DiplomaticSide.Dark;
-                        faction.growthMultiplier = 1.2f;
-                        break;
+                        case FactionFlavorType.Forest:
+                            faction.diplomaticSide = DiplomaticSide.Light;
+                            aggressionLevel = AggressionLevel1_RevengeOnly;
+                            faction.growthMultiplier = 0.75f;
+                            aiConscript = AiConscript.Green;
+                            break;
 
-                    case FactionFlavorType.Warrior:
-                        aggressionLevel = Bound.Max(aggressionLevel + 1, AggressionLevel3_FocusedAttacks);
-                        break;
+                        case FactionFlavorType.Mystical:
+                            faction.diplomaticSide = DiplomaticSide.Dark;
+                            faction.growthMultiplier = 1.2f;
+                            break;
 
-                    
+                        case FactionFlavorType.Warrior:
+                            aggressionLevel = Bound.Max(aggressionLevel + 1, AggressionLevel3_FocusedAttacks);
+                            break;
+
+
+                    }
+
                 }
-
-                
             }
         }
 

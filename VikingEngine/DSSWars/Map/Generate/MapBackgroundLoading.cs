@@ -95,11 +95,14 @@ namespace VikingEngine.DSSWars.Map.Generate
                         seed = Ref.rnd.Ushort();
                     }
 
-                    bool success = dataGenerate.Generate(false, world);// DssRef.storage.mapSize, -1, false, seed);
+                    bool success = dataGenerate.Generate(false, world);
 
                     if (success)
                     {
-                        DssRef.world = dataGenerate.world;
+                        if (!abort)
+                        {
+                            DssRef.world = dataGenerate.world;
+                        }
                         generateSuccess = true;
                         return;
                     }
@@ -115,6 +118,11 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         public void Update()
         {
+            if (abort)
+            {
+                return;
+            }
+
             if (DssRef.storage.generateNewMaps)
             {
                 if (generateSuccess)
@@ -137,28 +145,35 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         void postGenerateUpdate()
         {
-            if (loadingState <= LoadingState.StorageDone)
+            try
             {
-                loadingState = LoadingState.Post1Started;
-                postGenerate = new Map.Generate.GenerateMap();
-                postGenerate.postLoadGenerate_Part1(DssRef.world);
-            }
-            else if (loadingState == LoadingState.Post1Started)
-            {
-                if (postGenerate.postComplete)
+                if (loadingState <= LoadingState.StorageDone)
                 {
-                    loadingState = LoadingState.Post2Started;
+                    loadingState = LoadingState.Post1Started;
                     postGenerate = new Map.Generate.GenerateMap();
-                    postGenerate.postLoadGenerate_Part2(DssRef.world, loadMeta);
+                    postGenerate.postLoadGenerate_Part1(DssRef.world);
                 }
-                //loadingState = LoadingState.Complete;
-            }
-            else if (loadingState == LoadingState.Post2Started)
-            {
-                if (postGenerate.postComplete)
+                else if (loadingState == LoadingState.Post1Started)
                 {
-                    loadingState = LoadingState.Complete;
+                    if (postGenerate.postComplete)
+                    {
+                        loadingState = LoadingState.Post2Started;
+                        postGenerate = new Map.Generate.GenerateMap();
+                        postGenerate.postLoadGenerate_Part2(DssRef.world, loadMeta);
+                    }
+                    //loadingState = LoadingState.Complete;
                 }
+                else if (loadingState == LoadingState.Post2Started)
+                {
+                    if (postGenerate.postComplete)
+                    {
+                        loadingState = LoadingState.Complete;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.ToString());
             }
         }
 
@@ -193,6 +208,11 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         public bool Complete()
         {
+            if (abort)
+            {
+                return true;
+            }
+
             if (loadMeta != null && loadMeta.metaVersion >= 3)
             { 
                 return true;

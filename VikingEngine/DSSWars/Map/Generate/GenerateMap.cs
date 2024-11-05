@@ -42,6 +42,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         {
             //ushort seed = Ref.rnd.Ushort();
             world = new WorldData(worldMeta);//new Data.WorldMetaData(seed, size, number));
+            world.availableGenericAiTypes = WorldData.AvailableGenericAiTypes();
             biomsLayout = new BiomsLayout(world.rnd);
 
             try
@@ -642,7 +643,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         City owner = world.cities[t.CityIndex];
                         int borderCity = -1;
 
-                        for (int dirIx = 0; dirIx < checkDirs.Length; ++dirIx)//each (IntVector2 dir in checkDirs)
+                        for (int dirIx = 0; dirIx < checkDirs.Length; ++dirIx)
                         {
                             IntVector2 dir = checkDirs[dirIx];
                             Tile neighbor = world.tileGrid.array[dir.X + loop.Position.X, dir.Y + loop.Position.Y];
@@ -652,10 +653,6 @@ namespace VikingEngine.DSSWars.Map.Generate
                                 t.AddBorder(dirIx, land? neighbor.CityIndex: Tile.SeaBorder);
                                 borderCity = neighbor.CityIndex;
                             }
-                            //else if (!neighbor.IsLand())
-                            //{
-                            //    t.AddBorder(dirIx, Tile.SeaBorder);
-                            //}
                         }
 
                         if (t.BorderCount > 0)
@@ -692,10 +689,6 @@ namespace VikingEngine.DSSWars.Map.Generate
                 if (!world.cities[i].hasNeededAreaSize())
                 {
                     return false;
-                    ////Remove the city, it has not enough area!
-                    //world.tileGrid.Get(world.cities[i].tilePos).tileContent = TileContent.NONE;
-                    //world.unitCollAreaGrid.remove(world.cities[i]);
-                    //world.cities.RemoveAt(i);
                 }
             }
 

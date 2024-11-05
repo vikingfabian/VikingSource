@@ -3,8 +3,16 @@
 * Save files are about four times larger now (200MB for large map)
 * Army tags
 * Army menu update
+* border poles
+* new pre-genereated maps
+* fixed armies that try to buy food from an empty city
+* fixed named faction doublette bug
+* 6 new generic ai flags
+
+! Old saves are broken
 
 #Todo (xmas patch)#
+krig varning på ally
 new maps
 dölj carry amount
 new game - Skip language crashes game

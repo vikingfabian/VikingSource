@@ -37,7 +37,7 @@ namespace VikingEngine.DSSWars
         public static MapSize? SaveLoadSpecificMap = PlatformSettings.DevBuild ? null :
             null;//DO NOT CHANGE
 
-        public static bool BlockBackgroundLoading = PlatformSettings.DevBuild ? true :
+        public static bool BlockBackgroundLoading = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE
 
         //public const bool Trailer = true;

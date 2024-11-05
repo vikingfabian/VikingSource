@@ -328,43 +328,10 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.fol_sprout, rnd, wp, 0.05f + 0.01f * sizeValue));
                     break;
                 case TerrainSubFoilType.WheatFarm:
-                    farm(3);
-                    //{
-                    //    int frame = TerrainContent.FarmCulture_Empty;
-                    //    if (sizeValue >= TerrainContent.FarmCulture_ReadySize)
-                    //    {
-                    //        frame = 3;
-                    //    }
-                    //    else if (sizeValue >= TerrainContent.FarmCulture_HalfSize)
-                    //    {
-                    //        frame = 2;
-                    //    }
-                    //    else if (sizeValue > TerrainContent.FarmCulture_Empty)
-                    //    {
-                    //        frame = 1;
-                    //    }
-                    //    addFoliage(new Foliage(LootFest.VoxelModelName.fol_farmculture, frame, wp, 0.1f));
-                    //}
+                    farm(3);                    
                     break;
                 case TerrainSubFoilType.LinenFarm:
-                    farm(4);
-                    //{
-                        
-                        //int frame = TerrainContent.FarmCulture_Empty;
-                        //if (sizeValue >= TerrainContent.FarmCulture_ReadySize)
-                        //{
-                        //    frame = 4;
-                        //}
-                        //else if (sizeValue >= TerrainContent.FarmCulture_HalfSize)
-                        //{
-                        //    frame = 2;
-                        //}
-                        //else if (sizeValue > TerrainContent.FarmCulture_Empty)
-                        //{
-                        //    frame = 1;
-                        //}
-                        //addFoliage(new Foliage(LootFest.VoxelModelName.fol_farmculture, frame, wp, 0.1f));
-                    //}
+                    farm(4);                    
                     break;
                 case TerrainSubFoilType.HempFarm:
                     farm(6);
@@ -374,7 +341,7 @@ namespace VikingEngine.DSSWars.Map
                     break;
 
                 case TerrainSubFoilType.BogIron:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 0, wp, 0.08f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 3, wp, 0.14f));
                     break;
                 default:
                     throw new NotImplementedException();
@@ -398,15 +365,7 @@ namespace VikingEngine.DSSWars.Map
                 }
                 addFoliage(new Foliage(LootFest.VoxelModelName.fol_farmculture, frame, wp, 0.1f));
             }
-            //if (foliage == null)
-            //{
-            //    foliage = new List<Foliage>(8);
-            //}
-
-//#if DEBUG
-//            model.DebugName = "Map foliage " + model.DebugName;
-//#endif
-            //addFoliage(new Foliage(modelName, rnd, wp, scale));
+            
         }
 
         void createBuilding(Tile tile, ref SubTile subTile, TerrainBuildingType buildingType, Vector3 wp)
@@ -414,7 +373,6 @@ namespace VikingEngine.DSSWars.Map
             wp.X += WorldData.SubTileHalfWidth;
             wp.Z += WorldData.SubTileHalfWidth;
 
-            //float scale = WorldData.SubTileWidth * 1.4f;
 
             switch (buildingType)
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
@@ -57,11 +58,20 @@ namespace VikingEngine.DSSWars
 
         public Faction(WorldData addTo, FactionType factiontype)
         {
+            if (factiontype == FactionType.SkaeldraHaim)
+            {
+                lib.DoNothing();
+            }
+
             if (factiontype == FactionType.DefaultAi)
             {
                 if (addTo.availableGenericAiTypes.Count > 0)
                 {
                     factiontype = arraylib.RandomListMemberPop(addTo.availableGenericAiTypes, addTo.metaData.objRnd);
+                    //if (addTo.availableGenericAiTypes.Count == 1)
+                    //{
+                    //    lib.DoNothing();
+                    //}
                 }
             }
 
@@ -109,8 +119,7 @@ namespace VikingEngine.DSSWars
         }
         virtual public void writeGameState(System.IO.BinaryWriter w)
         {
-            Debug.WriteCheck(w);
-
+            
             w.Write((ushort)factiontype);
             w.Write(gold);
 
@@ -121,7 +130,6 @@ namespace VikingEngine.DSSWars
                 w.Write((ushort)citiesC.sel.parentArrayIndex);
             }
 
-            Debug.WriteCheck(w);
             w.Write((ushort)armies.Count); 
             var armiesC = armies.counter();
             while (armiesC.Next())
@@ -129,7 +137,6 @@ namespace VikingEngine.DSSWars
                 armiesC.sel.writeGameState(w); 
             }
 
-            Debug.WriteCheck(w);
             for (int i = 0; i < diplomaticRelations.Length; ++i)
             {
                 if (diplomaticRelations[i] != null &&
@@ -140,16 +147,13 @@ namespace VikingEngine.DSSWars
             }
             w.Write(short.MinValue);
 
-            Debug.WriteCheck(w);
             player.writeGameState(w);
 
-            Debug.WriteCheck(w);
-            workTemplate.writeGameState(w, false);
+           workTemplate.writeGameState(w, false);
 
         }
         virtual public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
-            Debug.ReadCheck(r);
             factiontype = (FactionType)r.ReadUInt16();
             gold = r.ReadInt32();
 
@@ -162,7 +166,6 @@ namespace VikingEngine.DSSWars
                 city.setFaction(this);
             }
 
-            Debug.ReadCheck(r);
             int armiesCount = r.ReadUInt16();
             for (int i = 0; i < armiesCount; i++)
             {
@@ -171,7 +174,6 @@ namespace VikingEngine.DSSWars
                 //armies.Add(army);
             }
 
-            Debug.ReadCheck(r);
             while (true)
             { 
                 DiplomaticRelation relation = new DiplomaticRelation();
@@ -193,7 +195,6 @@ namespace VikingEngine.DSSWars
             //}
             //else
             //{
-            Debug.ReadCheck(r);
             if ((factiontype == FactionType.Player) != player.IsPlayer())
             {
                 throw new Exception();
@@ -202,7 +203,6 @@ namespace VikingEngine.DSSWars
             player.readGameState(r, subVersion, pointers);
             
 
-            Debug.ReadCheck(r);
             workTemplate.readGameState(r, subVersion, false);
         }
 
@@ -939,6 +939,22 @@ namespace VikingEngine.DSSWars
                 case FactionType.EasternEmpire:
                     return SpeakTerms.SpeakTermsN1_Bad;
             }
+        }
+
+        public List<Faction> CollectWars()
+        {
+            List<Faction> opponents = new List<Faction>();
+            for (int relIx = 0; relIx < diplomaticRelations.Length; ++relIx)
+            {
+                if (diplomaticRelations[relIx] != null &&
+                    relIx != parentArrayIndex &&
+                   diplomaticRelations[relIx].Relation <= RelationType.RelationTypeN3_War)
+                {
+                    opponents.Add(DssRef.world.factions.Array[relIx]);
+                }
+            }
+
+            return opponents;
         }
 
         public bool WantToAllyAgainstDark()

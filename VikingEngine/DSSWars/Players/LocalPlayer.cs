@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars.Players
         public ConscriptProfile soldierConscriptCopy, knightConscriptCopy;
 
         public PlayerControls.Tutorial tutorial = null;
-
+        CityBorders cityBorders = new CityBorders();
         public bool viewCityTagsOnMap = true;
         public bool viewArmyTagsOnMap = true;
 
@@ -706,6 +706,8 @@ namespace VikingEngine.DSSWars.Players
             drawUnitsView.Update();
             playerData.view.Camera.RecalculateMatrices();
             updateMapOverlays();
+
+            cityBorders.update(this);
         }
 
         void setBuildMode(City city, BuildAndExpandType type)
