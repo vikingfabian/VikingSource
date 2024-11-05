@@ -12,13 +12,15 @@ namespace VikingEngine.DSSWars.Data
 {
     static class CityTag
     {
+        public const SpriteName NoBackSprite = SpriteName.BluePrintSquareFull;
+
         public static SpriteName BackSprite(CityTagBack back)
         {
             switch (back)
             {
-                case CityTagBack.White: 
+                case CityTagBack.White:
                     return SpriteName.warsFolder_white;
-                case CityTagBack.Carton: 
+                case CityTagBack.Carton:
                     return SpriteName.warsFolder_carton;
                 case CityTagBack.Yellow:
                     return SpriteName.warsFolder_yellow;
@@ -33,7 +35,7 @@ namespace VikingEngine.DSSWars.Data
                 case CityTagBack.Green:
                     return SpriteName.warsFolder_green;
 
-                default: return SpriteName.BluePrintSquareFull;
+                default: return NoBackSprite;
             }
         }
 
@@ -163,10 +165,165 @@ namespace VikingEngine.DSSWars.Data
 
             return SpriteName.NO_IMAGE;
         }
+
+        public static SpriteName ArtSprite(ArmyTagArt art)
+        {
+            if (art == ArmyTagArt.None)
+            {
+                return SpriteName.NO_IMAGE;
+            }
+            else if (art <= ArmyTagArt.UnitType_HonourGuard)
+            {
+                switch (art)
+                {
+                    case ArmyTagArt.UnitType_SharpStick:
+                        return SpriteName.WarsUnitIcon_Folkman;
+                    case ArmyTagArt.UnitType_Sword:
+                        return SpriteName.WarsUnitIcon_Soldier;
+                    case ArmyTagArt.UnitType_Bow:
+                        return SpriteName.WarsUnitIcon_Archer;
+                    case ArmyTagArt.UnitType_Ballista:
+                        return SpriteName.WarsUnitIcon_Ballista;
+                    case ArmyTagArt.UnitType_TwohandSword:
+                        return SpriteName.WarsUnitIcon_TwoHand;
+                    case ArmyTagArt.UnitType_Knight:
+                        return SpriteName.WarsUnitIcon_Knight;
+                    case ArmyTagArt.UnitType_HonourGuard:
+                        return SpriteName.WarsUnitIcon_Honorguard;
+                }
+            }
+            else if (art <= ArmyTagArt.ItemResourceTypeHeavyArmor)
+            {
+                switch (art)
+                {
+                    case ArmyTagArt.ItemResourceTypeSword: return SpriteName.WarsResource_Sword;
+                    case ArmyTagArt.ItemResourceTypeSharpStick: return SpriteName.WarsResource_Sharpstick;
+                    case ArmyTagArt.ItemResourceTypeTwoHandSword: return SpriteName.WarsResource_TwoHandSword;
+                    case ArmyTagArt.ItemResourceTypeKnightsLance: return SpriteName.WarsResource_KnightsLance;
+                    case ArmyTagArt.ItemResourceTypeBow: return SpriteName.WarsResource_Bow;
+                    case ArmyTagArt.ItemResourceTypeLongBow: return SpriteName.WarsResource_Longbow;
+                    case ArmyTagArt.ItemResourceTypeBallista: return SpriteName.WarsResource_Ballista;
+
+                    case ArmyTagArt.ItemResourceTypeLightArmor: return SpriteName.WarsResource_LightArmor;
+                    case ArmyTagArt.ItemResourceTypeMediumArmor: return SpriteName.WarsResource_MediumArmor;
+                    case ArmyTagArt.ItemResourceTypeHeavyArmor: return SpriteName.WarsResource_HeavyArmor;
+                }
+            }
+            else if (art <= ArmyTagArt.Specialize_Tradition)
+            {
+                switch (art)
+                {
+                    case ArmyTagArt.Specialize_Field:
+                        return SpriteName.WarsSpecializeField;
+                    case ArmyTagArt.Specialize_Sea:
+                        return SpriteName.WarsSpecializeSea;
+                    case ArmyTagArt.Specialize_Siege:
+                        return SpriteName.WarsSpecializeSiege;
+                    case ArmyTagArt.Specialize_Tradition:
+                        return SpriteName.WarsSpecializeTradition;
+
+                }
+            }
+            else if (art <= ArmyTagArt.LevelLegend)
+            {
+                switch (art)
+                {
+                    case ArmyTagArt.Specialize_Field:
+                        return SpriteName.WarsSpecializeField;
+                    case ArmyTagArt.Specialize_Sea:
+                        return SpriteName.WarsSpecializeSea;
+                    case ArmyTagArt.Specialize_Siege:
+                        return SpriteName.WarsSpecializeSiege;
+                    case ArmyTagArt.Specialize_Tradition:
+                        return SpriteName.WarsSpecializeTradition;
+                    case ArmyTagArt.LevelMinimal:
+                        return SpriteName.WarsUnitLevelMinimal;
+                    case ArmyTagArt.LevelBasic:
+                        return SpriteName.WarsUnitLevelBasic;
+                    case ArmyTagArt.LevelSkillful:
+                        return SpriteName.WarsUnitLevelSkillful;
+                    case ArmyTagArt.LevelProfessional:
+                        return SpriteName.WarsUnitLevelProfessional;
+                    case ArmyTagArt.LevelMaster:
+                        return SpriteName.WarsUnitLevelMaster;
+                    case ArmyTagArt.LevelLegend:
+                        return SpriteName.WarsUnitLevelLegend;
+                }
+            }
+            else if (art <= ArmyTagArt.icon_BrokenShield)
+            {
+                switch (art)
+                {
+                    case ArmyTagArt.icon_Lightning:
+                        return SpriteName.warsArmyTag_Lightning;
+                    case ArmyTagArt.icon_Fire:
+                        return SpriteName.warsArmyTag_Fire;
+                    case ArmyTagArt.icon_Hit:
+                        return SpriteName.warsArmyTag_Hit;
+                    case ArmyTagArt.icon_HitExpress:
+                        return SpriteName.warsArmyTag_HitExpress;
+                    case ArmyTagArt.icon_Retreat:
+                        return SpriteName.warsArmyTag_Retreat;
+                    case ArmyTagArt.icon_Return:
+                        return SpriteName.warsArmyTag_Return;
+                    case ArmyTagArt.icon_Anchor:
+                        return SpriteName.warsArmyTag_Anchor;
+                    case ArmyTagArt.icon_Shield:
+                        return SpriteName.warsArmyTag_Shield;
+                    case ArmyTagArt.icon_GoldShield:
+                        return SpriteName.warsArmyTag_GoldShield;
+                    case ArmyTagArt.icon_BrokenShield:
+                        return SpriteName.warsArmyTag_BrokenShield;
+                    case ArmyTagArt.icon_RoundShield:
+                        return SpriteName.warsArmyTag_RoundShield;
+                }
+            }
+            else if (art <= ArmyTagArt.WarsRelationTotalWar)
+            {
+                switch (art)
+                {
+                    case ArmyTagArt.WarsRelationAlly:
+                        return SpriteName.WarsRelationAlly;
+                    case ArmyTagArt.WarsRelationGood:
+                        return SpriteName.WarsRelationGood;
+                    case ArmyTagArt.WarsRelationPeace:
+                        return SpriteName.WarsRelationPeace;
+                    case ArmyTagArt.WarsRelationNeutral:
+                        return SpriteName.WarsRelationNeutral;
+                    case ArmyTagArt.WarsRelationTruce:
+                        return SpriteName.WarsRelationTruce;
+                    case ArmyTagArt.WarsRelationWar:
+                        return SpriteName.WarsRelationWar;
+                    case ArmyTagArt.WarsRelationTotalWar:
+                        return SpriteName.WarsRelationTotalWar;
+                }
+            }
+            else
+            {
+                switch (art)
+                {
+                    case ArmyTagArt.Num0: return SpriteName.pjNum0;
+                    case ArmyTagArt.Num1: return SpriteName.pjNum1;
+                    case ArmyTagArt.Num2: return SpriteName.pjNum2;
+                    case ArmyTagArt.Num3: return SpriteName.pjNum3;
+                    case ArmyTagArt.Num4: return SpriteName.pjNum4;
+                    case ArmyTagArt.Num5: return SpriteName.pjNum5;
+                    case ArmyTagArt.Num6: return SpriteName.pjNum6;
+                    case ArmyTagArt.Num7: return SpriteName.pjNum7;
+                    case ArmyTagArt.Num8: return SpriteName.pjNum8;
+                    case ArmyTagArt.Num9: return SpriteName.pjNum9;
+                    case ArmyTagArt.NumQuestion: return SpriteName.pjNumQuestion;
+                    case ArmyTagArt.NumExpression: return SpriteName.pjNumExpression;
+                    case ArmyTagArt.NumEqual: return SpriteName.pjNumEquals;
+                    case ArmyTagArt.NumArrow: return SpriteName.pjNumArrowR;
+                }
+            }
+            return SpriteName.NO_IMAGE;
+        }
     }
 
     enum CityTagBack
-    { 
+    {
         NONE,
         White,
         Carton,
@@ -178,14 +335,79 @@ namespace VikingEngine.DSSWars.Data
         Green,
         NUM,
     }
-    //add(SpriteName.warsFolder_carton);
-    //add(SpriteName.warsFolder_white);
-    //add(SpriteName.warsFolder_orange);
-    //add(SpriteName.warsFolder_yellow);
-    //add(SpriteName.warsFolder_green);
-    //add(SpriteName.warsFolder_pink);
-    //add(SpriteName.warsFolder_blue);
-    //add(SpriteName.warsFolder_cyan);
+
+    enum ArmyTagArt
+    {
+        None = 0,
+        UnitType_SharpStick,
+        UnitType_Sword,
+        UnitType_Bow,
+        UnitType_Ballista,
+        UnitType_TwohandSword,
+        UnitType_Knight,
+        UnitType_HonourGuard,
+
+        ItemResourceTypeSharpStick,
+        ItemResourceTypeSword,        
+        ItemResourceTypeTwoHandSword,
+        ItemResourceTypeKnightsLance,
+        ItemResourceTypeBow,
+        ItemResourceTypeLongBow,
+        ItemResourceTypeBallista,
+
+        ItemResourceTypeLightArmor,
+        ItemResourceTypeMediumArmor,
+        ItemResourceTypeHeavyArmor,
+
+        Specialize_Field,
+        Specialize_Sea,
+        Specialize_Siege,
+        Specialize_Tradition,
+
+        LevelMinimal,
+        LevelBasic,
+        LevelSkillful,
+        LevelProfessional,
+        LevelMaster,
+        LevelLegend,
+
+        icon_Lightning,
+        icon_Fire,        
+        icon_Hit,
+        icon_HitExpress,
+        icon_Retreat,
+        icon_Return,
+        icon_Anchor,
+        icon_Shield,
+        icon_GoldShield,
+        icon_RoundShield,
+        icon_BrokenShield,
+
+        WarsRelationAlly,
+        WarsRelationGood,
+        WarsRelationPeace,
+        WarsRelationNeutral,
+        WarsRelationTruce,
+        WarsRelationWar,
+        WarsRelationTotalWar,
+
+        Num0,
+        Num1,
+        Num2,
+        Num3,
+        Num4,
+        Num5,
+        Num6,
+        Num7,
+        Num8,
+        Num9,
+        NumQuestion,
+        NumExpression,
+        NumEqual,
+        NumArrow,
+
+        NUM,
+    }
 
     enum CityTagArt
     {
@@ -211,8 +433,8 @@ namespace VikingEngine.DSSWars.Data
         ItemResourceTypeIronOre,
         ItemResourceTypeIron,
 
-        ItemResourceTypeSword,
         ItemResourceTypeSharpStick,
+        ItemResourceTypeSword,
         ItemResourceTypeTwoHandSword,
         ItemResourceTypeKnightsLance,
         ItemResourceTypeBow,
@@ -222,7 +444,6 @@ namespace VikingEngine.DSSWars.Data
         ItemResourceTypeLightArmor,
         ItemResourceTypeMediumArmor,
         ItemResourceTypeHeavyArmor,
-
 
 
         BuildWorkerHuts,

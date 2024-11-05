@@ -25,6 +25,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         //public string EndGameStatistics_DecorsBuilt => "Decorations built: {0}";
         //public string EndGameStatistics_StatuesBuilt => "Statues built: {0}";
 
+        public string Diplomacy_RelationWithOthers => "Their relations with others";
         public string Automation_queue_description => "Will keep repeating until the que is empty";
 
         public string BuildingType_Storehourse_Description => "Workers may drop items here";
@@ -53,6 +54,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildHud_WorkTime => "Work time: {0}";
         public string BuildHud_GrowTime => "Grow time: {0}";
         public string BuildHud_Produce => "Poduce:";
+
+        public string LandType_Flatland => "Flat land";
+        public string LandType_Water => "Water";
+
 
         public string Delivery_AutoReciever_Description => "Will send to the city with lowest amount of resources";
 

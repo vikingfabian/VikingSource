@@ -12,10 +12,12 @@ namespace VikingEngine.DSSWars.Map
         List<CityTag> cityTags;
         LocalPlayer player;
         SpottedArrayCounter<City> citiesC;
+        SpottedArrayCounter<Army> armiesC;
         public CityTagMap(LocalPlayer player)
         {
             this.player = player;
             citiesC = player.faction.cities.counter();
+            armiesC = player.faction.armies.counter();
             cityTags = new List<CityTag>(8);
         }
 
@@ -23,7 +25,7 @@ namespace VikingEngine.DSSWars.Map
         {
             int tagIndex = 0;
 
-            if (DssRef.storage.viewTagsOnMap)
+            if (player.viewCityTagsOnMap)
             {
                 citiesC.Reset();
                 while (citiesC.Next())
@@ -41,6 +43,27 @@ namespace VikingEngine.DSSWars.Map
                     }
                 }
             }
+
+            if (player.viewArmyTagsOnMap)
+            {
+                armiesC.Reset();
+                while (armiesC.Next())
+                {
+                    if (armiesC.sel.tagBack != Data.CityTagBack.NONE)
+                    {
+
+                        if (cityTags.Count <= tagIndex)
+                        {
+                            cityTags.Add(new CityTag());
+                        }
+
+                        cityTags[tagIndex].update(player, armiesC.sel);
+                        tagIndex++;
+                    }
+                }
+            }
+            
+
             while (cityTags.Count > tagIndex)
             {
                 arraylib.PullLastMember(cityTags).DeleteMe();
@@ -65,15 +88,23 @@ namespace VikingEngine.DSSWars.Map
         public CityTag()
         {
             bg = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE, Vector2.Zero, Engine.Screen.IconSizeV2 * 0.8f, HudLib.DiplomacyDisplayLayer +1, true);
+            bg.Opacity = 0.7f;
             icon = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE, Vector2.Zero, Engine.Screen.IconSizeV2 * 0.65f, HudLib.DiplomacyDisplayLayer, true);
             //offset = (bg.size - icon.size) * 0.5f;
         }
 
-        public void update(LocalPlayer player, City city)
+        public void update(LocalPlayer player, AbsMapObject mapObj)
         {
-            Vector3 wp = city.position;
-            wp.X += 0.2f;
-            wp.Z += 0.2f;
+            Vector3 wp = mapObj.position;
+            if (mapObj.gameobjectType() == GameObjectType.Army)
+            {
+
+            }
+            else
+            {
+                wp.X += 0.2f;
+                wp.Z += 0.2f;
+            }
 
             bg.position = player.playerData.view.From3DToScreenPos(wp) + bg.HalfSize;
 
@@ -92,13 +123,16 @@ namespace VikingEngine.DSSWars.Map
 
             if (visible)
             {
+                mapObj.tagSprites(out SpriteName back, out SpriteName art);
+                    
+
                 bg.Visible = true;
-                bg.SetSpriteName(Data.CityTag.BackSprite(city.tagBack));
-                if (city.tagArt != Data.CityTagArt.None)
+                bg.SetSpriteName(back);
+                if (art != SpriteName.NO_IMAGE)
                 {
                     icon.position = bg.position;
                     icon.Visible = true;
-                    icon.SetSpriteName(Data.CityTag.ArtSprite(city.tagArt));
+                    icon.SetSpriteName(art);
                 }
                 else
                 {

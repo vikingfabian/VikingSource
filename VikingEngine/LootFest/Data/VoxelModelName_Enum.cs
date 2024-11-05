@@ -560,7 +560,7 @@ namespace VikingEngine.LootFest
         armystand,
         cityicon,
         buildarea,
-
+        wars_borderstick,
         //city_tower24,
         city_pen,
         city_workerhut,

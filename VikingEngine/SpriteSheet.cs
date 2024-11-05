@@ -2439,10 +2439,10 @@ namespace VikingEngine
 
                 currentIndex = numTilesWidth * 100;
                 {
-                    add(SpriteName.WarsSpcializeField);
-                    add(SpriteName.WarsSpcializeSea);
-                    add(SpriteName.WarsSpcializeAntiCavalry);
-                    add(SpriteName.WarsSpcializeSiege);
+                    add(SpriteName.WarsSpecializeField);
+                    add(SpriteName.WarsSpecializeSea);
+                    add(SpriteName.WarsSpecializeAntiCavalry);
+                    add(SpriteName.WarsSpecializeSiege);
                     add(SpriteName.warsArmyTag_Lightning);
                     add(SpriteName.warsArmyTag_Fire);
                     add(SpriteName.warsArmyTag_Shield);
@@ -2450,7 +2450,7 @@ namespace VikingEngine
                     add(SpriteName.warsArmyTag_Retreat);
                     add(SpriteName.warsArmyTag_HitExpress);
                     add(SpriteName.warsArmyTag_GoldShield);
-                    add(SpriteName.WarsSpcializeTradition);
+                    add(SpriteName.WarsSpecializeTradition);
                     add(SpriteName.warsArmyTag_Return);
                     add(SpriteName.warsArmyTag_RoundShield);
                     add(SpriteName.warsArmyTag_BrokenShield);   

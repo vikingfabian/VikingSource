@@ -1,9 +1,18 @@
 ﻿-Change Log-
 * Updated save system to include both map file and meta data - for maximized backward compatibility in the future
 * Save files are about four times larger now (200MB for large map)
-*
+* Army tags
+* Army menu update
+* border poles
+* new pre-genereated maps
+* fixed armies that try to buy food from an empty city
+* fixed named faction doublette bug
+* 6 new generic ai flags
+
+! Old saves are broken
 
 #Todo (xmas patch)#
+krig varning på ally
 new maps
 dölj carry amount
 new game - Skip language crashes game
@@ -13,13 +22,10 @@ new game - Skip language crashes game
 
 --Efter release polish--
 -war icon
- 
-
 pilar med resurser från delivery
 Factories modeller
 city economy
 visa antal byggnader i bygg meny
-training skill icon
 menu scroll
 
 manuballista (hand ballista)
@@ -49,17 +55,13 @@ Polish
 -the horses dont load when paused, plus rotation error
 -dölj move path OnHud 
 -attack ally yes/no warning
--burn yes/no
 
 Art
-
-
 
 
 #current
 English, Simplified Chinese, Japanese, Russian, Spanish
 
-#Real-time grand strategy
 
 
 

@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.Display
         public void tagsToMenu(RichBoxContent content)
         {
             content.newLine();
-            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Tag_ViewOnMap) }, DssRef.storage.TagsOnMapProperty));
+            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Tag_ViewOnMap) }, player.CityTagsOnMapProperty));
             content.newParagraph();
 
             for (CityTagBack back = CityTagBack.NONE; back < CityTagBack.NUM; back++)
@@ -958,6 +958,8 @@ namespace VikingEngine.DSSWars.Display
         Delivery,
         Build,
         Automation,
+        Disband,
+        Divide,
         NUM
     }
 

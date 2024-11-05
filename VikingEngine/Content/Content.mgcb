@@ -337,18 +337,6 @@
 /processorParam:Quality=Best
 /build:DSS/Music/dramatic-opener-nonloop.ogg
 
-#begin DSS/Music/dramatic-opener-nonloop.ogg
-/importer:OggImporter
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:DSS/Music/dramatic-opener-nonloop.ogg
-
-#begin DSS/Music/Dreamscape Adventures.ogg
-/importer:OggImporter
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:DSS/Music/Dreamscape Adventures.ogg
-
 #begin DSS/Music/Dreamscape Adventures.ogg
 /importer:OggImporter
 /processor:SongProcessor
@@ -427,12 +415,6 @@
 /processorParam:Quality=Best
 /build:DSS/Music/RM 5 - Suddenly Empty.ogg
 
-#begin DSS/Music/RM 5 - Suddenly Empty.ogg
-/importer:OggImporter
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:DSS/Music/RM 5 - Suddenly Empty.ogg
-
 #begin DSS/Music/RM 6 - Auderesne.ogg
 /importer:OggImporter
 /processor:SongProcessor
@@ -474,18 +456,6 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:DSS/Music/Shadows of Conflict.ogg
-
-#begin DSS/Music/Shadows of Conflict.ogg
-/importer:OggImporter
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:DSS/Music/Shadows of Conflict.ogg
-
-#begin DSS/Music/Veil of Time.ogg
-/importer:OggImporter
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:DSS/Music/Veil of Time.ogg
 
 #begin DSS/Music/Veil of Time.ogg
 /importer:OggImporter
@@ -1533,6 +1503,9 @@
 
 #begin VoxelModel/LfWars/wars_ballista_ship.vox
 /copy:VoxelModel/LfWars/wars_ballista_ship.vox
+
+#begin VoxelModel/LfWars/wars_borderstick.vox
+/copy:VoxelModel/LfWars/wars_borderstick.vox
 
 #begin VoxelModel/LfWars/wars_captain.vox
 /copy:VoxelModel/LfWars/wars_captain.vox

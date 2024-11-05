@@ -78,8 +78,8 @@ namespace VikingEngine.DSSWars
 
         public static IntVector2 SubtileToTilePos(IntVector2 subtilePos)
         {
-            subtilePos.X = (subtilePos.X + WorldData.HalfTileSubDivitions) / WorldData.TileSubDivitions;
-            subtilePos.Y = (subtilePos.Y + WorldData.HalfTileSubDivitions) / WorldData.TileSubDivitions;
+            subtilePos.X = (subtilePos.X) / WorldData.TileSubDivitions;
+            subtilePos.Y = (subtilePos.Y) / WorldData.TileSubDivitions;
             return subtilePos;
         }
 

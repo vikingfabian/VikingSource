@@ -24,6 +24,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (seconds > 0)
             {
+                if (debugTagged)
+                {
+                    lib.DoNothing();
+                }
 
                 if (foodBackOrderTimeSec > 0)
                 {
@@ -44,12 +48,10 @@ namespace VikingEngine.DSSWars.GameObject
                         {
                             bufferGoal_minutes = foodBuffer_minutes;
                         }
-                        
-                        
 
                         float bufferGoalFood = bufferGoal_minutes * TimeExt.MinuteInSeconds * foodUpkeep;
 
-                        if (bufferGoal_minutes > 0 && food < bufferGoalFood)
+                        if (bufferGoal_minutes > 0 && food < bufferGoalFood && city.res_food.amount >= ItemPropertyColl.CarryFood)
                         {
                             int statusIx = getOrCreateFreeWorker();
                             var status = workerStatuses[statusIx];
@@ -71,24 +73,28 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                     }
 
-                    if (food < 0)
+                   
+                }
+
+                float minBuffer = foodUpkeep * 2;
+
+                if (food < minBuffer)
+                {
+                    if (faction.player.IsPlayer())
                     {
-                        if (faction.player.IsPlayer())
+                        Ref.update.AddSyncAction(new SyncAction(() =>
                         {
-                            Ref.update.AddSyncAction(new SyncAction(() =>
-                            {
-                                faction.player.GetLocalPlayer().hud.messages.armyLowFoodMessage(this);
-                            }));
-                        }
+                            faction.player.GetLocalPlayer().hud.messages.armyLowFoodMessage(this);
+                        }));
+                    }
 
-                        //black market trade
-                        var cost = (int)Math.Ceiling(DssConst.FoodGoldValue_BlackMarket * -food);
+                    //black market trade
+                    var cost = (int)Math.Ceiling(DssConst.FoodGoldValue_BlackMarket * (minBuffer - food));
 
-                        if (faction.payMoney(cost, false))
-                        {
-                            foodCosts_blackmarket.add(cost);
-                            food = 0;
-                        }
+                    if (faction.payMoney(cost, false))
+                    {
+                        foodCosts_blackmarket.add(cost);
+                        food = minBuffer;
                     }
                 }
             }

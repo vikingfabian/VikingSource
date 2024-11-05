@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars
 
             if (loadMeta == null)
             {
-                initGameState(true);
+                initGameState(true, null);
                 onGameStart(true);
             }
             else
@@ -78,7 +78,7 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public void initGameState(bool newGame)
+        public void initGameState(bool newGame, ObjectPointerCollection pointers)
         {
             Ref.rnd.SetSeed(DssRef.world.metaData.seed);
             menuSystem = new GameMenuSystem();
@@ -90,7 +90,7 @@ namespace VikingEngine.DSSWars
             HudLib.Init();
 
             //Ref.rnd.SetSeed(DssRef.world.metaData.seed);
-            initPlayers(newGame);
+            initPlayers(newGame, pointers);
             culling = new Culling();
 
             factionsMap = new MapLayer_Factions();
@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        void initPlayers(bool newGame)
+        void initPlayers(bool newGame, ObjectPointerCollection pointers)
         {
             //Players.AiPlayer.EconomyMultiplier = Difficulty.AiEconomyLevel[DssRef.difficulty.aiEconomyLevel] / 100.0;
 
@@ -149,7 +149,9 @@ namespace VikingEngine.DSSWars
                 }
                 else if (factionsCounter.sel.factiontype == FactionType.Player)
                 {
-                    var local = new Players.LocalPlayer(factionsCounter.sel, playerIndex, playerCount, newGame);
+                    var local = new Players.LocalPlayer(factionsCounter.sel);
+                    //var local = arraylib.PullFirstMember(pointers.localPlayers);//new Players.LocalPlayer(factionsCounter.sel, 
+                    local.assignPlayer(playerIndex, playerCount, newGame);
                     localPlayers.Add(local);
                 }
                 else
@@ -171,7 +173,8 @@ namespace VikingEngine.DSSWars
                 for (var i = 0; i < playerCount; ++i)
                 {
                     var startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, localPlayers);
-                    var local = new Players.LocalPlayer(startFaction, i, playerCount, newGame);
+                    var local = new Players.LocalPlayer(startFaction);
+                    local.assignPlayer(i, playerCount, newGame);
                     localPlayers.Add(local);
                 }
             }

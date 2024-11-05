@@ -9,6 +9,7 @@ using Valve.Steamworks;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.LootFest.Data;
 using VikingEngine.PJ.Strategy;
 using VikingEngine.ToGG;
@@ -104,7 +105,7 @@ namespace VikingEngine.DSSWars.Data
             DssRef.world = worldData;
             
 
-            DssRef.state.initGameState(false);
+            DssRef.state.initGameState(false, pointers);
 
             //STATE
             DssRef.storage.read(r, true);
@@ -132,6 +133,7 @@ namespace VikingEngine.DSSWars.Data
 
     class ObjectPointerCollection
     { 
+        //public List<LocalPlayer> localPlayers = new List<LocalPlayer>();
         public List<AbsObjectPointer> pointers = new List<AbsObjectPointer>();
 
         public void SetPointer()

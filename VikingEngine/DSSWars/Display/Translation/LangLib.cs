@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Security;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
@@ -127,6 +128,13 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case MenuTab.Automation:
                     description = DssRef.lang.MenuTab_Automation_Description;
                     return DssRef.lang.Automation_Title;
+                case MenuTab.Divide:
+                    description = null;
+                    return DssRef.lang.ArmyOption_Divide;
+                case MenuTab.Disband:
+                    description = null;
+                    return DssRef.lang.ArmyOption_Disband;
+
                 default:
                     throw new NotImplementedException();
             }
@@ -228,6 +236,10 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case TerrainMainType.Foil:
                     switch ((TerrainSubFoilType)subType)
                     {
+                        default:
+                            return DssRef.todoLang.LandType_Flatland;
+                                                  
+
                         case TerrainSubFoilType.TreeHard:
                         case TerrainSubFoilType.TreeSoft:
                         case TerrainSubFoilType.DryWood:
@@ -247,6 +259,9 @@ namespace VikingEngine.DSSWars.Display.Translation
                             return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.todoLang.Resource_TypeName_Rapeseed);
                         case TerrainSubFoilType.HempFarm:
                             return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.todoLang.Resource_TypeName_Hemp);
+
+                        case TerrainSubFoilType.BogIron:
+                            return DssRef.lang.Resource_TypeName_BogIron;
                     }
                     break;
 
@@ -274,6 +289,15 @@ namespace VikingEngine.DSSWars.Display.Translation
                             return DssRef.lang.DecorType_Statue;
                     }
                     break;
+
+                case TerrainMainType.Destroyed:
+                case TerrainMainType.DefaultLand:
+                    return DssRef.todoLang.LandType_Flatland;
+                case TerrainMainType.DefaultSea:
+                    return DssRef.todoLang.LandType_Water;
+
+                case TerrainMainType.Resourses:
+                    return DssRef.lang.Resource;
             }
 
 

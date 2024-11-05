@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using VikingEngine.DSSWars;
 
 namespace VikingEngine.Graphics
 {
@@ -87,6 +88,14 @@ namespace VikingEngine.Graphics
         public void Remove(AbsDraw image)
         {
             images.Remove(image);
+        }
+
+        public void AddToRender(int layer)
+        {
+            foreach (var img in images)
+            {
+                img.AddToRender(layer);
+            }
         }
 
         virtual public void DeleteAll()

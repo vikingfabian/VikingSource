@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DSSWars.Battle;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 //
@@ -85,6 +86,21 @@ namespace VikingEngine.DSSWars.GameObject
         public Map.Tile Tile()
         {
             return DssRef.world.tileGrid.Get(tilePos);
+        }
+
+        virtual public void tagSprites(out SpriteName back, out SpriteName art)
+        { 
+            throw new NotImplementedException();
+        }
+        public void tagToHud(RichBoxContent content)
+        {
+            tagSprites(out SpriteName back, out SpriteName art);
+            if (back != CityTag.NoBackSprite)
+            {
+                content.Add(new RichBoxOverlapImage(
+                    new RichBoxImage(back),
+                    art, Vector2.Zero, 0.8f));
+            }
         }
 
         public bool LocalMember

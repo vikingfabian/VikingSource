@@ -2524,11 +2524,11 @@ namespace VikingEngine
         WarsUnitIcon_Greensoldier,
         WarsUnitIcon_Folkman,
 
-        WarsSpcializeField,
-        WarsSpcializeSea,
-        WarsSpcializeAntiCavalry,
-        WarsSpcializeSiege,
-        WarsSpcializeTradition,
+        WarsSpecializeField,
+        WarsSpecializeSea,
+        WarsSpecializeAntiCavalry,
+        WarsSpecializeSiege,
+        WarsSpecializeTradition,
 
         WarsCityHall,
         WarsBuild_WorkerHuts,

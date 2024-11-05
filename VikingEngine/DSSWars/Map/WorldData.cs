@@ -71,7 +71,7 @@ namespace VikingEngine.DSSWars
         //public int evilFactionIndex=-1;
         public bool abortLoad = false;
 
-        public List<FactionType> availableGenericAiTypes = AvailableGenericAiTypes();
+        public List<FactionType> availableGenericAiTypes = new List<FactionType>();// AvailableGenericAiTypes();
 
         public WorldData()
         {
@@ -251,6 +251,7 @@ namespace VikingEngine.DSSWars
         {
             //if (subversion >= 22  && subversion != SaveGamestate.MergeVersion)
             //{
+            availableGenericAiTypes.Clear();
             subTileGrid.LoopBegin();
             SubTile previuos = new SubTile();
 
@@ -376,7 +377,7 @@ namespace VikingEngine.DSSWars
 
         public void readMapFile(System.IO.BinaryReader r)
         {
-           int version = r.ReadInt32();
+            int version = r.ReadInt32();
 
             metaData.seed = r.ReadUInt16();
             //rnd = new PcgRandom(metaData.seed);
