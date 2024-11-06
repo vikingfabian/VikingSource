@@ -1468,33 +1468,33 @@ namespace VikingEngine.DSSWars.GameObject
         {
             IntVector2 topleft = WP.ToSubTilePos_TopLeft(tilePos);
 
-            TerrainBuildingType tower;
-            TerrainBuildingType wall;
-            TerrainBuildingType house;
-            TerrainBuildingType road;
+            int tower;
+            int wall;
+            int house;
+            int road;
             double percBuilding;
 
             switch (this.CityType)
             {
                 case CityType.Small:
-                    tower = TerrainBuildingType.DirtTower;
-                    wall = TerrainBuildingType.DirtWall;
-                    house = TerrainBuildingType.SmallHouse;
-                    road = TerrainBuildingType.CobbleStones;
+                    tower = (int)TerrainWallType.DirtTower;
+                    wall = (int)TerrainWallType.DirtWall;
+                    house = (int)TerrainBuildingType.SmallHouse;
+                    road = (int)TerrainBuildingType.CobbleStones;
                     percBuilding = 0.3;
                     break;
                 case CityType.Large:
-                    tower = TerrainBuildingType.WoodTower;
-                    wall= TerrainBuildingType.WoodWall;
-                    house = TerrainBuildingType.SmallHouse;
-                    road = TerrainBuildingType.Square;
+                    tower = (int)TerrainWallType.WoodTower;
+                    wall= (int)TerrainWallType.WoodWall;
+                    house = (int)TerrainBuildingType.SmallHouse;
+                    road = (int)TerrainBuildingType.Square;
                     percBuilding = 0.5;
                     break;
                 default:
-                    tower = TerrainBuildingType.StoneTower;
-                    wall = TerrainBuildingType.StoneWall;
-                    house = TerrainBuildingType.BigHouse;
-                    road = TerrainBuildingType.Square;
+                    tower = (int)TerrainWallType.StoneTower;
+                    wall = (int)TerrainWallType.StoneWall;
+                    house = (int)TerrainBuildingType.BigHouse;
+                    road = (int)TerrainBuildingType.Square;
                     percBuilding = 0.6;
                     break;
 
@@ -1504,48 +1504,52 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 for (int x = 0; x < WorldData.TileSubDivitions; ++x)
                 {
-                    TerrainBuildingType buildingType = TerrainBuildingType.NUM_NONE;
+                    TerrainMainType main = TerrainMainType.Building;
+                    int sub;
+                    //TerrainWallType wallType = TerrainWallType.NUM_NONE;
+                    //TerrainBuildingType buildingType = TerrainBuildingType.NUM_NONE;
 
                     bool edgeX = x == 0 || x == WorldData.TileSubDivitions_MaxIndex;
                     bool edgeY = y == 0 || y == WorldData.TileSubDivitions_MaxIndex;
 
                     if (edgeX || edgeY)
                     {
+                        main = TerrainMainType.Wall;
                         if (edgeX && edgeY)
                         {
-                            buildingType = tower;
+                           sub  = tower;
                         }
                         else
                         {
-                            buildingType = wall;
+                            sub = wall;
                         }
                     }
                     else if (x == 4 && y == 3)
                     {
-                        buildingType = TerrainBuildingType.StoneHall;
+                        sub = (int)TerrainBuildingType.StoneHall;
                     }
                     else if (x == 4 && y == 4)
                     {
-                        buildingType = TerrainBuildingType.Square;
+                        sub = (int)TerrainBuildingType.Square;
                     }
                     else if (x == 3 && y == 4)
                     {
-                        buildingType = TerrainBuildingType.Work_Cook;
+                        sub = (int)TerrainBuildingType.Work_Cook;
                     }
                     else if (x == 5 && y == 4)
                     {
-                        buildingType = TerrainBuildingType.Work_Bench;
+                        sub = (int)TerrainBuildingType.Work_Bench;
                     }
                     else
                     {
-                        buildingType = world.rnd.Chance(percBuilding) ? house : road;
+                        sub = world.rnd.Chance(percBuilding) ? house : road;
                     }
 
                     IntVector2 pos = topleft;
                     pos.X += x;
                     pos.Y += y;
                     var subTile = world.subTileGrid.Get(pos);
-                    subTile.SetType(TerrainMainType.Building, (int)buildingType, 1);
+                    subTile.SetType(main, sub, 1);
                     world.subTileGrid.Set(pos, subTile);
                 }
             }

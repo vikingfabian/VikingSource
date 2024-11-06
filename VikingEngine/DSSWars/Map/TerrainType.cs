@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.Map
 {
+
+   
+
     enum TerrainMainType
     {
         DefaultLand,
@@ -17,6 +20,7 @@ namespace VikingEngine.DSSWars.Map
         Resourses,
         Building,
         Decor,
+        Wall,
         NUM
     }
 
@@ -52,12 +56,12 @@ namespace VikingEngine.DSSWars.Map
 
     enum TerrainBuildingType
     {
-        DirtWall,
-        DirtTower,
-        WoodWall,
-        WoodTower,
-        StoneWall,
-        StoneTower,
+        _RESERVE1,//DirtWall,
+        _RESERVE2,//DirtTower,
+        _RESERVE3,//WoodWall,
+        _RESERVE4,//WoodTower,
+        _RESERVE5,//StoneWall,
+        _RESERVE6,//StoneTower,
         StoneHall,
         SmallHouse,
         BigHouse,
@@ -83,6 +87,18 @@ namespace VikingEngine.DSSWars.Map
         NUM_NONE
     }
 
+    enum TerrainWallType
+    {
+        DirtWall,
+        DirtTower,
+        WoodWall,
+        WoodTower,
+        StoneWall,
+        StoneTower,
+
+        NUM_NONE
+    }
+
     enum TerrainDecorType
     {
         Pavement,
@@ -103,4 +119,17 @@ namespace VikingEngine.DSSWars.Map
         GoldOre,
         MithrilOre,
     }
+
+    enum TerrainSeaType
+    {       
+        Deep,
+        Low,
+    }
+
+    enum TerrainDefaultLandType
+    {
+        Flat,
+        Mountain,
+    }
+
 }

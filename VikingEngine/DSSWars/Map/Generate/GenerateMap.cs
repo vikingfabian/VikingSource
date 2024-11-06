@@ -921,7 +921,18 @@ namespace VikingEngine.DSSWars.Map.Generate
                     Height heightSett = DssRef.map.heigts[tile.heightLevel];
                     Biom biom = DssRef.map.bioms.bioms[(int)tile.biom];
 
-                    TerrainMainType tileType = tile.IsLand() ? TerrainMainType.DefaultLand : TerrainMainType.DefaultSea;
+                    int defaultLandType = 0;
+                    TerrainMainType tileType;
+                    if (tile.IsLand())
+                    {
+                        tileType = TerrainMainType.DefaultLand;
+                        defaultLandType = (int)(tile.heightLevel < Height.MountainHeightStart ? TerrainDefaultLandType.Flat : TerrainDefaultLandType.Mountain);
+                    }
+                    else
+                    {
+                        tileType = TerrainMainType.DefaultSea;
+                        defaultLandType = (int)(tile.heightLevel == Height.LowWaterHeight? TerrainSeaType.Low : TerrainSeaType.Deep);
+                    }
                     
                     float groundY = tile.GroundY();
 
@@ -935,25 +946,25 @@ namespace VikingEngine.DSSWars.Map.Generate
                     {
                         for (int x = 1; x < WidthMin1; ++x)
                         {
-                            subTile(x, y, groundY, tileType);
+                            subTile(x, y, groundY, tileType, defaultLandType);
                         }
                     }
 
                     for (int sidePos = 1; sidePos < WidthMin1; ++sidePos)
                     {
-                        subTile(0, sidePos, groundY_w, tileType);
+                        subTile(0, sidePos, groundY_w, tileType, defaultLandType);
 
-                        subTile(WidthMin1, sidePos, groundY_e, tileType);
+                        subTile(WidthMin1, sidePos, groundY_e, tileType, defaultLandType);
 
-                        subTile(sidePos, 0, groundY_n, tileType);
+                        subTile(sidePos, 0, groundY_n, tileType, defaultLandType);
 
-                        subTile(sidePos, WidthMin1, groundY_s, tileType);
+                        subTile(sidePos, WidthMin1, groundY_s, tileType, defaultLandType);
                     }
 
-                    subTile(0, 0, lib.SmallestValue(groundY_w, groundY_n), tileType);
-                    subTile(WidthMin1, 0, lib.SmallestValue(groundY_e, groundY_n), tileType);
-                    subTile(0, WidthMin1, lib.SmallestValue(groundY_w, groundY_s), tileType);
-                    subTile(WidthMin1, WidthMin1, lib.SmallestValue(groundY_s, groundY_e), tileType);
+                    subTile(0, 0, lib.SmallestValue(groundY_w, groundY_n), tileType, defaultLandType);
+                    subTile(WidthMin1, 0, lib.SmallestValue(groundY_e, groundY_n), tileType, defaultLandType);
+                    subTile(0, WidthMin1, lib.SmallestValue(groundY_w, groundY_s), tileType, defaultLandType);
+                    subTile(WidthMin1, WidthMin1, lib.SmallestValue(groundY_s, groundY_e), tileType, defaultLandType);
 
                     float edgeHeight(int x, int y)
                     {
@@ -968,7 +979,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         return result;
                     }
 
-                    void subTile(int x, int y, float topY, TerrainMainType tiletype)
+                    void subTile(int x, int y, float topY, TerrainMainType tiletype, int subType)
                     {
                         const int RndRange = 3;
 
@@ -1006,7 +1017,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                             topY += heightSett.mountainPeak[x, y];
                         }
 
-                        var subTile = new SubTile(tiletype, rndColor, topY);
+                        var subTile = new SubTile(tiletype, subType, rndColor, topY);
                         TerrainContent.createSubTileContent(subX, subY, distanceToCity, tile, heightSett, biom, ref mudRadius, ref subTile, world, noiseMap);
 
                         world.subTileGrid.Set(subX, subY, subTile);

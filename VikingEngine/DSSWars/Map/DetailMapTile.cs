@@ -115,6 +115,10 @@ namespace VikingEngine.DSSWars.Map
                             createBuilding(tile, ref subTile, (TerrainBuildingType)subTile.subTerrain,
                                 topCenter(ref subTile, ref subTopLeft));
                             break;
+                        case TerrainMainType.Wall:
+                            createWall(tile, ref subTile, (TerrainWallType)subTile.subTerrain,
+                                topCenter(ref subTile, ref subTopLeft));
+                            break;
                         case TerrainMainType.Mine:
                             createMine((TerrainMineType)subTile.subTerrain,
                                 topCenter(ref subTile, ref subTopLeft));
@@ -368,7 +372,41 @@ namespace VikingEngine.DSSWars.Map
             
         }
 
-        void createBuilding(Tile tile, ref SubTile subTile, TerrainBuildingType buildingType, Vector3 wp)
+        void createWall(Tile tile, ref SubTile subTile, TerrainWallType buildingType, Vector3 wp)
+        {
+            wp.X += WorldData.SubTileHalfWidth;
+            wp.Z += WorldData.SubTileHalfWidth;
+
+            switch (buildingType)
+            {
+                case TerrainWallType.DirtWall:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_dirtwall, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainWallType.DirtTower:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_dirttower, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainWallType.WoodWall:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_woodwall, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainWallType.WoodTower:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_woodtower, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainWallType.StoneWall:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_stonewall, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainWallType.StoneTower:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_stonetower, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+
+                default:
+                    throw new NotImplementedException();
+
+            }
+
+        }
+    
+
+    void createBuilding(Tile tile, ref SubTile subTile, TerrainBuildingType buildingType, Vector3 wp)
         {
             wp.X += WorldData.SubTileHalfWidth;
             wp.Z += WorldData.SubTileHalfWidth;
@@ -402,24 +440,7 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainBuildingType.Barracks:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, rnd, wp, WorldData.SubTileWidth * 1f));
                     break;
-                case TerrainBuildingType.DirtWall:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_dirtwall, rnd, wp, WorldData.SubTileWidth * 1.4f));
-                    break;
-                case TerrainBuildingType.DirtTower:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_dirttower, rnd, wp, WorldData.SubTileWidth * 1.4f));
-                    break;
-                case TerrainBuildingType.WoodWall:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_woodwall, rnd, wp, WorldData.SubTileWidth * 1.4f));
-                    break;
-                case TerrainBuildingType.WoodTower:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_woodtower, rnd, wp, WorldData.SubTileWidth * 1.4f));
-                    break;
-                case TerrainBuildingType.StoneWall:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_stonewall, rnd, wp, WorldData.SubTileWidth * 1.4f));
-                    break;
-                case TerrainBuildingType.StoneTower:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_stonetower, rnd, wp, WorldData.SubTileWidth * 1.4f));
-                    break;
+                
                 case TerrainBuildingType.StoneHall:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_stonehall, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
