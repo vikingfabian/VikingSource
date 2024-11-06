@@ -1,15 +1,7 @@
 ﻿-Change Log-
-* Updated save system to include both map file and meta data - for maximized backward compatibility in the future
-* Save files are about four times larger now (200MB for large map)
-* Army tags
-* Army menu update
-* border poles
-* new pre-genereated maps
-* fixed armies that try to buy food from an empty city
-* fixed named faction doublette bug
-* 6 new generic ai flags
+* Dread factions will start stronger
 
-! Old saves are broken
+! Old saves are broken - again (cities will look weird)
 
 #Todo (xmas patch)#
 krig varning på ally

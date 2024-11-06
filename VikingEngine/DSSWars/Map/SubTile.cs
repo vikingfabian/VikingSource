@@ -29,11 +29,12 @@ namespace VikingEngine.DSSWars.Map
         /// </summary>
         public int collectionPointer = -1;
 
-        public SubTile(TerrainMainType type, Color color, float groundY)
+        public SubTile(TerrainMainType type, int subType, Color color, float groundY)
         {
             this.color = color;
             this.groundY = groundY;
             this.mainTerrain = type;
+            this.subTerrain = subType;
         }
 
         public void SetType(TerrainMainType main, int under, int amount)
