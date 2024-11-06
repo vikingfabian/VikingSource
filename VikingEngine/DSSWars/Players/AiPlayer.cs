@@ -688,14 +688,39 @@ namespace VikingEngine.DSSWars.Players
 
                         break;
                     case FactionType.DarkFollower:
-                        mainArmy = startMainArmy();
-                        for (int i = 0; i < 5; ++i)
                         {
-                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_Pikeman);
-                        }
-                        for (int i = 0; i < 5; ++i)
-                        {
-                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_CrossbowMan);
+                            //mainArmy = startMainArmy();
+                            //for (int i = 0; i < 5; ++i)
+                            //{
+                            //    new SoldierGroup(mainArmy, DssLib.SoldierProfile_Pikeman);
+                            //}
+                            //for (int i = 0; i < 5; ++i)
+                            //{
+                            //    new SoldierGroup(mainArmy, DssLib.SoldierProfile_CrossbowMan);
+                            //}
+
+                            var citiesC = faction.cities.counter();
+                            while (citiesC.Next())
+                            {
+                                int count = citiesC.sel.CityType == CityType.Large ? 5 : 2;
+                                //if (citiesC.sel.CityType == CityType.Large)
+                                //{
+                                IntVector2 pos = DssRef.world.GetFreeTile(citiesC.sel.tilePos);
+                                var army = faction.NewArmy(pos);
+                                
+                                for (int i = 0; i < count; ++i)
+                                {
+                                    new SoldierGroup(army, DssLib.SoldierProfile_Pikeman);
+                                }
+                                for (int i = 0; i < count; ++i)
+                                {
+                                    new SoldierGroup(army, DssLib.SoldierProfile_CrossbowMan);
+                                }
+
+                                army.OnSoldierPurchaseCompleted();
+                                army.setMaxFood();
+                                //}
+                            }
                         }
                         break;
 
