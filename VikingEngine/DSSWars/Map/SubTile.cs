@@ -5,6 +5,7 @@ using System.Text;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.LootFest.Players;
 
@@ -37,6 +38,32 @@ namespace VikingEngine.DSSWars.Map
             this.subTerrain = subType;
         }
 
+        public float TerrainBlockMultipleValue()
+        {
+            switch (mainTerrain)
+            {
+                case TerrainMainType.Wall:
+                    return DetailPathNode.MoveCostWall;
+
+                case TerrainMainType.Foil:
+                    switch ((TerrainSubFoilType)subTerrain)
+                    {
+                        case TerrainSubFoilType.TreeHard:
+                        case TerrainSubFoilType.TreeSoft:
+                        case TerrainSubFoilType.DryWood:
+                            return DetailPathNode.MoveCostHindering;
+                    }
+                    break;
+                case TerrainMainType.Building:
+                    return DetailPathNode.MoveCostHindering;
+
+                case TerrainMainType.Mine:
+                    return DetailPathNode.MoveCostHindering;
+            }
+
+            return 1;
+        }
+
         public void SetType(TerrainMainType main, int under, int amount)
         {
             mainTerrain = main;
@@ -48,8 +75,6 @@ namespace VikingEngine.DSSWars.Map
         const int EqSubterrainIx = 1;
         const int EqTerrainAmountIx = 2;
         const int EqCollectionPointerIx = 3;
-
-
         public void write(System.IO.BinaryWriter w, ref SubTile previous)
         {
 

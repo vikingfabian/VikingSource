@@ -361,7 +361,9 @@ namespace VikingEngine.DSSWars.Map.Path
         const float MoveCostStraight = 10f;
         const float MoveCostDiagonal = 14f;
 
-        const float MoveCostWall = 20;
+        public const float MoveCostWall = 20;
+        public const float MoveCostHindering = 3;
+
 
         public static readonly DetailPathNode Empty = new DetailPathNode();
 
@@ -399,18 +401,23 @@ namespace VikingEngine.DSSWars.Map.Path
             this.PreviousPosition = parent.Position;
             closed = false;
 
-            moveCost = lib.IsEven(dir8) ? MoveCostStraight : MoveCostDiagonal;
+            if (lib.IsEven(dir8))
+            {
+                moveCost = MoveCostStraight;
+            }
+            else
+            { 
+                moveCost = MoveCostDiagonal;
+            }
+            
             if (dir8 == parent.dir8)
             { //Bonus for keeping direction
                 moveCost -= 1f;
             }
 
             SubTile subtile = world.subTileGrid.Get(pos);
-            if (subtile.mainTerrain == TerrainMainType.Building &&
-                subtile.subTerrain == (int)TerrainBuildingType.StoneWall)
-            {
-                moveCost *= MoveCostWall;
-            }
+            moveCost *= subtile.TerrainBlockMultipleValue();
+            
 
             Tile tile = world.tileGrid.Get(pos / WorldData.TileSubDivitions);
             waterTile = tile.IsWater();

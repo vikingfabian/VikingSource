@@ -38,7 +38,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             foreach (var obj in objects)
             {
-                obj.GetArmy().hoverAndSelectInfo(guiModels, player.playerData.localPlayerIndex);
+                obj.GetArmy().hoverAndSelectInfo(player, guiModels);
             }
 
         }

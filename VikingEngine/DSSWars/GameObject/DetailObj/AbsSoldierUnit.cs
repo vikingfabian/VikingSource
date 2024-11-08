@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.GameObject
         public IntVector2 gridPlacement;
 
         public SoldierAiState aiState = SoldierAiState.GroupLock;
-        public SoldierState2 state2 = SoldierState2.idle;
+        public SoldierState2 state2 = SoldierState2.wakeup;
         float stateTime;
         public int following = -1;
 

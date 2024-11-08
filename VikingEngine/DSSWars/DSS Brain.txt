@@ -10,6 +10,13 @@ dölj carry amount
 new game - Skip language crashes game
 
 
+--Group engagement--
+Attack radius
+	-smaller when traveling
+	-large against attack order
+
+Attack lineup innan target
+
 //ShowGamepadTextInput
 
 --Efter release polish--

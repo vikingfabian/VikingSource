@@ -84,6 +84,8 @@ namespace VikingEngine.DSSWars.GameObject
             setMaxFood();
 
             init(faction);
+
+            //Order_MoveTo(startPosition);
         }
 
         public Army()
@@ -484,7 +486,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (player.faction == faction)
             {
-                hoverAndSelectInfo(guiModels, player.playerData.localPlayerIndex);
+                hoverAndSelectInfo(player, guiModels);
             }
         }
 
@@ -545,37 +547,54 @@ namespace VikingEngine.DSSWars.GameObject
                 DeleteMe(DeleteReason.EmptyGroup, true);
             }
         }
-
         void updateArmyMovement(float time)
         {
+            bool inPointMode = false; //for later opt, all groups are removed for perfromance
+
             if (!IdleObjetive())
             {
-                Vector2 dir = Vector2.Zero;
-                dir.X = nextNodePos.X - position.X;
-                dir.Y = nextNodePos.Y - position.Z;
-
-                float l = dir.Length();
-
-                if (l > 0.04f)
+                if (inPointMode)
                 {
-                    var tile = DssRef.world.tileGrid.Get(tilePos);
-                    float speed = tile.TerrainSpeedMultiplier(out bool isLand);
-                    speed *= isLand ? transportSpeedLand : transportSpeedSea;
 
-                    dir.Normalize();
-                    //rotation.radians = lib.V2ToAngle(dir);
-                    Vector2 move = speed * time * dir;
-                    position.X += move.X;
-                    position.Z += move.Y;
+                    Vector2 dir = Vector2.Zero;
+                    dir.X = nextNodePos.X - position.X;
+                    dir.Y = nextNodePos.Y - position.Z;
 
-                    position.Y = tile.GroundY_aboveWater();
+                    float l = dir.Length();
 
-                    IntVector2 newtilepos = new IntVector2(position.X, position.Z);
-                    if (tilePos != newtilepos)
+                    if (l > 0.04f)
                     {
-                        tilePos = newtilepos;
+                        var tile = DssRef.world.tileGrid.Get(tilePos);
+                        float speed = tile.TerrainSpeedMultiplier(out bool isLand);
+                        speed *= isLand ? transportSpeedLand : transportSpeedSea;
+
+                        dir.Normalize();
+                        //rotation.radians = lib.V2ToAngle(dir);
+                        Vector2 move = speed * time * dir;
+                        position.X += move.X;
+                        position.Z += move.Y;
+
+                        position.Y = tile.GroundY_aboveWater();
+
+                        IntVector2 newtilepos = new IntVector2(position.X, position.Z);
+                        if (tilePos != newtilepos)
+                        {
+                            tilePos = newtilepos;
+                        }
                     }
+
                 }
+                else //Object mode
+                {   
+                    
+                    Vector3 goalDiff = armyGoalCenterWp - position;
+                    float l = VectorExt.PlaneXZLength(goalDiff);
+
+                    if (l < 0.1f)
+                    {
+                        clearObjective();
+                    }
+                } 
             }
         }
 
@@ -589,8 +608,8 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (fullUpdate || !isIdle)
                 {
-                    //Vector3 armyCenter = Vector3.Zero;
-                    //int armyCenterCount = 0;
+                    Vector3 armyCenter = Vector3.Zero;
+                    int armyCenterCount = 0;
                     var groupsC = groups.counter();
                     //SoldierGroup centerGuy = null;
                     //SoldierGroup mostCenterGuy 
@@ -598,8 +617,9 @@ namespace VikingEngine.DSSWars.GameObject
                     while (groupsC.Next())
                     {
                         groupsC.sel.update(time, fullUpdate);
-                        //armyCenter += groupsC.sel.position;
-                        //++armyCenterCount;
+                        Vector3 goalOffset = groupsC.sel.goalWp - armyGoalCenterWp;
+                        armyCenter += groupsC.sel.position - goalOffset;
+                        ++armyCenterCount;
 
                         //if (groupsC.sel.armyGridPlacement2.Y == 0)
                         //{                            
@@ -618,16 +638,28 @@ namespace VikingEngine.DSSWars.GameObject
                     //        position = newPosition;
                     //    }
                     //}
-                    //else if (armyCenterCount > 0)
-                    //{
-                    //    var newPosition = armyCenter / armyCenterCount;
-                    //    if (newPosition.X > 1 && newPosition.Z > 1)
-                    //    {
-                    //        position = newPosition;
-                    //    }
-                    //}
+                    if (IdleObjetive())
+                    {
+                        position.X = armyGoalCenterWp.X;
+                        position.Z = armyGoalCenterWp.Z;
 
-                    
+                    }
+                    else if (armyCenterCount > 0)
+                    {
+                        var newPosition = armyCenter / armyCenterCount;
+                        if (newPosition.X > 1 && newPosition.Z > 1)
+                        {
+                            position.X = newPosition.X;
+                            position.Z = newPosition.Z;
+                        }
+
+                        tilePos = new IntVector2(position.X, position.Z);
+                        var tile = DssRef.world.tileGrid.Get(tilePos);
+                        position.Y = tile.GroundY_aboveWater();
+
+                    }
+
+
                 }
 
                 aiUpdate(fullUpdate);
@@ -643,7 +675,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void refreshPositions(bool onPurchase)
         {
-            refreshGroupPlacements2(tilePos, true);
+            refreshGroupPlacements2(tilePos);
             //int width = groupsWidth();
 
             //IntVector2 nextGroupPlacementIndex = IntVector2.Zero;
@@ -974,7 +1006,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             nextNodePos = nextNodeTilePos;
 
-            refreshGroupPlacements2(nextNodeTilePos, finalNode);
+            refreshGroupPlacements2(nextNodeTilePos);
 
             
             //var groupsC = groups.counter();

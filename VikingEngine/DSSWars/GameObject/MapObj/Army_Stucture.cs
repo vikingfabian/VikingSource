@@ -22,6 +22,7 @@ namespace VikingEngine.DSSWars.GameObject
         int nextLeftRightOnBehindRow = 0;
 
         public int armyColumnWidth = MinColumnWidth;
+        public Vector3 armyGoalCenterWp;
 
         public IntVector2 nextArmyPlacement(int row)
         {
@@ -56,14 +57,12 @@ namespace VikingEngine.DSSWars.GameObject
         public void armyColumnWidthClick(int w)
         {
             armyColumnWidth = w;
-            refreshGroupPlacements2(tilePos, true);
+            refreshGroupPlacements2(tilePos);
         }
 
-        void refreshGroupPlacements2(IntVector2 walkToTilePos, bool finalNode)
+        void refreshGroupPlacements2(IntVector2 walkToTilePos)
         {
-            //if (finalNode)
-            //{
-            bool columnStructure = !finalNode;
+            //bool columnStructure = !finalNode;
 
             ArmyPlacementGrid placementGrid = new ArmyPlacementGrid();
 
@@ -74,24 +73,14 @@ namespace VikingEngine.DSSWars.GameObject
                 placementGrid.add(groupsC.sel);
             }
 
-            placementGrid.calcPositions(this, walkToTilePos, columnStructure);
-            //}
-            //else
-            //{
-            //    var wp = WP.ToWorldPos(walkToTilePos);
-            //    var groupsC = groups.counter();
-
-            //    while (groupsC.Next())
-            //    {
-            //        groupsC.sel.setArmyPlacement2(wp);
-            //    }
-            //}
-        }
-
-        void refreshGroupPlacements2_onMidNode(IntVector2 walkToTilePos)
-        {
+            placementGrid.calcPositions(this, walkToTilePos, walkGoalAsShip);
             
         }
+
+        //void refreshGroupPlacements2_onMidNode(IntVector2 walkToTilePos)
+        //{
+            
+        //}
     }
 
     class ArmyPlacementGrid
@@ -131,7 +120,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
-        public void calcPositions(Army army, IntVector2 walkToPos, bool columnStructure)
+        public void calcPositions(Army army, IntVector2 walkToPos, bool endAsShip)
         {
             List<SoldierGroup> failedPlacements = new List<SoldierGroup>();
 
@@ -142,27 +131,28 @@ namespace VikingEngine.DSSWars.GameObject
             //army.position
             //army.rotation
             //army.armyColumnWidth
-            int columnWidth = columnStructure ? 1 : army.armyColumnWidth;
+            int columnWidth = /*columnStructure ? 1 :*/ army.armyColumnWidth;
 
             Vector2 relPos = new Vector2();
             Vector2 centerWp = walkToPos.Vec;
+            army.armyGoalCenterWp = VectorExt.V2toV3XZ(centerWp);
 
-            column(Col_Center + PosXAdd, relPos, out Vector2 finalCenter, out float largestWidth, -0.5f);
+            column(Col_Center + PosXAdd, relPos, out Vector2 finalCenter, out float largestWidth, -0.5f, endAsShip);
 
             Vector2 relPosLeft = new Vector2(-largestWidth * 0.5f - DssVar.SoldierGroup_GridExtraSpacing, 0);
             Vector2 relPosRight = new Vector2(largestWidth * 0.5f + DssVar.SoldierGroup_GridExtraSpacing, 0);
 
 
 
-            column(Col_LeftBody + PosXAdd, relPosLeft, out Vector2 finalLeft, out largestWidth, -1f);
+            column(Col_LeftBody + PosXAdd, relPosLeft, out Vector2 finalLeft, out largestWidth, -1f, endAsShip);
             relPosLeft.X -= largestWidth + DssVar.SoldierGroup_GridExtraSpacing;
 
-            column(Col_RightBody + PosXAdd, relPosRight, out Vector2 finalRight, out largestWidth, 0f);
+            column(Col_RightBody + PosXAdd, relPosRight, out Vector2 finalRight, out largestWidth, 0f, endAsShip);
             relPosRight.X += largestWidth + DssVar.SoldierGroup_GridExtraSpacing;
 
-            column(Col_LeftFlank + PosXAdd, relPosLeft, out _, out largestWidth, -1f);
+            column(Col_LeftFlank + PosXAdd, relPosLeft, out _, out largestWidth, -1f, endAsShip);
 
-            column(Col_RightFlank + PosXAdd, relPosRight, out _, out largestWidth, 0f);
+            column(Col_RightFlank + PosXAdd, relPosRight, out _, out largestWidth, 0f, endAsShip);
 
 
             int leftColX = 0, centerColX = 0, rightColX = 0;
@@ -249,16 +239,16 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            void column(int colindex, Vector2 _relPos, out Vector2 finalPos, out float largestWidth, float centerPan)
+            void column(int colindex, Vector2 _relPos, out Vector2 finalPos, out float largestWidth, float centerPan, bool endAsShip)
             {
                 finalPos.X = _relPos.X;
                 largestWidth = 0;
                 Vector2 cellSize;
-                grid[colindex, 0].nextPlacement(centerWp, army.rotation, _relPos, centerPan, columnWidth, out cellSize, out _, true, failedPlacements);
+                grid[colindex, 0].nextPlacement(centerWp, army.rotation, _relPos, centerPan, columnWidth, out cellSize, out _, true, endAsShip, failedPlacements);
 
                 for (int row = 1; row < RowsCount; row++)
                 {
-                    grid[colindex, row].nextPlacement(centerWp, army.rotation, _relPos, centerPan, columnWidth, out cellSize, out float adjLeft, false, failedPlacements);
+                    grid[colindex, row].nextPlacement(centerWp, army.rotation, _relPos, centerPan, columnWidth, out cellSize, out float adjLeft, false, endAsShip, failedPlacements);
                     largestWidth = lib.LargestValue(largestWidth, cellSize.X);
                     finalPos.X = adjLeft;
                     _relPos.Y += cellSize.Y + DssVar.SoldierGroup_GridExtraSpacing;
@@ -323,7 +313,7 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        public void nextPlacement(Vector2 centerWp, Rotation1D armyRotation, Vector2 relativePosition, float centerPan, int armyColumnWidth, out Vector2 cellSize, out float adjLeft, bool frontRow, List<SoldierGroup> failedPlacements)
+        public void nextPlacement(Vector2 centerWp, Rotation1D armyRotation, Vector2 relativePosition, float centerPan, int armyColumnWidth, out Vector2 cellSize, out float adjLeft, bool frontRow, bool endAsShip, List<SoldierGroup> failedPlacements)
         {
             if (centerPan < 0)
             {
@@ -360,15 +350,15 @@ namespace VikingEngine.DSSWars.GameObject
                         topleft.X + colX * DssVar.SoldierGroup_Spacing,
                         topleft.Y + rowY * DssVar.SoldierGroup_Spacing);
 
-                    if (localPos.Y < 0.38f)
-                    {
-                        lib.DoNothing();
-                    }
+                    //if (localPos.Y < 0.38f)
+                    //{
+                    //    lib.DoNothing();
+                    //}
                     localPos = lib.RotatePointAroundCenter(Vector2.Zero, localPos,  armyRotation.radians);
                     Vector3 goalWp = VectorExt.V2toV3XZ(localPos + centerWp);
                     IntVector2 subTilePos = WP.ToSubTilePos(goalWp);
                     var subTile = DssRef.world.subTileGrid.Get(subTilePos);
-                    if (subTile.mainTerrain == Map.TerrainMainType.DefaultSea)
+                    if ((subTile.mainTerrain == Map.TerrainMainType.DefaultSea) != endAsShip)
                     {
                         failedPlacements.Add(group);
                     }
@@ -388,6 +378,11 @@ namespace VikingEngine.DSSWars.GameObject
             //{
             //    cellSize = new Vector2(DssVar.SoldierGroup_Spacing);
             //}
+        }
+
+        public override string ToString()
+        {
+            return "ArmyPlacementCell, count: " + groups.Count.ToString();
         }
     }
 }

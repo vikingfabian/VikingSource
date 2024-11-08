@@ -1,10 +1,13 @@
-﻿using System;
+﻿#define VISUAL_NODES
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.Graphics;
 using VikingEngine.LootFest.Map;
 using VikingEngine.PJ;
+using VikingEngine.Timer;
 
 namespace VikingEngine.DSSWars.Map
 {
@@ -204,18 +207,34 @@ namespace VikingEngine.DSSWars.Map
             currentNodeIx = nodes.Count - 1;
 
 #if VISUAL_NODES
-            nodeImages = new List<Graphics.Mesh>();
-            foreach (Vector2 n in nodes)
-            {
-                Vector3 pos = WorldPosition.V2toV3(n);
-                WorldPosition wp = new WorldPosition(pos);
-                wp.SetFromGroundY(2);
-                nodeImages.Add(new Graphics.Mesh(LoadedMesh.cube_repeating, wp.ToWorldPos(), 
-                    new Graphics.TextureEffect( Graphics.TextureEffectType.Flat, SpriteName.ControllerB), 0.4f));
-            }
-
+            Ref.update.AddSyncAction(new SyncAction(createVisuals));
 #endif
         }
+
+#if VISUAL_NODES
+        void createVisuals()
+        {
+            nodeImages = new List<Graphics.Mesh>();
+            foreach (var n in nodes)
+            {
+                Vector3 pos = WP.ToSubTileWP_Centered(n.position);
+                //WorldPosition wp = new WorldPosition(pos);
+
+                var mesh = new Graphics.Mesh(LoadedMesh.cube_repeating, pos, new Vector3(0.3f), Graphics.TextureEffectType.Flat, SpriteName.ArmourGold, Color.White, false);
+                mesh.AddToRender(DrawGame.UnitDetailLayer);
+                nodeImages.Add(mesh);
+            }
+            new TimedAction0ArgTrigger(deleteVisuals, 10000);
+        }
+
+        void deleteVisuals()
+        {
+            foreach (var img in nodeImages)
+            {
+                img.DeleteMe();
+            }
+        }
+#endif
 
         public bool TryGetCurrentNode(out PathNodeResult node)
         {
@@ -277,6 +296,57 @@ namespace VikingEngine.DSSWars.Map
         public IntVector2 LastNode()
         {
             return nodes[0].position;
+        }
+
+        public IntVector2 getNodeAhead(int distanceAhead, IntVector2 start)
+        {
+            int maxLoops = 100;
+
+            while (--maxLoops > 0)
+            {
+                if (HasMoreNodes())
+                {
+                    int dist = nodes[currentNodeIx].position.SideLength(start);
+                    if (dist <= 1)
+                    {
+                        NextNode();
+                    }
+                    else
+                    { 
+                        //Next is distance one away
+                        int aheadNode = Bound.Min(currentNodeIx - (distanceAhead -1), 0);
+                        return nodes[aheadNode].position;
+                    }
+                }
+                else
+                {
+                    return start;
+                }
+            }
+
+            return start;
+        }
+
+        public void refreshCurrentNode(IntVector2 tilePos, out bool offTrack)
+        {
+            int maxLoops = 100;
+
+            while (HasMoreNodes() && --maxLoops > 0)
+            {
+                int dist = nodes[currentNodeIx].position.SideLength(tilePos);
+                if (dist <= 1)
+                {
+                    NextNode();
+                }
+                else
+                {
+                    offTrack = dist > 2;
+                    return;
+                }
+            }
+
+            offTrack = false;
+            return;
         }
 
         public int RemoveLast()

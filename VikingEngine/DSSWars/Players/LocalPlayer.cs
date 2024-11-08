@@ -843,7 +843,7 @@ namespace VikingEngine.DSSWars.Players
                 if (VikingEngine.Input.Keyboard.KeyDownEvent(Keys.P))
                 {
                     var subtile = DssRef.world.subTileGrid.Get(mapControls.hover.subTile.subTilePos);
-                    subtile.SetType(TerrainMainType.Building, (int)TerrainBuildingType.StoneWall, 1);
+                    subtile.SetType(TerrainMainType.Wall, (int)TerrainWallType.StoneWall, 1);
                     DssRef.world.subTileGrid.Set(mapControls.hover.subTile.subTilePos, subtile);
                 }
 #endif
