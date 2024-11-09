@@ -9,7 +9,7 @@ using VikingEngine.LootFest.Players;
 using VikingEngine.HUD.RichBox;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
-using VikingEngine.DSSWars.Battle;
+//using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.GameState;
 using System;
 using System.IO;
@@ -55,11 +55,11 @@ namespace VikingEngine.DSSWars.Players
         public Automation automation;
         public Build.BuildControls buildControls;
 
-        public SpottedArray<Battle.BattleGroup> battles = new SpottedArray<Battle.BattleGroup>(4);
+        //public SpottedArray<Battle.BattleGroup> battles = new SpottedArray<Battle.BattleGroup>(4);
 
         int tabCity = -1;
         SpottedArrayCounter<Army> tabArmy;
-        SpottedArrayCounter<BattleGroup> tabBattle;
+        //SpottedArrayCounter<BattleGroup> tabBattle;
 
         public int mercenaryCost = DssRef.difficulty.MercenaryPurchaseCost_Start;
 
@@ -99,7 +99,7 @@ namespace VikingEngine.DSSWars.Players
             faction.diplomaticSide = DiplomaticSide.Light;
 
             tabArmy = faction.armies.counter();
-            tabBattle = new SpottedArrayCounter<BattleGroup>(battles);
+            //tabBattle = new SpottedArrayCounter<BattleGroup>(battles);
 
             input = new InputMap(playerindex);
             input.setInputSource(pStorage.inputSource.sourceType, pStorage.inputSource.controllerIndex);
@@ -340,7 +340,7 @@ namespace VikingEngine.DSSWars.Players
             content.newParagraph();
             content.h2(DssRef.lang.WorkForce_ChildBirthRequirements);
             content.text(string.Format(DssRef.lang.WorkForce_AvailableHomes, city.homesUnused())).overrideColor = HudLib.ResourceCostColor(city.homesUnused() > 0);
-            content.text(DssRef.lang.WorkForce_Peace).overrideColor = HudLib.ResourceCostColor(city.battleGroup == null);
+            //content.text(DssRef.lang.WorkForce_Peace).overrideColor = HudLib.ResourceCostColor(city.battleGroup == null);
             HudLib.ItemCount(content, DssRef.lang.Resource_TypeName_Food, city.res_food.amount.ToString()).overrideColor = HudLib.ResourceCostColor(city.res_food.amount > 0);
 
             hud.tooltip.create(this, content, true);
@@ -532,25 +532,25 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public void enterBattle(Battle.BattleGroup battleGroup, AbsMapObject playerUnit)
-        {
-            battles.Add(battleGroup);
-            RichBoxContent content = new RichBoxContent();
-            hud.messages.Title(content, DssRef.lang.Hud_Battle);
+        //public void enterBattle(Battle.BattleGroup battleGroup, AbsMapObject playerUnit)
+        //{
+        //    battles.Add(battleGroup);
+        //    RichBoxContent content = new RichBoxContent();
+        //    hud.messages.Title(content, DssRef.lang.Hud_Battle);
 
-            var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-            hud.messages.ControllerInputIcons(gotoBattleButtonContent);
-            gotoBattleButtonContent.Add(new RichBoxText(playerUnit.TypeName() + " - " + battleGroup.TypeName()));
+        //    var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
+        //    hud.messages.ControllerInputIcons(gotoBattleButtonContent);
+        //    gotoBattleButtonContent.Add(new RichBoxText(playerUnit.TypeName() + " - " + battleGroup.TypeName()));
 
-            content.Add(new RichboxButton(gotoBattleButtonContent,
-                new RbAction1Arg<Battle.BattleGroup>(goToBattle, battleGroup)));
-            hud.messages.Add(content);
-        }
+        //    content.Add(new RichboxButton(gotoBattleButtonContent,
+        //        new RbAction1Arg<Battle.BattleGroup>(goToBattle, battleGroup)));
+        //    hud.messages.Add(content);
+        //}
 
-        void goToBattle(Battle.BattleGroup battleGroup)
-        {
-            mapControls.cameraFocus = battleGroup;
-        }
+        //void goToBattle(Battle.BattleGroup battleGroup)
+        //{
+        //    mapControls.cameraFocus = battleGroup;
+        //}
 
         public override void onNewRelation(Faction otherFaction, DiplomaticRelation rel, RelationType previousRelation)
         {
@@ -1050,25 +1050,25 @@ namespace VikingEngine.DSSWars.Players
             }
 
             //BATTLE
-            if (input.NextBattle.DownEvent)
-            {
-                if (Input.Keyboard.Shift)
-                {
-                    if (tabBattle.Prev_Rollover())
-                    {
-                        mapControls.cameraFocus = tabBattle.sel;
-                        return;
-                    }
-                }
-                else
-                {
-                    if (tabBattle.Next_Rollover())
-                    {
-                        mapControls.cameraFocus = tabBattle.sel;
-                        return;
-                    }
-                }
-            }
+            //if (input.NextBattle.DownEvent)
+            //{
+            //    if (Input.Keyboard.Shift)
+            //    {
+            //        if (tabBattle.Prev_Rollover())
+            //        {
+            //            mapControls.cameraFocus = tabBattle.sel;
+            //            return;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (tabBattle.Next_Rollover())
+            //        {
+            //            mapControls.cameraFocus = tabBattle.sel;
+            //            return;
+            //        }
+            //    }
+            //}
         }
 
         void updateMapOverlays()
@@ -1163,6 +1163,7 @@ namespace VikingEngine.DSSWars.Players
 
             Faction enemyFac = DssRef.settings.darkLordPlayer.faction;
             DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
+            DssRef.diplomacy.declareWar(faction, enemyFac);
             //DssRef.world.factionsCounter.Reset();
 
             //enemyFac = DssRef.world.factions.Array[DssRef.world.evilFactionIndex];
@@ -1187,10 +1188,10 @@ namespace VikingEngine.DSSWars.Players
                 //{
                 //    new SoldierGroup(army, UnitType.Viking, false).completeTransform(SoldierTransformType.ToShip);
                 //}
-                //for (int i = 0; i < 10; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Soldier, false).completeTransform(SoldierTransformType.ToShip);
-                //}
+                for (int i = 0; i < 2; ++i)
+                {
+                    new SoldierGroup(army, DssLib.SoldierProfile_Standard, army.position);
+                }
                 //for (int i = 0; i < 30; ++i)
                 //{
                 //    new SoldierGroup(army, UnitType.Knight, false).completeTransform(SoldierTransformType.ToShip);
@@ -1199,22 +1200,21 @@ namespace VikingEngine.DSSWars.Players
             }
             //else
             {
-                //{
-                //    var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
-                //    army.rotation = enemyRot;
-                //    //int count = 4;//Ref.rnd.Int(4, 8);
+                {
+                    var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
+                    army.rotation = enemyRot;
+                    //int count = 4;//Ref.rnd.Int(4, 8);
 
-                //    for (int i = 0; i < 10; ++i)
-                //    {
-                //        new SoldierGroup(army, UnitType.Archer, false).completeTransform(SoldierTransformType.ToShip);
-                //    }
-                //    new SoldierGroup(army, UnitType.DarkLord, false).completeTransform(SoldierTransformType.ToShip);
-                //    //for (int i = 0; i < 5; ++i)
-                //    //{
-                //    //    new SoldierGroup(army, UnitType.Ballista, false);
-                //    //}
-                //    army.refreshPositions(true);
-                //}
+                    for (int i = 0; i < 2; ++i)
+                    {
+                        new SoldierGroup(army, DssLib.SoldierProfile_Standard, army.position);
+                    }
+                    //for (int i = 0; i < 5; ++i)
+                    //{
+                    //    new SoldierGroup(army, UnitType.Ballista, false);
+                    //}
+                    army.refreshPositions(true);
+                }
 
 
                 //{

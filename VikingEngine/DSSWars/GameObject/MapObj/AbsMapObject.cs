@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using VikingEngine.DSSWars.Battle;
+//using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
@@ -68,10 +68,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         abstract protected void setInRenderState();
 
-        virtual public void ExitBattleGroup()
-        {
-            battleGroup = null;
-        }
+        //virtual public void ExitBattleGroup()
+        //{
+        //    battleGroup = null;
+        //}
 
         public float distanceTo(AbsMapObject obj)
         {

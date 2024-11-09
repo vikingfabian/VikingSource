@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars
         public int nextGroupId = 0;
         public List<Players.LocalPlayer> localPlayers;
         
-        public SpottedArray<Battle.BattleGroup> battles = new SpottedArray<Battle.BattleGroup>(64);
+        //public SpottedArray<Battle.BattleGroup> battles = new SpottedArray<Battle.BattleGroup>(64);
 
         bool host;
         bool isReady= false;
@@ -216,7 +216,7 @@ namespace VikingEngine.DSSWars
             new AsynchUpdateable_TryCatch(asyncUserUpdate, "DSS user update", 58);
             new AsynchUpdateable_TryCatch(asyncMapBorders, "DSS map borders update", 59);
             new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60);
-            new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62);
+            //new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62);
             new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63);
             new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
             
@@ -434,22 +434,22 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        bool asyncBattlesUpdate(int id, float time)
-        {
-            if (cutScene == null)
-            {
-                var battlesC = battles.counter();
-                while (battlesC.Next())
-                {
-                    bool deleted = battlesC.sel.async_update(time);
-                    if (deleted)
-                    {
-                        battlesC.RemoveAtCurrent();
-                    }
-                }
-            }
-            return exitThreads;
-        }
+        //bool asyncBattlesUpdate(int id, float time)
+        //{
+        //    if (cutScene == null)
+        //    {
+        //        var battlesC = battles.counter();
+        //        while (battlesC.Next())
+        //        {
+        //            bool deleted = battlesC.sel.async_update(time);
+        //            if (deleted)
+        //            {
+        //                battlesC.RemoveAtCurrent();
+        //            }
+        //        }
+        //    }
+        //    return exitThreads;
+        //}
 
         bool asyncWorkUpdate(int id, float time)
         {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml.Linq;
 using System.Xml.Xsl;
 using Valve.Steamworks;
-using VikingEngine.DSSWars.Battle;
+//using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Players;
@@ -471,7 +471,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             Debug.CrashIfThreaded();
             groups.RemoveAt_EqualSafeCheck(group, group.parentArrayIndex);
-            if (!InBattle())
+            //if (!InBattle())
             {
                 refreshPositions(false);
             }
@@ -812,9 +812,9 @@ namespace VikingEngine.DSSWars.GameObject
                     terrainSpeedMultiplier = tile.TerrainSpeedMultiplier(isShip);
                 }
                 
-                var battleGroup_sp = battleGroup;
-                bool inBattle = battleGroup_sp != null && battleGroup_sp.battleState == Battle.BattleState.Battle;
-                bool notBattle = !inBattle;
+                //var battleGroup_sp = battleGroup;
+                //bool inBattle = battleGroup_sp != null && battleGroup_sp.battleState == Battle.BattleState.Battle;
+                //bool notBattle = !inBattle;
 
                 var groupsC = groups.counter();
 
@@ -834,7 +834,7 @@ namespace VikingEngine.DSSWars.GameObject
                         ++shipCount;
                         dps = groupsC.sel.soldierData.DPS_sea();
 
-                        if (notBattle)                       
+                        //if (notBattle)                       
                         {
                             speedbonus += groupsC.sel.soldierConscript.conscript.armySpeedBonus(false);//unitProfile.ArmySpeedBonusSea;
                             groupsC.sel.walkSpeed = transportSpeedSea;
@@ -851,11 +851,11 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         dps = groupsC.sel.soldierData.DPS_land();
 
-                        if (notBattle)
-                        {
-                            speedbonus += groupsC.sel.soldierConscript.conscript.armySpeedBonus(true);//unitProfile.ArmySpeedBonusLand;
-                            groupsC.sel.walkSpeed = transportSpeedLand;
-                        }
+                        //if (notBattle)
+                        //{
+                        speedbonus += groupsC.sel.soldierConscript.conscript.armySpeedBonus(true);//unitProfile.ArmySpeedBonusLand;
+                        groupsC.sel.walkSpeed = transportSpeedLand;
+                        //}
 
                         health = groupsC.sel.soldierData.basehealth;
                     }
@@ -940,11 +940,11 @@ namespace VikingEngine.DSSWars.GameObject
                 isShip && 
                 faction.grouptype == FactionGroupType.Nordic)
             {
-                var battle = battles.First();
-                if (battle != null && battle.faction.player.IsPlayer())
-                {
-                    DssRef.achieve.UnlockAchievement(AchievementIndex.viking_naval);
-                }
+                //var battle = battles.First();
+                //if (battle != null && battle.faction.player.IsPlayer())
+                //{
+                //    DssRef.achieve.UnlockAchievement(AchievementIndex.viking_naval);
+                //}
             }
 
             var counter = groups.counter();
@@ -989,10 +989,10 @@ namespace VikingEngine.DSSWars.GameObject
         public void setWalkNode(IntVector2 nextNodeTilePos, bool finalNode,
             bool nextIsFootTransform, bool nextIsShipTransform)
         {
-            if (battleGroup != null)
-            {
-                return;
-            }
+            //if (battleGroup != null)
+            //{
+            //    return;
+            //}
 
             //if (id == 786)
             //{ 
@@ -1052,38 +1052,38 @@ namespace VikingEngine.DSSWars.GameObject
             return !isDeleted;
         }
 
-        public override void OnBattleJoin(BattleGroup group)
-        {
-            base.OnBattleJoin(group);
+        //public override void OnBattleJoin(BattleGroup group)
+        //{
+        //    base.OnBattleJoin(group);
 
-            var groupsC = groups.counter();
-            while (groupsC.Next())
-            {   
-                groupsC.sel.battleQueTime = 0;
-                groupsC.sel.prevBattleGridPos = IntVector2.MinValue;
-            }
-        }
+        //    var groupsC = groups.counter();
+        //    while (groupsC.Next())
+        //    {   
+        //        groupsC.sel.battleQueTime = 0;
+        //        groupsC.sel.prevBattleGridPos = IntVector2.MinValue;
+        //    }
+        //}
 
-        public override void ExitBattleGroup()
-        {
-            base.ExitBattleGroup();
+        //public override void ExitBattleGroup()
+        //{
+        //    base.ExitBattleGroup();
 
-            refreshPositions(false);
-            Ai_EnterPeaceEvent();
+        //    refreshPositions(false);
+        //    Ai_EnterPeaceEvent();
 
-            bool refreshArmyPos = IdleObjetive();
+        //    bool refreshArmyPos = IdleObjetive();
 
-            var groupsC = groups.counter();
-            while (groupsC.Next())
-            {   
-                if (refreshArmyPos)
-                {
-                    groupsC.sel.bumpWalkToNode(tilePos);
-                }
+        //    var groupsC = groups.counter();
+        //    while (groupsC.Next())
+        //    {   
+        //        if (refreshArmyPos)
+        //        {
+        //            groupsC.sel.bumpWalkToNode(tilePos);
+        //        }
 
-                groupsC.sel.EnterPeaceEvent();
-            }
-        }
+        //        groupsC.sel.EnterPeaceEvent();
+        //    }
+        //}
         
         public Vector3 leadingPosition()
         {

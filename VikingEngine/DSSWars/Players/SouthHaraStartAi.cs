@@ -44,7 +44,7 @@ namespace VikingEngine.DSSWars.Players
                         messageDone = true;
                     }
 
-                    if (armiesC.sel.InBattle() ||
+                    if (/*armiesC.sel.InBattle() ||*/
                         armiesC.sel.IdleObjetive())
                     {
                         complete();

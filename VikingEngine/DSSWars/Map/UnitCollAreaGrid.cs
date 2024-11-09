@@ -98,65 +98,65 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        IntVector2 previousBattleGroupCheckTilePos = IntVector2.NegativeOne;
-        List<AbsMapObject> battleGroupNearMapObjects = new List<AbsMapObject>();
+        //IntVector2 previousBattleGroupCheckTilePos = IntVector2.NegativeOne;
+        //List<AbsMapObject> battleGroupNearMapObjects = new List<AbsMapObject>();
 
-        public List<AbsMapObject> BattleGroupNearMapObjects(IntVector2 tilePos, List<Faction> factions)
-        {
-            battleGroupNearMapObjects.Clear();
+        //public List<AbsMapObject> BattleGroupNearMapObjects(IntVector2 tilePos, List<Faction> factions)
+        //{
+        //    battleGroupNearMapObjects.Clear();
             
-            if (tilePos != previousBattleGroupCheckTilePos)
-            {
-                previousBattleGroupCheckTilePos = tilePos;
+        //    if (tilePos != previousBattleGroupCheckTilePos)
+        //    {
+        //        previousBattleGroupCheckTilePos = tilePos;
 
-                IntVector2 areaPos = tilePos / UnitGridSquareWidth;
+        //        IntVector2 areaPos = tilePos / UnitGridSquareWidth;
 
-                UnitCollArea area;
+        //        UnitCollArea area;
 
-                for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
-                {
-                    for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
-                    {
-                        if (grid.TryGet(x, y, out area))
-                        {
-                            if (area.cities != null)
-                            {
-                                foreach (var m in area.cities)
-                                {
-                                    if (m.battleGroup == null &&
-                                        m.tilePos.SideLength(tilePos) <= DssLib.BattleChainConflictRadius &&
-                                        factions.Contains(m.faction))
-                                    {
-                                        battleGroupNearMapObjects.Add(m);
-                                    }
-                                }                                
-                            }
+        //        for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
+        //        {
+        //            for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
+        //            {
+        //                if (grid.TryGet(x, y, out area))
+        //                {
+        //                    if (area.cities != null)
+        //                    {
+        //                        foreach (var m in area.cities)
+        //                        {
+        //                            if (m.battleGroup == null &&
+        //                                m.tilePos.SideLength(tilePos) <= DssLib.BattleChainConflictRadius &&
+        //                                factions.Contains(m.faction))
+        //                            {
+        //                                battleGroupNearMapObjects.Add(m);
+        //                            }
+        //                        }                                
+        //                    }
 
-                            lock (area.armies)
-                            {
-                                //var armies_sp = area.armies;
-                                if (area.armies != null)
-                                {
-                                    foreach (var m in area.armies)
-                                    {
-                                        if (m.battleGroup == null &&
-                                            m.tilePos.SideLength(tilePos) <= DssLib.BattleChainConflictRadius &&
-                                            m.IdleObjetive() &&
-                                           factions.Contains(m.faction))
-                                        {
-                                            battleGroupNearMapObjects.Add(m);
-                                        }
-                                    }
-                                }
-                            }
-                        }
+        //                    lock (area.armies)
+        //                    {
+        //                        //var armies_sp = area.armies;
+        //                        if (area.armies != null)
+        //                        {
+        //                            foreach (var m in area.armies)
+        //                            {
+        //                                if (m.battleGroup == null &&
+        //                                    m.tilePos.SideLength(tilePos) <= DssLib.BattleChainConflictRadius &&
+        //                                    m.IdleObjetive() &&
+        //                                   factions.Contains(m.faction))
+        //                                {
+        //                                    battleGroupNearMapObjects.Add(m);
+        //                                }
+        //                            }
+        //                        }
+        //                    }
+        //                }
                         
-                    }
-                }
-            }
+        //            }
+        //        }
+        //    }
 
-            return battleGroupNearMapObjects;
-        }
+        //    return battleGroupNearMapObjects;
+        //}
 
         public List<AbsMapObject> MapControlsMultiselectMapObjects(IntVector2 tilePosStart, IntVector2 tilePosEnd, Faction faction)
         {
@@ -584,7 +584,6 @@ namespace VikingEngine.DSSWars.Map
 
             opponents = groupsAndCities_nearUpdate;
             friendly = friendlyGroupsAndCities_nearUpdate;
-            //return groupsAndCities_nearUpdate;
         }
 
 

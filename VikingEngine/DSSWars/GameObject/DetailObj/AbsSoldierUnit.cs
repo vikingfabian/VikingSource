@@ -372,7 +372,13 @@ namespace VikingEngine.DSSWars.GameObject
                 model?.update(this);
             }
         }
+        public void update2_battle(float time, bool fullUpate)
+        {
+            updateMoveAttackPrio(time, fullUpate);
 
+            updateGroudY(false);
+            model?.update(this);
+        }
         public void wakeUp2()
         {
             if (state2 == SoldierState2.idle)
@@ -484,7 +490,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        private void updateMoveAttackPrio(float time, bool fullUpdate)
+        protected void updateMoveAttackPrio(float time, bool fullUpdate)
         {
             searchTargetUpdate();
 
@@ -499,14 +505,14 @@ namespace VikingEngine.DSSWars.GameObject
                 //Attacking
                 updateAttack(time);
             }
-            else if (attackTarget == null)
-            {
-                state.idle = true;
-                if (group.army.battleGroup == null)
-                {
-                    setReGroupState();
-                }
-            }
+            //else if (attackTarget == null)
+            //{
+            //    state.idle = true;
+            //    //if (group.army.battleGroup == null)
+            //    {
+            //        setReGroupState();
+            //    }
+            //}
             else
             {
                 var inReach = checkTargetInReach();
@@ -991,30 +997,35 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void asyncBattleUpdate()
+        { 
+             groupAttackTarget_asynch();
+        }
         override public void asynchUpdate()
         {
-            if (localMember)
-            {
-                tilePos = WP.ToTilePos(position);
+           
+            //if (localMember)
+            //{
+            //    tilePos = WP.ToTilePos(position);
 
-                goalDistans = VectorExt.PlaneXZLength(walkingGoal - position);
+            //    goalDistans = VectorExt.PlaneXZLength(walkingGoal - position);
 
-                if (aiState == SoldierAiState.ColumnQue)
-                {
-                    bumpIntoEnemyWhileQue_asynch();
+            //    if (aiState == SoldierAiState.ColumnQue)
+            //    {
+            //        bumpIntoEnemyWhileQue_asynch();
 
-                    if (soldierData.mainAttack != AttackType.Melee || bonusProjectiles > 0)
-                    {
-                        groupAttackTarget_asynch();
-                    }
-                }
-                else if (aiState == SoldierAiState.FreeAttack)
-                {
-                    groupAttackTarget_asynch();
-                    asynchFriendlyCollisionsCheck();
-                }
+            //        if (soldierData.mainAttack != AttackType.Melee || bonusProjectiles > 0)
+            //        {
+            //            groupAttackTarget_asynch();
+            //        }
+            //    }
+            //    else if (aiState == SoldierAiState.FreeAttack)
+            //    {
+            //        groupAttackTarget_asynch();
+            //        asynchFriendlyCollisionsCheck();
+            //    }
 
-            }
+            //}
         }
 
         void bumpIntoEnemyWhileQue_asynch()

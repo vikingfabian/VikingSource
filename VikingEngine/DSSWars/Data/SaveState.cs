@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Valve.Steamworks;
 using VikingEngine.DataStream;
-using VikingEngine.DSSWars.Battle;
+//using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.LootFest.Data;
@@ -245,26 +245,26 @@ namespace VikingEngine.DSSWars.Data
         }
     }
 
-    class BattleMemberObjectPointer: AbsObjectPointer
-    {
-        BattleGroup battle;
+    //class BattleMemberObjectPointer: AbsObjectPointer
+    //{
+    //    //BattleGroup battle;
 
-        public BattleMemberObjectPointer(System.IO.BinaryWriter w, AbsGameObject target)
-        {
-            WriteObjectPointer(w, target);        
-        }
+    //    public BattleMemberObjectPointer(System.IO.BinaryWriter w, AbsGameObject target)
+    //    {
+    //        WriteObjectPointer(w, target);        
+    //    }
 
-        public BattleMemberObjectPointer(BinaryReader r, BattleGroup battle)
-        {
-            this.battle = battle;
-            ReadObjectPointer(r);
-        }
+    //    //public BattleMemberObjectPointer(BinaryReader r, BattleGroup battle)
+    //    //{
+    //    //    this.battle = battle;
+    //    //    ReadObjectPointer(r);
+    //    //}
 
-        public override void SetPointer()
-        {
-            battle.addPart((AbsMapObject)GetObject(), false);
-        }
-    }
+    //    //public override void SetPointer()
+    //    //{
+    //    //    battle.addPart((AbsMapObject)GetObject(), false);
+    //    //}
+    //}
 
     struct SaveVersion
     {

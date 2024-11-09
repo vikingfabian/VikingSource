@@ -1003,7 +1003,7 @@ namespace VikingEngine.DSSWars.Players
             { 
                 var city = faction.cities.GetRandomUnsafe(Ref.rnd);
 
-                if (city != null && !city.InBattle())
+                if (city != null /*&& !city.InBattle()*/)
                 {
                     int friendCount = 0;
                     int enemyCount = 0;
@@ -1022,7 +1022,7 @@ namespace VikingEngine.DSSWars.Players
 
                     if (friendCount > enemyCount)
                     {
-                        purchaseOrder = PurchaseOrderType_CityWorkers;
+                        //purchaseOrder = PurchaseOrderType_CityWorkers;
                     }
                     else
                     {
@@ -1045,8 +1045,9 @@ namespace VikingEngine.DSSWars.Players
         void mainArmy_AsyncUpdate(List<int> wars)
         {
 
-            if (emptyMainArmy() ||
-                mainArmy.InBattle())
+            if (emptyMainArmy())
+                //||
+                //mainArmy.InBattle())
             {
                 mainArmyState = MainArmyState_StartNew;
                 if (faction.armies.Count > 0)

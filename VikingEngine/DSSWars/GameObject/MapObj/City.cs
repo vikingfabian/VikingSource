@@ -864,7 +864,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public double childAddPerSec()
         {
-            if (battleGroup == null &&
+            if (/*battleGroup == null &&*/
                 res_food.amount > 0 &&
                 homeUsers() < homesTotal())
             {
@@ -927,7 +927,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            if (battleGroup == null)
+            //if (battleGroup == null)
             {
                 if (immigrants.HasValue())
                 {
@@ -1079,7 +1079,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void respawnGuard()
         {
             if (guardCount < maxGuardSize && 
-                !InBattle() &&
+                //!InBattle() &&
                 spendWorker(1))
             {
                 guardCount += 1;

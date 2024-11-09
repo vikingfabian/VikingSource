@@ -5,7 +5,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Xml.Linq;
 using Valve.Steamworks;
-using VikingEngine.DSSWars.Battle;
+//using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Delivery;
@@ -386,7 +386,7 @@ namespace VikingEngine.DSSWars.Display
 
         void purchaseOptions(RichBoxContent content)
         {
-            if (city.battleGroup == null)
+            //if (city.battleGroup == null)
             {
                 if (city.damages.HasValue())
                 {
