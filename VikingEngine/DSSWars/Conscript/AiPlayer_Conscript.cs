@@ -82,7 +82,7 @@ namespace VikingEngine.DSSWars.Players
 
         virtual protected bool buySoldiers(City city, bool aggresive, bool commit)
         {
-            if (!aggresive && city.workForce < city.workForceMax - DssConst.SoldierGroup_DefaultCount)
+            if (!aggresive && city.workForce.amount < city.workForceMax - DssConst.SoldierGroup_DefaultCount)
             {
                 return false;
             }
@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars.Players
 
             int availableWeapons = city.GetGroupedResource(weaponItem).amount / DssConst.SoldierGroup_DefaultCount;
             int availableArmors = city.GetGroupedResource(armorItem).amount / DssConst.SoldierGroup_DefaultCount;
-            int availableMen = (city.workForce / DssConst.SoldierGroup_DefaultCount) - 1;
+            int availableMen = (city.workForce.amount / DssConst.SoldierGroup_DefaultCount) - 1;
 
             int get = lib.SmallestValue(availableArmors, availableWeapons, availableMen, city.conscriptBuildings.Count * 2);
 

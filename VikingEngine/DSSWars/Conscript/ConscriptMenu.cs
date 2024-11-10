@@ -168,7 +168,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                 content.newLine();
                 HudLib.BulletPoint(content);
-                HudLib.ResourceCost(content, ResourceType.Worker, DssConst.SoldierGroup_DefaultCount, city.workForce);
+                HudLib.ResourceCost(content, ResourceType.Worker, DssConst.SoldierGroup_DefaultCount, city.workForce.amount);
 
                 content.newLine();
                 HudLib.BulletPoint(content);

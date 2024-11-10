@@ -88,8 +88,8 @@ namespace VikingEngine.DSSWars.GameObject
 
                             case ConscriptActiveStatus.CollectingMen:
                                 int needMen = DssConst.SoldierGroup_DefaultCount - status.menCollected;
-                                int collectMen = lib.SmallestValue(workForce, needMen);
-                                workForce -= collectMen;
+                                int collectMen = lib.SmallestValue(workForce.amount, needMen);
+                                workForce.amount -= collectMen;
                                 status.menCollected += collectMen;
 
                                 if (status.menCollected == DssConst.SoldierGroup_DefaultCount)

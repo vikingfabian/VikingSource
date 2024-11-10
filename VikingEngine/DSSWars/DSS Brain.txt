@@ -1,10 +1,14 @@
 ﻿-Change Log-
-* Fixed reported crashes
+* Fixed craigs crashes
+* Delivery: auto city take other deliveries into account
+* save of food safeguard setting
 
-
-! Old saves are slightly broken - again (cities will look weird)
 
 #Todo (xmas patch)#
+
+
+
+
 krig varning på ally
 new maps
 dölj carry amount

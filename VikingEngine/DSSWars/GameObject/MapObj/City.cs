@@ -47,7 +47,8 @@ namespace VikingEngine.DSSWars.GameObject
         public FloatingInt childrenAge0 = new FloatingInt();
         public int childrenAge1 = 0;
 
-        public int workForce = 0;
+        public GroupedResource workForce = new GroupedResource();
+        
         public int workForceMax = 0;
 
         //public int maxEpandWorkSize;
@@ -286,7 +287,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            w.Write(Convert.ToUInt16(workForce));
+            w.Write(Convert.ToUInt16(workForce.amount));
             w.Write(Convert.ToUInt16(workForceMax));
             childrenAge0.write16bit(w);
             w.Write((ushort)childrenAge1);
@@ -325,10 +326,6 @@ namespace VikingEngine.DSSWars.GameObject
             res_heavyArmor.writeGameState(w); // ItemResourceType.HeavyArmor,
 
             res_longbow.writeGameState(w);
-            //foreach (var type in MovableCityResourceTypes)
-            //{
-            //    GetGroupedResource(type).writeGameState(w);
-            //}
 
             w.Write((ushort)conscriptBuildings.Count);
             foreach (var barracks in conscriptBuildings)
@@ -351,10 +348,12 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 w.Write((ushort)tagArt);
             }
+
+            w.Write(res_food_safeguard);
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
-            workForce = r.ReadUInt16();
+            workForce.amount = r.ReadUInt16();
             workForceMax = r.ReadUInt16();
             childrenAge0.read16bit(r);
             childrenAge1 = r.ReadUInt16();
@@ -393,16 +392,8 @@ namespace VikingEngine.DSSWars.GameObject
             res_mediumArmor.readGameState(r, subversion); // ItemResourceType.MediumArmor,
             res_heavyArmor.readGameState(r, subversion); // ItemResourceType.HeavyArmor,
 
-            //if (subversion >= 19 && subversion != SaveGamestate.MergeVersion)
-            //{
-                res_longbow.readGameState(r, subversion);
-            //}
-            //foreach (var type in MovableCityResourceTypes)
-            //{
-            //    GroupedResource resource = new GroupedResource();
-            //    resource.readGameState(r, subversion);
-            //    SetGroupedResource(type, resource);
-            //}
+            res_longbow.readGameState(r, subversion);
+            
 
             refreshCitySize();
 
@@ -428,14 +419,16 @@ namespace VikingEngine.DSSWars.GameObject
             autoBuild_Farm = r.ReadBoolean();
             autoExpandFarmType = (Build.BuildAndExpandType)r.ReadByte();
 
-            //if (subversion >= 23 && subversion != SaveGamestate.MergeVersion)
-            //{
             tagBack = (CityTagBack)r.ReadByte();
             if (tagBack != CityTagBack.NONE)
             {
                 tagArt = (CityTagArt)r.ReadUInt16();
             }
-            //}
+
+            if (subversion >= 29)
+            {
+                res_food_safeguard = r.ReadBoolean();
+            }
         }
 
         public void writeNet(System.IO.BinaryWriter w)
@@ -459,11 +452,7 @@ namespace VikingEngine.DSSWars.GameObject
             return 40000 + workForceMax * 10;
         }
 
-        //public bool canExpandWorkForce(int count)
-        //{
-        //    return (workForceMax + DssConst.ExpandWorkForce * count) <= maxEpandWorkSize;
-        //}
-
+       
         public bool canIncreaseGuardSize(int count)
         {
             return (maxGuardSize + DssConst.ExpandGuardSize * count) <= workForceMax;
@@ -473,7 +462,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             workForceMax += amount;
             refreshCitySize();
-            detailObj.refreshWorkerSubtiles();//updateWorkerModels();
+            detailObj.refreshWorkerSubtiles();
         }
 
         public void onWorkHutBuild()
@@ -507,25 +496,6 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        //public bool buyWorkforce(bool commit, int count)
-        //{
-        //    if (canExpandWorkForce(count))
-        //    {
-        //        int totalCost = 0;
-
-        //        if (faction.calcCost(expandWorkForceCost() * count, ref totalCost))
-        //        {
-        //            if (commit)
-        //            {
-        //                expandWorkForce(DssConst.ExpandWorkForce * count);
-        //                faction.payMoney(totalCost, true);
-        //            }
-        //            return true;
-        //        }
-        //    }
-        //    return false;
-        //}
-
         public bool buyRepair(bool commit, bool all)
         {
             if (damages.HasValue())
@@ -552,8 +522,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void burnItDown()
         {
             damages.value = MaxDamages();
-            //guardCount = 0;
-            workForce = 0;
+            workForce.amount = 0;
         }
 
         public double MaxDamages()
@@ -621,7 +590,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (newGame)
             {
-                maxGuardSize = workForce / 4;
+                maxGuardSize = workForce.amount / 4;
 
                 guardCount = maxGuardSize;
             }
@@ -659,7 +628,7 @@ namespace VikingEngine.DSSWars.GameObject
                         waterAddPerSec = DssConst.WaterAdd_HeadCity;
                         break;
                 }
-                workForce = (int)(workForceMax * 0.75);
+                workForce.amount = (int)(workForceMax * 0.75);
                 waterAddPerSec += Ref.rnd.Float(DssConst.WaterAdd_RandomAdd);
 
                 if (Culture == CityCulture.DeepWell)
@@ -829,7 +798,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return new CityEconomyData()
             {
-                workerCount = workForce,//tax = workForce.value * TaxPerWorker,
+                workerCount = workForce.amount,//tax = workForce.value * TaxPerWorker,
                 cityGuardUpkeep = GuardUpkeep(maxGuardSize),
                 blackMarketCosts_Food = blackMarketCosts_food.displayValue_sec,
             };
@@ -867,7 +836,7 @@ namespace VikingEngine.DSSWars.GameObject
                 res_food.amount > 0 &&
                 homeUsers() < homesTotal())
             {
-                var result = workForce / 200.0 * faction.growthMultiplier;
+                var result = workForce.amount / 200.0 * faction.growthMultiplier;
                 if (Culture == CityCulture.LargeFamilies)
                 {
                     result *= 2;
@@ -894,7 +863,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int homeUsers()
         {
-            return workForce + children();
+            return workForce.amount + children();
         }
 
         public int children()
@@ -920,9 +889,9 @@ namespace VikingEngine.DSSWars.GameObject
                 addWorkers = childrenAge1;
                 childrenAge1 = childrenAge0.pull();
 
-                if (workForce < MinWorkforce)
+                if (workForce.amount < MinWorkforce)
                 {
-                    addWorkers += MinWorkforce - workForce;
+                    addWorkers += MinWorkforce - workForce.amount;
                 }
             }
 
@@ -939,9 +908,9 @@ namespace VikingEngine.DSSWars.GameObject
                 detailObj.oneSecondUpdate();
             }
 
-            workForce = Bound.Max(workForce + addWorkers, homesTotal());
+            workForce.amount = Bound.Max(workForce.amount + addWorkers, homesTotal());
 
-            if (workForce > Achievements.LargePopulationCount &&
+            if (workForce.amount > Achievements.LargePopulationCount &&
                  !DssRef.achieve.largePopulation &&
                  faction.player.IsPlayer())
             {
@@ -1087,9 +1056,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         bool spendWorker(int count)
         {
-            if (workForce >= count)
+            if (workForce.amount >= count)
             { 
-                workForce-= count;
+                workForce.amount -= count;
                 return true;
             }
 
@@ -1156,7 +1125,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (minimal)
             {
                 content.Add(new RichBoxImage(SpriteName.WarsWorker));
-                content.Add(new RichBoxText(TextLib.LargeNumber(workForce)));
+                content.Add(new RichBoxText(TextLib.LargeNumber(workForce.amount)));
                 content.space();
                 content.Add(new RichBoxImage(SpriteName.WarsGuard));
                 content.Add(new RichBoxText(TextLib.Divition_Large(guardCount, maxGuardSize)));
@@ -1174,7 +1143,7 @@ namespace VikingEngine.DSSWars.GameObject
                 content.space();
                 HudLib.InfoButton(content, new RbAction1Arg<City>(player.childrenTooltip, this));
 
-                HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce, workForceMax));
+                HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.amount, workForceMax));
                 HudLib.ItemCount(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, TextLib.Divition_Large(guardCount, maxGuardSize));
                 content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
                 content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, calcIncome_async().total(this)));
@@ -1449,7 +1418,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         bool spendMenForDrafting(int menCount, bool commit)
         { 
-            bool success = mercenaries + workForce >= menCount;
+            bool success = mercenaries + workForce.amount >= menCount;
 
             if (success && commit)
             {
@@ -1457,7 +1426,7 @@ namespace VikingEngine.DSSWars.GameObject
                 mercenaries -= mercUse;
                 menCount -= mercUse;
 
-                workForce -= menCount;
+                workForce.amount -= menCount;
                
             }
 
