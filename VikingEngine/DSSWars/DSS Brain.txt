@@ -4,6 +4,11 @@
 
 ! Old saves are slightly broken - again (cities will look weird)
 
+#Todo (XP)#
+* annoyed by the deliveries being inefficient
+* worker level
+* soldier level
+
 #Todo (xmas patch)#
 krig varning på ally
 new maps
