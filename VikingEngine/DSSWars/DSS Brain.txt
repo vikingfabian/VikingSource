@@ -1,5 +1,6 @@
 ﻿-Change Log-
-* Dread factions will start stronger
+* Fixed reported crashes
+
 
 ! Old saves are slightly broken - again (cities will look weird)
 

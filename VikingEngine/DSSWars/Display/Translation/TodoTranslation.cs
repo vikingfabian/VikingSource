@@ -58,6 +58,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string LandType_Flatland => "Flat land";
         public string LandType_Water => "Water";
 
+        public string BuildingType_Wall => "Wall";
+
 
         public string Delivery_AutoReciever_Description => "Will send to the city with lowest amount of resources";
 
