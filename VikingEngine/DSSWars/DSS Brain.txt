@@ -5,9 +5,19 @@
 ! Old saves are slightly broken - again (cities will look weird)
 
 #Todo (XP)#
+* water expansion
+* axe, (sword needs good weapon smith)
+* steel, long sword > rapier, crossbow
 * annoyed by the deliveries being inefficient
+-wagon, transport span amount
+-tool shed, faster farming upgrade
+-Embassy expansion för att unlocka diplomacy
+-Mines
 * worker level
 * soldier level
+
+* manuballista (hand ballista), wall crusher
+
 
 #Todo (xmas patch)#
 krig varning på ally
@@ -26,7 +36,7 @@ city economy
 visa antal byggnader i bygg meny
 menu scroll
 
-manuballista (hand ballista)
+
 
 Error
 -back button in menues 

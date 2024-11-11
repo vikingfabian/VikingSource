@@ -8,6 +8,7 @@ using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Work;
 
 namespace VikingEngine.DSSWars.Build
 {
@@ -20,16 +21,18 @@ namespace VikingEngine.DSSWars.Build
         public TerrainMainType mainType;
         public int subType;
         public SpriteName sprite;
+        public WorkExperienceType experienceType;
         //static int NextIndex = 0;
         //public int index;
 
-        public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, SpriteName sprite, CraftBlueprint blueprint)
+        public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, SpriteName sprite, CraftBlueprint blueprint, WorkExperienceType experienceType)
         {
             this.sprite = sprite;
             this.buildType = buildType;
             this.blueprint = blueprint;
             this.mainType = mainType;
             this.subType = subType;
+            this.experienceType = experienceType;
 
             BuildLib.BuildOptions[(int)buildType] = this;
         }

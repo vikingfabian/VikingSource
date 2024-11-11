@@ -837,29 +837,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
     }
 
-    enum WorkType
-    { 
-        IsDeleted,
-        Idle,
-        Exit,
-        Starving,
-        Eat,
-
-        Till,
-        Plant,
-        GatherFoil,
-        //GatherCityProduce,
-        Mine,
-        PickUpResource,
-        PickUpProduce,
-        DropOff,        
-        Craft,
-        Build,
-        LocalTrade,
-
-        TrossCityTrade,
-        TrossReturnToArmy,
-    }
+    
 
     
 }
