@@ -103,6 +103,14 @@ namespace VikingEngine.DSSWars.GameObject
             rotation.ByteDir = r.ReadByte();
         }
 
+        public static void OldRead(System.IO.BinaryReader r)
+        {
+            SoldierAiState aiState = (SoldierAiState)r.ReadByte();
+            WP.readPosXZ(r, out Vector3 position, out IntVector2 tilePos);
+            var rotation = new Rotation1D();
+            rotation.ByteDir = r.ReadByte();
+        }
+
         public void writeNet(System.IO.BinaryWriter w)
         {
 

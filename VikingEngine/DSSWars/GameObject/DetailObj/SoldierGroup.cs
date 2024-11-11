@@ -188,14 +188,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            //w.Write((byte)type);
-            //w.Write((byte)FirstSoldierData().unitType);
-            
-            //typeSoldierData.writeGameState(w);
             soldierConscript.writeGameState(w);
             w.Write(IsShip());
-
-            //typeCurrentData = typeSoldierData;
 
             armyLocalPlacement.writeShort(w);
 
