@@ -482,6 +482,15 @@ namespace VikingEngine.DSSWars.Map
                     break;
 
 
+                case TerrainBuildingType._RESERVE1:
+                case TerrainBuildingType._RESERVE2:
+                case TerrainBuildingType._RESERVE3:
+                case TerrainBuildingType._RESERVE4:
+                case TerrainBuildingType._RESERVE5:
+                case TerrainBuildingType._RESERVE6:
+                    createWall(tile, ref subTile, (TerrainWallType)buildingType, wp);
+                    break;
+                
                 default:
                     throw new NotImplementedException();
             }

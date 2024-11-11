@@ -1,7 +1,7 @@
 ﻿-Change Log-
 * Dread factions will start stronger
 
-! Old saves are broken - again (cities will look weird)
+! Old saves are slightly broken - again (cities will look weird)
 
 #Todo (xmas patch)#
 krig varning på ally
