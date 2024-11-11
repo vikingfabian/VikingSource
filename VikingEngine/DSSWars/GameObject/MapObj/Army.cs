@@ -479,7 +479,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void OnSoldierPurchaseCompleted()
         {
-            refreshPositions(true);           
+            refreshPositions(true);  
+            
         }
 
         public override void selectionGui(Players.LocalPlayer player, ImageGroup guiModels)
@@ -593,6 +594,10 @@ namespace VikingEngine.DSSWars.GameObject
                     if (l < 0.1f)
                     {
                         clearObjective();
+                    }
+                    else
+                    {
+                        rotation.radians = lib.V2ToAngle_normalized_unsafe(goalDiff.X / l, goalDiff.Z / l);
                     }
                 } 
             }

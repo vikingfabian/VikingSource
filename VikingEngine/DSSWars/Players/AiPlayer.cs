@@ -605,7 +605,7 @@ namespace VikingEngine.DSSWars.Players
                                 mainArmy = startMainArmy();
                                 for (int i = 0; i < 5; ++i)
                                 {
-                                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_Standard, mainArmy.position);//, UnitType.Soldier, false);
+                                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);//, UnitType.Soldier, false);
                                 }
                                 break;
 
@@ -657,7 +657,7 @@ namespace VikingEngine.DSSWars.Players
                                 mainArmy = startMainArmy();
                                 for (int i = 0; i < 3; ++i)
                                 {
-                                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_Standard, mainArmy.position);
+                                    new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
                                 }
                                 for (int i = 0; i < 3; ++i)
                                 {
@@ -791,7 +791,7 @@ namespace VikingEngine.DSSWars.Players
                                     }
                                     for (int i = 0; i < 60; ++i)
                                     {
-                                        new SoldierGroup(army, DssLib.SoldierProfile_Standard, army.position); //UnitType.Soldier, false);
+                                        new SoldierGroup(army, DssLib.SoldierProfile_Swordsman, army.position); //UnitType.Soldier, false);
                                     }
                                     for (int i = 0; i < 20; ++i)
                                     {

@@ -37,6 +37,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool waitForRegroup = false;
         float stateTime = 0;
         public IntVector2 walkGoal, adjustedWalkGoal;
+
         public bool walkGoalAsShip;
         public IntVector2 nextNodePos;
         public AbsMapObject attackTarget = null;
@@ -355,7 +356,11 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 goal = tilePos;
             }
-            else
+            else if (objective == ArmyObjective.Attack)
+            {
+                goal = attackTarget.tilePos;
+            }
+            else 
             {
                 goal = walkGoal;
             }

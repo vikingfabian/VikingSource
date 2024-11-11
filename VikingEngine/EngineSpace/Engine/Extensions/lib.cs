@@ -984,12 +984,17 @@ namespace VikingEngine
             return (float)Math.Atan2(direction.X, -direction.Y);
 
         }
+
+        public static float V2ToAngle_normalized_unsafe(float xDir, float yDir)
+        {   
+            return (float)Math.Atan2(xDir, yDir);
+        }
         //public static Vector2 ChangeV2Angle(Vector2 dir, Rotation1D angleDiff)
         //{
         //    angleDiff.Add(Rotation1D.FromDirection(dir));
         //    return angleDiff.Direction(dir.Length());
         //}
-        
+
         //public static Color HSL2RGB(double h, double sl, double l)
         /// <param name="hue">Hue in 0-1</param>
         public static Color HSL2RGB(double hue, double saturation, double lightness)

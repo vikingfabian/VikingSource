@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -16,13 +17,14 @@ namespace VikingEngine.DSSWars.GameObject
         public const int MinColumnWidth = 2;
         public const int MaxColumnWidth = 8;
 
-        int nextLeftRightOnFrontRow = 0;
+        //int nextLeftRightOnFrontRow = 0;
         int nextLeftRightOnBodyRow = 0;
         int nextLeftRightOnSecondRow = 0;
         int nextLeftRightOnBehindRow = 0;
 
         public int armyColumnWidth = MinColumnWidth;
         public Vector3 armyGoalCenterWp;
+        public float armyGoalRotation;
 
         public IntVector2 nextArmyPlacement(int row)
         {
@@ -62,29 +64,48 @@ namespace VikingEngine.DSSWars.GameObject
 
         void refreshGroupPlacements2(IntVector2 walkToTilePos)
         {
-            //bool columnStructure = !finalNode;
-
-            ArmyPlacementGrid placementGrid = new ArmyPlacementGrid();
-
-            var groupsC = groups.counter();
-
-            while (groupsC.Next())
+            Task.Factory.StartNew(() =>
             {
-                placementGrid.add(groupsC.sel);
-            }
+                ArmyPlacementGrid placementGrid = ArmyPlacementGrid.PoolGet();
+                {
+                    var groupsC = groups.counter();
 
-            placementGrid.calcPositions(this, walkToTilePos, walkGoalAsShip);
-            
+                    while (groupsC.Next())
+                    {
+                        placementGrid.add(groupsC.sel);
+                    }
+
+                    placementGrid.calcPositions(this, walkToTilePos, walkGoalAsShip);
+                }
+                ArmyPlacementGrid.PoolReturn(placementGrid);
+            });
         }
 
-        //void refreshGroupPlacements2_onMidNode(IntVector2 walkToTilePos)
-        //{
-            
-        //}
     }
 
     class ArmyPlacementGrid
     {
+        static ConcurrentStack<ArmyPlacementGrid> Pool = new ConcurrentStack<ArmyPlacementGrid>();
+
+        public static ArmyPlacementGrid PoolGet()
+        {
+            if (Pool.TryPop(out ArmyPlacementGrid grid))
+            {
+                return grid;
+            }
+            else
+            {
+                return new ArmyPlacementGrid();
+            }
+        }
+
+        public static void PoolReturn(ArmyPlacementGrid grid)
+        {
+            // Reset the node to a default state
+            grid.recycle();
+            Pool.Push(grid);
+        }
+
         public const int Row_Front = -1;
         public const int Row_Body = 0;
         public const int Row_Second = 1;
@@ -114,6 +135,15 @@ namespace VikingEngine.DSSWars.GameObject
             comumnWidth = new float[ColsCount];
         }
 
+        public void recycle()
+        {
+            ForXYLoop loop = new ForXYLoop(new IntVector2(ColsCount, RowsCount));
+            while (loop.Next())
+            {
+                grid[loop.Position.X, loop.Position.Y].recycle();
+            }
+        }
+
         public void add(SoldierGroup group)
         {
             grid[group.armyGridPlacement2.X + PosXAdd, group.armyGridPlacement2.Y + PosYAdd].add(group);
@@ -136,6 +166,16 @@ namespace VikingEngine.DSSWars.GameObject
             Vector2 relPos = new Vector2();
             Vector2 centerWp = walkToPos.Vec;
             army.armyGoalCenterWp = VectorExt.V2toV3XZ(centerWp);
+            //float endRotation;
+            Vector2 diff = centerWp - VectorExt.V3XZtoV2(army.position);
+            if (VectorExt.HasValue(diff))
+            {
+                army.armyGoalRotation = lib.V2ToAngle(diff);
+            }
+            else
+            {
+                army.armyGoalRotation = army.rotation.Radians;
+            }
 
             column(Col_Center + PosXAdd, relPos, out Vector2 finalCenter, out float largestWidth, -0.5f, endAsShip);
 
@@ -244,11 +284,11 @@ namespace VikingEngine.DSSWars.GameObject
                 finalPos.X = _relPos.X;
                 largestWidth = 0;
                 Vector2 cellSize;
-                grid[colindex, 0].nextPlacement(centerWp, army.rotation, _relPos, centerPan, columnWidth, out cellSize, out _, true, endAsShip, failedPlacements);
+                grid[colindex, 0].nextPlacement(centerWp, army.armyGoalRotation, _relPos, centerPan, columnWidth, out cellSize, out _, true, endAsShip, failedPlacements);
 
                 for (int row = 1; row < RowsCount; row++)
                 {
-                    grid[colindex, row].nextPlacement(centerWp, army.rotation, _relPos, centerPan, columnWidth, out cellSize, out float adjLeft, false, endAsShip, failedPlacements);
+                    grid[colindex, row].nextPlacement(centerWp, army.armyGoalRotation, _relPos, centerPan, columnWidth, out cellSize, out float adjLeft, false, endAsShip, failedPlacements);
                     largestWidth = lib.LargestValue(largestWidth, cellSize.X);
                     finalPos.X = adjLeft;
                     _relPos.Y += cellSize.Y + DssVar.SoldierGroup_GridExtraSpacing;
@@ -261,7 +301,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             bool nextExtraColumnPos(SoldierGroup group, ref Vector2 finalPos, ref int colX)
             {
-                bool success = ArmyPlacementCell.ExtraPlacement(centerWp, army.rotation, finalPos, columnWidth, ref colX, out Vector3 goalWp);
+                bool success = ArmyPlacementCell.ExtraPlacement(centerWp, army.armyGoalRotation, finalPos, columnWidth, ref colX, out Vector3 goalWp);
 
                 if (!success || colX >= columnWidth)
                 {
@@ -287,7 +327,12 @@ namespace VikingEngine.DSSWars.GameObject
             groups.Add(group);
         }
 
-        public static bool ExtraPlacement(Vector2 centerWp, Rotation1D armyRotation, Vector2 relativePosition, int armyColumnWidth, ref int currentColX, out Vector3 goalWp)
+        public void recycle()
+        {
+            groups.Clear();
+        }
+
+        public static bool ExtraPlacement(Vector2 centerWp, float endRotation, Vector2 relativePosition, int armyColumnWidth, ref int currentColX, out Vector3 goalWp)
         {
 
             Vector2 topleft = relativePosition;
@@ -297,7 +342,7 @@ namespace VikingEngine.DSSWars.GameObject
                 Vector2 localPos = topleft;
                 localPos.X += colX * DssVar.SoldierGroup_Spacing ;
 
-                localPos = lib.RotatePointAroundCenter(Vector2.Zero, localPos, armyRotation.radians);
+                localPos = lib.RotatePointAroundCenter(Vector2.Zero, localPos, endRotation);
                 goalWp = VectorExt.V2toV3XZ(localPos + centerWp);
                 IntVector2 subTilePos = WP.ToSubTilePos(goalWp);
                 var subTile = DssRef.world.subTileGrid.Get(subTilePos);
@@ -313,7 +358,7 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        public void nextPlacement(Vector2 centerWp, Rotation1D armyRotation, Vector2 relativePosition, float centerPan, int armyColumnWidth, out Vector2 cellSize, out float adjLeft, bool frontRow, bool endAsShip, List<SoldierGroup> failedPlacements)
+        public void nextPlacement(Vector2 centerWp, float endRotation, Vector2 relativePosition, float centerPan, int armyColumnWidth, out Vector2 cellSize, out float adjLeft, bool frontRow, bool endAsShip, List<SoldierGroup> failedPlacements)
         {
             if (centerPan < 0)
             {
@@ -354,7 +399,7 @@ namespace VikingEngine.DSSWars.GameObject
                     //{
                     //    lib.DoNothing();
                     //}
-                    localPos = lib.RotatePointAroundCenter(Vector2.Zero, localPos,  armyRotation.radians);
+                    localPos = lib.RotatePointAroundCenter(Vector2.Zero, localPos,  endRotation);
                     Vector3 goalWp = VectorExt.V2toV3XZ(localPos + centerWp);
                     IntVector2 subTilePos = WP.ToSubTilePos(goalWp);
                     var subTile = DssRef.world.subTileGrid.Get(subTilePos);

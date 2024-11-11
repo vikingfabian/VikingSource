@@ -1,5 +1,5 @@
 ﻿
-#define VISUAL_NODES
+//#define VISUAL_NODES
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Concurrent;

@@ -132,6 +132,11 @@ namespace VikingEngine.DSSWars.GameObject
             
             initPart3(typeCurrentData);
 
+            if (army.inRender_detailLayer)
+            {
+                setDetailLevel(true);
+            }
+
             if (army.faction.player.IsPlayer())
             {
                 army.faction.player.GetLocalPlayer().statistics.SoldiersRecruited += soldierCount;
@@ -185,12 +190,47 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (unitDetailView)
             {
+                createSoldierObjects(unitDetailView, true);
+            }
+            else
+            {
+                if (state == GroupState.Battle)
+                {
+                    var soldiers_sp = soldiers;
+                    if (soldiers_sp != null)
+                    {
+                        var soldiersC = soldiers_sp.counter();
+                        while (soldiersC.Next())
+                        {
+                            soldiersC.sel.setDetailLevel(unitDetailView);
+                        }
+                    }
+                }
+                else
+                {
+                    createSoldierObjects(unitDetailView, true);
+                }
+            }
+        }
+
+        void createSoldierObjects(bool create, bool models)
+        { 
+            if (create)
+            {
                 if (soldiers == null)
                 {
-                    createAllSoldiers(typeCurrentData, soldierCount);
+                    createAllSoldiers(typeCurrentData, soldierCount, models);
                     if (typeCurrentData.IsShip())
                     {
                         FirstSoldier().health = shipHealth;
+                    }
+                }
+                else if (models)
+                {
+                    var soldiersC = soldiers.counter();
+                    while (soldiersC.Next())
+                    {
+                        soldiersC.sel.setDetailLevel(create);
                     }
                 }
             }
@@ -204,7 +244,7 @@ namespace VikingEngine.DSSWars.GameObject
                         if (first != null)
                         {
                             shipHealth = first.health;
-                        } 
+                        }
                     }
                     deleteAllSoldiers(DeleteReason.CameraCulling);
                 }
@@ -244,17 +284,17 @@ namespace VikingEngine.DSSWars.GameObject
 
             w.Write((byte)groupObjective);
 
-            w.Write((byte)soldiers.Count);
-            bool soldiersLockedInGroup = groupObjective == GroupObjective_FollowArmyObjective;
+            //w.Write((byte)soldiers.Count);
+            //bool soldiersLockedInGroup = groupObjective == GroupObjective_FollowArmyObjective;
 
-            if (!soldiersLockedInGroup)
-            {
-                var soldiersC = soldiers.counter();
-                while (soldiersC.Next())
-                {
-                    soldiersC.sel.writeGameState(w);
-                }
-            }
+            //if (!soldiersLockedInGroup)
+            //{
+            //    var soldiersC = soldiers.counter();
+            //    while (soldiersC.Next())
+            //    {
+            //        soldiersC.sel.writeGameState(w);
+            //    }
+            //}
         }
 
         public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
@@ -292,16 +332,16 @@ namespace VikingEngine.DSSWars.GameObject
             //    new TrainingCompleteTimer(this);
             //}
 
-            createAllSoldiers(typeCurrentData, soldiersCount);
+            //createAllSoldiers(typeCurrentData, soldiersCount);
 
-            if (!soldiersLockedInGroup)
-            {
-                var soldiersC = soldiers.counter();
-                while (soldiersC.Next())
-                {
-                    soldiersC.sel.readGameState(r, version);
-                }
-            }
+            //if (!soldiersLockedInGroup)
+            //{
+            //    var soldiersC = soldiers.counter();
+            //    while (soldiersC.Next())
+            //    {
+            //        soldiersC.sel.readGameState(r, version);
+            //    }
+            //}
 
             initPart3(typeCurrentData);
         }
@@ -331,7 +371,7 @@ namespace VikingEngine.DSSWars.GameObject
             //}
         }
 
-        private void createAllSoldiers(AbsSoldierProfile typeProfile, int count)
+        private void createAllSoldiers(AbsSoldierProfile typeProfile, int count, bool createModels)
         {
             soldiers = new SpottedArray<AbsSoldierUnit>(count);
             soldierData = soldierConscript.init(typeProfile);
@@ -357,11 +397,11 @@ namespace VikingEngine.DSSWars.GameObject
                     if (bannerPos.Equals(x, y))
                     {
                         var bannerData = soldierConscript.bannermanSetup(soldierData);
-                        unit = createUnit(DssRef.profile.bannerman, new IntVector2(x + xStart, y), tilePos, ref bannerData);
+                        unit = createUnit(DssRef.profile.bannerman, new IntVector2(x + xStart, y), tilePos, ref bannerData, createModels);
                     }
                     else
                     {
-                        unit = createUnit(typeProfile, new IntVector2(x + xStart, y), tilePos, ref soldierData);
+                        unit = createUnit(typeProfile, new IntVector2(x + xStart, y), tilePos, ref soldierData, createModels);
                     }
 
 
@@ -456,7 +496,7 @@ namespace VikingEngine.DSSWars.GameObject
                         var shipData = soldierData;
                         soldierConscript.shipSetup(ref shipData);
 
-                        var ship = createUnit(typeShipData, IntVector2.Zero, WP.ToTilePos(position), ref shipData);
+                        var ship = createUnit(typeShipData, IntVector2.Zero, WP.ToTilePos(position), ref shipData, true);
                         ship.position = position;
                         ship.health = totalHealth;
                         ship.refreshShipCarryCount();
@@ -465,7 +505,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {   
                         int count = (int)Math.Ceiling(totalHealth / (double)soldierData.basehealth);
 
-                        createAllSoldiers(typeCurrentData, count);
+                        createAllSoldiers(typeCurrentData, count, true);
                     }
 
                     refreshAttackRadius(typeCurrentData);
@@ -492,7 +532,7 @@ namespace VikingEngine.DSSWars.GameObject
             return center;
         }
 
-        public AbsSoldierUnit createUnit(AbsSoldierProfile typeProfile, IntVector2 gridPlacement, IntVector2 area, ref SoldierData data)
+        public AbsSoldierUnit createUnit(AbsSoldierProfile typeProfile, IntVector2 gridPlacement, IntVector2 area, ref SoldierData data, bool models)
         {
             AbsSoldierUnit s;
             
@@ -505,7 +545,7 @@ namespace VikingEngine.DSSWars.GameObject
             s.position = WP.ToWorldPos(area); //temp pos
             s.parentArrayIndex = soldiers.Add(s);
 
-            if (army.inRender_detailLayer)
+            if (army.inRender_detailLayer && models)
             {
                 s.setDetailLevel(true);
                 s.update(1f, true);
@@ -539,6 +579,25 @@ namespace VikingEngine.DSSWars.GameObject
             return target.position;
         }
 
+        void enterBattleState(bool enter)
+        {
+            if (enter)
+            {
+                state = GroupState.Battle;
+                createSoldierObjects(enter, false);
+            }
+            else
+            {
+                state = GroupState.FindArmyPlacement;           
+            }
+
+            var soldiersC = soldiers.counter();
+            while (soldiersC.Next())
+            {
+                soldiersC.sel.enterBattleState(enter);
+            }
+        }
+
         public void update(float time, bool fullUpdate)
         {
             if (inShipTransform)
@@ -550,6 +609,11 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (attack_sp != null)
             {
+                if (state != GroupState.Battle)
+                {
+                    enterBattleState(true);
+                }
+
                 Vector2 diff = new Vector2(
                     attack_sp.position.X - position.X,
                     attack_sp.position.Z - position.Z);
@@ -564,7 +628,7 @@ namespace VikingEngine.DSSWars.GameObject
                         var soldiersC = soldiers.counter();
                         while (soldiersC.Next())
                         {
-                            soldiersC.sel.update2_battle(time, fullUpdate);
+                            soldiersC.sel.update2_battle_attack(time, fullUpdate);
                         }
                     }
                 }
@@ -582,16 +646,19 @@ namespace VikingEngine.DSSWars.GameObject
                         var soldiersC = soldiers.counter();
                         while (soldiersC.Next())
                         {
-                            soldiersC.sel.update2(time);
+                            soldiersC.sel.update2_battle_move(time, fullUpdate);
 
                         }
                     }
                 }
-
-                
             }
             else
             {
+                if (state == GroupState.Battle)
+                {
+                    enterBattleState(false);
+                }
+
                 switch (state)
                 {
                     case GroupState.Idle:
@@ -636,7 +703,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         if (move)
                         {
-                            if (updateWalking(walkingGoalWp(out bool shipTransform), true, army.rotation, time))
+                            if (updateWalking(walkingGoalWp(out bool shipTransform), true, army.armyGoalRotation, time))
                             {
                                 state = GroupState.GoingIdle;
                                 waitTime = 0;
@@ -1993,10 +2060,10 @@ namespace VikingEngine.DSSWars.GameObject
                 ++lifeState;
                 //position = goalWp;
 
-                if (army.inRender_detailLayer)
-                {
-                    setDetailLevel(true);
-                }
+                //if (army.inRender_detailLayer)
+                //{
+                //    setDetailLevel(true);
+                //}
             }
             wakeupSoldiers();
 

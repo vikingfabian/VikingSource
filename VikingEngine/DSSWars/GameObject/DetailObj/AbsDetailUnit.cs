@@ -43,12 +43,13 @@ namespace VikingEngine.DSSWars.GameObject
         //public Vector3 position;
 
         public SoldierData soldierData;
-        protected Vector2 collisionForce = Vector2.Zero;
-        const int CollGroupSize = 8;
+        //protected Vector2 collisionForce = Vector2.Zero;
+        //const int CollGroupSize = 8;
 
-        protected SafeCollectAsynchStaticList<AbsDetailUnit> collisionGroup = new SafeCollectAsynchStaticList<AbsDetailUnit>(CollGroupSize);
-        protected int collisionFrames = 0;
+        //protected SafeCollectAsynchStaticList<AbsDetailUnit> collisionGroup = new SafeCollectAsynchStaticList<AbsDetailUnit>(CollGroupSize);
+        //protected int collisionFrames = 0;
         public DetailUnitModel model;
+        public Physics.AbsBound2D bound;
 
         //bool isDeleted = false;
 
@@ -222,16 +223,16 @@ namespace VikingEngine.DSSWars.GameObject
             
         }
 
-        protected void collisionGroupCheck(AbsDetailUnit unit, float distance)
-        {
-            if (distance < DssVar.Men_AsynchCollisionGroupRadius)
-            {
-                if (collisionGroup.processList.Count < CollGroupSize)
-                {
-                    collisionGroup.processList.Add(unit);
-                }
-            }
-        }
+        //protected void collisionGroupCheck(AbsDetailUnit unit, float distance)
+        //{
+        //    if (distance < DssVar.Men_AsynchCollisionGroupRadius)
+        //    {
+        //        if (collisionGroup.processList.Count < CollGroupSize)
+        //        {
+        //            collisionGroup.processList.Add(unit);
+        //        }
+        //    }
+        //}
 
         
 

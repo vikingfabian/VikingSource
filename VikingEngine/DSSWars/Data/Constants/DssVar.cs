@@ -25,8 +25,8 @@ namespace VikingEngine.DSSWars
         {
             Projectile.Projectile_PeekHeight = DssConst.Men_StandardModelScale * 1f;
             Men_AsynchCollisionGroupRadius = StandardBoundRadius * 2f;
-            StandardBoundRadius = 0.3f * DssConst.Men_StandardModelScale;
-            DefaultGroupSpacing = StandardBoundRadius * 3f;
+            StandardBoundRadius = 0.4f * DssConst.Men_StandardModelScale;
+            DefaultGroupSpacing = StandardBoundRadius * 2.5f;
             SoldierGroup_Spacing = DssConst.SoldierGroup_RowWidth * DefaultGroupSpacing * 1.15f;
             SoldierGroup_CollisionRadius = DssConst.SoldierGroup_RowWidth * DefaultGroupSpacing * 0.45f;
             SoldierGroup_MoveCollisionRadius = SoldierGroup_CollisionRadius * 0.6f;

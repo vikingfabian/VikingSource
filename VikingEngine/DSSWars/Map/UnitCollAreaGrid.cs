@@ -586,61 +586,40 @@ namespace VikingEngine.DSSWars.Map
             friendly = friendlyGroupsAndCities_nearUpdate;
         }
 
+        public void collectGroups(IntVector2 tilePos,
+           ref List<GameObject.AbsGroup> groups, bool cities)
+        {
+            groups.Clear();
 
+            IntVector2 areaPos = tilePos / UnitGridSquareWidth;
+            UnitCollArea area;
 
-        //public Faction CityDomination(City city)
-        //{
-        //    cityDominationStrength.Clear();
+            for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
+            {
+                for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
+                {
+                    if (grid.TryGet(x, y, out area))
+                    {
+                        lock (area.groups)
+                        {
+                            if (area.groups != null)
+                            {
+                                groups.AddRange(area.groups);
+                            }
+                        }
 
-        //    cityDominationStrength.Add(city.faction.index, 0);
+                        if (cities)
+                        {
+                            foreach (var city in area.cities)
+                            {
+                                groups.AddRange(area.cities);
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-        //    IntVector2 areaPos = city.tilePos / UnitGridSquareWidth;
-        //    UnitCollArea area;
-
-        //    for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
-        //    {
-        //        for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
-        //        {
-        //            if (grid.TryGet(x, y, out area))
-        //            {
-        //                var armies_sp = area.armies;
-        //                if (armies_sp != null)
-        //                {
-        //                    foreach (var army in armies_sp)
-        //                    {
-        //                        bool inRange = (army.tilePos - city.tilePos).Length() <= DssLib.CityDominationRadius;
-
-        //                        if (inRange)
-        //                        {
-        //                            if (cityDominationStrength.ContainsKey(army.faction.index))
-        //                            {
-        //                                cityDominationStrength[army.faction.index] += army.strengthValue;
-        //                            }
-        //                            else if (DssRef.diplomacy.InWar(army.faction, city.faction))
-        //                            {
-        //                                cityDominationStrength.Add(army.faction.index, army.strengthValue);
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    int strongestFaction = -1;
-        //    float strongest = float.MinValue;
-
-        //    foreach (var kv in cityDominationStrength)
-        //    {
-        //        if (kv.Value > strongest)
-        //        {
-        //            strongestFaction = kv.Key;
-        //            strongest = kv.Value;
-        //        }
-        //    }
-
-        //    return DssRef.world.factions.Array[strongestFaction];
-        //}
 
         public void collectArmies(IntVector2 tilePos, List<GameObject.Army> armies)
         {

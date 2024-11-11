@@ -3,30 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.MoonFall;
+using VikingEngine.ToGG.MoonFall.GO;
 
 namespace VikingEngine.DSSWars.GameObject
 {
 
     abstract class AbsSoldierUnit : AbsDetailUnit
     {
-        //public const int SoldierAiState_GroupLock = 0;
-        // const int SoldierAiState_ColumnQue = 1;
-        // const int SoldierAiState_FreeAttack = 2;
-        // const int SoldierAiState_Idle = 3;
-        // const int SoldierAiState_ReGroup = 4;
-
         protected static float GoalReachDist_GROUP = DssVar.StandardBoundRadius * 2f;
         protected static float GoalReachDist_WhenColliding = GoalReachDist_GROUP * 3f;
-        //const float GoalReachDist_Induvidual = AbsSoldierData.StandardBoundRadius * 0.04f;
-
-        //const float FleeMinDistanceToGoal = AbsSoldierData.StandardBoundRadius * 8;
-        //const float FleeMinDistanceToEnemy = AbsSoldierData.StandardBoundRadius * 5;
 
         public Vector3 walkingGoal;
         Vector2 groupOffset;
@@ -47,10 +39,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public UnitType UnitType;
         float reactionTime;
-        //override public AbsSoldierProfile profile()
-        //{ 
-        //    return DssRef.profile.Get(UnitType);
-        //}
+
+        
+        SoldierBattleData battleData = null;
+
         public override AbsDetailUnitProfile Profile()
         {
             return DssRef.profile.Get(UnitType);
@@ -121,6 +113,7 @@ namespace VikingEngine.DSSWars.GameObject
             this.group = group;
             this.gridPlacement = gridPlacement;
             parentArrayIndex = group.army.faction.pickNextUnitId();
+            bound = new Physics.CircleBound(Vector2.Zero, SoldierProfile().boundRadius);
 
             init(false);
             tilePos = tile;
@@ -278,63 +271,63 @@ namespace VikingEngine.DSSWars.GameObject
 
         override public void update(float time, bool fullUpdate)
         {
-            if (!lockMovement)
-            {
-                if (fullUpdate)
-                {
-                    switch (aiState)
-                    {
-                        case SoldierAiState.ColumnQue:
-                            if (soldierData.mainAttack != AttackType.Melee ||
-                               bonusProjectiles > 0)
-                            {
-                                updateRangeAttackIfAble(time, fullUpdate);
-                            }
-                            updateFollowQue(time);
-                            break;
-                        case SoldierAiState.FreeAttack:
-                            updateMoveAttackPrio(time, fullUpdate);
-                            collisionUpdate();
-                            break;
-                        case SoldierAiState.Idle:
-                            state.idle = true;
-                            state.walking = false;
-                            break;
-                        case SoldierAiState.ReGroup:
-                            if (!walkTowards(time, walkingGoal))
-                            {
-                                rotateToAngle(group.rotation.radians);
-                                state.idle = !state.rotating;
-                            }
-                            collisionUpdate();
-                            break;
-                        case SoldierAiState.GroupLock:
-                            //In wrong state
-                            setFreeAttack();
-                            break;
-                    }
+            //    if (!lockMovement)
+            //    {
+            //        if (fullUpdate)
+            //        {
+            //            switch (aiState)
+            //            {
+            //                case SoldierAiState.ColumnQue:
+            //                    if (soldierData.mainAttack != AttackType.Melee ||
+            //                       bonusProjectiles > 0)
+            //                    {
+            //                        updateRangeAttackIfAble(time, fullUpdate);
+            //                    }
+            //                    updateFollowQue(time);
+            //                    break;
+            //                case SoldierAiState.FreeAttack:
+            //                    updateMoveAttackPrio(time, fullUpdate);
+            //                    //collisionUpdate();
+            //                    break;
+            //                case SoldierAiState.Idle:
+            //                    state.idle = true;
+            //                    state.walking = false;
+            //                    break;
+            //                case SoldierAiState.ReGroup:
+            //                    if (!walkTowards(time, walkingGoal))
+            //                    {
+            //                        rotateToAngle(group.rotation.radians);
+            //                        state.idle = !state.rotating;
+            //                    }
+            //                    //collisionUpdate();
+            //                    break;
+            //                case SoldierAiState.GroupLock:
+            //                    //In wrong state
+            //                    setFreeAttack();
+            //                    break;
+            //            }
 
-                    updateGroudY(false);
-                }
-                else
-                {
-                    switch (aiState)
-                    {
-                        case SoldierAiState.FreeAttack:
-                            updateMoveAttackPrio(time, fullUpdate);
-                            break;
-                        case SoldierAiState.GroupLock:
-                            //In wrong state
-                            setFreeAttack();
-                            break;
-                    }
-                }
+            //            updateGroudY(false);
+            //        }
+            //        else
+            //        {
+            //            switch (aiState)
+            //            {
+            //                case SoldierAiState.FreeAttack:
+            //                    updateMoveAttackPrio(time, fullUpdate);
+            //                    break;
+            //                case SoldierAiState.GroupLock:
+            //                    //In wrong state
+            //                    setFreeAttack();
+            //                    break;
+            //            }
+            //        }
 
-                model?.update(this);
+            //        model?.update(this);
+            //    }
             }
-        }
 
-        public void update_GroupLocked(bool walking)
+            public void update_GroupLocked(bool walking)
         {
             if (walking)
             {
@@ -358,25 +351,64 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else if (state2 != SoldierState2.idle)
             {
-                walkingGoal = groupPosition(group.position, group.rotation.radians);
-                if (!walkTowards(time, walkingGoal))
-                {
-                    rotateToAngle(group.rotation.radians);
-                }
+                followPathUpdate(time);
                 if (group.state == GroupState.GoingIdle && state2 == SoldierState2.waiting)
                 {
                     state2 = SoldierState2.idle;
                 }
 
                 updateGroudY(false);
+                bound.Center = VectorExt.V3XZtoV2(position);
                 model?.update(this);
             }
         }
-        public void update2_battle(float time, bool fullUpate)
+
+        void followPathUpdate(float time)
         {
-            updateMoveAttackPrio(time, fullUpate);
+            walkingGoal = groupPosition(group.position, group.rotation.radians);
+            if (!walkTowards(time, walkingGoal))
+            {
+                rotateToAngle(group.rotation.radians);
+            }
+        }
+
+        bool freeToMove(float time)
+        {
+            if (battleData != null)
+            {
+                if (battleData.queueTime > 0)
+                { 
+                    battleData.queueTime-= time;
+                    if (battleData.queueTime <= 0)
+                    {
+                        battleData.InQueue(this);
+                    }
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public void update2_battle_move(float time, bool fullUpate)
+        {
+            
+            followPathUpdate(time);
+            
+            battleData?.update(this);
 
             updateGroudY(false);
+            bound.Center = VectorExt.V3XZtoV2(position);
+            model?.update(this);
+        }
+        public void update2_battle_attack(float time, bool fullUpate)
+        {
+            updateMoveAttackPrio(time, fullUpate, freeToMove(time));
+            
+            battleData?.update(this);
+
+            updateGroudY(false);
+            bound.Center = VectorExt.V3XZtoV2(position);
             model?.update(this);
         }
         public void wakeUp2()
@@ -385,6 +417,18 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 state2 = SoldierState2.wakeup;
                 stateTime = reactionTime;                
+            }
+        }
+
+        public void enterBattleState(bool enter)
+        {
+            if (enter)
+            {
+                battleData = new SoldierBattleData();
+            }
+            else
+            { 
+                battleData = null;
             }
         }
 
@@ -490,7 +534,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        protected void updateMoveAttackPrio(float time, bool fullUpdate)
+        protected void updateMoveAttackPrio(float time, bool fullUpdate, bool mayMove)
         {
             searchTargetUpdate();
 
@@ -534,17 +578,22 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else if (group.attacking_soldierGroupOrCity != null)
                 {//Walk straight while searching opponent
-                    walkStraightForward(time);
+                    if (mayMove)
+                    { walkStraightForward(time); }
+                    else
+                    { 
+                        state.walking = false;
+                    }
                 }
-                else if (hasWalkingOrder)
-                {
-                    walkTowards(time, walkingGoal);
-                    checkWalkingGoalCompletetion();
-                }
-                else
-                {
-                    state.idle = true;
-                }
+                //else if (hasWalkingOrder)
+                //{
+                //    walkTowards(time, walkingGoal);
+                //    checkWalkingGoalCompletetion();
+                //}
+                //else
+                //{
+                //    state.idle = true;
+                //}
             }
 
             if (!state.idle)
@@ -571,7 +620,14 @@ namespace VikingEngine.DSSWars.GameObject
                         rotateTowards(attackTarget, SoldierProfile().rotationSpeed);
                         break;
                     case HasTargetInReach.MustWalk:
-                        walkTowards(time, attackTarget.position);
+                        if (mayMove)
+                        {
+                            walkTowards(time, attackTarget.position);
+                        }
+                        else
+                        {
+                            state.walking = false;
+                        }
                         break;
                 }
             }
@@ -719,76 +775,76 @@ namespace VikingEngine.DSSWars.GameObject
             refreshAttackTarget();
         }
 
-        void asynchFriendlyCollisionsCheck()
-        {
-            collisionGroup.processList.QuickClear();
+        //void asynchFriendlyCollisionsCheck()
+        //{
+        //    collisionGroup.processList.QuickClear();
 
-            var soldiers = group.soldiers.counter();
-            while (soldiers.Next())
-            {
-                if (soldiers.sel != this)
-                {
-                    collisionGroupCheck(soldiers.sel, distanceToUnit(soldiers.sel));
-                }
-            }
-            collisionGroup.swap();
-        }
+        //    var soldiers = group.soldiers.counter();
+        //    while (soldiers.Next())
+        //    {
+        //        if (soldiers.sel != this)
+        //        {
+        //            collisionGroupCheck(soldiers.sel, distanceToUnit(soldiers.sel));
+        //        }
+        //    }
+        //    collisionGroup.swap();
+        //}
 
-        void collisionUpdate()
-        {
-            if (model != null)
-            {
-                for (int t = 0; t < Ref.GameTimePassed16ms; ++t)
-                {
-                    bool hasIdleUnitCollision = false;
+        //void collisionUpdate()
+        //{
+        //    if (model != null)
+        //    {
+        //        for (int t = 0; t < Ref.GameTimePassed16ms; ++t)
+        //        {
+        //            bool hasIdleUnitCollision = false;
 
-                    collisionGroup.loopBegin();
-                    while (collisionGroup.loopNext())
-                    {
-                        var otherModel = collisionGroup.sel.model;
-                        if (otherModel != null)
-                        {
-                            Physics.Collision2D intersection = model.bound.Intersect2(otherModel.bound);
-                            if (intersection.IsCollision)
-                            {
-                                collisionForce += intersection.direction;
-                                if (!collisionGroup.sel.state.walking)
-                                {
-                                    hasIdleUnitCollision = true;
-                                }
-                            }
-                        }
-                    }
+        //            collisionGroup.loopBegin();
+        //            while (collisionGroup.loopNext())
+        //            {
+        //                var otherModel = collisionGroup.sel.model;
+        //                if (otherModel != null)
+        //                {
+        //                    Physics.Collision2D intersection = model.bound.Intersect2(otherModel.bound);
+        //                    if (intersection.IsCollision)
+        //                    {
+        //                        collisionForce += intersection.direction;
+        //                        if (!collisionGroup.sel.state.walking)
+        //                        {
+        //                            hasIdleUnitCollision = true;
+        //                        }
+        //                    }
+        //                }
+        //            }
 
-                    if (hasIdleUnitCollision)
-                    {
-                        collisionFrames++;
-                    }
-                    else
-                    {
-                        collisionFrames = 0;
-                    }
+        //            if (hasIdleUnitCollision)
+        //            {
+        //                collisionFrames++;
+        //            }
+        //            else
+        //            {
+        //                collisionFrames = 0;
+        //            }
 
-                    applyCollisions();
-                }
-            }
+        //            applyCollisions();
+        //        }
+        //    }
 
-        }
+        //}
 
-        override public void applyCollisions()
-        {
-            if (VectorExt.HasValue(collisionForce))
-            {
-                if (state.walking)
-                {
-                    collisionForce *= 0.2f;
-                }
+        //override public void applyCollisions()
+        //{
+        //    if (VectorExt.HasValue(collisionForce))
+        //    {
+        //        if (state.walking)
+        //        {
+        //            collisionForce *= 0.2f;
+        //        }
 
-                position += VectorExt.V2toV3XZ(0.04f * collisionForce);
+        //        position += VectorExt.V2toV3XZ(0.04f * collisionForce);
 
-                collisionForce = Vector2.Zero;
-            }
-        }
+        //        collisionForce = Vector2.Zero;
+        //    }
+        //}
 
         void updateFollowQue(float time)
         {
@@ -998,8 +1054,10 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         public void asyncBattleUpdate()
-        { 
-             groupAttackTarget_asynch();
+        {   
+
+            battleData?.asycUpdate(this);
+            groupAttackTarget_asynch();
         }
         override public void asynchUpdate()
         {

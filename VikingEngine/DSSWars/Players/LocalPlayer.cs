@@ -396,7 +396,7 @@ namespace VikingEngine.DSSWars.Players
 
             for (int i = 0; i < 5; ++i)
             {
-                new SoldierGroup(mainArmy, DssLib.SoldierProfile_Standard, mainArmy.position);//mainArmy, UnitType.Soldier, false);
+                new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);//mainArmy, UnitType.Soldier, false);
             }
 
             if (IsPlayer() && DssRef.difficulty.honorGuard)
@@ -641,6 +641,12 @@ namespace VikingEngine.DSSWars.Players
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                 {                        
                     hud.messages.Add("message!", "Hello hello");
+                }
+
+                if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.N) && !Input.Keyboard.Ctrl)
+                {
+                    AbsWorldObject obj = mapControls.hover.obj as AbsWorldObject;
+                    obj?.AddDebugTag();
                 }
             }
 
@@ -1164,17 +1170,7 @@ namespace VikingEngine.DSSWars.Players
             Faction enemyFac = DssRef.settings.darkLordPlayer.faction;
             DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
             DssRef.diplomacy.declareWar(faction, enemyFac);
-            //DssRef.world.factionsCounter.Reset();
-
-            //enemyFac = DssRef.world.factions.Array[DssRef.world.evilFactionIndex];
-            ////while (DssRef.world.factionsCounter.Next())
-            ////{
-            ////    if (DssRef.world.factionsCounter.sel.player.IsAi())
-            ////    {
-            ////        enemyFac = DssRef.world.factionsCounter.sel;
-            ////        break;
-            ////    }
-            ////}
+           
 
             IntVector2 position = mapControls.tilePosition;
 
@@ -1182,75 +1178,32 @@ namespace VikingEngine.DSSWars.Players
             {
                 var army = faction.NewArmy(position);
                 army.rotation = playerRot;
-
-                //int count = Ref.rnd.Int(4, 8);
-                //for (int i = 0; i < 15; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Viking, false).completeTransform(SoldierTransformType.ToShip);
-                //}
-                for (int i = 0; i < 2; ++i)
+                Vector3 groupPos = army.position;
+                for (int i = 0; i < 5; ++i)
                 {
-                    new SoldierGroup(army, DssLib.SoldierProfile_Standard, army.position);
+                    new SoldierGroup(army, DssLib.SoldierProfile_Swordsman, groupPos);
+                    groupPos.Z += DssVar.SoldierGroup_Spacing;
                 }
-                //for (int i = 0; i < 30; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Knight, false).completeTransform(SoldierTransformType.ToShip);
-                //}
                 army.refreshPositions(true);
             }
             //else
-            {
-                {
-                    var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
-                    army.rotation = enemyRot;
-                    //int count = 4;//Ref.rnd.Int(4, 8);
+            //{
+            //    {
+            //        var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
+            //        army.rotation = enemyRot;
+            //        Vector3 groupPos = army.position;
+            //        //int count = 4;//Ref.rnd.Int(4, 8);
 
-                    for (int i = 0; i < 2; ++i)
-                    {
-                        new SoldierGroup(army, DssLib.SoldierProfile_Standard, army.position);
-                    }
-                    //for (int i = 0; i < 5; ++i)
-                    //{
-                    //    new SoldierGroup(army, UnitType.Ballista, false);
-                    //}
-                    army.refreshPositions(true);
-                }
+            //        for (int i = 0; i < 5; ++i)
+            //        {
+            //            new SoldierGroup(army, DssLib.SoldierProfile_Standard, groupPos);
+            //            groupPos.Z += DssVar.SoldierGroup_Spacing;
+            //        }
+            //        army.refreshPositions(true);
+            //    }
 
 
-                //{
-                //    var army = enemyFac.NewArmy(VectorExt.AddY(position, 2));
-                //    army.rotation = enemyRot;
-                //    //int count = 4;//Ref.rnd.Int(4, 8);
-                //    for (int i = 0; i < 5; ++i)
-                //    {
-                //        new SoldierGroup(army, UnitType.Soldier, false);
-                //    }
-                //    for (int i = 0; i < 5; ++i)
-                //    {
-                //        new SoldierGroup(army, UnitType.Ballista, false);
-                //    }
-                //    army.refreshPositions(true);
-                //}
-                //count = Ref.rnd.Int(4, 8);
-                //for (int i = 0; i < count; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Pikeman, false);
-                //}
-
-
-                //count = Ref.rnd.Int(0, 8);
-                //for (int i = 0; i < count; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.CrossBow, false);
-                //}
-
-                //count = Ref.rnd.Int(0, 16);
-                //for (int i = 0; i < count; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Trollcannon, false);
-                //}
-                //army.refreshPositions(true);
-            }
+            //}
 
         }
 

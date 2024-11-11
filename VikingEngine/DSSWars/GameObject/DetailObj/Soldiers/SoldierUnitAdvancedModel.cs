@@ -9,7 +9,7 @@ namespace VikingEngine.DSSWars.GameObject
     class DetailUnitModel : IDeleteable
     {
         public Graphics.AbsVoxelObj model;
-        public Physics.AbsBound2D bound;
+        //public Physics.AbsBound2D bound;
 
         virtual public void DeleteMe()
         {
@@ -53,8 +53,8 @@ namespace VikingEngine.DSSWars.GameObject
             shadowPlane.Position = model.position + shadowOffset;
             shadowPlane.Rotation = model.Rotation;
 
-            bound.Center = VectorExt.V3XZtoV2(model.position);
-            selectionArea.Center = bound.Center;
+            
+            selectionArea.Center = soldier.bound.Center;
             selectionArea.Center.Y -= 0.5f;
         }
 
@@ -78,7 +78,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             shadowPlane.Opacity = 0.5f;
 
-            bound = new Physics.CircleBound(Vector2.Zero, soldier.SoldierProfile().boundRadius);
+            
             selectionArea = new Circle(Vector2.Zero, 1.2f);
 
         }

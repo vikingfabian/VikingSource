@@ -66,7 +66,7 @@ namespace VikingEngine.DSSWars
             }
         };
 
-        public static readonly SoldierConscriptProfile SoldierProfile_Standard = new SoldierConscriptProfile()
+        public static readonly SoldierConscriptProfile SoldierProfile_Swordsman = new SoldierConscriptProfile()
         {
             conscript = new ConscriptProfile()
             {
