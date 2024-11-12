@@ -42,10 +42,10 @@ namespace VikingEngine.DSSWars.GameObject
             WalkDirCheckLength = DssVar.SoldierGroup_CollisionRadius * 0.9f;
         }
 
-        public const int GroupObjective_FollowArmyObjective = 0;
-        public const int GroupObjective_IsSplit = 1;
-        public const int GroupObjective_ReGrouping = 2;
-        public const int GroupObjective_FindArmyPlacement = 3;
+        //public const int GroupObjective_FollowArmyObjective = 0;
+        //public const int GroupObjective_IsSplit = 1;
+        //public const int GroupObjective_ReGrouping = 2;
+        //public const int GroupObjective_FindArmyPlacement = 3;
 
         bool isWalkingIntoOtherGroup = false;
 
@@ -75,8 +75,8 @@ namespace VikingEngine.DSSWars.GameObject
         public IntVector2 armyLocalPlacement = IntVector2.Zero;
         public IntVector2 armyGridPlacement2 = IntVector2.Zero;
         
-        public UnitType type;
-        public bool lockMovement = false;
+        //public UnitType type;
+        //public bool lockMovement = false;
         public Rotation1D rotation;
 
         public float terrainSpeedMultiplier = 1.0f;
@@ -95,8 +95,8 @@ namespace VikingEngine.DSSWars.GameObject
         public int lifeState = LifeState_New;
 
         public GroupState state = GroupState.Idle;
-        public int groupObjective = GroupObjective_FollowArmyObjective;
-        public bool attackState = false;
+        //public int groupObjective = GroupObjective_FollowArmyObjective;
+        //public bool attackState = false;
         //bool isRecruit;
         public bool inShipTransform = false;
 
@@ -149,7 +149,7 @@ namespace VikingEngine.DSSWars.GameObject
             collisionModel = new Graphics.Mesh(LoadedMesh.SelectCircleSolid, position, new Vector3(WalkDirBound.radius * 2f), TextureEffectType.Flat, SpriteName.WhiteArea, Color.HotPink, false);
             collisionModel.AddToRender(DrawGame.UnitDetailLayer);
 #endif
-            type = soldierConscript.unitType();
+            var type = soldierConscript.unitType();
             typeSoldierData = DssRef.profile.Get(type);//new ConscriptedSoldierData();
             typeShipData = DssRef.profile.Get(typeSoldierData.ShipType());
 
@@ -260,6 +260,36 @@ namespace VikingEngine.DSSWars.GameObject
         //    DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, tilePos);
         //}
 
+////        //SoldierGroup write
+
+////        soldierConscript.writeGameState(w);
+////w.Write(IsShip());
+
+////armyLocalPlacement.writeShort(w);
+
+////bool lockedInArmyGrid = army.IdleObjetive() && groupObjective == GroupObjective_FollowArmyObjective;
+////        w.Write(lockedInArmyGrid);
+
+////if (!lockedInArmyGrid)
+////{
+////    WP.writePosXZ(w, position);
+////    w.Write(rotation.ByteDir);
+////}
+
+////    w.Write((byte) groupObjective);
+
+////w.Write((byte) soldiers.Count);
+////bool soldiersLockedInGroup = groupObjective == GroupObjective_FollowArmyObjective;
+
+////if (!soldiersLockedInGroup)
+////{
+////    var soldiersC = soldiers.counter();
+////    while (soldiersC.Next())
+////    { 
+////        soldiersC.sel.writeGameState(w);
+////    }
+////}
+
         public void writeGameState(System.IO.BinaryWriter w)
         {
             //w.Write((byte)type);
@@ -268,8 +298,6 @@ namespace VikingEngine.DSSWars.GameObject
             //typeSoldierData.writeGameState(w);
             soldierConscript.writeGameState(w);
             w.Write(isShip);
-
-            //typeCurrentData = typeSoldierData;
 
             armyLocalPlacement.writeShort(w);
 
@@ -284,7 +312,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             w.Write((byte)groupObjective);
 
-            //w.Write((byte)soldiers.Count);
+            w.Write((byte)soldierCount);
             //bool soldiersLockedInGroup = groupObjective == GroupObjective_FollowArmyObjective;
 
             //if (!soldiersLockedInGroup)
@@ -297,7 +325,7 @@ namespace VikingEngine.DSSWars.GameObject
             //}
         }
 
-        public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
             soldierConscript.readGameState(r);
 
@@ -309,21 +337,32 @@ namespace VikingEngine.DSSWars.GameObject
 
             armyLocalPlacement.readShort(r);
 
-            bool lockedInArmyGrid = r.ReadBoolean();
-
-            if (!lockedInArmyGrid)
+            if (subVersion < 40)
             {
-                WP.readPosXZ(r, out position, out tilePos);
-                rotation.ByteDir = r.ReadByte();
-            }
+                bool lockedInArmyGrid = r.ReadBoolean();
 
-            groupObjective = r.ReadByte();
+                if (!lockedInArmyGrid)
+                {
+                    WP.readPosXZ(r, out position, out tilePos);
+                    rotation.ByteDir = r.ReadByte();
+                }
+
+                int groupObjective = r.ReadByte();
+            }
 
             int soldiersCount = r.ReadByte();
             bool soldiersLockedInGroup = groupObjective == GroupObjective_FollowArmyObjective;
 
             //AbsSoldierData typeData = DssRef.unitsdata.Get(type);
             initPart2(typeCurrentData);
+
+            if (subVersion < 40 && !soldiersLockedInGroup)
+            {
+                for (int i = 0; i < soldiersCount; i++)
+                {
+                    AbsSoldierUnit.OldRead(r);
+                }
+            }
 
             //AbsSoldierData soldierData = DssRef.unitsdata.Get(soldierType);
 
@@ -334,8 +373,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             //createAllSoldiers(typeCurrentData, soldiersCount);
 
-            //if (!soldiersLockedInGroup)
-            //{
+
             //    var soldiersC = soldiers.counter();
             //    while (soldiersC.Next())
             //    {
@@ -2158,6 +2196,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string ToString()
         {
+            var type = soldierConscript.unitType();
             return "Group " + type.ToString() + " x" + soldiers.Count.ToString() + ", id" + parentArrayIndex.ToString();
         }
     }    
