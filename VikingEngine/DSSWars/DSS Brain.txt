@@ -60,6 +60,15 @@ Art
 English, Simplified Chinese, Japanese, Russian, Spanish
 
 
+#Todo (DSS 2)#
+-Free build of city walls, towers
+-Better looking start cities
+-Nicer menu
+-Dynamic shadows shader
+-New end boss
+-Lots of named factions
+
+
 
 
 
