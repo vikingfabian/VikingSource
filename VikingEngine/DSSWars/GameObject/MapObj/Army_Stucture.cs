@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.PJ.CarBall;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -62,9 +63,21 @@ namespace VikingEngine.DSSWars.GameObject
             refreshGroupPlacements2(tilePos);
         }
 
-        void refreshGroupPlacements2(IntVector2 walkToTilePos)
+        void refreshGroupPlacements2(IntVector2 walkToTilePos, bool async = true)
         {
-            Task.Factory.StartNew(() =>
+            if (async)
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    execute();
+                });
+            }
+            else
+            {
+                execute();
+            }
+
+            void execute()
             {
                 ArmyPlacementGrid placementGrid = ArmyPlacementGrid.PoolGet();
                 {
@@ -78,7 +91,7 @@ namespace VikingEngine.DSSWars.GameObject
                     placementGrid.calcPositions(this, walkToTilePos, walkGoalAsShip);
                 }
                 ArmyPlacementGrid.PoolReturn(placementGrid);
-            });
+            }
         }
 
     }
@@ -345,11 +358,17 @@ namespace VikingEngine.DSSWars.GameObject
                 localPos = lib.RotatePointAroundCenter(Vector2.Zero, localPos, endRotation);
                 goalWp = VectorExt.V2toV3XZ(localPos + centerWp);
                 IntVector2 subTilePos = WP.ToSubTilePos(goalWp);
-                var subTile = DssRef.world.subTileGrid.Get(subTilePos);
-                if (subTile.mainTerrain != Map.TerrainMainType.DefaultSea)
+                if (DssRef.world.subTileGrid.TryGet(subTilePos, out SubTile subTile))
                 {
-                    currentColX = colX + 1;
-                    return true;
+                    if (subTile.mainTerrain != Map.TerrainMainType.DefaultSea)
+                    {
+                        currentColX = colX + 1;
+                        return true;
+                    }
+                }
+                else
+                {
+                    return false;
                 }
             }
 

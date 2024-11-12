@@ -19,18 +19,16 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class Army : AbsMapObject
     {
-       
-
         public const float MaxTradeDistance = 3;
 
-        const int GroupsWidth_Size1 = 5;
-        const int GroupsWidth_Size2 = 7;
-        const int GroupsWidth_Size3 = 9;
-        const int GroupsWidth_Size4 = 11;
+        const int GroupsWidth_Size1 = 2;
+        const int GroupsWidth_Size2 = 4;
+        const int GroupsWidth_Size3 = 6;
+        const int GroupsWidth_Size4 = 8;
 
-        const int Size1Capacity = GroupsWidth_Size1 * GroupsWidth_Size1;
-        const int Size2Capacity = GroupsWidth_Size2 * GroupsWidth_Size2;
-        const int Size3Capacity = GroupsWidth_Size3 * GroupsWidth_Size3;
+        static readonly int Size1Capacity = MathExt.Square(GroupsWidth_Size1 * 3);
+        static readonly int Size2Capacity = MathExt.Square(GroupsWidth_Size2 * 3);
+        static readonly int Size3Capacity = MathExt.Square(GroupsWidth_Size3 * 3);
 
 
         const LootFest.VoxelModelName OverviewBannerModelName = LootFest.VoxelModelName.armystand;
@@ -44,7 +42,6 @@ namespace VikingEngine.DSSWars.GameObject
         public Rotation1D rotation = Rotation1D.D180.Add(Ref.rnd.Plus_MinusF(0.8f));
         public float soldierRadius = 0.5f;
         BoundingSphere bound;
-        //public int index;
         
         public int id;
        
@@ -62,7 +59,6 @@ namespace VikingEngine.DSSWars.GameObject
         public Vector2 cullingTopLeft, cullingBottomRight;
         bool isIdle = true;
 
-        //bool deserters = false;
         public float food = 0;
         public float foodUpkeep = 0;
 
@@ -74,18 +70,19 @@ namespace VikingEngine.DSSWars.GameObject
 
         public CityTagBack tagBack = CityTagBack.NONE;
         public ArmyTagArt tagArt = ArmyTagArt.None;
+
         public Army(Faction faction, IntVector2 startPosition)
         {
             id = ++DssRef.state.NextArmyId;
             name = Data.NameGenerator.ArmyName(id);
             position = WP.ToMapPos(startPosition);
             tilePos = startPosition;
+            cullingTopLeft = tilePos.Vec;
+            cullingBottomRight = cullingTopLeft;
             nextNodePos = tilePos;
             setMaxFood();
 
             init(faction);
-
-            //Order_MoveTo(startPosition);
         }
 
         public Army()
@@ -690,7 +687,7 @@ namespace VikingEngine.DSSWars.GameObject
             //refreshPositionsFor(ArmyPlacement.Back, ref nextGroupPlacementIndex, width, onPurchase);
         }
 
-        public int groupsWidth()
+        public void autoColumnWidth()
         {
             int width;
 
@@ -711,7 +708,7 @@ namespace VikingEngine.DSSWars.GameObject
                 width = GroupsWidth_Size1;
             }
 
-            return width;
+            armyColumnWidth = width;
         }
 
         //static readonly int[] PlacementX = new int[] { 0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5 };

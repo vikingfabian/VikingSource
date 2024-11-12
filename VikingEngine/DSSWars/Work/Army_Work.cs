@@ -13,6 +13,33 @@ namespace VikingEngine.DSSWars.GameObject
     {
         float foodBackOrderTimeSec = 0;
 
+        public void setAsStartArmy()
+        {
+            //IntVector2 start = tilePos;
+            //tilePos.Y -= 1;
+            //OnSoldierPurchaseCompleted();
+
+            //var groupsC = groups.counter();
+            //while (groupsC.Next())
+            //{
+            //    groupsC.sel.setAsStartArmy();
+            //}
+            ////Order_MoveTo(start);
+            //position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();
+            //refreshPositions(true);
+            refreshGroupPlacements2(tilePos, false);
+            var groupsC = groups.counter();
+            while (groupsC.Next())
+            {
+                groupsC.sel.setAsStartArmy();
+            }
+            updateArmyMovement(1);
+
+            setMaxFood();
+            //tilePos = start;
+            //updateModelsPosition();
+        }
+
         public void setMaxFood()
         {
             float energy = DssLib.SoldierDefaultEnergyUpkeep / DssConst.FoodEnergy * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);

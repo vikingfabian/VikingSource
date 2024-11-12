@@ -330,8 +330,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         public void Order_Attack(AbsMapObject attackTarget)
-        {
-           
+        {           
             DssRef.diplomacy.declareWar(faction, attackTarget.faction);
             clearObjective();
             this.attackTarget = attackTarget;
@@ -360,10 +359,43 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 goal = attackTarget.tilePos;
             }
-            else 
+            else
             {
                 goal = walkGoal;
             }
+
+
+            var tile = DssRef.world.tileGrid.Get(goal);
+            if (tile.tileContent == TileContent.City)
+            {
+                IntVector2 dir = walkGoal - tilePos;
+                if (dir.HasValue())
+                {   
+                    IntVector2 adjusted = goal - dir.Normal();
+                    if (DssRef.world.tileGrid.Get(adjusted).IsWater())
+                    {
+                        int closestDist = 10;
+                        
+                        for (Dir8 d = 0; d < Dir8.NUM; d++)
+                        {
+                            IntVector2 pos = IntVector2.FromDir8(d) + goal;
+                            if (DssRef.world.tileGrid.Get(pos).IsLand())
+                            {
+                                var l = goal.SideLength(pos);
+                                if (l < closestDist)
+                                { 
+                                    adjusted = pos;
+                                }
+                            }
+                        }
+                    }
+
+                    goal = adjusted;
+                }
+            }
+
+            walkGoal = goal;
+
             walkGoalAsShip = DssRef.world.tileGrid.Get(goal).IsWater();
             refreshGroupPlacements2(goal);
 

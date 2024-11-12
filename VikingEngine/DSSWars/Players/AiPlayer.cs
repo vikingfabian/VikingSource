@@ -717,8 +717,8 @@ namespace VikingEngine.DSSWars.Players
                                     new SoldierGroup(army, DssLib.SoldierProfile_CrossbowMan, army.position);
                                 }
 
-                                army.OnSoldierPurchaseCompleted();
-                                army.setMaxFood();
+                                //army.OnSoldierPurchaseCompleted();
+                                army.setAsStartArmy();
                                 //}
                             }
                         }
@@ -739,8 +739,8 @@ namespace VikingEngine.DSSWars.Players
                                         new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard, army.position);
                                     }
 
-                                    army.OnSoldierPurchaseCompleted();
-                                    army.setMaxFood();
+                                    //army.OnSoldierPurchaseCompleted();
+                                    army.setAsStartArmy();
                                 }
                             }
                         }
@@ -798,8 +798,8 @@ namespace VikingEngine.DSSWars.Players
                                         new SoldierGroup(army, DssLib.SoldierProfile_Knight, army.position);
                                     }
 
-                                    army.OnSoldierPurchaseCompleted();
-                                    army.setMaxFood();
+                                    //army.OnSoldierPurchaseCompleted();
+                                    army.setAsStartArmy();
                                 }
                             }
                         }
@@ -808,8 +808,8 @@ namespace VikingEngine.DSSWars.Players
 
                 if (mainArmy != null)
                 {
-                    mainArmy.OnSoldierPurchaseCompleted();
-                    mainArmy.setMaxFood();
+                    //mainArmy.OnSoldierPurchaseCompleted();
+                    mainArmy.setAsStartArmy();
                 }
             }
 

@@ -983,12 +983,15 @@ namespace VikingEngine.DSSWars.GameObject
 
             ai_armyDefenceValue = armyDefence;
 
+            DssRef.world.unitCollAreaGrid.collectOpponentGroups(faction, tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities);
+            detailObj.asynchFindBattleTarget(groups);
+
             if (guardCount <= 0 && armyDefence == 0)
             {
                 //Destroyed in battle, domination check
                 Dictionary<int, FloatPointer> cityDominationStrength = new Dictionary<int, FloatPointer>(4);
 
-                DssRef.world.unitCollAreaGrid.collectOpponentGroups(faction, tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities);
+                
                 foreach (var group in groups)
                 {
                     int key = group.GetFaction().parentArrayIndex;

@@ -7,8 +7,6 @@
 #Todo (xmas patch)#
 
 
-
-
 krig varning på ally
 new maps
 dölj carry amount

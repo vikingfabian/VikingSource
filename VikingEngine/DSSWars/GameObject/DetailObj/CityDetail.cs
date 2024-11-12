@@ -356,28 +356,32 @@ namespace VikingEngine.DSSWars.GameObject
             return pos;
 
         }
-        public void asynchFindBattleTarget()
+        public void asynchFindBattleTarget(List<GameObject.SoldierGroup> groups)
         {
-            if (city.debugTagged)
-            {
-                lib.DoNothing();
-            }
+            //if (city.debugTagged)
+            //{
+            //    lib.DoNothing();
+            //}
             AbsDetailUnit closestOpponent = null;
             float closestOpponentDistance = float.MaxValue;
 
-            DssRef.world.unitCollAreaGrid.collectOpponentGroups(GetFaction(), tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities);
+            //DssRef.world.unitCollAreaGrid.collectOpponentGroups(GetFaction(), tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities);
 
             foreach (var m in groups)
             {
-                var soldiers = m.soldiers.counter();
-                while (soldiers.Next())
+                var soldiers_SP = m.soldiers;
+                if (soldiers_SP != null)
                 {
-                    if (soldiers.sel.Alive_IncomingDamageIncluded())
+                    var soldiersC = soldiers_SP.counter();
+                    while (soldiersC.Next())
                     {
-                        //float distance = spaceBetweenUnits(soldiers.sel);
+                        if (soldiersC.sel.Alive_IncomingDamageIncluded())
+                        {
+                            //float distance = spaceBetweenUnits(soldiers.sel);
 
-                        closestTargetCheck(soldiers.sel, //distance,
-                            ref closestOpponent, ref closestOpponentDistance);
+                            closestTargetCheck(soldiersC.sel, //distance,
+                                ref closestOpponent, ref closestOpponentDistance);
+                        }
                     }
                 }
             }

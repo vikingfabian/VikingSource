@@ -415,8 +415,8 @@ namespace VikingEngine.DSSWars.Players
                             new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard, army.position);//UnitType.HonorGuard, false);
                             --guardCount;
                         }
-                        army.OnSoldierPurchaseCompleted();
-                        army.setMaxFood();
+                        //army.OnSoldierPurchaseCompleted();
+                        army.setAsStartArmy();
                         if (guardCount <= 3)
                         {
                             break;
@@ -429,8 +429,8 @@ namespace VikingEngine.DSSWars.Players
                     new SoldierGroup(mainArmy, DssLib.SoldierProfile_HonorGuard, mainArmy.position);
                 }
             }
-            mainArmy.OnSoldierPurchaseCompleted();
-            mainArmy.setMaxFood();
+            //mainArmy.OnSoldierPurchaseCompleted();
+            mainArmy.setAsStartArmy();
         }
 
         public void toPeacefulCheck_asynch()

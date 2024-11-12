@@ -1129,13 +1129,17 @@ namespace VikingEngine.DSSWars.GameObject
                 switch (attacking_sp.gameobjectType())
                 {
                     case GameObjectType.SoldierGroup:
-                        var soldiers = attacking_sp.GetGroup().soldiers.counter();
-                        while (soldiers.Next())
+                        var soldiers_sp = attacking_sp.GetGroup().soldiers;
+                        if (soldiers_sp != null)
                         {
-                            if (soldiers.sel.Alive_IncomingDamageIncluded())
+                            var soldiers = soldiers_sp.counter();
+                            while (soldiers.Next())
                             {
-                                closestTargetCheck(soldiers.sel,
-                                    ref closestOpponent, ref closestOpponentDistance);
+                                if (soldiers.sel.Alive_IncomingDamageIncluded())
+                                {
+                                    closestTargetCheck(soldiers.sel,
+                                        ref closestOpponent, ref closestOpponentDistance);
+                                }
                             }
                         }
                         break;

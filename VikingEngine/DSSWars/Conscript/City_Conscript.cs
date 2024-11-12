@@ -350,11 +350,12 @@ namespace VikingEngine.DSSWars.GameObject
             };
 
             Vector3 startPos = WP.ToWorldPos(tilePos);
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 5; i++)
             {
                 new SoldierGroup(army, soldierProfile, startPos);
             }
-            army?.OnSoldierPurchaseCompleted();
+            //army?.OnSoldierPurchaseCompleted();
+            army.setAsStartArmy();
         }
 
         public void CalcRecruitToTile()
