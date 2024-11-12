@@ -242,15 +242,7 @@ namespace VikingEngine.DSSWars.GameObject
             int soldiersCount = r.ReadByte();
             bool soldiersLockedInGroup = groupObjective == GroupObjective_FollowArmyObjective;
 
-            //AbsSoldierData typeData = DssRef.unitsdata.Get(type);
             initPart2(typeCurrentData);
-
-            //AbsSoldierData soldierData = DssRef.unitsdata.Get(soldierType);
-
-            //if (soldierType == UnitType.Recruit)
-            //{
-            //    new TrainingCompleteTimer(this);
-            //}
 
             createAllSoldiers(typeCurrentData, soldiersCount);
 
@@ -260,6 +252,51 @@ namespace VikingEngine.DSSWars.GameObject
                 while (soldiersC.Next())
                 {
                     soldiersC.sel.readGameState(r, version);
+                }
+            }
+
+            initPart3(typeCurrentData);
+        }
+
+        public void readGameState_old(System.IO.BinaryReader r, int version)
+        {
+            soldierConscript.readGameState(r);
+
+            initPart1();
+
+            bool isShip = r.ReadBoolean();
+            typeCurrentData = isShip ? typeShipData : typeSoldierData;
+
+
+            armyLocalPlacement.readShort(r);
+
+            bool lockedInArmyGrid = r.ReadBoolean();
+
+            if (lockedInArmyGrid)
+            {
+                position = army.position;
+                rotation = army.rotation;
+            }
+            else
+            {
+                WP.readPosXZ(r, out position, out tilePos);
+                rotation.ByteDir = r.ReadByte();
+            }
+
+            var groupObjective = r.ReadByte();
+
+            int soldiersCount = r.ReadByte();
+            bool soldiersLockedInGroup = groupObjective == 0;//GroupObjective_FollowArmyObjective;
+
+            initPart2(typeCurrentData);
+
+            createAllSoldiers(typeCurrentData, soldiersCount);
+
+            if (!soldiersLockedInGroup)
+            {
+                for (int i = 0; i < soldiersCount; i++)
+                {
+                    AbsSoldierUnit.OldRead(r);
                 }
             }
 
