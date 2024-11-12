@@ -9,6 +9,12 @@ namespace VikingEngine.DSSWars.Display.Translation
     class TodoTranslation
     {
 
+        public string ArmyStructure_ColumnWidth = "Army column width";
+        public string ArmyStructure_Row_Front = "Front";
+        public string ArmyStructure_Row_Body = "Body";
+        public string ArmyStructure_Row_Second = "Second";
+        public string ArmyStructure_Row_Behind = "Behind";
+
         //public string Tutorial_BuildSomething => "Build something that produces {0}";
         //public string Tutorial_BuildCraft => "Build a crafting station for: {0}";
         //public string Tutorial_IncreaseBufferLimit => "Increase buffer limit for: {0}";

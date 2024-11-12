@@ -14,6 +14,7 @@ namespace VikingEngine.DSSWars.Map
         public Grid2D<UnitCollArea> grid;
 
         public List<GameObject.SoldierGroup> groups_nearUpdate = new List<GameObject.SoldierGroup>(32);
+        public List<City> cities_nearUpdate = new List<City>(4);
         public List<GameObject.AbsGroup> groupsAndCities_nearUpdate = new List<GameObject.AbsGroup>(32);
         public List<GameObject.Army> armies_nearUpdate = new List<GameObject.Army>(8);
         public List<GameObject.AbsGroup> friendlyGroupsAndCities_nearUpdate = new List<GameObject.AbsGroup>(8);
@@ -407,9 +408,10 @@ namespace VikingEngine.DSSWars.Map
         }
 
 
-        public List<GameObject.SoldierGroup> collectOpponentGroups(Faction faction, IntVector2 tilePos)
+        public void collectOpponentGroups(Faction faction, IntVector2 tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities)
         {
             groups_nearUpdate.Clear();
+            cities_nearUpdate.Clear();
 
             IntVector2 areaPos = tilePos / UnitGridSquareWidth;
             UnitCollArea area;
@@ -434,11 +436,20 @@ namespace VikingEngine.DSSWars.Map
                                 }
                             }
                         }
+
+                        foreach (var city in area.cities)
+                        {
+                            if (DssRef.diplomacy.InWar(faction, city.faction))
+                            {
+                                cities_nearUpdate.Add(city);
+                            }
+                        }
                     }
                 }
             }
 
-            return groups_nearUpdate;
+            groups = groups_nearUpdate;
+            cities = cities_nearUpdate;
         }
 
         public List<GameObject.AbsGroup> collectOpponents(Faction faction, IntVector2 tilePos)

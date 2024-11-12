@@ -368,10 +368,10 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     groupsCounter.sel.army = toArmy;
                     toArmy.AddSoldierGroup(groupsCounter.sel);
-                    if (groupsCounter.sel.groupObjective == SoldierGroup.GroupObjective_FollowArmyObjective)
-                    {
-                        groupsCounter.sel.groupObjective = SoldierGroup.GroupObjective_ReGrouping;
-                    }
+                    //if (groupsCounter.sel.groupObjective == SoldierGroup.GroupObjective_FollowArmyObjective)
+                    //{
+                    //    groupsCounter.sel.groupObjective = SoldierGroup.GroupObjective_ReGrouping;
+                    //}
                     groupsCounter.RemoveAtCurrent();
 
                     if (--count <= 0)
@@ -733,27 +733,27 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
 
-        public void refreshPositionsFor(ArmyPlacement armyPlacement, ref IntVector2 nextGroupPlacementIndex, int groupsWidth, bool onPurchase)
-        {
-            var groupsC = groups.counter();
+        //public void refreshPositionsFor(ArmyPlacement armyPlacement, ref IntVector2 nextGroupPlacementIndex, int groupsWidth, bool onPurchase)
+        //{
+        //    var groupsC = groups.counter();
 
-            while (groupsC.Next())
-            {
-                var soldier = groupsC.sel.FirstSoldier();
-                if (soldier != null)
-                {
-                    if (soldier.soldierData.ArmyFrontToBackPlacement == armyPlacement)
-                    {
-                        IntVector2 result = nextGroupPlacementIndex;
-                        result.X = TogglePlacementX(nextGroupPlacementIndex.X);// PlacementX[result.X];
+        //    while (groupsC.Next())
+        //    {
+        //        var soldier = groupsC.sel.FirstSoldier();
+        //        if (soldier != null)
+        //        {
+        //            if (soldier.soldierData.ArmyFrontToBackPlacement == armyPlacement)
+        //            {
+        //                IntVector2 result = nextGroupPlacementIndex;
+        //                result.X = TogglePlacementX(nextGroupPlacementIndex.X);// PlacementX[result.X];
 
-                        nextGroupPlacementIndex.Grindex_Next(groupsWidth);
-                        groupsC.sel.SetArmyPlacement(result, onPurchase); //behöver en wake up alert
+        //                nextGroupPlacementIndex.Grindex_Next(groupsWidth);
+        //                groupsC.sel.SetArmyPlacement(result, onPurchase); //behöver en wake up alert
                                                                           
-                    }
-                }
-            }
-        }
+        //            }
+        //        }
+        //    }
+        //}
 
         protected override void setInRenderState()
         {              
@@ -831,8 +831,8 @@ namespace VikingEngine.DSSWars.GameObject
                     count += groupsC.sel.soldierCount;
                     groupsC.sel.setBattleWalkingSpeed();
 
-                    allGropsAreIdle &= groupsC.sel.allInduvidualsAreIdle;
-                    int health = 0;
+                    allGropsAreIdle &= groupsC.sel.state == GroupState.Idle; //.allInduvidualsAreIdle;
+                    int health;
 
                     if (groupsC.sel.isShip)
                     {
@@ -927,6 +927,15 @@ namespace VikingEngine.DSSWars.GameObject
             if (!inRender_detailLayer)
             {
                 updateMembers(time * Ref.GameTimeSpeed, false);
+            }
+        }
+
+        public void asyncNearObjectsUpdate()
+        {
+            var groupsC = groups.counter();
+            while (groupsC.Next())
+            {
+                groupsC.sel.asynchNearObjectsUpdate();
             }
         }
 

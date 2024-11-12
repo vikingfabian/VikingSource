@@ -967,20 +967,144 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void asynchNearObjectsUpdate()
         {
-            float defence = 0;
+            float armyDefence = 0;
+            const int DominanceTileRadius = 4;
 
             DssRef.world.unitCollAreaGrid.collectArmies(faction, tilePos, 1,
                 DssRef.world.unitCollAreaGrid.armies_nearUpdate);
 
             foreach (var m in DssRef.world.unitCollAreaGrid.armies_nearUpdate)
             {
-                if (m.tilePos.SideLength(tilePos) <= 4)
+                if (m.tilePos.SideLength(tilePos) <= DominanceTileRadius)
                 {
-                    defence += m.strengthValue;
+                    armyDefence += m.strengthValue;
                 }
             }
 
-            ai_armyDefenceValue = defence;
+            ai_armyDefenceValue = armyDefence;
+
+            if (guardCount <= 0 && armyDefence == 0)
+            {
+                //Destroyed in battle, domination check
+                Dictionary<int, FloatPointer> cityDominationStrength = new Dictionary<int, FloatPointer>(4);
+
+                DssRef.world.unitCollAreaGrid.collectOpponentGroups(faction, tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities);
+                foreach (var group in groups)
+                {
+                    int key = group.GetFaction().parentArrayIndex;
+                    float value = group.strengthValue();
+
+                    if (cityDominationStrength.TryGetValue(key, out FloatPointer current))
+                    {
+                        current.value += value;
+                    }
+                    else
+                    {
+                        cityDominationStrength.Add(key, new FloatPointer(value));
+                    }
+                }
+
+                int strongestFaction = -1;
+                float strongest = float.MinValue;
+
+                foreach (var kv in cityDominationStrength)
+                {
+                    if (kv.Value.value > strongest)
+                    {
+                        strongestFaction = kv.Key;
+                        strongest = kv.Value.value;
+                    }
+                }
+
+                var dominatingFaction = DssRef.world.factions.Array[strongestFaction];
+
+                if (faction.player.IsPlayer())
+                {
+                    ++faction.player.GetLocalPlayer().statistics.CitiesLost;
+                }
+                if (dominatingFaction.player.IsPlayer())
+                {
+                    ++dominatingFaction.player.GetLocalPlayer().statistics.CitiesCaptured;
+                }
+
+                Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(setFaction, dominatingFaction));
+            }
+            //            var membersC = MembersCounter();
+            //            while (membersC.Next())
+            //            {
+            //                if (membersC.sel.gameobjectType() == GameObjectType.City)
+            //                {
+            //                    cities.Add(membersC.sel.GetCity());
+            //                }
+
+            //                if (cityDominationStrength.ContainsKey(membersC.sel.faction.parentArrayIndex))
+            //                {
+            //                    cityDominationStrength[membersC.sel.faction.parentArrayIndex] += membersC.sel.strengthValue;
+            //                }
+            //                else
+            //                {
+            //                    cityDominationStrength.Add(membersC.sel.faction.parentArrayIndex, membersC.sel.strengthValue);
+            //                }
+
+            //                membersC.sel.ExitBattleGroup();
+            //            }
+
+            //            int strongestFaction = -1;
+            //            float strongest = float.MinValue;
+
+            //            foreach (var kv in cityDominationStrength)
+            //            {
+            //                if (kv.Value > strongest)
+            //                {
+            //                    strongestFaction = kv.Key;
+            //                    strongest = kv.Value;
+            //                }
+            //            }
+
+            //            var dominatingFaction = DssRef.world.factions.Array[strongestFaction];
+
+            //            if (cities.Count > 0)
+            //            {
+            //                foreach (var c in cities)
+            //                {
+            //                    if (DssRef.diplomacy.InWar(c.faction, dominatingFaction))
+            //                    {
+            //                        if (c.faction.player.IsPlayer())
+            //                        {
+            //                            ++c.faction.player.GetLocalPlayer().statistics.CitiesLost;
+            //                        }
+            //                        if (dominatingFaction.player.IsPlayer())
+            //                        {
+            //                            ++dominatingFaction.player.GetLocalPlayer().statistics.CitiesCaptured;
+            //                        }
+
+            //                        Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(c.setFaction, dominatingFaction));
+            //                    }
+            //                }
+            //            }
+
+            //            for (int i = 0; i < factions.Count; ++i)
+            //            {
+            //                var f = factions[i];
+
+            //                bool winner = f == dominatingFaction || !DssRef.diplomacy.InWar(f, dominatingFaction);
+
+            //                if (f.player.IsPlayer())
+            //                {
+            //                    var p = f.player.GetLocalPlayer();
+            //                    p.battles.Remove(this);
+            //                    if (winner)
+            //                    {
+            //                        p.statistics.BattlesWon++;
+            //                    }
+            //                    else
+            //                    {
+            //                        p.statistics.BattlesLost++;
+            //                    }
+            //                }
+            //            }
+            //        }
+            //}
 
             //detailObj.asynchNearObjectsUpdate();
         }
@@ -1048,6 +1172,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void respawnGuard()
         {
             if (guardCount < maxGuardSize && 
+                guardCount > 0 && //Zero when waiting for domination
                 //!InBattle() &&
                 spendWorker(1))
             {
@@ -1309,6 +1434,7 @@ namespace VikingEngine.DSSWars.GameObject
                     prevOwner.remove(this);
                 }
                 OnNewOwner();
+                guardCount = Bound.Min(guardCount, 1);
             }
         }
 

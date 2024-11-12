@@ -638,6 +638,7 @@ namespace VikingEngine.DSSWars
             }
             return exitThreads;
         }
+
         bool asynchNearObjectsUpdate(int id, float time)
         {
             if (cutScene == null)
@@ -647,6 +648,16 @@ namespace VikingEngine.DSSWars
                 foreach (var m in DssRef.world.cities)
                 {
                     m.asynchNearObjectsUpdate();
+                }
+
+                var factions = DssRef.world.factions.counter();
+                while (factions.Next())
+                {
+                    var armiesC = factions.sel.armies.counter();
+                    while (armiesC.Next())
+                    {
+                        armiesC.sel.asyncNearObjectsUpdate();
+                    }
                 }
             }
             return exitThreads;

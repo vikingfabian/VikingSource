@@ -1188,19 +1188,19 @@ namespace VikingEngine.DSSWars.Players
             }
             //else
             //{
-            //    {
-            //        var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
-            //        army.rotation = enemyRot;
-            //        Vector3 groupPos = army.position;
-            //        //int count = 4;//Ref.rnd.Int(4, 8);
+            //{
+            //    var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
+            //    army.rotation = enemyRot;
+            //    Vector3 groupPos = army.position;
+            //    //int count = 4;//Ref.rnd.Int(4, 8);
 
-            //        for (int i = 0; i < 5; ++i)
-            //        {
-            //            new SoldierGroup(army, DssLib.SoldierProfile_Standard, groupPos);
-            //            groupPos.Z += DssVar.SoldierGroup_Spacing;
-            //        }
-            //        army.refreshPositions(true);
+            //    for (int i = 0; i < 1; ++i)
+            //    {
+            //        new SoldierGroup(army, DssLib.SoldierProfile_Swordsman, groupPos);
+            //        groupPos.Z += DssVar.SoldierGroup_Spacing;
             //    }
+            //    army.refreshPositions(true);
+            //}
 
 
             //}

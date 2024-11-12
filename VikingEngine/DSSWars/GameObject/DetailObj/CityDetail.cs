@@ -365,9 +365,9 @@ namespace VikingEngine.DSSWars.GameObject
             AbsDetailUnit closestOpponent = null;
             float closestOpponentDistance = float.MaxValue;
 
-            var opponentGroups = DssRef.world.unitCollAreaGrid.collectOpponentGroups(GetFaction(), tilePos);
+            DssRef.world.unitCollAreaGrid.collectOpponentGroups(GetFaction(), tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities);
 
-            foreach (var m in opponentGroups)
+            foreach (var m in groups)
             {
                 var soldiers = m.soldiers.counter();
                 while (soldiers.Next())

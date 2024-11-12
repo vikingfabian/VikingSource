@@ -86,23 +86,24 @@ namespace VikingEngine.DSSWars.Battle
             SoldierBuffer.Clear();
             //Collect nearby collision bounds
             DssRef.world.unitCollAreaGrid.collectGroups(parent.tilePos, ref GroupBuffer, false);
-            //float searchRadius = parent.bound.InnerCirkleRadius + WorldData.SubTileHalfWidth;
 
             foreach (var group in GroupBuffer)
             {
                 if (VectorExt.Length(group.position.X - parent.position.X, group.position.Z - parent.position.Z) < SoldierToGroupMaxDistance)
                 {
-                    var soldiers = group.GetGroup().soldiers;
-                    if (soldiers != null)
+                    if (group.gameobjectType() == GameObjectType.SoldierGroup)
                     {
-                        var soldiersC = soldiers.counter();
-                        while (soldiersC.Next())
+                        var soldiers = group.GetGroup().soldiers;
+                        if (soldiers != null)
                         {
-                            //float maxDist = searchRadius + soldiersC.sel.bound.InnerCirkleRadius;
-                            if (parent.bound.AsynchCollect(soldiersC.sel.bound) &&
-                                soldiersC.sel != parent)
+                            var soldiersC = soldiers.counter();
+                            while (soldiersC.Next())
                             {
-                                SoldierBuffer.Add(soldiersC.sel);
+                                if (parent.bound.AsynchCollect(soldiersC.sel.bound) &&
+                                    soldiersC.sel != parent)
+                                {
+                                    SoldierBuffer.Add(soldiersC.sel);
+                                }
                             }
                         }
                     }
@@ -116,60 +117,5 @@ namespace VikingEngine.DSSWars.Battle
             }
         }
 
-        //void collisionUpdate()
-        //{
-        //    if (model != null)
-        //    {
-        //        for (int t = 0; t < Ref.GameTimePassed16ms; ++t)
-        //        {
-        //            bool hasIdleUnitCollision = false;
-
-        //            collisionGroup.loopBegin();
-        //            while (collisionGroup.loopNext())
-        //            {
-        //                var otherModel = collisionGroup.sel.model;
-        //                if (otherModel != null)
-        //                {
-        //                    Physics.Collision2D intersection = model.bound.Intersect2(otherModel.bound);
-        //                    if (intersection.IsCollision)
-        //                    {
-        //                        collisionForce += intersection.direction;
-        //                        if (!collisionGroup.sel.state.walking)
-        //                        {
-        //                            hasIdleUnitCollision = true;
-        //                        }
-        //                    }
-        //                }
-        //            }
-
-        //            if (hasIdleUnitCollision)
-        //            {
-        //                collisionFrames++;
-        //            }
-        //            else
-        //            {
-        //                collisionFrames = 0;
-        //            }
-
-        //            applyCollisions();
-        //        }
-        //    }
-
-        //}
-
-        //override public void applyCollisions()
-        //{
-        //    if (VectorExt.HasValue(collisionForce))
-        //    {
-        //        if (state.walking)
-        //        {
-        //            collisionForce *= 0.2f;
-        //        }
-
-        //        position += VectorExt.V2toV3XZ(0.04f * collisionForce);
-
-        //        collisionForce = Vector2.Zero;
-        //    }
-        //}
     }
 }
