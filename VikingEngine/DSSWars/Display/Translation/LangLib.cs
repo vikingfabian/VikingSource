@@ -298,6 +298,9 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                 case TerrainMainType.Resourses:
                     return DssRef.lang.Resource;
+
+                case TerrainMainType.Wall:
+                    return DssRef.todoLang.BuildingType_Wall;
             }
 
 

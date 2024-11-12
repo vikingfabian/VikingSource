@@ -1334,7 +1334,7 @@ namespace VikingEngine.DSSWars.Players
                     {
                         city = c;
                     }
-                    else if (c.workForce > city.workForce)
+                    else if (c.workForce.amount > city.workForce.amount)
                     {
                         city = c;
                     }

@@ -176,7 +176,7 @@ namespace VikingEngine.DSSWars
                 CityEconomyData data = citiesC.sel.calcIncome_async();
                 newCitiesEconomy.Add(data);
                 //cityIncomeCount += data.total();
-                workForceCount += citiesC.sel.workForce;
+                workForceCount += citiesC.sel.workForce.amount;
                 citiesFoodProduce += citiesC.sel.foodProduction.displayValue_sec;
                 citiesFoodSpend += citiesC.sel.foodSpending.displayValue_sec;
                 soldResources += citiesC.sel.soldResources.displayValue_sec;

@@ -55,12 +55,12 @@ namespace VikingEngine.DSSWars.GameObject
             IntVector2 minpos = WP.ToSubTilePos_Centered(tilePos);
             IntVector2 maxpos = minpos;
 
-            res_water.clearOrders();
-            res_wood.clearOrders();
-            res_stone.clearOrders();
-            res_rawFood.clearOrders();
-            res_skinLinnen.clearOrders();
-            res_ironore.clearOrders();
+            //res_water.clearOrders();
+            //res_wood.clearOrders();
+            //res_stone.clearOrders();
+            //res_rawFood.clearOrders();
+            //res_skinLinnen.clearOrders();
+            //res_ironore.clearOrders();
             //waterSpendOrders = 0;
             
 
@@ -84,7 +84,7 @@ namespace VikingEngine.DSSWars.GameObject
                         idleCount++; 
                         break;
                     default:
-                        checkAvailableAndBackOrder(status.work, status.workSubType);
+                        checkAvailable(status.work, status.workSubType);
                         break;
                     
                 }
@@ -112,7 +112,7 @@ namespace VikingEngine.DSSWars.GameObject
             cullingTopLeft = WP.SubtileToTilePos(minpos);
             cullingBottomRight = WP.SubtileToTilePos(maxpos);
 
-            int workTeamCount = workForce / WorkTeamSize;
+            int workTeamCount = workForce.amount / WorkTeamSize;
 
             if (workerStatusActiveCount < workTeamCount)
             {
@@ -172,7 +172,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (workerStatuses[i].work == WorkType.Idle)
                 {
-                    if (workerStatusActiveCount > workForce)
+                    if (workerStatusActiveCount > workForce.amount)
                     {
                         --workerStatusActiveCount;
                         var status = workerStatuses[i];
@@ -196,7 +196,7 @@ namespace VikingEngine.DSSWars.GameObject
                     else if (workerStatuses[i].energy <= DssConst.Worker_Starvation)
                     {
                         --workerStatusActiveCount;
-                        --workForce;
+                        --workForce.amount;
                         var status = workerStatuses[i];
                         status.createWorkOrder(WorkType.Starving, -1, -1, WP.ToSubTilePos_Centered(tilePos), this);
                         workerStatuses[i] = status;
@@ -219,7 +219,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 var work = arraylib.PullLastMember(workQue);
 
-                if (checkAvailableAndBackOrder(work.work, work.subWork) &&
+                if (checkAvailable(work.work, work.subWork) &&
                     isFreeTile(work.subTile))
                 {
                     int bestWorkerListIx = -1;
@@ -562,7 +562,7 @@ namespace VikingEngine.DSSWars.GameObject
                         ++CityStructure.Singleton.foodspots;
                         buildType = BuildAndExpandType.WheatFarm;
                     }
-                    else if (work && workForce >= workForceMax)
+                    else if (work && workForce.amount >= workForceMax)
                     {
                         buildType = BuildAndExpandType.WorkerHuts;
                     }
@@ -764,7 +764,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        bool checkAvailableAndBackOrder(WorkType work, int subWork)
+        bool checkAvailable(WorkType work, int subWork)
         {
             switch (work)
             {
@@ -777,12 +777,12 @@ namespace VikingEngine.DSSWars.GameObject
                         ResourceLib.Blueprint(item, out var bp1, out var bp2);
                         if (bp1.available(this))
                         {
-                            bp1.createBackOrder(this);
+                            //bp1.createBackOrder(this);
                             return true;
                         }
                         else if (bp2 != null && bp2.available(this))
                         {
-                            bp2.createBackOrder(this);
+                            //bp2.createBackOrder(this);
                             return true;
                         }
                         else
@@ -796,7 +796,7 @@ namespace VikingEngine.DSSWars.GameObject
                         var bp = BuildLib.BuildOptions[subWork].blueprint;
                         if (bp.available(this))
                         {
-                            bp.createBackOrder(this);
+                            //bp.createBackOrder(this);
                             return true;
                         }
                         else

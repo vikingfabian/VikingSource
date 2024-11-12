@@ -553,9 +553,10 @@ namespace VikingEngine.DSSWars.GameObject
     struct GroupedResource
     {
         public int amount;
-        public int backOrder;
+        //public int backOrder;
         public int goalBuffer;
-        public int orderQueCount;
+        //public int orderQueCount;
+        public int deliverCount;
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
@@ -568,10 +569,10 @@ namespace VikingEngine.DSSWars.GameObject
             goalBuffer = r.ReadUInt16();
         }
 
-        public int freeAmount()
-        { 
-            return amount - backOrder;
-        }
+        //public int freeAmount()
+        //{ 
+        //    return amount - backOrder;
+        //}
 
         public bool needMore()
         {
@@ -585,7 +586,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool canTradeAway()
         {
-            return (amount - backOrder) >= goalBuffer;
+            return amount >= goalBuffer;
+        }
+
+        public int amountPlusDelivery()
+        {
+            return amount + deliverCount;
         }
 
         public void add(ItemResource item, int multiply = 1)
@@ -648,11 +654,11 @@ namespace VikingEngine.DSSWars.GameObject
             content.Add(text);
         }
 
-        public void clearOrders()
-        { 
-            backOrder = 0;
-            orderQueCount = 0;
-        }
+        //public void clearOrders()
+        //{ 
+        //    backOrder = 0;
+        //    //orderQueCount = 0;
+        //}
 
         public override string ToString()
         {

@@ -46,30 +46,30 @@ namespace VikingEngine.DSSWars.GameObject
                                     status.profile.toCity > 0 &&
                                     status.CanSend(this))
                                 {
-                                    City othercity = findOtherCity(ref status);//DssRef.world.cities[status.profile.toCity];
+                                    City othercity = findOtherCity(ref status);
 
                                     if (othercity != null && 
                                         othercity.faction == this.faction )
                                     {
-                                        //if ()
-                                        //{
-                                        //Collecting Items:
-                                        //if (status.CanSend(this) &&
-                                        //    status.CountDownQue())
-                                        //{
                                         if (status.CountDownQue())
                                         {
                                             status.inProgress = status.profile;
 
                                             if (status.inProgress.type == ItemResourceType.Men)
                                             {
-                                                workForce -= DssConst.CityDeliveryCount;
+                                                workForce.amount -= DssConst.CityDeliveryCount;
+
+                                                othercity.workForce.deliverCount += DssConst.CityDeliveryCount;
                                             }
                                             else
                                             {
-                                                var resource = GetGroupedResource(status.inProgress.type);
-                                                resource.amount -= DssConst.CityDeliveryCount;
-                                                SetGroupedResource(status.inProgress.type, resource);
+                                                var resource_send = GetGroupedResource(status.inProgress.type);
+                                                resource_send.amount -= DssConst.CityDeliveryCount;
+                                                SetGroupedResource(status.inProgress.type, resource_send);
+
+                                                var resource_recieve = othercity.GetGroupedResource(status.inProgress.type);
+                                                resource_recieve.deliverCount += DssConst.CityDeliveryCount;
+                                                othercity.SetGroupedResource(status.inProgress.type, resource_recieve);
                                             }
 
                                             status.active++;
@@ -93,22 +93,30 @@ namespace VikingEngine.DSSWars.GameObject
                             
 
                         case DeliveryActiveStatus.Delivering:
+
+                            bool resetDeliverRecieveValue = Ref.rnd.Chance(0.05); //Just to adjust any drifting values
+
                             if (status.countdown.TimeOut())
                             {
                                 City othercity = DssRef.world.cities[status.inProgress.ToCity()];
                                 if (status.inProgress.type == ItemResourceType.Men)
                                 {
-                                    if (othercity.workForce + DssConst.CityDeliveryCount > othercity.workForceMax)
+                                    if (othercity.workForce.amount + DssConst.CityDeliveryCount > othercity.workForceMax)
                                     {
                                         //Add rest to immigration
-                                        int rest = othercity.workForce + DssConst.CityDeliveryCount - othercity.workForceMax;
-                                        othercity.workForce = othercity.workForceMax;
+                                        int rest = othercity.workForce.amount + DssConst.CityDeliveryCount - othercity.workForceMax;
+                                        othercity.workForce.amount = othercity.workForceMax;
                                         othercity.immigrants.value += rest;
                                     }
                                     else
                                     {
-                                        othercity.workForce += DssConst.CityDeliveryCount;
+                                        othercity.workForce.amount += DssConst.CityDeliveryCount;
                                     }
+                                    if (resetDeliverRecieveValue)
+                                    {
+                                        othercity.workForce.deliverCount = 0;
+                                    }
+                                    othercity.workForce.deliverCount -= DssConst.CityDeliveryCount;
                                 }
                                 else
                                 {
@@ -122,9 +130,8 @@ namespace VikingEngine.DSSWars.GameObject
                                     }
                                     
                                     resource.amount += DssConst.CityDeliveryCount;
+                                    resource.deliverCount -= DssConst.CityDeliveryCount;
                                     othercity.SetGroupedResource(status.inProgress.type, resource);
-
-
                                 }
                                 status.active = DeliveryActiveStatus.Idle;
                             }

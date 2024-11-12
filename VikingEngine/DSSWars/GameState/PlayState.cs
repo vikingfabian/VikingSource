@@ -132,7 +132,7 @@ namespace VikingEngine.DSSWars
             new Faction(DssRef.world, FactionType.SouthHara);
 
             int playerCount = DssRef.storage.playerCount;
-            int playerIndex = 0;
+            //int playerIndex = 0;
             localPlayers = new List<Players.LocalPlayer>(playerCount);
             Engine.Screen.SetupSplitScreen(playerCount, !DssRef.storage.verticalScreenSplit);
 
@@ -149,7 +149,7 @@ namespace VikingEngine.DSSWars
                 {
                     var local = new Players.LocalPlayer(factionsCounter.sel);
                     //var local = arraylib.PullFirstMember(pointers.localPlayers);//new Players.LocalPlayer(factionsCounter.sel, 
-                    local.assignPlayer(playerIndex, playerCount, newGame);
+                    
                     localPlayers.Add(local);
                 }
                 else
@@ -174,6 +174,13 @@ namespace VikingEngine.DSSWars
                     var local = new Players.LocalPlayer(startFaction);
                     local.assignPlayer(i, playerCount, newGame);
                     localPlayers.Add(local);
+                }
+            }
+            else
+            {
+                for (var i = 0; i < playerCount; ++i)
+                {
+                    localPlayers[i].assignPlayer(i, playerCount, newGame);
                 }
             }
 
