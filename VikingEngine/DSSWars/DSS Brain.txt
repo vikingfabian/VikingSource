@@ -5,6 +5,7 @@
 ! Old saves are slightly broken - again (cities will look weird)
 
 #Todo (XP)#
+* wood cutter/stone cutter shed, improved working radius
 * water expansion
 * axe/short sword, (sword needs good weapon smith)
 * steel, long sword > rapier, crossbow
