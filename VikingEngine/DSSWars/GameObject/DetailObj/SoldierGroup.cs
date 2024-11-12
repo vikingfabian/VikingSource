@@ -292,41 +292,25 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            //w.Write((byte)type);
-            //w.Write((byte)FirstSoldierData().unitType);
-
-            //typeSoldierData.writeGameState(w);
             soldierConscript.writeGameState(w);
             w.Write(isShip);
 
             armyLocalPlacement.writeShort(w);
-
-            bool lockedInArmyGrid = army.IdleObjetive() && groupObjective == GroupObjective_FollowArmyObjective;
-            w.Write(lockedInArmyGrid);
-
-            if (!lockedInArmyGrid)
-            {
-                WP.writePosXZ(w, position);
-                w.Write(rotation.ByteDir);
-            }
-
-            w.Write((byte)groupObjective);
+            WP.writePosXZ(w, position);
+            w.Write(rotation.ByteDir);
 
             w.Write((byte)soldierCount);
-            //bool soldiersLockedInGroup = groupObjective == GroupObjective_FollowArmyObjective;
-
-            //if (!soldiersLockedInGroup)
-            //{
-            //    var soldiersC = soldiers.counter();
-            //    while (soldiersC.Next())
-            //    {
-            //        soldiersC.sel.writeGameState(w);
-            //    }
-            //}
+            w.Write((short)shipHealth);
         }
 
         public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
+            if (subVersion < 40)
+            {
+                readGameState_old(r, subVersion);
+                return;
+            }
+
             soldierConscript.readGameState(r);
 
             initPart1();
@@ -334,52 +318,60 @@ namespace VikingEngine.DSSWars.GameObject
             isShip = r.ReadBoolean();
             typeCurrentData = isShip ? typeShipData : typeSoldierData;
 
+            armyLocalPlacement.readShort(r);
+            
+            WP.readPosXZ(r, out position, out tilePos);
+            rotation.ByteDir = r.ReadByte();
+
+            soldierCount = r.ReadByte();
+            shipHealth = r.ReadInt16();
+
+            initPart2(typeCurrentData);
+
+            initPart3(typeCurrentData);
+        }
+
+        public void readGameState_old(System.IO.BinaryReader r, int version)
+        {
+            soldierConscript.readGameState(r);
+
+            initPart1();
+
+            bool isShip = r.ReadBoolean();
+            typeCurrentData = isShip ? typeShipData : typeSoldierData;
+
 
             armyLocalPlacement.readShort(r);
 
-            if (subVersion < 40)
+            bool lockedInArmyGrid = r.ReadBoolean();
+
+            if (lockedInArmyGrid)
             {
-                bool lockedInArmyGrid = r.ReadBoolean();
-
-                if (!lockedInArmyGrid)
-                {
-                    WP.readPosXZ(r, out position, out tilePos);
-                    rotation.ByteDir = r.ReadByte();
-                }
-
-                int groupObjective = r.ReadByte();
+                position = army.position;
+                rotation = army.rotation;
+            }
+            else
+            {
+                WP.readPosXZ(r, out position, out tilePos);
+                rotation.ByteDir = r.ReadByte();
             }
 
-            int soldiersCount = r.ReadByte();
-            bool soldiersLockedInGroup = groupObjective == GroupObjective_FollowArmyObjective;
+            var groupObjective = r.ReadByte();
 
-            //AbsSoldierData typeData = DssRef.unitsdata.Get(type);
+            soldierCount = r.ReadByte();
+            bool soldiersLockedInGroup = groupObjective == 0;//GroupObjective_FollowArmyObjective;
+
             initPart2(typeCurrentData);
 
-            if (subVersion < 40 && !soldiersLockedInGroup)
+            //createAllSoldiers(typeCurrentData, soldiersCount);
+
+            if (!soldiersLockedInGroup)
             {
-                for (int i = 0; i < soldiersCount; i++)
+                for (int i = 0; i < soldierCount; i++)
                 {
                     AbsSoldierUnit.OldRead(r);
                 }
             }
-
-            //AbsSoldierData soldierData = DssRef.unitsdata.Get(soldierType);
-
-            //if (soldierType == UnitType.Recruit)
-            //{
-            //    new TrainingCompleteTimer(this);
-            //}
-
-            //createAllSoldiers(typeCurrentData, soldiersCount);
-
-
-            //    var soldiersC = soldiers.counter();
-            //    while (soldiersC.Next())
-            //    {
-            //        soldiersC.sel.readGameState(r, version);
-            //    }
-            //}
 
             initPart3(typeCurrentData);
         }

@@ -37,16 +37,16 @@ namespace VikingEngine.DSSWars.Resource
             this.requirement = requirement;
         }
 
-        public void createBackOrder(City city)
-        {
-            foreach (var r in resources)
-            {
-                var res = city.GetGroupedResource(r.type);
-                res.backOrder += r.amount;
-                city.SetGroupedResource(r.type, res);
-            }
+        //public void createBackOrder(City city)
+        //{
+        //    foreach (var r in resources)
+        //    {
+        //        var res = city.GetGroupedResource(r.type);
+        //        res.backOrder += r.amount;
+        //        city.SetGroupedResource(r.type, res);
+        //    }
 
-        }
+        //}
         public bool available(City city)
         {
             foreach (var r in resources)

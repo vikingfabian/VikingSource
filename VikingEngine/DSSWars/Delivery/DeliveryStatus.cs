@@ -97,11 +97,10 @@ namespace VikingEngine.DSSWars.Delivery
         {
             active = (DeliveryActiveStatus)r.ReadByte();
 
-            if (subVersion >= 14)
-            {
+           
                 useSenderMin = r.ReadBoolean();
                 useRecieverMax = r.ReadBoolean();
-            }
+            
 
             senderMin = r.ReadUInt16();
             recieverMax = r.ReadUInt16();
@@ -126,7 +125,7 @@ namespace VikingEngine.DSSWars.Delivery
             int min = useSenderMin ? senderMin : 0;
             if (profile.type == ItemResourceType.Men)
             {
-                return city.workForce - min >= DssConst.CityDeliveryCount;
+                return city.workForce.amount - min >= DssConst.CityDeliveryCount;
             }
             else
             {
@@ -152,24 +151,24 @@ namespace VikingEngine.DSSWars.Delivery
             //return true;
         }
 
-        public bool CanRecieve(int cityIx, out int recieverHasAmount)
+        public bool CanRecieve(int cityIx, out int recieverHasAmountPlusDeliveries)
         {
             if (arraylib.InBound(DssRef.world.cities, cityIx))
             {
                 City city = DssRef.world.cities[cityIx];
                 if (profile.type == ItemResourceType.Men)
                 {
-                    recieverHasAmount = city.workForce;
+                    recieverHasAmountPlusDeliveries = city.workForce.amountPlusDelivery();
                 }
                 else
                 {
-                    recieverHasAmount = city.GetGroupedResource(profile.type).amount;
 
+                    recieverHasAmountPlusDeliveries = city.GetGroupedResource(profile.type).amountPlusDelivery();
                 }
 
                 if (useRecieverMax)
                 {
-                    return recieverHasAmount < recieverMax;
+                    return recieverHasAmountPlusDeliveries < recieverMax;
                 }
 
                 return true;
@@ -177,7 +176,7 @@ namespace VikingEngine.DSSWars.Delivery
             }
             else
             {
-                recieverHasAmount = 0;
+                recieverHasAmountPlusDeliveries = 0;
                 return false;
             }
         }
@@ -243,7 +242,7 @@ namespace VikingEngine.DSSWars.Delivery
 
             if (profile.type == ItemResourceType.Men)
             {
-                HudLib.ResourceCost(content, ItemResourceType.Men, DssConst.SoldierGroup_DefaultCount, city.workForce);
+                HudLib.ResourceCost(content, ItemResourceType.Men, DssConst.SoldierGroup_DefaultCount, city.workForce.amount);
             }
             else
             {

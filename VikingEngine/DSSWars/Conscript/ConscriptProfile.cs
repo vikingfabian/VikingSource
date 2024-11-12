@@ -67,7 +67,7 @@ namespace VikingEngine.DSSWars.Conscript
                     city.AddGroupedResource(armorItem, equipmentCollected);
                 }
 
-                city.workForce += menCollected;
+                city.workForce.amount += menCollected;
 
                 active = ConscriptActiveStatus.Idle;
 
@@ -227,7 +227,7 @@ namespace VikingEngine.DSSWars.Conscript
                 hasArmor = city.GetGroupedResource(armorItem).amount >= DssConst.SoldierGroup_DefaultCount;
             }
 
-            bool hasMen = city.workForce >= DssConst.SoldierGroup_DefaultCount;
+            bool hasMen = city.workForce.amount >= DssConst.SoldierGroup_DefaultCount;
 
             bool available = hasWeapons && hasArmor && hasMen;
 

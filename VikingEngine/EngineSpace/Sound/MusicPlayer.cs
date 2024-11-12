@@ -112,12 +112,15 @@ namespace VikingEngine.Sound
 
         private void resetPlayList()
         {
-            for (int i = 0; i < playList.Count; ++i)
+            if (playList != null)
             {
-                var data = playList[i];
-                data.played = false;
+                for (int i = 0; i < playList.Count; ++i)
+                {
+                    var data = playList[i];
+                    data.played = false;
+                }
+                shuffleSongsLeftToPlay = playList.Count;
             }
-            shuffleSongsLeftToPlay = playList.Count;
         }
 
         public void PlaySong(SongData songdata, bool isAsynch, bool autoplay = true)

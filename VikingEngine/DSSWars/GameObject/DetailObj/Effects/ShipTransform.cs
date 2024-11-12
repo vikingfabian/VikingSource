@@ -60,7 +60,7 @@ namespace VikingEngine.DSSWars.GameObject
         { 
             transformEffect = true;                    
             lookingForTerrain = false;
-            group.lockMovement = true;
+            //group.lockMovement = true;
         }
 
         void updateEffect()
@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars.GameObject
             transformModel?.DeleteMe();
             loadingModel?.DeleteMe();
             //group.inShipTransform = null;
-            group.lockMovement = false;
+            //group.lockMovement = false;
             group.completeTransform(toShip? SoldierTransformType.ToShip : SoldierTransformType.FromShip);
         }
     }
