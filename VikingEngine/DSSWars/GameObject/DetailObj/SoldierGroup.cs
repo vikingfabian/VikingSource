@@ -1674,7 +1674,8 @@ namespace VikingEngine.DSSWars.GameObject
                         goalSubTile = WP.ToSubTilePos(goalWp);
                     }
 
-                    if (detailPath == null || detailPath.goal != goalSubTile)
+                    if (l >= WorldData.SubTileWidth && 
+                        (detailPath == null || detailPath.goal != goalSubTile))
                     {
                         pathCalulate_detail(goalSubTile);
                     }
@@ -1773,6 +1774,10 @@ namespace VikingEngine.DSSWars.GameObject
                     goalWp = position;
                 }
             }
+            //else
+            //{
+            //    goalWp = position;
+            //}
         }
 
         //void setObjective(int objective)
@@ -2118,15 +2123,15 @@ namespace VikingEngine.DSSWars.GameObject
         {
             goalWp = wp;
 
-            if (state == GroupState.GameStart)
-            {
-                position = goalWp;
-                rotation = army.armyGoalRotation;
-            }
-            else
-            {
+            //if (state == GroupState.GameStart)
+            //{
+            //    position = goalWp;
+            //    rotation = army.armyGoalRotation;
+            //}
+            //else
+            //{
                 wakeupSoldiers();
-            }
+            //}
             state = GroupState.FindArmyPlacement;
         }
 
@@ -2236,7 +2241,7 @@ namespace VikingEngine.DSSWars.GameObject
         FindArmyPlacement,
         Battle,
 
-        GameStart,
+        //GameStart,
         //Rotate,
     }
 

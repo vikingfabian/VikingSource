@@ -642,8 +642,8 @@ namespace VikingEngine.DSSWars.GameObject
                     //}
                     if (IdleObjetive())
                     {
-                        position.X = armyGoalCenterWp.X;
-                        position.Z = armyGoalCenterWp.Z;
+                        //position.X = armyGoalCenterWp.X;
+                        //position.Z = armyGoalCenterWp.Z;
 
                     }
                     else if (armyCenterCount > 0)

@@ -69,7 +69,10 @@ namespace VikingEngine.DSSWars.Map.Path
             * 3.Varje kollad center ruta ska till en sluten lista
             * 4.Varje ny ruta ska till en öppen lista
             */
-
+            if (center == goal)
+            {
+                return null;
+            }
             
             area = Rectangle2.FromCenterTileAndRadius(center, MaxTileRadius);
             area.SetBounds(DssRef.world.subTileGrid.Area);

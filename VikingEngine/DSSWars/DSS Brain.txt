@@ -3,6 +3,11 @@
 * Delivery: auto city take other deliveries into account
 * save of food safeguard setting
 
+#Todo (OPT)#
+Tile till struct
+Tänk på alla object ligger på heap (ta bort new)
+recycle av path result
+
 
 #Todo (xmas patch)#
 

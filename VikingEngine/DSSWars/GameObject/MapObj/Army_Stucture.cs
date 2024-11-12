@@ -79,6 +79,11 @@ namespace VikingEngine.DSSWars.GameObject
 
             void execute()
             {
+                if (faction.player.IsAi())
+                {
+                    autoColumnWidth();
+                }
+
                 ArmyPlacementGrid placementGrid = ArmyPlacementGrid.PoolGet();
                 {
                     var groupsC = groups.counter();
