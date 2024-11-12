@@ -6,7 +6,7 @@
 
 #Todo (XP)#
 * water expansion
-* axe, (sword needs good weapon smith)
+* axe/short sword, (sword needs good weapon smith)
 * steel, long sword > rapier, crossbow
 * annoyed by the deliveries being inefficient
 -wagon, transport span amount
@@ -15,6 +15,7 @@
 -Mines
 * worker level
 * soldier level
+* Guest housing (sten hus i stan) for guards, barracks, post office, (city hall min size, öka vid antal byggnader?) 
 
 * manuballista (hand ballista), wall crusher
 
