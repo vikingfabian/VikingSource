@@ -70,30 +70,30 @@ namespace VikingEngine.DSSWars.Build
 
         public static void Init()
         {
-            new BuildOption(BuildAndExpandType.WorkerHuts, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, SpriteName.WarsBuild_WorkerHuts, ResourceLib.CraftWorkerHut);
-            new BuildOption(BuildAndExpandType.Postal, TerrainMainType.Building, (int)TerrainBuildingType.Postal, SpriteName.WarsBuild_Postal, ResourceLib.CraftPostal);
-            new BuildOption(BuildAndExpandType.Recruitment, TerrainMainType.Building, (int)TerrainBuildingType.Recruitment, SpriteName.WarsBuild_Recruitment, ResourceLib.CraftRecruitment);
-            new BuildOption(BuildAndExpandType.Barracks, TerrainMainType.Building, (int)TerrainBuildingType.Barracks, SpriteName.WarsBuild_Barracks, ResourceLib.CraftBarracks);
-            new BuildOption(BuildAndExpandType.Nobelhouse, TerrainMainType.Building, (int)TerrainBuildingType.Nobelhouse, SpriteName.WarsBuild_Nobelhouse, ResourceLib.CraftNobelHouse);
-            new BuildOption(BuildAndExpandType.Tavern, TerrainMainType.Building, (int)TerrainBuildingType.Tavern, SpriteName.WarsBuild_Tavern, ResourceLib.CraftTavern);
-            new BuildOption(BuildAndExpandType.Storehouse, TerrainMainType.Building, (int)TerrainBuildingType.Storehouse, SpriteName.WarsBuild_Storehouse, ResourceLib.CraftStorehouse);
-            new BuildOption(BuildAndExpandType.Brewery, TerrainMainType.Building, (int)TerrainBuildingType.Brewery, SpriteName.WarsBuild_Brewery, ResourceLib.CraftBrewery);
-            new BuildOption(BuildAndExpandType.PigPen, TerrainMainType.Building, (int)TerrainBuildingType.PigPen, SpriteName.WarsBuild_PigPen, ResourceLib.CraftPigPen);
-            new BuildOption(BuildAndExpandType.HenPen, TerrainMainType.Building, (int)TerrainBuildingType.HenPen, SpriteName.WarsBuild_HenPen, ResourceLib.CraftHenPen);
-            new BuildOption(BuildAndExpandType.Cook, TerrainMainType.Building, (int)TerrainBuildingType.Work_Cook, SpriteName.WarsBuild_Cook, ResourceLib.CraftCook);
-            new BuildOption(BuildAndExpandType.CoalPit, TerrainMainType.Building, (int)TerrainBuildingType.Work_CoalPit, SpriteName.WarsBuild_CoalPit, ResourceLib.CraftCoalPit);
-            new BuildOption(BuildAndExpandType.WorkBench, TerrainMainType.Building, (int)TerrainBuildingType.Work_Bench, SpriteName.WarsBuild_WorkBench, ResourceLib.CraftWorkBench);
-            new BuildOption(BuildAndExpandType.Smith, TerrainMainType.Building, (int)TerrainBuildingType.Work_Smith, SpriteName.WarsBuild_Smith, ResourceLib.CraftSmith);
-            new BuildOption(BuildAndExpandType.Carpenter, TerrainMainType.Building, (int)TerrainBuildingType.Carpenter, SpriteName.WarsBuild_Carpenter, ResourceLib.CraftCarpenter);
+            new BuildOption(BuildAndExpandType.WorkerHuts, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, SpriteName.WarsBuild_WorkerHuts, ResourceLib.CraftWorkerHut, Work.WorkExperienceType.HouseBuilding);
+            new BuildOption(BuildAndExpandType.Postal, TerrainMainType.Building, (int)TerrainBuildingType.Postal, SpriteName.WarsBuild_Postal, ResourceLib.CraftPostal, Work.WorkExperienceType.HouseBuilding);
+            new BuildOption(BuildAndExpandType.Recruitment, TerrainMainType.Building, (int)TerrainBuildingType.Recruitment, SpriteName.WarsBuild_Recruitment, ResourceLib.CraftRecruitment, Work.WorkExperienceType.HouseBuilding);
+            new BuildOption(BuildAndExpandType.Barracks, TerrainMainType.Building, (int)TerrainBuildingType.Barracks, SpriteName.WarsBuild_Barracks, ResourceLib.CraftBarracks, Work.WorkExperienceType.HouseBuilding);
+            new BuildOption(BuildAndExpandType.Nobelhouse, TerrainMainType.Building, (int)TerrainBuildingType.Nobelhouse, SpriteName.WarsBuild_Nobelhouse, ResourceLib.CraftNobelHouse, Work.WorkExperienceType.HouseBuilding);
+            new BuildOption(BuildAndExpandType.Tavern, TerrainMainType.Building, (int)TerrainBuildingType.Tavern, SpriteName.WarsBuild_Tavern, ResourceLib.CraftTavern, Work.WorkExperienceType.HouseBuilding);
+            new BuildOption(BuildAndExpandType.Storehouse, TerrainMainType.Building, (int)TerrainBuildingType.Storehouse, SpriteName.WarsBuild_Storehouse, ResourceLib.CraftStorehouse, Work.WorkExperienceType.HouseBuilding);
+            new BuildOption(BuildAndExpandType.Brewery, TerrainMainType.Building, (int)TerrainBuildingType.Brewery, SpriteName.WarsBuild_Brewery, ResourceLib.CraftBrewery, Work.WorkExperienceType.Cook);
+            new BuildOption(BuildAndExpandType.PigPen, TerrainMainType.Building, (int)TerrainBuildingType.PigPen, SpriteName.WarsBuild_PigPen, ResourceLib.CraftPigPen, Work.WorkExperienceType.AnimalCare);
+            new BuildOption(BuildAndExpandType.HenPen, TerrainMainType.Building, (int)TerrainBuildingType.HenPen, SpriteName.WarsBuild_HenPen, ResourceLib.CraftHenPen, Work.WorkExperienceType.AnimalCare);
+            new BuildOption(BuildAndExpandType.Cook, TerrainMainType.Building, (int)TerrainBuildingType.Work_Cook, SpriteName.WarsBuild_Cook, ResourceLib.CraftCook, Work.WorkExperienceType.HouseBuilding);
+            new BuildOption(BuildAndExpandType.CoalPit, TerrainMainType.Building, (int)TerrainBuildingType.Work_CoalPit, SpriteName.WarsBuild_CoalPit, ResourceLib.CraftCoalPit, Work.WorkExperienceType.CraftFuel);
+            new BuildOption(BuildAndExpandType.WorkBench, TerrainMainType.Building, (int)TerrainBuildingType.Work_Bench, SpriteName.WarsBuild_WorkBench, ResourceLib.CraftWorkBench, Work.WorkExperienceType.HouseBuilding);
+            new BuildOption(BuildAndExpandType.Smith, TerrainMainType.Building, (int)TerrainBuildingType.Work_Smith, SpriteName.WarsBuild_Smith, ResourceLib.CraftSmith, Work.WorkExperienceType.HouseBuilding);
+            new BuildOption(BuildAndExpandType.Carpenter, TerrainMainType.Building, (int)TerrainBuildingType.Carpenter, SpriteName.WarsBuild_Carpenter, ResourceLib.CraftCarpenter, Work.WorkExperienceType.HouseBuilding);
 
-            new BuildOption(BuildAndExpandType.WheatFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, SpriteName.WarsBuild_WheatFarms, ResourceLib.CraftWheatFarm);
-            new BuildOption(BuildAndExpandType.LinenFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarm, SpriteName.WarsBuild_LinenFarms, ResourceLib.CraftLinenFarm);
-            new BuildOption(BuildAndExpandType.HempFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarm, SpriteName.WarsBuild_HempFarms, ResourceLib.CraftHempFarm);
-            new BuildOption(BuildAndExpandType.RapeSeedFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarm, SpriteName.WarsBuild_RapeseedFarms, ResourceLib.CraftRapeseedFarm);
+            new BuildOption(BuildAndExpandType.WheatFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, SpriteName.WarsBuild_WheatFarms, ResourceLib.CraftWheatFarm, Work.WorkExperienceType.Farm);
+            new BuildOption(BuildAndExpandType.LinenFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarm, SpriteName.WarsBuild_LinenFarms, ResourceLib.CraftLinenFarm, Work.WorkExperienceType.Farm);
+            new BuildOption(BuildAndExpandType.HempFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarm, SpriteName.WarsBuild_HempFarms, ResourceLib.CraftHempFarm, Work.WorkExperienceType.Farm);
+            new BuildOption(BuildAndExpandType.RapeSeedFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarm, SpriteName.WarsBuild_RapeseedFarms, ResourceLib.CraftRapeseedFarm, Work.WorkExperienceType.Farm);
 
-            new BuildOption(BuildAndExpandType.Pavement, TerrainMainType.Decor, (int)TerrainDecorType.Pavement, SpriteName.WarsBuild_Pavement, ResourceLib.CraftPavement);
-            new BuildOption(BuildAndExpandType.PavementFlower, TerrainMainType.Decor, (int)TerrainDecorType.PavementFlower, SpriteName.WarsBuild_PavementFlowers, ResourceLib.CraftPavementFlower);
-            new BuildOption(BuildAndExpandType.Statue_ThePlayer, TerrainMainType.Decor, (int)TerrainDecorType.Statue_ThePlayer, SpriteName.WarsBuild_Statue, ResourceLib.CraftStatue);
+            new BuildOption(BuildAndExpandType.Pavement, TerrainMainType.Decor, (int)TerrainDecorType.Pavement, SpriteName.WarsBuild_Pavement, ResourceLib.CraftPavement, Work.WorkExperienceType.StoneCutter);
+            new BuildOption(BuildAndExpandType.PavementFlower, TerrainMainType.Decor, (int)TerrainDecorType.PavementFlower, SpriteName.WarsBuild_PavementFlowers, ResourceLib.CraftPavementFlower, Work.WorkExperienceType.StoneCutter);
+            new BuildOption(BuildAndExpandType.Statue_ThePlayer, TerrainMainType.Decor, (int)TerrainDecorType.Statue_ThePlayer, SpriteName.WarsBuild_Statue, ResourceLib.CraftStatue, Work.WorkExperienceType.StoneCutter);
 
         }
 

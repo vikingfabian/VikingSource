@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Work;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.MoonFall;
