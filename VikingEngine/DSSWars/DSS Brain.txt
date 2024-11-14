@@ -8,9 +8,10 @@
 * wood cutter/stone cutter shed, improved working radius
 * water expansion
 * axe/short sword, (sword needs good weapon smith)
-* steel, long sword > rapier, crossbow
+* steel, long sword > rapier, steel armor
+
 * annoyed by the deliveries being inefficient
--wagon, transport span amount
+-wagon, transport span amount, 2/4 wheel
 -tool shed, faster farming upgrade
 -Embassy expansion för att unlocka diplomacy
 -Mines
@@ -19,6 +20,14 @@
 * Guest housing (sten hus i stan) for guards, barracks, post office, (city hall min size, öka vid antal byggnader?) 
 
 * manuballista (hand ballista), wall crusher
+* diplomat, med politic / spy upgrade
+
+* crossbow, hand cannon (cupper), blunder buss, rifle (mechanic shop)
+* gun powder, chemist (fuel, sulfur)
+* cupper cannon, icon cannon, haubitz
+* smelter for metals
+* horse farm
+* ox farm, also incread farming area
 
 
 #Todo (xmas patch)#
