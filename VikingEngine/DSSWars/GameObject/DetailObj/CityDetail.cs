@@ -147,8 +147,7 @@ namespace VikingEngine.DSSWars.GameObject
                         if (edgeLoop.Next())
                         {
                             
-                            Tile t;
-                            if (DssRef.world.tileGrid.TryGet(edgeLoop.Position, out t) &&
+                            if (DssRef.world.tileGrid.TryGet(edgeLoop.Position, out Tile t) &&
                                     t.IsLand() && t.CityIndex == city.parentArrayIndex)
                             {
                                 const int SubStartTrialCount = 4;

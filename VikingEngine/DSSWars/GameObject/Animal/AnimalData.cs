@@ -18,15 +18,15 @@ namespace VikingEngine.DSSWars.GameObject.Animal
             this.animal = animal;
         }
 
-        public void create(Map.Tile tile)
+        public void create(IntVector2 tilepos)
         {
             switch (animal)
             {
                 case AnimalType.Pig:
-                    new Pig(tile, wp);
+                    new Pig(tilepos, wp);
                     break;
                 case AnimalType.Hen:
-                    new Hen(tile, wp);
+                    new Hen(tilepos, wp);
                     break;
             }
         }

@@ -62,8 +62,7 @@ namespace VikingEngine.DSSWars
 
         public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, IntVector2 pos)
         {
-            Map.Tile tile;
-            if (DssRef.world.tileGrid.TryGet(pos, out tile))
+            if (DssRef.world.tileGrid.TryGet(pos, out Map.Tile tile))
             {
                 if (cullingStateA)
                 { GetRenderState_enter(ref tile.bits_renderStateA, ref enterRender_overviewLayer, ref enterRender_detailLayer); }
@@ -254,6 +253,7 @@ namespace VikingEngine.DSSWars
                     }
 
                     var tile = DssRef.world.tileGrid.Get(loop.Position);
+                    //Debug.Log("Tile Get(A) " + loop.Position.ToString() + ", " + tile.ToString());
                     if (bStateA)
                     {
                         Culling.SetRenderState(ref tile.bits_renderStateA, !enterRender, enterRender, layer.DrawFullOverview, layer.DrawDetailLayer);
@@ -265,7 +265,8 @@ namespace VikingEngine.DSSWars
                         //if (value > tile.renderStateB) { tile.renderStateB = value; }
                     }
                     DssRef.world.tileGrid.Set(loop.Position, tile);
-                    
+                    //Debug.Log("Tile Set(A) " + loop.Position.ToString() + ", " + tile.ToString());
+
                 }
             }
         }
@@ -293,6 +294,7 @@ namespace VikingEngine.DSSWars
                     {
                         tile.bits_renderStateB = Culling.NoRender;
                     }
+                    DssRef.world.tileGrid.Set(loop.Position, tile);
                 }
             }
         }

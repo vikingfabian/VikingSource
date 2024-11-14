@@ -16,14 +16,14 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         VectorRect area;
         protected WalkingAnimation walkingAnimation;
         protected Graphics.AbsVoxelObj model;
-        Tile tile;
+        IntVector2 tilepos;
         Time stateTime;
         Vector3 walkDir;
         bool walkState = true;
-        public AbsLivestock(Tile tile, Vector3 topCenterWp)
+        public AbsLivestock(IntVector2 tilepos, Vector3 topCenterWp)
             :base(true)
         {
-            this.tile = tile;
+            this.tilepos = tilepos;
             model = createModel();
             model.AddToRender(DrawGame.UnitDetailLayer);
             
@@ -76,6 +76,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
                 }
             }
 
+            var tile = DssRef.world.tileGrid.Get(tilepos);
             if (!tile.hasTileInRender && tile.OutOfRenderTimeOut())
             {
                 DeleteMe();
@@ -93,8 +94,8 @@ namespace VikingEngine.DSSWars.GameObject.Animal
 
     class Pig : AbsLivestock
     {
-        public Pig(Tile tile, Vector3 topCenterWp)
-            : base(tile, topCenterWp)
+        public Pig(IntVector2 tilepos, Vector3 topCenterWp)
+            : base(tilepos, topCenterWp)
         { }
         protected override Graphics.AbsVoxelObj createModel()
         {
@@ -114,8 +115,8 @@ namespace VikingEngine.DSSWars.GameObject.Animal
     }
     class Hen : AbsLivestock
     {
-        public Hen(Tile tile, Vector3 topCenterWp)
-            : base(tile, topCenterWp)
+        public Hen(IntVector2 tilepos, Vector3 topCenterWp)
+            : base(tilepos, topCenterWp)
         { }
         protected override Graphics.AbsVoxelObj createModel()
         {

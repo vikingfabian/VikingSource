@@ -1087,8 +1087,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             tilePos = WP.ToTilePos(position);
 
-            Map.Tile tile;
-            if ( DssRef.world.tileGrid.TryGet(tilePos, out tile))
+            if ( DssRef.world.tileGrid.TryGet(tilePos, out Map.Tile tile))
             {
                 terrainSpeedMultiplier = tile.TerrainSpeedMultiplier(IsShip()) * 0.4f + army.terrainSpeedMultiplier * 0.6f;
                 position.Y = tile.UnitGroundY();

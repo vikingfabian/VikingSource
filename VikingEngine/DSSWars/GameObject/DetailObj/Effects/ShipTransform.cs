@@ -37,8 +37,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (lookingForTerrain)
             {
-                Tile tile;
-                if (DssRef.world.tileGrid.TryGet(group.tilePos, out tile) &&
+                if (DssRef.world.tileGrid.TryGet(group.tilePos, out Tile tile) &&
                     tile.IsWater() == toShip)
                 {
                     begin();

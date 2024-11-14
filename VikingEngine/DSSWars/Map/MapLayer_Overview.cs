@@ -134,9 +134,7 @@ namespace VikingEngine.DSSWars.Map
 
                         for (int i = 0; i < IntVector2.Dir4Array.Length; ++i)
                         {
-                            Tile n;
-
-                            edge4Dir[i] =  DssRef.world.GetTileSafe(pos + IntVector2.Dir4Array[i], out n) && tile.heightLevel > n.heightLevel;
+                            edge4Dir[i] =  DssRef.world.GetTileSafe(pos + IntVector2.Dir4Array[i], out Tile n) && tile.heightLevel > n.heightLevel;
                         }
 
                         Sprite imgCoords = topTex;

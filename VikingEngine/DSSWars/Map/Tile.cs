@@ -518,11 +518,11 @@ namespace VikingEngine.DSSWars.Map
         
         public override string ToString()
         {
-            if (IsWater())
-            {
-                return "Water";
-            }
-            return heightLevel.ToString() + " {" + City().ToString() + "}";
+            //if (IsWater())
+            //{
+            //    return "Water";
+            //}
+            return (IsWater()? "water" : "land") + heightLevel.ToString() + " city:" + CityIndex.ToString();
         }
     }
 

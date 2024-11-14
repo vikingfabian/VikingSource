@@ -544,8 +544,7 @@ namespace VikingEngine.DSSWars.Battle
 
             if (group.IsShip() != goalNode.water)
             {
-                Tile tile;
-                if (DssRef.world.tileGrid.TryGet(group.tilePos, out tile))
+                if (DssRef.world.tileGrid.TryGet(group.tilePos, out Tile tile))
                 {
                     if (tile.IsWater() == goalNode.water)
                     {
@@ -793,8 +792,8 @@ namespace VikingEngine.DSSWars.Battle
         {
             this.worldPos = worldPos;
             blocked = outsideBounds;
-            Map.Tile tile;
-            if (DssRef.world.tileGrid.TryGet(new IntVector2(worldPos.X, worldPos.Z), out tile))
+            
+            if (DssRef.world.tileGrid.TryGet(new IntVector2(worldPos.X, worldPos.Z), out Tile tile))
             {
                 water = tile.IsWater();
             }
