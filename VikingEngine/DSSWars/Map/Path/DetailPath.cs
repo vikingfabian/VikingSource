@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.Map.Path
     {
         //Represents a thread-safe last in-first out (LIFO) collection.
         ConcurrentStack<DetailPathFinding> pfPool = new ConcurrentStack<DetailPathFinding>();
-        ConcurrentStack<DetailWalkingPath> resultPool = new ConcurrentStack<DetailWalkingPath>();
+        ConcurrentQueue<DetailWalkingPath> resultPool = new ConcurrentQueue<DetailWalkingPath>();
                 
         public DetailPathFinding GetPf()
         {
@@ -39,9 +39,18 @@ namespace VikingEngine.DSSWars.Map.Path
         }
 
         public DetailWalkingPath GetRes()
-        {
-            if (resultPool.TryPop(out DetailWalkingPath path))
+        {   
+            if (resultPool.TryDequeue(out DetailWalkingPath path))
             {
+                if (path.timeStamp + 2 >= Ref.TotalFrameCount)
+                {
+                    resultPool.Enqueue(new DetailWalkingPath());
+                    resultPool.Enqueue(new DetailWalkingPath());
+                    resultPool.Enqueue(new DetailWalkingPath());
+                    resultPool.Enqueue(new DetailWalkingPath());
+                    System.Threading.Thread.Sleep(32);
+                }
+                path.recycle();
                 return path;
             }
             else
@@ -50,12 +59,13 @@ namespace VikingEngine.DSSWars.Map.Path
             }
         }
 
-        public void Return(DetailWalkingPath path)
+        public void Return(DetailWalkingPath pathresult)
         {
             // Reset the node to a default state
 
-            path.recycle();
-            resultPool.Push(path);
+            //pathresult.recycle();
+            pathresult.timeStamp = Ref.TotalFrameCount;
+            resultPool.Enqueue(pathresult);
         }
     }
 
@@ -177,14 +187,16 @@ namespace VikingEngine.DSSWars.Map.Path
                 }
             }
 
-            List<DetailPathNodeResult> result = new List<DetailPathNodeResult>();
+            //List<DetailPathNodeResult> result = new List<DetailPathNodeResult>();
+            
+            var path = DssRef.state.detailPathFindingPool.GetRes();
             bool blocked = false;
 
             while (currentNode.Position != startNode.Position)
             {
                 if (currentNode.ship == startAsShip || currentNode.ship == endAsShip)
                 {
-                    result.Add(new DetailPathNodeResult(currentNode.Position, currentNode.ship));
+                    path.nodes.Add(new DetailPathNodeResult(currentNode.Position, currentNode.ship));
                     
                     numLoops++;
                     if (numLoops > MaxNodeLength)
@@ -192,17 +204,15 @@ namespace VikingEngine.DSSWars.Map.Path
                 }
                 else
                 {
-                    result.Clear();
+                    path.nodes.Clear();
                     blocked = true;
                 }
 
                 IntVector2 pos = currentNode.PreviousPosition;
                 currentNode = nodeGrid[pos.X - area.pos.X, pos.Y - area.pos.Y];
             }
-
-
-            var path = DssRef.state.detailPathFindingPool.GetRes();
-            path.init(goal, result, blocked);
+                        
+            path.init(goal, blocked);
             return path;
         }
 
@@ -247,9 +257,9 @@ namespace VikingEngine.DSSWars.Map.Path
 
         public int currentNodeIx;
         public IntVector2 goal;
-        public List<DetailPathNodeResult> nodes;
+        public List<DetailPathNodeResult> nodes = new List<DetailPathNodeResult>(64);
         public bool blockedPath;
-
+        public int timeStamp;
         public void recycle()
         { 
             nodes.Clear();
@@ -296,10 +306,10 @@ namespace VikingEngine.DSSWars.Map.Path
             
         }
 
-        public void init(IntVector2 goal, List<DetailPathNodeResult> nodes, bool blockedPath)
+        public void init(IntVector2 goal,/* List<DetailPathNodeResult> nodes,*/ bool blockedPath)
         {
             this.goal = goal;
-            this.nodes = nodes;
+            //this.nodes = nodes;
             this.blockedPath = blockedPath;
             currentNodeIx = nodes.Count - 1;
 

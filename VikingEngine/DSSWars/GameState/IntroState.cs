@@ -127,7 +127,9 @@ namespace VikingEngine.DSSWars
         void asynchStorageLoading()
         {
             FlagDesign.Init();
-            new Data.GameStorage().Load();
+            
+                new Data.GameStorage().Load();
+            
             Ref.gamesett.Load();
             new Display.Translation.Translation().setupLanguage(true);
 

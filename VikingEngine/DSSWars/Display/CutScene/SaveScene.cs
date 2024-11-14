@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -64,12 +65,12 @@ namespace VikingEngine.DSSWars.Display.CutScene
         public bool ExitGame = false;
         int holdTime = 4;
         int state_0Hold_1Save_2meta_3Done = 0;
-        
+
         SaveGamestate saveGamestate;
         bool autoSave;
-        public SaveScene(bool auto) 
-            :base()
-        { 
+        public SaveScene(bool auto)
+            : base()
+        {
             this.autoSave = auto;
         }
 
@@ -83,57 +84,72 @@ namespace VikingEngine.DSSWars.Display.CutScene
             state_0Hold_1Save_2meta_3Done++;
 
             displaySaveComplete();
-        }        
+        }
 
         override public void Time_Update(float time)
         {
-            switch (state_0Hold_1Save_2meta_3Done)
+            if (StartupSettings.Saves)
             {
-                case 0:
-                    if (--holdTime <= 0)
-                    {
-                        //Begin save
-                        state_0Hold_1Save_2meta_3Done++;
-                        meta = new SaveStateMeta(autoSave);
-                        saveGamestate = new SaveGamestate(meta);
-                        saveGamestate.save();
-                    }
-                    break;
-                case 1:
-                    if (saveGamestate.complete)
-                    {
-                        state_0Hold_1Save_2meta_3Done++;
 
-                        DssRef.storage.meta.AddSave(meta, this);
-                    }
-                    break;
-                case 2:
-                    //Wait for callback
-                    break;
-
-                case 3:
-                    if (ExitGame)
-                    {
-                        DssRef.state.exit();
-                    }
-                    else if (autoSave)
-                    {
-                        RichBoxContent content = new RichBoxContent();
-                        content.h1(DssRef.lang.GameMenu_AutoSave);
-                        DssRef.state.localPlayers[0].hud.messages.Add(content);
-
-                        Close();
-                    }
-                    else
-                    {
-                        if (InputLib.AnyKeyDownEvent())
+                switch (state_0Hold_1Save_2meta_3Done)
+                {
+                    case 0:
+                        if (--holdTime <= 0)
                         {
+                            //Begin save
+                            state_0Hold_1Save_2meta_3Done++;
+                            meta = new SaveStateMeta(autoSave);
+                            saveGamestate = new SaveGamestate(meta);
+                            saveGamestate.save();
+                        }
+                        break;
+                    case 1:
+                        if (saveGamestate.complete)
+                        {
+                            state_0Hold_1Save_2meta_3Done++;
+
+                            DssRef.storage.meta.AddSave(meta, this);
+                        }
+                        break;
+                    case 2:
+                        //Wait for callback
+                        break;
+
+                    case 3:
+                        if (ExitGame)
+                        {
+                            DssRef.state.exit();
+                        }
+                        else if (autoSave)
+                        {
+                            RichBoxContent content = new RichBoxContent();
+                            content.h1(DssRef.lang.GameMenu_AutoSave);
+                            DssRef.state.localPlayers[0].hud.messages.Add(content);
+
                             Close();
                         }
-                    }
-                    break;
+                        else
+                        {
+                            if (InputLib.AnyKeyDownEvent())
+                            {
+                                Close();
+                            }
+                        }
+                        break;
+                }
             }
-        }        
+            else
+            {
+                Close();
+                if (ExitGame)
+                {
+                    DssRef.state.exit();
+                }
+            }
+
+        }
+        
+
     }
 
     class LoadScene : AbsSaveScene

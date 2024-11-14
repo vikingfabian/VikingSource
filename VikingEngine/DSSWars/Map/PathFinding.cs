@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Valve.Steamworks;
+using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.Map;
 using VikingEngine.PJ;
@@ -18,7 +19,8 @@ namespace VikingEngine.DSSWars.Map
     {
         //Represents a thread-safe last in-first out (LIFO) collection.
         ConcurrentStack<PathFinding> poolPf = new ConcurrentStack<PathFinding>();
-        ConcurrentStack<WalkingPath> poolRes = new ConcurrentStack<WalkingPath>();
+        ConcurrentQueue<WalkingPath> poolRes = new ConcurrentQueue<WalkingPath>();
+        //Stack<WalkingPath> poolResOut = new Stack<WalkingPath>();
 
         
         public PathFinding GetPf()
@@ -35,9 +37,16 @@ namespace VikingEngine.DSSWars.Map
 
         public WalkingPath GetRes()
         {
-            if (poolRes.TryPop(out WalkingPath res))
+            if (poolRes.TryDequeue(out WalkingPath path))
             {
-                return res;
+                if (path.timeStamp + 2 >= Ref.TotalFrameCount)
+                {
+                    poolRes.Enqueue(new WalkingPath());
+                    poolRes.Enqueue(new WalkingPath());
+                    System.Threading.Thread.Sleep(32);
+                }
+                path.recycle();
+                return path;
             }
             else
             {
@@ -55,13 +64,14 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        public void Return(WalkingPath path)
+        public void Return(WalkingPath pathresult)
         {
             // Reset the node to a default state
-            if (path != null)
+            if (pathresult != null)
             {
-                path.recycle();
-                poolRes.Push(path);
+                //path.recycle();
+                pathresult.timeStamp = Ref.TotalFrameCount;
+                poolRes.Enqueue(pathresult);
             }
         }
     }
@@ -153,12 +163,12 @@ namespace VikingEngine.DSSWars.Map
                 }
             }
 
-            List<PathNodeResult> result = new List<PathNodeResult>();
-
+            //List<PathNodeResult> result = new List<PathNodeResult>();
+            var path = DssRef.state.pathFindingPool.GetRes();
 
             while (currentNode.Position != startNode.Position)
             {
-                result.Add(new PathNodeResult(currentNode.Position, currentNode.ship));
+                path.nodes.Add(new PathNodeResult(currentNode.Position, currentNode.ship));
                 IntVector2 pos = currentNode.PreviousPosition;
                 currentNode = nodeGrid[pos.X, pos.Y];
 
@@ -167,9 +177,8 @@ namespace VikingEngine.DSSWars.Map
                     throw new EndlessLoopException("");
 
             }
-
-            var path = DssRef.state.pathFindingPool.GetRes();
-            path.init(result);
+                        
+            path.init();
             return path;
         }
 
@@ -212,8 +221,9 @@ namespace VikingEngine.DSSWars.Map
         const int IgnoreDirChangeTimes = 10;
         const float NodeMinDistance = 0.3f;
 
+        public int timeStamp;
         public int currentNodeIx;
-        public List<PathNodeResult> nodes;
+        public List<PathNodeResult> nodes = new List<PathNodeResult>(64);
 
         public Vector2 DirToNextNode(Vector2 myPos, out bool complete, out bool ship)
         {
@@ -244,9 +254,9 @@ namespace VikingEngine.DSSWars.Map
         //#endif
         //        }
 
-        public void init(List<PathNodeResult> nodes)
+        public void init(/*List<PathNodeResult> nodes*/)
         {
-            this.nodes = nodes;
+            //this.nodes = nodes;
             currentNodeIx = nodes.Count - 1;
 
 #if VISUAL_NODES

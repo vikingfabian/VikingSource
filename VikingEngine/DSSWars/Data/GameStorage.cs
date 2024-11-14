@@ -50,7 +50,10 @@ namespace VikingEngine.DSSWars.Data
         public void Load()
         {
             DataStream.DataStreamHandler.TryReadBinaryIO(path, read);
-            meta.Load();
+            if (StartupSettings.Saves)
+            {
+                meta.Load();
+            }
             flagStorage.Load();
         }
 

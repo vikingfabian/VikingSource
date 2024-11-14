@@ -10,6 +10,9 @@ namespace VikingEngine.DSSWars
     {
         public static bool AutoStartLevel = false;
 
+        public static bool Saves = PlatformSettings.DevBuild ? false :
+            false;//TRUE
+
         public static bool SpawnStartingArmies = PlatformSettings.DevBuild ? true :
             true;//DO NOT CHANGE
         
