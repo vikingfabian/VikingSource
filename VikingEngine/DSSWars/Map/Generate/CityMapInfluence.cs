@@ -15,21 +15,23 @@ namespace VikingEngine.DSSWars.Map
         Grid2D<Influence> inflenceMap;
         List<MapCity> cities;
 
-        public void reset(WorldData world)
-        {
-            for (int i = 0; i < world.cities.Count; ++i)
-            {
-                world.cities[i].parentArrayIndex = i;
-                world.cities[i].neighborCities.Clear();
-                world.cities[i].areaSize = 0;
-            }
+        //public void reset(WorldData world)
+        //{
+        //    for (int i = 0; i < world.cities.Count; ++i)
+        //    {
+        //        world.cities[i].parentArrayIndex = i;
+        //        world.cities[i].neighborCities.Clear();
+        //        world.cities[i].areaSize = 0;
+        //    }
 
-            world.tileGrid.LoopBegin();
-            while (world.tileGrid.LoopNext())
-            {
-                world.tileGrid.LoopValueGet().removeCity();
-            }
-        }
+        //    world.tileGrid.LoopBegin();
+        //    while (world.tileGrid.LoopNext())
+        //    {
+        //        var tile = world.tileGrid.LoopValueGet();
+        //        tile.removeCity();
+
+        //    }
+        //}
         public void generate(WorldData world) 
         {
             inflenceMap = new Grid2D<Influence>(world.Size);
@@ -93,7 +95,12 @@ namespace VikingEngine.DSSWars.Map
                 }
 
                 var city = inflenceMap.LoopValueGet().city;
-                world.tileGrid.Get(inflenceMap.LoopPosition).CityIndex = city.parentArrayIndex;
+                var tile = world.tileGrid.Get(inflenceMap.LoopPosition);
+                {
+                    tile.CityIndex = city.parentArrayIndex;
+                }
+                world.tileGrid.Set(inflenceMap.LoopPosition, tile);
+                
                 var r = inflenceMap.LoopPosition.SideLength(city.tilePos);
                 if (city.cityTileRadius < r)
                 { 

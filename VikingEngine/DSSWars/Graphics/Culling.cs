@@ -264,6 +264,8 @@ namespace VikingEngine.DSSWars
                         Culling.SetRenderState(ref tile.bits_renderStateB, !enterRender, enterRender, layer.DrawFullOverview, layer.DrawDetailLayer);
                         //if (value > tile.renderStateB) { tile.renderStateB = value; }
                     }
+                    DssRef.world.tileGrid.Set(loop.Position, tile);
+                    
                 }
             }
         }

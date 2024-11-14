@@ -78,10 +78,14 @@ namespace VikingEngine.DSSWars.Map
                 if (render == Culling.NoRender || onSecondUpdate)
                 {
                     tile.hasTileInRender = false;
-                    tile.exitRenderTimeStamp_TotSec = Ref.TotalGameTimeSec;
+                    tile.exitRenderTimeStamp_TotSec = Ref.TotalGameTimeSec; 
+                    DssRef.world.tileGrid.Set(tiles[i].pos, tile);
+
                     tiles[i].add = false;
                     processingTiles.Add(tiles[i]);
                     tiles.RemoveAt(i);
+
+                    
                 }
             }            
 
@@ -111,6 +115,8 @@ namespace VikingEngine.DSSWars.Map
                                 var maptile = new DetailMapTile(loop.Position);
                                 processingTiles.Add(maptile);
                                 tiles.Add(maptile);
+
+                                DssRef.world.tileGrid.Set(loop.Position, tile);
                             }
                         }
                     }

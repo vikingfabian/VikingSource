@@ -9,7 +9,7 @@ using VikingEngine.ToGG.HeroQuest;
 
 namespace VikingEngine.DSSWars.Map
 {
-    class Tile
+    struct Tile
     {
         public const int NoBorderRegion = -2;
         public const int SeaBorder = -1;
@@ -72,6 +72,7 @@ namespace VikingEngine.DSSWars.Map
         }
 
         public Tile(System.IO.BinaryReader r, Tile previous, int version)
+            :this()
         {
             readMapFile(r, previous, version);
         }
@@ -265,16 +266,16 @@ namespace VikingEngine.DSSWars.Map
 
         }
 
-        public void removeCity()
-        {
-            BorderCount=0;
-            BorderRegion_North = NoBorderRegion; 
-            BorderRegion_East = NoBorderRegion; 
-            BorderRegion_South = NoBorderRegion; 
-            BorderRegion_West = NoBorderRegion;
-            CityIndex = -1;
-            tileContent = TileContent.NONE;
-        }
+        //public void removeCity()
+        //{
+        //    BorderCount=0;
+        //    BorderRegion_North = NoBorderRegion; 
+        //    BorderRegion_East = NoBorderRegion; 
+        //    BorderRegion_South = NoBorderRegion; 
+        //    BorderRegion_West = NoBorderRegion;
+        //    CityIndex = -1;
+        //    tileContent = TileContent.NONE;
+        //}
 
         //public void setRenderState(bool inRender)
         //{
