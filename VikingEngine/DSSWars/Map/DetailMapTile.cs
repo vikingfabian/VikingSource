@@ -59,11 +59,11 @@ namespace VikingEngine.DSSWars.Map
         static PcgRandom rnd = new PcgRandom();
         //public bool isDeleted = false;
 
-        public DetailMapTile(IntVector2 pos)
+        public DetailMapTile(IntVector2 pos, Tile tile)
         {
             this.pos = pos;
             
-            var tile = DssRef.world.tileGrid.Get(pos);
+            //var tile = DssRef.world.tileGrid.Get(pos);
             if (tile.heightLevel != Height.DeepWaterHeight)
             {
                 polygonBlock(tile);
@@ -603,7 +603,7 @@ namespace VikingEngine.DSSWars.Map
         {
             if (add)
             {
-                var tile = DssRef.world.tileGrid.Get(pos);
+                //var tile = DssRef.world.tileGrid.Get(pos);
 
                 if (model != null)
                 {
@@ -630,7 +630,7 @@ namespace VikingEngine.DSSWars.Map
                 {
                     foreach (var m in animalData)
                     {
-                        m.create(tile);
+                        m.create(pos);
                     }
                 }
             }

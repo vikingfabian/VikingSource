@@ -73,15 +73,21 @@ namespace VikingEngine.DSSWars.Map
            
             for (int i = tiles.Count - 1; i >= 0; --i)
             {
-                var tile = DssRef.world.tileGrid.Get(tiles[i].pos);
+                var tilePos = tiles[i].pos;
+                var tile = DssRef.world.tileGrid.Get(tilePos);
+                //Debug.Log("Tile Get(C) " + tilePos.ToString() + ", " + tile.ToString());
                 byte render = DssRef.state.culling.cullingStateA ? tile.bits_renderStateA : tile.bits_renderStateB;
                 if (render == Culling.NoRender || onSecondUpdate)
                 {
                     tile.hasTileInRender = false;
-                    tile.exitRenderTimeStamp_TotSec = Ref.TotalGameTimeSec;
+                    tile.exitRenderTimeStamp_TotSec = Ref.TotalGameTimeSec; 
+                    DssRef.world.tileGrid.Set(tilePos, tile);
+                    //Debug.Log("Tile Set(C) " + tilePos.ToString() + ", " + tile.ToString());
                     tiles[i].add = false;
                     processingTiles.Add(tiles[i]);
                     tiles.RemoveAt(i);
+
+                    
                 }
             }            
 
@@ -104,13 +110,17 @@ namespace VikingEngine.DSSWars.Map
                         while (loop.Next())
                         {
                             var tile = DssRef.world.tileGrid.Get(loop.Position);
-
+                            //Debug.Log("Tile Get(B) " + loop.Position.ToString() + ", " + tile.ToString());
                             if (!tile.hasTileInRender)
                             {
                                 tile.hasTileInRender = true;
-                                var maptile = new DetailMapTile(loop.Position);
+                                DssRef.world.tileGrid.Set(loop.Position, tile);
+                                var maptile = new DetailMapTile(loop.Position, tile);
                                 processingTiles.Add(maptile);
                                 tiles.Add(maptile);
+
+                                
+                                //Debug.Log("Tile Set(B) " + loop.Position.ToString() + ", " + tile.ToString());
                             }
                         }
                     }

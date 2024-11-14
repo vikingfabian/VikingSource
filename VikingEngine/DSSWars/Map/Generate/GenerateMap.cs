@@ -287,6 +287,8 @@ namespace VikingEngine.DSSWars.Map.Generate
                                     {
                                         tile.biom = biom;
                                     }
+
+                                    world.tileGrid.Set(pos, tile);
                                     //else if (world.rnd.Chance(0.4f))
                                     //{
                                     //    tile.biom = biom;
@@ -371,6 +373,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                                     sunken[loopArea.Position.X, loopArea.Position.Y] = sub;
                                     t.heightLevel -= sub;
                                     Bound.Min(ref t.heightLevel,  Height.LowWaterHeight);
+                                    world.tileGrid.Set(loopArea.Position, t);
                                 }
 
 
@@ -416,6 +419,8 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                             tile.heightLevel = Height.LowWaterHeight;
                             tile.seaDistanceHeatMap = -OrthogonalHeat;
+
+                            world.tileGrid.Set(npos, nTile);
                         }
                     }
 
@@ -439,6 +444,8 @@ namespace VikingEngine.DSSWars.Map.Generate
                             }
                         }
                     }
+
+                    world.tileGrid.array[loop.Position.X, loop.Position.Y] = tile;
                 }
             }
 
@@ -499,6 +506,8 @@ namespace VikingEngine.DSSWars.Map.Generate
                                 }
                             }
                         }
+
+                        world.tileGrid.array[loop.Position.X, loop.Position.Y] = tile;
                     }
                 }
             }
@@ -555,6 +564,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                                     world.cities.Add(c);
                                     //addUnitToGrid(c);
                                     cityTile.tileContent = TileContent.City;
+                                    world.tileGrid.Set(pos, cityTile);
                                     //t.CityIndex = c.index;
 
                                     world.unitCollAreaGrid.add(c);
@@ -562,6 +572,8 @@ namespace VikingEngine.DSSWars.Map.Generate
                                 
                             }
                         }
+
+
                     }
                 }
 
@@ -663,6 +675,8 @@ namespace VikingEngine.DSSWars.Map.Generate
                             }
                             owner.AddNeighborCity(borderCity);
                         }
+
+                        world.tileGrid.Set(loop.Position, t);
                     }
                 }
             }

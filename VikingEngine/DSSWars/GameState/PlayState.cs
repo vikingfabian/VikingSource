@@ -542,6 +542,7 @@ namespace VikingEngine.DSSWars
         {
             if (cutScene == null)
             {
+                culling.asynch_update(time);
                 DssRef.state.detailMap.asynchUpdate();
                 overviewMap.unitMiniModels.asynchUpdate();
             }
@@ -626,7 +627,7 @@ namespace VikingEngine.DSSWars
         {
             if (cutScene == null)
             {
-                culling.asynch_update(time);
+                //culling.asynch_update(time);
             }
             return exitThreads;
         }

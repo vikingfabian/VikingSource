@@ -639,8 +639,10 @@ namespace VikingEngine.DSSWars.Players
                 }
 
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
-                {                        
-                    hud.messages.Add("message!", "Hello hello");
+                {
+                    //hud.messages.Add("message!", "Hello hello");
+                    var tile = DssRef.world.tileGrid.Get(mapControls.tilePosition);
+                    Debug.Log(tile.ToString() );
                 }
 
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.N) && !Input.Keyboard.Ctrl)

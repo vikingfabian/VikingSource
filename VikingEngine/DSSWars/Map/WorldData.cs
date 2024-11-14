@@ -592,11 +592,11 @@ namespace VikingEngine.DSSWars
             return metaData.seed + x * 11 + y * 13;
         }
 
-        public bool GetTileSafe(Vector3 pos, out Tile tile)
-        {
-            IntVector2 tPos = WP.ToTilePos(pos);
-            return GetTileSafe(tPos, out tile);
-        }
+        //public bool GetTileSafe(Vector3 pos, out Tile tile)
+        //{
+        //    IntVector2 tPos = WP.ToTilePos(pos);
+        //    return GetTileSafe(tPos, out tile);
+        //}
 
          
         public float GetGroundHeight(Vector3 pos)
@@ -661,7 +661,7 @@ namespace VikingEngine.DSSWars
             }
             else
             {
-                tile = null;
+                tile = new Tile();
                 return false;
             }
         }
