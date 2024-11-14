@@ -190,7 +190,7 @@ namespace VikingEngine.DSSWars.Players
                 if (army.tilePos != player.mapControls.tilePosition &&
                     DssRef.world.tileGrid.InBounds(player.mapControls.tilePosition))
                 {
-                    PathFinding pf = DssRef.state.pathFindingPool.Get();
+                    PathFinding pf = DssRef.state.pathFindingPool.GetPf();
                     {
                         newPath = pf.FindPath(army.tilePos, army.rotation, player.mapControls.tilePosition,
                             false);

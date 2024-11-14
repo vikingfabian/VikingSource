@@ -953,17 +953,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        //public void dominationCheck()
-        //{
-        //    if (battleGroup == null)
-        //    {
-        //       var faction = DssRef.world.unitCollAreaGrid.CityDomination(this);
-
-        //        Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(setFaction, faction));
-        //       //setFaction(faction);
-               
-        //    }
-        //}
+        static Dictionary<int, float> CityDominationStrength = new Dictionary<int, float>(4);
 
         public void asynchNearObjectsUpdate()
         {
@@ -989,33 +979,33 @@ namespace VikingEngine.DSSWars.GameObject
             if (guardCount <= 0 && armyDefence == 0)
             {
                 //Destroyed in battle, domination check
-                Dictionary<int, FloatPointer> cityDominationStrength = new Dictionary<int, FloatPointer>(4);
-
+                
+                CityDominationStrength.Clear();
                 
                 foreach (var group in groups)
                 {
                     int key = group.GetFaction().parentArrayIndex;
                     float value = group.strengthValue();
 
-                    if (cityDominationStrength.TryGetValue(key, out FloatPointer current))
+                    if (CityDominationStrength.TryGetValue(key, out float current))
                     {
-                        current.value += value;
+                        CityDominationStrength[key] = current + value;
                     }
                     else
                     {
-                        cityDominationStrength.Add(key, new FloatPointer(value));
+                        CityDominationStrength.Add(key, value);
                     }
                 }
 
                 int strongestFaction = -1;
                 float strongest = float.MinValue;
 
-                foreach (var kv in cityDominationStrength)
+                foreach (var kv in CityDominationStrength)
                 {
-                    if (kv.Value.value > strongest)
+                    if (kv.Value > strongest)
                     {
                         strongestFaction = kv.Key;
-                        strongest = kv.Value.value;
+                        strongest = kv.Value;
                     }
                 }
 

@@ -15,11 +15,12 @@ namespace VikingEngine.DSSWars.Map.Path
     class DetailPathFindingPool
     {
         //Represents a thread-safe last in-first out (LIFO) collection.
-        private ConcurrentStack<DetailPathFinding> pool = new ConcurrentStack<DetailPathFinding>();
-
-        public DetailPathFinding Get()
+        ConcurrentStack<DetailPathFinding> pfPool = new ConcurrentStack<DetailPathFinding>();
+        ConcurrentStack<DetailWalkingPath> resultPool = new ConcurrentStack<DetailWalkingPath>();
+                
+        public DetailPathFinding GetPf()
         {
-            if (pool.TryPop(out DetailPathFinding path))
+            if (pfPool.TryPop(out DetailPathFinding path))
             {
                 return path;
             }
@@ -34,7 +35,27 @@ namespace VikingEngine.DSSWars.Map.Path
             // Reset the node to a default state
 
             path.recycle();
-            pool.Push(path);
+            pfPool.Push(path);
+        }
+
+        public DetailWalkingPath GetRes()
+        {
+            if (resultPool.TryPop(out DetailWalkingPath path))
+            {
+                return path;
+            }
+            else
+            {
+                return new DetailWalkingPath();
+            }
+        }
+
+        public void Return(DetailWalkingPath path)
+        {
+            // Reset the node to a default state
+
+            path.recycle();
+            resultPool.Push(path);
         }
     }
 
@@ -158,7 +179,9 @@ namespace VikingEngine.DSSWars.Map.Path
             }
 
 
-            return new DetailWalkingPath(goal, result, blocked);
+            var path = DssRef.state.detailPathFindingPool.GetRes();
+            path.init(goal, result, blocked);
+            return path;
         }
 
         public void recycle()
@@ -205,6 +228,11 @@ namespace VikingEngine.DSSWars.Map.Path
         public List<DetailPathNodeResult> nodes;
         public bool blockedPath;
 
+        public void recycle()
+        { 
+            nodes.Clear();
+        }
+
         public Vector2 DirToNextNode(Vector2 myPos, out bool complete, out bool ship)
         {
             ship = nodes[currentNodeIx].ship;
@@ -241,7 +269,12 @@ namespace VikingEngine.DSSWars.Map.Path
             return toWp;
         }
 
-        public DetailWalkingPath(IntVector2 goal, List<DetailPathNodeResult> nodes, bool blockedPath)
+        public DetailWalkingPath()
+        {
+            
+        }
+
+        public void init(IntVector2 goal, List<DetailPathNodeResult> nodes, bool blockedPath)
         {
             this.goal = goal;
             this.nodes = nodes;

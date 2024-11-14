@@ -429,7 +429,7 @@ namespace VikingEngine.DSSWars.GameObject
                 var group = groups.PullRandom_Safe(Ref.rnd);
                 if (group != null)
                 {
-                    soldiersDeserted += group.soldiers.Count;
+                    soldiersDeserted += group.soldierCount;
                     group.DeleteMe(DeleteReason.Desert, false);                    
                 }
             }
@@ -514,8 +514,6 @@ namespace VikingEngine.DSSWars.GameObject
             scale = new Vector3(0.6f);
         }
 
-        
-
         virtual public void update()
         {
             updateArmyMovement(Ref.DeltaGameTimeMs);
@@ -553,7 +551,6 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (inPointMode)
                 {
-
                     Vector2 dir = Vector2.Zero;
                     dir.X = nextNodePos.X - position.X;
                     dir.Y = nextNodePos.Y - position.Z;

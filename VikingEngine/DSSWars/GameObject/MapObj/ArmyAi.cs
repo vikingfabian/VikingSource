@@ -451,7 +451,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void path_calulate()
         {
-            PathFinding pf = DssRef.state.pathFindingPool.Get();
+            PathFinding pf = DssRef.state.pathFindingPool.GetPf();
             {
                 path = pf.FindPath(tilePos, rotation, walkGoal, isShip);
             }

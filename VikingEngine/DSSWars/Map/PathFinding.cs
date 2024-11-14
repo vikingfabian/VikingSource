@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Valve.Steamworks;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.Map;
 using VikingEngine.PJ;
@@ -16,11 +17,13 @@ namespace VikingEngine.DSSWars.Map
     class PathFindingPool
     {
         //Represents a thread-safe last in-first out (LIFO) collection.
-        private ConcurrentStack<PathFinding> pool = new ConcurrentStack<PathFinding>();
+        ConcurrentStack<PathFinding> poolPf = new ConcurrentStack<PathFinding>();
+        ConcurrentStack<WalkingPath> poolRes = new ConcurrentStack<WalkingPath>();
 
-        public PathFinding Get()
+        
+        public PathFinding GetPf()
         {
-            if (pool.TryPop(out PathFinding path))
+            if (poolPf.TryPop(out PathFinding path))
             {
                 return path;
             }
@@ -30,12 +33,36 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
+        public WalkingPath GetRes()
+        {
+            if (poolRes.TryPop(out WalkingPath res))
+            {
+                return res;
+            }
+            else
+            {
+                return new WalkingPath();
+            }
+        }
+
         public void Return(PathFinding path)
         {
             // Reset the node to a default state
+            if (path != null)
+            {
+                path.recycle();
+                poolPf.Push(path);
+            }
+        }
 
-            path.recycle();
-            pool.Push(path);
+        public void Return(WalkingPath path)
+        {
+            // Reset the node to a default state
+            if (path != null)
+            {
+                path.recycle();
+                poolRes.Push(path);
+            }
         }
     }
 
@@ -141,8 +168,9 @@ namespace VikingEngine.DSSWars.Map
 
             }
 
-
-            return new WalkingPath(result);
+            var path = DssRef.state.pathFindingPool.GetRes();
+            path.init(result);
+            return path;
         }
 
         public void recycle()
@@ -201,7 +229,22 @@ namespace VikingEngine.DSSWars.Map
             return diff;
         }
 
-        public WalkingPath(List<PathNodeResult> nodes)
+        public void recycle()
+        {
+            nodes.Clear();
+        }
+
+//        public WalkingPath(List<PathNodeResult> nodes)
+//        {
+//            this.nodes = nodes;
+//            currentNodeIx = nodes.Count - 1;
+
+        //#if VISUAL_NODES
+        //            Ref.update.AddSyncAction(new SyncAction(createVisuals));
+        //#endif
+        //        }
+
+        public void init(List<PathNodeResult> nodes)
         {
             this.nodes = nodes;
             currentNodeIx = nodes.Count - 1;
