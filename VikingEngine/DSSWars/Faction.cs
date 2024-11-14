@@ -11,6 +11,7 @@ using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Data;
 using VikingEngine.ToGG.MoonFall;
+using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
 namespace VikingEngine.DSSWars
 {
@@ -428,6 +429,15 @@ namespace VikingEngine.DSSWars
             while (armiesC.Next())
             {
                 armiesC.sel.asynchSleepObjectsUpdate(time);
+            }
+        }
+
+        public void asyncPathUpdate()
+        {
+            var armiesC = armies.counter();
+            while (armiesC.Next())
+            {
+                armiesC.sel.asyncPathUpdate();
             }
         }
 

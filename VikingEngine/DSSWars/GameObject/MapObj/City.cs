@@ -979,9 +979,9 @@ namespace VikingEngine.DSSWars.GameObject
             if (guardCount <= 0 && armyDefence == 0)
             {
                 //Destroyed in battle, domination check
-                
+
                 CityDominationStrength.Clear();
-                
+
                 foreach (var group in groups)
                 {
                     int key = group.GetFaction().parentArrayIndex;
@@ -997,30 +997,35 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                int strongestFaction = -1;
-                float strongest = float.MinValue;
-
-                foreach (var kv in CityDominationStrength)
+                if (CityDominationStrength.Count >= 1)
                 {
-                    if (kv.Value > strongest)
+                    int strongestFaction = -1;
+                    float strongest = float.MinValue;
+
+                    foreach (var kv in CityDominationStrength)
                     {
-                        strongestFaction = kv.Key;
-                        strongest = kv.Value;
+                        if (kv.Value > strongest)
+                        {
+                            strongestFaction = kv.Key;
+                            strongest = kv.Value;
+                        }
                     }
-                }
 
-                var dominatingFaction = DssRef.world.factions.Array[strongestFaction];
 
-                if (faction.player.IsPlayer())
-                {
-                    ++faction.player.GetLocalPlayer().statistics.CitiesLost;
-                }
-                if (dominatingFaction.player.IsPlayer())
-                {
-                    ++dominatingFaction.player.GetLocalPlayer().statistics.CitiesCaptured;
-                }
 
-                Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(setFaction, dominatingFaction));
+                    var dominatingFaction = DssRef.world.factions.Array[strongestFaction];
+
+                    if (faction.player.IsPlayer())
+                    {
+                        ++faction.player.GetLocalPlayer().statistics.CitiesLost;
+                    }
+                    if (dominatingFaction.player.IsPlayer())
+                    {
+                        ++dominatingFaction.player.GetLocalPlayer().statistics.CitiesCaptured;
+                    }
+
+                    Ref.update.AddSyncAction(new SyncAction1Arg<Faction>(setFaction, dominatingFaction));
+                }
             }
             //            var membersC = MembersCounter();
             //            while (membersC.Next())

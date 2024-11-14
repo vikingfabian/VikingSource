@@ -1,4 +1,4 @@
-﻿#define VISUAL_NODES
+﻿//#define VISUAL_NODES
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

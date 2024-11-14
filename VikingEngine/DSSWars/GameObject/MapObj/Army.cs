@@ -821,7 +821,7 @@ namespace VikingEngine.DSSWars.GameObject
                 while (groupsC.Next())
                 {
                     //var unitProfile = groupsC.sel.typeCurrentData; //DssRef.unitsdata.Get(groupsC.sel.type);
-                    groupsC.sel.asynchUpdate();
+                    //groupsC.sel.asynchUpdate();
                     count += groupsC.sel.soldierCount;
                     groupsC.sel.setBattleWalkingSpeed();
 
@@ -923,6 +923,7 @@ namespace VikingEngine.DSSWars.GameObject
                 updateMembers(time * Ref.GameTimeSpeed, false);
             }
         }
+
 
         public void asyncNearObjectsUpdate()
         {

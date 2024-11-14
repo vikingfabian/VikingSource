@@ -226,7 +226,8 @@ namespace VikingEngine.DSSWars
             //new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62);
             new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63);
             new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
-            
+            new AsynchUpdateable_TryCatch(asyncPathUpdate, "DSS path update", 64);
+
             if (localPlayers.Count > 1)
             {
                 Ref.SetGameSpeed(DssRef.storage.multiplayerGameSpeed);
@@ -607,6 +608,17 @@ namespace VikingEngine.DSSWars
                     }
                 }
             }
+            return exitThreads;
+        }
+
+        bool asyncPathUpdate(int id, float time)
+        {
+            var factions = DssRef.world.factions.counter();
+            while (factions.Next())
+            {
+                factions.sel.asyncPathUpdate();
+            }
+
             return exitThreads;
         }
 
