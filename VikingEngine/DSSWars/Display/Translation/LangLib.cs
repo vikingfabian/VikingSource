@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Net.Security;
 using System.Text;
@@ -10,12 +11,40 @@ using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Work;
 using VikingEngine.LootFest.GO;
 
 namespace VikingEngine.DSSWars.Display.Translation
 {
     static class LangLib
     {
+        public static string ExperienceLevel(ExperienceLevel level)
+        {
+            switch (level)
+            {
+                case Work.ExperienceLevel.Beginner_1:
+                    return DssRef.todoLang.ExperienceLevel_1;
+                case Work.ExperienceLevel.Practitioner_2:
+                    return DssRef.todoLang.ExperienceLevel_2;
+                case Work.ExperienceLevel.Expert_3:
+                    return DssRef.todoLang.ExperienceLevel_3;
+                case Work.ExperienceLevel.Master_4:
+                    return DssRef.todoLang.ExperienceLevel_4;
+                case Work.ExperienceLevel.Legendary_5:
+                    return DssRef.todoLang.ExperienceLevel_5;
+            }
+
+            return TextLib.Error;
+        }
+
+        public static SpriteName ExperienceIcon(ExperienceLevel level)
+        {
+            if (level >= Work.ExperienceLevel.Legendary_5)
+            {
+                return SpriteName.WarsUnitLevelLegend;
+            }
+            return  (SpriteName)((int)SpriteName.WarsUnitLevelMinimal + (int)level);
+        }
 
         public static string Armor(ArmorLevel level)
         {
@@ -87,9 +116,6 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return TextLib.Error;
             }
         }
-
-
-       
 
         public static string Tab(MenuTab tab, out string description)
         {

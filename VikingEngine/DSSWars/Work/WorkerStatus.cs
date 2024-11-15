@@ -561,18 +561,18 @@ namespace VikingEngine.DSSWars.Work
             void addTo(ref byte xp)
             {
                 byte add = 1;
-                switch (ToLevel(xp))
+                switch (WorkLib.ToLevel(xp))
                 { 
-                    case ExperienceLevel.Beginner:
+                    case ExperienceLevel.Beginner_1:
                         add = 2;
                         break;
-                    case ExperienceLevel.Master:
+                    case ExperienceLevel.Master_4:
                         if (Ref.rnd.Chance(0.9))
                         {
                             add = 0;
                         }
                         break;
-                    case ExperienceLevel.Legendary:
+                    case ExperienceLevel.Legendary_5:
                         add = 0;
                         break;
                 }
@@ -580,11 +580,7 @@ namespace VikingEngine.DSSWars.Work
             }
         }
 
-        static ExperienceLevel ToLevel(byte xp)
-        {
-            ExperienceLevel level = (ExperienceLevel)(xp / DssConst.WorkXpToLevel);
-            return level;
-        }
+        
 
 
         public void cancelWork()

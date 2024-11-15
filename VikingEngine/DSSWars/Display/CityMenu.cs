@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Data;
@@ -88,7 +89,7 @@ namespace VikingEngine.DSSWars.Display
                     break;
 
                 case MenuTab.Work:
-                    city.workTemplate.toHud(player, content, city.faction, city);
+                    workTab(content);
                     break;
 
                 case MenuTab.Conscript:
@@ -114,6 +115,75 @@ namespace VikingEngine.DSSWars.Display
                 case MenuTab.Build:
                     player.buildControls.toHud(player, content, city);
                     break;
+            }
+        }
+
+        void workTab(RichBoxContent content)
+        {
+            if (player.tutorial == null)
+            {
+                for (WorkSubTab workSubTab = 0; workSubTab < WorkSubTab.NUM; ++workSubTab)
+                {
+                    string text = null;
+                    switch (workSubTab)
+                    {
+                        case WorkSubTab.Priority:
+                            text = DssRef.lang.Work_OrderPrioTitle;
+                            break;
+                        case WorkSubTab.Experience:
+                            text = DssRef.todoLang.Experience_Title;
+                            break;
+                    }
+                    var subTab = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(text) },
+                        new RbAction1Arg<WorkSubTab>((WorkSubTab resourcesSubTab) =>
+                        {
+                            player.workSubTab = resourcesSubTab;
+                        }, workSubTab, SoundLib.menutab));
+                    subTab.setGroupSelectionColor(HudLib.RbSettings, player.workSubTab == workSubTab);
+                    content.Add(subTab);
+                    content.space();
+                }
+                content.newParagraph();
+            }
+
+            switch (player.workSubTab)
+            {
+                case WorkSubTab.Priority:
+                    city.workTemplate.toHud(player, content, city.faction, city);
+                    break;
+                case WorkSubTab.Experience:
+                    experienceTab(content);
+                    break;
+            }
+
+            
+        }
+
+        void experienceTab(RichBoxContent content)
+        {
+            HudLib.Label(content, DssRef.todoLang.Experience_TopExperience);
+            experience(DssRef.todoLang.ExperienceType_Farm, city.topskill_Farm);
+            experience(DssRef.todoLang.ExperienceType_AnimalCare, city.topskill_AnimalCare);
+            //     public ExperienceLevel topskill_Farm = 0;
+            //public ExperienceLevel topskill_AnimalCare = 0;
+            //public ExperienceLevel topskill_HouseBuilding = 0;
+            //public ExperienceLevel topskill_WoodCutter = 0;
+            //public ExperienceLevel topskill_StoneCutter = 0;
+            //public ExperienceLevel topskill_Mining = 0;
+            //public ExperienceLevel topskill_Transport = 0;
+            //public ExperienceLevel topskill_Cook = 0;
+            //public ExperienceLevel topskill_CraftWood = 0;
+            //public ExperienceLevel topskill_CraftIron = 0;
+            //public ExperienceLevel topskill_CraftArmor = 0;
+            //public ExperienceLevel topskill_CraftWeapon = 0;
+            //public ExperienceLevel topskill_CraftFuel = 0;
+
+            void experience(string typeName, ExperienceLevel level)
+            {
+                content.newLine();
+                content.Add(new RichBoxText(typeName + ":"));
+                content.Add(new RichBoxImage(LangLib.ExperienceIcon(level)));
+                content.Add(new RichBoxText(LangLib.ExperienceLevel(level)));
             }
         }
 
@@ -961,6 +1031,13 @@ namespace VikingEngine.DSSWars.Display
     { 
         Overview,
         Stockpile,
+        NUM
+    }
+
+    enum WorkSubTab
+    { 
+        Priority,
+        Experience,
         NUM
     }
 }

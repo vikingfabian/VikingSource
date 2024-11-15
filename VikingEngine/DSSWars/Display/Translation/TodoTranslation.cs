@@ -25,6 +25,45 @@ namespace VikingEngine.DSSWars.Display.Translation
         //public string EndGameStatistics_DecorsBuilt => "Decorations built: {0}";
         //public string EndGameStatistics_StatuesBuilt => "Statues built: {0}";
 
+        public string Experience_Title => "Experience";
+        public string Experience_TopExperience => "Top experience levels";
+
+        public string ExperienceType_Farm => "Farming";
+        public string ExperienceType_AnimalCare => "Animal care";
+        public string ExperienceType_HouseBuilding => "House building";
+        public string ExperienceType_WoodCutter => "Wood cutting";
+        public string ExperienceType_StoneCutter => "Stone cutting";
+        public string ExperienceType_Mining => "Mining";
+        public string ExperienceType_Transport => "Transport";
+        public string ExperienceType_Cook => "Cook";
+        public string ExperienceType_CraftWood => "Wood craft";
+        public string ExperienceType_CraftIron => "Iron craft";
+        public string ExperienceType_CraftArmor => "Armor craft";
+        public string ExperienceType_CraftWeapon => "Weapon craft";
+        public string ExperienceType_CraftFuel => "Collier";
+
+        public string ExperienceLevel_1 => "Beginner";
+        public string ExperienceLevel_2 => "Practitioner";
+        public string ExperienceLevel_3 => "Expert";
+        public string ExperienceLevel_4 => "Master";
+        public string ExperienceLevel_5 => "Legendary";
+
+       
+
+        //     public ExperienceLevel topskill_Farm = 0;
+        //public ExperienceLevel topskill_AnimalCare = 0;
+        //public ExperienceLevel topskill_HouseBuilding = 0;
+        //public ExperienceLevel topskill_WoodCutter = 0;
+        //public ExperienceLevel topskill_StoneCutter = 0;
+        //public ExperienceLevel topskill_Mining = 0;
+        //public ExperienceLevel topskill_Transport = 0;
+        //public ExperienceLevel topskill_Cook = 0;
+        //public ExperienceLevel topskill_CraftWood = 0;
+        //public ExperienceLevel topskill_CraftIron = 0;
+        //public ExperienceLevel topskill_CraftArmor = 0;
+        //public ExperienceLevel topskill_CraftWeapon = 0;
+        //public ExperienceLevel topskill_CraftFuel = 0;
+
         public string Diplomacy_RelationWithOthers => "Their relations with others";
         public string Automation_queue_description => "Will keep repeating until the que is empty";
 

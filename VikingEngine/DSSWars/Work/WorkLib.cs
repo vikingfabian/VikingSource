@@ -6,6 +6,15 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.Work
 {
+    static class WorkLib
+    {
+        public static ExperienceLevel ToLevel(byte xp)
+        {
+            ExperienceLevel level = (ExperienceLevel)(xp / DssConst.WorkXpToLevel);
+            return level;
+        }
+    }
+
     enum WorkType
     {
         IsDeleted,
@@ -46,16 +55,17 @@ namespace VikingEngine.DSSWars.Work
         CraftArmor,
         CraftWeapon,
         CraftFuel,
+        NUM
     }
 
     enum ExperienceLevel
     { 
-        Beginner,
-        Practitioner,
+        Beginner_1,
+        Practitioner_2,
         //Specialist,
-        Expert,
-        Master,
-        Legendary,
+        Expert_3,
+        Master_4,
+        Legendary_5,
         NUM
     }
 }

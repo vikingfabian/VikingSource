@@ -15,7 +15,8 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City : GameObject.AbsMapObject
     {
-        
+        static byte[] MaxSkill = new byte[(int)WorkExperienceType.NUM];
+
         public WorkTemplate workTemplate = new WorkTemplate();
 
         const int NoSubWork = -1;
@@ -23,25 +24,21 @@ namespace VikingEngine.DSSWars.GameObject
         TimeStamp previousWorkQueUpdate = TimeStamp.None;
         List<WorkQueMember> workQue = new List<WorkQueMember>();
         bool starving = false;
-        //public void workTab(Players.LocalPlayer player,RichBoxContent content)
-        //{
-            
-        //}
         static List<int> idleWorkers = new List<int>(64);
 
-        //bool resourceHasSafeGuard(ref GroupedResource resource,ref WorkPriority work)
-        //{
-        //    return work.safeguard && resource.amount <= DssConst.WorkSafeGuardAmount;
-        //}
-
-        //int resourceSafeGuardPrio(ref GroupedResource resource, ref WorkPriority work)
-        //{
-        //    if (work.safeguard && resource.amount <= DssConst.WorkSafeGuardAmount)
-        //    {
-        //        return WorkTemplate.SafeGuardPrio;
-        //    }
-        //    return work.value;
-        //}
+        public ExperienceLevel topskill_Farm = 0;
+        public ExperienceLevel topskill_AnimalCare = 0;
+        public ExperienceLevel topskill_HouseBuilding = 0;
+        public ExperienceLevel topskill_WoodCutter = 0;
+        public ExperienceLevel topskill_StoneCutter = 0;
+        public ExperienceLevel topskill_Mining = 0;
+        public ExperienceLevel topskill_Transport = 0;
+        public ExperienceLevel topskill_Cook = 0;
+        public ExperienceLevel topskill_CraftWood = 0;
+        public ExperienceLevel topskill_CraftIron = 0;
+        public ExperienceLevel topskill_CraftArmor = 0;
+        public ExperienceLevel topskill_CraftWeapon = 0;
+        public ExperienceLevel topskill_CraftFuel = 0;
 
         public void async_workUpdate()
         {
@@ -61,13 +58,30 @@ namespace VikingEngine.DSSWars.GameObject
             res_rawFood.clearOrders();
             res_skinLinnen.clearOrders();
             res_ironore.clearOrders();
-            //waterSpendOrders = 0;
-            
+
+            for (int i = 0; i < MaxSkill.Length; ++i)
+            {
+                MaxSkill[i] = 0;
+            }
 
             for (int i = 0; i < workerStatuses.Count; i++)
             {
                 var status = workerStatuses[i];
-                
+
+                if (status.xp1 > MaxSkill[(int)status.xpType1])
+                {
+                    MaxSkill[(int)status.xpType1] = status.xp1;
+                }
+                if (status.xp2 > MaxSkill[(int)status.xpType2])
+                {
+                    MaxSkill[(int)status.xpType2] = status.xp2;
+                }
+                if (status.xp3 > MaxSkill[(int)status.xpType3])
+                {
+                    MaxSkill[(int)status.xpType3] = status.xp3;
+                }
+
+
                 switch (status.work)
                 {
                     case WorkType.IsDeleted:
@@ -108,6 +122,20 @@ namespace VikingEngine.DSSWars.GameObject
                     maxpos.Y = pos.Y;
                 }
             }
+
+            topskill_Farm = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.Farm]);
+            topskill_AnimalCare = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.AnimalCare]);
+            topskill_HouseBuilding = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.HouseBuilding]);
+            topskill_WoodCutter = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.WoodCutter]);
+            topskill_StoneCutter = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.StoneCutter]);
+            topskill_Mining = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.Mining]);
+            topskill_Transport = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.Transport]);
+            topskill_Cook = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.Cook]);
+            topskill_CraftWood = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftWood]);
+            topskill_CraftIron = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftIron]);
+            topskill_CraftArmor = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftArmor]);
+            topskill_CraftWeapon = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftWeapon]);
+            topskill_CraftFuel = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftFuel]);
 
             cullingTopLeft = WP.SubtileToTilePos(minpos);
             cullingBottomRight = WP.SubtileToTilePos(maxpos);
