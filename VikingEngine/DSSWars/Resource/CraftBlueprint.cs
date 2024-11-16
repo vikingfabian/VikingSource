@@ -26,10 +26,12 @@ namespace VikingEngine.DSSWars.Resource
 
         public CraftRequirement requirement;
         public int tooltipId = -1;
+        public Work.WorkExperienceType experienceType;
 
-        public CraftBlueprint(CraftResultType resultType, int resultSubType, int resultAmount, UseResource[] resources, CraftRequirement requirement = CraftRequirement.None)
+        public CraftBlueprint(CraftResultType resultType, int resultSubType, int resultAmount, UseResource[] resources, Work.WorkExperienceType experienceType, CraftRequirement requirement = CraftRequirement.None)
         {
             //this.icon = icon;
+            this.experienceType = experienceType;
             this.resultType = resultType;
             this.resultSubType = resultSubType;
             this.resultAmount = resultAmount;

@@ -37,7 +37,7 @@ namespace VikingEngine.DSSWars.Display.Translation
             return TextLib.Error;
         }
 
-        public static SpriteName ExperienceIcon(ExperienceLevel level)
+        public static SpriteName ExperienceLevelIcon(ExperienceLevel level)
         {
             if (level >= Work.ExperienceLevel.Legendary_5)
             {

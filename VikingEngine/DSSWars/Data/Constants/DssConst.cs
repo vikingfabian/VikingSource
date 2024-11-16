@@ -85,7 +85,8 @@ namespace VikingEngine.DSSWars
         public static int CityDeliveryCount = 30;
 
         //WORK
-        public static int WorkXpToLevel = 10;
+        public static int WorkXpToLevel = 50;
+        public static byte DefaultWorkXpGain = 5;
         public static float WorkTime_Eat = 10;
         public static float WorkTime_PickUpResource = 2;
         public static float WorkTime_PickUpProduce = 3;

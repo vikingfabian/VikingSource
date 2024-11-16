@@ -72,7 +72,7 @@ namespace VikingEngine.DSSWars.Players
         public MenuTab cityTab = CityMenu.Tabs[0];
         public MenuTab armyTab = ArmyMenu.Tabs[0];
         public ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview;
-        public WorkSubTab workSubTab = WorkSubTab.Experience;
+        public WorkSubTab workSubTab = WorkSubTab.Priority;
 
         public DeliveryStatus menDeliveryCopy, itemDeliveryCopy;
         public ConscriptProfile soldierConscriptCopy, knightConscriptCopy;

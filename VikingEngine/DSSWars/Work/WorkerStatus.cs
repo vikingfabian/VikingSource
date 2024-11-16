@@ -478,7 +478,7 @@ namespace VikingEngine.DSSWars.Work
                             build.execute_async(city, subTileEnd, ref subTile);
                             DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                             
-                            gainXp = build.experienceType;
+                            gainXp = build.experienceType();
                         }
                     }
                     break;
@@ -508,21 +508,39 @@ namespace VikingEngine.DSSWars.Work
 
         }
 
+        public byte getXpFor(WorkExperienceType type)
+        {
+            if (type == xpType1)
+            {
+                return xp1;
+            }
+            else if (type == xpType2)
+            {
+                return xp2;
+            }
+            else if (type == xpType3)
+            {
+                return xp3;
+            }
+
+            return 0;
+        }
+
         void addExperience(WorkExperienceType type)
         {
             if (type != WorkExperienceType.NONE)
             {
                 if (type == xpType1)
                 {
-                    addTo(ref xp1);
+                    addTo(ref type, ref xp1);
                 }
                 else if (type == xpType2)
                 {
-                    addTo(ref xp2);
+                    addTo(ref type, ref xp2);
                 }
                 else if (type == xpType3)
                 {
-                    addTo(ref xp3);
+                    addTo(ref type, ref xp3);
                 }
                 else
                 {
@@ -544,36 +562,46 @@ namespace VikingEngine.DSSWars.Work
                     {
                         case 0:
                             xpType1 = type;
-                            addTo(ref xp1);
+                            xp1 = 0;
+                            addTo(ref type, ref xp1);
                             break;
                         case 1:
                             xpType2 = type;
-                            addTo(ref xp2); 
+                            xp2 = 0;
+                            addTo(ref type, ref xp2); 
                             break;
                         case 2:
                             xpType3 = type;
-                            addTo(ref xp3); 
+                            xp3 = 0;
+                            addTo(ref type, ref xp3); 
                             break;
                     }
                 }
             }
 
-            void addTo(ref byte xp)
+            void addTo(ref WorkExperienceType type, ref byte xp)
             {
-                byte add = 1;
+                byte add = 0;
                 switch (WorkLib.ToLevel(xp))
                 { 
                     case ExperienceLevel.Beginner_1:
-                        add = 2;
+                        add = WorkLib.WorkToXPTable[(int)type];
+                        add += 1;
+                        break;
+                    case ExperienceLevel.Expert_3:
+                        if (Ref.rnd.Chance(0.5))
+                        {
+                            add = WorkLib.WorkToXPTable[(int)type];
+                        }
                         break;
                     case ExperienceLevel.Master_4:
-                        if (Ref.rnd.Chance(0.9))
+                        if (Ref.rnd.Chance(0.1))
                         {
-                            add = 0;
+                            add = WorkLib.WorkToXPTable[(int)type];
                         }
                         break;
                     case ExperienceLevel.Legendary_5:
-                        add = 0;
+                        //add = 0;
                         break;
                 }
                 xp += add;

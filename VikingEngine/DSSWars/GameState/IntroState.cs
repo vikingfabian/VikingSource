@@ -12,6 +12,7 @@ using VikingEngine.SteamWrapping;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Work;
 
 namespace VikingEngine.DSSWars
 {
@@ -95,8 +96,9 @@ namespace VikingEngine.DSSWars
             LootFest.Data.Block.Init();
             FlagAndColor.Init();
             ItemPropertyColl.Init();
+            WorkLib.Init();
 
-            
+
             new Models().loadContent();
 
             Engine.LoadContent.LoadMesh(LoadedMesh.cube_repeating, Engine.LoadContent.ModelPath + "cube_repeating");

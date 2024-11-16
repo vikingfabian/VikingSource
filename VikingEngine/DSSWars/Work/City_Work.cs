@@ -40,6 +40,8 @@ namespace VikingEngine.DSSWars.GameObject
         public ExperienceLevel topskill_CraftWeapon = 0;
         public ExperienceLevel topskill_CraftFuel = 0;
 
+        public ExperenceOrDistancePrio experenceOrDistance = ExperenceOrDistancePrio.Mix;
+
         public void async_workUpdate()
         {
             CityStructure.Singleton.newCity = true;
@@ -243,6 +245,28 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
+            int distanceValue;
+            int experienceValue;
+
+            switch (experenceOrDistance)
+            {
+                case ExperenceOrDistancePrio.Mix:
+                    distanceValue = 8;
+                    experienceValue = 5;
+                    break;
+                case ExperenceOrDistancePrio.Distance:
+                    distanceValue = 256;
+                    experienceValue = 10;
+                    break;
+               case ExperenceOrDistancePrio.Experience:
+                    distanceValue = 8;
+                    experienceValue = 256;
+                    break;
+
+                default:
+                    throw new NotImplementedException();
+            }
+
             while (workQue.Count > 0 && idleWorkers.Count > 0)
             {
                 var work = arraylib.PullLastMember(workQue);
@@ -250,6 +274,8 @@ namespace VikingEngine.DSSWars.GameObject
                 if (checkAvailableAndBackOrder(work.work, work.subWork) &&
                     isFreeTile(work.subTile))
                 {
+                    WorkExperienceType experienceType = WorkLib.WorkToExperienceType(work.work, work.subWork, work.subTile);
+
                     int bestWorkerListIx = -1;
                     int bestvalue = int.MaxValue;
 
@@ -258,10 +284,15 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         var worderIx = idleWorkers[i];
                         var worker = workerStatuses[worderIx];
+
                         var distance =  work.subTile.SideLength(worker.subTileEnd);
-                        if (distance < bestvalue)
+                        var xp = worker.getXpFor(experienceType);
+
+                        int value = distance * distanceValue - xp * experienceValue;
+
+                        if (value < bestvalue)
                         { 
-                            bestvalue = distance;
+                            bestvalue = value;
                             bestWorkerListIx = i;
                         }
                     }

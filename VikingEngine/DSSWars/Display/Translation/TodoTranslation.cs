@@ -48,7 +48,16 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string ExperienceLevel_4 => "Master";
         public string ExperienceLevel_5 => "Legendary";
 
-       
+        public string ExperenceOrDistancePrio_Title => "Worker selection";
+        public string ExperenceOrDistancePrio_Description => "Idle workers will be selected to work either by distance or experience";
+        public string Hud_Mixed => "Mixed";
+        public string Hud_Distance => "Distance";
+        //enum ExperenceOrDistancePrio
+        //{
+        //    Experience,
+        //    Mix,
+        //    Distance,
+        //}
 
         //     public ExperienceLevel topskill_Farm = 0;
         //public ExperienceLevel topskill_AnimalCare = 0;

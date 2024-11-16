@@ -162,27 +162,70 @@ namespace VikingEngine.DSSWars.Display
         void experienceTab(RichBoxContent content)
         {
             HudLib.Label(content, DssRef.todoLang.Experience_TopExperience);
-            experience(DssRef.todoLang.ExperienceType_Farm, city.topskill_Farm);
-            experience(DssRef.todoLang.ExperienceType_AnimalCare, city.topskill_AnimalCare);
-            //     public ExperienceLevel topskill_Farm = 0;
-            //public ExperienceLevel topskill_AnimalCare = 0;
-            //public ExperienceLevel topskill_HouseBuilding = 0;
-            //public ExperienceLevel topskill_WoodCutter = 0;
-            //public ExperienceLevel topskill_StoneCutter = 0;
-            //public ExperienceLevel topskill_Mining = 0;
-            //public ExperienceLevel topskill_Transport = 0;
-            //public ExperienceLevel topskill_Cook = 0;
-            //public ExperienceLevel topskill_CraftWood = 0;
-            //public ExperienceLevel topskill_CraftIron = 0;
-            //public ExperienceLevel topskill_CraftArmor = 0;
-            //public ExperienceLevel topskill_CraftWeapon = 0;
-            //public ExperienceLevel topskill_CraftFuel = 0;
+            experience(SpriteName.WarsWorkFarm, DssRef.todoLang.ExperienceType_Farm, city.topskill_Farm);
+            experience(SpriteName.WarsBuild_PigPen, DssRef.todoLang.ExperienceType_AnimalCare, city.topskill_AnimalCare);
+            experience(SpriteName.WarsHammer, DssRef.todoLang.ExperienceType_HouseBuilding, city.topskill_HouseBuilding);
+            experience(SpriteName.WarsResource_Wood, DssRef.todoLang.ExperienceType_WoodCutter, city.topskill_WoodCutter);
+            experience(SpriteName.WarsResource_Stone, DssRef.todoLang.ExperienceType_StoneCutter, city.topskill_StoneCutter);
+            experience(SpriteName.WarsWorkMine, DssRef.todoLang.ExperienceType_Mining, city.topskill_Mining);
+            experience(SpriteName.WarsWorkMove, DssRef.todoLang.ExperienceType_Transport, city.topskill_Transport);
+            experience(SpriteName.WarsResource_Food, DssRef.todoLang.ExperienceType_Cook, city.topskill_Cook);
+            experience(SpriteName.WarsBuild_Carpenter, DssRef.todoLang.ExperienceType_CraftWood, city.topskill_CraftWood);
+            experience(SpriteName.WarsResource_Iron, DssRef.todoLang.ExperienceType_CraftIron, city.topskill_CraftIron);
+            experience(SpriteName.WarsResource_MediumArmor, DssRef.todoLang.ExperienceType_CraftArmor, city.topskill_CraftArmor);
+            experience(SpriteName.WarsResource_Sword, DssRef.todoLang.ExperienceType_CraftWeapon, city.topskill_CraftWeapon);
+            experience(SpriteName.WarsResource_Fuel, DssRef.todoLang.ExperienceType_CraftFuel, city.topskill_CraftFuel);
 
-            void experience(string typeName, ExperienceLevel level)
+            content.newParagraph();
+            content.Add(new RichBoxBeginTitle());
+            var prioTitle = new RichBoxText(DssRef.todoLang.ExperenceOrDistancePrio_Title);
+            prioTitle.overrideColor = HudLib.TitleColor_Label;
+            content.Add(prioTitle);
+            content.space();
+            HudLib.InfoButton(content, new RbAction(() =>
+            {
+                RichBoxContent content = new RichBoxContent();
+                content.text(DssRef.todoLang.ExperenceOrDistancePrio_Description);
+                player.hud.tooltip.create(player, content, true);
+            }));
+
+            content.newLine();
+            for (ExperenceOrDistancePrio prio = 0; prio < ExperenceOrDistancePrio.NUM; ++prio)
+            {
+                string text = null;
+                switch (prio)
+                {
+                    case ExperenceOrDistancePrio.Distance:
+                        text = DssRef.todoLang.Hud_Distance;
+                        break;
+                    case ExperenceOrDistancePrio.Mix:
+                        text = DssRef.todoLang.Hud_Mixed;
+                        break;
+                    case ExperenceOrDistancePrio.Experience:
+                        text = DssRef.todoLang.Experience_Title;
+                        break;
+
+                }
+                var option = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(text) },
+                    new RbAction1Arg<ExperenceOrDistancePrio>((ExperenceOrDistancePrio val) =>
+                    {
+                        city.experenceOrDistance = val;
+                    }, prio, SoundLib.menu));
+                option.setGroupSelectionColor(HudLib.RbSettings, city.experenceOrDistance == prio);
+                content.Add(option);
+                content.space();
+            }
+            
+        
+
+            void experience(SpriteName typeIcon, string typeName, ExperienceLevel level)
             {
                 content.newLine();
-                content.Add(new RichBoxText(typeName + ":"));
-                content.Add(new RichBoxImage(LangLib.ExperienceIcon(level)));
+                content.Add(new RichBoxImage(typeIcon));
+                var typeNameText = new RichBoxText(typeName + ":");
+                typeNameText.overrideColor = HudLib.TitleColor_TypeName;
+                content.Add(typeNameText);
+                content.Add(new RichBoxImage(LangLib.ExperienceLevelIcon(level)));
                 content.Add(new RichBoxText(LangLib.ExperienceLevel(level)));
             }
         }

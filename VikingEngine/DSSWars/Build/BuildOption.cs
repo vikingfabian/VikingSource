@@ -21,20 +21,24 @@ namespace VikingEngine.DSSWars.Build
         public TerrainMainType mainType;
         public int subType;
         public SpriteName sprite;
-        public WorkExperienceType experienceType;
+        
         //static int NextIndex = 0;
         //public int index;
 
-        public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, SpriteName sprite, CraftBlueprint blueprint, WorkExperienceType experienceType)
+        public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, SpriteName sprite, CraftBlueprint blueprint)
         {
             this.sprite = sprite;
             this.buildType = buildType;
             this.blueprint = blueprint;
             this.mainType = mainType;
             this.subType = subType;
-            this.experienceType = experienceType;
+            //this.experienceType = experienceType;
 
             BuildLib.BuildOptions[(int)buildType] = this;
+        }
+        public WorkExperienceType experienceType() 
+        {
+            return blueprint.experienceType;
         }
         public string Label()
         {
