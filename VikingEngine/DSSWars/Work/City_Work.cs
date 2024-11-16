@@ -160,6 +160,12 @@ namespace VikingEngine.DSSWars.GameObject
                         subTileStart = startPos,
                     };
 
+                    if (DssRef.time.totalMinutes < 1)
+                    {
+                        newWorker.xpType1 = WorkExperienceType.Farm;
+                        newWorker.xp1 = DssConst.WorkXpToLevel;
+                    }
+
                     if (deletedCount > 0)
                     {
                         for (int di = deletedIx; di < workerStatuses.Count; ++di)
@@ -279,8 +285,7 @@ namespace VikingEngine.DSSWars.GameObject
                     int bestWorkerListIx = -1;
                     int bestvalue = int.MaxValue;
 
-                    //Find best suited worker (currently distance)
-                    for (int i = 0; i < idleWorkers.Count; ++i)//foreach (int i in idleWorkers)
+                    for (int i = 0; i < idleWorkers.Count; ++i)
                     {
                         var worderIx = idleWorkers[i];
                         var worker = workerStatuses[worderIx];

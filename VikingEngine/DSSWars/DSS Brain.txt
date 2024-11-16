@@ -29,6 +29,10 @@
 * horse farm
 * ox farm, also incread farming area
 
+* go legendary, bonus building
+ farm - apple tree
+
+
 
 #Todo (xmas patch)#
 krig varning på ally
