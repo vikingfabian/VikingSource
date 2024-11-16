@@ -87,7 +87,7 @@ namespace VikingEngine.DSSWars.Work
                     ItemResource recieved = toCity.MakeTrade(ItemResourceType.Food_G, carry.amount, DssConst.Worker_TrossWorkerCarryWeight);
                     carry = recieved;
 
-                    createWorkOrder(WorkType.TrossReturnToArmy, 0, -1, WP.ToSubTilePos_Centered(army.tilePos), null);
+                    createWorkOrder(WorkType.TrossReturnToArmy, 0, WorkExperienceType.NONE, -1, WP.ToSubTilePos_Centered(army.tilePos), null);
                     break;
                 case WorkType.TrossReturnToArmy:
                     army.food += carry.amount;
@@ -667,7 +667,7 @@ namespace VikingEngine.DSSWars.Work
         }
 
 
-        public void createWorkOrder(WorkType work, int subWork, int order, IntVector2 targetSubTile, City city)
+        public void createWorkOrder(WorkType work, int subWork, WorkExperienceType experienceType, int order, IntVector2 targetSubTile, City city)
         {
             this.work = work;
             workSubType = subWork;
@@ -677,7 +677,7 @@ namespace VikingEngine.DSSWars.Work
             processTimeStartStampSec = Ref.TotalGameTimeSec;
             float dist = VectorExt.Length(subTileEnd.X - subTileStart.X, subTileEnd.Y - subTileStart.Y) / WorldData.TileSubDivitions; //Convrst to WP length
 
-            processTimeLengthSec = finalizeWorkTime(city) +
+            processTimeLengthSec = finalizeWorkTime(experienceType, city) +
                 dist / DssVar.Men_StandardWalkingSpeed_PerSec;
 
             switch (work)
@@ -719,66 +719,93 @@ namespace VikingEngine.DSSWars.Work
 
         public float finalizeWorkTime(City city)
         {
+            return finalizeWorkTime(WorkLib.WorkToExperienceType(work, workSubType, subTileEnd), city);
+        }
+        public float finalizeWorkTime(WorkExperienceType experienceType, City city)
+        {
+            float time;
+
             switch (work)
             {
                 case WorkType.Eat:
                     return DssConst.WorkTime_Eat;
                 case WorkType.PickUpResource:
-                    return DssConst.WorkTime_PickUpResource;
+                    time = DssConst.WorkTime_PickUpResource;
+                    break;
                 case WorkType.PickUpProduce:
-                    return DssConst.WorkTime_PickUpProduce;
+                    time = DssConst.WorkTime_PickUpProduce;
+                    break;
                 case WorkType.TrossCityTrade:
-                    return DssConst.WorkTime_TrossCityTrade;
+                    time = DssConst.WorkTime_TrossCityTrade;
+                    break;
                 case WorkType.LocalTrade:
-                    return DssConst.WorkTime_LocalTrade;
+                    time = DssConst.WorkTime_LocalTrade;
+                    break;
                 case WorkType.GatherFoil:
                     SubTile subTile = DssRef.world.subTileGrid.Get(subTileEnd);
                     switch ((TerrainSubFoilType)subTile.subTerrain)
                     {
                         case TerrainSubFoilType.TreeSoft:
-                            return DssConst.WorkTime_GatherFoil_TreeSoft;
+                            time = DssConst.WorkTime_GatherFoil_TreeSoft;
+                            break;
                         case TerrainSubFoilType.TreeHard:
-                            return DssConst.WorkTime_GatherFoil_TreeHard;
+                            time = DssConst.WorkTime_GatherFoil_TreeHard;
+                            break;
                         case TerrainSubFoilType.DryWood:
-                            return DssConst.WorkTime_GatherFoil_DryWood;
+                            time = DssConst.WorkTime_GatherFoil_DryWood;
+                            break;
                         case TerrainSubFoilType.WheatFarm:
                         case TerrainSubFoilType.LinenFarm:
                         case TerrainSubFoilType.RapeSeedFarm:
                         case TerrainSubFoilType.HempFarm:
-                            return DssConst.WorkTime_GatherFoil_FarmCulture;
+                            time = DssConst.WorkTime_GatherFoil_FarmCulture;
+                            break;
                         case TerrainSubFoilType.Stones:
                         case TerrainSubFoilType.StoneBlock:
-                            return DssConst.WorkTime_GatherFoil_Stones;
+                            time = DssConst.WorkTime_GatherFoil_Stones;
+                            break;
 
                         case TerrainSubFoilType.BogIron:
-                            return DssConst.WorkTime_BogIron;
+                            time = DssConst.WorkTime_BogIron;
+                            break;
                         default:
                             return -1;//throw new NotImplementedException();
+                            
                     }
+                    break;
                 case WorkType.Till:
-                    return DssConst.WorkTime_Till;
+                    time = DssConst.WorkTime_Till;
+                    break;
                 case WorkType.Plant:
-                    return DssConst.WorkTime_Plant;
+                    time = DssConst.WorkTime_Plant;
+                    break;
                 case WorkType.Mine:
-                    return DssConst.WorkTime_Mine;
+                    time = DssConst.WorkTime_Mine;
+                    break;
                 case WorkType.Craft:
-                    return DssConst.WorkTime_Craft;
+                    time = DssConst.WorkTime_Craft;
+                    break;
                 case WorkType.Build:
                     if (city.Culture == CityCulture.Builders)
                     {
-                        return DssConst.WorkTime_Building * 0.5f;
+                        time = DssConst.WorkTime_Building * 0.5f;
                     }
-                    return DssConst.WorkTime_Building;
-
+                    else
+                    {
+                        time = DssConst.WorkTime_Building;
+                    }
+                    break;
                 case WorkType.TrossReturnToArmy:
                 case WorkType.DropOff:
                 case WorkType.Exit:
                 case WorkType.Starving:
                     return 1f;
-
                 default:
                     throw new NotImplementedException();
             }
+
+            time *= WorkLib.LevelToWorkTimePerc(getXpFor(experienceType));
+            return time;
         }
     }
 }

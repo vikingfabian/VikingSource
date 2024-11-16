@@ -87,6 +87,8 @@ namespace VikingEngine.DSSWars
         //WORK
         public static byte WorkXpToLevel = 50;
         public static byte DefaultWorkXpGain = 5;
+        public static float XpLevelWorkTimePercReduction = 0.1f;
+
         public static float WorkTime_Eat = 10;
         public static float WorkTime_PickUpResource = 2;
         public static float WorkTime_PickUpProduce = 4;

@@ -175,10 +175,12 @@ namespace VikingEngine.DSSWars.Display
             experience(SpriteName.WarsResource_MediumArmor, DssRef.todoLang.ExperienceType_CraftArmor, city.topskill_CraftArmor);
             experience(SpriteName.WarsResource_Sword, DssRef.todoLang.ExperienceType_CraftWeapon, city.topskill_CraftWeapon);
             experience(SpriteName.WarsResource_Fuel, DssRef.todoLang.ExperienceType_CraftFuel, city.topskill_CraftFuel);
+            content.newParagraph();
+            HudLib.Description(content, string.Format(DssRef.todoLang.Experience_TimeReductionDescription, MathExt.PercentageInteger(DssConst.XpLevelWorkTimePercReduction)));
 
             content.newParagraph();
             content.Add(new RichBoxBeginTitle());
-            var prioTitle = new RichBoxText(DssRef.todoLang.ExperenceOrDistancePrio_Title);
+            var prioTitle = new RichBoxText( DssRef.todoLang.ExperenceOrDistancePrio_Title);
             prioTitle.overrideColor = HudLib.TitleColor_Label;
             content.Add(prioTitle);
             content.space();

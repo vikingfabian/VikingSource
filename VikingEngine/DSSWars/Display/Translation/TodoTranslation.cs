@@ -28,6 +28,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Experience_Title => "Experience";
         public string Experience_TopExperience => "Top experience levels";
 
+        public string Experience_TimeReductionDescription => "Work time is reduced by {0}% per level";
+
         public string ExperienceType_Farm => "Farming";
         public string ExperienceType_AnimalCare => "Animal care";
         public string ExperienceType_HouseBuilding => "House building";

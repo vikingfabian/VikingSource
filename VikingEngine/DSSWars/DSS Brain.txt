@@ -33,6 +33,8 @@
  farm - apple tree
 
 
+* masters home, låt hög level arbetare vänta
+
 
 #Todo (xmas patch)#
 krig varning på ally

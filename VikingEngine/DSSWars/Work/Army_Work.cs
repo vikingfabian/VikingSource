@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.GameObject
                         {
                             int statusIx = getOrCreateFreeWorker();
                             var status = workerStatuses[statusIx];
-                            status.createWorkOrder(WorkType.TrossCityTrade, -1, -1, WP.ToSubTilePos_Centered(city.tilePos), null);
+                            status.createWorkOrder(WorkType.TrossCityTrade, -1, WorkExperienceType.NONE, -1, WP.ToSubTilePos_Centered(city.tilePos), null);
                             if (city.faction != faction)
                             {
                                 foodCosts_import.add(status.carry.amount);

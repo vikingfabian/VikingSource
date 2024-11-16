@@ -66,8 +66,6 @@ namespace VikingEngine.DSSWars.Work
                             case TerrainSubFoilType.BogIron:
                                 gainXp = WorkExperienceType.Mining;
                                 break;
-
-
                         }                      
                     }
                     break;
@@ -82,7 +80,6 @@ namespace VikingEngine.DSSWars.Work
 
                 case WorkType.PickUpProduce:
                     gainXp = WorkExperienceType.AnimalCare;
-                    //work = WorkType.Idle;
                     break;
 
                 case WorkType.DropOff:
@@ -90,24 +87,19 @@ namespace VikingEngine.DSSWars.Work
                     gainXp = WorkExperienceType.Transport;
                     break;
 
-
                 case WorkType.Mine:
                     gainXp = WorkExperienceType.Mining;
                     break;
+
                 case WorkType.Craft:
-
-
                     ItemResourceType item = (ItemResourceType)workSubType;
                     ResourceLib.Blueprint(item, out CraftBlueprint bp1, out var bp2);
                     gainXp = bp1.experienceType;
                     break;
 
                 case WorkType.Build:
-
                     var build = BuildLib.BuildOptions[workSubType];
-
                     gainXp = build.experienceType();
-
                     break;
             }
 
@@ -120,7 +112,10 @@ namespace VikingEngine.DSSWars.Work
             return level;
         }
 
-
+        public static float LevelToWorkTimePerc(byte xp)
+        {
+            return 1f - xp / DssConst.WorkXpToLevel * DssConst.XpLevelWorkTimePercReduction;
+        }
     }
 
     enum WorkType

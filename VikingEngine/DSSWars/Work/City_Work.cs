@@ -212,21 +212,21 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         --workerStatusActiveCount;
                         var status = workerStatuses[i];
-                        status.createWorkOrder(WorkType.Exit, -1, -1, WP.ToSubTilePos_Centered(tilePos), this);
+                        status.createWorkOrder(WorkType.Exit, -1, WorkExperienceType.NONE, -1, WP.ToSubTilePos_Centered(tilePos), this);
                         workerStatuses[i] = status;
                     }
                     else if (workerStatuses[i].carry.amount > 0)
                     {
                         CityStructure.Singleton.updateIfNew(this, workerStatuses.Count);
                         var status = workerStatuses[i];
-                        status.createWorkOrder(WorkType.DropOff, -1, -1, CityStructure.Singleton.storePosition(status.subTileEnd), this);
+                        status.createWorkOrder(WorkType.DropOff, -1, WorkExperienceType.Transport, -1, CityStructure.Singleton.storePosition(status.subTileEnd), this);
                         workerStatuses[i] = status;
                     }
                     else if (workerStatuses[i].energy < 0 && (res_food.amount > 0 || faction.gold > 0))
                     {
                         CityStructure.Singleton.updateIfNew(this, workerStatuses.Count);
                         var status = workerStatuses[i];
-                        status.createWorkOrder(WorkType.Eat, -1, -1, CityStructure.Singleton.eatPosition(status.subTileEnd), this);
+                        status.createWorkOrder(WorkType.Eat, -1, WorkExperienceType.NONE, -1, CityStructure.Singleton.eatPosition(status.subTileEnd), this);
                         workerStatuses[i] = status;
                     }
                     else if (workerStatuses[i].energy <= DssConst.Worker_Starvation)
@@ -234,7 +234,7 @@ namespace VikingEngine.DSSWars.GameObject
                         --workerStatusActiveCount;
                         --workForce;
                         var status = workerStatuses[i];
-                        status.createWorkOrder(WorkType.Starving, -1, -1, WP.ToSubTilePos_Centered(tilePos), this);
+                        status.createWorkOrder(WorkType.Starving, -1, WorkExperienceType.NONE, -1, WP.ToSubTilePos_Centered(tilePos), this);
                         workerStatuses[i] = status;
                     }
                     else//else if (workQue.Count > 0)
@@ -316,7 +316,7 @@ namespace VikingEngine.DSSWars.GameObject
                         idleWorkers.RemoveAt(bestWorkerListIx);
 
                         var status = workerStatuses[worderIx];
-                        status.createWorkOrder(work.work, work.subWork, work.orderId, work.subTile, this);
+                        status.createWorkOrder(work.work, work.subWork, experienceType, work.orderId, work.subTile, this);
                         workerStatuses[worderIx] = status;
 
                         if (work.orderId >= 0)
