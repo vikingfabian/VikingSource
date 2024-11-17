@@ -214,9 +214,9 @@ namespace VikingEngine.DSSWars.Work
                 case ItemResourceType.Iron_G:
                     return craft_iron;
 
-                case ItemResourceType.LightArmor: return craft_lightarmor;
-                case ItemResourceType.MediumArmor: return craft_mediumarmor;
-                case ItemResourceType.HeavyArmor: return craft_heavyarmor;
+                case ItemResourceType.PaddedArmor: return craft_lightarmor;
+                case ItemResourceType.IronArmor: return craft_mediumarmor;
+                case ItemResourceType.HeavyIronArmor: return craft_heavyarmor;
 
                 case ItemResourceType.SharpStick: return craft_sharpstick;
                 case ItemResourceType.Sword: return craft_sword;

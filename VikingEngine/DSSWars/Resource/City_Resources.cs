@@ -41,9 +41,9 @@ namespace VikingEngine.DSSWars.GameObject
              ItemResourceType.LongBow,
              ItemResourceType.Ballista,            
 
-             ItemResourceType.LightArmor,
-             ItemResourceType.MediumArmor,
-             ItemResourceType.HeavyArmor,
+             ItemResourceType.PaddedArmor,
+             ItemResourceType.IronArmor,
+             ItemResourceType.HeavyIronArmor,
         };
 
         MinuteStats blackMarketCosts_food = new MinuteStats();
@@ -211,13 +211,13 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Ballista:
                     res_ballista.amount += add;
                     break;
-                case ItemResourceType.LightArmor:
+                case ItemResourceType.PaddedArmor:
                     res_lightArmor.amount += add;
                     break;
-                case ItemResourceType.MediumArmor:
+                case ItemResourceType.IronArmor:
                     res_mediumArmor.amount += add;
                     break;
-                case ItemResourceType.HeavyArmor:
+                case ItemResourceType.HeavyIronArmor:
                     res_heavyArmor.amount += add;
                     break;
                 case ItemResourceType.NONE:
@@ -256,9 +256,9 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.LongBow: return res_longbow;
                 case ItemResourceType.Ballista: return res_ballista;
 
-                case ItemResourceType.LightArmor: return res_lightArmor;
-                case ItemResourceType.MediumArmor: return res_mediumArmor;
-                case ItemResourceType.HeavyArmor: return res_heavyArmor;
+                case ItemResourceType.PaddedArmor: return res_lightArmor;
+                case ItemResourceType.IronArmor: return res_mediumArmor;
+                case ItemResourceType.HeavyIronArmor: return res_heavyArmor;
 
                 case ItemResourceType.NONE: return Res_Nothing;
 
@@ -368,13 +368,13 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Ballista:
                     res_ballista = resource;
                     break;
-                case ItemResourceType.LightArmor:
+                case ItemResourceType.PaddedArmor:
                     res_lightArmor = resource;
                     break;
-                case ItemResourceType.MediumArmor:
+                case ItemResourceType.IronArmor:
                     res_mediumArmor = resource;
                     break;
-                case ItemResourceType.HeavyArmor:
+                case ItemResourceType.HeavyIronArmor:
                     res_heavyArmor = resource;
                     break;
 

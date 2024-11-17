@@ -10,8 +10,8 @@ namespace VikingEngine.DSSWars.Resource
 {
     static class ResourceLib
     {
-        public static readonly ItemResourceType[] SmithCraftTypes = { ItemResourceType.Iron_G, ItemResourceType.MediumArmor, ItemResourceType.HeavyArmor, ItemResourceType.Sword, ItemResourceType.TwoHandSword, ItemResourceType.KnightsLance };
-        public static readonly ItemResourceType[] BenchCraftTypes = { ItemResourceType.Fuel_G, ItemResourceType.LightArmor, ItemResourceType.SharpStick, ItemResourceType.Bow };
+        public static readonly ItemResourceType[] SmithCraftTypes = { ItemResourceType.Iron_G, ItemResourceType.IronArmor, ItemResourceType.HeavyIronArmor, ItemResourceType.Sword, ItemResourceType.TwoHandSword, ItemResourceType.KnightsLance };
+        public static readonly ItemResourceType[] BenchCraftTypes = { ItemResourceType.Fuel_G, ItemResourceType.PaddedArmor, ItemResourceType.SharpStick, ItemResourceType.Bow };
         public static readonly ItemResourceType[] CarpenterCraftTypes = { ItemResourceType.SharpStick, ItemResourceType.Bow, ItemResourceType.LongBow, ItemResourceType.Ballista };
 
         public static readonly CraftBlueprint CraftFuel1 = new CraftBlueprint(
@@ -192,7 +192,7 @@ namespace VikingEngine.DSSWars.Resource
 
         public static readonly CraftBlueprint CraftLightArmor = new CraftBlueprint(
             CraftResultType.Resource,
-            (int)ItemResourceType.LightArmor,
+            (int)ItemResourceType.PaddedArmor,
             1,
             new UseResource[]
             {
@@ -203,7 +203,7 @@ namespace VikingEngine.DSSWars.Resource
 
         public static readonly CraftBlueprint CraftMediumArmor = new CraftBlueprint(
             CraftResultType.Resource,
-            (int)ItemResourceType.MediumArmor,
+            (int)ItemResourceType.IronArmor,
             1,
             new UseResource[]
             {
@@ -216,7 +216,7 @@ namespace VikingEngine.DSSWars.Resource
 
         public static readonly CraftBlueprint CraftHeavyArmor = new CraftBlueprint(
             CraftResultType.Resource,
-            (int)ItemResourceType.HeavyArmor,
+            (int)ItemResourceType.HeavyIronArmor,
             1,
             new UseResource[]
             {
@@ -557,15 +557,15 @@ namespace VikingEngine.DSSWars.Resource
                     return SpriteName.WarsResource_Food;
                 case ItemResourceType.GoldOre:
                     return SpriteName.WarsResource_GoldOre;
-                case ItemResourceType.HeavyArmor:
+                case ItemResourceType.HeavyIronArmor:
                     return SpriteName.WarsResource_HeavyArmor;
                 case ItemResourceType.Iron_G:
                     return SpriteName.WarsResource_Iron;
                 case ItemResourceType.IronOre_G:
                     return SpriteName.WarsResource_IronOre;
-                case ItemResourceType.MediumArmor:
+                case ItemResourceType.IronArmor:
                     return SpriteName.WarsResource_MediumArmor;
-                case ItemResourceType.LightArmor:
+                case ItemResourceType.PaddedArmor:
                     return SpriteName.WarsResource_LightArmor;
                 case ItemResourceType.Linen:
                     return SpriteName.WarsResource_Linen;
@@ -620,9 +620,9 @@ namespace VikingEngine.DSSWars.Resource
                 case ItemResourceType.Beer: bp1 = CraftBeer; bp2 = null; break;
 
                 case ItemResourceType.Iron_G: bp1 = CraftIron; bp2 = null; break;
-                case ItemResourceType.LightArmor: bp1 = CraftLightArmor; bp2 = null; break;
-                case ItemResourceType.MediumArmor: bp1 = CraftMediumArmor; bp2 = null; break;
-                case ItemResourceType.HeavyArmor: bp1 = CraftHeavyArmor; bp2 = null; break;
+                case ItemResourceType.PaddedArmor: bp1 = CraftLightArmor; bp2 = null; break;
+                case ItemResourceType.IronArmor: bp1 = CraftMediumArmor; bp2 = null; break;
+                case ItemResourceType.HeavyIronArmor: bp1 = CraftHeavyArmor; bp2 = null; break;
 
                 case ItemResourceType.SharpStick: bp1 = CraftSharpStick; bp2 = null; break;
                 case ItemResourceType.Sword: bp1 = CraftSword; bp2 = null; break;

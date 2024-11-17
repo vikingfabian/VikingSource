@@ -417,7 +417,7 @@ namespace VikingEngine.DSSWars.Work
                                     gainXp = WorkExperienceType.Cook;
                                     break;
 
-                                case ItemResourceType.LightArmor:
+                                case ItemResourceType.PaddedArmor:
                                     if (city.Culture == CityCulture.Weavers)
                                     {
                                         add += 1;
@@ -426,8 +426,8 @@ namespace VikingEngine.DSSWars.Work
                                     gainXp = WorkExperienceType.CraftArmor;
                                     break;
 
-                                case ItemResourceType.MediumArmor:
-                                case ItemResourceType.HeavyArmor:
+                                case ItemResourceType.IronArmor:
+                                case ItemResourceType.HeavyIronArmor:
                                     if (city.Culture == CityCulture.Armorsmith)
                                     {
                                         add += 1;

@@ -431,11 +431,11 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case ItemResourceType.Ballista:
                     return DssRef.lang.UnitType_Ballista;
 
-                case ItemResourceType.LightArmor:
+                case ItemResourceType.PaddedArmor:
                     return DssRef.lang.Resource_TypeName_LightArmor;
-                case ItemResourceType.MediumArmor:
+                case ItemResourceType.IronArmor:
                     return DssRef.lang.Resource_TypeName_MediumArmor;
-                case ItemResourceType.HeavyArmor:
+                case ItemResourceType.HeavyIronArmor:
                     return DssRef.lang.Resource_TypeName_HeavyArmor;
 
                 default:

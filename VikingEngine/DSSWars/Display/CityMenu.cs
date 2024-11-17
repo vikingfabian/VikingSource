@@ -378,13 +378,13 @@ namespace VikingEngine.DSSWars.Display
 
                     content.Add(new RichBoxSeperationLine());
                                         
-                    city.res_lightArmor.toMenu(content, ItemResourceType.LightArmor, false, ref reachedBuffer);
+                    city.res_lightArmor.toMenu(content, ItemResourceType.PaddedArmor, false, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftLightArmor);
 
-                    city.res_mediumArmor.toMenu(content, ItemResourceType.MediumArmor, false, ref reachedBuffer);
+                    city.res_mediumArmor.toMenu(content, ItemResourceType.IronArmor, false, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftMediumArmor);
 
-                    city.res_heavyArmor.toMenu(content, ItemResourceType.HeavyArmor, false, ref reachedBuffer);
+                    city.res_heavyArmor.toMenu(content, ItemResourceType.HeavyIronArmor, false, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftHeavyArmor);
 
 
@@ -427,9 +427,9 @@ namespace VikingEngine.DSSWars.Display
                     stockpile(ItemResourceType.LongBow);
                     stockpile(ItemResourceType.Ballista);
                     content.Add(new RichBoxSeperationLine());
-                    stockpile(ItemResourceType.LightArmor);
-                    stockpile(ItemResourceType.MediumArmor);
-                    stockpile(ItemResourceType.HeavyArmor);
+                    stockpile(ItemResourceType.PaddedArmor);
+                    stockpile(ItemResourceType.IronArmor);
+                    stockpile(ItemResourceType.HeavyIronArmor);
 
                     HudLib.Description(content, DssRef.lang.Resource_StockPile_Info);
                     GroupedResource.BufferIconInfo(content, false);
