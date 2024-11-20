@@ -124,6 +124,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public TradeTemplate tradeTemplate = new TradeTemplate();
         public const int DefaultFoodBuffer = 500;
+        public const int Logistics1FoodStorage = 300;
         public void defaultResourceBuffer()
         {
             res_wood.goalBuffer = 300;

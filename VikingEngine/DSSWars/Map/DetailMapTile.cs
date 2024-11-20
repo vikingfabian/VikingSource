@@ -438,7 +438,7 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_recruitment, rnd, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.Barracks:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, rnd, wp, WorldData.SubTileWidth * 1f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 0, wp, WorldData.SubTileWidth * 1f));
                     break;
                 
                 case TerrainBuildingType.StoneHall:
@@ -479,6 +479,9 @@ namespace VikingEngine.DSSWars.Map
                     break;
                 case TerrainBuildingType.Nobelhouse:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_nobelhouse, 1, wp, WorldData.SubTileWidth * 1.3f));
+                    break;
+                case TerrainBuildingType.Logistics:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_logistic, subTile.terrainAmount -1, wp, WorldData.SubTileWidth * 1.0f));
                     break;
 
 

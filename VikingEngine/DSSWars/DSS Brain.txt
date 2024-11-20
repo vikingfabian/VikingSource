@@ -1,11 +1,13 @@
 ﻿-Change Log-
-* Fixed craigs crashes
-* Delivery: auto city take other deliveries into account
-* save of food safeguard setting
-
+* "Building death spiral" fix; includes a limit to the work order que.
+* logistics, building that unlocks building options
+* the 5X speed option is hidden in settings
+* improved voxel editor select and stamp/delete functions
+* Improved subtiles multicore data security
+* reduced animal sounds
+* compressed delivery menu hud
 
 #Todo (xmas patch)#
-
 
 
 
@@ -53,9 +55,25 @@ Polish
 -dölj move path OnHud 
 -attack ally yes/no warning
 
-Art
+#Art
 
 
+#Voxel
+/logistic overseer, +lvl 2
+/farm plus tool shed
+/smelter
+/manuballista, /cannons, /hand cannon, /slinger, /long sword, /mithril user, /warhammer
+/stone cutter, wood cutter
+/water resovoir
+/Embassy
+/delivery lvl2/3
+/knight barrack
+/barrack in use, melee/range/siege
+/mines
+/chemestry
+/Foundry (gjuteri)
+/cast iron
+/-lvl2 gun powder (beer chemist) Black powder/ gunpowder
 #current
 English, Simplified Chinese, Japanese, Russian, Spanish
 
@@ -63,7 +81,7 @@ English, Simplified Chinese, Japanese, Russian, Spanish
 #Todo (DSS 2)#
 1. better presentation
 2. 100 hour playtime
-3. multiplayer
+3. maybe multiplayer
 
 -Free build of city walls, towers
 -Better looking start cities
@@ -71,6 +89,7 @@ English, Simplified Chinese, Japanese, Russian, Spanish
 -Dynamic shadows shader
 -New end boss
 -Lots of named factions
+-Are you strongly opposed to showing building counts per town or production outputs
 
 
 

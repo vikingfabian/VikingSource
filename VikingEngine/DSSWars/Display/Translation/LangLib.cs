@@ -195,7 +195,9 @@ namespace VikingEngine.DSSWars.Display.Translation
             {
                 case TerrainMainType.Building:
                     switch ((TerrainBuildingType)subType)
-                    { 
+                    {
+                        case TerrainBuildingType.Logistics:
+                            return DssRef.todoLang.BuildingType_Logistics;
                         case TerrainBuildingType.Barracks:
                             return DssRef.lang.BuildingType_Barracks;
                         case TerrainBuildingType.Bank:
@@ -263,7 +265,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                         case TerrainSubFoilType.BogIron:
                             return DssRef.lang.Resource_TypeName_BogIron;
                     }
-                    break;
+                    //break;
 
                 case TerrainMainType.Mine:
                     switch ((TerrainMineType)subType)
@@ -310,7 +312,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public static string BuildingDescription(TerrainBuildingType buildingType)
         {
             switch (buildingType)
-            { 
+            {
+                case TerrainBuildingType.Logistics:
+                    return DssRef.todoLang.BuildingType_Logistics_Description;
                 case TerrainBuildingType.Tavern:
                     return DssRef.lang.BuildingType_Tavern_Description;
                 case TerrainBuildingType.Storehouse:

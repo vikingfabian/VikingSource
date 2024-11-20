@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Valve.Steamworks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.ToGG.ToggEngine.Map;
 
 namespace VikingEngine.DSSWars.Map
 {
@@ -26,6 +28,7 @@ namespace VikingEngine.DSSWars.Map
         int nobelHouseCount = 0;
         public int fuelSpots = 0;
         public int foodspots = 0;
+        //public int logisticsLevel = 0;
         public bool newCity = true;
 
         public void setupTutorialMap(City city)
@@ -95,6 +98,43 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
+        public bool find(City city, TerrainMainType main, int sub, out IntVector2 position)
+        {
+            IntVector2 topleft;
+            ForXYLoop subTileLoop;
+            for (int radius = 0; radius <= city.cityTileRadius; ++radius)
+            {
+                ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+
+                while (cirkleLoop.Next())
+                {
+                    if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
+                    {
+                        var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
+                        if (tile.CityIndex == city.parentArrayIndex && tile.IsLand())
+                        {
+                            topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
+                            subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
+
+                            while (subTileLoop.Next())
+                            {
+                                SubTile subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
+
+                                if (subTile.mainTerrain == main && subTile.subTerrain == sub)
+                                { 
+                                    position = subTileLoop.Position;
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            position = IntVector2.Zero;
+            return false;
+        }
+
         public void update(City city, int workerCount, int emptyLandExpansions = 2)
         {
             //int emptyLandExpansions = 2;
@@ -117,6 +157,7 @@ namespace VikingEngine.DSSWars.Map
             int coalPitCount = 0;
             fuelSpots = 0;
             foodspots = 0;
+            int logisticsLevel = 0;
 
             IntVector2 cityHall = WP.ToSubTilePos_Centered(city.tilePos);
             FoodSpots_workupdate.Add(cityHall);
@@ -257,6 +298,9 @@ namespace VikingEngine.DSSWars.Map
                                             case TerrainBuildingType.Nobelhouse:
                                                 ++nobelHouseCount;
                                                 break;
+                                            case TerrainBuildingType.Logistics:
+                                                logisticsLevel = subTile.terrainAmount;
+                                                break;
                                         }
                                         break;
                                     case TerrainMainType.Destroyed:
@@ -276,8 +320,9 @@ namespace VikingEngine.DSSWars.Map
             }
 
             //Complete
-            city.nobelHouse_buildingCount = nobelHouseCount;
-            city.coalpit_buildingCount = coalPitCount;
+            city.buildingCount_nobelHouse = nobelHouseCount;
+            city.buildingCount_coalpit = coalPitCount;
+            city.buildingLevel_logistics = logisticsLevel;
 
             void farming(ref SubTile subTile)
             {
@@ -287,7 +332,7 @@ namespace VikingEngine.DSSWars.Map
                 }
                 else if (subTile.terrainAmount >= TerrainContent.FarmCulture_ReadySize)
                 {
-                    Farms.Add(new SubTileWork(subTileLoop.Position, WorkType.GatherFoil));//FarmGather.Add(subTileLoop.Position);
+                    Farms.Add(new SubTileWork(subTileLoop.Position, WorkType.GatherFoil));
                 }
             }
         }

@@ -236,13 +236,16 @@ namespace VikingEngine.DSSWars.Work
 
                             if (chunk.count <= 0)
                             {
-                                subTile.collectionPointer = -1;
+                                EditSubTile editTile = new EditSubTile(subTileEnd, subTile, false, false, true);
+                                editTile.value.collectionPointer = -1;
 
                                 if (subTile.mainTerrain == TerrainMainType.Resourses)
                                 {
-                                    subTile.mainTerrain = TerrainMainType.DefaultLand;
+                                    editTile.value.mainTerrain = TerrainMainType.DefaultLand;
+                                    editTile.editTerrain = true;
                                 }
-                                DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                                editTile.Submit();
+                                //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                             }
                         }
                     }
@@ -272,7 +275,12 @@ namespace VikingEngine.DSSWars.Work
                         if (subTile.terrainAmount >= min)
                         {
                             subTile.terrainAmount -= size;
-                            DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+
+                            EditSubTile editTile = new EditSubTile(subTileEnd, subTile, false, true, false);
+                            editTile.Submit();
+                            
+                            //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+
 
                             carry = new ItemResource(resourceType, 1, Convert.ToInt32(processTimeLengthSec), 1);
                         }
@@ -348,10 +356,10 @@ namespace VikingEngine.DSSWars.Work
                         ItemResourceType item = (ItemResourceType)workSubType;
                         ResourceLib.Blueprint(item, out var bp1, out var bp2);
 
-                        int add = bp1.tryCraft(city);
+                        int add = bp1.tryPayResources(city);
                         if (add == 0 && bp2 != null)
                         {
-                            add = bp2.tryCraft(city);
+                            add = bp2.tryPayResources(city);
                         }
 
                         if (add > 0)
@@ -524,8 +532,9 @@ namespace VikingEngine.DSSWars.Work
                 ref subTile.collectionPointer);
 
             subTile.SetType(TerrainMainType.Resourses, (int)TerrainResourcesType.Wood, 1);
-
-            DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+            EditSubTile editSubTile = new EditSubTile(subTileEnd, subTile, true, true, true);
+            editSubTile.Submit();
+            //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
         }
 
 

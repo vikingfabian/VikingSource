@@ -67,8 +67,9 @@ namespace VikingEngine.DSSWars.GameObject
         public bool hasBuilding_carpenter = false;
         public bool hasBuilding_brewery = false;
         public bool hasBuilding_smith = false;
-        public int coalpit_buildingCount = 0;
-        public int nobelHouse_buildingCount = 0;
+        public int buildingCount_coalpit = 0;
+        public int buildingCount_nobelHouse = 0;
+        public int buildingLevel_logistics = 0;
         string name = null;
 
         IntVector2 cullingTopLeft, cullingBottomRight;
@@ -81,6 +82,54 @@ namespace VikingEngine.DSSWars.GameObject
 
         public CityTagBack tagBack = CityTagBack.NONE;
         public CityTagArt tagArt = CityTagArt.None;
+
+        public bool CanBuildLogistics(int toLevel)
+        {
+            if (toLevel == 1)
+            {
+                return res_food.amount >= Logistics1FoodStorage;
+            }
+            else
+            {
+                return faction.totalWorkForce > DssConst.Logistics2_PopulationRequirement;
+            }
+        }
+
+        public int MaxBuildQueue()
+        {
+            switch (buildingLevel_logistics)
+            {
+                default: return DssConst.WorkQueue_Start;
+                case 1: return DssConst.WorkQueue_LogisticsLevel1;
+                case 2: return int.MaxValue;
+            }
+        }
+
+        public void upgradeLogistics()
+        {
+            Task task = Task.Factory.StartNew(() =>
+            {
+                if (CityStructure.Singleton.find(this, TerrainMainType.Building, (int)TerrainBuildingType.Logistics, out IntVector2 position))
+                {
+                    ResourceLib.CraftLogisticsLevel2.payResources(this);
+
+                    EditSubTile edit = new EditSubTile();
+                    edit.position = position;
+                    edit.value.terrainAmount = 2;
+                    edit.editAmount = true;
+
+                    edit.Submit();
+
+                    buildingLevel_logistics = 2;
+                }
+            });
+            
+        }
+
+        public bool availableBuildQueue(LocalPlayer player)
+        {
+            return MaxBuildQueue() > 1000 || player.orders.buildQueue(this) < MaxBuildQueue();
+        }
 
         public void AutoExpandType(out bool work, out Build.BuildAndExpandType farm)
         {

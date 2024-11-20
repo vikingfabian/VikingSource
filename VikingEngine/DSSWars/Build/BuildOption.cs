@@ -12,16 +12,13 @@ using VikingEngine.DSSWars.Resource;
 namespace VikingEngine.DSSWars.Build
 {
     class BuildOption
-    {
-        //public BuildOptionType type;
-        
+    {   
         public BuildAndExpandType buildType;
         public CraftBlueprint blueprint;
         public TerrainMainType mainType;
         public int subType;
         public SpriteName sprite;
-        //static int NextIndex = 0;
-        //public int index;
+        public bool uniqueBuilding = false;
 
         public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, SpriteName sprite, CraftBlueprint blueprint)
         {
@@ -36,26 +33,6 @@ namespace VikingEngine.DSSWars.Build
         public string Label()
         {
             return LangLib.TerrainName(mainType, subType);
-            //switch (mainType)
-            //{
-            //    case TerrainMainType.Building:
-            //        return ((TerrainBuildingType)subType).ToString();
-            //    case TerrainMainType.Foil:
-            //        return ((TerrainSubFoilType)subType).ToString();
-            //    case TerrainMainType.Decor:
-            //        switch ((TerrainDecorType)subType)
-            //        {
-            //            case TerrainDecorType.Pavement:
-            //                return DssRef.lang.DecorType_Pavement + " A";
-            //            case TerrainDecorType.PavementFlower:
-            //                return DssRef.lang.DecorType_Pavement + " B";
-            //            case TerrainDecorType.Statue_ThePlayer:
-            //                return DssRef.lang.DecorType_Statue;
-            //        }
-            //        break;
-            //}
-
-            //return TextLib.Error;
         }
         public string Description()
         {
@@ -74,18 +51,22 @@ namespace VikingEngine.DSSWars.Build
 
         public void execute_async(City city, IntVector2 subPos, ref SubTile subTile)
         {
-            //switch (type)
-            //{
-            //    case BuildOptionType.Building:
             subTile.SetType(mainType, subType, 1);
 
             switch (mainType)
             {
                 case TerrainMainType.Building:
-
                     {
                         switch ((TerrainBuildingType)subType)
                         {
+                            case TerrainBuildingType.Logistics:
+                                if (city.CanBuildLogistics(2))
+                                {
+                                    subTile.terrainAmount = 2;
+                                }
+                                city.buildingLevel_logistics = subTile.terrainAmount;
+                                break;
+
                             case TerrainBuildingType.WorkerHut:
                                 city.onWorkHutBuild();
                                 break;
@@ -124,17 +105,8 @@ namespace VikingEngine.DSSWars.Build
                     }
                     break;
             }
-            //    case BuildOptionType.Farm:
-            //        subTile.SetType(TerrainMainType.Foil, subType, 1);
-            //        break;
-            //}
-            blueprint.craft(city);
+
+            blueprint.payResources(city);
         }
     }
-
-    //enum BuildOptionType
-    //{
-    //    Building,
-    //    Farm,
-    //}
 }

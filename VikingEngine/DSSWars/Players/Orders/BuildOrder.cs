@@ -41,6 +41,11 @@ namespace VikingEngine.DSSWars.Players.Orders
            return null;
         }
 
+        virtual public bool BuildQueue(City city)
+        {
+            return false;
+        }
+
         virtual public bool IsBuildOnSubTile(IntVector2 subTile)
         { 
             return false;
@@ -150,6 +155,16 @@ namespace VikingEngine.DSSWars.Players.Orders
                 return this;
             }
             return null;
+        }
+
+        //public override BuildOrder GetWorkOrder(City city)
+        public override bool BuildQueue(City city)
+        {
+            if (this.city == city && orderStatus != OrderStatus.Complete)
+            {
+                return true;
+            }
+            return false;
         }
 
         public WorkQueMember createWorkQue(out CraftBlueprint blueprint)

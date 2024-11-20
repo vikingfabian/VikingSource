@@ -464,50 +464,18 @@ namespace VikingEngine.DSSWars.Display
                 optionalBp.toMenu(content, city);
             }
 
-            if (blueprint.requirement != CraftRequirement.None)
-            {
-                content.newLine();
-                HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
-                content.newLine();
-                HudLib.BulletPoint(content);
-
-                string reqText;
-                bool available;
-                switch (blueprint.requirement)
-                {
-                    case CraftRequirement.Carpenter:
-                        reqText = DssRef.lang.BuildingType_Carpenter;
-                        available = city.hasBuilding_carpenter;
-                        break;
-                    case CraftRequirement.Brewery:
-                        reqText = DssRef.lang.BuildingType_Brewery;
-                        available = city.hasBuilding_brewery;
-                        break;
-                    case CraftRequirement.Smith:
-                        reqText = DssRef.lang.BuildingType_Smith;
-                        available = city.hasBuilding_smith;
-                        break;
-                    case CraftRequirement.CoalPit:
-                        reqText = DssRef.lang.BuildingType_CoalPit;
-                        available = city.coalpit_buildingCount > 0;
-                        break;
-
-                    default:
-                        throw new NotImplementedException();
-                }
-
-                RichBoxText requirement1 = new RichBoxText(reqText);
-                requirement1.overrideColor = available ? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                content.Add(requirement1);
-            }
+            blueprint.requirementToHud(content, city, out _);
 
             content.Add(new RichBoxSeperationLine());
             content.newParagraph();
             content.h2(DssRef.lang.MenuTab_Resources).overrideColor = HudLib.TitleColor_Label;
             blueprint.listResources(content, city, optionalBp);
+            
 
             player.hud.tooltip.create(player, content, true, blueprint.tooltipId);
         }
+
+        
 
         void conscriptTab(RichBoxContent content)
         {

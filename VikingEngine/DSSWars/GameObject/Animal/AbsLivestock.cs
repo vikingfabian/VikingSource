@@ -127,7 +127,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
 
         protected override void sound()
         {
-            if (Ref.rnd.Chance(0.1))
+            if (Ref.rnd.Chance(0.02))
             {
                 SoundLib.hen.Play(model.position);
             }
