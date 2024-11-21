@@ -71,7 +71,7 @@ namespace VikingEngine.DSSWars.Players.Orders
             return false;
         }
 
-        public void addOrder(AbsOrder order, bool onConflict_Toggle)
+        public void addOrder(AbsOrder order, ActionOnConflict onConflict)
         {
             lock (orders)
             {
@@ -80,10 +80,15 @@ namespace VikingEngine.DSSWars.Players.Orders
                 {
                     if (order.IsConflictingOrder(orders[i]))
                     {
+                        if (onConflict == ActionOnConflict.Cancel)
+                        {
+                            return;
+                        }
+
                         orders[i].DeleteMe();
                         orders.RemoveAt(i);
 
-                        if (onConflict_Toggle)
+                        if (onConflict == ActionOnConflict.Toggle)
                         {
                             return;
                         }
@@ -174,5 +179,12 @@ namespace VikingEngine.DSSWars.Players.Orders
             }
             Debug.ReadCheck(r);
         }
+    }
+
+    enum ActionOnConflict
+    { 
+        Commit,
+        Toggle,
+        Cancel,
     }
 }

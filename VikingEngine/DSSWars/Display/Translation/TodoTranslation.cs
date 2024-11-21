@@ -24,6 +24,8 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         //public string EndGameStatistics_DecorsBuilt => "Decorations built: {0}";
         //public string EndGameStatistics_StatuesBuilt => "Statues built: {0}";
+
+        public string Info_FooodAndDeliveryLocation => "By default, workers go to the city hall to eat or drop off items";
         public string GameMenu_UseSpeedX => "{0} speed option";
 
         public string Diplomacy_RelationWithOthers => "Their relations with others";

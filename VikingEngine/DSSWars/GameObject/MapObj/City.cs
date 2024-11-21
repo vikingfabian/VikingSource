@@ -16,7 +16,9 @@ using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Work;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest;
@@ -89,10 +91,12 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 return res_food.amount >= Logistics1FoodStorage;
             }
-            else
+            else if (toLevel == 2)
             {
                 return faction.totalWorkForce > DssConst.Logistics2_PopulationRequirement;
             }
+
+            return false;
         }
 
         public int MaxBuildQueue()
@@ -109,7 +113,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             Task task = Task.Factory.StartNew(() =>
             {
-                if (CityStructure.Singleton.find(this, TerrainMainType.Building, (int)TerrainBuildingType.Logistics, out IntVector2 position))
+                if (CityStructure.WorkInstance.find(this, TerrainMainType.Building, (int)TerrainBuildingType.Logistics, out IntVector2 position))
                 {
                     ResourceLib.CraftLogisticsLevel2.payResources(this);
 
@@ -126,6 +130,44 @@ namespace VikingEngine.DSSWars.GameObject
             
         }
 
+
+        public bool autoUpgradeLogistics(IntVector2 freeSubTile, bool commit)
+        {
+            //commit is main thread
+
+            if (CanBuildLogistics(buildingLevel_logistics + 1))
+            {
+                if (buildingLevel_logistics == 0)
+                {
+                    if (ResourceLib.CraftLogistics.hasResources(this))
+                    {
+                        if (commit)
+                        {
+                            var player = faction.player.GetLocalPlayer();
+                            if (player != null)
+                            {
+                                player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, this, freeSubTile, Build.BuildAndExpandType.Logistics), ActionOnConflict.Cancel);
+                            }
+                        }
+                        return true;
+                    }
+                }
+                else if (buildingLevel_logistics == 1)
+                {
+                    if (ResourceLib.CraftLogisticsLevel2.hasResources(this))
+                    {
+                        if (commit)
+                        {
+                            ResourceLib.CraftLogisticsLevel2.payResources(this);
+                            upgradeLogistics();
+                        }
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         public bool availableBuildQueue(LocalPlayer player)
         {
             return MaxBuildQueue() > 1000 || player.orders.buildQueue(this) < MaxBuildQueue();
@@ -134,6 +176,13 @@ namespace VikingEngine.DSSWars.GameObject
         public void AutoExpandType(out bool work, out Build.BuildAndExpandType farm)
         {
             work = autoBuild_Work;
+
+            if (buildingLevel_logistics == 0)
+            {
+                farm = Build.BuildAndExpandType.NUM_NONE;
+                return;
+            }
+           
             farm = autoBuild_Farm ? autoExpandFarmType : Build.BuildAndExpandType.NUM_NONE;
         }
 

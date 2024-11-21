@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars.Build
                 {
                     if (selectedSubTile.city.availableBuildQueue(player) && placeBuildingOption().blueprint.meetsRequirements(selectedSubTile.city))
                     {
-                        player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, selectedSubTile.city, selectedSubTile.subTilePos, placeBuildingType), true);
+                        player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, selectedSubTile.city, selectedSubTile.subTilePos, placeBuildingType), ActionOnConflict.Toggle);
                     }
                     else
                     {
@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars.Build
                                     &&
                                     !player.orders.orderConflictingSubTile(subTileLoop.Position, false))
                                 {
-                                    player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType), false);
+                                    player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType),  ActionOnConflict.Cancel);
                                     if (--count <= 0)
                                     { return; }
                                 }
@@ -141,6 +141,11 @@ namespace VikingEngine.DSSWars.Build
                     content.newLine();
                     switch (type)
                     {
+                        case BuildAndExpandType.Storehouse:
+                        case BuildAndExpandType.Tavern:
+                            HudLib.Description(content, DssRef.todoLang.Info_FooodAndDeliveryLocation);
+                            break;
+
                         case BuildAndExpandType.Logistics:
                             HudLib.BulletPoint(content);
                             content.Add(new RichBoxImage(SpriteName.birdUnLock));
@@ -534,40 +539,41 @@ namespace VikingEngine.DSSWars.Build
                     content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(city.faction.totalWorkForce));
 
                     player.hud.tooltip.create(player, content, true);
-                }), ResourceLib.CraftLogisticsLevel2.canCraft(city) && city.CanBuildLogistics(2)));
+                }), ResourceLib.CraftLogisticsLevel2.hasResources(city) && city.CanBuildLogistics(2)));
             }
 
             content.newParagraph();
             content.text(string.Format(DssRef.lang.Build_OrderQue, orderLength)).overrideColor = HudLib.InfoYellow_Light;
 
-           
-            content.Add(new RichBoxSeperationLine());
+            if (city.buildingLevel_logistics > 0)
+            {
+                content.Add(new RichBoxSeperationLine());
 
-            //--Automation
-            content.h2(DssRef.lang.Automation_Title).overrideColor = HudLib.TitleColor_Label;
+                //--Automation
+                content.h2(DssRef.lang.Automation_Title).overrideColor = HudLib.TitleColor_Label;
 
-            content.newLine();
-            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
+                content.newLine();
+                content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
                 {
                     new RichBoxText( DssRef.lang.CityOption_AutoBuild_Work),
                 }, city.AutoBuildWorkProperty));
-            content.newLine();
+                content.newLine();
 
-            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
+                content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
                 {
                     new RichBoxText( DssRef.lang.CityOption_AutoBuild_Farm),
                 }, city.AutoBuildFarmProperty));
-            
 
-            if (city.AutoBuildFarmProperty(0, false, false))
-            {
-                content.newLine();
 
-                foreach (var opt in AutoBuildOptions)
+                if (city.AutoBuildFarmProperty(0, false, false))
                 {
-                    var build = BuildLib.BuildOptions[(int)opt];
+                    content.newLine();
 
-                    var optButton = new RichboxButton(new List<AbsRichBoxMember> {
+                    foreach (var opt in AutoBuildOptions)
+                    {
+                        var build = BuildLib.BuildOptions[(int)opt];
+
+                        var optButton = new RichboxButton(new List<AbsRichBoxMember> {
                         new RichBoxImage(build.sprite),
                         new RichBoxSpace(),
                         new RichBoxText(build.Label())
@@ -575,16 +581,16 @@ namespace VikingEngine.DSSWars.Build
                     {
                         city.autoExpandFarmType = opt;
                     }, SoundLib.menu));
-                    optButton.setGroupSelectionColor(HudLib.RbSettings, opt == city.autoExpandFarmType);
-                    content.Add(optButton);
-                    content.space();
+                        optButton.setGroupSelectionColor(HudLib.RbSettings, opt == city.autoExpandFarmType);
+                        content.Add(optButton);
+                        content.space();
+                    }
                 }
-            }
 
-            content.newParagraph();
-            
-            city.workTemplate.autoBuild.toHud(player, content, DssRef.lang.Work_OrderPrioTitle, SpriteName.MenuPixelIconSettings, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, player.faction, city);
-        
+                content.newParagraph();
+
+                city.workTemplate.autoBuild.toHud(player, content, DssRef.lang.Work_OrderPrioTitle, SpriteName.MenuPixelIconSettings, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, player.faction, city);
+            }
         
             void autoBuildButton(string caption, int count)
             {

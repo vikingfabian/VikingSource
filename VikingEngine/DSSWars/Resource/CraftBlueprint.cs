@@ -60,7 +60,7 @@ namespace VikingEngine.DSSWars.Resource
             return true;
         }
 
-        public bool canCraft(City city)
+        public bool hasResources(City city)
         {
             foreach (var r in resources)
             {

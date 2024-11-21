@@ -11,7 +11,8 @@ namespace VikingEngine.DSSWars.Map
 {
     class CityStructure
     {
-        public static readonly CityStructure Singleton = new CityStructure();
+        public static readonly CityStructure WorkInstance = new CityStructure();
+        public static readonly CityStructure AutomationInstance = new CityStructure();
 
         public List<IntVector2> FoodSpots_workupdate = new List<IntVector2>(4);
         public List<IntVector2> StoragePoints_workupdate = new List<IntVector2>(4);

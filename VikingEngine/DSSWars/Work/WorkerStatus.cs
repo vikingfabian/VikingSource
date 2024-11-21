@@ -428,11 +428,11 @@ namespace VikingEngine.DSSWars.Work
 
                             if (city.GetGroupedResource(item).needMore())
                             {
-                                if (bp1.canCraft(city))
+                                if (bp1.hasResources(city))
                                 {
                                     tryRepeatWork = true;
                                 }
-                                else if (bp2 != null && bp2.canCraft(city))
+                                else if (bp2 != null && bp2.hasResources(city))
                                 {
                                     tryRepeatWork = true;
                                 }

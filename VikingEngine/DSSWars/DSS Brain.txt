@@ -1,15 +1,7 @@
 ﻿-Change Log-
-* "Building death spiral" fix; includes a limit to the work order que.
-* logistics, building that unlocks building options
-* the 5X speed option is hidden in settings
-* improved voxel editor select and stamp/delete functions
-* Improved subtiles multicore data security
-* reduced animal sounds
-* compressed delivery menu hud
+
 
 #Todo (xmas patch)#
-
-
 
 krig varning på ally
 new maps
