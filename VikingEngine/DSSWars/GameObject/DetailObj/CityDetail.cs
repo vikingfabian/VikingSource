@@ -157,8 +157,8 @@ namespace VikingEngine.DSSWars.GameObject
                                 for (int trialIx = 0; trialIx < SubStartTrialCount; ++trialIx)
                                 {
                                     IntVector2 subPos = topLeft;
-                                    subPos.X += Ref.rnd.Int(WorldData.TileSubDivitions);
-                                    subPos.Y += Ref.rnd.Int(WorldData.TileSubDivitions);
+                                    subPos.X += Ref.rnd.Int(1, WorldData.TileSubDivitions -1);
+                                    subPos.Y += Ref.rnd.Int(1, WorldData.TileSubDivitions -1);
 
 
                                     if (Build.BuildLib.TryAutoBuild(subPos, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut))

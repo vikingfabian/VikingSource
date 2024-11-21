@@ -39,16 +39,16 @@ namespace VikingEngine.DSSWars.Resource
             this.requirement = requirement;
         }
 
-        public void createBackOrder(City city)
-        {
-            foreach (var r in resources)
-            {
-                var res = city.GetGroupedResource(r.type);
-                res.backOrder += r.amount;
-                city.SetGroupedResource(r.type, res);
-            }
+        //public void createBackOrder(City city)
+        //{
+        //    foreach (var r in resources)
+        //    {
+        //        var res = city.GetGroupedResource(r.type);
+        //        res.backOrder += r.amount;
+        //        city.SetGroupedResource(r.type, res);
+        //    }
 
-        }
+        //}
         public bool available(City city)
         {
             foreach (var r in resources)
@@ -62,7 +62,7 @@ namespace VikingEngine.DSSWars.Resource
             return true;
         }
 
-        public bool canCraft(City city)
+        public bool hasResources(City city)
         {
             foreach (var r in resources)
             {
@@ -91,7 +91,7 @@ namespace VikingEngine.DSSWars.Resource
             return min;
         }
 
-        public int craft(City city)
+        public int payResources(City city)
         {
             foreach (var r in resources)
             {
@@ -101,7 +101,7 @@ namespace VikingEngine.DSSWars.Resource
             return resultAmount;
         }
 
-        public int tryCraft(City city)
+        public int tryPayResources(City city)
         {
             foreach (var r in resources)
             {
@@ -191,6 +191,63 @@ namespace VikingEngine.DSSWars.Resource
             }
         }
 
+        public bool meetsRequirements(City city)
+        {
+            requirementToHud(null, city, out bool result);
+            return result;
+        }
+
+        public void requirementToHud(RichBoxContent content, City city, out bool available)
+        {
+            available = true;
+
+            if (requirement != CraftRequirement.None)
+            {
+                if (content != null)
+                {
+                    content.newLine();
+                    HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                }
+                string reqText;
+
+                switch (requirement)
+                {
+                    case CraftRequirement.Carpenter:
+                        reqText = DssRef.lang.BuildingType_Carpenter;
+                        available = city.hasBuilding_carpenter;
+                        break;
+                    case CraftRequirement.Brewery:
+                        reqText = DssRef.lang.BuildingType_Brewery;
+                        available = city.hasBuilding_brewery;
+                        break;
+                    case CraftRequirement.Smith:
+                        reqText = DssRef.lang.BuildingType_Smith;
+                        available = city.hasBuilding_smith;
+                        break;
+                    case CraftRequirement.CoalPit:
+                        reqText = DssRef.lang.BuildingType_CoalPit;
+                        available = city.buildingCount_coalpit > 0;
+                        break;
+                    case CraftRequirement.Logistics1:
+                        reqText = string.Format(DssRef.todoLang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, City.Logistics1FoodStorage);
+                        available = city.res_food.amount >= City.Logistics1FoodStorage;
+                        break;
+
+                    default:
+                        throw new NotImplementedException();
+                }
+
+                if (content != null)
+                {
+                    RichBoxText requirement1 = new RichBoxText(reqText);
+                    requirement1.overrideColor = available ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                    content.Add(requirement1);
+                }
+            }
+        }
+
         public void listResources(RichBoxContent content, City city, CraftBlueprint optionalBp = null)
         {
             bool reachedBuffer = false;
@@ -241,6 +298,9 @@ namespace VikingEngine.DSSWars.Resource
         Brewery,
         Smith,
         CoalPit,
+        Logistics1,
+        Logistics2,
+
     }
 
     enum CraftResultType

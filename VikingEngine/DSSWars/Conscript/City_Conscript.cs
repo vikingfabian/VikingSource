@@ -88,8 +88,8 @@ namespace VikingEngine.DSSWars.GameObject
 
                             case ConscriptActiveStatus.CollectingMen:
                                 int needMen = DssConst.SoldierGroup_DefaultCount - status.menCollected;
-                                int collectMen = lib.SmallestValue(workForce, needMen);
-                                workForce -= collectMen;
+                                int collectMen = lib.SmallestValue(workForce.amount, needMen);
+                                workForce.amount -= collectMen;
                                 status.menCollected += collectMen;
 
                                 if (status.menCollected == DssConst.SoldierGroup_DefaultCount)
@@ -321,6 +321,8 @@ namespace VikingEngine.DSSWars.GameObject
                 var subTile = DssRef.world.subTileGrid.Get(pos);
                 subTile.SetType(TerrainMainType.Building, (int)TerrainBuildingType.Barracks, 1);
                 DssRef.world.subTileGrid.Set(pos, subTile);
+                //EditSubTile edit = new EditSubTile(pos, subTile, true, false, false);
+                //edit.Submit();
 
                 BarracksStatus newBarrack = new BarracksStatus()
                 {

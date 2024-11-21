@@ -14,6 +14,20 @@ namespace VikingEngine.DSSWars.Players.Orders
     {
         public List<AbsOrder> orders = new List<AbsOrder>();
 
+        public int buildQueue(City city)
+        {
+            int count = 0;
+            for (int i = 0; i < orders.Count; ++i)
+            {
+                if (orders[i].BuildQueue(city))
+                {
+                    ++count;
+                }
+            }
+
+            return count;
+        }
+
         public void refreshAvailable(Faction faction)
         {
             for (int i = orders.Count - 1; i >= 0; --i)
@@ -39,12 +53,17 @@ namespace VikingEngine.DSSWars.Players.Orders
             return null;
         }
 
-        public bool orderConflictingSubTile(IntVector2 subTilePos)
+        public bool orderConflictingSubTile(IntVector2 subTilePos, bool removeConflict)
         {
             for (int i = 0; i < orders.Count; ++i)
             {
                 if (orders[i].IsBuildOnSubTile(subTilePos))
                 {
+                    if (removeConflict)
+                    {
+                        orders[i].DeleteMe();
+                        orders.RemoveAt(i);
+                    }
                     return true;
                 }
             }
@@ -52,7 +71,7 @@ namespace VikingEngine.DSSWars.Players.Orders
             return false;
         }
 
-        public void addOrder(AbsOrder order, bool onConflict_Toggle)
+        public void addOrder(AbsOrder order, ActionOnConflict onConflict)
         {
             lock (orders)
             {
@@ -61,10 +80,15 @@ namespace VikingEngine.DSSWars.Players.Orders
                 {
                     if (order.IsConflictingOrder(orders[i]))
                     {
+                        if (onConflict == ActionOnConflict.Cancel)
+                        {
+                            return;
+                        }
+
                         orders[i].DeleteMe();
                         orders.RemoveAt(i);
 
-                        if (onConflict_Toggle)
+                        if (onConflict == ActionOnConflict.Toggle)
                         {
                             return;
                         }
@@ -155,5 +179,12 @@ namespace VikingEngine.DSSWars.Players.Orders
             }
             Debug.ReadCheck(r);
         }
+    }
+
+    enum ActionOnConflict
+    { 
+        Commit,
+        Toggle,
+        Cancel,
     }
 }

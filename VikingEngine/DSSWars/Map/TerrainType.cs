@@ -83,7 +83,7 @@ namespace VikingEngine.DSSWars.Map
         Nobelhouse,
         Storehouse,
         Bank,
-        
+        Logistics,
         NUM_NONE
     }
 

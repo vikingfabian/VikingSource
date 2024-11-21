@@ -25,6 +25,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         //public string EndGameStatistics_DecorsBuilt => "Decorations built: {0}";
         //public string EndGameStatistics_StatuesBuilt => "Statues built: {0}";
 
+        public string Info_FooodAndDeliveryLocation => "By default, workers go to the city hall to eat or drop off items";
+        public string GameMenu_UseSpeedX => "{0} speed option";
+
         public string Experience_Title => "Experience";
         public string Experience_TopExperience => "Top experience levels";
 
@@ -96,6 +99,19 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_Bank => "Bank";
         public string BuildingType_Bank_Description => "Send gold to other cities";
 
+        public string BuildingType_Logistics => "Logistics";
+        public string BuildingType_Logistics_Description => "Upgrade your ability to order buildings";
+
+        public string BuildingType_Logistics_NationSizeRequirement => "Nation total workforce: {0}";
+        public string Requirements_XItemStorageOfY => "City {0} storage of: {1}";
+
+
+        public string XP_UnlockBuildQueue => "Unlock build queue to: {0}";
+        public string XP_UnlockBuilding => "Unlock building: ";
+        public string XP_Upgrade => "Upgrade";
+
+        public string XP_UpgradeBuildingX => "Upgrade building: {0}";
+
         /// <summary>
         /// Title for describing the production cycle of farms
         /// </summary>
@@ -103,15 +119,16 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildHud_MayCraft => "May craft";
         public string BuildHud_WorkTime => "Work time: {0}";
         public string BuildHud_GrowTime => "Grow time: {0}";
-        public string BuildHud_Produce => "Poduce:";
+        public string BuildHud_Produce => "Produce:";
+
+        public string BuildHud_Queue => "Allowed build queue: {0}/{1}";
 
         public string LandType_Flatland => "Flat land";
         public string LandType_Water => "Water";
-
         public string BuildingType_Wall => "Wall";
-
-
         public string Delivery_AutoReciever_Description => "Will send to the city with lowest amount of resources";
+
+        public string Hud_NoLimit => "No limit";
 
         public string Hud_On => "On";
         public string Hud_Off => "Off";

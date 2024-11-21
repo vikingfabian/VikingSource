@@ -25,6 +25,7 @@ namespace VikingEngine.Voxels
         public VoxelDesignerInterface designerInterface;
        
         protected bool repeateOnAllFrames = true;
+        protected bool stampEmpty = false;
         abstract public BlockHD SelectedMaterial { get; set; }
         abstract public BlockHD SecondaryMaterial { get; set; }
        
@@ -1105,6 +1106,12 @@ namespace VikingEngine.Voxels
         {
             if (set) { repeateOnAllFrames = value; }
             return repeateOnAllFrames;
+        }
+
+        public bool bStampEmptyProperty(int index, bool set, bool value)
+        {
+            if (set) { stampEmpty = value; }
+            return stampEmpty;
         }
         protected bool haveCopiedVoxels
         {

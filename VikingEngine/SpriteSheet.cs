@@ -2293,6 +2293,7 @@ namespace VikingEngine
                     add(SpriteName.WarsWorkerAdd, 2, 2);
                     add(SpriteName.WarsWorkerSub, 2, 2);
                     add(SpriteName.WarsBogIron, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Hammerknight, 2, 2);
                 }
 
                 currentIndex = numTilesWidth * 96;
@@ -2435,6 +2436,16 @@ namespace VikingEngine
                     add(SpriteName.WarsCityHall, 3, 3);
                     add(SpriteName.WarsBuild_RapeseedFarms, 3, 3);
                     add(SpriteName.WarsBuild_HempFarms, 3, 3);
+
+                    add(SpriteName.WarsBuild_Logistics, 3, 3);
+                    add(SpriteName.WarsBuild_Smelter, 3, 3);
+                    add(SpriteName.WarsBuild_WoodCutter, 3, 3);
+                    add(SpriteName.WarsBuild_StoneCutter, 3, 3);
+                    add(SpriteName.WarsBuild_Embassy, 3, 3);
+                    add(SpriteName.WarsBuild_WaterReservoir, 3, 3);
+                    add(SpriteName.WarsBuild_KnightBarrack, 3, 3);
+                    add(SpriteName.WarsBuild_Foundry, 3, 3);
+                    add(SpriteName.WarsBuild_Chemist, 3, 3);
                 }
 
                 currentIndex = numTilesWidth * 100;
@@ -2455,9 +2466,63 @@ namespace VikingEngine
                     add(SpriteName.warsArmyTag_RoundShield);
                     add(SpriteName.warsArmyTag_BrokenShield);   
                     add(SpriteName.warsArmyTag_Anchor);
+
+                    add(SpriteName.WarsResource_Crossbow);
+                    add(SpriteName.WarsResource_Sulfur);
+                    add(SpriteName.WarsResource_BlackPowder);
+                    add(SpriteName.WarsResource_Lead);
+                    add(SpriteName.WarsResource_LeadOre);
+                    add(SpriteName.WarsResource_TinOre);
+                    add(SpriteName.WarsResource_Tin);
+                    add(SpriteName.WarsWoodCraftIcon);
+                    add(SpriteName.WarsResource_Wagon2Wheel);
+                    add(SpriteName.WarsResource_Whagon4Wheel);
+                    add(SpriteName.WarsResource_ShortSword);
+                    add(SpriteName.WarsResource_Longsword);
+                    add(SpriteName.WarsResource_Steel);
+                    add(SpriteName.WarsResource_HeavyIronArmor);
+                    add(SpriteName.WarsResource_LightPlateArmor);
+                    add(SpriteName.WarsResource_BloomeryIron);
+                    add(SpriteName.WarsResource_MithrilAlloy);
+                    add(SpriteName.WarsResource_Bronze);
+                    add(SpriteName.WarsResource_SilverOre);
+                    add(SpriteName.WarsResource_Ox);
+                    add(SpriteName.WarsResource_BronzeSword);
+                    add(SpriteName.WarsResource_HeavyPaddedArmor);
+                    add(SpriteName.WarsResource_ThrowSpear);
+                    add(SpriteName.WarsResource_Slingshot);
+                    add(SpriteName.WarsResource_BronzeShotgun);
+                    add(SpriteName.WarsResource_BronzeRifle);
+                    add(SpriteName.WarsResource_IronShotgun);
+                    add(SpriteName.WarsResource_IronRifle);
+                    add(SpriteName.WarsResource_BronzeManCannon);
+                    add(SpriteName.WarsResource_IronManCannon);
+                    add(SpriteName.WarsResource_BronzeSiegeCannon);
+                    add(SpriteName.WarsResource_IronSiegeCannon);
+                    add(SpriteName.WarsResource_Warhammer);
+                    add(SpriteName.WarsResource_Catapult);
+                    add(SpriteName.WarsResource_Trebuchet);
+                    add(SpriteName.WarsResource_CastIron);
+                    add(SpriteName.WarsResource_Manuballista);
+                    add(SpriteName.WarsResource_Bullets);
+                    add(SpriteName.WarsResource_GunPowder);
                 }
 
-                    
+                currentIndex = numTilesWidth * 101;
+                {
+                    add(SpriteName.WarsUnitIcon_Javelin, 2, 2);
+                    add(SpriteName.WarsUnitIcon_BronzeShotgun, 2, 2);
+                    add(SpriteName.WarsUnitIcon_BronzeRifle, 2, 2);
+                    add(SpriteName.WarsUnitIcon_MithrilMan, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Longsword, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Manuballista, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Catapult, 2, 2);
+                    add(SpriteName.WarsUnitIcon_BronzeManCannon, 2, 2);
+                    add(SpriteName.WarsUnitIcon_BronzeSiegeCannon, 2, 2);
+                    add(SpriteName.WarsUnitIcon_IronManCannon, 2, 2);
+                    add(SpriteName.WarsUnitIcon_IronSiegeCannon, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Slingshot, 2, 2);
+                }
 
                 currentIndex = numTilesWidth * 106;
                 {

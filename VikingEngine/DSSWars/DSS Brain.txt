@@ -1,8 +1,7 @@
 ﻿-Change Log-
-* Fixed reported crashes
 
 
-! Old saves are slightly broken - again (cities will look weird)
+#Todo (xmas patch)#
 
 #Todo (XP)#
 * wood cutter/stone cutter shed, improved working radius
@@ -85,13 +84,43 @@ Polish
 -dölj move path OnHud 
 -attack ally yes/no warning
 
-Art
+#Art
 placement bonus icon
 work skill icons (carpenting)
 
 
+#Voxel
+/logistic overseer, +lvl 2
+/farm plus tool shed
+/smelter
+/manuballista, /cannons, /hand cannon, /slinger, /long sword, /mithril user, /warhammer
+/stone cutter, wood cutter
+/water resovoir
+/Embassy
+/delivery lvl2/3
+/knight barrack
+/barrack in use, melee/range/siege
+/mines
+/chemestry
+/Foundry (gjuteri)
+/cast iron
+/-lvl2 gun powder (beer chemist) Black powder/ gunpowder
 #current
 English, Simplified Chinese, Japanese, Russian, Spanish
+
+
+#Todo (DSS 2)#
+1. better presentation
+2. 100 hour playtime
+3. maybe multiplayer
+
+-Free build of city walls, towers
+-Better looking start cities
+-Nicer menu
+-Dynamic shadows shader
+-New end boss
+-Lots of named factions
+-Are you strongly opposed to showing building counts per town or production outputs
 
 
 

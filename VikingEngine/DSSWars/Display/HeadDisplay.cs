@@ -236,12 +236,12 @@ namespace VikingEngine.DSSWars.Display
                         input(player.input.GameSpeed, gameSpeed);
                         if (fullDisplay)
                         {
-                            for (int i = 0; i < DssLib.GameSpeedOptions.Length; i++)
+                            for (int i = 0; i < player.GameSpeedOptions.Length; i++)
                             {
                                 var button = new RichboxButton(
-                                     new List<AbsRichBoxMember> { new RichBoxText(string.Format(DssRef.lang.Hud_XTimes, DssLib.GameSpeedOptions[i])) },
-                                     new RbAction1Arg<int>(gameSpeedClick, DssLib.GameSpeedOptions[i]), null, true);
-                                button.setGroupSelectionColor(HudLib.RbSettings, Ref.TargetGameTimeSpeed == DssLib.GameSpeedOptions[i]);
+                                     new List<AbsRichBoxMember> { new RichBoxText(string.Format(DssRef.lang.Hud_XTimes, player.GameSpeedOptions[i])) },
+                                     new RbAction1Arg<int>(gameSpeedClick, player.GameSpeedOptions[i]), null, true);
+                                button.setGroupSelectionColor(HudLib.RbSettings, Ref.TargetGameTimeSpeed == player.GameSpeedOptions[i]);
                                 content.Add(button);
                                 content.space(); 
                                 

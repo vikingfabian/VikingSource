@@ -226,6 +226,29 @@ namespace VikingEngine.DSSWars.Resource
             Work.WorkExperienceType.CraftArmor,
             CraftRequirement.Smith
         );
+        public static readonly CraftBlueprint CraftLogistics = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.Logistics,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Wood_Group, 20),
+                new UseResource(ItemResourceType.Stone_G, 30)
+            },
+            Work.WorkExperienceType.HouseBuilding,
+            CraftRequirement.Logistics1
+        );
+        public static readonly CraftBlueprint CraftLogisticsLevel2 = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.Logistics,
+            2,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Wood_Group, 10),
+                new UseResource(ItemResourceType.Stone_G, 10)
+            }, Work.WorkExperienceType.HouseBuilding, 
+            CraftRequirement.Logistics2
+        );
 
         public static readonly CraftBlueprint CraftWorkerHut = new CraftBlueprint(
             CraftResultType.Building,

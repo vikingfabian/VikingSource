@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars.Work
             this.status = status;
             parentArrayIndex = statusIndex;
             model = mapObject.GetFaction().AutoLoadModelInstance(
-                 LootFest.VoxelModelName.war_worker, DssConst.Men_StandardModelScale * 0.9f, true);
+                 DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f, true);
 
             model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
 

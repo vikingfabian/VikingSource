@@ -40,20 +40,23 @@ namespace VikingEngine.DSSWars.Delivery
                 content.Add(title);
                 content.space();
                 HudLib.CloseButton(content, new RbAction(() => { city.selectedDelivery = -1; }, SoundLib.menuBack));
-                //content.Add(new RichboxButton(new List<AbsRichBoxMember>
-                //    { new RichBoxSpace(), new RichBoxText(DssRef.lang.Hud_EndSessionIcon),new RichBoxSpace(), },
-                //    new RbAction(() => { city.selectedDelivery = -1; }, SoundLib.menuBack)));
+                
 
-                content.newLine();
-                HudLib.Description(content, DssRef.lang.BuildingType_Postal_Description);
-                HudLib.Description(content, string.Format(DssRef.lang.Deliver_WillSendXInfo, DssConst.CityDeliveryCount));
 
                 content.newParagraph();
 
                 if (!currentStatus.Recruitment())
                 {
                     HudLib.Label(content, DssRef.lang.Resource);
-                    content.newLine();
+                    content.space();
+                    HudLib.InfoButton(content, new RbAction(() =>
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        HudLib.Description(content, DssRef.lang.BuildingType_Postal_Description);
+                        HudLib.Description(content, string.Format(DssRef.lang.Deliver_WillSendXInfo, DssConst.CityDeliveryCount));
+                        player.hud.tooltip.create(player, content, true);
+                    }));
+                    content.newParagraph();
                     content.Add(new RichBoxScale(1.6f));
                     foreach (var item in City.MovableCityResourceTypes)
                     {
@@ -102,8 +105,9 @@ namespace VikingEngine.DSSWars.Delivery
                     }
 
                 }
-                content.newParagraph();
+                
                 content.Add(new RichBoxScale());
+                content.newParagraph();
 
                 HudLib.Label(content, DssRef.lang.Hud_RecieveingCity);
                 content.newLine();
@@ -194,7 +198,7 @@ namespace VikingEngine.DSSWars.Delivery
                 if (isSending || currentStatus.que > 0)
                 {
 
-                    content.newParagraph();
+                    //content.newParagraph();
                     content.Add(new RichBoxSeperationLine());
                     {
                         content.newLine();

@@ -193,7 +193,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void onNewModel_asynch(LootFest.VoxelModelName name, Graphics.VoxelModel master)
         {
-            if (name == VoxelModelName.war_worker)
+            if (name == DssLib.WorkerModel)
             {
                 foreach (var m in members)
                 {
@@ -222,12 +222,12 @@ namespace VikingEngine.DSSWars.GameObject
             this.diff = diff;
             
             model = faction.AutoLoadModelInstance(
-               LootFest.VoxelModelName.war_worker, DssConst.Men_StandardModelScale * 0.9f, true);
+               DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f, true);
         }
 
         public void onNewModel_asynch(LootFest.VoxelModelName name, Graphics.VoxelModel master)
         {
-            DSSWars.Faction.SetNewMaster(name, LootFest.VoxelModelName.war_worker, model, master);
+            DSSWars.Faction.SetNewMaster(name, DssLib.WorkerModel, model, master);
         }
 
         public void update(AbsSoldierUnit parent)

@@ -24,7 +24,7 @@ namespace VikingEngine.Engine
         static SpriteFont[] Fonts = new SpriteFont[(int)LoadedFont.NUM_NON];
         static SoundEffect[] SoundEffects = new SoundEffect[(int)LoadedSound.NUM];
 
-        static Model[] Models = new Model[(int)LoadedMesh.NUM];//Dictionary<LoadedMesh, Model> modelList = new Dictionary<LoadedMesh, Model>();
+        public static Model[] Models = new Model[(int)LoadedMesh.NUM];//Dictionary<LoadedMesh, Model> modelList = new Dictionary<LoadedMesh, Model>();
         static Effect[] effectList = new Effect[(int)LoadedEffect.NUM_NoEffect];
 
         public const string TexturePath = "Texture\\";
