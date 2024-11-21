@@ -487,14 +487,16 @@ namespace VikingEngine.DSSWars
 
         bool asyncResourcesUpdate(int id, float time)
         {
+            //This thread is the only thay may edit subtiles
             if (cutScene == null)
             {
+                resources.asyncEditTiles();
                 //Runs every minute to upate any resource progression: trees grow, food spoil, etc
                 if (bResourceMinuteUpdate || StartupSettings.DebugResoursesSuperSpeed)
                 {
                     bResourceMinuteUpdate = false;
 
-                    resources.asyncUpdate();
+                    resources.asyncGrowUpdate();
                 }
             }
             return exitThreads;

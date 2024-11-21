@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -16,6 +17,7 @@ namespace VikingEngine.DSSWars.Resource
         SpottedArrayCounter_Resource registerCounter;
 
         TerrainContent terrainContent = new TerrainContent();
+        public ConcurrentStack<EditSubTile> editSubTilesStack = new ConcurrentStack<EditSubTile>();
 
         public WorldResources()
         {
@@ -78,12 +80,18 @@ namespace VikingEngine.DSSWars.Resource
             resourceRegister.Array[index] = resourceChunk;
         }
 
-        public void asyncUpdate()
-        {
+        public void asyncGrowUpdate()
+        {           
+
             ForXYLoop loop = new ForXYLoop(DssRef.world.subTileGrid.Size);
 
             while (loop.Next())
             {
+                while (editSubTilesStack.TryPop(out var edit))
+                {
+                    edit.ExecuteEdit();
+                }
+
                 var subtile = DssRef.world.subTileGrid.Get(loop.Position);
 
                 if (subtile.mainTerrain == TerrainMainType.Foil)
@@ -95,8 +103,14 @@ namespace VikingEngine.DSSWars.Resource
                     terrainContent.asyncCityProduce(loop.Position, subtile);
                 }
             }
+        }
 
-
+        public void asyncEditTiles()
+        {
+            while (editSubTilesStack.TryPop(out var edit))
+            {
+                edit.ExecuteEdit();
+            }
         }
 
     }

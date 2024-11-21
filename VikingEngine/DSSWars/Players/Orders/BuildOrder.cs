@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Work;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.MoonFall;
@@ -39,6 +40,11 @@ namespace VikingEngine.DSSWars.Players.Orders
         virtual public BuildOrder GetWorkOrder(City city)
         { 
            return null;
+        }
+
+        virtual public bool BuildQueue(City city)
+        {
+            return false;
         }
 
         virtual public bool IsBuildOnSubTile(IntVector2 subTile)
@@ -150,6 +156,16 @@ namespace VikingEngine.DSSWars.Players.Orders
                 return this;
             }
             return null;
+        }
+
+        //public override BuildOrder GetWorkOrder(City city)
+        public override bool BuildQueue(City city)
+        {
+            if (this.city == city && orderStatus != OrderStatus.Complete)
+            {
+                return true;
+            }
+            return false;
         }
 
         public WorkQueMember createWorkQue(out CraftBlueprint blueprint)

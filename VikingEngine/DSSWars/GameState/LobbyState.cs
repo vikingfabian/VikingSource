@@ -27,6 +27,7 @@ using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.HUD.RichBox;
 using System.Linq;
+using VikingEngine.DSSWars.Players;
 
 namespace VikingEngine.DSSWars
 {
@@ -589,6 +590,17 @@ namespace VikingEngine.DSSWars
             return DssRef.storage.autoSave;
         }
 
+        public bool speed5Property(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                DssRef.storage.speed5x = value;
+
+                DssRef.storage.Save(null);
+            }
+            return DssRef.storage.speed5x;
+        }
+
         public bool tutorialProperty(int index, bool set, bool value)
         {
             if (set)
@@ -728,6 +740,7 @@ namespace VikingEngine.DSSWars
                 Ref.gamesett.optionsMenu(layout);
                 new GuiCheckbox(DssRef.lang.GameMenu_AutoSave, null, autoSaveProperty, layout);
                 new GuiCheckbox(DssRef.lang.Tutorial_MenuOption, null, tutorialProperty, layout);
+                new GuiCheckbox(string.Format( DssRef.todoLang.GameMenu_UseSpeedX, LocalPlayer.MaxSpeedOption), null, speed5Property, layout);
             }
             layout.End();
 

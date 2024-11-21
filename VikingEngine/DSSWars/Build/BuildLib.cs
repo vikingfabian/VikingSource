@@ -33,43 +33,87 @@ namespace VikingEngine.DSSWars.Build
         Pavement,
         PavementFlower,
 
+        Logistics,
+
         NUM_NONE,
     }
     static class BuildLib
     {
-       
-        public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
-        public static readonly List<BuildAndExpandType> AvailableBuildTypes = new List<BuildAndExpandType> {
-            BuildAndExpandType.WorkerHuts,
-            BuildAndExpandType.Barracks,
+        public static List<BuildAndExpandType> LogisticsUnlockBuildings = new List<BuildAndExpandType>
+        {
             BuildAndExpandType.Nobelhouse,
-            BuildAndExpandType.Postal,
             BuildAndExpandType.Recruitment,
-            
             BuildAndExpandType.Storehouse,
             BuildAndExpandType.Tavern,
             BuildAndExpandType.Brewery,
-            BuildAndExpandType.Cook,
             BuildAndExpandType.CoalPit,
-            BuildAndExpandType.WorkBench,
-            BuildAndExpandType.Smith,
-            BuildAndExpandType.Carpenter,
-            BuildAndExpandType.PigPen,
-            BuildAndExpandType.HenPen,
-            BuildAndExpandType.WheatFarm,
-            BuildAndExpandType.LinenFarm,
-            BuildAndExpandType.RapeSeedFarm,
-            BuildAndExpandType.HempFarm,
-            
-
-            BuildAndExpandType.Pavement,
-            BuildAndExpandType.PavementFlower,
-            BuildAndExpandType.Statue_ThePlayer
         };
-       
+
+        public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
+        public static List<BuildAndExpandType> AvailableBuildTypes(GameObject.City city)
+        {
+            List<BuildAndExpandType> result = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
+
+            if (city.buildingLevel_logistics == 0)
+            {
+                result.Add(BuildAndExpandType.Logistics);
+            }
+
+            result.Add(BuildAndExpandType.WorkerHuts);
+            result.Add(BuildAndExpandType.Barracks);
+            
+            if (city.buildingLevel_logistics >= 1)
+            {
+                result.Add(BuildAndExpandType.Nobelhouse);
+            }
+            
+            result.Add(BuildAndExpandType.Postal);
+            
+            if (city.buildingLevel_logistics >= 1)
+            {
+                result.Add(BuildAndExpandType.Recruitment);
+                result.Add(BuildAndExpandType.Storehouse);
+                result.Add(BuildAndExpandType.Tavern);
+                result.Add(BuildAndExpandType.Brewery);
+            }
+            
+            result.Add(BuildAndExpandType.Cook);
+            
+            if (city.buildingLevel_logistics >= 1)
+            {
+                result.Add(BuildAndExpandType.CoalPit);
+            }
+            
+            result.Add(BuildAndExpandType.WorkBench);
+            result.Add(BuildAndExpandType.Smith);
+            result.Add(BuildAndExpandType.Carpenter);
+            result.Add(BuildAndExpandType.PigPen);
+            result.Add(BuildAndExpandType.HenPen);
+            result.Add(BuildAndExpandType.WheatFarm);
+            result.Add(BuildAndExpandType.LinenFarm);
+            result.Add(BuildAndExpandType.RapeSeedFarm);
+            if (city.buildingLevel_logistics >= 1)
+            {
+                result.Add(BuildAndExpandType.HempFarm);
+            }
+
+            if (city.buildingLevel_logistics >= 2)
+            {
+                result.Add(BuildAndExpandType.Pavement);
+                result.Add(BuildAndExpandType.PavementFlower);
+                result.Add(BuildAndExpandType.Statue_ThePlayer);
+            }
+
+            return result;
+        }
 
         public static void Init()
         {
+            new BuildOption(BuildAndExpandType.Logistics, TerrainMainType.Building, (int)TerrainBuildingType.Logistics, SpriteName.WarsBuild_Logistics, ResourceLib.CraftLogistics)
+            {
+                uniqueBuilding = true
+            };
+
             new BuildOption(BuildAndExpandType.WorkerHuts, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, SpriteName.WarsBuild_WorkerHuts, ResourceLib.CraftWorkerHut);
             new BuildOption(BuildAndExpandType.Postal, TerrainMainType.Building, (int)TerrainBuildingType.Postal, SpriteName.WarsBuild_Postal, ResourceLib.CraftPostal);
             new BuildOption(BuildAndExpandType.Recruitment, TerrainMainType.Building, (int)TerrainBuildingType.Recruitment, SpriteName.WarsBuild_Recruitment, ResourceLib.CraftRecruitment);
@@ -86,7 +130,7 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.Smith, TerrainMainType.Building, (int)TerrainBuildingType.Work_Smith, SpriteName.WarsBuild_Smith, ResourceLib.CraftSmith);
             new BuildOption(BuildAndExpandType.Carpenter, TerrainMainType.Building, (int)TerrainBuildingType.Carpenter, SpriteName.WarsBuild_Carpenter, ResourceLib.CraftCarpenter);
 
-            new BuildOption(BuildAndExpandType.WheatFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, SpriteName.WarsBuild_WheatFarms, ResourceLib.CraftWheatFarm);
+            new BuildOption(BuildAndExpandType.WheatFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, SpriteName.WarsBuild_WheatFarms, ResourceLib.CraftWheatFarm );
             new BuildOption(BuildAndExpandType.LinenFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarm, SpriteName.WarsBuild_LinenFarms, ResourceLib.CraftLinenFarm);
             new BuildOption(BuildAndExpandType.HempFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarm, SpriteName.WarsBuild_HempFarms, ResourceLib.CraftHempFarm);
             new BuildOption(BuildAndExpandType.RapeSeedFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarm, SpriteName.WarsBuild_RapeseedFarms, ResourceLib.CraftRapeseedFarm);
@@ -135,7 +179,9 @@ namespace VikingEngine.DSSWars.Build
                 if (CanAutoBuildHere(ref subTile))
                 {
                     subTile.SetType(mainType, terrainSubType, 1);
-                    DssRef.world.subTileGrid.Set(subTilePos, subTile);
+                    EditSubTile edit = new EditSubTile(subTilePos, subTile, true, false, false);
+                    edit.Submit();
+                    //DssRef.world.subTileGrid.Set(subTilePos, subTile);
                     return true;
                 }
             }

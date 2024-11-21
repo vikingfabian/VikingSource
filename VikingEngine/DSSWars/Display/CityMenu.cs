@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Data;
@@ -88,7 +89,7 @@ namespace VikingEngine.DSSWars.Display
                     break;
 
                 case MenuTab.Work:
-                    city.workTemplate.toHud(player, content, city.faction, city);
+                    workTab(content);
                     break;
 
                 case MenuTab.Conscript:
@@ -114,6 +115,120 @@ namespace VikingEngine.DSSWars.Display
                 case MenuTab.Build:
                     player.buildControls.toHud(player, content, city);
                     break;
+            }
+        }
+
+        void workTab(RichBoxContent content)
+        {
+            if (player.tutorial == null)
+            {
+                for (WorkSubTab workSubTab = 0; workSubTab < WorkSubTab.NUM; ++workSubTab)
+                {
+                    string text = null;
+                    switch (workSubTab)
+                    {
+                        case WorkSubTab.Priority:
+                            text = DssRef.lang.Work_OrderPrioTitle;
+                            break;
+                        case WorkSubTab.Experience:
+                            text = DssRef.todoLang.Experience_Title;
+                            break;
+                    }
+                    var subTab = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(text) },
+                        new RbAction1Arg<WorkSubTab>((WorkSubTab resourcesSubTab) =>
+                        {
+                            player.workSubTab = resourcesSubTab;
+                        }, workSubTab, SoundLib.menutab));
+                    subTab.setGroupSelectionColor(HudLib.RbSettings, player.workSubTab == workSubTab);
+                    content.Add(subTab);
+                    content.space();
+                }
+                content.newParagraph();
+            }
+
+            switch (player.workSubTab)
+            {
+                case WorkSubTab.Priority:
+                    city.workTemplate.toHud(player, content, city.faction, city);
+                    break;
+                case WorkSubTab.Experience:
+                    experienceTab(content);
+                    break;
+            }
+
+            
+        }
+
+        void experienceTab(RichBoxContent content)
+        {
+            HudLib.Label(content, DssRef.todoLang.Experience_TopExperience);
+            experience(SpriteName.WarsWorkFarm, DssRef.todoLang.ExperienceType_Farm, city.topskill_Farm);
+            experience(SpriteName.WarsBuild_PigPen, DssRef.todoLang.ExperienceType_AnimalCare, city.topskill_AnimalCare);
+            experience(SpriteName.WarsHammer, DssRef.todoLang.ExperienceType_HouseBuilding, city.topskill_HouseBuilding);
+            experience(SpriteName.WarsResource_Wood, DssRef.todoLang.ExperienceType_WoodCutter, city.topskill_WoodCutter);
+            experience(SpriteName.WarsResource_Stone, DssRef.todoLang.ExperienceType_StoneCutter, city.topskill_StoneCutter);
+            experience(SpriteName.WarsWorkMine, DssRef.todoLang.ExperienceType_Mining, city.topskill_Mining);
+            experience(SpriteName.WarsWorkMove, DssRef.todoLang.ExperienceType_Transport, city.topskill_Transport);
+            experience(SpriteName.WarsResource_Food, DssRef.todoLang.ExperienceType_Cook, city.topskill_Cook);
+            experience(SpriteName.WarsBuild_Carpenter, DssRef.todoLang.ExperienceType_CraftWood, city.topskill_CraftWood);
+            experience(SpriteName.WarsResource_Iron, DssRef.todoLang.ExperienceType_CraftIron, city.topskill_CraftIron);
+            experience(SpriteName.WarsResource_MediumArmor, DssRef.todoLang.ExperienceType_CraftArmor, city.topskill_CraftArmor);
+            experience(SpriteName.WarsResource_Sword, DssRef.todoLang.ExperienceType_CraftWeapon, city.topskill_CraftWeapon);
+            experience(SpriteName.WarsResource_Fuel, DssRef.todoLang.ExperienceType_CraftFuel, city.topskill_CraftFuel);
+            content.newParagraph();
+            HudLib.Description(content, string.Format(DssRef.todoLang.Experience_TimeReductionDescription, MathExt.PercentageInteger(DssConst.XpLevelWorkTimePercReduction)));
+
+            content.newParagraph();
+            content.Add(new RichBoxBeginTitle());
+            var prioTitle = new RichBoxText( DssRef.todoLang.ExperenceOrDistancePrio_Title);
+            prioTitle.overrideColor = HudLib.TitleColor_Label;
+            content.Add(prioTitle);
+            content.space();
+            HudLib.InfoButton(content, new RbAction(() =>
+            {
+                RichBoxContent content = new RichBoxContent();
+                content.text(DssRef.todoLang.ExperenceOrDistancePrio_Description);
+                player.hud.tooltip.create(player, content, true);
+            }));
+
+            content.newLine();
+            for (ExperenceOrDistancePrio prio = 0; prio < ExperenceOrDistancePrio.NUM; ++prio)
+            {
+                string text = null;
+                switch (prio)
+                {
+                    case ExperenceOrDistancePrio.Distance:
+                        text = DssRef.todoLang.Hud_Distance;
+                        break;
+                    case ExperenceOrDistancePrio.Mix:
+                        text = DssRef.todoLang.Hud_Mixed;
+                        break;
+                    case ExperenceOrDistancePrio.Experience:
+                        text = DssRef.todoLang.Experience_Title;
+                        break;
+
+                }
+                var option = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(text) },
+                    new RbAction1Arg<ExperenceOrDistancePrio>((ExperenceOrDistancePrio val) =>
+                    {
+                        city.experenceOrDistance = val;
+                    }, prio, SoundLib.menu));
+                option.setGroupSelectionColor(HudLib.RbSettings, city.experenceOrDistance == prio);
+                content.Add(option);
+                content.space();
+            }
+            
+        
+
+            void experience(SpriteName typeIcon, string typeName, ExperienceLevel level)
+            {
+                content.newLine();
+                content.Add(new RichBoxImage(typeIcon));
+                var typeNameText = new RichBoxText(typeName + ":");
+                typeNameText.overrideColor = HudLib.TitleColor_TypeName;
+                content.Add(typeNameText);
+                content.Add(new RichBoxImage(LangLib.ExperienceLevelIcon(level)));
+                content.Add(new RichBoxText(LangLib.ExperienceLevel(level)));
             }
         }
 
@@ -263,13 +378,13 @@ namespace VikingEngine.DSSWars.Display
 
                     content.Add(new RichBoxSeperationLine());
                                         
-                    city.res_lightArmor.toMenu(content, ItemResourceType.LightArmor, false, ref reachedBuffer);
+                    city.res_lightArmor.toMenu(content, ItemResourceType.PaddedArmor, false, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftLightArmor);
 
-                    city.res_mediumArmor.toMenu(content, ItemResourceType.MediumArmor, false, ref reachedBuffer);
+                    city.res_mediumArmor.toMenu(content, ItemResourceType.IronArmor, false, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftMediumArmor);
 
-                    city.res_heavyArmor.toMenu(content, ItemResourceType.HeavyArmor, false, ref reachedBuffer);
+                    city.res_heavyArmor.toMenu(content, ItemResourceType.HeavyIronArmor, false, ref reachedBuffer);
                     blueprintButton(player, content, ResourceLib.CraftHeavyArmor);
 
 
@@ -312,9 +427,9 @@ namespace VikingEngine.DSSWars.Display
                     stockpile(ItemResourceType.LongBow);
                     stockpile(ItemResourceType.Ballista);
                     content.Add(new RichBoxSeperationLine());
-                    stockpile(ItemResourceType.LightArmor);
-                    stockpile(ItemResourceType.MediumArmor);
-                    stockpile(ItemResourceType.HeavyArmor);
+                    stockpile(ItemResourceType.PaddedArmor);
+                    stockpile(ItemResourceType.IronArmor);
+                    stockpile(ItemResourceType.HeavyIronArmor);
 
                     HudLib.Description(content, DssRef.lang.Resource_StockPile_Info);
                     GroupedResource.BufferIconInfo(content, false);
@@ -464,50 +579,18 @@ namespace VikingEngine.DSSWars.Display
                 optionalBp.toMenu(content, city);
             }
 
-            if (blueprint.requirement != CraftRequirement.None)
-            {
-                content.newLine();
-                HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
-                content.newLine();
-                HudLib.BulletPoint(content);
-
-                string reqText;
-                bool available;
-                switch (blueprint.requirement)
-                {
-                    case CraftRequirement.Carpenter:
-                        reqText = DssRef.lang.BuildingType_Carpenter;
-                        available = city.hasBuilding_carpenter;
-                        break;
-                    case CraftRequirement.Brewery:
-                        reqText = DssRef.lang.BuildingType_Brewery;
-                        available = city.hasBuilding_brewery;
-                        break;
-                    case CraftRequirement.Smith:
-                        reqText = DssRef.lang.BuildingType_Smith;
-                        available = city.hasBuilding_smith;
-                        break;
-                    case CraftRequirement.CoalPit:
-                        reqText = DssRef.lang.BuildingType_CoalPit;
-                        available = city.coalpit_buildingCount > 0;
-                        break;
-
-                    default:
-                        throw new NotImplementedException();
-                }
-
-                RichBoxText requirement1 = new RichBoxText(reqText);
-                requirement1.overrideColor = available ? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                content.Add(requirement1);
-            }
+            blueprint.requirementToHud(content, city, out _);
 
             content.Add(new RichBoxSeperationLine());
             content.newParagraph();
             content.h2(DssRef.lang.MenuTab_Resources).overrideColor = HudLib.TitleColor_Label;
             blueprint.listResources(content, city, optionalBp);
+            
 
             player.hud.tooltip.create(player, content, true, blueprint.tooltipId);
         }
+
+        
 
         void conscriptTab(RichBoxContent content)
         {
@@ -961,6 +1044,13 @@ namespace VikingEngine.DSSWars.Display
     { 
         Overview,
         Stockpile,
+        NUM
+    }
+
+    enum WorkSubTab
+    { 
+        Priority,
+        Experience,
         NUM
     }
 }

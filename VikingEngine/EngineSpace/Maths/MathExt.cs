@@ -457,5 +457,10 @@ namespace VikingEngine
         {
             return value - Convert.ToInt32(value * sub);
         }
+
+        public static int PercentageInteger(float perc)
+        {
+            return Convert.ToInt32(perc * 100);
+        }
     }
 }

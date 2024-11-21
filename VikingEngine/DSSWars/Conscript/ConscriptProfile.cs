@@ -823,9 +823,9 @@ namespace VikingEngine.DSSWars.Conscript
             switch (armorLevel)
             {
                 case ArmorLevel.None: return Resource.ItemResourceType.NONE;
-                case ArmorLevel.Light: return Resource.ItemResourceType.LightArmor;
-                case ArmorLevel.Medium: return Resource.ItemResourceType.MediumArmor;
-                case ArmorLevel.Heavy: return Resource.ItemResourceType.HeavyArmor;
+                case ArmorLevel.Light: return Resource.ItemResourceType.PaddedArmor;
+                case ArmorLevel.Medium: return Resource.ItemResourceType.IronArmor;
+                case ArmorLevel.Heavy: return Resource.ItemResourceType.HeavyIronArmor;
                 default: throw new NotImplementedException();
             }
         }

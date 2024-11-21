@@ -10,8 +10,8 @@ namespace VikingEngine.DSSWars.Resource
 {
     static class ResourceLib
     {
-        public static readonly ItemResourceType[] SmithCraftTypes = { ItemResourceType.Iron_G, ItemResourceType.MediumArmor, ItemResourceType.HeavyArmor, ItemResourceType.Sword, ItemResourceType.TwoHandSword, ItemResourceType.KnightsLance };
-        public static readonly ItemResourceType[] BenchCraftTypes = { ItemResourceType.Fuel_G, ItemResourceType.LightArmor, ItemResourceType.SharpStick, ItemResourceType.Bow };
+        public static readonly ItemResourceType[] SmithCraftTypes = { ItemResourceType.Iron_G, ItemResourceType.IronArmor, ItemResourceType.HeavyIronArmor, ItemResourceType.Sword, ItemResourceType.TwoHandSword, ItemResourceType.KnightsLance };
+        public static readonly ItemResourceType[] BenchCraftTypes = { ItemResourceType.Fuel_G, ItemResourceType.PaddedArmor, ItemResourceType.SharpStick, ItemResourceType.Bow };
         public static readonly ItemResourceType[] CarpenterCraftTypes = { ItemResourceType.SharpStick, ItemResourceType.Bow, ItemResourceType.LongBow, ItemResourceType.Ballista };
 
         public static readonly CraftBlueprint CraftFuel1 = new CraftBlueprint(
@@ -21,7 +21,8 @@ namespace VikingEngine.DSSWars.Resource
             new UseResource[]
             {
                 new UseResource(ItemResourceType.Wood_Group, 5),
-            }
+            },
+             Work.WorkExperienceType.CraftFuel
         );
 
         public static readonly CraftBlueprint CraftCharcoal = new CraftBlueprint(
@@ -32,7 +33,9 @@ namespace VikingEngine.DSSWars.Resource
             {
                 new UseResource(ItemResourceType.Fuel_G, 10),
                 new UseResource(ItemResourceType.Wood_Group, 10),
-            }, CraftRequirement.CoalPit
+            },
+             Work.WorkExperienceType.CraftFuel,
+             CraftRequirement.CoalPit
         );
 
         const int FoodWaterUsage = 3;
@@ -48,7 +51,8 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Water_G, FoodWaterUsage),
                 new UseResource(ItemResourceType.Fuel_G, FoodWaterUsage),
                 new UseResource(ItemResourceType.RawFood_Group, FoodCraftAmount)
-            }
+            },
+             Work.WorkExperienceType.Cook
         )
         { tooltipId = Tooltip.Food_BlueprintId };
 
@@ -61,7 +65,8 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Beer, FoodWaterUsage),
                 new UseResource(ItemResourceType.Fuel_G, FoodWaterUsage),
                 new UseResource(ItemResourceType.RawFood_Group, FoodCraftAmount)
-            }
+            },
+            Work.WorkExperienceType.Cook
         )
         { tooltipId = Tooltip.Food_BlueprintId };
 
@@ -75,7 +80,9 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Fuel_G, 1),
                 new UseResource(ItemResourceType.RawFood_Group, 1)
                },
+             Work.WorkExperienceType.Cook,
                CraftRequirement.Brewery
+
            );
 
         public static readonly CraftBlueprint CraftIron = new CraftBlueprint(
@@ -88,6 +95,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Fuel_G, 30),
                 new UseResource(ItemResourceType.IronOre_G, 2)
             },
+            Work.WorkExperienceType.CraftIron,
             CraftRequirement.Smith
         );
 
@@ -99,7 +107,8 @@ namespace VikingEngine.DSSWars.Resource
             {
                 new UseResource(ItemResourceType.Wood_Group, 1),
                 new UseResource(ItemResourceType.Stone_G, 1),
-            }
+            },
+             Work.WorkExperienceType.CraftWeapon
         );
 
         public static readonly CraftBlueprint CraftSword = new CraftBlueprint(
@@ -111,6 +120,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.SkinLinen_Group, 1),
                 new UseResource(ItemResourceType.Iron_G, 3),
             },
+             Work.WorkExperienceType.CraftWeapon,
             CraftRequirement.Smith
         );
 
@@ -125,6 +135,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Wood_Group, 5),
                 new UseResource(ItemResourceType.Iron_G, 5),
             },
+            Work.WorkExperienceType.CraftWeapon,
             CraftRequirement.Smith
         );
 
@@ -137,6 +148,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.SkinLinen_Group, 1),
                 new UseResource(ItemResourceType.Iron_G, 6),
             },
+             Work.WorkExperienceType.CraftWeapon,
             CraftRequirement.Smith
         );
 
@@ -148,7 +160,8 @@ namespace VikingEngine.DSSWars.Resource
             {
                 new UseResource(ItemResourceType.Wood_Group, 2),
                 new UseResource(ItemResourceType.SkinLinen_Group, 2),
-            }
+            },
+             Work.WorkExperienceType.CraftWood
         );
         public static readonly CraftBlueprint CraftLongBow = new CraftBlueprint(
             CraftResultType.Resource,
@@ -158,7 +171,9 @@ namespace VikingEngine.DSSWars.Resource
             {
                 new UseResource(ItemResourceType.Wood_Group, 4),
                 new UseResource(ItemResourceType.SkinLinen_Group, 3),
-            }, CraftRequirement.Carpenter
+            },
+            Work.WorkExperienceType.CraftWood,
+            CraftRequirement.Carpenter
         );
 
         public static readonly CraftBlueprint CraftBallista = new CraftBlueprint(
@@ -171,41 +186,68 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.SkinLinen_Group, 4),
                 new UseResource(ItemResourceType.Iron_G, 1),
             },
+            Work.WorkExperienceType.CraftWood,
             CraftRequirement.Carpenter
         );
 
         public static readonly CraftBlueprint CraftLightArmor = new CraftBlueprint(
             CraftResultType.Resource,
-            (int)ItemResourceType.LightArmor,
+            (int)ItemResourceType.PaddedArmor,
             1,
             new UseResource[]
             {
         new UseResource(ItemResourceType.SkinLinen_Group, 4),
-            }
+            },
+            Work.WorkExperienceType.CraftArmor
         );
 
         public static readonly CraftBlueprint CraftMediumArmor = new CraftBlueprint(
             CraftResultType.Resource,
-            (int)ItemResourceType.MediumArmor,
+            (int)ItemResourceType.IronArmor,
             1,
             new UseResource[]
             {
         new UseResource(ItemResourceType.SkinLinen_Group, 4),
         new UseResource(ItemResourceType.Iron_G, 2),
             },
+            Work.WorkExperienceType.CraftArmor,
             CraftRequirement.Smith
         );
 
         public static readonly CraftBlueprint CraftHeavyArmor = new CraftBlueprint(
             CraftResultType.Resource,
-            (int)ItemResourceType.HeavyArmor,
+            (int)ItemResourceType.HeavyIronArmor,
             1,
             new UseResource[]
             {
         new UseResource(ItemResourceType.SkinLinen_Group, 2),
         new UseResource(ItemResourceType.Iron_G, 6),
             },
+            Work.WorkExperienceType.CraftArmor,
             CraftRequirement.Smith
+        );
+        public static readonly CraftBlueprint CraftLogistics = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.Logistics,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Wood_Group, 20),
+                new UseResource(ItemResourceType.Stone_G, 30)
+            },
+            Work.WorkExperienceType.HouseBuilding,
+            CraftRequirement.Logistics1
+        );
+        public static readonly CraftBlueprint CraftLogisticsLevel2 = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.Logistics,
+            2,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Wood_Group, 10),
+                new UseResource(ItemResourceType.Stone_G, 10)
+            }, Work.WorkExperienceType.HouseBuilding, 
+            CraftRequirement.Logistics2
         );
 
         public static readonly CraftBlueprint CraftWorkerHut = new CraftBlueprint(
@@ -216,7 +258,8 @@ namespace VikingEngine.DSSWars.Resource
             {
         new UseResource(ItemResourceType.Wood_Group, 200),
         new UseResource(ItemResourceType.Stone_G, 40)
-            }
+            },
+            Work.WorkExperienceType.HouseBuilding
         );
 
         public static readonly CraftBlueprint CraftTavern = new CraftBlueprint(
@@ -227,7 +270,8 @@ namespace VikingEngine.DSSWars.Resource
             {
                 new UseResource(ItemResourceType.Wood_Group, 100),
                 new UseResource(ItemResourceType.Stone_G, 20)
-            }
+            },
+            Work.WorkExperienceType.HouseBuilding
         );
 
         public static readonly CraftBlueprint CraftStorehouse = new CraftBlueprint(
@@ -238,7 +282,8 @@ namespace VikingEngine.DSSWars.Resource
            {
                 new UseResource(ItemResourceType.Wood_Group, 60),
                 new UseResource(ItemResourceType.Stone_G, 40)
-           }
+           },
+            Work.WorkExperienceType.HouseBuilding
        );
 
         public static readonly CraftBlueprint CraftBrewery = new CraftBlueprint(
@@ -249,7 +294,8 @@ namespace VikingEngine.DSSWars.Resource
            {
                 new UseResource(ItemResourceType.Wood_Group, 60),
                 new UseResource(ItemResourceType.Iron_G, 5)
-           }
+           },
+            Work.WorkExperienceType.Cook
        );
 
         public static readonly CraftBlueprint CraftPostal = new CraftBlueprint(
@@ -259,7 +305,8 @@ namespace VikingEngine.DSSWars.Resource
            new UseResource[]
            {
         new UseResource(ItemResourceType.Wood_Group, 60),
-           }
+           },
+            Work.WorkExperienceType.HouseBuilding
        );
 
         public static readonly CraftBlueprint CraftRecruitment = new CraftBlueprint(
@@ -270,7 +317,8 @@ namespace VikingEngine.DSSWars.Resource
             {
         new UseResource(ItemResourceType.Wood_Group, 50),
         new UseResource(ItemResourceType.SkinLinen_Group, 10)
-            }
+            },
+            Work.WorkExperienceType.HouseBuilding
         );
 
         public static readonly CraftBlueprint CraftBarracks = new CraftBlueprint(
@@ -281,7 +329,8 @@ namespace VikingEngine.DSSWars.Resource
             {
         new UseResource(ItemResourceType.Wood_Group, 100),
         new UseResource(ItemResourceType.Stone_G, 20)
-            }
+            },
+            Work.WorkExperienceType.HouseBuilding
         );
 
         public static readonly CraftBlueprint CraftPigPen = new CraftBlueprint(
@@ -293,7 +342,8 @@ namespace VikingEngine.DSSWars.Resource
         new UseResource(ItemResourceType.Water_G, 4),
         new UseResource(ItemResourceType.Wood_Group, 20),
         new UseResource(ItemResourceType.RawFood_Group, DssConst.PigRawFoodAmout)
-            }
+            },
+            Work.WorkExperienceType.AnimalCare
         );
 
         public static readonly CraftBlueprint CraftHenPen = new CraftBlueprint(
@@ -305,7 +355,8 @@ namespace VikingEngine.DSSWars.Resource
         new UseResource(ItemResourceType.Water_G, 2),
         new UseResource(ItemResourceType.Wood_Group, 20),
         new UseResource(ItemResourceType.RawFood_Group, DssConst.DefaultItemRawFoodAmount)
-            }
+            },
+            Work.WorkExperienceType.AnimalCare
         );
 
         static readonly UseResource[] FarmResources = new UseResource[]
@@ -318,28 +369,32 @@ namespace VikingEngine.DSSWars.Resource
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.WheatFarm,
             1,
-            FarmResources
+            FarmResources,
+            Work.WorkExperienceType.Farm
         );
 
         public static readonly CraftBlueprint CraftLinenFarm = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.LinenFarm,
             1,
-            FarmResources
+            FarmResources,
+            Work.WorkExperienceType.Farm
         );
 
         public static readonly CraftBlueprint CraftHempFarm = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.HempFarm,
             1,
-            FarmResources
+            FarmResources,
+            Work.WorkExperienceType.Farm
         );
 
         public static readonly CraftBlueprint CraftRapeseedFarm = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.RapeSeedFarm,
             1,
-            FarmResources
+            FarmResources,
+            Work.WorkExperienceType.Farm
         );
 
         public const int CraftSmith_IronUse = 10;
@@ -351,7 +406,8 @@ namespace VikingEngine.DSSWars.Resource
            {
                new UseResource(ItemResourceType.Wood_Group, 10),
                new UseResource(ItemResourceType.Iron_G, CraftSmith_IronUse),
-           }
+           },
+            Work.WorkExperienceType.HouseBuilding
        );
 
         public static readonly CraftBlueprint CraftCook = new CraftBlueprint(
@@ -363,7 +419,8 @@ namespace VikingEngine.DSSWars.Resource
                new UseResource(ItemResourceType.Wood_Group, 10),
                new UseResource(ItemResourceType.Stone_G, 10),
                new UseResource(ItemResourceType.Iron_G, 5),
-           }
+           },
+            Work.WorkExperienceType.HouseBuilding
         );
 
         public static readonly CraftBlueprint CraftWorkBench = new CraftBlueprint(
@@ -374,7 +431,8 @@ namespace VikingEngine.DSSWars.Resource
            {
                new UseResource(ItemResourceType.Wood_Group, 10),
                new UseResource(ItemResourceType.Iron_G, 2),
-           }
+           },
+            Work.WorkExperienceType.HouseBuilding
         );
 
         public static readonly CraftBlueprint CraftCoalPit = new CraftBlueprint(
@@ -384,7 +442,8 @@ namespace VikingEngine.DSSWars.Resource
            new UseResource[]
            {
                new UseResource(ItemResourceType.Stone_G, 30),
-           }
+           },
+            Work.WorkExperienceType.CraftFuel
         );
 
         public static readonly CraftBlueprint CraftCarpenter = new CraftBlueprint(
@@ -395,7 +454,8 @@ namespace VikingEngine.DSSWars.Resource
            {
                new UseResource(ItemResourceType.Wood_Group, 20),
                new UseResource(ItemResourceType.Iron_G, 8),
-           }
+           },
+            Work.WorkExperienceType.HouseBuilding
         );
 
         public static readonly CraftBlueprint CraftNobelHouse = new CraftBlueprint(
@@ -407,7 +467,8 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Gold, 5000),
                 new UseResource(ItemResourceType.Wood_Group, 100),
                 new UseResource(ItemResourceType.Stone_G, 200)
-            }
+            },
+            Work.WorkExperienceType.HouseBuilding
         );
 
         public static readonly CraftBlueprint CraftPavement = new CraftBlueprint(
@@ -417,7 +478,8 @@ namespace VikingEngine.DSSWars.Resource
            new UseResource[]
            {
                new UseResource(ItemResourceType.Stone_G, 20),
-           }
+           },
+            Work.WorkExperienceType.StoneCutter
        );
         public static readonly CraftBlueprint CraftPavementFlower = new CraftBlueprint(
             CraftResultType.Building,
@@ -427,7 +489,8 @@ namespace VikingEngine.DSSWars.Resource
            {
                 new UseResource(ItemResourceType.RawFood_Group, 5),
                new UseResource(ItemResourceType.Stone_G, 20),
-           }
+           },
+            Work.WorkExperienceType.StoneCutter
        );
 
         public static readonly CraftBlueprint CraftStatue = new CraftBlueprint(
@@ -438,7 +501,8 @@ namespace VikingEngine.DSSWars.Resource
            {
                new UseResource(ItemResourceType.Stone_G, 500),
                new UseResource(ItemResourceType.Iron_G, 50),
-           }
+           },
+            Work.WorkExperienceType.StoneCutter
        );
 
 
@@ -449,7 +513,8 @@ namespace VikingEngine.DSSWars.Resource
            new UseResource[]
            {
                new UseResource(ItemResourceType.GoldOre, 1),
-           }
+           },
+            Work.WorkExperienceType.NONE
        );
 
         public static string Name(ResourceType resource)
@@ -515,15 +580,15 @@ namespace VikingEngine.DSSWars.Resource
                     return SpriteName.WarsResource_Food;
                 case ItemResourceType.GoldOre:
                     return SpriteName.WarsResource_GoldOre;
-                case ItemResourceType.HeavyArmor:
+                case ItemResourceType.HeavyIronArmor:
                     return SpriteName.WarsResource_HeavyArmor;
                 case ItemResourceType.Iron_G:
                     return SpriteName.WarsResource_Iron;
                 case ItemResourceType.IronOre_G:
                     return SpriteName.WarsResource_IronOre;
-                case ItemResourceType.MediumArmor:
+                case ItemResourceType.IronArmor:
                     return SpriteName.WarsResource_MediumArmor;
-                case ItemResourceType.LightArmor:
+                case ItemResourceType.PaddedArmor:
                     return SpriteName.WarsResource_LightArmor;
                 case ItemResourceType.Linen:
                     return SpriteName.WarsResource_Linen;
@@ -578,9 +643,9 @@ namespace VikingEngine.DSSWars.Resource
                 case ItemResourceType.Beer: bp1 = CraftBeer; bp2 = null; break;
 
                 case ItemResourceType.Iron_G: bp1 = CraftIron; bp2 = null; break;
-                case ItemResourceType.LightArmor: bp1 = CraftLightArmor; bp2 = null; break;
-                case ItemResourceType.MediumArmor: bp1 = CraftMediumArmor; bp2 = null; break;
-                case ItemResourceType.HeavyArmor: bp1 = CraftHeavyArmor; bp2 = null; break;
+                case ItemResourceType.PaddedArmor: bp1 = CraftLightArmor; bp2 = null; break;
+                case ItemResourceType.IronArmor: bp1 = CraftMediumArmor; bp2 = null; break;
+                case ItemResourceType.HeavyIronArmor: bp1 = CraftHeavyArmor; bp2 = null; break;
 
                 case ItemResourceType.SharpStick: bp1 = CraftSharpStick; bp2 = null; break;
                 case ItemResourceType.Sword: bp1 = CraftSword; bp2 = null; break;

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Players
@@ -29,12 +30,14 @@ namespace VikingEngine.DSSWars.Players
         bool autoExpandGuard = false;
         //bool autoNobelhouse = false;
         bool autoRepair = false;
+        bool autoUpgradeLogistics = false;
         //int[] recruitAmount = new int[DssLib.AvailableUnitTypes.Length];
 
         AutomationAction automationAction = AutomationAction.WaitForUpdate;
         City cityAction = null;
         UnitType recruitType = UnitType.NULL;
         int recruitCount = 0;
+        IntVector2 subtilePos;
 
         Build.BuildAndExpandType autoBuildType = Build.BuildAndExpandType.WorkerHuts;
 
@@ -51,7 +54,7 @@ namespace VikingEngine.DSSWars.Players
             w.Write(autoBuild_intelligent);
             w.Write((byte)autoBuildType);
             w.Write(autoExpandGuard);
-            //w.Write(autoNobelhouse);
+            w.Write(autoUpgradeLogistics);
 
             //foreach (var recruit in recruitAmount)
             //{
@@ -67,9 +70,12 @@ namespace VikingEngine.DSSWars.Players
             autoBuild = r.ReadBoolean();
             autoBuild_intelligent = r.ReadBoolean();
             autoBuildType = (Build.BuildAndExpandType)r.ReadByte();
-            autoExpandGuard = r.ReadBoolean();            
-            //autoNobelhouse = r.ReadBoolean();
+            autoExpandGuard = r.ReadBoolean();
 
+            if (subVersion >= 30)
+            {
+                autoUpgradeLogistics = r.ReadBoolean();
+            }
             //for (int i =0; i< recruitAmount.Length;++i)
             //{
             //    recruitAmount[i] = r.ReadByte();
@@ -120,6 +126,16 @@ namespace VikingEngine.DSSWars.Players
                 (value ? SoundLib.click : SoundLib.back).Play();
             }
             return autoRepair;
+        }
+
+        bool AutoUpgradeLogisticsProperty(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                autoUpgradeLogistics = value;
+                (value ? SoundLib.click : SoundLib.back).Play();
+            }
+            return autoUpgradeLogistics;
         }
 
         //bool AutoNobelHouseProperty(int index, bool set, bool value)
@@ -186,13 +202,20 @@ namespace VikingEngine.DSSWars.Players
                 }, AutoRepairCityProperty));
 
             content.newLine();
+
+            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
+                {
+                    new RichBoxText(string.Format(DssRef.todoLang.XP_UpgradeBuildingX, DssRef.todoLang.BuildingType_Logistics)),
+                }, AutoUpgradeLogisticsProperty));
+
+            content.newLine();
             //content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
             //    {
             //        new RichBoxText(string.Format( DssRef.lang.HudAction_BuyItem, DssRef.lang.Building_NobleHouse)),
             //    }, AutoNobelHouseProperty));
 
             //content.newLine();
-            
+
             content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
                 {
                     new RichBoxText( DssRef.lang.CityOption_ExpandGuardSize),
@@ -240,6 +263,15 @@ namespace VikingEngine.DSSWars.Players
                                 {
                                     cityAction = citiesC.sel;
                                     automationAction = AutomationAction.Repair;
+                                    return;
+                                }
+
+                                if (autoUpgradeLogistics && citiesC.sel.autoUpgradeLogistics(IntVector2.Zero, false))
+                                {   
+                                    cityAction = citiesC.sel;
+                                    automationAction = AutomationAction.UpgradeLogistics;
+                                    CityStructure.AutomationInstance.update(citiesC.sel, 0, 4);
+                                    subtilePos = CityStructure.AutomationInstance.EmptyLand.Last();
                                     return;
                                 }
 
@@ -320,6 +352,9 @@ namespace VikingEngine.DSSWars.Players
         {
             switch (automationAction)
             {
+                case AutomationAction.UpgradeLogistics:
+                    cityAction.autoUpgradeLogistics(subtilePos, true);
+                    break;
                 //case AutomationAction.NobelHouse:
                 //    cityAction.buyNobelHouseAction();
                 //    break;
@@ -342,18 +377,18 @@ namespace VikingEngine.DSSWars.Players
 
         }
 
-        public Build.BuildAndExpandType AutoExpandType(out bool intelligent)
-        {
-            intelligent = autoBuild_intelligent;
-            if (autoBuild)
-            {
-                return autoBuildType;
-            }
-            else
-            { 
-                return Build.BuildAndExpandType.NUM_NONE;
-            }
-        }
+        //public Build.BuildAndExpandType AutoExpandType(out bool intelligent)
+        //{
+        //    intelligent = autoBuild_intelligent;
+        //    if (autoBuild)
+        //    {
+        //        return autoBuildType;
+        //    }
+        //    else
+        //    { 
+        //        return Build.BuildAndExpandType.NUM_NONE;
+        //    }
+        //}
     }
 
     enum AutomationAction
@@ -366,5 +401,6 @@ namespace VikingEngine.DSSWars.Players
         ExpandWorkforce,
         /*NobelHouse*/
         GuardSize,
+        UpgradeLogistics,
     }
 }

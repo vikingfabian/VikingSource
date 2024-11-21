@@ -85,22 +85,26 @@ namespace VikingEngine.DSSWars
         public static int CityDeliveryCount = 30;
 
         //WORK
+        public static byte WorkXpToLevel = 50;
+        public static byte DefaultWorkXpGain = 5;
+        public static float XpLevelWorkTimePercReduction = 0.1f;
+
         public static float WorkTime_Eat = 10;
         public static float WorkTime_PickUpResource = 2;
-        public static float WorkTime_PickUpProduce = 3;
+        public static float WorkTime_PickUpProduce = 4;
         public static float WorkTime_TrossCityTrade = 4;
         public static float WorkTime_LocalTrade = WorkTime_TrossCityTrade;
-        public static float WorkTime_GatherFoil_TreeSoft = 10;
-        public static float WorkTime_GatherFoil_TreeHard = 12;
-        public static float WorkTime_GatherFoil_DryWood = 5;
-        public static float WorkTime_GatherFoil_FarmCulture = 20;
-        public static float WorkTime_GatherFoil_Stones = 5;
-        public static float WorkTime_Till = 30;
-        public static float WorkTime_Plant = 20;
-        public static float WorkTime_Mine = 30;
+        public static float WorkTime_GatherFoil_TreeSoft = 12;
+        public static float WorkTime_GatherFoil_TreeHard = 15;
+        public static float WorkTime_GatherFoil_DryWood = 6;
+        public static float WorkTime_GatherFoil_FarmCulture = 22;
+        public static float WorkTime_GatherFoil_Stones = 7;
+        public static float WorkTime_Till = 34;
+        public static float WorkTime_Plant = 25;
+        public static float WorkTime_Mine = 35;
         public static float WorkTime_BogIron = WorkTime_Mine * 2;
-        public static float WorkTime_Craft = 2;
-        public static float WorkTime_Building = 40;
+        public static float WorkTime_Craft = 10;
+        public static float WorkTime_Building = 50;
 
         public static int Worker_TrossWorkerCarryWeight = 4;
         public static int Worker_MaxEnergy = 500;
@@ -121,5 +125,10 @@ namespace VikingEngine.DSSWars
         public static int PlantWaterCost = 1;
 
         public static int WorkSafeGuardAmount = 10;
+
+        //XP
+        public static int WorkQueue_Start = 2;
+        public static int WorkQueue_LogisticsLevel1 = 4;
+        public static int Logistics2_PopulationRequirement = 1200;
     }
 }

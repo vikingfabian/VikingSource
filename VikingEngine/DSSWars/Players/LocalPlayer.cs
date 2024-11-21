@@ -23,11 +23,13 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.ToGG.Commander.LevelSetup;
+using VikingEngine.ToGG.HeroQuest.Net;
 
 namespace VikingEngine.DSSWars.Players
 {
     partial class LocalPlayer : AbsPlayer
-    {   
+    {
+        public const int MaxSpeedOption = 5;
         public Engine.PlayerData playerData;
 
         public GameHud hud;
@@ -72,6 +74,7 @@ namespace VikingEngine.DSSWars.Players
         public MenuTab cityTab = CityMenu.Tabs[0];
         public MenuTab armyTab = ArmyMenu.Tabs[0];
         public ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview;
+        public WorkSubTab workSubTab = WorkSubTab.Priority;
 
         public DeliveryStatus menDeliveryCopy, itemDeliveryCopy;
         public ConscriptProfile soldierConscriptCopy, knightConscriptCopy;
@@ -80,6 +83,7 @@ namespace VikingEngine.DSSWars.Players
         CityBorders cityBorders = new CityBorders();
         public bool viewCityTagsOnMap = true;
         public bool viewArmyTagsOnMap = true;
+        public int[] GameSpeedOptions;
 
         public LocalPlayer(Faction faction)
            : base(faction)
@@ -90,6 +94,14 @@ namespace VikingEngine.DSSWars.Players
             faction.availableForPlayer = false;
 
             automation = new Automation(this);
+            if (DssRef.storage.speed5x)
+            {
+                GameSpeedOptions = new int[] { 1, 2, MaxSpeedOption };
+            }
+            else
+            {
+                GameSpeedOptions = new int[] { 1, 2 };
+            }
         }
 
         public void assignPlayer(int playerindex, int numPlayers, bool newGame)
@@ -1122,12 +1134,12 @@ namespace VikingEngine.DSSWars.Players
                 }
                 else
                 {
-                    for (int i = 0; i < DssLib.GameSpeedOptions.Length; i++)
+                    for (int i = 0; i < GameSpeedOptions.Length; i++)
                     {
-                        if (DssLib.GameSpeedOptions[i] == Ref.GameTimeSpeed)
+                        if (GameSpeedOptions[i] == Ref.GameTimeSpeed)
                         {
-                            int next = Bound.SetRollover(i + 1, 0, DssLib.GameSpeedOptions.Length - 1);
-                            Ref.SetGameSpeed( DssLib.GameSpeedOptions[next]);
+                            int next = Bound.SetRollover(i + 1, 0, GameSpeedOptions.Length - 1);
+                            Ref.SetGameSpeed( GameSpeedOptions[next]);
                             hud.needRefresh = true;
                             break;
                         }
@@ -1180,10 +1192,10 @@ namespace VikingEngine.DSSWars.Players
                 //{
                 //    new SoldierGroup(army, UnitType.Viking, false).completeTransform(SoldierTransformType.ToShip);
                 //}
-                //for (int i = 0; i < 10; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Soldier, false).completeTransform(SoldierTransformType.ToShip);
-                //}
+                for (int i = 0; i < 10; ++i)
+                {
+                    new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard);
+                }
                 //for (int i = 0; i < 30; ++i)
                 //{
                 //    new SoldierGroup(army, UnitType.Knight, false).completeTransform(SoldierTransformType.ToShip);

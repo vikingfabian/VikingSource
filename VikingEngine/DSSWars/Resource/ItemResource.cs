@@ -99,7 +99,7 @@ namespace VikingEngine.DSSWars.Resource
         CupperOre,
         SilverOre,
         GoldOre,
-        MithrilOre,
+        RawMithril,
 
         Iron_G,
         Steel,
@@ -117,9 +117,9 @@ namespace VikingEngine.DSSWars.Resource
         Sword,
         Shield,
 
-        LightArmor,
-        MediumArmor,
-        HeavyArmor,
+        PaddedArmor,
+        IronArmor,
+        HeavyIronArmor,
 
         StoneBlock,
         Stone_G,
@@ -148,6 +148,43 @@ namespace VikingEngine.DSSWars.Resource
         Men,
         Rapeseed,
         Hemp,
+
+
+        BronzeSword,
+        ShortSword,
+        LongSword,
+        MithrilSword,
+        SlingShot,
+        ThrowingSpear,
+        Crossbow,
+        MithrilBow,
+
+        Wagon2Wheel,
+        Wagon4Wheel,
+        Toolshed,
+
+        Sulfur,
+        LeadOre,
+        Lead,
+        Bloomery,
+
+        Gunpowder,
+        HandCulverin,
+        HandCannon,
+        Rifle,
+        Blunderbus,
+
+        Maniballista,
+        SiegeCannonBronze,
+        ManCannonBronze,
+        SiegeCannonIron,
+        ManCannonIron,
+
+        BronzeArmor,
+        HeavyPaddedArmor,
+        LightPlateArmor,
+        FullPlateArmor,
+        MithrilArmor,
 
         NUM,
     }

@@ -1,16 +1,47 @@
 ﻿-Change Log-
-* Fixed craigs crashes
-* Delivery: auto city take other deliveries into account
-* save of food safeguard setting
 
 
 !Alla objekt med Tile referens måste ändras (livestock)
 
 #Todo (xmas patch)#
 
+#Todo (XP)#
+* wood cutter/stone cutter shed, improved working radius
+* water expansion
+* axe/short sword, (sword needs good weapon smith)
+* steel, long sword > rapier, steel armor
+
+* annoyed by the deliveries being inefficient
+-wagon, transport span amount, 2/4 wheel
+-tool shed, faster farming upgrade
+-Embassy expansion för att unlocka diplomacy
+-Mines
+* worker level
+* soldier level
+* Guest housing (sten hus i stan) for guards, barracks, post office, (city hall min size, öka vid antal byggnader?) 
+
+* manuballista (hand ballista), wall crusher
+* diplomat, med politic / spy upgrade
+
+* crossbow, hand cannon (cupper), blunder buss, rifle (mechanic shop)
+* gun powder, chemist (fuel, sulfur)
+* cupper cannon, icon cannon, haubitz
+* smelter for metals
+* horse farm
+* ox farm, also incread farming area
+
+* go legendary, bonus building
+ farm - apple tree
 
 
 
+* masters guild, låt hög level arbetare vänta
+* refugee tent, samlar på invandrare (60) half food cost, auto build homes?
+* coin maker - brons till pengar
+
+* bloomery furnace > järn till bloomery > måste smidas till stål
+
+#Todo (xmas patch)#
 krig varning på ally
 new maps
 dölj carry amount
@@ -27,7 +58,7 @@ city economy
 visa antal byggnader i bygg meny
 menu scroll
 
-manuballista (hand ballista)
+
 
 Error
 -back button in menues 
@@ -55,20 +86,43 @@ Polish
 -dölj move path OnHud 
 -attack ally yes/no warning
 
-Art
+#Art
+placement bonus icon
+work skill icons (carpenting)
 
 
+#Voxel
+/logistic overseer, +lvl 2
+/farm plus tool shed
+/smelter
+/manuballista, /cannons, /hand cannon, /slinger, /long sword, /mithril user, /warhammer
+/stone cutter, wood cutter
+/water resovoir
+/Embassy
+/delivery lvl2/3
+/knight barrack
+/barrack in use, melee/range/siege
+/mines
+/chemestry
+/Foundry (gjuteri)
+/cast iron
+/-lvl2 gun powder (beer chemist) Black powder/ gunpowder
 #current
 English, Simplified Chinese, Japanese, Russian, Spanish
 
 
 #Todo (DSS 2)#
+1. better presentation
+2. 100 hour playtime
+3. maybe multiplayer
+
 -Free build of city walls, towers
 -Better looking start cities
 -Nicer menu
 -Dynamic shadows shader
 -New end boss
 -Lots of named factions
+-Are you strongly opposed to showing building counts per town or production outputs
 
 
 

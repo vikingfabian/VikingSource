@@ -30,9 +30,9 @@ namespace VikingEngine.DSSWars.Resource
             items[(int)ItemResourceType.Linen] = new ItemProperties(1f / 10);
             items[(int)ItemResourceType.Food_G] = new ItemProperties(1f / CarryFood);
 
-            items[(int)ItemResourceType.LightArmor] = new ItemProperties(1f / 10);
-            items[(int)ItemResourceType.MediumArmor] = new ItemProperties(1f / 5);
-            items[(int)ItemResourceType.HeavyArmor] = new ItemProperties(1f / 3);
+            items[(int)ItemResourceType.PaddedArmor] = new ItemProperties(1f / 10);
+            items[(int)ItemResourceType.IronArmor] = new ItemProperties(1f / 5);
+            items[(int)ItemResourceType.HeavyIronArmor] = new ItemProperties(1f / 3);
 
             items[(int)ItemResourceType.SharpStick] = new ItemProperties(1f / 10);
             items[(int)ItemResourceType.Sword] = new ItemProperties(1f / 5);

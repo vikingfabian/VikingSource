@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
@@ -140,7 +141,8 @@ namespace VikingEngine.DSSWars.Display
                 switch (subTile.selectTileResult)
                 {
                     case Players.SelectTileResult.Build:
-                        title = new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Build_PlaceBuilding, BuildLib.BuildOptions[(int)player.buildControls.placeBuildingType].Label()));
+                        var buildOpt = BuildLib.BuildOptions[(int)player.buildControls.placeBuildingType];
+                        title = new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Build_PlaceBuilding, buildOpt.Label()));
                         content.Add(title);
                         content.newLine();
                         //CraftBlueprint blueprint = ResourceLib.Blueprint(player.BuildControls.placeBuildingType);
@@ -165,6 +167,12 @@ namespace VikingEngine.DSSWars.Display
                                 content.text(DssRef.lang.BuildHud_OccupiedTile).overrideColor = HudLib.NotAvailableColor;
                                 break;
                         }
+
+                        if (subTile.city.buildingLevel_logistics < 2)
+                        {
+                            content.text(string.Format(DssRef.todoLang.BuildHud_Queue, player.orders.buildQueue(subTile.city), subTile.city.MaxBuildQueue())).overrideColor = subTile.city.availableBuildQueue(player) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                        }
+                        buildOpt.blueprint.requirementToHud(content, subTile.city, out _);
 
                         content.Add(new RichBoxSeperationLine());
                         content.newParagraph();

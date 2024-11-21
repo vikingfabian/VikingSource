@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars.Work
             this.status = status;
             parentArrayIndex = statusIndex;
             model = mapObject.GetFaction().AutoLoadModelInstance(
-                 LootFest.VoxelModelName.war_worker, DssConst.Men_StandardModelScale * 0.9f, true);
+                 DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f, true);
 
             model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
 
@@ -441,6 +441,11 @@ namespace VikingEngine.DSSWars.Work
             }
 
             args.content.text(string.Format(DssRef.lang.WorkerHud_Energy, TextLib.OneDecimal(status.energy)));
+
+            args.content.text(string.Format("XP1: {0} {1}", status.xpType1, status.xp1));
+            args.content.text(string.Format("XP2: {0} {1}", status.xpType2, status.xp2));
+            args.content.text(string.Format("XP3: {0} {1}", status.xpType3, status.xp3));
+
         }
 
         public override void selectionFrame(bool hover, Selection selection)

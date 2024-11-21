@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 cityCounter.sel.res_sharpstick.amount = DssConst.SoldierGroup_DefaultCount;//30;
                 cityCounter.sel.res_lightArmor.amount = DssConst.SoldierGroup_DefaultCount;
 
-                CityStructure.Singleton.setupTutorialMap(cityCounter.sel);
+                CityStructure.WorkInstance.setupTutorialMap(cityCounter.sel);
             }
 
             player.faction.workTemplate.craft_sharpstick.value = 0;

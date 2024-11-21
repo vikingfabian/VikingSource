@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.Graphics;
+using VikingEngine.LootFest;
 
 
 namespace VikingEngine.DSSWars
@@ -15,6 +16,8 @@ namespace VikingEngine.DSSWars
     static class DssLib
     {
         public const bool UseLocalTrading = false;
+
+        public const VoxelModelName WorkerModel = VoxelModelName.war_gnome;
 
         public static readonly string ContentDir = "DSS" + DataStream.FilePath.Dir;
         public static readonly string StoryContentDir = ContentDir + "Story" + DataStream.FilePath.Dir;
@@ -30,7 +33,7 @@ namespace VikingEngine.DSSWars
 
         public const bool AllowDoubleTime = false;
         #endregion
-        public static readonly int[] GameSpeedOptions = { 1, 2, 5 };
+        
         public const int UserHeraldicWidth = 16;
         public const int MaxLocalPlayers = 4;
         public const int RtsMaxFactions = 2000;
