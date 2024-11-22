@@ -39,7 +39,8 @@ namespace VikingEngine.DSSWars
 
         public void workTab(RichBoxContent content)
         {
-            workTemplate.toHud(player.GetLocalPlayer(), content, this, null);
+            var p = player.GetLocalPlayer();
+            workTemplate.toHud(p, content, p.workSubTab, this, null);
         }
 
         public void tradeTab(RichBoxContent content)

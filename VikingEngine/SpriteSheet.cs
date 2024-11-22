@@ -2483,7 +2483,7 @@ namespace VikingEngine
                     add(SpriteName.WarsResource_Tin);
                     add(SpriteName.WarsWoodCraftIcon);
                     add(SpriteName.WarsResource_Wagon2Wheel);
-                    add(SpriteName.WarsResource_Whagon4Wheel);
+                    add(SpriteName.WarsResource_Wagon4Wheel);
                     add(SpriteName.WarsResource_ShortSword);
                     add(SpriteName.WarsResource_Longsword);
                     add(SpriteName.WarsResource_Steel);

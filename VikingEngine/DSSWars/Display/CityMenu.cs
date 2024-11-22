@@ -124,32 +124,45 @@ namespace VikingEngine.DSSWars.Display
             {
                 for (WorkSubTab workSubTab = 0; workSubTab < WorkSubTab.NUM; ++workSubTab)
                 {
-                    string text = null;
+                    var tabContent = new RichBoxContent();
+                    //string text = null;
                     switch (workSubTab)
                     {
-                        case WorkSubTab.Priority:
-                            text = DssRef.lang.Work_OrderPrioTitle;
+                        case WorkSubTab.Priority_Resources:
+                            tabContent.Add(new RichBoxText(DssRef.lang.Work_OrderPrioTitle));
+                            tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Wood));
                             break;
+
+                        case WorkSubTab.Priority_Metals:
+                            tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Iron));
+                            break;
+                        case WorkSubTab.Priority_Weapons:
+                            tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Sword));
+                            break;
+                        case WorkSubTab.Priority_Armor:
+                            tabContent.Add(new RichBoxImage(SpriteName.WarsResource_IronArmor));
+                            break;
+
                         case WorkSubTab.Experience:
-                            text = DssRef.todoLang.Experience_Title;
+                            tabContent.Add(new RichBoxText(DssRef.todoLang.Experience_Title));
                             break;
                     }
-                    var subTab = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(text) },
+                    var subTab = new RichboxButton(tabContent,
                         new RbAction1Arg<WorkSubTab>((WorkSubTab resourcesSubTab) =>
                         {
                             player.workSubTab = resourcesSubTab;
                         }, workSubTab, SoundLib.menutab));
                     subTab.setGroupSelectionColor(HudLib.RbSettings, player.workSubTab == workSubTab);
                     content.Add(subTab);
-                    content.space();
+                    content.space(workSubTab== WorkSubTab.Priority_Armor ? 2 : 1);
                 }
                 content.newParagraph();
             }
 
             switch (player.workSubTab)
             {
-                case WorkSubTab.Priority:
-                    city.workTemplate.toHud(player, content, city.faction, city);
+                default:
+                    city.workTemplate.toHud(player, content, player.workSubTab, city.faction, city);
                     break;
                 case WorkSubTab.Experience:
                     experienceTab(content);
@@ -1294,8 +1307,11 @@ namespace VikingEngine.DSSWars.Display
     
 
     enum WorkSubTab
-    { 
-        Priority,
+    {
+        Priority_Resources,
+        Priority_Metals,
+        Priority_Weapons,
+        Priority_Armor,
         Experience,
         NUM
     }

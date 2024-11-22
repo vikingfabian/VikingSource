@@ -182,7 +182,7 @@ namespace VikingEngine.DSSWars.Resource
                 case ItemResourceType.Wagon2Wheel:
                     return SpriteName.WarsResource_Wagon2Wheel;
                 case ItemResourceType.Wagon4Wheel:
-                    return SpriteName.WarsResource_Whagon4Wheel;
+                    return SpriteName.WarsResource_Wagon4Wheel;
                 case ItemResourceType.Tin:
                     return SpriteName.WarsResource_Tin;
                 case ItemResourceType.TinOre:

@@ -2629,7 +2629,7 @@ namespace VikingEngine
         WarsResource_Tin,
         WarsWoodCraftIcon,
         WarsResource_Wagon2Wheel,
-        WarsResource_Whagon4Wheel,
+        WarsResource_Wagon4Wheel,
         WarsResource_ShortSword,
         WarsResource_Longsword,
         WarsResource_Steel,
