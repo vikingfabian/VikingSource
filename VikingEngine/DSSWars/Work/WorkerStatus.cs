@@ -387,7 +387,7 @@ namespace VikingEngine.DSSWars.Work
                     {
 
                         ItemResourceType item = (ItemResourceType)workSubType;
-                        ResourceLib.Blueprint(item, out var bp1, out var bp2);
+                        CraftResourceLib.Blueprint(item, out var bp1, out var bp2);
 
                         int add = bp1.tryPayResources(city);
                         if (add == 0 && bp2 != null)

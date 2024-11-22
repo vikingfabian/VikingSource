@@ -30,20 +30,63 @@ namespace VikingEngine.DSSWars.GameObject
              ItemResourceType.Food_G,
              ItemResourceType.Beer,
              ItemResourceType.SkinLinen_Group,
-             ItemResourceType.IronOre_G,
-             ItemResourceType.Iron_G,
 
-             ItemResourceType.Sword,
-             ItemResourceType.SharpStick,
+             ItemResourceType.IronOre_G,
+             ItemResourceType.TinOre,
+             ItemResourceType.CupperOre,
+             ItemResourceType.LeadOre,
+             ItemResourceType.SilverOre,
+
+             ItemResourceType.Iron_G,
+             ItemResourceType.Tin,
+            ItemResourceType.Cupper,
+            ItemResourceType.Lead,
+            ItemResourceType.Silver,
+            ItemResourceType.RawMithril,
+            ItemResourceType.Sulfur,
+
+            ItemResourceType.Bronze,
+            ItemResourceType.CastIron,
+            ItemResourceType.BloomeryIron,
+            ItemResourceType.Mithril,
+
+            ItemResourceType.Toolkit,
+            ItemResourceType.Wagon2Wheel,
+            ItemResourceType.Wagon4Wheel,
+            ItemResourceType.BlackPowder,
+            ItemResourceType.GunPowder,
+            ItemResourceType.LedBullet,
+
+            ItemResourceType.SharpStick,
+            ItemResourceType.BronzeSword,
+            ItemResourceType.ShortSword,
+            ItemResourceType.Sword,
+            ItemResourceType.LongSword,
+            ItemResourceType.MithrilSword,
+
+            ItemResourceType.Warhammer,
              ItemResourceType.TwoHandSword,
              ItemResourceType.KnightsLance,
+
+             ItemResourceType.SlingShot,
+             ItemResourceType.ThrowingSpear,
              ItemResourceType.Bow,
              ItemResourceType.LongBow,
-             ItemResourceType.Ballista,            
+            ItemResourceType.MithrilBow,
+
+            ItemResourceType.Ballista,
+            ItemResourceType.Manuballista,
+            ItemResourceType.SiegeCannonBronze,
+            ItemResourceType.ManCannonBronze,
+            ItemResourceType.SiegeCannonIron,
+            ItemResourceType.ManCannonIron,
 
              ItemResourceType.PaddedArmor,
+             ItemResourceType.HeavyPaddedArmor,
              ItemResourceType.IronArmor,
              ItemResourceType.HeavyIronArmor,
+             ItemResourceType.LightPlateArmor,
+             ItemResourceType.FullPlateArmor,
         };
 
         MinuteStats blackMarketCosts_food = new MinuteStats();
@@ -68,20 +111,70 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource res_food = new GroupedResource() { amount = 200, goalBuffer = 500 };
         public GroupedResource res_beer = new GroupedResource() { amount = 0, goalBuffer = 200 };
         public GroupedResource res_skinLinnen = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_ironore = new GroupedResource() { goalBuffer = 100 };
-        public GroupedResource res_iron = new GroupedResource() { amount = 10, goalBuffer = 100 };
 
+        public GroupedResource res_ironore = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_TinOre = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_CupperOre = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_LeadOre = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_SilverOre = new GroupedResource() { goalBuffer = 100 };
+
+        public GroupedResource res_iron = new GroupedResource() { amount = 10, goalBuffer = 100 };
+        public GroupedResource res_Tin = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Cupper = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Lead = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Silver = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_RawMithril = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Sulfur = new GroupedResource() { goalBuffer = 100 };
+
+        public GroupedResource res_Bronze = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Steel = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_CastIron = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_BloomeryIron = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Mithril = new GroupedResource() { goalBuffer = 100 };
+
+        public GroupedResource res_Toolkit = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Wagon2Wheel = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Wagon4Wheel = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_BlackPowder = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_GunPowder = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_LedBullet = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_sharpstick = new GroupedResource() { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
-        public GroupedResource res_sword = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource res_BronzeSword = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_shortsword = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource res_Sword = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_LongSword = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_MithrilSword = new GroupedResource() { goalBuffer = 100 };
+
+        public GroupedResource res_Warhammer = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_twohandsword = new GroupedResource() { amount = 0, goalBuffer = 100 };
         public GroupedResource res_knightslance = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource res_SlingShot = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_ThrowingSpear = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_bow = new GroupedResource() { amount = 0, goalBuffer = 100 };
         public GroupedResource res_longbow = new GroupedResource() { amount = 0, goalBuffer = 100 };
-        public GroupedResource res_ballista = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource res_crossbow = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource res_MithrilBow = new GroupedResource() { goalBuffer = 100 };
 
-        public GroupedResource res_lightArmor = new GroupedResource() { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
-        public GroupedResource res_mediumArmor = new GroupedResource() { amount = 2, goalBuffer = 100 };
-        public GroupedResource res_heavyArmor = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource res_HandCannon = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_HandCulvertin = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Rifle = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Blunderbus = new GroupedResource() { goalBuffer = 100 };
+
+        public GroupedResource res_BatteringRam = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_ballista = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource res_Manuballista = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Catapult = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_SiegeCannonBronze = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_ManCannonBronze = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_SiegeCannonIron = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_ManCannonIron = new GroupedResource() { goalBuffer = 100 };
+
+        public GroupedResource res_paddedArmor = new GroupedResource() { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
+        public GroupedResource res_HeavyPaddedArmor = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_mailArmor = new GroupedResource() { amount = 2, goalBuffer = 100 };
+        public GroupedResource res_heavyMailArmor = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource res_LightPlateArmor = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_FullPlateArmor = new GroupedResource() { goalBuffer = 100 };
 
         public bool res_food_safeguard = true;
 
@@ -134,18 +227,64 @@ namespace VikingEngine.DSSWars.GameObject
             res_food.goalBuffer = DefaultFoodBuffer;
             res_beer.goalBuffer = 200;
             res_skinLinnen.goalBuffer = 100;
+
             res_ironore.goalBuffer = 100;
+            res_TinOre.goalBuffer = 100;
+            res_CupperOre.goalBuffer = 100;
+            res_LeadOre.goalBuffer = 100;
+            res_SilverOre.goalBuffer = 100;
+
             res_iron.goalBuffer = 100;
+            res_Tin.goalBuffer = 100;
+            res_Cupper.goalBuffer = 100;
+            res_Lead.goalBuffer = 100;
+            res_Silver.goalBuffer = 100;
+            res_RawMithril.goalBuffer = 100;
+            res_Sulfur.goalBuffer = 100;
+
+            res_Steel.goalBuffer = 100;
+            res_Bronze.goalBuffer = 100;
+            res_CastIron.goalBuffer = 100; 
+            res_BloomeryIron.goalBuffer = 100; 
+            res_Mithril.goalBuffer = 100;
+
             res_sharpstick.goalBuffer = 100;
-            res_sword.goalBuffer = 100;
+            res_shortsword.goalBuffer = 100;
+            res_Sword.goalBuffer = 100;
+            res_LongSword.goalBuffer = 100;
+
+            res_Warhammer.goalBuffer = 100;
             res_twohandsword.goalBuffer = 100;
             res_knightslance.goalBuffer = 100;
+
+            res_SlingShot.goalBuffer = 100;
+            res_ThrowingSpear.goalBuffer = 100;
             res_bow.goalBuffer = 100;
             res_longbow.goalBuffer = 100;
+            res_crossbow.goalBuffer = 100;
+            res_MithrilBow.goalBuffer = 100;
+            
+            res_HandCannon.goalBuffer = 100;
+            res_HandCulvertin.goalBuffer = 100;
+            res_Rifle.goalBuffer = 100;
+            res_Blunderbus.goalBuffer = 100;
+
             res_ballista.goalBuffer = 100;
-            res_lightArmor.goalBuffer = 100;
-            res_mediumArmor.goalBuffer = 100;
-            res_heavyArmor.goalBuffer = 100;
+            res_Manuballista.goalBuffer = 100;
+            res_Catapult.goalBuffer = 100;
+            res_BatteringRam.goalBuffer = 100;
+
+            res_SiegeCannonBronze.goalBuffer = 100;
+            res_ManCannonBronze.goalBuffer = 100;
+            res_SiegeCannonIron.goalBuffer = 100;
+            res_ManCannonIron.goalBuffer = 100;
+
+            res_paddedArmor.goalBuffer = 100;
+            res_HeavyPaddedArmor.goalBuffer = 100;
+            res_mailArmor.goalBuffer = 100;
+            res_heavyMailArmor.goalBuffer = 100;
+            res_LightPlateArmor.goalBuffer = 100;
+            res_FullPlateArmor.goalBuffer = 100;
 
         }
 
@@ -163,12 +302,6 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case ItemResourceType.Water_G:
                     res_water.amount += add;
-                    break;
-                case ItemResourceType.IronOre_G:
-                    res_ironore.amount += add;
-                    break;
-                case ItemResourceType.Iron_G:
-                    res_iron.amount += add;
                     break;
                 case ItemResourceType.Food_G:
                     res_food.amount += add;
@@ -191,11 +324,98 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.SkinLinen_Group:
                     res_skinLinnen.amount += add;
                     break;
+                case ItemResourceType.Toolkit:
+                    res_Toolkit.amount += add;
+                    break;
+                case ItemResourceType.Wagon2Wheel:
+                    res_Wagon2Wheel.amount += add;
+                    break;
+                case ItemResourceType.Wagon4Wheel:
+                    res_Wagon4Wheel.amount += add;
+                    break;
+                case ItemResourceType.BlackPowder:
+                    res_BlackPowder.amount += add;
+                    break;
+                case ItemResourceType.GunPowder:
+                    res_GunPowder.amount += add;
+                    break;
+                case ItemResourceType.LedBullet:
+                    res_LedBullet.amount += add;
+                    break;
+
+                case ItemResourceType.IronOre_G:
+                    res_ironore.amount += add;
+                    break;
+                case ItemResourceType.TinOre:
+                    res_TinOre.amount += add;
+                    break;
+                case ItemResourceType.CupperOre:
+                    res_CupperOre.amount += add;
+                    break;
+                case ItemResourceType.LeadOre:
+                    res_LeadOre.amount += add;
+                    break;
+                case ItemResourceType.SilverOre:
+                    res_SilverOre.amount += add;
+                    break;
+
+                case ItemResourceType.Iron_G:
+                    res_iron.amount += add;
+                    break;
+                case ItemResourceType.Tin:
+                    res_Tin.amount += add;
+                    break;
+                case ItemResourceType.Cupper:
+                    res_Cupper.amount += add;
+                    break;
+                case ItemResourceType.Lead:
+                    res_Lead.amount += add;
+                    break;
+                case ItemResourceType.Silver:
+                    res_Silver.amount += add;
+                    break;
+                case ItemResourceType.RawMithril:
+                    res_RawMithril.amount += add;
+                    break;
+                case ItemResourceType.Sulfur:
+                    res_Sulfur.amount += add;
+                    break;
+
+                case ItemResourceType.Steel:
+                    res_Steel.amount += add;
+                    break;
+                case ItemResourceType.Bronze:
+                    res_Bronze.amount += add;
+                    break;
+                case ItemResourceType.CastIron:
+                    res_CastIron.amount += add;
+                    break;
+                case ItemResourceType.BloomeryIron:
+                    res_BloomeryIron.amount += add;
+                    break;
+                case ItemResourceType.Mithril:
+                    res_Mithril.amount += add;
+                    break;
+                                 
+
                 case ItemResourceType.SharpStick:
                     res_sharpstick.amount += add;
                     break;
+                case ItemResourceType.BronzeSword:
+                    res_BronzeSword.amount += add;
+                    break;
+                case ItemResourceType.ShortSword:
+                    res_shortsword.amount += add;
+                    break;
                 case ItemResourceType.Sword:
-                    res_sword.amount += add;
+                    res_Sword.amount += add;
+                    break;
+                case ItemResourceType.LongSword:
+                    res_LongSword.amount += add;
+                    break;
+
+                case ItemResourceType.Warhammer:
+                    res_Warhammer.amount += add;
                     break;
                 case ItemResourceType.TwoHandSword:
                     res_twohandsword.amount += add;
@@ -203,24 +423,70 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.KnightsLance:
                     res_knightslance.amount += add;
                     break;
+
+                case ItemResourceType.SlingShot:
+                    res_SlingShot.amount += add;
+                    break;
+                case ItemResourceType.ThrowingSpear:
+                    res_ThrowingSpear.amount += add;
+                    break;
                 case ItemResourceType.Bow:
                     res_bow.amount += add;
                     break;
                 case ItemResourceType.LongBow:
                     res_longbow.amount += add;
                     break;
+                case ItemResourceType.Crossbow:
+                    res_crossbow.amount += add;
+                    break;
+                case ItemResourceType.MithrilBow:
+                    res_MithrilBow.amount += add;
+                    break;
+
                 case ItemResourceType.Ballista:
                     res_ballista.amount += add;
                     break;
+                case ItemResourceType.Manuballista:
+                    res_Manuballista.amount += add;
+                    break;
+                case ItemResourceType.Catapult:
+                    res_Catapult.amount += add;
+                    break;
+                case ItemResourceType.UN_BatteringRam:
+                    res_BatteringRam.amount += add;
+                    break;
+                case ItemResourceType.SiegeCannonBronze:
+                    res_SiegeCannonBronze.amount += add;
+                    break;
+                case ItemResourceType.ManCannonBronze:
+                    res_ManCannonBronze.amount += add;
+                    break;
+                case ItemResourceType.SiegeCannonIron:
+                    res_SiegeCannonIron.amount += add;
+                    break;
+                case ItemResourceType.ManCannonIron:
+                    res_ManCannonIron.amount += add;
+                    break;
+
                 case ItemResourceType.PaddedArmor:
-                    res_lightArmor.amount += add;
+                    res_paddedArmor.amount += add;
+                    break;
+                case ItemResourceType.HeavyPaddedArmor:
+                    res_HeavyPaddedArmor.amount += add;
                     break;
                 case ItemResourceType.IronArmor:
-                    res_mediumArmor.amount += add;
+                    res_mailArmor.amount += add;
                     break;
                 case ItemResourceType.HeavyIronArmor:
-                    res_heavyArmor.amount += add;
+                    res_heavyMailArmor.amount += add;
                     break;
+                case ItemResourceType.LightPlateArmor:
+                    res_LightPlateArmor.amount += add;
+                    break;
+                case ItemResourceType.FullPlateArmor:
+                    res_FullPlateArmor.amount += add;
+                    break;
+
                 case ItemResourceType.NONE:
                     return;
 
@@ -229,44 +495,6 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public GroupedResource GetGroupedResource(ItemResourceType type)
-        {
-            switch (type)
-            {
-                case ItemResourceType.Gold:
-                    return new GroupedResource() { amount = faction.gold };
-                case ItemResourceType.GoldOre:
-                    return new GroupedResource() { amount = 1 };
-
-                case ItemResourceType.Water_G: return res_water;
-                case ItemResourceType.IronOre_G: return res_ironore;
-                case ItemResourceType.Iron_G: return res_iron;
-                case ItemResourceType.Beer: return res_beer;
-                case ItemResourceType.Food_G: return res_food;
-                case ItemResourceType.Stone_G: return res_stone;
-                case ItemResourceType.Wood_Group: return res_wood;
-                case ItemResourceType.Fuel_G: return res_fuel;
-                case ItemResourceType.RawFood_Group: return res_rawFood;
-                case ItemResourceType.SkinLinen_Group: return res_skinLinnen;
-
-                case ItemResourceType.SharpStick: return res_sharpstick;
-                case ItemResourceType.Sword: return res_sword;
-                case ItemResourceType.TwoHandSword: return res_twohandsword;
-                case ItemResourceType.KnightsLance: return res_knightslance;
-                case ItemResourceType.Bow: return res_bow;
-                case ItemResourceType.LongBow: return res_longbow;
-                case ItemResourceType.Ballista: return res_ballista;
-
-                case ItemResourceType.PaddedArmor: return res_lightArmor;
-                case ItemResourceType.IronArmor: return res_mediumArmor;
-                case ItemResourceType.HeavyIronArmor: return res_heavyArmor;
-
-                case ItemResourceType.NONE: return Res_Nothing;
-
-                default:
-                    throw new NotImplementedException();
-            }
-        }
 
         public bool needMore(ItemResourceType type, bool rawfoodSafeGuard, bool woodSafeGuard, out bool usesSafeGuard)
         {
@@ -277,7 +505,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Egg:
                 case ItemResourceType.Hen:
                     if (rawfoodSafeGuard)
-                    { 
+                    {
                         usesSafeGuard = true;
                         return true;
                     }
@@ -313,18 +541,107 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+
+        public GroupedResource GetGroupedResource(ItemResourceType type)
+        {
+            switch (type)
+            {
+                case ItemResourceType.Gold:
+                    return new GroupedResource() { amount = faction.gold };
+                case ItemResourceType.GoldOre:
+                    return new GroupedResource() { amount = 1 };
+
+                case ItemResourceType.Water_G: return res_water;
+
+                case ItemResourceType.Beer: return res_beer;
+                case ItemResourceType.Food_G: return res_food;
+                case ItemResourceType.Stone_G: return res_stone;
+                case ItemResourceType.Wood_Group: return res_wood;
+                case ItemResourceType.Fuel_G: return res_fuel;
+                case ItemResourceType.RawFood_Group: return res_rawFood;
+                case ItemResourceType.SkinLinen_Group: return res_skinLinnen;
+
+                case ItemResourceType.Toolkit: return res_Toolkit;
+                case ItemResourceType.Wagon2Wheel: return res_Wagon2Wheel;
+                case ItemResourceType.Wagon4Wheel: return res_Wagon4Wheel;
+                case ItemResourceType.BlackPowder: return res_BlackPowder;
+                case ItemResourceType.GunPowder: return res_GunPowder;
+                case ItemResourceType.LedBullet: return res_LedBullet;
+
+                case ItemResourceType.IronOre_G: return res_ironore;
+                case ItemResourceType.TinOre: return res_TinOre;
+                case ItemResourceType.CupperOre: return res_CupperOre;
+                case ItemResourceType.LeadOre: return res_LeadOre;
+                case ItemResourceType.SilverOre: return res_SilverOre;
+
+                case ItemResourceType.Iron_G: return res_iron;
+                case ItemResourceType.Tin: return res_Tin;
+                case ItemResourceType.Cupper: return res_Cupper;
+                case ItemResourceType.Lead: return res_Lead;
+                case ItemResourceType.Silver: return res_Silver;
+                case ItemResourceType.RawMithril: return res_RawMithril;
+                case ItemResourceType.Sulfur: return res_Sulfur;
+
+                case ItemResourceType.Steel: return res_Steel;
+                case ItemResourceType.Bronze: return res_Bronze;
+                case ItemResourceType.CastIron: return res_CastIron;
+                case ItemResourceType.BloomeryIron: return res_BloomeryIron;
+                case ItemResourceType.Mithril: return res_Mithril;
+
+                case ItemResourceType.SharpStick: return res_sharpstick;
+                case ItemResourceType.BronzeSword: return res_BronzeSword;
+                case ItemResourceType.ShortSword: return res_shortsword;
+                case ItemResourceType.Sword: return res_Sword;
+                case ItemResourceType.LongSword: return res_LongSword;
+                case ItemResourceType.MithrilSword: return res_MithrilSword;
+
+                case ItemResourceType.Warhammer: return res_Warhammer;
+                case ItemResourceType.TwoHandSword: return res_twohandsword;
+                case ItemResourceType.KnightsLance: return res_knightslance;
+
+                case ItemResourceType.SlingShot: return res_SlingShot;
+                case ItemResourceType.ThrowingSpear: return res_ThrowingSpear;
+                case ItemResourceType.Bow: return res_bow;
+                case ItemResourceType.LongBow: return res_longbow;
+                case ItemResourceType.Crossbow: return res_crossbow;
+                case ItemResourceType.MithrilBow: return res_MithrilBow;
+
+                case ItemResourceType.HandCannon: return res_HandCannon;
+                case ItemResourceType.HandCulverin: return res_HandCulvertin;
+                case ItemResourceType.Rifle: return res_Rifle;
+                case ItemResourceType.Blunderbus: return res_Blunderbus;
+
+                case ItemResourceType.Ballista: return res_ballista;
+                case ItemResourceType.Manuballista: return res_Manuballista;
+                case ItemResourceType.Catapult: return res_Catapult;
+                case ItemResourceType.UN_BatteringRam: return res_BatteringRam;
+
+                case ItemResourceType.SiegeCannonBronze: return res_SiegeCannonBronze;
+                case ItemResourceType.ManCannonBronze: return res_ManCannonBronze;
+                case ItemResourceType.SiegeCannonIron: return res_SiegeCannonIron;
+                case ItemResourceType.ManCannonIron: return res_ManCannonIron;
+
+                case ItemResourceType.PaddedArmor: return res_paddedArmor;
+                case ItemResourceType.HeavyPaddedArmor: return res_HeavyPaddedArmor;
+                case ItemResourceType.IronArmor: return res_mailArmor;
+                case ItemResourceType.HeavyIronArmor: return res_heavyMailArmor;
+                case ItemResourceType.LightPlateArmor: return res_LightPlateArmor;
+                case ItemResourceType.FullPlateArmor: return res_FullPlateArmor;
+
+                case ItemResourceType.NONE: return Res_Nothing;
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+
         public void SetGroupedResource(ItemResourceType type, GroupedResource resource)
         {
             switch (type)
             {
                 case ItemResourceType.Water_G:
                     res_water = resource;
-                    break;
-                case ItemResourceType.IronOre_G:
-                    res_ironore = resource;
-                    break;
-                case ItemResourceType.Iron_G:
-                    res_iron = resource;
                     break;
                 case ItemResourceType.Food_G:
                     res_food = resource;
@@ -347,12 +664,95 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.SkinLinen_Group:
                     res_skinLinnen = resource;
                     break;
-
+                case ItemResourceType.Toolkit:
+                    res_Toolkit = resource;
+                    break;
+                case ItemResourceType.Wagon2Wheel:
+                    res_Wagon2Wheel = resource;
+                    break;
+                case ItemResourceType.Wagon4Wheel:
+                    res_Wagon4Wheel = resource;
+                    break;
+                case ItemResourceType.BlackPowder:
+                    res_BlackPowder = resource;
+                    break;
+                case ItemResourceType.GunPowder:
+                    res_GunPowder = resource;
+                    break;
+                case ItemResourceType.LedBullet:
+                    res_LedBullet = resource;
+                    break;
+                case ItemResourceType.IronOre_G:
+                    res_ironore = resource;
+                    break;
+                case ItemResourceType.TinOre:
+                    res_TinOre = resource;
+                    break;
+                case ItemResourceType.CupperOre:
+                    res_CupperOre = resource;
+                    break;
+                case ItemResourceType.LeadOre:
+                    res_LeadOre = resource;
+                    break;
+                case ItemResourceType.SilverOre:
+                    res_SilverOre = resource;
+                    break;
+                case ItemResourceType.Iron_G:
+                    res_iron = resource;
+                    break;
+                case ItemResourceType.Tin:
+                    res_Tin = resource;
+                    break;
+                case ItemResourceType.Cupper:
+                    res_Cupper = resource;
+                    break;
+                case ItemResourceType.Lead:
+                    res_Lead = resource;
+                    break;
+                case ItemResourceType.Silver:
+                    res_Silver = resource;
+                    break;
+                case ItemResourceType.RawMithril:
+                    res_RawMithril = resource;
+                    break;
+                case ItemResourceType.Sulfur:
+                    res_Sulfur = resource;
+                    break;
+                case ItemResourceType.Steel:
+                    res_Steel = resource;
+                    break;
+                case ItemResourceType.Bronze:
+                    res_Bronze = resource;
+                    break;
+                case ItemResourceType.CastIron:
+                    res_CastIron = resource;
+                    break;
+                case ItemResourceType.BloomeryIron:
+                    res_BloomeryIron = resource;
+                    break;
+                case ItemResourceType.Mithril:
+                    res_Mithril = resource;
+                    break;
                 case ItemResourceType.SharpStick:
                     res_sharpstick = resource;
                     break;
+                case ItemResourceType.BronzeSword:
+                    res_BronzeSword = resource;
+                    break;
+                case ItemResourceType.ShortSword:
+                    res_shortsword = resource;
+                    break;
                 case ItemResourceType.Sword:
-                    res_sword = resource;
+                    res_Sword = resource;
+                    break;
+                case ItemResourceType.LongSword:
+                    res_LongSword = resource;
+                    break;
+                case ItemResourceType.MithrilSword:
+                    res_MithrilSword = resource;
+                    break;
+                case ItemResourceType.Warhammer:
+                    res_Warhammer = resource;
                     break;
                 case ItemResourceType.TwoHandSword:
                     res_twohandsword = resource;
@@ -360,29 +760,82 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.KnightsLance:
                     res_knightslance = resource;
                     break;
+                case ItemResourceType.SlingShot:
+                    res_SlingShot = resource;
+                    break;
+                case ItemResourceType.ThrowingSpear:
+                    res_ThrowingSpear = resource;
+                    break;
                 case ItemResourceType.Bow:
                     res_bow = resource;
                     break;
                 case ItemResourceType.LongBow:
                     res_longbow = resource;
                     break;
+                case ItemResourceType.Crossbow:
+                    res_crossbow = resource;
+                    break;
+                case ItemResourceType.MithrilBow:
+                    res_MithrilBow = resource;
+                    break;
+                case ItemResourceType.HandCannon:
+                    res_HandCannon = resource;
+                    break;
+                case ItemResourceType.HandCulverin:
+                    res_HandCulvertin = resource;
+                    break;
+                case ItemResourceType.Rifle:
+                    res_Rifle = resource;
+                    break;
+                case ItemResourceType.Blunderbus:
+                    res_Blunderbus = resource;
+                    break;
                 case ItemResourceType.Ballista:
                     res_ballista = resource;
                     break;
+                case ItemResourceType.Manuballista:
+                    res_Manuballista = resource;
+                    break;
+                case ItemResourceType.Catapult:
+                    res_Catapult = resource;
+                    break;
+                case ItemResourceType.UN_BatteringRam:
+                    res_BatteringRam = resource;
+                    break;
+                case ItemResourceType.SiegeCannonBronze:
+                    res_SiegeCannonBronze = resource;
+                    break;
+                case ItemResourceType.ManCannonBronze:
+                    res_ManCannonBronze = resource;
+                    break;
+                case ItemResourceType.SiegeCannonIron:
+                    res_SiegeCannonIron = resource;
+                    break;
+                case ItemResourceType.ManCannonIron:
+                    res_ManCannonIron = resource;
+                    break;
                 case ItemResourceType.PaddedArmor:
-                    res_lightArmor = resource;
+                    res_paddedArmor = resource;
+                    break;
+                case ItemResourceType.HeavyPaddedArmor:
+                    res_HeavyPaddedArmor = resource;
                     break;
                 case ItemResourceType.IronArmor:
-                    res_mediumArmor = resource;
+                    res_mailArmor = resource;
                     break;
                 case ItemResourceType.HeavyIronArmor:
-                    res_heavyArmor = resource;
+                    res_heavyMailArmor = resource;
                     break;
-
-                case ItemResourceType.Gold:
+                case ItemResourceType.LightPlateArmor:
+                    res_LightPlateArmor = resource;
+                    break;
+                case ItemResourceType.FullPlateArmor:
+                    res_FullPlateArmor = resource;
+                    break;
                 case ItemResourceType.NONE:
-                    return;
-
+                case ItemResourceType.Gold:
+                    // No action needed for these types
+                    break;
                 default:
                     throw new NotImplementedException();
             }
@@ -605,6 +1058,7 @@ namespace VikingEngine.DSSWars.GameObject
             content.newLine();
             
             content.Add(new RichBoxImage(ResourceLib.Icon(item)));
+            content.space();
             content.Add(new RichBoxText( LangLib.Item(item) + ": " + TextLib.LargeNumber(amount)));
 
             if (item != ItemResourceType.Water_G && item != ItemResourceType.Gold)

@@ -83,7 +83,19 @@ namespace VikingEngine.DSSWars.Map
         Nobelhouse,
         Storehouse,
         Bank,
+
         Logistics,
+        Smelter,
+        WoodCutter,
+        StoneCutter,
+        Embassy,
+        WaterResovoir,
+        KnightsBarracks,
+        Foundry,
+        Armory,
+        Chemist,
+        Gunmaker,
+
         NUM_NONE
     }
 

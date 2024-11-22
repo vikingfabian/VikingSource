@@ -2320,19 +2320,26 @@ namespace VikingEngine
                     add(SpriteName.ColorPickerCircle);
                     add(SpriteName.WarsNightmareEyeGlow);
                     currentIndex += 1;
-                    add(SpriteName.WarsResource_MediumArmor);
-                    currentIndex += 2;
+                    add(SpriteName.WarsResource_IronArmor);
+                     add(SpriteName.WarsResource_MithrilArmor);
+                     add(SpriteName.WarsResource_BronzeArmor);
+                    
                     add(SpriteName.WarsResource_Sharpstick);
                     add(SpriteName.WarsResource_Sword);
-                    currentIndex += 1;
+                    add(SpriteName.WarsResource_MithrilSword);
                     add(SpriteName.WarsResource_Bow);
                     add(SpriteName.WarsResource_Longbow);
-                    currentIndex += 7;
+                    add(SpriteName.WarsResource_Mithrilbow);
+                    currentIndex += 6;
                     add(SpriteName.WarsDelivery);
                     add(SpriteName.WarsTrade);
                     add(SpriteName.WarsResource_Beer);
                     add(SpriteName.WarsResource_Iron);
-                    currentIndex += 9;
+                    add(SpriteName.WarsResource_Silver);
+                    add(SpriteName.WarsResource_Cupper);
+                    add(SpriteName.WarsResource_Gold);
+                    add(SpriteName.WarsResource_Mithril);
+                    currentIndex += 5;
                     add(SpriteName.WarsResource_SkinAndLinen);
                     currentIndex += 5;
                     add(SpriteName.WarsResource_Stone);
@@ -2348,8 +2355,8 @@ namespace VikingEngine
                     add(SpriteName.WarsResource_Linen);
                     add(SpriteName.WarsResource_Wheat);
                     add(SpriteName.WarsResource_Egg);
-                    add(SpriteName.WarsResource_LightArmor);
-                    add(SpriteName.WarsResource_HeavyArmor);
+                    add(SpriteName.WarsResource_PaddedArmor);
+                    add(SpriteName.WarsResource_FullPlateArmor);
                     add(SpriteName.WarsResource_IronOre);
                     add(SpriteName.WarsResource_GoldOre);
                     add(SpriteName.WarsResource_Ballista);
@@ -2506,6 +2513,8 @@ namespace VikingEngine
                     add(SpriteName.WarsResource_Manuballista);
                     add(SpriteName.WarsResource_Bullets);
                     add(SpriteName.WarsResource_GunPowder);
+                    add(SpriteName.WarsResource_CupperOre);
+                    add(SpriteName.WarsResource_Toolkit);
                 }
 
                 currentIndex = numTilesWidth * 101;

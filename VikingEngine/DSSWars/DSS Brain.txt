@@ -37,9 +37,10 @@
 
 * masters guild, låt hög level arbetare vänta
 * refugee tent, samlar på invandrare (60) half food cost, auto build homes?
-* coin maker - brons till pengar
+* coin maker - koppar, brons, silver till pengar
 
 * bloomery furnace > järn till bloomery > måste smidas till stål
+* vetskap kan sparas i pergament och sparas, kopieras, trade, sprida med messenger > papyrus/läder pergament
 
 #Todo (xmas patch)#
 krig varning på ally
@@ -47,6 +48,9 @@ new maps
 dölj carry amount
 new game - Skip language crashes game
 
+
+lamps - förbättrar produktion i area, måste fyllas med fuel
+förvaringsbyggnader som ökar max stack av olika typer, vapen hus, kylrum osv
 
 //ShowGamepadTextInput
 

@@ -77,9 +77,9 @@ namespace VikingEngine.DSSWars.Data
                     case CityTagArt.ItemResourceTypeLongBow: return SpriteName.WarsResource_Longbow;
                     case CityTagArt.ItemResourceTypeBallista: return SpriteName.WarsResource_Ballista;
 
-                    case CityTagArt.ItemResourceTypeLightArmor: return SpriteName.WarsResource_LightArmor;
-                    case CityTagArt.ItemResourceTypeMediumArmor: return SpriteName.WarsResource_MediumArmor;
-                    case CityTagArt.ItemResourceTypeHeavyArmor: return SpriteName.WarsResource_HeavyArmor;
+                    case CityTagArt.ItemResourceTypeLightArmor: return SpriteName.WarsResource_PaddedArmor;
+                    case CityTagArt.ItemResourceTypeMediumArmor: return SpriteName.WarsResource_IronArmor;
+                    case CityTagArt.ItemResourceTypeHeavyArmor: return SpriteName.WarsResource_FullPlateArmor;
                 }
             }
             else if (art <= CityTagArt.BuildPavementFlower)
@@ -204,9 +204,9 @@ namespace VikingEngine.DSSWars.Data
                     case ArmyTagArt.ItemResourceTypeLongBow: return SpriteName.WarsResource_Longbow;
                     case ArmyTagArt.ItemResourceTypeBallista: return SpriteName.WarsResource_Ballista;
 
-                    case ArmyTagArt.ItemResourceTypeLightArmor: return SpriteName.WarsResource_LightArmor;
-                    case ArmyTagArt.ItemResourceTypeMediumArmor: return SpriteName.WarsResource_MediumArmor;
-                    case ArmyTagArt.ItemResourceTypeHeavyArmor: return SpriteName.WarsResource_HeavyArmor;
+                    case ArmyTagArt.ItemResourceTypeLightArmor: return SpriteName.WarsResource_PaddedArmor;
+                    case ArmyTagArt.ItemResourceTypeMediumArmor: return SpriteName.WarsResource_IronArmor;
+                    case ArmyTagArt.ItemResourceTypeHeavyArmor: return SpriteName.WarsResource_FullPlateArmor;
                 }
             }
             else if (art <= ArmyTagArt.Specialize_Tradition)

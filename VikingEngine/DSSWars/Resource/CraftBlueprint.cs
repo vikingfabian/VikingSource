@@ -222,6 +222,22 @@ namespace VikingEngine.DSSWars.Resource
                         reqText = DssRef.lang.BuildingType_Brewery;
                         available = city.hasBuilding_brewery;
                         break;
+                    case CraftRequirement.Smelter:
+                        reqText = DssRef.todoLang.BuildingType_SmeltingFurnace;
+                        available = city.buildingCount_smelter > 0;
+                        break;
+                    case CraftRequirement.Chemist:
+                        reqText = DssRef.todoLang.BuildingType_Chemist;
+                        available = city.buildingCount_chemist > 0;
+                        break;
+                    case CraftRequirement.CoinMaker:
+                        reqText = DssRef.todoLang.BuildingType_CoinMaker;
+                        available = city.buildingCount_coinmaker > 0;
+                        break;
+                    case CraftRequirement.Foundry:
+                        reqText = DssRef.todoLang.BuildingType_Foundry;
+                        available = city.buildingCount_foundry > 0;
+                        break;
                     case CraftRequirement.Smith:
                         reqText = DssRef.lang.BuildingType_Smith;
                         available = city.hasBuilding_smith;
@@ -296,8 +312,12 @@ namespace VikingEngine.DSSWars.Resource
         None = 0,
         Carpenter,
         Brewery,
+        Smelter,
         Smith,
+        Foundry,
         CoalPit,
+        CoinMaker,
+        Chemist,
         Logistics1,
         Logistics2,
 

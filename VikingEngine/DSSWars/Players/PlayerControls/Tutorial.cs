@@ -127,14 +127,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             {
                 cityCounter.sel.res_wood.amount = 0;
                 cityCounter.sel.res_sharpstick.amount = DssConst.SoldierGroup_DefaultCount;//30;
-                cityCounter.sel.res_lightArmor.amount = DssConst.SoldierGroup_DefaultCount;
+                cityCounter.sel.res_paddedArmor.amount = DssConst.SoldierGroup_DefaultCount;
 
                 CityStructure.WorkInstance.setupTutorialMap(cityCounter.sel);
             }
 
             player.faction.workTemplate.craft_sharpstick.value = 0;
             player.faction.workTemplate.craft_bow.value = 0;
-            player.faction.workTemplate.craft_lightarmor.value = 0;
+            player.faction.workTemplate.craft_paddedarmor.value = 0;
             player.faction.refreshCityWork();
 
             refreshLimits();
@@ -393,7 +393,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     if (!weaponsArmor_setArmorPrio)
                     {
                         if (player.mapControls.selection.obj is City &&
-                            player.mapControls.selection.obj.GetCity().workTemplate.craft_lightarmor.value > 0)
+                            player.mapControls.selection.obj.GetCity().workTemplate.craft_paddedarmor.value > 0)
                         {
                             weaponsArmor_setArmorPrio = true;
                             onPartSuccess();
@@ -414,7 +414,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     if (!weaponsArmor_produceArmor)
                     {
                         if (player.mapControls.selection.obj is City &&
-                            player.mapControls.selection.obj.GetCity().res_lightArmor.amount >= CollectWeaponArmorAmount)
+                            player.mapControls.selection.obj.GetCity().res_paddedArmor.amount >= CollectWeaponArmorAmount)
                         {
                             weaponsArmor_produceArmor = true;
 

@@ -33,19 +33,21 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string Experience_TimeReductionDescription => "Work time is reduced by {0}% per level";
 
-        public string ExperienceType_Farm => "Farming";
+        public string ExperienceType_Farm => "Farmer";
         public string ExperienceType_AnimalCare => "Animal care";
-        public string ExperienceType_HouseBuilding => "House building";
-        public string ExperienceType_WoodCutter => "Wood cutting";
-        public string ExperienceType_StoneCutter => "Stone cutting";
-        public string ExperienceType_Mining => "Mining";
+        public string ExperienceType_HouseBuilding => "House builder";
+        public string ExperienceType_WoodCutter => "Wood worker";
+        public string ExperienceType_StoneCutter => "Stone cutter";
+        public string ExperienceType_Mining => "Miner";
         public string ExperienceType_Transport => "Transport";
         public string ExperienceType_Cook => "Cook";
-        public string ExperienceType_CraftWood => "Wood craft";
-        public string ExperienceType_CraftIron => "Iron craft";
-        public string ExperienceType_CraftArmor => "Armor craft";
-        public string ExperienceType_CraftWeapon => "Weapon craft";
+        public string ExperienceType_Fletcher => "Fletcher";
+        public string ExperienceType_RefineOre => "Smelter";
+        public string ExperienceType_CraftMetal => "Smith";
+        public string ExperienceType_CraftArmor => "Armorer";
+        public string ExperienceType_CraftWeapon => "Weapon smith";
         public string ExperienceType_CraftFuel => "Collier";
+        public string ExperienceType_Chemist => "Chemist";
 
         public string ExperienceLevel_1 => "Beginner";
         public string ExperienceLevel_2 => "Practitioner";
@@ -57,6 +59,96 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string ExperenceOrDistancePrio_Description => "Idle workers will be selected to work either by distance or experience";
         public string Hud_Mixed => "Mixed";
         public string Hud_Distance => "Distance";
+
+        public string Resource_TypeName_Wagon2Wheel=> "Small wagon";
+        public string Resource_TypeName_Wagon4Wheel=> "Large wagon";
+        public string Resource_TypeName_Tin => "Tin";
+        public string Resource_TypeName_TinOre=> "Tin ore";
+
+        public string Resource_TypeName_Cupper => "Cupper";
+        public string Resource_TypeName_CupperOre=> "Cupper ore";
+        public string Resource_TypeName_SilverOre => "Silver ore";
+        public string Resource_TypeName_Silver => "Silver";
+
+        /// <summary>
+        /// Mithril is a fantasy metal
+        /// </summary>
+        public string Resource_TypeName_RawMithril=> "Raw mithril";
+        public string Resource_TypeName_Mithril => "Mithril";
+
+        public string Resource_TypeName_BronzeSword=> "Bronze sword";
+        public string Resource_TypeName_ShortSword=> "Shortsword";
+        public string Resource_TypeName_LongSword=> "Longsword";
+        public string Resource_TypeName_Warhammer=> "Warhammer";
+        public string Resource_TypeName_MithrilSword=> "Mithril sword";
+        public string Resource_TypeName_SlingShot=> "Slingshot";
+        public string Resource_TypeName_ThrowingSpear=> "Throwing spear";
+        public string Resource_TypeName_Crossbow=> "Crossbow";
+        public string Resource_TypeName_MithrilBow=> "Mithril bow";
+
+        public string Resource_TypeName_Toolkit=> "Tool kit";
+
+        public string Resource_TypeName_Sulfur=> "Sulfur";
+        public string Resource_TypeName_LeadOre=> "Lead ore";
+        public string Resource_TypeName_Lead=> "Lead";
+        public string Resource_TypeName_Bronze => "Bronze";
+        public string Resource_TypeName_BloomIron => "Bloomery iron";
+        public string Resource_TypeName_Steel => "Steel";
+        public string Resource_TypeName_CastIron=> "Cast iron";
+
+        public string Resource_TypeName_BlackPowder=> "Black powder";
+        public string Resource_TypeName_GunPowder=> "Gunpowder";
+        public string Resource_TypeName_LedBullet=> "Bullet";
+
+        public string Resource_TypeName_HandCannon => "Hand cannon";
+        public string Resource_TypeName_HandCulverin=> "Hand culvertin";
+        public string Resource_TypeName_Rifle=> "Rifle";
+        public string Resource_TypeName_Blunderbus=> "Blunderbus";
+
+        public string Resource_TypeName_Manuballista=> "Maniballista";
+        public string Resource_TypeName_Catapult=> "Catapult";
+        public string Resource_TypeName_SiegeCannonBronze=> "Basilic";
+        public string Resource_TypeName_ManCannonBronze=> "Bombard";
+        public string Resource_TypeName_SiegeCannonIron=> "Haubitz";
+        public string Resource_TypeName_ManCannonIron=> "Cannon";
+
+        public string Resource_TypeName_PaddedArmor=> "Padded armor";
+        public string Resource_TypeName_HeavyPaddedArmor=> "Heavy padded armor";
+
+        public string Resource_TypeName_IronArmor=> "Mail armor";
+        public string Resource_TypeName_HeavyIronArmor=> "Heavy mail armor";
+        
+        public string Resource_TypeName_BronzeArmor=> "Bronze armor";
+        
+        public string Resource_TypeName_LightPlateArmor=> "Plate armor";
+        public string Resource_TypeName_FullPlateArmor=> "Full plate armor";
+
+        public string BuildingType_WoodCutter => "Lumber mill";
+        public string BuildingType_Workshop_Description => "Improves work in the area";
+
+        public string BuildingType_StoneCutter => "Stone quarry";
+
+        public string BuildingType_Embassy => "Embassy";
+        public string BuildingType_Embassy_Description => "For diplomatic relations";
+
+        public string BuildingType_KnightsBarracks => "Knights barracks";
+        
+        public string BuildingType_WaterResovoir => "Water resovoir";
+        public string BuildingType_WaterResovoir_Description => "Increase water storage";
+
+        public string BuildingType_SmeltingFurnace => "Smelting furnace";
+        public string BuildingType_SmeltingFurnace_Description => "Purify ore to metal";
+
+        public string BuildingType_Foundry => "Foundry";
+        public string BuildingType_Foundry_Description => "Metal casting station";
+
+        public string BuildingType_Armory => "Armory";
+        public string BuildingType_Chemist => "Chemist";
+        public string BuildingType_CoinMaker => "Coin minter";
+        public string BuildingType_Gunmaker => "Gunmaker";
+
+
+        public string Work_MiningResource = "Mining {0}";
         //enum ExperenceOrDistancePrio
         //{
         //    Experience,

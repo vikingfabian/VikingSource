@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DataStream;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Delivery;
@@ -72,6 +73,12 @@ namespace VikingEngine.DSSWars.GameObject
         public int buildingCount_coalpit = 0;
         public int buildingCount_nobelHouse = 0;
         public int buildingLevel_logistics = 0;
+
+        public int buildingCount_coinmaker = 0;
+        public int buildingCount_foundry = 0;
+        public int buildingCount_smelter = 0;
+        public int buildingCount_chemist = 0;
+
         string name = null;
 
         IntVector2 cullingTopLeft, cullingBottomRight;
@@ -115,7 +122,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (CityStructure.WorkInstance.find(this, TerrainMainType.Building, (int)TerrainBuildingType.Logistics, out IntVector2 position))
                 {
-                    ResourceLib.CraftLogisticsLevel2.payResources(this);
+                    CraftBuildingLib.CraftLogisticsLevel2.payResources(this);
 
                     EditSubTile edit = new EditSubTile();
                     edit.position = position;
@@ -139,7 +146,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (buildingLevel_logistics == 0)
                 {
-                    if (ResourceLib.CraftLogistics.hasResources(this))
+                    if (CraftBuildingLib.CraftLogistics.hasResources(this))
                     {
                         if (commit)
                         {
@@ -154,11 +161,11 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else if (buildingLevel_logistics == 1)
                 {
-                    if (ResourceLib.CraftLogisticsLevel2.hasResources(this))
+                    if (CraftBuildingLib.CraftLogisticsLevel2.hasResources(this))
                     {
                         if (commit)
                         {
-                            ResourceLib.CraftLogisticsLevel2.payResources(this);
+                            CraftBuildingLib.CraftLogisticsLevel2.payResources(this);
                             upgradeLogistics();
                         }
                         return true;
@@ -412,16 +419,16 @@ namespace VikingEngine.DSSWars.GameObject
             res_ironore.writeGameState(w); // ItemResourceType.IronOre_G,
             res_iron.writeGameState(w); // ItemResourceType.Iron_G,
 
-            res_sword.writeGameState(w); // ItemResourceType.Sword,
+            res_shortsword.writeGameState(w); // ItemResourceType.Sword,
             res_sharpstick.writeGameState(w); // ItemResourceType.SharpStick,
             res_twohandsword.writeGameState(w); // ItemResourceType.TwoHandSword,
             res_knightslance.writeGameState(w); // ItemResourceType.KnightsLance,
             res_bow.writeGameState(w); // ItemResourceType.Bow,
             res_ballista.writeGameState(w); // ItemResourceType.Ballista,            
 
-            res_lightArmor.writeGameState(w); // ItemResourceType.LightArmor,
-            res_mediumArmor.writeGameState(w); // ItemResourceType.MediumArmor,
-            res_heavyArmor.writeGameState(w); // ItemResourceType.HeavyArmor,
+            res_paddedArmor.writeGameState(w); // ItemResourceType.LightArmor,
+            res_mailArmor.writeGameState(w); // ItemResourceType.MediumArmor,
+            res_heavyMailArmor.writeGameState(w); // ItemResourceType.HeavyArmor,
 
             res_longbow.writeGameState(w);
 
@@ -479,16 +486,16 @@ namespace VikingEngine.DSSWars.GameObject
             res_ironore.readGameState(r, subversion); // ItemResourceType.IronOre_G,
             res_iron.readGameState(r, subversion); // ItemResourceType.Iron_G,
 
-            res_sword.readGameState(r, subversion); // ItemResourceType.Sword,
+            res_shortsword.readGameState(r, subversion); // ItemResourceType.Sword,
             res_sharpstick.readGameState(r, subversion); // ItemResourceType.SharpStick,
             res_twohandsword.readGameState(r, subversion); // ItemResourceType.TwoHandSword,
             res_knightslance.readGameState(r, subversion); // ItemResourceType.KnightsLance,
             res_bow.readGameState(r, subversion); // ItemResourceType.Bow,
             res_ballista.readGameState(r, subversion); // ItemResourceType.Ballista,            
 
-            res_lightArmor.readGameState(r, subversion); // ItemResourceType.LightArmor,
-            res_mediumArmor.readGameState(r, subversion); // ItemResourceType.MediumArmor,
-            res_heavyArmor.readGameState(r, subversion); // ItemResourceType.HeavyArmor,
+            res_paddedArmor.readGameState(r, subversion); // ItemResourceType.LightArmor,
+            res_mailArmor.readGameState(r, subversion); // ItemResourceType.MediumArmor,
+            res_heavyMailArmor.readGameState(r, subversion); // ItemResourceType.HeavyArmor,
 
             res_longbow.readGameState(r, subversion);
             

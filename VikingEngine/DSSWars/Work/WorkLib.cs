@@ -26,8 +26,8 @@ namespace VikingEngine.DSSWars.Work
             WorkToXPTable[(int)WorkExperienceType.Mining] = DssConst.DefaultWorkXpGain;
             WorkToXPTable[(int)WorkExperienceType.Transport] = 2;
             WorkToXPTable[(int)WorkExperienceType.Cook] = 2;
-            WorkToXPTable[(int)WorkExperienceType.CraftWood] = DssConst.DefaultWorkXpGain;
-            WorkToXPTable[(int)WorkExperienceType.CraftIron] = DssConst.DefaultWorkXpGain;
+            WorkToXPTable[(int)WorkExperienceType.Fletcher] = DssConst.DefaultWorkXpGain;
+            WorkToXPTable[(int)WorkExperienceType.CraftMetal] = DssConst.DefaultWorkXpGain;
             WorkToXPTable[(int)WorkExperienceType.CraftArmor] = DssConst.DefaultWorkXpGain;
             WorkToXPTable[(int)WorkExperienceType.CraftWeapon] = DssConst.DefaultWorkXpGain;
             WorkToXPTable[(int)WorkExperienceType.CraftFuel] = 1;
@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars.Work
 
                 case WorkType.Craft:
                     ItemResourceType item = (ItemResourceType)workSubType;
-                    ResourceLib.Blueprint(item, out CraftBlueprint bp1, out var bp2);
+                    CraftResourceLib.Blueprint(item, out CraftBlueprint bp1, out var bp2);
                     gainXp = bp1.experienceType;
                     break;
 
@@ -153,11 +153,14 @@ namespace VikingEngine.DSSWars.Work
         Mining,
         Transport,
         Cook,
-        CraftWood,
-        CraftIron,
+        Fletcher,
+        Smelting,
+        CastMetal,
+        CraftMetal,
         CraftArmor,
         CraftWeapon,
         CraftFuel,
+        Chemistry,
         NUM
     }
 

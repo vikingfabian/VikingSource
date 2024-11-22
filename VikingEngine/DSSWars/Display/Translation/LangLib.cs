@@ -435,12 +435,119 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case ItemResourceType.Ballista:
                     return DssRef.lang.UnitType_Ballista;
 
+                //case ItemResourceType.PaddedArmor:
+                //    return DssRef.lang.Resource_TypeName_LightArmor;
+                //case ItemResourceType.IronArmor:
+                //    return DssRef.lang.Resource_TypeName_MediumArmor;
+                //case ItemResourceType.HeavyIronArmor:
+                //    return DssRef.lang.Resource_TypeName_HeavyArmor;
+
+
+                case ItemResourceType.Wagon2Wheel:
+                    return DssRef.todoLang.Resource_TypeName_Wagon2Wheel;
+                case ItemResourceType.Wagon4Wheel:
+                    return DssRef.todoLang.Resource_TypeName_Wagon4Wheel;
+                case ItemResourceType.Tin:
+                    return DssRef.todoLang.Resource_TypeName_Tin;
+                case ItemResourceType.TinOre:
+                    return DssRef.todoLang.Resource_TypeName_TinOre;
+                case ItemResourceType.Bronze:
+                    return DssRef.todoLang.Resource_TypeName_Bronze;
+                case ItemResourceType.Cupper:
+                    return DssRef.todoLang.Resource_TypeName_Cupper;
+                case ItemResourceType.CupperOre:
+                    return DssRef.todoLang.Resource_TypeName_CupperOre;
+                case ItemResourceType.Silver:
+                    return DssRef.todoLang.Resource_TypeName_Silver;
+                case ItemResourceType.SilverOre:
+                    return DssRef.todoLang.Resource_TypeName_SilverOre;
+                case ItemResourceType.Mithril:
+                    return DssRef.todoLang.Resource_TypeName_Mithril;
+                case ItemResourceType.RawMithril:
+                    return DssRef.todoLang.Resource_TypeName_RawMithril;
+
+                case ItemResourceType.BronzeSword:
+                    return DssRef.todoLang.Resource_TypeName_BronzeSword;
+                case ItemResourceType.ShortSword:
+                    return DssRef.todoLang.Resource_TypeName_ShortSword;
+                case ItemResourceType.LongSword:
+                    return DssRef.todoLang.Resource_TypeName_LongSword;
+                case ItemResourceType.Warhammer:
+                    return DssRef.todoLang.Resource_TypeName_Warhammer;
+                case ItemResourceType.MithrilSword:
+                    return DssRef.todoLang.Resource_TypeName_MithrilSword;
+                case ItemResourceType.SlingShot:
+                    return DssRef.todoLang.Resource_TypeName_SlingShot;
+                case ItemResourceType.ThrowingSpear:
+                    return DssRef.todoLang.Resource_TypeName_ThrowingSpear;
+                case ItemResourceType.Crossbow:
+                    return DssRef.todoLang.Resource_TypeName_Crossbow;
+                case ItemResourceType.MithrilBow:
+                    return DssRef.todoLang.Resource_TypeName_MithrilBow;
+
+                case ItemResourceType.Toolkit:
+                    return DssRef.todoLang.Resource_TypeName_Toolkit;
+
+                case ItemResourceType.Sulfur:
+                    return DssRef.todoLang.Resource_TypeName_Sulfur;
+                case ItemResourceType.LeadOre:
+                    return DssRef.todoLang.Resource_TypeName_LeadOre;
+                case ItemResourceType.Lead:
+                    return DssRef.todoLang.Resource_TypeName_Lead;
+                case ItemResourceType.BloomeryIron:
+                    return DssRef.todoLang.Resource_TypeName_BloomIron;
+                case ItemResourceType.Steel:
+                    return DssRef.todoLang.Resource_TypeName_Steel;
+                case ItemResourceType.CastIron:
+                    return DssRef.todoLang.Resource_TypeName_CastIron;
+
+                case ItemResourceType.BlackPowder:
+                    return DssRef.todoLang.Resource_TypeName_BlackPowder;
+                case ItemResourceType.GunPowder:
+                    return DssRef.todoLang.Resource_TypeName_GunPowder;
+                case ItemResourceType.LedBullet:
+                    return DssRef.todoLang.Resource_TypeName_LedBullet;
+
+                case ItemResourceType.HandCannon:
+                    return DssRef.todoLang.Resource_TypeName_HandCannon;
+                case ItemResourceType.HandCulverin:
+                    return DssRef.todoLang.Resource_TypeName_HandCulverin;
+                case ItemResourceType.Rifle:
+                    return DssRef.todoLang.Resource_TypeName_Rifle;
+                case ItemResourceType.Blunderbus:
+                    return DssRef.todoLang.Resource_TypeName_Blunderbus;
+
+                case ItemResourceType.Manuballista:
+                    return DssRef.todoLang.Resource_TypeName_Manuballista;
+                case ItemResourceType.Catapult:
+                    return DssRef.todoLang.Resource_TypeName_Catapult;
+                case ItemResourceType.SiegeCannonBronze:
+                    return DssRef.todoLang.Resource_TypeName_SiegeCannonBronze;
+                case ItemResourceType.ManCannonBronze:
+                    return DssRef.todoLang.Resource_TypeName_ManCannonBronze;
+                case ItemResourceType.SiegeCannonIron:
+                    return DssRef.todoLang.Resource_TypeName_SiegeCannonIron;
+                case ItemResourceType.ManCannonIron:
+                    return DssRef.todoLang.Resource_TypeName_ManCannonIron;
+
                 case ItemResourceType.PaddedArmor:
-                    return DssRef.lang.Resource_TypeName_LightArmor;
+                    return DssRef.todoLang.Resource_TypeName_PaddedArmor;
+                case ItemResourceType.HeavyPaddedArmor:
+                    return DssRef.todoLang.Resource_TypeName_HeavyPaddedArmor;
+
                 case ItemResourceType.IronArmor:
-                    return DssRef.lang.Resource_TypeName_MediumArmor;
+                    return DssRef.todoLang.Resource_TypeName_IronArmor;
                 case ItemResourceType.HeavyIronArmor:
-                    return DssRef.lang.Resource_TypeName_HeavyArmor;
+                    return DssRef.todoLang.Resource_TypeName_HeavyIronArmor;
+
+                case ItemResourceType.BronzeArmor:
+                    return DssRef.todoLang.Resource_TypeName_BronzeArmor;
+
+                case ItemResourceType.LightPlateArmor:
+                    return DssRef.todoLang.Resource_TypeName_LightPlateArmor;
+                case ItemResourceType.FullPlateArmor:
+                    return DssRef.todoLang.Resource_TypeName_FullPlateArmor;
+
 
                 default:
                     return TextLib.Error;

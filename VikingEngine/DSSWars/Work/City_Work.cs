@@ -34,11 +34,14 @@ namespace VikingEngine.DSSWars.GameObject
         public ExperienceLevel topskill_Mining = 0;
         public ExperienceLevel topskill_Transport = 0;
         public ExperienceLevel topskill_Cook = 0;
-        public ExperienceLevel topskill_CraftWood = 0;
-        public ExperienceLevel topskill_CraftIron = 0;
+        public ExperienceLevel topskill_Fletcher = 0;
+        public ExperienceLevel topskill_Smelting = 0;
+        public ExperienceLevel topskill_Casting = 0;
+        public ExperienceLevel topskill_CraftMetal = 0;
         public ExperienceLevel topskill_CraftArmor = 0;
         public ExperienceLevel topskill_CraftWeapon = 0;
         public ExperienceLevel topskill_CraftFuel = 0;
+        public ExperienceLevel topskill_Chemistry = 0;
 
         public ExperenceOrDistancePrio experenceOrDistance = ExperenceOrDistancePrio.Mix;
 
@@ -133,8 +136,8 @@ namespace VikingEngine.DSSWars.GameObject
             topskill_Mining = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.Mining]);
             topskill_Transport = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.Transport]);
             topskill_Cook = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.Cook]);
-            topskill_CraftWood = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftWood]);
-            topskill_CraftIron = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftIron]);
+            topskill_Fletcher = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.Fletcher]);
+            topskill_CraftMetal = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftMetal]);
             topskill_CraftArmor = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftArmor]);
             topskill_CraftWeapon = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftWeapon]);
             topskill_CraftFuel = WorkLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftFuel]);
@@ -471,7 +474,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                if (workTemplate.mining.HasPrio() || fuelSafeGuard)
+                if (workTemplate.mining_iron.HasPrio() || fuelSafeGuard)
                 {
                     foreach (var pos in CityStructure.WorkInstance.Mines)
                     {
@@ -494,7 +497,7 @@ namespace VikingEngine.DSSWars.GameObject
                         if ((needMore || safeGuard) && isFreeTile(pos))
                         {
                             int distanceValue = -center.SideLength(pos);
-                            workQue.Add(new WorkQueMember(WorkType.Mine, NoSubWork, pos, safeGuard ? WorkTemplate.SafeGuardPrio : workTemplate.mining.value, distanceValue));
+                            workQue.Add(new WorkQueMember(WorkType.Mine, NoSubWork, pos, safeGuard ? WorkTemplate.SafeGuardPrio : workTemplate.mining_iron.value, distanceValue));
                         }
                     }
                 }
@@ -536,7 +539,7 @@ namespace VikingEngine.DSSWars.GameObject
                         case TerrainBuildingType.Work_Cook:
                             if (
                                 ((workTemplate.craft_food.HasPrio() && res_food.needMore()) ||  foodSafeGuard) &&
-                                (ResourceLib.CraftFood2.hasResources(this) || ResourceLib.CraftFood1.hasResources(this)) &&
+                                (CraftResourceLib.Food2.hasResources(this) || CraftResourceLib.Food1.hasResources(this)) &&
                                 isFreeTile(pos))
                             {
                                 workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Food_G, pos, foodSafeGuard ? WorkTemplate.SafeGuardPrio : workTemplate.craft_food.value, distanceValue));
@@ -544,17 +547,17 @@ namespace VikingEngine.DSSWars.GameObject
                             break;
 
                         case TerrainBuildingType.Work_Bench:
-                            craftBench(pos, distanceValue, ResourceLib.BenchCraftTypes, -5000);
+                            craftBench(pos, distanceValue, CraftBuildingLib.BenchCraftTypes, -5000);
                             break;
                         case TerrainBuildingType.Work_Smith:
 
-                            craftBench(pos, distanceValue, ResourceLib.SmithCraftTypes);
+                            craftBench(pos, distanceValue, CraftBuildingLib.SmithCraftTypes);
                             break;
 
                         case TerrainBuildingType.Work_CoalPit:
                             if (
                                 ((workTemplate.craft_fuel.HasPrio() && res_fuel.needMore()) || fuelSafeGuard) &&
-                               ResourceLib.CraftCharcoal.hasResources(this) &&
+                               CraftResourceLib.Charcoal.hasResources(this) &&
                                isFreeTile(pos))
                             {
                                 workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Coal, pos, fuelSafeGuard? WorkTemplate.SafeGuardPrio : workTemplate.craft_fuel.value, distanceValue));
@@ -564,7 +567,7 @@ namespace VikingEngine.DSSWars.GameObject
                         case TerrainBuildingType.Brewery:
                             if (workTemplate.craft_beer.HasPrio() &&
                                 res_beer.needMore() &&
-                                ResourceLib.CraftBrewery.hasResources(this) &&
+                                CraftBuildingLib.CraftBrewery.hasResources(this) &&
                                 isFreeTile(pos))
                             {
                                 workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Beer, pos, workTemplate.craft_beer.value, distanceValue));
@@ -572,7 +575,7 @@ namespace VikingEngine.DSSWars.GameObject
                             break;
 
                         case TerrainBuildingType.Carpenter:
-                            craftBench(pos, distanceValue, ResourceLib.CarpenterCraftTypes);
+                            craftBench(pos, distanceValue, CraftBuildingLib.CarpenterCraftTypes);
                             break;
                     }
                 }
@@ -658,7 +661,7 @@ namespace VikingEngine.DSSWars.GameObject
                         var template = workTemplate.GetWorkPriority(item);
                         if (template.value > topPrioValue)
                         {
-                            ResourceLib.Blueprint(item, out var bp1, out var bp2);
+                            CraftResourceLib.Blueprint(item, out var bp1, out var bp2);
                             if (bp1.available(this) && GetGroupedResource(item).needMore())
                             {
                                 topPrioValue = template.value;
@@ -822,7 +825,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case WorkType.Craft:
                     {
                         ItemResourceType item = (ItemResourceType)subWork;
-                        ResourceLib.Blueprint(item, out var bp1, out var bp2);
+                        CraftResourceLib.Blueprint(item, out var bp1, out var bp2);
                         if (bp1.available(this))
                         {
                             //bp1.createBackOrder(this);

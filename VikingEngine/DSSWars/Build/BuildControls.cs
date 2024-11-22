@@ -361,7 +361,7 @@ namespace VikingEngine.DSSWars.Build
                             content.newLine();
                             content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
                             content.space();
-                            ResourceLib.CraftBeer.toMenu(content, city, false);
+                            CraftResourceLib.Beer.toMenu(content, city, false);
                             break;
 
                         case BuildAndExpandType.Cook:
@@ -370,24 +370,24 @@ namespace VikingEngine.DSSWars.Build
                             content.newLine();
                             content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
                             content.space();
-                            ResourceLib.CraftFood1.toMenu(content, city, false);
+                            CraftResourceLib.Food1.toMenu(content, city, false);
 
                             content.newLine();
                             content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
                             content.space();
-                            ResourceLib.CraftFood2.toMenu(content, city, false);
+                            CraftResourceLib.Food2.toMenu(content, city, false);
 
                             break;
 
                         case BuildAndExpandType.Carpenter:
                             content.h2(DssRef.todoLang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
 
-                            foreach (var m in ResourceLib.CarpenterCraftTypes)
+                            foreach (var m in CraftBuildingLib.CarpenterCraftTypes)
                             {
                                 content.newLine();
                                 content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
                                 content.space();
-                                ResourceLib.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
+                                CraftResourceLib.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
                                 bp1.toMenu(content, city, false);
                             }
                             
@@ -396,12 +396,12 @@ namespace VikingEngine.DSSWars.Build
                         case BuildAndExpandType.WorkBench:
                             content.h2(DssRef.todoLang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
 
-                            foreach (var m in ResourceLib.BenchCraftTypes)
+                            foreach (var m in CraftBuildingLib.BenchCraftTypes)
                             {
                                 content.newLine();
                                 content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
                                 content.space();
-                                ResourceLib.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
+                                CraftResourceLib.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
                                 bp1.toMenu(content, city, false);
                             }
 
@@ -410,12 +410,12 @@ namespace VikingEngine.DSSWars.Build
                         case BuildAndExpandType.Smith:
                             content.h2(DssRef.todoLang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
 
-                            foreach (var m in ResourceLib.SmithCraftTypes)
+                            foreach (var m in CraftBuildingLib.SmithCraftTypes)
                             {
                                 content.newLine();
                                 content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
                                 content.space();
-                                ResourceLib.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
+                                CraftResourceLib.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
                                 bp1.toMenu(content, city, false);
                             }
                             break;
@@ -425,7 +425,7 @@ namespace VikingEngine.DSSWars.Build
                             content.newLine();
                             content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
                             content.space();
-                            ResourceLib.CraftCharcoal.toMenu(content, city, false);
+                            CraftResourceLib.Charcoal.toMenu(content, city, false);
                             break;
 
                     }
@@ -526,7 +526,7 @@ namespace VikingEngine.DSSWars.Build
                     RichBoxContent content = new RichBoxContent();
                     HudLib.Label(content, DssRef.todoLang.XP_Upgrade);
                     content.newLine();
-                    ResourceLib.CraftLogisticsLevel2.toMenu(content, city);
+                    CraftBuildingLib.CraftLogistics.toMenu(content, city);
 
                     content.newParagraph();
                     HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
@@ -539,7 +539,7 @@ namespace VikingEngine.DSSWars.Build
                     content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(city.faction.totalWorkForce));
 
                     player.hud.tooltip.create(player, content, true);
-                }), ResourceLib.CraftLogisticsLevel2.hasResources(city) && city.CanBuildLogistics(2)));
+                }), CraftBuildingLib.CraftLogisticsLevel2.hasResources(city) && city.CanBuildLogistics(2)));
             }
 
             content.newParagraph();

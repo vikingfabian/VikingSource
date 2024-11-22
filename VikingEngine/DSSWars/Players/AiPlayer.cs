@@ -521,8 +521,8 @@ namespace VikingEngine.DSSWars.Players
                         case FactionFlavorType.Mountain:
 
                             faction.mainCity.res_iron.amount += 100;
-                            faction.mainCity.res_sword.amount += 60;
-                            faction.mainCity.res_heavyArmor.amount += 60;
+                            faction.mainCity.res_shortsword.amount += 60;
+                            faction.mainCity.res_heavyMailArmor.amount += 60;
                             break;
 
                         case FactionFlavorType.Forest:
@@ -553,7 +553,7 @@ namespace VikingEngine.DSSWars.Players
             int prioAdd = 0;
             if (aggressionLevel >= AggressionLevel2_RandomAttacks)
             {
-                faction.workTemplate.craft_heavyarmor.value = 5;
+                faction.workTemplate.craft_heavymailarmor.value = 5;
             }
             else if (aggressionLevel == AggressionLevel1_RevengeOnly)
             {
@@ -564,8 +564,8 @@ namespace VikingEngine.DSSWars.Players
                 prioAdd = -2;
             }
 
-            faction.workTemplate.craft_mediumarmor.value = 4 + prioAdd;
-            faction.workTemplate.craft_lightarmor.value = 3 + prioAdd;
+            faction.workTemplate.craft_mailarmor.value = 4 + prioAdd;
+            faction.workTemplate.craft_paddedarmor.value = 3 + prioAdd;
 
             faction.workTemplate.craft_sword.value = 5 + prioAdd;
             faction.workTemplate.craft_bow.value = 4 + prioAdd;
