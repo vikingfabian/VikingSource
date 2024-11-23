@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars.Players
                                         selectTileResult = SelectTileResult.Recruitment;
                                         break;
                                     case Map.TerrainBuildingType.Nobelhouse:
-                                    case Map.TerrainBuildingType.Barracks:
+                                    case Map.TerrainBuildingType.SoldierBarracks:
                                         selectTileResult = SelectTileResult.Conscript;
                                         break;
                                         //case Map.TerrainBuildingType.Square:

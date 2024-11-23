@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         //public string EndGameStatistics_DecorsBuilt => "Decorations built: {0}";
         //public string EndGameStatistics_StatuesBuilt => "Statues built: {0}";
-
+        public string Hud_None => "None";
         public string Info_FooodAndDeliveryLocation => "By default, workers go to the city hall to eat or drop off items";
         public string GameMenu_UseSpeedX => "{0} speed option";
 
@@ -82,7 +82,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Resource_TypeName_Warhammer=> "Warhammer";
         public string Resource_TypeName_MithrilSword=> "Mithril sword";
         public string Resource_TypeName_SlingShot=> "Slingshot";
-        public string Resource_TypeName_ThrowingSpear=> "Throwing spear";
+        public string Resource_TypeName_ThrowingSpear=> "Javelin";
         public string Resource_TypeName_Crossbow=> "Crossbow";
         public string Resource_TypeName_MithrilBow=> "Mithril bow";
 
@@ -121,7 +121,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Resource_TypeName_BronzeArmor=> "Bronze armor";
         
         public string Resource_TypeName_LightPlateArmor=> "Plate armor";
-        public string Resource_TypeName_FullPlateArmor=> "Full plate armor";
+        public string Resource_TypeName_FullPlateArmor => "Full plate armor";
+        public string Resource_TypeName_MithrilArmor => "Mithril armor";
 
         public string BuildingType_WoodCutter => "Lumber mill";
         public string BuildingType_Workshop_Description => "Improves work in the area";
@@ -131,8 +132,13 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_Embassy => "Embassy";
         public string BuildingType_Embassy_Description => "For diplomatic relations";
 
+        public string BuildingType_SoldierBarracks => "Soldier barracks";
+        public string BuildingType_ArcherBarracks => "Archer barracks";
+        public string BuildingType_WarmashineBarracks => "Warmashine barracks";
+        public string BuildingType_GunBarracks => "Gun barracks";
+        public string BuildingType_CannonBarracks => "Cannon barracks";
         public string BuildingType_KnightsBarracks => "Knights barracks";
-        
+
         public string BuildingType_WaterResovoir => "Water resovoir";
         public string BuildingType_WaterResovoir_Description => "Increase water storage";
 

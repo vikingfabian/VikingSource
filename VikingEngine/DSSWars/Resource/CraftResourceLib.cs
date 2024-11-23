@@ -30,6 +30,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 case ItemResourceType.PaddedArmor: bp1 = PaddedArmor; bp2 = null; break;
                 case ItemResourceType.HeavyPaddedArmor: bp1 = HeavyPaddedArmor; bp2 = null; break;
+                case ItemResourceType.BronzeArmor: bp1 = BronzeArmor; bp2 = null; break;
                 case ItemResourceType.IronArmor: bp1 = MailArmor; bp2 = null; break;
                 case ItemResourceType.HeavyIronArmor: bp1 = HeavyMailArmor; bp2 = null; break;
                 case ItemResourceType.LightPlateArmor: bp1 = PlateArmor; bp2 = null; break;
@@ -762,6 +763,18 @@ namespace VikingEngine.DSSWars.Resource
             new UseResource[]
             {
         new UseResource(ItemResourceType.SkinLinen_Group, 8),
+            },
+            Work.WorkExperienceType.CraftArmor
+        );
+
+        public static readonly CraftBlueprint BronzeArmor = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.BronzeArmor,
+            1,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.SkinLinen_Group, 4),
+        new UseResource(ItemResourceType.Bronze, 2),
             },
             Work.WorkExperienceType.CraftArmor
         );

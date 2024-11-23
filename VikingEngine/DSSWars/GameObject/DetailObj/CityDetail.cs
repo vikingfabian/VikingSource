@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.GameObject
         public const int WorkersPerTile = WorkersPerHut * WorkerHutsPerTile * HutMaxLevel;
         public const int HutMaxLevel = 2;
         City city;
-        const int GuardMaxHealth = 80;
+        const int GuardMaxHealth = 160;
         int guardHealth = GuardMaxHealth;
         float nextRespawn = 0;
         //CityDetailData data;

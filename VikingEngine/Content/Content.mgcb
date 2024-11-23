@@ -1561,6 +1561,9 @@
 #begin VoxelModel/LfWars/wars_ironsiegecannon.vox
 /copy:VoxelModel/LfWars/wars_ironsiegecannon.vox
 
+#begin VoxelModel/LfWars/wars_javelin.vox
+/copy:VoxelModel/LfWars/wars_javelin.vox
+
 #begin VoxelModel/LfWars/wars_knight_ship.vox
 /copy:VoxelModel/LfWars/wars_knight_ship.vox
 

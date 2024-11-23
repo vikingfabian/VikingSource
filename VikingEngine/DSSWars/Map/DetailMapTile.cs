@@ -437,10 +437,25 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainBuildingType.Recruitment:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_recruitment, rnd, wp, WorldData.SubTileWidth * 1f));
                     break;
-                case TerrainBuildingType.Barracks:
+                case TerrainBuildingType.SoldierBarracks:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 0, wp, WorldData.SubTileWidth * 1f));
                     break;
-                
+                case TerrainBuildingType.ArcherBarracks:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 0, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                case TerrainBuildingType.WarmashineBarracks:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 0, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                case TerrainBuildingType.KnightsBarracks:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 0, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                case TerrainBuildingType.GunBarracks:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 0, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                case TerrainBuildingType.CannonBarracks:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 0, wp, WorldData.SubTileWidth * 1f));
+                    break;
+
                 case TerrainBuildingType.StoneHall:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_stonehall, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;

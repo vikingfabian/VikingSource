@@ -83,6 +83,7 @@ namespace VikingEngine.DSSWars.GameObject
 
              ItemResourceType.PaddedArmor,
              ItemResourceType.HeavyPaddedArmor,
+             ItemResourceType.BronzeArmor,
              ItemResourceType.IronArmor,
              ItemResourceType.HeavyIronArmor,
              ItemResourceType.LightPlateArmor,
@@ -171,10 +172,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public GroupedResource res_paddedArmor = new GroupedResource() { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
         public GroupedResource res_HeavyPaddedArmor = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_BronzeArmor = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_mailArmor = new GroupedResource() { amount = 2, goalBuffer = 100 };
         public GroupedResource res_heavyMailArmor = new GroupedResource() { amount = 0, goalBuffer = 100 };
         public GroupedResource res_LightPlateArmor = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_FullPlateArmor = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_MithrilArmor = new GroupedResource() { goalBuffer = 100 };
 
         public bool res_food_safeguard = true;
 
@@ -281,6 +284,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             res_paddedArmor.goalBuffer = 100;
             res_HeavyPaddedArmor.goalBuffer = 100;
+            res_BronzeArmor.goalBuffer = 100;
             res_mailArmor.goalBuffer = 100;
             res_heavyMailArmor.goalBuffer = 100;
             res_LightPlateArmor.goalBuffer = 100;
@@ -474,6 +478,9 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.HeavyPaddedArmor:
                     res_HeavyPaddedArmor.amount += add;
                     break;
+                case ItemResourceType.BronzeArmor:
+                    res_BronzeArmor.amount += add;
+                    break;
                 case ItemResourceType.IronArmor:
                     res_mailArmor.amount += add;
                     break;
@@ -623,10 +630,12 @@ namespace VikingEngine.DSSWars.GameObject
 
                 case ItemResourceType.PaddedArmor: return res_paddedArmor;
                 case ItemResourceType.HeavyPaddedArmor: return res_HeavyPaddedArmor;
+                case ItemResourceType.BronzeArmor: return res_BronzeArmor;
                 case ItemResourceType.IronArmor: return res_mailArmor;
                 case ItemResourceType.HeavyIronArmor: return res_heavyMailArmor;
                 case ItemResourceType.LightPlateArmor: return res_LightPlateArmor;
                 case ItemResourceType.FullPlateArmor: return res_FullPlateArmor;
+                case ItemResourceType.MithrilArmor: return res_MithrilArmor;
 
                 case ItemResourceType.NONE: return Res_Nothing;
 
@@ -819,6 +828,9 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case ItemResourceType.HeavyPaddedArmor:
                     res_HeavyPaddedArmor = resource;
+                    break;
+                case ItemResourceType.BronzeArmor:
+                    res_BronzeArmor = resource;
                     break;
                 case ItemResourceType.IronArmor:
                     res_mailArmor = resource;

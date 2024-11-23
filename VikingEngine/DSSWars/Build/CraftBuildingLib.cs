@@ -26,14 +26,14 @@ namespace VikingEngine.DSSWars.Build
         };
 
         public static readonly ItemResourceType[] ArmoryCraftTypes = {
-            ItemResourceType.IronArmor, ItemResourceType.HeavyIronArmor, ItemResourceType.LightPlateArmor, ItemResourceType.FullPlateArmor,
+            ItemResourceType.PaddedArmor, ItemResourceType.HeavyPaddedArmor, ItemResourceType.BronzeArmor, ItemResourceType.IronArmor, ItemResourceType.HeavyIronArmor, ItemResourceType.LightPlateArmor, ItemResourceType.FullPlateArmor,
         };
 
         public static readonly ItemResourceType[] FoundryCraftTypes = { 
             ItemResourceType.Bronze, ItemResourceType.CastIron, ItemResourceType.BloomeryIron, ItemResourceType.Mithril };
 
         public static readonly ItemResourceType[] BenchCraftTypes = { 
-            ItemResourceType.Fuel_G, ItemResourceType.PaddedArmor, ItemResourceType.HeavyPaddedArmor, ItemResourceType.SharpStick, ItemResourceType.SlingShot, ItemResourceType.ThrowingSpear };
+            ItemResourceType.Fuel_G, ItemResourceType.PaddedArmor, ItemResourceType.HeavyPaddedArmor, ItemResourceType.BronzeArmor, ItemResourceType.SharpStick, ItemResourceType.SlingShot, ItemResourceType.ThrowingSpear };
         
         public static readonly ItemResourceType[] CarpenterCraftTypes = { 
             ItemResourceType.SharpStick, ItemResourceType.Bow, ItemResourceType.LongBow, ItemResourceType.Crossbow, 
@@ -66,7 +66,7 @@ namespace VikingEngine.DSSWars.Build
             CraftRequirement.Logistics2
         );
 
-        public static readonly CraftBlueprint CraftWorkerHut = new CraftBlueprint(
+        public static readonly CraftBlueprint WorkerHut = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.WorkerHuts,
             1,
@@ -78,7 +78,7 @@ namespace VikingEngine.DSSWars.Build
             Work.WorkExperienceType.HouseBuilding
         );
 
-        public static readonly CraftBlueprint CraftTavern = new CraftBlueprint(
+        public static readonly CraftBlueprint Tavern = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Tavern,
             1,
@@ -90,7 +90,7 @@ namespace VikingEngine.DSSWars.Build
             Work.WorkExperienceType.HouseBuilding
         );
 
-        public static readonly CraftBlueprint CraftStorehouse = new CraftBlueprint(
+        public static readonly CraftBlueprint Storehouse = new CraftBlueprint(
            CraftResultType.Building,
            (int)Build.BuildAndExpandType.Storehouse,
            1,
@@ -102,7 +102,7 @@ namespace VikingEngine.DSSWars.Build
             Work.WorkExperienceType.HouseBuilding
        );
 
-        public static readonly CraftBlueprint CraftBrewery = new CraftBlueprint(
+        public static readonly CraftBlueprint Brewery = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Brewery,
            1,
@@ -114,7 +114,7 @@ namespace VikingEngine.DSSWars.Build
             Work.WorkExperienceType.Cook
        );
 
-        public static readonly CraftBlueprint CraftPostal = new CraftBlueprint(
+        public static readonly CraftBlueprint Postal = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Postal,
            1,
@@ -125,7 +125,7 @@ namespace VikingEngine.DSSWars.Build
             Work.WorkExperienceType.HouseBuilding
        );
 
-        public static readonly CraftBlueprint CraftRecruitment = new CraftBlueprint(
+        public static readonly CraftBlueprint Recruitment = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Recruitment,
             1,
@@ -137,9 +137,9 @@ namespace VikingEngine.DSSWars.Build
             Work.WorkExperienceType.HouseBuilding
         );
 
-        public static readonly CraftBlueprint CraftBarracks = new CraftBlueprint(
+        public static readonly CraftBlueprint Barracks = new CraftBlueprint(
             CraftResultType.Building,
-            (int)Build.BuildAndExpandType.Barracks,
+            (int)Build.BuildAndExpandType.SoldierBarracks,
             1,
             new UseResource[]
             {
@@ -149,7 +149,7 @@ namespace VikingEngine.DSSWars.Build
             Work.WorkExperienceType.HouseBuilding
         );
 
-        public static readonly CraftBlueprint CraftPigPen = new CraftBlueprint(
+        public static readonly CraftBlueprint PigPen = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.PigPen,
             1,
@@ -162,7 +162,7 @@ namespace VikingEngine.DSSWars.Build
             Work.WorkExperienceType.AnimalCare
         );
 
-        public static readonly CraftBlueprint CraftHenPen = new CraftBlueprint(
+        public static readonly CraftBlueprint HenPen = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.HenPen,
             1,
@@ -181,7 +181,7 @@ namespace VikingEngine.DSSWars.Build
                 new UseResource(ItemResourceType.Water_G, 2),
             };
 
-        public static readonly CraftBlueprint CraftWheatFarm = new CraftBlueprint(
+        public static readonly CraftBlueprint WheatFarm = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.WheatFarm,
             1,
@@ -189,7 +189,7 @@ namespace VikingEngine.DSSWars.Build
             Work.WorkExperienceType.Farm
         );
 
-        public static readonly CraftBlueprint CraftLinenFarm = new CraftBlueprint(
+        public static readonly CraftBlueprint LinenFarm = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.LinenFarm,
             1,
@@ -197,7 +197,7 @@ namespace VikingEngine.DSSWars.Build
             Work.WorkExperienceType.Farm
         );
 
-        public static readonly CraftBlueprint CraftHempFarm = new CraftBlueprint(
+        public static readonly CraftBlueprint HempFarm = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.HempFarm,
             1,
@@ -205,7 +205,7 @@ namespace VikingEngine.DSSWars.Build
             Work.WorkExperienceType.Farm
         );
 
-        public static readonly CraftBlueprint CraftRapeseedFarm = new CraftBlueprint(
+        public static readonly CraftBlueprint RapeseedFarm = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.RapeSeedFarm,
             1,
@@ -214,7 +214,7 @@ namespace VikingEngine.DSSWars.Build
         );
 
         public const int CraftSmith_IronUse = 10;
-        public static readonly CraftBlueprint CraftSmith = new CraftBlueprint(
+        public static readonly CraftBlueprint Smith = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Smith,
            1,
@@ -226,7 +226,7 @@ namespace VikingEngine.DSSWars.Build
             Work.WorkExperienceType.HouseBuilding
        );
 
-        public static readonly CraftBlueprint CraftCook = new CraftBlueprint(
+        public static readonly CraftBlueprint Cook = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Cook,
            1,
@@ -239,7 +239,7 @@ namespace VikingEngine.DSSWars.Build
             Work.WorkExperienceType.HouseBuilding
         );
 
-        public static readonly CraftBlueprint CraftWorkBench = new CraftBlueprint(
+        public static readonly CraftBlueprint WorkBench = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.WorkBench,
            1,
@@ -251,7 +251,7 @@ namespace VikingEngine.DSSWars.Build
             Work.WorkExperienceType.HouseBuilding
         );
 
-        public static readonly CraftBlueprint CraftCoalPit = new CraftBlueprint(
+        public static readonly CraftBlueprint CoalPit = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.CoalPit,
            1,
@@ -262,7 +262,7 @@ namespace VikingEngine.DSSWars.Build
             Work.WorkExperienceType.CraftFuel
         );
 
-        public static readonly CraftBlueprint CraftCarpenter = new CraftBlueprint(
+        public static readonly CraftBlueprint Carpenter = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Carpenter,
            1,
@@ -275,7 +275,7 @@ namespace VikingEngine.DSSWars.Build
         );
 
 
-        public static readonly CraftBlueprint CraftBuilding_Smelter = new CraftBlueprint(
+        public static readonly CraftBlueprint Smelter = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Smelter,
            1,
@@ -288,7 +288,7 @@ namespace VikingEngine.DSSWars.Build
         );
 
 
-        public static readonly CraftBlueprint CraftBuilding_WoodCutter = new CraftBlueprint(
+        public static readonly CraftBlueprint WoodCutter = new CraftBlueprint(
                     CraftResultType.Building,
                     (int)Build.BuildAndExpandType.WoodCutter,
                    1,
@@ -300,7 +300,7 @@ namespace VikingEngine.DSSWars.Build
                     Work.WorkExperienceType.HouseBuilding
                 );
 
-        public static readonly CraftBlueprint CraftBuilding_StoneCutter = new CraftBlueprint(
+        public static readonly CraftBlueprint StoneCutter = new CraftBlueprint(
                     CraftResultType.Building,
                     (int)Build.BuildAndExpandType.StoneCutter,
                    1,
@@ -312,7 +312,7 @@ namespace VikingEngine.DSSWars.Build
                     Work.WorkExperienceType.HouseBuilding
                 );
 
-        public static readonly CraftBlueprint CraftBuilding_Embassy = new CraftBlueprint(
+        public static readonly CraftBlueprint Embassy = new CraftBlueprint(
                     CraftResultType.Building,
                     (int)Build.BuildAndExpandType.Embassy,
                    1,
@@ -324,7 +324,7 @@ namespace VikingEngine.DSSWars.Build
                    },
                     Work.WorkExperienceType.HouseBuilding
                 );
-        public static readonly CraftBlueprint CraftBuilding_WaterResovoir = new CraftBlueprint(
+        public static readonly CraftBlueprint WaterResovoir = new CraftBlueprint(
                     CraftResultType.Building,
                     (int)Build.BuildAndExpandType.WaterResovoir,
                    1,
@@ -334,7 +334,7 @@ namespace VikingEngine.DSSWars.Build
                    },
                     Work.WorkExperienceType.HouseBuilding
                 );
-        public static readonly CraftBlueprint CraftBuilding_KnightsBarracks = new CraftBlueprint(
+        public static readonly CraftBlueprint KnightsBarracks = new CraftBlueprint(
                     CraftResultType.Building,
                     (int)Build.BuildAndExpandType.KnightsBarracks,
                    1,
@@ -345,7 +345,7 @@ namespace VikingEngine.DSSWars.Build
                    },
                     Work.WorkExperienceType.HouseBuilding
                 );
-        public static readonly CraftBlueprint CraftBuilding_Foundry = new CraftBlueprint(
+        public static readonly CraftBlueprint Foundry = new CraftBlueprint(
                     CraftResultType.Building,
                     (int)Build.BuildAndExpandType.Foundry,
                    1,
@@ -356,7 +356,7 @@ namespace VikingEngine.DSSWars.Build
                    },
                     Work.WorkExperienceType.HouseBuilding
                 );
-        public static readonly CraftBlueprint CraftBuilding_Chemist = new CraftBlueprint(
+        public static readonly CraftBlueprint Chemist = new CraftBlueprint(
                     CraftResultType.Building,
                     (int)Build.BuildAndExpandType.Chemist,
                    1,
@@ -370,7 +370,7 @@ namespace VikingEngine.DSSWars.Build
                     Work.WorkExperienceType.HouseBuilding
                 );
 
-        public static readonly CraftBlueprint CraftBuilding_Gunmaker = new CraftBlueprint(
+        public static readonly CraftBlueprint Gunmaker = new CraftBlueprint(
                     CraftResultType.Building,
                     (int)Build.BuildAndExpandType.Gunmaker,
                    1,
@@ -384,7 +384,7 @@ namespace VikingEngine.DSSWars.Build
                     Work.WorkExperienceType.HouseBuilding
                 );
 
-        public static readonly CraftBlueprint CraftNobelHouse = new CraftBlueprint(
+        public static readonly CraftBlueprint NobelHouse = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Nobelhouse,
             1,
@@ -397,7 +397,7 @@ namespace VikingEngine.DSSWars.Build
             Work.WorkExperienceType.HouseBuilding
         );
 
-        public static readonly CraftBlueprint CraftPavement = new CraftBlueprint(
+        public static readonly CraftBlueprint Pavement = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Pavement,
            1,
@@ -407,7 +407,7 @@ namespace VikingEngine.DSSWars.Build
            },
             Work.WorkExperienceType.StoneCutter
        );
-        public static readonly CraftBlueprint CraftPavementFlower = new CraftBlueprint(
+        public static readonly CraftBlueprint PavementFlower = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.PavementFlower,
            1,
@@ -419,7 +419,7 @@ namespace VikingEngine.DSSWars.Build
             Work.WorkExperienceType.StoneCutter
        );
 
-        public static readonly CraftBlueprint CraftStatue = new CraftBlueprint(
+        public static readonly CraftBlueprint Statue = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Statue_ThePlayer,
            1,

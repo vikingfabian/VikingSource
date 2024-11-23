@@ -77,12 +77,23 @@ namespace VikingEngine.DSSWars.Build
                                 city.onWorkHutBuild();
                                 break;
 
-                            case TerrainBuildingType.Barracks:
-                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, bool>(city.addBarracks, subPos, false));
+                            case TerrainBuildingType.SoldierBarracks:
+                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Conscript.BarracksType>(city.addBarracks, subPos, Conscript.BarracksType.Soldier));
                                 break;
-
-                            case TerrainBuildingType.Nobelhouse:
-                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, bool>(city.addBarracks, subPos, true));
+                            case TerrainBuildingType.ArcherBarracks:
+                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Conscript.BarracksType>(city.addBarracks, subPos, Conscript.BarracksType.Archer));
+                                break;
+                            case TerrainBuildingType.WarmashineBarracks:
+                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Conscript.BarracksType>(city.addBarracks, subPos, Conscript.BarracksType.Warmashine));
+                                break;
+                            case TerrainBuildingType.KnightsBarracks:
+                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Conscript.BarracksType>(city.addBarracks, subPos, Conscript.BarracksType.Knight));
+                                break;
+                            case TerrainBuildingType.GunBarracks:
+                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Conscript.BarracksType>(city.addBarracks, subPos, Conscript.BarracksType.Gun));
+                                break;
+                            case TerrainBuildingType.CannonBarracks:
+                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Conscript.BarracksType>(city.addBarracks, subPos, Conscript.BarracksType.Cannon));
                                 break;
 
                             case TerrainBuildingType.Postal:

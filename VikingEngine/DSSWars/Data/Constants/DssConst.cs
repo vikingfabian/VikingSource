@@ -8,7 +8,7 @@ namespace VikingEngine.DSSWars
     static class DssConst
     {
         //SOLDIER
-        public static int Soldier_DefaultHealth = 200;
+        public static int Soldier_DefaultHealth = 400;
         public static float Soldier_StandardAttackAndCoolDownTime = 1600;
         public static int SoldierGroup_RowWidth = 6;
         public static int SoldierGroup_ColumnsDepth = 5;
@@ -20,24 +20,51 @@ namespace VikingEngine.DSSWars
         public static float Men_StandardShipSpeed = Men_StandardWalkingSpeed * 2f;
 
         //CONSCRIPT
-        public static int WeaponDamage_SharpStick = 30;
-        public static int WeaponDamage_Sword = 50;
-        public static int WeaponDamage_Pike = 50;
-        public static int WeaponDamage_TwoHandSword = 100;
-        public static int WeaponDamage_KnigtsLance = 120;
+        public static int WeaponDamage_SharpStick = 20;
+        public static int WeaponDamage_BronzeSword = 40;
+        public static int WeaponDamage_ShortSword = 50;
+        public static int WeaponDamage_Sword = 80;
+        public static int WeaponDamage_LongSword = 120;
 
-        public static int WeaponDamage_Bow = 30;
-        public static int WeaponDamage_Longbow = 50;
-        public static int WeaponDamage_CrossBow = 100;
-        public static int WeaponDamage_Ballista = 300;
+        public static int WeaponDamage_Pike = 80;
+        public static int WeaponDamage_Warhammer = 100;
+        public static int WeaponDamage_TwoHandSword = 140;
+        public static int WeaponDamage_KnigtsLance = 200;
+        public static int WeaponDamage_MithrilSword = 600;
+
+        public static int WeaponDamage_Slingshot = 5;
+        public static int WeaponDamage_Throwingspear = 30;
+        public static int WeaponDamage_Bow = 50;
+        public static int WeaponDamage_Longbow = 80;
+        public static int WeaponDamage_CrossBow = 120;
+        public static int WeaponDamage_MithrilBow = 300;
+
+        public static int WeaponDamage_Handcannon = 130;
+        public static int WeaponDamage_Handculvetin = 25;
+        public static int WeaponDamage_Rifle = 180;
+        public static int WeaponDamage_Blunderbus= 50;
+
+        public static int WeaponDamage_Ballista = 350;
+        public static int WeaponDamage_ManuBallista = 200;
+        public static int WeaponDamage_Catapult = 400;
+
+        public static int WeaponDamage_SiegeCannonBronze = 1000;
+        public static int WeaponDamage_ManCannonBronze = 200;
+        public static int WeaponDamage_SiegeCannonIron = 600;
+        public static int WeaponDamage_ManCannonIron = 300;
 
         public static float AntiCavalryBonusMultiply = 2;
         public static float ArrowWeaknessBonusMultiply = 1.5f;
 
         public static int ArmorHealth_None = (int)(Soldier_DefaultHealth * 0.5);
-        public static int ArmorHealth_Light = Soldier_DefaultHealth;
-        public static int ArmorHealth_Medium = (int)(Soldier_DefaultHealth * 1.5);
-        public static int ArmorHealth_Heavy = (int)(Soldier_DefaultHealth * 2);
+        public static int ArmorHealth_Padded = Soldier_DefaultHealth;
+        public static int ArmorHealth_HeavyPadded = (int)(Soldier_DefaultHealth * 1.25);
+        public static int ArmorHealth_Bronze = (int)(Soldier_DefaultHealth * 1.4);
+        public static int ArmorHealth_Mail = (int)(Soldier_DefaultHealth * 1.5);
+        public static int ArmorHealth_HeavyMail = (int)(Soldier_DefaultHealth * 2);
+        public static int ArmorHealth_Plate = (int)(Soldier_DefaultHealth * 2.2);
+        public static int ArmorHealth_FullPlate = (int)(Soldier_DefaultHealth * 3);
+        public static int ArmorHealth_Mithril = (int)(Soldier_DefaultHealth * 6);
 
         public static float TrainingAttackSpeed_Minimal = 0.5f;
         public static float TrainingAttackSpeed_Basic = 1f;
@@ -62,12 +89,6 @@ namespace VikingEngine.DSSWars
         public static int SmallCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 5);
         public static int LargeCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 7);
         public static int HeadCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 10);
-
-        //public static int Maxwater_SmallCity = 5;
-        //public static int Maxwater_LargeCity= 8;
-        //public static int Maxwater_HeadCity = 10;
-
-        //public static int Maxwater_RandomAdd = 2;
 
         public static float WaterAdd_SmallCity = 0.7f;
         public static float WaterAdd_LargeCity = 0.9f;

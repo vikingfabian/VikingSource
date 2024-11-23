@@ -94,7 +94,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             var list = new List<BuildAndExpandType>(){
                 BuildAndExpandType.WorkerHuts,
-                BuildAndExpandType.Barracks,
+                BuildAndExpandType.SoldierBarracks,
       
                 //BuildAndExpandType.Brewery,
                 //BuildAndExpandType.Cook,
@@ -210,7 +210,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     break;
 
                 case TutorialMission.ConscriptArmy:
-                    content.icontext(HudLib.CheckImage(conscriptArmy_build), string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Barracks].Label()));
+                    content.icontext(HudLib.CheckImage(conscriptArmy_build), string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.SoldierBarracks].Label()));
                     content.icontext(HudLib.CheckImage(conscriptArmy_selectTab), string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.Conscription_Title));
                     content.icontext(HudLib.CheckImage(conscriptArmy_createArmy), string.Format(DssRef.lang.Tutorial_CreateSoldiers, DssRef.lang.Resource_TypeName_SharpStick, DssRef.lang.Resource_TypeName_LightArmor));
                     break;
@@ -428,7 +428,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     {   
                         foreach (var order in player.orders.orders)
                         {
-                            if (order is BuildOrder && ((BuildOrder)order).buildingType == Build.BuildAndExpandType.Barracks)
+                            if (order is BuildOrder && ((BuildOrder)order).buildingType == Build.BuildAndExpandType.SoldierBarracks)
                             {
                                 conscriptArmy_build = true;
                                 onPartSuccess();

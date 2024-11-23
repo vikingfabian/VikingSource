@@ -96,6 +96,7 @@ namespace VikingEngine.DSSWars.GameObject
                 LootFest.VoxelModelName.wars_soldier,
                 LootFest.VoxelModelName.wars_soldier_i2,
                 LootFest.VoxelModelName.wars_soldier_i3,
+                LootFest.VoxelModelName.wars_longsword,
 
                 LootFest.VoxelModelName.wars_piker,
 
@@ -104,19 +105,31 @@ namespace VikingEngine.DSSWars.GameObject
                 LootFest.VoxelModelName.war_sailor,
                 LootFest.VoxelModelName.war_sailor_i2,
 
+                LootFest.VoxelModelName.wars_hammer,
                 LootFest.VoxelModelName.wars_twohand,
 
                 LootFest.VoxelModelName.war_knight,
                 LootFest.VoxelModelName.war_knight_i2,
                 LootFest.VoxelModelName.war_knight_i3,
 
+                LootFest.VoxelModelName.wars_slingman,
+                LootFest.VoxelModelName.wars_javelin,
                 LootFest.VoxelModelName.war_archer,
                 LootFest.VoxelModelName.war_archer_i2,
 
                 LootFest.VoxelModelName.wars_crossbow,
+                 LootFest.VoxelModelName.wars_handcannon,
+                 LootFest.VoxelModelName.wars_culvertin,
 
                 LootFest.VoxelModelName.war_ballista,
                 LootFest.VoxelModelName.war_ballista_i2,
+
+                LootFest.VoxelModelName.wars_manuballista,
+                LootFest.VoxelModelName.wars_catapult,
+                LootFest.VoxelModelName.wars_bronzesiegecannon,
+                LootFest.VoxelModelName.wars_bronzemancannon,
+                LootFest.VoxelModelName.wars_ironsiegecannon,
+                LootFest.VoxelModelName.wars_ironmancannon,
 
                 LootFest.VoxelModelName.little_hirdman,
 
@@ -321,12 +334,30 @@ namespace VikingEngine.DSSWars.GameObject
     { 
         SharpStick,
         Sword,
+        LongSword,
         Pike,
+        Warhammer,
         TwohandSword,
         Knight,
+        MithrilKnight,
+
+        Slingshot,
+        Throwingspear,
         Bow,
         CrossBow,
+        MithrilBow,
+
+        Rifle,
+        Shotgun,
+
         Ballista,
+        ManuBallista,
+        Catapult,
+
+        SiegeCannonBronze,
+        ManCannonBronze,
+        SiegeCannonIron,
+        ManCannonIron,
 
         HonourGuard,
         Viking,

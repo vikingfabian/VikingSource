@@ -115,7 +115,7 @@ namespace VikingEngine.DSSWars.Resource
 
         SharpStick,
         Sword,
-        UN_Shield,
+        Pike,
 
         PaddedArmor,
         IronArmor,

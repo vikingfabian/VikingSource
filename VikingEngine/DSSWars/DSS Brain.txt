@@ -1,5 +1,5 @@
 ﻿-Change Log-
-
+Double soldier health
 
 !Alla objekt med Tile referens måste ändras (livestock)
 
@@ -8,15 +8,12 @@
 #Todo (XP)#
 * wood cutter/stone cutter shed, improved working radius
 * water expansion
-* axe/short sword, (sword needs good weapon smith)
-* steel, long sword > rapier, steel armor
 
 * annoyed by the deliveries being inefficient
 -wagon, transport span amount, 2/4 wheel
 -tool shed, faster farming upgrade
 -Embassy expansion för att unlocka diplomacy
 -Mines
-* worker level
 * soldier level
 * Guest housing (sten hus i stan) for guards, barracks, post office, (city hall min size, öka vid antal byggnader?) 
 
@@ -24,9 +21,6 @@
 * diplomat, med politic / spy upgrade
 
 * crossbow, hand cannon (cupper), blunder buss, rifle (mechanic shop)
-* gun powder, chemist (fuel, sulfur)
-* cupper cannon, icon cannon, haubitz
-* smelter for metals
 * horse farm
 * ox farm, also incread farming area
 
@@ -39,7 +33,6 @@
 * refugee tent, samlar på invandrare (60) half food cost, auto build homes?
 * coin maker - koppar, brons, silver till pengar
 
-* bloomery furnace > järn till bloomery > måste smidas till stål
 * vetskap kan sparas i pergament och sparas, kopieras, trade, sprida med messenger > papyrus/läder pergament
 
 #Todo (xmas patch)#

@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars.Players
         public WorkSubTab workSubTab = WorkSubTab.Priority_Resources;
 
         public DeliveryStatus menDeliveryCopy, itemDeliveryCopy;
-        public ConscriptProfile soldierConscriptCopy, knightConscriptCopy;
+        public ConscriptProfile soldierConscriptCopy, archerConscriptCopy, warmashineConscriptCopy, knightConscriptCopy, gunConscriptCopy, cannonConscriptCopy;
 
         public PlayerControls.Tutorial tutorial = null;
         CityBorders cityBorders = new CityBorders();
@@ -175,10 +175,24 @@ namespace VikingEngine.DSSWars.Players
             menDeliveryCopy.defaultSetup(false);
 
             soldierConscriptCopy = new ConscriptProfile();
-            soldierConscriptCopy.defaultSetup(false);
+            soldierConscriptCopy.defaultSetup(BarracksType.Soldier);
+
+            archerConscriptCopy = new ConscriptProfile();
+            archerConscriptCopy.defaultSetup(BarracksType.Archer);
+
+            warmashineConscriptCopy = new ConscriptProfile();
+            warmashineConscriptCopy.defaultSetup(BarracksType.Warmashine);
 
             knightConscriptCopy = new ConscriptProfile();
-            knightConscriptCopy.defaultSetup(true);
+            knightConscriptCopy.defaultSetup(BarracksType.Knight);
+
+            gunConscriptCopy = new ConscriptProfile();
+            gunConscriptCopy.defaultSetup(BarracksType.Gun);
+
+            cannonConscriptCopy = new ConscriptProfile();
+            cannonConscriptCopy.defaultSetup(BarracksType.Cannon);
+
+
         }
 
         public void initPlayerToPlayer(int playerindex, int numPlayers)
@@ -788,7 +802,7 @@ namespace VikingEngine.DSSWars.Players
                                     break;
 
                                 case TerrainBuildingType.Nobelhouse:
-                                case TerrainBuildingType.Barracks:
+                                case TerrainBuildingType.SoldierBarracks:
                                     if (input.Copy.DownEvent)
                                     {
                                         int ix = mapControls.hover.subTile.city.conscriptIxFromSubTile(mapControls.hover.subTile.subTilePos);

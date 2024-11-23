@@ -26,20 +26,35 @@ namespace VikingEngine.DSSWars.Conscript
 
         public ConscriptProfile inProgress;
         public TimeInGameCountdown countdown;
-        public bool nobelmen;
+        public BarracksType type;
         public int menCollected;
         public int equipmentCollected;
 
         public int idAndPosition;
         public int que;
 
-        public BarracksStatus(bool nobelmen)
+        public BarracksStatus(BarracksType type)
             : this()
         {
-            this.nobelmen = nobelmen;
-            if (nobelmen)
+            this.type = type;
+
+            switch (type)
             {
-                profile.weapon = MainWeapon.KnightsLance;
+                case BarracksType.Soldier:
+                    profile.weapon = ItemResourceType.SharpStick;
+                    break;
+                case BarracksType.Archer:
+                    profile.weapon = ItemResourceType.SlingShot;
+                    break;
+                case BarracksType.Warmashine:
+                    profile.weapon = ItemResourceType.Ballista;
+                    break;
+                case BarracksType.Knight:
+                    profile.weapon = ItemResourceType.Warhammer;
+                    break;
+                case BarracksType.Gun:
+                    profile.weapon = ItemResourceType.HandCannon;
+                    break;
             }
         }
 
@@ -57,12 +72,12 @@ namespace VikingEngine.DSSWars.Conscript
                     active == ConscriptActiveStatus.CollectingMen)
             {
                 //return items
-                ItemResourceType weaponItem = ConscriptProfile.WeaponItem(inProgress.weapon);
-                ItemResourceType armorItem = ConscriptProfile.ArmorItem(inProgress.armorLevel);
+                ItemResourceType weaponItem = inProgress.weapon;
+                ItemResourceType armorItem =inProgress.armorLevel;
 
                 city.AddGroupedResource(weaponItem, equipmentCollected);
 
-                if (inProgress.armorLevel != ArmorLevel.None)
+                if (inProgress.armorLevel != ItemResourceType.NONE)
                 {
                     city.AddGroupedResource(armorItem, equipmentCollected);
                 }
@@ -97,7 +112,7 @@ namespace VikingEngine.DSSWars.Conscript
                     countdown.writeGameState(w);
                     break;
             }
-            w.Write(nobelmen);
+            w.Write((byte)type);
             w.Write(idAndPosition);
             w.Write((byte)que);
         }
@@ -127,9 +142,14 @@ namespace VikingEngine.DSSWars.Conscript
                     countdown.readGameState(r);
                     break;
             }
-            if (subVersion >= 13)
+            if (subVersion >= 13 && subVersion < 40)
             {
-                nobelmen = r.ReadBoolean();
+                bool nobelmen = r.ReadBoolean();
+            }
+
+            if (subVersion >= 40)
+            {
+                type = (BarracksType)r.ReadByte();
             }
             idAndPosition = r.ReadInt32();
             que = r.ReadByte();
@@ -152,7 +172,7 @@ namespace VikingEngine.DSSWars.Conscript
 
         public TimeLength TimeLength()
         {
-            return new TimeLength(ConscriptProfile.TrainingTime(inProgress.training, nobelmen));
+            return new TimeLength(ConscriptProfile.TrainingTime(inProgress.training, type));
         }
 
         public string activeStringOf(ConscriptActiveStatus status)
@@ -216,14 +236,14 @@ namespace VikingEngine.DSSWars.Conscript
         public void tooltip(LocalPlayer player, City city, RichBoxContent content)
         {
 
-            ItemResourceType weaponItem = ConscriptProfile.WeaponItem(profile.weapon);
+            ItemResourceType weaponItem = profile.weapon;
             bool hasWeapons = city.GetGroupedResource(weaponItem).amount >= DssConst.SoldierGroup_DefaultCount;
 
             bool hasArmor = true;
-            ItemResourceType armorItem = ItemResourceType.NONE;
-            if (profile.armorLevel != ArmorLevel.None)
+            ItemResourceType armorItem = profile.armorLevel;
+            if (profile.armorLevel != ItemResourceType.NONE)
             {
-                armorItem = ConscriptProfile.ArmorItem(profile.armorLevel);
+                //armorItem = ConscriptProfile.ArmorItem(profile.armorLevel);
                 hasArmor = city.GetGroupedResource(armorItem).amount >= DssConst.SoldierGroup_DefaultCount;
             }
 
@@ -239,7 +259,7 @@ namespace VikingEngine.DSSWars.Conscript
             //ItemResourceType weaponitem = ConscriptProfile.WeaponItem(profile.weapon);
             content.Add(new RichBoxImage(ResourceLib.Icon(weaponItem)));
 
-            if (profile.armorLevel != ArmorLevel.None)
+            if (profile.armorLevel != ItemResourceType.NONE)
             {
                 //ItemResourceType armoritem = ConscriptProfile.ArmorItem(profile.armorLevel);
                 content.Add(new RichBoxImage(ResourceLib.Icon(armorItem)));
@@ -267,7 +287,13 @@ namespace VikingEngine.DSSWars.Conscript
         public ConscriptProfile conscript;
         public float skillBonus;
 
-
+        public SoldierConscriptProfile()
+      
+        {
+            conscript = new ConscriptProfile();
+            conscript.weapon = ItemResourceType.SharpStick;
+            skillBonus = 0;
+        }
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
@@ -288,9 +314,9 @@ namespace VikingEngine.DSSWars.Conscript
             }
             switch (conscript.weapon)
             {
-                case MainWeapon.Ballista:
+                case ItemResourceType.Ballista:
                     return UnitType.ConscriptWarmashine;
-                case MainWeapon.KnightsLance:
+                case ItemResourceType.KnightsLance:
                     return UnitType.ConscriptCavalry;
 
                 default:
@@ -305,23 +331,57 @@ namespace VikingEngine.DSSWars.Conscript
                 default:
                     switch (conscript.weapon)
                     {
-                        case MainWeapon.SharpStick:
+                        case ItemResourceType.SharpStick:
                             return UnitFilterType.SharpStick;
-                        case MainWeapon.Sword:
+
+                        case ItemResourceType.BronzeSword:
+                        case ItemResourceType.ShortSword:
+                        case ItemResourceType.Sword:
                             return UnitFilterType.Sword;
-                        case MainWeapon.Pike:
+                        case ItemResourceType.Pike:
                             return UnitFilterType.Pike;
-                        case MainWeapon.TwoHandSword:
+
+                        case ItemResourceType.Warhammer:
+                            return UnitFilterType.Warhammer;
+                        case ItemResourceType.TwoHandSword:
                             return UnitFilterType.TwohandSword;
-                        case MainWeapon.KnightsLance:
+                        case ItemResourceType.KnightsLance:
                             return UnitFilterType.Knight;
-                        case MainWeapon.Bow:
-                        case MainWeapon.Longbow:
+                        case ItemResourceType.MithrilSword:
+                            return UnitFilterType.MithrilKnight;
+
+                        case ItemResourceType.SlingShot:
+                            return UnitFilterType.Slingshot;
+                        case ItemResourceType.ThrowingSpear:
+                            return UnitFilterType.Throwingspear;
+                        case ItemResourceType.Bow:
+                        case ItemResourceType.LongBow:
                             return UnitFilterType.Bow;
-                        case MainWeapon.CrossBow:
+
+                        case ItemResourceType.Crossbow:
                             return UnitFilterType.CrossBow;
-                        case MainWeapon.Ballista:
+                        case ItemResourceType.MithrilBow:
+                            return UnitFilterType.MithrilBow;
+
+                        case ItemResourceType.HandCannon:
+                        case ItemResourceType.Rifle:
+                            return UnitFilterType.Rifle;
+                        case ItemResourceType.HandCulverin:
+                        case ItemResourceType.Blunderbus:
+                            return UnitFilterType.Shotgun;
+
+                        case ItemResourceType.Ballista:
                             return UnitFilterType.Ballista;
+                        case ItemResourceType.Manuballista:
+                            return UnitFilterType.ManuBallista;
+                        case ItemResourceType.SiegeCannonBronze:
+                            return UnitFilterType.SiegeCannonBronze;
+                        case ItemResourceType.ManCannonBronze:
+                            return UnitFilterType.ManCannonBronze;
+                        case ItemResourceType.SiegeCannonIron:
+                            return UnitFilterType.SiegeCannonIron;
+                        case ItemResourceType.ManCannonIron:
+                            return UnitFilterType.ManCannonIron;
 
                         default:
                             throw new NotImplementedException();
@@ -362,14 +422,22 @@ namespace VikingEngine.DSSWars.Conscript
 
             switch (conscript.weapon)
             {
-                case MainWeapon.SharpStick:
+                case ItemResourceType.SharpStick:
                     soldierData.mainAttack = AttackType.Melee;
                     soldierData.attackRange = 0.03f;
                     soldierData.modelName = LootFest.VoxelModelName.war_folkman;
                     soldierData.icon = SpriteName.WarsUnitIcon_Folkman;
                     break;
 
-                case MainWeapon.Sword:
+                case ItemResourceType.BronzeSword:
+                case ItemResourceType.ShortSword:
+                    soldierData.mainAttack = AttackType.Melee;
+                    soldierData.attackRange = 0.03f;
+                    soldierData.modelName = LootFest.VoxelModelName.wars_soldier;
+                    soldierData.modelVariationCount = 3;
+                    soldierData.icon = SpriteName.WarsUnitIcon_Soldier;
+                    break;
+                case ItemResourceType.Sword:
                     soldierData.mainAttack = AttackType.Melee;
                     soldierData.attackRange = 0.04f;
                     soldierData.modelName = LootFest.VoxelModelName.wars_soldier;
@@ -377,7 +445,14 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.icon = SpriteName.WarsUnitIcon_Soldier;
                     break;
 
-                case MainWeapon.Pike:
+                case ItemResourceType.LongSword:
+                    soldierData.mainAttack = AttackType.Melee;
+                    soldierData.attackRange = 0.05f;
+                    soldierData.modelName = LootFest.VoxelModelName.wars_longsword;
+                    soldierData.icon = SpriteName.WarsUnitIcon_Longsword;
+                    break;
+
+                case ItemResourceType.Pike:
                     soldierData.arrowWeakness = true;
                     soldierData.mainAttack = AttackType.Melee;
                     soldierData.attackRange = 0.055f;
@@ -388,7 +463,14 @@ namespace VikingEngine.DSSWars.Conscript
                     conscript.specialization = SpecializationType.AntiCavalry;
                     break;
 
-                case MainWeapon.TwoHandSword:
+                case ItemResourceType.Warhammer:
+                    soldierData.mainAttack = AttackType.Melee;
+                    soldierData.attackRange = 0.04f;
+                    soldierData.modelName = LootFest.VoxelModelName.wars_hammer;
+                    soldierData.icon = SpriteName.WarsResource_Warhammer;
+                    break;
+
+                case ItemResourceType.TwoHandSword:
                     soldierData.arrowWeakness = true;
                     soldierData.mainAttack = AttackType.Melee;
                     soldierData.attackRange = 0.08f;
@@ -398,7 +480,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.icon = SpriteName.WarsUnitIcon_TwoHand;
                     break;
 
-                case MainWeapon.KnightsLance:
+                case ItemResourceType.KnightsLance:
                     soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 2f;
                     soldierData.attackRange = 0.06f;
                     soldierData.basehealth *= 3;
@@ -415,7 +497,35 @@ namespace VikingEngine.DSSWars.Conscript
                     //soldierData.ArmySpeedBonusLand = 0.8;
                     break;
 
-                case MainWeapon.Bow:
+                case ItemResourceType.MithrilSword:
+                    soldierData.mainAttack = AttackType.Melee;
+                    soldierData.attackRange = 0.055f;
+                    soldierData.modelName = LootFest.VoxelModelName.wars_mithrilman;
+                    soldierData.icon = SpriteName.WarsUnitIcon_MithrilMan;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.8f;
+                    break;
+
+                case ItemResourceType.SlingShot:
+                    soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
+                    soldierData.mainAttack = AttackType.SlingShot;
+                    soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Mid;
+                    soldierData.attackRange = 1.8f;
+                    soldierData.modelName = LootFest.VoxelModelName.wars_slingman;
+                    soldierData.icon = SpriteName.WarsUnitIcon_Slingshot;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 10f;
+                    break;
+
+                case ItemResourceType.ThrowingSpear:
+                    soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.3f;
+                    soldierData.mainAttack = AttackType.Javelin;
+                    soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Mid;
+                    soldierData.attackRange = .5f;
+                    soldierData.modelName = LootFest.VoxelModelName.wars_javelin;
+                    soldierData.icon = SpriteName.WarsUnitIcon_Javelin;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 6f;
+                    break;
+
+                case ItemResourceType.Bow:
                     soldierData.mainAttack = AttackType.Arrow;
                     soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Mid;
                     soldierData.attackRange = 1.3f;
@@ -425,7 +535,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 10f;
                     break;
 
-                case MainWeapon.Longbow:
+                case ItemResourceType.LongBow:
                     soldierData.mainAttack = AttackType.Arrow;
                     soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Mid;
                     soldierData.attackRange = 1.7f;
@@ -435,7 +545,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 10f;
                     break;
 
-                case MainWeapon.CrossBow:
+                case ItemResourceType.Crossbow:
                     soldierData.mainAttack = AttackType.Bolt;
                     soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Mid;
                     soldierData.attackRange = 1.7f;
@@ -445,7 +555,58 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 15f;
                     break;
 
-                case MainWeapon.Ballista:
+                case ItemResourceType.MithrilBow:
+                    soldierData.mainAttack = AttackType.Arrow;
+                    soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Mid;
+                    soldierData.attackRange = 2.5f;
+                    soldierData.modelName = LootFest.VoxelModelName.war_archer;
+                    soldierData.modelVariationCount = 2;
+                    soldierData.icon = SpriteName.WarsUnitIcon_Archer;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 8f;
+                    break;
+
+
+                case ItemResourceType.HandCannon:
+                    soldierData.mainAttack = AttackType.GunShot;
+                    soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Mid;
+                    soldierData.attackRange = 1.2f;
+                    soldierData.modelName = LootFest.VoxelModelName.wars_handcannon;
+                    soldierData.modelVariationCount = 1;
+                    soldierData.icon = SpriteName.WarsUnitIcon_BronzeRifle;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 12f;
+                    break;
+
+                case ItemResourceType.HandCulverin:
+                    soldierData.mainAttack = AttackType.GunBlast;
+                    soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Mid;
+                    soldierData.attackRange = 0.4f;
+                    soldierData.modelName = LootFest.VoxelModelName.wars_culvertin;
+                    soldierData.modelVariationCount = 1;
+                    soldierData.icon = SpriteName.WarsUnitIcon_BronzeRifle;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 12f;
+                    break;
+
+                case ItemResourceType.Rifle:
+                    soldierData.mainAttack = AttackType.GunShot;
+                    soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Mid;
+                    soldierData.attackRange = 1.5f;
+                    soldierData.modelName = LootFest.VoxelModelName.wars_handcannon;
+                    soldierData.modelVariationCount = 1;
+                    soldierData.icon = SpriteName.WarsUnitIcon_BronzeRifle;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 12f;
+                    break;
+
+                case ItemResourceType.Blunderbus:
+                    soldierData.mainAttack = AttackType.GunBlast;
+                    soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Mid;
+                    soldierData.attackRange = 0.5f;
+                    soldierData.modelName = LootFest.VoxelModelName.wars_culvertin;
+                    soldierData.modelVariationCount = 1;
+                    soldierData.icon = SpriteName.WarsUnitIcon_BronzeRifle;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 12f;
+                    break;
+
+                case ItemResourceType.Ballista:
                     soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
                     soldierData.attackRange = WarmashineProfile.BallistaRange;
 
@@ -462,6 +623,93 @@ namespace VikingEngine.DSSWars.Conscript
 
                     soldierData.icon = SpriteName.WarsUnitIcon_Ballista;
 
+                    soldierData.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
+                    break;
+
+                case ItemResourceType.Manuballista:
+                    soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
+                    soldierData.attackRange = 2;
+
+                    soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
+                    soldierData.mainAttack = AttackType.Ballista;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 16f;
+
+                    soldierData.modelName = LootFest.VoxelModelName.wars_manuballista;
+
+                    soldierData.modelScale = DssConst.Men_StandardModelScale * 2f;
+                    soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Mid;
+
+                    soldierData.icon = SpriteName.WarsResource_Manuballista;
+                    soldierData.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
+                    break;
+
+                case ItemResourceType.SiegeCannonBronze:
+                    soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.3f;
+                    soldierData.attackRange = WarmashineProfile.BallistaRange;
+
+                    soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
+                    soldierData.mainAttack = AttackType.Cannonball;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 50f;
+
+                    soldierData.modelName = LootFest.VoxelModelName.wars_bronzesiegecannon;
+
+                    soldierData.modelScale = DssConst.Men_StandardModelScale * 2f;
+                    soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Back;
+
+                    soldierData.icon = SpriteName.WarsResource_BronzeSiegeCannon;
+
+                    soldierData.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 4;
+                    break;
+
+                case ItemResourceType.ManCannonBronze:
+                    soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
+                    soldierData.attackRange = 2;
+
+                    soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
+                    soldierData.mainAttack = AttackType.Cannonball;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 20f;
+
+                    soldierData.modelName = LootFest.VoxelModelName.wars_bronzemancannon;
+
+                    soldierData.modelScale = DssConst.Men_StandardModelScale * 2f;
+                    soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Mid;
+
+                    soldierData.icon = SpriteName.WarsResource_BronzeManCannon;
+                    soldierData.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
+                    break;
+
+                case ItemResourceType.SiegeCannonIron:
+                    soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
+                    soldierData.attackRange = 2.5f;
+
+                    soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
+                    soldierData.mainAttack = AttackType.Cannonball;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 20f;
+
+                    soldierData.modelName = LootFest.VoxelModelName.wars_ironsiegecannon;
+
+                    soldierData.modelScale = DssConst.Men_StandardModelScale * 2f;
+                    soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Back;
+
+                    soldierData.icon = SpriteName.WarsResource_IronSiegeCannon;
+
+                    soldierData.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 4;
+                    break;
+
+                case ItemResourceType.ManCannonIron:
+                    soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
+                    soldierData.attackRange = 2.4f;
+
+                    soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
+                    soldierData.mainAttack = AttackType.Cannonball;
+                    soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 18;
+
+                    soldierData.modelName = LootFest.VoxelModelName.wars_ironmancannon;
+
+                    soldierData.modelScale = DssConst.Men_StandardModelScale * 2f;
+                    soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Mid;
+
+                    soldierData.icon = SpriteName.WarsUnitIcon_IronManCannon;
                     soldierData.energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 2;
                     break;
             }
@@ -585,27 +833,27 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 switch (conscript.weapon)
                 {
-                    case MainWeapon.SharpStick:
+                    case ItemResourceType.SharpStick:
                         soldierData.modelName = LootFest.VoxelModelName.wars_folk_ship;
 
                         break;
-                    case MainWeapon.Pike:
-                    case MainWeapon.Sword:
+                    case ItemResourceType.Pike:
+                    case ItemResourceType.Sword:
                         soldierData.modelName = LootFest.VoxelModelName.wars_soldier_ship;
                         break;
 
-                    case MainWeapon.CrossBow:
-                    case MainWeapon.Longbow:
-                    case MainWeapon.Bow:
+                    case ItemResourceType.Crossbow:
+                    case ItemResourceType.LongBow:
+                    case ItemResourceType.Bow:
                         soldierData.modelName = LootFest.VoxelModelName.wars_archer_ship;
                         break;
 
-                    case MainWeapon.Ballista:
+                    case ItemResourceType.Ballista:
                         soldierData.modelName = LootFest.VoxelModelName.wars_ballista_ship;
                         break;
 
-                    case MainWeapon.TwoHandSword:
-                    case MainWeapon.KnightsLance:
+                    case ItemResourceType.TwoHandSword:
+                    case ItemResourceType.KnightsLance:
                         soldierData.modelName = LootFest.VoxelModelName.wars_knight_ship;
                         break;
 
@@ -618,34 +866,43 @@ namespace VikingEngine.DSSWars.Conscript
 
     struct ConscriptProfile
     {
-        public MainWeapon weapon;
-        public ArmorLevel armorLevel;
+        public ItemResourceType weapon;
+        public ItemResourceType armorLevel;
         public TrainingLevel training;
         public SpecializationType specialization;
 
+        public ConscriptProfile()
+        {
+            weapon = ItemResourceType.SharpStick;
+            armorLevel = ItemResourceType.NONE;
+
+            training = 0;
+            specialization = SpecializationType.None;
+        }
+
         public bool RangedUnit()
         {
-            return weapon == MainWeapon.Bow || weapon == MainWeapon.CrossBow || weapon == MainWeapon.Ballista;
+            return weapon == ItemResourceType.Bow || weapon == ItemResourceType.Crossbow || weapon == ItemResourceType.Ballista;
         }
 
         public bool RangedManUnit()
         {
-            return weapon == MainWeapon.Bow || weapon == MainWeapon.CrossBow;
+            return weapon == ItemResourceType.Bow || weapon == ItemResourceType.Crossbow;    
         }
 
         public bool MeleeSoldier()
         {
-            return weapon == MainWeapon.SharpStick || weapon == MainWeapon.Sword || weapon == MainWeapon.TwoHandSword;
+            return weapon == ItemResourceType.SharpStick || weapon == ItemResourceType.Sword || weapon == ItemResourceType.TwoHandSword;
         }
 
         public bool KnightUnit()
         {
-            return weapon == MainWeapon.TwoHandSword || weapon == MainWeapon.KnightsLance;
+            return weapon == ItemResourceType.TwoHandSword || weapon == ItemResourceType.KnightsLance;
         }
 
         public bool Warmashine()
         {
-            return weapon == MainWeapon.Ballista;
+            return weapon == ItemResourceType.Ballista;
         }
 
         public double armySpeedBonus(bool land)
@@ -654,9 +911,10 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 switch (weapon)
                 {
-                    case MainWeapon.KnightsLance:
+                    case ItemResourceType.KnightsLance:
                         return 0.8;
-                    case MainWeapon.Ballista:
+                    case ItemResourceType.Ballista:
+                    case ItemResourceType.Catapult:
                         return -0.5;
                 }
             }
@@ -671,13 +929,31 @@ namespace VikingEngine.DSSWars.Conscript
             return 0;
         }
 
-        public void defaultSetup(bool nobelmen)
+        public void defaultSetup(BarracksType type)
         {
-            if (nobelmen)
+            switch (type)
             {
-                weapon = MainWeapon.TwoHandSword;
-                training = TrainingLevel.Basic;
+                case BarracksType.Soldier:
+                    weapon = ItemResourceType.SharpStick;
+                    break;
+                case BarracksType.Archer:
+                    weapon = ItemResourceType.SlingShot;
+                    break;
+                case BarracksType.Warmashine:
+                    weapon = ItemResourceType.Ballista;
+                    break;
+                case BarracksType.Knight:
+                    weapon = ItemResourceType.Warhammer;
+                    training = TrainingLevel.Basic;
+                    break;
+                case BarracksType.Gun:
+                    weapon = ItemResourceType.HandCannon;
+                    break;
+                case BarracksType.Cannon:
+                    weapon = ItemResourceType.ManCannonBronze;
+                    break;
             }
+
         }
 
         public string TypeName()
@@ -696,22 +972,22 @@ namespace VikingEngine.DSSWars.Conscript
                 default:
                     switch (weapon)
                     {
-                        case MainWeapon.Bow:
-                        case MainWeapon.Longbow:
+                        case ItemResourceType.Bow:
+                        case ItemResourceType.LongBow:
                             return DssRef.lang.UnitType_Archer;
-                        case MainWeapon.CrossBow:
+                        case ItemResourceType.Crossbow:
                             return DssRef.lang.UnitType_Crossbow;
-                        case MainWeapon.Ballista:
+                        case ItemResourceType.Ballista:
                             return DssRef.lang.UnitType_Ballista;
-                        case MainWeapon.SharpStick:
+                        case ItemResourceType.SharpStick:
                             return DssRef.lang.UnitType_Folkman;
-                        case MainWeapon.Pike:
+                        case ItemResourceType.Pike:
                             return DssRef.lang.UnitType_Pikeman;
-                        case MainWeapon.Sword:
+                        case ItemResourceType.Sword:
                             return DssRef.lang.UnitType_Soldier;
-                        case MainWeapon.KnightsLance:
+                        case ItemResourceType.KnightsLance:
                             return DssRef.lang.UnitType_CavalryKnight;
-                        case MainWeapon.TwoHandSword:
+                        case ItemResourceType.TwoHandSword:
                             return DssRef.lang.UnitType_FootKnight;
 
 
@@ -724,11 +1000,11 @@ namespace VikingEngine.DSSWars.Conscript
         public SpecializationType[] avaialableSpecializations()
         {
             SpecializationType[] specializationTypes;
-            if (weapon == MainWeapon.TwoHandSword)
+            if (weapon == ItemResourceType.TwoHandSword)
             {
                 specializationTypes = new SpecializationType[] { SpecializationType.AntiCavalry };
             }
-            else if (weapon == MainWeapon.Ballista)
+            else if (weapon == ItemResourceType.Ballista)
             {
                 specializationTypes = new SpecializationType[] { SpecializationType.Siege };
             }
@@ -748,11 +1024,10 @@ namespace VikingEngine.DSSWars.Conscript
 
         public void toHud(RichBoxContent content)
         {
-            content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_WeaponTitle, LangLib.Weapon(weapon)));
-            content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_ArmorTitle, LangLib.Armor(armorLevel)));
+            content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_WeaponTitle, LangLib.Item(weapon)));
+            content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_ArmorTitle, LangLib.Item(armorLevel)));
             content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_TrainingTitle, LangLib.Training(training)));
             content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_SpecializationTitle, LangLib.SpecializationTypeName(specialization)));
-
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
@@ -765,70 +1040,96 @@ namespace VikingEngine.DSSWars.Conscript
 
         public void readGameState(System.IO.BinaryReader r)
         {
-            weapon = (MainWeapon)r.ReadByte();
-            armorLevel = (ArmorLevel)r.ReadByte();
+            weapon = (ItemResourceType)r.ReadByte();
+            armorLevel = (ItemResourceType)r.ReadByte();
             training = (TrainingLevel)r.ReadByte();
             specialization = (SpecializationType)r.ReadByte();
         }
 
         //make these static
-        public static int WeaponDamage(MainWeapon weapon)
+        public static int WeaponDamage(ItemResourceType weapon)
         {
             switch (weapon)
             {
-                case MainWeapon.SharpStick: return DssConst.WeaponDamage_SharpStick;
-                case MainWeapon.Sword: return DssConst.WeaponDamage_Sword;
-                case MainWeapon.Pike: return DssConst.WeaponDamage_Pike;
-                case MainWeapon.TwoHandSword: return DssConst.WeaponDamage_TwoHandSword;
-                case MainWeapon.KnightsLance: return DssConst.WeaponDamage_KnigtsLance;
-                case MainWeapon.Bow: return DssConst.WeaponDamage_Bow;
-                case MainWeapon.Longbow: return DssConst.WeaponDamage_Longbow;
-                case MainWeapon.CrossBow: return DssConst.WeaponDamage_CrossBow;
-                case MainWeapon.Ballista: return DssConst.WeaponDamage_Ballista;
+                case ItemResourceType.SharpStick: return DssConst.WeaponDamage_SharpStick;
+                case ItemResourceType.BronzeSword: return DssConst.WeaponDamage_BronzeSword;
+                case ItemResourceType.ShortSword: return DssConst.WeaponDamage_ShortSword;
+                case ItemResourceType.Sword: return DssConst.WeaponDamage_Sword;
+                case ItemResourceType.LongSword: return DssConst.WeaponDamage_LongSword;
+                case ItemResourceType.Pike: return DssConst.WeaponDamage_Pike;
+
+                case ItemResourceType.Warhammer: return DssConst.WeaponDamage_Warhammer;
+                case ItemResourceType.TwoHandSword: return DssConst.WeaponDamage_TwoHandSword;
+                case ItemResourceType.KnightsLance: return DssConst.WeaponDamage_KnigtsLance;
+                case ItemResourceType.SlingShot: return DssConst.WeaponDamage_Slingshot;
+                case ItemResourceType.ThrowingSpear: return DssConst.WeaponDamage_Throwingspear;
+                case ItemResourceType.Bow: return DssConst.WeaponDamage_Bow;
+                case ItemResourceType.LongBow: return DssConst.WeaponDamage_Longbow;
+                case ItemResourceType.Crossbow: return DssConst.WeaponDamage_CrossBow;
+                case ItemResourceType.MithrilBow: return DssConst.WeaponDamage_MithrilBow;
+
+                case ItemResourceType.HandCannon: return DssConst.WeaponDamage_Handcannon;
+                case ItemResourceType.HandCulverin: return DssConst.WeaponDamage_Handculvetin;
+                case ItemResourceType.Rifle: return DssConst.WeaponDamage_Rifle;
+                case ItemResourceType.Blunderbus: return DssConst.WeaponDamage_Blunderbus;
+
+                case ItemResourceType.Ballista: return DssConst.WeaponDamage_Ballista;
+                case ItemResourceType.Manuballista: return DssConst.WeaponDamage_ManuBallista;
+                case ItemResourceType.Catapult: return DssConst.WeaponDamage_Catapult;
+
+                case ItemResourceType.SiegeCannonBronze: return DssConst.WeaponDamage_SiegeCannonBronze;
+                case ItemResourceType.ManCannonBronze: return DssConst.WeaponDamage_ManCannonBronze;
+                case ItemResourceType.SiegeCannonIron: return DssConst.WeaponDamage_SiegeCannonIron;
+                case ItemResourceType.ManCannonIron: return DssConst.WeaponDamage_ManCannonIron;
 
                 default: throw new NotImplementedException();
             }
         }
 
-        public static Resource.ItemResourceType WeaponItem(MainWeapon weapon)
-        {
-            switch (weapon)
-            {
-                case MainWeapon.SharpStick: return Resource.ItemResourceType.SharpStick;
-                case MainWeapon.Sword: return Resource.ItemResourceType.Sword;
-                case MainWeapon.TwoHandSword: return Resource.ItemResourceType.TwoHandSword;
-                case MainWeapon.KnightsLance: return Resource.ItemResourceType.KnightsLance;
-                case MainWeapon.Bow: return Resource.ItemResourceType.Bow;
-                case MainWeapon.Longbow: return Resource.ItemResourceType.LongBow;
-                case MainWeapon.Ballista: return Resource.ItemResourceType.Ballista;
+        //public static Resource.ItemResourceType WeaponItem(ItemResourceType weapon)
+        //{
+        //    switch (weapon)
+        //    {
+        //        case ItemResourceType.SharpStick: return Resource.ItemResourceType.SharpStick;
+        //        case ItemResourceType.Sword: return Resource.ItemResourceType.Sword;
+        //        case ItemResourceType.TwoHandSword: return Resource.ItemResourceType.TwoHandSword;
+        //        case ItemResourceType.KnightsLance: return Resource.ItemResourceType.KnightsLance;
+        //        case ItemResourceType.Bow: return Resource.ItemResourceType.Bow;
+        //        case ItemResourceType.LongBow: return Resource.ItemResourceType.LongBow;
+        //        case ItemResourceType.Ballista: return Resource.ItemResourceType.Ballista;
 
-                default: throw new NotImplementedException();
-            }
-        }
+        //        default: throw new NotImplementedException();
+        //    }
+        //}
 
-        public static int ArmorHealth(ArmorLevel armorLevel)
+        public static int ArmorHealth(ItemResourceType armorLevel)
         {
             switch (armorLevel)
             {
-                case ArmorLevel.None: return DssConst.ArmorHealth_None;
-                case ArmorLevel.Light: return DssConst.ArmorHealth_Light;
-                case ArmorLevel.Medium: return DssConst.ArmorHealth_Medium;
-                case ArmorLevel.Heavy: return DssConst.ArmorHealth_Heavy;
+                case ItemResourceType.NONE: return DssConst.ArmorHealth_None;
+                case ItemResourceType.PaddedArmor: return DssConst.ArmorHealth_Padded;
+                case ItemResourceType.HeavyPaddedArmor: return DssConst.ArmorHealth_HeavyPadded;
+                case ItemResourceType.BronzeArmor: return DssConst.ArmorHealth_Bronze;
+                case ItemResourceType.IronArmor: return DssConst.ArmorHealth_Mail;
+                case ItemResourceType.HeavyIronArmor: return DssConst.ArmorHealth_HeavyMail;
+                case ItemResourceType.LightPlateArmor: return DssConst.ArmorHealth_Plate;
+                case ItemResourceType.FullPlateArmor: return DssConst.ArmorHealth_FullPlate;
+                case ItemResourceType.MithrilArmor: return DssConst.ArmorHealth_Mithril;
                 default: throw new NotImplementedException();
             }
         }
 
-        public static Resource.ItemResourceType ArmorItem(ArmorLevel armorLevel)
-        {
-            switch (armorLevel)
-            {
-                case ArmorLevel.None: return Resource.ItemResourceType.NONE;
-                case ArmorLevel.Light: return Resource.ItemResourceType.PaddedArmor;
-                case ArmorLevel.Medium: return Resource.ItemResourceType.IronArmor;
-                case ArmorLevel.Heavy: return Resource.ItemResourceType.HeavyIronArmor;
-                default: throw new NotImplementedException();
-            }
-        }
+        //public static Resource.ItemResourceType ArmorItem(ItemResourceType armorLevel)
+        //{
+        //    switch (armorLevel)
+        //    {
+        //        case ItemResourceType.None: return Resource.ItemResourceType.NONE;
+        //        case ItemResourceType.PaddedArmor: return Resource.ItemResourceType.PaddedArmor;
+        //        case ItemResourceType.Mail: return Resource.ItemResourceType.IronArmor;
+        //        case ItemResourceType.FullPlate: return Resource.ItemResourceType.HeavyIronArmor;
+        //        default: throw new NotImplementedException();
+        //    }
+        //}
 
         public static float TrainingAttackSpeed(TrainingLevel training)
         {
@@ -842,7 +1143,7 @@ namespace VikingEngine.DSSWars.Conscript
             }
         }
 
-        public static float TrainingTime(TrainingLevel training, bool nobelMen)
+        public static float TrainingTime(TrainingLevel training, BarracksType type)
         {
             float result;
             switch (training)
@@ -863,37 +1164,47 @@ namespace VikingEngine.DSSWars.Conscript
                 default: throw new NotImplementedException();
             }
 
-            if (nobelMen)
-            {
-                result += DssConst.TrainingTimeSec_NobelmenAdd;
+            switch (type)
+            { 
+                case BarracksType.Knight:
+                    result += DssConst.TrainingTimeSec_NobelmenAdd;
+                    break;
+                case BarracksType.Gun:
+                case BarracksType.Cannon:
+                    result /= 2;
+                    break;
             }
-
+            
             return result;
         }
     }
 
-    enum ArmorLevel
-    {
-        None,
-        Light,
-        Medium,
-        Heavy,
-        NUM
-    }
+    //enum ArmorLevel
+    //{
+    //    None,
+    //    PaddedArmor,
+    //    HeavyPaddedArmor,
+    //    Mail,
+    //    HeavyMail,
+    //    Plate,
+    //    FullPlate,
+    //    Mithril,
+    //    NUM
+    //}
 
-    enum MainWeapon
-    {
-        SharpStick,
-        Sword,
-        Pike,
-        Bow,
-        CrossBow,
-        TwoHandSword,
-        KnightsLance,
-        Ballista,
-        Longbow,
-        NUM
-    }
+    //enum MainWeapon
+    //{
+    //    SharpStick,
+    //    Sword,
+    //    Pike,
+    //    Bow,
+    //    CrossBow,
+    //    TwoHandSword,
+    //    KnightsLance,
+    //    Ballista,
+    //    Longbow,
+    //    NUM
+    //}
 
     enum TrainingLevel
     {
@@ -925,5 +1236,15 @@ namespace VikingEngine.DSSWars.Conscript
         CollectingEquipment,
         CollectingMen,
         Training,
+    }
+
+    enum BarracksType
+    { 
+        Soldier,
+        Archer,
+        Warmashine,
+        Knight,
+        Gun,
+        Cannon,
     }
 }

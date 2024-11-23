@@ -46,37 +46,37 @@ namespace VikingEngine.DSSWars.Display.Translation
             return  (SpriteName)((int)SpriteName.WarsUnitLevelMinimal + (int)level);
         }
 
-        public static string Armor(ArmorLevel level)
-        {
-            switch (level)
-            {
-                case ArmorLevel.None:
-                    return "None";
-                case ArmorLevel.Light: return DssRef.lang.Resource_TypeName_LightArmor;
-                case ArmorLevel.Medium: return DssRef.lang.Resource_TypeName_MediumArmor;
-                case ArmorLevel.Heavy: return DssRef.lang.Resource_TypeName_HeavyArmor;
+        //public static string Armor(ArmorLevel level)
+        //{
+        //    switch (level)
+        //    {
+        //        case ArmorLevel.None:
+        //            return "None";
+        //        case ArmorLevel.PaddedArmor: return DssRef.lang.Resource_TypeName_LightArmor;
+        //        case ArmorLevel.Mail: return DssRef.lang.Resource_TypeName_MediumArmor;
+        //        case ArmorLevel.FullPlate: return DssRef.lang.Resource_TypeName_HeavyArmor;
 
-                default:
-                    throw new NotImplementedException();
-            }
-        }
+        //        default:
+        //            throw new NotImplementedException();
+        //    }
+        //}
 
-        public static string Weapon(MainWeapon weapon)
-        {
-            switch (weapon)
-            {
-                case MainWeapon.SharpStick: return DssRef.lang.Resource_TypeName_SharpStick;
-                case MainWeapon.Sword: return DssRef.lang.Resource_TypeName_Sword;
-                case MainWeapon.TwoHandSword: return DssRef.lang.Resource_TypeName_TwoHandSword;
-                case MainWeapon.KnightsLance: return DssRef.lang.Resource_TypeName_KnightsLance;
-                case MainWeapon.Bow: return DssRef.lang.Resource_TypeName_Bow;
-                case MainWeapon.Longbow: return DssRef.todoLang.Resource_TypeName_Longbow;
-                case MainWeapon.Ballista: return DssRef.lang.UnitType_Ballista;
+        //public static string Weapon(MainWeapon weapon)
+        //{
+        //    switch (weapon)
+        //    {
+        //        case MainWeapon.SharpStick: return DssRef.lang.Resource_TypeName_SharpStick;
+        //        case MainWeapon.Sword: return DssRef.lang.Resource_TypeName_Sword;
+        //        case MainWeapon.TwoHandSword: return DssRef.lang.Resource_TypeName_TwoHandSword;
+        //        case MainWeapon.KnightsLance: return DssRef.lang.Resource_TypeName_KnightsLance;
+        //        case MainWeapon.Bow: return DssRef.lang.Resource_TypeName_Bow;
+        //        case MainWeapon.Longbow: return DssRef.todoLang.Resource_TypeName_Longbow;
+        //        case MainWeapon.Ballista: return DssRef.lang.UnitType_Ballista;
 
-                default:
-                    return TextLib.Error;
-            }
-        }
+        //        default:
+        //            return TextLib.Error;
+        //    }
+        //}
 
         public static string Training(TrainingLevel training)
         {
@@ -224,7 +224,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                     {
                         case TerrainBuildingType.Logistics:
                             return DssRef.todoLang.BuildingType_Logistics;
-                        case TerrainBuildingType.Barracks:
+                        case TerrainBuildingType.SoldierBarracks:
                             return DssRef.lang.BuildingType_Barracks;
                         case TerrainBuildingType.Bank:
                             return DssRef.todoLang.BuildingType_Bank;
@@ -355,8 +355,15 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.lang.BuildingType_Postal_Description;
                 case TerrainBuildingType.Recruitment:
                     return DssRef.lang.BuildingType_Recruitment_Description;
-                case TerrainBuildingType.Barracks:
+
+                case TerrainBuildingType.SoldierBarracks:
+                case TerrainBuildingType.ArcherBarracks:
+                case TerrainBuildingType.WarmashineBarracks:
+                case TerrainBuildingType.KnightsBarracks:
+                case TerrainBuildingType.GunBarracks:
+                case TerrainBuildingType.CannonBarracks:
                     return DssRef.lang.BuildingType_Barracks_Description;
+
                 case TerrainBuildingType.Work_Cook:
                     return DssRef.lang.BuildingType_Cook_Description;
                 case TerrainBuildingType.Work_Bench:
@@ -384,6 +391,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         {
             switch (item)
             {
+                case ItemResourceType.NONE: return DssRef.todoLang.Hud_None;
+
                 case ItemResourceType.GoldOre: return DssRef.lang.Resource_TypeName_GoldOre;
                 case ItemResourceType.Gold: return DssRef.lang.ResourceType_Gold;
 
@@ -547,6 +556,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.todoLang.Resource_TypeName_LightPlateArmor;
                 case ItemResourceType.FullPlateArmor:
                     return DssRef.todoLang.Resource_TypeName_FullPlateArmor;
+                case ItemResourceType.MithrilArmor:
+                    return DssRef.todoLang.Resource_TypeName_MithrilArmor;
 
 
                 default:

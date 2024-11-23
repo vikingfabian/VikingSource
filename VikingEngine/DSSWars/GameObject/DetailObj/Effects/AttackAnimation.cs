@@ -161,6 +161,9 @@ namespace VikingEngine.DSSWars.GameObject
         KnifeThrow,
         SecondaryJavelin,
         Javelin,
+
+        GunShot,
+        GunBlast,
         NUM_NON
     }
 

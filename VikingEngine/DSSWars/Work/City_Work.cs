@@ -567,7 +567,7 @@ namespace VikingEngine.DSSWars.GameObject
                         case TerrainBuildingType.Brewery:
                             if (workTemplate.craft_beer.HasPrio() &&
                                 res_beer.needMore() &&
-                                CraftBuildingLib.CraftBrewery.hasResources(this) &&
+                                CraftBuildingLib.Brewery.hasResources(this) &&
                                 isFreeTile(pos))
                             {
                                 workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Beer, pos, workTemplate.craft_beer.value, distanceValue));

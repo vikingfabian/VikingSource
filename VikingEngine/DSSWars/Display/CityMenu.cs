@@ -569,6 +569,9 @@ namespace VikingEngine.DSSWars.Display
 
                     city.res_HeavyPaddedArmor.toMenu(content, ItemResourceType.HeavyPaddedArmor, false, ref reachedBuffer);
                     blueprintButton(player, content, CraftResourceLib.HeavyPaddedArmor);
+                    
+                    city.res_BronzeArmor.toMenu(content, ItemResourceType.BronzeArmor, false, ref reachedBuffer);
+                    blueprintButton(player, content, CraftResourceLib.BronzeArmor);
 
                     city.res_mailArmor.toMenu(content, ItemResourceType.IronArmor, false, ref reachedBuffer);
                     blueprintButton(player, content, CraftResourceLib.MailArmor);

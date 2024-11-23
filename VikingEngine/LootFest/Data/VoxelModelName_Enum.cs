@@ -526,6 +526,7 @@ namespace VikingEngine.LootFest
         wars_culvertin,
         wars_handcannon,
         wars_slingman,
+        wars_javelin,
         wars_hammer,
         city_water,
         city_quarry,
