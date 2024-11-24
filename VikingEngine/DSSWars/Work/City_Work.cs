@@ -719,7 +719,7 @@ namespace VikingEngine.DSSWars.GameObject
                 int count = Math.Min(structure.EmptyLand.Count, FuelFarmCount);
                 for (int i = 0; i < count; ++i) 
                 {
-                    BuildLib.TryAutoBuild(structure.EmptyLand[i], TerrainMainType.Foil, fuelType);
+                    BuildLib.TryAutoBuild(structure.EmptyLand[i], TerrainMainType.Foil, fuelType, Ref.rnd.Int(1, TerrainContent.FarmCulture_MaxSize));
                 }                
             }
         }

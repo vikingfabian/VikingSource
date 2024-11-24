@@ -600,6 +600,16 @@ namespace VikingEngine.DSSWars
             }
             return DssRef.storage.speed5x;
         }
+        public bool longerBuildQueueProperty(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                DssRef.storage.longerBuildQueue = value;
+
+                DssRef.storage.Save(null);
+            }
+            return DssRef.storage.longerBuildQueue;
+        }
 
         public bool tutorialProperty(int index, bool set, bool value)
         {
@@ -741,6 +751,7 @@ namespace VikingEngine.DSSWars
                 new GuiCheckbox(DssRef.lang.GameMenu_AutoSave, null, autoSaveProperty, layout);
                 new GuiCheckbox(DssRef.lang.Tutorial_MenuOption, null, tutorialProperty, layout);
                 new GuiCheckbox(string.Format( DssRef.todoLang.GameMenu_UseSpeedX, LocalPlayer.MaxSpeedOption), null, speed5Property, layout);
+                new GuiCheckbox(DssRef.todoLang.GameMenu_LongerBuildQueue, null, longerBuildQueueProperty, layout);
             }
             layout.End();
 

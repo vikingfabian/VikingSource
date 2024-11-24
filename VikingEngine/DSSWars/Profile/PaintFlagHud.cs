@@ -70,7 +70,7 @@ namespace VikingEngine.DSSWars.Profile
 
                 if (state.controllerPickColorState)
                 {
-                    content.h2(PaintFlagState.ProfileColorName(state.selectedColorType));
+                    content.h2(PaintFlagState.ProfileColorName(state.selectedColorType)).overrideColor = HudLib.TitleColor_Label;
                     content.icontext(SpriteName.LeftStick, DssRef.lang.ProfileEditor_Hue);
                     content.icontext(SpriteName.RightStick, DssRef.lang.ProfileEditor_Lightness);
                     content.newParagraph();
@@ -79,7 +79,7 @@ namespace VikingEngine.DSSWars.Profile
                 }
                 else
                 {
-                    content.text(DssRef.lang.FlagEditor_Description);
+                    content.text(DssRef.lang.FlagEditor_Description).overrideColor = HudLib.InfoYellow_Light;
                     content.newLine();
 
                     content.icontext(state.VisualInput.FlagDesign_PaintBucket.Icon, DssRef.lang.FlagEditor_Bucket);
@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars.Profile
                     }
                     else
                     {
-                        content.h2(DssRef.lang.ProfileEditor_MoveImage);
+                        content.h2(DssRef.lang.ProfileEditor_MoveImage).overrideColor = HudLib.TitleColor_Label;
                         content.newLine();
                         content.Button(DssRef.lang.ProfileEditor_MoveImageUp, new RbAction1Arg<IntVector2>(state.moveOption, IntVector2.NegativeY), null, true);
                         content.newLine();
@@ -140,7 +140,7 @@ namespace VikingEngine.DSSWars.Profile
 
         private void colorTypes()
         {
-            content.h2(DssRef.lang.ProfileEditor_FlagColorsTitle);
+            content.h2(DssRef.lang.ProfileEditor_FlagColorsTitle).overrideColor = HudLib.TitleColor_Label;
             content.newLine();
             flagcolor(ProfileColorType.Main);
             flagcolor(ProfileColorType.Detail1);
@@ -148,7 +148,7 @@ namespace VikingEngine.DSSWars.Profile
 
             content.newParagraph();
 
-            content.h2(DssRef.lang.ProfileEditor_PeopleColorsTitle);
+            content.h2(DssRef.lang.ProfileEditor_PeopleColorsTitle).overrideColor = HudLib.TitleColor_Label;
             content.newLine();
 
             peoplecolor(ProfileColorType.Skin);

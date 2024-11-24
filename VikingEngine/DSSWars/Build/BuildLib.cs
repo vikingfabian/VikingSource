@@ -171,15 +171,15 @@ namespace VikingEngine.DSSWars.Build
             return false;
         }
 
-        public static bool TryAutoBuild(IntVector2 subTilePos, TerrainMainType mainType, int terrainSubType)
+        public static bool TryAutoBuild(IntVector2 subTilePos, TerrainMainType mainType, int terrainSubType, int amount)
         {
             SubTile subTile;
             if (DssRef.world.subTileGrid.TryGet(subTilePos, out subTile))
             {
                 if (CanAutoBuildHere(ref subTile))
                 {
-                    subTile.SetType(mainType, terrainSubType, 1);
-                    EditSubTile edit = new EditSubTile(subTilePos, subTile, true, false, false);
+                    subTile.SetType(mainType, terrainSubType, amount);
+                    EditSubTile edit = new EditSubTile(subTilePos, subTile, true, true, false);
                     edit.Submit();
                     //DssRef.world.subTileGrid.Set(subTilePos, subTile);
                     return true;

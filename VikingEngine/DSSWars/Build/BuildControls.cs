@@ -155,7 +155,7 @@ namespace VikingEngine.DSSWars.Build
                             }
                             else
                             {
-                                content.Add(new RichBoxText(string.Format(DssRef.todoLang.XP_UnlockBuildQueue, DssConst.WorkQueue_LogisticsLevel1)));
+                                content.Add(new RichBoxText(string.Format(DssRef.todoLang.XP_UnlockBuildQueue, City.LevelToMaxBuildQueue(1))));
                             }
 
                             foreach (var building in BuildLib.LogisticsUnlockBuildings)

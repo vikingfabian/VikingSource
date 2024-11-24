@@ -27,6 +27,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string Info_FooodAndDeliveryLocation => "By default, workers go to the city hall to eat or drop off items";
         public string GameMenu_UseSpeedX => "{0} speed option";
+        public string GameMenu_LongerBuildQueue => "Extended build queue";
 
         public string Diplomacy_RelationWithOthers => "Their relations with others";
         public string Automation_queue_description => "Will keep repeating until the que is empty";

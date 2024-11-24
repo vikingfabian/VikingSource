@@ -25,6 +25,18 @@
 /processorParam:TextureFormat=Color
 /build:DSS/dss_bg.png
 
+#begin DSS/flag painter bg.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DSS/flag painter bg.png
+
 #begin DSS/Map/map_sz0_i1.map
 /copy:DSS/Map/map_sz0_i1.map
 

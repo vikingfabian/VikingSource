@@ -101,12 +101,38 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int MaxBuildQueue()
         {
-            switch (buildingLevel_logistics)
+            //int queue = int.MaxValue;
+            //switch (buildingLevel_logistics)
+            //{
+            //    default : return queue;
+            //    case 0: queue = DssConst.WorkQueue_Start; break;
+            //    case 1: queue = DssConst.WorkQueue_LogisticsLevel1; break;
+            //}
+
+            //if (DssRef.storage.longerBuildQueue)
+            //{
+            //    queue *= 2;
+            //}
+
+            return LevelToMaxBuildQueue(buildingLevel_logistics); //return queue;
+        }
+
+        public static int LevelToMaxBuildQueue(int level)
+        {
+            int queue = int.MaxValue;
+            switch (level)
             {
-                default: return DssConst.WorkQueue_Start;
-                case 1: return DssConst.WorkQueue_LogisticsLevel1;
-                case 2: return int.MaxValue;
+                default: return queue;
+                case 0: queue = DssConst.WorkQueue_Start; break;
+                case 1: queue = DssConst.WorkQueue_LogisticsLevel1; break;
             }
+
+            if (DssRef.storage.longerBuildQueue)
+            {
+                queue *= 2;
+            }
+
+            return queue;
         }
 
         public void upgradeLogistics()
