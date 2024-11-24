@@ -3,6 +3,14 @@
 * Delivery: auto city take other deliveries into account
 * save of food safeguard setting
 
+# WORKER PATH #
+Ha en loop som går igenom tiles, om det finns 1+ byggnader, räkna tid från hall till slumpad byggnad, tid till närmast mat och avlämning
+Plus räkna tid att passera i verti hori riktning (gör en path som fram, diagonal up ner, till har gått 4 tiles - kanske upp ner)
+Gissat avstånd är lägsta av att passera centrum eller snabbast verti hori
+Alternativt ha en hash dictionary mellan alla tiles i en stad
+Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
+
+
 #Todo (OPT)#
 Tile till struct
 Tänk på alla object ligger på heap (ta bort new)
