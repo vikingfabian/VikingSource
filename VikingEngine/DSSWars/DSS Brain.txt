@@ -1,8 +1,4 @@
 ﻿-Change Log-
-* Randomized start farm growth
-* All farming yield 50% more resources
-* Secret menu option that extends the build queue limit
-* Improved flag painter hud
 
 
 #Todo (xmas patch)#
