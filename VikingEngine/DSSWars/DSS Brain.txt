@@ -6,7 +6,13 @@ Double soldier health
 #Todo (xmas patch)#
 
 #Todo (XP)#
+-Full automation
+-build prio, remove building
+-build placement bonus
+
+(-house variants)
 * wood cutter/stone cutter shed, improved working radius
++  ports can speed up how much u can send or recieve
 * water expansion
 
 * annoyed by the deliveries being inefficient
