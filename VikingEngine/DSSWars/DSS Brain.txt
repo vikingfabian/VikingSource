@@ -1,6 +1,9 @@
 ﻿-Change Log-
 
 
+todo demolish
+-räkna byggnader baklänges, som tex workerhuts
+
 #Todo (xmas patch)#
 
 new game - Skip language crashes game

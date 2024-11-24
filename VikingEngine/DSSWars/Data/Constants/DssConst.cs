@@ -101,6 +101,7 @@ namespace VikingEngine.DSSWars
         public static float WorkTime_BogIron = WorkTime_Mine * 2;
         public static float WorkTime_Craft = 2;
         public static float WorkTime_Building = 40;
+        public static float WorkTime_Demolish = 10;
 
         public static int Worker_TrossWorkerCarryWeight = 4;
         public static int Worker_MaxEnergy = 500;

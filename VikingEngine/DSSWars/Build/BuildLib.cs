@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.ToGG.ToggEngine.Map;
 
 namespace VikingEngine.DSSWars.Build
 {
@@ -187,6 +189,54 @@ namespace VikingEngine.DSSWars.Build
             }
 
             return false;
+        }
+
+        public static void Demolish(IntVector2 subTilePos)
+        {
+            var subTile = DssRef.world.subTileGrid.Get(subTilePos);
+            var buildingType = BuildLib.GetType(subTile.mainTerrain, subTile.subTerrain);
+            if (buildingType != BuildAndExpandType.NUM_NONE)
+            {
+                var bp = BuildOptions[(int)buildingType].blueprint;
+                foreach (var r in bp.resources)
+                {
+                    int returnAmount = r.amount / 2;
+                    if (returnAmount > 0)
+                    {
+                        DssRef.state.resources.addItem(
+                            new Resource.ItemResource(
+                              r.type,
+                              subTile.terrainQuality,
+                              0,
+                              returnAmount),
+                          ref subTile.collectionPointer);
+                    }
+                }               
+
+                subTile.mainTerrain = TerrainMainType.Resourses;
+                subTile.subTerrain = (int)TerrainResourcesType.Rubble;
+
+                EditSubTile edit = new EditSubTile(subTilePos, subTile, true, true, true);
+                edit.Submit();
+            }
+        }
+
+        public static BuildAndExpandType GetType(TerrainMainType main, int subType)
+        {
+            if (main == TerrainMainType.DefaultLand || main == TerrainMainType.DefaultSea)
+            { 
+                return BuildAndExpandType.NUM_NONE;
+            }
+
+            foreach (var opt in BuildOptions)
+            {
+                if (opt.mainType == main && opt.subType == subType)
+                { 
+                    return opt.buildType;
+                }
+            }
+
+            return BuildAndExpandType.NUM_NONE;
         }
     }
 

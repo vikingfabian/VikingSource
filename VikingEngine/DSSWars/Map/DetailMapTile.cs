@@ -581,7 +581,7 @@ namespace VikingEngine.DSSWars.Map
                     break;
                 case TerrainResourcesType.Rubble:
                     scale = 0.1f;
-                    modelName = LootFest.VoxelModelName.;
+                    modelName = LootFest.VoxelModelName.resource_rubble;
                     break;
 
                 default:

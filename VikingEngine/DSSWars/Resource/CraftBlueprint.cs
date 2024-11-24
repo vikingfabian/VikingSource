@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.Resource
     {
         //SpriteName icon;
         //string name;
-        UseResource[] resources;
+        public UseResource[] resources;
         CraftResultType resultType;
         int resultSubType;
         int resultAmount;

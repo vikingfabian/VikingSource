@@ -9,9 +9,9 @@ namespace VikingEngine.DSSWars.Display.Translation
     class TodoTranslation
     {
 
-        
 
 
+        public string BuildHud_Demolish => "Demolish";
     }
 
 }

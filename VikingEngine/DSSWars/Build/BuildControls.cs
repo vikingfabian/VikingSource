@@ -47,9 +47,9 @@ namespace VikingEngine.DSSWars.Build
         }
 
         public void onTileSelect(SelectedSubTile selectedSubTile)
-        {   
+        {
             if (buildMode == SelectTileResult.Build)
-            {   
+            {
                 //todo check toggle
                 var mayBuild = selectedSubTile.MayBuild(player);
                 if (mayBuild == MayBuildResult.Yes || mayBuild == MayBuildResult.Yes_ChangeCity)
@@ -64,10 +64,16 @@ namespace VikingEngine.DSSWars.Build
                         player.orders.orderConflictingSubTile(selectedSubTile.subTilePos, true);
                     }
                 }
-            }            
-        }
+            }
+            else if (buildMode == SelectTileResult.Demolish)
+            {
+                if (selectedSubTile.MayDemolish(player))
+                {
+                    player.orders.addOrder(new DemolishOrder(WorkTemplate.MaxPrio, true, selectedSubTile.city, selectedSubTile.subTilePos), ActionOnConflict.Toggle);
+                }
+            }
 
-        
+        }
 
         public void autoPlaceBuilding(City city, int count)
         {
@@ -465,7 +471,13 @@ namespace VikingEngine.DSSWars.Build
             content.newParagraph();
 
             BuildOption buildOpt = null;
-                
+
+            content.Add(new RichboxButton(new List<AbsRichBoxMember>
+            {
+                new RichBoxText(DssRef.todoLang.BuildHud_Demolish)
+            }, new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.Demolish, SoundLib.menu)));
+
+            content.space();
 
             if (buildMode != SelectTileResult.None)
             {
@@ -488,7 +500,7 @@ namespace VikingEngine.DSSWars.Build
             int orderLength = 0;
             foreach (var m in player.orders.orders)
             {
-                if (m.GetWorkOrder(city) != null)
+                if (m.GetWorkType(city) != OrderType.NONE)
                 {
                     orderLength++;
                 }

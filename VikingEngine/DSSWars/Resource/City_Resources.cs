@@ -273,6 +273,7 @@ namespace VikingEngine.DSSWars.GameObject
             usesSafeGuard = false;
             switch (type)
             {
+                case ItemResourceType.RawFood_Group:
                 case ItemResourceType.Wheat:
                 case ItemResourceType.Egg:
                 case ItemResourceType.Hen:
@@ -291,6 +292,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     return res_food.needMore() || res_skinLinnen.needMore();
 
+                case ItemResourceType.Wood_Group:
                 case ItemResourceType.DryWood:
                 case ItemResourceType.SoftWood:
                 case ItemResourceType.HardWood:
@@ -305,11 +307,12 @@ namespace VikingEngine.DSSWars.GameObject
                     return false;
 
                 default:
-#if DEBUG
-                    throw new NotImplementedException();
-#else
-                    return false;
-#endif
+//#if DEBUG
+                    return GetGroupedResource(type).needMore();
+                    //throw new NotImplementedException();
+//#else
+//                    return false;
+//#endif
             }
         }
 

@@ -104,7 +104,7 @@ namespace VikingEngine.DSSWars.Players.Orders
         {
             for (int i = orders.Count - 1; i >= 0; --i)
             {
-                if (orders[i].GetWorkOrder(city) != null)
+                if (orders[i].GetWorkType(city) !=  OrderType.NONE)
                 {
                     orders[i].DeleteMe();
                     orders.RemoveAt(i);

@@ -180,7 +180,7 @@ namespace VikingEngine.DSSWars.Display
                         bp.listResources(content, subTile.city);
 
                         break;
-                    case Players.SelectTileResult.Destroy:
+                    case Players.SelectTileResult.Demolish:
                         title = new RichBoxText(DssRef.lang.Build_DestroyBuilding);
                         content.Add(title);
                         break;

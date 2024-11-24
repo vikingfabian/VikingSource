@@ -517,6 +517,12 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/bow2.wav
 
+#begin DSS/Sound/break.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/break.wav
+
 #begin DSS/Sound/button_hover1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
