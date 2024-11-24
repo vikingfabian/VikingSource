@@ -40,6 +40,7 @@ namespace VikingEngine.DSSWars.Map
                 LootFest.VoxelModelName.fol_farmculture,
 
                 LootFest.VoxelModelName.resource_tree,
+                LootFest.VoxelModelName.resource_rubble,
 
             };
         }
@@ -573,11 +574,16 @@ namespace VikingEngine.DSSWars.Map
 
             switch (resourceType)
             {
+               
                 case TerrainResourcesType.Wood:
                     scale = 0.1f;
                     modelName = LootFest.VoxelModelName.resource_tree;
                     break;
-                
+                case TerrainResourcesType.Rubble:
+                    scale = 0.1f;
+                    modelName = LootFest.VoxelModelName.;
+                    break;
+
                 default:
                     throw new NotImplementedException();
             }
@@ -586,9 +592,9 @@ namespace VikingEngine.DSSWars.Map
             //{
             //    foliage = new List<Foliage>(8);
             //}
-#if DEBUG
-            model.DebugName = "Resource pile " + model.DebugName;
-#endif
+//#if DEBUG
+//            model.DebugName = "Resource pile " + model.DebugName;
+//#endif
             addFoliage(new Foliage(modelName, rnd, wp, scale));
 
         }

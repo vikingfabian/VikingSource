@@ -576,10 +576,15 @@ namespace VikingEngine.DSSWars.GameObject
             return 40000 + workForceMax * 10;
         }
 
-       
-        public bool canIncreaseGuardSize(int count)
+
+        public bool canIncreaseGuardSize(int count, bool checkIfCapped)
         {
-            return (maxGuardSize + DssConst.ExpandGuardSize * count) <= workForceMax;
+            if (checkIfCapped && guardCount + 2 < maxGuardSize)
+            {
+                return false;
+            }
+
+            return (maxGuardSize + DssConst.ExpandGuardSize * count) <= workForceMax;            
         }
 
         public void expandWorkForce(int amount)
@@ -603,7 +608,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool buyCityGuards(bool commit, int count)
         {
-            if (canIncreaseGuardSize(count))
+            if (canIncreaseGuardSize(count, false))
             {
                 int totalCost = 0;
 

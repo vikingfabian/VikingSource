@@ -822,7 +822,7 @@ namespace VikingEngine.DSSWars.Display
         {
             RichBoxContent content = new RichBoxContent();
 
-            if (city.canIncreaseGuardSize(count))
+            if (city.canIncreaseGuardSize(count, false))
             {
                 content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
                 content.newLine();

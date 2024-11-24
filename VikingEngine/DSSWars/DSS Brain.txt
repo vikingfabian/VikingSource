@@ -3,9 +3,6 @@
 
 #Todo (xmas patch)#
 
-krig varning på ally
-new maps
-dölj carry amount
 new game - Skip language crashes game
 
 

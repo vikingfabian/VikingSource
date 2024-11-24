@@ -1441,6 +1441,12 @@
 #begin VoxelModel/LfWars/Pig.vox
 /copy:VoxelModel/LfWars/Pig.vox
 
+#begin VoxelModel/LfWars/resource_rubble.vox
+/copy:VoxelModel/LfWars/resource_rubble.vox
+
+#begin VoxelModel/LfWars/resource_tree.vox
+/copy:VoxelModel/LfWars/resource_tree.vox
+
 #begin VoxelModel/LfWars/war_archer_i2.vox
 /copy:VoxelModel/LfWars/war_archer_i2.vox
 

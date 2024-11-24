@@ -716,6 +716,7 @@ namespace VikingEngine.LootFest
         fol_farmculture2,
 
         resource_tree,
+        resource_rubble,
 
         decor_statue,
         city_pavement,
