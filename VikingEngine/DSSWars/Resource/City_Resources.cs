@@ -638,7 +638,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (safeguard)
             {
                 sprite = SpriteName.WarsStockpileAdd_Protected;
-                textstring = DssRef.todoLang.Resource_FoodSafeGuard_Active;
+                textstring = DssRef.lang.Resource_FoodSafeGuard_Active;
             }
             else
             {

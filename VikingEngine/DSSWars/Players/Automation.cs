@@ -205,7 +205,7 @@ namespace VikingEngine.DSSWars.Players
 
             content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
                 {
-                    new RichBoxText(string.Format(DssRef.todoLang.XP_UpgradeBuildingX, DssRef.todoLang.BuildingType_Logistics)),
+                    new RichBoxText(string.Format(DssRef.lang.XP_UpgradeBuildingX, DssRef.lang.BuildingType_Logistics)),
                 }, AutoUpgradeLogisticsProperty));
 
             content.newLine();

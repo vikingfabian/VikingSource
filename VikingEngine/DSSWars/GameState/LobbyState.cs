@@ -750,8 +750,8 @@ namespace VikingEngine.DSSWars
                 Ref.gamesett.optionsMenu(layout);
                 new GuiCheckbox(DssRef.lang.GameMenu_AutoSave, null, autoSaveProperty, layout);
                 new GuiCheckbox(DssRef.lang.Tutorial_MenuOption, null, tutorialProperty, layout);
-                new GuiCheckbox(string.Format( DssRef.todoLang.GameMenu_UseSpeedX, LocalPlayer.MaxSpeedOption), null, speed5Property, layout);
-                new GuiCheckbox(DssRef.todoLang.GameMenu_LongerBuildQueue, null, longerBuildQueueProperty, layout);
+                new GuiCheckbox(string.Format( DssRef.lang.GameMenu_UseSpeedX, LocalPlayer.MaxSpeedOption), null, speed5Property, layout);
+                new GuiCheckbox(DssRef.lang.GameMenu_LongerBuildQueue, null, longerBuildQueueProperty, layout);
             }
             layout.End();
 

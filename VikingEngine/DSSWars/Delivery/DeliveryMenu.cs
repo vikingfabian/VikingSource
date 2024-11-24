@@ -149,7 +149,7 @@ namespace VikingEngine.DSSWars.Delivery
                             {
                                 RichBoxContent content = new RichBoxContent();
                                 content.h2(DssRef.lang.Automation_Title).overrideColor = HudLib.TitleColor_Name;
-                                content.text(DssRef.todoLang.Delivery_AutoReciever_Description).overrideColor = HudLib.InfoYellow_Light;
+                                content.text(DssRef.lang.Delivery_AutoReciever_Description).overrideColor = HudLib.InfoYellow_Light;
                                 player.hud.tooltip.create(player, content, true);
                             }));
                     button.setGroupSelectionColor(HudLib.RbSettings, DeliveryProfile.ToCityAuto == currentStatus.profile.toCity);

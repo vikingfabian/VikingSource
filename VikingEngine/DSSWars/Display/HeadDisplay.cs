@@ -320,7 +320,7 @@ namespace VikingEngine.DSSWars.Display
                         content.ButtonDescription(player.input.NextArmy, DssRef.lang.Input_NextArmy);
                         content.ButtonDescription(player.input.NextBattle, DssRef.lang.Input_NextBattle);
 
-                        content.ButtonDescription(player.input.Build, DssRef.todoLang.Input_Build);
+                        content.ButtonDescription(player.input.Build, DssRef.lang.Input_Build);
                         content.ButtonDescription(player.input.Copy, DssRef.lang.Hud_CopySetup);
                         content.ButtonDescription(player.input.Paste, DssRef.lang.Hud_Paste);
 

@@ -94,11 +94,11 @@ namespace VikingEngine.DSSWars.Profile
                     colorTypes();
 
                     content.newParagraph();
-                    var undoContent = new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Hud_Undo) };
+                    var undoContent = new List<AbsRichBoxMember> { new RichBoxText(DssRef.lang.Hud_Undo) };
                     content.Add(new RichboxButton(undoContent, new RbAction(state.undo), null, state.undoHistory.Count > 1));
                     content.space();
 
-                    var redoContent = new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Hud_Redo) };
+                    var redoContent = new List<AbsRichBoxMember> { new RichBoxText(DssRef.lang.Hud_Redo) };
                     content.Add(new RichboxButton(redoContent, new RbAction(state.redo), null, state.redoHistory.Count > 0));
                     content.newParagraph();
                     if (state.controllerMode)
@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.Profile
                     }
                     if (state.controllerMode == false)
                     {
-                        content.Button(DssRef.todoLang.FlagEditor_ClearAll, new RbAction(state.clearAll), null, true);
+                        content.Button(DssRef.lang.FlagEditor_ClearAll, new RbAction(state.clearAll), null, true);
                     }
                     content.newLine();
                     content.Button(state.controllerMode ? SpriteName.ButtonBACK : SpriteName.NO_IMAGE, DssRef.lang.ProfileEditor_DiscardAndExit, new RbAction(state.discardAndExit), null, true);

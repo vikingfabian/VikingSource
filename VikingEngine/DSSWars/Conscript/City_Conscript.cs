@@ -282,7 +282,7 @@ namespace VikingEngine.DSSWars.GameObject
                         soldierProfile.skillBonus = 1.2f;
                     }
                     break;
-                case CityCulture.Nobelmen:
+                case CityCulture.Noblemen:
                     if (soldierProfile.conscript.KnightUnit())
                     {
                         soldierProfile.skillBonus = 1.2f;

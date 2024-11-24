@@ -1591,5 +1591,101 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string EndGameStatistics_DecorsBuilt => "建造的装饰：{0}";
         public override string EndGameStatistics_StatuesBuilt => "建造的雕像：{0}";
+
+
+
+        //############
+        // XMAS UPDATE
+        //############
+        public override string Info_FoodAndDeliveryLocation => "默认情况下，工人会去市政厅吃饭或放置物品";
+        public override string GameMenu_UseSpeedX => "{0} 速度选项";
+        public override string GameMenu_LongerBuildQueue => "扩展建造队列";
+
+        public override string Diplomacy_RelationWithOthers => "与他人的关系";
+        public override string Automation_queue_description => "队列空前将持续重复";
+
+        public override string BuildingType_Storehouse_Description => "工人可以在这里放置物品";
+
+        public override string Resource_TypeName_Longbow => "长弓";
+        public override string Resource_TypeName_Rapeseed => "油菜籽";
+        public override string Resource_TypeName_Hemp => "大麻";
+
+        public override string Resource_BogIronDescription => "采矿比使用沼泽铁更有效率。";
+
+        public override string Resource_FoodSafeGuard_Description => "安全防护。如果食品生产链的优先级降低至 {0} 以下，将最大化优先级。";
+        public override string Resource_FoodSafeGuard_Active => "安全防护已激活。";
+
+        public override string GameMenu_NextSong => "下一首歌";
+
+        public override string BuildingType_Bank => "银行";
+        public override string BuildingType_Bank_Description => "向其他城市发送金币";
+
+        public override string BuildingType_Logistics => "物流";
+        public override string BuildingType_Logistics_Description => "提升您的建筑指令能力";
+
+        public override string BuildingType_Logistics_NationSizeRequirement => "国家总劳动力：{0}";
+        public override string Requirements_XItemStorageOfY => "{0} 城市存储：{1}";
+
+        public override string XP_UnlockBuildQueue => "解锁建造队列至：{0}";
+        public override string XP_UnlockBuilding => "解锁建筑：";
+        public override string XP_Upgrade => "升级";
+
+        public override string XP_UpgradeBuildingX => "升级建筑：{0}";
+
+        public override string BuildHud_PerCycle => "每周期";
+        public override string BuildHud_MayCraft => "可能制作";
+        public override string BuildHud_WorkTime => "工作时间：{0}";
+        public override string BuildHud_GrowTime => "成长时间：{0}";
+        public override string BuildHud_Produce => "生产：";
+
+        public override string BuildHud_Queue => "允许建造队列：{0}/{1}";
+
+        public override string LandType_Flatland => "平原";
+        public override string LandType_Water => "水域";
+        public override string BuildingType_Wall => "墙";
+        public override string Delivery_AutoReciever_Description => "将发送至资源最少的城市";
+
+        public override string Hud_On => "开";
+        public override string Hud_Off => "关";
+
+        public override string Hud_Time_Seconds => "{0} 秒";
+        public override string Hud_Time_Minutes => "{0} 分钟";
+        public override string Hud_Undo => "撤销";
+        public override string Hud_Redo => "重做";
+
+        public override string Tag_ViewOnMap => "在地图上查看标签";
+
+        public override string MenuTab_Tag => "标签";
+
+        public override string Input_Build => "建造";
+
+        public override string FlagEditor_ClearAll => "清除所有";
+
+        public override string CityCulture_Stonemason => "石匠";
+        public override string CityCulture_Stonemason_Description => "改善石材采集";
+
+        public override string CityCulture_Brewmaster => "酿酒师";
+        public override string CityCulture_Brewmaster_Description => "增强啤酒生产";
+
+        public override string CityCulture_Weavers => "织工";
+        public override string CityCulture_Weavers_Description => "增强轻甲生产";
+
+        public override string CityCulture_SiegeEngineer => "攻城工程师";
+        public override string CityCulture_SiegeEngineer_Description => "更强大的攻城机器";
+
+        public override string CityCulture_Armorsmith => "铠甲匠";
+        public override string CityCulture_Armorsmith_Description => "改善铁甲生产";
+
+        public override string CityCulture_Noblemen => "贵族";
+        public override string CityCulture_Noblemen_Description => "更强大的骑士";
+
+        public override string CityCulture_Seafaring => "航海";
+        public override string CityCulture_Seafaring_Description => "海上特化的士兵拥有更强的船只";
+
+        public override string CityCulture_Backtrader => "背后交易者";
+        public override string CityCulture_Backtrader_Description => "更便宜的黑市";
+
+        public override string CityCulture_LawAbiding => "遵纪守法";
+        public override string CityCulture_LawAbiding_Description => "增加税收。没有黑市。";
     }
 }

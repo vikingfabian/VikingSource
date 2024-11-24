@@ -333,7 +333,7 @@ namespace VikingEngine.DSSWars
         Weavers,//.
         SiegeEngineer,//.
         Armorsmith,//.
-        Nobelmen,//.
+        Noblemen,//.
         Seafaring,//.
         Backtrader,//.
         Lawbiding,//.
