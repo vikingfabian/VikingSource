@@ -170,7 +170,7 @@ namespace VikingEngine.DSSWars.Display
 
                         if (subTile.city.buildingLevel_logistics < 2)
                         {
-                            content.text(string.Format(DssRef.todoLang.BuildHud_Queue, player.orders.buildQueue(subTile.city), subTile.city.MaxBuildQueue())).overrideColor = subTile.city.availableBuildQueue(player) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                            content.text(string.Format(DssRef.lang.BuildHud_Queue, player.orders.buildQueue(subTile.city), subTile.city.MaxBuildQueue())).overrideColor = subTile.city.availableBuildQueue(player) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                         }
                         buildOpt.blueprint.requirementToHud(content, subTile.city, out _);
 
@@ -180,7 +180,7 @@ namespace VikingEngine.DSSWars.Display
                         bp.listResources(content, subTile.city);
 
                         break;
-                    case Players.SelectTileResult.Destroy:
+                    case Players.SelectTileResult.Demolish:
                         title = new RichBoxText(DssRef.lang.Build_DestroyBuilding);
                         content.Add(title);
                         break;

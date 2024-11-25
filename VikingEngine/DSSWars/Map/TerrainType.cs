@@ -50,6 +50,7 @@ namespace VikingEngine.DSSWars.Map
     enum TerrainResourcesType
     {
         Wood,
+        Rubble,
         Storage,
         NUM_NONE
     }

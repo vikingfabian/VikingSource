@@ -16,6 +16,8 @@ namespace VikingEngine.DSSWars.Resource
         {
             items = new ItemProperties[(int)ItemResourceType.NUM];
 
+            
+
             items[(int)ItemResourceType.HardWood] = new ItemProperties(1f / 20);
             items[(int)ItemResourceType.SoftWood] = new ItemProperties(1f / 30);
             items[(int)ItemResourceType.DryWood] = new ItemProperties(1f / 60);
@@ -37,15 +39,15 @@ namespace VikingEngine.DSSWars.Resource
             items[(int)ItemResourceType.SharpStick] = new ItemProperties(1f / 10);
             items[(int)ItemResourceType.Sword] = new ItemProperties(1f / 5);
             items[(int)ItemResourceType.Bow] = new ItemProperties(1f / 10);
-#if !DEBUG
+//#if !DEBUG
             for (int i = 0; i < items.Length; ++i)
             {
                 if (items[i] == null)
                 { 
-                    items[i] = new ItemProperties(1f);
+                    items[i] = new ItemProperties(1f/30);
                 }
             }
-#endif
+//#endif
         }
 
         public static int CarryAmount(ItemResourceType item, float maxWeight = 1f)

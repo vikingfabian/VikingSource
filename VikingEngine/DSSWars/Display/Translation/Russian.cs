@@ -1590,5 +1590,99 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string EndGameStatistics_DecorsBuilt => "Построено декораций: {0}";
         public override string EndGameStatistics_StatuesBuilt => "Построено статуй: {0}";
 
+
+        //############
+        // XMAS UPDATE
+        //############
+        public override string Info_FoodAndDeliveryLocation => "По умолчанию рабочие идут в мэрию, чтобы поесть или сдать предметы";
+        public override string GameMenu_UseSpeedX => "Опция скорости {0}";
+        public override string GameMenu_LongerBuildQueue => "Расширенная очередь строительства";
+
+        public override string Diplomacy_RelationWithOthers => "Их отношения с другими";
+        public override string Automation_queue_description => "Будет повторяться, пока очередь не опустеет";
+
+        public override string BuildingType_Storehouse_Description => "Рабочие могут оставлять предметы здесь";
+
+        public override string Resource_TypeName_Longbow => "длинный лук";
+        public override string Resource_TypeName_Rapeseed => "рапс";
+        public override string Resource_TypeName_Hemp => "конопля";
+
+        public override string Resource_BogIronDescription => "Добыча железа более эффективна, чем использование болотной руды.";
+
+        public override string Resource_FoodSafeGuard_Description => "Защита. Максимизирует приоритет цепочки производства пищи, если он упадет ниже {0}.";
+        public override string Resource_FoodSafeGuard_Active => "Защита активирована.";
+
+        public override string GameMenu_NextSong => "Следующая песня";
+
+        public override string BuildingType_Bank => "Банк";
+        public override string BuildingType_Bank_Description => "Отправлять золото в другие города";
+
+        public override string BuildingType_Logistics => "Логистика";
+        public override string BuildingType_Logistics_Description => "Улучшите вашу способность заказывать строительство";
+
+        public override string BuildingType_Logistics_NationSizeRequirement => "Общая рабочая сила страны: {0}";
+        public override string Requirements_XItemStorageOfY => "Хранение в городе {0}: {1}";
+
+        public override string XP_UnlockBuildQueue => "Разблокировать очередь строительства до: {0}";
+        public override string XP_UnlockBuilding => "Разблокировать здание: ";
+        public override string XP_Upgrade => "Улучшение";
+
+        public override string XP_UpgradeBuildingX => "Улучшить здание: {0}";
+
+        public override string BuildHud_PerCycle => "За цикл";
+        public override string BuildHud_MayCraft => "Можно изготовить";
+        public override string BuildHud_WorkTime => "Время работы: {0}";
+        public override string BuildHud_GrowTime => "Время роста: {0}";
+        public override string BuildHud_Produce => "Производить:";
+
+        public override string BuildHud_Queue => "Допустимая очередь строительства: {0}/{1}";
+
+        public override string LandType_Flatland => "Равнина";
+        public override string LandType_Water => "Вода";
+        public override string BuildingType_Wall => "Стена";
+        public override string Delivery_AutoReciever_Description => "Отправлять в город с наименьшим количеством ресурсов";
+
+        public override string Hud_On => "Включено";
+        public override string Hud_Off => "Выключено";
+
+        public override string Hud_Time_Seconds => "{0} секунд";
+        public override string Hud_Time_Minutes => "{0} минут";
+        public override string Hud_Undo => "Отменить";
+        public override string Hud_Redo => "Повторить";
+
+        public override string Tag_ViewOnMap => "Посмотреть теги на карте";
+
+        public override string MenuTab_Tag => "Тег";
+
+        public override string Input_Build => "Строить";
+
+        public override string FlagEditor_ClearAll => "Очистить всё";
+
+        public override string CityCulture_Stonemason => "Каменщик";
+        public override string CityCulture_Stonemason_Description => "Улучшенная добыча камня";
+
+        public override string CityCulture_Brewmaster => "Пивовар";
+        public override string CityCulture_Brewmaster_Description => "Улучшенное производство пива";
+
+        public override string CityCulture_Weavers => "Ткачи";
+        public override string CityCulture_Weavers_Description => "Улучшенное производство легкой брони";
+
+        public override string CityCulture_SiegeEngineer => "Инженер осадных машин";
+        public override string CityCulture_SiegeEngineer_Description => "Более мощные осадные машины";
+
+        public override string CityCulture_Armorsmith => "Бронник";
+        public override string CityCulture_Armorsmith_Description => "Улучшенное производство железной брони";
+
+        public override string CityCulture_Noblemen => "Дворяне";
+        public override string CityCulture_Noblemen_Description => "Более мощные рыцари";
+
+        public override string CityCulture_Seafaring => "Мореходство";
+        public override string CityCulture_Seafaring_Description => "Солдаты с морской специализацией имеют более сильные корабли";
+
+        public override string CityCulture_Backtrader => "Черный торговец";
+        public override string CityCulture_Backtrader_Description => "Дешевый черный рынок";
+
+        public override string CityCulture_LawAbiding => "Законопослушный";
+        public override string CityCulture_LawAbiding_Description => "Больше налогов. Черный рынок недоступен.";
     }
 }

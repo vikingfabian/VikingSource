@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.Resource
     {
         //SpriteName icon;
         //string name;
-        UseResource[] resources;
+        public UseResource[] resources;
         CraftResultType resultType;
         int resultSubType;
         int resultAmount;
@@ -247,7 +247,7 @@ namespace VikingEngine.DSSWars.Resource
                         available = city.buildingCount_coalpit > 0;
                         break;
                     case CraftRequirement.Logistics1:
-                        reqText = string.Format(DssRef.todoLang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, City.Logistics1FoodStorage);
+                        reqText = string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, City.Logistics1FoodStorage);
                         available = city.res_food.amount >= City.Logistics1FoodStorage;
                         break;
 

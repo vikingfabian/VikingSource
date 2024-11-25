@@ -160,7 +160,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     subPos.Y += Ref.rnd.Int(1, WorldData.TileSubDivitions -1);
 
 
-                                    if (Build.BuildLib.TryAutoBuild(subPos, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut))
+                                    if (Build.BuildLib.TryAutoBuild(subPos, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, 1))
                                     {
                                         ++totalWorkerHutAndLevelCount;
 
@@ -178,10 +178,12 @@ namespace VikingEngine.DSSWars.GameObject
                                             {
                                                 TerrainMainType terrain;
                                                 int sub;
+                                                int maxAmount;
                                                 if (Ref.rnd.Chance(0.75))
                                                 {
                                                     terrain = TerrainMainType.Foil;
                                                     sub = (int)TerrainSubFoilType.WheatFarm;
+                                                    maxAmount = TerrainContent.FarmCulture_MaxSize;
                                                 }
                                                 else
                                                 {
@@ -189,14 +191,16 @@ namespace VikingEngine.DSSWars.GameObject
                                                     if (Ref.rnd.Chance(0.4))
                                                     {
                                                         sub = (int)TerrainBuildingType.PigPen;
+                                                        maxAmount = TerrainContent.PigMaxSize;
                                                     }
                                                     else
                                                     {
                                                         sub = (int)TerrainBuildingType.HenPen;
+                                                        maxAmount = TerrainContent.HenMaxSize;
                                                     }
                                                 }
                                                 
-                                                if (Build.BuildLib.TryAutoBuild(farmLoop.Position, terrain, sub))
+                                                if (Build.BuildLib.TryAutoBuild(farmLoop.Position, terrain, sub, Ref.rnd.Int(1, maxAmount)))
                                                 {
                                                     ++cultureCount;
                                                     if (cultureCount >= CulturesPerFarm)

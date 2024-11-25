@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars.Work
                         model.Frame = 0;
                         updateGroudY(true);
 
-                        if (status.work == WorkType.Build && !status.orderIsActive(city))
+                        if ((status.work == WorkType.Build || status.work == WorkType.Demolish) && !status.orderIsActive(city))
                         {
                             state = WorkerUnitState.None;
                             status.cancelWork();
@@ -190,6 +190,7 @@ namespace VikingEngine.DSSWars.Work
                             }
                             break;
                         case WorkType.Build:
+                        case WorkType.Demolish:
                             if (workAnimation_soundframe())
                             {
                                 SoundLib.hammer.Play(model.position);
@@ -233,6 +234,11 @@ namespace VikingEngine.DSSWars.Work
                             case WorkType.PickUpProduce:
                                 SoundLib.pickup.Play(model.position);
                                 break;
+
+                            case WorkType.Demolish:
+                                SoundLib.breaking.Play(model.position);
+                                break;
+
                             case WorkType.Starving:
                             case WorkType.Exit:
                                 DeleteMe();
@@ -260,7 +266,7 @@ namespace VikingEngine.DSSWars.Work
         {
             if (workAnimation.timeOut())
             {
-                model.Frame = model.Frame == 1 ? 2 : 1;
+                model.Frame = model.Frame == 0 ? 2 : 0;
                 return model.Frame == 2;
             }
 

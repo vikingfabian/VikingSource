@@ -25,6 +25,18 @@
 /processorParam:TextureFormat=Color
 /build:DSS/dss_bg.png
 
+#begin DSS/flag painter bg.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DSS/flag painter bg.png
+
 #begin DSS/Map/map_sz0_i1.map
 /copy:DSS/Map/map_sz0_i1.map
 
@@ -504,6 +516,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/bow2.wav
+
+#begin DSS/Sound/break.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/break.wav
 
 #begin DSS/Sound/button_hover1.wav
 /importer:WavImporter
@@ -1428,6 +1446,12 @@
 
 #begin VoxelModel/LfWars/Pig.vox
 /copy:VoxelModel/LfWars/Pig.vox
+
+#begin VoxelModel/LfWars/resource_rubble.vox
+/copy:VoxelModel/LfWars/resource_rubble.vox
+
+#begin VoxelModel/LfWars/resource_tree.vox
+/copy:VoxelModel/LfWars/resource_tree.vox
 
 #begin VoxelModel/LfWars/war_archer_i2.vox
 /copy:VoxelModel/LfWars/war_archer_i2.vox

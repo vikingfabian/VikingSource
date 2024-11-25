@@ -364,11 +364,19 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         for (int i = 0; i < orders_sp.orders.Count; ++i)
                         {
-                            var workOrder = orders_sp.orders[i].GetWorkOrder(this);
-                            if (workOrder != null)
+                            var order = orders_sp.orders[i];
+                            switch (order.GetWorkType(this))
                             {
-                                workQue.Add(workOrder.createWorkQue(out CraftBlueprint orderBluePrint));
+                                case OrderType.Build:
+                                    var workOrder = order.GetBuild();
+                                    workQue.Add(workOrder.createWorkQue(out CraftBlueprint orderBluePrint));                                    
+                                    break;
+                                case OrderType.Demolish:
+                                    var demolishOrder = order.GetDemolish();
+                                    workQue.Add(demolishOrder.createWorkQue());  
+                                    break;
                             }
+                            
                         }
                     }
                 }
@@ -788,7 +796,7 @@ namespace VikingEngine.DSSWars.GameObject
                 int count = Math.Min(structure.EmptyLand.Count, FuelFarmCount);
                 for (int i = 0; i < count; ++i) 
                 {
-                    BuildLib.TryAutoBuild(structure.EmptyLand[i], TerrainMainType.Foil, fuelType);
+                    BuildLib.TryAutoBuild(structure.EmptyLand[i], TerrainMainType.Foil, fuelType, Ref.rnd.Int(1, TerrainContent.FarmCulture_MaxSize));
                 }                
             }
         }

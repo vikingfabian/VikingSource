@@ -28,6 +28,7 @@ namespace VikingEngine.DSSWars.Data
         public bool autoSave = true;
         public bool runTutorial = true;
         public bool speed5x = false;
+        public bool longerBuildQueue = false;
 
         public LocalPlayerStorage[] localPlayers = null;
         public Profile.FlagStorage flagStorage;
@@ -93,7 +94,7 @@ namespace VikingEngine.DSSWars.Data
         }
         public void write(System.IO.BinaryWriter w, bool gamestate = false)
         {
-            const int Version = 18;
+            const int Version = 19;
 
             w.Write(Version);
 
@@ -121,6 +122,7 @@ namespace VikingEngine.DSSWars.Data
             w.Write(runTutorial);
 
             w.Write(speed5x);
+            w.Write(longerBuildQueue);
         }
 
         public void read(System.IO.BinaryReader r)
@@ -182,6 +184,10 @@ namespace VikingEngine.DSSWars.Data
             if (version >= 18)
             { 
                 speed5x = r.ReadBoolean();
+            }
+            if (version >= 19)
+            {
+                longerBuildQueue = r.ReadBoolean();
             }
         }
 

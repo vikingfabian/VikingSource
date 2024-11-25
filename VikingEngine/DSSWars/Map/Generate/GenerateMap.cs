@@ -1065,7 +1065,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 CityCulture.Weavers,
                 CityCulture.SiegeEngineer,
                 CityCulture.Armorsmith,
-                CityCulture.Nobelmen,
+                CityCulture.Noblemen,
                 CityCulture.Backtrader,
                 CityCulture.Lawbiding,
             };

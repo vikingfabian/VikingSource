@@ -126,19 +126,20 @@ namespace VikingEngine.DSSWars
         public static float WorkTime_BogIron = WorkTime_Mine * 2;
         public static float WorkTime_Craft = 10;
         public static float WorkTime_Building = 50;
+        public static float WorkTime_Demolish = 10;
 
         public static int Worker_TrossWorkerCarryWeight = 4;
         public static int Worker_MaxEnergy = 500;
         public static int Worker_Starvation = -Worker_MaxEnergy;
 
-        public static int DefaultItemRawFoodAmount = 8;
-        public static int DefaultItemFuelAmount = 8;
-        public static int HempFuelAmount = 5;
+        public static int DefaultItemRawFoodAmount = 12;
+        public static int DefaultItemFuelAmount = 12;
+        public static int HempFuelAmount = 8;
 
-        public static int HenRawFoodAmout = 5;
-        public static int EggRawFoodAmout = 3;
+        public static int HenRawFoodAmout = 8;
+        public static int EggRawFoodAmout = 5;
 
-        public static int PigRawFoodAmout = 6;
+        public static int PigRawFoodAmout = 8;
         public static float ManDefaultEnergyCost = 1f;
         public static float WorkTeamEnergyCost = ManDefaultEnergyCost * City.WorkTeamSize;
         public static float WorkTeamEnergyCost_WhenIdle = WorkTeamEnergyCost * 0.5f;

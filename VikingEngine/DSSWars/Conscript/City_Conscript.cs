@@ -310,7 +310,7 @@ namespace VikingEngine.DSSWars.GameObject
                         soldierProfile.skillBonus = 1.2f;
                     }
                     break;
-                case CityCulture.Nobelmen:
+                case CityCulture.Noblemen:
                     if (soldierProfile.conscript.KnightUnit())
                     {
                         soldierProfile.skillBonus = 1.2f;
@@ -381,6 +381,16 @@ namespace VikingEngine.DSSWars.GameObject
             lock (conscriptBuildings)
             {
                 conscriptBuildings.Add(consriptProfile);
+            }
+        }
+
+        public void destroyBarracks(IntVector2 subPos)
+        {
+            lock (conscriptBuildings)
+            {
+               int index =  conscriptIxFromSubTile(subPos);
+                conscriptBuildings[index].returnItems(this);
+                conscriptBuildings.RemoveAt(index);
             }
         }
 

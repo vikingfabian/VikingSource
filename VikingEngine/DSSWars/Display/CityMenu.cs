@@ -249,7 +249,7 @@ namespace VikingEngine.DSSWars.Display
         public void tagsToMenu(RichBoxContent content)
         {
             content.newLine();
-            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Tag_ViewOnMap) }, player.CityTagsOnMapProperty));
+            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember> { new RichBoxText(DssRef.lang.Tag_ViewOnMap) }, player.CityTagsOnMapProperty));
             content.newParagraph();
 
             for (CityTagBack back = CityTagBack.NONE; back < CityTagBack.NUM; back++)
@@ -374,8 +374,8 @@ namespace VikingEngine.DSSWars.Display
                     new RbAction(() =>
                     {
                         RichBoxContent content = new RichBoxContent();
-                        content.text(string.Format(DssRef.todoLang.Resource_FoodSafeGuard_Description, DssConst.WorkSafeGuardAmount)).overrideColor = HudLib.InfoYellow_Light;
-                        content.text(city.res_food_safeguard? DssRef.todoLang.Hud_On : DssRef.todoLang.Hud_Off);
+                        content.text(string.Format(DssRef.lang.Resource_FoodSafeGuard_Description, DssConst.WorkSafeGuardAmount)).overrideColor = HudLib.InfoYellow_Light;
+                        content.text(city.res_food_safeguard? DssRef.lang.Hud_On : DssRef.lang.Hud_Off);
                         player.hud.tooltip.create(player, content, true);
                     })));
 
@@ -1188,7 +1188,7 @@ namespace VikingEngine.DSSWars.Display
         {
             RichBoxContent content = new RichBoxContent();
 
-            if (city.canIncreaseGuardSize(count))
+            if (city.canIncreaseGuardSize(count, false))
             {
                 content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
                 content.newLine();

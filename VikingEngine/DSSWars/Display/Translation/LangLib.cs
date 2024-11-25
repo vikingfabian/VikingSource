@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.lang.MenuTab_Info;
                 case MenuTab.Tag:
                     description = null;
-                    return DssRef.todoLang.MenuTab_Tag;
+                    return DssRef.lang.MenuTab_Tag;
                 case MenuTab.Build:
                     description = DssRef.lang.MenuTab_Build_Description;
                     return DssRef.lang.MenuTab_Build;
@@ -223,11 +223,11 @@ namespace VikingEngine.DSSWars.Display.Translation
                     switch ((TerrainBuildingType)subType)
                     {
                         case TerrainBuildingType.Logistics:
-                            return DssRef.todoLang.BuildingType_Logistics;
+                            return DssRef.lang.BuildingType_Logistics;
                         case TerrainBuildingType.SoldierBarracks:
                             return DssRef.lang.BuildingType_Barracks;
                         case TerrainBuildingType.Bank:
-                            return DssRef.todoLang.BuildingType_Bank;
+                            return DssRef.lang.BuildingType_Bank;
                         case TerrainBuildingType.Brewery:
                             return DssRef.lang.BuildingType_Brewery;
                         case TerrainBuildingType.Carpenter:
@@ -265,7 +265,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                     switch ((TerrainSubFoilType)subType)
                     {
                         default:
-                            return DssRef.todoLang.LandType_Flatland;
+                            return DssRef.lang.LandType_Flatland;
                                                   
 
                         case TerrainSubFoilType.TreeHard:
@@ -284,9 +284,9 @@ namespace VikingEngine.DSSWars.Display.Translation
                             return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat);
 
                         case TerrainSubFoilType.RapeSeedFarm:
-                            return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.todoLang.Resource_TypeName_Rapeseed);
+                            return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Rapeseed);
                         case TerrainSubFoilType.HempFarm:
-                            return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.todoLang.Resource_TypeName_Hemp);
+                            return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Hemp);
 
                         case TerrainSubFoilType.BogIron:
                             return DssRef.lang.Resource_TypeName_BogIron;
@@ -320,15 +320,15 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                 case TerrainMainType.Destroyed:
                 case TerrainMainType.DefaultLand:
-                    return DssRef.todoLang.LandType_Flatland;
+                    return DssRef.lang.LandType_Flatland;
                 case TerrainMainType.DefaultSea:
-                    return DssRef.todoLang.LandType_Water;
+                    return DssRef.lang.LandType_Water;
 
                 case TerrainMainType.Resourses:
                     return DssRef.lang.Resource;
 
                 case TerrainMainType.Wall:
-                    return DssRef.todoLang.BuildingType_Wall;
+                    return DssRef.lang.BuildingType_Wall;
             }
 
 
@@ -340,11 +340,11 @@ namespace VikingEngine.DSSWars.Display.Translation
             switch (buildingType)
             {
                 case TerrainBuildingType.Logistics:
-                    return DssRef.todoLang.BuildingType_Logistics_Description;
+                    return DssRef.lang.BuildingType_Logistics_Description;
                 case TerrainBuildingType.Tavern:
                     return DssRef.lang.BuildingType_Tavern_Description;
                 case TerrainBuildingType.Storehouse:
-                    return DssRef.todoLang.BuildingType_Storehourse_Description;
+                    return DssRef.lang.BuildingType_Storehouse_Description;
                 case TerrainBuildingType.PigPen:
                     return DssRef.lang.BuildingType_PigPen_Description;
                 case TerrainBuildingType.HenPen:
@@ -379,7 +379,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case TerrainBuildingType.Work_CoalPit:
                     return DssRef.lang.BuildingType_CoalPit_Description;
                 case TerrainBuildingType.Bank:
-                    return DssRef.todoLang.BuildingType_Bank_Description;
+                    return DssRef.lang.BuildingType_Bank_Description;
 
                 default:
                     return TextLib.Error;
@@ -425,9 +425,9 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.lang.Resource_TypeName_Linen;
 
                 case ItemResourceType.Rapeseed:
-                    return DssRef.todoLang.Resource_TypeName_Rapeseed;
+                    return DssRef.lang.Resource_TypeName_Rapeseed;
                 case ItemResourceType.Hemp:
-                    return DssRef.todoLang.Resource_TypeName_Hemp;
+                    return DssRef.lang.Resource_TypeName_Hemp;
 
                 case ItemResourceType.SharpStick:
                     return DssRef.lang.Resource_TypeName_SharpStick;
@@ -440,7 +440,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case ItemResourceType.Bow:
                     return DssRef.lang.Resource_TypeName_Bow;
                 case ItemResourceType.LongBow:
-                    return DssRef.todoLang.Resource_TypeName_Longbow;
+                    return DssRef.lang.Resource_TypeName_Longbow;
                 case ItemResourceType.Ballista:
                     return DssRef.lang.UnitType_Ballista;
 
@@ -584,23 +584,23 @@ namespace VikingEngine.DSSWars.Display.Translation
 
 
                 case DSSWars.CityCulture.Stonemason:
-                    return title ? DssRef.todoLang.CityCulture_Stonemason : DssRef.todoLang.CityCulture_Stonemason_Description;
+                    return title ? DssRef.lang.CityCulture_Stonemason : DssRef.lang.CityCulture_Stonemason_Description;
                 case DSSWars.CityCulture.Brewmaster:
-                    return title ? DssRef.todoLang.CityCulture_Brewmaster : DssRef.todoLang.CityCulture_Brewmaster_Description;
+                    return title ? DssRef.lang.CityCulture_Brewmaster : DssRef.lang.CityCulture_Brewmaster_Description;
                 case DSSWars.CityCulture.Weavers:
-                    return title ? DssRef.todoLang.CityCulture_Weavers : DssRef.todoLang.CityCulture_Weavers_Description;
+                    return title ? DssRef.lang.CityCulture_Weavers : DssRef.lang.CityCulture_Weavers_Description;
                 case DSSWars.CityCulture.SiegeEngineer:
-                    return title ? DssRef.todoLang.CityCulture_SiegeEngineer : DssRef.todoLang.CityCulture_SiegeEngineer_Description;
+                    return title ? DssRef.lang.CityCulture_SiegeEngineer : DssRef.lang.CityCulture_SiegeEngineer_Description;
                 case DSSWars.CityCulture.Armorsmith:
-                    return title ? DssRef.todoLang.CityCulture_Armorsmith : DssRef.todoLang.CityCulture_Armorsmith_Description;
-                case DSSWars.CityCulture.Nobelmen:
-                    return title ? DssRef.todoLang.CityCulture_Nobelmen : DssRef.todoLang.CityCulture_Nobelmen_Description;
+                    return title ? DssRef.lang.CityCulture_Armorsmith : DssRef.lang.CityCulture_Armorsmith_Description;
+                case DSSWars.CityCulture.Noblemen:
+                    return title ? DssRef.lang.CityCulture_Noblemen : DssRef.lang.CityCulture_Noblemen_Description;
                 case DSSWars.CityCulture.Seafaring:
-                    return title ? DssRef.todoLang.CityCulture_Seafaring : DssRef.todoLang.CityCulture_Seafaring_Description;
+                    return title ? DssRef.lang.CityCulture_Seafaring : DssRef.lang.CityCulture_Seafaring_Description;
                 case DSSWars.CityCulture.Backtrader:
-                    return title ? DssRef.todoLang.CityCulture_Backtrader : DssRef.todoLang.CityCulture_Backtrader_Description;
+                    return title ? DssRef.lang.CityCulture_Backtrader : DssRef.lang.CityCulture_Backtrader_Description;
                 case DSSWars.CityCulture.Lawbiding:
-                    return title ? DssRef.todoLang.CityCulture_Lawbiding : DssRef.todoLang.CityCulture_Lawbiding_Description;
+                    return title ? DssRef.lang.CityCulture_LawAbiding : DssRef.lang.CityCulture_LawAbiding_Description;
 
                 default: return TextLib.Error;
             }

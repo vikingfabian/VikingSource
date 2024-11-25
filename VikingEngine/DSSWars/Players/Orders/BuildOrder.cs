@@ -16,70 +16,26 @@ using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Players.Orders
 {
-    abstract class AbsOrder
+    abstract class AbsBuildOrder : AbsOrder
     {
-        public OrderStatus orderStatus = OrderStatus.Waiting;
-        public int priority;
-        static int NextId = 0;
-        public int id;
+        protected City city;
+        protected IntVector2 subTile;
+        protected AbsVoxelObj model;
 
-        //public AbsOrder(int priority)
-        //{
-
-        //}
-
-        virtual public void onAdd()
-        { }
-
-        public void baseInit(int priority)
+        protected void createModel(int frame)
         { 
-            this.priority = priority;
-            id = NextId++;
-        }
-
-        virtual public BuildOrder GetWorkOrder(City city)
-        { 
-           return null;
-        }
-
-        virtual public bool BuildQueue(City city)
-        {
-            return false;
-        }
-
-        virtual public bool IsBuildOnSubTile(IntVector2 subTile)
-        { 
-            return false;
-        }
-
-        abstract public bool IsConflictingOrder(AbsOrder other);
-
-        virtual public void DeleteMe() { }
-
-        virtual public RichBoxContent ToHud()
-        {
-            throw new NotImplementedException();
-        }
-
-        virtual public bool refreshAvailable(Faction faction) { return true; }
-
-        virtual public void writeGameState(System.IO.BinaryWriter w)
-        {       
-            w.Write((byte)priority);
-        }
-        virtual public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
-        {
-           priority = r.ReadByte();
+            model = DssRef.models.ModelInstance(LootFest.VoxelModelName.buildarea, WorldData.SubTileWidth * 1.4f, false);
+            model.Frame = frame;
+            model.AddToRender(DrawGame.UnitDetailLayer);
+            model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTile);
         }
     }
 
-    class BuildOrder : AbsOrder
+    class BuildOrder : AbsBuildOrder
     {
-        City city;
-        IntVector2 subTile;
+        
         public BuildAndExpandType buildingType;
         Mesh icon;
-        AbsVoxelObj model;
 
         public BuildOrder()
         { }
@@ -98,12 +54,10 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         public override void onAdd()
         {
-            
-            model = DssRef.models.ModelInstance(LootFest.VoxelModelName.buildarea, WorldData.SubTileWidth * 1.4f, false);
-            model.AddToRender(DrawGame.UnitDetailLayer);
-            model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTile);
 
-            Vector3 iconPos = model.position;
+            createModel(0);
+
+             Vector3 iconPos = model.position;
             iconPos.Y += model.scale.Y * 6f;
             iconPos.Z += model.scale.Y * 0.15f;
 
@@ -144,19 +98,24 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         override public void DeleteMe()
         { 
-            Debug.CrashIfThreaded();
+            base.DeleteMe();
+            //Debug.CrashIfThreaded();
 
-            model.DeleteMe();
+            //model.DeleteMe();
             icon.DeleteMe();
         }
-        public override BuildOrder GetWorkOrder(City city)
+        public override BuildOrder GetBuild()
         {
-            if (this.city == city && orderStatus == OrderStatus.Waiting)
-            { 
-                return this;
-            }
-            return null;
+            return this;
         }
+        //public override BuildOrder GetWorkOrder(City city)
+        //{
+        //    if (this.city == city && orderStatus == OrderStatus.Waiting)
+        //    { 
+        //        return this;
+        //    }
+        //    return null;
+        //}
 
         //public override BuildOrder GetWorkOrder(City city)
         public override bool BuildQueue(City city)
@@ -190,6 +149,15 @@ namespace VikingEngine.DSSWars.Players.Orders
         public override bool refreshAvailable(Faction faction)
         {
             return city.faction == faction;
+        }
+
+        override public OrderType GetWorkType(City city)
+        {
+            if (this.city == city)
+            {
+                return OrderType.Build;
+            }
+            return OrderType.NONE;
         }
     }
 

@@ -108,12 +108,38 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int MaxBuildQueue()
         {
-            switch (buildingLevel_logistics)
+            //int queue = int.MaxValue;
+            //switch (buildingLevel_logistics)
+            //{
+            //    default : return queue;
+            //    case 0: queue = DssConst.WorkQueue_Start; break;
+            //    case 1: queue = DssConst.WorkQueue_LogisticsLevel1; break;
+            //}
+
+            //if (DssRef.storage.longerBuildQueue)
+            //{
+            //    queue *= 2;
+            //}
+
+            return LevelToMaxBuildQueue(buildingLevel_logistics); //return queue;
+        }
+
+        public static int LevelToMaxBuildQueue(int level)
+        {
+            int queue = int.MaxValue;
+            switch (level)
             {
-                default: return DssConst.WorkQueue_Start;
-                case 1: return DssConst.WorkQueue_LogisticsLevel1;
-                case 2: return int.MaxValue;
+                default: return queue;
+                case 0: queue = DssConst.WorkQueue_Start; break;
+                case 1: queue = DssConst.WorkQueue_LogisticsLevel1; break;
             }
+
+            if (DssRef.storage.longerBuildQueue)
+            {
+                queue *= 2;
+            }
+
+            return queue;
         }
 
         public void upgradeLogistics()
@@ -557,10 +583,15 @@ namespace VikingEngine.DSSWars.GameObject
             return 40000 + workForceMax * 10;
         }
 
-       
-        public bool canIncreaseGuardSize(int count)
+
+        public bool canIncreaseGuardSize(int count, bool checkIfCapped)
         {
-            return (maxGuardSize + DssConst.ExpandGuardSize * count) <= workForceMax;
+            if (checkIfCapped && guardCount + 2 < maxGuardSize)
+            {
+                return false;
+            }
+
+            return (maxGuardSize + DssConst.ExpandGuardSize * count) <= workForceMax;            
         }
 
         public void expandWorkForce(int amount)
@@ -570,9 +601,16 @@ namespace VikingEngine.DSSWars.GameObject
             detailObj.refreshWorkerSubtiles();
         }
 
-        public void onWorkHutBuild()
+        public void onWorkHutBuild(bool build_notDestroy)
         {
-            workForceMax += DssConst.SoldierGroup_DefaultCount;
+            if (build_notDestroy)
+            {
+                workForceMax += DssConst.SoldierGroup_DefaultCount;
+            }
+            else
+            {
+                workForceMax -= DssConst.SoldierGroup_DefaultCount;
+            }
             refreshCitySize();
         }
 
@@ -584,7 +622,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool buyCityGuards(bool commit, int count)
         {
-            if (canIncreaseGuardSize(count))
+            if (canIncreaseGuardSize(count, false))
             {
                 int totalCost = 0;
 
@@ -772,11 +810,6 @@ namespace VikingEngine.DSSWars.GameObject
                 if (newType != CityType)
                 {
                     CityType = newType;
-                    //detailObj.refreshModel();
-                    //Task.Factory.StartNew(() =>
-                    //{
-                    //    createBuildingSubtiles(DssRef.world);
-                    //});
 
                     if (overviewModel != null)
                     {

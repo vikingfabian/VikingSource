@@ -72,6 +72,8 @@ namespace VikingEngine.DSSWars.Work
                     return DssRef.lang.WorkerStatus_Exit;
                 case WorkType.TrossReturnToArmy:
                     return DssRef.lang.WorkerStatus_TrossReturnToArmy;
+                case WorkType.Demolish:
+                    return DssRef.lang.Build_DestroyBuilding;
 
                 default:
                     return TextLib.Error;
@@ -484,9 +486,21 @@ namespace VikingEngine.DSSWars.Work
                         {
                             var build = BuildLib.BuildOptions[workSubType];
                             build.execute_async(city, subTileEnd, ref subTile);
-                            DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                            //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+                            EditSubTile edit = new EditSubTile(subTileEnd, subTile, true, true, false);
+                            edit.Submit();
                             
                             gainXp = build.experienceType();
+                        }
+                    }
+                    break;
+                case WorkType.Demolish:
+                    {
+                        if (orderIsActive(city))
+                        {
+                            BuildLib.Demolish(city, subTileEnd);
+                            //BuildLib.BuildOptions[workSubType].execute_async(city, subTileEnd, ref subTile);
+                            //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                         }
                     }
                     break;
@@ -794,6 +808,7 @@ namespace VikingEngine.DSSWars.Work
                 case WorkType.Craft:
                     time = DssConst.WorkTime_Craft;
                     break;
+
                 case WorkType.Build:
                     if (city.Culture == CityCulture.Builders)
                     {
@@ -804,6 +819,9 @@ namespace VikingEngine.DSSWars.Work
                         time = DssConst.WorkTime_Building;
                     }
                     break;
+                case WorkType.Demolish:
+                    return DssConst.WorkTime_Demolish;
+
                 case WorkType.TrossReturnToArmy:
                 case WorkType.DropOff:
                 case WorkType.Exit:

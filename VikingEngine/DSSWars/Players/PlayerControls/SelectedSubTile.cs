@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.Graphics;
@@ -134,6 +135,25 @@ namespace VikingEngine.DSSWars.Players
             return MayBuildResult.No_OutsideRegion;
         }
 
+        public bool MayDemolish(LocalPlayer player)
+        {
+            if (city != null)
+            {
+                if (city.faction.player == player)
+                {
+                    if (WP.SubtileToTilePos(subTilePos) != city.tilePos) //center tile is protected
+                    {
+                        var buildingType = BuildLib.GetType(subTile.mainTerrain, subTile.subTerrain);
+                        if (buildingType != BuildAndExpandType.NUM_NONE)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
 
 
         public bool viewSelection(bool view)
@@ -184,7 +204,7 @@ namespace VikingEngine.DSSWars.Players
         
         Build,
         ClearTerrain,
-        Destroy,
+        Demolish,
     }
 
     enum MayBuildResult

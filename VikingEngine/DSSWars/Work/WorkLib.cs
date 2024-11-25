@@ -136,6 +136,7 @@ namespace VikingEngine.DSSWars.Work
         DropOff,
         Craft,
         Build,
+        Demolish,
         LocalTrade,
 
         TrossCityTrade,

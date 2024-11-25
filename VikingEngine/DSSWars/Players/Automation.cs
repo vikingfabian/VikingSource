@@ -205,7 +205,7 @@ namespace VikingEngine.DSSWars.Players
 
             content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
                 {
-                    new RichBoxText(string.Format(DssRef.todoLang.XP_UpgradeBuildingX, DssRef.todoLang.BuildingType_Logistics)),
+                    new RichBoxText(string.Format(DssRef.lang.XP_UpgradeBuildingX, DssRef.lang.BuildingType_Logistics)),
                 }, AutoUpgradeLogisticsProperty));
 
             content.newLine();
@@ -275,67 +275,13 @@ namespace VikingEngine.DSSWars.Players
                                     return;
                                 }
 
-                                if (autoExpandGuard && citiesC.sel.canIncreaseGuardSize(1))
+                                if (autoExpandGuard && citiesC.sel.canIncreaseGuardSize(1, true))
                                 {
                                     cityAction = citiesC.sel;
                                     automationAction = AutomationAction.GuardSize;
                                     return;
                                 }
 
-                                //if (autoNobelhouse && citiesC.sel.canBuyNobelHouse())
-                                //{
-                                //    cityAction = citiesC.sel;
-                                //    automationAction = AutomationAction.NobelHouse;
-                                //    return;
-                                //}
-
-                                //if (autoBuild && citiesC.sel.canExpandWorkForce(1))
-                                //{
-                                //    cityAction = citiesC.sel;
-                                //    automationAction = AutomationAction.ExpandWorkforce;
-                                //    return;
-                                //}
-
-                                //if (autoRecruit)
-                                //{
-                                //    const int RecruitChunk = 5;
-                                //    var army = citiesC.sel.recruitToClosestArmy();
-                                //    Dictionary<UnitType, int> typeCount = null;
-                                //    if (army != null)
-                                //    {
-                                //        typeCount = army.Status().getTypeCounts();
-                                //    }
-
-                                //    for (int maxCount = RecruitChunk; maxCount <= 100; maxCount += RecruitChunk)
-                                //    {
-                                //        for (int i = 0; i < DssLib.AvailableUnitTypes.Length; i++)
-                                //        {
-                                //            recruitCount = Bound.Max(recruitAmount[i], maxCount);
-
-                                //            var unitType = DssLib.AvailableUnitTypes[i];
-
-                                //            if (recruitCount > 0 && 
-                                //                citiesC.sel.HasUnitPurchaseOption(unitType))
-                                //            {
-                                                
-                                //                int current = 0;
-                                //                if (typeCount != null)
-                                //                {
-                                //                    typeCount.TryGetValue(unitType, out current);
-                                //                }
-
-                                //                if (current < recruitCount)
-                                //                {
-                                //                    cityAction = citiesC.sel;
-                                //                    recruitType = unitType;
-                                //                    recruitCount = Bound.Max(recruitAmount[i] - current, RecruitChunk);
-                                //                    automationAction = AutomationAction.Recruit;
-                                //                    return;
-                                //                }
-                                //            }
-                                //        }
-                                //    }
-                                //}
                             }
                         }
                     }
@@ -355,18 +301,11 @@ namespace VikingEngine.DSSWars.Players
                 case AutomationAction.UpgradeLogistics:
                     cityAction.autoUpgradeLogistics(subtilePos, true);
                     break;
-                //case AutomationAction.NobelHouse:
-                //    cityAction.buyNobelHouseAction();
-                //    break;
+
                 case AutomationAction.Repair:
                     cityAction.buyRepair(true, true);
                     break;
-                //case AutomationAction.ExpandWorkforce:
-                //    cityAction.buyWorkforce(true, 1);
-                //    break;
-                //case AutomationAction.Recruit:
-                //    cityAction.buySoldiersAction(recruitType, recruitCount, null);
-                //    break;
+
                 case AutomationAction.GuardSize:
                     cityAction.buyCityGuards(true, 1);
                     break;
