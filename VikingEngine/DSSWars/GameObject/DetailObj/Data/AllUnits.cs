@@ -108,6 +108,7 @@ namespace VikingEngine.DSSWars.GameObject
                 LootFest.VoxelModelName.wars_hammer,
                 LootFest.VoxelModelName.wars_twohand,
                 LootFest.VoxelModelName.wars_mithrilman,
+                LootFest.VoxelModelName.wars_mithrilarcher,
 
                 LootFest.VoxelModelName.war_knight,
                 LootFest.VoxelModelName.war_knight_i2,

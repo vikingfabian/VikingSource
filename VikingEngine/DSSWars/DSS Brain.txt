@@ -1,5 +1,7 @@
 ﻿-Change Log-
 Double soldier health
+19 new soldier typer (old 7)
+
 
 !Alla objekt med Tile referens måste ändras (livestock)
 

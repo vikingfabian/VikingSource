@@ -309,7 +309,8 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Mid;
                     soldierData.attackRange = 2.5f;
                     soldierData.modelName = LootFest.VoxelModelName.wars_mithrilarcher;
-                    soldierData.modelVariationCount = 2;
+                    soldierData.modelScale *= 1.3f;
+                    
                     soldierData.icon = SpriteName.WarsUnitIcon_MithrilArcher;
                     soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 8f;
                     break;

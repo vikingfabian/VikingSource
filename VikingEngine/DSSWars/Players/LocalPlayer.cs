@@ -1198,7 +1198,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     conscript = new ConscriptProfile()
                     {
-                        weapon = Resource.ItemResourceType.Warhammer,
+                        weapon = Resource.ItemResourceType.MithrilBow,
                         armorLevel = Resource.ItemResourceType.IronArmor,
                         training = TrainingLevel.Basic,
                         specialization = SpecializationType.Traditional,
