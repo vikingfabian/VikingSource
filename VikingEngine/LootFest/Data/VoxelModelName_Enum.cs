@@ -166,7 +166,7 @@ namespace VikingEngine.LootFest
 
         gunmodel_mashine, gunmodel_sidearm,
         gunbullet, handgranade,
-         golden_arrow, slingstone,
+         golden_arrow, 
         orc_arrow,
         Shield1,
         Shield2,
@@ -464,6 +464,8 @@ namespace VikingEngine.LootFest
 #region LFWARS
         party_restbar,
         Arrow,
+        slingstone,
+        boulder_proj,
         Pig,
         Hen,
         little_kingman,
@@ -523,6 +525,7 @@ namespace VikingEngine.LootFest
         wars_manuballista,
         wars_longsword,
         wars_mithrilman,
+        wars_mithrilarcher,
         wars_culvertin,
         wars_handcannon,
         wars_slingman,
@@ -555,6 +558,7 @@ namespace VikingEngine.LootFest
         
         war_ballista_proj,
         war_cannonball,
+        war_gunblast,
 
         war_folkman,
         wars_piker,

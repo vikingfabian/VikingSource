@@ -666,7 +666,6 @@ namespace VikingEngine.DSSWars.Players
 
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                 {
-                    //hud.messages.Add("message!", "Hello hello");
                     var tile = DssRef.world.tileGrid.Get(mapControls.tilePosition);
                     Debug.Log(tile.ToString() );
                 }
@@ -1182,94 +1181,62 @@ namespace VikingEngine.DSSWars.Players
 
             Faction enemyFac = DssRef.settings.darkLordPlayer.faction;
             DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
-            //DssRef.world.factionsCounter.Reset();
-
-            //enemyFac = DssRef.world.factions.Array[DssRef.world.evilFactionIndex];
-            ////while (DssRef.world.factionsCounter.Next())
-            ////{
-            ////    if (DssRef.world.factionsCounter.sel.player.IsAi())
-            ////    {
-            ////        enemyFac = DssRef.world.factionsCounter.sel;
-            ////        break;
-            ////    }
-            ////}
+            
 
             IntVector2 position = mapControls.tilePosition;
+
+            Army friendlyArmy, enemyArmy;
+
 
             //if (friendly)
             {
                 var army = faction.NewArmy(position);
+                friendlyArmy = army;
                 army.rotation = playerRot;
 
-                //int count = Ref.rnd.Int(4, 8);
-                //for (int i = 0; i < 15; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Viking, false).completeTransform(SoldierTransformType.ToShip);
-                //}
-                for (int i = 0; i < 10; ++i)
+                SoldierConscriptProfile SoldierProfile1 = new SoldierConscriptProfile()
                 {
-                    new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard);
+                    conscript = new ConscriptProfile()
+                    {
+                        weapon = Resource.ItemResourceType.Warhammer,
+                        armorLevel = Resource.ItemResourceType.IronArmor,
+                        training = TrainingLevel.Basic,
+                        specialization = SpecializationType.Traditional,
+                    }
+                };
+
+                for (int i = 0; i < 2; ++i)
+                {
+                    new SoldierGroup(army, SoldierProfile1);
                 }
-                //for (int i = 0; i < 30; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Knight, false).completeTransform(SoldierTransformType.ToShip);
-                //}
                 army.refreshPositions(true);
             }
             //else
             {
-                //{
-                //    var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
-                //    army.rotation = enemyRot;
-                //    //int count = 4;//Ref.rnd.Int(4, 8);
+                
+                var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
+                enemyArmy = army;
+                army.rotation = enemyRot;
 
-                //    for (int i = 0; i < 10; ++i)
-                //    {
-                //        new SoldierGroup(army, UnitType.Archer, false).completeTransform(SoldierTransformType.ToShip);
-                //    }
-                //    new SoldierGroup(army, UnitType.DarkLord, false).completeTransform(SoldierTransformType.ToShip);
-                //    //for (int i = 0; i < 5; ++i)
-                //    //{
-                //    //    new SoldierGroup(army, UnitType.Ballista, false);
-                //    //}
-                //    army.refreshPositions(true);
-                //}
+                SoldierConscriptProfile SoldierProfile1 = new SoldierConscriptProfile()
+                {
+                    conscript = new ConscriptProfile()
+                    {
+                        weapon = Resource.ItemResourceType.Sword,
+                        armorLevel = Resource.ItemResourceType.IronArmor,
+                        training = TrainingLevel.Basic,
+                        specialization = SpecializationType.Traditional,
+                    }
+                };
+                for (int i = 0; i < 2; ++i)
+                {
+                    new SoldierGroup(army, SoldierProfile1);
+                }
 
-
-                //{
-                //    var army = enemyFac.NewArmy(VectorExt.AddY(position, 2));
-                //    army.rotation = enemyRot;
-                //    //int count = 4;//Ref.rnd.Int(4, 8);
-                //    for (int i = 0; i < 5; ++i)
-                //    {
-                //        new SoldierGroup(army, UnitType.Soldier, false);
-                //    }
-                //    for (int i = 0; i < 5; ++i)
-                //    {
-                //        new SoldierGroup(army, UnitType.Ballista, false);
-                //    }
-                //    army.refreshPositions(true);
-                //}
-                //count = Ref.rnd.Int(4, 8);
-                //for (int i = 0; i < count; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Pikeman, false);
-                //}
-
-
-                //count = Ref.rnd.Int(0, 8);
-                //for (int i = 0; i < count; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.CrossBow, false);
-                //}
-
-                //count = Ref.rnd.Int(0, 16);
-                //for (int i = 0; i < count; ++i)
-                //{
-                //    new SoldierGroup(army, UnitType.Trollcannon, false);
-                //}
-                //army.refreshPositions(true);
+                army.refreshPositions(true);
             }
+
+            friendlyArmy.Order_Attack(enemyArmy);
 
         }
 

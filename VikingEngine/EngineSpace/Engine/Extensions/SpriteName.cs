@@ -2529,6 +2529,7 @@ namespace VikingEngine
         WarsUnitIcon_BronzeShotgun,
         WarsUnitIcon_BronzeRifle,
         WarsUnitIcon_MithrilMan,
+        WarsUnitIcon_MithrilArcher,
         WarsUnitIcon_Longsword,
         WarsUnitIcon_Manuballista,
         WarsUnitIcon_Catapult,

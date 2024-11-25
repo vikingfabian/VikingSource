@@ -220,11 +220,12 @@ namespace VikingEngine.DSSWars.GameObject
                 
         public void refreshGroupOffset()
         {
-            groupOffset.X = gridPlacement.X * SoldierProfile().groupSpacing +
-                Ref.rnd.Plus_MinusF(SoldierProfile().groupSpacingRndOffset);
+            
+            groupOffset.X = gridPlacement.X * soldierData.groupSpacing +
+                Ref.rnd.Plus_MinusF(soldierData.groupSpacingRndOffset);
 
-            groupOffset.Y = (gridPlacement.Y + group.halfColDepth) * SoldierProfile().groupSpacing +
-                Ref.rnd.Plus_MinusF(SoldierProfile().groupSpacingRndOffset);
+            groupOffset.Y = (gridPlacement.Y + group.halfColDepth) * soldierData.groupSpacing +
+                Ref.rnd.Plus_MinusF(soldierData.groupSpacingRndOffset);
         }
 
         void updateGroupPosition()
@@ -728,7 +729,7 @@ namespace VikingEngine.DSSWars.GameObject
             var leadUnit = group.soldiers.GetIndex_Safe(following);
             if (leadUnit != null)
             {
-                if (distanceToUnit(leadUnit) > SoldierProfile().groupSpacing)
+                if (distanceToUnit(leadUnit) > soldierData.groupSpacing)
                 {
                     walkTowards(time, leadUnit.position);
                 }
@@ -949,7 +950,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         if (soldiers.sel.Alive_IncomingDamageIncluded())
                         {
-                            if (distanceToUnit(soldiers.sel) < SoldierProfile().groupSpacing)
+                            if (distanceToUnit(soldiers.sel) < soldierData.groupSpacing)
                             {
                                 setFreeAttack();
                                 return;

@@ -30,14 +30,10 @@ namespace VikingEngine.DSSWars.GameObject
             data.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.5f;
             hasBannerMan = false;
 
-            workForcePerUnit = 0;
+            
             goldCost = 0;
 
-            rowWidth = 1;
-            columnsDepth = 1;
-            //ArmyFrontToBackPlacement = ArmyPlacement.Back;
-
-            upkeepPerSoldier = 0;
+            
             
 
             data.modelName = LootFest.VoxelModelName.wars_darklord;

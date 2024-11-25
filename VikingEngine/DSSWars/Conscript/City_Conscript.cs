@@ -296,22 +296,26 @@ namespace VikingEngine.DSSWars.GameObject
                 skillBonus = 1,
             };
 
+            soldierProfile.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmashine);
+
+
             switch (Culture)
             {
+               
                 case CityCulture.Archers:
-                    if (soldierProfile.conscript.RangedManUnit())
+                    if (rangedMan)
                     {
                         soldierProfile.skillBonus = 1.2f;
                     }
                     break;
                 case CityCulture.Warriors:
-                    if (soldierProfile.conscript.MeleeSoldier())
+                    if (meleeMan)
                     {
                         soldierProfile.skillBonus = 1.2f;
                     }
                     break;
                 case CityCulture.Noblemen:
-                    if (soldierProfile.conscript.KnightUnit())
+                    if (knight)
                     {
                         soldierProfile.skillBonus = 1.2f;
                     }
@@ -323,7 +327,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     break;
                 case CityCulture.SiegeEngineer:
-                    if (soldierProfile.conscript.Warmashine())
+                    if (warmashine)
                     {
                         soldierProfile.skillBonus = 1.2f;
                     }

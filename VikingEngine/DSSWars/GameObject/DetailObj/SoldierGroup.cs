@@ -99,10 +99,10 @@ namespace VikingEngine.DSSWars.GameObject
 
             //AbsSoldierData typeData = DssRef.unitsdata.Get(type);
 
-            initPart2(typeCurrentData);
+            initPart2(typeCurrentData, out int count);
 
             //Column for column spawning
-            int count = typeCurrentData.rowWidth * typeCurrentData.columnsDepth;
+            //int count = soldierData.rowWidth * soldierData.columnsDepth;
             createAllSoldiers(typeCurrentData, count);
 
             initPart3(typeCurrentData);
@@ -118,7 +118,7 @@ namespace VikingEngine.DSSWars.GameObject
             type = soldierConscript.unitType();
             typeSoldierData = DssRef.profile.Get(type);//new ConscriptedSoldierData();
             typeShipData = DssRef.profile.Get(typeSoldierData.ShipType());
-
+            soldierData = soldierConscript.init(typeSoldierData);
             typeCurrentData = typeSoldierData;
         }
 
@@ -154,12 +154,12 @@ namespace VikingEngine.DSSWars.GameObject
         //    }
         //}
 
-        void initPart2(AbsSoldierProfile typeData)
+        void initPart2(AbsSoldierProfile typeData, out int count)
         {
-            int count = typeData.rowWidth * typeData.columnsDepth;
+            count = soldierData.rowWidth * soldierData.columnsDepth;
 
             soldiers = new SpottedArray<AbsSoldierUnit>(count);
-            halfColDepth = typeData.columnsDepth * -0.5f;
+            halfColDepth = soldierData.columnsDepth * -0.5f;
 
             //Vector2 boxSz = new Vector2(
             //    (typeData.rowWidth - 1) * typeData.groupSpacing,
@@ -249,7 +249,7 @@ namespace VikingEngine.DSSWars.GameObject
             bool soldiersLockedInGroup = groupObjective == GroupObjective_FollowArmyObjective;
 
             //AbsSoldierData typeData = DssRef.unitsdata.Get(type);
-            initPart2(typeCurrentData);
+            initPart2(typeCurrentData, out _);
 
             //AbsSoldierData soldierData = DssRef.unitsdata.Get(soldierType);
 
@@ -299,19 +299,19 @@ namespace VikingEngine.DSSWars.GameObject
 
         private void createAllSoldiers(AbsSoldierProfile typeProfile, int count)
         {
-            soldierData = soldierConscript.init(typeProfile);
+            
             //energyPerSoldier = soldierData.energyPerSoldier;
             if (typeProfile.IsShip())
             {
                 soldierConscript.shipSetup(ref soldierData);
             }
 
-            int xStart = -typeProfile.rowWidth / 2;
+            int xStart = -soldierData.rowWidth / 2;
             IntVector2 bannerPos = bannerManPos();
 
-            int columnDepth = MathExt.Div_Ceiling(count, typeProfile.rowWidth);
+            int columnDepth = MathExt.Div_Ceiling(count, soldierData.rowWidth);
 
-            for (int x = 0; x < typeProfile.rowWidth; ++x)
+            for (int x = 0; x < soldierData.rowWidth; ++x)
             {
                 int leadUnit = -1;
                 for (int y = 0; y < columnDepth; ++y)
@@ -351,7 +351,7 @@ namespace VikingEngine.DSSWars.GameObject
             IntVector2 bannerPos;
             if (typeCurrentData.hasBannerMan)
             {
-                bannerPos = new IntVector2(typeCurrentData.rowWidth / 2, typeCurrentData.columnsDepth - 1);
+                bannerPos = new IntVector2(soldierData.rowWidth / 2, soldierData.columnsDepth - 1);
             }
             else
             {
@@ -676,10 +676,10 @@ namespace VikingEngine.DSSWars.GameObject
 
                 IntVector2 nextPos = IntVector2.Zero;
                 int bannerLead = -1;
-                int xStart = -typeCurrentData.rowWidth / 2;
+                int xStart = -soldierData.rowWidth / 2;
 
                 var soldiersC = soldiers.counter();
-                AbsSoldierUnit[] leadRow = new AbsSoldierUnit[typeCurrentData.rowWidth];
+                AbsSoldierUnit[] leadRow = new AbsSoldierUnit[soldierData.rowWidth];
 
                 while (soldiersC.Next())
                 {
@@ -707,7 +707,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         do
                         {
-                            if (++nextPos.X >= typeCurrentData.rowWidth)
+                            if (++nextPos.X >= soldierData.rowWidth)
                             {
                                 nextPos.X = 0;
                                 nextPos.Y++;

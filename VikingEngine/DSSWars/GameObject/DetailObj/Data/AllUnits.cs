@@ -107,6 +107,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 LootFest.VoxelModelName.wars_hammer,
                 LootFest.VoxelModelName.wars_twohand,
+                LootFest.VoxelModelName.wars_mithrilman,
 
                 LootFest.VoxelModelName.war_knight,
                 LootFest.VoxelModelName.war_knight_i2,
@@ -175,20 +176,56 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 case UnitFilterType.SharpStick:
                     return SpriteName.WarsUnitIcon_Folkman;
+
+
                 case UnitFilterType.Sword:
                     return SpriteName.WarsUnitIcon_Soldier;
+                case UnitFilterType.LongSword:
+                    return SpriteName.WarsUnitIcon_Longsword;
                 case UnitFilterType.Pike:
                     return SpriteName.WarsUnitIcon_Pikeman;
+
+                case UnitFilterType.Warhammer:
+                    return SpriteName.WarsUnitIcon_Hammerknight;
                 case UnitFilterType.TwohandSword:
                     return SpriteName.WarsUnitIcon_TwoHand;
                 case UnitFilterType.Knight:
                     return SpriteName.WarsUnitIcon_Knight;
+                case UnitFilterType.MithrilKnight:
+                    return SpriteName.WarsUnitIcon_MithrilMan;
+                case UnitFilterType.MithrilBow:
+                    return SpriteName.WarsUnitIcon_MithrilArcher;
+
+                case UnitFilterType.Slingshot:
+                    return SpriteName.WarsUnitIcon_Slingshot;
+                case UnitFilterType.Throwingspear:
+                    return SpriteName.WarsUnitIcon_Javelin;
                 case UnitFilterType.Bow:
                     return SpriteName.WarsUnitIcon_Archer;
                 case UnitFilterType.CrossBow:
                     return SpriteName.LittleUnitIconCrossBowman;
+
+                case UnitFilterType.Rifle:
+                    return SpriteName.WarsUnitIcon_BronzeRifle;
+                case UnitFilterType.Shotgun:
+                    return SpriteName.WarsResource_BronzeShotgun;
+
                 case UnitFilterType.Ballista:
                     return SpriteName.WarsUnitIcon_Ballista;
+                case UnitFilterType.ManuBallista:
+                    return SpriteName.WarsUnitIcon_Manuballista;
+                case UnitFilterType.Catapult:
+                    return SpriteName.WarsUnitIcon_Catapult;
+
+                case UnitFilterType.SiegeCannonBronze:
+                    return SpriteName.WarsUnitIcon_BronzeSiegeCannon;
+                case UnitFilterType.ManCannonBronze:
+                    return SpriteName.WarsResource_BronzeManCannon;
+                case UnitFilterType.SiegeCannonIron:
+                    return SpriteName.WarsResource_IronSiegeCannon;
+                case UnitFilterType.ManCannonIron:
+                    return SpriteName.WarsUnitIcon_IronManCannon;
+
 
                 case UnitFilterType.GreenSoldier:
                     return SpriteName.WarsUnitIcon_Greensoldier;

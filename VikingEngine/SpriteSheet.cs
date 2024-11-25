@@ -2531,6 +2531,7 @@ namespace VikingEngine
                     add(SpriteName.WarsUnitIcon_IronManCannon, 2, 2);
                     add(SpriteName.WarsUnitIcon_IronSiegeCannon, 2, 2);
                     add(SpriteName.WarsUnitIcon_Slingshot, 2, 2);
+                    add(SpriteName.WarsUnitIcon_MithrilArcher, 2, 2);
                 }
 
                 currentIndex = numTilesWidth * 106;

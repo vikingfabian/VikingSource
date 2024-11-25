@@ -108,9 +108,12 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.Pig, false);
             loadVoxelModel(VoxelModelName.Hen, false);
             loadVoxelModel(VoxelModelName.Arrow, true);
+            loadVoxelModel(VoxelModelName.slingstone, true);
+            loadVoxelModel(VoxelModelName.boulder_proj, true);
             loadVoxelModel(VoxelModelName.little_javelin, true);
             loadVoxelModel(VoxelModelName.little_boltarrow, true);
             loadVoxelModel(VoxelModelName.war_cannonball, true);
+            loadVoxelModel(VoxelModelName.war_gunblast, true);
             loadVoxelModel(VoxelModelName.war_ballista_proj, true);
             loadVoxelModel(VoxelModelName.wars_loading_anim, true);
             loadVoxelModel(VoxelModelName.wars_shipbuild, true);

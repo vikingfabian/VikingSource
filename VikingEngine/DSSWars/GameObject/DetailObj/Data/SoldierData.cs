@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,6 +31,14 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         public bool canAttackCharacters = true;
         public bool canAttackStructure = true;
         public float modelScale = DssConst.Men_StandardModelScale;
+
+        public float upkeepPerSoldier = DssLib.SoldierDefaultUpkeep;
+        public int workForcePerUnit = 1;
+        public float groupSpacing = DssVar.DefaultGroupSpacing;
+        public float groupSpacingRndOffset = DssVar.StandardBoundRadius * 0.3f;
+        public int rowWidth = DssConst.SoldierGroup_RowWidth;
+        public int columnsDepth = DssConst.SoldierGroup_ColumnsDepth;
+        public Vector3 modelToShadowScale = new Vector3(0.4f, 1f, 0.32f);
 
         public SoldierData()
         { }
@@ -67,6 +76,21 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         public int DPS_structure()
         {
             return Convert.ToInt32(attackDamageStructure / (attackTimePlusCoolDown / 1000.0));
+        }
+
+        public int workForceCount()
+        {
+            return rowWidth * columnsDepth * workForcePerUnit;
+        }
+
+        public int Upkeep()
+        {
+            return Convert.ToInt32(rowWidth * columnsDepth * upkeepPerSoldier);
+        }
+
+        public Vector3 ShadowModelScale()
+        {
+            return modelToShadowScale * DssConst.Men_StandardModelScale;
         }
     }
 }

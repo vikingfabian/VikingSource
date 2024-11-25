@@ -57,6 +57,7 @@ namespace VikingEngine.DSSWars.GameObject
             
             LootFest.VoxelModelName modelName;
             float scale;
+            int frame = 0;
 
             switch (type)
             {
@@ -72,18 +73,53 @@ namespace VikingEngine.DSSWars.GameObject
                     speed *= 1.5f;
                     linear = true;
                     break;
-                case AttackType.Cannonball:
+
+                case AttackType.Haubitz:
                     //warsRef.sound.rocket.Play(start);
                     modelName = LootFest.VoxelModelName.war_cannonball;
                     scale = DssConst.Men_StandardModelScale * 0.4f;
                     linear = false;
                     fireParticles = true;
                     break;
+                case AttackType.Cannonball:
+                    //warsRef.sound.rocket.Play(start);
+                    modelName = LootFest.VoxelModelName.war_cannonball;
+                    scale = DssConst.Men_StandardModelScale * 0.4f;
+                    linear = true;
+                    speed *= 1.5f;
+                    fireParticles = true;
+                    break;
+
+                case AttackType.GunShot:
+                    //warsRef.sound.rocket.Play(start);
+                    modelName = LootFest.VoxelModelName.war_cannonball;
+                    scale = DssConst.Men_StandardModelScale * 0.16f;
+                    linear = true;
+                    speed *= 1.5f;
+                    break;
+
+                case AttackType.GunBlast:
+                    //warsRef.sound.rocket.Play(start);
+                    modelName = LootFest.VoxelModelName.war_gunblast;
+                    scale = DssConst.Men_StandardModelScale * 0.45f;
+                    linear = true;
+                    speed *= 1.7f;
+                    frame = Ref.rnd.Int(3);
+                    break;
+
+                case AttackType.MassiveCannonball:
+                    //warsRef.sound.rocket.Play(start);
+                    modelName = LootFest.VoxelModelName.war_cannonball;
+                    scale = DssConst.Men_StandardModelScale * 0.8f;
+                    linear = true;
+                    speed *= 1.5f;
+                    fireParticles = true;
+                    break;
 
                 case AttackType.SlingShot:
                     //warsRef.sound.knifethrow.Play(start);
                     modelName = LootFest.VoxelModelName.slingstone;
-                    scale = 0.2f;
+                    scale = DssConst.Men_StandardModelScale * 0.14f;
                     break;
                 case AttackType.FireBomb:
                    // warsRef.sound.catapult.Play(start);
@@ -96,6 +132,12 @@ namespace VikingEngine.DSSWars.GameObject
                     modelName = LootFest.VoxelModelName.war_ballista_proj;
                     scale = DssConst.Men_StandardModelScale * 1.2f;
                     linear = true;
+                    break;
+                case AttackType.Catapult:
+                    rotatingSpeed = 2f;
+                    modelName = LootFest.VoxelModelName.boulder_proj;
+                    scale = DssConst.Men_StandardModelScale * 0.5f;
+                    linear = false;
                     break;
                 case AttackType.KnifeThrow:
                    // warsRef.sound.knifethrow.Play(start);
@@ -120,6 +162,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             model = DssRef.models.ModelInstance(modelName, scale, false);
             model.AddToRender(DrawGame.UnitDetailLayer);
+            model.Frame = frame;
             linearPosition = start;
             model.position = start;
 

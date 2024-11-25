@@ -1285,6 +1285,9 @@
 #begin VoxelModel/LfWars/banner.vox
 /copy:VoxelModel/LfWars/banner.vox
 
+#begin VoxelModel/LfWars/boulder_proj.vox
+/copy:VoxelModel/LfWars/boulder_proj.vox
+
 #begin VoxelModel/LfWars/buildarea.vox
 /copy:VoxelModel/LfWars/buildarea.vox
 
@@ -1453,6 +1456,9 @@
 #begin VoxelModel/LfWars/resource_tree.vox
 /copy:VoxelModel/LfWars/resource_tree.vox
 
+#begin VoxelModel/LfWars/slingstone.vox
+/copy:VoxelModel/LfWars/slingstone.vox
+
 #begin VoxelModel/LfWars/war_archer_i2.vox
 /copy:VoxelModel/LfWars/war_archer_i2.vox
 
@@ -1479,6 +1485,9 @@
 
 #begin VoxelModel/LfWars/war_gnome.vox
 /copy:VoxelModel/LfWars/war_gnome.vox
+
+#begin VoxelModel/LfWars/war_gunblast.vox
+/copy:VoxelModel/LfWars/war_gunblast.vox
 
 #begin VoxelModel/LfWars/war_knight_i2.vox
 /copy:VoxelModel/LfWars/war_knight_i2.vox
@@ -1599,6 +1608,9 @@
 
 #begin VoxelModel/LfWars/wars_manuballista.vox
 /copy:VoxelModel/LfWars/wars_manuballista.vox
+
+#begin VoxelModel/LfWars/wars_mithrilarcher.vox
+/copy:VoxelModel/LfWars/wars_mithrilarcher.vox
 
 #begin VoxelModel/LfWars/wars_mithrilman.vox
 /copy:VoxelModel/LfWars/wars_mithrilman.vox
