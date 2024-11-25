@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.Work
                 case WorkType.TrossReturnToArmy:
                     return DssRef.lang.WorkerStatus_TrossReturnToArmy;
                 case WorkType.Demolish:
-                    return DssRef.todoLang.BuildHud_Demolish;
+                    return DssRef.lang.Build_DestroyBuilding;
 
                 default:
                     return TextLib.Error;
@@ -465,7 +465,7 @@ namespace VikingEngine.DSSWars.Work
                     {
                         if (orderIsActive(city))
                         {
-                            BuildLib.Demolish(subTileEnd);
+                            BuildLib.Demolish(city, subTileEnd);
                             //BuildLib.BuildOptions[workSubType].execute_async(city, subTileEnd, ref subTile);
                             //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                         }

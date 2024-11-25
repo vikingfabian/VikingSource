@@ -49,6 +49,35 @@ namespace VikingEngine.DSSWars.Build
             return TextLib.Error;
         }
 
+        public void destroy_async(City city, IntVector2 subPos)
+        {
+            switch (mainType)
+            {
+                case TerrainMainType.Building:
+                    {
+                        switch ((TerrainBuildingType)subType)
+                        {
+                            
+                            case TerrainBuildingType.WorkerHut:
+                                city.onWorkHutBuild(false);
+                                break;
+
+                            case TerrainBuildingType.Nobelhouse:
+                            case TerrainBuildingType.Barracks:
+                                city.destroyBarracks(subPos);
+                                break;
+
+                            case TerrainBuildingType.Recruitment:
+                            case TerrainBuildingType.Postal:
+                                city.destroyDelivery(subPos);
+                                break;
+
+                        }
+                    }
+                    break;
+            }
+        }
+
         public void execute_async(City city, IntVector2 subPos, ref SubTile subTile)
         {
             subTile.SetType(mainType, subType, 1);
@@ -68,7 +97,7 @@ namespace VikingEngine.DSSWars.Build
                                 break;
 
                             case TerrainBuildingType.WorkerHut:
-                                city.onWorkHutBuild();
+                                city.onWorkHutBuild(true);
                                 break;
 
                             case TerrainBuildingType.Barracks:

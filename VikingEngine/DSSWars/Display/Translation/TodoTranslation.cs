@@ -11,7 +11,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
 
 
-        public string BuildHud_Demolish => "Demolish";
+        //public string BuildHud_Demolish => "Demolish";
     }
 
 }

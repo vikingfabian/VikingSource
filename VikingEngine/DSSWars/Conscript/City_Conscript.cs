@@ -355,6 +355,16 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void destroyBarracks(IntVector2 subPos)
+        {
+            lock (conscriptBuildings)
+            {
+               int index =  conscriptIxFromSubTile(subPos);
+                conscriptBuildings[index].returnItems(this);
+                conscriptBuildings.RemoveAt(index);
+            }
+        }
+
         public int conscriptIxFromSubTile(IntVector2 subTilePos)
         {
             int id = conv.IntVector2ToInt(subTilePos);

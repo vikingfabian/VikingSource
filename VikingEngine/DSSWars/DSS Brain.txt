@@ -1,8 +1,6 @@
 ﻿-Change Log-
 
 
-todo demolish
--räkna byggnader baklänges, som tex workerhuts
 
 #Todo (xmas patch)#
 

@@ -594,9 +594,16 @@ namespace VikingEngine.DSSWars.GameObject
             detailObj.refreshWorkerSubtiles();
         }
 
-        public void onWorkHutBuild()
+        public void onWorkHutBuild(bool build_notDestroy)
         {
-            workForceMax += DssConst.SoldierGroup_DefaultCount;
+            if (build_notDestroy)
+            {
+                workForceMax += DssConst.SoldierGroup_DefaultCount;
+            }
+            else
+            {
+                workForceMax -= DssConst.SoldierGroup_DefaultCount;
+            }
             refreshCitySize();
         }
 
@@ -796,11 +803,6 @@ namespace VikingEngine.DSSWars.GameObject
                 if (newType != CityType)
                 {
                     CityType = newType;
-                    //detailObj.refreshModel();
-                    //Task.Factory.StartNew(() =>
-                    //{
-                    //    createBuildingSubtiles(DssRef.world);
-                    //});
 
                     if (overviewModel != null)
                     {

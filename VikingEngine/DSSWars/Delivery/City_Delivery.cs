@@ -261,6 +261,16 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void destroyDelivery(IntVector2 subPos)
+        {
+            lock (deliveryServices)
+            {
+                int index = deliveryIxFromSubTile(subPos);
+                //deliveryServices[index].returnItems(this);
+                deliveryServices.RemoveAt(index);
+            }
+        }
+
 
         public int deliveryIxFromSubTile(IntVector2 subTilePos)
         {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.ToGG.ToggEngine.Map;
@@ -191,13 +192,16 @@ namespace VikingEngine.DSSWars.Build
             return false;
         }
 
-        public static void Demolish(IntVector2 subTilePos)
+        public static void Demolish(City city, IntVector2 subTilePos)
         {
             var subTile = DssRef.world.subTileGrid.Get(subTilePos);
             var buildingType = BuildLib.GetType(subTile.mainTerrain, subTile.subTerrain);
             if (buildingType != BuildAndExpandType.NUM_NONE)
             {
-                var bp = BuildOptions[(int)buildingType].blueprint;
+                var opt = BuildOptions[(int)buildingType];
+               opt.destroy_async(city, subTilePos);
+                
+                var bp = opt.blueprint;
                 foreach (var r in bp.resources)
                 {
                     int returnAmount = r.amount / 2;

@@ -474,7 +474,7 @@ namespace VikingEngine.DSSWars.Build
 
             content.Add(new RichboxButton(new List<AbsRichBoxMember>
             {
-                new RichBoxText(DssRef.todoLang.BuildHud_Demolish)
+                new RichBoxText(DssRef.lang.Build_DestroyBuilding)
             }, new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.Demolish, SoundLib.menu)));
 
             content.space();
