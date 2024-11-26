@@ -1114,7 +1114,7 @@ namespace VikingEngine.DSSWars.Players
         void updateGameSpeed()
         {
            
-            if (DssRef.difficulty.allowPauseCommand && 
+            if (DssRef.difficulty.setting_allowPauseCommand && 
                 input.PauseGame.DownEvent && 
                 DssRef.state.localPlayers.Count == 1)//IsLocalHost())
             {

@@ -35,7 +35,7 @@ namespace VikingEngine.HUD
 
         protected virtual bool AutoAddToLayout { get { return true; } }
 
-        public string ToolTip { get; protected set; }
+        public string ToolTip;
 
         bool isHovered;
         public virtual bool IsHovered

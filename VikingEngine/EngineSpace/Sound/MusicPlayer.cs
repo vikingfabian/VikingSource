@@ -57,6 +57,8 @@ namespace VikingEngine.Sound
 
         public void nextRandomSong()
         {
+            if (playList == null) return;
+
             currentDelay = TimeExt.MinutesToMS(DelayBetweenSongs_minutes.GetRandom());
             keepPlaying = true;
             playSongState = PlaySongState.LoadingSong;

@@ -213,7 +213,7 @@ namespace VikingEngine.DSSWars
                     groups.sel.Upkeep(ref energyUpkeep);
                 }
 
-                float foodUpkeep = energyUpkeep / DssConst.FoodEnergy;
+                float foodUpkeep = energyUpkeep / DssRef.difficulty.FoodEnergySett;
 
                 //totalArmiesUpkeep += armyUpkeep;
                 foodImport += armiesC.sel.foodCosts_import.displayValue_sec;
