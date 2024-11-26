@@ -6,7 +6,10 @@ Double soldier health
 !Alla objekt med Tile referens måste ändras (livestock)
 
 
-#Todo (xmas patch)#
+#Todo (difficulty)#
+hara anfaller i sandbox
+war manager ska vara av på easy
+peace mode?
 
 #Todo (XP)#
 -Full automation
