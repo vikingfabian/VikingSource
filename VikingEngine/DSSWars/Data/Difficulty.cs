@@ -33,8 +33,11 @@ namespace VikingEngine.DSSWars.Data
         public bool honorGuard = true;
         public bool resourcesStartHelp = false;
 
-        public bool allowPauseCommand = true;
+        public bool setting_allowPauseCommand = true;
+        public float setting_foodMulti = 1;
+        public GameMode setting_gameMode = GameMode.FullStory;
         public bool boss = true;
+        public bool peaceful = false;
 
         public int MercenaryPurchaseCost_Start;
         public int MercenaryPurchaseCost_Add;
@@ -58,13 +61,13 @@ namespace VikingEngine.DSSWars.Data
 
                 new GuiTextButton(options[i].ToString() + "%",
                     string.Format( DssRef.lang.DifficultyDescription_AiAggression, TextLib.IndexDivition((int)difficulty.aiAggressivity, (int)AiAggressivity.NUM)) + Environment.NewLine +
-                   string.Format(DssRef.lang.DifficultyDescription_BossSize,TextLib.IndexDivition((int)difficulty.bossSize, (int)BossSize.NUM)) + Environment.NewLine +
-                   string.Format(DssRef.lang.DifficultyDescription_BossEnterTime, TextLib.IndexDivition((int)difficulty.bossTimeSettings, (int)BossTimeSettings.NUM)) + Environment.NewLine +
-                   string.Format(DssRef.lang.DifficultyDescription_AiEconomy, AiEconomyLevel[difficulty.aiEconomyLevel].ToString()) + Environment.NewLine +
+                    string.Format(DssRef.lang.DifficultyDescription_BossSize,TextLib.IndexDivition((int)difficulty.bossSize, (int)BossSize.NUM)) + Environment.NewLine +
+                    string.Format(DssRef.lang.DifficultyDescription_BossEnterTime, TextLib.IndexDivition((int)difficulty.bossTimeSettings, (int)BossTimeSettings.NUM)) + Environment.NewLine +
+                    string.Format(DssRef.lang.DifficultyDescription_AiEconomy, AiEconomyLevel[difficulty.aiEconomyLevel].ToString()) + Environment.NewLine +
                     string.Format(DssRef.lang.DifficultyDescription_AiDelay, TimeSpan.FromSeconds(difficulty.aiDelayTimeSec).ToString()) + Environment.NewLine +
                     string.Format(DssRef.lang.DifficultyDescription_DiplomacyDifficulty, TextLib.IndexDivition(difficulty.diplomacyDifficulty, DiplomacyDifficultyCount)) + Environment.NewLine +
                     string.Format(DssRef.lang.DifficultyDescription_MercenaryCost, difficulty.MercenaryPurchaseCost_Start.ToString() )+ Environment.NewLine +
-                   string.Format(DssRef.lang.DifficultyDescription_HonorGuards, difficulty.honorGuard? Ref.langOpt.Hud_Yes : Ref.langOpt.Hud_No),
+                    string.Format(DssRef.lang.DifficultyDescription_HonorGuards, difficulty.honorGuard? Ref.langOpt.Hud_Yes : Ref.langOpt.Hud_No),
 
                     new GuiAction1Arg<int>(difficultyOptionsLink, i),
                     false, layout);
@@ -80,7 +83,7 @@ namespace VikingEngine.DSSWars.Data
         public int TotalDifficulty()
         {
             double result = PercDifficulty;
-            if (!allowPauseCommand)
+            if (!setting_allowPauseCommand)
             {
                 result *= 1.25;
             }
@@ -94,6 +97,22 @@ namespace VikingEngine.DSSWars.Data
 
         void refreshSettings(int difficulty)
         {
+            switch (setting_gameMode)
+            {
+                case GameMode.FullStory:
+                    boss = true;
+                    peaceful = false; 
+                    break;
+                case GameMode.Sandbox:
+                    boss = false;
+                    peaceful = false;
+                    break;
+                case GameMode.Peaceful:
+                    boss = false;
+                    peaceful = true;
+                    break;
+            }
+
             switch (difficulty)
             {
                 case 0:
@@ -208,14 +227,14 @@ namespace VikingEngine.DSSWars.Data
 
         public void write(System.IO.BinaryWriter w)
         {
-            w.Write(allowPauseCommand);
+            w.Write(setting_allowPauseCommand);
             w.Write(boss);
             w.Write(difficulty);
         }
 
         public void read(System.IO.BinaryReader r, int version)
         {
-            allowPauseCommand = r.ReadBoolean();
+            setting_allowPauseCommand = r.ReadBoolean();
             boss = r.ReadBoolean();
             difficulty = r.ReadInt32();
 
@@ -224,6 +243,14 @@ namespace VikingEngine.DSSWars.Data
 
     }
 
+
+    enum GameMode
+    { 
+        FullStory,
+        Sandbox,
+        Peaceful,
+        NUM
+    }
     //enum AiResourceMultiplyType
     //{ 
     //    None,
