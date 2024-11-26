@@ -1620,6 +1620,12 @@ namespace VikingEngine.DSSWars.Players
 
         bool mayAttackFaction(Faction otherFaction)
         {
+            if (DssRef.difficulty.peaceful && otherFaction.player.IsPlayer())
+            {
+                RelationType playerRel = DssRef.diplomacy.GetRelationType(faction, otherFaction);
+                return playerRel <= RelationType.RelationTypeN3_War;
+            }
+
             if (otherFaction.player.protectedPlayer)
             {
                 if (faction.Size() >= FactionSize.Big && Ref.rnd.Chance(0.25))

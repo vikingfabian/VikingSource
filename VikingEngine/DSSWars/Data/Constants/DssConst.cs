@@ -87,7 +87,7 @@ namespace VikingEngine.DSSWars
         //WORK
         public static float WorkTime_Eat = 10;
         public static float WorkTime_PickUpResource = 2;
-        public static float WorkTime_PickUpProduce = 3;
+        public static float WorkTime_PickUpProduce = 10;
         public static float WorkTime_TrossCityTrade = 4;
         public static float WorkTime_LocalTrade = WorkTime_TrossCityTrade;
         public static float WorkTime_GatherFoil_TreeSoft = 10;
@@ -106,14 +106,17 @@ namespace VikingEngine.DSSWars
         public static int Worker_MaxEnergy = 500;
         public static int Worker_Starvation = -Worker_MaxEnergy;
 
-        public static int DefaultItemRawFoodAmount = 25;
-        public static int DefaultItemFuelAmount = 25;
-        public static int HempFuelAmount = 15;
+        public static int WheatFoodAmount = 30;
+        //public static int DefaultItemFuelAmount = 25;
+        public static int RapeSeedFuelAmount = 15;
+        public static int HempLinenAndFuelAmount = 8;
+        public static int LinenHarvestAmount = 15;
 
-        public static int HenRawFoodAmout = 15;
-        public static int EggRawFoodAmout = 10;
+        public static int HenRawFoodAmout = 6;
+        public static int EggRawFoodAmout = 2;
 
-        public static int PigRawFoodAmout = 15;
+        public static int PigRawFoodAmout = 4;
+        public static int PigSkinAmount = 2;
         public static float ManDefaultEnergyCost = 1f;
         public static float WorkTeamEnergyCost = ManDefaultEnergyCost * City.WorkTeamSize;
         public static float WorkTeamEnergyCost_WhenIdle = WorkTeamEnergyCost * 0.5f;

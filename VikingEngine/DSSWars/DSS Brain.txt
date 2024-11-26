@@ -1,5 +1,8 @@
 ﻿-Change Log-
-All raw food production is doubled
+* All food/linen production is rebalanced
+* New game settings, and fixed boss-free gameplay
+* The attack manager is turned off on easy
+* fixed reported crashes
 
 #Todo (xmas patch)#
 

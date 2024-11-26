@@ -65,7 +65,7 @@ namespace VikingEngine.HUD
         protected override void OnUpdate(GuiMember selected)
         {
             // If there is text
-            if (selected.ToolTip != null && selected.ToolTip != "")
+            if (TextLib.HasValue(selected.ToolTip))
             {
                 // Set the text to whatever the tooltip of the member is.
                 textBox.TextString = selected.ToolTip;

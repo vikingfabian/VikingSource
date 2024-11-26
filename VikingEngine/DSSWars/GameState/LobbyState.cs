@@ -46,6 +46,7 @@ namespace VikingEngine.DSSWars
         InputButtonType mappingFor;
         bool inKeyMapsMenu = false;
         List<Keys> availableKeyboardKeys;
+        
         public LobbyState()
             : base()
         {
@@ -390,21 +391,26 @@ namespace VikingEngine.DSSWars
             {
                 new GuiLargeTextButton(DssRef.lang.Lobby_Start, null, new GuiAction(startGame), false, layout);
                 new GuiOptionsList<MapSize>(SpriteName.NO_IMAGE, DssRef.lang.Lobby_MapSizeTitle, mapSizes, mapSizeProperty, layout);
+                new GuiCheckbox(DssRef.lang.Settings_GenerateMaps, DssRef.lang.Settings_GenerateMaps_SlowDescription, generateNewMapsProperty, layout);
 
                 difficultyLevelText = new GuiLabel("XXX", layout);
 
                 new GuiTextButton(string.Format(DssRef.lang.Settings_DifficultyLevel, DssRef.difficulty.PercDifficulty), null, selectDifficultyMenu, true, layout);
                 new GuiSectionSeparator(layout);
 
-                new GuiLabel("Advanced", layout);
-                new GuiCheckbox(DssRef.lang.Settings_GenerateMaps, DssRef.lang.Settings_GenerateMaps_SlowDescription, generateNewMapsProperty, layout);
+                new GuiLabel(DssRef.todoLang.Hud_Advanced, layout);
+                
 
-                gameModeText(out string modecaption, out string modedesc);
+                gameModeText(DssRef.difficulty.setting_gameMode, out string modecaption, out string modedesc);
 
                 new GuiTextButton(DssRef.todoLang.Settings_GameMode + " (" + modecaption + ")", modedesc, selectGameModeMenu, true, layout);
                 new GuiCheckbox(DssRef.lang.Settings_AllowPause, null, allowPauseProperty, layout);
+                //new GuiLabel(, layout);
+                var foodSlider = new GuiFloatSlider(SpriteName.WarsResource_Food, DssRef.todoLang.Settings_FoodMultiplier, foodMultiProperty, new IntervalF(0.5f, 10f), false, layout);
+                foodSlider.onLeaveCallback = new Action(foodSliderLeave);
+                foodSlider.ToolTip = DssRef.todoLang.Settings_FoodMultiplier_Description;
 
-                new GuiFloatSlider(SpriteName.WarsResource_Food, DssRef.todoLang.Settings_FoodMultiplier, foodMultiProperty, new IntervalF(0.5f, 10f), false, layout);
+ new GuiTextButton(DssRef.todoLang.Settings_ResetToDefault, null, resetToDefault, false, layout);
             }
             layout.End();
 
@@ -416,11 +422,11 @@ namespace VikingEngine.DSSWars
             return GetSet.Do<float>(set, ref DssRef.difficulty.setting_foodMulti, value);
         }
 
-        void gameModeText(out string caption, out string desc)
+        void gameModeText(GameMode mode, out string caption, out string desc)
         {
             caption = null;
             desc = null;
-            switch (DssRef.difficulty.setting_gameMode)
+            switch (mode)
             {
                 case GameMode.FullStory:
                     caption = DssRef.todoLang.Settings_Mode_Story;
@@ -454,7 +460,7 @@ namespace VikingEngine.DSSWars
             {
                 for (GameMode mode = 0; mode < GameMode.NUM; ++mode)
                 {
-                    gameModeText(out string caption, out string desc);
+                    gameModeText(mode, out string caption, out string desc);
                     //new GuiTextButton(DssRef.todoLang.Settings_Mode_Story, DssRef.todoLang.Settings_Mode_InclueBoss + " " + DssRef.todoLang.Settings_Mode_InclueAttacks,
                     //    new GuiAction1Arg<GameMode>(gameModeClick, Data.GameMode.FullStory), false, layout);
                     //new GuiTextButton(DssRef.todoLang.Settings_Mode_Sandbox, DssRef.todoLang.Settings_Mode_InclueAttacks,
@@ -484,6 +490,19 @@ namespace VikingEngine.DSSWars
             mainMenu();
             newGameSettings();
             //menuSystem.menu.PopLayout();
+        }
+
+        void resetToDefault()
+        {
+            DssRef.difficulty = new Difficulty();
+            DssRef.storage.Save(null);
+            mainMenu();
+            newGameSettings();
+        }
+
+        void foodSliderLeave()
+        { 
+            DssRef.storage.Save(null);
         }
 
         void extra_PlayCommanderVersus()
@@ -539,11 +558,11 @@ namespace VikingEngine.DSSWars
         {
             if (set)
             {
-                DssRef.difficulty.boss = value;
+                DssRef.difficulty.runEvents = value;
                 DssRef.storage.Save(null);
                 refreshDifficultyLevel();
             }
-            return DssRef.difficulty.boss;
+            return DssRef.difficulty.runEvents;
         }
 
         public MapSize mapSizeProperty(bool set, MapSize value)

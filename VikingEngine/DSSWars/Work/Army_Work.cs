@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void setMaxFood()
         {
-            float energy = DssLib.SoldierDefaultEnergyUpkeep / DssConst.FoodEnergy * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);
+            float energy = DssLib.SoldierDefaultEnergyUpkeep / DssRef.difficulty.FoodEnergySett * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);
             float bufferGoalFood = friendlyAreaFoodBuffer_minutes * TimeExt.MinuteInSeconds * energy;
             food = bufferGoalFood;
         }

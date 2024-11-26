@@ -10,6 +10,7 @@ namespace VikingEngine.DSSWars.Display.Translation
     {
         public string Hud_Advanced => "Advanced";
 
+        public string Settings_ResetToDefault => "Reset to default";
         public string Settings_NewGame => "New game";
 
         public string Settings_AndvancedGameSettings => "Game settings";

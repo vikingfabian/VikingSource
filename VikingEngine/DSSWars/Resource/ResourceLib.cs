@@ -312,7 +312,7 @@ namespace VikingEngine.DSSWars.Resource
             {
         new UseResource(ItemResourceType.Water_G, 4),
         new UseResource(ItemResourceType.Wood_Group, 20),
-        new UseResource(ItemResourceType.RawFood_Group, DssConst.PigRawFoodAmout)
+        new UseResource(ItemResourceType.RawFood_Group, DssConst.WheatFoodAmount)
             }
         );
 
@@ -324,7 +324,7 @@ namespace VikingEngine.DSSWars.Resource
             {
         new UseResource(ItemResourceType.Water_G, 2),
         new UseResource(ItemResourceType.Wood_Group, 20),
-        new UseResource(ItemResourceType.RawFood_Group, DssConst.DefaultItemRawFoodAmount)
+        new UseResource(ItemResourceType.RawFood_Group, DssConst.WheatFoodAmount)
             }
         );
 
