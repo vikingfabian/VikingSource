@@ -1,5 +1,5 @@
 ﻿-Change Log-
-
+All raw food production is doubled
 
 #Todo (xmas patch)#
 
