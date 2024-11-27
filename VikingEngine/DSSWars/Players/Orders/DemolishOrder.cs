@@ -7,6 +7,7 @@ using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.Graphics;
+using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Players.Orders
 {
@@ -19,11 +20,6 @@ namespace VikingEngine.DSSWars.Players.Orders
             baseInit(priority);
             this.city = city;
             this.subTile = subTile;
-
-            //if (bLocalPlayer)
-            //{
-            //    init();
-            //}
         }
 
         public override void onAdd()
@@ -46,15 +42,28 @@ namespace VikingEngine.DSSWars.Players.Orders
             //icon.DeleteMe();
         }
 
-        public override bool IsConflictingOrder(AbsOrder other)
+        public override RichBoxContent ToHud()
         {
-            var other_d = other.GetDemolish();
-            if (other_d != null)
-            {
-                return this.subTile == other_d.subTile;
-            }
-            return false;
+            RichBoxContent content = new RichBoxContent();
+            content.h2(DssRef.lang.Build_DestroyBuilding);
+
+            return content;
         }
+
+        //public override bool IsBuildOnSubTile(IntVector2 subTile)
+        //{
+        //    return base.IsBuildOnSubTile(subTile);
+        //}
+
+        //public override bool IsConflictingOrder(AbsOrder other)
+        //{
+        //    var other_d = other.GetDemolish();
+        //    if (other_d != null)
+        //    {
+        //        return this.subTile == other_d.subTile;
+        //    }
+        //    return false;
+        //}
 
         public override DemolishOrder GetDemolish()
         {

@@ -3,7 +3,8 @@
 * New game settings, and fixed boss-free gameplay
 * The attack manager is turned off on easy
 * fixed reported crashes
-
+* fixed build/destroy issues
+* made the ai cheat less when conscripting
 
 #Todo (xmas patch)#
 

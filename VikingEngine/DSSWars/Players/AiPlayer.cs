@@ -954,7 +954,7 @@ namespace VikingEngine.DSSWars.Players
                         {
                             maxPurchaseCount = MathExt.MultiplyInt(DssRef.difficulty.aiEconomyMultiplier, maxPurchaseCount);
                         }
-                        createPurcaseOrder(city, maxPurchaseCount);
+                        createPurchaseOrder(city, maxPurchaseCount);
                     }
                 }
                 else if (inWar)
@@ -1034,7 +1034,7 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        private void createPurcaseOrder(City city, int maxPurchaseCount)
+        private void createPurchaseOrder(City city, int maxPurchaseCount)
         {
             purchaseCount = Ref.rnd.Int(5, maxPurchaseCount);
             purchaseOrder = PurchaseOrderType_Army;
@@ -1262,14 +1262,7 @@ namespace VikingEngine.DSSWars.Players
 
         private void mainArmyBuyAtCity(City city)
         {
-            //int max = Math.Min(faction.gold / DssLib.GroupDefaultCost, city.workForce / DssConst.SoldierGroup_DefaultCount);
-            
-            //if (max >= 4)
-            //{
-            //    purchaseCount = Ref.rnd.Int(MathExt.MultiplyInt(0.5, max), max);
-
-            //    if (purchaseCount >= 4)
-            //    {
+           
                     mainArmyState = MainArmyState_BuySoldiers;
 
                     purchaseIsMainArmy = true;
@@ -1277,21 +1270,12 @@ namespace VikingEngine.DSSWars.Players
                     purchaseOrderIndex1 = city.parentArrayIndex;
 
                     collectLooseArmies(city.tilePos);
-            //    }
-
-            //}
+           
         }
 
         void buyDefenceAtCity(City city)
         {   
-            //int max = Math.Min(faction.gold / DssLib.GroupDefaultCost, city.workForce / DssConst.SoldierGroup_DefaultCount);
-
-            //if (max >= 4)
-            //{
-            //    purchaseCount = Ref.rnd.Int(MathExt.MultiplyInt(0.3, max), MathExt.MultiplyInt(0.6, max));
-
-            //    if (purchaseCount >= 4)
-            //    {
+            
                 if (buySoldiers(city, true, false))
                 {
                     purchaseOrder = PurchaseOrderType_Army;
