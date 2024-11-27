@@ -124,6 +124,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 city.AddGroupedResource(profile.weapon, -get * DssConst.SoldierGroup_DefaultCount);
                 city.AddGroupedResource(profile.armorLevel, -get * DssConst.SoldierGroup_DefaultCount);
+                city.workForce.amount -= get * DssConst.SoldierGroup_DefaultCount;
 
                 switch (aiConscript)
                 { 

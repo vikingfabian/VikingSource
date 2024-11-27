@@ -112,7 +112,7 @@ namespace VikingEngine.DSSWars
 
         public static float WorkTime_Eat = 10;
         public static float WorkTime_PickUpResource = 2;
-        public static float WorkTime_PickUpProduce = 4;
+        public static float WorkTime_PickUpProduce = 10;
         public static float WorkTime_TrossCityTrade = 4;
         public static float WorkTime_LocalTrade = WorkTime_TrossCityTrade;
         public static float WorkTime_GatherFoil_TreeSoft = 12;
@@ -132,25 +132,29 @@ namespace VikingEngine.DSSWars
         public static int Worker_MaxEnergy = 500;
         public static int Worker_Starvation = -Worker_MaxEnergy;
 
-        public static int DefaultItemRawFoodAmount = 12;
-        public static int DefaultItemFuelAmount = 12;
-        public static int HempFuelAmount = 8;
+        public static int WheatFoodAmount = 30;
+        //public static int DefaultItemFuelAmount = 25;
+        public static int RapeSeedFuelAmount = 15;
+        public static int HempLinenAndFuelAmount = 8;
+        public static int LinenHarvestAmount = 15;
 
-        public static int HenRawFoodAmout = 8;
-        public static int EggRawFoodAmout = 5;
+        public static int HenRawFoodAmout = 6;
+        public static int EggRawFoodAmout = 2;
 
-        public static int PigRawFoodAmout = 8;
+        public static int PigRawFoodAmout = 4;
+        public static int PigSkinAmount = 2;
         public static float ManDefaultEnergyCost = 1f;
         public static float WorkTeamEnergyCost = ManDefaultEnergyCost * City.WorkTeamSize;
         public static float WorkTeamEnergyCost_WhenIdle = WorkTeamEnergyCost * 0.5f;
         public static int FoodEnergy = 100;
         public static int PlantWaterCost = 1;
+        //public static int PlantFoodCost = 6;
 
         public static int WorkSafeGuardAmount = 10;
 
         //XP
-        public static int WorkQueue_Start = 2;
-        public static int WorkQueue_LogisticsLevel1 = 4;
+        public static int WorkQueue_Start = 3;
+        public static int WorkQueue_LogisticsLevel1 = 6;
         public static int Logistics2_PopulationRequirement = 1200;
     }
 }

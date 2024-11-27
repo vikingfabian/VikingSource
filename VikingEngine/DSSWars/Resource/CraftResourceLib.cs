@@ -246,18 +246,44 @@ namespace VikingEngine.DSSWars.Resource
         const int FoodCraftAmount = 20;
 
 
+        //public static readonly CraftBlueprint Food1 = new CraftBlueprint(
+        //    CraftResultType.Resource,
+        //    (int)ItemResourceType.Food_G,
+        //    FoodCraftAmount,
+        //    new UseResource[]
+        //    {
+        //        new UseResource(ItemResourceType.Water_G, FoodWaterUsage),
+        //        new UseResource(ItemResourceType.Fuel_G, FoodWaterUsage),
+        //        new UseResource(ItemResourceType.RawFood_Group, FoodCraftAmount)
+        //    },
+        //     Work.WorkExperienceType.Cook
+        //)
+        //{ tooltipId = Tooltip.Food_BlueprintId };
+
+        //public static readonly CraftBlueprint Food2 = new CraftBlueprint(
+        //    CraftResultType.Resource,
+        //    (int)ItemResourceType.Food_G,
+        //    FoodCraftAmount,
+        //    new UseResource[]
+        //    {
+        //        new UseResource(ItemResourceType.Beer, FoodWaterUsage),
+        //        new UseResource(ItemResourceType.Fuel_G, FoodWaterUsage),
+        //        new UseResource(ItemResourceType.RawFood_Group, FoodCraftAmount)
+        //    },
+        //    Work.WorkExperienceType.Cook
+        //)
+        //{ tooltipId = Tooltip.Food_BlueprintId };
         public static readonly CraftBlueprint Food1 = new CraftBlueprint(
-            CraftResultType.Resource,
-            (int)ItemResourceType.Food_G,
-            FoodCraftAmount,
-            new UseResource[]
-            {
+          CraftResultType.Resource,
+          (int)ItemResourceType.Food_G,
+          FoodCraftAmount,
+          new UseResource[]
+          {
                 new UseResource(ItemResourceType.Water_G, FoodWaterUsage),
                 new UseResource(ItemResourceType.Fuel_G, FoodWaterUsage),
                 new UseResource(ItemResourceType.RawFood_Group, FoodCraftAmount)
-            },
-             Work.WorkExperienceType.Cook
-        )
+          }, Work.WorkExperienceType.Cook
+      )
         { tooltipId = Tooltip.Food_BlueprintId };
 
         public static readonly CraftBlueprint Food2 = new CraftBlueprint(
@@ -269,10 +295,11 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Beer, FoodWaterUsage),
                 new UseResource(ItemResourceType.Fuel_G, FoodWaterUsage),
                 new UseResource(ItemResourceType.RawFood_Group, FoodCraftAmount)
-            },
-            Work.WorkExperienceType.Cook
+            }, Work.WorkExperienceType.Cook
         )
         { tooltipId = Tooltip.Food_BlueprintId };
+
+
 
         public static readonly CraftBlueprint Beer = new CraftBlueprint(
                 CraftResultType.Resource,

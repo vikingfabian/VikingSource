@@ -29,6 +29,22 @@ namespace VikingEngine.DSSWars.Players.Orders
             model.AddToRender(DrawGame.UnitDetailLayer);
             model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTile);
         }
+
+        public override bool IsBuildOnSubTile(IntVector2 subTile)
+        {
+            return this.subTile == subTile;
+        }
+
+        public override bool IsConflictingOrder(AbsOrder other)
+        {
+            return other.IsBuildOnSubTile(subTile);
+        }
+
+        public override void DeleteMe()
+        {
+            model.DeleteMe();
+            base.DeleteMe();
+        }
     }
 
     class BuildOrder : AbsBuildOrder
@@ -99,25 +115,14 @@ namespace VikingEngine.DSSWars.Players.Orders
         override public void DeleteMe()
         { 
             base.DeleteMe();
-            //Debug.CrashIfThreaded();
-
-            //model.DeleteMe();
+            
             icon.DeleteMe();
         }
         public override BuildOrder GetBuild()
         {
             return this;
         }
-        //public override BuildOrder GetWorkOrder(City city)
-        //{
-        //    if (this.city == city && orderStatus == OrderStatus.Waiting)
-        //    { 
-        //        return this;
-        //    }
-        //    return null;
-        //}
-
-        //public override BuildOrder GetWorkOrder(City city)
+        
         public override bool BuildQueue(City city)
         {
             if (this.city == city && orderStatus != OrderStatus.Complete)
@@ -136,15 +141,7 @@ namespace VikingEngine.DSSWars.Players.Orders
             return result;
         }
 
-        public override bool IsBuildOnSubTile(IntVector2 subTile)
-        {
-            return this.subTile == subTile;
-        }
-
-        public override bool IsConflictingOrder(AbsOrder other)
-        {
-            return other.IsBuildOnSubTile(subTile);
-        }
+      
 
         public override bool refreshAvailable(Faction faction)
         {

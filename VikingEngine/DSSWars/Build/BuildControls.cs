@@ -228,7 +228,7 @@ namespace VikingEngine.DSSWars.Build
                             HudLib.BulletPoint(content);
                             content.Add(new RichBoxText(DssRef.lang.BuildHud_Produce));
                             content.space();
-                            content.Add(new RichBoxText(DssConst.DefaultItemRawFoodAmount.ToString()));
+                            content.Add(new RichBoxText(DssConst.WheatFoodAmount.ToString()));
                             content.Add(new RichBoxImage(SpriteName.WarsResource_RawFood));
                             content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_RawFood));
 
@@ -282,7 +282,7 @@ namespace VikingEngine.DSSWars.Build
                             HudLib.BulletPoint(content);
                             content.Add(new RichBoxText(DssRef.lang.BuildHud_Produce));
                             content.space();
-                            content.Add(new RichBoxText(DssConst.DefaultItemFuelAmount.ToString()));
+                            content.Add(new RichBoxText(DssConst.RapeSeedFuelAmount.ToString()));
                             content.Add(new RichBoxImage(SpriteName.WarsResource_Fuel));
                             content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Fuel));
 
@@ -309,11 +309,11 @@ namespace VikingEngine.DSSWars.Build
                             HudLib.BulletPoint(content);
                             content.Add(new RichBoxText(DssRef.lang.BuildHud_Produce));
                             content.space();
-                            content.Add(new RichBoxText(DssConst.HempFuelAmount.ToString()));
+                            content.Add(new RichBoxText(DssConst.HempLinenAndFuelAmount.ToString()));
                             content.Add(new RichBoxImage(SpriteName.WarsResource_Fuel));
                             content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Fuel));
                             content.Add(new RichBoxImage(SpriteName.pjNumPlus));
-                            content.Add(new RichBoxText(DssConst.HempFuelAmount.ToString()));
+                            content.Add(new RichBoxText(DssConst.HempLinenAndFuelAmount.ToString()));
                             content.Add(new RichBoxImage(SpriteName.WarsResource_LinenCloth));
                             content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Linen));
                             break;
@@ -332,7 +332,7 @@ namespace VikingEngine.DSSWars.Build
                             HudLib.BulletPoint(content);
                             content.Add(new RichBoxText(DssRef.lang.BuildHud_Produce));
                             content.space();
-                            content.Add(new RichBoxText((DssConst.HenRawFoodAmout * 2).ToString()));
+                            content.Add(new RichBoxText((DssConst.HenRawFoodAmout + DssConst.EggRawFoodAmout).ToString()));
                             content.Add(new RichBoxImage(SpriteName.WarsResource_RawFood));
                             content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_RawFood));
 
@@ -357,7 +357,7 @@ namespace VikingEngine.DSSWars.Build
                             content.Add(new RichBoxImage(SpriteName.WarsResource_RawFood));
                             content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_RawFood));
                             content.Add(new RichBoxImage(SpriteName.pjNumPlus));
-                            content.Add(new RichBoxText(DssConst.PigRawFoodAmout.ToString()));
+                            content.Add(new RichBoxText(DssConst.PigSkinAmount.ToString()));
                             content.Add(new RichBoxImage(SpriteName.WarsResource_LinenCloth));
                             content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Linen));
                             break;

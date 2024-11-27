@@ -40,6 +40,7 @@ namespace VikingEngine.DSSWars.Display
                 ImageLayers.Foreground9_Back, true);
             preview = new Graphics.Image(SpriteName.WhiteArea, Vector2.Zero, Engine.Screen.SmallIconSizeV2 - new Vector2(previewOutlineW * 2),
                 ImageLayers.Foreground9_Back, true);
+            preview.LayerAbove(previewOutline);
 
             previewOffset = new Vector2(Engine.Screen.SmallIconSize * 0.7f);
 

@@ -54,6 +54,7 @@ namespace VikingEngine.DSSWars
             DssRef.state = this;
             this.host = host;
             Engine.Update.SetFrameRate(60);
+
             //int seed;
             //if (loadMeta == null)
             //{
@@ -192,6 +193,7 @@ namespace VikingEngine.DSSWars
 
         void onGameStart(bool newGame)
         {
+            DssRef.difficulty.refreshSettings();
             events.onGameStart(newGame);
             Ref.music.OnGameStart();
 

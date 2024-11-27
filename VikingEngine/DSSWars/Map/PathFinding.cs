@@ -262,7 +262,7 @@ namespace VikingEngine.DSSWars.Map
         {
             int ix = currentNodeIx;
 
-            if (ix >= 0 && nodes.Count > 0)
+            if (ix >= 0 && ix < nodes.Count)
             {
                 node = nodes[ix];
                 return true;

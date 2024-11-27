@@ -156,7 +156,7 @@ namespace VikingEngine.DSSWars.Display
 
             void pauseButton()
             {
-                if (DssRef.difficulty.allowPauseCommand)
+                if (DssRef.difficulty.setting_allowPauseCommand)
                 {
                     var button = new RichboxButton(new List<AbsRichBoxMember>
                     {

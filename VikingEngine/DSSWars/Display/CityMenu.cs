@@ -424,7 +424,7 @@ namespace VikingEngine.DSSWars.Display
                         var arrow = new RichBoxImage(SpriteName.pjNumArrowR);
                         arrow.color = Color.CornflowerBlue;
                         content.Add(arrow);
-                        content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_EnergyAmount, DssConst.FoodEnergy)));
+                        content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_EnergyAmount,DssRef.difficulty.FoodEnergySett)));
                     }
                     break;
 

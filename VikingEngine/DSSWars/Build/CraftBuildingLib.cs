@@ -149,18 +149,80 @@ namespace VikingEngine.DSSWars.Build
             Work.WorkExperienceType.HouseBuilding
         );
 
+        //public static readonly CraftBlueprint PigPen = new CraftBlueprint(
+        //    CraftResultType.Building,
+        //    (int)Build.BuildAndExpandType.PigPen,
+        //    1,
+        //    new UseResource[]
+        //    {
+        //new UseResource(ItemResourceType.Water_G, 4),
+        //new UseResource(ItemResourceType.Wood_Group, 20),
+        //new UseResource(ItemResourceType.RawFood_Group, DssConst.PigRawFoodAmout)
+        //    },
+        //    Work.WorkExperienceType.AnimalCare
+        //);
+
+        //public static readonly CraftBlueprint HenPen = new CraftBlueprint(
+        //    CraftResultType.Building,
+        //    (int)Build.BuildAndExpandType.HenPen,
+        //    1,
+        //    new UseResource[]
+        //    {
+        //new UseResource(ItemResourceType.Water_G, 2),
+        //new UseResource(ItemResourceType.Wood_Group, 20),
+        //new UseResource(ItemResourceType.RawFood_Group, DssConst.DefaultItemRawFoodAmount)
+        //    },
+        //    Work.WorkExperienceType.AnimalCare
+        //);
+
+        //static readonly UseResource[] FarmResources = new UseResource[]
+        //    {
+        //        new UseResource(ItemResourceType.RawFood_Group, 4),
+        //        new UseResource(ItemResourceType.Water_G, 2),
+        //    };
+
+        //public static readonly CraftBlueprint WheatFarm = new CraftBlueprint(
+        //    CraftResultType.Building,
+        //    (int)Build.BuildAndExpandType.WheatFarm,
+        //    1,
+        //    FarmResources,
+        //    Work.WorkExperienceType.Farm
+        //);
+
+        //public static readonly CraftBlueprint LinenFarm = new CraftBlueprint(
+        //    CraftResultType.Building,
+        //    (int)Build.BuildAndExpandType.LinenFarm,
+        //    1,
+        //    FarmResources,
+        //    Work.WorkExperienceType.Farm
+        //);
+
+        //public static readonly CraftBlueprint HempFarm = new CraftBlueprint(
+        //    CraftResultType.Building,
+        //    (int)Build.BuildAndExpandType.HempFarm,
+        //    1,
+        //    FarmResources,
+        //    Work.WorkExperienceType.Farm
+        //);
+
+        //public static readonly CraftBlueprint RapeseedFarm = new CraftBlueprint(
+        //    CraftResultType.Building,
+        //    (int)Build.BuildAndExpandType.RapeSeedFarm,
+        //    1,
+        //    FarmResources,
+        //    Work.WorkExperienceType.Farm
+        //);
         public static readonly CraftBlueprint PigPen = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.PigPen,
-            1,
-            new UseResource[]
-            {
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.PigPen,
+           1,
+           new UseResource[]
+           {
         new UseResource(ItemResourceType.Water_G, 4),
         new UseResource(ItemResourceType.Wood_Group, 20),
-        new UseResource(ItemResourceType.RawFood_Group, DssConst.PigRawFoodAmout)
-            },
-            Work.WorkExperienceType.AnimalCare
-        );
+        new UseResource(ItemResourceType.RawFood_Group, DssConst.WheatFoodAmount)
+           }, Work.WorkExperienceType.AnimalCare
+       );
 
         public static readonly CraftBlueprint HenPen = new CraftBlueprint(
             CraftResultType.Building,
@@ -170,9 +232,8 @@ namespace VikingEngine.DSSWars.Build
             {
         new UseResource(ItemResourceType.Water_G, 2),
         new UseResource(ItemResourceType.Wood_Group, 20),
-        new UseResource(ItemResourceType.RawFood_Group, DssConst.DefaultItemRawFoodAmount)
-            },
-            Work.WorkExperienceType.AnimalCare
+        new UseResource(ItemResourceType.RawFood_Group, DssConst.WheatFoodAmount)
+            }, Work.WorkExperienceType.AnimalCare
         );
 
         static readonly UseResource[] FarmResources = new UseResource[]
@@ -185,32 +246,28 @@ namespace VikingEngine.DSSWars.Build
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.WheatFarm,
             1,
-            FarmResources,
-            Work.WorkExperienceType.Farm
+            FarmResources, Work.WorkExperienceType.Farm
         );
 
         public static readonly CraftBlueprint LinenFarm = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.LinenFarm,
             1,
-            FarmResources,
-            Work.WorkExperienceType.Farm
+            FarmResources, Work.WorkExperienceType.Farm
         );
 
         public static readonly CraftBlueprint HempFarm = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.HempFarm,
             1,
-            FarmResources,
-            Work.WorkExperienceType.Farm
+            FarmResources, Work.WorkExperienceType.Farm
         );
 
         public static readonly CraftBlueprint RapeseedFarm = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.RapeSeedFarm,
             1,
-            FarmResources,
-            Work.WorkExperienceType.Farm
+            FarmResources, Work.WorkExperienceType.Farm
         );
 
         public const int CraftSmith_IronUse = 10;
