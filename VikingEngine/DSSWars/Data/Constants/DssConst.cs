@@ -128,8 +128,8 @@ namespace VikingEngine.DSSWars
         public static int WorkSafeGuardAmount = 10;
 
         //XP
-        public static int WorkQueue_Start = 2;
-        public static int WorkQueue_LogisticsLevel1 = 4;
+        public static int WorkQueue_Start = 3;
+        public static int WorkQueue_LogisticsLevel1 = 6;
         public static int Logistics2_PopulationRequirement = 1200;
     }
 }
