@@ -439,22 +439,22 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_recruitment, rnd, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.SoldierBarracks:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 0, wp, WorldData.SubTileWidth * 1f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 1, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.ArcherBarracks:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 0, wp, WorldData.SubTileWidth * 1f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 2, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.WarmashineBarracks:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 0, wp, WorldData.SubTileWidth * 1f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 3, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.KnightsBarracks:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 0, wp, WorldData.SubTileWidth * 1f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 5, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.GunBarracks:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 0, wp, WorldData.SubTileWidth * 1f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 6, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.CannonBarracks:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 0, wp, WorldData.SubTileWidth * 1f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 7, wp, WorldData.SubTileWidth * 1f));
                     break;
 
                 case TerrainBuildingType.StoneHall:
@@ -486,15 +486,43 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainBuildingType.Work_Smith:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 0, wp, WorldData.SubTileWidth * 1.4f));
                     break;
+                case TerrainBuildingType.Smelter:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 5, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.Foundry:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 6, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.Armory:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 0, wp, WorldData.SubTileWidth * 1.4f));//saknar
+                    break;
+                case TerrainBuildingType.Chemist:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 7, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+
+
                 case TerrainBuildingType.Brewery:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 2, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                case TerrainBuildingType.WaterResovoir:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_water, 0, wp, WorldData.SubTileWidth * 1f));
                     break;
 
                 case TerrainBuildingType.Carpenter:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_carpenter, 0, wp, WorldData.SubTileWidth * 1f));
                     break;
+                case TerrainBuildingType.WoodCutter:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_quarry, 0, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                case TerrainBuildingType.StoneCutter:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_quarry, 1, wp, WorldData.SubTileWidth * 1f));
+                    break;
+
+
                 case TerrainBuildingType.Nobelhouse:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_nobelhouse, 0, wp, WorldData.SubTileWidth * 1.3f));
+                    break;
+                case TerrainBuildingType.Embassy:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_nobelhouse, 1, wp, WorldData.SubTileWidth * 1.3f));
                     break;
                 case TerrainBuildingType.Logistics:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_logistic, subTile.terrainAmount -1, wp, WorldData.SubTileWidth * 1.0f));

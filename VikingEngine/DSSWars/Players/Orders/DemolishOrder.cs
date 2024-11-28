@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         public WorkQueMember createWorkQue()
         {
-            var result = new WorkQueMember(WorkType.Demolish, 0, subTile, priority, 0);
+            var result = new WorkQueMember(WorkType.Demolish, 0, 0, subTile, priority, 0, 0);
             result.orderId = id;
             return result;
         }

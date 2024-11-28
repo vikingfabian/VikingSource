@@ -84,7 +84,8 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string Resource_TypeName_BronzeSword=> "Bronze sword";
         public string Resource_TypeName_ShortSword=> "Shortsword";
-        public string Resource_TypeName_LongSword=> "Longsword";
+        public string Resource_TypeName_LongSword => "Longsword";
+        public string Resource_TypeName_HandSpear => "Hand spear";
         public string Resource_TypeName_Warhammer=> "Warhammer";
         public string Resource_TypeName_MithrilSword=> "Mithril sword";
         public string Resource_TypeName_SlingShot=> "Slingshot";
@@ -138,10 +139,17 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string UnitType_Warhammer => "Hammer knight";
         public string UnitType_MithrilKnight => "Immortal knight";
         public string UnitType_MithrilArcher=> "Immortal archer";
+        public string UnitType_SpearAndShield => "Lineman";
 
+        public string BuildHud_AreaAffectTitle => "Area affect";
+        public string BuildHud_BonusRadius => "Bonus radius: {0}";
 
         public string BuildingType_WoodCutter => "Lumber mill";
         public string BuildingType_Workshop_Description => "Improves work in the area";
+
+        public string BuildingType_WoodCutter_AreaAffect => "Gain {0}% more wood from trees";
+
+        public string BuildingType_StoneCutter_AreaAffect => "Gain {0}% more stone";
 
         public string BuildingType_StoneCutter => "Stone quarry";
 

@@ -78,6 +78,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int buildingCount_foundry = 0;
         public int buildingCount_smelter = 0;
         public int buildingCount_chemist = 0;
+        public int buildingCount_waterresorvoir = 0;
 
         string name = null;
 
@@ -428,7 +429,7 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write((ushort)guardCount);
             w.Write((ushort)maxGuardSize);
 
-            w.Write((byte)maxWater);
+            w.Write((byte)maxWaterBase);
             w.Write(Debug.Byte_OrCrash((int)(waterAddPerSec * 20)));
             workTemplate.writeGameState(w, true);
 
@@ -495,7 +496,8 @@ namespace VikingEngine.DSSWars.GameObject
             guardCount = r.ReadUInt16();
             maxGuardSize = r.ReadUInt16();
 
-            maxWater = r.ReadByte();
+            maxWaterBase = r.ReadByte();
+            maxWaterTotal = maxWaterBase;
             waterAddPerSec = r.ReadByte() / 20f;
             
             workTemplate.readGameState(r, subversion, true);
@@ -1062,7 +1064,8 @@ namespace VikingEngine.DSSWars.GameObject
             //    waterAddPerSec = 2;
             //}
             nextWater.value += waterAddPerSec;
-            res_water.amount = Math.Min(res_water.amount + nextWater.pull(), maxWater);
+            maxWaterTotal = maxWaterBase + buildingCount_waterresorvoir * DssConst.WaterResovoirWaterAdd;
+            res_water.amount = Math.Min(res_water.amount + nextWater.pull(), maxWaterTotal);
 
             if (starving)
             { 

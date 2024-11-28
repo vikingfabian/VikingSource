@@ -562,6 +562,7 @@ namespace VikingEngine.LootFest
 
         war_folkman,
         wars_piker,
+        wars_spearman,
         wars_trollcannon,
         little_farmerorc_v2,
         war_farmerneutral,

@@ -11,6 +11,8 @@ namespace VikingEngine
     /// </summary>
     static class MathExt
     {
+        public const float OnePercentage = 0.01f;
+
         public const float Tau = MathHelper.TwoPi;
         public const float TauOver2 = MathHelper.Pi;
         public const float TauOver4 = MathHelper.PiOver2;
@@ -451,6 +453,11 @@ namespace VikingEngine
         public static int AddPercentage(int value, float add)
         {
             return value + Convert.ToInt32(value * add);
+        }
+
+        public static int AddPercentage(int value, byte add)
+        {
+            return value + Convert.ToInt32(value * add * OnePercentage);
         }
 
         public static int SubtractPercentage(int value, float sub)

@@ -390,6 +390,8 @@ namespace VikingEngine.DSSWars.Resource
                     return SpriteName.WarsResource_ShortSword;
                 case ItemResourceType.LongSword:
                     return SpriteName.WarsResource_Longsword;
+                case ItemResourceType.HandSpear:
+                    return SpriteName.WarsResource_HandSpear;
                 case ItemResourceType.Warhammer:
                     return SpriteName.WarsResource_Warhammer;
                 case ItemResourceType.MithrilSword:

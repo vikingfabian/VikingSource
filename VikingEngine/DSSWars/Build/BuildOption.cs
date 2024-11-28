@@ -80,7 +80,6 @@ namespace VikingEngine.DSSWars.Build
                             case TerrainBuildingType.Postal:
                                 city.destroyDelivery(subPos);
                                 break;
-
                         }
                     }
                     break;

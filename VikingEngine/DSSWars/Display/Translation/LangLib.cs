@@ -257,6 +257,35 @@ namespace VikingEngine.DSSWars.Display.Translation
                         case TerrainBuildingType.WorkerHut:
                             return DssRef.lang.BuildingType_WorkerHut;
 
+                        case TerrainBuildingType.Smelter:
+                            return DssRef.todoLang.BuildingType_SmeltingFurnace;
+                        case TerrainBuildingType.WoodCutter:
+                            return DssRef.todoLang.BuildingType_WoodCutter;
+                        case TerrainBuildingType.StoneCutter:
+                            return DssRef.todoLang.BuildingType_StoneCutter;
+                        case TerrainBuildingType.Embassy:
+                            return DssRef.todoLang.BuildingType_Embassy;
+                        case TerrainBuildingType.WaterResovoir:
+                            return DssRef.todoLang.BuildingType_WaterResovoir;
+                        case TerrainBuildingType.ArcherBarracks:
+                            return DssRef.todoLang.BuildingType_ArcherBarracks;
+                        case TerrainBuildingType.WarmashineBarracks:
+                            return DssRef.todoLang.BuildingType_WarmashineBarracks;
+                        case TerrainBuildingType.GunBarracks:
+                            return DssRef.todoLang.BuildingType_GunBarracks;
+                        case TerrainBuildingType.CannonBarracks:
+                            return DssRef.todoLang.BuildingType_CannonBarracks;
+                        case TerrainBuildingType.KnightsBarracks:
+                            return DssRef.todoLang.BuildingType_KnightsBarracks;
+                        case TerrainBuildingType.Foundry:
+                            return DssRef.todoLang.BuildingType_Foundry;
+                        case TerrainBuildingType.Armory:
+                            return DssRef.todoLang.BuildingType_Armory;
+                        case TerrainBuildingType.Chemist:
+                            return DssRef.todoLang.BuildingType_Chemist;
+                        case TerrainBuildingType.Gunmaker:
+                            return DssRef.todoLang.BuildingType_Gunmaker;
+
                         default:
                             return DssRef.lang.BuildingType_DefaultName;
                     }
@@ -481,6 +510,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.todoLang.Resource_TypeName_ShortSword;
                 case ItemResourceType.LongSword:
                     return DssRef.todoLang.Resource_TypeName_LongSword;
+                case ItemResourceType.HandSpear:
+                    return DssRef.todoLang.Resource_TypeName_HandSpear;
                 case ItemResourceType.Warhammer:
                     return DssRef.todoLang.Resource_TypeName_Warhammer;
                 case ItemResourceType.MithrilSword:

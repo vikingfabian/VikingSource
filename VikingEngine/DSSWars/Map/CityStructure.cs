@@ -27,6 +27,10 @@ namespace VikingEngine.DSSWars.Map
         public List<IntVector2> CraftStation = new List<IntVector2>(20);
         public List<IntVector2> EmptyLand = new List<IntVector2>(2);
         public List<IntVector2> ResourceOnGround = new List<IntVector2>(20);
+
+        public List<IntVector2> WoodCutter = new List<IntVector2>(20);
+        public List<IntVector2> StoneCutter = new List<IntVector2>(20);
+
         int nobelHouseCount = 0;
         public int fuelSpots = 0;
         public int foodspots = 0;
@@ -155,11 +159,14 @@ namespace VikingEngine.DSSWars.Map
             CraftStation.Clear();
             EmptyLand.Clear();
             ResourceOnGround.Clear();
+            WoodCutter.Clear();
+            StoneCutter.Clear();
             nobelHouseCount = 0;
             int coalPitCount = 0;
             fuelSpots = 0;
             foodspots = 0;
             int logisticsLevel = 0;
+            int waterReservoirs = 0;
 
             IntVector2 cityHall = WP.ToSubTilePos_Centered(city.tilePos);
             FoodSpots_workupdate.Add(cityHall);
@@ -204,7 +211,7 @@ namespace VikingEngine.DSSWars.Map
                                             case Map.TerrainSubFoilType.TreeSoft:
                                             case Map.TerrainSubFoilType.TreeHard:
                                             case Map.TerrainSubFoilType.DryWood:
-                                                if (Trees.Count < workerCount &&
+                                                if (/*Trees.Count < workerCount &&*/
                                                     (foil == TerrainSubFoilType.DryWood || subTile.terrainAmount >= TerrainContent.TreeReadySize))
                                                 {
                                                     ++fuelSpots;
@@ -214,10 +221,10 @@ namespace VikingEngine.DSSWars.Map
 
                                             case Map.TerrainSubFoilType.StoneBlock:
                                             case Map.TerrainSubFoilType.Stones:
-                                                if (Stones.Count < workerCount)
-                                                {
+                                                //if (Stones.Count < workerCount)
+                                                //{
                                                     Stones.Add(subTileLoop.Position);
-                                                }
+                                                //}
                                                 break;
 
                                             case TerrainSubFoilType.WheatFarm:
@@ -297,11 +304,21 @@ namespace VikingEngine.DSSWars.Map
                                                 city.hasBuilding_smith = true;
                                                 CraftStation.Add(subTileLoop.Position);
                                                 break;
+                                            case TerrainBuildingType.WoodCutter:
+                                                WoodCutter.Add(subTileLoop.Position);
+                                                break;
+                                            case TerrainBuildingType.StoneCutter:
+                                                StoneCutter.Add(subTileLoop.Position);
+                                                break;
+
                                             case TerrainBuildingType.Nobelhouse:
                                                 ++nobelHouseCount;
                                                 break;
                                             case TerrainBuildingType.Logistics:
                                                 logisticsLevel = subTile.terrainAmount;
+                                                break;
+                                            case TerrainBuildingType.WaterResovoir:
+                                                ++waterReservoirs;
                                                 break;
                                         }
                                         break;
@@ -325,6 +342,7 @@ namespace VikingEngine.DSSWars.Map
             city.buildingCount_nobelHouse = nobelHouseCount;
             city.buildingCount_coalpit = coalPitCount;
             city.buildingLevel_logistics = logisticsLevel;
+            city.buildingCount_waterresorvoir = waterReservoirs;
 
             void farming(ref SubTile subTile)
             {
@@ -373,6 +391,17 @@ namespace VikingEngine.DSSWars.Map
             }
 
             return result;
+        }
+
+        public bool inBonusRadius(IntVector2 pos, List<IntVector2> bonusLocations, int radius)
+        {
+            foreach (var loc in bonusLocations)
+            {
+                if (pos.SideLength(loc) <= radius)
+                { return true; }
+            }
+
+            return false;
         }
     }
 

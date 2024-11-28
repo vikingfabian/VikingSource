@@ -79,6 +79,8 @@ namespace VikingEngine.DSSWars.Conscript
 
                         case ItemResourceType.Pike:
                             return UnitFilterType.Pike;
+                        case ItemResourceType.HandSpear:
+                            return UnitFilterType.SpearAndShield;
 
                         case ItemResourceType.Warhammer:
                             return UnitFilterType.Warhammer;
@@ -202,6 +204,17 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.modelScale *= 1.6f;
                     soldierData.icon = SpriteName.WarsUnitIcon_Pikeman;
                     conscript.specialization = SpecializationType.AntiCavalry;
+                    break;
+
+
+                case ItemResourceType.HandSpear:
+                    soldierData.arrowWeakness = true;
+                    soldierData.mainAttack = AttackType.Melee;
+                    soldierData.attackRange = 0.05f;
+                    soldierData.modelName = LootFest.VoxelModelName.wars_spearman;
+                    soldierData.modelVariationCount = 1;
+                    soldierData.modelScale *= 1.6f;
+                    soldierData.icon = SpriteName.LittleUnitIconSpearman;
                     break;
 
                 case ItemResourceType.Warhammer:
@@ -670,6 +683,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                         break;
                     case ItemResourceType.Pike:
+                    case ItemResourceType.HandSpear:
                     case ItemResourceType.BronzeSword:
                     case ItemResourceType.ShortSword:
                     case ItemResourceType.Sword:

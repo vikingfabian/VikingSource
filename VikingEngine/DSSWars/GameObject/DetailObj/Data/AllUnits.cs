@@ -99,6 +99,7 @@ namespace VikingEngine.DSSWars.GameObject
                 LootFest.VoxelModelName.wars_longsword,
 
                 LootFest.VoxelModelName.wars_piker,
+                LootFest.VoxelModelName.wars_spearman,
 
                 LootFest.VoxelModelName.war_folkman,
 
@@ -374,6 +375,7 @@ namespace VikingEngine.DSSWars.GameObject
         Sword,
         LongSword,
         Pike,
+        SpearAndShield,
         Warhammer,
         TwohandSword,
         Knight,

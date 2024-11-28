@@ -37,6 +37,7 @@ namespace VikingEngine.DSSWars.Conscript
                 case ItemResourceType.ShortSword:
                 case ItemResourceType.Sword:
                 case ItemResourceType.LongSword:
+                case ItemResourceType.HandSpear:
                     ranged = false;
                     rangedMan = false;
                     meleeMan = true;
@@ -210,6 +211,9 @@ namespace VikingEngine.DSSWars.Conscript
                         case ItemResourceType.LongSword:
                             return DssRef.lang.UnitType_Soldier;
 
+                        case ItemResourceType.HandSpear:
+                            return  DssRef.todoLang.UnitType_SpearAndShield;
+
                         case ItemResourceType.Warhammer:
                             return DssRef.todoLang.UnitType_Warhammer;
                         case ItemResourceType.KnightsLance:
@@ -326,6 +330,7 @@ namespace VikingEngine.DSSWars.Conscript
                 case ItemResourceType.Sword: return DssConst.WeaponDamage_Sword;
                 case ItemResourceType.LongSword: return DssConst.WeaponDamage_LongSword;
                 case ItemResourceType.Pike: return DssConst.WeaponDamage_Pike;
+                case ItemResourceType.HandSpear: return DssConst.WeaponDamage_Handspear;
 
                 case ItemResourceType.Warhammer: return DssConst.WeaponDamage_Warhammer;
                 case ItemResourceType.TwoHandSword: return DssConst.WeaponDamage_TwoHandSword;

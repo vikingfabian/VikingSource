@@ -50,6 +50,7 @@ namespace VikingEngine.DSSWars.Work
         public WorkPriority craft_shortsword = new WorkPriority(0);
         public WorkPriority craft_sword = new WorkPriority(0);
         public WorkPriority craft_longsword = new WorkPriority(0);
+        public WorkPriority craft_handspear = new WorkPriority(0);
         public WorkPriority craft_mithrilsword = new WorkPriority(0);
         public WorkPriority craft_warhammer = new WorkPriority(0);
         public WorkPriority craft_twohandsword = new WorkPriority(0);
@@ -309,6 +310,7 @@ namespace VikingEngine.DSSWars.Work
                 case ItemResourceType.ShortSword: return craft_shortsword;
                 case ItemResourceType.Sword: return craft_sword;
                 case ItemResourceType.LongSword: return craft_longsword;
+                case ItemResourceType.HandSpear: return craft_handspear;
                 case ItemResourceType.Warhammer: return craft_warhammer;
                 case ItemResourceType.TwoHandSword: return craft_twohandsword;
                 case ItemResourceType.KnightsLance: return craft_knightslance;
@@ -560,7 +562,9 @@ namespace VikingEngine.DSSWars.Work
                 case WorkPriorityType.craftLongSword:
                     craft_longsword = value;
                     break;
-
+                case WorkPriorityType.craftHandSpear:
+                    craft_handspear = value;
+                    break;
                 case WorkPriorityType.craftWarhammer:
                     craft_warhammer = value;
                     break;
@@ -775,6 +779,7 @@ namespace VikingEngine.DSSWars.Work
                     craft_shortsword.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_ShortSword), SpriteName.WarsHammer, SpriteName.WarsResource_ShortSword, WorkPriorityType.craftShortSword, faction, city);
                     craft_sword.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Sword), SpriteName.WarsHammer, SpriteName.WarsResource_Sword, WorkPriorityType.craftSword, faction, city);
                     craft_longsword.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_LongSword), SpriteName.WarsHammer, SpriteName.WarsResource_Longsword, WorkPriorityType.craftLongSword, faction, city);
+                    craft_handspear.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_HandSpear), SpriteName.WarsHammer, SpriteName.WarsResource_HandSpear, WorkPriorityType.craftHandSpear, faction, city);
 
                     craft_warhammer.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Warhammer), SpriteName.WarsHammer, SpriteName.WarsResource_Warhammer, WorkPriorityType.craftWarhammer, faction, city);
                     craft_twohandsword.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_TwoHandSword), SpriteName.WarsHammer, SpriteName.WarsResource_TwoHandSword, WorkPriorityType.craftTwoHandSword, faction, city);
@@ -1021,6 +1026,7 @@ namespace VikingEngine.DSSWars.Work
         craftShortSword,
         craftSword,
         craftLongSword,
+        craftHandSpear,
 
         craftWarhammer,
         craftTwoHandSword,

@@ -14,7 +14,8 @@ namespace VikingEngine.DSSWars.Build
             ItemResourceType.BloomeryIron, ItemResourceType.Silver, ItemResourceType.Mithril };
         
         public static readonly ItemResourceType[] SmithCraftTypes = { 
-            ItemResourceType.ShortSword, ItemResourceType.Sword, ItemResourceType.LongSword, 
+            ItemResourceType.ShortSword, ItemResourceType.Sword, ItemResourceType.LongSword,
+            ItemResourceType.HandSpear,
             ItemResourceType.Warhammer, ItemResourceType.TwoHandSword, ItemResourceType.KnightsLance, 
             ItemResourceType.IronArmor,            
         };
@@ -22,11 +23,12 @@ namespace VikingEngine.DSSWars.Build
         public static readonly ItemResourceType[] GunmakerCraftTypes = {
             ItemResourceType.HandCannon, ItemResourceType.HandCulverin,
             ItemResourceType.Rifle, ItemResourceType.Blunderbus,
+            ItemResourceType.SiegeCannonBronze, ItemResourceType.ManCannonBronze,
             ItemResourceType.SiegeCannonIron, ItemResourceType.ManCannonIron,
         };
 
         public static readonly ItemResourceType[] ArmoryCraftTypes = {
-            ItemResourceType.PaddedArmor, ItemResourceType.HeavyPaddedArmor, ItemResourceType.BronzeArmor, ItemResourceType.IronArmor, ItemResourceType.HeavyIronArmor, ItemResourceType.LightPlateArmor, ItemResourceType.FullPlateArmor,
+            ItemResourceType.PaddedArmor, ItemResourceType.HeavyPaddedArmor, ItemResourceType.BronzeArmor, ItemResourceType.IronArmor, ItemResourceType.HeavyIronArmor, ItemResourceType.LightPlateArmor, ItemResourceType.FullPlateArmor, ItemResourceType.MithrilArmor
         };
 
         public static readonly ItemResourceType[] FoundryCraftTypes = { 
@@ -36,7 +38,8 @@ namespace VikingEngine.DSSWars.Build
             ItemResourceType.Fuel_G, ItemResourceType.PaddedArmor, ItemResourceType.HeavyPaddedArmor, ItemResourceType.BronzeArmor, ItemResourceType.SharpStick, ItemResourceType.SlingShot, ItemResourceType.ThrowingSpear };
         
         public static readonly ItemResourceType[] CarpenterCraftTypes = { 
-            ItemResourceType.SharpStick, ItemResourceType.Bow, ItemResourceType.LongBow, ItemResourceType.Crossbow, 
+            ItemResourceType.SharpStick, ItemResourceType.Bow, ItemResourceType.LongBow, ItemResourceType.Crossbow,
+            ItemResourceType.MithrilBow,
             ItemResourceType.Ballista, ItemResourceType.Manuballista, ItemResourceType.Catapult };
 
         public static readonly ItemResourceType[] ChemistCraftTypes = { 
@@ -137,17 +140,76 @@ namespace VikingEngine.DSSWars.Build
             Work.WorkExperienceType.HouseBuilding
         );
 
-        public static readonly CraftBlueprint Barracks = new CraftBlueprint(
+        public static readonly CraftBlueprint SoldierBarracks = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.SoldierBarracks,
             1,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.Wood_Group, 100),
+        new UseResource(ItemResourceType.Wood_Group, 80),
         new UseResource(ItemResourceType.Stone_G, 20)
             },
             Work.WorkExperienceType.HouseBuilding
         );
+
+        public static readonly CraftBlueprint ArcherBarracks = new CraftBlueprint(
+                    CraftResultType.Building,
+                    (int)Build.BuildAndExpandType.ArcherBarracks,
+                    1,
+                    new UseResource[]
+                    {
+        new UseResource(ItemResourceType.Wood_Group, 80),
+        new UseResource(ItemResourceType.Stone_G, 20)
+                    },
+                    Work.WorkExperienceType.HouseBuilding
+                );
+
+        public static readonly CraftBlueprint WarmashineBarracks = new CraftBlueprint(
+                    CraftResultType.Building,
+                    (int)Build.BuildAndExpandType.WarmashineBarracks,
+                    1,
+                    new UseResource[]
+                    {
+        new UseResource(ItemResourceType.Wood_Group, 80),
+        new UseResource(ItemResourceType.Stone_G, 20)
+                    },
+                    Work.WorkExperienceType.HouseBuilding
+                );
+
+        public static readonly CraftBlueprint GunBarracks = new CraftBlueprint(
+                    CraftResultType.Building,
+                    (int)Build.BuildAndExpandType.GunBarracks,
+                    1,
+                    new UseResource[]
+                    {
+        new UseResource(ItemResourceType.Wood_Group, 40),
+        new UseResource(ItemResourceType.Stone_G, 40)
+                    },
+                    Work.WorkExperienceType.HouseBuilding
+                );
+        public static readonly CraftBlueprint CannonBarracks = new CraftBlueprint(
+                            CraftResultType.Building,
+                            (int)Build.BuildAndExpandType.CannonBarracks,
+                            1,
+                            new UseResource[]
+                            {
+        new UseResource(ItemResourceType.Wood_Group, 30),
+        new UseResource(ItemResourceType.Stone_G, 60)
+                            },
+                            Work.WorkExperienceType.HouseBuilding
+                        );
+
+        public static readonly CraftBlueprint KnightsBarracks = new CraftBlueprint(
+                  CraftResultType.Building,
+                  (int)Build.BuildAndExpandType.KnightsBarracks,
+                 1,
+                 new UseResource[]
+                 {
+                    new UseResource(ItemResourceType.Wood_Group, 20),
+                    new UseResource(ItemResourceType.Stone_G, 100)
+                 },
+                  Work.WorkExperienceType.HouseBuilding
+            );
 
         //public static readonly CraftBlueprint PigPen = new CraftBlueprint(
         //    CraftResultType.Building,
@@ -332,6 +394,19 @@ namespace VikingEngine.DSSWars.Build
         );
 
 
+        public static readonly CraftBlueprint Armory = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.Armory,
+           1,
+           new UseResource[]
+           {
+               new UseResource(ItemResourceType.Wood_Group, 10),
+               new UseResource(ItemResourceType.Stone_G, 30),
+               
+           },
+            Work.WorkExperienceType.HouseBuilding
+        );
+
         public static readonly CraftBlueprint Smelter = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Smelter,
@@ -343,6 +418,8 @@ namespace VikingEngine.DSSWars.Build
            },
             Work.WorkExperienceType.HouseBuilding
         );
+
+
 
 
         public static readonly CraftBlueprint WoodCutter = new CraftBlueprint(
@@ -391,17 +468,8 @@ namespace VikingEngine.DSSWars.Build
                    },
                     Work.WorkExperienceType.HouseBuilding
                 );
-        public static readonly CraftBlueprint KnightsBarracks = new CraftBlueprint(
-                    CraftResultType.Building,
-                    (int)Build.BuildAndExpandType.KnightsBarracks,
-                   1,
-                   new UseResource[]
-                   {
-                    new UseResource(ItemResourceType.Wood_Group, 20),
-                    new UseResource(ItemResourceType.Stone_G, 100)
-                   },
-                    Work.WorkExperienceType.HouseBuilding
-                );
+      
+                
         public static readonly CraftBlueprint Foundry = new CraftBlueprint(
                     CraftResultType.Building,
                     (int)Build.BuildAndExpandType.Foundry,

@@ -20,6 +20,7 @@ namespace VikingEngine.DSSWars
         public static float Men_StandardShipSpeed = Men_StandardWalkingSpeed * 2f;
 
         //CONSCRIPT
+        public static int WeaponDamage_Handspear = 10;
         public static int WeaponDamage_SharpStick = 20;
         public static int WeaponDamage_BronzeSword = 40;
         public static int WeaponDamage_ShortSword = 50;
@@ -95,7 +96,8 @@ namespace VikingEngine.DSSWars
         public static float WaterAdd_HeadCity = 1.1f;
         public static float WaterAdd_RandomAdd = 0.25f; 
 
-        public static int Maxwater = 12;
+        public static int Maxwater = 6;
+        public static int WaterResovoirWaterAdd = 2;
         public static int ExpandWorkForce = SoldierGroup_DefaultCount * 4;
         public static int ExpandGuardSize = SoldierGroup_DefaultCount;
 
@@ -104,6 +106,16 @@ namespace VikingEngine.DSSWars
         public static int FoodGoldValue = 2;
         public static int FoodGoldValue_BlackMarket = FoodGoldValue * 5;
         public static int CityDeliveryCount = 30;
+
+        //BUILDING
+        public static int WoodCutter_BonusRadius = 8;
+        public static byte WoodCutter_WoodBonus = 40;
+
+        public static int StoneCutter_BonusRadius = 5;
+        public static byte StoneCutter_StoneBonus = 25;
+
+        public static int Harbour_BonusRadius = 6;
+        public static byte Harbour_SpeedBonus = 5;
 
         //WORK
         public static byte WorkXpToLevel = 50;

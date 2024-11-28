@@ -393,7 +393,7 @@ namespace VikingEngine.DSSWars.Build
                                 content.newLine();
                                 content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
                                 content.space();
-                                CraftResourceLib.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
+                                ItemPropertyColl.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
                                 bp1.toMenu(content, city, false);
                             }
                             
@@ -407,7 +407,7 @@ namespace VikingEngine.DSSWars.Build
                                 content.newLine();
                                 content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
                                 content.space();
-                                CraftResourceLib.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
+                                ItemPropertyColl.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
                                 bp1.toMenu(content, city, false);
                             }
 
@@ -421,7 +421,7 @@ namespace VikingEngine.DSSWars.Build
                                 content.newLine();
                                 content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
                                 content.space();
-                                CraftResourceLib.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
+                                ItemPropertyColl.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
                                 bp1.toMenu(content, city, false);
                             }
                             break;

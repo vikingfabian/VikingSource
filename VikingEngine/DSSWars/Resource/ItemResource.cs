@@ -151,6 +151,7 @@ namespace VikingEngine.DSSWars.Resource
 
         BronzeSword,
         ShortSword,
+        HandSpear,
         LongSword,
         Warhammer,
         MithrilSword,

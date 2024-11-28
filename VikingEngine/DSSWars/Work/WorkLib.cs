@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars.Work
 
                 case WorkType.Craft:
                     ItemResourceType item = (ItemResourceType)workSubType;
-                    CraftResourceLib.Blueprint(item, out CraftBlueprint bp1, out var bp2);
+                    ItemPropertyColl.Blueprint(item, out CraftBlueprint bp1, out var bp2);
                     gainXp = bp1.experienceType;
                     break;
 
@@ -112,9 +112,9 @@ namespace VikingEngine.DSSWars.Work
             return level;
         }
 
-        public static float LevelToWorkTimePerc(byte xp)
+        public static float WorkTimePerc(byte xp, byte timeBonusPerc)
         {
-            return 1f - xp / DssConst.WorkXpToLevel * DssConst.XpLevelWorkTimePercReduction;
+            return 1f - (xp / DssConst.WorkXpToLevel * DssConst.XpLevelWorkTimePercReduction) - timeBonusPerc * MathExt.OnePercentage;
         }
     }
 

@@ -1642,6 +1642,9 @@
 #begin VoxelModel/LfWars/wars_soldier.vox
 /copy:VoxelModel/LfWars/wars_soldier.vox
 
+#begin VoxelModel/LfWars/wars_spearman.vox
+/copy:VoxelModel/LfWars/wars_spearman.vox
+
 #begin VoxelModel/LfWars/wars_trollcannon.vox
 /copy:VoxelModel/LfWars/wars_trollcannon.vox
 

@@ -23,6 +23,7 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType.ShortSword,
             ItemResourceType.Sword,
             ItemResourceType.LongSword,
+            ItemResourceType.HandSpear,
         };
 
         static readonly ItemResourceType[] ArcherWeapons = {

@@ -348,7 +348,7 @@ namespace VikingEngine.DSSWars.Display
                     //content.newLine();
 
                     content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
-                    content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Water + ": " + string.Format(DssRef.lang.Language_CollectProgress, city.res_water.amount, city.maxWater)));
+                    content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Water + ": " + string.Format(DssRef.lang.Language_CollectProgress, city.res_water.amount, city.maxWaterTotal)));
                     content.Add(new RichBoxTab(0.4f));
                     content.Add(new RichBoxImage(SpriteName.WarsResource_WaterAdd));
                     content.Add(new RichBoxText(TextLib.OneDecimal(city.waterAddPerSec)));
@@ -489,6 +489,10 @@ namespace VikingEngine.DSSWars.Display
 
                     city.res_LongSword.toMenu(content, ItemResourceType.LongSword, false, ref reachedBuffer);
                     blueprintButton(player, content, CraftResourceLib.LongSword);
+                    
+                    city.res_HandSpear.toMenu(content, ItemResourceType.HandSpear, false, ref reachedBuffer);
+                    blueprintButton(player, content, CraftResourceLib.HandSpearIron, CraftResourceLib.HandSpearBronze);
+                    
                     content.newParagraph();
 
                     city.res_Warhammer.toMenu(content, ItemResourceType.Warhammer, false, ref reachedBuffer);
@@ -640,6 +644,7 @@ namespace VikingEngine.DSSWars.Display
                     stockpile(ItemResourceType.ShortSword);
                     stockpile(ItemResourceType.Sword);
                     stockpile(ItemResourceType.LongSword);
+                    stockpile(ItemResourceType.HandSpear);
                     content.newParagraph();
 
                     stockpile(ItemResourceType.Warhammer);

@@ -2632,6 +2632,7 @@ namespace VikingEngine
         WarsResource_Wagon2Wheel,
         WarsResource_Wagon4Wheel,
         WarsResource_ShortSword,
+        WarsResource_HandSpear,
         WarsResource_Longsword,
         WarsResource_Steel,
         WarsResource_HeavyIronArmor,

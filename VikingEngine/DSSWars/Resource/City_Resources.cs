@@ -62,6 +62,7 @@ namespace VikingEngine.DSSWars.GameObject
             ItemResourceType.ShortSword,
             ItemResourceType.Sword,
             ItemResourceType.LongSword,
+            ItemResourceType.HandSpear,
             ItemResourceType.MithrilSword,
 
             ItemResourceType.Warhammer,
@@ -99,7 +100,8 @@ namespace VikingEngine.DSSWars.GameObject
         int waterBuffer = 2;
         int waterSpendOrders = 0;
 
-        public int maxWater = DssConst.Maxwater;
+        public int maxWaterBase = DssConst.Maxwater;
+        public int maxWaterTotal = DssConst.Maxwater;
         FloatingInt nextWater = new FloatingInt();
         public float waterAddPerSec;
         static readonly GroupedResource Res_Nothing = new GroupedResource() { amount = 100000 };
@@ -144,6 +146,7 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource res_shortsword = new GroupedResource() { amount = 0, goalBuffer = 100 };
         public GroupedResource res_Sword = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_LongSword = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_HandSpear = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_MithrilSword = new GroupedResource() { goalBuffer = 100 };
 
         public GroupedResource res_Warhammer = new GroupedResource() { goalBuffer = 100 };
@@ -255,6 +258,7 @@ namespace VikingEngine.DSSWars.GameObject
             res_shortsword.goalBuffer = 100;
             res_Sword.goalBuffer = 100;
             res_LongSword.goalBuffer = 100;
+            res_HandSpear.goalBuffer = 100;
 
             res_Warhammer.goalBuffer = 100;
             res_twohandsword.goalBuffer = 100;
@@ -416,6 +420,9 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case ItemResourceType.LongSword:
                     res_LongSword.amount += add;
+                    break;
+                case ItemResourceType.HandSpear:
+                    res_HandSpear.amount += add;
                     break;
 
                 case ItemResourceType.Warhammer:
@@ -603,6 +610,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.ShortSword: return res_shortsword;
                 case ItemResourceType.Sword: return res_Sword;
                 case ItemResourceType.LongSword: return res_LongSword;
+                case ItemResourceType.HandSpear: return res_HandSpear;
                 case ItemResourceType.MithrilSword: return res_MithrilSword;
 
                 case ItemResourceType.Warhammer: return res_Warhammer;
@@ -759,6 +767,9 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case ItemResourceType.LongSword:
                     res_LongSword = resource;
+                    break;
+                case ItemResourceType.HandSpear:
+                    res_HandSpear = resource;
                     break;
                 case ItemResourceType.MithrilSword:
                     res_MithrilSword = resource;

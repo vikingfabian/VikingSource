@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.Work
         public WorkExperienceType xpType1, xpType2, xpType3;
         //5 levels, using 50xp each
         public byte xp1, xp2, xp3;
-
+        public byte workBonus;
 
         public WorkType work;
         public int workSubType;
@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.Work
                     ItemResource recieved = toCity.MakeTrade(ItemResourceType.Food_G, carry.amount, DssConst.Worker_TrossWorkerCarryWeight);
                     carry = recieved;
 
-                    createWorkOrder(WorkType.TrossReturnToArmy, 0, WorkExperienceType.NONE, -1, WP.ToSubTilePos_Centered(army.tilePos), null);
+                    createWorkOrder(WorkType.TrossReturnToArmy, 0, 0, WorkExperienceType.NONE, -1, WP.ToSubTilePos_Centered(army.tilePos), null);
                     break;
                 case WorkType.TrossReturnToArmy:
                     army.food += carry.amount;
@@ -207,7 +207,18 @@ namespace VikingEngine.DSSWars.Work
 
                             case TerrainSubFoilType.StoneBlock:
                             case TerrainSubFoilType.Stones:
-                                carry = new ItemResource(ItemResourceType.Stone_G, city.Culture == CityCulture.Stonemason ? 8 : 4, Convert.ToInt32(processTimeLengthSec), ItemPropertyColl.CarryStones);
+                                int amount = 4;
+                                if (workBonus > 0)
+                                { 
+                                    amount = MathExt.AddPercentage(amount, workBonus);
+                                }
+
+                                if (city.Culture == CityCulture.Stonemason)
+                                {
+                                    amount *= 2;
+                                }
+
+                                carry = new ItemResource(ItemResourceType.Stone_G, amount, Convert.ToInt32(processTimeLengthSec), ItemPropertyColl.CarryStones);
 
                                 gainXp = WorkExperienceType.StoneCutter;
                                 break;
@@ -389,7 +400,7 @@ namespace VikingEngine.DSSWars.Work
                     {
 
                         ItemResourceType item = (ItemResourceType)workSubType;
-                        CraftResourceLib.Blueprint(item, out var bp1, out var bp2);
+                        ItemPropertyColl.Blueprint(item, out var bp1, out var bp2);
 
                         int add = bp1.tryPayResources(city);
                         if (add == 0 && bp2 != null)
@@ -670,6 +681,12 @@ namespace VikingEngine.DSSWars.Work
         void gatherWood(Resource.ItemResourceType resourceType, ref SubTile subTile, City city)
         {
             int amount = subTile.terrainAmount;
+
+            if (workBonus > 0)
+            {
+                amount = MathExt.AddPercentage(amount, workBonus);
+            }
+
             if (city.Culture == CityCulture.Woodcutters)
             {
                 amount *= 2;
@@ -690,8 +707,9 @@ namespace VikingEngine.DSSWars.Work
         }
 
 
-        public void createWorkOrder(WorkType work, int subWork, WorkExperienceType experienceType, int order, IntVector2 targetSubTile, City city)
+        public void createWorkOrder(WorkType work, int subWork, byte workBonus, WorkExperienceType experienceType, int order, IntVector2 targetSubTile, City city)
         {
+            this.workBonus = workBonus;
             this.work = work;
             workSubType = subWork;
             orderId = order;
@@ -705,19 +723,6 @@ namespace VikingEngine.DSSWars.Work
 
             switch (work)
             {
-                case WorkType.Craft:
-                    //SubTile subTile = DssRef.world.subTileGrid.Get(subTileEnd);
-                    //var building = (TerrainBuildingType)subTile.subTerrain;
-                    //switch (building)
-                    //{ 
-                    //    case TerrainBuildingType.Work_Cook:
-                    //        workSubType = Subwork_Craft_Food;
-                    //        break;
-                    //    case TerrainBuildingType.Work_Smith:
-                    //        workSubType = Subwork_Craft_Iron;
-                    //        break;
-                    //}
-                    break;
 
                 case WorkType.LocalTrade:
                     {
@@ -831,7 +836,7 @@ namespace VikingEngine.DSSWars.Work
                     throw new NotImplementedException();
             }
 
-            time *= WorkLib.LevelToWorkTimePerc(getXpFor(experienceType));
+            time *= WorkLib.WorkTimePerc(getXpFor(experienceType), workBonus);
             return time;
         }
     }
