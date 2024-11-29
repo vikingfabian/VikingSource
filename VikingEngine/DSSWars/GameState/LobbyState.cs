@@ -25,6 +25,8 @@ using VikingEngine.DSSWars.GameState;
 using VikingEngine.HUD.RichBox;
 using System.Linq;
 using VikingEngine.DSSWars.Players;
+using System.IO;
+using VikingEngine.DataStream;
 
 namespace VikingEngine.DSSWars
 {
@@ -152,7 +154,7 @@ namespace VikingEngine.DSSWars
 
                 if (arraylib.HasMembers(saves))
                 {
-                    new GuiTextButton(DssRef.lang.GameMenu_ContinueFromSave, saves[0].InfoString(), new GuiAction1Arg<int>(continueFromSave, 0), false, layout);
+                    new GuiTextButton(DssRef.lang.GameMenu_ContinueFromSave, saves[0].InfoString(), new GuiAction1Arg<SaveStateMeta>(continueFromSave, saves[0]), false, layout);
                 }
 
                 new GuiLargeTextButton(DssRef.todoLang.Settings_NewGame, null, new GuiAction(newGameSettings) /*new GuiAction(startGame)*/, true, layout);
@@ -178,7 +180,7 @@ namespace VikingEngine.DSSWars
 
                     if (DssRef.storage.playerCount > 1)
                     {
-                        new GuiTextButton(string.Format(Ref.langOpt.InputSelect, playerData.inputSource.ToString()), null, new GuiAction3Arg<int, bool, int>(selectInputMenu, playerNum, false, -1), true, layout);
+                        new GuiTextButton(string.Format(Ref.langOpt.InputSelect, playerData.inputSource.ToString()), null, new GuiAction3Arg<int, bool, SaveStateMeta>(selectInputMenu, playerNum, false, null), true, layout);
                     }
 
                     new GuiSectionSeparator(layout);
@@ -410,7 +412,7 @@ namespace VikingEngine.DSSWars
                 foodSlider.onLeaveCallback = new Action(foodSliderLeave);
                 foodSlider.ToolTip = DssRef.todoLang.Settings_FoodMultiplier_Description;
 
- new GuiTextButton(DssRef.todoLang.Settings_ResetToDefault, null, resetToDefault, false, layout);
+                new GuiTextButton(DssRef.todoLang.Settings_ResetToDefault, null, resetToDefault, false, layout);
             }
             layout.End();
 
@@ -591,7 +593,7 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        void selectInputMenu(int playerNumber, bool startGame, int saveIndex)
+        void selectInputMenu(int playerNumber, bool startGame, SaveStateMeta saveMeta)
         {
             var available = availableInput();
             GuiLayout layout = new GuiLayout(Ref.langOpt.InputSelect, menuSystem.menu);
@@ -602,11 +604,11 @@ namespace VikingEngine.DSSWars
                     {
                         if (m.IsController)
                         {
-                            new GuiIconTextButton(SpriteName.ButtonSTART, HudLib.InputName(m.sourceType), null, new GuiAction2Arg<InputSource, int>(selectController_startGame, m, saveIndex), false, layout);
+                            new GuiIconTextButton(SpriteName.ButtonSTART, HudLib.InputName(m.sourceType), null, new GuiAction2Arg<InputSource, SaveStateMeta>(selectController_startGame, m, saveMeta), false, layout);
                         }
                         else
                         {
-                            new GuiTextButton(HudLib.InputName(m.sourceType), null, new GuiAction2Arg<InputSource, int>(selectController_startGame, m, saveIndex), false, layout);
+                            new GuiTextButton(HudLib.InputName(m.sourceType), null, new GuiAction2Arg<InputSource, SaveStateMeta>(selectController_startGame, m, saveMeta), false, layout);
                         }
                     }
                     else
@@ -946,7 +948,7 @@ namespace VikingEngine.DSSWars
                 int index;
                 if (Input.XInput.KeyDownEvent_index(Buttons.Start, out index))
                 {
-                    selectController_startGame(new InputSource(InputSourceType.XController, index), -1);
+                    selectController_startGame(new InputSource(InputSourceType.XController, index), null);
                 }
             }
 
@@ -1003,11 +1005,11 @@ namespace VikingEngine.DSSWars
                 if (availableList.Count > 1)
                 {
                     controllerStartGameUpdate = true;
-                    selectInputMenu(1, true, -1);
+                    selectInputMenu(1, true, null);
                 }
                 else
                 {
-                    selectController_startGame(availableList[0], -1);
+                    selectController_startGame(availableList[0], null);
                 }
                 return;
             }
@@ -1041,22 +1043,112 @@ namespace VikingEngine.DSSWars
                 for (int i = 0; i < saves.Count; ++i)
                 {
                     var save = saves[i];
-                    new GuiTextButton(save.TitleString(), save.InfoString(), new GuiAction1Arg<int>(continueFromSave, i), false, layout); 
+                    new GuiTextButton(save.TitleString(), save.InfoString(), new GuiAction1Arg<SaveStateMeta>(continueFromSave, save), false, layout); 
+                }
+
+                new GuiSectionSeparator(layout);
+                new GuiTextButton(DssRef.todoLang.Lobby_ExportSave, string.Format( DssRef.todoLang.Lobby_ExportSave_Description, SaveMeta.ImportSaveFolder), exportSave_listsaves, true, layout);
+                new GuiTextButton(DssRef.todoLang.Lobby_ImportSave, null, importSaves, true, layout); 
+            }
+            layout.End();
+        }
+
+        void exportSave_listsaves()
+        {
+            var saves = DssRef.storage.meta.listSaves();
+
+            GuiLayout layout = new GuiLayout(DssRef.todoLang.Lobby_ExportSave, menuSystem.menu);
+            {
+                for (int i = 0; i < saves.Count; ++i)
+                {
+                    var save = saves[i];
+                    new GuiTextButton(save.TitleString(), save.InfoString(), new GuiAction1Arg<SaveStateMeta>(exportSaveSelected, save), false, layout);
                 }
             }
             layout.End();
         }
 
-        void continueFromSave(int listIndex)
+        void exportSaveSelected(SaveStateMeta saveMeta)
         {
-            var save =DssRef.storage.meta.listSaves()[listIndex];
+            SaveStateMeta exportPath = new SaveStateMeta();
 
-            if (save == null) 
+            exportPath.import = saveMeta.ExportString();
+
+            var fileName = DataStreamHandler.SearchFilesInStorageDir(saveMeta.Path, false)[0];
+            File.Copy(fileName, exportPath.Path.CompletePath(true), overwrite: true);
+
+            mainMenu();
+        }
+
+        bool importSavesMenu = false;
+        void importSaves()
+        {
+            var saves = DssRef.storage.meta.listSaves();
+            importSavesMenu = true;
+
+            GuiLayout layout = new GuiLayout(DssRef.todoLang.Lobby_ImportSave, menuSystem.menu);
+            {
+                new GuiLabel(DssRef.todoLang.Hud_Loading, layout);
+            }
+            layout.OnDelete += new Action(() => { importSavesMenu = false; });
+            layout.End();
+
+            new Timer.AsynchActionTrigger(loadSaveImportsList_async, true);
+        }
+        void loadSaveImportsList_async()
+        {
+            var list = DssRef.storage.meta.ListSaveImports();
+
+
+            for (int i =0; i < list.Count; ++i)//each (var f in list)
+            {
+                list[i] = list[i].Split(Path.DirectorySeparatorChar).Last();
+            }
+
+            new Timer.Action1ArgTrigger<List<string>>(listImports, list);
+        }
+
+        void listImports(List<string> names)
+        {
+            if (importSavesMenu)
+            {
+                menuSystem.menu.PopLayout();
+
+                GuiLayout layout = new GuiLayout(DssRef.lang.GameMenu_LoadState, menuSystem.menu);
+                {
+                    for (int i = 0; i < names.Count; ++i)
+                    {
+                        var save = names[i];
+                        new GuiTextButton(LoadContent.CheckCharsSafety( save, LoadedFont.Regular), null, new GuiAction1Arg<string>(importSave, save), false, layout);
+                    }
+
+                    if (names.Count == 0)
+                    {
+                        new GuiLabel(DssRef.lang.Hud_EmptyList, layout);
+                    }
+                }
+                layout.End();
+            }
+        }
+
+        void importSave(string name)
+        {
+            SaveStateMeta meta = new SaveStateMeta();
+            meta.import = name;
+
+            meta.loadImportMeta();
+        }
+
+        public void continueFromSave(SaveStateMeta saveMeta)//int listIndex)
+        {
+            //var save =DssRef.storage.meta.listSaves()[listIndex];
+
+            if (saveMeta == null) 
             {
                 return;
             }
 
-            if (save.localPlayerCount == DssRef.storage.playerCount)
+            if (saveMeta.localPlayerCount == DssRef.storage.playerCount)
             {
                 if (mapBackgroundLoading != null)
                 {
@@ -1068,20 +1160,20 @@ namespace VikingEngine.DSSWars
                 if (availableList.Count > 1)
                 {
                     controllerStartGameUpdate = true;
-                    selectInputMenu(1, true, listIndex);
+                    selectInputMenu(1, true, saveMeta);
                 }
                 else
                 {
-                    selectController_startGame(availableList[0], listIndex);
+                    selectController_startGame(availableList[0], saveMeta);
                 }
                 //new StartGame(netLobby, save, mapBackgroundLoading);
             }
             else
             {
-                setPlayerCount(save.localPlayerCount, false);
+                setPlayerCount(saveMeta.localPlayerCount, false);
                 GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_WarningTitle, menuSystem.menu);
                 {
-                    new GuiLabel(string.Format( DssRef.lang.GameMenu_Load_PlayerCountError, save.localPlayerCount), layout);
+                    new GuiLabel(string.Format( DssRef.lang.GameMenu_Load_PlayerCountError, saveMeta.localPlayerCount), layout);
                     new GuiIconTextButton(SpriteName.MenuIconResume, Ref.langOpt.Hud_OK, null, mainMenu, false, layout);
                 }
                 layout.End();                
@@ -1089,34 +1181,20 @@ namespace VikingEngine.DSSWars
             
         }
 
-        void selectController_startGame(InputSource inputSource, int saveIndex)
+        void selectController_startGame(InputSource inputSource, SaveStateMeta saveMeta)
         {
             var playerData = DssRef.storage.localPlayers[0];
             playerData.inputSource = inputSource;
             DssRef.storage.checkPlayerDoublettes(0);
 
-            SaveStateMeta save = null;
-            if (saveIndex >= 0)
-            {
-                save =DssRef.storage.meta.listSaves()[saveIndex];
-            }
-            new StartGame(netLobby, save, mapBackgroundLoading);
+            //SaveStateMeta save = null;
+            //if (saveIndex >= 0)
+            //{
+            //    save =DssRef.storage.meta.listSaves()[saveIndex];
+            //}
+            new StartGame(netLobby, saveMeta, mapBackgroundLoading);
         }
-        //public override void NetEvent_PeerJoined(Network.AbsNetworkPeer gamer)
-        //{
-        //    base.NetEvent_PeerJoined(gamer);
-        //    netLobby.NetEvent_PeerJoined(gamer);
-        //}
-        //public override void NetworkReadPacket(Network.ReceivedPacket packet)
-        //{
-        //    base.NetworkReadPacket(packet);
-        //    netLobby.NetworkReadPacket(packet);
-        //}
-        //public override void NetEvent_PeerLost(Network.AbsNetworkPeer gamer)
-        //{
-        //    base.NetEvent_PeerLost(gamer);
-        //    netLobby.NetEvent_PeerLost(gamer);
-        //}
+        
     }
 
     class GamerStatus

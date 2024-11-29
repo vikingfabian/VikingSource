@@ -22,7 +22,8 @@ namespace VikingEngine.DSSWars.Data
         public bool verticalScreenSplit = true;
 
         DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath, "DSS_gameoptions", ".sav");
-       
+        
+
         public MapSize mapSize = MapSize.Medium;
         public bool generateNewMaps = false;
         public bool autoSave = true;
@@ -47,6 +48,7 @@ namespace VikingEngine.DSSWars.Data
                 localPlayers[i] = new LocalPlayerStorage(i);
             }
         }
+
 
         public void Load()
         {

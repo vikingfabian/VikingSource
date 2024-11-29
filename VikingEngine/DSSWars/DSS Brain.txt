@@ -1,9 +1,16 @@
 ﻿-Change Log-
-
+Fixed farm fuel/linen follow faction setting
+Export/Import option for save files
 
 #Todo (xmas patch)#
+Tutorial pil till höger
+Lås pan i tutorial
+Temp gröna tummar i tex zoom level, tab osv
 
-new game - Skip language crashes game
+//Fixa fel city är vald i bygg meny, toggle city
+Nåt är fel med faction work
+Multiplayer crash
+Export/Import saves
 
 
 //ShowGamepadTextInput

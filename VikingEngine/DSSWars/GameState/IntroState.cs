@@ -19,8 +19,7 @@ namespace VikingEngine.DSSWars
     /// The first state for DSS, will load all content
     /// </summary>
     class IntroState : Engine.GameState
-    {
-        
+    {        
         bool isReset;
         Graphics.TextG pressStartText;
 
@@ -51,9 +50,6 @@ namespace VikingEngine.DSSWars
             }
             else
             {
-                
-
-                
                 Engine.ParticleHandler.Init();
                 new VikingEngine.Engine.LoadBaseTextures();
                
@@ -128,6 +124,7 @@ namespace VikingEngine.DSSWars
         {
             FlagDesign.Init();
             new Data.GameStorage().Load();
+            DssRef.storage.meta.CreateImportFolders();
             Ref.gamesett.Load();
             new Display.Translation.Translation().setupLanguage(true);
 
