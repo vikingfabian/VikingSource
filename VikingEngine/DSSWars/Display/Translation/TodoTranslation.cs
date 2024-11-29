@@ -11,6 +11,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Hud_Advanced => "Advanced";
         public string Hud_Loading => "Loading...";
 
+        public string CityOption_LowerGuardSize => "Release guard";
+        public string Hud_Purchase_MinCapacity => "Has reached minimum capacity";
         public string Settings_ResetToDefault => "Reset to default";
         public string Settings_NewGame => "New game";
 

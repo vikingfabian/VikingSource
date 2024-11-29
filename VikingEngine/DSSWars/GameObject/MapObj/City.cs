@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City : GameObject.AbsMapObject
     {
-        public const int ExpandGuardSizeCost = 12000;
+        
 
         //public int index;
         public int areaSize = 0;
@@ -576,6 +576,11 @@ namespace VikingEngine.DSSWars.GameObject
             return 40000 + workForceMax * 10;
         }
 
+        //public int releaseWorkForceGain()
+        //{
+        //    return expandWorkForceCost() / 2 - DssConst.ExpandGuardSize * 10;
+        //}
+
 
         public bool canIncreaseGuardSize(int count, bool checkIfCapped)
         {
@@ -587,12 +592,19 @@ namespace VikingEngine.DSSWars.GameObject
             return (maxGuardSize + DssConst.ExpandGuardSize * count) <= workForceMax;            
         }
 
-        public void expandWorkForce(int amount)
+        public bool canReleaseGuardSize(int count)
         {
-            workForceMax += amount;
+            return (maxGuardSize - DssConst.ExpandGuardSize * count) >= DssConst.ExpandGuardSize;
+        }
+
+        public void expandWorkForce(int totalAmount)
+        {
+            workForceMax += totalAmount;
             refreshCitySize();
             detailObj.refreshWorkerSubtiles();
         }
+
+       
 
         public void onWorkHutBuild(bool build_notDestroy)
         {
@@ -613,13 +625,26 @@ namespace VikingEngine.DSSWars.GameObject
             refreshCitySize();
         }
 
+        public void releaseGuardSize(int totalAmount)
+        {
+            maxGuardSize -= totalAmount;
+            if (guardCount > maxGuardSize)
+            {
+                int releasedWorkers = guardCount - maxGuardSize;
+                guardCount = maxGuardSize;
+                addWorkers(releasedWorkers);
+
+                faction.gold += DssConst.ReleaseGuardSizeGain;
+            }
+        }
+
         public bool buyCityGuards(bool commit, int count)
         {
             if (canIncreaseGuardSize(count, false))
             {
                 int totalCost = 0;
 
-                if (faction.calcCost(ExpandGuardSizeCost * count, ref totalCost))
+                if (faction.calcCost(DssConst.ExpandGuardSizeCost * count, ref totalCost))
                 {
                     if (commit)
                     {
@@ -631,6 +656,21 @@ namespace VikingEngine.DSSWars.GameObject
             }
             return false;
         }
+
+        //public bool releaseCityGuards(bool commit, int count)
+        //{
+        //    if (canReleaseGuardSize(count))
+        //    {
+        //            if (commit)
+        //            {
+        //                (DssConst.ExpandGuardSize * count);
+        //                faction.payMoney(totalCost, true);
+        //            }
+        //            return true;
+        //        }
+        //    }
+        //    return false;
+        //}
 
         public bool buyRepair(bool commit, bool all)
         {
@@ -1067,6 +1107,21 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void addWorkers(int add)
+        {
+            if (workForce.amount + add > workForceMax)
+            {
+                //Add rest to immigration
+                int rest = workForce.amount + add - workForceMax;
+                workForce.amount = workForceMax;
+                immigrants.value += rest;
+            }
+            else
+            {
+                workForce.amount += add;
+            }
+        }
+
         public void asynchGameObjectsUpdate(bool minute)
         {
             collectBattles_asynch();
@@ -1274,7 +1329,7 @@ namespace VikingEngine.DSSWars.GameObject
                 content.space();
                 HudLib.InfoButton(content, new RbAction1Arg<City>(player.childrenTooltip, this));
 
-                HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.amount, workForceMax));
+                HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.amount, homesTotal()));
                 HudLib.ItemCount(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, TextLib.Divition_Large(guardCount, maxGuardSize));
                 content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
                 content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, calcIncome_async().total(this)));

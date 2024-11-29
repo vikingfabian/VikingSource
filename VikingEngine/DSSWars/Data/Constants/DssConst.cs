@@ -84,6 +84,10 @@ namespace VikingEngine.DSSWars
         public static int FoodGoldValue_BlackMarket = FoodGoldValue * 5;
         public static int CityDeliveryCount = 30;
 
+        public const int ExpandGuardSizeCost = 12000;
+        public const int ReleaseGuardSizeGain = ExpandGuardSizeCost / 2;
+
+
         //WORK
         public static float WorkTime_Eat = 10;
         public static float WorkTime_PickUpResource = 2;

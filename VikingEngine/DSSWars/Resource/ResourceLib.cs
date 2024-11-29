@@ -522,6 +522,8 @@ namespace VikingEngine.DSSWars.Resource
             {
                 case ItemResourceType.Gold:
                     return SpriteName.rtsMoney;
+                case ItemResourceType.Men:
+                    return SpriteName.WarsWorker;
 
                 case ItemResourceType.Ballista:
                     return SpriteName.WarsResource_Ballista;

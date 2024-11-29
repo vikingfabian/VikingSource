@@ -416,6 +416,9 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case ItemResourceType.HeavyArmor:
                     return DssRef.lang.Resource_TypeName_HeavyArmor;
 
+                case ItemResourceType.Men:
+                    return DssRef.lang.ResourceType_Workers;
+
                 default:
                     return TextLib.Error;
             }

@@ -429,7 +429,16 @@ namespace VikingEngine.DSSWars.Display
                 }
 
                 content.newLine();
-
+                {
+                    int count = 1;
+                    content.Add(new RichboxButton(new List<AbsRichBoxMember>{
+                                    new RichBoxImage(SpriteName.WarsGuard),
+                                    new RichBoxText( DssRef.todoLang.CityOption_LowerGuardSize),
+                                },
+                        new RbAction1Arg<int>(city.releaseGuardSize, count * DssConst.ExpandGuardSize, SoundLib.menuBuy),
+                        new RbAction1Arg<int>(releaseGuardSizeToolTip, count),
+                        city.canReleaseGuardSize(count)));
+                }
                 //if (!city.nobelHouse && city.canEverGetNobelHouse())
                 //{
                 //    content.Button(DssRef.lang.Building_NobleHouse,
@@ -818,22 +827,46 @@ namespace VikingEngine.DSSWars.Display
         {
             city.buyCityGuards(true, count);
         }
+
+        public void releaseGuardSizeToolTip(int count)
+        {
+            RichBoxContent content = new RichBoxContent();
+
+            if (city.canReleaseGuardSize(count))
+            {
+                content.h2(DssRef.lang.Hud_PurchaseTitle_Cost).overrideColor = HudLib.TitleColor_Label;
+                content.newLine();
+                content.icontext(SpriteName.WarsGuard, string.Format(DssRef.lang.Hud_IncreaseMaxGuardCount, -DssConst.ExpandGuardSize * count));
+                
+                
+                content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
+                HudLib.ItemCount(content, SpriteName.rtsIncome, DssRef.lang.ResourceType_Gold, (DssConst.ReleaseGuardSizeGain * count).ToString());
+
+            }
+            else
+            {
+                content.Add(new RichBoxText(DssRef.todoLang.Hud_Purchase_MinCapacity, Color.Red));
+            }
+
+            player.hud.tooltip.create(player, content, true);
+        }
+
         public void buyGuardSizeToolTip(int count)
         {
             RichBoxContent content = new RichBoxContent();
 
             if (city.canIncreaseGuardSize(count, false))
             {
-                content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
+                content.h2(DssRef.lang.Hud_PurchaseTitle_Cost).overrideColor = HudLib.TitleColor_Label;
                 content.newLine();
-                HudLib.ResourceCost(content, ResourceType.Gold, City.ExpandGuardSizeCost * count, player.faction.gold);
+                HudLib.ResourceCost(content, ResourceType.Gold, DssConst.ExpandGuardSizeCost * count, player.faction.gold);
                 content.newLine();
                 //content.icontext(SpriteName.rtsUpkeepTime, "Upkeep +" + city.GuardUpkeep(City.ExpandGuardSize * count).ToString());
                 HudLib.Upkeep(content, city.GuardUpkeep(DssConst.ExpandGuardSize * count));
 
-                content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
-                
-                content.icontext(SpriteName.WarsGuardAdd, string.Format(DssRef.lang.Hud_IncreaseMaxGuardCount, DssConst.ExpandGuardSize * count));
+                content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
+
+                content.icontext(SpriteName.WarsGuardAdd, string.Format(DssRef.lang.Hud_IncreaseMaxGuardCount, TextLib.PlusMinus( DssConst.ExpandGuardSize * count)));
             }
             else 
             {

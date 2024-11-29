@@ -237,6 +237,8 @@ namespace VikingEngine.DSSWars.GameObject
                     return new GroupedResource() { amount = faction.gold };
                 case ItemResourceType.GoldOre:
                     return new GroupedResource() { amount = 1 };
+                case ItemResourceType.Men:
+                    return workForce;
 
                 case ItemResourceType.Water_G: return res_water;
                 case ItemResourceType.IronOre_G: return res_ironore;
@@ -611,7 +613,9 @@ namespace VikingEngine.DSSWars.GameObject
             content.Add(new RichBoxImage(ResourceLib.Icon(item)));
             content.Add(new RichBoxText( LangLib.Item(item) + ": " + TextLib.LargeNumber(amount)));
 
-            if (item != ItemResourceType.Water_G && item != ItemResourceType.Gold)
+            if (item != ItemResourceType.Water_G && 
+                item != ItemResourceType.Gold &&
+                item != ItemResourceType.Men)
             {
                 bool reached = amount >= goalBuffer;
                 reachedBuffer |= reached;
