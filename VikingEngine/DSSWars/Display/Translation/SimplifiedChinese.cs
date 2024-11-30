@@ -263,7 +263,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_GuardCount => "守卫";
 
-        public override string Hud_IncreaseMaxGuardCount => "最大守卫数量 +{0}";
+        public override string Hud_IncreaseMaxGuardCount => "最大守卫数量 {0}";
 
         public override string Hud_GuardCount_MustExpandCityMessage => "你需要扩展城市。";
 

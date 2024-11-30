@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.ToGG;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -71,28 +72,18 @@ namespace VikingEngine.DSSWars.Delivery
                                {
                                    RichBoxContent content = new RichBoxContent();
 
-                                   content.h2(DssRef.lang.Hud_ThisCity);
+                                   content.h2(DssRef.lang.Hud_ThisCity).overrideColor = HudLib.TitleColor_Label;
                                    bool reachedBuffer = false;
-
                                    bool safeGuard = city.foodSafeGuardIsActive(item);
-
 
                                    city.GetGroupedResource(item).toMenu(content, item, safeGuard, ref reachedBuffer);
 
-                                   if (currentStatus.profile.toCity >= 0)
+                                   if (currentStatus.profile.toCity >= 0 && currentStatus.profile.toCity != DeliveryProfile.ToCityAuto)
                                    {
                                        content.newParagraph();
-                                       content.h2(DssRef.lang.Hud_RecieveingCity);
-                                       if (currentStatus.profile.toCity == DeliveryProfile.ToCityAuto)
-                                       {
-
-                                       }
-                                       else
-                                       {
-                                           DssRef.world.cities[currentStatus.profile.toCity].GetGroupedResource(item).toMenu(content, item, safeGuard, ref reachedBuffer);
-                                       }
-
-                                       //
+                                       content.h2(DssRef.lang.Hud_RecieveingCity).overrideColor = HudLib.TitleColor_Label;
+                                       DssRef.world.cities[currentStatus.profile.toCity].GetGroupedResource(item).toMenu(content, item, safeGuard, ref reachedBuffer);
+                                       
                                    }
 
                                    //content.text(LangLib.Item(item)).overrideColor = HudLib.TitleColor_TypeName;
@@ -128,11 +119,33 @@ namespace VikingEngine.DSSWars.Delivery
                             new RbAction1Arg<int>(cityClick, cities_c.sel.parentArrayIndex, SoundLib.menu), new RbAction1Arg<City>((toCity) =>
                             {
                                 RichBoxContent content = new RichBoxContent();
-                                content.h2(toCity.Name()).overrideColor = HudLib.TitleColor_Name;
+                                content.h2(toCity.Name()).overrideColor = HudLib.TitleColor_Label;
                                 var time = DeliveryProfile.DeliveryTime(city, toCity, out float distance);
                                 content.text(string.Format(DssRef.lang.Delivery_DistanceX, TextLib.OneDecimal(distance)));
                                 content.text(string.Format(DssRef.lang.Delivery_DeliveryTimeX, time.LongString()));
 
+                                if (currentStatus.profile.type != ItemResourceType.NONE)
+                                {
+                                    content.newParagraph();
+                                    content.h2(DssRef.lang.Hud_ThisCity).overrideColor = HudLib.TitleColor_Label;
+                                    bool reachedBuffer = false;
+                                    bool safeGuard = city.foodSafeGuardIsActive(currentStatus.profile.type);
+                                    city.GetGroupedResource(currentStatus.profile.type).toMenu(content, currentStatus.profile.type, safeGuard, ref reachedBuffer);
+
+                                    //if (currentStatus.profile.toCity >= 0)
+                                    //{
+                                        content.newParagraph();
+                                        content.h2(DssRef.lang.Hud_RecieveingCity).overrideColor = HudLib.TitleColor_Label;
+                                        //if (currentStatus.profile.toCity == DeliveryProfile.ToCityAuto)
+                                        //{
+
+                                        //}
+                                        //else
+                                        //{
+                                            toCity.GetGroupedResource(currentStatus.profile.type).toMenu(content, currentStatus.profile.type, false, ref reachedBuffer);
+                                        //}
+                                    //}
+                                }
                                 player.hud.tooltip.create(player, content, true);
                             }, cities_c.sel));
                         button.setGroupSelectionColor(HudLib.RbSettings, cities_c.sel.parentArrayIndex == currentStatus.profile.toCity);

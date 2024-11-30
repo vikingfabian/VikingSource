@@ -509,6 +509,8 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+                case ItemResourceType.Men:
+                    return workForce;
 
         public bool needMore(ItemResourceType type, bool rawfoodSafeGuard, bool woodSafeGuard, out bool usesSafeGuard)
         {
@@ -1088,7 +1090,9 @@ namespace VikingEngine.DSSWars.GameObject
             content.space();
             content.Add(new RichBoxText( LangLib.Item(item) + ": " + TextLib.LargeNumber(amount)));
 
-            if (item != ItemResourceType.Water_G && item != ItemResourceType.Gold)
+            if (item != ItemResourceType.Water_G && 
+                item != ItemResourceType.Gold &&
+                item != ItemResourceType.Men)
             {
                 bool reached = amount >= goalBuffer;
                 reachedBuffer |= reached;

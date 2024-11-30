@@ -4,7 +4,6 @@ Double soldier health
 14 new buildings
 optimized worker performance
 
-
 !Alla objekt med Tile referens måste ändras (livestock)
 
 
@@ -54,7 +53,10 @@ optimized worker performance
 krig varning på ally
 new maps
 dölj carry amount
-new game - Skip language crashes game
+//Fixa fel city är vald i bygg meny, toggle city
+//Nåt är fel med faction work
+Multiplayer crash
+//Export/Import saves
 
 
 lamps - förbättrar produktion i area, måste fyllas med fuel

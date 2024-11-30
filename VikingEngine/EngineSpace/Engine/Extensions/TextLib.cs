@@ -132,6 +132,13 @@ namespace VikingEngine
 
         }
 
+        public static string RemoveEnding(string text, int removeCount)
+        {
+            if (removeCount >= text.Length)
+                return text;
+            return text.Remove(text.Length - removeCount, removeCount);
+        }
+
         public static string PluralEnding(string text, int count)
         {
             if (count > 1)

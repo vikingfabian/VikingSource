@@ -205,8 +205,8 @@ namespace VikingEngine.DSSWars.Work
             craft_heavymailarmor.onFactionValueChange(factionTemplate.craft_heavymailarmor);
 
             farm_food.onFactionValueChange(factionTemplate.farm_food);
-            farm_fuel.onFactionValueChange(factionTemplate.farm_food);
-            farm_linen.onFactionValueChange(factionTemplate.farm_food);
+            farm_fuel.onFactionValueChange(factionTemplate.farm_fuel);
+            farm_linen.onFactionValueChange(factionTemplate.farm_linen);
             bogiron.onFactionValueChange(factionTemplate.bogiron);
             mining_iron.onFactionValueChange(factionTemplate.mining_iron);
             trading.onFactionValueChange(factionTemplate.trading);

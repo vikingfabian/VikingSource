@@ -51,9 +51,10 @@ namespace VikingEngine.DSSWars.Data
 
         public void load()
         {
-            //complete = true;
             DataStream.BeginReadWrite.BinaryIO(false, meta.Path, null, readGameState, this, true);
         }
+
+        
 
         public void SaveComplete(bool save, int player, bool completed, byte[] value)
         {
@@ -86,6 +87,8 @@ namespace VikingEngine.DSSWars.Data
             Debug.WriteCheck(w);
             DssRef.state.writeGameState(w);
         }
+
+        
 
         public void readGameState(System.IO.BinaryReader r)
         {

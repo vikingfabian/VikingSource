@@ -18,6 +18,7 @@ using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.LootFest.Players;
 using VikingEngine.PJ.Joust;
+using VikingEngine.PJ.Bagatelle;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -101,22 +102,23 @@ namespace VikingEngine.DSSWars.GameObject
                                 City othercity = DssRef.world.cities[status.inProgress.ToCity()];
                                 if (status.inProgress.type == ItemResourceType.Men)
                                 {
-                                    if (othercity.workForce.amount + DssConst.CityDeliveryCount > othercity.workForceMax)
-                                    {
-                                        //Add rest to immigration
-                                        int rest = othercity.workForce.amount + DssConst.CityDeliveryCount - othercity.workForceMax;
-                                        othercity.workForce.amount = othercity.workForceMax;
-                                        othercity.immigrants.value += rest;
-                                    }
-                                    else
-                                    {
-                                        othercity.workForce.amount += DssConst.CityDeliveryCount;
-                                    }
+                                     othercity.addWorkers(DssConst.CityDeliveryCount);
+                                    //if (othercity.workForce.amount + DssConst.CityDeliveryCount > othercity.workForceMax)
+                                    //{
+                                    //    //Add rest to immigration
+                                    //    int rest = othercity.workForce.amount + DssConst.CityDeliveryCount - othercity.workForceMax;
+                                    //    othercity.workForce.amount = othercity.workForceMax;
+                                    //    othercity.immigrants.value += rest;
+                                    //}
+                                    //else
+                                    //{
+                                    //    othercity.workForce.amount += DssConst.CityDeliveryCount;
+                                    //}
                                     if (resetDeliverRecieveValue)
                                     {
                                         othercity.workForce.deliverCount = 0;
                                     }
-                                    othercity.workForce.deliverCount -= DssConst.CityDeliveryCount;
+                                    othercity.workForce.deliverCount = Bound.Min( othercity.workForce.deliverCount - DssConst.CityDeliveryCount, 0);
                                 }
                                 else
                                 {

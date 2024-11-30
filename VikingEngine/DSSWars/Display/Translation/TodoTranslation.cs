@@ -9,7 +9,10 @@ namespace VikingEngine.DSSWars.Display.Translation
     class TodoTranslation
     {
         public string Hud_Advanced => "Advanced";
+        public string Hud_Loading => "Loading...";
 
+        public string CityOption_LowerGuardSize => "Release guard";
+        public string Hud_Purchase_MinCapacity => "Has reached minimum capacity";
         public string Settings_ResetToDefault => "Reset to default";
         public string Settings_NewGame => "New game";
 
@@ -25,7 +28,11 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Settings_Mode_Sandbox => "Sandbox";
         public string Settings_Mode_Peaceful => "Peaceful";
         public string Settings_Mode_Peaceful_Description => "All wars are initiated by the player";
-        
+
+        public string Lobby_ImportSave=> "Import save";
+
+        public string Lobby_ExportSave => "Export save";
+        public string Lobby_ExportSave_Description => "Creates a copy of the file, and will place it in the import folder: {0}";
 
         //public string BuildHud_Demolish => "Demolish";
         //public string EndGameStatistics_DecorsBuilt => "Decorations built: {0}";

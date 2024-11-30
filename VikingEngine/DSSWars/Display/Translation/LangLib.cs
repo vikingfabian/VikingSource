@@ -591,6 +591,9 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.todoLang.Resource_TypeName_MithrilArmor;
 
 
+                case ItemResourceType.Men:
+                    return DssRef.lang.ResourceType_Workers;
+
                 default:
                     return TextLib.Error;
             }
