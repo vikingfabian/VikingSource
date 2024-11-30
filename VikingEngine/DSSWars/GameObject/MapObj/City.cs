@@ -1321,13 +1321,18 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
+                bool interactive = player.faction == faction;
+
                 if (damages.HasValue())
                 {
                     content.icontext(SpriteName.hqBatteResultBobbleDamage, string.Format(DssRef.lang.CityOption_Damages, damages.Int()));
                 }
                 HudLib.ItemCount(content, SpriteName.WarsWorkerAdd, DssRef.lang.ResourceType_Children, children().ToString());
                 content.space();
-                HudLib.InfoButton(content, new RbAction1Arg<City>(player.childrenTooltip, this));
+                if (interactive)
+                {
+                    HudLib.InfoButton(content, new RbAction1Arg<City>(player.childrenTooltip, this));
+                }
 
                 HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.amount, homesTotal()));
                 HudLib.ItemCount(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, TextLib.Divition_Large(guardCount, maxGuardSize));
@@ -1335,7 +1340,7 @@ namespace VikingEngine.DSSWars.GameObject
                 content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, calcIncome_async().total(this)));
                 content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, GuardUpkeep(maxGuardSize)));
 
-                cultureToHud(player, content);
+                cultureToHud(player, content, interactive);
 
                 if (immigrants.HasValue())
                 {
@@ -1367,17 +1372,25 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
-        public void cultureToHud(LocalPlayer player, RichBoxContent content)
+        public void cultureToHud(LocalPlayer player, RichBoxContent content, bool interactive)
         {
             content.icontext(SpriteName.WarsCultureIcon, string.Format(DssRef.lang.CityCulture_CultureIsX, Display.Translation.LangLib.CityCulture(Culture, true)));
-            content.space();
-            HudLib.InfoButton(content, new RbAction(() =>
+            if (interactive)
             {
-                RichBoxContent content = new RichBoxContent();
-                content.text(Display.Translation.LangLib.CityCulture(Culture, false));
+                content.space();
+                HudLib.InfoButton(content, new RbAction(() =>
+                {
+                    RichBoxContent content = new RichBoxContent();
+                    content.text(Display.Translation.LangLib.CityCulture(Culture, false));
 
-                player.hud.tooltip.create(player, content, true);
-            }));//cultureToolTip));
+                    player.hud.tooltip.create(player, content, true);
+                }));//cultureToolTip));
+            }
+            else
+            {
+                content.newLine();
+                HudLib.Description(content, Display.Translation.LangLib.CityCulture(Culture, false));
+            }
         }
 
        // void cultureToolTip()

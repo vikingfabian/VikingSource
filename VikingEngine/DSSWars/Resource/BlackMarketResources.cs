@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.Resource
         {
             if (city.Culture == CityCulture.Lawbiding)
             {
-                city.cultureToHud(player, content);
+                city.cultureToHud(player, content, false);
                 return;
             }
 

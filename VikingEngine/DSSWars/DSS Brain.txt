@@ -1,18 +1,11 @@
 ﻿-Change Log-
 Removed water on iron production
+Fixed beer production bug
+Tutorial improvement: locked camera pan, some green checks go back when you are lost, massive white outline to the tutorial hud
+
 
 #Todo (xmas patch)#
-Tutorial pil till höger
-Lås pan i tutorial
-Temp gröna tummar i tex zoom level, tab osv
 
-//Fixa fel city är vald i bygg meny, toggle city
-//Nåt är fel med faction work
-Multiplayer crash
-//Export/Import saves
-
-
-//ShowGamepadTextInput
 
 --Efter release polish--
 -war icon
@@ -32,7 +25,7 @@ Retreat system
 
 
 Polish
-
+- full auto option
 
 -döda av faktion som bara har en soldat kvar
 -Missing file error på load
