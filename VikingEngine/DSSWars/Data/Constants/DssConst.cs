@@ -168,6 +168,8 @@ namespace VikingEngine.DSSWars
 
         public static int WorkSafeGuardAmount = 10;
 
+        public const int StockPileMinBound = 0;
+        public const int StockPileMaxBound = 20000;
         //XP
         public static int WorkQueue_Start = 3;
         public static int WorkQueue_LogisticsLevel1 = 6;

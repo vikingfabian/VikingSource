@@ -2592,6 +2592,7 @@ namespace VikingEngine
         WarsResource_Mithrilbow,
         WarsResource_Ballista,
         WarsResource_Beer,
+        WarsResource_CoolingFluid,
         WarsResource_Silver,
         WarsResource_Cupper,
         WarsResource_CupperOre,

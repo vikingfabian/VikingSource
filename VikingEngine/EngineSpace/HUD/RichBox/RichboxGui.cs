@@ -50,7 +50,7 @@ namespace VikingEngine.HUD.RichBox
             this.settings = settings;
         }
 
-        public void DeleteMe()
+        virtual public void DeleteMe()
         {
             foreach (var p in parts)
             {

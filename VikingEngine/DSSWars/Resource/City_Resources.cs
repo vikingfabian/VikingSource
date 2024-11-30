@@ -29,6 +29,7 @@ namespace VikingEngine.DSSWars.GameObject
              ItemResourceType.RawFood_Group,
              ItemResourceType.Food_G,
              ItemResourceType.Beer,
+             ItemResourceType.CoolingFluid,
              ItemResourceType.SkinLinen_Group,
 
              ItemResourceType.IronOre_G,
@@ -113,6 +114,7 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource res_rawFood = new GroupedResource() { amount = 50, goalBuffer = 200 };
         public GroupedResource res_food = new GroupedResource() { amount = 200, goalBuffer = 500 };
         public GroupedResource res_beer = new GroupedResource() { amount = 0, goalBuffer = 200 };
+        public GroupedResource res_coolingfluid = new GroupedResource() { amount = 0, goalBuffer = 200 };
         public GroupedResource res_skinLinnen = new GroupedResource() { goalBuffer = 100 };
 
         public GroupedResource res_ironore = new GroupedResource() { goalBuffer = 100 };
@@ -317,6 +319,9 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Beer:
                     res_beer.amount += add;
                     break;
+                case ItemResourceType.CoolingFluid:
+                    res_coolingfluid.amount += add;
+                    break;
                 case ItemResourceType.Stone_G:
                     res_stone.amount += add;
                     break;
@@ -509,8 +514,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-                case ItemResourceType.Men:
-                    return workForce;
+               
 
         public bool needMore(ItemResourceType type, bool rawfoodSafeGuard, bool woodSafeGuard, out bool usesSafeGuard)
         {
@@ -569,10 +573,13 @@ namespace VikingEngine.DSSWars.GameObject
                     return new GroupedResource() { amount = faction.gold };
                 case ItemResourceType.GoldOre:
                     return new GroupedResource() { amount = 1 };
+                case ItemResourceType.Men:
+                    return workForce;
 
                 case ItemResourceType.Water_G: return res_water;
 
                 case ItemResourceType.Beer: return res_beer;
+                case ItemResourceType.CoolingFluid: return res_coolingfluid;
                 case ItemResourceType.Food_G: return res_food;
                 case ItemResourceType.Stone_G: return res_stone;
                 case ItemResourceType.Wood_Group: return res_wood;
@@ -670,6 +677,9 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case ItemResourceType.Beer:
                     res_beer = resource;
+                    break;
+                case ItemResourceType.CoolingFluid:
+                    res_coolingfluid = resource;
                     break;
                 case ItemResourceType.Stone_G:
                     res_stone = resource;

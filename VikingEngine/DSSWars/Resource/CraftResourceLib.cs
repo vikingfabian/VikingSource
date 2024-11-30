@@ -9,6 +9,8 @@ namespace VikingEngine.DSSWars.Resource
 {
     static class CraftResourceLib
     {
+        const int FoodWaterUsage = 20;
+        const int FoodCraftAmount = 20;
         //public static void Blueprint(ItemResourceType item, out CraftBlueprint bp1, out CraftBlueprint bp2)
         //{
         //    switch (item)
@@ -19,7 +21,7 @@ namespace VikingEngine.DSSWars.Resource
         //        case ItemResourceType.Beer: bp1 = Beer; bp2 = null; break;
 
         //        case ItemResourceType.Cupper: bp1 = Cupper; bp2 = null; break;
-                
+
         //        case ItemResourceType.Tin: bp1 = Tin; bp2 = null; break;
         //        case ItemResourceType.Lead: bp1 = Lead; bp2 = null; break;
         //        case ItemResourceType.Iron_G: bp1 = Iron; bp2 = null; break;
@@ -29,7 +31,7 @@ namespace VikingEngine.DSSWars.Resource
         //        case ItemResourceType.CastIron: bp1 = CastIron; bp2 = null; break;
         //        case ItemResourceType.BloomeryIron: bp1 = BloomeryIron; bp2 = null; break;
         //        case ItemResourceType.Mithril: bp1 = Mithril; bp2 = null; break;
-                
+
 
         //        case ItemResourceType.PaddedArmor: bp1 = PaddedArmor; bp2 = null; break;
         //        case ItemResourceType.HeavyPaddedArmor: bp1 = HeavyPaddedArmor; bp2 = null; break;
@@ -63,7 +65,7 @@ namespace VikingEngine.DSSWars.Resource
         //        case ItemResourceType.LongBow: bp1 = LongBow; bp2 = null; break;
         //        case ItemResourceType.Crossbow: bp1 = CrossBow; bp2 = null; break;
         //        case ItemResourceType.MithrilBow: bp1 = MithrilBow; bp2 = null; break;
-                                   
+
         //        case ItemResourceType.HandCannon: bp1 = BronzeHandCannon; bp2 = null; break;
         //        case ItemResourceType.HandCulverin: bp1 = BronzeHandCulverin; bp2 = null; break;
         //        case ItemResourceType.Rifle: bp1 = Rifle; bp2 = null; break;
@@ -88,7 +90,21 @@ namespace VikingEngine.DSSWars.Resource
             4,
             new UseResource[]
             {
-                new UseResource(ItemResourceType.Water_G, 1),
+                new UseResource(ItemResourceType.Water_G, 2),
+                new UseResource(ItemResourceType.Fuel_G, 30),
+                new UseResource(ItemResourceType.CupperOre, 2)
+            },
+            Work.WorkExperienceType.Smelting,
+            CraftRequirement.Smelter
+        );
+
+        public static readonly CraftBlueprint Cupper_AndCooling = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.Cupper,
+            4,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.CoolingFluid, 2),
                 new UseResource(ItemResourceType.Fuel_G, 30),
                 new UseResource(ItemResourceType.CupperOre, 2)
             },
@@ -102,7 +118,21 @@ namespace VikingEngine.DSSWars.Resource
             4,
             new UseResource[]
             {
-                new UseResource(ItemResourceType.Water_G, 1),
+                new UseResource(ItemResourceType.Water_G, 2),
+                new UseResource(ItemResourceType.Fuel_G, 30),
+                new UseResource(ItemResourceType.IronOre_G, 2)
+            },
+            Work.WorkExperienceType.Smelting,
+            CraftRequirement.Smelter
+        );
+
+        public static readonly CraftBlueprint Iron_AndCooling = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.Iron_G,
+            4,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.CoolingFluid, 2),
                 new UseResource(ItemResourceType.Fuel_G, 30),
                 new UseResource(ItemResourceType.IronOre_G, 2)
             },
@@ -117,6 +147,20 @@ namespace VikingEngine.DSSWars.Resource
             new UseResource[]
             {
                 new UseResource(ItemResourceType.Water_G, 1),
+                new UseResource(ItemResourceType.Fuel_G, 30),
+                new UseResource(ItemResourceType.SilverOre, 2)
+            },
+            Work.WorkExperienceType.Smelting,
+            CraftRequirement.Smelter
+        );
+
+        public static readonly CraftBlueprint Silver_AndCooling = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.Silver,
+            4,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.CoolingFluid, 1),
                 new UseResource(ItemResourceType.Fuel_G, 30),
                 new UseResource(ItemResourceType.SilverOre, 2)
             },
@@ -144,6 +188,7 @@ namespace VikingEngine.DSSWars.Resource
             4,
             new UseResource[]
             {
+
                 new UseResource(ItemResourceType.Fuel_G, 10),
                 new UseResource(ItemResourceType.LeadOre, 2)
             },
@@ -172,7 +217,20 @@ namespace VikingEngine.DSSWars.Resource
             4,
             new UseResource[]
             {
-                new UseResource(ItemResourceType.Water_G, 1),
+                new UseResource(ItemResourceType.Water_G, 2),
+                new UseResource(ItemResourceType.BloomeryIron, 4)
+            },
+            Work.WorkExperienceType.CraftMetal,
+            CraftRequirement.Smith
+        );
+
+        public static readonly CraftBlueprint Steel_AndCooling = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.Steel,
+            4,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.CoolingFluid, 2),
                 new UseResource(ItemResourceType.BloomeryIron, 4)
             },
             Work.WorkExperienceType.CraftMetal,
@@ -247,8 +305,7 @@ namespace VikingEngine.DSSWars.Resource
              CraftRequirement.CoalPit
         );
 
-        const int FoodWaterUsage = 20;
-        const int FoodCraftAmount = 20;
+       
 
 
         //public static readonly CraftBlueprint Food1 = new CraftBlueprint(
@@ -318,6 +375,19 @@ namespace VikingEngine.DSSWars.Resource
                },
              Work.WorkExperienceType.Chemistry,
                CraftRequirement.Brewery
+
+           );
+
+        public static readonly CraftBlueprint CoolingFluid = new CraftBlueprint(
+                CraftResultType.Resource,
+                (int)ItemResourceType.CoolingFluid,
+               10,
+               new UseResource[]
+               {
+                new UseResource(ItemResourceType.Water_G, 5),
+                new UseResource(ItemResourceType.RawFood_Group, 3)
+               },
+             Work.WorkExperienceType.Chemistry
 
            );
 

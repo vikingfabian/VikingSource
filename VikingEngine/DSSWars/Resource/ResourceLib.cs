@@ -304,6 +304,8 @@ namespace VikingEngine.DSSWars.Resource
                     return SpriteName.WarsResource_Ballista;
                 case ItemResourceType.Beer:
                     return SpriteName.WarsResource_Beer;
+                case ItemResourceType.CoolingFluid:
+                    return SpriteName.WarsResource_CoolingFluid;
                 case ItemResourceType.Bow:
                     return SpriteName.WarsResource_Bow;
                 case ItemResourceType.Crossbow:

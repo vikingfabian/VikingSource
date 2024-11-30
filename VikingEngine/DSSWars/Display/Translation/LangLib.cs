@@ -160,7 +160,9 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case MenuTab.Disband:
                     description = null;
                     return DssRef.lang.ArmyOption_Disband;
-
+                case MenuTab.Mix:
+                    description = "All info compressed to one place";
+                    return "Mix";
                 default:
                     throw new NotImplementedException();
             }
@@ -331,7 +333,20 @@ namespace VikingEngine.DSSWars.Display.Translation
                             return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Coal);
                         case TerrainMineType.GoldOre:
                             return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.ResourceType_Gold);
-                        
+
+                        case TerrainMineType.TinOre:
+                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Tin);
+                        case TerrainMineType.CupperOre:
+                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Cupper);
+                        case TerrainMineType.SilverOre:
+                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Silver);
+                        case TerrainMineType.LeadOre:
+                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Lead);
+                        case TerrainMineType.Mithril:
+                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Mithril);
+                        case TerrainMineType.Sulfur:
+                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Sulfur);
+
                     }
                     break;
 
@@ -427,6 +442,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                 case ItemResourceType.Water_G: return DssRef.lang.Resource_TypeName_Water;
                 case ItemResourceType.Beer: return DssRef.lang.Resource_TypeName_Beer;
+                case ItemResourceType.CoolingFluid: return DssRef.todoLang.Resource_TypeName_CoolingFluid;
                 case ItemResourceType.IronOre_G: return DssRef.lang.Resource_TypeName_IronOre;
                 case ItemResourceType.Iron_G: return DssRef.lang.Resource_TypeName_Iron;
                 case ItemResourceType.Food_G: return DssRef.lang.Resource_TypeName_Food;

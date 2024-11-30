@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars.Resource
             items[(int)ItemResourceType.Stone_G] = new ItemProperties(1f / CarryStones, null, null);
             items[(int)ItemResourceType.IronOre_G] = new ItemProperties(1f / 10, null, null);
             items[(int)ItemResourceType.GoldOre] = new ItemProperties(1f / 10, null, null);
-            items[(int)ItemResourceType.Iron_G] = new ItemProperties(1f / 5, null, null);
+            //items[(int)ItemResourceType.Iron_G] = new ItemProperties(1f / 5, null, null);
             items[(int)ItemResourceType.Egg] = new ItemProperties(1f / 60, null, null);
             items[(int)ItemResourceType.Pig] = new ItemProperties(1f, null, null);
             items[(int)ItemResourceType.Hen] = new ItemProperties(1f / 4, null, null);
@@ -37,15 +37,17 @@ namespace VikingEngine.DSSWars.Resource
             items[(int)ItemResourceType.Coal] = new ItemProperties(DefaultWeight, CraftResourceLib.Charcoal, null);
             items[(int)ItemResourceType.Food_G] = new ItemProperties(1f / CarryFood, CraftResourceLib.Food1, CraftResourceLib.Food2);
             items[(int)ItemResourceType.Beer] = new ItemProperties(DefaultWeight, CraftResourceLib.Beer, null);
-            
-            items[(int)ItemResourceType.Cupper] = new ItemProperties(DefaultWeight, CraftResourceLib.Cupper, null);
+            items[(int)ItemResourceType.CoolingFluid] = new ItemProperties(DefaultWeight, CraftResourceLib.CoolingFluid, null);
+
+            items[(int)ItemResourceType.Cupper] = new ItemProperties(DefaultWeight, CraftResourceLib.Cupper, CraftResourceLib.Cupper_AndCooling);
             items[(int)ItemResourceType.Tin] = new ItemProperties(DefaultWeight, CraftResourceLib.Tin, null);
             items[(int)ItemResourceType.Lead] = new ItemProperties(DefaultWeight, CraftResourceLib.Lead, null);
-            items[(int)ItemResourceType.Iron_G] = new ItemProperties(DefaultWeight, CraftResourceLib.Iron, null);
-            items[(int)ItemResourceType.Silver] = new ItemProperties(DefaultWeight, CraftResourceLib.Silver, null);
+            items[(int)ItemResourceType.Iron_G] = new ItemProperties(DefaultWeight, CraftResourceLib.Iron, CraftResourceLib.Iron_AndCooling);
+            items[(int)ItemResourceType.Silver] = new ItemProperties(DefaultWeight, CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling);
             items[(int)ItemResourceType.Bronze] = new ItemProperties(DefaultWeight, CraftResourceLib.Bronze, null);
             items[(int)ItemResourceType.CastIron] = new ItemProperties(DefaultWeight, CraftResourceLib.CastIron, null);
             items[(int)ItemResourceType.BloomeryIron] = new ItemProperties(DefaultWeight, CraftResourceLib.BloomeryIron, null);
+            items[(int)ItemResourceType.Steel] = new ItemProperties(DefaultWeight, CraftResourceLib.Steel, CraftResourceLib.Steel_AndCooling);
             items[(int)ItemResourceType.Mithril] = new ItemProperties(DefaultWeight, CraftResourceLib.Mithril, null);
             
 

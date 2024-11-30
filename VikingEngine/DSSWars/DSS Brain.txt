@@ -3,17 +3,18 @@ Double soldier health
 20 new soldier types
 14 new buildings
 optimized worker performance
+All water values are x10
 
 !Alla objekt med Tile referens måste ändras (livestock)
 
 
-#Todo (XP)#
+#Todo#
 -Difficulty
 	Fiendens aggro ska komma i två stages (total peace och war manager)
 	Samma längd på bossar
 	Fiende hordes (mer mini bossar)
 
-
+-Mix menu
 -Full automation
 -build prio
 -build placement bonus
@@ -53,14 +54,12 @@ optimized worker performance
 krig varning på ally
 new maps
 dölj carry amount
-//Fixa fel city är vald i bygg meny, toggle city
-//Nåt är fel med faction work
-Multiplayer crash
-//Export/Import saves
 
 
 lamps - förbättrar produktion i area, måste fyllas med fuel
 förvaringsbyggnader som ökar max stack av olika typer, vapen hus, kylrum osv
+
+cooling fluid
 
 //ShowGamepadTextInput
 
@@ -83,7 +82,7 @@ Retreat system
 
 
 Polish
-
+- full auto option
 
 -döda av faktion som bara har en soldat kvar
 -Missing file error på load
@@ -103,23 +102,9 @@ Polish
 placement bonus icon
 work skill icons (carpenting)
 
-
 #Voxel
-/logistic overseer, +lvl 2
-/farm plus tool shed
-/smelter
-/manuballista, /cannons, /hand cannon, /slinger, /long sword, /mithril user, /warhammer
-/stone cutter, wood cutter
-/water resovoir
-/Embassy
-/delivery lvl2/3
-/knight barrack
-/barrack in use, melee/range/siege
-/mines
-/chemestry
-/Foundry (gjuteri)
-/cast iron
-/-lvl2 gun powder (beer chemist) Black powder/ gunpowder
+
+
 #current
 English, Simplified Chinese, Japanese, Russian, Spanish
 

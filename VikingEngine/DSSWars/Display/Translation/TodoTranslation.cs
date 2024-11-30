@@ -35,6 +35,15 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Lobby_ExportSave_Description => "Creates a copy of the file, and will place it in the import folder: {0}";
 
         //public string BuildHud_Demolish => "Demolish";
+        public string Resource_CurrentAmount => "Current amount: {0}";
+        public string Resource_MaxAmount_Soft => "Soft Cap (Max Limit): {0}";
+        public string Resource_MaxAmount => "Max limit: {0}";
+        public string Resource_AddPerSec => "Increase Rate: {0} per second";
+
+
+        public string Resource_WaterAddLimit => "Water increase rate can't be altered";
+
+        public string Tutorial_Select_SubTab => "And select cathegory: {0}";
         //public string EndGameStatistics_DecorsBuilt => "Decorations built: {0}";
         //public string EndGameStatistics_StatuesBuilt => "Statues built: {0}";
         public string Hud_None => "None";
@@ -100,6 +109,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Resource_TypeName_Crossbow=> "Crossbow";
         public string Resource_TypeName_MithrilBow=> "Mithril bow";
 
+        public string Resource_TypeName_CoolingFluid=> "CoolingFluid";
         public string Resource_TypeName_Toolkit=> "Tool kit";
 
         public string Resource_TypeName_Sulfur=> "Sulfur";

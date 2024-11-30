@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.Players
         const float CamMaxRotation = 0.5f;
         const float CamStartRotation = MathHelper.PiOver2;
         IntervalF ZoomRange = MapDetailLayerManager.FullZoomRange;
-
+        VectorRect panBounds;
         FloatInBound camRotation = new FloatInBound(CamStartRotation, new IntervalF(CamStartRotation - CamMaxRotation, CamStartRotation + CamMaxRotation), false);
 
         LocalPlayer player;
@@ -61,7 +61,7 @@ namespace VikingEngine.DSSWars.Players
             camera.FieldOfView = 20;
             camera.UseTerrainCollisions = false;
             camera.zoomChaseLengthPercentage = 0.5f;
-
+            panBounds = DssRef.world.unitBounds;
             hover = new Selection(player, true);
             selection = new Selection(player, false);
             
@@ -80,9 +80,19 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public void setZoomRange(bool tutorial)
+        public void setCameraBounds(bool tutorial, Rectangle2 cityArea)
         {
             ZoomRange = tutorial? MapDetailLayerManager.TutorialZoomRange : MapDetailLayerManager.FullZoomRange;
+
+            if (tutorial)
+            {
+                cityArea.AddRadius(5);
+                panBounds = new VectorRect(cityArea);
+            }
+            else
+            {
+                panBounds = DssRef.world.unitBounds;
+            }
         }
 
         public Vector2 XPointerPos()
@@ -1023,8 +1033,8 @@ namespace VikingEngine.DSSWars.Players
                 cameraFocus = null;
 
                 camera.LookTarget -= pan;
-                camera.setLookTargetXBound(DssRef.world.unitBounds.Position.X, DssRef.world.unitBounds.Right);
-                camera.setLookTargetZBound(DssRef.world.unitBounds.Position.Y, DssRef.world.unitBounds.Bottom);
+                camera.setLookTargetXBound(panBounds.Position.X, panBounds.Right);
+                camera.setLookTargetZBound(panBounds.Position.Y, panBounds.Bottom);
 
                 playerPointerPos = camera.LookTarget;
             }

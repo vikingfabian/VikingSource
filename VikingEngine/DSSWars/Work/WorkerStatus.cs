@@ -403,6 +403,7 @@ namespace VikingEngine.DSSWars.Work
                         ItemPropertyColl.Blueprint(item, out var bp1, out var bp2);
 
                         int add = bp1.tryPayResources(city);
+                        gainXp = bp1.experienceType;
                         if (add == 0 && bp2 != null)
                         {
                             add = bp2.tryPayResources(city);
@@ -414,8 +415,6 @@ namespace VikingEngine.DSSWars.Work
                             {
                                 case ItemResourceType.Food_G:
                                     city.foodProduction.add(add);
-
-                                    gainXp = WorkExperienceType.Cook;
                                     break;
 
                                 case ItemResourceType.Fuel_G:
@@ -425,8 +424,6 @@ namespace VikingEngine.DSSWars.Work
                                     {
                                         add *= 2;
                                     }
-
-                                    gainXp = WorkExperienceType.CraftFuel;
                                     break;
 
                                 case ItemResourceType.Beer:
@@ -434,8 +431,6 @@ namespace VikingEngine.DSSWars.Work
                                     {
                                         add += add / 2;
                                     }
-
-                                    gainXp = WorkExperienceType.Cook;
                                     break;
 
                                 case ItemResourceType.PaddedArmor:
@@ -443,8 +438,6 @@ namespace VikingEngine.DSSWars.Work
                                     {
                                         add += 1;
                                     }
-
-                                    gainXp = WorkExperienceType.CraftArmor;
                                     break;
 
                                 case ItemResourceType.IronArmor:
@@ -453,8 +446,6 @@ namespace VikingEngine.DSSWars.Work
                                     {
                                         add += 1;
                                     }
-
-                                    gainXp = WorkExperienceType.CraftArmor;
                                     break;
 
                             }
@@ -497,7 +488,6 @@ namespace VikingEngine.DSSWars.Work
                         {
                             var build = BuildLib.BuildOptions[workSubType];
                             build.execute_async(city, subTileEnd, ref subTile);
-                            //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
                             EditSubTile edit = new EditSubTile(subTileEnd, subTile, true, true, false);
                             edit.Submit();
                             
@@ -510,8 +500,8 @@ namespace VikingEngine.DSSWars.Work
                         if (orderIsActive(city))
                         {
                             BuildLib.Demolish(city, subTileEnd);
-                            //BuildLib.BuildOptions[workSubType].execute_async(city, subTileEnd, ref subTile);
-                            //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+
+                            gainXp = WorkExperienceType.HouseBuilding;
                         }
                     }
                     break;

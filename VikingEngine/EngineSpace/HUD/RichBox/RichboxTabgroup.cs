@@ -92,7 +92,10 @@ namespace VikingEngine.HUD.RichBox
             group.position.X += group.imageHeight * 0.3f;
         }
 
-        
+        public override void onEnter()
+        {
+            enter?.actionTrigger();
+        }
     }
 
 

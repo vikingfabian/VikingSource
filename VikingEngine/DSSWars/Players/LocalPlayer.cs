@@ -24,6 +24,7 @@ using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.ToGG.Commander.LevelSetup;
 using VikingEngine.ToGG.HeroQuest.Net;
+using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars.Players
 {
@@ -75,6 +76,8 @@ namespace VikingEngine.DSSWars.Players
         public MenuTab armyTab = ArmyMenu.Tabs[0];
         public ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview_Resources;
         public WorkSubTab workSubTab = WorkSubTab.Priority_Resources;
+        public MixTabEditType mixTabEditType = MixTabEditType.None;
+        public ItemResourceType mixTabItem = ItemResourceType.NONE;
 
         public DeliveryStatus menDeliveryCopy, itemDeliveryCopy;
         public ConscriptProfile soldierConscriptCopy, archerConscriptCopy, warmashineConscriptCopy, knightConscriptCopy, gunConscriptCopy, cannonConscriptCopy;

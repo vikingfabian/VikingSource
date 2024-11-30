@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Data;
@@ -29,7 +30,7 @@ namespace VikingEngine.DSSWars.Display
     class CityMenu
     {
         public static readonly List<MenuTab> Tabs = new List<MenuTab>() { 
-            MenuTab.Info, MenuTab.Resources, MenuTab.Work, MenuTab.BlackMarket, MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript, MenuTab.Tag };
+            MenuTab.Info, MenuTab.Resources, MenuTab.Work, MenuTab.BlackMarket, MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript, MenuTab.Tag, MenuTab.Mix };
         Players.LocalPlayer player;
         City city;
         static readonly int[] StockPileControls = { 100, 1000 };
@@ -115,9 +116,149 @@ namespace VikingEngine.DSSWars.Display
                 case MenuTab.Build:
                     player.buildControls.toHud(player, content, city);
                     break;
+
+                case MenuTab.Mix:
+                    mixTab(content);
+                    break;
             }
         }
 
+        void mixTab(RichBoxContent content)
+        {
+            //if (player.tutorial == null || player.tutorial.DisplayStockpile())
+            {
+                for (ResourcesSubTab resourcesSubTab = 0; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
+                {
+                    var tabContent = new RichBoxContent();
+                    //string text = null;
+                    switch (resourcesSubTab)
+                    {
+                        case ResourcesSubTab.Overview_Resources:
+                            tabContent.Add(new RichBoxText(DssRef.lang.Resource_Tab_Overview));
+                            tabContent.space();
+                            tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Wood));
+                            break;
+
+                        case ResourcesSubTab.Overview_Metals:
+                            tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Iron));
+                            break;
+
+                        case ResourcesSubTab.Overview_Weapons:
+                            tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Sword));
+                            break;
+
+                        case ResourcesSubTab.Overview_Projectile:
+                            tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Bow));
+                            break;
+
+                        case ResourcesSubTab.Overview_Armor:
+                            tabContent.Add(new RichBoxImage(SpriteName.cmdMailArmor));
+                            break;
+
+
+                    }
+                    var subTab = new RichboxButton(tabContent,
+                        new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
+                        {
+                            player.resourcesSubTab = resourcesSubTab;
+                        }, resourcesSubTab, SoundLib.menutab));
+                    subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
+                    content.Add(subTab);
+                    content.space();
+                }
+                content.newParagraph();
+            }
+
+            bool reachedBuffer = false;
+
+            switch (player.resourcesSubTab)
+            {
+                case ResourcesSubTab.Overview_Resources:
+                    mixResource(ItemResourceType.Wood_Group, false, WorkPriorityType.wood, SpriteName.WarsWorkCollect);
+                    mixResource(ItemResourceType.Stone_G, false, WorkPriorityType.wood, SpriteName.WarsWorkCollect);
+                    mixResource(ItemResourceType.RawFood_Group, false, WorkPriorityType.wood, SpriteName.WarsWorkCollect);
+                    mixResource(ItemResourceType.SkinLinen_Group, false, WorkPriorityType.farmlinen, SpriteName.WarsWorkFarm);
+                    break;
+            }
+
+            void mixResource(ItemResourceType item, bool safeGuard, WorkPriorityType workPriorityType, SpriteName prioIcon)
+            {
+                content.newLine();
+
+                var typeIcon = ResourceLib.Icon(item);
+                var typeName = LangLib.Item(item);
+                var city_res = city.GetGroupedResource(item);
+
+                var infoContent = new List<AbsRichBoxMember>(2);
+                infoContent.Add(new RichBoxImage(typeIcon));
+                var amountText = new RichBoxText(city_res.amount.ToString());
+                amountText.overrideColor = Color.White;
+                infoContent.Add(amountText);
+
+                var infoButton = new RichboxButton(infoContent, null, new RbAction(() =>
+                {
+                    RichBoxContent content = new RichBoxContent();
+                    content.Add(new RichBoxText(typeName));
+                    player.hud.tooltip.create(player, content, true);
+                }));
+                infoButton.overrideBgColor = HudLib.InfoYellow_BG;
+
+                content.Add(infoButton);
+                content.space();
+                content.Add(new RichBoxTab(0.25f));
+
+                if (item != ItemResourceType.Water_G &&
+                   item != ItemResourceType.Gold &&
+                   item != ItemResourceType.Men)
+                {
+                    var stockpileContent = new List<AbsRichBoxMember>(2);
+                    stockpileContent.Add(new RichBoxText(city_res.goalBuffer.ToString()));
+
+                    bool reached = city_res.amount >= city_res.goalBuffer;
+                    reachedBuffer |= reached;
+                    SpriteName stockIcon;
+                    if (safeGuard)
+                    {
+                        stockIcon = SpriteName.WarsStockpileAdd_Protected;
+                    }
+                    else if (reached)
+                    {
+                        stockIcon = SpriteName.WarsStockpileStop;
+                    }
+                    else
+                    {
+                        stockIcon = SpriteName.WarsStockpileAdd;
+                    }
+                    var icon = new RichBoxImage(stockIcon);
+                    stockpileContent.Add(icon);
+
+
+                    var stockpileButton = new RichboxButton(stockpileContent, new RbAction(() =>
+                    {
+                        player.mixTabEditType = MixTabEditType.Stockpile;
+                        player.mixTabItem = item;
+                    }, SoundLib.menu));
+
+                    content.Add(stockpileButton);
+                }
+
+                if (workPriorityType != WorkPriorityType.NUM_NONE)
+                {
+
+                }
+
+                if (player.mixTabEditType != MixTabEditType.None &&
+                    item == player.mixTabItem)
+                {
+                    content.newLine();
+                    switch (player.mixTabEditType)
+                    {
+                        case MixTabEditType.Stockpile:
+                            stockPileEdit(content, item, city_res);
+                            break;
+                } }
+            }
+        }
         void workTab(RichBoxContent content)
         {
             if (player.tutorial == null)
@@ -183,12 +324,13 @@ namespace VikingEngine.DSSWars.Display
             experience(SpriteName.WarsWorkMine, DssRef.todoLang.ExperienceType_Mining, city.topskill_Mining);
             experience(SpriteName.WarsWorkMove, DssRef.todoLang.ExperienceType_Transport, city.topskill_Transport);
             experience(SpriteName.WarsResource_Food, DssRef.todoLang.ExperienceType_Cook, city.topskill_Cook);
-            experience(SpriteName.WarsBuild_Carpenter, DssRef.todoLang.ExperienceType_Fletcher, city.topskill_Fletcher);
+            experience(SpriteName.WarsWoodCraftIcon, DssRef.todoLang.ExperienceType_Fletcher, city.topskill_Fletcher);
             experience(SpriteName.WarsResource_Iron, DssRef.todoLang.ExperienceType_CraftMetal, city.topskill_CraftMetal);
             experience(SpriteName.WarsResource_IronArmor, DssRef.todoLang.ExperienceType_CraftArmor, city.topskill_CraftArmor);
             experience(SpriteName.WarsResource_Sword, DssRef.todoLang.ExperienceType_CraftWeapon, city.topskill_CraftWeapon);
             experience(SpriteName.WarsResource_Fuel, DssRef.todoLang.ExperienceType_CraftFuel, city.topskill_CraftFuel);
-            experience(SpriteName.WarsResource_GunPowder, DssRef.todoLang.BuildingType_Gunmaker, city.topskill_CraftFuel);
+            experience(SpriteName.WarsBuild_Chemist, DssRef.todoLang.ExperienceType_Chemist, city.topskill_Chemistry);
+            //experience(SpriteName.WarsResource_GunPowder, DssRef.todoLang.BuildingType_Gunmaker, city.);
             content.newParagraph();
             HudLib.Description(content, string.Format(DssRef.todoLang.Experience_TimeReductionDescription, MathExt.PercentageInteger(DssConst.XpLevelWorkTimePercReduction)));
 
@@ -238,9 +380,12 @@ namespace VikingEngine.DSSWars.Display
             {
                 content.newLine();
                 content.Add(new RichBoxImage(typeIcon));
+                content.space();
                 var typeNameText = new RichBoxText(typeName + ":");
                 typeNameText.overrideColor = HudLib.TitleColor_TypeName;
                 content.Add(typeNameText);
+
+                content.Add(new RichBoxTab(0.4f));
                 content.Add(new RichBoxImage(LangLib.ExperienceLevelIcon(level)));
                 content.Add(new RichBoxText(LangLib.ExperienceLevel(level)));
             }
@@ -387,6 +532,9 @@ namespace VikingEngine.DSSWars.Display
 
                     city.res_beer.toMenu(content, ItemResourceType.Beer, false, ref reachedBuffer);
                     blueprintButton(player, content, CraftResourceLib.Beer);
+
+                    city.res_coolingfluid.toMenu(content, ItemResourceType.CoolingFluid, false, ref reachedBuffer);
+                    blueprintButton(player, content, CraftResourceLib.CoolingFluid);
                     content.newParagraph();
 
                     city.res_Toolkit.toMenu(content, ItemResourceType.Toolkit, false, ref reachedBuffer);
@@ -439,19 +587,19 @@ namespace VikingEngine.DSSWars.Display
 
 
                     city.res_iron.toMenu(content, ItemResourceType.Iron_G, false, ref reachedBuffer);
-                    blueprintButton(player, content, CraftResourceLib.Iron);
+                    blueprintButton(player, content, CraftResourceLib.Iron, CraftResourceLib.Iron_AndCooling);
 
                     city.res_Tin.toMenu(content, ItemResourceType.Tin, false, ref reachedBuffer);
                     blueprintButton(player, content, CraftResourceLib.Tin);
 
                     city.res_Cupper.toMenu(content, ItemResourceType.Cupper, false, ref reachedBuffer);
-                    blueprintButton(player, content, CraftResourceLib.Cupper);
+                    blueprintButton(player, content, CraftResourceLib.Cupper, CraftResourceLib.Cupper_AndCooling);
 
                     city.res_Lead.toMenu(content, ItemResourceType.Lead, false, ref reachedBuffer);
                     blueprintButton(player, content, CraftResourceLib.Lead);
 
                     city.res_Silver.toMenu(content, ItemResourceType.Silver, false, ref reachedBuffer);
-                    blueprintButton(player, content, CraftResourceLib.Silver);
+                    blueprintButton(player, content, CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling);
 
                     city.res_RawMithril.toMenu(content, ItemResourceType.RawMithril, false, ref reachedBuffer);
                     content.newParagraph();
@@ -467,7 +615,7 @@ namespace VikingEngine.DSSWars.Display
                     blueprintButton(player, content, CraftResourceLib.BloomeryIron);
                     
                     city.res_Steel.toMenu(content, ItemResourceType.Steel, false, ref reachedBuffer);
-                    blueprintButton(player, content, CraftResourceLib.Steel);
+                    blueprintButton(player, content, CraftResourceLib.Steel, CraftResourceLib.Steel_AndCooling);
 
                     city.res_Mithril.toMenu(content, ItemResourceType.Mithril, false, ref reachedBuffer);
                     blueprintButton(player, content, CraftResourceLib.Mithril);
@@ -602,6 +750,7 @@ namespace VikingEngine.DSSWars.Display
                     stockpile(ItemResourceType.Food_G);
                     stockpile(ItemResourceType.Fuel_G);
                     stockpile(ItemResourceType.Beer);
+                    stockpile(ItemResourceType.CoolingFluid);
                     content.newParagraph();
 
                     stockpile(ItemResourceType.Toolkit);
@@ -694,11 +843,10 @@ namespace VikingEngine.DSSWars.Display
 
             void stockpile(ItemResourceType item)
             {
-                const int MinBound = 0;
-                const int MaxBound = 20000;
+                
 
 
-                var res = city.GetGroupedResource(item);
+                GroupedResource res = city.GetGroupedResource(item);
 
                 content.newLine();
                 var icon = new RichBoxImage(res.amount >= res.goalBuffer ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd);
@@ -710,42 +858,49 @@ namespace VikingEngine.DSSWars.Display
                 content.Add(new RichBoxImage(ResourceLib.Icon(item)));
                 content.space();
                 //content.Add(new RichBoxText(LangLib.Item(item) + ": "));
-                RbAction hover = new RbAction(() => {
-                    RichBoxContent content = new RichBoxContent();
-                    bool buffer = false;
-                    city.GetGroupedResource(item).toMenu(content, item, false, ref buffer);//content.Add(new RichBoxText(LangLib.Item(item)));
-                    player.hud.tooltip.create(player, content, true);
-                });
+
                 //content.newLine();
-                for (int i = StockPileControls.Length - 1; i >= 0; i--)
-                {
-                    int change = -StockPileControls[i];
-                    content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(TextLib.PlusMinus(change)) },
-                        new RbAction1Arg<int>((int change) => {
-                            var res = city.GetGroupedResource(item);
-                            res.goalBuffer = Bound.Set(res.goalBuffer + change, MinBound, MaxBound);
-                            city.SetGroupedResource(item, res);
+                stockPileEdit(content, item, res);
+            }
+        }
 
-                        }, change, SoundLib.menu), hover));
+        void stockPileEdit(RichBoxContent content, ItemResourceType item, GroupedResource res)
+        {
+            RbAction hover = new RbAction(() => {
+                RichBoxContent content = new RichBoxContent();
+                bool buffer = false;
+                city.GetGroupedResource(item).toMenu(content, item, false, ref buffer);//content.Add(new RichBoxText(LangLib.Item(item)));
+                player.hud.tooltip.create(player, content, true);
+            });
 
-                    content.space();
-                }
+            for (int i = StockPileControls.Length - 1; i >= 0; i--)
+            {
+                int change = -StockPileControls[i];
+                content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(TextLib.PlusMinus(change)) },
+                    new RbAction1Arg<int>((int change) => {
+                        var res = city.GetGroupedResource(item);
+                        res.goalBuffer = Bound.Set(res.goalBuffer + change, DssConst.StockPileMinBound, DssConst.StockPileMaxBound);
+                        city.SetGroupedResource(item, res);
 
-                content.Add(new RichBoxText(res.goalBuffer.ToString()));
+                    }, change, SoundLib.menu), hover));
 
-                for (int i = 0; i < StockPileControls.Length; i++)
-                {
-                    content.space();
+                content.space();
+            }
 
-                    int change = StockPileControls[i];
-                    content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(TextLib.PlusMinus(change)) },
-                        new RbAction1Arg<int>((int change) => {
-                            var res = city.GetGroupedResource(item);
-                            res.goalBuffer = Bound.Set(res.goalBuffer + change, MinBound, MaxBound);
-                            city.SetGroupedResource(item, res);
+            content.Add(new RichBoxText(res.goalBuffer.ToString()));
 
-                        }, change, SoundLib.menu), hover));
-                }
+            for (int i = 0; i < StockPileControls.Length; i++)
+            {
+                content.space();
+
+                int change = StockPileControls[i];
+                content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(TextLib.PlusMinus(change)) },
+                    new RbAction1Arg<int>((int change) => {
+                        var res = city.GetGroupedResource(item);
+                        res.goalBuffer = Bound.Set(res.goalBuffer + change, DssConst.StockPileMinBound, DssConst.StockPileMaxBound);
+                        city.SetGroupedResource(item, res);
+
+                    }, change, SoundLib.menu), hover));
             }
         }
 
@@ -1326,7 +1481,15 @@ namespace VikingEngine.DSSWars.Display
         Automation,
         Disband,
         Divide,
+        Mix,
         NUM
+    }
+
+    enum MixTabEditType
+    { 
+        None,
+        Stockpile,
+        WorkPrio,
     }
 
     enum ResourcesSubTab

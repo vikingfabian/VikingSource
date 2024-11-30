@@ -134,7 +134,9 @@ namespace VikingEngine.DSSWars.Map
         CupperOre,
         SilverOre,
         GoldOre,
-        MithrilOre,
+        LeadOre,
+        Mithril,
+        Sulfur,
     }
 
     enum TerrainSeaType

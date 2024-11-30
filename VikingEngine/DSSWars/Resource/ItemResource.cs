@@ -161,6 +161,7 @@ namespace VikingEngine.DSSWars.Resource
         MithrilBow,
 
         Toolkit,
+        CoolingFluid,
 
         Sulfur,
         LeadOre,

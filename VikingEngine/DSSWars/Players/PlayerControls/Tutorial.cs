@@ -40,8 +40,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         static int CollectWeaponArmorAmount = DssConst.SoldierGroup_DefaultCount * 2;
 
         bool collectResources_zoomIn = false;
+        bool collectResources_zoomIn_sound = false;
         bool collectResources_selectCity = false;
+        bool collectResources_selectCity_sound = false;
         bool collectResources_selectTab = false;
+        bool collectResources_selectTab_sound = false;
         bool collectResources_collectwood = false;
         bool collectResources_collectstone = false;
 
@@ -64,24 +67,29 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         bool CollectFood_buildfoodproduction = false;
         bool CollectFood_buildfuelproduction = false;
         bool CollectFood_builcook = false;
+        bool CollectFood_selectStockPile = false;
         bool CollectFood_increasefoodbuffer = false;
         bool CollectFood_reachfoodamount = false;
 
         bool moveArmy_ZoomOut = false;
+        bool moveArmy_ZoomOut_sound = false;
         //bool moveArmy_Select = false;
         bool moveArmy_SelectMove = false;
 
         bool diplomatics_ZoomOut = false;
+        bool diplomatics_ZoomOut_sound = false;
         bool diplomatics_goodRelation = false;
 
-//        (hide tavern)
-//-look at the food blueprint
-//-build something that produces raw food
-//-build something that produces fuel
-//-build a food crafting station
-//-increase the food buffer limit
-//-reach a stockpile of X food
-//*The workers will move to the city hall for food
+        Rectangle2 cityarea;
+
+        //        (hide tavern)
+        //-look at the food blueprint
+        //-build something that produces raw food
+        //-build something that produces fuel
+        //-build a food crafting station
+        //-increase the food buffer limit
+        //-reach a stockpile of X food
+        //*The workers will move to the city hall for food
 
         LocalPlayer player;
         TutorialMission tutorialMission = 0;
@@ -118,6 +126,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         public Tutorial(LocalPlayer player)
         {
+            cityarea = new Rectangle2();
+
             this.player = player;
             display = new Display.TutorialDisplay(player);
 
@@ -130,6 +140,16 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 cityCounter.sel.res_paddedArmor.amount = DssConst.SoldierGroup_DefaultCount;
 
                 CityStructure.WorkInstance.setupTutorialMap(cityCounter.sel);
+
+                if (cityarea.X == 0)
+                {
+                    cityarea.pos = cityCounter.sel.tilePos;
+                    cityarea.size = IntVector2.One;
+                }
+                else
+                {
+                    cityarea.includeTile(cityCounter.sel.tilePos);
+                }
             }
 
             player.faction.workTemplate.craft_sharpstick.value = 0;
@@ -148,7 +168,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         void refreshLimits()
         {
-            player.mapControls.setZoomRange(tutorialMission < TutorialMission.Diplomatics);
+            player.mapControls.setCameraBounds(tutorialMission < TutorialMission.Diplomatics, cityarea);
 
             cityTabs = new List<MenuTab>{ MenuTab.Info, MenuTab.Resources };
 
@@ -221,6 +241,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.icontext(HudLib.CheckImage(CollectFood_buildfoodproduction), string.Format(DssRef.lang.Tutorial_BuildSomething, DssRef.lang.Resource_TypeName_RawFood));//-build something that produces raw food
                     content.icontext(HudLib.CheckImage(CollectFood_buildfuelproduction), string.Format(DssRef.lang.Tutorial_BuildSomething, DssRef.lang.Resource_TypeName_Fuel));//-build something that produces fuel
                     content.icontext(HudLib.CheckImage(CollectFood_builcook), string.Format(DssRef.lang.Tutorial_BuildCraft, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
+                    
+                    content.icontext(HudLib.CheckImage(CollectFood_selectStockPile), 
+                        string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources) + ". " + string.Format(DssRef.todoLang.Tutorial_Select_SubTab, DssRef.lang.Resource_Tab_Stockpile));//-build a food crafting station
+
                     content.icontext(HudLib.CheckImage(CollectFood_increasefoodbuffer), string.Format(DssRef.lang.Tutorial_IncreaseBufferLimit, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
                     content.icontext(HudLib.CheckImage(CollectFood_reachfoodamount), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, ReachFoodBuffer, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
 
@@ -269,30 +293,63 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             switch (tutorialMission)
             {
                 case TutorialMission.CollectResources:
-                    if (!collectResources_selectCity)
+
+                    if (player.mapControls.selection.obj is City)
                     {
-                        if (player.mapControls.selection.obj is City)
-                        {   
+                        if (!collectResources_selectCity)
+                        {
                             collectResources_selectCity = true;
-                            onPartSuccess();
+                            onPartSuccess(collectResources_selectCity_sound);
+                            collectResources_selectCity_sound = true;
                         }
                     }
-                    if (!collectResources_zoomIn)
+                    else
                     {
-                        if (player.drawUnitsView.current.DrawDetailLayer)
+                        if (collectResources_selectCity)
+                        {
+                            collectResources_selectCity = false;
+                            display.refresh = true;
+                        }
+                    }
+
+                    if (player.drawUnitsView.current.DrawDetailLayer)
+                    {
+                        if (!collectResources_zoomIn)
                         {
                             collectResources_zoomIn = true;
-                            onPartSuccess();
+                            onPartSuccess(collectResources_zoomIn_sound);
+                            collectResources_zoomIn_sound = true;
                         }
                     }
-                    if (!collectResources_selectTab)
+                    else
                     {
-                        if (player.cityTab == Display.MenuTab.Resources)
+                        if (collectResources_zoomIn)
+                        {
+                            collectResources_zoomIn = false;
+                            display.refresh = true;
+                        }
+                    }
+                    
+
+                    
+                    if (player.cityTab == Display.MenuTab.Resources)
+                    {
+                        if (!collectResources_selectTab)
                         {
                             collectResources_selectTab = true;
-                            onPartSuccess();
+                            onPartSuccess(collectResources_selectTab_sound);
+                            collectResources_selectTab_sound = true;
                         }
                     }
+                    else
+                    {
+                        if (collectResources_selectTab)
+                        {
+                            collectResources_selectTab = false;
+                            display.refresh = true;
+                        }
+                    }
+                    
                     if (!collectResources_collectwood)
                     {
                         if (player.mapControls.selection.obj is City)
@@ -540,6 +597,19 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             }
                         }
                     }
+
+                    if (!CollectFood_selectStockPile)
+                    {
+                        if (player.mapControls.selection.obj is City &&
+                            player.cityTab == Display.MenuTab.Resources &&
+                            player.resourcesSubTab == ResourcesSubTab.Stockpile_Resources)
+                        {
+                            CollectFood_selectStockPile = true;
+
+                            onPartSuccess();
+                        }
+                    }
+
                     if (!CollectFood_increasefoodbuffer)
                     {
                         if (player.mapControls.selection.obj is City &&
@@ -565,14 +635,26 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     break;
               
                 case TutorialMission.MoveArmy:
-                    if (!moveArmy_ZoomOut)
+
+                    if (player.drawUnitsView.current.DrawNormal)
                     {
-                        if (player.drawUnitsView.current.DrawNormal)
+                        if (!moveArmy_ZoomOut)
                         {
                             moveArmy_ZoomOut = true;
-                            onPartSuccess();
+                            onPartSuccess(moveArmy_ZoomOut_sound);
+                            moveArmy_ZoomOut_sound = true;
                         }
                     }
+                    else
+                    {
+                        if (moveArmy_ZoomOut)
+                        {
+                            moveArmy_ZoomOut = false;
+                            display.refresh = true;
+                        }
+                    }
+                    
+
                     if (!moveArmy_SelectMove)
                     {
                         var armyC = player.faction.armies.counter();
@@ -590,14 +672,25 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
                     break;
                 case TutorialMission.Diplomatics:
-                    if (!diplomatics_ZoomOut)
+
+                    if (player.drawUnitsView.current.DrawOverview)
                     {
-                        if (player.drawUnitsView.current.DrawOverview)
+                        if (!diplomatics_ZoomOut)
                         {
                             diplomatics_ZoomOut = true;
-                            onPartSuccess();
+                            onPartSuccess(diplomatics_ZoomOut_sound);
+                            diplomatics_ZoomOut_sound = true;
                         }
                     }
+                    else
+                    {
+                        if (diplomatics_ZoomOut)
+                        {
+                            diplomatics_ZoomOut = false;
+                            display.refresh = true;
+                        }
+                    }
+                    
                     if (!diplomatics_goodRelation)
                     {
                         foreach (var rel in player.faction.diplomaticRelations)
@@ -619,9 +712,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             display.update();
         }
 
-        void onPartSuccess()
+        void onPartSuccess(bool soundPlayed = false)
         {
-            SoundLib.trophy.Play();
+            if (!soundPlayed)
+            {
+                SoundLib.trophy.Play();
+            }
             display.refresh = true;
 
             bool missionComplete = false;
@@ -724,7 +820,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         public void EndTutorial()
         {
-            player.mapControls.setZoomRange(false);
+            player.mapControls.setCameraBounds(false, cityarea);
             
 
             DssRef.storage.runTutorial = false;
