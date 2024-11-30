@@ -116,6 +116,7 @@ namespace VikingEngine.DSSWars.Resource
             4,
             new UseResource[]
             {
+                new UseResource(ItemResourceType.Water_G, 1),
                 new UseResource(ItemResourceType.Fuel_G, 30),
                 new UseResource(ItemResourceType.SilverOre, 2)
             },
@@ -129,7 +130,7 @@ namespace VikingEngine.DSSWars.Resource
             4,
             new UseResource[]
             {
-                new UseResource(ItemResourceType.Water_G, 1),
+                //new UseResource(ItemResourceType.Water_G, 1),
                 new UseResource(ItemResourceType.Fuel_G, 20),
                 new UseResource(ItemResourceType.TinOre, 2)
             },
@@ -171,6 +172,7 @@ namespace VikingEngine.DSSWars.Resource
             4,
             new UseResource[]
             {
+                new UseResource(ItemResourceType.Water_G, 1),
                 new UseResource(ItemResourceType.BloomeryIron, 4)
             },
             Work.WorkExperienceType.CraftMetal,
@@ -245,7 +247,7 @@ namespace VikingEngine.DSSWars.Resource
              CraftRequirement.CoalPit
         );
 
-        const int FoodWaterUsage = 3;
+        const int FoodWaterUsage = 20;
         const int FoodCraftAmount = 20;
 
 
