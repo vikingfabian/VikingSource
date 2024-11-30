@@ -84,7 +84,7 @@ namespace VikingEngine.DSSWars.Resource
             4,
             new UseResource[]
             {
-                new UseResource(ItemResourceType.Water_G, 1),
+                //new UseResource(ItemResourceType.Water_G, 1),
                 new UseResource(ItemResourceType.Fuel_G, 30),
                 new UseResource(ItemResourceType.IronOre_G, 2)
             },
