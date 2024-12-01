@@ -1,10 +1,9 @@
 ﻿-Change Log-
-Removed water on iron production
-Fixed beer production bug
-Tutorial improvement: locked camera pan, some green checks go back when you are lost, massive white outline to the tutorial hud
 
 
 #Todo (xmas patch)#
+Full translation
+water/diplomacy description
 
 
 --Efter release polish--

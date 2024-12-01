@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Display.Translation
             switch (level)
             {
                 case ArmorLevel.None:
-                    return "None";
+                    return DssRef.lang.Hud_None;
                 case ArmorLevel.Light: return DssRef.lang.Resource_TypeName_LightArmor;
                 case ArmorLevel.Medium: return DssRef.lang.Resource_TypeName_MediumArmor;
                 case ArmorLevel.Heavy: return DssRef.lang.Resource_TypeName_HeavyArmor;
