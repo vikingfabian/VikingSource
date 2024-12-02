@@ -2465,6 +2465,8 @@ namespace VikingEngine
         WarsRelationFlag,
         
         WarsMapIcon,
+        WarsTechnology_Unlocked,
+        WarsTechnology_Locked,
         WarsGovernmentIcon,
         WarsStrengthIcon,
         WarsGroupIcon,
@@ -2592,7 +2594,7 @@ namespace VikingEngine
         WarsResource_Mithrilbow,
         WarsResource_Ballista,
         WarsResource_Beer,
-        WarsResource_CoolingFluid,
+        WarsResource_CoolingFluid,        
         WarsResource_Silver,
         WarsResource_Cupper,
         WarsResource_CupperOre,

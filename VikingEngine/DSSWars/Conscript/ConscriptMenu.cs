@@ -54,8 +54,10 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType.HandCulverin,
             ItemResourceType.Rifle,
             ItemResourceType.Blunderbus,
+        };
 
-            ItemResourceType.SiegeCannonBronze,
+        static readonly ItemResourceType[] CannonWeapons = {
+           ItemResourceType.SiegeCannonBronze,
             ItemResourceType.ManCannonBronze,
             ItemResourceType.SiegeCannonIron,
             ItemResourceType.ManCannonIron,
@@ -94,19 +96,23 @@ namespace VikingEngine.DSSWars.Conscript
                         break;
                     case BarracksType.Archer:
                         typeName = DssRef.todoLang.BuildingType_SoldierBarracks;
-                        weapons = SoldierWeapons;
+                        weapons = ArcherWeapons;
                         break;
                     case BarracksType.Warmashine:
                         typeName = DssRef.todoLang.BuildingType_SoldierBarracks;
-                        weapons = SoldierWeapons;
+                        weapons = WarmashineWeapons;
                         break;
                     case BarracksType.Knight:
                         typeName = DssRef.todoLang.BuildingType_SoldierBarracks;
-                        weapons = SoldierWeapons;
+                        weapons = NobelWeapons;
                         break;
                     case BarracksType.Gun:
                         typeName = DssRef.todoLang.BuildingType_SoldierBarracks;
-                        weapons = SoldierWeapons;
+                        weapons = GunWeapons;
+                        break;
+                    case BarracksType.Cannon:
+                        typeName = DssRef.todoLang.BuildingType_CannonBarracks;
+                        weapons = CannonWeapons;
                         break;
                     
                 }
@@ -282,7 +288,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                 if (currentStatus.active != ConscriptActiveStatus.Idle)
                 {
-                    content.newParagraph();
+                    //content.newParagraph();
                     content.Add(new RichBoxSeperationLine());
                     {
                         content.newLine();

@@ -597,8 +597,28 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainMineType.Coal:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 2, wp, scale));
                     break;
+                case TerrainMineType.TinOre:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 6, wp, scale));
+                    break;
+                
+                case TerrainMineType.CupperOre:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 9, wp, scale));
+                    break;
+                
+                case TerrainMineType.LeadOre:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 7, wp, scale));
+                    break;
+                case TerrainMineType.SilverOre:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 4, wp, scale));
+                    break;
                 case TerrainMineType.GoldOre:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 1, wp, scale));
+                    break;
+                case TerrainMineType.Mithril:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 8, wp, scale));
+                    break;
+                case TerrainMineType.Sulfur:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 5, wp, scale));
                     break;
 
                 default:

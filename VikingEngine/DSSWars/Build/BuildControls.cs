@@ -138,7 +138,7 @@ namespace VikingEngine.DSSWars.Build
                     RichBoxContent content = new RichBoxContent();
 
                     var build = BuildLib.BuildOptions[(int)type];
-                    content.h2( TextLib.LargeFirstLetter(build.Label()) ).overrideColor = HudLib.TitleColor_TypeName;
+                    content.h2(TextLib.LargeFirstLetter(build.Label())).overrideColor = HudLib.TitleColor_TypeName;
                     build.blueprint.toMenu(content, city);
 
                     content.Add(new RichBoxSeperationLine());
@@ -147,6 +147,48 @@ namespace VikingEngine.DSSWars.Build
                     content.newLine();
                     switch (type)
                     {
+                        case BuildAndExpandType.WaterResovoir:
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxImage(SpriteName.WarsResource_WaterAdd));
+                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.Resource_MaxAmount, TextLib.PlusMinus(DssConst.WaterResovoirWaterAdd))));
+
+                            content.newParagraph();
+                            HudLib.Label(content, DssRef.lang.Hud_ThisCity);
+                            content.newLine();
+                            content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
+                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.Resource_CurrentAmount, city.res_water.amount)));
+                            content.newLine();
+                            content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
+                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.Resource_MaxAmount, city.maxWaterTotal)));
+                            content.newLine();
+                            content.Add(new RichBoxImage(SpriteName.WarsResource_WaterAdd));
+                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.Resource_AddPerSec, TextLib.OneDecimal( city.waterAddPerSec))));
+                            break;
+
+                        case BuildAndExpandType.WoodCutter:
+                            HudLib.Label(content, DssRef.todoLang.BuildHud_AreaAffectTitle);
+
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.BuildingType_WoodCutter_AreaAffect, DssConst.WoodCutter_WoodBonus)));
+
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.BuildHud_BonusRadius, DssConst.WoodCutter_BonusRadius)));
+                            break;
+
+                        case BuildAndExpandType.StoneCutter:
+                            HudLib.Label(content, DssRef.todoLang.BuildHud_AreaAffectTitle);
+
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.BuildingType_StoneCutter_AreaAffect, DssConst.StoneCutter_StoneBonus)));
+
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.BuildHud_BonusRadius, DssConst.StoneCutter_BonusRadius)));
+                            break;
+
                         case BuildAndExpandType.Storehouse:
                         case BuildAndExpandType.Tavern:
                             HudLib.Description(content, DssRef.lang.Info_FoodAndDeliveryLocation);
@@ -212,15 +254,15 @@ namespace VikingEngine.DSSWars.Build
                             content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
                             content.newLine();
                             HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize -1))));
-                            
+                            content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize - 1))));
+
                             content.newLine();
                             HudLib.BulletPoint(content);
                             content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_Plant + DssConst.WorkTime_GatherFoil_FarmCulture))));
 
                             content.newLine();
                             HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format( DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
+                            content.Add(new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
                             content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
                             content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Water));
 
@@ -372,7 +414,7 @@ namespace VikingEngine.DSSWars.Build
 
                         case BuildAndExpandType.Cook:
                             content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
-                            
+
                             content.newLine();
                             content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
                             content.space();
@@ -396,7 +438,7 @@ namespace VikingEngine.DSSWars.Build
                                 ItemPropertyColl.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
                                 bp1.toMenu(content, city, false);
                             }
-                            
+
                             break;
 
                         case BuildAndExpandType.WorkBench:
@@ -436,7 +478,7 @@ namespace VikingEngine.DSSWars.Build
 
                     }
 
-                    
+
                     content.Add(new RichBoxSeperationLine());
                     content.h2(DssRef.lang.MenuTab_Resources).overrideColor = HudLib.TitleColor_Label;
                     build.blueprint.listResources(content, city);
@@ -447,7 +489,10 @@ namespace VikingEngine.DSSWars.Build
                     }
 
                     player.hud.tooltip.create(player, content, true);
-                }, opt));
+                }, opt)
+                {
+
+                });
 
                 bool availableBuild = true;
                 if (opt == BuildAndExpandType.Logistics)

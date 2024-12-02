@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.DSSWars.XP;
 
 namespace VikingEngine.DSSWars.Build
 {

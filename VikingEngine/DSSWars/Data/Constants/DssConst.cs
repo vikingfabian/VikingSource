@@ -170,9 +170,16 @@ namespace VikingEngine.DSSWars
 
         public const int StockPileMinBound = 0;
         public const int StockPileMaxBound = 20000;
+        
         //XP
         public static int WorkQueue_Start = 3;
         public static int WorkQueue_LogisticsLevel1 = 6;
         public static int Logistics2_PopulationRequirement = 1200;
+
+        public static int TechnologyGain_GoodRelation_PerMin = 2;
+        public static int TechnologyGain_AllyRelation_PerMin = 4;
+        public static int TechnologyGain_CitySpread = 10;
+        public static int TechnologyGain_Master = 10;
+
     }
 }

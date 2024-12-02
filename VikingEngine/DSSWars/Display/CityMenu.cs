@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
@@ -30,7 +31,9 @@ namespace VikingEngine.DSSWars.Display
     class CityMenu
     {
         public static readonly List<MenuTab> Tabs = new List<MenuTab>() { 
-            MenuTab.Info, MenuTab.Resources, MenuTab.Work, MenuTab.BlackMarket, MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript, MenuTab.Tag, MenuTab.Mix };
+            MenuTab.Info, MenuTab.Resources, MenuTab.Work, MenuTab.BlackMarket, 
+            MenuTab.Build, MenuTab.Delivery, MenuTab.Conscript, MenuTab.Progress,
+            MenuTab.Tag, MenuTab.Mix };
         Players.LocalPlayer player;
         City city;
         static readonly int[] StockPileControls = { 100, 1000 };
@@ -117,10 +120,53 @@ namespace VikingEngine.DSSWars.Display
                     player.buildControls.toHud(player, content, city);
                     break;
 
+                case MenuTab.Progress:
+                    progressTab(content);
+                    break;
+
                 case MenuTab.Mix:
                     mixTab(content);
                     break;
             }
+        }
+
+        void progressTab(RichBoxContent content)
+        {
+            for (ProgressSubTab workSubTab = 0; workSubTab < ProgressSubTab.NUM; ++workSubTab)
+            {
+                var tabContent = new RichBoxContent();
+                //string text = null;
+                switch (workSubTab)
+                {
+                    case ProgressSubTab.Technology:
+                        tabContent.Add(new RichBoxText(DssRef.todoLang.Technology_Title));
+                        break;
+
+                    case ProgressSubTab.Experience:
+                        tabContent.Add(new RichBoxText(DssRef.todoLang.Experience_Title));
+                        break;
+                }
+                var subTab = new RichboxButton(tabContent,
+                    new RbAction1Arg<ProgressSubTab>((ProgressSubTab resourcesSubTab) =>
+                    {
+                        player.progressSubTab = resourcesSubTab;
+                    }, workSubTab, SoundLib.menutab));
+                subTab.setGroupSelectionColor(HudLib.RbSettings, player.progressSubTab == workSubTab);
+                content.Add(subTab);
+                content.space();
+            }
+            content.newParagraph();
+
+            switch (player.progressSubTab)
+            {
+                default:
+                    city.technologyHud(content, player);
+                    break;
+                case ProgressSubTab.Experience:
+                    experienceTab(content);
+                    break;
+            }
+            
         }
 
         void mixTab(RichBoxContent content)
@@ -174,14 +220,46 @@ namespace VikingEngine.DSSWars.Display
             switch (player.resourcesSubTab)
             {
                 case ResourcesSubTab.Overview_Resources:
-                    mixResource(ItemResourceType.Wood_Group, false, WorkPriorityType.wood, SpriteName.WarsWorkCollect);
-                    mixResource(ItemResourceType.Stone_G, false, WorkPriorityType.wood, SpriteName.WarsWorkCollect);
-                    mixResource(ItemResourceType.RawFood_Group, false, WorkPriorityType.wood, SpriteName.WarsWorkCollect);
-                    mixResource(ItemResourceType.SkinLinen_Group, false, WorkPriorityType.farmlinen, SpriteName.WarsWorkFarm);
+                    {
+                        ItemResourceType item = ItemResourceType.Wood_Group;
+                        mixResource(item, false);
+                        work(item, WorkPriorityType.wood, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Wood), SpriteName.WarsWorkCollect);
+                        work(item, WorkPriorityType.move, DssRef.lang.Work_Move, SpriteName.WarsWorkMove);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.Stone_G;
+                        mixResource(item, false);
+                        work(item, WorkPriorityType.stone, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Stone), SpriteName.WarsWorkCollect);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.RawFood_Group;
+                        mixResource(item, false);
+                        work(item, WorkPriorityType.farmfood, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Food, SpriteName.WarsWorkFarm);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.SkinLinen_Group;
+                        mixResource(item, false);
+                        work(item, WorkPriorityType.farmlinen, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Linen, SpriteName.WarsWorkFarm);
+                        end(item);
+                    }
+
+                    {
+                        ItemResourceType item = ItemResourceType.Food_G;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.Food1, CraftResourceLib.Food2);
+                        work(item, WorkPriorityType.craftFood, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Food), SpriteName.WarsHammer);
+                        end(item);
+                    }
+
+                    
+
                     break;
             }
 
-            void mixResource(ItemResourceType item, bool safeGuard, WorkPriorityType workPriorityType, SpriteName prioIcon)
+            void mixResource(ItemResourceType item, bool safeGuard)
             {
                 content.newLine();
 
@@ -205,7 +283,7 @@ namespace VikingEngine.DSSWars.Display
 
                 content.Add(infoButton);
                 content.space();
-                content.Add(new RichBoxTab(0.25f));
+                
 
                 if (item != ItemResourceType.Water_G &&
                    item != ItemResourceType.Gold &&
@@ -239,24 +317,62 @@ namespace VikingEngine.DSSWars.Display
                         player.mixTabItem = item;
                     }, SoundLib.menu));
 
+                    content.Add(new RichBoxTab(0.25f));
                     content.Add(stockpileButton);
+                    content.space();
                 }
+            }
 
-                if (workPriorityType != WorkPriorityType.NUM_NONE)
+            void blueprint(CraftBlueprint blueprint, CraftBlueprint optionalBp = null)
+            {
+
+                content.Add(new RichboxButton(new List<AbsRichBoxMember> {
+                new RichBoxImage(SpriteName.WarsBluePrint)
+                },
+                null, new RbAction2Arg<CraftBlueprint, CraftBlueprint>(blueprintTooltip, blueprint, optionalBp)));
+                content.space();
+            }
+
+            void work(ItemResourceType item, WorkPriorityType workPriorityType, string caption, SpriteName prioIcon)
+            {
+                var buttonContent = new RichBoxContent();
+                buttonContent.Add(new RichBoxImage(prioIcon));
+                var prio = city.workTemplate.GetWorkPriority(workPriorityType);
+                buttonContent.Add(new RichBoxText(prio.value.ToString()));
+
+                var button = new RichboxButton(buttonContent, new RbAction(() =>
                 {
+                    player.mixTabEditType = MixTabEditType.WorkPrio;
+                    player.mixTabItem = item;
+                }, SoundLib.menu),
+                new RbAction(()=> 
+                {
+                    var content = new RichBoxContent();
+                    HudLib.Label(content, DssRef.lang.Work_OrderPrioTitle);
+                    content.text(caption);
+                    player.hud.tooltip.create(player, content, true);
+                }));
 
-                }
+                //content.Add(new RichBoxTab(0.5f));
+                content.Add(button);
+                content.space();
+            }
 
+            void end(ItemResourceType item)
+            {
                 if (player.mixTabEditType != MixTabEditType.None &&
-                    item == player.mixTabItem)
+                   item == player.mixTabItem)
                 {
+                    var city_res = city.GetGroupedResource(item);
+
                     content.newLine();
                     switch (player.mixTabEditType)
                     {
                         case MixTabEditType.Stockpile:
                             stockPileEdit(content, item, city_res);
                             break;
-                } }
+                    }
+                }
             }
         }
         void workTab(RichBoxContent content)
@@ -348,24 +464,24 @@ namespace VikingEngine.DSSWars.Display
             }));
 
             content.newLine();
-            for (ExperenceOrDistancePrio prio = 0; prio < ExperenceOrDistancePrio.NUM; ++prio)
+            for (ExperienceOrDistancePrio prio = 0; prio < ExperienceOrDistancePrio.NUM; ++prio)
             {
                 string text = null;
                 switch (prio)
                 {
-                    case ExperenceOrDistancePrio.Distance:
+                    case ExperienceOrDistancePrio.Distance:
                         text = DssRef.todoLang.Hud_Distance;
                         break;
-                    case ExperenceOrDistancePrio.Mix:
+                    case ExperienceOrDistancePrio.Mix:
                         text = DssRef.todoLang.Hud_Mixed;
                         break;
-                    case ExperenceOrDistancePrio.Experience:
+                    case ExperienceOrDistancePrio.Experience:
                         text = DssRef.todoLang.Experience_Title;
                         break;
 
                 }
                 var option = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(text) },
-                    new RbAction1Arg<ExperenceOrDistancePrio>((ExperenceOrDistancePrio val) =>
+                    new RbAction1Arg<ExperienceOrDistancePrio>((ExperienceOrDistancePrio val) =>
                     {
                         city.experenceOrDistance = val;
                     }, prio, SoundLib.menu));
@@ -736,6 +852,9 @@ namespace VikingEngine.DSSWars.Display
 
                     city.res_FullPlateArmor.toMenu(content, ItemResourceType.FullPlateArmor, false, ref reachedBuffer);
                     blueprintButton(player, content, CraftResourceLib.FullPlateArmor);
+
+                    city.res_MithrilArmor.toMenu(content, ItemResourceType.MithrilArmor, false, ref reachedBuffer);
+                    blueprintButton(player, content, CraftResourceLib.MithrilArmor);
                     break;
 
                 case ResourcesSubTab.Stockpile_Resources:
@@ -838,6 +957,7 @@ namespace VikingEngine.DSSWars.Display
                     stockpile(ItemResourceType.HeavyIronArmor);
                     stockpile(ItemResourceType.LightPlateArmor);
                     stockpile(ItemResourceType.FullPlateArmor);
+                    stockpile(ItemResourceType.MithrilArmor);
                     break;
             }
 
@@ -983,7 +1103,7 @@ namespace VikingEngine.DSSWars.Display
             content.Add(new RichboxButton(new List<AbsRichBoxMember> { 
                 new RichBoxImage(SpriteName.WarsBluePrint)
             },
-               null, new RbAction2Arg<CraftBlueprint, CraftBlueprint>(blueprintTooltip, blueprint, optionalBp)));
+            null, new RbAction2Arg<CraftBlueprint, CraftBlueprint>(blueprintTooltip, blueprint, optionalBp)));
 
         }
 
@@ -1481,6 +1601,7 @@ namespace VikingEngine.DSSWars.Display
         Automation,
         Disband,
         Divide,
+        Progress,
         Mix,
         NUM
     }
@@ -1516,6 +1637,13 @@ namespace VikingEngine.DSSWars.Display
         Priority_Metals,
         Priority_Weapons,
         Priority_Armor,
+        Experience,
+        NUM
+    }
+
+    enum ProgressSubTab
+    { 
+        Technology,
         Experience,
         NUM
     }

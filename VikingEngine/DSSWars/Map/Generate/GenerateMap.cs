@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
@@ -10,6 +11,7 @@ using VikingEngine.LootFest.Map;
 using VikingEngine.PJ.Joust;
 using VikingEngine.PJ.SmashBirds;
 using VikingEngine.PJ.Tanks;
+using VikingEngine.ToGG.Commander.UnitsData;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Map.Generate
@@ -913,6 +915,8 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         void processSubTiles(int part)
         {
+            List<IntVector2> mineLocations = new List<IntVector2>(1024);
+
             const int WidthMin1 = WorldData.TileSubDivitions - 1;
 
             int partWidth = world.Size.X / ProcessSubTileParts;
@@ -1032,13 +1036,86 @@ namespace VikingEngine.DSSWars.Map.Generate
                         }
 
                         var subTile = new SubTile(tiletype, subType, rndColor, topY);
-                        TerrainContent.createSubTileContent(subX, subY, distanceToCity, tile, heightSett, biom, ref mudRadius, ref subTile, world, noiseMap);
+                        TerrainContent.createSubTileContent(subX, subY, distanceToCity, tile, heightSett, biom, ref mudRadius, ref subTile, world, noiseMap, mineLocations);
 
                         world.subTileGrid.Set(subX, subY, subTile);
 
                     }
                 }
 
+            }
+
+            int mithrilCount = 0;
+            switch (world.metaData.mapSize)
+            {
+               //Tiny, Small, Medium, Large, Huge, Epic
+               default:
+                    mithrilCount = 2;
+                    break;
+
+                case MapSize.Medium:
+                    mithrilCount = 3;
+                    break;
+
+                case MapSize.Large:
+                    mithrilCount = 4;
+                    break;
+
+                case MapSize.Huge:
+                case MapSize.Epic:
+                    mithrilCount = 5;
+                    break;
+            }
+
+            if (world.rnd.Chance(0.4))
+            {
+                ++mithrilCount;
+
+                if (world.rnd.Chance(0.1))
+                {
+                    ++mithrilCount;
+                }
+            }
+
+            addMines(mithrilCount, (int)TerrainMineType.Mithril);
+
+            int tin = MathExt.MultiplyInt(world.rnd.Double(0.12, 0.14), mineLocations.Count);
+            int cupper = MathExt.MultiplyInt(world.rnd.Double(0.12, 0.14), mineLocations.Count);
+            int lead = MathExt.MultiplyInt(world.rnd.Double(0.12, 0.14), mineLocations.Count);
+            int silver = MathExt.MultiplyInt(world.rnd.Double(0.05, 0.06), mineLocations.Count);
+            int gold = MathExt.MultiplyInt(world.rnd.Double(0.03, 0.04), mineLocations.Count);
+            int sulfur = MathExt.MultiplyInt(world.rnd.Double(0.14, 0.16), mineLocations.Count);
+
+            addMines(tin, (int)TerrainMineType.TinOre);
+            addMines(cupper, (int)TerrainMineType.CupperOre);
+            addMines(lead, (int)TerrainMineType.LeadOre);
+            addMines(silver, (int)TerrainMineType.SilverOre);
+            addMines(gold, (int)TerrainMineType.GoldOre);
+            addMines(sulfur, (int)TerrainMineType.Sulfur);
+
+            for (int i = 0; i < mineLocations.Count; ++i)
+            {
+                IntVector2 pos = mineLocations[i];
+
+                var subTile = world.subTileGrid.Get(pos);
+                subTile.subTerrain = (int)TerrainMineType.IronOre;
+                world.subTileGrid.Set(pos, subTile);
+            }
+
+            void addMines(int count, int type)
+            {
+                for (int i = 0; i < count; ++i)
+                {
+                    int index = world.rnd.Int(mineLocations.Count);
+                    IntVector2 pos = mineLocations[index];
+                    mineLocations.RemoveAt(index);
+
+                    var subTile = world.subTileGrid.Get(pos);
+                    subTile.subTerrain = type;
+
+                    world.subTileGrid.Set(pos, subTile);
+
+                }
             }
         }
 

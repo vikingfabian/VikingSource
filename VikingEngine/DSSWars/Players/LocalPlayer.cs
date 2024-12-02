@@ -76,6 +76,7 @@ namespace VikingEngine.DSSWars.Players
         public MenuTab armyTab = ArmyMenu.Tabs[0];
         public ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview_Resources;
         public WorkSubTab workSubTab = WorkSubTab.Priority_Resources;
+        public ProgressSubTab progressSubTab = 0;
         public MixTabEditType mixTabEditType = MixTabEditType.None;
         public ItemResourceType mixTabItem = ItemResourceType.NONE;
 

@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.HeroQuest.HeroStrategy;
@@ -26,9 +27,10 @@ namespace VikingEngine.DSSWars.Resource
 
         public CraftRequirement requirement;
         public int tooltipId = -1;
-        public Work.WorkExperienceType experienceType;
+        public WorkExperienceType experienceType;
+        public ExperienceLevel levelRequirement;
 
-        public CraftBlueprint(CraftResultType resultType, int resultSubType, int resultAmount, UseResource[] resources, Work.WorkExperienceType experienceType, CraftRequirement requirement = CraftRequirement.None)
+        public CraftBlueprint(CraftResultType resultType, int resultSubType, int resultAmount, UseResource[] resources, XP.WorkExperienceType experienceType, ExperienceLevel levelRequirement = ExperienceLevel.Beginner_1, CraftRequirement requirement = CraftRequirement.None)
         {
             //this.icon = icon;
             this.experienceType = experienceType;
@@ -36,6 +38,7 @@ namespace VikingEngine.DSSWars.Resource
             this.resultSubType = resultSubType;
             this.resultAmount = resultAmount;
             this.resources = resources;
+            this.levelRequirement = levelRequirement;
             this.requirement = requirement;
         }
 

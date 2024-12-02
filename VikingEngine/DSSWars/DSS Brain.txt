@@ -111,9 +111,10 @@ English, Simplified Chinese, Japanese, Russian, Spanish
 
 #Todo (DSS 2)#
 1. better presentation
-2. 100 hour playtime
+2. 50 hour playtime
 3. maybe multiplayer
 
+-Select leader type
 -Free build of city walls, towers
 -Better looking start cities
 -Nicer menu

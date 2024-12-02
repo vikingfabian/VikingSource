@@ -2517,6 +2517,9 @@ namespace VikingEngine
                     add(SpriteName.WarsResource_Toolkit);
                     add(SpriteName.WarsResource_HandSpear);
                     add(SpriteName.WarsResource_CoolingFluid);
+                    add(SpriteName.WarsTechnology_Unlocked);
+                    add(SpriteName.WarsTechnology_Locked);
+
                 }
 
                 currentIndex = numTilesWidth * 101;

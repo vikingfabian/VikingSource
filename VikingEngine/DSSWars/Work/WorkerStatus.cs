@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
 using VikingEngine.ToGG.MoonFall;
 
@@ -373,11 +374,31 @@ namespace VikingEngine.DSSWars.Work
                             case TerrainMineType.IronOre:
                                 resourceType = ItemResourceType.IronOre_G;
                                 break;
+                            case TerrainMineType.TinOre:
+                                resourceType = ItemResourceType.TinOre;
+                                break;
+                            case TerrainMineType.CupperOre:
+                                resourceType = ItemResourceType.CupperOre;
+                                break;
+                            case TerrainMineType.LeadOre:
+                                resourceType = ItemResourceType.LeadOre;
+                                break;
+                            case TerrainMineType.Sulfur:
+                                resourceType = ItemResourceType.Sulfur;
+                                break;
+                            case TerrainMineType.SilverOre:
+                                resourceType = ItemResourceType.SilverOre;
+                                break;
+                            
                             case TerrainMineType.Coal:
                                 resourceType = ItemResourceType.Coal;
                                 break;
                             case TerrainMineType.GoldOre:
                                 resourceType = ItemResourceType.GoldOre;
+                                break;
+
+                            case TerrainMineType.Mithril:
+                                resourceType = ItemResourceType.RawMithril;
                                 break;
                         }
 
@@ -531,7 +552,7 @@ namespace VikingEngine.DSSWars.Work
 
         }
 
-        public byte getXpFor(WorkExperienceType type)
+        public byte getXpFor(XP.WorkExperienceType type)
         {
             if (type == xpType1)
             {
@@ -549,9 +570,9 @@ namespace VikingEngine.DSSWars.Work
             return 0;
         }
 
-        void addExperience(WorkExperienceType type)
+        void addExperience(XP.WorkExperienceType type)
         {
-            if (type != WorkExperienceType.NONE)
+            if (type != XP.WorkExperienceType.NONE)
             {
                 if (type == xpType1)
                 {
@@ -602,7 +623,7 @@ namespace VikingEngine.DSSWars.Work
                 }
             }
 
-            void addTo(ref WorkExperienceType type, ref byte xp)
+            void addTo(ref XP.WorkExperienceType type, ref byte xp)
             {
                 byte add = 0;
                 switch (WorkLib.ToLevel(xp))
@@ -697,7 +718,7 @@ namespace VikingEngine.DSSWars.Work
         }
 
 
-        public void createWorkOrder(WorkType work, int subWork, byte workBonus, WorkExperienceType experienceType, int order, IntVector2 targetSubTile, City city)
+        public void createWorkOrder(WorkType work, int subWork, byte workBonus, XP.WorkExperienceType experienceType, int order, IntVector2 targetSubTile, City city)
         {
             this.workBonus = workBonus;
             this.work = work;
@@ -739,7 +760,7 @@ namespace VikingEngine.DSSWars.Work
         {
             return finalizeWorkTime(WorkLib.WorkToExperienceType(work, workSubType, subTileEnd), city);
         }
-        public float finalizeWorkTime(WorkExperienceType experienceType, City city)
+        public float finalizeWorkTime(XP.WorkExperienceType experienceType, City city)
         {
             float time;
 

@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.DSSWars.XP;
 using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -25,25 +26,7 @@ namespace VikingEngine.DSSWars.GameObject
         List<WorkQueMember> workQue = new List<WorkQueMember>();
         bool starving = false;
         static List<int> idleWorkers = new List<int>(64);
-
-        public ExperienceLevel topskill_Farm = 0;
-        public ExperienceLevel topskill_AnimalCare = 0;
-        public ExperienceLevel topskill_HouseBuilding = 0;
-        public ExperienceLevel topskill_WoodCutter = 0;
-        public ExperienceLevel topskill_StoneCutter = 0;
-        public ExperienceLevel topskill_Mining = 0;
-        public ExperienceLevel topskill_Transport = 0;
-        public ExperienceLevel topskill_Cook = 0;
-        public ExperienceLevel topskill_Fletcher = 0;
-        public ExperienceLevel topskill_Smelting = 0;
-        public ExperienceLevel topskill_Casting = 0;
-        public ExperienceLevel topskill_CraftMetal = 0;
-        public ExperienceLevel topskill_CraftArmor = 0;
-        public ExperienceLevel topskill_CraftWeapon = 0;
-        public ExperienceLevel topskill_CraftFuel = 0;
-        public ExperienceLevel topskill_Chemistry = 0;
-
-        public ExperenceOrDistancePrio experenceOrDistance = ExperenceOrDistancePrio.Mix;
+                
 
         public void async_workUpdate()
         {
@@ -254,15 +237,15 @@ namespace VikingEngine.DSSWars.GameObject
 
             switch (experenceOrDistance)
             {
-                case ExperenceOrDistancePrio.Mix:
+                case ExperienceOrDistancePrio.Mix:
                     distanceValue = 8;
                     experienceValue = 5;
                     break;
-                case ExperenceOrDistancePrio.Distance:
+                case ExperienceOrDistancePrio.Distance:
                     distanceValue = 256;
                     experienceValue = 10;
                     break;
-               case ExperenceOrDistancePrio.Experience:
+               case ExperienceOrDistancePrio.Experience:
                     distanceValue = 8;
                     experienceValue = 256;
                     break;

@@ -8,6 +8,8 @@ namespace VikingEngine.DSSWars.Display.Translation
 {
     class TodoTranslation
     {
+
+
         public string Hud_Advanced => "Advanced";
         public string Hud_Loading => "Loading...";
 
@@ -65,6 +67,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string ExperienceType_Cook => "Cook";
         public string ExperienceType_Fletcher => "Fletcher";
         public string ExperienceType_RefineOre => "Smelter";
+        public string ExperienceType_Casting => "Casting";
         public string ExperienceType_CraftMetal => "Smith";
         public string ExperienceType_CraftArmor => "Armorer";
         public string ExperienceType_CraftWeapon => "Weapon smith";
@@ -79,8 +82,23 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string ExperenceOrDistancePrio_Title => "Worker selection";
         public string ExperenceOrDistancePrio_Description => "Idle workers will be selected to work either by distance or experience";
+
+
+        public string Technology_Title = "Technology";
+        public string Technology_ShareField = "Sharing technology field";
+
+        public string Technology_GainByNeigborRelation => "For each neighbor faction with the technology. And your relation is {0}: {1}";
+        public string Technology_ForEachMaster=> "When a {0} reaches an experience level of {1}, in the technology field: {2}";
+        public string Technology_CitySpread => "Your cities will share technology when adjacent: {0}";
+        public string Technology_CityCapture => "Most technolgies are destroyed when a city is captured in battle";
+
+        public string Technology_AdvancedBuildings = "Advanced buildings";
+        public string Technology_AdvancedCasting = "Advanced casting";
+        public string Hud_PercentPerMinute => "{0}% per minute";
         public string Hud_Mixed => "Mixed";
         public string Hud_Distance => "Distance";
+
+        public string Hud_Unlock => "Unlock";
 
         public string Resource_TypeName_Wagon2Wheel=> "Small wagon";
         public string Resource_TypeName_Wagon4Wheel=> "Large wagon";
@@ -182,6 +200,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string BuildingType_WaterResovoir => "Water resovoir";
         public string BuildingType_WaterResovoir_Description => "Increase water storage";
+        //public string BuildingType_WaterResovoir_IncreaseStorage => "Max "
 
         public string BuildingType_SmeltingFurnace => "Smelting furnace";
         public string BuildingType_SmeltingFurnace_Description => "Purify ore to metal";
@@ -196,6 +215,8 @@ namespace VikingEngine.DSSWars.Display.Translation
 
 
         public string Work_MiningResource = "Mining {0}";
+
+        public string MenuTab_Progress => "Progress";
         //enum ExperenceOrDistancePrio
         //{
         //    Experience,
@@ -286,7 +307,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         //public string Input_Build => "Build";
 
         //public string FlagEditor_ClearAll => "Clear all";
-        
+
 
         //public string CityCulture_Stonemason => "Stonemason";
         //public string CityCulture_Stonemason_Description => "Improved stone collecting";
@@ -346,7 +367,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         //public string FactionName_Oathmaeren=> "Oathmaeren";
         //public string FactionName_Elderforge=> "Elderforge";
         //public string FactionName_MarhollowCartel=> "Marhollow Cartel";
-        
+
         //public string FactionName_TharvaniDominion=> "Tharvani Dominion";
         //public string FactionName_KystraAscendancy=> "Kystra Ascendancy";
         //public string FactionName_GildenmarkUnion=> "Gildenmark Union";

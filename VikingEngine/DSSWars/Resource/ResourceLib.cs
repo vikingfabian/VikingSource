@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.Resource
            {
                new UseResource(ItemResourceType.GoldOre, 1),
            },
-            Work.WorkExperienceType.CraftMetal
+            XP.WorkExperienceType.CraftMetal
        );
 
         public static readonly CraftBlueprint CupperCoin = new CraftBlueprint(
@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.Resource
            {
                new UseResource(ItemResourceType.Cupper, 5),
            },
-            Work.WorkExperienceType.NONE
+            XP.WorkExperienceType.NONE
        );
 
         public static readonly CraftBlueprint BronzeCoin = new CraftBlueprint(
@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars.Resource
            {
                new UseResource(ItemResourceType.Bronze, 5),
            },
-            Work.WorkExperienceType.NONE
+            XP.WorkExperienceType.NONE
        );
 
         public static readonly CraftBlueprint SilverCoin = new CraftBlueprint(
@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.Resource
           {
                new UseResource(ItemResourceType.Silver, 5),
           },
-           Work.WorkExperienceType.NONE
+           XP.WorkExperienceType.NONE
       );
 
         public static readonly CraftBlueprint ElfCoin = new CraftBlueprint(
@@ -62,7 +62,7 @@ namespace VikingEngine.DSSWars.Resource
           {
                new UseResource(ItemResourceType.Mithril, 1),
           },
-           Work.WorkExperienceType.NONE
+           XP.WorkExperienceType.NONE
       );
 
         // public static readonly CraftBlueprint CraftRecruitment = new CraftBlueprint(

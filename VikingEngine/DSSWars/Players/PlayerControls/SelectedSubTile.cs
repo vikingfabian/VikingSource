@@ -80,13 +80,15 @@ namespace VikingEngine.DSSWars.Players
                                     case Map.TerrainBuildingType.Recruitment:
                                         selectTileResult = SelectTileResult.Recruitment;
                                         break;
-                                    case Map.TerrainBuildingType.Nobelhouse:
+
                                     case Map.TerrainBuildingType.SoldierBarracks:
+                                    case Map.TerrainBuildingType.ArcherBarracks:
+                                    case Map.TerrainBuildingType.WarmashineBarracks:
+                                    case Map.TerrainBuildingType.KnightsBarracks:
+                                    case Map.TerrainBuildingType.GunBarracks:
+                                    case Map.TerrainBuildingType.CannonBarracks:
                                         selectTileResult = SelectTileResult.Conscript;
                                         break;
-                                        //case Map.TerrainBuildingType.Square:
-                                        //    selectTileResult = SelectTileResult.Resources;
-                                        //    break;
                                 }
 
                                 hasSelection = selectTileResult != SelectTileResult.None;

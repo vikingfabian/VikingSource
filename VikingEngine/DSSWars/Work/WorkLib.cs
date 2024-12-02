@@ -7,6 +7,7 @@ using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.XP;
 
 namespace VikingEngine.DSSWars.Work
 {
@@ -143,44 +144,5 @@ namespace VikingEngine.DSSWars.Work
         TrossReturnToArmy,
     }
 
-    enum WorkExperienceType : byte
-    {
-        NONE,
-        Farm,
-        AnimalCare,
-        HouseBuilding,
-        WoodCutter,
-        StoneCutter,
-        Mining,
-        Transport,
-        Cook,
-        Fletcher,
-        Smelting,
-        CastMetal,
-        CraftMetal,
-        CraftArmor,
-        CraftWeapon,
-        CraftFuel,
-        Chemistry,
-        NUM
-    }
-
-    enum ExperienceLevel
-    { 
-        Beginner_1,
-        Practitioner_2,
-        //Specialist,
-        Expert_3,
-        Master_4,
-        Legendary_5,
-        NUM
-    }
-
-    enum ExperenceOrDistancePrio
-    {
-        Distance,
-        Mix,
-        Experience,
-        NUM
-    }
+    
 }

@@ -12,34 +12,117 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.DSSWars.XP;
 using VikingEngine.LootFest.GO;
 
 namespace VikingEngine.DSSWars.Display.Translation
 {
     static class LangLib
     {
+        //public static string WorkPrio(WorkPriorityType workPriority)
+        //{ 
+            
+        //}
+
         public static string ExperienceLevel(ExperienceLevel level)
         {
             switch (level)
             {
-                case Work.ExperienceLevel.Beginner_1:
+                case XP.ExperienceLevel.Beginner_1:
                     return DssRef.todoLang.ExperienceLevel_1;
-                case Work.ExperienceLevel.Practitioner_2:
+                case XP.ExperienceLevel.Practitioner_2:
                     return DssRef.todoLang.ExperienceLevel_2;
-                case Work.ExperienceLevel.Expert_3:
+                case XP.ExperienceLevel.Expert_3:
                     return DssRef.todoLang.ExperienceLevel_3;
-                case Work.ExperienceLevel.Master_4:
+                case XP.ExperienceLevel.Master_4:
                     return DssRef.todoLang.ExperienceLevel_4;
-                case Work.ExperienceLevel.Legendary_5:
+                case XP.ExperienceLevel.Legendary_5:
                     return DssRef.todoLang.ExperienceLevel_5;
             }
 
             return TextLib.Error;
         }
 
+        public static void ExperienceType(WorkExperienceType type, out string name, out SpriteName icon)
+        {
+            switch (type)
+            {
+
+                case WorkExperienceType.Farm:
+                    name = DssRef.todoLang.ExperienceType_Farm;
+                    icon = SpriteName.WarsWorkFarm;
+                    break;
+                case WorkExperienceType.AnimalCare:
+                    name = DssRef.todoLang.ExperienceType_AnimalCare;
+                    icon = SpriteName.WarsBuild_PigPen;
+                    break;
+                case WorkExperienceType.HouseBuilding:
+                    name = DssRef.todoLang.ExperienceType_HouseBuilding;
+                    icon = SpriteName.WarsHammer;
+                    break;
+                case WorkExperienceType.WoodCutter:
+                    name = DssRef.todoLang.ExperienceType_WoodCutter;
+                    icon = SpriteName.WarsResource_Wood;
+                    break;
+                case WorkExperienceType.StoneCutter:
+                    name = DssRef.todoLang.ExperienceType_StoneCutter;
+                    icon = SpriteName.WarsResource_Stone;
+                    break;
+                case WorkExperienceType.Mining:
+                    name = DssRef.todoLang.ExperienceType_Mining;
+                    icon = SpriteName.WarsWorkMine;
+                    break;
+                case WorkExperienceType.Transport:
+                    name = DssRef.todoLang.ExperienceType_Transport;
+                    icon = SpriteName.WarsWorkMove;
+                    break;
+                case WorkExperienceType.Cook:
+                    name = DssRef.todoLang.ExperienceType_Cook;
+                    icon = SpriteName.WarsResource_Food;
+                    break;
+                case WorkExperienceType.Fletcher:
+                    name = DssRef.todoLang.ExperienceType_Fletcher;
+                    icon = SpriteName.WarsWoodCraftIcon;
+                    break;
+                case WorkExperienceType.Smelting:
+                    name = DssRef.todoLang.ExperienceType_RefineOre;
+                    icon = SpriteName.WarsResource_CastIron;
+                    break;
+                case WorkExperienceType.CastMetal:
+                    name = DssRef.todoLang.ExperienceType_Casting;
+                    icon = SpriteName.WarsResource_Bronze;
+                    break;
+                case WorkExperienceType.CraftMetal:
+                    name = DssRef.todoLang.ExperienceType_CraftMetal;
+                    icon = SpriteName.WarsBuild_Smith;
+                    break;
+                case WorkExperienceType.CraftArmor:
+                    name = DssRef.todoLang.ExperienceType_CraftArmor;
+                    icon = SpriteName.WarsResource_IronArmor;
+                    break;
+                case WorkExperienceType.CraftWeapon:
+                    name = DssRef.todoLang.ExperienceType_CraftWeapon;
+                    icon = SpriteName.WarsResource_Sword;
+                    break;
+                case WorkExperienceType.CraftFuel:
+                    name = DssRef.todoLang.ExperienceType_CraftFuel;
+                    icon = SpriteName.WarsResource_Fuel;
+                    break;
+                case WorkExperienceType.Chemistry:
+                    name = DssRef.todoLang.BuildingType_Chemist;
+                    icon = SpriteName.WarsBuild_Chemist;
+                    break;
+
+                default:
+                    name = TextLib.Error;
+                    icon = SpriteName.NO_IMAGE;
+                    break;
+            }
+        }
+
         public static SpriteName ExperienceLevelIcon(ExperienceLevel level)
         {
-            if (level >= Work.ExperienceLevel.Legendary_5)
+            if (level >= XP.ExperienceLevel.Legendary_5)
             {
                 return SpriteName.WarsUnitLevelLegend;
             }
@@ -160,6 +243,9 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case MenuTab.Disband:
                     description = null;
                     return DssRef.lang.ArmyOption_Disband;
+                case MenuTab.Progress:
+                    description= null;
+                    return DssRef.todoLang.MenuTab_Progress;
                 case MenuTab.Mix:
                     description = "All info compressed to one place";
                     return "Mix";
@@ -424,6 +510,13 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.lang.BuildingType_CoalPit_Description;
                 case TerrainBuildingType.Bank:
                     return DssRef.lang.BuildingType_Bank_Description;
+
+                case TerrainBuildingType.WoodCutter:
+                case TerrainBuildingType.StoneCutter:
+                    return DssRef.todoLang.BuildingType_Workshop_Description;
+
+                case TerrainBuildingType.WaterResovoir:
+                    return DssRef.todoLang.BuildingType_WaterResovoir_Description;
 
                 default:
                     return TextLib.Error;
