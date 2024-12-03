@@ -217,15 +217,15 @@ namespace VikingEngine.DSSWars
             new AsynchUpdateable_TryCatch(asynchAiPlayersUpdate, "DSS ai player update", 52);
             new AsynchUpdateable_TryCatch(asynchArmyAiUpdate, "DSS army ai update", 53);
             new AsynchUpdateable_TryCatch(asynchCullingUpdate, "DSS culling update", 54);
-            new AsynchUpdateable_TryCatch(asynchSleepObjectsUpdate, "DSS sleep objects update", 55);
+            new AsynchUpdateable_TryCatch(asynchSleepObjectsUpdate, "DSS sleep objects update", 55, System.Threading.ThreadPriority.BelowNormal);
             new AsynchUpdateable_TryCatch(asynchNearObjectsUpdate, "DSS near objects update", 56);
-            new AsynchUpdateable_TryCatch(asynchMapGenerating, "DSS map gen", 57);
-            new AsynchUpdateable_TryCatch(asyncUserUpdate, "DSS user update", 58);
-            new AsynchUpdateable_TryCatch(asyncMapBorders, "DSS map borders update", 59);
-            new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60);
+            new AsynchUpdateable_TryCatch(asynchMapGenerating, "DSS map gen", 57, System.Threading.ThreadPriority.AboveNormal);
+            new AsynchUpdateable_TryCatch(asyncUserUpdate, "DSS user update", 58, System.Threading.ThreadPriority.AboveNormal);
+            new AsynchUpdateable_TryCatch(asyncMapBorders, "DSS map borders update", 59, System.Threading.ThreadPriority.BelowNormal);
+            new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60, System.Threading.ThreadPriority.BelowNormal);
             new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62);
-            new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63);
-            new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
+            new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63, System.Threading.ThreadPriority.Lowest);
+            new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61, System.Threading.ThreadPriority.Lowest);
             
             if (localPlayers.Count > 1)
             {
