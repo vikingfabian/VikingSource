@@ -288,30 +288,34 @@ namespace VikingEngine.DSSWars
         {
             if (duringStartUp)
             {
-                if (mainCity == null)
-                    mainCity = city;
-                else if (city.CityType > mainCity.CityType)
-                {//larger city
-                    mainCity = city;
-                }
-            }
-
-
-            if (!cities.Contains(city))
-            {
+                //if (mainCity == null)
+                //    mainCity = city;
+                //else if (city.CityType > mainCity.CityType)
+                //{//larger city
+                //    mainCity = city;
+                //}
                 cities.Add(city);
                 city.setFaction(this);
-                if (!duringStartUp)
+            }
+            else
+            {
+
+                if (!cities.Contains(city))
                 {
-                    player.OnCityCapture(city);
-
-                    city.workTemplate.setAllToFollowFaction();
-                    city.workTemplate.onFactionChange(workTemplate);
-                    city.defaultResourceBuffer();
-
-                    if (mainCity == null || mainCity.faction != this)
+                    cities.Add(city);
+                    city.setFaction(this);
+                    if (!duringStartUp)
                     {
-                        refreshMainCity();
+                        player.OnCityCapture(city);
+
+                        city.workTemplate.setAllToFollowFaction();
+                        city.workTemplate.onFactionChange(workTemplate);
+                        city.defaultResourceBuffer();
+
+                        if (mainCity == null || mainCity.faction != this)
+                        {
+                            refreshMainCity();
+                        }
                     }
                 }
             }

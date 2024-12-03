@@ -8,7 +8,7 @@ Technology tree
 
 optimized worker performance
 Added multicore priority to make the map load smoother during gameplay
-
+Slight improvement on map generating (sticks on 70%)
 
 
 
