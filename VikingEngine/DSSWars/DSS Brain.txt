@@ -2,8 +2,11 @@
 Double soldier health
 20 new soldier types
 14 new buildings
+50 new resources
 optimized worker performance
 All water values are x10
+Technology tree
+
 
 !Alla objekt med Tile referens måste ändras (livestock)
 

@@ -87,9 +87,10 @@ namespace VikingEngine.DSSWars.GameObject
 
             content.newParagraph();
 
-            Unlocks blackpowUnlock = new Unlocks(); blackpowUnlock.UnlockIron();
+            Unlocks blackpowUnlock = new Unlocks(); blackpowUnlock.UnlockBlackPowder();
             tech(technology.iron, SpriteName.WarsResource_BronzeRifle, DssRef.todoLang.Resource_TypeName_BlackPowder, blackpowUnlock, gunPowderFields);
-            Unlocks gunpowUnlock = new Unlocks(); gunpowUnlock.UnlockIron();
+            
+            Unlocks gunpowUnlock = new Unlocks(); gunpowUnlock.UnlockGunPowder();
             tech(technology.iron, SpriteName.WarsResource_IronRifle, DssRef.todoLang.Resource_TypeName_GunPowder, gunpowUnlock, gunPowderFields);
 
 

@@ -55,6 +55,7 @@ namespace VikingEngine.DSSWars.Build
                 new UseResource(ItemResourceType.Stone_G, 30)
             },
             XP.WorkExperienceType.HouseBuilding,
+             XP.ExperienceLevel.Beginner_1,
             CraftRequirement.Logistics1
         );
         public static readonly CraftBlueprint CraftLogisticsLevel2 = new CraftBlueprint(
@@ -66,6 +67,7 @@ namespace VikingEngine.DSSWars.Build
                 new UseResource(ItemResourceType.Wood_Group, 10),
                 new UseResource(ItemResourceType.Stone_G, 10)
             }, XP.WorkExperienceType.HouseBuilding,
+             XP.ExperienceLevel.Beginner_1,
             CraftRequirement.Logistics2
         );
 
@@ -90,7 +92,7 @@ namespace VikingEngine.DSSWars.Build
                 new UseResource(ItemResourceType.Wood_Group, 100),
                 new UseResource(ItemResourceType.Stone_G, 20)
             },
-            XP.WorkExperienceType.HouseBuilding
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
         );
 
         public static readonly CraftBlueprint Storehouse = new CraftBlueprint(
@@ -102,7 +104,7 @@ namespace VikingEngine.DSSWars.Build
                 new UseResource(ItemResourceType.Wood_Group, 60),
                 new UseResource(ItemResourceType.Stone_G, 40)
            },
-            XP.WorkExperienceType.HouseBuilding
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Practitioner_2
        );
 
         public static readonly CraftBlueprint Brewery = new CraftBlueprint(
@@ -114,7 +116,7 @@ namespace VikingEngine.DSSWars.Build
                 new UseResource(ItemResourceType.Wood_Group, 60),
                 new UseResource(ItemResourceType.Iron_G, 5)
            },
-            XP.WorkExperienceType.Cook
+            XP.WorkExperienceType.Cook, XP.ExperienceLevel.Beginner_1
        );
 
         public static readonly CraftBlueprint Postal = new CraftBlueprint(
@@ -125,7 +127,7 @@ namespace VikingEngine.DSSWars.Build
            {
         new UseResource(ItemResourceType.Wood_Group, 60),
            },
-            XP.WorkExperienceType.HouseBuilding
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
        );
 
         public static readonly CraftBlueprint Recruitment = new CraftBlueprint(
@@ -185,7 +187,7 @@ namespace VikingEngine.DSSWars.Build
         new UseResource(ItemResourceType.Wood_Group, 40),
         new UseResource(ItemResourceType.Stone_G, 40)
                     },
-                    XP.WorkExperienceType.HouseBuilding
+                    XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Practitioner_2
                 );
         public static readonly CraftBlueprint CannonBarracks = new CraftBlueprint(
                             CraftResultType.Building,
@@ -196,7 +198,7 @@ namespace VikingEngine.DSSWars.Build
         new UseResource(ItemResourceType.Wood_Group, 30),
         new UseResource(ItemResourceType.Stone_G, 60)
                             },
-                            XP.WorkExperienceType.HouseBuilding
+                            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Practitioner_2
                         );
 
         public static readonly CraftBlueprint KnightsBarracks = new CraftBlueprint(
@@ -208,7 +210,7 @@ namespace VikingEngine.DSSWars.Build
                     new UseResource(ItemResourceType.Wood_Group, 20),
                     new UseResource(ItemResourceType.Stone_G, 100)
                  },
-                  XP.WorkExperienceType.HouseBuilding
+                  XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
             );
 
         //public static readonly CraftBlueprint PigPen = new CraftBlueprint(
@@ -342,7 +344,7 @@ namespace VikingEngine.DSSWars.Build
                new UseResource(ItemResourceType.Wood_Group, 10),
                new UseResource(ItemResourceType.Iron_G, CraftSmith_IronUse),
            },
-            XP.WorkExperienceType.HouseBuilding
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Practitioner_2
        );
 
         public static readonly CraftBlueprint Cook = new CraftBlueprint(
@@ -355,7 +357,7 @@ namespace VikingEngine.DSSWars.Build
                new UseResource(ItemResourceType.Stone_G, 10),
                new UseResource(ItemResourceType.Iron_G, 5),
            },
-            XP.WorkExperienceType.HouseBuilding
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
         );
 
         public static readonly CraftBlueprint WorkBench = new CraftBlueprint(
@@ -431,7 +433,7 @@ namespace VikingEngine.DSSWars.Build
                new UseResource(ItemResourceType.Wood_Group, 30),
                new UseResource(ItemResourceType.Stone_G, 5),
                    },
-                    XP.WorkExperienceType.HouseBuilding
+                    XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Practitioner_2
                 );
 
         public static readonly CraftBlueprint StoneCutter = new CraftBlueprint(
@@ -443,7 +445,7 @@ namespace VikingEngine.DSSWars.Build
                new UseResource(ItemResourceType.Wood_Group, 10),
                new UseResource(ItemResourceType.Stone_G, 20),
                    },
-                    XP.WorkExperienceType.HouseBuilding
+                    XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Practitioner_2
                 );
 
         public static readonly CraftBlueprint Bank = new CraftBlueprint(
@@ -456,7 +458,7 @@ namespace VikingEngine.DSSWars.Build
                         new UseResource(ItemResourceType.Wood_Group, 50),
                         new UseResource(ItemResourceType.Stone_G, 100)
                    },
-                    XP.WorkExperienceType.HouseBuilding
+                    XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
                 );
         public static readonly CraftBlueprint Embassy = new CraftBlueprint(
                     CraftResultType.Building,
@@ -468,7 +470,7 @@ namespace VikingEngine.DSSWars.Build
                         new UseResource(ItemResourceType.Wood_Group, 50),
                         new UseResource(ItemResourceType.Stone_G, 100)
                    },
-                    XP.WorkExperienceType.HouseBuilding
+                    XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
                 );
         public static readonly CraftBlueprint WaterResovoir = new CraftBlueprint(
                     CraftResultType.Building,
@@ -504,7 +506,7 @@ namespace VikingEngine.DSSWars.Build
                     new UseResource(ItemResourceType.Bronze, 30),
 
                    },
-                    XP.WorkExperienceType.HouseBuilding
+                    XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Practitioner_2
                 );
 
         public static readonly CraftBlueprint Gunmaker = new CraftBlueprint(
@@ -531,7 +533,7 @@ namespace VikingEngine.DSSWars.Build
                 new UseResource(ItemResourceType.Wood_Group, 100),
                 new UseResource(ItemResourceType.Stone_G, 200)
             },
-            XP.WorkExperienceType.HouseBuilding
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
         );
 
         public static readonly CraftBlueprint Pavement = new CraftBlueprint(
@@ -542,7 +544,7 @@ namespace VikingEngine.DSSWars.Build
            {
                new UseResource(ItemResourceType.Stone_G, 20),
            },
-            XP.WorkExperienceType.StoneCutter
+            XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Practitioner_2
        );
         public static readonly CraftBlueprint PavementFlower = new CraftBlueprint(
             CraftResultType.Building,
@@ -553,7 +555,7 @@ namespace VikingEngine.DSSWars.Build
                 new UseResource(ItemResourceType.RawFood_Group, 5),
                new UseResource(ItemResourceType.Stone_G, 20),
            },
-            XP.WorkExperienceType.StoneCutter
+            XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Practitioner_2
        );
 
         public static readonly CraftBlueprint Statue = new CraftBlueprint(
@@ -565,7 +567,7 @@ namespace VikingEngine.DSSWars.Build
                new UseResource(ItemResourceType.Stone_G, 500),
                new UseResource(ItemResourceType.Iron_G, 50),
            },
-            XP.WorkExperienceType.StoneCutter
+            XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Master_4
        );
     }
 }

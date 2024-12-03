@@ -147,7 +147,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Resource_TypeName_Rifle=> "Rifle";
         public string Resource_TypeName_Blunderbus=> "Blunderbus";
 
-        public string Resource_TypeName_Manuballista=> "Maniballista";
+        public string Resource_TypeName_Manuballista=> "Manuballista";
         public string Resource_TypeName_Catapult => "Catapult";
         public string Resource_TypeName_BatteringRam => "BatteringRam";
         public string Resource_TypeName_SiegeCannonBronze=> "Basilic";
