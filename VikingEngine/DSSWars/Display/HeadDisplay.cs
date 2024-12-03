@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.Display
     {        
         public bool fullDisplay = true;
         public const string AutomationMenuState = "auto";
-        public static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Economy, MenuTab.Automation, MenuTab.Work };
+        public static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Economy, MenuTab.Automation, MenuTab.Work, MenuTab.Progress };
 
         public HeadDisplay(RichboxGui gui)
             :base(gui)
@@ -97,6 +97,9 @@ namespace VikingEngine.DSSWars.Display
 
                             case MenuTab.Trade:
                                 faction.tradeTab(content);
+                                break;
+                            case MenuTab.Progress:
+                                progressTab();
                                 break;
                         }
                     }
@@ -447,7 +450,10 @@ namespace VikingEngine.DSSWars.Display
             }
         }
 
-
+        void progressTab()
+        { 
+            
+        }
 
         public static void FactionSize(Faction faction, RichBoxContent content, bool fullDisplay)
         {

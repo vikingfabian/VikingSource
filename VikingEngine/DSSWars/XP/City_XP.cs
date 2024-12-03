@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City
     {
-        TechnologyTemplate technology = new TechnologyTemplate();
+        public TechnologyTemplate technology = new TechnologyTemplate();
 
         public ExperienceLevel topskill_Farm = 0;
         public ExperienceLevel topskill_AnimalCare = 0;
@@ -35,6 +35,8 @@ namespace VikingEngine.DSSWars.GameObject
         public ExperienceLevel topskill_Chemistry = 0;
 
         public ExperienceOrDistancePrio experenceOrDistance = ExperienceOrDistancePrio.Mix;
+
+        
 
         public void technologyHud(RichBoxContent content, LocalPlayer player)
         {
@@ -134,7 +136,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
 
-            void tech(byte value, SpriteName icon, string caption, Unlocks unlocks, List<WorkExperienceType> experienceField)
+            void tech(int value, SpriteName icon, string caption, Unlocks unlocks, List<WorkExperienceType> experienceField)
             {
                 content.newLine();
 

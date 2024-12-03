@@ -1511,6 +1511,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 Faction prevOwner = this.faction;
                 this.faction = faction;
+                technology.destroyTechOnTakeOver();
                 faction.AddCity(this, false);
                 if (prevOwner != null)
                 {
@@ -1539,6 +1540,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 workTemplate.onFactionChange(faction.workTemplate);
                 tradeTemplate.onFactionValueChange(faction.tradeTemplate);
+                technology.addFactionUnlocked(faction.technology);
             }
         }
 

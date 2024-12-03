@@ -50,8 +50,8 @@ namespace VikingEngine.DSSWars
 
         public float militaryStrength = 0;
         public bool hasDeserters = true;
-        
 
+        public XP.TechnologyTemplate technology;
 
         public Faction()
         { }
@@ -82,15 +82,7 @@ namespace VikingEngine.DSSWars
             initVisuals(addTo.metaData);
 
             cities = new SpottedArray<GameObject.City>(8);
-
-            //cityCounter = new SpottedArrayCounter<City>(cities);
-
-            //cityAsynchMainCounter = new SpottedArrayCounter<City>(cities);
-            //cityAsynchAiCounter = new SpottedArrayCounter<City>(cities);
-
             armies = new SpottedArray<Army>(16);
-            //armiesCounter = armies.counter();
-
             
         }
 

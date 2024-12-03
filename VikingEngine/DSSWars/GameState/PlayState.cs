@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DebugExtensions;
@@ -12,6 +13,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.XP;
 using VikingEngine.Input;
 using VikingEngine.ToGG.MoonFall;
 //
@@ -40,11 +42,13 @@ namespace VikingEngine.DSSWars
         bool exitThreads = false;
         public GameEvents events;
         public Progress progress = new Progress();
+        TechnologyManager technologyManager = new TechnologyManager();
         public AbsCutScene cutScene=null;
 
         bool bResourceMinuteUpdate = true;
         public int NextArmyId = 0;
         public GameMenuSystem menuSystem;
+        bool slowMinuteUpdate = true;   
         Timer.Basic subTileReloadTimer = new Timer.Basic(1000, true);                
 
         public PlayState(bool host, SaveStateMeta loadMeta)
@@ -225,8 +229,9 @@ namespace VikingEngine.DSSWars
             new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60, System.Threading.ThreadPriority.BelowNormal);
             new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62);
             new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63, System.Threading.ThreadPriority.Lowest);
-            new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61, System.Threading.ThreadPriority.Lowest);
-            
+            new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61, System.Threading.ThreadPriority.BelowNormal);
+            new AsynchUpdateable_TryCatch(asyncSlowUpdate, "DSS slow update", 62, System.Threading.ThreadPriority.Lowest);
+
             if (localPlayers.Count > 1)
             {
                 Ref.SetGameSpeed(DssRef.storage.multiplayerGameSpeed);
@@ -391,6 +396,8 @@ namespace VikingEngine.DSSWars
         { 
             bResourceMinuteUpdate = true;
 
+            slowMinuteUpdate = true;
+
             if (DssRef.storage.autoSave && 
                 Ref.TotalTimeSec > LastAutoSaveTime_TotalSec + AutoSaveTimeSec)
             {
@@ -401,6 +408,8 @@ namespace VikingEngine.DSSWars
                 LastAutoSaveTime_TotalSec = Ref.TotalTimeSec;
             }            
         }
+
+        
 
         public override void OnDestroy()
         {
@@ -500,6 +509,20 @@ namespace VikingEngine.DSSWars
 
                     resources.asyncGrowUpdate();
                 }
+            }
+            return exitThreads;
+        }
+
+        bool asyncSlowUpdate(int id, float time)
+        {
+            if (cutScene == null)
+            {
+                if (slowMinuteUpdate)
+                { 
+                    slowMinuteUpdate = false;
+                    technologyManager.asyncOneMinuteUpdate();
+                }
+
             }
             return exitThreads;
         }

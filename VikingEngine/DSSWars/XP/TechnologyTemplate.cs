@@ -10,27 +10,130 @@ namespace VikingEngine.DSSWars.XP
 {
     struct TechnologyTemplate
     {
-        public const byte Unlocked = 100;
+        public const int Unlocked = 100;
+        public const int FactionUnlock = 100000;
 
-        public byte advancedBuilding;
-        public byte advancedCasting;
+        public int advancedBuilding;
+        public int advancedCasting;
 
-        public byte iron;
-        public byte steel;
+        public int iron;
+        public int steel;
 
-        public byte catapult;
+        public int catapult;
         
-        public byte blackPowder;
+        public int blackPowder;
+        public int gunPowder;
 
-        public byte gunPowder;
+        public void destroyTechOnTakeOver()
+        {
+            tech(ref advancedBuilding);
+            tech(ref advancedCasting);
+            tech(ref iron);
+            tech(ref steel);
+            tech(ref catapult);
+            tech(ref blackPowder);
+            tech(ref gunPowder);
 
-        public static int PercentProgress(byte value)
+            void tech(ref int thisTech)
+            {
+                if (thisTech > 0)
+                {
+                    thisTech = Math.Min(Ref.rnd.Int(thisTech), Ref.rnd.Int(thisTech));
+                }
+            }
+        }
+
+        //public void applyFactionTech(TechnologyTemplate from)
+        //{
+        //    tech(ref advancedBuilding, from.advancedBuilding);
+        //    tech(ref advancedCasting, from.advancedCasting);
+        //    tech(ref iron, from.iron);
+        //    tech(ref steel, from.steel);
+        //    tech(ref catapult, from.catapult);
+        //    tech(ref blackPowder, from.blackPowder);
+        //    tech(ref gunPowder, from.gunPowder);
+
+        //    void tech(ref int thisTech, int otherTech)
+        //    {
+        //        if (otherTech >= FactionUnlock)
+        //        {
+        //            thisTech = FactionUnlock;
+        //        }
+        //    }
+        //}
+
+        public void gainTechSpread(TechnologyTemplate from, int gainSpeed)
+        {
+            tech(ref advancedBuilding, from.advancedBuilding);
+            tech(ref advancedCasting, from.advancedCasting);
+            tech(ref iron, from.iron);
+            tech(ref steel, from.steel);
+            tech(ref catapult, from.catapult);
+            tech(ref blackPowder, from.blackPowder);
+            tech(ref gunPowder, from.gunPowder);
+
+            void tech(ref int thisTech, int otherTech)
+            {
+                if (otherTech >= Unlocked && thisTech < Unlocked)
+                {
+                    thisTech = Bound.Max(thisTech + gainSpeed, Unlocked);
+                }
+            }
+        }
+
+        public void addFactionUnlocked(TechnologyTemplate from)
+        {
+            tech(ref advancedBuilding, from.advancedBuilding);
+            tech(ref advancedCasting, from.advancedCasting);
+            tech(ref iron, from.iron);
+            tech(ref steel, from.steel);
+            tech(ref catapult, from.catapult);
+            tech(ref blackPowder, from.blackPowder);
+            tech(ref gunPowder, from.gunPowder);
+
+            void tech(ref int thisTech, int otherTech)
+            {
+                if (otherTech >= FactionUnlock)
+                { 
+                    thisTech = Unlocked;
+                }
+            }
+        }
+
+        public void checkCityCount(int cityCount)
+        {
+            tech(ref advancedBuilding);
+            tech(ref advancedCasting);
+            tech(ref iron);
+            tech(ref steel);
+            tech(ref catapult);
+            tech(ref blackPowder);
+            tech(ref gunPowder);
+
+            void tech(ref int thisTech)
+            {
+                if (thisTech >= cityCount)
+                {
+                    thisTech = FactionUnlock;
+                }
+            }
+        }
+
+        public void Add(TechnologyTemplate city)
+        {
+            advancedBuilding += city.advancedBuilding;
+            advancedCasting += city.advancedCasting;
+            iron += city.iron;
+            steel += city.steel;
+            blackPowder += city.blackPowder;
+            gunPowder += city.gunPowder;
+        }
+
+        public static int PercentProgress(int value)
         {
             return Bound.Max(value, 100);
         }
     }
-
-
 
     struct Unlocks
     {

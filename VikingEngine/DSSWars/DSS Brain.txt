@@ -20,6 +20,7 @@ Slight improvement on map generating (sticks on 70%)
 	Fiendens aggro ska komma i två stages (total peace och war manager)
 	Samma längd på bossar
 	Fiende hordes (mer mini bossar)
+	Antal städer avgör threat level, vilket tillåter ai att alliera och dela tech, kan meddela mellan olika nivåer
 
 -Mix menu
 -Full automation
@@ -27,9 +28,10 @@ Slight improvement on map generating (sticks on 70%)
 -build placement bonus
 
 (-house variants)
-* wood cutter/stone cutter shed, improved working radius
+
 +  ports can speed up how much u can send or recieve
-* water expansion
+
+
 
 * annoyed by the deliveries being inefficient
 -wagon, transport span amount, 2/4 wheel
