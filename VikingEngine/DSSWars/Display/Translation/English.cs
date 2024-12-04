@@ -1709,5 +1709,42 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string CityCulture_LawAbiding => "Law-abiding";
         public override string CityCulture_LawAbiding_Description => "Gain more tax. No black market.";
+
+        //##2##
+
+        public override string Hud_Advanced => "Advanced";
+        public override string Hud_Loading => "Loading...";
+
+        public override string CityOption_LowerGuardSize => "Release guard";
+        public override string Hud_Purchase_MinCapacity => "Minimum capacity reached";
+        public override string Settings_ResetToDefault => "Reset to default";
+        public override string Settings_NewGame => "New game";
+
+        public override string Settings_AdvancedGameSettings => "Advanced Game Settings";
+        public override string Settings_FoodMultiplier => "Food multiplier";
+        public override string Settings_FoodMultiplier_Description => "How long a worker or soldier lasts on a full stomach. A high value will lower computer performance.";
+
+        public override string Settings_GameMode => "Game mode";
+
+        public override string Settings_Mode_Story => "Full story";
+        public override string Settings_Mode_IncludeBoss => "Include Boss Events.";
+        public override string Settings_Mode_IncludeAttacks => "Include Random Attacks.";
+        public override string Settings_Mode_Sandbox => "Sandbox";
+        public override string Settings_Mode_Peaceful => "Peaceful";
+        public override string Settings_Mode_Peaceful_Description => "All wars are initiated by the player";
+
+        public override string Lobby_ImportSave => "Import save";
+
+        public override string Lobby_ExportSave => "Export save";
+        public override string Lobby_ExportSave_Description => "Creates a copy of the file and places it in the import folder: {0}";
+
+        public override string Resource_CurrentAmount => "Current amount: {0}";
+        public override string Resource_MaxAmount_Soft => "Soft Cap (Max Limit): {0}";
+        public override string Resource_MaxAmount => "Max limit: {0}";
+        public override string Resource_AddPerSec => "Increase Rate: {0} per second";
+
+        public override string Resource_WaterAddLimit => "Water increase rate can't be altered";
+
+        public override string Tutorial_Select_SubTab => "And select category: {0}";
     }
 }

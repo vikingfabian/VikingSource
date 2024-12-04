@@ -1691,5 +1691,42 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string CityCulture_LawAbiding => "法を守る";
         public override string CityCulture_LawAbiding_Description => "税金が増える。ブラックマーケットは利用不可。";
+
+
+
+        public override string Hud_Advanced => "詳細設定";
+        public override string Hud_Loading => "読み込み中...";
+
+        public override string CityOption_LowerGuardSize => "ガード解除";
+        public override string Hud_Purchase_MinCapacity => "最小容量に達しました";
+        public override string Settings_ResetToDefault => "デフォルトにリセット";
+        public override string Settings_NewGame => "新しいゲーム";
+
+        public override string Settings_AdvancedGameSettings => "高度なゲーム設定";
+        public override string Settings_FoodMultiplier => "食料倍率";
+        public override string Settings_FoodMultiplier_Description => "満腹時の労働者または兵士の持続時間。高い値はコンピュータのパフォーマンスを低下させます。";
+
+        public override string Settings_GameMode => "ゲームモード";
+
+        public override string Settings_Mode_Story => "フルストーリー";
+        public override string Settings_Mode_IncludeBoss => "ボスイベントを含む。";
+        public override string Settings_Mode_IncludeAttacks => "ランダムアタックを含む。";
+        public override string Settings_Mode_Sandbox => "サンドボックス";
+        public override string Settings_Mode_Peaceful => "平和";
+        public override string Settings_Mode_Peaceful_Description => "すべての戦争はプレイヤーによって開始されます";
+
+        public override string Lobby_ImportSave => "セーブデータをインポート";
+
+        public override string Lobby_ExportSave => "セーブデータをエクスポート";
+        public override string Lobby_ExportSave_Description => "ファイルのコピーを作成し、インポートフォルダーに配置します：{0}";
+
+        public override string Resource_CurrentAmount => "現在の量：{0}";
+        public override string Resource_MaxAmount_Soft => "ソフトキャップ（最大限界）：{0}";
+        public override string Resource_MaxAmount => "最大限界：{0}";
+        public override string Resource_AddPerSec => "増加率：{0}毎秒";
+
+        public override string Resource_WaterAddLimit => "水の増加率は変更できません";
+
+        public override string Tutorial_Select_SubTab => "そしてカテゴリを選択：{0}";
     }
 }

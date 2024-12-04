@@ -157,7 +157,7 @@ namespace VikingEngine.DSSWars
                     new GuiTextButton(DssRef.lang.GameMenu_ContinueFromSave, saves[0].InfoString(), new GuiAction1Arg<SaveStateMeta>(continueFromSave, saves[0]), false, layout);
                 }
 
-                new GuiLargeTextButton(DssRef.todoLang.Settings_NewGame, null, new GuiAction(newGameSettings) /*new GuiAction(startGame)*/, true, layout);
+                new GuiLargeTextButton(DssRef.lang.Settings_NewGame, null, new GuiAction(newGameSettings) /*new GuiAction(startGame)*/, true, layout);
 
                 if (arraylib.HasMembers(saves))
                 {
@@ -400,19 +400,19 @@ namespace VikingEngine.DSSWars
                 new GuiTextButton(string.Format(DssRef.lang.Settings_DifficultyLevel, DssRef.difficulty.PercDifficulty), null, selectDifficultyMenu, true, layout);
                 new GuiSectionSeparator(layout);
 
-                new GuiLabel(DssRef.todoLang.Hud_Advanced, layout);
+                new GuiLabel(DssRef.lang.Hud_Advanced, layout);
                 
 
                 gameModeText(DssRef.difficulty.setting_gameMode, out string modecaption, out string modedesc);
 
-                new GuiTextButton(DssRef.todoLang.Settings_GameMode + " (" + modecaption + ")", modedesc, selectGameModeMenu, true, layout);
+                new GuiTextButton(DssRef.lang.Settings_GameMode + " (" + modecaption + ")", modedesc, selectGameModeMenu, true, layout);
                 new GuiCheckbox(DssRef.lang.Settings_AllowPause, null, allowPauseProperty, layout);
                 //new GuiLabel(, layout);
-                var foodSlider = new GuiFloatSlider(SpriteName.WarsResource_Food, DssRef.todoLang.Settings_FoodMultiplier, foodMultiProperty, new IntervalF(0.5f, 10f), false, layout);
+                var foodSlider = new GuiFloatSlider(SpriteName.WarsResource_Food, DssRef.lang.Settings_FoodMultiplier, foodMultiProperty, new IntervalF(0.5f, 10f), false, layout);
                 foodSlider.onLeaveCallback = new Action(foodSliderLeave);
-                foodSlider.ToolTip = DssRef.todoLang.Settings_FoodMultiplier_Description;
+                foodSlider.ToolTip = DssRef.lang.Settings_FoodMultiplier_Description;
 
-                new GuiTextButton(DssRef.todoLang.Settings_ResetToDefault, null, resetToDefault, false, layout);
+                new GuiTextButton(DssRef.lang.Settings_ResetToDefault, null, resetToDefault, false, layout);
             }
             layout.End();
 
@@ -431,16 +431,16 @@ namespace VikingEngine.DSSWars
             switch (mode)
             {
                 case GameMode.FullStory:
-                    caption = DssRef.todoLang.Settings_Mode_Story;
-                    desc = DssRef.todoLang.Settings_Mode_InclueBoss + " " + DssRef.todoLang.Settings_Mode_InclueAttacks;
+                    caption = DssRef.lang.Settings_Mode_Story;
+                    desc = DssRef.lang.Settings_Mode_IncludeBoss + " " + DssRef.lang.Settings_Mode_IncludeAttacks;
                     break;
                 case GameMode.Sandbox:
-                    caption = DssRef.todoLang.Settings_Mode_Sandbox;
-                    desc = DssRef.todoLang.Settings_Mode_InclueAttacks;
+                    caption = DssRef.lang.Settings_Mode_Sandbox;
+                    desc = DssRef.lang.Settings_Mode_IncludeAttacks;
                     break;
                 case GameMode.Peaceful:
-                    caption = DssRef.todoLang.Settings_Mode_Peaceful;
-                    desc = DssRef.todoLang.Settings_Mode_Peaceful_Description;
+                    caption = DssRef.lang.Settings_Mode_Peaceful;
+                    desc = DssRef.lang.Settings_Mode_Peaceful_Description;
                     break;
             }
         }
@@ -449,7 +449,7 @@ namespace VikingEngine.DSSWars
         //    GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
         //    {
         //        new GuiCheckbox(DssRef.lang.Settings_GenerateMaps, DssRef.lang.Settings_GenerateMaps_SlowDescription, generateNewMapsProperty, layout);
-        //        new GuiTextButton(DssRef.todoLang.Settings_GameMode, null, selectGameModeMenu, true, layout);
+        //        new GuiTextButton(DssRef.lang.Settings_GameMode, null, selectGameModeMenu, true, layout);
         //        new GuiCheckbox(DssRef.lang.Settings_AllowPause, null, allowPauseProperty, layout);
         //        //new GuiCheckbox(DssRef.lang.Settings_BossEvents, DssRef.lang.Settings_BossEvents_SandboxDescription, bossProperty, layout);
 
@@ -463,9 +463,9 @@ namespace VikingEngine.DSSWars
                 for (GameMode mode = 0; mode < GameMode.NUM; ++mode)
                 {
                     gameModeText(mode, out string caption, out string desc);
-                    //new GuiTextButton(DssRef.todoLang.Settings_Mode_Story, DssRef.todoLang.Settings_Mode_InclueBoss + " " + DssRef.todoLang.Settings_Mode_InclueAttacks,
+                    //new GuiTextButton(DssRef.lang.Settings_Mode_Story, DssRef.lang.Settings_Mode_InclueBoss + " " + DssRef.lang.Settings_Mode_InclueAttacks,
                     //    new GuiAction1Arg<GameMode>(gameModeClick, Data.GameMode.FullStory), false, layout);
-                    //new GuiTextButton(DssRef.todoLang.Settings_Mode_Sandbox, DssRef.todoLang.Settings_Mode_InclueAttacks,
+                    //new GuiTextButton(DssRef.lang.Settings_Mode_Sandbox, DssRef.lang.Settings_Mode_InclueAttacks,
                     //        new GuiAction1Arg<GameMode>(gameModeClick, Data.GameMode.Sandbox), false, layout);
                     new GuiTextButton(caption, desc,
                         new GuiAction1Arg<GameMode>(gameModeClick, mode), false, layout);
@@ -1047,8 +1047,8 @@ namespace VikingEngine.DSSWars
                 }
 
                 new GuiSectionSeparator(layout);
-                new GuiTextButton(DssRef.todoLang.Lobby_ExportSave, string.Format( DssRef.todoLang.Lobby_ExportSave_Description, SaveMeta.ImportSaveFolder), exportSave_listsaves, true, layout);
-                new GuiTextButton(DssRef.todoLang.Lobby_ImportSave, null, importSaves, true, layout); 
+                new GuiTextButton(DssRef.lang.Lobby_ExportSave, string.Format( DssRef.lang.Lobby_ExportSave_Description, SaveMeta.ImportSaveFolder), exportSave_listsaves, true, layout);
+                new GuiTextButton(DssRef.lang.Lobby_ImportSave, null, importSaves, true, layout); 
             }
             layout.End();
         }
@@ -1057,7 +1057,7 @@ namespace VikingEngine.DSSWars
         {
             var saves = DssRef.storage.meta.listSaves();
 
-            GuiLayout layout = new GuiLayout(DssRef.todoLang.Lobby_ExportSave, menuSystem.menu);
+            GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_ExportSave, menuSystem.menu);
             {
                 for (int i = 0; i < saves.Count; ++i)
                 {
@@ -1086,9 +1086,9 @@ namespace VikingEngine.DSSWars
             var saves = DssRef.storage.meta.listSaves();
             importSavesMenu = true;
 
-            GuiLayout layout = new GuiLayout(DssRef.todoLang.Lobby_ImportSave, menuSystem.menu);
+            GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_ImportSave, menuSystem.menu);
             {
-                new GuiLabel(DssRef.todoLang.Hud_Loading, layout);
+                new GuiLabel(DssRef.lang.Hud_Loading, layout);
             }
             layout.OnDelete += new Action(() => { importSavesMenu = false; });
             layout.End();
