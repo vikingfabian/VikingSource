@@ -1684,5 +1684,43 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string CityCulture_LawAbiding => "Законопослушный";
         public override string CityCulture_LawAbiding_Description => "Больше налогов. Черный рынок недоступен.";
+
+
+
+
+        public override string Hud_Advanced => "Расширенные";
+        public override string Hud_Loading => "Загрузка...";
+
+        public override string CityOption_LowerGuardSize => "Отпустить стражу";
+        public override string Hud_Purchase_MinCapacity => "Достигнут минимальный объем";
+        public override string Settings_ResetToDefault => "Сбросить настройки";
+        public override string Settings_NewGame => "Новая игра";
+
+        public override string Settings_AdvancedGameSettings => "Расширенные настройки игры";
+        public override string Settings_FoodMultiplier => "Множитель еды";
+        public override string Settings_FoodMultiplier_Description => "Сколько времени работник или солдат может продержаться на полном желудке. Высокое значение снизит производительность компьютера.";
+
+        public override string Settings_GameMode => "Режим игры";
+
+        public override string Settings_Mode_Story => "Полная история";
+        public override string Settings_Mode_IncludeBoss => "События с боссами.";
+        public override string Settings_Mode_IncludeAttacks => "Случайные атаки.";
+        public override string Settings_Mode_Sandbox => "Песочница";
+        public override string Settings_Mode_Peaceful => "Мирный";
+        public override string Settings_Mode_Peaceful_Description => "Все войны начинаются по инициативе игрока";
+
+        public override string Lobby_ImportSave => "Импортировать сохранение";
+
+        public override string Lobby_ExportSave => "Экспортировать сохранение";
+        public override string Lobby_ExportSave_Description => "Создает копию файла и помещает ее в папку импорта: {0}";
+
+        public override string Resource_CurrentAmount => "Текущее количество: {0}";
+        public override string Resource_MaxAmount_Soft => "Мягкий предел (Макс. лимит): {0}";
+        public override string Resource_MaxAmount => "Максимальный лимит: {0}";
+        public override string Resource_AddPerSec => "Скорость увеличения: {0} в секунду";
+
+        public override string Resource_WaterAddLimit => "Скорость увеличения воды изменить нельзя";
+
+        public override string Tutorial_Select_SubTab => "Выберите подкатегорию: {0}";
     }
 }

@@ -1687,5 +1687,43 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string CityCulture_LawAbiding => "遵纪守法";
         public override string CityCulture_LawAbiding_Description => "增加税收。没有黑市。";
+
+
+
+
+        public override string Hud_Advanced => "高级";
+        public override string Hud_Loading => "加载中...";
+
+        public override string CityOption_LowerGuardSize => "释放守卫";
+        public override string Hud_Purchase_MinCapacity => "已达到最小容量";
+        public override string Settings_ResetToDefault => "恢复默认设置";
+        public override string Settings_NewGame => "新游戏";
+
+        public override string Settings_AdvancedGameSettings => "高级游戏设置";
+        public override string Settings_FoodMultiplier => "食物倍数";
+        public override string Settings_FoodMultiplier_Description => "工人或士兵在饱腹状态下能持续的时间。较高的值会降低计算机性能。";
+
+        public override string Settings_GameMode => "游戏模式";
+
+        public override string Settings_Mode_Story => "完整故事";
+        public override string Settings_Mode_IncludeBoss => "包括Boss事件。";
+        public override string Settings_Mode_IncludeAttacks => "包括随机攻击。";
+        public override string Settings_Mode_Sandbox => "沙盒";
+        public override string Settings_Mode_Peaceful => "和平";
+        public override string Settings_Mode_Peaceful_Description => "所有战争都由玩家发起";
+
+        public override string Lobby_ImportSave => "导入存档";
+
+        public override string Lobby_ExportSave => "导出存档";
+        public override string Lobby_ExportSave_Description => "创建文件的副本，并将其放置在导入文件夹中：{0}";
+
+        public override string Resource_CurrentAmount => "当前数量：{0}";
+        public override string Resource_MaxAmount_Soft => "软上限（最大限制）：{0}";
+        public override string Resource_MaxAmount => "最大限制：{0}";
+        public override string Resource_AddPerSec => "增加速率：每秒{0}";
+
+        public override string Resource_WaterAddLimit => "水的增加速率不能改变";
+
+        public override string Tutorial_Select_SubTab => "并选择分类：{0}";
     }
 }

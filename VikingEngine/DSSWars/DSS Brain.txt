@@ -1,9 +1,9 @@
 ﻿-Change Log-
-
+* Full translation
+* Water/diplomacy description
 
 #Todo (xmas patch)#
-Full translation
-water/diplomacy description
+
 
 
 --Efter release polish--

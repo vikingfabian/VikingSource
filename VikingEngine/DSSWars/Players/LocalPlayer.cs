@@ -1414,6 +1414,23 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        public double diplomacyAddPerSec()
+        {
+            return DssRef.diplomacy.DefaultDiplomacyPerSecond + DssRef.diplomacy.NobelHouseAddDiplomacy * faction.nobelHouseCount;
+        }
+
+        public double diplomacyAddPerSec_CapIncluded()
+        {
+            if (diplomaticPoints.value < diplomaticPoints_softMax)
+            {
+                return diplomacyAddPerSec();
+            }
+            else
+            {
+                return DssRef.diplomacy.AddDiplomacy_AfterSoftlock_PerSecond;
+            }
+        }
+
         public override void oneSecUpdate()
         {
             base.oneSecUpdate();
@@ -1424,7 +1441,7 @@ namespace VikingEngine.DSSWars.Players
 
             if (diplomaticPoints.value < diplomaticPoints_softMax)
             {
-                diplomaticPoints.add(DssRef.diplomacy.DefaultDiplomacyPerSecond + DssRef.diplomacy.NobelHouseAddDiplomacy * faction.nobelHouseCount, diplomaticPoints_softMax);
+                diplomaticPoints.add(diplomacyAddPerSec(), diplomaticPoints_softMax);
             }
             else
             {

@@ -1687,5 +1687,42 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string CityCulture_LawAbiding => "Cumplidor de la ley";
         public override string CityCulture_LawAbiding_Description => "Obtener más impuestos. Sin mercado negro.";
+
+
+
+        public override string Hud_Advanced => "Avanzado";
+        public override string Hud_Loading => "Cargando...";
+
+        public override string CityOption_LowerGuardSize => "Liberar guardia";
+        public override string Hud_Purchase_MinCapacity => "Capacidad mínima alcanzada";
+        public override string Settings_ResetToDefault => "Restablecer a los valores predeterminados";
+        public override string Settings_NewGame => "Nuevo juego";
+
+        public override string Settings_AdvancedGameSettings => "Configuración avanzada del juego";
+        public override string Settings_FoodMultiplier => "Multiplicador de alimentos";
+        public override string Settings_FoodMultiplier_Description => "Cuánto tiempo puede durar un trabajador o soldado con el estómago lleno. Un valor alto reducirá el rendimiento del ordenador.";
+
+        public override string Settings_GameMode => "Modo de juego";
+
+        public override string Settings_Mode_Story => "Historia completa";
+        public override string Settings_Mode_IncludeBoss => "Incluir eventos de jefes.";
+        public override string Settings_Mode_IncludeAttacks => "Incluir ataques aleatorios.";
+        public override string Settings_Mode_Sandbox => "Modo sandbox";
+        public override string Settings_Mode_Peaceful => "Pacífico";
+        public override string Settings_Mode_Peaceful_Description => "Todas las guerras son iniciadas por el jugador";
+
+        public override string Lobby_ImportSave => "Importar partida guardada";
+
+        public override string Lobby_ExportSave => "Exportar partida guardada";
+        public override string Lobby_ExportSave_Description => "Crea una copia del archivo y lo coloca en la carpeta de importación: {0}";
+
+        public override string Resource_CurrentAmount => "Cantidad actual: {0}";
+        public override string Resource_MaxAmount_Soft => "Límite máximo suave: {0}";
+        public override string Resource_MaxAmount => "Límite máximo: {0}";
+        public override string Resource_AddPerSec => "Tasa de incremento: {0} por segundo";
+
+        public override string Resource_WaterAddLimit => "La tasa de aumento del agua no se puede alterar";
+
+        public override string Tutorial_Select_SubTab => "Y selecciona la categoría: {0}";
     }
 }

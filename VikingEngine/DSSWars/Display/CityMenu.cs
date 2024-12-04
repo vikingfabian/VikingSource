@@ -195,6 +195,26 @@ namespace VikingEngine.DSSWars.Display
                     content.Add(new RichBoxTab(0.4f));
                     content.Add(new RichBoxImage(SpriteName.WarsResource_WaterAdd));
                     content.Add(new RichBoxText(TextLib.OneDecimal(city.waterAddPerSec)));
+                    content.space();
+                    HudLib.InfoButton(content, new RbAction(() =>
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        content.h2(TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Water)).overrideColor = HudLib.TitleColor_Label;
+                        content.newLine();
+                        content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
+                        content.Add(new RichBoxText( string.Format(DssRef.lang.Resource_CurrentAmount, city.res_water.amount)));
+
+                        content.text(string.Format(DssRef.lang.Resource_MaxAmount, city.maxWater));
+
+                        content.newLine();
+                        content.Add(new RichBoxImage(SpriteName.WarsResource_WaterAdd));
+                        content.Add(new RichBoxText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.OneDecimal( city.waterAddPerSec))));
+
+                        content.newParagraph();
+                        HudLib.Description(content, DssRef.lang.Resource_WaterAddLimit);
+
+                        player.hud.tooltip.create(player, content, true);
+                    }));
 
                     bool reachedBuffer = false;
                     var foodSafeGuard = city.foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
@@ -433,7 +453,7 @@ namespace VikingEngine.DSSWars.Display
                     int count = 1;
                     content.Add(new RichboxButton(new List<AbsRichBoxMember>{
                                     new RichBoxImage(SpriteName.WarsGuard),
-                                    new RichBoxText( DssRef.todoLang.CityOption_LowerGuardSize),
+                                    new RichBoxText( DssRef.lang.CityOption_LowerGuardSize),
                                 },
                         new RbAction1Arg<int>(city.releaseGuardSize, count * DssConst.ExpandGuardSize, SoundLib.menuBuy),
                         new RbAction1Arg<int>(releaseGuardSizeToolTip, count),
@@ -845,7 +865,7 @@ namespace VikingEngine.DSSWars.Display
             }
             else
             {
-                content.Add(new RichBoxText(DssRef.todoLang.Hud_Purchase_MinCapacity, Color.Red));
+                content.Add(new RichBoxText(DssRef.lang.Hud_Purchase_MinCapacity, Color.Red));
             }
 
             player.hud.tooltip.create(player, content, true);

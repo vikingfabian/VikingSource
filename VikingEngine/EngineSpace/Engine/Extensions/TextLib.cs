@@ -81,6 +81,16 @@ namespace VikingEngine
             return result;
         }
 
+        public const string ThreeDecimalFormat = "{0:0.000}";
+        public static string ThreeDecimal(double value)
+        {
+            string result = string.Format(ThreeDecimalFormat, value);
+
+            stringSafeDecimal(ref result);
+
+            return result;
+        }
+
         static void stringSafeDecimal(ref string result)
         {
             if (result.Length > 2)
