@@ -774,7 +774,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.CastMetal,
             XP.ExperienceLevel.Practitioner_2,
-            CraftRequirement.Foundry
+            CraftRequirement.Gunmaker
         );
 
         public static readonly CraftBlueprint BronzeHandCulverin = new CraftBlueprint(
@@ -789,7 +789,7 @@ namespace VikingEngine.DSSWars.Resource
            },
           XP.WorkExperienceType.CastMetal,
             XP.ExperienceLevel.Practitioner_2,
-           CraftRequirement.Foundry
+           CraftRequirement.Gunmaker
         );
 
         public static readonly CraftBlueprint Rifle = new CraftBlueprint(
@@ -804,7 +804,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.CastMetal,
             XP.ExperienceLevel.Expert_3,
-            CraftRequirement.Foundry
+            CraftRequirement.Gunmaker
         );
 
         public static readonly CraftBlueprint Blunderbus = new CraftBlueprint(
@@ -819,10 +819,10 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.CastMetal,
             XP.ExperienceLevel.Expert_3,
-            CraftRequirement.Foundry
+            CraftRequirement.Gunmaker
         );
 
-        public static readonly CraftBlueprint Ballista = new CraftBlueprint(
+        public static readonly CraftBlueprint Ballista_Iron = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.Ballista,
             1,
@@ -836,6 +836,21 @@ namespace VikingEngine.DSSWars.Resource
             XP.ExperienceLevel.Practitioner_2,
             CraftRequirement.Carpenter
         );
+
+        public static readonly CraftBlueprint Ballista_Bronze = new CraftBlueprint(
+           CraftResultType.Resource,
+           (int)ItemResourceType.Ballista,
+           1,
+           new UseResource[]
+           {
+                new UseResource(ItemResourceType.Wood_Group, 8),
+                new UseResource(ItemResourceType.SkinLinen_Group, 4),
+                new UseResource(ItemResourceType.Bronze, 1),
+           },
+          XP.WorkExperienceType.Fletcher,
+           XP.ExperienceLevel.Practitioner_2,
+           CraftRequirement.Carpenter
+       );
 
         public static readonly CraftBlueprint ManuBallista = new CraftBlueprint(
             CraftResultType.Resource,
@@ -879,7 +894,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.CastMetal,
             XP.ExperienceLevel.Master_4,
-            CraftRequirement.Foundry
+            CraftRequirement.Gunmaker
         );
 
         public static readonly CraftBlueprint ManCannonBronze = new CraftBlueprint(
@@ -892,7 +907,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.CastMetal,
             XP.ExperienceLevel.Expert_3,
-            CraftRequirement.Foundry
+            CraftRequirement.Gunmaker
         );
 
         public static readonly CraftBlueprint SiegeCannonIron = new CraftBlueprint(
@@ -907,7 +922,7 @@ namespace VikingEngine.DSSWars.Resource
            },
           XP.WorkExperienceType.CraftMetal,
            XP.ExperienceLevel.Master_4,
-           CraftRequirement.Smith
+           CraftRequirement.Gunmaker
        );
 
         public static readonly CraftBlueprint ManCannonIron = new CraftBlueprint(
@@ -922,7 +937,7 @@ namespace VikingEngine.DSSWars.Resource
            },
           XP.WorkExperienceType.CraftMetal,
            XP.ExperienceLevel.Master_4,
-           CraftRequirement.Smith
+           CraftRequirement.Gunmaker
        );
 
         public static readonly CraftBlueprint PaddedArmor = new CraftBlueprint(

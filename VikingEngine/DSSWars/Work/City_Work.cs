@@ -634,7 +634,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 bool checkAutoBuildAvailable()
                 {
-                    if (buildingLevel_logistics < 2)
+                    if (buildingStructure.buildingLevel_logistics < 2)
                     {
                         var p = faction.player.GetLocalPlayer();
                         if (p != null)

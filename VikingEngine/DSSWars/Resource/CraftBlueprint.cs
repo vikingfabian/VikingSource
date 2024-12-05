@@ -219,35 +219,39 @@ namespace VikingEngine.DSSWars.Resource
                 {
                     case CraftRequirement.Carpenter:
                         reqText = DssRef.lang.BuildingType_Carpenter;
-                        available = city.hasBuilding_carpenter;
+                        available = city.buildingStructure.hasBuilding_carpenter;
                         break;
                     case CraftRequirement.Brewery:
                         reqText = DssRef.lang.BuildingType_Brewery;
-                        available = city.hasBuilding_brewery;
+                        available = city.buildingStructure.hasBuilding_brewery;
                         break;
                     case CraftRequirement.Smelter:
                         reqText = DssRef.todoLang.BuildingType_SmeltingFurnace;
-                        available = city.buildingCount_smelter > 0;
+                        available = city.buildingStructure.buildingCount_smelter > 0;
                         break;
                     case CraftRequirement.Chemist:
                         reqText = DssRef.todoLang.BuildingType_Chemist;
-                        available = city.buildingCount_chemist > 0;
+                        available = city.buildingStructure.buildingCount_chemist > 0;
+                        break;
+                    case CraftRequirement.Gunmaker:
+                        reqText = DssRef.todoLang.BuildingType_Gunmaker;
+                        available = city.buildingStructure.buildingCount_gunmaker > 0;
                         break;
                     case CraftRequirement.CoinMaker:
                         reqText = DssRef.todoLang.BuildingType_CoinMaker;
-                        available = city.buildingCount_coinmaker > 0;
+                        available = city.buildingStructure.buildingCount_coinmaker > 0;
                         break;
                     case CraftRequirement.Foundry:
                         reqText = DssRef.todoLang.BuildingType_Foundry;
-                        available = city.buildingCount_foundry > 0;
+                        available = city.buildingStructure.buildingCount_foundry > 0;
                         break;
                     case CraftRequirement.Smith:
                         reqText = DssRef.lang.BuildingType_Smith;
-                        available = city.hasBuilding_smith;
+                        available = city.buildingStructure.hasBuilding_smith;
                         break;
                     case CraftRequirement.CoalPit:
                         reqText = DssRef.lang.BuildingType_CoalPit;
-                        available = city.buildingCount_coalpit > 0;
+                        available = city.buildingStructure.buildingCount_coalpit > 0;
                         break;
                     case CraftRequirement.Logistics1:
                         reqText = string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, City.Logistics1FoodStorage);
@@ -321,6 +325,7 @@ namespace VikingEngine.DSSWars.Resource
         CoalPit,
         CoinMaker,
         Chemist,
+        Gunmaker,
         Logistics1,
         Logistics2,
 

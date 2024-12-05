@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
@@ -40,6 +41,44 @@ namespace VikingEngine.DSSWars
         public void workTab(RichBoxContent content)
         {
             var p = player.GetLocalPlayer();
+
+            content.newLine();
+            for (WorkSubTab workSubTab = 0; workSubTab < WorkSubTab.NUM; ++workSubTab)
+            {
+                var tabContent = new RichBoxContent();
+                //string text = null;
+                switch (workSubTab)
+                {
+                    case WorkSubTab.Priority_Resources:
+                        tabContent.Add(new RichBoxText(DssRef.lang.Work_OrderPrioTitle));
+                        tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Wood));
+                        break;
+
+                    case WorkSubTab.Priority_Metals:
+                        tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Iron));
+                        break;
+                    case WorkSubTab.Priority_Weapons:
+                        tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Sword));
+                        break;
+                    case WorkSubTab.Priority_Armor:
+                        tabContent.Add(new RichBoxImage(SpriteName.WarsResource_IronArmor));
+                        break;
+
+                        //case WorkSubTab.Experience:
+                        //    tabContent.Add(new RichBoxText(DssRef.todoLang.Experience_Title));
+                        //    break;
+                }
+                var subTab = new RichboxButton(tabContent,
+                    new RbAction1Arg<WorkSubTab>((WorkSubTab resourcesSubTab) =>
+                    {
+                        p.workSubTab = resourcesSubTab;
+                    }, workSubTab, SoundLib.menutab));
+                subTab.setGroupSelectionColor(HudLib.RbSettings, p.workSubTab == workSubTab);
+                content.Add(subTab);
+                content.space(workSubTab == WorkSubTab.Priority_Armor ? 2 : 1);
+            }
+            content.newParagraph();
+           
             workTemplate.toHud(p, content, p.workSubTab, this, null);
         }
 

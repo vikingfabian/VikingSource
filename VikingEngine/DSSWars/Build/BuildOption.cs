@@ -102,7 +102,7 @@ namespace VikingEngine.DSSWars.Build
                                 {
                                     subTile.terrainAmount = 2;
                                 }
-                                city.buildingLevel_logistics = subTile.terrainAmount;
+                                city.buildingStructure.buildingLevel_logistics = subTile.terrainAmount;
                                 break;
 
                             case TerrainBuildingType.WorkerHut:

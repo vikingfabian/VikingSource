@@ -151,6 +151,9 @@ namespace VikingEngine.DSSWars
                 {
                     new GuiLabel("! debug cheats !", layout);
                 }
+#if DEBUG
+                new GuiLargeTextButton(DssRef.lang.Lobby_Start, null, new GuiAction(startGame), false, layout);
+#endif
 
                 if (arraylib.HasMembers(saves))
                 {

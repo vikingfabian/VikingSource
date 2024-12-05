@@ -77,20 +77,77 @@ namespace VikingEngine.DSSWars.Build
         public static List<BuildAndExpandType> AvailableBuildTypes(GameObject.City city)
         {
             List<BuildAndExpandType> result = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
-            var unlocks = city.technology.GetUnlocks();
+            var unlocks = city.technology.GetUnlocks(false);
 
-            if (city.buildingLevel_logistics == 0 ||
+            if (city.buildingStructure.buildingLevel_logistics == 0 ||
                 StartupSettings.UnlockAllProgress)
             {
                 result.Add(BuildAndExpandType.Logistics);
             }
-            if (city.buildingLevel_logistics >= 1 ||
+
+            result.Add(BuildAndExpandType.WorkerHuts);
+
+            result.Add(BuildAndExpandType.WheatFarm);
+            result.Add(BuildAndExpandType.LinenFarm);
+            result.Add(BuildAndExpandType.RapeSeedFarm);
+            if (unlocks.building_mixedFarms)
+            {
+                result.Add(BuildAndExpandType.HempFarm);
+                result.Add(BuildAndExpandType.PigPen);
+            }
+            result.Add(BuildAndExpandType.HenPen);
+
+           
+            
+           
+
+            if (unlocks.building_stoneBuildings)
+            {
+                result.Add(BuildAndExpandType.Nobelhouse);
+
+                if (city.buildingStructure.buildingCount_nobelHouse > 0 ||
+                StartupSettings.UnlockAllProgress)
+                {
+                    result.Add(BuildAndExpandType.Embassy);
+                }
+            }
+
+            result.Add(BuildAndExpandType.Postal);
+            
+            if (city.buildingStructure.buildingLevel_logistics >= 1 ||
                 StartupSettings.UnlockAllProgress)
             {
+                result.Add(BuildAndExpandType.Recruitment);
+                result.Add(BuildAndExpandType.Storehouse);
+                result.Add(BuildAndExpandType.Tavern);
+                result.Add(BuildAndExpandType.Brewery);
                 result.Add(BuildAndExpandType.WaterResovoir);
             }
             
-            result.Add(BuildAndExpandType.WorkerHuts);
+            
+            
+            if (city.buildingStructure.buildingLevel_logistics >= 1 ||
+                StartupSettings.UnlockAllProgress)
+            {
+                result.Add(BuildAndExpandType.CoalPit);
+            }
+            
+            result.Add(BuildAndExpandType.WorkBench);
+            result.Add(BuildAndExpandType.Cook);
+            result.Add(BuildAndExpandType.Smelter);
+            result.Add(BuildAndExpandType.Foundry);
+            result.Add(BuildAndExpandType.Smith);
+
+            result.Add(BuildAndExpandType.Carpenter);
+            if (unlocks.building_chemist)
+            {
+                result.Add(BuildAndExpandType.Chemist);
+                result.Add(BuildAndExpandType.Gunmaker);
+            }
+
+            result.Add(BuildAndExpandType.Armory);
+
+           
             result.Add(BuildAndExpandType.SoldierBarracks);
             result.Add(BuildAndExpandType.ArcherBarracks);
             result.Add(BuildAndExpandType.WarmashineBarracks);
@@ -101,76 +158,21 @@ namespace VikingEngine.DSSWars.Build
             if (unlocks.building_cannonBarrack)
             {
                 result.Add(BuildAndExpandType.CannonBarracks);
-            }            
+            }
 
-            if (city.buildingLevel_logistics >= 1 ||
+            if (city.buildingStructure.buildingLevel_logistics >= 1 ||
                 StartupSettings.UnlockAllProgress)
             {
-                if (city.buildingCount_nobelHouse > 0 ||
+                if (city.buildingStructure.buildingCount_nobelHouse > 0 ||
                     StartupSettings.UnlockAllProgress)
                 {
                     result.Add(BuildAndExpandType.KnightsBarracks);
                 }
             }
 
-            if (unlocks.building_stoneBuildings)
-            {
-                result.Add(BuildAndExpandType.Nobelhouse);
+           
 
-                if (city.buildingCount_nobelHouse > 0 ||
-                StartupSettings.UnlockAllProgress)
-                {
-                    result.Add(BuildAndExpandType.Embassy);
-                }
-            }
-
-            result.Add(BuildAndExpandType.Postal);
-            
-            if (city.buildingLevel_logistics >= 1 ||
-                StartupSettings.UnlockAllProgress)
-            {
-                result.Add(BuildAndExpandType.Recruitment);
-                result.Add(BuildAndExpandType.Storehouse);
-                result.Add(BuildAndExpandType.Tavern);
-                result.Add(BuildAndExpandType.Brewery);
-            }
-            
-            result.Add(BuildAndExpandType.Cook);
-            
-            if (city.buildingLevel_logistics >= 1 ||
-                StartupSettings.UnlockAllProgress)
-            {
-                result.Add(BuildAndExpandType.CoalPit);
-            }
-            
-            result.Add(BuildAndExpandType.WorkBench);
-            result.Add(BuildAndExpandType.Smelter);
-            result.Add(BuildAndExpandType.Smith);
-            result.Add(BuildAndExpandType.Foundry);
-            result.Add(BuildAndExpandType.Armory);
-
-            result.Add(BuildAndExpandType.Carpenter);
-            if (unlocks.building_chemist)
-            {
-                result.Add(BuildAndExpandType.Chemist);
-                result.Add(BuildAndExpandType.Gunmaker);
-            }
-
-
-            if (unlocks.building_mixedFarms)
-            {
-                result.Add(BuildAndExpandType.PigPen);
-            }
-            result.Add(BuildAndExpandType.HenPen);
-            result.Add(BuildAndExpandType.WheatFarm);
-            result.Add(BuildAndExpandType.LinenFarm);
-            result.Add(BuildAndExpandType.RapeSeedFarm);
-            if (unlocks.building_mixedFarms)
-            {
-                result.Add(BuildAndExpandType.HempFarm);
-            }
-
-            if (city.buildingLevel_logistics >= 1 ||
+            if (city.buildingStructure.buildingLevel_logistics >= 1 ||
                 StartupSettings.UnlockAllProgress)
             {
                 
@@ -179,7 +181,7 @@ namespace VikingEngine.DSSWars.Build
 
             }
 
-            if (city.buildingLevel_logistics >= 2 ||
+            if (city.buildingStructure.buildingLevel_logistics >= 2 ||
                 StartupSettings.UnlockAllProgress)
             {
                 result.Add(BuildAndExpandType.Pavement);

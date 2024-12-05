@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 building = BuildAndExpandType.SoldierBarracks;
             }
-            else if (((!city.hasBuilding_smith && city.res_ironore.amount > ResourceLowBuffer) ||
+            else if (((!city.buildingStructure.hasBuilding_smith && city.res_ironore.amount > ResourceLowBuffer) ||
                 (city.res_ironore.amount >= city.res_ironore.goalBuffer)
                     && Ref.rnd.Chance(0.02))
                 )

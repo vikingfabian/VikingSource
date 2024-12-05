@@ -123,6 +123,7 @@ namespace VikingEngine.DSSWars
 
         //WORK
         public static byte WorkXpToLevel = 50;
+        public static int WorkLevel_Master = WorkXpToLevel * 4;
         public static byte DefaultWorkXpGain = 5;
         public static float XpLevelWorkTimePercReduction = 0.1f;
 

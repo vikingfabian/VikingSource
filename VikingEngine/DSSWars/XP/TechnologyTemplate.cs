@@ -25,39 +25,40 @@ namespace VikingEngine.DSSWars.XP
         public int blackPowder;
         public int gunPowder;
 
-        public Unlocks GetUnlocks()
+        public Unlocks GetUnlocks(bool factionView)
         {
             Unlocks unlocks = new Unlocks();
+            int unlockAt = factionView ? 1 : Unlocked;
 
-            if (advancedBuilding >= Unlocked)
+            if (advancedBuilding >= unlockAt)
             {
                 unlocks.UnlockAdvancedBuilding();
             }
-            if (advancedFarming >= Unlocked)
+            if (advancedFarming >= unlockAt)
             {
                 unlocks.UnlockAdvancedFarming();
             }
-            if (advancedCasting >= Unlocked)
+            if (advancedCasting >= unlockAt)
             {
                 unlocks.UnlockAdvancedCasting();
             }
-            if (iron >= Unlocked)
+            if (iron >= unlockAt)
             {
                 unlocks.UnlockIron();
             }
-            if (steel >= Unlocked)
+            if (steel >= unlockAt)
             {
                 unlocks.UnlockSteel();
             }
-            if (catapult >= Unlocked)
+            if (catapult >= unlockAt)
             {
                 unlocks.UnlockCatapult();
             }
-            if (blackPowder >= Unlocked)
+            if (blackPowder >= unlockAt)
             {
                 unlocks.UnlockBlackPowder();
             }
-            if (gunPowder >= Unlocked)
+            if (gunPowder >= unlockAt)
             {
                 unlocks.UnlockGunPowder();
             }
@@ -92,10 +93,16 @@ namespace VikingEngine.DSSWars.XP
             tech(ref advancedFarming, from.advancedFarming);
             tech(ref advancedCasting, from.advancedCasting);
             tech(ref iron, from.iron);
-            tech(ref steel, from.steel);
+            if (iron >= Unlocked)
+            {
+                tech(ref steel, from.steel);
+            }
             tech(ref catapult, from.catapult);
             tech(ref blackPowder, from.blackPowder);
-            tech(ref gunPowder, from.gunPowder);
+            if (blackPowder >= Unlocked)
+            {
+                tech(ref gunPowder, from.gunPowder);
+            }
 
             void tech(ref int thisTech, int otherTech)
             {
@@ -177,6 +184,9 @@ namespace VikingEngine.DSSWars.XP
         public bool item_cannon;
         public bool building_cannonBarrack;
 
+        public bool item_castIron;
+        public bool item_castMithril;
+
         public bool item_Iron;
         public bool item_Sword;
         public bool item_IronArmor;
@@ -207,6 +217,8 @@ namespace VikingEngine.DSSWars.XP
 
         public void UnlockAdvancedCasting()
         {
+            item_castIron = true;
+            item_castMithril = true;
             item_cannon = true;
             building_cannonBarrack = true;
         }
@@ -305,6 +317,15 @@ namespace VikingEngine.DSSWars.XP
                 items.Add(ItemResourceType.FullPlateArmor);
             }
 
+            if (item_castIron)
+            {
+                items.Add(ItemResourceType.CastIron);
+            }
+            if (item_castMithril)
+            {
+                items.Add(ItemResourceType.Mithril);
+            }
+
             if (item_catapult)
             {
                 items.Add(ItemResourceType.Manuballista);
@@ -320,9 +341,23 @@ namespace VikingEngine.DSSWars.XP
                 items.Add(ItemResourceType.BlackPowder);
                 items.Add(ItemResourceType.HandCannon);
                 items.Add(ItemResourceType.HandCulverin);
-                items.Add(ItemResourceType.ManCannonBronze);
-                items.Add(ItemResourceType.SiegeCannonBronze);
+                
             }
+
+            if (item_gunPowder)
+            {
+                items.Add(ItemResourceType.GunPowder);
+                items.Add(ItemResourceType.Rifle);
+                items.Add(ItemResourceType.Blunderbus);                
+            }
+
+            if (item_cannon)
+            {
+                items.Add(ItemResourceType.SiegeCannonBronze);
+                items.Add(ItemResourceType.ManCannonBronze);
+                items.Add(ItemResourceType.SiegeCannonIron);
+                items.Add(ItemResourceType.ManCannonIron);                
+            }            
 
             return items;
         }

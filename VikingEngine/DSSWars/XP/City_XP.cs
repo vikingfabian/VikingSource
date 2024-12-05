@@ -305,5 +305,89 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
         }
+
+        public void onMasterLevel(WorkExperienceType experienceType)
+        {
+            switch (experienceType)
+            {
+                case WorkExperienceType.HouseBuilding:
+                case WorkExperienceType.StoneCutter:
+                    technology.advancedBuilding += DssConst.TechnologyGain_Master;
+                    break;
+
+                case WorkExperienceType.Farm:
+                case WorkExperienceType.AnimalCare:
+                    technology.advancedFarming += DssConst.TechnologyGain_Master;
+                    break;
+
+                case WorkExperienceType.Smelting:
+                case WorkExperienceType.CastMetal:
+                    technology.advancedCasting += DssConst.TechnologyGain_Master;
+                    break;
+
+                case WorkExperienceType.Mining:
+                case WorkExperienceType.CraftMetal:
+                    if (technology.iron < TechnologyTemplate.Unlocked)
+                    {
+                        technology.iron += DssConst.TechnologyGain_Master;
+                    }
+                    else
+                    {
+                        technology.steel += DssConst.TechnologyGain_Master;
+                    }
+                    break;
+
+                case WorkExperienceType.WoodCutter:
+                case WorkExperienceType.Fletcher:
+                    technology.catapult += DssConst.TechnologyGain_Master;
+                    break;
+
+                case WorkExperienceType.CraftFuel:
+                case WorkExperienceType.Chemistry:
+                    if (technology.iron < TechnologyTemplate.Unlocked)
+                    {
+                        technology.blackPowder += DssConst.TechnologyGain_Master;
+                    }
+                    else
+                    {
+                        technology.gunPowder += DssConst.TechnologyGain_Master;
+                    }
+                    break;
+
+
+
+                    //    var advBuildingFields = new List<WorkExperienceType>
+                    //{
+                    //    WorkExperienceType.HouseBuilding,
+                    //    WorkExperienceType.StoneCutter,
+                    //};
+                    //var advFarmingFields = new List<WorkExperienceType>
+                    //{
+                    //    WorkExperienceType.,
+                    //    WorkExperienceType.AnimalCare,
+                    //};
+                    //var advCastingFields = new List<WorkExperienceType>
+                    //{
+                    //    WorkExperienceType.Smelting,
+                    //    WorkExperienceType.CastMetal,
+                    //};
+                    //var ironSteelFields = new List<WorkExperienceType>
+                    //{
+                    //    WorkExperienceType.Mining,
+                    //    WorkExperienceType.CraftMetal,
+                    //};
+                    //var catapultFields = new List<WorkExperienceType>
+                    //{
+                    //    WorkExperienceType.WoodCutter,
+                    //    WorkExperienceType.Fletcher,
+                    //};
+
+                    //var gunPowderFields = new List<WorkExperienceType>
+                    //{
+                    //    WorkExperienceType.CraftFuel,
+                    //    WorkExperienceType.Chemistry,
+                    //};
+            }
+        }
     }
 }

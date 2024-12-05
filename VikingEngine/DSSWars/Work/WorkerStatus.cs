@@ -531,7 +531,7 @@ namespace VikingEngine.DSSWars.Work
                     break;
             }
 
-            addExperience(gainXp);
+            addExperience(gainXp, city);
 
             if (tryRepeatWork && energy > 0)
             {
@@ -570,7 +570,7 @@ namespace VikingEngine.DSSWars.Work
             return 0;
         }
 
-        void addExperience(XP.WorkExperienceType type)
+        void addExperience(XP.WorkExperienceType type, City city)
         {
             if (type != XP.WorkExperienceType.NONE)
             {
@@ -625,6 +625,7 @@ namespace VikingEngine.DSSWars.Work
 
             void addTo(ref XP.WorkExperienceType type, ref byte xp)
             {
+                bool master = false;
                 byte add = 0;
                 switch (WorkLib.ToLevel(xp))
                 { 
@@ -639,6 +640,7 @@ namespace VikingEngine.DSSWars.Work
                         }
                         break;
                     case ExperienceLevel.Master_4:
+                        master = true;
                         if (Ref.rnd.Chance(0.1))
                         {
                             add = WorkLib.WorkToXPTable[(int)type];
@@ -649,6 +651,11 @@ namespace VikingEngine.DSSWars.Work
                         break;
                 }
                 xp += add;
+                if (xp >= DssConst.WorkLevel_Master &&
+                    !master)
+                {
+                    city.onMasterLevel(type);
+                }
             }
         }
 

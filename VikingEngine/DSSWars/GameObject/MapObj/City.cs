@@ -67,18 +67,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         public float ai_armyDefenceValue = 0;
         //public bool nobelHouse = false;
-        public bool hasBuilding_carpenter = false;
-        public bool hasBuilding_brewery = false;
-        public bool hasBuilding_smith = false;
-        public int buildingCount_coalpit = 0;
-        public int buildingCount_nobelHouse = 0;
-        public int buildingLevel_logistics = 0;
 
-        public int buildingCount_coinmaker = 0;
-        public int buildingCount_foundry = 0;
-        public int buildingCount_smelter = 0;
-        public int buildingCount_chemist = 0;
-        public int buildingCount_waterresorvoir = 0;
+        public BuildingStructure buildingStructure = new BuildingStructure();
+        
 
         string name = null;
 
@@ -122,7 +113,7 @@ namespace VikingEngine.DSSWars.GameObject
             //    queue *= 2;
             //}
 
-            return LevelToMaxBuildQueue(buildingLevel_logistics); //return queue;
+            return LevelToMaxBuildQueue(buildingStructure.buildingLevel_logistics); //return queue;
         }
 
         public static int LevelToMaxBuildQueue(int level)
@@ -158,7 +149,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     edit.Submit();
 
-                    buildingLevel_logistics = 2;
+                    buildingStructure.buildingLevel_logistics = 2;
                 }
             });
             
@@ -169,9 +160,9 @@ namespace VikingEngine.DSSWars.GameObject
         {
             //commit is main thread
 
-            if (CanBuildLogistics(buildingLevel_logistics + 1))
+            if (CanBuildLogistics(buildingStructure.buildingLevel_logistics + 1))
             {
-                if (buildingLevel_logistics == 0)
+                if (buildingStructure.buildingLevel_logistics == 0)
                 {
                     if (CraftBuildingLib.CraftLogistics.hasResources(this))
                     {
@@ -186,7 +177,7 @@ namespace VikingEngine.DSSWars.GameObject
                         return true;
                     }
                 }
-                else if (buildingLevel_logistics == 1)
+                else if (buildingStructure.buildingLevel_logistics == 1)
                 {
                     if (CraftBuildingLib.CraftLogisticsLevel2.hasResources(this))
                     {
@@ -211,7 +202,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             work = autoBuild_Work;
 
-            if (buildingLevel_logistics == 0)
+            if (buildingStructure.buildingLevel_logistics == 0)
             {
                 farm = Build.BuildAndExpandType.NUM_NONE;
                 return;
@@ -1104,7 +1095,7 @@ namespace VikingEngine.DSSWars.GameObject
             //    waterAddPerSec = 2;
             //}
             nextWater.value += waterAddPerSec;
-            maxWaterTotal = maxWaterBase + buildingCount_waterresorvoir * DssConst.WaterResovoirWaterAdd;
+            maxWaterTotal = maxWaterBase + buildingStructure.buildingCount_waterresorvoir * DssConst.WaterResovoirWaterAdd;
             res_water.amount = Math.Min(res_water.amount + nextWater.pull(), maxWaterTotal);
 
             if (starving)

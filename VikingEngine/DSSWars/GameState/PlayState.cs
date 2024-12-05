@@ -523,7 +523,7 @@ namespace VikingEngine.DSSWars
                 if (slowMinuteUpdate)
                 { 
                     slowMinuteUpdate = false;
-                    technologyManager.asyncOneMinuteUpdate();
+                    technologyManager.asyncOneMinuteUpdate(false);
                 }
 
             }

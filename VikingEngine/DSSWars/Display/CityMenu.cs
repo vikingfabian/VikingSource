@@ -377,8 +377,8 @@ namespace VikingEngine.DSSWars.Display
         }
         void workTab(RichBoxContent content)
         {
-            if (player.tutorial == null)
-            {
+            //if (player.tutorial == null)
+            //{
                 for (WorkSubTab workSubTab = 0; workSubTab < WorkSubTab.NUM; ++workSubTab)
                 {
                     var tabContent = new RichBoxContent();
@@ -400,9 +400,9 @@ namespace VikingEngine.DSSWars.Display
                             tabContent.Add(new RichBoxImage(SpriteName.WarsResource_IronArmor));
                             break;
 
-                        case WorkSubTab.Experience:
-                            tabContent.Add(new RichBoxText(DssRef.todoLang.Experience_Title));
-                            break;
+                        //case WorkSubTab.Experience:
+                        //    tabContent.Add(new RichBoxText(DssRef.todoLang.Experience_Title));
+                        //    break;
                     }
                     var subTab = new RichboxButton(tabContent,
                         new RbAction1Arg<WorkSubTab>((WorkSubTab resourcesSubTab) =>
@@ -414,7 +414,7 @@ namespace VikingEngine.DSSWars.Display
                     content.space(workSubTab== WorkSubTab.Priority_Armor ? 2 : 1);
                 }
                 content.newParagraph();
-            }
+            //}
 
             switch (player.workSubTab)
             {
@@ -433,14 +433,14 @@ namespace VikingEngine.DSSWars.Display
         {
             HudLib.Label(content, DssRef.todoLang.Experience_TopExperience);
             experience(SpriteName.WarsWorkFarm, DssRef.todoLang.ExperienceType_Farm, city.topskill_Farm);
-            experience(SpriteName.WarsBuild_PigPen, DssRef.todoLang.ExperienceType_AnimalCare, city.topskill_AnimalCare);
+            experience(SpriteName.WarsBuild_HenPen, DssRef.todoLang.ExperienceType_AnimalCare, city.topskill_AnimalCare);
             experience(SpriteName.WarsHammer, DssRef.todoLang.ExperienceType_HouseBuilding, city.topskill_HouseBuilding);
             experience(SpriteName.WarsResource_Wood, DssRef.todoLang.ExperienceType_WoodCutter, city.topskill_WoodCutter);
             experience(SpriteName.WarsResource_Stone, DssRef.todoLang.ExperienceType_StoneCutter, city.topskill_StoneCutter);
             experience(SpriteName.WarsWorkMine, DssRef.todoLang.ExperienceType_Mining, city.topskill_Mining);
             experience(SpriteName.WarsWorkMove, DssRef.todoLang.ExperienceType_Transport, city.topskill_Transport);
             experience(SpriteName.WarsResource_Food, DssRef.todoLang.ExperienceType_Cook, city.topskill_Cook);
-            experience(SpriteName.WarsWoodCraftIcon, DssRef.todoLang.ExperienceType_Fletcher, city.topskill_Fletcher);
+            experience(SpriteName.WarsFletcherArrowIcon, DssRef.todoLang.ExperienceType_Fletcher, city.topskill_Fletcher);
             experience(SpriteName.WarsResource_Iron, DssRef.todoLang.ExperienceType_CraftMetal, city.topskill_CraftMetal);
             experience(SpriteName.WarsResource_IronArmor, DssRef.todoLang.ExperienceType_CraftArmor, city.topskill_CraftArmor);
             experience(SpriteName.WarsResource_Sword, DssRef.todoLang.ExperienceType_CraftWeapon, city.topskill_CraftWeapon);
@@ -828,7 +828,7 @@ namespace VikingEngine.DSSWars.Display
                     content.newParagraph();
 
                     city.res_ballista.toMenu(content, ItemResourceType.Ballista, false, ref reachedBuffer);
-                    blueprintButton(player, content, CraftResourceLib.Ballista);
+                    blueprintButton(player, content, CraftResourceLib.Ballista_Iron, CraftResourceLib.Ballista_Bronze);
 
                     city.res_Manuballista.toMenu(content, ItemResourceType.Manuballista, false, ref reachedBuffer);
                     blueprintButton(player, content, CraftResourceLib.ManuBallista);
@@ -1657,8 +1657,9 @@ namespace VikingEngine.DSSWars.Display
         Priority_Metals,
         Priority_Weapons,
         Priority_Armor,
-        Experience,
-        NUM
+        
+        NUM,
+            Experience,
     }
 
     enum ProgressSubTab

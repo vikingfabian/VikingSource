@@ -7,6 +7,7 @@ using Valve.Steamworks;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.ToGG.ToggEngine.Map;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.DSSWars.Build;
 
 namespace VikingEngine.DSSWars.Map
 {
@@ -31,7 +32,7 @@ namespace VikingEngine.DSSWars.Map
         public List<IntVector2> WoodCutter = new List<IntVector2>(20);
         public List<IntVector2> StoneCutter = new List<IntVector2>(20);
 
-        int nobelHouseCount = 0;
+        //int nobelHouseCount = 0;
         public int fuelSpots = 0;
         public int foodspots = 0;
         //public int logisticsLevel = 0;
@@ -161,12 +162,14 @@ namespace VikingEngine.DSSWars.Map
             ResourceOnGround.Clear();
             WoodCutter.Clear();
             StoneCutter.Clear();
-            nobelHouseCount = 0;
-            int coalPitCount = 0;
+            //nobelHouseCount = 0;
+            //int coalPitCount = 0;
             fuelSpots = 0;
             foodspots = 0;
-            int logisticsLevel = 0;
-            int waterReservoirs = 0;
+            //int logisticsLevel = 0;
+            //int waterReservoirs = 0;
+
+            BuildingStructure buildingStructure = new BuildingStructure();
 
             IntVector2 cityHall = WP.ToSubTilePos_Centered(city.tilePos);
             FoodSpots_workupdate.Add(cityHall);
@@ -283,16 +286,16 @@ namespace VikingEngine.DSSWars.Map
                                                 StoragePoints_workupdate.Add(subTileLoop.Position);
                                                 break;
                                             case TerrainBuildingType.Carpenter:
-                                                city.hasBuilding_carpenter = true;
+                                                buildingStructure.hasBuilding_carpenter = true;
                                                 CraftStation.Add(subTileLoop.Position);
                                                 break;
                                             case TerrainBuildingType.Brewery:
-                                                city.hasBuilding_brewery = true;
+                                                buildingStructure.hasBuilding_brewery = true;
                                                 CraftStation.Add(subTileLoop.Position);
                                                 break;
                                             
                                             case TerrainBuildingType.Work_CoalPit:
-                                                ++coalPitCount;
+                                                ++buildingStructure.coalPitCount;
                                                 CraftStation.Add(subTileLoop.Position);
                                                 break;
 
@@ -301,7 +304,7 @@ namespace VikingEngine.DSSWars.Map
                                                 CraftStation.Add(subTileLoop.Position);
                                                 break;
                                             case TerrainBuildingType.Work_Smith:
-                                                city.hasBuilding_smith = true;
+                                                buildingStructure.hasBuilding_smith = true;
                                                 CraftStation.Add(subTileLoop.Position);
                                                 break;
                                             case TerrainBuildingType.WoodCutter:
@@ -312,13 +315,13 @@ namespace VikingEngine.DSSWars.Map
                                                 break;
 
                                             case TerrainBuildingType.Nobelhouse:
-                                                ++nobelHouseCount;
+                                                ++buildingStructure.buildingCount_nobelHouse;
                                                 break;
                                             case TerrainBuildingType.Logistics:
-                                                logisticsLevel = subTile.terrainAmount;
+                                                buildingStructure.buildingLevel_logistics = subTile.terrainAmount;
                                                 break;
                                             case TerrainBuildingType.WaterResovoir:
-                                                ++waterReservoirs;
+                                                ++buildingStructure.buildingCount_waterresorvoir;
                                                 break;
                                         }
                                         break;
@@ -339,10 +342,11 @@ namespace VikingEngine.DSSWars.Map
             }
 
             //Complete
-            city.buildingCount_nobelHouse = nobelHouseCount;
-            city.buildingCount_coalpit = coalPitCount;
-            city.buildingLevel_logistics = logisticsLevel;
-            city.buildingCount_waterresorvoir = waterReservoirs;
+            city.buildingStructure = buildingStructure;
+            //    buildingCount_nobelHouse = nobelHouseCount;
+            //city.buildingCount_coalpit = coalPitCount;
+            //city.buildingLevel_logistics = logisticsLevel;
+            //city.buildingCount_waterresorvoir = waterReservoirs;
 
             void farming(ref SubTile subTile)
             {

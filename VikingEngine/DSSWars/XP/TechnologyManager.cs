@@ -75,10 +75,12 @@ namespace VikingEngine.DSSWars.XP
                 var citiesC = factionsC.sel.cities.counter();
                 while (citiesC.Next())
                 {
+                    citiesC.sel.workTemplate.applyUnlock(citiesC.sel.technology.GetUnlocks(false));
                     factionTech.Add(citiesC.sel.technology);
                 }
 
                 factionsC.sel.technology = factionTech;
+                factionsC.sel.workTemplate.applyUnlock(factionTech.GetUnlocks(true));
             }
         }
     }

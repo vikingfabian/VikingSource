@@ -573,7 +573,7 @@ namespace VikingEngine.DSSWars.Build
                 player.orders.clearAll(city);
             }, SoundLib.menuBack), null, orderLength > 0);
 
-            if (city.buildingLevel_logistics == 1)
+            if (city.buildingStructure.buildingLevel_logistics == 1)
             {
                 content.space();
                 var upgradeText = new RichBoxText(string.Format(DssRef.lang.XP_UpgradeBuildingX, DssRef.lang.BuildingType_Logistics));
@@ -602,7 +602,7 @@ namespace VikingEngine.DSSWars.Build
             content.newParagraph();
             content.text(string.Format(DssRef.lang.Build_OrderQue, orderLength)).overrideColor = HudLib.InfoYellow_Light;
 
-            if (city.buildingLevel_logistics > 0)
+            if (city.buildingStructure.buildingLevel_logistics > 0)
             {
                 content.Add(new RichBoxSeperationLine());
 

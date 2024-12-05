@@ -498,6 +498,9 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainBuildingType.Chemist:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 7, wp, WorldData.SubTileWidth * 1.4f));
                     break;
+                case TerrainBuildingType.Gunmaker:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 0, wp, WorldData.SubTileWidth * 0.4f));
+                    break;
 
 
                 case TerrainBuildingType.Brewery:

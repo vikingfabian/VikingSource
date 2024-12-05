@@ -168,7 +168,7 @@ namespace VikingEngine.DSSWars.Display
                                 break;
                         }
 
-                        if (subTile.city.buildingLevel_logistics < 2)
+                        if (subTile.city.buildingStructure.buildingLevel_logistics < 2)
                         {
                             content.text(string.Format(DssRef.lang.BuildHud_Queue, player.orders.buildQueue(subTile.city), subTile.city.MaxBuildQueue())).overrideColor = subTile.city.availableBuildQueue(player) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                         }
