@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                             if (currentWorkforce >= goalWorkForce)
                             {
                                 //faction.availableForPlayer = true;
-                                faction.refreshMainCity();
+                                //faction.refreshMainCity();
                                 return currentWorkforce;
                             }
                         }
@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 }
             }
 
-            faction.refreshMainCity();
+            //faction.refreshMainCity();
             return currentWorkforce;
 
             void addCity(City city)

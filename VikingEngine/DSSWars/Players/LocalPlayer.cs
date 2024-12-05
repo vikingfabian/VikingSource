@@ -106,6 +106,9 @@ namespace VikingEngine.DSSWars.Players
             {
                 GameSpeedOptions = new int[] { 1, 2 };
             }
+
+            faction.technology = new XP.TechnologyTemplate();
+            //faction.technology.iron = XP.TechnologyTemplate.FactionUnlock;
         }
 
         public void assignPlayer(int playerindex, int numPlayers, bool newGame)

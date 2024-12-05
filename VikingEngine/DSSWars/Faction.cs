@@ -280,12 +280,14 @@ namespace VikingEngine.DSSWars
         {
             if (duringStartUp)
             {
-                //if (mainCity == null)
-                //    mainCity = city;
-                //else if (city.CityType > mainCity.CityType)
-                //{//larger city
-                //    mainCity = city;
-                //}
+                if (mainCity == null)
+                {
+                    mainCity = city;
+                }
+                else if (city.workForceMax > mainCity.workForceMax)
+                {//larger city
+                    mainCity = city;
+                }
                 cities.Add(city);
                 city.setFaction(this);
             }

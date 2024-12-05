@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                     break;
                 case WorkExperienceType.AnimalCare:
                     name = DssRef.todoLang.ExperienceType_AnimalCare;
-                    icon = SpriteName.WarsBuild_PigPen;
+                    icon = SpriteName.WarsBuild_HenPen;
                     break;
                 case WorkExperienceType.HouseBuilding:
                     name = DssRef.todoLang.ExperienceType_HouseBuilding;
@@ -82,7 +82,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                     break;
                 case WorkExperienceType.Fletcher:
                     name = DssRef.todoLang.ExperienceType_Fletcher;
-                    icon = SpriteName.WarsWoodCraftIcon;
+                    icon = SpriteName.WarsFletcherArrowIcon;
                     break;
                 case WorkExperienceType.Smelting:
                     name = DssRef.todoLang.ExperienceType_RefineOre;

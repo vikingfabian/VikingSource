@@ -10,6 +10,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.LootFest.Players;
 using VikingEngine.DSSWars.Display.Translation;
+using System.Reflection.Metadata;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -36,15 +37,70 @@ namespace VikingEngine.DSSWars.GameObject
 
         public ExperienceOrDistancePrio experenceOrDistance = ExperienceOrDistancePrio.Mix;
 
-        
+        public void technologyOverviewHud(RichBoxContent content, LocalPlayer player)
+        {
+            content.newLine();
+            content.Add(new RichBoxImage(SpriteName.WarsTechnology_Unlocked));
+
+            tech(technology.advancedBuilding, SpriteName.WarsBuild_Nobelhouse, DssRef.todoLang.Technology_AdvancedBuildings);
+            
+            tech(technology.advancedFarming, SpriteName.WarsWorkFarm, DssRef.todoLang.Technology_AdvancedFarming);
+
+            tech(technology.advancedCasting, SpriteName.WarsResource_IronManCannon, DssRef.todoLang.Technology_AdvancedCasting);
+
+            tech(technology.iron, SpriteName.WarsResource_Iron, DssRef.lang.Resource_TypeName_Iron);
+
+            tech(technology.steel, SpriteName.WarsResource_Steel, DssRef.todoLang.Resource_TypeName_Steel);
+
+            tech(technology.catapult, SpriteName.WarsResource_Catapult, DssRef.todoLang.Resource_TypeName_Catapult);
+
+            tech(technology.blackPowder, SpriteName.WarsResource_BronzeRifle, DssRef.todoLang.Resource_TypeName_BlackPowder);
+
+            tech(technology.gunPowder, SpriteName.WarsResource_IronRifle, DssRef.todoLang.Resource_TypeName_GunPowder);
+
+            void tech(int value, SpriteName icon, string caption)
+            {
+                bool unlocked = value >= TechnologyTemplate.Unlocked;
+
+                if (unlocked)
+                {
+                    var infoContent = new RichBoxContent();
+
+                   infoContent.Add(new RichBoxImage(icon));
+                    
+                    var infoButton = new RichboxButton(infoContent, null, new RbAction(() =>
+                    {
+                        RichBoxContent content = new RichBoxContent();
+
+                        content.h2(DssRef.todoLang.Technology_Title).overrideColor = HudLib.TitleColor_Label;
+                        content.newLine();
+                        content.Add(new RichBoxImage(icon));
+                        content.space();
+                        content.Add(new RichBoxText(caption));
+
+
+                        player.hud.tooltip.create(player, content, true);
+                    }));
+
+                    infoButton.overrideBgColor = HudLib.InfoYellow_BG;
+                    content.Add(infoButton);
+                    content.space();
+                }
+            }
+        }
 
         public void technologyHud(RichBoxContent content, LocalPlayer player)
         {
 
             var advBuildingFields = new List<WorkExperienceType>
-            {   
+            {
                 WorkExperienceType.HouseBuilding,
                 WorkExperienceType.StoneCutter,
+            };
+            var advFarmingFields = new List<WorkExperienceType>
+            {
+                WorkExperienceType.Farm,
+                WorkExperienceType.AnimalCare,
             };
             var advCastingFields = new List<WorkExperienceType>
             {
@@ -72,8 +128,12 @@ namespace VikingEngine.DSSWars.GameObject
             tech(technology.advancedBuilding, SpriteName.WarsBuild_Nobelhouse, DssRef.todoLang.Technology_AdvancedBuildings, advBuildingUnlock, advBuildingFields);
 
             content.newParagraph();
+            Unlocks advFarmUnlock = new Unlocks(); advFarmUnlock.UnlockAdvancedFarming();
+            tech(technology.advancedFarming, SpriteName.WarsWorkFarm, DssRef.todoLang.Technology_AdvancedFarming, advFarmUnlock, advFarmingFields);
+
+            content.newParagraph();
             Unlocks advCastingUnlock = new Unlocks(); advCastingUnlock.UnlockAdvancedCasting();
-            tech(technology.advancedBuilding, SpriteName.WarsResource_IronManCannon, DssRef.todoLang.Technology_AdvancedCasting, advCastingUnlock, advCastingFields);
+            tech(technology.advancedCasting, SpriteName.WarsResource_IronManCannon, DssRef.todoLang.Technology_AdvancedCasting, advCastingUnlock, advCastingFields);
 
             content.newParagraph();
             Unlocks ironUnlock = new Unlocks(); ironUnlock.UnlockIron();
@@ -90,36 +150,85 @@ namespace VikingEngine.DSSWars.GameObject
             content.newParagraph();
 
             Unlocks blackpowUnlock = new Unlocks(); blackpowUnlock.UnlockBlackPowder();
-            tech(technology.iron, SpriteName.WarsResource_BronzeRifle, DssRef.todoLang.Resource_TypeName_BlackPowder, blackpowUnlock, gunPowderFields);
+            tech(technology.blackPowder, SpriteName.WarsResource_BronzeRifle, DssRef.todoLang.Resource_TypeName_BlackPowder, blackpowUnlock, gunPowderFields);
             
             Unlocks gunpowUnlock = new Unlocks(); gunpowUnlock.UnlockGunPowder();
-            tech(technology.iron, SpriteName.WarsResource_IronRifle, DssRef.todoLang.Resource_TypeName_GunPowder, gunpowUnlock, gunPowderFields);
+            tech(technology.gunPowder, SpriteName.WarsResource_IronRifle, DssRef.todoLang.Resource_TypeName_GunPowder, gunpowUnlock, gunPowderFields);
 
 
             content.newParagraph();
             {
                 HudLib.BulletPoint(content);
-                var info = new RichBoxText(string.Format(DssRef.todoLang.Technology_GainByNeigborRelation, DssRef.lang.Diplomacy_RelationType_Good,
-                    string.Format(DssRef.todoLang.Hud_PercentPerMinute, TextLib.PlusMinus( DssConst.TechnologyGain_GoodRelation_PerMin))));
-                info.overrideColor = HudLib.InfoYellow_Light;
-                content.Add(info);
+                content.Add(new RichBoxImage(SpriteName.WarsRelationGood));
+                content.Add(new RichBoxText($"{DssRef.lang.Diplomacy_RelationType_Good}: {string.Format(DssRef.todoLang.Hud_PercentPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_GoodRelation_PerMin))}"));
+                content.space();
+
+                HudLib.InfoButton(content, new RbAction(() =>
+                {
+                    RichBoxContent content = new RichBoxContent();
+                    var info = new RichBoxText(string.Format(DssRef.todoLang.Technology_GainByNeigborRelation, DssRef.lang.Diplomacy_RelationType_Good,
+                        string.Format(DssRef.todoLang.Hud_PercentPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_GoodRelation_PerMin))));
+                    info.overrideColor = HudLib.InfoYellow_Light;
+                    content.Add(info);
+
+                    player.hud.tooltip.create(player, content, true);
+                }));
             }
             content.newLine();
             {
-                HudLib.BulletPoint(content);
-                var info = new RichBoxText(string.Format(DssRef.todoLang.Technology_GainByNeigborRelation, DssRef.lang.Diplomacy_RelationType_Ally,
+                HudLib.BulletPoint(content);                
+                content.Add(new RichBoxImage(SpriteName.WarsRelationAlly));
+                content.Add(new RichBoxText($"{DssRef.lang.Diplomacy_RelationType_Ally}: {string.Format(DssRef.todoLang.Hud_PercentPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_AllyRelation_PerMin))}"));
+                content.space();
+
+                HudLib.InfoButton(content, new RbAction(() =>
+                {
+                    RichBoxContent content = new RichBoxContent();
+                    var info = new RichBoxText(string.Format(DssRef.todoLang.Technology_GainByNeigborRelation, DssRef.lang.Diplomacy_RelationType_Ally,
                     string.Format(DssRef.todoLang.Hud_PercentPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_AllyRelation_PerMin))));
-                info.overrideColor = HudLib.InfoYellow_Light;
-                content.Add(info);
+                    info.overrideColor = HudLib.InfoYellow_Light;
+                    content.Add(info);
+
+                    player.hud.tooltip.create(player, content, true);
+                }));
             }
             content.newLine();
             {
                 HudLib.BulletPoint(content);
-                var info = new RichBoxText(string.Format(DssRef.todoLang.Technology_CitySpread,
+                content.Add(new RichBoxImage(SpriteName.WarsCityHall));
+                content.Add(new RichBoxText($"{DssRef.lang.UnitType_City}: {string.Format(DssRef.todoLang.Hud_PercentPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_CitySpread))}"));
+                content.space();
+
+                HudLib.InfoButton(content, new RbAction(() =>
+                {
+                    RichBoxContent content = new RichBoxContent();
+                    var info = new RichBoxText(string.Format(DssRef.todoLang.Technology_CitySpread,
                     string.Format(DssRef.todoLang.Hud_PercentPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_CitySpread))));
-                info.overrideColor = HudLib.InfoYellow_Light;
-                content.Add(info);
+                    info.overrideColor = HudLib.InfoYellow_Light;
+                    content.Add(info);
+
+                    player.hud.tooltip.create(player, content, true);
+                }));
             }
+           
+            content.newLine();
+            {
+                HudLib.BulletPoint(content);
+                content.Add(new RichBoxImage(LangLib.ExperienceLevelIcon( ExperienceLevel.Master_4)));
+                content.Add(new RichBoxText($"{DssRef.todoLang.ExperienceLevel_4}: { TextLib.PlusMinus(DssConst.TechnologyGain_Master)}"));
+                content.space();
+
+                HudLib.InfoButton(content, new RbAction(() =>
+                {
+                    RichBoxContent content = new RichBoxContent();
+                    var info = new RichBoxText(string.Format(DssRef.todoLang.Technology_ForEachMaster, DssRef.lang.ResourceType_Workers, DssRef.todoLang.ExperienceLevel_4, TextLib.PlusMinus(DssConst.TechnologyGain_Master)));
+                    info.overrideColor = HudLib.InfoYellow_Light;
+                    content.Add(info);
+
+                    player.hud.tooltip.create(player, content, true);
+                }));
+            }
+
             content.newLine();
             {
                 HudLib.BulletPoint(content);
@@ -127,14 +236,6 @@ namespace VikingEngine.DSSWars.GameObject
                 info.overrideColor = HudLib.InfoYellow_Light;
                 content.Add(info);
             }
-            content.newLine();
-            {
-                HudLib.BulletPoint(content);
-                var info = new RichBoxText(string.Format(DssRef.todoLang.Technology_ForEachMaster, DssRef.lang.ResourceType_Workers, DssRef.todoLang.ExperienceLevel_4, TextLib.PlusMinus(DssConst.TechnologyGain_Master)));
-                info.overrideColor = HudLib.InfoYellow_Light;
-                content.Add(info);
-            }
-
 
             void tech(int value, SpriteName icon, string caption, Unlocks unlocks, List<WorkExperienceType> experienceField)
             {

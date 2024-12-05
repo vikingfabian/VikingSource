@@ -37,21 +37,17 @@ Slight improvement on map generating (sticks on 70%)
 -wagon, transport span amount, 2/4 wheel
 -tool shed, faster farming upgrade
 -Embassy expansion för att unlocka diplomacy
--Mines
 * soldier level
 * Guest housing (sten hus i stan) for guards, barracks, post office, (city hall min size, öka vid antal byggnader?) 
 
-* manuballista (hand ballista), wall crusher
+* wall crusher
 * diplomat, med politic / spy upgrade
 
-* crossbow, hand cannon (cupper), blunder buss, rifle (mechanic shop)
 * horse farm
 * ox farm, also incread farming area
 
 * go legendary, bonus building
  farm - apple tree
-
-
 
 * masters guild, låt hög level arbetare vänta
 * refugee tent, samlar på invandrare (60) half food cost, auto build homes?
@@ -59,6 +55,7 @@ Slight improvement on map generating (sticks on 70%)
 
 * vetskap kan sparas i pergament och sparas, kopieras, trade, sprida med messenger > papyrus/läder pergament
 
+* faction resources per second current/produced/consumed 
 #Todo (xmas patch)#
 krig varning på ally
 new maps

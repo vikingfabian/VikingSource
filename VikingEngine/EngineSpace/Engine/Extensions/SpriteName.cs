@@ -2632,6 +2632,8 @@ namespace VikingEngine
         WarsResource_TinOre,
         WarsResource_Tin,
         WarsWoodCraftIcon,
+        WarsFletcherArrowIcon,
+
         WarsResource_Wagon2Wheel,
         WarsResource_Wagon4Wheel,
         WarsResource_ShortSword,

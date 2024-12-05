@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.XP;
 using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Work
@@ -37,6 +38,7 @@ namespace VikingEngine.DSSWars.Work
         public WorkPriority craft_bronze = new WorkPriority(0);
         public WorkPriority craft_castiron = new WorkPriority(0);
         public WorkPriority craft_bloomeryiron = new WorkPriority(0);
+        public WorkPriority craft_steel = new WorkPriority(0);
         public WorkPriority craft_mithril = new WorkPriority(0);
 
         public WorkPriority craft_toolkit = new WorkPriority(0);
@@ -107,7 +109,39 @@ namespace VikingEngine.DSSWars.Work
         public WorkPriority coinmaker_bronze = new WorkPriority(0);
         public WorkPriority coinmaker_silver = new WorkPriority(0);
         public WorkPriority coinmaker_mithril = new WorkPriority(0);
+        public void applyUnlock(Unlocks unlocks)
+        {
+            craft_toolkit.unlocked = unlocks.item_tools;
 
+            craft_iron.unlocked = unlocks.item_Iron;
+            craft_shortsword.unlocked = unlocks.item_Sword;
+            craft_sword.unlocked = unlocks.item_Sword;
+            craft_mailarmor.unlocked = unlocks.item_IronArmor;
+            craft_heavymailarmor.unlocked = unlocks.item_IronArmor;
+
+            craft_bloomeryiron.unlocked = unlocks.item_Steel;
+            craft_steel.unlocked = unlocks.item_Steel;
+            craft_longsword.unlocked = unlocks.item_LongSword;
+            craft_twohandsword.unlocked = unlocks.item_LongSword;
+            craft_platearmor.unlocked = unlocks.item_SteelArmor;
+            craft_fullplatearmor.unlocked = unlocks.item_SteelArmor;
+
+            craft_catapult.unlocked = unlocks.item_catapult;
+            craft_manuballista.unlocked = unlocks.item_catapult;
+            craft_crossbow.unlocked = unlocks.item_crossbow;
+
+            craft_blackpowder.unlocked = unlocks.item_blackPowder;
+            craft_handcannon.unlocked = unlocks.item_blackPowder;
+            craft_handculvertin.unlocked = unlocks.item_blackPowder;
+            craft_siegecannonbronze.unlocked = unlocks.item_blackPowder;
+            craft_mancannonbronze.unlocked = unlocks.item_blackPowder;
+
+            craft_gunpowder.unlocked = unlocks.item_gunPowder;
+            craft_rifle.unlocked = unlocks.item_gunPowder;
+            craft_blunderbus.unlocked = unlocks.item_gunPowder;
+            craft_siegecannoniron.unlocked = unlocks.item_gunPowder;
+            craft_mancannoniron.unlocked = unlocks.item_gunPowder;
+        }
 
         public WorkTemplate()
         {
@@ -183,6 +217,8 @@ namespace VikingEngine.DSSWars.Work
                 farm_linen.readGameState(r, subversion, isCity);
             //}
         }
+
+        
 
         public void onFactionChange(WorkTemplate factionTemplate)
         {
@@ -295,6 +331,8 @@ namespace VikingEngine.DSSWars.Work
                     return craft_iron;
                 case ItemResourceType.BloomeryIron:
                     return craft_iron;
+                case ItemResourceType.Steel:
+                    return craft_steel;
                 case ItemResourceType.Mithril:
                     return craft_iron;
 
@@ -373,6 +411,8 @@ namespace VikingEngine.DSSWars.Work
                     return craft_castiron;
                 case WorkPriorityType.craftBloomeryIron:
                     return craft_bloomeryiron;
+                case WorkPriorityType.craftSteel:
+                    return craft_steel;
                 case WorkPriorityType.craftMithril:
                     return craft_mithril;
 
@@ -443,13 +483,13 @@ namespace VikingEngine.DSSWars.Work
                     return craft_batteringram;
 
                 case WorkPriorityType.craftSiegeCannonBronze:
-                    return craft_ballista;
+                    return craft_siegecannonbronze;
                 case WorkPriorityType.craftManCannonBronze:
-                    return craft_ballista;
+                    return craft_mancannonbronze;
                 case WorkPriorityType.craftSiegeCannonIron:
-                    return craft_ballista;
+                    return craft_siegecannoniron;
                 case WorkPriorityType.craftManCannonIron:
-                    return craft_ballista;
+                    return craft_mancannoniron;
 
                 case WorkPriorityType.craftPaddedArmor:
                     return craft_paddedarmor;
@@ -461,6 +501,13 @@ namespace VikingEngine.DSSWars.Work
                     return craft_mailarmor;
                 case WorkPriorityType.craftHeavyMailArmor:
                     return craft_heavymailarmor;
+                case WorkPriorityType.craftPlateArmor:
+                    return craft_platearmor;
+                case WorkPriorityType.craftFullPlateArmor:
+                    return craft_fullplatearmor;
+                case WorkPriorityType.craftMithrilArmor:
+                    return craft_mithrilarmor;
+
                 case WorkPriorityType.farmfood:
                     return farm_food;
                 case WorkPriorityType.farmfuel:
@@ -540,6 +587,9 @@ namespace VikingEngine.DSSWars.Work
                     break;
                 case WorkPriorityType.craftBloomeryIron:
                     craft_bloomeryiron = value;
+                    break;
+                case WorkPriorityType.craftSteel:
+                    craft_steel = value;
                     break;
                 case WorkPriorityType.craftMithril:
                     craft_iron = value;
@@ -787,6 +837,7 @@ namespace VikingEngine.DSSWars.Work
                     craft_bronze.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Bronze), SpriteName.WarsHammer, SpriteName.WarsResource_Bronze, WorkPriorityType.craftBronze, faction, city);
                     craft_castiron.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_CastIron), SpriteName.WarsHammer, SpriteName.WarsResource_CastIron, WorkPriorityType.craftCastIron, faction, city);
                     craft_bloomeryiron.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_BloomIron), SpriteName.WarsHammer, SpriteName.WarsResource_BloomeryIron, WorkPriorityType.craftBloomeryIron, faction, city);
+                    craft_steel.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Steel), SpriteName.WarsHammer, SpriteName.WarsResource_Steel, WorkPriorityType.craftSteel, faction, city);
                     craft_mithril.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Mithril), SpriteName.WarsHammer, SpriteName.WarsResource_MithrilAlloy, WorkPriorityType.craftMithril, faction, city);
 
                     break;
@@ -844,8 +895,6 @@ namespace VikingEngine.DSSWars.Work
             } 
         
         }
-
-
     }
 
     struct WorkPriority
@@ -854,21 +903,21 @@ namespace VikingEngine.DSSWars.Work
 
         public int value;
         public bool followFaction;
+        public bool unlocked;
         //public bool safeguard;
 
         public WorkPriority(int defaultVal)//, bool safeguard)
         {
             followFaction = true;
-            //this.safeguard = safeguard;
+            unlocked = true;
             value = defaultVal;
         }
 
         public void onFactionValueChange(WorkPriority factionTemplate)
         {
-            if (followFaction)
+            if (followFaction && unlocked)
             {
                 value = factionTemplate.value;
-                //  safeguard = factionTemplate.safeguard;
             }
         }
 
@@ -1035,6 +1084,7 @@ namespace VikingEngine.DSSWars.Work
         craftBronze,
         craftCastIron,
         craftBloomeryIron,
+        craftSteel,
         craftMithril,
         craftToolkit,
         craftWagonLight,
@@ -1083,6 +1133,7 @@ namespace VikingEngine.DSSWars.Work
         craftHeavyMailArmor,
         craftPlateArmor,
         craftFullPlateArmor,
+        craftMithrilArmor,
 
         farmfood,
         farmfuel,

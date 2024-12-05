@@ -622,7 +622,7 @@ namespace VikingEngine.DSSWars.Display
                         content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
                         content.Add(new RichBoxText( string.Format(DssRef.lang.Resource_CurrentAmount, city.res_water.amount)));
 
-                        content.text(string.Format(DssRef.lang.Resource_MaxAmount, city.maxWater));
+                        content.text(string.Format(DssRef.lang.Resource_MaxAmount, city.maxWaterTotal));
 
                         content.newLine();
                         content.Add(new RichBoxImage(SpriteName.WarsResource_WaterAdd));

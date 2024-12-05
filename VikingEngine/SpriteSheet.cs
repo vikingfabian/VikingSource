@@ -2519,6 +2519,8 @@ namespace VikingEngine
                     add(SpriteName.WarsResource_CoolingFluid);
                     add(SpriteName.WarsTechnology_Unlocked);
                     add(SpriteName.WarsTechnology_Locked);
+                    add(SpriteName.WarsFletcherArrowIcon);
+
 
                 }
 

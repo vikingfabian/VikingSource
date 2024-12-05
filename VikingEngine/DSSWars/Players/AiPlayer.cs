@@ -5,6 +5,7 @@ using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.XP;
 
 
 namespace VikingEngine.DSSWars.Players
@@ -73,69 +74,85 @@ namespace VikingEngine.DSSWars.Players
             {               
                 case FactionType.Starshield:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_Starshield;
                     break;
                 case FactionType.Bluepeak:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_Bluepeak;
                     break;
                 case FactionType.Hoft:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_Hoft;
                     break;
                 case FactionType.RiverStallion:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_RiverStallion;
                     break;
                 case FactionType.Sivo:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_Sivo;
                     break;
 
                 case FactionType.AelthrenConclave:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_AelthrenConclave;
                     break;
                 case FactionType.VrakasundEnclave:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_VrakasundEnclave;
                     break;
                 case FactionType.Tormürd:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_Tormürd;
                     break;
                 case FactionType.ElderysFyrd:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_ElderysFyrd;
                     break;
                 case FactionType.Hólmgar:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_Hólmgar;
                     break;
                 case FactionType.RûnothalOrder:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_RûnothalOrder;
                     break;
 
                 case FactionType.GrimwardEotain:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_GrimwardEotain;
                     break;
                 case FactionType.SkaeldraHaim:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_SkaeldraHaim;
                     break;
                 case FactionType.MordwynnCompact:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_MordwynnCompact;
                     break;
                 case FactionType.AethmireSovren:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_AethmireSovren;
                     break;
 
                  case FactionType.ThurlanKin:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_ThurlanKin;
                     break;
                 case FactionType.ValestennOrder:
@@ -144,200 +161,248 @@ namespace VikingEngine.DSSWars.Players
                     break;
                 case FactionType.Mournfold:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_Mournfold;
                     break;
                 case FactionType.OrentharTribes:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_OrentharTribes;
                     break;
                 case FactionType.SkarnVael:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_SkarnVael;
                     break;
                 case FactionType.Glimmerfell:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_Glimmerfell;
                     break;
                 case FactionType.BleakwaterFold:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_BleakwaterFold;
                     break;
                 case FactionType.Oathmaeren:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_Oathmaeren;
                     break;
                 case FactionType.Elderforge:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_Elderforge;
                     break;
                 case FactionType.MarhollowCartel:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_MarhollowCartel;
                     break;
 
 
                 case FactionType.TharvaniDominion:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_TharvaniDominion;
                     break;
                 case FactionType.KystraAscendancy:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_KystraAscendancy;
                     break;
                 case FactionType.GildenmarkUnion:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_GildenmarkUnion;
                     break;
                 case FactionType.AurecanEmpire:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_AurecanEmpire;
                     break;
                 case FactionType.BronzeReach:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_BronzeReach;
                     break;
                 case FactionType.ElbrethGuild:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_ElbrethGuild;
                     break;
                 case FactionType.ValosianSenate:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_ValosianSenate;
                     break;
                 case FactionType.IronmarchCompact:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_IronmarchCompact;
                     break;
                 case FactionType.KaranthCollective:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_KaranthCollective;
                     break;
                 case FactionType.VerdicAlliance:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_VerdicAlliance;
                     break;
 
                 case FactionType.OrokhCircles:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_OrokhCircles;
                     break;
                 case FactionType.TannagHorde:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_TannagHorde;
                     break;
                 case FactionType.BraghkRaiders:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_BraghkRaiders;
                     break;
                 case FactionType.ThurvanniStonekeepers:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_ThurvanniStonekeepers;
                     break;
                 case FactionType.KolvrenHunters:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_KolvrenHunters;
                     break;
                 case FactionType.JorathBloodbound:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_JorathBloodbound;
                     break;
                 case FactionType.UlrethSkycallers:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_UlrethSkycallers;
                     break;
                 case FactionType.GharjaRavagers:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_GharjaRavagers;
                     break;
                 case FactionType.RavkanShield:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_RavkanShield;
                     break;
                 case FactionType.FenskaarTidewalkers:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_FenskaarTidewalkers;
                     break;
 
 
                 case FactionType.HroldaniStormguard:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_HroldaniStormguard;
                     break;
                 case FactionType.SkirnirWolfkin:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_SkirnirWolfkin;
                     break;
                 case FactionType.ThalgarBearclaw:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_ThalgarBearclaw;
                     break;
                 case FactionType.VarnokRimeguard:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_VarnokRimeguard;
                     break;
                 case FactionType.KorrakFirehand:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_KorrakFirehand;
                     break;
                 case FactionType.MoongladeGat:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_MoongladeGat;
                     break;
                 case FactionType.DraskarSons:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_DraskarSons;
                     break;
                 case FactionType.YrdenFlamekeepers:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_YrdenFlamekeepers;
                     break;
                 case FactionType.BrundirWarhorns:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_BrundirWarhorns;
                     break;
                 case FactionType.OltunBonecarvers:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_OltunBonecarvers;
                     break;
 
                 case FactionType.HaskariEmber:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_HaskariEmber;
                     break;
                 case FactionType.ZalfrikThunderborn:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_ZalfrikThunderborn;
                     break;
                 case FactionType.BjorunStonetender:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_BjorunStonetender;
                     break;
                 case FactionType.MyrdarrIcewalkers:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_MyrdarrIcewalkers;
                     break;
                 case FactionType.SkelvikSpear:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_SkelvikSpear;
                     break;
                 case FactionType.VaragThroatcallers:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_VaragThroatcallers;
                     break;
                 case FactionType.Durakai:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_Durakai;
                     break;
                 case FactionType.FjornfellWarhowl:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_FjornfellWarhowl;
                     break;
                 case FactionType.AshgroveWard:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_AshgroveWard;
                     break;
                 case FactionType.HragmarHorncarvers:
                     defaultSetup();
+                    techSetup();
                     name = DssRef.lang.FactionName_HragmarHorncarvers;
                     break;
 
@@ -345,6 +410,7 @@ namespace VikingEngine.DSSWars.Players
                 case FactionType.Player:
                 case FactionType.DefaultAi:
                     defaultSetup();
+                    techSetup();
                     name = string.Format(DssRef.lang.FactionName_GenericAi, faction.parentArrayIndex);
                     break;
 
@@ -355,6 +421,16 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 1.5f;
                     name = DssRef.lang.FactionName_DarkLord;
                     faction.displayInFullOverview = true;
+
+
+                    techSetup();
+                    faction.technology.advancedBuilding = TechnologyTemplate.FactionUnlock;
+                    faction.technology.advancedCasting = TechnologyTemplate.FactionUnlock;
+                    faction.technology.iron = TechnologyTemplate.FactionUnlock;
+                    faction.technology.steel = TechnologyTemplate.FactionUnlock;
+                    faction.technology.blackPowder = TechnologyTemplate.FactionUnlock;
+                    faction.technology.gunPowder = TechnologyTemplate.FactionUnlock;
+
                     break;
 
                 case FactionType.DarkFollower:
@@ -366,6 +442,9 @@ namespace VikingEngine.DSSWars.Players
                     name = DssRef.lang.FactionName_DarkFollower;
                     faction.displayInFullOverview = true;
                     faction.gold += DssConst.HeadCityStartMaxWorkForce * 10;
+
+                    techSetup();
+                    faction.technology.blackPowder = TechnologyTemplate.FactionUnlock;
                     break;
 
                 case FactionType.UnitedKingdom:
@@ -374,6 +453,11 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     name = DssRef.lang.FactionName_UnitedKingdom;
                     faction.displayInFullOverview = true;
+                    
+                    techSetup();
+                    techSetup();
+                    faction.technology.advancedBuilding = TechnologyTemplate.FactionUnlock;
+                    faction.technology.steel = TechnologyTemplate.FactionUnlock;
                     break;
 
                 case FactionType.GreenWood:
@@ -384,12 +468,18 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     faction.growthMultiplier = 0.75f;
                     name = DssRef.lang.FactionName_Greenwood;
-                    //addStartCitiesBuyOption(UnitType.GreenSoldier);
+                    faction.profile.factionFlavorType = FactionFlavorType.Forest;
+
+                    techSetup();
+                    faction.technology.steel = TechnologyTemplate.FactionUnlock;
                     break;
 
                 case FactionType.EasternEmpire:
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     name = DssRef.lang.FactionName_EasternEmpire;
+
+                    techSetup();
+                    faction.technology.advancedBuilding = TechnologyTemplate.FactionUnlock;
                     break;
 
                 case FactionType.NordicRealm:
@@ -398,6 +488,8 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     name = DssRef.lang.FactionName_NordicRealm;
                     //addStartCitiesBuyOption(UnitType.Viking);
+
+                    techSetup();
                     break;
 
                 case FactionType.BearClaw:
@@ -406,6 +498,7 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     name = DssRef.lang.FactionName_BearClaw;
                     //addStartCitiesBuyOption(UnitType.Viking);
+                    techSetup();
                     break;
 
                 case FactionType.NordicSpur:
@@ -414,6 +507,7 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     name = DssRef.lang.FactionName_NordicSpur;
                     //addStartCitiesBuyOption(UnitType.Viking);
+                    techSetup();
                     break;
 
                 case FactionType.IceRaven:
@@ -422,6 +516,7 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     name = DssRef.lang.FactionName_IceRaven;
                     //addStartCitiesBuyOption(UnitType.Viking);
+                    techSetup();
                     break;
 
                 case FactionType.DragonSlayer:
@@ -430,6 +525,8 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = Ref.rnd.Chance(0.4) ? AggressionLevel2_RandomAttacks : AggressionLevel1_RevengeOnly;
                     name = DssRef.lang.FactionName_Dragonslayer;
                     //addStartCitiesBuyOption(UnitType.CrossBow);
+                    techSetup();
+                    faction.technology.catapult = TechnologyTemplate.FactionUnlock;
                     break;
 
                 case FactionType.SouthHara:
@@ -443,6 +540,10 @@ namespace VikingEngine.DSSWars.Players
                     name = DssRef.lang.FactionName_SouthHara;
                     faction.displayInFullOverview = true;
                     faction.gold += DssConst.HeadCityStartMaxWorkForce * 5;
+
+                    techSetup();
+                    faction.technology.catapult = TechnologyTemplate.FactionUnlock;
+                    faction.technology.blackPowder = TechnologyTemplate.FactionUnlock;
                     break;
 
                 case FactionType.DyingMonger:
@@ -454,6 +555,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.hasDeserters = false;
                     name = DssRef.lang.FactionName_Monger;
                     faction.gold += DssConst.HeadCityStartMaxWorkForce * 1000;
+                    techSetup();
                     break;
 
                 case FactionType.DyingHate:
@@ -465,6 +567,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.hasDeserters = false;
                     name = DssRef.lang.FactionName_Hatu;
                     faction.gold += DssConst.HeadCityStartMaxWorkForce * 1000;
+                    techSetup();
                     break;
 
                 case FactionType.DyingDestru:
@@ -476,6 +579,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.hasDeserters = false;
                     name = DssRef.lang.FactionName_Destru;
                     faction.gold += DssConst.HeadCityStartMaxWorkForce * 1000;
+                    techSetup();
                     break;
 
 
@@ -483,7 +587,8 @@ namespace VikingEngine.DSSWars.Players
                     throw new NotImplementedException("ai player " + faction.factiontype);
             }
 
-            
+            //apply tech on all cities
+
 
             void defaultSetup()
             {
@@ -544,6 +649,97 @@ namespace VikingEngine.DSSWars.Players
 
                     }
 
+                }
+            }
+
+            void techSetup()
+            {
+                faction.technology.advancedBuilding = Ref.rnd.Int(50);
+                faction.technology.advancedFarming = Ref.rnd.Int(50);
+                faction.technology.advancedCasting = Ref.rnd.Int(50);
+                faction.technology.iron = TechnologyTemplate.FactionUnlock;
+                faction.technology.steel = Ref.rnd.Int(50);
+                faction.technology.catapult = Ref.rnd.Int(50);
+                faction.technology.blackPowder = Ref.rnd.Int(50);
+
+                if (faction.profile.factionFlavorType == FactionFlavorType.City)
+                {
+                    if (Ref.rnd.Chance(0.8))
+                    {
+                        faction.technology.advancedBuilding = TechnologyTemplate.FactionUnlock;
+                    }
+                    else
+                    {
+                        faction.technology.advancedBuilding = MathExt.MultiplyInt(faction.technology.steel, 2);
+                    }
+                }
+                
+                if (faction.profile.factionFlavorType == FactionFlavorType.Mountain)
+                {
+                    if (Ref.rnd.Chance(0.8))
+                    {
+                        faction.technology.steel = TechnologyTemplate.FactionUnlock;
+                    }
+                    else
+                    {
+                        faction.technology.steel = MathExt.MultiplyInt(faction.technology.steel, 2);
+                    }
+
+                    if (Ref.rnd.Chance(0.6))
+                    {
+                        faction.technology.catapult = TechnologyTemplate.FactionUnlock;
+                    }
+                    else
+                    {
+                        faction.technology.catapult = MathExt.MultiplyInt(faction.technology.steel, 2);
+                    }
+                }
+
+                if (faction.profile.factionFlavorType == FactionFlavorType.People)
+                {
+                    faction.technology.iron = 0;
+                    faction.technology.steel = 0;
+
+                    if (Ref.rnd.Chance(0.6))
+                    {
+                        faction.technology.advancedFarming = TechnologyTemplate.FactionUnlock;
+                    }
+                    else
+                    {
+                        faction.technology.advancedFarming = MathExt.MultiplyInt(faction.technology.steel, 2);
+                    }
+                }
+
+                if (faction.diplomaticSide == DiplomaticSide.Dark)
+                {
+                    if (Ref.rnd.Chance(0.6))
+                    {
+                        faction.technology.advancedCasting = TechnologyTemplate.FactionUnlock;
+                    }
+                    else
+                    {
+                        faction.technology.advancedCasting *= 2;
+                    }
+
+                    if (Ref.rnd.Chance(0.6))
+                    {
+                        faction.technology.blackPowder = TechnologyTemplate.FactionUnlock;
+                    }
+                    else
+                    {
+                        faction.technology.blackPowder *= 2;
+                    }
+
+                    if (Ref.rnd.Chance(0.4))
+                    {
+                        faction.technology.steel = TechnologyTemplate.FactionUnlock;
+                    }
+                    else
+                    {
+                        faction.technology.steel = MathExt.MultiplyInt(faction.technology.steel, 1.5);
+                    }
+
+                    faction.technology.advancedFarming = 0;
                 }
             }
         }

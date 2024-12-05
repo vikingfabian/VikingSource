@@ -14,6 +14,7 @@ namespace VikingEngine.DSSWars.XP
         public const int FactionUnlock = 100000;
 
         public int advancedBuilding;
+        public int advancedFarming; //hemp, pigs, toolbox
         public int advancedCasting;
 
         public int iron;
@@ -24,9 +25,50 @@ namespace VikingEngine.DSSWars.XP
         public int blackPowder;
         public int gunPowder;
 
+        public Unlocks GetUnlocks()
+        {
+            Unlocks unlocks = new Unlocks();
+
+            if (advancedBuilding >= Unlocked)
+            {
+                unlocks.UnlockAdvancedBuilding();
+            }
+            if (advancedFarming >= Unlocked)
+            {
+                unlocks.UnlockAdvancedFarming();
+            }
+            if (advancedCasting >= Unlocked)
+            {
+                unlocks.UnlockAdvancedCasting();
+            }
+            if (iron >= Unlocked)
+            {
+                unlocks.UnlockIron();
+            }
+            if (steel >= Unlocked)
+            {
+                unlocks.UnlockSteel();
+            }
+            if (catapult >= Unlocked)
+            {
+                unlocks.UnlockCatapult();
+            }
+            if (blackPowder >= Unlocked)
+            {
+                unlocks.UnlockBlackPowder();
+            }
+            if (gunPowder >= Unlocked)
+            {
+                unlocks.UnlockGunPowder();
+            }
+
+            return unlocks;
+        }
+
         public void destroyTechOnTakeOver()
         {
             tech(ref advancedBuilding);
+            tech(ref advancedFarming);
             tech(ref advancedCasting);
             tech(ref iron);
             tech(ref steel);
@@ -43,28 +85,11 @@ namespace VikingEngine.DSSWars.XP
             }
         }
 
-        //public void applyFactionTech(TechnologyTemplate from)
-        //{
-        //    tech(ref advancedBuilding, from.advancedBuilding);
-        //    tech(ref advancedCasting, from.advancedCasting);
-        //    tech(ref iron, from.iron);
-        //    tech(ref steel, from.steel);
-        //    tech(ref catapult, from.catapult);
-        //    tech(ref blackPowder, from.blackPowder);
-        //    tech(ref gunPowder, from.gunPowder);
-
-        //    void tech(ref int thisTech, int otherTech)
-        //    {
-        //        if (otherTech >= FactionUnlock)
-        //        {
-        //            thisTech = FactionUnlock;
-        //        }
-        //    }
-        //}
 
         public void gainTechSpread(TechnologyTemplate from, int gainSpeed)
         {
             tech(ref advancedBuilding, from.advancedBuilding);
+            tech(ref advancedFarming, from.advancedFarming);
             tech(ref advancedCasting, from.advancedCasting);
             tech(ref iron, from.iron);
             tech(ref steel, from.steel);
@@ -81,9 +106,10 @@ namespace VikingEngine.DSSWars.XP
             }
         }
 
-        public void addFactionUnlocked(TechnologyTemplate from)
+        public void addFactionUnlocked(TechnologyTemplate from, bool includeProgress)
         {
             tech(ref advancedBuilding, from.advancedBuilding);
+            tech(ref advancedFarming, from.advancedFarming);
             tech(ref advancedCasting, from.advancedCasting);
             tech(ref iron, from.iron);
             tech(ref steel, from.steel);
@@ -97,12 +123,17 @@ namespace VikingEngine.DSSWars.XP
                 { 
                     thisTech = Unlocked;
                 }
+                else if (includeProgress)
+                { 
+                    thisTech = otherTech;
+                }
             }
         }
 
         public void checkCityCount(int cityCount)
         {
             tech(ref advancedBuilding);
+            tech(ref advancedFarming);
             tech(ref advancedCasting);
             tech(ref iron);
             tech(ref steel);
@@ -122,6 +153,7 @@ namespace VikingEngine.DSSWars.XP
         public void Add(TechnologyTemplate city)
         {
             advancedBuilding += city.advancedBuilding;
+            advancedFarming += city.advancedFarming;
             advancedCasting += city.advancedCasting;
             iron += city.iron;
             steel += city.steel;
@@ -138,6 +170,9 @@ namespace VikingEngine.DSSWars.XP
     struct Unlocks
     {
         public bool building_stoneBuildings;
+
+        public bool item_tools;
+        public bool building_mixedFarms;
 
         public bool item_cannon;
         public bool building_cannonBarrack;
@@ -162,6 +197,12 @@ namespace VikingEngine.DSSWars.XP
         public void UnlockAdvancedBuilding()
         {
             building_stoneBuildings = true;
+        }
+
+        public void UnlockAdvancedFarming()
+        {
+            item_tools = true;
+            building_mixedFarms = true;
         }
 
         public void UnlockAdvancedCasting()
@@ -209,6 +250,11 @@ namespace VikingEngine.DSSWars.XP
                 builds.Add(BuildAndExpandType.Nobelhouse);
                 builds.Add(BuildAndExpandType.Bank);
             }
+            if (building_mixedFarms)
+            {
+                builds.Add(BuildAndExpandType.HempFarm);
+                builds.Add(BuildAndExpandType.PigPen);
+            }
 
             if (building_cannonBarrack)
             {
@@ -229,8 +275,10 @@ namespace VikingEngine.DSSWars.XP
             
             List <ItemResourceType> items = new List < ItemResourceType >();
 
-            
-
+            if (item_tools)
+            {
+                items.Add(ItemResourceType.Toolkit);
+            }
             if (item_Iron)
             {
                 items.Add(ItemResourceType.Iron_G);
@@ -274,7 +322,6 @@ namespace VikingEngine.DSSWars.XP
                 items.Add(ItemResourceType.HandCulverin);
                 items.Add(ItemResourceType.ManCannonBronze);
                 items.Add(ItemResourceType.SiegeCannonBronze);
-
             }
 
             return items;

@@ -1357,6 +1357,10 @@ namespace VikingEngine.DSSWars.GameObject
                     content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.Hud_Immigrants, immigrants.Int()));
                 }
 
+                technologyOverviewHud(content, player);
+#if DEBUG
+                technologyHud(content, player);
+#endif
                 //if (!player.inTutorialMode)
                 {
                     //Properties
@@ -1540,7 +1544,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 workTemplate.onFactionChange(faction.workTemplate);
                 tradeTemplate.onFactionValueChange(faction.tradeTemplate);
-                technology.addFactionUnlocked(faction.technology);
+                technology.addFactionUnlocked(faction.technology, false);
             }
         }
 

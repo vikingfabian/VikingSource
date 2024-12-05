@@ -77,6 +77,7 @@ namespace VikingEngine.DSSWars.Build
         public static List<BuildAndExpandType> AvailableBuildTypes(GameObject.City city)
         {
             List<BuildAndExpandType> result = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
+            var unlocks = city.technology.GetUnlocks();
 
             if (city.buildingLevel_logistics == 0 ||
                 StartupSettings.UnlockAllProgress)
@@ -93,18 +94,27 @@ namespace VikingEngine.DSSWars.Build
             result.Add(BuildAndExpandType.SoldierBarracks);
             result.Add(BuildAndExpandType.ArcherBarracks);
             result.Add(BuildAndExpandType.WarmashineBarracks);
-            result.Add(BuildAndExpandType.GunBarracks);
-            result.Add(BuildAndExpandType.CannonBarracks);
+            if (unlocks.building_gunBarrack)
+            {
+                result.Add(BuildAndExpandType.GunBarracks);
+            }
+            if (unlocks.building_cannonBarrack)
+            {
+                result.Add(BuildAndExpandType.CannonBarracks);
+            }            
 
             if (city.buildingLevel_logistics >= 1 ||
                 StartupSettings.UnlockAllProgress)
             {
                 if (city.buildingCount_nobelHouse > 0 ||
-                StartupSettings.UnlockAllProgress)
+                    StartupSettings.UnlockAllProgress)
                 {
                     result.Add(BuildAndExpandType.KnightsBarracks);
                 }
+            }
 
+            if (unlocks.building_stoneBuildings)
+            {
                 result.Add(BuildAndExpandType.Nobelhouse);
 
                 if (city.buildingCount_nobelHouse > 0 ||
@@ -113,7 +123,7 @@ namespace VikingEngine.DSSWars.Build
                     result.Add(BuildAndExpandType.Embassy);
                 }
             }
-            
+
             result.Add(BuildAndExpandType.Postal);
             
             if (city.buildingLevel_logistics >= 1 ||
@@ -140,19 +150,30 @@ namespace VikingEngine.DSSWars.Build
             result.Add(BuildAndExpandType.Armory);
 
             result.Add(BuildAndExpandType.Carpenter);
-            result.Add(BuildAndExpandType.Chemist);
-            result.Add(BuildAndExpandType.Gunmaker);
+            if (unlocks.building_chemist)
+            {
+                result.Add(BuildAndExpandType.Chemist);
+                result.Add(BuildAndExpandType.Gunmaker);
+            }
 
-            result.Add(BuildAndExpandType.PigPen);
+
+            if (unlocks.building_mixedFarms)
+            {
+                result.Add(BuildAndExpandType.PigPen);
+            }
             result.Add(BuildAndExpandType.HenPen);
             result.Add(BuildAndExpandType.WheatFarm);
             result.Add(BuildAndExpandType.LinenFarm);
             result.Add(BuildAndExpandType.RapeSeedFarm);
+            if (unlocks.building_mixedFarms)
+            {
+                result.Add(BuildAndExpandType.HempFarm);
+            }
+
             if (city.buildingLevel_logistics >= 1 ||
                 StartupSettings.UnlockAllProgress)
             {
-                result.Add(BuildAndExpandType.HempFarm);
-
+                
                 result.Add(BuildAndExpandType.WoodCutter);
                 result.Add(BuildAndExpandType.StoneCutter);
 
@@ -163,6 +184,10 @@ namespace VikingEngine.DSSWars.Build
             {
                 result.Add(BuildAndExpandType.Pavement);
                 result.Add(BuildAndExpandType.PavementFlower);
+                
+            }
+            if (unlocks.building_stoneBuildings)
+            {
                 result.Add(BuildAndExpandType.Statue_ThePlayer);
             }
 

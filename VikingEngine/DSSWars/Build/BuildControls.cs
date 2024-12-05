@@ -150,19 +150,19 @@ namespace VikingEngine.DSSWars.Build
                         case BuildAndExpandType.WaterResovoir:
                             HudLib.BulletPoint(content);
                             content.Add(new RichBoxImage(SpriteName.WarsResource_WaterAdd));
-                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.Resource_MaxAmount, TextLib.PlusMinus(DssConst.WaterResovoirWaterAdd))));
+                            content.Add(new RichBoxText(string.Format(DssRef.lang.Resource_MaxAmount, TextLib.PlusMinus(DssConst.WaterResovoirWaterAdd))));
 
                             content.newParagraph();
                             HudLib.Label(content, DssRef.lang.Hud_ThisCity);
                             content.newLine();
                             content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
-                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.Resource_CurrentAmount, city.res_water.amount)));
+                            content.Add(new RichBoxText(string.Format(DssRef.lang.Resource_CurrentAmount, city.res_water.amount)));
                             content.newLine();
                             content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
-                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.Resource_MaxAmount, city.maxWaterTotal)));
+                            content.Add(new RichBoxText(string.Format(DssRef.lang.Resource_MaxAmount, city.maxWaterTotal)));
                             content.newLine();
                             content.Add(new RichBoxImage(SpriteName.WarsResource_WaterAdd));
-                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.Resource_AddPerSec, TextLib.OneDecimal( city.waterAddPerSec))));
+                            content.Add(new RichBoxText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.OneDecimal( city.waterAddPerSec))));
                             break;
 
                         case BuildAndExpandType.WoodCutter:

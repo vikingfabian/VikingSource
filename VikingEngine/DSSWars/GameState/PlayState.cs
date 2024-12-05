@@ -94,12 +94,13 @@ namespace VikingEngine.DSSWars
 
             //Ref.rnd.SetSeed(DssRef.world.metaData.seed);
             initPlayers(newGame, pointers);
+
             culling = new Culling();
 
             factionsMap = new MapLayer_Factions();
             overviewMap = new Map.MapLayer_Overview(factionsMap);
             detailMap = new Map.MapLayer_Detail();
-
+            technologyManager.initGame(newGame);
             
             events = new GameEvents();
 
@@ -193,6 +194,8 @@ namespace VikingEngine.DSSWars
             {
                 localPlayers[i].initPlayerToPlayer(i, playerCount);
             }
+
+
         }
 
         void onGameStart(bool newGame)

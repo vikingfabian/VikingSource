@@ -8,47 +8,75 @@ namespace VikingEngine.DSSWars.XP
 {
     class TechnologyManager
     {
-        public void asyncOneMinuteUpdate()
+        /// <remark>
+        /// Players must be fully initialized
+        /// </remark>
+        public void initGame(bool newGame)
+        {
+            if (newGame)
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    var factionsCounter = DssRef.world.factions.counter();
+                    while (factionsCounter.Next())
+                    {
+                        var citiesC = factionsCounter.sel.cities.counter();
+                        while (citiesC.Next())
+                        {
+                            citiesC.sel.technology.addFactionUnlocked(factionsCounter.sel.technology, true);
+                        }
+                    }
+
+                    asyncOneMinuteUpdate(false);
+                });
+            }
+        }
+
+        public void asyncOneMinuteUpdate(bool runSpread)
         {
             //Collect tech spread
 
-            foreach (var city in DssRef.world.cities)
-            {   
-                foreach (var ni in city.neighborCities)
+            if (runSpread)
+            {
+                foreach (var city in DssRef.world.cities)
                 {
-                    var nCity = DssRef.world.cities[ni];
-                    if (city.faction == nCity.faction)
+                    foreach (var ni in city.neighborCities)
                     {
-                        city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_CitySpread);
-                    }
-                    else
-                    {
-                        switch (DssRef.diplomacy.GetRelationType(city.faction, nCity.faction))
+                        var nCity = DssRef.world.cities[ni];
+                        if (city.faction == nCity.faction)
                         {
-                            case RelationType.RelationType2_Good:
-                                city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_GoodRelation_PerMin);
-                                break;
-                            case RelationType.RelationType3_Ally:
-                                city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_AllyRelation_PerMin);
-                                break;
+                            city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_CitySpread);
+                        }
+                        else
+                        {
+                            switch (DssRef.diplomacy.GetRelationType(city.faction, nCity.faction))
+                            {
+                                case RelationType.RelationType2_Good:
+                                    city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_GoodRelation_PerMin);
+                                    break;
+                                case RelationType.RelationType3_Ally:
+                                    city.technology.gainTechSpread(nCity.technology, DssConst.TechnologyGain_AllyRelation_PerMin);
+                                    break;
+                            }
                         }
                     }
                 }
             }
 
             //Faction tech overview
+            //Apply unlock to work
             var factionsC = DssRef.world.factions.counter();
             while (factionsC.Next())
             {
                 TechnologyTemplate factionTech = new TechnologyTemplate();
-                factionTech.addFactionUnlocked(factionsC.sel.technology);
+                factionTech.addFactionUnlocked(factionsC.sel.technology, false);
+
+
                 var citiesC = factionsC.sel.cities.counter();
                 while (citiesC.Next())
                 {
                     factionTech.Add(citiesC.sel.technology);
                 }
-
-
 
                 factionsC.sel.technology = factionTech;
             }

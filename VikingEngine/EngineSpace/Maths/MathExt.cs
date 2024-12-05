@@ -261,9 +261,9 @@ namespace VikingEngine
             return x < 1e-10f;
         }
 
-        public static int MultiplyInt(double multiply, int value)
+        public static int MultiplyInt(double value1, double value2)
         {
-            return Convert.ToInt32(value * multiply);
+            return Convert.ToInt32(value2 * value1);
         }
 
         public static IntVector2 Max(IntVector2 a, IntVector2 b)

@@ -83,12 +83,13 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Technology_Title = "Technology";
         public string Technology_ShareField = "Sharing technology field";
 
-        public string Technology_GainByNeigborRelation => "For each neighbor faction with the technology. And your relation is {0}: {1}";
+        public string Technology_GainByNeigborRelation => "For each neighbor city with the technology. And your relation is {0}: {1}";
         public string Technology_ForEachMaster=> "When a {0} reaches an experience level of {1}, in the technology field: {2}";
         public string Technology_CitySpread => "Your cities will share technology when adjacent: {0}";
         public string Technology_CityCapture => "Most technolgies are destroyed when a city is captured in battle";
 
         public string Technology_AdvancedBuildings = "Advanced buildings";
+        public string Technology_AdvancedFarming = "Advanced farming";
         public string Technology_AdvancedCasting = "Advanced casting";
         public string Hud_PercentPerMinute => "{0}% per minute";
         public string Hud_Mixed => "Mixed";
