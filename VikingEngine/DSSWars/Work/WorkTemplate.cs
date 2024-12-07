@@ -67,7 +67,7 @@ namespace VikingEngine.DSSWars.Work
         public WorkPriority craft_mithrilbow = new WorkPriority(0);
 
         public WorkPriority craft_handcannon = new WorkPriority(0);
-        public WorkPriority craft_handculvertin = new WorkPriority(0);
+        public WorkPriority craft_handculverin = new WorkPriority(0);
         public WorkPriority craft_rifle = new WorkPriority(0);
         public WorkPriority craft_blunderbus = new WorkPriority(0);
 
@@ -99,8 +99,10 @@ namespace VikingEngine.DSSWars.Work
         public WorkPriority mining_cupper = new WorkPriority(0);
         public WorkPriority mining_lead = new WorkPriority(0);
         public WorkPriority mining_silver = new WorkPriority(0);
+        public WorkPriority mining_gold = new WorkPriority(3);
         public WorkPriority mining_mithril = new WorkPriority(0);
         public WorkPriority mining_sulfur = new WorkPriority(0);
+        public WorkPriority mining_coal = new WorkPriority(0);
 
         public WorkPriority trading = new WorkPriority(2);
         public WorkPriority autoBuild = new WorkPriority(1);
@@ -111,6 +113,11 @@ namespace VikingEngine.DSSWars.Work
         public WorkPriority coinmaker_mithril = new WorkPriority(0);
         public void applyUnlock(Unlocks unlocks)
         {
+            coinmaker_cupper.unlocked = unlocks.coinMaking;
+            coinmaker_bronze.unlocked = unlocks.coinMaking;
+            coinmaker_silver.unlocked = unlocks.coinMaking;
+            coinmaker_mithril.unlocked = unlocks.coinMaking;
+
             craft_toolkit.unlocked = unlocks.item_tools;
 
             craft_castiron.unlocked = unlocks.item_castIron;
@@ -138,7 +145,7 @@ namespace VikingEngine.DSSWars.Work
             craft_blackpowder.unlocked = unlocks.item_blackPowder;
             craft_bullet.unlocked = unlocks.item_blackPowder;
             craft_handcannon.unlocked = unlocks.item_blackPowder;
-            craft_handculvertin.unlocked = unlocks.item_blackPowder;
+            craft_handculverin.unlocked = unlocks.item_blackPowder;
             
             craft_gunpowder.unlocked = unlocks.item_gunPowder;
             craft_rifle.unlocked = unlocks.item_gunPowder;
@@ -162,29 +169,90 @@ namespace VikingEngine.DSSWars.Work
             craft_fuel.writeGameState(w, isCity);
             craft_food.writeGameState(w, isCity);
             craft_beer.writeGameState(w, isCity);
-            craft_iron.writeGameState(w, isCity);
-            craft_sharpstick.writeGameState(w, isCity);
-            craft_sword.writeGameState(w, isCity);
-            craft_bow.writeGameState(w, isCity);
+            craft_coolingfluid.writeGameState(w, isCity);
 
+            craft_iron.writeGameState(w, isCity);
+            craft_tin.writeGameState(w, isCity);
+            craft_cupper.writeGameState(w, isCity);
+            craft_lead.writeGameState(w, isCity);
+            craft_silver.writeGameState(w, isCity);
+
+            craft_bronze.writeGameState(w, isCity);
+            craft_castiron.writeGameState(w, isCity);
+            craft_bloomeryiron.writeGameState(w, isCity);
+            craft_steel.writeGameState(w, isCity);
+            craft_mithril.writeGameState(w, isCity);
+
+            craft_toolkit.writeGameState(w, isCity);
+            craft_wagonlight.writeGameState(w, isCity);
+            craft_wagonheavy.writeGameState(w, isCity);
+            craft_blackpowder.writeGameState(w, isCity);
+            craft_gunpowder.writeGameState(w, isCity);
+            craft_bullet.writeGameState(w, isCity);
+
+            craft_sharpstick.writeGameState(w, isCity);
+            craft_bronzesword.writeGameState(w, isCity);
+            craft_shortsword.writeGameState(w, isCity);
+            craft_sword.writeGameState(w, isCity);
+            craft_longsword.writeGameState(w, isCity);
+            craft_handspear.writeGameState(w, isCity);
+            craft_mithrilsword.writeGameState(w, isCity);
+            craft_warhammer.writeGameState(w, isCity);
             craft_twohandsword.writeGameState(w, isCity);
             craft_knightslance.writeGameState(w, isCity);
+
+            craft_slingshot.writeGameState(w, isCity);
+            craft_throwingspear.writeGameState(w, isCity);
+            craft_bow.writeGameState(w, isCity);
+            craft_longbow.writeGameState(w, isCity);
+            craft_crossbow.writeGameState(w, isCity);
+            craft_mithrilbow.writeGameState(w, isCity);
+
+            craft_handcannon.writeGameState(w, isCity);
+            craft_handculverin.writeGameState(w, isCity);
+            craft_rifle.writeGameState(w, isCity);
+            craft_blunderbus.writeGameState(w, isCity);
+
             craft_ballista.writeGameState(w, isCity);
+            craft_manuballista.writeGameState(w, isCity);
+            craft_catapult.writeGameState(w, isCity);
+            craft_batteringram.writeGameState(w, isCity);
+
+            craft_siegecannonbronze.writeGameState(w, isCity);
+            craft_mancannonbronze.writeGameState(w, isCity);
+            craft_siegecannoniron.writeGameState(w, isCity);
+            craft_mancannoniron.writeGameState(w, isCity);
 
             craft_paddedarmor.writeGameState(w, isCity);
+            craft_heavypaddedarmor.writeGameState(w, isCity);
+            craft_bronzearmor.writeGameState(w, isCity);
             craft_mailarmor.writeGameState(w, isCity);
             craft_heavymailarmor.writeGameState(w, isCity);
+            craft_platearmor.writeGameState(w, isCity);
+            craft_fullplatearmor.writeGameState(w, isCity);
+            craft_mithrilarmor.writeGameState(w, isCity);
+
             farm_food.writeGameState(w, isCity);
+            farm_fuel.writeGameState(w, isCity);
+            farm_linen.writeGameState(w, isCity);
+            bogiron.writeGameState(w, isCity);
             mining_iron.writeGameState(w, isCity);
+            mining_tin.writeGameState(w, isCity);
+            mining_cupper.writeGameState(w, isCity);
+            mining_lead.writeGameState(w, isCity);
+            mining_silver.writeGameState(w, isCity);
+            mining_gold.writeGameState(w, isCity);
+            mining_mithril.writeGameState(w, isCity);
+            mining_sulfur.writeGameState(w, isCity);
+            mining_coal.writeGameState(w, isCity);
+
             trading.writeGameState(w, isCity);
             autoBuild.writeGameState(w, isCity);
 
-            bogiron.writeGameState(w, isCity);
-            craft_longbow.writeGameState(w, isCity);
-
-            farm_fuel.writeGameState(w, isCity);
-            farm_linen.writeGameState(w, isCity);
-
+            coinmaker_cupper.writeGameState(w, isCity);
+            coinmaker_bronze.writeGameState(w, isCity);
+            coinmaker_silver.writeGameState(w, isCity);
+            coinmaker_mithril.writeGameState(w, isCity);
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, bool isCity)
         {
@@ -194,38 +262,93 @@ namespace VikingEngine.DSSWars.Work
             craft_fuel.readGameState(r, subversion, isCity);
             craft_food.readGameState(r, subversion, isCity);
             craft_beer.readGameState(r, subversion, isCity);
-            craft_iron.readGameState(r, subversion, isCity);
-            craft_sharpstick.readGameState(r, subversion, isCity);
-            craft_sword.readGameState(r, subversion, isCity);
-            craft_bow.readGameState(r, subversion, isCity);
+            craft_coolingfluid.readGameState(r, subversion, isCity);
 
-            if (subversion >= 13)
-            {
-                craft_twohandsword.readGameState(r, subversion, isCity);
-                craft_knightslance.readGameState(r, subversion, isCity);
-                craft_ballista.readGameState(r, subversion, isCity);
-            }
+            craft_iron.readGameState(r, subversion, isCity);
+            craft_tin.readGameState(r, subversion, isCity);
+            craft_cupper.readGameState(r, subversion, isCity);
+            craft_lead.readGameState(r, subversion, isCity);
+            craft_silver.readGameState(r, subversion, isCity);
+
+            craft_bronze.readGameState(r, subversion, isCity);
+            craft_castiron.readGameState(r, subversion, isCity);
+            craft_bloomeryiron.readGameState(r, subversion, isCity);
+            craft_steel.readGameState(r, subversion, isCity);
+            craft_mithril.readGameState(r, subversion, isCity);
+
+            craft_toolkit.readGameState(r, subversion, isCity);
+            craft_wagonlight.readGameState(r, subversion, isCity);
+            craft_wagonheavy.readGameState(r, subversion, isCity);
+            craft_blackpowder.readGameState(r, subversion, isCity);
+            craft_gunpowder.readGameState(r, subversion, isCity);
+            craft_bullet.readGameState(r, subversion, isCity);
+
+            craft_sharpstick.readGameState(r, subversion, isCity);
+            craft_bronzesword.readGameState(r, subversion, isCity);
+            craft_shortsword.readGameState(r, subversion, isCity);
+            craft_sword.readGameState(r, subversion, isCity);
+            craft_longsword.readGameState(r, subversion, isCity);
+            craft_handspear.readGameState(r, subversion, isCity);
+            craft_mithrilsword.readGameState(r, subversion, isCity);
+            craft_warhammer.readGameState(r, subversion, isCity);
+            craft_twohandsword.readGameState(r, subversion, isCity);
+            craft_knightslance.readGameState(r, subversion, isCity);
+
+            craft_slingshot.readGameState(r, subversion, isCity);
+            craft_throwingspear.readGameState(r, subversion, isCity);
+            craft_bow.readGameState(r, subversion, isCity);
+            craft_longbow.readGameState(r, subversion, isCity);
+            craft_crossbow.readGameState(r, subversion, isCity);
+            craft_mithrilbow.readGameState(r, subversion, isCity);
+
+            craft_handcannon.readGameState(r, subversion, isCity);
+            craft_handculverin.readGameState(r, subversion, isCity);
+            craft_rifle.readGameState(r, subversion, isCity);
+            craft_blunderbus.readGameState(r, subversion, isCity);
+
+            craft_ballista.readGameState(r, subversion, isCity);
+            craft_manuballista.readGameState(r, subversion, isCity);
+            craft_catapult.readGameState(r, subversion, isCity);
+            craft_batteringram.readGameState(r, subversion, isCity);
+
+            craft_siegecannonbronze.readGameState(r, subversion, isCity);
+            craft_mancannonbronze.readGameState(r, subversion, isCity);
+            craft_siegecannoniron.readGameState(r, subversion, isCity);
+            craft_mancannoniron.readGameState(r, subversion, isCity);
+
             craft_paddedarmor.readGameState(r, subversion, isCity);
+            craft_heavypaddedarmor.readGameState(r, subversion, isCity);
+            craft_bronzearmor.readGameState(r, subversion, isCity);
             craft_mailarmor.readGameState(r, subversion, isCity);
             craft_heavymailarmor.readGameState(r, subversion, isCity);
+            craft_platearmor.readGameState(r, subversion, isCity);
+            craft_fullplatearmor.readGameState(r, subversion, isCity);
+            craft_mithrilarmor.readGameState(r, subversion, isCity);
+
             farm_food.readGameState(r, subversion, isCity);
+            farm_fuel.readGameState(r, subversion, isCity);
+            farm_linen.readGameState(r, subversion, isCity);
+            bogiron.readGameState(r, subversion, isCity);
             mining_iron.readGameState(r, subversion, isCity);
+            mining_tin.readGameState(r, subversion, isCity);
+            mining_cupper.readGameState(r, subversion, isCity);
+            mining_lead.readGameState(r, subversion, isCity);
+            mining_silver.readGameState(r, subversion, isCity);
+            mining_gold.readGameState(r, subversion, isCity);
+            mining_mithril.readGameState(r, subversion, isCity);
+            mining_sulfur.readGameState(r, subversion, isCity);
+            mining_coal.readGameState(r, subversion, isCity);
+
             trading.readGameState(r, subversion, isCity);
             autoBuild.readGameState(r, subversion, isCity);
 
-            //if (subversion >= 18 && subversion != SaveGamestate.MergeVersion)
-            //{
-                bogiron.readGameState(r, subversion, isCity);
-                craft_longbow.readGameState(r, subversion, isCity);
-            //}
-            //if (subversion >= 20 && subversion != SaveGamestate.MergeVersion)
-            //{
-                farm_fuel.readGameState(r, subversion, isCity);
-                farm_linen.readGameState(r, subversion, isCity);
-            //}
+            coinmaker_cupper.readGameState(r, subversion, isCity);
+            coinmaker_bronze.readGameState(r, subversion, isCity);
+            coinmaker_silver.readGameState(r, subversion, isCity);
+            coinmaker_mithril.readGameState(r, subversion, isCity);
         }
 
-        
+
 
         public void onFactionChange(WorkTemplate factionTemplate)
         {
@@ -235,27 +358,90 @@ namespace VikingEngine.DSSWars.Work
             craft_fuel.onFactionValueChange(factionTemplate.craft_fuel);
             craft_food.onFactionValueChange(factionTemplate.craft_food);
             craft_beer.onFactionValueChange(factionTemplate.craft_beer);
+            craft_coolingfluid.onFactionValueChange(factionTemplate.craft_coolingfluid);
+
             craft_iron.onFactionValueChange(factionTemplate.craft_iron);
+            craft_tin.onFactionValueChange(factionTemplate.craft_tin);
+            craft_cupper.onFactionValueChange(factionTemplate.craft_cupper);
+            craft_lead.onFactionValueChange(factionTemplate.craft_lead);
+            craft_silver.onFactionValueChange(factionTemplate.craft_silver);
+
+            craft_bronze.onFactionValueChange(factionTemplate.craft_bronze);
+            craft_castiron.onFactionValueChange(factionTemplate.craft_castiron);
+            craft_bloomeryiron.onFactionValueChange(factionTemplate.craft_bloomeryiron);
+            craft_steel.onFactionValueChange(factionTemplate.craft_steel);
+            craft_mithril.onFactionValueChange(factionTemplate.craft_mithril);
+
+            craft_toolkit.onFactionValueChange(factionTemplate.craft_toolkit);
+            craft_wagonlight.onFactionValueChange(factionTemplate.craft_wagonlight);
+            craft_wagonheavy.onFactionValueChange(factionTemplate.craft_wagonheavy);
+            craft_blackpowder.onFactionValueChange(factionTemplate.craft_blackpowder);
+            craft_gunpowder.onFactionValueChange(factionTemplate.craft_gunpowder);
+            craft_bullet.onFactionValueChange(factionTemplate.craft_bullet);
 
             craft_sharpstick.onFactionValueChange(factionTemplate.craft_sharpstick);
+            craft_bronzesword.onFactionValueChange(factionTemplate.craft_bronzesword);
+            craft_shortsword.onFactionValueChange(factionTemplate.craft_shortsword);
             craft_sword.onFactionValueChange(factionTemplate.craft_sword);
+            craft_longsword.onFactionValueChange(factionTemplate.craft_longsword);
+            craft_handspear.onFactionValueChange(factionTemplate.craft_handspear);
+            craft_mithrilsword.onFactionValueChange(factionTemplate.craft_mithrilsword);
+            craft_warhammer.onFactionValueChange(factionTemplate.craft_warhammer);
             craft_twohandsword.onFactionValueChange(factionTemplate.craft_twohandsword);
             craft_knightslance.onFactionValueChange(factionTemplate.craft_knightslance);
+
+            craft_slingshot.onFactionValueChange(factionTemplate.craft_slingshot);
+            craft_throwingspear.onFactionValueChange(factionTemplate.craft_throwingspear);
             craft_bow.onFactionValueChange(factionTemplate.craft_bow);
             craft_longbow.onFactionValueChange(factionTemplate.craft_longbow);
+            craft_crossbow.onFactionValueChange(factionTemplate.craft_crossbow);
+            craft_mithrilbow.onFactionValueChange(factionTemplate.craft_mithrilbow);
+
+            craft_handcannon.onFactionValueChange(factionTemplate.craft_handcannon);
+            craft_handculverin.onFactionValueChange(factionTemplate.craft_handculverin);
+            craft_rifle.onFactionValueChange(factionTemplate.craft_rifle);
+            craft_blunderbus.onFactionValueChange(factionTemplate.craft_blunderbus);
+
             craft_ballista.onFactionValueChange(factionTemplate.craft_ballista);
+            craft_manuballista.onFactionValueChange(factionTemplate.craft_manuballista);
+            craft_catapult.onFactionValueChange(factionTemplate.craft_catapult);
+            craft_batteringram.onFactionValueChange(factionTemplate.craft_batteringram);
+
+            craft_siegecannonbronze.onFactionValueChange(factionTemplate.craft_siegecannonbronze);
+            craft_mancannonbronze.onFactionValueChange(factionTemplate.craft_mancannonbronze);
+            craft_siegecannoniron.onFactionValueChange(factionTemplate.craft_siegecannoniron);
+            craft_mancannoniron.onFactionValueChange(factionTemplate.craft_mancannoniron);
 
             craft_paddedarmor.onFactionValueChange(factionTemplate.craft_paddedarmor);
+            craft_heavypaddedarmor.onFactionValueChange(factionTemplate.craft_heavypaddedarmor);
+            craft_bronzearmor.onFactionValueChange(factionTemplate.craft_bronzearmor);
             craft_mailarmor.onFactionValueChange(factionTemplate.craft_mailarmor);
             craft_heavymailarmor.onFactionValueChange(factionTemplate.craft_heavymailarmor);
+            craft_platearmor.onFactionValueChange(factionTemplate.craft_platearmor);
+            craft_fullplatearmor.onFactionValueChange(factionTemplate.craft_fullplatearmor);
+            craft_mithrilarmor.onFactionValueChange(factionTemplate.craft_mithrilarmor);
 
             farm_food.onFactionValueChange(factionTemplate.farm_food);
             farm_fuel.onFactionValueChange(factionTemplate.farm_fuel);
             farm_linen.onFactionValueChange(factionTemplate.farm_linen);
             bogiron.onFactionValueChange(factionTemplate.bogiron);
             mining_iron.onFactionValueChange(factionTemplate.mining_iron);
+            mining_tin.onFactionValueChange(factionTemplate.mining_tin);
+            mining_cupper.onFactionValueChange(factionTemplate.mining_cupper);
+            mining_lead.onFactionValueChange(factionTemplate.mining_lead);
+            mining_silver.onFactionValueChange(factionTemplate.mining_silver);
+            mining_gold.onFactionValueChange(factionTemplate.mining_gold);
+            mining_mithril.onFactionValueChange(factionTemplate.mining_mithril);
+            mining_sulfur.onFactionValueChange(factionTemplate.mining_sulfur);
+            mining_coal.onFactionValueChange(factionTemplate.mining_sulfur);
+
             trading.onFactionValueChange(factionTemplate.trading);
             autoBuild.onFactionValueChange(factionTemplate.autoBuild);
+
+            coinmaker_cupper.onFactionValueChange(factionTemplate.coinmaker_cupper);
+            coinmaker_bronze.onFactionValueChange(factionTemplate.coinmaker_bronze);
+            coinmaker_silver.onFactionValueChange(factionTemplate.coinmaker_silver);
+            coinmaker_mithril.onFactionValueChange(factionTemplate.coinmaker_mithril);
         }
 
         public void setAllToFollowFaction()
@@ -267,27 +453,90 @@ namespace VikingEngine.DSSWars.Work
             craft_fuel.followFaction = true;
             craft_food.followFaction = true;
             craft_beer.followFaction = true;
+            craft_coolingfluid.followFaction = true;
+
             craft_iron.followFaction = true;
+            craft_tin.followFaction = true;
+            craft_cupper.followFaction = true;
+            craft_lead.followFaction = true;
+            craft_silver.followFaction = true;
+
+            craft_bronze.followFaction = true;
+            craft_castiron.followFaction = true;
+            craft_bloomeryiron.followFaction = true;
+            craft_steel.followFaction = true;
+            craft_mithril.followFaction = true;
+
+            craft_toolkit.followFaction = true;
+            craft_wagonlight.followFaction = true;
+            craft_wagonheavy.followFaction = true;
+            craft_blackpowder.followFaction = true;
+            craft_gunpowder.followFaction = true;
+            craft_bullet.followFaction = true;
 
             craft_sharpstick.followFaction = true;
+            craft_bronzesword.followFaction = true;
+            craft_shortsword.followFaction = true;
             craft_sword.followFaction = true;
+            craft_longsword.followFaction = true;
+            craft_handspear.followFaction = true;
+            craft_mithrilsword.followFaction = true;
+            craft_warhammer.followFaction = true;
             craft_twohandsword.followFaction = true;
             craft_knightslance.followFaction = true;
+
+            craft_slingshot.followFaction = true;
+            craft_throwingspear.followFaction = true;
             craft_bow.followFaction = true;
             craft_longbow.followFaction = true;
+            craft_crossbow.followFaction = true;
+            craft_mithrilbow.followFaction = true;
+
+            craft_handcannon.followFaction = true;
+            craft_handculverin.followFaction = true;
+            craft_rifle.followFaction = true;
+            craft_blunderbus.followFaction = true;
+
             craft_ballista.followFaction = true;
+            craft_manuballista.followFaction = true;
+            craft_catapult.followFaction = true;
+            craft_batteringram.followFaction = true;
+
+            craft_siegecannonbronze.followFaction = true;
+            craft_mancannonbronze.followFaction = true;
+            craft_siegecannoniron.followFaction = true;
+            craft_mancannoniron.followFaction = true;
 
             craft_paddedarmor.followFaction = true;
+            craft_heavypaddedarmor.followFaction = true;
+            craft_bronzearmor.followFaction = true;
             craft_mailarmor.followFaction = true;
             craft_heavymailarmor.followFaction = true;
+            craft_platearmor.followFaction = true;
+            craft_fullplatearmor.followFaction = true;
+            craft_mithrilarmor.followFaction = true;
 
             farm_food.followFaction = true;
             farm_fuel.followFaction = true;
             farm_linen.followFaction = true;
             bogiron.followFaction = true;
             mining_iron.followFaction = true;
+            mining_tin.followFaction = true;
+            mining_cupper.followFaction = true;
+            mining_lead.followFaction = true;
+            mining_silver.followFaction = true;
+            mining_gold.followFaction = true;
+            mining_mithril.followFaction = true;
+            mining_sulfur.followFaction = true;
+            mining_coal.followFaction = true;
+
             trading.followFaction = true;
             autoBuild.followFaction = true;
+
+            coinmaker_cupper.followFaction = true;
+            coinmaker_bronze.followFaction = true;
+            coinmaker_silver.followFaction = true;
+            coinmaker_mithril.followFaction = true;
         }
 
         public void setWorkPrio(int set, WorkPriorityType priorityType)
@@ -319,67 +568,126 @@ namespace VikingEngine.DSSWars.Work
                     return craft_fuel;
                 case ItemResourceType.Food_G:
                     return craft_food;
+                case ItemResourceType.Beer:
+                    return craft_beer;
+                case ItemResourceType.CoolingFluid:
+                    return craft_coolingfluid;
 
                 case ItemResourceType.Iron_G:
                     return craft_iron;
                 case ItemResourceType.Tin:
-                    return craft_iron;
+                    return craft_tin;
                 case ItemResourceType.Cupper:
-                    return craft_iron;
+                    return craft_cupper;
                 case ItemResourceType.Lead:
-                    return craft_iron;
+                    return craft_lead;
                 case ItemResourceType.Silver:
-                    return craft_iron;
-
+                    return craft_silver;
 
                 case ItemResourceType.Bronze:
-                    return craft_iron;
+                    return craft_bronze;
                 case ItemResourceType.CastIron:
-                    return craft_iron;
+                    return craft_castiron;
                 case ItemResourceType.BloomeryIron:
-                    return craft_iron;
+                    return craft_bloomeryiron;
                 case ItemResourceType.Steel:
                     return craft_steel;
                 case ItemResourceType.Mithril:
-                    return craft_iron;
+                    return craft_mithril;
 
+                case ItemResourceType.Toolkit:
+                    return craft_toolkit;
+                case ItemResourceType.Wagon2Wheel:
+                    return craft_wagonlight;
+                case ItemResourceType.Wagon4Wheel:
+                    return craft_wagonheavy;
+                case ItemResourceType.BlackPowder:
+                    return craft_blackpowder;
+                case ItemResourceType.GunPowder:
+                    return craft_gunpowder;
+                case ItemResourceType.LedBullet:
+                    return craft_bullet;
 
-                case ItemResourceType.PaddedArmor: return craft_paddedarmor;
-                case ItemResourceType.HeavyPaddedArmor: return craft_heavypaddedarmor;
-                case ItemResourceType.BronzeArmor: return craft_bronzearmor;
-                case ItemResourceType.IronArmor: return craft_mailarmor;
-                case ItemResourceType.HeavyIronArmor: return craft_heavymailarmor;
-                case ItemResourceType.LightPlateArmor: return craft_platearmor;
-                case ItemResourceType.FullPlateArmor: return craft_fullplatearmor;
+                case ItemResourceType.PaddedArmor:
+                    return craft_paddedarmor;
+                case ItemResourceType.HeavyPaddedArmor:
+                    return craft_heavypaddedarmor;
+                case ItemResourceType.BronzeArmor:
+                    return craft_bronzearmor;
+                case ItemResourceType.IronArmor:
+                    return craft_mailarmor;
+                case ItemResourceType.HeavyIronArmor:
+                    return craft_heavymailarmor;
+                case ItemResourceType.LightPlateArmor:
+                    return craft_platearmor;
+                case ItemResourceType.FullPlateArmor:
+                    return craft_fullplatearmor;
+                case ItemResourceType.MithrilArmor:
+                    return craft_mithrilarmor;
 
-                case ItemResourceType.SharpStick: return craft_sharpstick;
-                case ItemResourceType.BronzeSword: return craft_bronzesword;
-                case ItemResourceType.ShortSword: return craft_shortsword;
-                case ItemResourceType.Sword: return craft_sword;
-                case ItemResourceType.LongSword: return craft_longsword;
-                case ItemResourceType.HandSpear: return craft_handspear;
-                case ItemResourceType.Warhammer: return craft_warhammer;
-                case ItemResourceType.TwoHandSword: return craft_twohandsword;
-                case ItemResourceType.KnightsLance: return craft_knightslance;
+                case ItemResourceType.SharpStick:
+                    return craft_sharpstick;
+                case ItemResourceType.BronzeSword:
+                    return craft_bronzesword;
+                case ItemResourceType.ShortSword:
+                    return craft_shortsword;
+                case ItemResourceType.Sword:
+                    return craft_sword;
+                case ItemResourceType.LongSword:
+                    return craft_longsword;
+                case ItemResourceType.HandSpear:
+                    return craft_handspear;
+                case ItemResourceType.MithrilSword:
+                    return craft_mithrilsword;
+                case ItemResourceType.Warhammer:
+                    return craft_warhammer;
+                case ItemResourceType.TwoHandSword:
+                    return craft_twohandsword;
+                case ItemResourceType.KnightsLance:
+                    return craft_knightslance;
 
-                case ItemResourceType.SlingShot: return craft_slingshot;
-                case ItemResourceType.ThrowingSpear: return craft_throwingspear;
-                case ItemResourceType.Bow: return craft_bow;
-                case ItemResourceType.LongBow: return craft_longbow;
-                case ItemResourceType.Crossbow: return craft_crossbow;
+                case ItemResourceType.SlingShot:
+                    return craft_slingshot;
+                case ItemResourceType.ThrowingSpear:
+                    return craft_throwingspear;
+                case ItemResourceType.Bow:
+                    return craft_bow;
+                case ItemResourceType.LongBow:
+                    return craft_longbow;
+                case ItemResourceType.Crossbow:
+                    return craft_crossbow;
+                case ItemResourceType.MithrilBow:
+                    return craft_mithrilbow;
 
-                case ItemResourceType.Ballista: return craft_ballista;
-                case ItemResourceType.Manuballista: return craft_manuballista;
-                case ItemResourceType.Catapult: return craft_catapult;
-                case ItemResourceType.UN_BatteringRam: return craft_batteringram;
-                case ItemResourceType.SiegeCannonBronze: return craft_siegecannonbronze;
-                case ItemResourceType.ManCannonBronze: return craft_mancannonbronze;
-                case ItemResourceType.SiegeCannonIron: return craft_siegecannoniron;
-                case ItemResourceType.ManCannonIron: return craft_mancannoniron;
+                case ItemResourceType.HandCannon:
+                    return craft_handcannon;
+                case ItemResourceType.HandCulverin:
+                    return craft_handculverin;
+                case ItemResourceType.Rifle:
+                    return craft_rifle;
+                case ItemResourceType.Blunderbus:
+                    return craft_blunderbus;
+
+                case ItemResourceType.Ballista:
+                    return craft_ballista;
+                case ItemResourceType.Manuballista:
+                    return craft_manuballista;
+                case ItemResourceType.Catapult:
+                    return craft_catapult;
+                case ItemResourceType.UN_BatteringRam:
+                    return craft_batteringram;
+                case ItemResourceType.SiegeCannonBronze:
+                    return craft_siegecannonbronze;
+                case ItemResourceType.ManCannonBronze:
+                    return craft_mancannonbronze;
+                case ItemResourceType.SiegeCannonIron:
+                    return craft_siegecannoniron;
+                case ItemResourceType.ManCannonIron:
+                    return craft_mancannoniron;
+
 
                 default:
                     throw new NotImplementedException();
-
             }
         }
 
@@ -474,7 +782,7 @@ namespace VikingEngine.DSSWars.Work
                 case WorkPriorityType.craftHandCannon:
                     return craft_handcannon;
                 case WorkPriorityType.craftHandCulvertin:
-                    return craft_handculvertin;
+                    return craft_handculverin;
                 case WorkPriorityType.craftRifle:
                     return craft_rifle;
                 case WorkPriorityType.craftBlunderbus:
@@ -534,10 +842,14 @@ namespace VikingEngine.DSSWars.Work
                     return mining_lead;
                 case WorkPriorityType.miningSilver:
                     return mining_silver;
+                case WorkPriorityType.miningGold:
+                    return mining_gold;
                 case WorkPriorityType.miningMithril:
                     return mining_mithril;
                 case WorkPriorityType.miningSulfur:
                     return mining_sulfur;
+                case WorkPriorityType.miningCoal:
+                    return mining_coal;
 
                 case WorkPriorityType.trading:
                     return trading;
@@ -754,11 +1066,17 @@ namespace VikingEngine.DSSWars.Work
                 case WorkPriorityType.miningSilver:
                     mining_silver = value;
                     break;
+                case WorkPriorityType.miningGold:
+                    mining_gold = value;
+                    break;
                 case WorkPriorityType.miningMithril:
                     mining_mithril = value;
                     break;
                 case WorkPriorityType.miningSulfur:
                     mining_sulfur = value;
+                    break;
+                case WorkPriorityType.miningCoal:
+                    mining_coal = value;
                     break;
 
                 case WorkPriorityType.trading:
@@ -818,8 +1136,10 @@ namespace VikingEngine.DSSWars.Work
                     mining_cupper.toHud(player, content, string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_Cupper), SpriteName.WarsWorkMine, SpriteName.WarsResource_Cupper, WorkPriorityType.miningCupper, faction, city);
                     mining_lead.toHud(player, content, string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_Lead), SpriteName.WarsWorkMine, SpriteName.WarsResource_Lead, WorkPriorityType.miningLead, faction, city);
                     mining_silver.toHud(player, content, string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_Silver), SpriteName.WarsWorkMine, SpriteName.WarsResource_Silver, WorkPriorityType.miningSilver, faction, city);
+                    mining_gold.toHud(player, content, string.Format(DssRef.todoLang.Work_MiningResource, DssRef.lang.ResourceType_Gold), SpriteName.WarsWorkMine, SpriteName.WarsResource_Gold, WorkPriorityType.miningGold, faction, city);
                     mining_mithril.toHud(player, content, string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_Mithril), SpriteName.WarsWorkMine, SpriteName.WarsResource_Mithril, WorkPriorityType.miningMithril, faction, city);
                     mining_sulfur.toHud(player, content, string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_Sulfur), SpriteName.WarsWorkMine, SpriteName.WarsResource_Sulfur, WorkPriorityType.miningSulfur, faction, city);
+                    mining_coal.toHud(player, content, string.Format(DssRef.todoLang.Work_MiningResource, DssRef.lang.Resource_TypeName_Coal), SpriteName.WarsWorkMine, SpriteName.WarsResource_Fuel, WorkPriorityType.miningCoal, faction, city);
                     content.newParagraph();
            
                     craft_iron.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Iron), SpriteName.WarsHammer, SpriteName.WarsResource_Iron, WorkPriorityType.craftIron, faction, city);
@@ -858,7 +1178,7 @@ namespace VikingEngine.DSSWars.Work
                     craft_crossbow.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Crossbow), SpriteName.WarsHammer, SpriteName.WarsResource_Crossbow, WorkPriorityType.craftCrossbow, faction, city);
                     
                     craft_handcannon.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_HandCannon), SpriteName.WarsHammer, SpriteName.WarsResource_BronzeRifle, WorkPriorityType.craftHandCannon, faction, city);
-                    craft_handculvertin.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_HandCulverin), SpriteName.WarsHammer, SpriteName.WarsResource_BronzeShotgun, WorkPriorityType.craftHandCulvertin, faction, city);
+                    craft_handculverin.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_HandCulverin), SpriteName.WarsHammer, SpriteName.WarsResource_BronzeShotgun, WorkPriorityType.craftHandCulvertin, faction, city);
                     craft_rifle.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Rifle), SpriteName.WarsHammer, SpriteName.WarsResource_IronRifle, WorkPriorityType.craftRifle, faction, city);
                     craft_blunderbus.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Blunderbus), SpriteName.WarsHammer, SpriteName.WarsResource_IronShotgun, WorkPriorityType.craftBlunderbus, faction, city);
 
@@ -1006,41 +1326,22 @@ namespace VikingEngine.DSSWars.Work
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, bool isCity)
         {
-            //if (subversion < 23 || subversion == SaveGamestate.MergeVersion)
-            //{
-            //    //old
-            //    value = r.ReadByte();
-            //    if (isCity)
-            //    {
-            //        if (subversion < 20 || subversion == SaveGamestate.MergeVersion)
-            //        {//old
-            //            followFaction = r.ReadBoolean();
-            //        }
-            //        else
-            //        {
-            //            EightBit eightBit = new EightBit(r);
-            //            followFaction = eightBit.Get(0);
-            //        }
-            //    }
-            //}
-            //else
-            //{
-                //new
-                if (isCity)
-                {
-                    EightBit eightBit = new EightBit(r);
-                    followFaction = eightBit.Get(0);
+            
+            if (isCity)
+            {
+                EightBit eightBit = new EightBit(r);
+                followFaction = eightBit.Get(0);
 
-                    if (!followFaction)
-                    {
-                        value = r.ReadByte();
-                    }
-                }
-                else
+                if (!followFaction)
                 {
                     value = r.ReadByte();
                 }
-            //}
+            }
+            else
+            {
+                value = r.ReadByte();
+            }
+          
         }
 
         public void addPrio(int add)
@@ -1139,19 +1440,22 @@ namespace VikingEngine.DSSWars.Work
         miningCupper,
         miningLead,
         miningSilver,
+        miningGold,
         miningMithril,
         miningSulfur,
+        miningCoal,
+
 
         trading,
         autoBuild,
         expandFarms,
-        
+
+        coinmaker_cupper,
+        coinmaker_bronze,
+        coinmaker_silver,
+        coinmaker_mithril,
+
         NUM_NONE
     }
 
-    //enum WorkTab
-    //{ 
-    //    Resources,
-    //    Weapons,
-    //}
 }

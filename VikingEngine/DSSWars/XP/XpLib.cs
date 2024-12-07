@@ -8,6 +8,31 @@ namespace VikingEngine.DSSWars.XP
 {
     static class XpLib
     {
+        public static WorkExperienceType[] ExperienceTypes =
+        {
+            WorkExperienceType.Farm,
+            WorkExperienceType.AnimalCare,
+            WorkExperienceType.HouseBuilding,
+            WorkExperienceType.WoodCutter,
+            WorkExperienceType.StoneCutter,
+            WorkExperienceType.Mining,
+            WorkExperienceType.Transport,
+            WorkExperienceType.Cook,
+            WorkExperienceType.Fletcher,
+            WorkExperienceType.Smelting,
+            WorkExperienceType.CastMetal,
+            WorkExperienceType.CraftMetal,
+            WorkExperienceType.CraftArmor,
+            WorkExperienceType.CraftWeapon,
+            WorkExperienceType.CraftFuel,
+            WorkExperienceType.Chemistry,
+        };
+
+        public static ExperienceLevel ToLevel(byte xp)
+        {
+            ExperienceLevel level = (ExperienceLevel)(xp / DssConst.WorkXpToLevel);
+            return level;
+        }
     }
 
     enum WorkExperienceType : byte

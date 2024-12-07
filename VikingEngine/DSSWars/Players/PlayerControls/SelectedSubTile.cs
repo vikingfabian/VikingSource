@@ -21,6 +21,7 @@ namespace VikingEngine.DSSWars.Players
         Mesh model;
         public bool isNew = false;
         public SelectTileResult selectTileResult = SelectTileResult.None;
+        public bool tileOfInterest = false;
         public City city;
         public SelectedSubTile(LocalPlayer player, bool isHover)
         {
@@ -42,6 +43,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     this.subTilePos = subTilePos;
                     isNew = true;
+                    tileOfInterest = false;
                     if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(subTilePos), out var tile))
                     {
                         city = tile.City();
@@ -69,32 +71,49 @@ namespace VikingEngine.DSSWars.Players
                         {
                             if (city.faction == player.faction)
                             {
-                                switch (subTile.GeBuildingType())
+                                switch (subTile.mainTerrain)
                                 {
-                                    case Map.TerrainBuildingType.StoneHall:
-                                        selectTileResult = SelectTileResult.CityHall;
-                                        break;
-                                    case Map.TerrainBuildingType.Postal:
-                                        selectTileResult = SelectTileResult.Postal;
-                                        break;
-                                    case Map.TerrainBuildingType.Recruitment:
-                                        selectTileResult = SelectTileResult.Recruitment;
+                                    case TerrainMainType.Building:
+                                        switch ((TerrainBuildingType)subTile.subTerrain)
+                                        {
+                                            case Map.TerrainBuildingType.StoneHall:
+                                                selectTileResult = SelectTileResult.CityHall;
+                                                break;
+                                            case Map.TerrainBuildingType.Postal:
+                                                selectTileResult = SelectTileResult.Postal;
+                                                break;
+                                            case Map.TerrainBuildingType.Recruitment:
+                                                selectTileResult = SelectTileResult.Recruitment;
+                                                break;
+
+                                            case Map.TerrainBuildingType.SoldierBarracks:
+                                            case Map.TerrainBuildingType.ArcherBarracks:
+                                            case Map.TerrainBuildingType.WarmashineBarracks:
+                                            case Map.TerrainBuildingType.KnightsBarracks:
+                                            case Map.TerrainBuildingType.GunBarracks:
+                                            case Map.TerrainBuildingType.CannonBarracks:
+                                                selectTileResult = SelectTileResult.Conscript;
+                                                break;
+                                        }
+
+                                        hasSelection = selectTileResult != SelectTileResult.None;
+                                        model.position = WP.SubtileToWorldPosXZ_Centered(subTilePos);
+                                        model.position.Y = subTile.groundY;
+                                        return;
+
+                                    case TerrainMainType.Mine:
+                                        tileOfInterest = true;
                                         break;
 
-                                    case Map.TerrainBuildingType.SoldierBarracks:
-                                    case Map.TerrainBuildingType.ArcherBarracks:
-                                    case Map.TerrainBuildingType.WarmashineBarracks:
-                                    case Map.TerrainBuildingType.KnightsBarracks:
-                                    case Map.TerrainBuildingType.GunBarracks:
-                                    case Map.TerrainBuildingType.CannonBarracks:
-                                        selectTileResult = SelectTileResult.Conscript;
+                                    case TerrainMainType.Foil:
+                                        switch ((TerrainSubFoilType)subTile.subTerrain)
+                                        {
+                                            case TerrainSubFoilType.BogIron:
+                                                tileOfInterest = true;
+                                                break;
+                                        }
                                         break;
                                 }
-
-                                hasSelection = selectTileResult != SelectTileResult.None;
-                                model.position = WP.SubtileToWorldPosXZ_Centered(subTilePos);
-                                model.position.Y = subTile.groundY;
-                                return;
                             }
 
                         }

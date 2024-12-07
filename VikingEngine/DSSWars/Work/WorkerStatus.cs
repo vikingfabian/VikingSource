@@ -5,12 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
+using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Work
@@ -35,6 +37,66 @@ namespace VikingEngine.DSSWars.Work
         public ItemResource carry;
         public float energy;
         //public bool isDeleted;
+
+        public void xpToHud(RichBoxContent content)
+        {
+            // Pair the XP values with their respective types
+            var xpPairs = new List<(byte xp, WorkExperienceType type)>
+            {
+                (xp1, xpType1),
+                (xp2, xpType2),
+                (xp3, xpType3)
+            };
+
+            // Sort the list by XP in descending order
+            xpPairs.Sort((a, b) => b.xp.CompareTo(a.xp));
+
+            foreach (var xpPair in xpPairs)
+            {
+                if (xpPair.xp > 0 && xpPair.type != WorkExperienceType.NONE)
+                {
+                    LangLib.ExperienceType(xpPair.type, out string typeName, out SpriteName typeIcon);
+                    var level = XpLib.ToLevel(xpPair.xp);
+
+                    content.newLine();
+                    content.Add(new RichBoxImage(typeIcon));
+                    content.space();
+                    var typeNameText = new RichBoxText(typeName + ":");
+                    typeNameText.overrideColor = HudLib.TitleColor_TypeName;
+                    content.Add(typeNameText);
+
+                    content.Add(new RichBoxTab(0.2f));
+                    content.Add(new RichBoxImage(LangLib.ExperienceLevelIcon(level)));
+                    content.Add(new RichBoxText(LangLib.ExperienceLevel(level)));
+                }
+            }
+        }
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)xpType1);
+            w.Write((byte)xpType2);
+            w.Write((byte)xpType3);
+            w.Write(xp1);
+            w.Write(xp2);
+            w.Write(xp3);
+
+            w.Write((short)energy);
+            carry.writeGameState(w);
+        }
+        public void readGameState(System.IO.BinaryReader r, int subversion)
+        {
+            xpType1 = (WorkExperienceType)r.ReadByte();
+            xpType2 = (WorkExperienceType)r.ReadByte();
+            xpType3 = (WorkExperienceType)r.ReadByte();
+            xp1 = r.ReadByte();
+            xp2 = r.ReadByte();
+            xp3 = r.ReadByte();
+
+            energy = r.ReadInt16();
+            carry.readGameState(r, subversion);
+
+        }
 
         public override string ToString()
         {
@@ -447,6 +509,18 @@ namespace VikingEngine.DSSWars.Work
                                     }
                                     break;
 
+
+                                case ItemResourceType.Iron_G:
+                                case ItemResourceType.Cupper:
+                                case ItemResourceType.Tin:
+                                case ItemResourceType.Lead:
+                                case ItemResourceType.Silver:
+                                case ItemResourceType.RawMithril:
+                                    if (city.Culture == CityCulture.Smelters)
+                                    {
+                                        add *= 2;
+                                    }
+                                    break;
                                 case ItemResourceType.Beer:
                                     if (city.Culture == CityCulture.Brewmaster)
                                     {
@@ -468,7 +542,14 @@ namespace VikingEngine.DSSWars.Work
                                         add += 1;
                                     }
                                     break;
-
+                                case ItemResourceType.Bronze:
+                                case ItemResourceType.BronzeSword:
+                                case ItemResourceType.BronzeArmor:
+                                    if (city.Culture == CityCulture.BronzeCasters)
+                                    {
+                                        add *= 2;
+                                    }
+                                    break;
                             }
 
                             city.AddGroupedResource(item, add);
@@ -627,7 +708,7 @@ namespace VikingEngine.DSSWars.Work
             {
                 bool master = false;
                 byte add = 0;
-                switch (WorkLib.ToLevel(xp))
+                switch (XpLib.ToLevel(xp))
                 { 
                     case ExperienceLevel.Beginner_1:
                         add = WorkLib.WorkToXPTable[(int)type];
@@ -765,7 +846,7 @@ namespace VikingEngine.DSSWars.Work
 
         public float finalizeWorkTime(City city)
         {
-            return finalizeWorkTime(WorkLib.WorkToExperienceType(work, workSubType, subTileEnd), city);
+            return finalizeWorkTime(WorkLib.WorkToExperienceType(work, workSubType, subTileEnd, out _), city);
         }
         public float finalizeWorkTime(XP.WorkExperienceType experienceType, City city)
         {

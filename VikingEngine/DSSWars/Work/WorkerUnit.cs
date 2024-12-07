@@ -256,9 +256,6 @@ namespace VikingEngine.DSSWars.Work
                     parentMapObject.getWorkerStatus(parentArrayIndex, ref status);
                     checkForGoal(false, city);
                     break;
-
-
-
             }
         }
 
@@ -441,17 +438,28 @@ namespace VikingEngine.DSSWars.Work
             args.content.h2(Name()).overrideColor = Color.LightYellow;
             args.content.text(string.Format(DssRef.lang.WorkerHud_WorkType, status.workString()));
 
+            status.xpToHud(args.content);
+
             if (status.carry.amount > 0)
             {
-                args.content.text(string.Format(DssRef.lang.WorkerHud_Carry, status.carry.amount, LangLib.Item(status.carry.type)));
+                args.content.newLine();
+                args.content.Add(new RichBoxImage(SpriteName.WarsWorkMove));
+                args.content.space();
+                args.content.Add(new RichBoxText(string.Format(DssRef.lang.WorkerHud_Carry, status.carry.amount, LangLib.Item(status.carry.type))));
             }
 
             args.content.text(string.Format(DssRef.lang.WorkerHud_Energy, TextLib.OneDecimal(status.energy)));
 
+#if DEBUG
             args.content.text(string.Format("XP1: {0} {1}", status.xpType1, status.xp1));
             args.content.text(string.Format("XP2: {0} {1}", status.xpType2, status.xp2));
             args.content.text(string.Format("XP3: {0} {1}", status.xpType3, status.xp3));
+#endif
+        }
 
+        public void toolTip(RichBoxContent content)
+        {
+            status.xpToHud(content);
         }
 
         public override void selectionFrame(bool hover, Selection selection)

@@ -34,9 +34,11 @@ namespace VikingEngine.DSSWars.Work
             WorkToXPTable[(int)WorkExperienceType.CraftFuel] = 1;
         }
 
-        public static WorkExperienceType WorkToExperienceType(WorkType work, int workSubType, IntVector2 subTileEnd)
+        public static WorkExperienceType WorkToExperienceType(WorkType work, int workSubType, IntVector2 subTileEnd, out int requiredXp)
         {
             WorkExperienceType gainXp = WorkExperienceType.NONE;
+            requiredXp = 0;
+
             switch (work)
             {
                 case WorkType.GatherFoil:
@@ -96,22 +98,20 @@ namespace VikingEngine.DSSWars.Work
                     ItemResourceType item = (ItemResourceType)workSubType;
                     ItemPropertyColl.Blueprint(item, out CraftBlueprint bp1, out var bp2);
                     gainXp = bp1.experienceType;
+                    requiredXp = DssConst.WorkXpToLevel * (int)bp1.levelRequirement;
                     break;
 
                 case WorkType.Build:
                     var build = BuildLib.BuildOptions[workSubType];
                     gainXp = build.experienceType();
+                    requiredXp = DssConst.WorkXpToLevel * (int)build.blueprint.levelRequirement;
                     break;
             }
 
             return gainXp;
         }
 
-        public static ExperienceLevel ToLevel(byte xp)
-        {
-            ExperienceLevel level = (ExperienceLevel)(xp / DssConst.WorkXpToLevel);
-            return level;
-        }
+        
 
         public static float WorkTimePerc(byte xp, byte timeBonusPerc)
         {

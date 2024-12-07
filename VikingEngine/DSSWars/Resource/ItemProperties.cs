@@ -58,6 +58,7 @@ namespace VikingEngine.DSSWars.Resource
             items[(int)ItemResourceType.HeavyIronArmor] = new ItemProperties(DefaultWeight, CraftResourceLib.HeavyMailArmor, null);
             items[(int)ItemResourceType.LightPlateArmor] = new ItemProperties(DefaultWeight, CraftResourceLib.PlateArmor, null);
             items[(int)ItemResourceType.FullPlateArmor] = new ItemProperties(DefaultWeight, CraftResourceLib.FullPlateArmor, null);
+            items[(int)ItemResourceType.MithrilArmor] = new ItemProperties(DefaultWeight, CraftResourceLib.MithrilArmor, null);
 
             items[(int)ItemResourceType.Toolkit] = new ItemProperties(DefaultWeight, CraftResourceLib.Beer, null);
             items[(int)ItemResourceType.Wagon2Wheel] = new ItemProperties(DefaultWeight, CraftResourceLib.WagonLight, null);
@@ -97,7 +98,13 @@ namespace VikingEngine.DSSWars.Resource
             items[(int)ItemResourceType.ManCannonBronze] = new ItemProperties(DefaultWeight, CraftResourceLib.ManCannonBronze, null);
             items[(int)ItemResourceType.SiegeCannonIron] = new ItemProperties(DefaultWeight, CraftResourceLib.SiegeCannonIron, null);
             items[(int)ItemResourceType.ManCannonIron] = new ItemProperties(DefaultWeight, CraftResourceLib.ManCannonIron, null);
-            
+
+            items[(int)ItemResourceType.CupperCoin] = new ItemProperties(DefaultWeight, ResourceLib.CupperCoin, null);
+            items[(int)ItemResourceType.BronzeCoin] = new ItemProperties(DefaultWeight, ResourceLib.BronzeCoin, null);
+            items[(int)ItemResourceType.SilverCoin] = new ItemProperties(DefaultWeight, ResourceLib.SilverCoin, null);
+            items[(int)ItemResourceType.ElfCoin] = new ItemProperties(DefaultWeight, ResourceLib.ElfCoin, null);
+
+
             for (int i = 0; i < items.Length; ++i)
             {
                 if (items[i] == null)

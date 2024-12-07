@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Text;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Build;
@@ -56,7 +57,12 @@ namespace VikingEngine.DSSWars.Display
                     {
                         hoverTip(player, player.mapControls.hover.obj);
                     }
-                    
+                    else if (player.mapControls.hover.subTile.tileOfInterest)
+                    {
+                        //SUBTILE tooltip
+                        hoverTip(player, player.mapControls.hover.subTile);
+                    }
+
                 }
             }
             else
@@ -349,6 +355,10 @@ namespace VikingEngine.DSSWars.Display
 
                     case GameObjectType.ObjectCollection:
                         obj.GetCollection().Tooltip(content);
+                        break;
+
+                    case GameObjectType.Worker:
+                        obj.GetWorker().toolTip(content);
                         break;
                 }
             }

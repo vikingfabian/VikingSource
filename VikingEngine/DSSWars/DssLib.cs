@@ -337,6 +337,10 @@ namespace VikingEngine.DSSWars
         Backtrader,//.
         Lawbiding,//.
 
+        Smelters,//
+        BronzeCasters,//
+        Apprentices,//
+
         NUM_NONE
     }
 }

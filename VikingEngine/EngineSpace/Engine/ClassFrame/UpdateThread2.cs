@@ -21,9 +21,6 @@ namespace VikingEngine
         protected string name;
         protected int id;
 
-        //int startDelay;
-        //float updateDelays;
-
         bool busyThread = false;
         public bool end = false;
 

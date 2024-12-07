@@ -502,7 +502,6 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 0, wp, WorldData.SubTileWidth * 0.4f));
                     break;
 
-
                 case TerrainBuildingType.Brewery:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 2, wp, WorldData.SubTileWidth * 1f));
                     break;
@@ -520,7 +519,6 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_quarry, 1, wp, WorldData.SubTileWidth * 1f));
                     break;
 
-
                 case TerrainBuildingType.Nobelhouse:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_nobelhouse, 0, wp, WorldData.SubTileWidth * 1.3f));
                     break;
@@ -531,6 +529,12 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_logistic, subTile.terrainAmount -1, wp, WorldData.SubTileWidth * 1.0f));
                     break;
 
+                case TerrainBuildingType.Bank:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.Bank, 0, wp, WorldData.SubTileWidth * 1.0f));
+                    break;
+                case TerrainBuildingType.CoinMinter:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 0, wp, WorldData.SubTileWidth * 0.5f));
+                    break;
 
                 case TerrainBuildingType._RESERVE1:
                 case TerrainBuildingType._RESERVE2:

@@ -160,7 +160,8 @@ namespace VikingEngine.DSSWars.Display
             switch (player.progressSubTab)
             {
                 default:
-                    city.technologyHud(content, player);
+                    new TechnologyHud().technologyHud(content, player, city, city.faction);
+                    //city.technologyHud(content, player);
                     break;
                 case ProgressSubTab.Experience:
                     experienceTab(content);
@@ -425,8 +426,6 @@ namespace VikingEngine.DSSWars.Display
                     experienceTab(content);
                     break;
             }
-
-            
         }
 
         void experienceTab(RichBoxContent content)
@@ -660,18 +659,18 @@ namespace VikingEngine.DSSWars.Display
                         player.hud.tooltip.create(player, content, true);
                     })));
 
-
-                    city.res_fuel.toMenu(content, ItemResourceType.Fuel_G, fuelSafeGuard, ref reachedBuffer);
-                    blueprintButton(player, content, CraftResourceLib.Fuel1, null, true);
-                    content.space();
-                    blueprintButton(player, content, CraftResourceLib.Charcoal);
-
                     city.res_beer.toMenu(content, ItemResourceType.Beer, false, ref reachedBuffer);
                     blueprintButton(player, content, CraftResourceLib.Beer);
 
                     city.res_coolingfluid.toMenu(content, ItemResourceType.CoolingFluid, false, ref reachedBuffer);
                     blueprintButton(player, content, CraftResourceLib.CoolingFluid);
                     content.newParagraph();
+
+                    city.res_fuel.toMenu(content, ItemResourceType.Fuel_G, fuelSafeGuard, ref reachedBuffer);
+                    blueprintButton(player, content, CraftResourceLib.Fuel1, null, true);
+                    content.space();
+                    blueprintButton(player, content, CraftResourceLib.Charcoal);
+                    
 
                     city.res_Toolkit.toMenu(content, ItemResourceType.Toolkit, false, ref reachedBuffer);
                     blueprintButton(player, content, CraftResourceLib.Toolkit);

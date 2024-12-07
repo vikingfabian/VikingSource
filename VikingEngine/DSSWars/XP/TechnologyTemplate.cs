@@ -14,7 +14,7 @@ namespace VikingEngine.DSSWars.XP
         public const int FactionUnlock = 100000;
 
         public int advancedBuilding;
-        public int advancedFarming; //hemp, pigs, toolbox
+        public int advancedFarming;
         public int advancedCasting;
 
         public int iron;
@@ -24,6 +24,30 @@ namespace VikingEngine.DSSWars.XP
         
         public int blackPowder;
         public int gunPowder;
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)Bound.Max(advancedBuilding, Unlocked));
+            w.Write((byte)Bound.Max(advancedFarming, Unlocked));
+            w.Write((byte)Bound.Max(advancedCasting, Unlocked));
+            w.Write((byte)Bound.Max(iron, Unlocked));
+            w.Write((byte)Bound.Max(steel, Unlocked));
+            w.Write((byte)Bound.Max(catapult, Unlocked));
+            w.Write((byte)Bound.Max(blackPowder, Unlocked));
+            w.Write((byte)Bound.Max(gunPowder, Unlocked));
+
+        }
+        public void readGameState(System.IO.BinaryReader r, int subversion)
+        {
+            advancedBuilding = r.ReadByte();
+            advancedFarming = r.ReadByte();
+            advancedCasting = r.ReadByte();
+            iron = r.ReadByte();
+            steel = r.ReadByte();
+            catapult = r.ReadByte();
+            blackPowder = r.ReadByte();
+            gunPowder = r.ReadByte();
+        }
 
         public Unlocks GetUnlocks(bool factionView)
         {
@@ -85,7 +109,6 @@ namespace VikingEngine.DSSWars.XP
                 }
             }
         }
-
 
         public void gainTechSpread(TechnologyTemplate from, int gainSpeed)
         {
@@ -174,193 +197,5 @@ namespace VikingEngine.DSSWars.XP
         }
     }
 
-    struct Unlocks
-    {
-        public bool building_stoneBuildings;
-
-        public bool item_tools;
-        public bool building_mixedFarms;
-
-        public bool item_cannon;
-        public bool building_cannonBarrack;
-
-        public bool item_castIron;
-        public bool item_castMithril;
-
-        public bool item_Iron;
-        public bool item_Sword;
-        public bool item_IronArmor;
-
-        public bool item_Steel;
-        public bool item_LongSword;
-        public bool item_SteelArmor;
-
-        public bool item_catapult;
-        public bool item_crossbow;
-
-        public bool item_blackPowder;
-        public bool building_gunBarrack;
-        public bool building_chemist;
-
-        public bool item_gunPowder;
-
-        public void UnlockAdvancedBuilding()
-        {
-            building_stoneBuildings = true;
-        }
-
-        public void UnlockAdvancedFarming()
-        {
-            item_tools = true;
-            building_mixedFarms = true;
-        }
-
-        public void UnlockAdvancedCasting()
-        {
-            item_castIron = true;
-            item_castMithril = true;
-            item_cannon = true;
-            building_cannonBarrack = true;
-        }
-
-        public void UnlockIron()
-        {
-            item_Iron = true;
-            item_Sword = true;
-            item_IronArmor = true;
-        }
-
-        public void UnlockSteel()
-        {
-            item_LongSword = true;
-            item_Steel = true;
-            item_SteelArmor = true;
-        }
-
-        public void UnlockCatapult()
-        {
-            item_catapult = true;
-            item_crossbow = true;
-        }
-
-        public void UnlockBlackPowder()
-        {
-            building_chemist = true;
-            item_blackPowder = true;
-        }
-
-        public void UnlockGunPowder()
-        {
-            item_gunPowder = true;
-        }
-
-        public List<BuildAndExpandType> ListBuildings()
-        { 
-            List<BuildAndExpandType> builds = new List<BuildAndExpandType>();
-            if (building_stoneBuildings)
-            {
-                builds.Add(BuildAndExpandType.Nobelhouse);
-                builds.Add(BuildAndExpandType.Bank);
-            }
-            if (building_mixedFarms)
-            {
-                builds.Add(BuildAndExpandType.HempFarm);
-                builds.Add(BuildAndExpandType.PigPen);
-            }
-
-            if (building_cannonBarrack)
-            {
-                builds.Add(BuildAndExpandType.GunBarracks);
-                builds.Add(BuildAndExpandType.CannonBarracks);
-            }
-
-            if (building_chemist)
-            {
-                builds.Add(BuildAndExpandType.Chemist);
-            }
-
-            return builds;
-        }
-
-        public List<ItemResourceType> ListItems()
-        {
-            
-            List <ItemResourceType> items = new List < ItemResourceType >();
-
-            if (item_tools)
-            {
-                items.Add(ItemResourceType.Toolkit);
-            }
-            if (item_Iron)
-            {
-                items.Add(ItemResourceType.Iron_G);
-            }
-            if (item_Sword)
-            {
-                items.Add(ItemResourceType.Sword);
-            }
-            if (item_IronArmor)
-            {
-                items.Add(ItemResourceType.IronArmor);
-            }
-
-            if (item_Steel)
-            {
-                items.Add(ItemResourceType.Steel);
-            }
-            if (item_LongSword)
-            {
-                items.Add(ItemResourceType.LongSword);
-            }
-            if (item_SteelArmor)
-            {
-                items.Add(ItemResourceType.FullPlateArmor);
-            }
-
-            if (item_castIron)
-            {
-                items.Add(ItemResourceType.CastIron);
-            }
-            if (item_castMithril)
-            {
-                items.Add(ItemResourceType.Mithril);
-            }
-
-            if (item_catapult)
-            {
-                items.Add(ItemResourceType.Manuballista);
-                items.Add(ItemResourceType.Catapult);
-            }
-            if (item_crossbow)
-            {
-                items.Add(ItemResourceType.Crossbow);
-            }
-
-            if (item_blackPowder)
-            {
-                items.Add(ItemResourceType.BlackPowder);
-                items.Add(ItemResourceType.HandCannon);
-                items.Add(ItemResourceType.HandCulverin);
-                
-            }
-
-            if (item_gunPowder)
-            {
-                items.Add(ItemResourceType.GunPowder);
-                items.Add(ItemResourceType.Rifle);
-                items.Add(ItemResourceType.Blunderbus);                
-            }
-
-            if (item_cannon)
-            {
-                items.Add(ItemResourceType.SiegeCannonBronze);
-                items.Add(ItemResourceType.ManCannonBronze);
-                items.Add(ItemResourceType.SiegeCannonIron);
-                items.Add(ItemResourceType.ManCannonIron);                
-            }            
-
-            return items;
-        }
-
-    }
+    
 }

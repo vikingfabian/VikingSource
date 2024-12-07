@@ -45,6 +45,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         //public string EndGameStatistics_DecorsBuilt => "Decorations built: {0}";
         //public string EndGameStatistics_StatuesBuilt => "Statues built: {0}";
         public string Hud_None => "None";
+        public string Hud_AllCities => "All cities";
         public string Info_FooodAndDeliveryLocation => "By default, workers go to the city hall to eat or drop off items";
         public string GameMenu_UseSpeedX => "{0} speed option";
 
@@ -163,6 +164,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Resource_TypeName_LightPlateArmor=> "Plate armor";
         public string Resource_TypeName_FullPlateArmor => "Full plate armor";
         public string Resource_TypeName_MithrilArmor => "Mithril armor";
+        public string Resource_TypeName_Coin => "Coin";
 
 
         //public string UnitType_SlingShot => "Slinger";
@@ -197,7 +199,6 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string BuildingType_WaterResovoir => "Water resovoir";
         public string BuildingType_WaterResovoir_Description => "Increase water storage";
-        //public string BuildingType_WaterResovoir_IncreaseStorage => "Max "
 
         public string BuildingType_SmeltingFurnace => "Smelting furnace";
         public string BuildingType_SmeltingFurnace_Description => "Purify ore to metal";
@@ -206,14 +207,32 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_Foundry_Description => "Metal casting station";
 
         public string BuildingType_Armory => "Armory";
+        public string BuildingType_Armory_Description => "Armor crafting station";
         public string BuildingType_Chemist => "Chemist";
+        public string BuildingType_Chemist_Description => "Chemicals crafting station";
         public string BuildingType_CoinMaker => "Coin minter";
+        public string BuildingType_CoinMaker_Description => "Turn metals to money";
         public string BuildingType_Gunmaker => "Gunmaker";
+        public string BuildingType_Gunmaker_Description => "Crafting station for guns and cannons";
 
 
         public string Work_MiningResource = "Mining {0}";
 
         public string MenuTab_Progress => "Progress";
+
+        public string CityCulture_Smelters_Description => "Improved ore smelting";
+        public string CityCulture_Smelters => "Smelters";
+
+        public string CityCulture_Apprentices_Description => "New workers will gain experience from active workers";
+        public string CityCulture_Apprentices => "Apprentices";
+
+        public string CityCulture_BronzeCasters_Description => "Improved production of bronze and bronze items";
+        public string CityCulture_BronzeCasters => "Bronze casters";
+
+        public string CityCulture_x_Description => "";
+        public string CityCulture_x => "";
+
+
         //enum ExperenceOrDistancePrio
         //{
         //    Experience,

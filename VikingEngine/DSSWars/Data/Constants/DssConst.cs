@@ -101,7 +101,13 @@ namespace VikingEngine.DSSWars
         public static int ExpandWorkForce = SoldierGroup_DefaultCount * 4;
         public static int ExpandGuardSize = SoldierGroup_DefaultCount;
 
+        public static int CupperSellValue = 5;
+        public static int BronzeSellValue = 10;
+        public static int SilverSellValue = 25;
         public static int GoldOreSellValue = 100;
+        public static int MithrilSellValue = 1000;
+        
+
         public static int IronSellValue = 5;
         public static int FoodGoldValue = 2;
         public static int FoodGoldValue_BlackMarket = FoodGoldValue * 5;

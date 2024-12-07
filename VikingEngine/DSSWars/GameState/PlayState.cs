@@ -220,6 +220,7 @@ namespace VikingEngine.DSSWars
                 initStartUnits();
             }
 
+            System.Threading.Thread.CurrentThread.Priority = System.Threading.ThreadPriority.Highest;
             new AsynchUpdateable_TryCatch(asynchGameObjectsUpdate, "DSS gameobjects update", 51);
             new AsynchUpdateable_TryCatch(asynchAiPlayersUpdate, "DSS ai player update", 52);
             new AsynchUpdateable_TryCatch(asynchArmyAiUpdate, "DSS army ai update", 53);
@@ -431,6 +432,7 @@ namespace VikingEngine.DSSWars
         {
             Ref.music.stop(true);
             exitThreads = true;
+            
             new ExitGamePlay();
         }
 

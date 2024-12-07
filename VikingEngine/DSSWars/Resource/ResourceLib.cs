@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint ConvertGoldOre = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.Gold,
-           1,
+           DssConst.GoldOreSellValue,
            new UseResource[]
            {
                new UseResource(ItemResourceType.GoldOre, 1),
@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint CupperCoin = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.Gold,
-           5,
+           5 * DssConst.CupperSellValue,
            new UseResource[]
            {
                new UseResource(ItemResourceType.Cupper, 5),
@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint BronzeCoin = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.Gold,
-           10,
+           5 * DssConst.BronzeSellValue,
            new UseResource[]
            {
                new UseResource(ItemResourceType.Bronze, 5),
@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint SilverCoin = new CraftBlueprint(
            CraftResultType.Resource,
            (int)ItemResourceType.Gold,
-          20,
+          5 * DssConst.SilverSellValue,
           new UseResource[]
           {
                new UseResource(ItemResourceType.Silver, 5),
@@ -57,7 +57,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint ElfCoin = new CraftBlueprint(
            CraftResultType.Resource,
            (int)ItemResourceType.Gold,
-          100,
+          DssConst.MithrilSellValue,
           new UseResource[]
           {
                new UseResource(ItemResourceType.Mithril, 1),

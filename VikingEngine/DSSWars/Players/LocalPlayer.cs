@@ -108,7 +108,7 @@ namespace VikingEngine.DSSWars.Players
             }
 
             faction.technology = new XP.TechnologyTemplate();
-            //faction.technology.iron = XP.TechnologyTemplate.FactionUnlock;
+            faction.technology.iron = XP.TechnologyTemplate.FactionUnlock;
         }
 
         public void assignPlayer(int playerindex, int numPlayers, bool newGame)

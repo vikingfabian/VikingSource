@@ -40,7 +40,8 @@ namespace VikingEngine.DSSWars.Build
 
         Logistics,
         Bank,
-        
+        CoinMinter,
+
         WoodCutter,
         StoneCutter,
         Embassy,
@@ -95,20 +96,24 @@ namespace VikingEngine.DSSWars.Build
                 result.Add(BuildAndExpandType.HempFarm);
                 result.Add(BuildAndExpandType.PigPen);
             }
+
             result.Add(BuildAndExpandType.HenPen);
-
-           
-            
-           
-
+                       
             if (unlocks.building_stoneBuildings)
             {
                 result.Add(BuildAndExpandType.Nobelhouse);
 
-                if (city.buildingStructure.buildingCount_nobelHouse > 0 ||
-                StartupSettings.UnlockAllProgress)
+                if (city.buildingStructure.Nobelhouse_count > 0 ||
+                    StartupSettings.UnlockAllProgress)
                 {
                     result.Add(BuildAndExpandType.Embassy);
+                }
+
+                result.Add(BuildAndExpandType.Bank);
+                if (city.buildingStructure.Bank_count > 0 ||
+                    StartupSettings.UnlockAllProgress)
+                {
+                    result.Add(BuildAndExpandType.CoinMinter);
                 }
             }
 
@@ -124,13 +129,11 @@ namespace VikingEngine.DSSWars.Build
                 result.Add(BuildAndExpandType.WaterResovoir);
             }
             
-            
-            
-            if (city.buildingStructure.buildingLevel_logistics >= 1 ||
-                StartupSettings.UnlockAllProgress)
-            {
+            //if (city.buildingStructure.buildingLevel_logistics >= 1 ||
+            //    StartupSettings.UnlockAllProgress)
+            //{
                 result.Add(BuildAndExpandType.CoalPit);
-            }
+            //}
             
             result.Add(BuildAndExpandType.WorkBench);
             result.Add(BuildAndExpandType.Cook);
@@ -163,7 +166,7 @@ namespace VikingEngine.DSSWars.Build
             if (city.buildingStructure.buildingLevel_logistics >= 1 ||
                 StartupSettings.UnlockAllProgress)
             {
-                if (city.buildingStructure.buildingCount_nobelHouse > 0 ||
+                if (city.buildingStructure.Nobelhouse_count > 0 ||
                     StartupSettings.UnlockAllProgress)
                 {
                     result.Add(BuildAndExpandType.KnightsBarracks);
@@ -233,6 +236,7 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.WoodCutter, TerrainMainType.Building, (int)TerrainBuildingType.WoodCutter, SpriteName.WarsBuild_WoodCutter, CraftBuildingLib. WoodCutter);
             new BuildOption(BuildAndExpandType.StoneCutter, TerrainMainType.Building, (int)TerrainBuildingType.StoneCutter, SpriteName.WarsBuild_StoneCutter, CraftBuildingLib.StoneCutter);
             new BuildOption(BuildAndExpandType.Bank, TerrainMainType.Building, (int)TerrainBuildingType.Bank, SpriteName.WarsBuild_Bank, CraftBuildingLib.Bank);
+            new BuildOption(BuildAndExpandType.CoinMinter, TerrainMainType.Building, (int)TerrainBuildingType.CoinMinter, SpriteName.WarsBuild_Bank, CraftBuildingLib.CoinMinter);
             new BuildOption(BuildAndExpandType.Embassy, TerrainMainType.Building, (int)TerrainBuildingType.Embassy, SpriteName.WarsBuild_Embassy, CraftBuildingLib.Embassy);
             new BuildOption(BuildAndExpandType.WaterResovoir, TerrainMainType.Building, (int)TerrainBuildingType.WaterResovoir, SpriteName.WarsBuild_WaterReservoir, CraftBuildingLib.WaterResovoir);
             new BuildOption(BuildAndExpandType.ArcherBarracks, TerrainMainType.Building, (int)TerrainBuildingType.ArcherBarracks, SpriteName.WarsBuild_KnightBarrack, CraftBuildingLib.KnightsBarracks);

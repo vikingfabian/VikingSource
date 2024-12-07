@@ -298,10 +298,10 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint Fuel1 = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.Fuel_G,
-            5,
+            10,
             new UseResource[]
             {
-                new UseResource(ItemResourceType.Wood_Group, 5),
+                new UseResource(ItemResourceType.Wood_Group, 10),
             },
             XP.WorkExperienceType.CraftFuel
         );

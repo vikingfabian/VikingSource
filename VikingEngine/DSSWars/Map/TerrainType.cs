@@ -6,9 +6,6 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.Map
 {
-
-   
-
     enum TerrainMainType
     {
         DefaultLand,
@@ -84,6 +81,7 @@ namespace VikingEngine.DSSWars.Map
         Nobelhouse,
         Storehouse,
         Bank,
+        CoinMinter,
 
         Logistics,
         Smelter,
@@ -150,5 +148,4 @@ namespace VikingEngine.DSSWars.Map
         Flat,
         Mountain,
     }
-
 }

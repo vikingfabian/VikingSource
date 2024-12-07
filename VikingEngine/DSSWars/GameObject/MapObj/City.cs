@@ -421,34 +421,94 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write((ushort)maxGuardSize);
 
             w.Write((byte)maxWaterBase);
-            w.Write(Debug.Byte_OrCrash((int)(waterAddPerSec * 20)));
+            w.Write(waterAddPerSec);
             workTemplate.writeGameState(w, true);
 
             w.Write((short)res_water.amount);
 
 
-            res_wood.writeGameState(w); //ItemResourceType.Wood_Group,
-            res_fuel.writeGameState(w); // ItemResourceType.Fuel_G,
-            res_stone.writeGameState(w); // ItemResourceType.Stone_G,
-            res_rawFood.writeGameState(w); // ItemResourceType.RawFood_Group,
-            res_food.writeGameState(w); // ItemResourceType.Food_G,
-            res_beer.writeGameState(w); // ItemResourceType.Beer,
-            res_skinLinnen.writeGameState(w); // ItemResourceType.SkinLinen_Group,
-            res_ironore.writeGameState(w); // ItemResourceType.IronOre_G,
-            res_iron.writeGameState(w); // ItemResourceType.Iron_G,
+            res_wood.writeGameState(w); // ItemResourceType.Wood_Group
+            res_fuel.writeGameState(w); // ItemResourceType.Fuel_G
+            res_stone.writeGameState(w); // ItemResourceType.Stone_G
+            res_rawFood.writeGameState(w); // ItemResourceType.RawFood_Group
+            res_food.writeGameState(w); // ItemResourceType.Food_G
+            res_beer.writeGameState(w); // ItemResourceType.Beer
+            res_coolingfluid.writeGameState(w); // ItemResourceType.CoolingFluid
+            res_skinLinnen.writeGameState(w); // ItemResourceType.SkinLinen_Group
 
-            res_shortsword.writeGameState(w); // ItemResourceType.Sword,
-            res_sharpstick.writeGameState(w); // ItemResourceType.SharpStick,
-            res_twohandsword.writeGameState(w); // ItemResourceType.TwoHandSword,
-            res_knightslance.writeGameState(w); // ItemResourceType.KnightsLance,
-            res_bow.writeGameState(w); // ItemResourceType.Bow,
-            res_ballista.writeGameState(w); // ItemResourceType.Ballista,            
+            res_ironore.writeGameState(w); // ItemResourceType.IronOre_G
+            res_TinOre.writeGameState(w); // ItemResourceType.TinOre_G
+            res_CupperOre.writeGameState(w); // ItemResourceType.CopperOre_G
+            res_LeadOre.writeGameState(w); // ItemResourceType.LeadOre_G
+            res_SilverOre.writeGameState(w); // ItemResourceType.SilverOre_G
 
-            res_paddedArmor.writeGameState(w); // ItemResourceType.LightArmor,
-            res_mailArmor.writeGameState(w); // ItemResourceType.MediumArmor,
-            res_heavyMailArmor.writeGameState(w); // ItemResourceType.HeavyArmor,
+            res_iron.writeGameState(w); // ItemResourceType.Iron_G
+            res_Tin.writeGameState(w); // ItemResourceType.Tin_G
+            res_Cupper.writeGameState(w); // ItemResourceType.Copper_G
+            res_Lead.writeGameState(w); // ItemResourceType.Lead_G
+            res_Silver.writeGameState(w); // ItemResourceType.Silver_G
+            res_RawMithril.writeGameState(w); // ItemResourceType.RawMithril
+            res_Sulfur.writeGameState(w); // ItemResourceType.Sulfur
 
-            res_longbow.writeGameState(w);
+            res_Bronze.writeGameState(w); // ItemResourceType.Bronze
+            res_Steel.writeGameState(w); // ItemResourceType.Steel
+            res_CastIron.writeGameState(w); // ItemResourceType.CastIron
+            res_BloomeryIron.writeGameState(w); // ItemResourceType.BloomeryIron
+            res_Mithril.writeGameState(w); // ItemResourceType.Mithril
+
+            res_Toolkit.writeGameState(w); // ItemResourceType.Toolkit
+            res_Wagon2Wheel.writeGameState(w); // ItemResourceType.Wagon2Wheel
+            res_Wagon4Wheel.writeGameState(w); // ItemResourceType.Wagon4Wheel
+            res_BlackPowder.writeGameState(w); // ItemResourceType.BlackPowder
+            res_GunPowder.writeGameState(w); // ItemResourceType.GunPowder
+            res_LedBullet.writeGameState(w); // ItemResourceType.LedBullet
+
+            res_sharpstick.writeGameState(w); // ItemResourceType.SharpStick
+            res_BronzeSword.writeGameState(w); // ItemResourceType.BronzeSword
+            res_shortsword.writeGameState(w); // ItemResourceType.ShortSword
+            res_Sword.writeGameState(w); // ItemResourceType.Sword
+            res_LongSword.writeGameState(w); // ItemResourceType.LongSword
+            res_HandSpear.writeGameState(w); // ItemResourceType.HandSpear
+            res_MithrilSword.writeGameState(w); // ItemResourceType.MithrilSword
+
+            res_Warhammer.writeGameState(w); // ItemResourceType.Warhammer
+            res_twohandsword.writeGameState(w); // ItemResourceType.TwoHandSword
+            res_knightslance.writeGameState(w); // ItemResourceType.KnightsLance
+            res_SlingShot.writeGameState(w); // ItemResourceType.SlingShot
+            res_ThrowingSpear.writeGameState(w); // ItemResourceType.ThrowingSpear
+            res_bow.writeGameState(w); // ItemResourceType.Bow
+            res_longbow.writeGameState(w); // ItemResourceType.LongBow
+            res_crossbow.writeGameState(w); // ItemResourceType.CrossBow
+            res_MithrilBow.writeGameState(w); // ItemResourceType.MithrilBow
+
+            res_HandCannon.writeGameState(w); // ItemResourceType.HandCannon
+            res_HandCulvertin.writeGameState(w); // ItemResourceType.HandCulvertin
+            res_Rifle.writeGameState(w); // ItemResourceType.Rifle
+            res_Blunderbus.writeGameState(w); // ItemResourceType.Blunderbus
+
+            res_BatteringRam.writeGameState(w); // ItemResourceType.BatteringRam
+            res_ballista.writeGameState(w); // ItemResourceType.Ballista
+            res_Manuballista.writeGameState(w); // ItemResourceType.Manuballista
+            res_Catapult.writeGameState(w); // ItemResourceType.Catapult
+            res_SiegeCannonBronze.writeGameState(w); // ItemResourceType.SiegeCannonBronze
+            res_ManCannonBronze.writeGameState(w); // ItemResourceType.ManCannonBronze
+            res_SiegeCannonIron.writeGameState(w); // ItemResourceType.SiegeCannonIron
+            res_ManCannonIron.writeGameState(w); // ItemResourceType.ManCannonIron
+
+            res_paddedArmor.writeGameState(w); // ItemResourceType.LightArmor
+            res_HeavyPaddedArmor.writeGameState(w); // ItemResourceType.HeavyPaddedArmor
+            res_BronzeArmor.writeGameState(w); // ItemResourceType.BronzeArmor
+            res_mailArmor.writeGameState(w); // ItemResourceType.MediumArmor
+            res_heavyMailArmor.writeGameState(w); // ItemResourceType.HeavyArmor
+            res_LightPlateArmor.writeGameState(w); // ItemResourceType.LightPlateArmor
+            res_FullPlateArmor.writeGameState(w); // ItemResourceType.FullPlateArmor
+            res_MithrilArmor.writeGameState(w); // ItemResourceType.MithrilArmor
+
+            w.Write((ushort)workerStatuses.Count);
+            for (int i = 0; i < workerStatuses.Count; i++) 
+            { 
+                workerStatuses[i].writeGameState(w);
+            }
 
             w.Write((ushort)conscriptBuildings.Count);
             foreach (var barracks in conscriptBuildings)
@@ -473,6 +533,8 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             w.Write(res_food_safeguard);
+
+            technology.writeGameState(w);
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
@@ -489,38 +551,106 @@ namespace VikingEngine.DSSWars.GameObject
 
             maxWaterBase = r.ReadByte();
             maxWaterTotal = maxWaterBase;
-            waterAddPerSec = r.ReadByte() / 20f;
+            waterAddPerSec = r.ReadSingle();
             
             workTemplate.readGameState(r, subversion, true);
 
             res_water.amount = r.ReadInt16();
 
-            res_wood.readGameState(r, subversion); //ItemResourceType.Wood_Group,
-            res_fuel.readGameState(r, subversion); // ItemResourceType.Fuel_G,
-            res_stone.readGameState(r, subversion); // ItemResourceType.Stone_G,
-            res_rawFood.readGameState(r, subversion); // ItemResourceType.RawFood_Group,
-            res_food.readGameState(r, subversion); // ItemResourceType.Food_G,
-            res_beer.readGameState(r, subversion); // ItemResourceType.Beer,
-            res_skinLinnen.readGameState(r, subversion); // ItemResourceType.SkinLinen_Group,
-            res_ironore.readGameState(r, subversion); // ItemResourceType.IronOre_G,
-            res_iron.readGameState(r, subversion); // ItemResourceType.Iron_G,
+            res_wood.readGameState(r, subversion); // ItemResourceType.Wood_Group
+            res_fuel.readGameState(r, subversion); // ItemResourceType.Fuel_G
+            res_stone.readGameState(r, subversion); // ItemResourceType.Stone_G
+            res_rawFood.readGameState(r, subversion); // ItemResourceType.RawFood_Group
+            res_food.readGameState(r, subversion); // ItemResourceType.Food_G
+            res_beer.readGameState(r, subversion); // ItemResourceType.Beer
+            res_coolingfluid.readGameState(r, subversion); // ItemResourceType.CoolingFluid
+            res_skinLinnen.readGameState(r, subversion); // ItemResourceType.SkinLinen_Group
 
-            res_shortsword.readGameState(r, subversion); // ItemResourceType.Sword,
-            res_sharpstick.readGameState(r, subversion); // ItemResourceType.SharpStick,
-            res_twohandsword.readGameState(r, subversion); // ItemResourceType.TwoHandSword,
-            res_knightslance.readGameState(r, subversion); // ItemResourceType.KnightsLance,
-            res_bow.readGameState(r, subversion); // ItemResourceType.Bow,
-            res_ballista.readGameState(r, subversion); // ItemResourceType.Ballista,            
+            res_ironore.readGameState(r, subversion); // ItemResourceType.IronOre_G
+            res_TinOre.readGameState(r, subversion); // ItemResourceType.TinOre_G
+            res_CupperOre.readGameState(r, subversion); // ItemResourceType.CopperOre_G
+            res_LeadOre.readGameState(r, subversion); // ItemResourceType.LeadOre_G
+            res_SilverOre.readGameState(r, subversion); // ItemResourceType.SilverOre_G
 
-            res_paddedArmor.readGameState(r, subversion); // ItemResourceType.LightArmor,
-            res_mailArmor.readGameState(r, subversion); // ItemResourceType.MediumArmor,
-            res_heavyMailArmor.readGameState(r, subversion); // ItemResourceType.HeavyArmor,
+            res_iron.readGameState(r, subversion); // ItemResourceType.Iron_G
+            res_Tin.readGameState(r, subversion); // ItemResourceType.Tin_G
+            res_Cupper.readGameState(r, subversion); // ItemResourceType.Copper_G
+            res_Lead.readGameState(r, subversion); // ItemResourceType.Lead_G
+            res_Silver.readGameState(r, subversion); // ItemResourceType.Silver_G
+            res_RawMithril.readGameState(r, subversion); // ItemResourceType.RawMithril
+            res_Sulfur.readGameState(r, subversion); // ItemResourceType.Sulfur
 
-            res_longbow.readGameState(r, subversion);
-            
+            res_Bronze.readGameState(r, subversion); // ItemResourceType.Bronze
+            res_Steel.readGameState(r, subversion); // ItemResourceType.Steel
+            res_CastIron.readGameState(r, subversion); // ItemResourceType.CastIron
+            res_BloomeryIron.readGameState(r, subversion); // ItemResourceType.BloomeryIron
+            res_Mithril.readGameState(r, subversion); // ItemResourceType.Mithril
+
+            res_Toolkit.readGameState(r, subversion); // ItemResourceType.Toolkit
+            res_Wagon2Wheel.readGameState(r, subversion); // ItemResourceType.Wagon2Wheel
+            res_Wagon4Wheel.readGameState(r, subversion); // ItemResourceType.Wagon4Wheel
+            res_BlackPowder.readGameState(r, subversion); // ItemResourceType.BlackPowder
+            res_GunPowder.readGameState(r, subversion); // ItemResourceType.GunPowder
+            res_LedBullet.readGameState(r, subversion); // ItemResourceType.LedBullet
+
+            res_sharpstick.readGameState(r, subversion); // ItemResourceType.SharpStick
+            res_BronzeSword.readGameState(r, subversion); // ItemResourceType.BronzeSword
+            res_shortsword.readGameState(r, subversion); // ItemResourceType.ShortSword
+            res_Sword.readGameState(r, subversion); // ItemResourceType.Sword
+            res_LongSword.readGameState(r, subversion); // ItemResourceType.LongSword
+            res_HandSpear.readGameState(r, subversion); // ItemResourceType.HandSpear
+            res_MithrilSword.readGameState(r, subversion); // ItemResourceType.MithrilSword
+
+            res_Warhammer.readGameState(r, subversion); // ItemResourceType.Warhammer
+            res_twohandsword.readGameState(r, subversion); // ItemResourceType.TwoHandSword
+            res_knightslance.readGameState(r, subversion); // ItemResourceType.KnightsLance
+            res_SlingShot.readGameState(r, subversion); // ItemResourceType.SlingShot
+            res_ThrowingSpear.readGameState(r, subversion); // ItemResourceType.ThrowingSpear
+            res_bow.readGameState(r, subversion); // ItemResourceType.Bow
+            res_longbow.readGameState(r, subversion); // ItemResourceType.LongBow
+            res_crossbow.readGameState(r, subversion); // ItemResourceType.CrossBow
+            res_MithrilBow.readGameState(r, subversion); // ItemResourceType.MithrilBow
+
+            res_HandCannon.readGameState(r, subversion); // ItemResourceType.HandCannon
+            res_HandCulvertin.readGameState(r, subversion); // ItemResourceType.HandCulvertin
+            res_Rifle.readGameState(r, subversion); // ItemResourceType.Rifle
+            res_Blunderbus.readGameState(r, subversion); // ItemResourceType.Blunderbus
+
+            res_BatteringRam.readGameState(r, subversion); // ItemResourceType.BatteringRam
+            res_ballista.readGameState(r, subversion); // ItemResourceType.Ballista
+            res_Manuballista.readGameState(r, subversion); // ItemResourceType.Manuballista
+            res_Catapult.readGameState(r, subversion); // ItemResourceType.Catapult
+            res_SiegeCannonBronze.readGameState(r, subversion); // ItemResourceType.SiegeCannonBronze
+            res_ManCannonBronze.readGameState(r, subversion); // ItemResourceType.ManCannonBronze
+            res_SiegeCannonIron.readGameState(r, subversion); // ItemResourceType.SiegeCannonIron
+            res_ManCannonIron.readGameState(r, subversion); // ItemResourceType.ManCannonIron
+
+            res_paddedArmor.readGameState(r, subversion); // ItemResourceType.LightArmor
+            res_HeavyPaddedArmor.readGameState(r, subversion); // ItemResourceType.HeavyPaddedArmor
+            res_BronzeArmor.readGameState(r, subversion); // ItemResourceType.BronzeArmor
+            res_mailArmor.readGameState(r, subversion); // ItemResourceType.MediumArmor
+            res_heavyMailArmor.readGameState(r, subversion); // ItemResourceType.HeavyArmor
+            res_LightPlateArmor.readGameState(r, subversion); // ItemResourceType.LightPlateArmor
+            res_FullPlateArmor.readGameState(r, subversion); // ItemResourceType.FullPlateArmor
+            res_MithrilArmor.readGameState(r, subversion); // ItemResourceType.MithrilArmor
+
+            IntVector2 startPos = WP.ToSubTilePos_Centered(tilePos);
+            int workerStatusesCount = r.ReadUInt16();
+            for (int i = 0; i < workerStatusesCount; i++)
+            {
+                var newWorker = new WorkerStatus()
+                {
+                    work = WorkType.Idle,
+                    processTimeStartStampSec = Ref.TotalGameTimeSec,
+                    subTileEnd = startPos,
+                    subTileStart = startPos,
+                };
+
+                newWorker.readGameState(r, subversion);
+                workerStatuses.Add(newWorker);
+            }
 
             refreshCitySize();
-
             conscriptBuildings.Clear();
             int conscriptBuildingsCount = r.ReadUInt16();
             for (int i = 0; i < conscriptBuildingsCount; i++)
@@ -553,6 +683,8 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 res_food_safeguard = r.ReadBoolean();
             }
+
+            technology.readGameState(r, subversion);
         }
 
         public void writeNet(System.IO.BinaryWriter w)
@@ -1095,7 +1227,7 @@ namespace VikingEngine.DSSWars.GameObject
             //    waterAddPerSec = 2;
             //}
             nextWater.value += waterAddPerSec;
-            maxWaterTotal = maxWaterBase + buildingStructure.buildingCount_waterresorvoir * DssConst.WaterResovoirWaterAdd;
+            maxWaterTotal = maxWaterBase + buildingStructure.WaterResovoir_count * DssConst.WaterResovoirWaterAdd;
             res_water.amount = Math.Min(res_water.amount + nextWater.pull(), maxWaterTotal);
 
             if (starving)
@@ -1348,9 +1480,10 @@ namespace VikingEngine.DSSWars.GameObject
                     content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.Hud_Immigrants, immigrants.Int()));
                 }
 
-                technologyOverviewHud(content, player);
+                new XP.TechnologyHud().technologyOverviewHud(content, player, null, faction);
+                //technologyOverviewHud(content, player);
 #if DEBUG
-                technologyHud(content, player);
+                //technologyHud(content, player);
 #endif
                 //if (!player.inTutorialMode)
                 {

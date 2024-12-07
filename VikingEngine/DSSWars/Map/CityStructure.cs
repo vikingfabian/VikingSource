@@ -26,6 +26,7 @@ namespace VikingEngine.DSSWars.Map
         public List<IntVector2> BogIron = new List<IntVector2>(20);
         public List<IntVector2> Mines = new List<IntVector2>(20);
         public List<IntVector2> CraftStation = new List<IntVector2>(20);
+        public List<IntVector2> CoinMinting = new List<IntVector2>(2);
         public List<IntVector2> EmptyLand = new List<IntVector2>(2);
         public List<IntVector2> ResourceOnGround = new List<IntVector2>(20);
 
@@ -158,6 +159,7 @@ namespace VikingEngine.DSSWars.Map
             BogIron.Clear();
             Mines.Clear();
             CraftStation.Clear();
+            CoinMinting.Clear();
             EmptyLand.Clear();
             ResourceOnGround.Clear();
             WoodCutter.Clear();
@@ -231,16 +233,24 @@ namespace VikingEngine.DSSWars.Map
                                                 break;
 
                                             case TerrainSubFoilType.WheatFarm:
+                                                ++buildingStructure.WheatFarm_count;
                                                 ++foodspots;
                                                 farming(ref subTile);
                                                 break;
 
                                             case TerrainSubFoilType.LinenFarm:
+                                                ++buildingStructure.LinenFarm_count;
                                                 farming(ref subTile);
                                                 break;
 
                                             case TerrainSubFoilType.RapeSeedFarm:
+                                                ++buildingStructure.RapeSeedFarm_count;
+                                                ++fuelSpots;
+                                                farming(ref subTile);
+                                                break;
+
                                             case TerrainSubFoilType.HempFarm:
+                                                ++buildingStructure.HempFarm_count;
                                                 ++fuelSpots;
                                                 farming(ref subTile);
                                                 break;
@@ -264,7 +274,12 @@ namespace VikingEngine.DSSWars.Map
 
                                         switch (building)
                                         {
+                                            case TerrainBuildingType.WorkerHut:
+                                                ++buildingStructure.WorkerHuts_count;
+                                                break;
+
                                             case TerrainBuildingType.HenPen:
+                                                ++buildingStructure.HenPen_count;
                                                 ++foodspots;
                                                 if (subTile.terrainAmount > TerrainContent.HenReady)
                                                 { 
@@ -272,11 +287,38 @@ namespace VikingEngine.DSSWars.Map
                                                 }
                                                 break;
                                             case TerrainBuildingType.PigPen:
+                                                ++buildingStructure.PigPen_count;
                                                 ++foodspots;
                                                 if (subTile.terrainAmount > TerrainContent.PigReady)
                                                 {
                                                     AnimalPens.Add(subTileLoop.Position);
                                                 }
+                                                break;
+
+                                            case TerrainBuildingType.Postal:
+                                                ++buildingStructure.Postal_count;
+                                                break;
+                                            case TerrainBuildingType.Recruitment:
+                                                ++buildingStructure.Recruitment_count;
+                                                break;
+
+                                            case TerrainBuildingType.SoldierBarracks:
+                                                ++buildingStructure.SoldierBarracks_count;
+                                                break;
+                                            case TerrainBuildingType.ArcherBarracks:
+                                                ++buildingStructure.ArcherBarracks_count;
+                                                break;
+                                            case TerrainBuildingType.WarmashineBarracks:
+                                                ++buildingStructure.WarmashineBarracks_count;
+                                                break;
+                                            case TerrainBuildingType.KnightsBarracks:
+                                                ++buildingStructure.KnightsBarracks_count;
+                                                break;
+                                            case TerrainBuildingType.GunBarracks:
+                                                ++buildingStructure.GunBarracks_count;
+                                                break;
+                                            case TerrainBuildingType.CannonBarracks:
+                                                ++buildingStructure.CannonBarracks_count;
                                                 break;
 
                                             case TerrainBuildingType.Tavern:
@@ -286,42 +328,85 @@ namespace VikingEngine.DSSWars.Map
                                                 StoragePoints_workupdate.Add(subTileLoop.Position);
                                                 break;
                                             case TerrainBuildingType.Carpenter:
-                                                buildingStructure.hasBuilding_carpenter = true;
+                                                ++buildingStructure.Carpenter_count;
                                                 CraftStation.Add(subTileLoop.Position);
                                                 break;
                                             case TerrainBuildingType.Brewery:
-                                                buildingStructure.hasBuilding_brewery = true;
+                                                ++buildingStructure.Brewery_count;
                                                 CraftStation.Add(subTileLoop.Position);
                                                 break;
                                             
                                             case TerrainBuildingType.Work_CoalPit:
-                                                ++buildingStructure.coalPitCount;
+                                                ++buildingStructure.CoalPit_count;
                                                 CraftStation.Add(subTileLoop.Position);
                                                 break;
 
                                             case TerrainBuildingType.Work_Cook:
+                                                ++buildingStructure.Cook_count;
+                                                CraftStation.Add(subTileLoop.Position);
+                                                break;
+
                                             case TerrainBuildingType.Work_Bench:
+                                                ++buildingStructure.WorkBench_count;
                                                 CraftStation.Add(subTileLoop.Position);
                                                 break;
                                             case TerrainBuildingType.Work_Smith:
-                                                buildingStructure.hasBuilding_smith = true;
+                                                ++buildingStructure.Smith_count;
                                                 CraftStation.Add(subTileLoop.Position);
                                                 break;
+
+                                            case TerrainBuildingType.Smelter:
+                                                ++buildingStructure.Smelter_count;
+                                                CraftStation.Add(subTileLoop.Position);
+                                                break;
+
+                                            case TerrainBuildingType.Foundry:
+                                                ++buildingStructure.Foundry_count;
+                                                CraftStation.Add(subTileLoop.Position);
+                                                break;
+
+                                            case TerrainBuildingType.Armory:
+                                                ++buildingStructure.Armory_count;
+                                                CraftStation.Add(subTileLoop.Position);
+                                                break;
+
+                                            case TerrainBuildingType.Chemist:
+                                                ++buildingStructure.Chemist_count;
+                                                CraftStation.Add(subTileLoop.Position);
+                                                break;
+
+                                            case TerrainBuildingType.Gunmaker:
+                                                ++buildingStructure.Gunmaker_count;
+                                                CraftStation.Add(subTileLoop.Position);
+                                                break;
+
                                             case TerrainBuildingType.WoodCutter:
+                                                ++buildingStructure.WoodCutter_count;
                                                 WoodCutter.Add(subTileLoop.Position);
                                                 break;
                                             case TerrainBuildingType.StoneCutter:
+                                                ++buildingStructure.StoneCutter_count;
                                                 StoneCutter.Add(subTileLoop.Position);
                                                 break;
 
                                             case TerrainBuildingType.Nobelhouse:
-                                                ++buildingStructure.buildingCount_nobelHouse;
+                                                ++buildingStructure.Nobelhouse_count;
+                                                break;
+                                            case TerrainBuildingType.Embassy:
+                                                ++buildingStructure.Embassy_count;
                                                 break;
                                             case TerrainBuildingType.Logistics:
                                                 buildingStructure.buildingLevel_logistics = subTile.terrainAmount;
                                                 break;
                                             case TerrainBuildingType.WaterResovoir:
-                                                ++buildingStructure.buildingCount_waterresorvoir;
+                                                ++buildingStructure.WaterResovoir_count;
+                                                break;
+                                            case TerrainBuildingType.Bank:
+                                                ++buildingStructure.Bank_count;
+                                                break;
+                                            case TerrainBuildingType.CoinMinter:
+                                                ++buildingStructure.CoinMinter_count;
+                                                CoinMinting.Add(subTileLoop.Position);
                                                 break;
                                         }
                                         break;

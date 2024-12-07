@@ -192,7 +192,13 @@ namespace VikingEngine.DSSWars.Resource
         FullPlateArmor,
         MithrilArmor,
 
+        CupperCoin,
+        BronzeCoin,
+        SilverCoin,
+        ElfCoin,
         NUM,
+
+        
     }
 
     //enum ItemResourceType

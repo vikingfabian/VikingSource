@@ -148,6 +148,13 @@ namespace VikingEngine.DSSWars.Resource
             return SpriteName.NO_IMAGE;
         }
 
+        public void resultTypeToMenu(RichBoxContent content)
+        { 
+            content.Add(new RichBoxImage(icon()));
+            content.space();
+            content.Add(new RichBoxText(name()));
+        }
+
         public void toMenu(RichBoxContent content, City city, bool newLine = true)
         {
             if (newLine)
@@ -168,9 +175,22 @@ namespace VikingEngine.DSSWars.Resource
             content.Add(arrow);
             content.Add(new RichBoxText(resultAmount.ToString()));
             content.Add(new RichBoxImage(icon()));
+            content.space();
             content.Add(new RichBoxText(name()));
 
             content.newLine();
+            if (levelRequirement > ExperienceLevel.Beginner_1)
+            {
+                var levelReqText = new RichBoxText(DssRef.lang.Hud_PurchaseTitle_Requirement + ":");
+                content.Add(levelReqText);
+                content.space();
+                var levelText = new RichBoxText(LangLib.ExperienceLevel(levelRequirement));
+                levelText.overrideColor = HudLib.TitleColor_TypeName;
+                content.Add(levelText);
+                content.space();
+                content.Add(new RichBoxImage(LangLib.ExperienceLevelIcon(levelRequirement)));
+                content.newLine();
+            }
 
             void addResources(int count, SpriteName sprite, string name)
             {
@@ -219,39 +239,39 @@ namespace VikingEngine.DSSWars.Resource
                 {
                     case CraftRequirement.Carpenter:
                         reqText = DssRef.lang.BuildingType_Carpenter;
-                        available = city.buildingStructure.hasBuilding_carpenter;
+                        available = city.buildingStructure.Carpenter_count>0;
                         break;
                     case CraftRequirement.Brewery:
                         reqText = DssRef.lang.BuildingType_Brewery;
-                        available = city.buildingStructure.hasBuilding_brewery;
+                        available = city.buildingStructure.Brewery_count>0;
                         break;
                     case CraftRequirement.Smelter:
                         reqText = DssRef.todoLang.BuildingType_SmeltingFurnace;
-                        available = city.buildingStructure.buildingCount_smelter > 0;
+                        available = city.buildingStructure.Smelter_count > 0;
                         break;
                     case CraftRequirement.Chemist:
                         reqText = DssRef.todoLang.BuildingType_Chemist;
-                        available = city.buildingStructure.buildingCount_chemist > 0;
+                        available = city.buildingStructure.Chemist_count > 0;
                         break;
                     case CraftRequirement.Gunmaker:
                         reqText = DssRef.todoLang.BuildingType_Gunmaker;
-                        available = city.buildingStructure.buildingCount_gunmaker > 0;
+                        available = city.buildingStructure.Gunmaker_count > 0;
                         break;
                     case CraftRequirement.CoinMaker:
                         reqText = DssRef.todoLang.BuildingType_CoinMaker;
-                        available = city.buildingStructure.buildingCount_coinmaker > 0;
+                        available = city.buildingStructure.CoinMinter_count > 0;
                         break;
                     case CraftRequirement.Foundry:
                         reqText = DssRef.todoLang.BuildingType_Foundry;
-                        available = city.buildingStructure.buildingCount_foundry > 0;
+                        available = city.buildingStructure.Foundry_count > 0;
                         break;
                     case CraftRequirement.Smith:
                         reqText = DssRef.lang.BuildingType_Smith;
-                        available = city.buildingStructure.hasBuilding_smith;
+                        available = city.buildingStructure.Smith_count > 0;
                         break;
                     case CraftRequirement.CoalPit:
                         reqText = DssRef.lang.BuildingType_CoalPit;
-                        available = city.buildingStructure.buildingCount_coalpit > 0;
+                        available = city.buildingStructure.CoalPit_count > 0;
                         break;
                     case CraftRequirement.Logistics1:
                         reqText = string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, City.Logistics1FoodStorage);

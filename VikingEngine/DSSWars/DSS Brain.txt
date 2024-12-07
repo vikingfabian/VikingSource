@@ -1,14 +1,16 @@
 ﻿-Change Log-
+Worker experience
 Double soldier health
 20 new soldier types
 14 new buildings
 50 new resources
 All water values are x10
 Technology tree
+3 rew city cultures
 
 optimized worker performance
 Added multicore priority to make the map load smoother during gameplay
-Slight improvement on map generating (sticks on 70%)
+Slight improvement on new map generating (sticks on 70%)
 
 
 

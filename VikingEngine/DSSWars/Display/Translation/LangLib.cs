@@ -500,8 +500,15 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.lang.BuildingType_Bench_Description;
                 case TerrainBuildingType.Work_Smith:
                     return DssRef.lang.BuildingType_Smith_Description;
+                case TerrainBuildingType.Smelter:
+                    return DssRef.todoLang.BuildingType_SmeltingFurnace_Description;
+                case TerrainBuildingType.Foundry:
+                    return DssRef.todoLang.BuildingType_Foundry_Description;
                 case TerrainBuildingType.Carpenter:
                     return DssRef.lang.BuildingType_Carpenter_Description;
+                case TerrainBuildingType.Armory:
+                    return DssRef.todoLang.BuildingType_Armory_Description;
+
                 case TerrainBuildingType.Nobelhouse:
                     return DssRef.lang.BuildingType_Nobelhouse_Description;
                 case TerrainBuildingType.Brewery:
@@ -699,9 +706,14 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case ItemResourceType.MithrilArmor:
                     return DssRef.todoLang.Resource_TypeName_MithrilArmor;
 
-
                 case ItemResourceType.Men:
                     return DssRef.lang.ResourceType_Workers;
+
+                case ItemResourceType.CupperCoin:
+                case ItemResourceType.BronzeCoin:
+                case ItemResourceType.SilverCoin:
+                case ItemResourceType.ElfCoin:
+                    return DssRef.todoLang.Resource_TypeName_Coin;
 
                 default:
                     return TextLib.Error;
@@ -744,6 +756,14 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return title ? DssRef.lang.CityCulture_Backtrader : DssRef.lang.CityCulture_Backtrader_Description;
                 case DSSWars.CityCulture.Lawbiding:
                     return title ? DssRef.lang.CityCulture_LawAbiding : DssRef.lang.CityCulture_LawAbiding_Description;
+
+
+                case DSSWars.CityCulture.Smelters:
+                    return title ? DssRef.todoLang.CityCulture_Smelters : DssRef.todoLang.CityCulture_Smelters_Description;
+                case DSSWars.CityCulture.BronzeCasters:
+                    return title ? DssRef.todoLang.CityCulture_BronzeCasters : DssRef.todoLang.CityCulture_BronzeCasters_Description;
+                case DSSWars.CityCulture.Apprentices:
+                    return title ? DssRef.todoLang.CityCulture_Apprentices : DssRef.todoLang.CityCulture_Apprentices_Description;
 
                 default: return TextLib.Error;
             }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -126,12 +127,17 @@ namespace VikingEngine.DSSWars.Build
             foreach (var opt in available)
             {
                 var build = BuildLib.BuildOptions[(int)opt];
+                var buildCount = city.buildingStructure.getCount(opt);
 
-                var button = new RichboxButton(new List<AbsRichBoxMember> {
-                    
-                    new RichBoxImage(build.sprite),
-
-                },
+                var buttonIcon = new RichBoxImage(build.sprite);
+                var buttonContent = new List<AbsRichBoxMember> {
+                    buttonIcon,                    
+                };
+                if (buildCount > 0)
+                {
+                    buttonContent.Add(new RichBoxOverlapText(buttonIcon,buildCount.ToString(), new Vector2(1.1f, 1.1f), 1.0f, new Vector2(1,1f), Color.White));
+                }
+                var button = new RichboxButton(buttonContent,
                 new RbAction1Arg<BuildAndExpandType>(buildingTypeClick, opt, SoundLib.menu),
                 new RbAction1Arg<BuildAndExpandType>((BuildAndExpandType type) =>
                 {
@@ -405,75 +411,92 @@ namespace VikingEngine.DSSWars.Build
                             break;
 
                         case BuildAndExpandType.Brewery:
-                            content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
-                            content.newLine();
-                            content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
-                            content.space();
-                            CraftResourceLib.Beer.toMenu(content, city, false);
+                            mayCraftList(content, CraftResourceLib.Beer);
+                            //content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
+                            //content.newLine();
+                            //content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
+                            //content.space();
+                            //CraftResourceLib.Beer.toMenu(content, city, false);
                             break;
 
                         case BuildAndExpandType.Cook:
-                            content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
+                            mayCraftList(content, CraftResourceLib.Food1);
+                            //content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
 
-                            content.newLine();
-                            content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
-                            content.space();
-                            CraftResourceLib.Food1.toMenu(content, city, false);
+                            //content.newLine();
+                            //content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
+                            //content.space();
+                            //CraftResourceLib.Food1.toMenu(content, city, false);
 
-                            content.newLine();
-                            content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
-                            content.space();
-                            CraftResourceLib.Food2.toMenu(content, city, false);
+                            //content.newLine();
+                            //content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
+                            //content.space();
+                            //CraftResourceLib.Food2.toMenu(content, city, false);
 
                             break;
 
                         case BuildAndExpandType.Carpenter:
-                            content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
+                            //content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
 
-                            foreach (var m in CraftBuildingLib.CarpenterCraftTypes)
-                            {
-                                content.newLine();
-                                content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
-                                content.space();
-                                ItemPropertyColl.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
-                                bp1.toMenu(content, city, false);
-                            }
+                            //foreach (var m in CraftBuildingLib.CarpenterCraftTypes)
+                            //{
+                            //    content.newLine();
+                            //    content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
+                            //    content.space();
+                            //    ItemPropertyColl.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
+                            //    bp1.toMenu(content, city, false);
+                            //}
+                            mayCraftList(content, city, CraftBuildingLib.CarpenterCraftTypes);
 
                             break;
 
                         case BuildAndExpandType.WorkBench:
-                            content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
+                            //content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
 
-                            foreach (var m in CraftBuildingLib.BenchCraftTypes)
-                            {
-                                content.newLine();
-                                content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
-                                content.space();
-                                ItemPropertyColl.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
-                                bp1.toMenu(content, city, false);
-                            }
+                            //foreach (var m in CraftBuildingLib.BenchCraftTypes)
+                            //{
+                            //    content.newLine();
+                            //    content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
+                            //    content.space();
+                            //    ItemPropertyColl.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
+                            //    bp1.toMenu(content, city, false);
+                            //}
+                            mayCraftList(content, city, CraftBuildingLib.BenchCraftTypes);
+                            break;
 
+                        case BuildAndExpandType.Smelter:
+                            mayCraftList(content, city, CraftBuildingLib.SmelterCraftTypes);
+                            break;
+
+                        case BuildAndExpandType.Foundry:
+                            mayCraftList(content, city, CraftBuildingLib.FoundryCraftTypes);
+                            break;
+
+                        case BuildAndExpandType.Armory:
+                            mayCraftList(content, city, CraftBuildingLib.ArmoryCraftTypes);
                             break;
 
                         case BuildAndExpandType.Smith:
-                            content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
+                            mayCraftList(content, city, CraftBuildingLib.SmithCraftTypes);
+                            //content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
 
-                            foreach (var m in CraftBuildingLib.SmithCraftTypes)
-                            {
-                                content.newLine();
-                                content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
-                                content.space();
-                                ItemPropertyColl.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
-                                bp1.toMenu(content, city, false);
-                            }
+                            //foreach (var m in CraftBuildingLib.SmithCraftTypes)
+                            //{
+                            //    content.newLine();
+                            //    content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
+                            //    content.space();
+                            //    ItemPropertyColl.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
+                            //    bp1.toMenu(content, city, false);
+                            //}
                             break;
 
                         case BuildAndExpandType.CoalPit:
-                            content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
-                            content.newLine();
-                            content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
-                            content.space();
-                            CraftResourceLib.Charcoal.toMenu(content, city, false);
+                            mayCraftList(content, CraftResourceLib.Charcoal);
+                            //content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
+                            //content.newLine();
+                            //content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
+                            //content.space();
+                            //CraftResourceLib.Charcoal.toMenu(content, city, false);
                             break;
 
                     }
@@ -663,6 +686,34 @@ namespace VikingEngine.DSSWars.Build
                     }, SoundLib.menuBuy), null, buildOpt != null && (count <= max - current) );
                 }
             }
+
+            
+        }
+
+        void mayCraftList(RichBoxContent content, City city, ItemResourceType[] types)
+        {
+            content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
+
+            foreach (var m in types)
+            {
+                content.newLine();
+                content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
+                content.space();
+                ItemPropertyColl.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
+                //bp1.toMenu(content, city, false);
+                bp1.resultTypeToMenu(content);
+            }
+        }
+        void mayCraftList(RichBoxContent content, CraftBlueprint bp1)
+        {
+            content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
+
+           
+            content.newLine();
+            content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
+            content.space();
+            //bp1.toMenu(content, city, false);
+            bp1.resultTypeToMenu(content);            
         }
 
         void modeClick(SelectTileResult set)

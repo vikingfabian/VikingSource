@@ -376,7 +376,7 @@ namespace VikingEngine.DSSWars
                 if (citiesC.sel.faction == this)
                 {
                     citiesC.sel.oneSecUpdate();
-                    nobelHouseCount += citiesC.sel.buildingStructure.buildingCount_nobelHouse;
+                    nobelHouseCount += citiesC.sel.buildingStructure.Nobelhouse_count;
                     
                 }
                 else

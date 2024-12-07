@@ -99,7 +99,7 @@ namespace VikingEngine.DSSWars.Display
                                 faction.tradeTab(content);
                                 break;
                             case MenuTab.Progress:
-                                progressTab();
+                                progressTab(player);
                                 break;
                         }
                     }
@@ -469,9 +469,9 @@ namespace VikingEngine.DSSWars.Display
             }
         }
 
-        void progressTab()
-        { 
-            
+        void progressTab(Players.LocalPlayer player)
+        {
+            new XP.TechnologyHud().technologyHud(content, player, null, player.faction);
         }
 
         public static void FactionSize(Faction faction, RichBoxContent content, bool fullDisplay)

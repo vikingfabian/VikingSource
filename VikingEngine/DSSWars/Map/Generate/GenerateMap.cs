@@ -1098,6 +1098,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             int silver = MathExt.MultiplyInt(world.rnd.Double(0.05, 0.06), mineLocations.Count);
             int gold = MathExt.MultiplyInt(world.rnd.Double(0.03, 0.04), mineLocations.Count);
             int sulfur = MathExt.MultiplyInt(world.rnd.Double(0.14, 0.16), mineLocations.Count);
+            int coal = MathExt.MultiplyInt(world.rnd.Double(0.14, 0.16), mineLocations.Count);
 
             addMines(tin, (int)TerrainMineType.TinOre);
             addMines(cupper, (int)TerrainMineType.CupperOre);
@@ -1105,6 +1106,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             addMines(silver, (int)TerrainMineType.SilverOre);
             addMines(gold, (int)TerrainMineType.GoldOre);
             addMines(sulfur, (int)TerrainMineType.Sulfur);
+            addMines(coal, (int)TerrainMineType.Coal);
 
             for (int i = 0; i < mineLocations.Count; ++i)
             {
@@ -1158,6 +1160,11 @@ namespace VikingEngine.DSSWars.Map.Generate
                 CityCulture.Noblemen,
                 CityCulture.Backtrader,
                 CityCulture.Lawbiding,
+
+                CityCulture.Smelters,
+                CityCulture.BronzeCasters,
+                CityCulture.Apprentices,
+
             };
     }
 
