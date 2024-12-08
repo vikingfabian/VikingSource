@@ -122,11 +122,11 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (mainAttack)
                     {
-                        Projectile.ProjectileAttack(fullUpdate, this, soldierData.mainAttack, target, damage);
+                        Projectile.ProjectileAttack(fullUpdate, this, soldierData.mainAttack, target, damage, soldierData.attackSplashCount);
                     }
                     else
                     {
-                        Projectile.ProjectileAttack(fullUpdate, this, soldierData.secondaryAttack, target, damage);
+                        Projectile.ProjectileAttack(fullUpdate, this, soldierData.secondaryAttack, target, damage, soldierData.attackSplashCount);
                     }
                 }
             }

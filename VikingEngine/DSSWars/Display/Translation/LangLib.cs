@@ -423,7 +423,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                         case TerrainMineType.TinOre:
                             return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Tin);
                         case TerrainMineType.CupperOre:
-                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Cupper);
+                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Copper);
                         case TerrainMineType.SilverOre:
                             return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Silver);
                         case TerrainMineType.LeadOre:
@@ -608,9 +608,9 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case ItemResourceType.Bronze:
                     return DssRef.todoLang.Resource_TypeName_Bronze;
                 case ItemResourceType.Cupper:
-                    return DssRef.todoLang.Resource_TypeName_Cupper;
+                    return DssRef.todoLang.Resource_TypeName_Copper;
                 case ItemResourceType.CupperOre:
-                    return DssRef.todoLang.Resource_TypeName_CupperOre;
+                    return DssRef.todoLang.Resource_TypeName_CopperOre;
                 case ItemResourceType.Silver:
                     return DssRef.todoLang.Resource_TypeName_Silver;
                 case ItemResourceType.SilverOre:

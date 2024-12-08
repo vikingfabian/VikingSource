@@ -2336,7 +2336,7 @@ namespace VikingEngine
                     add(SpriteName.WarsResource_Beer);
                     add(SpriteName.WarsResource_Iron);
                     add(SpriteName.WarsResource_Silver);
-                    add(SpriteName.WarsResource_Cupper);
+                    add(SpriteName.WarsResource_Copper);
                     add(SpriteName.WarsResource_Gold);
                     add(SpriteName.WarsResource_Mithril);
                     currentIndex += 5;
@@ -2453,6 +2453,10 @@ namespace VikingEngine
                     add(SpriteName.WarsBuild_KnightBarrack, 3, 3);
                     add(SpriteName.WarsBuild_Foundry, 3, 3);
                     add(SpriteName.WarsBuild_Chemist, 3, 3);
+
+                    add(SpriteName.WarsBuild_Armory, 3, 3);
+                    add(SpriteName.WarsBuild_Gunmaker, 3, 3);
+                    add(SpriteName.WarsBuild_Coinminter, 3, 3);
                 }
 
                 currentIndex = numTilesWidth * 100;
@@ -2513,7 +2517,7 @@ namespace VikingEngine
                     add(SpriteName.WarsResource_Manuballista);
                     add(SpriteName.WarsResource_Bullets);
                     add(SpriteName.WarsResource_GunPowder);
-                    add(SpriteName.WarsResource_CupperOre);
+                    add(SpriteName.WarsResource_CopperOre);
                     add(SpriteName.WarsResource_Toolkit);
                     add(SpriteName.WarsResource_HandSpear);
                     add(SpriteName.WarsResource_CoolingFluid);

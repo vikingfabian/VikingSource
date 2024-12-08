@@ -376,9 +376,9 @@ namespace VikingEngine.DSSWars.Resource
                 case ItemResourceType.Bronze:
                     return SpriteName.WarsResource_Bronze;
                 case ItemResourceType.Cupper:
-                    return SpriteName.WarsResource_Cupper;
+                    return SpriteName.WarsResource_Copper;
                 case ItemResourceType.CupperOre:
-                    return SpriteName.WarsResource_CupperOre;
+                    return SpriteName.WarsResource_CopperOre;
                 case ItemResourceType.Silver:
                     return SpriteName.WarsResource_Silver;
                 case ItemResourceType.SilverOre:

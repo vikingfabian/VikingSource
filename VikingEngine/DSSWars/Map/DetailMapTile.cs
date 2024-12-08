@@ -493,13 +493,13 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 6, wp, WorldData.SubTileWidth * 1.4f));
                     break;
                 case TerrainBuildingType.Armory:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 0, wp, WorldData.SubTileWidth * 1.4f));//saknar
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 8, wp, WorldData.SubTileWidth * 1.4f));
                     break;
                 case TerrainBuildingType.Chemist:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 7, wp, WorldData.SubTileWidth * 1.4f));
                     break;
                 case TerrainBuildingType.Gunmaker:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 0, wp, WorldData.SubTileWidth * 0.4f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 9, wp, WorldData.SubTileWidth * 1.4f));
                     break;
 
                 case TerrainBuildingType.Brewery:
@@ -533,7 +533,7 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.Bank, 0, wp, WorldData.SubTileWidth * 1.0f));
                     break;
                 case TerrainBuildingType.CoinMinter:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 0, wp, WorldData.SubTileWidth * 0.5f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.Bank, 1, wp, WorldData.SubTileWidth * 1.0f));
                     break;
 
                 case TerrainBuildingType._RESERVE1:

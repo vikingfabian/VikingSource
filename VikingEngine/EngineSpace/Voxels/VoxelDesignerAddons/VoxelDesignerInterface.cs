@@ -398,10 +398,11 @@ namespace VikingEngine.Voxels
         public void ShowHUD(bool show)
         {
             hudElements.SetVisible(show);
-            if (!show)
-            {
-                pencilShadow.hide();
-            }
+            //if (!show)
+            //{
+            pencilShadow.visible = show;
+            pencilShadow.hide();
+            //}
             if (grid != null)
             {
                 grid.Visible = show;

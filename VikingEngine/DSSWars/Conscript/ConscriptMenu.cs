@@ -387,7 +387,25 @@ namespace VikingEngine.DSSWars.Conscript
         void weaponTooltip(ItemResourceType weapon)
         {
             RichBoxContent content = new RichBoxContent();
-            content.Add(new RichBoxText(string.Format(DssRef.lang.Conscript_WeaponDamage, ConscriptProfile.WeaponDamage(weapon))));
+            content.Add(new RichBoxImage(SpriteName.warsArmyTag_Hit));
+            content.space();
+            content.Add(new RichBoxText(string.Format(DssRef.lang.Conscript_WeaponDamage, ConscriptProfile.WeaponDamage(weapon, out int splashCount))));
+
+            if (splashCount > 0)
+            {
+                content.newLine();
+                content.Add(new RichBoxText(splashCount < 6 ? DssRef.todoLang.Conscript_SplashDamage : DssRef.todoLang.Conscript_HighSplashDamage));
+            }
+            
+            switch (weapon)
+            {
+                case ItemResourceType.HandSpear:
+                    content.newLine();
+                    content.Add(new RichBoxImage(SpriteName.warsArmyTag_Shield));
+                    content.space();
+                    content.Add(new RichBoxText(string.Format(DssRef.lang.Conscript_ArmorHealth, TextLib.PlusMinus(DssConst.WeaponHealthAdd_Handspear))));
+                    break;
+            }
             content.newParagraph();
             //var item = ConscriptProfile.WeaponItem(weapon);
             var res = city.GetGroupedResource(weapon);
@@ -396,6 +414,7 @@ namespace VikingEngine.DSSWars.Conscript
             bool reachedBuffer = false;
             res.toMenu(content, weapon, false, ref reachedBuffer);
 
+            
             //if (reachedBuffer)
             //{
             //    GroupedResource.BufferIconInfo(content);
@@ -413,6 +432,8 @@ namespace VikingEngine.DSSWars.Conscript
 
             RichBoxContent content = new RichBoxContent
             {
+                new RichBoxImage(SpriteName.warsArmyTag_Shield),
+                new RichBoxSpace(),
                 new RichBoxText(string.Format(DssRef.lang.Conscript_ArmorHealth, ConscriptProfile.ArmorHealth(armor)))
             };
 

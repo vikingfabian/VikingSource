@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.Data
             {
                 return SpriteName.NO_IMAGE;
             }
-            else if (art <= CityTagArt.ItemResourceTypeMithrilArmor)
+            else if (art <= CityTagArt.ItemResourceTypeMithril)
             {
                 switch (art)
                 {
@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.Data
                     case CityTagArt.ItemResourceTypeWood: return SpriteName.WarsResource_Wood;
                     case CityTagArt.ItemResourceTypeFuel: return SpriteName.WarsResource_Fuel;
                     case CityTagArt.ItemResourceTypeStone: return SpriteName.WarsResource_Stone;
-                    //case CityTagArt.ItemResourceTypeRaw_Coal: return SpriteName.GoodsCoal;
+                    // case CityTagArt.ItemResourceTypeRaw_Coal: return SpriteName.GoodsCoal; // Uncomment if Raw_Coal is added to enum
                     case CityTagArt.ItemResourceTypeRaw_Meat: return SpriteName.WarsResource_RawMeat;
                     case CityTagArt.ItemResourceTypeRaw_Wheat: return SpriteName.WarsResource_Wheat;
                     case CityTagArt.ItemResourceTypeRaw_Linen: return SpriteName.WarsResource_Linen;
@@ -65,31 +65,143 @@ namespace VikingEngine.DSSWars.Data
                     case CityTagArt.ItemResourceTypeRawFood: return SpriteName.WarsResource_RawFood;
                     case CityTagArt.ItemResourceTypeFood: return SpriteName.WarsResource_Food;
                     case CityTagArt.ItemResourceTypeBeer: return SpriteName.WarsResource_Beer;
+                    case CityTagArt.ItemResourceTypeCoolingFluid: return SpriteName.WarsResource_CoolingFluid;
                     case CityTagArt.ItemResourceTypeSkinLinen: return SpriteName.WarsResource_LinenCloth;
+                    case CityTagArt.ItemResourceTypeToolkit: return SpriteName.WarsResource_Toolkit;
+                    case CityTagArt.ItemResourceTypeWagon2Wheel: return SpriteName.WarsResource_Wagon2Wheel;
+                    case CityTagArt.ItemResourceTypeWagon4Wheel: return SpriteName.WarsResource_Wagon4Wheel;
+                    case CityTagArt.ItemResourceTypeBlackPowder: return SpriteName.WarsResource_BlackPowder;
+                    case CityTagArt.ItemResourceTypeGunPowder: return SpriteName.WarsResource_GunPowder;
+                    case CityTagArt.ItemResourceTypeLedBullet: return SpriteName.WarsResource_Bullets;
+
                     case CityTagArt.ItemResourceTypeIronOre: return SpriteName.WarsResource_IronOre;
+                    case CityTagArt.ItemResourceTypeTinOre: return SpriteName.WarsResource_TinOre;
+                    case CityTagArt.ItemResourceTypeCopperOre: return SpriteName.WarsResource_CopperOre;
+                    case CityTagArt.ItemResourceTypeLeadOre: return SpriteName.WarsResource_LeadOre;
+                    case CityTagArt.ItemResourceTypeSilverOre: return SpriteName.WarsResource_SilverOre;
+
                     case CityTagArt.ItemResourceTypeIron: return SpriteName.WarsResource_Iron;
+                    case CityTagArt.ItemResourceTypeTin: return SpriteName.WarsResource_Tin;
+                    case CityTagArt.ItemResourceTypeCopper: return SpriteName.WarsResource_Copper;
+                    case CityTagArt.ItemResourceTypeLead: return SpriteName.WarsResource_Lead;
+                    case CityTagArt.ItemResourceTypeSilver: return SpriteName.WarsResource_Silver;
+                    case CityTagArt.ItemResourceTypeRawMithril: return SpriteName.WarsResource_Mithril;
 
-                    case CityTagArt.ItemResourceTypeSword: return SpriteName.WarsResource_Sword;
-                    case CityTagArt.ItemResourceTypeSharpStick: return SpriteName.WarsResource_Sharpstick;
-                    case CityTagArt.ItemResourceTypeTwoHandSword: return SpriteName.WarsResource_TwoHandSword;
-                    case CityTagArt.ItemResourceTypeKnightsLance: return SpriteName.WarsResource_KnightsLance;
-                    case CityTagArt.ItemResourceTypeBow: return SpriteName.WarsResource_Bow;
-                    case CityTagArt.ItemResourceTypeLongBow: return SpriteName.WarsResource_Longbow;
-                    case CityTagArt.ItemResourceTypeBallista: return SpriteName.WarsResource_Ballista;
-
-                    case CityTagArt.ItemResourceTypePaddedArmor: return SpriteName.WarsResource_PaddedArmor;
-                    case CityTagArt.ItemResourceTypeMailArmor: return SpriteName.WarsResource_IronArmor;
-                    case CityTagArt.ItemResourceTypeFullPlateArmor: return SpriteName.WarsResource_FullPlateArmor;
-                }
+                    case CityTagArt.ItemResourceTypeBronze: return SpriteName.WarsResource_Bronze;
+                    case CityTagArt.ItemResourceTypeCastIron: return SpriteName.WarsResource_CastIron;
+                    case CityTagArt.ItemResourceTypeBloomeryIron: return SpriteName.WarsResource_BloomeryIron;
+                    case CityTagArt.ItemResourceTypeSteel: return SpriteName.WarsResource_Steel;
+                    case CityTagArt.ItemResourceTypeMithril: return SpriteName.WarsResource_Mithril;
+                } 
             }
-            else if (art <= CityTagArt.BuildPavementFlower)
+            else if (art <= CityTagArt.ItemResourceTypeMithrilArmor)
             {
                 switch (art)
                 {
+                    case CityTagArt.ItemResourceTypeSharpStick: return SpriteName.WarsResource_Sharpstick;
+                    case CityTagArt.ItemResourceTypeBronzeSword: return SpriteName.WarsResource_BronzeSword;
+                    case CityTagArt.ItemResourceTypeShortSword: return SpriteName.WarsResource_ShortSword;
+                    case CityTagArt.ItemResourceTypeSword: return SpriteName.WarsResource_Sword;
+                    case CityTagArt.ItemResourceTypeLongSword: return SpriteName.WarsResource_Longsword;
+
+                    case CityTagArt.ItemResourceTypeWarHammer: return SpriteName.WarsResource_Warhammer;
+                    case CityTagArt.ItemResourceTypeTwoHandSword: return SpriteName.WarsResource_TwoHandSword;
+                    case CityTagArt.ItemResourceTypeKnightsLance: return SpriteName.WarsResource_KnightsLance;
+                    case CityTagArt.ItemResourceTypeMithrilSword: return SpriteName.WarsResource_MithrilSword;
+
+                    case CityTagArt.ItemResourceTypeSlingshot: return SpriteName.WarsResource_Slingshot;
+                    case CityTagArt.ItemResourceTypeThrowingSpear: return SpriteName.WarsResource_ThrowSpear;
+                    case CityTagArt.ItemResourceTypeBow: return SpriteName.WarsResource_Bow;
+                    case CityTagArt.ItemResourceTypeLongBow: return SpriteName.WarsResource_Longbow;
+                    case CityTagArt.ItemResourceTypeCrossbow: return SpriteName.WarsResource_Crossbow;
+                    case CityTagArt.ItemResourceTypeMithrilBow: return SpriteName.WarsResource_Mithrilbow;
+
+                    case CityTagArt.ItemResourceTypeHandCannon: return SpriteName.WarsResource_BronzeRifle;
+                    case CityTagArt.ItemResourceTypeHandCulverin: return SpriteName.WarsResource_BronzeShotgun;
+                    case CityTagArt.ItemResourceTypeRifle: return SpriteName.WarsResource_IronRifle;
+                    case CityTagArt.ItemResourceTypeBlunderbus: return SpriteName.WarsResource_IronShotgun;
+
+                    case CityTagArt.ItemResourceTypeBallista: return SpriteName.WarsResource_Ballista;
+                    case CityTagArt.ItemResourceTypeManuBallista: return SpriteName.WarsResource_Manuballista;
+                    case CityTagArt.ItemResourceTypeCatapult: return SpriteName.WarsResource_Catapult;
+                    case CityTagArt.ItemResourceTypeSiegeCannonBronze: return SpriteName.WarsResource_BronzeSiegeCannon;
+                    case CityTagArt.ItemResourceTypeManCannonBronze: return SpriteName.WarsResource_BronzeManCannon;
+                    case CityTagArt.ItemResourceTypeSiegeCannonIron: return SpriteName.WarsResource_IronSiegeCannon;
+                    case CityTagArt.ItemResourceTypeManCannonIron: return SpriteName.WarsResource_IronManCannon;
+
+                    case CityTagArt.ItemResourceTypePaddedArmor: return SpriteName.WarsResource_PaddedArmor;
+                    case CityTagArt.ItemResourceTypeHeavyPaddedArmor: return SpriteName.WarsResource_HeavyPaddedArmor;
+                    case CityTagArt.ItemResourceTypeBronzeArmor: return SpriteName.WarsResource_BronzeArmor;
+                    case CityTagArt.ItemResourceTypeMailArmor: return SpriteName.WarsResource_IronArmor;
+                    case CityTagArt.ItemResourceTypeHeavyMailArmor: return SpriteName.WarsResource_HeavyIronArmor;
+                    case CityTagArt.ItemResourceTypeLightPlateArmor: return SpriteName.WarsResource_LightPlateArmor;
+                    case CityTagArt.ItemResourceTypeFullPlateArmor: return SpriteName.WarsResource_FullPlateArmor;
+
+                    case CityTagArt.ItemResourceTypeMithrilArmor: return SpriteName.WarsResource_MithrilArmor;
+
+                        //case CityTagArt.ItemResourceTypeGoldOre: return SpriteName.WarsResource_GoldOre;
+                        //case CityTagArt.ItemResourceTypeGold: return SpriteName.rtsMoney;
+                        //case CityTagArt.ItemResourceTypeWater: return SpriteName.WarsResource_Water;
+                        //case CityTagArt.ItemResourceTypeWood: return SpriteName.WarsResource_Wood;
+                        //case CityTagArt.ItemResourceTypeFuel: return SpriteName.WarsResource_Fuel;
+                        //case CityTagArt.ItemResourceTypeStone: return SpriteName.WarsResource_Stone;
+                        ////case CityTagArt.ItemResourceTypeRaw_Coal: return SpriteName.GoodsCoal;
+                        //case CityTagArt.ItemResourceTypeRaw_Meat: return SpriteName.WarsResource_RawMeat;
+                        //case CityTagArt.ItemResourceTypeRaw_Wheat: return SpriteName.WarsResource_Wheat;
+                        //case CityTagArt.ItemResourceTypeRaw_Linen: return SpriteName.WarsResource_Linen;
+                        //case CityTagArt.ItemResourceTypeRaw_Hemp: return SpriteName.WarsResource_Hemp;
+                        //case CityTagArt.ItemResourceTypeRaw_Rapeseed: return SpriteName.WarsResource_Rapeseed;
+
+                        //case CityTagArt.ItemResourceTypeRawFood: return SpriteName.WarsResource_RawFood;
+                        //case CityTagArt.ItemResourceTypeFood: return SpriteName.WarsResource_Food;
+                        //case CityTagArt.ItemResourceTypeBeer: return SpriteName.WarsResource_Beer;
+                        //case CityTagArt.ItemResourceTypeSkinLinen: return SpriteName.WarsResource_LinenCloth;
+                        //case CityTagArt.ItemResourceTypeIronOre: return SpriteName.WarsResource_IronOre;
+                        //case CityTagArt.ItemResourceTypeIron: return SpriteName.WarsResource_Iron;
+
+                        //case CityTagArt.ItemResourceTypeSword: return SpriteName.WarsResource_Sword;
+                        //case CityTagArt.ItemResourceTypeSharpStick: return SpriteName.WarsResource_Sharpstick;
+                        //case CityTagArt.ItemResourceTypeTwoHandSword: return SpriteName.WarsResource_TwoHandSword;
+                        //case CityTagArt.ItemResourceTypeKnightsLance: return SpriteName.WarsResource_KnightsLance;
+                        //case CityTagArt.ItemResourceTypeBow: return SpriteName.WarsResource_Bow;
+                        //case CityTagArt.ItemResourceTypeLongBow: return SpriteName.WarsResource_Longbow;
+                        //case CityTagArt.ItemResourceTypeBallista: return SpriteName.WarsResource_Ballista;
+
+                        //case CityTagArt.ItemResourceTypePaddedArmor: return SpriteName.WarsResource_PaddedArmor;
+                        //case CityTagArt.ItemResourceTypeMailArmor: return SpriteName.WarsResource_IronArmor;
+                        //case CityTagArt.ItemResourceTypeFullPlateArmor: return SpriteName.WarsResource_FullPlateArmor;
+                }
+            }
+            else if (art <= CityTagArt.BuildStatue_ThePlayer)
+            {
+                switch (art)
+                {
+                    //case CityTagArt.BuildWorkerHuts: return SpriteName.WarsBuild_WorkerHuts;
+                    //case CityTagArt.BuildPostal: return SpriteName.WarsBuild_Postal;
+                    //case CityTagArt.BuildRecruitment: return SpriteName.WarsBuild_Recruitment;
+                    //case CityTagArt.BuildSoldierBarracks: return SpriteName.WarsBuild_Barracks;
+                    //case CityTagArt.BuildNobelhouse: return SpriteName.WarsBuild_Nobelhouse;
+                    //case CityTagArt.BuildTavern: return SpriteName.WarsBuild_Tavern;
+                    //case CityTagArt.BuildStorehouse: return SpriteName.WarsBuild_Storehouse;
+                    //case CityTagArt.BuildBrewery: return SpriteName.WarsBuild_Brewery;
+                    //case CityTagArt.BuildCook: return SpriteName.WarsBuild_Cook;
+                    //case CityTagArt.BuildCoalPit: return SpriteName.WarsBuild_CoalPit;
+                    //case CityTagArt.BuildWorkBench: return SpriteName.WarsBuild_WorkBench;
+                    //case CityTagArt.BuildSmith: return SpriteName.WarsBuild_Smith;
+                    //case CityTagArt.BuildCarpenter: return SpriteName.WarsBuild_Carpenter;
+                    //case CityTagArt.BuildWheatFarm: return SpriteName.WarsBuild_WheatFarms;
+                    //case CityTagArt.BuildLinenFarm: return SpriteName.WarsBuild_LinenFarms;
+                    //case CityTagArt.BuildHempFarm: return SpriteName.WarsBuild_HempFarms;
+                    //case CityTagArt.BuildRapeSeedFarm: return SpriteName.WarsBuild_RapeseedFarms;
+                    //case CityTagArt.BuildPigPen: return SpriteName.WarsBuild_PigPen;
+                    //case CityTagArt.BuildHenPen: return SpriteName.WarsBuild_HenPen;
+                    //case CityTagArt.BuildStatue_ThePlayer: return SpriteName.WarsBuild_Statue;
+                    //case CityTagArt.BuildPavement: return SpriteName.WarsBuild_Pavement;
+                    //case CityTagArt.BuildPavementFlower: return SpriteName.WarsBuild_PavementFlowers;
                     case CityTagArt.BuildWorkerHuts: return SpriteName.WarsBuild_WorkerHuts;
                     case CityTagArt.BuildPostal: return SpriteName.WarsBuild_Postal;
                     case CityTagArt.BuildRecruitment: return SpriteName.WarsBuild_Recruitment;
-                    case CityTagArt.BuildBarracks: return SpriteName.WarsBuild_Barracks;
+                    //case CityTagArt.BuildSoldierBarracks: return SpriteName.WarsBuild_Barracks;
                     case CityTagArt.BuildNobelhouse: return SpriteName.WarsBuild_Nobelhouse;
                     case CityTagArt.BuildTavern: return SpriteName.WarsBuild_Tavern;
                     case CityTagArt.BuildStorehouse: return SpriteName.WarsBuild_Storehouse;
@@ -108,6 +220,26 @@ namespace VikingEngine.DSSWars.Data
                     case CityTagArt.BuildStatue_ThePlayer: return SpriteName.WarsBuild_Statue;
                     case CityTagArt.BuildPavement: return SpriteName.WarsBuild_Pavement;
                     case CityTagArt.BuildPavementFlower: return SpriteName.WarsBuild_PavementFlowers;
+
+                    case CityTagArt.Embassy: return SpriteName.WarsBuild_Embassy;
+                    case CityTagArt.Bank: return SpriteName.WarsBuild_Bank;
+                    case CityTagArt.CoinMinter: return SpriteName.WarsBuild_Coinminter;
+                    case CityTagArt.BuildWaterResovoir: return SpriteName.WarsBuild_WaterReservoir;
+                    case CityTagArt.BuildSmelter: return SpriteName.WarsBuild_Smelter;
+                    case CityTagArt.BuildFoundry: return SpriteName.WarsBuild_Foundry;
+                    case CityTagArt.BuildChemist: return SpriteName.WarsBuild_Chemist;
+                    case CityTagArt.BuildGunmaker: return SpriteName.WarsBuild_Gunmaker;
+                    case CityTagArt.BuildArmory: return SpriteName.WarsBuild_Armory;
+
+                    case CityTagArt.BuildSoldierBarracks: return SpriteName.WarsBuild_Barracks;
+                    case CityTagArt.BuildArcherBarracks: return SpriteName.MissingImage;
+                    case CityTagArt.BuildWarmashineBarracks: return SpriteName.MissingImage;
+                    case CityTagArt.BuildGunBarracks: return SpriteName.MissingImage;
+                    case CityTagArt.BuildCannonBarracks: return SpriteName.MissingImage;
+                    case CityTagArt.BuildKnightsBarracks: return SpriteName.MissingImage;
+
+                    case CityTagArt.BuildWoodCutter: return SpriteName.WarsBuild_WoodCutter;
+                    case CityTagArt.BuildStoneCutter: return SpriteName.WarsBuild_StoneCutter;
                 }
             }
             else if (art <= CityTagArt.UnitType_Viking)
@@ -193,7 +325,7 @@ namespace VikingEngine.DSSWars.Data
             {
                 return SpriteName.NO_IMAGE;
             }
-            else if (art <= ArmyTagArt.UnitType_HonourGuard)
+            else if (art <= ArmyTagArt.UnitType_ManIronCannon)
             {
                 switch (art)
                 {
@@ -231,17 +363,46 @@ namespace VikingEngine.DSSWars.Data
             {
                 switch (art)
                 {
-                    case ArmyTagArt.ItemResourceTypeSword: return SpriteName.WarsResource_Sword;
                     case ArmyTagArt.ItemResourceTypeSharpStick: return SpriteName.WarsResource_Sharpstick;
+                    case ArmyTagArt.ItemResourceTypeBronzeSword: return SpriteName.WarsResource_BronzeSword;
+                    case ArmyTagArt.ItemResourceTypeShortSword: return SpriteName.WarsResource_ShortSword;
+                    case ArmyTagArt.ItemResourceTypeSword: return SpriteName.WarsResource_Sword;
+                    case ArmyTagArt.ItemResourceTypeLongSword: return SpriteName.WarsResource_Longsword;
+
+                    case ArmyTagArt.ItemResourceTypeWarHammer: return SpriteName.WarsResource_Warhammer;
                     case ArmyTagArt.ItemResourceTypeTwoHandSword: return SpriteName.WarsResource_TwoHandSword;
                     case ArmyTagArt.ItemResourceTypeKnightsLance: return SpriteName.WarsResource_KnightsLance;
+                    case ArmyTagArt.ItemResourceTypeMithrilSword: return SpriteName.WarsResource_MithrilSword;
+
+                    case ArmyTagArt.ItemResourceTypeSlingshot: return SpriteName.WarsResource_Slingshot;
+                    case ArmyTagArt.ItemResourceTypeThrowingSpear: return SpriteName.WarsResource_ThrowSpear;
                     case ArmyTagArt.ItemResourceTypeBow: return SpriteName.WarsResource_Bow;
                     case ArmyTagArt.ItemResourceTypeLongBow: return SpriteName.WarsResource_Longbow;
+                    case ArmyTagArt.ItemResourceTypeCrossbow: return SpriteName.WarsResource_Crossbow;
+                    case ArmyTagArt.ItemResourceTypeMithrilBow: return SpriteName.WarsResource_Mithrilbow;
+
+                    case ArmyTagArt.ItemResourceTypeHandCannon: return SpriteName.WarsResource_BronzeRifle;
+                    case ArmyTagArt.ItemResourceTypeHandCulverin: return SpriteName.WarsResource_BronzeShotgun;
+                    case ArmyTagArt.ItemResourceTypeRifle: return SpriteName.WarsResource_IronRifle;
+                    case ArmyTagArt.ItemResourceTypeBlunderbus: return SpriteName.WarsResource_IronShotgun;
+
                     case ArmyTagArt.ItemResourceTypeBallista: return SpriteName.WarsResource_Ballista;
+                    case ArmyTagArt.ItemResourceTypeManuBallista: return SpriteName.WarsResource_Manuballista;
+                    case ArmyTagArt.ItemResourceTypeCatapult: return SpriteName.WarsResource_Catapult;
+                    case ArmyTagArt.ItemResourceTypeSiegeCannonBronze: return SpriteName.WarsResource_BronzeSiegeCannon;
+                    case ArmyTagArt.ItemResourceTypeManCannonBronze: return SpriteName.WarsResource_BronzeManCannon;
+                    case ArmyTagArt.ItemResourceTypeSiegeCannonIron: return SpriteName.WarsResource_IronSiegeCannon;
+                    case ArmyTagArt.ItemResourceTypeManCannonIron: return SpriteName.WarsResource_IronManCannon;
 
                     case ArmyTagArt.ItemResourceTypePaddedArmor: return SpriteName.WarsResource_PaddedArmor;
-                    case ArmyTagArt.ItemResourceTypeMail: return SpriteName.WarsResource_IronArmor;
-                    case ArmyTagArt.ItemResourceTypeFullPlate: return SpriteName.WarsResource_FullPlateArmor;
+                    case ArmyTagArt.ItemResourceTypeHeavyPaddedArmor: return SpriteName.WarsResource_HeavyPaddedArmor;
+                    case ArmyTagArt.ItemResourceTypeBronzeArmor: return SpriteName.WarsResource_BronzeArmor;
+                    case ArmyTagArt.ItemResourceTypeMailArmor: return SpriteName.WarsResource_IronArmor;
+                    case ArmyTagArt.ItemResourceTypeHeavyMailArmor: return SpriteName.WarsResource_HeavyIronArmor;
+                    case ArmyTagArt.ItemResourceTypeLightPlateArmor: return SpriteName.WarsResource_LightPlateArmor;
+                    case ArmyTagArt.ItemResourceTypeFullPlateArmor: return SpriteName.WarsResource_FullPlateArmor;
+
+                    case ArmyTagArt.ItemResourceTypeMithrilArmor: return SpriteName.WarsResource_MithrilArmor;
                 }
             }
             else if (art <= ArmyTagArt.Specialize_Tradition)
@@ -416,7 +577,7 @@ namespace VikingEngine.DSSWars.Data
         ItemResourceTypeMithrilBow,
 
         ItemResourceTypeSlingshot,
-        ItemResourceTypeThrowingspear,
+        ItemResourceTypeThrowingSpear,
         ItemResourceTypeBow,
         ItemResourceTypeLongBow,
         ItemResourceTypeCrossbow,
@@ -427,7 +588,7 @@ namespace VikingEngine.DSSWars.Data
         ItemResourceTypeBlunderbus,
 
         ItemResourceTypeBallista,
-        ItemResourceTypeMenuBallista,
+        ItemResourceTypeManuBallista,
         ItemResourceTypeCatapult,
         ItemResourceTypeSiegeCannonBronze,
         ItemResourceTypeManCannonBronze,
@@ -437,10 +598,10 @@ namespace VikingEngine.DSSWars.Data
         ItemResourceTypePaddedArmor,
         ItemResourceTypeHeavyPaddedArmor,
         ItemResourceTypeBronzeArmor,
-        ItemResourceTypeMail,
-        ItemResourceTypeHeavyMail,
-        ItemResourceTypePlate,
-        ItemResourceTypeFullPlate,
+        ItemResourceTypeMailArmor,
+        ItemResourceTypeHeavyMailArmor,
+        ItemResourceTypeLightPlateArmor,
+        ItemResourceTypeFullPlateArmor,
         ItemResourceTypeMithrilArmor,
 
         Specialize_Field,
@@ -525,13 +686,13 @@ namespace VikingEngine.DSSWars.Data
                 
         ItemResourceTypeIronOre,
         ItemResourceTypeTinOre,
-        ItemResourceTypeCupperOre,
+        ItemResourceTypeCopperOre,
         ItemResourceTypeLeadOre,
         ItemResourceTypeSilverOre,
 
         ItemResourceTypeIron,
         ItemResourceTypeTin,
-        ItemResourceTypeCupper,
+        ItemResourceTypeCopper,
         ItemResourceTypeLead,
         ItemResourceTypeSilver,
         ItemResourceTypeRawMithril,
@@ -578,7 +739,6 @@ namespace VikingEngine.DSSWars.Data
         ItemResourceTypeHeavyMailArmor,
         ItemResourceTypeLightPlateArmor,
         ItemResourceTypeFullPlateArmor,
-
         ItemResourceTypeMithrilArmor,
         //ItemResourceTypeGoldOre,
         //ItemResourceTypeGold,
@@ -641,32 +801,51 @@ namespace VikingEngine.DSSWars.Data
 
 
         BuildWorkerHuts,
-        BuildPostal,
-        BuildRecruitment,
-        BuildBarracks,
-        BuildNobelhouse,
-        BuildTavern,
-        BuildStorehouse,
-        BuildBrewery,
-        BuildCook,
-        BuildCoalPit,
-        BuildWorkBench,
-        BuildSmith,
-        BuildCarpenter,
         BuildWheatFarm,
         BuildLinenFarm,
-        BuildHempFarm,
         BuildRapeSeedFarm,
+        BuildHempFarm,
         BuildPigPen,
         BuildHenPen,
-        BuildStatue_ThePlayer,
+
+        BuildNobelhouse,
+        Embassy,
+        Bank,
+        CoinMinter,
+        BuildPostal,
+        BuildRecruitment,
+        BuildStorehouse,
+        
+        BuildTavern,
+        BuildBrewery,
+        BuildWaterResovoir,
+        BuildCoalPit,
+        BuildWorkBench,
+        BuildCook,
+        BuildSmelter,
+        BuildFoundry,       
+        BuildSmith,
+        BuildCarpenter,
+        BuildChemist,
+        BuildGunmaker,
+        BuildArmory,
+
+        BuildSoldierBarracks,
+        BuildArcherBarracks,
+        BuildWarmashineBarracks,
+        BuildGunBarracks,
+        BuildCannonBarracks,
+        BuildKnightsBarracks,
+
+        BuildWoodCutter,
+        BuildStoneCutter,
+        
         BuildPavement,
         BuildPavementFlower,
+        BuildStatue_ThePlayer,
 
-        Worker,
-       
-        
-        
+
+        Worker,        
         UnitType_SharpStick,
         UnitType_Sword,
         UnitType_LongSword,

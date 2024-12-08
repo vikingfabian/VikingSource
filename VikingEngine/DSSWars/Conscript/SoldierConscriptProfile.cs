@@ -157,7 +157,7 @@ namespace VikingEngine.DSSWars.Conscript
             SoldierData soldierData = profile.data;
 
             soldierData.basehealth = ConscriptProfile.ArmorHealth(conscript.armorLevel);
-            soldierData.attackDamage = Convert.ToInt32(ConscriptProfile.WeaponDamage(conscript.weapon) * skillBonus);
+            soldierData.attackDamage = Convert.ToInt32(ConscriptProfile.WeaponDamage(conscript.weapon, out soldierData.attackSplashCount) * skillBonus);
             soldierData.attackDamageStructure = soldierData.attackDamage;
             soldierData.attackDamageSea = soldierData.attackDamage;
 
@@ -206,7 +206,6 @@ namespace VikingEngine.DSSWars.Conscript
                     conscript.specialization = SpecializationType.AntiCavalry;
                     break;
 
-
                 case ItemResourceType.HandSpear:
                     soldierData.arrowWeakness = true;
                     soldierData.mainAttack = AttackType.Melee;
@@ -215,6 +214,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.modelVariationCount = 1;
                     soldierData.modelScale *= 1.6f;
                     soldierData.icon = SpriteName.LittleUnitIconSpearman;
+                    soldierData.basehealth += DssConst.WeaponHealthAdd_Handspear;
                     break;
 
                 case ItemResourceType.Warhammer:
@@ -343,6 +343,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.mainAttack = AttackType.GunBlast;
                     soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Mid;
                     soldierData.attackRange = 0.4f;
+                    //soldierData.attackSplashCount = 8;
                     soldierData.modelName = LootFest.VoxelModelName.wars_culvertin;
                     soldierData.modelVariationCount = 1;
                     soldierData.icon = SpriteName.WarsUnitIcon_BronzeRifle;
@@ -363,6 +364,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.mainAttack = AttackType.GunBlast;
                     soldierData.ArmyFrontToBackPlacement = ArmyPlacement.Mid;
                     soldierData.attackRange = 0.5f;
+                    //soldierData.attackSplashCount = 8;
                     soldierData.modelName = LootFest.VoxelModelName.wars_culvertin;
                     soldierData.modelVariationCount = 1;
                     soldierData.icon = SpriteName.WarsUnitIcon_BronzeRifle;
@@ -375,6 +377,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                     soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
                     soldierData.mainAttack = AttackType.Ballista;
+                    //soldierData.attackSplashCount = 1;
                     soldierData.attackDamageStructure = Convert.ToInt32(1500 * skillBonus);
                     soldierData.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 16f;
 
@@ -399,6 +402,7 @@ namespace VikingEngine.DSSWars.Conscript
                 case ItemResourceType.Manuballista:
                     soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
                     soldierData.attackRange = 2;
+                    //soldierData.attackSplashCount = 1;
 
                     soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
                     soldierData.mainAttack = AttackType.Ballista;
@@ -423,6 +427,7 @@ namespace VikingEngine.DSSWars.Conscript
                 case ItemResourceType.Catapult:
                     soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
                     soldierData.attackRange = 2.6f;
+                    //soldierData.attackSplashCount = 3;
 
                     soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
                     soldierData.mainAttack = AttackType.Catapult;
@@ -449,6 +454,7 @@ namespace VikingEngine.DSSWars.Conscript
                 case ItemResourceType.SiegeCannonBronze:
                     soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.3f;
                     soldierData.attackRange = 2.4f;
+                    //soldierData.attackSplashCount = 12;
 
                     soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
                     soldierData.mainAttack = AttackType.MassiveCannonball;
@@ -475,6 +481,7 @@ namespace VikingEngine.DSSWars.Conscript
                 case ItemResourceType.ManCannonBronze:
                     soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
                     soldierData.attackRange = 2;
+                    //soldierData.attackSplashCount = 5;
 
                     soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
                     soldierData.mainAttack = AttackType.Cannonball;
@@ -499,6 +506,7 @@ namespace VikingEngine.DSSWars.Conscript
                 case ItemResourceType.SiegeCannonIron:
                     soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
                     soldierData.attackRange = 2.2f;
+                    //soldierData.attackSplashCount = 2;
 
                     soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
                     soldierData.mainAttack = AttackType.Haubitz;
@@ -524,6 +532,7 @@ namespace VikingEngine.DSSWars.Conscript
                 case ItemResourceType.ManCannonIron:
                     soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
                     soldierData.attackRange = 2.4f;
+                    //soldierData.attackSplashCount = 6;
 
                     soldierData.basehealth = MathExt.MultiplyInt(0.5, soldierData.basehealth);
                     soldierData.mainAttack = AttackType.Cannonball;

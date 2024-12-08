@@ -139,6 +139,8 @@ namespace VikingEngine.Voxels
                 moveAll(posDiff);
             }
             UpdatePencilInfo();
+
+
             designerInterface.pencilShadow.update(this);
         }
 

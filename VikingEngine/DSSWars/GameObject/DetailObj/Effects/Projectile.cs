@@ -9,16 +9,16 @@ namespace VikingEngine.DSSWars.GameObject
     class Projectile : AbsUpdateable
     {
         public static void ProjectileAttack(bool fullUpdate, AbsDetailUnit attacker,
-            AttackType type, AbsDetailUnit target, int damage) /*int splashCount, float splashPercDamage)*/
+            AttackType type, AbsDetailUnit target, int damage, int splashCount) /*int splashCount, float splashPercDamage)*/
         {
             if (fullUpdate)
             {
                 new Projectile(attacker.projectileStartPos(), attacker,
-                    type, target, damage);
+                    type, target, damage, splashCount);
             }
             else
             {
-                ProjectileHit(false, target, damage, attacker);
+                ProjectileHit(false, target, damage, splashCount, attacker);
             }
         }
         
@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.GameObject
         GameObject.AbsDetailUnit target; 
         int damage;
         int splashCount;
-        float splashPercDamage;
+        //float splashPercDamage;
 
         float totalDistance;
         Vector3 linearPosition;
@@ -45,14 +45,14 @@ namespace VikingEngine.DSSWars.GameObject
         Vector3 blankTarget;
 
         public Projectile(Vector3 start, AbsDetailUnit fromAttack, AttackType type, 
-            AbsDetailUnit target, int damage)
+            AbsDetailUnit target, int damage, int splashCount)
             : base(true)
         {
             this.fromAttack = fromAttack;
             this.target = target;
             this.damage = damage;
             
-            //this.splashCount = splashCount;
+            this.splashCount = splashCount;
             //this.splashPercDamage = splashPercDamage; 
             
             LootFest.VoxelModelName modelName;
@@ -251,30 +251,30 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (target != null)
             {
-                ProjectileHit(true, target, damage, /*splashCount, splashPercDamage,*/ fromAttack);
+                ProjectileHit(true, target, damage, splashCount, /*splashPercDamage,*/ fromAttack);
             }
         }
 
-        public static void ProjectileHit(bool fullUpdate, AbsDetailUnit target, int damage,
+        public static void ProjectileHit(bool fullUpdate, AbsDetailUnit target, int damage, int splashCount,
             //int splashCount, float splashPercDamage,
             AbsDetailUnit fromAttack)
         {
 
             target.takeDamage(damage, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate);
-            //if (splashCount > 0 && target.IsSoldierUnit())
-            //{
-            //    int splashDamage = Convert.ToInt32(splashPercDamage * damage);
+            if (splashCount > 0 && target.IsSoldierUnit())
+            {
+                int splashDamage = damage;//Convert.ToInt32(splashPercDamage * damage);
 
-            //    for (int i = 0; i < splashCount; i++)
-            //    {
-            //        var target2 = target.group.soldiers.GetRandomUnsafe(Ref.rnd);
-            //        if (target2 != null)
-            //        {
-            //            target2.takeDamage(splashDamage, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate);
-            //        }
-            //    }
-            //}
-            
+                for (int i = 0; i < splashCount; i++)
+                {
+                    var target2 = target.group.soldiers.GetRandomUnsafe(Ref.rnd);
+                    if (target2 != null)
+                    {
+                        target2.takeDamage(splashDamage, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate);
+                    }
+                }
+            }
+
         }
 
         public override void DeleteMe()

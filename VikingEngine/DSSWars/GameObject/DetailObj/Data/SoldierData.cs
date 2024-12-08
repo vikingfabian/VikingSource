@@ -15,6 +15,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         public AttackType secondaryAttack = 0;
         public int bonusProjectiles = 0;
         public int attackDamage = 0, attackDamageSea = 0, attackDamageStructure = 0;
+        public int attackSplashCount = 0;
         public int secondaryAttackDamage = 0;
         public float attackTimePlusCoolDown = 0;
 

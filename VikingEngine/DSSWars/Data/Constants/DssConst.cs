@@ -21,6 +21,7 @@ namespace VikingEngine.DSSWars
 
         //CONSCRIPT
         public static int WeaponDamage_Handspear = 10;
+        public static int WeaponHealthAdd_Handspear = 200;
         public static int WeaponDamage_SharpStick = 20;
         public static int WeaponDamage_BronzeSword = 40;
         public static int WeaponDamage_ShortSword = 50;

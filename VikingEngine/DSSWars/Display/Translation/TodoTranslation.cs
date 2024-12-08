@@ -49,6 +49,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Info_FooodAndDeliveryLocation => "By default, workers go to the city hall to eat or drop off items";
         public string GameMenu_UseSpeedX => "{0} speed option";
 
+        public string Conscript_SplashDamage => "Splash damage";
+        public string Conscript_HighSplashDamage => "High splash damage";
+
         public string Experience_Title => "Experience";
         public string Experience_TopExperience => "Top experience levels";
 
@@ -103,8 +106,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Resource_TypeName_Tin => "Tin";
         public string Resource_TypeName_TinOre=> "Tin ore";
 
-        public string Resource_TypeName_Cupper => "Cupper";
-        public string Resource_TypeName_CupperOre=> "Cupper ore";
+        public string Resource_TypeName_Copper => "Copper";
+        public string Resource_TypeName_CopperOre=> "Copper ore";
         public string Resource_TypeName_SilverOre => "Silver ore";
         public string Resource_TypeName_Silver => "Silver";
 

@@ -320,8 +320,9 @@ namespace VikingEngine.DSSWars.Conscript
         }
 
         //make these static
-        public static int WeaponDamage(ItemResourceType weapon)
+        public static int WeaponDamage(ItemResourceType weapon, out int splashCount)
         {
+            splashCount = 0;
             switch (weapon)
             {
                 case ItemResourceType.SharpStick: return DssConst.WeaponDamage_SharpStick;
@@ -345,18 +346,33 @@ namespace VikingEngine.DSSWars.Conscript
                 case ItemResourceType.MithrilBow: return DssConst.WeaponDamage_MithrilBow;
 
                 case ItemResourceType.HandCannon: return DssConst.WeaponDamage_Handcannon;
-                case ItemResourceType.HandCulverin: return DssConst.WeaponDamage_Handculvetin;
+                case ItemResourceType.HandCulverin:
+                    splashCount = 7;
+                    return DssConst.WeaponDamage_Handculvetin;
                 case ItemResourceType.Rifle: return DssConst.WeaponDamage_Rifle;
-                case ItemResourceType.Blunderbus: return DssConst.WeaponDamage_Blunderbus;
+                case ItemResourceType.Blunderbus:
+                    splashCount = 8;
+                    return DssConst.WeaponDamage_Blunderbus;
 
-                case ItemResourceType.Ballista: return DssConst.WeaponDamage_Ballista;
-                case ItemResourceType.Manuballista: return DssConst.WeaponDamage_ManuBallista;
-                case ItemResourceType.Catapult: return DssConst.WeaponDamage_Catapult;
+                case ItemResourceType.Ballista:
+                    splashCount = 1;
+                    return DssConst.WeaponDamage_Ballista;
+                case ItemResourceType.Manuballista:
+                    splashCount = 1;
+                    return DssConst.WeaponDamage_ManuBallista;
+                case ItemResourceType.Catapult:
+                    splashCount = 3; 
+                    return DssConst.WeaponDamage_Catapult;
 
-                case ItemResourceType.SiegeCannonBronze: return DssConst.WeaponDamage_SiegeCannonBronze;
-                case ItemResourceType.ManCannonBronze: return DssConst.WeaponDamage_ManCannonBronze;
-                case ItemResourceType.SiegeCannonIron: return DssConst.WeaponDamage_SiegeCannonIron;
-                case ItemResourceType.ManCannonIron: return DssConst.WeaponDamage_ManCannonIron;
+                case ItemResourceType.SiegeCannonBronze:
+                    splashCount = 12; 
+                    return DssConst.WeaponDamage_SiegeCannonBronze;
+                case ItemResourceType.ManCannonBronze:
+                    splashCount = 5; return DssConst.WeaponDamage_ManCannonBronze;
+                case ItemResourceType.SiegeCannonIron:
+                    splashCount = 2; return DssConst.WeaponDamage_SiegeCannonIron;
+                case ItemResourceType.ManCannonIron:
+                    splashCount = 6; return DssConst.WeaponDamage_ManCannonIron;
 
                 default: throw new NotImplementedException();
             }
