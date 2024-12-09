@@ -395,6 +395,9 @@ namespace VikingEngine.DSSWars.Map
                                             case TerrainBuildingType.Embassy:
                                                 ++buildingStructure.Embassy_count;
                                                 break;
+                                            case TerrainBuildingType.School:
+                                                ++buildingStructure.School_count;
+                                                break;
                                             case TerrainBuildingType.Logistics:
                                                 buildingStructure.buildingLevel_logistics = subTile.terrainAmount;
                                                 break;

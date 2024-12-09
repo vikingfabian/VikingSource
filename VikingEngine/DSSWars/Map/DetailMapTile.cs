@@ -448,13 +448,13 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 3, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.KnightsBarracks:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 5, wp, WorldData.SubTileWidth * 1f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 4, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.GunBarracks:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 6, wp, WorldData.SubTileWidth * 1f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 5, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.CannonBarracks:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 7, wp, WorldData.SubTileWidth * 1f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 6, wp, WorldData.SubTileWidth * 1f));
                     break;
 
                 case TerrainBuildingType.StoneHall:
@@ -535,7 +535,9 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainBuildingType.CoinMinter:
                     addFoliage(new Foliage(LootFest.VoxelModelName.Bank, 1, wp, WorldData.SubTileWidth * 1.0f));
                     break;
-
+                case TerrainBuildingType.School:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_logistic, 2, wp, WorldData.SubTileWidth * 1.0f));
+                    break;
                 case TerrainBuildingType._RESERVE1:
                 case TerrainBuildingType._RESERVE2:
                 case TerrainBuildingType._RESERVE3:
