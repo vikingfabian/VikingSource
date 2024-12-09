@@ -218,6 +218,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_Gunmaker => "Gunmaker";
         public string BuildingType_Gunmaker_Description => "Crafting station for guns and cannons";
 
+        public string BuildingType_School_Tab => "School";
+        public string BuildingType_School => "Masters guild";
+        public string BuildingType_School_Description => "Increase the skill level of workers";
+
 
         public string Work_MiningResource = "Mining {0}";
 

@@ -58,6 +58,7 @@ namespace VikingEngine.DSSWars.Build
         Armory,
         Chemist,
         Gunmaker,
+        School,
 
         NUM_NONE,
     }
@@ -72,6 +73,8 @@ namespace VikingEngine.DSSWars.Build
             BuildAndExpandType.Brewery,
             BuildAndExpandType.CoalPit,
             BuildAndExpandType.Foundry,
+            BuildAndExpandType.School,
+
         };
 
         public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
@@ -84,6 +87,11 @@ namespace VikingEngine.DSSWars.Build
                 StartupSettings.UnlockAllProgress)
             {
                 result.Add(BuildAndExpandType.Logistics);
+            }
+            if (city.buildingStructure.buildingLevel_logistics >= 1 ||
+                StartupSettings.UnlockAllProgress)
+            {
+                result.Add(BuildAndExpandType.School);
             }
 
             result.Add(BuildAndExpandType.WorkerHuts);
@@ -181,6 +189,7 @@ namespace VikingEngine.DSSWars.Build
                 
                 result.Add(BuildAndExpandType.WoodCutter);
                 result.Add(BuildAndExpandType.StoneCutter);
+                
 
             }
 
@@ -247,6 +256,8 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.Foundry, TerrainMainType.Building, (int)TerrainBuildingType.Foundry, SpriteName.WarsBuild_Foundry, CraftBuildingLib.Foundry);
             new BuildOption(BuildAndExpandType.Chemist, TerrainMainType.Building, (int)TerrainBuildingType.Chemist, SpriteName.WarsBuild_Chemist, CraftBuildingLib.Chemist);
             new BuildOption(BuildAndExpandType.Gunmaker, TerrainMainType.Building, (int)TerrainBuildingType.Gunmaker, SpriteName.WarsBuild_Gunmaker, CraftBuildingLib.Gunmaker);
+            new BuildOption(BuildAndExpandType.School, TerrainMainType.Building, (int)TerrainBuildingType.School, SpriteName.WarsBuild_Gunmaker, CraftBuildingLib.School);
+
         }
 
         public static BuildAndExpandType BuildTypeFromTerrain(TerrainMainType main, int sub)

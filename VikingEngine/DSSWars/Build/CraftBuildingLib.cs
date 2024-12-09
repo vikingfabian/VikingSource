@@ -541,6 +541,20 @@ namespace VikingEngine.DSSWars.Build
                     XP.WorkExperienceType.HouseBuilding
                 );
 
+        public static readonly CraftBlueprint School = new CraftBlueprint(
+                    CraftResultType.Building,
+                    (int)Build.BuildAndExpandType.School,
+                   1,
+                   new UseResource[]
+                   {
+                    new UseResource(ItemResourceType.Wood_Group, 100),
+                    new UseResource(ItemResourceType.Stone_G, 20),
+                    new UseResource(ItemResourceType.Iron_G, 5),
+
+                   },
+                    XP.WorkExperienceType.HouseBuilding
+                );
+
         public static readonly CraftBlueprint NobelHouse = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Nobelhouse,

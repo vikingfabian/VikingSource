@@ -98,6 +98,7 @@ namespace VikingEngine.DSSWars.Map
         Armory,
         Chemist,
         Gunmaker,
+        School,
 
         NUM_NONE
     }

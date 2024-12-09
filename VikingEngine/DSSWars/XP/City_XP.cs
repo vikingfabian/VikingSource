@@ -37,6 +37,34 @@ namespace VikingEngine.DSSWars.GameObject
 
         public ExperienceOrDistancePrio experenceOrDistance = ExperienceOrDistancePrio.Mix;
 
+        public int selectedSchool = -1;
+        public List<SchoolStatus> schoolBuildings = new List<SchoolStatus>();
+
+        public ExperienceLevel GetTopSkill(WorkExperienceType experienceType)
+        {
+            switch (experienceType)
+            {
+                case WorkExperienceType.Farm: return topskill_Farm;
+
+                case WorkExperienceType.AnimalCare: return topskill_Farm;
+                case WorkExperienceType.HouseBuilding: return topskill_Farm;
+                case WorkExperienceType.WoodCutter: return topskill_Farm;
+                case WorkExperienceType.StoneCutter: return topskill_Farm;
+                case WorkExperienceType.Mining: return topskill_Farm;
+                case WorkExperienceType.Transport: return topskill_Farm;
+                case WorkExperienceType.Cook: return topskill_Farm;
+                case WorkExperienceType.Fletcher: return topskill_Farm;
+                case WorkExperienceType.Smelting: return topskill_Farm;
+                case WorkExperienceType.CastMetal: return topskill_Farm;
+                case WorkExperienceType.CraftMetal: return topskill_Farm;
+                case WorkExperienceType.CraftArmor: return topskill_Farm;
+                case WorkExperienceType.CraftWeapon: return topskill_Farm;
+                case WorkExperienceType.CraftFuel: return topskill_Farm;
+                case WorkExperienceType.Chemistry: return topskill_Farm;
+
+                default: throw new NotImplementedException();
+            }
+        }
 
         public void onMasterLevel(WorkExperienceType experienceType)
         {

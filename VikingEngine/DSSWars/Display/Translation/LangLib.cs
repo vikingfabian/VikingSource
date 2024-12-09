@@ -373,6 +373,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                             return DssRef.todoLang.BuildingType_Chemist;
                         case TerrainBuildingType.Gunmaker:
                             return DssRef.todoLang.BuildingType_Gunmaker;
+                        case TerrainBuildingType.School:
+                            return DssRef.todoLang.BuildingType_School;
 
                         default:
                             return DssRef.lang.BuildingType_DefaultName;
@@ -525,6 +527,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case TerrainBuildingType.WaterResovoir:
                     return DssRef.todoLang.BuildingType_WaterResovoir_Description;
 
+                case TerrainBuildingType.School:
+                    return DssRef.todoLang.BuildingType_School_Description;
                 default:
                     return TextLib.Error;
             }
