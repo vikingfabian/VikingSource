@@ -55,13 +55,13 @@ namespace VikingEngine.DSSWars.Players
                         BlackMarketResources.AiPurchaseWood(city, faction);
                     }
 
-                    bool craftWeapon = adjustWorkToCrafting(city, ResourceLib.CraftSword, ref city.workTemplate.craft_sword, false);
-                    craftWeapon = adjustWorkToCrafting(city, ResourceLib.CraftBow, ref city.workTemplate.craft_bow, craftWeapon);
-                    adjustWorkToCrafting(city, ResourceLib.CraftSharpStick, ref city.workTemplate.craft_sharpstick, craftWeapon);
+                    bool craftWeapon = adjustWorkToCrafting(city, CraftResourceLib.Sword, ref city.workTemplate.craft_sword, false);
+                    craftWeapon = adjustWorkToCrafting(city, CraftResourceLib.Bow, ref city.workTemplate.craft_bow, craftWeapon);
+                    adjustWorkToCrafting(city, CraftResourceLib.SharpStick, ref city.workTemplate.craft_sharpstick, craftWeapon);
                     
-                    bool craftArmour= adjustWorkToCrafting(city, ResourceLib.CraftHeavyArmor, ref city.workTemplate.craft_heavyarmor, false);
-                    craftArmour = adjustWorkToCrafting(city, ResourceLib.CraftMediumArmor, ref city.workTemplate.craft_mediumarmor, craftArmour);
-                    adjustWorkToCrafting(city, ResourceLib.CraftLightArmor, ref city.workTemplate.craft_lightarmor, craftArmour);
+                    bool craftArmour= adjustWorkToCrafting(city, CraftResourceLib.HeavyMailArmor, ref city.workTemplate.craft_heavymailarmor, false);
+                    craftArmour = adjustWorkToCrafting(city, CraftResourceLib.MailArmor, ref city.workTemplate.craft_mailarmor, craftArmour);
+                    adjustWorkToCrafting(city, CraftResourceLib.PaddedArmor, ref city.workTemplate.craft_paddedarmor, craftArmour);
                     
                 }
             }
@@ -127,14 +127,14 @@ namespace VikingEngine.DSSWars.Players
             }
             else if (city.conscriptBuildings.Count < 2 && Ref.rnd.Chance(0.6))
             {
-                building = BuildAndExpandType.Barracks;
+                building = BuildAndExpandType.SoldierBarracks;
             }
-            else if (((!city.hasBuilding_smith && city.res_ironore.amount > ResourceLowBuffer) ||
+            else if (((city.buildingStructure.Smith_count == 0 && city.res_ironore.amount > ResourceLowBuffer) ||
                 (city.res_ironore.amount >= city.res_ironore.goalBuffer)
                     && Ref.rnd.Chance(0.02))
                 )
             {
-                if (city.res_iron.amount < ResourceLib.CraftSmith_IronUse)
+                if (city.res_iron.amount < CraftBuildingLib.CraftSmith_IronUse)
                 {
                     if (!BlackMarketResources.AiPurchaseIron(city, faction))
                     {

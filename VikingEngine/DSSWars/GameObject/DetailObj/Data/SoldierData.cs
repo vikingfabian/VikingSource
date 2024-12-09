@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,10 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         public bool arrowWeakness = false;
         public AttackType mainAttack=0;
         public AttackType secondaryAttack = 0;
+        //public int defaultArmyPlacement;
         public int bonusProjectiles = 0;
         public int attackDamage = 0, attackDamageSea = 0, attackDamageStructure = 0;
+        public int attackSplashCount = 0;
         public int secondaryAttackDamage = 0;
         public float attackTimePlusCoolDown = 0;
 
@@ -24,12 +27,20 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         public int modelVariationCount = 1;
         public SpriteName icon = SpriteName.MissingImage;
 
-        public ArmyPlacement ArmyFrontToBackPlacement = 0;
+        public int defaultArmyPlacement =0;
         public float energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep;
         public float walkingSpeed = DssConst.Men_StandardWalkingSpeed;
         public bool canAttackCharacters = true;
         public bool canAttackStructure = true;
         public float modelScale = DssConst.Men_StandardModelScale;
+
+        public float upkeepPerSoldier = DssLib.SoldierDefaultUpkeep;
+        public int workForcePerUnit = 1;
+        public float groupSpacing = DssVar.DefaultGroupSpacing;
+        public float groupSpacingRndOffset = DssVar.StandardBoundRadius * 0.3f;
+        public int rowWidth = DssConst.SoldierGroup_RowWidth;
+        public int columnsDepth = DssConst.SoldierGroup_ColumnsDepth;
+        public Vector3 modelToShadowScale = new Vector3(0.4f, 1f, 0.32f);
 
         public SoldierData()
         { }
@@ -67,6 +78,21 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         public int DPS_structure()
         {
             return Convert.ToInt32(attackDamageStructure / (attackTimePlusCoolDown / 1000.0));
+        }
+
+        public int workForceCount()
+        {
+            return rowWidth * columnsDepth * workForcePerUnit;
+        }
+
+        public int Upkeep()
+        {
+            return Convert.ToInt32(rowWidth * columnsDepth * upkeepPerSoldier);
+        }
+
+        public Vector3 ShadowModelScale()
+        {
+            return modelToShadowScale * DssConst.Men_StandardModelScale;
         }
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.Graphics;
+using VikingEngine.LootFest;
 
 
 namespace VikingEngine.DSSWars
@@ -15,6 +16,8 @@ namespace VikingEngine.DSSWars
     static class DssLib
     {
         public const bool UseLocalTrading = false;
+
+        public const VoxelModelName WorkerModel = VoxelModelName.war_gnome;
 
         public static readonly string ContentDir = "DSS" + DataStream.FilePath.Dir;
         public static readonly string StoryContentDir = ContentDir + "Story" + DataStream.FilePath.Dir;
@@ -30,7 +33,7 @@ namespace VikingEngine.DSSWars
 
         public const bool AllowDoubleTime = false;
         #endregion
-        public static readonly int[] GameSpeedOptions = { 1, 2, 5 };
+        
         public const int UserHeraldicWidth = 16;
         public const int MaxLocalPlayers = 4;
         public const int RtsMaxFactions = 2000;
@@ -42,8 +45,6 @@ namespace VikingEngine.DSSWars
 
 
         public const int MercenaryPurchaseCount = 150;
-       
-
 
         public const int DefaultMaxCommand = 2;
         public const double DefaultCommandPerSecond = 1.0 / 60.0;
@@ -59,8 +60,8 @@ namespace VikingEngine.DSSWars
         {
             conscript = new ConscriptProfile()
             {
-                weapon = MainWeapon.SharpStick,
-                armorLevel = ArmorLevel.Light,
+                weapon = Resource.ItemResourceType.SharpStick,
+                armorLevel = Resource.ItemResourceType.PaddedArmor,
                 training = TrainingLevel.Basic,
                 specialization = SpecializationType.Traditional,
             }
@@ -70,8 +71,8 @@ namespace VikingEngine.DSSWars
         {
             conscript = new ConscriptProfile()
             {
-                weapon = MainWeapon.Sword,
-                armorLevel = ArmorLevel.Medium,
+                weapon = Resource.ItemResourceType.Sword,
+                armorLevel = Resource.ItemResourceType.IronArmor,
                 training = TrainingLevel.Basic,
                 specialization = SpecializationType.Traditional,
             }
@@ -81,8 +82,8 @@ namespace VikingEngine.DSSWars
         {
             conscript = new ConscriptProfile()
             {
-                weapon = MainWeapon.Sword,
-                armorLevel = ArmorLevel.Heavy,
+                weapon = Resource.ItemResourceType.Sword,
+                armorLevel = Resource.ItemResourceType.FullPlateArmor,
                 training = TrainingLevel.Skillful,
                 specialization = SpecializationType.Traditional,
             }
@@ -92,8 +93,8 @@ namespace VikingEngine.DSSWars
         {
             conscript = new ConscriptProfile()
             {
-                weapon = MainWeapon.Sword,
-                armorLevel = ArmorLevel.Medium,
+                weapon = Resource.ItemResourceType.Sword,
+                armorLevel = Resource.ItemResourceType.IronArmor,
                 training = TrainingLevel.Skillful,
                 specialization = SpecializationType.Sea,
             }
@@ -103,8 +104,8 @@ namespace VikingEngine.DSSWars
         {
             conscript = new ConscriptProfile()
             {
-                weapon = MainWeapon.Pike,
-                armorLevel = ArmorLevel.Heavy,
+                weapon = Resource.ItemResourceType.Pike,
+                armorLevel = Resource.ItemResourceType.FullPlateArmor,
                 training = TrainingLevel.Basic,
                 specialization = SpecializationType.AntiCavalry,
             }
@@ -114,8 +115,8 @@ namespace VikingEngine.DSSWars
         {
             conscript = new ConscriptProfile()
             {
-                weapon = MainWeapon.KnightsLance,
-                armorLevel = ArmorLevel.Heavy,
+                weapon = Resource.ItemResourceType.KnightsLance,
+                armorLevel = Resource.ItemResourceType.FullPlateArmor,
                 training = TrainingLevel.Skillful,
                 specialization = SpecializationType.Traditional,
             }
@@ -125,8 +126,8 @@ namespace VikingEngine.DSSWars
         {
             conscript = new ConscriptProfile()
             {
-                weapon = MainWeapon.TwoHandSword,
-                armorLevel = ArmorLevel.Heavy,
+                weapon = Resource.ItemResourceType.TwoHandSword,
+                armorLevel = Resource.ItemResourceType.FullPlateArmor,
                 training = TrainingLevel.Skillful,
                 specialization = SpecializationType.Traditional,
             }
@@ -136,8 +137,8 @@ namespace VikingEngine.DSSWars
         {
             conscript = new ConscriptProfile()
             {
-                weapon = MainWeapon.Longbow,
-                armorLevel = ArmorLevel.Light,
+                weapon = Resource.ItemResourceType.LongBow,
+                armorLevel = Resource.ItemResourceType.PaddedArmor,
                 training = TrainingLevel.Basic,
                 specialization = SpecializationType.Traditional,
             }
@@ -147,8 +148,8 @@ namespace VikingEngine.DSSWars
         {
             conscript = new ConscriptProfile()
             {
-                weapon = MainWeapon.Ballista,
-                armorLevel = ArmorLevel.Light,
+                weapon = Resource.ItemResourceType.Ballista,
+                armorLevel = Resource.ItemResourceType.PaddedArmor,
                 training = TrainingLevel.Basic,
                 specialization = SpecializationType.Siege,
             }
@@ -158,8 +159,8 @@ namespace VikingEngine.DSSWars
         {
             conscript = new ConscriptProfile()
             {
-                weapon = MainWeapon.CrossBow,
-                armorLevel = ArmorLevel.Medium,
+                weapon = Resource.ItemResourceType.Crossbow,
+                armorLevel = Resource.ItemResourceType.IronArmor,
                 training = TrainingLevel.Basic,
                 specialization = SpecializationType.Traditional,
             }
@@ -169,8 +170,8 @@ namespace VikingEngine.DSSWars
         {
             conscript = new ConscriptProfile()
             {
-                weapon = MainWeapon.Sword,
-                armorLevel = ArmorLevel.Heavy,
+                weapon = Resource.ItemResourceType.Sword,
+                armorLevel = Resource.ItemResourceType.FullPlateArmor,
                 training = TrainingLevel.Professional,
                 specialization = SpecializationType.HonorGuard,
             }
@@ -179,8 +180,8 @@ namespace VikingEngine.DSSWars
         {
             conscript = new ConscriptProfile()
             {
-                weapon = MainWeapon.Sword,
-                armorLevel = ArmorLevel.Medium,
+                weapon = Resource.ItemResourceType.Sword,
+                armorLevel = Resource.ItemResourceType.IronArmor,
                 training = TrainingLevel.Professional,
                 specialization = SpecializationType.Green,
             }
@@ -189,8 +190,8 @@ namespace VikingEngine.DSSWars
         {
             conscript = new ConscriptProfile()
             {
-                weapon = MainWeapon.Sword,
-                armorLevel = ArmorLevel.Medium,
+                weapon = Resource.ItemResourceType.Sword,
+                armorLevel = Resource.ItemResourceType.IronArmor,
                 training = TrainingLevel.Skillful,
                 specialization = SpecializationType.Viking,
             }
@@ -288,6 +289,7 @@ namespace VikingEngine.DSSWars
         /// </summary>
         High,
 
+
         NUM
     }
 
@@ -330,10 +332,14 @@ namespace VikingEngine.DSSWars
         Weavers,//.
         SiegeEngineer,//.
         Armorsmith,//.
-        Nobelmen,//.
+        Noblemen,//.
         Seafaring,//.
         Backtrader,//.
         Lawbiding,//.
+
+        Smelters,//
+        BronzeCasters,//
+        Apprentices,//
 
         NUM_NONE
     }

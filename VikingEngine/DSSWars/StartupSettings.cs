@@ -27,6 +27,9 @@ namespace VikingEngine.DSSWars
 
         public static bool SkipRecruitTime = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE
+        
+        public static bool UnlockAllProgress = PlatformSettings.DevBuild ? false :
+            false;//DO NOT CHANGE
 
         public static bool TestOffscreenUpdate = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE
@@ -46,6 +49,7 @@ namespace VikingEngine.DSSWars
         //public const bool Trailer = true;
 
         public static bool CheatActive =>
+            UnlockAllProgress ||
             !SpawnStartingArmies ||
             !RunAI ||
             EndlessResources ||

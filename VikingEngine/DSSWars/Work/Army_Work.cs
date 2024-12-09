@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void setMaxFood()
         {
-            float energy = DssLib.SoldierDefaultEnergyUpkeep / DssConst.FoodEnergy * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);
+            float energy = DssLib.SoldierDefaultEnergyUpkeep / DssRef.difficulty.FoodEnergySett * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);
             float bufferGoalFood = friendlyAreaFoodBuffer_minutes * TimeExt.MinuteInSeconds * energy;
             food = bufferGoalFood;
         }
@@ -82,7 +82,7 @@ namespace VikingEngine.DSSWars.GameObject
                         {
                             int statusIx = getOrCreateFreeWorker();
                             var status = workerStatuses[statusIx];
-                            status.createWorkOrder(WorkType.TrossCityTrade, -1, -1, WP.ToSubTilePos_Centered(city.tilePos), null);
+                            status.createWorkOrder(WorkType.TrossCityTrade, -1, 0, XP.WorkExperienceType.NONE, -1, WP.ToSubTilePos_Centered(city.tilePos), null);
                             if (city.faction != faction)
                             {
                                 foodCosts_import.add(status.carry.amount);

@@ -25,6 +25,9 @@ namespace VikingEngine.HUD
         Vector2 slideLength;
         Vector2 sliderStartPos;
 
+        bool newValueOnLeave = false;
+        public Action onLeaveCallback = null;
+
         /* Constructors */
         public AbsGuiSlider(SpriteName iconTile, string label, string toolTip, IntervalF range, bool vertical, GuiLayout layout)
             : base(layout, toolTip)
@@ -135,6 +138,11 @@ namespace VikingEngine.HUD
         protected override void OnLeave()
         {
             new ChangeColor(slider, style.SliderColor, style.fadeTimeMS, true);
+            if (newValueOnLeave)
+            {
+                onLeaveCallback?.Invoke();
+            }
+            newValueOnLeave = false;
         }
 
         protected override void OnPress()
@@ -174,6 +182,7 @@ namespace VikingEngine.HUD
             UpdateText();
             SetValue(range.GetFromPercent(valueT));
             layoutParent.gui.RefreshAllMembers(this);
+            newValueOnLeave = true;
         }
 
         protected void UpdateSliderPosition()

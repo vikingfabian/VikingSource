@@ -43,7 +43,10 @@ namespace VikingEngine.Engine
         public static void ReplaceGamestate(GameState newstate)
         {
             if (Ref.gamestate != null)
+            {
                 Ref.gamestate.OnDestroy();
+                Ref.update.AbortThreads();
+            }
             newstate.GotFocus(null);
             Ref.update.ResetGameTime();
 

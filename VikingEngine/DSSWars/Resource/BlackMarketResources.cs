@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
@@ -32,7 +33,7 @@ namespace VikingEngine.DSSWars.Resource
         }
         public static bool AiPurchaseIron(City city, Faction faction)
         {
-            int count = ResourceLib.CraftSmith_IronUse;
+            int count = CraftBuildingLib.CraftSmith_IronUse;
             if (faction.payMoney(count * Cost_Iron, false))
             {
                 city.res_iron.amount += count;
@@ -54,7 +55,7 @@ namespace VikingEngine.DSSWars.Resource
         {
             if (city.Culture == CityCulture.Lawbiding)
             {
-                city.cultureToHud(player, content);
+                city.cultureToHud(player, content, false);
                 return;
             }
 

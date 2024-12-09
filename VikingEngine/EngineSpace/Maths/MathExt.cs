@@ -11,6 +11,8 @@ namespace VikingEngine
     /// </summary>
     static class MathExt
     {
+        public const float OnePercentage = 0.01f;
+
         public const float Tau = MathHelper.TwoPi;
         public const float TauOver2 = MathHelper.Pi;
         public const float TauOver4 = MathHelper.PiOver2;
@@ -259,9 +261,9 @@ namespace VikingEngine
             return x < 1e-10f;
         }
 
-        public static int MultiplyInt(double multiply, int value)
+        public static int MultiplyInt(double value1, double value2)
         {
-            return Convert.ToInt32(value * multiply);
+            return Convert.ToInt32(value2 * value1);
         }
 
         public static IntVector2 Max(IntVector2 a, IntVector2 b)
@@ -453,9 +455,19 @@ namespace VikingEngine
             return value + Convert.ToInt32(value * add);
         }
 
+        public static int AddPercentage(int value, byte add)
+        {
+            return value + Convert.ToInt32(value * add * OnePercentage);
+        }
+
         public static int SubtractPercentage(int value, float sub)
         {
             return value - Convert.ToInt32(value * sub);
+        }
+
+        public static int PercentageInteger(float perc)
+        {
+            return Convert.ToInt32(perc * 100);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars
             copy, paste, start, stop,
             select_army, select_city, select_faction,
             ordermove, orderstop, message, trophy,
-            woodcut, tree_falling, scythe, drop_item, pickaxe, hen, pig, pickup,
+            woodcut, tree_falling, breaking, scythe, drop_item, pickaxe, hen, pig, pickup,
             anvil, dig, genericWork, hammer;
 
         public static RbSoundProfile menu, menuHover, menutab, menutabHover, menuBack, menuBuy, menuArmyHalt, menuCopy, menuPaste, menuStart, menuStop;
@@ -52,6 +52,7 @@ namespace VikingEngine.DSSWars
 
             woodcut = new SoundContainerSingle(soundDir + "woodcut", 0.4f, 0.2f);
             tree_falling = new SoundContainerSingle(soundDir + "tree_falling", 0.4f, 0.2f);
+            breaking = new SoundContainerSingle(soundDir + "break", 0.4f, 0.2f);
             scythe = new SoundContainerSingle(soundDir + "scythe", 0.7f, 0.4f);
             drop_item = new SoundContainerSingle(soundDir + "drop_item", 1f, 0.4f);
             pickaxe = new SoundContainerSingle(soundDir + "pickaxe", 0.6f, 0.2f);

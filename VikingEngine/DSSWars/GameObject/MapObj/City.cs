@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DataStream;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Delivery;
@@ -16,7 +17,9 @@ using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Work;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest;
@@ -27,7 +30,7 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City : GameObject.AbsMapObject
     {
-        public const int ExpandGuardSizeCost = 12000;
+        
 
         //public int index;
         public int areaSize = 0;
@@ -64,11 +67,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public float ai_armyDefenceValue = 0;
         //public bool nobelHouse = false;
-        public bool hasBuilding_carpenter = false;
-        public bool hasBuilding_brewery = false;
-        public bool hasBuilding_smith = false;
-        public int coalpit_buildingCount = 0;
-        public int nobelHouse_buildingCount = 0;
+
+        public BuildingStructure buildingStructure = new BuildingStructure();
+        
+
         string name = null;
 
         IntVector2 cullingTopLeft, cullingBottomRight;
@@ -82,9 +84,130 @@ namespace VikingEngine.DSSWars.GameObject
         public CityTagBack tagBack = CityTagBack.NONE;
         public CityTagArt tagArt = CityTagArt.None;
 
+        public bool CanBuildLogistics(int toLevel)
+        {
+            if (toLevel == 1)
+            {
+                return res_food.amount >= Logistics1FoodStorage;
+            }
+            else if (toLevel == 2)
+            {
+                return faction.totalWorkForce > DssConst.Logistics2_PopulationRequirement;
+            }
+
+            return false;
+        }
+
+        public int MaxBuildQueue()
+        {
+            //int queue = int.MaxValue;
+            //switch (buildingLevel_logistics)
+            //{
+            //    default : return queue;
+            //    case 0: queue = DssConst.WorkQueue_Start; break;
+            //    case 1: queue = DssConst.WorkQueue_LogisticsLevel1; break;
+            //}
+
+            //if (DssRef.storage.longerBuildQueue)
+            //{
+            //    queue *= 2;
+            //}
+
+            return LevelToMaxBuildQueue(buildingStructure.buildingLevel_logistics); //return queue;
+        }
+
+        public static int LevelToMaxBuildQueue(int level)
+        {
+            int queue = int.MaxValue;
+            switch (level)
+            {
+                default: return queue;
+                case 0: queue = DssConst.WorkQueue_Start; break;
+                case 1: queue = DssConst.WorkQueue_LogisticsLevel1; break;
+            }
+
+            if (DssRef.storage.longerBuildQueue)
+            {
+                queue *= 2;
+            }
+
+            return queue;
+        }
+
+        public void upgradeLogistics()
+        {
+            Task task = Task.Factory.StartNew(() =>
+            {
+                if (CityStructure.WorkInstance.find(this, TerrainMainType.Building, (int)TerrainBuildingType.Logistics, out IntVector2 position))
+                {
+                    CraftBuildingLib.CraftLogisticsLevel2.payResources(this);
+
+                    EditSubTile edit = new EditSubTile();
+                    edit.position = position;
+                    edit.value.terrainAmount = 2;
+                    edit.editAmount = true;
+
+                    edit.Submit();
+
+                    buildingStructure.buildingLevel_logistics = 2;
+                }
+            });
+            
+        }
+
+
+        public bool autoUpgradeLogistics(IntVector2 freeSubTile, bool commit)
+        {
+            //commit is main thread
+
+            if (CanBuildLogistics(buildingStructure.buildingLevel_logistics + 1))
+            {
+                if (buildingStructure.buildingLevel_logistics == 0)
+                {
+                    if (CraftBuildingLib.CraftLogistics.hasResources(this))
+                    {
+                        if (commit)
+                        {
+                            var player = faction.player.GetLocalPlayer();
+                            if (player != null)
+                            {
+                                player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, this, freeSubTile, Build.BuildAndExpandType.Logistics), ActionOnConflict.Cancel);
+                            }
+                        }
+                        return true;
+                    }
+                }
+                else if (buildingStructure.buildingLevel_logistics == 1)
+                {
+                    if (CraftBuildingLib.CraftLogisticsLevel2.hasResources(this))
+                    {
+                        if (commit)
+                        {
+                            CraftBuildingLib.CraftLogisticsLevel2.payResources(this);
+                            upgradeLogistics();
+                        }
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool availableBuildQueue(LocalPlayer player)
+        {
+            return MaxBuildQueue() > 1000 || player.orders.buildQueue(this) < MaxBuildQueue();
+        }
+
         public void AutoExpandType(out bool work, out Build.BuildAndExpandType farm)
         {
             work = autoBuild_Work;
+
+            if (buildingStructure.buildingLevel_logistics == 0)
+            {
+                farm = Build.BuildAndExpandType.NUM_NONE;
+                return;
+            }
+           
             farm = autoBuild_Farm ? autoExpandFarmType : Build.BuildAndExpandType.NUM_NONE;
         }
 
@@ -297,35 +420,95 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write((ushort)guardCount);
             w.Write((ushort)maxGuardSize);
 
-            w.Write((byte)maxWater);
-            w.Write(Debug.Byte_OrCrash((int)(waterAddPerSec * 20)));
+            w.Write((byte)maxWaterBase);
+            w.Write(waterAddPerSec);
             workTemplate.writeGameState(w, true);
 
             w.Write((short)res_water.amount);
 
 
-            res_wood.writeGameState(w); //ItemResourceType.Wood_Group,
-            res_fuel.writeGameState(w); // ItemResourceType.Fuel_G,
-            res_stone.writeGameState(w); // ItemResourceType.Stone_G,
-            res_rawFood.writeGameState(w); // ItemResourceType.RawFood_Group,
-            res_food.writeGameState(w); // ItemResourceType.Food_G,
-            res_beer.writeGameState(w); // ItemResourceType.Beer,
-            res_skinLinnen.writeGameState(w); // ItemResourceType.SkinLinen_Group,
-            res_ironore.writeGameState(w); // ItemResourceType.IronOre_G,
-            res_iron.writeGameState(w); // ItemResourceType.Iron_G,
+            res_wood.writeGameState(w); // ItemResourceType.Wood_Group
+            res_fuel.writeGameState(w); // ItemResourceType.Fuel_G
+            res_stone.writeGameState(w); // ItemResourceType.Stone_G
+            res_rawFood.writeGameState(w); // ItemResourceType.RawFood_Group
+            res_food.writeGameState(w); // ItemResourceType.Food_G
+            res_beer.writeGameState(w); // ItemResourceType.Beer
+            res_coolingfluid.writeGameState(w); // ItemResourceType.CoolingFluid
+            res_skinLinnen.writeGameState(w); // ItemResourceType.SkinLinen_Group
 
-            res_sword.writeGameState(w); // ItemResourceType.Sword,
-            res_sharpstick.writeGameState(w); // ItemResourceType.SharpStick,
-            res_twohandsword.writeGameState(w); // ItemResourceType.TwoHandSword,
-            res_knightslance.writeGameState(w); // ItemResourceType.KnightsLance,
-            res_bow.writeGameState(w); // ItemResourceType.Bow,
-            res_ballista.writeGameState(w); // ItemResourceType.Ballista,            
+            res_ironore.writeGameState(w); // ItemResourceType.IronOre_G
+            res_TinOre.writeGameState(w); // ItemResourceType.TinOre_G
+            res_CupperOre.writeGameState(w); // ItemResourceType.CopperOre_G
+            res_LeadOre.writeGameState(w); // ItemResourceType.LeadOre_G
+            res_SilverOre.writeGameState(w); // ItemResourceType.SilverOre_G
 
-            res_lightArmor.writeGameState(w); // ItemResourceType.LightArmor,
-            res_mediumArmor.writeGameState(w); // ItemResourceType.MediumArmor,
-            res_heavyArmor.writeGameState(w); // ItemResourceType.HeavyArmor,
+            res_iron.writeGameState(w); // ItemResourceType.Iron_G
+            res_Tin.writeGameState(w); // ItemResourceType.Tin_G
+            res_Cupper.writeGameState(w); // ItemResourceType.Copper_G
+            res_Lead.writeGameState(w); // ItemResourceType.Lead_G
+            res_Silver.writeGameState(w); // ItemResourceType.Silver_G
+            res_RawMithril.writeGameState(w); // ItemResourceType.RawMithril
+            res_Sulfur.writeGameState(w); // ItemResourceType.Sulfur
 
-            res_longbow.writeGameState(w);
+            res_Bronze.writeGameState(w); // ItemResourceType.Bronze
+            res_Steel.writeGameState(w); // ItemResourceType.Steel
+            res_CastIron.writeGameState(w); // ItemResourceType.CastIron
+            res_BloomeryIron.writeGameState(w); // ItemResourceType.BloomeryIron
+            res_Mithril.writeGameState(w); // ItemResourceType.Mithril
+
+            res_Toolkit.writeGameState(w); // ItemResourceType.Toolkit
+            res_Wagon2Wheel.writeGameState(w); // ItemResourceType.Wagon2Wheel
+            res_Wagon4Wheel.writeGameState(w); // ItemResourceType.Wagon4Wheel
+            res_BlackPowder.writeGameState(w); // ItemResourceType.BlackPowder
+            res_GunPowder.writeGameState(w); // ItemResourceType.GunPowder
+            res_LedBullet.writeGameState(w); // ItemResourceType.LedBullet
+
+            res_sharpstick.writeGameState(w); // ItemResourceType.SharpStick
+            res_BronzeSword.writeGameState(w); // ItemResourceType.BronzeSword
+            res_shortsword.writeGameState(w); // ItemResourceType.ShortSword
+            res_Sword.writeGameState(w); // ItemResourceType.Sword
+            res_LongSword.writeGameState(w); // ItemResourceType.LongSword
+            res_HandSpear.writeGameState(w); // ItemResourceType.HandSpear
+            res_MithrilSword.writeGameState(w); // ItemResourceType.MithrilSword
+
+            res_Warhammer.writeGameState(w); // ItemResourceType.Warhammer
+            res_twohandsword.writeGameState(w); // ItemResourceType.TwoHandSword
+            res_knightslance.writeGameState(w); // ItemResourceType.KnightsLance
+            res_SlingShot.writeGameState(w); // ItemResourceType.SlingShot
+            res_ThrowingSpear.writeGameState(w); // ItemResourceType.ThrowingSpear
+            res_bow.writeGameState(w); // ItemResourceType.Bow
+            res_longbow.writeGameState(w); // ItemResourceType.LongBow
+            res_crossbow.writeGameState(w); // ItemResourceType.CrossBow
+            res_MithrilBow.writeGameState(w); // ItemResourceType.MithrilBow
+
+            res_HandCannon.writeGameState(w); // ItemResourceType.HandCannon
+            res_HandCulvertin.writeGameState(w); // ItemResourceType.HandCulvertin
+            res_Rifle.writeGameState(w); // ItemResourceType.Rifle
+            res_Blunderbus.writeGameState(w); // ItemResourceType.Blunderbus
+
+            res_BatteringRam.writeGameState(w); // ItemResourceType.BatteringRam
+            res_ballista.writeGameState(w); // ItemResourceType.Ballista
+            res_Manuballista.writeGameState(w); // ItemResourceType.Manuballista
+            res_Catapult.writeGameState(w); // ItemResourceType.Catapult
+            res_SiegeCannonBronze.writeGameState(w); // ItemResourceType.SiegeCannonBronze
+            res_ManCannonBronze.writeGameState(w); // ItemResourceType.ManCannonBronze
+            res_SiegeCannonIron.writeGameState(w); // ItemResourceType.SiegeCannonIron
+            res_ManCannonIron.writeGameState(w); // ItemResourceType.ManCannonIron
+
+            res_paddedArmor.writeGameState(w); // ItemResourceType.LightArmor
+            res_HeavyPaddedArmor.writeGameState(w); // ItemResourceType.HeavyPaddedArmor
+            res_BronzeArmor.writeGameState(w); // ItemResourceType.BronzeArmor
+            res_mailArmor.writeGameState(w); // ItemResourceType.MediumArmor
+            res_heavyMailArmor.writeGameState(w); // ItemResourceType.HeavyArmor
+            res_LightPlateArmor.writeGameState(w); // ItemResourceType.LightPlateArmor
+            res_FullPlateArmor.writeGameState(w); // ItemResourceType.FullPlateArmor
+            res_MithrilArmor.writeGameState(w); // ItemResourceType.MithrilArmor
+
+            w.Write((ushort)workerStatuses.Count);
+            for (int i = 0; i < workerStatuses.Count; i++) 
+            { 
+                workerStatuses[i].writeGameState(w);
+            }
 
             w.Write((ushort)conscriptBuildings.Count);
             foreach (var barracks in conscriptBuildings)
@@ -350,6 +533,8 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             w.Write(res_food_safeguard);
+
+            technology.writeGameState(w);
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
@@ -364,39 +549,108 @@ namespace VikingEngine.DSSWars.GameObject
             guardCount = r.ReadUInt16();
             maxGuardSize = r.ReadUInt16();
 
-            maxWater = r.ReadByte();
-            waterAddPerSec = r.ReadByte() / 20f;
+            maxWaterBase = r.ReadByte();
+            maxWaterTotal = maxWaterBase;
+            waterAddPerSec = r.ReadSingle();
             
             workTemplate.readGameState(r, subversion, true);
 
             res_water.amount = r.ReadInt16();
 
-            res_wood.readGameState(r, subversion); //ItemResourceType.Wood_Group,
-            res_fuel.readGameState(r, subversion); // ItemResourceType.Fuel_G,
-            res_stone.readGameState(r, subversion); // ItemResourceType.Stone_G,
-            res_rawFood.readGameState(r, subversion); // ItemResourceType.RawFood_Group,
-            res_food.readGameState(r, subversion); // ItemResourceType.Food_G,
-            res_beer.readGameState(r, subversion); // ItemResourceType.Beer,
-            res_skinLinnen.readGameState(r, subversion); // ItemResourceType.SkinLinen_Group,
-            res_ironore.readGameState(r, subversion); // ItemResourceType.IronOre_G,
-            res_iron.readGameState(r, subversion); // ItemResourceType.Iron_G,
+            res_wood.readGameState(r, subversion); // ItemResourceType.Wood_Group
+            res_fuel.readGameState(r, subversion); // ItemResourceType.Fuel_G
+            res_stone.readGameState(r, subversion); // ItemResourceType.Stone_G
+            res_rawFood.readGameState(r, subversion); // ItemResourceType.RawFood_Group
+            res_food.readGameState(r, subversion); // ItemResourceType.Food_G
+            res_beer.readGameState(r, subversion); // ItemResourceType.Beer
+            res_coolingfluid.readGameState(r, subversion); // ItemResourceType.CoolingFluid
+            res_skinLinnen.readGameState(r, subversion); // ItemResourceType.SkinLinen_Group
 
-            res_sword.readGameState(r, subversion); // ItemResourceType.Sword,
-            res_sharpstick.readGameState(r, subversion); // ItemResourceType.SharpStick,
-            res_twohandsword.readGameState(r, subversion); // ItemResourceType.TwoHandSword,
-            res_knightslance.readGameState(r, subversion); // ItemResourceType.KnightsLance,
-            res_bow.readGameState(r, subversion); // ItemResourceType.Bow,
-            res_ballista.readGameState(r, subversion); // ItemResourceType.Ballista,            
+            res_ironore.readGameState(r, subversion); // ItemResourceType.IronOre_G
+            res_TinOre.readGameState(r, subversion); // ItemResourceType.TinOre_G
+            res_CupperOre.readGameState(r, subversion); // ItemResourceType.CopperOre_G
+            res_LeadOre.readGameState(r, subversion); // ItemResourceType.LeadOre_G
+            res_SilverOre.readGameState(r, subversion); // ItemResourceType.SilverOre_G
 
-            res_lightArmor.readGameState(r, subversion); // ItemResourceType.LightArmor,
-            res_mediumArmor.readGameState(r, subversion); // ItemResourceType.MediumArmor,
-            res_heavyArmor.readGameState(r, subversion); // ItemResourceType.HeavyArmor,
+            res_iron.readGameState(r, subversion); // ItemResourceType.Iron_G
+            res_Tin.readGameState(r, subversion); // ItemResourceType.Tin_G
+            res_Cupper.readGameState(r, subversion); // ItemResourceType.Copper_G
+            res_Lead.readGameState(r, subversion); // ItemResourceType.Lead_G
+            res_Silver.readGameState(r, subversion); // ItemResourceType.Silver_G
+            res_RawMithril.readGameState(r, subversion); // ItemResourceType.RawMithril
+            res_Sulfur.readGameState(r, subversion); // ItemResourceType.Sulfur
 
-            res_longbow.readGameState(r, subversion);
-            
+            res_Bronze.readGameState(r, subversion); // ItemResourceType.Bronze
+            res_Steel.readGameState(r, subversion); // ItemResourceType.Steel
+            res_CastIron.readGameState(r, subversion); // ItemResourceType.CastIron
+            res_BloomeryIron.readGameState(r, subversion); // ItemResourceType.BloomeryIron
+            res_Mithril.readGameState(r, subversion); // ItemResourceType.Mithril
+
+            res_Toolkit.readGameState(r, subversion); // ItemResourceType.Toolkit
+            res_Wagon2Wheel.readGameState(r, subversion); // ItemResourceType.Wagon2Wheel
+            res_Wagon4Wheel.readGameState(r, subversion); // ItemResourceType.Wagon4Wheel
+            res_BlackPowder.readGameState(r, subversion); // ItemResourceType.BlackPowder
+            res_GunPowder.readGameState(r, subversion); // ItemResourceType.GunPowder
+            res_LedBullet.readGameState(r, subversion); // ItemResourceType.LedBullet
+
+            res_sharpstick.readGameState(r, subversion); // ItemResourceType.SharpStick
+            res_BronzeSword.readGameState(r, subversion); // ItemResourceType.BronzeSword
+            res_shortsword.readGameState(r, subversion); // ItemResourceType.ShortSword
+            res_Sword.readGameState(r, subversion); // ItemResourceType.Sword
+            res_LongSword.readGameState(r, subversion); // ItemResourceType.LongSword
+            res_HandSpear.readGameState(r, subversion); // ItemResourceType.HandSpear
+            res_MithrilSword.readGameState(r, subversion); // ItemResourceType.MithrilSword
+
+            res_Warhammer.readGameState(r, subversion); // ItemResourceType.Warhammer
+            res_twohandsword.readGameState(r, subversion); // ItemResourceType.TwoHandSword
+            res_knightslance.readGameState(r, subversion); // ItemResourceType.KnightsLance
+            res_SlingShot.readGameState(r, subversion); // ItemResourceType.SlingShot
+            res_ThrowingSpear.readGameState(r, subversion); // ItemResourceType.ThrowingSpear
+            res_bow.readGameState(r, subversion); // ItemResourceType.Bow
+            res_longbow.readGameState(r, subversion); // ItemResourceType.LongBow
+            res_crossbow.readGameState(r, subversion); // ItemResourceType.CrossBow
+            res_MithrilBow.readGameState(r, subversion); // ItemResourceType.MithrilBow
+
+            res_HandCannon.readGameState(r, subversion); // ItemResourceType.HandCannon
+            res_HandCulvertin.readGameState(r, subversion); // ItemResourceType.HandCulvertin
+            res_Rifle.readGameState(r, subversion); // ItemResourceType.Rifle
+            res_Blunderbus.readGameState(r, subversion); // ItemResourceType.Blunderbus
+
+            res_BatteringRam.readGameState(r, subversion); // ItemResourceType.BatteringRam
+            res_ballista.readGameState(r, subversion); // ItemResourceType.Ballista
+            res_Manuballista.readGameState(r, subversion); // ItemResourceType.Manuballista
+            res_Catapult.readGameState(r, subversion); // ItemResourceType.Catapult
+            res_SiegeCannonBronze.readGameState(r, subversion); // ItemResourceType.SiegeCannonBronze
+            res_ManCannonBronze.readGameState(r, subversion); // ItemResourceType.ManCannonBronze
+            res_SiegeCannonIron.readGameState(r, subversion); // ItemResourceType.SiegeCannonIron
+            res_ManCannonIron.readGameState(r, subversion); // ItemResourceType.ManCannonIron
+
+            res_paddedArmor.readGameState(r, subversion); // ItemResourceType.LightArmor
+            res_HeavyPaddedArmor.readGameState(r, subversion); // ItemResourceType.HeavyPaddedArmor
+            res_BronzeArmor.readGameState(r, subversion); // ItemResourceType.BronzeArmor
+            res_mailArmor.readGameState(r, subversion); // ItemResourceType.MediumArmor
+            res_heavyMailArmor.readGameState(r, subversion); // ItemResourceType.HeavyArmor
+            res_LightPlateArmor.readGameState(r, subversion); // ItemResourceType.LightPlateArmor
+            res_FullPlateArmor.readGameState(r, subversion); // ItemResourceType.FullPlateArmor
+            res_MithrilArmor.readGameState(r, subversion); // ItemResourceType.MithrilArmor
+
+            IntVector2 startPos = WP.ToSubTilePos_Centered(tilePos);
+            int workerStatusesCount = r.ReadUInt16();
+            for (int i = 0; i < workerStatusesCount; i++)
+            {
+                var newWorker = new WorkerStatus()
+                {
+                    work = WorkType.Idle,
+                    processTimeStartStampSec = Ref.TotalGameTimeSec,
+                    subTileEnd = startPos,
+                    subTileStart = startPos,
+                };
+
+                newWorker.readGameState(r, subversion);
+                workerStatuses.Add(newWorker);
+            }
 
             refreshCitySize();
-
             conscriptBuildings.Clear();
             int conscriptBuildingsCount = r.ReadUInt16();
             for (int i = 0; i < conscriptBuildingsCount; i++)
@@ -429,6 +683,8 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 res_food_safeguard = r.ReadBoolean();
             }
+
+            technology.readGameState(r, subversion);
         }
 
         public void writeNet(System.IO.BinaryWriter w)
@@ -452,22 +708,46 @@ namespace VikingEngine.DSSWars.GameObject
             return 40000 + workForceMax * 10;
         }
 
-       
-        public bool canIncreaseGuardSize(int count)
+        //public int releaseWorkForceGain()
+        //{
+        //    return expandWorkForceCost() / 2 - DssConst.ExpandGuardSize * 10;
+        //}
+
+
+        public bool canIncreaseGuardSize(int count, bool checkIfCapped)
         {
-            return (maxGuardSize + DssConst.ExpandGuardSize * count) <= workForceMax;
+            if (checkIfCapped && guardCount + 2 < maxGuardSize)
+            {
+                return false;
+            }
+
+            return (maxGuardSize + DssConst.ExpandGuardSize * count) <= workForceMax;            
         }
 
-        public void expandWorkForce(int amount)
+        public bool canReleaseGuardSize(int count)
         {
-            workForceMax += amount;
+            return (maxGuardSize - DssConst.ExpandGuardSize * count) >= DssConst.ExpandGuardSize;
+        }
+
+        public void expandWorkForce(int totalAmount)
+        {
+            workForceMax += totalAmount;
             refreshCitySize();
             detailObj.refreshWorkerSubtiles();
         }
 
-        public void onWorkHutBuild()
+       
+
+        public void onWorkHutBuild(bool build_notDestroy)
         {
-            workForceMax += DssConst.SoldierGroup_DefaultCount;
+            if (build_notDestroy)
+            {
+                workForceMax += DssConst.SoldierGroup_DefaultCount;
+            }
+            else
+            {
+                workForceMax -= DssConst.SoldierGroup_DefaultCount;
+            }
             refreshCitySize();
         }
 
@@ -477,13 +757,26 @@ namespace VikingEngine.DSSWars.GameObject
             refreshCitySize();
         }
 
+        public void releaseGuardSize(int totalAmount)
+        {
+            maxGuardSize -= totalAmount;
+            if (guardCount > maxGuardSize)
+            {
+                int releasedWorkers = guardCount - maxGuardSize;
+                guardCount = maxGuardSize;
+                addWorkers(releasedWorkers);
+
+                faction.gold += DssConst.ReleaseGuardSizeGain;
+            }
+        }
+
         public bool buyCityGuards(bool commit, int count)
         {
-            if (canIncreaseGuardSize(count))
+            if (canIncreaseGuardSize(count, false))
             {
                 int totalCost = 0;
 
-                if (faction.calcCost(ExpandGuardSizeCost * count, ref totalCost))
+                if (faction.calcCost(DssConst.ExpandGuardSizeCost * count, ref totalCost))
                 {
                     if (commit)
                     {
@@ -495,6 +788,21 @@ namespace VikingEngine.DSSWars.GameObject
             }
             return false;
         }
+
+        //public bool releaseCityGuards(bool commit, int count)
+        //{
+        //    if (canReleaseGuardSize(count))
+        //    {
+        //            if (commit)
+        //            {
+        //                (DssConst.ExpandGuardSize * count);
+        //                faction.payMoney(totalCost, true);
+        //            }
+        //            return true;
+        //        }
+        //    }
+        //    return false;
+        //}
 
         public bool buyRepair(bool commit, bool all)
         {
@@ -668,11 +976,6 @@ namespace VikingEngine.DSSWars.GameObject
                 if (newType != CityType)
                 {
                     CityType = newType;
-                    //detailObj.refreshModel();
-                    //Task.Factory.StartNew(() =>
-                    //{
-                    //    createBuildingSubtiles(DssRef.world);
-                    //});
 
                     if (overviewModel != null)
                     {
@@ -925,7 +1228,8 @@ namespace VikingEngine.DSSWars.GameObject
             //    waterAddPerSec = 2;
             //}
             nextWater.value += waterAddPerSec;
-            res_water.amount = Math.Min(res_water.amount + nextWater.pull(), maxWater);
+            maxWaterTotal = maxWaterBase + buildingStructure.WaterResovoir_count * DssConst.WaterResovoirWaterAdd;
+            res_water.amount = Math.Min(res_water.amount + nextWater.pull(), maxWaterTotal);
 
             if (starving)
             { 
@@ -934,6 +1238,21 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     faction.player.GetLocalPlayer().hud.messages.cityLowFoodMessage(this);
                 }
+            }
+        }
+
+        public void addWorkers(int add)
+        {
+            if (workForce.amount + add > workForceMax)
+            {
+                //Add rest to immigration
+                int rest = workForce.amount + add - workForceMax;
+                workForce.amount = workForceMax;
+                immigrants.value += rest;
+            }
+            else
+            {
+                workForce.amount += add;
             }
         }
 
@@ -1259,27 +1578,37 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
+                bool interactive = player.faction == faction;
+
                 if (damages.HasValue())
                 {
                     content.icontext(SpriteName.hqBatteResultBobbleDamage, string.Format(DssRef.lang.CityOption_Damages, damages.Int()));
                 }
                 HudLib.ItemCount(content, SpriteName.WarsWorkerAdd, DssRef.lang.ResourceType_Children, children().ToString());
                 content.space();
-                HudLib.InfoButton(content, new RbAction1Arg<City>(player.childrenTooltip, this));
+                if (interactive)
+                {
+                    HudLib.InfoButton(content, new RbAction1Arg<City>(player.childrenTooltip, this));
+                }
 
-                HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.amount, workForceMax));
+                HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.amount, homesTotal()));
                 HudLib.ItemCount(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, TextLib.Divition_Large(guardCount, maxGuardSize));
                 content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
                 content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, calcIncome_async().total(this)));
                 content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, GuardUpkeep(maxGuardSize)));
 
-                cultureToHud(player, content);
+                cultureToHud(player, content, interactive);
 
                 if (immigrants.HasValue())
                 {
                     content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.Hud_Immigrants, immigrants.Int()));
                 }
 
+                new XP.TechnologyHud().technologyOverviewHud(content, player, null, faction);
+                //technologyOverviewHud(content, player);
+#if DEBUG
+                //technologyHud(content, player);
+#endif
                 //if (!player.inTutorialMode)
                 {
                     //Properties
@@ -1305,17 +1634,25 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
-        public void cultureToHud(LocalPlayer player, RichBoxContent content)
+        public void cultureToHud(LocalPlayer player, RichBoxContent content, bool interactive)
         {
             content.icontext(SpriteName.WarsCultureIcon, string.Format(DssRef.lang.CityCulture_CultureIsX, Display.Translation.LangLib.CityCulture(Culture, true)));
-            content.space();
-            HudLib.InfoButton(content, new RbAction(() =>
+            if (interactive)
             {
-                RichBoxContent content = new RichBoxContent();
-                content.text(Display.Translation.LangLib.CityCulture(Culture, false));
+                content.space();
+                HudLib.InfoButton(content, new RbAction(() =>
+                {
+                    RichBoxContent content = new RichBoxContent();
+                    content.text(Display.Translation.LangLib.CityCulture(Culture, false));
 
-                player.hud.tooltip.create(player, content, true);
-            }));//cultureToolTip));
+                    player.hud.tooltip.create(player, content, true);
+                }));//cultureToolTip));
+            }
+            else
+            {
+                content.newLine();
+                HudLib.Description(content, Display.Translation.LangLib.CityCulture(Culture, false));
+            }
         }
 
        // void cultureToolTip()
@@ -1426,6 +1763,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 Faction prevOwner = this.faction;
                 this.faction = faction;
+                technology.destroyTechOnTakeOver();
                 faction.AddCity(this, false);
                 if (prevOwner != null)
                 {
@@ -1455,6 +1793,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 workTemplate.onFactionChange(faction.workTemplate);
                 tradeTemplate.onFactionValueChange(faction.tradeTemplate);
+                technology.addFactionUnlocked(faction.technology, false);
             }
         }
 

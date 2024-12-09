@@ -7,45 +7,41 @@ namespace VikingEngine.DSSWars.Map.Generate
     class GenerateRegion
     {
         public List<City> cities = new List<City>(16);
-        public int goalWorkForce, currentWorkforce;
-        public Faction tempFaction = new Faction();
+        
+        //public Faction tempFaction = new Faction();
 
-        public void Reset(int goalWorkForce)
+        //public void Reset(int goalWorkForce)
+        //{
+        //    this.goalWorkForce = goalWorkForce;
+        //    currentWorkforce = 0;
+
+        //    cities.Clear();
+        //}
+
+        
+
+
+        public int GetStartFactionRegion(int goalWorkForce, City startCity, WorldData world, Faction faction)
         {
-            this.goalWorkForce = goalWorkForce;
-            currentWorkforce = 0;
-
             cities.Clear();
-        }
 
-        void addCity(City city)
-        {
-            city.faction = tempFaction;
-            cities.Add(city);
-            currentWorkforce += city.workForceMax;
-        }
-
-
-        public void GetStartFactionRegion(City startCity, WorldData world)
-        {
-            //if (startCity.faction == null)
-            //{
-            //faction = new Faction(factions.Count);
-            //factions.Add(faction);
+            int currentWorkforce = 0;
             addCity(startCity);
 
-
-            List<City> checkCities = new List<City>(8);
+            int checkStartIx = 0;
+            int checkEndIx = 0;
+            
 
             int loopCount = 0;
             while (++loopCount < 20)
             {
-                checkCities.Clear();
-                checkCities.AddRange(cities);
-
-                foreach (City check in checkCities)
+                //checkCities.Clear();
+                //checkCities.AddRange(cities);
+                checkEndIx = cities.Count -1;
+                //foreach (City check in checkCities)
+                for (int cityIx = checkStartIx; cityIx <= checkEndIx; cityIx++)
                 {
-                    foreach (int n in check.neighborCities)
+                    foreach (int n in cities[cityIx].neighborCities)
                     {
                         //if (!arraylib.InBound(world.cities, n))
                         //{ 
@@ -59,22 +55,35 @@ namespace VikingEngine.DSSWars.Map.Generate
                             if (currentWorkforce >= goalWorkForce)
                             {
                                 //faction.availableForPlayer = true;
-                                return;
+                                //faction.refreshMainCity();
+                                return currentWorkforce;
                             }
                         }
                     }
+
+                    checkStartIx = checkEndIx +1;
                 }
             }
-            //}
-        }
 
-        public void ApplyFaction(Faction faction)
-        {
-            foreach (var c in cities)
+            //faction.refreshMainCity();
+            return currentWorkforce;
+
+            void addCity(City city)
             {
-                c.faction = null;
-                faction.AddCity(c, true);
+                //city.faction = faction;
+                faction.AddCity(city, true);
+                cities.Add(city);
+                currentWorkforce += city.workForceMax;
             }
         }
+
+        //public void ApplyFaction(Faction faction)
+        //{
+        //    foreach (var c in cities)
+        //    {
+        //        c.faction = null;
+        //        faction.AddCity(c, true);
+        //    }
+        //}
     }
 }

@@ -263,7 +263,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_GuardCount => "Guardias";
 
-        public override string Hud_IncreaseMaxGuardCount => "Tamaño máximo de guardias +{0}";
+        public override string Hud_IncreaseMaxGuardCount => "Tamaño máximo de guardias {0}";
 
         public override string Hud_GuardCount_MustExpandCityMessage => "Necesitas expandir la ciudad.";
 
@@ -1593,5 +1593,136 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string EndGameStatistics_DecorsBuilt => "Decoraciones construidas: {0}";
         public override string EndGameStatistics_StatuesBuilt => "Estatuas construidas: {0}";
 
+
+        //############
+        // XMAS UPDATE
+        //############
+        public override string Info_FoodAndDeliveryLocation => "Por defecto, los trabajadores van al ayuntamiento para comer o dejar objetos";
+        public override string GameMenu_UseSpeedX => "Opción de velocidad {0}";
+        public override string GameMenu_LongerBuildQueue => "Cola de construcción extendida";
+
+        public override string Diplomacy_RelationWithOthers => "Sus relaciones con otros";
+        public override string Automation_queue_description => "Continuará repitiendo hasta que la cola esté vacía";
+
+        public override string BuildingType_Storehouse_Description => "Los trabajadores pueden dejar objetos aquí";
+
+        public override string Resource_TypeName_Longbow => "arco largo";
+        public override string Resource_TypeName_Rapeseed => "colza";
+        public override string Resource_TypeName_Hemp => "cáñamo";
+
+        public override string Resource_BogIronDescription => "Minar hierro es más eficiente que utilizar hierro de pantano.";
+
+        public override string Resource_FoodSafeGuard_Description => "Protección activa. Maximizará la prioridad de la cadena de producción de alimentos si cae por debajo de {0}.";
+        public override string Resource_FoodSafeGuard_Active => "Protección activa.";
+
+        public override string GameMenu_NextSong => "Siguiente canción";
+
+        public override string BuildingType_Bank => "Banco";
+        public override string BuildingType_Bank_Description => "Enviar oro a otras ciudades";
+
+        public override string BuildingType_Logistics => "Logística";
+        public override string BuildingType_Logistics_Description => "Mejore su capacidad para ordenar construcciones";
+
+        public override string BuildingType_Logistics_NationSizeRequirement => "Fuerza laboral total de la nación: {0}";
+        public override string Requirements_XItemStorageOfY => "Almacenamiento en la ciudad {0} de: {1}";
+
+        public override string XP_UnlockBuildQueue => "Desbloquear cola de construcción a: {0}";
+        public override string XP_UnlockBuilding => "Desbloquear edificio:";
+        public override string XP_Upgrade => "Mejorar";
+
+        public override string XP_UpgradeBuildingX => "Mejorar edificio: {0}";
+
+        public override string BuildHud_PerCycle => "Por ciclo";
+        public override string BuildHud_MayCraft => "Puede fabricar";
+        public override string BuildHud_WorkTime => "Tiempo de trabajo: {0}";
+        public override string BuildHud_GrowTime => "Tiempo de crecimiento: {0}";
+        public override string BuildHud_Produce => "Producir:";
+
+        public override string BuildHud_Queue => "Cola de construcción permitida: {0}/{1}";
+
+        public override string LandType_Flatland => "Tierra plana";
+        public override string LandType_Water => "Agua";
+        public override string BuildingType_Wall => "Muro";
+        public override string Delivery_AutoReciever_Description => "Enviar a la ciudad con la menor cantidad de recursos";
+
+        public override string Hud_On => "Activado";
+        public override string Hud_Off => "Desactivado";
+
+        public override string Hud_Time_Seconds => "{0} segundos";
+        public override string Hud_Time_Minutes => "{0} minutos";
+        public override string Hud_Undo => "Deshacer";
+        public override string Hud_Redo => "Rehacer";
+
+        public override string Tag_ViewOnMap => "Ver etiquetas en el mapa";
+
+        public override string MenuTab_Tag => "Etiqueta";
+
+        public override string Input_Build => "Construir";
+
+        public override string FlagEditor_ClearAll => "Limpiar todo";
+
+        public override string CityCulture_Stonemason => "Cantero";
+        public override string CityCulture_Stonemason_Description => "Mejora la recolección de piedra";
+
+        public override string CityCulture_Brewmaster => "Maestro cervecero";
+        public override string CityCulture_Brewmaster_Description => "Producción de cerveza mejorada";
+
+        public override string CityCulture_Weavers => "Tejedores";
+        public override string CityCulture_Weavers_Description => "Producción mejorada de armaduras ligeras";
+
+        public override string CityCulture_SiegeEngineer => "Ingeniero de asedio";
+        public override string CityCulture_SiegeEngineer_Description => "Máquinas de asedio más potentes";
+
+        public override string CityCulture_Armorsmith => "Armero";
+        public override string CityCulture_Armorsmith_Description => "Producción mejorada de armaduras de hierro";
+
+        public override string CityCulture_Noblemen => "Nobles";
+        public override string CityCulture_Noblemen_Description => "Caballeros más poderosos";
+
+        public override string CityCulture_Seafaring => "Navegación";
+        public override string CityCulture_Seafaring_Description => "Soldados con especialización marina tienen barcos más fuertes";
+
+        public override string CityCulture_Backtrader => "Comerciante clandestino";
+        public override string CityCulture_Backtrader_Description => "Mercado negro más barato";
+
+        public override string CityCulture_LawAbiding => "Cumplidor de la ley";
+        public override string CityCulture_LawAbiding_Description => "Obtener más impuestos. Sin mercado negro.";
+
+
+
+        public override string Hud_Advanced => "Avanzado";
+        public override string Hud_Loading => "Cargando...";
+
+        public override string CityOption_LowerGuardSize => "Liberar guardia";
+        public override string Hud_Purchase_MinCapacity => "Capacidad mínima alcanzada";
+        public override string Settings_ResetToDefault => "Restablecer a los valores predeterminados";
+        public override string Settings_NewGame => "Nuevo juego";
+
+        public override string Settings_AdvancedGameSettings => "Configuración avanzada del juego";
+        public override string Settings_FoodMultiplier => "Multiplicador de alimentos";
+        public override string Settings_FoodMultiplier_Description => "Cuánto tiempo puede durar un trabajador o soldado con el estómago lleno. Un valor alto reducirá el rendimiento del ordenador.";
+
+        public override string Settings_GameMode => "Modo de juego";
+
+        public override string Settings_Mode_Story => "Historia completa";
+        public override string Settings_Mode_IncludeBoss => "Incluir eventos de jefes.";
+        public override string Settings_Mode_IncludeAttacks => "Incluir ataques aleatorios.";
+        public override string Settings_Mode_Sandbox => "Modo sandbox";
+        public override string Settings_Mode_Peaceful => "Pacífico";
+        public override string Settings_Mode_Peaceful_Description => "Todas las guerras son iniciadas por el jugador";
+
+        public override string Lobby_ImportSave => "Importar partida guardada";
+
+        public override string Lobby_ExportSave => "Exportar partida guardada";
+        public override string Lobby_ExportSave_Description => "Crea una copia del archivo y lo coloca en la carpeta de importación: {0}";
+
+        public override string Resource_CurrentAmount => "Cantidad actual: {0}";
+        public override string Resource_MaxAmount_Soft => "Límite máximo suave: {0}";
+        public override string Resource_MaxAmount => "Límite máximo: {0}";
+        public override string Resource_AddPerSec => "Tasa de incremento: {0} por segundo";
+
+        public override string Resource_WaterAddLimit => "La tasa de aumento del agua no se puede alterar";
+
+        public override string Tutorial_Select_SubTab => "Y selecciona la categoría: {0}";
     }
 }

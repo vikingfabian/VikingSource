@@ -158,7 +158,12 @@ namespace VikingEngine.DSSWars.Delivery
                 City city = DssRef.world.cities[cityIx];
                 if (profile.type == ItemResourceType.Men)
                 {
-                    recieverHasAmountPlusDeliveries = city.workForce.amountPlusDelivery();
+                    recieverHasAmountPlusDeliveries = city.homesTotal() + city.workForce.deliverCount;
+
+                    if (recieverHasAmountPlusDeliveries + DssConst.CityDeliveryCount > city.homesTotal())
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
@@ -232,7 +237,7 @@ namespace VikingEngine.DSSWars.Delivery
         public void defaultSetup(bool recruitment)
         {
             senderMin = 100;
-            recieverMax = 200;
+            recieverMax = 100;
             profile.toCity = -1;
             profile.type = recruitment ? ItemResourceType.Men : ItemResourceType.Food_G;
         }

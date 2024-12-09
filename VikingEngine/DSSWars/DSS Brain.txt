@@ -1,24 +1,77 @@
 ﻿-Change Log-
-* Fixed craigs crashes
-* Delivery: auto city take other deliveries into account
-* save of food safeguard setting
+Worker experience
+Double soldier health
+20 new soldier types
+14 new buildings
+50 new resources
+All water values are x10
+Technology tree
+3 rew city cultures
 
+optimized worker performance
+Added multicore priority to make the map load smoother during gameplay
+Slight improvement on new map generating (sticks on 70%)
 #Todo (OPT)#
 Tile till struct
 Tänk på alla object ligger på heap (ta bort new)
 recycle av path result
 
 
+
 !Alla objekt med Tile referens måste ändras (livestock)
 
+
+#Todo#
+-Difficulty
+	Fiendens aggro ska komma i två stages (total peace och war manager)
+	Samma längd på bossar
+	Fiende hordes (mer mini bossar)
+	Antal städer avgör threat level, vilket tillåter ai att alliera och dela tech, kan meddela mellan olika nivåer
+
+-Mix menu
+-Full automation
+-build prio
+-build placement bonus
+
+(-house variants)
+
++  ports can speed up how much u can send or recieve
+
+
+
+* annoyed by the deliveries being inefficient
+-wagon, transport span amount, 2/4 wheel
+-tool shed, faster farming upgrade
+-Embassy expansion för att unlocka diplomacy
+* soldier level
+* Guest housing (sten hus i stan) for guards, barracks, post office, (city hall min size, öka vid antal byggnader?) 
+
+* wall crusher
+* diplomat, med politic / spy upgrade
+
+* horse farm
+* ox farm, also incread farming area
+
+* go legendary, bonus building
+ farm - apple tree
+
+* masters guild, låt hög level arbetare vänta
+* refugee tent, samlar på invandrare (60) half food cost, auto build homes?
+* coin maker - koppar, brons, silver till pengar
+
+* vetskap kan sparas i pergament och sparas, kopieras, trade, sprida med messenger > papyrus/läder pergament
+
+* faction resources per second current/produced/consumed 
 #Todo (xmas patch)#
-
-
 krig varning på ally
 new maps
 dölj carry amount
-new game - Skip language crashes game
 
+
+lamps - förbättrar produktion i area, måste fyllas med fuel
+förvaringsbyggnader som ökar max stack av olika typer, vapen hus, kylrum osv
+
+cooling fluid
 
 --Group engagement--
 Attack radius
@@ -37,7 +90,6 @@ city economy
 visa antal byggnader i bygg meny
 menu scroll
 
-manuballista (hand ballista)
 
 Error
 -back button in menues 
@@ -49,7 +101,7 @@ Retreat system
 
 
 Polish
-
+- full auto option
 
 -döda av faktion som bara har en soldat kvar
 -Missing file error på load
@@ -65,7 +117,11 @@ Polish
 -dölj move path OnHud 
 -attack ally yes/no warning
 
-Art
+#Art
+placement bonus icon
+work skill icons (carpenting)
+
+#Voxel
 
 
 #current
@@ -73,12 +129,18 @@ English, Simplified Chinese, Japanese, Russian, Spanish
 
 
 #Todo (DSS 2)#
+1. better presentation
+2. 50 hour playtime
+3. maybe multiplayer
+
+-Select leader type
 -Free build of city walls, towers
 -Better looking start cities
 -Nicer menu
 -Dynamic shadows shader
 -New end boss
 -Lots of named factions
+-Are you strongly opposed to showing building counts per town or production outputs
 
 
 

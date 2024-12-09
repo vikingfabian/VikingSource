@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.Display
     {        
         public bool fullDisplay = true;
         public const string AutomationMenuState = "auto";
-        public static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Economy, MenuTab.Automation, MenuTab.Work };
+        public static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Economy, MenuTab.Automation, MenuTab.Work, MenuTab.Progress };
 
         public HeadDisplay(RichboxGui gui)
             :base(gui)
@@ -98,6 +98,9 @@ namespace VikingEngine.DSSWars.Display
                             case MenuTab.Trade:
                                 faction.tradeTab(content);
                                 break;
+                            case MenuTab.Progress:
+                                progressTab(player);
+                                break;
                         }
                     }
                 }
@@ -156,7 +159,7 @@ namespace VikingEngine.DSSWars.Display
 
             void pauseButton()
             {
-                if (DssRef.difficulty.allowPauseCommand)
+                if (DssRef.difficulty.setting_allowPauseCommand)
                 {
                     var button = new RichboxButton(new List<AbsRichBoxMember>
                     {
@@ -236,12 +239,12 @@ namespace VikingEngine.DSSWars.Display
                         input(player.input.GameSpeed, gameSpeed);
                         if (fullDisplay)
                         {
-                            for (int i = 0; i < DssLib.GameSpeedOptions.Length; i++)
+                            for (int i = 0; i < player.GameSpeedOptions.Length; i++)
                             {
                                 var button = new RichboxButton(
-                                     new List<AbsRichBoxMember> { new RichBoxText(string.Format(DssRef.lang.Hud_XTimes, DssLib.GameSpeedOptions[i])) },
-                                     new RbAction1Arg<int>(gameSpeedClick, DssLib.GameSpeedOptions[i]), null, true);
-                                button.setGroupSelectionColor(HudLib.RbSettings, Ref.TargetGameTimeSpeed == DssLib.GameSpeedOptions[i]);
+                                     new List<AbsRichBoxMember> { new RichBoxText(string.Format(DssRef.lang.Hud_XTimes, player.GameSpeedOptions[i])) },
+                                     new RbAction1Arg<int>(gameSpeedClick, player.GameSpeedOptions[i]), null, true);
+                                button.setGroupSelectionColor(HudLib.RbSettings, Ref.TargetGameTimeSpeed == player.GameSpeedOptions[i]);
                                 content.Add(button);
                                 content.space(); 
                                 
@@ -304,7 +307,26 @@ namespace VikingEngine.DSSWars.Display
 
                     //string diplomacy = "Diplomatic points: {0}/{1}({2})";
                     content.icontext(SpriteName.WarsDiplomaticPoint, string.Format(DssRef.lang.ResourceType_DiplomacyPoints_WithSoftAndHardLimit, player.diplomaticPoints.Int(), player.diplomaticPoints_softMax, player.diplomaticPoints.max));
+                    content.space();
+                    HudLib.InfoButton(content, new RbAction(() =>
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        content.h2(TextLib.LargeFirstLetter(DssRef.lang.ResourceType_DiplomacyPoints)).overrideColor = HudLib.TitleColor_Label;
+                        content.newLine();
+                        content.Add(new RichBoxImage(SpriteName.WarsDiplomaticPoint));
+                        content.space();
+                        content.Add(new RichBoxText(string.Format(DssRef.lang.Resource_CurrentAmount, player.diplomaticPoints.Int())));
 
+                        content.text(string.Format(DssRef.lang.Resource_MaxAmount_Soft, player.diplomaticPoints_softMax));
+                        content.text(string.Format(DssRef.lang.Resource_MaxAmount, player.diplomaticPoints.max));
+
+                        content.newLine();
+                        content.Add(new RichBoxImage(SpriteName.WarsDiplomaticAddTime));
+                        content.space();
+                        content.Add(new RichBoxText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.ThreeDecimal(player.diplomacyAddPerSec_CapIncluded()))));
+
+                        player.hud.tooltip.create(player, content, true);
+                    }));
                     //content.icontext(SpriteName.WarsGroupIcon, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_MercenaryMarket, player.mercenaryMarket.Int()));
                     //string command = "Command points: {0}";
                     //content.icontext(SpriteName.WarsCommandPoint, string.Format(command, player.commandPoints.ToString()));
@@ -320,7 +342,7 @@ namespace VikingEngine.DSSWars.Display
                         content.ButtonDescription(player.input.NextArmy, DssRef.lang.Input_NextArmy);
                         content.ButtonDescription(player.input.NextBattle, DssRef.lang.Input_NextBattle);
 
-                        content.ButtonDescription(player.input.Build, DssRef.todoLang.Input_Build);
+                        content.ButtonDescription(player.input.Build, DssRef.lang.Input_Build);
                         content.ButtonDescription(player.input.Copy, DssRef.lang.Hud_CopySetup);
                         content.ButtonDescription(player.input.Paste, DssRef.lang.Hud_Paste);
 
@@ -447,7 +469,10 @@ namespace VikingEngine.DSSWars.Display
             }
         }
 
-
+        void progressTab(Players.LocalPlayer player)
+        {
+            new XP.TechnologyHud().technologyHud(content, player, null, player.faction);
+        }
 
         public static void FactionSize(Faction faction, RichBoxContent content, bool fullDisplay)
         {

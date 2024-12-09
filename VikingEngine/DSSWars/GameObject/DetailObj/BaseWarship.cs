@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
             soldierCount = MathExt.Div_Ceiling(this.health, defaultSoldier.basehealth);
             if (soldierCount > 0)
             {
-                multiAttackCount = Math.Min(soldierCount, group.typeSoldierData.rowWidth);
+                multiAttackCount = Math.Min(soldierCount, group.soldierData.rowWidth);
                 multiAttackTimeCooldown = defaultSoldier.attackTimePlusCoolDown / (soldierCount / multiAttackCount);
             }
             

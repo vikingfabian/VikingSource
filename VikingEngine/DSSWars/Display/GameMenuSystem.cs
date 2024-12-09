@@ -130,7 +130,7 @@ namespace VikingEngine.DSSWars.Display
                 {
                     multiplayerGameSpeedToMenu(layout);
                 }
-                new GuiTextButton(DssRef.todoLang.GameMenu_NextSong, null, new GuiAction(() => { Ref.music.debugNext(); closeMenu(); }), false, layout);
+                new GuiTextButton(DssRef.lang.GameMenu_NextSong, null, new GuiAction(() => { Ref.music.debugNext(); closeMenu(); }), false, layout);
 
                 Ref.gamesett.soundOptions(layout);
                 new GuiSectionSeparator(layout);

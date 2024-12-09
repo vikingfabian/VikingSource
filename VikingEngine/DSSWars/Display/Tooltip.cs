@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Text;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Build;
@@ -9,6 +10,7 @@ using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
@@ -55,7 +57,12 @@ namespace VikingEngine.DSSWars.Display
                     {
                         hoverTip(player, player.mapControls.hover.obj);
                     }
-                    
+                    else if (player.mapControls.hover.subTile.tileOfInterest)
+                    {
+                        //SUBTILE tooltip
+                        hoverTip(player, player.mapControls.hover.subTile);
+                    }
+
                 }
             }
             else
@@ -140,7 +147,8 @@ namespace VikingEngine.DSSWars.Display
                 switch (subTile.selectTileResult)
                 {
                     case Players.SelectTileResult.Build:
-                        title = new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Build_PlaceBuilding, BuildLib.BuildOptions[(int)player.buildControls.placeBuildingType].Label()));
+                        var buildOpt = BuildLib.BuildOptions[(int)player.buildControls.placeBuildingType];
+                        title = new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Build_PlaceBuilding, buildOpt.Label()));
                         content.Add(title);
                         content.newLine();
                         //CraftBlueprint blueprint = ResourceLib.Blueprint(player.BuildControls.placeBuildingType);
@@ -166,13 +174,19 @@ namespace VikingEngine.DSSWars.Display
                                 break;
                         }
 
+                        if (subTile.city.buildingStructure.buildingLevel_logistics < 2)
+                        {
+                            content.text(string.Format(DssRef.lang.BuildHud_Queue, player.orders.buildQueue(subTile.city), subTile.city.MaxBuildQueue())).overrideColor = subTile.city.availableBuildQueue(player) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                        }
+                        buildOpt.blueprint.requirementToHud(content, subTile.city, out _);
+
                         content.Add(new RichBoxSeperationLine());
                         content.newParagraph();
                         content.h2(DssRef.lang.MenuTab_Resources).overrideColor = HudLib.TitleColor_Label;
                         bp.listResources(content, subTile.city);
 
                         break;
-                    case Players.SelectTileResult.Destroy:
+                    case Players.SelectTileResult.Demolish:
                         title = new RichBoxText(DssRef.lang.Build_DestroyBuilding);
                         content.Add(title);
                         break;
@@ -341,6 +355,10 @@ namespace VikingEngine.DSSWars.Display
 
                     case GameObjectType.ObjectCollection:
                         obj.GetCollection().Tooltip(content);
+                        break;
+
+                    case GameObjectType.Worker:
+                        obj.GetWorker().toolTip(content);
                         break;
                 }
             }

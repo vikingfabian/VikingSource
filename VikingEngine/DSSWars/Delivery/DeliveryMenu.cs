@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.ToGG;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -40,20 +41,23 @@ namespace VikingEngine.DSSWars.Delivery
                 content.Add(title);
                 content.space();
                 HudLib.CloseButton(content, new RbAction(() => { city.selectedDelivery = -1; }, SoundLib.menuBack));
-                //content.Add(new RichboxButton(new List<AbsRichBoxMember>
-                //    { new RichBoxSpace(), new RichBoxText(DssRef.lang.Hud_EndSessionIcon),new RichBoxSpace(), },
-                //    new RbAction(() => { city.selectedDelivery = -1; }, SoundLib.menuBack)));
+                
 
-                content.newLine();
-                HudLib.Description(content, DssRef.lang.BuildingType_Postal_Description);
-                HudLib.Description(content, string.Format(DssRef.lang.Deliver_WillSendXInfo, DssConst.CityDeliveryCount));
 
                 content.newParagraph();
 
                 if (!currentStatus.Recruitment())
                 {
                     HudLib.Label(content, DssRef.lang.Resource);
-                    content.newLine();
+                    content.space();
+                    HudLib.InfoButton(content, new RbAction(() =>
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        HudLib.Description(content, DssRef.lang.BuildingType_Postal_Description);
+                        HudLib.Description(content, string.Format(DssRef.lang.Deliver_WillSendXInfo, DssConst.CityDeliveryCount));
+                        player.hud.tooltip.create(player, content, true);
+                    }));
+                    content.newParagraph();
                     content.Add(new RichBoxScale(1.6f));
                     foreach (var item in City.MovableCityResourceTypes)
                     {
@@ -68,28 +72,18 @@ namespace VikingEngine.DSSWars.Delivery
                                {
                                    RichBoxContent content = new RichBoxContent();
 
-                                   content.h2(DssRef.lang.Hud_ThisCity);
+                                   content.h2(DssRef.lang.Hud_ThisCity).overrideColor = HudLib.TitleColor_Label;
                                    bool reachedBuffer = false;
-
                                    bool safeGuard = city.foodSafeGuardIsActive(item);
-
 
                                    city.GetGroupedResource(item).toMenu(content, item, safeGuard, ref reachedBuffer);
 
-                                   if (currentStatus.profile.toCity >= 0)
+                                   if (currentStatus.profile.toCity >= 0 && currentStatus.profile.toCity != DeliveryProfile.ToCityAuto)
                                    {
                                        content.newParagraph();
-                                       content.h2(DssRef.lang.Hud_RecieveingCity);
-                                       if (currentStatus.profile.toCity == DeliveryProfile.ToCityAuto)
-                                       {
-
-                                       }
-                                       else
-                                       {
-                                           DssRef.world.cities[currentStatus.profile.toCity].GetGroupedResource(item).toMenu(content, item, safeGuard, ref reachedBuffer);
-                                       }
-
-                                       //
+                                       content.h2(DssRef.lang.Hud_RecieveingCity).overrideColor = HudLib.TitleColor_Label;
+                                       DssRef.world.cities[currentStatus.profile.toCity].GetGroupedResource(item).toMenu(content, item, safeGuard, ref reachedBuffer);
+                                       
                                    }
 
                                    //content.text(LangLib.Item(item)).overrideColor = HudLib.TitleColor_TypeName;
@@ -102,8 +96,9 @@ namespace VikingEngine.DSSWars.Delivery
                     }
 
                 }
-                content.newParagraph();
+                
                 content.Add(new RichBoxScale());
+                content.newParagraph();
 
                 HudLib.Label(content, DssRef.lang.Hud_RecieveingCity);
                 content.newLine();
@@ -124,11 +119,33 @@ namespace VikingEngine.DSSWars.Delivery
                             new RbAction1Arg<int>(cityClick, cities_c.sel.parentArrayIndex, SoundLib.menu), new RbAction1Arg<City>((toCity) =>
                             {
                                 RichBoxContent content = new RichBoxContent();
-                                content.h2(toCity.Name()).overrideColor = HudLib.TitleColor_Name;
+                                content.h2(toCity.Name()).overrideColor = HudLib.TitleColor_Label;
                                 var time = DeliveryProfile.DeliveryTime(city, toCity, out float distance);
                                 content.text(string.Format(DssRef.lang.Delivery_DistanceX, TextLib.OneDecimal(distance)));
                                 content.text(string.Format(DssRef.lang.Delivery_DeliveryTimeX, time.LongString()));
 
+                                if (currentStatus.profile.type != ItemResourceType.NONE)
+                                {
+                                    content.newParagraph();
+                                    content.h2(DssRef.lang.Hud_ThisCity).overrideColor = HudLib.TitleColor_Label;
+                                    bool reachedBuffer = false;
+                                    bool safeGuard = city.foodSafeGuardIsActive(currentStatus.profile.type);
+                                    city.GetGroupedResource(currentStatus.profile.type).toMenu(content, currentStatus.profile.type, safeGuard, ref reachedBuffer);
+
+                                    //if (currentStatus.profile.toCity >= 0)
+                                    //{
+                                        content.newParagraph();
+                                        content.h2(DssRef.lang.Hud_RecieveingCity).overrideColor = HudLib.TitleColor_Label;
+                                        //if (currentStatus.profile.toCity == DeliveryProfile.ToCityAuto)
+                                        //{
+
+                                        //}
+                                        //else
+                                        //{
+                                            toCity.GetGroupedResource(currentStatus.profile.type).toMenu(content, currentStatus.profile.type, false, ref reachedBuffer);
+                                        //}
+                                    //}
+                                }
                                 player.hud.tooltip.create(player, content, true);
                             }, cities_c.sel));
                         button.setGroupSelectionColor(HudLib.RbSettings, cities_c.sel.parentArrayIndex == currentStatus.profile.toCity);
@@ -145,7 +162,7 @@ namespace VikingEngine.DSSWars.Delivery
                             {
                                 RichBoxContent content = new RichBoxContent();
                                 content.h2(DssRef.lang.Automation_Title).overrideColor = HudLib.TitleColor_Name;
-                                content.text(DssRef.todoLang.Delivery_AutoReciever_Description).overrideColor = HudLib.InfoYellow_Light;
+                                content.text(DssRef.lang.Delivery_AutoReciever_Description).overrideColor = HudLib.InfoYellow_Light;
                                 player.hud.tooltip.create(player, content, true);
                             }));
                     button.setGroupSelectionColor(HudLib.RbSettings, DeliveryProfile.ToCityAuto == currentStatus.profile.toCity);
@@ -194,7 +211,7 @@ namespace VikingEngine.DSSWars.Delivery
                 if (isSending || currentStatus.que > 0)
                 {
 
-                    content.newParagraph();
+                    //content.newParagraph();
                     content.Add(new RichBoxSeperationLine());
                     {
                         content.newLine();

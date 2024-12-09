@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars
         {
             if (newGame)
             {
-                if (DssRef.difficulty.bossTimeSettings != BossTimeSettings.Never)
+                if (DssRef.difficulty.runEvents)
                 {
                     prepareNext();
                 }
@@ -310,7 +310,7 @@ namespace VikingEngine.DSSWars
 
         public void asyncUpdate(float time)
         {
-            if (DssRef.difficulty.bossTimeSettings != BossTimeSettings.Never &&
+            if (DssRef.difficulty.runEvents &&
                 !DssRef.settings.AiDelay &&
                 (
                 nextEvent == EventType.SouthShips ||
@@ -353,7 +353,7 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            if (toPeacefulCheckTimer.CountDown(time))
+            if (DssRef.difficulty.toPeacefulCheck && toPeacefulCheckTimer.CountDown(time))
             {
                 toPeacefulCheckTimer = new Time(15, TimeUnit.Minutes);
 
@@ -678,7 +678,7 @@ namespace VikingEngine.DSSWars
         Normal,
         Late,
         VeryLate,
-        Never,
+        //Never,
         NUM
     }
 

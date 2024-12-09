@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars
             //RAW
             List<VoxelModelName> loadRawModels = new List<VoxelModelName>
             {
-                VoxelModelName.war_worker,
+                DssLib.WorkerModel,
                 VoxelModelName.war_recruit,
                 VoxelModelName.wars_shipcrew,
                 VoxelModelName.wars_captain,
@@ -100,6 +100,9 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.city_barracks, false);
             loadVoxelModel(VoxelModelName.city_carpenter, false);
             loadVoxelModel(VoxelModelName.city_nobelhouse, false);
+            loadVoxelModel(VoxelModelName.city_logistic, false);
+            loadVoxelModel(VoxelModelName.city_quarry, false);
+            loadVoxelModel(VoxelModelName.city_water, false);
 
             loadVoxelModel(VoxelModelName.decor_statue, false);
             loadVoxelModel(VoxelModelName.city_pavement, false);
@@ -107,9 +110,12 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.Pig, false);
             loadVoxelModel(VoxelModelName.Hen, false);
             loadVoxelModel(VoxelModelName.Arrow, true);
+            loadVoxelModel(VoxelModelName.slingstone, true);
+            loadVoxelModel(VoxelModelName.boulder_proj, true);
             loadVoxelModel(VoxelModelName.little_javelin, true);
             loadVoxelModel(VoxelModelName.little_boltarrow, true);
             loadVoxelModel(VoxelModelName.war_cannonball, true);
+            loadVoxelModel(VoxelModelName.war_gunblast, true);
             loadVoxelModel(VoxelModelName.war_ballista_proj, true);
             loadVoxelModel(VoxelModelName.wars_loading_anim, true);
             loadVoxelModel(VoxelModelName.wars_shipbuild, true);

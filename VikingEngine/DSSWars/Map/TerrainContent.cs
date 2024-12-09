@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Resource;
@@ -138,7 +139,8 @@ namespace VikingEngine.DSSWars.Map
             ref IntervalF mudRadius,
             ref SubTile subTile, 
             WorldData world, 
-            VikingEngine.EngineSpace.Maths.SimplexNoise2D noiseMap)
+            VikingEngine.EngineSpace.Maths.SimplexNoise2D noiseMap,
+            List<IntVector2> mineLocations)
         {
             if (tile.IsLand() && !height.isMountainPeek)
             {
@@ -160,19 +162,21 @@ namespace VikingEngine.DSSWars.Map
                         if (tile.heightLevel >= Height.MineHeightStart)
                         {
                             var rndMine = world.rnd.Double();
-                            if (rndMine < 0.001)
+                            //if (rndMine < 0.001)
+                            //{
+                            //    subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.GoldOre, 1);
+                            //    return;
+                            //}
+                            //else if (rndMine < 0.002)
+                            //{
+                            //    subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.Coal, 1);
+                            //    return;
+                            //}
+                            //else 
+                            if (rndMine < 0.008)
                             {
-                                subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.GoldOre, 1);
-                                return;
-                            }
-                            else if (rndMine < 0.002)
-                            {
-                                subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.Coal, 1);
-                                return;
-                            }
-                            else if (rndMine < 0.0065)
-                            {
-                                subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.IronOre, 1);
+                                subTile.SetType(TerrainMainType.Mine, 0, 1);//(int)TerrainMineType.IronOre, 1);
+                                mineLocations.Add(new IntVector2(x, y));
                                 return;
                             }
                         }

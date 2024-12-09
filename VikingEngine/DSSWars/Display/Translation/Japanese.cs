@@ -266,7 +266,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_GuardCount => "守衛";
 
-        public override string Hud_IncreaseMaxGuardCount => "最大守衛数 +{0}";
+        public override string Hud_IncreaseMaxGuardCount => "最大守衛数 {0}";
 
         public override string Hud_GuardCount_MustExpandCityMessage => "都市を拡張する必要があります。";
 
@@ -1597,5 +1597,136 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string EndGameStatistics_DecorsBuilt => "建てられた装飾：{0}";
         public override string EndGameStatistics_StatuesBuilt => "建てられた像：{0}";
 
+
+        //############
+        // XMAS UPDATE
+        //############
+        public override string Info_FoodAndDeliveryLocation => "標準では、労働者は市役所に食事をしに行くか、アイテムを預けに行きます";
+        public override string GameMenu_UseSpeedX => "{0} スピードオプション";
+        public override string GameMenu_LongerBuildQueue => "建設キューを延長";
+
+        public override string Diplomacy_RelationWithOthers => "他者との関係";
+        public override string Automation_queue_description => "キューが空になるまで繰り返し処理を行います";
+
+        public override string BuildingType_Storehouse_Description => "労働者はここにアイテムを置くことができます";
+
+        public override string Resource_TypeName_Longbow => "ロングボウ";
+        public override string Resource_TypeName_Rapeseed => "菜種";
+        public override string Resource_TypeName_Hemp => "麻";
+
+        public override string Resource_BogIronDescription => "沼鉄を使うよりも鉄の採掘の方が効率的です。";
+
+        public override string Resource_FoodSafeGuard_Description => "セーフガード。食料生産チェーンの優先度を最大化します。値が{0}以下になった場合。";
+        public override string Resource_FoodSafeGuard_Active => "セーフガードが有効です。";
+
+        public override string GameMenu_NextSong => "次の曲";
+
+        public override string BuildingType_Bank => "銀行";
+        public override string BuildingType_Bank_Description => "他の都市に金を送る";
+
+        public override string BuildingType_Logistics => "物流";
+        public override string BuildingType_Logistics_Description => "建築の注文能力を向上させる";
+
+        public override string BuildingType_Logistics_NationSizeRequirement => "国の総労働力：{0}";
+        public override string Requirements_XItemStorageOfY => "{0}市の{1}の保管";
+
+        public override string XP_UnlockBuildQueue => "ビルドキューの解除：{0}";
+        public override string XP_UnlockBuilding => "建物の解除：";
+        public override string XP_Upgrade => "アップグレード";
+
+        public override string XP_UpgradeBuildingX => "建物のアップグレード：{0}";
+
+        public override string BuildHud_PerCycle => "サイクルごと";
+        public override string BuildHud_MayCraft => "作成可能";
+        public override string BuildHud_WorkTime => "作業時間：{0}";
+        public override string BuildHud_GrowTime => "成長時間：{0}";
+        public override string BuildHud_Produce => "生産：";
+
+        public override string BuildHud_Queue => "許可された建設キュー：{0}/{1}";
+
+        public override string LandType_Flatland => "平地";
+        public override string LandType_Water => "水域";
+        public override string BuildingType_Wall => "壁";
+        public override string Delivery_AutoReciever_Description => "資源が最も少ない都市に送信されます";
+
+        public override string Hud_On => "オン";
+        public override string Hud_Off => "オフ";
+
+        public override string Hud_Time_Seconds => "{0}秒";
+        public override string Hud_Time_Minutes => "{0}分";
+        public override string Hud_Undo => "元に戻す";
+        public override string Hud_Redo => "やり直し";
+
+        public override string Tag_ViewOnMap => "地図上でタグを表示";
+
+        public override string MenuTab_Tag => "タグ";
+
+        public override string Input_Build => "建設";
+
+        public override string FlagEditor_ClearAll => "すべてクリア";
+
+        public override string CityCulture_Stonemason => "石工";
+        public override string CityCulture_Stonemason_Description => "石の収集を改善";
+
+        public override string CityCulture_Brewmaster => "醸造師";
+        public override string CityCulture_Brewmaster_Description => "ビールの生産を強化";
+
+        public override string CityCulture_Weavers => "織工";
+        public override string CityCulture_Weavers_Description => "軽装甲の生産を強化";
+
+        public override string CityCulture_SiegeEngineer => "攻城技師";
+        public override string CityCulture_SiegeEngineer_Description => "より強力な攻城兵器";
+
+        public override string CityCulture_Armorsmith => "鎧職人";
+        public override string CityCulture_Armorsmith_Description => "鉄の鎧の生産を改善";
+
+        public override string CityCulture_Noblemen => "貴族";
+        public override string CityCulture_Noblemen_Description => "より強力な騎士";
+
+        public override string CityCulture_Seafaring => "海洋技術";
+        public override string CityCulture_Seafaring_Description => "海の特化兵士がより強力な船を持つ";
+
+        public override string CityCulture_Backtrader => "裏取引商";
+        public override string CityCulture_Backtrader_Description => "ブラックマーケットが安くなる";
+
+        public override string CityCulture_LawAbiding => "法を守る";
+        public override string CityCulture_LawAbiding_Description => "税金が増える。ブラックマーケットは利用不可。";
+
+
+
+        public override string Hud_Advanced => "詳細設定";
+        public override string Hud_Loading => "読み込み中...";
+
+        public override string CityOption_LowerGuardSize => "ガード解除";
+        public override string Hud_Purchase_MinCapacity => "最小容量に達しました";
+        public override string Settings_ResetToDefault => "デフォルトにリセット";
+        public override string Settings_NewGame => "新しいゲーム";
+
+        public override string Settings_AdvancedGameSettings => "高度なゲーム設定";
+        public override string Settings_FoodMultiplier => "食料倍率";
+        public override string Settings_FoodMultiplier_Description => "満腹時の労働者または兵士の持続時間。高い値はコンピュータのパフォーマンスを低下させます。";
+
+        public override string Settings_GameMode => "ゲームモード";
+
+        public override string Settings_Mode_Story => "フルストーリー";
+        public override string Settings_Mode_IncludeBoss => "ボスイベントを含む。";
+        public override string Settings_Mode_IncludeAttacks => "ランダムアタックを含む。";
+        public override string Settings_Mode_Sandbox => "サンドボックス";
+        public override string Settings_Mode_Peaceful => "平和";
+        public override string Settings_Mode_Peaceful_Description => "すべての戦争はプレイヤーによって開始されます";
+
+        public override string Lobby_ImportSave => "セーブデータをインポート";
+
+        public override string Lobby_ExportSave => "セーブデータをエクスポート";
+        public override string Lobby_ExportSave_Description => "ファイルのコピーを作成し、インポートフォルダーに配置します：{0}";
+
+        public override string Resource_CurrentAmount => "現在の量：{0}";
+        public override string Resource_MaxAmount_Soft => "ソフトキャップ（最大限界）：{0}";
+        public override string Resource_MaxAmount => "最大限界：{0}";
+        public override string Resource_AddPerSec => "増加率：{0}毎秒";
+
+        public override string Resource_WaterAddLimit => "水の増加率は変更できません";
+
+        public override string Tutorial_Select_SubTab => "そしてカテゴリを選択：{0}";
     }
 }

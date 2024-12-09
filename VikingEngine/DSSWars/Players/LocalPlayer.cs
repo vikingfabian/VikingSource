@@ -23,11 +23,14 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.ToGG.Commander.LevelSetup;
+using VikingEngine.ToGG.HeroQuest.Net;
+using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars.Players
 {
     partial class LocalPlayer : AbsPlayer
-    {   
+    {
+        public const int MaxSpeedOption = 5;
         public Engine.PlayerData playerData;
 
         public GameHud hud;
@@ -71,15 +74,20 @@ namespace VikingEngine.DSSWars.Players
         public MenuTab factionTab = HeadDisplay.Tabs[0];
         public MenuTab cityTab = CityMenu.Tabs[0];
         public MenuTab armyTab = ArmyMenu.Tabs[0];
-        public ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview;
+        public ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview_Resources;
+        public WorkSubTab workSubTab = WorkSubTab.Priority_Resources;
+        public ProgressSubTab progressSubTab = 0;
+        public MixTabEditType mixTabEditType = MixTabEditType.None;
+        public ItemResourceType mixTabItem = ItemResourceType.NONE;
 
         public DeliveryStatus menDeliveryCopy, itemDeliveryCopy;
-        public ConscriptProfile soldierConscriptCopy, knightConscriptCopy;
+        public ConscriptProfile soldierConscriptCopy, archerConscriptCopy, warmashineConscriptCopy, knightConscriptCopy, gunConscriptCopy, cannonConscriptCopy;
 
         public PlayerControls.Tutorial tutorial = null;
         CityBorders cityBorders = new CityBorders();
         public bool viewCityTagsOnMap = true;
         public bool viewArmyTagsOnMap = true;
+        public int[] GameSpeedOptions;
 
         public LocalPlayer(Faction faction)
            : base(faction)
@@ -90,6 +98,17 @@ namespace VikingEngine.DSSWars.Players
             faction.availableForPlayer = false;
 
             automation = new Automation(this);
+            if (DssRef.storage.speed5x)
+            {
+                GameSpeedOptions = new int[] { 1, 2, MaxSpeedOption };
+            }
+            else
+            {
+                GameSpeedOptions = new int[] { 1, 2 };
+            }
+
+            faction.technology = new XP.TechnologyTemplate();
+            faction.technology.iron = XP.TechnologyTemplate.FactionUnlock;
         }
 
         public void assignPlayer(int playerindex, int numPlayers, bool newGame)
@@ -163,10 +182,24 @@ namespace VikingEngine.DSSWars.Players
             menDeliveryCopy.defaultSetup(false);
 
             soldierConscriptCopy = new ConscriptProfile();
-            soldierConscriptCopy.defaultSetup(false);
+            soldierConscriptCopy.defaultSetup(BarracksType.Soldier);
+
+            archerConscriptCopy = new ConscriptProfile();
+            archerConscriptCopy.defaultSetup(BarracksType.Archer);
+
+            warmashineConscriptCopy = new ConscriptProfile();
+            warmashineConscriptCopy.defaultSetup(BarracksType.Warmashine);
 
             knightConscriptCopy = new ConscriptProfile();
-            knightConscriptCopy.defaultSetup(true);
+            knightConscriptCopy.defaultSetup(BarracksType.Knight);
+
+            gunConscriptCopy = new ConscriptProfile();
+            gunConscriptCopy.defaultSetup(BarracksType.Gun);
+
+            cannonConscriptCopy = new ConscriptProfile();
+            cannonConscriptCopy.defaultSetup(BarracksType.Cannon);
+
+
         }
 
         public void initPlayerToPlayer(int playerindex, int numPlayers)
@@ -640,7 +673,6 @@ namespace VikingEngine.DSSWars.Players
 
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                 {
-                    //hud.messages.Add("message!", "Hello hello");
                     var tile = DssRef.world.tileGrid.Get(mapControls.tilePosition);
                     Debug.Log(tile.ToString() );
                 }
@@ -782,7 +814,7 @@ namespace VikingEngine.DSSWars.Players
                                     break;
 
                                 case TerrainBuildingType.Nobelhouse:
-                                case TerrainBuildingType.Barracks:
+                                case TerrainBuildingType.SoldierBarracks:
                                     if (input.Copy.DownEvent)
                                     {
                                         int ix = mapControls.hover.subTile.city.conscriptIxFromSubTile(mapControls.hover.subTile.subTilePos);
@@ -1120,7 +1152,7 @@ namespace VikingEngine.DSSWars.Players
         void updateGameSpeed()
         {
            
-            if (DssRef.difficulty.allowPauseCommand && 
+            if (DssRef.difficulty.setting_allowPauseCommand && 
                 input.PauseGame.DownEvent && 
                 DssRef.state.localPlayers.Count == 1)//IsLocalHost())
             {
@@ -1137,12 +1169,12 @@ namespace VikingEngine.DSSWars.Players
                 }
                 else
                 {
-                    for (int i = 0; i < DssLib.GameSpeedOptions.Length; i++)
+                    for (int i = 0; i < GameSpeedOptions.Length; i++)
                     {
-                        if (DssLib.GameSpeedOptions[i] == Ref.GameTimeSpeed)
+                        if (GameSpeedOptions[i] == Ref.GameTimeSpeed)
                         {
-                            int next = Bound.SetRollover(i + 1, 0, DssLib.GameSpeedOptions.Length - 1);
-                            Ref.SetGameSpeed( DssLib.GameSpeedOptions[next]);
+                            int next = Bound.SetRollover(i + 1, 0, GameSpeedOptions.Length - 1);
+                            Ref.SetGameSpeed( GameSpeedOptions[next]);
                             hud.needRefresh = true;
                             break;
                         }
@@ -1176,36 +1208,58 @@ namespace VikingEngine.DSSWars.Players
 
             IntVector2 position = mapControls.tilePosition;
 
+            Army friendlyArmy, enemyArmy;
+
+
             //if (friendly)
             {
                 var army = faction.NewArmy(position);
+                friendlyArmy = army;
                 army.rotation = playerRot;
-                Vector3 groupPos = army.position;
-                for (int i = 0; i < 5; ++i)
+
+                SoldierConscriptProfile SoldierProfile1 = new SoldierConscriptProfile()
                 {
-                    new SoldierGroup(army, DssLib.SoldierProfile_Swordsman, groupPos);
-                    groupPos.Z += DssVar.SoldierGroup_Spacing;
+                    conscript = new ConscriptProfile()
+                    {
+                        weapon = Resource.ItemResourceType.HandCulverin,
+                        armorLevel = Resource.ItemResourceType.IronArmor,
+                        training = TrainingLevel.Basic,
+                        specialization = SpecializationType.Traditional,
+                    }
+                };
+
+                for (int i = 0; i < 2; ++i)
+                {
+                    new SoldierGroup(army, SoldierProfile1, army.position);
                 }
                 army.refreshPositions(true);
             }
             //else
-            //{
-            //{
-            //    var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
-            //    army.rotation = enemyRot;
-            //    Vector3 groupPos = army.position;
-            //    //int count = 4;//Ref.rnd.Int(4, 8);
+            {
+                
+                var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
+                enemyArmy = army;
+                army.rotation = enemyRot;
 
-            //    for (int i = 0; i < 1; ++i)
-            //    {
-            //        new SoldierGroup(army, DssLib.SoldierProfile_Swordsman, groupPos);
-            //        groupPos.Z += DssVar.SoldierGroup_Spacing;
-            //    }
-            //    army.refreshPositions(true);
-            //}
+                SoldierConscriptProfile SoldierProfile1 = new SoldierConscriptProfile()
+                {
+                    conscript = new ConscriptProfile()
+                    {
+                        weapon = Resource.ItemResourceType.Sword,
+                        armorLevel = Resource.ItemResourceType.NONE,
+                        training = TrainingLevel.Basic,
+                        specialization = SpecializationType.Traditional,
+                    }
+                };
+                for (int i = 0; i < 2; ++i)
+                {
+                    new SoldierGroup(army, SoldierProfile1, army.position);
+                }
 
+                army.refreshPositions(true);
+            }
 
-            //}
+            friendlyArmy.Order_Attack(enemyArmy);
 
         }
 
@@ -1367,6 +1421,23 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        public double diplomacyAddPerSec()
+        {
+            return DssRef.diplomacy.DefaultDiplomacyPerSecond + DssRef.diplomacy.NobelHouseAddDiplomacy * faction.nobelHouseCount;
+        }
+
+        public double diplomacyAddPerSec_CapIncluded()
+        {
+            if (diplomaticPoints.value < diplomaticPoints_softMax)
+            {
+                return diplomacyAddPerSec();
+            }
+            else
+            {
+                return DssRef.diplomacy.AddDiplomacy_AfterSoftlock_PerSecond;
+            }
+        }
+
         public override void oneSecUpdate()
         {
             base.oneSecUpdate();
@@ -1377,7 +1448,7 @@ namespace VikingEngine.DSSWars.Players
 
             if (diplomaticPoints.value < diplomaticPoints_softMax)
             {
-                diplomaticPoints.add(DssRef.diplomacy.DefaultDiplomacyPerSecond + DssRef.diplomacy.NobelHouseAddDiplomacy * faction.nobelHouseCount, diplomaticPoints_softMax);
+                diplomaticPoints.add(diplomacyAddPerSec(), diplomaticPoints_softMax);
             }
             else
             {

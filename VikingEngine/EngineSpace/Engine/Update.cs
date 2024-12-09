@@ -311,6 +311,17 @@ namespace VikingEngine.Engine
             return Convert.ToInt32(ms / Ref.TargetDeltaTimeMs);
         }
 
+        public void AbortThreads() 
+        {
+            var upateC = updateLists[(int)UpdateType.Full].counter();
+            
+            while (upateC.Next())
+            {
+                var updateable= upateC.sel as AbsUpdateable;
+                updateable?.AbortThreads();
+            }
+        }
+
         public void Exit()
         {
             exitApplication = true;

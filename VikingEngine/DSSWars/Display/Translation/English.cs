@@ -267,7 +267,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         /// </summary>
         public override string Hud_GuardCount => "Guards";
 
-        public override string Hud_IncreaseMaxGuardCount => "Max guard size +{0}";
+        public override string Hud_IncreaseMaxGuardCount => "Max guard size {0}";
 
         public override string Hud_GuardCount_MustExpandCityMessage => "You need to expand the city.";
 
@@ -1608,5 +1608,143 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public override string EndGameStatistics_DecorsBuilt => "Decorations built: {0}";
         public override string EndGameStatistics_StatuesBuilt => "Statues built: {0}";
+
+
+        //############
+        // XMAS UPDATE
+        //############
+        public override string Info_FoodAndDeliveryLocation => "By default, workers go to the city hall to eat or drop off items";
+        public override string GameMenu_UseSpeedX => "{0} speed option";
+        public override string GameMenu_LongerBuildQueue => "Extended build queue";
+
+        public override string Diplomacy_RelationWithOthers => "Their relations with others";
+        public override string Automation_queue_description => "Will keep repeating until the queue is empty";
+
+        public override string BuildingType_Storehouse_Description => "Workers may drop items here";
+
+        public override string Resource_TypeName_Longbow => "longbow";
+        public override string Resource_TypeName_Rapeseed => "rapeseed";
+        public override string Resource_TypeName_Hemp => "hemp";
+
+        public override string Resource_BogIronDescription => "Mining iron is more efficient than using bog iron.";
+
+
+        public override string Resource_FoodSafeGuard_Description => "Safe guard. Will maximize the priority of the food production chain, if it falls below {0}.";
+        public override string Resource_FoodSafeGuard_Active => "Safe guard is active.";
+
+        public override string GameMenu_NextSong => "Next song";
+
+        public override string BuildingType_Bank => "Bank";
+        public override string BuildingType_Bank_Description => "Send gold to other cities";
+
+        public override string BuildingType_Logistics => "Logistics";
+        public override string BuildingType_Logistics_Description => "Upgrade your ability to order buildings";
+
+        public override string BuildingType_Logistics_NationSizeRequirement => "Nation total workforce: {0}";
+        public override string Requirements_XItemStorageOfY => "City {0} storage of: {1}";
+
+
+        public override string XP_UnlockBuildQueue => "Unlock build queue to: {0}";
+        public override string XP_UnlockBuilding => "Unlock building: ";
+        public override string XP_Upgrade => "Upgrade";
+
+        public override string XP_UpgradeBuildingX => "Upgrade building: {0}";
+
+        /// <summary>
+        /// Title for describing the production cycle of farms
+        /// </summary>
+        public override string BuildHud_PerCycle => "Per cycle";
+        public override string BuildHud_MayCraft => "May craft";
+        public override string BuildHud_WorkTime => "Work time: {0}";
+        public override string BuildHud_GrowTime => "Grow time: {0}";
+        public override string BuildHud_Produce => "Produce:";
+
+        public override string BuildHud_Queue => "Allowed build queue: {0}/{1}";
+
+        public override string LandType_Flatland => "Flat land";
+        public override string LandType_Water => "Water";
+        public override string BuildingType_Wall => "Wall";
+        public override string Delivery_AutoReciever_Description => "Will send to the city with lowest amount of resources";
+
+        public override string Hud_On => "On";
+        public override string Hud_Off => "Off";
+
+        public override string Hud_Time_Seconds => "{0} seconds";
+        public override string Hud_Time_Minutes => "{0} minutes";
+        public override string Hud_Undo => "Undo";
+        public override string Hud_Redo => "Redo";
+
+        public override string Tag_ViewOnMap => "View tags on map";
+
+        public override string MenuTab_Tag => "Tag";
+
+        public override string Input_Build => "Build";
+
+        public override string FlagEditor_ClearAll => "Clear all";
+
+
+        public override string CityCulture_Stonemason => "Stonemason";
+        public override string CityCulture_Stonemason_Description => "Improved stone collecting";
+
+        public override string CityCulture_Brewmaster => "Brewmaster";
+        public override string CityCulture_Brewmaster_Description => "Enhanced beer production";
+
+        public override string CityCulture_Weavers => "Weavers";
+        public override string CityCulture_Weavers_Description => "Enhanced light armor production";
+
+        public override string CityCulture_SiegeEngineer => "Siege engineer";
+        public override string CityCulture_SiegeEngineer_Description => "More powerful warmashines";
+
+        public override string CityCulture_Armorsmith => "Armorsmith";
+        public override string CityCulture_Armorsmith_Description => "Improved iron armor production";
+
+        public override string CityCulture_Noblemen => "Noblemen";
+        public override string CityCulture_Noblemen_Description => "More powerful knights";
+
+        public override string CityCulture_Seafaring => "Seafaring";
+        public override string CityCulture_Seafaring_Description => "Soldiers with sea specialzation, have stronger ships";
+
+        public override string CityCulture_Backtrader => "Backtrader";
+        public override string CityCulture_Backtrader_Description => "Cheaper black market";
+
+        public override string CityCulture_LawAbiding => "Law-abiding";
+        public override string CityCulture_LawAbiding_Description => "Gain more tax. No black market.";
+
+        //##2##
+
+        public override string Hud_Advanced => "Advanced";
+        public override string Hud_Loading => "Loading...";
+
+        public override string CityOption_LowerGuardSize => "Release guard";
+        public override string Hud_Purchase_MinCapacity => "Minimum capacity reached";
+        public override string Settings_ResetToDefault => "Reset to default";
+        public override string Settings_NewGame => "New game";
+
+        public override string Settings_AdvancedGameSettings => "Advanced Game Settings";
+        public override string Settings_FoodMultiplier => "Food multiplier";
+        public override string Settings_FoodMultiplier_Description => "How long a worker or soldier lasts on a full stomach. A high value will lower computer performance.";
+
+        public override string Settings_GameMode => "Game mode";
+
+        public override string Settings_Mode_Story => "Full story";
+        public override string Settings_Mode_IncludeBoss => "Include Boss Events.";
+        public override string Settings_Mode_IncludeAttacks => "Include Random Attacks.";
+        public override string Settings_Mode_Sandbox => "Sandbox";
+        public override string Settings_Mode_Peaceful => "Peaceful";
+        public override string Settings_Mode_Peaceful_Description => "All wars are initiated by the player";
+
+        public override string Lobby_ImportSave => "Import save";
+
+        public override string Lobby_ExportSave => "Export save";
+        public override string Lobby_ExportSave_Description => "Creates a copy of the file and places it in the import folder: {0}";
+
+        public override string Resource_CurrentAmount => "Current amount: {0}";
+        public override string Resource_MaxAmount_Soft => "Soft Cap (Max Limit): {0}";
+        public override string Resource_MaxAmount => "Max limit: {0}";
+        public override string Resource_AddPerSec => "Increase Rate: {0} per second";
+
+        public override string Resource_WaterAddLimit => "Water increase rate can't be altered";
+
+        public override string Tutorial_Select_SubTab => "And select category: {0}";
     }
 }

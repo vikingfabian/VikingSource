@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.Graphics;
@@ -20,6 +21,7 @@ namespace VikingEngine.DSSWars.Players
         Mesh model;
         public bool isNew = false;
         public SelectTileResult selectTileResult = SelectTileResult.None;
+        public bool tileOfInterest = false;
         public City city;
         public SelectedSubTile(LocalPlayer player, bool isHover)
         {
@@ -41,6 +43,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     this.subTilePos = subTilePos;
                     isNew = true;
+                    tileOfInterest = false;
                     if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(subTilePos), out var tile))
                     {
                         city = tile.City();
@@ -68,30 +71,49 @@ namespace VikingEngine.DSSWars.Players
                         {
                             if (city.faction == player.faction)
                             {
-                                switch (subTile.GeBuildingType())
+                                switch (subTile.mainTerrain)
                                 {
-                                    case Map.TerrainBuildingType.StoneHall:
-                                        selectTileResult = SelectTileResult.CityHall;
-                                        break;
-                                    case Map.TerrainBuildingType.Postal:
-                                        selectTileResult = SelectTileResult.Postal;
-                                        break;
-                                    case Map.TerrainBuildingType.Recruitment:
-                                        selectTileResult = SelectTileResult.Recruitment;
-                                        break;
-                                    case Map.TerrainBuildingType.Nobelhouse:
-                                    case Map.TerrainBuildingType.Barracks:
-                                        selectTileResult = SelectTileResult.Conscript;
-                                        break;
-                                        //case Map.TerrainBuildingType.Square:
-                                        //    selectTileResult = SelectTileResult.Resources;
-                                        //    break;
-                                }
+                                    case TerrainMainType.Building:
+                                        switch ((TerrainBuildingType)subTile.subTerrain)
+                                        {
+                                            case Map.TerrainBuildingType.StoneHall:
+                                                selectTileResult = SelectTileResult.CityHall;
+                                                break;
+                                            case Map.TerrainBuildingType.Postal:
+                                                selectTileResult = SelectTileResult.Postal;
+                                                break;
+                                            case Map.TerrainBuildingType.Recruitment:
+                                                selectTileResult = SelectTileResult.Recruitment;
+                                                break;
 
-                                hasSelection = selectTileResult != SelectTileResult.None;
-                                model.position = WP.SubtileToWorldPosXZ_Centered(subTilePos);
-                                model.position.Y = subTile.groundY;
-                                return;
+                                            case Map.TerrainBuildingType.SoldierBarracks:
+                                            case Map.TerrainBuildingType.ArcherBarracks:
+                                            case Map.TerrainBuildingType.WarmashineBarracks:
+                                            case Map.TerrainBuildingType.KnightsBarracks:
+                                            case Map.TerrainBuildingType.GunBarracks:
+                                            case Map.TerrainBuildingType.CannonBarracks:
+                                                selectTileResult = SelectTileResult.Conscript;
+                                                break;
+                                        }
+
+                                        hasSelection = selectTileResult != SelectTileResult.None;
+                                        model.position = WP.SubtileToWorldPosXZ_Centered(subTilePos);
+                                        model.position.Y = subTile.groundY;
+                                        return;
+
+                                    case TerrainMainType.Mine:
+                                        tileOfInterest = true;
+                                        break;
+
+                                    case TerrainMainType.Foil:
+                                        switch ((TerrainSubFoilType)subTile.subTerrain)
+                                        {
+                                            case TerrainSubFoilType.BogIron:
+                                                tileOfInterest = true;
+                                                break;
+                                        }
+                                        break;
+                                }
                             }
 
                         }
@@ -134,6 +156,25 @@ namespace VikingEngine.DSSWars.Players
             return MayBuildResult.No_OutsideRegion;
         }
 
+        public bool MayDemolish(LocalPlayer player)
+        {
+            if (city != null)
+            {
+                if (city.faction.player == player)
+                {
+                    if (WP.SubtileToTilePos(subTilePos) != city.tilePos) //center tile is protected
+                    {
+                        var buildingType = BuildLib.GetType(subTile.mainTerrain, subTile.subTerrain);
+                        if (buildingType != BuildAndExpandType.NUM_NONE)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
 
 
         public bool viewSelection(bool view)
@@ -184,7 +225,7 @@ namespace VikingEngine.DSSWars.Players
         
         Build,
         ClearTerrain,
-        Destroy,
+        Demolish,
     }
 
     enum MayBuildResult

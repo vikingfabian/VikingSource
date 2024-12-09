@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars
         float second = 0;
         int quarter = 0;
         int secondsToMinute = 0;
-        int totalMinutes = 0;
+        public int totalMinutes = 0;
 
         float asyncGameObjects_Seconds = 0;
         float asyncWork_Seconds = 0;

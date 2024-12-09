@@ -44,6 +44,8 @@ namespace VikingEngine
 
         virtual public bool RunDuringPause { get { return true; } }
 
+        virtual public void AbortThreads() { }
+
     }
 
     abstract class AbsInGameUpdateable : AbsUpdateable

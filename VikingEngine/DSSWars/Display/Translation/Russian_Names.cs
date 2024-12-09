@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.Display.Translation
 {
-    partial class Russian : AbsLanguage
+    partial class Russian
     {
 
         /// <summary>

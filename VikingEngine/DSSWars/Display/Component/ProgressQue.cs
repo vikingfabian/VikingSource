@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars.Display.Component
                 {
                     RichBoxContent content = new RichBoxContent();
 
-                    content.text(DssRef.todoLang.Automation_queue_description);
+                    content.text(DssRef.lang.Automation_queue_description);
 
                     player.hud.tooltip.create(player, content, true);
                 }

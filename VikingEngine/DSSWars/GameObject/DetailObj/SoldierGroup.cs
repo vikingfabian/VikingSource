@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             initPart2(typeCurrentData);
 
-            soldierCount = typeCurrentData.rowWidth * typeCurrentData.columnsDepth;
+            soldierCount = soldierData.rowWidth * soldierData.columnsDepth;
             soldierData = soldierConscript.init(typeCurrentData);
 
             initPart3(typeCurrentData);
@@ -154,19 +154,19 @@ namespace VikingEngine.DSSWars.GameObject
             var type = soldierConscript.unitType();
             typeSoldierData = DssRef.profile.Get(type);//new ConscriptedSoldierData();
             typeShipData = DssRef.profile.Get(typeSoldierData.ShipType());
-
+            soldierData = soldierConscript.init(typeSoldierData);
             typeCurrentData = typeSoldierData;
 
-            armyGridPlacement2 = army.nextArmyPlacement(soldierConscript.conscript.DefaultArmyRow());
+            armyGridPlacement2 = army.nextArmyPlacement(soldierData.defaultArmyPlacement);//soldierConscript.conscript.DefaultArmyRow());
 
         }
 
         void initPart2(AbsSoldierProfile typeData)
         {
-            int count = typeData.rowWidth * typeData.columnsDepth;
+            //count = soldierData.rowWidth * soldierData.columnsDepth;
 
 
-            halfColDepth = typeData.columnsDepth * -0.5f;
+            halfColDepth = soldierData.columnsDepth * -0.5f;
 
             //skirmishCount = MathExt.MultiplyInt(0.3, count);
 
@@ -413,14 +413,12 @@ namespace VikingEngine.DSSWars.GameObject
                 soldierConscript.shipSetup(ref soldierData);
             }
 
-            int xStart = -typeProfile.rowWidth / 2;
+            int xStart = -soldierData.rowWidth / 2;
             IntVector2 bannerPos = bannerManPos();
 
-            int columnDepth = MathExt.Div_Ceiling(count, typeProfile.rowWidth);
+            int columnDepth = MathExt.Div_Ceiling(count, soldierData.rowWidth);
 
-            //setGroundY();
-
-            for (int x = 0; x < typeProfile.rowWidth; ++x)
+            for (int x = 0; x < soldierData.rowWidth; ++x)
             {
                 //int leadUnit = -1;
                 for (int y = 0; y < columnDepth; ++y)
@@ -481,7 +479,7 @@ namespace VikingEngine.DSSWars.GameObject
             IntVector2 bannerPos;
             if (typeCurrentData.hasBannerMan)
             {
-                bannerPos = new IntVector2(typeCurrentData.rowWidth / 2, typeCurrentData.columnsDepth - 1);
+                bannerPos = new IntVector2(soldierData.rowWidth / 2, soldierData.columnsDepth - 1);
             }
             else
             {

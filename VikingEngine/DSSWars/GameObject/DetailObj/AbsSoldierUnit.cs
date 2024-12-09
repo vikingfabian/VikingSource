@@ -238,11 +238,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void refreshGroupOffset()
         {
-            groupOffset.X = gridPlacement.X * SoldierProfile().groupSpacing +
-                Ref.rnd.Plus_MinusF(SoldierProfile().groupSpacingRndOffset);
+            
+            groupOffset.X = gridPlacement.X * soldierData.groupSpacing +
+                Ref.rnd.Plus_MinusF(soldierData.groupSpacingRndOffset);
 
-            groupOffset.Y = (gridPlacement.Y + group.halfColDepth) * SoldierProfile().groupSpacing +
-                Ref.rnd.Plus_MinusF(SoldierProfile().groupSpacingRndOffset);
+            groupOffset.Y = (gridPlacement.Y + group.halfColDepth) * soldierData.groupSpacing +
+                Ref.rnd.Plus_MinusF(soldierData.groupSpacingRndOffset);
         }
 
         void updateGroupPosition()

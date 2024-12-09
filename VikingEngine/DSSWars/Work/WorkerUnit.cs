@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars.Work
             this.status = status;
             parentArrayIndex = statusIndex;
             model = mapObject.GetFaction().AutoLoadModelInstance(
-                 LootFest.VoxelModelName.war_worker, DssConst.Men_StandardModelScale * 0.9f, true);
+                 DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f, true);
 
             model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
 
@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars.Work
                         model.Frame = 0;
                         updateGroudY(true);
 
-                        if (status.work == WorkType.Build && !status.orderIsActive(city))
+                        if ((status.work == WorkType.Build || status.work == WorkType.Demolish) && !status.orderIsActive(city))
                         {
                             state = WorkerUnitState.None;
                             status.cancelWork();
@@ -190,6 +190,7 @@ namespace VikingEngine.DSSWars.Work
                             }
                             break;
                         case WorkType.Build:
+                        case WorkType.Demolish:
                             if (workAnimation_soundframe())
                             {
                                 SoundLib.hammer.Play(model.position);
@@ -233,6 +234,11 @@ namespace VikingEngine.DSSWars.Work
                             case WorkType.PickUpProduce:
                                 SoundLib.pickup.Play(model.position);
                                 break;
+
+                            case WorkType.Demolish:
+                                SoundLib.breaking.Play(model.position);
+                                break;
+
                             case WorkType.Starving:
                             case WorkType.Exit:
                                 DeleteMe();
@@ -250,9 +256,6 @@ namespace VikingEngine.DSSWars.Work
                     parentMapObject.getWorkerStatus(parentArrayIndex, ref status);
                     checkForGoal(false, city);
                     break;
-
-
-
             }
         }
 
@@ -260,7 +263,7 @@ namespace VikingEngine.DSSWars.Work
         {
             if (workAnimation.timeOut())
             {
-                model.Frame = model.Frame == 1 ? 2 : 1;
+                model.Frame = model.Frame == 0 ? 2 : 0;
                 return model.Frame == 2;
             }
 
@@ -435,12 +438,28 @@ namespace VikingEngine.DSSWars.Work
             args.content.h2(Name()).overrideColor = Color.LightYellow;
             args.content.text(string.Format(DssRef.lang.WorkerHud_WorkType, status.workString()));
 
+            status.xpToHud(args.content);
+
             if (status.carry.amount > 0)
             {
-                args.content.text(string.Format(DssRef.lang.WorkerHud_Carry, status.carry.amount, LangLib.Item(status.carry.type)));
+                args.content.newLine();
+                args.content.Add(new RichBoxImage(SpriteName.WarsWorkMove));
+                args.content.space();
+                args.content.Add(new RichBoxText(string.Format(DssRef.lang.WorkerHud_Carry, status.carry.amount, LangLib.Item(status.carry.type))));
             }
 
             args.content.text(string.Format(DssRef.lang.WorkerHud_Energy, TextLib.OneDecimal(status.energy)));
+
+#if DEBUG
+            args.content.text(string.Format("XP1: {0} {1}", status.xpType1, status.xp1));
+            args.content.text(string.Format("XP2: {0} {1}", status.xpType2, status.xp2));
+            args.content.text(string.Format("XP3: {0} {1}", status.xpType3, status.xp3));
+#endif
+        }
+
+        public void toolTip(RichBoxContent content)
+        {
+            status.xpToHud(content);
         }
 
         public override void selectionFrame(bool hover, Selection selection)

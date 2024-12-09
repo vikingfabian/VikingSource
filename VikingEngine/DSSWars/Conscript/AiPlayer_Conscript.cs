@@ -12,18 +12,18 @@ namespace VikingEngine.DSSWars.Players
 {
     partial class AiPlayer
     {
-        static readonly MainWeapon[] conscriptWeaponPrioOrder =
+        static readonly ItemResourceType[] conscriptWeaponPrioOrder =
         {
-            MainWeapon.Sword,
-            MainWeapon.Bow,
-            MainWeapon.SharpStick
+            ItemResourceType.Sword,
+            ItemResourceType.Bow,
+            ItemResourceType.SharpStick
         };
 
-        static readonly ArmorLevel[] conscriptArmorPrioOrder =
+        static readonly ItemResourceType[] conscriptArmorPrioOrder =
         {
-            ArmorLevel.Heavy,
-            ArmorLevel.Medium,
-            ArmorLevel.Light,
+            ItemResourceType.FullPlateArmor,
+            ItemResourceType.IronArmor,
+            ItemResourceType.PaddedArmor,
         };
 
         void setupConscriptAi_async(City city)
@@ -31,13 +31,13 @@ namespace VikingEngine.DSSWars.Players
             
             if (city.conscriptBuildings.Count > 0)
             {
-                MainWeapon weapon = 0;
-                ArmorLevel armorLevel = ArmorLevel.None;
+                ItemResourceType weapon = ItemResourceType.SharpStick;
+                ItemResourceType armorLevel = ItemResourceType.NONE;
 
                 foreach (var w in conscriptWeaponPrioOrder)
                 {
-                    ItemResourceType weaponItem = ConscriptProfile.WeaponItem(w);
-                    int availableWeapons = city.GetGroupedResource(weaponItem).amount;
+                    //ItemResourceType weaponItem = ConscriptProfile.WeaponItem(w);
+                    int availableWeapons = city.GetGroupedResource(w).amount;
 
                     if (availableWeapons >= DssConst.SoldierGroup_DefaultCount)
                     {
@@ -48,8 +48,8 @@ namespace VikingEngine.DSSWars.Players
 
                 foreach (var a in conscriptArmorPrioOrder)
                 {
-                    ItemResourceType armorItem = ConscriptProfile.ArmorItem(a);
-                    int availableArmor = city.GetGroupedResource(armorItem).amount;
+                    //ItemResourceType armorItem = ConscriptProfile.ArmorItem(a);
+                    int availableArmor = city.GetGroupedResource(a).amount;
 
                     if (availableArmor >= DssConst.SoldierGroup_DefaultCount)
                     {
@@ -101,32 +101,42 @@ namespace VikingEngine.DSSWars.Players
                 {
                     profile = city.conscriptBuildings[0].profile;
                 }
+                else
+                {
+                    return false;
+                }
             }
 
-            ItemResourceType weaponItem = ConscriptProfile.WeaponItem(profile.weapon);
-            ItemResourceType armorItem = ConscriptProfile.ArmorItem(profile.armorLevel);
+            if (profile.weapon == ItemResourceType.NONE)
+            { 
+                return false;
+            }
 
-            int availableWeapons = city.GetGroupedResource(weaponItem).amount / DssConst.SoldierGroup_DefaultCount;
-            int availableArmors = city.GetGroupedResource(armorItem).amount / DssConst.SoldierGroup_DefaultCount;
+            //ItemResourceType weaponItem = ConscriptProfile.WeaponItem(profile.weapon);
+            //ItemResourceType armorItem = ConscriptProfile.ArmorItem(profile.armorLevel);
+
+            int availableWeapons = city.GetGroupedResource(profile.weapon).amount / DssConst.SoldierGroup_DefaultCount;
+            int availableArmors = city.GetGroupedResource(profile.armorLevel).amount / DssConst.SoldierGroup_DefaultCount;
             int availableMen = (city.workForce.amount / DssConst.SoldierGroup_DefaultCount) - 1;
 
             int get = lib.SmallestValue(availableArmors, availableWeapons, availableMen, city.conscriptBuildings.Count * 2);
 
             if (commit && get > 0)
             {
-                city.AddGroupedResource(weaponItem, -get * DssConst.SoldierGroup_DefaultCount);
-                city.AddGroupedResource(armorItem, -get * DssConst.SoldierGroup_DefaultCount);
+                city.AddGroupedResource(profile.weapon, -get * DssConst.SoldierGroup_DefaultCount);
+                city.AddGroupedResource(profile.armorLevel, -get * DssConst.SoldierGroup_DefaultCount);
+                city.workForce.amount -= get * DssConst.SoldierGroup_DefaultCount;
 
                 switch (aiConscript)
                 { 
                     case AiConscript.Orcs:
-                        switch (weaponItem)
+                        switch (profile.weapon)
                         { 
                             case ItemResourceType.Bow:
-                                profile.weapon = MainWeapon.CrossBow;
+                                profile.weapon = ItemResourceType.Crossbow;
                                 break;
                             case ItemResourceType.Sword:
-                                profile.weapon = MainWeapon.Pike;
+                                profile.weapon = ItemResourceType.Pike;
                                 break;
                         }
                         break;
@@ -136,13 +146,13 @@ namespace VikingEngine.DSSWars.Players
                         break;
 
                     case AiConscript.DragonSlayer:
-                        switch (weaponItem)
+                        switch (profile.weapon)
                         {
                             case ItemResourceType.Bow:
-                                profile.weapon = MainWeapon.CrossBow;
+                                profile.weapon = ItemResourceType.Crossbow;
                                 break;
                             case ItemResourceType.Sword:
-                                profile.weapon = MainWeapon.Ballista;
+                                profile.weapon = ItemResourceType.Ballista;
                                 break;
                         }
                         profile.specialization = SpecializationType.Siege;

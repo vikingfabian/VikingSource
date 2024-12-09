@@ -638,9 +638,14 @@ namespace VikingEngine.LootFest.Editor
                 new GuiTextButton("Clear", "Removes all blocks in the selected area", designer.clearSelectedArea, false, layout);
                 if (designer.animationFrames != null && designer.animationFrames.Frames.Count > 1)
                 {
-                    new GuiTextButton("Stamp All frames", "Paste the voxels on all frames", designer.LinkStampAllFrames, false, layout);
-                    new GuiTextButton("Clear in frames", "Remove blocks in the selected area from all frames", designer.clearSelectedArea_AllFrames, false, layout);
-                    new GuiTextButton("Clear other Frames", "Remove blocks from all frames except this", designer.clearSelectedArea_AllFramesButThis, false, layout);
+                    new GuiTextButton("Stamp in other frames", "Paste the voxels in other frames", stampFramesOptions, false, layout);
+                    
+                    new GuiTextButton("Clear in All frames", "Remove blocks in the selected area from all frames",
+                        new GuiAction1Arg<bool>(designer.ClearSelectedAreaOnFrames, true), false, layout);
+                        /*designer.clearSelectedArea_AllFrames*/
+                    new GuiTextButton("Clear Other Frames", "Remove blocks from all frames except this",
+                        new GuiAction1Arg<bool>(designer.ClearSelectedAreaOnFrames, false), false, layout);
+                        /*designer.clearSelectedArea_AllFramesButThis*/
                 }
 
                 if (!designer.inGame)
@@ -648,6 +653,23 @@ namespace VikingEngine.LootFest.Editor
 
 
             } layout.End();
+        }
+
+        void stampFramesOptions()
+        {
+            GuiLayout layout = new GuiLayout("Stamp options", menu);
+            {
+                new GuiCheckbox("Include empty", null, designer.bStampEmptyProperty, layout);
+                new GuiTextButton("All frames", null, new GuiAction1Arg<int>(designer.LinkStampOnFrames, -1), false, layout);
+                for (int i = 0; i < designer.animationFrames.Frames.Count; i++)
+                {
+                    if (i != designer.currentFrame.Value)
+                    {
+                        new GuiTextButton("Frame " + TextLib.IndexToString(i), null, new GuiAction1Arg<int>(designer.LinkStampOnFrames, i), false, layout);
+                    }
+                }
+            }
+            layout.End();
         }
 
         void pageSettings()

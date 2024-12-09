@@ -51,8 +51,8 @@ namespace VikingEngine.DSSWars
 
         public float militaryStrength = 0;
         public bool hasDeserters = true;
-        
 
+        public XP.TechnologyTemplate technology;
 
         public Faction()
         { }
@@ -83,15 +83,7 @@ namespace VikingEngine.DSSWars
             initVisuals(addTo.metaData);
 
             cities = new SpottedArray<GameObject.City>(8);
-
-            //cityCounter = new SpottedArrayCounter<City>(cities);
-
-            //cityAsynchMainCounter = new SpottedArrayCounter<City>(cities);
-            //cityAsynchAiCounter = new SpottedArrayCounter<City>(cities);
-
             armies = new SpottedArray<Army>(16);
-            //armiesCounter = armies.counter();
-
             
         }
 
@@ -290,29 +282,35 @@ namespace VikingEngine.DSSWars
             if (duringStartUp)
             {
                 if (mainCity == null)
+                {
                     mainCity = city;
-                else if (city.CityType > mainCity.CityType)
+                }
+                else if (city.workForceMax > mainCity.workForceMax)
                 {//larger city
                     mainCity = city;
                 }
-            }
-
-
-            if (!cities.Contains(city))
-            {
                 cities.Add(city);
                 city.setFaction(this);
-                if (!duringStartUp)
+            }
+            else
+            {
+
+                if (!cities.Contains(city))
                 {
-                    player.OnCityCapture(city);
-
-                    city.workTemplate.setAllToFollowFaction();
-                    city.workTemplate.onFactionChange(workTemplate);
-                    city.defaultResourceBuffer();
-
-                    if (mainCity == null || mainCity.faction != this)
+                    cities.Add(city);
+                    city.setFaction(this);
+                    if (!duringStartUp)
                     {
-                        refreshMainCity();
+                        player.OnCityCapture(city);
+
+                        city.workTemplate.setAllToFollowFaction();
+                        city.workTemplate.onFactionChange(workTemplate);
+                        city.defaultResourceBuffer();
+
+                        if (mainCity == null || mainCity.faction != this)
+                        {
+                            refreshMainCity();
+                        }
                     }
                 }
             }
@@ -379,7 +377,7 @@ namespace VikingEngine.DSSWars
                 if (citiesC.sel.faction == this)
                 {
                     citiesC.sel.oneSecUpdate();
-                    nobelHouseCount += citiesC.sel.nobelHouse_buildingCount;
+                    nobelHouseCount += citiesC.sel.buildingStructure.Nobelhouse_count;
                     
                 }
                 else

@@ -59,6 +59,10 @@ namespace VikingEngine.HUD.RichBox
 
         virtual public void getButtons(List<RichboxButton> buttons)
         { }
+
+        virtual public Vector2 Position => throw new NotImplementedException();
+        virtual public Vector2 Center => throw new NotImplementedException();
+        virtual public Vector2 Size => throw new NotImplementedException();
     }
 
     class RichBoxNewLine : AbsRichBoxMember
@@ -143,6 +147,8 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
+    
+
     class RichboxIntDisplay : RichBoxText
     {
         IntGetSetIx property;
@@ -215,8 +221,9 @@ namespace VikingEngine.HUD.RichBox
 
         abstract protected Rectangle SourceRect();
         abstract public float Layer { get; }
-        abstract public Vector2 Center { get; }
-        abstract public Vector2 Size { get; }
+        
+
+       
     }
 
     class RichBoxImage : AbsRichBoxImage
@@ -248,6 +255,7 @@ namespace VikingEngine.HUD.RichBox
 
 
         public override float Layer => pointer.PaintLayer;
+        public override Vector2 Position => pointer.position - pointer.HalfSize;
         public override Vector2 Center => pointer.position;
         public override Vector2 Size => pointer.size;
     }
@@ -299,6 +307,68 @@ namespace VikingEngine.HUD.RichBox
         public override float Layer => masterImage.Layer;
         public override Vector2 Center => masterImage.Center;
         public override Vector2 Size =>masterImage.Size;
+    }
+
+    class RichBoxOverlapText : AbsRichBoxMember
+    {
+        string text;
+        public Text2 pointer;
+        public Color? overrideColor;
+        public LoadedFont? overrideFont;
+        AbsRichBoxMember overMember;
+        Vector2 percPosition; 
+        float scale;
+        Vector2 origo;
+        public RichBoxOverlapText(AbsRichBoxMember overMember, string text, Vector2 percPosition, float scale, Vector2 origo, Color? overrideColor = null, LoadedFont? overrideFont = null)
+        {
+            this.origo = origo;
+            this.percPosition = percPosition;
+            this.scale = scale;
+            this.overMember = overMember;
+            this.text = text;
+            this.overrideColor = overrideColor;
+            this.overrideFont = overrideFont;
+        }
+
+        public override void Create(RichBoxGroup group)
+        {
+            var format = group.Format();
+
+            Color col = overrideColor == null ? format.Color : overrideColor.Value;
+            LoadedFont font = overrideFont == null ? format.Font : overrideFont.Value;
+
+            List<string> lines = new List<string>(4);
+            TextLib.SplitToMultiLine2(text, font,
+                AbsText.HeightToScale(format.size, format.Font).Y,
+                group.boxWidth, group.position.X - group.topleft.X, lines);
+
+
+
+            for (int i = 0; i < lines.Count; ++i)
+            {
+                Text2 textLine = new Text2(lines[i], format.Font, overMember.Position + percPosition * overMember.Size,
+                    format.size * scale, col, group.layer -1, null, group.addToRender);
+                textLine.SetCenterRelative(origo);
+                //textLine.Align 
+                //textLine.OrigoAtCenterHeight();
+                group.Add(textLine);
+
+                if (i == 0)
+                {
+                    pointer = textLine;
+                }
+
+                //if (arraylib.IsLast(i, lines))
+                //{
+                //    group.position.X = textLine.MeasureRightPos();
+                //}
+                //else
+                //{
+                //    group.position.X = group.topleft.X + group.boxWidth;
+                //    group.newLine();
+                //}
+            }
+        }
     }
 
     class RichBoxTexture : AbsRichBoxImage
