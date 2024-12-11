@@ -191,6 +191,7 @@ namespace VikingEngine.DSSWars.Work
                             break;
                         case WorkType.Build:
                         case WorkType.Demolish:
+                        case WorkType.School:
                             if (workAnimation_soundframe())
                             {
                                 SoundLib.hammer.Play(model.position);

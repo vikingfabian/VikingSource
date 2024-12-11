@@ -129,10 +129,7 @@ namespace VikingEngine.DSSWars
         public static byte Harbour_SpeedBonus = 5;
 
         //WORK
-        public static byte WorkXpToLevel = 50;
-        public static int WorkLevel_Master = WorkXpToLevel * 4;
-        public static byte DefaultWorkXpGain = 5;
-        public static float XpLevelWorkTimePercReduction = 0.1f;
+       
 
         public static float WorkTime_Eat = 10;
         public static float WorkTime_PickUpResource = 2;
@@ -144,12 +141,15 @@ namespace VikingEngine.DSSWars
         public static float WorkTime_GatherFoil_DryWood = 6;
         public static float WorkTime_GatherFoil_FarmCulture = 22;
         public static float WorkTime_GatherFoil_Stones = 7;
-        public static float WorkTime_Till = 34;
+        //public static float WorkTime_Till = 34;
+        //public static float WorkTime_Till_Upgraded = 24;
         public static float WorkTime_Plant = 25;
+        public static float WorkTime_Plant_Upgraded = 20;
         public static float WorkTime_Mine = 35;
         public static float WorkTime_BogIron = WorkTime_Mine * 2;
         public static float WorkTime_Craft = 10;
         public static float WorkTime_Building = 50;
+        public static float WorkTime_UpgradeBuilding = 5;
         public static float WorkTime_Demolish = 10;
 
         public static int Worker_TrossWorkerCarryWeight = 4;
@@ -178,8 +178,13 @@ namespace VikingEngine.DSSWars
 
         public const int StockPileMinBound = 0;
         public const int StockPileMaxBound = 20000;
-        
+
         //XP
+        public static byte WorkXpToLevel = 50;
+        public static int WorkLevel_Master = WorkXpToLevel * 4;
+        public static byte DefaultWorkXpGain = 5;
+        public static float XpLevelWorkTimePercReduction = 0.1f;
+
         public static int WorkQueue_Start = 3;
         public static int WorkQueue_LogisticsLevel1 = 6;
         public static int Logistics2_PopulationRequirement = 1200;
@@ -188,6 +193,8 @@ namespace VikingEngine.DSSWars
         public static int TechnologyGain_AllyRelation_PerMin = 2;
         public static int TechnologyGain_CitySpread = 4;
         public static int TechnologyGain_Master = 10;
+
+        public static float Time_SchoolOneXP = 2;
 
     }
 }

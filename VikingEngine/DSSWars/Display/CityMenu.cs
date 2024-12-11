@@ -145,7 +145,12 @@ namespace VikingEngine.DSSWars.Display
                     case ProgressSubTab.Experience:
                         tabContent.Add(new RichBoxText(DssRef.todoLang.Experience_Title));
                         break;
+
+                    case ProgressSubTab.Schools:
+                        tabContent.Add(new RichBoxText(DssRef.todoLang.BuildingType_School_Tab));
+                        break;
                 }
+            
                 var subTab = new RichboxButton(tabContent,
                     new RbAction1Arg<ProgressSubTab>((ProgressSubTab resourcesSubTab) =>
                     {
@@ -161,10 +166,14 @@ namespace VikingEngine.DSSWars.Display
             {
                 default:
                     new TechnologyHud().technologyHud(content, player, city, city.faction);
-                    //city.technologyHud(content, player);
                     break;
+
                 case ProgressSubTab.Experience:
                     experienceTab(content);
+                    break;
+
+                case ProgressSubTab.Schools:
+                    new SchoolMenu().ToHud(city, player, content);
                     break;
             }
             
@@ -1665,6 +1674,7 @@ namespace VikingEngine.DSSWars.Display
     { 
         Technology,
         Experience,
+        Schools,
         NUM
     }
 }

@@ -188,7 +188,7 @@ namespace VikingEngine.DSSWars.Delivery
                 if (currentStatus.profile.toCity >= 0)
                 {
                     content.newParagraph();
-                    que.toHud(player, content, queClick, currentStatus.que);
+                    que.toHud(player, content, queClick, currentStatus.que, Conscript.BarracksStatus.MaxQue, true);
                 }
 
                 content.newParagraph();

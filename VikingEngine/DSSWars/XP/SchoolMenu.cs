@@ -4,13 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Display.Component;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Players;
+using VikingEngine.ToGG.ToggEngine.QueAction;
 
 namespace VikingEngine.DSSWars.XP
 {
@@ -18,7 +21,7 @@ namespace VikingEngine.DSSWars.XP
     {
         City city;
         LocalPlayer player;
-
+        ProgressQue que = new ProgressQue();
         public void ToHud(City city, LocalPlayer player, RichBoxContent content)
         {
             content.newLine();
@@ -33,7 +36,7 @@ namespace VikingEngine.DSSWars.XP
                 content.Add(new RichBoxImage(expIcon));
                 content.space();
                 content.Add(new RichBoxBeginTitle(1));
-                var title = new RichBoxText(expName + " " + currentStatus.idAndPosition.ToString());
+                var title = new RichBoxText(DssRef.todoLang.BuildingType_School + " " + currentStatus.idAndPosition.ToString());
                 title.overrideColor = HudLib.TitleColor_TypeName;
                 content.Add(title);
                 content.space();
@@ -41,6 +44,7 @@ namespace VikingEngine.DSSWars.XP
 
                 content.newParagraph();
                 HudLib.Label(content, DssRef.todoLang.Experience_Title);
+                content.newLine();
 
                 foreach (var exp in XpLib.ExperienceTypes)
                 {
@@ -53,17 +57,45 @@ namespace VikingEngine.DSSWars.XP
 
                     var button = new RichboxButton(buttonContent,
                        new RbAction1Arg<WorkExperienceType>(experienceClick, exp, SoundLib.menu),
-                   new RbAction1Arg<WorkExperienceType>(tooltip, exp));
+                   new RbAction1Arg<WorkExperienceType>(expTooltip, exp));
                     button.setGroupSelectionColor(HudLib.RbSettings, exp == currentStatus.learnExperience);
                     content.Add(button);
                     content.space();
+                }
+                content.newParagraph();
+
+                if (currentStatus.learnExperience != WorkExperienceType.NONE)
+                {
+                    HudLib.Label(content, DssRef.todoLang.SchoolHud_ToLevel);
+                    content.newLine();
+                    for (ExperienceLevel level = ExperienceLevel.Practitioner_2; level <= SchoolStatus.MaxLevel; level++)
+                    {
+                        var text = LangLib.ExperienceLevel(level);
+                        var icon = LangLib.ExperienceLevelIcon(level);
+
+                        var buttonContent = new List<AbsRichBoxMember>()
+                    {
+                        new RichBoxImage(icon),
+                        new RichBoxText(text),
+                    };
+
+                        var button = new RichboxButton(buttonContent,
+                           new RbAction1Arg<ExperienceLevel>(toLevelClick, level, SoundLib.menu),
+                       new RbAction1Arg<ExperienceLevel>(lvlToolTip, level));
+                        button.setGroupSelectionColor(HudLib.RbSettings, level == currentStatus.toLevel);
+                        content.Add(button);
+                        content.space();
+                    }
+
+                    content.newParagraph();
+                    que.toHud(player, content, queClick, currentStatus.que, SchoolStatus.MaxQue, false);
                 }
 
             }
             else
             {
 
-                content.h2(DssRef.lang.Conscript_SelectBuilding).overrideColor = HudLib.TitleColor_Action;
+                content.h2(DssRef.todoLang.SchoolHud_SelectSchool).overrideColor = HudLib.TitleColor_Action;
                 if (city.schoolBuildings.Count == 0)
                 {
                     //EMPTY
@@ -71,10 +103,9 @@ namespace VikingEngine.DSSWars.XP
                     content.newParagraph();
                     content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement).overrideColor = HudLib.TitleColor_Label;
                     content.newLine();
-                    content.Add(new RichBoxImage(SpriteName.WarsBuild_Barracks));
+                    content.Add(new RichBoxImage(SpriteName.WarsBuild_School));
                     content.space();
-                    content.Add(new RichBoxText(DssRef.lang.BuildingType_Barracks));
-                   
+                    content.Add(new RichBoxText(DssRef.todoLang.BuildingType_School));                   
                 }
                 else
                 {
@@ -87,18 +118,11 @@ namespace VikingEngine.DSSWars.XP
                         var caption = new RichBoxText(text);
                         caption.overrideColor = HudLib.TitleColor_Name;
 
-                        //var info = new RichBoxText(
-                        //        currentProfile.shortActiveString()
-                        //    );
-                        //info.overrideColor = HudLib.InfoYellow_Light;
-
                         content.Add(new RichboxButton(new List<AbsRichBoxMember>(){
                         new RichBoxImage(icon),
                         new RichBoxSpace(),
                         caption,
-                    }, new RbAction1Arg<int>(selectClick, i, SoundLib.menu)));
-
-                        //content.text(currentProfile.shortActiveString()).overrideColor = HudLib.InfoYellow_Light;
+                        }, new RbAction1Arg<int>(selectClick, i, SoundLib.menu)));
 
                     }
                 }
@@ -116,7 +140,22 @@ namespace VikingEngine.DSSWars.XP
             currentStatus.learnExperience = exp;
             city.schoolBuildings[city.selectedSchool] = currentStatus;
         }
-        void tooltip(WorkExperienceType exp)
+
+        void toLevelClick(ExperienceLevel lvl)
+        {
+            SchoolStatus currentStatus = city.schoolBuildings[city.selectedSchool];
+            currentStatus.toLevel = lvl;
+            city.schoolBuildings[city.selectedSchool] = currentStatus;
+        }
+
+        void queClick(int length)
+        {
+            SchoolStatus currentStatus = city.schoolBuildings[city.selectedSchool];
+            currentStatus.que = length;
+            city.schoolBuildings[city.selectedSchool] = currentStatus;
+        }
+
+        void expTooltip(WorkExperienceType exp)
         {
             LangLib.ExperienceType(exp, out string expName, out SpriteName expIcon);
 
@@ -136,19 +175,23 @@ namespace VikingEngine.DSSWars.XP
                 content.Add(new RichBoxText(LangLib.ExperienceLevel(level)));
             
 
-            //if (armor != ItemResourceType.NONE)
-            //{
-            //    content.newParagraph();
-            //    content.h2(DssRef.lang.Hud_Available).overrideColor = HudLib.TitleColor_Label;
-            //    //var item = ConscriptProfile.ArmorItem(armor);
+            player.hud.tooltip.create(player, content, true);
+        }
 
-            //    bool reachedBuffer = false;
-            //    city.GetGroupedResource(armor).toMenu(content, armor, false, ref reachedBuffer);
-            //    //if (reachedBuffer)
-            //    //{
-            //    //    GroupedResource.BufferIconInfo(content);
-            //    //}
-            //}
+        void lvlToolTip(ExperienceLevel lvl)
+        {
+            RichBoxContent content = new RichBoxContent();
+            
+            float time = (int)lvl * DssConst.WorkXpToLevel * DssConst.Time_SchoolOneXP;
+            TimeSpan timespan = TimeSpan.FromSeconds(time);
+            var timeLabel = new RichBoxText(string.Format( DssRef.lang.Conscript_TrainingTime, string.Empty));
+            timeLabel.overrideColor = HudLib.TitleColor_Label;
+
+            content.Add(timeLabel);
+            content.Add(new RichBoxText(HudLib.TimeSpan_LongText(timespan)));
+             
+            content.newLine();
+            content.text(DssRef.todoLang.SchoolHud_TimeDescription).overrideColor = HudLib.InfoYellow_Light;
 
             player.hud.tooltip.create(player, content, true);
         }

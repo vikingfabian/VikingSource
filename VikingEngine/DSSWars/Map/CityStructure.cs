@@ -233,23 +233,27 @@ namespace VikingEngine.DSSWars.Map
                                                 break;
 
                                             case TerrainSubFoilType.WheatFarm:
+                                            case TerrainSubFoilType.WheatFarmUpgraded:
                                                 ++buildingStructure.WheatFarm_count;
                                                 ++foodspots;
                                                 farming(ref subTile);
                                                 break;
 
                                             case TerrainSubFoilType.LinenFarm:
+                                            case TerrainSubFoilType.LinenFarmUpgraded:
                                                 ++buildingStructure.LinenFarm_count;
                                                 farming(ref subTile);
                                                 break;
 
                                             case TerrainSubFoilType.RapeSeedFarm:
+                                            case TerrainSubFoilType.RapeSeedFarmUpgraded:
                                                 ++buildingStructure.RapeSeedFarm_count;
                                                 ++fuelSpots;
                                                 farming(ref subTile);
                                                 break;
 
                                             case TerrainSubFoilType.HempFarm:
+                                            case TerrainSubFoilType.HempFarmUpgraded:
                                                 ++buildingStructure.HempFarm_count;
                                                 ++fuelSpots;
                                                 farming(ref subTile);

@@ -47,6 +47,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         {
             switch (type)
             {
+                case WorkExperienceType.NONE:
+                    name = DssRef.todoLang.Hud_None;
+                    icon = SpriteName.BluePrintSquareFull;
+                    break;
 
                 case WorkExperienceType.Farm:
                     name = DssRef.todoLang.ExperienceType_Farm;
@@ -313,7 +317,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                         case TerrainBuildingType.Logistics:
                             return DssRef.lang.BuildingType_Logistics;
                         case TerrainBuildingType.SoldierBarracks:
-                            return DssRef.lang.BuildingType_Barracks;
+                            return DssRef.todoLang.BuildingType_SoldierBarracks;
                         case TerrainBuildingType.Bank:
                             return DssRef.lang.BuildingType_Bank;
                         case TerrainBuildingType.Brewery:
@@ -401,6 +405,8 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                         case TerrainSubFoilType.WheatFarm:
                             return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat);
+                        case TerrainSubFoilType.WheatFarmUpgraded:
+                            return string.Format(DssRef.todoLang.BuildingType_IsUpgraded, string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat));
 
                         case TerrainSubFoilType.RapeSeedFarm:
                             return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Rapeseed);

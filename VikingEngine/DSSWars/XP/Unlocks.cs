@@ -14,6 +14,7 @@ namespace VikingEngine.DSSWars.XP
         public bool coinMaking;
 
         public bool item_tools;
+        public bool building_upgradedFarm;
         public bool building_mixedFarms;
 
         public bool item_cannon;
@@ -39,6 +40,31 @@ namespace VikingEngine.DSSWars.XP
 
         public bool item_gunPowder;
 
+        public void unlockAll()
+        {
+            building_stoneBuildings = true;
+            coinMaking = true;
+            item_tools = true;
+            building_upgradedFarm = true;
+            building_mixedFarms = true;
+            item_castIron = true;
+            item_castMithril = true;
+            item_cannon = true;
+            building_cannonBarrack = true;
+            item_Iron = true;
+            item_Sword = true;
+            item_IronArmor = true;
+            item_LongSword = true;
+            item_Steel = true;
+            item_SteelArmor = true;
+            item_catapult = true;
+            item_crossbow = true;
+            building_chemist = true;
+            building_gunBarrack = true;
+            item_blackPowder = true;
+            item_gunPowder = true;
+        }
+
         public void UnlockAdvancedBuilding()
         {
             building_stoneBuildings = true;
@@ -48,6 +74,7 @@ namespace VikingEngine.DSSWars.XP
         public void UnlockAdvancedFarming()
         {
             item_tools = true;
+            building_upgradedFarm = true;
             building_mixedFarms = true;
         }
 
@@ -82,6 +109,7 @@ namespace VikingEngine.DSSWars.XP
         public void UnlockBlackPowder()
         {
             building_chemist = true;
+            building_gunBarrack = true;
             item_blackPowder = true;
         }
 
@@ -104,9 +132,13 @@ namespace VikingEngine.DSSWars.XP
                 builds.Add(BuildAndExpandType.PigPen);
             }
 
-            if (building_cannonBarrack)
+            if (building_gunBarrack)
             {
                 builds.Add(BuildAndExpandType.GunBarracks);
+            }
+
+            if (building_cannonBarrack)
+            {
                 builds.Add(BuildAndExpandType.CannonBarracks);
             }
 

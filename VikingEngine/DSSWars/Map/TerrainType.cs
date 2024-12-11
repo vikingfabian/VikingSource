@@ -38,6 +38,12 @@ namespace VikingEngine.DSSWars.Map
         BogIron,
         HempFarm,
         RapeSeedFarm,
+
+        WheatFarmUpgraded,
+        LinenFarmUpgraded,
+        HempFarmUpgraded,
+        RapeSeedFarmUpgraded,
+
         NUM_NONE
     }
 
@@ -99,6 +105,10 @@ namespace VikingEngine.DSSWars.Map
         Chemist,
         Gunmaker,
         School,
+        PostalLevel2,
+        PostalLevel3,
+        RecruitmentLevel2,
+        RecruitmentLevel3,
 
         NUM_NONE
     }

@@ -94,6 +94,10 @@ namespace VikingEngine.DSSWars.Players
                                             case Map.TerrainBuildingType.CannonBarracks:
                                                 selectTileResult = SelectTileResult.Conscript;
                                                 break;
+
+                                            case Map.TerrainBuildingType.School:
+                                                selectTileResult = SelectTileResult.School;
+                                                break;
                                         }
 
                                         hasSelection = selectTileResult != SelectTileResult.None;
@@ -220,6 +224,7 @@ namespace VikingEngine.DSSWars.Players
         Postal,
         Recruitment,
         Conscript,
+        School,
 
         //Resources,
         

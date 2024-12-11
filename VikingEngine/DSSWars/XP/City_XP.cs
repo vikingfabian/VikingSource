@@ -11,6 +11,7 @@ using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.LootFest.Players;
 using VikingEngine.DSSWars.Display.Translation;
 using System.Reflection.Metadata;
+using VikingEngine.DSSWars.Delivery;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -40,6 +41,55 @@ namespace VikingEngine.DSSWars.GameObject
         public int selectedSchool = -1;
         public List<SchoolStatus> schoolBuildings = new List<SchoolStatus>();
 
+        public void onSchoolComplete_async(IntVector2 subPos)
+        {
+            Ref.update.AddSyncAction(new SyncAction(() =>
+            {
+                var index = SchoolIxFromSubTile(subPos);
+                if (arraylib.InBound(schoolBuildings, index))
+                {
+                    SchoolStatus currentStatus = schoolBuildings[index];
+                    --currentStatus.que;
+                   schoolBuildings[index] = currentStatus;
+                }
+            }));
+        }
+
+        public void addSchool(IntVector2 subPos)
+        {
+            SchoolStatus newBuilding = new SchoolStatus()
+            {
+                idAndPosition = conv.IntVector2ToInt(subPos),
+            };
+            newBuilding.defaulSetup();
+
+            lock (schoolBuildings)
+            {
+                schoolBuildings.Add(newBuilding);
+            }
+        }
+        public void destroySchool(IntVector2 subPos)
+        {
+            lock (schoolBuildings)
+            {
+                int index = SchoolIxFromSubTile(subPos);
+                schoolBuildings.RemoveAt(index);
+            }
+        }
+
+        public int SchoolIxFromSubTile(IntVector2 subTilePos)
+        {
+            int id = conv.IntVector2ToInt(subTilePos);
+            for (int i = 0; i < schoolBuildings.Count; ++i)
+            {
+                if (schoolBuildings[i].idAndPosition == id)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
         public ExperienceLevel GetTopSkill(WorkExperienceType experienceType)
         {
             switch (experienceType)

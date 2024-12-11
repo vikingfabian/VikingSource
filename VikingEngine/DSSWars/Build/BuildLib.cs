@@ -60,6 +60,15 @@ namespace VikingEngine.DSSWars.Build
         Gunmaker,
         School,
 
+        WheatFarmUpgraded,
+        LinenFarmUpgraded,
+        HempFarmUpgraded,
+        RapeSeedFarmUpgraded,
+        PostalLevel2,
+        PostalLevel3,
+        RecruitmentLevel2,
+        RecruitmentLevel3,
+
         NUM_NONE,
     }
     static class BuildLib
@@ -83,6 +92,11 @@ namespace VikingEngine.DSSWars.Build
             List<BuildAndExpandType> result = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
             var unlocks = city.technology.GetUnlocks(false);
 
+            if (StartupSettings.UnlockAllProgress)
+            { 
+                unlocks.unlockAll();
+            }
+
             if (city.buildingStructure.buildingLevel_logistics == 0 ||
                 StartupSettings.UnlockAllProgress)
             {
@@ -97,8 +111,21 @@ namespace VikingEngine.DSSWars.Build
             result.Add(BuildAndExpandType.WorkerHuts);
 
             result.Add(BuildAndExpandType.WheatFarm);
+            if (unlocks.building_upgradedFarm)
+            {
+                result.Add(BuildAndExpandType.WheatFarmUpgraded);
+            }
+            
             result.Add(BuildAndExpandType.LinenFarm);
+            if (unlocks.building_upgradedFarm)
+            {
+                //result.Add(BuildAndExpandType.LinenFarmUpgraded);
+            }
             result.Add(BuildAndExpandType.RapeSeedFarm);
+            if (unlocks.building_upgradedFarm)
+            {
+                //result.Add(BuildAndExpandType.RapeSeedFarmUpgraded);
+            }
             if (unlocks.building_mixedFarms)
             {
                 result.Add(BuildAndExpandType.HempFarm);
@@ -126,11 +153,16 @@ namespace VikingEngine.DSSWars.Build
             }
 
             result.Add(BuildAndExpandType.Postal);
-            
+
             if (city.buildingStructure.buildingLevel_logistics >= 1 ||
                 StartupSettings.UnlockAllProgress)
             {
+                //result.Add(BuildAndExpandType.PostalLevel2);
+                //result.Add(BuildAndExpandType.PostalLevel3);
                 result.Add(BuildAndExpandType.Recruitment);
+                //result.Add(BuildAndExpandType.RecruitmentLevel2);
+                //result.Add(BuildAndExpandType.RecruitmentLevel3);
+
                 result.Add(BuildAndExpandType.Storehouse);
                 result.Add(BuildAndExpandType.Tavern);
                 result.Add(BuildAndExpandType.Brewery);
@@ -181,16 +213,11 @@ namespace VikingEngine.DSSWars.Build
                 }
             }
 
-           
-
             if (city.buildingStructure.buildingLevel_logistics >= 1 ||
                 StartupSettings.UnlockAllProgress)
-            {
-                
+            {                
                 result.Add(BuildAndExpandType.WoodCutter);
                 result.Add(BuildAndExpandType.StoneCutter);
-                
-
             }
 
             if (city.buildingStructure.buildingLevel_logistics >= 2 ||
@@ -231,7 +258,8 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.Smith, TerrainMainType.Building, (int)TerrainBuildingType.Work_Smith, SpriteName.WarsBuild_Smith, CraftBuildingLib.Smith);
             new BuildOption(BuildAndExpandType.Carpenter, TerrainMainType.Building, (int)TerrainBuildingType.Carpenter, SpriteName.WarsBuild_Carpenter, CraftBuildingLib.Carpenter);
 
-            new BuildOption(BuildAndExpandType.WheatFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, SpriteName.WarsBuild_WheatFarms, CraftBuildingLib.WheatFarm );
+            new BuildOption(BuildAndExpandType.WheatFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, SpriteName.WarsBuild_WheatFarms, CraftBuildingLib.WheatFarm);
+            new BuildOption(BuildAndExpandType.WheatFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarmUpgraded, SpriteName.WarsBuild_WheatFarms, CraftBuildingLib.WheatFarmUpgrade);
             new BuildOption(BuildAndExpandType.LinenFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarm, SpriteName.WarsBuild_LinenFarms, CraftBuildingLib.LinenFarm);
             new BuildOption(BuildAndExpandType.HempFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarm, SpriteName.WarsBuild_HempFarms, CraftBuildingLib.HempFarm);
             new BuildOption(BuildAndExpandType.RapeSeedFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarm, SpriteName.WarsBuild_RapeseedFarms, CraftBuildingLib.RapeseedFarm);
@@ -264,7 +292,7 @@ namespace VikingEngine.DSSWars.Build
         { 
             foreach (BuildOption buildOption in BuildOptions)
             {
-                if (buildOption.mainType == main && buildOption.subType == sub)
+                if (buildOption != null && buildOption.mainType == main && buildOption.subType == sub)
                 { 
                     return buildOption.buildType;
                 }

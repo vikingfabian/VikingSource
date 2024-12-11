@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars
         public static bool SkipRecruitTime = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE
         
-        public static bool UnlockAllProgress = PlatformSettings.DevBuild ? false :
+        public static bool UnlockAllProgress = PlatformSettings.DevBuild ? true :
             false;//DO NOT CHANGE
 
         public static bool TestOffscreenUpdate = PlatformSettings.DevBuild ? false :

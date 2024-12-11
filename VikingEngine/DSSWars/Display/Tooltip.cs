@@ -225,6 +225,18 @@ namespace VikingEngine.DSSWars.Display
                             }
                         }
                         break;
+                    case Players.SelectTileResult.School:
+                        {
+                            title = new RichBoxText(DssRef.todoLang.BuildingType_School);
+                            content.Add(title);
+
+                            content.newLine();
+                            //if (subTile.city.GetDelivery(subTile.subTilePos, out DeliveryStatus status))
+                            //{
+                            //    status.tooltip(player, subTile.city, content);
+                            //}
+                        }
+                        break;
                     case Players.SelectTileResult.Conscript:
                         {
                             title = new RichBoxText(DssRef.lang.Conscription_Title);

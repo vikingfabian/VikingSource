@@ -11,15 +11,15 @@ namespace VikingEngine.DSSWars.Build
     {
         public const int CraftSmith_IronUse = 10;
 
-        public static readonly ItemResourceType[] SmelterCraftTypes = { 
-            ItemResourceType.Cupper, ItemResourceType.Tin, ItemResourceType.Lead, ItemResourceType.Iron_G, 
+        public static readonly ItemResourceType[] SmelterCraftTypes = {
+            ItemResourceType.Cupper, ItemResourceType.Tin, ItemResourceType.Lead, ItemResourceType.Iron_G,
             ItemResourceType.BloomeryIron, ItemResourceType.Silver, ItemResourceType.Mithril };
-        
-        public static readonly ItemResourceType[] SmithCraftTypes = { 
+
+        public static readonly ItemResourceType[] SmithCraftTypes = {
             ItemResourceType.ShortSword, ItemResourceType.Sword, ItemResourceType.LongSword,
             ItemResourceType.HandSpear,
-            ItemResourceType.Warhammer, ItemResourceType.TwoHandSword, ItemResourceType.KnightsLance, 
-            ItemResourceType.IronArmor,            
+            ItemResourceType.Warhammer, ItemResourceType.TwoHandSword, ItemResourceType.KnightsLance,
+            ItemResourceType.IronArmor,
         };
 
         public static readonly ItemResourceType[] GunmakerCraftTypes = {
@@ -33,21 +33,21 @@ namespace VikingEngine.DSSWars.Build
             ItemResourceType.PaddedArmor, ItemResourceType.HeavyPaddedArmor, ItemResourceType.BronzeArmor, ItemResourceType.IronArmor, ItemResourceType.HeavyIronArmor, ItemResourceType.LightPlateArmor, ItemResourceType.FullPlateArmor, ItemResourceType.MithrilArmor
         };
 
-        public static readonly ItemResourceType[] FoundryCraftTypes = { 
+        public static readonly ItemResourceType[] FoundryCraftTypes = {
             ItemResourceType.Bronze, ItemResourceType.CastIron, ItemResourceType.BloomeryIron, ItemResourceType.Mithril };
 
-        public static readonly ItemResourceType[] BenchCraftTypes = { 
+        public static readonly ItemResourceType[] BenchCraftTypes = {
             ItemResourceType.Fuel_G, ItemResourceType.PaddedArmor, ItemResourceType.SharpStick, ItemResourceType.SlingShot, ItemResourceType.ThrowingSpear };
-        
-        public static readonly ItemResourceType[] CarpenterCraftTypes = { 
+
+        public static readonly ItemResourceType[] CarpenterCraftTypes = {
             ItemResourceType.SharpStick, ItemResourceType.Bow, ItemResourceType.LongBow, ItemResourceType.Crossbow,
             ItemResourceType.MithrilBow,
             ItemResourceType.Ballista, ItemResourceType.Manuballista, ItemResourceType.Catapult };
 
-        public static readonly ItemResourceType[] ChemistCraftTypes = { 
+        public static readonly ItemResourceType[] ChemistCraftTypes = {
             ItemResourceType.BlackPowder, ItemResourceType.GunPowder };
 
-        
+
 
         public static readonly CraftBlueprint CraftLogistics = new CraftBlueprint(
             CraftResultType.Building,
@@ -316,6 +316,14 @@ namespace VikingEngine.DSSWars.Build
             1,
             FarmResources, XP.WorkExperienceType.Farm
         );
+
+        public static readonly CraftBlueprint WheatFarmUpgrade = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.WheatFarmUpgraded,
+            1, new UseResource[] { new UseResource(ItemResourceType.Toolkit, 1) },
+            XP.WorkExperienceType.Farm, XP.ExperienceLevel.Practitioner_2
+        )
+        { upgradeFrom = WheatFarm };
 
         public static readonly CraftBlueprint LinenFarm = new CraftBlueprint(
             CraftResultType.Building,

@@ -270,7 +270,7 @@ namespace VikingEngine.DSSWars.Conscript
                 content.newParagraph();
 
 
-                que.toHud(player, content, queClick, currentStatus.que);
+                que.toHud(player, content, queClick, currentStatus.que, BarracksStatus.MaxQue, true);
 
 
                 content.newParagraph();
