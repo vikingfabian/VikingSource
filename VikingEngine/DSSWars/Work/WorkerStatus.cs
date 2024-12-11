@@ -219,6 +219,7 @@ namespace VikingEngine.DSSWars.Work
                                 break;
 
                             case TerrainSubFoilType.WheatFarm:
+                            case TerrainSubFoilType.WheatFarmUpgraded:
                                 carry = new Resource.ItemResource(
                                         ItemResourceType.Wheat,
                                         subTile.terrainQuality,
@@ -975,6 +976,7 @@ namespace VikingEngine.DSSWars.Work
                             time = DssConst.WorkTime_GatherFoil_DryWood;
                             break;
                         case TerrainSubFoilType.WheatFarm:
+                        case TerrainSubFoilType.WheatFarmUpgraded:
                         case TerrainSubFoilType.LinenFarm:
                         case TerrainSubFoilType.RapeSeedFarm:
                         case TerrainSubFoilType.HempFarm:
@@ -997,7 +999,14 @@ namespace VikingEngine.DSSWars.Work
                 //    time = DssConst.WorkTime_Till;
                     break;
                 case WorkType.Plant:
-                    time = DssConst.WorkTime_Plant;
+                    if (workBonus == 0)
+                    {
+                        time = DssConst.WorkTime_Plant;
+                    }
+                    else
+                    { 
+                        time = DssConst.WorkTime_Plant_Upgraded;
+                    }
                     break;
                 case WorkType.Mine:
                     time = DssConst.WorkTime_Mine;

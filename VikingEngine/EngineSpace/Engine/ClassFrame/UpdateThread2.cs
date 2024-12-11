@@ -61,14 +61,14 @@ namespace VikingEngine
                     asynchTime = time;
                     time -= asynchTime;
 
-                    if (asynchTime > 0)
+                    //if (asynchTime > 0)
+                    //{
+                    busyThread = true;
                     {
-                        busyThread = true;
-                        {
-                            asynchAction();
-                        }
-                        busyThread = false;
+                        asynchAction();
                     }
+                    busyThread = false;
+                    //}
                 }
             });
 

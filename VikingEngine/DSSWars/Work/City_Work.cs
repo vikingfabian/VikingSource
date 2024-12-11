@@ -464,26 +464,44 @@ namespace VikingEngine.DSSWars.GameObject
                     bool safeGuard = false;
                     var subTile = DssRef.world.subTileGrid.Get(tilework.subtile);
                     int prio = 0;
+                    byte bonus = 0;
                     switch (subTile.GetFoilType())
                     {
                         case TerrainSubFoilType.LinenFarm:
-                        case TerrainSubFoilType.LinenFarmUpgraded:
                             needMore = res_skinLinnen.needMore();
                             prio = workTemplate.farm_linen.value;
                             break;
+                        case TerrainSubFoilType.LinenFarmUpgraded:
+                            needMore = res_skinLinnen.needMore();
+                            prio = workTemplate.farm_linen.value;
+                            
+                            break;
                         case TerrainSubFoilType.WheatFarm:
-                        case TerrainSubFoilType.WheatFarmUpgraded:
                             safeGuard = rawFoodSafeGuard;
                             needMore = res_rawFood.needMore();
                             prio = workTemplate.farm_food.value;
                             break;
+                        case TerrainSubFoilType.WheatFarmUpgraded:
+                            safeGuard = rawFoodSafeGuard;
+                            needMore = res_rawFood.needMore();
+                            prio = workTemplate.farm_food.value;
+                            bonus = 1;
+                            break;
                         case TerrainSubFoilType.RapeSeedFarm:
+                            safeGuard = fuelSafeGuard;
+                            needMore = res_fuel.needMore();
+                            prio = workTemplate.farm_fuel.value;
+                            break;
                         case TerrainSubFoilType.RapeSeedFarmUpgraded:
                             safeGuard = fuelSafeGuard;
                             needMore = res_fuel.needMore();
                             prio = workTemplate.farm_fuel.value;
                             break;
                         case TerrainSubFoilType.HempFarm:
+                            safeGuard = fuelSafeGuard;
+                            needMore = res_fuel.needMore() || res_skinLinnen.needMore() || fuelSafeGuard;
+                            prio = Math.Max(workTemplate.farm_linen.value, workTemplate.farm_fuel.value);
+                            break;
                         case TerrainSubFoilType.HempFarmUpgraded:
                             safeGuard = fuelSafeGuard;
                             needMore = res_fuel.needMore() || res_skinLinnen.needMore() || fuelSafeGuard;
@@ -494,7 +512,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (((needMore && prio > WorkTemplate.NoPrio) || safeGuard) && isFreeTile(tilework.subtile))
                     {
                         int distanceValue = -center.SideLength(tilework.subtile);
-                        workQue.Add(new WorkQueMember(tilework.workType, NoSubWork, 0, tilework.subtile, safeGuard? WorkTemplate.SafeGuardPrio : workTemplate.farm_food.value,0, distanceValue));
+                        workQue.Add(new WorkQueMember(tilework.workType, NoSubWork, bonus, tilework.subtile, safeGuard? WorkTemplate.SafeGuardPrio : workTemplate.farm_food.value,0, distanceValue));
                     }
                 }
 

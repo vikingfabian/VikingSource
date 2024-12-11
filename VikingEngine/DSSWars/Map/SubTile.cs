@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Valve.Steamworks;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
@@ -153,7 +154,7 @@ namespace VikingEngine.DSSWars.Map
             this.color = other.color;
         }
 
-        public bool MayBuild()
+        public bool MayBuild(BuildAndExpandType build)
         {
             switch (mainTerrain)
             {
@@ -164,8 +165,11 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainMainType.Foil:
                     switch ((TerrainSubFoilType)subTerrain)
                     {
-                        case TerrainSubFoilType.LinenFarm:
                         case TerrainSubFoilType.WheatFarm:
+                            return build == BuildAndExpandType.WheatFarmUpgraded;
+
+                        case TerrainSubFoilType.LinenFarm:
+                        case TerrainSubFoilType.WheatFarmUpgraded:
                         case TerrainSubFoilType.RapeSeedFarm:
                         case TerrainSubFoilType.HempFarm:
                             return false;

@@ -130,6 +130,13 @@ namespace VikingEngine.DSSWars.Work
                                         SoundLib.woodcut.Play(model.position);
                                         break;
                                     case TerrainSubFoilType.WheatFarm:
+                                    case TerrainSubFoilType.WheatFarmUpgraded:
+                                    case TerrainSubFoilType.LinenFarm:
+                                    case TerrainSubFoilType.LinenFarmUpgraded:
+                                    case TerrainSubFoilType.RapeSeedFarm:
+                                    case TerrainSubFoilType.RapeSeedFarmUpgraded:
+                                    case TerrainSubFoilType.HempFarm:
+                                    case TerrainSubFoilType.HempFarmUpgraded:
                                         SoundLib.scythe.Play(model.position);
                                         break;
                                     case TerrainSubFoilType.StoneBlock:
@@ -151,15 +158,15 @@ namespace VikingEngine.DSSWars.Work
                         case WorkType.Plant:
                             if (workAnimation_soundframe())
                             {
-                                SoundLib.genericWork.Play(model.position);
-                            }
-                            break;
-                        case WorkType.Till:
-                            if (workAnimation_soundframe())
-                            {
                                 SoundLib.dig.Play(model.position);
                             }
                             break;
+                        //case WorkType.Till:
+                        //    if (workAnimation_soundframe())
+                        //    {
+                        //        SoundLib.dig.Play(model.position);
+                        //    }
+                        //    break;
                         case WorkType.Craft:
                             if (workAnimation_soundframe())
                             {
