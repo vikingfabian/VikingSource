@@ -184,9 +184,9 @@ namespace VikingEngine.DSSWars.Resource
             content.Add(new RichBoxText(name()));
         }
 
-        public void toMenu(RichBoxContent content, City city, bool newLine = true)
+        public void toMenu(RichBoxContent content, City city, bool upgradeOnly = false, bool newLine = true)
         {
-            if (upgradeFrom != null)
+            if (upgradeFrom != null && !upgradeOnly)
             {
                 upgradeFrom.toMenu(content, city, newLine);
                 newLine = true;

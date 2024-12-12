@@ -170,7 +170,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.SilverOre, 2)
             },
            XP.WorkExperienceType.Smelting,
-           XP.ExperienceLevel.Beginner_1,
+           XP.ExperienceLevel.Practitioner_2,
             CraftRequirement.Smelter
         );
 

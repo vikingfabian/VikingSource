@@ -77,7 +77,8 @@ namespace VikingEngine.DSSWars.Work
                         model.Frame = 0;
                         updateGroudY(true);
 
-                        if ((status.work == WorkType.Build || status.work == WorkType.Demolish) && !status.orderIsActive(city))
+                        if ((status.work == WorkType.Build || status.work == WorkType.Upgrade || status.work == WorkType.Demolish) && 
+                            !status.orderIsActive(city))
                         {
                             state = WorkerUnitState.None;
                             status.cancelWork();
@@ -197,6 +198,7 @@ namespace VikingEngine.DSSWars.Work
                             }
                             break;
                         case WorkType.Build:
+                        case WorkType.Upgrade:
                         case WorkType.Demolish:
                         case WorkType.School:
                             if (workAnimation_soundframe())

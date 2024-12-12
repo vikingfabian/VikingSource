@@ -52,15 +52,18 @@ namespace VikingEngine.DSSWars.Players.Orders
         
         public BuildAndExpandType buildingType;
         Mesh icon;
+        public bool upgrade;
 
         public BuildOrder()
         { }
-        public BuildOrder(int priority, bool bLocalPlayer, City city, IntVector2 subTile, BuildAndExpandType buildingType)
+        public BuildOrder(int priority, bool bLocalPlayer, City city, IntVector2 subTile, BuildAndExpandType buildingType, bool upgrade)
         {
+            this.upgrade = upgrade;
             baseInit(priority);
             this.city = city;
             this.subTile = subTile;
             this.buildingType = buildingType;
+            this.upgrade = upgrade;
 
             //if (bLocalPlayer)
             //{
@@ -86,8 +89,8 @@ namespace VikingEngine.DSSWars.Players.Orders
         public override RichBoxContent ToHud()
         {
             RichBoxContent content = new RichBoxContent();
-            content.h2(DssRef.lang.Build_Order);
-            BuildLib.BuildOptions[(int)buildingType].blueprint.toMenu(content, city);
+            content.h2(upgrade? DssRef.todoLang.Upgrade_Order : DssRef.lang.Build_Order);
+            BuildLib.BuildOptions[(int)buildingType].blueprint.toMenu(content, city, upgrade);
 
             return content;
         }
@@ -136,7 +139,7 @@ namespace VikingEngine.DSSWars.Players.Orders
         {
             int type = (int)buildingType;
             blueprint = BuildLib.BuildOptions[type].blueprint;
-            var result = new WorkQueMember(WorkType.Build, type, 0, subTile, priority, 0, 0);
+            var result = new WorkQueMember(upgrade? WorkType.Upgrade : WorkType.Build, type, 0, subTile, priority, 0, 0);
             result.orderId = id;
             return result;
         }

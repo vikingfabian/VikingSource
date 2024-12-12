@@ -332,6 +332,14 @@ namespace VikingEngine.DSSWars.Build
             FarmResources, XP.WorkExperienceType.Farm
         );
 
+        public static readonly CraftBlueprint LinenFarmUpgrade = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.LinenFarmUpgraded,
+            1, new UseResource[] { new UseResource(ItemResourceType.Toolkit, 1) },
+            XP.WorkExperienceType.Farm, XP.ExperienceLevel.Practitioner_2
+        )
+        { upgradeFrom = LinenFarm };
+
         public static readonly CraftBlueprint HempFarm = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.HempFarm,
@@ -339,14 +347,28 @@ namespace VikingEngine.DSSWars.Build
             FarmResources, XP.WorkExperienceType.Farm
         );
 
+        public static readonly CraftBlueprint HempFarmUpgrade = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.HempFarmUpgraded,
+            1, new UseResource[] { new UseResource(ItemResourceType.Toolkit, 1) },
+            XP.WorkExperienceType.Farm, XP.ExperienceLevel.Practitioner_2
+        )
+        { upgradeFrom = HempFarm };
+
         public static readonly CraftBlueprint RapeseedFarm = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.RapeSeedFarm,
             1,
             FarmResources, XP.WorkExperienceType.Farm
         );
+        public static readonly CraftBlueprint RapeseedFarmUpgrade = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.RapeSeedFarm,
+            1, new UseResource[] { new UseResource(ItemResourceType.Toolkit, 1) },
+            XP.WorkExperienceType.Farm, XP.ExperienceLevel.Practitioner_2
+        )
+        { upgradeFrom = RapeseedFarm };
 
-       
         public static readonly CraftBlueprint Smith = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Smith,

@@ -43,6 +43,14 @@ namespace VikingEngine.DSSWars.Resource
             this.amount = amount;
         }
 
+        public ItemResource(ItemResourceType type, int amount)
+        {
+            this.type = type;
+            this.quality = 1;
+            this.cost = 1;
+            this.amount = amount;
+        }
+
         public void merge(ItemResource other)
         {
             quality = quality * amount + other.quality * other.amount;

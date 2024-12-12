@@ -185,7 +185,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string SchoolHud_ToLevel => "To level";
         public string SchoolHud_TimeDescription => "Time assumes zero experience; it decreases with experience.";
         public string SchoolHud_SelectSchool => "Select school";
-
+        public string Upgrade_Order => "Upgrade order";
         public string BuildingType_IsUpgraded => "{0} - upgraded";
         public string BuildingType_WoodCutter => "Lumber mill";
         public string BuildingType_Workshop_Description => "Improves work in the area";

@@ -132,14 +132,15 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public MayBuildResult MayBuild(LocalPlayer player)
+        public MayBuildResult MayBuild(LocalPlayer player, out bool upgrade)
         {
+            upgrade = false;
             if (city != null)
             {
                 if (city.faction.player == player)
                 {
                     //var current = subTile.GeBuildingType();
-                    if (subTile.MayBuild())
+                    if (subTile.MayBuild(player.buildControls.placeBuildingType, out upgrade))
                     {
                         if (player.mapControls.selection.obj == city)
                         {
@@ -237,6 +238,7 @@ namespace VikingEngine.DSSWars.Players
     { 
         ERR,
         Yes,
+        YesUpgrade,
         Yes_ChangeCity,
         No_OutsideRegion,
         No_Occupied,

@@ -52,12 +52,12 @@ namespace VikingEngine.DSSWars.Build
             if (buildMode == SelectTileResult.Build)
             {
                 //todo check toggle
-                var mayBuild = selectedSubTile.MayBuild(player);
+                var mayBuild = selectedSubTile.MayBuild(player, out bool upgrade);
                 if (mayBuild == MayBuildResult.Yes || mayBuild == MayBuildResult.Yes_ChangeCity)
                 {
                     if (selectedSubTile.city.availableBuildQueue(player) && placeBuildingOption().blueprint.meetsRequirements(selectedSubTile.city))
                     {
-                        player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, selectedSubTile.city, selectedSubTile.subTilePos, placeBuildingType), ActionOnConflict.Toggle);
+                        player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, selectedSubTile.city, selectedSubTile.subTilePos, placeBuildingType, upgrade), ActionOnConflict.Toggle);
                     }
                     else
                     {
@@ -100,12 +100,12 @@ namespace VikingEngine.DSSWars.Build
                             {
                                 var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
 
-                                
-                                if (subTile.MayBuild()
+
+                                if (subTile.MayBuild(placeBuildingType, out bool upgrade)
                                     &&
                                     !player.orders.orderConflictingSubTile(subTileLoop.Position, false))
                                 {
-                                    player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType),  ActionOnConflict.Cancel);
+                                    player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType, upgrade),  ActionOnConflict.Cancel);
                                     if (--count <= 0)
                                     { return; }
                                 }
@@ -257,113 +257,133 @@ namespace VikingEngine.DSSWars.Build
                             break;
 
                         case BuildAndExpandType.WheatFarm:
-                            content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize - 1))));
+                            farmHud(false, new ItemResource(ItemResourceType.RawFood_Group, DssConst.WheatFoodAmount), ItemResource.Empty);
+                            break;
+                        case BuildAndExpandType.WheatFarmUpgraded:
+                            farmHud(true, new ItemResource(ItemResourceType.RawFood_Group, DssConst.WheatFoodAmount), ItemResource.Empty);
+                            //float plantTime = type == BuildAndExpandType.WheatFarm? DssConst.WorkTime_Plant : DssConst.WorkTime_Plant_Upgraded;
 
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_Plant + DssConst.WorkTime_GatherFoil_FarmCulture))));
+                            //content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
+                            //content.newLine();
+                            //HudLib.BulletPoint(content);
+                            //content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize - 1))));
 
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
-                            content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
-                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Water));
+                            //content.newLine();
+                            //HudLib.BulletPoint(content);
+                            //content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, plantTime + DssConst.WorkTime_GatherFoil_FarmCulture))));
 
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(DssRef.lang.BuildHud_Produce));
-                            content.space();
-                            content.Add(new RichBoxText(DssConst.WheatFoodAmount.ToString()));
-                            content.Add(new RichBoxImage(SpriteName.WarsResource_RawFood));
-                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_RawFood));
+                            //content.newLine();
+                            //HudLib.BulletPoint(content);
+                            //content.Add(new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
+                            //content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
+                            //content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Water));
+
+                            //content.newLine();
+                            //HudLib.BulletPoint(content);
+                            //content.Add(new RichBoxText(DssRef.lang.BuildHud_Produce));
+                            //content.space();
+                            //content.Add(new RichBoxText(DssConst.WheatFoodAmount.ToString()));
+                            //content.Add(new RichBoxImage(SpriteName.WarsResource_RawFood));
+                            //content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_RawFood));
 
                             //content.Add(new RichBoxImage(SpriteName.pjNumPlus));
                             break;
 
                         case BuildAndExpandType.LinenFarm:
-                            content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize - 1))));
+                            farmHud(false, new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.LinenHarvestAmount), ItemResource.Empty);
+                            //content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
+                            //content.newLine();
+                            //HudLib.BulletPoint(content);
+                            //content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize - 1))));
 
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_Plant + DssConst.WorkTime_GatherFoil_FarmCulture))));
+                            //content.newLine();
+                            //HudLib.BulletPoint(content);
+                            //content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_Plant + DssConst.WorkTime_GatherFoil_FarmCulture))));
 
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
-                            content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
-                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Water));
+                            //content.newLine();
+                            //HudLib.BulletPoint(content);
+                            //content.Add(new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
+                            //content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
+                            //content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Water));
 
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(DssRef.lang.BuildHud_Produce));
-                            content.space();
-                            content.Add(new RichBoxText(TerrainContent.FarmCulture_ReadySize.ToString()));
-                            content.Add(new RichBoxImage(SpriteName.WarsResource_LinenCloth));
-                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Linen));
+                            //content.newLine();
+                            //HudLib.BulletPoint(content);
+                            //content.Add(new RichBoxText(DssRef.lang.BuildHud_Produce));
+                            //content.space();
+                            //content.Add(new RichBoxText(TerrainContent.FarmCulture_ReadySize.ToString()));
+                            //content.Add(new RichBoxImage(SpriteName.WarsResource_LinenCloth));
+                            //content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Linen));
 
                             //content.Add(new RichBoxImage(SpriteName.pjNumPlus));
+                            break;
+
+                        case BuildAndExpandType.LinenFarmUpgraded:
+                            farmHud(true, new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.LinenHarvestAmount), ItemResource.Empty);
                             break;
 
                         case BuildAndExpandType.RapeSeedFarm:
-                            content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize - 1))));
+                            farmHud(false, new ItemResource(ItemResourceType.Fuel_G, DssConst.RapeSeedFuelAmount), ItemResource.Empty);
+                            //content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
+                            //content.newLine();
+                            //HudLib.BulletPoint(content);
+                            //content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize - 1))));
 
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_Plant + DssConst.WorkTime_GatherFoil_FarmCulture))));
+                            //content.newLine();
+                            //HudLib.BulletPoint(content);
+                            //content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_Plant + DssConst.WorkTime_GatherFoil_FarmCulture))));
 
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
-                            content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
-                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Water));
+                            //content.newLine();
+                            //HudLib.BulletPoint(content);
+                            //content.Add(new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
+                            //content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
+                            //content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Water));
 
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(DssRef.lang.BuildHud_Produce));
-                            content.space();
-                            content.Add(new RichBoxText(DssConst.RapeSeedFuelAmount.ToString()));
-                            content.Add(new RichBoxImage(SpriteName.WarsResource_Fuel));
-                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Fuel));
+                            //content.newLine();
+                            //HudLib.BulletPoint(content);
+                            //content.Add(new RichBoxText(DssRef.lang.BuildHud_Produce));
+                            //content.space();
+                            //content.Add(new RichBoxText(DssConst.RapeSeedFuelAmount.ToString()));
+                            //content.Add(new RichBoxImage(SpriteName.WarsResource_Fuel));
+                            //content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Fuel));
 
                             //content.Add(new RichBoxImage(SpriteName.pjNumPlus));
                             break;
+                        case BuildAndExpandType.RapeSeedFarmUpgraded:
+                            farmHud(false, new ItemResource(ItemResourceType.Fuel_G, DssConst.RapeSeedFuelAmount), ItemResource.Empty);
+                            break;
 
                         case BuildAndExpandType.HempFarm:
-                            content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize - 1))));
+                            farmHud(false, new ItemResource(ItemResourceType.Fuel_G, DssConst.HempLinenAndFuelAmount), new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.HempLinenAndFuelAmount));
+                            //content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
+                            //content.newLine();
+                            //HudLib.BulletPoint(content);
+                            //content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize - 1))));
 
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_Plant + DssConst.WorkTime_GatherFoil_FarmCulture))));
+                            //content.newLine();
+                            //HudLib.BulletPoint(content);
+                            //content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_Plant + DssConst.WorkTime_GatherFoil_FarmCulture))));
 
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
-                            content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
-                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Water));
+                            //content.newLine();
+                            //HudLib.BulletPoint(content);
+                            //content.Add(new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
+                            //content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
+                            //content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Water));
 
-                            content.newLine();
-                            HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(DssRef.lang.BuildHud_Produce));
-                            content.space();
-                            content.Add(new RichBoxText(DssConst.HempLinenAndFuelAmount.ToString()));
-                            content.Add(new RichBoxImage(SpriteName.WarsResource_Fuel));
-                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Fuel));
-                            content.Add(new RichBoxImage(SpriteName.pjNumPlus));
-                            content.Add(new RichBoxText(DssConst.HempLinenAndFuelAmount.ToString()));
-                            content.Add(new RichBoxImage(SpriteName.WarsResource_LinenCloth));
-                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Linen));
+                            //content.newLine();
+                            //HudLib.BulletPoint(content);
+                            //content.Add(new RichBoxText(DssRef.lang.BuildHud_Produce));
+                            //content.space();
+                            //content.Add(new RichBoxText(DssConst.HempLinenAndFuelAmount.ToString()));
+                            //content.Add(new RichBoxImage(SpriteName.WarsResource_Fuel));
+                            //content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Fuel));
+                            //content.Add(new RichBoxImage(SpriteName.pjNumPlus));
+                            //content.Add(new RichBoxText(DssConst.HempLinenAndFuelAmount.ToString()));
+                            //content.Add(new RichBoxImage(SpriteName.WarsResource_LinenCloth));
+                            //content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Linen));
+                            break;
+
+                        case BuildAndExpandType.HempFarmUpgraded:
+                            farmHud(true, new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.HempLinenAndFuelAmount), new ItemResource(ItemResourceType.Fuel_G, DssConst.HempLinenAndFuelAmount));
                             break;
 
                         case BuildAndExpandType.HenPen:
@@ -512,6 +532,46 @@ namespace VikingEngine.DSSWars.Build
                     }
 
                     player.hud.tooltip.create(player, content, true);
+
+                    void farmHud(bool upgrade, ItemResource produce1, ItemResource produce2)
+                    {
+                        float plantTime = upgrade ? DssConst.WorkTime_Plant_Upgraded : DssConst.WorkTime_Plant;
+
+                        content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize - 1))));
+
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        var workTimeText = new RichBoxText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, plantTime + DssConst.WorkTime_GatherFoil_FarmCulture)));
+                        if (upgrade)
+                        {
+                            workTimeText.overrideColor = HudLib.AvailableColor;
+                        }
+                        content.Add(workTimeText);
+
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
+                        content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
+                        content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Water));
+
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RichBoxText(DssRef.lang.BuildHud_Produce));
+                        content.space();
+                        content.Add(new RichBoxText(produce1.amount.ToString()));
+                        content.Add(new RichBoxImage(ResourceLib.Icon(produce1.type)));//SpriteName.WarsResource_RawFood));
+                        content.Add(new RichBoxText(LangLib.Item(produce1.type)));//DssRef.lang.Resource_TypeName_RawFood));
+                        if (produce2.amount > 0)
+                        {
+                            content.Add(new RichBoxImage(SpriteName.pjNumPlus));
+                            content.Add(new RichBoxText(DssConst.HempLinenAndFuelAmount.ToString()));
+                            content.Add(new RichBoxImage(SpriteName.WarsResource_LinenCloth));
+                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Linen));
+                        }
+                    }
                 }, opt)
                 {
 
@@ -533,6 +593,8 @@ namespace VikingEngine.DSSWars.Build
                 }
                 content.Add(button);
                 content.space();
+
+               
             }
             content.Add(new RichBoxScale(1));
 

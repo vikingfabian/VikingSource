@@ -107,8 +107,13 @@ namespace VikingEngine.DSSWars.Work
         {
             switch (work)
             {
+               
                 case WorkType.Build:
                     return string.Format(DssRef.lang.WorkerStatus_BuildX, BuildLib.BuildOptions[workSubType].Label());
+               
+                case WorkType.Upgrade:
+                    return DssRef.todoLang.Upgrade_Order;
+
                 case WorkType.Craft:
                     return string.Format(DssRef.lang.Work_CraftX, LangLib.Item((ItemResourceType)workSubType));
 
@@ -232,6 +237,8 @@ namespace VikingEngine.DSSWars.Work
                                 break;
 
                             case TerrainSubFoilType.LinenFarm:
+                            case TerrainSubFoilType.LinenFarmUpgraded:
+
                                 carry = new Resource.ItemResource(
                                         ItemResourceType.Linen,
                                         subTile.terrainQuality,
@@ -245,6 +252,7 @@ namespace VikingEngine.DSSWars.Work
                                 break;
 
                             case TerrainSubFoilType.RapeSeedFarm:
+                            case TerrainSubFoilType.RapeSeedFarmUpgraded:
                                 carry = new Resource.ItemResource(
                                         ItemResourceType.Rapeseed,
                                         subTile.terrainQuality,
@@ -259,6 +267,7 @@ namespace VikingEngine.DSSWars.Work
                                 break;
 
                             case TerrainSubFoilType.HempFarm:
+                            case TerrainSubFoilType.HempFarmUpgraded:
                                 carry = new Resource.ItemResource(
                                         ItemResourceType.Hemp,
                                         subTile.terrainQuality,
@@ -579,18 +588,20 @@ namespace VikingEngine.DSSWars.Work
                     }
                     break;
 
+                case WorkType.Upgrade:
                 case WorkType.Build:
+                   
+                    if (orderIsActive(city))
                     {
-                        if (orderIsActive(city))
-                        {
-                            var build = BuildLib.BuildOptions[workSubType];
-                            build.execute_async(city, subTileEnd, ref subTile, false);
-                            EditSubTile edit = new EditSubTile(subTileEnd, subTile, true, true, false);
-                            edit.Submit();
+                        bool upgrade = work == WorkType.Upgrade;
+                        var build = BuildLib.BuildOptions[workSubType];
+                        build.execute_async(city, subTileEnd, ref subTile, upgrade);
+                        EditSubTile edit = new EditSubTile(subTileEnd, subTile, true, !upgrade, false);
+                        edit.Submit();
                             
-                            gainXp = build.experienceType();
-                        }
+                        gainXp = build.experienceType();
                     }
+                    
                     break;
                 case WorkType.School:
                     setExperience((WorkExperienceType)workSubType, workBonus);
@@ -978,8 +989,11 @@ namespace VikingEngine.DSSWars.Work
                         case TerrainSubFoilType.WheatFarm:
                         case TerrainSubFoilType.WheatFarmUpgraded:
                         case TerrainSubFoilType.LinenFarm:
+                        case TerrainSubFoilType.LinenFarmUpgraded:
                         case TerrainSubFoilType.RapeSeedFarm:
+                        case TerrainSubFoilType.RapeSeedFarmUpgraded:
                         case TerrainSubFoilType.HempFarm:
+                        case TerrainSubFoilType.HempFarmUpgraded:
                             time = DssConst.WorkTime_GatherFoil_FarmCulture;
                             break;
                         case TerrainSubFoilType.Stones:

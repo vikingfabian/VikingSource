@@ -119,16 +119,20 @@ namespace VikingEngine.DSSWars.Build
             result.Add(BuildAndExpandType.LinenFarm);
             if (unlocks.building_upgradedFarm)
             {
-                //result.Add(BuildAndExpandType.LinenFarmUpgraded);
+                result.Add(BuildAndExpandType.LinenFarmUpgraded);
             }
             result.Add(BuildAndExpandType.RapeSeedFarm);
             if (unlocks.building_upgradedFarm)
             {
-                //result.Add(BuildAndExpandType.RapeSeedFarmUpgraded);
+                result.Add(BuildAndExpandType.RapeSeedFarmUpgraded);
             }
             if (unlocks.building_mixedFarms)
             {
                 result.Add(BuildAndExpandType.HempFarm);
+                if (unlocks.building_upgradedFarm)
+                {
+                    result.Add(BuildAndExpandType.HempFarmUpgraded);
+                }
                 result.Add(BuildAndExpandType.PigPen);
             }
 
@@ -261,8 +265,11 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.WheatFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, SpriteName.WarsBuild_WheatFarms, CraftBuildingLib.WheatFarm);
             new BuildOption(BuildAndExpandType.WheatFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarmUpgraded, SpriteName.WarsBuild_WheatFarms, CraftBuildingLib.WheatFarmUpgrade);
             new BuildOption(BuildAndExpandType.LinenFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarm, SpriteName.WarsBuild_LinenFarms, CraftBuildingLib.LinenFarm);
+            new BuildOption(BuildAndExpandType.LinenFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarmUpgraded, SpriteName.WarsBuild_LinenFarms, CraftBuildingLib.LinenFarmUpgrade);
             new BuildOption(BuildAndExpandType.HempFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarm, SpriteName.WarsBuild_HempFarms, CraftBuildingLib.HempFarm);
+            new BuildOption(BuildAndExpandType.HempFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarmUpgraded, SpriteName.WarsBuild_HempFarms, CraftBuildingLib.HempFarmUpgrade);
             new BuildOption(BuildAndExpandType.RapeSeedFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarm, SpriteName.WarsBuild_RapeseedFarms, CraftBuildingLib.RapeseedFarm);
+            new BuildOption(BuildAndExpandType.RapeSeedFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarmUpgraded, SpriteName.WarsBuild_RapeseedFarms, CraftBuildingLib.RapeseedFarmUpgrade);
 
             new BuildOption(BuildAndExpandType.Pavement, TerrainMainType.Decor, (int)TerrainDecorType.Pavement, SpriteName.WarsBuild_Pavement, CraftBuildingLib.Pavement);
             new BuildOption(BuildAndExpandType.PavementFlower, TerrainMainType.Decor, (int)TerrainDecorType.PavementFlower, SpriteName.WarsBuild_PavementFlowers, CraftBuildingLib.PavementFlower);

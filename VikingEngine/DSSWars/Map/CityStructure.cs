@@ -435,10 +435,6 @@ namespace VikingEngine.DSSWars.Map
 
             //Complete
             city.buildingStructure = buildingStructure;
-            //    buildingCount_nobelHouse = nobelHouseCount;
-            //city.buildingCount_coalpit = coalPitCount;
-            //city.buildingLevel_logistics = logisticsLevel;
-            //city.buildingCount_waterresorvoir = waterReservoirs;
 
             void farming(ref SubTile subTile)
             {

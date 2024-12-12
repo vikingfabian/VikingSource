@@ -154,8 +154,9 @@ namespace VikingEngine.DSSWars.Map
             this.color = other.color;
         }
 
-        public bool MayBuild(BuildAndExpandType build)
+        public bool MayBuild(BuildAndExpandType build, out bool upgrade)
         {
+            upgrade = false;
             switch (mainTerrain)
             {
                 case TerrainMainType.Building:
@@ -166,12 +167,25 @@ namespace VikingEngine.DSSWars.Map
                     switch ((TerrainSubFoilType)subTerrain)
                     {
                         case TerrainSubFoilType.WheatFarm:
+                            upgrade = true;
                             return build == BuildAndExpandType.WheatFarmUpgraded;
 
                         case TerrainSubFoilType.LinenFarm:
-                        case TerrainSubFoilType.WheatFarmUpgraded:
+                            upgrade = true;
+                            return build == BuildAndExpandType.LinenFarmUpgraded;
+
                         case TerrainSubFoilType.RapeSeedFarm:
+                            upgrade = true;
+                            return build == BuildAndExpandType.RapeSeedFarmUpgraded;
+
                         case TerrainSubFoilType.HempFarm:
+                            upgrade = true;
+                            return build == BuildAndExpandType.HempFarmUpgraded;
+
+                        case TerrainSubFoilType.WheatFarmUpgraded:
+                        case TerrainSubFoilType.LinenFarmUpgraded:
+                        case TerrainSubFoilType.RapeSeedFarmUpgraded:
+                        case TerrainSubFoilType.HempFarmUpgraded:
                             return false;
                         
                     }

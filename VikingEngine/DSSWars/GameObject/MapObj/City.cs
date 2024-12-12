@@ -171,7 +171,7 @@ namespace VikingEngine.DSSWars.GameObject
                             var player = faction.player.GetLocalPlayer();
                             if (player != null)
                             {
-                                player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, this, freeSubTile, Build.BuildAndExpandType.Logistics), ActionOnConflict.Cancel);
+                                player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, this, freeSubTile, Build.BuildAndExpandType.Logistics, false), ActionOnConflict.Cancel);
                             }
                         }
                         return true;
