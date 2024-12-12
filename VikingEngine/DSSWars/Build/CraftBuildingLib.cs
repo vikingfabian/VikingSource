@@ -129,10 +129,33 @@ namespace VikingEngine.DSSWars.Build
            1,
            new UseResource[]
            {
-        new UseResource(ItemResourceType.Wood_Group, 60),
+                new UseResource(ItemResourceType.Wood_Group, 60),
            },
             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
        );
+        public static readonly CraftBlueprint Postal_Level2 = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.PostalLevel2,
+           1,
+           new UseResource[]
+           {
+                new UseResource(ItemResourceType.Wagon2Wheel, 1),
+           },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Practitioner_2
+       )
+        { upgradeFrom = Postal };
+
+        public static readonly CraftBlueprint Postal_Level3 = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.PostalLevel3,
+           1,
+           new UseResource[]
+           {
+                new UseResource(ItemResourceType.Wagon4Wheel, 1),
+           },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Practitioner_2
+       )
+        { upgradeFrom = Postal };
 
         public static readonly CraftBlueprint Recruitment = new CraftBlueprint(
             CraftResultType.Building,

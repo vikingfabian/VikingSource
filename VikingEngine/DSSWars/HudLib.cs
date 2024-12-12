@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars
             RbOnGuiSettings = RbSettings;
             RbOnGuiSettings.scaleUp(1.4f);
 
-            HeadDisplayWidth = Engine.Screen.IconSize * 6;
+            HeadDisplayWidth = Engine.Screen.IconSize * 7;
             HeadDisplayEdge = Engine.Screen.BorderWidth;
 
             richboxGui = new RichboxGuiSettings()

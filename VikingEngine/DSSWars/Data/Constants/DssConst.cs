@@ -112,7 +112,11 @@ namespace VikingEngine.DSSWars
         public static int IronSellValue = 5;
         public static int FoodGoldValue = 2;
         public static int FoodGoldValue_BlackMarket = FoodGoldValue * 5;
-        public static int CityDeliveryCount = 30;
+
+        public static int CityDeliveryChunkSize_Mini = 10;
+        public static int CityDeliveryChunkSize_Level1 = 30;
+        public static int CityDeliveryChunkSize_Level2 = 60;
+        public static int CityDeliveryChunkSize_Level3 = 120;
 
         public const int ExpandGuardSizeCost = 12000;
         public const int ReleaseGuardSizeGain = ExpandGuardSizeCost / 2;

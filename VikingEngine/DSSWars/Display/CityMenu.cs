@@ -603,7 +603,15 @@ namespace VikingEngine.DSSWars.Display
                         }, resourcesSubTab, SoundLib.menutab));
                     subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
                     content.Add(subTab);
-                    content.space();
+
+                    if (resourcesSubTab == ResourcesSubTab.Overview_Armor)
+                    {
+                        content.newLine();
+                    }
+                    else
+                    {
+                        content.space();
+                    }
                 }
                 content.newParagraph();
             }

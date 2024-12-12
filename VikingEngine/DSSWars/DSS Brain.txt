@@ -4,9 +4,15 @@ Double soldier health
 20 new soldier types
 14 new buildings
 50 new resources
+Farms can be upgraded
+Delivery amount can be changed
 All water values are x10
 Technology tree
-3 rew city cultures
+3 new city cultures
+The menu is 20% wider
+
+ bb           
+
 
 optimized worker performance
 Added multicore priority to make the map load smoother during gameplay

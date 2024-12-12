@@ -336,10 +336,19 @@ namespace VikingEngine.DSSWars.Display.Translation
                             return DssRef.lang.Building_NobleHouse;
                         case TerrainBuildingType.PigPen:
                             return DssRef.lang.BuildingType_PigPen;
+
                         case TerrainBuildingType.Postal:
                             return DssRef.lang.BuildingType_Postal;
+                        case TerrainBuildingType.PostalLevel2:
+                        case TerrainBuildingType.PostalLevel3:
+                            return string.Format(DssRef.todoLang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Postal);
+
                         case TerrainBuildingType.Recruitment:
                             return DssRef.lang.BuildingType_Recruitment;
+                        case TerrainBuildingType.RecruitmentLevel2:
+                        case TerrainBuildingType.RecruitmentLevel3:
+                            return string.Format(DssRef.todoLang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Recruitment);
+
                         case TerrainBuildingType.Work_Smith:
                             return DssRef.lang.BuildingType_Smith;                       
                         case TerrainBuildingType.Storehouse:

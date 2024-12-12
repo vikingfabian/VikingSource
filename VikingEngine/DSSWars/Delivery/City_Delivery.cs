@@ -58,28 +58,30 @@ namespace VikingEngine.DSSWars.GameObject
 
                                             if (status.inProgress.type == ItemResourceType.Men)
                                             {
-                                                workForce.amount -= DssConst.CityDeliveryCount;
+                                                workForce.amount -= status.inProgress.SendAmount;
 
-                                                othercity.workForce.deliverCount += DssConst.CityDeliveryCount;
+                                                othercity.workForce.deliverCount += status.inProgress.SendAmount;
                                             }
                                             else
                                             {
-                                                var resource_send = GetGroupedResource(status.inProgress.type);
-                                                resource_send.amount -= DssConst.CityDeliveryCount;
-                                                SetGroupedResource(status.inProgress.type, resource_send);
+                                                //var resource_send = GetGroupedResource(status.inProgress.type);
+                                                //resource_send.amount -= status.inProgress.SendAmount;
+                                                //SetGroupedResource(status.inProgress.type, resource_send);
+                                                AddGroupedResource(status.inProgress.type, -status.inProgress.SendAmount);
 
                                                 var resource_recieve = othercity.GetGroupedResource(status.inProgress.type);
-                                                resource_recieve.deliverCount += DssConst.CityDeliveryCount;
+                                                resource_recieve.deliverCount += status.inProgress.SendAmount;
                                                 othercity.SetGroupedResource(status.inProgress.type, resource_recieve);
                                             }
 
                                             status.active++;
                                             status.countdown = new TimeInGameCountdown(DeliveryProfile.DeliveryTime(this, othercity, out _));
                                             if (inRender_detailLayer)
+
                                             {
                                                 Ref.update.AddSyncAction(new SyncAction(() =>
                                                 {
-                                                    new ResourceEffect(status.inProgress.type, DssConst.CityDeliveryCount,
+                                                    new ResourceEffect(status.inProgress.type, status.inProgress.SendAmount,
                                                        VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(conv.IntToIntVector2(status.idAndPosition)), DssConst.Men_StandardModelScale * 2f),
                                                        ResourceEffectType.Deliver);
                                                 }));
@@ -102,7 +104,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 City othercity = DssRef.world.cities[status.inProgress.ToCity()];
                                 if (status.inProgress.type == ItemResourceType.Men)
                                 {
-                                     othercity.addWorkers(DssConst.CityDeliveryCount);
+                                     othercity.addWorkers(status.inProgress.SendAmount);
                                     //if (othercity.workForce.amount + DssConst.CityDeliveryCount > othercity.workForceMax)
                                     //{
                                     //    //Add rest to immigration
@@ -118,7 +120,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     {
                                         othercity.workForce.deliverCount = 0;
                                     }
-                                    othercity.workForce.deliverCount = Bound.Min( othercity.workForce.deliverCount - DssConst.CityDeliveryCount, 0);
+                                    othercity.workForce.deliverCount = Bound.Min( othercity.workForce.deliverCount - status.inProgress.SendAmount, 0);
                                 }
                                 else
                                 {
@@ -131,8 +133,8 @@ namespace VikingEngine.DSSWars.GameObject
                                         DssRef.achieve.UnlockAchievement_async(AchievementIndex.deliver_food);
                                     }
                                     
-                                    resource.amount += DssConst.CityDeliveryCount;
-                                    resource.deliverCount -= DssConst.CityDeliveryCount;
+                                    resource.amount += status.inProgress.SendAmount;
+                                    resource.deliverCount -= status.inProgress.SendAmount;
                                     othercity.SetGroupedResource(status.inProgress.type, resource);
                                 }
                                 status.active = DeliveryActiveStatus.Idle;
@@ -248,17 +250,29 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void addDelivery(IntVector2 subPos, bool recruitment)
+        public void addDelivery(IntVector2 subPos, int level, bool recruitment)
         {
             DeliveryStatus deliveryStatus = new DeliveryStatus()
             {
                 idAndPosition = conv.IntVector2ToInt(subPos),
+                level = level,
             };
 
             deliveryStatus.defaultSetup(recruitment);
 
             lock (deliveryServices)
             {
+                for (int i = 0; i < deliveryServices.Count; ++i)
+                {
+                    if (deliveryServices[i].idAndPosition == deliveryStatus.idAndPosition)
+                    {
+                        //Upgrade
+                        var prevDelivery = deliveryServices[i];
+                        prevDelivery.level = level;
+                        deliveryServices[i] = prevDelivery;
+                        return;
+                    }
+                }
                 deliveryServices.Add(deliveryStatus);
             }
         }

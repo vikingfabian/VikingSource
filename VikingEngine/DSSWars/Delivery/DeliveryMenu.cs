@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Display.Component;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
@@ -54,12 +55,70 @@ namespace VikingEngine.DSSWars.Delivery
                     {
                         RichBoxContent content = new RichBoxContent();
                         HudLib.Description(content, DssRef.lang.BuildingType_Postal_Description);
-                        HudLib.Description(content, string.Format(DssRef.lang.Deliver_WillSendXInfo, DssConst.CityDeliveryCount));
+                        HudLib.Description(content, string.Format(DssRef.lang.Deliver_WillSendXInfo, DssConst.CityDeliveryChunkSize_Level1));
                         player.hud.tooltip.create(player, content, true);
                     }));
-                    content.newParagraph();
+                    content.newLine();
+
+                    if (currentStatus.profile.type != ItemResourceType.NONE)
+                    {
+                        bool reachedBuffer = false;
+                        city.GetGroupedResource(currentStatus.profile.type).toMenu(content, currentStatus.profile.type, false, ref reachedBuffer);
+
+                        content.newLine();
+                    }
+                    for (ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview_Resources; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
+                    {
+                        var tabContent = new RichBoxContent();
+                        //string text = null;
+                        switch (resourcesSubTab)
+                        {
+                            case ResourcesSubTab.Overview_Resources:
+                                tabContent.Add(new RichBoxText(DssRef.todoLang.Hud_category ));
+                                tabContent.space();
+                                tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Wood));
+                                break;
+
+                            case ResourcesSubTab.Overview_Metals:
+                                tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Iron));
+                                break;
+                            case ResourcesSubTab.Overview_Weapons:
+                                tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Sword));
+                                break;
+
+                            case ResourcesSubTab.Overview_Projectile:
+                                tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Bow));
+                                break;
+
+                            case ResourcesSubTab.Overview_Armor:
+                                tabContent.Add(new RichBoxImage(SpriteName.cmdMailArmor));
+                                break;
+                        }
+                        var subTab = new RichboxButton(tabContent,
+                            new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
+                            {
+                                player.resourcesSubTab = resourcesSubTab;
+                            }, resourcesSubTab, SoundLib.menutab));
+                        subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
+                        content.Add(subTab);
+                        content.space();
+                    }
+
+                    
                     content.Add(new RichBoxScale(1.6f));
-                    foreach (var item in City.MovableCityResourceTypes)
+                    content.newLine();
+                    ItemResourceType[] resourceTypes;
+
+                    switch (player.resourcesSubTab)
+                    {
+                        default: resourceTypes = City.MovableCityResource_Misc; break;
+                        case ResourcesSubTab.Overview_Metals: resourceTypes = City.MovableCityResource_Metals; break;
+                        case ResourcesSubTab.Overview_Weapons: resourceTypes = City.MovableCityResource_WeaponMelee; break;
+                        case ResourcesSubTab.Overview_Projectile: resourceTypes = City.MovableCityResource_WeaponRanged; break;
+                        case ResourcesSubTab.Overview_Armor: resourceTypes = City.MovableCityResource_Armor; break;
+                    }
+
+                    foreach (var item in resourceTypes)
                     {
                         var button = new RichboxButton(new List<AbsRichBoxMember>{
                                 new RichBoxImage(ResourceLib.Icon(item))   
@@ -170,6 +229,39 @@ namespace VikingEngine.DSSWars.Delivery
                 }
 
                 content.newParagraph();
+                //SEND CHUNK SIZE
+                HudLib.Label(content, DssRef.todoLang.Delivery_SendChunk);
+                content.newLine();
+                List<int> sendChunkOptions = new List<int>(4);
+                sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Mini);
+                sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Level1);
+
+                if (currentStatus.level >= 2)
+                {
+                    sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Level2);
+                }
+                if (currentStatus.level >= 3)
+                {
+                    sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Level3);
+                }
+
+                foreach (int amount in sendChunkOptions)
+                {
+                    var button = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(amount.ToString()) },
+                        new RbAction(() =>
+                        {
+                            DeliveryStatus currentStatus = get();
+                            currentStatus.profile.SendAmount = amount;
+                            set(currentStatus);
+                        }, SoundLib.menu));
+
+                    button.setGroupSelectionColor(HudLib.RbSettings, amount == currentStatus.profile.SendAmount);
+
+                    content.Add(button);
+                    content.space();
+                }
+
+                content.newParagraph();
 
                 var minLabel = new RichBoxText(DssRef.lang.Delivery_SenderMinimumCap + ":");
                 minLabel.overrideColor = HudLib.TitleColor_Label_Dark;
@@ -235,7 +327,6 @@ namespace VikingEngine.DSSWars.Delivery
 
                     if (isSending)
                     {
-
                         content.newLine();
                         HudLib.BulletPoint(content);
                         content.Add(new RichBoxText(currentStatus.longTimeProgress(city)));

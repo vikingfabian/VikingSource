@@ -18,10 +18,8 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City
     {
-        /// <remarks>
-        /// Changing the list will corrupt the save files!
-        /// </remarks>
-        public static readonly ItemResourceType[] MovableCityResourceTypes =
+
+        public static readonly ItemResourceType[] MovableCityResource_Misc =
         {
              ItemResourceType.Wood_Group,
              ItemResourceType.Fuel_G,
@@ -32,6 +30,15 @@ namespace VikingEngine.DSSWars.GameObject
              ItemResourceType.CoolingFluid,
              ItemResourceType.SkinLinen_Group,
 
+             ItemResourceType.Toolkit,
+            ItemResourceType.Wagon2Wheel,
+            ItemResourceType.Wagon4Wheel,
+            ItemResourceType.BlackPowder,
+            ItemResourceType.GunPowder,
+            ItemResourceType.LedBullet,
+        };
+        public static readonly ItemResourceType[] MovableCityResource_Metals =
+       {
              ItemResourceType.IronOre_G,
              ItemResourceType.TinOre,
              ItemResourceType.CupperOre,
@@ -48,33 +55,38 @@ namespace VikingEngine.DSSWars.GameObject
 
             ItemResourceType.Bronze,
             ItemResourceType.CastIron,
-            ItemResourceType.BloomeryIron,
+            //ItemResourceType.BloomeryIron,
             ItemResourceType.Mithril,
-
-            ItemResourceType.Toolkit,
-            ItemResourceType.Wagon2Wheel,
-            ItemResourceType.Wagon4Wheel,
-            ItemResourceType.BlackPowder,
-            ItemResourceType.GunPowder,
-            ItemResourceType.LedBullet,
-
+        };
+        public static readonly ItemResourceType[] MovableCityResource_WeaponMelee =
+       {
             ItemResourceType.SharpStick,
             ItemResourceType.BronzeSword,
             ItemResourceType.ShortSword,
             ItemResourceType.Sword,
             ItemResourceType.LongSword,
             ItemResourceType.HandSpear,
-            ItemResourceType.MithrilSword,
 
             ItemResourceType.Warhammer,
              ItemResourceType.TwoHandSword,
              ItemResourceType.KnightsLance,
+            ItemResourceType.MithrilSword,
+        };
+
+        public static readonly ItemResourceType[] MovableCityResource_WeaponRanged =
+         {
 
              ItemResourceType.SlingShot,
              ItemResourceType.ThrowingSpear,
              ItemResourceType.Bow,
              ItemResourceType.LongBow,
-            ItemResourceType.MithrilBow,
+            ItemResourceType.Crossbow,
+           ItemResourceType.MithrilBow,
+
+            ItemResourceType.HandCannon,
+            ItemResourceType.HandCulverin,
+            ItemResourceType.Rifle,
+            ItemResourceType.Blunderbus,
 
             ItemResourceType.Ballista,
             ItemResourceType.Manuballista,
@@ -83,6 +95,10 @@ namespace VikingEngine.DSSWars.GameObject
             ItemResourceType.SiegeCannonIron,
             ItemResourceType.ManCannonIron,
 
+        };
+
+        public static readonly ItemResourceType[] MovableCityResource_Armor =
+         {
              ItemResourceType.PaddedArmor,
              ItemResourceType.HeavyPaddedArmor,
              ItemResourceType.BronzeArmor,

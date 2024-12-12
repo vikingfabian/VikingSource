@@ -161,8 +161,8 @@ namespace VikingEngine.DSSWars.Build
             if (city.buildingStructure.buildingLevel_logistics >= 1 ||
                 StartupSettings.UnlockAllProgress)
             {
-                //result.Add(BuildAndExpandType.PostalLevel2);
-                //result.Add(BuildAndExpandType.PostalLevel3);
+                result.Add(BuildAndExpandType.PostalLevel2);
+                result.Add(BuildAndExpandType.PostalLevel3);
                 result.Add(BuildAndExpandType.Recruitment);
                 //result.Add(BuildAndExpandType.RecruitmentLevel2);
                 //result.Add(BuildAndExpandType.RecruitmentLevel3);
@@ -247,7 +247,11 @@ namespace VikingEngine.DSSWars.Build
             };
 
             new BuildOption(BuildAndExpandType.WorkerHuts, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, SpriteName.WarsBuild_WorkerHuts, CraftBuildingLib.WorkerHut);
+
             new BuildOption(BuildAndExpandType.Postal, TerrainMainType.Building, (int)TerrainBuildingType.Postal, SpriteName.WarsBuild_Postal, CraftBuildingLib.Postal);
+            new BuildOption(BuildAndExpandType.PostalLevel2, TerrainMainType.Building, (int)TerrainBuildingType.PostalLevel2, SpriteName.WarsBuild_Postal, CraftBuildingLib.Postal_Level2);
+            new BuildOption(BuildAndExpandType.PostalLevel3, TerrainMainType.Building, (int)TerrainBuildingType.PostalLevel3, SpriteName.WarsBuild_Postal, CraftBuildingLib.Postal_Level3);
+
             new BuildOption(BuildAndExpandType.Recruitment, TerrainMainType.Building, (int)TerrainBuildingType.Recruitment, SpriteName.WarsBuild_Recruitment, CraftBuildingLib.Recruitment);
             new BuildOption(BuildAndExpandType.SoldierBarracks, TerrainMainType.Building, (int)TerrainBuildingType.SoldierBarracks, SpriteName.WarsBuild_SoldierBarracks, CraftBuildingLib.SoldierBarracks);
             new BuildOption(BuildAndExpandType.Nobelhouse, TerrainMainType.Building, (int)TerrainBuildingType.Nobelhouse, SpriteName.WarsBuild_Nobelhouse, CraftBuildingLib.NobelHouse);

@@ -63,6 +63,11 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType.ManCannonIron,
         };
 
+        //static readonly int[] SendSizeOptions =
+        // {
+
+        //};
+
         City city;
         LocalPlayer player;
         ProgressQue que = new ProgressQue();

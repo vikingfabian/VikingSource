@@ -50,6 +50,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Info_FooodAndDeliveryLocation => "By default, workers go to the city hall to eat or drop off items";
         public string GameMenu_UseSpeedX => "{0} speed option";
 
+        public string Delivery_SendChunk => "Items per Delivery";
+
         public string Conscript_SplashDamage => "Splash damage";
         public string Conscript_HighSplashDamage => "High splash damage";
 
@@ -101,6 +103,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Hud_Distance => "Distance";
 
         public string Hud_Unlock => "Unlock";
+        public string Hud_category => "Category";
 
         public string Resource_TypeName_Wagon2Wheel=> "Small wagon";
         public string Resource_TypeName_Wagon4Wheel=> "Large wagon";
