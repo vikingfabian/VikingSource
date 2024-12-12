@@ -519,6 +519,21 @@ namespace VikingEngine.DSSWars.Build
                             //CraftResourceLib.Charcoal.toMenu(content, city, false);
                             break;
 
+                        case BuildAndExpandType.Postal:
+                        case BuildAndExpandType.Recruitment:
+                            deliveryHud(1);
+                            break;
+
+                        case BuildAndExpandType.PostalLevel2:
+                        case BuildAndExpandType.RecruitmentLevel2:
+                            deliveryHud(2);
+                            break;
+
+                        case BuildAndExpandType.PostalLevel3:
+                        case BuildAndExpandType.RecruitmentLevel3:
+                            deliveryHud(3);
+                            break;
+
                     }
 
 
@@ -533,6 +548,38 @@ namespace VikingEngine.DSSWars.Build
 
                     player.hud.tooltip.create(player, content, true);
 
+
+                    void deliveryHud(int level)
+                    {
+                        int maxAmount;
+                        float speedBonus;
+
+                        switch (level)
+                        {
+                            default:
+                                maxAmount = DssConst.CityDeliveryChunkSize_Level1;
+                                speedBonus = 0;
+                                break;
+                            case 2:
+                                maxAmount = DssConst.CityDeliveryChunkSize_Level2;
+                                speedBonus = DssConst.DeliveryLevel2TimeReducePerc;
+                                break;
+                            case 3:
+                                maxAmount = DssConst.CityDeliveryChunkSize_Level3;
+                                speedBonus = DssConst.DeliveryLevel3TimeReducePerc;
+                                break;
+                        }
+
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Delivery_SendChunk, maxAmount)));
+                        if (speedBonus > 0)
+                        {
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.Delivery_SpeedBonus, speedBonus)));
+                        }
+                    }
                     void farmHud(bool upgrade, ItemResource produce1, ItemResource produce2)
                     {
                         float plantTime = upgrade ? DssConst.WorkTime_Plant_Upgraded : DssConst.WorkTime_Plant;

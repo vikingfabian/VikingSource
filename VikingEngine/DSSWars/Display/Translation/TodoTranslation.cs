@@ -51,6 +51,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string GameMenu_UseSpeedX => "{0} speed option";
 
         public string Delivery_SendChunk => "Items per Delivery";
+        public string Delivery_SpeedBonus => "Speed bonus: {0}%";
 
         public string Conscript_SplashDamage => "Splash damage";
         public string Conscript_HighSplashDamage => "High splash damage";
@@ -63,7 +64,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string ExperienceType_Farm => "Farmer";
         public string ExperienceType_AnimalCare => "Animal care";
         public string ExperienceType_HouseBuilding => "House builder";
-        public string ExperienceType_WoodCutter => "Wood worker";
+        public string ExperienceType_WoodWork => "Wood worker";
         public string ExperienceType_StoneCutter => "Stone cutter";
         public string ExperienceType_Mining => "Miner";
         public string ExperienceType_Transport => "Transport";

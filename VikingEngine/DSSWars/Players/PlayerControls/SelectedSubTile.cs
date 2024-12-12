@@ -80,9 +80,13 @@ namespace VikingEngine.DSSWars.Players
                                                 selectTileResult = SelectTileResult.CityHall;
                                                 break;
                                             case Map.TerrainBuildingType.Postal:
+                                            case Map.TerrainBuildingType.PostalLevel2:
+                                            case Map.TerrainBuildingType.PostalLevel3:
                                                 selectTileResult = SelectTileResult.Postal;
                                                 break;
                                             case Map.TerrainBuildingType.Recruitment:
+                                            case Map.TerrainBuildingType.RecruitmentLevel2:
+                                            case Map.TerrainBuildingType.RecruitmentLevel3:
                                                 selectTileResult = SelectTileResult.Recruitment;
                                                 break;
 

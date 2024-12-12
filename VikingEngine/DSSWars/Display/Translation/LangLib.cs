@@ -64,8 +64,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                     name = DssRef.todoLang.ExperienceType_HouseBuilding;
                     icon = SpriteName.WarsHammer;
                     break;
-                case WorkExperienceType.WoodCutter:
-                    name = DssRef.todoLang.ExperienceType_WoodCutter;
+                case WorkExperienceType.WoodWork:
+                    name = DssRef.todoLang.ExperienceType_WoodWork;
                     icon = SpriteName.WarsResource_Wood;
                     break;
                 case WorkExperienceType.StoneCutter:
@@ -507,9 +507,15 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.lang.BuildingType_HenPen_Description;
                 case TerrainBuildingType.WorkerHut:
                     return string.Format(DssRef.lang.BuildingType_WorkerHut_DescriptionLimitX, GameObject.CityDetail.WorkersPerHut);
+                
                 case TerrainBuildingType.Postal:
+                case TerrainBuildingType.PostalLevel2:
+                case TerrainBuildingType.PostalLevel3:
                     return DssRef.lang.BuildingType_Postal_Description;
+
                 case TerrainBuildingType.Recruitment:
+                case TerrainBuildingType.RecruitmentLevel2:
+                case TerrainBuildingType.RecruitmentLevel3:
                     return DssRef.lang.BuildingType_Recruitment_Description;
 
                 case TerrainBuildingType.SoldierBarracks:

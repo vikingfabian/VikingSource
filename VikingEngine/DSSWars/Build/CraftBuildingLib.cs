@@ -133,6 +133,7 @@ namespace VikingEngine.DSSWars.Build
            },
             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
        );
+
         public static readonly CraftBlueprint Postal_Level2 = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.PostalLevel2,
@@ -168,6 +169,30 @@ namespace VikingEngine.DSSWars.Build
             },
             XP.WorkExperienceType.HouseBuilding
         );
+
+        public static readonly CraftBlueprint Recruitment_Level2 = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.RecruitmentLevel2,
+           1,
+          new UseResource[]
+           {
+                new UseResource(ItemResourceType.Wagon2Wheel, 1),
+           },
+           XP.WorkExperienceType.HouseBuilding
+        )
+        { upgradeFrom = Recruitment };
+
+        public static readonly CraftBlueprint Recruitment_Level3 = new CraftBlueprint(
+          CraftResultType.Building,
+          (int)Build.BuildAndExpandType.RecruitmentLevel3,
+          1,
+         new UseResource[]
+          {
+                new UseResource(ItemResourceType.Wagon4Wheel, 1),
+          },
+          XP.WorkExperienceType.HouseBuilding
+       )
+        { upgradeFrom = Recruitment };
 
         public static readonly CraftBlueprint SoldierBarracks = new CraftBlueprint(
             CraftResultType.Building,

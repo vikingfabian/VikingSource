@@ -200,5 +200,8 @@ namespace VikingEngine.DSSWars
 
         public static float Time_SchoolOneXP = 2;
 
+        public static float DeliveryLevel2TimeReducePerc = 5;
+        public static float DeliveryLevel3TimeReducePerc = 10;
+
     }
 }

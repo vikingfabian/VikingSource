@@ -75,7 +75,7 @@ namespace VikingEngine.DSSWars.GameObject
                                             }
 
                                             status.active++;
-                                            status.countdown = new TimeInGameCountdown(DeliveryProfile.DeliveryTime(this, othercity, out _));
+                                            status.countdown = new TimeInGameCountdown(DeliveryProfile.DeliveryTime(this, othercity, status.level, out _));
                                             if (inRender_detailLayer)
 
                                             {

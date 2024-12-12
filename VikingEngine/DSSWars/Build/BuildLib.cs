@@ -164,8 +164,8 @@ namespace VikingEngine.DSSWars.Build
                 result.Add(BuildAndExpandType.PostalLevel2);
                 result.Add(BuildAndExpandType.PostalLevel3);
                 result.Add(BuildAndExpandType.Recruitment);
-                //result.Add(BuildAndExpandType.RecruitmentLevel2);
-                //result.Add(BuildAndExpandType.RecruitmentLevel3);
+                result.Add(BuildAndExpandType.RecruitmentLevel2);
+                result.Add(BuildAndExpandType.RecruitmentLevel3);
 
                 result.Add(BuildAndExpandType.Storehouse);
                 result.Add(BuildAndExpandType.Tavern);
@@ -253,6 +253,9 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.PostalLevel3, TerrainMainType.Building, (int)TerrainBuildingType.PostalLevel3, SpriteName.WarsBuild_Postal, CraftBuildingLib.Postal_Level3);
 
             new BuildOption(BuildAndExpandType.Recruitment, TerrainMainType.Building, (int)TerrainBuildingType.Recruitment, SpriteName.WarsBuild_Recruitment, CraftBuildingLib.Recruitment);
+            new BuildOption(BuildAndExpandType.RecruitmentLevel2, TerrainMainType.Building, (int)TerrainBuildingType.RecruitmentLevel2, SpriteName.WarsBuild_Recruitment, CraftBuildingLib.Recruitment_Level2);
+            new BuildOption(BuildAndExpandType.RecruitmentLevel3, TerrainMainType.Building, (int)TerrainBuildingType.RecruitmentLevel3, SpriteName.WarsBuild_Recruitment, CraftBuildingLib.Recruitment_Level3);
+            
             new BuildOption(BuildAndExpandType.SoldierBarracks, TerrainMainType.Building, (int)TerrainBuildingType.SoldierBarracks, SpriteName.WarsBuild_SoldierBarracks, CraftBuildingLib.SoldierBarracks);
             new BuildOption(BuildAndExpandType.Nobelhouse, TerrainMainType.Building, (int)TerrainBuildingType.Nobelhouse, SpriteName.WarsBuild_Nobelhouse, CraftBuildingLib.NobelHouse);
             new BuildOption(BuildAndExpandType.Tavern, TerrainMainType.Building, (int)TerrainBuildingType.Tavern, SpriteName.WarsBuild_Tavern, CraftBuildingLib.Tavern);

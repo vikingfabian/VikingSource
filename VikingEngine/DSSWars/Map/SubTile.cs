@@ -160,6 +160,24 @@ namespace VikingEngine.DSSWars.Map
             switch (mainTerrain)
             {
                 case TerrainMainType.Building:
+                    switch ((TerrainBuildingType)subTerrain)
+                    {
+                        default: return false;
+
+                        case TerrainBuildingType.Postal:
+                            upgrade = true;
+                            return build == BuildAndExpandType.PostalLevel2 || build == BuildAndExpandType.PostalLevel3;
+                        case TerrainBuildingType.PostalLevel2:
+                            upgrade = true;
+                            return build == BuildAndExpandType.PostalLevel3;
+
+                        case TerrainBuildingType.Recruitment:
+                            upgrade = true;
+                            return build == BuildAndExpandType.RecruitmentLevel2 || build == BuildAndExpandType.RecruitmentLevel3;
+                        case TerrainBuildingType.RecruitmentLevel2:
+                            upgrade = true;
+                            return build == BuildAndExpandType.RecruitmentLevel3;
+                    }
                 case TerrainMainType.DefaultSea:
                     return false;
 
@@ -190,8 +208,6 @@ namespace VikingEngine.DSSWars.Map
                         
                     }
                     break;
-
-
             }
 
             return true;

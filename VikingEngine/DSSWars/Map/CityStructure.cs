@@ -300,9 +300,14 @@ namespace VikingEngine.DSSWars.Map
                                                 break;
 
                                             case TerrainBuildingType.Postal:
+                                            case TerrainBuildingType.PostalLevel2:
+                                            case TerrainBuildingType.PostalLevel3:
                                                 ++buildingStructure.Postal_count;
                                                 break;
+
                                             case TerrainBuildingType.Recruitment:
+                                            case TerrainBuildingType.RecruitmentLevel2:
+                                            case TerrainBuildingType.RecruitmentLevel3:
                                                 ++buildingStructure.Recruitment_count;
                                                 break;
 

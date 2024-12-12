@@ -444,22 +444,22 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_storehouse, rnd, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.Postal:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, 0, wp, WorldData.SubTileWidth * 1f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, 0, wp, WorldData.SubTileWidth * 0.9f));
                     break;
                 case TerrainBuildingType.PostalLevel2:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, 1, wp, WorldData.SubTileWidth * 1f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, 1, wp, WorldData.SubTileWidth * 0.9f));
                     break;
                 case TerrainBuildingType.PostalLevel3:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, 2, wp, WorldData.SubTileWidth * 1f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, 2, wp, WorldData.SubTileWidth * 0.9f));
                     break;
                 case TerrainBuildingType.Recruitment:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_recruitment, 0, wp, WorldData.SubTileWidth * 1f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_recruitment, 0, wp, WorldData.SubTileWidth * 0.9f));
                     break;
                 case TerrainBuildingType.RecruitmentLevel2:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_recruitment, 0, wp, WorldData.SubTileWidth * 1f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_recruitment, 0, wp, WorldData.SubTileWidth * 0.9f));
                     break;
                 case TerrainBuildingType.RecruitmentLevel3:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_recruitment, 0, wp, WorldData.SubTileWidth * 1f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_recruitment, 0, wp, WorldData.SubTileWidth * 0.9f));
                     break;
                 case TerrainBuildingType.SoldierBarracks:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 1, wp, WorldData.SubTileWidth * 1f));

@@ -443,7 +443,7 @@ namespace VikingEngine.DSSWars.Display
             experience(SpriteName.WarsWorkFarm, DssRef.todoLang.ExperienceType_Farm, city.topskill_Farm);
             experience(SpriteName.WarsBuild_HenPen, DssRef.todoLang.ExperienceType_AnimalCare, city.topskill_AnimalCare);
             experience(SpriteName.WarsHammer, DssRef.todoLang.ExperienceType_HouseBuilding, city.topskill_HouseBuilding);
-            experience(SpriteName.WarsResource_Wood, DssRef.todoLang.ExperienceType_WoodCutter, city.topskill_WoodCutter);
+            experience(SpriteName.WarsResource_Wood, DssRef.todoLang.ExperienceType_WoodWork, city.topskill_WoodCutter);
             experience(SpriteName.WarsResource_Stone, DssRef.todoLang.ExperienceType_StoneCutter, city.topskill_StoneCutter);
             experience(SpriteName.WarsWorkMine, DssRef.todoLang.ExperienceType_Mining, city.topskill_Mining);
             experience(SpriteName.WarsWorkMove, DssRef.todoLang.ExperienceType_Transport, city.topskill_Transport);

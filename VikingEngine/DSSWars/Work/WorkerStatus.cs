@@ -210,17 +210,17 @@ namespace VikingEngine.DSSWars.Work
                         {
                             case TerrainSubFoilType.TreeSoft:
                                 gatherWood(Resource.ItemResourceType.SoftWood, ref subTile, city);
-                                gainXp = WorkExperienceType.WoodCutter;
+                                gainXp = WorkExperienceType.WoodWork;
                                 break;
 
                             case TerrainSubFoilType.TreeHard:
                                 gatherWood(Resource.ItemResourceType.HardWood, ref subTile, city);
-                                gainXp = WorkExperienceType.WoodCutter;
+                                gainXp = WorkExperienceType.WoodWork;
                                 break;
 
                             case TerrainSubFoilType.DryWood:
                                 gatherWood(Resource.ItemResourceType.DryWood, ref subTile, city);
-                                gainXp = WorkExperienceType.WoodCutter;
+                                gainXp = WorkExperienceType.WoodWork;
                                 break;
 
                             case TerrainSubFoilType.WheatFarm:

@@ -106,7 +106,7 @@ namespace VikingEngine.DSSWars.GameObject
             topskill_Farm = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Farm]);
             topskill_AnimalCare = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.AnimalCare]);
             topskill_HouseBuilding = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.HouseBuilding]);
-            topskill_WoodCutter = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.WoodCutter]);
+            topskill_WoodCutter = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.WoodWork]);
             topskill_StoneCutter = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.StoneCutter]);
             topskill_Mining = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Mining]);
             topskill_Transport = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Transport]);
@@ -356,6 +356,10 @@ namespace VikingEngine.DSSWars.GameObject
                 IntVector2 center = WP.ToSubTilePos_Centered(tilePos);
                 workQue.Clear();
 
+                if (debugTagged)
+                {
+                    lib.DoNothing();
+                }
 
                 bool foodSafeGuard = foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
                

@@ -228,7 +228,7 @@ namespace VikingEngine.DSSWars.Delivery
             }
             else
             {
-                remaining = DeliveryProfile.DeliveryTime(from, DssRef.world.cities[profile.toCity], out _).LongString();
+                remaining = DeliveryProfile.DeliveryTime(from, DssRef.world.cities[profile.toCity], level, out _).LongString();
             }
             return string.Format("Delivering {0}", remaining);
         }
@@ -240,7 +240,10 @@ namespace VikingEngine.DSSWars.Delivery
             profile.toCity = -1;
             profile.type = recruitment ? ItemResourceType.Men : ItemResourceType.Food_G;
             profile.SendAmount = DssConst.CityDeliveryChunkSize_Level1;
-            level = 1;
+            if (level < 1)
+            {
+                level = 1;
+            }
         }
 
         public void tooltip(LocalPlayer player, City city, RichBoxContent content)
@@ -323,7 +326,7 @@ namespace VikingEngine.DSSWars.Delivery
         }
 
 
-        public static TimeLength DeliveryTime(City from, City othercity, out float distance)
+        public static TimeLength DeliveryTime(City from, City othercity, int level, out float distance)
         {
             distance = VectorExt.Length((othercity.tilePos - from.tilePos).Vec);
             float time = distance / DssVar.Men_StandardWalkingSpeed_PerSec;
@@ -331,6 +334,16 @@ namespace VikingEngine.DSSWars.Delivery
             {
                 time *= 0.5f;
             }
+
+            if (level == 2)
+            {
+                time = MathExt.SubtractIntegerPercentage(time, DssConst.DeliveryLevel2TimeReducePerc);
+            }
+            else if (level == 3)
+            {
+                time = MathExt.SubtractIntegerPercentage(time, DssConst.DeliveryLevel3TimeReducePerc);
+            }
+
             return new TimeLength(time);
         }
 

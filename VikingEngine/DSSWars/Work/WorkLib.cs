@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Work
             WorkToXPTable[(int)WorkExperienceType.Farm] = DssConst.DefaultWorkXpGain;
             WorkToXPTable[(int)WorkExperienceType.AnimalCare] = DssConst.DefaultWorkXpGain;
             WorkToXPTable[(int)WorkExperienceType.HouseBuilding] = (byte)(DssConst.DefaultWorkXpGain * 2);
-            WorkToXPTable[(int)WorkExperienceType.WoodCutter] = DssConst.DefaultWorkXpGain;
+            WorkToXPTable[(int)WorkExperienceType.WoodWork] = DssConst.DefaultWorkXpGain;
             WorkToXPTable[(int)WorkExperienceType.StoneCutter] = DssConst.DefaultWorkXpGain;
             WorkToXPTable[(int)WorkExperienceType.Mining] = DssConst.DefaultWorkXpGain;
             WorkToXPTable[(int)WorkExperienceType.Transport] = 2;
@@ -52,7 +52,7 @@ namespace VikingEngine.DSSWars.Work
                             case TerrainSubFoilType.TreeSoft:
                             case TerrainSubFoilType.TreeHard:
                             case TerrainSubFoilType.DryWood:
-                                gainXp = WorkExperienceType.WoodCutter;
+                                gainXp = WorkExperienceType.WoodWork;
                                 break;
 
                             case TerrainSubFoilType.WheatFarm:

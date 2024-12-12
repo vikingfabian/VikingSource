@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 case WorkExperienceType.AnimalCare: return topskill_Farm;
                 case WorkExperienceType.HouseBuilding: return topskill_Farm;
-                case WorkExperienceType.WoodCutter: return topskill_Farm;
+                case WorkExperienceType.WoodWork: return topskill_Farm;
                 case WorkExperienceType.StoneCutter: return topskill_Farm;
                 case WorkExperienceType.Mining: return topskill_Farm;
                 case WorkExperienceType.Transport: return topskill_Farm;
@@ -147,7 +147,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     break;
 
-                case WorkExperienceType.WoodCutter:
+                case WorkExperienceType.WoodWork:
                 case WorkExperienceType.Fletcher:
                     technology.catapult += DssConst.TechnologyGain_Master;
                     break;
