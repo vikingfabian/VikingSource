@@ -155,7 +155,7 @@ namespace VikingEngine.DSSWars.Display
                         var bp = player.buildControls.placeBuildingOption().blueprint;
                         bp.toMenu(content, subTile.city);
 
-                        var mayBuild = player.mapControls.hover.subTile.MayBuild(player);
+                        var mayBuild = player.mapControls.hover.subTile.MayBuild(player, out bool upgrade);
                         
                         switch (mayBuild)
                         { 
@@ -223,6 +223,18 @@ namespace VikingEngine.DSSWars.Display
                             {
                                 status.tooltip(player, subTile.city, content);
                             }
+                        }
+                        break;
+                    case Players.SelectTileResult.School:
+                        {
+                            title = new RichBoxText(DssRef.todoLang.BuildingType_School);
+                            content.Add(title);
+
+                            content.newLine();
+                            //if (subTile.city.GetDelivery(subTile.subTilePos, out DeliveryStatus status))
+                            //{
+                            //    status.tooltip(player, subTile.city, content);
+                            //}
                         }
                         break;
                     case Players.SelectTileResult.Conscript:

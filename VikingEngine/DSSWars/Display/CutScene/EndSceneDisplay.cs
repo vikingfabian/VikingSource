@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
 
             content.icontext(HudLib.CheckImage(DssRef.difficulty.setting_allowPauseCommand), DssRef.lang.Settings_AllowPause);
 
-            var time = HudLib.TimeSpan(DssRef.time.TotalIngameTime());
+            var time = HudLib.TimeSpan_LongText(DssRef.time.TotalIngameTime());
             content.text(string.Format(DssRef.lang.EndGameStatistics_Time, time));
 
             content.newParagraph();

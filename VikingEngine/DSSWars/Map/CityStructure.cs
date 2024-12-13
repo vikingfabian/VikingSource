@@ -233,23 +233,27 @@ namespace VikingEngine.DSSWars.Map
                                                 break;
 
                                             case TerrainSubFoilType.WheatFarm:
+                                            case TerrainSubFoilType.WheatFarmUpgraded:
                                                 ++buildingStructure.WheatFarm_count;
                                                 ++foodspots;
                                                 farming(ref subTile);
                                                 break;
 
                                             case TerrainSubFoilType.LinenFarm:
+                                            case TerrainSubFoilType.LinenFarmUpgraded:
                                                 ++buildingStructure.LinenFarm_count;
                                                 farming(ref subTile);
                                                 break;
 
                                             case TerrainSubFoilType.RapeSeedFarm:
+                                            case TerrainSubFoilType.RapeSeedFarmUpgraded:
                                                 ++buildingStructure.RapeSeedFarm_count;
                                                 ++fuelSpots;
                                                 farming(ref subTile);
                                                 break;
 
                                             case TerrainSubFoilType.HempFarm:
+                                            case TerrainSubFoilType.HempFarmUpgraded:
                                                 ++buildingStructure.HempFarm_count;
                                                 ++fuelSpots;
                                                 farming(ref subTile);
@@ -296,9 +300,14 @@ namespace VikingEngine.DSSWars.Map
                                                 break;
 
                                             case TerrainBuildingType.Postal:
+                                            case TerrainBuildingType.PostalLevel2:
+                                            case TerrainBuildingType.PostalLevel3:
                                                 ++buildingStructure.Postal_count;
                                                 break;
+
                                             case TerrainBuildingType.Recruitment:
+                                            case TerrainBuildingType.RecruitmentLevel2:
+                                            case TerrainBuildingType.RecruitmentLevel3:
                                                 ++buildingStructure.Recruitment_count;
                                                 break;
 
@@ -395,6 +404,9 @@ namespace VikingEngine.DSSWars.Map
                                             case TerrainBuildingType.Embassy:
                                                 ++buildingStructure.Embassy_count;
                                                 break;
+                                            case TerrainBuildingType.School:
+                                                ++buildingStructure.School_count;
+                                                break;
                                             case TerrainBuildingType.Logistics:
                                                 buildingStructure.buildingLevel_logistics = subTile.terrainAmount;
                                                 break;
@@ -428,10 +440,6 @@ namespace VikingEngine.DSSWars.Map
 
             //Complete
             city.buildingStructure = buildingStructure;
-            //    buildingCount_nobelHouse = nobelHouseCount;
-            //city.buildingCount_coalpit = coalPitCount;
-            //city.buildingLevel_logistics = logisticsLevel;
-            //city.buildingCount_waterresorvoir = waterReservoirs;
 
             void farming(ref SubTile subTile)
             {

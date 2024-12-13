@@ -49,6 +49,7 @@ namespace VikingEngine.DSSWars.Build
         public int Armory_count;
         public int Chemist_count;
         public int Gunmaker_count;
+        public int School_count;
 
         public int getCount(BuildAndExpandType type)
         {
@@ -92,6 +93,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Armory: return Armory_count;
                 case BuildAndExpandType.Chemist: return Chemist_count;
                 case BuildAndExpandType.Gunmaker: return Gunmaker_count;
+                case BuildAndExpandType.School: return School_count;
 
                 default: return 0; // Return 0 for NUM_NONE or any other undefined type
             }

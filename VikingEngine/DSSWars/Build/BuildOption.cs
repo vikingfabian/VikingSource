@@ -78,8 +78,16 @@ namespace VikingEngine.DSSWars.Build
                                 break;
 
                             case TerrainBuildingType.Recruitment:
+                            case TerrainBuildingType.RecruitmentLevel2:
+                            case TerrainBuildingType.RecruitmentLevel3:
                             case TerrainBuildingType.Postal:
+                            case TerrainBuildingType.PostalLevel2:
+                            case TerrainBuildingType.PostalLevel3:
                                 city.destroyDelivery(subPos);
+                                break;
+
+                            case TerrainBuildingType.School:
+                                city.destroySchool(subPos);
                                 break;
                         }
                     }
@@ -87,8 +95,9 @@ namespace VikingEngine.DSSWars.Build
             }
         }
 
-        public void execute_async(City city, IntVector2 subPos, ref SubTile subTile)
+        public void execute_async(City city, IntVector2 subPos, ref SubTile subTile, bool upgrade)
         {
+            //TODO handle upgrades
             subTile.SetType(mainType, subType, 1);
 
             switch (mainType)
@@ -129,11 +138,28 @@ namespace VikingEngine.DSSWars.Build
                                 break;
 
                             case TerrainBuildingType.Postal:
-                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, bool>(city.addDelivery, subPos, false));
+                                Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, bool>(city.addDelivery, subPos, 1, false));
+                                break;
+                            case TerrainBuildingType.PostalLevel2:
+                                Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, bool>(city.addDelivery, subPos, 2, false));
+                                break;
+                            case TerrainBuildingType.PostalLevel3:
+                                Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, bool>(city.addDelivery, subPos, 3, false));
                                 break;
 
                             case TerrainBuildingType.Recruitment:
-                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, bool>(city.addDelivery, subPos, true));
+                                Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, bool>(city.addDelivery, subPos, 1, true));
+                                break;
+                            case TerrainBuildingType.RecruitmentLevel2:
+                                Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, bool>(city.addDelivery, subPos, 2, true));
+                                break;
+                            case TerrainBuildingType.RecruitmentLevel3:
+                                Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, bool>(city.addDelivery, subPos, 3, true));
+                                break;
+
+
+                            case TerrainBuildingType.School:
+                                Ref.update.AddSyncAction(new SyncAction1Arg<IntVector2>(city.addSchool, subPos));
                                 break;
                         }
                     }
@@ -155,7 +181,14 @@ namespace VikingEngine.DSSWars.Build
                     break;
             }
 
-            blueprint.payResources(city);
+            if (upgrade)
+            {
+                blueprint.payResources(city);
+            }
+            else
+            {
+                blueprint.payResources_BuildAndUpgrade(city);
+            }
         }
     }
 }

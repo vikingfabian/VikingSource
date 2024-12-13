@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars
             RbOnGuiSettings = RbSettings;
             RbOnGuiSettings.scaleUp(1.4f);
 
-            HeadDisplayWidth = Engine.Screen.IconSize * 6;
+            HeadDisplayWidth = Engine.Screen.IconSize * 7;
             HeadDisplayEdge = Engine.Screen.BorderWidth;
 
             richboxGui = new RichboxGuiSettings()
@@ -176,6 +176,20 @@ namespace VikingEngine.DSSWars
         public static string TimeSpan(TimeSpan time) 
         { 
             return string.Format(DssRef.lang.Hud_TimeSpan, (int)time.TotalHours, time.Minutes, time.Seconds);
+        }
+
+        public static string TimeSpan_LongText(TimeSpan time)
+        {
+            string result = string.Format(DssRef.lang.Hud_Time_Seconds, time.Seconds);
+            if (time.TotalMinutes >= 1)
+            {
+                result = string.Format(DssRef.lang.Hud_Time_Minutes, time.Minutes) + ", " + result;
+            }
+            if (time.TotalHours >= 1)
+            {
+                result = string.Format(DssRef.todoLang.Hud_Time_Hours, (int)time.TotalHours) + ", " + result;
+            }
+            return result;
         }
 
         public static string InputName(InputSourceType input)

@@ -170,7 +170,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.SilverOre, 2)
             },
            XP.WorkExperienceType.Smelting,
-           XP.ExperienceLevel.Beginner_1,
+           XP.ExperienceLevel.Practitioner_2,
             CraftRequirement.Smelter
         );
 
@@ -444,7 +444,7 @@ namespace VikingEngine.DSSWars.Resource
                     new UseResource(ItemResourceType.SkinLinen_Group, 4),
                     new UseResource(ItemResourceType.Wood_Group, 8),
                },
-               XP.WorkExperienceType.WoodCutter,
+               XP.WorkExperienceType.WoodWork,
 
                XP.ExperienceLevel.Practitioner_2,
                 CraftRequirement.Carpenter
@@ -460,7 +460,7 @@ namespace VikingEngine.DSSWars.Resource
                     new UseResource(ItemResourceType.Wood_Group, 16),
                     new UseResource(ItemResourceType.Iron_G, 2),
                },
-               XP.WorkExperienceType.WoodCutter,
+               XP.WorkExperienceType.WoodWork,
 
                XP.ExperienceLevel.Expert_3,
                 CraftRequirement.Carpenter

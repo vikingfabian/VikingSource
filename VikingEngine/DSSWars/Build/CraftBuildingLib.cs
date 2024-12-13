@@ -11,15 +11,15 @@ namespace VikingEngine.DSSWars.Build
     {
         public const int CraftSmith_IronUse = 10;
 
-        public static readonly ItemResourceType[] SmelterCraftTypes = { 
-            ItemResourceType.Cupper, ItemResourceType.Tin, ItemResourceType.Lead, ItemResourceType.Iron_G, 
+        public static readonly ItemResourceType[] SmelterCraftTypes = {
+            ItemResourceType.Cupper, ItemResourceType.Tin, ItemResourceType.Lead, ItemResourceType.Iron_G,
             ItemResourceType.BloomeryIron, ItemResourceType.Silver, ItemResourceType.Mithril };
-        
-        public static readonly ItemResourceType[] SmithCraftTypes = { 
+
+        public static readonly ItemResourceType[] SmithCraftTypes = {
             ItemResourceType.ShortSword, ItemResourceType.Sword, ItemResourceType.LongSword,
             ItemResourceType.HandSpear,
-            ItemResourceType.Warhammer, ItemResourceType.TwoHandSword, ItemResourceType.KnightsLance, 
-            ItemResourceType.IronArmor,            
+            ItemResourceType.Warhammer, ItemResourceType.TwoHandSword, ItemResourceType.KnightsLance,
+            ItemResourceType.IronArmor,
         };
 
         public static readonly ItemResourceType[] GunmakerCraftTypes = {
@@ -33,21 +33,21 @@ namespace VikingEngine.DSSWars.Build
             ItemResourceType.PaddedArmor, ItemResourceType.HeavyPaddedArmor, ItemResourceType.BronzeArmor, ItemResourceType.IronArmor, ItemResourceType.HeavyIronArmor, ItemResourceType.LightPlateArmor, ItemResourceType.FullPlateArmor, ItemResourceType.MithrilArmor
         };
 
-        public static readonly ItemResourceType[] FoundryCraftTypes = { 
+        public static readonly ItemResourceType[] FoundryCraftTypes = {
             ItemResourceType.Bronze, ItemResourceType.CastIron, ItemResourceType.BloomeryIron, ItemResourceType.Mithril };
 
-        public static readonly ItemResourceType[] BenchCraftTypes = { 
+        public static readonly ItemResourceType[] BenchCraftTypes = {
             ItemResourceType.Fuel_G, ItemResourceType.PaddedArmor, ItemResourceType.SharpStick, ItemResourceType.SlingShot, ItemResourceType.ThrowingSpear };
-        
-        public static readonly ItemResourceType[] CarpenterCraftTypes = { 
+
+        public static readonly ItemResourceType[] CarpenterCraftTypes = {
             ItemResourceType.SharpStick, ItemResourceType.Bow, ItemResourceType.LongBow, ItemResourceType.Crossbow,
             ItemResourceType.MithrilBow,
             ItemResourceType.Ballista, ItemResourceType.Manuballista, ItemResourceType.Catapult };
 
-        public static readonly ItemResourceType[] ChemistCraftTypes = { 
+        public static readonly ItemResourceType[] ChemistCraftTypes = {
             ItemResourceType.BlackPowder, ItemResourceType.GunPowder };
 
-        
+
 
         public static readonly CraftBlueprint CraftLogistics = new CraftBlueprint(
             CraftResultType.Building,
@@ -129,10 +129,34 @@ namespace VikingEngine.DSSWars.Build
            1,
            new UseResource[]
            {
-        new UseResource(ItemResourceType.Wood_Group, 60),
+                new UseResource(ItemResourceType.Wood_Group, 60),
            },
             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
        );
+
+        public static readonly CraftBlueprint Postal_Level2 = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.PostalLevel2,
+           1,
+           new UseResource[]
+           {
+                new UseResource(ItemResourceType.Wagon2Wheel, 1),
+           },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Practitioner_2
+       )
+        { upgradeFrom = Postal };
+
+        public static readonly CraftBlueprint Postal_Level3 = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.PostalLevel3,
+           1,
+           new UseResource[]
+           {
+                new UseResource(ItemResourceType.Wagon4Wheel, 1),
+           },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Practitioner_2
+       )
+        { upgradeFrom = Postal };
 
         public static readonly CraftBlueprint Recruitment = new CraftBlueprint(
             CraftResultType.Building,
@@ -145,6 +169,30 @@ namespace VikingEngine.DSSWars.Build
             },
             XP.WorkExperienceType.HouseBuilding
         );
+
+        public static readonly CraftBlueprint Recruitment_Level2 = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.RecruitmentLevel2,
+           1,
+          new UseResource[]
+           {
+                new UseResource(ItemResourceType.Wagon2Wheel, 1),
+           },
+           XP.WorkExperienceType.HouseBuilding
+        )
+        { upgradeFrom = Recruitment };
+
+        public static readonly CraftBlueprint Recruitment_Level3 = new CraftBlueprint(
+          CraftResultType.Building,
+          (int)Build.BuildAndExpandType.RecruitmentLevel3,
+          1,
+         new UseResource[]
+          {
+                new UseResource(ItemResourceType.Wagon4Wheel, 1),
+          },
+          XP.WorkExperienceType.HouseBuilding
+       )
+        { upgradeFrom = Recruitment };
 
         public static readonly CraftBlueprint SoldierBarracks = new CraftBlueprint(
             CraftResultType.Building,
@@ -317,12 +365,28 @@ namespace VikingEngine.DSSWars.Build
             FarmResources, XP.WorkExperienceType.Farm
         );
 
+        public static readonly CraftBlueprint WheatFarmUpgrade = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.WheatFarmUpgraded,
+            1, new UseResource[] { new UseResource(ItemResourceType.Toolkit, 1) },
+            XP.WorkExperienceType.Farm, XP.ExperienceLevel.Practitioner_2
+        )
+        { upgradeFrom = WheatFarm };
+
         public static readonly CraftBlueprint LinenFarm = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.LinenFarm,
             1,
             FarmResources, XP.WorkExperienceType.Farm
         );
+
+        public static readonly CraftBlueprint LinenFarmUpgrade = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.LinenFarmUpgraded,
+            1, new UseResource[] { new UseResource(ItemResourceType.Toolkit, 1) },
+            XP.WorkExperienceType.Farm, XP.ExperienceLevel.Practitioner_2
+        )
+        { upgradeFrom = LinenFarm };
 
         public static readonly CraftBlueprint HempFarm = new CraftBlueprint(
             CraftResultType.Building,
@@ -331,14 +395,28 @@ namespace VikingEngine.DSSWars.Build
             FarmResources, XP.WorkExperienceType.Farm
         );
 
+        public static readonly CraftBlueprint HempFarmUpgrade = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.HempFarmUpgraded,
+            1, new UseResource[] { new UseResource(ItemResourceType.Toolkit, 1) },
+            XP.WorkExperienceType.Farm, XP.ExperienceLevel.Practitioner_2
+        )
+        { upgradeFrom = HempFarm };
+
         public static readonly CraftBlueprint RapeseedFarm = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.RapeSeedFarm,
             1,
             FarmResources, XP.WorkExperienceType.Farm
         );
+        public static readonly CraftBlueprint RapeseedFarmUpgrade = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.RapeSeedFarm,
+            1, new UseResource[] { new UseResource(ItemResourceType.Toolkit, 1) },
+            XP.WorkExperienceType.Farm, XP.ExperienceLevel.Practitioner_2
+        )
+        { upgradeFrom = RapeseedFarm };
 
-       
         public static readonly CraftBlueprint Smith = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Smith,
@@ -536,6 +614,20 @@ namespace VikingEngine.DSSWars.Build
                     new UseResource(ItemResourceType.Wood_Group, 20),
                     new UseResource(ItemResourceType.Stone_G, 20),
                     new UseResource(ItemResourceType.Iron_G, 10),
+
+                   },
+                    XP.WorkExperienceType.HouseBuilding
+                );
+
+        public static readonly CraftBlueprint School = new CraftBlueprint(
+                    CraftResultType.Building,
+                    (int)Build.BuildAndExpandType.School,
+                   1,
+                   new UseResource[]
+                   {
+                    new UseResource(ItemResourceType.Wood_Group, 100),
+                    new UseResource(ItemResourceType.Stone_G, 20),
+                    new UseResource(ItemResourceType.Iron_G, 5),
 
                    },
                     XP.WorkExperienceType.HouseBuilding

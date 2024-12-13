@@ -518,6 +518,8 @@ namespace VikingEngine.DSSWars.Conscript
         Basic,
         Skillful,
         Professional,
+        Champion,
+        Legendary,
         NUM
     }
 

@@ -11,6 +11,7 @@ using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.LootFest.Players;
 using VikingEngine.DSSWars.Display.Translation;
 using System.Reflection.Metadata;
+using VikingEngine.DSSWars.Delivery;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -37,6 +38,83 @@ namespace VikingEngine.DSSWars.GameObject
 
         public ExperienceOrDistancePrio experenceOrDistance = ExperienceOrDistancePrio.Mix;
 
+        public int selectedSchool = -1;
+        public List<SchoolStatus> schoolBuildings = new List<SchoolStatus>();
+
+        public void onSchoolComplete_async(IntVector2 subPos)
+        {
+            Ref.update.AddSyncAction(new SyncAction(() =>
+            {
+                var index = SchoolIxFromSubTile(subPos);
+                if (arraylib.InBound(schoolBuildings, index))
+                {
+                    SchoolStatus currentStatus = schoolBuildings[index];
+                    --currentStatus.que;
+                   schoolBuildings[index] = currentStatus;
+                }
+            }));
+        }
+
+        public void addSchool(IntVector2 subPos)
+        {
+            SchoolStatus newBuilding = new SchoolStatus()
+            {
+                idAndPosition = conv.IntVector2ToInt(subPos),
+            };
+            newBuilding.defaulSetup();
+
+            lock (schoolBuildings)
+            {
+                schoolBuildings.Add(newBuilding);
+            }
+        }
+        public void destroySchool(IntVector2 subPos)
+        {
+            lock (schoolBuildings)
+            {
+                int index = SchoolIxFromSubTile(subPos);
+                schoolBuildings.RemoveAt(index);
+            }
+        }
+
+        public int SchoolIxFromSubTile(IntVector2 subTilePos)
+        {
+            int id = conv.IntVector2ToInt(subTilePos);
+            for (int i = 0; i < schoolBuildings.Count; ++i)
+            {
+                if (schoolBuildings[i].idAndPosition == id)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+        public ExperienceLevel GetTopSkill(WorkExperienceType experienceType)
+        {
+            switch (experienceType)
+            {
+                case WorkExperienceType.Farm: return topskill_Farm;
+
+                case WorkExperienceType.AnimalCare: return topskill_Farm;
+                case WorkExperienceType.HouseBuilding: return topskill_Farm;
+                case WorkExperienceType.WoodWork: return topskill_Farm;
+                case WorkExperienceType.StoneCutter: return topskill_Farm;
+                case WorkExperienceType.Mining: return topskill_Farm;
+                case WorkExperienceType.Transport: return topskill_Farm;
+                case WorkExperienceType.Cook: return topskill_Farm;
+                case WorkExperienceType.Fletcher: return topskill_Farm;
+                case WorkExperienceType.Smelting: return topskill_Farm;
+                case WorkExperienceType.CastMetal: return topskill_Farm;
+                case WorkExperienceType.CraftMetal: return topskill_Farm;
+                case WorkExperienceType.CraftArmor: return topskill_Farm;
+                case WorkExperienceType.CraftWeapon: return topskill_Farm;
+                case WorkExperienceType.CraftFuel: return topskill_Farm;
+                case WorkExperienceType.Chemistry: return topskill_Farm;
+
+                default: throw new NotImplementedException();
+            }
+        }
 
         public void onMasterLevel(WorkExperienceType experienceType)
         {
@@ -69,7 +147,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     break;
 
-                case WorkExperienceType.WoodCutter:
+                case WorkExperienceType.WoodWork:
                 case WorkExperienceType.Fletcher:
                     technology.catapult += DssConst.TechnologyGain_Master;
                     break;

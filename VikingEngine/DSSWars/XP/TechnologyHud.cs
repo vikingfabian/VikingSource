@@ -115,7 +115,7 @@ namespace VikingEngine.DSSWars.XP
             };
             var catapultFields = new List<WorkExperienceType>
             {
-                WorkExperienceType.WoodCutter,
+                WorkExperienceType.WoodWork,
                 WorkExperienceType.Fletcher,
             };
 

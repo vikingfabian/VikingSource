@@ -47,6 +47,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         {
             switch (type)
             {
+                case WorkExperienceType.NONE:
+                    name = DssRef.todoLang.Hud_None;
+                    icon = SpriteName.BluePrintSquareFull;
+                    break;
 
                 case WorkExperienceType.Farm:
                     name = DssRef.todoLang.ExperienceType_Farm;
@@ -60,8 +64,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                     name = DssRef.todoLang.ExperienceType_HouseBuilding;
                     icon = SpriteName.WarsHammer;
                     break;
-                case WorkExperienceType.WoodCutter:
-                    name = DssRef.todoLang.ExperienceType_WoodCutter;
+                case WorkExperienceType.WoodWork:
+                    name = DssRef.todoLang.ExperienceType_WoodWork;
                     icon = SpriteName.WarsResource_Wood;
                     break;
                 case WorkExperienceType.StoneCutter:
@@ -169,6 +173,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case TrainingLevel.Basic: return DssRef.lang.Conscript_Training_Basic;
                 case TrainingLevel.Skillful: return DssRef.lang.Conscript_Training_Skillful;
                 case TrainingLevel.Professional: return DssRef.lang.Conscript_Training_Professional;
+                case TrainingLevel.Champion: return DssRef.todoLang.Conscript_Training_Champion;
+                case TrainingLevel.Legendary: return DssRef.todoLang.Conscript_Training_Legendary;
 
                 default:
                     throw new NotImplementedException();
@@ -313,9 +319,11 @@ namespace VikingEngine.DSSWars.Display.Translation
                         case TerrainBuildingType.Logistics:
                             return DssRef.lang.BuildingType_Logistics;
                         case TerrainBuildingType.SoldierBarracks:
-                            return DssRef.lang.BuildingType_Barracks;
+                            return DssRef.todoLang.BuildingType_SoldierBarracks;
                         case TerrainBuildingType.Bank:
                             return DssRef.lang.BuildingType_Bank;
+                        case TerrainBuildingType.CoinMinter:
+                            return DssRef.todoLang.BuildingType_CoinMaker;
                         case TerrainBuildingType.Brewery:
                             return DssRef.lang.BuildingType_Brewery;
                         case TerrainBuildingType.Carpenter:
@@ -330,10 +338,19 @@ namespace VikingEngine.DSSWars.Display.Translation
                             return DssRef.lang.Building_NobleHouse;
                         case TerrainBuildingType.PigPen:
                             return DssRef.lang.BuildingType_PigPen;
+
                         case TerrainBuildingType.Postal:
                             return DssRef.lang.BuildingType_Postal;
+                        case TerrainBuildingType.PostalLevel2:
+                        case TerrainBuildingType.PostalLevel3:
+                            return string.Format(DssRef.todoLang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Postal);
+
                         case TerrainBuildingType.Recruitment:
                             return DssRef.lang.BuildingType_Recruitment;
+                        case TerrainBuildingType.RecruitmentLevel2:
+                        case TerrainBuildingType.RecruitmentLevel3:
+                            return string.Format(DssRef.todoLang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Recruitment);
+
                         case TerrainBuildingType.Work_Smith:
                             return DssRef.lang.BuildingType_Smith;                       
                         case TerrainBuildingType.Storehouse:
@@ -373,6 +390,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                             return DssRef.todoLang.BuildingType_Chemist;
                         case TerrainBuildingType.Gunmaker:
                             return DssRef.todoLang.BuildingType_Gunmaker;
+                        case TerrainBuildingType.School:
+                            return DssRef.todoLang.BuildingType_School;
 
                         default:
                             return DssRef.lang.BuildingType_DefaultName;
@@ -396,14 +415,23 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                         case TerrainSubFoilType.LinenFarm:
                             return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Linen);
+                        case TerrainSubFoilType.LinenFarmUpgraded:
+                            return string.Format(DssRef.todoLang.BuildingType_IsUpgraded, string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Linen));
 
                         case TerrainSubFoilType.WheatFarm:
                             return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat);
+                        case TerrainSubFoilType.WheatFarmUpgraded:
+                            return string.Format(DssRef.todoLang.BuildingType_IsUpgraded, string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat));
 
                         case TerrainSubFoilType.RapeSeedFarm:
                             return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Rapeseed);
+                        case TerrainSubFoilType.RapeSeedFarmUpgraded:
+                            return string.Format(DssRef.todoLang.BuildingType_IsUpgraded, string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Rapeseed));
+
                         case TerrainSubFoilType.HempFarm:
                             return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Hemp);
+                        case TerrainSubFoilType.HempFarmUpgraded:
+                            return string.Format(DssRef.todoLang.BuildingType_IsUpgraded, string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Hemp));
 
                         case TerrainSubFoilType.BogIron:
                             return DssRef.lang.Resource_TypeName_BogIron;
@@ -481,9 +509,15 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.lang.BuildingType_HenPen_Description;
                 case TerrainBuildingType.WorkerHut:
                     return string.Format(DssRef.lang.BuildingType_WorkerHut_DescriptionLimitX, GameObject.CityDetail.WorkersPerHut);
+                
                 case TerrainBuildingType.Postal:
+                case TerrainBuildingType.PostalLevel2:
+                case TerrainBuildingType.PostalLevel3:
                     return DssRef.lang.BuildingType_Postal_Description;
+
                 case TerrainBuildingType.Recruitment:
+                case TerrainBuildingType.RecruitmentLevel2:
+                case TerrainBuildingType.RecruitmentLevel3:
                     return DssRef.lang.BuildingType_Recruitment_Description;
 
                 case TerrainBuildingType.SoldierBarracks:
@@ -511,12 +545,16 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                 case TerrainBuildingType.Nobelhouse:
                     return DssRef.lang.BuildingType_Nobelhouse_Description;
+                case TerrainBuildingType.Embassy:
+                    return DssRef.todoLang.BuildingType_Embassy_Description;
                 case TerrainBuildingType.Brewery:
                     return DssRef.lang.BuildingType_Tavern_Brewery;
                 case TerrainBuildingType.Work_CoalPit:
                     return DssRef.lang.BuildingType_CoalPit_Description;
                 case TerrainBuildingType.Bank:
                     return DssRef.lang.BuildingType_Bank_Description;
+                case TerrainBuildingType.CoinMinter:
+                    return DssRef.todoLang.BuildingType_CoinMaker_Description;
 
                 case TerrainBuildingType.WoodCutter:
                 case TerrainBuildingType.StoneCutter:
@@ -525,6 +563,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case TerrainBuildingType.WaterResovoir:
                     return DssRef.todoLang.BuildingType_WaterResovoir_Description;
 
+                case TerrainBuildingType.School:
+                    return DssRef.todoLang.BuildingType_School_Description;
                 default:
                     return TextLib.Error;
             }

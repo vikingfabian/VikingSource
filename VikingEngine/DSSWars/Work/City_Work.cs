@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars.GameObject
         List<WorkQueMember> workQue = new List<WorkQueMember>();
         bool starving = false;
         static List<int> idleWorkers = new List<int>(64);
-                
+             
         public void async_workUpdate()
         {
             CityStructure.WorkInstance.newCity = true;
@@ -106,7 +106,7 @@ namespace VikingEngine.DSSWars.GameObject
             topskill_Farm = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Farm]);
             topskill_AnimalCare = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.AnimalCare]);
             topskill_HouseBuilding = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.HouseBuilding]);
-            topskill_WoodCutter = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.WoodCutter]);
+            topskill_WoodCutter = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.WoodWork]);
             topskill_StoneCutter = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.StoneCutter]);
             topskill_Mining = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Mining]);
             topskill_Transport = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Transport]);
@@ -283,10 +283,9 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (checkAvailable(work.work, work.subWork) &&
                     isFreeTile(work.subTile))
-                {
-                    
-                    WorkExperienceType experienceType = WorkLib.WorkToExperienceType(work.work, work.subWork, work.subTile,
-                        out int xpRequired);
+                {                    
+                    WorkExperienceType experienceType = WorkLib.WorkToExperienceType(work.work, work.subWork, work.workBonus, work.subTile, this,
+                        out int xpRequired, out int maxXp);
 
                     int bestWorkerListIx = -1;
                     int bestvalue = int.MaxValue;
@@ -298,7 +297,7 @@ namespace VikingEngine.DSSWars.GameObject
                         
                         var xp = worker.getXpFor(experienceType);
 
-                        if (xp >= xpRequired)
+                        if (xp >= xpRequired && xp < maxXp)
                         {
                             var distance = work.subTile.SideLength(worker.subTileEnd);
                             int value = distance * distanceValue - xp * experienceValue;
@@ -357,6 +356,10 @@ namespace VikingEngine.DSSWars.GameObject
                 IntVector2 center = WP.ToSubTilePos_Centered(tilePos);
                 workQue.Clear();
 
+                if (debugTagged)
+                {
+                    lib.DoNothing();
+                }
 
                 bool foodSafeGuard = foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
                
@@ -382,6 +385,19 @@ namespace VikingEngine.DSSWars.GameObject
                                     break;
                             }
                             
+                        }
+                    }
+                }
+
+                //SCHOOL
+                lock (schoolBuildings)
+                {
+                    for (int i = 0; i < schoolBuildings.Count; ++i)
+                    {
+                        var school = schoolBuildings[i];
+                        if (school.que > 0)
+                        {
+                            workQue.Add(new WorkQueMember(WorkType.School, (int)school.learnExperience, (byte)school.toLevel, conv.IntToIntVector2(school.idAndPosition), WorkTemplate.MaxPrio, 0, 0));
                         }
                     }
                 }
@@ -452,18 +468,35 @@ namespace VikingEngine.DSSWars.GameObject
                     bool safeGuard = false;
                     var subTile = DssRef.world.subTileGrid.Get(tilework.subtile);
                     int prio = 0;
+                    byte bonus = 0;
                     switch (subTile.GetFoilType())
                     {
                         case TerrainSubFoilType.LinenFarm:
                             needMore = res_skinLinnen.needMore();
                             prio = workTemplate.farm_linen.value;
                             break;
-                        case TerrainSubFoilType.WheatFarm:                                
+                        case TerrainSubFoilType.LinenFarmUpgraded:
+                            needMore = res_skinLinnen.needMore();
+                            prio = workTemplate.farm_linen.value;
+                            
+                            break;
+                        case TerrainSubFoilType.WheatFarm:
                             safeGuard = rawFoodSafeGuard;
                             needMore = res_rawFood.needMore();
                             prio = workTemplate.farm_food.value;
                             break;
+                        case TerrainSubFoilType.WheatFarmUpgraded:
+                            safeGuard = rawFoodSafeGuard;
+                            needMore = res_rawFood.needMore();
+                            prio = workTemplate.farm_food.value;
+                            bonus = 1;
+                            break;
                         case TerrainSubFoilType.RapeSeedFarm:
+                            safeGuard = fuelSafeGuard;
+                            needMore = res_fuel.needMore();
+                            prio = workTemplate.farm_fuel.value;
+                            break;
+                        case TerrainSubFoilType.RapeSeedFarmUpgraded:
                             safeGuard = fuelSafeGuard;
                             needMore = res_fuel.needMore();
                             prio = workTemplate.farm_fuel.value;
@@ -473,12 +506,17 @@ namespace VikingEngine.DSSWars.GameObject
                             needMore = res_fuel.needMore() || res_skinLinnen.needMore() || fuelSafeGuard;
                             prio = Math.Max(workTemplate.farm_linen.value, workTemplate.farm_fuel.value);
                             break;
+                        case TerrainSubFoilType.HempFarmUpgraded:
+                            safeGuard = fuelSafeGuard;
+                            needMore = res_fuel.needMore() || res_skinLinnen.needMore() || fuelSafeGuard;
+                            prio = Math.Max(workTemplate.farm_linen.value, workTemplate.farm_fuel.value);
+                            break;
                     }
 
                     if (((needMore && prio > WorkTemplate.NoPrio) || safeGuard) && isFreeTile(tilework.subtile))
                     {
                         int distanceValue = -center.SideLength(tilework.subtile);
-                        workQue.Add(new WorkQueMember(tilework.workType, NoSubWork, 0, tilework.subtile, safeGuard? WorkTemplate.SafeGuardPrio : workTemplate.farm_food.value,0, distanceValue));
+                        workQue.Add(new WorkQueMember(tilework.workType, NoSubWork, bonus, tilework.subtile, safeGuard? WorkTemplate.SafeGuardPrio : workTemplate.farm_food.value,0, distanceValue));
                     }
                 }
 

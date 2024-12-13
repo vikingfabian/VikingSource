@@ -215,7 +215,7 @@ namespace VikingEngine.DSSWars.Data
         }
         public string InfoString()
         {
-            string playTime = HudLib.TimeSpan(this.playTime);//Engine.LoadContent.CheckCharsSafety(this.playTime.ToString(), LoadedFont.Regular);
+            string playTime = HudLib.TimeSpan_LongText(this.playTime);//Engine.LoadContent.CheckCharsSafety(this.playTime.ToString(), LoadedFont.Regular);
             string result = string.Format(DssRef.lang.EndGameStatistics_Time, playTime) + Environment.NewLine;
             if (autosave)
             {

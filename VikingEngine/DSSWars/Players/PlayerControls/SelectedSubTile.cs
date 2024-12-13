@@ -80,9 +80,13 @@ namespace VikingEngine.DSSWars.Players
                                                 selectTileResult = SelectTileResult.CityHall;
                                                 break;
                                             case Map.TerrainBuildingType.Postal:
+                                            case Map.TerrainBuildingType.PostalLevel2:
+                                            case Map.TerrainBuildingType.PostalLevel3:
                                                 selectTileResult = SelectTileResult.Postal;
                                                 break;
                                             case Map.TerrainBuildingType.Recruitment:
+                                            case Map.TerrainBuildingType.RecruitmentLevel2:
+                                            case Map.TerrainBuildingType.RecruitmentLevel3:
                                                 selectTileResult = SelectTileResult.Recruitment;
                                                 break;
 
@@ -93,6 +97,10 @@ namespace VikingEngine.DSSWars.Players
                                             case Map.TerrainBuildingType.GunBarracks:
                                             case Map.TerrainBuildingType.CannonBarracks:
                                                 selectTileResult = SelectTileResult.Conscript;
+                                                break;
+
+                                            case Map.TerrainBuildingType.School:
+                                                selectTileResult = SelectTileResult.School;
                                                 break;
                                         }
 
@@ -128,14 +136,15 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public MayBuildResult MayBuild(LocalPlayer player)
+        public MayBuildResult MayBuild(LocalPlayer player, out bool upgrade)
         {
+            upgrade = false;
             if (city != null)
             {
                 if (city.faction.player == player)
                 {
                     //var current = subTile.GeBuildingType();
-                    if (subTile.MayBuild())
+                    if (subTile.MayBuild(player.buildControls.placeBuildingType, out upgrade))
                     {
                         if (player.mapControls.selection.obj == city)
                         {
@@ -220,6 +229,7 @@ namespace VikingEngine.DSSWars.Players
         Postal,
         Recruitment,
         Conscript,
+        School,
 
         //Resources,
         
@@ -232,6 +242,7 @@ namespace VikingEngine.DSSWars.Players
     { 
         ERR,
         Yes,
+        YesUpgrade,
         Yes_ChangeCity,
         No_OutsideRegion,
         No_Occupied,

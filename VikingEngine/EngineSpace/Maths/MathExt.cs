@@ -450,6 +450,11 @@ namespace VikingEngine
             return value - value * sub;
         }
 
+        public static float SubtractIntegerPercentage(float value, float sub)
+        {
+            return value - value * sub * OnePercentage;
+        }
+
         public static int AddPercentage(int value, float add)
         {
             return value + Convert.ToInt32(value * add);

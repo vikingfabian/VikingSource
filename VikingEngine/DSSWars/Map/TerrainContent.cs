@@ -84,6 +84,10 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainSubFoilType.LinenFarm:
                 case TerrainSubFoilType.RapeSeedFarm:
                 case TerrainSubFoilType.HempFarm:
+                case TerrainSubFoilType.WheatFarmUpgraded:
+                case TerrainSubFoilType.LinenFarmUpgraded:
+                case TerrainSubFoilType.RapeSeedFarmUpgraded:
+                case TerrainSubFoilType.HempFarmUpgraded:
                     if (subtile.terrainAmount > FarmCulture_Empty && 
                         subtile.terrainAmount < FarmCulture_MaxSize)
                     {

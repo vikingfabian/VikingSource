@@ -29,6 +29,7 @@ namespace VikingEngine.DSSWars.Resource
         public int tooltipId = -1;
         public WorkExperienceType experienceType;
         public ExperienceLevel levelRequirement;
+        public CraftBlueprint upgradeFrom = null;
 
         public CraftBlueprint(CraftResultType resultType, int resultSubType, int resultAmount, UseResource[] resources, XP.WorkExperienceType experienceType, ExperienceLevel levelRequirement = ExperienceLevel.Beginner_1, CraftRequirement requirement = CraftRequirement.None)
         {
@@ -78,6 +79,22 @@ namespace VikingEngine.DSSWars.Resource
             return true;
         }
 
+        public bool hasResources_buildAndUpgrade(City city)
+        {
+            if (upgradeFrom != null && !upgradeFrom.hasResources_buildAndUpgrade(city))
+            { return false; }
+
+            foreach (var r in resources)
+            {
+                var res = city.GetGroupedResource(r.type);
+                if (res.amount < r.amount)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public int canCraftCount(City city)
         {
             int min = int.MaxValue;
@@ -96,6 +113,18 @@ namespace VikingEngine.DSSWars.Resource
 
         public int payResources(City city)
         {
+            foreach (var r in resources)
+            {
+                city.AddGroupedResource(r.type, -r.amount);
+            }
+
+            return resultAmount;
+        }
+
+        public int payResources_BuildAndUpgrade(City city)
+        {
+            upgradeFrom?.payResources_BuildAndUpgrade(city);
+
             foreach (var r in resources)
             {
                 city.AddGroupedResource(r.type, -r.amount);
@@ -155,12 +184,19 @@ namespace VikingEngine.DSSWars.Resource
             content.Add(new RichBoxText(name()));
         }
 
-        public void toMenu(RichBoxContent content, City city, bool newLine = true)
+        public void toMenu(RichBoxContent content, City city, bool upgradeOnly = false, bool newLine = true)
         {
+            if (upgradeFrom != null && !upgradeOnly)
+            {
+                upgradeFrom.toMenu(content, city, newLine);
+                newLine = true;
+            }
+
             if (newLine)
             {
                 content.newLine();
             }
+
             bool first = true;
             bool available;
             foreach (var r in resources)
@@ -182,13 +218,23 @@ namespace VikingEngine.DSSWars.Resource
             if (levelRequirement > ExperienceLevel.Beginner_1)
             {
                 var levelReqText = new RichBoxText(DssRef.lang.Hud_PurchaseTitle_Requirement + ":");
+                levelReqText.overrideColor = HudLib.TitleColor_Label;
                 content.Add(levelReqText);
+                content.space();
+                
+                LangLib.ExperienceType(experienceType, out string expName, out SpriteName expIcon);
+                content.Add(new RichBoxImage(expIcon));
+                content.space();
+                var expText = new RichBoxText(expName);
+                content.Add(expText);
+                content.space();
+
+                content.Add(new RichBoxImage(LangLib.ExperienceLevelIcon(levelRequirement)));
                 content.space();
                 var levelText = new RichBoxText(LangLib.ExperienceLevel(levelRequirement));
                 levelText.overrideColor = HudLib.TitleColor_TypeName;
-                content.Add(levelText);
-                content.space();
-                content.Add(new RichBoxImage(LangLib.ExperienceLevelIcon(levelRequirement)));
+            
+                content.Add(levelText);  
                 content.newLine();
             }
 

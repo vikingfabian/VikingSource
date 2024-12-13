@@ -171,7 +171,7 @@ namespace VikingEngine.DSSWars.GameObject
                             var player = faction.player.GetLocalPlayer();
                             if (player != null)
                             {
-                                player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, this, freeSubTile, Build.BuildAndExpandType.Logistics), ActionOnConflict.Cancel);
+                                player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, this, freeSubTile, Build.BuildAndExpandType.Logistics, false), ActionOnConflict.Cancel);
                             }
                         }
                         return true;
@@ -521,6 +521,10 @@ namespace VikingEngine.DSSWars.GameObject
             { 
                 delivery.writeGameState(w);
             }
+
+            w.Write((ushort)schoolBuildings.Count);
+            foreach (var school in schoolBuildings)
+            { school.writeGameState(w); }
             
             w.Write(autoBuild_Work);
             w.Write(autoBuild_Farm);
@@ -667,6 +671,18 @@ namespace VikingEngine.DSSWars.GameObject
                 DeliveryStatus status = new Delivery.DeliveryStatus();
                 status.readGameState(r, subversion);
                 deliveryServices.Add(status);
+            }
+
+            if (subversion >= 41)
+            {
+                schoolBuildings.Clear();
+                int schoolBuildingsCount = r.ReadUInt16();
+                for (int i = 0; i < schoolBuildingsCount; i++)
+                {
+                    XP.SchoolStatus status = new XP.SchoolStatus();
+                    status.readGameState(r, subversion);
+                    schoolBuildings.Add(status);
+                }
             }
 
             autoBuild_Work = r.ReadBoolean();

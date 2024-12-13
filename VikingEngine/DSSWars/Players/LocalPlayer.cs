@@ -165,12 +165,12 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (c != null)
                     {
-                        foreach (var type in City.MovableCityResourceTypes)
-                        {
-                            var res = c.GetGroupedResource(type);
-                            res.amount += 1000;
-                            c.SetGroupedResource(type, res);
-                        }
+                        //foreach (var type in City.MovableCityResourceTypes)
+                        //{
+                        //    var res = c.GetGroupedResource(type);
+                        //    res.amount += 1000;
+                        //    c.SetGroupedResource(type, res);
+                        //}
                     }
                 }
             }
@@ -961,12 +961,12 @@ namespace VikingEngine.DSSWars.Players
         {
             foreach (var c in DssRef.world.cities)
             {
-                foreach (var type in City.MovableCityResourceTypes)
-                {
-                    var res = c.GetGroupedResource(type);
-                    res.amount += 1000;
-                    c.SetGroupedResource(type, res);
-                }
+                //foreach (var type in City.MovableCityResourceTypes)
+                //{
+                //    var res = c.GetGroupedResource(type);
+                //    res.amount += 1000;
+                //    c.SetGroupedResource(type, res);
+                //}
             } 
         }
 

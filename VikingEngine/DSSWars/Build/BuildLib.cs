@@ -58,6 +58,16 @@ namespace VikingEngine.DSSWars.Build
         Armory,
         Chemist,
         Gunmaker,
+        School,
+
+        WheatFarmUpgraded,
+        LinenFarmUpgraded,
+        HempFarmUpgraded,
+        RapeSeedFarmUpgraded,
+        PostalLevel2,
+        PostalLevel3,
+        RecruitmentLevel2,
+        RecruitmentLevel3,
 
         NUM_NONE,
     }
@@ -72,6 +82,8 @@ namespace VikingEngine.DSSWars.Build
             BuildAndExpandType.Brewery,
             BuildAndExpandType.CoalPit,
             BuildAndExpandType.Foundry,
+            BuildAndExpandType.School,
+
         };
 
         public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
@@ -80,20 +92,47 @@ namespace VikingEngine.DSSWars.Build
             List<BuildAndExpandType> result = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
             var unlocks = city.technology.GetUnlocks(false);
 
+            if (StartupSettings.UnlockAllProgress)
+            { 
+                unlocks.unlockAll();
+            }
+
             if (city.buildingStructure.buildingLevel_logistics == 0 ||
                 StartupSettings.UnlockAllProgress)
             {
                 result.Add(BuildAndExpandType.Logistics);
             }
+            if (city.buildingStructure.buildingLevel_logistics >= 1 ||
+                StartupSettings.UnlockAllProgress)
+            {
+                result.Add(BuildAndExpandType.School);
+            }
 
             result.Add(BuildAndExpandType.WorkerHuts);
 
             result.Add(BuildAndExpandType.WheatFarm);
+            if (unlocks.building_upgradedFarm)
+            {
+                result.Add(BuildAndExpandType.WheatFarmUpgraded);
+            }
+            
             result.Add(BuildAndExpandType.LinenFarm);
+            if (unlocks.building_upgradedFarm)
+            {
+                result.Add(BuildAndExpandType.LinenFarmUpgraded);
+            }
             result.Add(BuildAndExpandType.RapeSeedFarm);
+            if (unlocks.building_upgradedFarm)
+            {
+                result.Add(BuildAndExpandType.RapeSeedFarmUpgraded);
+            }
             if (unlocks.building_mixedFarms)
             {
                 result.Add(BuildAndExpandType.HempFarm);
+                if (unlocks.building_upgradedFarm)
+                {
+                    result.Add(BuildAndExpandType.HempFarmUpgraded);
+                }
                 result.Add(BuildAndExpandType.PigPen);
             }
 
@@ -118,11 +157,16 @@ namespace VikingEngine.DSSWars.Build
             }
 
             result.Add(BuildAndExpandType.Postal);
-            
+
             if (city.buildingStructure.buildingLevel_logistics >= 1 ||
                 StartupSettings.UnlockAllProgress)
             {
+                result.Add(BuildAndExpandType.PostalLevel2);
+                result.Add(BuildAndExpandType.PostalLevel3);
                 result.Add(BuildAndExpandType.Recruitment);
+                result.Add(BuildAndExpandType.RecruitmentLevel2);
+                result.Add(BuildAndExpandType.RecruitmentLevel3);
+
                 result.Add(BuildAndExpandType.Storehouse);
                 result.Add(BuildAndExpandType.Tavern);
                 result.Add(BuildAndExpandType.Brewery);
@@ -173,15 +217,11 @@ namespace VikingEngine.DSSWars.Build
                 }
             }
 
-           
-
             if (city.buildingStructure.buildingLevel_logistics >= 1 ||
                 StartupSettings.UnlockAllProgress)
-            {
-                
+            {                
                 result.Add(BuildAndExpandType.WoodCutter);
                 result.Add(BuildAndExpandType.StoneCutter);
-
             }
 
             if (city.buildingStructure.buildingLevel_logistics >= 2 ||
@@ -207,9 +247,16 @@ namespace VikingEngine.DSSWars.Build
             };
 
             new BuildOption(BuildAndExpandType.WorkerHuts, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, SpriteName.WarsBuild_WorkerHuts, CraftBuildingLib.WorkerHut);
+
             new BuildOption(BuildAndExpandType.Postal, TerrainMainType.Building, (int)TerrainBuildingType.Postal, SpriteName.WarsBuild_Postal, CraftBuildingLib.Postal);
+            new BuildOption(BuildAndExpandType.PostalLevel2, TerrainMainType.Building, (int)TerrainBuildingType.PostalLevel2, SpriteName.WarsBuild_Postal, CraftBuildingLib.Postal_Level2);
+            new BuildOption(BuildAndExpandType.PostalLevel3, TerrainMainType.Building, (int)TerrainBuildingType.PostalLevel3, SpriteName.WarsBuild_Postal, CraftBuildingLib.Postal_Level3);
+
             new BuildOption(BuildAndExpandType.Recruitment, TerrainMainType.Building, (int)TerrainBuildingType.Recruitment, SpriteName.WarsBuild_Recruitment, CraftBuildingLib.Recruitment);
-            new BuildOption(BuildAndExpandType.SoldierBarracks, TerrainMainType.Building, (int)TerrainBuildingType.SoldierBarracks, SpriteName.WarsBuild_Barracks, CraftBuildingLib.SoldierBarracks);
+            new BuildOption(BuildAndExpandType.RecruitmentLevel2, TerrainMainType.Building, (int)TerrainBuildingType.RecruitmentLevel2, SpriteName.WarsBuild_Recruitment, CraftBuildingLib.Recruitment_Level2);
+            new BuildOption(BuildAndExpandType.RecruitmentLevel3, TerrainMainType.Building, (int)TerrainBuildingType.RecruitmentLevel3, SpriteName.WarsBuild_Recruitment, CraftBuildingLib.Recruitment_Level3);
+            
+            new BuildOption(BuildAndExpandType.SoldierBarracks, TerrainMainType.Building, (int)TerrainBuildingType.SoldierBarracks, SpriteName.WarsBuild_SoldierBarracks, CraftBuildingLib.SoldierBarracks);
             new BuildOption(BuildAndExpandType.Nobelhouse, TerrainMainType.Building, (int)TerrainBuildingType.Nobelhouse, SpriteName.WarsBuild_Nobelhouse, CraftBuildingLib.NobelHouse);
             new BuildOption(BuildAndExpandType.Tavern, TerrainMainType.Building, (int)TerrainBuildingType.Tavern, SpriteName.WarsBuild_Tavern, CraftBuildingLib.Tavern);
             new BuildOption(BuildAndExpandType.Storehouse, TerrainMainType.Building, (int)TerrainBuildingType.Storehouse, SpriteName.WarsBuild_Storehouse, CraftBuildingLib.Storehouse);
@@ -222,10 +269,14 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.Smith, TerrainMainType.Building, (int)TerrainBuildingType.Work_Smith, SpriteName.WarsBuild_Smith, CraftBuildingLib.Smith);
             new BuildOption(BuildAndExpandType.Carpenter, TerrainMainType.Building, (int)TerrainBuildingType.Carpenter, SpriteName.WarsBuild_Carpenter, CraftBuildingLib.Carpenter);
 
-            new BuildOption(BuildAndExpandType.WheatFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, SpriteName.WarsBuild_WheatFarms, CraftBuildingLib.WheatFarm );
+            new BuildOption(BuildAndExpandType.WheatFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, SpriteName.WarsBuild_WheatFarms, CraftBuildingLib.WheatFarm);
+            new BuildOption(BuildAndExpandType.WheatFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarmUpgraded, SpriteName.WarsBuild_WheatFarms, CraftBuildingLib.WheatFarmUpgrade);
             new BuildOption(BuildAndExpandType.LinenFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarm, SpriteName.WarsBuild_LinenFarms, CraftBuildingLib.LinenFarm);
+            new BuildOption(BuildAndExpandType.LinenFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarmUpgraded, SpriteName.WarsBuild_LinenFarms, CraftBuildingLib.LinenFarmUpgrade);
             new BuildOption(BuildAndExpandType.HempFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarm, SpriteName.WarsBuild_HempFarms, CraftBuildingLib.HempFarm);
+            new BuildOption(BuildAndExpandType.HempFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarmUpgraded, SpriteName.WarsBuild_HempFarms, CraftBuildingLib.HempFarmUpgrade);
             new BuildOption(BuildAndExpandType.RapeSeedFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarm, SpriteName.WarsBuild_RapeseedFarms, CraftBuildingLib.RapeseedFarm);
+            new BuildOption(BuildAndExpandType.RapeSeedFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarmUpgraded, SpriteName.WarsBuild_RapeseedFarms, CraftBuildingLib.RapeseedFarmUpgrade);
 
             new BuildOption(BuildAndExpandType.Pavement, TerrainMainType.Decor, (int)TerrainDecorType.Pavement, SpriteName.WarsBuild_Pavement, CraftBuildingLib.Pavement);
             new BuildOption(BuildAndExpandType.PavementFlower, TerrainMainType.Decor, (int)TerrainDecorType.PavementFlower, SpriteName.WarsBuild_PavementFlowers, CraftBuildingLib.PavementFlower);
@@ -239,21 +290,23 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.CoinMinter, TerrainMainType.Building, (int)TerrainBuildingType.CoinMinter, SpriteName.WarsBuild_Coinminter, CraftBuildingLib.CoinMinter);
             new BuildOption(BuildAndExpandType.Embassy, TerrainMainType.Building, (int)TerrainBuildingType.Embassy, SpriteName.WarsBuild_Embassy, CraftBuildingLib.Embassy);
             new BuildOption(BuildAndExpandType.WaterResovoir, TerrainMainType.Building, (int)TerrainBuildingType.WaterResovoir, SpriteName.WarsBuild_WaterReservoir, CraftBuildingLib.WaterResovoir);
-            new BuildOption(BuildAndExpandType.ArcherBarracks, TerrainMainType.Building, (int)TerrainBuildingType.ArcherBarracks, SpriteName.WarsBuild_KnightBarrack, CraftBuildingLib.KnightsBarracks);
-            new BuildOption(BuildAndExpandType.WarmashineBarracks, TerrainMainType.Building, (int)TerrainBuildingType.WarmashineBarracks, SpriteName.WarsBuild_KnightBarrack, CraftBuildingLib.WarmashineBarracks);
-            new BuildOption(BuildAndExpandType.GunBarracks, TerrainMainType.Building, (int)TerrainBuildingType.GunBarracks, SpriteName.WarsBuild_KnightBarrack, CraftBuildingLib.GunBarracks);
-            new BuildOption(BuildAndExpandType.CannonBarracks, TerrainMainType.Building, (int)TerrainBuildingType.CannonBarracks, SpriteName.WarsBuild_KnightBarrack, CraftBuildingLib.CannonBarracks);
+            new BuildOption(BuildAndExpandType.ArcherBarracks, TerrainMainType.Building, (int)TerrainBuildingType.ArcherBarracks, SpriteName.WarsBuild_ArcherBarracks, CraftBuildingLib.KnightsBarracks);
+            new BuildOption(BuildAndExpandType.WarmashineBarracks, TerrainMainType.Building, (int)TerrainBuildingType.WarmashineBarracks, SpriteName.WarsBuild_WarmashineBarracks, CraftBuildingLib.WarmashineBarracks);
+            new BuildOption(BuildAndExpandType.GunBarracks, TerrainMainType.Building, (int)TerrainBuildingType.GunBarracks, SpriteName.WarsBuild_GunBarracks, CraftBuildingLib.GunBarracks);
+            new BuildOption(BuildAndExpandType.CannonBarracks, TerrainMainType.Building, (int)TerrainBuildingType.CannonBarracks, SpriteName.WarsBuild_CannonBarracks, CraftBuildingLib.CannonBarracks);
             new BuildOption(BuildAndExpandType.KnightsBarracks, TerrainMainType.Building, (int)TerrainBuildingType.KnightsBarracks, SpriteName.WarsBuild_KnightBarrack, CraftBuildingLib.KnightsBarracks);
             new BuildOption(BuildAndExpandType.Foundry, TerrainMainType.Building, (int)TerrainBuildingType.Foundry, SpriteName.WarsBuild_Foundry, CraftBuildingLib.Foundry);
             new BuildOption(BuildAndExpandType.Chemist, TerrainMainType.Building, (int)TerrainBuildingType.Chemist, SpriteName.WarsBuild_Chemist, CraftBuildingLib.Chemist);
             new BuildOption(BuildAndExpandType.Gunmaker, TerrainMainType.Building, (int)TerrainBuildingType.Gunmaker, SpriteName.WarsBuild_Gunmaker, CraftBuildingLib.Gunmaker);
+            new BuildOption(BuildAndExpandType.School, TerrainMainType.Building, (int)TerrainBuildingType.School, SpriteName.WarsBuild_School, CraftBuildingLib.School);
+
         }
 
         public static BuildAndExpandType BuildTypeFromTerrain(TerrainMainType main, int sub)
         { 
             foreach (BuildOption buildOption in BuildOptions)
             {
-                if (buildOption.mainType == main && buildOption.subType == sub)
+                if (buildOption != null && buildOption.mainType == main && buildOption.subType == sub)
                 { 
                     return buildOption.buildType;
                 }

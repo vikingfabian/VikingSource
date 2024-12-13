@@ -25,6 +25,7 @@ namespace VikingEngine.DSSWars.Conscript
         public int equipmentCollected;
 
         public int idAndPosition;
+        public TrainingLevel maxTrainingLevel;
         public int que;
 
         public BarracksStatus(BarracksType type)
@@ -50,6 +51,8 @@ namespace VikingEngine.DSSWars.Conscript
                     profile.weapon = ItemResourceType.HandCannon;
                     break;
             }
+
+            maxTrainingLevel = TrainingLevel.Skillful;
         }
 
         public void halt(City city)
@@ -109,6 +112,9 @@ namespace VikingEngine.DSSWars.Conscript
             w.Write((byte)type);
             w.Write(idAndPosition);
             w.Write((byte)que);
+            w.Write((byte)maxTrainingLevel);
+
+
         }
 
         public void readGameState(System.IO.BinaryReader r, int subVersion)
@@ -136,17 +142,18 @@ namespace VikingEngine.DSSWars.Conscript
                     countdown.readGameState(r);
                     break;
             }
-            if (subVersion >= 13 && subVersion < 40)
-            {
-                bool nobelmen = r.ReadBoolean();
-            }
-
+            
             if (subVersion >= 40)
             {
                 type = (BarracksType)r.ReadByte();
             }
             idAndPosition = r.ReadInt32();
             que = r.ReadByte();
+
+            if (subVersion >= 43)
+            {
+                maxTrainingLevel = (TrainingLevel)r.ReadByte();
+            }
         }
         public bool CountDownQue()
         {

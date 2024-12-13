@@ -719,16 +719,6 @@ namespace VikingEngine.DSSWars.Players
                         player.cityTab = Display.MenuTab.Conscript;
                         selectedSubTile.city.selectedConscript = selectedSubTile.city.conscriptIxFromSubTile(selectedSubTile.subTilePos);
 
-
-
-                        //int id = conv.IntVector2ToInt(selectedSubTile.subTilePos);
-                        //for (int i = 0; i < selectedSubTile.city.conscriptBuildings.Count; ++i)
-                        //{
-                        //    if (selectedSubTile.city.conscriptBuildings[i].idAndPosition == id)
-                        //    {
-                        //        selectedSubTile.city.selectedConscript = i; break;
-                        //    }
-                        //}
                     }
                     break;
                 case SelectTileResult.Recruitment:
@@ -737,21 +727,20 @@ namespace VikingEngine.DSSWars.Players
                         player.cityTab = Display.MenuTab.Delivery;
                         selectedSubTile.city.selectedDelivery = selectedSubTile.city.deliveryIxFromSubTile(selectedSubTile.subTilePos);
 
-                        //int id = conv.IntVector2ToInt(selectedSubTile.subTilePos);
-                        //for (int i = 0; i < selectedSubTile.city.deliveryServices.Count; ++i)
-                        //{
-                        //    if (selectedSubTile.city.deliveryServices[i].idAndPosition == id)
-                        //    {
-                        //        selectedSubTile.city.selectedDelivery = i; break;
-                        //    }
-                        //}
-
-                        //setObjectMenuFocus(true);
                     }
                     break;
-                //case SelectTileResult.:
-                //    player.cityTab = Display.MenuTab.Delivery;
-                //    break;
+
+                case SelectTileResult.School:
+                    {
+                        player.cityTab = Display.MenuTab.Progress;
+                        player.progressSubTab = Display.ProgressSubTab.Schools;
+                        selectedSubTile.city.selectedSchool = selectedSubTile.city.SchoolIxFromSubTile(selectedSubTile.subTilePos);
+
+                    }
+                    break;
+                    //case SelectTileResult.:
+                    //    player.cityTab = Display.MenuTab.Delivery;
+                    //    break;
             }
             
             //switch (tileResult)

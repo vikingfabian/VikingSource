@@ -55,11 +55,19 @@ namespace VikingEngine.DSSWars.Display.Translation
         //public string EndGameStatistics_StatuesBuilt => "Statues built: {0}";
         public string Hud_None => "None";
         public string Hud_AllCities => "All cities";
+        public string Hud_Time_Hours => "{0} hours";
         public string Info_FooodAndDeliveryLocation => "By default, workers go to the city hall to eat or drop off items";
         public string GameMenu_UseSpeedX => "{0} speed option";
 
+        public string Delivery_SendChunk => "Items per Delivery";
+        public string Delivery_SpeedBonus => "Speed bonus: {0}%";
+
         public string Conscript_SplashDamage => "Splash damage";
         public string Conscript_HighSplashDamage => "High splash damage";
+
+        public string Conscript_Training_Champion => "Champion";
+        public string Conscript_Training_Legendary => "Legendary";
+
 
         public string Experience_Title => "Experience";
         public string Experience_TopExperience => "Top experience levels";
@@ -69,7 +77,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string ExperienceType_Farm => "Farmer";
         public string ExperienceType_AnimalCare => "Animal care";
         public string ExperienceType_HouseBuilding => "House builder";
-        public string ExperienceType_WoodCutter => "Wood worker";
+        public string ExperienceType_WoodWork => "Wood worker";
         public string ExperienceType_StoneCutter => "Stone cutter";
         public string ExperienceType_Mining => "Miner";
         public string ExperienceType_Transport => "Transport";
@@ -109,6 +117,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Hud_Distance => "Distance";
 
         public string Hud_Unlock => "Unlock";
+        public string Hud_category => "Category";
 
         public string Resource_TypeName_Wagon2Wheel=> "Small wagon";
         public string Resource_TypeName_Wagon4Wheel=> "Large wagon";
@@ -190,6 +199,11 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildHud_AreaAffectTitle => "Area affect";
         public string BuildHud_BonusRadius => "Bonus radius: {0}";
 
+        public string SchoolHud_ToLevel => "To level";
+        public string SchoolHud_TimeDescription => "Time assumes zero experience; it decreases with experience.";
+        public string SchoolHud_SelectSchool => "Select school";
+        public string Upgrade_Order => "Upgrade order";
+        public string BuildingType_IsUpgraded => "{0} - upgraded";
         public string BuildingType_WoodCutter => "Lumber mill";
         public string BuildingType_Workshop_Description => "Improves work in the area";
 
@@ -226,6 +240,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_CoinMaker_Description => "Turn metals to money";
         public string BuildingType_Gunmaker => "Gunmaker";
         public string BuildingType_Gunmaker_Description => "Crafting station for guns and cannons";
+
+        public string BuildingType_School_Tab => "School";
+        public string BuildingType_School => "Masters guild";
+        public string BuildingType_School_Description => "Increase the skill level of workers";
 
 
         public string Work_MiningResource = "Mining {0}";

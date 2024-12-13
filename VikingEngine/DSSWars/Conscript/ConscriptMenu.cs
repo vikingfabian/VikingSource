@@ -63,6 +63,11 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType.ManCannonIron,
         };
 
+        //static readonly int[] SendSizeOptions =
+        // {
+
+        //};
+
         City city;
         LocalPlayer player;
         ProgressQue que = new ProgressQue();
@@ -203,7 +208,7 @@ namespace VikingEngine.DSSWars.Conscript
                 content.newLine();
                 TrainingLevel minLevel = currentStatus.type == BarracksType.Knight ? TrainingLevel.Basic : TrainingLevel.Minimal;
 
-                TrainingLevel maxLevel = TrainingLevel.Professional;
+                TrainingLevel maxLevel = currentStatus.maxTrainingLevel;
                 if (city.Culture == CityCulture.CrabMentality)
                 {
                     maxLevel = TrainingLevel.Basic;
@@ -270,7 +275,7 @@ namespace VikingEngine.DSSWars.Conscript
                 content.newParagraph();
 
 
-                que.toHud(player, content, queClick, currentStatus.que);
+                que.toHud(player, content, queClick, currentStatus.que, BarracksStatus.MaxQue, true);
 
 
                 content.newParagraph();

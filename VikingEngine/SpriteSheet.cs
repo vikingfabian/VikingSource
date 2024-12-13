@@ -2155,10 +2155,15 @@ namespace VikingEngine
                 }
 
 
-                currentIndex = numTilesWidth * 85;
-                {
-                    add(SpriteName.rtsCardBg, currentIndex, DSSCardSz.X, DSSCardSz.Y);
-                }
+                //currentIndex = numTilesWidth * 85;
+                //{
+                //    add(SpriteName.rtsCardBg, currentIndex, DSSCardSz.X, DSSCardSz.Y);
+                //}
+            }
+
+            currentIndex = numTilesWidth * 90;
+            {
+                add(SpriteName.WarsBuild_School, currentIndex, 3, 3);
             }
 
             if (PlatformSettings.RunProgram == StartProgram.ToGG ||
@@ -2457,6 +2462,12 @@ namespace VikingEngine
                     add(SpriteName.WarsBuild_Armory, 3, 3);
                     add(SpriteName.WarsBuild_Gunmaker, 3, 3);
                     add(SpriteName.WarsBuild_Coinminter, 3, 3);
+
+                    add(SpriteName.WarsBuild_SoldierBarracks, 3, 3);
+                    add(SpriteName.WarsBuild_ArcherBarracks, 3, 3);
+                    add(SpriteName.WarsBuild_WarmashineBarracks, 3, 3);
+                    add(SpriteName.WarsBuild_GunBarracks, 3, 3);
+                    add(SpriteName.WarsBuild_CannonBarracks, 3, 3);
                 }
 
                 currentIndex = numTilesWidth * 100;

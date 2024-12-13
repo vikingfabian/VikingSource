@@ -152,7 +152,12 @@ namespace VikingEngine.DSSWars.Display
                     case ProgressSubTab.Experience:
                         tabContent.Add(new RichBoxText(DssRef.todoLang.Experience_Title));
                         break;
+
+                    case ProgressSubTab.Schools:
+                        tabContent.Add(new RichBoxText(DssRef.todoLang.BuildingType_School_Tab));
+                        break;
                 }
+            
                 var subTab = new RichboxButton(tabContent,
                     new RbAction1Arg<ProgressSubTab>((ProgressSubTab resourcesSubTab) =>
                     {
@@ -168,10 +173,14 @@ namespace VikingEngine.DSSWars.Display
             {
                 default:
                     new TechnologyHud().technologyHud(content, player, city, city.faction);
-                    //city.technologyHud(content, player);
                     break;
+
                 case ProgressSubTab.Experience:
                     experienceTab(content);
+                    break;
+
+                case ProgressSubTab.Schools:
+                    new SchoolMenu().ToHud(city, player, content);
                     break;
             }
             
@@ -441,7 +450,7 @@ namespace VikingEngine.DSSWars.Display
             experience(SpriteName.WarsWorkFarm, DssRef.todoLang.ExperienceType_Farm, city.topskill_Farm);
             experience(SpriteName.WarsBuild_HenPen, DssRef.todoLang.ExperienceType_AnimalCare, city.topskill_AnimalCare);
             experience(SpriteName.WarsHammer, DssRef.todoLang.ExperienceType_HouseBuilding, city.topskill_HouseBuilding);
-            experience(SpriteName.WarsResource_Wood, DssRef.todoLang.ExperienceType_WoodCutter, city.topskill_WoodCutter);
+            experience(SpriteName.WarsResource_Wood, DssRef.todoLang.ExperienceType_WoodWork, city.topskill_WoodCutter);
             experience(SpriteName.WarsResource_Stone, DssRef.todoLang.ExperienceType_StoneCutter, city.topskill_StoneCutter);
             experience(SpriteName.WarsWorkMine, DssRef.todoLang.ExperienceType_Mining, city.topskill_Mining);
             experience(SpriteName.WarsWorkMove, DssRef.todoLang.ExperienceType_Transport, city.topskill_Transport);
@@ -601,7 +610,15 @@ namespace VikingEngine.DSSWars.Display
                         }, resourcesSubTab, SoundLib.menutab));
                     subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
                     content.Add(subTab);
-                    content.space();
+
+                    if (resourcesSubTab == ResourcesSubTab.Overview_Armor)
+                    {
+                        content.newLine();
+                    }
+                    else
+                    {
+                        content.space();
+                    }
                 }
                 content.newParagraph();
             }
@@ -1672,6 +1689,7 @@ namespace VikingEngine.DSSWars.Display
     { 
         Technology,
         Experience,
+        Schools,
         NUM
     }
 }

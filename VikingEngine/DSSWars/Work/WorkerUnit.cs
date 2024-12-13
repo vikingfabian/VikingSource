@@ -77,7 +77,8 @@ namespace VikingEngine.DSSWars.Work
                         model.Frame = 0;
                         updateGroudY(true);
 
-                        if ((status.work == WorkType.Build || status.work == WorkType.Demolish) && !status.orderIsActive(city))
+                        if ((status.work == WorkType.Build || status.work == WorkType.Upgrade || status.work == WorkType.Demolish) && 
+                            !status.orderIsActive(city))
                         {
                             state = WorkerUnitState.None;
                             status.cancelWork();
@@ -130,6 +131,13 @@ namespace VikingEngine.DSSWars.Work
                                         SoundLib.woodcut.Play(model.position);
                                         break;
                                     case TerrainSubFoilType.WheatFarm:
+                                    case TerrainSubFoilType.WheatFarmUpgraded:
+                                    case TerrainSubFoilType.LinenFarm:
+                                    case TerrainSubFoilType.LinenFarmUpgraded:
+                                    case TerrainSubFoilType.RapeSeedFarm:
+                                    case TerrainSubFoilType.RapeSeedFarmUpgraded:
+                                    case TerrainSubFoilType.HempFarm:
+                                    case TerrainSubFoilType.HempFarmUpgraded:
                                         SoundLib.scythe.Play(model.position);
                                         break;
                                     case TerrainSubFoilType.StoneBlock:
@@ -151,15 +159,15 @@ namespace VikingEngine.DSSWars.Work
                         case WorkType.Plant:
                             if (workAnimation_soundframe())
                             {
-                                SoundLib.genericWork.Play(model.position);
-                            }
-                            break;
-                        case WorkType.Till:
-                            if (workAnimation_soundframe())
-                            {
                                 SoundLib.dig.Play(model.position);
                             }
                             break;
+                        //case WorkType.Till:
+                        //    if (workAnimation_soundframe())
+                        //    {
+                        //        SoundLib.dig.Play(model.position);
+                        //    }
+                        //    break;
                         case WorkType.Craft:
                             if (workAnimation_soundframe())
                             {
@@ -190,7 +198,9 @@ namespace VikingEngine.DSSWars.Work
                             }
                             break;
                         case WorkType.Build:
+                        case WorkType.Upgrade:
                         case WorkType.Demolish:
+                        case WorkType.School:
                             if (workAnimation_soundframe())
                             {
                                 SoundLib.hammer.Play(model.position);

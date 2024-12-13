@@ -2552,6 +2552,12 @@ namespace VikingEngine
         WarsBuild_Postal,
         WarsBuild_Recruitment,
         WarsBuild_Barracks,
+        WarsBuild_SoldierBarracks,
+        WarsBuild_ArcherBarracks,
+        WarsBuild_WarmashineBarracks,
+        WarsBuild_GunBarracks,
+        WarsBuild_CannonBarracks,
+
         WarsBuild_Tavern,
         WarsBuild_Storehouse,
         WarsBuild_Bank,
@@ -2584,6 +2590,7 @@ namespace VikingEngine
         WarsBuild_Armory,
         WarsBuild_Gunmaker,
         WarsBuild_Coinminter,
+        WarsBuild_School,
 
         WarsResource_BronzeArmor,
         WarsResource_PaddedArmor,
