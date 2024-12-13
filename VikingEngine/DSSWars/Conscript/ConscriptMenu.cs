@@ -208,7 +208,7 @@ namespace VikingEngine.DSSWars.Conscript
                 content.newLine();
                 TrainingLevel minLevel = currentStatus.type == BarracksType.Knight ? TrainingLevel.Basic : TrainingLevel.Minimal;
 
-                TrainingLevel maxLevel = TrainingLevel.Professional;
+                TrainingLevel maxLevel = currentStatus.maxTrainingLevel;
                 if (city.Culture == CityCulture.CrabMentality)
                 {
                     maxLevel = TrainingLevel.Basic;

@@ -56,6 +56,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Conscript_SplashDamage => "Splash damage";
         public string Conscript_HighSplashDamage => "High splash damage";
 
+        public string Conscript_Training_Champion => "Champion";
+        public string Conscript_Training_Legendary => "Legendary";
+
+
         public string Experience_Title => "Experience";
         public string Experience_TopExperience => "Top experience levels";
 

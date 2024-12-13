@@ -173,6 +173,8 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case TrainingLevel.Basic: return DssRef.lang.Conscript_Training_Basic;
                 case TrainingLevel.Skillful: return DssRef.lang.Conscript_Training_Skillful;
                 case TrainingLevel.Professional: return DssRef.lang.Conscript_Training_Professional;
+                case TrainingLevel.Champion: return DssRef.todoLang.Conscript_Training_Champion;
+                case TrainingLevel.Legendary: return DssRef.todoLang.Conscript_Training_Legendary;
 
                 default:
                     throw new NotImplementedException();
