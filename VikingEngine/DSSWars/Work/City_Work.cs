@@ -534,8 +534,8 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                if (fuelSafeGuard)
-                {
+                //if (fuelSafeGuard)
+                //{
                     foreach (var pos in CityStructure.WorkInstance.Mines)
                     {
                         bool needMore = true;
@@ -562,7 +562,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 priority = workTemplate.mining_lead;
                                 break;
                             case TerrainMineType.SilverOre:
-                                needMore = res_ironore.needMore();
+                                needMore = res_Silver.needMore();
                                 priority = workTemplate.mining_silver;
                                 break;
                             case TerrainMineType.Sulfur:
@@ -591,7 +591,7 @@ namespace VikingEngine.DSSWars.GameObject
                             workQue.Add(new WorkQueMember(WorkType.Mine, NoSubWork, 0, pos, safeGuard ? WorkTemplate.SafeGuardPrio : priority.value, 0, distanceValue));
                         }
                     }
-                }
+                
 
                 //ANIMALS
                 if (workTemplate.farm_food.HasPrio() || rawFoodSafeGuard)
@@ -667,6 +667,21 @@ namespace VikingEngine.DSSWars.GameObject
 
                         case TerrainBuildingType.Carpenter:
                             craftBench(pos, distanceValue, CraftBuildingLib.CarpenterCraftTypes);
+                            break;
+                        case TerrainBuildingType.Armory:
+                            craftBench(pos, distanceValue, CraftBuildingLib.ArmoryCraftTypes);
+                            break;
+                        case TerrainBuildingType.Smelter:
+                            craftBench(pos, distanceValue, CraftBuildingLib.SmelterCraftTypes);
+                            break;
+                        case TerrainBuildingType.Foundry:
+                            craftBench(pos, distanceValue, CraftBuildingLib.FoundryCraftTypes);
+                            break;
+                        case TerrainBuildingType.Chemist:
+                            craftBench(pos, distanceValue, CraftBuildingLib.ChemistCraftTypes);
+                            break;
+                        case TerrainBuildingType.Gunmaker:
+                            craftBench(pos, distanceValue, CraftBuildingLib.GunmakerCraftTypes);
                             break;
                     }
                 }

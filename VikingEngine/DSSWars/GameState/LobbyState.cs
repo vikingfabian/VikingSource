@@ -415,6 +415,8 @@ namespace VikingEngine.DSSWars
                 foodSlider.onLeaveCallback = new Action(foodSliderLeave);
                 foodSlider.ToolTip = DssRef.lang.Settings_FoodMultiplier_Description;
 
+                new GuiCheckbox(DssRef.todoLang.Settings_CentralGold, DssRef.todoLang.Settings_CentralGold_Description, centralGoldProperty, layout);
+
                 new GuiTextButton(DssRef.lang.Settings_ResetToDefault, null, resetToDefault, false, layout);
             }
             layout.End();
@@ -557,6 +559,17 @@ namespace VikingEngine.DSSWars
                 refreshDifficultyLevel();
             }
             return DssRef.difficulty.setting_allowPauseCommand;
+        }
+
+        public bool centralGoldProperty(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                DssRef.storage.centralGold = value;
+                DssRef.storage.Save(null);
+                refreshDifficultyLevel();
+            }
+            return DssRef.storage.centralGold;
         }
 
         public bool bossProperty(int index, bool set, bool value)

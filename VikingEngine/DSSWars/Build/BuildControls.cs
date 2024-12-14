@@ -534,6 +534,37 @@ namespace VikingEngine.DSSWars.Build
                             deliveryHud(3);
                             break;
 
+                        case BuildAndExpandType.Bank:
+                            content.h2(DssRef.lang.XP_UnlockBuilding).overrideColor = HudLib.TitleColor_Label;
+                            List<BuildAndExpandType> unlocks = new List<BuildAndExpandType>()
+                            {
+                                BuildAndExpandType.CoinMinter,
+                            };
+
+                            if (!DssRef.storage.centralGold)
+                            {
+                                unlocks.Add(BuildAndExpandType.GoldDeliveryLvl1);
+                            }
+                            
+                            foreach (var building in unlocks)
+                            {
+                                var opt = BuildLib.BuildOptions[(int)building];
+                                content.newLine();
+                                HudLib.BulletPoint(content);
+                                content.Add(new RichBoxText(DssRef.lang.XP_UnlockBuilding));
+                                content.Add(new RichBoxImage(opt.sprite));
+                                content.space();
+                                content.Add(new RichBoxText(opt.Label()));
+                            }
+                            content.newParagraph();
+
+                            content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
+                            content.newLine();
+                            HudLib.BulletPoint(content);                            
+                            content.Add(new RichBoxText(string.Format(DssRef.lang.Economy_TaxIncome, TextLib.PlusMinus(MathExt.PercentageInteger(DssConst.BankTaxIncreasePercUnits)))));
+                            content.text(DssRef.todoLang.Hud_EffectDoesNotStack).overrideColor = HudLib.InfoYellow_Light;
+                            break;
+
                     }
 
 

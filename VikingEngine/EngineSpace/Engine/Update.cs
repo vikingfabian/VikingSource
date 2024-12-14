@@ -282,11 +282,7 @@ namespace VikingEngine.Engine
 
         }
 
-        public void ResetGameTime()
-        {
-            Ref.PrevTotalGameTimeSec = 0;
-            Ref.TotalGameTimeSec = 0;
-        }
+        
 
         public void ExitToDash()
         {

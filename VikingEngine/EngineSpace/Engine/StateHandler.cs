@@ -48,7 +48,7 @@ namespace VikingEngine.Engine
                 Ref.update.AbortThreads();
             }
             newstate.GotFocus(null);
-            Ref.update.ResetGameTime();
+            Ref.ResetGameTime();
 
             //new Timer.CheckTrialStatus();
             Debug.OnNewGameState();

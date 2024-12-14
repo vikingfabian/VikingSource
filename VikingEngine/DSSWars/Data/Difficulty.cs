@@ -88,6 +88,10 @@ namespace VikingEngine.DSSWars.Data
             {
                 result *= 1.25;
             }
+            if (!DssRef.storage.centralGold)
+            {
+                result *= 1.5;
+            }
             switch (setting_gameMode)
             {
                 case GameMode.Sandbox:

@@ -154,9 +154,9 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource res_BloomeryIron = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_Mithril = new GroupedResource() { goalBuffer = 100 };
 
-        public GroupedResource res_Toolkit = new GroupedResource() { amount = 5, goalBuffer = 100 };
-        public GroupedResource res_Wagon2Wheel = new GroupedResource() { amount = 5, goalBuffer = 100 };
-        public GroupedResource res_Wagon4Wheel = new GroupedResource() { amount = 5, goalBuffer = 100 };
+        public GroupedResource res_Toolkit = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Wagon2Wheel = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Wagon4Wheel = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_BlackPowder = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_GunPowder = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_LedBullet = new GroupedResource() { goalBuffer = 100 };

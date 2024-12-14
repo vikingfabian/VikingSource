@@ -44,6 +44,10 @@ namespace VikingEngine.DSSWars.Display.Translation
         //public string Tutorial_Select_SubTab => "And select category: {0}";
         //public string EndGameStatistics_DecorsBuilt => "Decorations built: {0}";
         //public string EndGameStatistics_StatuesBuilt => "Statues built: {0}";
+
+        public string Settings_CentralGold => "Central gold";
+        public string Settings_CentralGold_Description => "On: all your gold is in a shared pool for instant use. Off: gold is physical and needs to be transported.";
+
         public string Hud_None => "None";
         public string Hud_AllCities => "All cities";
         public string Hud_Time_Hours => "{0} hours";

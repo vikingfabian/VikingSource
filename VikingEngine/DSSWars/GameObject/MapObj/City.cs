@@ -504,6 +504,8 @@ namespace VikingEngine.DSSWars.GameObject
             res_FullPlateArmor.writeGameState(w); // ItemResourceType.FullPlateArmor
             res_MithrilArmor.writeGameState(w); // ItemResourceType.MithrilArmor
 
+            //Debug.WriteCheck(w);
+
             w.Write((ushort)workerStatuses.Count);
             for (int i = 0; i < workerStatuses.Count; i++) 
             { 
@@ -540,6 +542,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             technology.writeGameState(w);
             w.Write(gold);
+
+            Debug.WriteCheck(w);
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
@@ -598,6 +602,11 @@ namespace VikingEngine.DSSWars.GameObject
             res_GunPowder.readGameState(r, subversion); // ItemResourceType.GunPowder
             res_LedBullet.readGameState(r, subversion); // ItemResourceType.LedBullet
 
+            res_Toolkit.amount = 0;
+            res_Wagon2Wheel.amount = 0;
+            res_Wagon4Wheel.amount = 0;
+
+
             res_sharpstick.readGameState(r, subversion); // ItemResourceType.SharpStick
             res_BronzeSword.readGameState(r, subversion); // ItemResourceType.BronzeSword
             res_shortsword.readGameState(r, subversion); // ItemResourceType.ShortSword
@@ -639,6 +648,8 @@ namespace VikingEngine.DSSWars.GameObject
             res_FullPlateArmor.readGameState(r, subversion); // ItemResourceType.FullPlateArmor
             res_MithrilArmor.readGameState(r, subversion); // ItemResourceType.MithrilArmor
 
+            //Debug.ReadCheck(r);
+
             IntVector2 startPos = WP.ToSubTilePos_Centered(tilePos);
             int workerStatusesCount = r.ReadUInt16();
             for (int i = 0; i < workerStatusesCount; i++)
@@ -674,17 +685,16 @@ namespace VikingEngine.DSSWars.GameObject
                 deliveryServices.Add(status);
             }
 
-            if (subversion >= 41)
+            
+            schoolBuildings.Clear();
+            int schoolBuildingsCount = r.ReadUInt16();
+            for (int i = 0; i < schoolBuildingsCount; i++)
             {
-                schoolBuildings.Clear();
-                int schoolBuildingsCount = r.ReadUInt16();
-                for (int i = 0; i < schoolBuildingsCount; i++)
-                {
-                    XP.SchoolStatus status = new XP.SchoolStatus();
-                    status.readGameState(r, subversion);
-                    schoolBuildings.Add(status);
-                }
+                XP.SchoolStatus status = new XP.SchoolStatus();
+                status.readGameState(r, subversion);
+                schoolBuildings.Add(status);
             }
+            
 
             autoBuild_Work = r.ReadBoolean();
             autoBuild_Farm = r.ReadBoolean();
@@ -700,10 +710,9 @@ namespace VikingEngine.DSSWars.GameObject
             
             technology.readGameState(r, subversion);
 
-            if (subversion >= 43)
-            {
-                gold = r.ReadInt32();
-            }
+            gold = r.ReadInt32();
+
+            Debug.ReadCheck(r);
         }
 
         public void writeNet(System.IO.BinaryWriter w)

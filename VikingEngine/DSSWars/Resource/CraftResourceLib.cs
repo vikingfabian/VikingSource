@@ -727,7 +727,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.SkinLinen_Group, 3),
             },
            XP.WorkExperienceType.Fletcher,
-            XP.ExperienceLevel.Practitioner_2,
+            XP.ExperienceLevel.Expert_3,
             CraftRequirement.Carpenter
         );
 

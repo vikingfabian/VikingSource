@@ -91,9 +91,16 @@ namespace VikingEngine.DSSWars.GameObject
         { }
 
         public bool payMoney(int cost)
-        { 
-            gold -= cost;
-            return true;
+        {
+            if (DssRef.storage.centralGold)
+            {
+                return faction.payMoney(cost, false, null);
+            }
+            else
+            {
+                gold -= cost;
+                return true;
+            }
         }
 
         void init(Faction faction)
@@ -828,18 +835,22 @@ namespace VikingEngine.DSSWars.GameObject
                 foodCosts_blackmarket.minuteUpdate();
             }
 
-            var onCity = DssRef.world.tileGrid.Get(tilePos).City();
 
-            if (onCity.faction == faction)
+            if (!DssRef.storage.centralGold)
             {
-                if (gold < goldCarryCapacity)
+                var onCity = DssRef.world.tileGrid.Get(tilePos).City();
+
+                if (onCity.faction == faction)
                 {
-                   gold += faction.payMoney_MuchAsPossible(goldCarryCapacity - gold, onCity);
-                }
-                else if (gold > goldCarryCapacity)
-                {
-                    faction.gainMoney(gold - goldCarryCapacity, onCity);
-                    gold = goldCarryCapacity;
+                    if (gold < goldCarryCapacity)
+                    {
+                        gold += faction.payMoney_MuchAsPossible(goldCarryCapacity - gold, onCity);
+                    }
+                    else if (gold > goldCarryCapacity)
+                    {
+                        faction.gainMoney(gold - goldCarryCapacity, onCity);
+                        gold = goldCarryCapacity;
+                    }
                 }
             }
         }

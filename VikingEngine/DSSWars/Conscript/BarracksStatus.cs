@@ -153,6 +153,7 @@ namespace VikingEngine.DSSWars.Conscript
             if (subVersion >= 43)
             {
                 maxTrainingLevel = (TrainingLevel)r.ReadByte();
+                //maxTrainingLevel = TrainingLevel.Skillful;
             }
         }
         public bool CountDownQue()

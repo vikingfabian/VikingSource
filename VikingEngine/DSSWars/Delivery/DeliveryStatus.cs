@@ -130,16 +130,8 @@ namespace VikingEngine.DSSWars.Delivery
                     break;
             }
             idAndPosition = r.ReadInt32();
-            que = r.ReadByte();
-
-            if (subVersion >= 42)
-            {
-                level = r.ReadByte();
-            }
-            else
-            {
-                level = 1;
-            }
+            que = r.ReadByte();            
+            level = r.ReadByte();            
         }
 
         public bool CanSend(City city)
@@ -317,20 +309,8 @@ namespace VikingEngine.DSSWars.Delivery
         public void readGameState(System.IO.BinaryReader r, int subVersion)
         {
             toCity = r.ReadInt16();
-            type = (ItemResourceType)r.ReadByte();
-
-            if (subVersion >= 42)
-            {
-                SendAmount = r.ReadByte();
-            }
-            else if (subVersion >= 43)
-            {
-                SendAmount = r.ReadInt16();
-            }
-            else
-            {
-                SendAmount = DssConst.CityDeliveryChunkSize_Level1;
-            }
+            type = (ItemResourceType)r.ReadByte();           
+            SendAmount = r.ReadInt16();
 
             if (toCity == ToCityAuto)
             {
