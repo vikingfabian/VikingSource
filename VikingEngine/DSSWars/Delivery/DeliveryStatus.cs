@@ -13,6 +13,11 @@ namespace VikingEngine.DSSWars.Delivery
 {
     struct DeliveryStatus
     {
+        public const ItemResourceType DeliveryType_Resource = ItemResourceType.Food_G;
+        public const ItemResourceType DeliveryType_Men = ItemResourceType.Men;
+        public const ItemResourceType DeliveryType_Gold = ItemResourceType.Gold;
+
+
         public const int MaxQue = 20;
 
         public DeliveryActiveStatus active;
@@ -47,6 +52,11 @@ namespace VikingEngine.DSSWars.Delivery
             profile = setup.profile;
 
             checkCity(player);
+        }
+
+        public bool IsGold()
+        { 
+            return profile.type == DeliveryType_Gold;
         }
 
         public void checkCity(LocalPlayer player)
@@ -155,7 +165,7 @@ namespace VikingEngine.DSSWars.Delivery
             if (arraylib.InBound(DssRef.world.cities, cityIx))
             {
                 City city = DssRef.world.cities[cityIx];
-                if (profile.type == ItemResourceType.Men)
+                if (profile.type == DeliveryType_Men)
                 {
                     recieverHasAmountPlusDeliveries = city.homesTotal() + city.workForce.deliverCount;
 
@@ -233,13 +243,25 @@ namespace VikingEngine.DSSWars.Delivery
             return string.Format("Delivering {0}", remaining);
         }
 
-        public void defaultSetup(bool recruitment)
+        public void defaultSetup(ItemResourceType deliveryType)
         {
-            senderMin = 100;
-            recieverMax = 100;
+            
             profile.toCity = -1;
-            profile.type = recruitment ? ItemResourceType.Men : ItemResourceType.Food_G;
-            profile.SendAmount = DssConst.CityDeliveryChunkSize_Level1;
+            profile.type = deliveryType;// ? ItemResourceType.Men : ItemResourceType.Food_G;
+
+            if (deliveryType == DeliveryType_Gold)
+            {
+                senderMin = 1000;
+                recieverMax = 1000;
+                profile.SendAmount = DssConst.GoldDeliveryChunkSize_Level1;
+            }
+            else
+            {
+                senderMin = 100;
+                recieverMax = 100;
+                profile.SendAmount = DssConst.CityDeliveryChunkSize_Level1;
+            }
+
             if (level < 1)
             {
                 level = 1;
@@ -285,7 +307,7 @@ namespace VikingEngine.DSSWars.Delivery
         {
             w.Write((short)toCity);
             w.Write((byte)type);
-            w.Write((byte)SendAmount);
+            w.Write((short)SendAmount);
             if (toCity == ToCityAuto)
             {
                 w.Write((short)autoCity);
@@ -300,6 +322,10 @@ namespace VikingEngine.DSSWars.Delivery
             if (subVersion >= 42)
             {
                 SendAmount = r.ReadByte();
+            }
+            else if (subVersion >= 43)
+            {
+                SendAmount = r.ReadInt16();
             }
             else
             {

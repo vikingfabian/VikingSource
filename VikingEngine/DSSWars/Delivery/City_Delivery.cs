@@ -217,13 +217,18 @@ namespace VikingEngine.DSSWars.GameObject
             if (arraylib.InBound(deliveryServices, index))
             {
                 DeliveryStatus currentStatus = deliveryServices[index];
-                if (currentStatus.Recruitment())
+
+                switch (currentStatus.profile.type)
                 {
-                    player.menDeliveryCopy = currentStatus;
-                }
-                else
-                {
-                    player.itemDeliveryCopy = currentStatus;
+                    default:
+                        player.itemDeliveryCopy = currentStatus;
+                        break;
+                    case DeliveryStatus.DeliveryType_Men:
+                        player.menDeliveryCopy = currentStatus;
+                        break;
+                    case DeliveryStatus.DeliveryType_Gold:
+                        player.goldDeliveryCopy = currentStatus;
+                        break;
                 }
             }
         }
@@ -238,19 +243,25 @@ namespace VikingEngine.DSSWars.GameObject
             if (arraylib.InBound(deliveryServices, index))
             {
                 DeliveryStatus currentStatus = deliveryServices[index];
-                if (currentStatus.Recruitment())
-                {
-                    currentStatus.useSetup(player.menDeliveryCopy, player);
+
+                switch (currentStatus.profile.type)
+                { 
+                    default:
+                        currentStatus.useSetup(player.itemDeliveryCopy, player);
+                        break;
+                    case DeliveryStatus.DeliveryType_Men:
+                        currentStatus.useSetup(player.menDeliveryCopy, player);
+                        break;
+                    case DeliveryStatus.DeliveryType_Gold:
+                        currentStatus.useSetup(player.goldDeliveryCopy, player);
+                        break;
                 }
-                else
-                {
-                    currentStatus.useSetup(player.itemDeliveryCopy, player);
-                }
+               
                 deliveryServices[index] = currentStatus;
             }
         }
 
-        public void addDelivery(IntVector2 subPos, int level, bool recruitment)
+        public void addDelivery(IntVector2 subPos, int level, ItemResourceType deliveryType)
         {
             DeliveryStatus deliveryStatus = new DeliveryStatus()
             {
@@ -258,7 +269,7 @@ namespace VikingEngine.DSSWars.GameObject
                 level = level,
             };
 
-            deliveryStatus.defaultSetup(recruitment);
+            deliveryStatus.defaultSetup(deliveryType);
 
             lock (deliveryServices)
             {

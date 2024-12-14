@@ -47,6 +47,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Hud_None => "None";
         public string Hud_AllCities => "All cities";
         public string Hud_Time_Hours => "{0} hours";
+
+        public string Hud_EffectDoesNotStack => "This effect does not stack";
         public string Info_FooodAndDeliveryLocation => "By default, workers go to the city hall to eat or drop off items";
         public string GameMenu_UseSpeedX => "{0} speed option";
 
@@ -104,6 +106,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Technology_AdvancedFarming = "Advanced farming";
         public string Technology_AdvancedCasting = "Advanced casting";
         public string Hud_PercentPerMinute => "{0}% per minute";
+        public string Hud_PercentValueCost => "The service costs {0}% of the value";
+
         public string Hud_Mixed => "Mixed";
         public string Hud_Distance => "Distance";
 
@@ -236,6 +240,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_School => "Masters guild";
         public string BuildingType_School_Description => "Increase the skill level of workers";
 
+        public string BuildingType_GoldDelivery => "Gold courier";
+        public string BuildingType_Bank_Description => "Gold management";
 
         public string Work_MiningResource = "Mining {0}";
 

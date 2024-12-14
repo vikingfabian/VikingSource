@@ -345,6 +345,12 @@ namespace VikingEngine.DSSWars.Display.Translation
                         case TerrainBuildingType.PostalLevel3:
                             return string.Format(DssRef.todoLang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Postal);
 
+                        case TerrainBuildingType.GoldDeliveryLevel1:
+                            return DssRef.todoLang.BuildingType_GoldDelivery;
+                        case TerrainBuildingType.GoldDeliveryLevel2:
+                        case TerrainBuildingType.GoldDeliveryLevel3:
+                            return string.Format(DssRef.todoLang.BuildingType_IsUpgraded, DssRef.todoLang.BuildingType_GoldDelivery);
+
                         case TerrainBuildingType.Recruitment:
                             return DssRef.lang.BuildingType_Recruitment;
                         case TerrainBuildingType.RecruitmentLevel2:
@@ -552,9 +558,14 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case TerrainBuildingType.Work_CoalPit:
                     return DssRef.lang.BuildingType_CoalPit_Description;
                 case TerrainBuildingType.Bank:
-                    return DssRef.lang.BuildingType_Bank_Description;
+                    return DssRef.lang.BuildingType_GoldDelivery_Description;
                 case TerrainBuildingType.CoinMinter:
                     return DssRef.todoLang.BuildingType_CoinMaker_Description;
+
+                case TerrainBuildingType.GoldDeliveryLevel1:
+                case TerrainBuildingType.GoldDeliveryLevel2:
+                case TerrainBuildingType.GoldDeliveryLevel3:
+                    return DssRef.lang.BuildingType_GoldDelivery_Description;
 
                 case TerrainBuildingType.WoodCutter:
                 case TerrainBuildingType.StoneCutter:

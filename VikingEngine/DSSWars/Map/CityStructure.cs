@@ -207,7 +207,6 @@ namespace VikingEngine.DSSWars.Map
                                 switch (subTile.mainTerrain)
                                 {
 
-
                                     case TerrainMainType.Foil:
                                         var foil = (TerrainSubFoilType)subTile.subTerrain;
 
@@ -412,6 +411,11 @@ namespace VikingEngine.DSSWars.Map
                                                 break;
                                             case TerrainBuildingType.WaterResovoir:
                                                 ++buildingStructure.WaterResovoir_count;
+                                                break;
+                                            case TerrainBuildingType.GoldDeliveryLevel1:
+                                            case TerrainBuildingType.GoldDeliveryLevel2:
+                                            case TerrainBuildingType.GoldDeliveryLevel3:
+                                                ++buildingStructure.GoldDelivery_count;
                                                 break;
                                             case TerrainBuildingType.Bank:
                                                 ++buildingStructure.Bank_count;

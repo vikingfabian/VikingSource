@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars.Players
         public MixTabEditType mixTabEditType = MixTabEditType.None;
         public ItemResourceType mixTabItem = ItemResourceType.NONE;
 
-        public DeliveryStatus menDeliveryCopy, itemDeliveryCopy;
+        public DeliveryStatus menDeliveryCopy, itemDeliveryCopy, goldDeliveryCopy;
         public ConscriptProfile soldierConscriptCopy, archerConscriptCopy, warmashineConscriptCopy, knightConscriptCopy, gunConscriptCopy, cannonConscriptCopy;
 
         public PlayerControls.Tutorial tutorial = null;
@@ -176,10 +176,13 @@ namespace VikingEngine.DSSWars.Players
             }
 
             menDeliveryCopy = new DeliveryStatus();
-            menDeliveryCopy.defaultSetup(true);
+            menDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Men);
 
             itemDeliveryCopy = new DeliveryStatus();
-            menDeliveryCopy.defaultSetup(false);
+            menDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Resource);
+            
+            goldDeliveryCopy = new DeliveryStatus();
+            goldDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Gold);
 
             soldierConscriptCopy = new ConscriptProfile();
             soldierConscriptCopy.defaultSetup(BarracksType.Soldier);
@@ -1450,7 +1453,7 @@ namespace VikingEngine.DSSWars.Players
 
             if (StartupSettings.EndlessResources)
             {
-                faction.gold += 1000;
+                faction.addMoney_factionWide(1000);
             }
 
             if (StartupSettings.EndlessDiplomacy)

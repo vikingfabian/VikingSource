@@ -69,6 +69,10 @@ namespace VikingEngine.DSSWars.Build
         RecruitmentLevel2,
         RecruitmentLevel3,
 
+        GoldDeliveryLvl1,
+        GoldDeliveryLvl2,
+        GoldDeliveryLvl3,
+
         NUM_NONE,
     }
     static class BuildLib
@@ -152,7 +156,18 @@ namespace VikingEngine.DSSWars.Build
                 if (city.buildingStructure.Bank_count > 0 ||
                     StartupSettings.UnlockAllProgress)
                 {
+                    if (!DssRef.storage.centralGold)
+                    {
+                        result.Add(BuildAndExpandType.GoldDeliveryLvl1);
+                        if (city.buildingStructure.buildingLevel_logistics >= 1 ||
+                            StartupSettings.UnlockAllProgress)
+                        {
+                            result.Add(BuildAndExpandType.GoldDeliveryLvl2);
+                            result.Add(BuildAndExpandType.GoldDeliveryLvl3);
+                        }
+                    }
                     result.Add(BuildAndExpandType.CoinMinter);
+
                 }
             }
 
@@ -255,7 +270,12 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.Recruitment, TerrainMainType.Building, (int)TerrainBuildingType.Recruitment, SpriteName.WarsBuild_Recruitment, CraftBuildingLib.Recruitment);
             new BuildOption(BuildAndExpandType.RecruitmentLevel2, TerrainMainType.Building, (int)TerrainBuildingType.RecruitmentLevel2, SpriteName.WarsBuild_Recruitment, CraftBuildingLib.Recruitment_Level2);
             new BuildOption(BuildAndExpandType.RecruitmentLevel3, TerrainMainType.Building, (int)TerrainBuildingType.RecruitmentLevel3, SpriteName.WarsBuild_Recruitment, CraftBuildingLib.Recruitment_Level3);
-            
+
+            new BuildOption(BuildAndExpandType.GoldDeliveryLvl1, TerrainMainType.Building, (int)TerrainBuildingType.GoldDeliveryLevel1, SpriteName.WarsBuild_Postal, CraftBuildingLib.GoldDelivery);
+            new BuildOption(BuildAndExpandType.GoldDeliveryLvl2, TerrainMainType.Building, (int)TerrainBuildingType.GoldDeliveryLevel2, SpriteName.WarsBuild_Postal, CraftBuildingLib.GoldDelivery_Level2);
+            new BuildOption(BuildAndExpandType.GoldDeliveryLvl3, TerrainMainType.Building, (int)TerrainBuildingType.GoldDeliveryLevel3, SpriteName.WarsBuild_Postal, CraftBuildingLib.GoldDelivery_Level3);
+
+
             new BuildOption(BuildAndExpandType.SoldierBarracks, TerrainMainType.Building, (int)TerrainBuildingType.SoldierBarracks, SpriteName.WarsBuild_SoldierBarracks, CraftBuildingLib.SoldierBarracks);
             new BuildOption(BuildAndExpandType.Nobelhouse, TerrainMainType.Building, (int)TerrainBuildingType.Nobelhouse, SpriteName.WarsBuild_Nobelhouse, CraftBuildingLib.NobelHouse);
             new BuildOption(BuildAndExpandType.Tavern, TerrainMainType.Building, (int)TerrainBuildingType.Tavern, SpriteName.WarsBuild_Tavern, CraftBuildingLib.Tavern);

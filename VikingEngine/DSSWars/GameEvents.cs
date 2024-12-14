@@ -348,7 +348,12 @@ namespace VikingEngine.DSSWars
                 foreach (var faction in factions)
                 {
                     faction.growthMultiplier = 0.5f;
-                    faction.gold = -10000;
+                    faction.addMoney_factionWide( -10000);
+                    //var citiesC = faction.cities.counter();
+                    //while (citiesC.Next())
+                    //{
+                    //    citiesC.sel.gold = -2000;
+                    //}
                     faction.hasDeserters = true;
                 }
             }

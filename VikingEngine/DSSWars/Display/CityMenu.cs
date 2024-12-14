@@ -42,6 +42,15 @@ namespace VikingEngine.DSSWars.Display
             this.player = player;
             this.city = city;
 
+            if (!DssRef.storage.centralGold)
+            {
+                content.newLine();
+                content.Add(new RichBoxImage(SpriteName.rtsMoney));
+                content.space();
+                content.Add(new RichBoxText(DssRef.lang.ResourceType_Gold + ": " + TextLib.LargeNumber(city.gold),  HudLib.NegativeRed(city.gold)));
+                content.Add(new RichBoxNewLine());
+            }
+
             content.newLine();
             
             int tabSel = 0;

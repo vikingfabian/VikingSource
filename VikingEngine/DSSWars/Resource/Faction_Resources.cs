@@ -148,52 +148,150 @@ namespace VikingEngine.DSSWars
             city.workTemplate.followFactionClick(prioType, workTemplate);
         }
 
-        public bool calcCost(int cost, ref int totalCost) {
+        public bool calcCost(int cost, ref int totalCost, City city) {
             totalCost += cost;
 
-            return gold >= totalCost;
+            if (DssRef.storage.centralGold)
+            {
+                return gold >= totalCost;
+            }
+            else
+            {
+                return city.gold >= totalCost;
+            }
         }
 
-        public bool payMoney(int cost, bool allowDept)
+        public bool hasMoney(int cost, City city)
+        {
+            if (DssRef.storage.centralGold)
+            {
+                return gold >= cost;
+            }
+            else
+            {
+                return city.gold >= cost;
+            }
+        }
+
+        public bool payMoney(int cost, bool allowDept, City city)
         {
             if (player.IsPlayer() && StartupSettings.EndlessResources)
             {
                 return true;
             }
 
-            if (allowDept || gold >= cost)
+            if (DssRef.storage.centralGold)
             {
-                gold -= cost;
-                return true;
+                if (allowDept || gold >= cost)
+                {
+                    gold -= cost;
+                    return true;
+                }
+            }
+            else
+            {
+                if (allowDept || city.gold >= cost)
+                {
+                    city.gold -= cost;
+                    return true;
+                }
             }
             return false;
         }
+        public int payMoney_MuchAsPossible(int cost, City city)
+        {
+            if (DssRef.storage.centralGold)
+            {
+               return  pay(ref gold);
+            }
+            else
+            {
+               return pay(ref city.gold);
+            }
+
+            int pay(ref int gold)
+            {
+                if (gold > 0)
+                {
+                    int canPay = lib.SmallestValue(gold, cost);
+                    gold-= canPay;
+                    return canPay;
+                }
+                return 0;
+            }
+        }
+
+
+        public void gainMoney(int value, City city)
+        {
+            if (DssRef.storage.centralGold)
+            {
+                gold += value;
+            }
+            else
+            { 
+                city.gold += value;        
+            }
+        }
+
+        public void addMoney_factionWide(int value)
+        {   
+            gold += value;
+
+            if (cities.Count > 0)
+            {
+                int perCity = value / cities.Count;
+
+                var citiesC = cities.counter();
+                while (citiesC.Next())
+                {
+                    citiesC.sel.gold += perCity;
+                }
+            }           
+        }
 
         public void resources_oneSecUpdate()
-        {
-            
+        {           
 
             CityTradeImport = CityTradeImportCounting;
             CityTradeExport = CityTradeExportCounting;
             CityTradeImportCounting -= CityTradeImport;
             CityTradeExportCounting -= CityTradeExport;
 
-            double tax = citiesEconomy.tax(null);
+            //double tax = citiesEconomy.tax(null);
+            double incomeMultiplier = 1;
             if (player.IsAi())
             {
                 if (DssRef.settings.AiDelay)
                 {
-                    tax *= 0.05;
+                    incomeMultiplier = 0.05;
                 }
                 else if (player.aggressionLevel > AbsPlayer.AggressionLevel0_Passive)
                 {
-                    tax *= DssRef.difficulty.aiEconomyMultiplier;
+                    incomeMultiplier = DssRef.difficulty.aiEconomyMultiplier;
                 }
             }
-            int income = Convert.ToInt32(tax - citiesEconomy.cityGuardUpkeep - DssLib.NobleHouseUpkeep * nobelHouseCount);
 
-            
-            gold += income;
+            double income = 0;
+            int citiesTotalGold =0;
+            var citiesC = cities.counter();
+            while (citiesC.Next())
+            {
+                income += citiesC.sel.income_oneSecUpdate(incomeMultiplier);
+                citiesTotalGold += citiesC.sel.gold;
+            }
+
+            if (DssRef.storage.centralGold)
+            {
+                gold += Convert.ToInt32(income);
+            }
+            else
+            { 
+                gold = citiesTotalGold;
+            }
+
+            //int income = Convert.ToInt32(tax - citiesEconomy.cityGuardUpkeep - DssLib.NobleHouseUpkeep * nobelHouseCount);            
+            //gold += income;
             
             previuosGold = storeGold;
             storeGold = gold;
@@ -245,12 +343,13 @@ namespace VikingEngine.DSSWars
             while (armiesC.Next())
             {
                 float energyUpkeep = 0;
+                float moneyCarry = 0;
                 //float armyUpkeep = 0;
 
                 var groups = armiesC.sel.groups.counter();
                 while (groups.Next())
                 {
-                    groups.sel.Upkeep(ref energyUpkeep);
+                    groups.sel.Upkeep(ref energyUpkeep, ref moneyCarry);
                 }
 
                 float foodUpkeep = energyUpkeep / DssRef.difficulty.FoodEnergySett;
@@ -261,6 +360,7 @@ namespace VikingEngine.DSSWars
 
                 totalArmiesFoodUpkeep += foodUpkeep;
          
+                armiesC.sel.goldCarryCapacity = Convert.ToInt32(moneyCarry);
                 armiesC.sel.foodUpkeep = foodUpkeep;
                 armiesC.sel.food -= foodUpkeep * oneSecondUpdate;
                 if (armiesC.sel.food < -foodUpkeep * 60)

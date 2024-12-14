@@ -25,6 +25,7 @@ namespace VikingEngine.DSSWars.Data
         
 
         public MapSize mapSize = MapSize.Medium;
+        public bool centralGold = false;
         public bool generateNewMaps = false;
         public bool autoSave = true;
         public bool runTutorial = true;

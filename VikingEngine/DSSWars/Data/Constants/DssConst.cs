@@ -82,12 +82,14 @@ namespace VikingEngine.DSSWars
 
         public static float Conscript_SpecializePercentage = 0.5f;
 
+        public static float MoneyCarryPerSoldier = FoodGoldValue_BlackMarket;
+
         //OTHER
         public static float Livestock_WalkingSpeed = Men_StandardWalkingSpeed * 0.2f;
         public static int DeliveryMaxDistance = 80;
 
         //CITY
-        public static float TaxPerWorker = 0.1f;
+        public static float TaxPerWorker = 0.05f;
         public static int SmallCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 5);
         public static int LargeCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 7);
         public static int HeadCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 10);
@@ -133,8 +135,6 @@ namespace VikingEngine.DSSWars
         public static byte Harbour_SpeedBonus = 5;
 
         //WORK
-       
-
         public static float WorkTime_Eat = 10;
         public static float WorkTime_PickUpResource = 2;
         public static float WorkTime_PickUpProduce = 10;
@@ -202,6 +202,15 @@ namespace VikingEngine.DSSWars
 
         public static float DeliveryLevel2TimeReducePerc = 5;
         public static float DeliveryLevel3TimeReducePerc = 10;
+
+
+        //BANK
+        public static float GoldDeliveryFeePerc = 10;
+        public static float BankTaxIncreasePercUnits = 0.05f;
+        public static int GoldDeliveryChunkSize_Mini = 100;
+        public static int GoldDeliveryChunkSize_Level1 = 500;
+        public static int GoldDeliveryChunkSize_Level2 = 2000;
+        public static int GoldDeliveryChunkSize_Level3 = 5000;
 
     }
 }

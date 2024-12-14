@@ -143,17 +143,17 @@ namespace VikingEngine.DSSWars.Display
             {
                 content.Add(new RichBoxImage(SpriteName.rtsMoney));
                 content.space();
-                content.Add(new RichBoxText(DssRef.lang.ResourceType_Gold + ": " + TextLib.LargeNumber(faction.gold), negativeRed(faction.gold)));
+                content.Add(new RichBoxText(DssRef.lang.ResourceType_Gold + ": " + TextLib.LargeNumber(faction.gold), HudLib.NegativeRed(faction.gold)));
                 content.Add(new RichBoxNewLine());
             }
 
             void compressedGoldAndIncome()
             {
                 content.Add(new RichBoxImage(SpriteName.rtsMoney));
-                content.Add(new RichBoxText(TextLib.LargeNumber(faction.gold), negativeRed(faction.gold)));
+                content.Add(new RichBoxText(TextLib.LargeNumber(faction.gold), HudLib.NegativeRed(faction.gold)));
                 content.space();
                 content.Add(new RichBoxImage(SpriteName.rtsIncomeTime));
-                content.Add(new RichBoxText(TextLib.LargeNumber(faction.MoneySecDiff()), negativeRed(faction.MoneySecDiff())));
+                content.Add(new RichBoxText(TextLib.LargeNumber(faction.MoneySecDiff()), HudLib.NegativeRed(faction.MoneySecDiff())));
                 
             }
 
@@ -217,7 +217,7 @@ namespace VikingEngine.DSSWars.Display
                     content.Add(new RichBoxImage(SpriteName.rtsIncomeTime));
                     content.space();
                     content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(faction.MoneySecDiff())),
-                            negativeRed(faction.MoneySecDiff())));
+                            HudLib.NegativeRed(faction.MoneySecDiff())));
                     content.newLine();
                 }
                 else

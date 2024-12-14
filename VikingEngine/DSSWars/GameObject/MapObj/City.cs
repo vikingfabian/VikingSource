@@ -539,6 +539,7 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(res_food_safeguard);
 
             technology.writeGameState(w);
+            w.Write(gold);
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
@@ -695,12 +696,14 @@ namespace VikingEngine.DSSWars.GameObject
                 tagArt = (CityTagArt)r.ReadUInt16();
             }
 
-            if (subversion >= 29)
-            {
-                res_food_safeguard = r.ReadBoolean();
-            }
-
+            res_food_safeguard = r.ReadBoolean();
+            
             technology.readGameState(r, subversion);
+
+            if (subversion >= 43)
+            {
+                gold = r.ReadInt32();
+            }
         }
 
         public void writeNet(System.IO.BinaryWriter w)
@@ -752,8 +755,6 @@ namespace VikingEngine.DSSWars.GameObject
             detailObj.refreshWorkerSubtiles();
         }
 
-       
-
         public void onWorkHutBuild(bool build_notDestroy)
         {
             if (build_notDestroy)
@@ -782,7 +783,7 @@ namespace VikingEngine.DSSWars.GameObject
                 guardCount = maxGuardSize;
                 addWorkers(releasedWorkers);
 
-                faction.gold += DssConst.ReleaseGuardSizeGain;
+                faction.gainMoney(DssConst.ReleaseGuardSizeGain, this);
             }
         }
 
@@ -792,12 +793,12 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 int totalCost = 0;
 
-                if (faction.calcCost(DssConst.ExpandGuardSizeCost * count, ref totalCost))
+                if (faction.calcCost(DssConst.ExpandGuardSizeCost * count, ref totalCost, this))
                 {
                     if (commit)
                     {
                         expandGuardSize(DssConst.ExpandGuardSize * count);
-                        faction.payMoney(totalCost, true);
+                        faction.payMoney(totalCost, true, this);
                     }
                     return true;
                 }
@@ -830,12 +831,12 @@ namespace VikingEngine.DSSWars.GameObject
                 repairCountAndCost(all, out count, out cost);
 
                 int totalCost = 0;
-                if (faction.calcCost(cost, ref totalCost))
+                if (faction.hasMoney(cost, this))
                 {
                     if (commit)
                     {
                         damages.value -= count;
-                        faction.payMoney(totalCost, true);
+                        faction.payMoney(cost, true, this);
                     }
                     return true;
                 }
@@ -876,12 +877,12 @@ namespace VikingEngine.DSSWars.GameObject
             int totalCost = 0;
             int mercenariesCount = DssLib.MercenaryPurchaseCount * count;
 
-            if (faction.calcCost(buyMercenaryCost(count), ref totalCost) &&
+            if (faction.calcCost(buyMercenaryCost(count), ref totalCost, this) &&
                 faction.player.GetLocalPlayer().mercenaryMarket.Int() >= mercenariesCount)
             {
                 if (commit)
                 {
-                    faction.payMoney(totalCost, true);
+                    faction.payMoney(totalCost, true, this);
                     faction.player.GetLocalPlayer().mercenaryMarket.pay(mercenariesCount, true);
                     faction.player.GetLocalPlayer().mercenaryCost += DssRef.difficulty.MercenaryPurchaseCost_Add * count;
 
@@ -899,12 +900,10 @@ namespace VikingEngine.DSSWars.GameObject
             return Convert.ToInt32(result);
         }
 
-
         public int GuardUpkeep(int maxGuardSize)
         {
             return (int)(0.2f * maxGuardSize);
         }
-
 
         public void onGameStart(bool newGame)
         {
@@ -1113,17 +1112,7 @@ namespace VikingEngine.DSSWars.GameObject
         //    totalIncome = Convert.ToInt32(Math.Floor(workForce.value * TaxPerWorker - upkeep - blackMarketCosts.displayValue_sec));
         //}
 
-        public CityEconomyData calcIncome_async()
-        {
-            return new CityEconomyData()
-            {
-                workerCount = workForce.amount,//tax = workForce.value * TaxPerWorker,
-                cityGuardUpkeep = GuardUpkeep(maxGuardSize),
-                blackMarketCosts_Food = blackMarketCosts_food.displayValue_sec,
-            };
-
-
-        }
+        
 
         public void onNewModel(LootFest.VoxelModelName name, Graphics.VoxelModel master)
         {
@@ -1138,6 +1127,29 @@ namespace VikingEngine.DSSWars.GameObject
             detailObj.update(Ref.DeltaGameTimeMs, true);
 
             updateWorkerUnits();
+        }
+
+        public double income_oneSecUpdate(double incomeMultiplier)
+        {
+            CityEconomyData cityEconomy = new CityEconomyData();
+            double income = cityEconomy.tax(this) * incomeMultiplier;
+
+            income -= GuardUpkeep(maxGuardSize);
+            income -= DssLib.NobleHouseUpkeep * buildingStructure.Nobelhouse_count;
+
+            gold += Convert.ToInt32(income);
+
+            return income;
+        }
+
+        public CityEconomyData calcIncome_async()
+        {
+            return new CityEconomyData()
+            {
+                workerCount = workForce.amount,//tax = workForce.value * TaxPerWorker,
+                cityGuardUpkeep = GuardUpkeep(maxGuardSize),
+                blackMarketCosts_Food = blackMarketCosts_food.displayValue_sec,
+            };
         }
 
         public override void asynchCullingUpdate(float time, bool bStateA)

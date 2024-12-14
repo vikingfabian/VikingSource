@@ -267,5 +267,17 @@ namespace VikingEngine.DSSWars
             content.Add(dot);
             return dot;
         }
+
+        public static Color? NegativeRed(int value)
+        {
+            if (value < 0)
+            {
+                return Color.Red;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

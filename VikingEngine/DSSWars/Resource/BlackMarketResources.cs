@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars.Resource
         public static void AiPurchaseWood(City city, Faction faction)
         {
             int count = 5;
-            if (faction.payMoney(count * Cost_Wood, false))
+            if (faction.payMoney(count * Cost_Wood, false, city))
             {
                 city.res_wood.amount += count;
             }
@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.Resource
         public static bool AiPurchaseIron(City city, Faction faction)
         {
             int count = CraftBuildingLib.CraftSmith_IronUse;
-            if (faction.payMoney(count * Cost_Iron, false))
+            if (faction.payMoney(count * Cost_Iron, false, city))
             {
                 city.res_iron.amount += count;
                 return true;
@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars.Resource
                     new RichBoxText(name),
                 },
                 new RbAction3Arg<ItemResourceType, int, int>(city.blackMarketPurchase, resourceType, count, cost, SoundLib.menuBuy),
-                tooltip(count), player.faction.calcCost(cost, ref non));
+                tooltip(count), player.faction.calcCost(cost, ref non, city));
 
                 content.Add(button);
                 content.space();
@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars.Resource
                         new RichBoxText(string.Format(DssRef.lang.Hud_XTimes, count)),
                     },
                     new RbAction3Arg<ItemResourceType, int, int>(city.blackMarketPurchase, resourceType, count, cost, SoundLib.menuBuy),
-                    tooltip(count), player.faction.calcCost(cost * count, ref non));
+                    tooltip(count), player.faction.calcCost(cost * count, ref non, city));
                     content.Add(xbutton);
                     content.space();
                 }

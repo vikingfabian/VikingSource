@@ -72,6 +72,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public CityTagBack tagBack = CityTagBack.NONE;
         public ArmyTagArt tagArt = ArmyTagArt.None;
+
+        public int goldCarryCapacity = 0;
+        public int gold = 0;
+
         public Army(Faction faction, IntVector2 startPosition)
         {
             id = ++DssRef.state.NextArmyId;
@@ -85,6 +89,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Army()
         { }
+
+        public bool payMoney(int cost)
+        { 
+            gold -= cost;
+            return true;
+        }
 
         void init(Faction faction)
         {
@@ -333,6 +343,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void tradeSoldiersTo(UnitFilterType type, int count, Army toArmy)
         {
+            float startGroupCount = groups.Count;
             var groupsCounter = groups.counter();
 
             while (groupsCounter.Next())
@@ -353,16 +364,23 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
             }
-            
+
+            int transportGold;
+
             if (groups.Count <= 0)
             {
+                transportGold = gold;
                 DeleteMe(DeleteReason.EmptyGroup, true);
             }
             else
             {
+                float percMove = (startGroupCount - groups.Count) / startGroupCount;
+                transportGold = Convert.ToInt32(gold * percMove);
                 refreshPositions(false);
             }
 
+            gold -= transportGold;
+            toArmy.gold += transportGold;
             toArmy.refreshPositions(false);
             toArmy.onArmyMerge();
         }
@@ -808,6 +826,21 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 foodCosts_import.minuteUpdate();
                 foodCosts_blackmarket.minuteUpdate();
+            }
+
+            var onCity = DssRef.world.tileGrid.Get(tilePos).City();
+
+            if (onCity.faction == faction)
+            {
+                if (gold < goldCarryCapacity)
+                {
+                   gold += faction.payMoney_MuchAsPossible(goldCarryCapacity - gold, onCity);
+                }
+                else if (gold > goldCarryCapacity)
+                {
+                    faction.gainMoney(gold - goldCarryCapacity, onCity);
+                    gold = goldCarryCapacity;
+                }
             }
         }
 

@@ -123,6 +123,7 @@ namespace VikingEngine.DSSWars.GameObject
         public float waterAddPerSec;
         static readonly GroupedResource Res_Nothing = new GroupedResource() { amount = 100000 };
 
+        public int gold = 5;
         public GroupedResource res_water = new GroupedResource();
         public GroupedResource res_wood = new GroupedResource() { amount = 20, goalBuffer = 300 };
         public GroupedResource res_fuel = new GroupedResource() { amount = 20, goalBuffer = 300 };
@@ -324,7 +325,7 @@ namespace VikingEngine.DSSWars.GameObject
             switch (type)
             {
                 case ItemResourceType.Gold:
-                    faction.gold += add;
+                    faction.gainMoney(add, this);//.gold += add;
                     break;
                 case ItemResourceType.Water_G:
                     res_water.amount += add;
@@ -586,7 +587,7 @@ namespace VikingEngine.DSSWars.GameObject
             switch (type)
             {
                 case ItemResourceType.Gold:
-                    return new GroupedResource() { amount = faction.gold };
+                    return new GroupedResource() { amount = DssRef.storage.centralGold? faction.gold : gold };
                 case ItemResourceType.GoldOre:
                     return new GroupedResource() { amount = 1 };
                 case ItemResourceType.Men:
@@ -1006,7 +1007,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.GoldOre:
                     {
                         var price = convert1.amount * DssConst.GoldOreSellValue;
-                        faction.gold += price;
+                        faction.gainMoney( price, this);
                         soldResources.add(price);
 
                         convert1.type = ItemResourceType.Gold;
@@ -1051,7 +1052,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void blackMarketPurchase(ItemResourceType resourceType, int count, int cost)
         {
-            if (faction.payMoney(cost * count, false))
+            if (faction.payMoney(cost * count, false, this))
             {
                 AddGroupedResource(resourceType, count);
             }

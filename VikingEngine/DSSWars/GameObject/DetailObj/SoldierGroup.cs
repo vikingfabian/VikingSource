@@ -1317,9 +1317,10 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void Upkeep(ref float energy)
+        public void Upkeep(ref float energy, ref float moneyCarry)
         {
             energy += soldierData.energyPerSoldier * soldiers.Count;
+            moneyCarry += soldiers.Count * DssConst.MoneyCarryPerSoldier;
         }
 
         public override void DeleteMe(DeleteReason reason, bool removeFromParent)

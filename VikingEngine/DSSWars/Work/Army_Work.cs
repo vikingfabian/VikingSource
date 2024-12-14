@@ -91,7 +91,7 @@ namespace VikingEngine.DSSWars.GameObject
                     //black market trade
                     var cost = (int)Math.Ceiling(DssConst.FoodGoldValue_BlackMarket * (minBuffer - food));
 
-                    if (faction.payMoney(cost, false))
+                    if (payMoney(cost))
                     {
                         foodCosts_blackmarket.add(cost);
                         food = minBuffer;

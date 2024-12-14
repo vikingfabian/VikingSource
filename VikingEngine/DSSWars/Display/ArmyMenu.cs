@@ -25,7 +25,13 @@ namespace VikingEngine.DSSWars.Display
         {
             this.player = player;
             this.army = army;
-             
+
+            content.newLine();
+            content.Add(new RichBoxImage(SpriteName.rtsMoney));
+            content.space();
+            content.Add(new RichBoxText(DssRef.lang.ResourceType_Gold + ": " + TextLib.LargeNumber(army.gold), HudLib.NegativeRed(army.gold)));
+            content.Add(new RichBoxNewLine());
+
             content.newLine();
             switch (player.hud.displays.CurrentMenuState)
             {

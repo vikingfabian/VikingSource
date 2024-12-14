@@ -225,7 +225,7 @@ namespace VikingEngine.DSSWars.GameObject
                         status.createWorkOrder(WorkType.DropOff, -1, 0, WorkExperienceType.Transport, -1, CityStructure.WorkInstance.storePosition(status.subTileEnd), this);
                         workerStatuses[i] = status;
                     }
-                    else if (workerStatuses[i].energy < 0 && (res_food.amount > 0 || faction.gold > 0))
+                    else if (workerStatuses[i].energy < 0 && (res_food.amount > 0 || faction.hasMoney(1, this)))
                     {
                         CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
                         var status = workerStatuses[i];
@@ -925,7 +925,7 @@ namespace VikingEngine.DSSWars.GameObject
                 int buyFood = -res_food.amount;
 
                 int cost = (int)(buyFood * DssConst.FoodGoldValue_BlackMarket);
-                faction.payMoney(cost, true);
+                faction.payMoney(cost, true, this);
                 blackMarketCosts_food.add(cost);
                 res_food.amount += buyFood;
 

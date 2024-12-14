@@ -19,6 +19,8 @@ namespace VikingEngine.DSSWars.Delivery
     class DeliveryMenu
     {
         static readonly int[] BoundControls = { 10, 100, 1000 };
+        static readonly int[] BoundControls_Gold = { 100, 1000, 10000 };
+
         City city;
         LocalPlayer player;
         ProgressQue que = new ProgressQue();
@@ -232,17 +234,35 @@ namespace VikingEngine.DSSWars.Delivery
                 //SEND CHUNK SIZE
                 HudLib.Label(content, DssRef.todoLang.Delivery_SendChunk);
                 content.newLine();
-                List<int> sendChunkOptions = new List<int>(4);
-                sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Mini);
-                sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Level1);
 
-                if (currentStatus.level >= 2)
+                List<int> sendChunkOptions = new List<int>(4);
+                if (currentStatus.IsGold())
                 {
-                    sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Level2);
+                    sendChunkOptions.Add(DssConst.GoldDeliveryChunkSize_Mini);
+                    sendChunkOptions.Add(DssConst.GoldDeliveryChunkSize_Level1);
+
+                    if (currentStatus.level >= 2)
+                    {
+                        sendChunkOptions.Add(DssConst.GoldDeliveryChunkSize_Level2);
+                    }
+                    if (currentStatus.level >= 3)
+                    {
+                        sendChunkOptions.Add(DssConst.GoldDeliveryChunkSize_Level3);
+                    }
                 }
-                if (currentStatus.level >= 3)
+                else
                 {
-                    sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Level3);
+                    sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Mini);
+                    sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Level1);
+
+                    if (currentStatus.level >= 2)
+                    {
+                        sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Level2);
+                    }
+                    if (currentStatus.level >= 3)
+                    {
+                        sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Level3);
+                    }
                 }
 
                 foreach (int amount in sendChunkOptions)
@@ -408,10 +428,10 @@ namespace VikingEngine.DSSWars.Delivery
                 current = currentStatus.recieverMax;
             }
 
-
-            for (int i = BoundControls.Length - 1; i >= 0; i--)
+            int[] bounds = currentStatus.IsGold() ? BoundControls_Gold : BoundControls;
+            for (int i = bounds.Length - 1; i >= 0; i--)
             {
-                int change = -BoundControls[i];
+                int change = -bounds[i];
                 content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(TextLib.PlusMinus(change)) },
                     new RbAction2Arg<int, bool>(changeResourcePrice, change, minCap)));
 
@@ -421,9 +441,9 @@ namespace VikingEngine.DSSWars.Delivery
             content.Add(new RichBoxText(current.ToString()));
             content.space();
 
-            for (int i = 0; i < BoundControls.Length; i++)
+            for (int i = 0; i < bounds.Length; i++)
             {
-                int change = BoundControls[i];
+                int change = bounds[i];
                 content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(TextLib.PlusMinus(change)) },
                     new RbAction2Arg<int, bool>(changeResourcePrice, change, minCap)));
 

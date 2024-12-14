@@ -441,7 +441,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 1.5f;
                     name = DssRef.lang.FactionName_DarkFollower;
                     faction.displayInFullOverview = true;
-                    faction.gold += DssConst.HeadCityStartMaxWorkForce * 10;
+                    faction.addMoney_factionWide(DssConst.HeadCityStartMaxWorkForce * 10);
 
                     techSetup();
                     faction.technology.blackPowder = TechnologyTemplate.FactionUnlock;
@@ -539,7 +539,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.hasDeserters = false;
                     name = DssRef.lang.FactionName_SouthHara;
                     faction.displayInFullOverview = true;
-                    faction.gold += DssConst.HeadCityStartMaxWorkForce * 5;
+                    faction.addMoney_factionWide(DssConst.HeadCityStartMaxWorkForce * 5);
 
                     techSetup();
                     faction.technology.catapult = TechnologyTemplate.FactionUnlock;
@@ -554,7 +554,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
                     name = DssRef.lang.FactionName_Monger;
-                    faction.gold += DssConst.HeadCityStartMaxWorkForce * 1000;
+                    faction.addMoney_factionWide(DssConst.HeadCityStartMaxWorkForce * 1000);
                     techSetup();
                     break;
 
@@ -566,7 +566,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
                     name = DssRef.lang.FactionName_Hatu;
-                    faction.gold += DssConst.HeadCityStartMaxWorkForce * 1000;
+                    faction.addMoney_factionWide(DssConst.HeadCityStartMaxWorkForce * 1000);
                     techSetup();
                     break;
 
@@ -578,7 +578,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
                     name = DssRef.lang.FactionName_Destru;
-                    faction.gold += DssConst.HeadCityStartMaxWorkForce * 1000;
+                    faction.addMoney_factionWide(DssConst.HeadCityStartMaxWorkForce * 1000);
                     techSetup();
                     break;
 
