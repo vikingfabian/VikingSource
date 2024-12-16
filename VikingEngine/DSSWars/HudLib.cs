@@ -158,6 +158,21 @@ namespace VikingEngine.DSSWars
             return content.text(text);
         }
 
+        public static void Experience(RichBoxContent content, XP.WorkExperienceType exp, XP.ExperienceLevel level)
+        {
+            LangLib.ExperienceType(exp, out string expName, out SpriteName expIcon);
+            content.Add(new RichBoxImage(expIcon));
+            content.space();
+            var typeNameText = new RichBoxText(expName + ":");
+            typeNameText.overrideColor = HudLib.TitleColor_TypeName;
+            content.Add(typeNameText);
+
+            //var level = city.GetTopSkill(exp);
+            content.space();
+            content.Add(new RichBoxImage(LangLib.ExperienceLevelIcon(level)));
+            content.Add(new RichBoxText(LangLib.ExperienceLevel(level)));
+        }
+
         public static Color ResourceCostColor(bool hasEnough)
         { 
             return hasEnough ? AvailableColor : NotAvailableColor;

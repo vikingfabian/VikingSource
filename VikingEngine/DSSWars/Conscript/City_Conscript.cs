@@ -370,9 +370,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void addBarracks(IntVector2 subPos, BarracksType type)
         {
-            BarracksStatus consriptProfile = new BarracksStatus()
+            BarracksStatus consriptProfile = new BarracksStatus(type)
             {
-                type = type,
                 idAndPosition = conv.IntVector2ToInt(subPos),
             };
 
@@ -410,6 +409,19 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             return -1;
+        }
+
+        public bool hasConscriptId(int id)
+        {
+            for (int i = 0; i < conscriptBuildings.Count; ++i)
+            {
+                if (conscriptBuildings[i].idAndPosition == id)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public bool GetConscript(IntVector2 subTilePos, out BarracksStatus status)

@@ -52,6 +52,7 @@ namespace VikingEngine.DSSWars.XP
                     var buttonContent = new List<AbsRichBoxMember>()
                     {
                         new RichBoxImage(icon),
+                        new RichBoxSpace(),
                         new RichBoxText(text),
                     };
 
@@ -76,6 +77,7 @@ namespace VikingEngine.DSSWars.XP
                         var buttonContent = new List<AbsRichBoxMember>()
                     {
                         new RichBoxImage(icon),
+                        new RichBoxSpace(),
                         new RichBoxText(text),
                     };
 
@@ -157,22 +159,25 @@ namespace VikingEngine.DSSWars.XP
 
         void expTooltip(WorkExperienceType exp)
         {
-            LangLib.ExperienceType(exp, out string expName, out SpriteName expIcon);
+            
 
             RichBoxContent content = new RichBoxContent();
-            content.h2(DssRef.todoLang.Experience_TopExperience);
+            content.h2(DssRef.todoLang.Experience_TopExperience).overrideColor = HudLib.TitleColor_Label;
             
-                content.newLine();
-                content.Add(new RichBoxImage(expIcon));
-                content.space();
-                var typeNameText = new RichBoxText(expName + ":");
-                typeNameText.overrideColor = HudLib.TitleColor_TypeName;
-                content.Add(typeNameText);
+            content.newLine();
 
-                var level =  city.GetTopSkill(exp);
-            content.space();
-                content.Add(new RichBoxImage(LangLib.ExperienceLevelIcon(level)));
-                content.Add(new RichBoxText(LangLib.ExperienceLevel(level)));
+            HudLib.Experience(content, exp, city.GetTopSkill(exp));
+            //LangLib.ExperienceType(exp, out string expName, out SpriteName expIcon);
+            //content.Add(new RichBoxImage(expIcon));
+            //content.space();
+            //var typeNameText = new RichBoxText(expName + ":");
+            //typeNameText.overrideColor = HudLib.TitleColor_TypeName;
+            //content.Add(typeNameText);
+
+            //var level =  city.GetTopSkill(exp);
+            //content.space();
+            //content.Add(new RichBoxImage(LangLib.ExperienceLevelIcon(level)));
+            //content.Add(new RichBoxText(LangLib.ExperienceLevel(level)));
             
 
             player.hud.tooltip.create(player, content, true);

@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars.XP
                         var citiesC = factionsCounter.sel.cities.counter();
                         while (citiesC.Next())
                         {
-                            citiesC.sel.technology.addFactionUnlocked(factionsCounter.sel.technology, true);
+                            citiesC.sel.technology.addFactionUnlocked(factionsCounter.sel.technology, true, true);
                         }
                     }
 
@@ -40,6 +40,10 @@ namespace VikingEngine.DSSWars.XP
             {
                 foreach (var city in DssRef.world.cities)
                 {
+                    if (city.debugTagged)
+                    {
+                        lib.DoNothing();
+                    }
                     foreach (var ni in city.neighborCities)
                     {
                         var nCity = DssRef.world.cities[ni];
@@ -69,7 +73,7 @@ namespace VikingEngine.DSSWars.XP
             while (factionsC.Next())
             {
                 TechnologyTemplate factionTech = new TechnologyTemplate();
-                factionTech.addFactionUnlocked(factionsC.sel.technology, false);
+                factionTech.addFactionUnlocked(factionsC.sel.technology, false, false);
 
 
                 var citiesC = factionsC.sel.cities.counter();

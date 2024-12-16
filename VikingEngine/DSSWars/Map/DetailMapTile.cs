@@ -453,13 +453,13 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, 2, wp, WorldData.SubTileWidth * 0.9f));
                     break;
                 case TerrainBuildingType.Recruitment:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_recruitment, 0, wp, WorldData.SubTileWidth * 0.9f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, 3, wp, WorldData.SubTileWidth * 0.9f));
                     break;
                 case TerrainBuildingType.RecruitmentLevel2:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_recruitment, 0, wp, WorldData.SubTileWidth * 0.9f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, 4, wp, WorldData.SubTileWidth * 0.9f));
                     break;
                 case TerrainBuildingType.RecruitmentLevel3:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_recruitment, 0, wp, WorldData.SubTileWidth * 0.9f));
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, 5, wp, WorldData.SubTileWidth * 0.9f));
                     break;
                 case TerrainBuildingType.SoldierBarracks:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 1, wp, WorldData.SubTileWidth * 1f));
@@ -560,6 +560,16 @@ namespace VikingEngine.DSSWars.Map
                     break;
                 case TerrainBuildingType.School:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_logistic, 2, wp, WorldData.SubTileWidth * 1.0f));
+                    break;
+
+                case TerrainBuildingType.GoldDeliveryLevel1:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, 6, wp, WorldData.SubTileWidth * 0.9f));
+                    break;
+                case TerrainBuildingType.GoldDeliveryLevel2:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, 7, wp, WorldData.SubTileWidth * 0.9f));
+                    break;
+                case TerrainBuildingType.GoldDeliveryLevel3:
+                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, 8, wp, WorldData.SubTileWidth * 0.9f));
                     break;
 
                 case TerrainBuildingType._RESERVE1:

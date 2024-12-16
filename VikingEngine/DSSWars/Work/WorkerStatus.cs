@@ -299,7 +299,7 @@ namespace VikingEngine.DSSWars.Work
                                 break;
 
                             case TerrainSubFoilType.BogIron:
-                                carry = new ItemResource(ItemResourceType.IronOre_G, 1, Convert.ToInt32(processTimeLengthSec), TerrainContent.MineAmount);
+                                carry = new ItemResource(ItemResourceType.IronOre_G, 1, Convert.ToInt32(processTimeLengthSec), TerrainContent.DefaultMineAmount);
 
                                 gainXp = WorkExperienceType.Mining;
                                 break;
@@ -443,6 +443,7 @@ namespace VikingEngine.DSSWars.Work
                         //TODO placera mining i en deposit
                         var mineType = (TerrainMineType)subTile.subTerrain;
                         Resource.ItemResourceType resourceType = ItemResourceType.NONE;
+                        int amount = TerrainContent.DefaultMineAmount;
                         switch (mineType)
                         {
                             case TerrainMineType.IronOre:
@@ -466,6 +467,7 @@ namespace VikingEngine.DSSWars.Work
                             
                             case TerrainMineType.Coal:
                                 resourceType = ItemResourceType.Coal;
+                                amount = TerrainContent.MineAmount_Coal;
                                 break;
                             case TerrainMineType.GoldOre:
                                 resourceType = ItemResourceType.GoldOre;
@@ -476,7 +478,7 @@ namespace VikingEngine.DSSWars.Work
                                 break;
                         }
 
-                        int amount = TerrainContent.MineAmount;
+                        
                         if (city.Culture == CityCulture.Miners)
                         {
                             amount *= 2;

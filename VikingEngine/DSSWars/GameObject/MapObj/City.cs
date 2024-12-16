@@ -673,7 +673,11 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 var barrack = new Conscript.BarracksStatus();
                 barrack.readGameState(r, subversion);
-                conscriptBuildings.Add(barrack);
+                //check doublette
+                if (!hasConscriptId(barrack.idAndPosition))
+                {
+                    conscriptBuildings.Add(barrack);
+                }
             }
 
             deliveryServices.Clear();
@@ -1517,7 +1521,7 @@ namespace VikingEngine.DSSWars.GameObject
                     content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.Hud_Immigrants, immigrants.Int()));
                 }
 
-                new XP.TechnologyHud().technologyOverviewHud(content, player, null, faction);
+                new XP.TechnologyHud().technologyOverviewHud(content, player, this, faction);
                 //technologyOverviewHud(content, player);
 #if DEBUG
                 //technologyHud(content, player);
@@ -1705,7 +1709,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 workTemplate.onFactionChange(faction.workTemplate);
                 tradeTemplate.onFactionValueChange(faction.tradeTemplate);
-                technology.addFactionUnlocked(faction.technology, false);
+                technology.addFactionUnlocked(faction.technology, true, false);
             }
         }
 

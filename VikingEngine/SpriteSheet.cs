@@ -2164,6 +2164,13 @@ namespace VikingEngine
             currentIndex = numTilesWidth * 90;
             {
                 add(SpriteName.WarsBuild_School, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_PostalLevel2, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_PostalLevel3, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_RecruitmentLevel2, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_RecruitmentLevel3, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_GoldDeliver, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_GoldDeliverLevel2, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_GoldDeliverLevel3, currentIndex, 3, 3);
             }
 
             if (PlatformSettings.RunProgram == StartProgram.ToGG ||
@@ -2535,7 +2542,7 @@ namespace VikingEngine
                     add(SpriteName.WarsTechnology_Unlocked);
                     add(SpriteName.WarsTechnology_Locked);
                     add(SpriteName.WarsFletcherArrowIcon);
-
+                    add(SpriteName.WarsWorkSmelting);
 
                 }
 

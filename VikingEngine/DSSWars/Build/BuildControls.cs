@@ -577,6 +577,13 @@ namespace VikingEngine.DSSWars.Build
                         city.res_food.toMenu(content, ItemResourceType.Food_G, false, ref reachedBuffer);
                     }
 
+                    if (build.blueprint.levelRequirement > XP.ExperienceLevel.Beginner_1)
+                    {
+                        content.newLine();
+
+                        HudLib.Experience(content, build.blueprint.experienceType, city.GetTopSkill(build.blueprint.experienceType));
+                    }
+
                     player.hud.tooltip.create(player, content, true);
 
 
