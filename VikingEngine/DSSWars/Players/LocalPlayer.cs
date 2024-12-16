@@ -87,6 +87,7 @@ namespace VikingEngine.DSSWars.Players
         public LocalPlayer(Faction faction)
            : base(faction)
         {
+            faction.gold = DssRef.difficulty.PlayerBonusGold;
             orders = new Orders.Orders();
 
             faction.factiontype = FactionType.Player;
@@ -736,7 +737,7 @@ namespace VikingEngine.DSSWars.Players
         {
             if (drawUnitsView.current.DrawDetailLayer)
             {
-                if (input.Build.DownEvent)
+                if (input.Build.DownEvent && mapControls.hover.subTile.city.faction == this.faction)
                 {
                     var order = orders.orderOnSubTile(mapControls.hover.subTile.subTilePos) as BuildOrder;
                     if ( order != null)

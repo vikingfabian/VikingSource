@@ -1,7 +1,7 @@
 ﻿-Change Log-
-* Full translation
-* Water/diplomacy description
-
+* wrong city fix during building
+* easy mode starts with extra money
+* displays missing resources on cities
 #Todo (xmas patch)#
 
 

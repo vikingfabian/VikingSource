@@ -253,5 +253,11 @@ namespace VikingEngine.DSSWars
             content.Add(dot);
             return dot;
         }
+
+        public static void CityResource(RichBoxContent content, City city, ItemResourceType type)
+        {
+            bool buffer = false;
+            city.GetGroupedResource(type).toMenu(content, type, city.foodSafeGuardIsActive(type), ref buffer);
+        }
     }
 }
