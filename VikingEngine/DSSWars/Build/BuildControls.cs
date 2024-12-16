@@ -54,6 +54,12 @@ namespace VikingEngine.DSSWars.Build
                 var mayBuild = selectedSubTile.MayBuild(player);
                 if (mayBuild == MayBuildResult.Yes || mayBuild == MayBuildResult.Yes_ChangeCity)
                 {
+                    if (mayBuild == MayBuildResult.Yes_ChangeCity)
+                    {
+                        player.mapSelect(selectedSubTile.city);
+                    }
+
+
                     if (selectedSubTile.city.availableBuildQueue(player) && placeBuildingOption().blueprint.meetsRequirements(selectedSubTile.city))
                     {
                         player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, selectedSubTile.city, selectedSubTile.subTilePos, placeBuildingType), ActionOnConflict.Toggle);

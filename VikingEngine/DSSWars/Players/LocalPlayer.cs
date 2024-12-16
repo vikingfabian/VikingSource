@@ -1293,7 +1293,7 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        void mapSelect(AbsWorldObject mapObject)
+        public void mapSelect(AbsWorldObject mapObject)
         {
             bool sameMapObject = mapControls.selection.obj != null && mapObject == mapControls.selection.obj;
             clearSelection();
