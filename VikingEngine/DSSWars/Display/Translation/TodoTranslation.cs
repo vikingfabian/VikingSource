@@ -53,6 +53,9 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Hud_Time_Hours => "{0} hours";
 
         public string Hud_EffectDoesNotStack => "This effect does not stack";
+
+        public string Work_SmeltX => "Smelt {0}";
+
         public string Info_FooodAndDeliveryLocation => "By default, workers go to the city hall to eat or drop off items";
         public string GameMenu_UseSpeedX => "{0} speed option";
 

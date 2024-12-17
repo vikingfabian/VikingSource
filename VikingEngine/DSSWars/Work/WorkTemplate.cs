@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net;
+using System.Reflection.Metadata;
 using System.Security.AccessControl;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display;
@@ -577,7 +578,7 @@ namespace VikingEngine.DSSWars.Work
                     return craft_iron;
                 case ItemResourceType.Tin:
                     return craft_tin;
-                case ItemResourceType.Cupper:
+                case ItemResourceType.Copper:
                     return craft_cupper;
                 case ItemResourceType.Lead:
                     return craft_lead;
@@ -710,15 +711,15 @@ namespace VikingEngine.DSSWars.Work
                 case WorkPriorityType.craftCoolingFluid:
                     return craft_coolingfluid;
 
-                case WorkPriorityType.craftIron:
+                case WorkPriorityType.smeltIron:
                     return craft_iron;
-                case WorkPriorityType.craftTin:
+                case WorkPriorityType.smeltTin:
                     return craft_tin;
-                case WorkPriorityType.craftCupper:
+                case WorkPriorityType.smeltCopper:
                     return craft_cupper;
-                case WorkPriorityType.craftLead:
+                case WorkPriorityType.smeltLead:
                     return craft_lead;
-                case WorkPriorityType.craftSilver:
+                case WorkPriorityType.smeltSilver:
                     return craft_silver;
                 case WorkPriorityType.craftBronze:
                     return craft_bronze;
@@ -837,7 +838,7 @@ namespace VikingEngine.DSSWars.Work
                     return mining_iron;
                 case WorkPriorityType.miningTin:
                     return mining_tin;
-                case WorkPriorityType.miningCupper:
+                case WorkPriorityType.miningCopper:
                     return mining_cupper;
                 case WorkPriorityType.miningLead:
                     return mining_lead;
@@ -900,19 +901,19 @@ namespace VikingEngine.DSSWars.Work
                     craft_coolingfluid = value;
                     break;
 
-                case WorkPriorityType.craftIron:
+                case WorkPriorityType.smeltIron:
                     craft_iron = value;
                     break;
-                case WorkPriorityType.craftTin:
+                case WorkPriorityType.smeltTin:
                     craft_tin = value;
                     break;
-                case WorkPriorityType.craftCupper:
+                case WorkPriorityType.smeltCopper:
                     craft_cupper = value;
                     break;
-                case WorkPriorityType.craftLead:
+                case WorkPriorityType.smeltLead:
                     craft_lead = value;
                     break;
-                case WorkPriorityType.craftSilver:
+                case WorkPriorityType.smeltSilver:
                     craft_silver = value;
                     break;
 
@@ -1085,7 +1086,7 @@ namespace VikingEngine.DSSWars.Work
                 case WorkPriorityType.miningTin:
                     mining_tin = value;
                     break;
-                case WorkPriorityType.miningCupper:
+                case WorkPriorityType.miningCopper:
                     mining_cupper = value;
                     break;
                 case WorkPriorityType.miningLead:
@@ -1137,6 +1138,7 @@ namespace VikingEngine.DSSWars.Work
 
         
 
+
         public void toHud(Players.LocalPlayer player, RichBoxContent content, WorkSubTab tab, Faction faction, City city)
         {
             switch (tab)
@@ -1178,7 +1180,7 @@ namespace VikingEngine.DSSWars.Work
 
                     mining_iron.toHud(player, content, string.Format(DssRef.todoLang.Work_MiningResource, DssRef.lang.Resource_TypeName_Iron), SpriteName.WarsWorkMine, SpriteName.WarsResource_Iron, WorkPriorityType.miningIron, faction, city);
                     mining_tin.toHud(player, content, string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_Tin), SpriteName.WarsWorkMine, SpriteName.WarsResource_Tin, WorkPriorityType.miningTin, faction, city);
-                    mining_cupper.toHud(player, content, string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_Copper), SpriteName.WarsWorkMine, SpriteName.WarsResource_Copper, WorkPriorityType.miningCupper, faction, city);
+                    mining_cupper.toHud(player, content, string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_Copper), SpriteName.WarsWorkMine, SpriteName.WarsResource_Copper, WorkPriorityType.miningCopper, faction, city);
                     mining_lead.toHud(player, content, string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_Lead), SpriteName.WarsWorkMine, SpriteName.WarsResource_Lead, WorkPriorityType.miningLead, faction, city);
                     mining_silver.toHud(player, content, string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_Silver), SpriteName.WarsWorkMine, SpriteName.WarsResource_Silver, WorkPriorityType.miningSilver, faction, city);
                     mining_gold.toHud(player, content, string.Format(DssRef.todoLang.Work_MiningResource, DssRef.lang.ResourceType_Gold), SpriteName.WarsWorkMine, SpriteName.WarsResource_Gold, WorkPriorityType.miningGold, faction, city);
@@ -1187,11 +1189,11 @@ namespace VikingEngine.DSSWars.Work
                     mining_coal.toHud(player, content, string.Format(DssRef.todoLang.Work_MiningResource, DssRef.lang.Resource_TypeName_Coal), SpriteName.WarsWorkMine, SpriteName.WarsResource_Fuel, WorkPriorityType.miningCoal, faction, city);
                     content.newParagraph();
            
-                    craft_iron.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Iron), SpriteName.WarsHammer, SpriteName.WarsResource_Iron, WorkPriorityType.craftIron, faction, city);
-                    craft_tin.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Tin), SpriteName.WarsHammer, SpriteName.WarsResource_Tin, WorkPriorityType.craftTin, faction, city);
-                    craft_cupper.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Copper), SpriteName.WarsHammer, SpriteName.WarsResource_Copper, WorkPriorityType.craftCupper, faction, city);
-                    craft_lead.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Lead), SpriteName.WarsHammer, SpriteName.WarsResource_Lead, WorkPriorityType.craftLead, faction, city);
-                    craft_silver.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Silver), SpriteName.WarsHammer, SpriteName.WarsResource_Silver, WorkPriorityType.craftSilver, faction, city);
+                    craft_iron.toHud(player, content, string.Format(DssRef.todoLang.Work_SmeltX, DssRef.lang.Resource_TypeName_Iron), SpriteName.WarsHammer, SpriteName.WarsResource_Iron, WorkPriorityType.smeltIron, faction, city);
+                    craft_tin.toHud(player, content, string.Format(DssRef.todoLang.Work_SmeltX, DssRef.todoLang.Resource_TypeName_Tin), SpriteName.WarsHammer, SpriteName.WarsResource_Tin, WorkPriorityType.smeltTin, faction, city);
+                    craft_cupper.toHud(player, content, string.Format(DssRef.todoLang.Work_SmeltX, DssRef.todoLang.Resource_TypeName_Copper), SpriteName.WarsHammer, SpriteName.WarsResource_Copper, WorkPriorityType.smeltCopper, faction, city);
+                    craft_lead.toHud(player, content, string.Format(DssRef.todoLang.Work_SmeltX, DssRef.todoLang.Resource_TypeName_Lead), SpriteName.WarsHammer, SpriteName.WarsResource_Lead, WorkPriorityType.smeltLead, faction, city);
+                    craft_silver.toHud(player, content, string.Format(DssRef.todoLang.Work_SmeltX, DssRef.todoLang.Resource_TypeName_Silver), SpriteName.WarsHammer, SpriteName.WarsResource_Silver, WorkPriorityType.smeltSilver, faction, city);
                     craft_bronze.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Bronze), SpriteName.WarsHammer, SpriteName.WarsResource_Bronze, WorkPriorityType.craftBronze, faction, city);
                     craft_castiron.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_CastIron), SpriteName.WarsHammer, SpriteName.WarsResource_CastIron, WorkPriorityType.craftCastIron, faction, city);
                     craft_bloomeryiron.toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_BloomIron), SpriteName.WarsHammer, SpriteName.WarsResource_BloomeryIron, WorkPriorityType.craftBloomeryIron, faction, city);
@@ -1280,26 +1282,26 @@ namespace VikingEngine.DSSWars.Work
 
         public void toHud(Players.LocalPlayer player, RichBoxContent content, string name, SpriteName sprite1, SpriteName sprite2, WorkPriorityType priorityType, Faction faction, City city)//, bool allowSafeGuard)
         {
+            content.newLine();
+            var infoContent = new List<AbsRichBoxMember>(2);
+            infoContent.Add(new RichBoxImage(sprite1));
+            if (sprite2 != SpriteName.NO_IMAGE)
+            {
+                infoContent.Add(new RichBoxImage(sprite2));
+            }
+            var infoButton = new RichboxButton(infoContent, null, new RbAction(() =>
+            {
+                RichBoxContent content = new RichBoxContent();
+                content.Add(new RichBoxText(name));
+                player.hud.tooltip.create(player, content, true);
+            }));
+            infoButton.overrideBgColor = HudLib.InfoYellow_BG;
+
+            content.Add(infoButton);
+            content.Add(new RichBoxTab(0.2f));
+
             if (unlocked)
             {
-                content.newLine();
-                var infoContent = new List<AbsRichBoxMember>(2);
-                infoContent.Add(new RichBoxImage(sprite1));
-                if (sprite2 != SpriteName.NO_IMAGE)
-                {
-                    infoContent.Add(new RichBoxImage(sprite2));
-                }
-                var infoButton = new RichboxButton(infoContent, null, new RbAction(() =>
-                {
-                    RichBoxContent content = new RichBoxContent();
-                    content.Add(new RichBoxText(name));
-                    player.hud.tooltip.create(player, content, true);
-                }));
-                infoButton.overrideBgColor = HudLib.InfoYellow_BG;
-
-                content.Add(infoButton);
-                content.Add(new RichBoxTab(0.2f));
-
                 if (city != null)
                 {
                     HudLib.FollowFactionButton(followFaction,
@@ -1349,6 +1351,10 @@ namespace VikingEngine.DSSWars.Work
                     content.Add(button);
 
                 }
+            }
+            else
+            {
+                content.Add(new RichBoxImage(SpriteName.birdLock));
             }
         }
         public void writeGameState(System.IO.BinaryWriter w, bool isCity)
@@ -1417,11 +1423,11 @@ namespace VikingEngine.DSSWars.Work
         craftBeer,
         craftCoolingFluid,
 
-        craftIron,
-        craftTin,
-        craftCupper,
-        craftLead,
-        craftSilver,
+        smeltIron,
+        smeltTin,
+        smeltCopper,
+        smeltLead,
+        smeltSilver,
         craftBronze,
         craftCastIron,
         craftBloomeryIron,
@@ -1482,7 +1488,7 @@ namespace VikingEngine.DSSWars.Work
         bogiron,
         miningIron,
         miningTin,
-        miningCupper,
+        miningCopper,
         miningLead,
         miningSilver,
         miningGold,

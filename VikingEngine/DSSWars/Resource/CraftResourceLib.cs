@@ -84,15 +84,15 @@ namespace VikingEngine.DSSWars.Resource
         //}
 
         //ORE
-        public static readonly CraftBlueprint Cupper = new CraftBlueprint(
+        public static readonly CraftBlueprint Copper = new CraftBlueprint(
             CraftResultType.Resource,
-            (int)ItemResourceType.Cupper,
+            (int)ItemResourceType.Copper,
             4,
             new UseResource[]
             {
                 new UseResource(ItemResourceType.Water_G, 2),
                 new UseResource(ItemResourceType.Fuel_G, 30),
-                new UseResource(ItemResourceType.CupperOre, 2)
+                new UseResource(ItemResourceType.CopperOre, 2)
             },
             XP.WorkExperienceType.Smelting,
             XP.ExperienceLevel.Beginner_1,
@@ -101,13 +101,13 @@ namespace VikingEngine.DSSWars.Resource
 
         public static readonly CraftBlueprint Cupper_AndCooling = new CraftBlueprint(
             CraftResultType.Resource,
-            (int)ItemResourceType.Cupper,
+            (int)ItemResourceType.Copper,
             4,
             new UseResource[]
             {
                 new UseResource(ItemResourceType.CoolingFluid, 2),
                 new UseResource(ItemResourceType.Fuel_G, 30),
-                new UseResource(ItemResourceType.CupperOre, 2)
+                new UseResource(ItemResourceType.CopperOre, 2)
             },
            XP.WorkExperienceType.Smelting,
            XP.ExperienceLevel.Beginner_1,
@@ -271,7 +271,7 @@ namespace VikingEngine.DSSWars.Resource
             {
                 new UseResource(ItemResourceType.Stone_G, 1),
                 new UseResource(ItemResourceType.Fuel_G, 30),
-                new UseResource(ItemResourceType.Cupper, 4),
+                new UseResource(ItemResourceType.Copper, 4),
                 new UseResource(ItemResourceType.Tin, 2),
             },
            XP.WorkExperienceType.CastMetal,

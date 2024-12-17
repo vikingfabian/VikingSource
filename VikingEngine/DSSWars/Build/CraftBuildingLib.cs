@@ -12,7 +12,7 @@ namespace VikingEngine.DSSWars.Build
         public const int CraftSmith_IronUse = 10;
 
         public static readonly ItemResourceType[] SmelterCraftTypes = {
-            ItemResourceType.Cupper, ItemResourceType.Tin, ItemResourceType.Lead, ItemResourceType.Iron_G,
+            ItemResourceType.Copper, ItemResourceType.Tin, ItemResourceType.Lead, ItemResourceType.Iron_G,
             ItemResourceType.BloomeryIron, ItemResourceType.Silver, ItemResourceType.Mithril };
 
         public static readonly ItemResourceType[] SmithCraftTypes = {

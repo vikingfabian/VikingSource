@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Data
         SaveIterations autosaves = new SaveIterations(AutoSaveCount);
 
         DataStream.FilePath importSavePath = new DataStream.FilePath(ImportSaveFolder, null, null);
-        DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath, "DSS_savemeta", ".sav");
+        DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath, $"DSS_savemeta_v{SaveGamestate.Version}", ".mta");
 
         public void CreateImportFolders()
         {

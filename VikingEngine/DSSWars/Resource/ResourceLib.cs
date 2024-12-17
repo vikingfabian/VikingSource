@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars.Resource
            5 * DssConst.CupperSellValue,
            new UseResource[]
            {
-               new UseResource(ItemResourceType.Cupper, 5),
+               new UseResource(ItemResourceType.Copper, 5),
            },
             XP.WorkExperienceType.NONE
        );
@@ -375,9 +375,9 @@ namespace VikingEngine.DSSWars.Resource
                     return SpriteName.WarsResource_TinOre;
                 case ItemResourceType.Bronze:
                     return SpriteName.WarsResource_Bronze;
-                case ItemResourceType.Cupper:
+                case ItemResourceType.Copper:
                     return SpriteName.WarsResource_Copper;
-                case ItemResourceType.CupperOre:
+                case ItemResourceType.CopperOre:
                     return SpriteName.WarsResource_CopperOre;
                 case ItemResourceType.Silver:
                     return SpriteName.WarsResource_Silver;

@@ -104,7 +104,7 @@ namespace VikingEngine.DSSWars.Resource
 
         IronOre_G,
         TinOre,
-        CupperOre,
+        CopperOre,
         SilverOre,
         GoldOre,
         RawMithril,
@@ -112,7 +112,7 @@ namespace VikingEngine.DSSWars.Resource
         Iron_G,
         Steel,
         Tin,
-        Cupper,
+        Copper,
         Bronze,
         Silver,
         Gold,

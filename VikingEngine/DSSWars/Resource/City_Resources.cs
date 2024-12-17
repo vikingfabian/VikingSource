@@ -41,13 +41,13 @@ namespace VikingEngine.DSSWars.GameObject
        {
              ItemResourceType.IronOre_G,
              ItemResourceType.TinOre,
-             ItemResourceType.CupperOre,
+             ItemResourceType.CopperOre,
              ItemResourceType.LeadOre,
              ItemResourceType.SilverOre,
 
              ItemResourceType.Iron_G,
              ItemResourceType.Tin,
-            ItemResourceType.Cupper,
+            ItemResourceType.Copper,
             ItemResourceType.Lead,
             ItemResourceType.Silver,
             ItemResourceType.RawMithril,
@@ -379,7 +379,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.TinOre:
                     res_TinOre.amount += add;
                     break;
-                case ItemResourceType.CupperOre:
+                case ItemResourceType.CopperOre:
                     res_CupperOre.amount += add;
                     break;
                 case ItemResourceType.LeadOre:
@@ -395,7 +395,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Tin:
                     res_Tin.amount += add;
                     break;
-                case ItemResourceType.Cupper:
+                case ItemResourceType.Copper:
                     res_Cupper.amount += add;
                     break;
                 case ItemResourceType.Lead:
@@ -613,13 +613,13 @@ namespace VikingEngine.DSSWars.GameObject
 
                 case ItemResourceType.IronOre_G: return res_ironore;
                 case ItemResourceType.TinOre: return res_TinOre;
-                case ItemResourceType.CupperOre: return res_CupperOre;
+                case ItemResourceType.CopperOre: return res_CupperOre;
                 case ItemResourceType.LeadOre: return res_LeadOre;
                 case ItemResourceType.SilverOre: return res_SilverOre;
 
                 case ItemResourceType.Iron_G: return res_iron;
                 case ItemResourceType.Tin: return res_Tin;
-                case ItemResourceType.Cupper: return res_Cupper;
+                case ItemResourceType.Copper: return res_Cupper;
                 case ItemResourceType.Lead: return res_Lead;
                 case ItemResourceType.Silver: return res_Silver;
                 case ItemResourceType.RawMithril: return res_RawMithril;
@@ -737,7 +737,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.TinOre:
                     res_TinOre = resource;
                     break;
-                case ItemResourceType.CupperOre:
+                case ItemResourceType.CopperOre:
                     res_CupperOre = resource;
                     break;
                 case ItemResourceType.LeadOre:
@@ -752,7 +752,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Tin:
                     res_Tin = resource;
                     break;
-                case ItemResourceType.Cupper:
+                case ItemResourceType.Copper:
                     res_Cupper = resource;
                     break;
                 case ItemResourceType.Lead:

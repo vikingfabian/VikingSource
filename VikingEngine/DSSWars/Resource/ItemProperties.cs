@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.Resource
             items[(int)ItemResourceType.Beer] = new ItemProperties(DefaultWeight, CraftResourceLib.Beer, null);
             items[(int)ItemResourceType.CoolingFluid] = new ItemProperties(DefaultWeight, CraftResourceLib.CoolingFluid, null);
 
-            items[(int)ItemResourceType.Cupper] = new ItemProperties(DefaultWeight, CraftResourceLib.Cupper, CraftResourceLib.Cupper_AndCooling);
+            items[(int)ItemResourceType.Copper] = new ItemProperties(DefaultWeight, CraftResourceLib.Copper, CraftResourceLib.Cupper_AndCooling);
             items[(int)ItemResourceType.Tin] = new ItemProperties(DefaultWeight, CraftResourceLib.Tin, null);
             items[(int)ItemResourceType.Lead] = new ItemProperties(DefaultWeight, CraftResourceLib.Lead, null);
             items[(int)ItemResourceType.Iron_G] = new ItemProperties(DefaultWeight, CraftResourceLib.Iron, CraftResourceLib.Iron_AndCooling);

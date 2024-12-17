@@ -25,6 +25,7 @@ using VikingEngine.DSSWars.Delivery;
 using VikingEngine.ToGG.Commander.LevelSetup;
 using VikingEngine.ToGG.HeroQuest.Net;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Work;
 
 namespace VikingEngine.DSSWars.Players
 {
@@ -78,6 +79,7 @@ namespace VikingEngine.DSSWars.Players
         public WorkSubTab workSubTab = WorkSubTab.Priority_Resources;
         public ProgressSubTab progressSubTab = 0;
         public MixTabEditType mixTabEditType = MixTabEditType.None;
+        public WorkPriorityType mixWorkType = WorkPriorityType.NUM_NONE;
         public ItemResourceType mixTabItem = ItemResourceType.NONE;
 
         public DeliveryStatus menDeliveryCopy, itemDeliveryCopy, goldDeliveryCopy;

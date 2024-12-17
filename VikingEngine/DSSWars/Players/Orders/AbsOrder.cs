@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.Players.Orders
     {
         public OrderStatus orderStatus = OrderStatus.Waiting;
         public int priority;
-        static int NextId = 0;
+        static int NextId = 1;
         public int id;
 
         virtual public void onAdd()
