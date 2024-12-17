@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars
 
         int aiDelayTimeSec = 0;
       
-        public bool AiDelay = true;
+        //public bool AiDelay = true;
 
         public PlaySettings() 
         {
@@ -93,11 +93,15 @@ namespace VikingEngine.DSSWars
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            w.Write(aiDelayTimeSec);
+            //w.Write(aiDelayTimeSec);
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
-            aiDelayTimeSec = r.ReadInt32();
+            if (subversion < 31)
+            {
+                var aiDelayTimeSec = r.ReadInt32();
+
+            }
         }
     }
 }

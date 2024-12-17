@@ -15,9 +15,11 @@ namespace VikingEngine.DSSWars
     {
         public EventType nextEvent = 0;
         EventState eventState;
-        float eventPrepareTimeSec;
-        float eventCheckGameTimeSec;
-        float eventTriggerGameTimeSec;
+        TimeInGameCountdown prepareTime;
+        TimeInGameCountdown checkTime;
+        TimeInGameCountdown triggerTime;
+
+        
 
         IntervalF nextTotalGameTimeMin;
         IntervalF nextExpectedPlayerSize;
@@ -36,6 +38,18 @@ namespace VikingEngine.DSSWars
 
         public GameEvents()
         {
+            eventState = EventState.PowerChecked;
+            triggerTime.start(DssRef.difficulty.aiDelayTimeSec);//eventTriggerGameTimeSec = DssRef.difficulty.aiDelayTimeSec;
+        }
+
+        public bool AiDelay()
+        { 
+            return nextEvent <= EventType.AiDelay;
+        }
+
+        public bool RunWarmanager()
+        {
+            return nextEvent > EventType.WarmanagerDelay;
         }
 
         public void onGameStart(bool newGame)
@@ -73,9 +87,12 @@ namespace VikingEngine.DSSWars
         {
             w.Write((int)nextEvent);
             w.Write((int)eventState);
-            w.Write(eventPrepareTimeSec);
-            w.Write(eventCheckGameTimeSec);
-            w.Write(eventTriggerGameTimeSec);
+            //w.Write(eventPrepareTimeSec);
+            //w.Write(eventCheckGameTimeSec);
+            //w.Write(eventTriggerGameTimeSec);
+            prepareTime.writeGameState(w);
+            checkTime.writeGameState(w);
+            triggerTime.writeGameState(w);
 
             nextTotalGameTimeMin.Write(w);
             nextExpectedPlayerSize.Write(w);
@@ -90,11 +107,28 @@ namespace VikingEngine.DSSWars
         }
         public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
+            float eventPrepareTimeSec;
+            float eventCheckGameTimeSec;
+            float eventTriggerGameTimeSec;
+
             nextEvent = (EventType)r.ReadInt32();
             eventState = (EventState)r.ReadInt32();
-            eventPrepareTimeSec = r.ReadSingle();
-            eventCheckGameTimeSec = r.ReadSingle();
-            eventTriggerGameTimeSec = r.ReadSingle();
+            if (subVersion >= 31)
+            {
+                prepareTime.readGameState(r);
+                checkTime.readGameState(r);
+                triggerTime.readGameState(r);
+            }
+            else
+            {
+                //old
+                nextEvent += 2;
+
+                eventPrepareTimeSec = r.ReadSingle();
+                eventCheckGameTimeSec = r.ReadSingle();
+                eventTriggerGameTimeSec = r.ReadSingle();
+
+            }
 
             nextTotalGameTimeMin.Read(r);
             nextExpectedPlayerSize.Read(r);
@@ -107,14 +141,8 @@ namespace VikingEngine.DSSWars
             dyingFactionsTimer.read(r);
             dyingFactionsTimer.MilliSeconds = Bound.Min(dyingFactionsTimer.MilliSeconds, 1);
 
-            if (subVersion >= 5)
-            {
-                Ref.TotalGameTimeSec = r.ReadSingle();
-            }
-            else
-            {
-                Ref.TotalGameTimeSec = eventCheckGameTimeSec - 5;
-            }
+            Ref.TotalGameTimeSec = r.ReadSingle();
+            
         }
 
         void prepareNext()
@@ -159,20 +187,21 @@ namespace VikingEngine.DSSWars
                     break;
             }
 
-            eventPrepareTimeSec = Ref.TotalGameTimeSec;
-            eventCheckGameTimeSec = nextTotalGameTimeMin.Min * 60 + Ref.TotalGameTimeSec - 1f;
+            //eventPrepareTimeSec = Ref.TotalGameTimeSec;
+            prepareTime.zero();
+            checkTime.start(TimeLength.FromMinutes(nextTotalGameTimeMin.Min)); //eventCheckGameTimeSec = nextTotalGameTimeMin.Min * 60 + Ref.TotalGameTimeSec - 1f;
         }
 
         public void TestNextEvent()
         {
-            if (DssRef.settings.AiDelay)
-            {
-                DssRef.settings.AiDelay = false;
-                DssRef.state.localPlayers[0].hud.messages.Add(
-                        "Test event", "Removed AI delay");
-            }
-            else
-            {
+            //if (DssRef.settings.AiDelay)
+            //{
+            //    DssRef.settings.AiDelay = false;
+            //    DssRef.state.localPlayers[0].hud.messages.Add(
+            //            "Test event", "Removed AI delay");
+            //}
+            //else
+            //{
                 if (nextEvent <= EventType.DarkLord)
                 {
                     PowerCheck();
@@ -190,7 +219,7 @@ namespace VikingEngine.DSSWars
 
                 DssRef.state.localPlayers[0].hud.messages.Add(
                         "Test event", nextEvent.ToString());
-            }
+            //}
         }
 
         void RunNextEvent()
@@ -310,24 +339,41 @@ namespace VikingEngine.DSSWars
 
         public void asyncUpdate(float time)
         {
-            if (DssRef.difficulty.runEvents &&
-                !DssRef.settings.AiDelay &&
-                (
-                nextEvent == EventType.SouthShips ||
-                nextEvent == EventType.DarkLordWarning ||
-                nextEvent == EventType.DarkLord
-                ))
+            if (DssRef.state.localPlayers[0].tutorial != null ||
+                !DssRef.difficulty.runEvents)
+            {
+                return;
+            }
+
+            bool timedEvent;
+
+            switch (nextEvent)
+            {
+                case EventType.AiDelay:
+                case EventType.WarmanagerDelay:
+                case EventType.SouthShips:
+                case EventType.DarkLordWarning:
+                case EventType.DarkLord:
+                    timedEvent = true;
+                    break;
+
+                default:
+                    timedEvent = false;
+                    break;
+            }
+
+            if (timedEvent)
             {
                 if (eventState == EventState.Countdown)
                 {
-                    if (Ref.TotalGameTimeSec >= eventCheckGameTimeSec)
+                    if (checkTime.TimeOut())//Ref.TotalGameTimeSec >= eventCheckGameTimeSec)
                     {
                         PowerCheck();
                     }
                 }
                 else if (eventState == EventState.PowerChecked)
                 {
-                    if (Ref.TotalGameTimeSec >= eventTriggerGameTimeSec)
+                    if (triggerTime.TimeOut())//Ref.TotalGameTimeSec >= eventTriggerGameTimeSec)
                     {
                         calcAndRunEvent();
                     }
@@ -364,8 +410,6 @@ namespace VikingEngine.DSSWars
             }
         }
 
-       
-
         void PowerCheck()
         {
             eventState = EventState.PowerChecked;
@@ -397,13 +441,13 @@ namespace VikingEngine.DSSWars
                 time = nextTotalGameTimeMin.Center;
             }
 
-            time *= 60;
+            time *= TimeExt.MinuteInSeconds;
 
             time += time * Ref.rnd.Plus_MinusF(0.2f);
 
             asyncPrepare(ref time);
 
-            eventTriggerGameTimeSec = time + eventPrepareTimeSec;
+            triggerTime.start(time);//eventTriggerGameTimeSec = time + eventPrepareTimeSec;
         }
 
         void asyncPrepare(ref float time)
@@ -685,6 +729,8 @@ namespace VikingEngine.DSSWars
 
     enum EventType
     { 
+        AiDelay,
+        WarmanagerDelay,
         SouthShips,
         DarkLordWarning,
         DarkLord,
