@@ -46,6 +46,7 @@ namespace VikingEngine.DSSWars.Data
         public double resourceMultiplyChance = 0;
         public bool resourceMultiplyDecrease;
         public int FoodEnergySett;
+        public int PlayerBonusGold = 0;
 
         public Difficulty(int difficulty = DefaultOption)
         {
@@ -126,6 +127,7 @@ namespace VikingEngine.DSSWars.Data
                     toPeacefulCheck = false;
                     aiDelayTimeSec = 30 * TimeExt.MinuteInSeconds;
                     //toPeacefulPercentage = 0.01f;
+                    PlayerBonusGold = 6000;
                     break;
 
                 case 1:
@@ -141,6 +143,7 @@ namespace VikingEngine.DSSWars.Data
                     toPeacefulCheck = false;
                     aiDelayTimeSec = 15 * TimeExt.MinuteInSeconds;
                     //toPeacefulPercentage = 0.05f;
+                    PlayerBonusGold = 4000;
                     break;
 
                 case 2:
@@ -156,6 +159,7 @@ namespace VikingEngine.DSSWars.Data
                     toPeacefulCheck = true;
                     aiDelayTimeSec = 8 * TimeExt.MinuteInSeconds;
                     toPeacefulPercentage = 0.1f;
+                    PlayerBonusGold = 2000;
                     break;
 
                 case 3: //Medium

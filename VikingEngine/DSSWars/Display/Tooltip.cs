@@ -338,20 +338,58 @@ namespace VikingEngine.DSSWars.Display
                 switch (obj.gameobjectType())
                 {
                     case GameObjectType.City:
-                    case GameObjectType.Army:
-                        var mapObj = obj as AbsMapObject;
-                        if (mapObj != null)
-                        {
-                            content.newLine();
-                            content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
-                            content.Add(new RichBoxText(TextLib.OneDecimal(mapObj.strengthValue)));
-                            if (obj.gameobjectType() == GameObjectType.Army)
+                        {   
+                            var mapObj = obj as AbsMapObject;
+                            if (mapObj != null)
                             {
+                                const int LowAmount = 10;
+                                var city = mapObj.GetCity();
+                                content.newLine();
+                                HudLib.CityResource(content, city, ItemResourceType.Food_G);
+
+                                if (city.res_food.amount <= LowAmount)
+                                {
+                                    if (city.res_water.amount <= 2)
+                                    {
+                                        HudLib.CityResource(content, city, ItemResourceType.Water_G);
+                                    }
+                                    if (city.res_rawFood.amount <= LowAmount)
+                                    {
+                                        HudLib.CityResource(content, city, ItemResourceType.RawFood_Group);
+                                    }
+                                    if (city.res_fuel.amount <= LowAmount)
+                                    {
+                                        HudLib.CityResource(content, city, ItemResourceType.Fuel_G);
+                                    }
+                                }
+
+
+                                warStrength(mapObj);
+                            }
+                        }
+                        break;
+
+                    case GameObjectType.Army:
+                        {
+                            var mapObj = obj as AbsMapObject;
+                            if (mapObj != null)
+                            {
+                                
+                                var army = obj.GetArmy();
+                                if (army.food < army.foodUpkeep * 2)
+                                {
+                                    HudLib.ItemCount(content, SpriteName.WarsResource_Food, DssRef.lang.Resource_TypeName_Food, army.food.ToString());
+                                }
+                                warStrength(mapObj);
+                                //content.newLine();
+                                //content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
+                                //content.Add(new RichBoxText(TextLib.OneDecimal(mapObj.strengthValue)));
+
                                 content.newLine();
                                 content.Add(new RichBoxImage(SpriteName.WarsGroupIcon));
                                 content.space(1);
 
-                                var army = obj.GetArmy();
+                                
                                 var typeCounts = army.Status().getTypeCounts_Sorted(army.faction);
 
                                 foreach (var kv in typeCounts)
@@ -361,6 +399,7 @@ namespace VikingEngine.DSSWars.Display
                                     content.Add(new RichBoxImage(AllUnits.UnitFilterIcon(kv.Key)));
                                     content.space(2);
                                 }
+
                             }
                         }
                         break;
@@ -372,6 +411,13 @@ namespace VikingEngine.DSSWars.Display
                     case GameObjectType.Worker:
                         obj.GetWorker().toolTip(content);
                         break;
+                }
+
+                void warStrength(AbsMapObject mapObj)
+                {
+                    content.newLine();
+                    content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
+                    content.Add(new RichBoxText(TextLib.OneDecimal(mapObj.strengthValue)));
                 }
             }
             
