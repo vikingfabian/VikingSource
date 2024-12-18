@@ -179,6 +179,9 @@ namespace VikingEngine.DSSWars.GameObject
                 case UnitFilterType.SharpStick:
                     return SpriteName.WarsUnitIcon_Folkman;
 
+                case UnitFilterType.SpearAndShield:
+                    return SpriteName.LittleUnitIconSpearman;
+
 
                 case UnitFilterType.Sword:
                     return SpriteName.WarsUnitIcon_Soldier;

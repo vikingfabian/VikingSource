@@ -724,6 +724,7 @@ namespace VikingEngine.DSSWars.Work
 
             void addTo(ref XP.WorkExperienceType type, ref byte xp)
             {
+                bool expert = false;
                 bool master = false;
                 byte add = 0;
                 switch (XpLib.ToLevel(xp))
@@ -733,6 +734,7 @@ namespace VikingEngine.DSSWars.Work
                         add += 1;
                         break;
                     case ExperienceLevel.Expert_3:
+                        expert = true;
                         if (Ref.rnd.Chance(0.5))
                         {
                             add = WorkLib.WorkToXPTable[(int)type];
@@ -750,10 +752,15 @@ namespace VikingEngine.DSSWars.Work
                         break;
                 }
                 xp += add;
-                if (xp >= DssConst.WorkLevel_Master &&
+                if (xp >= DssConst.WorkLevel_Expert &&
+                    !expert)
+                {
+                    city.onMasterLevel(type, DssConst.TechnologyGain_Expert);
+                }
+                else if (xp >= DssConst.WorkLevel_Master &&
                     !master)
                 {
-                    city.onMasterLevel(type);
+                    city.onMasterLevel(type, DssConst.TechnologyGain_Master);
                 }
             }
         }

@@ -186,6 +186,7 @@ namespace VikingEngine.DSSWars
 
         //XP
         public static byte WorkXpToLevel = 50;
+        public static int WorkLevel_Expert = WorkXpToLevel * 3;
         public static int WorkLevel_Master = WorkXpToLevel * 4;
         public static byte DefaultWorkXpGain = 5;
         public static float XpLevelWorkTimePercReduction = 0.1f;
@@ -197,6 +198,7 @@ namespace VikingEngine.DSSWars
         public static int TechnologyGain_GoodRelation_PerMin = 1;
         public static int TechnologyGain_AllyRelation_PerMin = 2;
         public static int TechnologyGain_CitySpread = 4;
+        public static int TechnologyGain_Expert = 2;
         public static int TechnologyGain_Master = 10;
 
         public static float Time_SchoolOneXP = 2;
