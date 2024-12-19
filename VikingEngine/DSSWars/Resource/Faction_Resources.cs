@@ -141,7 +141,7 @@ namespace VikingEngine.DSSWars
             double tax = citiesEconomy.tax(null);
             if (player.IsAi())
             {
-                if (DssRef.settings.AiDelay)
+                if (DssRef.state.events.AiDelay())
                 {
                     tax *= 0.05;
                 }

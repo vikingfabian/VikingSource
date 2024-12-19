@@ -52,6 +52,11 @@ namespace VikingEngine.DSSWars.Data
         {
             return new TimeLength(minutes * TimeExt.MinuteInSeconds);
         }
+
+        public override string ToString()
+        {
+            return $"Time length: {seconds} seconds";
+        }
     }
 
     struct TimeInGameCountdown
@@ -109,6 +114,11 @@ namespace VikingEngine.DSSWars.Data
             {
                 start(new TimeLength(remaining));
             }
+        }
+
+        public override string ToString()
+        {
+            return $"Count down: {RemainingLength()}/{length.seconds} seconds";
         }
     }
 }

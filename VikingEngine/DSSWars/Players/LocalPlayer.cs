@@ -446,7 +446,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void toPeacefulCheck_asynch()
         {
-            if (faction.citiesEconomy.tax(null) > 0 && !DssRef.settings.AiDelay)
+            if (faction.citiesEconomy.tax(null) > 0 && !DssRef.state.events.AiDelay())
             {
                 int warCount = 0;
                 float opposingSize = 0;
