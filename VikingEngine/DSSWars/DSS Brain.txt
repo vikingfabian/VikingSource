@@ -11,7 +11,8 @@ All water values are x10
 Technology tree
 3 new city cultures
 The menu is 20% wider
-New menu tab; Mix of resources and prio
+New menu tab; Mix of resources and priority
+Reworked the event manager; boss events are timed the same no matter difficulty, and a less agressive game start.
 
 Bank system (untested), central gold can be turned on and off
 >Armies carry gold for food purchases
