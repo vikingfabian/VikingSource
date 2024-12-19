@@ -37,11 +37,11 @@ namespace VikingEngine.DSSWars.Data
         public GameMode setting_gameMode = GameMode.FullStory;
         public bool runEvents = true;
         public bool peaceful = false;
-        public bool toPeacefulCheck = true;
+        //public bool toPeacefulCheck = true;
 
         public int MercenaryPurchaseCost_Start;
         public int MercenaryPurchaseCost_Add;
-        public float toPeacefulPercentage;
+        public float toPeacefulPercentage=0;
 
         public double resourceMultiplyChance = 0;
         public bool resourceMultiplyDecrease;
@@ -124,7 +124,7 @@ namespace VikingEngine.DSSWars.Data
                     diplomacyDifficulty = 0;
                     honorGuard = true;
                     resourcesStartHelp = true;
-                    toPeacefulCheck = false;
+                    //toPeacefulCheck = false;
                     aiDelayTimeSec = 30 * TimeExt.MinuteInSeconds;
                     //toPeacefulPercentage = 0.01f;
                     PlayerBonusGold = 6000;
@@ -140,7 +140,7 @@ namespace VikingEngine.DSSWars.Data
                     diplomacyDifficulty = 0;
                     honorGuard = true;
                     resourcesStartHelp = true;
-                    toPeacefulCheck = false;
+                    //toPeacefulCheck = false;
                     aiDelayTimeSec = 15 * TimeExt.MinuteInSeconds;
                     //toPeacefulPercentage = 0.05f;
                     PlayerBonusGold = 4000;
@@ -156,7 +156,7 @@ namespace VikingEngine.DSSWars.Data
                     diplomacyDifficulty = 1;
                     honorGuard = true;
                     resourcesStartHelp = true;
-                    toPeacefulCheck = true;
+                    //toPeacefulCheck = true;
                     aiDelayTimeSec = 8 * TimeExt.MinuteInSeconds;
                     toPeacefulPercentage = 0.1f;
                     PlayerBonusGold = 2000;
@@ -169,7 +169,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 2;
                     diplomacyDifficulty = 1;
                     honorGuard = true;
-                    toPeacefulCheck = true;
+                    //toPeacefulCheck = true;
                     aiDelayTimeSec = 30;
                     toPeacefulPercentage = 0.2f;
                     break;
@@ -181,7 +181,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 2;
                     diplomacyDifficulty = 1;
                     honorGuard = false;
-                    toPeacefulCheck = true;
+                    //toPeacefulCheck = true;
                     aiDelayTimeSec = 10;
                     toPeacefulPercentage = 0.5f;
                     break;
@@ -193,7 +193,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 2;
                     diplomacyDifficulty = 1;
                     honorGuard = false;
-                    toPeacefulCheck = true;
+                    //toPeacefulCheck = true;
                     toPeacefulPercentage = 0.75f;
                     break;
 
@@ -207,7 +207,7 @@ namespace VikingEngine.DSSWars.Data
                     resourceMultiplyDecrease = false;
                     diplomacyDifficulty = 2;
                     honorGuard = false;
-                    toPeacefulCheck = true;
+                    //toPeacefulCheck = true;
                     toPeacefulPercentage = 1.5f;
                     break;
 
@@ -222,7 +222,7 @@ namespace VikingEngine.DSSWars.Data
                     resourceMultiplyDecrease = false;
                     diplomacyDifficulty = 2;
                     honorGuard = false;
-                    toPeacefulCheck = true;
+                    //toPeacefulCheck = true;
                     toPeacefulPercentage = 2f;
                     break;
             }
@@ -242,7 +242,8 @@ namespace VikingEngine.DSSWars.Data
                 case GameMode.Peaceful:
                     runEvents = false;
                     peaceful = true;
-                    toPeacefulCheck = false;
+                    toPeacefulPercentage = 0;
+                    //toPeacefulCheck = false;
                     break;
             }
 

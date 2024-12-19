@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars
 
         int aiDelayTimeSec = 0;
       
-        public bool AiDelay = true;
+        //public bool AiDelay = true;
 
         public PlaySettings() 
         {
@@ -68,36 +68,30 @@ namespace VikingEngine.DSSWars
             //bool haveIncome = faction.NetIncome() >= DssLib.GroupDefaultCost * (aggresive ? 5 : 15);
         }
 
-        public void OneSecondUpdate()
-        {
-            if (DssRef.state.localPlayers[0].tutorial == null)
-            {
-                if (--aiDelayTimeSec <= 0)
-                {
-                    AiDelay = false;
-                }
-            }            
-        }
+        //public void OneSecondUpdate()
+        //{
+        //    if (DssRef.state.localPlayers[0].tutorial == null)
+        //    {
+        //        if (--aiDelayTimeSec <= 0)
+        //        {
+        //            AiDelay = false;
+        //        }
+        //    }            
+        //}
 
-        public void OnPlayerDeclareWar()
-        {
-            const int DelayReduceToSec = 10;
-            if (AiDelay)
-            {
-                if (aiDelayTimeSec > DelayReduceToSec)
-                { 
-                    aiDelayTimeSec = DelayReduceToSec;
-                }
-            }
-        }
+        
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            w.Write(aiDelayTimeSec);
+            //w.Write(aiDelayTimeSec);
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
-            aiDelayTimeSec = r.ReadInt32();
+            if (subversion < 44)
+            {
+                var aiDelayTimeSec = r.ReadInt32();
+
+            }
         }
     }
 }

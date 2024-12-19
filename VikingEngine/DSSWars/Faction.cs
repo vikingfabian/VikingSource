@@ -418,7 +418,7 @@ namespace VikingEngine.DSSWars
             double incomeMultiplier = 1;
             if (player.IsAi())
             {
-                if (DssRef.settings.AiDelay)
+                if (DssRef.state.events.AiDelay())
                 {
                     incomeMultiplier = 0.1;
                 }
