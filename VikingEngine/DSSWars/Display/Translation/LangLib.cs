@@ -890,7 +890,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                         case TerrainMineType.TinOre:
                             return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Tin);
-                        case TerrainMineType.CupperOre:
+                        case TerrainMineType.CopperOre:
                             return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Copper);
                         case TerrainMineType.SilverOre:
                             return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Silver);

@@ -378,7 +378,7 @@ namespace VikingEngine.DSSWars.Display
                                 var army = obj.GetArmy();
                                 if (army.food < army.foodUpkeep * 2)
                                 {
-                                    HudLib.ItemCount(content, SpriteName.WarsResource_Food, DssRef.lang.Resource_TypeName_Food, army.food.ToString());
+                                    HudLib.ItemCount(content, SpriteName.WarsResource_Food, DssRef.lang.Resource_TypeName_Food, TextLib.OneDecimal(army.food));
                                 }
                                 warStrength(mapObj);
                                 //content.newLine();

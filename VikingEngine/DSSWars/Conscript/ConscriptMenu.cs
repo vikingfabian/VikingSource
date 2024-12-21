@@ -95,31 +95,30 @@ namespace VikingEngine.DSSWars.Conscript
 
                 switch (currentStatus.type)
                 {
-                    case BarracksType.Soldier:
+                    case Build.BuildAndExpandType.SoldierBarracks:
                         typeName = DssRef.todoLang.BuildingType_SoldierBarracks;
                         weapons = SoldierWeapons;
                         break;
-                    case BarracksType.Archer:
+                    case Build.BuildAndExpandType.ArcherBarracks:
                         typeName = DssRef.todoLang.BuildingType_SoldierBarracks;
                         weapons = ArcherWeapons;
                         break;
-                    case BarracksType.Warmashine:
+                    case Build.BuildAndExpandType.WarmashineBarracks:
                         typeName = DssRef.todoLang.BuildingType_SoldierBarracks;
                         weapons = WarmashineWeapons;
                         break;
-                    case BarracksType.Knight:
+                    case Build.BuildAndExpandType.KnightsBarracks:
                         typeName = DssRef.todoLang.BuildingType_SoldierBarracks;
                         weapons = NobelWeapons;
                         break;
-                    case BarracksType.Gun:
+                    case Build.BuildAndExpandType.GunBarracks:
                         typeName = DssRef.todoLang.BuildingType_SoldierBarracks;
                         weapons = GunWeapons;
                         break;
-                    case BarracksType.Cannon:
+                    case Build.BuildAndExpandType.CannonBarracks:
                         typeName = DssRef.todoLang.BuildingType_CannonBarracks;
                         weapons = CannonWeapons;
                         break;
-                    
                 }
 
 
@@ -206,7 +205,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                 HudLib.Label(content, DssRef.lang.Conscript_TrainingTitle);
                 content.newLine();
-                TrainingLevel minLevel = currentStatus.type == BarracksType.Knight ? TrainingLevel.Basic : TrainingLevel.Minimal;
+                TrainingLevel minLevel = currentStatus.type == Build.BuildAndExpandType.KnightsBarracks ? TrainingLevel.Basic : TrainingLevel.Minimal;
 
                 TrainingLevel maxLevel = currentStatus.maxTrainingLevel;
                 if (city.Culture == CityCulture.CrabMentality)
@@ -219,7 +218,7 @@ namespace VikingEngine.DSSWars.Conscript
                         new RichBoxImage((SpriteName)((int)SpriteName.WarsUnitLevelMinimal + (int)training)),
                         new RichBoxText( LangLib.Training(training))
                     }, new RbAction1Arg<TrainingLevel>(trainingClick, training, SoundLib.menu),
-                    new RbAction2Arg<TrainingLevel, BarracksType>(trainingTooltip, training, currentStatus.type));
+                    new RbAction2Arg<TrainingLevel, Build.BuildAndExpandType>(trainingTooltip, training, currentStatus.type));
                     button.setGroupSelectionColor(HudLib.RbSettings, training == currentStatus.profile.training);
                     content.Add(button);
                     content.space();
@@ -466,7 +465,7 @@ namespace VikingEngine.DSSWars.Conscript
 
             set(currentProfile);
         }
-        void trainingTooltip(TrainingLevel training, BarracksType type)
+        void trainingTooltip(TrainingLevel training, Build.BuildAndExpandType type)
         {
 
             RichBoxContent content = new RichBoxContent();

@@ -212,7 +212,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.attackRange = 0.05f;
                     soldierData.modelName = LootFest.VoxelModelName.wars_spearman;
                     soldierData.modelVariationCount = 1;
-                    soldierData.modelScale *= 1.6f;
+                    soldierData.modelScale *= 1.0f;
                     soldierData.icon = SpriteName.LittleUnitIconSpearman;
                     soldierData.basehealth += DssConst.WeaponHealthAdd_Handspear;
                     break;
@@ -696,12 +696,14 @@ namespace VikingEngine.DSSWars.Conscript
                     case ItemResourceType.BronzeSword:
                     case ItemResourceType.ShortSword:
                     case ItemResourceType.Sword:
+                    case ItemResourceType.ThrowingSpear:
                     case ItemResourceType.LongSword:
                         soldierData.modelName = LootFest.VoxelModelName.wars_soldier_ship;
                         break;
 
                     case ItemResourceType.Crossbow:
                     case ItemResourceType.LongBow:
+                    case ItemResourceType.SlingShot:
                     case ItemResourceType.Bow:
                     case ItemResourceType.HandCannon:
                     case ItemResourceType.HandCulverin:

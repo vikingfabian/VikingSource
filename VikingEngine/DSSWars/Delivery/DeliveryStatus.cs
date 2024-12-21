@@ -58,6 +58,10 @@ namespace VikingEngine.DSSWars.Delivery
         { 
             return profile.type == DeliveryType_Gold;
         }
+        public bool IsRecruitment()
+        {
+            return profile.type == ItemResourceType.Men;
+        }
 
         public void checkCity(LocalPlayer player)
         {
@@ -134,12 +138,18 @@ namespace VikingEngine.DSSWars.Delivery
             level = r.ReadByte();            
         }
 
-        public bool CanSend(City city)
+        public bool CanSend(City city, out ItemResourceType item)
         {
+            item = profile.type;
             int min = useSenderMin ? senderMin : 0;
             if (profile.type == ItemResourceType.Men)
             {
                 return city.workForce.amount - min >= DssConst.CityDeliveryChunkSize_Level1;
+            }
+            else if (profile.type == ItemResourceType.AutomatedItem)
+            {
+                item = city.findAutoItem();
+                return true;
             }
             else
             {
@@ -147,12 +157,12 @@ namespace VikingEngine.DSSWars.Delivery
             }
         }
 
-        public bool CanRecieve()
+        public bool CanRecieve(ItemResourceType sendItem)
         {
-            return CanRecieve(profile.toCity, out _);
+            return CanRecieve(sendItem, profile.toCity, out _);
         }
 
-        public bool CanRecieve(int cityIx, out int recieverHasAmountPlusDeliveries)
+        public bool CanRecieve(ItemResourceType sendItem, int cityIx, out int recieverHasAmountPlusDeliveries)
         {
             if (arraylib.InBound(DssRef.world.cities, cityIx))
             {
@@ -169,7 +179,7 @@ namespace VikingEngine.DSSWars.Delivery
                 else
                 {
 
-                    recieverHasAmountPlusDeliveries = city.GetGroupedResource(profile.type).amountPlusDelivery();
+                    recieverHasAmountPlusDeliveries = city.GetGroupedResource(sendItem).amountPlusDelivery();
                 }
 
                 if (useRecieverMax)
@@ -202,10 +212,7 @@ namespace VikingEngine.DSSWars.Delivery
             return false;
         }
 
-        public bool Recruitment()
-        {
-            return profile.type == ItemResourceType.Men;
-        }
+       
 
         public string shortActiveString()
         {

@@ -1047,7 +1047,7 @@ namespace VikingEngine.DSSWars.Display
         {
             if (player.tutorial == null || player.tutorial.DisplayStockpile())
             {
-                for (ResourcesSubTab resourcesSubTab = 0; resourcesSubTab < ResourcesSubTab.NUM; ++resourcesSubTab)
+                for (ResourcesSubTab resourcesSubTab = 0; resourcesSubTab < ResourcesSubTab.Auto; ++resourcesSubTab)
                 {
                     var tabContent = new RichBoxContent();
                     //string text = null;
@@ -2158,7 +2158,9 @@ namespace VikingEngine.DSSWars.Display
         Stockpile_Weapons,
         Stockpile_Projectile,
         Stockpile_Armor,
-        NUM
+
+        Auto,
+        
     }
 
     

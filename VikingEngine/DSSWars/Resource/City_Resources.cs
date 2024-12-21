@@ -21,15 +21,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         public static readonly ItemResourceType[] MovableCityResource_Misc =
         {
-             ItemResourceType.Wood_Group,
+            ItemResourceType.Food_G,
              ItemResourceType.Fuel_G,
-             ItemResourceType.Stone_G,
-             ItemResourceType.RawFood_Group,
-             ItemResourceType.Food_G,
              ItemResourceType.Beer,
              ItemResourceType.CoolingFluid,
              ItemResourceType.SkinLinen_Group,
-
+             ItemResourceType.RawFood_Group,
+             ItemResourceType.Wood_Group,
+             ItemResourceType.Stone_G,
              ItemResourceType.Toolkit,
             ItemResourceType.Wagon2Wheel,
             ItemResourceType.Wagon4Wheel,
@@ -60,8 +59,7 @@ namespace VikingEngine.DSSWars.GameObject
         };
         public static readonly ItemResourceType[] MovableCityResource_WeaponMelee =
        {
-            ItemResourceType.SharpStick,
-            ItemResourceType.BronzeSword,
+            
             ItemResourceType.ShortSword,
             ItemResourceType.Sword,
             ItemResourceType.LongSword,
@@ -71,13 +69,13 @@ namespace VikingEngine.DSSWars.GameObject
              ItemResourceType.TwoHandSword,
              ItemResourceType.KnightsLance,
             ItemResourceType.MithrilSword,
+
+            ItemResourceType.SharpStick,
+            ItemResourceType.BronzeSword,
         };
 
         public static readonly ItemResourceType[] MovableCityResource_WeaponRanged =
-         {
-
-             ItemResourceType.SlingShot,
-             ItemResourceType.ThrowingSpear,
+         {   
              ItemResourceType.Bow,
              ItemResourceType.LongBow,
             ItemResourceType.Crossbow,
@@ -95,17 +93,22 @@ namespace VikingEngine.DSSWars.GameObject
             ItemResourceType.SiegeCannonIron,
             ItemResourceType.ManCannonIron,
 
+            ItemResourceType.SlingShot,
+             ItemResourceType.ThrowingSpear,
+
         };
 
         public static readonly ItemResourceType[] MovableCityResource_Armor =
          {
-             ItemResourceType.PaddedArmor,
-             ItemResourceType.HeavyPaddedArmor,
+             
              ItemResourceType.BronzeArmor,
              ItemResourceType.IronArmor,
              ItemResourceType.HeavyIronArmor,
              ItemResourceType.LightPlateArmor,
              ItemResourceType.FullPlateArmor,
+
+             ItemResourceType.PaddedArmor,
+             ItemResourceType.HeavyPaddedArmor,
         };
 
         MinuteStats blackMarketCosts_food = new MinuteStats();
@@ -126,7 +129,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int gold = 5;
         public GroupedResource res_water = new GroupedResource();
         public GroupedResource res_wood = new GroupedResource() { amount = 20, goalBuffer = 300 };
-        public GroupedResource res_fuel = new GroupedResource() { amount = 20, goalBuffer = 300 };
+        public GroupedResource res_fuel = new GroupedResource() { amount = 100, goalBuffer = 300 };
         public GroupedResource res_stone = new GroupedResource() { amount = 20, goalBuffer = 100 };
         public GroupedResource res_rawFood = new GroupedResource() { amount = 50, goalBuffer = 200 };
         public GroupedResource res_food = new GroupedResource() { amount = 200, goalBuffer = 500 };
@@ -1087,6 +1090,11 @@ namespace VikingEngine.DSSWars.GameObject
         public bool needMore()
         {
             return amount < goalBuffer;
+        }
+
+        public bool reachedBuffer()
+        {
+            return amount >= goalBuffer;
         }
 
         public bool needToImport()

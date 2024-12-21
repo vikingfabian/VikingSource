@@ -127,8 +127,13 @@ namespace VikingEngine.DSSWars.Build
             content.newParagraph();
 
             content.Add(new RichBoxScale(2.1f));
+            
+            List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
 
-            List< BuildAndExpandType> available = player.tutorial == null ? BuildLib.AvailableBuildTypes(city) : player.tutorial.AvailableBuildTypes();
+            if (player.tutorial == null)
+            { BuildLib.AvailableBuildTypes(available, city); }
+            else
+            { available = player.tutorial.AvailableBuildTypes(); }
 
             foreach (var opt in available)
             {

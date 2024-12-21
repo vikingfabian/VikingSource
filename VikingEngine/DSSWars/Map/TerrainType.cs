@@ -143,7 +143,7 @@ namespace VikingEngine.DSSWars.Map
         StoneBlock,
         IronOre,
         TinOre,
-        CupperOre,
+        CopperOre,
         SilverOre,
         GoldOre,
         LeadOre,

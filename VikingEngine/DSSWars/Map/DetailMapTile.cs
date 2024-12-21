@@ -644,7 +644,7 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 6, wp, scale));
                     break;
                 
-                case TerrainMineType.CupperOre:
+                case TerrainMineType.CopperOre:
                     addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 9, wp, scale));
                     break;
                 

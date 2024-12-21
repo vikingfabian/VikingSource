@@ -190,7 +190,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (idleCount > 0 && previousWorkQueUpdate.secPassed(10))
             {
-                if (parentArrayIndex == -1 || debugTagged)
+                if (parentArrayIndex == 346 || debugTagged)
                 {
                     lib.DoNothing();
                 }
@@ -282,7 +282,7 @@ namespace VikingEngine.DSSWars.GameObject
                 var work = arraylib.PullLastMember(workQue);
 
                 if (checkAvailable(work.work, work.subWork) &&
-                    isFreeTile(work.subTile))
+                    work_isFreeTile(work.subTile))
                 {                    
                     WorkExperienceType experienceType = WorkLib.WorkToExperienceType(work.work, work.subWork, work.workBonus, work.subTile, this,
                         out int xpRequired, out int maxXp);
@@ -414,7 +414,7 @@ namespace VikingEngine.DSSWars.GameObject
                             var chunk = DssRef.state.resources.get(subTile.collectionPointer);
                             var resource = chunk.peek();
 
-                            if (needMore(resource.type, rawFoodSafeGuard, woodSafeGuard, out bool usesSafeGuard) && isFreeTile(pos))
+                            if (needMore(resource.type, rawFoodSafeGuard, woodSafeGuard, out bool usesSafeGuard) && work_isFreeTile(pos))
                             {
                                 int distanceValue = -center.SideLength(pos);
                                 workQue.Add(new WorkQueMember(WorkType.PickUpResource, NoSubWork, 0, pos, usesSafeGuard? WorkTemplate.SafeGuardPrio : workTemplate.move.value, 0, distanceValue));
@@ -428,7 +428,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     foreach (var pos in CityStructure.WorkInstance.Trees)
                     {
-                        if (isFreeTile(pos))
+                        if (work_isFreeTile(pos))
                         {
                             int distanceValue = -center.SideLength(pos);
 
@@ -448,7 +448,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     foreach (var pos in CityStructure.WorkInstance.Stones)
                     {
-                        if (isFreeTile(pos))
+                        if (work_isFreeTile(pos))
                         {
                             int distanceValue = -center.SideLength(pos);
                             byte bonus = 0;
@@ -513,7 +513,7 @@ namespace VikingEngine.DSSWars.GameObject
                             break;
                     }
 
-                    if (((needMore && prio > WorkTemplate.NoPrio) || safeGuard) && isFreeTile(tilework.subtile))
+                    if (((needMore && prio > WorkTemplate.NoPrio) || safeGuard) && work_isFreeTile(tilework.subtile))
                     {
                         int distanceValue = -center.SideLength(tilework.subtile);
                         workQue.Add(new WorkQueMember(tilework.workType, NoSubWork, bonus, tilework.subtile, safeGuard? WorkTemplate.SafeGuardPrio : workTemplate.farm_food.value,0, distanceValue));
@@ -526,7 +526,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     foreach (var pos in CityStructure.WorkInstance.BogIron)
                     {                       
-                        if (isFreeTile(pos))
+                        if (work_isFreeTile(pos))
                         {
                             int distanceValue = -center.SideLength(pos);
                             workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, 0, pos, workTemplate.bogiron.value,0, distanceValue));
@@ -553,7 +553,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 needMore = res_TinOre.needMore();
                                 priority = workTemplate.mining_tin;
                                 break;
-                            case TerrainMineType.CupperOre:
+                            case TerrainMineType.CopperOre:
                                 needMore = res_CupperOre.needMore();
                                 priority = workTemplate.mining_cupper;
                                 break;
@@ -585,7 +585,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 break;
                         }
 
-                        if (priority.HasPrio() && (needMore || safeGuard) && isFreeTile(pos))
+                        if (priority.HasPrio() && (needMore || safeGuard) && work_isFreeTile(pos))
                         {
                             int distanceValue = -center.SideLength(pos);
                             workQue.Add(new WorkQueMember(WorkType.Mine, NoSubWork, 0, pos, safeGuard ? WorkTemplate.SafeGuardPrio : priority.value, 0, distanceValue));
@@ -611,7 +611,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 break;
                         }
 
-                        if ((needMore || rawFoodSafeGuard) && isFreeTile(pos))
+                        if ((needMore || rawFoodSafeGuard) && work_isFreeTile(pos))
                         {
                             int distanceValue = -center.SideLength(pos);
                             workQue.Add(new WorkQueMember(WorkType.PickUpProduce, NoSubWork, 0, pos, rawFoodSafeGuard ? WorkTemplate.SafeGuardPrio : workTemplate.farm_food.value,0, distanceValue));
@@ -631,7 +631,7 @@ namespace VikingEngine.DSSWars.GameObject
                             if (
                                 ((workTemplate.craft_food.HasPrio() && res_food.needMore()) ||  foodSafeGuard) &&
                                 (CraftResourceLib.Food2.hasResources(this) || CraftResourceLib.Food1.hasResources(this)) &&
-                                isFreeTile(pos))
+                                work_isFreeTile(pos))
                             {
                                 workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Food_G, 0, pos, foodSafeGuard ? WorkTemplate.SafeGuardPrio : workTemplate.craft_food.value,0, distanceValue));
                             }
@@ -649,7 +649,7 @@ namespace VikingEngine.DSSWars.GameObject
                             if (
                                 ((workTemplate.craft_fuel.HasPrio() && res_fuel.needMore()) || fuelSafeGuard) &&
                                CraftResourceLib.Charcoal.hasResources(this) &&
-                               isFreeTile(pos))
+                               work_isFreeTile(pos))
                             {
                                 workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Coal, 0, pos, fuelSafeGuard? WorkTemplate.SafeGuardPrio : workTemplate.craft_fuel.value,0, distanceValue));
                             }
@@ -659,7 +659,7 @@ namespace VikingEngine.DSSWars.GameObject
                             if (workTemplate.craft_beer.HasPrio() &&
                                 res_beer.needMore() &&
                                 CraftResourceLib.Beer.hasResources(this) &&
-                                isFreeTile(pos))
+                                work_isFreeTile(pos))
                             {
                                 workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Beer, 0, pos, workTemplate.craft_beer.value,0, distanceValue));
                             }
@@ -716,74 +716,9 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                //EMPTY
-                if (checkAutoBuildAvailable())
-                {
-                    foreach (var pos in CityStructure.WorkInstance.EmptyLand)
-                    {
-                        faction.player.AutoExpandType(this, out bool work, out var buildType, out bool intelligent);
 
-                        bool intelligentCheck = true;
+                workAutoBuild(fuelSafeGuard, rawFoodSafeGuard);
 
-                        if (fuelSafeGuard && CityStructure.WorkInstance.fuelSpots < 4)
-                        {
-                            ++CityStructure.WorkInstance.fuelSpots;
-                            buildType = BuildAndExpandType.RapeSeedFarm;
-                        }
-                        else if (rawFoodSafeGuard && CityStructure.WorkInstance.foodspots < 4)
-                        {
-                            ++CityStructure.WorkInstance.foodspots;
-                            buildType = BuildAndExpandType.WheatFarm;
-                        }
-                        else if (work && workForce.amount >= workForceMax)
-                        {
-                            buildType = BuildAndExpandType.WorkerHuts;
-                        }
-                        else if (intelligent)
-                        {
-                            switch (buildType)
-                            {
-                                case BuildAndExpandType.WheatFarm:
-                                case BuildAndExpandType.HenPen:
-                                    intelligentCheck = res_rawFood.needMore();
-                                    break;
-                                case BuildAndExpandType.PigPen:
-                                    intelligentCheck = res_rawFood.needMore() || res_skinLinnen.needMore();
-                                    break;
-                                case BuildAndExpandType.LinenFarm:
-                                    intelligentCheck = res_skinLinnen.needMore();
-                                    break;
-                                case BuildAndExpandType.RapeSeedFarm:
-                                    intelligentCheck = res_fuel.needMore();
-                                    break;
-                            }
-                        }
-
-                        if (buildType != BuildAndExpandType.NUM_NONE)
-                        {
-                            if (BuildLib.BuildOptions[(int)buildType].blueprint.available(this) &&
-                                isFreeTile(pos))
-                            {
-                                int distanceValue = -center.SideLength(pos);
-                                workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, pos, workTemplate.autoBuild.value,0, distanceValue));
-                            }
-                        }
-                    }
-                }
-
-
-                bool checkAutoBuildAvailable()
-                {
-                    if (buildingStructure.buildingLevel_logistics < 2)
-                    {
-                        var p = faction.player.GetLocalPlayer();
-                        if (p != null)
-                        {
-                            return p.orders.buildQueue(this) + 1 < MaxBuildQueue();
-                        }
-                    }
-                    return true;
-                }
 
                 void craftBench(IntVector2 pos, int distanceValue, ItemResourceType[] types, int prioAdd = 0)
                 {
@@ -807,7 +742,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
 
                     if (topPrioValue > WorkTemplate.NoPrio &&
-                        isFreeTile(pos))
+                        work_isFreeTile(pos))
                     {
                         workQue.Add(new WorkQueMember(WorkType.Craft, (int)topItem, 0, pos, topPrioValue, prioAdd, distanceValue));
                     }
@@ -893,20 +828,22 @@ namespace VikingEngine.DSSWars.GameObject
             //    }
             //}
 
-            bool isFreeTile(IntVector2 subtile)
-            {
-                for (int i = 0; i < workerStatuses.Count; ++i)
-                { 
-                    var status = workerStatuses[i];
-                    if (status.work != WorkType.Idle &&
-                        status.subTileEnd == subtile)
-                    { 
-                        return false; 
-                    }
-                }
+           
+        }
 
-                return true;
+        bool work_isFreeTile(IntVector2 subtile)
+        {
+            for (int i = 0; i < workerStatuses.Count; ++i)
+            {
+                var status = workerStatuses[i];
+                if (status.work != WorkType.Idle &&
+                    status.subTileEnd == subtile)
+                {
+                    return false;
+                }
             }
+
+            return true;
         }
 
         public void checkPlayerFuelAccess_OnGamestart_async()

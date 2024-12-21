@@ -1584,6 +1584,30 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        public bool IsWarBorderCity(City city, bool inWarOnly)
+        {
+            foreach (var nIx in city.neighborCities)
+            {
+                var nCity = DssRef.world.cities[nIx];
+                if (nCity.faction != faction)
+                {
+                    var relation = DssRef.diplomacy.GetRelationType(nCity.faction, faction);
+                    if (relation <= RelationType.RelationTypeN1_Enemies)
+                    { 
+                        return true;
+                    }
+                    else if (!inWarOnly &&
+                        relation <= RelationType.RelationType0_Neutral &&
+                        nCity.faction.militaryStrength > faction.militaryStrength * 2)
+                    {
+                        return true;                        
+                    }
+                }
+            }
+
+            return false;
+        }
+
         City cityCloseToOpponent(int opponent)
         {
             Faction otherFaction = DssRef.world.factions[opponent];

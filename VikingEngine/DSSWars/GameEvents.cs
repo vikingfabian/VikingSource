@@ -150,6 +150,11 @@ namespace VikingEngine.DSSWars
             eventState = 0;
             switch (nextEvent)
             {
+                case EventType.WarmanagerDelay:
+                    {
+                        nextTotalGameTimeMinutes = IntervalF.NoInterval(20);
+                    }
+                    break;
                 case EventType.SouthShips:
                     {
                         nextTotalGameTimeMinutes = new IntervalF(1.6f, 2f) * TimeExt.HourInMinutes;

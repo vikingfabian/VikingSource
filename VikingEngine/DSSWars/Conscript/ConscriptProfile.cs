@@ -1,5 +1,6 @@
 ﻿
 using System;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
@@ -49,6 +50,7 @@ namespace VikingEngine.DSSWars.Conscript
                 case ItemResourceType.ThrowingSpear:
                 case ItemResourceType.Bow:
                 case ItemResourceType.LongBow:
+                case ItemResourceType.Crossbow:
 
                 case ItemResourceType.HandCannon:
                 case ItemResourceType.HandCulverin:
@@ -157,27 +159,27 @@ namespace VikingEngine.DSSWars.Conscript
             return 0;
         }
 
-        public void defaultSetup(BarracksType type)
+        public void defaultSetup(BuildAndExpandType barrackType)
         {
-            switch (type)
+            switch (barrackType)
             {
-                case BarracksType.Soldier:
+                case BuildAndExpandType.SoldierBarracks:
                     weapon = ItemResourceType.SharpStick;
                     break;
-                case BarracksType.Archer:
+                case BuildAndExpandType.ArcherBarracks:
                     weapon = ItemResourceType.SlingShot;
                     break;
-                case BarracksType.Warmashine:
+                case BuildAndExpandType.WarmashineBarracks:
                     weapon = ItemResourceType.Ballista;
                     break;
-                case BarracksType.Knight:
+                case BuildAndExpandType.KnightsBarracks:
                     weapon = ItemResourceType.Warhammer;
                     training = TrainingLevel.Basic;
                     break;
-                case BarracksType.Gun:
+                case BuildAndExpandType.GunBarracks:
                     weapon = ItemResourceType.HandCannon;
                     break;
-                case BarracksType.Cannon:
+                case BuildAndExpandType.CannonBarracks:
                     weapon = ItemResourceType.ManCannonBronze;
                     break;
             }
@@ -435,7 +437,7 @@ namespace VikingEngine.DSSWars.Conscript
             }
         }
 
-        public static float TrainingTime(TrainingLevel training, BarracksType type)
+        public static float TrainingTime(TrainingLevel training, BuildAndExpandType type)
         {
             float result;
             switch (training)
@@ -458,11 +460,11 @@ namespace VikingEngine.DSSWars.Conscript
 
             switch (type)
             { 
-                case BarracksType.Knight:
+                case BuildAndExpandType.KnightsBarracks:
                     result += DssConst.TrainingTimeSec_NobelmenAdd;
                     break;
-                case BarracksType.Gun:
-                case BarracksType.Cannon:
+                case BuildAndExpandType.GunBarracks:
+                case BuildAndExpandType.CannonBarracks:
                     result /= 2;
                     break;
             }
@@ -532,13 +534,13 @@ namespace VikingEngine.DSSWars.Conscript
         Training,
     }
 
-    enum BarracksType
-    { 
-        Soldier,
-        Archer,
-        Warmashine,
-        Knight,
-        Gun,
-        Cannon,
-    }
+    //enum BarracksType
+    //{ 
+    //    Soldier,
+    //    Archer,
+    //    Warmashine,
+    //    Knight,
+    //    Gun,
+    //    Cannon,
+    //}
 }

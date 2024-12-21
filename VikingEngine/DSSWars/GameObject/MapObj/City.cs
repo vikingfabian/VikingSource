@@ -198,18 +198,7 @@ namespace VikingEngine.DSSWars.GameObject
             return MaxBuildQueue() > 1000 || player.orders.buildQueue(this) < MaxBuildQueue();
         }
 
-        public void AutoExpandType(out bool work, out Build.BuildAndExpandType farm)
-        {
-            work = autoBuild_Work;
-
-            if (buildingStructure.buildingLevel_logistics == 0)
-            {
-                farm = Build.BuildAndExpandType.NUM_NONE;
-                return;
-            }
-           
-            farm = autoBuild_Farm ? autoExpandFarmType : Build.BuildAndExpandType.NUM_NONE;
-        }
+       
 
         public void haltConscriptAndDelivery()
         {

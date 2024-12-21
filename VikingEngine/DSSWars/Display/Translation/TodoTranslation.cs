@@ -62,6 +62,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Delivery_SendChunk => "Items per Delivery";
         public string Delivery_SpeedBonus => "Speed bonus: {0}%";
 
+        public string Delivery_AutoResourceDescription => "Delivers items that has reached the stockpile limit, to cities in need.";
+
         public string Conscript_SplashDamage => "Splash damage";
         public string Conscript_HighSplashDamage => "High splash damage";
 
@@ -164,7 +166,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Resource_TypeName_LedBullet=> "Bullet";
 
         public string Resource_TypeName_HandCannon => "Hand cannon";
-        public string Resource_TypeName_HandCulverin=> "Hand culvertin";
+        public string Resource_TypeName_HandCulverin=> "Hand culverin";
         public string Resource_TypeName_Rifle=> "Rifle";
         public string Resource_TypeName_Blunderbus=> "Blunderbus";
 

@@ -452,7 +452,7 @@ namespace VikingEngine.DSSWars.Work
                             case TerrainMineType.TinOre:
                                 resourceType = ItemResourceType.TinOre;
                                 break;
-                            case TerrainMineType.CupperOre:
+                            case TerrainMineType.CopperOre:
                                 resourceType = ItemResourceType.CopperOre;
                                 break;
                             case TerrainMineType.LeadOre:

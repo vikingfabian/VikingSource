@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars.Work
         public WorkPriority mining_cupper = new WorkPriority(0);
         public WorkPriority mining_lead = new WorkPriority(0);
         public WorkPriority mining_silver = new WorkPriority(0);
-        public WorkPriority mining_gold = new WorkPriority(3);
+        public WorkPriority mining_gold = new WorkPriority(1);
         public WorkPriority mining_mithril = new WorkPriority(0);
         public WorkPriority mining_sulfur = new WorkPriority(0);
         public WorkPriority mining_coal = new WorkPriority(0);
@@ -1270,6 +1270,13 @@ namespace VikingEngine.DSSWars.Work
             followFaction = true;
             unlocked = true;
             value = defaultVal;
+        }
+
+
+        public void set(int value)
+        { 
+            this.value = value;
+            followFaction = false;
         }
 
         public void onFactionValueChange(WorkPriority factionTemplate)

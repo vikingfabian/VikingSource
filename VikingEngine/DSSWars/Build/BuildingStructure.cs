@@ -100,5 +100,22 @@ namespace VikingEngine.DSSWars.Build
                 default: return 0; // Return 0 for NUM_NONE or any other undefined type
             }
         }
+
+        public int getBarracksCount(BuildAndExpandType type)
+        {
+            switch (type)
+            {
+                
+                case BuildAndExpandType.SoldierBarracks: return SoldierBarracks_count;
+                case BuildAndExpandType.ArcherBarracks: return ArcherBarracks_count;
+                case BuildAndExpandType.WarmashineBarracks: return WarmashineBarracks_count;
+                case BuildAndExpandType.GunBarracks: return GunBarracks_count;
+                case BuildAndExpandType.CannonBarracks: return CannonBarracks_count;
+                case BuildAndExpandType.KnightsBarracks: return KnightsBarracks_count;
+               
+
+                default: return 0; // Return 0 for NUM_NONE or any other undefined type
+            }
+        }
     }
 }

@@ -13,6 +13,8 @@ Technology tree
 The menu is 20% wider
 New menu tab; Mix of resources and priority
 Reworked the event manager; boss events are timed the same no matter difficulty, and a less agressive game start.
+Ai has been upgraded to build almost any building and can produce all soldiers
+Postal deliveries resource automation
 
 Bank system (untested), central gold can be turned on and off
 >Armies carry gold for food purchases

@@ -39,6 +39,16 @@ namespace VikingEngine.DSSWars.Map
         //public int logisticsLevel = 0;
         public bool newCity = true;
 
+        public int mineCount_iron = 0;
+        public int mineCount_tin = 0;
+        public int mineCount_copper = 0;
+        public int mineCount_lead = 0;
+        public int mineCount_silver = 0;
+        public int mineCount_gold = 0;
+        public int mineCount_mithril = 0;
+        public int mineCount_sulfur = 0;
+        public int mineCount_coal = 0;
+
         public void setupTutorialMap(City city)
         {
             IntVector2 topleft;
@@ -170,8 +180,17 @@ namespace VikingEngine.DSSWars.Map
             foodspots = 0;
             //int logisticsLevel = 0;
             //int waterReservoirs = 0;
+            mineCount_iron = 0;
+            mineCount_tin = 0;
+            mineCount_copper = 0;
+            mineCount_lead = 0;
+            mineCount_silver = 0;
+            mineCount_gold = 0;
+            mineCount_mithril = 0;
+            mineCount_sulfur = 0;
+            mineCount_coal = 0;
 
-            BuildingStructure buildingStructure = new BuildingStructure();
+        BuildingStructure buildingStructure = new BuildingStructure();
 
             IntVector2 cityHall = WP.ToSubTilePos_Centered(city.tilePos);
             FoodSpots_workupdate.Add(cityHall);
@@ -270,6 +289,38 @@ namespace VikingEngine.DSSWars.Map
 
                                     case TerrainMainType.Mine:
                                         Mines.Add(subTileLoop.Position);
+
+                                        var mineType = (TerrainMineType)subTile.subTerrain;
+                                        switch (mineType)
+                                        {
+                                            case TerrainMineType.Coal:
+                                                ++mineCount_coal;
+                                                break;
+                                            case TerrainMineType.IronOre:
+                                                ++mineCount_iron;
+                                                break;
+                                            case TerrainMineType.TinOre:
+                                                ++mineCount_tin;
+                                                break;
+                                            case TerrainMineType.CopperOre:
+                                                ++mineCount_copper;
+                                                break;
+                                            case TerrainMineType.Sulfur:
+                                                ++mineCount_sulfur;
+                                                break;
+                                            case TerrainMineType.LeadOre:
+                                                ++mineCount_lead;
+                                                break;
+                                            case TerrainMineType.SilverOre:
+                                                ++mineCount_silver;
+                                                break;
+                                            case TerrainMineType.GoldOre:
+                                                ++mineCount_gold;
+                                                break;
+                                            case TerrainMineType.Mithril:
+                                                ++mineCount_mithril;
+                                                break;
+                                        }
                                         break;
 
                                     case TerrainMainType.Building:

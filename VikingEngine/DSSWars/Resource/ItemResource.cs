@@ -204,6 +204,9 @@ namespace VikingEngine.DSSWars.Resource
         BronzeCoin,
         SilverCoin,
         ElfCoin,
+
+        AutomatedItem,
+
         NUM,
 
         

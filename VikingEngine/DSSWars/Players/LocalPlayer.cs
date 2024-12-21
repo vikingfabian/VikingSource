@@ -190,22 +190,22 @@ namespace VikingEngine.DSSWars.Players
             goldDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Gold);
 
             soldierConscriptCopy = new ConscriptProfile();
-            soldierConscriptCopy.defaultSetup(BarracksType.Soldier);
+            soldierConscriptCopy.defaultSetup(Build.BuildAndExpandType.SoldierBarracks);
 
             archerConscriptCopy = new ConscriptProfile();
-            archerConscriptCopy.defaultSetup(BarracksType.Archer);
+            archerConscriptCopy.defaultSetup(Build.BuildAndExpandType.ArcherBarracks);
 
             warmashineConscriptCopy = new ConscriptProfile();
-            warmashineConscriptCopy.defaultSetup(BarracksType.Warmashine);
+            warmashineConscriptCopy.defaultSetup(Build.BuildAndExpandType.WarmashineBarracks);
 
             knightConscriptCopy = new ConscriptProfile();
-            knightConscriptCopy.defaultSetup(BarracksType.Knight);
+            knightConscriptCopy.defaultSetup(Build.BuildAndExpandType.KnightsBarracks);
 
             gunConscriptCopy = new ConscriptProfile();
-            gunConscriptCopy.defaultSetup(BarracksType.Gun);
+            gunConscriptCopy.defaultSetup(Build.BuildAndExpandType.GunBarracks);
 
             cannonConscriptCopy = new ConscriptProfile();
-            cannonConscriptCopy.defaultSetup(BarracksType.Cannon);
+            cannonConscriptCopy.defaultSetup(Build.BuildAndExpandType.CannonBarracks);
 
 
         }
@@ -1209,49 +1209,85 @@ namespace VikingEngine.DSSWars.Players
                 friendlyArmy = army;
                 army.rotation = playerRot;
 
-                SoldierConscriptProfile SoldierProfile1 = new SoldierConscriptProfile()
                 {
-                    conscript = new ConscriptProfile()
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
                     {
-                        weapon = Resource.ItemResourceType.HandCulverin,
-                        armorLevel = Resource.ItemResourceType.IronArmor,
-                        training = TrainingLevel.Basic,
-                        specialization = SpecializationType.Traditional,
-                    }
-                };
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.HandSpear,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
 
-                for (int i = 0; i < 2; ++i)
+                    for (int i = 0; i < 6; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile);
+                    }
+                }
                 {
-                    new SoldierGroup(army, SoldierProfile1);
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.HandCulverin,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 4; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile);
+                    }
+                }
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.ManCannonBronze,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 2; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile);
+                    }
                 }
                 army.refreshPositions(true);
             }
             //else
-            {
+            //{
                 
-                var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
-                enemyArmy = army;
-                army.rotation = enemyRot;
+            //    var army = enemyFac.NewArmy(VectorExt.AddX(position, 2));
+            //    enemyArmy = army;
+            //    army.rotation = enemyRot;
 
-                SoldierConscriptProfile SoldierProfile1 = new SoldierConscriptProfile()
-                {
-                    conscript = new ConscriptProfile()
-                    {
-                        weapon = Resource.ItemResourceType.Sword,
-                        armorLevel = Resource.ItemResourceType.NONE,
-                        training = TrainingLevel.Basic,
-                        specialization = SpecializationType.Traditional,
-                    }
-                };
-                for (int i = 0; i < 2; ++i)
-                {
-                    new SoldierGroup(army, SoldierProfile1);
-                }
+            //    SoldierConscriptProfile SoldierProfile1 = new SoldierConscriptProfile()
+            //    {
+            //        conscript = new ConscriptProfile()
+            //        {
+            //            weapon = Resource.ItemResourceType.Sword,
+            //            armorLevel = Resource.ItemResourceType.NONE,
+            //            training = TrainingLevel.Basic,
+            //            specialization = SpecializationType.Traditional,
+            //        }
+            //    };
+            //    for (int i = 0; i < 2; ++i)
+            //    {
+            //        new SoldierGroup(army, SoldierProfile1);
+            //    }
 
-                army.refreshPositions(true);
-            }
+            //    army.refreshPositions(true);
+            //}
 
-            friendlyArmy.Order_Attack(enemyArmy);
+            //friendlyArmy.Order_Attack(enemyArmy);
 
         }
 
