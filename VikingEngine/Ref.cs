@@ -120,5 +120,16 @@ namespace VikingEngine
                 GameTimeSpeed = TargetGameTimeSpeed;
             }
         }
+
+        public static void ResetGameTime()
+        {       
+            TotalTimeSec = 0;
+            PrevTotalTimeSec = 0;
+            
+            TotalFrameCount = 0;
+
+            TotalGameTimeSec = 0;
+            PrevTotalGameTimeSec = 0;
+        }
     }
 }

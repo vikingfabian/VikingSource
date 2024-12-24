@@ -9,90 +9,21 @@ namespace VikingEngine.DSSWars.Resource
 {
     static class CraftResourceLib
     {
-        const int FoodWaterUsage = 20;
+        const int FoodWaterUsage = 8;
+        const int FoodFuelUsage = 3;
         const int FoodCraftAmount = 20;
-        //public static void Blueprint(ItemResourceType item, out CraftBlueprint bp1, out CraftBlueprint bp2)
-        //{
-        //    switch (item)
-        //    {
-        //        case ItemResourceType.Fuel_G: bp1 = Fuel1; bp2 = null; break;
-        //        case ItemResourceType.Coal: bp1 = Charcoal; bp2 = null; break;
-        //        case ItemResourceType.Food_G: bp1 = Food1; bp2 = Food2; break;
-        //        case ItemResourceType.Beer: bp1 = Beer; bp2 = null; break;
-
-        //        case ItemResourceType.Cupper: bp1 = Cupper; bp2 = null; break;
-
-        //        case ItemResourceType.Tin: bp1 = Tin; bp2 = null; break;
-        //        case ItemResourceType.Lead: bp1 = Lead; bp2 = null; break;
-        //        case ItemResourceType.Iron_G: bp1 = Iron; bp2 = null; break;
-        //        case ItemResourceType.Silver: bp1 = Silver; bp2 = null; break;
-
-        //        case ItemResourceType.Bronze: bp1 = Bronze; bp2 = null; break;
-        //        case ItemResourceType.CastIron: bp1 = CastIron; bp2 = null; break;
-        //        case ItemResourceType.BloomeryIron: bp1 = BloomeryIron; bp2 = null; break;
-        //        case ItemResourceType.Mithril: bp1 = Mithril; bp2 = null; break;
-
-
-        //        case ItemResourceType.PaddedArmor: bp1 = PaddedArmor; bp2 = null; break;
-        //        case ItemResourceType.HeavyPaddedArmor: bp1 = HeavyPaddedArmor; bp2 = null; break;
-        //        case ItemResourceType.BronzeArmor: bp1 = BronzeArmor; bp2 = null; break;
-        //        case ItemResourceType.IronArmor: bp1 = MailArmor; bp2 = null; break;
-        //        case ItemResourceType.HeavyIronArmor: bp1 = HeavyMailArmor; bp2 = null; break;
-        //        case ItemResourceType.LightPlateArmor: bp1 = PlateArmor; bp2 = null; break;
-        //        case ItemResourceType.FullPlateArmor: bp1 = FullPlateArmor; bp2 = null; break;
-
-        //        case ItemResourceType.Toolkit: bp1 = Beer; bp2 = null; break;
-        //        case ItemResourceType.Wagon2Wheel: bp1 = WagonLight; bp2 = null; break;
-        //        case ItemResourceType.Wagon4Wheel: bp1 = WagonHeavy; bp2 = null; break;
-        //        case ItemResourceType.BlackPowder: bp1 = BlackPowder; bp2 = null; break;
-        //        case ItemResourceType.GunPowder: bp1 = GunPowder; bp2 = null; break;
-        //        case ItemResourceType.LedBullet: bp1 = LedBullets; bp2 = null; break;
-
-        //        case ItemResourceType.SharpStick: bp1 = SharpStick; bp2 = null; break;
-        //        case ItemResourceType.BronzeSword: bp1 = BronzeSword; bp2 = null; break;
-        //        case ItemResourceType.ShortSword: bp1 = ShortSword; bp2 = null; break;
-        //        case ItemResourceType.Sword: bp1 = Sword; bp2 = null; break;
-        //        case ItemResourceType.LongSword: bp1 = LongSword; bp2 = null; break;
-        //        case ItemResourceType.MithrilSword: bp1 = MithrilSword; bp2 = null; break;
-
-        //        case ItemResourceType.Warhammer: bp1 = WarhammerIron; bp2 = WarhammerBronze; break;
-        //        case ItemResourceType.TwoHandSword: bp1 = TwoHandSword; bp2 = null; break;
-        //        case ItemResourceType.KnightsLance: bp1 = KnightsLance; bp2 = null; break;
-
-        //        case ItemResourceType.SlingShot: bp1 = Slingshot; bp2 = null; break;
-        //        case ItemResourceType.ThrowingSpear: bp1 = ThrowingSpear1; bp2 = ThrowingSpear2; break;
-        //        case ItemResourceType.Bow: bp1 = Bow; bp2 = null; break;
-        //        case ItemResourceType.LongBow: bp1 = LongBow; bp2 = null; break;
-        //        case ItemResourceType.Crossbow: bp1 = CrossBow; bp2 = null; break;
-        //        case ItemResourceType.MithrilBow: bp1 = MithrilBow; bp2 = null; break;
-
-        //        case ItemResourceType.HandCannon: bp1 = BronzeHandCannon; bp2 = null; break;
-        //        case ItemResourceType.HandCulverin: bp1 = BronzeHandCulverin; bp2 = null; break;
-        //        case ItemResourceType.Rifle: bp1 = Rifle; bp2 = null; break;
-        //        case ItemResourceType.Blunderbus: bp1 = Blunderbus; bp2 = null; break;
-
-        //        case ItemResourceType.Ballista: bp1 = Ballista; bp2 = null; break;
-        //        case ItemResourceType.Manuballista: bp1 = ManuBallista; bp2 = null; break;
-        //        case ItemResourceType.Catapult: bp1 = Catapult; bp2 = null; break;
-        //        case ItemResourceType.SiegeCannonBronze: bp1 = SiegeCannonBronze; bp2 = null; break;
-        //        case ItemResourceType.ManCannonBronze: bp1 = ManCannonBronze; bp2 = null; break;
-        //        case ItemResourceType.SiegeCannonIron: bp1 = SiegeCannonIron; bp2 = null; break;
-        //        case ItemResourceType.ManCannonIron: bp1 = ManCannonIron; bp2 = null; break;
-
-        //        default: throw new NotImplementedException();
-        //    }
-        //}
+       
 
         //ORE
-        public static readonly CraftBlueprint Cupper = new CraftBlueprint(
+        public static readonly CraftBlueprint Copper = new CraftBlueprint(
             CraftResultType.Resource,
-            (int)ItemResourceType.Cupper,
+            (int)ItemResourceType.Copper,
             4,
             new UseResource[]
             {
                 new UseResource(ItemResourceType.Water_G, 2),
                 new UseResource(ItemResourceType.Fuel_G, 30),
-                new UseResource(ItemResourceType.CupperOre, 2)
+                new UseResource(ItemResourceType.CopperOre, 2)
             },
             XP.WorkExperienceType.Smelting,
             XP.ExperienceLevel.Beginner_1,
@@ -101,13 +32,13 @@ namespace VikingEngine.DSSWars.Resource
 
         public static readonly CraftBlueprint Cupper_AndCooling = new CraftBlueprint(
             CraftResultType.Resource,
-            (int)ItemResourceType.Cupper,
+            (int)ItemResourceType.Copper,
             4,
             new UseResource[]
             {
                 new UseResource(ItemResourceType.CoolingFluid, 2),
                 new UseResource(ItemResourceType.Fuel_G, 30),
-                new UseResource(ItemResourceType.CupperOre, 2)
+                new UseResource(ItemResourceType.CopperOre, 2)
             },
            XP.WorkExperienceType.Smelting,
            XP.ExperienceLevel.Beginner_1,
@@ -271,7 +202,7 @@ namespace VikingEngine.DSSWars.Resource
             {
                 new UseResource(ItemResourceType.Stone_G, 1),
                 new UseResource(ItemResourceType.Fuel_G, 30),
-                new UseResource(ItemResourceType.Cupper, 4),
+                new UseResource(ItemResourceType.Copper, 4),
                 new UseResource(ItemResourceType.Tin, 2),
             },
            XP.WorkExperienceType.CastMetal,
@@ -357,7 +288,7 @@ namespace VikingEngine.DSSWars.Resource
           new UseResource[]
           {
                 new UseResource(ItemResourceType.Water_G, FoodWaterUsage),
-                new UseResource(ItemResourceType.Fuel_G, FoodWaterUsage),
+                new UseResource(ItemResourceType.Fuel_G, FoodFuelUsage),
                 new UseResource(ItemResourceType.RawFood_Group, FoodCraftAmount)
           },XP.WorkExperienceType.Cook
       )
@@ -370,7 +301,7 @@ namespace VikingEngine.DSSWars.Resource
             new UseResource[]
             {
                 new UseResource(ItemResourceType.Beer, FoodWaterUsage),
-                new UseResource(ItemResourceType.Fuel_G, FoodWaterUsage),
+                new UseResource(ItemResourceType.Fuel_G, FoodFuelUsage),
                 new UseResource(ItemResourceType.RawFood_Group, FoodCraftAmount)
             },XP.WorkExperienceType.Cook
         )
@@ -727,7 +658,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.SkinLinen_Group, 3),
             },
            XP.WorkExperienceType.Fletcher,
-            XP.ExperienceLevel.Practitioner_2,
+            XP.ExperienceLevel.Expert_3,
             CraftRequirement.Carpenter
         );
 

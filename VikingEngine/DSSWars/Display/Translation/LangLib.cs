@@ -21,9 +21,443 @@ namespace VikingEngine.DSSWars.Display.Translation
     {
         //public static string WorkPrio(WorkPriorityType workPriority)
         //{ 
-            
-        //}
 
+        //}
+        public static void WorkNameIcon(WorkPriorityType type, out string name, out SpriteName workIcon, out SpriteName typeIcon)
+        {
+            switch (type)
+            {
+                case WorkPriorityType.move:
+                    name = DssRef.lang.Work_Move;
+                    workIcon = SpriteName.WarsWorkMove;
+                    typeIcon = SpriteName.WarsBuild_Storehouse;
+                    break;
+
+                case WorkPriorityType.wood:
+                    name = string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Wood);
+                    workIcon = SpriteName.WarsWorkCollect;
+                    typeIcon = SpriteName.WarsResource_Wood;
+                    break;
+
+                case WorkPriorityType.stone:
+                    name = string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Stone);
+                    workIcon = SpriteName.WarsWorkCollect;
+                    typeIcon = SpriteName.WarsResource_Stone;
+                    break;
+
+                case WorkPriorityType.craftFuel:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Fuel);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Fuel;
+                    break;
+
+                case WorkPriorityType.craftFood:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Food);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Food;
+                    break;
+
+                case WorkPriorityType.craftBeer:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Beer);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Beer;
+                    break;
+
+                case WorkPriorityType.craftCoolingFluid:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_CoolingFluid);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_CoolingFluid;
+                    break;
+
+                case WorkPriorityType.craftToolkit:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Toolkit);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Toolkit;
+                    break;
+
+                case WorkPriorityType.craftWagonLight:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Wagon2Wheel);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Wagon2Wheel;
+                    break;
+
+                case WorkPriorityType.craftWagonHeavy:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Wagon4Wheel);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Wagon4Wheel;
+                    break;
+
+                case WorkPriorityType.craftBlackPowder:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_BlackPowder);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_BlackPowder;
+                    break;
+
+                case WorkPriorityType.craftGunPowder:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_GunPowder);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_GunPowder;
+                    break;
+
+                case WorkPriorityType.craftBullet:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_LedBullet);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Bullets;
+                    break;
+
+                case WorkPriorityType.smeltIron:
+                    name = string.Format(DssRef.todoLang.Work_SmeltX, DssRef.lang.Resource_TypeName_Iron);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Iron;
+                    break;
+
+                case WorkPriorityType.smeltTin:
+                    name = string.Format(DssRef.todoLang.Work_SmeltX, DssRef.todoLang.Resource_TypeName_Tin);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Tin;
+                    break;
+
+                case WorkPriorityType.smeltCopper:
+                    name = string.Format(DssRef.todoLang.Work_SmeltX, DssRef.todoLang.Resource_TypeName_Copper);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Copper;
+                    break;
+
+                case WorkPriorityType.smeltLead:
+                    name = string.Format(DssRef.todoLang.Work_SmeltX, DssRef.todoLang.Resource_TypeName_Lead);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Lead;
+                    break;
+
+                case WorkPriorityType.smeltSilver:
+                    name = string.Format(DssRef.todoLang.Work_SmeltX, DssRef.todoLang.Resource_TypeName_Silver);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Silver;
+                    break;
+
+                case WorkPriorityType.craftBronze:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Bronze);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Bronze;
+                    break;
+
+                case WorkPriorityType.craftCastIron:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_CastIron);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_CastIron;
+                    break;
+
+                case WorkPriorityType.craftBloomeryIron:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_BloomIron);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_BloomeryIron;
+                    break;
+
+                case WorkPriorityType.craftSteel:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Steel);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Steel;
+                    break;
+
+                case WorkPriorityType.craftMithril:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Mithril);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_MithrilAlloy;
+                    break;
+
+                case WorkPriorityType.farmfood:
+                    name = DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Food;
+                    workIcon = SpriteName.WarsWorkFarm;
+                    typeIcon = SpriteName.WarsResource_RawFood;
+                    break;
+
+                case WorkPriorityType.farmfuel:
+                    name = DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Fuel;
+                    workIcon = SpriteName.WarsWorkFarm;
+                    typeIcon = SpriteName.WarsResource_Fuel;
+                    break;
+
+                case WorkPriorityType.farmlinen:
+                    name = DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Linen;
+                    workIcon = SpriteName.WarsWorkFarm;
+                    typeIcon = SpriteName.WarsResource_LinenCloth;
+                    break;
+
+                case WorkPriorityType.bogiron:
+                    name = DssRef.lang.Resource_TypeName_BogIron;
+                    workIcon = SpriteName.WarsWorkCollect;
+                    typeIcon = SpriteName.WarsResource_IronOre;
+                    break;
+
+                case WorkPriorityType.miningIron:
+                    name = string.Format(DssRef.todoLang.Work_MiningResource, DssRef.lang.Resource_TypeName_Iron);
+                    workIcon = SpriteName.WarsWorkMine;
+                    typeIcon = SpriteName.WarsResource_Iron;
+                    break;
+
+                case WorkPriorityType.miningTin:
+                    name = string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_Tin);
+                    workIcon = SpriteName.WarsWorkMine;
+                    typeIcon = SpriteName.WarsResource_Tin;
+                    break;
+
+                case WorkPriorityType.miningCopper:
+                    name = string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_Copper);
+                    workIcon = SpriteName.WarsWorkMine;
+                    typeIcon = SpriteName.WarsResource_Copper;
+                    break;
+
+                case WorkPriorityType.miningLead:
+                    name = string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_Lead);
+                    workIcon = SpriteName.WarsWorkMine;
+                    typeIcon = SpriteName.WarsResource_Lead;
+                    break;
+
+                case WorkPriorityType.miningSilver:
+                    name = string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_Silver);
+                    workIcon = SpriteName.WarsWorkMine;
+                    typeIcon = SpriteName.WarsResource_Silver;
+                    break;
+
+                case WorkPriorityType.miningGold:
+                    name = string.Format(DssRef.todoLang.Work_MiningResource, DssRef.lang.ResourceType_Gold);
+                    workIcon = SpriteName.WarsWorkMine;
+                    typeIcon = SpriteName.WarsResource_Gold;
+                    break;
+                case WorkPriorityType.miningSulfur:
+                    name = string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_Sulfur);
+                    workIcon = SpriteName.WarsWorkMine;
+                    typeIcon = SpriteName.WarsResource_Sulfur;
+                    break;
+                case WorkPriorityType.miningMithril:
+                    name = string.Format(DssRef.todoLang.Work_MiningResource, DssRef.todoLang.Resource_TypeName_RawMithril);
+                    workIcon = SpriteName.WarsWorkMine;
+                    typeIcon = SpriteName.WarsResource_Mithril;
+                    break;
+
+                case WorkPriorityType.craftSharpStick:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_SharpStick);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Sharpstick;
+                    break;
+
+                case WorkPriorityType.craftBronzeSword:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_BronzeSword);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_BronzeSword;
+                    break;
+
+                case WorkPriorityType.craftShortSword:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_ShortSword);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_ShortSword;
+                    break;
+
+                case WorkPriorityType.craftSword:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Sword);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Sword;
+                    break;
+
+                case WorkPriorityType.craftLongSword:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_LongSword);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Longsword;
+                    break;
+
+                case WorkPriorityType.craftHandSpear:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_HandSpear);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_HandSpear;
+                    break;
+
+                case WorkPriorityType.craftWarhammer:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Warhammer);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Warhammer;
+                    break;
+
+                case WorkPriorityType.craftTwoHandSword:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_TwoHandSword);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_TwoHandSword;
+                    break;
+
+                case WorkPriorityType.craftKnightsLance:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_KnightsLance);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_KnightsLance;
+                    break;
+
+                case WorkPriorityType.craftMithrilSword:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_MithrilSword);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_MithrilSword;
+                    break;
+
+                case WorkPriorityType.craftSlingshot:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_SlingShot);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Slingshot;
+                    break;
+
+                case WorkPriorityType.craftThrowingspear:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_ThrowingSpear);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_ThrowSpear;
+                    break;
+
+                case WorkPriorityType.craftBow:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Bow);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Bow;
+                    break;
+
+                case WorkPriorityType.craftLongbow:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Longbow);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Longbow;
+                    break;
+
+                case WorkPriorityType.craftCrossbow:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Crossbow);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Crossbow;
+                    break;
+
+                case WorkPriorityType.craftMithrilbow:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_MithrilBow);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Mithrilbow;
+                    break;
+
+                case WorkPriorityType.craftHandCannon:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_HandCannon);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_BronzeRifle;
+                    break;
+
+                case WorkPriorityType.craftHandCulverin:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_HandCulverin);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_BronzeShotgun;
+                    break;
+
+                case WorkPriorityType.craftRifle:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Rifle);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_IronRifle;
+                    break;
+
+                case WorkPriorityType.craftBlunderbus:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Blunderbus);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_IronShotgun;
+                    break;
+
+                case WorkPriorityType.craftBallista:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.UnitType_Ballista);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Ballista;
+                    break;
+
+                case WorkPriorityType.craftManuBallista:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Manuballista);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Manuballista;
+                    break;
+
+                case WorkPriorityType.craftCatapult:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Catapult);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_Catapult;
+                    break;
+
+                case WorkPriorityType.craftBatteringRam:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_BatteringRam);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.MissingImage;
+                    break;
+
+                case WorkPriorityType.craftSiegeCannonBronze:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_SiegeCannonBronze);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_BronzeSiegeCannon;
+                    break;
+
+                case WorkPriorityType.craftManCannonBronze:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_ManCannonBronze);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_BronzeManCannon;
+                    break;
+
+                case WorkPriorityType.craftSiegeCannonIron:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_SiegeCannonIron);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_IronSiegeCannon;
+                    break;
+
+                case WorkPriorityType.craftManCannonIron:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_ManCannonIron);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_IronManCannon;
+                    break;
+
+                case WorkPriorityType.craftPaddedArmor:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_PaddedArmor);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_PaddedArmor;
+                    break;
+
+                case WorkPriorityType.craftHeavyPaddedArmor:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_HeavyPaddedArmor);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_HeavyPaddedArmor;
+                    break;
+
+                case WorkPriorityType.craftBronzeArmor:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_BronzeArmor);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_BronzeArmor;
+                    break;
+
+                case WorkPriorityType.craftMailArmor:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_IronArmor);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_IronArmor;
+                    break;
+
+                case WorkPriorityType.craftHeavyMailArmor:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_HeavyIronArmor);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_HeavyIronArmor;
+                    break;
+
+                case WorkPriorityType.craftPlateArmor:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_LightPlateArmor);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_LightPlateArmor;
+                    break;
+
+                case WorkPriorityType.craftFullPlateArmor:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_FullPlateArmor);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_FullPlateArmor;
+                    break;
+
+                case WorkPriorityType.craftMithrilArmor:
+                    name = string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_MithrilArmor);
+                    workIcon = SpriteName.WarsHammer;
+                    typeIcon = SpriteName.WarsResource_MithrilArmor;
+                    break;
+
+                default:
+                    name = "Unknown Work Type";
+                    workIcon = SpriteName.NO_IMAGE;
+                    typeIcon = SpriteName.NO_IMAGE;
+                    break;
+            }
+        }
         public static string ExperienceLevel(ExperienceLevel level)
         {
             switch (level)
@@ -345,6 +779,12 @@ namespace VikingEngine.DSSWars.Display.Translation
                         case TerrainBuildingType.PostalLevel3:
                             return string.Format(DssRef.todoLang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Postal);
 
+                        case TerrainBuildingType.GoldDeliveryLevel1:
+                            return DssRef.todoLang.BuildingType_GoldDelivery;
+                        case TerrainBuildingType.GoldDeliveryLevel2:
+                        case TerrainBuildingType.GoldDeliveryLevel3:
+                            return string.Format(DssRef.todoLang.BuildingType_IsUpgraded, DssRef.todoLang.BuildingType_GoldDelivery);
+
                         case TerrainBuildingType.Recruitment:
                             return DssRef.lang.BuildingType_Recruitment;
                         case TerrainBuildingType.RecruitmentLevel2:
@@ -450,7 +890,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
                         case TerrainMineType.TinOre:
                             return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Tin);
-                        case TerrainMineType.CupperOre:
+                        case TerrainMineType.CopperOre:
                             return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Copper);
                         case TerrainMineType.SilverOre:
                             return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Silver);
@@ -552,9 +992,14 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case TerrainBuildingType.Work_CoalPit:
                     return DssRef.lang.BuildingType_CoalPit_Description;
                 case TerrainBuildingType.Bank:
-                    return DssRef.lang.BuildingType_Bank_Description;
+                    return DssRef.lang.BuildingType_GoldDelivery_Description;
                 case TerrainBuildingType.CoinMinter:
                     return DssRef.todoLang.BuildingType_CoinMaker_Description;
+
+                case TerrainBuildingType.GoldDeliveryLevel1:
+                case TerrainBuildingType.GoldDeliveryLevel2:
+                case TerrainBuildingType.GoldDeliveryLevel3:
+                    return DssRef.lang.BuildingType_GoldDelivery_Description;
 
                 case TerrainBuildingType.WoodCutter:
                 case TerrainBuildingType.StoneCutter:
@@ -647,9 +1092,9 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.todoLang.Resource_TypeName_TinOre;
                 case ItemResourceType.Bronze:
                     return DssRef.todoLang.Resource_TypeName_Bronze;
-                case ItemResourceType.Cupper:
+                case ItemResourceType.Copper:
                     return DssRef.todoLang.Resource_TypeName_Copper;
-                case ItemResourceType.CupperOre:
+                case ItemResourceType.CopperOre:
                     return DssRef.todoLang.Resource_TypeName_CopperOre;
                 case ItemResourceType.Silver:
                     return DssRef.todoLang.Resource_TypeName_Silver;

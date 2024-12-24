@@ -21,15 +21,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         public static readonly ItemResourceType[] MovableCityResource_Misc =
         {
-             ItemResourceType.Wood_Group,
+            ItemResourceType.Food_G,
              ItemResourceType.Fuel_G,
-             ItemResourceType.Stone_G,
-             ItemResourceType.RawFood_Group,
-             ItemResourceType.Food_G,
              ItemResourceType.Beer,
              ItemResourceType.CoolingFluid,
              ItemResourceType.SkinLinen_Group,
-
+             ItemResourceType.RawFood_Group,
+             ItemResourceType.Wood_Group,
+             ItemResourceType.Stone_G,
              ItemResourceType.Toolkit,
             ItemResourceType.Wagon2Wheel,
             ItemResourceType.Wagon4Wheel,
@@ -41,13 +40,13 @@ namespace VikingEngine.DSSWars.GameObject
        {
              ItemResourceType.IronOre_G,
              ItemResourceType.TinOre,
-             ItemResourceType.CupperOre,
+             ItemResourceType.CopperOre,
              ItemResourceType.LeadOre,
              ItemResourceType.SilverOre,
 
              ItemResourceType.Iron_G,
              ItemResourceType.Tin,
-            ItemResourceType.Cupper,
+            ItemResourceType.Copper,
             ItemResourceType.Lead,
             ItemResourceType.Silver,
             ItemResourceType.RawMithril,
@@ -60,8 +59,7 @@ namespace VikingEngine.DSSWars.GameObject
         };
         public static readonly ItemResourceType[] MovableCityResource_WeaponMelee =
        {
-            ItemResourceType.SharpStick,
-            ItemResourceType.BronzeSword,
+            
             ItemResourceType.ShortSword,
             ItemResourceType.Sword,
             ItemResourceType.LongSword,
@@ -71,13 +69,13 @@ namespace VikingEngine.DSSWars.GameObject
              ItemResourceType.TwoHandSword,
              ItemResourceType.KnightsLance,
             ItemResourceType.MithrilSword,
+
+            ItemResourceType.SharpStick,
+            ItemResourceType.BronzeSword,
         };
 
         public static readonly ItemResourceType[] MovableCityResource_WeaponRanged =
-         {
-
-             ItemResourceType.SlingShot,
-             ItemResourceType.ThrowingSpear,
+         {   
              ItemResourceType.Bow,
              ItemResourceType.LongBow,
             ItemResourceType.Crossbow,
@@ -95,17 +93,22 @@ namespace VikingEngine.DSSWars.GameObject
             ItemResourceType.SiegeCannonIron,
             ItemResourceType.ManCannonIron,
 
+            ItemResourceType.SlingShot,
+             ItemResourceType.ThrowingSpear,
+
         };
 
         public static readonly ItemResourceType[] MovableCityResource_Armor =
          {
-             ItemResourceType.PaddedArmor,
-             ItemResourceType.HeavyPaddedArmor,
+             
              ItemResourceType.BronzeArmor,
              ItemResourceType.IronArmor,
              ItemResourceType.HeavyIronArmor,
              ItemResourceType.LightPlateArmor,
              ItemResourceType.FullPlateArmor,
+
+             ItemResourceType.PaddedArmor,
+             ItemResourceType.HeavyPaddedArmor,
         };
 
         MinuteStats blackMarketCosts_food = new MinuteStats();
@@ -123,9 +126,10 @@ namespace VikingEngine.DSSWars.GameObject
         public float waterAddPerSec;
         static readonly GroupedResource Res_Nothing = new GroupedResource() { amount = 100000 };
 
+        public int gold = 5;
         public GroupedResource res_water = new GroupedResource();
         public GroupedResource res_wood = new GroupedResource() { amount = 20, goalBuffer = 300 };
-        public GroupedResource res_fuel = new GroupedResource() { amount = 20, goalBuffer = 300 };
+        public GroupedResource res_fuel = new GroupedResource() { amount = 100, goalBuffer = 300 };
         public GroupedResource res_stone = new GroupedResource() { amount = 20, goalBuffer = 100 };
         public GroupedResource res_rawFood = new GroupedResource() { amount = 50, goalBuffer = 200 };
         public GroupedResource res_food = new GroupedResource() { amount = 200, goalBuffer = 500 };
@@ -153,9 +157,9 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource res_BloomeryIron = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_Mithril = new GroupedResource() { goalBuffer = 100 };
 
-        public GroupedResource res_Toolkit = new GroupedResource() { amount = 5, goalBuffer = 100 };
-        public GroupedResource res_Wagon2Wheel = new GroupedResource() { amount = 5, goalBuffer = 100 };
-        public GroupedResource res_Wagon4Wheel = new GroupedResource() { amount = 5, goalBuffer = 100 };
+        public GroupedResource res_Toolkit = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Wagon2Wheel = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Wagon4Wheel = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_BlackPowder = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_GunPowder = new GroupedResource() { goalBuffer = 100 };
         public GroupedResource res_LedBullet = new GroupedResource() { goalBuffer = 100 };
@@ -324,7 +328,7 @@ namespace VikingEngine.DSSWars.GameObject
             switch (type)
             {
                 case ItemResourceType.Gold:
-                    faction.gold += add;
+                    faction.gainMoney(add, this);//.gold += add;
                     break;
                 case ItemResourceType.Water_G:
                     res_water.amount += add;
@@ -378,7 +382,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.TinOre:
                     res_TinOre.amount += add;
                     break;
-                case ItemResourceType.CupperOre:
+                case ItemResourceType.CopperOre:
                     res_CupperOre.amount += add;
                     break;
                 case ItemResourceType.LeadOre:
@@ -394,7 +398,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Tin:
                     res_Tin.amount += add;
                     break;
-                case ItemResourceType.Cupper:
+                case ItemResourceType.Copper:
                     res_Cupper.amount += add;
                     break;
                 case ItemResourceType.Lead:
@@ -586,7 +590,7 @@ namespace VikingEngine.DSSWars.GameObject
             switch (type)
             {
                 case ItemResourceType.Gold:
-                    return new GroupedResource() { amount = faction.gold };
+                    return new GroupedResource() { amount = DssRef.storage.centralGold? faction.gold : gold };
                 case ItemResourceType.GoldOre:
                     return new GroupedResource() { amount = 1 };
                 case ItemResourceType.Men:
@@ -612,13 +616,13 @@ namespace VikingEngine.DSSWars.GameObject
 
                 case ItemResourceType.IronOre_G: return res_ironore;
                 case ItemResourceType.TinOre: return res_TinOre;
-                case ItemResourceType.CupperOre: return res_CupperOre;
+                case ItemResourceType.CopperOre: return res_CupperOre;
                 case ItemResourceType.LeadOre: return res_LeadOre;
                 case ItemResourceType.SilverOre: return res_SilverOre;
 
                 case ItemResourceType.Iron_G: return res_iron;
                 case ItemResourceType.Tin: return res_Tin;
-                case ItemResourceType.Cupper: return res_Cupper;
+                case ItemResourceType.Copper: return res_Cupper;
                 case ItemResourceType.Lead: return res_Lead;
                 case ItemResourceType.Silver: return res_Silver;
                 case ItemResourceType.RawMithril: return res_RawMithril;
@@ -736,7 +740,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.TinOre:
                     res_TinOre = resource;
                     break;
-                case ItemResourceType.CupperOre:
+                case ItemResourceType.CopperOre:
                     res_CupperOre = resource;
                     break;
                 case ItemResourceType.LeadOre:
@@ -751,7 +755,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Tin:
                     res_Tin = resource;
                     break;
-                case ItemResourceType.Cupper:
+                case ItemResourceType.Copper:
                     res_Cupper = resource;
                     break;
                 case ItemResourceType.Lead:
@@ -1006,7 +1010,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.GoldOre:
                     {
                         var price = convert1.amount * DssConst.GoldOreSellValue;
-                        faction.gold += price;
+                        faction.gainMoney( price, this);
                         soldResources.add(price);
 
                         convert1.type = ItemResourceType.Gold;
@@ -1051,7 +1055,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void blackMarketPurchase(ItemResourceType resourceType, int count, int cost)
         {
-            if (faction.payMoney(cost * count, false))
+            if (faction.payMoney(cost * count, false, this))
             {
                 AddGroupedResource(resourceType, count);
             }
@@ -1086,6 +1090,11 @@ namespace VikingEngine.DSSWars.GameObject
         public bool needMore()
         {
             return amount < goalBuffer;
+        }
+
+        public bool reachedBuffer()
+        {
+            return amount >= goalBuffer;
         }
 
         public bool needToImport()

@@ -215,7 +215,7 @@ namespace VikingEngine.DSSWars.Resource
             content.Add(new RichBoxText(name()));
 
             content.newLine();
-            if (levelRequirement > ExperienceLevel.Beginner_1)
+            //if (levelRequirement > ExperienceLevel.Beginner_1)
             {
                 var levelReqText = new RichBoxText(DssRef.lang.Hud_PurchaseTitle_Requirement + ":");
                 levelReqText.overrideColor = HudLib.TitleColor_Label;

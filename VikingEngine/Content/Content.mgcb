@@ -1333,9 +1333,6 @@
 #begin VoxelModel/LfWars/city_quarry.vox
 /copy:VoxelModel/LfWars/city_quarry.vox
 
-#begin VoxelModel/LfWars/city_recruitment.vox
-/copy:VoxelModel/LfWars/city_recruitment.vox
-
 #begin VoxelModel/LfWars/city_smallhouse.vox
 /copy:VoxelModel/LfWars/city_smallhouse.vox
 

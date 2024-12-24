@@ -12,7 +12,7 @@ namespace VikingEngine.DSSWars.Build
         public const int CraftSmith_IronUse = 10;
 
         public static readonly ItemResourceType[] SmelterCraftTypes = {
-            ItemResourceType.Cupper, ItemResourceType.Tin, ItemResourceType.Lead, ItemResourceType.Iron_G,
+            ItemResourceType.Copper, ItemResourceType.Tin, ItemResourceType.Lead, ItemResourceType.Iron_G,
             ItemResourceType.BloomeryIron, ItemResourceType.Silver, ItemResourceType.Mithril };
 
         public static readonly ItemResourceType[] SmithCraftTypes = {
@@ -181,6 +181,47 @@ namespace VikingEngine.DSSWars.Build
            XP.WorkExperienceType.HouseBuilding
         )
         { upgradeFrom = Recruitment };
+
+
+        public static readonly CraftBlueprint GoldDelivery = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.GoldDeliveryLvl1,
+           1,
+           new UseResource[]
+           {
+            new UseResource(ItemResourceType.Iron_G, 10),
+            new UseResource(ItemResourceType.Wood_Group, 20),
+            new UseResource(ItemResourceType.Stone_G, 40),
+           },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Practitioner_2
+       );
+
+        public static readonly CraftBlueprint GoldDelivery_Level2 = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.GoldDeliveryLvl2,
+           1,
+           new UseResource[]
+           {
+                new UseResource(ItemResourceType.Iron_G, 5),
+                new UseResource(ItemResourceType.Wagon2Wheel, 1),
+           },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
+       )
+        {  upgradeFrom = GoldDelivery };
+
+        public static readonly CraftBlueprint GoldDelivery_Level3 = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.GoldDeliveryLvl3,
+           1,
+           new UseResource[]
+           {
+                new UseResource(ItemResourceType.Steel, 5),
+                new UseResource(ItemResourceType.Wagon4Wheel, 1),
+           },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
+       )
+        { upgradeFrom = GoldDelivery };
+
 
         public static readonly CraftBlueprint Recruitment_Level3 = new CraftBlueprint(
           CraftResultType.Building,

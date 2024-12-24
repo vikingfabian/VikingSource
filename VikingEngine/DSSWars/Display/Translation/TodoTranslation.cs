@@ -53,14 +53,25 @@ namespace VikingEngine.DSSWars.Display.Translation
         //public string Tutorial_Select_SubTab => "And select category: {0}";
         //public string EndGameStatistics_DecorsBuilt => "Decorations built: {0}";
         //public string EndGameStatistics_StatuesBuilt => "Statues built: {0}";
+
+        public string Settings_CentralGold => "Central gold";
+        public string Settings_CentralGold_Description => "On: all your gold is in a shared pool for instant use. Off: gold is physical and needs to be transported.";
+
         public string Hud_None => "None";
         public string Hud_AllCities => "All cities";
         public string Hud_Time_Hours => "{0} hours";
+
+        public string Hud_EffectDoesNotStack => "This effect does not stack";
+
+        public string Work_SmeltX => "Smelt {0}";
+
         public string Info_FooodAndDeliveryLocation => "By default, workers go to the city hall to eat or drop off items";
         public string GameMenu_UseSpeedX => "{0} speed option";
 
         public string Delivery_SendChunk => "Items per Delivery";
         public string Delivery_SpeedBonus => "Speed bonus: {0}%";
+
+        public string Delivery_AutoResourceDescription => "Delivers items that has reached the stockpile limit, to cities in need.";
 
         public string Conscript_SplashDamage => "Splash damage";
         public string Conscript_HighSplashDamage => "High splash damage";
@@ -113,6 +124,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Technology_AdvancedFarming = "Advanced farming";
         public string Technology_AdvancedCasting = "Advanced casting";
         public string Hud_PercentPerMinute => "{0}% per minute";
+        public string Hud_PercentValueCost => "The service costs {0}% of the value";
+
         public string Hud_Mixed => "Mixed";
         public string Hud_Distance => "Distance";
 
@@ -162,7 +175,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Resource_TypeName_LedBullet=> "Bullet";
 
         public string Resource_TypeName_HandCannon => "Hand cannon";
-        public string Resource_TypeName_HandCulverin=> "Hand culvertin";
+        public string Resource_TypeName_HandCulverin=> "Hand culverin";
         public string Resource_TypeName_Rifle=> "Rifle";
         public string Resource_TypeName_Blunderbus=> "Blunderbus";
 
@@ -245,6 +258,8 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string BuildingType_School => "Masters guild";
         public string BuildingType_School_Description => "Increase the skill level of workers";
 
+        public string BuildingType_GoldDelivery => "Gold courier";
+        public string BuildingType_Bank_Description => "Gold management";
 
         public string Work_MiningResource = "Mining {0}";
 

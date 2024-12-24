@@ -173,22 +173,22 @@ namespace VikingEngine.DSSWars.GameObject
                 BarracksStatus currentStatus = conscriptBuildings[index];
                 switch (currentStatus.type)
                 {
-                    case BarracksType.Soldier:
+                    case Build.BuildAndExpandType.SoldierBarracks:
                         player.soldierConscriptCopy = currentStatus.profile;
                         break;
-                    case BarracksType.Archer:
+                    case Build.BuildAndExpandType.ArcherBarracks:
                         player.archerConscriptCopy = currentStatus.profile;
                         break;
-                    case BarracksType.Warmashine:
+                    case Build.BuildAndExpandType.WarmashineBarracks:
                         player.warmashineConscriptCopy = currentStatus.profile;
                         break;
-                    case BarracksType.Knight:
+                    case Build.BuildAndExpandType.KnightsBarracks:
                         player.knightConscriptCopy = currentStatus.profile;
                         break;
-                    case BarracksType.Gun:
+                    case Build.BuildAndExpandType.GunBarracks:
                         player.gunConscriptCopy = currentStatus.profile;
                         break;
-                    case BarracksType.Cannon:
+                    case Build.BuildAndExpandType.CannonBarracks:
                         player.cannonConscriptCopy = currentStatus.profile;
                         break;
 
@@ -209,22 +209,22 @@ namespace VikingEngine.DSSWars.GameObject
 
                 switch (currentStatus.type)
                 {
-                    case BarracksType.Soldier:
+                    case Build.BuildAndExpandType.SoldierBarracks:
                         currentStatus.profile=player.soldierConscriptCopy;
                         break;
-                    case BarracksType.Archer:
+                    case Build.BuildAndExpandType.ArcherBarracks:
                         currentStatus.profile= player.archerConscriptCopy;
                         break;
-                    case BarracksType.Warmashine:
+                    case Build.BuildAndExpandType.WarmashineBarracks:
                         currentStatus.profile=player.warmashineConscriptCopy ;
                         break;
-                    case BarracksType.Knight:
+                    case Build.BuildAndExpandType.KnightsBarracks:
                         currentStatus.profile=player.knightConscriptCopy;
                         break;
-                    case BarracksType.Gun:
+                    case Build.BuildAndExpandType.GunBarracks:
                         currentStatus.profile=player.gunConscriptCopy;
                         break;
-                    case BarracksType.Cannon:
+                    case Build.BuildAndExpandType.CannonBarracks:
                         currentStatus.profile=player.cannonConscriptCopy;
                         break;
 
@@ -445,7 +445,7 @@ namespace VikingEngine.DSSWars.GameObject
                 BarracksStatus newBarrack = new BarracksStatus()
                 {
                     profile = new ConscriptProfile() { weapon = ItemResourceType.SharpStick },
-                    type = BarracksType.Soldier,
+                    type = Build.BuildAndExpandType.SoldierBarracks,
                     idAndPosition = conv.IntVector2ToInt(pos),
                 };
                 newBarrack.profile.armorLevel = ItemResourceType.PaddedArmor;
@@ -454,11 +454,10 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void addBarracks(IntVector2 subPos, BarracksType type)
+        public void addBarracks(IntVector2 subPos, Build.BuildAndExpandType type)
         {
-            BarracksStatus consriptProfile = new BarracksStatus()
+            BarracksStatus consriptProfile = new BarracksStatus(type)
             {
-                type = type,
                 idAndPosition = conv.IntVector2ToInt(subPos),
             };
 
@@ -496,6 +495,19 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             return -1;
+        }
+
+        public bool hasConscriptId(int id)
+        {
+            for (int i = 0; i < conscriptBuildings.Count; ++i)
+            {
+                if (conscriptBuildings[i].idAndPosition == id)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public bool GetConscript(IntVector2 subTilePos, out BarracksStatus status)

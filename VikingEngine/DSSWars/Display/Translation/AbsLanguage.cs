@@ -776,7 +776,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string GameMenu_NextSong { get; }
 
         public abstract string BuildingType_Bank { get; }
-        public abstract string BuildingType_Bank_Description { get; }
+        public abstract string BuildingType_GoldDelivery_Description { get; }
 
         public abstract string BuildingType_Logistics { get; }
         public abstract string BuildingType_Logistics_Description { get; }

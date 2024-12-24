@@ -13,6 +13,11 @@ namespace VikingEngine.DSSWars.Delivery
 {
     struct DeliveryStatus
     {
+        public const ItemResourceType DeliveryType_Resource = ItemResourceType.Food_G;
+        public const ItemResourceType DeliveryType_Men = ItemResourceType.Men;
+        public const ItemResourceType DeliveryType_Gold = ItemResourceType.Gold;
+
+
         public const int MaxQue = 20;
 
         public DeliveryActiveStatus active;
@@ -47,6 +52,15 @@ namespace VikingEngine.DSSWars.Delivery
             profile = setup.profile;
 
             checkCity(player);
+        }
+
+        public bool IsGold()
+        { 
+            return profile.type == DeliveryType_Gold;
+        }
+        public bool IsRecruitment()
+        {
+            return profile.type == ItemResourceType.Men;
         }
 
         public void checkCity(LocalPlayer player)
@@ -120,24 +134,22 @@ namespace VikingEngine.DSSWars.Delivery
                     break;
             }
             idAndPosition = r.ReadInt32();
-            que = r.ReadByte();
-
-            if (subVersion >= 42)
-            {
-                level = r.ReadByte();
-            }
-            else
-            {
-                level = 1;
-            }
+            que = r.ReadByte();            
+            level = r.ReadByte();            
         }
 
-        public bool CanSend(City city)
+        public bool CanSend(City city, out ItemResourceType item)
         {
+            item = profile.type;
             int min = useSenderMin ? senderMin : 0;
             if (profile.type == ItemResourceType.Men)
             {
                 return city.workForce.amount - min >= DssConst.CityDeliveryChunkSize_Level1;
+            }
+            else if (profile.type == ItemResourceType.AutomatedItem)
+            {
+                item = city.findAutoItem();
+                return true;
             }
             else
             {
@@ -145,17 +157,17 @@ namespace VikingEngine.DSSWars.Delivery
             }
         }
 
-        public bool CanRecieve()
+        public bool CanRecieve(ItemResourceType sendItem)
         {
-            return CanRecieve(profile.toCity, out _);
+            return CanRecieve(sendItem, profile.toCity, out _);
         }
 
-        public bool CanRecieve(int cityIx, out int recieverHasAmountPlusDeliveries)
+        public bool CanRecieve(ItemResourceType sendItem, int cityIx, out int recieverHasAmountPlusDeliveries)
         {
             if (arraylib.InBound(DssRef.world.cities, cityIx))
             {
                 City city = DssRef.world.cities[cityIx];
-                if (profile.type == ItemResourceType.Men)
+                if (profile.type == DeliveryType_Men)
                 {
                     recieverHasAmountPlusDeliveries = city.homesTotal() + city.workForce.deliverCount;
 
@@ -167,7 +179,7 @@ namespace VikingEngine.DSSWars.Delivery
                 else
                 {
 
-                    recieverHasAmountPlusDeliveries = city.GetGroupedResource(profile.type).amountPlusDelivery();
+                    recieverHasAmountPlusDeliveries = city.GetGroupedResource(sendItem).amountPlusDelivery();
                 }
 
                 if (useRecieverMax)
@@ -200,10 +212,7 @@ namespace VikingEngine.DSSWars.Delivery
             return false;
         }
 
-        public bool Recruitment()
-        {
-            return profile.type == ItemResourceType.Men;
-        }
+       
 
         public string shortActiveString()
         {
@@ -233,13 +242,25 @@ namespace VikingEngine.DSSWars.Delivery
             return string.Format("Delivering {0}", remaining);
         }
 
-        public void defaultSetup(bool recruitment)
+        public void defaultSetup(ItemResourceType deliveryType)
         {
-            senderMin = 100;
-            recieverMax = 100;
+            
             profile.toCity = -1;
-            profile.type = recruitment ? ItemResourceType.Men : ItemResourceType.Food_G;
-            profile.SendAmount = DssConst.CityDeliveryChunkSize_Level1;
+            profile.type = deliveryType;// ? ItemResourceType.Men : ItemResourceType.Food_G;
+
+            if (deliveryType == DeliveryType_Gold)
+            {
+                senderMin = 1000;
+                recieverMax = 1000;
+                profile.SendAmount = DssConst.GoldDeliveryChunkSize_Level1;
+            }
+            else
+            {
+                senderMin = 100;
+                recieverMax = 100;
+                profile.SendAmount = DssConst.CityDeliveryChunkSize_Level1;
+            }
+
             if (level < 1)
             {
                 level = 1;
@@ -285,7 +306,7 @@ namespace VikingEngine.DSSWars.Delivery
         {
             w.Write((short)toCity);
             w.Write((byte)type);
-            w.Write((byte)SendAmount);
+            w.Write((short)SendAmount);
             if (toCity == ToCityAuto)
             {
                 w.Write((short)autoCity);
@@ -295,16 +316,8 @@ namespace VikingEngine.DSSWars.Delivery
         public void readGameState(System.IO.BinaryReader r, int subVersion)
         {
             toCity = r.ReadInt16();
-            type = (ItemResourceType)r.ReadByte();
-
-            if (subVersion >= 42)
-            {
-                SendAmount = r.ReadByte();
-            }
-            else
-            {
-                SendAmount = DssConst.CityDeliveryChunkSize_Level1;
-            }
+            type = (ItemResourceType)r.ReadByte();           
+            SendAmount = r.ReadInt16();
 
             if (toCity == ToCityAuto)
             {

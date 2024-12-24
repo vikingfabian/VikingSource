@@ -299,7 +299,7 @@ namespace VikingEngine.DSSWars.Work
                                 break;
 
                             case TerrainSubFoilType.BogIron:
-                                carry = new ItemResource(ItemResourceType.IronOre_G, 1, Convert.ToInt32(processTimeLengthSec), TerrainContent.MineAmount);
+                                carry = new ItemResource(ItemResourceType.IronOre_G, 1, Convert.ToInt32(processTimeLengthSec), TerrainContent.DefaultMineAmount);
 
                                 gainXp = WorkExperienceType.Mining;
                                 break;
@@ -443,6 +443,7 @@ namespace VikingEngine.DSSWars.Work
                         //TODO placera mining i en deposit
                         var mineType = (TerrainMineType)subTile.subTerrain;
                         Resource.ItemResourceType resourceType = ItemResourceType.NONE;
+                        int amount = TerrainContent.DefaultMineAmount;
                         switch (mineType)
                         {
                             case TerrainMineType.IronOre:
@@ -451,8 +452,8 @@ namespace VikingEngine.DSSWars.Work
                             case TerrainMineType.TinOre:
                                 resourceType = ItemResourceType.TinOre;
                                 break;
-                            case TerrainMineType.CupperOre:
-                                resourceType = ItemResourceType.CupperOre;
+                            case TerrainMineType.CopperOre:
+                                resourceType = ItemResourceType.CopperOre;
                                 break;
                             case TerrainMineType.LeadOre:
                                 resourceType = ItemResourceType.LeadOre;
@@ -466,6 +467,7 @@ namespace VikingEngine.DSSWars.Work
                             
                             case TerrainMineType.Coal:
                                 resourceType = ItemResourceType.Coal;
+                                amount = TerrainContent.MineAmount_Coal;
                                 break;
                             case TerrainMineType.GoldOre:
                                 resourceType = ItemResourceType.GoldOre;
@@ -476,7 +478,7 @@ namespace VikingEngine.DSSWars.Work
                                 break;
                         }
 
-                        int amount = TerrainContent.MineAmount;
+                        
                         if (city.Culture == CityCulture.Miners)
                         {
                             amount *= 2;
@@ -523,7 +525,7 @@ namespace VikingEngine.DSSWars.Work
 
 
                                 case ItemResourceType.Iron_G:
-                                case ItemResourceType.Cupper:
+                                case ItemResourceType.Copper:
                                 case ItemResourceType.Tin:
                                 case ItemResourceType.Lead:
                                 case ItemResourceType.Silver:
@@ -722,6 +724,7 @@ namespace VikingEngine.DSSWars.Work
 
             void addTo(ref XP.WorkExperienceType type, ref byte xp)
             {
+                bool expert = false;
                 bool master = false;
                 byte add = 0;
                 switch (XpLib.ToLevel(xp))
@@ -731,6 +734,7 @@ namespace VikingEngine.DSSWars.Work
                         add += 1;
                         break;
                     case ExperienceLevel.Expert_3:
+                        expert = true;
                         if (Ref.rnd.Chance(0.5))
                         {
                             add = WorkLib.WorkToXPTable[(int)type];
@@ -748,10 +752,15 @@ namespace VikingEngine.DSSWars.Work
                         break;
                 }
                 xp += add;
-                if (xp >= DssConst.WorkLevel_Master &&
+                if (xp >= DssConst.WorkLevel_Expert &&
+                    !expert)
+                {
+                    city.onMasterLevel(type, DssConst.TechnologyGain_Expert);
+                }
+                else if (xp >= DssConst.WorkLevel_Master &&
                     !master)
                 {
-                    city.onMasterLevel(type);
+                    city.onMasterLevel(type, DssConst.TechnologyGain_Master);
                 }
             }
         }

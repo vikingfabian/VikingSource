@@ -1622,7 +1622,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string GameMenu_NextSong => "次の曲";
 
         public override string BuildingType_Bank => "銀行";
-        public override string BuildingType_Bank_Description => "他の都市に金を送る";
+        public override string BuildingType_GoldDelivery_Description => "他の都市に金を送る";
 
         public override string BuildingType_Logistics => "物流";
         public override string BuildingType_Logistics_Description => "建築の注文能力を向上させる";

@@ -25,6 +25,7 @@ namespace VikingEngine.DSSWars.Data
         
 
         public MapSize mapSize = MapSize.Medium;
+        public bool centralGold = true;
         public bool generateNewMaps = false;
         public bool autoSave = true;
         public bool runTutorial = true;
@@ -99,7 +100,7 @@ namespace VikingEngine.DSSWars.Data
         }
         public void write(System.IO.BinaryWriter w, bool gamestate = false)
         {
-            const int Version = 20;
+            const int Version = 21;
 
             w.Write(Version);
 
@@ -128,6 +129,7 @@ namespace VikingEngine.DSSWars.Data
 
             w.Write(speed5x);
             w.Write(longerBuildQueue);
+            w.Write(centralGold);
         }
 
         public void read(System.IO.BinaryReader r)
@@ -193,6 +195,10 @@ namespace VikingEngine.DSSWars.Data
             if (version >= 19)
             {
                 longerBuildQueue = r.ReadBoolean();
+            }
+            if (version >= 21)
+            { 
+                centralGold = r.ReadBoolean();
             }
         }
 

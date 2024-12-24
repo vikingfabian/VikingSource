@@ -69,6 +69,10 @@ namespace VikingEngine.DSSWars.Build
         RecruitmentLevel2,
         RecruitmentLevel3,
 
+        GoldDeliveryLvl1,
+        GoldDeliveryLvl2,
+        GoldDeliveryLvl3,
+
         NUM_NONE,
     }
     static class BuildLib
@@ -87,9 +91,9 @@ namespace VikingEngine.DSSWars.Build
         };
 
         public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
-        public static List<BuildAndExpandType> AvailableBuildTypes(GameObject.City city)
+        public static void AvailableBuildTypes(List<BuildAndExpandType> list, GameObject.City city)
         {
-            List<BuildAndExpandType> result = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
+            //List<BuildAndExpandType> result = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
             var unlocks = city.technology.GetUnlocks(false);
 
             if (StartupSettings.UnlockAllProgress)
@@ -100,111 +104,122 @@ namespace VikingEngine.DSSWars.Build
             if (city.buildingStructure.buildingLevel_logistics == 0 ||
                 StartupSettings.UnlockAllProgress)
             {
-                result.Add(BuildAndExpandType.Logistics);
+                list.Add(BuildAndExpandType.Logistics);
             }
             if (city.buildingStructure.buildingLevel_logistics >= 1 ||
                 StartupSettings.UnlockAllProgress)
             {
-                result.Add(BuildAndExpandType.School);
+                list.Add(BuildAndExpandType.School);
             }
 
-            result.Add(BuildAndExpandType.WorkerHuts);
+            list.Add(BuildAndExpandType.WorkerHuts);
 
-            result.Add(BuildAndExpandType.WheatFarm);
+            list.Add(BuildAndExpandType.WheatFarm);
             if (unlocks.building_upgradedFarm)
             {
-                result.Add(BuildAndExpandType.WheatFarmUpgraded);
+                list.Add(BuildAndExpandType.WheatFarmUpgraded);
             }
             
-            result.Add(BuildAndExpandType.LinenFarm);
+            list.Add(BuildAndExpandType.LinenFarm);
             if (unlocks.building_upgradedFarm)
             {
-                result.Add(BuildAndExpandType.LinenFarmUpgraded);
+                list.Add(BuildAndExpandType.LinenFarmUpgraded);
             }
-            result.Add(BuildAndExpandType.RapeSeedFarm);
+            list.Add(BuildAndExpandType.RapeSeedFarm);
             if (unlocks.building_upgradedFarm)
             {
-                result.Add(BuildAndExpandType.RapeSeedFarmUpgraded);
+                list.Add(BuildAndExpandType.RapeSeedFarmUpgraded);
             }
             if (unlocks.building_mixedFarms)
             {
-                result.Add(BuildAndExpandType.HempFarm);
+                list.Add(BuildAndExpandType.HempFarm);
                 if (unlocks.building_upgradedFarm)
                 {
-                    result.Add(BuildAndExpandType.HempFarmUpgraded);
+                    list.Add(BuildAndExpandType.HempFarmUpgraded);
                 }
-                result.Add(BuildAndExpandType.PigPen);
+                list.Add(BuildAndExpandType.PigPen);
             }
 
-            result.Add(BuildAndExpandType.HenPen);
+            list.Add(BuildAndExpandType.HenPen);
                        
             if (unlocks.building_stoneBuildings)
             {
-                result.Add(BuildAndExpandType.Nobelhouse);
+                list.Add(BuildAndExpandType.Nobelhouse);
 
                 if (city.buildingStructure.Nobelhouse_count > 0 ||
                     StartupSettings.UnlockAllProgress)
                 {
-                    result.Add(BuildAndExpandType.Embassy);
+                    list.Add(BuildAndExpandType.Embassy);
                 }
 
-                result.Add(BuildAndExpandType.Bank);
+                list.Add(BuildAndExpandType.Bank);
                 if (city.buildingStructure.Bank_count > 0 ||
                     StartupSettings.UnlockAllProgress)
                 {
-                    result.Add(BuildAndExpandType.CoinMinter);
+                    if (!DssRef.storage.centralGold)
+                    {
+                        list.Add(BuildAndExpandType.GoldDeliveryLvl1);
+                        if (city.buildingStructure.buildingLevel_logistics >= 1 ||
+                            StartupSettings.UnlockAllProgress)
+                        {
+                            list.Add(BuildAndExpandType.GoldDeliveryLvl2);
+                            list.Add(BuildAndExpandType.GoldDeliveryLvl3);
+                        }
+                    }
+                    list.Add(BuildAndExpandType.CoinMinter);
+
                 }
             }
 
-            result.Add(BuildAndExpandType.Postal);
+            list.Add(BuildAndExpandType.Postal);
 
             if (city.buildingStructure.buildingLevel_logistics >= 1 ||
                 StartupSettings.UnlockAllProgress)
             {
-                result.Add(BuildAndExpandType.PostalLevel2);
-                result.Add(BuildAndExpandType.PostalLevel3);
-                result.Add(BuildAndExpandType.Recruitment);
-                result.Add(BuildAndExpandType.RecruitmentLevel2);
-                result.Add(BuildAndExpandType.RecruitmentLevel3);
+                list.Add(BuildAndExpandType.PostalLevel2);
+                list.Add(BuildAndExpandType.PostalLevel3);
+                list.Add(BuildAndExpandType.Recruitment);
+                list.Add(BuildAndExpandType.RecruitmentLevel2);
+                list.Add(BuildAndExpandType.RecruitmentLevel3);
 
-                result.Add(BuildAndExpandType.Storehouse);
-                result.Add(BuildAndExpandType.Tavern);
-                result.Add(BuildAndExpandType.Brewery);
-                result.Add(BuildAndExpandType.WaterResovoir);
+                list.Add(BuildAndExpandType.Storehouse);
+                list.Add(BuildAndExpandType.Tavern);
+                list.Add(BuildAndExpandType.Brewery);
+                list.Add(BuildAndExpandType.WaterResovoir);
             }
             
             //if (city.buildingStructure.buildingLevel_logistics >= 1 ||
             //    StartupSettings.UnlockAllProgress)
             //{
-                result.Add(BuildAndExpandType.CoalPit);
+                list.Add(BuildAndExpandType.CoalPit);
             //}
             
-            result.Add(BuildAndExpandType.WorkBench);
-            result.Add(BuildAndExpandType.Cook);
-            result.Add(BuildAndExpandType.Smelter);
-            result.Add(BuildAndExpandType.Foundry);
-            result.Add(BuildAndExpandType.Smith);
+            list.Add(BuildAndExpandType.WorkBench);
+            list.Add(BuildAndExpandType.Cook);
+            list.Add(BuildAndExpandType.Smelter);
+            list.Add(BuildAndExpandType.Foundry);
+            list.Add(BuildAndExpandType.Smith);
 
-            result.Add(BuildAndExpandType.Carpenter);
+            list.Add(BuildAndExpandType.Carpenter);
             if (unlocks.building_chemist)
             {
-                result.Add(BuildAndExpandType.Chemist);
-                result.Add(BuildAndExpandType.Gunmaker);
+                list.Add(BuildAndExpandType.Chemist);
+                list.Add(BuildAndExpandType.Gunmaker);
             }
 
-            result.Add(BuildAndExpandType.Armory);
+            list.Add(BuildAndExpandType.Armory);
 
            
-            result.Add(BuildAndExpandType.SoldierBarracks);
-            result.Add(BuildAndExpandType.ArcherBarracks);
-            result.Add(BuildAndExpandType.WarmashineBarracks);
+            list.Add(BuildAndExpandType.SoldierBarracks);
+            list.Add(BuildAndExpandType.ArcherBarracks);
+            list.Add(BuildAndExpandType.WarmashineBarracks);
             if (unlocks.building_gunBarrack)
             {
-                result.Add(BuildAndExpandType.GunBarracks);
+                list.Add(BuildAndExpandType.GunBarracks);
             }
             if (unlocks.building_cannonBarrack)
             {
-                result.Add(BuildAndExpandType.CannonBarracks);
+                list.Add(BuildAndExpandType.CannonBarracks);
             }
 
             if (city.buildingStructure.buildingLevel_logistics >= 1 ||
@@ -213,30 +228,30 @@ namespace VikingEngine.DSSWars.Build
                 if (city.buildingStructure.Nobelhouse_count > 0 ||
                     StartupSettings.UnlockAllProgress)
                 {
-                    result.Add(BuildAndExpandType.KnightsBarracks);
+                    list.Add(BuildAndExpandType.KnightsBarracks);
                 }
             }
 
             if (city.buildingStructure.buildingLevel_logistics >= 1 ||
                 StartupSettings.UnlockAllProgress)
             {                
-                result.Add(BuildAndExpandType.WoodCutter);
-                result.Add(BuildAndExpandType.StoneCutter);
+                list.Add(BuildAndExpandType.WoodCutter);
+                list.Add(BuildAndExpandType.StoneCutter);
             }
 
             if (city.buildingStructure.buildingLevel_logistics >= 2 ||
                 StartupSettings.UnlockAllProgress)
             {
-                result.Add(BuildAndExpandType.Pavement);
-                result.Add(BuildAndExpandType.PavementFlower);
+                list.Add(BuildAndExpandType.Pavement);
+                list.Add(BuildAndExpandType.PavementFlower);
                 
             }
             if (unlocks.building_stoneBuildings)
             {
-                result.Add(BuildAndExpandType.Statue_ThePlayer);
+                list.Add(BuildAndExpandType.Statue_ThePlayer);
             }
 
-            return result;
+            //return list;
         }
 
         public static void Init()
@@ -255,7 +270,12 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.Recruitment, TerrainMainType.Building, (int)TerrainBuildingType.Recruitment, SpriteName.WarsBuild_Recruitment, CraftBuildingLib.Recruitment);
             new BuildOption(BuildAndExpandType.RecruitmentLevel2, TerrainMainType.Building, (int)TerrainBuildingType.RecruitmentLevel2, SpriteName.WarsBuild_Recruitment, CraftBuildingLib.Recruitment_Level2);
             new BuildOption(BuildAndExpandType.RecruitmentLevel3, TerrainMainType.Building, (int)TerrainBuildingType.RecruitmentLevel3, SpriteName.WarsBuild_Recruitment, CraftBuildingLib.Recruitment_Level3);
-            
+
+            new BuildOption(BuildAndExpandType.GoldDeliveryLvl1, TerrainMainType.Building, (int)TerrainBuildingType.GoldDeliveryLevel1, SpriteName.WarsBuild_Postal, CraftBuildingLib.GoldDelivery);
+            new BuildOption(BuildAndExpandType.GoldDeliveryLvl2, TerrainMainType.Building, (int)TerrainBuildingType.GoldDeliveryLevel2, SpriteName.WarsBuild_Postal, CraftBuildingLib.GoldDelivery_Level2);
+            new BuildOption(BuildAndExpandType.GoldDeliveryLvl3, TerrainMainType.Building, (int)TerrainBuildingType.GoldDeliveryLevel3, SpriteName.WarsBuild_Postal, CraftBuildingLib.GoldDelivery_Level3);
+
+
             new BuildOption(BuildAndExpandType.SoldierBarracks, TerrainMainType.Building, (int)TerrainBuildingType.SoldierBarracks, SpriteName.WarsBuild_SoldierBarracks, CraftBuildingLib.SoldierBarracks);
             new BuildOption(BuildAndExpandType.Nobelhouse, TerrainMainType.Building, (int)TerrainBuildingType.Nobelhouse, SpriteName.WarsBuild_Nobelhouse, CraftBuildingLib.NobelHouse);
             new BuildOption(BuildAndExpandType.Tavern, TerrainMainType.Building, (int)TerrainBuildingType.Tavern, SpriteName.WarsBuild_Tavern, CraftBuildingLib.Tavern);
@@ -290,7 +310,7 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.CoinMinter, TerrainMainType.Building, (int)TerrainBuildingType.CoinMinter, SpriteName.WarsBuild_Coinminter, CraftBuildingLib.CoinMinter);
             new BuildOption(BuildAndExpandType.Embassy, TerrainMainType.Building, (int)TerrainBuildingType.Embassy, SpriteName.WarsBuild_Embassy, CraftBuildingLib.Embassy);
             new BuildOption(BuildAndExpandType.WaterResovoir, TerrainMainType.Building, (int)TerrainBuildingType.WaterResovoir, SpriteName.WarsBuild_WaterReservoir, CraftBuildingLib.WaterResovoir);
-            new BuildOption(BuildAndExpandType.ArcherBarracks, TerrainMainType.Building, (int)TerrainBuildingType.ArcherBarracks, SpriteName.WarsBuild_ArcherBarracks, CraftBuildingLib.KnightsBarracks);
+            new BuildOption(BuildAndExpandType.ArcherBarracks, TerrainMainType.Building, (int)TerrainBuildingType.ArcherBarracks, SpriteName.WarsBuild_ArcherBarracks, CraftBuildingLib.ArcherBarracks);
             new BuildOption(BuildAndExpandType.WarmashineBarracks, TerrainMainType.Building, (int)TerrainBuildingType.WarmashineBarracks, SpriteName.WarsBuild_WarmashineBarracks, CraftBuildingLib.WarmashineBarracks);
             new BuildOption(BuildAndExpandType.GunBarracks, TerrainMainType.Building, (int)TerrainBuildingType.GunBarracks, SpriteName.WarsBuild_GunBarracks, CraftBuildingLib.GunBarracks);
             new BuildOption(BuildAndExpandType.CannonBarracks, TerrainMainType.Building, (int)TerrainBuildingType.CannonBarracks, SpriteName.WarsBuild_CannonBarracks, CraftBuildingLib.CannonBarracks);

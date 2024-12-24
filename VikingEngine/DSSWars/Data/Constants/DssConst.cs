@@ -82,6 +82,8 @@ namespace VikingEngine.DSSWars
 
         public static float Conscript_SpecializePercentage = 0.5f;
 
+        
+
         //OTHER
         public static float Livestock_WalkingSpeed = Men_StandardWalkingSpeed * 0.2f;
         public static int DeliveryMaxDistance = 80;
@@ -112,6 +114,7 @@ namespace VikingEngine.DSSWars
         public static int IronSellValue = 5;
         public static int FoodGoldValue = 2;
         public static int FoodGoldValue_BlackMarket = FoodGoldValue * 5;
+        public static float MoneyCarryPerSoldier = FoodGoldValue_BlackMarket;
 
         public static int CityDeliveryChunkSize_Mini = 10;
         public static int CityDeliveryChunkSize_Level1 = 30;
@@ -133,8 +136,6 @@ namespace VikingEngine.DSSWars
         public static byte Harbour_SpeedBonus = 5;
 
         //WORK
-       
-
         public static float WorkTime_Eat = 10;
         public static float WorkTime_PickUpResource = 2;
         public static float WorkTime_PickUpProduce = 10;
@@ -185,6 +186,7 @@ namespace VikingEngine.DSSWars
 
         //XP
         public static byte WorkXpToLevel = 50;
+        public static int WorkLevel_Expert = WorkXpToLevel * 3;
         public static int WorkLevel_Master = WorkXpToLevel * 4;
         public static byte DefaultWorkXpGain = 5;
         public static float XpLevelWorkTimePercReduction = 0.1f;
@@ -196,12 +198,22 @@ namespace VikingEngine.DSSWars
         public static int TechnologyGain_GoodRelation_PerMin = 1;
         public static int TechnologyGain_AllyRelation_PerMin = 2;
         public static int TechnologyGain_CitySpread = 4;
+        public static int TechnologyGain_Expert = 2;
         public static int TechnologyGain_Master = 10;
 
         public static float Time_SchoolOneXP = 2;
 
         public static float DeliveryLevel2TimeReducePerc = 5;
         public static float DeliveryLevel3TimeReducePerc = 10;
+
+
+        //BANK
+        public static float GoldDeliveryFeePerc = 10;
+        public static float BankTaxIncreasePercUnits = 0.05f;
+        public static int GoldDeliveryChunkSize_Mini = 100;
+        public static int GoldDeliveryChunkSize_Level1 = 500;
+        public static int GoldDeliveryChunkSize_Level2 = 2000;
+        public static int GoldDeliveryChunkSize_Level3 = 5000;
 
     }
 }

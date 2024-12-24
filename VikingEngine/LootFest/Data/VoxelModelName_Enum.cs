@@ -602,7 +602,7 @@ namespace VikingEngine.LootFest
         city_storehouse,
         city_bank,
         city_postal,
-        city_recruitment,
+        /*city_recruitment*/
         city_barracks,
         city_mine,
         city_workstation,

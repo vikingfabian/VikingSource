@@ -1101,7 +1101,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             int coal = MathExt.MultiplyInt(world.rnd.Double(0.14, 0.16), mineLocations.Count);
 
             addMines(tin, (int)TerrainMineType.TinOre);
-            addMines(cupper, (int)TerrainMineType.CupperOre);
+            addMines(cupper, (int)TerrainMineType.CopperOre);
             addMines(lead, (int)TerrainMineType.LeadOre);
             addMines(silver, (int)TerrainMineType.SilverOre);
             addMines(gold, (int)TerrainMineType.GoldOre);

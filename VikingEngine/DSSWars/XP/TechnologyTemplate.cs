@@ -136,7 +136,7 @@ namespace VikingEngine.DSSWars.XP
             }
         }
 
-        public void addFactionUnlocked(TechnologyTemplate from, bool includeProgress)
+        public void addFactionUnlocked(TechnologyTemplate from, bool toCity, bool includeProgress)
         {
             tech(ref advancedBuilding, from.advancedBuilding);
             tech(ref advancedFarming, from.advancedFarming);
@@ -151,7 +151,7 @@ namespace VikingEngine.DSSWars.XP
             {
                 if (otherTech >= FactionUnlock)
                 { 
-                    thisTech = Unlocked;
+                    thisTech = toCity? Unlocked : FactionUnlock;
                 }
                 else if (includeProgress)
                 { 

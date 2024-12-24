@@ -55,6 +55,12 @@ namespace VikingEngine.DSSWars.Build
                 var mayBuild = selectedSubTile.MayBuild(player, out bool upgrade);
                 if (mayBuild == MayBuildResult.Yes || mayBuild == MayBuildResult.Yes_ChangeCity)
                 {
+                    if (mayBuild == MayBuildResult.Yes_ChangeCity)
+                    {
+                        player.mapSelect(selectedSubTile.city);
+                    }
+
+
                     if (selectedSubTile.city.availableBuildQueue(player) && placeBuildingOption().blueprint.meetsRequirements(selectedSubTile.city))
                     {
                         player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, selectedSubTile.city, selectedSubTile.subTilePos, placeBuildingType, upgrade), ActionOnConflict.Toggle);
@@ -121,8 +127,13 @@ namespace VikingEngine.DSSWars.Build
             content.newParagraph();
 
             content.Add(new RichBoxScale(2.1f));
+            
+            List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
 
-            List< BuildAndExpandType> available = player.tutorial == null ? BuildLib.AvailableBuildTypes(city) : player.tutorial.AvailableBuildTypes();
+            if (player.tutorial == null)
+            { BuildLib.AvailableBuildTypes(available, city); }
+            else
+            { available = player.tutorial.AvailableBuildTypes(); }
 
             foreach (var opt in available)
             {
@@ -534,6 +545,37 @@ namespace VikingEngine.DSSWars.Build
                             deliveryHud(3);
                             break;
 
+                        case BuildAndExpandType.Bank:
+                            content.h2(DssRef.lang.XP_UnlockBuilding).overrideColor = HudLib.TitleColor_Label;
+                            List<BuildAndExpandType> unlocks = new List<BuildAndExpandType>()
+                            {
+                                BuildAndExpandType.CoinMinter,
+                            };
+
+                            if (!DssRef.storage.centralGold)
+                            {
+                                unlocks.Add(BuildAndExpandType.GoldDeliveryLvl1);
+                            }
+                            
+                            foreach (var building in unlocks)
+                            {
+                                var opt = BuildLib.BuildOptions[(int)building];
+                                content.newLine();
+                                HudLib.BulletPoint(content);
+                                content.Add(new RichBoxText(DssRef.lang.XP_UnlockBuilding));
+                                content.Add(new RichBoxImage(opt.sprite));
+                                content.space();
+                                content.Add(new RichBoxText(opt.Label()));
+                            }
+                            content.newParagraph();
+
+                            content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
+                            content.newLine();
+                            HudLib.BulletPoint(content);                            
+                            content.Add(new RichBoxText(string.Format(DssRef.lang.Economy_TaxIncome, TextLib.PlusMinus(MathExt.PercentageInteger(DssConst.BankTaxIncreasePercUnits)))));
+                            content.text(DssRef.todoLang.Hud_EffectDoesNotStack).overrideColor = HudLib.InfoYellow_Light;
+                            break;
+
                     }
 
 
@@ -544,6 +586,13 @@ namespace VikingEngine.DSSWars.Build
                     {
                         bool reachedBuffer = false;
                         city.res_food.toMenu(content, ItemResourceType.Food_G, false, ref reachedBuffer);
+                    }
+
+                    if (build.blueprint.levelRequirement > XP.ExperienceLevel.Beginner_1)
+                    {
+                        content.newLine();
+
+                        HudLib.Experience(content, build.blueprint.experienceType, city.GetTopSkill(build.blueprint.experienceType));
                     }
 
                     player.hud.tooltip.create(player, content, true);

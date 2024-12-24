@@ -361,14 +361,87 @@ namespace VikingEngine.DSSWars
             }
         }
 
+
+        //public void resources_oneSecUpdate()
+        //{
+
+        //    //CityTradeImport = CityTradeImportCounting;
+        //    //CityTradeExport = CityTradeExportCounting;
+        //    //CityTradeImportCounting -= CityTradeImport;
+        //    //CityTradeExportCounting -= CityTradeExport;
+
+        //    ////double tax = citiesEconomy.tax(null);
+        //    //double incomeMultiplier = 1;
+        //    //if (player.IsAi())
+        //    //{
+        //    //    if (DssRef.settings.AiDelay)
+        //    //    {
+        //    //        incomeMultiplier = 0.05;
+        //    //    }
+        //    //    else if (player.aggressionLevel > AbsPlayer.AggressionLevel0_Passive)
+        //    //    {
+        //    //        incomeMultiplier = DssRef.difficulty.aiEconomyMultiplier;
+        //    //    }
+        //    //}
+
+        //    //double income = 0;
+        //    //int citiesTotalGold = 0;
+        //    var citiesC = cities.counter();
+        //    while (citiesC.Next())
+        //    {
+        //        //income += citiesC.sel.income_oneSecUpdate(incomeMultiplier);
+        //        //citiesTotalGold += citiesC.sel.gold;
+        //    }
+
+        //    //if (DssRef.storage.centralGold)
+        //    //{
+        //    //    gold += Convert.ToInt32(income);
+        //    //}
+        //    //else
+        //    //{
+        //    //    gold = citiesTotalGold;
+        //    //}
+
+        //    ////int income = Convert.ToInt32(tax - citiesEconomy.cityGuardUpkeep - DssLib.NobleHouseUpkeep * nobelHouseCount);            
+        //    ////gold += income;
+
+        //    //previuosGold = storeGold;
+        //    //storeGold = gold;
+        //}
         public void oneSecUpdate()
         {
-            if (nobelHouseCount > 0)
-            { 
+            CityTradeImport = CityTradeImportCounting;
+            CityTradeExport = CityTradeExportCounting;
+            CityTradeImportCounting -= CityTradeImport;
+            CityTradeExportCounting -= CityTradeExport;
+
+            //double tax = citiesEconomy.tax(null);
+            double incomeMultiplier = 1;
+            if (player.IsAi())
+            {
+                if (DssRef.state.events.AiDelay())
+                {
+                    incomeMultiplier = 0.1;
+                }
+                else if (player.aggressionLevel > AbsPlayer.AggressionLevel0_Passive)
+                {
+                    incomeMultiplier = DssRef.difficulty.aiEconomyMultiplier;
+                }
+            }
+            else
+            {
                 lib.DoNothing();
             }
+
+            double income = 0;
+            int citiesTotalGold = 0;
+
+            //if (nobelHouseCount > 0)
+            //{ 
+            //    lib.DoNothing();
+            //}
             nobelHouseCount = 0;
-            resources_oneSecUpdate();
+            //resources_oneSecUpdate();
             player.oneSecUpdate();
 
             var citiesC = cities.counter();
@@ -378,7 +451,9 @@ namespace VikingEngine.DSSWars
                 {
                     citiesC.sel.oneSecUpdate();
                     nobelHouseCount += citiesC.sel.buildingStructure.Nobelhouse_count;
-                    
+
+                    income += citiesC.sel.income_oneSecUpdate(incomeMultiplier);
+                    citiesTotalGold += citiesC.sel.gold;
                 }
                 else
                 {
@@ -386,6 +461,22 @@ namespace VikingEngine.DSSWars
                     refreshMainCity();
                 }
             }
+
+
+            if (DssRef.storage.centralGold)
+            {
+                gold += Convert.ToInt32(income);
+            }
+            else
+            {
+                gold = citiesTotalGold;
+            }
+
+            //int income = Convert.ToInt32(tax - citiesEconomy.cityGuardUpkeep - DssLib.NobleHouseUpkeep * nobelHouseCount);            
+            //gold += income;
+
+            previuosGold = storeGold;
+            storeGold = gold;
 
             if (armies.Count == 0 && cities.Count == 0)
             {

@@ -441,7 +441,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 1.5f;
                     name = DssRef.lang.FactionName_DarkFollower;
                     faction.displayInFullOverview = true;
-                    faction.gold += DssConst.HeadCityStartMaxWorkForce * 10;
+                    faction.addMoney_factionWide(DssConst.HeadCityStartMaxWorkForce * 10);
 
                     techSetup();
                     faction.technology.blackPowder = TechnologyTemplate.FactionUnlock;
@@ -539,7 +539,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.hasDeserters = false;
                     name = DssRef.lang.FactionName_SouthHara;
                     faction.displayInFullOverview = true;
-                    faction.gold += DssConst.HeadCityStartMaxWorkForce * 5;
+                    faction.addMoney_factionWide(DssConst.HeadCityStartMaxWorkForce * 5);
 
                     techSetup();
                     faction.technology.catapult = TechnologyTemplate.FactionUnlock;
@@ -554,7 +554,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
                     name = DssRef.lang.FactionName_Monger;
-                    faction.gold += DssConst.HeadCityStartMaxWorkForce * 1000;
+                    faction.addMoney_factionWide(DssConst.HeadCityStartMaxWorkForce * 1000);
                     techSetup();
                     break;
 
@@ -566,7 +566,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
                     name = DssRef.lang.FactionName_Hatu;
-                    faction.gold += DssConst.HeadCityStartMaxWorkForce * 1000;
+                    faction.addMoney_factionWide(DssConst.HeadCityStartMaxWorkForce * 1000);
                     techSetup();
                     break;
 
@@ -578,7 +578,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
                     name = DssRef.lang.FactionName_Destru;
-                    faction.gold += DssConst.HeadCityStartMaxWorkForce * 1000;
+                    faction.addMoney_factionWide(DssConst.HeadCityStartMaxWorkForce * 1000);
                     techSetup();
                     break;
 
@@ -1585,6 +1585,30 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        public bool IsWarBorderCity(City city, bool inWarOnly)
+        {
+            foreach (var nIx in city.neighborCities)
+            {
+                var nCity = DssRef.world.cities[nIx];
+                if (nCity.faction != faction)
+                {
+                    var relation = DssRef.diplomacy.GetRelationType(nCity.faction, faction);
+                    if (relation <= RelationType.RelationTypeN1_Enemies)
+                    { 
+                        return true;
+                    }
+                    else if (!inWarOnly &&
+                        relation <= RelationType.RelationType0_Neutral &&
+                        nCity.faction.militaryStrength > faction.militaryStrength * 2)
+                    {
+                        return true;                        
+                    }
+                }
+            }
+
+            return false;
+        }
+
         City cityCloseToOpponent(int opponent)
         {
             Faction otherFaction = DssRef.world.factions[opponent];
@@ -1755,7 +1779,7 @@ namespace VikingEngine.DSSWars.Players
 
         AbsMapObject AttackFaction(Army army, Faction opponent)
         {
-            if (!DssRef.settings.AiDelay && army != null)
+            if (!DssRef.state.events.AiDelay() && army != null)
             {
                 var areaPos = UnitCollAreaGrid.ToAreaPos(army.tilePos);
                 DssRef.world.unitCollAreaGrid.collectCitiesAndArmies(areaPos, 2, army.strengthValue * 0.8f, DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate,
@@ -1772,7 +1796,7 @@ namespace VikingEngine.DSSWars.Players
 
         City AttackRamdom(Army army)
         {
-            if (!DssRef.settings.AiDelay && army != null)
+            if (!DssRef.state.events.AiDelay() && army != null)
             {
                 var areaPos = UnitCollAreaGrid.ToAreaPos(army.tilePos);
 

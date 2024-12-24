@@ -109,6 +109,9 @@ namespace VikingEngine.DSSWars.Map
         PostalLevel3,
         RecruitmentLevel2,
         RecruitmentLevel3,
+        GoldDeliveryLevel1,
+        GoldDeliveryLevel2,
+        GoldDeliveryLevel3,
 
         NUM_NONE
     }
@@ -140,7 +143,7 @@ namespace VikingEngine.DSSWars.Map
         StoneBlock,
         IronOre,
         TinOre,
-        CupperOre,
+        CopperOre,
         SilverOre,
         GoldOre,
         LeadOre,

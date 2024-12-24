@@ -116,51 +116,51 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void onMasterLevel(WorkExperienceType experienceType)
+        public void onMasterLevel(WorkExperienceType experienceType, int gain)
         {
             switch (experienceType)
             {
                 case WorkExperienceType.HouseBuilding:
                 case WorkExperienceType.StoneCutter:
-                    technology.advancedBuilding += DssConst.TechnologyGain_Master;
+                    technology.advancedBuilding += gain;
                     break;
 
                 case WorkExperienceType.Farm:
                 case WorkExperienceType.AnimalCare:
-                    technology.advancedFarming += DssConst.TechnologyGain_Master;
+                    technology.advancedFarming += gain;
                     break;
 
                 case WorkExperienceType.Smelting:
                 case WorkExperienceType.CastMetal:
-                    technology.advancedCasting += DssConst.TechnologyGain_Master;
+                    technology.advancedCasting += gain;
                     break;
 
                 case WorkExperienceType.Mining:
                 case WorkExperienceType.CraftMetal:
                     if (technology.iron < TechnologyTemplate.Unlocked)
                     {
-                        technology.iron += DssConst.TechnologyGain_Master;
+                        technology.iron += gain;
                     }
                     else
                     {
-                        technology.steel += DssConst.TechnologyGain_Master;
+                        technology.steel += gain;
                     }
                     break;
 
                 case WorkExperienceType.WoodWork:
                 case WorkExperienceType.Fletcher:
-                    technology.catapult += DssConst.TechnologyGain_Master;
+                    technology.catapult += gain;
                     break;
 
                 case WorkExperienceType.CraftFuel:
                 case WorkExperienceType.Chemistry:
                     if (technology.iron < TechnologyTemplate.Unlocked)
                     {
-                        technology.blackPowder += DssConst.TechnologyGain_Master;
+                        technology.blackPowder += gain;
                     }
                     else
                     {
-                        technology.gunPowder += DssConst.TechnologyGain_Master;
+                        technology.gunPowder += gain;
                     }
                     break;
 

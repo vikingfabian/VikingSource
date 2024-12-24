@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
@@ -20,7 +21,7 @@ namespace VikingEngine.DSSWars.Conscript
 
         public ConscriptProfile inProgress;
         public TimeInGameCountdown countdown;
-        public BarracksType type;
+        public BuildAndExpandType type;
         public int menCollected;
         public int equipmentCollected;
 
@@ -28,28 +29,32 @@ namespace VikingEngine.DSSWars.Conscript
         public TrainingLevel maxTrainingLevel;
         public int que;
 
-        public BarracksStatus(BarracksType type)
+        public BarracksStatus(BuildAndExpandType type)
             : this()
         {
             this.type = type;
 
             switch (type)
             {
-                case BarracksType.Soldier:
+                case BuildAndExpandType.SoldierBarracks:
                     profile.weapon = ItemResourceType.SharpStick;
                     break;
-                case BarracksType.Archer:
+                case BuildAndExpandType.ArcherBarracks:
                     profile.weapon = ItemResourceType.SlingShot;
                     break;
-                case BarracksType.Warmashine:
+                case BuildAndExpandType.WarmashineBarracks:
                     profile.weapon = ItemResourceType.Ballista;
                     break;
-                case BarracksType.Knight:
+                case BuildAndExpandType.KnightsBarracks:
                     profile.weapon = ItemResourceType.Warhammer;
                     break;
-                case BarracksType.Gun:
+                case BuildAndExpandType.GunBarracks:
                     profile.weapon = ItemResourceType.HandCannon;
                     break;
+                case BuildAndExpandType.CannonBarracks:
+                    profile.weapon = ItemResourceType.ManCannonBronze;
+                    break;
+
             }
 
             maxTrainingLevel = TrainingLevel.Skillful;
@@ -145,7 +150,7 @@ namespace VikingEngine.DSSWars.Conscript
             
             if (subVersion >= 40)
             {
-                type = (BarracksType)r.ReadByte();
+                type = (BuildAndExpandType)r.ReadByte();
             }
             idAndPosition = r.ReadInt32();
             que = r.ReadByte();
@@ -153,6 +158,7 @@ namespace VikingEngine.DSSWars.Conscript
             if (subVersion >= 43)
             {
                 maxTrainingLevel = (TrainingLevel)r.ReadByte();
+                //maxTrainingLevel = TrainingLevel.Skillful;
             }
         }
         public bool CountDownQue()

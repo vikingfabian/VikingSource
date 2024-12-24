@@ -6,6 +6,7 @@ using VikingEngine.Input;
 using VikingEngine.LootFest.Map.HDvoxel;
 using Microsoft.Xna.Framework;
 using System.ComponentModel.Design;
+using System.Collections.Concurrent;
 
 namespace VikingEngine.Voxels
 {
@@ -14,7 +15,7 @@ namespace VikingEngine.Voxels
         AbsVoxelDesigner designer;
         public DrawQueAction currentDrawAction = null;
 
-        List<DrawQueAction> drawQue = new List<DrawQueAction>(4);
+        ConcurrentQueue<DrawQueAction> drawQue = new ConcurrentQueue<DrawQueAction>();
         DottedDrawStroke drawStroke;
 
         public EditorDrawTools(AbsVoxelDesigner designer)
@@ -53,10 +54,9 @@ namespace VikingEngine.Voxels
         public void beginStampSelection(bool drop)
         {
             DrawQueAction stamp = new DrawQueAction(drop);
-            lock (drawQue)
-            {
-                drawQue.Add(stamp);
-            }
+            
+                drawQue.Enqueue(stamp);
+            
         }
 
         public void NewBlockPosEvent(IntVector3 newCoord, IntVector3 posDiff)
@@ -78,13 +78,13 @@ namespace VikingEngine.Voxels
 
         public void update_asynch()
         {
-            while (drawQue.Count > 0)
+            while (drawQue.TryDequeue(out var action))
             {
-                var action = drawQue[0];
-                lock (drawQue)
-                {
-                    drawQue.RemoveAt(0);
-                }
+                //var action = drawQue[0];
+                //lock (drawQue)
+                //{
+                //    drawQue.RemoveAt(0);
+                //}
 
                 if (action != null)
                 {
@@ -217,10 +217,10 @@ namespace VikingEngine.Voxels
                     currentDrawAction = new DrawQueAction(DrawQueType.EndDot);
                     currentDrawAction.frame = designer.currentFrame.Value;
 
-                    lock (drawQue)
-                    {
-                        drawQue.Add(currentDrawAction);
-                    }
+                    //lock (drawQue)
+                    //{
+                        drawQue.Enqueue(currentDrawAction);
+                    //}
                     currentDrawAction = null;
                 }
                 else
@@ -228,10 +228,9 @@ namespace VikingEngine.Voxels
                     currentDrawAction.endDraw(designer.designerInterface.selectionArea, 
                         designer.designerInterface.toolDir, designer.designerInterface.mostRecentMoveXZ);
                     
-                    lock (drawQue)
-                    {
-                        drawQue.Add(currentDrawAction);
-                    }
+                    
+                        drawQue.Enqueue(currentDrawAction);
+                    
                     currentDrawAction = null;
                 }
                 designer.designerInterface.drawSize = IntVector3.One;
@@ -244,10 +243,8 @@ namespace VikingEngine.Voxels
             currentDrawAction = new DrawQueAction(designer.SelectedMaterial.BlockValue, designer.SecondaryMaterial.BlockValue, fill,
                 pos, sett.DrawTool, sett.PencilSize, sett.RadiusTolerance, sett.RoadEdgeSize, sett.RoundPencil, sett.RoadPercentFill, sett.RoadBelowFill, sett.RoadUpwardClear);
             
-            lock (drawQue)
-            {
-                drawQue.Add(currentDrawAction);
-            }
+                drawQue.Enqueue(currentDrawAction);
+            
         }
 
         protected void drawInArea(PaintFillType fill, PaintToolType tool, IntervalIntV3 drawArea, bool isAsynch)
@@ -559,10 +556,8 @@ namespace VikingEngine.Voxels
            
             selectAction.endDraw(designer.drawLimits,Dimensions.NON, IntVector3.Zero);
 
-            lock (drawQue)
-            {
-                drawQue.Add(selectAction);
-            }
+            drawQue.Enqueue(selectAction);
+            
 
             //gotPencilKeyDown = true;
             //selectionArea = drawLimits;

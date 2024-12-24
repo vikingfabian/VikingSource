@@ -43,6 +43,15 @@ namespace VikingEngine.DSSWars.Display
             this.player = player;
             this.city = city;
 
+            if (!DssRef.storage.centralGold)
+            {
+                content.newLine();
+                content.Add(new RichBoxImage(SpriteName.rtsMoney));
+                content.space();
+                content.Add(new RichBoxText(DssRef.lang.ResourceType_Gold + ": " + TextLib.LargeNumber(city.gold),  HudLib.NegativeRed(city.gold)));
+                content.Add(new RichBoxNewLine());
+            }
+
             content.newLine();
 
 #if DEBUG
@@ -240,38 +249,480 @@ namespace VikingEngine.DSSWars.Display
                     {
                         ItemResourceType item = ItemResourceType.Wood_Group;
                         mixResource(item, false);
-                        work(item, WorkPriorityType.wood, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Wood), SpriteName.WarsWorkCollect);
-                        work(item, WorkPriorityType.move, DssRef.lang.Work_Move, SpriteName.WarsWorkMove);
+                        work(item, WorkPriorityType.wood);
+                        work(item, WorkPriorityType.move);
+                        blackMarket(item);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.Stone_G;
                         mixResource(item, false);
-                        work(item, WorkPriorityType.stone, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Stone), SpriteName.WarsWorkCollect);
+                        work(item, WorkPriorityType.stone);
+                        blackMarket(item);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.Fuel_G;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.Fuel1, CraftResourceLib.Charcoal);
+                        work(item, WorkPriorityType.farmfuel);
+                        work(item, WorkPriorityType.craftFuel);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.RawFood_Group;
                         mixResource(item, false);
-                        work(item, WorkPriorityType.farmfood, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Food, SpriteName.WarsWorkFarm);
+                        work(item, WorkPriorityType.farmfood);
+                        blackMarket(item);
                         end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.SkinLinen_Group;
-                        mixResource(item, false);
-                        work(item, WorkPriorityType.farmlinen, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Linen, SpriteName.WarsWorkFarm);
-                        end(item);
-                    }
+                    }                    
 
                     {
                         ItemResourceType item = ItemResourceType.Food_G;
                         mixResource(item, false);
                         blueprint(CraftResourceLib.Food1, CraftResourceLib.Food2);
-                        work(item, WorkPriorityType.craftFood, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Food), SpriteName.WarsHammer);
+                        work(item, WorkPriorityType.craftFood);
+                        blackMarket(item);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.Beer;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.Beer);
+                        work(item, WorkPriorityType.craftBeer);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.CoolingFluid;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.CoolingFluid);
+                        work(item, WorkPriorityType.craftCoolingFluid);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.SkinLinen_Group;
+                        mixResource(item, false);
+                        work(item, WorkPriorityType.farmlinen);
+                        blackMarket(item);
+                        end(item);
+                    }
+                    content.newParagraph();
+                    {
+                        ItemResourceType item = ItemResourceType.Toolkit;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.Toolkit);
+                        work(item, WorkPriorityType.craftToolkit);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.Wagon2Wheel;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.WagonLight);
+                        work(item, WorkPriorityType.craftWagonLight);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.Wagon4Wheel;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.WagonHeavy);
+                        work(item, WorkPriorityType.craftWagonHeavy);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.BlackPowder;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.BlackPowder);
+                        work(item, WorkPriorityType.craftBlackPowder);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.LedBullet;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.LedBullets);
+                        work(item, WorkPriorityType.craftBullet);
                         end(item);
                     }
 
-                    
+                    break;
+                case ResourcesSubTab.Overview_Metals:
+
+                    {
+                        ItemResourceType item = ItemResourceType.IronOre_G;
+                        mixResource(item, false);
+                        work(item, WorkPriorityType.miningIron);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.TinOre;
+                        mixResource(item, false);
+                        work(item, WorkPriorityType.miningTin);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.CopperOre;
+                        mixResource(item, false);
+                        work(item, WorkPriorityType.miningCopper);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.LeadOre;
+                        mixResource(item, false);
+                        work(item, WorkPriorityType.miningLead);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.SilverOre;
+                        mixResource(item, false);
+                        work(item, WorkPriorityType.miningSilver);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.Sulfur;
+                        mixResource(item, false);
+                        work(item, WorkPriorityType.miningSulfur);
+                        end(item);
+                    }
+                    content.newParagraph();
+                    {
+                        ItemResourceType item = ItemResourceType.Iron_G;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.Iron, CraftResourceLib.Iron_AndCooling);
+                        work(item, WorkPriorityType.smeltIron);
+                        blackMarket(item);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.Tin;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.Tin);
+                        work(item, WorkPriorityType.smeltTin);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.Copper;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.Copper, CraftResourceLib.Cupper_AndCooling);
+                        work(item, WorkPriorityType.smeltCopper);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.Lead;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.Lead);
+                        work(item, WorkPriorityType.smeltLead);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.Silver;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling);
+                        work(item, WorkPriorityType.smeltSilver);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.RawMithril;
+                        mixResource(item, false);
+                        work(item, WorkPriorityType.miningMithril);
+                        end(item);
+                    }
+                    content.newParagraph();
+
+                    {
+                        ItemResourceType item = ItemResourceType.Bronze;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.Bronze);
+                        work(item, WorkPriorityType.craftBronze);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.CastIron;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.CastIron);
+                        work(item, WorkPriorityType.craftCastIron);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.BloomeryIron;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.BloomeryIron);
+                        work(item, WorkPriorityType.craftBloomeryIron);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.Steel;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.Steel, CraftResourceLib.Steel_AndCooling);
+                        work(item, WorkPriorityType.craftSteel);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.Mithril;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.Mithril);
+                        work(item, WorkPriorityType.craftMithril);
+                        end(item);
+                    }
+                    break;
+
+                case ResourcesSubTab.Overview_Weapons:
+
+                    {
+                        ItemResourceType item = ItemResourceType.SharpStick;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.SharpStick);
+                        work(item, WorkPriorityType.craftSharpStick);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.HandSpear;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.HandSpearIron, CraftResourceLib.HandSpearBronze);
+                        work(item, WorkPriorityType.craftHandSpear);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.BronzeSword;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.BronzeSword);
+                        work(item, WorkPriorityType.craftBronzeSword);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.ShortSword;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.ShortSword);
+                        work(item, WorkPriorityType.craftShortSword);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.Sword;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.Sword);
+                        work(item, WorkPriorityType.craftSword);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.LongSword;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.LongSword);
+                        work(item, WorkPriorityType.craftLongSword);
+                        end(item);
+                    }
+                    content.newParagraph();
+                    {
+                        ItemResourceType item = ItemResourceType.Warhammer;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.WarhammerIron, CraftResourceLib.WarhammerBronze);
+                        work(item, WorkPriorityType.craftWarhammer);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.TwoHandSword;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.TwoHandSword);
+                        work(item, WorkPriorityType.craftTwoHandSword);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.KnightsLance;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.KnightsLance);
+                        work(item, WorkPriorityType.craftKnightsLance);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.MithrilSword;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.MithrilSword);
+                        work(item, WorkPriorityType.craftMithrilSword);
+                        end(item);
+                    }
+                    break;
+
+                case ResourcesSubTab.Overview_Projectile:
+
+                    {
+                        ItemResourceType item = ItemResourceType.SlingShot;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.Slingshot);
+                        work(item, WorkPriorityType.craftSlingshot);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.ThrowingSpear;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.ThrowingSpear1,CraftResourceLib.ThrowingSpear2);
+                        work(item, WorkPriorityType.craftThrowingspear);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.Bow;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.Bow);
+                        work(item, WorkPriorityType.craftBow);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.LongBow;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.LongBow);
+                        work(item, WorkPriorityType.craftLongbow);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.Crossbow;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.CrossBow);
+                        work(item, WorkPriorityType.craftCrossbow);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.MithrilBow;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.MithrilBow);
+                        work(item, WorkPriorityType.craftMithrilbow);
+                        end(item);
+                    }
+                    content.newParagraph();
+                    {
+                        ItemResourceType item = ItemResourceType.HandCannon;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.BronzeHandCannon);
+                        work(item, WorkPriorityType.craftHandCannon);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.HandCulverin;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.BronzeHandCulverin);
+                        work(item, WorkPriorityType.craftHandCulverin);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.Rifle;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.Rifle);
+                        work(item, WorkPriorityType.craftRifle);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.Blunderbus;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.Blunderbus);
+                        work(item, WorkPriorityType.craftBlunderbus);
+                        end(item);
+                    }
+                    content.newParagraph();
+                    {
+                        ItemResourceType item = ItemResourceType.Ballista;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.Ballista_Iron,CraftResourceLib.Ballista_Bronze);
+                        work(item, WorkPriorityType.craftBallista);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.Manuballista;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.ManuBallista);
+                        work(item, WorkPriorityType.craftManuBallista);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.Catapult;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.Catapult);
+                        work(item, WorkPriorityType.craftCatapult);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.SiegeCannonBronze;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.SiegeCannonBronze);
+                        work(item, WorkPriorityType.craftSiegeCannonBronze);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.ManCannonBronze;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.ManCannonBronze);
+                        work(item, WorkPriorityType.craftManCannonBronze);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.SiegeCannonIron;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.SiegeCannonIron);
+                        work(item, WorkPriorityType.craftSiegeCannonIron);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.ManCannonIron;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.ManCannonIron);
+                        work(item, WorkPriorityType.craftManCannonIron);
+                        end(item);
+                    }
+
+                    break;
+
+                case ResourcesSubTab.Overview_Armor:
+
+                    {
+                        ItemResourceType item = ItemResourceType.PaddedArmor;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.PaddedArmor);
+                        work(item, WorkPriorityType.craftPaddedArmor);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.HeavyPaddedArmor;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.HeavyPaddedArmor);
+                        work(item, WorkPriorityType.craftHeavyPaddedArmor);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.BronzeArmor;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.BronzeArmor);
+                        work(item, WorkPriorityType.craftBronzeArmor);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.IronArmor;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.MailArmor);
+                        work(item, WorkPriorityType.craftMailArmor);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.HeavyIronArmor;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.HeavyMailArmor);
+                        work(item, WorkPriorityType.craftHeavyMailArmor);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.LightPlateArmor;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.PlateArmor);
+                        work(item, WorkPriorityType.craftPlateArmor);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.FullPlateArmor;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.FullPlateArmor);
+                        work(item, WorkPriorityType.craftFullPlateArmor);
+                        end(item);
+                    }
+                    {
+                        ItemResourceType item = ItemResourceType.MithrilArmor;
+                        mixResource(item, false);
+                        blueprint(CraftResourceLib.MithrilArmor);
+                        work(item, WorkPriorityType.craftMithrilArmor);
+                        end(item);
+                    }
 
                     break;
             }
@@ -286,6 +737,7 @@ namespace VikingEngine.DSSWars.Display
 
                 var infoContent = new List<AbsRichBoxMember>(2);
                 infoContent.Add(new RichBoxImage(typeIcon));
+                infoContent.Add(new RichBoxSpace());
                 var amountText = new RichBoxText(city_res.amount.ToString());
                 amountText.overrideColor = Color.White;
                 infoContent.Add(amountText);
@@ -328,13 +780,19 @@ namespace VikingEngine.DSSWars.Display
                     stockpileContent.Add(icon);
 
 
-                    var stockpileButton = new RichboxButton(stockpileContent, new RbAction(() =>
-                    {
-                        player.mixTabEditType = MixTabEditType.Stockpile;
-                        player.mixTabItem = item;
-                    }, SoundLib.menu));
+                    var stockpileButton = new RichboxButton(stockpileContent, 
+                        new RbAction(() =>
+                        {
+                            player.mixTabEditType = MixTabEditType.Stockpile;
+                            player.mixTabItem = item;
+                        }, SoundLib.menu), 
+                        new RbAction(()=> {
+                            var content = new RichBoxContent();
+                            content.text(DssRef.lang.Resource_Tab_Stockpile);
+                            player.hud.tooltip.create(player, content, true);
+                        }));
 
-                    content.Add(new RichBoxTab(0.25f));
+                    content.Add(new RichBoxTab(0.22f));
                     content.Add(stockpileButton);
                     content.space();
                 }
@@ -350,27 +808,51 @@ namespace VikingEngine.DSSWars.Display
                 content.space();
             }
 
-            void work(ItemResourceType item, WorkPriorityType workPriorityType, string caption, SpriteName prioIcon)
+            void work(ItemResourceType item, WorkPriorityType workPriorityType)
             {
+                LangLib.WorkNameIcon(workPriorityType, out string name, out SpriteName workIcon, out SpriteName typeIcon);
                 var buttonContent = new RichBoxContent();
-                buttonContent.Add(new RichBoxImage(prioIcon));
+                buttonContent.Add(new RichBoxImage(workIcon));
                 var prio = city.workTemplate.GetWorkPriority(workPriorityType);
                 buttonContent.Add(new RichBoxText(prio.value.ToString()));
 
                 var button = new RichboxButton(buttonContent, new RbAction(() =>
                 {
                     player.mixTabEditType = MixTabEditType.WorkPrio;
+                    player.mixWorkType = workPriorityType;
                     player.mixTabItem = item;
                 }, SoundLib.menu),
                 new RbAction(()=> 
                 {
                     var content = new RichBoxContent();
                     HudLib.Label(content, DssRef.lang.Work_OrderPrioTitle);
-                    content.text(caption);
+                    content.text(name);
                     player.hud.tooltip.create(player, content, true);
                 }));
 
                 //content.Add(new RichBoxTab(0.5f));
+                content.Add(button);
+                content.space();
+            }
+
+            void blackMarket(ItemResourceType item)
+            {
+                var buttonContent = new RichBoxContent();
+                buttonContent.Add(new RichBoxText("BM"));
+
+                var button = new RichboxButton(buttonContent, new RbAction(() =>
+                {
+                    player.mixTabEditType = MixTabEditType.BlackMarket;
+                    player.mixTabItem = item;
+                }, SoundLib.menu),
+                new RbAction(() =>
+                {
+                    var content = new RichBoxContent();
+                    HudLib.Label(content, DssRef.lang.Hud_BlackMarket);
+                   
+                    player.hud.tooltip.create(player, content, true);
+                }));
+                button.overrideBgColor = Color.DarkViolet;
                 content.Add(button);
                 content.space();
             }
@@ -387,6 +869,13 @@ namespace VikingEngine.DSSWars.Display
                     {
                         case MixTabEditType.Stockpile:
                             stockPileEdit(content, item, city_res);
+                            break;
+                        case MixTabEditType.WorkPrio:
+                            LangLib.WorkNameIcon(player.mixWorkType, out string name, out SpriteName workIcon, out SpriteName typeIcon);
+                            city.workTemplate.GetWorkPriority(player.mixWorkType).toHud(player, content, name, workIcon, typeIcon, player.mixWorkType, player.faction, city);
+                            break;
+                        case MixTabEditType.BlackMarket:
+                            BlackMarketResources.ResourceToHud(item, player, content, city);
                             break;
                     }
                 }
@@ -565,7 +1054,7 @@ namespace VikingEngine.DSSWars.Display
         {
             if (player.tutorial == null || player.tutorial.DisplayStockpile())
             {
-                for (ResourcesSubTab resourcesSubTab = 0; resourcesSubTab < ResourcesSubTab.NUM; ++resourcesSubTab)
+                for (ResourcesSubTab resourcesSubTab = 0; resourcesSubTab < ResourcesSubTab.Auto; ++resourcesSubTab)
                 {
                     var tabContent = new RichBoxContent();
                     //string text = null;
@@ -739,7 +1228,7 @@ namespace VikingEngine.DSSWars.Display
 
                     city.res_ironore.toMenu(content, ItemResourceType.IronOre_G, false, ref reachedBuffer);
                     city.res_TinOre.toMenu(content, ItemResourceType.TinOre, false, ref reachedBuffer);
-                    city.res_CupperOre.toMenu(content, ItemResourceType.CupperOre, false, ref reachedBuffer);
+                    city.res_CupperOre.toMenu(content, ItemResourceType.CopperOre, false, ref reachedBuffer);
                     city.res_LeadOre.toMenu(content, ItemResourceType.LeadOre, false, ref reachedBuffer);
                     city.res_SilverOre.toMenu(content, ItemResourceType.SilverOre, false, ref reachedBuffer);
                     content.newParagraph();
@@ -751,8 +1240,8 @@ namespace VikingEngine.DSSWars.Display
                     city.res_Tin.toMenu(content, ItemResourceType.Tin, false, ref reachedBuffer);
                     blueprintButton(player, content, CraftResourceLib.Tin);
 
-                    city.res_Cupper.toMenu(content, ItemResourceType.Cupper, false, ref reachedBuffer);
-                    blueprintButton(player, content, CraftResourceLib.Cupper, CraftResourceLib.Cupper_AndCooling);
+                    city.res_Cupper.toMenu(content, ItemResourceType.Copper, false, ref reachedBuffer);
+                    blueprintButton(player, content, CraftResourceLib.Copper, CraftResourceLib.Cupper_AndCooling);
 
                     city.res_Lead.toMenu(content, ItemResourceType.Lead, false, ref reachedBuffer);
                     blueprintButton(player, content, CraftResourceLib.Lead);
@@ -930,14 +1419,14 @@ namespace VikingEngine.DSSWars.Display
                 case ResourcesSubTab.Stockpile_Metals:
                     stockpile(ItemResourceType.IronOre_G);
                     stockpile(ItemResourceType.TinOre);
-                    stockpile(ItemResourceType.CupperOre);
+                    stockpile(ItemResourceType.CopperOre);
                     stockpile(ItemResourceType.LeadOre);
                     stockpile(ItemResourceType.SilverOre);
                     content.newParagraph();
 
                     stockpile(ItemResourceType.Iron_G);
                     stockpile(ItemResourceType.Tin);
-                    stockpile(ItemResourceType.Cupper);
+                    stockpile(ItemResourceType.Copper);
                     stockpile(ItemResourceType.Lead);
                     stockpile(ItemResourceType.Silver);
                     stockpile(ItemResourceType.RawMithril);
@@ -1168,7 +1657,13 @@ namespace VikingEngine.DSSWars.Display
             content.newParagraph();
             content.h2(DssRef.lang.MenuTab_Resources).overrideColor = HudLib.TitleColor_Label;
             blueprint.listResources(content, city, optionalBp);
-            
+
+            if (blueprint.levelRequirement > ExperienceLevel.Beginner_1)
+            {
+                content.newLine();
+
+                HudLib.Experience(content, blueprint.experienceType, city.GetTopSkill(blueprint.experienceType));
+            }
 
             player.hud.tooltip.create(player, content, true, blueprint.tooltipId);
         }
@@ -1654,6 +2149,7 @@ namespace VikingEngine.DSSWars.Display
         None,
         Stockpile,
         WorkPrio,
+        BlackMarket,
     }
 
     enum ResourcesSubTab
@@ -1669,7 +2165,9 @@ namespace VikingEngine.DSSWars.Display
         Stockpile_Weapons,
         Stockpile_Projectile,
         Stockpile_Armor,
-        NUM
+
+        Auto,
+        
     }
 
     

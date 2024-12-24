@@ -15,11 +15,12 @@ namespace VikingEngine.DSSWars
     {
         public EventType nextEvent = 0;
         EventState eventState;
-        float eventPrepareTimeSec;
-        float eventCheckGameTimeSec;
-        float eventTriggerGameTimeSec;
+        TimeInGameCountdown prepareTime;
+        TimeInGameCountdown checkTime;
+        TimeInGameCountdown triggerTime;
 
-        IntervalF nextTotalGameTimeMin;
+
+        IntervalF nextTotalGameTimeMinutes;
         IntervalF nextExpectedPlayerSize;
 
         City[] playerMostSouthCity;
@@ -35,17 +36,30 @@ namespace VikingEngine.DSSWars
         Time toPeacefulCheckTimer = new Time(3, TimeUnit.Minutes);
 
         public GameEvents()
+        {//eventTriggerGameTimeSec = DssRef.difficulty.aiDelayTimeSec;
+        }
+
+        public bool AiDelay()
+        { 
+            return nextEvent <= EventType.AiDelay;
+        }
+
+        public bool RunWarmanager()
         {
+            return nextEvent > EventType.WarmanagerDelay;
         }
 
         public void onGameStart(bool newGame)
         {
             if (newGame)
             {
-                if (DssRef.difficulty.runEvents)
-                {
-                    prepareNext();
-                }
+
+                eventState = EventState.PowerChecked;
+                triggerTime.start(DssRef.difficulty.aiDelayTimeSec);
+                //if (DssRef.difficulty.runEvents)
+                //{
+                //    prepareNext();
+                //}
 
                 //Prepare secret alliances
                 var DarkFollower = DssRef.world.factions.Array[DssRef.settings.Faction_DarkFollower];
@@ -73,11 +87,14 @@ namespace VikingEngine.DSSWars
         {
             w.Write((int)nextEvent);
             w.Write((int)eventState);
-            w.Write(eventPrepareTimeSec);
-            w.Write(eventCheckGameTimeSec);
-            w.Write(eventTriggerGameTimeSec);
+            //w.Write(eventPrepareTimeSec);
+            //w.Write(eventCheckGameTimeSec);
+            //w.Write(eventTriggerGameTimeSec);
+            prepareTime.writeGameState(w);
+            checkTime.writeGameState(w);
+            triggerTime.writeGameState(w);
 
-            nextTotalGameTimeMin.Write(w);
+            nextTotalGameTimeMinutes.Write(w);
             nextExpectedPlayerSize.Write(w);
 
             IOLib.WriteObjectList(w, playerMostSouthCity);
@@ -90,13 +107,30 @@ namespace VikingEngine.DSSWars
         }
         public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
+            float eventPrepareTimeSec;
+            float eventCheckGameTimeSec;
+            float eventTriggerGameTimeSec;
+
             nextEvent = (EventType)r.ReadInt32();
             eventState = (EventState)r.ReadInt32();
-            eventPrepareTimeSec = r.ReadSingle();
-            eventCheckGameTimeSec = r.ReadSingle();
-            eventTriggerGameTimeSec = r.ReadSingle();
+            if (subVersion >= 44)
+            {
+                prepareTime.readGameState(r);
+                checkTime.readGameState(r);
+                triggerTime.readGameState(r);
+            }
+            else
+            {
+                //old
+                nextEvent += 2;
 
-            nextTotalGameTimeMin.Read(r);
+                eventPrepareTimeSec = r.ReadSingle();
+                eventCheckGameTimeSec = r.ReadSingle();
+                eventTriggerGameTimeSec = r.ReadSingle();
+
+            }
+
+            nextTotalGameTimeMinutes.Read(r);
             nextExpectedPlayerSize.Read(r);
 
             playerMostSouthCity = arraylib.ToArray_Safe(IOLib.ReadObjectList<City>(r));
@@ -107,14 +141,8 @@ namespace VikingEngine.DSSWars
             dyingFactionsTimer.read(r);
             dyingFactionsTimer.MilliSeconds = Bound.Min(dyingFactionsTimer.MilliSeconds, 1);
 
-            if (subVersion >= 5)
-            {
-                Ref.TotalGameTimeSec = r.ReadSingle();
-            }
-            else
-            {
-                Ref.TotalGameTimeSec = eventCheckGameTimeSec - 5;
-            }
+            Ref.TotalGameTimeSec = r.ReadSingle();
+            
         }
 
         void prepareNext()
@@ -122,57 +150,44 @@ namespace VikingEngine.DSSWars
             eventState = 0;
             switch (nextEvent)
             {
+                case EventType.WarmanagerDelay:
+                    {
+                        nextTotalGameTimeMinutes = IntervalF.NoInterval(20);
+                    }
+                    break;
                 case EventType.SouthShips:
                     {
-                        IntervalF[] timeMinutes =
-                            {
-                            new IntervalF(60,80),//Immediate,                           
-                            new IntervalF(70,100),
-                            new IntervalF(130,140),//Normal,
-                            new IntervalF(140,160),
-                            new IntervalF(160,180),//VeryLate,
-                        };
-
-                        nextTotalGameTimeMin = timeMinutes[(int)DssRef.difficulty.bossTimeSettings];
+                        nextTotalGameTimeMinutes = new IntervalF(1.6f, 2f) * TimeExt.HourInMinutes;
                         nextExpectedPlayerSize = new IntervalF(DssConst.HeadCityStartMaxWorkForce * 2f, DssConst.HeadCityStartMaxWorkForce * 4f);
                     }
                     break;
                 case EventType.DarkLordWarning:
                     {
-                        IntervalF[] timeMinutes =
-                              {
-                            new IntervalF(135,140),//Immediate,                            
-                            new IntervalF(200,220),
-                            new IntervalF(220,230),//Normal,
-                            new IntervalF(230,370),
-                            new IntervalF(270,450),//VeryLate,
-                        };
-
-                        nextTotalGameTimeMin = timeMinutes[(int)DssRef.difficulty.bossTimeSettings];
+                        nextTotalGameTimeMinutes = new IntervalF(3f, 4f) * TimeExt.HourInMinutes;
                         nextExpectedPlayerSize = new IntervalF(DssConst.HeadCityStartMaxWorkForce * 4f, DssConst.HeadCityStartMaxWorkForce * 8f);
                     }
                     break;
                 case EventType.DarkLord:
                     {
-                        nextTotalGameTimeMin = IntervalF.NoInterval(30);
+                        nextTotalGameTimeMinutes = IntervalF.NoInterval(1f * TimeExt.HourInMinutes);
                     }
                     break;
             }
 
-            eventPrepareTimeSec = Ref.TotalGameTimeSec;
-            eventCheckGameTimeSec = nextTotalGameTimeMin.Min * 60 + Ref.TotalGameTimeSec - 1f;
+            prepareTime.zero();
+            checkTime.start(TimeLength.FromMinutes(nextTotalGameTimeMinutes.Min)); 
         }
 
         public void TestNextEvent()
         {
-            if (DssRef.settings.AiDelay)
-            {
-                DssRef.settings.AiDelay = false;
-                DssRef.state.localPlayers[0].hud.messages.Add(
-                        "Test event", "Removed AI delay");
-            }
-            else
-            {
+            //if (DssRef.state.events.AiDelay())
+            //{
+            //    DssRef.state.events.AiDelay() = false;
+            //    DssRef.state.localPlayers[0].hud.messages.Add(
+            //            "Test event", "Removed AI delay");
+            //}
+            //else
+            //{
                 if (nextEvent <= EventType.DarkLord)
                 {
                     PowerCheck();
@@ -190,7 +205,7 @@ namespace VikingEngine.DSSWars
 
                 DssRef.state.localPlayers[0].hud.messages.Add(
                         "Test event", nextEvent.ToString());
-            }
+            //}
         }
 
         void RunNextEvent()
@@ -310,24 +325,41 @@ namespace VikingEngine.DSSWars
 
         public void asyncUpdate(float time)
         {
-            if (DssRef.difficulty.runEvents &&
-                !DssRef.settings.AiDelay &&
-                (
-                nextEvent == EventType.SouthShips ||
-                nextEvent == EventType.DarkLordWarning ||
-                nextEvent == EventType.DarkLord
-                ))
+            if (DssRef.state.localPlayers[0].tutorial != null ||
+                !DssRef.difficulty.runEvents)
+            {
+                return;
+            }
+
+            bool timedEvent;
+
+            switch (nextEvent)
+            {
+                case EventType.AiDelay:
+                case EventType.WarmanagerDelay:
+                case EventType.SouthShips:
+                case EventType.DarkLordWarning:
+                case EventType.DarkLord:
+                    timedEvent = true;
+                    break;
+
+                default:
+                    timedEvent = false;
+                    break;
+            }
+
+            if (timedEvent)
             {
                 if (eventState == EventState.Countdown)
                 {
-                    if (Ref.TotalGameTimeSec >= eventCheckGameTimeSec)
+                    if (checkTime.TimeOut())//Ref.TotalGameTimeSec >= eventCheckGameTimeSec)
                     {
                         PowerCheck();
                     }
                 }
                 else if (eventState == EventState.PowerChecked)
                 {
-                    if (Ref.TotalGameTimeSec >= eventTriggerGameTimeSec)
+                    if (triggerTime.TimeOut())//Ref.TotalGameTimeSec >= eventTriggerGameTimeSec)
                     {
                         calcAndRunEvent();
                     }
@@ -348,12 +380,19 @@ namespace VikingEngine.DSSWars
                 foreach (var faction in factions)
                 {
                     faction.growthMultiplier = 0.5f;
-                    faction.gold = -10000;
+                    faction.addMoney_factionWide( -10000);
+                    //var citiesC = faction.cities.counter();
+                    //while (citiesC.Next())
+                    //{
+                    //    citiesC.sel.gold = -2000;
+                    //}
                     faction.hasDeserters = true;
                 }
             }
 
-            if (DssRef.difficulty.toPeacefulCheck && toPeacefulCheckTimer.CountDown(time))
+            if (toPeacefulCheckTimer.CountDown(time) &&
+                nextEvent > EventType.WarmanagerDelay &&
+                DssRef.difficulty.toPeacefulPercentage > 0)
             {
                 toPeacefulCheckTimer = new Time(15, TimeUnit.Minutes);
 
@@ -363,8 +402,6 @@ namespace VikingEngine.DSSWars
                 }
             }
         }
-
-       
 
         void PowerCheck()
         {
@@ -386,24 +423,24 @@ namespace VikingEngine.DSSWars
             //System.Diagnostics.Debug.WriteLine("Expected work force: " + nextExpectedPlayerSize.ToString());
             if (totalWorkForce < nextExpectedPlayerSize.Min)
             {
-                time = nextTotalGameTimeMin.Max;
+                time = nextTotalGameTimeMinutes.Max;
             }
             else if (totalWorkForce >= nextExpectedPlayerSize.Max)
             {
-                time = nextTotalGameTimeMin.Min;
+                time = nextTotalGameTimeMinutes.Min;
             }
             else
             {
-                time = nextTotalGameTimeMin.Center;
+                time = nextTotalGameTimeMinutes.Center;
             }
 
-            time *= 60;
+            time *= TimeExt.MinuteInSeconds;
 
             time += time * Ref.rnd.Plus_MinusF(0.2f);
 
             asyncPrepare(ref time);
 
-            eventTriggerGameTimeSec = time + eventPrepareTimeSec;
+            triggerTime.start(time);//eventTriggerGameTimeSec = time + eventPrepareTimeSec;
         }
 
         void asyncPrepare(ref float time)
@@ -463,10 +500,11 @@ namespace VikingEngine.DSSWars
                         }
 
                         if (DssRef.diplomacy.NegativeRelationWithPlayer(factionC.sel) ||
-                            factionC.sel.factiontype == FactionType.DarkLord ||
-                            factionC.sel.factiontype == FactionType.DarkFollower ||
-                            factionC.sel.factiontype == FactionType.SouthHara ||
-                            factionC.sel.factiontype == FactionType.UnitedKingdom)
+                            factionC.sel.diplomaticSide == DiplomaticSide.Dark)
+                            //factionC.sel.factiontype == FactionType.DarkLord ||
+                            //factionC.sel.factiontype == FactionType.DarkFollower ||
+                            //factionC.sel.factiontype == FactionType.SouthHara ||
+                            //factionC.sel.factiontype == FactionType.UnitedKingdom)
                         {
                             darkLordAllies.Add(factionC.sel);
                         }
@@ -497,11 +535,6 @@ namespace VikingEngine.DSSWars
                         calcSouthSpawn();
                     }
                     break;
-                //case EventType.DarkLord:
-                //    {
-
-                //    }
-                //    break;
             }
 
             Ref.update.AddSyncAction(new SyncAction(RunNextEvent));
@@ -587,6 +620,18 @@ namespace VikingEngine.DSSWars
                             }
                         }
                     }
+                }
+            }
+        }
+
+        public void OnPlayerDeclareWar()
+        {
+            const int DelayReduceToSec = 10;
+            if (nextEvent == EventType.AiDelay)
+            {
+                if (triggerTime.length.seconds > DelayReduceToSec)
+                {
+                    triggerTime.start(DelayReduceToSec);
                 }
             }
         }
@@ -684,6 +729,8 @@ namespace VikingEngine.DSSWars
 
     enum EventType
     { 
+        AiDelay,
+        WarmanagerDelay,
         SouthShips,
         DarkLordWarning,
         DarkLord,

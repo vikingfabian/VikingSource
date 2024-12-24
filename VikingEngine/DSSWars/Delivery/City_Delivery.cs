@@ -43,11 +43,20 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         case DeliveryActiveStatus.Idle:
                             {
+                                if (faction.player.IsAi())//OR fully auto
+                                {
+                                    status.profile.toCity = DeliveryProfile.ToCityAuto;
+                                    if (!status.IsRecruitment() && !status.IsGold())
+                                    { 
+                                        status.inProgress.type = ItemResourceType.AutomatedItem;
+                                    }
+                                }
+
                                 if (status.que > 0 && 
                                     status.profile.toCity > 0 &&
-                                    status.CanSend(this))
+                                    status.CanSend(this, out ItemResourceType sendItem))
                                 {
-                                    City othercity = findOtherCity(ref status);
+                                    City othercity = findOtherCity(sendItem, ref status);
 
                                     if (othercity != null && 
                                         othercity.faction == this.faction )
@@ -55,6 +64,7 @@ namespace VikingEngine.DSSWars.GameObject
                                         if (status.CountDownQue())
                                         {
                                             status.inProgress = status.profile;
+                                            status.inProgress.type = sendItem;
 
                                             if (status.inProgress.type == ItemResourceType.Men)
                                             {
@@ -64,9 +74,6 @@ namespace VikingEngine.DSSWars.GameObject
                                             }
                                             else
                                             {
-                                                //var resource_send = GetGroupedResource(status.inProgress.type);
-                                                //resource_send.amount -= status.inProgress.SendAmount;
-                                                //SetGroupedResource(status.inProgress.type, resource_send);
                                                 AddGroupedResource(status.inProgress.type, -status.inProgress.SendAmount);
 
                                                 var resource_recieve = othercity.GetGroupedResource(status.inProgress.type);
@@ -87,7 +94,6 @@ namespace VikingEngine.DSSWars.GameObject
                                                 }));
                                             }
                                         }
-                                       // }
                                     }
                                 }
                             }
@@ -104,18 +110,8 @@ namespace VikingEngine.DSSWars.GameObject
                                 City othercity = DssRef.world.cities[status.inProgress.ToCity()];
                                 if (status.inProgress.type == ItemResourceType.Men)
                                 {
-                                     othercity.addWorkers(status.inProgress.SendAmount);
-                                    //if (othercity.workForce.amount + DssConst.CityDeliveryCount > othercity.workForceMax)
-                                    //{
-                                    //    //Add rest to immigration
-                                    //    int rest = othercity.workForce.amount + DssConst.CityDeliveryCount - othercity.workForceMax;
-                                    //    othercity.workForce.amount = othercity.workForceMax;
-                                    //    othercity.immigrants.value += rest;
-                                    //}
-                                    //else
-                                    //{
-                                    //    othercity.workForce.amount += DssConst.CityDeliveryCount;
-                                    //}
+                                    othercity.addWorkers(status.inProgress.SendAmount);
+                                    
                                     if (resetDeliverRecieveValue)
                                     {
                                         othercity.workForce.deliverCount = 0;
@@ -146,7 +142,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            City findOtherCity(ref DeliveryStatus status)
+            City findOtherCity(ItemResourceType sendItem, ref DeliveryStatus status)
             {
                 if (status.profile.toCity == DeliveryProfile.ToCityAuto)
                 {
@@ -158,7 +154,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         if (citiesC.sel != this && tilePos.SideLength(citiesC.sel.tilePos) <= DssConst.DeliveryMaxDistance)
                         {
-                            if (status.CanRecieve(citiesC.sel.parentArrayIndex, out int hasAmount))
+                            if (status.CanRecieve(sendItem, citiesC.sel.parentArrayIndex, out int hasAmount))
                             {
                                 if (hasAmount < minAmount)
                                 {
@@ -177,7 +173,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else
                 {
-                    if (status.CanRecieve())
+                    if (status.CanRecieve(sendItem))
                     {
                         return DssRef.world.cities[status.profile.toCity];
                     }
@@ -187,6 +183,48 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
+            }
+        }
+
+        public ItemResourceType findAutoItem()
+        {
+            ItemResourceType result = ItemResourceType.NONE;
+
+            if (find(MovableCityResource_WeaponMelee))
+            {
+                return result;
+            }
+            if (find(MovableCityResource_WeaponRanged))
+            {
+                return result;
+            }
+            if (find(MovableCityResource_Armor))
+            {
+                return result;
+            }
+            if (find(MovableCityResource_Metals))
+            {
+                return result;
+            }
+            if (find(MovableCityResource_Misc))
+            {
+                return result;
+            }
+            
+            return result;
+
+            bool find(ItemResourceType[] movableCityResource)
+            {
+                foreach (ItemResourceType type in movableCityResource)
+                {
+                    if (GetGroupedResource(type).reachedBuffer())
+                    {
+                        result = type;
+                        return true;
+                    }
+                }
+
+                return false;
             }
         }
 
@@ -217,13 +255,18 @@ namespace VikingEngine.DSSWars.GameObject
             if (arraylib.InBound(deliveryServices, index))
             {
                 DeliveryStatus currentStatus = deliveryServices[index];
-                if (currentStatus.Recruitment())
+
+                switch (currentStatus.profile.type)
                 {
-                    player.menDeliveryCopy = currentStatus;
-                }
-                else
-                {
-                    player.itemDeliveryCopy = currentStatus;
+                    default:
+                        player.itemDeliveryCopy = currentStatus;
+                        break;
+                    case DeliveryStatus.DeliveryType_Men:
+                        player.menDeliveryCopy = currentStatus;
+                        break;
+                    case DeliveryStatus.DeliveryType_Gold:
+                        player.goldDeliveryCopy = currentStatus;
+                        break;
                 }
             }
         }
@@ -238,19 +281,25 @@ namespace VikingEngine.DSSWars.GameObject
             if (arraylib.InBound(deliveryServices, index))
             {
                 DeliveryStatus currentStatus = deliveryServices[index];
-                if (currentStatus.Recruitment())
-                {
-                    currentStatus.useSetup(player.menDeliveryCopy, player);
+
+                switch (currentStatus.profile.type)
+                { 
+                    default:
+                        currentStatus.useSetup(player.itemDeliveryCopy, player);
+                        break;
+                    case DeliveryStatus.DeliveryType_Men:
+                        currentStatus.useSetup(player.menDeliveryCopy, player);
+                        break;
+                    case DeliveryStatus.DeliveryType_Gold:
+                        currentStatus.useSetup(player.goldDeliveryCopy, player);
+                        break;
                 }
-                else
-                {
-                    currentStatus.useSetup(player.itemDeliveryCopy, player);
-                }
+               
                 deliveryServices[index] = currentStatus;
             }
         }
 
-        public void addDelivery(IntVector2 subPos, int level, bool recruitment)
+        public void addDelivery(IntVector2 subPos, int level, ItemResourceType deliveryType)
         {
             DeliveryStatus deliveryStatus = new DeliveryStatus()
             {
@@ -258,7 +307,7 @@ namespace VikingEngine.DSSWars.GameObject
                 level = level,
             };
 
-            deliveryStatus.defaultSetup(recruitment);
+            deliveryStatus.defaultSetup(deliveryType);
 
             lock (deliveryServices)
             {

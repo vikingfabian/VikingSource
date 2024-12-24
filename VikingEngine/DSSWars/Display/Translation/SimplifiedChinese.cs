@@ -1618,7 +1618,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public override string GameMenu_NextSong => "下一首歌";
 
         public override string BuildingType_Bank => "银行";
-        public override string BuildingType_Bank_Description => "向其他城市发送金币";
+        public override string BuildingType_GoldDelivery_Description => "向其他城市发送金币";
 
         public override string BuildingType_Logistics => "物流";
         public override string BuildingType_Logistics_Description => "提升您的建筑指令能力";

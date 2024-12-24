@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
@@ -83,6 +84,9 @@ namespace VikingEngine.DSSWars.Build
                             case TerrainBuildingType.Postal:
                             case TerrainBuildingType.PostalLevel2:
                             case TerrainBuildingType.PostalLevel3:
+                            case TerrainBuildingType.GoldDeliveryLevel1:
+                            case TerrainBuildingType.GoldDeliveryLevel2:
+                            case TerrainBuildingType.GoldDeliveryLevel3:
                                 city.destroyDelivery(subPos);
                                 break;
 
@@ -119,42 +123,52 @@ namespace VikingEngine.DSSWars.Build
                                 break;
 
                             case TerrainBuildingType.SoldierBarracks:
-                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Conscript.BarracksType>(city.addBarracks, subPos, Conscript.BarracksType.Soldier));
+                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(city.addBarracks, subPos, Build.BuildAndExpandType.SoldierBarracks));
                                 break;
                             case TerrainBuildingType.ArcherBarracks:
-                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Conscript.BarracksType>(city.addBarracks, subPos, Conscript.BarracksType.Archer));
+                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(city.addBarracks, subPos, Build.BuildAndExpandType.ArcherBarracks));
                                 break;
                             case TerrainBuildingType.WarmashineBarracks:
-                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Conscript.BarracksType>(city.addBarracks, subPos, Conscript.BarracksType.Warmashine));
+                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(city.addBarracks, subPos, Build.BuildAndExpandType.WarmashineBarracks));
                                 break;
                             case TerrainBuildingType.KnightsBarracks:
-                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Conscript.BarracksType>(city.addBarracks, subPos, Conscript.BarracksType.Knight));
+                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(city.addBarracks, subPos, Build.BuildAndExpandType.KnightsBarracks));
                                 break;
                             case TerrainBuildingType.GunBarracks:
-                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Conscript.BarracksType>(city.addBarracks, subPos, Conscript.BarracksType.Gun));
+                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(city.addBarracks, subPos, Build.BuildAndExpandType.GunBarracks));
                                 break;
                             case TerrainBuildingType.CannonBarracks:
-                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Conscript.BarracksType>(city.addBarracks, subPos, Conscript.BarracksType.Cannon));
+                                Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(city.addBarracks, subPos, Build.BuildAndExpandType.CannonBarracks));
                                 break;
 
                             case TerrainBuildingType.Postal:
-                                Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, bool>(city.addDelivery, subPos, 1, false));
+                                Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(city.addDelivery, subPos, 1, DeliveryStatus.DeliveryType_Resource));
                                 break;
                             case TerrainBuildingType.PostalLevel2:
-                                Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, bool>(city.addDelivery, subPos, 2, false));
+                                Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(city.addDelivery, subPos, 2, DeliveryStatus.DeliveryType_Resource));
                                 break;
                             case TerrainBuildingType.PostalLevel3:
-                                Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, bool>(city.addDelivery, subPos, 3, false));
+                                Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(city.addDelivery, subPos, 3, DeliveryStatus.DeliveryType_Resource));
                                 break;
 
                             case TerrainBuildingType.Recruitment:
-                                Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, bool>(city.addDelivery, subPos, 1, true));
+                                Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(city.addDelivery, subPos, 1, DeliveryStatus.DeliveryType_Men));
                                 break;
                             case TerrainBuildingType.RecruitmentLevel2:
-                                Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, bool>(city.addDelivery, subPos, 2, true));
+                                Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(city.addDelivery, subPos, 2, DeliveryStatus.DeliveryType_Men));
                                 break;
                             case TerrainBuildingType.RecruitmentLevel3:
-                                Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, bool>(city.addDelivery, subPos, 3, true));
+                                Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(city.addDelivery, subPos, 3, DeliveryStatus.DeliveryType_Men));
+                                break;
+
+                            case TerrainBuildingType.GoldDeliveryLevel1:
+                                Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(city.addDelivery, subPos, 1, DeliveryStatus.DeliveryType_Gold));
+                                break;
+                            case TerrainBuildingType.GoldDeliveryLevel2:
+                                Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(city.addDelivery, subPos, 2, DeliveryStatus.DeliveryType_Gold));
+                                break;
+                            case TerrainBuildingType.GoldDeliveryLevel3:
+                                Ref.update.AddSyncAction(new SyncAction3Arg<IntVector2, int, ItemResourceType>(city.addDelivery, subPos, 3, DeliveryStatus.DeliveryType_Gold));
                                 break;
 
 

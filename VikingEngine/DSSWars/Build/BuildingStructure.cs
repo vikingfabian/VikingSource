@@ -10,8 +10,8 @@ namespace VikingEngine.DSSWars.Build
     struct BuildingStructure
     {
         public int buildingLevel_logistics;
-
         public int WorkerHuts_count;
+        
         public int Postal_count;
         public int Recruitment_count;
         public int SoldierBarracks_count;
@@ -35,6 +35,7 @@ namespace VikingEngine.DSSWars.Build
         public int PavementFlower_count;
         public int Bank_count;
         public int CoinMinter_count;
+        public int GoldDelivery_count;
         public int WoodCutter_count;
         public int StoneCutter_count;
         public int Embassy_count;
@@ -79,6 +80,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.PavementFlower: return PavementFlower_count;
                 case BuildAndExpandType.Bank: return Bank_count;
                 case BuildAndExpandType.CoinMinter: return CoinMinter_count;
+                case BuildAndExpandType.GoldDeliveryLvl1: return GoldDelivery_count;
                 case BuildAndExpandType.WoodCutter: return WoodCutter_count;
                 case BuildAndExpandType.StoneCutter: return StoneCutter_count;
                 case BuildAndExpandType.Embassy: return Embassy_count;
@@ -94,6 +96,23 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Chemist: return Chemist_count;
                 case BuildAndExpandType.Gunmaker: return Gunmaker_count;
                 case BuildAndExpandType.School: return School_count;
+
+                default: return 0; // Return 0 for NUM_NONE or any other undefined type
+            }
+        }
+
+        public int getBarracksCount(BuildAndExpandType type)
+        {
+            switch (type)
+            {
+                
+                case BuildAndExpandType.SoldierBarracks: return SoldierBarracks_count;
+                case BuildAndExpandType.ArcherBarracks: return ArcherBarracks_count;
+                case BuildAndExpandType.WarmashineBarracks: return WarmashineBarracks_count;
+                case BuildAndExpandType.GunBarracks: return GunBarracks_count;
+                case BuildAndExpandType.CannonBarracks: return CannonBarracks_count;
+                case BuildAndExpandType.KnightsBarracks: return KnightsBarracks_count;
+               
 
                 default: return 0; // Return 0 for NUM_NONE or any other undefined type
             }

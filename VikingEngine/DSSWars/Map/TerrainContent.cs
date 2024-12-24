@@ -29,7 +29,8 @@ namespace VikingEngine.DSSWars.Map
         const int HenMaxTotal = HenMaxSize * HenMaxCount;
         public const int HenReady = HenMaxSize * 3;
 
-        public const int MineAmount = 10;
+        public const int DefaultMineAmount = 10;
+        public const int MineAmount_Coal = 20;
 
         public void asyncFoilGroth(IntVector2 pos, SubTile subtile)
         {
