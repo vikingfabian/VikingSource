@@ -689,11 +689,8 @@ namespace VikingEngine.DSSWars.GameObject
                 else
                 {
                     //Battle update
-                    if (updateWalking(walkingGoalAttackTarget(attack_sp, out bool shipTransform), true, false, 0, time))
-                    {
-                        //on target
-                    }
-
+                    updateWalking(walkingGoalAttackTarget(attack_sp, out bool shipTransform), true, false, 0, time);
+                    
                     if (soldiers != null)
                     {
                         var soldiersC = soldiers.counter();
