@@ -183,27 +183,48 @@ namespace VikingEngine
         {
             return AngleDifference(radians, otherAngle.radians);
         }
+
+        /// <summary>
+        /// Calculates the angular difference between two angles, returning a value in the range [-π, π].
+        /// </summary>
+        /// <param name="angle1">The first angle in radians.</param>
+        /// <param name="angle2">The second angle in radians.</param>
+        /// <returns>The signed angular difference in radians, within the range [-π, π].</returns>
         public static float AngleDifference(float angle1, float angle2)
         {
-            float diff = Math.Abs(angle2 - angle1);
-            bool positiveDir = angle2 > angle1;
+            // Calculate the raw angular difference.
+            float diff = angle2 - angle1;
 
-            if (diff > MathHelper.Pi) //the difference can't be higher than 180degrees
+            // Normalize the difference to the range [-2π, 2π].
+            //diff = diff % MathHelper.TwoPi;
+
+            // Adjust to ensure the difference is within [-π, π].
+            if (diff > MathHelper.Pi)
             {
-                diff = Math.Abs(diff - MathHelper.TwoPi);
-                positiveDir = !positiveDir;
+                diff -= MathHelper.TwoPi;
             }
-            return diff * lib.BoolToLeftRight(positiveDir);
+            else if (diff < -MathHelper.Pi)
+            {
+                diff += MathHelper.TwoPi;
+            }
+
+            return diff;
         }
+
 
         public static float AngleDifference_Absolute(float angle1, float angle2)
         {
-            float diff = Math.Abs(angle2 - angle1);
-            if (diff > MathHelper.Pi) //the difference can't be higher than 180degrees
-            {
-                diff = Math.Abs(diff - MathHelper.TwoPi);
-            }
-            return diff;
+            //float diff = angle2 - angle1;
+            //if (diff > MathHelper.Pi) //the difference can't be higher than 180degrees
+            //{
+            //    diff = Math.Abs(diff - MathHelper.TwoPi);
+            //}
+            //else if (diff < -MathHelper.Pi) //the difference can't be higher than 180degrees
+            //{
+            //    diff = diff + MathHelper.TwoPi;
+            //}
+
+            return Math.Abs(AngleDifference(angle1, angle2));
         }
         public static float MidAngle(float angle1, float angle2)
         {

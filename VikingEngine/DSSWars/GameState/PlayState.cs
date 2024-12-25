@@ -233,7 +233,7 @@ namespace VikingEngine.DSSWars
             new AsynchUpdateable_TryCatch(asyncUserUpdate, "DSS user update", 58, System.Threading.ThreadPriority.Normal);
             new AsynchUpdateable_TryCatch(asyncMapBorders, "DSS map borders update", 59, System.Threading.ThreadPriority.Lowest);
             new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60, System.Threading.ThreadPriority.Lowest);
-            //new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62, System.Threading.ThreadPriority.Normal);
+            new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62, System.Threading.ThreadPriority.Normal);
             new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63, System.Threading.ThreadPriority.Lowest);
             new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61, System.Threading.ThreadPriority.Lowest);
             new AsynchUpdateable_TryCatch(asyncSlowUpdate, "DSS slow update", 62, System.Threading.ThreadPriority.Lowest);
@@ -461,22 +461,35 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        //bool asyncBattlesUpdate(int id, float time)
-        //{
-        //    if (cutScene == null)
-        //    {
-        //        var battlesC = battles.counter();
-        //        while (battlesC.Next())
-        //        {
-        //            bool deleted = battlesC.sel.async_update(time);
-        //            if (deleted)
-        //            {
-        //                battlesC.RemoveAtCurrent();
-        //            }
-        //        }
-        //    }
-        //    return exitThreads;
-        //}
+        bool asyncBattlesUpdate(int id, float time)
+        {
+            if (cutScene == null)
+            {
+                //var battlesC = battles.counter();
+                //while (battlesC.Next())
+                //{
+                //    bool deleted = battlesC.sel.async_update(time);
+                //    if (deleted)
+                //    {
+                //        battlesC.RemoveAtCurrent();
+                //    }
+                //}
+                var factions = DssRef.world.factions.counter();
+                while (factions.Next())
+                {
+                    var armiesC = factions.sel.armies.counter();
+                    while (armiesC.Next())
+                    {
+                        var groupsC = armiesC.sel.groups.counter();
+                        while (groupsC.Next())
+                        {
+                            groupsC.sel.asyncBattleUpdate();
+                        }
+                    }
+                }
+            }
+            return exitThreads;
+        }
 
         bool asyncWorkUpdate(int id, float time)
         {

@@ -229,22 +229,33 @@ namespace VikingEngine.DSSWars.Data
     class ArmyAttackObjectPointer: AbsObjectPointer
     {
         Army army;
+        bool teleport;
 
         public ArmyAttackObjectPointer(System.IO.BinaryWriter w, AbsGameObject target)
         {
             WriteObjectPointer(w, target);        
         }
 
-        public ArmyAttackObjectPointer(BinaryReader r, Army army)
+        public ArmyAttackObjectPointer(BinaryReader r, Army army, bool teleport)
         {
             this.army = army;
+            this.teleport = teleport;
             ReadObjectPointer(r);
         }
 
         public override void SetPointer()
         {
-            army.attackTarget = (AbsMapObject)GetObject();
-            army.attackTargetFaction = army.attackTarget.faction.parentArrayIndex;
+            var target = (AbsMapObject)GetObject();
+
+            if (teleport)
+            {
+                army.Order_Attack_Setup(target);
+            }
+            else
+            {
+                army.Order_Attack(target);
+            }
+            //army.attackTargetFaction = army.attackTarget.faction.parentArrayIndex;
         }
     }
 

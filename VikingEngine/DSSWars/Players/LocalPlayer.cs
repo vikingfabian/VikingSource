@@ -1202,7 +1202,7 @@ namespace VikingEngine.DSSWars.Players
 
         void battleLineUpTest(bool friendly)
         {
-            Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(45));
+            Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(1));
             Rotation1D playerRot =enemyRot.getInvert();
 
             Faction enemyFac = DssRef.settings.darkLordPlayer.faction;
@@ -1233,7 +1233,24 @@ namespace VikingEngine.DSSWars.Players
                         }
                     };
 
-                    for (int i = 0; i < 6; ++i)
+                    for (int i = 0; i < 8; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Bow,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 4; ++i)
                     {
                         new SoldierGroup(army, SoldierProfile, army.position);
                     }
@@ -1295,6 +1312,23 @@ namespace VikingEngine.DSSWars.Players
                     };
 
                     for (int i = 0; i < 6; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
+                }
+                {
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                    {
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = Resource.ItemResourceType.Bow,
+                            armorLevel = Resource.ItemResourceType.IronArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    for (int i = 0; i < 4; ++i)
                     {
                         new SoldierGroup(army, SoldierProfile, army.position);
                     }

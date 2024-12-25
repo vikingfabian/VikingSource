@@ -1119,6 +1119,11 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             void addMines(int count, int type)
             {
+                if (mineLocations.Count < count)
+                {
+                    return;
+                }
+
                 for (int i = 0; i < count; ++i)
                 {
                     int index = world.rnd.Int(mineLocations.Count);

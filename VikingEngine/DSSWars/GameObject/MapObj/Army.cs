@@ -802,7 +802,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void asynchGameObjectsUpdate(float time, bool oneMinute)
         {
-            if (faction.factiontype == FactionType.SouthHara)
+            if (debugTagged)
             {
                 lib.DoNothing();
             }
@@ -831,67 +831,67 @@ namespace VikingEngine.DSSWars.GameObject
 
                 var groupsC = groups.counter();
 
-               
                 while (groupsC.Next())
                 {
-                    //var unitProfile = groupsC.sel.typeCurrentData; //DssRef.unitsdata.Get(groupsC.sel.type);
-                    //groupsC.sel.asynchUpdate();
-                    count += groupsC.sel.soldierCount;
-                    groupsC.sel.setBattleWalkingSpeed();
+                   
 
-                    allGropsAreIdle &= groupsC.sel.state == GroupState.Idle; //.allInduvidualsAreIdle;
-                    int health;
+                        count += groupsC.sel.soldierCount;
+                        groupsC.sel.setBattleWalkingSpeed();
 
-                    if (groupsC.sel.isShip)
-                    {
-                        ++shipCount;
-                        dps = groupsC.sel.soldierData.DPS_sea();
+                        allGropsAreIdle &= groupsC.sel.state == GroupState.Idle; //.allInduvidualsAreIdle;
+                        int health;
 
-                        //if (notBattle)                       
+                        if (groupsC.sel.isShip)
                         {
-                            speedbonus += groupsC.sel.soldierConscript.conscript.armySpeedBonus(false);//unitProfile.ArmySpeedBonusSea;
-                            groupsC.sel.walkSpeed = transportSpeedSea;
+                            ++shipCount;
+                            dps = groupsC.sel.soldierData.DPS_sea();
+
+                            //if (notBattle)                       
+                            {
+                                speedbonus += groupsC.sel.soldierConscript.conscript.armySpeedBonus(false);//unitProfile.ArmySpeedBonusSea;
+                                groupsC.sel.walkSpeed = transportSpeedSea;
+                            }
+
+                            //var first = groupsC.sel.FirstSoldier();
+                            //if (first != null)
+                            //{
+                            //TODO ship health
+                            health = groupsC.sel.soldierData.basehealth;
+                            //}
+                        }
+                        else
+                        {
+                            dps = groupsC.sel.soldierData.DPS_land();
+
+                            //if (notBattle)
+                            //{
+                            speedbonus += groupsC.sel.soldierConscript.conscript.armySpeedBonus(true);//unitProfile.ArmySpeedBonusLand;
+                            groupsC.sel.walkSpeed = transportSpeedLand;
+                            //}
+
+                            health = groupsC.sel.soldierData.basehealth;
                         }
 
-                        //var first = groupsC.sel.FirstSoldier();
-                        //if (first != null)
-                        //{
-                        //TODO ship health
-                            health = groupsC.sel.soldierData.basehealth;
-                        //}
-                    }
-                    else
-                    {
-                        dps = groupsC.sel.soldierData.DPS_land();
+                        if (groupsC.sel.position.X < minpos.X)
+                        {
+                            minpos.X = groupsC.sel.position.X;
+                        }
+                        if (groupsC.sel.position.X > maxpos.X)
+                        {
+                            maxpos.X = groupsC.sel.position.X;
+                        }
 
-                        //if (notBattle)
-                        //{
-                        speedbonus += groupsC.sel.soldierConscript.conscript.armySpeedBonus(true);//unitProfile.ArmySpeedBonusLand;
-                        groupsC.sel.walkSpeed = transportSpeedLand;
-                        //}
+                        if (groupsC.sel.position.Z < minpos.Y)
+                        {
+                            minpos.Y = groupsC.sel.position.Z;
+                        }
+                        if (groupsC.sel.position.Z > maxpos.Y)
+                        {
+                            maxpos.Y = groupsC.sel.position.Z;
+                        }
 
-                        health = groupsC.sel.soldierData.basehealth;
-                    }
-
-                    if (groupsC.sel.position.X < minpos.X)
-                    {
-                        minpos.X = groupsC.sel.position.X;
-                    }
-                    if (groupsC.sel.position.X > maxpos.X)
-                    { 
-                        maxpos.X = groupsC.sel.position.X;
-                    }
-
-                    if (groupsC.sel.position.Z < minpos.Y)
-                    {
-                        minpos.Y = groupsC.sel.position.Z;
-                    }
-                    if (groupsC.sel.position.Z > maxpos.Y)
-                    {
-                        maxpos.Y = groupsC.sel.position.Z;
-                    }
-
-                    totalStrength += (dps + health * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldierCount;
+                        totalStrength += (dps + health * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldierCount;
+                    
                 }
                 
                 isIdle = allGropsAreIdle && IdleObjetive();

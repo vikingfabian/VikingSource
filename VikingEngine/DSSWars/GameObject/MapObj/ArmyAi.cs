@@ -626,27 +626,51 @@ namespace VikingEngine.DSSWars.GameObject
         public void writeAiState(System.IO.BinaryWriter w)
         {
             w.Write((byte)objective);
-            if (objective == ArmyObjective.Attack)
-            {
-                new ArmyAttackObjectPointer(w, attackTarget);
+
+            switch (objective)
+            { 
+                case ArmyObjective.Attack:
+                    new ArmyAttackObjectPointer(w, attackTarget);
+                    break;
+                case ArmyObjective.TeleportAttack:
+                    new ArmyAttackObjectPointer(w, attackTarget);
+                    w.Write(teleportTime);
+                    break;
+                case ArmyObjective.MoveTo:
+                    WP.writeTilePos(w, walkGoal);
+                    break;
+                case ArmyObjective.TeleportMove:
+                    WP.writeTilePos(w, walkGoal);
+                    w.Write(teleportTime);
+                    break;
             }
-            else if (objective == ArmyObjective.MoveTo)
-            {
-                WP.writeTilePos(w, walkGoal);
-            }
+
         }
         public void readAiState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
             objective = (ArmyObjective)r.ReadByte();
-            if (objective == ArmyObjective.Attack)
+
+            switch (objective)
             {
-                pointers.pointers.Add(new ArmyAttackObjectPointer(r, this));
+                case ArmyObjective.Attack:
+                    pointers.pointers.Add(new ArmyAttackObjectPointer(r, this, false));
+                    break;
+                case ArmyObjective.TeleportAttack:
+                    pointers.pointers.Add(new ArmyAttackObjectPointer(r, this, true));
+                    teleportTime = r.ReadSingle();
+                    break;
+                case ArmyObjective.MoveTo:
+                    walkGoal = WP.readTilePos(r);
+                    Order_MoveTo(walkGoal);
+                    
+                    break;
+                case ArmyObjective.TeleportMove:
+                    walkGoal = WP.readTilePos(r);
+                    Order_MoveTo_Setup(walkGoal);
+                    teleportTime = r.ReadSingle();
+                    break;
             }
-            else if (objective == ArmyObjective.MoveTo)
-            {
-                walkGoal = WP.readTilePos(r);
-                adjustedWalkGoal = walkGoal;
-            }
+
         }
 
         public bool IdleObjetive()

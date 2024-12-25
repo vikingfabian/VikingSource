@@ -221,10 +221,17 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (soldiers == null)
                 {
-                    createAllSoldiers(typeCurrentData, soldierCount, models);
-                    if (typeCurrentData.IsShip())
+                    if (soldierCount > 0)
                     {
-                        FirstSoldier().health = shipHealth;
+                        createAllSoldiers(typeCurrentData, soldierCount, models);
+                        if (typeCurrentData.IsShip())
+                        {
+                            FirstSoldier().health = shipHealth;
+                        }
+                    }
+                    else
+                    {
+                        soldiers = new SpottedArray<AbsSoldierUnit>(0);
                     }
                 }
                 else if (models)
@@ -307,11 +314,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
-            if (subVersion < 40)
-            {
-                readGameState_old(r, subVersion);
-                return;
-            }
+            //if (subVersion < 40)
+            //{
+            //    readGameState_old(r, subVersion);
+            //    return;
+            //}
 
             soldierConscript.readGameState(r);
 
@@ -447,13 +454,6 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            //setGroundY();
-
-            //var soldiersC = soldiers.counter();
-            //while (soldiersC.Next())
-            //{
-            //    soldiersC.sel.firstUpdate();
-            //}
         }
 
         void deleteAllSoldiers(DeleteReason reason)
@@ -1396,12 +1396,6 @@ namespace VikingEngine.DSSWars.GameObject
                         return;
                     }
                 }
-
-                //if (attacking_soldierGroupOrCity == null)
-                //{
-                //    //Enter attack
-                //    recyclePath(true, true);
-                //}
                 attacking_soldierGroupOrCity = newTarget;
             }
         }
@@ -1430,7 +1424,10 @@ namespace VikingEngine.DSSWars.GameObject
         void refreshAttacking()
         {
             if (attacking_soldierGroupOrCity != null && 
-                (attacking_soldierGroupOrCity.defeated() || !DssRef.diplomacy.InWar(army.faction, attacking_soldierGroupOrCity.GetFaction())))
+                    (attacking_soldierGroupOrCity.defeated() || 
+                    !DssRef.diplomacy.InWar(army.faction, attacking_soldierGroupOrCity.GetFaction()) ||
+                    distance(attacking_soldierGroupOrCity) > 4)
+               )
             {
                 attacking_soldierGroupOrCity = null;
             }
@@ -1448,109 +1445,60 @@ namespace VikingEngine.DSSWars.GameObject
 
             refreshAttacking();
 
-            AbsGroup nearest = null;
-            float distanceValue = float.MaxValue;
+            //if (attacking_soldierGroupOrCity == null)
+            //{
+                AbsGroup nearest = null;
+                float distanceValue = float.MaxValue;
 
-            //float aggroRange = 2f;
-            
-            foreach (var opponent in groups)
-            {
-                
-                var group = opponent.GetGroup();
-                if (group.soldierCount > 0)
+                foreach (var opponent in groups)
                 {
-                    var dist = distanceValueTo(group, aggroRange(opponent.army));
 
-                    if (dist < distanceValue)
+                    var group = opponent.GetGroup();
+                    if (group.soldierCount > 0)
                     {
-                        distanceValue = dist;
-                        nearest = group;
-                    }
-                }
-                
-            }
+                        var dist = distanceValueTo(group, aggroRange(opponent.army));
 
-            if (nearest == null)
-            {
-                foreach (var opponent in cities)
-                {
-                    if (opponent.guardCount > 0)
-                    {
-                        var dist = distanceValueTo(opponent, aggroRange(opponent));
                         if (dist < distanceValue)
                         {
                             distanceValue = dist;
-                            nearest = opponent;
+                            nearest = group;
+                        }
+                    }
+
+                }
+
+                if (nearest == null)
+                {
+                    foreach (var opponent in cities)
+                    {
+                        if (opponent.guardCount > 0)
+                        {
+                            var score = distanceValueTo(opponent, aggroRange(opponent));
+
+                            if (score < distanceValue)
+                            {
+                                distanceValue = score;
+                                nearest = opponent;
+                            }
                         }
                     }
                 }
-            }
 
-            if (nearest != null)
-            {
-                addAttackTarget(nearest);
-            }
-
-            //if (opponents.Count > 0)
-            //{
-            //    lib.DoNothing();
-            //}
-
-            //if (attacking_soldierGroupOrCity == null && army.battles.Count > 0)
-            //{               
-            //    //Version 2: förlitar sig på att mapobject.battles 
-            //    AbsGroup nearest = null;
-            //    float distanceValue = float.MaxValue;
-            //    var battlesC = army.battles.counter();
-            //    while (battlesC.Next())
-            //    {
-            //        var type = battlesC.sel.gameobjectType();
-            //        if (type == GameObjectType.Army)
-            //        {
-            //            var groupsC = battlesC.sel.GetArmy().groups.counter();
-            //            while (groupsC.Next())
-            //            {
-            //                if (groupsC.sel.soldiers.Count > 0)
-            //                {
-            //                    var dist = distanceValueTo(groupsC.sel);
-
-            //                    if (dist < distanceValue)
-            //                    {
-            //                        distanceValue = dist;
-            //                        nearest = groupsC.sel;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //        else if (type == GameObjectType.City)
-            //        {
-            //            if (battlesC.sel.GetCity().guardCount > 0)
-            //            {
-            //                var dist = distanceValueTo(battlesC.sel);
-            //                if (dist < distanceValue)
-            //                {
-            //                    distanceValue = dist;
-            //                    nearest = battlesC.sel;
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    //closestOpponent = nearest;
-            //    if (nearest != null)
-            //    {
-            //        addAttackTarget(nearest);
-            //    }
-            //}
-
-            float aggroRange(AbsMapObject target)
-            {
-                if (target == army.attackTarget)
+                if (nearest != null)
                 {
-                    return 4;
+                    addAttackTarget(nearest);
                 }
-                return 2;
-            }
+
+
+                float aggroRange(AbsMapObject target)
+                {
+                    if (target == army.attackTarget)
+                    {
+                        return 4;
+                    }
+                    return 3;
+                }
+            //}
         }
 
         float distanceValueTo(AbsGroup toGroup, float maxRange)
@@ -1563,13 +1511,18 @@ namespace VikingEngine.DSSWars.GameObject
                 return float.MaxValue;
             }
 
-            const float AngleDiffValue = 0.5f;
+            const float AngleWeight = 4f;
 
             float dir = lib.V2ToAngle(diff);
-            float aDiff =Rotation1D.AngleDifference_Absolute(rotation.radians, dir);
-            float anglePercDiff = Math.Abs(aDiff) / MathExt.TauOver2;
+            float aDiff = Rotation1D.AngleDifference_Absolute(rotation.radians, dir);
+            float anglePercDiff = aDiff / MathF.PI;
 
-            float value = l + l * anglePercDiff * AngleDiffValue;
+            float value = l + l * anglePercDiff * AngleWeight;
+
+            if (toGroup == attacking_soldierGroupOrCity)
+            {
+                value *= 0.5f;
+            }
 
             return value;
         }
@@ -1628,6 +1581,20 @@ namespace VikingEngine.DSSWars.GameObject
             isWalkingIntoOtherGroup = false;
         }
 
+        public void asyncBattleUpdate()
+        {
+            var attack_sp = attacking_soldierGroupOrCity;
+                        
+            if (soldiers != null)
+            {
+                var counter = soldiers.counter();
+                while (counter.Next())
+                {
+                    counter.sel.asyncBattleUpdate();
+                }
+            }            
+        }
+
         public void asyncPathUpdate()
         {
 
@@ -1656,11 +1623,11 @@ namespace VikingEngine.DSSWars.GameObject
                         pathCalulate_detail(goalSubTile, true);
                     }
 
-                    var counter = soldiers.counter();
-                    while (counter.Next())
-                    {
-                        counter.sel.asyncBattleUpdate();
-                    }
+                    //var counter = soldiers.counter();
+                    //while (counter.Next())
+                    //{
+                    //    counter.sel.asyncBattleUpdate();
+                    //}
                 }
             }
             else
@@ -1911,24 +1878,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void remove(AbsSoldierUnit soldier)
         {
-            Debug.CrashIfThreaded();
-
+            //Debug.CrashIfThreaded();
+           
             soldiers.RemoveAt_EqualSafeCheck(soldier, soldier.parentArrayIndex);
-            //if (soldiers.Count == skirmishCount)
-            //{//GO SKIRMISH
-            //    var soldiersC = soldiers.counter();
-            //    while (soldiersC.Next())
-            //    {
-            //        soldiersC.sel.setFreeAttack();
-            //    }
-            //}
-            //else 
-            if (soldiers.Count == 0)
+            soldierCount = soldiers.Count;
+
+            if (soldiers.Count <= 0)
             {
-                //army.remove(this);
-                //isDeleted = true;
                 DeleteMe(DeleteReason.EmptyGroup, true);
-                //deleteGroup(false);
             }
         }
 
@@ -2083,49 +2040,17 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        //public override void DeleteMe(bool netShare)
-        //{
-        //    base.DeleteMe(netShare);
-        //    var soldiersC = soldiers.counter();
-        //    while (soldiersC.Next())
-        //    {
-        //        soldiersC.sel.DeleteMe(false);
-        //    }
-
-        //    soldiers.Clear();
-        //}
-
-        //public void deleteGroup(bool quickDelete)
-        //{
-        //    Debug.CrashIfThreaded();
-
-        //    if (soldiers.Count > 0)
-        //    {
-        //        var soldiersC = soldiers.counter();
-        //        while (soldiersC.Next())
-        //        {
-        //            soldiersC.sel.DeleteMe(true);
-        //        }
-        //    }
-
-        //    if (!quickDelete)
-        //    {
-        //        army.remove(this);
-        //        isDeleted = true;
-        //        //groupObjective = GroupObjective.Destroyed;
-        //    }
-        //}
 
         public override bool defeatedBy(Faction attacker)
         {
-            return soldierCount == 0;
+            return soldierCount <= 0;
         }
-
         public override bool aliveAndBelongTo(int faction)
         {
-            return soldiers.Count > 0;
+
+            return soldierCount > 0;
         }
-        
+
         public bool canMoveTo(IntVector2 from, IntVector2 to)
         {
             return true;

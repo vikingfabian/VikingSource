@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.Physics;
 using VikingEngine.ToGG.MoonFall;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
@@ -18,6 +19,7 @@ namespace VikingEngine.DSSWars.Battle
                 
         List<AbsSoldierUnit> nearBodyCollisionUnits = new List<AbsSoldierUnit>(8);
         public float queueTime = 0;
+        static CircleBound QueBound = new CircleBound();
         public void update(AbsSoldierUnit parent)
         {
             //1. Is the soldier queuing behind friendlies
@@ -76,34 +78,105 @@ namespace VikingEngine.DSSWars.Battle
 
         public bool InQueue(AbsSoldierUnit parent)
         {
+            const float Regular_QueTime = 400;
+            const float Turn_QueTime = 1200;
+
+            //turn = 0;
             var target_sp = parent.attackTarget;
             if (target_sp != null && parent.distanceToUnit(target_sp) < DssConst.MeleeAwareRange)
             {
                 return false;
             }
 
-            parent.bound.Center += parent.rotation.Direction(parent.bound.ExtremeRadius * 0.25f);
-
-            lock (nearBodyCollisionUnits)
+            if (collision(parent.rotation, Regular_QueTime))
             {
-                foreach (var unit in nearBodyCollisionUnits)
-                {
-                    if (parent.GetFaction() == unit.GetFaction())
-                    {
-                        Physics.Collision2D intersection = parent.bound.Intersect2(unit.bound);
-                        if (intersection.IsCollision)
+                switch (Ref.rnd.Int(4))
+                { 
+                    case 0:
                         {
-                            queueTime = 400;
-                            return true;
+                            Rotation1D dir = parent.rotation;
+                            dir.Add(-MathExt.TauOver6);
+                            if (!collision(dir, Turn_QueTime))
+                            {
+                                parent.state2 = SoldierState2.Turn;
+                                parent.goalRotation = dir.radians;
+                                //parent.stateTime = 400;
+                                //return false;
+                            }
+                        }
+                        break;
+                    case 1:
+                        {
+                            Rotation1D dir = parent.rotation;
+                            dir.Add(MathExt.TauOver6);
+                            if (!collision(dir, Turn_QueTime))
+                            {
+                                parent.state2 = SoldierState2.Turn;
+                                parent.goalRotation = dir.radians;
+                                //return false;
+                            }
+                        }
+                        break;
+                    case 2:
+                        {
+                            Rotation1D dir = parent.rotation;
+                            dir.Add(-MathExt.TauOver4);
+                            if (!collision(dir, Turn_QueTime))
+                            {
+                                parent.state2 = SoldierState2.Turn;
+                                parent.goalRotation = dir.radians;
+                                //parent.stateTime = 400;
+                                //return false;
+                            }
+                        }
+                        break;
+                    case 3:
+                        {
+                            Rotation1D dir = parent.rotation;
+                            dir.Add(MathExt.TauOver4);
+                            if (!collision(dir, Turn_QueTime))
+                            {
+                                parent.state2 = SoldierState2.Turn;
+                                parent.goalRotation = dir.radians;
+                                //return false;
+                            }
+                        }
+                        break;
+                }
+                return true;
+            }
+            return false;
+
+            bool collision(Rotation1D searchDir, float qTime)
+            {
+                QueBound.radius = parent.bound.ExtremeRadius;
+                QueBound.center = parent.bound.Center + searchDir.Direction(QueBound.radius * 0.25f);
+
+                lock (nearBodyCollisionUnits)
+                {
+                    foreach (var unit in nearBodyCollisionUnits)
+                    {
+                        if (parent.GetFaction() == unit.GetFaction())
+                        {
+                            Physics.Collision2D intersection = QueBound.Intersect2(unit.bound);
+                            if (intersection.IsCollision)
+                            {
+                                queueTime = qTime;
+                                return true;
+                            }
                         }
                     }
                 }
+                return false;
             }
-            return false;
         }
 
         public void asycUpdate(AbsSoldierUnit parent) 
         {
+            if (parent.group.debugTagged)
+            {
+                lib.DoNothing();
+            }
             AbsDetailUnit closestOpponent = null;
             float closestOpponentDistance = float.MaxValue;
 
@@ -111,13 +184,13 @@ namespace VikingEngine.DSSWars.Battle
 
             SoldierBuffer.Clear();
             //Collect nearby collision bounds
-            DssRef.world.unitCollAreaGrid.collectGroups(parent.tilePos, ref GroupBuffer, false);
+            DssRef.world.unitCollAreaGrid.collectGroups(parent.tilePos, ref GroupBuffer, true);
 
             foreach (var group in GroupBuffer)
             {
                 bool opponent = DssRef.diplomacy.InWar(parent.GetFaction(), group.GetFaction());
 
-                if (VectorExt.Length(group.position.X - parent.position.X, group.position.Z - parent.position.Z) < SoldierToGroupMaxDistance)
+                if (VectorExt.Length(group.position.X - parent.position.X, group.position.Z - parent.position.Z) < 3)
                 {
                     switch( group.gameobjectType())
                     {

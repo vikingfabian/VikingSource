@@ -30,10 +30,15 @@ Massive path finding update:
 > ! The CPU load is much higher, large maps can be unplayable.
 > ! This will introduce a lot of new bugs.
 
+Army structure update:
+> Move dynamic placement of soldiers in an army.
+> You can set their relative position.
+> ! Soldiers hindered by terrain will be pushed further back.
+
 New battle system:
 > Battles are not in a grid anymore.
 > Soldiers fight on a induvidual level, instead of army against army.
-> ! The melee units get stuck in a big blob.
+> ! Units get stuck in blobs, been improved from earlier versions.
 > ! Will be worse than the old system for a while, but has future potential.
 > ! Will igore land/water restrictions during fights.
 > ! This will introduce a lot of new bugs.
