@@ -9,16 +9,16 @@ namespace VikingEngine.DSSWars.GameObject
     class Projectile : AbsUpdateable
     {
         public static void ProjectileAttack(bool fullUpdate, AbsDetailUnit attacker,
-            AttackType type, AbsDetailUnit target, int damage) /*int splashCount, float splashPercDamage)*/
+            AttackType type, AbsDetailUnit target, int damage, int splashCount) /*int splashCount, float splashPercDamage)*/
         {
             if (fullUpdate)
             {
                 new Projectile(attacker.projectileStartPos(), attacker,
-                    type, target, damage);
+                    type, target, damage, splashCount);
             }
             else
             {
-                ProjectileHit(false, target, damage, attacker);
+                ProjectileHit(false, target, damage, splashCount, attacker);
             }
         }
         
@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.GameObject
         GameObject.AbsDetailUnit target; 
         int damage;
         int splashCount;
-        float splashPercDamage;
+        //float splashPercDamage;
 
         float totalDistance;
         Vector3 linearPosition;
@@ -45,18 +45,19 @@ namespace VikingEngine.DSSWars.GameObject
         Vector3 blankTarget;
 
         public Projectile(Vector3 start, AbsDetailUnit fromAttack, AttackType type, 
-            AbsDetailUnit target, int damage)
+            AbsDetailUnit target, int damage, int splashCount)
             : base(true)
         {
             this.fromAttack = fromAttack;
             this.target = target;
             this.damage = damage;
             
-            //this.splashCount = splashCount;
+            this.splashCount = splashCount;
             //this.splashPercDamage = splashPercDamage; 
             
             LootFest.VoxelModelName modelName;
             float scale;
+            int frame = 0;
 
             switch (type)
             {
@@ -72,18 +73,53 @@ namespace VikingEngine.DSSWars.GameObject
                     speed *= 1.5f;
                     linear = true;
                     break;
-                case AttackType.Cannonball:
+
+                case AttackType.Haubitz:
                     //warsRef.sound.rocket.Play(start);
                     modelName = LootFest.VoxelModelName.war_cannonball;
                     scale = DssConst.Men_StandardModelScale * 0.4f;
                     linear = false;
                     fireParticles = true;
                     break;
+                case AttackType.Cannonball:
+                    //warsRef.sound.rocket.Play(start);
+                    modelName = LootFest.VoxelModelName.war_cannonball;
+                    scale = DssConst.Men_StandardModelScale * 0.4f;
+                    linear = true;
+                    speed *= 1.5f;
+                    fireParticles = true;
+                    break;
+
+                case AttackType.GunShot:
+                    //warsRef.sound.rocket.Play(start);
+                    modelName = LootFest.VoxelModelName.war_cannonball;
+                    scale = DssConst.Men_StandardModelScale * 0.16f;
+                    linear = true;
+                    speed *= 1.5f;
+                    break;
+
+                case AttackType.GunBlast:
+                    //warsRef.sound.rocket.Play(start);
+                    modelName = LootFest.VoxelModelName.war_gunblast;
+                    scale = DssConst.Men_StandardModelScale * 0.45f;
+                    linear = true;
+                    speed *= 1.7f;
+                    frame = Ref.rnd.Int(3);
+                    break;
+
+                case AttackType.MassiveCannonball:
+                    //warsRef.sound.rocket.Play(start);
+                    modelName = LootFest.VoxelModelName.war_cannonball;
+                    scale = DssConst.Men_StandardModelScale * 0.8f;
+                    linear = true;
+                    speed *= 1.5f;
+                    fireParticles = true;
+                    break;
 
                 case AttackType.SlingShot:
                     //warsRef.sound.knifethrow.Play(start);
                     modelName = LootFest.VoxelModelName.slingstone;
-                    scale = 0.2f;
+                    scale = DssConst.Men_StandardModelScale * 0.14f;
                     break;
                 case AttackType.FireBomb:
                    // warsRef.sound.catapult.Play(start);
@@ -96,6 +132,12 @@ namespace VikingEngine.DSSWars.GameObject
                     modelName = LootFest.VoxelModelName.war_ballista_proj;
                     scale = DssConst.Men_StandardModelScale * 1.2f;
                     linear = true;
+                    break;
+                case AttackType.Catapult:
+                    rotatingSpeed = 2f;
+                    modelName = LootFest.VoxelModelName.boulder_proj;
+                    scale = DssConst.Men_StandardModelScale * 0.5f;
+                    linear = false;
                     break;
                 case AttackType.KnifeThrow:
                    // warsRef.sound.knifethrow.Play(start);
@@ -120,6 +162,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             model = DssRef.models.ModelInstance(modelName, scale, false);
             model.AddToRender(DrawGame.UnitDetailLayer);
+            model.Frame = frame;
             linearPosition = start;
             model.position = start;
 
@@ -208,30 +251,30 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (target != null)
             {
-                ProjectileHit(true, target, damage, /*splashCount, splashPercDamage,*/ fromAttack);
+                ProjectileHit(true, target, damage, splashCount, /*splashPercDamage,*/ fromAttack);
             }
         }
 
-        public static void ProjectileHit(bool fullUpdate, AbsDetailUnit target, int damage,
+        public static void ProjectileHit(bool fullUpdate, AbsDetailUnit target, int damage, int splashCount,
             //int splashCount, float splashPercDamage,
             AbsDetailUnit fromAttack)
         {
 
-            target.takeDamage(damage, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate);
-            //if (splashCount > 0 && target.IsSoldierUnit())
-            //{
-            //    int splashDamage = Convert.ToInt32(splashPercDamage * damage);
+            target.takeDamage(damage, null, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate);
+            if (splashCount > 0 && target.IsSoldierUnit())
+            {
+                int splashDamage = damage;//Convert.ToInt32(splashPercDamage * damage);
 
-            //    for (int i = 0; i < splashCount; i++)
-            //    {
-            //        var target2 = target.group.soldiers.GetRandomUnsafe(Ref.rnd);
-            //        if (target2 != null)
-            //        {
-            //            target2.takeDamage(splashDamage, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate);
-            //        }
-            //    }
-            //}
-            
+                for (int i = 0; i < splashCount; i++)
+                {
+                    var target2 = target.group.soldiers.GetRandomUnsafe(Ref.rnd);
+                    if (target2 != null)
+                    {
+                        target2.takeDamage(splashDamage, null, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate);
+                    }
+                }
+            }
+
         }
 
         public override void DeleteMe()

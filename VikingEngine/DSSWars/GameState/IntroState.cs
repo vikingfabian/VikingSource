@@ -12,6 +12,7 @@ using VikingEngine.SteamWrapping;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Work;
 
 namespace VikingEngine.DSSWars
 {
@@ -19,8 +20,7 @@ namespace VikingEngine.DSSWars
     /// The first state for DSS, will load all content
     /// </summary>
     class IntroState : Engine.GameState
-    {
-        
+    {        
         bool isReset;
         Graphics.TextG pressStartText;
 
@@ -51,9 +51,6 @@ namespace VikingEngine.DSSWars
             }
             else
             {
-                
-
-                
                 Engine.ParticleHandler.Init();
                 new VikingEngine.Engine.LoadBaseTextures();
                
@@ -95,8 +92,9 @@ namespace VikingEngine.DSSWars
             LootFest.Data.Block.Init();
             FlagAndColor.Init();
             ItemPropertyColl.Init();
+            WorkLib.Init();
 
-            
+
             new Models().loadContent();
 
             Engine.LoadContent.LoadMesh(LoadedMesh.cube_repeating, Engine.LoadContent.ModelPath + "cube_repeating");
@@ -130,6 +128,7 @@ namespace VikingEngine.DSSWars
             
                 new Data.GameStorage().Load();
             
+            DssRef.storage.meta.CreateImportFolders();
             Ref.gamesett.Load();
             new Display.Translation.Translation().setupLanguage(true);
 

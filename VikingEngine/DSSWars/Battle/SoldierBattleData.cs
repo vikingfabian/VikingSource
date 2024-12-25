@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.ToGG.MoonFall;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
 namespace VikingEngine.DSSWars.Battle
@@ -57,8 +58,30 @@ namespace VikingEngine.DSSWars.Battle
             }
         }
 
+        public void onTakeMeleeDamage(AbsSoldierUnit parent, AbsDetailUnit meleeAttacker)
+        {
+            if (parent.group.debugTagged && parent.parentArrayIndex == 3)
+            {
+                lib.DoNothing();
+            }
+
+            if (queueTime > 0)
+            {
+                queueTime = 0;
+                //parent.state2 = SoldierState2.
+                parent.attackTarget = meleeAttacker;
+                parent.nextAttackTarget = meleeAttacker;
+            }
+        }
+
         public bool InQueue(AbsSoldierUnit parent)
         {
+            var target_sp = parent.attackTarget;
+            if (target_sp != null && parent.distanceToUnit(target_sp) < DssConst.MeleeAwareRange)
+            {
+                return false;
+            }
+
             parent.bound.Center += parent.rotation.Direction(parent.bound.ExtremeRadius * 0.25f);
 
             lock (nearBodyCollisionUnits)
@@ -81,6 +104,9 @@ namespace VikingEngine.DSSWars.Battle
 
         public void asycUpdate(AbsSoldierUnit parent) 
         {
+            AbsDetailUnit closestOpponent = null;
+            float closestOpponentDistance = float.MaxValue;
+
             const float SoldierToGroupMaxDistance = 1.0f;
 
             SoldierBuffer.Clear();
@@ -89,23 +115,43 @@ namespace VikingEngine.DSSWars.Battle
 
             foreach (var group in GroupBuffer)
             {
+                bool opponent = DssRef.diplomacy.InWar(parent.GetFaction(), group.GetFaction());
+
                 if (VectorExt.Length(group.position.X - parent.position.X, group.position.Z - parent.position.Z) < SoldierToGroupMaxDistance)
                 {
-                    if (group.gameobjectType() == GameObjectType.SoldierGroup)
+                    switch( group.gameobjectType())
                     {
-                        var soldiers = group.GetGroup().soldiers;
-                        if (soldiers != null)
-                        {
-                            var soldiersC = soldiers.counter();
-                            while (soldiersC.Next())
+                        case GameObjectType.SoldierGroup:
+                            var soldiers = group.GetGroup().soldiers;
+                            if (soldiers != null)
                             {
-                                if (parent.bound.AsynchCollect(soldiersC.sel.bound) &&
-                                    soldiersC.sel != parent)
+                                var soldiersC = soldiers.counter();
+                                while (soldiersC.Next())
                                 {
-                                    SoldierBuffer.Add(soldiersC.sel);
+                                    if (soldiersC.sel.Alive_IncomingDamageIncluded())
+                                    {
+                                        if (parent.bound.AsynchCollect(soldiersC.sel.bound) &&
+                                            soldiersC.sel != parent)
+                                        {
+                                            SoldierBuffer.Add(soldiersC.sel);
+                                        }
+
+                                        if (opponent)
+                                        {
+                                            parent.closestTargetCheck(soldiersC.sel,
+                                                ref closestOpponent, ref closestOpponentDistance);
+                                        }
+                                    }
                                 }
                             }
-                        }
+                            break;
+                        case GameObjectType.City:
+                            if (opponent)
+                            {
+                                parent.closestTargetCheck(group.GetCity().detailObj,
+                                ref closestOpponent, ref closestOpponentDistance);
+                            }
+                            break;
                     }
                 }
             }
@@ -115,6 +161,8 @@ namespace VikingEngine.DSSWars.Battle
                 nearBodyCollisionUnits.Clear();
                 nearBodyCollisionUnits.AddRange(SoldierBuffer);
             }
+
+            parent.nextAttackTarget = closestOpponent;
         }
 
     }

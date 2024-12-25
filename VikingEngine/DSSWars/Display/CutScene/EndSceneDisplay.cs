@@ -66,9 +66,9 @@ namespace VikingEngine.DSSWars.Display.CutScene
             content.h1(string.Format(DssRef.lang.Settings_TotalDifficulty, DssRef.difficulty.TotalDifficulty()));
             content.text(string.Format(DssRef.lang.Settings_DifficultyLevel, DssRef.difficulty.PercDifficulty));
 
-            content.icontext(HudLib.CheckImage(DssRef.difficulty.allowPauseCommand), DssRef.lang.Settings_AllowPause);
+            content.icontext(HudLib.CheckImage(DssRef.difficulty.setting_allowPauseCommand), DssRef.lang.Settings_AllowPause);
 
-            var time = HudLib.TimeSpan(DssRef.time.TotalIngameTime());
+            var time = HudLib.TimeSpan_LongText(DssRef.time.TotalIngameTime());
             content.text(string.Format(DssRef.lang.EndGameStatistics_Time, time));
 
             content.newParagraph();

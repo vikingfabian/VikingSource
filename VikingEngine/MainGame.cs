@@ -38,6 +38,8 @@ namespace VikingEngine
         static void AbortAllThreads()
         {
             TaskExt.CheckStorageQue();
+
+            Ref.update.AbortThreads();
             //Ref.asynchUpdate.AbortThreads();
             //Engine.Storage.AbortSaveThread(true);
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DebugExtensions;
@@ -13,6 +14,7 @@ using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.XP;
 using VikingEngine.Input;
 using VikingEngine.ToGG.MoonFall;
 //
@@ -42,11 +44,13 @@ namespace VikingEngine.DSSWars
         bool exitThreads = false;
         public GameEvents events;
         public Progress progress = new Progress();
+        TechnologyManager technologyManager = new TechnologyManager();
         public AbsCutScene cutScene=null;
 
         bool bResourceMinuteUpdate = true;
         public int NextArmyId = 0;
         public GameMenuSystem menuSystem;
+        bool slowMinuteUpdate = true;   
         Timer.Basic subTileReloadTimer = new Timer.Basic(1000, true);                
 
         public PlayState(bool host, SaveStateMeta loadMeta)
@@ -56,6 +60,7 @@ namespace VikingEngine.DSSWars
             DssRef.state = this;
             this.host = host;
             Engine.Update.SetFrameRate(60);
+
             //int seed;
             //if (loadMeta == null)
             //{
@@ -91,12 +96,13 @@ namespace VikingEngine.DSSWars
 
             //Ref.rnd.SetSeed(DssRef.world.metaData.seed);
             initPlayers(newGame, pointers);
+
             culling = new Culling();
 
             factionsMap = new MapLayer_Factions();
             overviewMap = new Map.MapLayer_Overview(factionsMap);
             detailMap = new Map.MapLayer_Detail();
-
+            technologyManager.initGame(newGame);
             
             events = new GameEvents();
 
@@ -190,10 +196,13 @@ namespace VikingEngine.DSSWars
             {
                 localPlayers[i].initPlayerToPlayer(i, playerCount);
             }
+
+
         }
 
         void onGameStart(bool newGame)
         {
+            DssRef.difficulty.refreshSettings();
             events.onGameStart(newGame);
             Ref.music.OnGameStart();
 
@@ -213,19 +222,24 @@ namespace VikingEngine.DSSWars
                 initStartUnits();
             }
 
-            new AsynchUpdateable_TryCatch(asynchGameObjectsUpdate, "DSS gameobjects update", 51);
-            new AsynchUpdateable_TryCatch(asynchAiPlayersUpdate, "DSS ai player update", 52);
-            new AsynchUpdateable_TryCatch(asynchArmyAiUpdate, "DSS army ai update", 53);
-            new AsynchUpdateable_TryCatch(asynchCullingUpdate, "DSS culling update", 54);
-            new AsynchUpdateable_TryCatch(asynchSleepObjectsUpdate, "DSS sleep objects update", 55);
-            new AsynchUpdateable_TryCatch(asynchNearObjectsUpdate, "DSS near objects update", 56);
-            new AsynchUpdateable_TryCatch(asynchMapGenerating, "DSS map gen", 57);
-            new AsynchUpdateable_TryCatch(asyncUserUpdate, "DSS user update", 58);
-            new AsynchUpdateable_TryCatch(asyncMapBorders, "DSS map borders update", 59);
-            new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60);
-            //new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62);
-            new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63);
-            new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
+            //System.Threading.Thread.CurrentThread.Priority = System.Threading.ThreadPriority.Highest;
+            new AsynchUpdateable_TryCatch(asynchGameObjectsUpdate, "DSS gameobjects update", 51, System.Threading.ThreadPriority.BelowNormal);
+            new AsynchUpdateable_TryCatch(asynchAiPlayersUpdate, "DSS ai player update", 52, System.Threading.ThreadPriority.BelowNormal);
+            new AsynchUpdateable_TryCatch(asynchArmyAiUpdate, "DSS army ai update", 53, System.Threading.ThreadPriority.BelowNormal);
+            new AsynchUpdateable_TryCatch(asynchCullingUpdate, "DSS culling update", 54, System.Threading.ThreadPriority.BelowNormal);
+            new AsynchUpdateable_TryCatch(asynchSleepObjectsUpdate, "DSS sleep objects update", 55, System.Threading.ThreadPriority.BelowNormal);
+            new AsynchUpdateable_TryCatch(asynchNearObjectsUpdate, "DSS near objects update", 56, System.Threading.ThreadPriority.BelowNormal);
+            new AsynchUpdateable_TryCatch(asynchMapGenerating, "DSS map gen", 57, System.Threading.ThreadPriority.Normal);
+            new AsynchUpdateable_TryCatch(asyncUserUpdate, "DSS user update", 58, System.Threading.ThreadPriority.Normal);
+            new AsynchUpdateable_TryCatch(asyncMapBorders, "DSS map borders update", 59, System.Threading.ThreadPriority.Lowest);
+            new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60, System.Threading.ThreadPriority.Lowest);
+            //new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62, System.Threading.ThreadPriority.Normal);
+            new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63, System.Threading.ThreadPriority.Lowest);
+            new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61, System.Threading.ThreadPriority.Lowest);
+            new AsynchUpdateable_TryCatch(asyncSlowUpdate, "DSS slow update", 62, System.Threading.ThreadPriority.Lowest);
+
+            //new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63);
+            //new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
             new AsynchUpdateable_TryCatch(asyncPathUpdate, "DSS path update", 64);
 
             if (localPlayers.Count > 1)
@@ -319,10 +333,10 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            if (DssRef.time.oneSecond)
-            { 
-                DssRef.settings.OneSecondUpdate();                
-            }    
+            //if (DssRef.time.oneSecond)
+            //{ 
+            //    DssRef.settings.OneSecondUpdate();                
+            //}    
             if (DssRef.time.halfSecond)
             {
                 overviewMap.HalfSecondUpdate();
@@ -392,6 +406,8 @@ namespace VikingEngine.DSSWars
         { 
             bResourceMinuteUpdate = true;
 
+            slowMinuteUpdate = true;
+
             if (DssRef.storage.autoSave && 
                 Ref.TotalTimeSec > LastAutoSaveTime_TotalSec + AutoSaveTimeSec)
             {
@@ -402,6 +418,8 @@ namespace VikingEngine.DSSWars
                 LastAutoSaveTime_TotalSec = Ref.TotalTimeSec;
             }            
         }
+
+        
 
         public override void OnDestroy()
         {
@@ -420,6 +438,7 @@ namespace VikingEngine.DSSWars
         {
             Ref.music.stop(true);
             exitThreads = true;
+            
             new ExitGamePlay();
         }
 
@@ -490,15 +509,31 @@ namespace VikingEngine.DSSWars
 
         bool asyncResourcesUpdate(int id, float time)
         {
+            //This thread is the only thay may edit subtiles
             if (cutScene == null)
             {
+                resources.asyncEditTiles();
                 //Runs every minute to upate any resource progression: trees grow, food spoil, etc
                 if (bResourceMinuteUpdate || StartupSettings.DebugResoursesSuperSpeed)
                 {
                     bResourceMinuteUpdate = false;
 
-                    resources.asyncUpdate();
+                    resources.asyncGrowUpdate();
                 }
+            }
+            return exitThreads;
+        }
+
+        bool asyncSlowUpdate(int id, float time)
+        {
+            if (cutScene == null)
+            {
+                if (slowMinuteUpdate)
+                { 
+                    slowMinuteUpdate = false;
+                    technologyManager.asyncOneMinuteUpdate(true);
+                }
+
             }
             return exitThreads;
         }

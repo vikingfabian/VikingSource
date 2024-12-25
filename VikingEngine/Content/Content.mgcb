@@ -25,6 +25,18 @@
 /processorParam:TextureFormat=Color
 /build:DSS/dss_bg.png
 
+#begin DSS/flag painter bg.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DSS/flag painter bg.png
+
 #begin DSS/Map/map_sz0_i1.map
 /copy:DSS/Map/map_sz0_i1.map
 
@@ -504,6 +516,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/bow2.wav
+
+#begin DSS/Sound/break.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/break.wav
 
 #begin DSS/Sound/button_hover1.wav
 /importer:WavImporter
@@ -1267,6 +1285,9 @@
 #begin VoxelModel/LfWars/banner.vox
 /copy:VoxelModel/LfWars/banner.vox
 
+#begin VoxelModel/LfWars/boulder_proj.vox
+/copy:VoxelModel/LfWars/boulder_proj.vox
+
 #begin VoxelModel/LfWars/buildarea.vox
 /copy:VoxelModel/LfWars/buildarea.vox
 
@@ -1291,6 +1312,9 @@
 #begin VoxelModel/LfWars/city_dirtwall.vox
 /copy:VoxelModel/LfWars/city_dirtwall.vox
 
+#begin VoxelModel/LfWars/city_logistic.vox
+/copy:VoxelModel/LfWars/city_logistic.vox
+
 #begin VoxelModel/LfWars/city_mine.vox
 /copy:VoxelModel/LfWars/city_mine.vox
 
@@ -1306,8 +1330,8 @@
 #begin VoxelModel/LfWars/city_postal.vox
 /copy:VoxelModel/LfWars/city_postal.vox
 
-#begin VoxelModel/LfWars/city_recruitment.vox
-/copy:VoxelModel/LfWars/city_recruitment.vox
+#begin VoxelModel/LfWars/city_quarry.vox
+/copy:VoxelModel/LfWars/city_quarry.vox
 
 #begin VoxelModel/LfWars/city_smallhouse.vox
 /copy:VoxelModel/LfWars/city_smallhouse.vox
@@ -1335,6 +1359,9 @@
 
 #begin VoxelModel/LfWars/city_tower32.vox
 /copy:VoxelModel/LfWars/city_tower32.vox
+
+#begin VoxelModel/LfWars/city_water.vox
+/copy:VoxelModel/LfWars/city_water.vox
 
 #begin VoxelModel/LfWars/city_woodtower.vox
 /copy:VoxelModel/LfWars/city_woodtower.vox
@@ -1368,6 +1395,9 @@
 
 #begin VoxelModel/LfWars/fol_farmculture.vox
 /copy:VoxelModel/LfWars/fol_farmculture.vox
+
+#begin VoxelModel/LfWars/fol_farmculture2.vox
+/copy:VoxelModel/LfWars/fol_farmculture2.vox
 
 #begin VoxelModel/LfWars/fol_herbs.vox
 /copy:VoxelModel/LfWars/fol_herbs.vox
@@ -1417,6 +1447,15 @@
 #begin VoxelModel/LfWars/Pig.vox
 /copy:VoxelModel/LfWars/Pig.vox
 
+#begin VoxelModel/LfWars/resource_rubble.vox
+/copy:VoxelModel/LfWars/resource_rubble.vox
+
+#begin VoxelModel/LfWars/resource_tree.vox
+/copy:VoxelModel/LfWars/resource_tree.vox
+
+#begin VoxelModel/LfWars/slingstone.vox
+/copy:VoxelModel/LfWars/slingstone.vox
+
 #begin VoxelModel/LfWars/war_archer_i2.vox
 /copy:VoxelModel/LfWars/war_archer_i2.vox
 
@@ -1440,6 +1479,12 @@
 
 #begin VoxelModel/LfWars/war_folkman.vox
 /copy:VoxelModel/LfWars/war_folkman.vox
+
+#begin VoxelModel/LfWars/war_gnome.vox
+/copy:VoxelModel/LfWars/war_gnome.vox
+
+#begin VoxelModel/LfWars/war_gunblast.vox
+/copy:VoxelModel/LfWars/war_gunblast.vox
 
 #begin VoxelModel/LfWars/war_knight_i2.vox
 /copy:VoxelModel/LfWars/war_knight_i2.vox
@@ -1507,11 +1552,23 @@
 #begin VoxelModel/LfWars/wars_borderstick.vox
 /copy:VoxelModel/LfWars/wars_borderstick.vox
 
+#begin VoxelModel/LfWars/wars_bronzemancannon.vox
+/copy:VoxelModel/LfWars/wars_bronzemancannon.vox
+
+#begin VoxelModel/LfWars/wars_bronzesiegecannon.vox
+/copy:VoxelModel/LfWars/wars_bronzesiegecannon.vox
+
 #begin VoxelModel/LfWars/wars_captain.vox
 /copy:VoxelModel/LfWars/wars_captain.vox
 
+#begin VoxelModel/LfWars/wars_catapult.vox
+/copy:VoxelModel/LfWars/wars_catapult.vox
+
 #begin VoxelModel/LfWars/wars_crossbow.vox
 /copy:VoxelModel/LfWars/wars_crossbow.vox
+
+#begin VoxelModel/LfWars/wars_culvertin.vox
+/copy:VoxelModel/LfWars/wars_culvertin.vox
 
 #begin VoxelModel/LfWars/wars_darklord.vox
 /copy:VoxelModel/LfWars/wars_darklord.vox
@@ -1522,11 +1579,38 @@
 #begin VoxelModel/LfWars/wars_folk_ship.vox
 /copy:VoxelModel/LfWars/wars_folk_ship.vox
 
+#begin VoxelModel/LfWars/wars_hammer.vox
+/copy:VoxelModel/LfWars/wars_hammer.vox
+
+#begin VoxelModel/LfWars/wars_handcannon.vox
+/copy:VoxelModel/LfWars/wars_handcannon.vox
+
+#begin VoxelModel/LfWars/wars_ironmancannon.vox
+/copy:VoxelModel/LfWars/wars_ironmancannon.vox
+
+#begin VoxelModel/LfWars/wars_ironsiegecannon.vox
+/copy:VoxelModel/LfWars/wars_ironsiegecannon.vox
+
+#begin VoxelModel/LfWars/wars_javelin.vox
+/copy:VoxelModel/LfWars/wars_javelin.vox
+
 #begin VoxelModel/LfWars/wars_knight_ship.vox
 /copy:VoxelModel/LfWars/wars_knight_ship.vox
 
 #begin VoxelModel/LfWars/wars_loading_anim.vox
 /copy:VoxelModel/LfWars/wars_loading_anim.vox
+
+#begin VoxelModel/LfWars/wars_longsword.vox
+/copy:VoxelModel/LfWars/wars_longsword.vox
+
+#begin VoxelModel/LfWars/wars_manuballista.vox
+/copy:VoxelModel/LfWars/wars_manuballista.vox
+
+#begin VoxelModel/LfWars/wars_mithrilarcher.vox
+/copy:VoxelModel/LfWars/wars_mithrilarcher.vox
+
+#begin VoxelModel/LfWars/wars_mithrilman.vox
+/copy:VoxelModel/LfWars/wars_mithrilman.vox
 
 #begin VoxelModel/LfWars/wars_piker.vox
 /copy:VoxelModel/LfWars/wars_piker.vox
@@ -1540,6 +1624,9 @@
 #begin VoxelModel/LfWars/wars_shipmelee.vox
 /copy:VoxelModel/LfWars/wars_shipmelee.vox
 
+#begin VoxelModel/LfWars/wars_slingman.vox
+/copy:VoxelModel/LfWars/wars_slingman.vox
+
 #begin VoxelModel/LfWars/wars_soldier_i2.vox
 /copy:VoxelModel/LfWars/wars_soldier_i2.vox
 
@@ -1551,6 +1638,9 @@
 
 #begin VoxelModel/LfWars/wars_soldier.vox
 /copy:VoxelModel/LfWars/wars_soldier.vox
+
+#begin VoxelModel/LfWars/wars_spearman.vox
+/copy:VoxelModel/LfWars/wars_spearman.vox
 
 #begin VoxelModel/LfWars/wars_trollcannon.vox
 /copy:VoxelModel/LfWars/wars_trollcannon.vox

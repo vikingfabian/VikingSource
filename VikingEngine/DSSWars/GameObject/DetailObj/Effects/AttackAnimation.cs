@@ -111,7 +111,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         new ShipMeleeAttack(GetSoldierUnit(), attackDir);
                     }
-                    target.takeDamage(damage, attackDir, GetFaction(), fullUpdate);
+                    target.takeDamage(damage, this, attackDir, GetFaction(), fullUpdate);
                 }
                 else
                 {
@@ -122,11 +122,11 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (mainAttack)
                     {
-                        Projectile.ProjectileAttack(fullUpdate, this, soldierData.mainAttack, target, damage);
+                        Projectile.ProjectileAttack(fullUpdate, this, soldierData.mainAttack, target, damage, soldierData.attackSplashCount);
                     }
                     else
                     {
-                        Projectile.ProjectileAttack(fullUpdate, this, soldierData.secondaryAttack, target, damage);
+                        Projectile.ProjectileAttack(fullUpdate, this, soldierData.secondaryAttack, target, damage, soldierData.attackSplashCount);
                     }
                 }
             }
@@ -155,12 +155,18 @@ namespace VikingEngine.DSSWars.GameObject
         Bolt,
         RocketArrow,
         Ballista,
+        Catapult,
+        Haubitz,
         Cannonball,
+        MassiveCannonball,
         FireBomb,
         SlingShot,
         KnifeThrow,
         SecondaryJavelin,
         Javelin,
+
+        GunShot,
+        GunBlast,
         NUM_NON
     }
 

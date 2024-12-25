@@ -10,447 +10,242 @@ namespace VikingEngine.DSSWars.Resource
 {
     static class ResourceLib
     {
-        public static readonly ItemResourceType[] SmithCraftTypes = { ItemResourceType.Iron_G, ItemResourceType.MediumArmor, ItemResourceType.HeavyArmor, ItemResourceType.Sword, ItemResourceType.TwoHandSword, ItemResourceType.KnightsLance };
-        public static readonly ItemResourceType[] BenchCraftTypes = { ItemResourceType.Fuel_G, ItemResourceType.LightArmor, ItemResourceType.SharpStick, ItemResourceType.Bow };
-        public static readonly ItemResourceType[] CarpenterCraftTypes = { ItemResourceType.SharpStick, ItemResourceType.Bow, ItemResourceType.LongBow, ItemResourceType.Ballista };
-
-        public static readonly CraftBlueprint CraftFuel1 = new CraftBlueprint(
-            CraftResultType.Resource,
-            (int)ItemResourceType.Fuel_G,
-            5,
-            new UseResource[]
-            {
-                new UseResource(ItemResourceType.Wood_Group, 5),
-            }
-        );
-
-        public static readonly CraftBlueprint CraftCharcoal = new CraftBlueprint(
-            CraftResultType.Resource,
-            (int)ItemResourceType.Fuel_G,
-            25,
-            new UseResource[]
-            {
-                new UseResource(ItemResourceType.Fuel_G, 10),
-                new UseResource(ItemResourceType.Wood_Group, 10),
-            }, CraftRequirement.CoalPit
-        );
-
-        const int FoodWaterUsage = 3;
-        const int FoodCraftAmount = 20;
-
-
-        public static readonly CraftBlueprint CraftFood1 = new CraftBlueprint(
-            CraftResultType.Resource,
-            (int)ItemResourceType.Food_G,
-            FoodCraftAmount,
-            new UseResource[]
-            {
-                new UseResource(ItemResourceType.Water_G, FoodWaterUsage),
-                new UseResource(ItemResourceType.Fuel_G, FoodWaterUsage),
-                new UseResource(ItemResourceType.RawFood_Group, FoodCraftAmount)
-            }
-        )
-        { tooltipId = Tooltip.Food_BlueprintId };
-
-        public static readonly CraftBlueprint CraftFood2 = new CraftBlueprint(
-            CraftResultType.Resource,
-            (int)ItemResourceType.Food_G,
-            FoodCraftAmount,
-            new UseResource[]
-            {
-                new UseResource(ItemResourceType.Beer, FoodWaterUsage),
-                new UseResource(ItemResourceType.Fuel_G, FoodWaterUsage),
-                new UseResource(ItemResourceType.RawFood_Group, FoodCraftAmount)
-            }
-        )
-        { tooltipId = Tooltip.Food_BlueprintId };
-
-        public static readonly CraftBlueprint CraftBeer = new CraftBlueprint(
-                CraftResultType.Resource,
-                (int)ItemResourceType.Beer,
-               10,
-               new UseResource[]
-               {
-                new UseResource(ItemResourceType.Water_G, 5),
-                new UseResource(ItemResourceType.Fuel_G, 1),
-                new UseResource(ItemResourceType.RawFood_Group, 1)
-               },
-               CraftRequirement.Brewery
-           );
-
-        public static readonly CraftBlueprint CraftIron = new CraftBlueprint(
-            CraftResultType.Resource,
-            (int)ItemResourceType.Iron_G,
-            4,
-            new UseResource[]
-            {
-                new UseResource(ItemResourceType.Water_G, 1),
-                new UseResource(ItemResourceType.Fuel_G, 30),
-                new UseResource(ItemResourceType.IronOre_G, 2)
-            },
-            CraftRequirement.Smith
-        );
-
-        public static readonly CraftBlueprint CraftSharpStick = new CraftBlueprint(
-            CraftResultType.Resource,
-            (int)ItemResourceType.SharpStick,
-            1,
-            new UseResource[]
-            {
-                new UseResource(ItemResourceType.Wood_Group, 1),
-                new UseResource(ItemResourceType.Stone_G, 1),
-            }
-        );
-
-        public static readonly CraftBlueprint CraftSword = new CraftBlueprint(
-            CraftResultType.Resource,
-            (int)ItemResourceType.Sword,
-            1,
-            new UseResource[]
-            {
-                new UseResource(ItemResourceType.SkinLinen_Group, 1),
-                new UseResource(ItemResourceType.Iron_G, 3),
-            },
-            CraftRequirement.Smith
-        );
-
-        public static readonly CraftBlueprint CraftKnightsLance = new CraftBlueprint(
-            CraftResultType.Resource,
-            (int)ItemResourceType.KnightsLance,
-            1,
-            new UseResource[]
-            {
-                new UseResource(ItemResourceType.Gold, 60),
-                new UseResource(ItemResourceType.RawFood_Group, 20),
-                new UseResource(ItemResourceType.Wood_Group, 5),
-                new UseResource(ItemResourceType.Iron_G, 5),
-            },
-            CraftRequirement.Smith
-        );
-
-        public static readonly CraftBlueprint CraftTwoHandSword = new CraftBlueprint(
-            CraftResultType.Resource,
-            (int)ItemResourceType.TwoHandSword,
-            1,
-            new UseResource[]
-            {
-                new UseResource(ItemResourceType.SkinLinen_Group, 1),
-                new UseResource(ItemResourceType.Iron_G, 6),
-            },
-            CraftRequirement.Smith
-        );
-
-        public static readonly CraftBlueprint CraftBow = new CraftBlueprint(
-            CraftResultType.Resource,
-            (int)ItemResourceType.Bow,
-            1,
-            new UseResource[]
-            {
-                new UseResource(ItemResourceType.Wood_Group, 2),
-                new UseResource(ItemResourceType.SkinLinen_Group, 2),
-            }
-        );
-        public static readonly CraftBlueprint CraftLongBow = new CraftBlueprint(
-            CraftResultType.Resource,
-            (int)ItemResourceType.LongBow,
-            1,
-            new UseResource[]
-            {
-                new UseResource(ItemResourceType.Wood_Group, 4),
-                new UseResource(ItemResourceType.SkinLinen_Group, 3),
-            }, CraftRequirement.Carpenter
-        );
-
-        public static readonly CraftBlueprint CraftBallista = new CraftBlueprint(
-            CraftResultType.Resource,
-            (int)ItemResourceType.Ballista,
-            1,
-            new UseResource[]
-            {
-                new UseResource(ItemResourceType.Wood_Group, 8),
-                new UseResource(ItemResourceType.SkinLinen_Group, 4),
-                new UseResource(ItemResourceType.Iron_G, 1),
-            },
-            CraftRequirement.Carpenter
-        );
-
-        public static readonly CraftBlueprint CraftLightArmor = new CraftBlueprint(
-            CraftResultType.Resource,
-            (int)ItemResourceType.LightArmor,
-            1,
-            new UseResource[]
-            {
-        new UseResource(ItemResourceType.SkinLinen_Group, 4),
-            }
-        );
-
-        public static readonly CraftBlueprint CraftMediumArmor = new CraftBlueprint(
-            CraftResultType.Resource,
-            (int)ItemResourceType.MediumArmor,
-            1,
-            new UseResource[]
-            {
-        new UseResource(ItemResourceType.SkinLinen_Group, 4),
-        new UseResource(ItemResourceType.Iron_G, 2),
-            },
-            CraftRequirement.Smith
-        );
-
-        public static readonly CraftBlueprint CraftHeavyArmor = new CraftBlueprint(
-            CraftResultType.Resource,
-            (int)ItemResourceType.HeavyArmor,
-            1,
-            new UseResource[]
-            {
-        new UseResource(ItemResourceType.SkinLinen_Group, 2),
-        new UseResource(ItemResourceType.Iron_G, 6),
-            },
-            CraftRequirement.Smith
-        );
-
-        public static readonly CraftBlueprint CraftWorkerHut = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.WorkerHuts,
-            1,
-            new UseResource[]
-            {
-        new UseResource(ItemResourceType.Wood_Group, 200),
-        new UseResource(ItemResourceType.Stone_G, 40)
-            }
-        );
-
-        public static readonly CraftBlueprint CraftTavern = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.Tavern,
-            1,
-            new UseResource[]
-            {
-                new UseResource(ItemResourceType.Wood_Group, 100),
-                new UseResource(ItemResourceType.Stone_G, 20)
-            }
-        );
-
-        public static readonly CraftBlueprint CraftStorehouse = new CraftBlueprint(
-           CraftResultType.Building,
-           (int)Build.BuildAndExpandType.Storehouse,
-           1,
-           new UseResource[]
-           {
-                new UseResource(ItemResourceType.Wood_Group, 60),
-                new UseResource(ItemResourceType.Stone_G, 40)
-           }
-       );
-
-        public static readonly CraftBlueprint CraftBrewery = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.Brewery,
-           1,
-           new UseResource[]
-           {
-                new UseResource(ItemResourceType.Wood_Group, 60),
-                new UseResource(ItemResourceType.Iron_G, 5)
-           }
-       );
-
-        public static readonly CraftBlueprint CraftPostal = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.Postal,
-           1,
-           new UseResource[]
-           {
-        new UseResource(ItemResourceType.Wood_Group, 60),
-           }
-       );
-
-        public static readonly CraftBlueprint CraftRecruitment = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.Recruitment,
-            1,
-            new UseResource[]
-            {
-        new UseResource(ItemResourceType.Wood_Group, 50),
-        new UseResource(ItemResourceType.SkinLinen_Group, 10)
-            }
-        );
-
-        public static readonly CraftBlueprint CraftBarracks = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.Barracks,
-            1,
-            new UseResource[]
-            {
-        new UseResource(ItemResourceType.Wood_Group, 100),
-        new UseResource(ItemResourceType.Stone_G, 20)
-            }
-        );
-
-        public static readonly CraftBlueprint CraftPigPen = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.PigPen,
-            1,
-            new UseResource[]
-            {
-        new UseResource(ItemResourceType.Water_G, 4),
-        new UseResource(ItemResourceType.Wood_Group, 20),
-        new UseResource(ItemResourceType.RawFood_Group, DssConst.PigRawFoodAmout)
-            }
-        );
-
-        public static readonly CraftBlueprint CraftHenPen = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.HenPen,
-            1,
-            new UseResource[]
-            {
-        new UseResource(ItemResourceType.Water_G, 2),
-        new UseResource(ItemResourceType.Wood_Group, 20),
-        new UseResource(ItemResourceType.RawFood_Group, DssConst.DefaultItemRawFoodAmount)
-            }
-        );
-
-        static readonly UseResource[] FarmResources = new UseResource[]
-            {
-                new UseResource(ItemResourceType.RawFood_Group, 4),
-                new UseResource(ItemResourceType.Water_G, 2),
-            };
-
-        public static readonly CraftBlueprint CraftWheatFarm = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.WheatFarm,
-            1,
-            FarmResources
-        );
-
-        public static readonly CraftBlueprint CraftLinenFarm = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.LinenFarm,
-            1,
-            FarmResources
-        );
-
-        public static readonly CraftBlueprint CraftHempFarm = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.HempFarm,
-            1,
-            FarmResources
-        );
-
-        public static readonly CraftBlueprint CraftRapeseedFarm = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.RapeSeedFarm,
-            1,
-            FarmResources
-        );
-
-        public const int CraftSmith_IronUse = 10;
-        public static readonly CraftBlueprint CraftSmith = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.Smith,
-           1,
-           new UseResource[]
-           {
-               new UseResource(ItemResourceType.Wood_Group, 10),
-               new UseResource(ItemResourceType.Iron_G, CraftSmith_IronUse),
-           }
-       );
-
-        public static readonly CraftBlueprint CraftCook = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.Cook,
-           1,
-           new UseResource[]
-           {
-               new UseResource(ItemResourceType.Wood_Group, 10),
-               new UseResource(ItemResourceType.Stone_G, 10),
-               new UseResource(ItemResourceType.Iron_G, 5),
-           }
-        );
-
-        public static readonly CraftBlueprint CraftWorkBench = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.WorkBench,
-           1,
-           new UseResource[]
-           {
-               new UseResource(ItemResourceType.Wood_Group, 10),
-               new UseResource(ItemResourceType.Iron_G, 2),
-           }
-        );
-
-        public static readonly CraftBlueprint CraftCoalPit = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.CoalPit,
-           1,
-           new UseResource[]
-           {
-               new UseResource(ItemResourceType.Stone_G, 30),
-           }
-        );
-
-        public static readonly CraftBlueprint CraftCarpenter = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.Carpenter,
-           1,
-           new UseResource[]
-           {
-               new UseResource(ItemResourceType.Wood_Group, 20),
-               new UseResource(ItemResourceType.Iron_G, 8),
-           }
-        );
-
-        public static readonly CraftBlueprint CraftNobelHouse = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.Nobelhouse,
-            1,
-            new UseResource[]
-            {
-                new UseResource(ItemResourceType.Gold, 5000),
-                new UseResource(ItemResourceType.Wood_Group, 100),
-                new UseResource(ItemResourceType.Stone_G, 200)
-            }
-        );
-
-        public static readonly CraftBlueprint CraftPavement = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.Pavement,
-           1,
-           new UseResource[]
-           {
-               new UseResource(ItemResourceType.Stone_G, 20),
-           }
-       );
-        public static readonly CraftBlueprint CraftPavementFlower = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.PavementFlower,
-           1,
-           new UseResource[]
-           {
-                new UseResource(ItemResourceType.RawFood_Group, 5),
-               new UseResource(ItemResourceType.Stone_G, 20),
-           }
-       );
-
-        public static readonly CraftBlueprint CraftStatue = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.Statue_ThePlayer,
-           1,
-           new UseResource[]
-           {
-               new UseResource(ItemResourceType.Stone_G, 500),
-               new UseResource(ItemResourceType.Iron_G, 50),
-           }
-       );
-
-
         public static readonly CraftBlueprint ConvertGoldOre = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.Gold,
-           1,
+           DssConst.GoldOreSellValue,
            new UseResource[]
            {
                new UseResource(ItemResourceType.GoldOre, 1),
-           }
+           },
+            XP.WorkExperienceType.CraftMetal
        );
+
+        public static readonly CraftBlueprint CupperCoin = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.Gold,
+           5 * DssConst.CupperSellValue,
+           new UseResource[]
+           {
+               new UseResource(ItemResourceType.Copper, 5),
+           },
+            XP.WorkExperienceType.NONE
+       );
+
+        public static readonly CraftBlueprint BronzeCoin = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.Gold,
+           5 * DssConst.BronzeSellValue,
+           new UseResource[]
+           {
+               new UseResource(ItemResourceType.Bronze, 5),
+           },
+            XP.WorkExperienceType.NONE
+       );
+
+        public static readonly CraftBlueprint SilverCoin = new CraftBlueprint(
+           CraftResultType.Resource,
+           (int)ItemResourceType.Gold,
+          5 * DssConst.SilverSellValue,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Silver, 5),
+          },
+           XP.WorkExperienceType.NONE
+      );
+
+        public static readonly CraftBlueprint ElfCoin = new CraftBlueprint(
+           CraftResultType.Resource,
+           (int)ItemResourceType.Gold,
+          DssConst.MithrilSellValue,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Mithril, 1),
+          },
+           XP.WorkExperienceType.NONE
+      );
+
+        // public static readonly CraftBlueprint CraftRecruitment = new CraftBlueprint(
+        //     CraftResultType.Building,
+        //     (int)Build.BuildAndExpandType.Recruitment,
+        //     1,
+        //     new UseResource[]
+        //     {
+        // new UseResource(ItemResourceType.Wood_Group, 50),
+        // new UseResource(ItemResourceType.SkinLinen_Group, 10)
+        //     }
+        // );
+
+        // public static readonly CraftBlueprint CraftBarracks = new CraftBlueprint(
+        //     CraftResultType.Building,
+        //     (int)Build.BuildAndExpandType.Barracks,
+        //     1,
+        //     new UseResource[]
+        //     {
+        // new UseResource(ItemResourceType.Wood_Group, 100),
+        // new UseResource(ItemResourceType.Stone_G, 20)
+        //     }
+        // );
+
+        // public static readonly CraftBlueprint CraftPigPen = new CraftBlueprint(
+        //     CraftResultType.Building,
+        //     (int)Build.BuildAndExpandType.PigPen,
+        //     1,
+        //     new UseResource[]
+        //     {
+        // new UseResource(ItemResourceType.Water_G, 4),
+        // new UseResource(ItemResourceType.Wood_Group, 20),
+        // new UseResource(ItemResourceType.RawFood_Group, DssConst.WheatFoodAmount)
+        //     }
+        // );
+
+        // public static readonly CraftBlueprint CraftHenPen = new CraftBlueprint(
+        //     CraftResultType.Building,
+        //     (int)Build.BuildAndExpandType.HenPen,
+        //     1,
+        //     new UseResource[]
+        //     {
+        // new UseResource(ItemResourceType.Water_G, 2),
+        // new UseResource(ItemResourceType.Wood_Group, 20),
+        // new UseResource(ItemResourceType.RawFood_Group, DssConst.WheatFoodAmount)
+        //     }
+        // );
+
+        // static readonly UseResource[] FarmResources = new UseResource[]
+        //     {
+        //         new UseResource(ItemResourceType.RawFood_Group, 4),
+        //         new UseResource(ItemResourceType.Water_G, 2),
+        //     };
+
+        // public static readonly CraftBlueprint CraftWheatFarm = new CraftBlueprint(
+        //     CraftResultType.Building,
+        //     (int)Build.BuildAndExpandType.WheatFarm,
+        //     1,
+        //     FarmResources
+        // );
+
+        // public static readonly CraftBlueprint CraftLinenFarm = new CraftBlueprint(
+        //     CraftResultType.Building,
+        //     (int)Build.BuildAndExpandType.LinenFarm,
+        //     1,
+        //     FarmResources
+        // );
+
+        // public static readonly CraftBlueprint CraftHempFarm = new CraftBlueprint(
+        //     CraftResultType.Building,
+        //     (int)Build.BuildAndExpandType.HempFarm,
+        //     1,
+        //     FarmResources
+        // );
+
+        // public static readonly CraftBlueprint CraftRapeseedFarm = new CraftBlueprint(
+        //     CraftResultType.Building,
+        //     (int)Build.BuildAndExpandType.RapeSeedFarm,
+        //     1,
+        //     FarmResources
+        // );
+
+        // public const int CraftSmith_IronUse = 10;
+        // public static readonly CraftBlueprint CraftSmith = new CraftBlueprint(
+        //     CraftResultType.Building,
+        //     (int)Build.BuildAndExpandType.Smith,
+        //    1,
+        //    new UseResource[]
+        //    {
+        //        new UseResource(ItemResourceType.Wood_Group, 10),
+        //        new UseResource(ItemResourceType.Iron_G, CraftSmith_IronUse),
+        //    }
+        //);
+
+        // public static readonly CraftBlueprint CraftCook = new CraftBlueprint(
+        //     CraftResultType.Building,
+        //     (int)Build.BuildAndExpandType.Cook,
+        //    1,
+        //    new UseResource[]
+        //    {
+        //        new UseResource(ItemResourceType.Wood_Group, 10),
+        //        new UseResource(ItemResourceType.Stone_G, 10),
+        //        new UseResource(ItemResourceType.Iron_G, 5),
+        //    }
+        // );
+
+        // public static readonly CraftBlueprint CraftWorkBench = new CraftBlueprint(
+        //     CraftResultType.Building,
+        //     (int)Build.BuildAndExpandType.WorkBench,
+        //    1,
+        //    new UseResource[]
+        //    {
+        //        new UseResource(ItemResourceType.Wood_Group, 10),
+        //        new UseResource(ItemResourceType.Iron_G, 2),
+        //    }
+        // );
+
+        // public static readonly CraftBlueprint CraftCoalPit = new CraftBlueprint(
+        //     CraftResultType.Building,
+        //     (int)Build.BuildAndExpandType.CoalPit,
+        //    1,
+        //    new UseResource[]
+        //    {
+        //        new UseResource(ItemResourceType.Stone_G, 30),
+        //    }
+        // );
+
+        // public static readonly CraftBlueprint CraftCarpenter = new CraftBlueprint(
+        //     CraftResultType.Building,
+        //     (int)Build.BuildAndExpandType.Carpenter,
+        //    1,
+        //    new UseResource[]
+        //    {
+        //        new UseResource(ItemResourceType.Wood_Group, 20),
+        //        new UseResource(ItemResourceType.Iron_G, 8),
+        //    }
+        // );
+
+        // public static readonly CraftBlueprint CraftNobelHouse = new CraftBlueprint(
+        //     CraftResultType.Building,
+        //     (int)Build.BuildAndExpandType.Nobelhouse,
+        //     1,
+        //     new UseResource[]
+        //     {
+        //         new UseResource(ItemResourceType.Gold, 5000),
+        //         new UseResource(ItemResourceType.Wood_Group, 100),
+        //         new UseResource(ItemResourceType.Stone_G, 200)
+        //     }
+        // );
+
+        // public static readonly CraftBlueprint CraftPavement = new CraftBlueprint(
+        //     CraftResultType.Building,
+        //     (int)Build.BuildAndExpandType.Pavement,
+        //    1,
+        //    new UseResource[]
+        //    {
+        //        new UseResource(ItemResourceType.Stone_G, 20),
+        //    }
+        //);
+        // public static readonly CraftBlueprint CraftPavementFlower = new CraftBlueprint(
+        //     CraftResultType.Building,
+        //     (int)Build.BuildAndExpandType.PavementFlower,
+        //    1,
+        //    new UseResource[]
+        //    {
+        //         new UseResource(ItemResourceType.RawFood_Group, 5),
+        //        new UseResource(ItemResourceType.Stone_G, 20),
+        //    }
+        //);
+
+        // public static readonly CraftBlueprint CraftStatue = new CraftBlueprint(
+        //     CraftResultType.Building,
+        //     (int)Build.BuildAndExpandType.Statue_ThePlayer,
+        //    1,
+        //    new UseResource[]
+        //    {
+        //        new UseResource(ItemResourceType.Stone_G, 500),
+        //        new UseResource(ItemResourceType.Iron_G, 50),
+        //    }
+        //);
+
+
+
 
         public static string Name(ResourceType resource)
         {
@@ -502,29 +297,35 @@ namespace VikingEngine.DSSWars.Resource
             {
                 case ItemResourceType.Gold:
                     return SpriteName.rtsMoney;
+                case ItemResourceType.Men:
+                    return SpriteName.WarsWorker;
 
                 case ItemResourceType.Ballista:
                     return SpriteName.WarsResource_Ballista;
                 case ItemResourceType.Beer:
                     return SpriteName.WarsResource_Beer;
+                case ItemResourceType.CoolingFluid:
+                    return SpriteName.WarsResource_CoolingFluid;
                 case ItemResourceType.Bow:
                     return SpriteName.WarsResource_Bow;
+                case ItemResourceType.Crossbow:
+                    return SpriteName.WarsResource_Crossbow;
                 case ItemResourceType.Egg:
                     return SpriteName.WarsResource_Egg;
                 case ItemResourceType.Food_G:
                     return SpriteName.WarsResource_Food;
                 case ItemResourceType.GoldOre:
                     return SpriteName.WarsResource_GoldOre;
-                case ItemResourceType.HeavyArmor:
-                    return SpriteName.WarsResource_HeavyArmor;
+                case ItemResourceType.HeavyIronArmor:
+                    return SpriteName.WarsResource_HeavyIronArmor;
                 case ItemResourceType.Iron_G:
                     return SpriteName.WarsResource_Iron;
                 case ItemResourceType.IronOre_G:
                     return SpriteName.WarsResource_IronOre;
-                case ItemResourceType.MediumArmor:
-                    return SpriteName.WarsResource_MediumArmor;
-                case ItemResourceType.LightArmor:
-                    return SpriteName.WarsResource_LightArmor;
+                case ItemResourceType.IronArmor:
+                    return SpriteName.WarsResource_IronArmor;
+                case ItemResourceType.PaddedArmor:
+                    return SpriteName.WarsResource_PaddedArmor;
                 case ItemResourceType.Linen:
                     return SpriteName.WarsResource_Linen;
                 case ItemResourceType.LongBow:
@@ -563,36 +364,117 @@ namespace VikingEngine.DSSWars.Resource
                 case ItemResourceType.KnightsLance:
                     return SpriteName.WarsResource_KnightsLance;
 
+
+                case ItemResourceType.Wagon2Wheel:
+                    return SpriteName.WarsResource_Wagon2Wheel;
+                case ItemResourceType.Wagon4Wheel:
+                    return SpriteName.WarsResource_Wagon4Wheel;
+                case ItemResourceType.Tin:
+                    return SpriteName.WarsResource_Tin;
+                case ItemResourceType.TinOre:
+                    return SpriteName.WarsResource_TinOre;
+                case ItemResourceType.Bronze:
+                    return SpriteName.WarsResource_Bronze;
+                case ItemResourceType.Copper:
+                    return SpriteName.WarsResource_Copper;
+                case ItemResourceType.CopperOre:
+                    return SpriteName.WarsResource_CopperOre;
+                case ItemResourceType.Silver:
+                    return SpriteName.WarsResource_Silver;
+                case ItemResourceType.SilverOre:
+                    return SpriteName.WarsResource_SilverOre;
+                case ItemResourceType.Mithril:
+                    return SpriteName.WarsResource_MithrilAlloy;
+                case ItemResourceType.RawMithril:
+                    return SpriteName.WarsResource_Mithril;
+
+                case ItemResourceType.BronzeSword:
+                    return SpriteName.WarsResource_BronzeSword;
+                case ItemResourceType.ShortSword:
+                    return SpriteName.WarsResource_ShortSword;
+                case ItemResourceType.LongSword:
+                    return SpriteName.WarsResource_Longsword;
+                case ItemResourceType.HandSpear:
+                    return SpriteName.WarsResource_HandSpear;
+                case ItemResourceType.Warhammer:
+                    return SpriteName.WarsResource_Warhammer;
+                case ItemResourceType.MithrilSword:
+                    return SpriteName.WarsResource_MithrilSword;
+                case ItemResourceType.SlingShot:
+                    return SpriteName.WarsResource_Slingshot;
+                case ItemResourceType.ThrowingSpear:
+                    return SpriteName.WarsResource_ThrowSpear;
+                case ItemResourceType.MithrilBow:
+                    return SpriteName.WarsResource_Mithrilbow;
+
+                case ItemResourceType.Toolkit:
+                    return SpriteName.WarsResource_Toolkit;
+
+                case ItemResourceType.Sulfur:
+                    return SpriteName.WarsResource_Sulfur;
+                case ItemResourceType.LeadOre:
+                    return SpriteName.WarsResource_LeadOre;
+                case ItemResourceType.Lead:
+                    return SpriteName.WarsResource_Lead;
+                case ItemResourceType.BloomeryIron:
+                    return SpriteName.WarsResource_BloomeryIron;
+                case ItemResourceType.Steel:
+                    return SpriteName.WarsResource_Steel;
+                case ItemResourceType.CastIron:
+                    return SpriteName.WarsResource_CastIron;
+
+                case ItemResourceType.BlackPowder:
+                    return SpriteName.WarsResource_BlackPowder;
+                case ItemResourceType.GunPowder:
+                    return SpriteName.WarsResource_GunPowder;
+                case ItemResourceType.LedBullet:
+                    return SpriteName.WarsResource_Bullets;
+
+                case ItemResourceType.HandCannon:
+                    return SpriteName.WarsResource_BronzeRifle;
+                case ItemResourceType.HandCulverin:
+                    return SpriteName.WarsResource_BronzeShotgun;
+                case ItemResourceType.Rifle:
+                    return SpriteName.WarsResource_IronRifle;
+                case ItemResourceType.Blunderbus:
+                    return SpriteName.WarsResource_IronShotgun;
+
+                case ItemResourceType.Manuballista:
+                    return SpriteName.WarsResource_Manuballista;
+                case ItemResourceType.Catapult:
+                    return SpriteName.WarsResource_Catapult;
+                case ItemResourceType.SiegeCannonBronze:
+                    return SpriteName.WarsResource_BronzeSiegeCannon;
+                case ItemResourceType.ManCannonBronze:
+                    return SpriteName.WarsResource_BronzeManCannon;
+                case ItemResourceType.SiegeCannonIron:
+                    return SpriteName.WarsResource_IronSiegeCannon;
+                case ItemResourceType.ManCannonIron:
+                    return SpriteName.WarsResource_IronManCannon;
+
+                case ItemResourceType.HeavyPaddedArmor:
+                    return SpriteName.WarsResource_HeavyPaddedArmor;
+
+               
+                case ItemResourceType.BronzeArmor:
+                    return SpriteName.WarsResource_BronzeArmor;
+
+                case ItemResourceType.LightPlateArmor:
+                    return SpriteName.WarsResource_LightPlateArmor;
+                case ItemResourceType.FullPlateArmor:
+                    return SpriteName.WarsResource_FullPlateArmor;
+
+                case ItemResourceType.MithrilArmor:
+                    return SpriteName.WarsResource_MithrilArmor;
+
+
+
                 default:
                     return SpriteName.NO_IMAGE;
             }
         }
 
-        public static void Blueprint(ItemResourceType item, out CraftBlueprint bp1, out CraftBlueprint bp2)
-        {
-            switch (item)
-            {
-                case ItemResourceType.Fuel_G: bp1 = CraftFuel1; bp2 = null; break;
-                case ItemResourceType.Coal: bp1 = CraftCharcoal; bp2 = null; break;
-                case ItemResourceType.Food_G: bp1 = CraftFood1; bp2 = CraftFood2; break;
-                case ItemResourceType.Beer: bp1 = CraftBeer; bp2 = null; break;
-
-                case ItemResourceType.Iron_G: bp1 = CraftIron; bp2 = null; break;
-                case ItemResourceType.LightArmor: bp1 = CraftLightArmor; bp2 = null; break;
-                case ItemResourceType.MediumArmor: bp1 = CraftMediumArmor; bp2 = null; break;
-                case ItemResourceType.HeavyArmor: bp1 = CraftHeavyArmor; bp2 = null; break;
-
-                case ItemResourceType.SharpStick: bp1 = CraftSharpStick; bp2 = null; break;
-                case ItemResourceType.Sword: bp1 = CraftSword; bp2 = null; break;
-                case ItemResourceType.TwoHandSword: bp1 = CraftTwoHandSword; bp2 = null; break;
-                case ItemResourceType.KnightsLance: bp1 = CraftKnightsLance; bp2 = null; break;
-                case ItemResourceType.Bow: bp1 = CraftBow; bp2 = null; break;
-                case ItemResourceType.LongBow: bp1 = CraftLongBow; bp2 = null; break;
-                case ItemResourceType.Ballista: bp1 = CraftBallista; bp2 = null; break;
-
-                default: throw new NotImplementedException();
-            }
-        }
+        
     }
 
     enum ResourceType

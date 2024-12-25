@@ -178,7 +178,7 @@ namespace VikingEngine.DSSWars.Display
                 if (player.diplomacyMap.previousFactionsLookedAt.Count > 1)
                 {
                     content.newParagraph();
-                    content.h2(DssRef.todoLang.Diplomacy_RelationWithOthers).overrideColor = HudLib.TitleColor_Label;
+                    content.h2(DssRef.lang.Diplomacy_RelationWithOthers).overrideColor = HudLib.TitleColor_Label;
 
                     for (int i = 1; i < player.diplomacyMap.previousFactionsLookedAt.Count; i++)
                     {

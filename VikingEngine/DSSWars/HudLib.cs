@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars
 
         public static readonly Color OffStandardOrange = new Color(200, 128, 0);
         public static readonly Color InfoYellow_Dark = new Color(160, 128, 0);
-        public static readonly Color InfoYellow_Light = new Color(255, 255, 0);
+        public static readonly Color InfoYellow_Light = new Color(255, 255, 150);
         public static readonly Color InfoYellow_BG = new Color(40, 32, 0);
         public const ImageLayers StoryContentLayer = ImageLayers.Lay1_Front;
         public const ImageLayers StoryBgLayer = ImageLayers.Lay1_Back;
@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars
             RbOnGuiSettings = RbSettings;
             RbOnGuiSettings.scaleUp(1.4f);
 
-            HeadDisplayWidth = Engine.Screen.IconSize * 6;
+            HeadDisplayWidth = Engine.Screen.IconSize * 7;
             HeadDisplayEdge = Engine.Screen.BorderWidth;
 
             richboxGui = new RichboxGuiSettings()
@@ -158,6 +158,21 @@ namespace VikingEngine.DSSWars
             return content.text(text);
         }
 
+        public static void Experience(RichBoxContent content, XP.WorkExperienceType exp, XP.ExperienceLevel level)
+        {
+            LangLib.ExperienceType(exp, out string expName, out SpriteName expIcon);
+            content.Add(new RichBoxImage(expIcon));
+            content.space();
+            var typeNameText = new RichBoxText(expName + ":");
+            typeNameText.overrideColor = HudLib.TitleColor_TypeName;
+            content.Add(typeNameText);
+
+            //var level = city.GetTopSkill(exp);
+            content.space();
+            content.Add(new RichBoxImage(LangLib.ExperienceLevelIcon(level)));
+            content.Add(new RichBoxText(LangLib.ExperienceLevel(level)));
+        }
+
         public static Color ResourceCostColor(bool hasEnough)
         { 
             return hasEnough ? AvailableColor : NotAvailableColor;
@@ -176,6 +191,20 @@ namespace VikingEngine.DSSWars
         public static string TimeSpan(TimeSpan time) 
         { 
             return string.Format(DssRef.lang.Hud_TimeSpan, (int)time.TotalHours, time.Minutes, time.Seconds);
+        }
+
+        public static string TimeSpan_LongText(TimeSpan time)
+        {
+            string result = string.Format(DssRef.lang.Hud_Time_Seconds, time.Seconds);
+            if (time.TotalMinutes >= 1)
+            {
+                result = string.Format(DssRef.lang.Hud_Time_Minutes, time.Minutes) + ", " + result;
+            }
+            if (time.TotalHours >= 1)
+            {
+                result = string.Format(DssRef.todoLang.Hud_Time_Hours, (int)time.TotalHours) + ", " + result;
+            }
+            return result;
         }
 
         public static string InputName(InputSourceType input)
@@ -252,6 +281,24 @@ namespace VikingEngine.DSSWars
             //dot.color = Color.DarkGray;
             content.Add(dot);
             return dot;
+        }
+
+        public static void CityResource(RichBoxContent content, City city, ItemResourceType type)
+        {
+            bool buffer = false;
+            city.GetGroupedResource(type).toMenu(content, type, city.foodSafeGuardIsActive(type), ref buffer);
+        }
+
+        public static Color? NegativeRed(int value)
+        {
+            if (value < 0)
+            {
+                return Color.Red;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

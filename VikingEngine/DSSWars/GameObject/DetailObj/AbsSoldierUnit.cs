@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.PJ.Strategy;
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.ToGG.MoonFall.GO;
 
@@ -238,11 +239,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void refreshGroupOffset()
         {
-            groupOffset.X = gridPlacement.X * SoldierProfile().groupSpacing +
-                Ref.rnd.Plus_MinusF(SoldierProfile().groupSpacingRndOffset);
+            
+            groupOffset.X = gridPlacement.X * soldierData.groupSpacing +
+                Ref.rnd.Plus_MinusF(soldierData.groupSpacingRndOffset);
 
-            groupOffset.Y = (gridPlacement.Y + group.halfColDepth) * SoldierProfile().groupSpacing +
-                Ref.rnd.Plus_MinusF(SoldierProfile().groupSpacingRndOffset);
+            groupOffset.Y = (gridPlacement.Y + group.halfColDepth) * soldierData.groupSpacing +
+                Ref.rnd.Plus_MinusF(soldierData.groupSpacingRndOffset);
         }
 
         void updateGroupPosition()
@@ -409,6 +411,10 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public void update2_battle_attack(float time, bool fullUpate)
         {
+            if (group.debugTagged && parentArrayIndex == 26)
+            {
+                lib.DoNothing();
+            }
             updateMoveAttackPrio(time, fullUpate, freeToMove(time));
             
             battleData?.update(this);
@@ -542,7 +548,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected void updateMoveAttackPrio(float time, bool fullUpdate, bool mayMove)
         {
-            searchTargetUpdate();
+            refreshAttackTarget();
 
             state.walking = false;
             state.rotating = false;
@@ -572,10 +578,10 @@ namespace VikingEngine.DSSWars.GameObject
                     attackTarget = closestTarget(true, SoldierProfile().maxAttackAngle * 4f);
                     inReach = checkTargetInReach();
 
-                    if (inReach == HasTargetInReach.MustRotate)
-                    {
-                        inReach = HasTargetInReach.InReach;
-                    }
+                    //if (inReach == HasTargetInReach.MustRotate)
+                    //{
+                    //    inReach = HasTargetInReach.InReach;
+                    //}
                 }
 
                 if (inReach != HasTargetInReach.NoTarget)
@@ -585,9 +591,12 @@ namespace VikingEngine.DSSWars.GameObject
                 else if (group.attacking_soldierGroupOrCity != null)
                 {//Walk straight while searching opponent
                     if (mayMove)
-                    { walkStraightForward(time); }
-                    else
                     { 
+                        walkStraightForward(time); 
+                    }
+                    else
+                    {
+                        rotateTowards(attackTarget, SoldierProfile().rotationSpeed);
                         state.walking = false;
                     }
                 }
@@ -632,6 +641,7 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                         else
                         {
+                            rotateTowards(attackTarget, SoldierProfile().rotationSpeed);
                             state.walking = false;
                         }
                         break;
@@ -776,10 +786,10 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        void searchTargetUpdate()
-        {
-            refreshAttackTarget();
-        }
+        //void searchTargetUpdate()
+        //{
+        //    refreshAttackTarget();
+        //}
 
         //void asynchFriendlyCollisionsCheck()
         //{
@@ -1028,8 +1038,6 @@ namespace VikingEngine.DSSWars.GameObject
             return soldierData.walkingSpeed * group.terrainSpeedMultiplier * time;
         }
 
-
-
         void rotateTowards(AbsDetailUnit target, float speed)
         {
             if (target != null)
@@ -1055,7 +1063,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 state.rotating = false;
                 state2 = SoldierState2.waiting;
-                rotation = group.rotation;
+                rotation = goalAngle;
             }
         }
 
@@ -1063,7 +1071,17 @@ namespace VikingEngine.DSSWars.GameObject
         {   
 
             battleData?.asycUpdate(this);
-            groupAttackTarget_asynch();
+            //groupAttackTarget_asynch();
+        }
+
+        public override void takeDamage(int damageAmount, AbsDetailUnit meleeAttacker, Rotation1D attackDir, Faction enemyFaction, bool fullUpdate)
+        {
+            base.takeDamage(damageAmount, meleeAttacker, attackDir, enemyFaction, fullUpdate);
+
+            if (meleeAttacker != null)
+            {
+                battleData?.onTakeMeleeDamage(this, meleeAttacker);
+            }
         }
         override public void asynchUpdate()
         {

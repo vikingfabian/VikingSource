@@ -25,7 +25,16 @@ namespace VikingEngine.DSSWars.Display
         {
             this.player = player;
             this.army = army;
-             
+
+            if (!DssRef.storage.centralGold)
+            {
+                content.newLine();
+                content.Add(new RichBoxImage(SpriteName.rtsMoney));
+                content.space();
+                content.Add(new RichBoxText(DssRef.lang.ResourceType_Gold + ": " + TextLib.LargeNumber(army.gold), HudLib.NegativeRed(army.gold)));
+                content.Add(new RichBoxNewLine());
+            }
+
             content.newLine();
             switch (player.hud.displays.CurrentMenuState)
             {
@@ -537,7 +546,7 @@ namespace VikingEngine.DSSWars.Display
         public void tagsToMenu(RichBoxContent content)
         {
             content.newLine();
-            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Tag_ViewOnMap) }, player.ArmyTagsOnMapProperty));
+            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember> { new RichBoxText(DssRef.lang.Tag_ViewOnMap) }, player.ArmyTagsOnMapProperty));
             content.newParagraph();
 
             for (CityTagBack back = CityTagBack.NONE; back < CityTagBack.NUM; back++)

@@ -14,7 +14,7 @@ namespace VikingEngine.Voxels
 
         int currentModel;
         List<Graphics.Mesh> models = new List<Graphics.Mesh>(8);
-
+        public bool visible = true;
 
         public PencilShadow()
         { }
@@ -23,34 +23,37 @@ namespace VikingEngine.Voxels
         {
             hide();
 
+            if (visible)
             {
-                IntVector3 pos = designer.designerInterface.drawCoord;
-                for (pos.X = designer.drawLimits.Min.X; pos.X <= designer.drawLimits.Max.X; ++pos.X)
                 {
-                    bool isBlock = designer.GetVoxel(pos) != LootFest.Map.HDvoxel.BlockHD.EmptyBlock;
+                    IntVector3 pos = designer.designerInterface.drawCoord;
+                    for (pos.X = designer.drawLimits.Min.X; pos.X <= designer.drawLimits.Max.X; ++pos.X)
+                    {
+                        bool isBlock = designer.GetVoxel(pos) != LootFest.Map.HDvoxel.BlockHD.EmptyBlock;
 
-                    dirCheck(designer, isBlock, pos, Dimensions.X, -1);
-                    dirCheck(designer, isBlock, pos, Dimensions.X, 1);
+                        dirCheck(designer, isBlock, pos, Dimensions.X, -1);
+                        dirCheck(designer, isBlock, pos, Dimensions.X, 1);
+                    }
                 }
-            }
-            {
-                IntVector3 pos = designer.designerInterface.drawCoord;
-                for (pos.Y = designer.drawLimits.Min.Y; pos.Y <= designer.drawLimits.Max.Y; ++pos.Y)
                 {
-                    bool isBlock = designer.GetVoxel(pos) != LootFest.Map.HDvoxel.BlockHD.EmptyBlock;
+                    IntVector3 pos = designer.designerInterface.drawCoord;
+                    for (pos.Y = designer.drawLimits.Min.Y; pos.Y <= designer.drawLimits.Max.Y; ++pos.Y)
+                    {
+                        bool isBlock = designer.GetVoxel(pos) != LootFest.Map.HDvoxel.BlockHD.EmptyBlock;
 
-                    dirCheck(designer, isBlock, pos, Dimensions.Y, -1);
-                    dirCheck(designer, isBlock, pos, Dimensions.Y, 1);
+                        dirCheck(designer, isBlock, pos, Dimensions.Y, -1);
+                        dirCheck(designer, isBlock, pos, Dimensions.Y, 1);
+                    }
                 }
-            }
-            {
-                IntVector3 pos = designer.designerInterface.drawCoord;
-                for (pos.Z = designer.drawLimits.Min.Z; pos.Z <= designer.drawLimits.Max.Z; ++pos.Z)
                 {
-                    bool isBlock = designer.GetVoxel(pos) != LootFest.Map.HDvoxel.BlockHD.EmptyBlock;
+                    IntVector3 pos = designer.designerInterface.drawCoord;
+                    for (pos.Z = designer.drawLimits.Min.Z; pos.Z <= designer.drawLimits.Max.Z; ++pos.Z)
+                    {
+                        bool isBlock = designer.GetVoxel(pos) != LootFest.Map.HDvoxel.BlockHD.EmptyBlock;
 
-                    dirCheck(designer, isBlock, pos, Dimensions.Z, -1);
-                    dirCheck(designer, isBlock, pos, Dimensions.Z, 1);
+                        dirCheck(designer, isBlock, pos, Dimensions.Z, -1);
+                        dirCheck(designer, isBlock, pos, Dimensions.Z, 1);
+                    }
                 }
             }
         }

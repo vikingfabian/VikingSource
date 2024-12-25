@@ -50,7 +50,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string FlagEditor_Description { get; }
         public abstract string FlagEditor_Bucket { get; }
         public abstract string ProfileEditor_OptionsMenu { get; }
-        public abstract string ProfileEditor_FlagColorsTitle { get; }        
+        public abstract string ProfileEditor_FlagColorsTitle { get; }
         public abstract string ProfileEditor_MainColor { get; }
         public abstract string ProfileEditor_Detail1Color { get; }
         public abstract string ProfileEditor_Detail2Color { get; }
@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string ProfileEditor_Hue { get; }
         public abstract string ProfileEditor_Lightness { get; }
         public abstract string ProfileEditor_NextColorType { get; }
-              
+
 
         public abstract string Hud_GameSpeedLabel { get; }
         public abstract string Input_GameSpeed { get; }
@@ -99,13 +99,13 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string Hud_CityCount { get; }
         public abstract string Hud_ArmyCount { get; }
 
-        
+
         public abstract string Hud_XTimes { get; }
 
         public abstract string Hud_PurchaseTitle_Requirement { get; }
         public abstract string Hud_PurchaseTitle_Cost { get; }
         public abstract string Hud_PurchaseTitle_Gain { get; }
-       
+
         public abstract string Hud_Purchase_ResourceCostOfAvailable { get; }
 
         public abstract string Hud_Purchase_CostWillIncreaseByX { get; }
@@ -160,7 +160,7 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string HudAction_BuyItem { get; }
 
-        
+
         public abstract string Diplomacy_RelationType { get; }
         public abstract string Diplomacy_RelationToOthers { get; }
         public abstract string Diplomacy_RelationType_Servant { get; }
@@ -341,7 +341,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public abstract string DifficultyDescription_DiplomacyDifficulty { get; }
         public abstract string DifficultyDescription_MercenaryCost { get; }
         public abstract string DifficultyDescription_HonorGuards { get; }
-        
+
 
         public abstract string EndScreen_VictoryTitle { get; }
 
@@ -748,5 +748,137 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public abstract string EndGameStatistics_DecorsBuilt { get; }
         public abstract string EndGameStatistics_StatuesBuilt { get; }
+
+
+
+        /* #### --------------- ##### */
+        /* #### XMAS UPDATE ##### */
+        /* #### --------------- ##### */
+
+        public abstract string Info_FoodAndDeliveryLocation { get; }
+        public abstract string GameMenu_UseSpeedX { get; }
+        public abstract string GameMenu_LongerBuildQueue { get; }
+
+        public abstract string Diplomacy_RelationWithOthers { get; }
+        public abstract string Automation_queue_description { get; }
+
+        public abstract string BuildingType_Storehouse_Description { get; }
+
+        public abstract string Resource_TypeName_Longbow { get; }
+        public abstract string Resource_TypeName_Rapeseed { get; }
+        public abstract string Resource_TypeName_Hemp { get; }
+
+        public abstract string Resource_BogIronDescription { get; }
+
+        public abstract string Resource_FoodSafeGuard_Description { get; }
+        public abstract string Resource_FoodSafeGuard_Active { get; }
+
+        public abstract string GameMenu_NextSong { get; }
+
+        public abstract string BuildingType_Bank { get; }
+        public abstract string BuildingType_GoldDelivery_Description { get; }
+
+        public abstract string BuildingType_Logistics { get; }
+        public abstract string BuildingType_Logistics_Description { get; }
+        public abstract string BuildingType_Logistics_NationSizeRequirement { get; }
+        public abstract string Requirements_XItemStorageOfY { get; }
+
+        public abstract string XP_UnlockBuildQueue { get; }
+        public abstract string XP_UnlockBuilding { get; }
+        public abstract string XP_Upgrade { get; }
+        public abstract string XP_UpgradeBuildingX { get; }
+
+        public abstract string BuildHud_PerCycle { get; }
+        public abstract string BuildHud_MayCraft { get; }
+        public abstract string BuildHud_WorkTime { get; }
+        public abstract string BuildHud_GrowTime { get; }
+        public abstract string BuildHud_Produce { get; }
+
+        public abstract string BuildHud_Queue { get; }
+
+        public abstract string LandType_Flatland { get; }
+        public abstract string LandType_Water { get; }
+        public abstract string BuildingType_Wall { get; }
+        public abstract string Delivery_AutoReciever_Description { get; }
+
+        //public abstract string Hud_NoLimit { get; }
+        public abstract string Hud_On { get; }
+        public abstract string Hud_Off { get; }
+        public abstract string Hud_Time_Seconds { get; }
+        public abstract string Hud_Time_Minutes { get; }
+        public abstract string Hud_Undo { get; }
+        public abstract string Hud_Redo { get; }
+
+        public abstract string Tag_ViewOnMap { get; }
+        public abstract string MenuTab_Tag { get; }
+
+        public abstract string Input_Build { get; }
+
+        public abstract string FlagEditor_ClearAll { get; }
+
+        public abstract string CityCulture_Stonemason { get; }
+        public abstract string CityCulture_Stonemason_Description { get; }
+
+        public abstract string CityCulture_Brewmaster { get; }
+        public abstract string CityCulture_Brewmaster_Description { get; }
+
+        public abstract string CityCulture_Weavers { get; }
+        public abstract string CityCulture_Weavers_Description { get; }
+
+        public abstract string CityCulture_SiegeEngineer { get; }
+        public abstract string CityCulture_SiegeEngineer_Description { get; }
+
+        public abstract string CityCulture_Armorsmith { get; }
+        public abstract string CityCulture_Armorsmith_Description { get; }
+
+        public abstract string CityCulture_Noblemen { get; }
+        public abstract string CityCulture_Noblemen_Description { get; }
+
+        public abstract string CityCulture_Seafaring { get; }
+        public abstract string CityCulture_Seafaring_Description { get; }
+
+        public abstract string CityCulture_Backtrader { get; }
+        public abstract string CityCulture_Backtrader_Description { get; }
+
+        public abstract string CityCulture_LawAbiding { get; }
+        public abstract string CityCulture_LawAbiding_Description { get; }
+
+        //##2##
+
+        public abstract string Hud_Advanced { get; }
+        public abstract string Hud_Loading { get; }
+
+        public abstract string CityOption_LowerGuardSize { get; }
+        public abstract string Hud_Purchase_MinCapacity { get; }
+        public abstract string Settings_ResetToDefault { get; }
+        public abstract string Settings_NewGame { get; }
+
+        public abstract string Settings_AdvancedGameSettings { get; }
+        public abstract string Settings_FoodMultiplier { get; }
+        public abstract string Settings_FoodMultiplier_Description { get; }
+
+        public abstract string Settings_GameMode { get; }
+
+        public abstract string Settings_Mode_Story { get; }
+        public abstract string Settings_Mode_IncludeBoss { get; }
+        public abstract string Settings_Mode_IncludeAttacks { get; }
+        public abstract string Settings_Mode_Sandbox { get; }
+        public abstract string Settings_Mode_Peaceful { get; }
+        public abstract string Settings_Mode_Peaceful_Description { get; }
+
+        public abstract string Lobby_ImportSave { get; }
+
+        public abstract string Lobby_ExportSave { get; }
+        public abstract string Lobby_ExportSave_Description { get; }
+
+        public abstract string Resource_CurrentAmount { get; }
+        public abstract string Resource_MaxAmount_Soft { get; }
+        public abstract string Resource_MaxAmount { get; }
+        public abstract string Resource_AddPerSec { get; }
+
+        public abstract string Resource_WaterAddLimit { get; }
+
+        public abstract string Tutorial_Select_SubTab { get; }
+
     }
-}
+    }

@@ -10,14 +10,25 @@ namespace VikingEngine.DSSWars.Resource
     struct CityEconomyData
     {
         public float tax(City city) 
-        { 
-            float result = workerCount * DssConst.TaxPerWorker;
-            if (city != null && city.Culture == CityCulture.Lawbiding)
+        {
+            float taxPerc = DssConst.TaxPerWorker;
+            if (city != null)
             {
-                result *= 2f;
+                if (city.buildingStructure.Bank_count > 0)
+                {
+                    taxPerc += DssConst.BankTaxIncreasePercUnits;
+                }
+                if (city.Culture == CityCulture.Lawbiding)
+                {
+                    taxPerc *= 2f;
+                }
+            }
+            else
+            { 
+                return workerCount *  taxPerc;
             }
 
-            return result;  
+            return city.workForce.amount * taxPerc;
         }
         public int workerCount;
         public float cityGuardUpkeep;

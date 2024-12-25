@@ -83,7 +83,7 @@ namespace VikingEngine.DSSWars.GameObject
             return Rotation1D.FromDirection(VectorExt.V3XZtoV2(targetPosDiff));
         }
 
-        virtual public void takeDamage(int damageAmount, Rotation1D attackDir, Faction enemyFaction, bool fullUpdate)
+        virtual public void takeDamage(int damageAmount, AbsDetailUnit meleeAttacker, Rotation1D attackDir, Faction enemyFaction, bool fullUpdate)
         {
             if (health > 0)
             {
@@ -99,7 +99,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (health <= 0 && localMember)
                     {
                         onDeath(fullUpdate, enemyFaction);
-                    }
+                    }                    
 
                     if (fullUpdate)
                     {
@@ -198,29 +198,38 @@ namespace VikingEngine.DSSWars.GameObject
 
         //abstract public bool defeated(Faction attacker);
 
-        protected void closestTargetCheck(AbsDetailUnit unit,
+        public void closestTargetCheck(AbsDetailUnit unit,
             ref AbsDetailUnit closestOpponent,
             ref float closestOpponentDistance)
         {
             float distance = spaceBetweenUnits(unit);
 
-            float anglediff = Math.Abs(angleDiff(unit));
-            distance += anglediff * 0.1f;
-
-            if (distance < closestOpponentDistance)
+            if (distance < DssConst.MeleeAwareRange)
             {
-                if (canTargetUnit(unit))
+                if (distance < closestOpponentDistance &&
+                   canTargetUnit(unit))
+                {                    
+                    closestOpponent = unit;
+                    closestOpponentDistance = distance;   
+                }
+            }
+            else
+            {
+                float anglediff = Math.Abs(angleDiff(unit));
+                distance += anglediff * 0.1f;
+
+                if (distance < closestOpponentDistance &&
+                    canTargetUnit(unit))
                 {
                     var data = Profile();
-                    
+
                     if (!data.restrictTargetAngle || anglediff <= data.targetAngle)
                     {
                         closestOpponent = unit;
                         closestOpponentDistance = distance;
-                    }
+                    }                    
                 }
             }
-            
         }
 
         //protected void collisionGroupCheck(AbsDetailUnit unit, float distance)

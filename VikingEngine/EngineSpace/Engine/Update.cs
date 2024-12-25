@@ -282,11 +282,7 @@ namespace VikingEngine.Engine
 
         }
 
-        public void ResetGameTime()
-        {
-            Ref.PrevTotalGameTimeSec = 0;
-            Ref.TotalGameTimeSec = 0;
-        }
+        
 
         public void ExitToDash()
         {
@@ -309,6 +305,17 @@ namespace VikingEngine.Engine
         public static int MillisecToFrames(float ms)
         {
             return Convert.ToInt32(ms / Ref.TargetDeltaTimeMs);
+        }
+
+        public void AbortThreads() 
+        {
+            var upateC = updateLists[(int)UpdateType.Full].counter();
+            
+            while (upateC.Next())
+            {
+                var updateable= upateC.sel as AbsUpdateable;
+                updateable?.AbortThreads();
+            }
         }
 
         public void Exit()

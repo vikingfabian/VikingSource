@@ -71,6 +71,9 @@ namespace VikingEngine.DSSWars.GameObject
         public CityTagBack tagBack = CityTagBack.NONE;
         public ArmyTagArt tagArt = ArmyTagArt.None;
 
+        public int goldCarryCapacity = 0;
+        public int gold = 0;
+
         public Army(Faction faction, IntVector2 startPosition)
         {
             id = ++DssRef.state.NextArmyId;
@@ -87,6 +90,19 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Army()
         { }
+
+        public bool payMoney(int cost)
+        {
+            if (DssRef.storage.centralGold)
+            {
+                return faction.payMoney(cost, false, null);
+            }
+            else
+            {
+                gold -= cost;
+                return true;
+            }
+        }
 
         void init(Faction faction)
         {
@@ -357,6 +373,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void tradeSoldiersTo(UnitFilterType type, int count, Army toArmy)
         {
+            float startGroupCount = groups.Count;
             var groupsCounter = groups.counter();
 
             while (groupsCounter.Next())
@@ -377,16 +394,23 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
             }
-            
+
+            int transportGold;
+
             if (groups.Count <= 0)
             {
+                transportGold = gold;
                 DeleteMe(DeleteReason.EmptyGroup, true);
             }
             else
             {
+                float percMove = (startGroupCount - groups.Count) / startGroupCount;
+                transportGold = Convert.ToInt32(gold * percMove);
                 refreshPositions(false);
             }
 
+            gold -= transportGold;
+            toArmy.gold += transportGold;
             toArmy.refreshPositions(false);
             toArmy.onArmyMerge();
         }
@@ -628,15 +652,6 @@ namespace VikingEngine.DSSWars.GameObject
                         //    }
                         //}
                     }
-
-                    //if (centerGuy != null)
-                    //{
-                    //    var newPosition = centerGuy.position;
-                    //    if (newPosition.X > 1 && newPosition.Z > 1)
-                    //    {
-                    //        position = newPosition;
-                    //    }
-                    //}
                     if (IdleObjetive())
                     {
                         //position.X = armyGoalCenterWp.X;
@@ -674,7 +689,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void refreshPositions(bool onPurchase)
         {
-            refreshGroupPlacements2(tilePos);
+            refreshGroupPlacements2(tilePos, false, false);
             //int width = groupsWidth();
 
             //IntVector2 nextGroupPlacementIndex = IntVector2.Zero;
@@ -908,6 +923,25 @@ namespace VikingEngine.DSSWars.GameObject
                 foodCosts_import.minuteUpdate();
                 foodCosts_blackmarket.minuteUpdate();
             }
+
+
+            if (!DssRef.storage.centralGold)
+            {
+                var onCity = DssRef.world.tileGrid.Get(tilePos).City();
+
+                if (onCity.faction == faction)
+                {
+                    if (gold < goldCarryCapacity)
+                    {
+                        gold += faction.payMoney_MuchAsPossible(goldCarryCapacity - gold, onCity);
+                    }
+                    else if (gold > goldCarryCapacity)
+                    {
+                        faction.gainMoney(gold - goldCarryCapacity, onCity);
+                        gold = goldCarryCapacity;
+                    }
+                }
+            }
         }
 
         override public void asynchCullingUpdate(float time, bool bStateA)
@@ -919,7 +953,42 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (!inRender_detailLayer)
             {
-                updateMembers(time * Ref.GameTimeSpeed, false);
+                if (objective == ArmyObjective.TeleportAttack)
+                {
+                    //Wait to jump
+                    if (DssRef.state.culling.outsidePlayerAttension(tilePos))
+                    {
+                        if (Ref.TotalGameTimeSec >= teleportTime)
+                        {
+                            Ai_Finalize_Attack();
+                        }
+                    }
+                    else
+                    {
+                        //Cancel
+                        Order_Attack(attackTarget);
+                    }
+                }
+                else if (objective == ArmyObjective.TeleportMove)
+                {
+                    //Wait to jump
+                    if (DssRef.state.culling.outsidePlayerAttension(tilePos))
+                    {
+                        if (Ref.TotalGameTimeSec >= teleportTime)
+                        {
+                            Ai_Finalize_Move();
+                        }
+                    }
+                    else
+                    {
+                        //Cancel
+                        Order_MoveTo(walkGoal);
+                    }
+                }
+                else
+                {
+                    updateMembers(time * Ref.GameTimeSpeed, false);
+                }
             }
         }
 
@@ -1014,7 +1083,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             nextNodePos = nextNodeTilePos;
 
-            refreshGroupPlacements2(nextNodeTilePos);
+            refreshGroupPlacements2(nextNodeTilePos, false, false);
 
             
             //var groupsC = groups.counter();

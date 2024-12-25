@@ -27,13 +27,13 @@ namespace VikingEngine.DSSWars.GameObject
             ////Order_MoveTo(start);
             //position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();
             //refreshPositions(true);
-            refreshGroupPlacements2(tilePos, false);
-            var groupsC = groups.counter();
-            while (groupsC.Next())
-            {
-                groupsC.sel.setAsStartArmy();
-            }
-            updateArmyMovement(1);
+            refreshGroupPlacements2(tilePos, true, false);
+            //var groupsC = groups.counter();
+            //while (groupsC.Next())
+            //{
+            //    groupsC.sel.setAsStartArmy();
+            //}
+            //updateArmyMovement(1);
 
             setMaxFood();
             //tilePos = start;
@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void setMaxFood()
         {
-            float energy = DssLib.SoldierDefaultEnergyUpkeep / DssConst.FoodEnergy * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);
+            float energy = DssLib.SoldierDefaultEnergyUpkeep / DssRef.difficulty.FoodEnergySett * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);
             float bufferGoalFood = friendlyAreaFoodBuffer_minutes * TimeExt.MinuteInSeconds * energy;
             food = bufferGoalFood;
         }
@@ -82,7 +82,7 @@ namespace VikingEngine.DSSWars.GameObject
                         {
                             int statusIx = getOrCreateFreeWorker();
                             var status = workerStatuses[statusIx];
-                            status.createWorkOrder(WorkType.TrossCityTrade, -1, -1, WP.ToSubTilePos_Centered(city.tilePos), null);
+                            status.createWorkOrder(WorkType.TrossCityTrade, -1, 0, XP.WorkExperienceType.NONE, -1, WP.ToSubTilePos_Centered(city.tilePos), null);
                             if (city.faction != faction)
                             {
                                 foodCosts_import.add(status.carry.amount);
@@ -118,7 +118,7 @@ namespace VikingEngine.DSSWars.GameObject
                     //black market trade
                     var cost = (int)Math.Ceiling(DssConst.FoodGoldValue_BlackMarket * (minBuffer - food));
 
-                    if (faction.payMoney(cost, false))
+                    if (payMoney(cost))
                     {
                         foodCosts_blackmarket.add(cost);
                         food = minBuffer;

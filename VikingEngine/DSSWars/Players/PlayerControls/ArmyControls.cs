@@ -128,7 +128,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (m.isAlive)
                     {
-                        m.army.Order_MoveTo(player.mapControls.tilePosition);
+                        m.army.Ai_Order_MoveTo(player.mapControls.tilePosition);
                     }
                 }
             }

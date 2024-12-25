@@ -11,21 +11,38 @@ using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
 namespace VikingEngine.DSSWars.Data
 {
-    
-
-
     class SaveMeta
     {
         const int Version = 2;
 
         const int SaveStateCount = 10;
         const int AutoSaveCount = 10;
-
+        public const string ImportSaveFolder = "Import Save";
         SaveIterations saves = new SaveIterations(SaveStateCount);
         SaveIterations autosaves = new SaveIterations(AutoSaveCount);
 
+        DataStream.FilePath importSavePath = new DataStream.FilePath(ImportSaveFolder, null, null);
+        DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath, $"DSS_savemeta_v{SaveGamestate.Version}", ".mta");
 
-        DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath, "DSS_savemeta", ".sav");
+        public void CreateImportFolders()
+        {
+            System.IO.Directory.CreateDirectory(importSavePath.CompleteDirectory);
+        }
+
+        public List<string> ListSaveImports()
+        {
+            var files = System.IO.Directory.GetFiles(importSavePath.CompleteDirectory);
+            List<string> list = new List<string>();
+            foreach (var f in files)
+            {
+                if (f.Contains(SaveStateMeta.FileEnd))
+                { 
+                    list.Add(f);
+                }
+            }
+
+            return list;
+        }
 
         public void Save(DataStream.IStreamIOCallback callBack)
         {
@@ -79,8 +96,6 @@ namespace VikingEngine.DSSWars.Data
             saves.write(w);
             autosaves.write(w); 
         }
-
-
 
         public void read(System.IO.BinaryReader r)
         {
@@ -161,10 +176,10 @@ namespace VikingEngine.DSSWars.Data
         }
     }
 
-    class SaveStateMeta
+    class SaveStateMeta : IStreamIOCallback
     {
         const int Version = 3;
-
+        public const string FileEnd = ".sav";
         public DateTime saveDate;
         public TimeSpan playTime;
         public int localPlayerCount;
@@ -175,13 +190,20 @@ namespace VikingEngine.DSSWars.Data
         
         public bool autosave;
         public int index;
-        
+        public string import = null;
 
         public WorldMetaData worldmeta = null;
 
         DataStream.FilePath filepath(bool auto, int index)
         {
-           return new DataStream.FilePath(Ref.steam.UserCloudPath, string.Format("DSS_{0}savestate{1}_v{2}", auto? "auto_":string.Empty, index, stateVersion), ".sav");
+            if (import == null)
+            {
+                return new DataStream.FilePath(Ref.steam.UserCloudPath, string.Format("DSS_{0}savestate{1}_v{2}", auto ? "auto_" : string.Empty, index, stateVersion), FileEnd);
+            }
+            else
+            {
+                return new DataStream.FilePath(SaveMeta.ImportSaveFolder, TextLib.RemoveEnding(import, FileEnd.Length), FileEnd);
+            }
         }
 
         public DataStream.FilePath Path => filepath(autosave, index);
@@ -193,7 +215,7 @@ namespace VikingEngine.DSSWars.Data
         }
         public string InfoString()
         {
-            string playTime = HudLib.TimeSpan(this.playTime);//Engine.LoadContent.CheckCharsSafety(this.playTime.ToString(), LoadedFont.Regular);
+            string playTime = HudLib.TimeSpan_LongText(this.playTime);//Engine.LoadContent.CheckCharsSafety(this.playTime.ToString(), LoadedFont.Regular);
             string result = string.Format(DssRef.lang.EndGameStatistics_Time, playTime) + Environment.NewLine;
             if (autosave)
             {
@@ -203,13 +225,17 @@ namespace VikingEngine.DSSWars.Data
                 DssRef.lang.Lobby_MapSizeTitle + ": " + WorldData.SizeString(worldmeta.mapSize) + Environment.NewLine +
                 string.Format(DssRef.lang.Lobby_LocalMultiplayerEdit, localPlayerCount) + Environment.NewLine +
                 " [" + HudLib.Date(saveDate) + "]";
-            //" [" + Engine.LoadContent.CheckCharsSafety(saveDate.ToLongDateString(), LoadedFont.Regular) + "]";
-
-
-
+            
             return result;
         }
 
+        public string ExportString()
+        {
+            return FilePath.SanitizeFileName( Path.FileName + "_" + string.Format(DssRef.lang.EndGameStatistics_Time, playTime) + "_" + string.Format(DssRef.lang.Settings_DifficultyLevel, difficulty) + "_seed" + worldmeta.seed);
+        }
+
+        public SaveStateMeta()
+        { }
         public SaveStateMeta(bool autosave)
         {
             saveDate = DateTime.Now;
@@ -270,6 +296,26 @@ namespace VikingEngine.DSSWars.Data
             if (other == null)
                 return 1;
             return saveDate.CompareTo(other.saveDate);
+        }
+
+        public void loadImportMeta()
+        {
+            DataStream.BeginReadWrite.BinaryIO(false, Path, null, readMetaOnly, this, true);
+        }
+
+        public void SaveComplete(bool save, int player, bool completed, byte[] value) 
+        {
+            ((LobbyState)Ref.gamestate).continueFromSave(this);
+        }
+
+        public void readMetaOnly(System.IO.BinaryReader r)
+        {
+            SaveVersion version = new SaveVersion();
+            version.read(r);
+
+            //META            
+            read(r);
+            Debug.ReadCheck(r);
         }
     }
 }

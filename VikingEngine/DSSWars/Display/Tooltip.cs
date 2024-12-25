@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Text;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Build;
@@ -9,6 +10,7 @@ using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
@@ -55,7 +57,12 @@ namespace VikingEngine.DSSWars.Display
                     {
                         hoverTip(player, player.mapControls.hover.obj);
                     }
-                    
+                    else if (player.mapControls.hover.subTile.tileOfInterest)
+                    {
+                        //SUBTILE tooltip
+                        hoverTip(player, player.mapControls.hover.subTile);
+                    }
+
                 }
             }
             else
@@ -140,14 +147,15 @@ namespace VikingEngine.DSSWars.Display
                 switch (subTile.selectTileResult)
                 {
                     case Players.SelectTileResult.Build:
-                        title = new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Build_PlaceBuilding, BuildLib.BuildOptions[(int)player.buildControls.placeBuildingType].Label()));
+                        var buildOpt = BuildLib.BuildOptions[(int)player.buildControls.placeBuildingType];
+                        title = new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Build_PlaceBuilding, buildOpt.Label()));
                         content.Add(title);
                         content.newLine();
                         //CraftBlueprint blueprint = ResourceLib.Blueprint(player.BuildControls.placeBuildingType);
                         var bp = player.buildControls.placeBuildingOption().blueprint;
                         bp.toMenu(content, subTile.city);
 
-                        var mayBuild = player.mapControls.hover.subTile.MayBuild(player);
+                        var mayBuild = player.mapControls.hover.subTile.MayBuild(player, out bool upgrade);
                         
                         switch (mayBuild)
                         { 
@@ -166,13 +174,19 @@ namespace VikingEngine.DSSWars.Display
                                 break;
                         }
 
+                        if (subTile.city.buildingStructure.buildingLevel_logistics < 2)
+                        {
+                            content.text(string.Format(DssRef.lang.BuildHud_Queue, player.orders.buildQueue(subTile.city), subTile.city.MaxBuildQueue())).overrideColor = subTile.city.availableBuildQueue(player) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                        }
+                        buildOpt.blueprint.requirementToHud(content, subTile.city, out _);
+
                         content.Add(new RichBoxSeperationLine());
                         content.newParagraph();
                         content.h2(DssRef.lang.MenuTab_Resources).overrideColor = HudLib.TitleColor_Label;
                         bp.listResources(content, subTile.city);
 
                         break;
-                    case Players.SelectTileResult.Destroy:
+                    case Players.SelectTileResult.Demolish:
                         title = new RichBoxText(DssRef.lang.Build_DestroyBuilding);
                         content.Add(title);
                         break;
@@ -209,6 +223,18 @@ namespace VikingEngine.DSSWars.Display
                             {
                                 status.tooltip(player, subTile.city, content);
                             }
+                        }
+                        break;
+                    case Players.SelectTileResult.School:
+                        {
+                            title = new RichBoxText(DssRef.todoLang.BuildingType_School);
+                            content.Add(title);
+
+                            content.newLine();
+                            //if (subTile.city.GetDelivery(subTile.subTilePos, out DeliveryStatus status))
+                            //{
+                            //    status.tooltip(player, subTile.city, content);
+                            //}
                         }
                         break;
                     case Players.SelectTileResult.Conscript:
@@ -312,20 +338,58 @@ namespace VikingEngine.DSSWars.Display
                 switch (obj.gameobjectType())
                 {
                     case GameObjectType.City:
-                    case GameObjectType.Army:
-                        var mapObj = obj as AbsMapObject;
-                        if (mapObj != null)
-                        {
-                            content.newLine();
-                            content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
-                            content.Add(new RichBoxText(TextLib.OneDecimal(mapObj.strengthValue)));
-                            if (obj.gameobjectType() == GameObjectType.Army)
+                        {   
+                            var mapObj = obj as AbsMapObject;
+                            if (mapObj != null)
                             {
+                                const int LowAmount = 10;
+                                var city = mapObj.GetCity();
+                                content.newLine();
+                                HudLib.CityResource(content, city, ItemResourceType.Food_G);
+
+                                if (city.res_food.amount <= LowAmount)
+                                {
+                                    if (city.res_water.amount <= 2)
+                                    {
+                                        HudLib.CityResource(content, city, ItemResourceType.Water_G);
+                                    }
+                                    if (city.res_rawFood.amount <= LowAmount)
+                                    {
+                                        HudLib.CityResource(content, city, ItemResourceType.RawFood_Group);
+                                    }
+                                    if (city.res_fuel.amount <= LowAmount)
+                                    {
+                                        HudLib.CityResource(content, city, ItemResourceType.Fuel_G);
+                                    }
+                                }
+
+
+                                warStrength(mapObj);
+                            }
+                        }
+                        break;
+
+                    case GameObjectType.Army:
+                        {
+                            var mapObj = obj as AbsMapObject;
+                            if (mapObj != null)
+                            {
+                                
+                                var army = obj.GetArmy();
+                                if (army.food < army.foodUpkeep * 2)
+                                {
+                                    HudLib.ItemCount(content, SpriteName.WarsResource_Food, DssRef.lang.Resource_TypeName_Food, TextLib.OneDecimal(army.food));
+                                }
+                                warStrength(mapObj);
+                                //content.newLine();
+                                //content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
+                                //content.Add(new RichBoxText(TextLib.OneDecimal(mapObj.strengthValue)));
+
                                 content.newLine();
                                 content.Add(new RichBoxImage(SpriteName.WarsGroupIcon));
                                 content.space(1);
 
-                                var army = obj.GetArmy();
+                                
                                 var typeCounts = army.Status().getTypeCounts_Sorted(army.faction);
 
                                 foreach (var kv in typeCounts)
@@ -335,6 +399,7 @@ namespace VikingEngine.DSSWars.Display
                                     content.Add(new RichBoxImage(AllUnits.UnitFilterIcon(kv.Key)));
                                     content.space(2);
                                 }
+
                             }
                         }
                         break;
@@ -342,6 +407,17 @@ namespace VikingEngine.DSSWars.Display
                     case GameObjectType.ObjectCollection:
                         obj.GetCollection().Tooltip(content);
                         break;
+
+                    case GameObjectType.Worker:
+                        obj.GetWorker().toolTip(content);
+                        break;
+                }
+
+                void warStrength(AbsMapObject mapObj)
+                {
+                    content.newLine();
+                    content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
+                    content.Add(new RichBoxText(TextLib.OneDecimal(mapObj.strengthValue)));
                 }
             }
             

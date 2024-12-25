@@ -50,7 +50,7 @@ namespace VikingEngine.HUD.RichBox
             this.settings = settings;
         }
 
-        public void DeleteMe()
+        virtual public void DeleteMe()
         {
             foreach (var p in parts)
             {
@@ -402,17 +402,7 @@ namespace VikingEngine.HUD.RichBox
             return bg.Visible && bg.Area.IntersectPoint(Input.Mouse.Position);
         }
 
-        protected Color? negativeRed(int value)
-        {
-            if (value < 0)
-            {
-                return Color.Red;
-            }
-            else
-            {
-                return null;
-            }
-        }
+        
 
         public bool canMoveInteract()
         {

@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             initPart2(typeCurrentData);
 
-            soldierCount = typeCurrentData.rowWidth * typeCurrentData.columnsDepth;
+            soldierCount = soldierData.rowWidth * soldierData.columnsDepth;
             soldierData = soldierConscript.init(typeCurrentData);
 
             initPart3(typeCurrentData);
@@ -154,19 +154,19 @@ namespace VikingEngine.DSSWars.GameObject
             var type = soldierConscript.unitType();
             typeSoldierData = DssRef.profile.Get(type);//new ConscriptedSoldierData();
             typeShipData = DssRef.profile.Get(typeSoldierData.ShipType());
-
+            soldierData = soldierConscript.init(typeSoldierData);
             typeCurrentData = typeSoldierData;
 
-            armyGridPlacement2 = army.nextArmyPlacement(soldierConscript.conscript.DefaultArmyRow());
+            armyGridPlacement2 = army.nextArmyPlacement(soldierData.defaultArmyPlacement);//soldierConscript.conscript.DefaultArmyRow());
 
         }
 
         void initPart2(AbsSoldierProfile typeData)
         {
-            int count = typeData.rowWidth * typeData.columnsDepth;
+            //count = soldierData.rowWidth * soldierData.columnsDepth;
 
 
-            halfColDepth = typeData.columnsDepth * -0.5f;
+            halfColDepth = soldierData.columnsDepth * -0.5f;
 
             //skirmishCount = MathExt.MultiplyInt(0.3, count);
 
@@ -413,14 +413,12 @@ namespace VikingEngine.DSSWars.GameObject
                 soldierConscript.shipSetup(ref soldierData);
             }
 
-            int xStart = -typeProfile.rowWidth / 2;
+            int xStart = -soldierData.rowWidth / 2;
             IntVector2 bannerPos = bannerManPos();
 
-            int columnDepth = MathExt.Div_Ceiling(count, typeProfile.rowWidth);
+            int columnDepth = MathExt.Div_Ceiling(count, soldierData.rowWidth);
 
-            //setGroundY();
-
-            for (int x = 0; x < typeProfile.rowWidth; ++x)
+            for (int x = 0; x < soldierData.rowWidth; ++x)
             {
                 //int leadUnit = -1;
                 for (int y = 0; y < columnDepth; ++y)
@@ -481,7 +479,7 @@ namespace VikingEngine.DSSWars.GameObject
             IntVector2 bannerPos;
             if (typeCurrentData.hasBannerMan)
             {
-                bannerPos = new IntVector2(typeCurrentData.rowWidth / 2, typeCurrentData.columnsDepth - 1);
+                bannerPos = new IntVector2(soldierData.rowWidth / 2, soldierData.columnsDepth - 1);
             }
             else
             {
@@ -587,7 +585,7 @@ namespace VikingEngine.DSSWars.GameObject
             return s;
         }
 
-        Vector3 walkingGoalWp(out bool shiptransform, out bool pathIsReady)
+        Vector3 walkingGoalWp(out bool waterNode, out bool pathIsReady)
         {
             var path_sp = detailPath;
             if (path_sp != null)
@@ -595,7 +593,7 @@ namespace VikingEngine.DSSWars.GameObject
                 pathIsReady = true;
                 if (path_sp.NodeCountLeft() > 1)
                 {
-                    Vector3 result = path_sp.NextNodeWp(position, out bool complete, out shiptransform);
+                    Vector3 result = path_sp.NextNodeWp(position, out bool complete, out waterNode);
                     return result;
                 }
             }
@@ -604,7 +602,7 @@ namespace VikingEngine.DSSWars.GameObject
                 pathIsReady = false;
             }
 
-            shiptransform = isShip;            
+            waterNode = DssRef.world.tileGrid.Get(tilePos).IsWater();            
             return goalWp;
         }
 
@@ -651,6 +649,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void update(float time, bool fullUpdate)
         {
+            if (debugTagged)
+            {
+                lib.DoNothing();
+            }
+
             if (inShipTransform)
             {
                 return;
@@ -685,13 +688,9 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else
                 {
-
                     //Battle update
-                    if (updateWalking(walkingGoalAttackTarget(attack_sp, out bool shipTransform), true, false, 0, time))
-                    {
-                        //on target
-                    }
-
+                    updateWalking(walkingGoalAttackTarget(attack_sp, out bool shipTransform), true, false, 0, time);
+                    
                     if (soldiers != null)
                     {
                         var soldiersC = soldiers.counter();
@@ -754,7 +753,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         if (move)
                         {
-                            Vector3 goal = walkingGoalWp(out bool shipTransform, out bool ready);
+                            Vector3 goal = walkingGoalWp(out bool waterNode, out bool ready);
                             bool complete = updateWalking(goal, ready, true, army.armyGoalRotation, time);
                             if (ready)
                             {
@@ -764,7 +763,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     waitTime = 0;
                                 }
 
-                                if (shipTransform != isShip)
+                                if (waterNode != isShip)
                                 {
                                     if (!inShipTransform)
                                     {
@@ -801,7 +800,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (allIdle &&
                     state == GroupState.GoingIdle &&
-                    waitTime >= 2000)
+                    waitTime >= 5000)
                 {
                     state = GroupState.Idle;
                 }
@@ -1654,7 +1653,7 @@ namespace VikingEngine.DSSWars.GameObject
                     var detailPath_sp = detailPath;
                     if (detailPath_sp == null || detailPath_sp.goal != goalSubTile)
                     {
-                        pathCalulate_detail(goalSubTile);
+                        pathCalulate_detail(goalSubTile, true);
                     }
 
                     var counter = soldiers.counter();
@@ -1690,6 +1689,7 @@ namespace VikingEngine.DSSWars.GameObject
                     Vector3 diff = goalWp - position;
                     float l = VectorExt.PlaneXZLength(diff);
                     IntVector2 goalSubTile;
+                    bool isTravelNode = false;
                     if (l > DetailMaxLength)
                     {
                         if (path == null)
@@ -1701,7 +1701,7 @@ namespace VikingEngine.DSSWars.GameObject
                         var path_sp = path;
                         if (path_sp != null)
                         {
-                            IntVector2 aheadPathTile = path_sp.getNodeAhead(3, tilePos);
+                            IntVector2 aheadPathTile = path_sp.getNodeAhead(3, tilePos, out isTravelNode);
                             goalSubTile = WP.ToSubTilePos_Centered(aheadPathTile);
                         }
                         else
@@ -1717,7 +1717,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (l >= WorldData.SubTileWidth && 
                         (detailPath == null || detailPath.goal != goalSubTile))
                     {
-                        pathCalulate_detail(goalSubTile);
+                        pathCalulate_detail(goalSubTile, isTravelNode);
                     }
                 }
             }
@@ -1788,7 +1788,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
 
-        void pathCalulate_detail(IntVector2 goal)
+        void pathCalulate_detail(IntVector2 goal, bool isTravelNode)
         {
             //Path towards army end position
             //make a big path towards end pos
@@ -1801,7 +1801,7 @@ namespace VikingEngine.DSSWars.GameObject
             DetailPathFinding pf = DssRef.state.detailPathFindingPool.GetPf();
             {
                 detailPath = pf.FindPath(WP.ToSubTilePos(position), rotation, goal,
-                    isShip, army.walkGoalAsShip);
+                    isShip, army.walkGoalAsShip, isTravelNode);
             }
             DssRef.state.detailPathFindingPool.Return(pf);
 
@@ -2049,9 +2049,10 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void Upkeep(ref float energy)
+        public void Upkeep(ref float energy, ref float moneyCarry)
         {
             energy += soldierData.energyPerSoldier * soldierCount;
+            moneyCarry += soldierCount * DssConst.MoneyCarryPerSoldier;
         }
 
         public override void DeleteMe(DeleteReason reason, bool removeFromParent)
@@ -2163,20 +2164,31 @@ namespace VikingEngine.DSSWars.GameObject
             army.stateDebugText(content);
         }
 
-        public void setArmyPlacement2(Vector3 wp)
+        public void setArmyPlacement2(Vector3 wp, bool telePort)
         {
             goalWp = wp;
 
-            //if (state == GroupState.GameStart)
-            //{
-            //    position = goalWp;
-            //    rotation = army.armyGoalRotation;
-            //}
-            //else
-            //{
+            if (telePort)
+            {
+                position = wp;
+                tilePos = WP.ToTilePos(position);
+                setGroundY();
+                rotation = army.rotation;
+                //state = GroupState.Idle;
+
+                bool waterNode = DssRef.world.tileGrid.Get(tilePos).IsWater();
+                if (waterNode != isShip)
+                {
+                    completeTransform(waterNode ? SoldierTransformType.ToShip : SoldierTransformType.FromShip);
+                }
+            }
+            else
+            {
                 wakeupSoldiers();
-            //}
-            state = GroupState.FindArmyPlacement;
+            
+                state = GroupState.FindArmyPlacement;
+            }
+            
         }
 
         void wakeupSoldiers()

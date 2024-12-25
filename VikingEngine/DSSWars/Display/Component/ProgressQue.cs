@@ -12,7 +12,7 @@ namespace VikingEngine.DSSWars.Display.Component
 {
     class ProgressQue
     {
-        public void toHud(LocalPlayer player, RichBoxContent content, Action<int> queClick, int currentQue)
+        public void toHud(LocalPlayer player, RichBoxContent content, Action<int> queClick, int currentQue, int maxQue, bool noLimitOption)
         {
             HudLib.Label(content, DssRef.lang.Hud_Queue);
             content.space();
@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars.Display.Component
                 {
                     RichBoxContent content = new RichBoxContent();
 
-                    content.text(DssRef.todoLang.Automation_queue_description);
+                    content.text(DssRef.lang.Automation_queue_description);
 
                     player.hud.tooltip.create(player, content, true);
                 }
@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.Display.Component
             content.newLine();
             content.Add(new RichBoxImage(player.input.Stop.Icon));
             content.space();
-            for (int length = 0; length <= BarracksStatus.MaxQue; length++)
+            for (int length = 0; length <= maxQue; length++)
             {
                 var button = new RichboxButton(new List<AbsRichBoxMember>{
                        new RichBoxText( length.ToString())
@@ -38,11 +38,13 @@ namespace VikingEngine.DSSWars.Display.Component
                 content.Add(button);
                 content.space();
             }
+
+            if (noLimitOption)
             {
                 var button = new RichboxButton(new List<AbsRichBoxMember>{
                        new RichBoxText(DssRef.lang.Hud_NoLimit)
                     }, new RbAction1Arg<int>(queClick, 255, SoundLib.menuStart));
-                button.setGroupSelectionColor(HudLib.RbSettings, currentQue > BarracksStatus.MaxQue);
+                button.setGroupSelectionColor(HudLib.RbSettings, currentQue > maxQue);
                 content.Add(button);
             }
         }

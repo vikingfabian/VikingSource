@@ -19,8 +19,8 @@ namespace VikingEngine.DSSWars.Data
 {
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
-        public const int Version = 7;
-        public const int SubVersion = 40; 
+        public const int Version = 10;
+        public const int SubVersion = 44; 
         //public const int MergeVersion = 26;
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
@@ -51,9 +51,10 @@ namespace VikingEngine.DSSWars.Data
 
         public void load()
         {
-            //complete = true;
             DataStream.BeginReadWrite.BinaryIO(false, meta.Path, null, readGameState, this, true);
         }
+
+        
 
         public void SaveComplete(bool save, int player, bool completed, byte[] value)
         {
@@ -86,6 +87,8 @@ namespace VikingEngine.DSSWars.Data
             Debug.WriteCheck(w);
             DssRef.state.writeGameState(w);
         }
+
+        
 
         public void readGameState(System.IO.BinaryReader r)
         {

@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars.Map.Path
             nodeGrid = new DetailPathNode[area.Width, area.Height];
         }
 
-        public DetailWalkingPath FindPath(IntVector2 center, Rotation1D startDir, IntVector2 goal, bool startAsShip, bool endAsShip)
+        public DetailWalkingPath FindPath(IntVector2 center, Rotation1D startDir, IntVector2 goal, bool startAsShip, bool endAsShip, bool isTravelNode)
         {
             /*
             * Path finding algorithm
@@ -188,25 +188,27 @@ namespace VikingEngine.DSSWars.Map.Path
             }
 
             //List<DetailPathNodeResult> result = new List<DetailPathNodeResult>();
-            
+
+            //const int MaxBacknodes = 1;
             var path = DssRef.state.detailPathFindingPool.GetRes();
             bool blocked = false;
+            int totalNodes = 0;
 
             while (currentNode.Position != startNode.Position)
             {
-                if (currentNode.ship == startAsShip || currentNode.ship == endAsShip)
-                {
+                //if (isTravelNode || currentNode.ship == startAsShip || currentNode.ship == endAsShip || totalNodes > MaxBacknodes)
+                //{
                     path.nodes.Add(new DetailPathNodeResult(currentNode.Position, currentNode.ship));
-                    
-                    numLoops++;
-                    if (numLoops > MaxNodeLength)
+
+                    totalNodes++;
+                    if (totalNodes > MaxNodeLength)
                         throw new EndlessLoopException("");
-                }
-                else
-                {
-                    path.nodes.Clear();
-                    blocked = true;
-                }
+                //}
+                //else
+                //{
+                //    path.nodes.Clear();
+                //    blocked = true;
+                //}
 
                 IntVector2 pos = currentNode.PreviousPosition;
                 currentNode = nodeGrid[pos.X - area.pos.X, pos.Y - area.pos.Y];

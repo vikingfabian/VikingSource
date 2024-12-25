@@ -293,7 +293,7 @@ namespace VikingEngine.DSSWars.Map
         {
             int ix = currentNodeIx;
 
-            if (ix >= 0 && nodes.Count > 0)
+            if (ix >= 0 && ix < nodes.Count)
             {
                 node = nodes[ix];
                 return true;
@@ -351,7 +351,7 @@ namespace VikingEngine.DSSWars.Map
             return nodes[0].position;
         }
 
-        public IntVector2 getNodeAhead(int distanceAhead, IntVector2 start)
+        public IntVector2 getNodeAhead(int distanceAhead, IntVector2 start, out bool isTravelNode)
         {
             int maxLoops = 100;
 
@@ -368,15 +368,17 @@ namespace VikingEngine.DSSWars.Map
                     { 
                         //Next is distance one away
                         int aheadNode = Bound.Min(currentNodeIx - (distanceAhead -1), 0);
+                        isTravelNode = aheadNode >= 2;
                         return nodes[aheadNode].position;
                     }
                 }
                 else
                 {
+                    isTravelNode = false;
                     return start;
                 }
             }
-
+            isTravelNode = false;
             return start;
         }
 

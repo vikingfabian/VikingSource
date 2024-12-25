@@ -16,74 +16,54 @@ using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Players.Orders
 {
-    abstract class AbsOrder
+    abstract class AbsBuildOrder : AbsOrder
     {
-        public OrderStatus orderStatus = OrderStatus.Waiting;
-        public int priority;
-        static int NextId = 0;
-        public int id;
+        protected City city;
+        protected IntVector2 subTile;
+        protected AbsVoxelObj model;
 
-        //public AbsOrder(int priority)
-        //{
-
-        //}
-
-        virtual public void onAdd()
-        { }
-
-        public void baseInit(int priority)
+        protected void createModel(int frame)
         { 
-            this.priority = priority;
-            id = NextId++;
+            model = DssRef.models.ModelInstance(LootFest.VoxelModelName.buildarea, WorldData.SubTileWidth * 1.4f, false);
+            model.Frame = frame;
+            model.AddToRender(DrawGame.UnitDetailLayer);
+            model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTile);
         }
 
-        virtual public BuildOrder GetWorkOrder(City city)
-        { 
-           return null;
-        }
-
-        virtual public bool IsBuildOnSubTile(IntVector2 subTile)
-        { 
-            return false;
-        }
-
-        abstract public bool IsConflictingOrder(AbsOrder other);
-
-        virtual public void DeleteMe() { }
-
-        virtual public RichBoxContent ToHud()
+        public override bool IsBuildOnSubTile(IntVector2 subTile)
         {
-            throw new NotImplementedException();
+            return this.subTile == subTile;
         }
 
-        virtual public bool refreshAvailable(Faction faction) { return true; }
-
-        virtual public void writeGameState(System.IO.BinaryWriter w)
-        {       
-            w.Write((byte)priority);
-        }
-        virtual public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
+        public override bool IsConflictingOrder(AbsOrder other)
         {
-           priority = r.ReadByte();
+            return other.IsBuildOnSubTile(subTile);
+        }
+
+        public override void DeleteMe()
+        {
+            model.DeleteMe();
+            base.DeleteMe();
         }
     }
 
-    class BuildOrder : AbsOrder
+    class BuildOrder : AbsBuildOrder
     {
-        City city;
-        IntVector2 subTile;
+        
         public BuildAndExpandType buildingType;
         Mesh icon;
-        AbsVoxelObj model;
+        public bool upgrade;
 
         public BuildOrder()
         { }
-        public BuildOrder(int priority, bool bLocalPlayer, City city, IntVector2 subTile, BuildAndExpandType buildingType)
+        public BuildOrder(int priority, bool bLocalPlayer, City city, IntVector2 subTile, BuildAndExpandType buildingType, bool upgrade)
         {
+            this.upgrade = upgrade;
             baseInit(priority);
             this.city = city;
             this.subTile = subTile;
             this.buildingType = buildingType;
+            this.upgrade = upgrade;
 
             //if (bLocalPlayer)
             //{
@@ -93,12 +73,10 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         public override void onAdd()
         {
-            
-            model = DssRef.models.ModelInstance(LootFest.VoxelModelName.buildarea, WorldData.SubTileWidth * 1.4f, false);
-            model.AddToRender(DrawGame.UnitDetailLayer);
-            model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTile);
 
-            Vector3 iconPos = model.position;
+            createModel(0);
+
+             Vector3 iconPos = model.position;
             iconPos.Y += model.scale.Y * 6f;
             iconPos.Z += model.scale.Y * 0.15f;
 
@@ -111,8 +89,8 @@ namespace VikingEngine.DSSWars.Players.Orders
         public override RichBoxContent ToHud()
         {
             RichBoxContent content = new RichBoxContent();
-            content.h2(DssRef.lang.Build_Order);
-            BuildLib.BuildOptions[(int)buildingType].blueprint.toMenu(content, city);
+            content.h2(upgrade? DssRef.todoLang.Upgrade_Order : DssRef.lang.Build_Order);
+            BuildLib.BuildOptions[(int)buildingType].blueprint.toMenu(content, city, upgrade);
 
             return content;
         }
@@ -139,42 +117,47 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         override public void DeleteMe()
         { 
-            Debug.CrashIfThreaded();
-
-            model.DeleteMe();
+            base.DeleteMe();
+            
             icon.DeleteMe();
         }
-        public override BuildOrder GetWorkOrder(City city)
+        public override BuildOrder GetBuild()
         {
-            if (this.city == city && orderStatus == OrderStatus.Waiting)
-            { 
-                return this;
+            return this;
+        }
+        
+        public override bool BuildQueue(City city)
+        {
+            if (this.city == city && orderStatus != OrderStatus.Complete)
+            {
+                return true;
             }
-            return null;
+            return false;
         }
 
         public WorkQueMember createWorkQue(out CraftBlueprint blueprint)
         {
             int type = (int)buildingType;
             blueprint = BuildLib.BuildOptions[type].blueprint;
-            var result = new WorkQueMember(WorkType.Build, type, subTile, priority, 0);
+            var result = new WorkQueMember(upgrade? WorkType.Upgrade : WorkType.Build, type, 0, subTile, priority, 0, 0);
             result.orderId = id;
             return result;
         }
 
-        public override bool IsBuildOnSubTile(IntVector2 subTile)
-        {
-            return this.subTile == subTile;
-        }
-
-        public override bool IsConflictingOrder(AbsOrder other)
-        {
-            return other.IsBuildOnSubTile(subTile);
-        }
+      
 
         public override bool refreshAvailable(Faction faction)
         {
             return city.faction == faction;
+        }
+
+        override public OrderType GetWorkType(City city)
+        {
+            if (this.city == city)
+            {
+                return OrderType.Build;
+            }
+            return OrderType.NONE;
         }
     }
 

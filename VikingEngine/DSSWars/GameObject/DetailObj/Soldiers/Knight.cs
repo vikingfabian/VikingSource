@@ -78,13 +78,11 @@ namespace VikingEngine.DSSWars.GameObject
             rotationSpeed = StandardRotatingSpeed * 2f;
             targetSpotRange = StandardTargetSpotRange;
                         
-            rowWidth = 4;
-            columnsDepth = 3;
-            groupSpacing = DssVar.DefaultGroupSpacing * 1.4f;
+            
 
             goldCost = MathExt.MultiplyInt(2, DssLib.GroupDefaultCost);
-            workForcePerUnit = 2;
-            upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+
+           
             
             modelAdjY = 0.1f;
             hasBannerMan = false;

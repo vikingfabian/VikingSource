@@ -2155,10 +2155,22 @@ namespace VikingEngine
                 }
 
 
-                currentIndex = numTilesWidth * 85;
-                {
-                    add(SpriteName.rtsCardBg, currentIndex, DSSCardSz.X, DSSCardSz.Y);
-                }
+                //currentIndex = numTilesWidth * 85;
+                //{
+                //    add(SpriteName.rtsCardBg, currentIndex, DSSCardSz.X, DSSCardSz.Y);
+                //}
+            }
+
+            currentIndex = numTilesWidth * 90;
+            {
+                add(SpriteName.WarsBuild_School, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_PostalLevel2, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_PostalLevel3, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_RecruitmentLevel2, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_RecruitmentLevel3, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_GoldDeliver, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_GoldDeliverLevel2, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_GoldDeliverLevel3, currentIndex, 3, 3);
             }
 
             if (PlatformSettings.RunProgram == StartProgram.ToGG ||
@@ -2293,6 +2305,7 @@ namespace VikingEngine
                     add(SpriteName.WarsWorkerAdd, 2, 2);
                     add(SpriteName.WarsWorkerSub, 2, 2);
                     add(SpriteName.WarsBogIron, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Hammerknight, 2, 2);
                 }
 
                 currentIndex = numTilesWidth * 96;
@@ -2319,19 +2332,26 @@ namespace VikingEngine
                     add(SpriteName.ColorPickerCircle);
                     add(SpriteName.WarsNightmareEyeGlow);
                     currentIndex += 1;
-                    add(SpriteName.WarsResource_MediumArmor);
-                    currentIndex += 2;
+                    add(SpriteName.WarsResource_IronArmor);
+                     add(SpriteName.WarsResource_MithrilArmor);
+                     add(SpriteName.WarsResource_BronzeArmor);
+                    
                     add(SpriteName.WarsResource_Sharpstick);
                     add(SpriteName.WarsResource_Sword);
-                    currentIndex += 1;
+                    add(SpriteName.WarsResource_MithrilSword);
                     add(SpriteName.WarsResource_Bow);
                     add(SpriteName.WarsResource_Longbow);
-                    currentIndex += 7;
+                    add(SpriteName.WarsResource_Mithrilbow);
+                    currentIndex += 6;
                     add(SpriteName.WarsDelivery);
                     add(SpriteName.WarsTrade);
                     add(SpriteName.WarsResource_Beer);
                     add(SpriteName.WarsResource_Iron);
-                    currentIndex += 9;
+                    add(SpriteName.WarsResource_Silver);
+                    add(SpriteName.WarsResource_Copper);
+                    add(SpriteName.WarsResource_Gold);
+                    add(SpriteName.WarsResource_Mithril);
+                    currentIndex += 5;
                     add(SpriteName.WarsResource_SkinAndLinen);
                     currentIndex += 5;
                     add(SpriteName.WarsResource_Stone);
@@ -2347,8 +2367,8 @@ namespace VikingEngine
                     add(SpriteName.WarsResource_Linen);
                     add(SpriteName.WarsResource_Wheat);
                     add(SpriteName.WarsResource_Egg);
-                    add(SpriteName.WarsResource_LightArmor);
-                    add(SpriteName.WarsResource_HeavyArmor);
+                    add(SpriteName.WarsResource_PaddedArmor);
+                    add(SpriteName.WarsResource_FullPlateArmor);
                     add(SpriteName.WarsResource_IronOre);
                     add(SpriteName.WarsResource_GoldOre);
                     add(SpriteName.WarsResource_Ballista);
@@ -2435,6 +2455,26 @@ namespace VikingEngine
                     add(SpriteName.WarsCityHall, 3, 3);
                     add(SpriteName.WarsBuild_RapeseedFarms, 3, 3);
                     add(SpriteName.WarsBuild_HempFarms, 3, 3);
+
+                    add(SpriteName.WarsBuild_Logistics, 3, 3);
+                    add(SpriteName.WarsBuild_Smelter, 3, 3);
+                    add(SpriteName.WarsBuild_WoodCutter, 3, 3);
+                    add(SpriteName.WarsBuild_StoneCutter, 3, 3);
+                    add(SpriteName.WarsBuild_Embassy, 3, 3);
+                    add(SpriteName.WarsBuild_WaterReservoir, 3, 3);
+                    add(SpriteName.WarsBuild_KnightBarrack, 3, 3);
+                    add(SpriteName.WarsBuild_Foundry, 3, 3);
+                    add(SpriteName.WarsBuild_Chemist, 3, 3);
+
+                    add(SpriteName.WarsBuild_Armory, 3, 3);
+                    add(SpriteName.WarsBuild_Gunmaker, 3, 3);
+                    add(SpriteName.WarsBuild_Coinminter, 3, 3);
+
+                    add(SpriteName.WarsBuild_SoldierBarracks, 3, 3);
+                    add(SpriteName.WarsBuild_ArcherBarracks, 3, 3);
+                    add(SpriteName.WarsBuild_WarmashineBarracks, 3, 3);
+                    add(SpriteName.WarsBuild_GunBarracks, 3, 3);
+                    add(SpriteName.WarsBuild_CannonBarracks, 3, 3);
                 }
 
                 currentIndex = numTilesWidth * 100;
@@ -2455,9 +2495,73 @@ namespace VikingEngine
                     add(SpriteName.warsArmyTag_RoundShield);
                     add(SpriteName.warsArmyTag_BrokenShield);   
                     add(SpriteName.warsArmyTag_Anchor);
+
+                    add(SpriteName.WarsResource_Crossbow);
+                    add(SpriteName.WarsResource_Sulfur);
+                    add(SpriteName.WarsResource_BlackPowder);
+                    add(SpriteName.WarsResource_Lead);
+                    add(SpriteName.WarsResource_LeadOre);
+                    add(SpriteName.WarsResource_TinOre);
+                    add(SpriteName.WarsResource_Tin);
+                    add(SpriteName.WarsWoodCraftIcon);
+                    add(SpriteName.WarsResource_Wagon2Wheel);
+                    add(SpriteName.WarsResource_Wagon4Wheel);
+                    add(SpriteName.WarsResource_ShortSword);
+                    add(SpriteName.WarsResource_Longsword);
+                    add(SpriteName.WarsResource_Steel);
+                    add(SpriteName.WarsResource_HeavyIronArmor);
+                    add(SpriteName.WarsResource_LightPlateArmor);
+                    add(SpriteName.WarsResource_BloomeryIron);
+                    add(SpriteName.WarsResource_MithrilAlloy);
+                    add(SpriteName.WarsResource_Bronze);
+                    add(SpriteName.WarsResource_SilverOre);
+                    add(SpriteName.WarsResource_Ox);
+                    add(SpriteName.WarsResource_BronzeSword);
+                    add(SpriteName.WarsResource_HeavyPaddedArmor);
+                    add(SpriteName.WarsResource_ThrowSpear);
+                    add(SpriteName.WarsResource_Slingshot);
+                    add(SpriteName.WarsResource_BronzeShotgun);
+                    add(SpriteName.WarsResource_BronzeRifle);
+                    add(SpriteName.WarsResource_IronShotgun);
+                    add(SpriteName.WarsResource_IronRifle);
+                    add(SpriteName.WarsResource_BronzeManCannon);
+                    add(SpriteName.WarsResource_IronManCannon);
+                    add(SpriteName.WarsResource_BronzeSiegeCannon);
+                    add(SpriteName.WarsResource_IronSiegeCannon);
+                    add(SpriteName.WarsResource_Warhammer);
+                    add(SpriteName.WarsResource_Catapult);
+                    add(SpriteName.WarsResource_Trebuchet);
+                    add(SpriteName.WarsResource_CastIron);
+                    add(SpriteName.WarsResource_Manuballista);
+                    add(SpriteName.WarsResource_Bullets);
+                    add(SpriteName.WarsResource_GunPowder);
+                    add(SpriteName.WarsResource_CopperOre);
+                    add(SpriteName.WarsResource_Toolkit);
+                    add(SpriteName.WarsResource_HandSpear);
+                    add(SpriteName.WarsResource_CoolingFluid);
+                    add(SpriteName.WarsTechnology_Unlocked);
+                    add(SpriteName.WarsTechnology_Locked);
+                    add(SpriteName.WarsFletcherArrowIcon);
+                    add(SpriteName.WarsWorkSmelting);
+
                 }
 
-                    
+                currentIndex = numTilesWidth * 101;
+                {
+                    add(SpriteName.WarsUnitIcon_Javelin, 2, 2);
+                    add(SpriteName.WarsUnitIcon_BronzeShotgun, 2, 2);
+                    add(SpriteName.WarsUnitIcon_BronzeRifle, 2, 2);
+                    add(SpriteName.WarsUnitIcon_MithrilMan, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Longsword, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Manuballista, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Catapult, 2, 2);
+                    add(SpriteName.WarsUnitIcon_BronzeManCannon, 2, 2);
+                    add(SpriteName.WarsUnitIcon_BronzeSiegeCannon, 2, 2);
+                    add(SpriteName.WarsUnitIcon_IronManCannon, 2, 2);
+                    add(SpriteName.WarsUnitIcon_IronSiegeCannon, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Slingshot, 2, 2);
+                    add(SpriteName.WarsUnitIcon_MithrilArcher, 2, 2);
+                }
 
                 currentIndex = numTilesWidth * 106;
                 {

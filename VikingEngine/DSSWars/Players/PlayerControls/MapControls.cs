@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.Players
         const float CamMaxRotation = 0.5f;
         const float CamStartRotation = MathHelper.PiOver2;
         IntervalF ZoomRange = MapDetailLayerManager.FullZoomRange;
-
+        VectorRect panBounds;
         FloatInBound camRotation = new FloatInBound(CamStartRotation, new IntervalF(CamStartRotation - CamMaxRotation, CamStartRotation + CamMaxRotation), false);
 
         LocalPlayer player;
@@ -61,7 +61,7 @@ namespace VikingEngine.DSSWars.Players
             camera.FieldOfView = 20;
             camera.UseTerrainCollisions = false;
             camera.zoomChaseLengthPercentage = 0.5f;
-
+            panBounds = DssRef.world.unitBounds;
             hover = new Selection(player, true);
             selection = new Selection(player, false);
             
@@ -80,9 +80,19 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public void setZoomRange(bool tutorial)
+        public void setCameraBounds(bool tutorial, Rectangle2 cityArea)
         {
             ZoomRange = tutorial? MapDetailLayerManager.TutorialZoomRange : MapDetailLayerManager.FullZoomRange;
+
+            if (tutorial)
+            {
+                cityArea.AddRadius(5);
+                panBounds = new VectorRect(cityArea);
+            }
+            else
+            {
+                panBounds = DssRef.world.unitBounds;
+            }
         }
 
         public Vector2 XPointerPos()
@@ -709,16 +719,6 @@ namespace VikingEngine.DSSWars.Players
                         player.cityTab = Display.MenuTab.Conscript;
                         selectedSubTile.city.selectedConscript = selectedSubTile.city.conscriptIxFromSubTile(selectedSubTile.subTilePos);
 
-
-
-                        //int id = conv.IntVector2ToInt(selectedSubTile.subTilePos);
-                        //for (int i = 0; i < selectedSubTile.city.conscriptBuildings.Count; ++i)
-                        //{
-                        //    if (selectedSubTile.city.conscriptBuildings[i].idAndPosition == id)
-                        //    {
-                        //        selectedSubTile.city.selectedConscript = i; break;
-                        //    }
-                        //}
                     }
                     break;
                 case SelectTileResult.Recruitment:
@@ -727,21 +727,20 @@ namespace VikingEngine.DSSWars.Players
                         player.cityTab = Display.MenuTab.Delivery;
                         selectedSubTile.city.selectedDelivery = selectedSubTile.city.deliveryIxFromSubTile(selectedSubTile.subTilePos);
 
-                        //int id = conv.IntVector2ToInt(selectedSubTile.subTilePos);
-                        //for (int i = 0; i < selectedSubTile.city.deliveryServices.Count; ++i)
-                        //{
-                        //    if (selectedSubTile.city.deliveryServices[i].idAndPosition == id)
-                        //    {
-                        //        selectedSubTile.city.selectedDelivery = i; break;
-                        //    }
-                        //}
-
-                        //setObjectMenuFocus(true);
                     }
                     break;
-                //case SelectTileResult.:
-                //    player.cityTab = Display.MenuTab.Delivery;
-                //    break;
+
+                case SelectTileResult.School:
+                    {
+                        player.cityTab = Display.MenuTab.Progress;
+                        player.progressSubTab = Display.ProgressSubTab.Schools;
+                        selectedSubTile.city.selectedSchool = selectedSubTile.city.SchoolIxFromSubTile(selectedSubTile.subTilePos);
+
+                    }
+                    break;
+                    //case SelectTileResult.:
+                    //    player.cityTab = Display.MenuTab.Delivery;
+                    //    break;
             }
             
             //switch (tileResult)
@@ -1023,8 +1022,8 @@ namespace VikingEngine.DSSWars.Players
                 cameraFocus = null;
 
                 camera.LookTarget -= pan;
-                camera.setLookTargetXBound(DssRef.world.unitBounds.Position.X, DssRef.world.unitBounds.Right);
-                camera.setLookTargetZBound(DssRef.world.unitBounds.Position.Y, DssRef.world.unitBounds.Bottom);
+                camera.setLookTargetXBound(panBounds.Position.X, panBounds.Right);
+                camera.setLookTargetZBound(panBounds.Position.Y, panBounds.Bottom);
 
                 playerPointerPos = camera.LookTarget;
             }

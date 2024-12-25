@@ -60,10 +60,10 @@ namespace VikingEngine.DSSWars.GameObject
         public void armyColumnWidthClick(int w)
         {
             armyColumnWidth = w;
-            refreshGroupPlacements2(tilePos);
+            refreshGroupPlacements2(tilePos, false, false);
         }
 
-        void refreshGroupPlacements2(IntVector2 walkToTilePos, bool async = true)
+        void refreshGroupPlacements2(IntVector2 walkToTilePos, bool teleport, bool async = true)
         {
             if (async)
             {
@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars.GameObject
                         placementGrid.add(groupsC.sel);
                     }
 
-                    placementGrid.calcPositions(this, walkToTilePos, walkGoalAsShip);
+                    placementGrid.calcPositions(this, walkToTilePos, walkGoalAsShip, teleport);
                 }
                 ArmyPlacementGrid.PoolReturn(placementGrid);
             }
@@ -168,7 +168,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
-        public void calcPositions(Army army, IntVector2 walkToPos, bool endAsShip)
+        public void calcPositions(Army army, IntVector2 walkToPos, bool endAsShip, bool teleport)
         {
             List<SoldierGroup> failedPlacements = new List<SoldierGroup>();
 
@@ -215,18 +215,25 @@ namespace VikingEngine.DSSWars.GameObject
 
             int leftColX = 0, centerColX = 0, rightColX = 0;
 
+           
+
             foreach (var group in failedPlacements)
             {
-                for (int i = 0; i <= 10; i++)
-                {
-                    if (i == 10)
-                    {
-                        //total fail
-                        group.setArmyPlacement2(VectorExt.V2toV3XZ(centerWp));
+                const float MaxDistance = 0.5f;
+                float maxLeftY = finalLeft.Y + MaxDistance;
+                float maxCenterY = finalLeft.Y + MaxDistance;
+                float maxRightY = finalLeft.Y + MaxDistance;
 
-                    }
-                    else
-                    {
+                for (int depth = 0; depth <= 10; depth++)
+                {
+                    //if (depth == 10)
+                    //{
+                    //    //total fail
+                    //    group.setArmyPlacement2(VectorExt.V2toV3XZ(centerWp));
+
+                    //}
+                    //else
+                    //{
                         if (group.armyGridPlacement2.X < 0)
                         {
                             //go left to right
@@ -234,10 +241,6 @@ namespace VikingEngine.DSSWars.GameObject
                             {
                                 break;
                             }
-                            //if (nextExtraColumnPos(group, ref finalLeft))
-                            //{
-                            //    break;
-                            //}
 
                             if (nextExtraColumnPos(group, ref finalCenter, ref centerColX))
                             {
@@ -256,10 +259,6 @@ namespace VikingEngine.DSSWars.GameObject
                             {
                                 break;
                             }
-                            //if (nextExtraColumnPos(group, ref finalRight))
-                            //{
-                            //    break;
-                            //}
 
                             if (nextExtraColumnPos(group, ref finalCenter, ref centerColX))
                             {
@@ -277,10 +276,6 @@ namespace VikingEngine.DSSWars.GameObject
                             {
                                 break;
                             }
-                            //if (nextExtraColumnPos(group, ref finalCenter))
-                            //{
-                            //    break;
-                            //}
 
                             if (nextExtraColumnPos(group, ref finalRight, ref rightColX))
                             {
@@ -292,9 +287,14 @@ namespace VikingEngine.DSSWars.GameObject
                                 break;
                             }
                         }
+
+                    if (finalLeft.Y >= maxLeftY || finalCenter.Y >= maxCenterY || finalRight.Y >= maxRightY)
+                    {
+                        return;
                     }
-                    
                 }
+                    
+                //}
             }
 
             void column(int colindex, Vector2 _relPos, out Vector2 finalPos, out float largestWidth, float centerPan, bool endAsShip)
@@ -302,11 +302,11 @@ namespace VikingEngine.DSSWars.GameObject
                 finalPos.X = _relPos.X;
                 largestWidth = 0;
                 Vector2 cellSize;
-                grid[colindex, 0].nextPlacement(centerWp, army.armyGoalRotation, _relPos, centerPan, columnWidth, out cellSize, out _, true, endAsShip, failedPlacements);
+                grid[colindex, 0].nextPlacement(centerWp, army.armyGoalRotation, _relPos, centerPan, columnWidth, out cellSize, out _, true, endAsShip, teleport, failedPlacements);
 
                 for (int row = 1; row < RowsCount; row++)
                 {
-                    grid[colindex, row].nextPlacement(centerWp, army.armyGoalRotation, _relPos, centerPan, columnWidth, out cellSize, out float adjLeft, false, endAsShip, failedPlacements);
+                    grid[colindex, row].nextPlacement(centerWp, army.armyGoalRotation, _relPos, centerPan, columnWidth, out cellSize, out float adjLeft, false, endAsShip, teleport, failedPlacements);
                     largestWidth = lib.LargestValue(largestWidth, cellSize.X);
                     finalPos.X = adjLeft;
                     _relPos.Y += cellSize.Y + DssVar.SoldierGroup_GridExtraSpacing;
@@ -328,7 +328,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 if (success)
                 {
-                    group.setArmyPlacement2(goalWp);
+                    group.setArmyPlacement2(goalWp, teleport);
                 }
                 return success;
             }
@@ -382,7 +382,7 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        public void nextPlacement(Vector2 centerWp, float endRotation, Vector2 relativePosition, float centerPan, int armyColumnWidth, out Vector2 cellSize, out float adjLeft, bool frontRow, bool endAsShip, List<SoldierGroup> failedPlacements)
+        public void nextPlacement(Vector2 centerWp, float endRotation, Vector2 relativePosition, float centerPan, int armyColumnWidth, out Vector2 cellSize, out float adjLeft, bool frontRow, bool endAsShip, bool teleport, List<SoldierGroup> failedPlacements)
         {
             if (centerPan < 0)
             {
@@ -431,10 +431,10 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         failedPlacements.Add(group);
                     }
-                    else
-                    {
-                        group.setArmyPlacement2(goalWp);
-                    }
+                    //else
+                    //{
+                        group.setArmyPlacement2(goalWp, teleport);
+                    //}
 
                     if (++colX >= cols)
                     {

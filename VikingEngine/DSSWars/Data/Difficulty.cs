@@ -22,7 +22,6 @@ namespace VikingEngine.DSSWars.Data
         public BossSize bossSize = BossSize.Medium;
         public BossTimeSettings bossTimeSettings = BossTimeSettings.Normal;
         
-
         public int aiEconomyLevel = 1;
         public double aiEconomyMultiplier = 1.0;
         public int aiDelayTimeSec = 0;
@@ -33,15 +32,21 @@ namespace VikingEngine.DSSWars.Data
         public bool honorGuard = true;
         public bool resourcesStartHelp = false;
 
-        public bool allowPauseCommand = true;
-        public bool boss = true;
+        public bool setting_allowPauseCommand = true;
+        public float setting_foodMulti = 1;
+        public GameMode setting_gameMode = GameMode.FullStory;
+        public bool runEvents = true;
+        public bool peaceful = false;
+        //public bool toPeacefulCheck = true;
 
         public int MercenaryPurchaseCost_Start;
         public int MercenaryPurchaseCost_Add;
-        public float toPeacefulPercentage;
+        public float toPeacefulPercentage=0;
 
         public double resourceMultiplyChance = 0;
         public bool resourceMultiplyDecrease;
+        public int FoodEnergySett;
+        public int PlayerBonusGold = 0;
 
         public Difficulty(int difficulty = DefaultOption)
         {
@@ -58,13 +63,13 @@ namespace VikingEngine.DSSWars.Data
 
                 new GuiTextButton(options[i].ToString() + "%",
                     string.Format( DssRef.lang.DifficultyDescription_AiAggression, TextLib.IndexDivition((int)difficulty.aiAggressivity, (int)AiAggressivity.NUM)) + Environment.NewLine +
-                   string.Format(DssRef.lang.DifficultyDescription_BossSize,TextLib.IndexDivition((int)difficulty.bossSize, (int)BossSize.NUM)) + Environment.NewLine +
-                   string.Format(DssRef.lang.DifficultyDescription_BossEnterTime, TextLib.IndexDivition((int)difficulty.bossTimeSettings, (int)BossTimeSettings.NUM)) + Environment.NewLine +
-                   string.Format(DssRef.lang.DifficultyDescription_AiEconomy, AiEconomyLevel[difficulty.aiEconomyLevel].ToString()) + Environment.NewLine +
+                    string.Format(DssRef.lang.DifficultyDescription_BossSize,TextLib.IndexDivition((int)difficulty.bossSize, (int)BossSize.NUM)) + Environment.NewLine +
+                    string.Format(DssRef.lang.DifficultyDescription_BossEnterTime, TextLib.IndexDivition((int)difficulty.bossTimeSettings, (int)BossTimeSettings.NUM)) + Environment.NewLine +
+                    string.Format(DssRef.lang.DifficultyDescription_AiEconomy, AiEconomyLevel[difficulty.aiEconomyLevel].ToString()) + Environment.NewLine +
                     string.Format(DssRef.lang.DifficultyDescription_AiDelay, TimeSpan.FromSeconds(difficulty.aiDelayTimeSec).ToString()) + Environment.NewLine +
                     string.Format(DssRef.lang.DifficultyDescription_DiplomacyDifficulty, TextLib.IndexDivition(difficulty.diplomacyDifficulty, DiplomacyDifficultyCount)) + Environment.NewLine +
-                    string.Format(DssRef.lang.DifficultyDescription_MercenaryCost, difficulty.MercenaryPurchaseCost_Start.ToString() )+ Environment.NewLine +
-                   string.Format(DssRef.lang.DifficultyDescription_HonorGuards, difficulty.honorGuard? Ref.langOpt.Hud_Yes : Ref.langOpt.Hud_No),
+                    //string.Format(DssRef.lang.DifficultyDescription_MercenaryCost, difficulty.MercenaryPurchaseCost_Start.ToString() )+ Environment.NewLine +
+                    string.Format(DssRef.lang.DifficultyDescription_HonorGuards, difficulty.honorGuard? Ref.langOpt.Hud_Yes : Ref.langOpt.Hud_No),
 
                     new GuiAction1Arg<int>(difficultyOptionsLink, i),
                     false, layout);
@@ -74,26 +79,39 @@ namespace VikingEngine.DSSWars.Data
         public void set(int difficulty)
         {
             this.difficulty = difficulty;
-            refreshSettings(difficulty);
+            refreshSettings();
         }
 
         public int TotalDifficulty()
         {
             double result = PercDifficulty;
-            if (!allowPauseCommand)
+            if (!setting_allowPauseCommand)
             {
                 result *= 1.25;
             }
-            if (!boss)
+            if (!DssRef.storage.centralGold)
             {
-                result *= 0.75;
+                result *= 1.5;
+            }
+            switch (setting_gameMode)
+            {
+                case GameMode.Sandbox:
+                    result *= 0.75;
+                    break;
+                case GameMode.Peaceful:
+                    result *= 0.25;
+                    break;
             }
 
             return Convert.ToInt32(result);
         }
 
-        void refreshSettings(int difficulty)
+        public void refreshSettings()
         {
+            FoodEnergySett = Convert.ToInt32(DssConst.FoodEnergy * setting_foodMulti);
+
+            
+
             switch (difficulty)
             {
                 case 0:
@@ -106,8 +124,10 @@ namespace VikingEngine.DSSWars.Data
                     diplomacyDifficulty = 0;
                     honorGuard = true;
                     resourcesStartHelp = true;
+                    //toPeacefulCheck = false;
                     aiDelayTimeSec = 30 * TimeExt.MinuteInSeconds;
-                    toPeacefulPercentage = 0.01f;
+                    //toPeacefulPercentage = 0.01f;
+                    PlayerBonusGold = 6000;
                     break;
 
                 case 1:
@@ -120,8 +140,10 @@ namespace VikingEngine.DSSWars.Data
                     diplomacyDifficulty = 0;
                     honorGuard = true;
                     resourcesStartHelp = true;
+                    //toPeacefulCheck = false;
                     aiDelayTimeSec = 15 * TimeExt.MinuteInSeconds;
-                    toPeacefulPercentage = 0.05f;
+                    //toPeacefulPercentage = 0.05f;
+                    PlayerBonusGold = 4000;
                     break;
 
                 case 2:
@@ -134,8 +156,10 @@ namespace VikingEngine.DSSWars.Data
                     diplomacyDifficulty = 1;
                     honorGuard = true;
                     resourcesStartHelp = true;
+                    //toPeacefulCheck = true;
                     aiDelayTimeSec = 8 * TimeExt.MinuteInSeconds;
                     toPeacefulPercentage = 0.1f;
+                    PlayerBonusGold = 2000;
                     break;
 
                 case 3: //Medium
@@ -145,6 +169,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 2;
                     diplomacyDifficulty = 1;
                     honorGuard = true;
+                    //toPeacefulCheck = true;
                     aiDelayTimeSec = 30;
                     toPeacefulPercentage = 0.2f;
                     break;
@@ -156,6 +181,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 2;
                     diplomacyDifficulty = 1;
                     honorGuard = false;
+                    //toPeacefulCheck = true;
                     aiDelayTimeSec = 10;
                     toPeacefulPercentage = 0.5f;
                     break;
@@ -167,6 +193,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 2;
                     diplomacyDifficulty = 1;
                     honorGuard = false;
+                    //toPeacefulCheck = true;
                     toPeacefulPercentage = 0.75f;
                     break;
 
@@ -180,6 +207,7 @@ namespace VikingEngine.DSSWars.Data
                     resourceMultiplyDecrease = false;
                     diplomacyDifficulty = 2;
                     honorGuard = false;
+                    //toPeacefulCheck = true;
                     toPeacefulPercentage = 1.5f;
                     break;
 
@@ -194,11 +222,30 @@ namespace VikingEngine.DSSWars.Data
                     resourceMultiplyDecrease = false;
                     diplomacyDifficulty = 2;
                     honorGuard = false;
+                    //toPeacefulCheck = true;
                     toPeacefulPercentage = 2f;
                     break;
             }
 
             int mediumOffset = difficulty - 3;
+
+            switch (setting_gameMode)
+            {
+                case GameMode.FullStory:
+                    runEvents = true;
+                    peaceful = false;
+                    break;
+                case GameMode.Sandbox:
+                    runEvents = false;
+                    peaceful = false;
+                    break;
+                case GameMode.Peaceful:
+                    runEvents = false;
+                    peaceful = true;
+                    toPeacefulPercentage = 0;
+                    //toPeacefulCheck = false;
+                    break;
+            }
 
             MercenaryPurchaseCost_Start = 3500 + mediumOffset * 500;
             MercenaryPurchaseCost_Add = 100 + mediumOffset * 20;
@@ -208,22 +255,45 @@ namespace VikingEngine.DSSWars.Data
 
         public void write(System.IO.BinaryWriter w)
         {
-            w.Write(allowPauseCommand);
-            w.Write(boss);
+            w.Write(setting_allowPauseCommand);
+            //w.Write(boss);
+            w.Write((byte)setting_gameMode);
+            w.Write(setting_foodMulti);
             w.Write(difficulty);
         }
 
-        public void read(System.IO.BinaryReader r, int version)
+        public void read(System.IO.BinaryReader r, int storageversion)
         {
-            allowPauseCommand = r.ReadBoolean();
-            boss = r.ReadBoolean();
+            setting_allowPauseCommand = r.ReadBoolean();
+            if (storageversion < 20)
+            {
+                runEvents = r.ReadBoolean();
+                if (!runEvents)
+                {
+                    setting_gameMode = GameMode.Sandbox;
+                }
+            }
+            else
+            {
+                //NEW
+                setting_gameMode = (GameMode)r.ReadByte();
+                setting_foodMulti = r.ReadSingle();
+            }
             difficulty = r.ReadInt32();
 
-            refreshSettings(difficulty);
+            refreshSettings();
         }
 
     }
 
+
+    enum GameMode
+    { 
+        FullStory,
+        Sandbox,
+        Peaceful,
+        NUM
+    }
     //enum AiResourceMultiplyType
     //{ 
     //    None,

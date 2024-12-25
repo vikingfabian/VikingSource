@@ -81,6 +81,16 @@ namespace VikingEngine
             return result;
         }
 
+        public const string ThreeDecimalFormat = "{0:0.000}";
+        public static string ThreeDecimal(double value)
+        {
+            string result = string.Format(ThreeDecimalFormat, value);
+
+            stringSafeDecimal(ref result);
+
+            return result;
+        }
+
         static void stringSafeDecimal(ref string result)
         {
             if (result.Length > 2)
@@ -130,6 +140,13 @@ namespace VikingEngine
             }
             return text;
 
+        }
+
+        public static string RemoveEnding(string text, int removeCount)
+        {
+            if (removeCount >= text.Length)
+                return text;
+            return text.Remove(text.Length - removeCount, removeCount);
         }
 
         public static string PluralEnding(string text, int count)

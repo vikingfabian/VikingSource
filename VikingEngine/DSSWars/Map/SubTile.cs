@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Valve.Steamworks;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Path;
@@ -178,27 +179,60 @@ namespace VikingEngine.DSSWars.Map
             this.color = other.color;
         }
 
-        public bool MayBuild()
+        public bool MayBuild(BuildAndExpandType build, out bool upgrade)
         {
+            upgrade = false;
             switch (mainTerrain)
             {
                 case TerrainMainType.Building:
+                    switch ((TerrainBuildingType)subTerrain)
+                    {
+                        default: return false;
+
+                        case TerrainBuildingType.Postal:
+                            upgrade = true;
+                            return build == BuildAndExpandType.PostalLevel2 || build == BuildAndExpandType.PostalLevel3;
+                        case TerrainBuildingType.PostalLevel2:
+                            upgrade = true;
+                            return build == BuildAndExpandType.PostalLevel3;
+
+                        case TerrainBuildingType.Recruitment:
+                            upgrade = true;
+                            return build == BuildAndExpandType.RecruitmentLevel2 || build == BuildAndExpandType.RecruitmentLevel3;
+                        case TerrainBuildingType.RecruitmentLevel2:
+                            upgrade = true;
+                            return build == BuildAndExpandType.RecruitmentLevel3;
+                    }
                 case TerrainMainType.DefaultSea:
                     return false;
 
                 case TerrainMainType.Foil:
                     switch ((TerrainSubFoilType)subTerrain)
                     {
-                        case TerrainSubFoilType.LinenFarm:
                         case TerrainSubFoilType.WheatFarm:
+                            upgrade = true;
+                            return build == BuildAndExpandType.WheatFarmUpgraded;
+
+                        case TerrainSubFoilType.LinenFarm:
+                            upgrade = true;
+                            return build == BuildAndExpandType.LinenFarmUpgraded;
+
                         case TerrainSubFoilType.RapeSeedFarm:
+                            upgrade = true;
+                            return build == BuildAndExpandType.RapeSeedFarmUpgraded;
+
                         case TerrainSubFoilType.HempFarm:
+                            upgrade = true;
+                            return build == BuildAndExpandType.HempFarmUpgraded;
+
+                        case TerrainSubFoilType.WheatFarmUpgraded:
+                        case TerrainSubFoilType.LinenFarmUpgraded:
+                        case TerrainSubFoilType.RapeSeedFarmUpgraded:
+                        case TerrainSubFoilType.HempFarmUpgraded:
                             return false;
                         
                     }
                     break;
-
-
             }
 
             return true;

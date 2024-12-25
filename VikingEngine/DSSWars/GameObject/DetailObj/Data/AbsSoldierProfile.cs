@@ -10,20 +10,18 @@ namespace VikingEngine.DSSWars.GameObject
     abstract class AbsSoldierProfile : AbsDetailUnitProfile
     {        
         //public UnitType /*convertSoldierShipType*/;
-        public int rowWidth =DssConst.SoldierGroup_RowWidth;
-        public int columnsDepth = DssConst.SoldierGroup_ColumnsDepth;
+       
 
-        protected int workForcePerUnit = 1;
+        
         public int goldCost = DssLib.GroupDefaultCost;
 
-        public float upkeepPerSoldier = DssLib.SoldierDefaultUpkeep;
+        
         
         //public int recruitTrainingTimeSec = DssLib.DefalutRecruitTrainingTimeSec;
 
         protected const float StandardRotatingSpeed = 6.5f;
 
-        public float groupSpacing = DssVar.DefaultGroupSpacing;
-        public float groupSpacingRndOffset = DssVar.StandardBoundRadius * 0.3f;
+        
 
         public float rotationSpeed;
         public float walkingWaggleAngle = 0.16f;
@@ -31,7 +29,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public float maxAttackAngle = 0.15f;
         
-        public Vector3 modelToShadowScale = new Vector3(0.4f, 1f, 0.32f);
+        
 
         
         public bool hasBannerMan = true;
@@ -54,10 +52,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         
 
-        public Vector3 ShadowModelScale()
-        {
-            return modelToShadowScale * DssConst.Men_StandardModelScale;
-        }
+        
 
         //public void setupJavelinCommand()
         //{
@@ -72,15 +67,7 @@ namespace VikingEngine.DSSWars.GameObject
             return new BaseSoldier();
         }
 
-        public int workForceCount()
-        {
-            return rowWidth * columnsDepth * workForcePerUnit;
-        }
-
-        public int Upkeep()
-        {
-            return Convert.ToInt32(rowWidth * columnsDepth * upkeepPerSoldier);
-        }
+       
 
         virtual public UnitType ShipType()
         {

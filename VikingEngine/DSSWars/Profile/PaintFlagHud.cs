@@ -70,7 +70,7 @@ namespace VikingEngine.DSSWars.Profile
 
                 if (state.controllerPickColorState)
                 {
-                    content.h2(PaintFlagState.ProfileColorName(state.selectedColorType));
+                    content.h2(PaintFlagState.ProfileColorName(state.selectedColorType)).overrideColor = HudLib.TitleColor_Label;
                     content.icontext(SpriteName.LeftStick, DssRef.lang.ProfileEditor_Hue);
                     content.icontext(SpriteName.RightStick, DssRef.lang.ProfileEditor_Lightness);
                     content.newParagraph();
@@ -79,7 +79,7 @@ namespace VikingEngine.DSSWars.Profile
                 }
                 else
                 {
-                    content.text(DssRef.lang.FlagEditor_Description);
+                    content.text(DssRef.lang.FlagEditor_Description).overrideColor = HudLib.InfoYellow_Light;
                     content.newLine();
 
                     content.icontext(state.VisualInput.FlagDesign_PaintBucket.Icon, DssRef.lang.FlagEditor_Bucket);
@@ -94,11 +94,11 @@ namespace VikingEngine.DSSWars.Profile
                     colorTypes();
 
                     content.newParagraph();
-                    var undoContent = new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Hud_Undo) };
+                    var undoContent = new List<AbsRichBoxMember> { new RichBoxText(DssRef.lang.Hud_Undo) };
                     content.Add(new RichboxButton(undoContent, new RbAction(state.undo), null, state.undoHistory.Count > 1));
                     content.space();
 
-                    var redoContent = new List<AbsRichBoxMember> { new RichBoxText(DssRef.todoLang.Hud_Redo) };
+                    var redoContent = new List<AbsRichBoxMember> { new RichBoxText(DssRef.lang.Hud_Redo) };
                     content.Add(new RichboxButton(redoContent, new RbAction(state.redo), null, state.redoHistory.Count > 0));
                     content.newParagraph();
                     if (state.controllerMode)
@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars.Profile
                     }
                     else
                     {
-                        content.h2(DssRef.lang.ProfileEditor_MoveImage);
+                        content.h2(DssRef.lang.ProfileEditor_MoveImage).overrideColor = HudLib.TitleColor_Label;
                         content.newLine();
                         content.Button(DssRef.lang.ProfileEditor_MoveImageUp, new RbAction1Arg<IntVector2>(state.moveOption, IntVector2.NegativeY), null, true);
                         content.newLine();
@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.Profile
                     }
                     if (state.controllerMode == false)
                     {
-                        content.Button(DssRef.todoLang.FlagEditor_ClearAll, new RbAction(state.clearAll), null, true);
+                        content.Button(DssRef.lang.FlagEditor_ClearAll, new RbAction(state.clearAll), null, true);
                     }
                     content.newLine();
                     content.Button(state.controllerMode ? SpriteName.ButtonBACK : SpriteName.NO_IMAGE, DssRef.lang.ProfileEditor_DiscardAndExit, new RbAction(state.discardAndExit), null, true);
@@ -140,7 +140,7 @@ namespace VikingEngine.DSSWars.Profile
 
         private void colorTypes()
         {
-            content.h2(DssRef.lang.ProfileEditor_FlagColorsTitle);
+            content.h2(DssRef.lang.ProfileEditor_FlagColorsTitle).overrideColor = HudLib.TitleColor_Label;
             content.newLine();
             flagcolor(ProfileColorType.Main);
             flagcolor(ProfileColorType.Detail1);
@@ -148,7 +148,7 @@ namespace VikingEngine.DSSWars.Profile
 
             content.newParagraph();
 
-            content.h2(DssRef.lang.ProfileEditor_PeopleColorsTitle);
+            content.h2(DssRef.lang.ProfileEditor_PeopleColorsTitle).overrideColor = HudLib.TitleColor_Label;
             content.newLine();
 
             peoplecolor(ProfileColorType.Skin);

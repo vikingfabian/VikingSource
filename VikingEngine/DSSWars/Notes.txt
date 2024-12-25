@@ -1,0 +1,71 @@
+﻿ public GroupedResource res_water = new GroupedResource();
+        public GroupedResource res_wood = new GroupedResource() { amount = 20, goalBuffer = 300 };
+        public GroupedResource res_fuel = new GroupedResource() { amount = 20, goalBuffer = 300 };
+        public GroupedResource res_stone = new GroupedResource() { amount = 20, goalBuffer = 100 };
+        public GroupedResource res_rawFood = new GroupedResource() { amount = 50, goalBuffer = 200 };
+        public GroupedResource res_food = new GroupedResource() { amount = 200, goalBuffer = 500 };
+        public GroupedResource res_beer = new GroupedResource() { amount = 0, goalBuffer = 200 };
+        public GroupedResource res_skinLinnen = new GroupedResource() { goalBuffer = 100 };
+
+        public GroupedResource res_ironore = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_TinOre = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_CupperOre = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_LeadOre = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_SilverOre = new GroupedResource() { goalBuffer = 100 };
+
+        public GroupedResource res_iron = new GroupedResource() { amount = 10, goalBuffer = 100 };
+        public GroupedResource res_Tin = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Cupper = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Lead = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Silver = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_RawMithril = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Sulfur = new GroupedResource() { goalBuffer = 100 };
+
+        public GroupedResource res_Bronze = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_CastIron = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_BloomeryIron = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Mithril = new GroupedResource() { goalBuffer = 100 };
+
+        public GroupedResource res_Toolkit = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Wagon2Wheel = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Wagon4Wheel = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_BlackPowder = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_GunPowder = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_LedBullet = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_sharpstick = new GroupedResource() { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
+        public GroupedResource res_BronzeSword = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_shortsword = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource res_Sword = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_LongSword = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_MithrilSword = new GroupedResource() { goalBuffer = 100 };
+
+        public GroupedResource res_Warhammer = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_twohandsword = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource res_knightslance = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource res_SlingShot = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_ThrowingSpear = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_bow = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource res_longbow = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource res_crossbow = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource res_MithrilBow = new GroupedResource() { goalBuffer = 100 };
+
+        public GroupedResource res_HandCannon = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_HandCulvertin = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Rifle = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Blunderbus = new GroupedResource() { goalBuffer = 100 };
+
+        public GroupedResource res_BatteringRam = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_ballista = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource res_Manuballista = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_Catapult = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_SiegeCannonBronze = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_ManCannonBronze = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_SiegeCannonIron = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_ManCannonIron = new GroupedResource() { goalBuffer = 100 };
+
+        public GroupedResource res_paddedArmor = new GroupedResource() { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
+        public GroupedResource res_HeavyPaddedArmor = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_mailArmor = new GroupedResource() { amount = 2, goalBuffer = 100 };
+        public GroupedResource res_heavyMailArmor = new GroupedResource() { amount = 0, goalBuffer = 100 };
+        public GroupedResource res_LightPlateArmor = new GroupedResource() { goalBuffer = 100 };
+        public GroupedResource res_FullPlateArmor = new GroupedResource() { goalBuffer = 100 };

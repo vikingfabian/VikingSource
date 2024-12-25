@@ -16,6 +16,8 @@ namespace VikingEngine.DSSWars.Display
         TutorialDisplayPart displayPart;
         LocalPlayer player;
 
+        public Graphics.Image whiteBar;
+
         public TutorialDisplay(LocalPlayer player)
             : base(HudLib.richboxGui, player.input)
         {
@@ -25,6 +27,9 @@ namespace VikingEngine.DSSWars.Display
             {
                 displayPart, 
             };
+
+            whiteBar = new Graphics.Image(SpriteName.WhiteArea, new Vector2(Engine.Screen.SafeArea.Right - HudLib.richboxGui.width - Engine.Screen.SmallIconSize, 0),
+                Engine.Screen.Area.Size, ImageLayers.Background0);
         }
 
         public void update()
@@ -35,6 +40,12 @@ namespace VikingEngine.DSSWars.Display
                 displayPart.refresh(player, player.tutorial);
             }
         }
+        public override void DeleteMe()
+        {
+            whiteBar.DeleteMe();
+            base.DeleteMe();
+        }
+
     }
 
     class TutorialDisplayPart : RichboxGuiPart

@@ -38,6 +38,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool waitForRegroup = false;
         float stateTime = 0;
         public IntVector2 walkGoal, adjustedWalkGoal;
+        float teleportTime;
 
         public bool walkGoalAsShip;
         public IntVector2 nextNodePos;
@@ -347,28 +348,133 @@ namespace VikingEngine.DSSWars.GameObject
             //refreshNextWalkingNode();
         }
 
+        public void Ai_Order_MoveTo(IntVector2 goalTilePos)
+        {
+            if (orderOutsidePlayerAttension(goalTilePos))
+            {
+                if (Order_MoveTo_Setup(goalTilePos))
+                { 
+                    objective = ArmyObjective.TeleportMove;
+                    calcTeleportTime(goalTilePos);
+                }
+            }
+            else
+            { 
+                Order_MoveTo(goalTilePos);
+            }
+        }
+
+        public void Ai_Order_Attack(AbsMapObject attackTarget)
+        {
+            if (orderOutsidePlayerAttension(attackTarget))
+            {
+                Order_Attack_Setup(attackTarget);
+                objective = ArmyObjective.TeleportAttack;
+                calcTeleportTime(attackTarget.tilePos);
+            }
+            else
+            {
+                Order_Attack(attackTarget);
+            }
+        }
+
+        void calcTeleportTime(IntVector2 to)
+        {
+            float dist = to.SideLength(tilePos);
+            float speedPerSec = (isShip ? transportSpeedSea : transportSpeedLand) * TimeExt.SecondToMs;
+            float time = dist / speedPerSec;
+            teleportTime = Ref.TotalGameTimeSec + time;
+        }
+
+        void Ai_Finalize_Attack()
+        {
+            //todo räkna in support
+            if (this.strengthValue > attackTarget.strengthValue)
+            {
+                if (attackTarget.gameobjectType() == GameObjectType.City)
+                {
+                    attackTarget.GetCity().setFaction(faction);
+                }
+                else
+                {  
+                    Ref.update.AddSyncAction(new SyncAction(() =>
+                    {
+                        attackTarget.DeleteMe(DeleteReason.Death, true);
+                    }));
+                }
+            }
+            else
+            {
+                Ref.update.AddSyncAction(new SyncAction(() =>
+                {
+                    DeleteMe(DeleteReason.Death, true);
+                }));
+            }
+
+            Ai_Finalize_Move();
+        }
+
+        void Ai_Finalize_Move()
+        {
+            onNewGoal(true);
+        }
+
+        bool orderOutsidePlayerAttension(AbsMapObject target)
+        {            
+            return target.faction.player.IsAi() &&
+                orderOutsidePlayerAttension(target.tilePos);
+        }
+
+        bool orderOutsidePlayerAttension(IntVector2 to)
+        {
+
+            return Ref.rnd.Chance(0.8) &&
+                !inRender_overviewLayer &&
+                DssRef.state.culling.outsidePlayerAttension(tilePos) &&
+                DssRef.state.culling.outsidePlayerAttension(to);
+        }
 
         public void Order_MoveTo(IntVector2 goalTilePos)
+        {
+            if (Order_MoveTo_Setup(goalTilePos))
+            {        
+                onNewGoal(false);
+            }
+        }
+        public bool Order_MoveTo_Setup(IntVector2 goalTilePos)
         {
             clearObjective();
 
             if (goalTilePos != tilePos)
-            {                
+            {
                 walkGoal = goalTilePos;
                 adjustedWalkGoal = walkGoal;
                 objective = ArmyObjective.MoveTo;
-                onNewGoal();
+                return true;
+                //onNewGoal(false);
             }
+
+            return false;
         }
 
         public void Order_Attack(AbsMapObject attackTarget)
-        {           
+        {
+            //DssRef.diplomacy.declareWar(faction, attackTarget.faction);
+            //clearObjective();
+            //this.attackTarget = attackTarget;
+            //this.attackTargetFaction = attackTarget.faction.parentArrayIndex;
+            Order_Attack_Setup(attackTarget);
+            objective = ArmyObjective.Attack;
+            onNewGoal(false);
+        }
+
+        public void Order_Attack_Setup(AbsMapObject attackTarget)
+        {
             DssRef.diplomacy.declareWar(faction, attackTarget.faction);
             clearObjective();
             this.attackTarget = attackTarget;
             this.attackTargetFaction = attackTarget.faction.parentArrayIndex;
-            objective = ArmyObjective.Attack;
-            onNewGoal();
+            //objective = ArmyObjective.Attack;
         }
 
         public void haltMovement()
@@ -377,10 +483,10 @@ namespace VikingEngine.DSSWars.GameObject
             objective = ArmyObjective.Halt;
 
             setWalkNode(tilePos, true, false, false);
-            onNewGoal();
+            onNewGoal(false);
         }
 
-        void onNewGoal()
+        void onNewGoal(bool teleport)
         {
             IntVector2 goal;
             if (IdleObjetive())
@@ -388,7 +494,7 @@ namespace VikingEngine.DSSWars.GameObject
                 goal = tilePos;
                 needPath_playerview = false;
             }
-            else if (objective == ArmyObjective.Attack)
+            else if (objective == ArmyObjective.Attack || objective == ArmyObjective.TeleportAttack)
             {
                 goal = attackTarget.tilePos;
             }
@@ -430,7 +536,7 @@ namespace VikingEngine.DSSWars.GameObject
             walkGoal = goal;
 
             walkGoalAsShip = DssRef.world.tileGrid.Get(goal).IsWater();
-            refreshGroupPlacements2(goal);
+            refreshGroupPlacements2(goal, teleport);
 
             //path = null;
             goalId++;
@@ -470,11 +576,6 @@ namespace VikingEngine.DSSWars.GameObject
                 if (path_sp == null)
                 {
                     needPath_playerview = true;
-                    //Task.Factory.StartNew(() =>
-                    //{
-                    //    path_calulate();
-                    //    player.hud.needRefresh = true;
-                    //});
                 }
                 else
                 {
@@ -587,5 +688,8 @@ namespace VikingEngine.DSSWars.GameObject
         Halt,
         MoveTo,
         Attack,
+        TeleportMove,
+        TeleportAttack,
+
     }
 }

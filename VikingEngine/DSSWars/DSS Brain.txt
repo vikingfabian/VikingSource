@@ -1,7 +1,42 @@
 ﻿-Change Log-
-* Fixed craigs crashes
-* Delivery: auto city take other deliveries into account
-* save of food safeguard setting
+Worker experience
+Double soldier health
+20 new soldier types
+14 new buildings
+50 new resources
+Farms can be upgraded
+Delivery amount can be changed
+Deliveries can be upgraded
+All water values are x10
+Technology tree
+3 new city cultures
+The menu is 20% wider
+New menu tab; Mix of resources and priority
+Reworked the event manager; boss events are timed the same no matter difficulty, and a less agressive game start.
+Ai has been upgraded to build almost any building and can produce all soldiers
+Postal deliveries resource automation
+
+Bank system (untested), central gold can be turned on and off
+>Armies carry gold for food purchases
+
+Changed the save meta file so it changes name during version change 
+optimized worker performance
+Added multicore priority to make the map load smoother during gameplay
+Slight improvement on new map generating (sticks on 70%)
+
+
+Massive path finding update:
+> Soldiers activly follow terrain.
+> ! The CPU load is much higher, large maps can be unplayable.
+> ! This will introduce a lot of new bugs.
+
+New battle system:
+> Battles are not in a grid anymore.
+> Soldiers fight on a induvidual level, instead of army against army.
+> ! The melee units get stuck in a big blob.
+> ! Will be worse than the old system for a while, but has future potential.
+> ! Will igore land/water restrictions during fights.
+> ! This will introduce a lot of new bugs.
 
 # WORKER PATH #
 Ha en loop som går igenom tiles, om det finns 1+ byggnader, räkna tid från hall till slumpad byggnad, tid till närmast mat och avlämning
@@ -17,33 +52,61 @@ Tänk på alla object ligger på heap (ta bort new)
 recycle av path result
 
 
+
 !Alla objekt med Tile referens måste ändras (livestock)
 
-#Todo (XP)#
-* wood cutter/stone cutter shed, improved working radius
-* water expansion
-* axe/short sword, (sword needs good weapon smith)
-* steel, long sword > rapier, crossbow
+
+#Todo#
+-Difficulty
+	Fiendens aggro ska komma i två stages (total peace och war manager)
+	Samma längd på bossar
+	Fiende hordes (mer mini bossar)
+	Antal städer avgör threat level, vilket tillåter ai att alliera och dela tech, kan meddela mellan olika nivåer
+
+-Mix menu
+-Full automation
+-build prio
+-build placement bonus
+
+(-house variants)
+
++  ports can speed up how much u can send or recieve
+
+
+
 * annoyed by the deliveries being inefficient
--wagon, transport span amount
+-wagon, transport span amount, 2/4 wheel
 -tool shed, faster farming upgrade
 -Embassy expansion för att unlocka diplomacy
--Mines
-* worker level
 * soldier level
 * Guest housing (sten hus i stan) for guards, barracks, post office, (city hall min size, öka vid antal byggnader?) 
 
-* manuballista (hand ballista), wall crusher
+* wall crusher
+* diplomat, med politic / spy upgrade
 
+* horse farm
+* ox farm, also incread farming area
 
+* go legendary, bonus building
+ farm - apple tree
+
+* masters guild, låt hög level arbetare vänta
+* refugee tent, samlar på invandrare (60) half food cost, auto build homes?
+* coin maker - koppar, brons, silver till pengar
+
+* vetskap kan sparas i pergament och sparas, kopieras, trade, sprida med messenger > papyrus/läder pergament
+
+* faction resources per second current/produced/consumed 
 #Todo (xmas patch)#
-
-
 krig varning på ally
 new maps
 dölj carry amount
-new game - Skip language crashes game
 
+
+lamps - förbättrar produktion i area, måste fyllas med fuel
+förvaringsbyggnader som ökar max stack av olika typer, vapen hus, kylrum osv
+
+cooling fluid
 
 --Group engagement--
 Attack radius
@@ -63,7 +126,6 @@ visa antal byggnader i bygg meny
 menu scroll
 
 
-
 Error
 -back button in menues 
 
@@ -74,7 +136,7 @@ Retreat system
 
 
 Polish
-
+- full auto option
 
 -döda av faktion som bara har en soldat kvar
 -Missing file error på load
@@ -90,7 +152,11 @@ Polish
 -dölj move path OnHud 
 -attack ally yes/no warning
 
-Art
+#Art
+placement bonus icon
+work skill icons (carpenting)
+
+#Voxel
 
 
 #current
@@ -98,12 +164,18 @@ English, Simplified Chinese, Japanese, Russian, Spanish
 
 
 #Todo (DSS 2)#
+1. better presentation
+2. 50 hour playtime
+3. maybe multiplayer
+
+-Select leader type
 -Free build of city walls, towers
 -Better looking start cities
 -Nicer menu
 -Dynamic shadows shader
 -New end boss
 -Lots of named factions
+-Are you strongly opposed to showing building counts per town or production outputs
 
 
 

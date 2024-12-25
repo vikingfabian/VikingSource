@@ -6,9 +6,6 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.Map
 {
-
-   
-
     enum TerrainMainType
     {
         DefaultLand,
@@ -41,6 +38,12 @@ namespace VikingEngine.DSSWars.Map
         BogIron,
         HempFarm,
         RapeSeedFarm,
+
+        WheatFarmUpgraded,
+        LinenFarmUpgraded,
+        HempFarmUpgraded,
+        RapeSeedFarmUpgraded,
+
         NUM_NONE
     }
 
@@ -50,6 +53,7 @@ namespace VikingEngine.DSSWars.Map
     enum TerrainResourcesType
     {
         Wood,
+        Rubble,
         Storage,
         NUM_NONE
     }
@@ -78,12 +82,37 @@ namespace VikingEngine.DSSWars.Map
         Tavern,
         Postal,
         Recruitment,
-        Barracks,
+        SoldierBarracks,
         Carpenter,
         Nobelhouse,
         Storehouse,
         Bank,
-        
+        CoinMinter,
+
+        Logistics,
+        Smelter,
+        WoodCutter,
+        StoneCutter,
+        Embassy,
+        WaterResovoir,
+        ArcherBarracks,
+        WarmashineBarracks,
+        GunBarracks,
+        CannonBarracks,
+        KnightsBarracks,
+        Foundry,
+        Armory,
+        Chemist,
+        Gunmaker,
+        School,
+        PostalLevel2,
+        PostalLevel3,
+        RecruitmentLevel2,
+        RecruitmentLevel3,
+        GoldDeliveryLevel1,
+        GoldDeliveryLevel2,
+        GoldDeliveryLevel3,
+
         NUM_NONE
     }
 
@@ -114,10 +143,12 @@ namespace VikingEngine.DSSWars.Map
         StoneBlock,
         IronOre,
         TinOre,
-        CupperOre,
+        CopperOre,
         SilverOre,
         GoldOre,
-        MithrilOre,
+        LeadOre,
+        Mithril,
+        Sulfur,
     }
 
     enum TerrainSeaType
@@ -131,5 +162,4 @@ namespace VikingEngine.DSSWars.Map
         Flat,
         Mountain,
     }
-
 }

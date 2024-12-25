@@ -206,6 +206,18 @@ namespace VikingEngine.DataStream
         {
             return DataStream.DataStreamHandler.FileExists(this);
         }
+
+        public static string SanitizeFileName(string fileName)
+        {
+            // Replace invalid characters with an underscore
+            char[] invalidChars = Path.GetInvalidFileNameChars();
+            foreach (char c in invalidChars)
+            {
+                fileName = fileName.Replace(c, ' ');
+            }
+
+            return fileName;
+        }
     }
     
 }

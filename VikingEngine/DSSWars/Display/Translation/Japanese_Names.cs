@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.Display.Translation
 {
-    partial class Japanese : AbsLanguage
+    partial class Japanese
     {
         /// <summary>
         /// 2つのランダムな単語を組み合わせる方法

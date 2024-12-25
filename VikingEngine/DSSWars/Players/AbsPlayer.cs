@@ -12,9 +12,9 @@ namespace VikingEngine.DSSWars.Players
     abstract class AbsPlayer
     {
         public const int AggressionLevel0_Passive = 0;
-        protected const int AggressionLevel1_RevengeOnly = 1;
-        protected const int AggressionLevel2_RandomAttacks = 2;
-        protected const int AggressionLevel3_FocusedAttacks = 3;
+        public const int AggressionLevel1_RevengeOnly = 1;
+        public const int AggressionLevel2_RandomAttacks = 2;
+        public const int AggressionLevel3_FocusedAttacks = 3;
 
         public bool IsPlayerNeighbor = false;
         public Faction faction;

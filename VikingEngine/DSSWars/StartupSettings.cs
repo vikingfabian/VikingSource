@@ -13,10 +13,10 @@ namespace VikingEngine.DSSWars
         public static bool Saves = PlatformSettings.DevBuild ? false :
             false;//TRUE
 
-        public static bool SpawnStartingArmies = PlatformSettings.DevBuild ? true :
+        public static bool SpawnStartingArmies = PlatformSettings.DevBuild ? false :
             true;//DO NOT CHANGE
         
-        public static bool RunAI = PlatformSettings.DevBuild ? true :
+        public static bool RunAI = PlatformSettings.DevBuild ? false :
            true;//DO NOT CHANGE
 
         public static bool EndlessResources = PlatformSettings.DevBuild ? false : 
@@ -26,6 +26,9 @@ namespace VikingEngine.DSSWars
             false;//DO NOT CHANGE
 
         public static bool SkipRecruitTime = PlatformSettings.DevBuild ? false :
+            false;//DO NOT CHANGE
+        
+        public static bool UnlockAllProgress = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE
 
         public static bool TestOffscreenUpdate = PlatformSettings.DevBuild ? false :
@@ -46,6 +49,7 @@ namespace VikingEngine.DSSWars
         //public const bool Trailer = true;
 
         public static bool CheatActive =>
+            UnlockAllProgress ||
             !SpawnStartingArmies ||
             !RunAI ||
             EndlessResources ||
