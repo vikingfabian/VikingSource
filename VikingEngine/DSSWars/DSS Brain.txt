@@ -23,6 +23,20 @@ Changed the save meta file so it changes name during version change
 optimized worker performance
 Added multicore priority to make the map load smoother during gameplay
 Slight improvement on new map generating (sticks on 70%)
+
+
+Massive path finding update:
+> Soldiers activly follow terrain.
+> ! The CPU load is much higher, large maps can be unplayable.
+> ! This will introduce a lot of new bugs.
+
+New battle system:
+> Battles are not in a grid anymore.
+> Soldiers fight on a induvidual level, instead of army against army.
+> ! The melee units get stuck in queues.
+> ! Will be worse than the old system for a while, but has future potential.
+> ! This will introduce a lot of new bugs.
+
 #Todo (OPT)#
 Tile till struct
 Tänk på alla object ligger på heap (ta bort new)

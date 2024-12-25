@@ -189,26 +189,26 @@ namespace VikingEngine.DSSWars.Map.Path
 
             //List<DetailPathNodeResult> result = new List<DetailPathNodeResult>();
 
-            const int MaxBacknodes = 1;
+            //const int MaxBacknodes = 1;
             var path = DssRef.state.detailPathFindingPool.GetRes();
             bool blocked = false;
             int totalNodes = 0;
 
             while (currentNode.Position != startNode.Position)
             {
-                if (isTravelNode || currentNode.ship == startAsShip || currentNode.ship == endAsShip || totalNodes > MaxBacknodes)
-                {
+                //if (isTravelNode || currentNode.ship == startAsShip || currentNode.ship == endAsShip || totalNodes > MaxBacknodes)
+                //{
                     path.nodes.Add(new DetailPathNodeResult(currentNode.Position, currentNode.ship));
 
                     totalNodes++;
                     if (totalNodes > MaxNodeLength)
                         throw new EndlessLoopException("");
-                }
-                else
-                {
-                    path.nodes.Clear();
-                    blocked = true;
-                }
+                //}
+                //else
+                //{
+                //    path.nodes.Clear();
+                //    blocked = true;
+                //}
 
                 IntVector2 pos = currentNode.PreviousPosition;
                 currentNode = nodeGrid[pos.X - area.pos.X, pos.Y - area.pos.Y];

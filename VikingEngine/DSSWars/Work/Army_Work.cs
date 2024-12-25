@@ -27,13 +27,13 @@ namespace VikingEngine.DSSWars.GameObject
             ////Order_MoveTo(start);
             //position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();
             //refreshPositions(true);
-            refreshGroupPlacements2(tilePos, false);
-            var groupsC = groups.counter();
-            while (groupsC.Next())
-            {
-                groupsC.sel.setAsStartArmy();
-            }
-            updateArmyMovement(1);
+            refreshGroupPlacements2(tilePos, true, false);
+            //var groupsC = groups.counter();
+            //while (groupsC.Next())
+            //{
+            //    groupsC.sel.setAsStartArmy();
+            //}
+            //updateArmyMovement(1);
 
             setMaxFood();
             //tilePos = start;

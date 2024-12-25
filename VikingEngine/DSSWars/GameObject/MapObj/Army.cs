@@ -652,15 +652,6 @@ namespace VikingEngine.DSSWars.GameObject
                         //    }
                         //}
                     }
-
-                    //if (centerGuy != null)
-                    //{
-                    //    var newPosition = centerGuy.position;
-                    //    if (newPosition.X > 1 && newPosition.Z > 1)
-                    //    {
-                    //        position = newPosition;
-                    //    }
-                    //}
                     if (IdleObjetive())
                     {
                         //position.X = armyGoalCenterWp.X;
@@ -698,7 +689,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void refreshPositions(bool onPurchase)
         {
-            refreshGroupPlacements2(tilePos);
+            refreshGroupPlacements2(tilePos, false, false);
             //int width = groupsWidth();
 
             //IntVector2 nextGroupPlacementIndex = IntVector2.Zero;
@@ -962,7 +953,42 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (!inRender_detailLayer)
             {
-                updateMembers(time * Ref.GameTimeSpeed, false);
+                if (objective == ArmyObjective.TeleportAttack)
+                {
+                    //Wait to jump
+                    if (DssRef.state.culling.outsidePlayerAttension(tilePos))
+                    {
+                        if (Ref.TotalGameTimeSec >= teleportTime)
+                        {
+                            Ai_Finalize_Attack();
+                        }
+                    }
+                    else
+                    {
+                        //Cancel
+                        Order_Attack(attackTarget);
+                    }
+                }
+                else if (objective == ArmyObjective.TeleportMove)
+                {
+                    //Wait to jump
+                    if (DssRef.state.culling.outsidePlayerAttension(tilePos))
+                    {
+                        if (Ref.TotalGameTimeSec >= teleportTime)
+                        {
+                            Ai_Finalize_Move();
+                        }
+                    }
+                    else
+                    {
+                        //Cancel
+                        Order_MoveTo(walkGoal);
+                    }
+                }
+                else
+                {
+                    updateMembers(time * Ref.GameTimeSpeed, false);
+                }
             }
         }
 
@@ -1057,7 +1083,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             nextNodePos = nextNodeTilePos;
 
-            refreshGroupPlacements2(nextNodeTilePos);
+            refreshGroupPlacements2(nextNodeTilePos, false, false);
 
             
             //var groupsC = groups.counter();

@@ -2163,20 +2163,31 @@ namespace VikingEngine.DSSWars.GameObject
             army.stateDebugText(content);
         }
 
-        public void setArmyPlacement2(Vector3 wp)
+        public void setArmyPlacement2(Vector3 wp, bool telePort)
         {
             goalWp = wp;
 
-            //if (state == GroupState.GameStart)
-            //{
-            //    position = goalWp;
-            //    rotation = army.armyGoalRotation;
-            //}
-            //else
-            //{
+            if (telePort)
+            {
+                position = wp;
+                tilePos = WP.ToTilePos(position);
+                setGroundY();
+                rotation = army.rotation;
+                //state = GroupState.Idle;
+
+                bool waterNode = DssRef.world.tileGrid.Get(tilePos).IsWater();
+                if (waterNode != isShip)
+                {
+                    completeTransform(waterNode ? SoldierTransformType.ToShip : SoldierTransformType.FromShip);
+                }
+            }
+            else
+            {
                 wakeupSoldiers();
-            //}
-            state = GroupState.FindArmyPlacement;
+            
+                state = GroupState.FindArmyPlacement;
+            }
+            
         }
 
         void wakeupSoldiers()

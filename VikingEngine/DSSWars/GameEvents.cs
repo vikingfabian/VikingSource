@@ -188,23 +188,24 @@ namespace VikingEngine.DSSWars
             //}
             //else
             //{
-                if (nextEvent <= EventType.DarkLord)
-                {
-                    PowerCheck();
-                    calcAndRunEvent();
-                }
-                else
-                {
-                    nextEvent++;
+            nextEvent++;
+            prepareNext();
 
-                    if (nextEvent == EventType.KillTheDarkLord)
-                    {
-                        victory(true);
-                    }
-                }
+            //if (nextEvent <= EventType.DarkLord)
+            //{
+            //    PowerCheck();
+            //    calcAndRunEvent();
+            //}
+            //else
+            //{
+            //    if (nextEvent == EventType.KillTheDarkLord)
+            //    {
+            //        victory(true);
+            //    }
+            //}
 
-                DssRef.state.localPlayers[0].hud.messages.Add(
-                        "Test event", nextEvent.ToString());
+            DssRef.state.localPlayers[0].hud.messages.Add(
+                    "Test event", nextEvent.ToString());
             //}
         }
 

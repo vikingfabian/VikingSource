@@ -423,10 +423,6 @@ namespace VikingEngine.DSSWars.Players
             hud.tooltip.create(this, content, true);
         }
 
-        
-
-       
-
         public override void createStartUnits()
         {
             IntVector2 onTile = DssRef.world.GetFreeTile(faction.mainCity.tilePos);
@@ -437,7 +433,7 @@ namespace VikingEngine.DSSWars.Players
 
             for (int i = 0; i < 5; ++i)
             {
-                new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);//mainArmy, UnitType.Soldier, false);
+                new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
             }
 
             if (IsPlayer() && DssRef.difficulty.honorGuard)
@@ -453,7 +449,7 @@ namespace VikingEngine.DSSWars.Players
                         var army = faction.NewArmy(onTile);
                         for (int i = 0; i < 4; ++i)
                         {
-                            new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard, army.position);//UnitType.HonorGuard, false);
+                            new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard, army.position);
                             --guardCount;
                         }
                         //army.OnSoldierPurchaseCompleted();

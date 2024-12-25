@@ -27,6 +27,20 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        public bool outsidePlayerAttension(IntVector2 tilePos)
+        {
+            //return false;
+
+            foreach (var p in players)
+            {
+                if (p.insidePlayerAttension(cullingStateA, tilePos))
+                { 
+                    return false;
+                }
+            }
+
+            return true;
+        }
         public void asynch_update(float time)
         {
             asynch_updateTiles();
@@ -167,6 +181,12 @@ namespace VikingEngine.DSSWars
             playerData = Ref.draw.ActivePlayerScreens[index];
         }
 
+        public bool insidePlayerAttension(bool bStateA, IntVector2 tilePos)
+        {
+            PlayerCullingState state = bStateA ? stateA : stateB;
+            return state.attensionArea.IntersectTilePoint(tilePos);
+        }
+
         public void asynch_clearupdate(bool bStateA)
         {
             //Clear out previous render state
@@ -220,6 +240,7 @@ namespace VikingEngine.DSSWars
     {
         public Rectangle2 enterArea = Rectangle2.Zero;
         public Rectangle2 exitArea = Rectangle2.Zero;
+        public Rectangle2 attensionArea = Rectangle2.Zero;
 
         public bool overviewLayer = false;
         public bool detailLayer = false;
@@ -231,9 +252,11 @@ namespace VikingEngine.DSSWars
             enterArea.AddRadius(1);
             exitArea = enterArea;
             exitArea.AddRadius(1);
+            attensionArea = enterArea;
+            attensionArea.AddRadius(20);
 
             //Debug.Log(DebugLogType.MSG, "state " + (bStateA ? "A " : "B ") + screenArea.ToString());
- 
+
             var loopArea = exitArea;
             loopArea.size += 1;
 

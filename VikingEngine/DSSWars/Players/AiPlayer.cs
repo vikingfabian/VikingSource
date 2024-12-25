@@ -1335,7 +1335,7 @@ namespace VikingEngine.DSSWars.Players
                         nextDecisionTimer.MilliSeconds += 4000;
                         if (city.distanceTo(mainArmy) > 2)
                         {
-                            mainArmy.Order_MoveTo(city.tilePos);
+                            mainArmy.Ai_Order_MoveTo(city.tilePos);
                         }
                     }
                     else
@@ -1404,7 +1404,7 @@ namespace VikingEngine.DSSWars.Players
                             }
                             else
                             {
-                                mainArmy.Order_MoveTo(city.tilePos);
+                                mainArmy.Ai_Order_MoveTo(city.tilePos);
                             }
                         }
                     }
@@ -1491,7 +1491,7 @@ namespace VikingEngine.DSSWars.Players
                 double chance = a.objective == ArmyObjective.None ? 0.8 : 0.1;
                 if (a != mainArmy && Ref.rnd.Chance(chance))
                 {
-                    a.Order_MoveTo(toPos);
+                    a.Ai_Order_MoveTo(toPos);
                 }
             }
         }
@@ -1787,7 +1787,7 @@ namespace VikingEngine.DSSWars.Players
                 if (DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate.Count > 0)
                 {
                     AbsMapObject result = arraylib.RandomListMember(DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate);
-                    army.Order_Attack(result);
+                    army.Ai_Order_Attack(result);
                     return result;
                 }
             }
@@ -1813,7 +1813,7 @@ namespace VikingEngine.DSSWars.Players
                     {
                         if (mayAttackFaction(city.faction))
                         {
-                            army.Order_Attack(city);
+                            army.Ai_Order_Attack(city);
                             return city;
                         }
                     }
