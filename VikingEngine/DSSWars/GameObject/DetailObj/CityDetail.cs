@@ -262,7 +262,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public override void takeDamage(int damageAmount, Rotation1D attackDir, Faction damageFaction, bool fullUpdate)
+        public override void takeDamage(int damageAmount, AbsDetailUnit meleeAttacker, Rotation1D attackDir, Faction damageFaction, bool fullUpdate)
         {
             //base.takeDamage(damage);
             int totalDamage = Bound.Min(damageAmount / 2, 1);

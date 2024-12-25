@@ -33,8 +33,9 @@ Massive path finding update:
 New battle system:
 > Battles are not in a grid anymore.
 > Soldiers fight on a induvidual level, instead of army against army.
-> ! The melee units get stuck in queues.
+> ! The melee units get stuck in a big blob.
 > ! Will be worse than the old system for a while, but has future potential.
+> ! Will igore land/water restrictions during fights.
 > ! This will introduce a lot of new bugs.
 
 #Todo (OPT)#

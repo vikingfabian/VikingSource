@@ -36,9 +36,9 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
 
         }
 
-        public override void takeDamage(int damageAmount, Rotation1D attackDir, Faction damageFaction, bool fullUpdate)
+        public override void takeDamage(int damageAmount, AbsDetailUnit meleeAttacker, Rotation1D attackDir, Faction damageFaction, bool fullUpdate)
         {
-            base.takeDamage(damageAmount, attackDir, damageFaction, fullUpdate);
+            base.takeDamage(damageAmount, meleeAttacker, attackDir, damageFaction, fullUpdate);
             refreshShipCarryCount();
             model?.displayHealth(health / (float)soldierData.basehealth);
         }

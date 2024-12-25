@@ -2,6 +2,7 @@
 
 using VikingEngine.DSSWars.GameObject;
 using System;
+using VikingEngine.ToGG.HeroQuest.Data;
 
 namespace VikingEngine.DSSWars
 {
@@ -20,6 +21,9 @@ namespace VikingEngine.DSSWars
         public static float Men_StandardShipSpeed = Men_StandardWalkingSpeed * 2f;
 
         //CONSCRIPT
+        public static float SwordAttackRange = 0.04f;
+        public static float MeleeAwareRange = SwordAttackRange * 3f;
+
         public static int WeaponDamage_Handspear = 10;
         public static int WeaponHealthAdd_Handspear = 200;
         public static int WeaponDamage_SharpStick = 20;

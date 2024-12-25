@@ -182,7 +182,7 @@ namespace VikingEngine.DSSWars.Conscript
                     break;
                 case ItemResourceType.Sword:
                     soldierData.mainAttack = AttackType.Melee;
-                    soldierData.attackRange = 0.04f;
+                    soldierData.attackRange = DssConst.SwordAttackRange;
                     soldierData.modelName = LootFest.VoxelModelName.wars_soldier;
                     soldierData.modelVariationCount = 3;
                     soldierData.icon = SpriteName.WarsUnitIcon_Soldier;

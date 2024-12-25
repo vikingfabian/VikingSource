@@ -649,6 +649,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void update(float time, bool fullUpdate)
         {
+            if (debugTagged)
+            {
+                lib.DoNothing();
+            }
+
             if (inShipTransform)
             {
                 return;
@@ -683,7 +688,6 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else
                 {
-
                     //Battle update
                     if (updateWalking(walkingGoalAttackTarget(attack_sp, out bool shipTransform), true, false, 0, time))
                     {

@@ -28,5 +28,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return group.soldiers.Count == 1;
         }
+
+        
     }
 }
