@@ -24,16 +24,15 @@ optimized worker performance
 Added multicore priority to make the map load smoother during gameplay
 Slight improvement on new map generating (sticks on 70%)
 
+Army structure update:
+> More dynamic placement of soldiers in an army.
+> You can set their relative position.
+> ! Soldiers hindered by terrain will be pushed further back.
 
 Massive path finding update:
 > Soldiers activly follow terrain.
 > ! The CPU load is much higher, large maps can be unplayable.
 > ! This will introduce a lot of new bugs.
-
-Army structure update:
-> Move dynamic placement of soldiers in an army.
-> You can set their relative position.
-> ! Soldiers hindered by terrain will be pushed further back.
 
 New battle system:
 > Battles are not in a grid anymore.

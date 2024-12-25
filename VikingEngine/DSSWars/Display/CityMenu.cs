@@ -55,9 +55,9 @@ namespace VikingEngine.DSSWars.Display
             content.newLine();
 
 #if DEBUG
-            content.Button("*soldier", new RbAction(()=> { city.debugConscript( ItemResourceType.Sword); }) , null, true);
-            content.Button("*archer", new RbAction(() => { city.debugConscript(ItemResourceType.Bow); }), null, true);
-            content.Button("*ballista", new RbAction(() => { city.debugConscript(ItemResourceType.Ballista); }), null, true);
+            //content.Button("*soldier", new RbAction(()=> { city.debugConscript( ItemResourceType.Sword); }) , null, true);
+            //content.Button("*archer", new RbAction(() => { city.debugConscript(ItemResourceType.Bow); }), null, true);
+            //content.Button("*ballista", new RbAction(() => { city.debugConscript(ItemResourceType.Ballista); }), null, true);
 #endif
 
             int tabSel = 0;
