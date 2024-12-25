@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars
         TimeInGameCountdown triggerTime;
 
 
-        IntervalF nextTotalGameTimeMinutes;
+        IntervalF triggerTimeSpan;
         IntervalF nextExpectedPlayerSize;
 
         City[] playerMostSouthCity;
@@ -39,15 +39,84 @@ namespace VikingEngine.DSSWars
         {//eventTriggerGameTimeSec = DssRef.difficulty.aiDelayTimeSec;
         }
 
+        public void asyncUpdate(float time)
+        {
+            if (DssRef.state.localPlayers[0].tutorial != null ||
+                !DssRef.difficulty.runEvents)
+            {
+                return;
+            }
+
+            if (eventState == EventState.Done)
+            {
+                ++nextEvent;
+                eventState = EventState.Prepare;
+            }
+
+            if (eventState == EventState.Prepare)
+            {
+                prepareNext();
+                eventState = EventState.Countdown;
+            }
+
+            bool timedEvent;
+
+            switch (nextEvent)
+            {
+                case EventType.AiDelay:
+                case EventType.AiWarDelay:
+                case EventType.WarmanagerDelay:
+                case EventType.SouthShips:
+                case EventType.DarkLordWarning:
+                case EventType.DarkLord:
+                    timedEvent = true;
+                    break;
+
+                default:
+                    timedEvent = false;
+                    break;
+            }
+
+            if (timedEvent)
+            {
+                if (eventState == EventState.Countdown)
+                {
+                    if (checkTime.TimeOut())//Ref.TotalGameTimeSec >= eventCheckGameTimeSec)
+                    {                        
+                        PowerCheck();
+                        eventState = EventState.PowerChecked;
+                    }
+                }
+                else if (eventState == EventState.PowerChecked)
+                {
+                    if (triggerTime.TimeOut())//Ref.TotalGameTimeSec >= eventTriggerGameTimeSec)
+                    {   
+                        calcAndRunEvent();
+                        eventState = EventState.Done;
+                    }
+                }
+            }
+
+            asyncUpdateDyingFactions(time);
+
+            asyncUpdateTooPeaceful(time);
+        }
+
+
         public bool AiDelay()
         { 
             return nextEvent <= EventType.AiDelay;
         }
 
-        public bool RunWarmanager()
-        {
-            return nextEvent > EventType.WarmanagerDelay;
+        public bool MayAttackPlayer()
+        { 
+            return nextEvent > EventType.AiWarDelay;
         }
+
+        //public bool RunWarmanager()
+        //{
+        //    return nextEvent > EventType.WarmanagerDelay;
+        //}
 
         public void onGameStart(bool newGame)
         {
@@ -94,7 +163,7 @@ namespace VikingEngine.DSSWars
             checkTime.writeGameState(w);
             triggerTime.writeGameState(w);
 
-            nextTotalGameTimeMinutes.Write(w);
+            triggerTimeSpan.Write(w);
             nextExpectedPlayerSize.Write(w);
 
             IOLib.WriteObjectList(w, playerMostSouthCity);
@@ -107,30 +176,19 @@ namespace VikingEngine.DSSWars
         }
         public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
-            float eventPrepareTimeSec;
-            float eventCheckGameTimeSec;
-            float eventTriggerGameTimeSec;
+            //float eventPrepareTimeSec;
+            //float eventCheckGameTimeSec;
+            //float eventTriggerGameTimeSec;
 
             nextEvent = (EventType)r.ReadInt32();
             eventState = (EventState)r.ReadInt32();
-            if (subVersion >= 44)
-            {
-                prepareTime.readGameState(r);
-                checkTime.readGameState(r);
-                triggerTime.readGameState(r);
-            }
-            else
-            {
-                //old
-                nextEvent += 2;
+           
+            prepareTime.readGameState(r);
+            checkTime.readGameState(r);
+            triggerTime.readGameState(r);
+            
 
-                eventPrepareTimeSec = r.ReadSingle();
-                eventCheckGameTimeSec = r.ReadSingle();
-                eventTriggerGameTimeSec = r.ReadSingle();
-
-            }
-
-            nextTotalGameTimeMinutes.Read(r);
+            triggerTimeSpan.Read(r);
             nextExpectedPlayerSize.Read(r);
 
             playerMostSouthCity = arraylib.ToArray_Safe(IOLib.ReadObjectList<City>(r));
@@ -150,32 +208,37 @@ namespace VikingEngine.DSSWars
             eventState = 0;
             switch (nextEvent)
             {
+                case EventType.AiWarDelay:
+                    {
+                        triggerTimeSpan = IntervalF.NoInterval(15);
+                    }
+                    break;
                 case EventType.WarmanagerDelay:
                     {
-                        nextTotalGameTimeMinutes = IntervalF.NoInterval(20);
+                        triggerTimeSpan = IntervalF.NoInterval(20);
                     }
                     break;
                 case EventType.SouthShips:
                     {
-                        nextTotalGameTimeMinutes = new IntervalF(1.6f, 2f) * TimeExt.HourInMinutes;
+                        triggerTimeSpan = new IntervalF(3.6f, 4.5f) * TimeExt.HourInMinutes;
                         nextExpectedPlayerSize = new IntervalF(DssConst.HeadCityStartMaxWorkForce * 2f, DssConst.HeadCityStartMaxWorkForce * 4f);
                     }
                     break;
                 case EventType.DarkLordWarning:
                     {
-                        nextTotalGameTimeMinutes = new IntervalF(3f, 4f) * TimeExt.HourInMinutes;
+                        triggerTimeSpan = new IntervalF(22f, 28f) * TimeExt.HourInMinutes;
                         nextExpectedPlayerSize = new IntervalF(DssConst.HeadCityStartMaxWorkForce * 4f, DssConst.HeadCityStartMaxWorkForce * 8f);
                     }
                     break;
                 case EventType.DarkLord:
                     {
-                        nextTotalGameTimeMinutes = IntervalF.NoInterval(1f * TimeExt.HourInMinutes);
+                        triggerTimeSpan = IntervalF.NoInterval(1f * TimeExt.HourInMinutes);
                     }
                     break;
             }
 
             prepareTime.zero();
-            checkTime.start(TimeLength.FromMinutes(nextTotalGameTimeMinutes.Min)); 
+            checkTime.start(TimeLength.FromMinutes(triggerTimeSpan.Min)); 
         }
 
         public void TestNextEvent()
@@ -188,8 +251,9 @@ namespace VikingEngine.DSSWars
             //}
             //else
             //{
-            nextEvent++;
-            prepareNext();
+            DssRef.state.localPlayers[0].hud.messages.Add(
+                    "Test event", (nextEvent + 1).ToString());
+            eventState = EventState.Done;
 
             //if (nextEvent <= EventType.DarkLord)
             //{
@@ -204,8 +268,7 @@ namespace VikingEngine.DSSWars
             //    }
             //}
 
-            DssRef.state.localPlayers[0].hud.messages.Add(
-                    "Test event", nextEvent.ToString());
+            
             //}
         }
 
@@ -320,53 +383,13 @@ namespace VikingEngine.DSSWars
                 //    break;
                 }
 
-            ++nextEvent;
-            prepareNext();
+            //++nextEvent;
+            //prepareNext();
         }
 
-        public void asyncUpdate(float time)
-        {
-            if (DssRef.state.localPlayers[0].tutorial != null ||
-                !DssRef.difficulty.runEvents)
-            {
-                return;
-            }
-
-            bool timedEvent;
-
-            switch (nextEvent)
-            {
-                case EventType.AiDelay:
-                case EventType.WarmanagerDelay:
-                case EventType.SouthShips:
-                case EventType.DarkLordWarning:
-                case EventType.DarkLord:
-                    timedEvent = true;
-                    break;
-
-                default:
-                    timedEvent = false;
-                    break;
-            }
-
-            if (timedEvent)
-            {
-                if (eventState == EventState.Countdown)
-                {
-                    if (checkTime.TimeOut())//Ref.TotalGameTimeSec >= eventCheckGameTimeSec)
-                    {
-                        PowerCheck();
-                    }
-                }
-                else if (eventState == EventState.PowerChecked)
-                {
-                    if (triggerTime.TimeOut())//Ref.TotalGameTimeSec >= eventTriggerGameTimeSec)
-                    {
-                        calcAndRunEvent();
-                    }
-                }
-            }
-
+       
+        void asyncUpdateDyingFactions(float time)
+        { 
             if (dyingFactionsTimer.CountDown_IfActive(time))
             {
                 var monger = DssRef.world.factions.Array[DssRef.settings.Faction_DyingMonger];
@@ -390,7 +413,10 @@ namespace VikingEngine.DSSWars
                     faction.hasDeserters = true;
                 }
             }
+        }
 
+        void asyncUpdateTooPeaceful(float time)
+        {
             if (toPeacefulCheckTimer.CountDown(time) &&
                 nextEvent > EventType.WarmanagerDelay &&
                 DssRef.difficulty.toPeacefulPercentage > 0)
@@ -406,33 +432,38 @@ namespace VikingEngine.DSSWars
 
         void PowerCheck()
         {
-            eventState = EventState.PowerChecked;
-            //Set a time depending on the player's strength
-
-            int totalWorkForce = 0;
-            foreach (var p in DssRef.state.localPlayers)
-            {
-                var citiesC = p.faction.cities.counter();
-                while (citiesC.Next())
-                {
-                    totalWorkForce += citiesC.sel.workForceMax;
-                }
-            }
-
             float time;
-            //System.Diagnostics.Debug.WriteLine("Player work force: " + totalWorkForce);
-            //System.Diagnostics.Debug.WriteLine("Expected work force: " + nextExpectedPlayerSize.ToString());
-            if (totalWorkForce < nextExpectedPlayerSize.Min)
+
+            if (triggerTimeSpan.Length == 0)
             {
-                time = nextTotalGameTimeMinutes.Max;
-            }
-            else if (totalWorkForce >= nextExpectedPlayerSize.Max)
-            {
-                time = nextTotalGameTimeMinutes.Min;
+                time = triggerTimeSpan.Min;                
             }
             else
             {
-                time = nextTotalGameTimeMinutes.Center;
+                //Set a time depending on the player's strength
+                int totalWorkForce = 0;
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    var citiesC = p.faction.cities.counter();
+                    while (citiesC.Next())
+                    {
+                        totalWorkForce += citiesC.sel.workForceMax;
+                    }
+                }
+
+               
+                if (totalWorkForce < nextExpectedPlayerSize.Min)
+                {
+                    time = triggerTimeSpan.Max;
+                }
+                else if (totalWorkForce >= nextExpectedPlayerSize.Max)
+                {
+                    time = triggerTimeSpan.Min;
+                }
+                else
+                {
+                    time = triggerTimeSpan.Center;
+                }
             }
 
             time *= TimeExt.MinuteInSeconds;
@@ -527,7 +558,7 @@ namespace VikingEngine.DSSWars
 
         void calcAndRunEvent()
         {
-            eventState = EventState.Done;
+            
 
             switch (nextEvent)
             {
@@ -628,7 +659,7 @@ namespace VikingEngine.DSSWars
         public void OnPlayerDeclareWar()
         {
             const int DelayReduceToSec = 10;
-            if (nextEvent == EventType.AiDelay)
+            if (nextEvent <= EventType.WarmanagerDelay)
             {
                 if (triggerTime.length.seconds > DelayReduceToSec)
                 {
@@ -731,6 +762,7 @@ namespace VikingEngine.DSSWars
     enum EventType
     { 
         AiDelay,
+        AiWarDelay,
         WarmanagerDelay,
         SouthShips,
         DarkLordWarning,
@@ -745,6 +777,7 @@ namespace VikingEngine.DSSWars
 
     enum EventState
     { 
+        Prepare,
         Countdown,
         PowerChecked,
         Done,

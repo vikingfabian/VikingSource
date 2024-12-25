@@ -1,46 +1,6 @@
 ﻿-Change Log-
-Worker experience
-Double soldier health
-20 new soldier types
-14 new buildings
-50 new resources
-Farms can be upgraded
-Delivery amount can be changed
-Deliveries can be upgraded
-All water values are x10
-Technology tree
-3 new city cultures
-The menu is 20% wider
-New menu tab; Mix of resources and priority
-Reworked the event manager; boss events are timed the same no matter difficulty, and a less agressive game start.
-Ai has been upgraded to build almost any building and can produce all soldiers
-Postal deliveries resource automation
 
-Bank system (untested), central gold can be turned on and off
->Armies carry gold for food purchases
 
-Changed the save meta file so it changes name during version change 
-optimized worker performance
-Added multicore priority to make the map load smoother during gameplay
-Slight improvement on new map generating (sticks on 70%)
-
-Army structure update:
-> More dynamic placement of soldiers in an army.
-> You can set their relative position.
-> ! Soldiers hindered by terrain will be pushed further back.
-
-Massive path finding update:
-> Soldiers activly follow terrain.
-> ! The CPU load is much higher, large maps can be unplayable.
-> ! This will introduce a lot of new bugs.
-
-New battle system:
-> Battles are not in a grid anymore.
-> Soldiers fight on a induvidual level, instead of army against army.
-> ! Units get stuck in blobs, been improved from earlier versions.
-> ! Will be worse than the old system for a while, but has future potential.
-> ! Will igore land/water restrictions during fights.
-> ! This will introduce a lot of new bugs.
 
 # WORKER PATH #
 Ha en loop som går igenom tiles, om det finns 1+ byggnader, räkna tid från hall till slumpad byggnad, tid till närmast mat och avlämning

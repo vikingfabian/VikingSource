@@ -309,7 +309,7 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(rotation.ByteDir);
 
             w.Write((byte)soldierCount);
-            w.Write((short)shipHealth);
+            w.Write(shipHealth);
         }
 
         public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
@@ -333,7 +333,7 @@ namespace VikingEngine.DSSWars.GameObject
             rotation.ByteDir = r.ReadByte();
 
             soldierCount = r.ReadByte();
-            shipHealth = r.ReadInt16();
+            shipHealth = r.ReadInt32();
 
             initPart2(typeCurrentData);
 

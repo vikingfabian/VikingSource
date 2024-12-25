@@ -16,17 +16,20 @@ namespace VikingEngine
         static List<AbsQuedTasks> StorageTaskQue = new List<AbsQuedTasks>();
         //
         public static void CheckStorageQue()
-        {   
+        {            
+
             if (ActiveStorageTask != null)
             {
+                ActiveStorageTask.taskTime += Ref.DeltaTimeSec;
+
                 if (ActiveStorageTask.asynchActionComplete())
                 {
                     var prevTask = ActiveStorageTask;
                     ActiveStorageTask = null;
                     prevTask?.onStorageComplete();
                 }
-                else if (ActiveStorageTask.storageTaskBeginTime.secPassed(30f))
-                {
+                else if (ActiveStorageTask.taskTime > 60f)
+                {   
                     BlueScreen.ThreadException = new Exception("Storage timeout " + ActiveStorageTask.ToString());
                 }
             }
@@ -61,7 +64,7 @@ namespace VikingEngine
                     var activeStorageTask_sp = ActiveStorageTask;
                     if (activeStorageTask_sp != null)
                     {
-                        activeStorageTask_sp.storageTaskBeginTime = TimeStamp.Now();
+                        activeStorageTask_sp.taskTime = 0;
 
                         activeStorageTask_sp.task = Task.Factory.StartNew(() =>
                         {

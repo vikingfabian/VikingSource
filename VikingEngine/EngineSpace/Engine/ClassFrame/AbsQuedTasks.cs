@@ -10,7 +10,8 @@ namespace VikingEngine
 
         public bool bStorageTaskComplete = false, bAsynchTaskComplete = false, bMainThreadTaskComplete = false;
         public System.Threading.Tasks.Task task;
-        public TimeStamp storageTaskBeginTime;
+        public float taskTime;
+        //public TimeStamp storageTaskBeginTime;
 
         public AbsQuedTasks()
         { }

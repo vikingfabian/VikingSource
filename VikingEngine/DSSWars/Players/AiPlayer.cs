@@ -1824,7 +1824,7 @@ namespace VikingEngine.DSSWars.Players
 
         bool mayAttackFaction(Faction otherFaction)
         {
-            if (DssRef.difficulty.peaceful && otherFaction.player.IsPlayer())
+            if (otherFaction.player.IsPlayer() && (DssRef.difficulty.peaceful || !DssRef.state.events.MayAttackPlayer()))
             {
                 RelationType playerRel = DssRef.diplomacy.GetRelationType(faction, otherFaction);
                 return playerRel <= RelationType.RelationTypeN3_War;
