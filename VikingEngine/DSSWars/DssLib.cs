@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars
     {
         public const bool UseLocalTrading = false;
 
-        public const VoxelModelName WorkerModel = VoxelModelName.war_gnome;
+        public const VoxelModelName WorkerModel = VoxelModelName.war_worker;//VoxelModelName.war_gnome;
 
         public static readonly string ContentDir = "DSS" + DataStream.FilePath.Dir;
         public static readonly string StoryContentDir = ContentDir + "Story" + DataStream.FilePath.Dir;
