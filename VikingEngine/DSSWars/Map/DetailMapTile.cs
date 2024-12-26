@@ -99,21 +99,23 @@ namespace VikingEngine.DSSWars.Map
                     SubTile subTile = DssRef.world.subTileGrid.Get(subX, subY);
                     Vector2 subTopLeft = new Vector2(topLeft.X + x * WorldData.SubTileWidth, topLeft.Y + y * WorldData.SubTileWidth);
                     
-                    block(subTopLeft, ref subTile);
-
-                    surfaceTexture(tile, subTile, subTopLeft);
+                    bool bSurfacePolygonTexture = true;
+                    SpriteName surfaceSprite = SpriteName.WhiteArea_LFtiles;
+                    Color surfaceColor = subTile.color;
 
                     switch (subTile.mainTerrain)
                     {
                         case TerrainMainType.Foil:
+                            bSurfacePolygonTexture = false;                            
                             createFoliage((TerrainSubFoilType)subTile.subTerrain, subTile.terrainAmount,
-                                topCenter(ref subTile, ref subTopLeft));
+                                topCenter(ref subTile, ref subTopLeft), ref surfaceSprite);
                             break;
                         case TerrainMainType.Resourses:
                             createResoursePile((TerrainResourcesType)subTile.subTerrain,
                                 topCenter(ref subTile, ref subTopLeft));
                             break;
                         case TerrainMainType.Building:
+                            bSurfacePolygonTexture = false;
                             createBuilding(tile, ref subTile, (TerrainBuildingType)subTile.subTerrain,
                                 topCenter(ref subTile, ref subTopLeft));
                             break;
@@ -125,11 +127,23 @@ namespace VikingEngine.DSSWars.Map
                             createMine((TerrainMineType)subTile.subTerrain,
                                 topCenter(ref subTile, ref subTopLeft));
                             break;
+                        case TerrainMainType.Road:
+                            bSurfacePolygonTexture = false;
+                            createRoad((TerrainRoadType)subTile.subTerrain, ref surfaceSprite);
+                            break;
                         case TerrainMainType.Decor:
+                            bSurfacePolygonTexture = false;
                             createDecor(tile, ref subTile, (TerrainDecorType)subTile.subTerrain,
                                 topCenter(ref subTile, ref subTopLeft));
                             break;
-                    }                   
+                    }
+
+                    block(subTopLeft, surfaceSprite, surfaceColor, ref subTile);
+
+                    if (bSurfacePolygonTexture)
+                    {
+                        surfaceTexture(tile, subTile, subTopLeft);
+                    }
 
                     DssRef.world.subTileGrid.Set(
                         subTileStart.X + x, subTileStart.Y + y, 
@@ -140,14 +154,14 @@ namespace VikingEngine.DSSWars.Map
             verticeData = PolygonLib.BuildVDFromPolygons(
                 new Graphics.PolygonsAndTrianglesColor(DssRef.state.detailMap.polygons, null));
 
-            void block(Vector2 subTopLeft, ref SubTile subTile)
+            void block(Vector2 subTopLeft, SpriteName texture, Color color, ref SubTile subTile)
             {
                 var top = Graphics.PolygonColor.QuadXZ(
                     subTopLeft,
                     WorldData.SubTileWidthV2, false, subTile.groundY,
-                    subTile.mainTerrain == TerrainMainType.Foil ? SpriteName.warsFoliageShadow : SpriteName.WhiteArea_LFtiles,
+                    texture,
                     Dir4.N,
-                    subTile.color);
+                    color);
 
                 var bottom = top;
                 Color bottomCol;
@@ -166,7 +180,7 @@ namespace VikingEngine.DSSWars.Map
                     bottom.V1nw.Position, bottom.V3ne.Position,
                     top.V1nw.Position, top.V3ne.Position,
                     SpriteName.WhiteArea_LFtiles, Dir4.N,
-                    ColorExt.ChangeBrighness(subTile.color, -5));
+                    ColorExt.ChangeBrighness(color, -5));
                 left.V1nw.Color = bottomCol;
                 left.V3ne.Color = bottomCol;
 
@@ -174,7 +188,7 @@ namespace VikingEngine.DSSWars.Map
                     top.V0sw.Position, top.V2se.Position,
                     bottom.V0sw.Position, bottom.V2se.Position,
                     SpriteName.WhiteArea_LFtiles, Dir4.N,
-                    ColorExt.ChangeBrighness(subTile.color, -5));
+                    ColorExt.ChangeBrighness(color, -5));
                 right.V0sw.Color = bottomCol;
                 right.V2se.Color = bottomCol;
 
@@ -182,7 +196,7 @@ namespace VikingEngine.DSSWars.Map
                     bottom.V0sw.Position, bottom.V1nw.Position,
                     top.V0sw.Position, top.V1nw.Position,
                     SpriteName.WhiteArea_LFtiles, Dir4.N,
-                    ColorExt.ChangeBrighness(subTile.color, -10));
+                    ColorExt.ChangeBrighness(color, -10));
                 front.V1nw.Color = bottomCol;
                 front.V3ne.Color = bottomCol;
 
@@ -213,10 +227,10 @@ namespace VikingEngine.DSSWars.Map
                 subTopLeft.Y);
 
             
-            if (subTile.mainTerrain != TerrainMainType.Foil &&
-                subTile.mainTerrain != TerrainMainType.Building &&
-                subTile.mainTerrain != TerrainMainType.Decor)
-            {
+            //if (subTile.mainTerrain != TerrainMainType.Foil &&
+            //    subTile.mainTerrain != TerrainMainType.Building &&
+            //    subTile.mainTerrain != TerrainMainType.Decor)
+            //{
                 switch (col.Texture)
                 {
                     case SurfaceTextureType.Grass:
@@ -292,10 +306,15 @@ namespace VikingEngine.DSSWars.Map
                         }
                         break;
                 }
-            }
+            //}
         }
 
-        void createFoliage(TerrainSubFoilType type, int sizeValue, Vector3 wp)
+        void createRoad(TerrainRoadType type, ref SpriteName surfaceSprite)
+        {
+            surfaceSprite = SpriteName.warsFoliageDirtRoad;
+        }
+
+        void createFoliage(TerrainSubFoilType type, int sizeValue, Vector3 wp, ref SpriteName surfaceSprite)
         {
             wp.X += FoliageCenterRange.GetRandom(rnd);
             wp.Z += FoliageCenterRange.GetRandom(rnd);
@@ -318,12 +337,15 @@ namespace VikingEngine.DSSWars.Map
                     addFoliage(new Foliage(LootFest.VoxelModelName.fo_stone1, rnd, wp, 0.12f));
                     break;
                 case TerrainSubFoilType.TreeHard:
+                    surfaceSprite = SpriteName.warsFoliageRoundShadow;
                     addFoliage(new Foliage(LootFest.VoxelModelName.fol_tree_hard, rnd, wp, 0.03f + 0.0012f * sizeValue));
                     break;
                 case TerrainSubFoilType.TreeSoft:
+                    surfaceSprite = SpriteName.warsFoliageRoundShadow;
                     addFoliage(new Foliage(LootFest.VoxelModelName.fol_tree_soft, rnd, wp, 0.03f + 0.0012f * sizeValue));
                     break;
                 case TerrainSubFoilType.DryWood:
+                    surfaceSprite = SpriteName.warsFoliageRoundShadow;
                     addFoliage(new Foliage(LootFest.VoxelModelName.fol_tree_dry, rnd, wp, 0.12f));
                     break;
                 case TerrainSubFoilType.TreeSoftSprout:

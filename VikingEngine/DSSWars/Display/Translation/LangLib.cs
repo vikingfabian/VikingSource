@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.DSSWars.XP;
+using VikingEngine.Graphics;
 using VikingEngine.LootFest.GO;
 
 namespace VikingEngine.DSSWars.Display.Translation
@@ -832,6 +833,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                             return DssRef.todoLang.BuildingType_Gunmaker;
                         case TerrainBuildingType.School:
                             return DssRef.todoLang.BuildingType_School;
+                       
 
                         default:
                             return DssRef.lang.BuildingType_DefaultName;
@@ -901,6 +903,14 @@ namespace VikingEngine.DSSWars.Display.Translation
                         case TerrainMineType.Sulfur:
                             return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Sulfur);
 
+                    }
+                    break;
+
+                case TerrainMainType.Road:
+                    switch ((TerrainRoadType)subType)
+                    {
+                        case TerrainRoadType.DirtRoad:
+                            return DssRef.todoLang.BuildingType_DirtRoad;
                     }
                     break;
 

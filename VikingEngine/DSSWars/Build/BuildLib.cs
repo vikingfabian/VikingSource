@@ -73,6 +73,8 @@ namespace VikingEngine.DSSWars.Build
         GoldDeliveryLvl2,
         GoldDeliveryLvl3,
 
+        DirtRoad,
+
         NUM_NONE,
     }
     static class BuildLib
@@ -239,6 +241,7 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.StoneCutter);
             }
 
+            list.Add(BuildAndExpandType.DirtRoad);
             if (city.buildingStructure.buildingLevel_logistics >= 2 ||
                 StartupSettings.UnlockAllProgress)
             {
@@ -298,6 +301,7 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.RapeSeedFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarm, SpriteName.WarsBuild_RapeseedFarms, CraftBuildingLib.RapeseedFarm);
             new BuildOption(BuildAndExpandType.RapeSeedFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarmUpgraded, SpriteName.WarsBuild_RapeseedFarms, CraftBuildingLib.RapeseedFarmUpgrade);
 
+            new BuildOption(BuildAndExpandType.DirtRoad, TerrainMainType.Road, (int)TerrainRoadType.DirtRoad, SpriteName.WarsBuild_Pavement, CraftBuildingLib.DirtRoad);
             new BuildOption(BuildAndExpandType.Pavement, TerrainMainType.Decor, (int)TerrainDecorType.Pavement, SpriteName.WarsBuild_Pavement, CraftBuildingLib.Pavement);
             new BuildOption(BuildAndExpandType.PavementFlower, TerrainMainType.Decor, (int)TerrainDecorType.PavementFlower, SpriteName.WarsBuild_PavementFlowers, CraftBuildingLib.PavementFlower);
             new BuildOption(BuildAndExpandType.Statue_ThePlayer, TerrainMainType.Decor, (int)TerrainDecorType.Statue_ThePlayer, SpriteName.WarsBuild_Statue, CraftBuildingLib.Statue);

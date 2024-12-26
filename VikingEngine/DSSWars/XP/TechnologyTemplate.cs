@@ -10,7 +10,9 @@ namespace VikingEngine.DSSWars.XP
 {
     struct TechnologyTemplate
     {
-        public const int Unlocked = 100;
+        public static readonly TechnologyTemplate Start = new TechnologyTemplate();
+
+        public const int Unlocked = 200;
         public const int FactionUnlock = 100000;
 
         public int advancedBuilding;
@@ -24,6 +26,24 @@ namespace VikingEngine.DSSWars.XP
         
         public int blackPowder;
         public int gunPowder;
+
+
+        public TechnologyTemplate()
+        { 
+            advancedBuilding = Unlocked - 20;
+            advancedFarming = Unlocked - 50;
+            advancedCasting = Unlocked - 50;
+
+            iron = Unlocked - 50;
+            steel = Unlocked - 100;
+
+            catapult = Unlocked - 50;
+
+            blackPowder = Unlocked - 100;
+            gunPowder = Unlocked - 200;
+        }
+
+        
 
         public void writeGameState(System.IO.BinaryWriter w)
         {

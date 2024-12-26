@@ -2565,8 +2565,12 @@ namespace VikingEngine
 
                 currentIndex = numTilesWidth * 106;
                 {
+                    //currentIndex += 2;
+                    add(SpriteName.warsFoliageSquareShadow, 2, 2);
                     currentIndex += 2;
-                    add(SpriteName.warsFoliageShadow, 2, 2);
+                    add(SpriteName.warsFoliageRoundShadow, 2, 2);
+                    add(SpriteName.warsFoliageDirtRoad, 2, 2);
+
                     //add(SpriteName.rtsTownSide, 2, 2);
                     //add(SpriteName.rtsTownTop, 2, 2);
                     //add(SpriteName.rtsBlockSide, 2, 2);

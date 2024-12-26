@@ -2423,7 +2423,9 @@ namespace VikingEngine
         #region DSS WARS
         WarsNightmareEyeGlow,
         WarsGroundTex,
-        warsFoliageShadow,
+        warsFoliageSquareShadow,
+        warsFoliageRoundShadow,
+        warsFoliageDirtRoad,
         warsWorkerPromoHammer,
         warsWorkerPromoBox,
         warsCheckYes,

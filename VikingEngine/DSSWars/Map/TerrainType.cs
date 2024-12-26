@@ -18,6 +18,7 @@ namespace VikingEngine.DSSWars.Map
         Building,
         Decor,
         Wall,
+        Road,
         NUM
     }
 
@@ -133,6 +134,12 @@ namespace VikingEngine.DSSWars.Map
         Pavement,
         PavementFlower,
         Statue_ThePlayer,
+        NUM_NONE
+    }
+
+    enum TerrainRoadType
+    {
+        DirtRoad,
         NUM_NONE
     }
 

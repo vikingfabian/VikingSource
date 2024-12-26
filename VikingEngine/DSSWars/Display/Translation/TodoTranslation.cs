@@ -123,7 +123,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string Technology_AdvancedBuildings = "Advanced buildings";
         public string Technology_AdvancedFarming = "Advanced farming";
         public string Technology_AdvancedCasting = "Advanced casting";
-        public string Hud_PercentPerMinute => "{0}% per minute";
+        public string Hud_PointsPerMinute => "{0} points per minute";
         public string Hud_PercentValueCost => "The service costs {0}% of the value";
 
         public string Hud_Mixed => "Mixed";
@@ -260,6 +260,9 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string BuildingType_GoldDelivery => "Gold courier";
         public string BuildingType_Bank_Description => "Gold management";
+
+        public string BuildingType_DirtRoad => "Dirt road";
+
 
         public string Work_MiningResource = "Mining {0}";
 

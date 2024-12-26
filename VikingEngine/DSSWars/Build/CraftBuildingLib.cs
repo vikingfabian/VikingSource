@@ -687,6 +687,18 @@ namespace VikingEngine.DSSWars.Build
             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
         );
 
+
+        public static readonly CraftBlueprint DirtRoad = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.DirtRoad,
+           1,
+           new UseResource[]
+           {
+               new UseResource(ItemResourceType.Stone_G, 1),
+           },
+           XP.WorkExperienceType.StoneCutter
+       );
+
         public static readonly CraftBlueprint Pavement = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Pavement,
