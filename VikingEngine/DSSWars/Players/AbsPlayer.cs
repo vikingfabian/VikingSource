@@ -181,6 +181,21 @@ namespace VikingEngine.DSSWars.Players
         {
             
         }
+        public void setAggression(int agg)
+        {
+            if (aggressionLevel != agg)
+            {
+                aggressionLevel = agg;
+                GetAiPlayer()?.refreshAggression();
+            }
+        }
+        public void setMinimumAggression(int minAgg)
+        {
+            if (aggressionLevel <= minAgg)
+            {
+                setAggression(minAgg);
+            }
+        }
     }
 
     

@@ -53,6 +53,12 @@ namespace VikingEngine.DSSWars.Display.Translation
         //public string Tutorial_Select_SubTab => "And select category: {0}";
         //public string EndGameStatistics_DecorsBuilt => "Decorations built: {0}";
         //public string EndGameStatistics_StatuesBuilt => "Statues built: {0}";
+        public string Diplomacy_RelationType_Enemies => "Enemies";
+
+        public string EventMessage_EnemyAlliance_Title => "Fear of Domination";
+        public string EventMessage_EnemyAlliance => "The nations, fearing your growing power, unite in an alliance against you.";
+        
+
 
         public string Settings_CentralGold => "Central gold";
         public string Settings_CentralGold_Description => "On: all your gold is in a shared pool for instant use. Off: gold is physical and needs to be transported.";

@@ -57,6 +57,30 @@ namespace VikingEngine
         public override bool RunDuringPause { get { return false; } }
     }
 
+    abstract class AbsInGameTrigger : AbsInGameUpdateable
+    {
+        float triggerTime;
+        public AbsInGameTrigger(float timeSeconds)
+            : base(true)
+        { 
+            triggerTime = Ref.TotalGameTimeSec + timeSeconds;
+        }
+
+        public override void Time_Update(float time_ms)
+        {
+            if (Ref.TotalGameTimeSec >= triggerTime)
+            {
+                timeTrigger();
+                DeleteMe();
+            }
+        }
+
+        virtual protected void timeTrigger()
+        { }
+        public override UpdateType UpdateType => UpdateType.Lazy;
+        public override bool RunDuringPause { get { return false; } }
+    }
+
 
     abstract class OneTimeTrigger : AbsUpdateable
     {

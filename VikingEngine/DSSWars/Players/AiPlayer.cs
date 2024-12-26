@@ -645,8 +645,6 @@ namespace VikingEngine.DSSWars.Players
                         case FactionFlavorType.Warrior:
                             aggressionLevel = Bound.Max(aggressionLevel + 1, AggressionLevel3_FocusedAttacks);
                             break;
-
-
                     }
 
                 }
@@ -654,13 +652,13 @@ namespace VikingEngine.DSSWars.Players
 
             void techSetup()
             {
-                faction.technology.advancedBuilding = Ref.rnd.Int(50);
-                faction.technology.advancedFarming = Ref.rnd.Int(50);
-                faction.technology.advancedCasting = Ref.rnd.Int(50);
+                faction.technology.advancedBuilding = TechnologyTemplate.SetRandom(faction.technology.advancedBuilding);
+                faction.technology.advancedFarming = TechnologyTemplate.SetRandom(faction.technology.advancedFarming);
+                faction.technology.advancedCasting = TechnologyTemplate.SetRandom(faction.technology.advancedCasting);
                 faction.technology.iron = TechnologyTemplate.FactionUnlock;
-                faction.technology.steel = Ref.rnd.Int(50);
-                faction.technology.catapult = Ref.rnd.Int(50);
-                faction.technology.blackPowder = Ref.rnd.Int(50);
+                faction.technology.steel = TechnologyTemplate.SetRandom(faction.technology.steel);
+                faction.technology.catapult = TechnologyTemplate.SetRandom(faction.technology.catapult);
+                faction.technology.blackPowder = TechnologyTemplate.SetRandom(faction.technology.blackPowder);
 
                 if (faction.profile.factionFlavorType == FactionFlavorType.City)
                 {
@@ -670,7 +668,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     {
-                        faction.technology.advancedBuilding = MathExt.MultiplyInt(faction.technology.steel, 2);
+                        TechnologyTemplate.MultiplyProgress(ref faction.technology.advancedBuilding); //= MathExt.MultiplyInt(faction.technology.steel, 2);
                     }
                 }
                 
@@ -682,7 +680,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     {
-                        faction.technology.steel = MathExt.MultiplyInt(faction.technology.steel, 2);
+                        TechnologyTemplate.MultiplyProgress(ref faction.technology.steel);
                     }
 
                     if (Ref.rnd.Chance(0.6))
@@ -691,14 +689,14 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     {
-                        faction.technology.catapult = MathExt.MultiplyInt(faction.technology.steel, 2);
+                        TechnologyTemplate.MultiplyProgress(ref faction.technology.catapult);
                     }
                 }
 
                 if (faction.profile.factionFlavorType == FactionFlavorType.People)
                 {
-                    faction.technology.iron = 0;
-                    faction.technology.steel = 0;
+                    faction.technology.iron = TechnologyTemplate.Start.iron;
+                    faction.technology.steel = TechnologyTemplate.Start.steel;
 
                     if (Ref.rnd.Chance(0.6))
                     {
@@ -706,7 +704,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     {
-                        faction.technology.advancedFarming = MathExt.MultiplyInt(faction.technology.steel, 2);
+                        TechnologyTemplate.MultiplyProgress(ref faction.technology.advancedFarming);
                     }
                 }
 
@@ -718,7 +716,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     {
-                        faction.technology.advancedCasting *= 2;
+                        TechnologyTemplate.MultiplyProgress(ref faction.technology.advancedCasting);
                     }
 
                     if (Ref.rnd.Chance(0.6))
@@ -727,7 +725,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     {
-                        faction.technology.blackPowder *= 2;
+                        TechnologyTemplate.MultiplyProgress(ref faction.technology.blackPowder);
                     }
 
                     if (Ref.rnd.Chance(0.4))
@@ -736,10 +734,10 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     {
-                        faction.technology.steel = MathExt.MultiplyInt(faction.technology.steel, 1.5);
+                        TechnologyTemplate.MultiplyProgress(ref faction.technology.steel, 0.3);
                     }
 
-                    faction.technology.advancedFarming = 0;
+                    faction.technology.advancedFarming = TechnologyTemplate.Start.advancedFarming;
                 }
             }
         }

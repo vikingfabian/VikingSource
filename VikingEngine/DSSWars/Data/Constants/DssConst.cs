@@ -219,5 +219,8 @@ namespace VikingEngine.DSSWars
         public static int GoldDeliveryChunkSize_Level2 = 2000;
         public static int GoldDeliveryChunkSize_Level3 = 5000;
 
+        //EVENTS
+        public static Range DominationSizeIncrease = new Range(5, 7);
+        public static IntervalF DominationWarTimeDelay_Minutes = new IntervalF(10, 20);
     }
 }

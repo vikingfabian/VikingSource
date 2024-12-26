@@ -397,10 +397,10 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else
                 {  
-                    Ref.update.AddSyncAction(new SyncAction(() =>
+                    Ref.update.AddSyncAction(new SyncAction1Arg<AbsMapObject>((AbsMapObject attackTarget) =>
                     {
-                        attackTarget.DeleteMe(DeleteReason.Death, true);
-                    }));
+                        attackTarget?.DeleteMe(DeleteReason.Death, true);
+                    }, attackTarget));
                 }
             }
             else

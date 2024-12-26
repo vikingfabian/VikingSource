@@ -43,7 +43,25 @@ namespace VikingEngine.DSSWars.XP
             gunPowder = Unlocked - 200;
         }
 
-        
+        public static int SetRandom(int startValue, double percentageAdd = 0.5)
+        {
+            if (startValue > Unlocked)
+            {
+                return startValue;
+            }
+
+            double total = Unlocked - startValue;
+            return startValue + (int)(total * percentageAdd * Ref.rnd.Double());
+        }
+
+
+        public static void MultiplyProgress(ref int value, double reduceGap = 0.5)
+        {
+            int gap = Unlocked - value;
+            if (gap > 0) {
+                value = value + (int)(gap * reduceGap);
+            }
+        }
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
@@ -112,20 +130,21 @@ namespace VikingEngine.DSSWars.XP
 
         public void destroyTechOnTakeOver()
         {
-            tech(ref advancedBuilding);
-            tech(ref advancedFarming);
-            tech(ref advancedCasting);
-            tech(ref iron);
-            tech(ref steel);
-            tech(ref catapult);
-            tech(ref blackPowder);
-            tech(ref gunPowder);
+            tech(ref advancedBuilding, Start.advancedBuilding);
+            tech(ref advancedFarming, Start.advancedFarming);
+            tech(ref advancedCasting, Start.advancedCasting);
+            tech(ref iron, Start.iron);
+            tech(ref steel, Start.steel);
+            tech(ref catapult, Start.catapult);
+            tech(ref blackPowder, Start.blackPowder);
+            tech(ref gunPowder, Start.gunPowder);
 
-            void tech(ref int thisTech)
+            void tech(ref int thisTech, int start)
             {
-                if (thisTech > 0)
+                if (thisTech > start)
                 {
-                    thisTech = Math.Min(Ref.rnd.Int(thisTech), Ref.rnd.Int(thisTech));
+                    int points = thisTech - start;
+                    thisTech = start + Math.Min(Ref.rnd.Int(points), Ref.rnd.Int(points));
                 }
             }
         }

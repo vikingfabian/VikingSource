@@ -1,6 +1,8 @@
 ﻿-Change Log-
 New decor: Dirt road
-
+Changed the tech tree to a points system (instead of %)
+Domination manager: about every 6 cities you conquer will trigger a strong war alliance. (this is to counter the strategy of spamming of low grade soldiers)
+The war manager is set to run at half speed to grant a slower pace.
 
 # WORKER PATH #
 Ha en loop som går igenom tiles, om det finns 1+ byggnader, räkna tid från hall till slumpad byggnad, tid till närmast mat och avlämning
@@ -22,8 +24,6 @@ Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 ti
 (-house variants)
 +  ports can speed up how much u can send or recieve
 * annoyed by the deliveries being inefficient
--wagon, transport span amount, 2/4 wheel
--tool shed, faster farming upgrade
 -Embassy expansion för att unlocka diplomacy
 * soldier level
 * Guest housing (sten hus i stan) for guards, barracks, post office, (city hall min size, öka vid antal byggnader?) 
@@ -42,20 +42,9 @@ krig varning på ally
 new maps
 dölj carry amount
 
-
 lamps - förbättrar produktion i area, måste fyllas med fuel
 förvaringsbyggnader som ökar max stack av olika typer, vapen hus, kylrum osv
 
-cooling fluid
-
---Group engagement--
-Attack radius
-	-smaller when traveling
-	-large against attack order
-
-Attack lineup innan target
-
-//ShowGamepadTextInput
 
 --Efter release polish--
 -war icon

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Display.CutScene;
 using VikingEngine.DSSWars.GameObject;
@@ -100,8 +101,23 @@ namespace VikingEngine.DSSWars
             asyncUpdateDyingFactions(time);
 
             asyncUpdateTooPeaceful(time);
+
+            asyncCheckPlayerDominance();
         }
 
+        void asyncCheckPlayerDominance()
+        {
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                if (p.faction.cities.Count >= p.nextDominationSize)
+                {
+                    p.nextDominationSize = p.faction.cities.Count + DssConst.DominationSizeIncrease.GetRandom();
+                    p.dominationEvents++;
+
+                    collectAllianceAgainstPlayerDomination(p);
+                }
+            }
+        }
 
         public bool AiDelay()
         { 
@@ -421,7 +437,7 @@ namespace VikingEngine.DSSWars
                 nextEvent > EventType.WarmanagerDelay &&
                 DssRef.difficulty.toPeacefulPercentage > 0)
             {
-                toPeacefulCheckTimer = new Time(15, TimeUnit.Minutes);
+                toPeacefulCheckTimer = new Time(30, TimeUnit.Minutes);
 
                 foreach (var p in DssRef.state.localPlayers)
                 {
@@ -745,7 +761,193 @@ namespace VikingEngine.DSSWars
 
             new EndScene(false, false);
         }
-       
+
+        public void collectAllianceAgainstPlayerDomination(LocalPlayer player)
+        {
+            var neighbor = findAttackingNeighborFaction(player.faction);
+
+            List<Faction> attackers = new List<Faction>() { neighbor };
+            int totalSize = neighbor.totalWorkForce;
+            List<Faction> search = adjacentFactions(neighbor);
+            List<Faction> has_searched = new List<Faction>();
+
+            int maxLoops = 100;
+            while (--maxLoops > 0 && totalSize < player.faction.totalWorkForce * 1.5f)
+            {
+                if (search.Count > 0)
+                {   
+                    var faction = arraylib.RandomListMemberPop(search);
+                    bool bHasSearched = has_searched.Contains(faction);
+
+                    if (!bHasSearched &&
+                        factionMayStartWar(faction, player.faction) &&
+                        !attackers.Contains(faction))
+                    {
+                        attackers.Add(faction);
+                        totalSize += faction.totalWorkForce;
+                    }
+
+                    if (!bHasSearched)
+                    {
+                        has_searched.Add(faction);
+                    }
+                }
+                else
+                {
+                    foreach (var faction in has_searched)
+                    {
+                        search.AddRange(adjacentFactions(faction));
+                    }
+                }
+            }
+
+            Faction attackLeader = null;
+            //Create an alliance
+            foreach (var faction in attackers)
+            {
+                foreach (var other in attackers)
+                {
+                    if (other != faction)
+                    { 
+                        DssRef.diplomacy.SetRelationType(faction, other, RelationType.RelationType3_Ally);
+                    }
+                }
+
+                DssRef.diplomacy.SetRelationType(faction, player.faction, RelationType.RelationTypeN1_Enemies);
+                
+
+                if (attackLeader == null || faction.militaryStrength > attackLeader.militaryStrength)
+                { 
+                    attackLeader = faction;
+                }
+            }
+
+            //Prepare leader
+            attackers.Remove(attackLeader); 
+            attackers.Insert(0, attackLeader);
+            DssRef.diplomacy.GetOrCreateRelation(attackLeader, player.faction).SpeakTerms = SpeakTerms.SpeakTermsN2_None;
+            attackLeader.player.setAggression(AbsPlayer.AggressionLevel1_RevengeOnly);
+
+            Ref.update.AddSyncAction(new SyncAction(() =>
+            {
+                var city = attackLeader.mainCity;
+
+                var meleeProfile = new ConscriptProfile()
+                {
+                    weapon = Resource.ItemResourceType.Pike,
+                    armorLevel = Resource.ItemResourceType.IronArmor,
+                    training = TrainingLevel.Basic,
+                    specialization = SpecializationType.Traditional,
+                };
+                var rangedProfile = new ConscriptProfile()
+                {
+                    weapon = (player.dominationEvents < 3? Resource.ItemResourceType.Crossbow : Resource.ItemResourceType.HandCannon),
+                    armorLevel = Resource.ItemResourceType.PaddedArmor,
+                    training = TrainingLevel.Basic,
+                    specialization = SpecializationType.Traditional,
+                };
+
+                city.conscriptArmy(meleeProfile, city.defaultConscriptPos(), 3 + player.dominationEvents * 2);
+                city.conscriptArmy(rangedProfile, city.defaultConscriptPos(), 3 + player.dominationEvents * 2);
+
+                if (player.dominationEvents >= 3)
+                {
+                    var cannonProfile = new ConscriptProfile()
+                    {
+                        weapon = Resource.ItemResourceType.ManCannonBronze,
+                        armorLevel = Resource.ItemResourceType.PaddedArmor,
+                        training = TrainingLevel.Basic,
+                        specialization = SpecializationType.Siege,
+                    };
+                    city.conscriptArmy(cannonProfile, city.defaultConscriptPos(), 2 + player.dominationEvents);
+                }
+
+                player.hud.messages.Add(DssRef.todoLang.EventMessage_EnemyAlliance_Title, DssRef.todoLang.EventMessage_EnemyAlliance);
+            }));
+            
+            new Timer.TimedAction2ArgTrigger_InGame<List<Faction>, LocalPlayer>((List<Faction> attackers, LocalPlayer player) =>
+            {
+                attackers.First().player.setAggression(AbsPlayer.AggressionLevel3_FocusedAttacks);
+                foreach (var faction in attackers)
+                {
+                    faction.player.setMinimumAggression(AbsPlayer.AggressionLevel2_RandomAttacks);
+                    DssRef.diplomacy.SetRelationType(faction, player.faction, RelationType.RelationTypeN3_War);                    
+                }
+            }, attackers, player, TimeExt.MinuteInSeconds * DssConst.DominationWarTimeDelay_Minutes.GetRandom());
+
+
+            List<Faction> adjacentFactions(Faction faction)
+            {
+                List<Faction> factions = new List<Faction>();
+                var citiesC = faction.cities.counter();
+                while (citiesC.Next())
+                {
+                    foreach (var n in citiesC.sel.neighborCities)
+                    {
+                        var ncity = DssRef.world.cities[n];
+                        if (ncity.faction != faction &&
+                            ncity.faction.player.IsAi() &&
+                            !factions.Contains(ncity.faction))
+                        { 
+                            factions.Add(ncity.faction);
+                        }
+                    }
+                }
+                
+                return factions;
+            }
+        }
+
+        public Faction findAttackingNeighborFaction(Faction defender)
+        {
+            var cities = defender.cities.toList();
+
+            while (cities.Count > 0)
+            {
+                var city = arraylib.RandomListMemberPop(cities);
+
+                if (city != null)
+                {
+                    foreach (var cindex in city.neighborCities)
+                    {
+                        var otherfaction = DssRef.world.cities[cindex].faction;
+                        if (factionMayStartWar(otherfaction, defender))
+                        {
+                            //var rel = DssRef.diplomacy.GetRelationType(faction, otherfaction);
+                            //if (rel >= RelationType.RelationTypeN1_Enemies && rel <= RelationType.RelationType1_Peace)
+                            //{
+                            //    otherfaction.player.setMinimumAggression(AiPlayer.AggressionLevel2_RandomAttacks);
+                                //var aiPlayer = otherfaction.player.GetAiPlayer();
+                                //if (aiPlayer.aggressionLevel <= AiPlayer.AggressionLevel1_RevengeOnly)
+                                //{
+                                //    aiPlayer.aggressionLevel = AiPlayer.AggressionLevel2_RandomAttacks;
+                                //    aiPlayer.refreshAggression();
+                                //}
+                                //DssRef.diplomacy.declareWar(otherfaction, faction);
+                                return otherfaction;
+                            //}
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        bool factionMayStartWar(Faction attacker, Faction defender)
+        {
+            if ((attacker.factiontype == FactionType.DefaultAi || attacker.factiontype == FactionType.DarkFollower) &&
+                attacker.armies.Count > 0)
+            {
+                var rel = DssRef.diplomacy.GetRelationType(defender, attacker);
+                if (rel >= RelationType.RelationTypeN1_Enemies && rel <= RelationType.RelationType1_Peace)
+                {
+                    return true;
+                } 
+            }
+
+            return false;
+        }
+
     }
 
     enum BossTimeSettings

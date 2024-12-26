@@ -661,11 +661,15 @@ namespace VikingEngine.DSSWars.GameObject
                     else if (armyCenterCount > 0)
                     {
                         var newPosition = armyCenter / armyCenterCount;
-                        if (newPosition.X > 1 && newPosition.Z > 1)
-                        {
-                            position.X = newPosition.X;
-                            position.Z = newPosition.Z;
-                        }
+
+                        DssRef.world.unitBounds.KeepPointInsideBound_TilePositionXZref(ref newPosition);
+                        position = newPosition;
+
+                        //if (newPosition.X > 1 && newPosition.Z > 1)
+                        //{
+                        //    position.X = newPosition.X;
+                        //    position.Z = newPosition.Z;
+                        //}
 
                         tilePos = new IntVector2(position.X, position.Z);
                         var tile = DssRef.world.tileGrid.Get(tilePos);

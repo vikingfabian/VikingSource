@@ -39,6 +39,7 @@ namespace VikingEngine.DSSWars.Conscript
                 case ItemResourceType.Sword:
                 case ItemResourceType.LongSword:
                 case ItemResourceType.HandSpear:
+                case ItemResourceType.Pike:
                     ranged = false;
                     rangedMan = false;
                     meleeMan = true;
