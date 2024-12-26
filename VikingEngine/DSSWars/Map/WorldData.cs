@@ -33,6 +33,7 @@ namespace VikingEngine.DSSWars
         public const double TileWidthInKm = 0.064;
 
         public const int TileSubDivitions = 8;
+        public const int HalfTileSubDivitions = TileSubDivitions / 2;
         public const int TileSubDivitions_MaxIndex = TileSubDivitions-1;
 
         public static readonly Color WaterCol = new Color(14, 155, 246);
@@ -40,6 +41,7 @@ namespace VikingEngine.DSSWars
         public static readonly Color WaterDarkCol = new Color(0.043f, 0.486f,0.773f);
         public static readonly Color WaterDarkCol2 = ColorExt.Multiply(WaterDarkCol, 1.1f);
 
+        public static readonly float TileHalfWidth = 0.5f;
         public static readonly float SubTileWidth = 1f / TileSubDivitions;
         public static readonly Vector2 SubTileWidthV2 = new Vector2(SubTileWidth);
         public static readonly float SubTileHalfWidth = SubTileWidth * 0.5f;
@@ -57,7 +59,7 @@ namespace VikingEngine.DSSWars
 
         public List<City> cities; 
         public SpottedArray<Faction> factions;
-        public SpottedArrayCounter<Faction> factionsCounter;
+        //public SpottedArrayCounter<Faction> factionsCounter;
 
         public bool BordersUpdated = true;
         
@@ -69,10 +71,12 @@ namespace VikingEngine.DSSWars
         //public int evilFactionIndex=-1;
         public bool abortLoad = false;
 
+        public List<FactionType> availableGenericAiTypes = new List<FactionType>();// AvailableGenericAiTypes();
+
         public WorldData()
         {
             factions = new SpottedArray<Faction>();
-            factionsCounter = new SpottedArrayCounter<Faction>(factions);
+            //factionsCounter = new SpottedArrayCounter<Faction>(factions);
         }
 
         public WorldData(WorldMetaData metaData)//ushort seed, MapSize size)
@@ -167,8 +171,58 @@ namespace VikingEngine.DSSWars
         //    return faction;
         //}
 
+        bool subTileHasRepeatValue(ref SubTile subtile)
+        {
+            return subtile.mainTerrain == TerrainMainType.DefaultSea;
+        }
+
         public void writeGameState(System.IO.BinaryWriter w)
         {
+            subTileGrid.LoopBegin();
+            SubTile previuos = new SubTile();
+
+            while (subTileGrid.LoopNext())
+            {
+                var subtile = subTileGrid.LoopValueGet();
+                subtile.write(w, ref previuos);
+
+                previuos = subtile;
+
+                //if (subTileHasRepeatValue(ref subtile))
+                //{
+                //    //Find repeats
+                //    int repeating = 0;
+
+                //    while (true)
+                //    {
+                //        if (subTileGrid.LoopNext())
+                //        {
+                //            var nexttile = subTileGrid.LoopValueGet();
+                //            if (subtile.EqualSaveData(ref nexttile))
+                //            {
+                //                ++repeating;
+                //            }
+                //            else
+                //            {
+                //                subTileGrid.LoopUndoToPrev();
+                //                //end loop
+                //                DataStreamLib.WriteGrowingBitShiftValue(w, repeating);
+                //                break;
+                //            }
+                //        }
+                //        else
+                //        {
+                //            //end loop, and final position on map
+                //            DataStreamLib.WriteGrowingBitShiftValue(w, repeating);
+                //            break;
+                //        }
+                //    }                    
+                //}
+
+            }
+
+            Debug.WriteCheck(w);
+
             foreach (City city in cities)
             {
                 city.writeGameState(w);
@@ -189,9 +243,51 @@ namespace VikingEngine.DSSWars
                     w.Write(false); 
                 }
             }
+
+            Debug.WriteCheck(w);
+            
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
+            //if (subversion >= 22  && subversion != SaveGamestate.MergeVersion)
+            //{
+            availableGenericAiTypes.Clear();
+            subTileGrid.LoopBegin();
+            SubTile previuos = new SubTile();
+
+
+            while (subTileGrid.LoopNext())
+            {
+                SubTile subtile = subTileGrid.LoopValueGet();
+                subtile.read(r, ref previuos, subversion);
+                subTileGrid.LoopValueSet(subtile);
+
+                previuos = subtile;
+                //if (subTileHasRepeatValue(ref subtile))
+                //{
+                //    int repeating = DataStreamLib.ReadGrowingBitShiftValue(r);
+                //    for (int i = 0; i < repeating; i++)
+                //    {
+                //        subTileGrid.LoopNext();
+                //        SubTile nexttile = subTileGrid.LoopValueGet();
+                //        nexttile.copySaveDataFrom(ref subtile);
+                //        subTileGrid.LoopValueSet(nexttile);
+                //    }
+                //}   
+            }
+            //}
+            //else
+            //{
+            //    subTileGrid.LoopBegin();
+            //    while (subTileGrid.LoopNext())
+            //    {
+            //        SubTile st = subTileGrid.LoopValueGet();
+            //        st.read(r, subversion);
+            //        subTileGrid.LoopValueSet(st);
+            //    }
+            //}
+            Debug.ReadCheck(r);
+
             foreach (City city in cities)
             {
                 city.readGameState(r, subversion, pointers);
@@ -208,16 +304,19 @@ namespace VikingEngine.DSSWars
                 }
             }
 
+            Debug.ReadCheck(r);
+
+            
         }
-        
+
 
         public void writeMapFile(System.IO.BinaryWriter w)
         {
-            DebugWriteSize tilesSz = new DebugWriteSize();
-            DebugWriteSize citiesSz = new DebugWriteSize();
-            DebugWriteSize factionsSz = new DebugWriteSize();
+            //DebugWriteSize tilesSz = new DebugWriteSize();
+            //DebugWriteSize citiesSz = new DebugWriteSize();
+            //DebugWriteSize factionsSz = new DebugWriteSize();
 
-            const int SaveMapVersion = 4;
+            const int SaveMapVersion = 7;
             w.Write(SaveMapVersion);
 
             w.Write(metaData.seed);
@@ -225,40 +324,43 @@ namespace VikingEngine.DSSWars
 
             if (abortLoad) return;
             
-            tilesSz.begin(w);
+            //tilesSz.begin(w);
             ForXYLoop loop = new ForXYLoop(Size);
+            Tile previous = new Tile();
             while (loop.Next())
             {
                 var tile = tileGrid.Get(loop.Position);
-                tile.writeMapFile(w);
+                tile.writeMapFile(w, previous);
+
+                previous = tile;
             }
-            tilesSz.end(w);
+            //tilesSz.end(w);
 
             if (abortLoad) return;
 
             Debug.WriteCheck(w);
 
-            citiesSz.begin(w);
+            //citiesSz.begin(w);
             w.Write(cities.Count);
             foreach (var m in cities)
             {
                 m.writeMapFile(w);
             }
-            citiesSz.end(w);
+            //citiesSz.end(w);
 
             if (abortLoad) return;
 
             Debug.WriteCheck(w);
 
-            factionsSz.begin(w);
-            var factionsCount = factionsCounter.Clone();
+            //factionsSz.begin(w);
+            var factionsCount = factions.counter();
             w.Write(factions.Count);
             while (factionsCount.Next())
             {
                 w.Write((byte)factionsCount.sel.factiontype);
                 factionsCount.sel.writeMapFile(w);
             }
-            factionsSz.end(w);
+            //factionsSz.end(w);
 
             Debug.WriteCheck(w);
 
@@ -275,15 +377,20 @@ namespace VikingEngine.DSSWars
 
         public void readMapFile(System.IO.BinaryReader r)
         {
-           int version = r.ReadInt32();
+            int version = r.ReadInt32();
 
             metaData.seed = r.ReadUInt16();
+            //rnd = new PcgRandom(metaData.seed);
+
             Size.read(r);
             refreshSize();
             ForXYLoop loop = new ForXYLoop(Size);
+            Tile previous = new Tile();
             while (loop.Next())
             {
-                tileGrid.Set(loop.Position, new Tile(r, version));
+                var tile = new Tile(r, previous, version);
+                tileGrid.Set(loop.Position, tile);
+                previous = tile;
             }
 
             Debug.ReadCheck(r);
@@ -397,8 +504,8 @@ namespace VikingEngine.DSSWars
         public Faction ClosestFactionOverview(Vector3 position)
         {
             FindMinValuePointer<Faction> distances = new FindMinValuePointer<Faction>();
-           
-            factionsCounter.Reset();
+
+            var factionsCounter = factions.counter();
             while(factionsCounter.Next())
             {
                 distances.Next((factionsCounter.sel.SelectionCenter - position).Length(), 
@@ -579,6 +686,103 @@ namespace VikingEngine.DSSWars
         {
             x = Bound.Set(x, ExtraBoundRadius, DssRef.world.Size.X - ExtraBoundRadius);
             z = Bound.Set(z, ExtraBoundRadius, DssRef.world.Size.Y - ExtraBoundRadius);
+        }
+        public static List<FactionType> NamedAiTypes()
+        {
+            return new List<FactionType>
+            {
+                FactionType.DarkLord,
+                FactionType.DarkFollower,
+                FactionType.UnitedKingdom,
+                FactionType.GreenWood,
+                FactionType.EasternEmpire,
+                FactionType.NordicRealm,
+                FactionType.BearClaw,
+                FactionType.NordicSpur,
+                FactionType.IceRaven,
+                FactionType.DragonSlayer,
+                FactionType.SouthHara,
+                FactionType.DyingMonger,
+                FactionType.DyingHate,
+                FactionType.DyingDestru,
+            };
+        }
+        public static List<FactionType> AvailableGenericAiTypes()
+        {
+            return new List<FactionType>
+            {
+                FactionType.Starshield,//
+                FactionType.Bluepeak,//
+                FactionType.Hoft,//
+                FactionType.RiverStallion,//
+                FactionType.Sivo,//
+                FactionType.AelthrenConclave,//
+                FactionType.VrakasundEnclave,//
+                FactionType.Tormürd,//
+                FactionType.ElderysFyrd,//
+                FactionType.Hólmgar,//
+                FactionType.RûnothalOrder,//
+            
+                FactionType.GrimwardEotain,//
+                FactionType.SkaeldraHaim,//
+                FactionType.MordwynnCompact,//
+                FactionType.AethmireSovren,//
+                FactionType.ThurlanKin,//
+                FactionType.ValestennOrder,//
+                FactionType.Mournfold,//
+                FactionType.OrentharTribes,//
+                FactionType.SkarnVael,//
+                FactionType.Glimmerfell,//
+
+                FactionType.BleakwaterFold,//
+                FactionType.Oathmaeren,//
+                FactionType.Elderforge,//
+                FactionType.MarhollowCartel,//
+                FactionType.TharvaniDominion,//
+                FactionType.KystraAscendancy,//
+                FactionType.GildenmarkUnion,//
+                FactionType.AurecanEmpire,//
+                FactionType.BronzeReach,//
+                FactionType.ElbrethGuild,//
+                FactionType.ValosianSenate,//
+                FactionType.IronmarchCompact,//
+                FactionType.KaranthCollective,//
+                FactionType.VerdicAlliance,//
+
+                FactionType.OrokhCircles,//
+                FactionType.TannagHorde,//
+                FactionType.BraghkRaiders,//
+                FactionType.ThurvanniStonekeepers,//
+                FactionType.KolvrenHunters,//
+                FactionType.JorathBloodbound,//
+                FactionType.UlrethSkycallers,//
+                FactionType.GharjaRavagers,//
+                FactionType.RavkanShield,//
+                FactionType.FenskaarTidewalkers,//
+
+                FactionType.HroldaniStormguard,
+                FactionType.SkirnirWolfkin,
+                FactionType.ThalgarBearclaw,
+                FactionType.VarnokRimeguard,
+                FactionType.KorrakFirehand,
+                FactionType.MoongladeGat,
+                FactionType.DraskarSons,
+                FactionType.YrdenFlamekeepers,
+                FactionType.BrundirWarhorns,
+                FactionType.OltunBonecarvers,
+
+                FactionType.HaskariEmber,
+                FactionType.ZalfrikThunderborn,
+                FactionType.BjorunStonetender,
+                FactionType.MyrdarrIcewalkers,
+                FactionType.SkelvikSpear,
+                FactionType.VaragThroatcallers,
+                FactionType.Durakai,
+                FactionType.FjornfellWarhowl,
+                FactionType.AshgroveWard,
+                FactionType.HragmarHorncarvers,
+
+            };
         }
 
     }

@@ -48,7 +48,7 @@ namespace VikingEngine.Voxels
             new GuiTextButton("Replace Material", null, linkFindReplaceSelectionMaterials, true, layout);
             new GuiTextButton("Copy", null, new GuiAction1Arg<bool>(designer.copySelectedVoxels, false), false, layout);
             new GuiTextButton("Cut", null, new GuiAction1Arg<bool>(designer.copySelectedVoxels, true), false, layout);
-            new GuiTextButton("Save as template", null, designer.LinkSelSaveTemplate, true, layout);
+            //new GuiTextButton("Save as template", null, designer.LinkSelSaveTemplate, true, layout);
             new GuiTextButton("Make Stamp", null, new GuiAction1Arg<bool>(designer.stampSelection, true), false, layout);
             new GuiTextButton("Rotate/Flip", null, LinkRotateFlip, true, layout);
         }

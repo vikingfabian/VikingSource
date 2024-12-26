@@ -39,7 +39,7 @@ namespace VikingEngine
             addTaskToQue(MultiThreadType.Storage);
         }
 
-        protected override void runQuedStorageTask()
+        public override void runQuedStorageTask()
         {
             hasStartedTask = true;
             base.runQuedStorageTask();

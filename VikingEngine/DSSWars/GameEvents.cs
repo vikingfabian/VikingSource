@@ -32,6 +32,8 @@ namespace VikingEngine.DSSWars
 
         Time dyingFactionsTimer = Time.Zero;
 
+        Time toPeacefulCheckTimer = new Time(3, TimeUnit.Minutes);
+
         public GameEvents()
         {
         }
@@ -40,7 +42,7 @@ namespace VikingEngine.DSSWars
         {
             if (newGame)
             {
-                if (DssRef.difficulty.bossTimeSettings != BossTimeSettings.Never)
+                if (DssRef.difficulty.runEvents)
                 {
                     prepareNext();
                 }
@@ -84,8 +86,9 @@ namespace VikingEngine.DSSWars
             IOLib.WriteObjectList(w, darkLordAllies);
 
             dyingFactionsTimer.write(w);
+            w.Write(Ref.TotalGameTimeSec);
         }
-        public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
+        public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
             nextEvent = (EventType)r.ReadInt32();
             eventState = (EventState)r.ReadInt32();
@@ -103,6 +106,15 @@ namespace VikingEngine.DSSWars
 
             dyingFactionsTimer.read(r);
             dyingFactionsTimer.MilliSeconds = Bound.Min(dyingFactionsTimer.MilliSeconds, 1);
+
+            if (subVersion >= 5)
+            {
+                Ref.TotalGameTimeSec = r.ReadSingle();
+            }
+            else
+            {
+                Ref.TotalGameTimeSec = eventCheckGameTimeSec - 5;
+            }
         }
 
         void prepareNext()
@@ -114,35 +126,35 @@ namespace VikingEngine.DSSWars
                     {
                         IntervalF[] timeMinutes =
                             {
-                            new IntervalF(5,8),//Immediate,                           
-                            new IntervalF(20,30),
-                            new IntervalF(30,40),//Normal,
-                            new IntervalF(40,60),
-                            new IntervalF(60,80),//VeryLate,
+                            new IntervalF(60,80),//Immediate,                           
+                            new IntervalF(70,100),
+                            new IntervalF(130,140),//Normal,
+                            new IntervalF(140,160),
+                            new IntervalF(160,180),//VeryLate,
                         };
 
                         nextTotalGameTimeMin = timeMinutes[(int)DssRef.difficulty.bossTimeSettings];
-                        nextExpectedPlayerSize = new IntervalF(DssLib.HeadCityMaxWorkForce * 2f, DssLib.HeadCityMaxWorkForce * 4f);
+                        nextExpectedPlayerSize = new IntervalF(DssConst.HeadCityStartMaxWorkForce * 2f, DssConst.HeadCityStartMaxWorkForce * 4f);
                     }
                     break;
                 case EventType.DarkLordWarning:
                     {
                         IntervalF[] timeMinutes =
                               {
-                            new IntervalF(35,40),//Immediate,                            
-                            new IntervalF(100,120),
-                            new IntervalF(120,130),//Normal,
-                            new IntervalF(130,270),
-                            new IntervalF(170,350),//VeryLate,
+                            new IntervalF(135,140),//Immediate,                            
+                            new IntervalF(200,220),
+                            new IntervalF(220,230),//Normal,
+                            new IntervalF(230,370),
+                            new IntervalF(270,450),//VeryLate,
                         };
 
                         nextTotalGameTimeMin = timeMinutes[(int)DssRef.difficulty.bossTimeSettings];
-                        nextExpectedPlayerSize = new IntervalF(DssLib.HeadCityMaxWorkForce * 4f, DssLib.HeadCityMaxWorkForce * 8f);
+                        nextExpectedPlayerSize = new IntervalF(DssConst.HeadCityStartMaxWorkForce * 4f, DssConst.HeadCityStartMaxWorkForce * 8f);
                     }
                     break;
                 case EventType.DarkLord:
                     {
-                        nextTotalGameTimeMin = IntervalF.NoInterval(15);
+                        nextTotalGameTimeMin = IntervalF.NoInterval(30);
                     }
                     break;
             }
@@ -153,27 +165,37 @@ namespace VikingEngine.DSSWars
 
         public void TestNextEvent()
         {
-            if (nextEvent <= EventType.DarkLord)
+            if (DssRef.settings.AiDelay)
             {
-                PowerCheck();
-                calcAndRunEvent();
+                DssRef.settings.AiDelay = false;
+                DssRef.state.localPlayers[0].hud.messages.Add(
+                        "Test event", "Removed AI delay");
             }
-            else 
+            else
             {
-                nextEvent++;
-                
-                if (nextEvent == EventType.KillTheDarkLord)
+                if (nextEvent <= EventType.DarkLord)
                 {
-                    victory();
+                    PowerCheck();
+                    calcAndRunEvent();
                 }
-            }
+                else
+                {
+                    nextEvent++;
 
-            DssRef.state.localPlayers[0].hud.messages.Add(
-                    "Test event", nextEvent.ToString());
+                    if (nextEvent == EventType.KillTheDarkLord)
+                    {
+                        victory(true);
+                    }
+                }
+
+                DssRef.state.localPlayers[0].hud.messages.Add(
+                        "Test event", nextEvent.ToString());
+            }
         }
 
         void RunNextEvent()
         {
+            //Is synced
             switch (nextEvent)
             {
                 case EventType.SouthShips:
@@ -210,17 +232,17 @@ namespace VikingEngine.DSSWars
                                 int count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
                                 for (int i = 0; i < count; ++i)
                                 {
-                                    new SoldierGroup(army, UnitType.Pikeman, false);
+                                    new SoldierGroup(army, DssLib.SoldierProfile_Pikeman);
                                 }
                                 count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
                                 for (int i = 0; i < count; ++i)
                                 {
-                                    new SoldierGroup(army, UnitType.Sailor, false);
+                                    new SoldierGroup(army, DssLib.SoldierProfile_Sailor);
                                 }
                                 count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
                                 for (int i = 0; i < count; ++i)
                                 {
-                                    new SoldierGroup(army, UnitType.CrossBow, false);
+                                    new SoldierGroup(army, DssLib.SoldierProfile_CrossbowMan);
                                 }
                                 army.refreshPositions(true);
 
@@ -288,7 +310,8 @@ namespace VikingEngine.DSSWars
 
         public void asyncUpdate(float time)
         {
-            if (DssRef.difficulty.bossTimeSettings != BossTimeSettings.Never &&
+            if (DssRef.difficulty.runEvents &&
+                !DssRef.settings.AiDelay &&
                 (
                 nextEvent == EventType.SouthShips ||
                 nextEvent == EventType.DarkLordWarning ||
@@ -329,7 +352,19 @@ namespace VikingEngine.DSSWars
                     faction.hasDeserters = true;
                 }
             }
+
+            if (DssRef.difficulty.toPeacefulCheck && toPeacefulCheckTimer.CountDown(time))
+            {
+                toPeacefulCheckTimer = new Time(15, TimeUnit.Minutes);
+
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    p.toPeacefulCheck_asynch();
+                }
+            }
         }
+
+       
 
         void PowerCheck()
         {
@@ -347,8 +382,8 @@ namespace VikingEngine.DSSWars
             }
 
             float time;
-            System.Diagnostics.Debug.WriteLine("Player work force: " + totalWorkForce);
-            System.Diagnostics.Debug.WriteLine("Expected work force: " + nextExpectedPlayerSize.ToString());
+            //System.Diagnostics.Debug.WriteLine("Player work force: " + totalWorkForce);
+            //System.Diagnostics.Debug.WriteLine("Expected work force: " + nextExpectedPlayerSize.ToString());
             if (totalWorkForce < nextExpectedPlayerSize.Min)
             {
                 time = nextTotalGameTimeMin.Max;
@@ -569,25 +604,27 @@ namespace VikingEngine.DSSWars
             {
                 DssRef.settings.darkLordPlayer.factoriesLeft = 0;
                 nextEvent = EventType.DarkLordInPerson;
-                //Ref.update.AddSyncAction(new SyncAction(RunNextEvent));
+                Ref.update.AddSyncAction(new SyncAction(RunNextEvent));
             }
         }
 
         public void onDarkLordSpawn()
         {
-            nextEvent = EventType.KillTheDarkLord;
-
-            foreach (var p in DssRef.state.localPlayers)
+            if (nextEvent < EventType.KillTheDarkLord)
             {
-                p.hud.messages.Add(DssRef.lang.EventMessage_FinalBattleTitle, DssRef.lang.EventMessage_FinalBattleText);
-            }
+                nextEvent = EventType.KillTheDarkLord;
 
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    p.hud.messages.Add(DssRef.lang.EventMessage_FinalBattleTitle, DssRef.lang.EventMessage_FinalBattleText);
+                }
+            }
         }
         public void onDarkLorDeath()
         {
             if (nextEvent != EventType.End)
             {
-                victory();
+                victory(true);
             }
         }
 
@@ -599,17 +636,25 @@ namespace VikingEngine.DSSWars
                 {
                     DssRef.achieve.UnlockAchievement(AchievementIndex.no_darklord);
                 }
-                victory();
+                victory(true);
             }
         }
 
-        void victory()
+        public void onWorldDomination()
         {
-            nextEvent = EventType.End;
-            DssRef.achieve.onVictory();
-            //DssRef.state.localPlayers[0].menuSystem.victoryScreen();
+            victory(false);
+        }
 
-            new EndScene(true);
+        void victory(bool bossVictory)
+        {
+            if (nextEvent < EventType.End)
+            {
+                nextEvent = EventType.End;
+                DssRef.achieve.onVictory();
+                //DssRef.state.localPlayers[0].menuSystem.victoryScreen();
+
+                new EndScene(true, bossVictory);
+            }
         }
 
         public void onPlayerDeath()
@@ -622,7 +667,7 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            new EndScene(false);
+            new EndScene(false, false);
         }
        
     }
@@ -634,7 +679,7 @@ namespace VikingEngine.DSSWars
         Normal,
         Late,
         VeryLate,
-        Never,
+        //Never,
         NUM
     }
 

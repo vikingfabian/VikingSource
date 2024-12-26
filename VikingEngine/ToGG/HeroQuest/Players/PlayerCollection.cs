@@ -26,18 +26,18 @@ namespace VikingEngine.ToGG.HeroQuest.Players
 
         public List<AbsHQPlayer> allPlayersUnsorted = new List<AbsHQPlayer>(MaxPlayerCount);
         public SpottedArray<AbsHQPlayer> allPlayers;
-        public SpottedArrayCounter<AbsHQPlayer> allPlayersCounter;
-        SpottedArrayCounter<AbsHQPlayer> allPlayersAsynchCounter;
-        public SpottedArrayTypeCounter<AbsHQPlayer> remotePlayersCounter;
+        //public SpottedArrayCounter<AbsHQPlayer> allPlayersCounter;
+        //SpottedArrayCounter<AbsHQPlayer> allPlayersAsynchCounter;
+        //public SpottedArrayTypeCounter<AbsHQPlayer> remotePlayersCounter;
         
         public PlayerCollection() 
             : base()
         {
             hqRef.players = this;
             allPlayers = new SpottedArray<AbsHQPlayer>(MaxPlayerCount);
-            allPlayersCounter = allPlayers.counter();
-            allPlayersAsynchCounter = allPlayers.counter();
-            remotePlayersCounter = new SpottedArrayTypeCounter<AbsHQPlayer>(allPlayers, typeof(RemotePlayer));
+            //allPlayersCounter = allPlayers.counter();
+            //allPlayersAsynchCounter = allPlayers.counter();
+            //remotePlayersCounter = new SpottedArrayTypeCounter<AbsHQPlayer>(allPlayers, typeof(RemotePlayer));
 
             new AiPlayer(new Engine.AiPlayerData());
             if (toggRef.InEditor)
@@ -53,7 +53,7 @@ namespace VikingEngine.ToGG.HeroQuest.Players
 
         public void update_asynch(float time)
         {
-            allPlayersAsynchCounter.Reset();
+            var allPlayersAsynchCounter = allPlayers.counter();
             while (allPlayersAsynchCounter.Next())
             {
                 allPlayersAsynchCounter.sel.update_asynch(time);
@@ -110,7 +110,7 @@ namespace VikingEngine.ToGG.HeroQuest.Players
 
         public void unitsWithProperty(UnitPropertyType property, List<AbsUnit> result, int? teamFilter)
         {
-            allPlayersCounter.Reset();
+          var allPlayersCounter =  allPlayers.counter();
             while (allPlayersCounter.Next())
             {
                 if (teamFilter == null || allPlayersCounter.sel.pData.teamIndex == teamFilter)
@@ -127,7 +127,7 @@ namespace VikingEngine.ToGG.HeroQuest.Players
                 SpottedArray<AbsUnit> units = new SpottedArray<AbsUnit>(16);
                 units.Add(localHost.unitsColl.units);
 
-                var remotePlayers = remotePlayersCounter.IClone();
+                var remotePlayers = new SpottedArrayTypeCounter<AbsHQPlayer>(hqRef.players.allPlayers, typeof(RemotePlayer));
 
                 while (remotePlayers.Next())
                 {
@@ -172,7 +172,7 @@ namespace VikingEngine.ToGG.HeroQuest.Players
 
         public override void clearUnits()
         {
-            allPlayersCounter.Reset();
+            var allPlayersCounter = allPlayers.counter();
             while(allPlayersCounter.Next())
             {
                 allPlayersCounter.sel.unitsColl.clearUnits();
@@ -222,7 +222,7 @@ namespace VikingEngine.ToGG.HeroQuest.Players
             }
             else
             {
-                allPlayersCounter.Reset();
+                var allPlayersCounter = allPlayers.counter();
                 while (allPlayersCounter.Next())
                 {
                     if (allPlayersCounter.sel.pData.Type != Engine.PlayerType.Ai &&
@@ -286,12 +286,12 @@ namespace VikingEngine.ToGG.HeroQuest.Players
         {
             List<AbsGenericPlayer> result = new List<AbsGenericPlayer>(4);
 
-            var counter = (SpottedArrayCounter<AbsHQPlayer>)allPlayersCounter.IClone();
-            while (counter.Next())
+            var allPlayersCounter = allPlayers.counter();
+            while (allPlayersCounter.Next())
             {
-                if (counter.sel.pData.teamIndex == team)
+                if (allPlayersCounter.sel.pData.teamIndex == team)
                 {
-                    result.Add(counter.sel);
+                    result.Add(allPlayersCounter.sel);
                 }
             }
 
@@ -320,7 +320,7 @@ namespace VikingEngine.ToGG.HeroQuest.Players
         public override void OnMapPan(Vector2 screenPan)
         {
             base.OnMapPan(screenPan);
-            allPlayersCounter.Reset();
+            var allPlayersCounter = allPlayers.counter();
             while (allPlayersCounter.Next())
             {
                 allPlayersCounter.sel.OnMapPan(screenPan);

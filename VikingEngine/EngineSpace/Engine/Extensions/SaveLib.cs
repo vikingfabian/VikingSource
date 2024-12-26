@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Engine;
@@ -133,6 +134,18 @@ namespace VikingEngine
         public static int ReadDir(System.IO.BinaryReader r)
         {
             return (int)r.ReadSByte();
+        }
+
+        const float FloatMultiplier = 50; //Accuracy of 2%
+
+        public static void WriteFloatMultiplier(float value, System.IO.BinaryWriter w)
+        {            
+            w.Write((byte) (value * FloatMultiplier));
+        }
+
+        public static float ReadFloatMultiplier(System.IO.BinaryReader r)
+        {
+            return r.ReadByte() / FloatMultiplier;
         }
     }
 }

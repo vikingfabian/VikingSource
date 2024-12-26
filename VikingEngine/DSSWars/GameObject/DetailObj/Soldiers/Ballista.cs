@@ -9,46 +9,85 @@ using VikingEngine.ToGG.MoonFall.GO;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class BallistaData : AbsSoldierData
+    //class BallistaData : AbsSoldierProfile
+    //{
+    //    public BallistaData()
+    //    {
+    //        unitType = UnitType.Ballista;
+
+    //        modelScale = DssConst.Men_StandardModelScale * 2f;
+    //        boundRadius =DssVar.StandardBoundRadius * 2.2f;
+
+    //        walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
+    //        ArmySpeedBonusLand = -0.5;
+    //        rotationSpeed = StandardRotatingSpeed * 0.04f;
+    //        attackRange = 3f;
+    //        targetSpotRange = attackRange + StandardTargetSpotRange;
+    //        basehealth = MathExt.MultiplyInt(0.5, DssConst.Soldier_DefaultHealth);
+    //        mainAttack = AttackType.Ballista;
+    //        attackDamage = 300;
+    //        attackDamageStructure = 1500;
+    //        attackDamageSea = 400;
+    //        attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 16f;
+
+    //        maxAttackAngle = 0.07f;
+
+    //        rowWidth = 3;
+    //        columnsDepth = 2;
+    //        workForcePerUnit = 2;
+    //        goldCost = MathExt.MultiplyInt(0.9, DssLib.GroupDefaultCost);
+    //        upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+    //        groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
+
+    //        modelName = LootFest.VoxelModelName.war_ballista;
+    //        modelVariationCount = 2;
+    //        hasBannerMan = false;
+    //        ArmyFrontToBackPlacement = ArmyPlacement.Back;
+
+    //        description =DssRef.lang.UnitType_Description_Ballista;
+    //        icon = SpriteName.WarsUnitIcon_Ballista;
+
+    //        energyPerSoldier  = DssLib.SoldierDefaultEnergyUpkeep * 2;
+    //    }
+
+    //    public override AbsDetailUnit CreateUnit()
+    //    {
+    //        return new Ballista();
+    //    }
+    //}
+
+    class WarmashineProfile : ConscriptedSoldierProfile
     {
-        public BallistaData()
+        public const float BallistaRange = 3;
+        public WarmashineProfile() 
+            :base()
         {
-            unitType = UnitType.Ballista;
-
-            modelScale = StandardModelScale * 2f;
-            boundRadius = StandardBoundRadius * 2.2f;
-
-            walkingSpeed = StandardWalkingSpeed * 0.6f;
-            ArmySpeedBonusLand = -0.5;
-            rotationSpeed = StandardRotatingSpeed * 0.04f;
-            attackRange = 3f;
-            targetSpotRange = attackRange + StandardTargetSpotRange;
-            basehealth = MathExt.MultiplyInt(0.5, DefaultHealth);
-            mainAttack = AttackType.Ballista;
-            attackDamage = 600;
-            attackDamageStructure = 2500;
-            attackDamageSea = 500;
-            attackTimePlusCoolDown = StandardAttackAndCoolDownTime * 10f;
-
-            maxAttackAngle = 0.07f;
+            unitType = UnitType.ConscriptWarmashine;
             
+            boundRadius = DssVar.StandardBoundRadius * 2.2f;
+
+            //walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
+            //ArmySpeedBonusLand = -0.5;
+            rotationSpeed = StandardRotatingSpeed * 0.04f;
+            
+            targetSpotRange = BallistaRange + StandardTargetSpotRange;
+            
+            maxAttackAngle = 0.07f;
+
             rowWidth = 3;
             columnsDepth = 2;
             workForcePerUnit = 2;
             goldCost = MathExt.MultiplyInt(0.9, DssLib.GroupDefaultCost);
             upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
-            groupSpacing = DefaultGroupSpacing * 2.2f;
+            groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
 
-            modelName = LootFest.VoxelModelName.war_ballista;
-            modelVariationCount = 2;
             hasBannerMan = false;
-            ArmyFrontToBackPlacement = ArmyPlacement.Back;
+            
+            description = DssRef.lang.UnitType_Description_Ballista;
 
-            description = "Strong against cities";
-            icon = SpriteName.WarsUnitIcon_Ballista;
+            
         }
-
-        public override AbsDetailUnit CreateUnit()
+        public override AbsSoldierUnit CreateUnit()
         {
             return new Ballista();
         }
@@ -62,6 +101,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected override DetailUnitModel initModel()
         {
+            updateGroudY(true);
             return new BallistaModel(this);
         }
     }
@@ -79,10 +119,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             workers = new WarmashineWorkerCollection();
 
+            float scale = soldier.soldierData.modelScale;
+
             workers.Add(soldier.GetFaction(),
-                soldier.data.modelScale * Xdiff, soldier.data.modelScale * Zdiff);
+                scale * Xdiff, scale * Zdiff);
             workers.Add(soldier.GetFaction(),
-                soldier.data.modelScale * -Xdiff, soldier.data.modelScale * Zdiff);
+                scale * -Xdiff, scale * Zdiff);
         }
 
         public override void onNewModel(VoxelModelName name, VoxelModel master, AbsDetailUnit unit)
@@ -151,7 +193,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void onNewModel_asynch(LootFest.VoxelModelName name, Graphics.VoxelModel master)
         {
-            if (name == VoxelModelName.war_worker)
+            if (name == DssLib.WorkerModel)
             {
                 foreach (var m in members)
                 {
@@ -171,7 +213,7 @@ namespace VikingEngine.DSSWars.GameObject
 
     class WarmashineWorker
     {
-        WalkingAnimation walkingAnimation = WalkingAnimation.Standard;
+        WalkingAnimation walkingAnimation = WalkingAnimation.WorkerWalking;
         Graphics.AbsVoxelObj model;
         Vector3 diff;
 
@@ -180,12 +222,12 @@ namespace VikingEngine.DSSWars.GameObject
             this.diff = diff;
             
             model = faction.AutoLoadModelInstance(
-               LootFest.VoxelModelName.war_worker, AbsDetailUnitData.StandardModelScale * 0.9f, true);
+               DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f, true);
         }
 
         public void onNewModel_asynch(LootFest.VoxelModelName name, Graphics.VoxelModel master)
         {
-            DSSWars.Faction.SetNewMaster(name, LootFest.VoxelModelName.war_worker, model, master);
+            DSSWars.Faction.SetNewMaster(name, DssLib.WorkerModel, model, master);
         }
 
         public void update(AbsSoldierUnit parent)

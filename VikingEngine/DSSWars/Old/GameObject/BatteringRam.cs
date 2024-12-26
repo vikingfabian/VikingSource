@@ -17,7 +17,7 @@
 //        {
 //            //Spec: eldsprutare
 //            modelScale = StandardModelScale * 2f;
-//            boundRadius = StandardBoundRadius * 2.2f;
+//            boundRadius = DssVar.StandardBoundRadius * 2.2f;
 
 //            walkingSpeed = StandardWalkingSpeed * 0.85f;
 //            rotationSpeed = StandardRotatingSpeed * 0.06f;

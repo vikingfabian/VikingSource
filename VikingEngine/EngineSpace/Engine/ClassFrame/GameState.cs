@@ -64,7 +64,7 @@ namespace VikingEngine.Engine
         {
             createDrawManager();
             createUpdateManager();
-            Ref.GameTimeSpeed = 1f;
+            Ref.SetGameSpeed(1f);
 
             if (replaceState)
             {

@@ -90,8 +90,8 @@ namespace VikingEngine.DSSWars.GameObject
                 if (path_sp.TryGetCurrentNode(out node))
                 {
 
-                    bool nextIsShipTransform = path_sp.nextTwoNodesAreShip();
-                    bool nextIsFootTransform = path_sp.nextTwoNodesAreByFeet();
+                    bool nextIsShipTransform = path_sp.nextNodeIsShip();//path_sp.nextTwoNodesAreShip();
+                    bool nextIsFootTransform = path_sp.nextNodeIsFeet();//path_sp.nextTwoNodesAreByFeet();
 
                     var prevRotation = rotation;
 
@@ -132,10 +132,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void asynchAiUpdate(float time)
         {
-            //if (army.id == 1 && stateTime >= 2000)
-            //{
-            //    lib.DoNothing();
-            //}
+            if (debugTagged)
+            {
+                lib.DoNothing();
+            }
             if (objective != ArmyObjective.None)
             {
                 var attackTarget_sp = attackTarget;
@@ -399,8 +399,14 @@ namespace VikingEngine.DSSWars.GameObject
             if (objective == ArmyObjective.Attack) 
             {
                 var attackTarget_sp = attackTarget;
-                if (attackTarget_sp!= null && attackTarget_sp.defeated())
+                if (attackTarget_sp != null && !attackTarget_sp.aliveAndBelongTo(attackTargetFaction))
                 {
+                    if (debugTagged)
+                    {
+                        lib.DoNothing();
+                            
+                    }
+
                     attackTarget = null;
                     objective = ArmyObjective.None;
                     return true;

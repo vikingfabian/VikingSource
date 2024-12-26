@@ -2277,6 +2277,23 @@ namespace VikingEngine
 
                     addWithSizeDef(SpriteName.TextureHueSaturation, currentIndex, 1, 1, 45, 45);
                     addWithSizeDef(SpriteName.TextureDarknessGradient, currentIndex, 1, 1, 45, 45);
+
+                    add(SpriteName.LangButton_English, 8, 2);
+                    add(SpriteName.LangButton_Russian, 8, 2);
+                    add(SpriteName.LangButton_Spanish, 8, 2);
+                    add(SpriteName.LangButton_Portuguese, 8, 2);
+                    add(SpriteName.LangButton_German, 8, 2);
+                    add(SpriteName.LangButton_Japanese, 8, 2);
+                    add(SpriteName.LangButton_Frensh, 8, 2);
+                    add(SpriteName.LangButton_Chinese, 8, 2);
+                    add(SpriteName.WarsBluePrint, 2, 2);
+                    add(SpriteName.WarsUnitIcon_TwoHand, 2, 2);
+                    add(SpriteName.WarsBattleIcon, 2, 2);
+                    add(SpriteName.WarsWorker, 2, 2);
+                    add(SpriteName.WarsWorkerAdd, 2, 2);
+                    add(SpriteName.WarsWorkerSub, 2, 2);
+                    add(SpriteName.WarsBogIron, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Hammerknight, 2, 2);
                 }
 
                 currentIndex = numTilesWidth * 96;
@@ -2294,13 +2311,217 @@ namespace VikingEngine
 
                     add(SpriteName.WarsGuard);
                     add(SpriteName.WarsGuardAdd);
-                    add(SpriteName.WarsWorker);
-                    add(SpriteName.WarsWorkerAdd);
-                    add(SpriteName.WarsWorkerSub);
+                    add(SpriteName.WarsHammer);
+                    add(SpriteName.WarsHammerAdd);
+                    add(SpriteName.WarsHammerSub);
 
                     add(SpriteName.WarsDarkLordBossIcon);
                     add(SpriteName.WarsFactoryIcon);
                     add(SpriteName.ColorPickerCircle);
+                    add(SpriteName.WarsNightmareEyeGlow);
+                    currentIndex += 1;
+                    add(SpriteName.WarsResource_MediumArmor);
+                    currentIndex += 2;
+                    add(SpriteName.WarsResource_Sharpstick);
+                    add(SpriteName.WarsResource_Sword);
+                    currentIndex += 1;
+                    add(SpriteName.WarsResource_Bow);
+                    add(SpriteName.WarsResource_Longbow);
+                    currentIndex += 7;
+                    add(SpriteName.WarsDelivery);
+                    add(SpriteName.WarsTrade);
+                    add(SpriteName.WarsResource_Beer);
+                    add(SpriteName.WarsResource_Iron);
+                    currentIndex += 9;
+                    add(SpriteName.WarsResource_SkinAndLinen);
+                    currentIndex += 5;
+                    add(SpriteName.WarsResource_Stone);
+                    currentIndex += 2;
+                    add(SpriteName.WarsResource_RawMeat);
+                    currentIndex += 5;
+                    add(SpriteName.WarsHome);
+                    add(SpriteName.WarsResource_Water);
+                    add(SpriteName.WarsResource_WaterAdd);
+                    add(SpriteName.WarsResource_Wood);
+                    add(SpriteName.WarsResource_Food);
+                    add(SpriteName.WarsResource_RawFood);
+                    add(SpriteName.WarsResource_Linen);
+                    add(SpriteName.WarsResource_Wheat);
+                    add(SpriteName.WarsResource_Egg);
+                    add(SpriteName.WarsResource_LightArmor);
+                    add(SpriteName.WarsResource_HeavyArmor);
+                    add(SpriteName.WarsResource_IronOre);
+                    add(SpriteName.WarsResource_GoldOre);
+                    add(SpriteName.WarsResource_Ballista);
+                    add(SpriteName.WarsResource_TwoHandSword);
+                    add(SpriteName.WarsResource_KnightsLance);
+                    add(SpriteName.WarsResource_Fuel);
+
+                    add(SpriteName.WarsStockpileAdd);
+                    add(SpriteName.WarsStockpileStop);
+                    add(SpriteName.WarsResource_LinenCloth);
+
+                    add(SpriteName.WarsProtectedStockpileOn);
+                    add(SpriteName.WarsProtectedStockpileOff);
+                    add(SpriteName.WarsStockpileAdd_Protected);
+                    add(SpriteName.warsCheckYes);
+                    add(SpriteName.warsCheckNo);
+                    add(SpriteName.WarsCultureIcon);
+                    add(SpriteName.WarsResource_FoodEmpty);
+                    add(SpriteName.WarsBedIcon);
+                    currentIndex += 1;
+                    add(SpriteName.warsBulletPoint);
+                    currentIndex++;
+                    
+                    add(SpriteName.WarsMapIcon);
+                    add(SpriteName.WarsGovernmentIcon);
+                    add(SpriteName.WarsResource_FoodAdd);
+                    add(SpriteName.WarsResource_FoodSub);
+
+                    add(SpriteName.WarsWorkMove);
+                    add(SpriteName.WarsWorkCollect);
+                    add(SpriteName.WarsWorkMine);
+                    add(SpriteName.WarsWorkFarm);
+                    add(SpriteName.WarsFollowFactionYes);
+                    add(SpriteName.WarsFollowFactionNo);
+                    add(SpriteName.WarsUnitLevelLegend);
+                    add(SpriteName.WarsUnitLevelMaster);
+                    add(SpriteName.WarsUnitLevelProfessional);
+                    add(SpriteName.WarsUnitLevelSkillful);
+                    add(SpriteName.WarsUnitLevelBasic);
+                    add(SpriteName.WarsUnitLevelMinimal);
+
+                    add(SpriteName.WarsResource_Rapeseed);
+                    add(SpriteName.WarsResource_Hemp);
+
+
+                    add(SpriteName.warsFolder_carton);
+                    add(SpriteName.warsFolder_white);
+                    add(SpriteName.warsFolder_orange);
+                    add(SpriteName.warsFolder_yellow);
+                    add(SpriteName.warsFolder_green);
+                    add(SpriteName.warsFolder_pink);
+                    add(SpriteName.warsFolder_blue);
+                    add(SpriteName.warsFolder_cyan);
+
+                    add(SpriteName.warsResourceChunkAvailable);
+                    add(SpriteName.warsResourceChunkNotAvailable);
+
+                }
+
+                currentIndex = numTilesWidth * 97;
+                {
+                    add(SpriteName.WarsBuild_Barracks, 3, 3);
+                    add(SpriteName.WarsBuild_Brewery, 3, 3);
+                    add(SpriteName.WarsBuild_Tavern, 3, 3);
+                    add(SpriteName.WarsBuild_LinenFarms, 3, 3);
+                    add(SpriteName.WarsBuild_WheatFarms, 3, 3);
+                    add(SpriteName.WarsBuild_WorkerHuts, 3, 3);
+                    add(SpriteName.WarsBuild_Smith, 3, 3);
+                    add(SpriteName.WarsBuild_Cook, 3, 3);
+                    add(SpriteName.WarsBuild_Statue, 3, 3);
+                    add(SpriteName.WarsBuild_HenPen, 3, 3);
+                    add(SpriteName.WarsBuild_PigPen, 3, 3);
+                    currentIndex += 3;
+                    add(SpriteName.WarsBuild_Postal, 3, 3);
+                    add(SpriteName.WarsBuild_Recruitment, 3, 3);
+                    add(SpriteName.WarsBuild_Nobelhouse, 3, 3);
+                    add(SpriteName.WarsBuild_Carpenter, 3, 3);
+                    add(SpriteName.WarsBuild_WorkBench, 3, 3);
+                    add(SpriteName.WarsBuild_CoalPit, 3, 3);
+                    add(SpriteName.WarsBuild_Pavement, 3, 3);
+                    add(SpriteName.WarsBuild_PavementFlowers, 3, 3);
+                    add(SpriteName.WarsBuild_Bank, 3, 3);
+                    add(SpriteName.WarsBuild_Storehouse, 3, 3);
+                    add(SpriteName.WarsCityHall, 3, 3);
+                    add(SpriteName.WarsBuild_RapeseedFarms, 3, 3);
+                    add(SpriteName.WarsBuild_HempFarms, 3, 3);
+
+                    add(SpriteName.WarsBuild_Logistics, 3, 3);
+                    add(SpriteName.WarsBuild_Smelter, 3, 3);
+                    add(SpriteName.WarsBuild_WoodCutter, 3, 3);
+                    add(SpriteName.WarsBuild_StoneCutter, 3, 3);
+                    add(SpriteName.WarsBuild_Embassy, 3, 3);
+                    add(SpriteName.WarsBuild_WaterReservoir, 3, 3);
+                    add(SpriteName.WarsBuild_KnightBarrack, 3, 3);
+                    add(SpriteName.WarsBuild_Foundry, 3, 3);
+                    add(SpriteName.WarsBuild_Chemist, 3, 3);
+                }
+
+                currentIndex = numTilesWidth * 100;
+                {
+                    add(SpriteName.WarsSpecializeField);
+                    add(SpriteName.WarsSpecializeSea);
+                    add(SpriteName.WarsSpecializeAntiCavalry);
+                    add(SpriteName.WarsSpecializeSiege);
+                    add(SpriteName.warsArmyTag_Lightning);
+                    add(SpriteName.warsArmyTag_Fire);
+                    add(SpriteName.warsArmyTag_Shield);
+                    add(SpriteName.warsArmyTag_Hit);
+                    add(SpriteName.warsArmyTag_Retreat);
+                    add(SpriteName.warsArmyTag_HitExpress);
+                    add(SpriteName.warsArmyTag_GoldShield);
+                    add(SpriteName.WarsSpecializeTradition);
+                    add(SpriteName.warsArmyTag_Return);
+                    add(SpriteName.warsArmyTag_RoundShield);
+                    add(SpriteName.warsArmyTag_BrokenShield);   
+                    add(SpriteName.warsArmyTag_Anchor);
+
+                    add(SpriteName.WarsResource_Crossbow);
+                    add(SpriteName.WarsResource_Sulfur);
+                    add(SpriteName.WarsResource_BlackPowder);
+                    add(SpriteName.WarsResource_Lead);
+                    add(SpriteName.WarsResource_LeadOre);
+                    add(SpriteName.WarsResource_TinOre);
+                    add(SpriteName.WarsResource_Tin);
+                    add(SpriteName.WarsWoodCraftIcon);
+                    add(SpriteName.WarsResource_Wagon2Wheel);
+                    add(SpriteName.WarsResource_Whagon4Wheel);
+                    add(SpriteName.WarsResource_ShortSword);
+                    add(SpriteName.WarsResource_Longsword);
+                    add(SpriteName.WarsResource_Steel);
+                    add(SpriteName.WarsResource_HeavyIronArmor);
+                    add(SpriteName.WarsResource_LightPlateArmor);
+                    add(SpriteName.WarsResource_BloomeryIron);
+                    add(SpriteName.WarsResource_MithrilAlloy);
+                    add(SpriteName.WarsResource_Bronze);
+                    add(SpriteName.WarsResource_SilverOre);
+                    add(SpriteName.WarsResource_Ox);
+                    add(SpriteName.WarsResource_BronzeSword);
+                    add(SpriteName.WarsResource_HeavyPaddedArmor);
+                    add(SpriteName.WarsResource_ThrowSpear);
+                    add(SpriteName.WarsResource_Slingshot);
+                    add(SpriteName.WarsResource_BronzeShotgun);
+                    add(SpriteName.WarsResource_BronzeRifle);
+                    add(SpriteName.WarsResource_IronShotgun);
+                    add(SpriteName.WarsResource_IronRifle);
+                    add(SpriteName.WarsResource_BronzeManCannon);
+                    add(SpriteName.WarsResource_IronManCannon);
+                    add(SpriteName.WarsResource_BronzeSiegeCannon);
+                    add(SpriteName.WarsResource_IronSiegeCannon);
+                    add(SpriteName.WarsResource_Warhammer);
+                    add(SpriteName.WarsResource_Catapult);
+                    add(SpriteName.WarsResource_Trebuchet);
+                    add(SpriteName.WarsResource_CastIron);
+                    add(SpriteName.WarsResource_Manuballista);
+                    add(SpriteName.WarsResource_Bullets);
+                    add(SpriteName.WarsResource_GunPowder);
+                }
+
+                currentIndex = numTilesWidth * 101;
+                {
+                    add(SpriteName.WarsUnitIcon_Javelin, 2, 2);
+                    add(SpriteName.WarsUnitIcon_BronzeShotgun, 2, 2);
+                    add(SpriteName.WarsUnitIcon_BronzeRifle, 2, 2);
+                    add(SpriteName.WarsUnitIcon_MithrilMan, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Longsword, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Manuballista, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Catapult, 2, 2);
+                    add(SpriteName.WarsUnitIcon_BronzeManCannon, 2, 2);
+                    add(SpriteName.WarsUnitIcon_BronzeSiegeCannon, 2, 2);
+                    add(SpriteName.WarsUnitIcon_IronManCannon, 2, 2);
+                    add(SpriteName.WarsUnitIcon_IronSiegeCannon, 2, 2);
+                    add(SpriteName.WarsUnitIcon_Slingshot, 2, 2);
                 }
 
                 currentIndex = numTilesWidth * 106;
@@ -2420,6 +2641,10 @@ namespace VikingEngine
                 add(SpriteName.hqTutorial1, HqTutorialSz.X, HqTutorialSz.Y);
                 add(SpriteName.hqTutorial2, HqTutorialSz.X, HqTutorialSz.Y);
                 add(SpriteName.hqTutorial3, HqTutorialSz.X, HqTutorialSz.Y);
+
+                add(SpriteName.warsWorkerPromoHammer, 6, 6);
+                add(SpriteName.warsWorkerPromoBox, 6, 6);
+
 
             }
 

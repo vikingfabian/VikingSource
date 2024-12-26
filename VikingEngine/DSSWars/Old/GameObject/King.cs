@@ -20,7 +20,7 @@ namespace VikingEngine.DeepSimStrategy.GameObject
     //    {
     //        //Special, explodera
     //        modelScale = StandardModelScale * 1f;
-    //        boundRadius = StandardBoundRadius * 1f;
+    //        boundRadius = DssVar.StandardBoundRadius * 1f;
 
     //        walkingSpeed = KingWalkSpeed;
     //        rotationSpeed = StandardRotatingSpeed * 0.8f;

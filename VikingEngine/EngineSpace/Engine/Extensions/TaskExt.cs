@@ -10,8 +10,10 @@ namespace VikingEngine
     {
         #region StorageQue
         static AbsQuedTasks ActiveStorageTask = null;
-       
-        static SpottedArray<AbsQuedTasks> StorageQue = new SpottedArray<AbsQuedTasks>(32);
+
+        //static SpottedArray<AbsQuedTasks> StorageQue = new SpottedArray<AbsQuedTasks>(32);
+
+        static List<AbsQuedTasks> StorageTaskQue = new List<AbsQuedTasks>();
         //
         public static void CheckStorageQue()
         {   
@@ -31,34 +33,39 @@ namespace VikingEngine
 
             if (ActiveStorageTask == null)
             {
-                if (StorageQue.Count > 0)
+                if (StorageTaskQue.Count > 0)
                 {
-                    bool first = true;
-                    var storageTasksCounter = StorageQue.counter();
-                    while (storageTasksCounter.Next())
+                    //bool first = true;
+                    //var storageTasksCounter = StorageQue.counter();
+
+                    lock (StorageTaskQue)
                     {
-                        if (storageTasksCounter.sel.storagePriority)
+                        //while (storageTasksCounter.Next())
+                        for (int i = 0; i < StorageTaskQue.Count; ++i)                        
                         {
-                            ActiveStorageTask = storageTasksCounter.sel;
-                            break;
+                            if (StorageTaskQue[i].storagePriority)
+                            {
+                                ActiveStorageTask = StorageTaskQue[i];
+                                StorageTaskQue.RemoveAt(i);
+                                break;
+                            }                            
                         }
-                        else if (first)
+
+                        if (ActiveStorageTask == null)
                         {
-                            ActiveStorageTask = storageTasksCounter.sel;
+                            ActiveStorageTask = StorageTaskQue[0];
+                            StorageTaskQue.RemoveAt(0);
                         }
-                        first=false;
                     }
 
                     var activeStorageTask_sp = ActiveStorageTask;
                     if (activeStorageTask_sp != null)
                     {
-                        StorageQue.Remove(activeStorageTask_sp);
-
                         activeStorageTask_sp.storageTaskBeginTime = TimeStamp.Now();
 
                         activeStorageTask_sp.task = Task.Factory.StartNew(() =>
                         {
-                            activeStorageTask_sp.runQuedTask(MultiThreadType.Storage);
+                            activeStorageTask_sp.runQuedStorageTask();
                         });
                     }
                 }
@@ -67,12 +74,18 @@ namespace VikingEngine
 
         public static void AddStorageTask(AbsQuedTasks task)
         {
-            StorageQue.Add(task);
+            lock (StorageTaskQue)
+            {
+                StorageTaskQue.Add(task);
+            }
         }
 
         public static void ClearStorageQue()
         {
-            StorageQue.Clear();
+            lock (StorageTaskQue)
+            {
+                StorageTaskQue.Clear();
+            }
         }
         #endregion
 

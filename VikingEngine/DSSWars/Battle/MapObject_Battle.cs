@@ -122,12 +122,24 @@ namespace VikingEngine.DSSWars.GameObject
         public override void toHud(ObjectHudArgs args)
         {
             base.toHud(args);
-
-            if (battleGroup != null)
+            if (args.ShowFull)
             {
-                args.content.icontext(SpriteName.WarsRelationWar, battleGroup.TypeName()).overrideColor = Microsoft.Xna.Framework.Color.Red;
+#if DEBUG
+                debugTagButton(args.content);
+                //args.content.Button("debug tag", new HUD.RichBox.RbAction(AddDebugTag), null, true);
+#endif
+
+                if (battleGroup != null)
+                {
+                    args.content.icontext(SpriteName.WarsRelationWar, battleGroup.TypeName()).overrideColor = Microsoft.Xna.Framework.Color.Red;
+                }
+
             }
         }
 
+        //void toggleDebugTag()
+        //{
+        //    debugTagged = !debugTagged;
+        //}
     }
 }

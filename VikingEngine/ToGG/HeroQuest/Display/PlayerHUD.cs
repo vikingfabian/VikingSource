@@ -391,12 +391,12 @@ namespace VikingEngine.ToGG.HeroQuest
         public void refreshRemoteEndTurn()
         {
             int ix = 0;
-            hqRef.players.remotePlayersCounter.Reset();
-            while (hqRef.players.remotePlayersCounter.Next())
+            var remotes = new SpottedArrayTypeCounter<AbsHQPlayer>(hqRef.players.allPlayers, typeof(RemotePlayer));
+            while (remotes.Next())
             {
-                if (hqRef.players.remotePlayersCounter.Member.readyToEndTurn_Confirmed)
+                if (remotes.sel.readyToEndTurn_Confirmed)
                 {
-                    remoteEndTurnButtons[ix].refresh(hqRef.players.remotePlayersCounter.Member);
+                    remoteEndTurnButtons[ix].refresh(remotes.sel);
                     ix++;
                 }
             }

@@ -9,29 +9,41 @@ using VikingEngine.LootFest;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class BannerManData : AbsSoldierData
+    class BannerManProfile : ConscriptedSoldierProfile
     {
-        public BannerManData()
+        public BannerManProfile():base() 
         {
             unitType = UnitType.BannerMan;
-
-            modelScale = StandardModelScale * 1f;
-            boundRadius = StandardBoundRadius;
-
-            walkingSpeed = StandardWalkingSpeed;
-            rotationSpeed = StandardRotatingSpeed;
-
-            basehealth = 50;
-            canAttackCharacters = false;
-
-            modelName = LootFest.VoxelModelName.war_bannerman;
         }
-
-        public override AbsDetailUnit CreateUnit()
+        public override AbsSoldierUnit CreateUnit()
         {
             return new BannerMan();
         }
     }
+
+    //class BannerManData : AbsSoldierProfile
+    //{
+    //    public BannerManData()
+    //    {
+    //        unitType = UnitType.BannerMan;
+
+    //        modelScale =DssConst.Men_StandardModelScale * 1f;
+    //        boundRadius = DssVar.StandardBoundRadius;
+
+    //        walkingSpeed = DssConst.Men_StandardWalkingSpeed;
+    //        rotationSpeed = StandardRotatingSpeed;
+
+    //        //basehealth = 50;
+    //        canAttackCharacters = false;
+
+    //        data.modelName = LootFest.VoxelModelName.war_bannerman;
+    //    }
+
+    //    public override AbsDetailUnit CreateUnit()
+    //    {
+    //        return new BannerMan();
+    //    }
+    //}
 
     class BannerMan : BaseSoldier
     {        
@@ -42,6 +54,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected override DetailUnitModel initModel()
         {
+            updateGroudY(true);
             return new BannerManModel(this);
         }
     }
@@ -53,7 +66,7 @@ namespace VikingEngine.DSSWars.GameObject
         public BannerManModel(AbsSoldierUnit soldier)
             : base(soldier)
         {
-            banner = new Banner(soldier.GetFaction(), soldier.data.modelScale);
+            banner = new Banner(soldier.GetFaction(), soldier.soldierData.modelScale, (int)soldier.group.soldierConscript.conscript.training);
         }
 
         //protected override void updateShipAnimation(AbsSoldierUnit soldier)
@@ -82,10 +95,11 @@ namespace VikingEngine.DSSWars.GameObject
 
     class Banner : AbsModelAttachment
     {
-        public Banner(Faction faction, float soldierScale)
+        public Banner(Faction faction, float soldierScale, int skill)
         {
             model = faction.AutoLoadModelInstance(
                modelName(), soldierScale * 2f, true);
+            model.Frame = skill;
             diff = new Vector3(0.17f, 0, 0.12f) * soldierScale;
         }
 

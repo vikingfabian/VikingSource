@@ -19,10 +19,10 @@ namespace VikingEngine.DSSWars.Display.CutScene
         EndSceneLeftDisplayMain left;
         EndSceneCenterDisplayMain center;
         EndSceneRightDisplayMain right;
-        public EndSceneDisplay(bool victory, Action watchEpilogue)
+        public EndSceneDisplay(bool victory, bool bossVictory, Action watchEpilogue)
         { 
             left = new EndSceneLeftDisplayMain();
-            center = new EndSceneCenterDisplayMain(victory, watchEpilogue);
+            center = new EndSceneCenterDisplayMain(victory, bossVictory, watchEpilogue);
             right = new EndSceneRightDisplayMain();
 
             center.beginMove(0);
@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
 
         public void update()
         {
-            center.updateMove();
+            center.updateMove(out _);
             center.update();
         }
 
@@ -66,20 +66,19 @@ namespace VikingEngine.DSSWars.Display.CutScene
             content.h1(string.Format(DssRef.lang.Settings_TotalDifficulty, DssRef.difficulty.TotalDifficulty()));
             content.text(string.Format(DssRef.lang.Settings_DifficultyLevel, DssRef.difficulty.PercDifficulty));
 
-            content.icontext(HudLib.CheckImage(DssRef.difficulty.allowPauseCommand), DssRef.lang.Settings_AllowPause);
+            content.icontext(HudLib.CheckImage(DssRef.difficulty.setting_allowPauseCommand), DssRef.lang.Settings_AllowPause);
 
-            var time = DssRef.time.TotalIngameTime();
+            var time = HudLib.TimeSpan(DssRef.time.TotalIngameTime());
             content.text(string.Format(DssRef.lang.EndGameStatistics_Time, time));
 
             content.newParagraph();
-            content.text(DateTime.Now.ToShortDateString());
+            content.text(HudLib.Date(DateTime.Now));
             content.text(string.Format(DssRef.lang.Lobby_GameVersion, Engine.LoadContent.SteamVersion));
             
             Vector2 pos = Engine.Screen.SafeArea.CenterTop;
             pos.X -= HudLib.cutsceneGui.width * 1.5f + Engine.Screen.IconSize;
             endRefresh(pos, true);
         }
-
     }
 
 
@@ -88,10 +87,10 @@ namespace VikingEngine.DSSWars.Display.CutScene
     {
         EndSceneCenterDisplayPart part;
 
-        public EndSceneCenterDisplayMain(bool victory, Action watchEpilogue)
+        public EndSceneCenterDisplayMain(bool victory, bool bossVictory, Action watchEpilogue)
             : base(HudLib.cutsceneGui, DssRef.state.localPlayers[0].input)
         {
-            part = new EndSceneCenterDisplayPart(victory, this, watchEpilogue);
+            part = new EndSceneCenterDisplayPart(victory, bossVictory, this, watchEpilogue);
 
             parts = new List<HUD.RichBox.RichboxGuiPart>()
             {
@@ -102,38 +101,32 @@ namespace VikingEngine.DSSWars.Display.CutScene
 
     class EndSceneCenterDisplayPart : RichboxGuiPart
     {
-        public EndSceneCenterDisplayPart(bool victory, RichboxGui gui, Action watchEpilogue)
+        public EndSceneCenterDisplayPart(bool victory, bool bossVictory, RichboxGui gui, Action watchEpilogue)
             : base(gui)
         {
             if (victory)
             {
-                //List<string> victoryQoutes = new List<string>
-                //{
-                //    "In times of peace, we mourn the dead.",
-                //    "Every triumph carries a shadow of sacrifice.",
-                //    "Remember the journey that brought us here, dotted with the souls of the brave.",
-                //    "Our minds are light from victory, our hearts are heavy from the weight of the fallen"
-                //};
 
                 content.h1(DssRef.lang.EndScreen_VictoryTitle).overrideColor = Color.Yellow;
-                content.text(arraylib.RandomListMember(DssRef.lang.EndScreen_VictoryQuotes));
+
+                if (bossVictory)
+                {
+                    content.text(arraylib.RandomListMember(DssRef.lang.EndScreen_VictoryQuotes));
+                }
+                else
+                {
+                    content.text(DssRef.lang.EndScreen_DominationVictoryQuote);
+                }
             }
             else
             {
-                //List<string> failureQoutes = new List<string>
-                //{
-                //    "With our bodies torn from marching and nights of worry, we welcome the end.",
-                //    "Defeat may darken our lands, but they cannot extinguish the light of our determination.",
-                //    "Extinguish the flames in our hearts, from their ashes, our children shall forge a new dawn.",
-                //    "Let our tales be the ember that kindles tomorrow's victory.",
-                //};
 
                 content.h1(DssRef.lang.EndScreen_FailTitle).overrideColor = Color.Yellow;
                 content.text(arraylib.RandomListMember(DssRef.lang.EndScreen_FailureQuotes));
             }
 
             content.newParagraph();
-            if (victory)
+            if (victory && bossVictory)
             {
                 content.Button(DssRef.lang.EndScreen_WatchEpilogue, new RbAction(watchEpilogue), null, true);
                 content.newLine();

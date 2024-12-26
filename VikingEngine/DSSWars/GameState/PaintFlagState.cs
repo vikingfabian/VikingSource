@@ -8,20 +8,20 @@ using Microsoft.Xna.Framework.Input;
 using VikingEngine.HUD;
 using VikingEngine.DSSWars.Profile;
 using VikingEngine.LootFest.Map.HDvoxel;
-using VikingEngine.PJ.Tanks;
-using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 using VikingEngine.Input;
+using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.Engine;
 
 
 namespace VikingEngine.DSSWars
 {
     class PaintFlagState : Engine.GameState, DataStream.IStreamIOCallback
-    {        
+    {
         InputMap keyboardInput, controllerInput;
         int profileIx;
         public FlagAndColor profile;
         public ProfileColorType selectedColorType;
-        public FlagDesign file;
+        //public FlagDesign file;
         Grid2D<Image> imageGrid;
         Vector2 start;
         public VectorRect paintArea;
@@ -32,27 +32,30 @@ namespace VikingEngine.DSSWars
         bool isExiting = false;
         public bool controllerMode;
         public bool controllerPickColorState = false;
-
+        bool paitingHasChanged = false;
         Graphics.Image pointer;
+        Graphics.Image pixelOutline;
+        public List<FlagAndColor> undoHistory = new List<FlagAndColor>();
+        public List<FlagAndColor> redoHistory = new List<FlagAndColor>();
 
         public PaintFlagState(int profileIx, bool bController)
             : base(false)
         {
-            draw.ClrColor = Color.SaddleBrown;
+            draw.ClrColor = new Color(40, 45, 47);
 
             Engine.XGuide.UnjoinAll();
             int player = 0;
             Engine.XGuide.LocalHostIndex = player;
 
-            
+
             keyboardInput = new InputMap(player);
             controllerInput = new InputMap(player);
             controllerInput.xboxSetup();
 
             this.profileIx = profileIx;
             profile = DssRef.storage.flagStorage.flagDesigns[profileIx].Clone();
-
-            file = profile.flagDesign;
+            undoHistory.Add(profile.Clone());
+            //file = profile.flagDesign;
 
             //GRID
             float gridW = Engine.Screen.SafeArea.Height * 0.6f;
@@ -82,18 +85,54 @@ namespace VikingEngine.DSSWars
 
             pointer = new Graphics.Image(SpriteName.ColorPickerCircle,
                     paintArea.Center, Engine.Screen.SmallIconSizeV2, ImageLayers.Lay1_Front, true);
-            
+
+            pixelOutline = new Image(SpriteName.InterfaceBorder, Vector2.Zero, squareSz, ImageLayers.Bottom4);
+
             setControllerMode(bController);
 
             //HUD
             HudLib.Init();
-            menuSystem = new Display.MenuSystem(keyboardInput,  Display.MenuType.Editor);
+            menuSystem = new Display.MenuSystem(keyboardInput, Display.MenuType.Editor);
 
             hud = new PaintFlagHud(keyboardInput, this);
             setColorType(ProfileColorType.Main);
-
+            new Timer.AsynchActionTrigger(load_asynch, true);
+        }
+        Texture2D bgTex;
+        void load_asynch()
+        {
+            bgTex = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "flag painter bg");
+            new Timer.Action0ArgTrigger(loadingComplete);
         }
 
+        void loadingComplete()
+        {
+            float w = Engine.Screen.Width + 4;
+            float h = w / bgTex.Width * bgTex.Height;
+            float x = -2;
+            float y = Screen.CenterScreen.Y - h * 0.5f;
+
+            ImageAdvanced bgImage = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE,
+                new Vector2(x, y), new Vector2(w, h), ImageLayers.AbsoluteBottomLayer, false);
+            bgImage.Texture = bgTex;
+            bgImage.SetFullTextureSource();
+            bgImage.Opacity = 0.3f;
+
+            //Vector2 promoworkerSz = new Vector2(h * 0.05f);
+
+            //var worker1 = new Graphics.Image(SpriteName.warsWorkerPromoHammer, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.84f, 1f), -promoworkerSz.Y * 0.9f), promoworkerSz, ImageLayers.Background5);
+            //worker1.LayerAbove(bgImage);
+
+            //var worker2 = new Graphics.Image(SpriteName.warsWorkerPromoBox, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.6f, 1f), -promoworkerSz.Y * 0.9f), promoworkerSz, ImageLayers.Background5);
+            //worker2.LayerAbove(bgImage);
+
+            //var worker3 = new Graphics.Image(SpriteName.warsWorkerPromoBox, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.5f, 1f), -promoworkerSz.Y * 0.8f), promoworkerSz, ImageLayers.Background5);
+            //worker3.LayerAbove(bgImage);
+
+            //var worker4 = new Graphics.Image(SpriteName.warsWorkerPromoBox, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.2f, 1f), -promoworkerSz.Y * 0.9f), promoworkerSz, ImageLayers.Background5);
+            //worker4.LayerAbove(bgImage);
+
+        }
         void setControllerMode(bool value)
         {
             controllerMode = value;
@@ -103,12 +142,13 @@ namespace VikingEngine.DSSWars
         public InputMap VisualInput => controllerMode ? controllerInput : keyboardInput;
 
         public override void Time_Update(float time)
-        { 
+        {
             base.Time_Update(time);
             hud.update();
+            pixelOutline.Visible = false;
+
             if (!isExiting)
             {
-
                 if (menuSystem.menuUpdate())
                 {
                 }
@@ -125,7 +165,6 @@ namespace VikingEngine.DSSWars
                         updateInput();
                     }
                 }
-
             }
         }
 
@@ -152,7 +191,7 @@ namespace VikingEngine.DSSWars
             }
             else
             {
-                int p=-1;
+                int p = -1;
                 if (Input.XInput.AnyActivationKey_DownEvent(ref p))
                 {
                     setControllerMode(true);
@@ -238,11 +277,11 @@ namespace VikingEngine.DSSWars
                     moveOption(IntVector2.FromDir4(Dir4.E));
                 }
 
-                
-                paintInput(Input.Mouse.Position, 
+
+                paintInput(Input.Mouse.Position,
                     keyboardInput.Select.IsDown || Input.Mouse.IsButtonDown(MouseButton.Left),
                     keyboardInput.FlagDesign_PaintBucket.IsDown);
-                   
+
                 if (XInput.KeyDownEvent(Buttons.Back))
                 {
                     discardAndExit();
@@ -252,7 +291,40 @@ namespace VikingEngine.DSSWars
                     saveAndExit();
                 }
             }
-            
+
+            if (VikingEngine.Input.Keyboard.KeyDownEvent(Keys.B) && VikingEngine.Input.Keyboard.Ctrl)
+            {
+                debugMenu();
+
+            }
+        }
+
+        void debugMenu()
+        {
+            List<FactionType> factionTypes = WorldData.NamedAiTypes();
+            factionTypes.AddRange(WorldData.AvailableGenericAiTypes());
+
+            menuSystem.openMenu();
+            GuiLayout layout = new GuiLayout("*DEBUG*", menuSystem.menu);
+            {
+                foreach (var ftype in factionTypes)
+                {
+                    new GuiTextButton(ftype.ToString(), null, new GuiAction1Arg<FactionType>(loadFactionFlag, ftype), false, layout);
+                }
+            }
+            layout.End();
+
+
+        }
+
+        void loadFactionFlag(FactionType factionType)
+        {
+            menuSystem.closeMenu();
+            FlagAndColor flag = new FlagAndColor(factionType, 0, null);
+            profile = flag;
+            updateImageGrid();
+            hud.part.refresh();
+            setUndoPoint();
         }
 
         void paintInput(Vector2 pointer, bool keyIsDown, bool bBucket)
@@ -272,6 +344,16 @@ namespace VikingEngine.DSSWars
                     {
                         setColor(selectedColorType, bBucket);
                     }
+
+                    pixelOutline.Visible = true;
+                    var ar = imageGrid.Get(gridPosition).Area;
+                    ar.AddRadius(2);
+                    pixelOutline.Area = ar;
+                }
+
+                if (!keyIsDown && paitingHasChanged)
+                {
+                    setUndoPoint();
                 }
             }
         }
@@ -291,17 +373,17 @@ namespace VikingEngine.DSSWars
                 selectedColorType--;
                 if (selectedColorType < 0)
                 {
-                    selectedColorType = ProfileColorType.NUM -1;
+                    selectedColorType = ProfileColorType.NUM - 1;
                 }
             }
             hud.part.selectColorType(selectedColorType);
         }
 
-       public void discardAndExit()
+        public void discardAndExit()
         {
             new LobbyState();
         }
-       public void saveAndExit()
+        public void saveAndExit()
         {
             //EXIT
             DssRef.storage.flagStorage.flagDesigns[profileIx] = profile;
@@ -313,23 +395,31 @@ namespace VikingEngine.DSSWars
         {
         }
 
-       
-        void moveImage()
-        {
-            GuiLayout layout = new GuiLayout(DssRef.lang.ProfileEditor_MoveImage, menuSystem.menu, GuiLayoutMode.MultipleColumns, null);
-            {
-                new GuiTextButton(DssRef.lang.ProfileEditor_MoveImageLeft, null, new GuiAction1Arg<IntVector2>(moveOption, IntVector2.Left), true, layout);
-                new GuiTextButton(DssRef.lang.ProfileEditor_MoveImageRight, null, new GuiAction1Arg<IntVector2>(moveOption, IntVector2.Right), true, layout);
-                new GuiTextButton(DssRef.lang.ProfileEditor_MoveImageUp, null, new GuiAction1Arg<IntVector2>(moveOption, IntVector2.NegativeY), true, layout);
-                new GuiTextButton(DssRef.lang.ProfileEditor_MoveImageDown, null, new GuiAction1Arg<IntVector2>(moveOption, IntVector2.PositiveY), true, layout);
-            }
-            layout.End();
-        }
+
+        //void moveImage()
+        //{
+        //    GuiLayout layout = new GuiLayout(DssRef.lang.ProfileEditor_MoveImage, menuSystem.menu, GuiLayoutMode.MultipleColumns, null);
+        //    {
+        //        new GuiTextButton(DssRef.lang.ProfileEditor_MoveImageLeft, null, new GuiAction1Arg<IntVector2>(moveOption, IntVector2.Left), true, layout);
+        //        new GuiTextButton(DssRef.lang.ProfileEditor_MoveImageRight, null, new GuiAction1Arg<IntVector2>(moveOption, IntVector2.Right), true, layout);
+        //        new GuiTextButton(DssRef.lang.ProfileEditor_MoveImageUp, null, new GuiAction1Arg<IntVector2>(moveOption, IntVector2.NegativeY), true, layout);
+        //        new GuiTextButton(DssRef.lang.ProfileEditor_MoveImageDown, null, new GuiAction1Arg<IntVector2>(moveOption, IntVector2.PositiveY), true, layout);
+        //    }
+        //    layout.End();
+        //}
 
         public void moveOption(IntVector2 dir)
         {
-            file.dataGrid.MoveEveryThing(dir);
+            profile.flagDesign.MoveEveryThing(dir);
             updateImageGrid();
+            setUndoPoint();
+        }
+
+        public void clearAll()
+        {
+            profile.flagDesign.SetAll(0);
+            updateImageGrid();
+            setUndoPoint();
         }
 
         void profileColorButton(ProfileColorType colType, GuiLayout layout)
@@ -381,6 +471,7 @@ namespace VikingEngine.DSSWars
             //mainMenu();
 
             onColorChange();
+            setUndoPoint();
         }
 
         void onColorChange()
@@ -395,8 +486,41 @@ namespace VikingEngine.DSSWars
             imageGrid.LoopBegin();
             while (imageGrid.LoopNext())
             {
-                imageGrid.LoopValueGet().Color = profile.colors[file.dataGrid.Get(imageGrid.LoopPosition)];
+                imageGrid.LoopValueGet().Color = profile.getColor((ProfileColorType)profile.flagDesign.Get(imageGrid.LoopPosition));
                 setTexturePos(imageGrid.LoopPosition);
+            }
+        }
+
+
+        public void setUndoPoint()
+        { 
+            undoHistory.Add(profile.Clone());
+            redoHistory.Clear();
+
+            paitingHasChanged = false;
+            hud.part.refresh();
+        }
+
+        public void undo()
+        {
+            if (undoHistory.Count > 1)
+            {
+                redoHistory.Add(arraylib.PullLastMember(undoHistory));
+                profile = undoHistory.Last().Clone();
+                updateImageGrid();
+                hud.part.refresh();
+            }
+        }
+
+        public void redo()
+        {
+            if (redoHistory.Count > 0)
+            {
+                var r = arraylib.PullLastMember(redoHistory);
+                profile = r.Clone();
+                undoHistory.Add(r);
+                updateImageGrid();
+                hud.part.refresh();
             }
         }
 
@@ -409,11 +533,13 @@ namespace VikingEngine.DSSWars
             gridPosition = Bound.Set(gridPosition, IntVector2.Zero, GridMaxPos);
         }
 
+       
+
         void setColor(ProfileColorType color, bool bBucket)
         {
             if (bBucket)
             {
-                byte prev = file.dataGrid.Get(gridPosition);
+                byte prev = profile.flagDesign.Get(gridPosition);
                 if (prev != (byte)color)
                 {
                     bucket(prev, (byte)color, gridPosition);
@@ -422,22 +548,24 @@ namespace VikingEngine.DSSWars
             }
             else
             {
-                file.dataGrid.Set(gridPosition, (byte)color);
+                profile.flagDesign.Set(gridPosition, (byte)color);
                 imageGrid.Get(gridPosition).Color = profile.getColor(color);
                 setTexturePos(gridPosition);
             }
+
+            paitingHasChanged = true;
         }
 
         void bucket(byte fromColor, byte toColor, IntVector2 pos)
         {
-            byte prev = file.dataGrid.Get(pos);
+            byte prev = profile.flagDesign.Get(pos);
             if (prev == fromColor)
             {
-                file.dataGrid.Set(pos, toColor);
+                profile.flagDesign.Set(pos, toColor);
                 foreach (IntVector2 dir in IntVector2.Dir4Array)
                 {
                     IntVector2 neighbor = dir + pos;
-                    if (file.dataGrid.InBounds(neighbor))
+                    if (profile.flagDesign.InBounds(neighbor))
                     {
                         bucket(fromColor, toColor, neighbor);
                     }

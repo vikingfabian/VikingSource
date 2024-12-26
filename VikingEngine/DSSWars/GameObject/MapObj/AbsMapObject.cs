@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DSSWars.Battle;
+using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 //
 
@@ -19,9 +21,11 @@ namespace VikingEngine.DSSWars.GameObject
         /// <summary>
         /// Pågående strider, om order ges läggs inte battle till förrän armeerna är intill varandra
         /// </summary>
-        
-        public bool enterRender_asynch = false;
-        public bool inRender = false;
+
+        public bool enterRender_overviewLayer_async = false;
+        public bool enterRender_detailLayer_async = false;
+        public bool inRender_overviewLayer = false;
+        public bool inRender_detailLayer = false;
 
         public int previousWarAgainstFaction = -1;
         public float strengthValue=-1;
@@ -39,7 +43,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void asynchCullingUpdate(float time, bool bStateA)
         {
-            DssRef.state.culling.InRender_Asynch(ref enterRender_asynch, tilePos);
+            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, tilePos);
         }
         
 
@@ -50,9 +54,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected void updateDetailLevel()
         {
-            if (enterRender_asynch != inRender)
+            if (enterRender_overviewLayer_async != inRender_overviewLayer)
             {
-                inRender = enterRender_asynch;
+                inRender_overviewLayer = enterRender_overviewLayer_async;
+                setInRenderState();
+            }
+            else if (enterRender_detailLayer_async != inRender_detailLayer)
+            {
+                inRender_detailLayer = enterRender_detailLayer_async;
                 setInRenderState();
             }
         }
@@ -77,6 +86,21 @@ namespace VikingEngine.DSSWars.GameObject
         public Map.Tile Tile()
         {
             return DssRef.world.tileGrid.Get(tilePos);
+        }
+
+        virtual public void tagSprites(out SpriteName back, out SpriteName art)
+        { 
+            throw new NotImplementedException();
+        }
+        public void tagToHud(RichBoxContent content)
+        {
+            tagSprites(out SpriteName back, out SpriteName art);
+            if (back != CityTag.NoBackSprite)
+            {
+                content.Add(new RichBoxOverlapImage(
+                    new RichBoxImage(back),
+                    art, Vector2.Zero, 0.8f));
+            }
         }
 
         public bool LocalMember
@@ -113,6 +137,29 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return position;
         }
+
+        protected void processAsynchWork(List<WorkerStatus> workerStatuses)
+        {
+            for (int i = 0; i < workerStatuses.Count; i++)
+            {
+                var status = workerStatuses[i];
+                if (status.work > WorkType.Idle &&
+                    Ref.TotalGameTimeSec > status.processTimeStartStampSec + status.processTimeLengthSec)
+                {
+                    //Work complete
+                    onWorkComplete_async(ref status);
+                    workerStatuses[i] = status;
+                }
+
+            }
+        }
+
+        virtual protected void onWorkComplete_async(ref WorkerStatus status)
+        {  
+            throw new NotImplementedException();
+        }
+
+        
         //public override bool Alive()
         //{
         //    return !isDeleted;

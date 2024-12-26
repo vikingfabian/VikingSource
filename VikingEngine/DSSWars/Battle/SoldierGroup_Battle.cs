@@ -34,10 +34,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool asynchFindBattleTarget(BattleGroup battle)
         {
-            if (army.id == 2072)
-            {
-                lib.DoNothing();
-            }
+            //if (army.id == 2072)
+            //{
+            //    lib.DoNothing();
+            //}
 
             refreshAttacking();
 
@@ -106,10 +106,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void setBattleWalkingSpeed()
         {
-            AbsSoldierData typeData = FirstSoldierData();
+            //AbsSoldierData typeData = FirstSoldierData();
             
             //TODO pick subtile
-            walkSpeed = typeData.walkingSpeed * terrainSpeedMultiplier;
+            walkSpeed = soldierData.walkingSpeed * terrainSpeedMultiplier;
         }
     }
 }

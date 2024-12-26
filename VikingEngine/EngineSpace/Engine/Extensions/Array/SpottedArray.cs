@@ -40,7 +40,8 @@ namespace VikingEngine
         /// </summary>
         public bool Next()
         {
-            sel = array.NextIteration(ref selIndex);
+            var safePointer1 = array.NextIteration(ref selIndex);
+            sel = safePointer1;
             return sel != null;
         }
 
@@ -118,7 +119,7 @@ namespace VikingEngine
     {
         int index;
         public SpottedArray<T> array;
-        public T Member;
+        public T sel;
         Type type;
 
         public SpottedArrayTypeCounter(SpottedArray<T> array, Type type)
@@ -136,13 +137,13 @@ namespace VikingEngine
         {
             while (true)
             {
-                Member = array.NextIteration(ref index);
+                sel = array.NextIteration(ref index);
 
-                if (Member == null)
+                if (sel == null)
                 {
                     return false;
                 }
-                else if (Member.GetType() == type)
+                else if (sel.GetType() == type)
                 {
                     return true;
                 }
@@ -158,7 +159,7 @@ namespace VikingEngine
         public void Reset()
         {
             this.index = -1;
-            Member = default(T);
+            sel = default(T);
         }
         public void RemoveAtCurrent()
         {
@@ -176,7 +177,7 @@ namespace VikingEngine
             return clone;
         }
         public int CurrentIndex { get { return this.index; } }
-        public T GetSelection { get { return Member; } }
+        public T GetSelection { get { return sel; } }
     }
 
 
@@ -265,12 +266,12 @@ namespace VikingEngine
     /// </summary>
     class SpottedArray<T>
     {
-        int mostLeftFreePosition = 0;
+        public int mostLeftFreePosition = 0;
         /// <summary>
         /// The used part of the array, can be greater than the member count
         /// </summary>
-        public int SpottedLength { get; private set; }
-        public int Count { get; private set; }
+        public int SpottedLength;
+        public int Count;
         public T[] Array;
 
         public SpottedArray()
@@ -459,7 +460,7 @@ namespace VikingEngine
             }
         }
 
-        void adjustLength()
+        public void adjustLength()
         {
             T[] newArray = new T[Array.Length * 2];
             for (int i = 0; i < Array.Length; ++i)

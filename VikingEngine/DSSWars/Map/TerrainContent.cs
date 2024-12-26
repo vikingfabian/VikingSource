@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using VikingEngine.DSSWars.Map.Settings;
+using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars.Map
 {
@@ -8,21 +9,42 @@ namespace VikingEngine.DSSWars.Map
     {
         public const int SproutMaxSize = 5;
         public const int TreeMaxSize = 100;
+        public const int TreeReadySize = 50;
+
+        //public const int DryWoodSize = 20;
+
+        public const int FarmCulture_Empty = 0;
+        public const int FarmCulture_MaxSize = 5;        
+        public const int FarmCulture_ReadySize = FarmCulture_MaxSize - 1;
+        public const int FarmCulture_HalfSize = FarmCulture_ReadySize / 2;
+
+        public const int PigMaxSize = 3;
+        public const int PigMaxCount = 4;
+        const int PigMaxTotal = PigMaxSize * PigMaxCount;
+        public const int PigReady = PigMaxSize * 3;
+
+        public const int HenMaxSize = 2;
+        public const int HenMaxCount = 6;
+        const int HenMaxTotal = HenMaxSize * HenMaxCount;
+        public const int HenReady = HenMaxSize * 3;
+
+        public const int MineAmount = 10;
 
         public void asyncFoilGroth(IntVector2 pos, SubTile subtile)
         {
-            switch ((Map.TerrainSubFoilType)subtile.subTerrain)
+            Map.TerrainSubFoilType foilType = (Map.TerrainSubFoilType)subtile.subTerrain;
+            switch (foilType)
             {
-
+                case Map.TerrainSubFoilType.TreeSoft:
                 case Map.TerrainSubFoilType.TreeHard:
                     {
-                        if (subtile.terrainValue < TreeMaxSize)
+                        if (subtile.terrainAmount < TreeMaxSize)
                         {
-                            subtile.terrainValue++;
+                            subtile.terrainAmount++;
                             DssRef.world.subTileGrid.Set(pos, subtile);
                         }
 
-                        if (Ref.rnd.Chance(0.2) && subtile.terrainValue > 20 && subtile.terrainValue < 90)
+                        if (Ref.rnd.Chance(0.2) && subtile.terrainAmount > 20 && subtile.terrainAmount < 90)
                         {
                             IntVector2 rndDir = arraylib.RandomListMember(IntVector2.Dir8Array);
                             if (Ref.rnd.Chance(0.2))
@@ -35,7 +57,8 @@ namespace VikingEngine.DSSWars.Map
                             {
                                 if (ntile.mainTerrain == Map.TerrainMainType.DefaultLand)
                                 {
-                                    ntile.SetType(Map.TerrainMainType.Foil, (int)Map.TerrainSubFoilType.TreeHardSprout, 1);
+                                    Map.TerrainSubFoilType sprout = foilType == Map.TerrainSubFoilType.TreeSoft ? Map.TerrainSubFoilType.TreeSoftSprout : Map.TerrainSubFoilType.TreeHardSprout;
+                                    ntile.SetType(Map.TerrainMainType.Foil, (int)sprout, 1);
 
                                     DssRef.world.subTileGrid.Set(npos, ntile);
                                 }
@@ -47,13 +70,62 @@ namespace VikingEngine.DSSWars.Map
 
                 case Map.TerrainSubFoilType.TreeHardSprout:
                     {
-                        if (++subtile.terrainValue > SproutMaxSize)
+                        if (++subtile.terrainAmount > SproutMaxSize)
                         {
                             subtile.SetType(Map.TerrainMainType.Foil, (int)Map.TerrainSubFoilType.TreeHard, 1);
                         }
 
                         DssRef.world.subTileGrid.Set(pos, subtile);
                     }
+                    break;
+
+                case TerrainSubFoilType.WheatFarm:
+                case TerrainSubFoilType.LinenFarm:
+                case TerrainSubFoilType.RapeSeedFarm:
+                case TerrainSubFoilType.HempFarm:
+                    if (subtile.terrainAmount > FarmCulture_Empty && 
+                        subtile.terrainAmount < FarmCulture_MaxSize)
+                    {
+                        subtile.terrainAmount++;
+                        DssRef.world.subTileGrid.Set(pos, subtile);
+                    }
+                    break;
+            }
+        }
+
+        public void asyncCityProduce(IntVector2 pos, SubTile subtile)
+        {
+            Map.TerrainBuildingType buildingType = (Map.TerrainBuildingType)subtile.subTerrain;
+            switch (buildingType)
+            {
+                case TerrainBuildingType.PigPen:
+                    if (subtile.terrainAmount < PigMaxTotal)
+                    {
+                        subtile.terrainAmount++;
+                        DssRef.world.subTileGrid.Set(pos, subtile);
+                    }
+                    break;
+                case TerrainBuildingType.HenPen:
+                    const int EggGroupCount = 5;
+
+                    if (subtile.terrainAmount > 0)
+                    {
+                        if (Ref.rnd.Chance(1.0 / EggGroupCount))
+                        {
+                            DssRef.state.resources.addItem(
+                                new ItemResource(
+                                    ItemResourceType.Egg,
+                                    1,
+                                    subtile.terrainAmount * 4,
+                                    subtile.terrainAmount * EggGroupCount),
+                                ref subtile.collectionPointer);
+                        }
+                    }
+                    if (subtile.terrainAmount < HenMaxTotal)
+                    {
+                        subtile.terrainAmount++;
+                    }
+                    DssRef.world.subTileGrid.Set(pos, subtile);
                     break;
             }
         }
@@ -82,10 +154,43 @@ namespace VikingEngine.DSSWars.Map
                 if (world.rnd.Chance(0.6))
                 {
                     float stonenoise = noiseMap.OctaveNoise2D(4, 0.8f, 5, -x, y);
-                    if (stonenoise > 0.6f)
+
+                    if (stonenoise > 0.1)
                     {
-                        subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.StoneBlock, 1);
-                        return;
+                        if (tile.heightLevel >= Height.MineHeightStart)
+                        {
+                            var rndMine = world.rnd.Double();
+                            if (rndMine < 0.001)
+                            {
+                                subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.GoldOre, 1);
+                                return;
+                            }
+                            else if (rndMine < 0.002)
+                            {
+                                subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.Coal, 1);
+                                return;
+                            }
+                            else if (rndMine < 0.0065)
+                            {
+                                subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.IronOre, 1);
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            var rndBog = world.rnd.Double();
+                            if (rndBog < 0.003)
+                            {
+                                subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.BogIron, 1);
+                                return;
+                            }
+                        }
+
+                        if (stonenoise > 0.6f)
+                        {
+                            subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.StoneBlock, 1);
+                            return;
+                        }
                     }
                     if (stonenoise < -0.5f)
                     {
@@ -122,9 +227,23 @@ namespace VikingEngine.DSSWars.Map
                     if (treenoise < percTree && treenoise < world.rnd.Double(percTree * 2f))
                     {
                         int size = (int)((1.0 - Math.Min(treenoise, world.rnd.Double())) * TreeMaxSize);
+                                                
+                        TerrainSubFoilType treeType;
+                        if (world.rnd.Chance(biom.percDryWood))
+                        {
+                            treeType = TerrainSubFoilType.DryWood;
+                            size /= 3;
+                        }
+                        else if (world.rnd.Chance(biom.percSoftTree))
+                        {
+                            treeType = TerrainSubFoilType.TreeSoft;
+                        }
+                        else
+                        {
+                            treeType = TerrainSubFoilType.TreeHard;
+                        }
 
-                        bool soft = world.rnd.Chance(biom.percSoftTree);
-                        subTile.SetType(TerrainMainType.Foil, (int)(soft? TerrainSubFoilType.TreeSoft : TerrainSubFoilType.TreeHard), size);
+                        subTile.SetType(TerrainMainType.Foil, (int)treeType, size);
                     }
 
                 }
@@ -134,47 +253,5 @@ namespace VikingEngine.DSSWars.Map
 
     }
 
-    enum TerrainMainType
-    {
-        DefaultLand,
-        DefaultSea,
-        Destroyed,
-
-        Foil,
-        Terrain,
-        Building,
-        NUM
-    }
-
-    enum TerrainSubFoilType
-    {
-        TreeHardSprout,
-        TreeSoftSprout,
-        TreeHard,
-        TreeSoft,
-        Bush,
-        Herbs,
-        TallGrass,
-        Stones,
-        StoneBlock,
-        FarmCulture,
-        NUM
-    }
-
-    enum TerrainBuildingType
-    {
-        DirtWall,
-        DirtTower,
-        WoodWall,
-        WoodTower,
-        StoneWall,
-        StoneTower,
-        StoneHall,
-        SmallHouse,
-        BigHouse,
-        Square,
-        CobbleStones,
-        WorkerHut,
-        NUM
-    }
+    
 }

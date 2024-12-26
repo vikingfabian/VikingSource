@@ -11,7 +11,8 @@ namespace VikingEngine.DSSWars.Map
         LootFest.VoxelModelName modelName;
         Vector3 pos;
         float scale;
-        double randomFrame;
+        int setFrame = -1;
+        double randomFrame = -1;
 
         public Foliage(LootFest.VoxelModelName modelName, PcgRandom rnd, Vector3 pos, float scale)
         {
@@ -21,11 +22,27 @@ namespace VikingEngine.DSSWars.Map
             this.randomFrame = rnd.Double();
         }
 
+        public Foliage(LootFest.VoxelModelName modelName, int frame, Vector3 pos, float scale)
+        {
+            this.modelName = modelName;
+            this.pos = pos;
+            this.scale = scale;
+            this.setFrame = frame;
+        }
+
         public void addToRender()
         {
             model = DssRef.models.ModelInstance(modelName, scale, false);
-            model.Frame = (int)(randomFrame * model.NumFrames);
-            
+
+            if (setFrame < 0)
+            {
+                model.Frame = (int)(randomFrame * model.NumFrames);
+            }
+            else
+            {
+                model.Frame = setFrame;
+            }
+
             model.AddToRender(DrawGame.UnitDetailLayer);
             model.position = pos;
         }

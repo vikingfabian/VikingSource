@@ -24,6 +24,9 @@ namespace VikingEngine.DSSWars
         bool viewFlash = true;
         Timer.Basic flashTimer = new Timer.Basic(800, true);
 
+        const int PreviousFactionsLookedAtCount = 5;
+        public List<Faction> previousFactionsLookedAt = new List<Faction>(PreviousFactionsLookedAtCount +1);
+
         public DiplomacyMap(LocalPlayer player) 
         { 
             this.player = player;
@@ -47,7 +50,7 @@ namespace VikingEngine.DSSWars
                 {
                     GameObject = factory,
                     tilePos = factory.tilePos,
-                    icon = new Graphics.Image(SpriteName.WarsFactoryIcon, Vector2.Zero, Screen.IconSizeV2, HudLib.DiplomacyDisplayLayer - 2, true),
+                    icon = new Graphics.Image(SpriteName.WarsFactoryIcon, Vector2.Zero, Screen.IconSizeV2, HudLib.DiplomacyDisplayLayer - 4, true),
                 });
             }
 
@@ -56,7 +59,7 @@ namespace VikingEngine.DSSWars
                 questFlags.Add(new QuestFlag()
                 {
                     GameObject = DssRef.settings.darkLordPlayer.darkLordUnit,
-                    icon = new Graphics.Image(SpriteName.WarsDarkLordBossIcon, Vector2.Zero, Screen.IconSizeV2, HudLib.DiplomacyDisplayLayer - 2, true),
+                    icon = new Graphics.Image(SpriteName.WarsDarkLordBossIcon, Vector2.Zero, Screen.IconSizeV2, HudLib.DiplomacyDisplayLayer - 4, true),
                 });
             }
         }
@@ -85,8 +88,12 @@ namespace VikingEngine.DSSWars
             foreach (var rel in relationFlags)
             {
                 Faction faction = DssRef.world.factions[rel.faction];
-
+                if (faction!= null && faction.parentArrayIndex == 18)
+                {
+                    lib.DoNothing();
+                }
                 if (faction != null &&
+                    faction.isAlive &&
                     !faction.HasZeroUnits() &&
                     rel.inCullingView &&
                     (!player.drawUnitsView.current.DrawFullOverview || faction.displayInFullOverview || rel == selected))
@@ -218,12 +225,20 @@ namespace VikingEngine.DSSWars
 
                     if (player.input.Select.DownEvent)
                     {
+                        SoundLib.select_faction.Play();
                         selected = currentHover;
-                        //seletionbox.Area = hoverArea;
-                        //seletionbox.Visible = true;
                         player.hud.needRefresh = true;
 
                         player.hud.displays.beginMove(2);
+
+                        var faction = DssRef.world.factions.Array[selected.faction];
+
+                        previousFactionsLookedAt.Remove(faction);
+                        if (previousFactionsLookedAt.Count > PreviousFactionsLookedAtCount)
+                        { 
+                            arraylib.RemoveLast(previousFactionsLookedAt);
+                        }
+                        previousFactionsLookedAt.Insert(0, faction);
                     }
                 }
                 else
@@ -239,7 +254,7 @@ namespace VikingEngine.DSSWars
 
             if (selected != null)
             {               
-                player.hud.displays.updateMove();
+                player.hud.displays.updateMove(out _);
 
                 if (player.input.ControllerCancel.DownEvent)
                 {

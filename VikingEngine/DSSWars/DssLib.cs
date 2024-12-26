@@ -5,14 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
+using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.Graphics;
+using VikingEngine.LootFest;
 
 
 namespace VikingEngine.DSSWars
 {
     static class DssLib
     {
+        public const bool UseLocalTrading = false;
+
+        public const VoxelModelName WorkerModel = VoxelModelName.war_gnome;
+
         public static readonly string ContentDir = "DSS" + DataStream.FilePath.Dir;
         public static readonly string StoryContentDir = ContentDir + "Story" + DataStream.FilePath.Dir;
 
@@ -27,12 +33,13 @@ namespace VikingEngine.DSSWars
 
         public const bool AllowDoubleTime = false;
         #endregion
-        public static readonly int[] GameSpeedOptions = { 1, 2, 5 };
+        
         public const int UserHeraldicWidth = 16;
         public const int MaxLocalPlayers = 4;
         public const int RtsMaxFactions = 2000;
 
         public static readonly RotationQuarterion FaceCameraRotation = new RotationQuarterion(Quaternion.CreateFromYawPitchRoll(0, 1.2f, 0f));
+        public static readonly RotationQuarterion FaceForwardRotation = new RotationQuarterion(Quaternion.CreateFromYawPitchRoll(0, MathExt.TauOver4, 0f));
         public static readonly RotationQuarterion OverviewIconRotation = new RotationQuarterion(Quaternion.CreateFromYawPitchRoll(-0.4f, 0f, 0f));
         public static readonly RotationQuarterion BannerRotation = new RotationQuarterion(Quaternion.CreateFromYawPitchRoll(-0.3f, 0f, 0f));
 
@@ -51,6 +58,147 @@ namespace VikingEngine.DSSWars
         //public const double NobelHouseAddDiplomacy = 1.0 / 240.0;
         //public const double NobelHouseAddMaxDiplomacy = 0.25;
 
+        public static readonly SoldierConscriptProfile SoldierProfile_Farmer = new SoldierConscriptProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.SharpStick,
+                armorLevel = ArmorLevel.Light,
+                training = TrainingLevel.Basic,
+                specialization = SpecializationType.Traditional,
+            }
+        };
+
+        public static readonly SoldierConscriptProfile SoldierProfile_Standard = new SoldierConscriptProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.Sword,
+                armorLevel = ArmorLevel.Medium,
+                training = TrainingLevel.Basic,
+                specialization = SpecializationType.Traditional,
+            }
+        };
+
+        public static readonly SoldierConscriptProfile SoldierProfile_Dwarf = new SoldierConscriptProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.Sword,
+                armorLevel = ArmorLevel.Heavy,
+                training = TrainingLevel.Skillful,
+                specialization = SpecializationType.Traditional,
+            }
+        };
+
+        public static readonly SoldierConscriptProfile SoldierProfile_Sailor = new SoldierConscriptProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.Sword,
+                armorLevel = ArmorLevel.Medium,
+                training = TrainingLevel.Skillful,
+                specialization = SpecializationType.Sea,
+            }
+        };
+
+        public static readonly SoldierConscriptProfile SoldierProfile_Pikeman = new SoldierConscriptProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.Pike,
+                armorLevel = ArmorLevel.Heavy,
+                training = TrainingLevel.Basic,
+                specialization = SpecializationType.AntiCavalry,
+            }
+        };
+
+        public static readonly SoldierConscriptProfile SoldierProfile_Knight = new SoldierConscriptProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.KnightsLance,
+                armorLevel = ArmorLevel.Heavy,
+                training = TrainingLevel.Skillful,
+                specialization = SpecializationType.Traditional,
+            }
+        };
+
+        public static readonly SoldierConscriptProfile SoldierProfile_FootKnight = new SoldierConscriptProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.TwoHandSword,
+                armorLevel = ArmorLevel.Heavy,
+                training = TrainingLevel.Skillful,
+                specialization = SpecializationType.Traditional,
+            }
+        };
+
+        public static readonly SoldierConscriptProfile SoldierProfile_StandardArcher = new SoldierConscriptProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.Longbow,
+                armorLevel = ArmorLevel.Light,
+                training = TrainingLevel.Basic,
+                specialization = SpecializationType.Traditional,
+            }
+        };
+
+        public static readonly SoldierConscriptProfile SoldierProfile_StandardBallista = new SoldierConscriptProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.Ballista,
+                armorLevel = ArmorLevel.Light,
+                training = TrainingLevel.Basic,
+                specialization = SpecializationType.Siege,
+            }
+        };
+
+        public static readonly SoldierConscriptProfile SoldierProfile_CrossbowMan = new SoldierConscriptProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.CrossBow,
+                armorLevel = ArmorLevel.Medium,
+                training = TrainingLevel.Basic,
+                specialization = SpecializationType.Traditional,
+            }
+        };
+
+        public static readonly SoldierConscriptProfile SoldierProfile_HonorGuard = new SoldierConscriptProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.Sword,
+                armorLevel = ArmorLevel.Heavy,
+                training = TrainingLevel.Professional,
+                specialization = SpecializationType.HonorGuard,
+            }
+        };
+        public static readonly SoldierConscriptProfile SoldierProfile_GreenSoldier = new SoldierConscriptProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.Sword,
+                armorLevel = ArmorLevel.Medium,
+                training = TrainingLevel.Professional,
+                specialization = SpecializationType.Green,
+            }
+        };
+        public static readonly SoldierConscriptProfile SoldierProfile_Viking= new SoldierConscriptProfile()
+        {
+            conscript = new ConscriptProfile()
+            {
+                weapon = MainWeapon.Sword,
+                armorLevel = ArmorLevel.Medium,
+                training = TrainingLevel.Skillful,
+                specialization = SpecializationType.Viking,
+            }
+        };
+
         public const int TruceTimeSec = 180;
 
        
@@ -62,21 +210,22 @@ namespace VikingEngine.DSSWars
         public const float CityDominationRadius = BattleConflictRadius + 1.5f;
 
 
-        public static readonly UnitType[] AvailableUnitTypes = new UnitType[]
-            {
-                UnitType.Folkman,
-                UnitType.Soldier,
-                UnitType.Sailor,
-                UnitType.Knight,
-                UnitType.Archer,
-                UnitType.Ballista,
-            };
+        //public static readonly UnitType[] AvailableUnitTypes = new UnitType[]
+        //    {
+        //        UnitType.Folkman,
+        //        UnitType.Soldier,
+        //        UnitType.Sailor,
+        //        UnitType.Knight,
+        //        UnitType.Archer,
+        //        UnitType.Ballista,
+        //    };
 
         public const int GroupDefaultCost = 340;
         public const int GroupDefaultCultureCostReduction = 20;
         public const int GroupMinCost = 20;
         public const float SoldierDefaultUpkeep = 1f;
-        public const float GroupDefaultUpkeep = SoldierDefaultUpkeep * AbsSoldierData.GroupDefaultCount;
+        public static float SoldierDefaultEnergyUpkeep = DssConst.ManDefaultEnergyCost;
+        public static float GroupDefaultUpkeep = SoldierDefaultUpkeep * DssConst.SoldierGroup_DefaultCount;
         public const int DefalutRecruitTrainingTimeSec = 3 * 60;
                 
 
@@ -90,15 +239,13 @@ namespace VikingEngine.DSSWars
         //public const int LargeCityStartWorkForce = AbsSoldierData.GroupDefaultCount * 6;
         //public const int HeadCityStartWorkForce = AbsSoldierData.GroupDefaultCount * 10;
 
-        public static readonly int SmallCityMaxWorkForce = Convert.ToInt32(AbsSoldierData.GroupDefaultCount * 6);
-        public static readonly int LargeCityMaxWorkForce = Convert.ToInt32(AbsSoldierData.GroupDefaultCount * 9);
-        public static readonly int HeadCityMaxWorkForce = Convert.ToInt32(AbsSoldierData.GroupDefaultCount * 15);
+        
 
-        public static readonly int NobelHouseWorkForceReqiurement = HeadCityMaxWorkForce;
+        public static readonly int NobelHouseWorkForceReqiurement = DssConst.HeadCityStartMaxWorkForce;
 
         public const float ShipBuildTimeSec = 5f;
         public const float ShipExitTimeSec = 3f;
-        public const float BattleMaxQueTimeMs = 4000;
+        public const float BattleMaxQueTimeMs = 2000;
 
         #region OVERVIEW_LAYERS
 
@@ -147,6 +294,15 @@ namespace VikingEngine.DSSWars
         NUM
     }
 
+    enum AiConscript
+    { 
+        Default,
+        Orcs,
+        Green,
+        Viking,
+        DragonSlayer,
+    }
+
     enum BossSize
     {
         Small,
@@ -157,6 +313,33 @@ namespace VikingEngine.DSSWars
         NUM
     }
 
+    enum CityCulture
+    { 
+        LargeFamilies,//
+        FertileGround,//
+        Archers,//
+        Warriors,//
+        AnimalBreeder,//
+        Miners,//
+        Woodcutters,//
+        Builders,//
+        CrabMentality,// //ingen vill bli expert
+        DeepWell,//
+        Networker,//
+        PitMasters,//
+
+        Stonemason,//.
+        Brewmaster,//.
+        Weavers,//.
+        SiegeEngineer,//.
+        Armorsmith,//.
+        Noblemen,//.
+        Seafaring,//.
+        Backtrader,//.
+        Lawbiding,//.
+
+        NUM_NONE
+    }
 }
 
 

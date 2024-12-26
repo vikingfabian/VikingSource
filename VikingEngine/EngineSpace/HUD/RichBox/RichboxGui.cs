@@ -50,7 +50,7 @@ namespace VikingEngine.HUD.RichBox
             this.settings = settings;
         }
 
-        public void DeleteMe()
+        virtual public void DeleteMe()
         {
             foreach (var p in parts)
             {
@@ -64,7 +64,7 @@ namespace VikingEngine.HUD.RichBox
             menuStateHasChange = true;
         }
 
-        public bool update()
+        virtual public bool update()
         {
             bool interaction = false;
             foreach (var p in parts)
@@ -91,8 +91,9 @@ namespace VikingEngine.HUD.RichBox
             }
         }
 
-        public void updateMove()
+        public void updateMove(out bool refresh)
         {
+            refresh = false;
             if (input.RichboxGuiUseMove && lockInput <= 0)
             {
                 if (movePos_part >= 0 && parts[movePos_part].canMoveInteract())
@@ -164,11 +165,17 @@ namespace VikingEngine.HUD.RichBox
 
                     if (movePos_part >= 0 && input.RichboxGuiSelect.DownEvent)
                     {
-                        parts[movePos_part].interaction.hover.onClick();//.click?.actionTrigger();
+                        parts[movePos_part].interaction.hover.onClick();
+                        refresh = true;
                     }
                 }
             }
             --lockInput;
+        }
+
+        public Vector2 controllerSelectionPos()
+        {
+            return parts[movePos_part].interaction.hover.area().Position;
         }
 
         public void clearMoveSelection()
@@ -196,8 +203,20 @@ namespace VikingEngine.HUD.RichBox
                     }
                     else
                     {
-                        parts[movePos_part].interaction.hover = parts[movePos_part].richBox.buttonGrid_Y_X[movePos_grid.Y][movePos_grid.X];
-                        parts[movePos_part].interaction.refreshSelectOutline();
+                        var menuPart = parts[movePos_part];
+                        var interaction = menuPart.interaction;
+                        if (interaction != null)
+                        {
+                            if (Bound.SetToArray(ref movePos_grid.Y, menuPart.richBox.buttonGrid_Y_X.Count))
+                            {
+                                if (Bound.SetToArray(ref movePos_grid.X, menuPart.richBox.buttonGrid_Y_X[movePos_grid.Y].Count))
+                                {
+                                    interaction.hover =  menuPart.richBox.buttonGrid_Y_X[movePos_grid.Y][movePos_grid.X];
+                                }
+                            }
+                            
+                            interaction.refreshSelectOutline();
+                        }
                     }
                 }
             }
@@ -264,12 +283,17 @@ namespace VikingEngine.HUD.RichBox
         protected RichboxGui gui;
         Graphics.RectangleLines outLine;
         int index;
+        protected float bgAlpha;
+
+        bool firstUpdate = true;
 
         public RichboxGuiPart(RichboxGui gui)
         {
             this.gui = gui;
+
             bg = new Graphics.Image(SpriteName.WhiteArea, Vector2.Zero, Vector2.Zero, gui.settings.bglayer);
-            bg.ColorAndAlpha(gui.settings.bgCol, gui.settings.bgAlpha);
+            bgAlpha = gui.settings.bgAlpha;
+            bg.ColorAndAlpha(gui.settings.bgCol, bgAlpha);
         }
 
         public void DeleteMe()
@@ -284,6 +308,7 @@ namespace VikingEngine.HUD.RichBox
             {
                 return interaction.update();
             }
+            firstUpdate = false;
             return false;
         }
 
@@ -341,9 +366,9 @@ namespace VikingEngine.HUD.RichBox
             }
             else
             {
-                bg.Opacity = gui.settings.bgAlpha;
+                bg.Opacity = bgAlpha;
             }
-
+            firstUpdate = true;
             gui.onRefresh(this);
         }
 

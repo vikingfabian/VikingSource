@@ -98,10 +98,10 @@ namespace VikingEngine.ToGG.HeroQuest
                     {
                         hqRef.players.localHost.update();
 
-                        hqRef.players.remotePlayersCounter.Reset();
-                        while (hqRef.players.remotePlayersCounter.Next())
+                        var remotes = new SpottedArrayTypeCounter<AbsHQPlayer>(hqRef.players.allPlayers, typeof(RemotePlayer));
+                        while (remotes.Next())
                         {
-                            hqRef.players.remotePlayersCounter.Member.update();
+                            remotes.sel.update();
                         }
 
                         hqRef.players.dungeonMaster.idleUpdate();
@@ -113,10 +113,10 @@ namespace VikingEngine.ToGG.HeroQuest
                         hqRef.players.localHost.UpdateSpectating(hqRef.players.dungeonMaster.SpectatorTargetPos);
                         hqRef.players.localHost.idleUpdate();
 
-                        hqRef.players.remotePlayersCounter.Reset();
-                        while (hqRef.players.remotePlayersCounter.Next())
+                        var remotes = new SpottedArrayTypeCounter<AbsHQPlayer>(hqRef.players.allPlayers, typeof(RemotePlayer));
+                        while (remotes.Next())
                         {
-                            hqRef.players.remotePlayersCounter.Member.idleUpdate();
+                            remotes.sel.idleUpdate();
                         }
                     }
                 }
@@ -359,10 +359,10 @@ namespace VikingEngine.ToGG.HeroQuest
 
         bool allGamersReady()
         {
-            hqRef.players.remotePlayersCounter.Reset();
-            while (hqRef.players.remotePlayersCounter.Next())
+            var remotes = new SpottedArrayTypeCounter<AbsHQPlayer>(hqRef.players.allPlayers, typeof(RemotePlayer));
+            while (remotes.Next())
             {
-                if (!((RemotePlayer)hqRef.players.remotePlayersCounter.Member).isReady) return false;
+                if (!((RemotePlayer)remotes.sel).isReady) return false;
             }
             return true;
         }
@@ -532,10 +532,10 @@ namespace VikingEngine.ToGG.HeroQuest
             {
                 gamephase = GamePhase.StartGameReady;
 
-                hqRef.players.allPlayersCounter.Reset();
-                while (hqRef.players.allPlayersCounter.Next())
+                var allPlayersCounter = hqRef.players.allPlayers.counter();
+                while (allPlayersCounter.Next())
                 {
-                    hqRef.players.allPlayersCounter.sel.startGame();
+                    allPlayersCounter.sel.startGame();
                 }
 
                 if (hqRef.netManager.host)

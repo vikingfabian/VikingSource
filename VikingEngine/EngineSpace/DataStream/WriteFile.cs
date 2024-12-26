@@ -28,7 +28,7 @@ namespace VikingEngine.DataStream
         {
 
         }
-        protected override void runQuedStorageTask()
+        public override void runQuedStorageTask()
         {
             base.runQuedStorageTask();
            DataStreamHandler.Write(this.filePath, data);
@@ -57,7 +57,7 @@ namespace VikingEngine.DataStream
             beginStorageTask();//start();
         }
 
-        protected override void runQuedStorageTask()
+        public override void runQuedStorageTask()
         {
             base.runQuedStorageTask();
         }
@@ -92,7 +92,7 @@ namespace VikingEngine.DataStream
 
             //Engine.Storage.AddToSaveQue(StartQuedProcess, false); //as load be course its high prio to create
         }
-        protected override void runQuedStorageTask()
+        public override void runQuedStorageTask()
         {
             //base.runQuedStorageTask();
             DataStream.FilePath.CreateStorageFolder(path);

@@ -219,8 +219,7 @@ namespace VikingEngine.ToGG.Commander
             }
             else
             {
-                int non1; bool non2;
-                nextPlayer = Commander.cmdRef.players.allPlayers.PeekNext(true, out non1, out non2);
+                nextPlayer = Commander.cmdRef.players.allPlayers.PeekNext(true, out _, out _);
 
                 currentPlayer.EndTurn();
             }

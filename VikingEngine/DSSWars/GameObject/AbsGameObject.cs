@@ -5,6 +5,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Players;
 //
@@ -24,6 +25,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public Army GetArmy() { return null; }
 
+        virtual public MapObjectCollection GetCollection() { return null; }
+
+        virtual public WorkerUnit GetWorker() { return null; }
+
+        virtual public AbsMapObject RelatedMapObject() { return null; }
+
         virtual public IntVector2 TilePos() 
         { 
             throw new NotImplementedException();
@@ -36,6 +43,51 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public string TypeName() { return null; }
 
+
+        virtual public void TypeIcon(RichBoxContent content) {  }
+
+        virtual public string Name() { return null; }
+
+        virtual public void selectionGui(Players.LocalPlayer player, Graphics.ImageGroup guiModels)
+        { }
+        virtual public void selectionFrame(bool hover, Selection selection)
+        { }
+
+        virtual public void toHud(Display.ObjectHudArgs args)
+        {
+            string name = Name();
+            if (name != null)
+            {
+                args.content.text(name).overrideColor = Color.LightYellow;
+                args.content.newLine();
+            }
+            args.content.Add(new RichBoxBeginTitle());
+            args.content.Add(GetFaction().FlagTextureToHud());
+            TypeIcon(args.content);
+            args.content.Add(new RichBoxText(TypeName()));
+
+            if (args.ShowFull)
+            {
+                if (PlatformSettings.DevBuild)
+                {
+                    args.content.text("agg " + GetFaction().player.aggressionLevel.ToString());
+                }
+                if (GetFaction() != args.player.faction)
+                {
+                    var relation = DssRef.diplomacy.GetRelationType(args.player.faction, GetFaction());
+
+                    args.content.newLine();
+                    args.content.Add(new RichBoxText(GetFaction().PlayerName, Color.LightYellow));
+                    args.content.newLine();
+                    args.content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation)));
+                    args.content.Add(new RichBoxText(Diplomacy.RelationString(relation), Color.LightBlue));
+
+                }
+                args.content.Add(new RichBoxSeperationLine());
+            }
+        }
+        virtual public bool CanMenuFocus() { return false; }
+        virtual public bool aliveAndBelongTo(Faction faction) { return true; }
         //abstract public bool IsDeleted();
     }
     enum GameObjectType
@@ -46,6 +98,9 @@ namespace VikingEngine.DSSWars.GameObject
         SoldierGroup,
         Soldier,
         Battle,
+        Worker,
+
+        ObjectCollection,
 
         NUM_NON,
     }

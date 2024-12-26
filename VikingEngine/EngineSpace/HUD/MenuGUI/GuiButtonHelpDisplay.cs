@@ -65,7 +65,7 @@ namespace VikingEngine.HUD
         protected override void OnUpdate(GuiMember selected)
         {
             // If there is text
-            if (selected.ToolTip != null && selected.ToolTip != "")
+            if (TextLib.HasValue(selected.ToolTip))
             {
                 // Set the text to whatever the tooltip of the member is.
                 textBox.TextString = selected.ToolTip;
@@ -78,6 +78,10 @@ namespace VikingEngine.HUD
                 if (background.Bottom > Engine.Screen.SafeArea.Bottom)
                 {
                     background.Ypos = Engine.Screen.SafeArea.Bottom - background.Height;
+                }
+                if (background.Right > Engine.Screen.SafeArea.Right)
+                {
+                    background.SetRight(Engine.Screen.SafeArea.Right, true);
                 }
                 // Remember the text edge space for the text.
                 textBox.Position = background.Position + new Vector2(style.textEdgeSpace);

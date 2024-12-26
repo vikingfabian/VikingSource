@@ -37,7 +37,7 @@ namespace VikingEngine.LootFest.Process
             beginStorageTask();
         }
 
-        protected override void runQuedStorageTask()
+        public override void runQuedStorageTask()
         {
             base.runQuedStorageTask();
             returnVal = asynchProcess(value1);

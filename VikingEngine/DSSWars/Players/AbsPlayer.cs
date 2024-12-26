@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Players
@@ -14,17 +16,26 @@ namespace VikingEngine.DSSWars.Players
         protected const int AggressionLevel2_RandomAttacks = 2;
         protected const int AggressionLevel3_FocusedAttacks = 3;
 
-        //public List<AbsPlayer> opponents = new List<AbsPlayer>(2);
         public bool IsPlayerNeighbor = false;
         public Faction faction;
         public int aggressionLevel = AggressionLevel0_Passive;
         public bool protectedPlayer = false;
         protected bool ignorePlayerCapture = false;
 
+        //public List<AbsOrder> orders = new List<AbsOrder>();
+        public Orders.Orders orders;
+        abstract public void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType buildType, out bool intelligent);
         public AbsPlayer(Faction faction)
         {
             this.faction = faction;
             faction.SetStartOwner(this);
+
+            createStartupBarracks();
+        }
+
+        public void createStartupBarracks()
+        { 
+            faction.mainCity?.createStartupBarracks();
         }
 
         virtual public void Update()
@@ -34,7 +45,7 @@ namespace VikingEngine.DSSWars.Players
         {
 
         }
-        virtual public void readGameState(System.IO.BinaryReader r, int version)
+        virtual public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
 
         }
@@ -79,64 +90,67 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        
-
         public void onPlayerNeighborCapture(LocalPlayer player)
         {
-            if (ignorePlayerCapture)
-                return;
-
-            ignorePlayerCapture = true;
-
-            if (aggressionLevel == AggressionLevel0_Passive)
+            if (player.IsAi())
             {
-                if (DssRef.difficulty.aiAggressivity == AiAggressivity.Medium)
-                {
-                    if (Ref.rnd.Chance(0.35))
-                    {
-                        aggressionLevel = AggressionLevel2_RandomAttacks;
-                    }
-                    else if (Ref.rnd.Chance(0.06))
-                    {
-                        aggressionLevel = AggressionLevel3_FocusedAttacks;
-                    }
-                }
-                else if (DssRef.difficulty.aiAggressivity == AiAggressivity.High)
-                {
-                    if (Ref.rnd.Chance(0.6))
-                    {
-                        aggressionLevel = AggressionLevel2_RandomAttacks;
-                    }
-                    else
-                    {
-                        aggressionLevel = AggressionLevel3_FocusedAttacks;
-                    }
-                }
-            }
-            else if (aggressionLevel == AggressionLevel2_RandomAttacks)
-            {
-                if (DssRef.difficulty.aiAggressivity == AiAggressivity.Medium)
-                {
-                    if (Ref.rnd.Chance(0.05))
-                    {
-                        aggressionLevel = AggressionLevel3_FocusedAttacks;
-                    }
-                }
-                else if (DssRef.difficulty.aiAggressivity == AiAggressivity.High)
-                {
-                    if (Ref.rnd.Chance(0.7))
-                    {
-                        aggressionLevel = AggressionLevel3_FocusedAttacks;
-                    }
-                }
-            }
+                if (ignorePlayerCapture)
+                    return;
 
-            var relation = DssRef.diplomacy.GetOrCreateRelation(faction, player.faction);
-            relation.SetWorseSpeakTerms(DssRef.diplomacy.SpeakTermsOnNeigbor_BadChance, DssRef.diplomacy.SpeakTermsOnNeigbor_NoneChance);
+                ignorePlayerCapture = true;
 
-            if (IsAi() && faction.Size() >= FactionSize.Big)
-            {
-                protectedPlayer = true;
+                if (aggressionLevel == AggressionLevel0_Passive)
+                {
+                    if (DssRef.difficulty.aiAggressivity == AiAggressivity.Medium)
+                    {
+                        if (Ref.rnd.Chance(0.35))
+                        {
+                            aggressionLevel = AggressionLevel2_RandomAttacks;
+                        }
+                        else if (Ref.rnd.Chance(0.06))
+                        {
+                            aggressionLevel = AggressionLevel3_FocusedAttacks;
+                        }
+                    }
+                    else if (DssRef.difficulty.aiAggressivity == AiAggressivity.High)
+                    {
+                        if (Ref.rnd.Chance(0.6))
+                        {
+                            aggressionLevel = AggressionLevel2_RandomAttacks;
+                        }
+                        else
+                        {
+                            aggressionLevel = AggressionLevel3_FocusedAttacks;
+                        }
+                    }
+                }
+                else if (aggressionLevel == AggressionLevel2_RandomAttacks)
+                {
+                    if (DssRef.difficulty.aiAggressivity == AiAggressivity.Medium)
+                    {
+                        if (Ref.rnd.Chance(0.05))
+                        {
+                            aggressionLevel = AggressionLevel3_FocusedAttacks;
+                        }
+                    }
+                    else if (DssRef.difficulty.aiAggressivity == AiAggressivity.High)
+                    {
+                        if (Ref.rnd.Chance(0.7))
+                        {
+                            aggressionLevel = AggressionLevel3_FocusedAttacks;
+                        }
+                    }
+                }
+
+                player.GetAiPlayer().refreshAggression();
+
+                var relation = DssRef.diplomacy.GetOrCreateRelation(faction, player.faction);
+                relation.SetWorseSpeakTerms(DssRef.diplomacy.SpeakTermsOnNeigbor_BadChance, DssRef.diplomacy.SpeakTermsOnNeigbor_NoneChance);
+
+                if (faction.Size() >= FactionSize.Big)
+                {
+                    protectedPlayer = true;
+                }
             }
         }
 
@@ -164,7 +178,9 @@ namespace VikingEngine.DSSWars.Players
         abstract public string Name { get; }
 
         virtual public void OnCityCapture(City city)
-        {}
+        {
+            
+        }
     }
 
     

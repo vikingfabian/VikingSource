@@ -4,6 +4,7 @@ using System.IO;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest;
@@ -39,7 +40,7 @@ namespace VikingEngine.DSSWars
             //RAW
             List<VoxelModelName> loadRawModels = new List<VoxelModelName>
             {
-                VoxelModelName.war_worker,
+                DssLib.WorkerModel,
                 VoxelModelName.war_recruit,
                 VoxelModelName.wars_shipcrew,
                 VoxelModelName.wars_captain,
@@ -51,7 +52,7 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.citybanner,
             };
 
-            DssRef.unitsdata.AddModelsToLoad(loadRawModels);
+            new AllUnits().AddModelsToLoad(loadRawModels);
 
             foreach (var modelName in loadRawModels)
             {
@@ -73,6 +74,8 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.war_town3, false);
             loadVoxelModel(VoxelModelName.war_town_factory, false);
             loadVoxelModel(VoxelModelName.war_workerhut, false);
+            loadVoxelModel(VoxelModelName.city_mine, false);
+            loadVoxelModel(VoxelModelName.city_workstation, false);
 
             loadVoxelModel(VoxelModelName.city_dirtwall, false);
             loadVoxelModel(VoxelModelName.city_dirttower, false);
@@ -83,13 +86,27 @@ namespace VikingEngine.DSSWars
 
             loadVoxelModel(VoxelModelName.city_stonehall, false);
             loadVoxelModel(VoxelModelName.city_workerhut, false);
+            loadVoxelModel(VoxelModelName.city_pen, false);
 
             loadVoxelModel(VoxelModelName.city_cobblestone, false);
             loadVoxelModel(VoxelModelName.city_square, false);
             loadVoxelModel(VoxelModelName.city_smallhouse, false);
             loadVoxelModel(VoxelModelName.city_bighouse, false);
-            //loadVoxelModel(VoxelModelName.city_tower24, false);
+            loadVoxelModel(VoxelModelName.city_storehouse, false);
+            loadVoxelModel(VoxelModelName.city_tavern, false);
+            loadVoxelModel(VoxelModelName.city_bank, false);
+            loadVoxelModel(VoxelModelName.city_postal, false);
+            loadVoxelModel(VoxelModelName.city_recruitment, false);
+            loadVoxelModel(VoxelModelName.city_barracks, false);
+            loadVoxelModel(VoxelModelName.city_carpenter, false);
+            loadVoxelModel(VoxelModelName.city_nobelhouse, false);
+            loadVoxelModel(VoxelModelName.city_logistic, false);
 
+            loadVoxelModel(VoxelModelName.decor_statue, false);
+            loadVoxelModel(VoxelModelName.city_pavement, false);
+
+            loadVoxelModel(VoxelModelName.Pig, false);
+            loadVoxelModel(VoxelModelName.Hen, false);
             loadVoxelModel(VoxelModelName.Arrow, true);
             loadVoxelModel(VoxelModelName.little_javelin, true);
             loadVoxelModel(VoxelModelName.little_boltarrow, true);
@@ -102,6 +119,8 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.horse_brown, false);
             loadVoxelModel(VoxelModelName.horse_white, false);
             loadVoxelModel(VoxelModelName.wars_shipmelee, false);
+            loadVoxelModel(VoxelModelName.buildarea, false);
+            loadVoxelModel(VoxelModelName.wars_borderstick, false);
 
             foreach (var model in DetailMapTile.LoadModel())
             {
@@ -157,7 +176,7 @@ namespace VikingEngine.DSSWars
         {
             Graphics.VoxelModelInstance instance = new Graphics.VoxelModelInstance(null, addToRender);
 #if DEBUG
-            Debug.CrashIfThreaded();
+            //Debug.CrashIfThreaded();
             instance.DebugName = name.ToString();
 
             if (!voxelModels.ContainsKey(name))

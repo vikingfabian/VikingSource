@@ -340,7 +340,7 @@ namespace VikingEngine.PJ.SmashBirds
             bool inAir;
             updateCollisionState(out inAir);
 
-            if (stunnEffect == null && heavyFallStunn.TimeOut)
+            if (stunnEffect == null && heavyFallStunn.timeOut())
             {
 
                 if (data.button.IsDown)

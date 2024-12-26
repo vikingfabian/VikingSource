@@ -5,6 +5,9 @@ using System.Text;
 using VikingEngine.Engine;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.HUD;
+using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars;
+
 
 namespace VikingEngine
 {
@@ -13,7 +16,7 @@ namespace VikingEngine
     /// </summary>
     class GameSettings
     {
-        const int Version = 10;
+        const int Version = 12 ;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -28,9 +31,16 @@ namespace VikingEngine
         public bool dyslexiaFont = false;
         public Network.BannedPeers bannedPeers = new Network.BannedPeers();
         public bool graphicsHasChanged = false;
+        public LanguageType language = LanguageType.NONE;
+        public InputMap controllerMap;
+        public InputMap keyboardMap;
 
         public GameSettings()
         {
+            controllerMap = new InputMap(false);
+            controllerMap.setInputSource(Input.InputSourceType.XController, 0);
+            keyboardMap = new InputMap(true);
+            keyboardMap.setInputSource(Input.InputSourceType.KeyboardMouse, 0);
             Ref.gamesett = this;
         }
 
@@ -59,9 +69,12 @@ namespace VikingEngine
             w.Write(Engine.Sound.SoundVolume);
             w.Write((byte)VibrationLevel);
             w.Write(UiScale);
+            w.Write((byte)language);
             w.Write(dyslexiaFont);
+            controllerMap.write(w);
+            keyboardMap.write(w);
 
-            bannedPeers.write(w);
+            bannedPeers.write(w);           
         }
 
         public void readEmbeddedSettingsAndVersion(System.IO.BinaryReader r)
@@ -86,7 +99,17 @@ namespace VikingEngine
             {
                 UiScale = 1f;
             }
+            if (version >= 11)
+            { 
+                language = (LanguageType)r.ReadByte(); 
+            }
             dyslexiaFont = r.ReadBoolean();
+            if (version >= 12)
+            {
+                controllerMap.read(r);
+                keyboardMap.read(r);
+            }
+
             bannedPeers.read(r, version);
             
         }
@@ -235,17 +258,17 @@ namespace VikingEngine
         public void soundOptions(GuiLayout layout)
         {
             volumeOptions(layout);
-            if (Ref.music != null)
-            {
-                if (Ref.music.hasMusicQue())
-                {
-                    new GuiTextButton("Next song", null, Ref.music.nextRandomSong, false, layout);
-                }
-                //if (Ref.music.IsPlaying())
-                //{
-                //    new GuiDelegateLabel(SongTitleProperty, layout);
-                //}
-            }
+            //if (Ref.music != null)
+            //{
+            //    if (Ref.music.hasMusicQue())
+            //    {
+            //        new GuiTextButton("Next song", null, Ref.music.nextRandomSong, false, layout);
+            //    }
+            //    //if (Ref.music.IsPlaying())
+            //    //{
+            //    //    new GuiDelegateLabel(SongTitleProperty, layout);
+            //    //}
+            //}
         }
 
         void volumeOptions(GuiLayout layout)
@@ -426,5 +449,18 @@ namespace VikingEngine
 //            Screen.ApplyScreenSettings();
 //#endif
 //        }
+    }
+
+    enum LanguageType
+    {
+        NONE = 0,
+        English,
+        Chinese,
+        Russian,
+        Spanish,
+        Portuguese,
+        German,
+        Japanese,
+        French,
     }
 }

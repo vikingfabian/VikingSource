@@ -44,11 +44,11 @@ namespace VikingEngine.DSSWars.Display
         {
             if (menu == null)
             {
-                VectorRect area = XGuide.GetPlayer(input.playerIndex).view.safeScreenArea;
-                if (area.Width <= 0)
-                {
-                    area = Engine.Screen.SafeArea;
-                }
+                VectorRect area = Engine.Screen.SafeArea;//XGuide.GetPlayer(input.playerIndex).view.safeScreenArea;
+                //if (area.Width <= 0)
+                //{
+                //    area = Engine.Screen.SafeArea;
+                //}
 
                 menu = new Gui(GuiStyle(menuType == MenuType.Lobby), 
                     area, 
@@ -97,7 +97,7 @@ namespace VikingEngine.DSSWars.Display
                 new GuiOption<float>(4f),
             };
 
-            new GuiOptionsList<float>(SpriteName.NO_IMAGE, DssRef.lang.Hud_GameSpeedButton, options, multiplayerGameSpeedProperty, layout);
+            new GuiOptionsList<float>(SpriteName.NO_IMAGE, DssRef.lang.Input_GameSpeed, options, multiplayerGameSpeedProperty, layout);
         }
 
         float multiplayerGameSpeedProperty(bool set, float value)

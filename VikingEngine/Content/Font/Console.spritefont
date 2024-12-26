@@ -55,6 +55,15 @@ with.
         <Start>&#32;</Start>
         <End>&#512;</End>
       </CharacterRegion>
+
+		<!-- Russian -->
+		<CharacterRegion>
+
+			<Start>&#x410;</Start>
+
+			<End>&#x44F;</End>
+
+		</CharacterRegion>
     </CharacterRegions>
   </Asset>
 </XnaContent>

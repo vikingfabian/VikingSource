@@ -757,8 +757,8 @@ namespace VikingEngine.LootFest.Map
             {
                 if (level != null)
                 {
-                    IntVector2 non;
-                    BlockMap.DesignAreaStorage area = level.designAreas.getArea(Index, out non);
+                    
+                    BlockMap.DesignAreaStorage area = level.designAreas.getArea(Index, out _);
                     if (area != null)
                     {
                         SaveData2(true, area);

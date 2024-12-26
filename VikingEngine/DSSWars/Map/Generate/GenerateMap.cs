@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.HUD.RichBox;
@@ -41,6 +42,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         {
             //ushort seed = Ref.rnd.Ushort();
             world = new WorldData(worldMeta);//new Data.WorldMetaData(seed, size, number));
+            world.availableGenericAiTypes = WorldData.AvailableGenericAiTypes();
             biomsLayout = new BiomsLayout(world.rnd);
 
             try
@@ -65,7 +67,6 @@ namespace VikingEngine.DSSWars.Map.Generate
                 LoadStatus = 45;
                 generateDigChains();
                 LoadStatus = 50;
-
                 setWaterHeightAndWaterHeatmap();
 
                 LoadStatus = 55;
@@ -129,7 +130,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             }
         }
 
-        public void postLoadGenerate_Part2(WorldData world)
+        public void postLoadGenerate_Part2(WorldData world, SaveStateMeta loadMeta)
         {
             this.world = world;
             world.rnd = new PcgRandom(world.metaData.seed);
@@ -137,9 +138,12 @@ namespace VikingEngine.DSSWars.Map.Generate
             Task.Factory.StartNew(() =>
             {
                 //generateSubTileFoliage();
-                foreach (var c in world.cities)
+                if (loadMeta == null)
                 {
-                    c.createBuildingSubtiles(world);
+                    foreach (var c in world.cities)
+                    {
+                        c.createBuildingSubtiles(world);
+                    }
                 }
 
                 postComplete = true;
@@ -639,7 +643,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         City owner = world.cities[t.CityIndex];
                         int borderCity = -1;
 
-                        for (int dirIx = 0; dirIx < checkDirs.Length; ++dirIx)//each (IntVector2 dir in checkDirs)
+                        for (int dirIx = 0; dirIx < checkDirs.Length; ++dirIx)
                         {
                             IntVector2 dir = checkDirs[dirIx];
                             Tile neighbor = world.tileGrid.array[dir.X + loop.Position.X, dir.Y + loop.Position.Y];
@@ -649,10 +653,6 @@ namespace VikingEngine.DSSWars.Map.Generate
                                 t.AddBorder(dirIx, land? neighbor.CityIndex: Tile.SeaBorder);
                                 borderCity = neighbor.CityIndex;
                             }
-                            //else if (!neighbor.IsLand())
-                            //{
-                            //    t.AddBorder(dirIx, Tile.SeaBorder);
-                            //}
                         }
 
                         if (t.BorderCount > 0)
@@ -689,10 +689,6 @@ namespace VikingEngine.DSSWars.Map.Generate
                 if (!world.cities[i].hasNeededAreaSize())
                 {
                     return false;
-                    ////Remove the city, it has not enough area!
-                    //world.tileGrid.Get(world.cities[i].tilePos).tileContent = TileContent.NONE;
-                    //world.unitCollAreaGrid.remove(world.cities[i]);
-                    //world.cities.RemoveAt(i);
                 }
             }
 
@@ -701,24 +697,23 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         void factionStartAreas(MapSize mapSize)
         {
-            int goalWorkForce = DssLib.HeadCityMaxWorkForce + DssLib.LargeCityMaxWorkForce + DssLib.SmallCityMaxWorkForce;
+            int goalWorkForce = DssConst.HeadCityStartMaxWorkForce + DssConst.LargeCityStartMaxWorkForce + DssConst.SmallCityStartMaxWorkForce;
 
             if (mapSize >= MapSize.Epic)
             {
-                goalWorkForce += DssLib.HeadCityMaxWorkForce;
+                goalWorkForce += DssConst.HeadCityStartMaxWorkForce;
             }
             else if (mapSize >= MapSize.Huge)
             {
-                goalWorkForce += DssLib.LargeCityMaxWorkForce;
+                goalWorkForce += DssConst.LargeCityStartMaxWorkForce;
             }
 
-            
+            bool useRandomEmpires = mapSize >= MapSize.Medium;
+            IntervalF randomEmpiresSizeMulti = new IntervalF(1.5f, 2f + (mapSize - MapSize.Medium));
+
+
             namedFactionsOnMap(goalWorkForce);
 
-            //if (mapSize >= MapSize.Huge)
-            //{
-            //    goalIncome += DssLib.HeadCityBasicIncome;
-            //}
 
             foreach (City c in world.cities)
             {
@@ -726,18 +721,30 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                 if (c.faction == null)
                 {
-                    region.Reset(goalWorkForce);
+                    float size = goalWorkForce;
+                    bool rndEmpire = useRandomEmpires && world.rnd.Chance(0.25);
+                    if (rndEmpire)
+                    { 
+                        size *= randomEmpiresSizeMulti.GetRandom(world.rnd);
+                    }
+                    region.Reset((int)size);
                     region.GetStartFactionRegion(c, world);
 
                     var faction = new Faction(world, FactionType.DefaultAi);
                     
                     region.ApplyFaction(faction);
 
-                    if (region.currentWorkforce >= region.goalWorkForce)
+                    if (region.currentWorkforce >= region.goalWorkForce && !rndEmpire)
                     {
                         faction.availableForPlayer = true;
                     }
                 }
+#if DEBUG
+                if (c.faction == null)
+                {
+                    throw new Exception();
+                }
+#endif
             }
 
             if (world.factions.Count > DssLib.RtsMaxFactions)
@@ -914,7 +921,18 @@ namespace VikingEngine.DSSWars.Map.Generate
                     Height heightSett = DssRef.map.heigts[tile.heightLevel];
                     Biom biom = DssRef.map.bioms.bioms[(int)tile.biom];
 
-                    TerrainMainType tileType = tile.IsLand() ? TerrainMainType.DefaultLand : TerrainMainType.DefaultSea;
+                    int defaultLandType = 0;
+                    TerrainMainType tileType;
+                    if (tile.IsLand())
+                    {
+                        tileType = TerrainMainType.DefaultLand;
+                        defaultLandType = (int)(tile.heightLevel < Height.MountainHeightStart ? TerrainDefaultLandType.Flat : TerrainDefaultLandType.Mountain);
+                    }
+                    else
+                    {
+                        tileType = TerrainMainType.DefaultSea;
+                        defaultLandType = (int)(tile.heightLevel == Height.LowWaterHeight? TerrainSeaType.Low : TerrainSeaType.Deep);
+                    }
                     
                     float groundY = tile.GroundY();
 
@@ -928,25 +946,25 @@ namespace VikingEngine.DSSWars.Map.Generate
                     {
                         for (int x = 1; x < WidthMin1; ++x)
                         {
-                            subTile(x, y, groundY, tileType);
+                            subTile(x, y, groundY, tileType, defaultLandType);
                         }
                     }
 
                     for (int sidePos = 1; sidePos < WidthMin1; ++sidePos)
                     {
-                        subTile(0, sidePos, groundY_w, tileType);
+                        subTile(0, sidePos, groundY_w, tileType, defaultLandType);
 
-                        subTile(WidthMin1, sidePos, groundY_e, tileType);
+                        subTile(WidthMin1, sidePos, groundY_e, tileType, defaultLandType);
 
-                        subTile(sidePos, 0, groundY_n, tileType);
+                        subTile(sidePos, 0, groundY_n, tileType, defaultLandType);
 
-                        subTile(sidePos, WidthMin1, groundY_s, tileType);
+                        subTile(sidePos, WidthMin1, groundY_s, tileType, defaultLandType);
                     }
 
-                    subTile(0, 0, lib.SmallestValue(groundY_w, groundY_n), tileType);
-                    subTile(WidthMin1, 0, lib.SmallestValue(groundY_e, groundY_n), tileType);
-                    subTile(0, WidthMin1, lib.SmallestValue(groundY_w, groundY_s), tileType);
-                    subTile(WidthMin1, WidthMin1, lib.SmallestValue(groundY_s, groundY_e), tileType);
+                    subTile(0, 0, lib.SmallestValue(groundY_w, groundY_n), tileType, defaultLandType);
+                    subTile(WidthMin1, 0, lib.SmallestValue(groundY_e, groundY_n), tileType, defaultLandType);
+                    subTile(0, WidthMin1, lib.SmallestValue(groundY_w, groundY_s), tileType, defaultLandType);
+                    subTile(WidthMin1, WidthMin1, lib.SmallestValue(groundY_s, groundY_e), tileType, defaultLandType);
 
                     float edgeHeight(int x, int y)
                     {
@@ -961,7 +979,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         return result;
                     }
 
-                    void subTile(int x, int y, float topY, TerrainMainType tiletype)
+                    void subTile(int x, int y, float topY, TerrainMainType tiletype, int subType)
                     {
                         const int RndRange = 3;
 
@@ -999,7 +1017,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                             topY += heightSett.mountainPeak[x, y];
                         }
 
-                        var subTile = new SubTile(tiletype, rndColor, topY);
+                        var subTile = new SubTile(tiletype, subType, rndColor, topY);
                         TerrainContent.createSubTileContent(subX, subY, distanceToCity, tile, heightSett, biom, ref mudRadius, ref subTile, world, noiseMap);
 
                         world.subTileGrid.Set(subX, subY, subTile);
@@ -1019,6 +1037,24 @@ namespace VikingEngine.DSSWars.Map.Generate
         public List<City> DryEast = new List<City>();
         public List<City> NorthSea = new List<City>();
 
+        public static readonly CityCulture[] GeneralCultures =
+            {
+                CityCulture.LargeFamilies,
+                CityCulture.Archers,
+                CityCulture.Warriors,
+                CityCulture.AnimalBreeder,
+                CityCulture.Builders,
+                CityCulture.CrabMentality,
+                CityCulture.Networker,
+                CityCulture.Brewmaster,
+
+                CityCulture.Weavers,
+                CityCulture.SiegeEngineer,
+                CityCulture.Armorsmith,
+                CityCulture.Noblemen,
+                CityCulture.Backtrader,
+                CityCulture.Lawbiding,
+            };
     }
 
 }

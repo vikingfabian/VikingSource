@@ -22,11 +22,11 @@ namespace VikingEngine.DSSWars.Display
         public MessageGroup messages;
         public bool menuFocus = false;
 
-        public GameHud(LocalPlayer player)
+        public GameHud(LocalPlayer player, int numPlayers)
         {
             this.player = player;
             displays = new GameHudDisplays(player);
-            messages = new MessageGroup(player, HudLib.richboxGui);
+            messages = new MessageGroup(player, numPlayers, HudLib.richboxGui);
             tooltip = new Tooltip();
         }
 
@@ -53,7 +53,7 @@ namespace VikingEngine.DSSWars.Display
             displays.clearState();
         }
 
-        void setHeadMenuFocus(bool set)
+        public void setHeadMenuFocus(bool set)
         {
             if (menuFocus != set)
             {
@@ -74,7 +74,8 @@ namespace VikingEngine.DSSWars.Display
 
         public void updateMenuFocus()
         {
-            displays.updateMove();
+            displays.updateMove(out bool bRefresh);
+            needRefresh |= bRefresh;
 
             if (player.input.AutomationSetting.DownEvent ||
                 player.input.ControllerCancel.DownEvent)
@@ -177,13 +178,14 @@ namespace VikingEngine.DSSWars.Display
                 }
             }
 
-            void updateObjectDisplay(GameObject.AbsWorldObject obj, bool selected, bool refresh)
+            void updateObjectDisplay(GameObject.AbsGameObject obj, bool selected, bool refresh)
             {
                 if (refresh)
                 {
                     Vector2 pos = displays.headDisplay.area.LeftBottom;
                     pos.Y += Engine.Screen.BorderWidth * 2f;
                     displays.objectDisplay.refresh(player, obj, selected, pos);
+
                 }
             }
         }
@@ -197,7 +199,7 @@ namespace VikingEngine.DSSWars.Display
     { 
         Minimal,
         Normal,
-        Extended,
+        //Extended,
         NUM
     }
 }

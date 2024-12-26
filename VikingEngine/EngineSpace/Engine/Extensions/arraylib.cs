@@ -224,6 +224,11 @@ namespace VikingEngine
         /// </summary>
         public static T RandomListMemberPop<T>(List<T> list)
         {
+            if (list.Count == 0)
+            { 
+                return default(T);
+            }
+
             int ix = Ref.rnd.Int(list.Count);
             T result = list[ix];
             list.RemoveAt(ix);

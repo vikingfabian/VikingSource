@@ -20,8 +20,8 @@ namespace VikingEngine.DSSWars
 
         public int ServantMaxCities = 2;
         public int DefaultMaxDiplomacy = 4;
-        public double DefaultDiplomacyPerSecond = 1.0 / 60.0;
-        public double NobelHouseAddDiplomacy = 1.0 / 240.0;
+        public double DefaultDiplomacyPerSecond = 1.0 / 120.0;
+        public double NobelHouseAddDiplomacy = 1.0 / 480.0;
         public double NobelHouseAddMaxDiplomacy = 0.25;
 
 
@@ -103,7 +103,7 @@ namespace VikingEngine.DSSWars
             aiPlayerAsynchUpdate_wars_withplayer.Clear();
             for (int relIx = 0; relIx < aifaction.diplomaticRelations.Length; ++relIx)
             {
-                if (InWar(aifaction, DssRef.world.factions[relIx])) // aifaction.diplomaticRelations[relIx] != null && aifaction.diplomaticRelations[relIx].Relation == RelationTypeN3_War)
+                if (InWar(aifaction, DssRef.world.factions[relIx])) 
                 {
                     if (DssRef.world.factions[relIx].player.IsPlayer())
                     {
@@ -177,6 +177,32 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        public bool MayTrade(Faction faction1, Faction faction2, out RelationType relation)
+        {
+            relation = RelationType.RelationType0_Neutral;
+
+            if (faction1 == null || faction2 == null)
+            {
+                return false;
+            }
+
+            if (faction1 == faction2)
+            {
+                return false;
+            }
+
+            DiplomaticRelation rel = faction1.diplomaticRelations[faction2.parentArrayIndex];           
+            if (rel == null)
+            {
+                return true;
+            }
+            else
+            {
+                relation = rel.Relation;
+                return rel.Relation >= RelationType.RelationType0_Neutral;
+            }
+        }
+
         public RelationType GetRelationType(int faction1, int faction2)
         {
             var faction1_pointer = DssRef.world.factions[faction1];
@@ -234,13 +260,17 @@ namespace VikingEngine.DSSWars
 
         DiplomaticRelation NewRelation(Faction faction1, Faction faction2, RelationType newRelation)
         {
-            DiplomaticRelation rel;
-            SpeakTerms speakterms = (SpeakTerms)Math.Min((int)faction1.DefaultSpeakingTerms(), (int)faction2.DefaultSpeakingTerms());
-            rel = new DiplomaticRelation(faction1.parentArrayIndex, faction2.parentArrayIndex, newRelation, speakterms);
+            if (faction1 != faction2)
+            {
+                DiplomaticRelation rel;
+                SpeakTerms speakterms = (SpeakTerms)Math.Min((int)faction1.DefaultSpeakingTerms(), (int)faction2.DefaultSpeakingTerms());
+                rel = new DiplomaticRelation(faction1.parentArrayIndex, faction2.parentArrayIndex, newRelation, speakterms);
 
-            faction1.player.onNewRelation(faction2, rel, RelationType.RelationType0_Neutral);
-            faction2.player.onNewRelation(faction1, rel, RelationType.RelationType0_Neutral);
-            return rel;
+                faction1.player.onNewRelation(faction2, rel, RelationType.RelationType0_Neutral);
+                faction2.player.onNewRelation(faction1, rel, RelationType.RelationType0_Neutral);
+                return rel;
+            }
+            return null;    
         }
 
         public void declareWar(Faction attacker, Faction defender)
@@ -256,6 +286,7 @@ namespace VikingEngine.DSSWars
                     var player = attacker.player.GetLocalPlayer();
                     ++player.statistics.WarsStartedByYou;
                     player.diplomaticPoints.pay(cost, true);
+                    DssRef.settings.OnPlayerDeclareWar();
 
                     if (prevRelation >= RelationType.RelationType1_Peace)
                     {

@@ -20,10 +20,13 @@ namespace VikingEngine.DSSWars.Map
         public DetailLayer prevLayer;
 
         public static readonly IntervalF FullZoomRange = new IntervalF(1, 2500);
+        public static IntervalF TutorialZoomRange;
 
         public const float OverviewZoomStart = 80f;
         static readonly float UnitMaxZoom = FullZoomRange.Max - 0.4f;
 
+        static readonly float TerrainMaxZoom = 200;
+        public static readonly float StartZoom= TerrainMaxZoom * 0.5f;
 
         const float CloseUpCamAngle = 0.85f;
         public const float NormalCamAngle = 0.78f;
@@ -54,9 +57,11 @@ namespace VikingEngine.DSSWars.Map
                 layers.Add(new DetailLayer(MapDetailLayerType.UnitDetail1, minZoom, maxZoom, zoomBuffer));
 
                 minZoom = maxZoom;
-                maxZoom = 200;//FullZoomRange.GetFromPercent(0.5f);
+                maxZoom = TerrainMaxZoom;//FullZoomRange.GetFromPercent(0.5f);
 
                 layers.Add(new DetailLayer(MapDetailLayerType.TerrainOverview2, minZoom, maxZoom, zoomBuffer));
+
+                TutorialZoomRange = new IntervalF(FullZoomRange.Min, maxZoom - zoomBuffer);
 
                 minZoom = maxZoom;
                 maxZoom = 450;//FullZoomRange.GetFromPercent(0.75f);
@@ -116,7 +121,7 @@ namespace VikingEngine.DSSWars.Map
             if (prevLayer != null)
             {
                 prevLayer.opacity = 1f;
-                if (current.DrawCloseUp)
+                if (current.DrawDetailLayer)
                 {
                     prevLayer.opacity = 1.75f;
                 }
@@ -170,7 +175,7 @@ namespace VikingEngine.DSSWars.Map
         public const float NormalCamAngle = 0.78f;
         const float OverviewCamAngle = 0.65f;
 
-        public bool DrawCloseUp, DrawNormalAndClose, DrawNormal, DrawOverview, DrawFullOverview;
+        public bool DrawDetailLayer, DrawNormalAndClose, DrawNormal, DrawOverview, DrawFullOverview;
         //public float CloseUpTransparentsy, NormalAndCloseTransparentsy, NormalTransparentsy, OverviewTransparentsy, OverviewAndFactionsTransparentsy, FactionsTransparentsy;
 
         public float goalCamAngle;
@@ -191,7 +196,7 @@ namespace VikingEngine.DSSWars.Map
                 case MapDetailLayerType.UnitDetail1:
                     //CloseUp
                     goalCamAngle = CloseUpCamAngle;
-                    DrawCloseUp = true;
+                    DrawDetailLayer = true;
                    
                     break;
 
@@ -204,7 +209,7 @@ namespace VikingEngine.DSSWars.Map
                     goalCamAngle = OverviewCamAngle;
                     DrawOverview = true;
                     DrawFullOverview = false;
-                    DrawCloseUp = false;                  
+                    DrawDetailLayer = false;                  
                     break;
 
                 case MapDetailLayerType.FullOverview4:

@@ -77,7 +77,7 @@ namespace VikingEngine.ToGG
             }
         }
         
-        protected override void runQuedMainTask()
+        public override void runSyncAction()
         {
             if (!isRemoved)
             {

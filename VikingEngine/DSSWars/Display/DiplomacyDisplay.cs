@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.LootFest.GO.PickUp;
@@ -55,7 +56,7 @@ namespace VikingEngine.DSSWars.Display
 
             if ( selectedRelation!= null)
             {
-                FactionRelationDisplay(faction, selectedRelation, content);
+                FactionRelationDisplay(faction, selectedRelation.Relation, content);
 
                 content.newLine();
 
@@ -170,13 +171,34 @@ namespace VikingEngine.DSSWars.Display
                 if (againstDark)
                 {
                     content.newLine();
-                    content.ListDot();
+                    HudLib.BulletPoint(content);
                     content.Add(new RichBoxText(DssRef.lang.Diplomacy_LightSide));//"Is light side ally"));
+                }
+
+                if (player.diplomacyMap.previousFactionsLookedAt.Count > 1)
+                {
+                    content.newParagraph();
+                    content.h2(DssRef.lang.Diplomacy_RelationWithOthers).overrideColor = HudLib.TitleColor_Label;
+
+                    for (int i = 1; i < player.diplomacyMap.previousFactionsLookedAt.Count; i++)
+                    {
+                        content.newLine();
+                        var thirdPartFaction = player.diplomacyMap.previousFactionsLookedAt[i];
+                        var relation = DssRef.diplomacy.GetRelationType(otherfaction, thirdPartFaction);
+
+                        content.Add(thirdPartFaction.FlagTextureToHud());
+                        content.Add(new RichBoxText(thirdPartFaction.PlayerName));
+
+                        content.Add(new RichBoxText(": "));
+                        content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation)));
+                        content.Add(new RichBoxText(Diplomacy.RelationString(relation)));
+                    }
+                
                 }
             }
         }
 
-        public static void FactionRelationDisplay(Faction faction, DiplomaticRelation relation, RichBoxContent content)
+        public static void FactionRelationDisplay(Faction faction, RelationType relation, RichBoxContent content)
         {
             content.Add(new RichBoxBeginTitle(2));
             content.Add(faction.FlagTextureToHud());
@@ -187,9 +209,11 @@ namespace VikingEngine.DSSWars.Display
 
             content.newParagraph();
 
-            content.Add(new RichBoxText(DssRef.lang.Diplomacy_RelationType + ": "));
-            content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation.Relation)));
-            content.Add(new RichBoxText(Diplomacy.RelationString(relation.Relation)));
+            var relType = new RichBoxText(DssRef.lang.Diplomacy_RelationType + ": ");
+            relType.overrideColor = HudLib.TitleColor_TypeName;
+            content.Add(relType);
+            content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation)));
+            content.Add(new RichBoxText(Diplomacy.RelationString(relation)));
         }
 
         void playerToPlayer()
@@ -210,7 +234,7 @@ namespace VikingEngine.DSSWars.Display
                     content.Add(new RichboxButton(new List<AbsRichBoxMember>()
                         {
                             //new RichBoxImage(SpriteName.WarsRelationPeace),
-                            new RichBoxText(DssRef.lang.Hud_Cancel),
+                            new RichBoxText(Ref.langOpt.Hud_Cancel),
                         },
                         new RbAction(cancelToPlayerRelation, SoundLib.menuBuy)));
                 }
@@ -276,10 +300,12 @@ namespace VikingEngine.DSSWars.Display
             message.Add(new RichBoxImage(Diplomacy.RelationSprite(PtoP.suggestedRelation)));
             message.Add(new RichBoxText(Diplomacy.RelationString(PtoP.suggestedRelation)));
             message.newLine();
-            message.Add(new RichboxButton(new List<AbsRichBoxMember>
-                {
-                    new RichBoxText(DssRef.lang.Diplomacy_AcceptRelationOffer)
-                },
+
+            var acceptButtonContent = new List<AbsRichBoxMember>(7);
+            otherPlayer.hud.messages.ControllerInputIcons(acceptButtonContent);
+            acceptButtonContent.Add(new RichBoxText(DssRef.lang.Diplomacy_AcceptRelationOffer));
+            message.Add(new RichboxButton(
+                acceptButtonContent,
                 new RbAction(acceptToPlayerRelation)));
             otherPlayer.hud.messages.Add(message);
         }
@@ -367,12 +393,13 @@ namespace VikingEngine.DSSWars.Display
 
             diplomacyCostToHud(cost, content);
 
-            content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
+            content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
             content.newLine();
             //string newRelationString = "New relation: ";
 
             //content.Add(new RichBoxText(newRelationString));
             content.Add(new RichBoxImage(Diplomacy.RelationSprite(toRelation)));
+            content.space();
             content.Add(new RichBoxText(string.Format(DssRef.lang.Diplomacy_ForgeNewRelationTo, Diplomacy.RelationString(toRelation))));
 
             if (peace_notTruce == false)
@@ -419,24 +446,39 @@ namespace VikingEngine.DSSWars.Display
 
             diplomacyCostToHud(cost, content);
 
-            content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
+            content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
             content.newLine();
-            //string newRelationString = "New relation: ";
-
-            //content.Add(new RichBoxText(newRelationString));
+            HudLib.BulletPoint(content);
             content.Add(new RichBoxImage(Diplomacy.RelationSprite(toRelation)));
+            content.space();
             content.Add(new RichBoxText(string.Format(DssRef.lang.Diplomacy_ForgeNewRelationTo, Diplomacy.RelationString(toRelation))));
-            //content.text(string.Format(newRelationString, Diplomacy.RelationString(toRelation)));
-
+            
             if (ally_notFriend)
-            {
-                content.text(DssRef.lang.Diplomacy_AllyDescription);//"Allies share war declarations.");
+            {                
+                content.text(DssRef.lang.Diplomacy_AllyDescription).overrideColor = HudLib.InfoYellow_Light;
+                var opponents = otherfaction.CollectWars();
+                foreach (var m in opponents)
+                {
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                   
+                    var relation = DssRef.diplomacy.GetRelationType(otherfaction, m);
+                    content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation)));
+                    content.space();
+                    content.Add(m.FlagTextureToHud());
+                    content.Add(new RichBoxText(m.PlayerName));
+                }
             }
             else
             {
-                content.text(DssRef.lang.Diplomacy_GoodRelationDescription);//"Limits the ability to declare war.");
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RichBoxText(DssRef.lang.Diplomacy_GoodRelationDescription));//"Limits the ability to declare war.");
             }
-            content.text(string.Format(DssRef.lang.Diplomacy_BreakingRelationCost, Diplomacy.DeclareWarCost(toRelation)));
+
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RichBoxText( string.Format(DssRef.lang.Diplomacy_BreakingRelationCost, Diplomacy.DeclareWarCost(toRelation))));
 
             player.hud.tooltip.create(player, content, true);
         }
@@ -485,10 +527,10 @@ namespace VikingEngine.DSSWars.Display
             
             RichBoxContent content = new RichBoxContent();
 
-            content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement);
+            content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement).overrideColor = HudLib.TitleColor_Label;
             content.newLine();
             
-            content.ListDot();
+            HudLib.BulletPoint(content);
             {
                //string militaryStrength = "{0}x stronger military power";
                 content.Add(new RichBoxText(string.Format(DssRef.lang.Diplomacy_ServantRequirement_XStrongerMilitary, Diplomacy.MiltitaryStrengthXServant)));
@@ -502,13 +544,13 @@ namespace VikingEngine.DSSWars.Display
                 //content.text(faction.player.Name + ": " + Convert.ToInt32(faction.militaryStrength));
                 content.newLine();
             }
-            content.ListDot();
+            HudLib.BulletPoint(content);
             {
                 string militaryStrength = DssRef.lang.Diplomacy_ServantRequirement_HopelessWar;
                 content.Add(new RichBoxText(militaryStrength, HudLib.ResourceCostColor(hasStrongerFoe())));
                 content.newLine();
             }
-            content.ListDot();
+            HudLib.BulletPoint(content);
             {
                 string militaryStrength = DssRef.lang.Diplomacy_ServantRequirement_MaxCities;
                 content.Add(new RichBoxText(string.Format(militaryStrength, DssRef.diplomacy.ServantMaxCities), HudLib.ResourceCostColor(otherfaction.cities.Count <= DssRef.diplomacy.ServantMaxCities)));
@@ -521,7 +563,7 @@ namespace VikingEngine.DSSWars.Display
             diplomacyCostToHud(cost, content);
             content.text(DssRef.lang.Diplomacy_ServantPriceWillRise);
 
-            content.h2(DssRef.lang.Hud_PurchaseTitle_Gain);
+            content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
             
             content.text(DssRef.lang.Diplomacy_ServantGainAbsorbFaction);
 
@@ -530,9 +572,9 @@ namespace VikingEngine.DSSWars.Display
 
         void diplomacyCostToHud(int cost, RichBoxContent content)
         {
-            content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
+            content.h2(DssRef.lang.Hud_PurchaseTitle_Cost).overrideColor = HudLib.TitleColor_Label;
             content.newLine();
-            HudLib.ResourceCost(content, GameObject.Resource.ResourceType.DiplomaticPoint, cost, player.diplomaticPoints.Int());
+            HudLib.ResourceCost(content, ResourceType.DiplomaticPoint, cost, player.diplomaticPoints.Int());
             content.newLine();
         }
     }

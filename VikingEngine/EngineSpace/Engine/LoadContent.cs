@@ -24,11 +24,15 @@ namespace VikingEngine.Engine
         static SpriteFont[] Fonts = new SpriteFont[(int)LoadedFont.NUM_NON];
         static SoundEffect[] SoundEffects = new SoundEffect[(int)LoadedSound.NUM];
 
-        static Model[] Models = new Model[(int)LoadedMesh.NUM];//Dictionary<LoadedMesh, Model> modelList = new Dictionary<LoadedMesh, Model>();
+        public static Model[] Models = new Model[(int)LoadedMesh.NUM];//Dictionary<LoadedMesh, Model> modelList = new Dictionary<LoadedMesh, Model>();
         static Effect[] effectList = new Effect[(int)LoadedEffect.NUM_NoEffect];
 
         public const string TexturePath = "Texture\\";
         public const string ModelPath = "Model\\";
+
+        //static SpriteFont regular, bold, console;
+        static FontLanguage currentFontLanguage = FontLanguage.NONE;
+        //static SpriteFont chinese_regular, chinese_bold, chinese_console;
 
         public static Color[] GetTextureData(LoadedTexture texture, Rectangle pixels)
         {
@@ -46,11 +50,16 @@ namespace VikingEngine.Engine
             
             //Load fonts
             Fonts = new SpriteFont[(int)LoadedFont.NUM_NON];
-            Fonts[(int)LoadedFont.Regular] = Content.Load<SpriteFont>("Font\\Regular");
-            Fonts[(int)LoadedFont.Bold] = Content.Load<SpriteFont>("Font\\Bold");
-            Fonts[(int)LoadedFont.Console] = Content.Load<SpriteFont>("Font\\Console");
 
-            Engine.Screen.RegularFontSize = MeasureString("XXjj", LoadedFont.Regular).Y;
+            //regular = Content.Load<SpriteFont>("Font\\Regular");
+            //bold = Content.Load<SpriteFont>("Font\\Bold");
+            //console = Content.Load<SpriteFont>("Font\\Console");
+
+            
+
+            setFontLanguage(FontLanguage.Western);
+
+            Engine.Screen.RegularFontSize = MeasureString("XXjj", LoadedFont.Regular, out _).Y;
             //Engine.Screen.RefreshUiSize();
 
             Textures[0] = Content.Load<Texture2D>(TexturePath + "noimage");
@@ -58,6 +67,45 @@ namespace VikingEngine.Engine
             Textures[(int)LoadedTexture.WhiteArea] = Content.Load<Texture2D>(TexturePath + "whitearea256");
             effectList[(int)LoadedEffect.ParticleEffect] = LoadShader(LoadedEffect.ParticleEffect.ToString());
             BaseContentLoaded = true;
+        }
+
+        public static void setFontLanguage(FontLanguage fontLanguage)
+        {
+            if (currentFontLanguage != fontLanguage)
+            {
+                currentFontLanguage = fontLanguage;
+                switch (fontLanguage)
+                {
+                    case FontLanguage.Western:
+                        var regular = Content.Load<SpriteFont>("Font\\Regular");
+                        var bold = Content.Load<SpriteFont>("Font\\Bold");
+                        var console = Content.Load<SpriteFont>("Font\\Console");
+
+                        Fonts[(int)LoadedFont.Regular] = regular;
+                        Fonts[(int)LoadedFont.Bold] = bold;
+                        Fonts[(int)LoadedFont.Console] = console;
+                        break;
+                    case FontLanguage.Chinese:
+                        var chinese_regular = Content.Load<SpriteFont>("Font\\ChineseRegular");
+                        var chinese_bold = Content.Load<SpriteFont>("Font\\ChineseBold");
+                        var chinese_console = Content.Load<SpriteFont>("Font\\ChineseConsole");
+
+                        Fonts[(int)LoadedFont.Regular] = chinese_regular;
+                        Fonts[(int)LoadedFont.Bold] = chinese_bold;
+                        Fonts[(int)LoadedFont.Console] = chinese_console;
+                        break;
+
+                    case FontLanguage.Japanese:
+                        var japanese_regular = Content.Load<SpriteFont>("Font\\JapaneseRegular");
+                        var japanese_bold = Content.Load<SpriteFont>("Font\\JapaneseBold");
+                        var japanese_console = Content.Load<SpriteFont>("Font\\JapaneseConsole");
+
+                        Fonts[(int)LoadedFont.Regular] = japanese_regular;
+                        Fonts[(int)LoadedFont.Bold] = japanese_bold;
+                        Fonts[(int)LoadedFont.Console] = japanese_console;
+                        break;
+                }
+            }
         }
        
         public static void LoadMesh(LoadedMesh name, string dir)
@@ -98,10 +146,24 @@ namespace VikingEngine.Engine
         }
 
 
-        public static Vector2 MeasureString(string text, LoadedFont font)
+        public static Vector2 MeasureString(string text, LoadedFont font, out bool error)
         {
-            if (text == null) { return Vector2.One; }
-            return Fonts[(int)font].MeasureString(text);
+            if (text == null) 
+            { 
+                error = true;
+                return Vector2.One; 
+            }
+
+            try
+            {
+                error = false;
+                return Fonts[(int)font].MeasureString(text);
+            }
+            catch
+            {
+                error = true;
+                return new Vector2(100, 10);
+            }
         }
         /// <summary>
         /// replaces non-standard symbol and/or foreign character with '*' 
@@ -223,4 +285,12 @@ namespace VikingEngine
         ccgTiles,
         NUM
     };
+
+    public enum FontLanguage
+    { 
+        NONE,
+        Western,
+        Chinese,
+        Japanese,
+    }
 }

@@ -38,7 +38,7 @@ namespace VikingEngine.Input
 
     struct AlternativeDirectionalMap : IDirectionalMap
     {
-        IDirectionalMap dirMap1, dirMap2;
+        public IDirectionalMap dirMap1, dirMap2;
 
         public AlternativeDirectionalMap(IDirectionalMap dirMap1, IDirectionalMap dirMap2)
         {
@@ -67,8 +67,8 @@ namespace VikingEngine.Input
 
             if (includeAlternative)
             {
-                SpriteName non;
-                dirMap2.ListIcons(list, out non, includeAlternative);
+                //SpriteName non;
+                dirMap2.ListIcons(list, out _, includeAlternative);
             }
         }
 
@@ -176,22 +176,21 @@ namespace VikingEngine.Input
 
             if (includeAlternative)
             {
-                SpriteName non;
                 if (dirMap2 != null)
                 {
-                    dirMap2.ListIcons(list, out non, includeAlternative);
+                    dirMap2.ListIcons(list, out _, includeAlternative);
                 }
                 if (dirMap3 != null)
                 {
-                    dirMap3.ListIcons(list, out non, includeAlternative);
+                    dirMap3.ListIcons(list, out _, includeAlternative);
                 }
                 if (dirMap4 != null)
                 {
-                    dirMap4.ListIcons(list, out non, includeAlternative);
+                    dirMap4.ListIcons(list, out _, includeAlternative);
                 }
                 if (dirMap5 != null)
                 {
-                    dirMap5.ListIcons(list, out non, includeAlternative);
+                    dirMap5.ListIcons(list, out _, includeAlternative);
                 }
 
             }
@@ -267,17 +266,69 @@ namespace VikingEngine.Input
         public void write(System.IO.BinaryWriter w)
         {
             w.Write((byte)DirectionalMapType.FourButtons);
-            up.write(w);
-            down.write(w);
-            left.write(w);
-            right.write(w);
+
+            if (up != null)
+            {
+                w.Write(true);
+                up.write(w);
+            }
+            else
+            {
+                w.Write(false);
+            }
+
+            if (down != null)
+            {
+                w.Write(true);
+                down.write(w);
+            }
+            else
+            {
+                w.Write(false);
+            }
+
+            if (left != null)
+            {
+                w.Write(true);
+                left.write(w);
+            }
+            else
+            {
+                w.Write(false);
+            }
+
+            if (right != null)
+            {
+                w.Write(true);
+                right.write(w);
+            }
+            else
+            {
+                w.Write(false);
+            }
+
         }
         public void read(System.IO.BinaryReader r)
         {
-            up = MapRead.Button(r);
-            down = MapRead.Button(r);
-            left = MapRead.Button(r);
-            right = MapRead.Button(r);
+            if (r.ReadBoolean())
+            { 
+                up = MapRead.Button(r); 
+            }
+
+            if (r.ReadBoolean())
+            {
+                down = MapRead.Button(r); 
+            }
+
+            if (r.ReadBoolean())
+            {
+                left = MapRead.Button(r);
+            }
+
+            if (r.ReadBoolean())
+            {
+                right = MapRead.Button(r);
+            }
         }
     }
 

@@ -277,7 +277,7 @@ namespace VikingEngine.ToGG.HeroQuest.Players.Phase
                         {
                             VectorRect ar = iconAr;
                             ar.Size *= 0.6f;
-                            ar.RightBottom = iconAr.RightBottom;
+                            ar.SetRightBottom( iconAr.RightBottom, false);
 
                             var itemIcon = new Graphics.Image(itemSlot.item.Icon, 
                                 ar.Position, ar.Size, HudLib.PopupLayer - 2);

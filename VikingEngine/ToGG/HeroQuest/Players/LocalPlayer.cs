@@ -759,12 +759,11 @@ namespace VikingEngine.ToGG.HeroQuest.Players
 
             boardUiMovable.Clear();
 
-            string non;
             unitsColl.unitsCounter.Reset();
             while (unitsColl.unitsCounter.Next())
             {
                 if (unitsColl.unitsCounter.sel.Alive &&
-                    canBeMoved(unitsColl.unitsCounter.sel, out non))
+                    canBeMoved(unitsColl.unitsCounter.sel, out _))
                 {
                     boardUiMovable.Add(unitsColl.unitsCounter.sel.squarePos);
                 }

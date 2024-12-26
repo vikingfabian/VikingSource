@@ -9,6 +9,8 @@ using Valve.Steamworks;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Players;
+using VikingEngine.LootFest.Data;
 using VikingEngine.PJ.Strategy;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.MoonFall;
@@ -17,14 +19,16 @@ namespace VikingEngine.DSSWars.Data
 {
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
-        public const int Version = 4;
-        public const int SubVersion = 4;
+        public const int Version = 7;
+        public const int SubVersion = 30; 
+        //public const int MergeVersion = 26;
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
         bool dataReady = false;
         public bool complete = false;
         ObjectPointerCollection pointers;
         SaveStateMeta meta;
+        public WorldData worldData;
 
         public SaveGamestate(SaveStateMeta meta)
              : base(false)
@@ -47,9 +51,10 @@ namespace VikingEngine.DSSWars.Data
 
         public void load()
         {
-            //complete = true;
             DataStream.BeginReadWrite.BinaryIO(false, meta.Path, null, readGameState, this, true);
         }
+
+        
 
         public void SaveComplete(bool save, int player, bool completed, byte[] value)
         {
@@ -66,7 +71,15 @@ namespace VikingEngine.DSSWars.Data
         {
             new SaveVersion(Version, SubVersion).write(w);
 
-            DssRef.storage.write(w);
+            //META
+            meta.write(w);
+            Debug.WriteCheck(w);
+
+            //WORLD
+            DssRef.world.writeMapFile(w);
+
+            //STATE
+            DssRef.storage.write(w, true);
             Debug.WriteCheck(w);
             DssRef.settings.writeGameState(w);
             Debug.WriteCheck(w);
@@ -75,6 +88,8 @@ namespace VikingEngine.DSSWars.Data
             DssRef.state.writeGameState(w);
         }
 
+        
+
         public void readGameState(System.IO.BinaryReader r)
         {
             pointers = new ObjectPointerCollection();
@@ -82,13 +97,28 @@ namespace VikingEngine.DSSWars.Data
             SaveVersion version = new SaveVersion();
             version.read(r);
 
-            DssRef.storage.read(r);
+            //META            
+            meta.read(r);
+            Debug.ReadCheck(r);
+            
+            //WORLD
+            worldData = new WorldData();
+            worldData.metaData = meta.worldmeta;
+            worldData.readMapFile(r);
+            DssRef.world = worldData;
+            
+
+            DssRef.state.initGameState(false, pointers);
+
+            //STATE
+            DssRef.storage.read(r, true);
             Debug.ReadCheck(r);
             DssRef.settings.readGameState(r, version.sub, pointers);
             Debug.ReadCheck(r);
             DssRef.world.readGameState(r, version.sub, pointers);
             Debug.ReadCheck(r);
             DssRef.state.readGameState(r, version.sub, pointers);
+            DssRef.time.setTotalTime(meta.playTime);
         }
 
         public override void Time_Update(float time_ms)
@@ -96,7 +126,9 @@ namespace VikingEngine.DSSWars.Data
             if (dataReady)
             { 
                 dataReady = false;
-                new WriteByteArray(meta.Path, memoryStream, this);
+                var path = meta.Path;
+                System.IO.Directory.CreateDirectory(path.CompleteDirectory);
+                new WriteByteArray(path, memoryStream, this);
             }
         }
 
@@ -104,6 +136,7 @@ namespace VikingEngine.DSSWars.Data
 
     class ObjectPointerCollection
     { 
+        //public List<LocalPlayer> localPlayers = new List<LocalPlayer>();
         public List<AbsObjectPointer> pointers = new List<AbsObjectPointer>();
 
         public void SetPointer()

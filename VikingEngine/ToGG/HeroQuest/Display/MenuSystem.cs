@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using VikingEngine.HUD;
 using VikingEngine.ToGG.HeroQuest.Gadgets;
+using VikingEngine.ToGG.HeroQuest.Players;
 
 namespace VikingEngine.ToGG.HeroQuest.Display
 {
@@ -149,11 +150,11 @@ namespace VikingEngine.ToGG.HeroQuest.Display
 
         void giftedAwardsLink(int id)
         {
-            HeroQuest.hqRef.players.remotePlayersCounter.Reset();
-            HeroQuest.hqRef.players.remotePlayersCounter.Next();
+            var remotes = new SpottedArrayTypeCounter<AbsHQPlayer>(hqRef.players.allPlayers, typeof(RemotePlayer));
+            remotes.Next();
 
             toggRef.achievements.GetGiftedAchievement(id).NetSend(
-                HeroQuest.hqRef.players.remotePlayersCounter.GetSelection);
+                remotes.sel);
 
             CloseMenu();
         }

@@ -2,7 +2,7 @@
 
 namespace VikingEngine
 {
-    abstract class AbsQuedTasks : AbsMainThreadTask, ISpottedArrayMember
+    abstract class AbsQuedTasks : ISyncAction
     {
         public bool bStorageTask, bAsynchTask, bMainThreadTask;
         public bool storagePriority;
@@ -93,48 +93,52 @@ namespace VikingEngine
 
                 case MultiThreadType.Asynch:
                     task = System.Threading.Tasks.Task.Factory.StartNew(() =>
-                    {
-                        runQuedTask(MultiThreadType.Asynch);
-
-                        isMainThreadTaskReady = true;
-                    }
+                        {
+                            runQuedAsynchTask();//runQuedTask(MultiThreadType.Asynch);
+                            if (bMainThreadTask)
+                            {
+                                addToSyncedUpdate();//isMainThreadTaskReady = true;
+                            }
+                        }
                     );
 
-                    if (bMainThreadTask)
-                    {
-                        AddToUpdateList();
-                    }
+                    //if (bMainThreadTask)
+                    //{
+                    //    AddToUpdateList();
+                    //}
                     break;
 
                 case MultiThreadType.Main:
-                    AddToUpdateList();
+                    //AddToUpdateList();
                     break;
             }
         }
 
-        public override void runQuedTask(MultiThreadType threadType)
-        {
-            switch (threadType)
-            {
-                case MultiThreadType.Storage: runQuedStorageTask(); break;
-                case MultiThreadType.Asynch: runQuedAsynchTask(); break;
-                case MultiThreadType.Main: runQuedMainTask(); break;
-            }
-        }
+        //public override void runQuedTask(MultiThreadType threadType)
+        //{
+        //    switch (threadType)
+        //    {
+        //        case MultiThreadType.Storage: runQuedStorageTask(); break;
+        //        case MultiThreadType.Asynch: runQuedAsynchTask(); break;
+        //        case MultiThreadType.Main: runSyncAction(); break;
+        //    }
+        //}
 
-        virtual protected void runQuedStorageTask()
+        virtual public void runQuedStorageTask()
         { }
 
         virtual protected void runQuedAsynchTask()
         { }
 
-        virtual protected void runQuedMainTask()
+        virtual public void runSyncAction()
         { }
+
+
 
         virtual public void onStorageComplete()
         {
             bStorageTaskComplete = true;
-            isMainThreadTaskReady = !bAsynchTask;
+            //isMainThreadTaskReady = !bAsynchTask;
 
             if (autoRun)
             {
@@ -150,6 +154,11 @@ namespace VikingEngine
         public int SpottedArrayMemberIndex { get; set; }
         public bool SpottedArrayUseIndex { get { return true; } }
 
+
+        public void addToSyncedUpdate()
+        { 
+            Ref.update.AddSyncAction(this);
+        }
     }
 
     class QueAndSynchTask : AbsQuedTasks
@@ -171,9 +180,9 @@ namespace VikingEngine
             asynchAction();
         }
 
-        protected override void runQuedMainTask()
+        public override void runSyncAction()
         {
-            base.runQuedMainTask();
+            base.runSyncAction();
             synchedAction();
         }
     }

@@ -38,6 +38,12 @@ namespace VikingEngine.HUD.RichBox
             return textCont;
         }
 
+        public AbsRichBoxMember AddReturn(AbsRichBoxMember member)
+        { 
+            Add(member);
+            return member;
+        }
+
         public void add(SpriteName icon, string textline)
         {
             newLine();
@@ -45,7 +51,7 @@ namespace VikingEngine.HUD.RichBox
             Add(new RichBoxText(textline));
         }
 
-        public void space(int spaces = 1)
+        public void space(float spaces = 1f)
         { 
             Add(new RichBoxSpace(spaces));
         }
@@ -116,7 +122,7 @@ namespace VikingEngine.HUD.RichBox
             return result;
         }
 
-        public RichBoxImage ListDot()
+        public RichBoxImage BulletPoint()
         {
             var dot =new  RichBoxImage(SpriteName.WhiteArea, 0.4f, 1f, 2f);
             dot.color = Color.DarkGray;
@@ -173,21 +179,36 @@ namespace VikingEngine.HUD.RichBox
         public void ButtonDescription(IButtonMap buttonMap, string desc)
         {
             newLine();
-            ButtonMap(buttonMap);
+            this.buttonMap(buttonMap);
             space();
             Add(new RichBoxText(desc));
         }
-        public void ButtonMap(IButtonMap buttonMap)
+        public void buttonMap(IButtonMap buttonMap)
+        {
+            ButtonMap(buttonMap, this);
+            //List<SpriteName> sprites = new List<SpriteName>(2);
+            //buttonMap.ListIcons(sprites);
+
+            //for (int i = 0; i < sprites.Count; i++)
+            //{
+            //    Add(new RichBoxImage(sprites[i]));
+            //    if (i < sprites.Count - 1)
+            //    {
+            //        Add(new RichBoxText("+"));
+            //    }
+            //}
+        }
+        public static void ButtonMap(IButtonMap buttonMap, List<AbsRichBoxMember> content )
         { 
             List<SpriteName> sprites = new List<SpriteName>(2);
             buttonMap.ListIcons(sprites);
 
             for (int i = 0; i < sprites.Count; i++)
             {
-                Add(new RichBoxImage(sprites[i]));
+                content.Add(new RichBoxImage(sprites[i]));
                 if (i < sprites.Count - 1)
                 {
-                    Add(new RichBoxText("+"));
+                    content.Add(new RichBoxText("+"));
                 }
             }
         }

@@ -14,6 +14,7 @@ namespace VikingEngine.DSSWars.Map
     {
         //Represents a thread-safe last in-first out (LIFO) collection.
         private ConcurrentStack<PathFinding> pool = new ConcurrentStack<PathFinding>();
+        //public PathNodePool nodePool = new PathNodePool();
 
         public PathFinding Get()
         {
@@ -30,21 +31,49 @@ namespace VikingEngine.DSSWars.Map
         public void Return(PathFinding path)
         {
             // Reset the node to a default state
-            
+
             path.recycle();
             pool.Push(path);
         }
     }
 
+    //class PathNodePool
+    //{
+    //    private ConcurrentStack<PathNode> pool = new ConcurrentStack<PathNode>();
+
+    //    public PathNode Get()
+    //    {
+    //        if (pool.TryPop(out PathNode node))
+    //        {
+    //            return node;
+    //        }
+    //        else
+    //        {
+    //            return new PathNode();
+    //        }
+    //    }
+
+    //    public void Return(PathNode node)
+    //    {
+    //        // Reset the node to a default state
+    //        //if (node != null)
+    //        //{
+    //        //node.recycle();
+    //        if (pool.Count < PathFinding.MaxNodeLength)
+    //        {
+    //            pool.Push(node);
+    //        }
+    //        //}           
+    //    }
+    //}
+
+
     class PathFinding
     {
         public const int MaxNodeLength = 30000;
 
-        PathNodePool nodePool = new PathNodePool();
-
-        //SortedSet<PathNode> open2 = new SortedSet<PathNode>();
         List<PathNode> open = new List<PathNode>();
-        
+
         PathNode[,] nodeGrid;
         public PathFinding()
         {
@@ -67,38 +96,34 @@ namespace VikingEngine.DSSWars.Map
             * 3.Varje kollad center ruta ska till en sluten lista
             * 4.Varje ny ruta ska till en öppen lista
             */
-            
-            PathNode startNode = nodePool.Get().init(center, conv.ToDir8(startDir));
-            startNode.Closed = true;
-            startNode.ship = startAsShip;
-            nodeGrid[center.X, center.Y] = startNode;
 
+            PathNode startNode = new PathNode(center, conv.ToDir8_INT(startDir), startAsShip);
+            //PathNode startNode = DssRef.state.pathFindingPool.nodePool.Get().init(center, conv.ToDir8_INT(startDir));
+
+            nodeGrid[center.X, center.Y] = startNode;
 
             bool endAsShip = DssRef.world.tileGrid.Get(goal).IsWater();
             PathNode currentNode = startNode;
-            
+
             int numLoops = 0;
 
-            
+
             while (true)
             {
-                bool diagonal = false;
-                for (Dir8 dir = 0; dir < Dir8.NUM; dir++)
+                for (int dir = 0; dir < 8; dir++)
                 {
-                    IntVector2 pos = IntVector2.FromDir8(dir) + currentNode.Position;
-                    if (DssRef.world.tileBounds.IntersectTilePoint(pos) && nodeGrid[pos.X, pos.Y] == null)
+                    IntVector2 pos = IntVector2.Dir8Array[dir] + currentNode.Position;
+                    if (DssRef.world.tileBounds.IntersectTilePoint(pos) && !nodeGrid[pos.X, pos.Y].HasValue)
                     {
                         //add a node to open list
-                        PathNode node = nodePool.Get().init(pos, dir, DssRef.world, currentNode, diagonal, goal, endAsShip);
-                        if (!node.Closed)
-                            open.Add(node);
+                        PathNode node = new PathNode(pos, dir, DssRef.world, currentNode, goal, endAsShip);
+                        open.Add(node);
                         nodeGrid[pos.X, pos.Y] = node;
                     }
-                    diagonal = !diagonal;
                 }
 
                 var lowValue = float.MaxValue;
-                int lowIndex=-1;
+                int lowIndex = -1;
                 for (int i = 0; i < open.Count; i++)
                 {
                     if (open[i].Value < lowValue)
@@ -113,18 +138,18 @@ namespace VikingEngine.DSSWars.Map
                     currentNode = open[lowIndex];
                     open.RemoveAt(lowIndex);
                 }
-                currentNode.Closed = true;
+
+                currentNode.closed = true;
+                nodeGrid[currentNode.Position.X, currentNode.Position.Y] = currentNode;
 
                 if (currentNode.Position == goal)
                 {
                     break;
                 }
 
-                
                 numLoops++;
                 if (numLoops > 20000)
                 {
-                    //lib.DoNothing();
                     break;
                 }
             }
@@ -132,12 +157,11 @@ namespace VikingEngine.DSSWars.Map
             List<PathNodeResult> result = new List<PathNodeResult>();
 
 
-            while (currentNode != startNode)
+            while (currentNode.Position != startNode.Position)
             {
                 result.Add(new PathNodeResult(currentNode.Position, currentNode.ship));
-                IntVector2 pos = currentNode.PreviousPosition;//currentNode.Position - IntVector2.FromFacing8Dir(currentNode.parentDir);
+                IntVector2 pos = currentNode.PreviousPosition;
                 currentNode = nodeGrid[pos.X, pos.Y];
-
 
                 numLoops++;
                 if (numLoops > MaxNodeLength)
@@ -145,23 +169,20 @@ namespace VikingEngine.DSSWars.Map
 
             }
 
-     
+
             return new WalkingPath(result);
         }
 
         public void recycle()
-        { 
+        {
             open.Clear();
 
             for (int y = 0; y < DssRef.world.Size.Y; ++y)
             {
                 for (int x = 0; x < DssRef.world.Size.X; ++x)
                 {
-                    if (nodeGrid[x, y] != null)
-                    {
-                        nodePool.Return(nodeGrid[x, y]);
-                        nodeGrid[x, y] = null;
-                    }
+                    //DssRef.state.pathFindingPool.nodePool.Return(nodeGrid[x, y]);
+                    nodeGrid[x, y] = PathNode.Empty;
                 }
             }
         }
@@ -241,7 +262,7 @@ namespace VikingEngine.DSSWars.Map
         {
             int ix = currentNodeIx;
 
-            if (ix >= 0 && nodes.Count > 0)
+            if (ix >= 0 && ix < nodes.Count)
             {
                 node = nodes[ix];
                 return true;
@@ -263,6 +284,23 @@ namespace VikingEngine.DSSWars.Map
             if (currentNodeIx > 0)
             {
                 return !nodes[currentNodeIx].ship && !nodes[currentNodeIx - 1].ship;
+            }
+            return false;
+        }
+
+        public bool nextNodeIsShip()
+        {
+            if (currentNodeIx >= 0)
+            {
+                return nodes[currentNodeIx].ship;
+            }
+            return false;
+        }
+        public bool nextNodeIsFeet()
+        {
+            if (currentNodeIx >= 0)
+            {
+                return !nodes[currentNodeIx].ship;
             }
             return false;
         }
@@ -300,66 +338,96 @@ namespace VikingEngine.DSSWars.Map
         }
     }
 
-    class PathNodePool
-    {
-        private Stack<PathNode> pool = new Stack<PathNode>(PathFinding.MaxNodeLength);
-        
-        public PathNode Get()
-        {            
-            if (pool.Count > 0)
-            {
-                return pool.Pop();
-            }
-            else
-            {
-                return new PathNode();
-            }            
-        }
+    //class PathNodePool
+    //{
+    //    private Stack<PathNode> pool = new Stack<PathNode>(PathFinding.MaxNodeLength);
 
-        public void Return(PathNode node)
-        {           
-            // Reset the node to a default state
-            node.recycle();
-            if (pool.Count < PathFinding.MaxNodeLength)
-            {
-                pool.Push(node);
-            }           
-        }
-    }
+    //    public PathNode Get()
+    //    {            
+    //        if (pool.Count > 0)
+    //        {
+    //            return pool.Pop();
+    //        }
+    //        else
+    //        {
+    //            return new PathNode();
+    //        }            
+    //    }
 
-    class PathNode //: IComparable<PathNode>
+    //    public void Return(PathNode node)
+    //    {           
+    //        // Reset the node to a default state
+    //        node.recycle();
+    //        if (pool.Count < PathFinding.MaxNodeLength)
+    //        {
+    //            pool.Push(node);
+    //        }           
+    //    }
+    //}
+
+    struct PathNode //: IComparable<PathNode>
     {
         const float MoveCostStraight = 10f;
         const float MoveCostDiagonal = 14f;
+
+        public static readonly PathNode Empty = new PathNode();
+
         public float Value;
         float moveCost;
-        public bool Closed;
+
         public IntVector2 Position;
         public IntVector2 PreviousPosition;
 
+        public bool HasValue;
+        public bool closed;
         public bool waterTile;
         public bool ship;
 
-        Dir8 dir;
+        int dir8;
 
-        public PathNode init(IntVector2 pos, Dir8 dir)
+        public PathNode(IntVector2 pos, int dir8, bool ship)
         {
             this.Position = pos;
-            this.dir = dir;
+            this.dir8 = dir8;
+            this.ship = ship;
+            HasValue = true;
+            closed = true;
 
             moveCost = 0;
             Value = 0;
-            return this;
+            PreviousPosition = pos;
+            waterTile = ship;
         }
+        //public PathNode init(IntVector2 pos, int dir8)
+        //{
+        //    this.Position = pos;
+        //    this.dir8 = dir8;
 
-        public PathNode init(IntVector2 pos, Dir8 dir, WorldData world, PathNode parent, bool diagonal, IntVector2 goalPos, bool endAsShip)
+        //    moveCost = 0;
+        //    Value = 0;
+
+        //    HasValue = true;
+        //    return this;
+        //}
+        //public PathNode(IntVector2 pos, int dir8)
+        //{
+        //    this.Position = pos;
+        //    this.dir8 = dir8;
+
+        //    moveCost = 0;
+        //    Value = 0;
+        //}
+
+        public PathNode(IntVector2 pos, int dir8, WorldData world, PathNode parent, IntVector2 goalPos, bool endAsShip)
         {
             this.Position = pos;
-            this.dir = dir;
+            this.dir8 = dir8;
             this.PreviousPosition = parent.Position;
-            
-            moveCost = diagonal? MoveCostDiagonal : MoveCostStraight;
-            if (dir == parent.dir)
+            closed = false;
+
+            //Dir8 starts with North = 0 (even)
+            moveCost = lib.IsEven(dir8) ? MoveCostStraight : MoveCostDiagonal;
+            if (dir8 == parent.dir8)
             { //Bonus for keeping direction
                 moveCost -= 1f;
             }
@@ -376,46 +444,35 @@ namespace VikingEngine.DSSWars.Map
                 else
                 {
                     moveCost += MoveCostStraight * 16;
-                }                
+                }
             }
 
-            if (parent.ship)
-            {
-                if (!parent.waterTile && !this.waterTile)
-                {
-                    //Detta är för att armen kan vada igenom en tile med vatten
-                    parent.ship = false;
-                }
-            }
-            else
-            {
-                if (parent.waterTile && this.waterTile)
-                {
-                    parent.ship = true;
-                }
-            }
-            ship = parent.ship;
+            //if (parent.ship)
+            //{
+            //    if (!parent.waterTile && !this.waterTile)
+            //    {
+            //        //Detta är för att armen kan vada igenom en tile med vatten
+            //        parent.ship = false;
+            //    }
+            //}
+            //else
+            //{
+            //    if (parent.waterTile && this.waterTile)
+            //    {
+            //        parent.ship = true;
+            //    }
+            //}
+            //ship = parent.ship;
+            ship = this.waterTile;
 
             moveCost *= tile.TroupWalkingDistance(ship);
-               
+
             moveCost += parent.moveCost;
-                
+
             Value = moveCost + (Math.Abs(pos.X - goalPos.X) + Math.Abs(pos.Y - goalPos.Y)) * MoveCostStraight;
 
-            return this;
+            HasValue = true;
         }
-
-        public void recycle()
-        {
-            Closed = false;
-        }
-
-        //public int CompareTo(PathNode other)
-        //{
-        //    int result = Value.CompareTo(other.Value);
-           
-        //    return result;
-        //}
     }
 
 }

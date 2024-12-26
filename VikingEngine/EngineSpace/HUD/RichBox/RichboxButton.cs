@@ -12,7 +12,7 @@ namespace VikingEngine.HUD.RichBox
     {
         protected AbsRbAction click, enter;
         protected List<AbsRichBoxMember> content;
-        Graphics.Image bgPointer;
+        protected Graphics.Image bgPointer;
         public bool enabled;
 
         public Input.IButtonMap buttonMap = null;
@@ -45,33 +45,42 @@ namespace VikingEngine.HUD.RichBox
 
         public override void Create(RichBoxGroup group)
         {
-            Vector2 topLeft = group.position;
+            if (content.Count > 1)
+            {
+                lib.DoNothing();
+            }
+
+
+            const float HoriSpace = 4;
+
+            
             float heigh = group.lineSpacingHalf;
 
             group.parentMember.Push(this);
 
-            group.position.X += 4;
+            group.TryCreate_Start();
+            createContent(out Vector2 topLeft, out Vector2 bottomRight, out bool multiline);
 
-            createPreContent(group);
-
-            foreach (var m in content)
+            if (bottomRight.X + 4 > group.boxWidth)
             {
-                m.Create(group);
+                group.TryCreate_Undo();
+                group.newLine();
+                createContent(out topLeft, out bottomRight, out multiline);
             }
-            group.position.X += 4;
+            else
+            {
+                group.TryCreate_Complete();
+            }
 
             group.parentMember.Pop();
-
-            Vector2 bottomRight = group.position;
-            if (bottomRight.Y != topLeft.Y)
-            {
-                bottomRight.X = group.RightEdgeSpace();
-            }
 
             topLeft.Y -= heigh;
             bottomRight.Y += group.lineSpacingHalf;
 
             VectorRect area = VectorRect.FromTwoPoints(topLeft, bottomRight);
+
+            if (multiline) area.Width = group.boxWidth;
+
             area.AddXRadius(2);
             area.AddYRadius(-2);
             bgPointer = new Image(SpriteName.WhiteArea_LFtiles, area.Position, area.Size, group.layer + 1);
@@ -91,6 +100,44 @@ namespace VikingEngine.HUD.RichBox
             
             group.images.Add(bgPointer);
             group.buttonGrid_Y_X.Last().Add(this);
+
+            void createContent(out Vector2 topLeft, out Vector2 bottomRight, out bool multilineContent)
+            {
+                multilineContent = false;
+                float prevY = group.position.Y;
+                bool newLine = false;
+                topLeft = group.position;
+
+                group.position.X += HoriSpace;
+
+                createPreContent(group);
+
+                foreach (var m in content)
+                {
+                    m.Create(group);
+
+                    if (newLine)
+                    {
+                       
+                        multilineContent = true;
+                    }
+                    if (prevY < group.position.Y)
+
+                    {
+                        //multiline button
+                        //area.Width = group.boxWidth;
+                        group.position.X += HoriSpace;
+                        newLine = true;
+                    }
+                }
+                group.position.X += HoriSpace;
+
+                bottomRight = group.position;
+                if (bottomRight.Y != topLeft.Y)
+                {
+                    bottomRight.X = group.RightEdgeSpace();
+                }
+            }
         }
 
         virtual protected void createPreContent(RichBoxGroup group)
@@ -109,6 +156,19 @@ namespace VikingEngine.HUD.RichBox
         public override void onEnter()
         {
             enter?.actionTrigger();
+        }
+
+        public override void getButtons(List<RichboxButton> buttons)
+        {
+            buttons.Add(this);
+        }
+
+        public void setGroupSelectionColor(RichBoxSettings settings, bool selected)
+        {
+            if (!selected)
+            {
+                overrideBgColor = settings.buttonSecondary.BgColor;
+            }
         }
     }
 }

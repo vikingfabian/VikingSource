@@ -11,36 +11,36 @@ using VikingEngine.DSSWars.Display.CutScene;
 
 namespace VikingEngine.DSSWars.Display
 {
-    class GameMenuSystem:MenuSystem
+    class GameMenuSystem : MenuSystem
     {
         bool gameWasPaused;
-        bool localHost;
+        //bool localHost;
         Graphics.Image blackFade;
-        public GameMenuSystem(InputMap input, bool localHost)
-            :base (input, MenuType.InGame)
-        { 
-            this.localHost = localHost;
+        public GameMenuSystem()//, bool localHost)
+            : base(new InputMap(Engine.XGuide.LocalHostIndex), MenuType.InGame)
+        {
+            //this.localHost = localHost;
         }
 
-        public bool update()
-        {
-            if (localHost)
-            {
-                if (Open)
-                {
-                    menuUpdate();
-                    return true;
-                }
-                else
-                {
-                    if (input.Menu.DownEvent)
-                    {
-                        pauseMenu();
-                    }
-                }
-            }
-            return false;
-        }
+        //public bool update()
+        //{
+        //    //if (localHost)
+        //    //{
+        //        if (Open)
+        //        {
+        //            menuUpdate();
+        //            return true;
+        //        }
+        //        else
+        //        {
+        //            if (input.Menu.DownEvent)
+        //            {
+        //                pauseMenu();
+        //            }
+        //        }
+        //    //}
+        //    return false;
+        //}
 
         public override void openMenu()
         {
@@ -59,11 +59,17 @@ namespace VikingEngine.DSSWars.Display
         }
 
         public override void closeMenu()
-        {   
+        {
             Ref.SetPause(gameWasPaused);
             blackFade?.DeleteMe();
             blackFade = null;
             base.closeMenu();
+        }
+
+        void watchEpilogue()
+        {
+            closeMenu();
+            new CutScene.NightmarePrologue();
         }
 
         void saveGameState()
@@ -90,26 +96,77 @@ namespace VikingEngine.DSSWars.Display
             }
         }
 
+        void exit()
+        {
+            closeMenu();
+
+            //if (DssRef.state.cutScene == null)
+            //{
+            //    new SaveScene(true).ExitGame = true;
+            //}
+            //else
+            //{
+                DssRef.state.exit();
+            //}
+        }
+
         public void pauseMenu()
-        { 
+        {
             openMenu();
             GuiLayout layout = new GuiLayout(DssRef.lang.GameMenu_Title, menu);
-            {  
+            {
+
                 new GuiTextButton(DssRef.lang.GameMenu_Resume, null, closeMenu, false, layout);
+
+                if (DssRef.storage.runTutorial)
+                {
+                    new GuiDialogButton(DssRef.lang.Tutorial_EndTutorial, null, new GuiAction(endTutorial),
+                        false, layout);
+                }
                 new GuiTextButton(DssRef.lang.GameMenu_SaveState, DssRef.lang.GameMenu_SaveStateWarnings, saveGameState, false, layout);
+                new GuiTextButton(DssRef.lang.GameMenu_WatchPrologue, null, watchEpilogue, false, layout);
 
                 if (DssRef.state.IsLocalMultiplayer())
                 {
                     multiplayerGameSpeedToMenu(layout);
                 }
-                
+                new GuiTextButton(DssRef.lang.GameMenu_NextSong, null, new GuiAction(() => { Ref.music.debugNext(); closeMenu(); }), false, layout);
+
                 Ref.gamesett.soundOptions(layout);
                 new GuiSectionSeparator(layout);
+                new GuiDialogButton(DssRef.lang.GameMenu_ExitGame, null, new GuiAction(exit), false, layout);
 
-                new GuiDialogButton(DssRef.lang.GameMenu_ExitGame, null, new GuiAction(saveAndExit), false, layout);
+                new GuiDialogButton(DssRef.lang.Hud_SaveAndExit, null, new GuiAction(saveAndExit), false, layout);
+
             }
             layout.End();
         }
+
+        void endTutorial()
+        {
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                p.tutorial?.EndTutorial();
+            }
+            closeMenu();
+        }
+
+        public void debugMenu()
+        {
+            openMenu();
+            GuiLayout layout = new GuiLayout("DEBUG", menu);
+            {
+                DssRef.state.localPlayers[0].debugMenu(layout);
+            }
+            layout.End();
+        }
+
+        public void controllerLost()
+        {
+            pauseMenu();
+
+        }
+
 
     }
 }

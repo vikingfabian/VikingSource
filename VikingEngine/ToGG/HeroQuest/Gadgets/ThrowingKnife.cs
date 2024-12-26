@@ -18,7 +18,6 @@ namespace VikingEngine.ToGG.HeroQuest.Gadgets
 
         public override List<IntVector2> quickUse_TargetSquares(Unit user, out bool attackTarget)
         {
-            IntVector2 non;
             List<IntVector2> result = new List<IntVector2>();
 
             ForXYLoop loop = new ForXYLoop(Rectangle2.FromCenterTileAndRadius(user.squarePos, MaxRange));
@@ -32,7 +31,7 @@ namespace VikingEngine.ToGG.HeroQuest.Gadgets
                     if (unit != null && 
                         unit != user &&
                         unit.hasHealth() &&
-                        user.InLineOfSight(user.squarePos, loop.Position, false, out non))
+                        user.InLineOfSight(user.squarePos, loop.Position, false, out _))
                     {
                         result.Add(loop.Position);
                     }

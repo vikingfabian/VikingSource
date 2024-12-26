@@ -24,7 +24,9 @@ namespace VikingEngine.DSSWars.Map
         /// <summary>
         /// Trigger a reload of the map
         /// </summary>
-        public bool needReload = false;
+        
+        public bool onSecondUpdate = false;
+        //public bool needReload = false;
         public MapLayer_Detail()
         {
             DssRef.state.detailMap = this;
@@ -72,16 +74,16 @@ namespace VikingEngine.DSSWars.Map
             for (int i = tiles.Count - 1; i >= 0; --i)
             {
                 var tile = DssRef.world.tileGrid.Get(tiles[i].pos);
-                byte render = DssRef.state.culling.cullingStateA ? tile.renderStateA : tile.renderStateB;
-                if (render == Culling.NoRender || needReload)
+                byte render = DssRef.state.culling.cullingStateA ? tile.bits_renderStateA : tile.bits_renderStateB;
+                if (render == Culling.NoRender || onSecondUpdate)
                 {
                     tile.hasTileInRender = false;
+                    tile.exitRenderTimeStamp_TotSec = Ref.TotalGameTimeSec;
                     tiles[i].add = false;
                     processingTiles.Add(tiles[i]);
                     tiles.RemoveAt(i);
                 }
-            }
-            
+            }            
 
             for (int pIx = 0; pIx < DssRef.state.culling.players.Length; ++pIx)
             {
@@ -115,7 +117,7 @@ namespace VikingEngine.DSSWars.Map
                 }
             }
 
-            needReload = false;
+            onSecondUpdate = false;
 
             lock (synchTiles)
             {
@@ -123,11 +125,5 @@ namespace VikingEngine.DSSWars.Map
             }
             processingTiles.Clear();
         }
-
-        
-        //public void asynch_OnMapUpdate()
-        //{ 
-            
-        //}
     }
 }

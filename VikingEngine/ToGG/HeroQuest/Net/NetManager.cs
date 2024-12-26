@@ -211,8 +211,8 @@ namespace VikingEngine.ToGG.HeroQuest
         {
             if (host)
             {
-                var allP = hqRef.players.allPlayersCounter;
-                allP.Reset();
+                var allP = hqRef.players.allPlayers.counter();
+                
                 while (allP.Next())
                 {
                     if (allP.sel.IsHero && !allP.sel.readyToEndTurn_Confirmed)

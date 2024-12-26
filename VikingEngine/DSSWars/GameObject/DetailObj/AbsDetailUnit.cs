@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
+using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -41,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         //public Vector3 position;
 
-        const float AsynchCollisionGroupRadius = AbsSoldierData.StandardBoundRadius * 2f;
+        public SoldierData soldierData;
         protected Vector2 collisionForce = Vector2.Zero;
         const int CollGroupSize = 8;
 
@@ -118,27 +119,24 @@ namespace VikingEngine.DSSWars.GameObject
         abstract public void update(float time, bool fullUpdate);
 
         abstract public void asynchUpdate();
-        
-        public void setDetailLevel(bool unitDetailView)
-        {
-            Debug.CrashIfThreaded();
-            if (unitDetailView)
-            {
-                if (model == null)
-                {
-                    if (isDeleted)
-                    { 
-                        lib.DoNothing();
-                    }
-                    model = initModel();
-                }
-            }
-            else
-            {
-                model?.DeleteMe();
-                model = null;
-            }
-        }
+
+        //public void setDetailLevel(bool unitDetailView)
+        //{
+        //    Debug.CrashIfThreaded();
+        //    if (unitDetailView)
+        //    {
+        //        if (model == null)
+        //        {
+        //            model = initModel();
+        //            model.update(this);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        model?.DeleteMe();
+        //        model = null;
+        //    }
+        //}
 
         abstract protected DetailUnitModel initModel();
 
@@ -190,6 +188,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             var nextAttackTarget_sp= nextAttackTarget;
+            nextAttackTarget = null;
             if (nextAttackTarget_sp != null && !nextAttackTarget_sp.defeatedBy(GetFaction()))
             {
                 attackTarget = nextAttackTarget_sp;
@@ -211,9 +210,9 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (canTargetUnit(unit))
                 {
-                    var data = Data();
+                    var data = Profile();
                     
-                    if (!data.restrictAngle || anglediff <= data.angle)
+                    if (!data.restrictTargetAngle || anglediff <= data.targetAngle)
                     {
                         closestOpponent = unit;
                         closestOpponentDistance = distance;
@@ -225,7 +224,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected void collisionGroupCheck(AbsDetailUnit unit, float distance)
         {
-            if (distance < AsynchCollisionGroupRadius)
+            if (distance < DssVar.Men_AsynchCollisionGroupRadius)
             {
                 if (collisionGroup.processList.Count < CollGroupSize)
                 {
@@ -269,7 +268,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int missingHealth
         {
-            get { return Data().basehealth - health; }
+            get { return soldierData.basehealth - health; }
         }
 
         virtual public void onDeath(bool fullUpdate, Faction enemyFaction)
@@ -461,7 +460,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public float DPS()
         {
-            return Data().attackDamage / TimeExt.MillsSecToSec(Data().attackTimePlusCoolDown);
+            return soldierData.attackDamage / TimeExt.MillsSecToSec(soldierData.attackTimePlusCoolDown);
         }
 
         public bool Alive()
@@ -478,7 +477,7 @@ namespace VikingEngine.DSSWars.GameObject
             return health <= 0;
         }
 
-        override public bool aliveAndBelongTo(Faction faction) 
+        override public bool aliveAndBelongTo(int faction) 
         { 
             return health > 0;
         }
@@ -511,7 +510,7 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public Vector3 projectileStartPos()
         {
             Vector3 pos = position;
-            pos.Y += AbsDetailUnitData.StandardModelScale * 0.6f;
+            pos.Y += DssConst.Men_StandardModelScale * 0.6f;
             return pos;
         }
 
@@ -537,19 +536,19 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public int MaxHealth()
         {
-            return Data().basehealth;
+            return soldierData.basehealth;
         }
         
-        abstract public AbsDetailUnitData Data();
+        abstract public AbsDetailUnitProfile Profile();
 
         public override string TypeName()
         {
-            return DetailUnitType().ToString() + "(" + parentArrayIndex.ToString() + ")";
+            return TextLib.Error;//((ConscriptedSoldierData)Data()).profile.conscript.TypeName() + "(" + parentArrayIndex.ToString() + ")";
         }
 
         public override string ToString()
         {
-            string groupName = group == null? "" : " group(" + group.groupId.ToString() + ")";
+            string groupName = group == null? "" : " group(" + group.parentArrayIndex.ToString() + ")";
             return DetailUnitType().ToString() + "(" + parentArrayIndex.ToString() + ")" + groupName + " p" + " area(" + tilePos.X.ToString() + "," + tilePos.Y.ToString() + ")";
         }
     }

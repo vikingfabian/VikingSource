@@ -6,7 +6,7 @@ using VikingEngine.ToGG.HeroQuest.Data;
 
 namespace VikingEngine.DSSWars
 {
-    class FlagDesign
+    class FlagDesign : Grid2D<byte>
     {
         public static FlagDesign[] AiBanner;
         public static FlagDesign PlayerGriffin;
@@ -124,7 +124,7 @@ namespace VikingEngine.DSSWars
             };
 
             var AiBanner5 = new FlagDesign(banner5);
-            AiBanner5.dataGrid.FromArray(banner5);
+            //AiBanner5.FromArray(banner5);
 
             byte[] banner6 = new byte[]
            {
@@ -147,7 +147,181 @@ namespace VikingEngine.DSSWars
             };
 
             var AiBanner6 = new FlagDesign(banner6);
-            AiBanner6.dataGrid.FromArray(banner6);
+            //AiBanner6.FromArray(banner6);
+
+           
+            byte[] banner_shield = new byte[]
+            {
+                2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 2, 2,
+                2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 2, 2,
+                2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 2, 2,
+                2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 2, 2,
+                2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 2, 2,
+                2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 2, 2,
+                2, 2, 2, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 2, 2, 2,
+                2, 2, 2, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 2, 2, 2,
+                2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2,
+                2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2,
+                2, 2, 2, 2, 2, 1, 1, 1, 0, 0, 0, 2, 2, 2, 2, 2,
+                2, 2, 2, 2, 2, 2, 1, 1, 0, 0, 2, 2, 2, 2, 2, 2,
+                2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+            };
+
+            var AiBanner7 = new FlagDesign(banner_shield);
+
+
+            byte[] banner_checkers = new byte[]
+            {
+                2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 2, 2,
+                2, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2,
+                2, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2,
+                2, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2,
+                2, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2,
+                2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 2, 2,
+                2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 2, 2,
+                2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 2, 2,
+                2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 2, 2,
+                2, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2,
+                2, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2,
+                2, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2,
+                2, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2,
+                2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 2, 2,
+                2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+            };
+
+            var AiBanner8 = new FlagDesign(banner_checkers);
+
+            byte[] banner_stairs = new byte[]
+            {
+                2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2,
+                2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2,
+                2, 2, 0, 0, 0, 0, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2,
+                2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 2,
+                2, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2,
+                2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2, 2,
+                2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2,
+                2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2,
+                2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2,
+                2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2,
+                2, 2, 0, 0, 0, 0, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2,
+                2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 2,
+                2, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2,
+                2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2, 2,
+                2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2,
+                2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2,
+            };
+            var AiBanner9 = new FlagDesign(banner_stairs);
+
+
+            byte[] banner_thinstripes = new byte[]
+           {
+                2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2,
+                2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2,
+                2, 2, 0, 0, 0, 0, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2,
+                2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 2,
+                2, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2,
+                2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2, 2,
+                2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2,
+                2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2,
+                2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2,
+                2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2,
+                2, 2, 0, 0, 0, 0, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2,
+                2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 2,
+                2, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2,
+                2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2, 2,
+                2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2,
+                2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2,
+           };
+            var AiBanner10 = new FlagDesign(banner_thinstripes);
+
+            byte[] banner_threesundiagonal = new byte[]
+           {
+                1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 1, 1, 1, 2, 2, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 1, 1, 2, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 1, 1, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 1, 1, 1, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 1, 1,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 1, 1,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
+           };
+            var AiBanner11 = new FlagDesign(banner_threesundiagonal);
+
+            byte[] banner_crossandwedge = new byte[]
+          {
+                1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 1, 1, 1, 2, 2, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 1, 1, 2, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 1, 1, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 1, 1, 1, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 1, 1,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 1, 1,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
+          };
+            var AiBanner12 = new FlagDesign(banner_crossandwedge);
+
+            byte[] banner_vertiwaves = new byte[]
+             {
+                    2, 2, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2,
+                    2, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2,
+                    2, 2, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2,
+                    2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 2,
+                    2, 2, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2,
+                    2, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2,
+                    2, 2, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2,
+                    2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 2,
+                    2, 2, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2,
+                    2, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2,
+                    2, 2, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2,
+                    2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 2,
+                    2, 2, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2,
+                    2, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2,
+                    2, 2, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2,
+                    2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 2,
+             };
+            var AiBanner13 = new FlagDesign(banner_vertiwaves);
+
+            byte[] banner_tophoriwave = new byte[]
+             {
+                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                    1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1,
+                    1, 2, 0, 2, 1, 2, 0, 2, 1, 2, 0, 2, 1, 2, 0, 2,
+                    2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+             };
+            var AiBanner14 = new FlagDesign(banner_tophoriwave);
+
 
             AiBanner = new FlagDesign[] {
                 AiBanner1,
@@ -156,6 +330,14 @@ namespace VikingEngine.DSSWars
                 AiBanner4,
                 AiBanner5,
                 AiBanner6,
+                AiBanner7,
+                AiBanner8,
+                AiBanner9,
+                AiBanner10,
+                AiBanner11,
+                AiBanner12,
+                AiBanner13,
+                AiBanner14,
             };
 
             PlayerGriffin = new FlagDesign(new byte[]
@@ -199,18 +381,20 @@ namespace VikingEngine.DSSWars
 
         }
 
-        public Grid2D<byte> dataGrid;
+        //public Grid2D<byte> dataGrid;
 
         public FlagDesign(System.IO.BinaryReader r)
+            :base()
         {
             basicInit();
             read(r);
         }
 
         public FlagDesign(byte[] bytearray)
+            : base()
         {
             basicInit();
-            dataGrid.FromArray(bytearray);
+            this.FromArray(bytearray);
         }
 
         public FlagDesign()
@@ -237,33 +421,33 @@ namespace VikingEngine.DSSWars
                 1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,
             };
 
-            dataGrid.FromArray(swordBanner);
+            this.FromArray(swordBanner);
         }
 
         void basicInit()
         {
-            dataGrid = new Grid2D<byte>(DssLib.UserHeraldicWidth);
+            initGrid(new IntVector2( DssLib.UserHeraldicWidth));
         }
 
         public void write(System.IO.BinaryWriter w)
         {
-            w.Write(dataGrid.ToArray());
+            w.Write(ToArray());
         }
 
         public void read(System.IO.BinaryReader r)
         {
-            byte[] array = new byte[dataGrid.Size.Area()];
+            byte[] array = new byte[Size.Area()];
             r.Read(array, 0, array.Length);
-            dataGrid.FromArray(array);
+            FromArray(array);
         }
 
         public Color[] toColorArray(FlagAndColor factionVisual)
         {
-            byte[] dataArray = dataGrid.ToArray();
+            byte[] dataArray = ToArray();
             Color[] result = new Color[dataArray.Length];
             for (int i = 0; i < dataArray.Length; ++i)
             {
-                result[i] = factionVisual.colors[dataArray[i]];
+                result[i] = factionVisual.getColor((ProfileColorType) dataArray[i]);
             }
 
             return result;
@@ -276,12 +460,12 @@ namespace VikingEngine.DSSWars
             texture.SetData(toColorArray(factionVisual));
             return texture; 
         }
-
-        public FlagDesign Clone()
+        
+        public FlagDesign CloneFlag()
         {
             FlagDesign result = new FlagDesign();
-            //result.colors = (Color[])this.colors.Clone();
-            result.dataGrid = this.dataGrid.Clone();
+
+            result.array = (byte[,])array.Clone();
 
             return result;
         }
@@ -296,7 +480,7 @@ namespace VikingEngine.DSSWars
             //    }
             //}
 
-            return this.dataGrid.EqualData(other.dataGrid);
+            return EqualData(other);
         }
     }
 

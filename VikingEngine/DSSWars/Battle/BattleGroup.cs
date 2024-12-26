@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.Battle
         const int StandardGridRadius = 20;
         //const float MaxQueTime = 5000;        
         SpottedArray<AbsMapObject> members;
-        SpottedArrayCounter<AbsMapObject> membersC;
+        //SpottedArrayCounter<AbsMapObject> membersC;
         Vector2 center;
         Rotation1D rotation;
 
@@ -34,13 +34,13 @@ namespace VikingEngine.DSSWars.Battle
         
         //bool[] playerJoined = null;
         List<Faction> factions = new List<Faction>(4);
-
+        float ingameTimeStamp;
         public BattleGroup(AbsMapObject m1, AbsMapObject m2) 
         {
             //playerJoined = new bool[DssRef.state.localPlayers.Count];
-
+            ingameTimeStamp = Ref.TotalGameTimeSec;
             members = new SpottedArray<AbsMapObject>(4);
-            membersC = new SpottedArrayCounter<AbsMapObject>(members);
+            //membersC = new SpottedArrayCounter<AbsMapObject>(members);
 
             parentArrayIndex = DssRef.state.battles.Add(this);
 
@@ -84,7 +84,7 @@ namespace VikingEngine.DSSWars.Battle
 
         public SpottedArrayCounter<AbsMapObject> MembersCounter()
         {
-            return membersC.Clone();
+            return members.counter();
         }
 
         public bool addPart(AbsMapObject m, bool atStart = true)
@@ -103,11 +103,10 @@ namespace VikingEngine.DSSWars.Battle
                 if (m.faction.player.IsPlayer())
                 {
                     var player = m.faction.player.GetLocalPlayer();
-                    int ix = player.playerData.localPlayerIndex;
-                    if (newFaction)//!playerJoined[ix])
+                    //int ix = player.playerData.localPlayerIndex;
+                    if (newFaction)
                     {
-                        //playerJoined[ix] = true;
-                        player.battles.Add(this);
+                        Ref.update.AddSyncAction(new SyncAction2Arg<BattleGroup, AbsMapObject>( player.enterBattle,this, m));//.battles.Add(this);
                     }
                 }
 
@@ -161,7 +160,7 @@ namespace VikingEngine.DSSWars.Battle
                         var soldier = groupsC.sel.FirstSoldier();
                         if (soldier != null)
                         {
-                            if (soldier.data.ArmyFrontToBackPlacement == armyPlacement)
+                            if (soldier.soldierData.ArmyFrontToBackPlacement == armyPlacement)
                             {
                                 IntVector2 result = nextGroupPlacementIndex;
                                 result.X = Army.TogglePlacementX(nextGroupPlacementIndex.X);// PlacementX[result.X];
@@ -182,14 +181,18 @@ namespace VikingEngine.DSSWars.Battle
             }
         }
 
+        const float AiOrderTime = 600;
+
         public bool async_update(float time)
         {
+            float gameTime = (Ref.TotalGameTimeSec - ingameTimeStamp) * TimeExt.SecondToMs;
+            ingameTimeStamp = Ref.TotalGameTimeSec;
             switch (battleState)
             { 
                 case BattleState.Prepare:
                     chainAdjacentArmies();
 
-                    checkIdleTime -= time;
+                    checkIdleTime -= gameTime;
 
                     if (checkIdleTime <= 0)
                     {
@@ -201,23 +204,23 @@ namespace VikingEngine.DSSWars.Battle
                         }
                     }
 
-                    if (preparationTime.CountDown())
+                    if (preparationTime.CountDown(gameTime))
                     {
                         battleState = BattleState.Battle;
                     }
                     break;
 
                 case BattleState.Battle:
-                    nextAiOrderTime -= time;
+                    nextAiOrderTime -= gameTime;
                     if (nextAiOrderTime < 0)
                     {
                         bool inBattle = refreshAiOrders_hasBattle();
 
                         if (inBattle)
                         {
-                            refreshGroupsWalkPath(time);
+                            refreshGroupsWalkPath(gameTime);
 
-                            nextAiOrderTime = 600;
+                            nextAiOrderTime = AiOrderTime;
                         }
                         else
                         {
@@ -237,7 +240,7 @@ namespace VikingEngine.DSSWars.Battle
 
         bool allIdle()
         {
-            membersC.Reset();
+            var membersC = MembersCounter();
 
             while (membersC.Next())
             {
@@ -287,7 +290,7 @@ namespace VikingEngine.DSSWars.Battle
             bool hasBattle = false;
 
             //todo replace with player orders
-            membersC.Reset();
+            var membersC = MembersCounter();
 
             while (membersC.Next())
             {
@@ -319,7 +322,7 @@ namespace VikingEngine.DSSWars.Battle
             return hasBattle;
         }
 
-        void refreshGroupsWalkPath(float time)
+        void refreshGroupsWalkPath(float gametime)
         {
             /*
              * Försök att alltid hålla formation
@@ -332,7 +335,7 @@ namespace VikingEngine.DSSWars.Battle
 
             refreshUnitsGridPositions();
 
-            membersC.Reset();
+            var membersC = MembersCounter();
 
             while (membersC.Next())
             {
@@ -342,7 +345,8 @@ namespace VikingEngine.DSSWars.Battle
                     var groupsC = army.groups.counter();
                     while (groupsC.Next())
                     {
-                        walkPath(groupsC.sel, true, time);
+                        groupsC.sel.battleQueTime += AiOrderTime;
+                        walkPath(groupsC.sel, true, gametime);
                     }
                 }
             }
@@ -359,7 +363,7 @@ namespace VikingEngine.DSSWars.Battle
                     {
                         if (!groupsC.sel.battleWalkPath)
                         {
-                            walkPath(groupsC.sel, false, time);
+                            walkPath(groupsC.sel, false, gametime);
                         }
                     }
                 }
@@ -377,7 +381,7 @@ namespace VikingEngine.DSSWars.Battle
 
         void refreshUnitsGridPositions()
         {
-            membersC.Reset();
+            var membersC = MembersCounter();
             while (membersC.Next())
             {
                 if (membersC.sel.gameobjectType() == GameObjectType.Army)
@@ -409,6 +413,11 @@ namespace VikingEngine.DSSWars.Battle
 
         void walkPath(SoldierGroup group, bool straightOnly, float time)
         {
+            if (group.debugTagged)
+            { 
+                 lib.DoNothing();
+            }
+
             if (group.attacking_soldierGroupOrCity != null &&
                 !group.attackState)
             {
@@ -448,10 +457,7 @@ namespace VikingEngine.DSSWars.Battle
                             {
                                 applyWalkToNode(group, rightNode);
                             }
-                            else
-                            { 
-                                group.battleQueTime += time;
-                            }
+                            
                             //if (!tryWalkToNode(group, next))
                             //{
                             //    next = group.battleGridPos + VectorExt.RotateVector45DegreeRight_Normal(nDiff);
@@ -508,16 +514,25 @@ namespace VikingEngine.DSSWars.Battle
             }
             else if (group.IsShip() != goalNode.water)
             {
-                return group.battleQueTime < DssLib.BattleMaxQueTimeMs;
+                if (group.battleQueTime < DssLib.BattleMaxQueTimeMs)
+                {
+                    return false;
+                }
             }
-            else
-            {
-                return applyWalkToNode(group, goalNode);
-            }
+
+            
+
+            return applyWalkToNode(group, goalNode);
+            
         }
 
         private bool applyWalkToNode(SoldierGroup group, BattleGridNode goalNode)
         {
+
+            if (group.debugTagged)
+            {
+                lib.DoNothing();
+            }
             //Apply
             group.battleQueTime = 0;
             group.battleWalkPath = true;
@@ -587,8 +602,8 @@ namespace VikingEngine.DSSWars.Battle
         {
             Vector2 offset = VectorExt.RotateVector(
                 new Vector2(
-                    gridPos.X * SoldierGroup.GroupSpacing, 
-                    gridPos.Y * SoldierGroup.GroupSpacing), 
+                    gridPos.X * DssVar.SoldierGroup_Spacing, 
+                    gridPos.Y * DssVar.SoldierGroup_Spacing), 
                 rotation.radians);
 
             Vector3 result = new Vector3(
@@ -616,8 +631,8 @@ namespace VikingEngine.DSSWars.Battle
             Vector2 rotatedBackOffset = VectorExt.RotateVector(new Vector2(offsetX, offsetY), -rotation.radians);
 
             var result = new IntVector2( 
-                rotatedBackOffset.X / SoldierGroup.GroupSpacing, 
-                rotatedBackOffset.Y / SoldierGroup.GroupSpacing);
+                rotatedBackOffset.X / DssVar.SoldierGroup_Spacing, 
+                rotatedBackOffset.Y / DssVar.SoldierGroup_Spacing);
             return result;  
         }
 
@@ -659,7 +674,7 @@ namespace VikingEngine.DSSWars.Battle
             List<City> cities = new List<City>(2);
             Dictionary<int, float> cityDominationStrength = new Dictionary<int, float>(4);
 
-            membersC.Reset();
+            var membersC = MembersCounter();
             while (membersC.Next())
             {
                 if (membersC.sel.gameobjectType() == GameObjectType.City)
@@ -752,12 +767,17 @@ namespace VikingEngine.DSSWars.Battle
 
         public override string TypeName()
         {
-            return "Battle (" + TextLib.IndexToString(parentArrayIndex) + ")";
+            return DssRef.lang.Hud_Battle + " (" + parentArrayIndex.ToString() + ")"; //return "Battle (" + TextLib.IndexToString(parentArrayIndex) + ")";
         }
 
         public override GameObjectType gameobjectType()
         {
             return GameObjectType.Battle;
+        }
+
+        public override bool aliveAndBelongTo(Faction faction)
+        {
+            throw new NotImplementedException();
         }
     }
 

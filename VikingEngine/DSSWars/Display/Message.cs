@@ -3,10 +3,14 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using VikingEngine.DSSWars.Battle;
+using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Network;
+using VikingEngine.ToGG;
 
 namespace VikingEngine.DSSWars.Display
 {
@@ -17,10 +21,46 @@ namespace VikingEngine.DSSWars.Display
 
         List<Message> messages = new List<Message>();
         LocalPlayer player;
-        public MessageGroup(LocalPlayer player, RichboxGuiSettings settings)
+
+        static readonly TimeLength FoodWarningTimeout = new TimeLength(120);
+
+        TimeInGameCountdown cityLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
+        TimeInGameCountdown armyLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
+        float screenAreaBottom;
+        public MessageGroup(LocalPlayer player, int numPlayers, RichboxGuiSettings settings)
         {
             this.player = player;   
             this.settings = settings;
+        }
+
+        public void blockFoodWarning(bool block)
+        {
+            if (block)
+            {
+                cityLowFoodMessageCooldown.start(new TimeLength(100000));
+                armyLowFoodMessageCooldown.start(new TimeLength(100000));
+            }
+            else
+            {
+                cityLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
+                armyLowFoodMessageCooldown = new TimeInGameCountdown(FoodWarningTimeout);
+            }
+        }
+
+        public void onControllerClick()
+        {
+            foreach (var m in messages)
+            {
+                if (m.onControllerClick())
+                {
+                    return;
+                }
+            }
+        }
+
+        public void onGameStart()
+        { 
+         screenAreaBottom = player.playerData.view.DrawArea.Bottom + Engine.Screen.SmallIconSize;
         }
 
         public void Title(RichBoxContent content, string title)
@@ -32,14 +72,69 @@ namespace VikingEngine.DSSWars.Display
             content.newLine();
         }
 
+        public void ControllerInputIcons(List<AbsRichBoxMember> button)
+        {
+            if (player.input.inputSource.IsController)
+            {
+                RichBoxContent.ButtonMap(player.input.ControllerMessageClick, button);
+                button.Add(new RichBoxSpace());
+            }
+        }
+
+        public void cityLowFoodMessage(City city)
+        {
+            if (cityLowFoodMessageCooldown.TimeOut())
+            {
+                cityLowFoodMessageCooldown.start();
+
+                RichBoxContent content = new RichBoxContent();
+                Title(content, DssRef.lang.Message_OutOfFood_Title);
+                content.text(DssRef.lang.Message_CityOutOfFood_Text);
+
+                content.newParagraph();
+
+                var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
+                ControllerInputIcons(gotoBattleButtonContent);
+                gotoBattleButtonContent.Add(new RichBoxText(city.TypeName()));
+
+                content.Add(new RichboxButton(gotoBattleButtonContent,
+                    new RbAction1Arg<AbsGameObject>(goToMapObject, city, SoundLib.menu)));
+
+                Add(content);
+            }
+        }
+
+        public void armyLowFoodMessage(Army army)
+        {
+            if (armyLowFoodMessageCooldown.TimeOut())
+            {
+                armyLowFoodMessageCooldown.start();
+
+                RichBoxContent content = new RichBoxContent();
+                Title(content, DssRef.lang.Message_OutOfFood_Title);
+                content.text(DssRef.lang.Message_ArmyOutOfFood_Text);
+
+                content.newParagraph();
+
+                var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
+                ControllerInputIcons(gotoBattleButtonContent);
+                gotoBattleButtonContent.Add(new RichBoxText(army.TypeName()));
+
+                content.Add(new RichboxButton(gotoBattleButtonContent,
+                    new RbAction1Arg<AbsGameObject>(goToMapObject, army, SoundLib.menu)));
+
+                Add(content);
+            }
+        }
+
+        void goToMapObject(AbsGameObject city)
+        {
+            player.mapControls.cameraFocus = city;
+        }
+
         public void Add(string title, string text)
         {
             RichBoxContent content = new RichBoxContent();
-            //content.Add(new RichBoxBeginTitle(2));
-            //content.Add(new RichBoxImage(SpriteName.cmdWarningTriangle));
-            //content.space();
-            //content.Add(new RichBoxText(title, Color.Yellow));
-            //content.newLine();
             Title(content, title);
             content.text(text);
 
@@ -48,8 +143,14 @@ namespace VikingEngine.DSSWars.Display
 
         public void Add(RichBoxContent content)
         {
+            SoundLib.message.Play(Pan.Left);
             messages.Insert(0, new Message(player, content, settings));
             UpdatePositions();
+        }
+
+        public bool freeSpace()
+        { 
+            return messages.Count < 3;
         }
 
         public void Update(Vector2 position)
@@ -76,13 +177,15 @@ namespace VikingEngine.DSSWars.Display
 
         void UpdatePositions()
         {
+            
+
             Vector2 currentPos = position;
             if (messages.Count > 0)
             {                
                 foreach (var message in messages)
                 {
                     currentPos.Y += settings.edgeWidth * 2f;
-                    currentPos = message.UpdatePoisitions(currentPos);                    
+                    currentPos = message.UpdatePoisitions(currentPos, screenAreaBottom);                    
                 }
             }
         }
@@ -128,24 +231,49 @@ namespace VikingEngine.DSSWars.Display
                     player.input.RichboxGuiSelect);
         }
 
-        public Vector2 UpdatePoisitions(Vector2 position)
+        public bool onControllerClick()
+        {
+            if (richBox.buttonGrid_Y_X.Count > 0 && richBox.buttonGrid_Y_X[0].Count > 0)
+            {
+                if (time.msPassed(200))
+                {
+                    richBox.buttonGrid_Y_X[0][0].onClick();
+                }
+                return true;
+            }
+            return false;
+        }
+
+
+            public Vector2 UpdatePoisitions(Vector2 position, float screenAreaBottom)
         {
             area.Position = position;
             bg.Area = area;
             richBox.SetOffset(area.Position + contentOffset);
-                       
+            
+            bool visible = bg.Bottom <= screenAreaBottom;
+
+            bg.Visible = visible;
+            richBox.SetVisible(visible);
 
             return area.LeftBottom;
         }
 
         public void update()
-        { 
-            interaction.update();
+        {
+            if (bg.Visible)
+            {
+                interaction.update();
+            }
         }
 
         public bool mouseOver()
         {
-            return bg.Area.IntersectPoint(Input.Mouse.Position);
+            if (bg.Visible)
+            {
+                return bg.Area.IntersectPoint(Input.Mouse.Position);
+            }
+            return false;
         }
 
         public void DeleteMe()

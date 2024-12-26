@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using VikingEngine.Engine;
 
@@ -9,8 +11,8 @@ namespace VikingEngine.DSSWars
     class Culling
     {
         public const byte NoRender = 0;
-        public const byte EnterRender = 2;
-        public const byte Render = 1;
+        //public const byte EnterRender = 2;
+        //public const byte Render = 1;
 
         public PlayerCulling[] players;
         public bool cullingStateA = true;
@@ -58,56 +60,95 @@ namespace VikingEngine.DSSWars
             cullingStateA = !cullingStateA;
         }
 
-        public void InRender_Asynch(ref bool enterRender, IntVector2 pos)
+        public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, IntVector2 pos)
         {
             Map.Tile tile;
             if (DssRef.world.tileGrid.TryGet(pos, out tile))
             {
-                byte value = cullingStateA ? tile.renderStateA : tile.renderStateB;
-                if (value == NoRender)
-                {
-                    enterRender = false;
-                }
+                if (cullingStateA)
+                { GetRenderState_enter(ref tile.bits_renderStateA, ref enterRender_overviewLayer, ref enterRender_detailLayer); }
                 else
-                {
-                    enterRender = enterRender || value == EnterRender;
-                }
+                { GetRenderState_enter(ref tile.bits_renderStateB, ref enterRender_overviewLayer, ref enterRender_detailLayer); }
+               
             }
         }
 
-        public void InRender_Asynch(ref bool enterRender, bool bStateA, ref Vector2 minpos, ref Vector2 maxpos)
+        public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, bool bStateA, ref IntVector2 minpos, ref IntVector2 maxpos)
+        {
+            
+            bool overviewLayer = false;
+            bool detailLayer = false;
+
+            for (int cameraIndex = 0; cameraIndex < Ref.draw.ActivePlayerScreens.Count; ++cameraIndex)
+            {
+                var state = bStateA ? players[cameraIndex].stateA : players[cameraIndex].stateB;
+                if (state.enterArea.IntersectRect(minpos, maxpos))
+                {
+                    overviewLayer |= state.overviewLayer;
+                    detailLayer |= state.detailLayer;
+                }
+            }
+
+            enterRender_overviewLayer = overviewLayer;
+            enterRender_detailLayer = detailLayer;
+        }
+
+        public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, bool bStateA, ref Vector2 minpos, ref Vector2 maxpos)
         {
             for (int cameraIndex = 0; cameraIndex < Ref.draw.ActivePlayerScreens.Count; ++cameraIndex)
             {
                 var state = bStateA ? players[cameraIndex].stateA : players[cameraIndex].stateB;
                 if (state.enterArea.IntersectRect(minpos, maxpos))
-                { 
-                    enterRender = true;
+                {
+                    enterRender_overviewLayer = state.overviewLayer;
+                    enterRender_detailLayer = state.detailLayer;
                     return;
                 }
             }
 
-            enterRender = false;
-            //Map.Tile tile;
-            //if (DssRef.world.tileGrid.TryGet(pos, out tile))
-            //{
-            //    byte value = cullingStateA ? tile.renderStateA : tile.renderStateB;
-            //    if (value == NoRender)
-            //    {
-            //        enterRender = false;
-            //    }
-            //    else
-            //    {
-            //        enterRender = enterRender || value == EnterRender;
-            //    }
-            //}
+            enterRender_overviewLayer = false;
+            enterRender_detailLayer = false;
         }
 
-        //public bool TileInRender(IntVector2 pos)
-        //{
-        //    var tile = DssRef.world.tileGrid.Get(pos);
-        //}
+        const byte TerrainOverview_EnterRenderBit = 1, TerrainOverview_InRenderBit = 2, UnitDetail_EnterRenderBit = 4, UnitDetail_InRenderBit = 8;
 
+        public static void SetRenderState(ref byte renderState, 
+            bool terrainOverviewLayer_enterRender, bool terrainOverviewLayer_inRender, 
+            bool unitDetailLayer_enterRender, bool unitDetailLayer_inRender)
+        {
+            if (terrainOverviewLayer_enterRender)
+            {
+                renderState |= TerrainOverview_EnterRenderBit;
+            }
+            if (terrainOverviewLayer_inRender)
+            {
+                renderState |= TerrainOverview_InRenderBit;
+            }
+            if (unitDetailLayer_enterRender)
+            {
+                renderState |= UnitDetail_EnterRenderBit;
+            }
+            if (unitDetailLayer_inRender)
+            {
+                renderState |= UnitDetail_InRenderBit;
+            }
+        }
+
+        public static void GetRenderState(ref byte renderState, 
+            out bool terrainOverviewLayer_enterRender, out bool terrainOverviewLayer_inRender, 
+            out bool unitDetailLayer_enterRender, out bool unitDetailLayer_inRender)
+        {
+            terrainOverviewLayer_enterRender = (renderState & TerrainOverview_EnterRenderBit) != 0;
+            terrainOverviewLayer_inRender = (renderState & TerrainOverview_InRenderBit) != 0;
+            unitDetailLayer_enterRender = (renderState & UnitDetail_EnterRenderBit) != 0;
+            unitDetailLayer_inRender = (renderState & UnitDetail_InRenderBit) != 0;
+        }
+
+        public static void GetRenderState_enter(ref byte renderState, ref bool terrainOverviewLayer_enterRender, ref bool unitDetailLayer_enterRender)
+        {
+            terrainOverviewLayer_enterRender |= (renderState & TerrainOverview_EnterRenderBit) != 0;
+            unitDetailLayer_enterRender |= (renderState & UnitDetail_EnterRenderBit) != 0;
+        }
 
     }
     class PlayerCulling
@@ -136,10 +177,7 @@ namespace VikingEngine.DSSWars
 
         public void asynch_update(bool bStateA)
         {
-            //All tiles covered by the camera will update their render state
-
-            //Engine.PlayerData p = Ref.draw.ActivePlayerScreens[index];
-            Map.MapDetailLayerManager drawUnits = Map.MapDetailLayerManager.CameraIndexToView[index];
+            Map.MapDetailLayerManager detailLayer = Map.MapDetailLayerManager.CameraIndexToView[index];
             bool hasValue1, hasValue2, hasValue3, hasValue4;
             Vector3 topleft = playerData.view.Camera.CastRayInto3DPlane(playerData.view.DrawAreaF.Position, playerData.view.Viewport, mapPlane, out hasValue1);
             Vector3 topright = playerData.view.Camera.CastRayInto3DPlane(playerData.view.DrawAreaF.RightTop, playerData.view.Viewport, mapPlane, out hasValue2);
@@ -157,16 +195,22 @@ namespace VikingEngine.DSSWars
                 Rectangle2 screenArea = Rectangle2.FromTwoTilePoints(new IntVector2(left, top), new IntVector2(right, bottom));
                 DssRef.state.localPlayers[index].cullingTileArea = screenArea;
 
-                if (drawUnits.current.DrawOverview)
+                if (detailLayer.current.DrawOverview)
                 {
                     screenArea.SetMaxRadius(120, 100);
                 }
-                if (StartupSettings.TestOffscreenUpdate)
-                {
-                    screenArea.SetMaxRadius(4, 4);
-                }
+                //if (StartupSettings.TestOffscreenUpdate)
+                //{
+                //    screenArea.SetMaxRadius(4, 4);
+                //}
                 PlayerCullingState state = bStateA ? stateA : stateB;
-                state.asynch_update(bStateA, screenArea);
+                state.detailLayer = detailLayer.current.DrawDetailLayer;
+                state.overviewLayer = detailLayer.current.DrawNormal;
+                if (detailLayer.prevLayer != null)
+                {
+                    state.overviewLayer |= detailLayer.prevLayer.DrawNormal;
+                }
+                state.async_playerViewToRenderState(bStateA, screenArea, detailLayer.current);
             }
 
         }
@@ -177,44 +221,48 @@ namespace VikingEngine.DSSWars
     {
         public Rectangle2 enterArea = Rectangle2.Zero;
         public Rectangle2 exitArea = Rectangle2.Zero;
-        //public Rectangle2 renderTilesArea = Rectangle2.Zero;
 
-        public void asynch_update(bool bStateA, Rectangle2 screenArea)
+        public bool overviewLayer = false;
+        public bool detailLayer = false;
+
+
+        public void async_playerViewToRenderState(bool bStateA, Rectangle2 screenArea, Map.DetailLayer layer)
         {
             enterArea = screenArea;
-            //enterArea.AddToTopSide(1);
             enterArea.AddRadius(1);
             exitArea = enterArea;
             exitArea.AddRadius(1);
-            //renderTilesArea = enterArea;
 
+            //Debug.Log(DebugLogType.MSG, "state " + (bStateA ? "A " : "B ") + screenArea.ToString());
+ 
             var loopArea = exitArea;
             loopArea.size += 1;
 
             loopArea.SetTileBounds(DssRef.world.tileBounds);
 
-            if (loopArea.Width > 0 && loopArea.Height > 0)
+            if (loopArea.size.X > 0 && loopArea.size.Y > 0)
             {
 
                 ForXYLoop loop = new ForXYLoop(loopArea);
 
                 while (loop.Next())
                 {
-                    byte value = Culling.Render;
+                    bool enterRender = false;
                     if (enterArea.IntersectTilePoint(loop.Position))
                     {
-                        value = Culling.EnterRender;
+                        enterRender = true;
                     }
 
                     var tile = DssRef.world.tileGrid.Get(loop.Position);
                     if (bStateA)
                     {
-                        if (value > tile.renderStateA) { tile.renderStateA = value; }
-
+                        Culling.SetRenderState(ref tile.bits_renderStateA, !enterRender, enterRender, layer.DrawFullOverview, layer.DrawDetailLayer);
+                        //if (value > tile.renderStateA) { tile.renderStateA = value; }
                     }
                     else
                     {
-                        if (value > tile.renderStateB) { tile.renderStateB = value; }
+                        Culling.SetRenderState(ref tile.bits_renderStateB, !enterRender, enterRender, layer.DrawFullOverview, layer.DrawDetailLayer);
+                        //if (value > tile.renderStateB) { tile.renderStateB = value; }
                     }
                 }
             }
@@ -237,11 +285,11 @@ namespace VikingEngine.DSSWars
                     var tile = DssRef.world.tileGrid.Get(loop.Position);
                     if (bStateA)
                     {
-                        tile.renderStateA = Culling.NoRender;
+                        tile.bits_renderStateA = Culling.NoRender;
                     }
                     else
                     {
-                        tile.renderStateB = Culling.NoRender;
+                        tile.bits_renderStateB = Culling.NoRender;
                     }
                 }
             }

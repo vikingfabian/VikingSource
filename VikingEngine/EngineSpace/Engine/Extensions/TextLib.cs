@@ -7,6 +7,8 @@ using VikingEngine.Graphics;
 
 using System.Text;
 using System.Reflection;
+using System.Globalization;
+using VikingEngine.Input;
 
 namespace VikingEngine
 {
@@ -15,10 +17,11 @@ namespace VikingEngine
         /// <summary>
         /// "\"
         /// </summary>
-        
+
         public const string EmptyString = "";
         public const string Error = "ERR";
-        public const string TextFileEnding = ".txt"; 
+        const string MaxTwoDecimalsFormat = "0.##";
+        public const string TextFileEnding = ".txt";
         public static readonly List<char> BreakPoints = new List<char> { ' ', '+', '-', '*', '/', '^' };
         //const char NewLineChar1 = '\n';
         //const char NewLineChar2 = '\r';
@@ -51,13 +54,74 @@ namespace VikingEngine
 
             return text.ToString();
         }
+
+        static readonly NumberFormatInfo ThounsandSeperatorSpaceFormat = new NumberFormatInfo
+        {
+            NumberGroupSeparator = " ",
+            NumberDecimalDigits = 0
+        };
+        const string NoDecimals = "N0";
+
         public static string LargeNumber(int number)
         {
             if (Math.Abs(number) < 1000)
-            { 
+            {
                 return number.ToString();
             }
-            return number.ToString("#,##0").Replace(',', ' ').Trim();
+            return number.ToString(NoDecimals, ThounsandSeperatorSpaceFormat).Trim();
+        }
+
+        public const string OneDecimalFormat = "{0:0.0}";
+        public static string OneDecimal(double value)
+        {
+            string result = string.Format(OneDecimalFormat, value);
+
+            stringSafeDecimal(ref result);
+
+            return result;
+        }
+
+        public const string ThreeDecimalFormat = "{0:0.000}";
+        public static string ThreeDecimal(double value)
+        {
+            string result = string.Format(ThreeDecimalFormat, value);
+
+            stringSafeDecimal(ref result);
+
+            return result;
+        }
+
+        static void stringSafeDecimal(ref string result)
+        {
+            if (result.Length > 2)
+            {
+                if (result[result.Length - 2] == '٫')
+                {
+                    result = result.Replace('٫', ',');
+                }
+            }
+        }
+
+        public static string PlusMinusOneDecimal(double value)
+        {
+            string result = OneDecimal(value);
+            if (value > 0)
+            {
+                result = "+" + result;
+            }
+            return result;
+        }
+
+        public static string PlusMinus(double value)
+        {
+            string result = value.ToString(MaxTwoDecimalsFormat);
+            stringSafeDecimal(ref result);
+
+            if (value > 0)
+            {
+                result = "+" + result;
+            }
+            return result;
         }
 
         public static string FirstLetters(string text, int numLetters)
@@ -75,7 +139,14 @@ namespace VikingEngine
                 return text.Remove(numLetters - 2, text.Length - numLetters + 2) + DotDotDot;
             }
             return text;
-            
+
+        }
+
+        public static string RemoveEnding(string text, int removeCount)
+        {
+            if (removeCount >= text.Length)
+                return text;
+            return text.Remove(text.Length - removeCount, removeCount);
         }
 
         public static string PluralEnding(string text, int count)
@@ -94,7 +165,7 @@ namespace VikingEngine
 
         public static string IndexDivition(int index, int length)
         {
-            return (index+1).ToString() + "/" + length.ToString();
+            return (index + 1).ToString() + "/" + length.ToString();
         }
 
         public static string Divition_Large(int value, int dividedBy)
@@ -116,8 +187,18 @@ namespace VikingEngine
         {
             if (text.Length <= 1)
                 return text;
-            return (text.Remove(1, text.Length -1)).ToUpper() + text.Remove(0, 1);
+            return string.Concat(text[0].ToString().ToUpper(), text.AsSpan(1));//(text.Remove(1, text.Length - 1)).ToUpper() + text.Remove(0, 1);
         }
+
+        //public static string FirstCharToUpper(this string input)
+        //{
+        //    switch (input)
+        //    {
+        //        null => throw new ArgumentNullException(nameof(input)),
+        //        "" => throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input)),
+        //        _ => string.Concat(input[0].ToString().ToUpper(), input.AsSpan(1))
+        //    }
+        //}
 
         public static string PercentText(float percent)
         {
@@ -253,16 +334,86 @@ namespace VikingEngine
             }
         }
 
-        //public static string InsertLineBreaks(string text, LoadedFont font, float fontSize, float lineWidth)
-        //{
-        //    List<string> lines = SplitToMultiLine(text, font, fontSize, lineWidth);
-        //    string result = lines[0];
-        //    for (int i = 1; i < lines.Count; i++)
+        //    public static string SplitToMultiLine2(string text, LoadedFont font, float fontSize, float lineWidth,
+        //float inSpaceFirstRow = 0f, List<string> linesOut = null)
         //    {
-        //        result += NewLine + lines[i];
+        //        if (lineWidth < 1)
+        //        {
+        //            return "";
+        //        }
+
+        //        bool isAsian = IsAsianText(text);
+        //        text += " ";
+
+        //        StringBuilder completedText = new StringBuilder();
+        //        StringBuilder line = new StringBuilder();
+        //        StringBuilder testline = new StringBuilder();
+
+        //        foreach (char c in text)
+        //        {
+        //            if (c == '\n')
+        //            {
+        //                splitText();
+        //            }
+        //            else
+        //            {
+        //                testline.Clear();
+        //                testline.Append(line);
+        //                testline.Append(c);
+
+        //                bool tooLong =
+        //                    (Engine.LoadContent.MeasureString(testline.ToString(), font).X * fontSize) >=
+        //                    (lineWidth - inSpaceFirstRow);
+        //                if (tooLong)
+        //                {
+        //                    splitText();
+        //                }
+
+        //                line.Append(c);
+        //            }
+        //        }
+
+        //        if (line.Length > 0)
+        //        {
+        //            linesOut?.Add(line.ToString());
+        //            completedText.Append(line);
+        //        }
+
+        //        return completedText.ToString();
+
+        //        void splitText()
+        //        {
+        //            if (line.Length > 0)
+        //            {
+        //                linesOut?.Add(line.ToString());
+        //                completedText.Append(line);
+        //                completedText.Append(Environment.NewLine);
+        //                line.Clear();
+        //                inSpaceFirstRow = 0f;
+        //            }
+        //        }
+
+        //        bool IsAsianText(string inputText)
+        //        {
+        //            foreach (char ch in inputText)
+        //            {
+        //                if (IsAsianCharacter(ch))
+        //                {
+        //                    return true;
+        //                }
+        //            }
+        //            return false;
+        //        }
+
+        //        bool IsAsianCharacter(char ch)
+        //        {
+        //            return (ch >= 0x4E00 && ch <= 0x9FFF) || // CJK Unified Ideographs
+        //                   (ch >= 0x3400 && ch <= 0x4DBF) || // CJK Unified Ideographs Extension A
+        //                   (ch >= 0x3040 && ch <= 0x309F) || // Hiragana
+        //                   (ch >= 0x30A0 && ch <= 0x30FF) || // Katakana
+        //                   (ch >= 0xAC00 && ch <= 0xD7AF);   // Hangul Syllables
+        //        }
         //    }
-        //    return result;
-        //}
 
         public static string SplitToMultiLine2(string text, LoadedFont font, float fontSize, float lineWidth,
             float inSpaceFirstRow = 0f, List<string> linesOut = null)
@@ -270,7 +421,6 @@ namespace VikingEngine
             if (lineWidth < 1)
             {
                 return "";
-                //throw new ArgumentException("Split to multiline, " + text);
             }
 
             text += " ";
@@ -288,24 +438,10 @@ namespace VikingEngine
                 }
 
                 word.Append(c);
-                if (BreakPoints.Contains(c))
+                if (BreakPoints.Contains(c) || IsAsianCharacter(c))
                 {
-                    //testline.Clear();//.Remove(0, testline.Length);//.Clear();//Clear();
-                    //testline.Append(line);
-                    //testline.Append(word);
-
-                    //bool tooLong =
-                    //    (Engine.LoadContent.MeasureString(testline.ToString(), font).X * fontSize) >=
-                    //    (lineWidth - inSpaceFirstRow);
-                    //if (tooLong)
-                    //{
-                    //    splitText(true);
-                    //}
                     splitIfTooLong();
-
                     addLastWord();
-                    //line.Append(word);
-                    //word.Clear();//.Remove(0, word.Length);
                 }
                 else if (endsWithNewLine())
                 {
@@ -313,10 +449,6 @@ namespace VikingEngine
 
                     splitIfTooLong();
 
-                    //if (word.Length == Environment.NewLine.Length)
-                    //{
-
-                    //}
                     addLastWord();
                     splitText();
                 }
@@ -328,17 +460,16 @@ namespace VikingEngine
             linesOut?.Add(line.ToString());
             completedText.Append(line);
 
-            //completedText.Remove(completedText.Length - 1, 1); //Remove last letter
             return completedText.ToString();
 
             void splitIfTooLong()
             {
-                testline.Clear();//.Remove(0, testline.Length);//.Clear();//Clear();
+                testline.Clear();
                 testline.Append(line);
                 testline.Append(word);
 
                 bool tooLong =
-                    (Engine.LoadContent.MeasureString(testline.ToString(), font).X * fontSize) >=
+                    (Engine.LoadContent.MeasureString(testline.ToString(), font, out _).X * fontSize) >=
                     (lineWidth - inSpaceFirstRow);
                 if (tooLong)
                 {
@@ -349,19 +480,6 @@ namespace VikingEngine
             bool endsWithNewLine()
             {
                 return word.Length > 0 && word[word.Length - 1] == Environment.NewLine[Environment.NewLine.Length - 1];
-                //if (line.Length >= Environment.NewLine.Length)
-                //{
-                //    //compare last letters
-                //    for (int i = 0; i < Environment.NewLine.Length; ++i)
-                //    {
-                //        if (Environment.NewLine[i] != line[line.Length - Environment.NewLine.Length + i])
-                //        {
-                //            return false;
-                //        }
-                //    }
-                //    return true;
-                //}
-                //return false;
             }
 
             void splitText()
@@ -369,19 +487,25 @@ namespace VikingEngine
                 linesOut?.Add(line.ToString());
                 completedText.Append(line);
 
-                //if (isTooLong)
-                //{
-                    completedText.Append(Environment.NewLine);
-                //}
+                completedText.Append(Environment.NewLine);
 
-                line.Remove(0, line.Length);//line.Clear();
+                line.Remove(0, line.Length);
                 inSpaceFirstRow = 0f;
             }
 
             void addLastWord()
             {
                 line.Append(word);
-                word.Clear();//.Remove(0, word.Length);
+                word.Clear();
+            }
+
+            bool IsAsianCharacter(char ch)
+            {
+                return (ch >= 0x4E00 && ch <= 0x9FFF) || // CJK Unified Ideographs
+                       (ch >= 0x3400 && ch <= 0x4DBF) || // CJK Unified Ideographs Extension A
+                       (ch >= 0x3040 && ch <= 0x309F) || // Hiragana
+                       (ch >= 0x30A0 && ch <= 0x30FF) || // Katakana
+                       (ch >= 0xAC00 && ch <= 0xD7AF);   // Hangul Syllables
             }
         }
 
@@ -395,84 +519,6 @@ namespace VikingEngine
         {
             sb.Remove(0, sb.Length);
         }
-
-//        public static List<string> SplitToMultiLine(string text, LoadedFont font, float fontSize, float lineWidth)
-//        {
-//            if (lineWidth < 1)
-//            {
-//                throw new ArgumentException("Split to multiline, " + text);
-//            }
-//            const string Space = " ";
-//            //bool isBreak = false;
-//            text += Space;
-
-//            Lines.Clear();
-//            word.Clear();
-//            TextLine.Clear();
-////\n = CR (Carriage Return) // Used as a new line character in Unix
-////\r = LF (Line Feed) // Used as a new line character in Mac OS
-//            foreach (char c in text)
-//            {
-//                if (c != NewLineChar2)
-//                {
-//                    if (c == NewLineChar1)
-//                    {
-//                        TextLine.Append(word.String);
-//                        addLineWithXCheck(fontSize, lineWidth, font, TextLine);
-//                        TextLine.Clear();
-//                        word.Clear();
-//                    }
-//                    else if (BreakPoints.Contains(c))
-//                    {
-//                        test.Clear();
-//                        test.Append(TextLine.String, word.String);
-//                        if (ToLongString(test.String, fontSize, font, lineWidth))
-//                        { //Word ska inte addas här
-//                            addLineWithXCheck(fontSize, lineWidth, font, TextLine);
-//                            TextLine.Clear();
-//                            TextLine.AppendChar(word.String, c);
-
-//                            //ugly fix
-//                            if (Lines.Count != 0)
-//                            {
-//                                if (Lines[Lines.Count - 1] == Space)
-//                                {
-//                                    Lines.Remove(Lines[Lines.Count - 1]);
-//                                }
-//                            }
-//                        }
-//                        else
-//                        {
-//                            TextLine.AppendChar(word.String, c);
-//                        }
-//                        word.Clear();
-//                    }
-//                    else
-//                    {
-//                        word.AppendChar(c);
-//                    }
-//                }
-
-//            }
-//            test.Clear();
-//            test.Append(TextLine.String, word.String);
-//            if (ToLongString(test.String, fontSize, font, lineWidth))
-//            {
-//                addLineWithXCheck(fontSize, lineWidth, font, TextLine);
-//                addLineWithXCheck(fontSize, lineWidth, font, word);
-//            }
-//            else
-//            { 
-//                Lines.Add(test.String); 
-//            }
-
-//            if (Lines[Lines.Count - 1] == Space && Lines.Count > 1)
-//            {
-//                Lines.Remove(Lines[Lines.Count - 1]);
-//            }
-            
-//            return Lines;
-//        }
 
         static void addLineWithXCheck(float fontSize, float lineWidth, LoadedFont font, NTStringBuilder text)
         {
@@ -562,13 +608,13 @@ namespace VikingEngine
         }
         public static bool ToLongString(string text, float sizeX, LoadedFont font, float lineWidth)
         {
-            return Engine.LoadContent.MeasureString(text, font).X * sizeX >= lineWidth;
+            return Engine.LoadContent.MeasureString(text, font, out _).X * sizeX >= lineWidth;
         }
 
         public static float TextHeight(LoadedFont font)
         {
             const string Test = "MWg";
-            return Engine.LoadContent.MeasureString(Test, font).Y;
+            return Engine.LoadContent.MeasureString(Test, font, out _).Y;
         }
         public static string FileSizeText(long bytes)
         {

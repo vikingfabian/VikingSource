@@ -59,7 +59,8 @@ namespace VikingEngine.DSSWars.Profile
         DataStream.FilePath path(int index)
         {
             string num = index >= 0? (index + 1).ToString() : string.Empty;
-           return new DataStream.FilePath("FlagSave", "flag_" + num, ".set");
+            return new DataStream.FilePath(Ref.steam.UserCloudPath + System.IO.Path.AltDirectorySeparatorChar + 
+               "FlagSave", "flag_" + num, ".sav");
         }
 
     }

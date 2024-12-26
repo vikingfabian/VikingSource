@@ -9,52 +9,91 @@ using VikingEngine.LootFest;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class KnightData : AbsSoldierData
-    {
-        public KnightData() 
-        {
-            unitType = UnitType.Knight;
+    //class KnightData : AbsSoldierProfile
+    //{
+    //    public KnightData() 
+    //    {
+    //        unitType = UnitType.Knight;
 
-            modelScale = StandardModelScale * 1.8f;
-            boundRadius = StandardBoundRadius;
+    //        modelScale = DssConst.Men_StandardModelScale * 1.8f;
+    //        boundRadius = DssVar.StandardBoundRadius;
+
+    //        idleFrame = 0;
+    //        attackFrame = 1;
+
+    //        walkingSpeed = DssConst.Men_StandardWalkingSpeed * 2f;
+    //        ArmySpeedBonusLand = 0.8;
+    //        rotationSpeed = StandardRotatingSpeed * 2f;
+    //        targetSpotRange = StandardTargetSpotRange;
+    //        attackRange = 0.06f;
+    //        basehealth = DssConst.Soldier_DefaultHealth * 3;
+    //        mainAttack = AttackType.Melee;
+    //        attackDamage = 120;
+    //        attackDamageStructure = 30;
+    //        attackDamageSea = 20;
+    //        attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.8f;
+
+    //        rowWidth = 4;
+    //        columnsDepth = 3;
+    //        groupSpacing = DssVar.DefaultGroupSpacing * 1.4f;
+
+    //        goldCost = MathExt.MultiplyInt(2, DssLib.GroupDefaultCost);
+    //        workForcePerUnit = 2;
+    //        upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+    //        recruitTrainingTimeSec = MathExt.MultiplyInt(1.5, DssLib.DefalutRecruitTrainingTimeSec);
+
+    //        modelAdjY = 0.1f;
+    //        modelName = LootFest.VoxelModelName.war_knight;
+    //        modelVariationCount = 3;
+    //        hasBannerMan = false;
+
+    //        description = DssRef.lang.UnitType_Description_Knight;
+    //        icon = SpriteName.WarsUnitIcon_Knight;
+
+    //        energyPerSoldier = DssLib.SoldierDefaultEnergyUpkeep * 3;
+    //    }
+
+
+    //    public override AbsDetailUnit CreateUnit()
+    //    {
+
+    //        return new Knight();
+    //    }
+    //}
+
+    class CavalryProfile : ConscriptedSoldierProfile
+    {
+        public CavalryProfile()
+            :base()
+        {
+            unitType = UnitType.ConscriptCavalry;
+
+            //modelScale = DssConst.Men_StandardModelScale * 1.5f;
+            boundRadius = DssVar.StandardBoundRadius;
 
             idleFrame = 0;
             attackFrame = 1;
-
-            walkingSpeed = StandardWalkingSpeed * 2f;
-            ArmySpeedBonusLand = 0.8;
+            
+            //ArmySpeedBonusLand = 0.8;
             rotationSpeed = StandardRotatingSpeed * 2f;
             targetSpotRange = StandardTargetSpotRange;
-            attackRange = 0.06f;
-            basehealth = DefaultHealth * 3;
-            mainAttack = AttackType.Melee;
-            attackDamage = 120;
-            attackDamageStructure = 30;
-            attackDamageSea = 20;
-            attackTimePlusCoolDown = StandardAttackAndCoolDownTime * 0.8f;
-
+                        
             rowWidth = 4;
             columnsDepth = 3;
-            groupSpacing = DefaultGroupSpacing * 1.4f;
+            groupSpacing = DssVar.DefaultGroupSpacing * 1.4f;
 
             goldCost = MathExt.MultiplyInt(2, DssLib.GroupDefaultCost);
             workForcePerUnit = 2;
             upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
-            recruitTrainingTimeSec = MathExt.MultiplyInt(1.5, DssLib.DefalutRecruitTrainingTimeSec);
-
+            
             modelAdjY = 0.1f;
-            modelName = LootFest.VoxelModelName.war_knight;
-            modelVariationCount = 3;
             hasBannerMan = false;
 
-            description = "Strong in open field battles";
-            icon = SpriteName.WarsUnitIcon_Knight;
+            description = DssRef.lang.UnitType_Description_Knight;
         }
 
-
-        public override AbsDetailUnit CreateUnit()
+        public override AbsSoldierUnit CreateUnit()
         {
-            
             return new Knight();
         }
     }
@@ -62,11 +101,13 @@ namespace VikingEngine.DSSWars.GameObject
     {
         public Knight()
             : base()
-        {            
+        {    
+            
         }
 
         protected override DetailUnitModel initModel()
         {
+            updateGroudY(true);
             if (this.parentArrayIndex == 11)
             {
                 return new KnightBannerModel(this);
@@ -86,7 +127,7 @@ namespace VikingEngine.DSSWars.GameObject
            : base(soldier)
         {
           
-           horsemodel = DssRef.models.ModelInstance(Ref.rnd.Chance(0.2)? VoxelModelName.horse_white : VoxelModelName.horse_brown, AbsDetailUnitData.StandardModelScale * 1.6f,false);
+           horsemodel = DssRef.models.ModelInstance(Ref.rnd.Chance(0.2)? VoxelModelName.horse_white : VoxelModelName.horse_brown, DssConst.Men_StandardModelScale * 1.5f,false);
            horsemodel.AddToRender(DrawGame.UnitDetailLayer);
 
            walkingAnimation = new WalkingAnimation(1, 6, WalkingAnimation.StandardMoveFrames*2f);
@@ -103,11 +144,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (soldier.inAttackAnimation())
             {
-                model.Frame = soldier.data.attackFrame;
+                model.Frame = soldier.Profile().attackFrame;
             }
             else
             {
-                model.Frame = soldier.data.idleFrame;
+                model.Frame = soldier.Profile().idleFrame;
             }
 
             if (soldier.state.walking)
@@ -147,7 +188,7 @@ namespace VikingEngine.DSSWars.GameObject
         public KnightBannerModel(AbsSoldierUnit soldier)
             : base(soldier)
         {
-            banner = new HorseBanner(soldier.GetFaction(), soldier.data.modelScale);
+            banner = new HorseBanner(soldier.GetFaction(), soldier.soldierData.modelScale);
         }
 
         //protected override void updateShipAnimation(AbsSoldierUnit soldier)

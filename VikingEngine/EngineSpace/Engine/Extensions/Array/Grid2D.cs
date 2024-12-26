@@ -18,6 +18,9 @@ namespace VikingEngine
         public T[,] array;
         public T sel;
 
+        public Grid2D()
+        { }
+
         public Grid2D(int size)
             :this(new IntVector2(size))
         {
@@ -30,6 +33,13 @@ namespace VikingEngine
         }
 
         public Grid2D(IntVector2 size)
+        {
+            this.size = size;
+            array = new T[size.X, size.Y];
+        }
+
+
+        public void initGrid(IntVector2 size)
         {
             this.size = size;
             array = new T[size.X, size.Y];
@@ -125,6 +135,10 @@ namespace VikingEngine
             return array[x, y];
         }
         public void Set(IntVector2 position, T value)
+        {
+            array[position.X, position.Y] = value;
+        }
+        public void SetRef(ref IntVector2 position,ref T value)
         {
             array[position.X, position.Y] = value;
         }
@@ -236,6 +250,10 @@ namespace VikingEngine
         public bool LoopNext()
         {
             return loop.Next();
+        }
+        public void LoopUndoToPrev()
+        {
+            loop.UndoToPrevious();
         }
 
         public bool LoopNextSel()

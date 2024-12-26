@@ -24,14 +24,13 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
 
         override public void refreshShipCarryCount()
         {
-            var data = group.SoldierData();
-            soldierCount = MathExt.Div_Ceiling(this.health, data.basehealth);
+            var defaultSoldier = group.soldierConscript.init(group.typeSoldierData);
+            //var data = group.typeCurrentData;//.SoldierData();
+            soldierCount = MathExt.Div_Ceiling(this.health, defaultSoldier.basehealth);
             if (soldierCount > 0)
             {
-                multiAttackCount = Math.Min(soldierCount, data.rowWidth);
-                multiAttackTimeCooldown = data.attackTimePlusCoolDown / (soldierCount / multiAttackCount);
-
-                //multiAttackCount += 1;
+                multiAttackCount = Math.Min(soldierCount, group.typeSoldierData.rowWidth);
+                multiAttackTimeCooldown = defaultSoldier.attackTimePlusCoolDown / (soldierCount / multiAttackCount);
             }
             
 
@@ -41,7 +40,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
         {
             base.takeDamage(damageAmount, attackDir, damageFaction, fullUpdate);
             refreshShipCarryCount();
-            model?.displayHealth(health / (float)data.basehealth);
+            model?.displayHealth(health / (float)soldierData.basehealth);
         }
 
         public override bool IsShipType()
@@ -52,13 +51,13 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
         protected override DetailUnitModel initModel()
         {
             var model = new ShipUnitAdvancedModel(this);
-            model.displayHealth(health / (float)data.basehealth);
+            model.displayHealth(health / (float)soldierData.basehealth);
             return model;
         }
         public override Vector3 projectileStartPos()
         {
             Vector3 pos = position;
-            pos.Y += AbsDetailUnitData.StandardModelScale * 0.7f;
+            pos.Y += DssConst.Men_StandardModelScale * 0.7f;
             pos.X += Ref.rnd.Plus_MinusF(0.1f);
             pos.Z += Ref.rnd.Plus_MinusF(0.1f);
 

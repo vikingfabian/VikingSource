@@ -45,6 +45,8 @@ namespace VikingEngine.SteamWrapping
         public bool inOverlay = false;
         public SteamApplicationSettings applicationSettings;
 
+        public string UserCloudPath = "unknown_user";
+
         SteamCallback<GameOverlayActivated_t> gameOverlayActivatedCB;
         SteamCallback<UserStatsReceived_t> UserStatsRecievedCallback;
         SteamCallback<UserStatsStored_t> UserStatsStoredCallback;
@@ -91,7 +93,7 @@ namespace VikingEngine.SteamWrapping
             applicationSettings = SetupSteamApplicationSettings(PlatformSettings.RunProgram);
 
             isInitialized = SteamAPI.Init(applicationSettings.appId);
-            //lib.DoNothing();
+           
             if (!isInitialized)
             {
                 Debug.LogError("SteamAPI_Init() failed.");
@@ -100,10 +102,13 @@ namespace VikingEngine.SteamWrapping
             }
 
             SetupSubsystems(applicationSettings);
+            UserCloudPath = SteamAPI.SteamUser().GetSteamID().ToString();
+            
 
             return true;
         }
-        
+
+
         SteamApplicationSettings SetupSteamApplicationSettings(StartProgram program)
         {
             SteamApplicationSettings result;

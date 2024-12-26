@@ -80,16 +80,16 @@ namespace VikingEngine.DSSWars.Map
             //{
             //DssRef.world.Draw(cameraIndex);//, true);
 
-            var factions = DssRef.world.factionsCounter;
+            var factions = DssRef.world.factions.counter();
             factions.Reset();
 
             while (factions.Next())//foreach (var m in DssRef.state.players)
             {
-                factions.sel.armiesCounter.Reset();
-                while (factions.sel.armiesCounter.Next())
+                var armiesC = factions.sel.armies.counter();
+                while (armiesC.Next())
                 {
 
-                    var groupsCounter = factions.sel.armiesCounter.sel.groups.counter();
+                    var groupsCounter = armiesC.sel.groups.counter();
                     while (groupsCounter.Next())
                     {
                         groupsCounter.sel.DrawOverviewIcon(cameraIndex);

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Xml.Schema;
+using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Profile;
 using VikingEngine.Engine;
 using VikingEngine.Input;
@@ -20,11 +21,16 @@ namespace VikingEngine.DSSWars.Data
         public int playerCount = 1;
         public bool verticalScreenSplit = true;
 
-        DataStream.FilePath path = new DataStream.FilePath(null, "DSS_gameoptions", ".set");
-       
+        DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath, "DSS_gameoptions", ".sav");
+        
+
         public MapSize mapSize = MapSize.Medium;
         public bool generateNewMaps = false;
         public bool autoSave = true;
+        public bool runTutorial = true;
+        public bool speed5x = false;
+        public bool longerBuildQueue = false;
+
         public LocalPlayerStorage[] localPlayers = null;
         public Profile.FlagStorage flagStorage;
         public SaveMeta meta = null;
@@ -43,6 +49,7 @@ namespace VikingEngine.DSSWars.Data
             }
         }
 
+
         public void Load()
         {
             DataStream.DataStreamHandler.TryReadBinaryIO(path, read);
@@ -52,6 +59,7 @@ namespace VikingEngine.DSSWars.Data
 
         public void Save(DataStream.IStreamIOCallback callBack)
         {
+            System.IO.Directory.CreateDirectory(path.CompleteDirectory);
             DataStream.BeginReadWrite.BinaryIO(true, path, write, null, callBack, true);
         }
 
@@ -74,7 +82,7 @@ namespace VikingEngine.DSSWars.Data
         //    {
         //        levelPerc *= 1.25;
         //    }
-            
+
         //    if (!allowPauseCommand)
         //    {
         //        levelPerc *= 1.5;
@@ -82,10 +90,13 @@ namespace VikingEngine.DSSWars.Data
 
         //    return levelPerc;
         //}
-
         public void write(System.IO.BinaryWriter w)
         {
-            const int Version = 14;
+            write(w, false);
+        }
+        public void write(System.IO.BinaryWriter w, bool gamestate = false)
+        {
+            const int Version = 20;
 
             w.Write(Version);
 
@@ -96,20 +107,31 @@ namespace VikingEngine.DSSWars.Data
 
             w.Write((int)mapSize);
 
-            w.Write(verticalScreenSplit);
-
-            for (int i = 0; i < MaxLocalPlayerCount; ++i)
+            if (!gamestate)
             {
-                localPlayers[i].write(w);
+                w.Write(verticalScreenSplit);
+                for (int i = 0; i < MaxLocalPlayerCount; ++i)
+                {
+                    localPlayers[i].write(w);
+                }
             }
 
             w.Write(generateNewMaps);
             w.Write(autoSave);
             w.Write(multiplayerGameSpeed);
-            DssRef.difficulty.write(w);
+            DssRef.difficulty.write(w);   
             
+            w.Write(runTutorial);
+
+            w.Write(speed5x);
+            w.Write(longerBuildQueue);
         }
+
         public void read(System.IO.BinaryReader r)
+        {
+            read(r, false);
+        }
+        public void read(System.IO.BinaryReader r, bool gamestate)
         {
             int version = r.ReadInt32();
             if (version <= 4)
@@ -127,19 +149,22 @@ namespace VikingEngine.DSSWars.Data
             }
             mapSize = (MapSize)r.ReadInt32();
 
-            verticalScreenSplit = r.ReadBoolean();
-
-            for (int i = 0; i < MaxLocalPlayerCount; ++i)
+            if (!gamestate || version < 16)
             {
-                localPlayers[i].read(r, version);
+                verticalScreenSplit = r.ReadBoolean();
+
+                for (int i = 0; i < MaxLocalPlayerCount; ++i)
+                {
+                    localPlayers[i].read(r, version);
+                }
             }
 
             if (version >= 11)
             {
                 generateNewMaps = r.ReadBoolean();
                 if (version >= 13)
-                { 
-                    autoSave = r.ReadBoolean(); 
+                {
+                    autoSave = r.ReadBoolean();
                 }
                 if (version >= 14)
                 {
@@ -147,7 +172,25 @@ namespace VikingEngine.DSSWars.Data
                 }
                 DssRef.difficulty.read(r, version);
             }
+
+            if (version >= 15)
+            {
+                runTutorial = r.ReadBoolean();
+            }
             
+            if (version < 16)
+            {
+                runTutorial = true;
+            }
+
+            if (version >= 18)
+            { 
+                speed5x = r.ReadBoolean();
+            }
+            if (version >= 19)
+            {
+                longerBuildQueue = r.ReadBoolean();
+            }
         }
 
         public void checkPlayerDoublettes()
@@ -192,6 +235,8 @@ namespace VikingEngine.DSSWars.Data
                 }
             }
         }
+
+        
     }
 
 

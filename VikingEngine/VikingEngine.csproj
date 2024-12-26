@@ -64,16 +64,31 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="DSSWars\Display\Translation\Swedish.cs" />
+    <Compile Remove="EngineSpace\HUD\Translation\OptionsLanguage_Swedish.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Content\Modding\ModConst.txt" />
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Icon.ico" />
-    <EmbeddedResource Include="Icon.bmp" />
+    <Compile Include="Content\Modding\ModConst.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+
+    	<EmbeddedResource Include="Icon.ico">
+		<LogicalName>Icon.ico</LogicalName>
+	</EmbeddedResource>
+
+    	<EmbeddedResource Include="Icon.bmp">
+  		<LogicalName>Icon.bmp</LogicalName>
+	</EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
   </ItemGroup>

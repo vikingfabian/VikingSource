@@ -123,9 +123,9 @@ namespace VikingEngine.LootFest.Editor
  	         model = Editor.VoxelObjDataLoader.GetVoxelObjMaster(r, Vector3.Zero);
         }
 
-        protected override void runQuedMainTask()
+        public override void runSyncAction()
         {
-            base.runQuedMainTask();
+            base.runSyncAction();
             Ref.draw.AddToRenderList(model);
             callback.SetLodadModel(model, gamestate.ParentCenterPos);
             gamestate.AddMember(callback);

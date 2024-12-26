@@ -216,7 +216,7 @@ namespace VikingEngine.LootFest.Editor
         {
             infoText.TextString = "Tool: " + tool.ToString();
         }
-        
+
 
         //static RangeIntV3 drawSphere(GeomitricType type, float radius, IntVector3 drawCoord,
         //    Map.WorldPosition worldPos, BlockHD selectedMaterial)
@@ -344,6 +344,23 @@ namespace VikingEngine.LootFest.Editor
         //    UpdatePencilInfo();
         //}
 
+        void deleteArea(IntervalIntV3 volume)
+        {
+            ushort value = BlockHD.Empty.BlockValue;
+            IntVector3 drawPoint = new IntVector3();
+
+            for (drawPoint.Z = volume.Min.Z; drawPoint.Z <= volume.Max.Z; drawPoint.Z++)
+            {
+                for (drawPoint.Y = volume.Min.Y; drawPoint.Y <= volume.Max.Y; drawPoint.Y++)
+                {
+                    for (drawPoint.X = volume.Min.X; drawPoint.X <= volume.Max.X; drawPoint.X++)
+                    {
+                        SetVoxel(drawPoint , value);
+                    }
+                }
+            }
+        }
+
         public override void SetVoxel(IntVector3 drawPoint, ushort material)
         {
             if (inGame)
@@ -438,17 +455,61 @@ namespace VikingEngine.LootFest.Editor
             }
         }
         
-        public void LinkStampAllFrames()
+        public void LinkStampOnFrames(int frame = -1)
         {
+            int current = currentFrame.Value;
+
+            if (frame < 0)
+            {
+                for (int i = 0; i < animationFrames.Frames.Count; i++)
+                {
+                    //nextFrame(true);
+                    currentFrame.Value = i;
+                    if (stampEmpty)
+                    {
+                        deleteArea(designerInterface.selectionArea);
+                    }
+                    
+                    stampSelection(false);
+                }
+            }
+            else
+            {
+                currentFrame.Value = frame;
+                if (stampEmpty)
+                {
+                    deleteArea(designerInterface.selectionArea);
+                }
+                stampSelection(false);
+            }
+
+            currentFrame.Value = current;
+            menusystem.closeMenu();
+        }
+
+        public void ClearSelectedAreaOnFrames(bool includeThisFrame)
+        {
+            int current = currentFrame.Value;
             for (int i = 0; i < animationFrames.Frames.Count; i++)
             {
-                nextFrame(true);
-                stampSelection(false);
+                //nextFrame(true);
+                if (i != current || includeThisFrame)
+                {
+                    currentFrame.Value = i;
+                    
+                        deleteArea(designerInterface.selectionArea);
+                    
+                }
+            }
+
+            currentFrame.Value = current;
+            if (includeThisFrame)
+            {
+                removeSelection();
+                //UpdateVoxelObj(designerInterface.selectionArea);
             }
             menusystem.closeMenu();
         }
-       
-        
         
         public void LinkSelRotateLieDown()
         {
@@ -648,6 +709,8 @@ namespace VikingEngine.LootFest.Editor
             refreshSelectionModel();
         }
         
+        //void delete
+
         public override void stampSelection(bool startThread)
         {
 
@@ -923,10 +986,10 @@ namespace VikingEngine.LootFest.Editor
         {
             storeUndoableAction();
 
-            if (to.HasMaterial())
-            {
-                to.material = swapMaterialFrom.material;
-            }
+            //if (to.HasMaterial())
+            //{
+            //    to.material = swapMaterialFrom.material;
+            //}
             ushort swapTo = to.BlockValue;
             if (HasSelection)
             {

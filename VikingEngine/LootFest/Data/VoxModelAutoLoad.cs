@@ -198,12 +198,12 @@ namespace VikingEngine.LootFest.Data
             //master = Editor.VoxelObjDataLoader.ReadVoxelObjAnimHD(r, new Vector3(0, yAdjust, 0), centerY);
         }
 
-        protected override void runQuedMainTask()
+        public override void runSyncAction()
         {
 #if DEBUG
             System.Diagnostics.Debug.WriteLine("vox main task: " + name);
 #endif 
-            base.runQuedMainTask();
+            base.runSyncAction();
 
             Graphics.VoxelModel master = Editor.VoxelObjBuilder.BuildModelHD(verticeData, gridSz, framesData);
 

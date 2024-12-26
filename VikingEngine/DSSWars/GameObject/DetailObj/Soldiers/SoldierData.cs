@@ -6,33 +6,33 @@ using Microsoft.Xna.Framework;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class SoldierData : AbsSoldierData
-    {
-        public SoldierData()
-        {
-            unitType = UnitType.Soldier;
+    //class SoldierData : AbsSoldierProfile
+    //{
+    //    public SoldierData()
+    //    {
+    //        unitType = UnitType.Soldier;
 
-            modelScale = StandardModelScale;
-            boundRadius = StandardBoundRadius;
+    //        modelScale = DssConst.Men_StandardModelScale;
+    //        boundRadius =DssVar.StandardBoundRadius;
 
-            walkingSpeed = StandardWalkingSpeed;
-            rotationSpeed = StandardRotatingSpeed;
-            targetSpotRange = StandardTargetSpotRange;
-            attackRange = 0.04f;
-            basehealth = DefaultHealth;
-            mainAttack = AttackType.Melee;
-            attackDamage = 50;
-            attackDamageStructure = attackDamage;
-            attackDamageSea = attackDamage;
-            attackTimePlusCoolDown = StandardAttackAndCoolDownTime;
+    //        walkingSpeed = DssConst.Men_StandardWalkingSpeed;
+    //        rotationSpeed = StandardRotatingSpeed;
+    //        targetSpotRange = StandardTargetSpotRange;
+    //        attackRange = 0.04f;
+    //        basehealth = DssConst.Soldier_DefaultHealth;
+    //        mainAttack = AttackType.Melee;
+    //        attackDamage = 50;
+    //        attackDamageStructure = attackDamage;
+    //        attackDamageSea = attackDamage;
+    //        attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
 
-            setupJavelinCommand();
-            modelName = LootFest.VoxelModelName.wars_soldier;
-            modelVariationCount = 3;
+    //        setupJavelinCommand();
+    //        modelName = LootFest.VoxelModelName.wars_soldier;
+    //        modelVariationCount = 3;
 
-            description = "A general purpose unit.";
-            icon = SpriteName.WarsUnitIcon_Soldier;
-        }
-    }
+    //        description = DssRef.lang.UnitType_Description_Soldier;
+    //        icon = SpriteName.WarsUnitIcon_Soldier;
+    //    }
+    //}
 
 }

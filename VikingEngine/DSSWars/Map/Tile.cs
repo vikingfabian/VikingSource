@@ -42,12 +42,21 @@ namespace VikingEngine.DSSWars.Map
         public int seaDistanceHeatMap = int.MinValue;
         //--
 
-        public int WorkerCount = 0;
-        public byte renderStateA = Culling.NoRender;
-        public byte renderStateB = Culling.NoRender;
-        public bool hasTileInRender = false; 
+        //public int WorkerCount = 0;
+        
+        public float exitRenderTimeStamp_TotSec = 0;
+        //public byte renderStateA = Culling.NoRender;
+        //public byte renderStateB = Culling.NoRender;
+        public byte bits_renderStateA = Culling.NoRender;
+        public byte bits_renderStateB = Culling.NoRender;
+        public bool hasTileInRender = false;
 
         //public bool inRender = false;
+
+        public bool OutOfRenderTimeOut()
+        { 
+            return (Ref.TotalGameTimeSec - exitRenderTimeStamp_TotSec) > 1f;
+        }
 
         public Tile()
         {
@@ -62,9 +71,9 @@ namespace VikingEngine.DSSWars.Map
             BorderRegion_West = NoBorderRegion;
         }
 
-        public Tile(System.IO.BinaryReader r, int version)
+        public Tile(System.IO.BinaryReader r, Tile previous, int version)
         {
-            readMapFile(r, version);
+            readMapFile(r, previous, version);
         }
 
         public void setWaterHeat_Land(int heat)
@@ -99,32 +108,161 @@ namespace VikingEngine.DSSWars.Map
         }
 
 
-        public void writeMapFile(System.IO.BinaryWriter w)
-        {
-            w.Write(Debug.Ushort_OrCrash(CityIndex));//(ushort)CityIndex);
-            w.Write(Debug.Byte_OrCrash((byte)biom));//(byte)biom);
-            w.Write(Debug.Byte_OrCrash(heightLevel));//(byte)heightLevel);
-            w.Write(Debug.Byte_OrCrash((int)tileContent));//(byte)tileContent);
-            w.Write(Debug.Ushort_OrCrash(BorderCount));//(ushort)BorderCount);
+        const int SaveOpt_IsCity_Ix = 0;
+        const int SaveOpt_CityIndex_Ix = 1;
+        const int SaveOpt_biom_Ix = 2;
+        const int SaveOpt_heightLevel_Ix = 3;
+        const int SaveOpt_HasBorderN_Ix = 4;
+        const int SaveOpt_HasBorderE_Ix = 5;
+        const int SaveOpt_HasBorderS_Ix = 6;
+        const int SaveOpt_HasBorderW_Ix = 7;
 
-            w.Write(Debug.Short_OrCrash(BorderRegion_North));//(short)BorderRegion_North);
-            w.Write(Debug.Short_OrCrash(BorderRegion_East));//(short)BorderRegion_East);
-            w.Write(Debug.Short_OrCrash(BorderRegion_South));//(short)BorderRegion_South);
-            w.Write(Debug.Short_OrCrash(BorderRegion_West));//(short)BorderRegion_West);
+
+        public void writeMapFile(System.IO.BinaryWriter w, Tile previuos)
+        {
+            EightBit saveOpt = new EightBit();
+            bool bIsCity = tileContent == TileContent.City;
+            bool eqCityIndex = CityIndex == previuos.CityIndex;
+            bool eqBiom = biom == previuos.biom;
+            bool eqHeight = heightLevel == previuos.heightLevel;
+
+            bool bBorderN = BorderRegion_North != NoBorderRegion;
+            bool bBorderE = BorderRegion_East != NoBorderRegion;
+            bool bBorderS = BorderRegion_South != NoBorderRegion;
+            bool bBorderW = BorderRegion_West != NoBorderRegion;
+
+            saveOpt.Set(SaveOpt_IsCity_Ix, bIsCity);
+            saveOpt.Set(SaveOpt_CityIndex_Ix, eqCityIndex);
+            saveOpt.Set(SaveOpt_biom_Ix, eqBiom);
+            saveOpt.Set(SaveOpt_heightLevel_Ix, eqHeight);
+            saveOpt.Set(SaveOpt_HasBorderN_Ix, bBorderN);
+            saveOpt.Set(SaveOpt_HasBorderE_Ix, bBorderE);
+            saveOpt.Set(SaveOpt_HasBorderS_Ix, bBorderS);
+            saveOpt.Set(SaveOpt_HasBorderW_Ix, bBorderW);
+
+            saveOpt.write(w);
+
+            //w.Write(Debug.Byte_OrCrash((int)tileContent));
+            if (!eqCityIndex)
+            {
+                w.Write(Debug.Ushort_OrCrash(CityIndex));
+            }
+
+            if (!eqBiom)
+            {
+                w.Write(Debug.Byte_OrCrash((byte)biom));
+            }
+
+            if (!eqHeight)
+            {
+                w.Write(Debug.Byte_OrCrash(heightLevel));
+            }
+
+
+            //w.Write(Debug.Ushort_OrCrash(BorderCount));
+            if (bBorderN)
+            {
+                w.Write(Debug.Short_OrCrash(BorderRegion_North));
+            }
+            if (bBorderE)
+            {
+                w.Write(Debug.Short_OrCrash(BorderRegion_East));
+            }
+            if (bBorderS)
+            {
+                w.Write(Debug.Short_OrCrash(BorderRegion_South));
+            }
+            if (bBorderW)
+            {
+                w.Write(Debug.Short_OrCrash(BorderRegion_West));
+            }
         }
 
-        public void readMapFile(System.IO.BinaryReader r, int version)
+        public void readMapFile(System.IO.BinaryReader r, Tile previuos, int version)
         {
-            CityIndex = r.ReadUInt16();
-            biom = (BiomType)r.ReadByte();
-            heightLevel = r.ReadByte();
-            tileContent = (TileContent)r.ReadByte();
-            BorderCount = r.ReadUInt16();
+            //TODO optimera med att spara bool för repeat av vanliga värden
 
-            BorderRegion_North = r.ReadInt16();
-            BorderRegion_East = r.ReadInt16();
-            BorderRegion_South = r.ReadInt16();
-            BorderRegion_West = r.ReadInt16();
+            //tileContent = (TileContent)r.ReadByte();
+
+            EightBit saveOpt = new EightBit(r);
+
+            if (saveOpt.Get(SaveOpt_IsCity_Ix))
+            {
+                tileContent = TileContent.City;
+            }
+
+            if (saveOpt.Get(SaveOpt_CityIndex_Ix))
+            {
+                CityIndex = previuos.CityIndex;
+            }
+            else
+            {
+                CityIndex = r.ReadUInt16();
+            }
+
+            if (saveOpt.Get(SaveOpt_biom_Ix))
+            {
+                biom = previuos.biom;
+            }
+            else
+            {
+                biom = (BiomType)r.ReadByte();
+            }
+
+            if (saveOpt.Get(SaveOpt_heightLevel_Ix))
+            {
+                heightLevel = previuos.heightLevel;
+            }
+            else
+            {
+                heightLevel = r.ReadByte();
+            }
+
+            //BorderCount = r.ReadUInt16();
+
+            //TODO optimera med att spara bytebools för icke NO, och tilecontent == city
+            //Spara inte border count
+            BorderCount = 0;
+            if (saveOpt.Get(SaveOpt_HasBorderN_Ix))
+            {
+                ++BorderCount;
+                BorderRegion_North = r.ReadInt16();
+            }
+            else
+            { 
+                BorderRegion_North = NoBorderRegion;
+            }
+
+            if (saveOpt.Get(SaveOpt_HasBorderE_Ix))
+            {
+                ++BorderCount;
+                BorderRegion_East = r.ReadInt16();
+            }
+            else
+            {
+                BorderRegion_East = NoBorderRegion;
+            }
+
+            if (saveOpt.Get(SaveOpt_HasBorderS_Ix))
+            {
+                ++BorderCount;
+                BorderRegion_South = r.ReadInt16();
+            }
+            else
+            {
+                BorderRegion_South = NoBorderRegion;
+            }
+
+            if (saveOpt.Get(SaveOpt_HasBorderW_Ix))
+            {
+                ++BorderCount;
+                BorderRegion_West = r.ReadInt16();
+            }
+            else
+            {
+                BorderRegion_West = NoBorderRegion;
+            }
+
         }
 
         public void removeCity()
@@ -422,6 +560,6 @@ namespace VikingEngine.DSSWars.Map
     {
         NONE,
         City,
-        WorkerHut,
+        //WorkerHut,
     }
 }

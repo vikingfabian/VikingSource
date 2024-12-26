@@ -194,6 +194,11 @@ namespace VikingEngine.Engine
 
         override public string PublicName(LoadedFont fontsafe)
         {
+
+#if DSS
+            return string.Format(DssRef.lang.FactionName_Player, localPlayerIndex + 1);
+#else
+
 #if PCGAME
             if (Ref.steam.isInitialized)
             {
@@ -213,13 +218,11 @@ namespace VikingEngine.Engine
             }
 #endif
 
-#if DSS
-            return string.Format(DssRef.lang.FactionName_Player, localPlayerIndex + 1);
-#else
+
             return "Player" +  TextLib.IndexToString(localPlayerIndex);
 #endif
         }
-        
+
         public override string ToString()
         {
             return "local player data" + "(" + PublicName(LoadedFont.NUM_NON) + ")";

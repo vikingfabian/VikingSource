@@ -1,25 +1,36 @@
-﻿Change Log
-* Multiplayer: attacking another player removes diplomatic offerings
+﻿-Change Log-
+* Full translation
+* Water/diplomacy description
 
+#Todo (xmas patch)#
+
+
+
+--Efter release polish--
+-war icon
+pilar med resurser från delivery
+Factories modeller
+city economy
+visa antal byggnader i bygg meny
+menu scroll
 
 Error
--also path finding of a land army will often prefer water over land when the boat building will cause the travel time to take considerably longer than if it went over land
-from what i've seen, this generally only happens if the army is on a land tile immediately adjacent to water
+-back button in menues 
 
 Retreat system
 -retreat av de sista motståndarna
 -light taunt units (slingers, light cavalry)
 -reassemble av flydd arme
 
+
 Polish
--supress south hara war declaration message
--En granne attackerar alltid efter en liten stund (upprepa)
+- full auto option
+
+-döda av faktion som bara har en soldat kvar
 -Missing file error på load
 -(mercenaries cost increase bort)
--snabbare båt bygge i strid
 -cost mercenaries på tooltip
 -I should improve the diplomacy so peace agreements are shared with allies
--War declare, truce end messages
 -större radie på köpa till armeer
 -attack warning -Battle notification
 -diplomacy toggle/relation heatmap/units
@@ -29,18 +40,43 @@ Polish
 -dölj move path OnHud 
 -attack ally yes/no warning
 
-Art
--list punkt
--checkbox art
--Mercenary icon
--battle icon
--world domination achieve
+#Art
 
-#Upcoming Events
-- May 17: Game challenge competition and showcase booth
-- Juni 10: Steam next fest
-- August: Steam release
-- Late Summer / Early Autumn: Game world championship
+
+#Voxel
+/logistic overseer, +lvl 2
+/farm plus tool shed
+/smelter
+/manuballista, /cannons, /hand cannon, /slinger, /long sword, /mithril user, /warhammer
+/stone cutter, wood cutter
+/water resovoir
+/Embassy
+/delivery lvl2/3
+/knight barrack
+/barrack in use, melee/range/siege
+/mines
+/chemestry
+/Foundry (gjuteri)
+/cast iron
+/-lvl2 gun powder (beer chemist) Black powder/ gunpowder
+#current
+English, Simplified Chinese, Japanese, Russian, Spanish
+
+
+#Todo (DSS 2)#
+1. better presentation
+2. 100 hour playtime
+3. maybe multiplayer
+
+-Free build of city walls, towers
+-Better looking start cities
+-Nicer menu
+-Dynamic shadows shader
+-New end boss
+-Lots of named factions
+-Are you strongly opposed to showing building counts per town or production outputs
+
+
 
 
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using Microsoft.Xna.Framework;
+using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Players;
@@ -17,11 +18,9 @@ namespace VikingEngine.DSSWars.GameObject
         public bool isDeleted = false;
         
 
-        virtual public void selectionGui(Players.LocalPlayer player, Graphics.ImageGroup guiModels)
-        { }
+        
 
-        virtual public void selectionFrame(bool hover, Selection selection)
-        { }
+       
 
         abstract public bool defeatedBy(Faction attacker);
 
@@ -30,49 +29,52 @@ namespace VikingEngine.DSSWars.GameObject
             return isDeleted;
         }
 
-        abstract public bool aliveAndBelongTo(Faction faction);
+        abstract public bool aliveAndBelongTo(int faction);
 
-        virtual public void toHud(Display.ObjectHudArgs args)
-        {
-            string name = Name();
-            if (name != null)
-            {
-                args.content.text(name).overrideColor = Color.LightYellow;
-                args.content.newLine();
-            }
-            args.content.Add(new RichBoxBeginTitle());
-            args.content.Add(GetFaction().FlagTextureToHud());
-            args.content.Add(new RichBoxText(TypeName()));
+        //virtual public void toHud(ObjectHudArgs args)
+        //{
+        //    string name = Name();
 
-            if (PlatformSettings.DevBuild)
-            {
-                args.content.text("agg " + GetFaction().player.aggressionLevel.ToString());
-            }
-            if (GetFaction() != args.player.faction)
-            {
-                var relation = DssRef.diplomacy.GetRelationType(args.player.faction, GetFaction());
+        //    if (name != null)
+        //    {
+        //        args.content.text(name).overrideColor = Color.LightYellow;
+        //        args.content.newLine();
+        //    }
 
-                args.content.newLine();
-                args.content.Add(new RichBoxText(GetFaction().PlayerName, Color.LightYellow));
-                args.content.newLine();
-                args.content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation)));
-                args.content.Add(new RichBoxText(Diplomacy.RelationString(relation), Color.LightBlue));
+        //    args.content.Add(new RichBoxBeginTitle());
+        //    args.content.Add(GetFaction().FlagTextureToHud());
+        //    args.content.Add(new RichBoxText(TypeName()));
 
-            }
-            args.content.Add(new RichBoxSeperationLine());
-        }
+        //    if (PlatformSettings.DevBuild)
+        //    {
+        //        args.content.text("agg " + GetFaction().player.aggressionLevel.ToString());
+        //    }
+        //    if (GetFaction() != args.player.faction)
+        //    {
+        //        var relation = DssRef.diplomacy.GetRelationType(args.player.faction, GetFaction());
+
+        //        args.content.newLine();
+        //        args.content.Add(new RichBoxText(GetFaction().PlayerName, Color.LightYellow));
+        //        args.content.newLine();
+        //        args.content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation)));
+        //        args.content.Add(new RichBoxText(Diplomacy.RelationString(relation), Color.LightBlue));
+
+        //    }
+        //    args.content.Add(new RichBoxSeperationLine());
+        //}
 
         
-
-        virtual public string Name() { return null; }
-
-        abstract public AbsMapObject RelatedMapObject();
         virtual public void stateDebugText(HUD.RichBox.RichBoxContent content)
         { }
 
         virtual public void DeleteMe(DeleteReason reason, bool removeFromParent)
         {
             isDeleted = true;
+        }
+
+        protected void debugTagButton(RichBoxContent content)
+        {
+            content.Button(string.Format("debug tag ({0})", debugTagged), new HUD.RichBox.RbAction(AddDebugTag), null, true);
         }
 
         virtual public void AddDebugTag()

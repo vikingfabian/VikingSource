@@ -2,6 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Valve.Steamworks;
+using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Players;
+using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Map
 {
@@ -11,12 +16,12 @@ namespace VikingEngine.DSSWars.Map
         public float groundY;
         //public FoilType foil = FoilType.None;
         public TerrainMainType mainTerrain = TerrainMainType.NUM;
-        public int subTerrain = -1;
+        public int subTerrain = byte.MaxValue;
         /// <summary>
-        /// Amount of resources that can be extracted, or other value like building size
+        /// Amount of resources that can be extracted, animation frame for resources, or other value like building size
         /// </summary>
-        public int terrainValue = 0;
-        //public int colorVariant = 0;
+        public int terrainAmount = 0;
+
         public int terrainQuality = 0;
 
         /// <summary>
@@ -24,37 +29,181 @@ namespace VikingEngine.DSSWars.Map
         /// </summary>
         public int collectionPointer = -1;
 
-        public SubTile(TerrainMainType type, Color color, float groundY)
+        public SubTile(TerrainMainType type, int subType, Color color, float groundY)
         {
             this.color = color;
             this.groundY = groundY;
             this.mainTerrain = type;
+            this.subTerrain = subType;
         }
 
-        public void SetType(TerrainMainType main, int under, int value)
+        public void SetType(TerrainMainType main, int under, int amount)
         {
             mainTerrain = main;
             subTerrain = under;
-            terrainValue = value;
+            terrainAmount = amount;
         }
 
-        public void write(System.IO.BinaryWriter w)
+        const int EqMainTerrainIx = 0;
+        const int EqSubterrainIx = 1;
+        const int EqTerrainAmountIx = 2;
+        const int EqCollectionPointerIx = 3;
+
+
+        public void write(System.IO.BinaryWriter w, ref SubTile previous)
         {
-            w.Write(color.R);
-            w.Write(color.G);
-            w.Write(color.B);
+
+            //TODO check repeats with previous, use eightbit
+            bool eqMainTerrain = mainTerrain == previous.mainTerrain;
+            bool eqSubterrain = subTerrain == previous.subTerrain;
+            bool eqTerrainAmount = terrainAmount == previous.terrainAmount;
+            bool eqCollectionPointer = collectionPointer == previous.collectionPointer;
+
+            EightBit reapeats = new EightBit();
+            reapeats.Set(EqMainTerrainIx, eqMainTerrain);
+            reapeats.Set(EqSubterrainIx, eqSubterrain);
+            reapeats.Set(EqTerrainAmountIx, eqTerrainAmount);
+            reapeats.Set(EqCollectionPointerIx, eqCollectionPointer);
+
+            reapeats.write(w);
+
+            if (!eqMainTerrain)
+            {
+                w.Write((byte)mainTerrain);
+            }
+
+            if (!eqSubterrain)
+            {
+                w.Write(Debug.Byte_OrCrash(subTerrain));
+            }
+
+            if (!eqTerrainAmount)
+            {
+                w.Write((byte)terrainAmount);
+            }
+
+            if (!eqCollectionPointer)
+            {
+                w.Write(collectionPointer);
+            }
+
             w.Write(groundY);
-            w.Write((byte)mainTerrain);
+            SaveLib.WriteColorStream_3B(w, color);
         }
 
-        public void read(System.IO.BinaryReader r, int version)
+        public void read(System.IO.BinaryReader r, ref SubTile previous, int version)
         {
-            byte rValue = r.ReadByte();
-            byte gValue = r.ReadByte();
-            byte bValue = r.ReadByte();
-            color = new Color(rValue, gValue, bValue);
+            EightBit reapeats = new EightBit(r);
+
+            if (reapeats.Get(EqMainTerrainIx))
+            {
+                mainTerrain = previous.mainTerrain;
+            }
+            else
+            {
+                mainTerrain = (TerrainMainType)r.ReadByte();
+            }
+
+            if (reapeats.Get(EqSubterrainIx))
+            {
+                subTerrain = previous.subTerrain;
+            }
+            else
+            {
+                subTerrain = r.ReadByte();
+            }
+
+            if (reapeats.Get(EqTerrainAmountIx))
+            {
+                terrainAmount = previous.terrainAmount;
+            }
+            else
+            {
+                terrainAmount = r.ReadByte();
+            }
+
+            if (reapeats.Get(EqCollectionPointerIx))
+            {
+                collectionPointer = previous.collectionPointer;
+            }
+            else
+            {
+                collectionPointer = r.ReadInt32();
+            }
+
             groundY = r.ReadSingle();
-            mainTerrain = (TerrainMainType)r.ReadByte();
+            color = SaveLib.ReadColorStream_3B(r);
+        }
+
+        public bool EqualSaveData(ref SubTile other)
+        {
+            return  terrainAmount == other.terrainAmount && 
+                mainTerrain == other.mainTerrain && 
+                subTerrain == other.subTerrain &&
+                collectionPointer == other.collectionPointer &&
+                groundY == other.groundY;            
+        }
+
+        public void copySaveDataFrom(ref SubTile other)
+        { 
+            this.terrainAmount = other.terrainAmount;
+            this.mainTerrain = other.mainTerrain;
+            this.subTerrain = other.subTerrain;
+            this.groundY = other.groundY;
+            this.color = other.color;
+        }
+
+        public bool MayBuild()
+        {
+            switch (mainTerrain)
+            {
+                case TerrainMainType.Building:
+                case TerrainMainType.DefaultSea:
+                    return false;
+
+                case TerrainMainType.Foil:
+                    switch ((TerrainSubFoilType)subTerrain)
+                    {
+                        case TerrainSubFoilType.LinenFarm:
+                        case TerrainSubFoilType.WheatFarm:
+                        case TerrainSubFoilType.RapeSeedFarm:
+                        case TerrainSubFoilType.HempFarm:
+                            return false;
+                        
+                    }
+                    break;
+
+
+            }
+
+            return true;
+        }
+
+        public TerrainSubFoilType GetFoilType()
+        {
+            if (mainTerrain == TerrainMainType.Foil &&
+                subTerrain >= 0)
+            {
+                return (TerrainSubFoilType)subTerrain;
+            }
+
+            return TerrainSubFoilType.NUM_NONE;
+        }
+
+        public TerrainBuildingType GeBuildingType()
+        {
+            if (mainTerrain == TerrainMainType.Building &&
+                subTerrain >= 0)
+            {
+                return (TerrainBuildingType)subTerrain;
+            }
+
+            return TerrainBuildingType.NUM_NONE;
+        }
+
+        public string TypeToString()
+        {
+            return LangLib.TerrainName(mainTerrain, subTerrain);
         }
     }
 

@@ -16,7 +16,7 @@
 //            //Stannar upp efter kill, tuggar på ben, växer sen
 //            //Motskill, kasta köttben som dom springer efter
 //            modelScale = StandardModelScale * 0.6f;
-//            boundRadius = StandardBoundRadius * 0.6f;
+//            boundRadius = DssVar.StandardBoundRadius * 0.6f;
 
 //            walkingSpeed = StandardWalkingSpeed * 2f;
 //            rotationSpeed = StandardRotatingSpeed;

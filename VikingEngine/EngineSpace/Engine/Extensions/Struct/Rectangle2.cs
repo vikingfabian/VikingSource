@@ -6,6 +6,7 @@ using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.Physics;
 using VikingEngine.EngineSpace.Maths;
+using System.Runtime.CompilerServices;
 
 
 namespace VikingEngine
@@ -509,6 +510,20 @@ namespace VikingEngine
             {
                 if (this.pos.Y + size.Y > otherRect.Y &&
                     this.pos.Y < otherRect.Y + otherRect.Height)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool IntersectRect(IntVector2 otherRectMin, IntVector2 otherRectMax)
+        {
+            if (this.pos.X + size.X > otherRectMin.X &&
+                this.pos.X < otherRectMax.X)
+            {
+                if (this.pos.Y + size.Y > otherRectMin.Y &&
+                    this.pos.Y < otherRectMax.Y)
                 {
                     return true;
                 }

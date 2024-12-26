@@ -222,8 +222,8 @@ namespace VikingEngine.ToGG.HeroQuest.Display
                 var adjacent = hero.collectAdjacentHeroes(hero.squarePos, true);
 
                 sendToPlayers = new List2<SendToPlayerButton>(4);
-                var remotes = hqRef.players.remotePlayersCounter;
-                remotes.Reset();
+                var remotes = new SpottedArrayTypeCounter<AbsHQPlayer>(hqRef.players.allPlayers, typeof(RemotePlayer));
+               
 
                 Vector2 sz = Engine.Screen.IconSizeV2;
                 VectorRect area = new VectorRect(mainArea.Position, sz);

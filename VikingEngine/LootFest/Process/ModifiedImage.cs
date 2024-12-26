@@ -125,7 +125,7 @@ namespace VikingEngine.LootFest.Process
                 originalMesh = Generate(frames, addItems, findReplace, posAdj);
                 
 
-                AddToOrRemoveFromUpdateList(true);
+                //AddToOrRemoveFromUpdateList(true);
             }
         }
 
@@ -199,8 +199,11 @@ namespace VikingEngine.LootFest.Process
             return originalMesh;
         }
 
-        public override void Time_Update(float time)
+        //public override void Time_Update(float time)
+        public override void runSyncAction()
         {
+            base.runSyncAction();
+
             if (callback != null)
             { callback.SetCustomImage(originalMesh, link); }
         }
