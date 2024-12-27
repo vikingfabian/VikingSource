@@ -716,6 +716,19 @@ namespace VikingEngine
                 size.Y += tile.Y - BottomTile;
         }
 
+        public void includeTileAndRadius(IntVector2 tile, int radius)
+        {
+            if (pos.X > tile.X)
+                AddToLeftSide(pos.X - tile.X + radius);
+            if (pos.Y > tile.Y)
+                AddToTopSide(pos.Y - tile.Y + radius);
+
+            if (RightTile < tile.X)
+                size.X += tile.X - RightTile + radius;
+            if (BottomTile < tile.Y)
+                size.Y += tile.Y - BottomTile + radius;
+        }
+
         public void SetDim(Dimensions dim, int pos, int width)
         {
             switch (dim)

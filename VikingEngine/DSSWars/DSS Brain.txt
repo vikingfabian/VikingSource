@@ -12,11 +12,6 @@ Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
--Difficulty
-	Fiende hordes (mer mini bossar)
-	Antal städer avgör threat level, vilket tillåter ai att alliera och dela tech, kan meddela mellan olika nivåer
-
--Mix menu
 -Full automation
 -build prio
 -build placement bonus

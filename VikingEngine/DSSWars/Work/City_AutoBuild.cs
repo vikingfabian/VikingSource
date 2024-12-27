@@ -121,6 +121,7 @@ namespace VikingEngine.DSSWars.GameObject
                             case BuildAndExpandType.Storehouse:
                             case BuildAndExpandType.Tavern:
 
+                            case BuildAndExpandType.DirtRoad:
                             case BuildAndExpandType.Pavement:
                             case BuildAndExpandType.PavementFlower:
                             case BuildAndExpandType.Statue_ThePlayer:

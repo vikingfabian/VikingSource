@@ -48,6 +48,8 @@ namespace VikingEngine.DSSWars.Map
         public int mineCount_mithril = 0;
         public int mineCount_sulfur = 0;
         public int mineCount_coal = 0;
+        public BuildingPosition buildingPosition;
+
 
         public void setupTutorialMap(City city)
         {
@@ -190,7 +192,9 @@ namespace VikingEngine.DSSWars.Map
             mineCount_sulfur = 0;
             mineCount_coal = 0;
 
-        BuildingStructure buildingStructure = new BuildingStructure();
+            Rectangle2 emptyArea= Rectangle2.Zero;
+            buildingPosition = new BuildingPosition();
+            BuildingStructure buildingStructure = new BuildingStructure();
 
             IntVector2 cityHall = WP.ToSubTilePos_Centered(city.tilePos);
             FoodSpots_workupdate.Add(cityHall);
@@ -481,9 +485,18 @@ namespace VikingEngine.DSSWars.Map
                                     case TerrainMainType.DefaultLand:
                                         if (emptyLandExpansions > 0)
                                         {
-                                            --emptyLandExpansions;
-
-                                            EmptyLand.Add(subTileLoop.Position);
+                                            if (EmptyLand.Count == 0)
+                                            {
+                                                --emptyLandExpansions;
+                                                EmptyLand.Add(subTileLoop.Position);
+                                                emptyArea = Rectangle2.FromCenterTileAndRadius(subTileLoop.Position, 3);
+                                            }
+                                            else if (!emptyArea.IntersectTilePoint(subTileLoop.Position))
+                                            {
+                                                --emptyLandExpansions;
+                                                EmptyLand.Add(subTileLoop.Position);
+                                                emptyArea.includeTileAndRadius(subTileLoop.Position, 3);
+                                            }
                                         }
                                         break;
                                 }
