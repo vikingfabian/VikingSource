@@ -26,6 +26,7 @@ using VikingEngine.ToGG.Commander.LevelSetup;
 using VikingEngine.ToGG.HeroQuest.Net;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
+using System.Net.Http.Headers;
 
 namespace VikingEngine.DSSWars.Players
 {
@@ -1042,6 +1043,22 @@ namespace VikingEngine.DSSWars.Players
             diplomacyMap?.asynchUpdate();
 
             automation.asyncUpdate();
+
+            var city = faction.cities.GetRandomUnsafe(Ref.rnd);
+            if (city != null && 
+                city.automateCity && 
+                city.automationFocus == AutomationFocus.Military)
+            {
+                if (buySoldiers(city, true, false))
+                {
+                    Ref.update.AddSyncAction(new SyncAction(() =>
+                    {
+                        buySoldiers(city, true, true);
+                    }));
+                }
+            }
+
+            faction.updateResourceOverview_async();
         }
 
         void updateObjectTabbing()
@@ -1571,6 +1588,8 @@ namespace VikingEngine.DSSWars.Players
         public override void oneSecUpdate()
         {
             base.oneSecUpdate();
+
+            faction.resourceOverviewOneSecondUpdate();
 
             double max = DssRef.diplomacy.DefaultMaxDiplomacy + DssRef.diplomacy.NobelHouseAddMaxDiplomacy * faction.nobelHouseCount;
             diplomaticPoints_softMax = (int)Math.Floor(max);

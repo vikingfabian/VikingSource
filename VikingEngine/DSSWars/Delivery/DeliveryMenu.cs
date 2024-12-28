@@ -62,7 +62,7 @@ namespace VikingEngine.DSSWars.Delivery
 
                     if (currentStatus.profile.type == ItemResourceType.AutomatedItem)
                     {
-                        content.Add(new RichBoxImage(SpriteName.MenuPixelIconSettings));
+                        content.Add(new RichBoxImage(SpriteName.AutomationGearIcon));
                         content.space();
                         content.Add(new RichBoxText(DssRef.lang.Automation_Title));
                     }
@@ -112,7 +112,7 @@ namespace VikingEngine.DSSWars.Delivery
                     {
                         content.space();
                         var tabContent = new RichBoxContent();
-                        tabContent.Add(new RichBoxImage(SpriteName.MenuPixelIconSettings));
+                        tabContent.Add(new RichBoxImage(SpriteName.AutomationGearIcon));
 
                         var subTab = new RichboxButton(tabContent,
                             new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
@@ -155,7 +155,6 @@ namespace VikingEngine.DSSWars.Delivery
                         {
                             var button = new RichboxButton(new List<AbsRichBoxMember>{
                                 new RichBoxImage(ResourceLib.Icon(item))   
-                            //new RichBoxText(LangLib.Item(item))
                             },
 
                                 new RbAction1Arg<ItemResourceType>(itemClick, item, SoundLib.menu),
@@ -177,8 +176,6 @@ namespace VikingEngine.DSSWars.Delivery
                                            DssRef.world.cities[currentStatus.profile.toCity].GetGroupedResource(item).toMenu(content, item, safeGuard, ref reachedBuffer);
 
                                        }
-
-                                       //content.text(LangLib.Item(item)).overrideColor = HudLib.TitleColor_TypeName;
 
                                        player.hud.tooltip.create(player, content, true);
                                    }));
@@ -249,7 +246,7 @@ namespace VikingEngine.DSSWars.Delivery
                 //AUTO CITY
                 {
                     var button = new RichboxButton(new List<AbsRichBoxMember>{
-                            new RichBoxImage(SpriteName.MenuPixelIconSettings)
+                            new RichBoxImage(SpriteName.AutomationGearIcon)
                             }, new RbAction1Arg<int>(cityClick, DeliveryProfile.ToCityAuto, SoundLib.menu), new RbAction(() =>
                             {
                                 RichBoxContent content = new RichBoxContent();
@@ -362,7 +359,7 @@ namespace VikingEngine.DSSWars.Delivery
                         content.newLine();
                         HudLib.BulletPoint(content);
                         var text = new RichBoxText(DssRef.lang.Delivery_ItemsReady);
-                        bool ready = isSending || currentStatus.CanSend(city, out _);
+                        bool ready = isSending || currentStatus.CanSend(city, out currentStatus.inProgress.type);
                         text.overrideColor = ready? HudLib.AvailableColor : HudLib.NotAvailableColor;
                         content.Add(text);
 

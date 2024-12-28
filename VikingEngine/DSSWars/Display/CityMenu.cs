@@ -38,6 +38,14 @@ namespace VikingEngine.DSSWars.Display
         Players.LocalPlayer player;
         City city;
         static readonly int[] StockPileControls = { 100, 1000 };
+
+        public static readonly AutomationFocus[] AvailableAutomationFocuses =
+        {
+            AutomationFocus.NoFocus,
+            AutomationFocus.Grow,
+            AutomationFocus.Export,
+            AutomationFocus.Military
+        };
         public CityMenu(Players.LocalPlayer player, City city, RichBoxContent content)
         {
             this.player = player;
@@ -54,95 +62,104 @@ namespace VikingEngine.DSSWars.Display
 
             content.newLine();
 
+            if (city.automateCity)
+            {
+                city.CityDetailsHud(false, player, content);
+                purchaseOptions(content);
+            }
+            else
+            {
+
 #if DEBUG
-            //content.Button("*soldier", new RbAction(()=> { city.debugConscript( ItemResourceType.Sword); }) , null, true);
-            //content.Button("*archer", new RbAction(() => { city.debugConscript(ItemResourceType.Bow); }), null, true);
-            //content.Button("*ballista", new RbAction(() => { city.debugConscript(ItemResourceType.Ballista); }), null, true);
+                //content.Button("*soldier", new RbAction(()=> { city.debugConscript( ItemResourceType.Sword); }) , null, true);
+                //content.Button("*archer", new RbAction(() => { city.debugConscript(ItemResourceType.Bow); }), null, true);
+                //content.Button("*ballista", new RbAction(() => { city.debugConscript(ItemResourceType.Ballista); }), null, true);
 #endif
 
-            int tabSel = 0;
+                int tabSel = 0;
 
-            var tabs = new List<RichboxTabMember>((int)MenuTab.NUM);
+                var tabs = new List<RichboxTabMember>((int)MenuTab.NUM);
 
-            List<MenuTab> availableTabs =player.AvailableCityTabs();
-            for (int i = 0; i < availableTabs.Count; ++i)
-            {
-                var text = new RichBoxText(LangLib.Tab(availableTabs[i], out string description));
-                text.overrideColor = HudLib.RbSettings.tabSelected.Color;
-
-                AbsRbAction enter = null;
-                if (description != null)
+                List<MenuTab> availableTabs = player.AvailableCityTabs();
+                for (int i = 0; i < availableTabs.Count; ++i)
                 {
-                    enter = new RbAction(() =>
+                    var text = new RichBoxText(LangLib.Tab(availableTabs[i], out string description));
+                    text.overrideColor = HudLib.RbSettings.tabSelected.Color;
+
+                    AbsRbAction enter = null;
+                    if (description != null)
                     {
-                        RichBoxContent content = new RichBoxContent();
-                        content.text(description).overrideColor = HudLib.InfoYellow_Light;
+                        enter = new RbAction(() =>
+                        {
+                            RichBoxContent content = new RichBoxContent();
+                            content.text(description).overrideColor = HudLib.InfoYellow_Light;
 
-                        player.hud.tooltip.create(player, content, true);
-                    });
-                }
+                            player.hud.tooltip.create(player, content, true);
+                        });
+                    }
 
-                tabs.Add(new RichboxTabMember(new List<AbsRichBoxMember>
+                    tabs.Add(new RichboxTabMember(new List<AbsRichBoxMember>
                     {
                         text
                     }, enter));
 
-                if (availableTabs[i] == player.cityTab)
-                {
-                    tabSel = i;
+                    if (availableTabs[i] == player.cityTab)
+                    {
+                        tabSel = i;
+                    }
                 }
-            }
 
-            content.Add(new RichboxTabgroup(tabs, tabSel, player.cityTabClick, null, SoundLib.menutab, null, null));
+                content.Add(new RichboxTabgroup(tabs, tabSel, player.cityTabClick, null, SoundLib.menutab, null, null));
 
-            content.newLine();
+                content.newLine();
 
-            switch (player.cityTab)
-            { 
-                case MenuTab.Info:
-                    city.CityDetailsHud(false, player, content);
-                    purchaseOptions(content);
-                    break;
+                switch (player.cityTab)
+                {
+                    case MenuTab.Info:
+                        city.CityDetailsHud(false, player, content);
+                        purchaseOptions(content);
+                        break;
 
-                case MenuTab.Tag:
-                    tagsToMenu(content);
-                    break;
+                    case MenuTab.Tag:
+                        tagsToMenu(content);
+                        break;
 
-                case MenuTab.Work:
-                    workTab(content);
-                    break;
+                    case MenuTab.Work:
+                        workTab(content);
+                        break;
 
-                case MenuTab.Conscript:
-                    conscriptTab(content);
-                    break;
+                    case MenuTab.Conscript:
+                        conscriptTab(content);
+                        break;
 
-                case MenuTab.BlackMarket:
-                    BlackMarketResources.ToHud(player, content, city);
-                    break;
+                    case MenuTab.BlackMarket:
+                        BlackMarketResources.ToHud(player, content, city);
+                        break;
 
-                case MenuTab.Delivery:
-                    deliveryTab(content);
-                    break;
+                    case MenuTab.Delivery:
+                        deliveryTab(content);
+                        break;
 
-                case MenuTab.Resources:
-                    resourcesToMenu(content);
-                    break;
+                    case MenuTab.Resources:
+                        resourcesToMenu(content);
+                        break;
 
-                case MenuTab.Trade:
-                    tradeTab(content);
-                    break;
+                    case MenuTab.Trade:
+                        tradeTab(content);
+                        break;
 
-                case MenuTab.Build:
-                    player.buildControls.toHud(player, content, city);
-                    break;
+                    case MenuTab.Build:
+                        player.buildControls.toHud(player, content, city);
+                        break;
 
-                case MenuTab.Progress:
-                    progressTab(content);
-                    break;
+                    case MenuTab.Progress:
+                        progressTab(content);
+                        break;
 
-                case MenuTab.Mix:
-                    mixTab(content);
-                    break;
+                    case MenuTab.Mix:
+                        mixTab(content);
+                        break;
+                }
             }
         }
 

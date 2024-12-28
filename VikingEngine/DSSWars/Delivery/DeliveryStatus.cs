@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.Delivery
 {
     struct DeliveryStatus
     {
-        public const ItemResourceType DeliveryType_Resource = ItemResourceType.Food_G;
+        public const ItemResourceType DeliveryType_Resource = ItemResourceType.AutomatedItem;
         public const ItemResourceType DeliveryType_Men = ItemResourceType.Men;
         public const ItemResourceType DeliveryType_Gold = ItemResourceType.Gold;
 
@@ -149,7 +149,7 @@ namespace VikingEngine.DSSWars.Delivery
             else if (profile.type == ItemResourceType.AutomatedItem)
             {
                 item = city.findAutoItem();
-                return true;
+                return item != ItemResourceType.NONE;
             }
             else
             {
@@ -269,14 +269,26 @@ namespace VikingEngine.DSSWars.Delivery
 
         public void tooltip(LocalPlayer player, City city, RichBoxContent content)
         {
-            if (profile.type == ItemResourceType.Men)
+
+            switch (profile.type)
             {
-                HudLib.ResourceCost(content, ItemResourceType.Men, DssConst.SoldierGroup_DefaultCount, city.workForce.amount);
+                case DeliveryType_Men:
+                    HudLib.ResourceCost(content, ItemResourceType.Men, profile.SendAmount, city.workForce.amount);
+                    break;
+                case DeliveryType_Gold:
+                    HudLib.ResourceCost(content, ItemResourceType.Gold, profile.SendAmount, city.gold);
+                    break;
+                case DeliveryType_Resource:
+                    content.Add(new RichBoxImage(SpriteName.AutomationGearIcon));
+                    content.space();
+                    content.Add(new RichBoxText(DssRef.lang.Automation_Title));
+                    break;
+                default:
+                    HudLib.ResourceCost(content, profile.type, DssConst.SoldierGroup_DefaultCount, city.GetGroupedResource(profile.type).amount);
+                    break;
+
             }
-            else
-            {
-                HudLib.ResourceCost(content, profile.type, DssConst.SoldierGroup_DefaultCount, city.GetGroupedResource(profile.type).amount);
-            }
+
 
             content.newLine();
             content.Add(new RichBoxImage(player.input.Stop.Icon));

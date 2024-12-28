@@ -247,11 +247,6 @@ namespace VikingEngine.DSSWars.XP
                 
                 bool unlocked = value >= unlockValue;
 
-                var infoContent = new RichBoxContent();
-
-                infoContent.Add(new RichBoxImage(unlocked ? SpriteName.WarsTechnology_Unlocked : SpriteName.WarsTechnology_Locked));
-                infoContent.Add(new RichBoxImage(icon));
-                infoContent.space();
                 if (!cityView)
                 {
                     if (value >= faction.cities.Count)
@@ -263,6 +258,13 @@ namespace VikingEngine.DSSWars.XP
                         caption += $" ({value}/{faction.cities.Count})";
                     }
                 }
+
+                var infoContent = new RichBoxContent();
+
+                infoContent.Add(new RichBoxImage(unlocked ? SpriteName.WarsTechnology_Unlocked : SpriteName.WarsTechnology_Locked));
+                infoContent.Add(new RichBoxImage(icon));
+                infoContent.space();
+               
                 var captionText = new RichBoxText(caption);
                 captionText.overrideColor = unlocked ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                 infoContent.Add(captionText);

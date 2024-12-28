@@ -73,6 +73,7 @@ namespace VikingEngine.DSSWars.XP
             while (factionsC.Next())
             {
                 TechnologyTemplate factionTech = new TechnologyTemplate();
+                factionTech.zero();
                 factionTech.addFactionUnlocked(factionsC.sel.technology, false, false);
 
 
@@ -80,7 +81,7 @@ namespace VikingEngine.DSSWars.XP
                 while (citiesC.Next())
                 {
                     citiesC.sel.workTemplate.applyUnlock(citiesC.sel.technology.GetUnlocks(false));
-                    factionTech.Add(citiesC.sel.technology);
+                    factionTech.countUnlocks(citiesC.sel.technology);
                 }
 
                 factionsC.sel.technology = factionTech;

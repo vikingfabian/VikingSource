@@ -2331,7 +2331,7 @@ namespace VikingEngine
         MenuIconCredits,
         MenuIconSettings,
         //MenuIconFullScreen,
-        MenuPixelIconSettings,
+        AutomationGearIcon,
         MenuPixelIconManual,
         MenuPixelIconPlay,
 
@@ -2513,6 +2513,9 @@ namespace VikingEngine
         WarsHammer,
         WarsHammerAdd,
         WarsHammerSub,
+        WarsIncreaseArrowUp,
+        WarsDecreaseArrowDown,
+
 
         WarsDarkLordBossIcon,
         WarsFactoryIcon,

@@ -321,209 +321,261 @@ namespace VikingEngine.DSSWars.GameObject
         public void AddGroupedResource(ItemResourceType type, int add)
         {
             if (add == 0)
-            { 
+            {
                 lib.DoNothing();
             }
 
             switch (type)
             {
                 case ItemResourceType.Gold:
-                    faction.gainMoney(add, this);//.gold += add;
+                    faction.gainMoney(add, this);
                     break;
                 case ItemResourceType.Water_G:
                     res_water.amount += add;
                     break;
                 case ItemResourceType.Food_G:
                     res_food.amount += add;
+                    faction.res_food.onChange(add);
                     break;
                 case ItemResourceType.Beer:
                     res_beer.amount += add;
+                    faction.res_beer.onChange(add);
                     break;
                 case ItemResourceType.CoolingFluid:
                     res_coolingfluid.amount += add;
+                    faction.res_coolingfluid.onChange(add);
                     break;
                 case ItemResourceType.Stone_G:
                     res_stone.amount += add;
+                    faction.res_stone.onChange(add);
                     break;
                 case ItemResourceType.Wood_Group:
                     res_wood.amount += add;
+                    faction.res_wood.onChange(add);
                     break;
                 case ItemResourceType.Fuel_G:
                     res_fuel.amount += add;
+                    faction.res_fuel.onChange(add);
                     break;
                 case ItemResourceType.RawFood_Group:
                     res_rawFood.amount += add;
+                    faction.res_rawFood.onChange(add);
                     break;
                 case ItemResourceType.SkinLinen_Group:
                     res_skinLinnen.amount += add;
+                    faction.res_skinLinnen.onChange(add);
                     break;
                 case ItemResourceType.Toolkit:
                     res_Toolkit.amount += add;
+                    faction.res_Toolkit.onChange(add);
                     break;
                 case ItemResourceType.Wagon2Wheel:
                     res_Wagon2Wheel.amount += add;
+                    faction.res_Wagon2Wheel.onChange(add);
                     break;
                 case ItemResourceType.Wagon4Wheel:
                     res_Wagon4Wheel.amount += add;
+                    faction.res_Wagon4Wheel.onChange(add);
                     break;
                 case ItemResourceType.BlackPowder:
                     res_BlackPowder.amount += add;
+                    faction.res_BlackPowder.onChange(add);
                     break;
                 case ItemResourceType.GunPowder:
                     res_GunPowder.amount += add;
+                    faction.res_GunPowder.onChange(add);
                     break;
                 case ItemResourceType.LedBullet:
                     res_LedBullet.amount += add;
+                    faction.res_LedBullet.onChange(add);
                     break;
-
                 case ItemResourceType.IronOre_G:
                     res_ironore.amount += add;
+                    faction.res_ironore.onChange(add);
                     break;
                 case ItemResourceType.TinOre:
                     res_TinOre.amount += add;
+                    faction.res_TinOre.onChange(add);
                     break;
                 case ItemResourceType.CopperOre:
                     res_CupperOre.amount += add;
+                    faction.res_CupperOre.onChange(add);
                     break;
                 case ItemResourceType.LeadOre:
                     res_LeadOre.amount += add;
+                    faction.res_LeadOre.onChange(add);
                     break;
                 case ItemResourceType.SilverOre:
                     res_SilverOre.amount += add;
+                    faction.res_SilverOre.onChange(add);
                     break;
-
                 case ItemResourceType.Iron_G:
                     res_iron.amount += add;
+                    faction.res_iron.onChange(add);
                     break;
                 case ItemResourceType.Tin:
                     res_Tin.amount += add;
+                    faction.res_Tin.onChange(add);
                     break;
                 case ItemResourceType.Copper:
                     res_Cupper.amount += add;
+                    faction.res_Cupper.onChange(add);
                     break;
                 case ItemResourceType.Lead:
                     res_Lead.amount += add;
+                    faction.res_Lead.onChange(add);
                     break;
                 case ItemResourceType.Silver:
                     res_Silver.amount += add;
+                    faction.res_Silver.onChange(add);
                     break;
                 case ItemResourceType.RawMithril:
                     res_RawMithril.amount += add;
+                    faction.res_RawMithril.onChange(add);
                     break;
                 case ItemResourceType.Sulfur:
                     res_Sulfur.amount += add;
+                    faction.res_Sulfur.onChange(add);
                     break;
-
                 case ItemResourceType.Steel:
                     res_Steel.amount += add;
+                    faction.res_Steel.onChange(add);
                     break;
                 case ItemResourceType.Bronze:
                     res_Bronze.amount += add;
+                    faction.res_Bronze.onChange(add);
                     break;
                 case ItemResourceType.CastIron:
                     res_CastIron.amount += add;
+                    faction.res_CastIron.onChange(add);
                     break;
                 case ItemResourceType.BloomeryIron:
                     res_BloomeryIron.amount += add;
+                    faction.res_BloomeryIron.onChange(add);
                     break;
                 case ItemResourceType.Mithril:
                     res_Mithril.amount += add;
+                    faction.res_Mithril.onChange(add);
                     break;
-                                 
-
                 case ItemResourceType.SharpStick:
                     res_sharpstick.amount += add;
+                    faction.res_sharpstick.onChange(add);
                     break;
                 case ItemResourceType.BronzeSword:
                     res_BronzeSword.amount += add;
+                    faction.res_BronzeSword.onChange(add);
                     break;
                 case ItemResourceType.ShortSword:
                     res_shortsword.amount += add;
+                    faction.res_shortsword.onChange(add);
                     break;
                 case ItemResourceType.Sword:
                     res_Sword.amount += add;
+                    faction.res_Sword.onChange(add);
                     break;
                 case ItemResourceType.LongSword:
                     res_LongSword.amount += add;
+                    faction.res_LongSword.onChange(add);
                     break;
                 case ItemResourceType.HandSpear:
                     res_HandSpear.amount += add;
+                    faction.res_HandSpear.onChange(add);
                     break;
-
                 case ItemResourceType.Warhammer:
                     res_Warhammer.amount += add;
+                    faction.res_Warhammer.onChange(add);
                     break;
                 case ItemResourceType.TwoHandSword:
                     res_twohandsword.amount += add;
+                    faction.res_twohandsword.onChange(add);
                     break;
                 case ItemResourceType.KnightsLance:
                     res_knightslance.amount += add;
+                    faction.res_knightslance.onChange(add);
                     break;
-
                 case ItemResourceType.SlingShot:
                     res_SlingShot.amount += add;
+                    faction.res_SlingShot.onChange(add);
                     break;
                 case ItemResourceType.ThrowingSpear:
                     res_ThrowingSpear.amount += add;
+                    faction.res_ThrowingSpear.onChange(add);
                     break;
                 case ItemResourceType.Bow:
                     res_bow.amount += add;
+                    faction.res_bow.onChange(add);
                     break;
                 case ItemResourceType.LongBow:
                     res_longbow.amount += add;
+                    faction.res_longbow.onChange(add);
                     break;
                 case ItemResourceType.Crossbow:
                     res_crossbow.amount += add;
+                    faction.res_crossbow.onChange(add);
                     break;
                 case ItemResourceType.MithrilBow:
                     res_MithrilBow.amount += add;
+                    faction.res_MithrilBow.onChange(add);
                     break;
-
                 case ItemResourceType.Ballista:
                     res_ballista.amount += add;
+                    faction.res_ballista.onChange(add);
                     break;
                 case ItemResourceType.Manuballista:
                     res_Manuballista.amount += add;
+                    faction.res_Manuballista.onChange(add);
                     break;
                 case ItemResourceType.Catapult:
                     res_Catapult.amount += add;
+                    faction.res_Catapult.onChange(add);
                     break;
                 case ItemResourceType.UN_BatteringRam:
                     res_BatteringRam.amount += add;
+                    faction.res_BatteringRam.onChange(add);
                     break;
                 case ItemResourceType.SiegeCannonBronze:
                     res_SiegeCannonBronze.amount += add;
+                    faction.res_SiegeCannonBronze.onChange(add);
                     break;
                 case ItemResourceType.ManCannonBronze:
                     res_ManCannonBronze.amount += add;
+                    faction.res_ManCannonBronze.onChange(add);
                     break;
                 case ItemResourceType.SiegeCannonIron:
                     res_SiegeCannonIron.amount += add;
+                    faction.res_SiegeCannonIron.onChange(add);
                     break;
                 case ItemResourceType.ManCannonIron:
                     res_ManCannonIron.amount += add;
+                    faction.res_ManCannonIron.onChange(add);
                     break;
-
                 case ItemResourceType.PaddedArmor:
                     res_paddedArmor.amount += add;
+                    faction.res_paddedArmor.onChange(add);
                     break;
                 case ItemResourceType.HeavyPaddedArmor:
                     res_HeavyPaddedArmor.amount += add;
+                    faction.res_HeavyPaddedArmor.onChange(add);
                     break;
                 case ItemResourceType.BronzeArmor:
                     res_BronzeArmor.amount += add;
+                    faction.res_BronzeArmor.onChange(add);
                     break;
                 case ItemResourceType.IronArmor:
                     res_mailArmor.amount += add;
+                    faction.res_mailArmor.onChange(add);
                     break;
                 case ItemResourceType.HeavyIronArmor:
                     res_heavyMailArmor.amount += add;
+                    faction.res_heavyMailArmor.onChange(add);
                     break;
                 case ItemResourceType.LightPlateArmor:
                     res_LightPlateArmor.amount += add;
+                    faction.res_LightPlateArmor.onChange(add);
                     break;
                 case ItemResourceType.FullPlateArmor:
                     res_FullPlateArmor.amount += add;
+                    faction.res_FullPlateArmor.onChange(add);
                     break;
 
                 case ItemResourceType.NONE:
@@ -534,7 +586,8 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-               
+
+
 
         public bool needMore(ItemResourceType type, bool rawfoodSafeGuard, bool woodSafeGuard, out bool usesSafeGuard)
         {
@@ -680,7 +733,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.NONE: return Res_Nothing;
 
                 default:
-                    throw new NotImplementedException();
+                     throw new NotImplementedException();
             }
         }
 

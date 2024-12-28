@@ -11,18 +11,21 @@ using VikingEngine.DSSWars.Work;
 
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.ToGG;
 
 namespace VikingEngine.DSSWars.GameObject
 {
     //AUTO BUILD
     partial class City
     {
+        static ForXYEdgeLoopRandomPicker Auto_EdgeRandomizer = new ForXYEdgeLoopRandomPicker();
         static List<BuildAndExpandType> AutoBuildList = new List<BuildAndExpandType>(4);
         static RandomObjects_Int AutoBuild_RandomBuild = new RandomObjects_Int();
         static List<BuildAndExpandType> AutoBuild_available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
+        //static List<BuildAndExpandType> AutoBuild_available_mustInclude = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
 
-        AutomationFocus automationFocus = AutomationFocus.Random;
-
+        public bool automateCity = false;
+        public AutomationFocus automationFocus = AutomationFocus.NoFocus;
 
         protected void workAutoBuild(bool fuelSafeGuard, bool rawFoodSafeGuard)
         {
@@ -53,145 +56,21 @@ namespace VikingEngine.DSSWars.GameObject
                 else if (faction.player.IsAi())
                 {
                     var aiPlayer = faction.player.GetAiPlayer();
-                    automationFocus = AutomationFocus.Random;
+                    automationFocus = AutomationFocus.NoFocus;
 
                     bool warCity = aiPlayer.IsWarBorderCity(this, aiPlayer.aggressionLevel < AbsPlayer.AggressionLevel2_RandomAttacks);
                     if (warCity)
                     {
                         automationFocus = AutomationFocus.Military;
                     }
-                    auto_updateWorkPrio();
-
-                    AutoBuild_available.Clear();
-                    AutoBuild_RandomBuild.clear();
-
-                    BuildLib.AvailableBuildTypes(AutoBuild_available, this);
-
-                    int pickCount = lib.SmallestValue(AutoBuild_available.Count, 4);
-
-                    while (AutoBuild_available.Count > 0 && AutoBuild_RandomBuild.members.Count < 8)
-                    {
-                        var buildType = arraylib.RandomListMemberPop(AutoBuild_available);
-                        bool bBuild = true;
-                        int chance = 100;
-                        int maxCount = 4;
-                        int repeat = 1;
-
-                        switch (buildType)
-                        {
-
-                            case BuildAndExpandType.WorkerHuts:
-                                maxCount = 100;
-                                chance = 200;
-                                repeat = 4;
-                                break;
-                            case BuildAndExpandType.SoldierBarracks:
-                            case BuildAndExpandType.ArcherBarracks:
-                            case BuildAndExpandType.WarmashineBarracks:
-                            case BuildAndExpandType.KnightsBarracks:
-                            case BuildAndExpandType.GunBarracks:
-                            case BuildAndExpandType.CannonBarracks:
-                                maxCount = 2;
-                                chance = automationFocus == AutomationFocus.Military? 100 : 5;
-                                break;
-
-                            case BuildAndExpandType.CoalPit:
-                            case BuildAndExpandType.WorkBench:
-                                chance = 200;
-                                break;
-
-                            case BuildAndExpandType.WheatFarm:
-                            case BuildAndExpandType.LinenFarm:
-                            case BuildAndExpandType.HenPen:
-                            case BuildAndExpandType.PigPen:
-                            case BuildAndExpandType.RapeSeedFarm:
-                            case BuildAndExpandType.HempFarm:
-                                chance = 150;
-                                maxCount = 24;
-                                break;
-
-                            case BuildAndExpandType.WoodCutter:
-                            case BuildAndExpandType.StoneCutter:
-                            case BuildAndExpandType.PostalLevel2:
-                            case BuildAndExpandType.PostalLevel3:
-                            case BuildAndExpandType.RecruitmentLevel2:
-                            case BuildAndExpandType.RecruitmentLevel3:
-                            case BuildAndExpandType.GoldDeliveryLvl2:
-                            case BuildAndExpandType.GoldDeliveryLvl3:
-                            case BuildAndExpandType.Storehouse:
-                            case BuildAndExpandType.Tavern:
-
-                            case BuildAndExpandType.DirtRoad:
-                            case BuildAndExpandType.Pavement:
-                            case BuildAndExpandType.PavementFlower:
-                            case BuildAndExpandType.Statue_ThePlayer:
-                                bBuild = false;
-                                break;
-
-                            case BuildAndExpandType.Postal:
-                                if (automationFocus == AutomationFocus.Export)
-                                {
-                                    chance = 200;
-                                    maxCount = 24;
-                                }
-                                else
-                                {
-                                    chance = 40;
-                                    maxCount = 8;
-                                }
-                                break;
-                            case BuildAndExpandType.Recruitment:
-                                if (automationFocus == AutomationFocus.Export)
-                                {
-                                    chance = 200;
-                                    maxCount = 12;
-                                }
-                                else
-                                {
-                                    chance = 40;
-                                    maxCount = 4;
-                                }
-                                break;
-
-                            case BuildAndExpandType.Foundry:
-                                chance = 20;
-                                maxCount = 2;
-                                break;
-                        }
-
-                        if (bBuild)
-                        {
-                            var opt = BuildLib.BuildOptions[(int)buildType];
-                            if (opt.blueprint.hasResources_buildAndUpgrade(this))
-                            { 
-                                int currentCount = this.buildingStructure.getCount(buildType);
-
-                                if (currentCount == 0)
-                                {
-                                    chance /= 4;
-                                }
-
-                                if (currentCount < maxCount)
-                                {
-                                    repeat = Ref.rnd.Int(repeat) + 1;
-                                    for (int i = 0; i < repeat; ++i)
-                                    {
-                                        AutoBuild_RandomBuild.AddItem((int)buildType, chance);
-                                    } 
-                                }
-                            }
-                        }
-                    }
-
-                    pickCount = lib.SmallestValue(AutoBuild_RandomBuild.members.Count, 2);
-
-                    for (int i = 0; i < pickCount; ++i)
-                    {
-                        AutoBuildList.Add((BuildAndExpandType)AutoBuild_RandomBuild.PullRandom());
-                    }
+                    commit_automateCityBuilding();
 
                 }
-                else
+                else if (automateCity)
+                {
+                    commit_automateCityBuilding();
+                }
+                else //Player default
                 {
 
                     AutoExpandType(out bool work, out Build.BuildAndExpandType buildType);
@@ -203,32 +82,7 @@ namespace VikingEngine.DSSWars.GameObject
                         {
                             buildType = BuildAndExpandType.WorkerHuts;
                         }
-                        //bool intelligent = true;
-
-
-                        //else if (work && workForce.amount >= workForceMax)
-                        //{
-                        //    buildType = BuildAndExpandType.WorkerHuts;
-                        //}
-                        //else if (intelligent)
-                        //{
-                        //    switch (buildType)
-                        //    {
-                        //        case BuildAndExpandType.WheatFarm:
-                        //        case BuildAndExpandType.HenPen:
-                        //            intelligentCheck = res_rawFood.needMore();
-                        //            break;
-                        //        case BuildAndExpandType.PigPen:
-                        //            intelligentCheck = res_rawFood.needMore() || res_skinLinnen.needMore();
-                        //            break;
-                        //        case BuildAndExpandType.LinenFarm:
-                        //            intelligentCheck = res_skinLinnen.needMore();
-                        //            break;
-                        //        case BuildAndExpandType.RapeSeedFarm:
-                        //            intelligentCheck = res_fuel.needMore();
-                        //            break;
-                        //    }
-                        //}
+                        
                         if (buildType != BuildAndExpandType.NUM_NONE)
                         {
                             for (int i = 0; i < 4; i++)
@@ -243,18 +97,41 @@ namespace VikingEngine.DSSWars.GameObject
 
                 for (int i = 0; i < buildCount; ++i)
                 {
-                    //faction.player.AutoExpandType(this, out bool work, out var buildType, out bool intelligent);
-
                     var buildType = AutoBuildList[i];
+                    
                     var pos = CityStructure.WorkInstance.EmptyLand[i];
-
+                    if (this.buildingStructure.getCount(buildType) > 0)
+                    {
+                        var prevPos = CityStructure.WorkInstance.buildingPosition.getPos(buildType);
+                        if (prevPos.X > 0)
+                        {
+                            findAdjacentFreeSpot(prevPos, ref pos);
+                        }
+                    }
                     if (BuildLib.BuildOptions[(int)buildType].blueprint.available(this) &&
                         work_isFreeTile(pos))
                     {
-                        //int distanceValue = -center.SideLength(pos);
                         workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, pos, workTemplate.autoBuild.value, 0, 0));
                     }
                     
+                }
+            }
+
+            void findAdjacentFreeSpot(IntVector2 center, ref IntVector2 result)
+            {
+                for (int r = 1; r <= 2; r++)
+                {
+                    Auto_EdgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(center, r));
+                    //ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(center, r));
+                    //loop.RandomPosition
+                    while (Auto_EdgeRandomizer.Next())
+                    {
+                        if (CityStructure.WorkInstance.MayAutoBuildHere(this, Auto_EdgeRandomizer.Position))
+                        {
+                            result = Auto_EdgeRandomizer.Position;
+                            return;
+                        }
+                    }
                 }
             }
 
@@ -269,6 +146,160 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
                 return true;
+            }
+        }
+
+        private void commit_automateCityBuilding()
+        {
+            auto_updateWorkPrio();
+
+            AutoBuild_available.Clear();
+            //AutoBuild_available_mustInclude.Clear();
+            AutoBuild_RandomBuild.clear();
+
+            BuildLib.AvailableBuildTypes(AutoBuild_available, this);
+
+            int pickCount = lib.SmallestValue(AutoBuild_available.Count, 4);
+
+            switch (automationFocus)
+            {
+                case AutomationFocus.Grow:
+                    auto_addBuildingType(BuildAndExpandType.WorkerHuts);
+                    auto_addBuildingType(BuildAndExpandType.WheatFarm);
+                    break;
+                case AutomationFocus.Export:
+                    auto_addBuildingType(BuildAndExpandType.Postal);
+                    break;
+                case AutomationFocus.Military:
+                    auto_addBuildingType(BuildAndExpandType.SoldierBarracks);
+                    auto_addBuildingType(BuildAndExpandType.ArcherBarracks);
+                    auto_addBuildingType(BuildAndExpandType.WarmashineBarracks);
+                    break;
+            }
+
+            while (AutoBuild_available.Count > 0 && AutoBuild_RandomBuild.members.Count < 8)
+            {
+                var buildType = arraylib.RandomListMemberPop(AutoBuild_available);
+                auto_addBuildingType(buildType);
+            }
+
+            pickCount = lib.SmallestValue(AutoBuild_RandomBuild.members.Count, 2);
+
+            for (int i = 0; i < pickCount; ++i)
+            {
+                AutoBuildList.Add((BuildAndExpandType)AutoBuild_RandomBuild.PullRandom());
+            }
+        }
+
+        private void auto_addBuildingType(BuildAndExpandType buildType)
+        {
+            bool bBuild = true;
+            int chance = 100;
+            int maxCount = 4;
+            int repeat = 1;
+
+            switch (buildType)
+            {
+                case BuildAndExpandType.WorkerHuts:
+                    maxCount = 100;
+                    chance = 200;
+                    repeat = 4;
+                    break;
+                case BuildAndExpandType.SoldierBarracks:
+                case BuildAndExpandType.ArcherBarracks:
+                case BuildAndExpandType.WarmashineBarracks:
+                case BuildAndExpandType.KnightsBarracks:
+                case BuildAndExpandType.GunBarracks:
+                case BuildAndExpandType.CannonBarracks:
+                    maxCount = 2;
+                    chance = automationFocus == AutomationFocus.Military ? 100 : 5;
+                    break;
+
+                case BuildAndExpandType.CoalPit:
+                case BuildAndExpandType.WorkBench:
+                    chance = 200;
+                    break;
+
+                case BuildAndExpandType.WheatFarm:
+                case BuildAndExpandType.LinenFarm:
+                case BuildAndExpandType.HenPen:
+                case BuildAndExpandType.PigPen:
+                case BuildAndExpandType.RapeSeedFarm:
+                case BuildAndExpandType.HempFarm:
+                    chance = automationFocus == AutomationFocus.Grow? 300 : 150;
+                    maxCount = 24;
+                    break;
+
+                case BuildAndExpandType.WoodCutter:
+                case BuildAndExpandType.StoneCutter:
+                case BuildAndExpandType.PostalLevel2:
+                case BuildAndExpandType.PostalLevel3:
+                case BuildAndExpandType.RecruitmentLevel2:
+                case BuildAndExpandType.RecruitmentLevel3:
+                case BuildAndExpandType.GoldDeliveryLvl2:
+                case BuildAndExpandType.GoldDeliveryLvl3:
+                case BuildAndExpandType.Storehouse:
+                case BuildAndExpandType.Tavern:
+
+                case BuildAndExpandType.DirtRoad:
+                case BuildAndExpandType.Pavement:
+                case BuildAndExpandType.PavementFlower:
+                case BuildAndExpandType.Statue_ThePlayer:
+                    bBuild = false;
+                    break;
+
+                case BuildAndExpandType.Postal:
+                    if (automationFocus == AutomationFocus.Export)
+                    {
+                        chance = 60;
+                        maxCount = 24;
+                    }
+                    else
+                    {
+                        chance = 40;
+                        maxCount = 8;
+                    }
+                    break;
+                case BuildAndExpandType.Recruitment:
+                    if (automationFocus == AutomationFocus.Export)
+                    {
+                        chance = 200;
+                        maxCount = 12;
+                    }
+                    else
+                    {
+                        chance = 40;
+                        maxCount = 4;
+                    }
+                    break;
+
+                case BuildAndExpandType.Foundry:
+                    chance = 20;
+                    maxCount = 2;
+                    break;
+            }
+
+            if (bBuild)
+            {
+                var opt = BuildLib.BuildOptions[(int)buildType];
+                if (opt.blueprint.hasResources_buildAndUpgrade(this))
+                {
+                    int currentCount = this.buildingStructure.getCount(buildType);
+
+                    if (currentCount == 0)
+                    {
+                        chance /= 4;
+                    }
+
+                    if (currentCount < maxCount)
+                    {
+                        repeat = Ref.rnd.Int(repeat) + 1;
+                        for (int i = 0; i < repeat; ++i)
+                        {
+                            AutoBuild_RandomBuild.AddItem((int)buildType, chance);
+                        }
+                    }
+                }
             }
         }
 
@@ -374,14 +405,26 @@ namespace VikingEngine.DSSWars.GameObject
 
             workTemplate.autoBuild.set(1);
         }
+
+        public bool AutomateCityProperty(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                automateCity = value;
+                (value ? SoundLib.click : SoundLib.back).Play();
+            }
+            return automateCity;
+        }
     }
 
     enum AutomationFocus
     { 
+        NO_AUTO,
+        NoFocus,
         Grow,
         Export,
         Military,
         LevelUp,
-        Random,
+        //Random,
     }
 }

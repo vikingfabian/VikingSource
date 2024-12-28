@@ -1,8 +1,13 @@
 ﻿-Change Log-
-New decor: Dirt road
-Changed the tech tree to a points system (instead of %)
-Domination manager: about every 6 cities you conquer will trigger a strong war alliance. (this is to counter the strategy of spamming of low grade soldiers)
-The war manager is set to run at half speed to grant a slower pace.
+Fixed south ship event crash
+Fixed loading crashes
+The autobuilder groups the buildings
+Cities can be set on full automation (however, this will override any settings you had on the city)
+Improved the auto delivery
+Reduced city water add speed by 40%
+Overview of faction resources
+
+! The performance can be bad after a few hours of playing, restarting helps.
 
 # WORKER PATH #
 Ha en loop som går igenom tiles, om det finns 1+ byggnader, räkna tid från hall till slumpad byggnad, tid till närmast mat och avlämning
@@ -30,6 +35,7 @@ Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 ti
  farm - apple tree
 * refugee tent, samlar på invandrare (60) half food cost, auto build homes?
 * vetskap kan sparas i pergament och sparas, kopieras, trade, sprida med messenger > papyrus/läder pergament
+
 * faction resources per second current/produced/consumed 
 
 #Todo (xmas patch)#

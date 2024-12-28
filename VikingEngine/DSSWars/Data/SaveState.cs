@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars.Data
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
         public const int Version = 11;
-        public const int SubVersion = 45; 
+        public const int SubVersion = 46; 
         //public const int MergeVersion = 26;
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
@@ -209,8 +209,8 @@ namespace VikingEngine.DSSWars.Data
                     return DssRef.world.cities[id];
             }
 
-            throw new Exception("GetObject from Pointer");
-
+            //throw new Exception("GetObject from Pointer");
+            return null;
         }
 
         public void writeFaction(System.IO.BinaryWriter w, Faction faction)
@@ -247,13 +247,16 @@ namespace VikingEngine.DSSWars.Data
         {
             var target = (AbsMapObject)GetObject();
 
-            if (teleport)
+            if (target != null)
             {
-                army.Order_Attack_Setup(target);
-            }
-            else
-            {
-                army.Order_Attack(target);
+                if (teleport)
+                {
+                    army.Order_Attack_Setup(target);
+                }
+                else
+                {
+                    army.Order_Attack(target);
+                }
             }
             //army.attackTargetFaction = army.attackTarget.faction.parentArrayIndex;
         }

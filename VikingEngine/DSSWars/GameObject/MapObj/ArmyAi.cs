@@ -388,30 +388,33 @@ namespace VikingEngine.DSSWars.GameObject
 
         void Ai_Finalize_Attack()
         {
-            //todo räkna in support
-            if (this.strengthValue > attackTarget.strengthValue)
+            if (attackTarget != null)
             {
-                if (attackTarget.gameobjectType() == GameObjectType.City)
+                //todo räkna in support
+                if (this.strengthValue > attackTarget.strengthValue)
                 {
-                    attackTarget.GetCity().setFaction(faction);
+                    if (attackTarget.gameobjectType() == GameObjectType.City)
+                    {
+                        attackTarget.GetCity().setFaction(faction);
+                    }
+                    else
+                    {
+                        Ref.update.AddSyncAction(new SyncAction1Arg<AbsMapObject>((AbsMapObject attackTarget) =>
+                        {
+                            attackTarget?.DeleteMe(DeleteReason.Death, true);
+                        }, attackTarget));
+                    }
                 }
                 else
-                {  
-                    Ref.update.AddSyncAction(new SyncAction1Arg<AbsMapObject>((AbsMapObject attackTarget) =>
-                    {
-                        attackTarget?.DeleteMe(DeleteReason.Death, true);
-                    }, attackTarget));
-                }
-            }
-            else
-            {
-                Ref.update.AddSyncAction(new SyncAction(() =>
                 {
-                    DeleteMe(DeleteReason.Death, true);
-                }));
-            }
+                    Ref.update.AddSyncAction(new SyncAction(() =>
+                    {
+                        DeleteMe(DeleteReason.Death, true);
+                    }));
+                }
 
-            Ai_Finalize_Move();
+                Ai_Finalize_Move();
+            }
         }
 
         void Ai_Finalize_Move()
@@ -463,9 +466,12 @@ namespace VikingEngine.DSSWars.GameObject
             //clearObjective();
             //this.attackTarget = attackTarget;
             //this.attackTargetFaction = attackTarget.faction.parentArrayIndex;
-            Order_Attack_Setup(attackTarget);
-            objective = ArmyObjective.Attack;
-            onNewGoal(false);
+            if (attackTarget != null)
+            {
+                Order_Attack_Setup(attackTarget);
+                objective = ArmyObjective.Attack;
+                onNewGoal(false);
+            }
         }
 
         public void Order_Attack_Setup(AbsMapObject attackTarget)

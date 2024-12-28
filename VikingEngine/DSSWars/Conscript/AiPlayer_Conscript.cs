@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.Players
         }
     }
 
-    partial class AiPlayer
+    partial class AbsPlayer
     {
         static readonly AutoWeaponOption[] conscriptWeaponPrioOrder =
         {
@@ -187,43 +187,47 @@ namespace VikingEngine.DSSWars.Players
                 city.AddGroupedResource(profile.armorLevel, -get * DssConst.SoldierGroup_DefaultCount);
                 city.workForce.amount -= get * DssConst.SoldierGroup_DefaultCount;
 
-                switch (aiConscript)
-                { 
-                    case AiConscript.Orcs:
-                        switch (profile.weapon)
-                        { 
-                            case ItemResourceType.Bow:
-                                profile.weapon = ItemResourceType.Crossbow;
-                                break;
-                            case ItemResourceType.Sword:
-                                profile.weapon = ItemResourceType.Pike;
-                                break;
-                        }
-                        break;
+                var aiPlayer = city.faction.player.GetAiPlayer();
 
-                    case AiConscript.Viking:
-                        profile.specialization = SpecializationType.Viking;
-                        break;
+                if (aiPlayer != null)
+                {
+                    switch (aiPlayer.aiConscript)
+                    {
+                        case AiConscript.Orcs:
+                            switch (profile.weapon)
+                            {
+                                case ItemResourceType.Bow:
+                                    profile.weapon = ItemResourceType.Crossbow;
+                                    break;
+                                case ItemResourceType.Sword:
+                                    profile.weapon = ItemResourceType.Pike;
+                                    break;
+                            }
+                            break;
 
-                    case AiConscript.DragonSlayer:
-                        switch (profile.weapon)
-                        {
-                            case ItemResourceType.Bow:
-                                profile.weapon = ItemResourceType.Crossbow;
-                                break;
-                            case ItemResourceType.Sword:
-                                profile.weapon = ItemResourceType.Ballista;
-                                break;
-                        }
-                        profile.specialization = SpecializationType.Siege;
-                        break;
+                        case AiConscript.Viking:
+                            profile.specialization = SpecializationType.Viking;
+                            break;
 
-                    case AiConscript.Green:
-                        profile.specialization = SpecializationType.Green;
-                        profile.training = TrainingLevel.Skillful;
-                        break;
+                        case AiConscript.DragonSlayer:
+                            switch (profile.weapon)
+                            {
+                                case ItemResourceType.Bow:
+                                    profile.weapon = ItemResourceType.Crossbow;
+                                    break;
+                                case ItemResourceType.Sword:
+                                    profile.weapon = ItemResourceType.Ballista;
+                                    break;
+                            }
+                            profile.specialization = SpecializationType.Siege;
+                            break;
+
+                        case AiConscript.Green:
+                            profile.specialization = SpecializationType.Green;
+                            profile.training = TrainingLevel.Skillful;
+                            break;
+                    }
                 }
-
                 
                 city.conscriptArmy(profile, city.defaultConscriptPos(), get);
             }

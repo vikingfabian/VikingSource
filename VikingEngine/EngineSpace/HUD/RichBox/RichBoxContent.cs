@@ -44,12 +44,12 @@ namespace VikingEngine.HUD.RichBox
             return member;
         }
 
-        public void add(SpriteName icon, string textline)
-        {
-            newLine();
-            Add(new RichBoxImage(icon));
-            Add(new RichBoxText(textline));
-        }
+        //public void iconText(SpriteName icon, string textline)
+        //{
+        //    newLine();
+        //    Add(new RichBoxImage(icon));
+        //    Add(new RichBoxText(textline));
+        //}
 
         public void space(float spaces = 1f)
         { 

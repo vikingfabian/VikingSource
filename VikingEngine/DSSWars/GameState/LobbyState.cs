@@ -196,7 +196,7 @@ namespace VikingEngine.DSSWars
 
 
                 new GuiSectionSeparator(layout);
-                new GuiIconTextButton(SpriteName.MenuPixelIconSettings, Ref.langOpt.Options_title, null, new GuiAction(optionsMenu), true, layout);
+                new GuiIconTextButton(SpriteName.AutomationGearIcon, Ref.langOpt.Options_title, null, new GuiAction(optionsMenu), true, layout);
                 //new GuiTextButton("*Crash game*", null, crashTest, false, layout); 
                 if (PlatformSettings.DevBuild)
                 {

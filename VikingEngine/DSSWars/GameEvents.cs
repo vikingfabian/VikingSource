@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars
         TimeInGameCountdown triggerTime;
 
 
-        IntervalF triggerTimeSpan;
+        IntervalF triggerTimeSpan_Minutes;
         IntervalF nextExpectedPlayerSize;
 
         City[] playerMostSouthCity;
@@ -82,16 +82,32 @@ namespace VikingEngine.DSSWars
             {
                 if (eventState == EventState.Countdown)
                 {
-                    if (checkTime.TimeOut())//Ref.TotalGameTimeSec >= eventCheckGameTimeSec)
-                    {                        
+                    if (checkTime.TimeOut())
+                    {
+#if DEBUG
+                        Ref.update.AddSyncAction(new SyncAction(() =>
+                        {
+                            DssRef.state.localPlayers[0].hud.messages.Add(
+                                "Event Power check", (nextEvent).ToString());
+                        }));
+#endif
+
                         PowerCheck();
                         eventState = EventState.PowerChecked;
                     }
                 }
                 else if (eventState == EventState.PowerChecked)
                 {
-                    if (triggerTime.TimeOut())//Ref.TotalGameTimeSec >= eventTriggerGameTimeSec)
-                    {   
+                    if (triggerTime.TimeOut())
+                    {
+#if DEBUG
+                        Ref.update.AddSyncAction(new SyncAction(() =>
+                        {
+                            DssRef.state.localPlayers[0].hud.messages.Add(
+                                "Event Trigger", (nextEvent).ToString());
+                        }));
+                        
+#endif
                         calcAndRunEvent();
                         eventState = EventState.Done;
                     }
@@ -179,7 +195,7 @@ namespace VikingEngine.DSSWars
             checkTime.writeGameState(w);
             triggerTime.writeGameState(w);
 
-            triggerTimeSpan.Write(w);
+            triggerTimeSpan_Minutes.Write(w);
             nextExpectedPlayerSize.Write(w);
 
             IOLib.WriteObjectList(w, playerMostSouthCity);
@@ -204,7 +220,7 @@ namespace VikingEngine.DSSWars
             triggerTime.readGameState(r);
             
 
-            triggerTimeSpan.Read(r);
+            triggerTimeSpan_Minutes.Read(r);
             nextExpectedPlayerSize.Read(r);
 
             playerMostSouthCity = arraylib.ToArray_Safe(IOLib.ReadObjectList<City>(r));
@@ -226,35 +242,35 @@ namespace VikingEngine.DSSWars
             {
                 case EventType.AiWarDelay:
                     {
-                        triggerTimeSpan = IntervalF.NoInterval(15);
+                        triggerTimeSpan_Minutes = IntervalF.NoInterval(15);
                     }
                     break;
                 case EventType.WarmanagerDelay:
                     {
-                        triggerTimeSpan = IntervalF.NoInterval(20);
+                        triggerTimeSpan_Minutes = IntervalF.NoInterval(20);
                     }
                     break;
                 case EventType.SouthShips:
                     {
-                        triggerTimeSpan = new IntervalF(3.6f, 4.5f) * TimeExt.HourInMinutes;
+                        triggerTimeSpan_Minutes = new IntervalF(3.6f, 4.5f) * TimeExt.HourInMinutes;
                         nextExpectedPlayerSize = new IntervalF(DssConst.HeadCityStartMaxWorkForce * 2f, DssConst.HeadCityStartMaxWorkForce * 4f);
                     }
                     break;
                 case EventType.DarkLordWarning:
                     {
-                        triggerTimeSpan = new IntervalF(22f, 28f) * TimeExt.HourInMinutes;
+                        triggerTimeSpan_Minutes = new IntervalF(22f, 28f) * TimeExt.HourInMinutes;
                         nextExpectedPlayerSize = new IntervalF(DssConst.HeadCityStartMaxWorkForce * 4f, DssConst.HeadCityStartMaxWorkForce * 8f);
                     }
                     break;
                 case EventType.DarkLord:
                     {
-                        triggerTimeSpan = IntervalF.NoInterval(1f * TimeExt.HourInMinutes);
+                        triggerTimeSpan_Minutes = IntervalF.NoInterval(1f * TimeExt.HourInMinutes);
                     }
                     break;
             }
 
             prepareTime.zero();
-            checkTime.start(TimeLength.FromMinutes(triggerTimeSpan.Min)); 
+            checkTime.start(TimeLength.FromMinutes(triggerTimeSpan_Minutes.Min)); 
         }
 
         public void TestNextEvent()
@@ -268,8 +284,15 @@ namespace VikingEngine.DSSWars
             //else
             //{
             DssRef.state.localPlayers[0].hud.messages.Add(
-                    "Test event", (nextEvent + 1).ToString());
-            eventState = EventState.Done;
+                    "Test event", (nextEvent).ToString());
+            //checkTime.zero();
+            //eventState = EventState.Done;
+
+            //asyncUpdate(0);
+            checkTime.start(1);
+            triggerTime.start(2);
+            triggerTimeSpan_Minutes = IntervalF.NoInterval(0.1f);
+
 
             //if (nextEvent <= EventType.DarkLord)
             //{
@@ -284,124 +307,11 @@ namespace VikingEngine.DSSWars
             //    }
             //}
 
-            
+
             //}
         }
 
-        void RunNextEvent()
-        {
-            //Is synced
-            switch (nextEvent)
-            {
-                case EventType.SouthShips:
-                    {
-                        var enemyFac = DssRef.world.factions.Array[DssRef.settings.Faction_SouthHara];
-
-                        for (int playerIx = 0; playerIx < DssRef.state.localPlayers.Count; ++playerIx)
-                        {
-                            if (playerMostSouthCity[playerIx] != null)
-                            {
-                                IntVector2 spawn = spawnPos_Player[playerIx];
-                                Rotation1D enemyRot = Rotation1D.D0;
-
-                                Range soldierCount = Range.Zero;
-
-                                switch (DssRef.difficulty.bossSize)
-                                {
-                                    case BossSize.Small:
-                                        soldierCount = new Range(10, 14);
-                                        break;
-                                    case BossSize.Medium:
-                                        soldierCount = new Range(14, 18);
-                                        break;
-                                    case BossSize.Large:
-                                        soldierCount = new Range(18, 23);
-                                        break;
-                                    case BossSize.Huge:
-                                        soldierCount = new Range(24, 30);
-                                        break;
-                                }
-
-                                var army = enemyFac.NewArmy(VectorExt.AddY(spawn, 0));
-                                army.rotation = enemyRot;
-                                int count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
-                                for (int i = 0; i < count; ++i)
-                                {
-                                    new SoldierGroup(army, DssLib.SoldierProfile_Pikeman, army.position);
-                                }
-                                count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
-                                for (int i = 0; i < count; ++i)
-                                {
-                                    new SoldierGroup(army, DssLib.SoldierProfile_Sailor, army.position);
-                                }
-                                count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
-                                for (int i = 0; i < count; ++i)
-                                {
-                                    new SoldierGroup(army, DssLib.SoldierProfile_CrossbowMan, army.position);
-                                }
-                                army.refreshPositions(true);
-
-
-                                var groupsC = army.groups.counter();
-                                while (groupsC.Next())
-                                {
-                                    groupsC.sel.completeTransform( SoldierTransformType.ToShip);
-                                }
-
-                                DssRef.diplomacy.declareWar(enemyFac, DssRef.state.localPlayers[playerIx].faction);
-                                army.Order_MoveTo(VectorExt.AddY(playerMostSouthCity[playerIx].tilePos, 3));
-                            }
-                        }
-
-                        enemyFac.player.GetAiPlayer().nextDecisionTimer.MilliSeconds = float.MaxValue;
-                        new SouthHaraStartAi(enemyFac);
-
-                        playerMostSouthCity = null;
-                        spawnPos_Player = null;
-
-                    }
-                    break;
-                case EventType.DarkLordWarning:
-                    {
-                        foreach (var p in DssRef.state.localPlayers)
-                        {
-                            p.hud.messages.Add(DssRef.lang.EventMessage_ProphesyTitle, DssRef.lang.EventMessage_ProphesyText);
-                        }
-                    }
-                    break;
-                case EventType.DarkLord:
-                    {
-                        if (arraylib.HasMembers(darkLordAvailableFactions))
-                        {
-                            DssRef.settings.darkLordPlayer.EnterMap(arraylib.RandomListMember(darkLordAvailableFactions), darkLordAllies);
-
-                            darkLordAllies = null;
-                            darkLordAvailableFactions = null;
-
-                            var greenwood = DssRef.world.factions[DssRef.settings.Faction_GreenWood];
-
-                            foreach (var p in DssRef.state.localPlayers)
-                            {
-                                p.hud.messages.Add(DssRef.lang.EventMessage_FinalBossEnterTitle, DssRef.lang.EventMessage_FinalBossEnterText);
-
-                                if (!DssRef.diplomacy.InWar(p.faction, greenwood))
-                                {
-                                    DssRef.diplomacy.GetOrCreateRelation(p.faction, greenwood).SpeakTerms = SpeakTerms.SpeakTerms1_Good;
-                                }
-                            }
-                        }
-                    }
-                    break;
-                //case EventType.DarkLordInPerson:
-                //    {
-
-                //    }
-                //    break;
-                }
-
-            //++nextEvent;
-            //prepareNext();
-        }
+        
 
        
         void asyncUpdateDyingFactions(float time)
@@ -450,9 +360,9 @@ namespace VikingEngine.DSSWars
         {
             float time;
 
-            if (triggerTimeSpan.Length == 0)
+            if (triggerTimeSpan_Minutes.Length == 0)
             {
-                time = triggerTimeSpan.Min;                
+                time = triggerTimeSpan_Minutes.Min;                
             }
             else
             {
@@ -470,15 +380,15 @@ namespace VikingEngine.DSSWars
                
                 if (totalWorkForce < nextExpectedPlayerSize.Min)
                 {
-                    time = triggerTimeSpan.Max;
+                    time = triggerTimeSpan_Minutes.Max;
                 }
                 else if (totalWorkForce >= nextExpectedPlayerSize.Max)
                 {
-                    time = triggerTimeSpan.Min;
+                    time = triggerTimeSpan_Minutes.Min;
                 }
                 else
                 {
-                    time = triggerTimeSpan.Center;
+                    time = triggerTimeSpan_Minutes.Center;
                 }
             }
 
@@ -573,9 +483,7 @@ namespace VikingEngine.DSSWars
         }
 
         void calcAndRunEvent()
-        {
-            
-
+        { 
             switch (nextEvent)
             {
                 case EventType.SouthShips:
@@ -585,7 +493,122 @@ namespace VikingEngine.DSSWars
                     break;
             }
 
-            Ref.update.AddSyncAction(new SyncAction(RunNextEvent));
+            Ref.update.AddSyncAction(new SyncAction1Arg<EventType>(RunNextEvent_synced, nextEvent));
+        }
+
+        void RunNextEvent_synced(EventType nextEvent)
+        {
+            //Is synced
+            switch (nextEvent)
+            {
+                case EventType.SouthShips:
+                    {
+                        var enemyFac = DssRef.world.factions.Array[DssRef.settings.Faction_SouthHara];
+
+                        for (int playerIx = 0; playerIx < DssRef.state.localPlayers.Count; ++playerIx)
+                        {
+                            if (playerMostSouthCity[playerIx] != null)
+                            {
+                                IntVector2 spawn = spawnPos_Player[playerIx];
+                                Rotation1D enemyRot = Rotation1D.D0;
+
+                                Range soldierCount = Range.Zero;
+
+                                switch (DssRef.difficulty.bossSize)
+                                {
+                                    case BossSize.Small:
+                                        soldierCount = new Range(10, 14);
+                                        break;
+                                    case BossSize.Medium:
+                                        soldierCount = new Range(14, 18);
+                                        break;
+                                    case BossSize.Large:
+                                        soldierCount = new Range(18, 23);
+                                        break;
+                                    case BossSize.Huge:
+                                        soldierCount = new Range(24, 30);
+                                        break;
+                                }
+
+                                var army = enemyFac.NewArmy(VectorExt.AddY(spawn, 0));
+                                army.rotation = enemyRot;
+                                int count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
+                                for (int i = 0; i < count; ++i)
+                                {
+                                    new SoldierGroup(army, DssLib.SoldierProfile_Pikeman, army.position);
+                                }
+                                count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
+                                for (int i = 0; i < count; ++i)
+                                {
+                                    new SoldierGroup(army, DssLib.SoldierProfile_Sailor, army.position);
+                                }
+                                count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
+                                for (int i = 0; i < count; ++i)
+                                {
+                                    new SoldierGroup(army, DssLib.SoldierProfile_CrossbowMan, army.position);
+                                }
+                                army.startInOnePoint();//refreshPositions(true);
+
+
+                                //var groupsC = army.groups.counter();
+                                //while (groupsC.Next())
+                                //{
+                                //    groupsC.sel.completeTransform(SoldierTransformType.ToShip);
+                                //}
+
+                                DssRef.diplomacy.declareWar(enemyFac, DssRef.state.localPlayers[playerIx].faction);
+                                army.Order_MoveTo(VectorExt.AddY(playerMostSouthCity[playerIx].tilePos, 3));
+                            }
+                        }
+
+                        enemyFac.player.GetAiPlayer().nextDecisionTimer.MilliSeconds = float.MaxValue;
+                        new SouthHaraStartAi(enemyFac);
+
+                        playerMostSouthCity = null;
+                        spawnPos_Player = null;
+
+                    }
+                    break;
+                case EventType.DarkLordWarning:
+                    {
+                        foreach (var p in DssRef.state.localPlayers)
+                        {
+                            p.hud.messages.Add(DssRef.lang.EventMessage_ProphesyTitle, DssRef.lang.EventMessage_ProphesyText);
+                        }
+                    }
+                    break;
+                case EventType.DarkLord:
+                    {
+                        if (arraylib.HasMembers(darkLordAvailableFactions))
+                        {
+                            DssRef.settings.darkLordPlayer.EnterMap(arraylib.RandomListMember(darkLordAvailableFactions), darkLordAllies);
+
+                            darkLordAllies = null;
+                            darkLordAvailableFactions = null;
+
+                            var greenwood = DssRef.world.factions[DssRef.settings.Faction_GreenWood];
+
+                            foreach (var p in DssRef.state.localPlayers)
+                            {
+                                p.hud.messages.Add(DssRef.lang.EventMessage_FinalBossEnterTitle, DssRef.lang.EventMessage_FinalBossEnterText);
+
+                                if (!DssRef.diplomacy.InWar(p.faction, greenwood))
+                                {
+                                    DssRef.diplomacy.GetOrCreateRelation(p.faction, greenwood).SpeakTerms = SpeakTerms.SpeakTerms1_Good;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                    //case EventType.DarkLordInPerson:
+                    //    {
+
+                    //    }
+                    //    break;
+            }
+
+            //++nextEvent;
+            //prepareNext();
         }
 
         private void calcSouthSpawn()
@@ -696,7 +719,7 @@ namespace VikingEngine.DSSWars
             {
                 DssRef.settings.darkLordPlayer.factoriesLeft = 0;
                 nextEvent = EventType.DarkLordInPerson;
-                Ref.update.AddSyncAction(new SyncAction(RunNextEvent));
+                Ref.update.AddSyncAction(new SyncAction1Arg<EventType>(RunNextEvent_synced, nextEvent));
             }
         }
 

@@ -25,14 +25,12 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Map;
 using VikingEngine.LootFest.Players;
+using VikingEngine.PJ;
 
 namespace VikingEngine.DSSWars.GameObject
 {
     partial class City : GameObject.AbsMapObject
     {
-        
-
-        //public int index;
         public int areaSize = 0;
         public CityType CityType;
         public List<int> neighborCities = new List<int>();
@@ -41,9 +39,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         BoundingBox bound;
 
-        //public int totalIncome;
-
-        //float upkeep;
         public int maxGuardSize;
         public int guardCount;
 
@@ -84,6 +79,8 @@ namespace VikingEngine.DSSWars.GameObject
         public CityTagBack tagBack = CityTagBack.NONE;
         public CityTagArt tagArt = CityTagArt.None;
 
+        
+
         public bool CanBuildLogistics(int toLevel)
         {
             if (toLevel == 1)
@@ -100,20 +97,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int MaxBuildQueue()
         {
-            //int queue = int.MaxValue;
-            //switch (buildingLevel_logistics)
-            //{
-            //    default : return queue;
-            //    case 0: queue = DssConst.WorkQueue_Start; break;
-            //    case 1: queue = DssConst.WorkQueue_LogisticsLevel1; break;
-            //}
-
-            //if (DssRef.storage.longerBuildQueue)
-            //{
-            //    queue *= 2;
-            //}
-
-            return LevelToMaxBuildQueue(buildingStructure.buildingLevel_logistics); //return queue;
+            return LevelToMaxBuildQueue(buildingStructure.buildingLevel_logistics);
         }
 
         public static int LevelToMaxBuildQueue(int level)
@@ -531,6 +515,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             technology.writeGameState(w);
             w.Write(gold);
+            w.Write(automateCity);
+            w.Write((byte)automationFocus);
 
             Debug.WriteCheck(w);
         }
@@ -704,6 +690,12 @@ namespace VikingEngine.DSSWars.GameObject
             technology.readGameState(r, subversion);
 
             gold = r.ReadInt32();
+
+            if (subversion >= 45)
+            {
+                automateCity = r.ReadBoolean();
+                automationFocus = (AutomationFocus)r.ReadByte();
+            }
 
             Debug.ReadCheck(r);
         }
@@ -1610,6 +1602,65 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 bool interactive = player.faction == faction;
 
+                if (interactive)
+                {
+                    if (automateCity)
+                    {
+                        content.newParagraph();
+                    }
+                    else
+                    {
+                        content.newLine();
+                    }
+
+                    content.Add(new RichboxCheckbox(new List<AbsRichBoxMember> {
+                        new RichBoxText(DssRef.todoLang.Automation_AutomateCity)
+                    }, AutomateCityProperty));
+
+                    if (automateCity)
+                    {
+                        content.newLine();
+                        HudLib.Label(content, DssRef.todoLang.Automation_AutomationFocus);
+
+                        content.newLine();
+                        foreach (var focus in CityMenu.AvailableAutomationFocuses)
+                        {
+                            string caption = null;
+                            switch (focus)
+                            {
+                                case AutomationFocus.NoFocus:
+                                    caption = DssRef.todoLang.Hud_None;
+                                    break;
+                                case AutomationFocus.Grow:
+                                    caption = DssRef.todoLang.Automation_AutomationFocus_Grow;
+                                    break;
+                                case AutomationFocus.Export:
+                                    caption = DssRef.todoLang.Automation_AutomationFocus_Export;
+                                    break;
+                                case AutomationFocus.Military:
+                                    caption = DssRef.todoLang.Automation_AutomationFocus_War;
+                                    break;
+                            }
+
+                            var button = new RichboxButton(new List<AbsRichBoxMember>
+                            {
+                                new RichBoxText(caption),
+                            },
+                            new RbAction(() =>
+                            {
+                                automationFocus = focus;
+                            }, SoundLib.menu));
+
+                            button.setGroupSelectionColor(HudLib.RbSettings, automationFocus == focus);
+                            content.Add(button);
+                            content.space();
+                        }
+
+                        content.Add(new RichBoxSeperationLine());
+                        
+                    }
+                }
+
                 if (damages.HasValue())
                 {
                     content.icontext(SpriteName.hqBatteResultBobbleDamage, string.Format(DssRef.lang.CityOption_Damages, damages.Int()));
@@ -1659,9 +1710,6 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
             }
-
-            
-
         }
 
         public void cultureToHud(LocalPlayer player, RichBoxContent content, bool interactive)
@@ -2017,8 +2065,6 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
         }
-
-        
         
         public Army recruitToClosestArmy()
         {

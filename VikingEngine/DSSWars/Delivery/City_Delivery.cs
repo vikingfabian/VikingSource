@@ -43,12 +43,17 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         case DeliveryActiveStatus.Idle:
                             {
-                                if (faction.player.IsAi())//OR fully auto
+                                if (faction.player.IsAi() || 
+                                    (automateCity && status.que == 0))//OR fully auto
                                 {
                                     status.profile.toCity = DeliveryProfile.ToCityAuto;
+                                    status.que = 100;
+                                    status.recieverMax = 100;
+                                    status.useRecieverMax = true;
                                     if (!status.IsRecruitment() && !status.IsGold())
                                     { 
                                         status.inProgress.type = ItemResourceType.AutomatedItem;
+
                                     }
                                 }
 
@@ -78,7 +83,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                                                 var resource_recieve = othercity.GetGroupedResource(status.inProgress.type);
                                                 resource_recieve.deliverCount += status.inProgress.SendAmount;
-                                                othercity.SetGroupedResource(status.inProgress.type, resource_recieve);
+                                                othercity.AddGroupedResource(status.inProgress.type, status.inProgress.SendAmount);
                                             }
 
                                             status.active++;
@@ -98,7 +103,6 @@ namespace VikingEngine.DSSWars.GameObject
                                 }
                             }
                             break;
-
                             
 
                         case DeliveryActiveStatus.Delivering:

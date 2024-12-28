@@ -9,7 +9,7 @@ using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Players
 {
-    abstract class AbsPlayer
+    abstract partial class AbsPlayer
     {
         public const int AggressionLevel0_Passive = 0;
         public const int AggressionLevel1_RevengeOnly = 1;

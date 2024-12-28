@@ -87,7 +87,7 @@ namespace VikingEngine.ToGG.Commander.Battle
             foreach (var m in attackRoll.setup.dice.sides)
             {
                 float chance = m.result == BattleDiceResult.Empty ? attackRoll.setup.dice.noneChance() : m.chance;
-                diceContent.add(BattleDice.ResultIcon(m.result), BattleDice.ResultDesc(m.result) + " (" + TextLib.PercentText(chance) + ")");
+                diceContent.icontext(BattleDice.ResultIcon(m.result), BattleDice.ResultDesc(m.result) + " (" + TextLib.PercentText(chance) + ")");
             }
 
             var contentArea = prevArea;

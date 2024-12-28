@@ -164,7 +164,7 @@ namespace VikingEngine
 
                 add(SpriteName.MenuPixelIconMusicVol);
                 add(SpriteName.MenuPixelIconSoundVol);
-                add(SpriteName.MenuPixelIconSettings);
+                add(SpriteName.AutomationGearIcon);
                 add(SpriteName.MenuPixelIconManual);
                 add(SpriteName.MenuPixelIconPlay);
                 add(SpriteName.PixController1);
@@ -2543,6 +2543,8 @@ namespace VikingEngine
                     add(SpriteName.WarsTechnology_Locked);
                     add(SpriteName.WarsFletcherArrowIcon);
                     add(SpriteName.WarsWorkSmelting);
+                    add(SpriteName.WarsIncreaseArrowUp);
+                    add(SpriteName.WarsDecreaseArrowDown);
 
                 }
 

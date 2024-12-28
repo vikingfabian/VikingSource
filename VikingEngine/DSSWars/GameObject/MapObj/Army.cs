@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.Xsl;
 using Valve.Steamworks;
@@ -113,7 +114,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            w.Write((ushort)id);
+            w.Write(Debug.Ushort_OrCrash(id));
             WP.writePosXZ(w, position);
 
             w.Write((ushort)groups.Count);
@@ -690,17 +691,22 @@ namespace VikingEngine.DSSWars.GameObject
             bound.Center = overviewBanner.position;
         }
 
-
         public void refreshPositions(bool onPurchase)
         {
             refreshGroupPlacements2(tilePos, false, false);
-            //int width = groupsWidth();
+        }
 
-            //IntVector2 nextGroupPlacementIndex = IntVector2.Zero;
-
-            //refreshPositionsFor(ArmyPlacement.Front, ref nextGroupPlacementIndex, width, onPurchase);
-            //refreshPositionsFor(ArmyPlacement.Mid, ref nextGroupPlacementIndex, width, onPurchase);
-            //refreshPositionsFor(ArmyPlacement.Back, ref nextGroupPlacementIndex, width, onPurchase);
+        public void startInOnePoint()
+        {
+            Task.Factory.StartNew(() =>
+            {
+                var groupsC = groups.counter();
+                while (groupsC.Next())
+                {
+                    groupsC.sel.setArmyPlacement2(position, true);
+                }
+            });
+            
         }
 
         public void autoColumnWidth()
@@ -969,6 +975,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     else
                     {
+
                         //Cancel
                         Order_Attack(attackTarget);
                     }

@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.Players
         int mainArmyState = MainArmyState_StartNew;
         int mainArmyWar = -1;
 
-        AiConscript aiConscript = AiConscript.Default;
+        public AiConscript aiConscript = AiConscript.Default;
 
         public override void writeGameState(BinaryWriter w)
         {

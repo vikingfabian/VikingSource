@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.Display
     {        
         public bool fullDisplay = true;
         public const string AutomationMenuState = "auto";
-        public static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Economy, MenuTab.Automation, MenuTab.Work, MenuTab.Progress };
+        public static readonly MenuTab[] Tabs = { MenuTab.Info, MenuTab.Economy, MenuTab.Resources, MenuTab.Work, MenuTab.Automation, MenuTab.Progress };
 
         public HeadDisplay(RichboxGui gui)
             :base(gui)
@@ -89,6 +89,10 @@ namespace VikingEngine.DSSWars.Display
 
                             case MenuTab.Automation:
                                 player.automation.toMenu(content, fullDisplay);
+                                break;
+
+                            case MenuTab.Resources:
+                                faction.resourceTab(player, content);
                                 break;
 
                             case MenuTab.Work:

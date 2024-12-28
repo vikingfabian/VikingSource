@@ -274,6 +274,14 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string MenuTab_Progress => "Progress";
 
+        public string Automation_AutomateCity => "Automate city";
+        public string Automation_AutomationFocus => "Automation focus";
+        public string Automation_AutomationFocus_Grow => "Grow";
+        public string Automation_AutomationFocus_Export => "Export";
+        public string Automation_AutomationFocus_War => "War";
+
+
+
         public string CityCulture_Smelters_Description => "Improved ore smelting";
         public string CityCulture_Smelters => "Smelters";
 

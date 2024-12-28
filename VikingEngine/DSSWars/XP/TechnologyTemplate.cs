@@ -43,6 +43,21 @@ namespace VikingEngine.DSSWars.XP
             gunPowder = Unlocked - 200;
         }
 
+        public void zero()
+        {
+            advancedBuilding = 0;
+            advancedFarming = 0;
+            advancedCasting = 0;
+
+            iron = 0;
+            steel = 0;
+
+            catapult = 0;
+
+            blackPowder = 0;
+            gunPowder = 0;
+        }
+
         public static int SetRandom(int startValue, double percentageAdd = 0.5)
         {
             if (startValue > Unlocked)
@@ -219,15 +234,24 @@ namespace VikingEngine.DSSWars.XP
             }
         }
 
-        public void Add(TechnologyTemplate city)
+        public void countUnlocks(TechnologyTemplate city)
         {
-            advancedBuilding += city.advancedBuilding;
-            advancedFarming += city.advancedFarming;
-            advancedCasting += city.advancedCasting;
-            iron += city.iron;
-            steel += city.steel;
-            blackPowder += city.blackPowder;
-            gunPowder += city.gunPowder;
+            tech(ref advancedBuilding, city.advancedBuilding);
+            tech(ref advancedFarming, city.advancedFarming);
+            tech(ref advancedCasting, city.advancedCasting);
+            tech(ref iron, city.iron);
+            tech(ref steel, city.steel);
+            tech(ref catapult, city.catapult);
+            tech(ref blackPowder, city.blackPowder);
+            tech(ref gunPowder, city.gunPowder);
+
+            void tech(ref int thisTech, int cityTech)
+            {
+                if (cityTech >= Unlocked)
+                {
+                    thisTech++;
+                }
+            }
         }
 
         public static int PercentProgress(int value)
