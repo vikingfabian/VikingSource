@@ -1,9 +1,16 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.XP;
+using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Build
 {
@@ -96,6 +103,83 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.School: return School_pos;
 
                 default: throw new NotImplementedException(); // Return 0 for NUM_NONE or any other undefined type
+            }
+        }
+    }
+
+    struct TerrainStructure
+    {
+        public int mineCount_bogIron;
+
+        public int mineCount_iron;
+        public int mineCount_tin;
+        public int mineCount_copper;
+        public int mineCount_lead;
+        public int mineCount_silver;
+        public int mineCount_gold;
+        public int mineCount_mithril;
+        public int mineCount_sulfur;
+        public int mineCount_coal;
+
+        public void miningOverviewHud(RichBoxContent content, LocalPlayer player)
+        {
+            content.newLine();
+
+            content.Add(new RichBoxImage(SpriteName.WarsWorkMine));
+            content.space();
+
+            int totalCount = 0;
+
+            mine(mineCount_coal, ItemResourceType.Coal);
+            mine(mineCount_bogIron, ItemResourceType.BogIron);
+            mine(mineCount_iron, ItemResourceType.Iron_G);
+            mine(mineCount_tin, ItemResourceType.Tin);
+            mine(mineCount_copper, ItemResourceType.Copper);
+            mine(mineCount_lead, ItemResourceType.Lead);
+            mine(mineCount_silver, ItemResourceType.Silver);
+            mine(mineCount_gold, ItemResourceType.Gold);
+            mine(mineCount_mithril, ItemResourceType.Mithril);
+            mine(mineCount_sulfur, ItemResourceType.Sulfur);
+            
+
+            if (totalCount == 0)
+            {
+                content.Add(new RichBoxText(DssRef.lang.Hud_EmptyList));
+            }
+
+
+            void mine(int count, ItemResourceType resource)
+            {
+                totalCount += count;
+                if (count > 0)
+                {
+                    SpriteName icon = ResourceLib.Icon(resource);
+                    string resourceName = LangLib.Item(resource);
+                    var infoContent = new RichBoxContent();
+
+                    infoContent.Add(new RichBoxImage(icon));
+                    infoContent.space();
+                    var countText = new RichBoxText(count.ToString());
+                    countText.overrideColor = Color.White;
+                    infoContent.Add(countText); 
+
+                    var infoButton = new RichboxButton(infoContent, null, new RbAction(() =>
+                    {
+                        RichBoxContent content = new RichBoxContent();
+
+                        content.Add(new RichBoxImage(icon));
+                        content.space();
+                        var mineString = string.Format(DssRef.lang.BuildingType_ResourceMine, resourceName);
+                        content.Add(new RichBoxText(TextLib.LargeFirstLetter( string.Format(DssRef.lang.Language_XCountIsY, mineString, count))));
+
+
+                        player.hud.tooltip.create(player, content, true);
+                    }));
+
+                    infoButton.overrideBgColor = HudLib.InfoYellow_BG;
+                    content.Add(infoButton);
+                    content.space();
+                }
             }
         }
     }

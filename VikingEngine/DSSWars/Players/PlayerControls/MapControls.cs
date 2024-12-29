@@ -1064,7 +1064,7 @@ namespace VikingEngine.DSSWars.Players
                 }
                 else
                 {
-                    return GameObjectType.NUM_NON;
+                    return GameObjectType.NUM;
                 }
             }
         }

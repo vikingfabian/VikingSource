@@ -64,7 +64,7 @@ namespace VikingEngine.DSSWars.GameObject
         //public bool nobelHouse = false;
 
         public BuildingStructure buildingStructure = new BuildingStructure();
-        
+        public TerrainStructure terrainStructure = new TerrainStructure();
 
         string name = null;
 
@@ -1685,6 +1685,7 @@ namespace VikingEngine.DSSWars.GameObject
                     content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.Hud_Immigrants, immigrants.Int()));
                 }
 
+                terrainStructure.miningOverviewHud(content, player);
                 new XP.TechnologyHud().technologyOverviewHud(content, player, this, faction);
                 //technologyOverviewHud(content, player);
 #if DEBUG

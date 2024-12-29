@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
@@ -1201,6 +1202,71 @@ namespace VikingEngine.DSSWars.GameObject
                 content.Add(icon);
             }
             
+        }
+
+        public void toMenu(RichBoxContent content, ItemResourceType item, bool safeGuard, ref bool reachedBuffer, LocalPlayer player, City city, ResourcesSubTab stockpileLink)
+        {
+            content.newLine();
+
+            content.Add(new RichBoxImage(ResourceLib.Icon(item)));
+            content.space();
+            content.Add(new RichBoxText(LangLib.Item(item) + ": " + TextLib.LargeNumber(amount)));
+
+            if (item != ItemResourceType.Water_G &&
+                    item != ItemResourceType.Gold &&
+                    item != ItemResourceType.Men)
+            {
+                bool reached = amount >= goalBuffer;
+                reachedBuffer |= reached;
+                SpriteName stockIcon;
+                if (safeGuard)
+                {
+                    stockIcon = SpriteName.WarsStockpileAdd_Protected;
+                }
+                else if (reached)
+                {
+                    stockIcon = SpriteName.WarsStockpileStop;
+                }
+                else
+                {
+                    stockIcon = SpriteName.WarsStockpileAdd;
+                }
+                var icon = new RichBoxImage(stockIcon);
+
+                if (player == null)
+                {
+                    content.Add(icon);
+                }
+                else
+                {
+                    var infoContent = new RichBoxContent();
+
+                    infoContent.Add(icon);
+                   
+                    var infoButton = new RichboxButton(infoContent, 
+                        new RbAction(()=> 
+                        {
+                            player.resourcesSubTab = stockpileLink;  
+                        }),                        
+                        new RbAction(() =>
+                        {
+                            RichBoxContent content = new RichBoxContent();
+                            HudLib.Label(content, DssRef.lang.Resource_Tab_Stockpile);
+                            content.newLine();
+                            content.Add(new RichBoxImage(stockIcon));
+                            content.space();
+                            content.Add(new RichBoxText(city.GetGroupedResource(item).goalBuffer.ToString()));
+                        
+
+                            player.hud.tooltip.create(player, content, true);
+                        }));
+
+                    infoButton.overrideBgColor = HudLib.InfoYellow_BG;
+                    content.space();
+                    content.Add(infoButton);
+                }
+                
+            }
         }
 
         public static void BufferIconInfo(RichBoxContent content, bool safeguard)

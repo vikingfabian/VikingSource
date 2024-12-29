@@ -101,8 +101,8 @@ namespace VikingEngine.DSSWars.GameObject
         Worker,
 
         ObjectCollection,
-
-        NUM_NON,
+        NONE,
+        NUM,
     }
 }
 

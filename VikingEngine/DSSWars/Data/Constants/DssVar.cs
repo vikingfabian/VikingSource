@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars
             SoldierGroup_MoveCollisionRadius = SoldierGroup_CollisionRadius * 0.6f;
 
             SoldierGroup_GridExtraSpacing = DefaultGroupSpacing;
-            Worker_StandardBoundRadius = StandardBoundRadius * 4f;
+            Worker_StandardBoundRadius = StandardBoundRadius * 2f;
             Men_StandardWalkingSpeed_PerSec = DssConst.Men_StandardWalkingSpeed * TimeExt.SecondToMs;
             WorkerUnit_ResourcePosDiff = new Vector3(0, DssConst.Men_StandardModelScale * 1.2f, DssConst.Men_StandardModelScale * 0.25f);
 

@@ -152,6 +152,7 @@ namespace VikingEngine.DSSWars.GameObject
             init(faction);
 
             refreshPositions(true);
+            position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();
 
             readAiState(r, subVersion, pointers);
 

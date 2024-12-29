@@ -84,34 +84,52 @@ namespace VikingEngine.DSSWars.Build
 
         public void autoPlaceBuilding(City city, int count)
         {
-            IntVector2 topleft;
-            ForXYLoop subTileLoop;
+            BuildAndExpandType buildType = placeBuildingType;
 
-            for (int radius = 1; radius <= city.cityTileRadius; ++radius)
+
+
+            Task.Factory.StartNew(() =>
             {
-                int distanceValue = -radius;
-                ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+                List<IntVector2> positions = new List<IntVector2>(count);
+                CityStructure structure = new CityStructure();
+                structure.update(city, 1);
 
-                while (cirkleLoop.Next())
+                findBuildPositons_AutoBuilder(positions);
+                if (count > 0)
                 {
-                    if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
+                    findBuildPositons_Loop(positions);
+                }
+
+                foreach (IntVector2 position in positions)
+                {
+                    player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, position, placeBuildingType, false), ActionOnConflict.Cancel, false);
+                }
+
+                void findBuildPositons_AutoBuilder(List<IntVector2> result)
+                {
+                    if (city.buildingStructure.getCount(buildType) > 0)
                     {
-                        var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
-                        if (tile.CityIndex == city.parentArrayIndex && tile.IsLand())
+                        var prevPos = structure.buildingPosition.getPos(buildType);
+                        if (prevPos.X > 0)
+                        {                            
+                            findAdjacentFreeSpot(prevPos);
+                        }
+                    }
+
+                    void findAdjacentFreeSpot(IntVector2 center)
+                    {
+                        ForXYEdgeLoopRandomPicker Auto_EdgeRandomizer = new ForXYEdgeLoopRandomPicker();
+                        for (int r = 1; r <= 2; r++)
                         {
-                            topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
-                            subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
+                            Auto_EdgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(center, r));
 
-                            while (subTileLoop.Next())
+                            while (Auto_EdgeRandomizer.Next())
                             {
-                                var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
-
-
-                                if (subTile.MayBuild(placeBuildingType, out bool upgrade)
-                                    &&
-                                    !player.orders.orderConflictingSubTile(subTileLoop.Position, false))
+                                if (structure.MayAutoBuildHere(city, Auto_EdgeRandomizer.Position) &&
+                                    !player.orders.orderConflictingSubTile(Auto_EdgeRandomizer.Position, false))
                                 {
-                                    player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType, upgrade),  ActionOnConflict.Cancel);
+                                    result.Add(Auto_EdgeRandomizer.Position);
+                                    //player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType, upgrade), ActionOnConflict.Cancel);
                                     if (--count <= 0)
                                     { return; }
                                 }
@@ -119,7 +137,50 @@ namespace VikingEngine.DSSWars.Build
                         }
                     }
                 }
-            }
+
+
+                void findBuildPositons_Loop(List<IntVector2> result)
+                {
+                    IntVector2 topleft;
+                    ForXYLoop subTileLoop;
+
+                    for (int radius = 1; radius <= city.cityTileRadius; ++radius)
+                    {
+                        int distanceValue = -radius;
+                        ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+
+                        while (cirkleLoop.Next())
+                        {
+                            if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
+                            {
+                                var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
+                                if (tile.CityIndex == city.parentArrayIndex && tile.IsLand())
+                                {
+                                    topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
+                                    subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
+
+                                    while (subTileLoop.Next())
+                                    {
+                                        var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
+
+                                        if (subTile.MayBuild(placeBuildingType, out bool upgrade)
+                                            &&
+                                            !player.orders.orderConflictingSubTile(subTileLoop.Position, false))
+                                        {
+                                            result.Add(subTileLoop.Position);
+                                            //player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType, upgrade), ActionOnConflict.Cancel);
+                                            if (--count <= 0)
+                                            { return; }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            });
+           
         }
 
         public void toHud(LocalPlayer player, RichBoxContent content, City city)

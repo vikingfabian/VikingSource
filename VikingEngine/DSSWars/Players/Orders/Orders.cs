@@ -71,7 +71,7 @@ namespace VikingEngine.DSSWars.Players.Orders
             return false;
         }
 
-        public void addOrder(AbsOrder order, ActionOnConflict onConflict)
+        public void addOrder(AbsOrder order, ActionOnConflict onConflict, bool mainThread = true)
         {
             lock (orders)
             {
@@ -95,7 +95,14 @@ namespace VikingEngine.DSSWars.Players.Orders
                     }
                 }
 
-                order.onAdd();
+                if (mainThread)
+                {
+                    order.onAdd();
+                }
+                else
+                {
+                    Ref.update.AddSyncAction(new SyncAction(order.onAdd));
+                }
                 orders.Add(order);
             }
         }

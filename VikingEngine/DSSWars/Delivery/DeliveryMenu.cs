@@ -135,7 +135,7 @@ namespace VikingEngine.DSSWars.Delivery
                         content.space();
                     }
 
-                    if (currentStatus.profile.type != ItemResourceType.AutomatedItem)
+                    if (player.resourcesSubTab != ResourcesSubTab.Auto)
                     {
 
                         content.Add(new RichBoxScale(1.6f));

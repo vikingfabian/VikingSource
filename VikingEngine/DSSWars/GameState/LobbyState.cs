@@ -111,19 +111,19 @@ namespace VikingEngine.DSSWars
             bgImage.SetFullTextureSource();
             bgImage.Opacity = 0.5f;
 
-            Vector2 promoworkerSz = new Vector2(h * 0.05f);
+            Vector2 promoworkerSz = new Vector2(9, 6) * new Vector2(h * 0.02f);
 
-            var worker1 = new Graphics.Image(SpriteName.warsWorkerPromoHammer, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.84f, 1f), -promoworkerSz.Y * 0.9f), promoworkerSz, ImageLayers.Background5);
+            var worker1 = new Graphics.Image(SpriteName.warsWorkerPromoCannon, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.7f, 1f), -promoworkerSz.Y * 0.9f), promoworkerSz, ImageLayers.Background5);
             worker1.LayerAbove(bgImage);
 
-            var worker2 = new Graphics.Image(SpriteName.warsWorkerPromoBox, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.6f, 1f), -promoworkerSz.Y * 0.9f), promoworkerSz, ImageLayers.Background5);
-            worker2.LayerAbove(bgImage);
+            //var worker2 = new Graphics.Image(SpriteName.warsWorkerPromoBox, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.6f, 1f), -promoworkerSz.Y * 0.9f), promoworkerSz, ImageLayers.Background5);
+            //worker2.LayerAbove(bgImage);
 
-            var worker3 = new Graphics.Image(SpriteName.warsWorkerPromoBox, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.5f, 1f), -promoworkerSz.Y * 0.8f), promoworkerSz, ImageLayers.Background5);
-            worker3.LayerAbove(bgImage);
+            //var worker3 = new Graphics.Image(SpriteName.warsWorkerPromoBox, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.5f, 1f), -promoworkerSz.Y * 0.8f), promoworkerSz, ImageLayers.Background5);
+            //worker3.LayerAbove(bgImage);
 
-            var worker4 = new Graphics.Image(SpriteName.warsWorkerPromoBox, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.2f, 1f), -promoworkerSz.Y * 0.9f), promoworkerSz, ImageLayers.Background5);
-            worker4.LayerAbove(bgImage);
+            //var worker4 = new Graphics.Image(SpriteName.warsWorkerPromoBox, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.2f, 1f), -promoworkerSz.Y * 0.9f), promoworkerSz, ImageLayers.Background5);
+            //worker4.LayerAbove(bgImage);
 
         }
 

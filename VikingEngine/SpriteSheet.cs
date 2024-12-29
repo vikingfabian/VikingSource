@@ -2690,7 +2690,7 @@ namespace VikingEngine
                 add(SpriteName.warsWorkerPromoHammer, 6, 6);
                 add(SpriteName.warsWorkerPromoBox, 6, 6);
 
-
+                add(SpriteName.warsWorkerPromoCannon, 9, 6);
             }
 
             currentIndex = numTilesWidth * 118;

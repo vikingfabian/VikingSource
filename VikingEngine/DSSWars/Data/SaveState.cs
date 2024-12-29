@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars.Data
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
         public const int Version = 11;
-        public const int SubVersion = 46; 
+        public const int SubVersion = 47; 
         //public const int MergeVersion = 26;
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
@@ -157,17 +157,24 @@ namespace VikingEngine.DSSWars.Data
 
         public void WriteObjectPointer(System.IO.BinaryWriter w, AbsGameObject gameObject)
         {
-            var type = gameObject.gameobjectType();
-            w.Write((byte)type);
-            switch (type)
+            if (gameObject == null)
             {
-                case GameObjectType.Army:
-                    writeFaction(w, gameObject.GetFaction());
-                    w.Write((ushort)gameObject.GetArmy().id);
-                    break;
-                case GameObjectType.City:
-                    w.Write((ushort)gameObject.GetCity().parentArrayIndex);
-                    break;
+                w.Write((byte)GameObjectType.NONE);
+            }
+            else
+            {
+                var type = gameObject.gameobjectType();
+                w.Write((byte)type);
+                switch (type)
+                {
+                    case GameObjectType.Army:
+                        writeFaction(w, gameObject.GetFaction());
+                        w.Write((ushort)gameObject.GetArmy().id);
+                        break;
+                    case GameObjectType.City:
+                        w.Write((ushort)gameObject.GetCity().parentArrayIndex);
+                        break;
+                }
             }
         }
 
@@ -176,6 +183,9 @@ namespace VikingEngine.DSSWars.Data
             gameObjectType = (GameObjectType)r.ReadByte();
             switch (gameObjectType)
             {
+                case GameObjectType.NONE:
+                    pointer = null;
+                    return;
                 case GameObjectType.Army:
                     factionIndex = readFaction(r);
                     id = r.ReadUInt16();
@@ -196,12 +206,16 @@ namespace VikingEngine.DSSWars.Data
             switch (gameObjectType)
             {
                 case GameObjectType.Army:
-                    var armiesC = GetFaction().armies.counter();
-                    while (armiesC.Next())
+                    var faction = GetFaction();
+                    if (faction != null)
                     {
-                        if (armiesC.sel.id == id)
+                        var armiesC = faction.armies.counter();
+                        while (armiesC.Next())
                         {
-                            return armiesC.sel;
+                            if (armiesC.sel.id == id)
+                            {
+                                return armiesC.sel;
+                            }
                         }
                     }
                     break;
@@ -233,7 +247,10 @@ namespace VikingEngine.DSSWars.Data
 
         public ArmyAttackObjectPointer(System.IO.BinaryWriter w, AbsGameObject target)
         {
-            WriteObjectPointer(w, target);        
+            //if (target != null)
+            //{
+                WriteObjectPointer(w, target);
+            //}
         }
 
         public ArmyAttackObjectPointer(BinaryReader r, Army army, bool teleport)
@@ -258,7 +275,6 @@ namespace VikingEngine.DSSWars.Data
                     army.Order_Attack(target);
                 }
             }
-            //army.attackTargetFaction = army.attackTarget.faction.parentArrayIndex;
         }
     }
 

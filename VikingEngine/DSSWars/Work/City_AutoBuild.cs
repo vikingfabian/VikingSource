@@ -122,8 +122,7 @@ namespace VikingEngine.DSSWars.GameObject
                 for (int r = 1; r <= 2; r++)
                 {
                     Auto_EdgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(center, r));
-                    //ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(center, r));
-                    //loop.RandomPosition
+
                     while (Auto_EdgeRandomizer.Next())
                     {
                         if (CityStructure.WorkInstance.MayAutoBuildHere(this, Auto_EdgeRandomizer.Position))

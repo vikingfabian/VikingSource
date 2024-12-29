@@ -187,6 +187,7 @@ namespace VikingEngine.DSSWars
                     res_GunPowder.toMenu(content, ItemResourceType.GunPowder);
                     res_LedBullet.toMenu(content, ItemResourceType.LedBullet);
                     break;
+
                 case ResourcesSubTab.Overview_Metals:
                     content.Add(new RichBoxSeperationLine());
                     res_ironore.toMenu(content, ItemResourceType.IronOre_G);
@@ -217,6 +218,7 @@ namespace VikingEngine.DSSWars
                     content.Add(new RichBoxSeperationLine());
                     res_Mithril.toMenu(content, ItemResourceType.Mithril);
                     break;
+
                 case ResourcesSubTab.Overview_Weapons:
                     content.Add(new RichBoxSeperationLine());
                     res_sharpstick.toMenu(content, ItemResourceType.SharpStick);
@@ -235,6 +237,7 @@ namespace VikingEngine.DSSWars
                     res_twohandsword.toMenu(content, ItemResourceType.TwoHandSword);
                     res_knightslance.toMenu(content, ItemResourceType.KnightsLance);
                     break;
+
                 case ResourcesSubTab.Overview_Projectile:
                     content.Add(new RichBoxSeperationLine());
                     res_SlingShot.toMenu(content, ItemResourceType.SlingShot);
@@ -266,6 +269,7 @@ namespace VikingEngine.DSSWars
                     content.Add(new RichBoxSeperationLine());
                     res_ManCannonIron.toMenu(content, ItemResourceType.ManCannonIron);
                     break;
+
                 case ResourcesSubTab.Overview_Armor:
                     content.Add(new RichBoxSeperationLine());
                     res_paddedArmor.toMenu(content, ItemResourceType.PaddedArmor);
@@ -289,43 +293,42 @@ namespace VikingEngine.DSSWars
             var p = player.GetLocalPlayer();
 
             content.newLine();
-            for (WorkSubTab workSubTab = 0; workSubTab < WorkSubTab.NUM; ++workSubTab)
+            for (ResourcesSubTab resourcesSubTab = ResourcesSubTab.Work_Resources; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
             {
                 var tabContent = new RichBoxContent();
                 //string text = null;
-                switch (workSubTab)
+                switch (resourcesSubTab)
                 {
-                    case WorkSubTab.Priority_Resources:
+                    case ResourcesSubTab.Work_Resources:
                         tabContent.Add(new RichBoxText(DssRef.lang.Work_OrderPrioTitle));
                         tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Wood));
                         break;
 
-                    case WorkSubTab.Priority_Metals:
+                    case ResourcesSubTab.Work_Metals:
                         tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Iron));
                         break;
-                    case WorkSubTab.Priority_Weapons:
+                    case ResourcesSubTab.Work_Weapons:
                         tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Sword));
                         break;
-                    case WorkSubTab.Priority_Armor:
+                    case ResourcesSubTab.Work_Projectile:
+                        tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Bow));
+                        break;
+                    case ResourcesSubTab.Work_Armor:
                         tabContent.Add(new RichBoxImage(SpriteName.WarsResource_IronArmor));
                         break;
-
-                        //case WorkSubTab.Experience:
-                        //    tabContent.Add(new RichBoxText(DssRef.todoLang.Experience_Title));
-                        //    break;
                 }
                 var subTab = new RichboxButton(tabContent,
-                    new RbAction1Arg<WorkSubTab>((WorkSubTab resourcesSubTab) =>
-                    {
-                        p.workSubTab = resourcesSubTab;
-                    }, workSubTab, SoundLib.menutab));
-                subTab.setGroupSelectionColor(HudLib.RbSettings, p.workSubTab == workSubTab);
+                        new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
+                        {
+                            p.resourcesSubTab = resourcesSubTab;
+                        }, resourcesSubTab, SoundLib.menutab));
+                subTab.setGroupSelectionColor(HudLib.RbSettings, p.resourcesSubTab == resourcesSubTab);
                 content.Add(subTab);
-                content.space(workSubTab == WorkSubTab.Priority_Armor ? 2 : 1);
+                content.space(resourcesSubTab == ResourcesSubTab.Work_Armor ? 2 : 1);
             }
             content.newParagraph();
            
-            workTemplate.toHud(p, content, p.workSubTab, this, null);
+            workTemplate.toHud(p, content, p.resourcesSubTab, this, null);
         }
 
         public void tradeTab(RichBoxContent content)
@@ -361,19 +364,6 @@ namespace VikingEngine.DSSWars
                 refreshCityWork();
             }
         }
-
-        //public void setWorkPrioSafeGuard(bool set, WorkPriorityType priorityType, City city)
-        //{
-        //    if (city != null)
-        //    {
-        //        city.workTemplate.setWorkPrioSafeGuard(set, priorityType);
-        //    }
-        //    else
-        //    {
-        //        workTemplate.setWorkPrioSafeGuard(set, priorityType);
-        //        refreshCityWork();
-        //    }
-        //}
 
         public void refreshCityWork()
         { 

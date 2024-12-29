@@ -302,10 +302,10 @@ namespace VikingEngine.DSSWars
                     factions.Array[i].readGameState(r, subversion, pointers);
                     Debug.ReadCheck(r);
                 }
-                else
-                {
-                    factions.Array[i] = null;
-                }
+                //else
+                //{
+                //    factions.Array[i] = null;
+                //}
             }
 
             Debug.ReadCheck(r);

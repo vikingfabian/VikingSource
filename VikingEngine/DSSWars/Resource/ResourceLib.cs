@@ -320,6 +320,8 @@ namespace VikingEngine.DSSWars.Resource
                     return SpriteName.WarsResource_HeavyIronArmor;
                 case ItemResourceType.Iron_G:
                     return SpriteName.WarsResource_Iron;
+                case ItemResourceType.BogIron:
+                    return SpriteName.WarsBogIron;
                 case ItemResourceType.IronOre_G:
                     return SpriteName.WarsResource_IronOre;
                 case ItemResourceType.IronArmor:

@@ -1,13 +1,8 @@
 ﻿-Change Log-
-Fixed south ship event crash
-Fixed loading crashes
-The autobuilder groups the buildings
-Cities can be set on full automation (however, this will override any settings you had on the city)
-Improved the auto delivery
-Reduced city water add speed by 40%
-Overview of faction resources
-
-! The performance can be bad after a few hours of playing, restarting helps.
+More loading crash-fixes
+Auto placing buildings will use the auto build intelligence
+Overview of available mines
+Improved city HUD
 
 # WORKER PATH #
 Ha en loop som går igenom tiles, om det finns 1+ byggnader, räkna tid från hall till slumpad byggnad, tid till närmast mat och avlämning
@@ -105,7 +100,8 @@ English, Simplified Chinese, Japanese, Russian, Spanish
 -Dynamic shadows shader
 -New end boss
 -Lots of named factions
--Are you strongly opposed to showing building counts per town or production outputs
+
+-Min 5K wishlists
 
 
 

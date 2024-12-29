@@ -1538,8 +1538,6 @@ namespace VikingEngine
         cgCrosshairIcon,
         cgManaGlow,
         
-        
-
         #region FailingBird
 
         birdGroundTex,
@@ -2428,6 +2426,8 @@ namespace VikingEngine
         warsFoliageDirtRoad,
         warsWorkerPromoHammer,
         warsWorkerPromoBox,
+        warsWorkerPromoCannon,
+
         warsCheckYes,
         warsCheckNo,
         warsBulletPoint,

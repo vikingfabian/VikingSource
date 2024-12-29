@@ -481,7 +481,7 @@ namespace VikingEngine.DSSWars
             if (armies.Count == 0 && cities.Count == 0)
             {
                 bool protectedFaction = factiontype == FactionType.DarkLord ||
-                    (factiontype == FactionType.SouthHara && DssRef.state.events.nextEvent <= EventType.SouthShips);
+                    (factiontype == FactionType.SouthHara && DssRef.state.events.nextEvent < EventType.SouthShips);
                                     
                 if (!protectedFaction)
                 {
@@ -566,7 +566,7 @@ namespace VikingEngine.DSSWars
                 refreshMainCity();                     
             }
 
-            player.orders?.refreshAvailable(this);
+            player?.orders?.refreshAvailable(this);
         }
 
         public void refreshMainCity()

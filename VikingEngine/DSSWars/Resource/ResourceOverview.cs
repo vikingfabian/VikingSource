@@ -52,13 +52,13 @@ namespace VikingEngine.DSSWars.Resource
 
             content.Add(new RichBoxTab(0.5f));
             content.Add(new RichBoxImage(SpriteName.WarsDecreaseArrowDown));
-            var downText = new RichBoxText("-" + TextLib.LargeNumber(prevConsumed));
+            var downText = new RichBoxText(TextLib.LargeNumber(prevConsumed));
             downText.overrideColor = HudLib.NotAvailableColor;
             content.Add(downText);
 
             content.Add(new RichBoxTab(0.6f));
             content.Add(new RichBoxImage(SpriteName.WarsIncreaseArrowUp));
-            var upText = new RichBoxText("+" + TextLib.LargeNumber(prevProduced));
+            var upText = new RichBoxText(TextLib.LargeNumber(prevProduced));
             upText.overrideColor = HudLib.AvailableColor;
             content.Add(upText);
 

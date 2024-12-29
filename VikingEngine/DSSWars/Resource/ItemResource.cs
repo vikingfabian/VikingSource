@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars.Resource
         Wagon2Wheel,
         Wagon4Wheel,
         Coal,
-        UN_Tar,
+        BogIron,
 
         Linen,
         UN_Wool,

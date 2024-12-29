@@ -248,6 +248,8 @@ namespace VikingEngine.DSSWars.Delivery
             profile.toCity = -1;
             profile.type = deliveryType;// ? ItemResourceType.Men : ItemResourceType.Food_G;
 
+            useRecieverMax = true;
+
             if (deliveryType == DeliveryType_Gold)
             {
                 senderMin = 1000;

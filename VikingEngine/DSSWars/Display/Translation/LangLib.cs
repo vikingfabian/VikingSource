@@ -1040,6 +1040,7 @@ namespace VikingEngine.DSSWars.Display.Translation
                 case ItemResourceType.CoolingFluid: return DssRef.todoLang.Resource_TypeName_CoolingFluid;
                 case ItemResourceType.IronOre_G: return DssRef.lang.Resource_TypeName_IronOre;
                 case ItemResourceType.Iron_G: return DssRef.lang.Resource_TypeName_Iron;
+                case ItemResourceType.BogIron: return DssRef.lang.Resource_TypeName_BogIron;
                 case ItemResourceType.Food_G: return DssRef.lang.Resource_TypeName_Food;
                 case ItemResourceType.Stone_G: return DssRef.lang.Resource_TypeName_Stone;
 

@@ -186,6 +186,8 @@ namespace VikingEngine.DSSWars
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
+            w.Write(Ref.TotalGameTimeSec);
+
             w.Write((int)nextEvent);
             w.Write((int)eventState);
             //w.Write(eventPrepareTimeSec);
@@ -204,13 +206,18 @@ namespace VikingEngine.DSSWars
             IOLib.WriteObjectList(w, darkLordAllies);
 
             dyingFactionsTimer.write(w);
-            w.Write(Ref.TotalGameTimeSec);
+            
         }
         public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
             //float eventPrepareTimeSec;
             //float eventCheckGameTimeSec;
             //float eventTriggerGameTimeSec;
+
+            if (subVersion >= 47)
+            {
+                Ref.TotalGameTimeSec = r.ReadSingle();
+            }
 
             nextEvent = (EventType)r.ReadInt32();
             eventState = (EventState)r.ReadInt32();
@@ -231,8 +238,10 @@ namespace VikingEngine.DSSWars
             dyingFactionsTimer.read(r);
             dyingFactionsTimer.MilliSeconds = Bound.Min(dyingFactionsTimer.MilliSeconds, 1);
 
-            Ref.TotalGameTimeSec = r.ReadSingle();
-            
+            if (subVersion < 47)
+            {
+                Ref.TotalGameTimeSec = r.ReadSingle();
+            }
         }
 
         void prepareNext()
@@ -459,10 +468,6 @@ namespace VikingEngine.DSSWars
 
                         if (DssRef.diplomacy.NegativeRelationWithPlayer(factionC.sel) ||
                             factionC.sel.diplomaticSide == DiplomaticSide.Dark)
-                            //factionC.sel.factiontype == FactionType.DarkLord ||
-                            //factionC.sel.factiontype == FactionType.DarkFollower ||
-                            //factionC.sel.factiontype == FactionType.SouthHara ||
-                            //factionC.sel.factiontype == FactionType.UnitedKingdom)
                         {
                             darkLordAllies.Add(factionC.sel);
                         }
