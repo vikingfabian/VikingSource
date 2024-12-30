@@ -235,8 +235,10 @@ namespace VikingEngine.Network
         {
 #if PCGAME
             return Ref.steam.P2PManager.GetPeer(fullId);
-#endif
+#else
             return null;
+#endif
+            
 
         }
 

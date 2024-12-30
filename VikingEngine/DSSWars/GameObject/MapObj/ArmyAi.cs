@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.GameObject
         public AbsMapObject attackTarget = null;
         public int attackTargetFaction;
         public int goalId = 0;
-        bool nextPathNode = false;
+        //bool nextPathNode = false;
             
         //public ArmyAi(Army army)
         //{

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using Microsoft.Xna.Framework.Input;
 using VikingEngine.HUD;
 using Valve.Steamworks;
+using Microsoft.Xna.Framework;
 
 #if PCGAME
 //using System.Windows.Forms;

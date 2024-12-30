@@ -100,7 +100,7 @@ namespace VikingEngine
         {
             //if (PlatformSettings.RunProgram == StartProgram.LootFest3 && Input.Keyboard.KeyDownEvent(Keys.D5))
             //{ PlatformSettings.DebugWindow = !PlatformSettings.DebugWindow; }
-
+            
             if (PlatformSettings.DebugPerformanceText) start = DateTime.Now;
 
             this.gameTime = gameTime;

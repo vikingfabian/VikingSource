@@ -1,8 +1,18 @@
 ﻿-Change Log-
-More loading crash-fixes
-Auto placing buildings will use the auto build intelligence
-Overview of available mines
-Improved city HUD
+
+#OPT#
+AbsDetailUnit > public Physics.AbsBound2D bound;
+class UnitCollArea > använd pekare
+Separera main/detail path threads
+
+kan stackalloc användas till listor som skapar modeller?
+
+stanna musik spelaren
+
+monogame fork?
+
+hitta depricated
+
 
 # WORKER PATH #
 Ha en loop som går igenom tiles, om det finns 1+ byggnader, räkna tid från hall till slumpad byggnad, tid till närmast mat och avlämning
