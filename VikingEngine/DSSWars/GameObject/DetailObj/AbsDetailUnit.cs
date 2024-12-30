@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars.GameObject
         //protected SafeCollectAsynchStaticList<AbsDetailUnit> collisionGroup = new SafeCollectAsynchStaticList<AbsDetailUnit>(CollGroupSize);
         //protected int collisionFrames = 0;
         public DetailUnitModel model;
-        public Physics.AbsBound2D bound;
+        //public Physics.AbsBound2D bound;
 
         //bool isDeleted = false;
 

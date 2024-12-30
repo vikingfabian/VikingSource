@@ -14,6 +14,7 @@ namespace VikingEngine.DSSWars.Battle
 {
     class SoldierBattleData
     {
+        static Physics.CircleBound ParentBound = new CircleBound(), OtherBound = new CircleBound();
         static List<AbsSoldierUnit> SoldierBuffer = new List<AbsSoldierUnit>(16);
         static List<AbsGroup> GroupBuffer = new List<AbsGroup>(16);
                 
@@ -30,7 +31,7 @@ namespace VikingEngine.DSSWars.Battle
             {
                 foreach (var unit in nearBodyCollisionUnits)
                 {
-                    Physics.Collision2D intersection = parent.bound.Intersect2(unit.bound);
+                    Physics.Collision2D intersection = parent.Bound2D(ParentBound).Intersect2(unit.Bound2D(OtherBound));
                     //Make sure friendly units dont push eachother forward
                     if (intersection.IsCollision)
                     {
@@ -149,8 +150,8 @@ namespace VikingEngine.DSSWars.Battle
 
             bool collision(Rotation1D searchDir, float qTime)
             {
-                QueBound.radius = parent.bound.ExtremeRadius;
-                QueBound.center = parent.bound.Center + searchDir.Direction(QueBound.radius * 0.25f);
+                QueBound.radius = parent.boundRadius;
+                QueBound.center = parent.posXZ() + searchDir.Direction(QueBound.radius * 0.25f);
 
                 lock (nearBodyCollisionUnits)
                 {
@@ -158,7 +159,7 @@ namespace VikingEngine.DSSWars.Battle
                     {
                         if (parent.GetFaction() == unit.GetFaction())
                         {
-                            Physics.Collision2D intersection = QueBound.Intersect2(unit.bound);
+                            Physics.Collision2D intersection = QueBound.Intersect2(unit.Bound2D(OtherBound));
                             if (intersection.IsCollision)
                             {
                                 queueTime = qTime;
@@ -203,7 +204,7 @@ namespace VikingEngine.DSSWars.Battle
                                 {
                                     if (soldiersC.sel.Alive_IncomingDamageIncluded())
                                     {
-                                        if (parent.bound.AsynchCollect(soldiersC.sel.bound) &&
+                                        if (parent.Bound2D(ParentBound).AsynchCollect(soldiersC.sel.Bound2D(OtherBound)) &&
                                             soldiersC.sel != parent)
                                         {
                                             SoldierBuffer.Add(soldiersC.sel);

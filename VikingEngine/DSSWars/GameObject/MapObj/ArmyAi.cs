@@ -700,16 +700,16 @@ namespace VikingEngine.DSSWars.GameObject
             return objective == ArmyObjective.None || objective == ArmyObjective.Halt;
         }
 
-        public void Ai_EnterPeaceEvent()
-        {
-            waitForRegroup = true;
-            stateTime = 0;
+        //public void Ai_EnterPeaceEvent()
+        //{
+        //    waitForRegroup = true;
+        //    stateTime = 0;
 
-            if (IdleObjetive())
-            {
-                Order_MoveTo(positionBeforeBattle);
-            }
-        }
+        //    if (IdleObjetive())
+        //    {
+        //        Order_MoveTo(positionBeforeBattle);
+        //    }
+        //}
     }
 
     enum ArmyObjective

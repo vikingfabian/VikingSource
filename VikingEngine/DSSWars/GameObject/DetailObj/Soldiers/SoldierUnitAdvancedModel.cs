@@ -53,8 +53,8 @@ namespace VikingEngine.DSSWars.GameObject
             shadowPlane.Position = model.position + shadowOffset;
             shadowPlane.Rotation = model.Rotation;
 
-            
-            selectionArea.Center = soldier.bound.Center;
+
+            selectionArea.Center = soldier.posXZ();//bound.Center;
             selectionArea.Center.Y -= 0.5f;
         }
 

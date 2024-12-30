@@ -77,6 +77,9 @@ namespace VikingEngine.DSSWars.GameObject
             lib.Invert(ref debugTagged);
             Debug.Log((debugTagged ? "Tagged: " : "Remove tag: ") + this.ToString());
         }
+
+        public Vector2 posXZ()
+        { return new Vector2(position.X, position.Z); }
     }
 
 

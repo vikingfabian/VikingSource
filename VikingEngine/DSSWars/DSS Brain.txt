@@ -1,15 +1,17 @@
 ﻿-Change Log-
+Big performance update
+Upgraded to .net8
 
 #OPT#
-AbsDetailUnit > public Physics.AbsBound2D bound;
-class UnitCollArea > använd pekare
+//AbsDetailUnit > public Physics.AbsBound2D bound;
+//class UnitCollArea > använd pekare
 Separera main/detail path threads
 
 kan stackalloc användas till listor som skapar modeller?
 
 stanna musik spelaren
 
-hitta depricated
+//hitta depricated
 
 monogame fork? DrawUserPrimitives opt, titta på OGG filer
 
@@ -113,7 +115,8 @@ English, Simplified Chinese, Japanese, Russian, Spanish
 
 -Min 5K wishlists
 
-
+VertexPositionColorNormal
+VerticeDataColorTexture verticeData = new VerticeDataColorTexture(vertices, indexDrawOrder);
 
 
 

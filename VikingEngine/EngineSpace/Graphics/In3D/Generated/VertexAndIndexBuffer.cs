@@ -106,14 +106,14 @@ namespace VikingEngine.Graphics
         /* Fields */
         public Vector3 Position;
         public BoundingSphere CullingBound;
-        int numVertices;
+        //int numVertices;
         int numTriangles;
 
         /* Constructors */
         public VertexAndIndexBuffer(IVerticeData verticeData)
             : base(verticeData)
         {
-            numVertices = verticeData.DrawData.numVertices;
+            //numVertices = verticeData.DrawData.numVertices;
             numTriangles = verticeData.DrawData.numTriangles;
         }
 

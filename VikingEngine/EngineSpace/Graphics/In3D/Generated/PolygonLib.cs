@@ -172,6 +172,7 @@ namespace VikingEngine.Graphics
         }
         public void SetVertice(int index, object vertice)
         {
+            //VertexPositionColorNormal
             Vertices[index] = (VertexPositionNormalTexture)vertice;
         }
         public PolygonType Type { get { return PolygonType.Normal; } }

@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.GameObject
             position = city.position;
             
             tilePos = city.tilePos;
-            this.bound = new Physics.RectangleBound(city.WorldPositionXZ(), new Vector2(0.5f));
+            //this.bound = new Physics.RectangleBound(city.WorldPositionXZ(), new Vector2(0.5f));
 
             health = 10000;
             radius = 0.7f;

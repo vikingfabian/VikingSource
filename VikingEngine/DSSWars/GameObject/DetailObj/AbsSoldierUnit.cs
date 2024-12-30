@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject
         public UnitType UnitType;
         float reactionTime;        
         SoldierBattleData battleData = null;
-
+        public float boundRadius;
         public override AbsDetailUnitProfile Profile()
         {
             return DssRef.profile.Get(UnitType);
@@ -121,7 +121,8 @@ namespace VikingEngine.DSSWars.GameObject
             this.group = group;
             this.gridPlacement = gridPlacement;
             parentArrayIndex = group.army.faction.pickNextUnitId();
-            bound = new Physics.CircleBound(Vector2.Zero, SoldierProfile().boundRadius);
+            //bound = new Physics.CircleBound(Vector2.Zero, SoldierProfile().boundRadius);
+            boundRadius = SoldierProfile().boundRadius;
 
             init(false);
             tilePos = tile;
@@ -145,6 +146,14 @@ namespace VikingEngine.DSSWars.GameObject
                     reactionTime = 50 + Ref.rnd.Float(50);
                     break;
             }
+        }
+
+        public Physics.CircleBound Bound2D(Physics.CircleBound bound)
+        {
+            bound.center.X = position.X;
+            bound.center.Y = position.Z;
+            bound.radius = boundRadius;
+            return bound;
         }
 
         public void initUpgrade(SoldierGroup group)
@@ -367,7 +376,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 updateGroudY(false);
-                bound.Center = VectorExt.V3XZtoV2(position);
+                //bound.Center = VectorExt.V3XZtoV2(position);
                 model?.update(this);
             }
         }
@@ -408,7 +417,7 @@ namespace VikingEngine.DSSWars.GameObject
             battleData?.update(this);
 
             updateGroudY(false);
-            bound.Center = VectorExt.V3XZtoV2(position);
+            //bound.Center = VectorExt.V3XZtoV2(position);
             model?.update(this);
         }
         public void update2_battle_attack(float time, bool fullUpate)
@@ -431,7 +440,7 @@ namespace VikingEngine.DSSWars.GameObject
             battleData?.update(this);
 
             updateGroudY(false);
-            bound.Center = VectorExt.V3XZtoV2(position);
+            //bound.Center = VectorExt.V3XZtoV2(position);
             model?.update(this);
 
         }
@@ -708,19 +717,22 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (attack_sp.gameobjectType() == GameObjectType.SoldierGroup)
                 {
-                    var soldiersC = attack_sp.GetGroup().soldiers.counter();
-                    while (soldiersC.Next())
+                    var soldiers_sp = attack_sp.GetGroup().soldiers;
+                    if (soldiers_sp != null)
                     {
-                        AbsDetailUnit s = soldiersC.sel;
-                        if (s.Alive_IncomingDamageIncluded() && canTargetUnit(s))
+                        var soldiersC = soldiers_sp.counter();
+                        while (soldiersC.Next())
                         {
-                            if (!restrictAngle || Math.Abs(angleDiff(s)) <= angle)
+                            AbsDetailUnit s = soldiersC.sel;
+                            if (s.Alive_IncomingDamageIncluded() && canTargetUnit(s))
                             {
-                                closest.Next(distanceToUnit(s), s);
+                                if (!restrictAngle || Math.Abs(angleDiff(s)) <= angle)
+                                {
+                                    closest.Next(distanceToUnit(s), s);
+                                }
                             }
                         }
                     }
-
                 }
                 else if (attack_sp.gameobjectType() == GameObjectType.City)
                 {
