@@ -8,7 +8,7 @@ namespace VikingEngine.DSSWars.GameObject
     abstract class AbsGroup : AbsWorldObject
     {           
         public float groupRadius, attackRadius;
-        public IntVector2 battleGridPos, prevBattleGridPos;
+        //public IntVector2 battleGridPos, prevBattleGridPos;
 
         virtual public Vector2 WorldPositionXZ()
         {

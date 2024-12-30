@@ -11,7 +11,9 @@ namespace VikingEngine
 
         public AbsVikingException(string message, int MessageValue)
             :base(message)
-        { }
+        { 
+            this.MessageValue = MessageValue;
+        }
 
         abstract public ExceptionType Type { get; }
     }

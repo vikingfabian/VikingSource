@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.GameObject
         public Vector3 walkingGoal;
         Vector2 groupOffset;
         //float goalDistans = 0;
-        public WalkingPathInstance walkPath;
+        //public WalkingPathInstance walkPath;
         public bool lockMovement = true;
 
         int walkStraightUpdates = 0;
@@ -609,7 +609,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 var inReach = checkTargetInReach();
 
-                if (inReach != HasTargetInReach.InReach && mustCompleteAttackSet())
+                if (inReach != HasTargetInReach.InReach)
                 { //Try to find a nearby target
                     attackTarget = closestTarget(true, SoldierProfile().maxAttackAngle * 4f);
                     inReach = checkTargetInReach();

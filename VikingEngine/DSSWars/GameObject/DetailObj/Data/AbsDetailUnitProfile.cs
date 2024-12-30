@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.GameObject
        
         //public int attackSetCount = 0;
 
-        public float attackSetCoolDown;
+        //public float attackSetCoolDown;
         //public int splashDamage = 0;
         //public float splashRadius;
 

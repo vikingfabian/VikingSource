@@ -477,8 +477,7 @@ namespace VikingEngine.EngineSpace.Graphics.DeferredRendering
 
                 spotLightFx.CurrentTechnique.Passes[0].Apply();
 
-                device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0,
-                    spotMeshPart.NumVertices,
+                device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 
                     spotMeshPart.StartIndex,
                     spotMeshPart.PrimitiveCount);
             }

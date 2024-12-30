@@ -47,13 +47,13 @@ namespace VikingEngine.DSSWars.GameObject
         public int id;
        
         public int soldiersCount = 0;
-        public int upkeep;
+        //public int upkeep;
         public float transportSpeedLand = DssConst.Men_StandardWalkingSpeed;
         public float transportSpeedSea = DssConst.Men_StandardShipSpeed;
         public bool isShip = false;
 
         public float terrainSpeedMultiplier = 1.0f;
-        public IntVector2 positionBeforeBattle;
+        //public IntVector2 positionBeforeBattle;
         string name;
 
         static readonly Vector2 CamCullingRadius = new Vector2(DssVar.SoldierGroup_Spacing * 1.4f);

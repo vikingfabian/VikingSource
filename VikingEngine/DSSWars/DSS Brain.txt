@@ -9,9 +9,9 @@ kan stackalloc användas till listor som skapar modeller?
 
 stanna musik spelaren
 
-monogame fork?
-
 hitta depricated
+
+monogame fork? DrawUserPrimitives opt, titta på OGG filer
 
 
 # WORKER PATH #
@@ -40,7 +40,7 @@ Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 ti
  farm - apple tree
 * refugee tent, samlar på invandrare (60) half food cost, auto build homes?
 * vetskap kan sparas i pergament och sparas, kopieras, trade, sprida med messenger > papyrus/läder pergament
-
+-kanske en som delar sin progress med alla kopplade
 * faction resources per second current/produced/consumed 
 
 #Todo (xmas patch)#

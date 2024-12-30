@@ -9,13 +9,13 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
 {
     class BaseWarship : AbsSoldierUnit
     {
-        int storedAttacks = 0;
+        //int storedAttacks = 0;
         int soldierCount;
         int multiAttackCount;
         float multiAttackTimeCooldown;
 
-        float maxHealth;
-        public UnitType carryUnitType;
+        //float maxHealth;
+        //public UnitType carryUnitType;
 
         public BaseWarship()
             : base()

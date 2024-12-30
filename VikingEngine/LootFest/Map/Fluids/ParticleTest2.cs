@@ -469,7 +469,7 @@ namespace HardwareInstancing
                 device.BlendState = BlendState.Additive;
                 //device.BlendState = BlendState.Opaque;
                 device.SetVertexBuffers(bindings);
-                device.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0, 24, 0, 12, particlesToDraw);
+                device.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0, 12, particlesToDraw);
                 device.SetVertexBuffers(null);
                 particlesToDraw = 0;
             }

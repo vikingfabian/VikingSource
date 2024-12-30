@@ -140,7 +140,7 @@ namespace VikingEngine.Graphics
                         shader.CurrentTechnique.Passes[0].Apply();
 
                         // Draw mesh
-                        device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, part.NumVertices, part.StartIndex, part.PrimitiveCount);
+                        device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, part.StartIndex, part.PrimitiveCount);
                     }
                 }
             }
@@ -177,7 +177,7 @@ namespace VikingEngine.Graphics
                         shader.CurrentTechnique.Passes[0].Apply();
 
                         // Draw mesh
-                        Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, part.NumVertices, part.StartIndex, part.PrimitiveCount);
+                        Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, part.StartIndex, part.PrimitiveCount);
                     }
                 }
             }

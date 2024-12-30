@@ -138,10 +138,10 @@ namespace VikingEngine.Graphics
         public override void Draw()
         {
             // Restore the vertex buffer contents if the graphics device was lost.
-            if (vertexBuffer_GPU.IsContentLost)
-            {
-                vertexBuffer_GPU.SetData(particles_CPU);
-            }
+            //if (vertexBuffer_GPU.IsContentLost)
+            //{
+            //    vertexBuffer_GPU.SetData(particles_CPU);
+            //}
             drawParticleRange(0, lightsAndShadows.Count);
         }
         protected override LoadedEffect loadedEffect

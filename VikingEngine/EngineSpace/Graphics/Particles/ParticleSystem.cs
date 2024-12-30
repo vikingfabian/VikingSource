@@ -435,10 +435,10 @@ namespace VikingEngine.Graphics
             //GraphicsDevice device = GraphicsDevice;
 
             // Restore the vertex buffer contents if the graphics device was lost.
-            if (vertexBuffer_GPU.IsContentLost)
-            {
-                vertexBuffer_GPU.SetData(particles_CPU);
-            }
+            //if (vertexBuffer_GPU.IsContentLost)
+            //{
+            //    vertexBuffer_GPU.SetData(particles_CPU);
+            //}
 
             // If there are any particles waiting in the newly added queue,
             // we'd better upload them to the GPU ready for drawing.
@@ -534,7 +534,7 @@ namespace VikingEngine.Graphics
                         // If the active particles are all in one consecutive range,
                         // we can draw them all in a single call.
                         Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
-                                                     start * 4, (end - start) * 4,
+                                                     //start * 4, (end - start) * 4,
                                                      start * 6, (end - start) * 2);
                     }
                     else
@@ -542,13 +542,13 @@ namespace VikingEngine.Graphics
                         // If the active particle range wraps past the end of the queue
                         // back to the start, we must split them over two draw calls.
                         Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
-                                                     start * 4, (settings.MaxParticles - start) * 4,
+                                                     //start * 4, (settings.MaxParticles - start) * 4,
                                                      start * 6, (settings.MaxParticles - start) * 2);
 
                         if (end > 0)
                         {
                             Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
-                                                         0, end * 4,
+                                                         //0, end * 4,
                                                          0, end * 2);
                         }
                     }

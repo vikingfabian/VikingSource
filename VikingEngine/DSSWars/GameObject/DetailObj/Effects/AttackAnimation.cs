@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.GameObject
         public float prevAttackTime;
         public Time attackCooldownTime = 0;
         Time attackFrameTime;
-        public int attackSetIndex;
+        //public int attackSetIndex;
 
         public Rotation1D attackDir;
 
@@ -132,10 +132,10 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public bool mustCompleteAttackSet()
-        {
-            return attackSetIndex > 0;
-        }
+        //public bool mustCompleteAttackSet()
+        //{
+        //    return attackSetIndex > 0;
+        //}
 
         public bool IsAttacking
         {

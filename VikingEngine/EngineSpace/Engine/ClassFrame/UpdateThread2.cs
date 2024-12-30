@@ -49,7 +49,7 @@ namespace VikingEngine
 
         public void StartThread(ThreadPriority priority)
         {
-            Thread thread = new Thread(() =>
+            thread = new Thread(() =>
             {
                 while (!End())
                 {                    
