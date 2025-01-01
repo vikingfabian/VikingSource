@@ -109,7 +109,7 @@ namespace VikingEngine.LootFest.Editor
         public static IVerticeData BuildVerticesHD(List<VoxelObjGridDataHD> grids, Vector3 posAdjust, 
             out List<Frame> framesData)
         {
-            List<VertexPositionColorTexture> vertices = new List<VertexPositionColorTexture>(MinVertexCount * grids.Count);
+            List<VertexPositionColorNormal> vertices = new List<VertexPositionColorNormal>(MinVertexCount * grids.Count);
             List<int> indexDrawOrder = new List<int>(MinDrawOrderLenght);
             framesData = new List<Frame>(grids.Count);
 
@@ -122,7 +122,7 @@ namespace VikingEngine.LootFest.Editor
             if (vertices.Count == 0)
             { return null; }
 
-            VerticeDataColorTexture verticeData = new VerticeDataColorTexture(vertices, indexDrawOrder);
+            VerticeDataColorNormal verticeData = new VerticeDataColorNormal(vertices, indexDrawOrder);
             return verticeData;
         }
 
@@ -375,6 +375,191 @@ namespace VikingEngine.LootFest.Editor
         }
 
         public static Frame VoxelGridToVerticesHD(VoxelObjGridDataHD materialGrid, Vector3 posAdjust,
+           ref List<VertexPositionColorNormal> vertices, ref List<int> indexDrawOrder)
+        {
+            ushort material;
+            IntVector3 size = materialGrid.Size;
+            IntVector3 limits = materialGrid.Limits;
+            IntVector3 gridPos = IntVector3.Zero;
+            UInt16 totalVerticeIx = 0;
+            int startVerticeIndex = vertices.Count;
+            //int tileIx;
+
+            Vector3 position = Vector3.Zero;
+
+            //Graphics.Sprite file = DataLib.SpriteCollection.Get(SpriteName.WhiteArea);
+            Color faceColor;
+
+            //bool drawFace;
+            #region LOOP_TILES
+            for (gridPos.Y = 0; gridPos.Y < size.Y; gridPos.Y++)
+            {
+                bool notCheckTop = gridPos.Y == 0;
+                bool notCheckBottom = gridPos.Y == limits.Y;
+                position.Y = gridPos.Y + posAdjust.Y;
+
+                for (gridPos.Z = 0; gridPos.Z < size.Z; gridPos.Z++)
+                {
+                    bool notCheckFront = gridPos.Z == limits.Z;
+                    bool notCheckBack = gridPos.Z == 0;
+                    position.Z = gridPos.Z + posAdjust.Z;
+
+                    for (gridPos.X = 0; gridPos.X < size.X; gridPos.X++)
+                    {
+                        material = materialGrid.MaterialGrid[gridPos.X, gridPos.Y, gridPos.Z];
+
+                        if (material != BlockHD.EmptyBlock)
+                        {
+                            bool notCheckLeft = gridPos.X == limits.X;
+                            bool notCheckRight = gridPos.X == 0;
+                            position.X = gridPos.X + posAdjust.X;
+
+                            //TOP
+                            if (notCheckBottom || materialGrid.MaterialGrid[gridPos.X, gridPos.Y + 1, gridPos.Z] == BlockHD.EmptyBlock)
+                            {
+                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                    //FACE
+                                    CubeFace.Ypositive);
+
+                                faceColor = BlockHD.YellowTintCol(material);//material.YellowTintCol();
+
+                                indexDrawOrder.Add(vertices.Count);
+                                indexDrawOrder.Add((vertices.Count + 1));
+                                indexDrawOrder.Add((vertices.Count + 2));
+                                indexDrawOrder.Add((vertices.Count + 2));
+                                indexDrawOrder.Add((vertices.Count + 1));
+                                indexDrawOrder.Add((vertices.Count + 3));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner3, faceColor, Vector3.Up));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner1, faceColor, Vector3.Up));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner4, faceColor, Vector3.Up));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner2, faceColor, Vector3.Up));
+
+                                totalVerticeIx += BlockLib.NumVerticesPerFace;
+                            }
+                            //BOTTOM
+                            if (notCheckTop || materialGrid.MaterialGrid[gridPos.X, gridPos.Y - 1, gridPos.Z] == BlockHD.EmptyBlock)
+                            {
+                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                    //FACE
+                                    CubeFace.Ynegative);
+
+                                faceColor = BlockHD.DarkTintCol(material);// material.DarkTintCol();
+
+                                indexDrawOrder.Add(vertices.Count);
+                                indexDrawOrder.Add((vertices.Count + 1));
+                                indexDrawOrder.Add((vertices.Count + 2));
+                                indexDrawOrder.Add((vertices.Count + 2));
+                                indexDrawOrder.Add((vertices.Count + 1));
+                                indexDrawOrder.Add((vertices.Count + 3));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner3, faceColor, Vector3.Down));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner1, faceColor, Vector3.Down));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner4, faceColor, Vector3.Down));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner2, faceColor, Vector3.Down));
+
+                                totalVerticeIx += BlockLib.NumVerticesPerFace;
+                            }
+                            //FRONT
+                            if (notCheckFront || materialGrid.MaterialGrid[gridPos.X, gridPos.Y, gridPos.Z + 1] == BlockHD.EmptyBlock)
+                            {
+                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                    //FACE
+                                    CubeFace.Zpositive);
+
+                                faceColor = BlockHD.ToColor(material);//material.GetColor();
+
+                                indexDrawOrder.Add(vertices.Count);
+                                indexDrawOrder.Add((vertices.Count + 1));
+                                indexDrawOrder.Add((vertices.Count + 2));
+                                indexDrawOrder.Add((vertices.Count + 2));
+                                indexDrawOrder.Add((vertices.Count + 1));
+                                indexDrawOrder.Add((vertices.Count + 3));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner3, faceColor, Vector3.UnitZ));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner1, faceColor, Vector3.UnitZ));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner4, faceColor, Vector3.UnitZ));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner2, faceColor, Vector3.UnitZ));
+
+                                totalVerticeIx += BlockLib.NumVerticesPerFace;
+                            }
+                            //BACK
+                            if (notCheckBack || materialGrid.MaterialGrid[gridPos.X, gridPos.Y, gridPos.Z - 1] == BlockHD.EmptyBlock)
+                            {
+                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                    //FACE
+                                    CubeFace.Znegative);
+
+                                faceColor = BlockHD.ToColor(material);//material.GetColor();
+
+                                indexDrawOrder.Add(vertices.Count);
+                                indexDrawOrder.Add((vertices.Count + 1));
+                                indexDrawOrder.Add((vertices.Count + 2));
+                                indexDrawOrder.Add((vertices.Count + 2));
+                                indexDrawOrder.Add((vertices.Count + 1));
+                                indexDrawOrder.Add((vertices.Count + 3));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner3, faceColor, Vector3.Forward));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner1, faceColor, Vector3.Forward));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner4, faceColor, Vector3.Forward));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner2, faceColor, Vector3.Forward));
+
+                                totalVerticeIx += BlockLib.NumVerticesPerFace;
+                            }
+                            //RIGHT
+                            if (notCheckRight || materialGrid.MaterialGrid[gridPos.X - 1, gridPos.Y, gridPos.Z] == BlockHD.EmptyBlock)
+                            {
+                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                    //FACE
+                                    CubeFace.Xnegative);
+
+                                faceColor = BlockHD.BlueTintCol(material);//material.BlueTintCol();
+
+                                indexDrawOrder.Add(vertices.Count);
+                                indexDrawOrder.Add((vertices.Count + 1));
+                                indexDrawOrder.Add((vertices.Count + 2));
+                                indexDrawOrder.Add((vertices.Count + 2));
+                                indexDrawOrder.Add((vertices.Count + 1));
+                                indexDrawOrder.Add((vertices.Count + 3));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner3, faceColor, Vector3.Left));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner1, faceColor, Vector3.Left));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner4, faceColor, Vector3.Left));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner2, faceColor, Vector3.Left));
+
+                                totalVerticeIx += BlockLib.NumVerticesPerFace;
+                            }
+                            //LEFT
+                            if (notCheckLeft || materialGrid.MaterialGrid[gridPos.X + 1, gridPos.Y, gridPos.Z] == BlockHD.EmptyBlock)
+                            {
+                                Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(position,
+                                    //FACE
+                                    CubeFace.Xpositive);
+
+                                faceColor = BlockHD.BlueTintCol(material);//material.BlueTintCol();
+
+                                indexDrawOrder.Add(vertices.Count);
+                                indexDrawOrder.Add((vertices.Count + 1));
+                                indexDrawOrder.Add((vertices.Count + 2));
+                                indexDrawOrder.Add((vertices.Count + 2));
+                                indexDrawOrder.Add((vertices.Count + 1));
+                                indexDrawOrder.Add((vertices.Count + 3));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner3, faceColor, Vector3.Right));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner1, faceColor, Vector3.Right));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner4, faceColor, Vector3.Right));
+                                vertices.Add(new VertexPositionColorNormal(data.Corner2, faceColor, Vector3.Right));
+
+                                totalVerticeIx += BlockLib.NumVerticesPerFace;
+                            }
+                        }
+                    }
+                }
+
+
+            }
+            #endregion
+
+            Frame result = new Frame();
+            result.FromVerticesCount(startVerticeIndex, vertices.Count - startVerticeIndex);
+            return result;
+        }
+
+        public static Frame VoxelGridToVerticesHD(VoxelObjGridDataHD materialGrid, Vector3 posAdjust,
             ref List<VertexPositionColorTexture> vertices, ref List<int> indexDrawOrder)
         {
             ushort material;
@@ -558,6 +743,8 @@ namespace VikingEngine.LootFest.Editor
             result.FromVerticesCount(startVerticeIndex, vertices.Count - startVerticeIndex);
             return result;
         }
+
+
 
 
 

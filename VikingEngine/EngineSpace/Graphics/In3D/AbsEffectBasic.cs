@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,7 +99,7 @@ namespace VikingEngine.Graphics
         {
             basicEffect = new Microsoft.Xna.Framework.Graphics.BasicEffect(Engine.Draw.graphicsDeviceManager.GraphicsDevice);
             
-            basicEffect.TextureEnabled = true;
+            //basicEffect.TextureEnabled = true;
             basicEffect.VertexColorEnabled = true;
             basicEffect.Texture = Engine.LoadContent.Texture(tex);
 
@@ -122,11 +123,42 @@ namespace VikingEngine.Graphics
         public EffectBasicVertexColor()
         {
             basicEffect = new Microsoft.Xna.Framework.Graphics.BasicEffect(Engine.Draw.graphicsDeviceManager.GraphicsDevice);
+            shader = basicEffect;
+        }
 
+        public void ObjectShader()
+        {
             basicEffect.TextureEnabled = false;
             basicEffect.VertexColorEnabled = true;
 
-            shader = basicEffect;
+            bool light = Ref.gamesett.ModelLightShaderEffect;
+            basicEffect.LightingEnabled = light; // Enable lighting calculations
+            basicEffect.DirectionalLight0.Enabled = light;
+            basicEffect.DirectionalLight0.Direction = new Vector3(0.1f, -0.8f, -0.8f);
+            basicEffect.DirectionalLight0.DiffuseColor = new Vector3(0.3f); // White light
+
+            basicEffect.DirectionalLight1.Enabled = light;
+            basicEffect.DirectionalLight1.Direction = new Vector3(-0.1f, 0.8f, -0.8f);
+            basicEffect.DirectionalLight1.DiffuseColor = new Vector3(0.25f, 0.25f, 0); //theme color tint
+
+            if (light)
+            {
+                basicEffect.AmbientLightColor = new Vector3(0.7f);
+            }
+            else
+            {
+                basicEffect.AmbientLightColor = Vector3.One;
+            }
+        }
+
+       
+
+        public void TerrainShader()
+        {
+            basicEffect.TextureEnabled = true;
+            basicEffect.VertexColorEnabled = true;
+
+            basicEffect.AmbientLightColor = new Vector3(0.9f);
         }
 
         public static EffectBasicVertexColor GetSingletonSafe()
@@ -134,7 +166,22 @@ namespace VikingEngine.Graphics
             if (Singleton == null)
             {
                 Singleton = new EffectBasicVertexColor();
+                Singleton.ObjectShader();
             }
+
+            //bool on = !Input.Keyboard.Ctrl;
+            //Singleton.basicEffect.LightingEnabled = on; // Enable lighting calculations
+            //Singleton.basicEffect.DirectionalLight0.Enabled = on;
+            //Singleton.basicEffect.DirectionalLight0.Direction = new Vector3(0.1f, -0.8f, -0.8f); 
+            //Singleton.basicEffect.DirectionalLight0.DiffuseColor = new Vector3(0.3f); // White light
+
+            //Singleton.basicEffect.DirectionalLight1.Enabled = on;
+            //Singleton.basicEffect.DirectionalLight1.Direction = new Vector3(-0.1f, 0.8f, -0.8f);
+            //Singleton.basicEffect.DirectionalLight1.DiffuseColor = new Vector3(0.25f, 0.25f, 0); //theme color tint
+
+            //Singleton.basicEffect.AmbientLightColor = new Vector3(0.7f);
+
+
             return Singleton;
         }
     }

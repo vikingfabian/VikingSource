@@ -47,9 +47,8 @@ namespace VikingEngine.DSSWars.Map
         }
 
         const LoadedTexture Texture = LoadedTexture.SpriteSheet;
-        public static readonly Graphics.CustomEffect ModelEffect =
-            new Graphics.CustomEffect("FlatVerticeColor", false);
-
+        
+           
         public IntVector2 pos;
         IVerticeData verticeData;
         Graphics.VoxelModel model;
@@ -75,7 +74,7 @@ namespace VikingEngine.DSSWars.Map
         void polygonBlock(Tile tile)
         {
             model = new Graphics.VoxelModel(false);
-            model.Effect = ModelEffect;
+            model.Effect = MapLayer_Detail.ModelEffect;
             model.position = WP.ToWorldPos(pos);
 
 #if DEBUG

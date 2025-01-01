@@ -71,7 +71,9 @@ namespace VikingEngine.DSSWars
             bool hasFadingLayer = false;
 
             Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
-
+            
+            EffectBasicVertexColor.Singleton.basicEffect.AmbientLightColor = DssRef.time.ShaderDayLight_Objects;
+            Map.MapLayer_Detail.ModelEffect.SetColor(DssRef.time.ShaderDayLight_Map);
 
             for (int cameraIndex = 0; cameraIndex < ActivePlayerScreens.Count; ++cameraIndex)
             {
@@ -98,6 +100,8 @@ namespace VikingEngine.DSSWars
                 
                 for (int cameraIndex = 0; cameraIndex < ActivePlayerScreens.Count; ++cameraIndex)
                 {
+                    EffectBasicVertexColor.Singleton.basicEffect.DirectionalLight1.DiffuseColor = DssRef.state.localPlayers[cameraIndex].ShaderThemeColor;
+
                     Map.MapDetailLayerManager drawUnits = Map.MapDetailLayerManager.CameraIndexToView[cameraIndex];
                     if (drawUnits.prevLayer != null)
                     {
@@ -111,6 +115,7 @@ namespace VikingEngine.DSSWars
             
             for (int cameraIndex = 0; cameraIndex < ActivePlayerScreens.Count; ++cameraIndex)
             {
+                EffectBasicVertexColor.Singleton.basicEffect.DirectionalLight1.DiffuseColor = DssRef.state.localPlayers[cameraIndex].ShaderThemeColor;
                 Map.MapDetailLayerManager drawUnits = Map.MapDetailLayerManager.CameraIndexToView[cameraIndex];
 
                 drawDetailLayer(cameraIndex, drawUnits.current);

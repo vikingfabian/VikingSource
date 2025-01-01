@@ -5,14 +5,46 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace VikingEngine.Graphics
 {
+    class CustomEffect_NoColor : CustomEffect
+    {
+        public CustomEffect_NoColor(string TechniqueName, bool usesWorldPos)
+            :base(TechniqueName, usesWorldPos)
+        {
+            shader = shader.Clone();
+        }
+
+        protected override void SetVertexBufferEffect(AbsVoxelObj obj)
+        {
+            base.shader.CurrentTechnique = base.shader.Techniques[TechniqueName];
+
+            base.shader.Parameters[Graphics.TextureSourceLib.ColorMap].SetValue(Engine.LoadContent.Texture(obj.texture));
+            base.shader.Parameters["SourcePos"].SetValue(Vector2.Zero);
+            base.shader.Parameters["SourceSize"].SetValue(Vector2.One);
+
+            Ref.draw.worldMatrix = Matrix.CreateScale(obj.scale) * Matrix.CreateFromQuaternion(obj.Rotation.QuadRotation) * Matrix.CreateTranslation(obj.position);//Matrix.CreateTranslation(obj.Position);
+            if (usesWorldPos)
+            {
+                const string CameraPositionSetting = "CameraPosition";
+                base.shader.Parameters[CameraPositionSetting].SetValue(Ref.draw.Camera.Position);
+                base.shader.Parameters["world"].SetValue(Ref.draw.worldMatrix);
+            }
+            base.shader.Parameters["wvp"].SetValue(Ref.draw.worldMatrix * Ref.draw.Camera.ViewProjection);
+        }
+
+        public void SetColor(Vector4 color)
+        {
+            base.shader.Parameters[CustomEffect.ColorArgument].SetValue(color);
+        }
+    }
+
     class CustomEffect : AbsEffect
     {
         public const string ColorArgument = "ColorAndAlpha";
 
         static ModelMesh modelListMesh;
         static int modelMeshIx = 0;
-        string TechniqueName;
-        bool usesWorldPos;
+        protected string TechniqueName;
+        protected bool usesWorldPos;
         Texture2D prevTexture = null;
 
         public CustomEffect(string TechniqueName, bool usesWorldPos)
@@ -47,6 +79,8 @@ namespace VikingEngine.Graphics
                 modelListMesh.Draw();
             //}
         }
+
+        
 
         protected override void SetVertexBufferEffect(AbsVoxelObj obj)
         {

@@ -6,6 +6,7 @@ Upgraded to .net8
 //AbsDetailUnit > public Physics.AbsBound2D bound;
 //class UnitCollArea > använd pekare
 Separera main/detail path threads
+culling av worker / city models
 
 kan stackalloc användas till listor som skapar modeller?
 

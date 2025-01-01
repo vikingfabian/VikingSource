@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using VikingEngine.DSSWars.Data;
@@ -20,6 +21,17 @@ namespace VikingEngine.DSSWars
 
         float asyncGameObjects_Seconds = 0;
         float asyncWork_Seconds = 0;
+
+        const float DayLight_Min = 0.7f;
+        const float DayLight_Add = 0.2f;
+
+        const float DayLight_Terrain_Min = 0.9f;
+        const float DayLight_Terrain_Add = 0.2f;
+
+
+        public Vector3 ShaderDayLight_Objects = new Vector3(0.3f);
+        public Vector4 ShaderDayLight_Map = Vector4.One;
+        public float ShaderDayLight_RedTint = 0f;
 
         public GameTime()
         {
@@ -44,7 +56,23 @@ namespace VikingEngine.DSSWars
 
                 switch (quarter)
                 { 
-                    case 0: oneSecond = true; break;
+                    case 0: 
+                        oneSecond = true;
+
+                        if (Ref.gamesett.ModelLightShaderEffect)
+                        {
+                            float diff = Math.Abs(secondsToMinute - 30) / 30f;
+                            float light = 1f - diff;
+                            ShaderDayLight_Objects = new Vector3(DayLight_Min + DayLight_Add * light);
+                            ShaderDayLight_Map = new Vector4(DayLight_Terrain_Min + DayLight_Terrain_Add * light);
+                            ShaderDayLight_Map.W = 1f;
+                            ShaderDayLight_RedTint = diff * 0.12f;
+                        }
+                        else
+                        {
+                            ShaderDayLight_Map = Vector4.One;
+                        }
+                        break;
                     case 1: halfSecond = true; break;
                     case 2:
                         oneMinute = false;
@@ -63,11 +91,6 @@ namespace VikingEngine.DSSWars
                 }                
             }
         }
-
-        //public bool oneMinute()
-        //{
-        //    return secondsToMinute == 59;
-        //}
 
         public float pullAsyncGameObjects_Seconds()
         {

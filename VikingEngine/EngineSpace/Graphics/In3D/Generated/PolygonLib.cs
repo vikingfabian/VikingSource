@@ -35,7 +35,7 @@ namespace VikingEngine.Graphics
     }
     struct VerticeDrawOrderData
     {
-        public UInt16[] indexDrawOrder16;
+        public ushort[] indexDrawOrder16;
         public uint[] indexDrawOrder32;
         public int numVertices;
         public int numTriangles;
@@ -43,7 +43,7 @@ namespace VikingEngine.Graphics
 
         public IndexElementSize bitSize;
 
-        public VerticeDrawOrderData(StaticCountingList<int> indexDrawOrder, UInt16[] recycledIndexDrawOrder16, uint[] recycledIndexDrawOrder32)
+        public VerticeDrawOrderData(StaticCountingList<int> indexDrawOrder, ushort[] recycledIndexDrawOrder16, uint[] recycledIndexDrawOrder32)
             //: this(indexDrawOrder.Array, indexDrawOrder.CountingLength)
         {
             indexDrawOrderLength = indexDrawOrder.CountingLength;
@@ -213,6 +213,35 @@ namespace VikingEngine.Graphics
         }
     }
 
+    struct VerticeDataColorNormal : IVerticeData
+    {
+        public VertexPositionColorNormal[] Vertices;
+        VerticeDrawOrderData drawOrderData;
+
+        public VerticeDataColorNormal(List<VertexPositionColorNormal> vertices, List<int> indexDrawOrder)
+        {
+            Vertices = vertices.ToArray();
+            drawOrderData = new VerticeDrawOrderData(indexDrawOrder);
+        }
+
+        public VerticeDataColorNormal(int polyCount, int triangleCount)
+        {
+            drawOrderData = new VerticeDrawOrderData(polyCount, triangleCount);
+            Vertices = new VertexPositionColorNormal[drawOrderData.numVertices];
+        }
+        public void SetVertice(int index, object vertice)
+        {
+            Vertices[index] = (VertexPositionColorNormal)vertice;
+        }
+        public PolygonType Type { get { return PolygonType.ColorAndNormal; } }
+        public VerticeDrawOrderData DrawData { get { return drawOrderData; } }
+        public VertexDeclaration VertexDeclaration { get { return VertexPositionColorNormal.VertexDeclaration; } }
+        public void SetVertexBuffer(VertexBuffer VB)
+        {
+            VB.SetData(Vertices);
+        }
+    }
+
 
     struct VerticeDataColor : IVerticeData
     {
@@ -355,7 +384,7 @@ namespace VikingEngine.Graphics
             IVerticeData verticeData;
             if (polygonsAndTriangles.Type == PolygonType.Color)
             {
-                verticeData = new VerticeDataColorTexture(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);
+                verticeData = new VerticeDataColorTexture(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);//VerticeDataColorTexture(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);
             }
             else
             {
@@ -549,6 +578,7 @@ namespace VikingEngine.Graphics
     {
         Color,
         Normal,
+        ColorAndNormal
     }
 
     enum AssignNormals

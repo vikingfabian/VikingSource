@@ -27,6 +27,7 @@ using VikingEngine.ToGG.HeroQuest.Net;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using System.Net.Http.Headers;
+using System.Drawing;
 
 namespace VikingEngine.DSSWars.Players
 {
@@ -94,6 +95,12 @@ namespace VikingEngine.DSSWars.Players
 
         public int nextDominationSize;
         public int dominationEvents = 0;
+
+        static readonly Vector3 ThemeNorth_Blue = new Vector3(0f, 0f, 0.3f);
+        static readonly Vector3 ThemeMid_Yellow = new Vector3(0.15f, 0.15f, 0);
+        static readonly Vector3 ThemeSouth_Red = new Vector3(0.2f, 0.05f, 0f);
+
+        public Vector3 ShaderThemeColor = ThemeMid_Yellow;
 
         public LocalPlayer(Faction faction)
            : base(faction)
@@ -1059,6 +1066,21 @@ namespace VikingEngine.DSSWars.Players
             }
 
             faction.updateResourceOverview_async();
+
+            float z = mapControls.camera.LookTarget.Z / DssRef.world.Size.Y;
+            if (z < 0.5)
+            {
+                setThemeColor(z / 0.5f, ThemeNorth_Blue, ThemeMid_Yellow);
+            }
+            else
+            {
+                setThemeColor((z - 0.5f)/ 0.5f, ThemeMid_Yellow, ThemeSouth_Red);
+            }
+
+            void setThemeColor(float percSouth, Vector3 north, Vector3 south)
+            {
+                ShaderThemeColor = VectorExt.AddX( north * (1f - percSouth) + south * percSouth, DssRef.time.ShaderDayLight_RedTint);
+            }
         }
 
         void updateObjectTabbing()

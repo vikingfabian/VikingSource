@@ -21,10 +21,15 @@ namespace VikingEngine.DSSWars.Map
         int waterFrame = 0;
         double waterMoveCurve = 0;
 
+        public static Graphics.CustomEffect_NoColor ModelEffect = new Graphics.CustomEffect_NoColor("FlatVerticeColor", false);
+        //public static Graphics.EffectBasicVertexColor ModelEffect = new EffectBasicVertexColor();
+
+
+
         /// <summary>
         /// Trigger a reload of the map
         /// </summary>
-        
+
         public bool onSecondUpdate = false;
         //public bool needReload = false;
         public MapLayer_Detail()
@@ -36,6 +41,9 @@ namespace VikingEngine.DSSWars.Map
             MapLayer_Overview.WaterModel(out waterSurface, out waterBottom, true);
             waterSurface.AddToRender(DrawGame.UnitDetailLayer);
             waterBottom.AddToRender(DrawGame.UnitDetailLayer);
+
+            //ModelEffect.SetColor(Color.Gray.ToVector4());   
+            //ModelEffect.TerrainShader();
         }
 
         public void update()

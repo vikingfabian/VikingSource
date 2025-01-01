@@ -62,6 +62,7 @@ namespace VikingEngine.Engine
             //3d stuff
 
             effectBR = LoadContent.LoadShader("Effect");
+           
             TextureEffects = new VikingEngine.Graphics.CustomEffect[(int)Graphics.TextureEffectType.NUM_NON];
 
             TextureEffects[(int)Graphics.TextureEffectType.Flat] = new Graphics.CustomEffect("Flat", false);

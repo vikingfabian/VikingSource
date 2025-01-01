@@ -270,7 +270,7 @@ namespace VikingEngine.DSSWars
             var centerAdjust = grid.Frames[0].BottomCenterAdj();
 
 
-            buildVerticeDataHD(copy.Frames, centerAdjust);
+            buildVerticeDataHD_ColorNormal(copy.Frames, centerAdjust);
 
             Graphics.VoxelModel model = modelFromVertices();
 

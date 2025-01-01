@@ -131,6 +131,7 @@ namespace VikingEngine.DSSWars.Display
                     multiplayerGameSpeedToMenu(layout);
                 }
                 new GuiTextButton(DssRef.lang.GameMenu_NextSong, null, new GuiAction(() => { Ref.music.debugNext(); closeMenu(); }), false, layout);
+                new GuiCheckbox("Model light effect", null, Ref.gamesett.modelLightProperty, layout);
 
                 Ref.gamesett.soundOptions(layout);
                 new GuiSectionSeparator(layout);

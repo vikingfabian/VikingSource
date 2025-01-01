@@ -16,7 +16,7 @@ namespace VikingEngine
     /// </summary>
     class GameSettings
     {
-        const int Version = 12 ;
+        const int Version = 13;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -34,6 +34,7 @@ namespace VikingEngine
         public LanguageType language = LanguageType.NONE;
         public InputMap controllerMap;
         public InputMap keyboardMap;
+        public bool ModelLightShaderEffect = false;
 
         public GameSettings()
         {
@@ -74,7 +75,8 @@ namespace VikingEngine
             controllerMap.write(w);
             keyboardMap.write(w);
 
-            bannedPeers.write(w);           
+            bannedPeers.write(w);
+            w.Write(ModelLightShaderEffect);
         }
 
         public void readEmbeddedSettingsAndVersion(System.IO.BinaryReader r)
@@ -111,7 +113,11 @@ namespace VikingEngine
             }
 
             bannedPeers.read(r, version);
-            
+
+            if (version >= 13)
+            { 
+                ModelLightShaderEffect = r.ReadBoolean();
+            }
         }
 
         public void write(System.IO.BinaryWriter w)
@@ -228,6 +234,20 @@ namespace VikingEngine
             }
 
             return Screen.Monitor;
+        }
+
+        public bool modelLightProperty(int index, bool set, bool val)
+        {
+            if (set)
+            {
+                ModelLightShaderEffect = val;
+#if DSS
+                //Graphics.EffectBasicVertexColor.Singleton = null;
+                Graphics.EffectBasicVertexColor.Singleton.ObjectShader();
+#endif
+            }
+
+            return ModelLightShaderEffect;
         }
 
         public int resolutionPercProperty(bool set, int res)
