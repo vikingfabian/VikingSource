@@ -182,8 +182,8 @@ namespace VikingEngine.LootFest.Editor
                 { return null; }
 
             }
-            result.BuildFromPolygons(new Graphics.PolygonsAndTrianglesNormal(polygons,
-                    new List<Graphics.TriangleNormal>()), numPolys, LfLib.BlockTexture);
+            //result.BuildFromPolygons(new Graphics.PolygonsAndTrianglesNormal(polygons,
+            //        new List<Graphics.TriangleNormal>()), numPolys, LfLib.BlockTexture);
             result.SetOneScale(drawLimits.Size);
             return result;
         }

@@ -12,6 +12,10 @@ kan stackalloc användas till listor som skapar modeller?
 
 stanna musik spelaren
 
+List<ISyncAction> syncQue = new List<ISyncAction>(); till concurrent
+
+public void asyncUserUpdate(), varför triggar buy soldier?
+
 //hitta depricated
 
 monogame fork? DrawUserPrimitives opt, titta på OGG filer

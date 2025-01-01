@@ -60,18 +60,28 @@ namespace VikingEngine.Graphics
         {
             VB.SetBuffer();
             shader.Parameters["World"].SetValue(Matrix.CreateScale(scale) *
-                                                Matrix.CreateFromQuaternion(Rotation.QuadRotation) *
-                                                Matrix.CreateTranslation(position));
+                Matrix.CreateFromQuaternion(Rotation.QuadRotation) *
+                Matrix.CreateTranslation(position));
             shader.CurrentTechnique.Passes[0].Apply();
             VB.Draw(Frame);
         }
 
         /* Novelty methods */
-        public void BuildFromPolygons(IPolygonsAndTriangles polygonsAndTriangles, List<int> numPolysPerFrame, LoadedTexture spriteSheet)
+        public void BuildFromPolygons(PolygonsAndTrianglesColor polygonsAndTriangles, List<int> numPolysPerFrame, LoadedTexture spriteSheet)
         {
             IVerticeData verticeData = PolygonLib.BuildVDFromPolygons(polygonsAndTriangles);
             BuildFromVerticeData(verticeData, numPolysPerFrame, spriteSheet);
         }
+
+        public void BuildFromPolygons(PolygonsAndTrianglesNormal polygonsAndTriangles, List<int> numPolysPerFrame, LoadedTexture spriteSheet)
+        {
+            throw new NotImplementedException(); //Måste lägga till polygon normal 
+
+            //IVerticeData verticeData = PolygonLib.BuildVDFromPolygons(polygonsAndTriangles);
+            //BuildFromVerticeData(verticeData, numPolysPerFrame, spriteSheet);
+        }
+
+        
 
         public void BuildFromVerticeData(IVerticeData verticeData, List<int> numPolysPerFrame, LoadedTexture spriteSheet)
         {

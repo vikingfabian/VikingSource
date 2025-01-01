@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Engine;
@@ -146,7 +148,7 @@ namespace VikingEngine.Graphics
         }
     }
 
-    struct VerticeDataNormal : IVerticeData
+    class VerticeDataNormal : IVerticeData
     {
         VertexPositionNormalTexture[] Vertices;
         VerticeDrawOrderData drawOrderData;
@@ -184,36 +186,50 @@ namespace VikingEngine.Graphics
         }
     }
 
-    struct VerticeDataColorTexture : IVerticeData
+    class VerticeDataColorTexture : IVerticeData
     {
-        public VertexPositionColorTexture[] Vertices;
+        public ArrayExposedList<VertexPositionColorTexture> Vertices;
         VerticeDrawOrderData drawOrderData;
 
         public VerticeDataColorTexture(List<VertexPositionColorTexture> vertices, List<int> indexDrawOrder)
         {
-            Vertices = vertices.ToArray();
+            Vertices = new ArrayExposedList<VertexPositionColorTexture>(vertices);
             drawOrderData = new VerticeDrawOrderData(indexDrawOrder);
         }
 
-        public VerticeDataColorTexture(int polyCount, int triangleCount)
+        public VerticeDataColorTexture(int polyCount, int triangleCount)//pooling
         {
             drawOrderData = new VerticeDrawOrderData(polyCount, triangleCount);
-            Vertices = new VertexPositionColorTexture[drawOrderData.numVertices];
+            Vertices = new ArrayExposedList<VertexPositionColorTexture>(drawOrderData.numVertices);
+            Vertices.setLenght(drawOrderData.numVertices);
+        }
+
+        public void recycle(int polyCount, int triangleCount)//pooling
+        {
+            drawOrderData = new VerticeDrawOrderData(polyCount, triangleCount);
+            Vertices.setLenght(drawOrderData.numVertices);
         }
         public void SetVertice(int index, object vertice)
         {
-            Vertices[index] = (VertexPositionColorTexture)vertice;
+            Vertices.array[index] = (VertexPositionColorTexture)vertice;
         }
+
+        public void SetVertice(int index, VertexPositionColorTexture vertice)
+        {
+            Vertices.array[index] = vertice;
+        }
+
+
         public PolygonType Type { get { return PolygonType.Color; } }
         public VerticeDrawOrderData DrawData { get { return drawOrderData; } }
         public VertexDeclaration VertexDeclaration { get { return VertexPositionColorTexture.VertexDeclaration; } }
         public void SetVertexBuffer(VertexBuffer VB)
         {
-            VB.SetData(Vertices);
+            VB.SetData(Vertices.array, 0, Vertices.count);
         }
     }
 
-    struct VerticeDataColorNormal : IVerticeData
+    class VerticeDataColorNormal : IVerticeData
     {
         public VertexPositionColorNormal[] Vertices;
         VerticeDrawOrderData drawOrderData;
@@ -243,7 +259,7 @@ namespace VikingEngine.Graphics
     }
 
 
-    struct VerticeDataColor : IVerticeData
+    class VerticeDataColor : IVerticeData
     {
         public VertexPositionColor[] Vertices;
         VerticeDrawOrderData drawOrderData;
@@ -281,6 +297,31 @@ namespace VikingEngine.Graphics
         public Vector3 Corner4;
 
         public Vector3 Normal;
+
+
+        // Constructor with individual corners and auto-calculated normal
+        public Face(Vector3 corner1, Vector3 corner2, Vector3 corner3, Vector3 corner4)
+        {
+            Corner1 = corner1;
+            Corner2 = corner2;
+            Corner3 = corner3;
+            Corner4 = corner4;
+
+            Normal = PolygonLib.CalculateNormals(ref Corner1, ref Corner2, ref Corner3);
+        }
+
+        // Constructor with individual corners and provided normal
+        public Face(Vector3 corner1, Vector3 corner2, Vector3 corner3, Vector3 corner4, Vector3 normal)
+        {
+            Corner1 = corner1;
+            Corner2 = corner2;
+            Corner3 = corner3;
+            Corner4 = corner4;
+
+            Normal = normal;
+        }
+
+
         public Face(Vector3[] corners)
         {
             Corner1 = corners[0];
@@ -373,41 +414,40 @@ namespace VikingEngine.Graphics
     }
     static class PolygonLib
     {
+        public static ConcurrentStack<VerticeDataColorTexture> VerticeDataPool = new ConcurrentStack<VerticeDataColorTexture>();
+
         static readonly int[] BasicIndexDrawOrder = new int[] { 0, 1, 2, 2, 1, 3 };
         public const int NumCornersPolygon = 4;
         public const int NumCornersTriangle = 3;
         public const int NumDrawIxPerPoly = 6;
         public const int NumDrawIxPerTriangle = 6; //??
 
-        public static IVerticeData BuildVDFromPolygons(IPolygonsAndTriangles polygonsAndTriangles)
+        public static VerticeDataColorTexture BuildVDFromPolygons(PolygonsAndTrianglesColor polygonsAndTriangles)
         {
-            IVerticeData verticeData;
-            if (polygonsAndTriangles.Type == PolygonType.Color)
-            {
-                verticeData = new VerticeDataColorTexture(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);//VerticeDataColorTexture(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);
-            }
-            else
-            {
-                verticeData = new VerticeDataNormal(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);
-            }
+           
+            
+            VerticeDataColorTexture verticeData = new VerticeDataColorTexture(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);//VerticeDataColorTexture(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);
+           
+
+
             VerticeDrawOrderData drawOrder = verticeData.DrawData;
             int totalVerticeIx = 0;
             int indexDrawOrderPointer = 0;
-           // int[] indexDrawOrder = verticeData.DrawData.indexDrawOrder;
+
             for (int polyIx = 0; polyIx < polygonsAndTriangles.NumPolygons; polyIx++)
             {
-                verticeData.SetVertice(totalVerticeIx, polygonsAndTriangles.GetPolygonVertex0(ref polyIx));
+                verticeData.SetVertice(totalVerticeIx, polygonsAndTriangles.GetPolygonVertex0_coltex(ref polyIx));
                 totalVerticeIx++;
-                verticeData.SetVertice(totalVerticeIx, polygonsAndTriangles.GetPolygonVertex1(ref polyIx));
+                verticeData.SetVertice(totalVerticeIx, polygonsAndTriangles.GetPolygonVertex1_coltex(ref polyIx));
                 totalVerticeIx++;
-                verticeData.SetVertice(totalVerticeIx, polygonsAndTriangles.GetPolygonVertex2(ref polyIx));
+                verticeData.SetVertice(totalVerticeIx, polygonsAndTriangles.GetPolygonVertex2_coltex(ref polyIx));
                 totalVerticeIx++;
-                verticeData.SetVertice(totalVerticeIx, polygonsAndTriangles.GetPolygonVertex3(ref polyIx));
+                verticeData.SetVertice(totalVerticeIx, polygonsAndTriangles.GetPolygonVertex3_coltex(ref polyIx));
                 totalVerticeIx++;
 
                 for (int drawOrderIx = 0; drawOrderIx < NumDrawIxPerPoly; drawOrderIx++)
                 {
-                    drawOrder.SetDrawOrder(indexDrawOrderPointer, BasicIndexDrawOrder[drawOrderIx] + polyIx * PolygonLib.NumCornersPolygon);  //indexDrawOrder[indexDrawOrderPointer] = (UInt16)(BasicIndexDrawOrder[drawOrderIx] + polyIx * PolygonLib.NumCornersPolygon);
+                    drawOrder.SetDrawOrder(indexDrawOrderPointer, BasicIndexDrawOrder[drawOrderIx] + polyIx * PolygonLib.NumCornersPolygon);
                     indexDrawOrderPointer++;
                 }
             }
@@ -416,7 +456,7 @@ namespace VikingEngine.Graphics
                 for (int corner = 0; corner < PolygonLib.NumCornersTriangle; corner++)
                 {
                     verticeData.SetVertice(totalVerticeIx, polygonsAndTriangles.GetTriangleVertex(triIx, corner));
-                    drawOrder.SetDrawOrder(indexDrawOrderPointer, totalVerticeIx);//indexDrawOrder[indexDrawOrderPointer] = totalVerticeIx;
+                    drawOrder.SetDrawOrder(indexDrawOrderPointer, totalVerticeIx);
                     totalVerticeIx++;
                     indexDrawOrderPointer++;
                 }
@@ -424,6 +464,15 @@ namespace VikingEngine.Graphics
             }
             return verticeData;
         }
+        
+        //    else
+        //    {
+        //        //används inte
+        //        VerticeDataNormal verticeData = new VerticeDataNormal(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);
+        //        throw new NotImplementedException();
+        //    }
+            
+        //}
         public static Vector3 CalculateNormals(ref Vector3 vertexA, ref Vector3 vertexB, ref Vector3 vertexC)
         { //vectexA to C is the three corners of the surface triangle
             if (vertexA.Y == vertexB.Y)
@@ -455,16 +504,16 @@ namespace VikingEngine.Graphics
             return normal;
         }
 
-        public static AbsVertexAndIndexBuffer BuildVBFromPolygons(IPolygonsAndTriangles polygonsAndTriangles)
+        public static AbsVertexAndIndexBuffer BuildVBFromPolygons(PolygonsAndTrianglesColor polygonsAndTriangles)
         {
             IVerticeData verticeData = BuildVDFromPolygons(polygonsAndTriangles);
             VertexAndIndexBuffer result = new VertexAndIndexBuffer(verticeData);
             
             return result;
         }
-        public static AbsVertexAndIndexBuffer BuildVBAnimatedFromPolygons(List<IPolygonsAndTriangles> polygonsAndTriangles)
+        public static AbsVertexAndIndexBuffer BuildVBAnimatedFromPolygons(List<PolygonsAndTrianglesColor> polygonsAndTriangles)
         {
-            IPolygonsAndTriangles polyColl = polygonsAndTriangles[0];
+            PolygonsAndTrianglesColor polyColl = polygonsAndTriangles[0];
             List<int> numPolys = new List<int> { polyColl.NumPolygons };
             for (int i = 1; i < polygonsAndTriangles.Count; i++)
             {
@@ -479,99 +528,55 @@ namespace VikingEngine.Graphics
         {
             Face[] faces = new Face[(int)CubeFace.NUM];
             float radius = scale * PublicConstants.Half;
-            Vector3[] topCorners = new Vector3[PolygonNormal.NumCorners];
 
-            topCorners[PolygonNormal.CornerTopLeft].X = radius;
-            topCorners[PolygonNormal.CornerTopLeft].Y = -radius;
-            topCorners[PolygonNormal.CornerTopLeft].Z = -radius;
+            // Define top corners
+            Vector3 topCornerTopLeft = new Vector3(radius, -radius, -radius);
+            Vector3 topCornerTopRight = new Vector3(-radius, -radius, -radius);
+            Vector3 topCornerLowLeft = new Vector3(radius, -radius, radius);
+            Vector3 topCornerLowRight = new Vector3(-radius, -radius, radius);
 
-            topCorners[PolygonNormal.CornerTopRight].X = -radius;
-            topCorners[PolygonNormal.CornerTopRight].Y = -radius;
-            topCorners[PolygonNormal.CornerTopRight].Z = -radius;
+            // Define bottom corners
+            Vector3 bottomCornerTopLeft = new Vector3(radius, radius, -radius);
+            Vector3 bottomCornerTopRight = new Vector3(-radius, radius, -radius);
+            Vector3 bottomCornerLowLeft = new Vector3(radius, radius, radius);
+            Vector3 bottomCornerLowRight = new Vector3(-radius, radius, radius);
 
-            topCorners[PolygonNormal.CornerLowLeft].X = radius;
-            topCorners[PolygonNormal.CornerLowLeft].Y = -radius;
-            topCorners[PolygonNormal.CornerLowLeft].Z = radius;
-
-            topCorners[PolygonNormal.CornerLowRight].X = -radius;
-            topCorners[PolygonNormal.CornerLowRight].Y = -radius;
-            topCorners[PolygonNormal.CornerLowRight].Z = radius;
-
-
-            Vector3[] bottomCorners = new Vector3[PolygonNormal.NumCorners];
-
-            bottomCorners[PolygonNormal.CornerTopLeft].X = radius;
-            bottomCorners[PolygonNormal.CornerTopLeft].Y = radius;
-            bottomCorners[PolygonNormal.CornerTopLeft].Z = -radius;
-
-            bottomCorners[PolygonNormal.CornerTopRight].X = -radius;
-            bottomCorners[PolygonNormal.CornerTopRight].Y = radius;
-            bottomCorners[PolygonNormal.CornerTopRight].Z = -radius;
-
-            bottomCorners[PolygonNormal.CornerLowLeft].X = radius;
-            bottomCorners[PolygonNormal.CornerLowLeft].Y = radius;
-            bottomCorners[PolygonNormal.CornerLowLeft].Z = radius;
-
-            bottomCorners[PolygonNormal.CornerLowRight].X = -radius;
-            bottomCorners[PolygonNormal.CornerLowRight].Y = radius;
-            bottomCorners[PolygonNormal.CornerLowRight].Z = radius;
-
-            //create all faces
-
-            faces[(int)CubeFace.Ynegative] = new Face(topCorners,
-                new Vector3(0, -1, 0));
+            // Create faces using the new constructor
+            faces[(int)CubeFace.Ynegative] = new Face(
+                topCornerTopLeft, topCornerTopRight, topCornerLowLeft, topCornerLowRight,
+                new Vector3(0, -1, 0)
+            );
 
             faces[(int)CubeFace.Ypositive] = new Face(
-                new Vector3[] {
-                bottomCorners[PolygonNormal.CornerTopRight],
-                bottomCorners[PolygonNormal.CornerTopLeft],
-                bottomCorners[PolygonNormal.CornerLowRight],
-                bottomCorners[PolygonNormal.CornerLowLeft]},
-                new Vector3(0,1,0)
+                bottomCornerTopRight, bottomCornerTopLeft, bottomCornerLowRight, bottomCornerLowLeft,
+                new Vector3(0, 1, 0)
             );
 
             faces[(int)CubeFace.Zpositive] = new Face(
-                new Vector3[] {
-                bottomCorners[PolygonNormal.CornerLowRight],
-                bottomCorners[PolygonNormal.CornerLowLeft],
-                topCorners[PolygonNormal.CornerLowRight],
-                topCorners[PolygonNormal.CornerLowLeft],
-                
-                },
+                bottomCornerLowRight, bottomCornerLowLeft, topCornerLowRight, topCornerLowLeft,
                 new Vector3(0, 0, 1)
             );
 
             faces[(int)CubeFace.Znegative] = new Face(
-                new Vector3[] {
-                bottomCorners[PolygonNormal.CornerTopLeft],
-                bottomCorners[PolygonNormal.CornerTopRight],
-                topCorners[PolygonNormal.CornerTopLeft],
-                topCorners[PolygonNormal.CornerTopRight],
-                },
+                bottomCornerTopLeft, bottomCornerTopRight, topCornerTopLeft, topCornerTopRight,
                 new Vector3(0, 0, -1)
             );
 
             faces[(int)CubeFace.Xnegative] = new Face(
-                new Vector3[] {
-                bottomCorners[PolygonNormal.CornerTopRight],
-                bottomCorners[PolygonNormal.CornerLowRight],
-                topCorners[PolygonNormal.CornerTopRight],
-                topCorners[PolygonNormal.CornerLowRight],
-               },
+                bottomCornerTopRight, bottomCornerLowRight, topCornerTopRight, topCornerLowRight,
                 new Vector3(-1, 0, 0)
             );
+
             faces[(int)CubeFace.Xpositive] = new Face(
-                new Vector3[] {
-                bottomCorners[PolygonNormal.CornerLowLeft],
-                bottomCorners[PolygonNormal.CornerTopLeft],
-                topCorners[PolygonNormal.CornerLowLeft],
-                topCorners[PolygonNormal.CornerTopLeft],
-                
-                },
+                bottomCornerLowLeft, bottomCornerTopLeft, topCornerLowLeft, topCornerTopLeft,
                 new Vector3(1, 0, 0)
             );
+
             return faces;
         }
+
+
+
     }
 
     enum PolygonType

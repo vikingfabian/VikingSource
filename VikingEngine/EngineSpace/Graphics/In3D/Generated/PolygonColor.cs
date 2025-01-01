@@ -38,6 +38,23 @@ namespace VikingEngine.Graphics
             return Polygons[polyIndex].V3ne;
         }
 
+        public VertexPositionColorTexture GetPolygonVertex0_coltex(ref int polyIndex)
+        {
+            return Polygons[polyIndex].V0sw;
+        }
+        public VertexPositionColorTexture GetPolygonVertex1_coltex(ref int polyIndex)
+        {
+            return Polygons[polyIndex].V1nw;
+        }
+        public VertexPositionColorTexture GetPolygonVertex2_coltex(ref int polyIndex)
+        {
+            return Polygons[polyIndex].V2se;
+        }
+        public VertexPositionColorTexture GetPolygonVertex3_coltex(ref int polyIndex)
+        {
+            return Polygons[polyIndex].V3ne;
+        }
+
         public object GetTriangleVertex(int triangleIndex, int vertticeIx)
         {
             return Triangles[triangleIndex].VerticeData[vertticeIx];
