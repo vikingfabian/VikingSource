@@ -17,7 +17,7 @@ stanna musik spelaren
 //hitta depricated
 
 monogame fork? DrawUserPrimitives opt, titta på OGG filer
-försöka återvinna class DetailMapTile
+//försöka återvinna class DetailMapTile
 
 # WORKER PATH #
 Ha en loop som går igenom tiles, om det finns 1+ byggnader, räkna tid från hall till slumpad byggnad, tid till närmast mat och avlämning

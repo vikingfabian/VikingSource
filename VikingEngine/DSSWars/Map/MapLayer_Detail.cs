@@ -24,9 +24,7 @@ namespace VikingEngine.DSSWars.Map
         double waterMoveCurve = 0;
 
         public static Graphics.CustomEffect_NoColor ModelEffect = new Graphics.CustomEffect_NoColor("FlatVerticeColor", false);
-        //public static Graphics.EffectBasicVertexColor ModelEffect = new EffectBasicVertexColor();
-
-
+        
 
         /// <summary>
         /// Trigger a reload of the map
