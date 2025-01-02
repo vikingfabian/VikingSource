@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,6 +9,7 @@ namespace VikingEngine.DSSWars.Map
 {
     class MapLayer_Detail
     {
+        ConcurrentStack<DetailMapTile> tilePool = new ConcurrentStack<DetailMapTile>();
         List<DetailMapTile> tiles;
        
 
@@ -62,6 +64,13 @@ namespace VikingEngine.DSSWars.Map
             waterSurface.TextureSource.SourceF.X += Ref.DeltaGameTimeSec * -0.05f;
             waterSurface.TextureSource.SourceF.Y = (float)(Math.Sin(waterMoveCurve) * 0.1);
 
+            //while (synchTiles.TryPop(out var tile))
+            //{
+            //    if (!tile.synchToRender())
+            //    {
+            //        tilePool.Push(tile);
+            //    }
+            //}
             if (synchTiles.Count > 0)
             {
                 lock (synchTiles)
@@ -92,6 +101,7 @@ namespace VikingEngine.DSSWars.Map
                     //Debug.Log("Tile Set(C) " + tilePos.ToString() + ", " + tile.ToString());
                     tiles[i].add = false;
                     processingTiles.Add(tiles[i]);
+                    //synchTiles.Push(tiles[i]);
                     tiles.RemoveAt(i);
 
                     
@@ -122,9 +132,17 @@ namespace VikingEngine.DSSWars.Map
                             {
                                 tile.hasTileInRender = true;
                                 DssRef.world.tileGrid.Set(loop.Position, tile);
-                                var maptile = new DetailMapTile(loop.Position, tile);
+
+                                DetailMapTile maptile;
+                                if (!tilePool.TryPop(out maptile))
+                                {
+                                    maptile = new DetailMapTile();// loop.Position, tile);
+                                }
+                                maptile.add = true;
+                                maptile.polygonBlock(loop.Position, tile);
                                 processingTiles.Add(maptile);
-                                tiles.Add(maptile);
+                               // synchTiles.Push(maptile);
+                               tiles.Add(maptile);
 
                                 
                                 //Debug.Log("Tile Set(B) " + loop.Position.ToString() + ", " + tile.ToString());

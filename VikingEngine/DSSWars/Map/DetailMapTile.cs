@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.Map
         static readonly IntervalF GrassCenterRange =
             IntervalF.FromCenter(0.5f * WorldData.SubTileWidth, 0.45f * WorldData.SubTileWidth);
 
-        //static ConcurrentStack<Foliage> foliagePool = new ConcurrentStack<Foliage>();
+        static ConcurrentStack<Foliage> foliagePool = new ConcurrentStack<Foliage>();
 
         public static List<LootFest.VoxelModelName> LoadModel()
         {
@@ -54,167 +54,175 @@ namespace VikingEngine.DSSWars.Map
            
         public IntVector2 pos;
         VerticeDataColorTexture verticeData;
-        Graphics.VoxelModel model;
-        List<Foliage> foliage;
+        Graphics.VoxelModel model = new Graphics.VoxelModel(false);
+        List<Foliage> foliage = new List<Foliage>(8);
         List<AnimalData> animalData;
-        
+        bool hasPolygons;
 
         public bool add = true;
         static PcgRandom rnd = new PcgRandom();
         //public bool isDeleted = false;
 
-        public DetailMapTile(IntVector2 pos, Tile tile)
+        public DetailMapTile()//IntVector2 pos, Tile tile)
         {
-            this.pos = pos;
+            
+            model.Effect = MapLayer_Detail.ModelEffect;
+            model.Visible = false;
             
             //var tile = DssRef.world.tileGrid.Get(pos);
-            if (tile.heightLevel != Height.DeepWaterHeight)
-            {
-                polygonBlock(tile);
-            }
+            //if (tile.heightLevel != Height.DeepWaterHeight)
+            //{
+            //polygonBlock(pos, tile);
+            //}
         }
 
-        void polygonBlock(Tile tile)
+        public void polygonBlock(IntVector2 pos, Tile tile)
         {
-            model = new Graphics.VoxelModel(false);
-            model.Effect = MapLayer_Detail.ModelEffect;
-            model.position = WP.ToWorldPos(pos);
+            this.pos = pos;
+            hasPolygons = tile.heightLevel != Height.DeepWaterHeight;
+
+            if (hasPolygons)
+            {
+                //model = new Graphics.VoxelModel(false);
+
+                model.position = WP.ToWorldPos(pos);
 
 #if DEBUG
-            model.DebugName = "Detail map tile " + pos.ToString();
+                model.DebugName = "Detail map tile " + pos.ToString();
 #endif
 
-            DssRef.state.detailMap.polygons.Clear();
+                DssRef.state.detailMap.polygons.Clear();
 
-            Vector2 topLeft = VectorExt.V2NegHalf;
-            IntVector2 subTileStart = pos * WorldData.TileSubDivitions;
+                Vector2 topLeft = VectorExt.V2NegHalf;
+                IntVector2 subTileStart = pos * WorldData.TileSubDivitions;
 
-            for (int y = 0; y < WorldData.TileSubDivitions; ++y)
-            {
-                for (int x = 0; x < WorldData.TileSubDivitions; ++x)
+                for (int y = 0; y < WorldData.TileSubDivitions; ++y)
                 {
-                    int subX = subTileStart.X + x;
-                    int subY = subTileStart.Y + y;
-
-                    rnd.SetSeed(subX * 3 + subY * 11);
-
-                    SubTile subTile = DssRef.world.subTileGrid.Get(subX, subY);
-                    Vector2 subTopLeft = new Vector2(topLeft.X + x * WorldData.SubTileWidth, topLeft.Y + y * WorldData.SubTileWidth);
-                    
-                    bool bSurfacePolygonTexture = true;
-                    SpriteName surfaceSprite = SpriteName.WhiteArea_LFtiles;
-                    Color surfaceColor = subTile.color;
-
-                    switch (subTile.mainTerrain)
+                    for (int x = 0; x < WorldData.TileSubDivitions; ++x)
                     {
-                        case TerrainMainType.Foil:
-                            bSurfacePolygonTexture = false;                            
-                            createFoliage((TerrainSubFoilType)subTile.subTerrain, subTile.terrainAmount,
-                                topCenter(ref subTile, ref subTopLeft), ref surfaceSprite);
-                            break;
-                        case TerrainMainType.Resourses:
-                            createResoursePile((TerrainResourcesType)subTile.subTerrain,
-                                topCenter(ref subTile, ref subTopLeft));
-                            break;
-                        case TerrainMainType.Building:
-                            bSurfacePolygonTexture = false;
-                            createBuilding(tile, ref subTile, (TerrainBuildingType)subTile.subTerrain,
-                                topCenter(ref subTile, ref subTopLeft));
-                            break;
-                        case TerrainMainType.Wall:
-                            createWall(tile, ref subTile, (TerrainWallType)subTile.subTerrain,
-                                topCenter(ref subTile, ref subTopLeft));
-                            break;
-                        case TerrainMainType.Mine:
-                            createMine((TerrainMineType)subTile.subTerrain,
-                                topCenter(ref subTile, ref subTopLeft));
-                            break;
-                        case TerrainMainType.Road:
-                            bSurfacePolygonTexture = false;
-                            createRoad((TerrainRoadType)subTile.subTerrain, ref surfaceSprite);
-                            break;
-                        case TerrainMainType.Decor:
-                            bSurfacePolygonTexture = false;
-                            createDecor(tile, ref subTile, (TerrainDecorType)subTile.subTerrain,
-                                topCenter(ref subTile, ref subTopLeft));
-                            break;
+                        int subX = subTileStart.X + x;
+                        int subY = subTileStart.Y + y;
+
+                        rnd.SetSeed(subX * 3 + subY * 11);
+
+                        SubTile subTile = DssRef.world.subTileGrid.Get(subX, subY);
+                        Vector2 subTopLeft = new Vector2(topLeft.X + x * WorldData.SubTileWidth, topLeft.Y + y * WorldData.SubTileWidth);
+
+                        bool bSurfacePolygonTexture = true;
+                        SpriteName surfaceSprite = SpriteName.WhiteArea_LFtiles;
+                        Color surfaceColor = subTile.color;
+
+                        switch (subTile.mainTerrain)
+                        {
+                            case TerrainMainType.Foil:
+                                bSurfacePolygonTexture = false;
+                                createFoliage((TerrainSubFoilType)subTile.subTerrain, subTile.terrainAmount,
+                                    topCenter(ref subTile, ref subTopLeft), ref surfaceSprite);
+                                break;
+                            case TerrainMainType.Resourses:
+                                createResoursePile((TerrainResourcesType)subTile.subTerrain,
+                                    topCenter(ref subTile, ref subTopLeft));
+                                break;
+                            case TerrainMainType.Building:
+                                bSurfacePolygonTexture = false;
+                                createBuilding(tile, ref subTile, (TerrainBuildingType)subTile.subTerrain,
+                                    topCenter(ref subTile, ref subTopLeft));
+                                break;
+                            case TerrainMainType.Wall:
+                                createWall(tile, ref subTile, (TerrainWallType)subTile.subTerrain,
+                                    topCenter(ref subTile, ref subTopLeft));
+                                break;
+                            case TerrainMainType.Mine:
+                                createMine((TerrainMineType)subTile.subTerrain,
+                                    topCenter(ref subTile, ref subTopLeft));
+                                break;
+                            case TerrainMainType.Road:
+                                bSurfacePolygonTexture = false;
+                                createRoad((TerrainRoadType)subTile.subTerrain, ref surfaceSprite);
+                                break;
+                            case TerrainMainType.Decor:
+                                bSurfacePolygonTexture = false;
+                                createDecor(tile, ref subTile, (TerrainDecorType)subTile.subTerrain,
+                                    topCenter(ref subTile, ref subTopLeft));
+                                break;
+                        }
+
+                        block(subTopLeft, surfaceSprite, surfaceColor, ref subTile);
+
+                        if (bSurfacePolygonTexture)
+                        {
+                            surfaceTexture(tile, subTile, subTopLeft);
+                        }
+
+                        DssRef.world.subTileGrid.Set(
+                            subTileStart.X + x, subTileStart.Y + y,
+                            subTile);
                     }
+                }
 
-                    block(subTopLeft, surfaceSprite, surfaceColor, ref subTile);
+                verticeData = PolygonLib.BuildVDFromPolygons(
+                    new Graphics.PolygonsAndTrianglesColor(DssRef.state.detailMap.polygons, null));
 
-                    if (bSurfacePolygonTexture)
+                void block(Vector2 subTopLeft, SpriteName texture, Color color, ref SubTile subTile)
+                {
+                    var top = Graphics.PolygonColor.QuadXZ(
+                        subTopLeft,
+                        WorldData.SubTileWidthV2, false, subTile.groundY,
+                        texture,
+                        Dir4.N,
+                        color);
+
+                    var bottom = top;
+                    Color bottomCol;
+
+                    if (tile.IsLand())
                     {
-                        surfaceTexture(tile, subTile, subTopLeft);
+                        bottom.Move(VectorExt.V3FromY(-0.4f));
+                        bottomCol = ColorExt.VeryDarkGray;
                     }
+                    else
+                    {
+                        bottom.Move(VectorExt.V3FromY(-0.1f));
+                        bottomCol = MapSettings.DeepWaterCol1;
+                    }
+                    Graphics.PolygonColor left = new Graphics.PolygonColor(
+                        bottom.V1nw.Position, bottom.V3ne.Position,
+                        top.V1nw.Position, top.V3ne.Position,
+                        SpriteName.WhiteArea_LFtiles, Dir4.N,
+                        ColorExt.ChangeBrighness(color, -5));
+                    left.V1nw.Color = bottomCol;
+                    left.V3ne.Color = bottomCol;
 
-                    DssRef.world.subTileGrid.Set(
-                        subTileStart.X + x, subTileStart.Y + y, 
-                        subTile);
+                    Graphics.PolygonColor right = new Graphics.PolygonColor(
+                        top.V0sw.Position, top.V2se.Position,
+                        bottom.V0sw.Position, bottom.V2se.Position,
+                        SpriteName.WhiteArea_LFtiles, Dir4.N,
+                        ColorExt.ChangeBrighness(color, -5));
+                    right.V0sw.Color = bottomCol;
+                    right.V2se.Color = bottomCol;
+
+                    Graphics.PolygonColor front = new Graphics.PolygonColor(
+                        bottom.V0sw.Position, bottom.V1nw.Position,
+                        top.V0sw.Position, top.V1nw.Position,
+                        SpriteName.WhiteArea_LFtiles, Dir4.N,
+                        ColorExt.ChangeBrighness(color, -10));
+                    front.V1nw.Color = bottomCol;
+                    front.V3ne.Color = bottomCol;
+
+
+                    DssRef.state.detailMap.polygons.Add(top);
+                    DssRef.state.detailMap.polygons.Add(front);
+                    DssRef.state.detailMap.polygons.Add(left);
+                    DssRef.state.detailMap.polygons.Add(right);
                 }
-            }
 
-            verticeData = PolygonLib.BuildVDFromPolygons(
-                new Graphics.PolygonsAndTrianglesColor(DssRef.state.detailMap.polygons, null));
-
-            void block(Vector2 subTopLeft, SpriteName texture, Color color, ref SubTile subTile)
-            {
-                var top = Graphics.PolygonColor.QuadXZ(
-                    subTopLeft,
-                    WorldData.SubTileWidthV2, false, subTile.groundY,
-                    texture,
-                    Dir4.N,
-                    color);
-
-                var bottom = top;
-                Color bottomCol;
-
-                if (tile.IsLand())
+                Vector3 topCenter(ref SubTile subTile, ref Vector2 subTopLeft)
                 {
-                    bottom.Move(VectorExt.V3FromY(-0.4f));
-                    bottomCol = ColorExt.VeryDarkGray;
+                    return new Vector3(
+                         pos.X + subTopLeft.X,
+                         subTile.groundY,
+                         pos.Y + subTopLeft.Y);
                 }
-                else
-                {
-                    bottom.Move(VectorExt.V3FromY(-0.1f));
-                    bottomCol = MapSettings.DeepWaterCol1;
-                }
-                Graphics.PolygonColor left = new Graphics.PolygonColor(
-                    bottom.V1nw.Position, bottom.V3ne.Position,
-                    top.V1nw.Position, top.V3ne.Position,
-                    SpriteName.WhiteArea_LFtiles, Dir4.N,
-                    ColorExt.ChangeBrighness(color, -5));
-                left.V1nw.Color = bottomCol;
-                left.V3ne.Color = bottomCol;
-
-                Graphics.PolygonColor right = new Graphics.PolygonColor(
-                    top.V0sw.Position, top.V2se.Position,
-                    bottom.V0sw.Position, bottom.V2se.Position,
-                    SpriteName.WhiteArea_LFtiles, Dir4.N,
-                    ColorExt.ChangeBrighness(color, -5));
-                right.V0sw.Color = bottomCol;
-                right.V2se.Color = bottomCol;
-
-                Graphics.PolygonColor front = new Graphics.PolygonColor(
-                    bottom.V0sw.Position, bottom.V1nw.Position,
-                    top.V0sw.Position, top.V1nw.Position,
-                    SpriteName.WhiteArea_LFtiles, Dir4.N,
-                    ColorExt.ChangeBrighness(color, -10));
-                front.V1nw.Color = bottomCol;
-                front.V3ne.Color = bottomCol;
-
-
-                DssRef.state.detailMap.polygons.Add(top);
-                DssRef.state.detailMap.polygons.Add(front);
-                DssRef.state.detailMap.polygons.Add(left);
-                DssRef.state.detailMap.polygons.Add(right);
-            }
-
-            Vector3 topCenter(ref SubTile subTile, ref Vector2 subTopLeft)
-            {
-               return new Vector3(
-                    pos.X + subTopLeft.X,
-                    subTile.groundY,
-                    pos.Y + subTopLeft.Y);
             }
         }
 
@@ -311,6 +319,18 @@ namespace VikingEngine.DSSWars.Map
             //}
         }
 
+
+        Foliage newFoliage()
+        {
+            Foliage result;
+            if (!foliagePool.TryPop(out result))
+            {
+                result = new Foliage();
+            }
+            foliage.Add(result);
+            return result;
+        }
+
         void createRoad(TerrainRoadType type, ref SpriteName surfaceSprite)
         {
             surfaceSprite = SpriteName.warsFoliageDirtRoad;
@@ -324,35 +344,35 @@ namespace VikingEngine.DSSWars.Map
             switch (type)
             {
                 case TerrainSubFoilType.TallGrass:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.fol_tallgrass, rnd, wp, 0.12f));
+                    newFoliage().init(LootFest.VoxelModelName.fol_tallgrass, rnd, wp, 0.12f);
                     break;
                 case TerrainSubFoilType.StoneBlock:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.fol_stoneblock, rnd, wp, 0.12f));
+                    newFoliage().init(LootFest.VoxelModelName.fol_stoneblock, rnd, wp, 0.12f);
                     break;
                 case TerrainSubFoilType.Bush:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.fol_bush1, rnd, wp, 0.12f));
+                    newFoliage().init(LootFest.VoxelModelName.fol_bush1, rnd, wp, 0.12f);
                     break;
                 case TerrainSubFoilType.Herbs:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.fol_herbs, rnd, wp, 0.12f));
+                    newFoliage().init(LootFest.VoxelModelName.fol_herbs, rnd, wp, 0.12f);
                     break;
                 case TerrainSubFoilType.Stones:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.fo_stone1, rnd, wp, 0.12f));
+                    newFoliage().init(LootFest.VoxelModelName.fo_stone1, rnd, wp, 0.12f);
                     break;
                 case TerrainSubFoilType.TreeHard:
                     surfaceSprite = SpriteName.warsFoliageRoundShadow;
-                    addFoliage(new Foliage(LootFest.VoxelModelName.fol_tree_hard, rnd, wp, 0.03f + 0.0012f * sizeValue));
+                    newFoliage().init(LootFest.VoxelModelName.fol_tree_hard, rnd, wp, 0.03f + 0.0012f * sizeValue);
                     break;
                 case TerrainSubFoilType.TreeSoft:
                     surfaceSprite = SpriteName.warsFoliageRoundShadow;
-                    addFoliage(new Foliage(LootFest.VoxelModelName.fol_tree_soft, rnd, wp, 0.03f + 0.0012f * sizeValue));
+                    newFoliage().init(LootFest.VoxelModelName.fol_tree_soft, rnd, wp, 0.03f + 0.0012f * sizeValue);
                     break;
                 case TerrainSubFoilType.DryWood:
                     surfaceSprite = SpriteName.warsFoliageRoundShadow;
-                    addFoliage(new Foliage(LootFest.VoxelModelName.fol_tree_dry, rnd, wp, 0.12f));
+                    newFoliage().init(LootFest.VoxelModelName.fol_tree_dry, rnd, wp, 0.12f);
                     break;
                 case TerrainSubFoilType.TreeSoftSprout:
                 case TerrainSubFoilType.TreeHardSprout:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.fol_sprout, rnd, wp, 0.05f + 0.01f * sizeValue));
+                    newFoliage().init(LootFest.VoxelModelName.fol_sprout, rnd, wp, 0.05f + 0.01f * sizeValue);
                     break;
 
                 case TerrainSubFoilType.WheatFarm:
@@ -382,7 +402,7 @@ namespace VikingEngine.DSSWars.Map
                     break;
 
                 case TerrainSubFoilType.BogIron:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 3, wp, 0.14f));
+                    newFoliage().init(LootFest.VoxelModelName.city_mine, 3, wp, 0.14f);
                     break;
                 default:
                     throw new NotImplementedException();
@@ -404,7 +424,7 @@ namespace VikingEngine.DSSWars.Map
                 {
                     frame = 1;
                 }
-                addFoliage(new Foliage(upgraded? LootFest.VoxelModelName.fol_farmculture2 : LootFest.VoxelModelName.fol_farmculture, frame, wp, 0.1f));
+                newFoliage().init(upgraded? LootFest.VoxelModelName.fol_farmculture2 : LootFest.VoxelModelName.fol_farmculture, frame, wp, 0.1f);
             }
             
         }
@@ -417,22 +437,22 @@ namespace VikingEngine.DSSWars.Map
             switch (buildingType)
             {
                 case TerrainWallType.DirtWall:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_dirtwall, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    newFoliage().init(LootFest.VoxelModelName.city_dirtwall, rnd, wp, WorldData.SubTileWidth * 1.4f);
                     break;
                 case TerrainWallType.DirtTower:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_dirttower, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    newFoliage().init(LootFest.VoxelModelName.city_dirttower, rnd, wp, WorldData.SubTileWidth * 1.4f);
                     break;
                 case TerrainWallType.WoodWall:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_woodwall, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    newFoliage().init(LootFest.VoxelModelName.city_woodwall, rnd, wp, WorldData.SubTileWidth * 1.4f);
                     break;
                 case TerrainWallType.WoodTower:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_woodtower, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    newFoliage().init(LootFest.VoxelModelName.city_woodtower, rnd, wp, WorldData.SubTileWidth * 1.4f);
                     break;
                 case TerrainWallType.StoneWall:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_stonewall, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    newFoliage().init(LootFest.VoxelModelName.city_stonewall, rnd, wp, WorldData.SubTileWidth * 1.4f);
                     break;
                 case TerrainWallType.StoneTower:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_stonetower, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    newFoliage().init(LootFest.VoxelModelName.city_stonetower, rnd, wp, WorldData.SubTileWidth * 1.4f);
                     break;
 
                 default:
@@ -452,148 +472,148 @@ namespace VikingEngine.DSSWars.Map
             {
                 case TerrainBuildingType.PigPen:
                     animals(tile, ref subTile, ref wp, AnimalType.Pig, TerrainContent.PigMaxSize);
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    newFoliage().init(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f);
                     break;
                 case TerrainBuildingType.HenPen:
                     animals(tile, ref subTile, ref wp, AnimalType.Hen, TerrainContent.HenMaxSize);
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    newFoliage().init(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f);
                     break;
                 case TerrainBuildingType.WorkerHut:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workerhut, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    newFoliage().init(LootFest.VoxelModelName.city_workerhut, rnd, wp, WorldData.SubTileWidth * 1.4f);
                     break;
                 case TerrainBuildingType.Tavern:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_tavern, rnd, wp, WorldData.SubTileWidth * 0.9f));
+                    newFoliage().init(LootFest.VoxelModelName.city_tavern, rnd, wp, WorldData.SubTileWidth * 0.9f);
                     break;
                 case TerrainBuildingType.Storehouse:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_storehouse, rnd, wp, WorldData.SubTileWidth * 1f));
+                    newFoliage().init(LootFest.VoxelModelName.city_storehouse, rnd, wp, WorldData.SubTileWidth * 1f);
                     break;
                 case TerrainBuildingType.Postal:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, 0, wp, WorldData.SubTileWidth * 0.9f));
+                    newFoliage().init(LootFest.VoxelModelName.city_postal, 0, wp, WorldData.SubTileWidth * 0.9f);
                     break;
                 case TerrainBuildingType.PostalLevel2:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, 1, wp, WorldData.SubTileWidth * 0.9f));
+                    newFoliage().init(LootFest.VoxelModelName.city_postal, 1, wp, WorldData.SubTileWidth * 0.9f);
                     break;
                 case TerrainBuildingType.PostalLevel3:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, 2, wp, WorldData.SubTileWidth * 0.9f));
+                    newFoliage().init(LootFest.VoxelModelName.city_postal, 2, wp, WorldData.SubTileWidth * 0.9f);
                     break;
                 case TerrainBuildingType.Recruitment:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, 3, wp, WorldData.SubTileWidth * 0.9f));
+                    newFoliage().init(LootFest.VoxelModelName.city_postal, 3, wp, WorldData.SubTileWidth * 0.9f);
                     break;
                 case TerrainBuildingType.RecruitmentLevel2:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, 4, wp, WorldData.SubTileWidth * 0.9f));
+                    newFoliage().init(LootFest.VoxelModelName.city_postal, 4, wp, WorldData.SubTileWidth * 0.9f);
                     break;
                 case TerrainBuildingType.RecruitmentLevel3:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, 5, wp, WorldData.SubTileWidth * 0.9f));
+                    newFoliage().init(LootFest.VoxelModelName.city_postal, 5, wp, WorldData.SubTileWidth * 0.9f);
                     break;
                 case TerrainBuildingType.SoldierBarracks:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 1, wp, WorldData.SubTileWidth * 1f));
+                    newFoliage().init(LootFest.VoxelModelName.city_barracks, 1, wp, WorldData.SubTileWidth * 1f);
                     break;
                 case TerrainBuildingType.ArcherBarracks:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 2, wp, WorldData.SubTileWidth * 1f));
+                    newFoliage().init(LootFest.VoxelModelName.city_barracks, 2, wp, WorldData.SubTileWidth * 1f);
                     break;
                 case TerrainBuildingType.WarmashineBarracks:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 3, wp, WorldData.SubTileWidth * 1f));
+                    newFoliage().init(LootFest.VoxelModelName.city_barracks, 3, wp, WorldData.SubTileWidth * 1f);
                     break;
                 case TerrainBuildingType.KnightsBarracks:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 4, wp, WorldData.SubTileWidth * 1f));
+                    newFoliage().init(LootFest.VoxelModelName.city_barracks, 4, wp, WorldData.SubTileWidth * 1f);
                     break;
                 case TerrainBuildingType.GunBarracks:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 5, wp, WorldData.SubTileWidth * 1f));
+                    newFoliage().init(LootFest.VoxelModelName.city_barracks, 5, wp, WorldData.SubTileWidth * 1f);
                     break;
                 case TerrainBuildingType.CannonBarracks:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_barracks, 6, wp, WorldData.SubTileWidth * 1f));
+                    newFoliage().init(LootFest.VoxelModelName.city_barracks, 6, wp, WorldData.SubTileWidth * 1f);
                     break;
 
                 case TerrainBuildingType.StoneHall:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_stonehall, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    newFoliage().init(LootFest.VoxelModelName.city_stonehall, rnd, wp, WorldData.SubTileWidth * 1.4f);
                     break;
                 case TerrainBuildingType.SmallHouse:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_smallhouse, rnd, wp, WorldData.SubTileWidth * 1f));
+                    newFoliage().init(LootFest.VoxelModelName.city_smallhouse, rnd, wp, WorldData.SubTileWidth * 1f);
                     break;
                 case TerrainBuildingType.BigHouse:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_bighouse, rnd, wp, WorldData.SubTileWidth * 1f));
+                    newFoliage().init(LootFest.VoxelModelName.city_bighouse, rnd, wp, WorldData.SubTileWidth * 1f);
                     break;
                 case TerrainBuildingType.CobbleStones:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_cobblestone, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    newFoliage().init(LootFest.VoxelModelName.city_cobblestone, rnd, wp, WorldData.SubTileWidth * 1.4f);
                     break;
                 case TerrainBuildingType.Square:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_square, rnd, wp, WorldData.SubTileWidth * 1.1f));
+                    newFoliage().init(LootFest.VoxelModelName.city_square, rnd, wp, WorldData.SubTileWidth * 1.1f);
                     break;
                 case TerrainBuildingType.Work_Cook:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 1, wp, WorldData.SubTileWidth * 1f));
+                    newFoliage().init(LootFest.VoxelModelName.city_workstation, 1, wp, WorldData.SubTileWidth * 1f);
                     break;
                 case TerrainBuildingType.Work_Bench:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 3, wp, WorldData.SubTileWidth * 1.4f));
+                    newFoliage().init(LootFest.VoxelModelName.city_workstation, 3, wp, WorldData.SubTileWidth * 1.4f);
                     break;
 
                 case TerrainBuildingType.Work_CoalPit:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 4, wp, WorldData.SubTileWidth * 1.2f));
+                    newFoliage().init(LootFest.VoxelModelName.city_workstation, 4, wp, WorldData.SubTileWidth * 1.2f);
                     break;
 
                 case TerrainBuildingType.Work_Smith:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 0, wp, WorldData.SubTileWidth * 1.4f));
+                    newFoliage().init(LootFest.VoxelModelName.city_workstation, 0, wp, WorldData.SubTileWidth * 1.4f);
                     break;
                 case TerrainBuildingType.Smelter:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 5, wp, WorldData.SubTileWidth * 1.4f));
+                    newFoliage().init(LootFest.VoxelModelName.city_workstation, 5, wp, WorldData.SubTileWidth * 1.4f);
                     break;
                 case TerrainBuildingType.Foundry:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 6, wp, WorldData.SubTileWidth * 1.4f));
+                    newFoliage().init(LootFest.VoxelModelName.city_workstation, 6, wp, WorldData.SubTileWidth * 1.4f);
                     break;
                 case TerrainBuildingType.Armory:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 8, wp, WorldData.SubTileWidth * 1.4f));
+                    newFoliage().init(LootFest.VoxelModelName.city_workstation, 8, wp, WorldData.SubTileWidth * 1.4f);
                     break;
                 case TerrainBuildingType.Chemist:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 7, wp, WorldData.SubTileWidth * 1.4f));
+                    newFoliage().init(LootFest.VoxelModelName.city_workstation, 7, wp, WorldData.SubTileWidth * 1.4f);
                     break;
                 case TerrainBuildingType.Gunmaker:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 9, wp, WorldData.SubTileWidth * 1.4f));
+                    newFoliage().init(LootFest.VoxelModelName.city_workstation, 9, wp, WorldData.SubTileWidth * 1.4f);
                     break;
 
                 case TerrainBuildingType.Brewery:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_workstation, 2, wp, WorldData.SubTileWidth * 1f));
+                    newFoliage().init(LootFest.VoxelModelName.city_workstation, 2, wp, WorldData.SubTileWidth * 1f);
                     break;
                 case TerrainBuildingType.WaterResovoir:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_water, 0, wp, WorldData.SubTileWidth * 1f));
+                    newFoliage().init(LootFest.VoxelModelName.city_water, 0, wp, WorldData.SubTileWidth * 1f);
                     break;
 
                 case TerrainBuildingType.Carpenter:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_carpenter, 0, wp, WorldData.SubTileWidth * 1f));
+                    newFoliage().init(LootFest.VoxelModelName.city_carpenter, 0, wp, WorldData.SubTileWidth * 1f);
                     break;
                 case TerrainBuildingType.WoodCutter:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_quarry, 0, wp, WorldData.SubTileWidth * 1f));
+                    newFoliage().init(LootFest.VoxelModelName.city_quarry, 0, wp, WorldData.SubTileWidth * 1f);
                     break;
                 case TerrainBuildingType.StoneCutter:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_quarry, 1, wp, WorldData.SubTileWidth * 1f));
+                    newFoliage().init(LootFest.VoxelModelName.city_quarry, 1, wp, WorldData.SubTileWidth * 1f);
                     break;
 
                 case TerrainBuildingType.Nobelhouse:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_nobelhouse, 0, wp, WorldData.SubTileWidth * 1.3f));
+                    newFoliage().init(LootFest.VoxelModelName.city_nobelhouse, 0, wp, WorldData.SubTileWidth * 1.3f);
                     break;
                 case TerrainBuildingType.Embassy:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_nobelhouse, 1, wp, WorldData.SubTileWidth * 1.3f));
+                    newFoliage().init(LootFest.VoxelModelName.city_nobelhouse, 1, wp, WorldData.SubTileWidth * 1.3f);
                     break;
                 case TerrainBuildingType.Logistics:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_logistic, subTile.terrainAmount -1, wp, WorldData.SubTileWidth * 1.0f));
+                    newFoliage().init(LootFest.VoxelModelName.city_logistic, subTile.terrainAmount -1, wp, WorldData.SubTileWidth * 1.0f);
                     break;
 
                 case TerrainBuildingType.Bank:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.Bank, 0, wp, WorldData.SubTileWidth * 1.0f));
+                    newFoliage().init(LootFest.VoxelModelName.Bank, 0, wp, WorldData.SubTileWidth * 1.0f);
                     break;
                 case TerrainBuildingType.CoinMinter:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.Bank, 1, wp, WorldData.SubTileWidth * 1.0f));
+                    newFoliage().init(LootFest.VoxelModelName.Bank, 1, wp, WorldData.SubTileWidth * 1.0f);
                     break;
                 case TerrainBuildingType.School:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_logistic, 2, wp, WorldData.SubTileWidth * 1.0f));
+                    newFoliage().init(LootFest.VoxelModelName.city_logistic, 2, wp, WorldData.SubTileWidth * 1.0f);
                     break;
 
                 case TerrainBuildingType.GoldDeliveryLevel1:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, 6, wp, WorldData.SubTileWidth * 0.9f));
+                    newFoliage().init(LootFest.VoxelModelName.city_postal, 6, wp, WorldData.SubTileWidth * 0.9f);
                     break;
                 case TerrainBuildingType.GoldDeliveryLevel2:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, 7, wp, WorldData.SubTileWidth * 0.9f));
+                    newFoliage().init(LootFest.VoxelModelName.city_postal, 7, wp, WorldData.SubTileWidth * 0.9f);
                     break;
                 case TerrainBuildingType.GoldDeliveryLevel3:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_postal, 8, wp, WorldData.SubTileWidth * 0.9f));
+                    newFoliage().init(LootFest.VoxelModelName.city_postal, 8, wp, WorldData.SubTileWidth * 0.9f);
                     break;
 
                 case TerrainBuildingType._RESERVE1:
@@ -617,13 +637,13 @@ namespace VikingEngine.DSSWars.Map
 
             switch (decorType) {
                 case TerrainDecorType.Pavement:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_pavement, 0, wp, WorldData.SubTileWidth * 1.3f));
+                    newFoliage().init(LootFest.VoxelModelName.city_pavement, 0, wp, WorldData.SubTileWidth * 1.3f);
                     break;
                 case TerrainDecorType.PavementFlower:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_pavement, 1, wp, WorldData.SubTileWidth * 1.3f));
+                    newFoliage().init(LootFest.VoxelModelName.city_pavement, 1, wp, WorldData.SubTileWidth * 1.3f);
                     break;
                 case TerrainDecorType.Statue_ThePlayer:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.decor_statue, 0, wp, WorldData.SubTileWidth * 1f));
+                    newFoliage().init(LootFest.VoxelModelName.decor_statue, 0, wp, WorldData.SubTileWidth * 1f);
                     break;
                
                 default:
@@ -659,33 +679,33 @@ namespace VikingEngine.DSSWars.Map
             switch (mineType)
             {
                 case TerrainMineType.IronOre:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 0, wp, scale));
+                    newFoliage().init(LootFest.VoxelModelName.city_mine, 0, wp, scale);
                     break;
                 case TerrainMineType.Coal:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 2, wp, scale));
+                    newFoliage().init(LootFest.VoxelModelName.city_mine, 2, wp, scale);
                     break;
                 case TerrainMineType.TinOre:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 6, wp, scale));
+                    newFoliage().init(LootFest.VoxelModelName.city_mine, 6, wp, scale);
                     break;
                 
                 case TerrainMineType.CopperOre:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 9, wp, scale));
+                    newFoliage().init(LootFest.VoxelModelName.city_mine, 9, wp, scale);
                     break;
                 
                 case TerrainMineType.LeadOre:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 7, wp, scale));
+                    newFoliage().init(LootFest.VoxelModelName.city_mine, 7, wp, scale);
                     break;
                 case TerrainMineType.SilverOre:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 4, wp, scale));
+                    newFoliage().init(LootFest.VoxelModelName.city_mine, 4, wp, scale);
                     break;
                 case TerrainMineType.GoldOre:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 1, wp, scale));
+                    newFoliage().init(LootFest.VoxelModelName.city_mine, 1, wp, scale);
                     break;
                 case TerrainMineType.Mithril:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 8, wp, scale));
+                    newFoliage().init(LootFest.VoxelModelName.city_mine, 8, wp, scale);
                     break;
                 case TerrainMineType.Sulfur:
-                    addFoliage(new Foliage(LootFest.VoxelModelName.city_mine, 5, wp, scale));
+                    newFoliage().init(LootFest.VoxelModelName.city_mine, 5, wp, scale);
                     break;
 
                 default:
@@ -718,33 +738,40 @@ namespace VikingEngine.DSSWars.Map
                     throw new NotImplementedException();
             }
 
-            addFoliage(new Foliage(modelName, rnd, wp, scale));
+            newFoliage().init(modelName, rnd, wp, scale);
 
         }
 
-        void addFoliage(Foliage f)
-        {
-            if (foliage == null)
-            {
-                foliage = new List<Foliage>(8);
-            }
-            foliage.Add(f);
-        }
+        //void addFoliage(Foliage f)
+        //{
+        //    //if (foliage == null)
+        //    //{
+        //    //    foliage = new List<Foliage>(8);
+        //    //}
+        //    foliage.Add(f);
+        //}
 
-        public void synchToRender()
+        public bool synchToRender()
         {
             if (add)
             {
                 //var tile = DssRef.world.tileGrid.Get(pos);
 
-                if (model != null)
+                if (hasPolygons)//model != null)
                 {
+                    //if (!model.InRenderList)
+                    //{
+                    //    model.AddToRender(DrawGame.UnitDetailLayer);
+                    //}
+
                     model.BuildFromVerticeData(verticeData,
                         new List<int> { verticeData.DrawData.numTriangles / 2 },
                         Texture);
-
-                    model.AddToRender(DrawGame.UnitDetailLayer);
-
+                    model.Visible = true;
+                    if (!model.InRenderList)
+                    {
+                        model.AddToRender(DrawGame.UnitDetailLayer);
+                    }
                     PolygonLib.VerticeDataPool.Push(verticeData);
                     verticeData = null;
                 }
@@ -771,19 +798,23 @@ namespace VikingEngine.DSSWars.Map
             {
                 DeleteMe();
             }
+
+            return add;
         }
 
         public void DeleteMe()
         {
-            model?.DeleteMe();
-            if (foliage != null)
+            model.Visible = false;
+            //model?.DeleteMe();
+            //if (foliage != null)
+            //{
+            foreach (var m in foliage)
             {
-                foreach (var m in foliage)
-                {
-                    m.DeleteMe();
-                }
-                foliage = null;
+                m.DeleteMe();
             }
+            foliage.Clear();
+                //foliage = null;
+            //}
 
             //isDeleted = true;
         }
