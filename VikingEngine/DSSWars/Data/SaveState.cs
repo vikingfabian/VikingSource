@@ -67,6 +67,15 @@ namespace VikingEngine.DSSWars.Data
             complete = true;
         }
 
+        public void writeNet(System.IO.BinaryWriter w)
+        {
+            writeGameState(w);
+        }
+        public void readNet(System.IO.BinaryReader r)
+        {
+            readGameState(r);
+        }
+
         public void writeGameState(System.IO.BinaryWriter w)
         {
             new SaveVersion(Version, SubVersion).write(w);
@@ -86,9 +95,7 @@ namespace VikingEngine.DSSWars.Data
             DssRef.world.writeGameState(w);
             Debug.WriteCheck(w);
             DssRef.state.writeGameState(w);
-        }
-
-        
+        }        
 
         public void readGameState(System.IO.BinaryReader r)
         {

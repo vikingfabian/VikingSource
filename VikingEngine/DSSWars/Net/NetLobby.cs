@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using VikingEngine.Network;
 using VikingEngine.ToGG.HeroQuest.Net;
 
-namespace VikingEngine.DSSWars
+namespace VikingEngine.DSSWars.Net
 {
     class NetLobby : Network.NetLobby
     {
@@ -167,7 +167,7 @@ namespace VikingEngine.DSSWars
         class LobbyButton
         {
             VectorRect area;
-            public Network.AbsAvailableSession session;
+            public AbsAvailableSession session;
             Graphics.ImageGroupParent2D images;
             Vector2 sz;
             Graphics.Image outline;
@@ -180,7 +180,7 @@ namespace VikingEngine.DSSWars
                 bg.Color = Color.DarkBlue;
 
                 Graphics.TextG joinText = new Graphics.TextG(LoadedFont.Bold, Vector2.Zero,
-                    Vector2.One, Graphics.Align.Zero, "Join Quest Lobby:", Color.White, ImageLayers.AbsoluteBottomLayer);
+                    Vector2.One, Graphics.Align.Zero, "Join game:", Color.White, ImageLayers.AbsoluteBottomLayer);
                 joinText.LayerAbove(bg);
                 joinText.SetHeight(Engine.Screen.IconSize * 0.7f);
 

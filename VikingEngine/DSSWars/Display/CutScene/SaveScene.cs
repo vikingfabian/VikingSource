@@ -146,10 +146,7 @@ namespace VikingEngine.DSSWars.Display.CutScene
                     DssRef.state.exit();
                 }
             }
-
         }
-        
-
     }
 
     class LoadScene : AbsSaveScene
@@ -162,6 +159,14 @@ namespace VikingEngine.DSSWars.Display.CutScene
             this.meta = load;
             saveGamestate = new SaveGamestate(load);
             saveGamestate.load();
+        }
+
+        public LoadScene(System.IO.BinaryReader readWorld)
+            : base()
+        {
+            var meta = new SaveStateMeta();
+            saveGamestate = new SaveGamestate(meta);
+            saveGamestate.readNet(readWorld);
         }
 
         protected override string SaveString => DssRef.lang.Progressbar_LoadProgress;

@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.GameState
             :base()
         {
             draw.ClrColor = Color.Black;
-            Ref.lobby.disconnect(null);
+            Ref.lobby?.disconnect(null);
         }
 
         public override void Time_Update(float time)

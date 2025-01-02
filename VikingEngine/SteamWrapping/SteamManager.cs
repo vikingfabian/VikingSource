@@ -182,7 +182,7 @@ namespace VikingEngine.SteamWrapping
 
             if (PlatformSettings.RunProgram == StartProgram.LootFest3 ||
                 PlatformSettings.RunProgram == StartProgram.PartyJousting ||
-                //PlatformSettings.RunProgram == StartProgram.DSS ||
+                PlatformSettings.RunProgram == StartProgram.DSS ||
                 PlatformSettings.RunProgram == StartProgram.ToGG)
             {
                 P2PManager = new SteamP2PManager();

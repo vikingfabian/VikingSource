@@ -135,6 +135,10 @@ namespace VikingEngine.Network
     enum PacketType : byte
     {
         NON,
+
+        DssJoined_WantWorld,
+        DssSendWorld,
+
         VoiceChat,
         Steam_AssignClientId,
         Steam_SuccesfulJoinPing,

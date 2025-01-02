@@ -16,6 +16,7 @@ using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.Input;
+using VikingEngine.Network;
 using VikingEngine.ToGG.MoonFall;
 //
 
@@ -55,7 +56,7 @@ namespace VikingEngine.DSSWars
         bool slowMinuteUpdate = true;   
         Timer.Basic subTileReloadTimer = new Timer.Basic(1000, true);                
 
-        public PlayState(bool host, SaveStateMeta loadMeta)
+        public PlayState(bool host, SaveStateMeta loadMeta, System.IO.BinaryReader readWorld)
             : base()
         {
             
@@ -63,18 +64,11 @@ namespace VikingEngine.DSSWars
             this.host = host;
             Engine.Update.SetFrameRate(60);
 
-            //int seed;
-            //if (loadMeta == null)
-            //{
-            //    seed = DssRef.world.metaData.seed;
-            //}
-            //else
-            //{
-            //    seed = loadMeta.worldmeta.seed;
-            //}
-
-
-            if (loadMeta == null)
+            if (readWorld != null)
+            {
+                new LoadScene(readWorld);
+            }
+            else if (loadMeta == null)
             {
                 initGameState(true, null);
                 onGameStart(true);
@@ -741,6 +735,20 @@ namespace VikingEngine.DSSWars
         public bool IsLocalMultiplayer()
         {
             return localPlayers.Count >= 2;
+        }
+
+        public override void NetworkReadPacket(ReceivedPacket packet)
+        {
+            switch (packet.type)
+            {
+                case PacketType.DssJoined_WantWorld:
+                    var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssSendWorld,
+                        Network.PacketReliability.ReliableLasy, packet.sender.id);
+                    var meta = new SaveStateMeta();
+                    var saveGamestate = new SaveGamestate(meta);
+                    saveGamestate.writeNet(w);
+                    break;
+            }
         }
     }
 
