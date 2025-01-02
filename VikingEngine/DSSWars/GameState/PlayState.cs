@@ -21,7 +21,7 @@ using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
 {
-    class PlayState : Engine.GameState
+    class PlayState : AbsDssState
     {
         public const int PathThreadCount = 4;
         public WorldResources resources = new WorldResources();
@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars
         Timer.Basic subTileReloadTimer = new Timer.Basic(1000, true);                
 
         public PlayState(bool host, SaveStateMeta loadMeta)
-            : base(true)
+            : base()
         {
             
             DssRef.state = this;

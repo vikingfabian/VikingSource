@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace VikingEngine.DSSWars.GameState
 {
-    class ExitGamePlay : Engine.GameState
+    class ExitGamePlay : AbsDssState
     {
         int waitUpdates = 30;
 
@@ -13,6 +13,7 @@ namespace VikingEngine.DSSWars.GameState
             :base()
         {
             draw.ClrColor = Color.Black;
+            Ref.lobby.disconnect(null);
         }
 
         public override void Time_Update(float time)
@@ -24,10 +25,5 @@ namespace VikingEngine.DSSWars.GameState
                 new LobbyState();
             }
         }
-
-        //public override Engine.GameStateType Type
-        //{
-        //    get { return Engine.GameStateType.LoadingContent; }
-        //}
     }
 }

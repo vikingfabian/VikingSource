@@ -1,20 +1,10 @@
 ﻿-Change Log-
-Big performance update
-Upgraded to .net8
-Added 3 update cores (of course)
-Prepared light effects for future use
+
 
 
 #OPT#
-//AbsDetailUnit > public Physics.AbsBound2D bound;
-//class UnitCollArea > använd pekare
-//Separera main/detail path threads
 culling av worker
-
 stanna musik spelaren
-//List<ISyncAction> syncQue = new List<ISyncAction>(); till concurrent
-
-//hitta depricated
 
 monogame fork? DrawUserPrimitives opt, titta på OGG filer
 //försöka återvinna class DetailMapTile
@@ -120,6 +110,7 @@ English, Simplified Chinese, Japanese, Russian, Spanish
 -oktober next fest, demo måste vara redo senast september
 -wishlist länk i spelet måste finnas i alla menyer (använd steam API)
 
+-description gifs ska vara 3st "three pillars, what you do in the game"
 
 VertexPositionColorNormal
 VerticeDataColorTexture verticeData = new VerticeDataColorTexture(vertices, indexDrawOrder);

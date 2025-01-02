@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.LootFest.GO.Characters.CastleEnemy;
+using VikingEngine.ToGG.HeroQuest;
 
 namespace VikingEngine.DSSWars
 {
@@ -21,7 +23,7 @@ namespace VikingEngine.DSSWars
         PlayState state = null;
         SaveStateMeta loadMeta;
 
-        public StartGame(NetworkLobby netLobby, SaveStateMeta loadMeta, MapBackgroundLoading loading)
+        public StartGame(bool host, NetworkLobby netLobby, SaveStateMeta loadMeta, MapBackgroundLoading loading)
             :base(false)
         {
             this.loadMeta = loadMeta;
@@ -29,12 +31,12 @@ namespace VikingEngine.DSSWars
             new PlaySettings();
 
             if (loading == null)
-            { 
+            {
+                Ref.netSession.LobbyPublicity = Network.LobbyPublicity.Public;
                 loading = new MapBackgroundLoading(null);
             }
 
             this.loading=loading;
-            //available.join();
             this.netLobby = netLobby;
 
             loadingStatusText = new Graphics.TextG(LoadedFont.Regular, 
@@ -42,17 +44,13 @@ namespace VikingEngine.DSSWars
                 new Vector2(Engine.Screen.TextSize * 2f),
                 Graphics.Align.Zero, "...", Color.White, ImageLayers.Lay1);
 
-            //int loadingNumber = Ref.rnd.Int(MapFileGeneratorState.MapCountPerSize) + 1;
+            Ref.lobby.startSearchLobbies(false);
 
-            //storage = new WorldDataStorage();
-
-            //if (StartupSettings.SaveLoadSpecificMap.HasValue)
-            //{
-            //    DssRef.storage.mapSize = StartupSettings.SaveLoadSpecificMap.Value;
-            //    loadingNumber = 1;
-            //}
-            //storage.loadMap(DssRef.storage.mapSize, loadingNumber);
-            
+            if (host)
+            {
+                Ref.lobby.startCreateLobby(true);
+            }
+           
         }
 
         public override void Time_Update(float time)

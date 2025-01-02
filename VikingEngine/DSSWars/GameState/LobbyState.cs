@@ -30,7 +30,7 @@ using VikingEngine.DataStream;
 
 namespace VikingEngine.DSSWars
 {
-    class LobbyState : Engine.GameState
+    class LobbyState : AbsDssState
     {
         Display.MenuSystem menuSystem;
         MapBackgroundLoading mapBackgroundLoading;
@@ -90,6 +90,13 @@ namespace VikingEngine.DSSWars
             availableKeyboardKeys.Remove(Keys.Down);
             availableKeyboardKeys.Remove(Keys.Left);
             availableKeyboardKeys.Remove(Keys.Right);
+
+            if (Ref.lobby == null)
+            {
+                new NetLobby();
+            }
+
+            Ref.lobby.startSearchLobbies(true);
         }
 
         void load_asynch()
@@ -1047,7 +1054,7 @@ namespace VikingEngine.DSSWars
 
         void startGame_nochecks()
         {
-            new StartGame(netLobby, null, mapBackgroundLoading);
+            new StartGame(true, netLobby, null, mapBackgroundLoading);
         }
 
         void listSaves()
@@ -1208,7 +1215,7 @@ namespace VikingEngine.DSSWars
             //{
             //    save =DssRef.storage.meta.listSaves()[saveIndex];
             //}
-            new StartGame(netLobby, saveMeta, mapBackgroundLoading);
+            new StartGame(true, netLobby, saveMeta, mapBackgroundLoading);
         }
         
     }
