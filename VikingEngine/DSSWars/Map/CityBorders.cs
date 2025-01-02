@@ -15,9 +15,11 @@ namespace VikingEngine.DSSWars.Map
     class CityBorders
     {
         City current = null;
-        ImageGroup imageGroup = new ImageGroup();
+        //ImageGroup imageGroup = new ImageGroup();
         //int state_0del_1process_2created = 0;
-        
+        List<VoxelModelInstance> imageGroup = new List<VoxelModelInstance>();
+
+
         Task process;
         //List<Graphics.AbsVoxelObj> processModels = null;
 
@@ -28,12 +30,12 @@ namespace VikingEngine.DSSWars.Map
                 if (process.IsCompleted)
                 {
                     process = null;
-                    if (player.mapControls.selection.obj == current)
-                    {
-                        //still relavant
-                        imageGroup.AddToRender(DrawGame.UnitDetailLayer);
-                        //state_0del_1process_2created = 2;
-                    }
+                    //if (player.mapControls.selection.obj == current)
+                    //{
+                    //    //still relavant
+                    //    imageGroup.AddToRender(DrawGame.UnitDetailLayer);
+                    //    //state_0del_1process_2created = 2;
+                    //}
                     //else
                     //{
                     //    //cancel
@@ -49,7 +51,11 @@ namespace VikingEngine.DSSWars.Map
             if (player.mapControls.selection.obj != current)
             {
                 current = player.mapControls.selection.obj as City;
-                imageGroup.DeleteAll();
+                //imageGroup.DeleteAll();
+                foreach (var img in imageGroup)
+                {
+                    DssRef.models.recycle(img, true);
+                }
 
                 if (current != null)
                 {
@@ -173,8 +179,8 @@ namespace VikingEngine.DSSWars.Map
 
             void addStick(Vector3 pos, int frame)
             {
-                Graphics.AbsVoxelObj stick = DssRef.models.ModelInstance(VoxelModelName.wars_borderstick,
-                    DssConst.Men_StandardModelScale * 1.5f, false);
+                var stick = DssRef.models.ModelInstance(VoxelModelName.wars_borderstick,true,
+                    DssConst.Men_StandardModelScale * 1.5f, true, true);
                 stick.position = pos;
                 stick.Frame = frame;
                 imageGroup.Add(stick);

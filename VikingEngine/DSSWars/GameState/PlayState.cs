@@ -23,6 +23,7 @@ namespace VikingEngine.DSSWars
 {
     class PlayState : Engine.GameState
     {
+        public const int PathThreadCount = 4;
         public WorldResources resources = new WorldResources();
 
         Map.MapLayer_Factions factionsMap;
@@ -30,8 +31,9 @@ namespace VikingEngine.DSSWars
         public Map.MapLayer_Detail detailMap;
 
         public Culling culling;
-        public PathFindingPool pathFindingPool = new PathFindingPool();
-        public DetailPathFindingPool detailPathFindingPool = new DetailPathFindingPool();
+        public PathUpdateThread[] pathUpdates; 
+        //public PathFindingPool pathFindingPool = new PathFindingPool();
+        //public DetailPathFindingPool detailPathFindingPool = new DetailPathFindingPool();
 
         public int nextGroupId = 0;
         public List<Players.LocalPlayer> localPlayers;
@@ -41,7 +43,7 @@ namespace VikingEngine.DSSWars
         bool host;
         bool isReady= false;
         public bool PartyMode = false;   
-        bool exitThreads = false;
+        public bool exitThreads = false;
         public GameEvents events;
         public Progress progress = new Progress();
         TechnologyManager technologyManager = new TechnologyManager();
@@ -240,12 +242,28 @@ namespace VikingEngine.DSSWars
 
             //new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63);
             //new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
-            new AsynchUpdateable_TryCatch(asyncPathUpdate, "DSS path update", 64);
+           
 
             if (localPlayers.Count > 1)
             {
                 Ref.SetGameSpeed(DssRef.storage.multiplayerGameSpeed);
             }
+
+            pathUpdates = new PathUpdateThread[PathThreadCount + 1];
+            int startIx = 0;
+            int factionLength = DssRef.world.factions.Count / PathThreadCount;
+            for (int i = 0; i < PathThreadCount; i++)
+            {
+                int end = startIx + factionLength;
+                if (i == PathThreadCount -1)
+                {
+                    //last
+                    end = DssRef.world.factions.Count -1;
+                }
+                pathUpdates[i] = new PathUpdateThread(i, startIx, end);
+                startIx = end + 1;
+            }
+            pathUpdates[PathThreadCount] = new PathUpdateThread_Player(PathThreadCount);
 
             isReady = host;
         }
@@ -660,16 +678,7 @@ namespace VikingEngine.DSSWars
             return exitThreads;
         }
 
-        bool asyncPathUpdate(int id, float time)
-        {
-            var factions = DssRef.world.factions.counter();
-            while (factions.Next())
-            {
-                factions.sel.asyncPathUpdate();
-            }
-
-            return exitThreads;
-        }
+       
 
         bool asynchCullingUpdate(int id, float time)
         {

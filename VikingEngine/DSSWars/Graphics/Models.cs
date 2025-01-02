@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
@@ -17,6 +18,8 @@ namespace VikingEngine.DSSWars
    
     class Models
     {
+        ConcurrentStack<Graphics.VoxelModelInstance> voxelModelInstancesPool_detail = new ConcurrentStack<VoxelModelInstance>();
+        ConcurrentStack<Graphics.VoxelModelInstance> voxelModelInstancesPool_overview = new ConcurrentStack<VoxelModelInstance>();
         public Dictionary<VoxelModelName, VoxelObjGridDataAnimHD> rawModels = new Dictionary<VoxelModelName, VoxelObjGridDataAnimHD>();
         Dictionary<VoxelModelName, Graphics.VoxelModel> voxelModels = new Dictionary<VoxelModelName, Graphics.VoxelModel>();
         
@@ -173,15 +176,50 @@ namespace VikingEngine.DSSWars
             }
             
         }
-
-        public Graphics.AbsVoxelObj ModelInstance(
-           VoxelModelName name,
-           float scale = 1f,
-           bool addToRender = true)
+        public void recycle(Graphics.VoxelModelInstance instance, bool detailLayer)
         {
-            Graphics.VoxelModelInstance instance = new Graphics.VoxelModelInstance(null, addToRender);
+            if (instance != null)
+            {
+                instance.Visible = false;
+                instance.Rotation = RotationQuarterion.Identity;
+                (detailLayer ? voxelModelInstancesPool_detail : voxelModelInstancesPool_overview).Push(instance);
+            }
+        }
+
+        public Graphics.VoxelModelInstance ModelInstance(            
+            VoxelModelName name,
+            bool detailLayer,
+            float scale = 1f,           
+            bool addToRender = true, 
+            bool async = false)
+        {
+            //Graphics.VoxelModelInstance instance = new Graphics.VoxelModelInstance(null, addToRender);
+
+            Graphics.VoxelModelInstance instance;
+            if (addToRender &&
+                (detailLayer ? voxelModelInstancesPool_detail : voxelModelInstancesPool_overview).TryPop(out instance))
+            {
+                instance.Visible = true;                
+            }
+            else
+            {
+                instance = new Graphics.VoxelModelInstance(null);
+                if (addToRender)
+                {
+                    int lay = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.TerrainLayer;
+
+                    if (async)
+                    {
+                        Ref.update.AddSyncAction(new SyncAction1Arg<int>(instance.AddToRender, lay));
+                    }
+                    else
+                    {
+                        instance.AddToRender(lay);
+                    }
+                }
+            }
+
 #if DEBUG
-            //Debug.CrashIfThreaded();
             instance.DebugName = name.ToString();
 
             if (!voxelModels.ContainsKey(name))
@@ -200,58 +238,6 @@ namespace VikingEngine.DSSWars
             return instance;
         }
 
-        //public Graphics.AbsVoxelObj AutoLoadModelInstance(
-        //    VoxelModelName name,
-        //    float scale = 1f,
-        //    float yAdjust = 0f, bool centerY = false,
-        //    bool addToRender = true)
-        //{
-        //    Graphics.VoxelModelInstance instance = new Graphics.VoxelModelInstance(null, addToRender);
-
-        //}
-
-        //public VoxelObjGridDataAnimHD Get(VoxelModelName name, bool initiateLoading)
-        //{
-        //    VoxelObjGridDataAnimHD model = null;
-        //    lock (loaded)
-        //    {
-        //        loaded.TryGetValue(name, out model);
-        //    }
-
-        //    if (model == null && initiateLoading)
-        //    {
-        //        lock (loading)
-        //        {
-        //            if (!loading.Contains(name))
-        //            {
-        //                loading.Add(name);
-        //                new LoadRawModelTask(name);
-        //            }
-        //        }
-
-        //    }
-
-        //    return model;
-        //}
-
-        //public void onModelLoad_asynch(VoxelModelName name, VoxelObjGridDataAnimHD model)
-        //{
-        //    lock (loaded)
-        //    {
-        //        loaded.Add(name, model);
-        //    }
-        //    //lock (loading)
-        //    //{
-        //    //    loading.Remove(name);
-        //    //}
-
-        //    //var factions = DssRef.world.factions.counter();
-
-        //    //while (factions.Next())//var m in DssRef.state.players)
-        //    //{
-        //    //    factions.sel.OnRawModelLoaded_asynch(name, model);
-        //    //}
-        //}
     }
     class VoxelModelData
     {

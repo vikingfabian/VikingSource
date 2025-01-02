@@ -20,13 +20,13 @@ namespace VikingEngine.DSSWars.Players.Orders
     {
         protected City city;
         protected IntVector2 subTile;
-        protected AbsVoxelObj model;
+        protected VoxelModelInstance model;
 
         protected void createModel(int frame)
         { 
-            model = DssRef.models.ModelInstance(LootFest.VoxelModelName.buildarea, WorldData.SubTileWidth * 1.4f, false);
+            model = DssRef.models.ModelInstance(LootFest.VoxelModelName.buildarea, true, WorldData.SubTileWidth * 1.4f, true);
             model.Frame = frame;
-            model.AddToRender(DrawGame.UnitDetailLayer);
+            //model.AddToRender(DrawGame.UnitDetailLayer);
             model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTile);
         }
 
@@ -42,7 +42,8 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         public override void DeleteMe()
         {
-            model.DeleteMe();
+            //model.DeleteMe();
+            DssRef.models.recycle(model, true);
             base.DeleteMe();
         }
     }

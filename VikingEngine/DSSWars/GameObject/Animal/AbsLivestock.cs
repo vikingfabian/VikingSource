@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
     {        
         VectorRect area;
         protected WalkingAnimation walkingAnimation;
-        protected Graphics.AbsVoxelObj model;
+        protected Graphics.VoxelModelInstance model;
         IntVector2 tilepos;
         Time stateTime;
         Vector3 walkDir;
@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         {
             this.tilepos = tilepos;
             model = createModel();
-            model.AddToRender(DrawGame.UnitDetailLayer);
+            //model.AddToRender(DrawGame.UnitDetailLayer);
             
 
             stateTime = new Time(Ref.rnd.Float(10, 2000));
@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
             WP.Rotation1DToQuaterion(model, Ref.rnd.Rotation());
         }
 
-        abstract protected Graphics.AbsVoxelObj createModel();
+        abstract protected Graphics.VoxelModelInstance createModel();
 
         void randomWalkDir()
         {
@@ -88,7 +88,9 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         public override void DeleteMe()
         {
             base.DeleteMe();
-            model.DeleteMe();
+            DssRef.models.recycle(model, true);
+            model = null;
+            //model.DeleteMe();
         }
     }
 
@@ -97,12 +99,12 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         public Pig(IntVector2 tilepos, Vector3 topCenterWp)
             : base(tilepos, topCenterWp)
         { }
-        protected override Graphics.AbsVoxelObj createModel()
+        protected override Graphics.VoxelModelInstance createModel()
         {
             walkingAnimation = new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames);
 
-            return DssRef.models.ModelInstance(VoxelModelName.Pig,
-                DssConst.Men_StandardModelScale * 0.5f, false);
+            return DssRef.models.ModelInstance(VoxelModelName.Pig, true,
+                DssConst.Men_StandardModelScale * 0.5f, true);
         }
 
         protected override void sound()
@@ -118,12 +120,12 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         public Hen(IntVector2 tilepos, Vector3 topCenterWp)
             : base(tilepos, topCenterWp)
         { }
-        protected override Graphics.AbsVoxelObj createModel()
+        protected override Graphics.VoxelModelInstance createModel()
         {
             walkingAnimation = new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 0.25f);
 
-            return DssRef.models.ModelInstance(VoxelModelName.Hen,
-                DssConst.Men_StandardModelScale * 0.3f, false);
+            return DssRef.models.ModelInstance(VoxelModelName.Hen, true,
+                DssConst.Men_StandardModelScale * 0.3f, true);
         }
 
         protected override void sound()

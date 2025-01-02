@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
@@ -22,6 +23,8 @@ namespace VikingEngine.DSSWars.Map
 
         static readonly IntervalF GrassCenterRange =
             IntervalF.FromCenter(0.5f * WorldData.SubTileWidth, 0.45f * WorldData.SubTileWidth);
+
+        //static ConcurrentStack<Foliage> foliagePool = new ConcurrentStack<Foliage>();
 
         public static List<LootFest.VoxelModelName> LoadModel()
         {
@@ -50,7 +53,7 @@ namespace VikingEngine.DSSWars.Map
         
            
         public IntVector2 pos;
-        IVerticeData verticeData;
+        VerticeDataColorTexture verticeData;
         Graphics.VoxelModel model;
         List<Foliage> foliage;
         List<AnimalData> animalData;
@@ -715,13 +718,6 @@ namespace VikingEngine.DSSWars.Map
                     throw new NotImplementedException();
             }
 
-            //if (foliage == null)
-            //{
-            //    foliage = new List<Foliage>(8);
-            //}
-//#if DEBUG
-//            model.DebugName = "Resource pile " + model.DebugName;
-//#endif
             addFoliage(new Foliage(modelName, rnd, wp, scale));
 
         }
@@ -749,6 +745,7 @@ namespace VikingEngine.DSSWars.Map
 
                     model.AddToRender(DrawGame.UnitDetailLayer);
 
+                    PolygonLib.VerticeDataPool.Push(verticeData);
                     verticeData = null;
                 }
 

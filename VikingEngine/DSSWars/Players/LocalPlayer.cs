@@ -167,7 +167,7 @@ namespace VikingEngine.DSSWars.Players
             drawUnitsView = new MapDetailLayerManager(playerData);
             InitTutorial(newGame);
 
-            new AsynchUpdateable(interactAsynchUpdate, "DSS player interact", playerindex);
+            //new AsynchUpdateable(interactAsynchUpdate, "DSS player interact", playerindex);
 
             refreshNeihgborAggression();
             if (numPlayers > 1)
@@ -1507,11 +1507,11 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public bool interactAsynchUpdate(int id, float time)
+        public void asyncPlayerPathUpdate(float time)
         {
             armyControls?.asynchUpdate();
 
-            return false;
+            //return false;
         }
 
         bool clickHover(bool sameMapObject)

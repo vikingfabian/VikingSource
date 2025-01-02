@@ -424,11 +424,15 @@ namespace VikingEngine.Graphics
 
         public static VerticeDataColorTexture BuildVDFromPolygons(PolygonsAndTrianglesColor polygonsAndTriangles)
         {
-           
-            
-            VerticeDataColorTexture verticeData = new VerticeDataColorTexture(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);//VerticeDataColorTexture(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);
-           
-
+            VerticeDataColorTexture verticeData;
+            if (VerticeDataPool.TryPop(out verticeData))
+            {
+                verticeData.recycle(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);
+            }
+            else
+            {
+                verticeData = new VerticeDataColorTexture(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);//VerticeDataColorTexture(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);
+            }
 
             VerticeDrawOrderData drawOrder = verticeData.DrawData;
             int totalVerticeIx = 0;

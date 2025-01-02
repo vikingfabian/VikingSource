@@ -10,7 +10,7 @@ namespace VikingEngine.DSSWars.GameObject
 {
     class DeserterAnimation : AbsInGameUpdateable
     {
-        Graphics.AbsVoxelObj model;
+        Graphics.VoxelModelInstance model;
         WalkingAnimation walkingAnimation;
         Vector3 movedir;
         float lifeTime = 1500;
@@ -21,10 +21,9 @@ namespace VikingEngine.DSSWars.GameObject
             walkingAnimation = WalkingAnimation.Standard;
             walkingAnimation.randomStartFrame();
             this.movedir = movedir;
-            model = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_deserter,
+            model = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_deserter, true,
                 DssConst.Men_StandardModelScale,
-                false);
-            model.AddToRender(DrawGame.UnitDetailLayer);
+                true);
 
             model.position = soldier.position;
             model.Rotation = rotation;
@@ -46,7 +45,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void DeleteMe()
         {
-            model.DeleteMe();
+            DssRef.models.recycle(model, true);
+            model = null;
             base.DeleteMe();
         }
     }

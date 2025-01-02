@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Concurrent;
 
 namespace VikingEngine.Engine
 {
@@ -28,7 +29,7 @@ namespace VikingEngine.Engine
         
         SpottedArray<IUpdateable>[] updateLists;
         SpottedArray<IUpdateable> oneTimeTriggers;
-        List<ISyncAction> syncQue = new List<ISyncAction>();
+        ConcurrentStack<ISyncAction> syncQue = new ConcurrentStack<ISyncAction>();
         
         public int GetUpdateListCount(UpdateType updateType)
         {
@@ -207,22 +208,22 @@ namespace VikingEngine.Engine
                 }
             }
 
-            lock (syncQue)
+            while (syncQue.TryPop(out ISyncAction syncAction))
             {
-                for (int i = 0; i < syncQue.Count;++i)
-                {
-                    syncQue[i].runSyncAction();
-                }
-                syncQue.Clear();
+                syncAction.runSyncAction();
             }
+            
+                //for (int i = 0; i < syncQue.Count;++i)
+                //{
+                //    syncQue[i].runSyncAction();
+                //}
+                //syncQue.Clear();
+            
         }
 
         public void AddSyncAction(ISyncAction syncAction)
-        {
-            lock (syncQue)
-            {
-                syncQue.Add(syncAction);
-            }
+        {            
+            syncQue.Push(syncAction);   
         }
 
         public void TriggerAllSteamWriters()

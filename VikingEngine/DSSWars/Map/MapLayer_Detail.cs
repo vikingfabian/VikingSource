@@ -77,8 +77,7 @@ namespace VikingEngine.DSSWars.Map
         }
 
         public void asynchUpdate()
-        {
-           
+        {           
             for (int i = tiles.Count - 1; i >= 0; --i)
             {
                 var tilePos = tiles[i].pos;

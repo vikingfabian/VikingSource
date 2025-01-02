@@ -7,7 +7,7 @@ namespace VikingEngine.DSSWars.Map
 {
     class Foliage
     {
-        Graphics.AbsVoxelObj model;
+        Graphics.VoxelModelInstance model;
         LootFest.VoxelModelName modelName;
         Vector3 pos;
         float scale;
@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars.Map
 
         public void addToRender()
         {
-            model = DssRef.models.ModelInstance(modelName, scale, false);
+            model = DssRef.models.ModelInstance( modelName, true,scale, true);
 
             if (setFrame < 0)
             {
@@ -43,13 +43,18 @@ namespace VikingEngine.DSSWars.Map
                 model.Frame = setFrame;
             }
 
-            model.AddToRender(DrawGame.UnitDetailLayer);
+            //model.AddToRender(DrawGame.UnitDetailLayer);
             model.position = pos;
         }
 
         public void DeleteMe()
         {
-            model?.DeleteMe();
+            if (model != null)
+            {
+                //model.Visible = false;//.DeleteMe();
+                DssRef.models.recycle(model, true); 
+                model = null;
+            }
         }
     }
 }

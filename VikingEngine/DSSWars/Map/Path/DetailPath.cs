@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars.Map.Path
             nodeGrid = new DetailPathNode[area.Width, area.Height];
         }
 
-        public DetailWalkingPath FindPath(IntVector2 center, Rotation1D startDir, IntVector2 goal, bool startAsShip, bool endAsShip, bool isTravelNode)
+        public DetailWalkingPath FindPath(int pathThreadIndex, IntVector2 center, Rotation1D startDir, IntVector2 goal, bool startAsShip, bool endAsShip, bool isTravelNode)
         {
             /*
             * Path finding algorithm
@@ -190,7 +190,7 @@ namespace VikingEngine.DSSWars.Map.Path
             //List<DetailPathNodeResult> result = new List<DetailPathNodeResult>();
 
             //const int MaxBacknodes = 1;
-            var path = DssRef.state.detailPathFindingPool.GetRes();
+            var path = DssRef.state.pathUpdates[pathThreadIndex].detailPathFindingPool.GetRes();
             bool blocked = false;
             int totalNodes = 0;
 

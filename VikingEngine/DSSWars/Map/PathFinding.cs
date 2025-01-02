@@ -90,7 +90,7 @@ namespace VikingEngine.DSSWars.Map
             nodeGrid = new PathNode[DssRef.world.Size.X, DssRef.world.Size.Y];
         }
 
-        public WalkingPath FindPath(IntVector2 center, Rotation1D startDir, IntVector2 goal, bool startAsShip)
+        public WalkingPath FindPath(int pathThreadIndex, IntVector2 center, Rotation1D startDir, IntVector2 goal, bool startAsShip)
         {
             /*
             * Path finding algorithm
@@ -164,7 +164,7 @@ namespace VikingEngine.DSSWars.Map
             }
 
             //List<PathNodeResult> result = new List<PathNodeResult>();
-            var path = DssRef.state.pathFindingPool.GetRes();
+            var path = DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.GetRes();
 
             while (currentNode.Position != startNode.Position)
             {

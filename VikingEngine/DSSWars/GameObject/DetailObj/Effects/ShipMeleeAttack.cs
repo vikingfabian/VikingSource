@@ -11,7 +11,7 @@ namespace VikingEngine.DSSWars.GameObject
 {
     class ShipMeleeAttack:AbsInGameUpdateable
     {
-        Graphics.AbsVoxelObj model;
+        Graphics.VoxelModelInstance model;
         AbsSoldierUnit ship;
         Vector3 posDiff;
         public ShipMeleeAttack(AbsSoldierUnit ship, Rotation1D dir)
@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             posDiff = ship.soldierData.modelScale * offset;
 
-            model = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_shipmelee, DssConst.Men_StandardModelScale * 2f, false);
+            model = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_shipmelee, true, DssConst.Men_StandardModelScale * 2f, true);
             model.Frame = frame;
             model.AddToRender(DrawGame.UnitDetailLayer);
         }
@@ -52,7 +52,8 @@ namespace VikingEngine.DSSWars.GameObject
         public override void DeleteMe()
         {
             base.DeleteMe();
-            model.DeleteMe();
+            DssRef.models.recycle(model, true);
+            //model.DeleteMe();
         }
     }
 }

@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars.GameObject
         float speed = DssConst.Men_StandardModelScale * 8f;
         //const float MinDistance = AbsSoldierData.StandardModelScale * 0.2f;
 
-        Graphics.AbsVoxelObj model;
+        Graphics.VoxelModelInstance model;
         AbsDetailUnit fromAttack;
         GameObject.AbsDetailUnit target; 
         int damage;
@@ -160,8 +160,8 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
             }
 
-            model = DssRef.models.ModelInstance(modelName, scale, false);
-            model.AddToRender(DrawGame.UnitDetailLayer);
+            model = DssRef.models.ModelInstance(modelName, true, scale, true);
+            //model.AddToRender(DrawGame.UnitDetailLayer);
             model.Frame = frame;
             linearPosition = start;
             model.position = start;
@@ -280,7 +280,8 @@ namespace VikingEngine.DSSWars.GameObject
         public override void DeleteMe()
         {
             base.DeleteMe();
-            model.DeleteMe();
+            //model.DeleteMe();
+            DssRef.models.recycle(model, true);
         }
     }
 }

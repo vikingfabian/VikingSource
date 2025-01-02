@@ -14,7 +14,7 @@ namespace VikingEngine.DSSWars.GameObject
         bool toShip;
         Time transformTimer;
         //Graphics.Mesh transformIcon;
-        AbsVoxelObj transformModel, loadingModel;
+        VoxelModelInstance transformModel, loadingModel;
         bool transformEffect = false;
 
         public ShipTransform(SoldierGroup group, bool immediet)
@@ -72,14 +72,14 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (transformModel == null)
                 {
-                    transformModel = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_shipbuild, DssConst.Men_StandardModelScale * 2f, false);
+                    transformModel = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_shipbuild, true, DssConst.Men_StandardModelScale * 2f, true);
 
                     //transformIcon = new Graphics.Mesh(LoadedMesh.cube_repeating, group.position,
                     //    new Vector3(AbsDetailUnitData.StandardModelScale * 2f), Graphics.TextureEffectType.Flat,
                     //        SpriteName.WhiteArea, Color.Brown, false);
                     
 
-                    loadingModel = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_loading_anim, DssConst.Men_StandardModelScale * 2f, false);
+                    loadingModel = DssRef.models.ModelInstance( LootFest.VoxelModelName.wars_loading_anim,true, DssConst.Men_StandardModelScale * 2f, true);
                     transformModel.Frame = toShip? 0 : 1;
                     
 
@@ -89,8 +89,8 @@ namespace VikingEngine.DSSWars.GameObject
                     transformModel.position = loadingModel.position;
                     transformModel.position.Y += 0.04f;
 
-                    transformModel.AddToRender(DrawGame.UnitDetailLayer);
-                    loadingModel.AddToRender(DrawGame.UnitDetailLayer);
+                    //transformModel.AddToRender(DrawGame.UnitDetailLayer);
+                    //loadingModel.AddToRender(DrawGame.UnitDetailLayer);
                     //new Graphics.Motion3d(Graphics.MotionType.ROTATE, loadingModel,
                     //    new Vector3(MathExt.Tau, 0, 0), Graphics.MotionRepeate.Loop, 1000, true);
                 }
@@ -103,8 +103,14 @@ namespace VikingEngine.DSSWars.GameObject
         public override void DeleteMe()
         {
             base.DeleteMe();
-            transformModel?.DeleteMe();
-            loadingModel?.DeleteMe();
+
+            DssRef.models.recycle(transformModel, true);
+            DssRef.models.recycle(loadingModel, true);
+            //if (transformModel != null)
+            //{
+            //    transformModel?.DeleteMe();
+            //}
+            //loadingModel?.DeleteMe();
             //group.inShipTransform = null;
             //group.lockMovement = false;
             group.completeTransform(toShip? SoldierTransformType.ToShip : SoldierTransformType.FromShip);

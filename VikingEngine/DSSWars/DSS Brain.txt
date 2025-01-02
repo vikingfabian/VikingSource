@@ -1,25 +1,23 @@
 ﻿-Change Log-
 Big performance update
 Upgraded to .net8
+Added 3 update cores (of course)
+Prepared light effects for future use
+
 
 #OPT#
 //AbsDetailUnit > public Physics.AbsBound2D bound;
 //class UnitCollArea > använd pekare
-Separera main/detail path threads
-culling av worker / city models
-
-kan stackalloc användas till listor som skapar modeller?
+//Separera main/detail path threads
+culling av worker
 
 stanna musik spelaren
-
-List<ISyncAction> syncQue = new List<ISyncAction>(); till concurrent
-
-public void asyncUserUpdate(), varför triggar buy soldier?
+//List<ISyncAction> syncQue = new List<ISyncAction>(); till concurrent
 
 //hitta depricated
 
 monogame fork? DrawUserPrimitives opt, titta på OGG filer
-
+försöka återvinna class DetailMapTile
 
 # WORKER PATH #
 Ha en loop som går igenom tiles, om det finns 1+ byggnader, räkna tid från hall till slumpad byggnad, tid till närmast mat och avlämning
@@ -118,7 +116,10 @@ English, Simplified Chinese, Japanese, Russian, Spanish
 -New end boss
 -Lots of named factions
 
--Min 5K wishlists
+-Min 7K wishlists
+-oktober next fest, demo måste vara redo senast september
+-wishlist länk i spelet måste finnas i alla menyer (använd steam API)
+
 
 VertexPositionColorNormal
 VerticeDataColorTexture verticeData = new VerticeDataColorTexture(vertices, indexDrawOrder);

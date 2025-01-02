@@ -14,7 +14,7 @@ namespace VikingEngine.DSSWars.GameObject.Party
         /// <summary>
         /// Restless - warm in the clothes - Worn out
         /// </summary>
-        Graphics.AbsVoxelObj restBarModel;
+        Graphics.VoxelModelInstance restBarModel;
         public Pan restMeter;
         public Pan actionPoints;
 
@@ -51,15 +51,16 @@ namespace VikingEngine.DSSWars.GameObject.Party
                 if (restBarModel == null)
                 {
                     //y adj = 2f
-                    restBarModel = DssRef.models.ModelInstance(LootFest.VoxelModelName.party_restbar, 1f, false);
-                    restBarModel.AddToRender(DrawGame.TerrainLayer);
+                    restBarModel = DssRef.models.ModelInstance( LootFest.VoxelModelName.party_restbar, false,1f, true);
+                    //restBarModel.AddToRender(DrawGame.TerrainLayer);
                 }
             }
             else
             {
                 if (restBarModel != null)
                 {
-                    restBarModel.DeleteMe();
+                    //restBarModel.DeleteMe();
+                    DssRef.models.recycle(restBarModel, false);
                     restBarModel = null;
                 }
             }

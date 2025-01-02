@@ -151,12 +151,12 @@ namespace VikingEngine.DSSWars.GameObject
             return objective == ArmyObjective.Attack && path.NodeCountLeft() == 3;
         }
 
-        public void asyncPathUpdate()
+        public void asyncPathUpdate(int pathThreadIndex)
         {
             if (IdleObjetive())
             {
-                recyclePath();
-                   
+                recyclePath(pathThreadIndex);
+
             }
             else if (objective != ArmyObjective.None)
             {
@@ -164,12 +164,12 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (path == null)
                     {
-                        path_calulate();
+                        path_calulate(pathThreadIndex);
                     }
                     needPath_playerview = false;
                     var p = faction.player.GetLocalPlayer();
                     if (p != null)
-                    { 
+                    {
                         p.hud.needRefresh = true;
                     }
                 }
@@ -180,7 +180,7 @@ namespace VikingEngine.DSSWars.GameObject
                     path_sp.refreshCurrentNode(tilePos, out bool offTrack);
                     if (offTrack)
                     {
-                        path_calulate();
+                        path_calulate(pathThreadIndex);
                     }
                 }
             }
@@ -188,7 +188,7 @@ namespace VikingEngine.DSSWars.GameObject
             var groupsC = groups.counter();
             while (groupsC.Next())
             {
-                groupsC.sel.asyncPathUpdate();
+                groupsC.sel.asyncPathUpdate(pathThreadIndex);
             }
         }
 
@@ -592,27 +592,27 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        void recyclePath()
+        void recyclePath(int pathThreadIndex)
         {
             //if (path != null)
             //{
-                //lock (DssRef.state.pathFindingPool)
-                //{
-                    DssRef.state.pathFindingPool.Return(path);
-                    path = null;
-                //}
+            //lock (DssRef.state.pathFindingPool)
+            //{
+            DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.Return(path);
+            path = null;
+            //}
             //}
         }
 
-        void path_calulate()
+        void path_calulate(int pathThreadIndex)
         {
-            recyclePath();
+            recyclePath(pathThreadIndex);
 
-            PathFinding pf = DssRef.state.pathFindingPool.GetPf();
+            PathFinding pf = DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.GetPf();
             {
-                path = pf.FindPath(tilePos, rotation, walkGoal, isShip);
+                path = pf.FindPath(pathThreadIndex, tilePos, rotation, walkGoal, isShip);
             }
-            DssRef.state.pathFindingPool.Return(pf);
+            DssRef.state.pathUpdates[pathThreadIndex].pathFindingPool.Return(pf);
         }
 
         public override void stateDebugText(RichBoxContent content)

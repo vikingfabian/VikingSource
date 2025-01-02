@@ -13,7 +13,8 @@ namespace VikingEngine
     {
         protected AsynchUpdateAction updateAction;
 
-        ManualResetEvent resetEvent = new ManualResetEvent(false);
+        //ManualResetEvent resetEvent = new ManualResetEvent(false);
+        AutoResetEvent resetEvent = new AutoResetEvent(false);
         System.Threading.Thread thread;
         //Task task;
 
@@ -53,7 +54,7 @@ namespace VikingEngine
             {
                 while (!End())
                 {                    
-                    resetEvent.WaitOne(16); // Blocks until the event is signaled
+                    resetEvent.WaitOne(); // Blocks until the event is signaled
                     if (End())
                     {
                         return;
@@ -61,6 +62,10 @@ namespace VikingEngine
                     asynchTime = time;
                     time -= asynchTime;
 
+                    //if (asynchTime <= 0)
+                    //{ 
+                    //    lib.DoNothing(); //why is this often zero
+                    //}
                     //if (asynchTime > 0)
                     //{
                     busyThread = true;

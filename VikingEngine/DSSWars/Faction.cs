@@ -521,12 +521,12 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public void asyncPathUpdate()
+        public void asyncPathUpdate(int pathThreadIndex)
         {
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
-                armiesC.sel.asyncPathUpdate();
+                armiesC.sel.asyncPathUpdate(pathThreadIndex);
             }
         }
 

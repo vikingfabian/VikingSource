@@ -120,13 +120,13 @@ namespace VikingEngine.DSSWars.GameObject
     class KnightModel : SoldierUnitAdvancedModel
     {
         
-        Graphics.AbsVoxelObj horsemodel;
+        Graphics.VoxelModelInstance horsemodel;
         public KnightModel(AbsSoldierUnit soldier)
            : base(soldier)
         {
           
-           horsemodel = DssRef.models.ModelInstance(Ref.rnd.Chance(0.2)? VoxelModelName.horse_white : VoxelModelName.horse_brown, DssConst.Men_StandardModelScale * 1.5f,false);
-           horsemodel.AddToRender(DrawGame.UnitDetailLayer);
+           horsemodel = DssRef.models.ModelInstance(Ref.rnd.Chance(0.2)? VoxelModelName.horse_white : VoxelModelName.horse_brown, true, DssConst.Men_StandardModelScale * 1.5f,true);
+           //horsemodel.AddToRender(DrawGame.UnitDetailLayer);
 
            walkingAnimation = new WalkingAnimation(1, 6, WalkingAnimation.StandardMoveFrames*2f);
         }
@@ -175,7 +175,8 @@ namespace VikingEngine.DSSWars.GameObject
         public override void DeleteMe()
         {
             base.DeleteMe();
-            horsemodel.DeleteMe();
+            //horsemodel.DeleteMe();
+            DssRef.models.recycle(horsemodel, true);
         }
     }
 
