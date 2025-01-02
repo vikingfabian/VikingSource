@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars
             }
             else
             {
-                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.hqEnteredLobby,
+                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssJoined_WantWorld,
                     Network.PacketReliability.Reliable, Ref.netSession.Host().Id);
             }
         }

@@ -750,6 +750,11 @@ namespace VikingEngine.DSSWars
                     break;
             }
         }
+
+        public override void NetEvent_PeerJoined(AbsNetworkPeer peer)
+        {
+            base.NetEvent_PeerJoined(peer);
+        }
     }
 
     struct AsynchUpdateArgs

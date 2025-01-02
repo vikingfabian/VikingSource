@@ -13,6 +13,7 @@ namespace VikingEngine.ToGG.HeroQuest.Net
         public ConnectState(Network.AbsAvailableSession available)
             : base(true)
         {
+
             Ref.lobby.searchLobbies = false;
             available.join();
             init(available.hostName);

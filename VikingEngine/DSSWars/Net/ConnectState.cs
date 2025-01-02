@@ -4,18 +4,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameState;
 using VikingEngine.LootFest.BlockMap.Level;
 using VikingEngine.Network;
 using VikingEngine.ToGG.GameState;
 
 namespace VikingEngine.DSSWars.Net
 {
-    class ConnectState : Engine.GameState
+    class ConnectState : AbsDssState
     {
         Time failTimer = new Time(8, TimeUnit.Seconds);
 
         public ConnectState(Network.AbsAvailableSession available)
-            : base(true)
+            : base()
         {
             Ref.lobby.searchLobbies = false;
             available.join();
@@ -47,11 +48,12 @@ namespace VikingEngine.DSSWars.Net
             {
                 //Ref.lobby.startSearchLobbies(true);
 
-                new ExitState();
+                new ExitGamePlay();
                 
                 return;
             }
         }
+       
 
         public override void NetEvent_PingReturned(AbsNetworkPeer gamer)
         {
@@ -59,6 +61,10 @@ namespace VikingEngine.DSSWars.Net
 
             new StartGame(false, null, null, null);
             //new Lobby.LobbyState(false, null);
+        }
+        public override void NetworkReadPacket(ReceivedPacket packet)
+        {
+            base.NetworkReadPacket(packet);
         }
 
     }

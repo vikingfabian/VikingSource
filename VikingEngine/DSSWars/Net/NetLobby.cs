@@ -106,7 +106,7 @@ namespace VikingEngine.DSSWars.Net
             }
             lobbies.Clear();
         }
-
+        
         public override void NetEvent_SessionsFound(List<AbsAvailableSession> availableSessions, List<AbsAvailableSession> prevAvailableSessionsList)
         {
             base.NetEvent_SessionsFound(availableSessions, prevAvailableSessionsList);
@@ -151,6 +151,10 @@ namespace VikingEngine.DSSWars.Net
                     }
                 }
             }
+        }
+        public override void NetEvent_PingReturned(AbsNetworkPeer gamer)
+        {
+            Ref.gamestate.NetEvent_PingReturned(gamer);
         }
 
         //public override void NetEvent_PeerJoined(AbsNetworkPeer gamer)

@@ -10,7 +10,12 @@ namespace VikingEngine.DSSWars.GameState
     {
         public AbsDssState() 
             : base() 
-        { }
+        {
+            if (Ref.lobby == null)
+            {
+                new Net.NetLobby();
+            }
+        }
         public override void Time_Update(float time)
         {
             base.Time_Update(time);
