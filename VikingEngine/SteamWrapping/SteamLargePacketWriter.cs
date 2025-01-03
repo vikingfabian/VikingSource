@@ -87,8 +87,9 @@ namespace VikingEngine.SteamWrapping
                     }
                     else
                     {
-                        Ref.netSession.BeginWritingPacket(Network.PacketType.Steam_LargePacket_Recieved, SendPacketTo.OneSpecific, packet.sender.fullId,
+                        var w = Ref.netSession.BeginWritingPacket(Network.PacketType.Steam_LargePacket_Recieved, SendPacketTo.OneSpecific, packet.sender.fullId,
                             Network.PacketReliability.Reliable, null);
+                        w.Write(id);
                     }
                 }));
             });            

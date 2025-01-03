@@ -752,7 +752,7 @@ namespace VikingEngine.DSSWars
                     var saveGamestate = new SaveGamestate(meta);
                     saveGamestate.writeNet(w);
 
-                    new SteamLargePacketWriter(file, SendPacketTo.OneSpecific, packet.sender.fullId, PacketType.DssSendWorld);
+                    new SteamLargePacketWriter(file, SendPacketTo.OneSpecific, packet.sender.fullId, PacketType.DssSendWorld).begin();
                     break;
             }
         }
