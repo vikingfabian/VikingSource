@@ -58,9 +58,19 @@ namespace VikingEngine.SteamWrapping
                 w.Write((ushort)packetCount);
 
                 file.WritePartialDataToWriter(writerPos, SendChunkSize, w);
+                writerPos += SendChunkSize;
 
                 EndWrite_Asynch();
             });
+        }
+
+        public override void Time_Update(float time)
+        {
+            base.Time_Update(time);
+            if (writerPos >= file.memoryLength)
+            {
+                Ref.netSession.largePackets.Remove(id);
+            }
         }
 
         public void readNext(Network.ReceivedPacket packet)
@@ -84,6 +94,8 @@ namespace VikingEngine.SteamWrapping
                         largePacket.type = largePacketType;
                         largePacket.r = file.GetReader();
                         Ref.NetUpdateReciever().NetEvent_LargePacket(largePacket);
+
+                        Ref.netSession.largePackets.Remove(id);
                     }
                     else
                     {

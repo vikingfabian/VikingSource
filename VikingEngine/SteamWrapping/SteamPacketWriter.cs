@@ -42,7 +42,7 @@ namespace VikingEngine.SteamWrapping
             return w;
         }
 
-        public void Time_Update(float time)
+        virtual public void Time_Update(float time)
         {
 #if PCGAME
             if (Ref.steam.isNetworkInitialized)
