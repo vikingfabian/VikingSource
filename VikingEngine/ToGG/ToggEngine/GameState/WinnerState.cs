@@ -29,15 +29,15 @@ namespace VikingEngine.ToGG
                 winner.TurnsCount.ToString() + " turns", Color.White, ImageLayers.Lay3);
             turnText.Ypos += Engine.Screen.Height * 0.1f;
 
-            if (winner is LocalPlayer)
-            {
-                toggRef.storage.wonQuickPlay++;
-            }
-            else
-            {
-                toggRef.storage.lostQuickPlay++;
-            }
-            toggRef.storage.saveLoad(true);
+            //if (winner is LocalPlayer)
+            //{
+            //    toggRef.storage.wonQuickPlay++;
+            //}
+            //else
+            //{
+            //    toggRef.storage.lostQuickPlay++;
+            //}
+            //toggRef.storage.saveLoad(true);
         }
 
         public override void Time_Update(float time)
@@ -52,7 +52,11 @@ namespace VikingEngine.ToGG
                     Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Enter) ||
                     Input.Mouse.ButtonDownEvent(MouseButton.Left))
                 {
+#if DSS
+                    new DSSWars.LobbyState();
+#else
                     new GameState.MainMenuState();
+#endif
                 }
             }
         }

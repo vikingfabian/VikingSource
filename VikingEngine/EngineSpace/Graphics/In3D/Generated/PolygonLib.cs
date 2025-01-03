@@ -468,15 +468,64 @@ namespace VikingEngine.Graphics
             }
             return verticeData;
         }
-        
+
         //    else
         //    {
         //        //används inte
         //        VerticeDataNormal verticeData = new VerticeDataNormal(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);
         //        throw new NotImplementedException();
         //    }
-            
+
         //}
+
+        public static VerticeDataNormal BuildVDFromPolygons(PolygonsAndTrianglesNormal polygonsAndTriangles)
+        {
+            //VerticeDataColorNormal verticeData;
+            //if (VerticeDataPool.TryPop(out verticeData))
+            //{
+            //    verticeData.recycle(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);
+            //}
+            //else
+            //{
+            //    verticeData = new VerticeDataColorNormal(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);//VerticeDataColorTexture(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);
+            //}
+            VerticeDataNormal verticeData = new VerticeDataNormal(polygonsAndTriangles.NumPolygons, polygonsAndTriangles.NumTriangles);
+
+            VerticeDrawOrderData drawOrder = verticeData.DrawData;
+            int totalVerticeIx = 0;
+            int indexDrawOrderPointer = 0;
+
+            for (int polyIx = 0; polyIx < polygonsAndTriangles.NumPolygons; polyIx++)
+            {
+                verticeData.SetVertice(totalVerticeIx, polygonsAndTriangles.GetPolygonVertex0(ref polyIx));
+                totalVerticeIx++;
+                verticeData.SetVertice(totalVerticeIx, polygonsAndTriangles.GetPolygonVertex1(ref polyIx));
+                totalVerticeIx++;
+                verticeData.SetVertice(totalVerticeIx, polygonsAndTriangles.GetPolygonVertex2(ref polyIx));
+                totalVerticeIx++;
+                verticeData.SetVertice(totalVerticeIx, polygonsAndTriangles.GetPolygonVertex3(ref polyIx));
+                totalVerticeIx++;
+
+                for (int drawOrderIx = 0; drawOrderIx < NumDrawIxPerPoly; drawOrderIx++)
+                {
+                    drawOrder.SetDrawOrder(indexDrawOrderPointer, BasicIndexDrawOrder[drawOrderIx] + polyIx * PolygonLib.NumCornersPolygon);
+                    indexDrawOrderPointer++;
+                }
+            }
+            for (int triIx = 0; triIx < polygonsAndTriangles.NumTriangles; triIx++)
+            {
+                for (int corner = 0; corner < PolygonLib.NumCornersTriangle; corner++)
+                {
+                    verticeData.SetVertice(totalVerticeIx, polygonsAndTriangles.GetTriangleVertex(triIx, corner));
+                    drawOrder.SetDrawOrder(indexDrawOrderPointer, totalVerticeIx);
+                    totalVerticeIx++;
+                    indexDrawOrderPointer++;
+                }
+
+            }
+            return verticeData;
+        }
+
         public static Vector3 CalculateNormals(ref Vector3 vertexA, ref Vector3 vertexB, ref Vector3 vertexC)
         { //vectexA to C is the three corners of the surface triangle
             if (vertexA.Y == vertexB.Y)

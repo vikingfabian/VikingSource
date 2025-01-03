@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
+using VikingEngine.ToGG.ToggEngine.Map;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace VikingEngine.Graphics
@@ -129,6 +131,20 @@ namespace VikingEngine.Graphics
             V2se = new VertexPositionColorTexture(data.Corner4, color, file.SourcePolygonLowRight);
             V3ne = new VertexPositionColorTexture(data.Corner2, color, file.SourcePolygonTopRight);
         }
+        public PolygonColor(Graphics.Face face)
+        {
+            V0sw = new VertexPositionColorTexture(face.Corner3, Color.White, Vector2.Zero);
+            V1nw = new VertexPositionColorTexture(face.Corner1, Color.White, Vector2.Zero);
+            V2se = new VertexPositionColorTexture(face.Corner4, Color.White, Vector2.Zero);
+            V3ne = new VertexPositionColorTexture(face.Corner2, Color.White, Vector2.Zero);
+        }
+        //public PolygonNormal(Graphics.Face face)
+        //{
+        //    Vertex0sw = new VertexPositionNormalTexture(face.Corner3, face.Normal, Vector2.Zero);
+        //    Vertex1nw = new VertexPositionNormalTexture(face.Corner1, face.Normal, Vector2.Zero);
+        //    Vertex2se = new VertexPositionNormalTexture(face.Corner4, face.Normal, Vector2.Zero);
+        //    Vertex3ne = new VertexPositionNormalTexture(face.Corner2, face.Normal, Vector2.Zero);
+        //}
 
         public PolygonColor(int facetype, int tileIx, 
             Voxels.FaceCornerColorYS colors, IntVector3 blockPos)

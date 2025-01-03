@@ -75,10 +75,10 @@ namespace VikingEngine.Graphics
 
         public void BuildFromPolygons(PolygonsAndTrianglesNormal polygonsAndTriangles, List<int> numPolysPerFrame, LoadedTexture spriteSheet)
         {
-            throw new NotImplementedException(); //Måste lägga till polygon normal 
+            //throw new NotImplementedException(); //Måste lägga till polygon normal 
 
-            //IVerticeData verticeData = PolygonLib.BuildVDFromPolygons(polygonsAndTriangles);
-            //BuildFromVerticeData(verticeData, numPolysPerFrame, spriteSheet);
+            IVerticeData verticeData = PolygonLib.BuildVDFromPolygons(polygonsAndTriangles);
+            BuildFromVerticeData(verticeData, numPolysPerFrame, spriteSheet);
         }
 
         

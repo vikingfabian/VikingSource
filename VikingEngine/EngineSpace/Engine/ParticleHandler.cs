@@ -59,6 +59,7 @@ namespace VikingEngine.Engine
                     Graphics.ParticleSystemType.Fire,
                     Graphics.ParticleSystemType.Smoke,
                     Graphics.ParticleSystemType.DssDamage,
+                    Graphics.ParticleSystemType.CommanderDamage,
                 };
                 foreach (Graphics.ParticleSystemType type in use)
                 {
