@@ -136,8 +136,6 @@ namespace VikingEngine.Network
     {
         NON,
 
-        DssJoined_WantWorld,
-        DssSendWorld,
 
         VoiceChat,
         Steam_AssignClientId,
@@ -145,10 +143,15 @@ namespace VikingEngine.Network
         Steam_SendRoundtrip,
         Steam_ReturnRoundtrip,
         Steam_InviteAccepted,
+        Steam_LargePacket,
+        Steam_LargePacket_Recieved,
         Chat,
         WorldSeed,
         AddGameObject,
-        
+
+        DssJoined_WantWorld,
+        DssSendWorld,
+
         LF2_WorldOverview,
         LF2_StartAttack,
         LF2_MapFlag,

@@ -132,6 +132,10 @@ namespace VikingEngine.Engine
         
         virtual public void NetworkReadPacket(Network.ReceivedPacket packet)
         { }
+
+        virtual public void NetEvent_LargePacket(Network.ReceivedPacket packet) 
+        { }
+
         virtual public void NetEvent_PingReturned(Network.AbsNetworkPeer peer)
         { }
         virtual public void NetEvent_ConnectionLost(string reason)

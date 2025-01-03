@@ -235,7 +235,12 @@ namespace VikingEngine.DSSWars.Data
         }
 
         public SaveStateMeta()
-        { }
+        {
+            playTime = DssRef.time.TotalIngameTime();
+            localPlayerCount = DssRef.state.localPlayers.Count;
+            difficulty = DssRef.difficulty.TotalDifficulty();
+            worldmeta = DssRef.world.metaData;
+        }
         public SaveStateMeta(bool autosave)
         {
             saveDate = DateTime.Now;

@@ -35,7 +35,7 @@ namespace VikingEngine.SteamWrapping
 #if CCG
             2;
 #elif DSS
-            2;
+            16;
 #elif PJ
             9;
 #else

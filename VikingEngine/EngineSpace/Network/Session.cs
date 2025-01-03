@@ -29,7 +29,7 @@ namespace VikingEngine.Network
         public bool AllowVoiceChat = true;
         public int maxLocalGamers = 4;
 
-        
+        public Dictionary<int, SteamWrapping.SteamLargePacketWriter> largePackets = new Dictionary<int, SteamWrapping.SteamLargePacketWriter>(2); 
 
         /// <summary>
         /// Äger lobbyn, false om man är client.

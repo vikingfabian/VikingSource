@@ -17,6 +17,7 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.Input;
 using VikingEngine.Network;
+using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.MoonFall;
 //
 
@@ -742,11 +743,16 @@ namespace VikingEngine.DSSWars
             switch (packet.type)
             {
                 case PacketType.DssJoined_WantWorld:
-                    var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssSendWorld,
-                        Network.PacketReliability.ReliableLasy, packet.sender.id);
+                    var file = new DataStream.MemoryStreamHandler();
+                    var w = file.GetWriter();
+
+                    //var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssSendWorld, SendPacketTo.OneSpecific, packet.sender.fullId,
+                    //    Network.PacketReliability.Reliable, null);
                     var meta = new SaveStateMeta();
                     var saveGamestate = new SaveGamestate(meta);
                     saveGamestate.writeNet(w);
+
+                    new SteamLargePacketWriter(file, SendPacketTo.OneSpecific, packet.sender.fullId, PacketType.DssSendWorld);
                     break;
             }
         }

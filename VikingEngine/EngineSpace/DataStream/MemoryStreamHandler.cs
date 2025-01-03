@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -124,6 +125,105 @@ namespace VikingEngine.DataStream
             }
         }
 
+        public bool WritePartialDataToWriter(int startIndex, int length, System.IO.BinaryWriter writer)
+        {
+            if (s == null)
+            {
+                throw new InvalidOperationException("MemoryStream is null. Ensure it contains data before attempting to write.");
+            }
+
+            if (startIndex < 0 || length < 0)
+            {
+                throw new ArgumentOutOfRangeException("startIndex or length cannot be negative.");
+            }
+
+            // Adjust the length if it exceeds the available data
+            int availableLength = (int)(s.Length - startIndex);
+            if (availableLength <= 0)
+            {
+                throw new InvalidOperationException("Can't write zero length");
+            }
+
+            length = Math.Min(length, availableLength);
+
+            writer.Write((int)s.Length);
+            writer.Write(startIndex);
+            writer.Write(length);
+
+
+            // Save the current position of the MemoryStream
+            long originalPosition = s.Position;
+
+            try
+            {
+                // Set the position of the MemoryStream to the start index
+                s.Position = startIndex;
+
+                // Create a buffer to hold the data
+                byte[] buffer = new byte[length];
+
+                // Read the data into the buffer
+                int bytesRead = s.Read(buffer, 0, length);
+
+                // Write the data to the BinaryWriter
+                writer.Write(buffer, 0, bytesRead);
+
+                // Check if we have reached the end of the stream
+                return s.Position >= s.Length;
+            }
+            finally
+            {
+                // Restore the original position of the MemoryStream
+                s.Position = originalPosition;
+            }
+        }
+
+
+        public bool ReadPartialDataToMemory(System.IO.BinaryReader reader)
+        {
+            if (reader == null)
+            {
+                throw new ArgumentNullException(nameof(reader), "BinaryReader cannot be null.");
+            }
+
+            // Read the full length of the data (used for validation or reference)
+            int fullLength = reader.ReadInt32();
+
+            // Read the start index and length of the data to be read
+            int startIndex = reader.ReadInt32();
+            int length = reader.ReadInt32();
+
+            if (startIndex < 0 || length < 0 || startIndex + length > fullLength)
+            {
+                throw new ArgumentOutOfRangeException("Invalid startIndex or length specified in the BinaryReader.");
+            }
+
+            // Create a buffer for the partial data
+            byte[] buffer = reader.ReadBytes(length);
+
+            // Initialize or update the MemoryStream with the read data
+            if (s == null)
+            {
+                s = new MemoryStream(fullLength);
+            }
+
+            // Set the position to startIndex and write the partial data
+            long originalPosition = s.Position;
+            try
+            {
+                s.Position = startIndex;
+                s.Write(buffer, 0, buffer.Length);
+            }
+            finally
+            {
+                // Restore the original position of the MemoryStream
+                s.Position = originalPosition;
+            }
+
+            return startIndex + length >= fullLength;
+        }
+
+
         public void Save(FilePath path)
         {
             DataStreamHandler.Write(path, s.ToArray());
@@ -149,5 +249,7 @@ namespace VikingEngine.DataStream
                 return s != null && s.Length > 0;
             }
         }
+
+        public long memoryLength => s !=null? s.Length : 0;
     }
 }

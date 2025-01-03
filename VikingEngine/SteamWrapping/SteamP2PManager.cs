@@ -146,7 +146,11 @@ namespace VikingEngine.SteamWrapping
                                 }
                                 break;
                             case PacketType.Steam_SuccesfulJoinPing:
-                                lib.DoNothing();
+                                //lib.DoNothing();
+                                {
+                                    var w = Ref.netSession.BeginWritingPacket(PacketType.Steam_ReturnRoundtrip, senderId, PacketReliability.Reliable, packet.sender.id);
+                                    w.Write(0f);
+                                }
                                 break;
                             case PacketType.Steam_AssignClientId:
                                 if (hostSession)
@@ -175,6 +179,28 @@ namespace VikingEngine.SteamWrapping
                                     //ReceiveKick();
                                     Ref.netSession.Disconnect("Removed by host");
                                     //Ref.steam.LobbyMatchmaker.CreateLobby();
+                                }
+                                break;
+                            case PacketType.Steam_LargePacket:
+                                {
+                                    int id = packet.r.ReadInt32();
+                                    if (Ref.netSession.largePackets.TryGetValue(id, out var largePacketWriter))
+                                    {
+                                        largePacketWriter.readNext(packet);
+                                    }
+                                    else
+                                    {
+                                        new SteamLargePacketWriter(packet, id);
+                                    }
+                                }
+                                break;
+                            case PacketType.Steam_LargePacket_Recieved:
+                                {
+                                    int id = packet.r.ReadInt32();
+                                    if (Ref.netSession.largePackets.TryGetValue(id, out var largePacketWriter))
+                                    {
+                                        largePacketWriter.sendNext();
+                                    }
                                 }
                                 break;
                         }
@@ -247,7 +273,7 @@ namespace VikingEngine.SteamWrapping
             if (hostSession)
             {
                 return Ref.netSession.joinableStatus &&
-                    remoteGamers.Count + 2 <= SteamLobbyMatchmaker.MAX_LOBBY_MEMBERS &&
+                    remoteGamers.Count <= SteamLobbyMatchmaker.MAX_LOBBY_MEMBERS &&
                     Ref.gamesett.bannedPeers.isBanned(peer) == false;
             }
             else
@@ -415,6 +441,12 @@ namespace VikingEngine.SteamWrapping
         
         public void Send(byte[] data, VikingEngine.Network.PacketReliability rely, SendPacketTo to, ulong specificGamerID)
         {
+#if DEBUG
+            if (data.Length > 1200)
+            {
+                throw new Exception("Passed steam package limit");
+            }
+#endif
             EP2PSend sendType;
 
             if (rely == Network.PacketReliability.Unrelyable)
@@ -430,7 +462,8 @@ namespace VikingEngine.SteamWrapping
 
             if (to == SendPacketTo.OneSpecific)
             {
-                SteamAPI.SteamNetworking().SendP2PPacket(specificGamerID, data, (uint)data.Length, sendType, 0);
+
+                bool result = SteamAPI.SteamNetworking().SendP2PPacket(specificGamerID, data, (uint)data.Length, sendType, 0);
             }
             else if (to == SendPacketTo.Host)
             {

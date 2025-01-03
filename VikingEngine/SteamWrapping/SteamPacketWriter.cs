@@ -23,9 +23,12 @@ namespace VikingEngine.SteamWrapping
             { Ref.update.AddToOrRemoveFromUpdate(this, true); }
         }
 
+        public SteamWriter()
+        { }
+
         public void EndWrite_Asynch()
         {
-            Ref.update.AddToOrRemoveFromUpdate(this, true);
+            Ref.update.AddSyncAction(new SyncAction1Arg<float>(Time_Update, 0));
         }
 
         public System.IO.BinaryWriter writeHead(PacketType type, int? sender)
@@ -42,14 +45,13 @@ namespace VikingEngine.SteamWrapping
         public void Time_Update(float time)
         {
 #if PCGAME
-            if (Ref.steam.isNetworkInitialized)// && Ref.steam.P2PManager != null)
+            if (Ref.steam.isNetworkInitialized)
             {
                 Ref.steam.P2PManager.Send(this.ByteArray(), relyability, To, SpecificGamerID);
             }
 #endif
         }
         public UpdateType UpdateType { get { return VikingEngine.UpdateType.OneTimeTrigger; } }
-        //public bool SavingThread { get { return false; } }
 
         public int SpottedArrayMemberIndex { get { return -1; } set { } }
         public bool SpottedArrayUseIndex { get { return false; } }
