@@ -746,8 +746,6 @@ namespace VikingEngine.DSSWars
                     var file = new DataStream.MemoryStreamHandler();
                     var w = file.GetWriter();
 
-                    //var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssSendWorld, SendPacketTo.OneSpecific, packet.sender.fullId,
-                    //    Network.PacketReliability.Reliable, null);
                     var meta = new SaveStateMeta();
                     var saveGamestate = new SaveGamestate(meta);
                     saveGamestate.writeNet(w);

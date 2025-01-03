@@ -95,5 +95,15 @@ namespace VikingEngine.DSSWars
                     break;
             }
         }
+
+        public override void NetEvent_LargePacket(ReceivedPacket packet)
+        {
+            switch (packet.type)
+            {
+                case PacketType.DssSendWorld:
+                    state = new PlayState(host, loadMeta, packet.r);
+                    break;
+            }
+        }
     }
 }
