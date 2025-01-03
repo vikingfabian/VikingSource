@@ -1094,7 +1094,7 @@ namespace VikingEngine.DSSWars
         void exportSaveSelected(SaveStateMeta saveMeta)
         {
             SaveStateMeta exportPath = new SaveStateMeta();
-
+            exportPath.storageSetup();
             exportPath.import = saveMeta.ExportString();
 
             var fileName = DataStreamHandler.SearchFilesInStorageDir(saveMeta.Path, false)[0];
@@ -1156,7 +1156,7 @@ namespace VikingEngine.DSSWars
 
         void importSave(string name)
         {
-            SaveStateMeta meta = new SaveStateMeta();
+            SaveStateMeta meta = new SaveStateMeta();            
             meta.import = name;
 
             meta.loadImportMeta();

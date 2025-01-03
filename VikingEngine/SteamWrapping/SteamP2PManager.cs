@@ -141,12 +141,9 @@ namespace VikingEngine.SteamWrapping
                                     packet.sender.roundTripTime = packet.sender.roundTripTime * 0.5f + timePassed * 0.5f;
 
                                     Ref.NetUpdateReciever().NetEvent_PingReturned(packet.sender);
-
-                                    // Debug.Log("Ping returned " + packet.sender.roundTripTime.ToString());
                                 }
                                 break;
                             case PacketType.Steam_SuccesfulJoinPing:
-                                //lib.DoNothing();
                                 {
                                     var w = Ref.netSession.BeginWritingPacket(PacketType.Steam_ReturnRoundtrip, senderId, PacketReliability.Reliable, packet.sender.id);
                                     w.Write(0f);

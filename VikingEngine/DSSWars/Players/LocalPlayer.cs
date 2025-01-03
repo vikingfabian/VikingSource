@@ -161,8 +161,10 @@ namespace VikingEngine.DSSWars.Players
             playerData.view.SetDrawArea(numPlayers, pStorage.screenIndex, false, null);
 
             mapControls = new Players.MapControls(this);
-            mapControls.setCameraPos(faction.mainCity.tilePos);
-
+            if (faction.mainCity != null)
+            {
+                mapControls.setCameraPos(faction.mainCity.tilePos);
+            }
             Ref.draw.AddPlayerScreen(playerData);
             drawUnitsView = new MapDetailLayerManager(playerData);
             InitTutorial(newGame);

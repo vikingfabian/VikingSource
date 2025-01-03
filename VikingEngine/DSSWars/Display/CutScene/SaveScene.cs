@@ -167,6 +167,9 @@ namespace VikingEngine.DSSWars.Display.CutScene
             var meta = new SaveStateMeta();
             saveGamestate = new SaveGamestate(meta);
             saveGamestate.readNet(readWorld);
+
+            saveGamestate.complete = true;
+
         }
 
         protected override string SaveString => DssRef.lang.Progressbar_LoadProgress;

@@ -1,7 +1,6 @@
 ﻿-Change Log-
 
 
-
 #OPT#
 culling av worker
 stanna musik spelaren
@@ -108,6 +107,7 @@ English, Simplified Chinese, Japanese, Russian, Spanish
 
 -Min 7K wishlists
 -oktober next fest, demo måste vara redo senast september
+-hör av till 300 streamers om demo, lägg screens i mailet
 -wishlist länk i spelet måste finnas i alla menyer (använd steam API)
 
 -description gifs ska vara 3st "three pillars, what you do in the game"

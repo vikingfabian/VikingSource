@@ -69,11 +69,18 @@ namespace VikingEngine.DSSWars.Data
 
         public void writeNet(System.IO.BinaryWriter w)
         {
-            writeGameState(w);
+            meta.worldmeta.writeNet(w);
+            DssRef.world.writeNet(w);
+            //writeGameState(w);
         }
         public void readNet(System.IO.BinaryReader r)
         {
-            readGameState(r);
+            worldData = new WorldData();
+            meta.worldmeta = new WorldMetaData();
+            meta.worldmeta.readNet(r);
+            worldData.readNet(r);
+            DssRef.world = worldData;
+            //readGameState(r);
         }
 
         public void writeGameState(System.IO.BinaryWriter w)

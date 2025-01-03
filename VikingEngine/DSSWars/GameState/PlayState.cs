@@ -1,12 +1,18 @@
-﻿using System;
+﻿#define DEBUG_CLIENT
+
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
+
+
 using VikingEngine.DSSWars.Display;
 using VikingEngine.DSSWars.Display.CutScene;
 using VikingEngine.DSSWars.GameObject;
@@ -18,6 +24,7 @@ using VikingEngine.DSSWars.XP;
 using VikingEngine.Input;
 using VikingEngine.Network;
 using VikingEngine.SteamWrapping;
+using VikingEngine.ToGG.Commander.LevelSetup;
 using VikingEngine.ToGG.MoonFall;
 //
 
@@ -60,13 +67,25 @@ namespace VikingEngine.DSSWars
         public PlayState(bool host, SaveStateMeta loadMeta, System.IO.BinaryReader readWorld)
             : base()
         {
-            
+#if DEBUG_CLIENT
+            host = false;
+            var file = new DataStream.MemoryStreamHandler();
+            var w = file.GetWriter();
+
+            var meta = new SaveStateMeta();
+            meta.netSetup();
+            var saveGamestate = new SaveGamestate(meta);
+            saveGamestate.writeNet(w);
+
+            readWorld = file.GetReader();
+#endif
             DssRef.state = this;
             this.host = host;
             Engine.Update.SetFrameRate(60);
 
             if (readWorld != null)
             {
+                initGameState_client();
                 new LoadScene(readWorld);
             }
             else if (loadMeta == null)
@@ -78,6 +97,34 @@ namespace VikingEngine.DSSWars
             {
                 new LoadScene(loadMeta);
             }
+        }
+
+        public void initGameState_client()
+        {
+
+
+            menuSystem = new GameMenuSystem();
+
+            new GameObject.AllUnits();
+            new Diplomacy();
+            new Achievements();
+            new GameTime();
+            HudLib.Init();
+
+            DssRef.world.factions.Array[0] = new Faction(DssRef.world, FactionType.Player);
+            var local = new Players.LocalPlayer(DssRef.world.factions.Array[0]);
+            localPlayers = new List<Players.LocalPlayer>(1);
+            localPlayers.Add(local);
+            local.assignPlayer(0, 1, false);
+
+            culling = new Culling();
+
+            factionsMap = new MapLayer_Factions();
+            overviewMap = new Map.MapLayer_Overview(factionsMap);
+            detailMap = new Map.MapLayer_Detail();
+            technologyManager.initGame(false);
+
+            events = new GameEvents();
         }
 
         public void initGameState(bool newGame, ObjectPointerCollection pointers)
@@ -199,68 +246,80 @@ namespace VikingEngine.DSSWars
 
         void onGameStart(bool newGame)
         {
-            DssRef.difficulty.refreshSettings();
-            events.onGameStart(newGame);
             Ref.music.OnGameStart();
 
-            var factionsCounter = DssRef.world.factions.counter();
-            while (factionsCounter.Next())
+            if (host)
             {
-               factionsCounter.sel.onGameStart(newGame);
-            }
+                DssRef.difficulty.refreshSettings();
+                events.onGameStart(newGame);
 
-            foreach (var m in DssRef.world.cities)
-            {
-                m.onGameStart(newGame);
-            }
 
-            if (newGame && !DssRef.storage.runTutorial)
-            {
-                initStartUnits();
-            }
-
-            //System.Threading.Thread.CurrentThread.Priority = System.Threading.ThreadPriority.Highest;
-            new AsynchUpdateable_TryCatch(asynchGameObjectsUpdate, "DSS gameobjects update", 51, System.Threading.ThreadPriority.BelowNormal);
-            new AsynchUpdateable_TryCatch(asynchAiPlayersUpdate, "DSS ai player update", 52, System.Threading.ThreadPriority.BelowNormal);
-            new AsynchUpdateable_TryCatch(asynchArmyAiUpdate, "DSS army ai update", 53, System.Threading.ThreadPriority.BelowNormal);
-            new AsynchUpdateable_TryCatch(asynchCullingUpdate, "DSS culling update", 54, System.Threading.ThreadPriority.BelowNormal);
-            new AsynchUpdateable_TryCatch(asynchSleepObjectsUpdate, "DSS sleep objects update", 55, System.Threading.ThreadPriority.BelowNormal);
-            new AsynchUpdateable_TryCatch(asynchNearObjectsUpdate, "DSS near objects update", 56, System.Threading.ThreadPriority.BelowNormal);
-            new AsynchUpdateable_TryCatch(asynchMapGenerating, "DSS map gen", 57, System.Threading.ThreadPriority.Normal);
-            new AsynchUpdateable_TryCatch(asyncUserUpdate, "DSS user update", 58, System.Threading.ThreadPriority.Normal);
-            new AsynchUpdateable_TryCatch(asyncMapBorders, "DSS map borders update", 59, System.Threading.ThreadPriority.Lowest);
-            new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60, System.Threading.ThreadPriority.Lowest);
-            new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62, System.Threading.ThreadPriority.Normal);
-            new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63, System.Threading.ThreadPriority.Lowest);
-            new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61, System.Threading.ThreadPriority.Lowest);
-            new AsynchUpdateable_TryCatch(asyncSlowUpdate, "DSS slow update", 62, System.Threading.ThreadPriority.Lowest);
-
-            //new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63);
-            //new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
-           
-
-            if (localPlayers.Count > 1)
-            {
-                Ref.SetGameSpeed(DssRef.storage.multiplayerGameSpeed);
-            }
-
-            pathUpdates = new PathUpdateThread[PathThreadCount + 1];
-            int startIx = 0;
-            int factionLength = DssRef.world.factions.Count / PathThreadCount;
-            for (int i = 0; i < PathThreadCount; i++)
-            {
-                int end = startIx + factionLength;
-                if (i == PathThreadCount -1)
+                var factionsCounter = DssRef.world.factions.counter();
+                while (factionsCounter.Next())
                 {
-                    //last
-                    end = DssRef.world.factions.Count -1;
+                    factionsCounter.sel.onGameStart(newGame);
                 }
-                pathUpdates[i] = new PathUpdateThread(i, startIx, end);
-                startIx = end + 1;
-            }
-            pathUpdates[PathThreadCount] = new PathUpdateThread_Player(PathThreadCount);
 
-            isReady = host;
+                foreach (var m in DssRef.world.cities)
+                {
+                    m.onGameStart(newGame);
+                }
+
+                if (newGame && !DssRef.storage.runTutorial)
+                {
+                    initStartUnits();
+                }
+
+                //System.Threading.Thread.CurrentThread.Priority = System.Threading.ThreadPriority.Highest;
+                new AsynchUpdateable_TryCatch(asynchGameObjectsUpdate, "DSS gameobjects update", 51, System.Threading.ThreadPriority.BelowNormal);
+                new AsynchUpdateable_TryCatch(asynchAiPlayersUpdate, "DSS ai player update", 52, System.Threading.ThreadPriority.BelowNormal);
+                new AsynchUpdateable_TryCatch(asynchArmyAiUpdate, "DSS army ai update", 53, System.Threading.ThreadPriority.BelowNormal);
+                //new AsynchUpdateable_TryCatch(asynchCullingUpdate, "DSS culling update", 54, System.Threading.ThreadPriority.BelowNormal);
+                new AsynchUpdateable_TryCatch(asynchSleepObjectsUpdate, "DSS sleep objects update", 55, System.Threading.ThreadPriority.BelowNormal);
+                new AsynchUpdateable_TryCatch(asynchNearObjectsUpdate, "DSS near objects update", 56, System.Threading.ThreadPriority.BelowNormal);
+            }
+
+
+            new AsynchUpdateable_TryCatch(asynchMapGenerating, "DSS map gen", 57, System.Threading.ThreadPriority.Normal);
+            
+            
+            if (host)
+            {
+                new AsynchUpdateable_TryCatch(asyncUserUpdate, "DSS user update", 58, System.Threading.ThreadPriority.Normal);
+                new AsynchUpdateable_TryCatch(asyncMapBorders, "DSS map borders update", 59, System.Threading.ThreadPriority.Lowest);
+                new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60, System.Threading.ThreadPriority.Lowest);
+                new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62, System.Threading.ThreadPriority.Normal);
+                new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63, System.Threading.ThreadPriority.Lowest);
+                new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61, System.Threading.ThreadPriority.Lowest);
+                new AsynchUpdateable_TryCatch(asyncSlowUpdate, "DSS slow update", 62, System.Threading.ThreadPriority.Lowest);
+
+                //new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63);
+                //new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
+
+
+                if (localPlayers.Count > 1)
+                {
+                    Ref.SetGameSpeed(DssRef.storage.multiplayerGameSpeed);
+                }
+
+                pathUpdates = new PathUpdateThread[PathThreadCount + 1];
+                int startIx = 0;
+                int factionLength = DssRef.world.factions.Count / PathThreadCount;
+                for (int i = 0; i < PathThreadCount; i++)
+                {
+                    int end = startIx + factionLength;
+                    if (i == PathThreadCount - 1)
+                    {
+                        //last
+                        end = DssRef.world.factions.Count - 1;
+                    }
+                    pathUpdates[i] = new PathUpdateThread(i, startIx, end);
+                    startIx = end + 1;
+                }
+                pathUpdates[PathThreadCount] = new PathUpdateThread_Player(PathThreadCount);
+
+                isReady = host;
+            }
         }
 
         void initStartUnits()
@@ -306,50 +365,48 @@ namespace VikingEngine.DSSWars
                 return;
             }
 
-            if (Ref.DeltaGameTimeMs > 0)
+            if (host)
             {
-                DssRef.time.update();
-
-                if (isReady)
+                if (Ref.DeltaGameTimeMs > 0)
                 {
-                    foreach (var m in DssRef.world.cities)
+                    DssRef.time.update();
+
+                    if (isReady)
                     {
-                        m.update();
+                        foreach (var m in DssRef.world.cities)
+                        {
+                            m.update();
+                        }
+
+                        var factions = DssRef.world.factions.counter();
+                        while (factions.Next())
+                        {
+                            factions.sel.update();
+
+                            if (DssRef.time.oneSecond)
+                            {
+                                factions.sel.oneSecUpdate();
+                            }
+                        }
                     }
-
-                    var factions = DssRef.world.factions.counter();
-                    while (factions.Next())
+                }
+                else
+                {
+                    if (isReady)
                     {
-                        factions.sel.update();
+                        foreach (var m in DssRef.world.cities)
+                        {
+                            m.PauseUpdate();
+                        }
 
-                        if (DssRef.time.oneSecond)
-                        {                            
-                            factions.sel.oneSecUpdate();
+                        var factions = DssRef.world.factions.counter();
+                        while (factions.Next())
+                        {
+                            factions.sel.PauseUpdate();
                         }
                     }
                 }
             }
-            else 
-            {
-                if (isReady)
-                {
-                    foreach (var m in DssRef.world.cities)
-                    {
-                        m.PauseUpdate();
-                    }
-
-                    var factions = DssRef.world.factions.counter();
-                    while (factions.Next())
-                    {
-                        factions.sel.PauseUpdate();
-                    }
-                }
-            }
-
-            //if (DssRef.time.oneSecond)
-            //{ 
-            //    DssRef.settings.OneSecondUpdate();                
-            //}    
             if (DssRef.time.halfSecond)
             {
                 overviewMap.HalfSecondUpdate();
@@ -361,16 +418,19 @@ namespace VikingEngine.DSSWars
 
             detailMap.update();
 
-            foreach (var local in localPlayers)
+            if (localPlayers != null)
             {
-                local.userUpdate();
-                if (local.input.Menu.DownEvent)
+                foreach (var local in localPlayers)
                 {
-                    menuSystem.pauseMenu();
-                }
-                if (Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.B) && Keyboard.Ctrl)
-                {
-                    menuSystem.debugMenu();
+                    local.userUpdate();
+                    if (local.input.Menu.DownEvent)
+                    {
+                        menuSystem.pauseMenu();
+                    }
+                    if (Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.B) && Keyboard.Ctrl)
+                    {
+                        menuSystem.debugMenu();
+                    }
                 }
             }
 
@@ -675,14 +735,14 @@ namespace VikingEngine.DSSWars
 
        
 
-        bool asynchCullingUpdate(int id, float time)
-        {
-            if (cutScene == null)
-            {
-                //culling.asynch_update(time);
-            }
-            return exitThreads;
-        }
+        //bool asynchCullingUpdate(int id, float time)
+        //{
+        //    if (cutScene == null)
+        //    {
+        //        //culling.asynch_update(time);
+        //    }
+        //    return exitThreads;
+        //}
 
         bool asynchSleepObjectsUpdate(int id, float time)
         {
@@ -747,6 +807,7 @@ namespace VikingEngine.DSSWars
                     var w = file.GetWriter();
 
                     var meta = new SaveStateMeta();
+                    meta.netSetup();
                     var saveGamestate = new SaveGamestate(meta);
                     saveGamestate.writeNet(w);
 

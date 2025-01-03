@@ -31,6 +31,10 @@ namespace VikingEngine.DSSWars.Data
             read(r);
         }
 
+        public WorldMetaData()
+        {
+        }
+
         public void write(System.IO.BinaryWriter w)
         {
             w.Write(Version);
@@ -50,6 +54,15 @@ namespace VikingEngine.DSSWars.Data
             objRnd = new PcgRandom(objSeed);
             mapSize = (MapSize)r.ReadByte();
             saveIndex = r.ReadInt16();
+        }
+
+        public void writeNet(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)mapSize);
+        }
+        public void readNet(System.IO.BinaryReader r)
+        {
+            mapSize = (MapSize)r.ReadByte();
         }
 
         public void setObjSeed(int id)

@@ -228,6 +228,11 @@ namespace VikingEngine.DSSWars.GameObject
             this.CityType = type;
         }
 
+        public City(int index)
+        {
+            this.parentArrayIndex = index;
+        }
+
         public City(int index, System.IO.BinaryReader r, int version)
         {
             this.parentArrayIndex = index;

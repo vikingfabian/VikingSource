@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars
                 });
             }
 
-            if (DssRef.settings.darkLordPlayer.darkLordUnit != null && DssRef.settings.darkLordPlayer.darkLordUnit.Alive())
+            if (DssRef.settings.darkLordPlayer != null && DssRef.settings.darkLordPlayer.darkLordUnit != null && DssRef.settings.darkLordPlayer.darkLordUnit.Alive())
             {
                 questFlags.Add(new QuestFlag()
                 {

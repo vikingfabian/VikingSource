@@ -8,6 +8,7 @@ using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Data;
 using System.Xml.Linq;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.Network;
 
 namespace VikingEngine.DSSWars
 {   
@@ -311,6 +312,31 @@ namespace VikingEngine.DSSWars
             Debug.ReadCheck(r);
 
             
+        }
+
+        public void writeNet(System.IO.BinaryWriter w)
+        {
+            Size.write(w);
+
+            w.Write(cities.Count);
+            w.Write(factions.Array.Length);
+        }
+        public void readNet(System.IO.BinaryReader r)
+        {
+            Size.read(r);
+            refreshSize();
+
+            int cityCount = r.ReadInt32();
+            cities = new List<City>(cityCount);
+            for (int cityIndex = 0; cityIndex < cityCount; ++cityIndex)
+            {
+                City c = new City(cityIndex);
+                cities.Add(c);
+            }
+
+            int factionCount = r.ReadInt32();
+            factions = new SpottedArray<Faction>(factionCount);
+            factions.Count = factionCount;
         }
 
 
