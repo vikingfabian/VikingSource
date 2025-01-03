@@ -190,7 +190,7 @@ namespace VikingEngine.ToGG
             Vector3 ne = nw;
             ne.X += size.X;
 
-            return new Graphics.PolygonColor(nw, ne, sw, se,
+            return new Graphics.PolygonColor( ne, nw, se,sw,
                   imageFile, color);
         }
 

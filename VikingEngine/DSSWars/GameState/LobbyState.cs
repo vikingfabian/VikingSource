@@ -524,7 +524,7 @@ namespace VikingEngine.DSSWars
             new ToGG.ToggEngine.Map.SquareDic();
             ToGG.ToggEngine.Map.MainTerrainProperties.Init();
             new VikingEngine.ToGG.InputMap(0);
-            new Network.Session();
+            //new Network.Session();
 
             ToGG.Commander.LevelSetup.GameSetup setup = new ToGG.Commander.LevelSetup.GameSetup();
             setup.lobbyMembers = new List<ToGG.AbsLobbyMember>

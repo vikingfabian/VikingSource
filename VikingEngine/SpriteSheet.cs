@@ -2630,47 +2630,7 @@ namespace VikingEngine
                     currentIndex += 4;
                     addWithSizeDef(SpriteName.cmdTutVideo_BoardTile, currentIndex, 48, 48);
 
-                    add(SpriteName.cmdTileOpenWater, currentIndex, 2, 2);
-                    add(SpriteName.cmdTileCastle, currentIndex, 2, 2);
-                    add(SpriteName.cmdTilePalisad, currentIndex, 2, 2);
-                    add(SpriteName.cmdTilePavedRoad, currentIndex, 2, 2);
-                    add(SpriteName.cmdTileStoneWall, currentIndex, 2, 2);
-                    add(SpriteName.cmdTileStoneGate, currentIndex, 2, 2);
-
-                    add(SpriteName.cmdTileDungeonGround, currentIndex, 2, 2);
-                    add(SpriteName.cmdTileDungeonWall, currentIndex, 2, 2);
-
-                    add(SpriteName.cmdIconButtonReadyCheckGray, currentIndex, 2, 2);
-                    add(SpriteName.cmdIconButtonReadyCheck, currentIndex, 2, 2);
-
-                    add(SpriteName.cmdTileMountainwall1, currentIndex, 2, 2);
-                    add(SpriteName.cmdTileMountainwallTop, currentIndex, 2, 2);
-                    add(SpriteName.cmdTileMountainGround1, currentIndex, 2, 2);
-                    add(SpriteName.cmdTileMountainGround2, currentIndex, 2, 2);
-                    add(SpriteName.cmdTileMountainGround3, currentIndex, 2, 2);
-                    add(SpriteName.cmdTileMountainGround4, currentIndex, 2, 2);
-                    add(SpriteName.cmdTileMountainwall2, currentIndex, 2, 2);
-                    add(SpriteName.cmdTileMountainwall3, currentIndex, 2, 2);
-
-                    add(SpriteName.cmdTileMountBrickWall, currentIndex, 2, 2);
-                    add(SpriteName.cmdTileMountBrickWallTorch, currentIndex, 2, 2);
-                    add(SpriteName.cmdTileRedBrickGround1, currentIndex, 2, 2);
-                    add(SpriteName.cmdTileRedBrickGround2, currentIndex, 2, 2);
-                    add(SpriteName.cmdTileRedBrickGround3, currentIndex, 2, 2);
-                    add(SpriteName.cmdTileRedBrickGround4, currentIndex, 2, 2);
-                    add(SpriteName.cmdTileMountBrickGround1, currentIndex, 2, 2);
-                    add(SpriteName.cmdTileMountBrickGround2, currentIndex, 2, 2);
-                    add(SpriteName.cmdTileMountBrickGround3, currentIndex, 2, 2);
-                    add(SpriteName.cmdTileMountBrickGround4, currentIndex, 2, 2);
-                    add(SpriteName.cmdTileMountBrickWallTop, currentIndex, 2, 2);
-
-                    add(SpriteName.cmdTileGrassBTree, 2, 2);
-                    add(SpriteName.cmdTileGrassB1, 2, 2);
-                    add(SpriteName.cmdTileGrassB2, 2, 2);
-                    add(SpriteName.cmdTileGrassB3, 2, 2);
-                    add(SpriteName.cmdTileGrassBMud1, 2, 2);
-                    add(SpriteName.cmdTileGrassBMud2, 2, 2);
-                    add(SpriteName.cmdTileGrassBRock, 2, 2);
+                    
                 }
             }
 
@@ -2762,6 +2722,48 @@ namespace VikingEngine
                 currentIndex += 16;
                 add(SpriteName.EditorPencilCube, 2, 2);
                 add(SpriteName.EditorFillAreaTexture, 2, 2);
+
+                add(SpriteName.cmdTileOpenWater, currentIndex, 2, 2);
+                add(SpriteName.cmdTileCastle, currentIndex, 2, 2);
+                add(SpriteName.cmdTilePalisad, currentIndex, 2, 2);
+                add(SpriteName.cmdTilePavedRoad, currentIndex, 2, 2);
+                add(SpriteName.cmdTileStoneWall, currentIndex, 2, 2);
+                add(SpriteName.cmdTileStoneGate, currentIndex, 2, 2);
+
+                add(SpriteName.cmdTileDungeonGround, currentIndex, 2, 2);
+                add(SpriteName.cmdTileDungeonWall, currentIndex, 2, 2);
+
+                add(SpriteName.cmdIconButtonReadyCheckGray, currentIndex, 2, 2);
+                add(SpriteName.cmdIconButtonReadyCheck, currentIndex, 2, 2);
+
+                add(SpriteName.cmdTileMountainwall1, currentIndex, 2, 2);
+                add(SpriteName.cmdTileMountainwallTop, currentIndex, 2, 2);
+                add(SpriteName.cmdTileMountainGround1, currentIndex, 2, 2);
+                add(SpriteName.cmdTileMountainGround2, currentIndex, 2, 2);
+                add(SpriteName.cmdTileMountainGround3, currentIndex, 2, 2);
+                add(SpriteName.cmdTileMountainGround4, currentIndex, 2, 2);
+                add(SpriteName.cmdTileMountainwall2, currentIndex, 2, 2);
+                add(SpriteName.cmdTileMountainwall3, currentIndex, 2, 2);
+
+                add(SpriteName.cmdTileMountBrickWall, currentIndex, 2, 2);
+                add(SpriteName.cmdTileMountBrickWallTorch, currentIndex, 2, 2);
+                add(SpriteName.cmdTileRedBrickGround1, currentIndex, 2, 2);
+                add(SpriteName.cmdTileRedBrickGround2, currentIndex, 2, 2);
+                add(SpriteName.cmdTileRedBrickGround3, currentIndex, 2, 2);
+                add(SpriteName.cmdTileRedBrickGround4, currentIndex, 2, 2);
+                add(SpriteName.cmdTileMountBrickGround1, currentIndex, 2, 2);
+                add(SpriteName.cmdTileMountBrickGround2, currentIndex, 2, 2);
+                add(SpriteName.cmdTileMountBrickGround3, currentIndex, 2, 2);
+                add(SpriteName.cmdTileMountBrickGround4, currentIndex, 2, 2);
+                add(SpriteName.cmdTileMountBrickWallTop, currentIndex, 2, 2);
+
+                add(SpriteName.cmdTileGrassBTree, 2, 2);
+                add(SpriteName.cmdTileGrassB1, 2, 2);
+                add(SpriteName.cmdTileGrassB2, 2, 2);
+                add(SpriteName.cmdTileGrassB3, 2, 2);
+                add(SpriteName.cmdTileGrassBMud1, 2, 2);
+                add(SpriteName.cmdTileGrassBMud2, 2, 2);
+                add(SpriteName.cmdTileGrassBRock, 2, 2);
             }
             
         }

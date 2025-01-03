@@ -112,7 +112,7 @@ namespace VikingEngine.ToGG
 
         public override void runSyncAction()
         {
-             player.mapControls.SetAvailableTiles(available);
+             player?.mapControls.SetAvailableTiles(available);
         }
     }
 }
