@@ -35,6 +35,7 @@ namespace VikingEngine.SteamWrapping
         public SteamLargePacketWriter(Network.ReceivedPacket packet, int id)
             : base()
         {
+            this.id = id;
             Ref.netSession.largePackets.Add(id, this);
             file = new DataStream.MemoryStreamHandler();
             readNext(packet);
