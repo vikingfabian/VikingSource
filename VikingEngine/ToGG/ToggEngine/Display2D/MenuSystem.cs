@@ -180,7 +180,8 @@ namespace VikingEngine.ToGG
 
         public void quitToMenu()
         {
-            new GameState.ExitState();
+            new DSSWars.LobbyState();
+            //new GameState.ExitState();
             //new GameState.MainMenuState();
         }
         public void options()

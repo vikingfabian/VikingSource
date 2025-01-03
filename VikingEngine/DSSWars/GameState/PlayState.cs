@@ -1,4 +1,4 @@
-﻿#define DEBUG_CLIENT
+﻿//#define DEBUG_CLIENT
 
 
 using System;

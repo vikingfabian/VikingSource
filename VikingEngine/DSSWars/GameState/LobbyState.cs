@@ -521,6 +521,8 @@ namespace VikingEngine.DSSWars
 
         void extra_PlayCommanderVersus()
         {
+            VikingEngine.ToGG.toggLib.Init();
+            VikingEngine.ToGG.Commander.BattleLib.Init();
             new ToGG.ToggEngine.Map.SquareDic();
             ToGG.ToggEngine.Map.MainTerrainProperties.Init();
             new VikingEngine.ToGG.InputMap(0);
