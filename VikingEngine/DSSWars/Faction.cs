@@ -57,6 +57,9 @@ namespace VikingEngine.DSSWars
         public Faction(int index)
         {
             this.parentArrayIndex = index;
+
+            cities = new SpottedArray<GameObject.City>(8);
+            armies = new SpottedArray<Army>(16);
         }
 
         public Faction(WorldData addTo, FactionType factiontype)
@@ -196,10 +199,14 @@ namespace VikingEngine.DSSWars
         virtual public void writeNet(System.IO.BinaryWriter w)
         {
             w.Write((ushort)factiontype);
+            this.profile.write(w);
         }
         virtual public void readNet(System.IO.BinaryReader r)
         {
             factiontype = (FactionType)r.ReadUInt16();
+            FlagAndColor profile = new FlagAndColor(r);
+            SetProfile(profile);
+
             if (factiontype != FactionType.Player)
             {
                 new Players.AiPlayer(this);
