@@ -433,37 +433,47 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public void writeNet_FactionsAndCities(System.IO.BinaryWriter w, HashSet<int> factions, HashSet<int> CitiesInView)
+        public void writeNet_Factions(System.IO.BinaryWriter w, HashSet<int> factions)
         {
             w.Write((byte)factions.Count);
             foreach (int faction in factions) 
             {
                 w.Write((ushort)faction);
                 this.factions.Array[faction].writeNet(w);
-            }
-
-            w.Write((byte)cities.Count);
-            foreach (int city in CitiesInView)
-            {
-                w.Write((ushort)city);
-                this.cities[city].writeNet(w);
+                Debug.WriteCheck(w);
             }
         }
 
-        public void readNet_FactionsAndCities(System.IO.BinaryReader r)
+        public void readNet_Factions(System.IO.BinaryReader r)
         {
             int factionCount = r.ReadByte();
             for (int i = 0; i < factionCount; i++)
             { 
                 int faction = r.ReadUInt16();
                 this.factions.Array[faction].readNet(r);
+                Debug.ReadCheck(r);
             }
+        }
 
+        public void writeNet_Cities(System.IO.BinaryWriter w, HashSet<int> CitiesInView)
+        {
+            w.Write((byte)cities.Count);
+            foreach (int city in CitiesInView)
+            {
+                w.Write((ushort)city);
+                this.cities[city].writeNet(w);
+                Debug.WriteCheck(w);
+            }
+        }
+
+        public void readNet_Cities(System.IO.BinaryReader r)
+        {
             int cityCount = r.ReadByte();
             for (int i = 0; i < cityCount; i++)
             {
                 int city = r.ReadUInt16();
                 this.cities[city].readNet(r);
+                Debug.ReadCheck(r);
             }
         }
 

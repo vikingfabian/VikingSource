@@ -368,10 +368,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             CityType = (CityType)r.ReadByte();
             areaSize = r.ReadUInt16();
-            if (version >= 5)
-            {
-                cityTileRadius = r.ReadByte();
-            }
+            cityTileRadius = r.ReadByte();
+            
             workHutStyle = r.ReadByte();
 
             int neighborCitiesCount = r.ReadByte();
@@ -380,10 +378,7 @@ namespace VikingEngine.DSSWars.GameObject
                 neighborCities.Add(r.ReadUInt16());
             }
 
-            if (version >= 6)
-            {
-                Culture = (CityCulture)r.ReadByte();
-            }
+            Culture = (CityCulture)r.ReadByte();
         }
 
         public void writeGameState(System.IO.BinaryWriter w)

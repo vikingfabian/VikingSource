@@ -853,12 +853,13 @@ namespace VikingEngine.DSSWars
                     DssRef.world.readNet_SubTile(packet.r);//l 522
                     break;
 
-                case PacketType.DssFactionsAndCities:
-                    DssRef.world.readNet_FactionsAndCities(packet.r);
+                case PacketType.DssFactions:
+                    DssRef.world.readNet_Factions(packet.r);
                     break;
 
-                //case PacketType.DssCities:
-
+                case PacketType.DssCities:
+                    DssRef.world.readNet_Cities(packet.r);
+                    break;
             }
         }
 

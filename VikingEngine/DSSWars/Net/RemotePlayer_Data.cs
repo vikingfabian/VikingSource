@@ -39,7 +39,23 @@ namespace VikingEngine.DSSWars.Players
                         DssRef.world.writeNet_Tile(w, tilePos);
                     }
                     packet.EndWrite_Asynch();
-                }                
+                }
+                else if (FactionsInView.Count > 0)
+                {
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssFactions, Network.PacketReliability.Reliable, out var packet);
+                    {
+                        DssRef.world.writeNet_Factions(w, FactionsInView);
+                    }
+                    packet.EndWrite_Asynch();
+                }
+                else if (CitiesInView.Count > 0)
+                {
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssCities, Network.PacketReliability.Reliable, out var packet);
+                    {
+                        DssRef.world.writeNet_Cities(w, CitiesInView);
+                    }
+                    packet.EndWrite_Asynch();
+                }
                 else if (findMissingTile(out IntVector2 subtilePos, true))
                 {
                     var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldSubTiles, Network.PacketReliability.Reliable, out var packet);
@@ -48,16 +64,6 @@ namespace VikingEngine.DSSWars.Players
                     }
                     packet.EndWrite_Asynch();
                 }
-
-                if (FactionsInView.Count > 0 || CitiesInView.Count > 0)
-                {
-                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssFactionsAndCities, Network.PacketReliability.Reliable, out var packet);
-                    {
-                        DssRef.world.writeNet_FactionsAndCities(w, FactionsInView, CitiesInView);
-                    }
-                    packet.EndWrite_Asynch();
-                }
-               
             }
 
             bool findMissingTile(out IntVector2 tilePos, bool subTile)
