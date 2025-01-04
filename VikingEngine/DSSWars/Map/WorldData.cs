@@ -502,6 +502,8 @@ namespace VikingEngine.DSSWars
                 this.cities[city].readNet(r);
                 Debug.ReadCheck(r);
             }
+
+            DssRef.world.BordersUpdated = true;
         }
 
         public void writeMapFile(System.IO.BinaryWriter w)

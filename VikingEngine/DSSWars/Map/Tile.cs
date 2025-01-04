@@ -335,6 +335,19 @@ namespace VikingEngine.DSSWars.Map
             return DssRef.world.cities[CityIndex]; 
         }
 
+        public Color FactionColor()
+        {
+            var c = DssRef.world.cities[CityIndex];
+            if (c.faction != null)
+            {
+                return c.faction.profile.col0_Main;
+            }
+            else
+            {
+                return ColorExt.Empty;
+            }
+        }
+
         static readonly Color HeadCity = new Color(255,174,184);
         static readonly Color LargeCity = new Color(253,0,30);
         static readonly Color SmallCity = new Color(148,0,17);
@@ -384,6 +397,12 @@ namespace VikingEngine.DSSWars.Map
 
             Tile nTile;
             var faction = City().faction;
+
+            if (faction == null)
+            {
+                return Color.Black;
+            }
+
             City nCity;
             bool isCityAdjacent = false;
             bool isCityAdjacentCorner = false;

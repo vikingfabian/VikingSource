@@ -198,7 +198,7 @@ namespace VikingEngine.DSSWars.Map
                                             innerCornerSW,//sw,
                                             innerCornerSE,//se,
                                         },
-                                        tex, t.City().faction.Color()));
+                                        tex, t.FactionColor()));
                                     //break;
                                 }
 

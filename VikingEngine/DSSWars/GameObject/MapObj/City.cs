@@ -728,8 +728,11 @@ namespace VikingEngine.DSSWars.GameObject
             int height = r.ReadByte();
             var tile = new Tile();
             tile.heightLevel = height;
-            position.Y  = tile.ModelGroundY();
-            overviewModel.position = position;
+            position.Y = tile.ModelGroundY();
+            if (overviewModel != null)
+            {
+                overviewModel.position = position;
+            }
         }
 
         override public void tagSprites(out SpriteName back, out SpriteName art)
