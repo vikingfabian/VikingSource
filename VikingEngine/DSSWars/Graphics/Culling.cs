@@ -270,6 +270,7 @@ namespace VikingEngine.DSSWars
         {
             enterArea = screenArea;
             enterArea.AddRadius(1);
+            enterArea.SetTileBounds(DssRef.world.tileBounds);
             exitArea = enterArea;
             exitArea.AddRadius(1);
             attensionArea = enterArea;
