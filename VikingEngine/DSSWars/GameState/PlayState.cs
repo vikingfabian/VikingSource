@@ -320,8 +320,10 @@ namespace VikingEngine.DSSWars
                 }
                 pathUpdates[PathThreadCount] = new PathUpdateThread_Player(PathThreadCount);
 
-                isReady = host;
+                
             }
+
+            isReady = true;
         }
 
         void initStartUnits()
@@ -371,9 +373,10 @@ namespace VikingEngine.DSSWars
             if (Ref.DeltaGameTimeMs > 0)
             {
                 DssRef.time.update();
-                if (host)
+                
+                if (isReady)
                 {
-                    if (isReady)
+                    if (host)
                     {
                         foreach (var m in DssRef.world.cities)
                         {
@@ -391,7 +394,15 @@ namespace VikingEngine.DSSWars
                             }
                         }
                     }
+                    else
+                    {
+                        foreach (var m in DssRef.world.cities)
+                        {
+                            m.update_client();
+                        }
+                    }
                 }
+                
             }
             else
             {

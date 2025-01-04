@@ -26,6 +26,7 @@ using VikingEngine.LootFest;
 using VikingEngine.LootFest.Map;
 using VikingEngine.LootFest.Players;
 using VikingEngine.PJ;
+using VikingEngine.PJ.Moba.GO;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -379,6 +380,9 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             Culture = (CityCulture)r.ReadByte();
+
+            cullingTopLeft = tilePos;
+            cullingBottomRight = tilePos;
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
@@ -520,6 +524,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             Debug.WriteCheck(w);
         }
+
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             workForce.amount = r.ReadUInt16();
@@ -705,12 +710,17 @@ namespace VikingEngine.DSSWars.GameObject
             writeMapFile(w);
             w.Write((ushort)guardCount);
             w.Write((ushort)maxGuardSize);
+
+            w.Write((ushort)faction.parentArrayIndex);
         }
         public void readNet(System.IO.BinaryReader r)
         {
             readMapFile(r, int.MaxValue);
             guardCount = r.ReadUInt16();
             maxGuardSize = r.ReadUInt16();
+
+            int factionIx = r.ReadUInt16();
+            faction = DssRef.world.factions[factionIx];
 
             onGameStart(false);
         }
@@ -1130,6 +1140,11 @@ namespace VikingEngine.DSSWars.GameObject
             updateWorkerUnits();
         }
 
+        public void update_client()
+        {
+            updateDetailLevel();
+        }
+
         public double income_oneSecUpdate(double incomeMultiplier)
         {
             CityEconomyData cityEconomy = new CityEconomyData();
@@ -1155,10 +1170,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void asynchCullingUpdate(float time, bool bStateA)
         {
-            if (inRender_detailLayer)
-            {
-                lib.DoNothing();
-            }
+            //if (inRender_detailLayer)
+            //{
+            //    lib.DoNothing();
+            //}
             DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, ref cullingTopLeft, ref cullingBottomRight);
         }
 
