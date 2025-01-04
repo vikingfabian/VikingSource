@@ -472,7 +472,9 @@ namespace VikingEngine.DSSWars
         {
             var remotePlayerC = DssRef.state.remotePlayers.counter();
 
-            w.Write((byte)CitiesInView.Count);
+            int count = Math.Min(CitiesInView.Count, 8);
+
+            w.Write((byte)count);
             foreach (int city in CitiesInView)
             {
                 w.Write((ushort)city);
@@ -485,11 +487,15 @@ namespace VikingEngine.DSSWars
                 {
                     remotePlayerC.sel.citiesRecieved[city] = true;
                 }
+
+                --count;
+                if (count <= 0)
+                { 
+                    break;
+                }
             }
 
-            SteamP2PManager.CrashOnTooLargePacket(w);
-
-            
+            SteamP2PManager.CrashOnTooLargePacket(w);            
             
         }
 
