@@ -404,9 +404,9 @@ namespace VikingEngine.DSSWars
             var remotePlayerC = DssRef.state.remotePlayers.counter();
             while (remotePlayerC.Next())
             {
-                var remoteTile = remotePlayerC.sel.remoteTileGrid.Get(loop.Position);
+                var remoteTile = remotePlayerC.sel.remoteTileGrid.Get(tilePos);
                 remoteTile.detail = true;
-                remotePlayerC.sel.remoteTileGrid.Set(loop.Position, remoteTile);
+                remotePlayerC.sel.remoteTileGrid.Set(tilePos, remoteTile);
             }
         }
 
