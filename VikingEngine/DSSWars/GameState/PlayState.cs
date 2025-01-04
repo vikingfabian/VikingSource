@@ -369,12 +369,12 @@ namespace VikingEngine.DSSWars
                 return;
             }
 
-            if (host)
+            
+            if (Ref.DeltaGameTimeMs > 0)
             {
-                if (Ref.DeltaGameTimeMs > 0)
+                DssRef.time.update();
+                if (host)
                 {
-                    DssRef.time.update();
-
                     if (isReady)
                     {
                         foreach (var m in DssRef.world.cities)
@@ -394,7 +394,10 @@ namespace VikingEngine.DSSWars
                         }
                     }
                 }
-                else
+            }
+            else
+            {
+                if (host)
                 {
                     if (isReady)
                     {
@@ -411,6 +414,7 @@ namespace VikingEngine.DSSWars
                     }
                 }
             }
+            
             if (DssRef.time.halfSecond)
             {
                 overviewMap.HalfSecondUpdate();
@@ -485,7 +489,7 @@ namespace VikingEngine.DSSWars
 
             slowMinuteUpdate = true;
 
-            if (DssRef.storage.autoSave && 
+            if (host && DssRef.storage.autoSave && 
                 Ref.TotalTimeSec > LastAutoSaveTime_TotalSec + AutoSaveTimeSec)
             {
                 if (cutScene == null)
@@ -837,11 +841,11 @@ namespace VikingEngine.DSSWars
                     break;
 
                 case PacketType.DssWorldTiles:
-                    DssRef.world.readNet_Tile(packet.r);
+                    DssRef.world.readNet_Tile(packet.r);//l 32
                     break;
 
                 case PacketType.DssWorldSubTiles:
-                    DssRef.world.readNet_SubTile(packet.r);
+                    DssRef.world.readNet_SubTile(packet.r);//l 522
                     break;
 
             }

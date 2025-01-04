@@ -10,6 +10,8 @@ namespace VikingEngine.SteamWrapping
 {
     class SteamP2PManager
     {
+        public const int SteamPackageByteLimit = 1200;
+
         const float NoResponceTimeKickSeconds = 10;
         public bool autoAcceptSessionRequests = false;
         public int PeerCount { get { return remoteGamers.Count; } }
@@ -439,7 +441,7 @@ namespace VikingEngine.SteamWrapping
         public void Send(byte[] data, VikingEngine.Network.PacketReliability rely, SendPacketTo to, ulong specificGamerID)
         {
 #if DEBUG
-            if (data.Length > 1200)
+            if (data.Length > SteamPackageByteLimit)
             {
                 throw new Exception("Passed steam package limit");
             }
@@ -481,7 +483,7 @@ namespace VikingEngine.SteamWrapping
 
         public void SendUnreliable(byte[] data)
         {
-            if (data.Length > 1200)
+            if (data.Length > SteamPackageByteLimit)
             {
                 throw new IndexOutOfRangeException("MTU size is 1200 bytes. Please split the data into smaller packets.");
             }
@@ -493,7 +495,7 @@ namespace VikingEngine.SteamWrapping
 
         public void SendUnreliableNoDelay(byte[] data)
         {
-            if (data.Length > 1200)
+            if (data.Length > SteamPackageByteLimit)
             {
                 throw new IndexOutOfRangeException("MTU size is 1200 bytes. Please split the data into smaller packets.");
             }

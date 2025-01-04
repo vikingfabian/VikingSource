@@ -422,7 +422,7 @@ namespace VikingEngine.DSSWars
             {
                 var tile = DssRef.world.subTileGrid.Get(loop.Position);
                 tile.read(r, ref previous, int.MaxValue);
-                DssRef.world.subTileGrid.Set(tilePos, tile);
+                DssRef.world.subTileGrid.Set(loop.Position, tile);
 
                 previous = tile;
             }

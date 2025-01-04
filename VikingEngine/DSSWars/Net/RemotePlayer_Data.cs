@@ -10,7 +10,7 @@ namespace VikingEngine.DSSWars.Players
 
     partial class RemotePlayer
     {
-        public const int OverviewSendChunkSize = 4;
+        public const int OverviewSendChunkSize = 8;
 
         public Grid2D<RemoteTile> remoteTileGrid;
 
@@ -32,28 +32,24 @@ namespace VikingEngine.DSSWars.Players
                 //    //Send 
                 //}
 
-                if (playerCulling.overviewLayer)
+                
+                if (findMissingTile(out IntVector2 tilePos, false))
                 {
-                    if (findMissingTile(out IntVector2 tilePos, false))
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldTiles, Network.PacketReliability.Reliable, out var packet);
                     {
-                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldTiles, Network.PacketReliability.Reliable, out var packet);
-                        {
-                            DssRef.world.writeNet_Tile(w, tilePos);
-                        }
-                        packet.EndWrite_Asynch();
+                        DssRef.world.writeNet_Tile(w, tilePos);
                     }
+                    packet.EndWrite_Asynch();
                 }
-                else
+                else if (findMissingTile(out IntVector2 subtilePos, true))
                 {
-                    if (findMissingTile(out IntVector2 tilePos, true))
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldSubTiles, Network.PacketReliability.Reliable, out var packet);
                     {
-                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldSubTiles, Network.PacketReliability.Reliable, out var packet);
-                        {
-                            DssRef.world.writeNet_SubTile(w, tilePos);
-                        }
-                        packet.EndWrite_Asynch();
+                        DssRef.world.writeNet_SubTile(w, subtilePos);
                     }
+                    packet.EndWrite_Asynch();
                 }
+                
             }
 
             bool findMissingTile(out IntVector2 tilePos, bool subTile)

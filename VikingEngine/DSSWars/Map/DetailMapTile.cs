@@ -83,8 +83,6 @@ namespace VikingEngine.DSSWars.Map
 
             if (hasPolygons)
             {
-                //model = new Graphics.VoxelModel(false);
-
                 model.position = WP.ToWorldPos(pos);
 
 #if DEBUG
@@ -805,18 +803,12 @@ namespace VikingEngine.DSSWars.Map
         public void DeleteMe()
         {
             model.Visible = false;
-            //model?.DeleteMe();
-            //if (foliage != null)
-            //{
+            
             foreach (var m in foliage)
             {
                 m.DeleteMe();
             }
             foliage.Clear();
-                //foliage = null;
-            //}
-
-            //isDeleted = true;
         }
     }
 }
