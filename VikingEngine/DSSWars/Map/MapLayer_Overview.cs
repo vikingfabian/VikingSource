@@ -10,31 +10,29 @@ namespace VikingEngine.DSSWars.Map
     class MapLayer_Overview : Point3D
     {
         public Map.Borders borders;
-        //BordersUpdate bordersUpdate;
         public UnitMiniModels unitMiniModels;
-        //Timer.Basic borderUpdate = new Timer.Basic(1000, true);
 
         int state_Processing_Sych_Complete = 2;
         Map.MapLayer_Factions factionsMap;
+        Graphics.GeneratedObjColor heightMapModel;
+        public bool bRefreshTimer = false;
+        public bool bRefreshDataRecieved = false;
 
         public MapLayer_Overview(Map.MapLayer_Factions factionsMap)
         {
             this.factionsMap = factionsMap;
             Ref.draw.CurrentRenderLayer = DrawGame.TerrainLayer;
 
-            generateTerrain();
+            createModel(generateTerrain());
 
             Graphics.Mesh waterSurface, waterBottom;
             WaterModel(out waterSurface, out waterBottom, false);
             waterSurface.AddToRender(DrawGame.TerrainLayer);
-            //waterSurface.Opacity = 0.9f;
             waterBottom.AddToRender(DrawGame.TerrainLayer);
             waterBottom.Y = waterSurface.Y - 0.1f;
 
             
             borders = new Map.Borders();
-            //bordersUpdate = new BordersUpdate(borders, worldOverviewModel);
-
             Ref.draw.CurrentRenderLayer = 0;
 
             unitMiniModels = new UnitMiniModels();
@@ -80,7 +78,19 @@ namespace VikingEngine.DSSWars.Map
             return new VectorVolume(surfacePos, waterScale);
         }
 
-        private void generateTerrain()
+        public void refresh_async()
+        {
+            if (bRefreshTimer && bRefreshDataRecieved)
+            {
+                bRefreshTimer = false;
+                bRefreshDataRecieved = false;
+
+                var polygons = generateTerrain();
+                Ref.update.AddSyncAction(new SyncAction1Arg<List<Graphics.PolygonColor>>(createModel, polygons));
+            }
+        }
+
+        private List<Graphics.PolygonColor> generateTerrain()
         {
             IntVector2 pos = IntVector2.Zero;
 
@@ -90,7 +100,7 @@ namespace VikingEngine.DSSWars.Map
             Sprite citytopTex = Sprite.FromeName(SpriteName.WhiteArea_LFtiles);
             Sprite citysideTex = Sprite.FromeName(SpriteName.WhiteArea_LFtiles);
 
-            List<Graphics.PolygonColor> billboards = new List<PolygonColor>();
+            //List<Graphics.PolygonColor> billboards = new List<PolygonColor>();
             List<Graphics.PolygonColor> polygons = new List<PolygonColor>();
 
 
@@ -101,7 +111,8 @@ namespace VikingEngine.DSSWars.Map
             Vector3 se = Vector3.Zero;
 
             Vector3 bbnw, bbne, bbsw, bbse;
-            bool[] edge4Dir = new bool[4];
+             //bool[] edge4Dir = new bool[4];
+             Span<bool> edge4Dir = stackalloc bool[4];
 
             for (pos.Y = 0; pos.Y < DssRef.world.Size.Y; ++pos.Y)
             {
@@ -174,11 +185,18 @@ namespace VikingEngine.DSSWars.Map
                 }
             }
 
-            polygons.AddRange(billboards);
+            //polygons.AddRange(billboards);
 
-            Graphics.GeneratedObjColor heightMapModel = new Graphics.GeneratedObjColor(new Graphics.PolygonsAndTrianglesColor(
-                polygons, null), LoadedTexture.SpriteSheet, true);
+            return polygons;
 
+        }
+
+        void createModel(List<Graphics.PolygonColor> polygons)
+        {
+            heightMapModel?.DeleteMe();
+            heightMapModel = new Graphics.GeneratedObjColor(new Graphics.PolygonsAndTrianglesColor(
+                polygons, null), LoadedTexture.SpriteSheet, false);
+            heightMapModel.AddToRender(DrawGame.TerrainLayer);
         }
 
 

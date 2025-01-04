@@ -103,8 +103,6 @@ namespace VikingEngine.DSSWars
 
         public void initGameState_client()
         {
-
-
             menuSystem = new GameMenuSystem();
 
             new GameObject.AllUnits();
@@ -421,7 +419,8 @@ namespace VikingEngine.DSSWars
             }
             if (subTileReloadTimer.Update())
             {
-                detailMap.onSecondUpdate = true;
+                detailMap.oneSecondUpdate = true;
+                overviewMap.bRefreshTimer = true;
             }
 
             detailMap.update();
@@ -671,9 +670,16 @@ namespace VikingEngine.DSSWars
         {
             if (cutScene == null)
             {
+                if (!host)
+                {
+                    overviewMap.refresh_async();
+                }
+
                 culling.asynch_update(time);
                 DssRef.state.detailMap.asynchUpdate();
                 overviewMap.unitMiniModels.asynchUpdate();
+
+                
             }
             return exitThreads;
         }
@@ -825,8 +831,6 @@ namespace VikingEngine.DSSWars
             switch (packet.type)
             {
                 case PacketType.DssJoined_WantWorld:
-                    //var file = new DataStream.MemoryStreamHandler();
-                    //var w = file.GetWriter();
                     var w = Ref.netSession.BeginWritingPacket(PacketType.DssSendWorld, SendPacketTo.OneSpecific, packet.sender.fullId, PacketReliability.Reliable, null);
                     var meta = new SaveStateMeta();
                     meta.netSetup();
@@ -840,13 +844,20 @@ namespace VikingEngine.DSSWars
                     ((Players.RemotePlayer)packet.sender.Tag).Net_readStatus(packet.r);
                     break;
 
-                case PacketType.DssWorldTiles:
-                    DssRef.world.readNet_Tile(packet.r);//l 32
+                case PacketType.DssWorldTiles:                    
+                    DssRef.world.readNet_Tile(packet.r);//l 32 * 4 * 4
+                    overviewMap.bRefreshDataRecieved = true;
                     break;
 
                 case PacketType.DssWorldSubTiles:
                     DssRef.world.readNet_SubTile(packet.r);//l 522
                     break;
+
+                case PacketType.DssFactionsAndCities:
+                    DssRef.world.readNet_FactionsAndCities(packet.r);
+                    break;
+
+                //case PacketType.DssCities:
 
             }
         }

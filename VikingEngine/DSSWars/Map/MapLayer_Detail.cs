@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.Map
         /// Trigger a reload of the map
         /// </summary>
 
-        public bool onSecondUpdate = false;
+        public bool oneSecondUpdate = false;
         //public bool needReload = false;
         public MapLayer_Detail()
         {
@@ -91,7 +91,7 @@ namespace VikingEngine.DSSWars.Map
                 var tile = DssRef.world.tileGrid.Get(tilePos);
                 //Debug.Log("Tile Get(C) " + tilePos.ToString() + ", " + tile.ToString());
                 byte render = DssRef.state.culling.cullingStateA ? tile.bits_renderStateA : tile.bits_renderStateB;
-                if (render == Culling.NoRender || onSecondUpdate)
+                if (render == Culling.NoRender || oneSecondUpdate)
                 {
                     tile.hasTileInRender = false;
                     tile.exitRenderTimeStamp_TotSec = Ref.TotalGameTimeSec; 
@@ -150,7 +150,7 @@ namespace VikingEngine.DSSWars.Map
                 }
             }
 
-            onSecondUpdate = false;
+            oneSecondUpdate = false;
 
             lock (synchTiles)
             {

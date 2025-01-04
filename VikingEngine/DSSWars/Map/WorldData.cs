@@ -10,6 +10,7 @@ using System.Xml.Linq;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.Network;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
 {   
@@ -337,7 +338,10 @@ namespace VikingEngine.DSSWars
 
             int factionCount = r.ReadInt32();
             factions = new SpottedArray<Faction>(factionCount);
-            factions.Count = factionCount;
+            for (int i = 0; i < factionCount; ++i)
+            {
+                factions.Add(new Faction(i));
+            }
         }
 
         public void writeNet_Tile(System.IO.BinaryWriter w, IntVector2 tilePos)
@@ -349,6 +353,7 @@ namespace VikingEngine.DSSWars
             var area = new Rectangle2(tilePos, new IntVector2(RemotePlayer.OverviewSendChunkSize));
             area.SetTileBounds(DssRef.world.tileBounds);
             ForXYLoop loop = new ForXYLoop(area);
+
             Tile previous = new Tile();
             while (loop.Next())
             {
@@ -428,6 +433,39 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        public void writeNet_FactionsAndCities(System.IO.BinaryWriter w, HashSet<int> factions, HashSet<int> CitiesInView)
+        {
+            w.Write((byte)factions.Count);
+            foreach (int faction in factions) 
+            {
+                w.Write((ushort)faction);
+                this.factions.Array[faction].writeNet(w);
+            }
+
+            w.Write((byte)cities.Count);
+            foreach (int city in CitiesInView)
+            {
+                w.Write((ushort)city);
+                this.cities[city].writeNet(w);
+            }
+        }
+
+        public void readNet_FactionsAndCities(System.IO.BinaryReader r)
+        {
+            int factionCount = r.ReadByte();
+            for (int i = 0; i < factionCount; i++)
+            { 
+                int faction = r.ReadUInt16();
+                this.factions.Array[faction].readNet(r);
+            }
+
+            int cityCount = r.ReadByte();
+            for (int i = 0; i < cityCount; i++)
+            {
+                int city = r.ReadUInt16();
+                this.cities[city].readNet(r);
+            }
+        }
 
         public void writeMapFile(System.IO.BinaryWriter w)
         {

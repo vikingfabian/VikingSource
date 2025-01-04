@@ -54,8 +54,10 @@ namespace VikingEngine.DSSWars
 
         public XP.TechnologyTemplate technology;
 
-        public Faction()
-        { }
+        public Faction(int index)
+        {
+            this.parentArrayIndex = index;
+        }
 
         public Faction(WorldData addTo, FactionType factiontype)
         {
@@ -142,7 +144,7 @@ namespace VikingEngine.DSSWars
 
             player.writeGameState(w);
 
-           workTemplate.writeGameState(w, false);
+            workTemplate.writeGameState(w, false);
 
         }
         virtual public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
@@ -180,14 +182,6 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            //if (factiontype == FactionType.Player)
-            //{
-            //    LocalPlayer player = new LocalPlayer(this);
-            //    player.readGameState(r, subVersion, pointers);
-            //    pointers.localPlayers.Add(player);
-            //}
-            //else
-            //{
             if ((factiontype == FactionType.Player) != player.IsPlayer())
             {
                 throw new Exception();
@@ -201,11 +195,15 @@ namespace VikingEngine.DSSWars
 
         virtual public void writeNet(System.IO.BinaryWriter w)
         {
-
+            w.Write((ushort)factiontype);
         }
         virtual public void readNet(System.IO.BinaryReader r)
         {
-
+            factiontype = (FactionType)r.ReadUInt16();
+            if (factiontype != FactionType.Player)
+            {
+                new Players.AiPlayer(this);
+            }
         }
 
         public void writeMapFile(System.IO.BinaryWriter w)

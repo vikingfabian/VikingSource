@@ -707,11 +707,15 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void writeNet(System.IO.BinaryWriter w)
         {
-
+            writeMapFile(w);
+            w.Write((ushort)guardCount);
+            w.Write((ushort)maxGuardSize);
         }
         public void readNet(System.IO.BinaryReader r)
         {
-
+            readMapFile(r, int.MaxValue);
+            guardCount = r.ReadUInt16();
+            maxGuardSize = r.ReadUInt16();
         }
 
         override public void tagSprites(out SpriteName back, out SpriteName art)

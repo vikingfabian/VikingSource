@@ -154,6 +154,8 @@ namespace VikingEngine.Network
         DssPlayerStatus,
         DssWorldTiles,
         DssWorldSubTiles,
+        DssFactionsAndCities,
+        DssCities,
 
         LF2_WorldOverview,
         LF2_StartAttack,
