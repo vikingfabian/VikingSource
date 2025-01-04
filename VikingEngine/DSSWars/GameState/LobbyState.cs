@@ -205,10 +205,12 @@ namespace VikingEngine.DSSWars
                 new GuiSectionSeparator(layout);
                 new GuiIconTextButton(SpriteName.AutomationGearIcon, Ref.langOpt.Options_title, null, new GuiAction(optionsMenu), true, layout);
                 //new GuiTextButton("*Crash game*", null, crashTest, false, layout); 
+
+                new GuiTextButton("Play Commander", "A small tactical board game", new GuiAction(extra_PlayCommanderVersus), false, layout);
                 if (PlatformSettings.DevBuild)
                 {
                     new GuiTextButton("Map file generator", "Creates maps to play on. Takes about 10 minutes.", mapFileGenerator, false, layout);
-                    new GuiLargeTextButton("Play Commander", "", new GuiAction(extra_PlayCommanderVersus), false, layout);
+                    
 
                     new GuiLargeTextButton("Test sound", null, new GuiAction(testsound), false, layout);
                     new GuiTextButton("Load mod", null, loadMod, false, layout);
