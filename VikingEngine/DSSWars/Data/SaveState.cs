@@ -78,6 +78,7 @@ namespace VikingEngine.DSSWars.Data
             meta.worldmeta = new WorldMetaData();
             meta.worldmeta.readNet(r);
             worldData.readNet(r);
+            worldData.metaData = meta.worldmeta;
             DssRef.world = worldData;
         }
 

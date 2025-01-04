@@ -58,11 +58,11 @@ namespace VikingEngine.DSSWars.Data
 
         public void writeNet(System.IO.BinaryWriter w)
         {
-            w.Write((byte)mapSize);
+            write(w);
         }
         public void readNet(System.IO.BinaryReader r)
         {
-            mapSize = (MapSize)r.ReadByte();
+            read(r);
         }
 
         public void setObjSeed(int id)

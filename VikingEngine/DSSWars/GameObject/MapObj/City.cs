@@ -711,6 +711,8 @@ namespace VikingEngine.DSSWars.GameObject
             readMapFile(r, int.MaxValue);
             guardCount = r.ReadUInt16();
             maxGuardSize = r.ReadUInt16();
+
+            onGameStart(false);
         }
 
         override public void tagSprites(out SpriteName back, out SpriteName art)
