@@ -11,6 +11,8 @@ using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.Network;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.ToGG.MoonFall;
+using VikingEngine.SteamWrapping;
+using System.Linq;
 
 namespace VikingEngine.DSSWars
 {   
@@ -435,35 +437,60 @@ namespace VikingEngine.DSSWars
 
         public void writeNet_Factions(System.IO.BinaryWriter w, HashSet<int> factions)
         {
-            w.Write((byte)factions.Count);
-            foreach (int faction in factions) 
-            {
+            //int count = 
+
+            //w.Write((byte)factions.Count);
+            //foreach (int faction in factions) 
+            //{
+                int faction = factions.First();
                 w.Write((ushort)faction);
                 this.factions.Array[faction].writeNet(w);
                 Debug.WriteCheck(w);
+            //}
+
+            SteamP2PManager.CrashOnTooLargePacket(w);
+
+            var remotePlayerC = DssRef.state.remotePlayers.counter();
+            while (remotePlayerC.Next())
+            {
+                remotePlayerC.sel.factionsRecieved[faction] = true;
             }
         }
 
         public void readNet_Factions(System.IO.BinaryReader r)
         {
-            int factionCount = r.ReadByte();
-            for (int i = 0; i < factionCount; i++)
-            { 
+            //int factionCount = r.ReadByte();
+            //for (int i = 0; i < factionCount; i++)
+            //{ 
                 int faction = r.ReadUInt16();
                 this.factions.Array[faction].readNet(r);
                 Debug.ReadCheck(r);
-            }
+            //}
         }
 
         public void writeNet_Cities(System.IO.BinaryWriter w, HashSet<int> CitiesInView)
         {
+            var remotePlayerC = DssRef.state.remotePlayers.counter();
+
             w.Write((byte)cities.Count);
             foreach (int city in CitiesInView)
             {
                 w.Write((ushort)city);
                 this.cities[city].writeNet(w);
                 Debug.WriteCheck(w);
+
+                //
+                remotePlayerC.Reset();
+                while (remotePlayerC.Next())
+                {
+                    remotePlayerC.sel.citiesRecieved[city] = true;
+                }
             }
+
+            SteamP2PManager.CrashOnTooLargePacket(w);
+
+            
+            
         }
 
         public void readNet_Cities(System.IO.BinaryReader r)

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Valve.Steamworks;
 using VikingEngine.Network;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.SteamWrapping
 {
@@ -437,7 +438,17 @@ namespace VikingEngine.SteamWrapping
             return null;
         }
 
-        
+        public static void CrashOnTooLargePacket(System.IO.BinaryWriter w)
+        {
+#if DEBUG
+            if (w.BaseStream.Length > SteamPackageByteLimit)
+            {
+                throw new Exception("Passed steam package limit");
+            }
+#endif
+        }
+
+
         public void Send(byte[] data, VikingEngine.Network.PacketReliability rely, SendPacketTo to, ulong specificGamerID)
         {
 #if DEBUG

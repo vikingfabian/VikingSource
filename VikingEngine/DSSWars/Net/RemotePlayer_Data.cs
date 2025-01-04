@@ -15,8 +15,8 @@ namespace VikingEngine.DSSWars.Players
         static HashSet<int> FactionsInView = new HashSet<int>();
 
         public Grid2D<RemoteTile> remoteTileGrid;
-        bool[] citiesRecieved;
-        bool[] factionsRecieved;
+        public bool[] citiesRecieved;
+        public bool[] factionsRecieved;
 
         public void InitData()
         {
