@@ -712,6 +712,8 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write((ushort)maxGuardSize);
 
             w.Write((ushort)faction.parentArrayIndex);
+
+            w.Write((byte)Tile().heightLevel);
         }
         public void readNet(System.IO.BinaryReader r)
         {
@@ -723,6 +725,11 @@ namespace VikingEngine.DSSWars.GameObject
             faction = DssRef.world.factions[factionIx];
 
             onGameStart(false);
+            int height = r.ReadByte();
+            var tile = new Tile();
+            tile.heightLevel = height;
+            position.Y  = tile.ModelGroundY();
+            overviewModel.position = position;
         }
 
         override public void tagSprites(out SpriteName back, out SpriteName art)
