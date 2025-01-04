@@ -472,7 +472,7 @@ namespace VikingEngine.DSSWars
         {
             var remotePlayerC = DssRef.state.remotePlayers.counter();
 
-            w.Write((byte)cities.Count);
+            w.Write((byte)CitiesInView.Count);
             foreach (int city in CitiesInView)
             {
                 w.Write((ushort)city);
