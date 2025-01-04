@@ -46,6 +46,7 @@ namespace VikingEngine.DSSWars
 
         public int nextGroupId = 0;
         public List<Players.LocalPlayer> localPlayers;
+        public SpottedArray<Players.RemotePlayer> remotePlayers = new SpottedArray<Players.RemotePlayer>();
         
         //public SpottedArray<Battle.BattleGroup> battles = new SpottedArray<Battle.BattleGroup>(64);
 
@@ -63,6 +64,7 @@ namespace VikingEngine.DSSWars
         public GameMenuSystem menuSystem;
         bool slowMinuteUpdate = true;   
         Timer.Basic subTileReloadTimer = new Timer.Basic(1000, true);                
+        bool netMapUpdate = false;
 
         public PlayState(bool host, SaveStateMeta loadMeta, System.IO.BinaryReader readWorld)
             : base()
@@ -292,6 +294,8 @@ namespace VikingEngine.DSSWars
                 new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63, System.Threading.ThreadPriority.Lowest);
                 new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61, System.Threading.ThreadPriority.Lowest);
                 new AsynchUpdateable_TryCatch(asyncSlowUpdate, "DSS slow update", 62, System.Threading.ThreadPriority.Lowest);
+                
+                new AsynchUpdateable_TryCatch(asynchHostNetUpdate, "DSS host net update", 62, System.Threading.ThreadPriority.Lowest);
 
                 //new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63);
                 //new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
@@ -669,6 +673,20 @@ namespace VikingEngine.DSSWars
             }
             return exitThreads;
         }
+
+        bool asynchHostNetUpdate(int id, float time)
+        {
+            if (remotePlayers.Count > 0)
+            {
+                var remoteC = remotePlayers.counter();
+                while (remoteC.Next())
+                { 
+                    remoteC.sel.Net_HostMapUpdate_async();
+                }
+            }
+            return exitThreads;
+        }
+
         bool asyncMapBorders(int id, float time)
         {
             if (cutScene == null)
@@ -803,22 +821,45 @@ namespace VikingEngine.DSSWars
             switch (packet.type)
             {
                 case PacketType.DssJoined_WantWorld:
-                    var file = new DataStream.MemoryStreamHandler();
-                    var w = file.GetWriter();
-
+                    //var file = new DataStream.MemoryStreamHandler();
+                    //var w = file.GetWriter();
+                    var w = Ref.netSession.BeginWritingPacket(PacketType.DssSendWorld, SendPacketTo.OneSpecific, packet.sender.fullId, PacketReliability.Reliable, null);
                     var meta = new SaveStateMeta();
                     meta.netSetup();
                     var saveGamestate = new SaveGamestate(meta);
                     saveGamestate.writeNet(w);
 
-                    new SteamLargePacketWriter(file, SendPacketTo.OneSpecific, packet.sender.fullId, PacketType.DssSendWorld).begin();
+                    //new SteamLargePacketWriter(file, SendPacketTo.OneSpecific, packet.sender.fullId, PacketType.DssSendWorld).begin();
                     break;
+
+                case PacketType.DssPlayerStatus:
+                    ((Players.RemotePlayer)packet.sender.Tag).Net_readStatus(packet.r);
+                    break;
+
+                case PacketType.DssWorldTiles:
+                    DssRef.world.readNet_Tile(packet.r);
+                    break;
+
+                case PacketType.DssWorldSubTiles:
+                    DssRef.world.readNet_SubTile(packet.r);
+                    break;
+
             }
+        }
+
+        public override void NetUpdate()
+        {
+            foreach (var player in localPlayers)
+            {
+                player.NetUpdate();
+            }
+
         }
 
         public override void NetEvent_PeerJoined(AbsNetworkPeer peer)
         {
             base.NetEvent_PeerJoined(peer);
+            remotePlayers.Add(new Players.RemotePlayer(peer));
         }
     }
 

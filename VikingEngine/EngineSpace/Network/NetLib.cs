@@ -151,6 +151,9 @@ namespace VikingEngine.Network
 
         DssJoined_WantWorld,
         DssSendWorld,
+        DssPlayerStatus,
+        DssWorldTiles,
+        DssWorldSubTiles,
 
         LF2_WorldOverview,
         LF2_StartAttack,

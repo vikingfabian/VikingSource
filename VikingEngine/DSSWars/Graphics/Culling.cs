@@ -4,7 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.Engine;
+using VikingEngine.LootFest.Data;
 
 namespace VikingEngine.DSSWars
 {
@@ -174,11 +176,18 @@ namespace VikingEngine.DSSWars
         public PlayerCullingState stateA = new PlayerCullingState();
         public PlayerCullingState stateB = new PlayerCullingState();
 
+        public PlayerCulling()
+        { }
 
         public PlayerCulling(int ix)
         {
             this.index = ix;
             playerData = Ref.draw.ActivePlayerScreens[index];
+        }
+
+        public PlayerCullingState GetState()
+        { 
+            return DssRef.state.culling.cullingStateA ? stateA : stateB;
         }
 
         public bool insidePlayerAttension(bool bStateA, IntVector2 tilePos)
@@ -245,6 +254,17 @@ namespace VikingEngine.DSSWars
         public bool overviewLayer = false;
         public bool detailLayer = false;
 
+
+        public void writeNet(System.IO.BinaryWriter w)
+        {
+            enterArea.writeUshort(w);
+            w.Write(overviewLayer);
+        }
+        public void readNet(System.IO.BinaryReader r)
+        {
+            enterArea.readUshort(r);
+            overviewLayer = r.ReadBoolean();
+        }
 
         public void async_playerViewToRenderState(bool bStateA, Rectangle2 screenArea, Map.DetailLayer layer)
         {

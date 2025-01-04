@@ -85,6 +85,17 @@ namespace VikingEngine
         public IntVector2 pos;
         public IntVector2 size;
 
+        public void writeUshort(System.IO.BinaryWriter w)
+        {
+            pos.writeUshort(w);
+            size.writeUshort(w);
+        }
+
+        public void readUshort(System.IO.BinaryReader r)
+        {
+            pos.readUshort(r);
+            size.readUshort(r);
+        }
 
         /// <summary>
         /// Returns the right or bottom coordinate, depending on the dimension.

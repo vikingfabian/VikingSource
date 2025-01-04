@@ -361,8 +361,10 @@ namespace VikingEngine.Network
 #if PCGAME
             string data = Valve.Steamworks.SteamAPI.SteamMatchmaking().GetLobbyData(lobbyID, key);
             return Convert.ToInt32(data);
-#endif
+#else
             return int.MinValue;
+#endif
+           
         }
         
         float nextNetUpdateTime = 0;

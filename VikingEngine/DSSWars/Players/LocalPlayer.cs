@@ -220,7 +220,6 @@ namespace VikingEngine.DSSWars.Players
             cannonConscriptCopy = new ConscriptProfile();
             cannonConscriptCopy.defaultSetup(Build.BuildAndExpandType.CannonBarracks);
 
-
         }
 
         public void initPlayerToPlayer(int playerindex, int numPlayers)
@@ -239,6 +238,15 @@ namespace VikingEngine.DSSWars.Players
                         var otherP = DssRef.state.localPlayers[i].toPlayerDiplomacies[playerindex] = PtoP;
                     }
                 }
+            }
+        }
+
+        public void NetUpdate()
+        {
+            if (Ref.netSession.IsClient)
+            {
+                var w = Ref.netSession.BeginWritingPacketToHost(Network.PacketType.DssPlayerStatus, Network.PacketReliability.Unrelyable, playerData.localPlayerIndex);
+                DssRef.state.culling.players[playerData.localPlayerIndex].GetState().writeNet(w);
             }
         }
 

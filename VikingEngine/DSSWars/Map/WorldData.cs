@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Data;
 using System.Xml.Linq;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.Network;
+using VikingEngine.DSSWars.Players;
 
 namespace VikingEngine.DSSWars
 {   
@@ -339,6 +340,94 @@ namespace VikingEngine.DSSWars
             factions.Count = factionCount;
         }
 
+        public void writeNet_Tile(System.IO.BinaryWriter w, IntVector2 tilePos)
+        {
+            var remotePlayerC = DssRef.state.remotePlayers.counter();
+
+            tilePos.writeUshort(w);
+
+            var area = new Rectangle2(tilePos, new IntVector2(RemotePlayer.OverviewSendChunkSize));
+            area.SetTileBounds(DssRef.world.tileBounds);
+            ForXYLoop loop = new ForXYLoop(area);
+            Tile previous = new Tile();
+            while (loop.Next())
+            {
+                var tile = DssRef.world.tileGrid.Get(loop.Position);
+                tile.writeMapFile(w, previous);
+
+                previous = tile;
+
+                remotePlayerC.Reset();
+                while (remotePlayerC.Next())
+                { 
+                    var remoteTile = remotePlayerC.sel.remoteTileGrid.Get(loop.Position);
+                    remoteTile.overview = true;
+                    remotePlayerC.sel.remoteTileGrid.Set(loop.Position, remoteTile);
+                }
+            }            
+        }
+
+        public void readNet_Tile(System.IO.BinaryReader r)
+        {
+            IntVector2 tilePos = IntVector2.FromReadUshort(r);
+
+            var area = new Rectangle2(tilePos, new IntVector2(RemotePlayer.OverviewSendChunkSize));
+            area.SetTileBounds(DssRef.world.tileBounds);
+            ForXYLoop loop = new ForXYLoop(area);
+            Tile previous = new Tile();
+            while (loop.Next())
+            {
+                var tile = DssRef.world.tileGrid.Get(loop.Position);
+                tile.readMapFile(r, previous, int.MaxValue);
+                DssRef.world.tileGrid.Set(loop.Position, tile); 
+
+                previous = tile;
+            }
+        }
+
+        public void writeNet_SubTile(System.IO.BinaryWriter w, IntVector2 tilePos)
+        {
+            tilePos.writeUshort(w);
+
+            var area = new Rectangle2(WP.ToSubTilePos_TopLeft(tilePos), new IntVector2(WorldData.TileSubDivitions));
+            ForXYLoop loop = new ForXYLoop(area);
+            SubTile previous = new SubTile();
+
+            while (loop.Next())
+            {
+                var tile = DssRef.world.subTileGrid.Get(loop.Position);
+                tile.write(w, ref previous);
+
+                previous = tile;
+            }
+
+            var remotePlayerC = DssRef.state.remotePlayers.counter();
+            while (remotePlayerC.Next())
+            {
+                var remoteTile = remotePlayerC.sel.remoteTileGrid.Get(loop.Position);
+                remoteTile.detail = true;
+                remotePlayerC.sel.remoteTileGrid.Set(loop.Position, remoteTile);
+            }
+        }
+
+        public void readNet_SubTile(System.IO.BinaryReader r)
+        {
+            IntVector2 tilePos = IntVector2.FromReadUshort(r);
+
+            var area = new Rectangle2(WP.ToSubTilePos_TopLeft(tilePos), new IntVector2(WorldData.TileSubDivitions));
+            ForXYLoop loop = new ForXYLoop(area);
+            SubTile previous = new SubTile();
+
+            while (loop.Next())
+            {
+                var tile = DssRef.world.subTileGrid.Get(loop.Position);
+                tile.read(r, ref previous, int.MaxValue);
+                DssRef.world.subTileGrid.Set(tilePos, tile);
+
+                previous = tile;
+            }
+        }
+
 
         public void writeMapFile(System.IO.BinaryWriter w)
         {
@@ -458,6 +547,8 @@ namespace VikingEngine.DSSWars
             //}
 
         }
+
+
 
         public static bool LoadingComplete { get { return DssRef.world != null; } }
 

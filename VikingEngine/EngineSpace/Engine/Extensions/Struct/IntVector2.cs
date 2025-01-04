@@ -674,6 +674,13 @@ namespace VikingEngine
             return result;
         }
 
+        public static IntVector2 FromReadUshort(System.IO.BinaryReader r)
+        {
+            IntVector2 result = IntVector2.Zero;
+            result.readUshort(r);
+            return result;
+        }
+
         public int CompareTo(object obj)
         {
             IntVector2 other = (IntVector2)obj;

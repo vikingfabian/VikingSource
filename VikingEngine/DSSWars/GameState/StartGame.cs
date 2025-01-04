@@ -87,9 +87,6 @@ namespace VikingEngine.DSSWars
             switch (packet.type)
             {
                 case PacketType.DssSendWorld:
-                    //var meta = new SaveStateMeta();
-                    //var saveGamestate = new SaveGamestate(meta);
-                    //saveGamestate.readNet(packet.r);
                     state = new PlayState(host, loadMeta, packet.r);
 
                     break;

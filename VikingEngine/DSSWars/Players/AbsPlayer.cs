@@ -50,14 +50,14 @@ namespace VikingEngine.DSSWars.Players
 
         }
 
-        virtual public void writeNet(System.IO.BinaryWriter w)
-        {
+        //virtual public void writeNet(System.IO.BinaryWriter w)
+        //{
 
-        }
-        virtual public void readNet(System.IO.BinaryReader r)
-        {
+        //}
+        //virtual public void readNet(System.IO.BinaryReader r)
+        //{
 
-        }
+        //}
 
         virtual public void oneSecUpdate()
         { }
