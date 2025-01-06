@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (food < minBuffer)
                 {
-                    if (faction.player.IsPlayer())
+                    if (faction.player.IsLocalPlayer())
                     {
                         Ref.update.AddSyncAction(new SyncAction(() =>
                         {

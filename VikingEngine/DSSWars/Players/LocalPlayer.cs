@@ -31,7 +31,7 @@ using System.Drawing;
 
 namespace VikingEngine.DSSWars.Players
 {
-    partial class LocalPlayer : AbsPlayer
+    partial class LocalPlayer : AbsHumanPlayer
     {
         public const int MaxSpeedOption = 5;
         public Engine.PlayerData playerData;
@@ -127,6 +127,8 @@ namespace VikingEngine.DSSWars.Players
             faction.addMoney_factionWide(10000);
         }
 
+        
+
         public void assignPlayer(int playerindex, int numPlayers, bool newGame)
         {
             var pStorage = DssRef.storage.localPlayers[playerindex];
@@ -137,6 +139,14 @@ namespace VikingEngine.DSSWars.Players
             //tabBattle = new SpottedArrayCounter<BattleGroup>(battles);
 
             input = new InputMap(playerindex);
+            if (Ref.netSession.HasInternet)
+            {
+                var peer = Ref.netSession.LocalPeer();
+                if (peer != null)
+                {
+                    networkPeer = new Network.NetworkInstancePeer(peer,playerindex);
+                }
+            }
             input.setInputSource(pStorage.inputSource.sourceType, pStorage.inputSource.controllerIndex);
             if (pStorage.inputSource.IsController)
             {
@@ -462,7 +472,7 @@ namespace VikingEngine.DSSWars.Players
                 new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
             }
 
-            if (IsPlayer() && DssRef.difficulty.honorGuard)
+            if (IsLocalPlayer() && DssRef.difficulty.honorGuard)
             {
                 int guardCount = 12;
 
@@ -633,7 +643,7 @@ namespace VikingEngine.DSSWars.Players
             if ((rel.Relation <= RelationType.RelationTypeN3_War &&
                 otherFaction.factiontype != FactionType.SouthHara)
                 ||
-                otherFaction.player.IsPlayer())
+                otherFaction.player.IsLocalPlayer())
             {
                 string title;
                 if (rel.Relation >= RelationType.RelationType2_Good)
@@ -1695,7 +1705,7 @@ namespace VikingEngine.DSSWars.Players
             return false;
         }
 
-        public override bool IsPlayer()
+        public override bool IsLocalPlayer()
         {
             return true;
         }

@@ -120,7 +120,7 @@ namespace VikingEngine.SteamWrapping
         {
             get
             {
-                if (Ref.steam.P2PManager.localHost.fullId == this.fullId)
+                if (Ref.steam.P2PManager.localPeer.fullId == this.fullId)
                 {
                     return true;
                 }

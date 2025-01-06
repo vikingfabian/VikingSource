@@ -120,7 +120,7 @@ namespace VikingEngine.PJ.Bagatelle
 
         public override Network.AbsNetworkPeer NetworkPeer
         {
-            get { return Ref.netSession.LocalHost(); }//Ref.steam.P2PManager.localHost; }
+            get { return Ref.netSession.LocalPeer(); }//Ref.steam.P2PManager.localHost; }
         }
 
         public override GamerData GetGamerData()

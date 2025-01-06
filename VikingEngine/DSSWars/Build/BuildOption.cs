@@ -188,7 +188,7 @@ namespace VikingEngine.DSSWars.Build
                             break;
                     }
 
-                    if (city.faction.player.IsPlayer())
+                    if (city.faction.player.IsLocalPlayer())
                     {
                         city.faction.player.GetLocalPlayer().statistics.onDecorBuild_async(statue);
                     }

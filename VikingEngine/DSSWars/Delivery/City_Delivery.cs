@@ -128,7 +128,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                                     if (status.inProgress.type == ItemResourceType.Food_G &&
                                         resource.amount <= 2 &&
-                                        faction.player.IsPlayer())
+                                        faction.player.IsLocalPlayer())
                                     {
                                         DssRef.achieve.UnlockAchievement_async(AchievementIndex.deliver_food);
                                     }

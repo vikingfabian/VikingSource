@@ -75,7 +75,7 @@ namespace VikingEngine.LootFest
 
         public void FoundSession()
         {
-            LfRef.gamestate.GameObjCollection.UpdateOwnerId(Ref.netSession.LocalHost().id); //temp, tills gamestate bytas
+            LfRef.gamestate.GameObjCollection.UpdateOwnerId(Ref.netSession.LocalPeer().id); //temp, tills gamestate bytas
 
             System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(Network.PacketType.RequestMapSeed, Network.PacketReliability.Reliable);
             failTimer.Seconds = 10;

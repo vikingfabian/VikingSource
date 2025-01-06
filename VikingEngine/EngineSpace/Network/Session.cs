@@ -41,9 +41,9 @@ namespace VikingEngine.Network
             {
 #if PCGAME
                 ulong lobbyId = Ref.steam.LobbyMatchmaker.currentLobbyID;
-                if (lobbyId != 0 && Ref.steam.P2PManager.localHost != null)
+                if (lobbyId != 0 && Ref.steam.P2PManager.localPeer != null)
                 {
-                    return Valve.Steamworks.SteamAPI.SteamMatchmaking().GetLobbyOwner(lobbyId) == Ref.steam.P2PManager.localHost.fullId;
+                    return Valve.Steamworks.SteamAPI.SteamMatchmaking().GetLobbyOwner(lobbyId) == Ref.steam.P2PManager.localPeer.fullId;
                 }
 #endif
                 return false;
@@ -118,8 +118,8 @@ namespace VikingEngine.Network
                     }
                     else
                     {
-                        return Ref.steam.P2PManager.localHost != null &&
-                            Ref.steam.P2PManager.localHost.GotAssignedId;
+                        return Ref.steam.P2PManager.localPeer != null &&
+                            Ref.steam.P2PManager.localPeer.GotAssignedId;
                     }
                 }
 #endif
@@ -199,12 +199,12 @@ namespace VikingEngine.Network
 #endif
             return null;
         }
-        public AbsNetworkPeer LocalHost()
+        public AbsNetworkPeer LocalPeer()
         {
 #if PCGAME
             if (Ref.steam.isNetworkInitialized)
             {
-                return Ref.steam.P2PManager.GetLocalHost();
+                return Ref.steam.P2PManager.GetLocalPeer();
             }
 #endif
             return null;

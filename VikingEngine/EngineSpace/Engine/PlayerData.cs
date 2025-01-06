@@ -142,7 +142,7 @@ namespace VikingEngine.Engine
             //{
             //    return Ref.steam.P2PManager.localHost;
             //}
-            return Ref.netSession.LocalHost();
+            return Ref.netSession.LocalPeer();
         }
 
         public override bool equals(AbsPlayerData otherPlayerData)
@@ -189,7 +189,7 @@ namespace VikingEngine.Engine
             //{
             //    return Ref.steam.P2PManager.localHost;
             //}
-            return Ref.netSession.LocalHost();
+            return Ref.netSession.LocalPeer();
         }
 
         override public string PublicName(LoadedFont fontsafe)

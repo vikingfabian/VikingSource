@@ -478,7 +478,7 @@ namespace VikingEngine.DSSWars
             foreach (int city in CitiesInView)
             {
                 w.Write((ushort)city);
-                this.cities[city].writeNet(w);
+                this.cities[city].writeNet_map(w);
                 Debug.WriteCheck(w);
 
                 //
@@ -505,7 +505,7 @@ namespace VikingEngine.DSSWars
             for (int i = 0; i < cityCount; i++)
             {
                 int city = r.ReadUInt16();
-                this.cities[city].readNet(r);
+                this.cities[city].readNet_map(r);
                 Debug.ReadCheck(r);
             }
 

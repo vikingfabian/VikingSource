@@ -411,7 +411,7 @@ namespace VikingEngine.DSSWars
 
         public bool payMoney(int cost, bool allowDept, City city)
         {
-            if (player.IsPlayer() && StartupSettings.EndlessResources)
+            if (player.IsLocalPlayer() && StartupSettings.EndlessResources)
             {
                 return true;
             }

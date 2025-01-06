@@ -25,8 +25,10 @@ namespace VikingEngine.DSSWars.Players
             factionsRecieved = new bool[DssRef.world.factions.Count];
         }
 
-        public void Net_HostMapUpdate_async()
-        {            
+        public bool Net_HostMapUpdate_async()
+        {           
+            bool sentMap = true;
+
             if (playerCulling.enterArea.size.HasValue())
             {
                 CitiesInView.Clear();
@@ -64,7 +66,17 @@ namespace VikingEngine.DSSWars.Players
                     }
                     packet.EndWrite_Asynch();
                 }
+                else
+                {
+                    sentMap = false;
+                }
+
+                return sentMap;
+
+                //todo hitta alla städer och armeer i sight
             }
+
+            return false;
 
             bool findMissingTile(out IntVector2 tilePos, bool subTile)
             {
@@ -95,6 +107,11 @@ namespace VikingEngine.DSSWars.Players
                 tilePos = IntVector2.NegativeOne;
                 return false;
             }
+
+        }
+
+        public void Net_HostObjectsUpdate_async()
+        {
 
         }
     }

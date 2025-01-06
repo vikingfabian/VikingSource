@@ -105,7 +105,7 @@ namespace VikingEngine.DSSWars
             {
                 if (InWar(aifaction, DssRef.world.factions[relIx])) 
                 {
-                    if (DssRef.world.factions[relIx].player.IsPlayer())
+                    if (DssRef.world.factions[relIx].player.IsLocalPlayer())
                     {
                         aiPlayerAsynchUpdate_wars_withplayer.Add(relIx);
                     }
@@ -280,7 +280,7 @@ namespace VikingEngine.DSSWars
                 RelationType prevRelation = GetRelationType(attacker, defender);
                 var relation = SetRelationType(attacker, defender, RelationType.RelationTypeN3_War);
 
-                if (attacker.player.IsPlayer())
+                if (attacker.player.IsLocalPlayer())
                 {
                     int cost = DeclareWarCost(prevRelation);
                     var player = attacker.player.GetLocalPlayer();
@@ -297,14 +297,14 @@ namespace VikingEngine.DSSWars
                         relation.SetWorseSpeakTerms(SpeakTermsOnWar_BadChance, SpeakTermsOnWar_NoneChance);
                     }
 
-                    if (defender.player.IsPlayer())
+                    if (defender.player.IsLocalPlayer())
                     {
                         var otherPlayer = defender.player.GetLocalPlayer();
                         var PtoP = player.toPlayerDiplomacies[otherPlayer.playerData.localPlayerIndex];
                         PtoP.suggestingNewRelation = false;
                     }
                 }
-                if (defender.player.IsPlayer())
+                if (defender.player.IsLocalPlayer())
                 { 
                     ++defender.player.GetLocalPlayer().statistics.WarsStartedByEnemy;
                 }
@@ -313,7 +313,7 @@ namespace VikingEngine.DSSWars
 
         public bool PositiveRelationWithPlayer(Faction faction)
         {
-            if (faction.player.IsPlayer())
+            if (faction.player.IsLocalPlayer())
             { 
                 return true;
             }
@@ -331,7 +331,7 @@ namespace VikingEngine.DSSWars
 
         public bool NegativeRelationWithPlayer(Faction faction)
         {
-            if (faction.player.IsPlayer())
+            if (faction.player.IsLocalPlayer())
             {
                 return false;
             }

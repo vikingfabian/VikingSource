@@ -284,11 +284,11 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public void onDeath(bool fullUpdate, Faction enemyFaction)
         {
             //onEvent(UnitEventType.Death);
-            if (enemyFaction.player.IsPlayer())
+            if (enemyFaction.player.IsLocalPlayer())
             {
                 ++enemyFaction.player.GetLocalPlayer().statistics.EnemySoldiersKilled;
             }
-            if (group.army.faction.player.IsPlayer())
+            if (group.army.faction.player.IsLocalPlayer())
             {
                 ++group.army.faction.player.GetLocalPlayer().statistics.FriendlySoldiersLost;
             }

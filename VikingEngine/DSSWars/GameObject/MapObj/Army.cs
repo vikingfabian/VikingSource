@@ -1193,7 +1193,7 @@ namespace VikingEngine.DSSWars.GameObject
             int totalDeserters = desertSoldiers();
 
             if (totalDeserters > 0 &&
-                faction.player.IsPlayer() && 
+                faction.player.IsLocalPlayer() && 
                 faction.player.GetLocalPlayer().hud.messages.freeSpace())
             {
                 faction.player.GetLocalPlayer().hud.messages.Add("Deserters!", "Hungry soldiers are deserting from your armies");

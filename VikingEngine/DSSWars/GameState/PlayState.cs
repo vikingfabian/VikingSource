@@ -699,14 +699,35 @@ namespace VikingEngine.DSSWars
         {
             if (remotePlayers.Count > 0)
             {
-                var remoteC = remotePlayers.counter();
-                while (remoteC.Next())
-                { 
-                    remoteC.sel.Net_HostMapUpdate_async();
+                if (!sendMap())
+                {
+                    //TODO, rotate user update
+                    //Map sent, start updating units
+                    var remoteC = remotePlayers.counter();
+                    while (remoteC.Next())
+                    {
+                        remoteC.sel.Net_HostObjectsUpdate_async();
+                    }
+                }
+
+                bool sendMap()
+                {
+                    var remoteC = remotePlayers.counter();
+                    while (remoteC.Next())
+                    {
+                        if (remoteC.sel.Net_HostMapUpdate_async())
+                        {
+                            return true;
+                        }
+                    }
+
+                    return false;
                 }
             }
             return exitThreads;
         }
+
+        
 
         bool asyncMapBorders(int id, float time)
         {
@@ -852,7 +873,7 @@ namespace VikingEngine.DSSWars
                     break;
 
                 case PacketType.DssPlayerStatus:
-                    ((Players.RemotePlayer)packet.sender.Tag).Net_readStatus(packet.r);
+                    GetRemotePlayer(packet).Net_readStatus(packet.r);
                     break;
 
                 case PacketType.DssWorldTiles:                    
@@ -874,19 +895,62 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        public Players.RemotePlayer GetRemotePlayer(ReceivedPacket packet)
+        {
+            return (Players.RemotePlayer)packet.sender.instancePeers[packet.senderLocalIndex].Tag;
+        }
+
+        public Players.RemotePlayer GetOrCreateRemotePlayer(AbsNetworkPeer peer, int SplitScreenIndex)
+        {
+            var remotePlayerC = remotePlayers.counter();
+            while (remotePlayerC.Next())
+            {
+                if (remotePlayerC.sel.networkPeer.peer == peer)
+                {
+                    //TODO return region to AI
+                    return remotePlayerC.sel;
+                }
+            }
+
+            //No found
+            peer.initInstancePeers();
+            foreach (var ins in peer.instancePeers)
+            {
+                remotePlayers.Add(new Players.RemotePlayer(ins));
+            }
+            return (Players.RemotePlayer)peer.instancePeers[SplitScreenIndex].Tag;
+        }
+
         public override void NetUpdate()
         {
             foreach (var player in localPlayers)
             {
                 player.NetUpdate();
             }
-
         }
 
         public override void NetEvent_PeerJoined(AbsNetworkPeer peer)
         {
             base.NetEvent_PeerJoined(peer);
-            remotePlayers.Add(new Players.RemotePlayer(peer));
+            GetOrCreateRemotePlayer(peer, 0);
+            //peer.initInstancePeers();
+            //foreach (var ins in peer.instancePeers)
+            //{
+            //    remotePlayers.Add(new Players.RemotePlayer(ins));
+            //}
+        }
+
+        public override void NetEvent_PeerLost(AbsNetworkPeer peer)
+        {
+            var remotePlayerC = remotePlayers.counter();
+            while (remotePlayerC.Next())
+            {
+                if (remotePlayerC.sel.networkPeer.peer == peer)
+                {
+                    //TODO return region to AI
+                    remotePlayerC.RemoveAtCurrent();
+                }
+            }
         }
     }
 

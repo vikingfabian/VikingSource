@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             if (result.Count >= Achievements.AllUnitTypesCount &&
-                faction.player.IsPlayer())
+                faction.player.IsLocalPlayer())
             {
                 DssRef.achieve.UnlockAchievement(AchievementIndex.all_unit_types);
             }

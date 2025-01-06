@@ -10,6 +10,7 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Data;
+using VikingEngine.Network;
 using VikingEngine.ToGG.MoonFall;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
@@ -185,7 +186,7 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            if ((factiontype == FactionType.Player) != player.IsPlayer())
+            if ((factiontype == FactionType.Player) != player.IsLocalPlayer())
             {
                 throw new Exception();
             }
@@ -200,6 +201,11 @@ namespace VikingEngine.DSSWars
         {
             w.Write((ushort)factiontype);
             this.profile.write(w);
+
+            if (factiontype == FactionType.Player)
+            {
+                player.GetHumanPlayer().networkPeer.writeNetID(w);
+            }
         }
         virtual public void readNet(System.IO.BinaryReader r)
         {
@@ -207,7 +213,14 @@ namespace VikingEngine.DSSWars
             FlagAndColor profile = new FlagAndColor(r);
             SetProfile(profile);
 
-            if (factiontype != FactionType.Player)
+            if (factiontype == FactionType.Player)
+            {
+                Network.NetworkInstancePeer.ReadNetID(r, out AbsNetworkPeer peer, out int SplitScreenIndex);
+                var player = DssRef.state.GetOrCreateRemotePlayer(peer, SplitScreenIndex);
+                this.player = player;
+                player.faction = this;
+            }
+            else
             {
                 new Players.AiPlayer(this);
             }

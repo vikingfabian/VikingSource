@@ -50,7 +50,7 @@ namespace VikingEngine.PJ.Bagatelle
 
             if (Ref.netSession.InMultiplayerSession)
             {
-                nextGamerAssignedNetId += 1000 * Ref.netSession.LocalHost().id;
+                nextGamerAssignedNetId += 1000 * Ref.netSession.LocalPeer().id;
             
                 set1080pScreenArea();
             }
@@ -210,7 +210,7 @@ namespace VikingEngine.PJ.Bagatelle
 
                 if (r.ReadBoolean())
                 {
-                    if (id == Ref.netSession.LocalHost().fullId)
+                    if (id == Ref.netSession.LocalPeer().fullId)
                     {
                         foreach (var m in joinedLocalGamers)
                         {

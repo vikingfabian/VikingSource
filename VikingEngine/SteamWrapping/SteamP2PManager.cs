@@ -18,7 +18,7 @@ namespace VikingEngine.SteamWrapping
         public int PeerCount { get { return remoteGamers.Count; } }
 
         public SteamNetworkPeer Host;
-        public SteamNetworkPeer localHost;
+        public SteamNetworkPeer localPeer;
         public List<AbsNetworkPeer> remoteGamers;
         public bool hostSession = false;
 
@@ -174,7 +174,7 @@ namespace VikingEngine.SteamWrapping
                                 break;
                             case Network.PacketType.KickPlayer:
                                 ulong fullId = packet.r.ReadUInt64();
-                                if (localHost.fullId == fullId)
+                                if (localPeer.fullId == fullId)
                                 {
                                     //ReceiveKick();
                                     Ref.netSession.Disconnect("Removed by host");
@@ -227,9 +227,9 @@ namespace VikingEngine.SteamWrapping
 
         public AbsNetworkPeer AddPeer(ulong peerId)
         {
-            if (localHost == null)
+            if (localPeer == null)
             {
-                createLocalHost();
+                createLocalPeer();
             }
 
             if (peerId == 0)
@@ -237,7 +237,7 @@ namespace VikingEngine.SteamWrapping
                 throw new Exception();
             }
 
-            if (peerId == localHost.fullId)
+            if (peerId == localPeer.fullId)
             {
                 //local gamer, never add
                 return null;
@@ -282,19 +282,19 @@ namespace VikingEngine.SteamWrapping
             }
         }
 
-        public SteamNetworkPeer GetLocalHost()
+        public SteamNetworkPeer GetLocalPeer()
         {
-            if (localHost == null)
+            if (localPeer == null)
             {
-                createLocalHost();
+                createLocalPeer();
             }
 
-            return localHost;
+            return localPeer;
         }
 
-        void createLocalHost()
+        void createLocalPeer()
         {
-            localHost = new SteamNetworkPeer(SteamAPI.SteamUser().GetSteamID(), true);
+            localPeer = new SteamNetworkPeer(SteamAPI.SteamUser().GetSteamID(), true);
         }
 
         public void RemovePeer(AbsNetworkPeer peer)
@@ -338,8 +338,8 @@ namespace VikingEngine.SteamWrapping
         {
             if (hostSession)
             {
-                Host = localHost;
-                localHost.id = 0;
+                Host = localPeer;
+                localPeer.id = 0;
 
                 //Host = 0-3
                 //Error = 255
@@ -384,8 +384,8 @@ namespace VikingEngine.SteamWrapping
                     w.Write(r.id);
                 }
 
-                w.Write(localHost.fullId);
-                w.Write(localHost.id);
+                w.Write(localPeer.fullId);
+                w.Write(localPeer.id);
             }
         }
 
@@ -403,9 +403,9 @@ namespace VikingEngine.SteamWrapping
                 ulong steamId = r.ReadUInt64();
                 byte id = r.ReadByte();
 
-                if (localHost.fullId == steamId)
+                if (localPeer.fullId == steamId)
                 {
-                    localHost.id = id;
+                    localPeer.id = id;
                     myId = true;
                 }
                 else
@@ -432,8 +432,8 @@ namespace VikingEngine.SteamWrapping
                     return peer;
             }
 
-            if (localHost.fullId == peerId)
-                return localHost;
+            if (localPeer.fullId == peerId)
+                return localPeer;
 
             return null;
         }
@@ -553,7 +553,7 @@ namespace VikingEngine.SteamWrapping
                 RemovePeer(remoteGamers[i]);
             }
 
-            localHost = null;
+            localPeer = null;
             Host = null;
             endSession();
             SteamAPI.clearMem();

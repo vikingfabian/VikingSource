@@ -1664,7 +1664,7 @@ namespace VikingEngine.DSSWars.Players
                     if (c.faction != faction && c.faction != weakestOpponent)
                     {
                         if (DssRef.difficulty.aiAggressivity >= AiAggressivity.Medium &&
-                            c.faction.player.IsPlayer())
+                            c.faction.player.IsLocalPlayer())
                         {
                             return myCity;
                         }
@@ -1822,7 +1822,7 @@ namespace VikingEngine.DSSWars.Players
 
         bool mayAttackFaction(Faction otherFaction)
         {
-            if (otherFaction.player.IsPlayer() && (DssRef.difficulty.peaceful || !DssRef.state.events.MayAttackPlayer()))
+            if (otherFaction.player.IsLocalPlayer() && (DssRef.difficulty.peaceful || !DssRef.state.events.MayAttackPlayer()))
             {
                 RelationType playerRel = DssRef.diplomacy.GetRelationType(faction, otherFaction);
                 return playerRel <= RelationType.RelationTypeN3_War;
@@ -1879,7 +1879,7 @@ namespace VikingEngine.DSSWars.Players
         {
             return true;
         }
-        public override bool IsPlayer()
+        public override bool IsLocalPlayer()
         {
             return false;
         }

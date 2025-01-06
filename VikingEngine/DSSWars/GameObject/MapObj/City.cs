@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http.Headers;
 using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
@@ -401,9 +402,173 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(waterAddPerSec);
             workTemplate.writeGameState(w, true);
 
+            writeResources(w);
+
+            //Debug.WriteCheck(w);
+
+            writeWorkerStatuses(w);
+
+            w.Write((ushort)conscriptBuildings.Count);
+            foreach (var barracks in conscriptBuildings)
+            {
+                barracks.writeGameState(w);
+            }
+
+            w.Write((ushort)deliveryServices.Count);
+            foreach (var delivery in deliveryServices)
+            {
+                delivery.writeGameState(w);
+            }
+
+            w.Write((ushort)schoolBuildings.Count);
+            foreach (var school in schoolBuildings)
+            { school.writeGameState(w); }
+
+            w.Write(autoBuild_Work);
+            w.Write(autoBuild_Farm);
+            w.Write((byte)autoExpandFarmType);
+
+            w.Write((byte)tagBack);
+            if (tagBack != CityTagBack.NONE)
+            {
+                w.Write((ushort)tagArt);
+            }
+
+            w.Write(res_food_safeguard);
+
+            technology.writeGameState(w);
+            w.Write(gold);
+            w.Write(automateCity);
+            w.Write((byte)automationFocus);
+
+            Debug.WriteCheck(w);
+        }
+
+        
+
+
+        public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
+        {
+            workForce.amount = r.ReadUInt16();
+            workForceMax = r.ReadUInt16();
+            childrenAge0.read16bit(r);
+            childrenAge1 = r.ReadUInt16();
+
+            damages.read16bit(r);
+            immigrants.read16bit(r);
+
+            guardCount = r.ReadUInt16();
+            maxGuardSize = r.ReadUInt16();
+
+            maxWaterBase = r.ReadByte();
+            maxWaterTotal = maxWaterBase;
+            waterAddPerSec = r.ReadSingle();
+
+            workTemplate.readGameState(r, subversion, true);
+
+            readResources(r, subversion);
+            
+            readWorkerStatuses(r, subversion);
+
+            refreshCitySize();
+            conscriptBuildings.Clear();
+            int conscriptBuildingsCount = r.ReadUInt16();
+            for (int i = 0; i < conscriptBuildingsCount; i++)
+            {
+                var barrack = new Conscript.BarracksStatus();
+                barrack.readGameState(r, subversion);
+                //check doublette
+                if (!hasConscriptId(barrack.idAndPosition))
+                {
+                    conscriptBuildings.Add(barrack);
+                }
+            }
+
+            deliveryServices.Clear();
+            int deliveryServicesCount = r.ReadUInt16();
+            for (int i = 0; i < deliveryServicesCount; i++)
+            {
+                DeliveryStatus status = new Delivery.DeliveryStatus();
+                status.readGameState(r, subversion);
+                deliveryServices.Add(status);
+            }
+
+
+            schoolBuildings.Clear();
+            int schoolBuildingsCount = r.ReadUInt16();
+            for (int i = 0; i < schoolBuildingsCount; i++)
+            {
+                XP.SchoolStatus status = new XP.SchoolStatus();
+                status.readGameState(r, subversion);
+                schoolBuildings.Add(status);
+            }
+
+
+            autoBuild_Work = r.ReadBoolean();
+            autoBuild_Farm = r.ReadBoolean();
+            autoExpandFarmType = (Build.BuildAndExpandType)r.ReadByte();
+
+            tagBack = (CityTagBack)r.ReadByte();
+            if (tagBack != CityTagBack.NONE)
+            {
+                tagArt = (CityTagArt)r.ReadUInt16();
+            }
+
+            res_food_safeguard = r.ReadBoolean();
+
+            technology.readGameState(r, subversion);
+
+            gold = r.ReadInt32();
+
+            if (subversion >= 45)
+            {
+                automateCity = r.ReadBoolean();
+                automationFocus = (AutomationFocus)r.ReadByte();
+            }
+
+            Debug.ReadCheck(r);
+        }
+
+        private void writeWorkerStatuses(BinaryWriter w)
+        {
+            w.Write((ushort)workerStatuses.Count);
+            for (int i = 0; i < workerStatuses.Count; i++)
+            {
+                workerStatuses[i].writeGameState(w);
+            }
+        }
+
+        private void readWorkerStatuses(BinaryReader r, int subversion)
+        {
+            IntVector2 startPos = WP.ToSubTilePos_Centered(tilePos);
+
+            int workerStatusesCount = r.ReadUInt16();
+            for (int i = 0; i < workerStatusesCount; i++)
+            {
+                WorkerStatus readWorker = new WorkerStatus()
+                {
+                    work = WorkType.Idle,
+                    processTimeStartStampSec = Ref.TotalGameTimeSec,
+                    subTileEnd = startPos,
+                    subTileStart = startPos,
+                };
+
+                readWorker.readGameState(r, subversion);
+
+                if (i >= workerStatuses.Count)
+                {
+                    workerStatuses.Add(readWorker);
+                }
+                else
+                {
+                    workerStatuses[i] = readWorker;
+                }
+            }
+        }
+
+        void writeResources(System.IO.BinaryWriter w)
+        {
             w.Write((short)res_water.amount);
-
-
             res_wood.writeGameState(w); // ItemResourceType.Wood_Group
             res_fuel.writeGameState(w); // ItemResourceType.Fuel_G
             res_stone.writeGameState(w); // ItemResourceType.Stone_G
@@ -480,70 +645,10 @@ namespace VikingEngine.DSSWars.GameObject
             res_LightPlateArmor.writeGameState(w); // ItemResourceType.LightPlateArmor
             res_FullPlateArmor.writeGameState(w); // ItemResourceType.FullPlateArmor
             res_MithrilArmor.writeGameState(w); // ItemResourceType.MithrilArmor
-
-            //Debug.WriteCheck(w);
-
-            w.Write((ushort)workerStatuses.Count);
-            for (int i = 0; i < workerStatuses.Count; i++) 
-            { 
-                workerStatuses[i].writeGameState(w);
-            }
-
-            w.Write((ushort)conscriptBuildings.Count);
-            foreach (var barracks in conscriptBuildings)
-            { 
-                barracks.writeGameState(w);
-            }
-
-            w.Write((ushort)deliveryServices.Count);
-            foreach (var delivery in deliveryServices)
-            { 
-                delivery.writeGameState(w);
-            }
-
-            w.Write((ushort)schoolBuildings.Count);
-            foreach (var school in schoolBuildings)
-            { school.writeGameState(w); }
-            
-            w.Write(autoBuild_Work);
-            w.Write(autoBuild_Farm);
-            w.Write((byte)autoExpandFarmType);
-
-            w.Write((byte)tagBack);
-            if (tagBack != CityTagBack.NONE)
-            {
-                w.Write((ushort)tagArt);
-            }
-
-            w.Write(res_food_safeguard);
-
-            technology.writeGameState(w);
-            w.Write(gold);
-            w.Write(automateCity);
-            w.Write((byte)automationFocus);
-
-            Debug.WriteCheck(w);
         }
 
-        public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
+        public void readResources(System.IO.BinaryReader r, int subversion)
         {
-            workForce.amount = r.ReadUInt16();
-            workForceMax = r.ReadUInt16();
-            childrenAge0.read16bit(r);
-            childrenAge1 = r.ReadUInt16();
-
-            damages.read16bit(r);
-            immigrants.read16bit(r);
-
-            guardCount = r.ReadUInt16();
-            maxGuardSize = r.ReadUInt16();
-
-            maxWaterBase = r.ReadByte();
-            maxWaterTotal = maxWaterBase;
-            waterAddPerSec = r.ReadSingle();
-            
-            workTemplate.readGameState(r, subversion, true);
-
             res_water.amount = r.ReadInt16();
 
             res_wood.readGameState(r, subversion); // ItemResourceType.Wood_Group
@@ -627,85 +732,9 @@ namespace VikingEngine.DSSWars.GameObject
             res_LightPlateArmor.readGameState(r, subversion); // ItemResourceType.LightPlateArmor
             res_FullPlateArmor.readGameState(r, subversion); // ItemResourceType.FullPlateArmor
             res_MithrilArmor.readGameState(r, subversion); // ItemResourceType.MithrilArmor
-
-            //Debug.ReadCheck(r);
-
-            IntVector2 startPos = WP.ToSubTilePos_Centered(tilePos);
-            int workerStatusesCount = r.ReadUInt16();
-            for (int i = 0; i < workerStatusesCount; i++)
-            {
-                var newWorker = new WorkerStatus()
-                {
-                    work = WorkType.Idle,
-                    processTimeStartStampSec = Ref.TotalGameTimeSec,
-                    subTileEnd = startPos,
-                    subTileStart = startPos,
-                };
-
-                newWorker.readGameState(r, subversion);
-                workerStatuses.Add(newWorker);
-            }
-
-            refreshCitySize();
-            conscriptBuildings.Clear();
-            int conscriptBuildingsCount = r.ReadUInt16();
-            for (int i = 0; i < conscriptBuildingsCount; i++)
-            {
-                var barrack = new Conscript.BarracksStatus();
-                barrack.readGameState(r, subversion);
-                //check doublette
-                if (!hasConscriptId(barrack.idAndPosition))
-                {
-                    conscriptBuildings.Add(barrack);
-                }
-            }
-
-            deliveryServices.Clear();
-            int deliveryServicesCount = r.ReadUInt16();
-            for (int i = 0; i < deliveryServicesCount; i++)
-            {
-                DeliveryStatus status = new Delivery.DeliveryStatus();
-                status.readGameState(r, subversion);
-                deliveryServices.Add(status);
-            }
-
-            
-            schoolBuildings.Clear();
-            int schoolBuildingsCount = r.ReadUInt16();
-            for (int i = 0; i < schoolBuildingsCount; i++)
-            {
-                XP.SchoolStatus status = new XP.SchoolStatus();
-                status.readGameState(r, subversion);
-                schoolBuildings.Add(status);
-            }
-            
-
-            autoBuild_Work = r.ReadBoolean();
-            autoBuild_Farm = r.ReadBoolean();
-            autoExpandFarmType = (Build.BuildAndExpandType)r.ReadByte();
-
-            tagBack = (CityTagBack)r.ReadByte();
-            if (tagBack != CityTagBack.NONE)
-            {
-                tagArt = (CityTagArt)r.ReadUInt16();
-            }
-
-            res_food_safeguard = r.ReadBoolean();
-            
-            technology.readGameState(r, subversion);
-
-            gold = r.ReadInt32();
-
-            if (subversion >= 45)
-            {
-                automateCity = r.ReadBoolean();
-                automationFocus = (AutomationFocus)r.ReadByte();
-            }
-
-            Debug.ReadCheck(r);
         }
 
-        public void writeNet(System.IO.BinaryWriter w)
+        public void writeNet_map(System.IO.BinaryWriter w)
         {
             writeMapFile(w);
             w.Write((ushort)guardCount);
@@ -715,7 +744,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             w.Write((byte)Tile().heightLevel);
         }
-        public void readNet(System.IO.BinaryReader r)
+        public void readNet_map(System.IO.BinaryReader r)
         {
             readMapFile(r, int.MaxValue);
             guardCount = r.ReadUInt16();
@@ -733,6 +762,23 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 overviewModel.position = position;
             }
+        }
+
+        public void writeNet_update(System.IO.BinaryWriter w)
+        {
+            workTemplate.writeGameState(w, true);
+
+            writeResources(w);
+
+            writeWorkerStatuses(w);
+        }
+        public void readNet_update(System.IO.BinaryReader r)
+        {
+            workTemplate.readGameState(r, int.MaxValue, true);
+
+            readResources(r, int.MaxValue);
+
+            readWorkerStatuses(r, int.MaxValue);
         }
 
         override public void tagSprites(out SpriteName back, out SpriteName art)
@@ -1269,7 +1315,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (workForce.amount > Achievements.LargePopulationCount &&
                  !DssRef.achieve.largePopulation &&
-                 faction.player.IsPlayer())
+                 faction.player.IsLocalPlayer())
             {
                 DssRef.achieve.largePopulation = true;
                 DssRef.achieve.UnlockAchievement(AchievementIndex.large_population);
@@ -1287,7 +1333,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (starving)
             { 
                 starving = false;
-                if (faction.player.IsPlayer())
+                if (faction.player.IsLocalPlayer())
                 {
                     faction.player.GetLocalPlayer().hud.messages.cityLowFoodMessage(this);
                 }
@@ -1387,11 +1433,11 @@ namespace VikingEngine.DSSWars.GameObject
 
                     var dominatingFaction = DssRef.world.factions.Array[strongestFaction];
 
-                    if (faction.player.IsPlayer())
+                    if (faction.player.IsLocalPlayer())
                     {
                         ++faction.player.GetLocalPlayer().statistics.CitiesLost;
                     }
-                    if (dominatingFaction.player.IsPlayer())
+                    if (dominatingFaction.player.IsLocalPlayer())
                     {
                         ++dominatingFaction.player.GetLocalPlayer().statistics.CitiesCaptured;
                     }

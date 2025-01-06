@@ -56,7 +56,7 @@ namespace VikingEngine.ToGG.HeroQuest.Lobby
 
                 collectLobbyMembers();
 
-                selectScreen.setLocal(Ref.netSession.LocalHost(), host);
+                selectScreen.setLocal(Ref.netSession.LocalPeer(), host);
 
                 
                 selectScreen.setVisuals(hqRef.localPlayers.setups.First);
@@ -122,7 +122,7 @@ namespace VikingEngine.ToGG.HeroQuest.Lobby
                 }
             }
 
-            selectScreen.setNext(Ref.netSession.LocalHost());
+            selectScreen.setNext(Ref.netSession.LocalPeer());
         }
 
         void refreshMainMenu()

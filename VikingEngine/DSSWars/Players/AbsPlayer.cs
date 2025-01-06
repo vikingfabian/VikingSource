@@ -25,6 +25,9 @@ namespace VikingEngine.DSSWars.Players
         //public List<AbsOrder> orders = new List<AbsOrder>();
         public Orders.Orders orders;
         abstract public void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType buildType, out bool intelligent);
+
+        public AbsPlayer()
+        { }
         public AbsPlayer(Faction faction)
         {
             this.faction = faction;
@@ -164,9 +167,14 @@ namespace VikingEngine.DSSWars.Players
 
         abstract public bool IsAi();
 
-        abstract public bool IsPlayer();
+        abstract public bool IsLocalPlayer();
 
         virtual public LocalPlayer GetLocalPlayer()
+        {
+            return null;
+        }
+
+        virtual public AbsHumanPlayer GetHumanPlayer()
         {
             return null;
         }
