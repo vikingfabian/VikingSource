@@ -17,13 +17,13 @@ namespace VikingEngine.ToGG.HeroQuest
                 new List<ToggEngine.GO.AbsUnit> { attacker }, new AttackTargetGroup(target), StaminaAttackBoost.Zero, true);
 
             var members = new List<AbsRichBoxMember>{
-                new RichBoxBeginTitle(),
-                new RichBoxImage(target.attackType.IsMelee ? SpriteName.cmdUnitMeleeGui : SpriteName.cmdUnitRangedGui),
-                new RichBoxText(LanguageLib.AttackType(target.attackType)),
-                new RichBoxNewLine(true),
+                new RbBeginTitle(),
+                new RbImage(target.attackType.IsMelee ? SpriteName.cmdUnitMeleeGui : SpriteName.cmdUnitRangedGui),
+                new RbText(LanguageLib.AttackType(target.attackType)),
+                new RbNewLine(true),
             };
 
-            var die = new RichBoxImage(SpriteName.cmdDiceAttack);
+            var die = new RbImage(SpriteName.cmdDiceAttack);
             for (int i = 0; i < attacks.attackerSetup.attackStrength; ++i)
             {
                 members.Add(die);

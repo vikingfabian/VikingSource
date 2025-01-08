@@ -28,14 +28,14 @@ namespace VikingEngine.ToGG.HeroQuest.Data
         {
             for (int i = 0; i < surgeCost; ++i)
             {
-                richbox.Add(new RichBoxImage(SpriteName.cmdIconSurge, 1f, -0.2f, -0.2f));                        
+                richbox.Add(new RbImage(SpriteName.cmdIconSurge, 1f, -0.2f, -0.2f));                        
             }
 
-            richbox.Add(new RichBoxImage(SpriteName.cmdConvertArrow, HudLib.ConvertArrowScale));
+            richbox.Add(new RbImage(SpriteName.cmdConvertArrow, HudLib.ConvertArrowScale));
 
             for (int i = 0; i < resultCount; ++i)
             {
-                richbox.Add(new RichBoxImage(Icon));
+                richbox.Add(new RbImage(Icon));
             }
         }
 

@@ -25,7 +25,7 @@ namespace VikingEngine.ToGG.HeroQuest.Data
             List<AbsRichBoxMember> rb = new List<AbsRichBoxMember>();
             missionObjectivesTitle(rb);
 
-            rb.Add(new RichBoxText("Defeat the Naga boss"));
+            rb.Add(new RbText("Defeat the Naga boss"));
 
             return rb;
         }

@@ -1013,7 +1013,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.newLine();
             for (int w = Army.MinColumnWidth; w <= Army.MaxColumnWidth; w += 2)
             {
-                var button = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(w.ToString()) },
+                var button = new RbButton(new List<AbsRichBoxMember> { new RbText(w.ToString()) },
                     new RbAction1Arg<int>(army.armyColumnWidthClick, w, SoundLib.menu));
                 button.setGroupSelectionColor(HudLib.RbSettings, w == army.armyColumnWidth);
                 args.content.Add(button);
@@ -1023,7 +1023,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.newLine();
             //args.content.text($"column {armyGridPlacement2.X}");
             //args.content.text($"row {armyGridPlacement2.Y}");
-            args.content.Add(new RichBoxSeperationLine());
+            args.content.Add(new RbSeperationLine());
 
             for (int y = 0; y < ArmyPlacementGrid.RowsCount; y++)
             {
@@ -1048,8 +1048,8 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 args.content.newLine();
-                args.content.Add(new RichBoxText(name));
-                args.content.Add(new RichBoxTab(0.3f));
+                args.content.Add(new RbText(name));
+                args.content.Add(new RbTab(0.3f));
                 for (int x = 0; x < ArmyPlacementGrid.ColsCount; x++)
                 {
                     args.content.space();
@@ -1057,8 +1057,8 @@ namespace VikingEngine.DSSWars.GameObject
                     int colX = x - ArmyPlacementGrid.PosXAdd;
 
                     string caption = colX == 0 ? " C " : TextLib.PlusMinus(colX);
-                    var button = new RichboxButton(new List<AbsRichBoxMember> {
-                        new RichBoxText(caption)
+                    var button = new RbButton(new List<AbsRichBoxMember> {
+                        new RbText(caption)
                     },
                     new RbAction2Arg<int, int>(setNewArmyPlacement, colX, rowY), null);
 
@@ -1067,7 +1067,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
             }
-            args.content.Add(new RichBoxSeperationLine());
+            args.content.Add(new RbSeperationLine());
             //args.content.Button("debug tag", new HUD.RichBox.RbAction(AddDebugTag), null, true);
 #endif
             soldierConscript.conscript.toHud(args.content);
@@ -2081,7 +2081,7 @@ namespace VikingEngine.DSSWars.GameObject
                 content.text("attacking: None");
             }
 
-            content.Add(new RichBoxNewLine(true));
+            content.Add(new RbNewLine(true));
             content.text(army.TypeName());
             army.stateDebugText(content);
         }
@@ -2196,7 +2196,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void TypeIcon(RichBoxContent content)
         {
-            content.Add(new RichBoxImage(AllUnits.UnitFilterIcon(soldierConscript.filterType())));
+            content.Add(new RbImage(AllUnits.UnitFilterIcon(soldierConscript.filterType())));
         }
 
         public override string ToString()

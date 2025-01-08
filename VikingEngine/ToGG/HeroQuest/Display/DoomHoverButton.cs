@@ -56,33 +56,33 @@ namespace VikingEngine.ToGG.HeroQuest.Display
                 {
                     var members = new List<HUD.RichBox.AbsRichBoxMember>
                     {
-                        new HUD.RichBox.RichBoxBeginTitle(),
-                        new HUD.RichBox.RichBoxText("Doom track"),
-                        new HUD.RichBox.RichBoxNewLine(false),
+                        new HUD.RichBox.RbBeginTitle(),
+                        new HUD.RichBox.RbText("Doom track"),
+                        new HUD.RichBox.RbNewLine(false),
                     };
 
                     if (DoomTrack.ViewTime)
                     {
                         members.AddRange(new List<HUD.RichBox.AbsRichBoxMember>
                         {
-                            new HUD.RichBox.RichBoxImage(SpriteName.DoomClockIconGray),
-                            new HUD.RichBox.RichBoxImage(SpriteName.DoomClockIcon),
-                            new HUD.RichBox.RichBoxText(" Doom clock. Will increase each turn."),
-                            new HUD.RichBox.RichBoxNewLine(false),
+                            new HUD.RichBox.RbImage(SpriteName.DoomClockIconGray),
+                            new HUD.RichBox.RbImage(SpriteName.DoomClockIcon),
+                            new HUD.RichBox.RbText(" Doom clock. Will increase each turn."),
+                            new HUD.RichBox.RbNewLine(false),
                         });
                     }
 
                     members.AddRange(new List<HUD.RichBox.AbsRichBoxMember>
                     {
-                        new HUD.RichBox.RichBoxImage(SpriteName.DoomSkullGray),
-                        new HUD.RichBox.RichBoxImage(SpriteName.DoomSkull),
-                        new HUD.RichBox.RichBoxText(" Doom skull. A full bar will end the level in defeat."),
-                        new HUD.RichBox.RichBoxNewLine(false),
+                        new HUD.RichBox.RbImage(SpriteName.DoomSkullGray),
+                        new HUD.RichBox.RbImage(SpriteName.DoomSkull),
+                        new HUD.RichBox.RbText(" Doom skull. A full bar will end the level in defeat."),
+                        new HUD.RichBox.RbNewLine(false),
 
-                        new HUD.RichBox.RichBoxImage(SpriteName.GoldChestOpen),
-                        new HUD.RichBox.RichBoxImage(SpriteName.SilverChestOpen),
-                        new HUD.RichBox.RichBoxImage(SpriteName.BronzeChestOpen),
-                        new HUD.RichBox.RichBoxText(" Loot Chests. Complete the level before the chests are closed, to recieve extra rewards."),
+                        new HUD.RichBox.RbImage(SpriteName.GoldChestOpen),
+                        new HUD.RichBox.RbImage(SpriteName.SilverChestOpen),
+                        new HUD.RichBox.RbImage(SpriteName.BronzeChestOpen),
+                        new HUD.RichBox.RbText(" Loot Chests. Complete the level before the chests are closed, to recieve extra rewards."),
                     });
 
                     //tooltip = new Graphics.ImageGroup();

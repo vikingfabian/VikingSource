@@ -32,11 +32,11 @@ namespace VikingEngine.ToGG.HeroQuest.Data.LevelConditions
             flavorText(rb, "After tracking the goblins into the forest, we found their nest.");
 
             missionObjectivesTitle(rb);
-            rb.Add(new RichBoxText("Defeat the Goblin boss"));
-            rb.Add(new RichBoxNewLine());
+            rb.Add(new RbText("Defeat the Goblin boss"));
+            rb.Add(new RbNewLine());
 
             specialConditionsTitle(rb);
-            rb.Add(new RichBoxText("Goblins may feed the boss to heal him"));
+            rb.Add(new RbText("Goblins may feed the boss to heal him"));
 
             return rb;
         }

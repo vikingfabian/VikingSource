@@ -1292,21 +1292,21 @@ namespace VikingEngine.DSSWars.Work
         {
             content.newLine();
             var infoContent = new List<AbsRichBoxMember>(2);
-            infoContent.Add(new RichBoxImage(sprite1));
+            infoContent.Add(new RbImage(sprite1));
             if (sprite2 != SpriteName.NO_IMAGE)
             {
-                infoContent.Add(new RichBoxImage(sprite2));
+                infoContent.Add(new RbImage(sprite2));
             }
-            var infoButton = new RichboxButton(infoContent, null, new RbAction(() =>
+            var infoButton = new RbButton(infoContent, null, new RbAction(() =>
             {
                 RichBoxContent content = new RichBoxContent();
-                content.Add(new RichBoxText(name));
+                content.Add(new RbText(name));
                 player.hud.tooltip.create(player, content, true);
             }));
             infoButton.overrideBgColor = HudLib.InfoYellow_BG;
 
             content.Add(infoButton);
-            content.Add(new RichBoxTab(0.2f));
+            content.Add(new RbTab(0.2f));
 
             if (unlocked)
             {
@@ -1350,8 +1350,8 @@ namespace VikingEngine.DSSWars.Work
                         });
                     }
 
-                    var button = new RichboxButton(new List<AbsRichBoxMember> {
-                    new RichBoxText(prio.ToString())
+                    var button = new RbButton(new List<AbsRichBoxMember> {
+                    new RbText(prio.ToString())
                 },
                     new RbAction3Arg<int, WorkPriorityType, City>(faction.setWorkPrio, prio, priorityType, city, SoundLib.menu),
                     hover);
@@ -1362,7 +1362,7 @@ namespace VikingEngine.DSSWars.Work
             }
             else
             {
-                content.Add(new RichBoxImage(SpriteName.birdLock));
+                content.Add(new RbImage(SpriteName.birdLock));
             }
         }
         public void writeGameState(System.IO.BinaryWriter w, bool isCity)

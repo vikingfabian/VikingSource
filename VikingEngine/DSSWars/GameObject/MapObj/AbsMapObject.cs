@@ -97,8 +97,8 @@ namespace VikingEngine.DSSWars.GameObject
             tagSprites(out SpriteName back, out SpriteName art);
             if (back != CityTag.NoBackSprite)
             {
-                content.Add(new RichBoxOverlapImage(
-                    new RichBoxImage(back),
+                content.Add(new RbOverlapImage(
+                    new RbImage(back),
                     art, Vector2.Zero, 0.8f));
             }
         }

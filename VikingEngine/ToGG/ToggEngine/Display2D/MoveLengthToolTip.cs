@@ -9,22 +9,22 @@ namespace VikingEngine.ToGG.ToggEngine.Display2D
 {
     class MoveLengthToolTip : AbsToolTip
     {
-        RichBoxText moveText, backstabText;
+        RbText moveText, backstabText;
 
         public MoveLengthToolTip(MapControls mapcontrols)
             : base(mapcontrols)
         {
-            moveText = new RichBoxText("XX/XX");
+            moveText = new RbText("XX/XX");
 
             RichBoxContent content = new RichBoxContent();
-            content.Add(new RichBoxImage(SpriteName.cmdMoveLengthHudIcon));
+            content.Add(new RbImage(SpriteName.cmdMoveLengthHudIcon));
             content.Add(moveText);
 
             if (toggRef.mode == GameMode.Commander)
             {
-                backstabText = new RichBoxText("0");
+                backstabText = new RbText("0");
                 content.newLine();
-                content.Add(new RichBoxImage(SpriteName.BackStabIcon));
+                content.Add(new RbImage(SpriteName.BackStabIcon));
                 content.Add(backstabText);
             }
 
@@ -66,8 +66,8 @@ namespace VikingEngine.ToGG.ToggEngine.Display2D
         {
             AddRichBox(new List<AbsRichBoxMember>
             {
-                new RichBoxImage(SpriteName.cmdNoMove),
-                new RichBoxText(reason),
+                new RbImage(SpriteName.cmdNoMove),
+                new RbText(reason),
             });
         }
 

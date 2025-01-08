@@ -59,15 +59,15 @@ namespace VikingEngine.DSSWars.Work
                     var level = XpLib.ToLevel(xpPair.xp);
 
                     content.newLine();
-                    content.Add(new RichBoxImage(typeIcon));
+                    content.Add(new RbImage(typeIcon));
                     content.space();
-                    var typeNameText = new RichBoxText(typeName + ":");
+                    var typeNameText = new RbText(typeName + ":");
                     typeNameText.overrideColor = HudLib.TitleColor_TypeName;
                     content.Add(typeNameText);
 
-                    content.Add(new RichBoxTab(0.2f));
-                    content.Add(new RichBoxImage(LangLib.ExperienceLevelIcon(level)));
-                    content.Add(new RichBoxText(LangLib.ExperienceLevel(level)));
+                    content.Add(new RbTab(0.2f));
+                    content.Add(new RbImage(LangLib.ExperienceLevelIcon(level)));
+                    content.Add(new RbText(LangLib.ExperienceLevel(level)));
                 }
             }
         }

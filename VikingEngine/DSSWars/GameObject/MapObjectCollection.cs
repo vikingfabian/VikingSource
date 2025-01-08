@@ -53,7 +53,7 @@ namespace VikingEngine.DSSWars.GameObject
                 objects[i].GetArmy().toGroupHud(args.content);
                 if (i < objects.Count-1)
                 {
-                    args.content.Add(new RichBoxSeperationLine());
+                    args.content.Add(new RbSeperationLine());
                 }
             }
         }

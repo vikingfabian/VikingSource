@@ -179,9 +179,9 @@ namespace VikingEngine.DSSWars.Resource
 
         public void resultTypeToMenu(RichBoxContent content)
         { 
-            content.Add(new RichBoxImage(icon()));
+            content.Add(new RbImage(icon()));
             content.space();
-            content.Add(new RichBoxText(name()));
+            content.Add(new RbText(name()));
         }
 
         public void toMenu(RichBoxContent content, City city, bool upgradeOnly = false, bool newLine = true)
@@ -206,32 +206,32 @@ namespace VikingEngine.DSSWars.Resource
                 first = false;
             }
 
-            var arrow = new RichBoxImage(SpriteName.pjNumArrowR);
+            var arrow = new RbImage(SpriteName.pjNumArrowR);
             arrow.color = Color.CornflowerBlue;
             content.Add(arrow);
-            content.Add(new RichBoxText(resultAmount.ToString()));
-            content.Add(new RichBoxImage(icon()));
+            content.Add(new RbText(resultAmount.ToString()));
+            content.Add(new RbImage(icon()));
             content.space();
-            content.Add(new RichBoxText(name()));
+            content.Add(new RbText(name()));
 
             content.newLine();
             //if (levelRequirement > ExperienceLevel.Beginner_1)
             {
-                var levelReqText = new RichBoxText(DssRef.lang.Hud_PurchaseTitle_Requirement + ":");
+                var levelReqText = new RbText(DssRef.lang.Hud_PurchaseTitle_Requirement + ":");
                 levelReqText.overrideColor = HudLib.TitleColor_Label;
                 content.Add(levelReqText);
                 content.space();
                 
                 LangLib.ExperienceType(experienceType, out string expName, out SpriteName expIcon);
-                content.Add(new RichBoxImage(expIcon));
+                content.Add(new RbImage(expIcon));
                 content.space();
-                var expText = new RichBoxText(expName);
+                var expText = new RbText(expName);
                 content.Add(expText);
                 content.space();
 
-                content.Add(new RichBoxImage(LangLib.ExperienceLevelIcon(levelRequirement)));
+                content.Add(new RbImage(LangLib.ExperienceLevelIcon(levelRequirement)));
                 content.space();
-                var levelText = new RichBoxText(LangLib.ExperienceLevel(levelRequirement));
+                var levelText = new RbText(LangLib.ExperienceLevel(levelRequirement));
                 levelText.overrideColor = HudLib.TitleColor_TypeName;
             
                 content.Add(levelText);  
@@ -245,17 +245,17 @@ namespace VikingEngine.DSSWars.Resource
                     //string countString = count.ToString();
                     if (!first)
                     {
-                        content.Add(new RichBoxImage(SpriteName.pjNumPlus));
+                        content.Add(new RbImage(SpriteName.pjNumPlus));
                         //countString = " + " + countString;
                     }
-                    var countText = new RichBoxText(count.ToString());
+                    var countText = new RbText(count.ToString());
                     //if (!available)
                     //{ 
                     countText.overrideColor = available ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                     //}
                     content.Add(countText);
-                    content.Add(new RichBoxImage(sprite));
-                    content.Add(new RichBoxText(name));
+                    content.Add(new RbImage(sprite));
+                    content.Add(new RbText(name));
                 }
             }
         }
@@ -330,7 +330,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 if (content != null)
                 {
-                    RichBoxText requirement1 = new RichBoxText(reqText);
+                    RbText requirement1 = new RbText(reqText);
                     requirement1.overrideColor = available ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                     content.Add(requirement1);
                 }

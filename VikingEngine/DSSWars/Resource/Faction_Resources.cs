@@ -125,33 +125,33 @@ namespace VikingEngine.DSSWars
                 switch (resourcesSubTab)
                 {
                     case ResourcesSubTab.Overview_Resources:
-                        tabContent.Add(new RichBoxText(DssRef.lang.Resource_Tab_Overview));
+                        tabContent.Add(new RbText(DssRef.lang.Resource_Tab_Overview));
                         tabContent.space();
-                        tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Wood));
+                        tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
                         break;
 
                     case ResourcesSubTab.Overview_Metals:
-                        tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Iron));
+                        tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
                         break;
                     case ResourcesSubTab.Overview_Weapons:
-                        tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Sword));
+                        tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
                         break;
 
                     case ResourcesSubTab.Overview_Projectile:
-                        tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Bow));
+                        tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
                         break;
 
                     case ResourcesSubTab.Overview_Armor:
-                        tabContent.Add(new RichBoxImage(SpriteName.cmdMailArmor));
+                        tabContent.Add(new RbImage(SpriteName.cmdMailArmor));
                         break;
 
                     case ResourcesSubTab.Stockpile_Resources:
-                        tabContent.Add(new RichBoxText(DssRef.lang.Resource_Tab_Stockpile));
+                        tabContent.Add(new RbText(DssRef.lang.Resource_Tab_Stockpile));
                         tabContent.space();
-                        tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Wood));
+                        tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
                         break;
                 }
-                var subTab = new RichboxButton(tabContent,
+                var subTab = new RbButton(tabContent,
                     new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                     {
                         player.resourcesSubTab = resourcesSubTab;
@@ -164,123 +164,123 @@ namespace VikingEngine.DSSWars
             switch (player.resourcesSubTab)
             {
                 case ResourcesSubTab.Overview_Resources:
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_wood.toMenu(content, ItemResourceType.Wood_Group);
                     res_fuel.toMenu(content, ItemResourceType.Fuel_G);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_stone.toMenu(content, ItemResourceType.Stone_G);
                     res_rawFood.toMenu(content, ItemResourceType.RawFood_Group);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_food.toMenu(content, ItemResourceType.Food_G);
                     res_beer.toMenu(content, ItemResourceType.Beer);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_coolingfluid.toMenu(content, ItemResourceType.CoolingFluid);
                     res_skinLinnen.toMenu(content, ItemResourceType.SkinLinen_Group);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
 
                     res_Toolkit.toMenu(content, ItemResourceType.Toolkit);
                     res_Wagon2Wheel.toMenu(content, ItemResourceType.Wagon2Wheel);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_Wagon4Wheel.toMenu(content, ItemResourceType.Wagon4Wheel);
                     res_BlackPowder.toMenu(content, ItemResourceType.BlackPowder);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_GunPowder.toMenu(content, ItemResourceType.GunPowder);
                     res_LedBullet.toMenu(content, ItemResourceType.LedBullet);
                     break;
 
                 case ResourcesSubTab.Overview_Metals:
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_ironore.toMenu(content, ItemResourceType.IronOre_G);
                     res_TinOre.toMenu(content, ItemResourceType.TinOre);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_CupperOre.toMenu(content, ItemResourceType.CopperOre);
                     res_LeadOre.toMenu(content, ItemResourceType.LeadOre);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_SilverOre.toMenu(content, ItemResourceType.SilverOre);
 
                     res_iron.toMenu(content, ItemResourceType.Iron_G);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_Tin.toMenu(content, ItemResourceType.Tin);
                     res_Cupper.toMenu(content, ItemResourceType.Copper);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_Lead.toMenu(content, ItemResourceType.Lead);
                     res_Silver.toMenu(content, ItemResourceType.Silver);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_RawMithril.toMenu(content, ItemResourceType.RawMithril);
                     res_Sulfur.toMenu(content, ItemResourceType.Sulfur);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
 
                     res_Bronze.toMenu(content, ItemResourceType.Bronze);
                     res_Steel.toMenu(content, ItemResourceType.Steel);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_CastIron.toMenu(content, ItemResourceType.CastIron);
                     res_BloomeryIron.toMenu(content, ItemResourceType.BloomeryIron);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_Mithril.toMenu(content, ItemResourceType.Mithril);
                     break;
 
                 case ResourcesSubTab.Overview_Weapons:
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_sharpstick.toMenu(content, ItemResourceType.SharpStick);
                     res_BronzeSword.toMenu(content, ItemResourceType.BronzeSword);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_shortsword.toMenu(content, ItemResourceType.ShortSword);
                     res_Sword.toMenu(content, ItemResourceType.Sword);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_LongSword.toMenu(content, ItemResourceType.LongSword);
                     res_HandSpear.toMenu(content, ItemResourceType.HandSpear);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_MithrilSword.toMenu(content, ItemResourceType.MithrilSword);
 
                     res_Warhammer.toMenu(content, ItemResourceType.Warhammer);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_twohandsword.toMenu(content, ItemResourceType.TwoHandSword);
                     res_knightslance.toMenu(content, ItemResourceType.KnightsLance);
                     break;
 
                 case ResourcesSubTab.Overview_Projectile:
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_SlingShot.toMenu(content, ItemResourceType.SlingShot);
                     res_ThrowingSpear.toMenu(content, ItemResourceType.ThrowingSpear);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_bow.toMenu(content, ItemResourceType.Bow);
                     res_longbow.toMenu(content, ItemResourceType.LongBow);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_crossbow.toMenu(content, ItemResourceType.Crossbow);
                     res_MithrilBow.toMenu(content, ItemResourceType.MithrilBow);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
 
                     res_HandCannon.toMenu(content, ItemResourceType.HandCannon);
                     res_HandCulvertin.toMenu(content, ItemResourceType.HandCulverin);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_Rifle.toMenu(content, ItemResourceType.Rifle);
                     res_Blunderbus.toMenu(content, ItemResourceType.Blunderbus);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
 
                     //res_BatteringRam.toMenu(content, ItemResourceType.UN_BatteringRam);
                     res_ballista.toMenu(content, ItemResourceType.Ballista);
                     res_Manuballista.toMenu(content, ItemResourceType.Manuballista);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_Catapult.toMenu(content, ItemResourceType.Catapult);
                     res_SiegeCannonBronze.toMenu(content, ItemResourceType.SiegeCannonBronze);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_ManCannonBronze.toMenu(content, ItemResourceType.ManCannonBronze);
                     res_SiegeCannonIron.toMenu(content, ItemResourceType.SiegeCannonIron);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_ManCannonIron.toMenu(content, ItemResourceType.ManCannonIron);
                     break;
 
                 case ResourcesSubTab.Overview_Armor:
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_paddedArmor.toMenu(content, ItemResourceType.PaddedArmor);
                     res_HeavyPaddedArmor.toMenu(content, ItemResourceType.HeavyPaddedArmor);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_BronzeArmor.toMenu(content, ItemResourceType.BronzeArmor);
                     res_mailArmor.toMenu(content, ItemResourceType.IronArmor);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_heavyMailArmor.toMenu(content, ItemResourceType.HeavyIronArmor);
                     res_LightPlateArmor.toMenu(content, ItemResourceType.LightPlateArmor);
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     res_FullPlateArmor.toMenu(content, ItemResourceType.FullPlateArmor);
                     res_MithrilArmor.toMenu(content, ItemResourceType.MithrilArmor);
                     break;
@@ -300,24 +300,24 @@ namespace VikingEngine.DSSWars
                 switch (resourcesSubTab)
                 {
                     case ResourcesSubTab.Work_Resources:
-                        tabContent.Add(new RichBoxText(DssRef.lang.Work_OrderPrioTitle));
-                        tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Wood));
+                        tabContent.Add(new RbText(DssRef.lang.Work_OrderPrioTitle));
+                        tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
                         break;
 
                     case ResourcesSubTab.Work_Metals:
-                        tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Iron));
+                        tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
                         break;
                     case ResourcesSubTab.Work_Weapons:
-                        tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Sword));
+                        tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
                         break;
                     case ResourcesSubTab.Work_Projectile:
-                        tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Bow));
+                        tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
                         break;
                     case ResourcesSubTab.Work_Armor:
-                        tabContent.Add(new RichBoxImage(SpriteName.WarsResource_IronArmor));
+                        tabContent.Add(new RbImage(SpriteName.WarsResource_IronArmor));
                         break;
                 }
-                var subTab = new RichboxButton(tabContent,
+                var subTab = new RbButton(tabContent,
                         new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                         {
                             p.resourcesSubTab = resourcesSubTab;

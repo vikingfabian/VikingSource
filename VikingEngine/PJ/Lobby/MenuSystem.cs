@@ -214,8 +214,8 @@ namespace VikingEngine.PJ
                 new GuiRichLabel(
                     new List<HUD.RichBox.AbsRichBoxMember>
                     {
-                        new HUD.RichBox.RichBoxImage(SpriteName.MenuIconScreenResolution),
-                        new HUD.RichBox.RichBoxText(Engine.Screen.RenderingResolution.ToString("x"))
+                        new HUD.RichBox.RbImage(SpriteName.MenuIconScreenResolution),
+                        new HUD.RichBox.RbText(Engine.Screen.RenderingResolution.ToString("x"))
                     }, 
                     layout);
 

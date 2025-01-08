@@ -129,7 +129,7 @@ namespace VikingEngine.ToGG.HeroQuest.Data
                 SpriteName.cmdIconStaminaSmall, "Stamina",
                 new List<AbsRichBoxMember>
                 {
-                    new RichBoxText("You can spend stamina to move further, and to boost attacks")
+                    new RbText("You can spend stamina to move further, and to boost attacks")
                 });
         }
 
@@ -168,7 +168,7 @@ namespace VikingEngine.ToGG.HeroQuest.Data
             List<AbsRichBoxMember> rb = new List<AbsRichBoxMember>();
             flavorText(rb, "The final Hero Exam is tomorrow, now the time is perfect to sober up and start reading!");
             missionObjectivesTitle(rb);
-            rb.Add(new RichBoxText("Destroy all dummies"));
+            rb.Add(new RbText("Destroy all dummies"));
 
             return rb;
 

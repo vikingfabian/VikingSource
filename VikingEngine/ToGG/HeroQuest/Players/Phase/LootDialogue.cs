@@ -315,12 +315,12 @@ namespace VikingEngine.ToGG.HeroQuest.Players.Phase
                             var richbox = itemSlot.item.DescAsRichbox();
                             richbox.InsertRange(0, new List<HUD.RichBox.AbsRichBoxMember>
                             {
-                                new HUD.RichBox.RichBoxBeginTitle(),
-                                new HUD.RichBox.RichBoxText("Replace"),
-                                new HUD.RichBox.RichBoxNewLine(),
-                                new HUD.RichBox.RichBoxImage(itemSlot.item.Icon),
-                                new HUD.RichBox.RichBoxText(itemSlot.item.Name),
-                                new HUD.RichBox.RichBoxNewLine(),
+                                new HUD.RichBox.RbBeginTitle(),
+                                new HUD.RichBox.RbText("Replace"),
+                                new HUD.RichBox.RbNewLine(),
+                                new HUD.RichBox.RbImage(itemSlot.item.Icon),
+                                new HUD.RichBox.RbText(itemSlot.item.Name),
+                                new HUD.RichBox.RbNewLine(),
                             });
                             HudLib.AddTooltipText(tooltip, richbox, Dir4.S, area,
                                 area, true, false);

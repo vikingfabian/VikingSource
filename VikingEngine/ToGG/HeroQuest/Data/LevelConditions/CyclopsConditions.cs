@@ -19,7 +19,7 @@ namespace VikingEngine.ToGG.HeroQuest.Data.LevelConditions
             List<AbsRichBoxMember> rb = new List<AbsRichBoxMember>();
             missionObjectivesTitle(rb);
 
-            rb.Add(new RichBoxText("Defeat the Cyclops boss"));
+            rb.Add(new RbText("Defeat the Cyclops boss"));
 
             return rb;
         }

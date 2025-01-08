@@ -61,10 +61,10 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.text(name).overrideColor = Color.LightYellow;
                 args.content.newLine();
             }
-            args.content.Add(new RichBoxBeginTitle());
+            args.content.Add(new RbBeginTitle());
             args.content.Add(GetFaction().FlagTextureToHud());
             TypeIcon(args.content);
-            args.content.Add(new RichBoxText(TypeName()));
+            args.content.Add(new RbText(TypeName()));
 
             if (args.ShowFull)
             {
@@ -77,13 +77,13 @@ namespace VikingEngine.DSSWars.GameObject
                     var relation = DssRef.diplomacy.GetRelationType(args.player.faction, GetFaction());
 
                     args.content.newLine();
-                    args.content.Add(new RichBoxText(GetFaction().PlayerName, Color.LightYellow));
+                    args.content.Add(new RbText(GetFaction().PlayerName, Color.LightYellow));
                     args.content.newLine();
-                    args.content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation)));
-                    args.content.Add(new RichBoxText(Diplomacy.RelationString(relation), Color.LightBlue));
+                    args.content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
+                    args.content.Add(new RbText(Diplomacy.RelationString(relation), Color.LightBlue));
 
                 }
-                args.content.Add(new RichBoxSeperationLine());
+                args.content.Add(new RbSeperationLine());
             }
         }
         virtual public bool CanMenuFocus() { return false; }

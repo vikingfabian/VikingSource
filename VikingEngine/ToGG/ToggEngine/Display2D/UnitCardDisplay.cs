@@ -127,17 +127,17 @@ namespace VikingEngine.ToGG.ToggEngine.Display2D
                 {
                     if (rbMembers.Count > 0)
                     {
-                        rbMembers.Add(new RichBoxNewLine());
+                        rbMembers.Add(new RbNewLine());
                     }
 
                     if (items.items.sel.StackLimit > 1)
                     {
-                        rbMembers.Add(new RichBoxText(items.items.sel.count.ToString(), 
+                        rbMembers.Add(new RbText(items.items.sel.count.ToString(), 
                             null, LoadedFont.Bold));
                     }
 
-                    rbMembers.Add(new RichBoxImage(items.items.sel.Icon, 1.5f, 0, 0.1f));
-                    rbMembers.Add(new RichBoxText(items.items.sel.Name));
+                    rbMembers.Add(new RbImage(items.items.sel.Icon, 1.5f, 0, 0.1f));
+                    rbMembers.Add(new RbText(items.items.sel.Name));
                     
                 }
 
@@ -517,9 +517,9 @@ namespace VikingEngine.ToGG.ToggEngine.Display2D
                     {
                         if (m.Icon != SpriteName.NO_IMAGE)
                         {
-                            rbMembers.Add(new RichBoxImage(m.Icon));
+                            rbMembers.Add(new RbImage(m.Icon));
                         }
-                        rbMembers.Add(new RichBoxText(m.Name));                        
+                        rbMembers.Add(new RbText(m.Name));                        
                     }
                     else
                     {
@@ -528,7 +528,7 @@ namespace VikingEngine.ToGG.ToggEngine.Display2D
 
                     if (m != last)
                     {
-                        rbMembers.Add(new RichBoxSeperationLine());
+                        rbMembers.Add(new RbSeperationLine());
                     }
                 }
 

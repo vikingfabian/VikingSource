@@ -1281,7 +1281,7 @@ namespace VikingEngine.DSSWars.GameObject
             content.newLine();
             content.text("SoldierAiState: " + state2.ToString());
 
-            content.Add(new RichBoxNewLine(true));
+            content.Add(new RbNewLine(true));
             content.text(group.TypeName());
             group.stateDebugText(content);
         }

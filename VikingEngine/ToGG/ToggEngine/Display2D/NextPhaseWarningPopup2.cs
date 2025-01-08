@@ -19,7 +19,7 @@ namespace VikingEngine.ToGG.ToggEngine.Display2D
                 new List<AbsRichBoxMember>
                 {
                     //new RichBoxImage(SpriteName.cmdWarningTriangle),
-                    new RichBoxText("You still got more available actions")
+                    new RbText("You still got more available actions")
                 });
             images.Add(descRB);
 
@@ -39,11 +39,11 @@ namespace VikingEngine.ToGG.ToggEngine.Display2D
                 sett,
                 new List<AbsRichBoxMember>
                 {
-                    new RichBoxBeginTitle(),
+                    new RbBeginTitle(),
                     
-                    new RichBoxText("Press ", Color.Black),
-                    new RichBoxImage(toggRef.inputmap.nextPhase.Icon),
-                    new RichBoxText(" again", Color.Black),
+                    new RbText("Press ", Color.Black),
+                    new RbImage(toggRef.inputmap.nextPhase.Icon),
+                    new RbText(" again", Color.Black),
                 });
             images.Add(pressAgainRB);
             //pressAgainRB.maxWidth

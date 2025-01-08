@@ -18,21 +18,21 @@ namespace VikingEngine.HUD.RichBox
             : base(16)
         { }
 
-        public RichBoxText text(string textline)
+        public RbText text(string textline)
         {
             newLine();
-            var textCont = new RichBoxText(textline);
+            var textCont = new RbText(textline);
             Add(textCont);
 
             return textCont;
         }
 
-        public RichBoxText icontext(SpriteName icon, string textline)
+        public RbText icontext(SpriteName icon, string textline)
         {
             newLine();
-            Add(new RichBoxImage(icon));
+            Add(new RbImage(icon));
             space();
-            var textCont = new RichBoxText(textline);
+            var textCont = new RbText(textline);
             Add(textCont);
 
             return textCont;
@@ -56,21 +56,21 @@ namespace VikingEngine.HUD.RichBox
             Add(new RichBoxSpace(spaces));
         }
 
-        public RichBoxText h1(string textline)
+        public RbText h1(string textline)
         {
             newLine();
-            Add(new RichBoxBeginTitle(1));
-            var text = new RichBoxText(textline);
+            Add(new RbBeginTitle(1));
+            var text = new RbText(textline);
             Add(text);
 
             return text;
         }
 
-        public RichBoxText h2(string textline)
+        public RbText h2(string textline)
         {
             newLine();
-            Add(new RichBoxBeginTitle(2));
-            var text = new RichBoxText(textline);
+            Add(new RbBeginTitle(2));
+            var text = new RbText(textline);
             Add(text);
 
             return text;
@@ -80,51 +80,51 @@ namespace VikingEngine.HUD.RichBox
         {
             if (this.Count > 0)
             {
-                Add(new RichBoxNewLine());
+                Add(new RbNewLine());
             }
         }
 
         public void newParagraph()
         {
-            Add(new RichBoxNewLine(true, 2f));
+            Add(new RbNewLine(true, 2f));
         }
 
-        public RichboxButton Button(string caption, AbsRbAction action, AbsRbAction enter, bool enabled)
+        public RbButton Button(string caption, AbsRbAction action, AbsRbAction enter, bool enabled)
         {
-            var result = new RichboxButton(
+            var result = new RbButton(
                 new List<AbsRichBoxMember>
                 {
-                    new RichBoxText(caption),
+                    new RbText(caption),
                 },
                 action, enter, enabled);
             Add(result);
             return result;
         }
-        public RichboxButton Button(SpriteName icon, string caption, AbsRbAction action, AbsRbAction enter, bool enabled)
+        public RbButton Button(SpriteName icon, string caption, AbsRbAction action, AbsRbAction enter, bool enabled)
         {
             var buttonContent = new List<AbsRichBoxMember>(3);
             
             if (icon != SpriteName.NO_IMAGE)
             {
-                buttonContent.Add(new RichBoxImage(icon));
+                buttonContent.Add(new RbImage(icon));
                 buttonContent.Add(new RichBoxSpace());
             }
-            buttonContent.Add(new RichBoxText(caption));
+            buttonContent.Add(new RbText(caption));
             //{
             //    new RichBoxImage(icon),
             //    new RichBoxText(caption),
             //},
 
-            var result = new RichboxButton(
+            var result = new RbButton(
                 buttonContent,
                 action, enter, enabled);
             Add(result);
             return result;
         }
 
-        public RichBoxImage BulletPoint()
+        public RbImage BulletPoint()
         {
-            var dot =new  RichBoxImage(SpriteName.WhiteArea, 0.4f, 1f, 2f);
+            var dot =new  RbImage(SpriteName.WhiteArea, 0.4f, 1f, 2f);
             dot.color = Color.DarkGray;
             Add(dot);
             return dot;
@@ -133,44 +133,44 @@ namespace VikingEngine.HUD.RichBox
         public void PlusMinusInt(SpriteName icon, string label, IntGetSetIx property, int propertyIx)
         {
             newLine();
-            RichboxIntDisplay intDisplay = new RichboxIntDisplay(property, propertyIx);
+            RbDisplay intDisplay = new RbDisplay(property, propertyIx);
 
             if (icon != SpriteName.NO_IMAGE)
             {
-                Add(new RichBoxImage(icon));
+                Add(new RbImage(icon));
                 Add(new RichBoxSpace(0.6f));
             }
-            Add(new RichBoxText(label));
+            Add(new RbText(label));
 
-            Add(new RichBoxTab(0.4f));
+            Add(new RbTab(0.4f));
 
-            Add(new RichboxButton(
+            Add(new RbButton(
                new List<AbsRichBoxMember>
                {
-                    new RichBoxText("-10"),
+                    new RbText("-10"),
                },
                new RbAction_ChangeInt(property, propertyIx, -10, intDisplay.refresh)));
             space();
-            Add(new RichboxButton(
+            Add(new RbButton(
                 new List<AbsRichBoxMember>
                 {
-                    new RichBoxText("-1"),
+                    new RbText("-1"),
                 },
                 new RbAction_ChangeInt(property, propertyIx, -1, intDisplay.refresh)));
             space();
             Add(intDisplay);
             space();
-            Add(new RichboxButton(
+            Add(new RbButton(
                 new List<AbsRichBoxMember>
                 {
-                    new RichBoxText("+1"),
+                    new RbText("+1"),
                 },
                 new RbAction_ChangeInt(property, propertyIx, +1, intDisplay.refresh)));
             space();
-            Add(new RichboxButton(
+            Add(new RbButton(
                new List<AbsRichBoxMember>
                {
-                    new RichBoxText("+10"),
+                    new RbText("+10"),
                },
                new RbAction_ChangeInt(property, propertyIx, +10, intDisplay.refresh)));
             
@@ -181,7 +181,7 @@ namespace VikingEngine.HUD.RichBox
             newLine();
             this.buttonMap(buttonMap);
             space();
-            Add(new RichBoxText(desc));
+            Add(new RbText(desc));
         }
         public void buttonMap(IButtonMap buttonMap)
         {
@@ -205,10 +205,10 @@ namespace VikingEngine.HUD.RichBox
 
             for (int i = 0; i < sprites.Count; i++)
             {
-                content.Add(new RichBoxImage(sprites[i]));
+                content.Add(new RbImage(sprites[i]));
                 if (i < sprites.Count - 1)
                 {
-                    content.Add(new RichBoxText("+"));
+                    content.Add(new RbText("+"));
                 }
             }
         }

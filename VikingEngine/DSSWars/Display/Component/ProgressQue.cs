@@ -27,12 +27,12 @@ namespace VikingEngine.DSSWars.Display.Component
             }));
 
             content.newLine();
-            content.Add(new RichBoxImage(player.input.Stop.Icon));
+            content.Add(new RbImage(player.input.Stop.Icon));
             content.space();
             for (int length = 0; length <= maxQue; length++)
             {
-                var button = new RichboxButton(new List<AbsRichBoxMember>{
-                       new RichBoxText( length.ToString())
+                var button = new RbButton(new List<AbsRichBoxMember>{
+                       new RbText( length.ToString())
                     }, new RbAction1Arg<int>(queClick, length, length == 0? SoundLib.menuStop : SoundLib.menuStart));
                 button.setGroupSelectionColor(HudLib.RbSettings, length == currentQue);
                 content.Add(button);
@@ -41,8 +41,8 @@ namespace VikingEngine.DSSWars.Display.Component
 
             if (noLimitOption)
             {
-                var button = new RichboxButton(new List<AbsRichBoxMember>{
-                       new RichBoxText(DssRef.lang.Hud_NoLimit)
+                var button = new RbButton(new List<AbsRichBoxMember>{
+                       new RbText(DssRef.lang.Hud_NoLimit)
                     }, new RbAction1Arg<int>(queClick, 255, SoundLib.menuStart));
                 button.setGroupSelectionColor(HudLib.RbSettings, currentQue > maxQue);
                 content.Add(button);

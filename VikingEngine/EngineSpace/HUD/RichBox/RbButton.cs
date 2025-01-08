@@ -8,7 +8,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.HUD.RichBox
 {
-    class RichboxButton : AbsRichBoxMember
+    class RbButton : AbsRichBoxMember
     {
         protected AbsRbAction click, enter;
         protected List<AbsRichBoxMember> content;
@@ -18,10 +18,10 @@ namespace VikingEngine.HUD.RichBox
         public Input.IButtonMap buttonMap = null;
         public Color? overrideBgColor;
 
-        public RichboxButton()
+        public RbButton()
         { }
 
-        public RichboxButton(List<AbsRichBoxMember> content, AbsRbAction click, AbsRbAction enter = null, bool enabled = true, Color? overrideBgColor = null)
+        public RbButton(List<AbsRichBoxMember> content, AbsRbAction click, AbsRbAction enter = null, bool enabled = true, Color? overrideBgColor = null)
         {
             this.content = content;
             this.click = click;
@@ -40,7 +40,7 @@ namespace VikingEngine.HUD.RichBox
             {
                 this.buttonMap = buttonMap;
             }
-            content.Insert(0, new RichBoxImage(buttonMap.Icon, 1, 0, 1f));
+            content.Insert(0, new RbImage(buttonMap.Icon, 1, 0, 1f));
         }
 
         public override void Create(RichBoxGroup group)
@@ -158,7 +158,7 @@ namespace VikingEngine.HUD.RichBox
             enter?.actionTrigger();
         }
 
-        public override void getButtons(List<RichboxButton> buttons)
+        public override void getButtons(List<RbButton> buttons)
         {
             buttons.Add(this);
         }

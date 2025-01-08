@@ -250,19 +250,19 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    var info0 = new RichBoxText(DssRef.lang.Tutorial_CollectFood_Info0);
+                    var info0 = new RbText(DssRef.lang.Tutorial_CollectFood_Info0);
                     info0.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info0);
 
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    var info1 = new RichBoxText(DssRef.lang.Tutorial_CollectFood_Info1);
+                    var info1 = new RbText(DssRef.lang.Tutorial_CollectFood_Info1);
                     info1.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info1);
 
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    var info2 = new RichBoxText(DssRef.lang.Tutorial_CollectFood_Info2);
+                    var info2 = new RbText(DssRef.lang.Tutorial_CollectFood_Info2);
                     info2.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info2);
 

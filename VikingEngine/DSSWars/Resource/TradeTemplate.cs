@@ -224,7 +224,7 @@ namespace VikingEngine.DSSWars.Resource
         public void toHud(Players.LocalPlayer player, RichBoxContent content, string name, ItemResourceType resource, Faction faction, City city)
         {
             content.newLine();
-            content.Add(new RichBoxText(name));
+            content.Add(new RbText(name));
             content.newLine();
 
             if (city != null)
@@ -247,19 +247,19 @@ namespace VikingEngine.DSSWars.Resource
             for (int i = PriceControls.Length - 1; i >= 0; i--)
             {
                 float change = -PriceControls[i];
-                content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(TextLib.PlusMinus(change)) },
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(change)) },
                     new RbAction3Arg<float, ItemResourceType, City>(faction.changeResourcePrice, change, resource, city)));
 
                 content.space();
             }
 
-            content.Add(new RichBoxText(TextLib.OneDecimal(price)));
+            content.Add(new RbText(TextLib.OneDecimal(price)));
             content.space();
 
             for (int i = 0; i < PriceControls.Length; i++)
             {
                 float change = PriceControls[i];
-                content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(TextLib.PlusMinus(change)) },
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(change)) },
                     new RbAction3Arg<float, ItemResourceType, City>(faction.changeResourcePrice, change, resource, city)));
 
                 content.space();

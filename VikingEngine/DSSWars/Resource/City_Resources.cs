@@ -1175,9 +1175,9 @@ namespace VikingEngine.DSSWars.GameObject
         {
             content.newLine();
             
-            content.Add(new RichBoxImage(ResourceLib.Icon(item)));
+            content.Add(new RbImage(ResourceLib.Icon(item)));
             content.space();
-            content.Add(new RichBoxText( LangLib.Item(item) + ": " + TextLib.LargeNumber(amount)));
+            content.Add(new RbText( LangLib.Item(item) + ": " + TextLib.LargeNumber(amount)));
 
             if (item != ItemResourceType.Water_G && 
                 item != ItemResourceType.Gold &&
@@ -1198,7 +1198,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     stockIcon = SpriteName.WarsStockpileAdd;
                 }
-                var icon = new RichBoxImage(stockIcon);
+                var icon = new RbImage(stockIcon);
                 content.Add(icon);
             }
             
@@ -1208,9 +1208,9 @@ namespace VikingEngine.DSSWars.GameObject
         {
             content.newLine();
 
-            content.Add(new RichBoxImage(ResourceLib.Icon(item)));
+            content.Add(new RbImage(ResourceLib.Icon(item)));
             content.space();
-            content.Add(new RichBoxText(LangLib.Item(item) + ": " + TextLib.LargeNumber(amount)));
+            content.Add(new RbText(LangLib.Item(item) + ": " + TextLib.LargeNumber(amount)));
 
             if (item != ItemResourceType.Water_G &&
                     item != ItemResourceType.Gold &&
@@ -1231,7 +1231,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     stockIcon = SpriteName.WarsStockpileAdd;
                 }
-                var icon = new RichBoxImage(stockIcon);
+                var icon = new RbImage(stockIcon);
 
                 if (player == null)
                 {
@@ -1243,7 +1243,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     infoContent.Add(icon);
                    
-                    var infoButton = new RichboxButton(infoContent, 
+                    var infoButton = new RbButton(infoContent, 
                         new RbAction(()=> 
                         {
                             player.resourcesSubTab = stockpileLink;  
@@ -1253,9 +1253,9 @@ namespace VikingEngine.DSSWars.GameObject
                             RichBoxContent content = new RichBoxContent();
                             HudLib.Label(content, DssRef.lang.Resource_Tab_Stockpile);
                             content.newLine();
-                            content.Add(new RichBoxImage(stockIcon));
+                            content.Add(new RbImage(stockIcon));
                             content.space();
-                            content.Add(new RichBoxText(city.GetGroupedResource(item).goalBuffer.ToString()));
+                            content.Add(new RbText(city.GetGroupedResource(item).goalBuffer.ToString()));
                         
 
                             player.hud.tooltip.create(player, content, true);
@@ -1286,10 +1286,10 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
 
-            var icon = new RichBoxImage(sprite);
+            var icon = new RbImage(sprite);
             content.Add(icon);
 
-            var text = new RichBoxText(": " + textstring);
+            var text = new RbText(": " + textstring);
             text.overrideColor = HudLib.InfoYellow_Light;
             content.Add(text);
         }

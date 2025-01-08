@@ -453,9 +453,9 @@ namespace VikingEngine.DSSWars.Work
             if (status.carry.amount > 0)
             {
                 args.content.newLine();
-                args.content.Add(new RichBoxImage(SpriteName.WarsWorkMove));
+                args.content.Add(new RbImage(SpriteName.WarsWorkMove));
                 args.content.space();
-                args.content.Add(new RichBoxText(string.Format(DssRef.lang.WorkerHud_Carry, status.carry.amount, LangLib.Item(status.carry.type))));
+                args.content.Add(new RbText(string.Format(DssRef.lang.WorkerHud_Carry, status.carry.amount, LangLib.Item(status.carry.type))));
             }
 
             args.content.text(string.Format(DssRef.lang.WorkerHud_Energy, TextLib.OneDecimal(status.energy)));

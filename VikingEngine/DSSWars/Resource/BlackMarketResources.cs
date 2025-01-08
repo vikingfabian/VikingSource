@@ -116,14 +116,14 @@ namespace VikingEngine.DSSWars.Resource
 
                 content.newLine();
 
-                content.Add(new RichBoxImage(SpriteName.rtsUpkeep));
-                content.Add(new RichBoxText(cost.ToString()));
+                content.Add(new RbImage(SpriteName.rtsUpkeep));
+                content.Add(new RbText(cost.ToString()));
                 content.space();
 
-                RichboxButton button = new RichboxButton(new List<AbsRichBoxMember>
+                RbButton button = new RbButton(new List<AbsRichBoxMember>
                     {
-                        new RichBoxImage(ResourceLib.Icon(resourceType)),
-                        new RichBoxText(name),
+                        new RbImage(ResourceLib.Icon(resourceType)),
+                        new RbText(name),
                     },
                 new RbAction3Arg<ItemResourceType, int, int>(city.blackMarketPurchase, resourceType, count, cost, SoundLib.menuBuy),
                 tooltip(count), player.faction.calcCost(cost, ref non, city));
@@ -134,9 +134,9 @@ namespace VikingEngine.DSSWars.Resource
                 foreach (var c in PurchaseCount)
                 {
                     count = c;
-                    RichboxButton xbutton = new RichboxButton(new List<AbsRichBoxMember>
+                    RbButton xbutton = new RbButton(new List<AbsRichBoxMember>
                         {
-                            new RichBoxText(string.Format(DssRef.lang.Hud_XTimes, count)),
+                            new RbText(string.Format(DssRef.lang.Hud_XTimes, count)),
                         },
                     new RbAction3Arg<ItemResourceType, int, int>(city.blackMarketPurchase, resourceType, count, cost, SoundLib.menuBuy),
                     tooltip(count), player.faction.calcCost(cost * count, ref non, city));

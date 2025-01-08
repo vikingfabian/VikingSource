@@ -36,10 +36,10 @@ namespace VikingEngine.DSSWars.Delivery
             if (arraylib.InBound(city.deliveryServices, city.selectedDelivery))
             {
                 DeliveryStatus currentStatus = get();
-                content.Add(new RichBoxBeginTitle(1));
+                content.Add(new RbBeginTitle(1));
 
                 string typeName = currentStatus.IsRecruitment() ? DssRef.lang.BuildingType_Recruitment : DssRef.lang.BuildingType_Postal;
-                var title = new RichBoxText(typeName + " " + currentStatus.idAndPosition.ToString());
+                var title = new RbText(typeName + " " + currentStatus.idAndPosition.ToString());
                 title.overrideColor = HudLib.TitleColor_TypeName;
                 content.Add(title);
                 content.space();
@@ -62,9 +62,9 @@ namespace VikingEngine.DSSWars.Delivery
 
                     if (currentStatus.profile.type == ItemResourceType.AutomatedItem)
                     {
-                        content.Add(new RichBoxImage(SpriteName.AutomationGearIcon));
+                        content.Add(new RbImage(SpriteName.AutomationGearIcon));
                         content.space();
-                        content.Add(new RichBoxText(DssRef.lang.Automation_Title));
+                        content.Add(new RbText(DssRef.lang.Automation_Title));
                     }
                     else if (currentStatus.profile.type != ItemResourceType.NONE)
                     {
@@ -79,27 +79,27 @@ namespace VikingEngine.DSSWars.Delivery
                         switch (resourcesSubTab)
                         {
                             case ResourcesSubTab.Overview_Resources:
-                                tabContent.Add(new RichBoxText(DssRef.todoLang.Hud_category));
+                                tabContent.Add(new RbText(DssRef.todoLang.Hud_category));
                                 tabContent.space();
-                                tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Wood));
+                                tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
                                 break;
 
                             case ResourcesSubTab.Overview_Metals:
-                                tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Iron));
+                                tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
                                 break;
                             case ResourcesSubTab.Overview_Weapons:
-                                tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Sword));
+                                tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
                                 break;
 
                             case ResourcesSubTab.Overview_Projectile:
-                                tabContent.Add(new RichBoxImage(SpriteName.WarsResource_Bow));
+                                tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
                                 break;
 
                             case ResourcesSubTab.Overview_Armor:
-                                tabContent.Add(new RichBoxImage(SpriteName.cmdMailArmor));
+                                tabContent.Add(new RbImage(SpriteName.cmdMailArmor));
                                 break;
                         }
-                        var subTab = new RichboxButton(tabContent,
+                        var subTab = new RbButton(tabContent,
                             new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                             {
                                 player.resourcesSubTab = resourcesSubTab;
@@ -112,9 +112,9 @@ namespace VikingEngine.DSSWars.Delivery
                     {
                         content.space();
                         var tabContent = new RichBoxContent();
-                        tabContent.Add(new RichBoxImage(SpriteName.AutomationGearIcon));
+                        tabContent.Add(new RbImage(SpriteName.AutomationGearIcon));
 
-                        var subTab = new RichboxButton(tabContent,
+                        var subTab = new RbButton(tabContent,
                             new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                             {
                                 player.resourcesSubTab = resourcesSubTab;
@@ -153,8 +153,8 @@ namespace VikingEngine.DSSWars.Delivery
 
                         foreach (var item in resourceTypes)
                         {
-                            var button = new RichboxButton(new List<AbsRichBoxMember>{
-                                new RichBoxImage(ResourceLib.Icon(item))   
+                            var button = new RbButton(new List<AbsRichBoxMember>{
+                                new RbImage(ResourceLib.Icon(item))   
                             },
 
                                 new RbAction1Arg<ItemResourceType>(itemClick, item, SoundLib.menu),
@@ -201,9 +201,9 @@ namespace VikingEngine.DSSWars.Delivery
                         {
                             buttonContent.space();
                         }
-                        buttonContent.Add(new RichBoxText(cities_c.sel.TypeName()));
+                        buttonContent.Add(new RbText(cities_c.sel.TypeName()));
 
-                        var button = new RichboxButton(buttonContent, 
+                        var button = new RbButton(buttonContent, 
                             new RbAction1Arg<int>(cityClick, cities_c.sel.parentArrayIndex, SoundLib.menu), new RbAction1Arg<City>((toCity) =>
                             {
                                 RichBoxContent content = new RichBoxContent();
@@ -245,8 +245,8 @@ namespace VikingEngine.DSSWars.Delivery
 
                 //AUTO CITY
                 {
-                    var button = new RichboxButton(new List<AbsRichBoxMember>{
-                            new RichBoxImage(SpriteName.AutomationGearIcon)
+                    var button = new RbButton(new List<AbsRichBoxMember>{
+                            new RbImage(SpriteName.AutomationGearIcon)
                             }, new RbAction1Arg<int>(cityClick, DeliveryProfile.ToCityAuto, SoundLib.menu), new RbAction(() =>
                             {
                                 RichBoxContent content = new RichBoxContent();
@@ -295,7 +295,7 @@ namespace VikingEngine.DSSWars.Delivery
 
                 foreach (int amount in sendChunkOptions)
                 {
-                    var button = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(amount.ToString()) },
+                    var button = new RbButton(new List<AbsRichBoxMember> { new RbText(amount.ToString()) },
                         new RbAction(() =>
                         {
                             DeliveryStatus currentStatus = get();
@@ -313,17 +313,17 @@ namespace VikingEngine.DSSWars.Delivery
                 {
                     content.newParagraph();
 
-                    var minLabel = new RichBoxText(DssRef.lang.Delivery_SenderMinimumCap + ":");
+                    var minLabel = new RbText(DssRef.lang.Delivery_SenderMinimumCap + ":");
                     minLabel.overrideColor = HudLib.TitleColor_Label_Dark;
-                    content.Add(new RichboxCheckbox(new List<AbsRichBoxMember> { minLabel },
+                    content.Add(new RbCheckbox(new List<AbsRichBoxMember> { minLabel },
                         UseSenderMinProperty));
                     boundsToHud(content, currentStatus, true);
                 }
                 content.newParagraph();
 
-                var maxLabel = new RichBoxText(DssRef.lang.Delivery_RecieverMaximumCap + ":");
+                var maxLabel = new RbText(DssRef.lang.Delivery_RecieverMaximumCap + ":");
                 maxLabel.overrideColor = HudLib.TitleColor_Label_Dark;
-                content.Add(new RichboxCheckbox(new List<AbsRichBoxMember> { maxLabel },
+                content.Add(new RbCheckbox(new List<AbsRichBoxMember> { maxLabel },
                     UseRecieverMaxProperty));
                 boundsToHud(content, currentStatus, false);
 
@@ -334,17 +334,17 @@ namespace VikingEngine.DSSWars.Delivery
                 }
 
                 content.newParagraph();
-                content.Add(new RichboxButton(new List<AbsRichBoxMember> {
-                    new RichBoxImage(player.input.Copy.Icon),
+                content.Add(new RbButton(new List<AbsRichBoxMember> {
+                    new RbImage(player.input.Copy.Icon),
                     new RichBoxSpace(0.5f),
-                    new RichBoxText(DssRef.lang.Hud_CopySetup) },
+                    new RbText(DssRef.lang.Hud_CopySetup) },
                 new RbAction1Arg<LocalPlayer>(city.copyDelivery, player, SoundLib.menuCopy)));
 
                 content.space();
-                content.Add(new RichboxButton(new List<AbsRichBoxMember> {
-                    new RichBoxImage(player.input.Paste.Icon),
+                content.Add(new RbButton(new List<AbsRichBoxMember> {
+                    new RbImage(player.input.Paste.Icon),
                     new RichBoxSpace(0.5f),
-                    new RichBoxText(DssRef.lang.Hud_Paste)
+                    new RbText(DssRef.lang.Hud_Paste)
                 },
                 new RbAction1Arg<LocalPlayer>(city.pasteDelivery, player, SoundLib.menuPaste)));
 
@@ -354,11 +354,11 @@ namespace VikingEngine.DSSWars.Delivery
                 {
 
                     //content.newParagraph();
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     {
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        var text = new RichBoxText(DssRef.lang.Delivery_ItemsReady);
+                        var text = new RbText(DssRef.lang.Delivery_ItemsReady);
                         bool ready = isSending || currentStatus.CanSend(city, out currentStatus.inProgress.type);
                         text.overrideColor = ready? HudLib.AvailableColor : HudLib.NotAvailableColor;
                         content.Add(text);
@@ -366,21 +366,21 @@ namespace VikingEngine.DSSWars.Delivery
                         if (ready)
                         {
                             content.newLine();
-                            content.Add(new RichBoxImage(ResourceLib.Icon(currentStatus.inProgress.type)));
+                            content.Add(new RbImage(ResourceLib.Icon(currentStatus.inProgress.type)));
                             content.space();
-                            content.Add(new RichBoxText(LangLib.Item(currentStatus.inProgress.type) + ": " + currentStatus.inProgress.SendAmount.ToString()));
+                            content.Add(new RbText(LangLib.Item(currentStatus.inProgress.type) + ": " + currentStatus.inProgress.SendAmount.ToString()));
                         }
                     }
                     {
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        var text = new RichBoxText(DssRef.lang.Delivery_RecieverReady);
+                        var text = new RbText(DssRef.lang.Delivery_RecieverReady);
                         text.overrideColor = isSending || currentStatus.CanRecieve(currentStatus.inProgress.type) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                         content.Add(text);
 
                         if (isSending && currentStatus.inProgress.toCity == DeliveryProfile.ToCityAuto)
                         {
-                            content.Add(new RichBoxText(" - " + DssRef.world.cities[currentStatus.inProgress.autoCity].TypeName()));
+                            content.Add(new RbText(" - " + DssRef.world.cities[currentStatus.inProgress.autoCity].TypeName()));
                         }
                     }
 
@@ -388,7 +388,7 @@ namespace VikingEngine.DSSWars.Delivery
                     {
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RichBoxText(currentStatus.longTimeProgress(city)));
+                        content.Add(new RbText(currentStatus.longTimeProgress(city)));
                     }
                 }
             }
@@ -403,15 +403,15 @@ namespace VikingEngine.DSSWars.Delivery
                     content.newParagraph();
                     content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement).overrideColor = HudLib.TitleColor_Label;
                     content.newLine();
-                    content.Add(new RichBoxImage(SpriteName.WarsBuild_Postal));
+                    content.Add(new RbImage(SpriteName.WarsBuild_Postal));
                     content.space();
-                    content.Add(new RichBoxText(DssRef.lang.BuildingType_Postal));
+                    content.Add(new RbText(DssRef.lang.BuildingType_Postal));
                     content.newLine();
                     content.text(DssRef.lang.Hud_RequirementOr);
                     content.newLine();
-                    content.Add(new RichBoxImage(SpriteName.WarsBuild_Recruitment));
+                    content.Add(new RbImage(SpriteName.WarsBuild_Recruitment));
                     content.space();
-                    content.Add(new RichBoxText(DssRef.lang.BuildingType_Recruitment));
+                    content.Add(new RbText(DssRef.lang.BuildingType_Recruitment));
                 }
                 else
                 {
@@ -431,16 +431,16 @@ namespace VikingEngine.DSSWars.Delivery
                             title = DssRef.lang.BuildingType_Postal + ": " + currentProfile.profile.type.ToString();
                         }
 
-                        var caption = new RichBoxText(
+                        var caption = new RbText(
                                 title
                             );
                         caption.overrideColor = HudLib.TitleColor_Name;
 
-                        content.Add(new RichboxButton(new List<AbsRichBoxMember>(){
-                        new RichBoxBeginTitle(2),
+                        content.Add(new RbButton(new List<AbsRichBoxMember>(){
+                        new RbBeginTitle(2),
                         caption,
-                        new RichBoxNewLine(),
-                        new RichBoxText(currentProfile.shortActiveString())
+                        new RbNewLine(),
+                        new RbText(currentProfile.shortActiveString())
                     }, new RbAction1Arg<int>(selectClick, i, SoundLib.menu)));
 
                     }
@@ -471,19 +471,19 @@ namespace VikingEngine.DSSWars.Delivery
             for (int i = bounds.Length - 1; i >= 0; i--)
             {
                 int change = -bounds[i];
-                content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(TextLib.PlusMinus(change)) },
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(change)) },
                     new RbAction2Arg<int, bool>(changeResourcePrice, change, minCap)));
 
                 content.space();
             }
 
-            content.Add(new RichBoxText(current.ToString()));
+            content.Add(new RbText(current.ToString()));
             content.space();
 
             for (int i = 0; i < bounds.Length; i++)
             {
                 int change = bounds[i];
-                content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(TextLib.PlusMinus(change)) },
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(change)) },
                     new RbAction2Arg<int, bool>(changeResourcePrice, change, minCap)));
 
                 content.space();

@@ -109,14 +109,14 @@ namespace VikingEngine.DSSWars
 
             if (icon != SpriteName.NO_IMAGE)
             {
-                content.Add(new RichBoxImage(icon));
+                content.Add(new RbImage(icon));
                 content.space(0.5f);
             }
 
             string text = string.Format(DssRef.lang.Hud_Purchase_ResourceCostOfAvailable,
                 ResourceLib.Name(resource), TextLib.LargeNumber(needResource), TextLib.LargeNumber(hasResource));
 
-            content.Add( new RichBoxText(text, ResourceCostColor(hasResource >= needResource)));
+            content.Add( new RbText(text, ResourceCostColor(hasResource >= needResource)));
         }
 
         public static void ResourceCost(RichBoxContent content, ItemResourceType resource, int needResource, int hasResource)
@@ -125,14 +125,14 @@ namespace VikingEngine.DSSWars
 
             if (icon != SpriteName.NO_IMAGE)
             {
-                content.Add(new RichBoxImage(icon));
+                content.Add(new RbImage(icon));
                 content.space(0.5f);
             }
 
             string text = string.Format(DssRef.lang.Hud_Purchase_ResourceCostOfAvailable,
                 LangLib.Item(resource), TextLib.LargeNumber(needResource), TextLib.LargeNumber(hasResource));
 
-            content.Add(new RichBoxText(text, ResourceCostColor(hasResource >= needResource)));
+            content.Add(new RbText(text, ResourceCostColor(hasResource >= needResource)));
         }
 
         public static void Upkeep(RichBoxContent content, double value)
@@ -152,7 +152,7 @@ namespace VikingEngine.DSSWars
             content.icontext(icon, text);
         }
 
-        public static RichBoxText ItemCount(RichBoxContent content, string item, string count)
+        public static RbText ItemCount(RichBoxContent content, string item, string count)
         {
             string text = string.Format(DssRef.lang.Language_ItemCountPresentation, item, count);
             return content.text(text);
@@ -161,16 +161,16 @@ namespace VikingEngine.DSSWars
         public static void Experience(RichBoxContent content, XP.WorkExperienceType exp, XP.ExperienceLevel level)
         {
             LangLib.ExperienceType(exp, out string expName, out SpriteName expIcon);
-            content.Add(new RichBoxImage(expIcon));
+            content.Add(new RbImage(expIcon));
             content.space();
-            var typeNameText = new RichBoxText(expName + ":");
+            var typeNameText = new RbText(expName + ":");
             typeNameText.overrideColor = HudLib.TitleColor_TypeName;
             content.Add(typeNameText);
 
             //var level = city.GetTopSkill(exp);
             content.space();
-            content.Add(new RichBoxImage(LangLib.ExperienceLevelIcon(level)));
-            content.Add(new RichBoxText(LangLib.ExperienceLevel(level)));
+            content.Add(new RbImage(LangLib.ExperienceLevelIcon(level)));
+            content.Add(new RbText(LangLib.ExperienceLevel(level)));
         }
 
         public static Color ResourceCostColor(bool hasEnough)
@@ -223,7 +223,7 @@ namespace VikingEngine.DSSWars
         }
         public static void FollowFactionButton(bool followFaction, double currentFactionValue, AbsRbAction action, Players.LocalPlayer player, RichBoxContent content)
         {
-            var followFactionButton = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxImage(followFaction ? SpriteName.WarsFollowFactionYes : SpriteName.WarsFollowFactionNo) },
+            var followFactionButton = new RbButton(new List<AbsRichBoxMember> { new RbImage(followFaction ? SpriteName.WarsFollowFactionYes : SpriteName.WarsFollowFactionNo) },
                         action, new RbAction2Arg<bool, double>( player.followFactionTooltip, followFaction, currentFactionValue));//new RbAction2Arg<ItemResourceType, City>(faction.tradeFollowFactionClick, resource, city));
             if (!followFaction)
             {
@@ -235,10 +235,10 @@ namespace VikingEngine.DSSWars
 
         public static void InfoButton(RichBoxContent content, AbsRbAction enterAction)
         {
-            var text = new RichBoxText(DssRef.lang.Info_ButtonIcon);
+            var text = new RbText(DssRef.lang.Info_ButtonIcon);
             text.overrideColor = InfoYellow_Light;
 
-            var button = new RichboxButton(new List<AbsRichBoxMember> { 
+            var button = new RbButton(new List<AbsRichBoxMember> { 
                 new RichBoxSpace(0.5f),
                 text,
                 new RichBoxSpace(0.5f),
@@ -264,10 +264,10 @@ namespace VikingEngine.DSSWars
 
         public static void CloseButton(RichBoxContent content, AbsRbAction click)
         {
-            RichBoxText x = new RichBoxText(DssRef.lang.Hud_EndSessionIcon);
+            RbText x = new RbText(DssRef.lang.Hud_EndSessionIcon);
             x.overrideColor = Color.White;
 
-           var button = new RichboxButton(new List<AbsRichBoxMember>
+           var button = new RbButton(new List<AbsRichBoxMember>
                     { new RichBoxSpace(), x,new RichBoxSpace(), },
                     click);
             button.overrideBgColor = Color.DarkRed;
@@ -275,9 +275,9 @@ namespace VikingEngine.DSSWars
             content.Add(button);
         }
 
-        public static RichBoxImage BulletPoint(RichBoxContent content)
+        public static RbImage BulletPoint(RichBoxContent content)
         {
-            var dot = new RichBoxImage(SpriteName.warsBulletPoint, 0.8f, 0f, 0.3f);
+            var dot = new RbImage(SpriteName.warsBulletPoint, 0.8f, 0f, 0.3f);
             //dot.color = Color.DarkGray;
             content.Add(dot);
             return dot;

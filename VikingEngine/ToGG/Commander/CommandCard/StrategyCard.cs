@@ -59,10 +59,10 @@ namespace VikingEngine.ToGG.Commander.CommandCard
         {
             var members = new List<HUD.RichBox.AbsRichBoxMember>
             {
-                new HUD.RichBox.RichBoxBeginTitle(),
-                new HUD.RichBox.RichBoxText(Name),
-                new HUD.RichBox.RichBoxNewLine(false),
-                new HUD.RichBox.RichBoxText(Description)
+                new HUD.RichBox.RbBeginTitle(),
+                new HUD.RichBox.RbText(Name),
+                new HUD.RichBox.RbNewLine(false),
+                new HUD.RichBox.RbText(Description)
             };
 
             return members;

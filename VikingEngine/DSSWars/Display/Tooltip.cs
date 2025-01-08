@@ -139,16 +139,16 @@ namespace VikingEngine.DSSWars.Display
             RichBoxContent content = new RichBoxContent();
             if (subTile.selectTileResult != Players.SelectTileResult.None)
             {
-                content.Add(new RichBoxBeginTitle(2));
-                content.Add(new RichBoxImage(player.input.Select.Icon));
+                content.Add(new RbBeginTitle(2));
+                content.Add(new RbImage(player.input.Select.Icon));
 
-                RichBoxText title = null;
+                RbText title = null;
                 bool avaialableAction = true;
                 switch (subTile.selectTileResult)
                 {
                     case Players.SelectTileResult.Build:
                         var buildOpt = BuildLib.BuildOptions[(int)player.buildControls.placeBuildingType];
-                        title = new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Build_PlaceBuilding, buildOpt.Label()));
+                        title = new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Build_PlaceBuilding, buildOpt.Label()));
                         content.Add(title);
                         content.newLine();
                         //CraftBlueprint blueprint = ResourceLib.Blueprint(player.BuildControls.placeBuildingType);
@@ -180,30 +180,30 @@ namespace VikingEngine.DSSWars.Display
                         }
                         buildOpt.blueprint.requirementToHud(content, subTile.city, out _);
 
-                        content.Add(new RichBoxSeperationLine());
+                        content.Add(new RbSeperationLine());
                         content.newParagraph();
                         content.h2(DssRef.lang.MenuTab_Resources).overrideColor = HudLib.TitleColor_Label;
                         bp.listResources(content, subTile.city);
 
                         break;
                     case Players.SelectTileResult.Demolish:
-                        title = new RichBoxText(DssRef.lang.Build_DestroyBuilding);
+                        title = new RbText(DssRef.lang.Build_DestroyBuilding);
                         content.Add(title);
                         break;
 
                     case Players.SelectTileResult.ClearTerrain:
-                        title = new RichBoxText(DssRef.lang.Build_ClearTerrain);
+                        title = new RbText(DssRef.lang.Build_ClearTerrain);
                         content.Add(title);
                         break;
 
                     case Players.SelectTileResult.CityHall:
-                        title = new RichBoxText(DssRef.lang.Hud_SelectCity);
+                        title = new RbText(DssRef.lang.Hud_SelectCity);
                         content.Add(title);
                         break;
 
                     case Players.SelectTileResult.Postal:
                         {
-                            title = new RichBoxText(DssRef.lang.BuildingType_Postal);                            
+                            title = new RbText(DssRef.lang.BuildingType_Postal);                            
                             content.Add(title);
 
                             content.newLine();
@@ -215,7 +215,7 @@ namespace VikingEngine.DSSWars.Display
                         break;
                     case Players.SelectTileResult.Recruitment:
                         {
-                            title = new RichBoxText(DssRef.lang.BuildingType_Recruitment);
+                            title = new RbText(DssRef.lang.BuildingType_Recruitment);
                             content.Add(title);
 
                             content.newLine();
@@ -227,7 +227,7 @@ namespace VikingEngine.DSSWars.Display
                         break;
                     case Players.SelectTileResult.School:
                         {
-                            title = new RichBoxText(DssRef.todoLang.BuildingType_School);
+                            title = new RbText(DssRef.todoLang.BuildingType_School);
                             content.Add(title);
 
                             content.newLine();
@@ -239,7 +239,7 @@ namespace VikingEngine.DSSWars.Display
                         break;
                     case Players.SelectTileResult.Conscript:
                         {
-                            title = new RichBoxText(DssRef.lang.Conscription_Title);
+                            title = new RbText(DssRef.lang.Conscription_Title);
                             content.Add(title);
 
                             content.newLine();
@@ -252,7 +252,7 @@ namespace VikingEngine.DSSWars.Display
                 }
                 title.overrideColor = avaialableAction ? HudLib.TitleColor_Action: HudLib.NotAvailableColor;
 
-                content.Add(new RichBoxSeperationLine());
+                content.Add(new RbSeperationLine());
                 content.newParagraph();
              
             }
@@ -286,10 +286,10 @@ namespace VikingEngine.DSSWars.Display
                 var relation = DssRef.diplomacy.GetRelationType(player.faction, obj.GetFaction());
 
                 content.newLine();
-                content.Add(new RichBoxText(obj.GetFaction().PlayerName, HudLib.TitleColor_Name));
+                content.Add(new RbText(obj.GetFaction().PlayerName, HudLib.TitleColor_Name));
                 content.newLine();
-                content.Add(new RichBoxImage(Diplomacy.RelationSprite(relation)));
-                content.Add(new RichBoxText(Diplomacy.RelationString(relation), HudLib.TextColor_Relation));
+                content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
+                content.Add(new RbText(Diplomacy.RelationString(relation), HudLib.TextColor_Relation));
                 content.newLine();
                 
             }
@@ -298,7 +298,7 @@ namespace VikingEngine.DSSWars.Display
             {
                 if (!DssRef.diplomacy.InWar(player.faction, obj.GetFaction()))
                 {
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
 
                     RelationType rel = DssRef.diplomacy.GetRelationType(player.faction, obj.GetFaction());
                     
@@ -306,7 +306,7 @@ namespace VikingEngine.DSSWars.Display
                     content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
                     content.newLine();
                     HudLib.ResourceCost(content, ResourceType.DiplomaticPoint, Diplomacy.DeclareWarCost(rel), player.diplomaticPoints.Int());
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                 }
                 else
                 {
@@ -317,19 +317,19 @@ namespace VikingEngine.DSSWars.Display
                 var defender = obj as AbsMapObject;
                 if (attacker != null && defender!= null)
                 {
-                    content.Add(new RichBoxBeginTitle(2));
-                    content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
-                    content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_StrengthRating, string.Empty)));//"Strength ratings:"));
+                    content.Add(new RbBeginTitle(2));
+                    content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+                    content.Add(new RbText(string.Format(DssRef.lang.Hud_StrengthRating, string.Empty)));//"Strength ratings:"));
                     
                     content.newLine();
-                    content.Add(new RichBoxTexture(player.faction.flagTexture, 1f, 0, 0.2f));
+                    content.Add(new RbTexture(player.faction.flagTexture, 1f, 0, 0.2f));
                     
-                    content.Add(new RichBoxText(": " + TextLib.OneDecimal(attacker.strengthValue)));//string.Format(HudLib.OneDecimalFormat, attacker.strengthValue)));
+                    content.Add(new RbText(": " + TextLib.OneDecimal(attacker.strengthValue)));//string.Format(HudLib.OneDecimalFormat, attacker.strengthValue)));
                     content.newLine();
                     content.text(DssRef.lang.Hud_Versus);
                     content.newLine();
-                    content.Add(new RichBoxTexture(obj.GetFaction().flagTexture, 1f, 0, 0.2f));
-                    content.Add(new RichBoxText(": " + TextLib.OneDecimal(defender.strengthValue)));
+                    content.Add(new RbTexture(obj.GetFaction().flagTexture, 1f, 0, 0.2f));
+                    content.Add(new RbText(": " + TextLib.OneDecimal(defender.strengthValue)));
                     content.newLine();
                 }
             }
@@ -386,7 +386,7 @@ namespace VikingEngine.DSSWars.Display
                                 //content.Add(new RichBoxText(TextLib.OneDecimal(mapObj.strengthValue)));
 
                                 content.newLine();
-                                content.Add(new RichBoxImage(SpriteName.WarsGroupIcon));
+                                content.Add(new RbImage(SpriteName.WarsGroupIcon));
                                 content.space(1);
 
                                 
@@ -395,8 +395,8 @@ namespace VikingEngine.DSSWars.Display
                                 foreach (var kv in typeCounts)
                                 {
                                     //AbsSoldierData typeData = DssRef.unitsdata.Get(kv.Key);
-                                    content.Add(new RichBoxText(kv.Value.ToString()));
-                                    content.Add(new RichBoxImage(AllUnits.UnitFilterIcon(kv.Key)));
+                                    content.Add(new RbText(kv.Value.ToString()));
+                                    content.Add(new RbImage(AllUnits.UnitFilterIcon(kv.Key)));
                                     content.space(2);
                                 }
 
@@ -416,8 +416,8 @@ namespace VikingEngine.DSSWars.Display
                 void warStrength(AbsMapObject mapObj)
                 {
                     content.newLine();
-                    content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
-                    content.Add(new RichBoxText(TextLib.OneDecimal(mapObj.strengthValue)));
+                    content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+                    content.Add(new RbText(TextLib.OneDecimal(mapObj.strengthValue)));
                 }
             }
             

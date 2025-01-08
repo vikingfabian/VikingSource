@@ -196,16 +196,16 @@ namespace VikingEngine.DSSWars.Players
             //}
             //content.newParagraph();
 
-            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
+            content.Add(new RbCheckbox(new List<AbsRichBoxMember>
                 {
-                    new RichBoxText( DssRef.lang.CityOption_Repair),
+                    new RbText( DssRef.lang.CityOption_Repair),
                 }, AutoRepairCityProperty));
 
             content.newLine();
 
-            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
+            content.Add(new RbCheckbox(new List<AbsRichBoxMember>
                 {
-                    new RichBoxText(string.Format(DssRef.lang.XP_UpgradeBuildingX, DssRef.lang.BuildingType_Logistics)),
+                    new RbText(string.Format(DssRef.lang.XP_UpgradeBuildingX, DssRef.lang.BuildingType_Logistics)),
                 }, AutoUpgradeLogisticsProperty));
 
             content.newLine();
@@ -216,9 +216,9 @@ namespace VikingEngine.DSSWars.Players
 
             //content.newLine();
 
-            content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
+            content.Add(new RbCheckbox(new List<AbsRichBoxMember>
                 {
-                    new RichBoxText( DssRef.lang.CityOption_ExpandGuardSize),
+                    new RbText( DssRef.lang.CityOption_ExpandGuardSize),
                 }, AutoExpandGuardProperty));
 
             content.newLine();
@@ -235,7 +235,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RichBoxText(m));
+                content.Add(new RbText(m));
             }
 
         }

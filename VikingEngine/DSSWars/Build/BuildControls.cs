@@ -201,15 +201,15 @@ namespace VikingEngine.DSSWars.Build
                 var build = BuildLib.BuildOptions[(int)opt];
                 var buildCount = city.buildingStructure.getCount(opt);
 
-                var buttonIcon = new RichBoxImage(build.sprite);
+                var buttonIcon = new RbImage(build.sprite);
                 var buttonContent = new List<AbsRichBoxMember> {
                     buttonIcon,                    
                 };
                 if (buildCount > 0)
                 {
-                    buttonContent.Add(new RichBoxOverlapText(buttonIcon,buildCount.ToString(), new Vector2(1.1f, 1.1f), 1.0f, new Vector2(1,1f), Color.White));
+                    buttonContent.Add(new RbOverlapText(buttonIcon,buildCount.ToString(), new Vector2(1.1f, 1.1f), 1.0f, new Vector2(1,1f), Color.White));
                 }
-                var button = new RichboxButton(buttonContent,
+                var button = new RbButton(buttonContent,
                 new RbAction1Arg<BuildAndExpandType>(buildingTypeClick, opt, SoundLib.menu),
                 new RbAction1Arg<BuildAndExpandType>((BuildAndExpandType type) =>
                 {
@@ -219,7 +219,7 @@ namespace VikingEngine.DSSWars.Build
                     content.h2(TextLib.LargeFirstLetter(build.Label())).overrideColor = HudLib.TitleColor_TypeName;
                     build.blueprint.toMenu(content, city);
 
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     HudLib.Description(content, build.Description());
 
                     content.newLine();
@@ -227,20 +227,20 @@ namespace VikingEngine.DSSWars.Build
                     {
                         case BuildAndExpandType.WaterResovoir:
                             HudLib.BulletPoint(content);
-                            content.Add(new RichBoxImage(SpriteName.WarsResource_WaterAdd));
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.Resource_MaxAmount, TextLib.PlusMinus(DssConst.WaterResovoirWaterAdd))));
+                            content.Add(new RbImage(SpriteName.WarsResource_WaterAdd));
+                            content.Add(new RbText(string.Format(DssRef.lang.Resource_MaxAmount, TextLib.PlusMinus(DssConst.WaterResovoirWaterAdd))));
 
                             content.newParagraph();
                             HudLib.Label(content, DssRef.lang.Hud_ThisCity);
                             content.newLine();
-                            content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.Resource_CurrentAmount, city.res_water.amount)));
+                            content.Add(new RbImage(SpriteName.WarsResource_Water));
+                            content.Add(new RbText(string.Format(DssRef.lang.Resource_CurrentAmount, city.res_water.amount)));
                             content.newLine();
-                            content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.Resource_MaxAmount, city.maxWaterTotal)));
+                            content.Add(new RbImage(SpriteName.WarsResource_Water));
+                            content.Add(new RbText(string.Format(DssRef.lang.Resource_MaxAmount, city.maxWaterTotal)));
                             content.newLine();
-                            content.Add(new RichBoxImage(SpriteName.WarsResource_WaterAdd));
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.OneDecimal( city.waterAddPerSec))));
+                            content.Add(new RbImage(SpriteName.WarsResource_WaterAdd));
+                            content.Add(new RbText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.OneDecimal( city.waterAddPerSec))));
                             break;
 
                         case BuildAndExpandType.WoodCutter:
@@ -248,11 +248,11 @@ namespace VikingEngine.DSSWars.Build
 
                             content.newLine();
                             HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.BuildingType_WoodCutter_AreaAffect, DssConst.WoodCutter_WoodBonus)));
+                            content.Add(new RbText(string.Format(DssRef.todoLang.BuildingType_WoodCutter_AreaAffect, DssConst.WoodCutter_WoodBonus)));
 
                             content.newLine();
                             HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.BuildHud_BonusRadius, DssConst.WoodCutter_BonusRadius)));
+                            content.Add(new RbText(string.Format(DssRef.todoLang.BuildHud_BonusRadius, DssConst.WoodCutter_BonusRadius)));
                             break;
 
                         case BuildAndExpandType.StoneCutter:
@@ -260,11 +260,11 @@ namespace VikingEngine.DSSWars.Build
 
                             content.newLine();
                             HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.BuildingType_StoneCutter_AreaAffect, DssConst.StoneCutter_StoneBonus)));
+                            content.Add(new RbText(string.Format(DssRef.todoLang.BuildingType_StoneCutter_AreaAffect, DssConst.StoneCutter_StoneBonus)));
 
                             content.newLine();
                             HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.BuildHud_BonusRadius, DssConst.StoneCutter_BonusRadius)));
+                            content.Add(new RbText(string.Format(DssRef.todoLang.BuildHud_BonusRadius, DssConst.StoneCutter_BonusRadius)));
                             break;
 
                         case BuildAndExpandType.Storehouse:
@@ -274,14 +274,14 @@ namespace VikingEngine.DSSWars.Build
 
                         case BuildAndExpandType.Logistics:
                             HudLib.BulletPoint(content);
-                            content.Add(new RichBoxImage(SpriteName.birdUnLock));
+                            content.Add(new RbImage(SpriteName.birdUnLock));
                             if (city.CanBuildLogistics(2))
                             {
-                                content.Add(new RichBoxText(string.Format(DssRef.lang.XP_UnlockBuildQueue, DssRef.lang.Hud_NoLimit)));
+                                content.Add(new RbText(string.Format(DssRef.lang.XP_UnlockBuildQueue, DssRef.lang.Hud_NoLimit)));
                             }
                             else
                             {
-                                content.Add(new RichBoxText(string.Format(DssRef.lang.XP_UnlockBuildQueue, City.LevelToMaxBuildQueue(1))));
+                                content.Add(new RbText(string.Format(DssRef.lang.XP_UnlockBuildQueue, City.LevelToMaxBuildQueue(1))));
                             }
 
                             foreach (var building in BuildLib.LogisticsUnlockBuildings)
@@ -289,18 +289,18 @@ namespace VikingEngine.DSSWars.Build
                                 var opt = BuildLib.BuildOptions[(int)building];
                                 content.newLine();
                                 HudLib.BulletPoint(content);
-                                content.Add(new RichBoxText(DssRef.lang.XP_UnlockBuilding));
-                                content.Add(new RichBoxImage(opt.sprite));
-                                content.Add(new RichBoxText(opt.Label()));
+                                content.Add(new RbText(DssRef.lang.XP_UnlockBuilding));
+                                content.Add(new RbImage(opt.sprite));
+                                content.Add(new RbText(opt.Label()));
                             }
                             content.newParagraph();
 
                             HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
                             content.newLine();
                             HudLib.BulletPoint(content);
-                            content.Add(new RichBoxImage(SpriteName.WarsResource_Food));
+                            content.Add(new RbImage(SpriteName.WarsResource_Food));
                             content.space();
-                            var reqText = new RichBoxText(string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, City.Logistics1FoodStorage));
+                            var reqText = new RbText(string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, City.Logistics1FoodStorage));
                             reqText.overrideColor = city.CanBuildLogistics(1) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                             content.Add(reqText);
                             break;
@@ -309,22 +309,22 @@ namespace VikingEngine.DSSWars.Build
                             int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.NobelHouseAddDiplomacy * 3600);
 
                             HudLib.BulletPoint(content);
-                            content.Add(new RichBoxImage(SpriteName.WarsDiplomaticAddTime));
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
+                            content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
+                            content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
                             content.newLine();
 
                             HudLib.BulletPoint(content);
-                            content.Add(new RichBoxImage(SpriteName.WarsDiplomaticPoint));
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.NobelHouseAddMaxDiplomacy)));
+                            content.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
+                            content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.NobelHouseAddMaxDiplomacy)));
                             content.newLine();
 
                             HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
+                            content.Add(new RbText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
                             content.newLine();
 
                             HudLib.BulletPoint(content);
-                            content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_Upkeep, DssLib.NobleHouseUpkeep)));
+                            content.Add(new RbImage(SpriteName.rtsUpkeepTime));
+                            content.Add(new RbText(string.Format(DssRef.lang.Hud_Upkeep, DssLib.NobleHouseUpkeep)));
 
                             break;
 
@@ -462,19 +462,19 @@ namespace VikingEngine.DSSWars.Build
                             content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
                             content.newLine();
                             HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.HenReady - 1))));
+                            content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.HenReady - 1))));
 
                             content.newLine();
                             HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce + DssConst.WorkTime_PickUpResource))));
+                            content.Add(new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce + DssConst.WorkTime_PickUpResource))));
 
                             content.newLine();
                             HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(DssRef.lang.BuildHud_Produce));
+                            content.Add(new RbText(DssRef.lang.BuildHud_Produce));
                             content.space();
-                            content.Add(new RichBoxText((DssConst.HenRawFoodAmout + DssConst.EggRawFoodAmout).ToString()));
-                            content.Add(new RichBoxImage(SpriteName.WarsResource_RawFood));
-                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_RawFood));
+                            content.Add(new RbText((DssConst.HenRawFoodAmout + DssConst.EggRawFoodAmout).ToString()));
+                            content.Add(new RbImage(SpriteName.WarsResource_RawFood));
+                            content.Add(new RbText(DssRef.lang.Resource_TypeName_RawFood));
 
                             //content.Add(new RichBoxImage(SpriteName.pjNumPlus));
                             break;
@@ -483,23 +483,23 @@ namespace VikingEngine.DSSWars.Build
                             content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
                             content.newLine();
                             HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.PigReady - 1))));
+                            content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.PigReady - 1))));
 
                             content.newLine();
                             HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce))));
+                            content.Add(new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce))));
 
                             content.newLine();
                             HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(DssRef.lang.BuildHud_Produce));
+                            content.Add(new RbText(DssRef.lang.BuildHud_Produce));
                             content.space();
-                            content.Add(new RichBoxText(DssConst.PigRawFoodAmout.ToString()));
-                            content.Add(new RichBoxImage(SpriteName.WarsResource_RawFood));
-                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_RawFood));
-                            content.Add(new RichBoxImage(SpriteName.pjNumPlus));
-                            content.Add(new RichBoxText(DssConst.PigSkinAmount.ToString()));
-                            content.Add(new RichBoxImage(SpriteName.WarsResource_LinenCloth));
-                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Linen));
+                            content.Add(new RbText(DssConst.PigRawFoodAmout.ToString()));
+                            content.Add(new RbImage(SpriteName.WarsResource_RawFood));
+                            content.Add(new RbText(DssRef.lang.Resource_TypeName_RawFood));
+                            content.Add(new RbImage(SpriteName.pjNumPlus));
+                            content.Add(new RbText(DssConst.PigSkinAmount.ToString()));
+                            content.Add(new RbImage(SpriteName.WarsResource_LinenCloth));
+                            content.Add(new RbText(DssRef.lang.Resource_TypeName_Linen));
                             break;
 
                         case BuildAndExpandType.Brewery:
@@ -623,24 +623,24 @@ namespace VikingEngine.DSSWars.Build
                                 var opt = BuildLib.BuildOptions[(int)building];
                                 content.newLine();
                                 HudLib.BulletPoint(content);
-                                content.Add(new RichBoxText(DssRef.lang.XP_UnlockBuilding));
-                                content.Add(new RichBoxImage(opt.sprite));
+                                content.Add(new RbText(DssRef.lang.XP_UnlockBuilding));
+                                content.Add(new RbImage(opt.sprite));
                                 content.space();
-                                content.Add(new RichBoxText(opt.Label()));
+                                content.Add(new RbText(opt.Label()));
                             }
                             content.newParagraph();
 
                             content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
                             content.newLine();
                             HudLib.BulletPoint(content);                            
-                            content.Add(new RichBoxText(string.Format(DssRef.lang.Economy_TaxIncome, TextLib.PlusMinus(MathExt.PercentageInteger(DssConst.BankTaxIncreasePercUnits)))));
+                            content.Add(new RbText(string.Format(DssRef.lang.Economy_TaxIncome, TextLib.PlusMinus(MathExt.PercentageInteger(DssConst.BankTaxIncreasePercUnits)))));
                             content.text(DssRef.todoLang.Hud_EffectDoesNotStack).overrideColor = HudLib.InfoYellow_Light;
                             break;
 
                     }
 
 
-                    content.Add(new RichBoxSeperationLine());
+                    content.Add(new RbSeperationLine());
                     content.h2(DssRef.lang.MenuTab_Resources).overrideColor = HudLib.TitleColor_Label;
                     build.blueprint.listResources(content, city);
                     if (type == BuildAndExpandType.Logistics)
@@ -682,12 +682,12 @@ namespace VikingEngine.DSSWars.Build
 
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Delivery_SendChunk, maxAmount)));
+                        content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Delivery_SendChunk, maxAmount)));
                         if (speedBonus > 0)
                         {
                             content.newLine();
                             HudLib.BulletPoint(content);
-                            content.Add(new RichBoxText(string.Format(DssRef.todoLang.Delivery_SpeedBonus, speedBonus)));
+                            content.Add(new RbText(string.Format(DssRef.todoLang.Delivery_SpeedBonus, speedBonus)));
                         }
                     }
                     void farmHud(bool upgrade, ItemResource produce1, ItemResource produce2)
@@ -697,11 +697,11 @@ namespace VikingEngine.DSSWars.Build
                         content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RichBoxText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize - 1))));
+                        content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize - 1))));
 
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        var workTimeText = new RichBoxText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, plantTime + DssConst.WorkTime_GatherFoil_FarmCulture)));
+                        var workTimeText = new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, plantTime + DssConst.WorkTime_GatherFoil_FarmCulture)));
                         if (upgrade)
                         {
                             workTimeText.overrideColor = HudLib.AvailableColor;
@@ -710,23 +710,23 @@ namespace VikingEngine.DSSWars.Build
 
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RichBoxText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
-                        content.Add(new RichBoxImage(SpriteName.WarsResource_Water));
-                        content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Water));
+                        content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
+                        content.Add(new RbImage(SpriteName.WarsResource_Water));
+                        content.Add(new RbText(DssRef.lang.Resource_TypeName_Water));
 
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RichBoxText(DssRef.lang.BuildHud_Produce));
+                        content.Add(new RbText(DssRef.lang.BuildHud_Produce));
                         content.space();
-                        content.Add(new RichBoxText(produce1.amount.ToString()));
-                        content.Add(new RichBoxImage(ResourceLib.Icon(produce1.type)));//SpriteName.WarsResource_RawFood));
-                        content.Add(new RichBoxText(LangLib.Item(produce1.type)));//DssRef.lang.Resource_TypeName_RawFood));
+                        content.Add(new RbText(produce1.amount.ToString()));
+                        content.Add(new RbImage(ResourceLib.Icon(produce1.type)));//SpriteName.WarsResource_RawFood));
+                        content.Add(new RbText(LangLib.Item(produce1.type)));//DssRef.lang.Resource_TypeName_RawFood));
                         if (produce2.amount > 0)
                         {
-                            content.Add(new RichBoxImage(SpriteName.pjNumPlus));
-                            content.Add(new RichBoxText(DssConst.HempLinenAndFuelAmount.ToString()));
-                            content.Add(new RichBoxImage(SpriteName.WarsResource_LinenCloth));
-                            content.Add(new RichBoxText(DssRef.lang.Resource_TypeName_Linen));
+                            content.Add(new RbImage(SpriteName.pjNumPlus));
+                            content.Add(new RbText(DssConst.HempLinenAndFuelAmount.ToString()));
+                            content.Add(new RbImage(SpriteName.WarsResource_LinenCloth));
+                            content.Add(new RbText(DssRef.lang.Resource_TypeName_Linen));
                         }
                     }
                 }, opt)
@@ -759,18 +759,18 @@ namespace VikingEngine.DSSWars.Build
 
             BuildOption buildOpt = null;
 
-            content.Add(new RichboxButton(new List<AbsRichBoxMember>
+            content.Add(new RbButton(new List<AbsRichBoxMember>
             {
-                new RichBoxText(DssRef.lang.Build_DestroyBuilding)
+                new RbText(DssRef.lang.Build_DestroyBuilding)
             }, new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.Demolish, SoundLib.menu)));
 
             content.space();
 
             if (buildMode != SelectTileResult.None)
             {
-                var button = new RichboxButton(new List<AbsRichBoxMember> { 
+                var button = new RbButton(new List<AbsRichBoxMember> { 
                     new RichBoxSpace(),
-                    new RichBoxText(DssRef.lang.Hud_EndSessionIcon),
+                    new RbText(DssRef.lang.Hud_EndSessionIcon),
                     new RichBoxSpace(),
                     },
                     new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.None, SoundLib.menuBack));
@@ -818,9 +818,9 @@ namespace VikingEngine.DSSWars.Build
             if (city.buildingStructure.buildingLevel_logistics == 1)
             {
                 content.space();
-                var upgradeText = new RichBoxText(string.Format(DssRef.lang.XP_UpgradeBuildingX, DssRef.lang.BuildingType_Logistics));
+                var upgradeText = new RbText(string.Format(DssRef.lang.XP_UpgradeBuildingX, DssRef.lang.BuildingType_Logistics));
                 
-                content.Add(new RichboxButton(new List<AbsRichBoxMember>() { upgradeText }, new RbAction(city.upgradeLogistics, SoundLib.menuBuy), new RbAction(()=>
+                content.Add(new RbButton(new List<AbsRichBoxMember>() { upgradeText }, new RbAction(city.upgradeLogistics, SoundLib.menuBuy), new RbAction(()=>
                 {
                     RichBoxContent content = new RichBoxContent();
                     HudLib.Label(content, DssRef.lang.XP_Upgrade);
@@ -846,21 +846,21 @@ namespace VikingEngine.DSSWars.Build
 
             if (city.buildingStructure.buildingLevel_logistics > 0)
             {
-                content.Add(new RichBoxSeperationLine());
+                content.Add(new RbSeperationLine());
 
                 //--Automation
                 content.h2(DssRef.lang.Automation_Title).overrideColor = HudLib.TitleColor_Label;
 
                 content.newLine();
-                content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
+                content.Add(new RbCheckbox(new List<AbsRichBoxMember>
                 {
-                    new RichBoxText( DssRef.lang.CityOption_AutoBuild_Work),
+                    new RbText( DssRef.lang.CityOption_AutoBuild_Work),
                 }, city.AutoBuildWorkProperty));
                 content.newLine();
 
-                content.Add(new RichboxCheckbox(new List<AbsRichBoxMember>
+                content.Add(new RbCheckbox(new List<AbsRichBoxMember>
                 {
-                    new RichBoxText( DssRef.lang.CityOption_AutoBuild_Farm),
+                    new RbText( DssRef.lang.CityOption_AutoBuild_Farm),
                 }, city.AutoBuildFarmProperty));
 
 
@@ -872,10 +872,10 @@ namespace VikingEngine.DSSWars.Build
                     {
                         var build = BuildLib.BuildOptions[(int)opt];
 
-                        var optButton = new RichboxButton(new List<AbsRichBoxMember> {
-                        new RichBoxImage(build.sprite),
+                        var optButton = new RbButton(new List<AbsRichBoxMember> {
+                        new RbImage(build.sprite),
                         new RichBoxSpace(),
-                        new RichBoxText(build.Label())
+                        new RbText(build.Label())
                     }, new RbAction(() =>
                     {
                         city.autoExpandFarmType = opt;
@@ -916,7 +916,7 @@ namespace VikingEngine.DSSWars.Build
             foreach (var m in types)
             {
                 content.newLine();
-                content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
+                content.Add(new RbImage(SpriteName.WarsBluePrint));
                 content.space();
                 ItemPropertyColl.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
                 //bp1.toMenu(content, city, false);
@@ -929,7 +929,7 @@ namespace VikingEngine.DSSWars.Build
 
            
             content.newLine();
-            content.Add(new RichBoxImage(SpriteName.WarsBluePrint));
+            content.Add(new RbImage(SpriteName.WarsBluePrint));
             content.space();
             //bp1.toMenu(content, city, false);
             bp1.resultTypeToMenu(content);            

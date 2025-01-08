@@ -8,8 +8,8 @@ namespace VikingEngine.HUD.RichBox
 {
     class RbInteraction
     {
-        public RichboxButton hover = null;
-        public List<RichboxButton> buttons = new List<RichboxButton>(4);
+        public RbButton hover = null;
+        public List<RbButton> buttons = new List<RbButton>(4);
         public ImageLayers layer;
 
         Graphics.RectangleLines selectionOutline = null;
@@ -36,7 +36,7 @@ namespace VikingEngine.HUD.RichBox
             if (clickInput.IsMouse)
             {
                 Vector2 pos = Input.Mouse.Position;
-                RichboxButton prev = hover;
+                RbButton prev = hover;
                 hover = null;
                 VectorRect area = VectorRect.Zero;
 

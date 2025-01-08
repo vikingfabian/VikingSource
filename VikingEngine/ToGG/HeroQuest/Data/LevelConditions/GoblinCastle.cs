@@ -25,11 +25,11 @@ namespace VikingEngine.ToGG.HeroQuest.Data.LevelConditions
             flavorText(rb, "Scouts has found the leader behind the goblin attacks. It is time to pay him a visit.");
 
             missionObjectivesTitle(rb);
-            rb.Add(new RichBoxText("Defeat the Goblin army leader"));
-            rb.Add(new RichBoxNewLine());
+            rb.Add(new RbText("Defeat the Goblin army leader"));
+            rb.Add(new RbNewLine());
 
             specialConditionsTitle(rb);
-            rb.Add(new RichBoxText("Some guards has the Objective to ring the alarm bell, and spawn a group of soldiers"));
+            rb.Add(new RbText("Some guards has the Objective to ring the alarm bell, and spawn a group of soldiers"));
 
             return rb;
         }

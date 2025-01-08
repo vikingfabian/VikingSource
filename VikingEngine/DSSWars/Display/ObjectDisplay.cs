@@ -21,8 +21,8 @@ namespace VikingEngine.DSSWars.Display
                 beginRefresh();
                 if (obj.CanMenuFocus() && player.input.inputSource.IsController)
                 {
-                    content.Add(new HUD.RichBox.RichBoxImage(player.input.ControllerFocus.Icon));
-                    content.Add(new HUD.RichBox.RichBoxText(":"));
+                    content.Add(new HUD.RichBox.RbImage(player.input.ControllerFocus.Icon));
+                    content.Add(new HUD.RichBox.RbText(":"));
                     content.newLine();
                 }
 

@@ -1027,9 +1027,9 @@ namespace VikingEngine.DSSWars
             this.player = owner;
         }
 
-        public RichBoxTexture FlagTextureToHud()
+        public RbTexture FlagTextureToHud()
         {
-            return new RichBoxTexture(flagTexture, 1f, 0, 0.2f);
+            return new RbTexture(flagTexture, 1f, 0, 0.2f);
         }
 
         public Color Color()

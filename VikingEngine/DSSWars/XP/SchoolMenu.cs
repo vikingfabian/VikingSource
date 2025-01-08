@@ -33,10 +33,10 @@ namespace VikingEngine.DSSWars.XP
             {
                 SchoolStatus currentStatus = city.schoolBuildings[city.selectedSchool];
                 LangLib.ExperienceType(currentStatus.learnExperience, out string expName, out SpriteName expIcon);
-                content.Add(new RichBoxImage(expIcon));
+                content.Add(new RbImage(expIcon));
                 content.space();
-                content.Add(new RichBoxBeginTitle(1));
-                var title = new RichBoxText(DssRef.todoLang.BuildingType_School + " " + currentStatus.idAndPosition.ToString());
+                content.Add(new RbBeginTitle(1));
+                var title = new RbText(DssRef.todoLang.BuildingType_School + " " + currentStatus.idAndPosition.ToString());
                 title.overrideColor = HudLib.TitleColor_TypeName;
                 content.Add(title);
                 content.space();
@@ -51,12 +51,12 @@ namespace VikingEngine.DSSWars.XP
                     LangLib.ExperienceType(exp, out string text, out SpriteName icon);
                     var buttonContent = new List<AbsRichBoxMember>()
                     {
-                        new RichBoxImage(icon),
+                        new RbImage(icon),
                         new RichBoxSpace(),
-                        new RichBoxText(text),
+                        new RbText(text),
                     };
 
-                    var button = new RichboxButton(buttonContent,
+                    var button = new RbButton(buttonContent,
                        new RbAction1Arg<WorkExperienceType>(experienceClick, exp, SoundLib.menu),
                    new RbAction1Arg<WorkExperienceType>(expTooltip, exp));
                     button.setGroupSelectionColor(HudLib.RbSettings, exp == currentStatus.learnExperience);
@@ -76,12 +76,12 @@ namespace VikingEngine.DSSWars.XP
 
                         var buttonContent = new List<AbsRichBoxMember>()
                     {
-                        new RichBoxImage(icon),
+                        new RbImage(icon),
                         new RichBoxSpace(),
-                        new RichBoxText(text),
+                        new RbText(text),
                     };
 
-                        var button = new RichboxButton(buttonContent,
+                        var button = new RbButton(buttonContent,
                            new RbAction1Arg<ExperienceLevel>(toLevelClick, level, SoundLib.menu),
                        new RbAction1Arg<ExperienceLevel>(lvlToolTip, level));
                         button.setGroupSelectionColor(HudLib.RbSettings, level == currentStatus.toLevel);
@@ -105,9 +105,9 @@ namespace VikingEngine.DSSWars.XP
                     content.newParagraph();
                     content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement).overrideColor = HudLib.TitleColor_Label;
                     content.newLine();
-                    content.Add(new RichBoxImage(SpriteName.WarsBuild_School));
+                    content.Add(new RbImage(SpriteName.WarsBuild_School));
                     content.space();
-                    content.Add(new RichBoxText(DssRef.todoLang.BuildingType_School));                   
+                    content.Add(new RbText(DssRef.todoLang.BuildingType_School));                   
                 }
                 else
                 {
@@ -117,11 +117,11 @@ namespace VikingEngine.DSSWars.XP
 
                         SchoolStatus currentProfile = city.schoolBuildings[i];
                         LangLib.ExperienceType(currentProfile.learnExperience, out string text, out SpriteName icon);
-                        var caption = new RichBoxText(text);
+                        var caption = new RbText(text);
                         caption.overrideColor = HudLib.TitleColor_Name;
 
-                        content.Add(new RichboxButton(new List<AbsRichBoxMember>(){
-                        new RichBoxImage(icon),
+                        content.Add(new RbButton(new List<AbsRichBoxMember>(){
+                        new RbImage(icon),
                         new RichBoxSpace(),
                         caption,
                         }, new RbAction1Arg<int>(selectClick, i, SoundLib.menu)));
@@ -189,11 +189,11 @@ namespace VikingEngine.DSSWars.XP
             
             float time = (int)lvl * DssConst.WorkXpToLevel * DssConst.Time_SchoolOneXP;
             TimeSpan timespan = TimeSpan.FromSeconds(time);
-            var timeLabel = new RichBoxText(string.Format( DssRef.lang.Conscript_TrainingTime, string.Empty));
+            var timeLabel = new RbText(string.Format( DssRef.lang.Conscript_TrainingTime, string.Empty));
             timeLabel.overrideColor = HudLib.TitleColor_Label;
 
             content.Add(timeLabel);
-            content.Add(new RichBoxText(HudLib.TimeSpan_LongText(timespan)));
+            content.Add(new RbText(HudLib.TimeSpan_LongText(timespan)));
              
             content.newLine();
             content.text(DssRef.todoLang.SchoolHud_TimeDescription).overrideColor = HudLib.InfoYellow_Light;

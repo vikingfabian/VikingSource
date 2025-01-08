@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars.XP
             }
 
             content.newLine();
-            content.Add(new RichBoxImage(SpriteName.WarsTechnology_Unlocked));
+            content.Add(new RbImage(SpriteName.WarsTechnology_Unlocked));
 
             tech(technology.advancedBuilding, SpriteName.WarsBuild_Nobelhouse, DssRef.todoLang.Technology_AdvancedBuildings);
 
@@ -52,17 +52,17 @@ namespace VikingEngine.DSSWars.XP
                 {
                     var infoContent = new RichBoxContent();
 
-                    infoContent.Add(new RichBoxImage(icon));
+                    infoContent.Add(new RbImage(icon));
 
-                    var infoButton = new RichboxButton(infoContent, null, new RbAction(() =>
+                    var infoButton = new RbButton(infoContent, null, new RbAction(() =>
                     {
                         RichBoxContent content = new RichBoxContent();
 
                         content.h2(DssRef.todoLang.Technology_Title).overrideColor = HudLib.TitleColor_Label;
                         content.newLine();
-                        content.Add(new RichBoxImage(icon));
+                        content.Add(new RbImage(icon));
                         content.space();
-                        content.Add(new RichBoxText(caption));
+                        content.Add(new RbText(caption));
 
 
                         player.hud.tooltip.create(player, content, true);
@@ -162,14 +162,14 @@ namespace VikingEngine.DSSWars.XP
             content.newParagraph();
             {
                 HudLib.BulletPoint(content);
-                content.Add(new RichBoxImage(SpriteName.WarsRelationGood));
-                content.Add(new RichBoxText($"{DssRef.lang.Diplomacy_RelationType_Good}: {string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_GoodRelation_PerMin))}"));
+                content.Add(new RbImage(SpriteName.WarsRelationGood));
+                content.Add(new RbText($"{DssRef.lang.Diplomacy_RelationType_Good}: {string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_GoodRelation_PerMin))}"));
                 content.space();
 
                 HudLib.InfoButton(content, new RbAction(() =>
                 {
                     RichBoxContent content = new RichBoxContent();
-                    var info = new RichBoxText(string.Format(DssRef.todoLang.Technology_GainByNeigborRelation, DssRef.lang.Diplomacy_RelationType_Good,
+                    var info = new RbText(string.Format(DssRef.todoLang.Technology_GainByNeigborRelation, DssRef.lang.Diplomacy_RelationType_Good,
                         string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_GoodRelation_PerMin))));
                     info.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info);
@@ -180,14 +180,14 @@ namespace VikingEngine.DSSWars.XP
             content.newLine();
             {
                 HudLib.BulletPoint(content);
-                content.Add(new RichBoxImage(SpriteName.WarsRelationAlly));
-                content.Add(new RichBoxText($"{DssRef.lang.Diplomacy_RelationType_Ally}: {string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_AllyRelation_PerMin))}"));
+                content.Add(new RbImage(SpriteName.WarsRelationAlly));
+                content.Add(new RbText($"{DssRef.lang.Diplomacy_RelationType_Ally}: {string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_AllyRelation_PerMin))}"));
                 content.space();
 
                 HudLib.InfoButton(content, new RbAction(() =>
                 {
                     RichBoxContent content = new RichBoxContent();
-                    var info = new RichBoxText(string.Format(DssRef.todoLang.Technology_GainByNeigborRelation, DssRef.lang.Diplomacy_RelationType_Ally,
+                    var info = new RbText(string.Format(DssRef.todoLang.Technology_GainByNeigborRelation, DssRef.lang.Diplomacy_RelationType_Ally,
                     string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_AllyRelation_PerMin))));
                     info.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info);
@@ -198,14 +198,14 @@ namespace VikingEngine.DSSWars.XP
             content.newLine();
             {
                 HudLib.BulletPoint(content);
-                content.Add(new RichBoxImage(SpriteName.WarsCityHall));
-                content.Add(new RichBoxText($"{DssRef.lang.UnitType_City}: {string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_CitySpread))}"));
+                content.Add(new RbImage(SpriteName.WarsCityHall));
+                content.Add(new RbText($"{DssRef.lang.UnitType_City}: {string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_CitySpread))}"));
                 content.space();
 
                 HudLib.InfoButton(content, new RbAction(() =>
                 {
                     RichBoxContent content = new RichBoxContent();
-                    var info = new RichBoxText(string.Format(DssRef.todoLang.Technology_CitySpread,
+                    var info = new RbText(string.Format(DssRef.todoLang.Technology_CitySpread,
                     string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_CitySpread))));
                     info.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info);
@@ -217,14 +217,14 @@ namespace VikingEngine.DSSWars.XP
             content.newLine();
             {
                 HudLib.BulletPoint(content);
-                content.Add(new RichBoxImage(LangLib.ExperienceLevelIcon(ExperienceLevel.Master_4)));
-                content.Add(new RichBoxText($"{DssRef.todoLang.ExperienceLevel_4}: {TextLib.PlusMinus(DssConst.TechnologyGain_Master)}"));
+                content.Add(new RbImage(LangLib.ExperienceLevelIcon(ExperienceLevel.Master_4)));
+                content.Add(new RbText($"{DssRef.todoLang.ExperienceLevel_4}: {TextLib.PlusMinus(DssConst.TechnologyGain_Master)}"));
                 content.space();
 
                 HudLib.InfoButton(content, new RbAction(() =>
                 {
                     RichBoxContent content = new RichBoxContent();
-                    var info = new RichBoxText(string.Format(DssRef.todoLang.Technology_ForEachMaster, DssRef.lang.ResourceType_Workers, DssRef.todoLang.ExperienceLevel_4, TextLib.PlusMinus(DssConst.TechnologyGain_Master)));
+                    var info = new RbText(string.Format(DssRef.todoLang.Technology_ForEachMaster, DssRef.lang.ResourceType_Workers, DssRef.todoLang.ExperienceLevel_4, TextLib.PlusMinus(DssConst.TechnologyGain_Master)));
                     info.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info);
 
@@ -235,7 +235,7 @@ namespace VikingEngine.DSSWars.XP
             content.newLine();
             {
                 HudLib.BulletPoint(content);
-                var info = new RichBoxText(DssRef.todoLang.Technology_CityCapture);
+                var info = new RbText(DssRef.todoLang.Technology_CityCapture);
                 info.overrideColor = HudLib.InfoYellow_Light;
                 content.Add(info);
             }
@@ -261,15 +261,15 @@ namespace VikingEngine.DSSWars.XP
 
                 var infoContent = new RichBoxContent();
 
-                infoContent.Add(new RichBoxImage(unlocked ? SpriteName.WarsTechnology_Unlocked : SpriteName.WarsTechnology_Locked));
-                infoContent.Add(new RichBoxImage(icon));
+                infoContent.Add(new RbImage(unlocked ? SpriteName.WarsTechnology_Unlocked : SpriteName.WarsTechnology_Locked));
+                infoContent.Add(new RbImage(icon));
                 infoContent.space();
                
-                var captionText = new RichBoxText(caption);
+                var captionText = new RbText(caption);
                 captionText.overrideColor = unlocked ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                 infoContent.Add(captionText);
 
-                var infoButton = new RichboxButton(infoContent, null, new RbAction(() =>
+                var infoButton = new RbButton(infoContent, null, new RbAction(() =>
                 {
                     var items = unlocks.ListItems();
                     var buildings = unlocks.ListBuildings();
@@ -280,9 +280,9 @@ namespace VikingEngine.DSSWars.XP
                     {
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RichBoxImage(Resource.ResourceLib.Icon(item)));
+                        content.Add(new RbImage(Resource.ResourceLib.Icon(item)));
                         content.space();
-                        content.Add(new RichBoxText(Display.Translation.LangLib.Item(item)));
+                        content.Add(new RbText(Display.Translation.LangLib.Item(item)));
                     }
 
                     foreach (var item in buildings)
@@ -291,9 +291,9 @@ namespace VikingEngine.DSSWars.XP
 
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RichBoxImage(opt.sprite));
+                        content.Add(new RbImage(opt.sprite));
                         content.space();
-                        content.Add(new RichBoxText(opt.Label()));
+                        content.Add(new RbText(opt.Label()));
                     }
 
                     content.newParagraph();
@@ -304,9 +304,9 @@ namespace VikingEngine.DSSWars.XP
                         LangLib.ExperienceType(xpType, out string name, out SpriteName icon);
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RichBoxImage(icon));
+                        content.Add(new RbImage(icon));
                         content.space();
-                        content.Add(new RichBoxText(name));
+                        content.Add(new RbText(name));
                     }
 
                     player.hud.tooltip.create(player, content, true);
@@ -318,7 +318,7 @@ namespace VikingEngine.DSSWars.XP
                 if (cityView && !unlocked)
                 {
                     content.space(2f);
-                    content.Add(new RichBoxText($"({value - startValue} / {TechnologyTemplate.Unlocked - startValue})"));
+                    content.Add(new RbText($"({value - startValue} / {TechnologyTemplate.Unlocked - startValue})"));
                 }
             }
         }

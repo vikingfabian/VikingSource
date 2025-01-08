@@ -13,7 +13,7 @@ namespace VikingEngine.HUD.RichBox
         {
             return new List<AbsRichBoxMember>
             {
-                new RichBoxText(text)
+                new RbText(text)
             };
         }
 
@@ -23,15 +23,15 @@ namespace VikingEngine.HUD.RichBox
             {
                 return new List<AbsRichBoxMember>
                 {
-                    new RichBoxText(text)
+                    new RbText(text)
                 };
             }
             else
             {
                 return new List<AbsRichBoxMember>
                 {
-                    new RichBoxImage(icon),
-                    new RichBoxText(text)
+                    new RbImage(icon),
+                    new RbText(text)
                 };
             }
         }
@@ -45,7 +45,7 @@ namespace VikingEngine.HUD.RichBox
 
             if (members.Count > 0)
             {
-                members.Add(new RichBoxNewLine());
+                members.Add(new RbNewLine());
             }
         }
 
@@ -57,7 +57,7 @@ namespace VikingEngine.HUD.RichBox
         virtual public void onEnter() { }
         virtual public void onClick() { }
 
-        virtual public void getButtons(List<RichboxButton> buttons)
+        virtual public void getButtons(List<RbButton> buttons)
         { }
 
         virtual public Vector2 Position => throw new NotImplementedException();
@@ -65,12 +65,12 @@ namespace VikingEngine.HUD.RichBox
         virtual public Vector2 Size => throw new NotImplementedException();
     }
 
-    class RichBoxNewLine : AbsRichBoxMember
+    class RbNewLine : AbsRichBoxMember
     {
         bool newParagraph;
         float lineheight;
 
-        public RichBoxNewLine(bool newParagraph = false, float lineheight = 1f)
+        public RbNewLine(bool newParagraph = false, float lineheight = 1f)
         {
             this.newParagraph = newParagraph;
             this.lineheight = lineheight;
@@ -82,10 +82,10 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
-    class RichBoxBeginTitle : AbsRichBoxMember
+    class RbBeginTitle : AbsRichBoxMember
     {
         int level;
-        public RichBoxBeginTitle(int level = 2)
+        public RbBeginTitle(int level = 2)
         {
             this.level = level;
         }
@@ -96,14 +96,14 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
-    class RichBoxText : AbsRichBoxMember
+    class RbText : AbsRichBoxMember
     {
         string text;
         public Text2 pointer;
         public Color? overrideColor;
         public LoadedFont? overrideFont;
 
-        public RichBoxText(string text, Color? overrideColor = null, LoadedFont? overrideFont = null)
+        public RbText(string text, Color? overrideColor = null, LoadedFont? overrideFont = null)
         {
             this.text = text;
             this.overrideColor = overrideColor;
@@ -149,11 +149,11 @@ namespace VikingEngine.HUD.RichBox
 
     
 
-    class RichboxIntDisplay : RichBoxText
+    class RbDisplay : RbText
     {
         IntGetSetIx property;
         int propertyIx;
-        public RichboxIntDisplay(IntGetSetIx property, int propertyIx)
+        public RbDisplay(IntGetSetIx property, int propertyIx)
             : base(property(propertyIx,false, 0).ToString())
         { 
             this.property = property;
@@ -226,13 +226,13 @@ namespace VikingEngine.HUD.RichBox
        
     }
 
-    class RichBoxImage : AbsRichBoxImage
+    class RbImage : AbsRichBoxImage
     {
         SpriteName sprite;
         public Color? color;
         public Image pointer;
 
-        public RichBoxImage(SpriteName sprite, float scale = 1f, float addLeftSpace = 0, float addRightSpace = 0)
+        public RbImage(SpriteName sprite, float scale = 1f, float addLeftSpace = 0, float addRightSpace = 0)
             : base(scale, addLeftSpace, addRightSpace)
         {
             this.sprite = sprite;
@@ -260,7 +260,7 @@ namespace VikingEngine.HUD.RichBox
         public override Vector2 Size => pointer.size;
     }
 
-    class RichBoxOverlapImage : AbsRichBoxImage
+    class RbOverlapImage : AbsRichBoxImage
     {
         SpriteName sprite;
         public Color? color;
@@ -269,7 +269,7 @@ namespace VikingEngine.HUD.RichBox
         AbsRichBoxImage masterImage;
         Vector2 percOffset;
 
-        public RichBoxOverlapImage(AbsRichBoxImage masterImage, 
+        public RbOverlapImage(AbsRichBoxImage masterImage, 
             SpriteName sprite, Vector2 percOffset, float scale = 1f)
             : base(scale, 0, 0)
         {
@@ -309,7 +309,7 @@ namespace VikingEngine.HUD.RichBox
         public override Vector2 Size =>masterImage.Size;
     }
 
-    class RichBoxOverlapText : AbsRichBoxMember
+    class RbOverlapText : AbsRichBoxMember
     {
         string text;
         public Text2 pointer;
@@ -319,7 +319,7 @@ namespace VikingEngine.HUD.RichBox
         Vector2 percPosition; 
         float scale;
         Vector2 origo;
-        public RichBoxOverlapText(AbsRichBoxMember overMember, string text, Vector2 percPosition, float scale, Vector2 origo, Color? overrideColor = null, LoadedFont? overrideFont = null)
+        public RbOverlapText(AbsRichBoxMember overMember, string text, Vector2 percPosition, float scale, Vector2 origo, Color? overrideColor = null, LoadedFont? overrideFont = null)
         {
             this.origo = origo;
             this.percPosition = percPosition;
@@ -371,12 +371,12 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
-    class RichBoxTexture : AbsRichBoxImage
+    class RbTexture : AbsRichBoxImage
     {
         Texture2D tex;
         public ImageAdvanced pointer;
 
-        public RichBoxTexture(Texture2D tex, float scale = 1f, float addLeftSpace = 0, float addRightSpace = 0)
+        public RbTexture(Texture2D tex, float scale = 1f, float addLeftSpace = 0, float addRightSpace = 0)
             : base(scale, addLeftSpace, addRightSpace)
         {
             this.tex = tex;
@@ -430,11 +430,11 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
-    class RichBoxTab : AbsRichBoxMember
+    class RbTab : AbsRichBoxMember
     {
         float percX;
 
-        public RichBoxTab(float percX = 0.5f)
+        public RbTab(float percX = 0.5f)
         {
             this.percX = percX;
         }
@@ -453,10 +453,10 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
-    class RichBoxSeperationLine : AbsRichBoxMember
+    class RbSeperationLine : AbsRichBoxMember
     {
         public Image pointer;
-        public RichBoxSeperationLine()
+        public RbSeperationLine()
         { }
 
         public override void Create(RichBoxGroup group)

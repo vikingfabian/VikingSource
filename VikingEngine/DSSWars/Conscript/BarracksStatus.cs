@@ -258,34 +258,34 @@ namespace VikingEngine.DSSWars.Conscript
 
             bool available = hasWeapons && hasArmor && hasMen;
 
-            content.Add(new RichBoxImage(available ? SpriteName.warsResourceChunkAvailable : SpriteName.warsResourceChunkNotAvailable));
+            content.Add(new RbImage(available ? SpriteName.warsResourceChunkAvailable : SpriteName.warsResourceChunkNotAvailable));
             content.space(0.5f);
-            content.Add(new RichBoxImage(
+            content.Add(new RbImage(
                             new SoldierConscriptProfile() { conscript = profile }.Icon()
                             ));
             //ItemResourceType weaponitem = ConscriptProfile.WeaponItem(profile.weapon);
-            content.Add(new RichBoxImage(ResourceLib.Icon(weaponItem)));
+            content.Add(new RbImage(ResourceLib.Icon(weaponItem)));
 
             if (profile.armorLevel != ItemResourceType.NONE)
             {
                 //ItemResourceType armoritem = ConscriptProfile.ArmorItem(profile.armorLevel);
-                content.Add(new RichBoxImage(ResourceLib.Icon(armorItem)));
+                content.Add(new RbImage(ResourceLib.Icon(armorItem)));
             }
-            content.Add(new RichBoxImage((SpriteName)((int)SpriteName.WarsUnitLevelMinimal + (int)profile.training)));
+            content.Add(new RbImage((SpriteName)((int)SpriteName.WarsUnitLevelMinimal + (int)profile.training)));
 
             content.newLine();
-            content.Add(new RichBoxImage(player.input.Stop.Icon));
+            content.Add(new RbImage(player.input.Stop.Icon));
             content.space(0.5f);
-            content.Add(new RichBoxText(shortActiveString()));
+            content.Add(new RbText(shortActiveString()));
 
             content.newLine();
-            content.Add(new RichBoxImage(player.input.Copy.Icon));
+            content.Add(new RbImage(player.input.Copy.Icon));
             content.space(0.5f);
-            content.Add(new RichBoxText(DssRef.lang.Hud_CopySetup));
+            content.Add(new RbText(DssRef.lang.Hud_CopySetup));
             content.space(2);
-            content.Add(new RichBoxImage(player.input.Paste.Icon));
+            content.Add(new RbImage(player.input.Paste.Icon));
             content.space(0.5f);
-            content.Add(new RichBoxText(DssRef.lang.Hud_Paste));
+            content.Add(new RbText(DssRef.lang.Hud_Paste));
         }
     }
 }

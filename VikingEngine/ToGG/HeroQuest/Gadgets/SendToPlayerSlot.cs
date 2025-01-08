@@ -29,7 +29,7 @@ namespace VikingEngine.ToGG.HeroQuest.Gadgets
             base.createToolTip();
 
             var richbox = new List<AbsRichBoxMember>{
-                new RichBoxText("Give items to " + slot.player.HeroUnit.data.Name),
+                new RbText("Give items to " + slot.player.HeroUnit.data.Name),
             };
 
             HudLib.AddTooltipText(tooltip, richbox,

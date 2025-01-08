@@ -1638,7 +1638,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void TypeIcon(RichBoxContent content)
         {
-            content.Add(new RichBoxImage( SpriteName.WarsCityHall));
+            content.Add(new RbImage( SpriteName.WarsCityHall));
             tagToHud(content);
         }
 
@@ -1666,14 +1666,14 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (minimal)
             {
-                content.Add(new RichBoxImage(SpriteName.WarsWorker));
-                content.Add(new RichBoxText(TextLib.LargeNumber(workForce.amount)));
+                content.Add(new RbImage(SpriteName.WarsWorker));
+                content.Add(new RbText(TextLib.LargeNumber(workForce.amount)));
                 content.space();
-                content.Add(new RichBoxImage(SpriteName.WarsGuard));
-                content.Add(new RichBoxText(TextLib.Divition_Large(guardCount, maxGuardSize)));
+                content.Add(new RbImage(SpriteName.WarsGuard));
+                content.Add(new RbText(TextLib.Divition_Large(guardCount, maxGuardSize)));
                 content.space();
-                content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
-                content.Add(new RichBoxText(TextLib.OneDecimal(strengthValue)));
+                content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+                content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
             }
             else
             {
@@ -1690,8 +1690,8 @@ namespace VikingEngine.DSSWars.GameObject
                         content.newLine();
                     }
 
-                    content.Add(new RichboxCheckbox(new List<AbsRichBoxMember> {
-                        new RichBoxText(DssRef.todoLang.Automation_AutomateCity)
+                    content.Add(new RbCheckbox(new List<AbsRichBoxMember> {
+                        new RbText(DssRef.todoLang.Automation_AutomateCity)
                     }, AutomateCityProperty));
 
                     if (automateCity)
@@ -1719,9 +1719,9 @@ namespace VikingEngine.DSSWars.GameObject
                                     break;
                             }
 
-                            var button = new RichboxButton(new List<AbsRichBoxMember>
+                            var button = new RbButton(new List<AbsRichBoxMember>
                             {
-                                new RichBoxText(caption),
+                                new RbText(caption),
                             },
                             new RbAction(() =>
                             {
@@ -1733,7 +1733,7 @@ namespace VikingEngine.DSSWars.GameObject
                             content.space();
                         }
 
-                        content.Add(new RichBoxSeperationLine());
+                        content.Add(new RbSeperationLine());
                         
                     }
                 }
@@ -1782,8 +1782,8 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RichBoxImage(SpriteName.WarsFactoryIcon));
-                        content.Add(new RichBoxText(DssRef.lang.Building_DarkFactory));
+                        content.Add(new RbImage(SpriteName.WarsFactoryIcon));
+                        content.Add(new RbText(DssRef.lang.Building_DarkFactory));
 
                     }
                 }

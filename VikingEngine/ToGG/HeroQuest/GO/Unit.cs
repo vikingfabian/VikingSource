@@ -715,14 +715,14 @@ namespace VikingEngine.ToGG.HeroQuest
 
         void valuebarToRichbox(ValueBar value, AbsValuebarTooltip tooltip, List<HUD.RichBox.AbsRichBoxMember> richBox)
         {
-            richBox.Add(new HUD.RichBox.RichBoxText(value.BarText(false)));
+            richBox.Add(new HUD.RichBox.RbText(value.BarText(false)));
 
             for (int i = 0; i < value.maxValue; ++i)
             {
                 bool available = i < value.Value;
                 SpriteName sprite = available ? tooltip.Icon : tooltip.IconGrayed;
 
-                richBox.Add(new HUD.RichBox.RichBoxImage(sprite));
+                richBox.Add(new HUD.RichBox.RbImage(sprite));
             }
         }
 

@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.HUD.RichBox
 {
-    class RichboxCheckbox: RichboxButton
+    class RbCheckbox: RbButton
     {
         BoolGetSet property;
-        RichBoxImage checkImage = null;
+        RbImage checkImage = null;
         SpriteName checkOn, checkOff;
-        public RichboxCheckbox(List<AbsRichBoxMember> content, BoolGetSet property) 
+        public RbCheckbox(List<AbsRichBoxMember> content, BoolGetSet property) 
         {
             this.content = content;
             this.property = property;
@@ -38,7 +38,7 @@ namespace VikingEngine.HUD.RichBox
             {
                 bool value = property.Invoke(0, false, false);
 
-                checkImage = new RichBoxImage(value ? checkOn : checkOff);
+                checkImage = new RbImage(value ? checkOn : checkOff);
                 checkImage.Create(group);
                 group.position.X += 4;
             }

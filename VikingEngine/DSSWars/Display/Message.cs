@@ -65,10 +65,10 @@ namespace VikingEngine.DSSWars.Display
 
         public void Title(RichBoxContent content, string title)
         {
-            content.Add(new RichBoxBeginTitle(2));
-            content.Add(new RichBoxImage(SpriteName.cmdWarningTriangle));
+            content.Add(new RbBeginTitle(2));
+            content.Add(new RbImage(SpriteName.cmdWarningTriangle));
             content.space();
-            content.Add(new RichBoxText(title, Color.Yellow));
+            content.Add(new RbText(title, Color.Yellow));
             content.newLine();
         }
 
@@ -95,9 +95,9 @@ namespace VikingEngine.DSSWars.Display
 
                 var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
                 ControllerInputIcons(gotoBattleButtonContent);
-                gotoBattleButtonContent.Add(new RichBoxText(city.TypeName()));
+                gotoBattleButtonContent.Add(new RbText(city.TypeName()));
 
-                content.Add(new RichboxButton(gotoBattleButtonContent,
+                content.Add(new RbButton(gotoBattleButtonContent,
                     new RbAction1Arg<AbsGameObject>(goToMapObject, city, SoundLib.menu)));
 
                 Add(content);
@@ -118,9 +118,9 @@ namespace VikingEngine.DSSWars.Display
 
                 var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
                 ControllerInputIcons(gotoBattleButtonContent);
-                gotoBattleButtonContent.Add(new RichBoxText(army.TypeName()));
+                gotoBattleButtonContent.Add(new RbText(army.TypeName()));
 
-                content.Add(new RichboxButton(gotoBattleButtonContent,
+                content.Add(new RbButton(gotoBattleButtonContent,
                     new RbAction1Arg<AbsGameObject>(goToMapObject, army, SoundLib.menu)));
 
                 Add(content);

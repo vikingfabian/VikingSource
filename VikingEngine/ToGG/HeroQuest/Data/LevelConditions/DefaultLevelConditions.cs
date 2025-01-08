@@ -100,34 +100,34 @@ namespace VikingEngine.ToGG.HeroQuest.Data
         {
             return new List<AbsRichBoxMember>
             {
-                new RichBoxText("Not set"),
+                new RbText("Not set"),
             };
         }
 
         protected void flavorText(List<AbsRichBoxMember> rb, string text)
         {
-            rb.Add(new RichBoxText(text, FlavorTextColor));
-            rb.Add(new RichBoxNewLine(true));
+            rb.Add(new RbText(text, FlavorTextColor));
+            rb.Add(new RbNewLine(true));
         }
 
         protected void missionObjectivesTitle(List<AbsRichBoxMember> rb)
         {
-            rb.Add(new RichBoxBeginTitle());
-            rb.Add(new RichBoxText("Mission objectives"));
-            rb.Add(new RichBoxNewLine());
+            rb.Add(new RbBeginTitle());
+            rb.Add(new RbText("Mission objectives"));
+            rb.Add(new RbNewLine());
         }
 
         protected void specialConditionsTitle(List<AbsRichBoxMember> rb)
         {
-            rb.Add(new RichBoxBeginTitle());
-            rb.Add(new RichBoxText("Special conditions"));
-            rb.Add(new RichBoxNewLine());
+            rb.Add(new RbBeginTitle());
+            rb.Add(new RbText("Special conditions"));
+            rb.Add(new RbNewLine());
         }
 
         protected void turnLimitText(List<AbsRichBoxMember> rb)
         {
-            rb.Add(new RichBoxBeginTitle());
-            rb.Add(new RichBoxText("Turn: " + HeroTurnCount.ToString() + "/" + TimeLimit.ToString()));
+            rb.Add(new RbBeginTitle());
+            rb.Add(new RbText("Turn: " + HeroTurnCount.ToString() + "/" + TimeLimit.ToString()));
         }
 
         virtual public void environmentSpawn(MapGen.SpawnManager spawnManager)

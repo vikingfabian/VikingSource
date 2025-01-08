@@ -125,7 +125,7 @@ namespace VikingEngine.DSSWars.Build
         {
             content.newLine();
 
-            content.Add(new RichBoxImage(SpriteName.WarsWorkMine));
+            content.Add(new RbImage(SpriteName.WarsWorkMine));
             content.space();
 
             int totalCount = 0;
@@ -144,7 +144,7 @@ namespace VikingEngine.DSSWars.Build
 
             if (totalCount == 0)
             {
-                content.Add(new RichBoxText(DssRef.lang.Hud_EmptyList));
+                content.Add(new RbText(DssRef.lang.Hud_EmptyList));
             }
 
 
@@ -157,20 +157,20 @@ namespace VikingEngine.DSSWars.Build
                     string resourceName = LangLib.Item(resource);
                     var infoContent = new RichBoxContent();
 
-                    infoContent.Add(new RichBoxImage(icon));
+                    infoContent.Add(new RbImage(icon));
                     infoContent.space();
-                    var countText = new RichBoxText(count.ToString());
+                    var countText = new RbText(count.ToString());
                     countText.overrideColor = Color.White;
                     infoContent.Add(countText); 
 
-                    var infoButton = new RichboxButton(infoContent, null, new RbAction(() =>
+                    var infoButton = new RbButton(infoContent, null, new RbAction(() =>
                     {
                         RichBoxContent content = new RichBoxContent();
 
-                        content.Add(new RichBoxImage(icon));
+                        content.Add(new RbImage(icon));
                         content.space();
                         var mineString = string.Format(DssRef.lang.BuildingType_ResourceMine, resourceName);
-                        content.Add(new RichBoxText(TextLib.LargeFirstLetter( string.Format(DssRef.lang.Language_XCountIsY, mineString, count))));
+                        content.Add(new RbText(TextLib.LargeFirstLetter( string.Format(DssRef.lang.Language_XCountIsY, mineString, count))));
 
 
                         player.hud.tooltip.create(player, content, true);

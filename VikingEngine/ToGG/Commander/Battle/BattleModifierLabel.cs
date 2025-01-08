@@ -30,19 +30,19 @@ namespace VikingEngine.ToGG.Commander.Battle
 
             if (icon != SpriteName.NO_IMAGE)
             {
-                content.Add(new RichBoxImage(icon));
-                content.Add(new RichBoxText(name));
+                content.Add(new RbImage(icon));
+                content.Add(new RbText(name));
             }
             else
             {
-                content.Add(new RichBoxText(name));
+                content.Add(new RbText(name));
             }
         }
 
         public void SourceDescription(string desc)
         {
             content.newLine();
-            content.Add(new RichBoxText(desc));
+            content.Add(new RbText(desc));
         }
 
         public void SourceCommand(CommandCard.CommandType type)
@@ -51,23 +51,23 @@ namespace VikingEngine.ToGG.Commander.Battle
             var img = CommandCard.AbsCommandCard.CardImage(type);
             var text = CommandCard.AbsCommandCard.Name(type, ArmyScale.Standard, ArmyRace.NUM_NON);
 
-            content.Add(new RichBoxImage(img));
-            content.Add(new RichBoxText("Command - " + text));
+            content.Add(new RbImage(img));
+            content.Add(new RbText("Command - " + text));
         }
 
         public void Arrow()
         {
-            content.Add(new RichBoxImage(SpriteName.cmdConvertArrow, 0.6f));
+            content.Add(new RbImage(SpriteName.cmdConvertArrow, 0.6f));
         }
 
         public void ResultBlock()
         {
-            content.Add(new RichBoxImage(SpriteName.cmdArmorResult));
+            content.Add(new RbImage(SpriteName.cmdArmorResult));
         }
 
         public void ResultIgnoreRetreat()
         {
-            content.Add(new RichBoxImage(SpriteName.cmdIgnoreRetreat));
+            content.Add(new RbImage(SpriteName.cmdIgnoreRetreat));
         }
 
         //public void ResultAttackDice(int add)
@@ -77,47 +77,47 @@ namespace VikingEngine.ToGG.Commander.Battle
 
         public void ResultAttackModifier(int diceModifier)
         {
-            content.Add(new RichBoxText(TextLib.ValuePlusMinus(diceModifier)));
-            content.Add(new RichBoxImage(SpriteName.cmdDiceMelee));
+            content.Add(new RbText(TextLib.ValuePlusMinus(diceModifier)));
+            content.Add(new RbImage(SpriteName.cmdDiceMelee));
         }
         public void ResultAttackReducedTo(int maxAttack)
         {
-            content.Add(new RichBoxText("=" + maxAttack.ToString()));
-            content.Add(new RichBoxImage(SpriteName.cmdDiceMelee));
+            content.Add(new RbText("=" + maxAttack.ToString()));
+            content.Add(new RbImage(SpriteName.cmdDiceMelee));
         }
 
         public void ResultSetHitChance(float hitChance)
         {
-            content.Add(new RichBoxText("=" + TextLib.PercentText(hitChance)));
-            content.Add(new RichBoxImage(BattleDice.ResultIcon(BattleDiceResult.Hit1)));
+            content.Add(new RbText("=" + TextLib.PercentText(hitChance)));
+            content.Add(new RbImage(BattleDice.ResultIcon(BattleDiceResult.Hit1)));
         }
 
         public void ResultSetRetreatChance(float chance)
         {
-            content.Add(new RichBoxText("=" + TextLib.PercentText(chance)));
-            content.Add(new RichBoxImage(BattleDice.ResultIcon(BattleDiceResult.Retreat)));
+            content.Add(new RbText("=" + TextLib.PercentText(chance)));
+            content.Add(new RbImage(BattleDice.ResultIcon(BattleDiceResult.Retreat)));
         }
 
         public void ResultAddHitChance(float add)
         {
-            content.Add(new RichBoxText(TextLib.PercentAddText(add)));
-            content.Add(new RichBoxImage(BattleDice.ResultIcon(BattleDiceResult.Hit1)));
+            content.Add(new RbText(TextLib.PercentAddText(add)));
+            content.Add(new RbImage(BattleDice.ResultIcon(BattleDiceResult.Hit1)));
         }
 
         public void ResultAddRetreatChance(float add)
         {
-            content.Add(new RichBoxText(TextLib.PercentAddText(add)));
-            content.Add(new RichBoxImage(BattleDice.ResultIcon(BattleDiceResult.Retreat)));
+            content.Add(new RbText(TextLib.PercentAddText(add)));
+            content.Add(new RbImage(BattleDice.ResultIcon(BattleDiceResult.Retreat)));
         }
 
         public void icon(SpriteName sprite)
         {
-            content.Add(new RichBoxImage(sprite));
+            content.Add(new RbImage(sprite));
         }
 
         public void text(string text)
         {
-            content.Add(new RichBoxText(text));
+            content.Add(new RbText(text));
         }
 
         public bool HasContent => content.Count > 0;

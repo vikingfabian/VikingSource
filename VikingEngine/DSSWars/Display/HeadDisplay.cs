@@ -38,18 +38,18 @@ namespace VikingEngine.DSSWars.Display
                     {
                         if (player.input.inputSource.IsController)
                         {
-                            content.Add(new HUD.RichBox.RichBoxImage(player.input.ControllerFocus.Icon));
-                            content.Add(new HUD.RichBox.RichBoxText(":"));
+                            content.Add(new HUD.RichBox.RbImage(player.input.ControllerFocus.Icon));
+                            content.Add(new HUD.RichBox.RbText(":"));
                             content.newLine();
                         }
 
                         content.newLine();
                         int tabSel = 0;
 
-                        var tabs = new List<RichboxTabMember>((int)MenuTab.NUM);
+                        var tabs = new List<RbTabMember>((int)MenuTab.NUM);
                         for (int i = 0; i < Tabs.Length; ++i)
                         {
-                            var text = new RichBoxText(LangLib.Tab(Tabs[i], out string description));
+                            var text = new RbText(LangLib.Tab(Tabs[i], out string description));
                             text.overrideColor = HudLib.RbSettings.tabSelected.Color;
 
                             AbsRbAction enter = null;
@@ -64,7 +64,7 @@ namespace VikingEngine.DSSWars.Display
                                 });
                             }
 
-                            tabs.Add(new RichboxTabMember(new List<AbsRichBoxMember>
+                            tabs.Add(new RbTabMember(new List<AbsRichBoxMember>
                         {
                             text
                         }, enter));
@@ -75,7 +75,7 @@ namespace VikingEngine.DSSWars.Display
                             }
                         }
 
-                        content.Add(new RichboxTabgroup(tabs, tabSel, player.factionTabClick, null, SoundLib.menutab, null, null));
+                        content.Add(new RbTabgroup(tabs, tabSel, player.factionTabClick, null, SoundLib.menutab, null, null));
 
                         switch (player.factionTab)
                         {
@@ -125,39 +125,39 @@ namespace VikingEngine.DSSWars.Display
 
             void toggleMenu()
             {
-                content.Add(new RichBoxImage(player.input.ToggleHudDetail.Icon));
-                content.Add(new RichBoxImage(SpriteName.pjMenuIcon));
+                content.Add(new RbImage(player.input.ToggleHudDetail.Icon));
+                content.Add(new RbImage(SpriteName.pjMenuIcon));
             }
 
             void input(Input.IButtonMap button, string text)
             {
-                content.Add(new RichBoxImage(button.Icon));
+                content.Add(new RbImage(button.Icon));
                 content.Add(new RichBoxSpace());
-                content.Add(new RichBoxText(text));
+                content.Add(new RbText(text));
 
-                content.Add(new RichBoxNewLine());
+                content.Add(new RbNewLine());
             }
 
             void flagTexture()
             {
-                content.Add(new RichBoxTexture(faction.flagTexture, 1f, 0, 0.2f));
+                content.Add(new RbTexture(faction.flagTexture, 1f, 0, 0.2f));
             }
 
             void gold()
             {
-                content.Add(new RichBoxImage(SpriteName.rtsMoney));
+                content.Add(new RbImage(SpriteName.rtsMoney));
                 content.space();
-                content.Add(new RichBoxText(DssRef.lang.ResourceType_Gold + ": " + TextLib.LargeNumber(faction.gold), HudLib.NegativeRed(faction.gold)));
-                content.Add(new RichBoxNewLine());
+                content.Add(new RbText(DssRef.lang.ResourceType_Gold + ": " + TextLib.LargeNumber(faction.gold), HudLib.NegativeRed(faction.gold)));
+                content.Add(new RbNewLine());
             }
 
             void compressedGoldAndIncome()
             {
-                content.Add(new RichBoxImage(SpriteName.rtsMoney));
-                content.Add(new RichBoxText(TextLib.LargeNumber(faction.gold), HudLib.NegativeRed(faction.gold)));
+                content.Add(new RbImage(SpriteName.rtsMoney));
+                content.Add(new RbText(TextLib.LargeNumber(faction.gold), HudLib.NegativeRed(faction.gold)));
                 content.space();
-                content.Add(new RichBoxImage(SpriteName.rtsIncomeTime));
-                content.Add(new RichBoxText(TextLib.LargeNumber(faction.MoneySecDiff()), HudLib.NegativeRed(faction.MoneySecDiff())));
+                content.Add(new RbImage(SpriteName.rtsIncomeTime));
+                content.Add(new RbText(TextLib.LargeNumber(faction.MoneySecDiff()), HudLib.NegativeRed(faction.MoneySecDiff())));
                 
             }
 
@@ -165,31 +165,31 @@ namespace VikingEngine.DSSWars.Display
             {
                 if (DssRef.difficulty.setting_allowPauseCommand)
                 {
-                    var button = new RichboxButton(new List<AbsRichBoxMember>
+                    var button = new RbButton(new List<AbsRichBoxMember>
                     {
-                        new RichBoxImage(player.input.PauseGame.Icon),
-                        new RichBoxText(Ref.isPaused? DssRef.lang.Input_ResumePaused : DssRef.lang.Input_Pause),
+                        new RbImage(player.input.PauseGame.Icon),
+                        new RbText(Ref.isPaused? DssRef.lang.Input_ResumePaused : DssRef.lang.Input_Pause),
                     },
                     new RbAction(DssRef.state.pauseAction),
                     null);
                     button.setGroupSelectionColor(HudLib.RbSettings, Ref.isPaused);
                     content.Add(button);
 
-                    content.Add(new RichBoxNewLine());
+                    content.Add(new RbNewLine());
                 }
             }
 
             void gameMenuButton()
             {
-                content.Add(new RichboxButton(new List<AbsRichBoxMember>
+                content.Add(new RbButton(new List<AbsRichBoxMember>
                     {
-                        new RichBoxImage(player.input.Menu.Icon),
-                        new RichBoxText(DssRef.lang.GameMenu_Title),
+                        new RbImage(player.input.Menu.Icon),
+                        new RbText(DssRef.lang.GameMenu_Title),
                     },
                     new RbAction(DssRef.state.menuSystem.pauseMenu),
                     null));
 
-                content.Add(new RichBoxNewLine());
+                content.Add(new RbNewLine());
             }
 
 
@@ -200,7 +200,7 @@ namespace VikingEngine.DSSWars.Display
                 {
                     flagTexture();
                     compressedGoldAndIncome();
-                    content.Add(new RichBoxTab(0.8f));
+                    content.Add(new RbTab(0.8f));
                     toggleMenu();
                     return;
                 }
@@ -209,18 +209,18 @@ namespace VikingEngine.DSSWars.Display
                 this.fullDisplay = fullDisplay;
 
 
-                content.Add(new RichBoxBeginTitle(2));
+                content.Add(new RbBeginTitle(2));
                 flagTexture();
-                content.Add(new RichBoxText(faction.PlayerName));
-                content.Add(new RichBoxNewLine());
+                content.Add(new RbText(faction.PlayerName));
+                content.Add(new RbNewLine());
 
                 if (fullDisplay)
                 {
                     gold();
 
-                    content.Add(new RichBoxImage(SpriteName.rtsIncomeTime));
+                    content.Add(new RbImage(SpriteName.rtsIncomeTime));
                     content.space();
-                    content.Add(new RichBoxText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(faction.MoneySecDiff())),
+                    content.Add(new RbText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(faction.MoneySecDiff())),
                             HudLib.NegativeRed(faction.MoneySecDiff())));
                     content.newLine();
                 }
@@ -245,8 +245,8 @@ namespace VikingEngine.DSSWars.Display
                         {
                             for (int i = 0; i < player.GameSpeedOptions.Length; i++)
                             {
-                                var button = new RichboxButton(
-                                     new List<AbsRichBoxMember> { new RichBoxText(string.Format(DssRef.lang.Hud_XTimes, player.GameSpeedOptions[i])) },
+                                var button = new RbButton(
+                                     new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_XTimes, player.GameSpeedOptions[i])) },
                                      new RbAction1Arg<int>(gameSpeedClick, player.GameSpeedOptions[i]), null, true);
                                 button.setGroupSelectionColor(HudLib.RbSettings, Ref.TargetGameTimeSpeed == player.GameSpeedOptions[i]);
                                 content.Add(button);
@@ -317,17 +317,17 @@ namespace VikingEngine.DSSWars.Display
                         RichBoxContent content = new RichBoxContent();
                         content.h2(TextLib.LargeFirstLetter(DssRef.lang.ResourceType_DiplomacyPoints)).overrideColor = HudLib.TitleColor_Label;
                         content.newLine();
-                        content.Add(new RichBoxImage(SpriteName.WarsDiplomaticPoint));
+                        content.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
                         content.space();
-                        content.Add(new RichBoxText(string.Format(DssRef.lang.Resource_CurrentAmount, player.diplomaticPoints.Int())));
+                        content.Add(new RbText(string.Format(DssRef.lang.Resource_CurrentAmount, player.diplomaticPoints.Int())));
 
                         content.text(string.Format(DssRef.lang.Resource_MaxAmount_Soft, player.diplomaticPoints_softMax));
                         content.text(string.Format(DssRef.lang.Resource_MaxAmount, player.diplomaticPoints.max));
 
                         content.newLine();
-                        content.Add(new RichBoxImage(SpriteName.WarsDiplomaticAddTime));
+                        content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
                         content.space();
-                        content.Add(new RichBoxText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.ThreeDecimal(player.diplomacyAddPerSec_CapIncluded()))));
+                        content.Add(new RbText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.ThreeDecimal(player.diplomacyAddPerSec_CapIncluded()))));
 
                         player.hud.tooltip.create(player, content, true);
                     }));
@@ -335,7 +335,7 @@ namespace VikingEngine.DSSWars.Display
                     //string command = "Command points: {0}";
                     //content.icontext(SpriteName.WarsCommandPoint, string.Format(command, player.commandPoints.ToString()));
 
-                    content.Add(new RichBoxNewLine(true));
+                    content.Add(new RbNewLine(true));
 
                     //if (player.hud.detailLevel == HudDetailLevel.Extended)
                     //{
@@ -488,15 +488,15 @@ namespace VikingEngine.DSSWars.Display
             else
             {
                 content.newLine();
-                content.Add(new RichBoxImage(SpriteName.WarsWorker));
+                content.Add(new RbImage(SpriteName.WarsWorker));
                 content.space();
-                content.Add(new RichBoxText(TextLib.LargeNumber(faction.totalWorkForce)));
+                content.Add(new RbText(TextLib.LargeNumber(faction.totalWorkForce)));
 
                 content.space(2);
 
-                content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
+                content.Add(new RbImage(SpriteName.WarsStrengthIcon));
                 content.space();
-                content.Add(new RichBoxText(TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
+                content.Add(new RbText(TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
             }
             content.newLine();
         }

@@ -299,7 +299,7 @@ namespace VikingEngine.DSSWars
                     map.getset(input, ref button, false);
                     List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>(6)
                     {
-                        new RichBoxText(map.Name(input) + ": "),
+                        new RbText(map.Name(input) + ": "),
                     };
                     RichBoxContent.ButtonMap(button, buttonContent);
                     new GuiRichButton(HudLib.RbOnGuiSettings, buttonContent, null,

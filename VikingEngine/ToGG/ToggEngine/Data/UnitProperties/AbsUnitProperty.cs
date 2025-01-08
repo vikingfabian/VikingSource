@@ -440,12 +440,12 @@ namespace VikingEngine.ToGG.Data.Property
             var display = new List<AbsRichBoxMember>(surgeOption.surgeCost + 3);
             for (int i = 0; i < surgeOption.surgeCost; ++i)
             {
-                display.Add(new RichBoxImage(SpriteName.cmdIconSurgeSmall, 1f, -0.2f, -0.2f));
+                display.Add(new RbImage(SpriteName.cmdIconSurgeSmall, 1f, -0.2f, -0.2f));
             }
 
-            display.Add(new RichBoxImage(SpriteName.cmdConvertArrow, 0.6f));
-            display.Add(new RichBoxImage(surgeOption.Icon));
-            display.Add(new RichBoxText(surgeOption.Name));
+            display.Add(new RbImage(SpriteName.cmdConvertArrow, 0.6f));
+            display.Add(new RbImage(surgeOption.Icon));
+            display.Add(new RbText(surgeOption.Name));
 
             return display;
         }

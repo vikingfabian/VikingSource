@@ -94,12 +94,12 @@ namespace VikingEngine.DSSWars.Profile
                     colorTypes();
 
                     content.newParagraph();
-                    var undoContent = new List<AbsRichBoxMember> { new RichBoxText(DssRef.lang.Hud_Undo) };
-                    content.Add(new RichboxButton(undoContent, new RbAction(state.undo), null, state.undoHistory.Count > 1));
+                    var undoContent = new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_Undo) };
+                    content.Add(new RbButton(undoContent, new RbAction(state.undo), null, state.undoHistory.Count > 1));
                     content.space();
 
-                    var redoContent = new List<AbsRichBoxMember> { new RichBoxText(DssRef.lang.Hud_Redo) };
-                    content.Add(new RichboxButton(redoContent, new RbAction(state.redo), null, state.redoHistory.Count > 0));
+                    var redoContent = new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_Redo) };
+                    content.Add(new RbButton(redoContent, new RbAction(state.redo), null, state.redoHistory.Count > 0));
                     content.newParagraph();
                     if (state.controllerMode)
                     {
@@ -159,19 +159,19 @@ namespace VikingEngine.DSSWars.Profile
         {
             content.text(PaintFlagState.ProfileColorName(colorType));
             content.newLine();
-            var color = new RichBoxImage(SpriteName.WhiteArea);
+            var color = new RbImage(SpriteName.WhiteArea);
             color.color = state.profile.getColor(colorType);
-            content.Add(new RichboxButton(
+            content.Add(new RbButton(
                 new List<AbsRichBoxMember>
                 {
-                    new RichBoxImage(SpriteName.EditorToolPencil),
+                    new RbImage(SpriteName.EditorToolPencil),
                     color,
                 },
                 new RbAction1Arg<ProfileColorType>(selectColorType, colorType), null, true));
 
             if (state.selectedColorType == colorType)
             {
-                content.Add(new RichBoxImage(SpriteName.LfNpcSpeechArrow));
+                content.Add(new RbImage(SpriteName.LfNpcSpeechArrow));
             }
             content.newLine();
         }
@@ -180,19 +180,19 @@ namespace VikingEngine.DSSWars.Profile
         {
             content.text(PaintFlagState.ProfileColorName(colorType));
             content.newLine();
-            var color = new RichBoxImage(SpriteName.WhiteArea);
+            var color = new RbImage(SpriteName.WhiteArea);
             color.color = state.profile.getColor(colorType);
-            content.Add(new RichboxButton(
+            content.Add(new RbButton(
                 new List<AbsRichBoxMember>
                 {
-                    new RichBoxImage(SpriteName.IconColorPick),
+                    new RbImage(SpriteName.IconColorPick),
                     color,
                 },
                 new RbAction1Arg<ProfileColorType>(selectColorType, colorType), null, true));
 
             if (state.selectedColorType == colorType)
             {
-                content.Add(new RichBoxImage(SpriteName.LfNpcSpeechArrow));
+                content.Add(new RbImage(SpriteName.LfNpcSpeechArrow));
             }
 
             content.newLine();

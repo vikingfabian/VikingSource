@@ -281,9 +281,9 @@ namespace VikingEngine.DSSWars.Delivery
                     HudLib.ResourceCost(content, ItemResourceType.Gold, profile.SendAmount, city.gold);
                     break;
                 case DeliveryType_Resource:
-                    content.Add(new RichBoxImage(SpriteName.AutomationGearIcon));
+                    content.Add(new RbImage(SpriteName.AutomationGearIcon));
                     content.space();
-                    content.Add(new RichBoxText(DssRef.lang.Automation_Title));
+                    content.Add(new RbText(DssRef.lang.Automation_Title));
                     break;
                 default:
                     HudLib.ResourceCost(content, profile.type, DssConst.SoldierGroup_DefaultCount, city.GetGroupedResource(profile.type).amount);
@@ -293,18 +293,18 @@ namespace VikingEngine.DSSWars.Delivery
 
 
             content.newLine();
-            content.Add(new RichBoxImage(player.input.Stop.Icon));
+            content.Add(new RbImage(player.input.Stop.Icon));
             content.space(0.5f);
-            content.Add(new RichBoxText(shortActiveString()));
+            content.Add(new RbText(shortActiveString()));
 
             content.newLine();
-            content.Add(new RichBoxImage(player.input.Copy.Icon));
+            content.Add(new RbImage(player.input.Copy.Icon));
             content.space(0.5f);
-            content.Add(new RichBoxText(DssRef.lang.Hud_CopySetup));
+            content.Add(new RbText(DssRef.lang.Hud_CopySetup));
             content.space(2);
-            content.Add(new RichBoxImage(player.input.Paste.Icon));
+            content.Add(new RbImage(player.input.Paste.Icon));
             content.space(0.5f);
-            content.Add(new RichBoxText(DssRef.lang.Hud_Paste));
+            content.Add(new RbText(DssRef.lang.Hud_Paste));
         }
     }
 

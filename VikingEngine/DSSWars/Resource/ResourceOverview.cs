@@ -43,22 +43,22 @@ namespace VikingEngine.DSSWars.Resource
         {
             content.newLine();
 
-            content.Add(new RichBoxImage(ResourceLib.Icon(item)));
+            content.Add(new RbImage(ResourceLib.Icon(item)));
             content.space();
-            content.Add(new RichBoxText(LangLib.Item(item) + ": "));
-            content.Add(new RichBoxTab(0.4f));
-            content.Add(new RichBoxText(TextLib.LargeNumber(prevCurrent)));
+            content.Add(new RbText(LangLib.Item(item) + ": "));
+            content.Add(new RbTab(0.4f));
+            content.Add(new RbText(TextLib.LargeNumber(prevCurrent)));
 
 
-            content.Add(new RichBoxTab(0.5f));
-            content.Add(new RichBoxImage(SpriteName.WarsDecreaseArrowDown));
-            var downText = new RichBoxText(TextLib.LargeNumber(prevConsumed));
+            content.Add(new RbTab(0.5f));
+            content.Add(new RbImage(SpriteName.WarsDecreaseArrowDown));
+            var downText = new RbText(TextLib.LargeNumber(prevConsumed));
             downText.overrideColor = HudLib.NotAvailableColor;
             content.Add(downText);
 
-            content.Add(new RichBoxTab(0.6f));
-            content.Add(new RichBoxImage(SpriteName.WarsIncreaseArrowUp));
-            var upText = new RichBoxText(TextLib.LargeNumber(prevProduced));
+            content.Add(new RbTab(0.6f));
+            content.Add(new RbImage(SpriteName.WarsIncreaseArrowUp));
+            var upText = new RbText(TextLib.LargeNumber(prevProduced));
             upText.overrideColor = HudLib.AvailableColor;
             content.Add(upText);
 

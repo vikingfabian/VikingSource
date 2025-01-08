@@ -11,11 +11,11 @@ using VikingEngine.ToGG.HeroQuest.Data.Condition;
 
 namespace VikingEngine.HUD.RichBox
 {
-    class RichboxTabgroup : AbsRichBoxMember
+    class RbTabgroup : AbsRichBoxMember
     {
-        List<RichboxTabMember> members;
+        List<RbTabMember> members;
         public Image pointer;
-        public RichboxTabgroup(List<RichboxTabMember> members, int selected, Action<int> click, Action<int> enter = null, RbSoundProfile clickSound = null, RbSoundProfile hoverSound = null, Color? overrideBgColor = null)
+        public RbTabgroup(List<RbTabMember> members, int selected, Action<int> click, Action<int> enter = null, RbSoundProfile clickSound = null, RbSoundProfile hoverSound = null, Color? overrideBgColor = null)
         {
             this.members = members;
             for (int i = 0; i < members.Count; i++)
@@ -40,18 +40,18 @@ namespace VikingEngine.HUD.RichBox
 
         
 
-        public override void getButtons(List<RichboxButton> buttons)
+        public override void getButtons(List<RbButton> buttons)
         {
            buttons.AddRange(members);
         }
     }
 
-    class RichboxTabMember: RichboxButton
+    class RbTabMember: RbButton
     {
         bool selected;
         //int index;
 
-        public RichboxTabMember(List<AbsRichBoxMember> content, AbsRbAction enterAction = null)
+        public RbTabMember(List<AbsRichBoxMember> content, AbsRbAction enterAction = null)
         {
             this.content = content;
             this.enabled = true;

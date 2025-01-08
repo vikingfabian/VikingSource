@@ -187,7 +187,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void TypeIcon(RichBoxContent content)
         {
-            content.Add(new RichBoxImage(SpriteName.WarsUnitIcon_Soldier));
+            content.Add(new RbImage(SpriteName.WarsUnitIcon_Soldier));
             tagToHud(content);
         }
         //public override SpriteName TypeIcon()
@@ -208,13 +208,13 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 //if (args.gui.menuState.Count == 0)
                 //{
-                args.content.Add(new RichBoxImage(SpriteName.WarsGroupIcon));
-                args.content.Add(new RichBoxText(groups.Count.ToString()));
+                args.content.Add(new RbImage(SpriteName.WarsGroupIcon));
+                args.content.Add(new RbText(groups.Count.ToString()));
                 args.content.space();
-                args.content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
-                args.content.Add(new RichBoxText(TextLib.OneDecimal(strengthValue)));
+                args.content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+                args.content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
                 args.content.space();
-                args.content.Add(new RichBoxImage(SpriteName.rtsUpkeepTime));
+                args.content.Add(new RbImage(SpriteName.rtsUpkeepTime));
                 //args.content.Add(new RichBoxText(TextLib.LargeNumber(upkeep)));
                 //}
             }
@@ -311,12 +311,12 @@ namespace VikingEngine.DSSWars.GameObject
                 content.newLine();
             }
 
-            content.Add(new RichBoxBeginTitle());
+            content.Add(new RbBeginTitle());
             content.Add(GetFaction().FlagTextureToHud());
-            content.Add(new RichBoxText(TypeName()));
+            content.Add(new RbText(TypeName()));
 
-            content.Add(new RichBoxImage(SpriteName.WarsStrengthIcon));
-            content.Add(new RichBoxText(TextLib.OneDecimal(strengthValue)));
+            content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+            content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
         }
 
         public ArmyStatus Status()
