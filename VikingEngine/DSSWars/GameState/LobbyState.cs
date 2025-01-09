@@ -204,6 +204,7 @@ namespace VikingEngine.DSSWars
                     new GuiTextButton("Load mod", null, loadMod, false, layout);
                     if (Ref.steam.statsInitialized)
                     {
+                        new GuiTextButton("Initialize steam stats", null, Ref.steam.stats.initializeAllStatsOnSteam, false, layout);
                         new GuiTextButton("Load global steam stats", null, Ref.steam.stats.beginRequestGlobalStats, false, layout);
                     }
                 }

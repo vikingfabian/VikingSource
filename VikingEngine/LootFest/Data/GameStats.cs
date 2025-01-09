@@ -43,7 +43,7 @@ namespace VikingEngine.LootFest.Data
                 editHours,
             };
         }
-
+     
         public override List<IStatsValue> listGlobalStats()
         {
             throw new NotImplementedException();
@@ -61,6 +61,10 @@ namespace VikingEngine.LootFest.Data
             editorBlocksPlaced.getStat();
             playHours.getStat();
             editHours.getStat();
+        }
+        public override void initAndSetStats()
+        {
+            throw new NotImplementedException();
         }
 
         public override void collectValues(float prevTotalTimeSec)

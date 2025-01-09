@@ -53,6 +53,12 @@ namespace VikingEngine.PJ.PjEngine
         {
             throw new NotImplementedException();
         }
+        
+
+        public override void initAndSetStats()
+        {
+            throw new NotImplementedException();
+        }
 
         public override void getStats()
         {

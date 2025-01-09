@@ -191,47 +191,105 @@ namespace VikingEngine.DSSWars.Data
             gameLength_passed30hour.getStat();//"lenght_30h");
         }
 
+        public override void initAndSetStats()
+        {
+            startTutorial.set(1);
+            completeTutorial.set(1);
+            skipTutorial.set(1);
+
+            startNewStory.set(1);
+            startNewSandbox.set(1);
+            startNewPeaceful.set(1);
+            keyboard_user.set(1);
+            controller_user.set(1);
+
+            startNew25perc.set(1);
+            startNew50perc.set(1);
+            startNew75perc.set(1);
+            startNew150perc.set(1);
+            startNew175perc.set(1);
+            startNew200perc.set(1);
+
+            startNew_MapSmall.set(1);
+            startNew_MapLarge.set(1);
+            startNew_MapHuge.set(1);
+
+            startNewLocalMultiplayer.set(1);//"startnew_localmp");
+
+            saveCustomFlag.set(1);//"save_flag");
+
+            won25perc.set(1);//"won_25perc");
+            won50perc.set(1);//"won_50perc");
+            won75perc.set(1);//"won_75perc");
+            won100perc.set(1);//"won_100perc");
+            won125perc.set(1);//"won_125perc");
+            won150perc.set(1);//"won_150perc");
+            won175perc.set(1);//"won_175perc");
+            won200perc.set(1);//"won_200perc");
+
+            lost25perc.set(1);//"lost_25perc");
+            lost50perc.set(1);//"lost_50perc");
+            lost75perc.set(1);//"lost_75perc");
+            lost100perc.set(1);//"lost_100perc");
+            lost125perc.set(1);//"lost_125perc");
+            lost150perc.set(1);//"lost_150perc");
+            lost175perc.set(1);//"lost_175perc");
+            lost200perc.set(1);//"lost_200perc");
+
+            gameLength_passed5min.set(1);//"lenght_5min");
+            gameLength_passed15min.set(1);//"lenght_15min");
+            gameLength_passed30min.set(1);//"lenght_30min");
+            gameLength_passed1hour.set(1);//"lenght_1h");
+            gameLength_passed2hour.set(1);//"lenght_2h");
+            gameLength_passed5hour.set(1);//"lenght_5h");
+            gameLength_passed10hour.set(1);//"lenght_10h");
+            gameLength_passed20hour.set(1);//"lenght_20h");
+            gameLength_passed30hour.set(1);//"lenght_30h");
+        }
+
         public override void collectValues(float prevTotalTimeSec)
         {
-            var gametime = DssRef.time.TotalIngameTime();
-            if (gametime.TotalMinutes >= 5)
+            if (DssRef.time != null)
             {
-                gameLength_passed5min.addOne_ifUnset();
-            }
-            if (gametime.TotalMinutes >= 15)
-            {
-                gameLength_passed15min.addOne_ifUnset();
-            }
-            if (gametime.TotalMinutes >= 30)
-            {
-                gameLength_passed30min.addOne_ifUnset();
-            }
+                var gametime = DssRef.time.TotalIngameTime();
+                if (gametime.TotalMinutes >= 5)
+                {
+                    gameLength_passed5min.addOne_ifUnset();
+                }
+                if (gametime.TotalMinutes >= 15)
+                {
+                    gameLength_passed15min.addOne_ifUnset();
+                }
+                if (gametime.TotalMinutes >= 30)
+                {
+                    gameLength_passed30min.addOne_ifUnset();
+                }
 
-            if (gametime.TotalHours >= 1)
-            {
-                gameLength_passed1hour.addOne_ifUnset();
+                if (gametime.TotalHours >= 1)
+                {
+                    gameLength_passed1hour.addOne_ifUnset();
+                }
+                if (gametime.TotalHours >= 2)
+                {
+                    gameLength_passed2hour.addOne_ifUnset();
+                }
+                if (gametime.TotalHours >= 5)
+                {
+                    gameLength_passed5hour.addOne_ifUnset();
+                }
+                if (gametime.TotalHours >= 10)
+                {
+                    gameLength_passed10hour.addOne_ifUnset();
+                }
+                if (gametime.TotalHours >= 20)
+                {
+                    gameLength_passed20hour.addOne_ifUnset();
+                }
+                if (gametime.TotalHours >= 30)
+                {
+                    gameLength_passed30hour.addOne_ifUnset();
+                }
             }
-            if (gametime.TotalHours >= 2)
-            {
-                gameLength_passed2hour.addOne_ifUnset();
-            }
-            if (gametime.TotalHours >= 5)
-            {
-                gameLength_passed5hour.addOne_ifUnset();
-            }
-            if (gametime.TotalHours >= 10)
-            {
-                gameLength_passed10hour.addOne_ifUnset();
-            }
-            if (gametime.TotalHours >= 20)
-            {
-                gameLength_passed20hour.addOne_ifUnset();
-            }
-            if (gametime.TotalHours >= 30)
-            {
-                gameLength_passed30hour.addOne_ifUnset();
-            }
-
         }
     }
 }

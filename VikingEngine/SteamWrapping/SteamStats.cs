@@ -42,6 +42,13 @@ namespace VikingEngine.SteamWrapping
             SteamAPI.SteamUserStats().StoreStats();
         }
 
+        public void initializeAllStatsOnSteam()
+        {
+            gamestats.initAndSetStats();
+            upload();
+
+        }
+
         public void beginRequestGlobalStats()
         {
             //funkar ej
@@ -74,6 +81,7 @@ namespace VikingEngine.SteamWrapping
         abstract public List<IStatsValue> collectTimedValues();
         abstract public List<IStatsValue> listGlobalStats();
         abstract public void getStats();
+        abstract public void initAndSetStats();
         abstract public void collectValues(float prevTotalTimeSec);
     }
 
@@ -99,6 +107,10 @@ namespace VikingEngine.SteamWrapping
         {
             testint.getStat();
             testfloat.getStat();
+        }
+        public override void initAndSetStats()
+        {
+            throw new NotImplementedException();
         }
 
         public override void collectValues(float prevTotalTimeSec)
