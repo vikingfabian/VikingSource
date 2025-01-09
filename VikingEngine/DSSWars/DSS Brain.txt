@@ -105,6 +105,7 @@ English, Simplified Chinese, Japanese, Russian, Spanish
 -New end boss
 -Lots of named factions
 
+-steam stats
 -Min 7K wishlists
 -oktober next fest, demo måste vara redo senast september
 -hör av till 300 streamers om demo, lägg screens i mailet

@@ -27,6 +27,7 @@ using System.Linq;
 using VikingEngine.DSSWars.Players;
 using System.IO;
 using VikingEngine.DataStream;
+using VikingEngine.HUD.RichMenu;
 
 namespace VikingEngine.DSSWars
 {
@@ -52,6 +53,7 @@ namespace VikingEngine.DSSWars
         public LobbyState()
             : base()
         {
+            HudLib.Init();
             Ref.isPaused = false;
             Engine.Screen.SetupSplitScreen(1, true);
             if (!StartupSettings.BlockBackgroundLoading)
@@ -97,6 +99,28 @@ namespace VikingEngine.DSSWars
             }
 
             Ref.lobby.startSearchLobbies(true);
+
+            testMenu2();
+        }
+
+        void testMenu2()
+        {
+            var area = Screen.SafeArea;
+            area.Width = Screen.IconSize * 8;
+            area.X = Screen.CenterScreen.X;
+
+            RichMenu menu = new RichMenu(HudLib.RbSettings, area, Vector2.Zero, ImageLayers.Top1);
+            Image bg = new Image(SpriteName.WhiteArea, area.Position, area.Size, ImageLayers.Top2);
+            bg.Opacity = 0.1f;
+            RichBoxContent content = new RichBoxContent();
+            content.h1("new menu");
+            for (int i = 0; i < 10; i++)
+            {
+                content.newLine();
+                content.Button("test" + i.ToString(), null, null, true);
+            }
+
+            menu.Refresh(content);
         }
 
         void load_asynch()
@@ -874,7 +898,7 @@ namespace VikingEngine.DSSWars
 
         void optionsMenu()
         {
-            HudLib.Init();
+            
             GuiLayout layout = new GuiLayout(Ref.langOpt.Options_title, menuSystem.menu);
             {
                 new GuiImageButton(new Translation().sprite(Ref.gamesett.language), null, new GuiAction(selectLanguageMenu), true, layout);
