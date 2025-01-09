@@ -385,6 +385,8 @@ namespace VikingEngine.DSSWars
         }
         public void saveAndExit()
         {
+            DssRef.stats.saveCustomFlag.addOne();
+
             //EXIT
             DssRef.storage.flagStorage.flagDesigns[profileIx] = profile;
             new LobbyState();

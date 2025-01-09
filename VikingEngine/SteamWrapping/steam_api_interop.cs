@@ -5309,8 +5309,10 @@ internal static extern IntPtr SteamMatchmakingRulesResponse();
 internal static extern IntPtr SteamMatchmakingServers();
 [DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamRemoteStorage", CallingConvention = CallingConvention.Cdecl)]
 internal static extern IntPtr SteamRemoteStorage();
+
 [DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamUserStats", CallingConvention = CallingConvention.Cdecl)]
 internal static extern IntPtr SteamUserStats();
+
 [DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamApps", CallingConvention = CallingConvention.Cdecl)]
 internal static extern IntPtr SteamApps();
 [DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamNetworking", CallingConvention = CallingConvention.Cdecl)]

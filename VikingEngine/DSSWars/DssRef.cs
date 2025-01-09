@@ -19,6 +19,7 @@ namespace VikingEngine.DSSWars
         public static Diplomacy diplomacy = null;
         public static GameStorage storage;
         public static Achievements achieve = null;
+        public static GameStats stats = null;
         public static PlayState state;
         
         public static GameObject.AllUnits profile;

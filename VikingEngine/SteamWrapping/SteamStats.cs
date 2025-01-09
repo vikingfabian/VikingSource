@@ -10,10 +10,10 @@ namespace VikingEngine.SteamWrapping
 {
     class SteamStats
     {
-        TimeStamp prevCollectTime;
+        //TimeStamp prevCollectTime;
+        float prevTotalTimeSec;
         public AbsGameStats gamestats;
-        SteamCallResult<GlobalStatsReceived_t> globalStatsReceivedCallback;
-        
+        SteamCallResult<GlobalStatsReceived_t> globalStatsReceivedCallback;        
 
         public SteamStats(AbsGameStats gamestats)
         {
@@ -23,16 +23,18 @@ namespace VikingEngine.SteamWrapping
         public void OnUserStatsRecieved(UserStatsReceived_t caller)
         {
             //statsInitialized = true;
-            prevCollectTime = TimeStamp.Now();
+            //prevCollectTime = TimeStamp.Now();
+            prevTotalTimeSec = Ref.TotalTimeSec;
             gamestats.getStats();
             
         }
 
         public void upload()
         {
-            gamestats.collectValues(prevCollectTime);
-            prevCollectTime = TimeStamp.Now();
-            var values = gamestats.listValues();
+            gamestats.collectValues(prevTotalTimeSec);
+            //prevCollectTime = TimeStamp.Now();
+            prevTotalTimeSec = Ref.TotalTimeSec;
+            var values = gamestats.collectTimedValues();
             foreach (var m in values)
             {
                 m.setStat();
@@ -40,27 +42,39 @@ namespace VikingEngine.SteamWrapping
             SteamAPI.SteamUserStats().StoreStats();
         }
 
-        void beginRequestGlobalStats()
+        public void beginRequestGlobalStats()
         {
             //funkar ej
             globalStatsReceivedCallback = new SteamCallResult<GlobalStatsReceived_t>(onGlobalStatsReceived);
-            var apiCall = SteamAPI.SteamUserStats().RequestGlobalStats(365);
+            var apiCall = SteamAPI.SteamUserStats().RequestGlobalStats(30);
             globalStatsReceivedCallback.Set(apiCall);
         }
 
         void onGlobalStatsReceived(GlobalStatsReceived_t caller, bool ioFailure)
         {
-            long global = 0;
-            bool succeed = SteamAPI.SteamUserStats().GetGlobalStat("test", out global);
+            //long global = 0;
+            //bool succeed = SteamAPI.SteamUserStats().GetGlobalStat("startnew_story", out global);
+
+            var globalStats = gamestats.listGlobalStats();
+            Debug.Log("##STEAM STATS##");
+            foreach (var m in globalStats)
+            {
+                bool succeed = SteamAPI.SteamUserStats().GetGlobalStat(m.Name, out long global);
+                if (succeed)
+                {
+                    Debug.Log(m.Name + ": " + global.ToString());
+                }
+            }
             lib.DoNothing();
         }
     }
 
     abstract class AbsGameStats
     {
-        abstract public List<IStatsValue> listValues();
+        abstract public List<IStatsValue> collectTimedValues();
+        abstract public List<IStatsValue> listGlobalStats();
         abstract public void getStats();
-        abstract public void collectValues(TimeStamp timePassed);
+        abstract public void collectValues(float prevTotalTimeSec);
     }
 
     class TestGameStats : AbsGameStats
@@ -68,13 +82,17 @@ namespace VikingEngine.SteamWrapping
         StatsInt testint = new StatsInt("testint");
         StatsFloat testfloat = new StatsFloat("testfloat");
 
-        public override List<IStatsValue> listValues()
+        public override List<IStatsValue> collectTimedValues()
         {
             return new List<IStatsValue>
             {
                 testint,
                 testfloat,
             };
+        }
+        public override List<IStatsValue> listGlobalStats()
+        {
+            throw new NotImplementedException();
         }
 
         public override void getStats()
@@ -83,7 +101,7 @@ namespace VikingEngine.SteamWrapping
             testfloat.getStat();
         }
 
-        public override void collectValues(TimeStamp timePassed)
+        public override void collectValues(float prevTotalTimeSec)
         {
         }
     }
@@ -93,6 +111,8 @@ namespace VikingEngine.SteamWrapping
         bool getStat();
         bool setStat();
         bool getUserStats(ulong user);
+
+        public string Name { get; }
     }
 
     struct StatsInt : IStatsValue
@@ -100,12 +120,41 @@ namespace VikingEngine.SteamWrapping
         public int value;
         public int valueAtGameStart;
         public string name;
+        public bool hasSet;
 
         public StatsInt(string name)
         {
+            hasSet = false;
             this.name = name;
             this.value = 0;
             valueAtGameStart = 0;
+        }
+
+        public void set(int value)
+        {
+            this.value = value;
+            setStat();
+        }
+
+        public void add(int add)
+        {
+            this.value += add;
+            setStat();
+        }
+
+        public void addOne()
+        {
+            this.value ++;
+            setStat();
+        }
+
+        public void addOne_ifUnset()
+        {
+            if (!hasSet)
+            {
+                this.value++;
+                setStat();
+            }
         }
 
         public bool getStat()
@@ -117,6 +166,7 @@ namespace VikingEngine.SteamWrapping
 
         public bool setStat()
         {
+            hasSet = true;
             return SteamAPI.SteamUserStats().SetStat_Int(name, value);
         }
 
@@ -136,6 +186,8 @@ namespace VikingEngine.SteamWrapping
         }
 
         public bool Bool { get { return value != 0; } set { this.value = value ? 1 : 0; } }
+
+        public string Name => name;
     }
 
     struct StatsFloat : IStatsValue
@@ -149,6 +201,18 @@ namespace VikingEngine.SteamWrapping
             this.name = name;
             this.value = 0;
             valueAtGameStart = 0;
+        }
+
+        public void set(float value)
+        {
+            this.value = value;
+            setStat();
+        }
+
+        public void add(float add)
+        {
+            this.value += add;
+            setStat();
         }
 
         public bool getStat()
@@ -177,6 +241,8 @@ namespace VikingEngine.SteamWrapping
         {
             return name + "(" + value.ToString() + ")";
         }
+
+        public string Name => name;
     }
 }
 #endif

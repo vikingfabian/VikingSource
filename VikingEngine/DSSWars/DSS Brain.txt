@@ -1,8 +1,5 @@
 ﻿-Change Log-
-* wrong city fix during building
-* easy mode starts with extra money
-* displays missing resources on cities
-#Todo (xmas patch)#
+* Added steam stats, to collect user data; like how many play on easy difficulty
 
 
 

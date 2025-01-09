@@ -38,12 +38,16 @@ namespace VikingEngine.DSSWars.Data
 
         public void save()
         {
+            if (Ref.steam.statsInitialized)
+            {
+                Ref.steam.stats.upload();
+            }
+
             AddToUpdateList();
 
-            var w = memoryStream.GetWriter();
-
-            Task.Factory.StartNew(() =>
+            Task.Factory.StartNew(()=>
             {
+                var w = memoryStream.GetWriter();
                 writeGameState(w);
                 dataReady = true;   
             });

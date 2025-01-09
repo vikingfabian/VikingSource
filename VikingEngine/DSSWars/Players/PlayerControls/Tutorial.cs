@@ -791,6 +791,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                 if (tutorialMission >= TutorialMission.End)
                 {
+                    DssRef.stats.completeTutorial.addOne();
                     player.hud.messages.Add(DssRef.lang.Tutorial_CompleteTitle, DssRef.lang.Tutorial_CompleteMessage);
                     EndTutorial();
                 }

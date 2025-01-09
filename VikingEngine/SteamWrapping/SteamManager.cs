@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using VikingEngine.DSSWars;
+
 
 #if PCGAME
 using Valve.Steamworks;
@@ -80,7 +82,7 @@ namespace VikingEngine.SteamWrapping
             else if (PlatformSettings.RunProgram == StartProgram.DSS)
             {
 #if DSS
-                //new Wars.GameStats();
+                new DSSWars.Data.GameStats();
 #endif
             }
         }
@@ -162,13 +164,15 @@ namespace VikingEngine.SteamWrapping
 
             AbsGameStats gamestats = null;
             if (PlatformSettings.RunProgram == StartProgram.LootFest3)
-            { gamestats = LootFest.LfRef.stats; }
-//            else if (PlatformSettings.RunProgram == StartProgram.Wars)
-//            {
-//#if DSS
-//                gamestats = Wars.warsRef.stats;
-//#endif
-//            }
+            { 
+                gamestats = LootFest.LfRef.stats; 
+            }
+            else if (PlatformSettings.RunProgram == StartProgram.DSS)
+            {
+#if DSS
+                gamestats = DssRef.stats;
+#endif
+            }
             else if (PlatformSettings.RunProgram == StartProgram.PartyJousting)
             {
 #if PJ

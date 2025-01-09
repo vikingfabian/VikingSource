@@ -84,7 +84,7 @@ namespace VikingEngine.DSSWars
 
             new GameObject.AllUnits();
             new Diplomacy();
-            new Achievements();
+            
             new GameTime();
             HudLib.Init();
 

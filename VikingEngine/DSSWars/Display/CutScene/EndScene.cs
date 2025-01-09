@@ -34,6 +34,40 @@ namespace VikingEngine.DSSWars.Display.CutScene
             blackout.Opacity = 0;
 
             new Timer.AsynchActionTrigger(load_asynch, true);
+
+
+            switch (DssRef.difficulty.PercDifficulty)
+            {
+                case 25:
+                    (victory? DssRef.stats.won25perc : DssRef.stats.lost25perc).addOne();
+                    break;
+                case 50:
+                    (victory ? DssRef.stats.won50perc : DssRef.stats.lost50perc).addOne();
+                    break;
+                case 75:
+                    (victory ? DssRef.stats.won75perc : DssRef.stats.lost75perc).addOne();
+                    break;
+                case 100:
+                    (victory ? DssRef.stats.won100perc : DssRef.stats.lost100perc).addOne();
+                    break;
+                case 125:
+                    (victory ? DssRef.stats.won125perc : DssRef.stats.lost125perc).addOne();
+                    break;
+                case 150:
+                    (victory ? DssRef.stats.won150perc : DssRef.stats.lost150perc).addOne();
+                    break;
+                case 175:
+                    (victory ? DssRef.stats.won175perc : DssRef.stats.lost175perc).addOne();
+                    break;
+                case 200:
+                    (victory ? DssRef.stats.won200perc : DssRef.stats.lost200perc).addOne();
+                    break;
+            }
+
+            if (Ref.steam.statsInitialized)
+            {
+                Ref.steam.stats.upload();
+            }
         }
 
         void load_asynch()
