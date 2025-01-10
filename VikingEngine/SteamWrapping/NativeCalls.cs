@@ -356,9 +356,21 @@ namespace VikingEngine.SteamWrapping
         internal static extern bool SteamAPI_ISteamUtils_BOverlayNeedsPresent(IntPtr instancePtr);
         [DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamAPI_ISteamUtils_CheckFileSignature", CallingConvention = CallingConvention.Cdecl)]
         internal static extern ulong SteamAPI_ISteamUtils_CheckFileSignature(IntPtr instancePtr, string szFileName);
+       
+
+
         [DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamAPI_ISteamUtils_ShowGamepadTextInput", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I1)]
         internal static extern bool SteamAPI_ISteamUtils_ShowGamepadTextInput(IntPtr instancePtr, int eInputMode, int eLineInputMode, string pchDescription, uint unCharMax, string pchExistingText);
+
+
+        [DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamAPI_ISteamUtils_ShowFloatingGamepadTextInput", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        internal static extern bool SteamAPI_ISteamUtils_ShowFloatingGamepadTextInput(IntPtr instancePtr, int eKeyboardMode, int nTextFieldXPosition, int nTextFieldYPosition, int nTextFieldWidth, int nTextFieldHeight);
+
+       // bool ShowFloatingGamepadTextInput(EFloatingGamepadTextInputMode eKeyboardMode, int nTextFieldXPosition, int nTextFieldYPosition, int nTextFieldWidth, int nTextFieldHeight);
+
+
         [DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamAPI_ISteamUtils_GetEnteredGamepadTextLength", CallingConvention = CallingConvention.Cdecl)]
         internal static extern uint SteamAPI_ISteamUtils_GetEnteredGamepadTextLength(IntPtr instancePtr);
         [DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamAPI_ISteamUtils_GetEnteredGamepadTextInput", CallingConvention = CallingConvention.Cdecl)]

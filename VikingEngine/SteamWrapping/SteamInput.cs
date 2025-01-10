@@ -11,7 +11,7 @@ namespace VikingEngine.SteamWrapping
     {
         public SteamInput(string description, string startText) 
         {
-            SteamAPI.SteamUtils().ShowGamepadTextInput((int)EGamepadTextInputMode.k_EGamepadTextInputModeNormal, (int)EGamepadTextInputLineMode.k_EGamepadTextInputLineModeSingleLine, description, 32, startText);
+           bool result =  SteamAPI.SteamUtils().ShowFloatingGamepadTextInput((int)EFloatingGamepadTextInputMode.k_EFloatingGamepadTextInputModeModeSingleLine,10, 10, 100, 50);
         }
     }
 }

@@ -206,13 +206,15 @@ namespace VikingEngine
         }
         public static string XboxVersion = "UNKNOWN";
 
-        public const string SteamApiDll = "Steam_api64";
+        public const string SteamApiDll = "steam_api64";
 
         public const string GameTitle =
 #if TOGG
          "Towards Gold and Glory";
 #elif PJ
          "Party Jousting";
+#elif DSS
+         "DSS";
 #else
          "Lootfest";
 #endif

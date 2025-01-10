@@ -13,6 +13,7 @@ using Valve.Steamworks;
 using System.Security;
 using VikingEngine.SteamWrapping;
 using System.Text;
+using Microsoft.Xna.Framework.Graphics;
 
 class InteropHelp
 { 
@@ -250,7 +251,10 @@ namespace Valve.Steamworks
 		public abstract bool BOverlayNeedsPresent();
 		public abstract ulong CheckFileSignature(string szFileName);
 		public abstract bool ShowGamepadTextInput(int eInputMode,int eLineInputMode,string pchDescription,uint unCharMax,string pchExistingText);
-		public abstract uint GetEnteredGamepadTextLength();
+
+		public abstract bool ShowFloatingGamepadTextInput(int eKeyboardMode, int nTextFieldXPosition, int nTextFieldYPosition, int nTextFieldWidth, int nTextFieldHeight);
+
+        public abstract uint GetEnteredGamepadTextLength();
 		public abstract bool GetEnteredGamepadTextInput(string pchText,uint cchText);
 		public abstract string GetSteamUILanguage();
 		public abstract bool IsSteamRunningInVR();
@@ -1869,6 +1873,14 @@ public override bool ShowGamepadTextInput(int eInputMode,int eLineInputMode,stri
     bool result = NativeCalls.SteamAPI_ISteamUtils_ShowGamepadTextInput(m_pSteamUtils,eInputMode,eLineInputMode,pchDescription,unCharMax,pchExistingText);
     return result;
 }
+
+public override bool ShowFloatingGamepadTextInput( int eKeyboardMode, int nTextFieldXPosition, int nTextFieldYPosition, int nTextFieldWidth, int nTextFieldHeight)
+{
+    CheckIfUsable();
+    bool result = NativeCalls.SteamAPI_ISteamUtils_ShowFloatingGamepadTextInput(m_pSteamUtils, eKeyboardMode, nTextFieldXPosition, nTextFieldYPosition, nTextFieldWidth, nTextFieldHeight);
+    return result;
+}
+
 public override uint GetEnteredGamepadTextLength()
 {
     CheckIfUsable();
@@ -5274,7 +5286,7 @@ public class SteamAPIInterop
 [DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamAPI_RestartAppIfNecessary", CallingConvention = CallingConvention.Cdecl)]
 internal static extern bool SteamAPI_RestartAppIfNecessary(uint unOwnAppID );
 
-[DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamAPI_Init", CallingConvention = CallingConvention.Cdecl)]
+[DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamAPI_InitAnonymousUser", CallingConvention = CallingConvention.Cdecl)]
 internal static extern bool SteamAPI_Init();
 
 [DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamAPI_RunCallbacks", CallingConvention = CallingConvention.Cdecl)]
@@ -5289,13 +5301,13 @@ internal static extern void SteamAPI_RegisterCallResult(IntPtr pCallback, ulong 
 internal static extern void SteamAPI_UnregisterCallResult(IntPtr pCallback, ulong hAPICall);
 [DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamClient", CallingConvention = CallingConvention.Cdecl)]
 internal static extern IntPtr SteamClient();
-[DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamUser", CallingConvention = CallingConvention.Cdecl)]
+[DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamAPI_SteamUser_v023", CallingConvention = CallingConvention.Cdecl)]
 internal static extern IntPtr SteamUser();
 [DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamFriends", CallingConvention = CallingConvention.Cdecl)]
 internal static extern IntPtr SteamFriends();
-[DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamUtils", CallingConvention = CallingConvention.Cdecl)]
+[DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamAPI_SteamUtils_v010", CallingConvention = CallingConvention.Cdecl)]
 internal static extern IntPtr SteamUtils();
-[DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamMatchmaking", CallingConvention = CallingConvention.Cdecl)]
+[DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamAPI_SteamMatchmaking_v009", CallingConvention = CallingConvention.Cdecl)]
 internal static extern IntPtr SteamMatchmaking();
 [DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamMatchmakingServerListResponse", CallingConvention = CallingConvention.Cdecl)]
 internal static extern IntPtr SteamMatchmakingServerListResponse();
@@ -5307,13 +5319,13 @@ internal static extern IntPtr SteamMatchmakingPlayersResponse();
 internal static extern IntPtr SteamMatchmakingRulesResponse();
 [DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamMatchmakingServers", CallingConvention = CallingConvention.Cdecl)]
 internal static extern IntPtr SteamMatchmakingServers();
-[DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamRemoteStorage", CallingConvention = CallingConvention.Cdecl)]
+[DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamAPI_SteamRemoteStorage_v016", CallingConvention = CallingConvention.Cdecl)]
 internal static extern IntPtr SteamRemoteStorage();
 [DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamUserStats", CallingConvention = CallingConvention.Cdecl)]
 internal static extern IntPtr SteamUserStats();
 [DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamApps", CallingConvention = CallingConvention.Cdecl)]
 internal static extern IntPtr SteamApps();
-[DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamNetworking", CallingConvention = CallingConvention.Cdecl)]
+[DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamAPI_SteamNetworking_v006", CallingConvention = CallingConvention.Cdecl)]
 internal static extern IntPtr SteamNetworking();
 [DllImportAttribute(VikingEngine.PlatformSettings.SteamApiDll, EntryPoint = "SteamScreenshots", CallingConvention = CallingConvention.Cdecl)]
 internal static extern IntPtr SteamScreenshots();
@@ -5766,6 +5778,13 @@ public enum EGamepadTextInputMode
 	k_EGamepadTextInputModeNormal = 0,
 	k_EGamepadTextInputModePassword = 1,
 }
+	public enum EFloatingGamepadTextInputMode
+	{
+		k_EFloatingGamepadTextInputModeModeSingleLine,  //0	Enter dismisses the keyboard
+		k_EFloatingGamepadTextInputModeModeMultipleLines,   //1	User needs to explicitly dismiss the keyboard
+		k_EFloatingGamepadTextInputModeModeEmail,   //2	Keyboard is displayed in a special mode that makes it easier to enter emails
+		k_EFloatingGamepadTextInputModeModeNumeric, //3	Numeric keypad is shown
+	}
 public enum EGamepadTextInputLineMode
 {
 	k_EGamepadTextInputLineModeSingleLine = 0,

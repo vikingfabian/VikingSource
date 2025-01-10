@@ -69,6 +69,14 @@ namespace VikingEngine.Engine
             //waitingKeyInput = true;
             keyInputValues = values;
             new SteamWrapping.SteamInput(values.Description, values.DefaultText);
+            //TextBox textBox = new TextBox();
+            //textBox.Location = new Point(10, 10);
+            //textBox.Width = 200;
+            //textBox.TextChanged += (sender, args) =>
+            //{
+            //    Console.WriteLine($"Text changed: {textBox.Text}");
+            //};
+            //this.Controls.Add(textBox);
         }
 
         public static void TextInputEvent(string input)

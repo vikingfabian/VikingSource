@@ -86,6 +86,38 @@ namespace VikingEngine
             DebugExtensions.BlueScreen.TryCatch(init1_Construct, DebugExtensions.TryMethodType.Init1);
         }
 
+
+
+        private static string inputBuffer = "";
+
+        public static void RegisterFocusedButtonForTextInput(System.EventHandler<TextInputEventArgs> method)
+        {
+            // Example `gw` reference; this must be your actual game window or framework's input object
+            Ref.main.Window.TextInput += method;
+        }
+
+        private static void OnTextInput(object sender, TextInputEventArgs e)
+        {
+            // Handle backspace
+            if (e.Character == '\b' && inputBuffer.Length > 0)
+            {
+                inputBuffer = inputBuffer.Substring(0, inputBuffer.Length - 1);
+            }
+            else
+            {
+                // Append input to the buffer
+                inputBuffer += e.Character;
+            }
+
+            Console.WriteLine($"Current input: {inputBuffer}");
+        }
+
+        // Usage in initialization
+        public static void InitializeTextInput()
+        {
+            RegisterFocusedButtonForTextInput(OnTextInput);
+        }
+
         /* Family Methods */
         protected override void Initialize()
         {
@@ -93,6 +125,8 @@ namespace VikingEngine
         }
         protected override void LoadContent()
         {
+            InitializeTextInput();
+
             DebugExtensions.BlueScreen.TryCatch(init3_LoadContent, DebugExtensions.TryMethodType.Init3);
         }
         
