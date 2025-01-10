@@ -636,7 +636,7 @@ namespace VikingEngine.ToGG.ToggEngine.MapEditor
             }
         }
         
-        void onFileNameChange(int user, string result, int index)
+        void onFileNameChange(string result, object tag)
         {
             filemanager.fileName = result;
         }

@@ -181,7 +181,7 @@ namespace VikingEngine.Engine
                 lazyUpdateAccumulatedTime_next = 0;
             }
 
-            XGuide.Update();
+            //XGuide.Update();
             if (Ref.netSession != null)
                 Ref.netSession.Time_Update(time);
             ParticleHandler.Update(time);

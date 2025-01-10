@@ -294,7 +294,7 @@ namespace VikingEngine.DSSWars.Display.Translation
         public string CityCulture_x_Description => "";
         public string CityCulture_x => "";
 
-
+        //public string InputTitle => "Input field";
         //enum ExperenceOrDistancePrio
         //{
         //    Experience,

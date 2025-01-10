@@ -18,7 +18,7 @@ namespace VikingEngine
     /// Event called upoin after text box input
     /// </summary>
     /// <param name="result">input, null is canceled</param>
-    public delegate void TextInputEvent(int user, string result, int index);
+    public delegate void TextInputEvent(string result, object tag);
     
     delegate bool BoolGetSet(int index, bool set, bool value);
     delegate int IntGetSet(bool set, int value);

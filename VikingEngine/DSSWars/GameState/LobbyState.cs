@@ -214,6 +214,10 @@ namespace VikingEngine.DSSWars
 
                     new GuiLargeTextButton("Test sound", null, new GuiAction(testsound), false, layout);
                     new GuiTextButton("Load mod", null, loadMod, false, layout);
+                    new GuiTextButton("Text Input", null, new Action(() =>
+                    {
+                        new TextInput("test", null, null);
+                    }), true, layout);
                 }
                 new GuiTextButton("Credits", null, credits, true, layout);
 

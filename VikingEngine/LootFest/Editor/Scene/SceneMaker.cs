@@ -191,12 +191,12 @@ namespace VikingEngine.LootFest.Editor
             //    inputDialogue = null;
             //}
         }
-        public override void TextInputEvent(int playerIndex, string input, int link)
+        public override void TextInputEvent(string input, object tag)
         {
             collection.currentFileName = input;
             save();
             CloseMenu();
-            TextInputCancelEvent(playerIndex);
+            TextInputCancelEvent(0);
         }
         //public override void BlockMenuLinkEvent(HUD.IMenuLink link, int playerIx, numBUTTON button)
         //{
@@ -245,7 +245,7 @@ namespace VikingEngine.LootFest.Editor
         void typeFileName()
         {
             collection.randomFileName();
-            Engine.XGuide.BeginKeyBoardInput(new KeyboardInputValues("Name your creation", collection.currentFileName, inputMap.playerIndex));//(int)controller.Index));
+            //Engine.XGuide.BeginKeyBoardInput(new KeyboardInputValues("Name your creation", collection.currentFileName, inputMap.playerIndex));//(int)controller.Index));
         }
        
         void save()

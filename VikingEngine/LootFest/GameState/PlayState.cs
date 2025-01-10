@@ -256,28 +256,29 @@ namespace VikingEngine.LootFest
             text = TextLib.FirstLetters(text, byte.MaxValue - 1);
         }
 
-        public override void TextInputEvent(int playerIndex, string input, int link)
+        public override void TextInputEvent(string input, object tag)
         {
-            localPlayers[playerIndex].TextInputEvent(playerIndex, input, link);
+
+            //localPlayers[playerIndex].TextInputEvent(playerIndex, input, link);
             
-            if (input[0] == '.')
-            {
-                bool acceptedCheat = true;
-                switch (input.Remove(0, 1))
-                {
-                    default: acceptedCheat = false; break;
-                    case "denet":
-                        createNetDebug();
-                        break;
-                    case "crash13":
-                        new DebugExtensions.CrashTimer();
-                        break;
-                }
-                if (acceptedCheat)
-                {
-                    LocalHostingPlayer.Print(input + " activated");
-                }
-            }
+            //if (input[0] == '.')
+            //{
+            //    bool acceptedCheat = true;
+            //    switch (input.Remove(0, 1))
+            //    {
+            //        default: acceptedCheat = false; break;
+            //        case "denet":
+            //            createNetDebug();
+            //            break;
+            //        case "crash13":
+            //            new DebugExtensions.CrashTimer();
+            //            break;
+            //    }
+            //    if (acceptedCheat)
+            //    {
+            //        LocalHostingPlayer.Print(input + " activated");
+            //    }
+            //}
         }
         public override void TextInputCancelEvent(int playerIndex)
         {

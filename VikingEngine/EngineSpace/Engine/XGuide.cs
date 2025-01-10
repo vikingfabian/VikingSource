@@ -14,11 +14,11 @@ namespace VikingEngine.Engine
         public static int LocalHostIndex = 0;
         static MainGame mainGame = null;
         public static List<PlayerData> players = new List<PlayerData>(4);
-        static bool waitingKeyInput = false;
-        static KeyboardInputValues keyInputValues;
-        static int overridePlayerInput = 0;
-        public static bool OverridePlayerInput { get { return overridePlayerInput > 0; } }
-        public static bool UseQuickInputDialogue = true;
+        //static bool waitingKeyInput = false;
+        //static KeyboardInputValues keyInputValues;
+        //static int overridePlayerInput = 0;
+        //public static bool OverridePlayerInput { get { return overridePlayerInput > 0; } }
+        //public static bool UseQuickInputDialogue = true;
 
         public static void Init(MainGame inMainGame)
         {
@@ -64,27 +64,27 @@ namespace VikingEngine.Engine
             players[(int)p.localPlayerIndex] = p;
         }
 
-        public static void BeginKeyBoardInput(KeyboardInputValues values)
-        {
-            //waitingKeyInput = true;
-            keyInputValues = values;
-            new SteamWrapping.SteamInput(values.Description, values.DefaultText);
-        }
+        //public static void BeginKeyBoardInput(KeyboardInputValues values)
+        //{
+        //    //waitingKeyInput = true;
+        //    keyInputValues = values;
+        //    new SteamWrapping.SteamInput(values.Description, values.DefaultText);
+        //}
 
-        public static void TextInputEvent(string input)
-        {
-            if (input == null)
-            {
-                Ref.gamestate.TextInputCancelEvent(keyInputValues.PlayerIndex);
-            }
-            else
-            {
-                if (keyInputValues.callBack == null)
-                    Ref.gamestate.TextInputEvent(keyInputValues.PlayerIndex, input, keyInputValues.Link);
-                else
-                    keyInputValues.callBack(keyInputValues.PlayerIndex, input, keyInputValues.Link);
-            }
-        }
+        //public static void TextInputEvent(string input)
+        //{
+        //    if (input == null)
+        //    {
+        //        Ref.gamestate.TextInputCancelEvent(keyInputValues.PlayerIndex);
+        //    }
+        //    else
+        //    {
+        //        if (keyInputValues.callBack == null)
+        //            Ref.gamestate.TextInputEvent(keyInputValues.PlayerIndex, input, keyInputValues.Link);
+        //        else
+        //            keyInputValues.callBack(keyInputValues.PlayerIndex, input, keyInputValues.Link);
+        //    }
+        //}
 
         public static bool InOverlay
         {
@@ -115,42 +115,42 @@ namespace VikingEngine.Engine
 
 
 
-        public static void Update()
-        {
-            if (VikingEngine.Input.InputLib.inPopupWindow || InOverlay)
-            {
-                overridePlayerInput = 3;
-            }
-            else
-            {
-                overridePlayerInput--;
-            }
+//        public static void Update()
+//        {
+//            if (VikingEngine.Input.InputLib.inPopupWindow || InOverlay)
+//            {
+//                overridePlayerInput = 3;
+//            }
+//            else
+//            {
+//                overridePlayerInput--;
+//            }
 
 
-            if (waitingKeyInput)
-            {   
-                waitingKeyInput = false;
-                VikingEngine.Input.InputLib.inPopupWindow = true;
-//#if PCGAME
-//                HUD.TextInputForm dialogueForm = new HUD.TextInputForm(keyInputValues.DefaultText);
+//            if (waitingKeyInput)
+//            {   
+//                waitingKeyInput = false;
+//                VikingEngine.Input.InputLib.inPopupWindow = true;
+////#if PCGAME
+////                HUD.TextInputForm dialogueForm = new HUD.TextInputForm(keyInputValues.DefaultText);
 
-//                if (dialogueForm.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-//                {
-//                    if (keyInputValues.callBack != null)
-//                    {
-//                        keyInputValues.callBack(keyInputValues.PlayerIndex, dialogueForm.Result, keyInputValues.Link);
-//                    }
-//                    else
-//                    {
-//                        Ref.gamestate.TextInputEvent(keyInputValues.PlayerIndex, dialogueForm.Result, keyInputValues.Link);
-//                    }
-//                }
+////                if (dialogueForm.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+////                {
+////                    if (keyInputValues.callBack != null)
+////                    {
+////                        keyInputValues.callBack(keyInputValues.PlayerIndex, dialogueForm.Result, keyInputValues.Link);
+////                    }
+////                    else
+////                    {
+////                        Ref.gamestate.TextInputEvent(keyInputValues.PlayerIndex, dialogueForm.Result, keyInputValues.Link);
+////                    }
+////                }
 
-//                VikingEngine.Input.InputLib.inPopupWindow = false;
-//                dialogueForm.Dispose();
-//#endif
-            }
-        }
+////                VikingEngine.Input.InputLib.inPopupWindow = false;
+////                dialogueForm.Dispose();
+////#endif
+//            }
+//        }
         
         public static void UnjoinAll()
         {

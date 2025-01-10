@@ -159,7 +159,7 @@ namespace VikingEngine.PJ.MiniGolf
             }
         }
 
-        void onFileNameChange(int user, string result, int index)
+        void onFileNameChange(string result, object tag)
         {
             GolfRef.field.storage.saveFileName = TextLib.checkFileName(result);
         }

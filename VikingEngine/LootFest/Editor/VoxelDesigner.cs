@@ -581,12 +581,15 @@ namespace VikingEngine.LootFest.Editor
             UpdateDrawLimits();
             updateVoxelObj();
         }
-      
-        
 
-        public void onFileNameChange(int user, string result, int index)
+
+
+        public void onFileNameChange(string result, object tag)
         {
-            storage.saveFileName = result;
+            if (result != null)
+            {
+                storage.saveFileName = result;
+            }
         }
        
         public void LinkEXIT()
