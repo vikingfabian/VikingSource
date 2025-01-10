@@ -22,7 +22,7 @@ namespace VikingEngine.HUD
 
         void clickEvent()
         {
-            Engine.XGuide.BeginKeyBoardInput(new Engine.KeyboardInputValues("error", "error", textString,
+            Engine.XGuide.BeginKeyBoardInput(new Engine.KeyboardInputValues("error", textString,
                 0, 0, TextInputEvent));//, layoutParent.gui, null);
         }
 

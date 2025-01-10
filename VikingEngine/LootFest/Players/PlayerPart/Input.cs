@@ -100,7 +100,7 @@ namespace VikingEngine.LootFest.Players
             }
             if (inputMap.chat.DownEvent)//pData.inputMap/.DownEvent(ButtonActionType.GameChat))
             {
-                XGuide.BeginKeyBoardInput(new KeyboardInputValues("", "", "", PlayerIndex, 0, chatInput));
+                XGuide.BeginKeyBoardInput(new KeyboardInputValues("", "", PlayerIndex, 0, chatInput));
             }
 
             updateCamInput();

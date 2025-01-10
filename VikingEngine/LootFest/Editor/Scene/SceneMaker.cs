@@ -245,7 +245,7 @@ namespace VikingEngine.LootFest.Editor
         void typeFileName()
         {
             collection.randomFileName();
-            Engine.XGuide.BeginKeyBoardInput(new KeyboardInputValues("Name", "Name your creation", collection.currentFileName, inputMap.playerIndex));//(int)controller.Index));
+            Engine.XGuide.BeginKeyBoardInput(new KeyboardInputValues("Name your creation", collection.currentFileName, inputMap.playerIndex));//(int)controller.Index));
         }
        
         void save()

@@ -66,8 +66,9 @@ namespace VikingEngine.Engine
 
         public static void BeginKeyBoardInput(KeyboardInputValues values)
         {
-            waitingKeyInput = true;
+            //waitingKeyInput = true;
             keyInputValues = values;
+            new SteamWrapping.SteamInput(values.Description, values.DefaultText);
         }
 
         public static void TextInputEvent(string input)
@@ -164,7 +165,7 @@ namespace VikingEngine.Engine
 
     public struct KeyboardInputValues
     {
-        public string Title;
+        //public string Title;
         public string Description;
         public string DefaultText;
         public int PlayerIndex;
@@ -172,13 +173,13 @@ namespace VikingEngine.Engine
         public TextInputEvent callBack;
 
       
-        public KeyboardInputValues(string title, string desciption, string defaultText, int playerIx)
-            : this(title, desciption, defaultText, playerIx, 0, null)
+        public KeyboardInputValues( string desciption, string defaultText, int playerIx)
+            : this(desciption, defaultText, playerIx, 0, null)
         { }
-        public KeyboardInputValues(string title, string desciption, string defaultText, int playerIx, 
+        public KeyboardInputValues(string desciption, string defaultText, int playerIx, 
             int link, TextInputEvent callBack)
         {
-            Title = title;
+            //Title = title;
             Description = desciption;
             DefaultText = defaultText;
 
