@@ -2,6 +2,7 @@
 * Created a text input popup
 * Text input for voxel designer
 * Renaming of Armies and Cities
+* Improved voxeleditor undo action
 
 #OPT#
 culling av worker

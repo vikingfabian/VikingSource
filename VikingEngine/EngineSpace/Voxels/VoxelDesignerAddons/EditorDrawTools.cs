@@ -94,7 +94,7 @@ namespace VikingEngine.Voxels
                     switch (action.type)
                     {
                         case DrawQueType.FillVolume:
-                            designer.undolist.add(new UndoAction(volume, designer, action.frame));
+                            designer.undolist.add(new UndoAction(designer, action.frame));
                             action.fillArea(designer);
                             designer.startUpdateVoxelObj(true);
                             designer.refreshSelectionModel();
@@ -117,13 +117,13 @@ namespace VikingEngine.Voxels
                             break;
                         case DrawQueType.EndDot:
                             volume = drawStroke.volume;
-                            designer.undolist.add(new UndoAction(volume, drawStroke.undoData, action.frame));
+                            designer.undolist.add(new UndoAction(drawStroke.undoData, action.frame));
                             drawStroke = null;
                             break;
                         case DrawQueType.StampSelection:
                             volume = designer.selectedVoxels.getMinMax();
                             volume = designer.drawLimits.keepValueInMyBounds(volume);
-                            designer.undolist.add(new UndoAction(volume, designer, action.frame));
+                            designer.undolist.add(new UndoAction(designer, action.frame));
                             designer.stampSelection_Raw();
                             designer.startUpdateVoxelObj(true);
                             if (action.dropSelection)
