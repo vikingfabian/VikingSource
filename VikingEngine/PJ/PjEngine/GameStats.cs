@@ -29,7 +29,7 @@ namespace VikingEngine.PJ.PjEngine
             PjRef.stats = this;
         }
 
-        public override List<IStatsValue> listValues()
+        public override List<IStatsValue> collectTimedValues()
         {
             return new List<IStatsValue>
             {
@@ -49,6 +49,17 @@ namespace VikingEngine.PJ.PjEngine
             };
         }
 
+        public override List<IStatsValue> listGlobalStats()
+        {
+            throw new NotImplementedException();
+        }
+        
+
+        public override void initAndSetStats()
+        {
+            throw new NotImplementedException();
+        }
+
         public override void getStats()
         {
             testint.getStat();
@@ -66,34 +77,34 @@ namespace VikingEngine.PJ.PjEngine
             modeSpaceWarsHours.getStat();
         }
 
-        public override void collectValues(TimeStamp timePassed)
+        public override void collectValues(float prevTotalTimeSec)
         {
-            playHoursTotal.value += timePassed.Hours;
+            //playHoursTotal.value += timePassed.Hours;
 
-            switch (PjRef.storage.Mode)
-            {
-                case PartyGameMode.Jousting:
-                    modeJoustHours.value += timePassed.Hours;
-                    break;
-                case PartyGameMode.Bagatelle:
-                    modeBagatelleHours.value += timePassed.Hours;
-                    break;
-                case PartyGameMode.MiniGolf:
-                    modeGolfHours.value += timePassed.Hours;
-                    break;
-                case PartyGameMode.CarBall:
-                    modeCarBallHours.value += timePassed.Hours;
-                    break;
-                case PartyGameMode.Strategy:
-                    modeRiskHours.value += timePassed.Hours;
-                    break;
-                case PartyGameMode.SpacePirate:
-                    modeSpaceWarsHours.value += timePassed.Hours;
-                    break;
+            //switch (PjRef.storage.Mode)
+            //{
+            //    case PartyGameMode.Jousting:
+            //        modeJoustHours.value += timePassed.Hours;
+            //        break;
+            //    case PartyGameMode.Bagatelle:
+            //        modeBagatelleHours.value += timePassed.Hours;
+            //        break;
+            //    case PartyGameMode.MiniGolf:
+            //        modeGolfHours.value += timePassed.Hours;
+            //        break;
+            //    case PartyGameMode.CarBall:
+            //        modeCarBallHours.value += timePassed.Hours;
+            //        break;
+            //    case PartyGameMode.Strategy:
+            //        modeRiskHours.value += timePassed.Hours;
+            //        break;
+            //    case PartyGameMode.SpacePirate:
+            //        modeSpaceWarsHours.value += timePassed.Hours;
+            //        break;
 
-            }
+            //}
 
-            dlcCount.value = Ref.steam.DLC.Count();
+            //dlcCount.value = Ref.steam.DLC.Count();
         }
     }
 }

@@ -238,6 +238,11 @@ namespace VikingEngine.DSSWars
 
                     new GuiLargeTextButton("Test sound", null, new GuiAction(testsound), false, layout);
                     new GuiTextButton("Load mod", null, loadMod, false, layout);
+                    if (Ref.steam.statsInitialized)
+                    {
+                        new GuiTextButton("Initialize steam stats", null, Ref.steam.stats.initializeAllStatsOnSteam, false, layout);
+                        new GuiTextButton("Load global steam stats", null, Ref.steam.stats.beginRequestGlobalStats, false, layout);
+                    }
                 }
                 new GuiTextButton("Credits", null, credits, true, layout);
 

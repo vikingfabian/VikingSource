@@ -104,6 +104,7 @@ English, Simplified Chinese, Japanese, Russian, Spanish
 -Dynamic shadows shader
 -New end boss
 -Lots of named factions
+https://discord.com/verification
 
 -steam stats
 -Min 7K wishlists
@@ -115,6 +116,4 @@ English, Simplified Chinese, Japanese, Russian, Spanish
 
 VertexPositionColorNormal
 VerticeDataColorTexture verticeData = new VerticeDataColorTexture(vertices, indexDrawOrder);
-
-
 

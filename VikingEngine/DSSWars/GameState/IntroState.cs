@@ -13,6 +13,7 @@ using Valve.Steamworks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.DSSWars.Data;
 
 namespace VikingEngine.DSSWars
 {
@@ -151,6 +152,8 @@ namespace VikingEngine.DSSWars
 #endif
 
                     Ref.main.criticalContentIsLoaded = true;
+                    new Achievements();
+                    new GameStats();
 
                     new GameState.ExitGamePlay();
                 }
