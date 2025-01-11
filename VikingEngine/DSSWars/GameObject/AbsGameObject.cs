@@ -74,12 +74,12 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (mayEdit)
                 {
-                    var editButton = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxImage(SpriteName.InterfaceTextInput) },
+                    var editButton = new RbButton(new List<AbsRichBoxMember> { new RbImage(SpriteName.InterfaceTextInput) },
                         new RbAction(beginEditName), null);
                     args.content.Add(editButton);
                     args.content.space();
                 }
-                var nameText = new RichBoxText(name);
+                var nameText = new RbText(name);
                 nameText.overrideColor = Color.LightYellow;
                 args.content.Add(nameText);
                 args.content.newLine();
