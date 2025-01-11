@@ -445,7 +445,7 @@ namespace VikingEngine.DSSWars.Work
         public override void toHud(ObjectHudArgs args)
         {
 
-            args.content.h2(Name()).overrideColor = Color.LightYellow;
+            args.content.h2(Name(out _)).overrideColor = Color.LightYellow;
             args.content.text(string.Format(DssRef.lang.WorkerHud_WorkType, status.workString()));
 
             status.xpToHud(args.content);
@@ -511,8 +511,9 @@ namespace VikingEngine.DSSWars.Work
             return this;
         }
 
-        public override string Name()
+        public override string Name(out bool mayEdit)
         {
+            mayEdit = false;
             return parentMapObject.TypeName() + " " + DssRef.lang.UnitType_Worker + " (" + parentArrayIndex.ToString() + ")";
         }
 

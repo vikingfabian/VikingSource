@@ -274,7 +274,7 @@ namespace VikingEngine.DSSWars.Display
                 content.h2(DssRef.lang.ArmyOption_Attack).overrideColor = HudLib.TitleColor_Attack;
             }
 
-            string name = obj.Name();
+            string name = obj.Name(out _);
             if (name != null)
             {
                 content.text(name).overrideColor = HudLib.TitleColor_Name;

@@ -11,7 +11,6 @@ using VikingEngine.ToGG.GameState;
 namespace VikingEngine.Input
 {
     //    /// <param name="result">input, null is canceled</param>
-    //    public delegate void TextInputEvent(int user, string result, int index);
     class TextInput : GameState
     {
         TextG display;

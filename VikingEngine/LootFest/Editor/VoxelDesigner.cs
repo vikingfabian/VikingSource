@@ -203,146 +203,10 @@ namespace VikingEngine.LootFest.Editor
         }
 
 
-        //void beginDrawGeometry(GeomitricType type)
-        //{
-        //    designerInterface.selectionArea = drawSphere(type, sphereRadius, designerInterface.drawCoord, worldPos, SelectedMaterial);
-
-        //    startUpdateVoxelObj(false);
-
-        //    designerInterface.selectionArea.Min = designerInterface.drawCoord;
-        //    designerInterface.selectionArea.Max = designerInterface.drawCoord;
-        //}
         protected override void chagedTool(PaintFillType tool)
         {
             infoText.TextString = "Tool: " + tool.ToString();
         }
-
-
-        //static RangeIntV3 drawSphere(GeomitricType type, float radius, IntVector3 drawCoord,
-        //    Map.WorldPosition worldPos, BlockHD selectedMaterial)
-        //{
-        //    int intRadius = (int)radius;
-        //    IntVector3 pos = IntVector3.Zero;
-        //    ushort blockMat = selectedMaterial.BlockValue;
-
-        //    switch (type)
-        //    {
-        //        default: //sphere
-
-        //            for (pos.Z = drawCoord.Z - intRadius; pos.Z <= drawCoord.Z + intRadius; pos.Z++)
-        //            {
-        //                for (pos.Y = drawCoord.Y - intRadius; pos.Y <= drawCoord.Y + intRadius; pos.Y++)
-        //                {
-        //                    for (pos.X = drawCoord.X - intRadius; pos.X <= drawCoord.X + intRadius; pos.X++)
-        //                    {
-        //                        if (CreationSizeLimit.WithinRange(pos) && (pos.Vec - drawCoord.Vec).Length() < radius)
-        //                        {
-        //                            Map.WorldPosition wp = worldPos;
-        //                            wp.WorldGrindex.Add(pos);
-        //                            if (wp.WorldGrindex.Y >= 0 && wp.WorldGrindex.Y < Map.WorldPosition.ChunkHeight)
-        //                            {
-        //                                wp.SetBlock_IfOpen(blockMat);
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //            break;
-        //        case GeomitricType.Cylinder:
-        //            const int Lenght = 3;
-        //            Vector2 planePos = Vector2.Zero;
-
-        //            for (pos.Z = drawCoord.Z - intRadius; pos.Z <= drawCoord.Z + intRadius; pos.Z++)
-        //            {
-        //                planePos.Y = pos.Z - drawCoord.Z;
-        //                for (pos.Y = drawCoord.Y; pos.Y <= drawCoord.Y + Lenght; pos.Y++)
-        //                {
-        //                    for (pos.X = drawCoord.X - intRadius; pos.X <= drawCoord.X + intRadius; pos.X++)
-        //                    {
-        //                        planePos.X = pos.X - drawCoord.X;
-        //                        if (CreationSizeLimit.WithinRange(pos) && planePos.Length() < radius)
-        //                        {
-        //                            Map.WorldPosition wp = worldPos;
-        //                            wp.WorldGrindex.Add(pos);
-        //                            if (wp.WorldGrindex.Y >= 0 && wp.WorldGrindex.Y < Map.WorldPosition.ChunkHeight)
-        //                            { 
-        //                                wp.SetBlock_IfOpen(blockMat);
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //            break;
-        //        case GeomitricType.Pyramid:
-        //            pos.Y = drawCoord.Y;
-        //            while (pos.Y < Map.WorldPosition.ChunkHeight && radius > 0)
-        //            {
-        //                for (pos.Z = drawCoord.Z - intRadius; pos.Z <= drawCoord.Z + intRadius; pos.Z++)
-        //                {
-        //                    for (pos.X = drawCoord.X - intRadius; pos.X <= drawCoord.X + intRadius; pos.X++)
-        //                    {
-        //                        if (CreationSizeLimit.WithinRange(pos))
-        //                        {
-        //                            Map.WorldPosition wp = worldPos;
-        //                            wp.WorldGrindex.Add(pos);
-        //                            if (wp.WorldGrindex.Y >= 0 && wp.WorldGrindex.Y < Map.WorldPosition.ChunkHeight)
-        //                            { 
-        //                                wp.SetBlock_IfOpen(blockMat);
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //                pos.Y++;
-        //                intRadius--;
-        //            }
-        //            intRadius = (int)radius;
-        //            break;
-        //    }
-
-
-        //    RangeIntV3 selectionArea = RangeIntV3.Zero;
-        //    selectionArea.Min.X = Bound.SetMinVal(drawCoord.X - intRadius, CreationSizeLimit.Min.X);
-        //    selectionArea.Min.Z = Bound.SetMinVal(drawCoord.Z - intRadius, CreationSizeLimit.Min.Z);
-
-        //    selectionArea.Max.X = Bound.SetMaxVal(drawCoord.X + intRadius, CreationSizeLimit.Max.X);
-        //    selectionArea.Max.Z = Bound.SetMaxVal(drawCoord.Z + intRadius, CreationSizeLimit.Max.Z);
-
-        //    return selectionArea;
-        //}
-
-
-        //protected override void drawInArea(PaintToolType fill, DrawShape tool, RangeIntV3 drawArea, bool isAsynch)
-        //{
-        //    switch (fill)
-        //    {
-        //        default:
-        //            Music.SoundManager.PlayFlatSound(LoadedSound.block_place_1);
-        //            break;
-        //        case PaintToolType.Delete:
-        //            Music.SoundManager.PlayFlatSound(LoadedSound.tool_dig);
-        //            break;
-        //        case PaintToolType.Select:
-        //            Music.SoundManager.PlayFlatSound(LoadedSound.tool_select);
-        //            selectedVoxels.Voxels.Clear();
-        //            templateSent = false;
-        //            break;
-
-        //    }
-        //    base.drawInArea(fill, tool, drawArea, isAsynch);
-
-        //    if (inGame && (fill == PaintToolType.Delete || SelectedMaterial.HasMaterial() || fill == PaintToolType.Select))
-        //    {
-        //        startUpdateVoxelObj(isAsynch);
-        //    }
-        //    if (fill == PaintToolType.Select)
-        //    {
-        //        refreshSelectionModel();
-        //        startUpdateVoxelObj(isAsynch);
-        //    }
-
-        //    designerInterface.drawSize = IntVector3.One;
-        //    UpdatePencilInfo();
-        //}
 
         void deleteArea(IntervalIntV3 volume)
         {
@@ -544,8 +408,7 @@ namespace VikingEngine.LootFest.Editor
         {
             ShowHUD(false);
             menusystem.closeMenu();
-        }
-        
+        }        
 
         public void setBgCol(Color col)
         {
@@ -559,7 +422,6 @@ namespace VikingEngine.LootFest.Editor
             menusystem.closeMenu();
         }
         
-
         public void changeCanvasSize(IntVector3 add)
         {
             drawLimits.Max += add;
@@ -581,8 +443,6 @@ namespace VikingEngine.LootFest.Editor
             UpdateDrawLimits();
             updateVoxelObj();
         }
-
-
 
         public void onFileNameChange(string result, object tag)
         {
@@ -843,61 +703,6 @@ namespace VikingEngine.LootFest.Editor
                     infoText.TextString += " " + drawCoordMaterial.ToString() + " (" + drawCoordMaterial.BlockValue.ToString() + ")";
                 }
 
-                //if (inGame)
-                //{
-                //    GetVoxel(
-
-                //    wp = worldPos;
-                //    wp.WorldGrindex += designerInterface.drawCoord;
-
-                //    int state_empty0_contact1_inside2 = 0;
-
-                //    if (drawCoordMaterial.HasMaterial())
-                //    {
-                //        state_empty0_contact1_inside2 = 2;
-                //    }
-                //    else if (checkSelectionContact(wp))
-                //    {
-                //        state_empty0_contact1_inside2 = 1;
-                //    }
-                //    designerInterface.setPencilColor(state_empty0_contact1_inside2);
-
-
-                //    //set shadow
-
-                //    //bool gotYpos = false;
-
-                //    //wp.WorldGrindex.Y -= 1;
-
-                //    //if (drawCoordMaterial.IsEmpty())
-                //    //{
-                //    //    while (wp.WorldGrindex.Y > 0)
-                //    //    {
-                //    //        wp.WorldGrindex.Y -= 1;
-                //    //        if (wp.BlockHasMaterial())
-                //    //        {
-                //    //            gotYpos = true;
-                //    //            break;
-                //    //        }
-                //    //    }
-                //    //}
-                //    //if (!gotYpos)
-                //    //{
-                //    //    wp.Y = designerInterface.drawCoord.Y;
-                //    //    while (wp.WorldGrindex.Y < Map.WorldPosition.MaxChunkY)
-                //    //    {
-                //    //        if (wp.BlockIsEmpty())
-                //    //        {
-                //    //            wp.WorldGrindex.Y -= 1;
-                //    //            break;
-                //    //        }
-                //    //        wp.Y += 1;
-
-                //    //    }
-                //    //}
-
-                //}
-                //else
                 {
                     base.UpdatePencilInfo();
                 }
@@ -906,25 +711,6 @@ namespace VikingEngine.LootFest.Editor
             }
         }
 
-        //bool checkSelectionContact(Map.WorldPosition wp)
-        //{
-        //    for (Dimensions d = Dimensions.X; d <= Dimensions.Z; d++)
-        //    {
-
-        //        for (int dir = 0; dir < 2; dir++)
-        //        {
-        //            IntVector3 pos = IntVector3.Zero;
-        //            pos.Set(d, lib.BoolToDirection(dir == 0));
-        //            if (wp.GetNeighborPos(pos).BlockHasMaterial())
-        //            {
-
-        //                return true;
-        //            }
-        //        }
-        //    }
-        //    return false;
-        //}
-        
         public void addLoadedModel(VoxelObjGridDataAnimHD loadedModel, bool combineLoading)
         {
             storeUndoableAction();
@@ -989,26 +775,9 @@ namespace VikingEngine.LootFest.Editor
         {
             storeUndoableAction();
 
-            //if (to.HasMaterial())
-            //{
-            //    to.material = swapMaterialFrom.material;
-            //}
             ushort swapTo = to.BlockValue;
             if (HasSelection)
             {
-                //if (!inGame && repeateOnAllFrames)
-                //{
-                //    designerInterface.drawSize = designerInterface.selectionArea.Add;
-                //    for (int i = 0; i < animationFrames.Frames.Count; i++)
-                //    {
-                //        swapMaterials(selectedVoxels, swapTo, false);
-                //        stampSelection(false);
-                //        selectedVoxels.Voxels.Clear();
-                //        nextFrame(true);
-                //        //drawInArea(PaintToolType.Select, DrawShape.Rectangle, designerInterface.selectionArea, false);
-                //    }
-                //}
-                //else
                 swapMaterials(selectedVoxels, swapTo, true);
 
                 if (!inGame && repeateOnAllFrames)
@@ -1114,20 +883,8 @@ namespace VikingEngine.LootFest.Editor
             if (from == swapTo)
                 return;
             IntVector3 pos = IntVector3.Zero;
-            //for (pos.Z = designerInterface.selectionArea.Min.Z; pos.Z <= designerInterface.selectionArea.Max.Z; pos.Z++)
-            //{
-            //    for (pos.Y = designerInterface.selectionArea.Min.Y; pos.Y <= designerInterface.selectionArea.Max.Y; pos.Y++)
-            //    {
-            //        for (pos.X = designerInterface.selectionArea.Min.X; pos.X <= designerInterface.selectionArea.Max.X; pos.X++)
-            //        {
-            //            if (grid.Get(pos) == from)
-            //            {
-            //                grid.Set(pos, swapTo);
-            //            }
-            //        }
+            
 
-            //    }
-            //}
             grid.ReplaceMaterial(from, swapTo, designerInterface.selectionArea);
 
             if (HasSelection)
@@ -1235,21 +992,16 @@ namespace VikingEngine.LootFest.Editor
             base.DeleteMe();
             menusystem.DeleteMe();
             infoText.DeleteMe();
-            //crossHair.DeleteMe();
             clearDoor();
         }
         void clearDoor()
         {
             if (doorOutline != null)
             {
-                //door = null;
                 doorOutline.DeleteMe();
                 doorOutline = null;
             }
         }
-
-        
-        
 
     }
 

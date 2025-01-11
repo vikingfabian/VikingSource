@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Valve.Steamworks;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
@@ -68,7 +69,8 @@ namespace VikingEngine.DSSWars.GameObject
         public BuildingStructure buildingStructure = new BuildingStructure();
         public TerrainStructure terrainStructure = new TerrainStructure();
 
-        string name = null;
+        bool customName = false;
+        ObjectName name = new ObjectName();
 
         IntVector2 cullingTopLeft, cullingBottomRight;
         public int cityTileRadius = 0;
@@ -441,6 +443,10 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(automateCity);
             w.Write((byte)automationFocus);
 
+            
+            //SaveLib.WriteString(w, customName? name : null);
+            name.write(w);
+            
             Debug.WriteCheck(w);
         }
 
@@ -525,6 +531,17 @@ namespace VikingEngine.DSSWars.GameObject
                 automateCity = r.ReadBoolean();
                 automationFocus = (AutomationFocus)r.ReadByte();
             }
+
+            //if (subversion >= 48)
+            //{ 
+            //    string readname = SaveLib.ReadString(r);
+            //    if (readname != null)
+            //    {
+            //        name = readname;
+            //        customName = true;
+            //    }
+            //}
+            name.read(r, subversion);
 
             Debug.ReadCheck(r);
         }
@@ -996,7 +1013,10 @@ namespace VikingEngine.DSSWars.GameObject
                 new Vector3(iconScale * 0.5f, 0.1f, iconScale * 0.5f));
             bound = volume.boundingBox();
 
-            name = Data.NameGenerator.CityName(tilePos);
+            if (!name.custom)
+            {
+                name.name = Data.NameGenerator.CityName(tilePos);
+            }
         }
 
         void initEconomy(bool newGame)
@@ -1622,9 +1642,15 @@ namespace VikingEngine.DSSWars.GameObject
             return "City" + parentArrayIndex.ToString();
         }
 
-        public override string Name()
+        public override string Name(out bool mayEdit)
         {
-            return name;
+            mayEdit = faction.player.IsLocalPlayer();
+            return name.name;
+        }
+
+        protected override void NameEditEvent(string result, object tag)
+        {
+            name.setCustom(result);
         }
 
         public override string TypeName()

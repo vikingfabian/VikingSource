@@ -1,5 +1,6 @@
 ﻿-Change Log-
-
+* Created a text input popup
+* Text input for voxel designer
 
 #OPT#
 culling av worker
