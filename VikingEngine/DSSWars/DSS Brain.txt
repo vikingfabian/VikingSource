@@ -3,6 +3,7 @@
 * Text input for voxel designer
 * Renaming of Armies and Cities
 * Improved voxeleditor undo action
+* Fixed some crashes
 
 #OPT#
 culling av worker

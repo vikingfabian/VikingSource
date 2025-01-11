@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Engine;
@@ -116,6 +117,7 @@ namespace VikingEngine.Voxels
             }
             else
             {
+                designer.setUndoDrawLimit(allFrames.Frames.First().Size);
                 designer.animationFrames = allFrames;
             }
 

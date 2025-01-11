@@ -251,7 +251,6 @@ namespace VikingEngine.Voxels
         { }
         public VoxelObjGridDataHD(IntVector3 size)
         {
-            //IntVector3 size = limits + 1;
             MaterialGrid = new ushort[size.X, size.Y, size.Z];
         }
         public VoxelObjGridDataHD Clone()

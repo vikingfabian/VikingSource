@@ -294,7 +294,7 @@ namespace VikingEngine.LootFest.Editor
             drawLimits.Max.AddDimension(Dimensions.Z, 2);
             UpdateDrawLimits();
 
-            moveAll(new IntVector3(1, 0, 1));
+            moveAll(new IntVector3(1, 0, 1), false);
 
             updateVoxelObj();
         }
@@ -311,7 +311,7 @@ namespace VikingEngine.LootFest.Editor
                 dropSelection(false);
                 bool repeatSave = repeateOnAllFrames;
                 repeateOnAllFrames = true;
-                moveAll(-designerInterface.selectionArea.Min);
+                moveAll(-designerInterface.selectionArea.Min, true);
                 repeateOnAllFrames = repeatSave;
                 drawLimits.Max = designerInterface.selectionArea.Add;
                 UpdateDrawLimits();
@@ -424,15 +424,16 @@ namespace VikingEngine.LootFest.Editor
         
         public void changeCanvasSize(IntVector3 add)
         {
+            storeUndoableAction(true);
             drawLimits.Max += add;
             UpdateDrawLimits();
             updateVoxelObj();
 
-            if (add.LargestSideLength() > 1)
+            if (add.LargestSideLength_Abs() > 1)
             {
                 bool storeRepeateOnAllFrames = repeateOnAllFrames;
                 repeateOnAllFrames = true;
-                moveAll(add / 2);
+                moveAll(add / 2, false);
 
                 repeateOnAllFrames = storeRepeateOnAllFrames;
             }
@@ -582,7 +583,7 @@ namespace VikingEngine.LootFest.Editor
                 if (HasSelection)
                 {
                     Music.SoundManager.PlayFlatSound(LoadedSound.block_place_1);
-                    storeUndoableAction();
+                    storeUndoableAction(false);
                     foreach (VoxelHD v in selectedVoxels.Voxels)
                     {
                         worldPos.GetNeighborPos(v.Position).SetBlock(v.Material);
@@ -713,7 +714,7 @@ namespace VikingEngine.LootFest.Editor
 
         public void addLoadedModel(VoxelObjGridDataAnimHD loadedModel, bool combineLoading)
         {
-            storeUndoableAction();
+            storeUndoableAction(true);
 
             if (combineLoading)
             {
@@ -773,7 +774,7 @@ namespace VikingEngine.LootFest.Editor
 
         void replaceSelectionMaterialsTo(BlockHD to)
         {
-            storeUndoableAction();
+            storeUndoableAction(repeateOnAllFrames);
 
             ushort swapTo = to.BlockValue;
             if (HasSelection)

@@ -836,6 +836,14 @@ namespace VikingEngine
         {
             return Math.Abs(val1) > Math.Abs(val2) ? val1 : val2;
         }
+        public static int LargestAbsoluteValue(int val1, int val2, int val3)
+        {
+            if (Math.Abs(val1) > Math.Abs(val2))
+            {
+                return Math.Abs(val1) > Math.Abs(val3) ? val1 : val3;
+            }
+            return Math.Abs(val2) > Math.Abs(val3) ? val2 : val3;
+        }
         public static float LargestValue(float val1, float val2)
         {
             return val1 > val2 ? val1 : val2;

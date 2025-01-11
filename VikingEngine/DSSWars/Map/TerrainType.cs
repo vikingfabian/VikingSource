@@ -125,7 +125,11 @@ namespace VikingEngine.DSSWars.Map
         WoodTower,
         StoneWall,
         StoneTower,
-
+        StoneWallGreen,
+        StoneWallBlueRoof,
+        StoneWallWoodHouse,
+        StoneGate,
+        StoneHouse,
         NUM_NONE
     }
 
@@ -134,6 +138,13 @@ namespace VikingEngine.DSSWars.Map
         Pavement,
         PavementFlower,
         Statue_ThePlayer,
+        PavementLamp,
+        PavemenFountain,
+        PavementRectFlower,
+        GardenFourBushes,
+        GardenLongTree,
+        GardenWalledBush,
+        GardenGrass,
         NUM_NONE
     }
 

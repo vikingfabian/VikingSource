@@ -75,6 +75,28 @@ namespace VikingEngine.DSSWars.Build
 
         DirtRoad,
 
+        DirtWall,
+        DirtTower,
+        WoodWall,
+        WoodTower,
+        StoneWall,
+        StoneTower,
+        StoneWallGreen,//1
+        StoneWallBlueRoof,//2
+        StoneWallWoodHouse,//3
+        StoneGate,//5
+        StoneHouse,//6
+        PavementLamp,//1
+        PavemenFountain,//2
+        PavementRectFlower,//4
+        GardenGrass,
+        GardenFourBushes,//0
+        GardenLongTree,//1
+        GardenWalledBush,//2
+        SmallCityHouse,
+        BigCityHouse,
+        CitySquare,
+        CobbleStones,
         NUM_NONE,
     }
     static class BuildLib
@@ -95,7 +117,6 @@ namespace VikingEngine.DSSWars.Build
         public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
         public static void AvailableBuildTypes(List<BuildAndExpandType> list, GameObject.City city)
         {
-            //List<BuildAndExpandType> result = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
             var unlocks = city.technology.GetUnlocks(false);
 
             if (StartupSettings.UnlockAllProgress)
@@ -190,12 +211,7 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.WaterResovoir);
             }
             
-            //if (city.buildingStructure.buildingLevel_logistics >= 1 ||
-            //    StartupSettings.UnlockAllProgress)
-            //{
-                list.Add(BuildAndExpandType.CoalPit);
-            //}
-            
+            list.Add(BuildAndExpandType.CoalPit);
             list.Add(BuildAndExpandType.WorkBench);
             list.Add(BuildAndExpandType.Cook);
             list.Add(BuildAndExpandType.Smelter);
@@ -254,7 +270,28 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.Statue_ThePlayer);
             }
 
-            //return list;
+            list.Add(BuildAndExpandType.DirtWall);
+            list.Add(BuildAndExpandType.DirtTower);
+            list.Add(BuildAndExpandType.WoodWall);
+            list.Add(BuildAndExpandType.WoodTower);
+            list.Add(BuildAndExpandType.StoneWall);
+            list.Add(BuildAndExpandType.StoneTower);
+            list.Add(BuildAndExpandType.StoneWallGreen);
+            list.Add(BuildAndExpandType.StoneWallBlueRoof);
+            list.Add(BuildAndExpandType.StoneWallWoodHouse);
+            list.Add(BuildAndExpandType.StoneGate);
+            list.Add(BuildAndExpandType.StoneHouse);
+            list.Add(BuildAndExpandType.PavementLamp);
+            list.Add(BuildAndExpandType.PavemenFountain);
+            list.Add(BuildAndExpandType.PavementRectFlower);
+            list.Add(BuildAndExpandType.GardenGrass);
+            list.Add(BuildAndExpandType.GardenFourBushes);
+            list.Add(BuildAndExpandType.GardenLongTree);
+            list.Add(BuildAndExpandType.GardenWalledBush);
+            list.Add(BuildAndExpandType.SmallCityHouse);
+            list.Add(BuildAndExpandType.BigCityHouse);
+            list.Add(BuildAndExpandType.CitySquare);
+            list.Add(BuildAndExpandType.CobbleStones);
         }
 
         public static void Init()
@@ -323,6 +360,30 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.Chemist, TerrainMainType.Building, (int)TerrainBuildingType.Chemist, SpriteName.WarsBuild_Chemist, CraftBuildingLib.Chemist);
             new BuildOption(BuildAndExpandType.Gunmaker, TerrainMainType.Building, (int)TerrainBuildingType.Gunmaker, SpriteName.WarsBuild_Gunmaker, CraftBuildingLib.Gunmaker);
             new BuildOption(BuildAndExpandType.School, TerrainMainType.Building, (int)TerrainBuildingType.School, SpriteName.WarsBuild_School, CraftBuildingLib.School);
+
+
+            new BuildOption(BuildAndExpandType.DirtWall, TerrainMainType.Wall, (int)TerrainWallType.DirtWall, SpriteName.MissingImage, CraftBuildingLib.DirtWall);
+            new BuildOption(BuildAndExpandType.DirtTower,TerrainMainType.Wall, (int)TerrainWallType.DirtTower, SpriteName.MissingImage, CraftBuildingLib.DirtTower);
+            new BuildOption(BuildAndExpandType.WoodWall,TerrainMainType.Wall, (int)TerrainWallType.WoodWall, SpriteName.MissingImage, CraftBuildingLib.WoodWall);
+            new BuildOption(BuildAndExpandType.WoodTower,TerrainMainType.Wall, (int)TerrainWallType.WoodTower, SpriteName.MissingImage, CraftBuildingLib.WoodTower);
+            new BuildOption(BuildAndExpandType.StoneWall,TerrainMainType.Wall, (int)TerrainWallType.StoneWall, SpriteName.MissingImage, CraftBuildingLib.StoneWall);
+            new BuildOption(BuildAndExpandType.StoneTower,TerrainMainType.Wall, (int)TerrainWallType.StoneTower, SpriteName.MissingImage, CraftBuildingLib.StoneTower);
+            new BuildOption(BuildAndExpandType.StoneWallGreen,TerrainMainType.Wall, (int)TerrainWallType.StoneWallGreen, SpriteName.MissingImage, CraftBuildingLib.StoneWallGreen);
+             new BuildOption(BuildAndExpandType.StoneWallBlueRoof,TerrainMainType.Wall, (int)TerrainWallType.StoneWallBlueRoof, SpriteName.MissingImage, CraftBuildingLib.StoneWallBlueRoof);
+             new BuildOption(BuildAndExpandType.StoneWallWoodHouse,TerrainMainType.Wall, (int)TerrainWallType.StoneWallWoodHouse, SpriteName.MissingImage, CraftBuildingLib.StoneWallWoodHouse);
+             new BuildOption(BuildAndExpandType.StoneGate,TerrainMainType.Wall, (int)TerrainWallType.StoneGate, SpriteName.MissingImage, CraftBuildingLib.StoneGate);
+             new BuildOption(BuildAndExpandType.StoneHouse,TerrainMainType.Wall, (int)TerrainWallType.StoneHouse, SpriteName.MissingImage, CraftBuildingLib.StoneHouse);
+             new BuildOption(BuildAndExpandType.PavementLamp,TerrainMainType.Decor, (int)TerrainDecorType.PavementLamp, SpriteName.MissingImage, CraftBuildingLib.PavementLamp);
+            new BuildOption(BuildAndExpandType.PavemenFountain,TerrainMainType.Decor, (int)TerrainDecorType.PavemenFountain, SpriteName.MissingImage, CraftBuildingLib.PavemenFountain);
+            new BuildOption(BuildAndExpandType.PavementRectFlower,TerrainMainType.Decor, (int)TerrainDecorType.PavementRectFlower, SpriteName.MissingImage, CraftBuildingLib.PavementRectFlower);
+            new BuildOption(BuildAndExpandType.GardenGrass, TerrainMainType.Decor, (int)TerrainDecorType.GardenGrass, SpriteName.MissingImage, CraftBuildingLib.GardenGrass);
+            new BuildOption(BuildAndExpandType.GardenFourBushes, TerrainMainType.Decor, (int)TerrainDecorType.GardenFourBushes, SpriteName.MissingImage, CraftBuildingLib.GardenFourBushes);
+            new BuildOption(BuildAndExpandType.GardenLongTree,TerrainMainType.Decor, (int)TerrainDecorType.GardenLongTree, SpriteName.MissingImage, CraftBuildingLib.GardenLongTree);
+            new BuildOption(BuildAndExpandType.GardenWalledBush,TerrainMainType.Decor, (int)TerrainDecorType.GardenWalledBush, SpriteName.MissingImage, CraftBuildingLib.GardenWalledBush);
+            new BuildOption(BuildAndExpandType.SmallCityHouse,TerrainMainType.Building, (int)TerrainBuildingType.SmallHouse, SpriteName.MissingImage, CraftBuildingLib.SmallCityHouse);
+            new BuildOption(BuildAndExpandType.BigCityHouse,TerrainMainType.Building, (int)TerrainBuildingType.BigHouse, SpriteName.MissingImage, CraftBuildingLib.BigCityHouse);
+            new BuildOption(BuildAndExpandType.CitySquare,TerrainMainType.Building, (int)TerrainBuildingType.Square, SpriteName.MissingImage, CraftBuildingLib.CitySquare);
+            new BuildOption(BuildAndExpandType.CobbleStones,TerrainMainType.Building, (int)TerrainBuildingType.CobbleStones, SpriteName.MissingImage, CraftBuildingLib.CobbleStones);
 
         }
 

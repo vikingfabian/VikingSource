@@ -109,6 +109,7 @@ namespace VikingEngine.DSSWars
 
             loadVoxelModel(VoxelModelName.decor_statue, false);
             loadVoxelModel(VoxelModelName.city_pavement, false);
+            loadVoxelModel(VoxelModelName.city_garden, false);
 
             loadVoxelModel(VoxelModelName.Pig, false);
             loadVoxelModel(VoxelModelName.Hen, false);
@@ -180,6 +181,11 @@ namespace VikingEngine.DSSWars
         {
             if (instance != null)
             {
+                int lay = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.TerrainLayer;
+                if (!instance.InRenderList && instance.inRenderLayer != lay )
+                {
+                    lib.DoNothing();
+                }
                 instance.Visible = false;
                 instance.Rotation = RotationQuarterion.Identity;
                 (detailLayer ? voxelModelInstancesPool_detail : voxelModelInstancesPool_overview).Push(instance);

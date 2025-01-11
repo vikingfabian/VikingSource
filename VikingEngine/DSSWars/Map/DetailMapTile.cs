@@ -8,6 +8,7 @@ using System.Text;
 using VikingEngine.DSSWars.GameObject.Animal;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.Graphics;
+using VikingEngine.LootFest.Map.Terrain;
 
 namespace VikingEngine.DSSWars.Map
 {
@@ -93,6 +94,8 @@ namespace VikingEngine.DSSWars.Map
 
                 Vector2 topLeft = VectorExt.V2NegHalf;
                 IntVector2 subTileStart = pos * WorldData.TileSubDivitions;
+                Biom biom = DssRef.map.bioms.bioms[(int)tile.biom];
+                var col = biom.colors_height[tile.heightLevel];
 
                 for (int y = 0; y < WorldData.TileSubDivitions; ++y)
                 {
@@ -107,7 +110,9 @@ namespace VikingEngine.DSSWars.Map
                         Vector2 subTopLeft = new Vector2(topLeft.X + x * WorldData.SubTileWidth, topLeft.Y + y * WorldData.SubTileWidth);
 
                         bool bSurfacePolygonTexture = true;
+                        SurfaceTextureType surfacePolygonTexture = col.Texture;
                         SpriteName surfaceSprite = SpriteName.WhiteArea_LFtiles;
+                        
                         Color surfaceColor = subTile.color;
 
                         switch (subTile.mainTerrain)
@@ -141,7 +146,7 @@ namespace VikingEngine.DSSWars.Map
                             case TerrainMainType.Decor:
                                 bSurfacePolygonTexture = false;
                                 createDecor(tile, ref subTile, (TerrainDecorType)subTile.subTerrain,
-                                    topCenter(ref subTile, ref subTopLeft));
+                                    topCenter(ref subTile, ref subTopLeft), ref bSurfacePolygonTexture, ref surfacePolygonTexture, ref surfaceColor);
                                 break;
                         }
 
@@ -149,7 +154,7 @@ namespace VikingEngine.DSSWars.Map
 
                         if (bSurfacePolygonTexture)
                         {
-                            surfaceTexture(tile, subTile, subTopLeft);
+                            surfaceTexture(tile, subTile, subTopLeft, surfaceColor, surfacePolygonTexture);
                         }
 
                         DssRef.world.subTileGrid.Set(
@@ -224,10 +229,10 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        void surfaceTexture(Tile tile, SubTile subTile, Vector2 subTopLeft)
+        void surfaceTexture(Tile tile, SubTile subTile, Vector2 subTopLeft, Color tileColor, SurfaceTextureType textureType)
         {
-            Biom biom = DssRef.map.bioms.bioms[(int)tile.biom];
-            var col = biom.colors_height[tile.heightLevel];
+            
+            
 
             Vector3 center = new Vector3(
                 subTopLeft.X,
@@ -239,7 +244,7 @@ namespace VikingEngine.DSSWars.Map
             //    subTile.mainTerrain != TerrainMainType.Building &&
             //    subTile.mainTerrain != TerrainMainType.Decor)
             //{
-                switch (col.Texture)
+                switch (textureType)
                 {
                     case SurfaceTextureType.Grass:
                         {
@@ -250,7 +255,7 @@ namespace VikingEngine.DSSWars.Map
                                 pos.X += GrassCenterRange.GetRandom(rnd);
                                 pos.Z += GrassCenterRange.GetRandom(rnd);
 
-                                Color bottomCol = ColorExt.ChangeBrighness(subTile.color, 4);
+                                Color bottomCol = ColorExt.ChangeBrighness(tileColor, 4);
                                 Color topCol = bottomCol;
 
                                 double rndCol = rnd.Double();
@@ -432,25 +437,44 @@ namespace VikingEngine.DSSWars.Map
             wp.X += WorldData.SubTileHalfWidth;
             wp.Z += WorldData.SubTileHalfWidth;
 
+            const float WallSize = 1.5f;
+
             switch (buildingType)
             {
                 case TerrainWallType.DirtWall:
-                    newFoliage().init(LootFest.VoxelModelName.city_dirtwall, rnd, wp, WorldData.SubTileWidth * 1.4f);
+                    newFoliage().init(LootFest.VoxelModelName.city_dirtwall, rnd, wp, WorldData.SubTileWidth * WallSize);
                     break;
                 case TerrainWallType.DirtTower:
-                    newFoliage().init(LootFest.VoxelModelName.city_dirttower, rnd, wp, WorldData.SubTileWidth * 1.4f);
+                    newFoliage().init(LootFest.VoxelModelName.city_dirttower, rnd, wp, WorldData.SubTileWidth * WallSize);
                     break;
                 case TerrainWallType.WoodWall:
-                    newFoliage().init(LootFest.VoxelModelName.city_woodwall, rnd, wp, WorldData.SubTileWidth * 1.4f);
+                    newFoliage().init(LootFest.VoxelModelName.city_woodwall, rnd, wp, WorldData.SubTileWidth * WallSize);
                     break;
                 case TerrainWallType.WoodTower:
-                    newFoliage().init(LootFest.VoxelModelName.city_woodtower, rnd, wp, WorldData.SubTileWidth * 1.4f);
+                    newFoliage().init(LootFest.VoxelModelName.city_woodtower, rnd, wp, WorldData.SubTileWidth * WallSize);
                     break;
                 case TerrainWallType.StoneWall:
-                    newFoliage().init(LootFest.VoxelModelName.city_stonewall, rnd, wp, WorldData.SubTileWidth * 1.4f);
+                    newFoliage().init(LootFest.VoxelModelName.city_stonewall, 0, wp, WorldData.SubTileWidth * WallSize);
                     break;
                 case TerrainWallType.StoneTower:
-                    newFoliage().init(LootFest.VoxelModelName.city_stonetower, rnd, wp, WorldData.SubTileWidth * 1.4f);
+                    newFoliage().init(LootFest.VoxelModelName.city_stonetower, rnd, wp, WorldData.SubTileWidth * WallSize);
+                    break;
+
+
+                case TerrainWallType.StoneWallGreen:
+                    newFoliage().init(LootFest.VoxelModelName.city_stonewall, 1, wp, WorldData.SubTileWidth * WallSize);
+                    break;
+                case TerrainWallType.StoneWallBlueRoof:
+                    newFoliage().init(LootFest.VoxelModelName.city_stonewall, 2, wp, WorldData.SubTileWidth * WallSize);
+                    break;
+                case TerrainWallType.StoneWallWoodHouse:
+                    newFoliage().init(LootFest.VoxelModelName.city_stonewall, 3, wp, WorldData.SubTileWidth * WallSize);
+                    break;
+                case TerrainWallType.StoneGate:
+                    newFoliage().init(LootFest.VoxelModelName.city_stonewall, 5, wp, WorldData.SubTileWidth * 1.5f);
+                    break;
+                case TerrainWallType.StoneHouse:
+                    newFoliage().init(LootFest.VoxelModelName.city_stonewall, 6, wp, WorldData.SubTileWidth * WallSize);
                     break;
 
                 default:
@@ -628,22 +652,66 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        void createDecor(Tile tile, ref SubTile subTile, TerrainDecorType decorType, Vector3 wp)
+        static readonly Color GardenGrassCol = new Color(104, 146, 70);
+        static readonly Color GardenGrassColShadow = new Color(90, 135, 60);
+        static readonly Color PavementGroundCol = new Color(92, 92, 136);
+
+        void createDecor(Tile tile, ref SubTile subTile, TerrainDecorType decorType, Vector3 wp, ref bool bSurfacePolygonTexture, ref SurfaceTextureType surfacePolygonTexture, ref Color surfaceColor)
         {
             wp.X += WorldData.SubTileHalfWidth;
             wp.Z += WorldData.SubTileHalfWidth;
 
             switch (decorType) {
                 case TerrainDecorType.Pavement:
+                    surfaceColor = PavementGroundCol;
                     newFoliage().init(LootFest.VoxelModelName.city_pavement, 0, wp, WorldData.SubTileWidth * 1.3f);
                     break;
                 case TerrainDecorType.PavementFlower:
+                    surfaceColor = PavementGroundCol;
                     newFoliage().init(LootFest.VoxelModelName.city_pavement, 1, wp, WorldData.SubTileWidth * 1.3f);
                     break;
                 case TerrainDecorType.Statue_ThePlayer:
+                    surfaceColor = PavementGroundCol;
                     newFoliage().init(LootFest.VoxelModelName.decor_statue, 0, wp, WorldData.SubTileWidth * 1f);
                     break;
-               
+
+
+                case TerrainDecorType.PavementLamp:
+                    surfaceColor = PavementGroundCol;
+                    newFoliage().init(LootFest.VoxelModelName.city_pavement, 1, wp, WorldData.SubTileWidth * 1.3f);
+                    break;
+                case TerrainDecorType.PavemenFountain:
+                    surfaceColor = PavementGroundCol;
+                    newFoliage().init(LootFest.VoxelModelName.city_pavement, 2, wp, WorldData.SubTileWidth * 1.3f);
+                    break;
+                case TerrainDecorType.PavementRectFlower:
+                    surfaceColor = PavementGroundCol;
+                    newFoliage().init(LootFest.VoxelModelName.city_pavement, 4, wp, WorldData.SubTileWidth * 1.3f);
+                    break;
+                case TerrainDecorType.GardenFourBushes:
+                    bSurfacePolygonTexture = true;
+                    surfaceColor = GardenGrassColShadow;
+                    surfacePolygonTexture = SurfaceTextureType.Grass;
+                    newFoliage().init(LootFest.VoxelModelName.city_garden, 0, wp, WorldData.SubTileWidth * 1.3f);
+                    break;
+                case TerrainDecorType.GardenLongTree:
+                    bSurfacePolygonTexture = true;
+                    surfaceColor = GardenGrassColShadow;
+                    surfacePolygonTexture = SurfaceTextureType.Grass;
+                    newFoliage().init(LootFest.VoxelModelName.city_garden, 1, wp, WorldData.SubTileWidth * 1.3f);
+                    break;
+                case TerrainDecorType.GardenWalledBush:
+                    bSurfacePolygonTexture = true;
+                    surfaceColor = GardenGrassCol;
+                    surfacePolygonTexture = SurfaceTextureType.Grass;
+                    newFoliage().init(LootFest.VoxelModelName.city_garden, 2, wp, WorldData.SubTileWidth * 1.3f);
+                    break;
+                case TerrainDecorType.GardenGrass:
+                    bSurfacePolygonTexture = true;
+                    surfaceColor = GardenGrassCol;
+                    surfacePolygonTexture = SurfaceTextureType.Grass;                    
+                    break;
+
                 default:
                     throw new NotImplementedException();
             }

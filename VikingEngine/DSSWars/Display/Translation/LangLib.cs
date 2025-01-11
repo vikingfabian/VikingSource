@@ -833,7 +833,17 @@ namespace VikingEngine.DSSWars.Display.Translation
                             return DssRef.todoLang.BuildingType_Gunmaker;
                         case TerrainBuildingType.School:
                             return DssRef.todoLang.BuildingType_School;
-                       
+
+
+                        case TerrainBuildingType.CobbleStones:
+                            return "Cobble stones";
+                        case TerrainBuildingType.SmallHouse:
+                            return "Small house";
+                        case TerrainBuildingType.BigHouse:
+                            return "Big house";
+                        case TerrainBuildingType.Square:
+                            return "City square";
+
 
                         default:
                             return DssRef.lang.BuildingType_DefaultName;
@@ -923,6 +933,14 @@ namespace VikingEngine.DSSWars.Display.Translation
                             return DssRef.lang.DecorType_Pavement + " B";
                         case TerrainDecorType.Statue_ThePlayer:
                             return DssRef.lang.DecorType_Statue;
+
+                        case TerrainDecorType.PavementLamp: return "pavement lamp";
+                        case TerrainDecorType.PavemenFountain: return "pavement fountain";
+                        case TerrainDecorType.PavementRectFlower: return DssRef.lang.DecorType_Pavement + " C";
+                        case TerrainDecorType.GardenFourBushes: return "Garden bushes";
+                        case TerrainDecorType.GardenLongTree: return "Garden long tree";
+                        case TerrainDecorType.GardenWalledBush: return "Garden bush";
+                        case TerrainDecorType.GardenGrass: return "Garden grass";
                     }
                     break;
 
@@ -936,6 +954,25 @@ namespace VikingEngine.DSSWars.Display.Translation
                     return DssRef.lang.Resource;
 
                 case TerrainMainType.Wall:
+
+                    switch ((TerrainWallType)subType)
+                    { 
+                        case TerrainWallType.DirtWall:
+                            return "dirt wall";
+                        case TerrainWallType.DirtTower:
+                            return "dirt tower";
+                        case TerrainWallType.WoodWall: return "wood wall";
+                        case TerrainWallType.WoodTower: return "wood tower";
+                        case TerrainWallType.StoneWall: return "stonewall";
+                        case TerrainWallType.StoneTower: return "stone tower";
+                        case TerrainWallType.StoneWallGreen: return "stonewall green";
+                        case TerrainWallType.StoneWallBlueRoof: return "stonewall with roof";
+                        case TerrainWallType.StoneWallWoodHouse: return "stonewall with house";
+                        case TerrainWallType.StoneGate: return "stonewall gate";
+                        case TerrainWallType.StoneHouse: return "castle stone house";
+
+                    }
+
                     return DssRef.lang.BuildingType_Wall;
             }
 

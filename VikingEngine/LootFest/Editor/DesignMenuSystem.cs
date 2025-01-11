@@ -274,12 +274,12 @@ namespace VikingEngine.LootFest.Editor
         {
             var layout = new GuiLayout("Move All", menu);
             {
-                new GuiTextButton("Move +X", null, new GuiAction1Arg<IntVector3>(designer.moveAll, IntVector3.PlusX), false, layout);
-                new GuiTextButton("Move Up", null, new GuiAction1Arg<IntVector3>(designer.moveAll, IntVector3.PlusY), false, layout);
-                new GuiTextButton("Move +Z", null, new GuiAction1Arg<IntVector3>(designer.moveAll, IntVector3.PlusZ), false, layout);
-                new GuiTextButton("Move -X", null, new GuiAction1Arg<IntVector3>(designer.moveAll, IntVector3.NegativeX), false, layout);
-                new GuiTextButton("Move Down", null, new GuiAction1Arg<IntVector3>(designer.moveAll, IntVector3.NegativeY), false, layout);
-                new GuiTextButton("Move -Z", null, new GuiAction1Arg<IntVector3>(designer.moveAll, IntVector3.NegativeZ), false, layout);
+                new GuiTextButton("Move +X", null, new GuiAction2Arg<IntVector3, bool>(designer.moveAll, IntVector3.PlusX, true), false, layout);
+                new GuiTextButton("Move Up", null, new GuiAction2Arg<IntVector3, bool>(designer.moveAll, IntVector3.PlusY, true), false, layout);
+                new GuiTextButton("Move +Z", null, new GuiAction2Arg<IntVector3, bool>(designer.moveAll, IntVector3.PlusZ, true), false, layout);
+                new GuiTextButton("Move -X", null, new GuiAction2Arg<IntVector3, bool>(designer.moveAll, IntVector3.NegativeX, true), false, layout);
+                new GuiTextButton("Move Down", null, new GuiAction2Arg<IntVector3, bool>(designer.moveAll, IntVector3.NegativeY, true), false, layout);
+                new GuiTextButton("Move -Z", null, new GuiAction2Arg<IntVector3, bool>(designer.moveAll, IntVector3.NegativeZ, true), false, layout);
 
                 allFramesChkBox(layout);
 

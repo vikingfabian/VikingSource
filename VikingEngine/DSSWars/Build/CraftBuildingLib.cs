@@ -732,5 +732,230 @@ namespace VikingEngine.DSSWars.Build
            },
             XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Master_4
        );
+
+
+
+        public static readonly CraftBlueprint DirtWall = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.DirtWall,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Gold, 1),
+          },
+           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+        );
+
+        public static readonly CraftBlueprint DirtTower = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.DirtTower,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Gold, 1),
+          },
+           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint WoodWall = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.WoodWall,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Gold, 1),
+          },
+           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint WoodTower = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.WoodTower,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Gold, 1),
+          },
+           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint StoneWall = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.StoneWall,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Gold, 1),
+          },
+           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint StoneTower = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.StoneTower,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Gold, 1),
+          },
+           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint StoneWallGreen = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.StoneWallGreen,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Gold, 1),
+          },
+           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint StoneWallBlueRoof = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.StoneWallBlueRoof,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Gold, 1),
+          },
+           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint StoneWallWoodHouse = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.StoneWallWoodHouse,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Gold, 1),
+          },
+           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint StoneGate = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.StoneGate,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Gold, 1),
+          },
+           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint StoneHouse = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.StoneHouse,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Gold, 1),
+          },
+           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint PavementLamp = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.PavementLamp,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Gold, 1),
+          },
+           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint PavemenFountain = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.PavemenFountain,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Gold, 1),
+          },
+           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint PavementRectFlower = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.PavementRectFlower,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Gold, 1),
+          },
+           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint GardenFourBushes = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.GardenFourBushes,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Gold, 1),
+          },
+           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint GardenLongTree = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.GardenLongTree,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Gold, 1),
+          },
+           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint GardenWalledBush = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.GardenWalledBush,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Gold, 1),
+          },
+           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint SmallCityHouse = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.SmallCityHouse,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Gold, 1),
+          },
+           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint BigCityHouse = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.BigCityHouse,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Gold, 1),
+          },
+           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint CitySquare = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.CitySquare,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Gold, 1),
+          },
+           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint CobbleStones = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.CobbleStones,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Gold, 1),
+          },
+           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+        );
+
+        public static readonly CraftBlueprint GardenGrass = new CraftBlueprint(
+          CraftResultType.Building,
+          (int)Build.BuildAndExpandType.GardenGrass,
+         1,
+         new UseResource[]
+         {
+               new UseResource(ItemResourceType.Gold, 1),
+         },
+          XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+       );
     }
 }

@@ -10,6 +10,7 @@ using VikingEngine.HUD;
 using VikingEngine.LootFest.Data;
 using VikingEngine.Input;
 using VikingEngine.LootFest.Map.HDvoxel;
+using System.ComponentModel.Design;
 
 namespace VikingEngine.Voxels
 {
@@ -136,7 +137,7 @@ namespace VikingEngine.Voxels
             
             if (HasSelection)
             {
-                moveAll(posDiff);
+                moveAll(posDiff, false);
             }
             UpdatePencilInfo();
 
@@ -282,7 +283,7 @@ namespace VikingEngine.Voxels
         }
         protected void ExpandDrawLimits(Dimensions dir, int add)
         {
-            storeUndoableAction();
+            storeUndoableAction(true);
 
             switch (dir)
             {
@@ -316,6 +317,16 @@ namespace VikingEngine.Voxels
                 return true;
             }
             return false;
+        }
+
+        public void setUndoDrawLimit(IntVector3 size)
+        {
+            if (size != drawLimits.Size)
+            {
+                drawLimits.Size = size;
+                animationFrames = null;
+                UpdateDrawLimits();
+            }
         }
 
         /// <summary>
@@ -543,9 +554,9 @@ namespace VikingEngine.Voxels
             }
         }
 
-        virtual protected void storeUndoableAction()
+        virtual protected void storeUndoableAction(bool allFrames)
         {
-
+            this.undolist.add(new UndoAction(this, allFrames? -1 : currentFrame.Value));
         }
 
         virtual public void print(string text)
@@ -561,7 +572,7 @@ namespace VikingEngine.Voxels
                 designerInterface.selectionArea.AddZ = add.X;
 
                 IntVector3 posdiff = designerInterface.selectionArea.Min - designerInterface.drawCoord;
-                moveAll(-posdiff);
+                moveAll(-posdiff, true);
 
 
                 selectedVoxels.Rotate(dir, designerInterface.selectionArea);
@@ -622,7 +633,7 @@ namespace VikingEngine.Voxels
         }
         
 
-        public void moveAll(IntVector3 dir)
+        public void moveAll(IntVector3 dir, bool storeUndo)
         {
             if (dir != IntVector3.Zero)
             {
@@ -635,6 +646,10 @@ namespace VikingEngine.Voxels
                 }
                 else
                 {
+                    if (storeUndo)
+                    {
+                        storeUndoableAction(repeateOnAllFrames);
+                    }
                     if (repeateOnAllFrames)
                     {
                         for (int i = 0; i < animationFrames.Frames.Count; i++)
@@ -645,7 +660,7 @@ namespace VikingEngine.Voxels
                     }
                     else
                     {
-                        storeUndoableAction();
+                        
                         voxels.Move(dir, drawLimits);
                     }
 
@@ -1018,7 +1033,7 @@ namespace VikingEngine.Voxels
         {
             if (HasSelection)
             {
-                storeUndoableAction();
+                storeUndoableAction(false);
 
                 if (startThread)
                     new ThreadedTemplateStamp(this, selectedVoxels.Clone());
