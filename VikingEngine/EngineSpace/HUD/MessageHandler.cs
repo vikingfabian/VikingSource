@@ -207,8 +207,8 @@ namespace VikingEngine.HUD
         }
         public void ReadStream(System.IO.BinaryReader r)
         {
-            Text = SaveLib.ReadString(r);
-            Sender = SaveLib.ReadString(r);
+            Text = SaveLib.ReadString_safe(r);
+            Sender = SaveLib.ReadString_safe(r);
         }
 
 

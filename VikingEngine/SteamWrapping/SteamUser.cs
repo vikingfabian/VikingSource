@@ -26,7 +26,7 @@ namespace VikingEngine.SteamWrapping
 
         public void read(System.IO.BinaryReader r)
         {
-            name = SaveLib.ReadString(r);
+            name = SaveLib.ReadString_safe(r);
             id = r.ReadUInt64();
         }
 

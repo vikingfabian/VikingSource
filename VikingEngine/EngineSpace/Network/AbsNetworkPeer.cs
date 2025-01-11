@@ -165,7 +165,7 @@ namespace VikingEngine.Network
         public StoredPeer(System.IO.BinaryReader r)
         {
             fullId = r.ReadUInt64();
-            name = SaveLib.ReadString(r);
+            name = SaveLib.ReadString_safe(r);
         }
 
         public void write(System.IO.BinaryWriter w)

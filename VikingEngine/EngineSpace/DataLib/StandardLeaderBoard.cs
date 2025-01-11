@@ -27,7 +27,7 @@ namespace VikingEngine.DataLib
         }
         public void ReadSaveFile(System.IO.BinaryReader r, byte version)
         {
-            gamer = SaveLib.ReadString(r);
+            gamer = SaveLib.ReadString_safe(r);
             Score = r.ReadInt32();
         }
 

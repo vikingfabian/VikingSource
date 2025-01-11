@@ -1,6 +1,7 @@
 ﻿-Change Log-
 * Created a text input popup
 * Text input for voxel designer
+* Renaming of Armies and Cities
 
 #OPT#
 culling av worker

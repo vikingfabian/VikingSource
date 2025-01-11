@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars
         public static PlayState state;
         
         public static GameObject.AllUnits profile;
-        public static GameTime time;
+        public static GameTime time = new GameTime();
         public static Display.Translation.AbsLanguage lang;
         public static Display.Translation.TodoTranslation todoLang = new Display.Translation.TodoTranslation();
         public static PlaySettings settings;

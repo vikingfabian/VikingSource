@@ -81,7 +81,7 @@ namespace VikingEngine.LootFest.Editor
 
         public void ReadStream(System.IO.BinaryReader r, byte version)
         {
-            Name = SaveLib.ReadString(r);
+            Name = SaveLib.ReadString_safe(r);
             point = new Graphics.Point3D();
             point.Position = SaveLib.ReadVector3(r);
             point.Rotation.ReadStream(r);

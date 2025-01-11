@@ -36,7 +36,7 @@ namespace VikingEngine
             w.Write((byte)value.Length);
             w.Write(value.ToCharArray());
         }
-        public static string ReadString(System.IO.BinaryReader r)
+        public static string ReadString_safe(System.IO.BinaryReader r)
         {
             try
             {
@@ -50,6 +50,14 @@ namespace VikingEngine
 
                 return null;
             }
+        }
+
+        public static string ReadString(System.IO.BinaryReader r)
+        {
+            byte length = r.ReadByte();
+            if (length == 0)
+                return null;
+            return new string(r.ReadChars(length));
         }
 
         public static void WriteVector(System.IO.BinaryWriter w, Vector3 value)

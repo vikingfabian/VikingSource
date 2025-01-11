@@ -180,7 +180,7 @@ namespace VikingEngine
             }
             if (version >= 4 && version < 9)
             {
-                string screenName = SaveLib.ReadString(r);
+                string screenName = SaveLib.ReadString_safe(r);
 
 //#if PCGAME
 //                foreach (var m in System.Windows.Forms.Screen.AllScreens)

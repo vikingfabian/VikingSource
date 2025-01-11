@@ -85,7 +85,7 @@ namespace VikingEngine.ToGG.HeroQuest.Data
             
             if (quest == QuestName.Custom)
             {
-                customName = SaveLib.ReadString(r);
+                customName = SaveLib.ReadString_safe(r);
             }
         }
 
