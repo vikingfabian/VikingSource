@@ -207,7 +207,7 @@ namespace VikingEngine.DSSWars.Delivery
                             new RbAction1Arg<int>(cityClick, cities_c.sel.parentArrayIndex, SoundLib.menu), new RbAction1Arg<City>((toCity) =>
                             {
                                 RichBoxContent content = new RichBoxContent();
-                                content.h2(toCity.Name()).overrideColor = HudLib.TitleColor_Label;
+                                content.h2(toCity.Name(out _)).overrideColor = HudLib.TitleColor_Label;
                                 var time = DeliveryProfile.DeliveryTime(city, toCity, currentStatus.level, out float distance);
                                 content.text(string.Format(DssRef.lang.Delivery_DistanceX, TextLib.OneDecimal(distance)));
                                 content.text(string.Format(DssRef.lang.Delivery_DeliveryTimeX, time.LongString()));

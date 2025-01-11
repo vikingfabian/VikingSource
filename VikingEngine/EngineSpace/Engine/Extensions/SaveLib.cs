@@ -28,7 +28,7 @@ namespace VikingEngine
         }
         public static void WriteString(System.IO.BinaryWriter w, string value)
         {
-            if (value == null)
+            if (string.IsNullOrEmpty(value))
             {
                 w.Write((byte)0);
                 return;
@@ -36,7 +36,7 @@ namespace VikingEngine
             w.Write((byte)value.Length);
             w.Write(value.ToCharArray());
         }
-        public static String ReadString(System.IO.BinaryReader r)
+        public static string ReadString(System.IO.BinaryReader r)
         {
             try
             {

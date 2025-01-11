@@ -203,7 +203,7 @@ namespace VikingEngine.DSSWars
             }
             else
             {
-                instance = new Graphics.VoxelModelInstance(null);
+                instance = new Graphics.VoxelModelInstance(null, false);
                 if (addToRender)
                 {
                     int lay = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.TerrainLayer;

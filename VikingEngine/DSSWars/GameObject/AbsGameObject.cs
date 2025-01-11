@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.Input;
 using VikingEngine.LootFest.Players;
 //
 
@@ -46,19 +47,41 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void TypeIcon(RichBoxContent content) {  }
 
-        virtual public string Name() { return null; }
+        virtual public string Name(out bool mayEdit) {
+            mayEdit = false;
+            return null; 
+        }
 
         virtual public void selectionGui(Players.LocalPlayer player, Graphics.ImageGroup guiModels)
         { }
         virtual public void selectionFrame(bool hover, Selection selection)
         { }
 
+        public void beginEditName()
+        {
+            new TextInput(Name(out _), NameEditEvent, null);
+        }
+
+        virtual protected void NameEditEvent(string result, object tag)
+        {
+            throw new NotImplementedException();
+        }
+
         virtual public void toHud(Display.ObjectHudArgs args)
         {
-            string name = Name();
+            string name = Name(out bool mayEdit);
             if (name != null)
             {
-                args.content.text(name).overrideColor = Color.LightYellow;
+                if (mayEdit)
+                {
+                    var editButton = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxImage(SpriteName.InterfaceTextInput) },
+                        new RbAction(beginEditName), null);
+                    args.content.Add(editButton);
+                    args.content.space();
+                }
+                var nameText = new RichBoxText(name);
+                nameText.overrideColor = Color.LightYellow;
+                args.content.Add(nameText);
                 args.content.newLine();
             }
             args.content.Add(new RbBeginTitle());

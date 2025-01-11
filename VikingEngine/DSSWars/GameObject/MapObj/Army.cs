@@ -54,7 +54,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public float terrainSpeedMultiplier = 1.0f;
         //public IntVector2 positionBeforeBattle;
-        string name;
+        //string name;
+        ObjectName name = new ObjectName();
 
         static readonly Vector2 CamCullingRadius = new Vector2(DssVar.SoldierGroup_Spacing * 1.4f);
         public Vector2 cullingTopLeft, cullingBottomRight;
@@ -78,7 +79,7 @@ namespace VikingEngine.DSSWars.GameObject
         public Army(Faction faction, IntVector2 startPosition)
         {
             id = ++DssRef.state.NextArmyId;
-            name = Data.NameGenerator.ArmyName(id);
+            name.name = Data.NameGenerator.ArmyName(id);
             position = WP.ToMapPos(startPosition);
             tilePos = startPosition;
             cullingTopLeft = tilePos.Vec;
@@ -115,6 +116,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void writeGameState(System.IO.BinaryWriter w)
         {
             w.Write(Debug.Ushort_OrCrash(id));
+            name.write(w);
             WP.writePosXZ(w, position);
 
             w.Write((ushort)groups.Count);
@@ -140,7 +142,12 @@ namespace VikingEngine.DSSWars.GameObject
             this.faction = faction;
 
             id = r.ReadUInt16();
-            name = Data.NameGenerator.ArmyName(id);
+            name.read(r, subVersion);
+            if (!name.custom)
+            {
+                name.name = Data.NameGenerator.ArmyName(id);
+            }
+
             WP.readPosXZ(r, out position, out tilePos);
 
             int groupsCount = r.ReadUInt16();
@@ -195,9 +202,15 @@ namespace VikingEngine.DSSWars.GameObject
         //    return SpriteName.WarsUnitIcon_Soldier;
         //}
 
-        public override string Name()
+        public override string Name(out bool mayEdit)
         {
-            return name;//return "Army" + parentArrayIndex.ToString();
+            mayEdit = faction.player.IsLocalPlayer();
+            return name.name;
+        }
+
+        protected override void NameEditEvent(string result, object tag)
+        {
+            name.setCustom(result);
         }
 
         public override void toHud(ObjectHudArgs args)
@@ -303,7 +316,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void toGroupHud(RichBoxContent content)
         {
-            string name = Name();
+            string name = Name(out _);
 
             if (name != null)
             {

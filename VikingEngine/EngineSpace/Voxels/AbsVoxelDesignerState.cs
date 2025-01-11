@@ -55,9 +55,9 @@ namespace VikingEngine.Voxels
         {
             desinger.BeginInputDialogueEvent(keyInputValues);
         }
-        public override void TextInputEvent(int playerIndex, string input, int link)
+        public override void TextInputEvent(string input, object tag)
         {
-            desinger.TextInputEvent(playerIndex, input, link);
+            desinger.TextInputEvent(input, tag);
         }
         public override void TextInputCancelEvent(int playerIndex)
         {

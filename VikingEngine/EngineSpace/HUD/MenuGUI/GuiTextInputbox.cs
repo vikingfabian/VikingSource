@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using VikingEngine.Input;
 
 namespace VikingEngine.HUD
 {
@@ -22,16 +23,19 @@ namespace VikingEngine.HUD
 
         void clickEvent()
         {
-            Engine.XGuide.BeginKeyBoardInput(new Engine.KeyboardInputValues("error", "error", textString,
-                0, 0, TextInputEvent));//, layoutParent.gui, null);
+            new TextInput(textString, TextInputEvent, null);
+            //Engine.XGuide.BeginKeyBoardInput(new Engine.KeyboardInputValues("error", textString,
+            //    0, 0, TextInputEvent));//, layoutParent.gui, null);
         }
 
-        void TextInputEvent(int user, string result, int index)
+        void TextInputEvent(string result, object tag)
         {
-            textString = result;
-            text.TextString = ">" + textString;
-            if (callBack != null)
-            { callBack(user, result, index); }
+            if (result != null)
+            {
+                textString = result;
+                text.TextString = ">" + textString;
+            }
+            callBack?.Invoke(result, tag);
         }
     }
 }

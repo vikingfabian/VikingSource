@@ -243,6 +243,10 @@ namespace VikingEngine.DSSWars
                         new GuiTextButton("Initialize steam stats", null, Ref.steam.stats.initializeAllStatsOnSteam, false, layout);
                         new GuiTextButton("Load global steam stats", null, Ref.steam.stats.beginRequestGlobalStats, false, layout);
                     }
+                    new GuiTextButton("Text Input", null, new Action(() =>
+                    {
+                        new TextInput("test", null, null);
+                    }), true, layout);
                 }
                 new GuiTextButton("Credits", null, credits, true, layout);
 
