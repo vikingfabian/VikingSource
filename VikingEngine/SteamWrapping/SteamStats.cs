@@ -34,6 +34,12 @@ namespace VikingEngine.SteamWrapping
             gamestats.collectValues(prevTotalTimeSec);
             //prevCollectTime = TimeStamp.Now();
             prevTotalTimeSec = Ref.TotalTimeSec;
+#if DEBUG
+            if (!PlatformSettings.Debug_SteamStats)
+            {
+                return;
+            }
+#endif
             var values = gamestats.collectTimedValues();
             foreach (var m in values)
             {
@@ -179,6 +185,12 @@ namespace VikingEngine.SteamWrapping
         public bool setStat()
         {
             hasSet = true;
+#if DEBUG
+            if (!PlatformSettings.Debug_SteamStats)
+            { 
+                return false;
+            }
+#endif
             return SteamAPI.SteamUserStats().SetStat_Int(name, value);
         }
 
@@ -234,6 +246,12 @@ namespace VikingEngine.SteamWrapping
 
         public bool setStat()
         {
+#if DEBUG
+            if (!PlatformSettings.Debug_SteamStats)
+            {
+                return false;
+            }
+#endif
             return SteamAPI.SteamUserStats().SetStat_Float(name, value);
         }
 

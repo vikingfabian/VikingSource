@@ -35,6 +35,8 @@ namespace VikingEngine
 
         public static readonly bool Debug_SteamAPI = true;
 
+        public static readonly bool Debug_SteamStats = false;
+
         public static readonly bool Debug_AllowDisconnect = false;
 
         public const bool Debug_HideMouse = false;
