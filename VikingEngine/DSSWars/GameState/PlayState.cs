@@ -2,6 +2,7 @@
 
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Headers;
@@ -21,6 +22,7 @@ using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
+using VikingEngine.Graphics;
 using VikingEngine.Input;
 using VikingEngine.Network;
 using VikingEngine.SteamWrapping;
@@ -40,7 +42,9 @@ namespace VikingEngine.DSSWars
         public Map.MapLayer_Detail detailMap;
 
         public Culling culling;
-        public PathUpdateThread[] pathUpdates; 
+        public PathUpdateThread[] pathUpdates;
+        ConcurrentStack<Graphics.VoxelModelInstance> voxelModelInstancesPool_detail = new ConcurrentStack<VoxelModelInstance>();
+        ConcurrentStack<Graphics.VoxelModelInstance> voxelModelInstancesPool_overview = new ConcurrentStack<VoxelModelInstance>();
         //public PathFindingPool pathFindingPool = new PathFindingPool();
         //public DetailPathFindingPool detailPathFindingPool = new DetailPathFindingPool();
 
@@ -893,6 +897,11 @@ namespace VikingEngine.DSSWars
                     DssRef.world.readNet_Cities(packet.r);
                     break;
             }
+        }
+
+        public ConcurrentStack<Graphics.VoxelModelInstance> modelPool(bool detail)
+        { 
+            return detail? voxelModelInstancesPool_detail : voxelModelInstancesPool_overview;
         }
 
         public Players.RemotePlayer GetRemotePlayer(ReceivedPacket packet)

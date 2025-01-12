@@ -18,8 +18,7 @@ namespace VikingEngine.DSSWars
    
     class Models
     {
-        ConcurrentStack<Graphics.VoxelModelInstance> voxelModelInstancesPool_detail = new ConcurrentStack<VoxelModelInstance>();
-        ConcurrentStack<Graphics.VoxelModelInstance> voxelModelInstancesPool_overview = new ConcurrentStack<VoxelModelInstance>();
+        
         public Dictionary<VoxelModelName, VoxelObjGridDataAnimHD> rawModels = new Dictionary<VoxelModelName, VoxelObjGridDataAnimHD>();
         Dictionary<VoxelModelName, Graphics.VoxelModel> voxelModels = new Dictionary<VoxelModelName, Graphics.VoxelModel>();
         
@@ -113,6 +112,7 @@ namespace VikingEngine.DSSWars
 
             loadVoxelModel(VoxelModelName.Pig, false);
             loadVoxelModel(VoxelModelName.Hen, false);
+            loadVoxelModel(VoxelModelName.Pheasant, false);
             loadVoxelModel(VoxelModelName.Arrow, true);
             loadVoxelModel(VoxelModelName.slingstone, true);
             loadVoxelModel(VoxelModelName.boulder_proj, true);
@@ -181,14 +181,14 @@ namespace VikingEngine.DSSWars
         {
             if (instance != null)
             {
-                int lay = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.TerrainLayer;
-                if (!instance.InRenderList && instance.inRenderLayer != lay )
-                {
-                    lib.DoNothing();
-                }
+                //int lay = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.TerrainLayer;
+                //if (!instance.InRenderList && instance.inRenderLayer != lay )
+                //{
+                //    lib.DoNothing();
+                //}
                 instance.Visible = false;
                 instance.Rotation = RotationQuarterion.Identity;
-                (detailLayer ? voxelModelInstancesPool_detail : voxelModelInstancesPool_overview).Push(instance);
+                DssRef.state.modelPool(detailLayer).Push(instance);
             }
         }
 
@@ -203,7 +203,7 @@ namespace VikingEngine.DSSWars
 
             Graphics.VoxelModelInstance instance;
             if (addToRender &&
-                (detailLayer ? voxelModelInstancesPool_detail : voxelModelInstancesPool_overview).TryPop(out instance))
+                DssRef.state.modelPool(detailLayer).TryPop(out instance))
             {
                 instance.Visible = true;                
             }
@@ -228,10 +228,10 @@ namespace VikingEngine.DSSWars
 #if DEBUG
             instance.DebugName = name.ToString();
 
-            if (!voxelModels.ContainsKey(name))
-            {
-                lib.DoNothing();
-            }
+            //if (!voxelModels.ContainsKey(name))
+            //{
+            //    lib.DoNothing();
+            //}
 #endif
 
             Graphics.VoxelModel master = voxelModels[name];
@@ -269,58 +269,4 @@ namespace VikingEngine.DSSWars
         }
     }
 
-//    class LoadRawModelTask : DataLib.StorageTaskWithQuedProcess
-//    {
-//        VoxelModelName name;
-//        VoxelObjGridDataAnimHD result;
-//        public LoadRawModelTask(VoxelModelName name)
-//            : base(false, VoxelObjDataLoader.ContentPath(name), true)
-//        {
-//            this.name = name;
-//#if DEBUG
-//            System.Diagnostics.Debug.WriteLine("begin raw load: " + name);
-//#endif            
-//            beginAutoTasksRun();
-//        }
-
-//        public override void ReadStream(System.IO.BinaryReader r)
-//        {
-//#if DEBUG
-//            System.Diagnostics.Debug.WriteLine("begin raw read: " + name);
-//#endif 
-//            var grids = VoxelObjDataLoader.LoadVoxelObjGridHD(r);
-//            result = new VoxelObjGridDataAnimHD(grids);
-//#if DEBUG
-//            System.Diagnostics.Debug.WriteLine("end raw read: " + name);
-//#endif 
-//        }
-
-//        protected override void runQuedAsynchTask()
-//        {
-//#if DEBUG
-//            System.Diagnostics.Debug.WriteLine("begin raw asynch: " + name);
-//#endif 
-//            base.runQuedAsynchTask();
-//            DssRef.modelsRaw.onModelL
-//            oad_asynch(name, result);
-
-//#if DEBUG
-//            System.Diagnostics.Debug.WriteLine("end raw asynch: " + name);
-//#endif 
-//        }
-
-//        protected override void runQuedMainTask()
-//        {
-//#if DEBUG
-//            System.Diagnostics.Debug.WriteLine("raw main task: " + name);
-//#endif 
-//            base.runQuedMainTask();
-            
-//        }
-
-//        public override void Time_Update(float time_ms)
-//        {
-//            base.Time_Update(time_ms);
-//        }
-//    }
 }

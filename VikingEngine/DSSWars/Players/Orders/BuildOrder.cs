@@ -23,8 +23,9 @@ namespace VikingEngine.DSSWars.Players.Orders
         protected VoxelModelInstance model;
 
         protected void createModel(int frame)
-        { 
-            model = DssRef.models.ModelInstance(LootFest.VoxelModelName.buildarea, true, WorldData.SubTileWidth * 1.4f, true);
+        {
+            Debug.CrashIfThreaded();
+            model = DssRef.models.ModelInstance(LootFest.VoxelModelName.buildarea, true, WorldData.SubTileWidth * 1.4f, true, false);
             model.Frame = frame;
             //model.AddToRender(DrawGame.UnitDetailLayer);
             model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTile);

@@ -1447,6 +1447,9 @@
 #begin VoxelModel/LfWars/party_restbar.vox
 /copy:VoxelModel/LfWars/party_restbar.vox
 
+#begin VoxelModel/LfWars/Pheasant.vox
+/copy:VoxelModel/LfWars/Pheasant.vox
+
 #begin VoxelModel/LfWars/Pig.vox
 /copy:VoxelModel/LfWars/Pig.vox
 

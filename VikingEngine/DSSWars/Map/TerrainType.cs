@@ -145,6 +145,12 @@ namespace VikingEngine.DSSWars.Map
         GardenLongTree,
         GardenWalledBush,
         GardenGrass,
+        GardenBird,
+        GardenMemoryStone,
+        Statue_Leader,
+        Statue_Lion,
+        Statue_Horse,
+        Statue_Pillar,
         NUM_NONE
     }
 

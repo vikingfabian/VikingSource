@@ -28,6 +28,9 @@ namespace VikingEngine.DSSWars.GameObject.Animal
                 case AnimalType.Hen:
                     new Hen(tilepos, wp);
                     break;
+                case AnimalType.Pheasant:
+                    new Pheasant(tilepos, wp);
+                    break;
             }
         }
     }

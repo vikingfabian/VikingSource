@@ -97,6 +97,12 @@ namespace VikingEngine.DSSWars.Build
         BigCityHouse,
         CitySquare,
         CobbleStones,
+        GardenBird,
+        GardenMemoryStone,
+        Statue_Leader,
+        Statue_Lion,
+        Statue_Horse,
+        Statue_Pillar,
         NUM_NONE,
     }
     static class BuildLib
@@ -285,6 +291,7 @@ namespace VikingEngine.DSSWars.Build
             list.Add(BuildAndExpandType.PavemenFountain);
             list.Add(BuildAndExpandType.PavementRectFlower);
             list.Add(BuildAndExpandType.GardenGrass);
+            list.Add(BuildAndExpandType.GardenBird);
             list.Add(BuildAndExpandType.GardenFourBushes);
             list.Add(BuildAndExpandType.GardenLongTree);
             list.Add(BuildAndExpandType.GardenWalledBush);
@@ -292,6 +299,13 @@ namespace VikingEngine.DSSWars.Build
             list.Add(BuildAndExpandType.BigCityHouse);
             list.Add(BuildAndExpandType.CitySquare);
             list.Add(BuildAndExpandType.CobbleStones);
+
+            list.Add(BuildAndExpandType.GardenBird);
+            list.Add(BuildAndExpandType.GardenMemoryStone);
+            list.Add(BuildAndExpandType.Statue_Leader);
+            list.Add(BuildAndExpandType.Statue_Lion);
+            list.Add(BuildAndExpandType.Statue_Horse);
+            list.Add(BuildAndExpandType.Statue_Pillar);
         }
 
         public static void Init()
@@ -360,8 +374,7 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.Chemist, TerrainMainType.Building, (int)TerrainBuildingType.Chemist, SpriteName.WarsBuild_Chemist, CraftBuildingLib.Chemist);
             new BuildOption(BuildAndExpandType.Gunmaker, TerrainMainType.Building, (int)TerrainBuildingType.Gunmaker, SpriteName.WarsBuild_Gunmaker, CraftBuildingLib.Gunmaker);
             new BuildOption(BuildAndExpandType.School, TerrainMainType.Building, (int)TerrainBuildingType.School, SpriteName.WarsBuild_School, CraftBuildingLib.School);
-
-
+            
             new BuildOption(BuildAndExpandType.DirtWall, TerrainMainType.Wall, (int)TerrainWallType.DirtWall, SpriteName.MissingImage, CraftBuildingLib.DirtWall);
             new BuildOption(BuildAndExpandType.DirtTower,TerrainMainType.Wall, (int)TerrainWallType.DirtTower, SpriteName.MissingImage, CraftBuildingLib.DirtTower);
             new BuildOption(BuildAndExpandType.WoodWall,TerrainMainType.Wall, (int)TerrainWallType.WoodWall, SpriteName.MissingImage, CraftBuildingLib.WoodWall);
@@ -377,6 +390,7 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.PavemenFountain,TerrainMainType.Decor, (int)TerrainDecorType.PavemenFountain, SpriteName.MissingImage, CraftBuildingLib.PavemenFountain);
             new BuildOption(BuildAndExpandType.PavementRectFlower,TerrainMainType.Decor, (int)TerrainDecorType.PavementRectFlower, SpriteName.MissingImage, CraftBuildingLib.PavementRectFlower);
             new BuildOption(BuildAndExpandType.GardenGrass, TerrainMainType.Decor, (int)TerrainDecorType.GardenGrass, SpriteName.MissingImage, CraftBuildingLib.GardenGrass);
+            new BuildOption(BuildAndExpandType.GardenBird, TerrainMainType.Decor, (int)TerrainDecorType.GardenBird, SpriteName.MissingImage, CraftBuildingLib.GardenBird);
             new BuildOption(BuildAndExpandType.GardenFourBushes, TerrainMainType.Decor, (int)TerrainDecorType.GardenFourBushes, SpriteName.MissingImage, CraftBuildingLib.GardenFourBushes);
             new BuildOption(BuildAndExpandType.GardenLongTree,TerrainMainType.Decor, (int)TerrainDecorType.GardenLongTree, SpriteName.MissingImage, CraftBuildingLib.GardenLongTree);
             new BuildOption(BuildAndExpandType.GardenWalledBush,TerrainMainType.Decor, (int)TerrainDecorType.GardenWalledBush, SpriteName.MissingImage, CraftBuildingLib.GardenWalledBush);
@@ -384,6 +398,13 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.BigCityHouse,TerrainMainType.Building, (int)TerrainBuildingType.BigHouse, SpriteName.MissingImage, CraftBuildingLib.BigCityHouse);
             new BuildOption(BuildAndExpandType.CitySquare,TerrainMainType.Building, (int)TerrainBuildingType.Square, SpriteName.MissingImage, CraftBuildingLib.CitySquare);
             new BuildOption(BuildAndExpandType.CobbleStones,TerrainMainType.Building, (int)TerrainBuildingType.CobbleStones, SpriteName.MissingImage, CraftBuildingLib.CobbleStones);
+
+            new BuildOption(BuildAndExpandType.GardenMemoryStone, TerrainMainType.Decor, (int)TerrainDecorType.GardenMemoryStone, SpriteName.MissingImage, CraftBuildingLib.GardenMemoryStone);
+            new BuildOption(BuildAndExpandType.Statue_Leader, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Leader, SpriteName.MissingImage, CraftBuildingLib.Statue_Leader);
+            new BuildOption(BuildAndExpandType.Statue_Lion, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Lion, SpriteName.MissingImage, CraftBuildingLib.Statue_Lion);
+            new BuildOption(BuildAndExpandType.Statue_Horse, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Horse, SpriteName.MissingImage, CraftBuildingLib.Statue_Horse);
+            new BuildOption(BuildAndExpandType.Statue_Pillar, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Pillar, SpriteName.MissingImage, CraftBuildingLib.Statue_Pillar);
+           
 
         }
 

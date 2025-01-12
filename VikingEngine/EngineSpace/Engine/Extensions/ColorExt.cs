@@ -53,10 +53,11 @@ namespace VikingEngine
 
         public static Color ChangeBrighness(Color col, int change)
         {
-            col.R = Bound.Byte(col.R + change);
-            col.G = Bound.Byte(col.G + change);
-            col.B = Bound.Byte(col.B + change);
-            return col;
+            col.Deconstruct(out byte r, out byte g, out byte b);
+            //col.R = Bound.Byte(col.R + change);
+            //col.G = Bound.Byte(col.G + change);
+            //col.B = Bound.Byte(col.B + change);
+            return new Color(r+change, g+change, b+change);
         }
 
         public static float GetBrightNess(Color col)

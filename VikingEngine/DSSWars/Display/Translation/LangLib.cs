@@ -941,6 +941,14 @@ namespace VikingEngine.DSSWars.Display.Translation
                         case TerrainDecorType.GardenLongTree: return "Garden long tree";
                         case TerrainDecorType.GardenWalledBush: return "Garden bush";
                         case TerrainDecorType.GardenGrass: return "Garden grass";
+                        case TerrainDecorType.GardenBird: return "Garden bird";
+
+
+                        case TerrainDecorType.GardenMemoryStone: return "Garden memory stone";
+                        case TerrainDecorType.Statue_Leader: return "Statue: leader";
+                        case TerrainDecorType.Statue_Lion: return "Statue: lion";
+                        case TerrainDecorType.Statue_Horse: return "Statue: horse";
+                        case TerrainDecorType.Statue_Pillar: return "Statue: pillar";
                     }
                     break;
 

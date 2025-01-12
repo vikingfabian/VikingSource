@@ -957,5 +957,69 @@ namespace VikingEngine.DSSWars.Build
          },
           XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
        );
+
+        public static readonly CraftBlueprint GardenBird = new CraftBlueprint(
+          CraftResultType.Building,
+          (int)Build.BuildAndExpandType.GardenBird,
+         1,
+         new UseResource[]
+         {
+               new UseResource(ItemResourceType.Gold, 1),
+         },
+          XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+       );
+
+
+        public static readonly CraftBlueprint GardenMemoryStone = new CraftBlueprint(
+         CraftResultType.Building,
+         (int)Build.BuildAndExpandType.GardenMemoryStone,
+        1,
+        new UseResource[]
+        {
+               new UseResource(ItemResourceType.Gold, 1),
+        },
+         XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+      );
+        public static readonly CraftBlueprint Statue_Leader = new CraftBlueprint(
+         CraftResultType.Building,
+         (int)Build.BuildAndExpandType.Statue_Leader,
+        1,
+        new UseResource[]
+        {
+               new UseResource(ItemResourceType.Gold, 1),
+        },
+         XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+      );
+        public static readonly CraftBlueprint Statue_Lion = new CraftBlueprint(
+         CraftResultType.Building,
+         (int)Build.BuildAndExpandType.Statue_Lion,
+        1,
+        new UseResource[]
+        {
+               new UseResource(ItemResourceType.Gold, 1),
+        },
+         XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+      );
+        public static readonly CraftBlueprint Statue_Horse = new CraftBlueprint(
+         CraftResultType.Building,
+         (int)Build.BuildAndExpandType.Statue_Horse,
+        1,
+        new UseResource[]
+        {
+               new UseResource(ItemResourceType.Gold, 1),
+        },
+         XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+      );
+        public static readonly CraftBlueprint Statue_Pillar = new CraftBlueprint(
+         CraftResultType.Building,
+         (int)Build.BuildAndExpandType.Statue_Pillar,
+        1,
+        new UseResource[]
+        {
+               new UseResource(ItemResourceType.Gold, 1),
+        },
+         XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+      );
+       
     }
 }

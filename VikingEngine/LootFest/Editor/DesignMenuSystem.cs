@@ -729,7 +729,13 @@ namespace VikingEngine.LootFest.Editor
 
         public void colorPalette(GuiLayout layout, Action<BlockHD> link)
         {
-            var inUse = designer.materialsInUse(true);
+            var inUse = designer.materialsInUse(true, out ushort selected);
+
+            if (selected != 0)
+            {
+                ColorButton(BlockHD.ToColor(selected), layout, link, true);
+                new GuiSectionSeparator(layout);
+            }
             foreach (var m in inUse)
             {
                 ColorButton(BlockHD.ToColor(m), layout, link);
@@ -879,9 +885,18 @@ namespace VikingEngine.LootFest.Editor
 
         }
 
-        static void ColorButton(Color col, GuiLayout layout, Action<BlockHD> link)
+        static void ColorButton(Color col, GuiLayout layout, Action<BlockHD> link, bool bigIcon = false)
         {
-            var icon = new GuiSmallIcon(SpriteName.WhiteArea, col.ToString(), new GuiAction1Arg<BlockHD>(link, new BlockHD(col)), false, layout);
+            GuiIcon icon;
+
+            if (bigIcon)
+            {
+                icon = new GuiIcon(SpriteName.WhiteArea, col.ToString(), new GuiAction1Arg<BlockHD>(link, new BlockHD(col)), false, layout);
+            }
+            else
+            {
+                icon = new GuiSmallIcon(SpriteName.WhiteArea, col.ToString(), new GuiAction1Arg<BlockHD>(link, new BlockHD(col)), false, layout);
+            }
             icon.iconImage.Color = col;
         }
 

@@ -145,7 +145,7 @@ namespace VikingEngine.Voxels
             designerInterface.pencilShadow.update(this);
         }
 
-        public List<ushort> materialsInUse(bool includePaintCol)
+        public List<ushort> materialsInUse(bool includePaintCol, out ushort selected)
         {
             List<ushort> result = new List<ushort>();
             bool[] inUse = new bool[ushort.MaxValue];
@@ -170,15 +170,20 @@ namespace VikingEngine.Voxels
 
             if (includePaintCol)
             {
-                if (!inUse[SelectedMaterial.BlockValue])
-                {
-                    result.Add(SelectedMaterial.BlockValue);
-                }
+                //if (!inUse[SelectedMaterial.BlockValue])
+                //{
+                //    result.Add(SelectedMaterial.BlockValue);
+                //}
+                selected = SelectedMaterial.BlockValue;
 
                 if (!inUse[SecondaryMaterial.BlockValue])
                 {
                     result.Add(SecondaryMaterial.BlockValue);
                 }
+            }
+            else
+            {
+                selected = 0;
             }
 
             return result;

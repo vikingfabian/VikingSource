@@ -137,9 +137,32 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         }
     }
 
+    class Pheasant : AbsLivestock
+    {
+        public Pheasant(IntVector2 tilepos, Vector3 topCenterWp)
+            : base(tilepos, topCenterWp)
+        { }
+        protected override Graphics.VoxelModelInstance createModel()
+        {
+            walkingAnimation = new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 0.25f);
+
+            return DssRef.models.ModelInstance(VoxelModelName.Pheasant, true,
+                DssConst.Men_StandardModelScale * 0.6f, true);
+        }
+
+        protected override void sound()
+        {
+            //if (Ref.rnd.Chance(0.02))
+            //{
+            //    SoundLib.hen.Play(model.position);
+            //}
+        }
+    }
+
     enum AnimalType
     { 
         Pig,
         Hen,
+        Pheasant,
     }
 }
