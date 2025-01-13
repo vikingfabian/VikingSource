@@ -335,6 +335,11 @@ namespace VikingEngine.DSSWars.Map
             return DssRef.world.cities[CityIndex]; 
         }
 
+        public Faction Faction()
+        {
+           return DssRef.world.cities[CityIndex].faction;
+        }
+
         public Color FactionColor()
         {
             var c = DssRef.world.cities[CityIndex];

@@ -1020,6 +1020,28 @@ namespace VikingEngine.DSSWars.Build
         },
          XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
       );
-       
+
+
+      
+       public static readonly CraftBlueprint FlagPole_LongBanner = new CraftBlueprint(
+         CraftResultType.Building,
+         (int)Build.BuildAndExpandType.FlagPole_LongBanner,
+        1,
+        new UseResource[]
+        {
+               new UseResource(ItemResourceType.Gold, 1),
+        },
+         XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+      );
+        public static readonly CraftBlueprint FlagPole_Flag = new CraftBlueprint(
+         CraftResultType.Building,
+         (int)Build.BuildAndExpandType.FlagPole_Flag,
+        1,
+        new UseResource[]
+        {
+               new UseResource(ItemResourceType.Gold, 1),
+        },
+         XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+      );
     }
 }

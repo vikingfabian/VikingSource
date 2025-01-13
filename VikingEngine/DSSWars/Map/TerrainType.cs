@@ -151,6 +151,8 @@ namespace VikingEngine.DSSWars.Map
         Statue_Lion,
         Statue_Horse,
         Statue_Pillar,
+        FlagPole_LongBanner,
+        FlagPole_Flag,
         NUM_NONE
     }
 

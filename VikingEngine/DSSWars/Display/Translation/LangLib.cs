@@ -949,6 +949,11 @@ namespace VikingEngine.DSSWars.Display.Translation
                         case TerrainDecorType.Statue_Lion: return "Statue: lion";
                         case TerrainDecorType.Statue_Horse: return "Statue: horse";
                         case TerrainDecorType.Statue_Pillar: return "Statue: pillar";
+
+                        case TerrainDecorType.FlagPole_LongBanner:
+                            return "Flag pole: Long banner";
+                        case TerrainDecorType.FlagPole_Flag:
+                            return "Flag pole: Flag";
                     }
                     break;
 

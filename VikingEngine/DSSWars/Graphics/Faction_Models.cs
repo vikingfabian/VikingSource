@@ -5,6 +5,7 @@ using System.Diagnostics.Metrics;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
+using VikingEngine.Graphics;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Map.HDvoxel;
 using VikingEngine.Voxels;
@@ -18,7 +19,7 @@ namespace VikingEngine.DSSWars
 
         List<VoxelModelName> processStarted = new List<VoxelModelName>(8);
 
-        public Graphics.AbsVoxelObj AutoLoadModelInstance(VoxelModelName name,
+        public Graphics.VoxelModelInstance AutoLoadModelInstance(VoxelModelName name,
            float scale = 1f,
            //float yAdjust = 0f, bool centerY = false,
            bool addToRender = false)
@@ -184,6 +185,7 @@ namespace VikingEngine.DSSWars
     class FactionModelBuilder : Voxels.ModelBuilder
     {
         static readonly IntVector3 TroopBannerStart = new IntVector3(3, 44, 2);
+        static readonly IntVector3 WavingFlagStart = new IntVector3(4, 44, 3);
         static readonly IntVector3 HorseBannerStart = new IntVector3(3, 50, 0);
         static readonly IntVector3 CityBannerStart = new IntVector3(6, 44, 0);
         static readonly IntVector3 ArmyBannerStart = new IntVector3(1, 0, 1);
@@ -241,6 +243,7 @@ namespace VikingEngine.DSSWars
 
             VoxelObjGridDataAnimHD copy = grid.Clone();
             copy.ReplaceMaterial(faction.profile.modelColorReplace);
+            
 
             switch (name)
             {
@@ -248,6 +251,10 @@ namespace VikingEngine.DSSWars
                     addFlagTexture(faction, copy, TroopBannerStart, true, 1);
                     addFlagTexture(faction, copy, TroopBannerStart, true, 2);
                     addFlagTexture(faction, copy, TroopBannerStart, true, 3);
+                    break;
+                case VoxelModelName.wars_flag:
+                    addFlagTexture(faction, copy, WavingFlagStart, true, 0);
+                    addFlagTexture(faction, copy, WavingFlagStart, true, 1);
                     break;
                 case VoxelModelName.horsebanner:
                     addFlagTexture(faction, copy, HorseBannerStart, true);
@@ -273,6 +280,11 @@ namespace VikingEngine.DSSWars
             buildVerticeDataHD_ColorNormal(copy.Frames, centerAdjust);
 
             Graphics.VoxelModel model = modelFromVertices();
+
+            if (name == VoxelModelName.wars_flag)
+            {
+                model.Effect = FlagWaveEffect.GetSingletonSafe();
+            }
 
             return model;
         }

@@ -28,8 +28,8 @@ namespace VikingEngine.Graphics
         public VoxelModel(bool addToRender)
             : base(addToRender)
         {
-            EffectBasicVertexColor.GetSingletonSafe();
-            Effect = FlagWaveEffect.GetSingletonSafe();//EffectBasicVertexColor.GetSingletonSafe();
+            Effect = EffectBasicVertexColor.GetSingletonSafe();
+            //Effect = FlagWaveEffect.GetSingletonSafe();
         }
 
         /* Family methods */

@@ -103,6 +103,9 @@ namespace VikingEngine.DSSWars.Build
         Statue_Lion,
         Statue_Horse,
         Statue_Pillar,
+
+        FlagPole_LongBanner,
+        FlagPole_Flag,
         NUM_NONE,
     }
     static class BuildLib
@@ -306,6 +309,9 @@ namespace VikingEngine.DSSWars.Build
             list.Add(BuildAndExpandType.Statue_Lion);
             list.Add(BuildAndExpandType.Statue_Horse);
             list.Add(BuildAndExpandType.Statue_Pillar);
+
+            list.Add(BuildAndExpandType.FlagPole_LongBanner);
+            list.Add(BuildAndExpandType.FlagPole_Flag);
         }
 
         public static void Init()
@@ -404,7 +410,9 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.Statue_Lion, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Lion, SpriteName.MissingImage, CraftBuildingLib.Statue_Lion);
             new BuildOption(BuildAndExpandType.Statue_Horse, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Horse, SpriteName.MissingImage, CraftBuildingLib.Statue_Horse);
             new BuildOption(BuildAndExpandType.Statue_Pillar, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Pillar, SpriteName.MissingImage, CraftBuildingLib.Statue_Pillar);
-           
+
+            new BuildOption(BuildAndExpandType.FlagPole_LongBanner, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_LongBanner, SpriteName.MissingImage, CraftBuildingLib.FlagPole_LongBanner);
+            new BuildOption(BuildAndExpandType.FlagPole_Flag, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_Flag, SpriteName.MissingImage, CraftBuildingLib.FlagPole_Flag);
 
         }
 

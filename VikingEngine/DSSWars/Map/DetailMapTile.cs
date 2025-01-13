@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.Map
         static readonly IntervalF GrassCenterRange =
             IntervalF.FromCenter(0.5f * WorldData.SubTileWidth, 0.45f * WorldData.SubTileWidth);
 
-        static ConcurrentStack<Foliage> foliagePool = new ConcurrentStack<Foliage>();
+        static ConcurrentStack<FoliageModel> foliagePool = new ConcurrentStack<FoliageModel>();
 
         public static List<LootFest.VoxelModelName> LoadModel()
         {
@@ -56,7 +56,8 @@ namespace VikingEngine.DSSWars.Map
         public IntVector2 pos;
         VerticeDataColorTexture verticeData;
         Graphics.VoxelModel model = new Graphics.VoxelModel(false);
-        List<Foliage> foliage = new List<Foliage>(8);
+        List<FoliageModel> foliageModels = new List<FoliageModel>(8);
+        List<FlagModel> flagModels = new List<FlagModel>(2);
         List<AnimalData> animalData;
         bool hasPolygons;
 
@@ -323,14 +324,14 @@ namespace VikingEngine.DSSWars.Map
         }
 
 
-        Foliage newFoliage()
+        FoliageModel newFoliage()
         {
-            Foliage result;
+            FoliageModel result;
             if (!foliagePool.TryPop(out result))
             {
-                result = new Foliage();
+                result = new FoliageModel();
             }
-            foliage.Add(result);
+            foliageModels.Add(result);
             return result;
         }
 
@@ -744,7 +745,36 @@ namespace VikingEngine.DSSWars.Map
                     surfaceColor = PavementGroundCol;
                     newFoliage().init(LootFest.VoxelModelName.decor_statue, 4, wp, WorldData.SubTileWidth * 1f);
                     break;
-                    
+
+
+                case TerrainDecorType.FlagPole_LongBanner:
+                    {
+                        newFoliage().init(LootFest.VoxelModelName.city_flagpole, 0, wp, WorldData.SubTileWidth * 1f);
+
+                        var faction = tile.Faction();
+                        if (faction != null)
+                        {
+                            var flag = new FlagModel();
+                            flag.init(faction, 0, wp + new Vector3(0.011f, 0.009f, -0.032f), WorldData.SubTileWidth * 1f);
+                            flagModels.Add(flag);
+                        } 
+                    }
+                    break;
+
+                case TerrainDecorType.FlagPole_Flag:
+                    {
+                        newFoliage().init(LootFest.VoxelModelName.city_flagpole, 1, wp, WorldData.SubTileWidth * 1f);
+
+                        var faction = tile.Faction();
+                        if (faction != null)
+                        {
+                            var flag = new FlagModel();
+                            flag.init(faction, 1, wp + new Vector3(0.001f, 0.009f, -0.038f), WorldData.SubTileWidth * 1f);
+                            flagModels.Add(flag);
+                        }
+                    }
+                    break;
+
                 default:
                     throw new NotImplementedException();
             }
@@ -876,13 +906,17 @@ namespace VikingEngine.DSSWars.Map
                 }
 
                 //foliage?.addToRender();
-                if (foliage != null)
-                {
-                    foreach (var m in foliage)
+                //if (foliage != null)
+                //{
+                    foreach (var m in foliageModels)
                     {
                         //m.AddToRender(DrawGame.UnitDetailLayer);
                         m.addToRender();
                     }
+                //}
+                foreach (var m in flagModels)
+                {
+                    m.addToRender();
                 }
 
                 if (animalData != null)
@@ -905,11 +939,16 @@ namespace VikingEngine.DSSWars.Map
         {
             model.Visible = false;
             
-            foreach (var m in foliage)
+            foreach (var m in foliageModels)
             {
                 m.DeleteMe();
             }
-            foliage.Clear();
+            foreach (var m in flagModels)
+            {
+                m.DeleteMe();
+            }
+            foliageModels.Clear();
+            flagModels.Clear();
         }
     }
 }

@@ -1318,6 +1318,9 @@
 #begin VoxelModel/LfWars/city_dirtwall.vox
 /copy:VoxelModel/LfWars/city_dirtwall.vox
 
+#begin VoxelModel/LfWars/city_flagpole.vox
+/copy:VoxelModel/LfWars/city_flagpole.vox
+
 #begin VoxelModel/LfWars/city_garden.vox
 /copy:VoxelModel/LfWars/city_garden.vox
 
@@ -1587,6 +1590,9 @@
 
 #begin VoxelModel/LfWars/wars_deserter.vox
 /copy:VoxelModel/LfWars/wars_deserter.vox
+
+#begin VoxelModel/LfWars/wars_flag.vox
+/copy:VoxelModel/LfWars/wars_flag.vox
 
 #begin VoxelModel/LfWars/wars_folk_ship.vox
 /copy:VoxelModel/LfWars/wars_folk_ship.vox

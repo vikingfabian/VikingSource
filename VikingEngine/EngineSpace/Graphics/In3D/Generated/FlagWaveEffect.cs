@@ -13,13 +13,13 @@ namespace VikingEngine.Graphics
         public static FlagWaveEffect Singleton;
         // Some default wave settings
         public float Time { get; set; } = 0.0f;
-        public float WaveSpeed { get; set; } = 0.5f;
-        public float WaveFrequency { get; set; } = 40.0f;
-        public float WaveAmplitude { get; set; } = 0.01f;
+        public float WaveSpeed { get; set; } = 2f;
+        public float WaveFrequency { get; set; } = 300.0f;
+        public float WaveAmplitude { get; set; } = 0.005f;
 
         // Secondary “flutter” wave for amplitude modulation
         public float AmplitudeModFrequency { get; set; } = 1.0f;
-        public float AmplitudeModRange { get; set; } = 0.1f;
+        //public float AmplitudeModRange { get; set; } = 0.55f;
 
         /// <summary>
         /// Constructor that calls base with:
@@ -36,11 +36,26 @@ namespace VikingEngine.Graphics
             shader.Parameters["WaveFrequency"]?.SetValue(WaveFrequency);
             shader.Parameters["WaveAmplitude"]?.SetValue(WaveAmplitude);
             shader.Parameters["AmplitudeModFrequency"]?.SetValue(AmplitudeModFrequency);
-            shader.Parameters["AmplitudeModRange"]?.SetValue(AmplitudeModRange);
+            //shader.Parameters["AmplitudeModRange"]?.SetValue(AmplitudeModRange);
         }
 
         public override void DrawVB(int frame, AbsVoxelObj obj, AbsVertexAndIndexBuffer VB)
         {
+            AmplitudeModFrequency = 5f;
+            WaveFrequency = 250;
+            //AmplitudeModRange = 0.8f;
+            WaveAmplitude = 0.0015f;
+            WaveSpeed = 4f;
+            //AmplitudeModRange = 0f;
+            shader.Parameters["WaveSpeed"]?.SetValue(WaveSpeed);
+            shader.Parameters["WaveFrequency"]?.SetValue(WaveFrequency);
+            shader.Parameters["WaveAmplitude"]?.SetValue(WaveAmplitude);
+            shader.Parameters["AmplitudeModFrequency"]?.SetValue(AmplitudeModFrequency);
+            //shader.Parameters["AmplitudeModRange"]?.SetValue(AmplitudeModRange);
+
+
+
+
             shader.Parameters["Time"]?.SetValue(Ref.TotalGameTimeSec);
             base.DrawVB(frame, obj, VB);
         }
@@ -55,11 +70,8 @@ namespace VikingEngine.Graphics
 
             // Set the wave parameters in the shader
             shader.Parameters["Time"]?.SetValue(Ref.TotalGameTimeSec);
-            //shader.Parameters["WaveSpeed"]?.SetValue(WaveSpeed);
-            //shader.Parameters["WaveFrequency"]?.SetValue(WaveFrequency);
-            //shader.Parameters["WaveAmplitude"]?.SetValue(WaveAmplitude);
-            //shader.Parameters["AmplitudeModFrequency"]?.SetValue(AmplitudeModFrequency);
-            //shader.Parameters["AmplitudeModRange"]?.SetValue(AmplitudeModRange);
+
+
 
             // If your .fx also has lighting parameters like LightDirection, LightColor, etc.,
             // you could set them here. For example:

@@ -48,6 +48,7 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.wars_captain,
 
                 VoxelModelName.banner,
+                VoxelModelName.wars_flag,
                 VoxelModelName.horsebanner,
                 VoxelModelName.armystand,
                 VoxelModelName.cityicon,
@@ -107,6 +108,7 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.city_water, false);
 
             loadVoxelModel(VoxelModelName.decor_statue, false);
+            loadVoxelModel(VoxelModelName.city_flagpole, false);
             loadVoxelModel(VoxelModelName.city_pavement, false);
             loadVoxelModel(VoxelModelName.city_garden, false);
 

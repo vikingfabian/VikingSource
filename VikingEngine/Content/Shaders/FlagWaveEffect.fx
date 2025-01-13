@@ -35,7 +35,7 @@ float WaveAmplitude = 0.5; // Base vertical distortion amplitude
 
 // Secondary wave to modulate amplitude over time
 float AmplitudeModFrequency = 1.0; // Speed of amplitude oscillation
-float AmplitudeModRange = 0.5; // How far amplitude swings up/down from normal
+//float AmplitudeModRange = 0.5; // How far amplitude swings up/down from normal
                                     // 0.5 = ±50% of WaveAmplitude
 
 //------------------------------------
@@ -99,10 +99,10 @@ VSOutput VS_Main(VSInput input)
     //    ...but we can keep it a bit simpler.  
     //    The below code modulates amplitude in a 50%-150% range if AmplitudeModRange=0.5.
 
-    float amplitudeOsc = 0.5 + 0.5 * sin(Time * AmplitudeModFrequency); // 0..1
-    float dynamicAmplitude = WaveAmplitude * (1.0 + AmplitudeModRange * (amplitudeOsc * 2.0 - 1.0));
+    float amplitudeOsc = 0.8 + 0.2 * sin(Time * AmplitudeModFrequency); // 0..1
+    float dynamicAmplitude = WaveAmplitude * amplitudeOsc; //* (1.0 + AmplitudeModRange * (amplitudeOsc * 2.0 - 1.0));
 
-    float wave = sin((worldPosition.x + Time * WaveSpeed) * WaveFrequency) * dynamicAmplitude;
+    float wave = sin((worldPosition.x + worldPosition.y * 0.5) * WaveFrequency - Time * WaveSpeed) * dynamicAmplitude;
 
     // Apply the wave to the Y position (or whichever axis suits your flag orientation)
     worldPosition.z += wave;
