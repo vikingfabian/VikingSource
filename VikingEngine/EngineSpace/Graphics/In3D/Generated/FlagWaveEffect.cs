@@ -13,12 +13,12 @@ namespace VikingEngine.Graphics
         public static FlagWaveEffect Singleton;
         // Some default wave settings
         public float Time { get; set; } = 0.0f;
-        public float WaveSpeed { get; set; } = 2f;
-        public float WaveFrequency { get; set; } = 300.0f;
-        public float WaveAmplitude { get; set; } = 0.005f;
+        public float WaveSpeed { get; set; } = 4f;
+        public float WaveFrequency { get; set; } = 250.0f;
+        public float WaveAmplitude { get; set; } = 0.0015f;
 
         // Secondary “flutter” wave for amplitude modulation
-        public float AmplitudeModFrequency { get; set; } = 1.0f;
+        public float AmplitudeModFrequency { get; set; } = 5f;
         //public float AmplitudeModRange { get; set; } = 0.55f;
 
         /// <summary>
@@ -41,16 +41,16 @@ namespace VikingEngine.Graphics
 
         public override void DrawVB(int frame, AbsVoxelObj obj, AbsVertexAndIndexBuffer VB)
         {
-            AmplitudeModFrequency = 5f;
-            WaveFrequency = 250;
+            //AmplitudeModFrequency = 5f;
+            //WaveFrequency = 250;
             //AmplitudeModRange = 0.8f;
-            WaveAmplitude = 0.0015f;
-            WaveSpeed = 4f;
-            //AmplitudeModRange = 0f;
-            shader.Parameters["WaveSpeed"]?.SetValue(WaveSpeed);
-            shader.Parameters["WaveFrequency"]?.SetValue(WaveFrequency);
-            shader.Parameters["WaveAmplitude"]?.SetValue(WaveAmplitude);
-            shader.Parameters["AmplitudeModFrequency"]?.SetValue(AmplitudeModFrequency);
+            //WaveAmplitude = 0.0015f;
+            //WaveSpeed = 4f;
+            ////AmplitudeModRange = 0f;
+            //shader.Parameters["WaveSpeed"]?.SetValue(WaveSpeed);
+            //shader.Parameters["WaveFrequency"]?.SetValue(WaveFrequency);
+            //shader.Parameters["WaveAmplitude"]?.SetValue(WaveAmplitude);
+            //shader.Parameters["AmplitudeModFrequency"]?.SetValue(AmplitudeModFrequency);
             //shader.Parameters["AmplitudeModRange"]?.SetValue(AmplitudeModRange);
 
 

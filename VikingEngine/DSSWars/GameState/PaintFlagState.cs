@@ -11,6 +11,8 @@ using VikingEngine.LootFest.Map.HDvoxel;
 using VikingEngine.Input;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Engine;
+using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
+using VikingEngine.ToGG.ToggEngine.GO;
 
 
 namespace VikingEngine.DSSWars
@@ -157,7 +159,11 @@ namespace VikingEngine.DSSWars
                     if (hud.colorArea.updateInput())
                     {
                         profile.setColor(selectedColorType, hud.colorArea.getColor());
-
+                        if (selectedColorType == ProfileColorType.Main &&
+                            autoAltMain)
+                        {
+                            profile.autoAltColor();
+                        }
                         onColorChange();
                     }
                     else
@@ -584,8 +590,19 @@ namespace VikingEngine.DSSWars
                 case ProfileColorType.Detail2: return DssRef.lang.ProfileEditor_Detail2Color;
                 case ProfileColorType.Skin: return DssRef.lang.ProfileEditor_SkinColor;
                 case ProfileColorType.Hair: return DssRef.lang.ProfileEditor_HairColor;
+                case ProfileColorType.AltMain: return DssRef.todoLang.ProfileEditor_AltMain;
             }
             throw new NotImplementedException();
+        }
+
+        bool autoAltMain = true;
+        public bool autoAltMainProperty(int index, bool _set, bool value)
+        {
+            if (_set)
+            {
+                autoAltMain = value;
+            }
+            return autoAltMain;
         }
     }
 }

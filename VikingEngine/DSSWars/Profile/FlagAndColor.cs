@@ -44,6 +44,7 @@ namespace VikingEngine.DSSWars
 
         public Color col3_Skin;
         public Color col4_Hair;
+        public Color col5_AltMain;
 
         //public Color[] colors = new Color[ColorCount];
         public ushort[] blockColors;
@@ -51,6 +52,21 @@ namespace VikingEngine.DSSWars
         public List<BlockHDPair> modelColorReplace;
         public FactionFlavorType factionFlavorType = FactionFlavorType.Other;
 
+
+        public void autoAltColor()
+        {
+            col0_Main.Deconstruct(out byte r, out byte g, out byte b);
+            col5_AltMain = new Color(adjust(r), adjust(g), adjust(b));
+
+            int adjust(byte col)
+            {
+                if (col > 200)
+                {
+                    return col - 40;
+                }
+                return col + 40;
+            }
+        }
 
         public FlagAndColor(FactionType factiontype, int index, WorldMetaData worldMeta)
         {
@@ -2702,67 +2718,10 @@ namespace VikingEngine.DSSWars
                     //    break;
             }
 
-
-            //if (factiontype == FactionType.Player)
-            //{
-            //    switch (index)
-            //    {
-            //        case 0:
-            //            col0_Main = Color.Blue);
-            //            col1_Detail1 = Color.Yellow);
-            //            col2_Detail2 = Color.Orange);
-            //            break;
-
-            //        case 1:
-            //            col0_Main = Color.Red);
-            //            col1_Detail1 = Color.MediumPurple);
-            //            col2_Detail2 = Color.Blue);
-            //            break;
-
-            //        case 2:
-            //            col0_Main = Color.Green);
-            //            col1_Detail1 = Color.Yellow);
-            //            col2_Detail2 = Color.YellowGreen);
-            //            break;
-
-            //        case 3:
-            //            col0_Main = Color.Orange);
-            //            col1_Detail1 = Color.Pink);
-            //            col2_Detail2 = Color.Brown);
-            //            break;
-            //    }
-
-            //    col3_Skin = Color.Beige);
-            //    col4_Hair = Color.Brown);
-
-            //    flagDesign = new FlagDesign();
-            //}
-            //else if (factiontype == FactionType.DarkLord)
-            //{
-            //    col0_Main = new Color(24, 8, 8));
-            //    col1_Detail1 = new Color(232, 216, 88));
-            //    col2_Detail2 = new Color(136, 8, 152));
-
-            //    col3_Skin = Color.LightGreen);
-            //    col4_Hair = Color.DarkGreen);
-
-            //    flagDesign = FlagDesign.EvilBanner;
-            //}
-            //else
-            //{
-            //    var color1 = AiColorRange.GetRandom();
-            //    var color2 = AiColorRange.GetRandom();
-
-            //    col0_Main = color1);
-            //    col1_Detail1 = color2);
-            //    col2_Detail2 = Color.Gray);
-
-            //    col3_Skin = Color.LightGray);
-            //    col4_Hair = Color.DarkGray);
-
-            //    flagDesign = arraylib.RandomListMember(FlagDesign.AiBanner);
-            //}
+            autoAltColor();
         }
+
+        
 
         public FlagAndColor(System.IO.BinaryReader r)
         {
@@ -2808,16 +2767,16 @@ namespace VikingEngine.DSSWars
             BlockHD darkMain = main;
             darkMain.tintSteps(-1, -1, -1);
 
-            Color altCol;
-            if (ColorExt.GetBrightNess(col0_Main) >= 0.3f)
-            {
-                altCol = ColorExt.ChangeBrighness( col0_Main, -30);
-            }
-            else
-            {
-                altCol = ColorExt.ChangeBrighness(col0_Main, 30);
-            }
-            BlockHD mainAlt = new BlockHD(altCol);
+            //Color altCol;
+            //if (ColorExt.GetBrightNess(col0_Main) >= 0.3f)
+            //{
+            //    altCol = ColorExt.ChangeBrighness( col0_Main, -30);
+            //}
+            //else
+            //{
+            //    altCol = ColorExt.ChangeBrighness(col0_Main, 30);
+            //}
+            BlockHD mainAlt = new BlockHD(col5_AltMain);
 
             //var skinCol = getColor(ProfileColorType.Skin);
             BlockHD skin = new BlockHD(col3_Skin);
@@ -2881,6 +2840,9 @@ namespace VikingEngine.DSSWars
                 case ProfileColorType.Hair:
                     col4_Hair = color;
                     break;
+                case ProfileColorType.AltMain:
+                    col5_AltMain = color;
+                    break;
 
             }
             //colors[(int)type] = color;
@@ -2901,7 +2863,8 @@ namespace VikingEngine.DSSWars
                     return col3_Skin;
                 case ProfileColorType.Hair:
                     return col4_Hair;
-
+                case ProfileColorType.AltMain:
+                    return col5_AltMain;
                 default:
                     throw new NotImplementedException();
             }
@@ -2997,6 +2960,7 @@ namespace VikingEngine.DSSWars
 
         Skin,
         Hair,
+        AltMain,
         NUM
     }
 }

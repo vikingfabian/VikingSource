@@ -184,8 +184,9 @@ namespace VikingEngine.DSSWars
 
     class FactionModelBuilder : Voxels.ModelBuilder
     {
-        static readonly IntVector3 TroopBannerStart = new IntVector3(3, 44, 2);
+        static readonly IntVector3 TroopBannerStart = new IntVector3(4, 44, 2);
         static readonly IntVector3 WavingFlagStart = new IntVector3(4, 44, 3);
+        static readonly IntVector3 WavingFlagStart_LargeFlag = new IntVector3(5, 37, 1);
         static readonly IntVector3 HorseBannerStart = new IntVector3(3, 50, 0);
         static readonly IntVector3 CityBannerStart = new IntVector3(6, 44, 0);
         static readonly IntVector3 ArmyBannerStart = new IntVector3(1, 0, 1);
@@ -255,6 +256,9 @@ namespace VikingEngine.DSSWars
                 case VoxelModelName.wars_flag:
                     addFlagTexture(faction, copy, WavingFlagStart, true, 0);
                     addFlagTexture(faction, copy, WavingFlagStart, true, 1);
+                    addFlagTexture(faction, copy, WavingFlagStart_LargeFlag, true, 3);
+                    addFlagTexture(faction, copy, WavingFlagStart, true, 4);
+                    addFlagTexture(faction, copy, WavingFlagStart, true, 5);
                     break;
                 case VoxelModelName.horsebanner:
                     addFlagTexture(faction, copy, HorseBannerStart, true);

@@ -8,6 +8,9 @@ namespace VikingEngine.DSSWars.Display.Translation
 {
     class TodoTranslation
     {
+        public string ProfileEditor_AltMain => "Alternative main";
+        public string Automation_CheckBoxTitle => "Automated";
+
         //public string Hud_Advanced => "Advanced";
         //public string Hud_Loading => "Loading...";
 

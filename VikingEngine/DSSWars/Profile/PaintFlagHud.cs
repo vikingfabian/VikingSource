@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Valve.Steamworks;
+using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.Display;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
@@ -153,6 +154,7 @@ namespace VikingEngine.DSSWars.Profile
 
             peoplecolor(ProfileColorType.Skin);
             peoplecolor(ProfileColorType.Hair);
+            altMainColor();
         }
 
         void flagcolor(ProfileColorType colorType)
@@ -198,11 +200,39 @@ namespace VikingEngine.DSSWars.Profile
             content.newLine();
         }
 
+        void altMainColor()
+        {
+            content.newParagraph();
+
+            var colorType = ProfileColorType.AltMain;
+            content.text(PaintFlagState.ProfileColorName(colorType));
+            content.newLine();
+            content.Add(new RbCheckbox(new List<AbsRichBoxMember> { 
+                new RbText(DssRef.todoLang.Automation_CheckBoxTitle) }, 
+                state.autoAltMainProperty));
+            content.space();
+            var color = new RbImage(SpriteName.WhiteArea);
+            color.color = state.profile.getColor(colorType);
+            content.Add(new RbButton(
+                new List<AbsRichBoxMember>
+                {
+                    new RbImage(SpriteName.IconColorPick),
+                    color,
+                },
+                new RbAction1Arg<ProfileColorType>(selectColorType, colorType), null, true));
+
+            if (state.selectedColorType == colorType)
+            {
+                content.Add(new RbImage(SpriteName.LfNpcSpeechArrow));
+            }
+
+            content.newLine();
+        }
+
         void debugPrintArray()
         {
             state.profile.PrintFlagColors();
-            state.profile.flagDesign.Print();
-            
+            state.profile.flagDesign.Print();            
         }
 
        public void selectColorType(ProfileColorType colorType)
@@ -212,7 +242,7 @@ namespace VikingEngine.DSSWars.Profile
             refresh();
         }
 
-       
+        
     }
 
 
