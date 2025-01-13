@@ -41,7 +41,7 @@ namespace VikingEngine.Graphics
     {
         public const string ColorArgument = "ColorAndAlpha";
 
-        static ModelMesh modelListMesh;
+        static protected ModelMesh modelListMesh;
         static int modelMeshIx = 0;
         protected string TechniqueName;
         protected bool usesWorldPos;

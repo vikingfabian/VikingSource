@@ -36,7 +36,7 @@ namespace VikingEngine.Engine
         //public static GraphicsDevice GraphicsDevice;
         public static Viewport defaultViewport;
         public static bool horizontalSplit = true;
-        public static Effect effectBR;
+        public static Effect effectBR, effectFlag;
         //public static Effect PixelShader;
         public static Graphics.CustomEffect[] TextureEffects;
         static protected RenderTarget2D MainRenderTarget;
@@ -62,13 +62,19 @@ namespace VikingEngine.Engine
             //3d stuff
 
             effectBR = LoadContent.LoadShader("Effect");
-           
+            effectFlag = LoadContent.LoadShader("FlagWaveEffect");
+
             TextureEffects = new VikingEngine.Graphics.CustomEffect[(int)Graphics.TextureEffectType.NUM_NON];
 
             TextureEffects[(int)Graphics.TextureEffectType.Flat] = new Graphics.CustomEffect("Flat", false);
+            TextureEffects[(int)Graphics.TextureEffectType.Flag] = new Graphics.FlagWaveEffect();
+#if TOGG
             TextureEffects[(int)Graphics.TextureEffectType.FlatNoOpacity] = new Graphics.CustomEffect("FlatNoOpacity", false);
             TextureEffects[(int)Graphics.TextureEffectType.Shadow] = new Graphics.CustomEffect("Shadow", false);
+#endif
+#if LOOTFEST
             TextureEffects[(int)Graphics.TextureEffectType.FixedLight] = new Graphics.CustomEffect("FixedLight", true);
+#endif
 
             //PixelShader = LoadContent.LoadShader("PixelShader");
 

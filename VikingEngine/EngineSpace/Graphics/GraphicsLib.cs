@@ -170,6 +170,7 @@ namespace VikingEngine.Graphics
         //Water,
         Shadow,
         FixedLight,
+        Flag,
         NUM_NON,
     }
 

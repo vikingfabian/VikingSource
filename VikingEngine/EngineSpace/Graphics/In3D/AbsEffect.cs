@@ -13,7 +13,7 @@ namespace VikingEngine.Graphics
 
         abstract protected void SetVertexBufferEffect(AbsVoxelObj obj);
 
-        public void DrawVB(int frame, AbsVoxelObj obj, AbsVertexAndIndexBuffer VB)
+        virtual public void DrawVB(int frame, AbsVoxelObj obj, AbsVertexAndIndexBuffer VB)
         {
             if (VB != null)
             {

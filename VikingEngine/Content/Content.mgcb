@@ -1150,6 +1150,12 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/EffectOld.fx
 
+#begin Shaders/FlagWaveEffect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/FlagWaveEffect.fx
+
 #begin Shaders/InstancingTest.fx
 /importer:EffectImporter
 /processor:EffectProcessor
