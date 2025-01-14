@@ -20,11 +20,10 @@ namespace VikingEngine.DSSWars
         List<VoxelModelName> processStarted = new List<VoxelModelName>(8);
 
         public Graphics.VoxelModelInstance AutoLoadModelInstance(VoxelModelName name,
-           float scale = 1f,
-           //float yAdjust = 0f, bool centerY = false,
+           float scale = 1f,          
            bool addToRender = false)
         {
-            //Debug.CrashIfThreaded();
+            
             Graphics.VoxelModelInstance instance = new Graphics.VoxelModelInstance(null, addToRender);
             
             instance.scale.X = scale;
@@ -34,25 +33,14 @@ namespace VikingEngine.DSSWars
 #endif
             Graphics.VoxelModel master = null;
 
-            //lock (models_loaded)
-            //{
-                models_loaded.TryGetValue(name, out master);
-            //}
+            models_loaded.TryGetValue(name, out master);
 
             if (master != null)
             {
-                //instance.SetMaster(master);
-                //if (instance.scale.X > 0)
-                //{
-                //    instance.scale = VectorExt.V3(instance.SizeToScale * instance.scale.X);
-                //}
                 setMaster(instance, master);    
             }
             else
             {
-                //instance.scale.X = scale;
-                //instance.scale.Y = 0;
-
                 Task.Run(async () =>
                 {
                     int numLoops = 0;
@@ -62,17 +50,8 @@ namespace VikingEngine.DSSWars
                         lib.DoNothing();
                     }
 #endif
-                    var grid = DssRef.models.rawModels[name];//.Get(name, true);
+                    var grid = DssRef.models.rawModels[name];
 
-                    //while (grid == null)
-                    //{
-                    //    if (++numLoops > 500)
-                    //    {
-                    //        BlueScreen.ThreadException = new Exception("Model locked in processing: " + name.ToString()); 
-                    //    }
-                    //    await Task.Delay(100);
-                    //    grid = DssRef.modelsRaw.Get(name, false);
-                    //}
 
                     generateFromGrid_asynch(name, grid);
 
@@ -92,13 +71,6 @@ namespace VikingEngine.DSSWars
                     setMaster(instance, master);
                 });
 
-                //var grid = DssRef.modelsRaw.Get(name);
-                
-                //if (grid != null)
-                //{
-                //    new Timer.Asynch2ArgTrigger<VoxelModelName, VoxelObjGridDataAnimHD>(
-                //        generateFromGrid_asynch, name, grid, false);
-                //}
             }
             return instance;
         }
@@ -186,7 +158,7 @@ namespace VikingEngine.DSSWars
     {
         static readonly IntVector3 TroopBannerStart = new IntVector3(4, 44, 2);
         static readonly IntVector3 WavingFlagStart = new IntVector3(4, 44, 3);
-        static readonly IntVector3 WavingFlagStart_LargeFlag = new IntVector3(5, 37, 1);
+        static readonly IntVector3 WavingFlagStart_LargeFlag = new IntVector3(7, 39, 3);
         static readonly IntVector3 HorseBannerStart = new IntVector3(3, 50, 0);
         static readonly IntVector3 CityBannerStart = new IntVector3(6, 44, 0);
         static readonly IntVector3 ArmyBannerStart = new IntVector3(1, 0, 1);
@@ -256,9 +228,10 @@ namespace VikingEngine.DSSWars
                 case VoxelModelName.wars_flag:
                     addFlagTexture(faction, copy, WavingFlagStart, true, 0);
                     addFlagTexture(faction, copy, WavingFlagStart, true, 1);
-                    addFlagTexture(faction, copy, WavingFlagStart_LargeFlag, true, 3);
+
+                    addFlagTexture(faction, copy, WavingFlagStart, true, 3);
                     addFlagTexture(faction, copy, WavingFlagStart, true, 4);
-                    addFlagTexture(faction, copy, WavingFlagStart, true, 5);
+                    addFlagTexture(faction, copy, WavingFlagStart_LargeFlag, true, 5);
                     break;
                 case VoxelModelName.horsebanner:
                     addFlagTexture(faction, copy, HorseBannerStart, true);

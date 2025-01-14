@@ -1033,7 +1033,73 @@ namespace VikingEngine.DSSWars.Build
         },
          XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
       );
+
         public static readonly CraftBlueprint FlagPole_Flag = new CraftBlueprint(
+         CraftResultType.Building,
+         (int)Build.BuildAndExpandType.FlagPole_Flag,
+        1,
+        new UseResource[]
+        {
+               new UseResource(ItemResourceType.Gold, 1),
+        },
+         XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+      );
+
+
+
+        public static readonly CraftBlueprint FlagPole_Banner = new CraftBlueprint(
+         CraftResultType.Building,
+         (int)Build.BuildAndExpandType.FlagPole_Flag,
+        1,
+        new UseResource[]
+        {
+               new UseResource(ItemResourceType.Gold, 1),
+        },
+         XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+      );
+
+        public static readonly CraftBlueprint FlagPole_SlimBanner = new CraftBlueprint(
+         CraftResultType.Building,
+         (int)Build.BuildAndExpandType.FlagPole_Flag,
+        1,
+        new UseResource[]
+        {
+               new UseResource(ItemResourceType.Gold, 1),
+        },
+         XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+      );
+
+        public static readonly CraftBlueprint FlagPole_FlagRound = new CraftBlueprint(
+         CraftResultType.Building,
+         (int)Build.BuildAndExpandType.FlagPole_Flag,
+        1,
+        new UseResource[]
+        {
+               new UseResource(ItemResourceType.Gold, 1),
+        },
+         XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+      );
+        public static readonly CraftBlueprint FlagPole_FlagLarge = new CraftBlueprint(
+         CraftResultType.Building,
+         (int)Build.BuildAndExpandType.FlagPole_Flag,
+        1,
+        new UseResource[]
+        {
+               new UseResource(ItemResourceType.Gold, 1),
+        },
+         XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+      );
+        public static readonly CraftBlueprint FlagPole_Streamer = new CraftBlueprint(
+         CraftResultType.Building,
+         (int)Build.BuildAndExpandType.FlagPole_Flag,
+        1,
+        new UseResource[]
+        {
+               new UseResource(ItemResourceType.Gold, 1),
+        },
+         XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Beginner_1
+      );
+        public static readonly CraftBlueprint FlagPole_Triangle = new CraftBlueprint(
          CraftResultType.Building,
          (int)Build.BuildAndExpandType.FlagPole_Flag,
         1,

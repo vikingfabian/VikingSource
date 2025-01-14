@@ -41,9 +41,7 @@ float AmplitudeModFrequency = 1.0; // Speed of amplitude oscillation
 //------------------------------------
 // Lighting parameters (simple Lambert)
 //------------------------------------
-float3 LightDirection = float3(-0.08, 0.89, 0.45); // The direction of the light
-float3 LightColor = float3(0.4, 0.4, 0.4); // The color of the light (white)
-float AmbientIntensity = 0.6; // Simple ambient term
+
 
 //------------------------------------
 // Vertex shader input structure
@@ -124,15 +122,7 @@ VSOutput VS_Main(VSInput input)
 //------------------------------------
 float4 PS_Main(VSOutput input) : COLOR0
 {
-    // Simple Lambert lighting
-    float3 N = normalize(input.Normal);
-    float3 L = normalize(-LightDirection); // Make sure light is normalized; note the minus sign
-
-    // Diffuse factor
-    float NdotL = saturate(dot(N, L));
-
-    // Final lighting factor
-    float3 lighting = LightColor * (AmbientIntensity + NdotL);
+   
 
     // Modulate by vertex color
     float3 finalColor = input.Color.rgb; //lighting * input.Color.rgb;

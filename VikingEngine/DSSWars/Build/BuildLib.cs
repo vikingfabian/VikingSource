@@ -104,8 +104,18 @@ namespace VikingEngine.DSSWars.Build
         Statue_Horse,
         Statue_Pillar,
 
+
         FlagPole_LongBanner,
+        FlagPole_Banner,
+        FlagPole_SlimBanner,
+
         FlagPole_Flag,
+        FlagPole_FlagRound,
+        FlagPole_FlagLarge,
+        FlagPole_Streamer,
+        FlagPole_Triangle,
+
+
         NUM_NONE,
     }
     static class BuildLib
@@ -309,9 +319,16 @@ namespace VikingEngine.DSSWars.Build
             list.Add(BuildAndExpandType.Statue_Lion);
             list.Add(BuildAndExpandType.Statue_Horse);
             list.Add(BuildAndExpandType.Statue_Pillar);
-
+            
             list.Add(BuildAndExpandType.FlagPole_LongBanner);
+            list.Add(BuildAndExpandType.FlagPole_Banner);
+            list.Add(BuildAndExpandType.FlagPole_SlimBanner);
+
             list.Add(BuildAndExpandType.FlagPole_Flag);
+            list.Add(BuildAndExpandType.FlagPole_FlagRound);
+            list.Add(BuildAndExpandType.FlagPole_FlagLarge);
+            list.Add(BuildAndExpandType.FlagPole_Streamer);
+            list.Add(BuildAndExpandType.FlagPole_Triangle);
         }
 
         public static void Init()
@@ -412,7 +429,15 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.Statue_Pillar, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Pillar, SpriteName.MissingImage, CraftBuildingLib.Statue_Pillar);
 
             new BuildOption(BuildAndExpandType.FlagPole_LongBanner, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_LongBanner, SpriteName.MissingImage, CraftBuildingLib.FlagPole_LongBanner);
+            new BuildOption(BuildAndExpandType.FlagPole_Banner, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_Banner, SpriteName.MissingImage, CraftBuildingLib.FlagPole_Banner);
+            new BuildOption(BuildAndExpandType.FlagPole_SlimBanner, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_SlimBanner, SpriteName.MissingImage, CraftBuildingLib.FlagPole_SlimBanner);
+
             new BuildOption(BuildAndExpandType.FlagPole_Flag, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_Flag, SpriteName.MissingImage, CraftBuildingLib.FlagPole_Flag);
+            new BuildOption(BuildAndExpandType.FlagPole_FlagRound, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_FlagRound, SpriteName.MissingImage, CraftBuildingLib.FlagPole_FlagRound);
+            new BuildOption(BuildAndExpandType.FlagPole_FlagLarge, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_FlagLarge, SpriteName.MissingImage, CraftBuildingLib.FlagPole_FlagLarge);
+            new BuildOption(BuildAndExpandType.FlagPole_Streamer, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_Streamer, SpriteName.MissingImage, CraftBuildingLib.FlagPole_Streamer);
+            new BuildOption(BuildAndExpandType.FlagPole_Triangle, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_Triangle, SpriteName.MissingImage, CraftBuildingLib.FlagPole_Triangle);
+
 
         }
 

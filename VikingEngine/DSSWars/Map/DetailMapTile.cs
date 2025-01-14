@@ -761,6 +761,34 @@ namespace VikingEngine.DSSWars.Map
                     }
                     break;
 
+                case TerrainDecorType.FlagPole_Banner:
+                    {
+                        newFoliage().init(LootFest.VoxelModelName.city_flagpole, 0, wp, WorldData.SubTileWidth * 1f);
+
+                        var faction = tile.Faction();
+                        if (faction != null)
+                        {
+                            var flag = new FlagModel();
+                            flag.init(faction, 1, wp + new Vector3(0.011f, 0.009f, -0.032f), WorldData.SubTileWidth * 1f);
+                            flagModels.Add(flag);
+                        }
+                    }
+                    break;
+
+                case TerrainDecorType.FlagPole_SlimBanner:
+                    {
+                        newFoliage().init(LootFest.VoxelModelName.city_flagpole, 0, wp, WorldData.SubTileWidth * 1f);
+
+                        var faction = tile.Faction();
+                        if (faction != null)
+                        {
+                            var flag = new FlagModel();
+                            flag.init(faction, 2, wp + new Vector3(0.011f, 0.009f, -0.032f), WorldData.SubTileWidth * 1f);
+                            flagModels.Add(flag);
+                        }
+                    }
+                    break;
+
                 case TerrainDecorType.FlagPole_Flag:
                     {
                         newFoliage().init(LootFest.VoxelModelName.city_flagpole, 1, wp, WorldData.SubTileWidth * 1f);
@@ -769,11 +797,68 @@ namespace VikingEngine.DSSWars.Map
                         if (faction != null)
                         {
                             var flag = new FlagModel();
-                            flag.init(faction, 1, wp + new Vector3(0.001f, 0.009f, -0.038f), WorldData.SubTileWidth * 1f);
+                            flag.init(faction, 3, wp + new Vector3(0.001f, 0.009f, -0.038f), WorldData.SubTileWidth * 1f);
                             flagModels.Add(flag);
                         }
                     }
                     break;
+
+                case TerrainDecorType.FlagPole_FlagRound:
+                    {
+                        newFoliage().init(LootFest.VoxelModelName.city_flagpole, 1, wp, WorldData.SubTileWidth * 1f);
+
+                        var faction = tile.Faction();
+                        if (faction != null)
+                        {
+                            var flag = new FlagModel();
+                            flag.init(faction, 4, wp + new Vector3(0.001f, 0.009f, -0.038f), WorldData.SubTileWidth * 1f);
+                            flagModels.Add(flag);
+                        }
+                    }
+                    break;
+
+                case TerrainDecorType.FlagPole_FlagLarge:
+                    {
+                        newFoliage().init(LootFest.VoxelModelName.city_flagpole, 1, wp, WorldData.SubTileWidth * 1f);
+
+                        var faction = tile.Faction();
+                        if (faction != null)
+                        {
+                            var flag = new FlagModel();
+                            flag.init(faction, 5, wp + new Vector3(0.001f, 0.009f, -0.038f), WorldData.SubTileWidth * 1f);
+                            flagModels.Add(flag);
+                        }
+                    }
+                    break;
+
+                case TerrainDecorType.FlagPole_Streamer:
+                    {
+                        newFoliage().init(LootFest.VoxelModelName.city_flagpole, 1, wp, WorldData.SubTileWidth * 1f);
+
+                        var faction = tile.Faction();
+                        if (faction != null)
+                        {
+                            var flag = new FlagModel();
+                            flag.init(faction, 6, wp + new Vector3(0.001f, 0.009f, -0.038f), WorldData.SubTileWidth * 1f);
+                            flagModels.Add(flag);
+                        }
+                    }
+                    break;
+
+                case TerrainDecorType.FlagPole_Triangle:
+                    {
+                        newFoliage().init(LootFest.VoxelModelName.city_flagpole, 1, wp, WorldData.SubTileWidth * 1f);
+
+                        var faction = tile.Faction();
+                        if (faction != null)
+                        {
+                            var flag = new FlagModel();
+                            flag.init(faction, 7, wp + new Vector3(0.001f, 0.009f, -0.038f), WorldData.SubTileWidth * 1f);
+                            flagModels.Add(flag);
+                        }
+                    }
+                    break;
+
 
                 default:
                     throw new NotImplementedException();
