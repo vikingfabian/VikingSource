@@ -32,21 +32,11 @@ using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
 {
-    class PlayState : AbsDssState
+    class PlayState : AbsPlayState
     {
         public const int PathThreadCount = 4;
-        public WorldResources resources = new WorldResources();
 
-        Map.MapLayer_Factions factionsMap;
-        Map.MapLayer_Overview overviewMap;
-        public Map.MapLayer_Detail detailMap;
-
-        public Culling culling;
-        public PathUpdateThread[] pathUpdates;
-        ConcurrentStack<Graphics.VoxelModelInstance> voxelModelInstancesPool_detail = new ConcurrentStack<VoxelModelInstance>();
-        ConcurrentStack<Graphics.VoxelModelInstance> voxelModelInstancesPool_overview = new ConcurrentStack<VoxelModelInstance>();
-        //public PathFindingPool pathFindingPool = new PathFindingPool();
-        //public DetailPathFindingPool detailPathFindingPool = new DetailPathFindingPool();
+        
 
         public int nextGroupId = 0;
         public List<Players.LocalPlayer> localPlayers;
@@ -54,20 +44,20 @@ namespace VikingEngine.DSSWars
         
         //public SpottedArray<Battle.BattleGroup> battles = new SpottedArray<Battle.BattleGroup>(64);
 
-        bool host;
+        
         bool isReady= false;
         public bool PartyMode = false;   
-        public bool exitThreads = false;
+        
         public GameEvents events;
         public Progress progress = new Progress();
         TechnologyManager technologyManager = new TechnologyManager();
-        public AbsCutScene cutScene=null;
+        
 
         bool bResourceMinuteUpdate = true;
         public int NextArmyId = 0;
         public GameMenuSystem menuSystem;
         bool slowMinuteUpdate = true;   
-        Timer.Basic subTileReloadTimer = new Timer.Basic(1000, true);                
+                     
         bool netMapUpdate = false;
 
         public PlayState(bool host, SaveStateMeta loadMeta, System.IO.BinaryReader readWorld)
@@ -121,11 +111,12 @@ namespace VikingEngine.DSSWars
             localPlayers.Add(local);
             local.assignPlayer(0, 1, false);
 
-            culling = new Culling();
+            //culling = new Culling();
 
-            factionsMap = new MapLayer_Factions();
-            overviewMap = new Map.MapLayer_Overview(factionsMap);
-            detailMap = new Map.MapLayer_Detail();
+            //factionsMap = new MapLayer_Factions();
+            //overviewMap = new Map.MapLayer_Overview(factionsMap);
+            //detailMap = new Map.MapLayer_Detail();
+            baseInit();
             technologyManager.initGame(false);
 
             events = new GameEvents();
@@ -145,11 +136,12 @@ namespace VikingEngine.DSSWars
             //Ref.rnd.SetSeed(DssRef.world.metaData.seed);
             initPlayers(newGame, pointers);
 
-            culling = new Culling();
+            //culling = new Culling();
 
-            factionsMap = new MapLayer_Factions();
-            overviewMap = new Map.MapLayer_Overview(factionsMap);
-            detailMap = new Map.MapLayer_Detail();
+            //factionsMap = new MapLayer_Factions();
+            //overviewMap = new Map.MapLayer_Overview(factionsMap);
+            //detailMap = new Map.MapLayer_Detail();
+            baseInit();
             technologyManager.initGame(newGame);
             
             events = new GameEvents();
@@ -283,9 +275,9 @@ namespace VikingEngine.DSSWars
                 new AsynchUpdateable_TryCatch(asynchNearObjectsUpdate, "DSS near objects update", 56, System.Threading.ThreadPriority.BelowNormal);
             }
 
-
-            new AsynchUpdateable_TryCatch(asynchMapGenerating, "DSS map gen", 57, System.Threading.ThreadPriority.Normal);
-            new AsynchUpdateable_TryCatch(asyncMapBorders, "DSS map borders update", 59, System.Threading.ThreadPriority.Lowest);
+            startMapThreads();
+            //new AsynchUpdateable_TryCatch(asynchMapGenerating, "DSS map gen", 57, System.Threading.ThreadPriority.Normal);
+            //new AsynchUpdateable_TryCatch(asyncMapBorders, "DSS map borders update", 59, System.Threading.ThreadPriority.Lowest);
 
             if (host)
             {
@@ -681,23 +673,7 @@ namespace VikingEngine.DSSWars
 
         }
 
-        bool asynchMapGenerating(int id, float time)
-        {
-            if (cutScene == null)
-            {
-                if (!host)
-                {
-                    overviewMap.refresh_async();
-                }
-
-                culling.asynch_update(time);
-                DssRef.state.detailMap.asynchUpdate();
-                overviewMap.unitMiniModels.asynchUpdate();
-
-                
-            }
-            return exitThreads;
-        }
+        
 
         bool asynchHostNetUpdate(int id, float time)
         {
@@ -733,14 +709,7 @@ namespace VikingEngine.DSSWars
 
         
 
-        bool asyncMapBorders(int id, float time)
-        {
-            if (cutScene == null)
-            {
-                overviewMap.runAsyncTask();
-            }
-            return exitThreads;
-        }
+       
 
         int asynchGameObjectsMinutes = 0;
         bool asynchGameObjectsUpdate(int id, float time)
