@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 
@@ -17,22 +18,28 @@ namespace VikingEngine.HUD.RichMenu
         public RichBoxGroup richBox;
         protected RichBoxContent content = new RichBoxContent();
         protected Graphics.Image bg;
-        public VectorRect area, contentArea;
+        public VectorRect edgeArea, displayArea;
         public RbInteraction interaction = null;
         //protected RichboxGui gui;
         Graphics.RectangleLines outLine;
 
         RenderTargetDrawContainer renderList = null;//Is a target image, rendering the menu content
+        
         RichBoxSettings settings;
-        public RichMenu(RichBoxSettings settings, VectorRect area, Vector2 edgeThickness, ImageLayers layer)
+
+        float scrollerWidth;
+        RichScrollbar scrollBar;
+        public RichMenu(RichBoxSettings settings, VectorRect edgeArea, Vector2 edgeThickness, ImageLayers layer)
         { 
             this.settings = settings;
-            this.area = area;
-            contentArea = area;
-            contentArea.AddXRadius(-edgeThickness.X);
-            contentArea.AddYRadius(-edgeThickness.Y);
+            this.edgeArea = edgeArea;
+            displayArea = edgeArea;
+            displayArea.AddXRadius(-edgeThickness.X);
+            displayArea.AddYRadius(-edgeThickness.Y);
+            scrollerWidth = Screen.SmallIconSize;
 
-            renderList = new RenderTargetDrawContainer(contentArea.Position, contentArea.Size, layer, new List<AbsDraw>());
+            renderList = new RenderTargetDrawContainer(displayArea.Position, displayArea.Size, layer, new List<AbsDraw>());
+            scrollBar = new RichScrollbar(displayArea, scrollerWidth, layer);
         }
 
         public void Refresh(RichBoxContent content)
@@ -40,10 +47,16 @@ namespace VikingEngine.HUD.RichMenu
             Ref.draw.AddToContainer = renderList;
             {
                 richBox = new RichBoxGroup(Vector2.Zero,
-                    contentArea.Width, ImageLayers.Lay0, settings, content, true, true, false);
-            }
-            Ref.draw.AddToContainer = null;
+                    displayArea.Width, ImageLayers.Lay0, settings, content, true, true, false);                
+                
+            } Ref.draw.AddToContainer = null;
 
+            scrollBar.Refresh(richBox.area.Height, displayArea.Height);
+        }
+
+        public void updateMouseInput()
+        {
+            scrollBar.updateMouseInput();
         }
     }
 }

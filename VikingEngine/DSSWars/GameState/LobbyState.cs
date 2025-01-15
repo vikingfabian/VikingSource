@@ -49,7 +49,8 @@ namespace VikingEngine.DSSWars
         InputButtonType mappingFor;
         bool inKeyMapsMenu = false;
         List<Keys> availableKeyboardKeys;
-        
+
+        RichMenu richmenu;
         public LobbyState()
             : base()
         {
@@ -109,18 +110,18 @@ namespace VikingEngine.DSSWars
             area.Width = Screen.IconSize * 8;
             area.X = Screen.CenterScreen.X;
 
-            RichMenu menu = new RichMenu(HudLib.RbSettings, area, Vector2.Zero, ImageLayers.Top1);
+            richmenu = new RichMenu(HudLib.RbSettings, area, Vector2.Zero, ImageLayers.Top1);
             Image bg = new Image(SpriteName.WhiteArea, area.Position, area.Size, ImageLayers.Top2);
             bg.Opacity = 0.1f;
             RichBoxContent content = new RichBoxContent();
             content.h1("new menu");
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 100; i++)
             {
                 content.newLine();
                 content.Button("test" + i.ToString(), null, null, true);
             }
 
-            menu.Refresh(content);
+            richmenu.Refresh(content);
         }
 
         void load_asynch()
@@ -1032,6 +1033,8 @@ namespace VikingEngine.DSSWars
                     }
                 }
             }
+
+            richmenu.updateMouseInput();
         }
 
         void emitGlow()
