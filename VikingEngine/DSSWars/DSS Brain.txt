@@ -5,6 +5,11 @@
 * Improved voxeleditor undo action
 * Fixed some crashes
 
+! load crash om man lämnar spelet
+! ogg fil problem
+! skicka bara data om spelaren passerar 15min
+
+
 #OPT#
 culling av worker
 stanna musik spelaren
