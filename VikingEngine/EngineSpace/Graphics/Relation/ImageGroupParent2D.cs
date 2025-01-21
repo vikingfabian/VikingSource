@@ -79,6 +79,15 @@ namespace VikingEngine.Graphics
             images.Add(member);
             return member;
         }
+
+        public void Add(List<Image> list)
+        {
+            foreach (AbsDraw2D img in list)
+            {
+                images.Add(new ImageGroup2DMember(img));
+            }
+        }
+
         public void Add(AbsDraw2D image1, AbsDraw2D image2)
         {
             images.Add(new ImageGroup2DMember(image1));

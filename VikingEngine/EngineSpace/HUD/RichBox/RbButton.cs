@@ -8,32 +8,17 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.HUD.RichBox
 {
-    class RbButton : AbsRichBoxMember
+
+    abstract class AbsRbButton : AbsRichBoxMember
     {
         protected AbsRbAction click, enter;
         protected List<AbsRichBoxMember> content;
-        protected Graphics.Image bgPointer;
+        public bool fillWidth = false;
+        
         public bool enabled;
 
         public Input.IButtonMap buttonMap = null;
-        public Color? overrideBgColor;
-
-        public RbButton()
-        { }
-
-        public RbButton(List<AbsRichBoxMember> content, AbsRbAction click, AbsRbAction enter = null, bool enabled = true, Color? overrideBgColor = null)
-        {
-            this.content = content;
-            this.click = click;
-            this.enter = enter;
-            if (this.click != null)
-            {
-                this.click.enabled = enabled;
-            }           
-            this.enabled = enabled;
-            this.overrideBgColor = overrideBgColor;
-        }
-
+                
         public void addShortCutButton(Input.IButtonMap buttonMap, bool enableInput= true)
         {
             if (enableInput)
@@ -51,7 +36,7 @@ namespace VikingEngine.HUD.RichBox
             }
 
 
-            const float HoriSpace = 4;
+            const float HoriSpace = 8;
 
             
             float heigh = group.lineSpacingHalf;
@@ -77,29 +62,29 @@ namespace VikingEngine.HUD.RichBox
             topLeft.Y -= heigh;
             bottomRight.Y += group.lineSpacingHalf;
 
+            if (fillWidth)
+            {
+                bottomRight.X = group.boxWidth;
+                group.newLine();
+            }
+            else
+            {
+                group.position.X += 8;
+            }
+
             VectorRect area = VectorRect.FromTwoPoints(topLeft, bottomRight);
 
             if (multiline) area.Width = group.boxWidth;
 
             area.AddXRadius(2);
             area.AddYRadius(-2);
-            bgPointer = new Image(SpriteName.WhiteArea_LFtiles, area.Position, area.Size, group.layer + 1);
+            //bgPointer = new Image(SpriteName.WhiteArea_LFtiles, area.Position, area.Size, group.layer + 1);
+            createBackground(group, area, group.layer + 1);
+
             
-            if (overrideBgColor != null)
-            {
-                bgPointer.Color = overrideBgColor.Value;
-            }
-            else if (enabled)
-            {
-                bgPointer.Color = group.settings.button.BgColor;
-            }
-            else 
-            {
-                bgPointer.Color = group.settings.buttonDisabled.BgColor;
-            }
-            
-            group.images.Add(bgPointer);
             group.buttonGrid_Y_X.Last().Add(this);
+           
+
 
             void createContent(out Vector2 topLeft, out Vector2 bottomRight, out bool multilineContent)
             {
@@ -140,35 +125,84 @@ namespace VikingEngine.HUD.RichBox
             }
         }
 
+        abstract protected void createBackground(RichBoxGroup group, VectorRect area, ImageLayers layer);
+
         virtual protected void createPreContent(RichBoxGroup group)
         { }
 
-        public VectorRect area()
-        {
-            return bgPointer.Area;
-        }
+        abstract public VectorRect area();
 
         public override void onClick()
         {
             click?.actionTrigger();
         }
 
+        virtual public void clickAnimation(bool keyDown)
+        { }
+
         public override void onEnter()
         {
             enter?.actionTrigger();
         }
 
-        public override void getButtons(List<RbButton> buttons)
+        public override void getButtons(List<AbsRbButton> buttons)
         {
             buttons.Add(this);
         }
 
-        public void setGroupSelectionColor(RichBoxSettings settings, bool selected)
+        abstract public void setGroupSelectionColor(RichBoxSettings settings, bool selected);
+    }
+
+    class RbButton : AbsRbButton
+    {
+        protected Graphics.Image bgPointer;
+        public Color? overrideBgColor;
+        public RbButton()
+        { }
+
+        public RbButton(List<AbsRichBoxMember> content, AbsRbAction click, AbsRbAction enter = null, bool enabled = true, Color? overrideBgColor = null)
+        {
+            this.content = content;
+            this.click = click;
+            this.enter = enter;
+            if (this.click != null)
+            {
+                this.click.enabled = enabled;
+            }
+            this.enabled = enabled;
+            this.overrideBgColor = overrideBgColor;
+        }
+
+        override protected void createBackground(RichBoxGroup group, VectorRect area, ImageLayers layer)
+        {
+            bgPointer = new Image(SpriteName.WhiteArea_LFtiles, area.Position, area.Size, layer);
+
+            if (overrideBgColor != null)
+            {
+                bgPointer.Color = overrideBgColor.Value;
+            }
+            else if (enabled)
+            {
+                bgPointer.Color = group.settings.button.BgColor;
+            }
+            else
+            {
+                bgPointer.Color = group.settings.buttonDisabled.BgColor;
+            }
+
+            group.images.Add(bgPointer);
+        }
+
+        override public void setGroupSelectionColor(RichBoxSettings settings, bool selected)
         {
             if (!selected)
             {
                 overrideBgColor = settings.buttonSecondary.BgColor;
             }
+        }
+        override public VectorRect area()
+        {
+            return bgPointer.Area;
         }
     }
 }

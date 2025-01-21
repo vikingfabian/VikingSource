@@ -8,6 +8,60 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.HUD
 {
+    struct NineSplitSettings
+    {
+        public SpriteName baseTexture;
+        
+        public SpriteName disableTexture;
+        public SpriteName notSelectedTexture;//maybe add primary, secondary
+        
+        /// <summary>
+        /// Edge space on the spritesheet
+        /// </summary>
+        public int textureEdgeInsert;
+        
+        public int cornerTexSize;
+        public float edgeScale; 
+        public bool useTextureAsEdgeSz;
+        public bool addCenterImage;
+
+        public NineSplitSettings(SpriteName baseTexture, int textureEdgeInsert, int cornerTexSize,
+            float edgeScale, bool useTextureAsEdgeSz, bool addCenterImage)
+        {
+            this.baseTexture = baseTexture;
+            this.disableTexture = baseTexture;
+            this.notSelectedTexture = baseTexture;
+
+            this.textureEdgeInsert = textureEdgeInsert;
+            this.cornerTexSize = cornerTexSize;
+            this.edgeScale = edgeScale;
+            this.useTextureAsEdgeSz = useTextureAsEdgeSz;
+            this.addCenterImage = addCenterImage;
+        }
+
+        public NineSplitSettings Enabled(bool enabled)
+        {
+            var result = this;
+            if (!enabled)
+            {
+                result.baseTexture = disableTexture;
+            }
+
+            return result;
+        }
+
+        public NineSplitSettings Selected(bool selected)
+        {
+            var result = this;
+            if (!selected)
+            {
+                result.baseTexture = notSelectedTexture;
+            }
+
+            return result;
+        }
+    }
+
     /// <summary>
     /// Takes an image, splits it in nine pieces, corners, edges, center - to create any area of that style
     /// </summary>
@@ -17,23 +71,27 @@ namespace VikingEngine.HUD
         VectorRect area;
         ImageLayers layer;
 
-        public NineSplitAreaTexture(SpriteName baseTexture, int textureEdgeInsert, int cornerTexSize, VectorRect area, 
+        public NineSplitAreaTexture(SpriteName baseTexture, int textureEdgeInsert, int cornerTexSize, VectorRect area,
             float edgeScale, bool useTextureAsEdgeSz, ImageLayers layer, bool addCenterImage, bool addToRender = true)
+        { }
+
+        public NineSplitAreaTexture(NineSplitSettings settings, VectorRect area, ImageLayers layer, bool addToRender = true)
         {
+
             this.area = area;
             this.layer = layer;
 
-            Sprite file = DataLib.SpriteCollection.Get(baseTexture);//DataLib.SpriteCollection.imageFiles[DataLib.SpriteCollection.imagesNames[baseTexture]];
-            file.Source.X += textureEdgeInsert;
-            file.Source.Y += textureEdgeInsert;
-            file.Source.Width -= textureEdgeInsert * 2;
-            file.Source.Height -= textureEdgeInsert * 2;
+            Sprite file = DataLib.SpriteCollection.Get(settings.baseTexture);//DataLib.SpriteCollection.imageFiles[DataLib.SpriteCollection.imagesNames[baseTexture]];
+            file.Source.X += settings.textureEdgeInsert;
+            file.Source.Y += settings.textureEdgeInsert;
+            file.Source.Width -= settings.textureEdgeInsert * 2;
+            file.Source.Height -= settings.textureEdgeInsert * 2;
             
-            int centerTexSize = file.Source.Width - cornerTexSize * 2;
+            int centerTexSize = file.Source.Width - settings.cornerTexSize * 2;
 
             Rectangle nw = file.Source;
-            nw.Width = cornerTexSize;
-            nw.Height = cornerTexSize;
+            nw.Width = settings.cornerTexSize;
+            nw.Height = settings.cornerTexSize;
 
             Rectangle n = nw;
             n.X += nw.Width;
@@ -43,11 +101,11 @@ namespace VikingEngine.HUD
             ne.X = n.Right;
 
             Rectangle w = nw;
-            w.Y += cornerTexSize;
+            w.Y += settings.cornerTexSize;
             w.Height = centerTexSize;
 
             Rectangle center = w;
-            center.X += cornerTexSize;
+            center.X += settings.cornerTexSize;
             center.Width = centerTexSize;
 
             Rectangle e = w;
@@ -63,62 +121,62 @@ namespace VikingEngine.HUD
             se.Y = sw.Y;
 
 
-            images = new List<Image>(32);
+            images = new List<Image>(16);
             Vector2 cornerSize;
 
-            if (useTextureAsEdgeSz)
+            if (settings.useTextureAsEdgeSz)
             {
-                 cornerSize= new Vector2((int)(cornerTexSize * edgeScale));
+                 cornerSize= new Vector2((int)(settings.cornerTexSize * settings.edgeScale));
             }
             else
             {
-                cornerSize = new Vector2(edgeScale);
+                cornerSize = new Vector2(settings.edgeScale);
             }
             Vector2 centerSize = area.Size - cornerSize * 2f;
 
-            Graphics.ImageAdvanced nwImg = new ImageAdvanced(baseTexture, area.Position, cornerSize, 
+            Graphics.ImageAdvanced nwImg = new ImageAdvanced(settings.baseTexture, area.Position, cornerSize, 
                 layer, false, addToRender);
             nwImg.ImageSource = nw;
 
-            Graphics.ImageAdvanced nImg = new ImageAdvanced(baseTexture, 
+            Graphics.ImageAdvanced nImg = new ImageAdvanced(settings.baseTexture, 
                 VectorExt.AddX(area.Position, cornerSize.X), new Vector2(centerSize.X, cornerSize.Y), 
                 layer+1, false, addToRender);
             nImg.ImageSource = n;
 
-            Graphics.ImageAdvanced neImg = new ImageAdvanced(baseTexture, new Vector2(nImg.Right, area.Position.Y), 
+            Graphics.ImageAdvanced neImg = new ImageAdvanced(settings.baseTexture, new Vector2(nImg.Right, area.Position.Y), 
                 cornerSize, layer, false, addToRender);
             neImg.ImageSource = ne;
 
             images.Add(nwImg); images.Add(nImg); images.Add(neImg);
 
-            Graphics.ImageAdvanced wImg = new ImageAdvanced(baseTexture, VectorExt.AddY(area.Position, cornerSize.Y), 
+            Graphics.ImageAdvanced wImg = new ImageAdvanced(settings.baseTexture, VectorExt.AddY(area.Position, cornerSize.Y), 
                 new Vector2(cornerSize.X, centerSize.Y), layer, false, addToRender);
             wImg.ImageSource = w;
 
-            if (addCenterImage)
+            if (settings.addCenterImage)
             {
-                Graphics.ImageAdvanced cImg = new ImageAdvanced(baseTexture, area.Position + cornerSize, 
+                Graphics.ImageAdvanced cImg = new ImageAdvanced(settings.baseTexture, area.Position + cornerSize, 
                     centerSize, layer, false, addToRender);
                 cImg.ChangePaintLayer(+1);
                 cImg.ImageSource = center;
                 images.Add(cImg);
             }
 
-            Graphics.ImageAdvanced eImg = new ImageAdvanced(baseTexture, new Vector2(area.X + cornerSize.X + centerSize.X,
+            Graphics.ImageAdvanced eImg = new ImageAdvanced(settings.baseTexture, new Vector2(area.X + cornerSize.X + centerSize.X,
                 area.Y + cornerSize.Y), new Vector2(cornerSize.X, centerSize.Y), layer, false, addToRender);
             eImg.ImageSource = e;
 
             images.Add(wImg); images.Add(eImg);
 
-            Graphics.ImageAdvanced swImg = new ImageAdvanced(baseTexture, 
+            Graphics.ImageAdvanced swImg = new ImageAdvanced(settings.baseTexture, 
                 new Vector2(area.X, area.Y + cornerSize.Y + centerSize.Y), cornerSize, layer, false, addToRender);
             swImg.ImageSource = sw;
 
-            Graphics.ImageAdvanced sImg = new ImageAdvanced(baseTexture, new Vector2(nImg.Xpos, swImg.Ypos), 
+            Graphics.ImageAdvanced sImg = new ImageAdvanced(settings.baseTexture, new Vector2(nImg.Xpos, swImg.Ypos), 
                 nImg.Size, layer + 1, false, addToRender);
             sImg.ImageSource = s;
 
-            Graphics.ImageAdvanced seImg = new ImageAdvanced(baseTexture, new Vector2(neImg.Xpos, swImg.Ypos), cornerSize, 
+            Graphics.ImageAdvanced seImg = new ImageAdvanced(settings.baseTexture, new Vector2(neImg.Xpos, swImg.Ypos), cornerSize, 
                 layer, false, addToRender);
             seImg.ImageSource = se;
 
@@ -149,6 +207,21 @@ namespace VikingEngine.HUD
             {
                 m.Visible = visible;
             }
+        }
+
+        public void SetColor(Color color)
+        {
+            foreach (var m in images)
+            {
+                m.Color = color;
+            }
+        }
+
+        public VectorRect GetAreaAdjusted()
+        {
+            var result = area;
+            area.Position = images[0].position;
+            return result;
         }
     }
 }

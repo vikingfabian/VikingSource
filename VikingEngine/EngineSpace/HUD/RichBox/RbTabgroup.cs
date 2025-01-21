@@ -40,9 +40,13 @@ namespace VikingEngine.HUD.RichBox
 
         
 
-        public override void getButtons(List<RbButton> buttons)
+        public override void getButtons(List<AbsRbButton> buttons)
         {
-           buttons.AddRange(members);
+            buttons.AddRange(members);
+            //foreach (var m in members)
+            //{
+            //    buttons.Add(m);
+            //}
         }
     }
 

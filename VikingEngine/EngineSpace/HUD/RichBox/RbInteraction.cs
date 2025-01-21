@@ -2,18 +2,22 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.Engine;
 using VikingEngine.Graphics;
+using VikingEngine.PJ.Match3;
 
 namespace VikingEngine.HUD.RichBox
 {
     class RbInteraction
     {
-        public RbButton hover = null;
-        public List<RbButton> buttons = new List<RbButton>(4);
+        //public Vector2 outlineOffset = Vector2.Zero;
+        public AbsRbButton hover = null;
+        public List<AbsRbButton> buttons = new List<AbsRbButton>(4);
         public ImageLayers layer;
 
         Graphics.RectangleLines selectionOutline = null;
-        Input.IButtonMap clickInput;        
+        Input.IButtonMap clickInput;
+        public RenderTargetDrawContainer drawContainer = null;
 
         public RbInteraction(List<AbsRichBoxMember> content, ImageLayers layer,  Input.IButtonMap clickInput)
         {
@@ -23,20 +27,19 @@ namespace VikingEngine.HUD.RichBox
             foreach (var m in content)
             {
                 m.getButtons(buttons);
-                //RichboxButton button = m as RichboxButton;
-                //if (button != null)
-                //{
-                //    buttons.Add(button);
-                //}
             }
         }
 
-        public bool update()
+        public bool update(Vector2 mousePosOffSet)
         {
             if (clickInput.IsMouse)
             {
-                Vector2 pos = Input.Mouse.Position;
-                RbButton prev = hover;
+                Vector2 pos = Input.Mouse.Position + mousePosOffSet;
+                //if (drawContainer != null)
+                //{
+                //    pos -= drawContainer.Position;
+                //}
+                AbsRbButton prev = hover;
                 hover = null;
                 VectorRect area = VectorRect.Zero;
 
@@ -44,7 +47,7 @@ namespace VikingEngine.HUD.RichBox
                 {
                     if (m.buttonMap != null && m.buttonMap.DownEvent)
                     {
-                        m.onClick();//.click?.actionTrigger();
+                        m.onClick();
                     }
 
                     area = m.area();
@@ -57,20 +60,22 @@ namespace VikingEngine.HUD.RichBox
 
                 if (hover != prev)
                 {
-                    //selectionOutline?.DeleteMe();
-                    //if (hover != null)
-                    //{
-                    //    selectionOutline = new RectangleLines(area, 2, 1, layer);
-                    //    hover.enter?.actionTrigger();
-                    //    //Debug.Log("on enter");
-                    //}
+                    prev?.clickAnimation(false);
                     refreshSelectOutline();
                 }
             }
-            if (clickInput.DownEvent && hover != null)
+            if (hover != null)
             {
-                hover.onClick();//.click?.actionTrigger();
-                return true;
+                if (clickInput.DownEvent)
+                {
+                    hover.onClick();
+                    hover.clickAnimation(true);
+                    return true;
+                }
+                else if (clickInput.UpEvent)
+                { 
+                    hover.clickAnimation(false);
+                }
             }
 
             return false;
@@ -78,20 +83,27 @@ namespace VikingEngine.HUD.RichBox
 
         public void refreshSelectOutline()
         {
+            Ref.draw.AddToContainer = drawContainer;
+
             selectionOutline?.DeleteMe();
             if (hover != null)
             {
-                selectionOutline = new RectangleLines(hover.area(), 2, 1, layer);
-                hover.onEnter();//.enter?.actionTrigger();
-                //Debug.Log("on enter");
+                var ar = hover.area();
+                //ar.Position += outlineOffset;
+                selectionOutline = new RectangleLines(ar, 2, 1, layer);
+                hover.onEnter();
             }
+
+            Ref.draw.AddToContainer = null;
         }
 
         public void clearSelection()
         {
-            hover=null;
+            Ref.draw.AddToContainer = drawContainer;
+            hover = null;
             selectionOutline?.DeleteMe();
             selectionOutline = null;
+            Ref.draw.AddToContainer = null;
         }
 
         public void DeleteMe()

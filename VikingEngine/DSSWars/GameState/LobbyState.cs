@@ -28,6 +28,7 @@ using VikingEngine.DSSWars.Players;
 using System.IO;
 using VikingEngine.DataStream;
 using VikingEngine.HUD.RichMenu;
+using VikingEngine.HUD.RichBox.Artistic;
 
 namespace VikingEngine.DSSWars
 {
@@ -110,14 +111,19 @@ namespace VikingEngine.DSSWars
             area.Width = Screen.IconSize * 8;
             area.X = Screen.CenterScreen.X;
 
-            richmenu = new RichMenu(HudLib.RbSettings, area, Vector2.Zero, ImageLayers.Top1);
-            Image bg = new Image(SpriteName.WhiteArea, area.Position, area.Size, ImageLayers.Top2);
-            bg.Opacity = 0.1f;
+            richmenu = new RichMenu(HudLib.RbSettings, area, new Vector2(6), RichMenu.DefaultRenderEdge, ImageLayers.Top1);
+            richmenu.addBackground(HudLib.HudMenuBackground, ImageLayers.Top1_Back);
+
+            //Image bg = new Image(SpriteName.WhiteArea, area.Position, area.Size, ImageLayers.Top2);
+            //bg.Opacity = 0.1f;
             RichBoxContent content = new RichBoxContent();
             content.h1("new menu");
             for (int i = 0; i < 100; i++)
             {
                 content.newLine();
+                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("test" + i.ToString()) }, null);
+                btn.fillWidth = true;
+                content.Add(btn);
                 content.Button("test" + i.ToString(), null, null, true);
             }
 

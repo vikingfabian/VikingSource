@@ -33,7 +33,11 @@ namespace VikingEngine.Graphics
             this.rectangle = rectangle;
             Refresh();
         }
-
+        public void Refresh(VectorRect rectangle)
+        {
+            this.rectangle = rectangle;
+            Refresh();
+        }
         public void Refresh()
         {
             VectorRect linesOuterArea = rectangle;

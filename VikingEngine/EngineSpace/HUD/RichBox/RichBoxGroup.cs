@@ -26,7 +26,7 @@ namespace VikingEngine.HUD.RichBox
 
         public int bTitelFormat = 0;
         public Stack<AbsRichBoxMember> parentMember = new Stack<AbsRichBoxMember>();
-        public List<List<RbButton>> buttonGrid_Y_X = new List<List<RbButton>>();
+        public List<List<AbsRbButton>> buttonGrid_Y_X = new List<List<AbsRbButton>>();
 
         int tryCreatePosition = -1;
         bool lockNewLine = false;
@@ -144,7 +144,7 @@ namespace VikingEngine.HUD.RichBox
         {
             if (buttonGrid_Y_X.Count == 0 || buttonGrid_Y_X.Last().Count > 0)
             {
-                buttonGrid_Y_X.Add(new List<RbButton>());
+                buttonGrid_Y_X.Add(new List<AbsRbButton>());
             }
             position.X = topleft.X;
 

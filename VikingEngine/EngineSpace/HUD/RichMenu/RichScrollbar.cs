@@ -12,108 +12,168 @@ namespace VikingEngine.HUD.RichMenu
 {
     class RichScrollbar
     {
-        RenderTargetDrawContainer scrollerRenderer = null;
+        //RenderTargetDrawContainer scrollerRenderer = null;
 
-
-        Image slider;
-        Graphics.Image background;
+        NineSplitAreaTexture slider;
+        NineSplitAreaTexture background;
         IntervalF valuerange;
-        float valueT;
+        public float scrollResult;
         float slideRange;
         bool mouseDown = false;
         float mouseDownY;
         float mouseDown_SliderY;
         VectorRect area;
-        
-        public RichScrollbar(VectorRect displayArea, float scrollerWidth, ImageLayers layer)//FloatGetSet property, GuiLayout layout)
+        float rowHeight;
+        NineSplitSettings sliderTex;
+        float sliderHeight = 1;
+        ImageLayers layer;
+        ImageGroupParent2D sliderGroup;
+        Graphics.RectangleLines selectionOutline = null;
+        public RichScrollbar(NineSplitSettings sliderTex, NineSplitSettings backgroundTex, 
+            VectorRect displayArea, float scrollerWidth, ImageLayers layer)
         {
-            //UpdateSliderPosition();
-            //slider.Height = (layout.gui.area.Height / layout.totalHeight) * layout.gui.area.Height - style.memberSpacing * 2;
+            this.layer = layer;
             area = new VectorRect(new Vector2(displayArea.Right, displayArea.Y), new Vector2(scrollerWidth, displayArea.Height));
-            
-            scrollerRenderer = new RenderTargetDrawContainer(area.Position, area.Size, layer, new List<AbsDraw>());
 
-            Ref.draw.AddToContainer = scrollerRenderer;
-            {
-                background = new Image(SpriteName.WhiteArea, Vector2.Zero, area.Size, ImageLayers.Background0);
-                slider = new Image(SpriteName.WhiteArea, Vector2.Zero, area.Size, ImageLayers.AbsoluteTopLayer);
-                slider.LayerAbove(background);
-            }
-            Ref.draw.AddToContainer = null;
-            scrollerRenderer.Visible = false;
-
-            background.Color = Color.Beige;
-            slider.Color = Color.Orange;
+            background = new NineSplitAreaTexture(backgroundTex, area, layer +1);//new Image(SpriteName.WhiteArea, area.Position, area.Size, layer + 1);
+            slider = null;
+            this.sliderTex = sliderTex;
         }
 
-        public void Refresh(float contentHeight, float displayHeight)
+        public VectorRect IncludeScrollArea(VectorRect menuarea)
+        { 
+            menuarea.SetRight(area.Right, true);
+            return menuarea;
+        }
+
+        public void Refresh(float contentHeight, float displayHeight, float rowHeight)
         {
+            this.rowHeight = rowHeight;
+
             //TODO begär id för varje meny
             if (contentHeight > displayHeight)
             {
                 float displayHeightPerc = displayHeight / contentHeight;
-                float sliderH = Math.Max(scrollerRenderer.Height * displayHeightPerc, Engine.Screen.SmallIconSize); 
-                slideRange = scrollerRenderer.Height - sliderH;
+                float sliderH = Math.Max(area.Height * displayHeightPerc, Engine.Screen.MinClickSize); 
+                slideRange = area.Height - sliderH;
                 valuerange = new IntervalF(0, contentHeight - displayHeight);
-                valueT = 0;
-                
-                slider.size.Y = sliderH;
-                
-                scrollerRenderer.Visible = true;
+                scrollResult = 0;
+
+                sliderHeight = sliderH;
+
+                setVisible(true);
             }
             else
             {
-                scrollerRenderer.Visible = false;
+                setVisible(false);
             }   
         }
 
-        void updateBarPos()
-        { 
-            
+        void setVisible(bool visible)
+        {
+            background.SetVisible(visible);
+
+            if (visible)
+            {
+                //VectorRect size = area;
+                //size.Height = sliderHeight;
+                slider = new NineSplitAreaTexture(sliderTex, SliderArea(false), layer);
+                if (sliderGroup == null)
+                {
+                    sliderGroup = new ImageGroupParent2D();
+                }
+                sliderGroup.Add(slider.images);
+            }
+            else
+            { 
+                slider.DeleteMe();
+                sliderGroup.Clear();
+            }
+
         }
 
-        public void updateMouseInput()
+        VectorRect SliderArea(bool includeMoveY)
         {
+            VectorRect ar = area;
+            if (includeMoveY)
+            {
+                ar.Y += sliderGroup.ParentY;
+            }
+            ar.Height = sliderHeight;
+            return ar;
+        }
+
+        public bool updateMouseInput()
+        {
+            bool viewOutline = false;
+            bool result = false;
+
             if (mouseDown)
             {
+                viewOutline = true;
                 if (Input.Mouse.IsButtonDown(MouseButton.Left))
-                {
+                {                    
                     float diff = Input.Mouse.Position.Y - mouseDownY;
-                    slider.Ypos = Bound.Set(diff + mouseDown_SliderY, 0, slideRange);
-                    valueT = valuerange.GetFromPercent(slider.Ypos / slideRange); 
+                    sliderGroup.ParentY = Bound.Set(diff + mouseDown_SliderY, 0, slideRange);
+                    scrollResult = -valuerange.GetFromPercent(sliderGroup.ParentY / slideRange);
+
+                    result = true;
                 }
                 else
                 {
+                    slider.SetColor(Color.White);
                     mouseDown = false;
                 }
             }
             else
             {
-                if (area.IntersectPoint(Input.Mouse.Position) &&
-                    Input.Mouse.ButtonDownEvent(MouseButton.Left))
+                if (SliderArea(true).IntersectPoint(Input.Mouse.Position))
                 {
-                    mouseDown = true;
-                    mouseDownY = Input.Mouse.Position.Y;
-                    mouseDown_SliderY = slider.Ypos;
+                    viewOutline = true;
+
+                    if (Input.Mouse.ButtonDownEvent(MouseButton.Left))
+                    {
+                        mouseDown = true;
+                        mouseDownY = Input.Mouse.Position.Y;
+                        mouseDown_SliderY = sliderGroup.ParentY;
+                        slider.SetColor(RichBox.Artistic.ArtButton.MouseDownCol);
+                    }
                 }
             }
-        }
-    }
-        //public override void OnMouseDrag()
-        //{
-        //    base.OnMouseDrag();
-        //    Vector2 localPos = FindLocalCursorPos();
-            
-        //        localPos.X -= sliderStartPos.X;
 
-        //        if (Input.Keyboard.Ctrl)
-        //        {
-        //            valueT = MathHelper.Clamp(valueT + (Input.Mouse.MoveDistance.X * 0.1f / slideLength.X), 0, 1);
-        //        }
-        //        else
-        //        {
-        //            valueT = MathHelper.Clamp(((localPos.X - slider.Width / 2) / (slideLength.X)), 0, 1);
-        //        }
-            
-        //}
+            if (viewOutline)
+            {
+                if (selectionOutline == null)
+                {
+                    selectionOutline = new RectangleLines(SliderArea(true), 2, 1, layer - 1);
+                }
+                else
+                {
+                    selectionOutline.Refresh(SliderArea(true));
+                }
+            }
+            else
+            {
+                selectionOutline?.DeleteMe();
+                selectionOutline = null;
+            }
+
+            return result;
+        }
+
+        public bool updateScrollWheel()
+        {
+            if (Input.Mouse.Scroll)
+            {
+                scrollResult = -valuerange.SetBounds(-scrollResult - Input.Mouse.ScrollValue * rowHeight * 2 / 15f);
+                sliderGroup.ParentY = slideRange * valuerange.GetValuePercentPos(-scrollResult);
+                selectionOutline?.Refresh(SliderArea(true));
+                return true;
+            }
+
+            return false;
+        }
+
+    }
+        
 }

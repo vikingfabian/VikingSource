@@ -57,7 +57,7 @@ namespace VikingEngine.HUD.RichBox
         virtual public void onEnter() { }
         virtual public void onClick() { }
 
-        virtual public void getButtons(List<RbButton> buttons)
+        virtual public void getButtons(List<AbsRbButton> buttons)
         { }
 
         virtual public Vector2 Position => throw new NotImplementedException();

@@ -23,6 +23,7 @@ namespace VikingEngine.Engine
         public static Vector2 TextSizeV2;
         public static float SmallIconSize;
         public static Vector2 SmallIconSizeV2;
+        public static float MinClickSize;
 
         public static float RegularFontSize = 1f;
         public static Vector2 TextIconFitSize;
@@ -198,6 +199,7 @@ namespace VikingEngine.Engine
             IconSizeV2 = new Vector2(IconSize);
             SmallIconSizeV2 = new Vector2(SmallIconSize);
             BorderWidth = (int)(IconSize * 0.12f);
+            MinClickSize = (int)(IconSize * 0.4f);
 
             TextSize = MinWidthHeight * 0.0006f * Ref.gamesett.UiScale;
             TextSizeV2 = new Vector2(TextSize);

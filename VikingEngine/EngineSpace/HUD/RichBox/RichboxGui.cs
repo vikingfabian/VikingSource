@@ -306,7 +306,7 @@ namespace VikingEngine.HUD.RichBox
         {
             if (interaction != null)
             {
-                return interaction.update();
+                return interaction.update(Vector2.Zero);
             }
             firstUpdate = false;
             return false;

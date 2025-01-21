@@ -263,7 +263,7 @@ namespace VikingEngine.DSSWars.Display
         {
             if (bg.Visible)
             {
-                interaction.update();
+                interaction.update(Vector2.Zero);
             }
         }
 

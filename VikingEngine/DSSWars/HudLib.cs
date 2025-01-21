@@ -10,6 +10,7 @@ using VikingEngine.ToGG.MoonFall;
 using VikingEngine.LootFest.Players;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.HUD;
 
 namespace VikingEngine.DSSWars
 {
@@ -47,6 +48,9 @@ namespace VikingEngine.DSSWars
 
         public const ImageLayers DiplomacyDisplayLayer = ImageLayers.Lay8;
 
+        public static NineSplitSettings HudMenuBackground;
+        public static NineSplitSettings HudMenuScollBackground;
+        public static NineSplitSettings HudMenuScollButton;
         public static RichBoxSettings RbSettings;
         public static RichBoxSettings RbOnGuiSettings;
 
@@ -57,22 +61,26 @@ namespace VikingEngine.DSSWars
         {
             const float TextToIconSz = 1.2f;
 
+            HudMenuBackground = new HUD.NineSplitSettings(SpriteName.cmdHudBorderPopup, 1, 8, 2f, true, true);
+
+            HudMenuScollBackground = HudMenuBackground;
+            HudMenuScollButton = new HUD.NineSplitSettings(SpriteName.cmdHudPopupButton, 1, 8, 2f, true, true);
+
             RbSettings = new HUD.RichBox.RichBoxSettings(
                 new TextFormat(LoadedFont.Regular, Engine.Screen.TextBreadHeight, Color.White, ColorExt.Empty),
                 new TextFormat(LoadedFont.Regular, Engine.Screen.TextBreadHeight, Color.Black, Color.CornflowerBlue),
-            Engine.Screen.TextBreadHeight * TextToIconSz, 1.1f);
+                Engine.Screen.TextBreadHeight * TextToIconSz, 1.1f);
             RbSettings.head1.Font = LoadedFont.Bold;
             RbSettings.head1.Color = Color.LightGray;
             RbSettings.checkOn = SpriteName.warsCheckYes;
             RbSettings.checkOff = SpriteName.warsCheckNo;
-            //RbSettings.tabSelected.BgColor = new Color(126, 56, 23);
-            //RbSettings.tabSelected.Color = new Color(222, 156, 125);
-            //RbSettings.tabNotSelected.BgColor = new Color(114, 73, 53);
-            //RbSettings.tabNotSelected.Color = RbSettings.tabSelected.Color;
+            
             RbSettings.tabSelected.BgColor = new Color(53, 158, 209);//new Color(121,110,233);
             RbSettings.tabSelected.Color = new Color(3, 0, 46);
             RbSettings.tabNotSelected.BgColor = new Color(36, 107, 142); //new Color(99,96,146);
             RbSettings.tabNotSelected.Color = RbSettings.tabSelected.Color;
+
+            RbSettings.artButtonTex = new HUD.NineSplitSettings(SpriteName.cmdHudBorderButton, 1, 8, 2f, true, true);
 
             RbOnGuiSettings = RbSettings;
             RbOnGuiSettings.scaleUp(1.4f);

@@ -189,5 +189,10 @@ namespace VikingEngine.Graphics
                 }
             }
         }
+
+        public Vector2 GetOffset()
+        {
+            return posOffset;
+        }
     }
 }

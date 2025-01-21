@@ -61,7 +61,6 @@ namespace VikingEngine.Graphics
             }
         }
 
-       // public bool SavingThread { get { return false; } }
         public bool RunDuringPause { get { return true; } }
 
     }
