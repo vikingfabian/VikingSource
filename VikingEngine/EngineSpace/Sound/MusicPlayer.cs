@@ -217,18 +217,26 @@ namespace VikingEngine.Sound
         {
             if (keepPlaying)
             {
-                currentSong = nextSongData;
-                playTime.MilliSeconds = Engine.Sound.PlayMusic(nextSong, currentSong.seamlessLoop);
-
-                if (currentSong.seamlessLoop)
+                if (MasterVolume <= 0)
                 {
-                    playTime.MilliSeconds *= LoopTimesRange.GetRandom(random);
-                    playSongState = PlaySongState.FadeIn;
+                    playSongState = PlaySongState.Delay;
+                    currentDelay = 2;//TimeExt.MinutesToMS(DelayBetweenSongs_minutes.GetRandom());
                 }
                 else
                 {
-                    MediaPlayer.Volume = currentVolume;
-                    playSongState = PlaySongState.Playing;
+                    currentSong = nextSongData;
+                    playTime.MilliSeconds = Engine.Sound.PlayMusic(nextSong, currentSong.seamlessLoop);
+
+                    if (currentSong.seamlessLoop)
+                    {
+                        playTime.MilliSeconds *= LoopTimesRange.GetRandom(random);
+                        playSongState = PlaySongState.FadeIn;
+                    }
+                    else
+                    {
+                        MediaPlayer.Volume = currentVolume;
+                        playSongState = PlaySongState.Playing;
+                    }
                 }
             }
             else
