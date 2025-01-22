@@ -325,161 +325,161 @@
 #begin DSS/Map/map_sz5_i9.map
 /copy:DSS/Map/map_sz5_i9.map
 
-#begin DSS/Music/ancient space.mp3
+#begin DSS/Music/ancient space_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/ancient space.mp3
+/build:DSS/Music/ancient space_2.mp3
 
-#begin DSS/Music/BBaaB_loop.mp3
+#begin DSS/Music/BBaaB_loop_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/BBaaB_loop.mp3
+/build:DSS/Music/BBaaB_loop_2.mp3
 
-#begin DSS/Music/digital battleground.mp3
+#begin DSS/Music/digital battleground_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/digital battleground.mp3
+/build:DSS/Music/digital battleground_2.mp3
 
-#begin DSS/Music/dramatic-opener-nonloop.mp3
+#begin DSS/Music/dramatic-opener-nonloop_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/dramatic-opener-nonloop.mp3
+/build:DSS/Music/dramatic-opener-nonloop_2.mp3
 
-#begin DSS/Music/Dreamscape Adventures.mp3
+#begin DSS/Music/Dreamscape Adventures_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/Dreamscape Adventures.mp3
+/build:DSS/Music/Dreamscape Adventures_2.mp3
 
-#begin DSS/Music/DSS - The Game Begins.mp3
+#begin DSS/Music/DSS - The Game Begins_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/DSS - The Game Begins.mp3
+/build:DSS/Music/DSS - The Game Begins_2.mp3
 
-#begin DSS/Music/echoes of valor.mp3
+#begin DSS/Music/echoes of valor_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/echoes of valor.mp3
+/build:DSS/Music/echoes of valor_2.mp3
 
-#begin DSS/Music/epic-warfare-nonloop.mp3
+#begin DSS/Music/epic-warfare-nonloop_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/epic-warfare-nonloop.mp3
+/build:DSS/Music/epic-warfare-nonloop_2.mp3
 
-#begin DSS/Music/Gargoyle_loop.mp3
+#begin DSS/Music/Gargoyle_loop_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/Gargoyle_loop.mp3
+/build:DSS/Music/Gargoyle_loop_2.mp3
 
-#begin DSS/Music/i am your doom.mp3
+#begin DSS/Music/i am your doom_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/i am your doom.mp3
+/build:DSS/Music/i am your doom_2.mp3
 
-#begin DSS/Music/Pixelated Battlefields.mp3
+#begin DSS/Music/Pixelated Battlefields_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/Pixelated Battlefields.mp3
+/build:DSS/Music/Pixelated Battlefields_2.mp3
 
-#begin DSS/Music/RM 1 - Introversion.mp3
+#begin DSS/Music/RM 1 - Introversion_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/RM 1 - Introversion.mp3
+/build:DSS/Music/RM 1 - Introversion_2.mp3
 
-#begin DSS/Music/RM 10 - Incubation.mp3
+#begin DSS/Music/RM 10 - Incubation_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/RM 10 - Incubation.mp3
+/build:DSS/Music/RM 10 - Incubation_2.mp3
 
-#begin DSS/Music/RM 2 - Arcane Benevolence.mp3
+#begin DSS/Music/RM 2 - Arcane Benevolence_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/RM 2 - Arcane Benevolence.mp3
+/build:DSS/Music/RM 2 - Arcane Benevolence_2.mp3
 
-#begin DSS/Music/RM 3 - Left in Autumn.mp3
+#begin DSS/Music/RM 3 - Left in Autumn_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/RM 3 - Left in Autumn.mp3
+/build:DSS/Music/RM 3 - Left in Autumn_2.mp3
 
-#begin DSS/Music/RM 4 - Warhogs.mp3
+#begin DSS/Music/RM 4 - Warhogs_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/RM 4 - Warhogs.mp3
+/build:DSS/Music/RM 4 - Warhogs_2.mp3
 
-#begin DSS/Music/RM 5 - Suddenly Empty.mp3
+#begin DSS/Music/RM 5 - Suddenly Empty_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/RM 5 - Suddenly Empty.mp3
+/build:DSS/Music/RM 5 - Suddenly Empty_2.mp3
 
-#begin DSS/Music/RM 6 - Auderesne.mp3
+#begin DSS/Music/RM 6 - Auderesne_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/RM 6 - Auderesne.mp3
+/build:DSS/Music/RM 6 - Auderesne_2.mp3
 
-#begin DSS/Music/RM 7 - For Eternity.mp3
+#begin DSS/Music/RM 7 - For Eternity_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/RM 7 - For Eternity.mp3
+/build:DSS/Music/RM 7 - For Eternity_2.mp3
 
-#begin DSS/Music/RM 8 - Asynchronous Flanking.mp3
+#begin DSS/Music/RM 8 - Asynchronous Flanking_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/RM 8 - Asynchronous Flanking.mp3
+/build:DSS/Music/RM 8 - Asynchronous Flanking_2.mp3
 
-#begin DSS/Music/RM 9 - Weeping Bedlam.mp3
+#begin DSS/Music/RM 9 - Weeping Bedlam_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/RM 9 - Weeping Bedlam.mp3
+/build:DSS/Music/RM 9 - Weeping Bedlam_2.mp3
 
-#begin DSS/Music/sadness-in-blue.mp3
+#begin DSS/Music/sadness-in-blue_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/sadness-in-blue.mp3
+/build:DSS/Music/sadness-in-blue_2.mp3
 
-#begin DSS/Music/shadow-hunter-nonloop.mp3
+#begin DSS/Music/shadow-hunter-nonloop_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/shadow-hunter-nonloop.mp3
+/build:DSS/Music/shadow-hunter-nonloop_2.mp3
 
-#begin DSS/Music/Shadows of Conflict.mp3
+#begin DSS/Music/Shadows of Conflict_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/Shadows of Conflict.mp3
+/build:DSS/Music/Shadows of Conflict_2.mp3
 
-#begin DSS/Music/Veil of Time.mp3
+#begin DSS/Music/Veil of Time_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/Veil of Time.mp3
+/build:DSS/Music/Veil of Time_2.mp3
 
-#begin DSS/Music/we-are-heroes.mp3
+#begin DSS/Music/we-are-heroes_2.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/we-are-heroes.mp3
+/build:DSS/Music/we-are-heroes_2.mp3
 
 #begin DSS/Sound/anvil.wav
 /importer:WavImporter
