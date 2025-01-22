@@ -19,6 +19,7 @@ namespace VikingEngine.HUD.RichBox
 
 
         public SpriteName checkOn, checkOff;
+        public SpriteName optionOn, optionOff;
 
         public float breadIconHeight, titleIconHeight;
 

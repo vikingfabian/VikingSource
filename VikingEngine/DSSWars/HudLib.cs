@@ -16,7 +16,6 @@ namespace VikingEngine.DSSWars
 {
     static class HudLib
     {
-        //
         public const float HeadDisplayBgOpacity = 0.9f;
         public static float HeadDisplayWidth, HeadDisplayEdge;
 
@@ -74,7 +73,9 @@ namespace VikingEngine.DSSWars
             RbSettings.head1.Color = Color.LightGray;
             RbSettings.checkOn = SpriteName.warsCheckYes;
             RbSettings.checkOff = SpriteName.warsCheckNo;
-            
+            RbSettings.optionOn = SpriteName.cmdHudOptionsOn;
+            RbSettings.optionOff = SpriteName.cmdHudOptionsOff;
+
             RbSettings.tabSelected.BgColor = new Color(53, 158, 209);//new Color(121,110,233);
             RbSettings.tabSelected.Color = new Color(3, 0, 46);
             RbSettings.tabNotSelected.BgColor = new Color(36, 107, 142); //new Color(99,96,146);

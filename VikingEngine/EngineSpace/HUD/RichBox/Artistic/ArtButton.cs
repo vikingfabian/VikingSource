@@ -13,6 +13,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
     { 
         Primary,
         Secondary,
+        CheckBox,
         OptionSelected,
         OptionNotSelected,
         TabSelected,
@@ -22,7 +23,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
     class ArtButton : AbsRbButton
     {
         public static readonly Color MouseDownCol = Color.LightGray;
-        RbButtonStyle buttonStyle;
+        protected RbButtonStyle buttonStyle;
         HUD.NineSplitAreaTexture texture;
         public ArtButton()
         { }
