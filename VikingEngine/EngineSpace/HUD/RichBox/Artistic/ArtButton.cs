@@ -49,6 +49,9 @@ namespace VikingEngine.HUD.RichBox.Artistic
                 default:
                     textureSett = group.settings.artButtonTex;
                     break;
+                case RbButtonStyle.CheckBox:
+                    textureSett = group.settings.artCheckButtonTex;
+                    break;
                 case RbButtonStyle.Secondary:
                     textureSett = group.settings.artButtonTex.Selected(false);
                     break;

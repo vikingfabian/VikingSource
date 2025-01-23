@@ -38,7 +38,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
             {
                 bool value = property.Invoke(0, false, false);
 
-                checkImage = new RbImage(value ? checkOn : checkOff);
+                checkImage = new RbImage(value ? checkOn : checkOff, 0.76f);
                 checkImage.Create(group);
                 group.position.X += 4;
             }

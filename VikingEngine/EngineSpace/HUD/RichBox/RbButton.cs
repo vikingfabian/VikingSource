@@ -35,9 +35,7 @@ namespace VikingEngine.HUD.RichBox
                 lib.DoNothing();
             }
 
-
-            const float HoriSpace = 8;
-
+            const float HoriSpace = 12;
             
             float heigh = group.lineSpacingHalf;
 
@@ -107,7 +105,6 @@ namespace VikingEngine.HUD.RichBox
                         multilineContent = true;
                     }
                     if (prevY < group.position.Y)
-
                     {
                         //multiline button
                         //area.Width = group.boxWidth;

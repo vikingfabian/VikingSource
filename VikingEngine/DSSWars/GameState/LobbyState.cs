@@ -111,13 +111,30 @@ namespace VikingEngine.DSSWars
             area.Width = Screen.IconSize * 8;
             area.X = Screen.CenterScreen.X;
 
-            richmenu = new RichMenu(HudLib.RbSettings, area, new Vector2(6), RichMenu.DefaultRenderEdge, ImageLayers.Top1);
+            richmenu = new RichMenu(HudLib.RbSettings, area, new Vector2(10), RichMenu.DefaultRenderEdge, ImageLayers.Top1);
             richmenu.addBackground(HudLib.HudMenuBackground, ImageLayers.Top1_Back);
 
             //Image bg = new Image(SpriteName.WhiteArea, area.Position, area.Size, ImageLayers.Top2);
             //bg.Opacity = 0.1f;
             RichBoxContent content = new RichBoxContent();
             content.h1("new menu");
+            content.newLine();
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudScrollerSlider), new RbText("check") }, BoolGetSet));
+
+            content.newLine();
+
+            content.Add(new ArtOption(true, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsResource_Food), new RbText("opt1") }, null));
+            content.Add(new ArtOption(false, new List<AbsRichBoxMember> { new RbText("opt2") }, null));
+            content.Add(new ArtOption(false, new List<AbsRichBoxMember> { new RbText("opt3") }, null));
+
+            content.newLine();
+            content.Add(new ArtTabgroup(new List<ArtTabMember>
+            {
+                new ArtTabMember(new List<AbsRichBoxMember> { new RbText("tab1") }),
+                new ArtTabMember(new List<AbsRichBoxMember> { new RbText("tab2") }),
+                new ArtTabMember(new List<AbsRichBoxMember> { new RbText("tab3") }),
+            }, 0, null));
+
             for (int i = 0; i < 100; i++)
             {
                 content.newLine();
@@ -128,6 +145,16 @@ namespace VikingEngine.DSSWars
             }
 
             richmenu.Refresh(content);
+        }
+
+        bool testBool = false;
+        bool BoolGetSet(int index, bool set, bool value)
+        {
+            if (set)
+            {
+                testBool = value;
+            }
+            return testBool;
         }
 
         void load_asynch()

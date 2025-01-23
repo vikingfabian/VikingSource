@@ -24,6 +24,7 @@ namespace VikingEngine.HUD.RichBox
         public float breadIconHeight, titleIconHeight;
 
         public NineSplitSettings artButtonTex;
+        public NineSplitSettings artCheckButtonTex;
         public NineSplitSettings artOptionButtonTex;
         public NineSplitSettings artTabTex;
 

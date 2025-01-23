@@ -29,13 +29,13 @@ namespace VikingEngine.HUD.RichMenu
         ImageLayers layer;
         ImageGroupParent2D sliderGroup;
         Graphics.RectangleLines selectionOutline = null;
+
         public RichScrollbar(NineSplitSettings sliderTex, NineSplitSettings backgroundTex, 
             VectorRect displayArea, float scrollerWidth, ImageLayers layer)
         {
             this.layer = layer;
-            area = new VectorRect(new Vector2(displayArea.Right, displayArea.Y), new Vector2(scrollerWidth, displayArea.Height));
-
-            background = new NineSplitAreaTexture(backgroundTex, area, layer +1);//new Image(SpriteName.WhiteArea, area.Position, area.Size, layer + 1);
+            area = new VectorRect(new Vector2(displayArea.Right - 2, displayArea.Y), new Vector2(scrollerWidth, displayArea.Height));
+            background = new NineSplitAreaTexture(backgroundTex, area, layer +1);
             slider = null;
             this.sliderTex = sliderTex;
         }

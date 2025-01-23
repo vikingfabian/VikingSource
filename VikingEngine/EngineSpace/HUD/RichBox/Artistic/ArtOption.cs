@@ -15,7 +15,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
 
         protected override void createPreContent(RichBoxGroup group)
         {   
-            var checkImage = new RbImage(buttonStyle == RbButtonStyle.OptionNotSelected ? group.settings.optionOn : group.settings.optionOff);
+            var checkImage = new RbImage(buttonStyle == RbButtonStyle.OptionNotSelected ? group.settings.optionOff : group.settings.optionOn, 0.76f);
             checkImage.Create(group);
             group.position.X += 4;            
         }

@@ -12,13 +12,13 @@ namespace VikingEngine.HUD.RichBox.Artistic
     class ArtTabgroup : AbsRichBoxMember
     {
         List<ArtTabMember> members;
-        public Image pointer;
-        public ArtTabgroup(List<ArtTabMember> members, int selected, Action<int> click, Action<int> enter = null, RbSoundProfile clickSound = null, RbSoundProfile hoverSound = null, Color? overrideBgColor = null)
+        public Image linePointer;
+        public ArtTabgroup(List<ArtTabMember> members, int selected, Action<int> click, Action<int> enter = null, RbSoundProfile clickSound = null, RbSoundProfile hoverSound = null)
         {
             this.members = members;
             for (int i = 0; i < members.Count; i++)
             {
-                members[i].initGroup(i, selected, click, enter, clickSound, hoverSound, overrideBgColor);
+                members[i].initGroup(i, selected, click, enter, clickSound, hoverSound);
             }
         }
 
@@ -30,32 +30,28 @@ namespace VikingEngine.HUD.RichBox.Artistic
             }
 
             Vector2 pos = new Vector2(group.area.X - 2, group.position.Y + group.lineSpacingHalf - 2);
-            pointer = new Image(SpriteName.WhiteArea, pos,
+            linePointer = new Image(SpriteName.WhiteArea, pos,
                 new Vector2(group.boxWidth + 4, 4), group.layer, false, group.addToRender);
-            pointer.Color = group.settings.tabSelected.BgColor;
-            group.Add(pointer);
+            linePointer.Color = group.settings.tabSelected.BgColor;
+            group.Add(linePointer);
+
+            group.newLine(true, 0.5f);
         }
-
-
 
         public override void getButtons(List<AbsRbButton> buttons)
         {
             buttons.AddRange(members);
-            //foreach (var m in members)
-            //{
-            //    buttons.Add(m);
-            //}
         }
     }
 
     class ArtTabMember : ArtButton
     {
         bool selected;
-        //int index;
 
         public ArtTabMember(List<AbsRichBoxMember> content, AbsRbAction enterAction = null)
             :base()
         {
+           
             this.content = content;
             this.enabled = true;
             this.enter = enterAction;
@@ -84,7 +80,6 @@ namespace VikingEngine.HUD.RichBox.Artistic
         {
             base.Create(group);
 
-            group.position.X += group.imageHeight * 0.3f;
         }
 
         public override void onEnter()

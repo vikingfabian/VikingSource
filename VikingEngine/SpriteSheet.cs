@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using VikingEngine.LootFest;
 
 namespace VikingEngine
 {
@@ -2545,6 +2546,21 @@ namespace VikingEngine
                     add(SpriteName.WarsWorkSmelting);
                     add(SpriteName.WarsIncreaseArrowUp);
                     add(SpriteName.WarsDecreaseArrowDown);
+
+                    addWithSizeDef(SpriteName.WarsHudScrollerBg, currentIndex, TileHalfSize, TileSize);
+                    addWithSizeDef(SpriteName.WarsHudScrollerSlider, currentIndex, TileHalfSize, TileSize);
+                    add(SpriteName.WarsHudTabSelected);
+                    add(SpriteName.WarsHudTabNotSelected);
+                    add(SpriteName.WarsHudPrimaryButton);
+                    add(SpriteName.WarsHudPrimaryButtonDisabled);
+                    add(SpriteName.WarsHudOptionSelected);
+                    add(SpriteName.WarsHudOptionNotSelected);
+                    add(SpriteName.WarsHudRoundButton);
+                    const int WarsCheckSize = 20;
+                    addWithSizeDef(SpriteName.WarsHudCheckYes, currentIndex, WarsCheckSize, WarsCheckSize);
+                    addWithSizeDef(SpriteName.WarsHudCheckNo, currentIndex, WarsCheckSize, WarsCheckSize);
+                    addWithSizeDef(SpriteName.WarsHudOptionYes, currentIndex, WarsCheckSize, WarsCheckSize);
+                    addWithSizeDef(SpriteName.WarsHudOptionNo, currentIndex, WarsCheckSize, WarsCheckSize);
 
                 }
 

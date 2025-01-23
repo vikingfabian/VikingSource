@@ -2419,6 +2419,22 @@ namespace VikingEngine
         #endregion
 
         #region DSS WARS
+        WarsHudScrollerBg,
+        WarsHudScrollerSlider,
+        WarsHudTabSelected,
+        WarsHudTabNotSelected,
+        WarsHud,
+        WarsHudPrimaryButton,
+        WarsHudPrimaryButtonDisabled,
+        WarsHudOptionSelected,
+        WarsHudOptionNotSelected,
+        WarsHudRoundButton,
+        WarsHudCheckYes,
+        WarsHudCheckNo,
+        WarsHudOptionYes,
+        WarsHudOptionNo,
+
+
         WarsNightmareEyeGlow,
         WarsGroundTex,
         warsFoliageSquareShadow,

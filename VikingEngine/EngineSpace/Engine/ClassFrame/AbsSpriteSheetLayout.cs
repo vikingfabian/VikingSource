@@ -25,7 +25,7 @@ namespace VikingEngine.Engine
         int TileSheetSize;
         protected int numTilesWidth;
         protected int TileSize;
-        int TileHalfSize;
+        protected int TileHalfSize;
         float TilePercentSize;
 
         protected void Settings(int tileSheetSize, int numTilesWidth)
