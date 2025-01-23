@@ -217,18 +217,26 @@ namespace VikingEngine.Sound
         {
             if (keepPlaying)
             {
-                currentSong = nextSongData;
-                playTime.MilliSeconds = Engine.Sound.PlayMusic(nextSong, currentSong.seamlessLoop);
-
-                if (currentSong.seamlessLoop)
+                if (MasterVolume <= 0)
                 {
-                    playTime.MilliSeconds *= LoopTimesRange.GetRandom(random);
-                    playSongState = PlaySongState.FadeIn;
+                    playSongState = PlaySongState.Delay;
+                    currentDelay = TimeExt.MinutesToMS(DelayBetweenSongs_minutes.GetRandom());
                 }
                 else
                 {
-                    MediaPlayer.Volume = currentVolume;
-                    playSongState = PlaySongState.Playing;
+                    currentSong = nextSongData;
+                    playTime.MilliSeconds = Engine.Sound.PlayMusic(nextSong, currentSong.seamlessLoop);
+
+                    if (currentSong.seamlessLoop)
+                    {
+                        playTime.MilliSeconds *= LoopTimesRange.GetRandom(random);
+                        playSongState = PlaySongState.FadeIn;
+                    }
+                    else
+                    {
+                        MediaPlayer.Volume = currentVolume;
+                        playSongState = PlaySongState.Playing;
+                    }
                 }
             }
             else
@@ -297,12 +305,17 @@ namespace VikingEngine.Sound
 
     class LoadAndPlaySong : StorageTask
     {
+        static bool MusicBan = false;
         SongData songData;
         Song song;
         MusicPlayer callBackObj;
         public LoadAndPlaySong(MusicPlayer callBackObj, SongData songData, bool fromAsynchContentLoad)
             : base()//true, false)
         {
+            if (MusicBan)
+            {
+                return;
+            }
             this.songData = songData;
             this.callBackObj = callBackObj;
             storagePriority = true;
@@ -320,8 +333,15 @@ namespace VikingEngine.Sound
         public override void runQuedStorageTask()
         {
             base.runQuedStorageTask();
-            song = Engine.LoadContent.Content.Load<Song>(songData.filePath);//RetroYay_Loop
-           // return true;
+            try
+            {
+                song = Engine.LoadContent.Content.Load<Song>(songData.filePath);
+            }
+            catch (Exception e)
+            {
+                MusicBan = true;
+            }
+            // return true;
         }
 
         public override void runSyncAction()
