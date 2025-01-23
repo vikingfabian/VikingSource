@@ -7,6 +7,7 @@ using VikingEngine.Graphics;
 using Microsoft.Xna.Framework.Input;
 using VikingEngine.HUD;
 using Valve.Steamworks;
+using VikingEngine.SteamWrapping;
 
 #if PCGAME
 //using System.Windows.Forms;
@@ -18,47 +19,49 @@ namespace VikingEngine.DebugExtensions
     class BlueScreen : Engine.GameState
     {
         string detailedText;
-        string logFullPath;
+        protected string logFullPath;
 
-        Gui menu;
+        protected Gui menu;
         public static Exception ThreadException = null;
         Time flashTimer = Time.Zero;
         bool redFlash = true;
+
+        public BlueScreen()
+        {
+            cleanUp();
+        }
+
         public BlueScreen(string errorMessageDetailed)
         {
-            Ref.draw.CurrentRenderLayer = 0;
-            TaskExt.ClearStorageQue();
-            //Engine.Storage.Reset(true);
-            if (Ref.netSession != null)
-                Ref.netSession.Disconnect("Blue screen");
+            cleanUp();
 
-            if (PlatformSettings.PC_platform)
-            {
-                try
-                {
-                    var now = DateTime.Now;
+            logError(errorMessageDetailed);
+            //if (PlatformSettings.PC_platform)
+            //{
+            //    try
+            //    {
+            //        var now = DateTime.Now;
 
-                    var logFilePath = new DataStream.FilePath(
-                         "Logs",
-                         string.Format("{0}_{1}_{2}__{3}_{4}", now.Year, now.Month, now.Day, now.Hour, now.Minute),
-                         ".txt", true, false);
+            //        var logFilePath = new DataStream.FilePath(
+            //             "Logs",
+            //             string.Format("{0}_{1}_{2}__{3}_{4}", now.Year, now.Month, now.Day, now.Hour, now.Minute),
+            //             ".txt", true, false);
 
-                    System.IO.Directory.CreateDirectory(logFilePath.CompleteDirectory);
-                    //Ref.analytics.Error(true, errorMessageDetailed);
+            //        System.IO.Directory.CreateDirectory(logFilePath.CompleteDirectory);
 
-                    //create a log file
-                    logFullPath = logFilePath.CompletePath(true);
-                    DataLib.SaveLoad.CreateTextFile(logFullPath, new List<string>
-                    {
-                        PlatformSettings.SteamVersion,
-                        errorMessageDetailed,
-                    });
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError(e.Message);
-                }
-            }
+            //        //create a log file
+            //        logFullPath = logFilePath.CompletePath(true);
+            //        DataLib.SaveLoad.CreateTextFile(logFullPath, new List<string>
+            //        {
+            //            PlatformSettings.SteamVersion,
+            //            errorMessageDetailed,
+            //        });
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        Debug.LogError(e.Message);
+            //    }
+            //}
 
 
             errorMessageDetailed = Engine.LoadContent.SteamVersion + compressText(errorMessageDetailed);
@@ -70,15 +73,16 @@ namespace VikingEngine.DebugExtensions
             {
                 detailedText = errorMessageDetailed;
 
-                Ref.draw.ClrColor = Color.DarkBlue;
+                //Ref.draw.ClrColor = Color.DarkBlue;
 
-                float t = 0.075f;
-                float t_w = (1 - 2 * t);
-                VectorRect rect = new VectorRect(t * Ref.draw.ScreenWidth, t * Ref.draw.ScreenHeight, t_w * Ref.draw.ScreenWidth, t_w * Ref.draw.ScreenHeight);
-                var style = new GuiStyle(rect.Width, 5, SpriteName.WhiteArea);
-                style.headBar = false;
-                menu = new Gui(style, rect, 0, ImageLayers.AbsoluteBottomLayer, Input.InputSource.DefaultPC);
-                GuiLayout layout = new GuiLayout("Game Crashed!", menu);
+                //float t = 0.075f;
+                //float t_w = (1 - 2 * t);
+                //VectorRect rect = new VectorRect(t * Ref.draw.ScreenWidth, t * Ref.draw.ScreenHeight, t_w * Ref.draw.ScreenWidth, t_w * Ref.draw.ScreenHeight);
+                //var style = new GuiStyle(rect.Width, 5, SpriteName.WhiteArea);
+                //style.headBar = false;
+                //menu = new Gui(style, rect, 0, ImageLayers.AbsoluteBottomLayer, Input.InputSource.DefaultPC);
+                //GuiLayout layout = new GuiLayout("Game Crashed!", menu);
+                GuiLayout layout = createMenu("Game Crashed!");
                 {
                     //new GuiLabel("You would really help us out if you sent us a screenshot of the message below, so we can stop this from happening again. Thank you for helping us!", layout);
                     if (PlatformSettings.PC_platform)
@@ -99,14 +103,62 @@ namespace VikingEngine.DebugExtensions
             else
             {
                 Engine.Draw.graphicsDeviceManager.ApplyChanges();
-
-                
-#if PCGAME
-                //var result = Microsoft.Xna.Framework.Input.MessageBox.Show(errorMessageDetailed, "Loading content Crash",
-                //    new string[] { "OK" });
-#endif
                 Ref.main.Exit();
             }
+        }
+
+        protected void cleanUp()
+        {
+            Ref.draw.CurrentRenderLayer = 0;
+            TaskExt.ClearStorageQue();
+
+            if (Ref.netSession != null)
+                Ref.netSession.Disconnect("Blue screen");
+        }
+
+        protected void logError(string errorMessageDetailed)
+        {
+            if (PlatformSettings.PC_platform)
+            {
+                try
+                {
+                    var now = DateTime.Now;
+
+                    var logFilePath = new DataStream.FilePath(
+                         "Logs",
+                         string.Format("{0}_{1}_{2}__{3}_{4}", now.Year, now.Month, now.Day, now.Hour, now.Minute),
+                         ".txt", true, false);
+
+                    System.IO.Directory.CreateDirectory(logFilePath.CompleteDirectory);
+
+                    //create a log file
+                    logFullPath = logFilePath.CompletePath(true);
+                    DataLib.SaveLoad.CreateTextFile(logFullPath, new List<string>
+                    {
+                        PlatformSettings.SteamVersion,
+                        errorMessageDetailed,
+                    });
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError(e.Message);
+                }
+            }
+        }
+
+        protected GuiLayout createMenu(string title)
+        {
+            Ref.draw.ClrColor = Color.DarkBlue;
+
+            float t = 0.075f;
+            float t_w = (1 - 2 * t);
+            VectorRect rect = new VectorRect(t * Ref.draw.ScreenWidth, t * Ref.draw.ScreenHeight, t_w * Ref.draw.ScreenWidth, t_w * Ref.draw.ScreenHeight);
+            var style = new GuiStyle(rect.Width, 5, SpriteName.WhiteArea);
+            style.headBar = false;
+            menu = new Gui(style, rect, 0, ImageLayers.AbsoluteBottomLayer, Input.InputSource.DefaultPC);
+            GuiLayout layout = new GuiLayout("Game Crashed!", menu);
+
+            return layout;
         }
 
         string compressText(string error)
@@ -177,11 +229,11 @@ namespace VikingEngine.DebugExtensions
             }
         }
 
-        void exitToDash()
+        protected void exitToDash()
         {
             Ref.update.exitApplication = true;
         }
-        void restart()
+        protected void restart()
         {
             Ref.main.GameIntroState(true);
         }
@@ -195,13 +247,16 @@ namespace VikingEngine.DebugExtensions
                 {
                     method();
                 }
+                catch (AbsSteamException e) 
+                {
+                    new SteamBlueScreen(ErrorMessage(e, methodType));
+                }
                 catch (Exception e)
                 {
                     new BlueScreen(ErrorMessage(e, methodType));
 #if PCGAME
                     SteamCrashReport.uploadException(e, methodType);
-#endif
-                    
+#endif                    
                 }
             }
             else

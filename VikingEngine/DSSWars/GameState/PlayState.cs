@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.Input;
+using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.MoonFall;
 //
 
@@ -49,22 +50,10 @@ namespace VikingEngine.DSSWars
 
         public PlayState(bool host, SaveStateMeta loadMeta)
             : base(true)
-        {
-            
+        {            
             DssRef.state = this;
             this.host = host;
             Engine.Update.SetFrameRate(60);
-
-            //int seed;
-            //if (loadMeta == null)
-            //{
-            //    seed = DssRef.world.metaData.seed;
-            //}
-            //else
-            //{
-            //    seed = loadMeta.worldmeta.seed;
-            //}
-
 
             if (loadMeta == null)
             {
@@ -74,7 +63,7 @@ namespace VikingEngine.DSSWars
             else
             {
                 new LoadScene(loadMeta);
-            }
+            }            
         }
 
         public void initGameState(bool newGame, ObjectPointerCollection pointers)
@@ -98,8 +87,6 @@ namespace VikingEngine.DSSWars
 
             
             events = new GameEvents();
-
-             
         }
 
         public void OnLoadComplete()

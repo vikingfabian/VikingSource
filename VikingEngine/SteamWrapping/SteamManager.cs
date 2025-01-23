@@ -87,6 +87,14 @@ namespace VikingEngine.SteamWrapping
             }
         }
 
+        public void GoOffline()
+        {
+            isInitialized = false;
+            isNetworkInitialized = false;
+            statsInitialized = false;
+            leaderboardsInitialized = false;
+        }
+
         /// <summary>
         /// Returns false if an error occured
         /// </summary>
