@@ -303,14 +303,20 @@ namespace VikingEngine.Sound
         public PlaySongState PlaySongState { get { return playSongState; } }
     }
 
+   
     class LoadAndPlaySong : StorageTask
     {
-        SongData songData;
+        static bool MusicBan = false;
+       SongData songData;
         Song song;
         MusicPlayer callBackObj;
         public LoadAndPlaySong(MusicPlayer callBackObj, SongData songData, bool fromAsynchContentLoad)
             : base()//true, false)
         {
+            if (MusicBan)
+            {
+                return;
+            }
             this.songData = songData;
             this.callBackObj = callBackObj;
             storagePriority = true;
@@ -328,7 +334,14 @@ namespace VikingEngine.Sound
         public override void runQuedStorageTask()
         {
             base.runQuedStorageTask();
-            song = Engine.LoadContent.Content.Load<Song>(songData.filePath);//RetroYay_Loop
+            try
+            {
+                song = Engine.LoadContent.Content.Load<Song>(songData.filePath);   
+            }
+            catch (Exception e)
+            {
+                MusicBan = true;
+            }
            // return true;
         }
 
