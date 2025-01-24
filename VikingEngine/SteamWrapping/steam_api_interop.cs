@@ -2811,6 +2811,7 @@ private void CheckIfUsable()
         throw new EmptyUser_SteamException();
     }
 }
+
 public override bool RequestCurrentStats()
 {
     CheckIfUsable();

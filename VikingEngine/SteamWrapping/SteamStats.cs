@@ -171,15 +171,23 @@ namespace VikingEngine.SteamWrapping
 
         public bool getStat()
         {
-            bool result = SteamAPI.SteamUserStats().GetStat_Int(name, ref value);
-            valueAtGameStart = value;
-            return result;
+            if (Ref.steam.isInitialized)
+            {
+                bool result = SteamAPI.SteamUserStats().GetStat_Int(name, ref value);
+                valueAtGameStart = value;
+                return result;
+            }
+            return false;
         }
 
         public bool setStat()
         {
             hasSet = true;
-            return SteamAPI.SteamUserStats().SetStat_Int(name, value);
+            if (Ref.steam.isInitialized)
+            {
+                return SteamAPI.SteamUserStats().SetStat_Int(name, value);
+            }
+            return false;
         }
 
         public bool getUserStats(ulong user)
@@ -229,12 +237,20 @@ namespace VikingEngine.SteamWrapping
 
         public bool getStat()
         {
-            return SteamAPI.SteamUserStats().GetStat_Float(name, ref value);
+            if (Ref.steam.isInitialized)
+            {
+                return SteamAPI.SteamUserStats().GetStat_Float(name, ref value);
+            }
+            return false;
         }
 
         public bool setStat()
         {
-            return SteamAPI.SteamUserStats().SetStat_Float(name, value);
+            if (Ref.steam.isInitialized)
+            {
+                return SteamAPI.SteamUserStats().SetStat_Float(name, value);
+            }
+            return false;
         }
 
         public bool getUserStats(ulong user)
