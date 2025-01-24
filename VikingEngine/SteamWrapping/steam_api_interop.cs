@@ -13,6 +13,7 @@ using Valve.Steamworks;
 using System.Security;
 using VikingEngine.SteamWrapping;
 using System.Text;
+using VikingEngine;
 
 class InteropHelp
 { 
@@ -37,6 +38,8 @@ class InteropHelp
         return System.Text.Encoding.UTF8.GetString(buffer);
         
     }
+
+    
 
     public class UTF8StringHandle : Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid
     {
@@ -68,6 +71,7 @@ class InteropHelp
         }
     }
 }
+
 
 
 
@@ -897,7 +901,7 @@ private void CheckIfUsable()
 {
 	if (m_pSteamClient == IntPtr.Zero)
 	{
-		throw new Exception("Steam Pointer not configured");
+		throw new EmptyUser_SteamException();
 	}
 }
 public override uint CreateSteamPipe()
@@ -1125,11 +1129,25 @@ IntPtr m_pSteamUser;
 public override IntPtr GetIntPtr() { return m_pSteamUser; }
 
 private void CheckIfUsable()
-{
+{          
+
     if (m_pSteamUser == IntPtr.Zero)
     {
-        throw new Exception("Steam Pointer not configured");
+        throw new EmptyUser_SteamException();
     }
+}
+
+private bool CheckIfUsable_Safe()
+{         
+    if (m_pSteamUser == IntPtr.Zero)
+    {
+#if DEBUG
+		throw new EmptyUser_SteamException();
+#endif
+		return false;
+	}
+
+	return true;
 }
 public override uint GetHSteamUser()
 {
@@ -1139,15 +1157,21 @@ public override uint GetHSteamUser()
 }
 public override bool BLoggedOn()
 {
-    CheckIfUsable();
-    bool result = NativeCalls.SteamAPI_ISteamUser_BLoggedOn(m_pSteamUser);
-    return result;
+	if (CheckIfUsable_Safe())
+	{
+		bool result = NativeCalls.SteamAPI_ISteamUser_BLoggedOn(m_pSteamUser);
+		return result;
+	}
+	return false;
 }
 public override ulong GetSteamID()
 {
-    CheckIfUsable();
-    ulong result = NativeCalls.SteamAPI_ISteamUser_GetSteamID(m_pSteamUser);
-    return result;
+	if (CheckIfUsable_Safe())
+	{
+		ulong result = NativeCalls.SteamAPI_ISteamUser_GetSteamID(m_pSteamUser);
+		return result;
+	}
+	return 0;
 }
 public override int InitiateGameConnection(IntPtr pAuthBlob,int cbMaxAuthBlob,ulong steamIDGameServer,uint unIPServer,char usPortServer,bool bSecure)
 {
@@ -1298,7 +1322,7 @@ private void CheckIfUsable()
 {
     if (m_pSteamFriends == IntPtr.Zero)
     {
-        throw new Exception("Steam Pointer not configured");
+        throw new EmptyUser_SteamException();
     }
 }
 public override string GetPersonaName()
@@ -1737,7 +1761,7 @@ private void CheckIfUsable()
 {
     if (m_pSteamUtils == IntPtr.Zero)
     {
-        throw new Exception("Steam Pointer not configured");
+        throw new EmptyUser_SteamException();
     }
 }
 public override uint GetSecondsSinceAppActive()
@@ -1915,7 +1939,7 @@ private void CheckIfUsable()
 {
     if (m_pSteamMatchmaking == IntPtr.Zero)
     {
-        throw new Exception("Steam Pointer not configured");
+        throw new EmptyUser_SteamException();
     }
 }
 public override int GetFavoriteGameCount()
@@ -2174,7 +2198,7 @@ private void CheckIfUsable()
 {
     if (m_pSteamMatchmakingServerListResponse == IntPtr.Zero)
     {
-        throw new Exception("Steam Pointer not configured");
+        throw new EmptyUser_SteamException();
     }
 }
 public override void ServerResponded(uint hRequest,int iServer)
@@ -2209,7 +2233,7 @@ private void CheckIfUsable()
 {
     if (m_pSteamMatchmakingPingResponse == IntPtr.Zero)
     {
-        throw new Exception("Steam Pointer not configured");
+        throw new EmptyUser_SteamException();
     }
 }
 public override void ServerResponded(IntPtr server)
@@ -2239,7 +2263,7 @@ private void CheckIfUsable()
 {
     if (m_pSteamMatchmakingPlayersResponse == IntPtr.Zero)
     {
-        throw new Exception("Steam Pointer not configured");
+        throw new EmptyUser_SteamException();
     }
 }
 public override void AddPlayerToList(string pchName,int nScore,float flTimePlayed)
@@ -2274,7 +2298,7 @@ private void CheckIfUsable()
 {
     if (m_pSteamMatchmakingRulesResponse == IntPtr.Zero)
     {
-        throw new Exception("Steam Pointer not configured");
+        throw new EmptyUser_SteamException();
     }
 }
 public override void RulesResponded(string pchRule,string pchValue)
@@ -2309,7 +2333,7 @@ private void CheckIfUsable()
 {
     if (m_pSteamMatchmakingServers == IntPtr.Zero)
     {
-        throw new Exception("Steam Pointer not configured");
+        throw new EmptyUser_SteamException();
     }
 }
 public override uint RequestInternetServerList(uint iApp,MatchMakingKeyValuePair_t  [] ppchFilters,ISteamMatchmakingServerListResponse pRequestServersResponse)
@@ -2426,7 +2450,7 @@ private void CheckIfUsable()
 {
     if (m_pSteamRemoteStorage == IntPtr.Zero)
     {
-        throw new Exception("Steam Pointer not configured");
+        throw new EmptyUser_SteamException();
     }
 }
 public override bool FileWrite(string pchFile,IntPtr pvData,int cubData)
@@ -2784,9 +2808,10 @@ private void CheckIfUsable()
 {
     if (m_pSteamUserStats == IntPtr.Zero)
     {
-        throw new Exception("Steam Pointer not configured");
+        throw new EmptyUser_SteamException();
     }
 }
+
 public override bool RequestCurrentStats()
 {
     CheckIfUsable();
@@ -3091,7 +3116,7 @@ private void CheckIfUsable()
 {
     if (m_pSteamApps == IntPtr.Zero)
     {
-        throw new Exception("Steam Pointer not configured");
+        throw new EmptyUser_SteamException();
     }
 }
 public override bool BIsSubscribed()
@@ -3257,7 +3282,7 @@ private void CheckIfUsable()
 {
 	if (m_pSteamNetworking == IntPtr.Zero)
 	{
-		throw new Exception("Steam Pointer not configured");
+		throw new EmptyUser_SteamException();
 	}
 }
 public override bool SendP2PPacket(ulong steamIDRemote, byte[] pubData, uint cubData, EP2PSend eP2PSendType, int nChannel)
@@ -3422,7 +3447,7 @@ private void CheckIfUsable()
 {
 	if (m_pSteamScreenshots == IntPtr.Zero)
 	{
-		throw new Exception("Steam Pointer not configured");
+		throw new EmptyUser_SteamException();
 	}
 }
 public override uint WriteScreenshot(IntPtr pubRGB,uint cubRGB,int nWidth,int nHeight)
@@ -3482,7 +3507,7 @@ private void CheckIfUsable()
 {
 	if (m_pSteamMusic == IntPtr.Zero)
 	{
-		throw new Exception("Steam Pointer not configured");
+		throw new EmptyUser_SteamException();
 	}
 }
 public override bool BIsEnabled()
@@ -3551,7 +3576,7 @@ private void CheckIfUsable()
 {
 	if (m_pSteamMusicRemote == IntPtr.Zero)
 	{
-		throw new Exception("Steam Pointer not configured");
+		throw new EmptyUser_SteamException();
 	}
 }
 public override bool RegisterSteamMusicRemote(string pchName)
@@ -3763,7 +3788,7 @@ private void CheckIfUsable()
 {
 	if (m_pSteamHTTP == IntPtr.Zero)
 	{
-		throw new Exception("Steam Pointer not configured");
+		throw new EmptyUser_SteamException();
 	}
 }
 public override uint CreateHTTPRequest(uint eHTTPRequestMethod,string pchAbsoluteURL)
@@ -3939,7 +3964,7 @@ private void CheckIfUsable()
 {
 	if (m_pSteamUnifiedMessages == IntPtr.Zero)
 	{
-		throw new Exception("Steam Pointer not configured");
+		throw new EmptyUser_SteamException();
 	}
 }
 public override ulong SendMethod(string pchServiceMethod,IntPtr pRequestBuffer,uint unRequestBufferSize,ulong unContext)
@@ -3991,7 +4016,7 @@ private void CheckIfUsable()
 {
 	if (m_pSteamController == IntPtr.Zero)
 	{
-		throw new Exception("Steam Pointer not configured");
+		throw new EmptyUser_SteamException();
 	}
 }
 public override bool Init()
@@ -4101,7 +4126,7 @@ private void CheckIfUsable()
 {
 	if (m_pSteamUGC == IntPtr.Zero)
 	{
-		throw new Exception("Steam Pointer not configured");
+		throw new EmptyUser_SteamException();
 	}
 }
 public override ulong CreateQueryUserUGCRequest(uint unAccountID,uint eListType,uint eMatchingUGCType,uint eSortOrder,uint nCreatorAppID,uint nConsumerAppID,uint unPage)
@@ -4479,7 +4504,7 @@ private void CheckIfUsable()
 {
 	if (m_pSteamAppList == IntPtr.Zero)
 	{
-		throw new Exception("Steam Pointer not configured");
+		throw new EmptyUser_SteamException();
 	}
 }
 public override uint GetNumInstalledApps()
@@ -4530,7 +4555,7 @@ private void CheckIfUsable()
 {
 	if (m_pSteamHTMLSurface == IntPtr.Zero)
 	{
-		throw new Exception("Steam Pointer not configured");
+		throw new EmptyUser_SteamException();
 	}
 }
 public override void DestructISteamHTMLSurface()
@@ -4734,7 +4759,7 @@ private void CheckIfUsable()
 {
 	if (m_pSteamInventory == IntPtr.Zero)
 	{
-		throw new Exception("Steam Pointer not configured");
+		throw new EmptyUser_SteamException();
 	}
 }
 public override uint GetResultStatus(int resultHandle)
@@ -4907,7 +4932,7 @@ private void CheckIfUsable()
 {
 	if (m_pSteamVideo == IntPtr.Zero)
 	{
-		throw new Exception("Steam Pointer not configured");
+		throw new EmptyUser_SteamException();
 	}
 }
 public override void GetVideoURL(uint unVideoAppID)
@@ -4939,7 +4964,7 @@ private void CheckIfUsable()
 {
 	if (m_pSteamGameServer == IntPtr.Zero)
 	{
-		throw new Exception("Steam Pointer not configured");
+		throw new EmptyUser_SteamException();
 	}
 }
 public override bool InitGameServer(uint unIP,char usGamePort,char usQueryPort,uint unFlags,uint nGameAppId,string pchVersionString)
@@ -5200,7 +5225,7 @@ private void CheckIfUsable()
 {
 	if (m_pSteamGameServerStats == IntPtr.Zero)
 	{
-		throw new Exception("Steam Pointer not configured");
+		throw new EmptyUser_SteamException();
 	}
 }
 public override ulong RequestUserStats(ulong steamIDUser)

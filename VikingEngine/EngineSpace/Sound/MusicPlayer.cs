@@ -341,7 +341,6 @@ namespace VikingEngine.Sound
             {
                 MusicBan = true;
             }
-            // return true;
         }
 
         public override void runSyncAction()
