@@ -197,105 +197,90 @@ namespace VikingEngine.DSSWars.GameObject
             int maxCount = 4;
             int repeat = 1;
 
-            switch (buildType)
+            if (BuildLib.BuildOptions[(int)buildType].canAutoBuild)
             {
-                case BuildAndExpandType.WorkerHuts:
-                    maxCount = 100;
-                    chance = 200;
-                    repeat = 4;
-                    break;
-                case BuildAndExpandType.SoldierBarracks:
-                case BuildAndExpandType.ArcherBarracks:
-                case BuildAndExpandType.WarmashineBarracks:
-                case BuildAndExpandType.KnightsBarracks:
-                case BuildAndExpandType.GunBarracks:
-                case BuildAndExpandType.CannonBarracks:
-                    maxCount = 2;
-                    chance = automationFocus == AutomationFocus.Military ? 100 : 5;
-                    break;
-
-                case BuildAndExpandType.CoalPit:
-                case BuildAndExpandType.WorkBench:
-                    chance = 200;
-                    break;
-
-                case BuildAndExpandType.WheatFarm:
-                case BuildAndExpandType.LinenFarm:
-                case BuildAndExpandType.HenPen:
-                case BuildAndExpandType.PigPen:
-                case BuildAndExpandType.RapeSeedFarm:
-                case BuildAndExpandType.HempFarm:
-                    chance = automationFocus == AutomationFocus.Grow? 300 : 150;
-                    maxCount = 24;
-                    break;
-
-                case BuildAndExpandType.WoodCutter:
-                case BuildAndExpandType.StoneCutter:
-                case BuildAndExpandType.PostalLevel2:
-                case BuildAndExpandType.PostalLevel3:
-                case BuildAndExpandType.RecruitmentLevel2:
-                case BuildAndExpandType.RecruitmentLevel3:
-                case BuildAndExpandType.GoldDeliveryLvl2:
-                case BuildAndExpandType.GoldDeliveryLvl3:
-                case BuildAndExpandType.Storehouse:
-                case BuildAndExpandType.Tavern:
-
-                case BuildAndExpandType.DirtRoad:
-                case BuildAndExpandType.Pavement:
-                case BuildAndExpandType.PavementFlower:
-                case BuildAndExpandType.Statue_ThePlayer:
-                    bBuild = false;
-                    break;
-
-                case BuildAndExpandType.Postal:
-                    if (automationFocus == AutomationFocus.Export)
-                    {
-                        chance = 60;
-                        maxCount = 24;
-                    }
-                    else
-                    {
-                        chance = 40;
-                        maxCount = 8;
-                    }
-                    break;
-                case BuildAndExpandType.Recruitment:
-                    if (automationFocus == AutomationFocus.Export)
-                    {
-                        chance = 200;
-                        maxCount = 12;
-                    }
-                    else
-                    {
-                        chance = 40;
-                        maxCount = 4;
-                    }
-                    break;
-
-                case BuildAndExpandType.Foundry:
-                    chance = 20;
-                    maxCount = 2;
-                    break;
-            }
-
-            if (bBuild)
-            {
-                var opt = BuildLib.BuildOptions[(int)buildType];
-                if (opt.blueprint.hasResources_buildAndUpgrade(this))
+                switch (buildType)
                 {
-                    int currentCount = this.buildingStructure.getCount(buildType);
+                    case BuildAndExpandType.WorkerHuts:
+                        maxCount = 100;
+                        chance = 200;
+                        repeat = 4;
+                        break;
+                    case BuildAndExpandType.SoldierBarracks:
+                    case BuildAndExpandType.ArcherBarracks:
+                    case BuildAndExpandType.WarmashineBarracks:
+                    case BuildAndExpandType.KnightsBarracks:
+                    case BuildAndExpandType.GunBarracks:
+                    case BuildAndExpandType.CannonBarracks:
+                        maxCount = 2;
+                        chance = automationFocus == AutomationFocus.Military ? 100 : 5;
+                        break;
 
-                    if (currentCount == 0)
-                    {
-                        chance /= 4;
-                    }
+                    case BuildAndExpandType.CoalPit:
+                    case BuildAndExpandType.WorkBench:
+                        chance = 200;
+                        break;
 
-                    if (currentCount < maxCount)
-                    {
-                        repeat = Ref.rnd.Int(repeat) + 1;
-                        for (int i = 0; i < repeat; ++i)
+                    case BuildAndExpandType.WheatFarm:
+                    case BuildAndExpandType.LinenFarm:
+                    case BuildAndExpandType.HenPen:
+                    case BuildAndExpandType.PigPen:
+                    case BuildAndExpandType.RapeSeedFarm:
+                    case BuildAndExpandType.HempFarm:
+                        chance = automationFocus == AutomationFocus.Grow ? 300 : 150;
+                        maxCount = 24;
+                        break;
+                                            
+                    case BuildAndExpandType.Postal:
+                        if (automationFocus == AutomationFocus.Export)
                         {
-                            AutoBuild_RandomBuild.AddItem((int)buildType, chance);
+                            chance = 60;
+                            maxCount = 24;
+                        }
+                        else
+                        {
+                            chance = 40;
+                            maxCount = 8;
+                        }
+                        break;
+                    case BuildAndExpandType.Recruitment:
+                        if (automationFocus == AutomationFocus.Export)
+                        {
+                            chance = 200;
+                            maxCount = 12;
+                        }
+                        else
+                        {
+                            chance = 40;
+                            maxCount = 4;
+                        }
+                        break;
+
+                    case BuildAndExpandType.Foundry:
+                        chance = 20;
+                        maxCount = 2;
+                        break;
+                }
+
+                if (bBuild)
+                {
+                    var opt = BuildLib.BuildOptions[(int)buildType];
+                    if (opt.blueprint.hasResources_buildAndUpgrade(this))
+                    {
+                        int currentCount = this.buildingStructure.getCount(buildType);
+
+                        if (currentCount == 0)
+                        {
+                            chance /= 4;
+                        }
+
+                        if (currentCount < maxCount)
+                        {
+                            repeat = Ref.rnd.Int(repeat) + 1;
+                            for (int i = 0; i < repeat; ++i)
+                            {
+                                AutoBuild_RandomBuild.AddItem((int)buildType, chance);
+                            }
                         }
                     }
                 }

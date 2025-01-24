@@ -134,7 +134,7 @@ namespace VikingEngine.HUD
             }
             Vector2 centerSize = area.Size - cornerSize * 2f;
 
-            Graphics.ImageAdvanced nwImg = new ImageAdvanced(settings.baseTexture, area.Position, cornerSize, 
+            Graphics.ImageAdvanced nwImg = new ImageAdvanced(settings.baseTexture, area.Position, cornerSize,
                 layer, false, addToRender);
             nwImg.ImageSource = nw;
 

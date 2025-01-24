@@ -88,8 +88,8 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         public override void DeleteMe()
         {
             base.DeleteMe();
-            DssRef.models.recycle(model, true);
-            model = null;
+            DssRef.models.recycle(ref model, true);
+            
             //model.DeleteMe();
         }
     }

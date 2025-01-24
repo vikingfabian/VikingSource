@@ -60,8 +60,7 @@ namespace VikingEngine.DSSWars.GameObject.Party
                 if (restBarModel != null)
                 {
                     //restBarModel.DeleteMe();
-                    DssRef.models.recycle(restBarModel, false);
-                    restBarModel = null;
+                    DssRef.models.recycle(ref restBarModel, false);
                 }
             }
         }

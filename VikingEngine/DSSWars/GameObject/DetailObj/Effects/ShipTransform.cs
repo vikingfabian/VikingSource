@@ -104,8 +104,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             base.DeleteMe();
 
-            DssRef.models.recycle(transformModel, true);
-            DssRef.models.recycle(loadingModel, true);
+            DssRef.models.recycle(ref transformModel, true);
+            DssRef.models.recycle(ref loadingModel, true);
             //if (transformModel != null)
             //{
             //    transformModel?.DeleteMe();

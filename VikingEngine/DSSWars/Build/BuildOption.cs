@@ -22,9 +22,10 @@ namespace VikingEngine.DSSWars.Build
         public int subType;
         public SpriteName sprite;
         public bool uniqueBuilding = false;
-
-        public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, SpriteName sprite, CraftBlueprint blueprint)
+        public bool canAutoBuild;
+        public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, SpriteName sprite, CraftBlueprint blueprint, bool canAutoBuild)
         {
+            this.canAutoBuild = canAutoBuild;
             this.sprite = sprite;
             this.buildType = buildType;
             this.blueprint = blueprint;

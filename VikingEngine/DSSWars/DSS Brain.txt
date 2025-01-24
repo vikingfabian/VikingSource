@@ -1,30 +1,37 @@
 ﻿-Change Log-
-* Created a text input popup
+* Created a text input prompt
 * Text input for voxel designer
 * Renaming of Armies and Cities
 * Improved voxeleditor undo action
 * Fixed some crashes
+* Fixed walking models recycle error
+* A secondary main color can be edited in the flag painter (will show on some soldiers)
 
-! load crash om man lämnar spelet
-! ogg fil problem
+! soldier ai is very passive in battles
+! the menues can look a bit funny
+! there are half-finished buildings in build options 
+
+
+
 ! skicka bara data om spelaren passerar 15min
 
 
 #OPT#
 culling av worker
-stanna musik spelaren
+//stanna musik spelaren
 
 monogame fork? DrawUserPrimitives opt, titta på OGG filer
 //försöka återvinna class DetailMapTile
 
 # WORKER PATH #
-Ha en loop som går igenom tiles, om det finns 1+ byggnader, räkna tid från hall till slumpad byggnad, tid till närmast mat och avlämning
+Ha en loop som går! igenom tiles, om det finns 1+ byggnader, räkna tid från hall till slumpad byggnad, tid till närmast mat och avlämning
 Plus räkna tid att passera i verti hori riktning (gör en path som fram, diagonal up ner, till har gått 4 tiles - kanske upp ner)
 Gissat avstånd är lägsta av att passera centrum eller snabbast verti hori
 Alternativt ha en hash dictionary mellan alla tiles i en stad
 Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
 
 #Todo#
+-drag button
 -Full automation
 -build prio
 -build placement bonus

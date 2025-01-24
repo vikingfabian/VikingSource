@@ -52,10 +52,13 @@ namespace VikingEngine.DSSWars.Map
             {
                 current = player.mapControls.selection.obj as City;
                 //imageGroup.DeleteAll();
-                foreach (var img in imageGroup)
+                for(int i = 0; i < imageGroup.Count; ++i)//each (var img in imageGroup)
                 {
-                    DssRef.models.recycle(img, true);
+                    var img = imageGroup[i];
+                    DssRef.models.recycle(ref img, true);
                 }
+
+                imageGroup.Clear();
 
                 if (current != null)
                 {

@@ -160,7 +160,7 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
             }
 
-            model = DssRef.models.ModelInstance(modelName, true, scale, true);
+            model = DssRef.models.ModelInstance(modelName, true, scale, false, true);
             //model.AddToRender(DrawGame.UnitDetailLayer);
             model.Frame = frame;
             linearPosition = start;
@@ -227,12 +227,7 @@ namespace VikingEngine.DSSWars.GameObject
                 lib.Rotation1DToQuaterion(model, dir.Radians + MathHelper.Pi);
             }
 
-            if (dist <= moveLength)
-            {
-                //Hit target
-                onHit();
-                DeleteMe();
-            }
+            
 
             if (Ref.TimePassed16ms)
             {
@@ -244,6 +239,13 @@ namespace VikingEngine.DSSWars.GameObject
                     Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, model.position);
 
                 }
+            }
+
+            if (dist <= moveLength)
+            {
+                //Hit target
+                onHit();
+                DeleteMe();
             }
         }
 
@@ -281,7 +283,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             base.DeleteMe();
             //model.DeleteMe();
-            DssRef.models.recycle(model, true);
+            DssRef.models.recycle(ref model, true, false);
         }
     }
 }

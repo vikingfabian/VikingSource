@@ -52,7 +52,7 @@ namespace VikingEngine.DSSWars.GameObject
         public override void DeleteMe()
         {
             base.DeleteMe();
-            DssRef.models.recycle(model, true);
+            DssRef.models.recycle(ref model, true);
             //model.DeleteMe();
         }
     }

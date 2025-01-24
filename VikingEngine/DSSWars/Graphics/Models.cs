@@ -179,8 +179,9 @@ namespace VikingEngine.DSSWars
             }
             
         }
-        public void recycle(Graphics.VoxelModelInstance instance, bool detailLayer)
+        public void recycle(ref Graphics.VoxelModelInstance instance, bool detailLayer, bool allowRecycle = true)
         {
+
             if (instance != null)
             {
                 //int lay = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.TerrainLayer;
@@ -188,26 +189,39 @@ namespace VikingEngine.DSSWars
                 //{
                 //    lib.DoNothing();
                 //}
-                instance.Visible = false;
-                instance.Rotation = RotationQuarterion.Identity;
-                DssRef.state.modelPool(detailLayer).Push(instance);
+                if (allowRecycle)
+                {
+                    instance.Visible = false;
+                    instance.Rotation = RotationQuarterion.Identity;
+                    DssRef.state.modelPool(detailLayer).Push(instance);
+                }
+                else
+                { 
+                    instance.DeleteMe();
+                }
             }
+
+            instance = null;
         }
 
         public Graphics.VoxelModelInstance ModelInstance(            
             VoxelModelName name,
             bool detailLayer,
-            float scale = 1f,           
+            float scale = 1f,
+            bool allowRecycle = true,
             bool addToRender = true, 
             bool async = false)
         {
-            //Graphics.VoxelModelInstance instance = new Graphics.VoxelModelInstance(null, addToRender);
-
+            
             Graphics.VoxelModelInstance instance;
-            if (addToRender &&
+            if (allowRecycle && addToRender &&
                 DssRef.state.modelPool(detailLayer).TryPop(out instance))
             {
-                instance.Visible = true;                
+                instance.Visible = true;
+                instance.Frame = 0;
+                instance.SpottedArrayMemberIndex = -1;
+                instance.inPlayerCamera = EightBit.AllTrue;
+               
             }
             else
             {
@@ -229,11 +243,6 @@ namespace VikingEngine.DSSWars
 
 #if DEBUG
             instance.DebugName = name.ToString();
-
-            //if (!voxelModels.ContainsKey(name))
-            //{
-            //    lib.DoNothing();
-            //}
 #endif
 
             Graphics.VoxelModel master = voxelModels[name];

@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.Players.Orders
         protected void createModel(int frame)
         {
             Debug.CrashIfThreaded();
-            model = DssRef.models.ModelInstance(LootFest.VoxelModelName.buildarea, true, WorldData.SubTileWidth * 1.4f, true, false);
+            model = DssRef.models.ModelInstance(LootFest.VoxelModelName.buildarea, true, WorldData.SubTileWidth * 1.4f, true, true, false);
             model.Frame = frame;
             //model.AddToRender(DrawGame.UnitDetailLayer);
             model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTile);
@@ -44,7 +44,7 @@ namespace VikingEngine.DSSWars.Players.Orders
         public override void DeleteMe()
         {
             //model.DeleteMe();
-            DssRef.models.recycle(model, true);
+            DssRef.models.recycle(ref model, true);
             base.DeleteMe();
         }
     }
