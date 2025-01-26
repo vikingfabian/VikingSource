@@ -60,10 +60,10 @@ namespace VikingEngine.DSSWars
         {
             const float TextToIconSz = 1.2f;
 
-            HudMenuBackground = new HUD.NineSplitSettings(SpriteName.cmdHudBorderButton, 1, 8, 2f, true, true);
+            HudMenuBackground = new HUD.NineSplitSettings(SpriteName.WarsHudMenuBg, 1, 8, 1f, true, true);
 
-            HudMenuScollBackground = new HUD.NineSplitSettings(SpriteName.WarsHudScrollerBg, 0, 6, 2f, true, true); ;
-            HudMenuScollButton = new HUD.NineSplitSettings(SpriteName.WarsHudScrollerSlider, 0, 6, 2f, true, true);
+            HudMenuScollBackground = new HUD.NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 8, 1f, true, true); ;
+            HudMenuScollButton = new HUD.NineSplitSettings(SpriteName.WarsHudScrollerSlider, 1, 8, 1f, true, true);
 
             RbSettings = new HUD.RichBox.RichBoxSettings(
                 new TextFormat(LoadedFont.Regular, Engine.Screen.TextBreadHeight, Color.White, ColorExt.Empty),
@@ -76,23 +76,23 @@ namespace VikingEngine.DSSWars
             RbSettings.optionOn = SpriteName.WarsHudOptionYes;
             RbSettings.optionOff = SpriteName.WarsHudOptionNo;
 
-            RbSettings.tabSelected.BgColor = new Color(53, 158, 209);//new Color(121,110,233);
+            RbSettings.tabSelected.BgColor = new Color(104, 149, 219);//new Color(121,110,233);
             RbSettings.tabSelected.Color = new Color(3, 0, 46);
             RbSettings.tabNotSelected.BgColor = new Color(36, 107, 142); //new Color(99,96,146);
             RbSettings.tabNotSelected.Color = RbSettings.tabSelected.Color;
 
-            RbSettings.artButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudPrimaryButton, 1, 8, 2f, true, true)
+            RbSettings.artButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudPrimaryButton, 1, 8, 1f, true, true)
             {
                 disableTexture = SpriteName.WarsHudPrimaryButtonDisabled
             };
 
-            RbSettings.artCheckButtonTex = new NineSplitSettings(SpriteName.WarsHudRoundButton, 1, 8, 2f, true, true);
-            RbSettings.artOptionButtonTex = new NineSplitSettings(SpriteName.WarsHudOptionSelected, 1, 8, 2f, true, true)
+            RbSettings.artCheckButtonTex = new NineSplitSettings(SpriteName.WarsHudRoundButton, 1, 8, 1f, true, true);
+            RbSettings.artOptionButtonTex = new NineSplitSettings(SpriteName.WarsHudOptionSelected, 1, 8, 1f, true, true)
             {
                 notSelectedTexture = SpriteName.WarsHudOptionNotSelected,
             };
 
-            RbSettings.artTabTex = new NineSplitSettings(SpriteName.WarsHudTabSelected, 1, 8, 2f, true, true)
+            RbSettings.artTabTex = new NineSplitSettings(SpriteName.WarsHudTabSelected, 1, 8, 1f, true, true)
             {
                 notSelectedTexture = SpriteName.WarsHudTabNotSelected,
             };

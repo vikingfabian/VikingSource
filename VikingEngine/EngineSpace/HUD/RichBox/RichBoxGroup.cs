@@ -88,7 +88,7 @@ namespace VikingEngine.HUD.RichBox
             if (parentMember.TryPeek(out parent))
             {
                 var button = parent as AbsRbButton;
-                if (button != null)
+                if (button != null && button.UseButtonContentSettings())
                 {
                     return button.enabled ? settings.button : settings.buttonDisabled;
                 }

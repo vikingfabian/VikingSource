@@ -81,18 +81,18 @@ namespace VikingEngine.DSSWars.Build
         WoodTower,
         StoneWall,
         StoneTower,
-        StoneWallGreen,//1
-        StoneWallBlueRoof,//2
-        StoneWallWoodHouse,//3
-        StoneGate,//5
-        StoneHouse,//6
-        PavementLamp,//1
-        PavemenFountain,//2
-        PavementRectFlower,//4
+        StoneWallGreen,
+        StoneWallBlueRoof,
+        StoneWallWoodHouse,
+        StoneGate,
+        StoneHouse,
+        PavementLamp,
+        PavemenFountain,
+        PavementRectFlower,
         GardenGrass,
-        GardenFourBushes,//0
-        GardenLongTree,//1
-        GardenWalledBush,//2
+        GardenFourBushes,
+        GardenLongTree,
+        GardenWalledBush,
         SmallCityHouse,
         BigCityHouse,
         CitySquare,

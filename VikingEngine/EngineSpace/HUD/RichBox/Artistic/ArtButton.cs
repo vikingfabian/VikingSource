@@ -18,6 +18,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
         OptionNotSelected,
         TabSelected,
         TabNotSelected,
+        HoverArea,
     }
 
     class ArtButton : AbsRbButton
@@ -67,6 +68,9 @@ namespace VikingEngine.HUD.RichBox.Artistic
                 case RbButtonStyle.TabNotSelected:
                     textureSett = group.settings.artTabTex.Selected(false);
                     break;
+                case RbButtonStyle.HoverArea:
+                    textureSett = group.settings.artHoverAreaTex;
+                    break;
             }
             texture = new HUD.NineSplitAreaTexture(textureSett, area, layer);
 
@@ -94,6 +98,11 @@ namespace VikingEngine.HUD.RichBox.Artistic
             { 
                 img.Color = toCol;
             }
+        }
+
+        virtual public bool UseButtonContentSettings()
+        {
+            return buttonStyle != RbButtonStyle.HoverArea;
         }
     }
 }

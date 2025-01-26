@@ -77,7 +77,7 @@ namespace VikingEngine.HUD
 
         public NineSplitAreaTexture(NineSplitSettings settings, VectorRect area, ImageLayers layer, bool addToRender = true)
         {
-
+            area.Round();
             this.area = area;
             this.layer = layer;
 
@@ -135,7 +135,7 @@ namespace VikingEngine.HUD
             Vector2 centerSize = area.Size - cornerSize * 2f;
 
             Graphics.ImageAdvanced nwImg = new ImageAdvanced(settings.baseTexture, area.Position, cornerSize,
-                layer, false, addToRender);
+                layer -1, false, addToRender);
             nwImg.ImageSource = nw;
 
             Graphics.ImageAdvanced nImg = new ImageAdvanced(settings.baseTexture, 
@@ -144,7 +144,7 @@ namespace VikingEngine.HUD
             nImg.ImageSource = n;
 
             Graphics.ImageAdvanced neImg = new ImageAdvanced(settings.baseTexture, new Vector2(nImg.Right, area.Position.Y), 
-                cornerSize, layer, false, addToRender);
+                cornerSize, layer - 1, false, addToRender);
             neImg.ImageSource = ne;
 
             images.Add(nwImg); images.Add(nImg); images.Add(neImg);
@@ -169,18 +169,20 @@ namespace VikingEngine.HUD
             images.Add(wImg); images.Add(eImg);
 
             Graphics.ImageAdvanced swImg = new ImageAdvanced(settings.baseTexture, 
-                new Vector2(area.X, area.Y + cornerSize.Y + centerSize.Y), cornerSize, layer, false, addToRender);
+                new Vector2(area.X, area.Y + cornerSize.Y + centerSize.Y), cornerSize, layer - 1, false, addToRender);
             swImg.ImageSource = sw;
 
             Graphics.ImageAdvanced sImg = new ImageAdvanced(settings.baseTexture, new Vector2(nImg.Xpos, swImg.Ypos), 
                 nImg.Size, layer + 1, false, addToRender);
             sImg.ImageSource = s;
 
-            Graphics.ImageAdvanced seImg = new ImageAdvanced(settings.baseTexture, new Vector2(neImg.Xpos, swImg.Ypos), cornerSize, 
-                layer, false, addToRender);
+            Graphics.ImageAdvanced seImg = new ImageAdvanced(settings.baseTexture, new Vector2(neImg.Xpos, swImg.Ypos), cornerSize,
+                layer - 1, false, addToRender);
             seImg.ImageSource = se;
 
             images.Add(swImg); images.Add(sImg); images.Add(seImg);
+
+            
         }
 
         public void addCenterColor(float distanceFromEdge, Color col)

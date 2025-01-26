@@ -35,7 +35,7 @@ namespace VikingEngine.HUD.RichBox
                 lib.DoNothing();
             }
 
-            const float HoriSpace = 12;
+            const float HoriSpace = 6;
             
             float heigh = group.lineSpacingHalf;
 
@@ -148,6 +148,11 @@ namespace VikingEngine.HUD.RichBox
         }
 
         abstract public void setGroupSelectionColor(RichBoxSettings settings, bool selected);
+
+        virtual public bool UseButtonContentSettings()
+        {
+            return true;
+        }
     }
 
     class RbButton : AbsRbButton

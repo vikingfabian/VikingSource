@@ -34,7 +34,7 @@ namespace VikingEngine.HUD.RichMenu
             VectorRect displayArea, float scrollerWidth, ImageLayers layer)
         {
             this.layer = layer;
-            area = new VectorRect(new Vector2(displayArea.Right - 2, displayArea.Y), new Vector2(scrollerWidth, displayArea.Height));
+            area = new VectorRect(new Vector2(displayArea.Right - 6, displayArea.Y), new Vector2(scrollerWidth, displayArea.Height));
             background = new NineSplitAreaTexture(backgroundTex, area, layer +1);
             slider = null;
             this.sliderTex = sliderTex;

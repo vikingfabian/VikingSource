@@ -114,12 +114,11 @@ namespace VikingEngine.DSSWars
             richmenu = new RichMenu(HudLib.RbSettings, area, new Vector2(10), RichMenu.DefaultRenderEdge, ImageLayers.Top1);
             richmenu.addBackground(HudLib.HudMenuBackground, ImageLayers.Top1_Back);
 
-            //Image bg = new Image(SpriteName.WhiteArea, area.Position, area.Size, ImageLayers.Top2);
-            //bg.Opacity = 0.1f;
             RichBoxContent content = new RichBoxContent();
-            content.h1("new menu");
+            content.h1("New menu",new Color(104, 149, 219));
+            content.text("Text text text");
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudScrollerSlider), new RbText("check") }, BoolGetSet));
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("check") }, BoolGetSet));
 
             content.newLine();
 

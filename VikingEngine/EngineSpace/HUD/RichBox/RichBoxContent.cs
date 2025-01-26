@@ -66,11 +66,33 @@ namespace VikingEngine.HUD.RichBox
             return text;
         }
 
+        public RbText h1(string textline, Color color)
+        {
+            newLine();
+            Add(new RbBeginTitle(1));
+            var text = new RbText(textline);
+            text.overrideColor = color;
+            Add(text);
+
+            return text;
+        }
+
         public RbText h2(string textline)
         {
             newLine();
             Add(new RbBeginTitle(2));
             var text = new RbText(textline);
+            Add(text);
+
+            return text;
+        }
+
+        public RbText h2(string textline, Color color)
+        {
+            newLine();
+            Add(new RbBeginTitle(2));
+            var text = new RbText(textline);
+            text.overrideColor = color;
             Add(text);
 
             return text;
