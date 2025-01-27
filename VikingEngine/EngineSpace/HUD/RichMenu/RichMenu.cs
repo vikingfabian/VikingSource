@@ -85,16 +85,18 @@ namespace VikingEngine.HUD.RichMenu
 
         public void updateMouseInput()
         {
-            if (scrollBar.updateMouseInput())
+            if (interaction.interactionStack == null && scrollBar.updateMouseInput())
             {
                 updateContentScroll();
             }
-            else if (renderArea.IntersectPoint(Input.Mouse.Position))
+            else if (renderArea.IntersectPoint(Input.Mouse.Position) ||
+                interaction.interactionStack != null)
             {
-                interaction.update(-renderArea.Position, this);
+                interaction.update(-renderArea.Position, this, out _);
             }
             else
             {
+                
                 interaction.clearSelection();
             }
 

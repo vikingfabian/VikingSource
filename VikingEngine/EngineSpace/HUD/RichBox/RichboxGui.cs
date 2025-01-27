@@ -165,7 +165,7 @@ namespace VikingEngine.HUD.RichBox
 
                     if (movePos_part >= 0 && input.RichboxGuiSelect.DownEvent)
                     {
-                        parts[movePos_part].interaction.hover.onClick();
+                        parts[movePos_part].interaction.hover.onClick(null);
                         refresh = true;
                     }
                 }
@@ -306,7 +306,7 @@ namespace VikingEngine.HUD.RichBox
         {
             if (interaction != null)
             {
-                return interaction.update(Vector2.Zero, null);
+                return interaction.update(Vector2.Zero, null, out _);
             }
             firstUpdate = false;
             return false;

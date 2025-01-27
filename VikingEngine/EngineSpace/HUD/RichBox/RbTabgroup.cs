@@ -96,7 +96,8 @@ namespace VikingEngine.HUD.RichBox
             group.position.X += group.imageHeight * 0.3f;
         }
 
-        public override void onEnter()
+        //public override void onEnter()
+        public override void onEnter(RichMenu.RichMenu menu)
         {
             enter?.actionTrigger();
         }

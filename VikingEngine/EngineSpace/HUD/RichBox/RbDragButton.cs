@@ -131,12 +131,12 @@ namespace VikingEngine.HUD.RichBox
 
                 if (Input.Mouse.Position.X < mouseXRange.Min)
                 {
-                    Input.Mouse.Position.X = mouseXRange.Max + (mouseXRange.Min - Input.Mouse.Position.X);
+                    Input.Mouse.SetPosition(new IntVector2(mouseXRange.Max + (mouseXRange.Min - Input.Mouse.Position.X), Input.Mouse.Position.Y));
                     prevMousePos.X = mouseXRange.Max;
                 }
                 else if (Input.Mouse.Position.X > mouseXRange.Max)
                 {
-                    Input.Mouse.Position.X = mouseXRange.Min + (Input.Mouse.Position.X- mouseXRange.Max);
+                    Input.Mouse.SetPosition(new IntVector2( mouseXRange.Min + (Input.Mouse.Position.X- mouseXRange.Max), Input.Mouse.Position.Y));
                     prevMousePos.X = mouseXRange.Min;
                 }
                 dragButton.valueChangeInput(change);

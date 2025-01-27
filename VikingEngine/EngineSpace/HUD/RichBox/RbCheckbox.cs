@@ -18,7 +18,8 @@ namespace VikingEngine.HUD.RichBox
             this.enabled = true;
         }
 
-        public override void onClick()
+        //public override void onClick()
+        public override void onClick(RichMenu.RichMenu menu)
         {
             bool value = !property.Invoke(0, false, false);
             property.Invoke(0, true, value);

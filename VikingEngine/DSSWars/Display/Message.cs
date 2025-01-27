@@ -237,7 +237,7 @@ namespace VikingEngine.DSSWars.Display
             {
                 if (time.msPassed(200))
                 {
-                    richBox.buttonGrid_Y_X[0][0].onClick();
+                    richBox.buttonGrid_Y_X[0][0].onClick(null);
                 }
                 return true;
             }
@@ -263,7 +263,7 @@ namespace VikingEngine.DSSWars.Display
         {
             if (bg.Visible)
             {
-                interaction.update(Vector2.Zero, null);
+                interaction.update(Vector2.Zero, null, out _);
             }
         }
 

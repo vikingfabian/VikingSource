@@ -111,12 +111,15 @@ namespace VikingEngine.DSSWars
             area.Width = Screen.IconSize * 8;
             area.X = Screen.CenterScreen.X;
 
-            richmenu = new RichMenu(HudLib.RbSettings, area, new Vector2(10), RichMenu.DefaultRenderEdge, ImageLayers.Top1);
+            
+            richmenu = new RichMenu(HudLib.RbSettings, area, new Vector2(10), RichMenu.DefaultRenderEdge, ImageLayers.Top1, new PlayerData(PlayerData.AllPlayers));
             richmenu.addBackground(HudLib.HudMenuBackground, ImageLayers.Top1_Back);
 
             RichBoxContent content = new RichBoxContent();
             content.h1("New menu",new Color(104, 149, 219));
             content.text("Text text text");
+            content.newLine();
+            content.Add(new RbDragButton(new ThreeSplitSettings(SpriteName.WarsHudDragButtonCenter, 1, 8), new DragButtonSettings(1, 100, 1), IntGetSet));  
             content.newLine();
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("check") }, BoolGetSet));
 
@@ -154,6 +157,16 @@ namespace VikingEngine.DSSWars
                 testBool = value;
             }
             return testBool;
+        }
+
+        int testInt = 1;
+        int IntGetSet(bool set, int value)
+        {
+            if (set)
+            {
+                testInt = value;
+            }
+            return testInt;
         }
 
         void load_asynch()

@@ -73,14 +73,14 @@ namespace VikingEngine.HUD.RichBox
                 prev?.clickAnimation(false);
                 refreshSelectOutline();
                 
-                hover?.onEnter();
+                hover?.onEnter(menu);
             }
 
             if (hover != null)
             {
                 if (clickInput.DownEvent)
                 {
-                    hover.onClick();
+                    hover.onClick(menu);
                     hover.clickAnimation(true);
                     return true;
                 }
@@ -90,7 +90,6 @@ namespace VikingEngine.HUD.RichBox
                 }
             }
 
-            end
             return false;
         }
 
