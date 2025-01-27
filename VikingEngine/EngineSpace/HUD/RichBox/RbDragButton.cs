@@ -54,7 +54,7 @@ namespace VikingEngine.HUD.RichBox
 
         public override VectorRect area()
         {
-            return texture.area;
+            return texture.Area();
         }
 
         public override void setGroupSelectionColor(RichBoxSettings settings, bool selected)
@@ -118,7 +118,7 @@ namespace VikingEngine.HUD.RichBox
             menu.interaction.interactionStack = this;
 
             mouseXRange = new IntervalF(menu.edgeArea.X, menu.edgeArea.Right);
-            moveLengthForValueChange = Screen.MinClickSize * 0.5f; 
+            moveLengthForValueChange = Screen.MinClickSize * 0.8f; 
 
         }
         public override bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, out bool endInteraction)

@@ -2503,19 +2503,20 @@ namespace VikingEngine
                     add(SpriteName.WarsBuild_StoneGate, 3, 3);
                     add(SpriteName.WarsBuild_StoneHouse, 3, 3);                   
                     add(SpriteName.WarsBuild_GardenGrass, 3, 3);
-                    
+                    add(SpriteName.WarsBuild_Statue_Lion, 3, 3);
+                    add(SpriteName.WarsBuild_Statue_Leader, 3, 3);
+                    add(SpriteName.WarsBuild_Statue_Horse, 3, 3);
+                    add(SpriteName.WarsBuild_Statue_Pillar, 3, 3);
                     //add(SpriteName.WarsBuild_SmallCityHouse, 3, 3);
                     //add(SpriteName.WarsBuild_BigCityHouse, 3, 3);
                     //add(SpriteName.WarsBuild_CitySquare, 3, 3);
                     //add(SpriteName.WarsBuild_CobbleStones, 3, 3);
-                    
-                    
-                    //add(SpriteName.WarsBuild_Statue_Lion, 3, 3);
-                    //add(SpriteName.WarsBuild_Statue_Horse, 3, 3);
-                    //add(SpriteName.WarsBuild_Statue_Pillar, 3, 3);
 
 
-        
+
+
+
+
                 }
 
                 currentIndex = numTilesWidth * 100;
@@ -2603,9 +2604,11 @@ namespace VikingEngine
                     addWithSizeDef(SpriteName.WarsHudOptionNo, currentIndex, WarsCheckSize, WarsCheckSize);
                     add(SpriteName.WarsHudMenuBg);
 
-                    addWithSizeDef(SpriteName.WarsHudDragButtonLeft, currentIndex, TileHalfSize, TileSize);
-                    add(SpriteName.WarsHudDragButtonCenter);
-                    addWithSizeDef(SpriteName.WarsHudDragButtonRight, currentIndex, TileHalfSize, TileSize);
+                    //addWithSizeDef(SpriteName.WarsHudDragButtonLeft, currentIndex, TileHalfSize, TileSize);
+                    add(SpriteName.WarsHudDragButton, 2, 1);
+                    currentIndex++;
+                    //addWithSizeDef(SpriteName.WarsHudDragButtonRight, currentIndex, TileHalfSize, TileSize);
+                    
                     add(SpriteName.WarsHudInfoIcon);
                     add(SpriteName.WarsHudHoverArea);
 

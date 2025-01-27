@@ -119,7 +119,7 @@ namespace VikingEngine.DSSWars
             content.h1("New menu",new Color(104, 149, 219));
             content.text("Text text text");
             content.newLine();
-            content.Add(new RbDragButton(new ThreeSplitSettings(SpriteName.WarsHudDragButtonCenter, 1, 8), new DragButtonSettings(1, 100, 1), IntGetSet));  
+            content.Add(new RbDragButton(new ThreeSplitSettings(SpriteName.WarsHudPrimaryButton, 1, 8), new DragButtonSettings(1, 100, 1), IntGetSet));  
             content.newLine();
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("check") }, BoolGetSet));
 
