@@ -17,15 +17,21 @@ namespace VikingEngine.HUD.RichBox
         
         public bool enabled;
 
-        public Input.IButtonMap buttonMap = null;
-                
-        public void addShortCutButton(Input.IButtonMap buttonMap, bool enableInput= true)
+        //public Input.IButtonMap buttonMap = null;
+
+        //public void addShortCutButton(Input.IButtonMap buttonMap, bool enableInput= true)
+        //{
+        //    if (enableInput)
+        //    {
+        //        this.buttonMap = buttonMap;
+        //    }
+        //    content.Insert(0, new RbImage(buttonMap.Icon, 1, 0, 1f));
+        //}
+
+        virtual protected float ButtonEdgeToContentSpace(bool left)
         {
-            if (enableInput)
-            {
-                this.buttonMap = buttonMap;
-            }
-            content.Insert(0, new RbImage(buttonMap.Icon, 1, 0, 1f));
+            const float HoriSpace = 6;
+            return HoriSpace;
         }
 
         public override void Create(RichBoxGroup group)
@@ -35,7 +41,7 @@ namespace VikingEngine.HUD.RichBox
                 lib.DoNothing();
             }
 
-            const float HoriSpace = 6;
+            
             
             float heigh = group.lineSpacingHalf;
 
@@ -91,7 +97,7 @@ namespace VikingEngine.HUD.RichBox
                 bool newLine = false;
                 topLeft = group.position;
 
-                group.position.X += HoriSpace;
+                group.position.X += ButtonEdgeToContentSpace(true);
 
                 createPreContent(group);
 
@@ -108,11 +114,11 @@ namespace VikingEngine.HUD.RichBox
                     {
                         //multiline button
                         //area.Width = group.boxWidth;
-                        group.position.X += HoriSpace;
+                        group.position.X += ButtonEdgeToContentSpace(false);
                         newLine = true;
                     }
                 }
-                group.position.X += HoriSpace;
+                group.position.X += ButtonEdgeToContentSpace(false);
 
                 bottomRight = group.position;
                 if (bottomRight.Y != topLeft.Y)
@@ -129,7 +135,7 @@ namespace VikingEngine.HUD.RichBox
 
         abstract public VectorRect area();
 
-        public override void onClick()
+        public override void onClick(RichMenu.RichMenu menu)
         {
             click?.actionTrigger();
         }
@@ -137,7 +143,7 @@ namespace VikingEngine.HUD.RichBox
         virtual public void clickAnimation(bool keyDown)
         { }
 
-        public override void onEnter()
+        public override void onEnter(RichMenu.RichMenu menu)
         {
             enter?.actionTrigger();
         }

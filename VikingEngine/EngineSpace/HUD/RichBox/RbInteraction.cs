@@ -8,9 +8,12 @@ using VikingEngine.PJ.Match3;
 
 namespace VikingEngine.HUD.RichBox
 {
-    class RbInteraction
+    abstract class AbsRbInteraction
     {
-        //public Vector2 outlineOffset = Vector2.Zero;
+        abstract public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, out bool endInteraction);
+    }
+    class RbInteraction: AbsRbInteraction
+    {
         public AbsRbButton hover = null;
         public List<AbsRbButton> buttons = new List<AbsRbButton>(4);
         public ImageLayers layer;
@@ -18,6 +21,7 @@ namespace VikingEngine.HUD.RichBox
         Graphics.RectangleLines selectionOutline = null;
         Input.IButtonMap clickInput;
         public RenderTargetDrawContainer drawContainer = null;
+        public AbsRbInteraction interactionStack = null;
 
         public RbInteraction(List<AbsRichBoxMember> content, ImageLayers layer,  Input.IButtonMap clickInput)
         {
@@ -30,26 +34,31 @@ namespace VikingEngine.HUD.RichBox
             }
         }
 
-        public bool update(Vector2 mousePosOffSet)
+        /// <returns>Any interaction happened (to avoid multiple)</returns>
+        override public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, out bool unused1)
         {
+            unused1 = false;
+            if (interactionStack != null)
+            {
+                var result = interactionStack.update(mousePosOffSet, menu, out bool endInteraction);
+                if (endInteraction)
+                {
+                    interactionStack = null;
+                }
+                return result;
+            }
+
+            AbsRbButton prev = hover;
+
             if (clickInput.IsMouse)
             {
                 Vector2 pos = Input.Mouse.Position + mousePosOffSet;
-                //if (drawContainer != null)
-                //{
-                //    pos -= drawContainer.Position;
-                //}
-                AbsRbButton prev = hover;
+               
                 hover = null;
                 VectorRect area = VectorRect.Zero;
 
                 foreach (var m in buttons)
                 {
-                    if (m.buttonMap != null && m.buttonMap.DownEvent)
-                    {
-                        m.onClick();
-                    }
-
                     area = m.area();
                     if (area.IntersectPoint(pos))
                     {
@@ -57,13 +66,16 @@ namespace VikingEngine.HUD.RichBox
                         break;
                     }
                 }
-
-                if (hover != prev)
-                {
-                    prev?.clickAnimation(false);
-                    refreshSelectOutline();
-                }
             }
+
+            if (hover != prev)
+            {
+                prev?.clickAnimation(false);
+                refreshSelectOutline();
+                
+                hover?.onEnter();
+            }
+
             if (hover != null)
             {
                 if (clickInput.DownEvent)
@@ -73,11 +85,12 @@ namespace VikingEngine.HUD.RichBox
                     return true;
                 }
                 else if (clickInput.UpEvent)
-                { 
+                {
                     hover.clickAnimation(false);
                 }
             }
 
+            end
             return false;
         }
 
@@ -89,9 +102,7 @@ namespace VikingEngine.HUD.RichBox
             if (hover != null)
             {
                 var ar = hover.area();
-                //ar.Position += outlineOffset;
-                selectionOutline = new RectangleLines(ar, 2, 1, layer);
-                hover.onEnter();
+                selectionOutline = new RectangleLines(ar, 2, 1, layer);                
             }
 
             Ref.draw.AddToContainer = null;

@@ -155,6 +155,7 @@ namespace VikingEngine.Engine
     
     class PlayerData : AbsPlayerData
     {
+        public const int AllPlayers = -1;
         public VikingEngine.Input.PlayerInputMap inputMap = null;
         
         public bool IsActive = false; 

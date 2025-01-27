@@ -313,7 +313,7 @@ namespace VikingEngine.DSSWars.Display
                         new HUD.RichBox.RbText(DssRef.lang.ArmyOption_Halt),
                         },
                         new RbAction(halt), null);
-            haltButton.addShortCutButton(player.input.Stop, false);
+            //haltButton.addShortCutButton(player.input.Stop, false);
             content.Add(haltButton);
         }
 

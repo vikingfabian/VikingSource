@@ -26,7 +26,7 @@ namespace VikingEngine.HUD.RichMenu
         public VectorRect edgeArea, renderArea, richboxArea, mouseScrollArea;
         Vector2 renderEdge;
         public RbInteraction interaction = null;
-        protected RichboxGui gui;
+        //protected RichboxGui gui;
         Graphics.RectangleLines outLine;
 
         RenderTargetDrawContainer renderList = null;//Is a target image, rendering the menu content
@@ -36,9 +36,11 @@ namespace VikingEngine.HUD.RichMenu
         float scrollerWidth;
         RichScrollbar scrollBar;
         ImageLayers layer;
+        public PlayerData playerData;
 
-        public RichMenu(RichBoxSettings settings, VectorRect edgeArea, Vector2 edgeThickness, Vector2 renderEdge, ImageLayers layer)
+        public RichMenu(RichBoxSettings settings, VectorRect edgeArea, Vector2 edgeThickness, Vector2 renderEdge, ImageLayers layer, PlayerData playerData)
         { 
+            this.playerData = playerData;
             this.layer = layer;
             this.settings = settings;
             this.edgeArea = edgeArea;
@@ -89,7 +91,7 @@ namespace VikingEngine.HUD.RichMenu
             }
             else if (renderArea.IntersectPoint(Input.Mouse.Position))
             {
-                interaction.update(-renderArea.Position/* - richBox.GetOffset()*/);
+                interaction.update(-renderArea.Position, this);
             }
             else
             {

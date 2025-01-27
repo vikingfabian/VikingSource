@@ -54,8 +54,8 @@ namespace VikingEngine.HUD.RichBox
         virtual public void finalizeArea(float width)
         { }
 
-        virtual public void onEnter() { }
-        virtual public void onClick() { }
+        virtual public void onEnter(RichMenu.RichMenu menu) { }
+        virtual public void onClick(RichMenu.RichMenu menu) { }
 
         virtual public void getButtons(List<AbsRbButton> buttons)
         { }

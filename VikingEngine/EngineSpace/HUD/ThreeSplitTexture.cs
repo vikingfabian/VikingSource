@@ -23,6 +23,19 @@ namespace VikingEngine.HUD
         /// </summary>
         public int sideTexSize;
 
+        public ThreeSplitSettings(SpriteName baseTexture, int textureEdgeInsert, int sideTexSize)
+        { 
+            this.baseTexture = baseTexture;
+            disableTexture = baseTexture;
+            this.textureEdgeInsert = textureEdgeInsert;
+            this.sideTexSize = sideTexSize;
+        }
+
+        public float TotalSideLeght()
+        { 
+            return sideTexSize;
+        }
+
     }
 
     class ThreeSplitTexture_Hori
