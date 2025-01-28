@@ -9,7 +9,6 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.HUD.RichBox
 {
-
     struct DragButtonSettings
     {
         public float min, max;
@@ -23,33 +22,46 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
-    /// <summary>
-    /// A drag button sourronded by + - buttons
-    /// </summary>
-    class RbDragButtonGroup
-    {
-
-    }
     class RbDragButton : AbsRbButton
     {
+        /// <summary>
+        /// A drag button sourronded by + - buttons
+        /// </summary>
+        /// <param name="options">Positive values, low to high</param>
+        public static void RbDragButtonGroup(RichBoxContent content, List<int> options, DragButtonSettings settings, IntGetSet intValue)
+        {
+            var dragButton = new RbDragButton(settings, intValue);
+
+            for (int i = options.Count - 1; i >= 0; --i)
+            {
+                content.Add(new RbDragOptionButton(dragButton, -options[i]));
+            }
+
+            content.Add(dragButton);
+
+            for (int i = 0; i < options.Count; ++i)
+            {
+                content.Add(new RbDragOptionButton(dragButton, options[i]));
+            }
+        }
+
         DragButtonSettings settings;
         bool valueTypeInt;
         IntGetSet intValue;
         FloatGetSet floatValue;
 
         RbText textPointer;
-        ThreeSplitSettings textureSett;
         ThreeSplitTexture_Hori texture;
-
-        public RbDragButton(ThreeSplitSettings texture, DragButtonSettings settings, IntGetSet intValue)
+        
+        public RbDragButton(DragButtonSettings settings, IntGetSet intValue)
         { 
-            this.textureSett = texture;
             this.settings = settings;
             this.intValue = intValue;
             valueTypeInt = true;
 
             textPointer = new RbText(TextLib.LargeNumber((int)settings.max));
             this.content = new List<AbsRichBoxMember> { textPointer };
+            enabled = true;
         }
 
         public override VectorRect area()
@@ -75,7 +87,7 @@ namespace VikingEngine.HUD.RichBox
 
         protected override void createBackground(RichBoxGroup group, VectorRect area, ImageLayers layer)
         {
-            texture = new HUD.ThreeSplitTexture_Hori(textureSett, area, layer);
+            texture = new HUD.ThreeSplitTexture_Hori(group.settings.dragButtonTex, area, layer + 2);
 
             group.images.AddRange(texture.images);
         }
@@ -99,9 +111,34 @@ namespace VikingEngine.HUD.RichBox
             }
         }
 
-        protected override float ButtonEdgeToContentSpace(bool left)
+        protected override float ButtonEdgeToContentSpace(RichBoxGroup group, bool left)
         {
-            return textureSett.TotalSideLeght();
+            return group.settings.dragButtonTex.TotalSideLeght();
+        }
+
+        public override bool UseButtonContentSettings()
+        {
+            return false;
+        }
+    }
+
+    class RbDragOptionButton : Artistic.ArtButton
+    {
+        RbDragButton parent;
+        int add;
+
+        public RbDragOptionButton(RbDragButton parent, int add)
+        {
+            this.parent = parent;
+            this.buttonStyle = Artistic.RbButtonStyle.Primary;
+            this.add = add;
+
+            content = new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(add)) };            
+        }
+
+        public override void onClick(RichMenu.RichMenu menu)
+        {
+            parent.valueChangeInput(add);
         }
     }
 

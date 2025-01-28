@@ -10,7 +10,7 @@ namespace VikingEngine.Graphics
     class ImageGroup
     {
         public List<AbsDraw> images;
-        Vector2 posOffset = Vector2.Zero;
+        protected Vector2 posOffset = Vector2.Zero;
 
         public ImageGroup()
         {

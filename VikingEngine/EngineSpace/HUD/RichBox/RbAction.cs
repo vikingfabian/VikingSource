@@ -14,6 +14,31 @@ namespace VikingEngine.HUD.RichBox
 
         public bool enabled = true;
         abstract public void actionTrigger();
+
+        virtual public RichBoxContent tooltip() { return null; }
+    }
+
+    delegate void TooltipContent(RichBoxContent content, object tag);
+
+    class RbTooltip : AbsRbAction
+    { 
+        TooltipContent delTooltipContent;
+        object tag;
+        public RbTooltip(TooltipContent delTooltipContent, object tag = null)
+        {
+            this.delTooltipContent = delTooltipContent;
+            this.tag = tag;
+        }
+
+        public override void actionTrigger()
+        {  }
+
+        override public RichBoxContent tooltip()
+        {
+            RichBoxContent content = new RichBoxContent();
+            delTooltipContent(content, tag);
+            return content;
+        }
     }
 
     class RbAction : AbsRbAction

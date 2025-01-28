@@ -221,8 +221,6 @@ namespace VikingEngine.HUD.RichBox
         {
             return (topleft.X + boxWidth) - position.X;
         }
-
-
         
         public void TryCreate_Start()
         { 
@@ -250,7 +248,22 @@ namespace VikingEngine.HUD.RichBox
             addToRender = true;
             lockNewLine = false;
         }
-        //float LineSpacing => imageHeight
+
+        public VectorRect AreaWithPosOffset()
+        {
+            VectorRect result = area;
+            result.Position += posOffset;
+
+            return result;
+        }
+
+        public VectorRect MaxAreaWithPosOffset()
+        {
+            VectorRect result = maxArea;
+            result.Position += posOffset;
+
+            return result;
+        }
     }
 
    

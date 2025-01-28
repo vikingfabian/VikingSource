@@ -72,7 +72,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
                     textureSett = group.settings.artHoverAreaTex;
                     break;
             }
-            texture = new HUD.NineSplitAreaTexture(textureSett, area, layer);
+            texture = new HUD.NineSplitAreaTexture(textureSett, area, layer + 1);
 
             group.images.AddRange(texture.images);
         }

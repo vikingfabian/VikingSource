@@ -15,20 +15,9 @@ namespace VikingEngine.HUD.RichBox
         protected List<AbsRichBoxMember> content;
         public bool fillWidth = false;
         
-        public bool enabled;
+        public bool enabled = true;
 
-        //public Input.IButtonMap buttonMap = null;
-
-        //public void addShortCutButton(Input.IButtonMap buttonMap, bool enableInput= true)
-        //{
-        //    if (enableInput)
-        //    {
-        //        this.buttonMap = buttonMap;
-        //    }
-        //    content.Insert(0, new RbImage(buttonMap.Icon, 1, 0, 1f));
-        //}
-
-        virtual protected float ButtonEdgeToContentSpace(bool left)
+        virtual protected float ButtonEdgeToContentSpace(RichBoxGroup group, bool left)
         {
             const float HoriSpace = 6;
             return HoriSpace;
@@ -40,8 +29,6 @@ namespace VikingEngine.HUD.RichBox
             {
                 lib.DoNothing();
             }
-
-            
             
             float heigh = group.lineSpacingHalf;
 
@@ -97,7 +84,7 @@ namespace VikingEngine.HUD.RichBox
                 bool newLine = false;
                 topLeft = group.position;
 
-                group.position.X += ButtonEdgeToContentSpace(true);
+                group.position.X += ButtonEdgeToContentSpace(group, true);
 
                 createPreContent(group);
 
@@ -114,11 +101,11 @@ namespace VikingEngine.HUD.RichBox
                     {
                         //multiline button
                         //area.Width = group.boxWidth;
-                        group.position.X += ButtonEdgeToContentSpace(false);
+                        group.position.X += ButtonEdgeToContentSpace(group, false);
                         newLine = true;
                     }
                 }
-                group.position.X += ButtonEdgeToContentSpace(false);
+                group.position.X += ButtonEdgeToContentSpace(group, false);
 
                 bottomRight = group.position;
                 if (bottomRight.Y != topLeft.Y)
@@ -145,7 +132,19 @@ namespace VikingEngine.HUD.RichBox
 
         public override void onEnter(RichMenu.RichMenu menu)
         {
-            enter?.actionTrigger();
+            if (enter != null)
+            {
+                if (menu != null)
+                {
+                    var tooltip = enter.tooltip();
+                    if (tooltip != null)
+                    {
+                        menu.addToolTip(tooltip, this.area());
+                        return;
+                    }
+                }
+                enter.actionTrigger();
+            }
         }
 
         public override void getButtons(List<AbsRbButton> buttons)

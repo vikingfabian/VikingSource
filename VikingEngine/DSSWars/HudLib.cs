@@ -52,6 +52,7 @@ namespace VikingEngine.DSSWars
         public static NineSplitSettings HudMenuScollButton;
         public static RichBoxSettings RbSettings;
         public static RichBoxSettings RbOnGuiSettings;
+        public static RichBoxSettings TooltipSettings;
 
         public static RichboxGuiSettings richboxGui;
         public static RichboxGuiSettings cutsceneGui;
@@ -86,6 +87,8 @@ namespace VikingEngine.DSSWars
                 disableTexture = SpriteName.WarsHudPrimaryButtonDisabled
             };
 
+            RbSettings.dragButtonTex = new ThreeSplitSettings(SpriteName.cmdHudBorderTooltip, 1, 8);
+
             RbSettings.artCheckButtonTex = new NineSplitSettings(SpriteName.WarsHudRoundButton, 1, 8, 1f, true, true);
             RbSettings.artOptionButtonTex = new NineSplitSettings(SpriteName.WarsHudOptionSelected, 1, 8, 1f, true, true)
             {
@@ -99,6 +102,9 @@ namespace VikingEngine.DSSWars
 
             RbOnGuiSettings = RbSettings;
             RbOnGuiSettings.scaleUp(1.4f);
+
+            TooltipSettings = RbSettings;
+            TooltipSettings.windowBackground = new NineSplitSettings(SpriteName.cmdHudBorderTooltip, 1, 8, 1f, true, true);
 
             HeadDisplayWidth = Engine.Screen.IconSize * 7;
             HeadDisplayEdge = Engine.Screen.BorderWidth;

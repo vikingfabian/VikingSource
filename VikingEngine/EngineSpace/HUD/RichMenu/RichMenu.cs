@@ -37,6 +37,7 @@ namespace VikingEngine.HUD.RichMenu
         RichScrollbar scrollBar;
         ImageLayers layer;
         public PlayerData playerData;
+        RichTooltip tooltip = null;
 
         public RichMenu(RichBoxSettings settings, VectorRect edgeArea, Vector2 edgeThickness, Vector2 renderEdge, ImageLayers layer, PlayerData playerData)
         { 
@@ -59,6 +60,19 @@ namespace VikingEngine.HUD.RichMenu
             
             scrollBar = new RichScrollbar(HudLib.HudMenuScollButton, HudLib.HudMenuScollBackground, edgeArea, scrollerWidth, layer -2);
             mouseScrollArea = scrollBar.IncludeScrollArea(edgeArea);
+        }
+
+        public void addToolTip(RichBoxContent content, VectorRect buttonArea)
+        {
+            deleteTooltip();
+            buttonArea.Position += renderList.position;
+            tooltip = new RichTooltip(content, HudLib.TooltipSettings, buttonArea, playerData.view.safeScreenArea, layer -5);
+        }
+
+        public void deleteTooltip()
+        {
+            tooltip?.DeleteMe();
+            tooltip = null;
         }
 
         public void addBackground(NineSplitSettings texture, ImageLayers layer)

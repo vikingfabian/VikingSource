@@ -28,7 +28,8 @@ namespace VikingEngine.HUD.RichBox
         public NineSplitSettings artOptionButtonTex;
         public NineSplitSettings artTabTex;
         public NineSplitSettings artHoverAreaTex;
-
+        public ThreeSplitSettings dragButtonTex;
+        public NineSplitSettings windowBackground;
 
         public RichBoxSettings(TextFormat breadText, TextFormat button, float iconHeight, float TitleSizeUp = 1.2f)
         {

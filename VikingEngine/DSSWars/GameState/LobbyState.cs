@@ -119,7 +119,10 @@ namespace VikingEngine.DSSWars
             content.h1("New menu",new Color(104, 149, 219));
             content.text("Text text text");
             content.newLine();
-            content.Add(new RbDragButton(new ThreeSplitSettings(SpriteName.WarsHudPrimaryButton, 1, 8), new DragButtonSettings(1, 100, 1), IntGetSet));  
+            content.Add(new RbDragButton(new DragButtonSettings(1, 100, 1), IntGetSet));
+            content.newLine();
+            RbDragButton.RbDragButtonGroup(content, new List<int> { 1,10 }, new DragButtonSettings(1, 100, 1), IntGetSet);
+
             content.newLine();
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("check") }, BoolGetSet));
 
@@ -140,13 +143,19 @@ namespace VikingEngine.DSSWars
             for (int i = 0; i < 100; i++)
             {
                 content.newLine();
-                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("test" + i.ToString()) }, null);
+                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("test" + i.ToString()) }, null, new RbTooltip(TooltipTest, i));
                 btn.fillWidth = true;
                 content.Add(btn);
                 content.Button("test" + i.ToString(), null, null, true);
             }
 
             richmenu.Refresh(content);
+        }
+
+        void TooltipTest(RichBoxContent content, object tag)
+        {
+            content.h2("Tooltip");
+            content.text("Button no: " + tag.ToString());
         }
 
         bool testBool = false;

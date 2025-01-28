@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.Graphics;
+using VikingEngine.Network;
 
 namespace VikingEngine.HUD
 {
@@ -59,6 +60,18 @@ namespace VikingEngine.HUD
             }
 
             return result;
+        }
+
+        public float BorderWidth()
+        {
+            if (useTextureAsEdgeSz)
+            {
+                return (int)(cornerTexSize * edgeScale);
+            }
+            else
+            {
+                return edgeScale;
+            }
         }
     }
 
@@ -201,6 +214,7 @@ namespace VikingEngine.HUD
             {
                 m.DeleteMe();
             }
+            //images = null;
         }
 
         public void SetVisible(bool visible)
