@@ -19,6 +19,7 @@ namespace VikingEngine.DSSWars.Display
         public HudDetailLevel detailLevel = HudDetailLevel.Normal;
 
         public GameHudDisplays displays;
+        public GameHudMenu hudmenu;
         public MessageGroup messages;
         public bool menuFocus = false;
 
@@ -26,6 +27,7 @@ namespace VikingEngine.DSSWars.Display
         {
             this.player = player;
             displays = new GameHudDisplays(player);
+            hudmenu = new GameHudMenu(player);
             messages = new MessageGroup(player, numPlayers, HudLib.richboxGui);
             tooltip = new Tooltip();
         }
@@ -182,10 +184,10 @@ namespace VikingEngine.DSSWars.Display
             {
                 if (refresh)
                 {
-                    Vector2 pos = displays.headDisplay.area.LeftBottom;
-                    pos.Y += Engine.Screen.BorderWidth * 2f;
-                    displays.objectDisplay.refresh(player, obj, selected, pos);
-
+                    //Vector2 pos = displays.headDisplay.area.LeftBottom;
+                    //pos.Y += Engine.Screen.BorderWidth * 2f;
+                    //displays.objectDisplay.refresh(player, obj, selected, pos);
+                    hudmenu.refreshObject(player, obj, selected);
                 }
             }
         }

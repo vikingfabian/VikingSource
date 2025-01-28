@@ -23,7 +23,7 @@ namespace VikingEngine.HUD.RichMenu
         protected RichBoxContent content = new RichBoxContent();
         //protected Graphics.Image bg;
         NineSplitAreaTexture backgroundTextures;
-        public VectorRect edgeArea, renderArea, richboxArea, mouseScrollArea;
+        public VectorRect backgroundArea, edgeArea, renderArea, richboxArea, mouseScrollArea;
         Vector2 renderEdge;
         public RbInteraction interaction = null;
         //protected RichboxGui gui;
@@ -45,6 +45,7 @@ namespace VikingEngine.HUD.RichMenu
             this.layer = layer;
             this.settings = settings;
             this.edgeArea = edgeArea;
+            backgroundArea = edgeArea;
             renderArea = edgeArea;
             renderArea.AddXRadius(-edgeThickness.X);
             renderArea.AddYRadius(-edgeThickness.Y);
@@ -75,13 +76,23 @@ namespace VikingEngine.HUD.RichMenu
             tooltip = null;
         }
 
+        public void updateHeightFromContent()
+        {
+            float edgeThickness = edgeArea.Bottom - renderArea.Bottom;
+
+            backgroundArea = edgeArea;
+            backgroundArea.SetBottom(richBox.area.Size.Y + edgeThickness, true);
+        }
+
         public void addBackground(NineSplitSettings texture, ImageLayers layer)
         {
-            backgroundTextures = new NineSplitAreaTexture(texture, edgeArea, layer + 1);
+            backgroundTextures = new NineSplitAreaTexture(texture, backgroundArea, layer + 1);
         }
 
         public void Refresh(RichBoxContent content)
         {
+            deleteContent();
+
             Ref.draw.AddToContainer = renderList;
             {
                 richBox = new RichBoxGroup(Vector2.Zero,
@@ -97,6 +108,11 @@ namespace VikingEngine.HUD.RichMenu
             updateContentScroll();
         }
 
+        void deleteContent()
+        {
+            renderList.renderList.Clear();
+        }
+
         public void updateMouseInput()
         {
             if (interaction.interactionStack == null && scrollBar.updateMouseInput())
@@ -110,7 +126,7 @@ namespace VikingEngine.HUD.RichMenu
             }
             else
             {
-                
+                deleteTooltip();
                 interaction.clearSelection();
             }
 

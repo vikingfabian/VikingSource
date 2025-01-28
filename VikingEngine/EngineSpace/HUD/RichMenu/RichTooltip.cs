@@ -67,7 +67,7 @@ namespace VikingEngine.HUD.RichMenu
 
                 if (!rightSide && richBox.maxArea.Width < width)
                 {
-                    adjust.X -= width - richBox.maxArea.Width;
+                    adjust.X = width - richBox.maxArea.Width;
                 }
 
                 if (richBox.area.Bottom > playerScreen.Bottom)

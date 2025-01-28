@@ -305,7 +305,7 @@ namespace VikingEngine.DSSWars.Display
 
         void infoTab(RichBoxContent content)
         {
-            army.basicInfoHud(new ObjectHudArgs(null, content, player, true));
+            army.basicInfoHud(new ObjectHudArgs( content, player, true));
 
             var haltButton = new HUD.RichBox.RbButton(
                         new List<AbsRichBoxMember>

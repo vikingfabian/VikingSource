@@ -162,14 +162,16 @@ namespace VikingEngine.DSSWars.Players
             faction.profile.gameStartInit();
             faction.displayInFullOverview = true;
 
-            hud = new GameHud(this, numPlayers);
-            buildControls = new Build.BuildControls(this);
-
-
             playerData = Engine.XGuide.GetPlayer(playerindex);
             playerData.Tag = this;
             playerData.view.SetDrawArea(numPlayers, pStorage.screenIndex, false, null);
 
+
+            hud = new GameHud(this, numPlayers);
+            buildControls = new Build.BuildControls(this);
+
+
+            
             mapControls = new Players.MapControls(this);
             if (faction.mainCity != null)
             {

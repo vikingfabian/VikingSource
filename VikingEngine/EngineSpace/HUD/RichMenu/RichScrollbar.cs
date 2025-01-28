@@ -85,9 +85,12 @@ namespace VikingEngine.HUD.RichMenu
                 sliderGroup.Add(slider.images);
             }
             else
-            { 
-                slider.DeleteMe();
-                sliderGroup.Clear();
+            {
+                if (slider != null)
+                {
+                    slider.DeleteMe();
+                    sliderGroup.Clear();
+                }
             }
 
         }
