@@ -73,7 +73,7 @@ namespace VikingEngine.HUD.RichBox
                 if (prev != null)
                 {
                     prev.clickAnimation(false);
-                    menu.deleteTooltip();
+                    menu?.deleteTooltip();
                 }
                 refreshSelectOutline();
                 

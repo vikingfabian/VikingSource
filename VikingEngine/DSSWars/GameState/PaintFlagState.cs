@@ -98,43 +98,10 @@ namespace VikingEngine.DSSWars
 
             hud = new PaintFlagHud(keyboardInput, this);
             setColorType(ProfileColorType.Main);
-            new Timer.AsynchActionTrigger(load_asynch, true);
+            //new Timer.AsynchActionTrigger(load_asynch, true);
+            new Display.EditorBackground();
         }
-        Texture2D bgTex;
-        void load_asynch()
-        {
-            bgTex = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "flag painter bg");
-            new Timer.Action0ArgTrigger(loadingComplete);
-        }
-
-        void loadingComplete()
-        {
-            float w = Engine.Screen.Width + 4;
-            float h = w / bgTex.Width * bgTex.Height;
-            float x = -2;
-            float y = Screen.CenterScreen.Y - h * 0.5f;
-
-            ImageAdvanced bgImage = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE,
-                new Vector2(x, y), new Vector2(w, h), ImageLayers.AbsoluteBottomLayer, false);
-            bgImage.Texture = bgTex;
-            bgImage.SetFullTextureSource();
-            bgImage.Opacity = 0.3f;
-
-            //Vector2 promoworkerSz = new Vector2(h * 0.05f);
-
-            //var worker1 = new Graphics.Image(SpriteName.warsWorkerPromoHammer, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.84f, 1f), -promoworkerSz.Y * 0.9f), promoworkerSz, ImageLayers.Background5);
-            //worker1.LayerAbove(bgImage);
-
-            //var worker2 = new Graphics.Image(SpriteName.warsWorkerPromoBox, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.6f, 1f), -promoworkerSz.Y * 0.9f), promoworkerSz, ImageLayers.Background5);
-            //worker2.LayerAbove(bgImage);
-
-            //var worker3 = new Graphics.Image(SpriteName.warsWorkerPromoBox, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.5f, 1f), -promoworkerSz.Y * 0.8f), promoworkerSz, ImageLayers.Background5);
-            //worker3.LayerAbove(bgImage);
-
-            //var worker4 = new Graphics.Image(SpriteName.warsWorkerPromoBox, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.2f, 1f), -promoworkerSz.Y * 0.9f), promoworkerSz, ImageLayers.Background5);
-            //worker4.LayerAbove(bgImage);
-
-        }
+        
         void setControllerMode(bool value)
         {
             controllerMode = value;

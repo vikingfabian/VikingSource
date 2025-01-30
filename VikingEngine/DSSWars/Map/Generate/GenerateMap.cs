@@ -16,13 +16,12 @@ using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Map.Generate
 {
+    
+
     class GenerateMap
     {
-        const float LandChainMinRadius = 2;
-        const float LandChainMaxRadius = 30;
         public static int LoadStatus = 0;
-        static readonly IntervalF linkPosDiffRange = new IntervalF(0.5f, 3);
-        static readonly Range landSpotSzRange = new Range(2, 24);
+        
         public WorldData world;
 
         public bool postComplete = false;
@@ -33,9 +32,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         VikingEngine.EngineSpace.Maths.SimplexNoise2D noiseMap;
         BiomsLayout biomsLayout;
 
-        static readonly IntervalF startRadiusRange = new IntervalF(LandChainMinRadius, LandChainMaxRadius * 0.5f);
-        static readonly Range chainLengthRange = new Range(2, 20);
-
+        
 
         IntervalF[] citySizeToMudRadius = new IntervalF[]
         {
@@ -44,7 +41,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             new IntervalF(5, 7),
         };
         
-        public bool Generate(bool save, Data.WorldMetaData worldMeta)//, int number, ushort seed) 
+        public bool Generate(bool save, Data.WorldMetaData worldMeta, MapGenerateSettings generateSettings)//, int number, ushort seed) 
         {
             //ushort seed = Ref.rnd.Ushort();
             world = new WorldData(worldMeta);//new Data.WorldMetaData(seed, size, number));
@@ -65,20 +62,36 @@ namespace VikingEngine.DSSWars.Map.Generate
                     world.tileGrid.Set(loop.Position, new Tile());
                 }
 
-                LoadStatus = 20;
+                const int ChainStartStatus = 20;
+                const int ChainEndStatus = 50;
+                LoadStatus = ChainStartStatus;
 
-                generateLandChains();
-                LoadStatus = 25;
-                generateDigChains();
-                LoadStatus = 30;
-                generateLandChains();
-                LoadStatus = 35;
-                generateDigChains();
-                LoadStatus = 40;
-                generateLandChains();
-                LoadStatus = 45;
-                generateDigChains();
-                LoadStatus = 50;
+                //generateLandChains(generateSettings);
+                //LoadStatus = 25;
+                //generateDigChains(generateSettings);
+                //LoadStatus = 30;
+                //generateLandChains(generateSettings);
+                //LoadStatus = 35;
+                //generateDigChains(generateSettings);
+                //LoadStatus = 40;
+                //generateLandChains(generateSettings);
+                //LoadStatus = 45;
+                //generateDigChains(generateSettings);
+
+                float loadStatusAdd = (float)(ChainEndStatus - ChainStartStatus) / (generateSettings.repeatBuildDigCount * 2);
+                float totalAdd = 0;
+                for (int i = 0; i < generateSettings.repeatBuildDigCount; i++)
+                {
+                    generateLandChains(generateSettings); //BUILD
+                    totalAdd += loadStatusAdd;
+                    LoadStatus = ChainStartStatus + (int)totalAdd;
+
+                    generateDigChains(generateSettings); //DIG
+                    totalAdd += loadStatusAdd;
+                    LoadStatus = ChainStartStatus + (int)totalAdd;
+                }
+                
+                LoadStatus = ChainEndStatus;
                 setWaterHeightAndWaterHeatmap();
 
                 LoadStatus = 55;
@@ -164,7 +177,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
 
 
-        void generateLandChains()
+        void generateLandChains(MapGenerateSettings generateSettings)
         {
             int[] mountain = new int[]
             {
@@ -208,7 +221,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 new ObjectCommonessPair<int[]>(4, veryplain)
             );
 
-            int numLandChains = world.areaTileCount / 2000;
+            int numLandChains = Convert.ToInt32(world.areaTileCount / 100f * generateSettings.BuildChainsCount_per100Tiles); //2000;
 
             const float MaxRadiusChange = 2;
             const float MaxDirChange = 0.6f;
@@ -247,7 +260,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 biom = biomsLayout.get(world, center);
 
                 startPos = center;
-                newChain(out radius, out growDir, out chainLength, out heightCenter, out heightCenterLength);
+                newChain(out radius, out growDir, out chainLength, out heightCenter, out heightCenterLength, generateSettings);
 
                 //go through each link in the chain
                 for (int link = 0; link < chainLength; ++link)
@@ -318,9 +331,9 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                     //move to the next link location
                     growDir.Add(world.rnd.Plus_MinusF(MaxDirChange));
-                    radius = Bound.Set(radius + world.rnd.Plus_MinusF(MaxRadiusChange), LandChainMinRadius, LandChainMaxRadius);
+                    radius = Bound.Set(radius + world.rnd.Plus_MinusF(MaxRadiusChange), generateSettings.LandChainMinRadius, generateSettings.LandChainMaxRadius);
 
-                    center += growDir.Direction(linkPosDiffRange.GetRandom(world.rnd));
+                    center += growDir.Direction(generateSettings.linkPosDiffRange.GetRandom(world.rnd));
 
                     heightCenter.Add(world.rnd.Plus_MinusF(0.2f));
                     heightCenterLength = Bound.Set(heightCenterLength + world.rnd.Plus_MinusF(0.2f), 0, 0.9f);
@@ -334,7 +347,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                             chainCenter = (center + startPos) * PublicConstants.Half;
                             center = chainCenter + Rotation1D.Random(world.rnd).Direction(restartDistRange.GetRandom(world.rnd));
 
-                            newChain(out radius, out growDir, out chainLength, out heightCenter, out heightCenterLength);
+                            newChain(out radius, out growDir, out chainLength, out heightCenter, out heightCenterLength, generateSettings);
                         }
                     }
                 }
@@ -345,21 +358,23 @@ namespace VikingEngine.DSSWars.Map.Generate
         
 
         void newChain(out float radius, out Rotation1D growDir, out int chainLength,
-            out Rotation1D heightCenter, out float heightCenterLength)
+            out Rotation1D heightCenter, out float heightCenterLength, MapGenerateSettings generateSettings)
         {
 
 
-            radius = lib.SmallestValue(startRadiusRange.GetRandom(world.rnd), startRadiusRange.GetRandom(world.rnd));
+            radius = lib.SmallestValue(generateSettings.startRadiusRange.GetRandom(world.rnd), generateSettings.startRadiusRange.GetRandom(world.rnd));
             growDir = Rotation1D.Random(world.rnd);
-            chainLength = chainLengthRange.GetRandom(world.rnd);
+            chainLength = generateSettings.chainLengthRange.GetRandom(world.rnd);
 
             heightCenter = Rotation1D.Random(world.rnd);
             heightCenterLength = world.rnd.Float(0.7f);
         }
         static readonly IntervalF digLinkPosDiffRange = new IntervalF(0.5f, 2);
-        void generateDigChains()
+        void generateDigChains(MapGenerateSettings generateSettings)
         {
-            int numLandChains = world.areaTileCount / 1800;
+            //int numLandChains = world.areaTileCount / 1800;
+            int numLandChains = Convert.ToInt32(world.areaTileCount / 100f * generateSettings.DigChainsCount_per100Tiles);
+
             for (int i = 0; i < numLandChains; ++i)
             {
                 int[,] sunken = new int[world.Size.X, world.Size.Y];

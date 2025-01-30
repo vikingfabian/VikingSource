@@ -116,7 +116,7 @@ namespace VikingEngine.DSSWars
             richmenu.addBackground(HudLib.HudMenuBackground, ImageLayers.Top1_Back);
 
             RichBoxContent content = new RichBoxContent();
-            content.h1("New menu",new Color(104, 149, 219));
+            content.h1("New menu", HudLib.TitleColor_Head);
             content.text("Text text text");
             content.newLine();
             content.Add(new RbDragButton(new DragButtonSettings(1, 100, 1), IntGetSet));
@@ -139,6 +139,14 @@ namespace VikingEngine.DSSWars
                 new ArtTabMember(new List<AbsRichBoxMember> { new RbText("tab2") }),
                 new ArtTabMember(new List<AbsRichBoxMember> { new RbText("tab3") }),
             }, 0, null));
+
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Start new game") }, null, null));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Load") }, null, null));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Options") }, null, null));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Map editor") }, null, null));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Voxel editor") }, null, null));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Flag painter") }, null, null));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Exit") }, null, null));
 
             for (int i = 0; i < 100; i++)
             {
@@ -286,6 +294,7 @@ namespace VikingEngine.DSSWars
                 //new GuiTextButton("*Crash game*", null, crashTest, false, layout); 
 
                 new GuiTextButton("Play Commander", "A small tactical board game", new GuiAction(extra_PlayCommanderVersus), false, layout);
+                
                 if (PlatformSettings.DevBuild)
                 {
                     new GuiTextButton("Map file generator", "Creates maps to play on. Takes about 10 minutes.", mapFileGenerator, false, layout);
