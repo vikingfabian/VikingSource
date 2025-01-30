@@ -2606,7 +2606,6 @@ namespace VikingEngine
 
                     //addWithSizeDef(SpriteName.WarsHudDragButtonLeft, currentIndex, TileHalfSize, TileSize);
                     add(SpriteName.WarsHudDragButton, 2, 1);
-                    currentIndex++;
                     //addWithSizeDef(SpriteName.WarsHudDragButtonRight, currentIndex, TileHalfSize, TileSize);
                     
                     add(SpriteName.WarsHudInfoIcon);
@@ -2618,7 +2617,12 @@ namespace VikingEngine
                     add(SpriteName.WarsHudHeadBarMenuIcon);
                     add(SpriteName.WarsHudHeadBarSecondaryBg);
                     add(SpriteName.WarsHudToolDownButton);
-                    
+
+                    add(SpriteName.WarsHudOutlineButton);
+                    add(SpriteName.WarsHudSecondaryButton);
+                    add(SpriteName.WarsHudSecondaryButtonDisabled);
+                    add(SpriteName.WarsHudHeadBarTabSelected);
+                    add(SpriteName.WarsHudHeadBarTabNotSelected);
                 }
 
                 currentIndex = numTilesWidth * 101;

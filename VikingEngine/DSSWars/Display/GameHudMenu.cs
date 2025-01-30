@@ -7,6 +7,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichMenu;
@@ -15,6 +16,8 @@ namespace VikingEngine.DSSWars.Display
 {
     class GameHudMenu
     {
+        ImageAdvanced flag;
+        NineSplitAreaTexture flagBg;
         RichMenu headDisplay;
         RichMenu factionDisplay;
 
@@ -27,20 +30,37 @@ namespace VikingEngine.DSSWars.Display
             headMenuArea.Width = headWidth;
             headDisplay = new RichMenu(HudLib.RbSettings, headMenuArea, new Vector2(8), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
             refreshFaction(player);
-            headMenuArea = headDisplay.richBox.area;
-            headDisplay.addBackground(new NineSplitSettings(SpriteName.WarsHudHeadBarBg, 1, 8, 1f, true, true), HudLib.GUILayer + 2);
+            headDisplay.updateHeightFromContent();
+
+            VectorRect flagBgArea = new VectorRect(headMenuArea.Position, new Vector2(headDisplay.backgroundArea.Height * 1.1f));
+            var flagBgTexSett = new NineSplitSettings(SpriteName.WarsHudFlagBorder, 1, 8, 1f, true, true);
+            flagBg = new NineSplitAreaTexture(flagBgTexSett, flagBgArea, HudLib.GUILayer + 2);
+            headDisplay.move(VectorExt.V2FromX(flagBgArea.Size.X - 4));
+            flagBgArea.AddRadius(-(flagBgTexSett.BorderWidth() + 6));
+            flag = new ImageAdvanced(SpriteName.NO_IMAGE, flagBgArea.Position, flagBgArea.Size, HudLib.GUILayer, false);
+            flag.Texture = player.faction.flagTexture;
+            flag.SetFullTextureSource();
+                        
+            headDisplay.addBackground(new NineSplitSettings(SpriteName.WarsHudHeadBarBg, 1, 16, 1f, true, true), HudLib.GUILayer + 4);
 
             var objectMenuArea = player.playerData.view.safeScreenArea;
             objectMenuArea.Width = HudLib.HeadDisplayWidth;
+            objectMenuArea.Position.Y = headDisplay.backgroundArea.Bottom + Engine.Screen.IconSize * 0.5f;
+            objectMenuArea.SetBottom(player.playerData.view.safeScreenArea.Bottom, true);
             objectDisplay = new RichMenu(HudLib.RbSettings, objectMenuArea, new Vector2(8), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
             objectDisplay.addBackground(HudLib.HudMenuBackground, HudLib.GUILayer + 2);
+        }
+
+        public void oneSecondUpdate(LocalPlayer player)
+        {
+            refreshFaction(player);
         }
 
         public void refreshFaction(Players.LocalPlayer player)
         {
             var content = new RichBoxContent();
-            player.faction.toHud(new ObjectHudArgs(content, player, false));
-
+            player.faction.headMenu(content, false);
+            headDisplay.Refresh(content);
         }
 
         public void refreshObject(Players.LocalPlayer player, GameObject.AbsGameObject obj, bool selected)

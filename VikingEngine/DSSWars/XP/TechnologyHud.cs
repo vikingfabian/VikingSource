@@ -7,6 +7,7 @@ using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.XP
@@ -54,7 +55,7 @@ namespace VikingEngine.DSSWars.XP
 
                     infoContent.Add(new RbImage(icon));
 
-                    var infoButton = new RbButton(infoContent, null, new RbAction(() =>
+                    var infoButton = new ArtButton( RbButtonStyle.HoverArea, infoContent, null, new RbAction(() =>
                     {
                         RichBoxContent content = new RichBoxContent();
 
@@ -68,7 +69,7 @@ namespace VikingEngine.DSSWars.XP
                         player.hud.tooltip.create(player, content, true);
                     }));
 
-                    infoButton.overrideBgColor = HudLib.InfoYellow_BG;
+                    //infoButton.overrideBgColor = HudLib.InfoYellow_BG;
                     content.Add(infoButton);
                     content.space();
                 }

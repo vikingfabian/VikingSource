@@ -18,6 +18,7 @@ using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.LootFest.Map;
@@ -78,7 +79,7 @@ namespace VikingEngine.DSSWars.Display
 
                 int tabSel = 0;
 
-                var tabs = new List<RbTabMember>((int)MenuTab.NUM);
+                var tabs = new List<ArtTabMember>((int)MenuTab.NUM);
 
                 List<MenuTab> availableTabs = player.AvailableCityTabs();
                 for (int i = 0; i < availableTabs.Count; ++i)
@@ -98,7 +99,7 @@ namespace VikingEngine.DSSWars.Display
                         });
                     }
 
-                    tabs.Add(new RbTabMember(new List<AbsRichBoxMember>
+                    tabs.Add(new ArtTabMember(new List<AbsRichBoxMember>
                     {
                         text
                     }, enter));
@@ -109,7 +110,7 @@ namespace VikingEngine.DSSWars.Display
                     }
                 }
 
-                content.Add(new RbTabgroup(tabs, tabSel, player.cityTabClick, null, SoundLib.menutab, null, null));
+                content.Add(new ArtTabgroup(tabs, tabSel, player.cityTabClick, null, SoundLib.menutab, null));
 
                 content.newLine();
 
@@ -246,12 +247,12 @@ namespace VikingEngine.DSSWars.Display
 
 
                     }
-                    var subTab = new RbButton(tabContent,
+                    var subTab = new ArtOption(player.resourcesSubTab == resourcesSubTab,tabContent,
                         new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                         {
                             player.resourcesSubTab = resourcesSubTab;
                         }, resourcesSubTab, SoundLib.menutab));
-                    subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
+                    //subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
                     content.Add(subTab);
                     content.space();
                 }
@@ -797,7 +798,7 @@ namespace VikingEngine.DSSWars.Display
                     stockpileContent.Add(icon);
 
 
-                    var stockpileButton = new RbButton(stockpileContent, 
+                    var stockpileButton = new ArtButton( RbButtonStyle.HoverArea, stockpileContent, 
                         new RbAction(() =>
                         {
                             player.mixTabEditType = MixTabEditType.Stockpile;
@@ -818,7 +819,7 @@ namespace VikingEngine.DSSWars.Display
             void blueprint(CraftBlueprint blueprint, CraftBlueprint optionalBp = null)
             {
 
-                content.Add(new RbButton(new List<AbsRichBoxMember> {
+                content.Add(new ArtButton( RbButtonStyle.HoverArea,new List<AbsRichBoxMember> {
                 new RbImage(SpriteName.WarsBluePrint)
                 },
                 null, new RbAction2Arg<CraftBlueprint, CraftBlueprint>(blueprintTooltip, blueprint, optionalBp)));
@@ -857,7 +858,7 @@ namespace VikingEngine.DSSWars.Display
                 var buttonContent = new RichBoxContent();
                 buttonContent.Add(new RbText("BM"));
 
-                var button = new RbButton(buttonContent, new RbAction(() =>
+                var button = new ArtButton( RbButtonStyle.Primary,buttonContent, new RbAction(() =>
                 {
                     player.mixTabEditType = MixTabEditType.BlackMarket;
                     player.mixTabItem = item;
@@ -869,7 +870,7 @@ namespace VikingEngine.DSSWars.Display
                    
                     player.hud.tooltip.create(player, content, true);
                 }));
-                button.overrideBgColor = Color.DarkViolet;
+                //button.overrideBgColor = Color.DarkViolet;
                 content.Add(button);
                 content.space();
             }
@@ -1591,7 +1592,7 @@ namespace VikingEngine.DSSWars.Display
                 if (city.damages.HasValue())
                 {
                     content.newLine();
-                    content.Add(new RbButton(new List<AbsRichBoxMember>{
+                    content.Add(new ArtButton( RbButtonStyle.Primary,new List<AbsRichBoxMember>{
                                     new RbImage(SpriteName.unitEmoteLove),
                                     new RbText(DssRef.lang.CityOption_Repair),
                                 },
@@ -1617,7 +1618,7 @@ namespace VikingEngine.DSSWars.Display
 
                 {
                     int count = 1;
-                    content.Add(new RbButton(new List<AbsRichBoxMember>{
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>{
                                     new RbImage(SpriteName.WarsGuardAdd),
                                     new RbText( DssRef.lang.CityOption_ExpandGuardSize),
                                 },
@@ -1625,19 +1626,21 @@ namespace VikingEngine.DSSWars.Display
                         new RbAction1Arg<int>(buyGuardSizeToolTip, count),
                         city.buyCityGuards(false, count)));
                 }
-                content.Add(new RichBoxSpace());
+                //content.Add(new RichBoxSpace());
                 {
                     int count = 5;
-                    content.Button(string.Format(DssRef.lang.Hud_XTimes, count),
-                    new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
-                    new RbAction1Arg<int>(buyGuardSizeToolTip, count),
-                    city.buyCityGuards(false, count));
+                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { 
+                            new RbText(string.Format(DssRef.lang.Hud_XTimes, count)) 
+                        },
+                        new RbAction1Arg<int>(buyCityGuardsAction, count, SoundLib.menuBuy),
+                        new RbAction1Arg<int>(buyGuardSizeToolTip, count),
+                        city.buyCityGuards(false, count)));
                 }
 
                 content.newLine();
                 {
                     int count = 1;
-                    content.Add(new RbButton(new List<AbsRichBoxMember>{
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>{
                                     new RbImage(SpriteName.WarsGuard),
                                     new RbText( DssRef.lang.CityOption_LowerGuardSize),
                                 },

@@ -1669,6 +1669,7 @@ namespace VikingEngine.DSSWars.Players
             }
 
             automation.oneSecondUpdate();
+            hud.hudmenu.oneSecondUpdate(this);
         }
 
         public override void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType farm, out bool intelligent)

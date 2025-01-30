@@ -125,8 +125,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (args.ShowFull)
             {
 #if DEBUG
-                debugTagButton(args.content);
-                //args.content.Button("debug tag", new HUD.RichBox.RbAction(AddDebugTag), null, true);
+                //debugTagButton(args.content);
 #endif
 
                 //if (battleGroup != null)

@@ -26,6 +26,7 @@ namespace VikingEngine.DSSWars.Display
 
         public void refreshUpdate(Players.LocalPlayer player, bool fullDisplay, bool refresh, Faction faction)
         {
+            return;
             if (bg.Visible && refresh)
             {
                 beginRefresh();

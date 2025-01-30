@@ -24,6 +24,7 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Map;
 using VikingEngine.LootFest.Players;
@@ -1716,7 +1717,7 @@ namespace VikingEngine.DSSWars.GameObject
                         content.newLine();
                     }
 
-                    content.Add(new RbCheckbox(new List<AbsRichBoxMember> {
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
                         new RbText(DssRef.todoLang.Automation_AutomateCity)
                     }, AutomateCityProperty));
 

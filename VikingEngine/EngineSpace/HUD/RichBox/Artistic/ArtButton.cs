@@ -13,6 +13,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
     { 
         Primary,
         Secondary,
+        Outline,
         CheckBox,
         OptionSelected,
         OptionNotSelected,
@@ -48,13 +49,16 @@ namespace VikingEngine.HUD.RichBox.Artistic
             switch (buttonStyle)
             { 
                 default:
-                    textureSett = group.settings.artButtonTex;
+                    textureSett = group.settings.artPrimaryButtonTex.Enabled(enabled);
                     break;
                 case RbButtonStyle.CheckBox:
                     textureSett = group.settings.artCheckButtonTex;
                     break;
                 case RbButtonStyle.Secondary:
-                    textureSett = group.settings.artButtonTex.Selected(false);
+                    textureSett = group.settings.artSecondaryButtonTex.Enabled(enabled);
+                    break;
+                case RbButtonStyle.Outline:
+                    textureSett = group.settings.artOutlineButtonTex;
                     break;
                 case RbButtonStyle.OptionSelected:
                     textureSett = group.settings.artOptionButtonTex;
@@ -100,9 +104,9 @@ namespace VikingEngine.HUD.RichBox.Artistic
             }
         }
 
-        virtual public bool UseButtonContentSettings()
+        override public bool UseButtonContentSettings()
         {
-            return buttonStyle != RbButtonStyle.HoverArea;
+            return buttonStyle != RbButtonStyle.HoverArea && buttonStyle != RbButtonStyle.Outline;
         }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.Input;
 using VikingEngine.LootFest.Players;
 //
@@ -74,7 +75,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (mayEdit)
                 {
-                    var editButton = new RbButton(new List<AbsRichBoxMember> { new RbImage(SpriteName.InterfaceTextInput) },
+                    var editButton = new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.InterfaceTextInput) },
                         new RbAction(beginEditName), null);
                     args.content.Add(editButton);
                     args.content.space();
@@ -89,7 +90,7 @@ namespace VikingEngine.DSSWars.GameObject
             TypeIcon(args.content);
             args.content.Add(new RbText(TypeName()));
 
-            if (args.ShowFull)
+            //if (args.ShowFull)
             {
                 if (PlatformSettings.DevBuild)
                 {

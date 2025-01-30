@@ -76,12 +76,18 @@ namespace VikingEngine.HUD.RichMenu
             tooltip = null;
         }
 
+        public void move(Vector2 move)
+        {
+            backgroundArea.Position  += move;
+            renderList.position += move;
+        }
+
         public void updateHeightFromContent()
         {
             float edgeThickness = edgeArea.Bottom - renderArea.Bottom;
 
             backgroundArea = edgeArea;
-            backgroundArea.SetBottom(richBox.area.Size.Y + edgeThickness, true);
+            backgroundArea.Height = richBox.area.Size.Y + edgeThickness * 3;
         }
 
         public void addBackground(NineSplitSettings texture, ImageLayers layer)

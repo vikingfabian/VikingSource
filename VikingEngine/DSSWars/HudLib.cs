@@ -11,6 +11,7 @@ using VikingEngine.LootFest.Players;
 using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD;
+using VikingEngine.HUD.RichBox.Artistic;
 
 namespace VikingEngine.DSSWars
 {
@@ -82,10 +83,16 @@ namespace VikingEngine.DSSWars
             RbSettings.tabNotSelected.BgColor = new Color(36, 107, 142); //new Color(99,96,146);
             RbSettings.tabNotSelected.Color = RbSettings.tabSelected.Color;
 
-            RbSettings.artButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudPrimaryButton, 1, 8, 1f, true, true)
+            RbSettings.artPrimaryButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudPrimaryButton, 1, 8, 1f, true, true)
             {
                 disableTexture = SpriteName.WarsHudPrimaryButtonDisabled
             };
+            RbSettings.artSecondaryButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudSecondaryButton, 1, 8, 1f, true, true)
+            {
+                disableTexture = SpriteName.WarsHudSecondaryButtonDisabled
+            };
+            RbSettings.artOutlineButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudOutlineButton, 1, 8, 1f, true, true);
+            RbSettings.artHoverAreaTex = new HUD.NineSplitSettings(SpriteName.WarsHudHoverArea, 1, 8, 1f, true, true);
 
             RbSettings.dragButtonTex = new ThreeSplitSettings(SpriteName.cmdHudBorderTooltip, 1, 8);
 
@@ -267,12 +274,10 @@ namespace VikingEngine.DSSWars
             var text = new RbText(DssRef.lang.Info_ButtonIcon);
             text.overrideColor = InfoYellow_Light;
 
-            var button = new RbButton(new List<AbsRichBoxMember> { 
-                new RichBoxSpace(0.5f),
-                text,
-                new RichBoxSpace(0.5f),
+            var button = new ArtImageButton(new List<AbsRichBoxMember> { 
+                new RbImage(SpriteName.WarsHudInfoIcon)
             },
-            null, enterAction, true, InfoYellow_Dark);
+            null, enterAction, true);
             content.Add(button);
         }
 
