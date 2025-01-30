@@ -67,7 +67,7 @@ namespace VikingEngine.DSSWars
 
             menuSystem = new Display.MenuSystem(new InputMap(Engine.XGuide.LocalHostIndex), Display.MenuType.Lobby);
             DssRef.storage.checkConnected();
-            mainMenu();
+            //mainMenu();
 
             Graphics.TextG version = new Graphics.TextG(LoadedFont.Console, Screen.SafeArea.RightBottom,
                 Engine.Screen.TextSizeV2, new Align(Vector2.One), string.Format(DssRef.lang.Lobby_GameVersion, Engine.LoadContent.SteamVersion),
@@ -102,7 +102,38 @@ namespace VikingEngine.DSSWars
 
             Ref.lobby.startSearchLobbies(true);
 
-            testMenu2();
+            //testMenu2();
+            createMenuLayout();
+        }
+
+        void createMenuLayout()
+        {
+            VectorRect leftArea = Screen.SafeArea;
+            leftArea.Width = Screen.IconSize * 8;
+            leftArea.Round();
+
+            VectorRect titleArea = leftArea;
+            titleArea.Height = leftArea.Width * 0.25f;
+            titleArea.Round();
+
+            VectorRect menuArea = leftArea;
+            menuArea.AddToTopSide(-titleArea.Height);
+
+            const int BgOffScreenLength = 10;
+
+            VectorRect titleBgArea = titleArea;
+            titleBgArea.X = -BgOffScreenLength;
+            titleBgArea.SetRight(titleArea.Right, true);
+            titleBgArea.Y = -BgOffScreenLength;
+            titleBgArea.SetBottom(titleArea.Bottom, true);
+
+            NineSplitAreaTexture titleBg = new NineSplitAreaTexture(new NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 6, 1f, true, true), titleBgArea, ImageLayers.Lay8);
+
+            VectorRect menuBgArea = menuArea;
+            menuBgArea.X = titleBgArea.X;
+            menuBgArea.SetRight(titleBgArea.Right, true);
+            menuBgArea.SetBottom(Engine.Screen.Area.Bottom + BgOffScreenLength, true);
+            NineSplitAreaTexture menuBg = new NineSplitAreaTexture(new NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 6, 1f, true, true), menuBgArea, ImageLayers.Lay9);
         }
 
         void testMenu2()
@@ -1049,7 +1080,7 @@ namespace VikingEngine.DSSWars
             //emitGlow();
             base.Time_Update(time);
 
-            menuSystem.menu.Update();
+            menuSystem.menu?.Update();
             splitScreenDisplay.update();
             if (mapBackgroundLoading != null)
             {
@@ -1097,7 +1128,7 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            richmenu.updateMouseInput();
+            //richmenu.updateMouseInput();
         }
 
         void emitGlow()
