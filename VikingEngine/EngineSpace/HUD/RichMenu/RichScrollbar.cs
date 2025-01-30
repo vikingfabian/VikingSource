@@ -85,11 +85,19 @@ namespace VikingEngine.HUD.RichMenu
                 sliderGroup.Add(slider.images);
             }
             else
-            { 
-                slider.DeleteMe();
-                sliderGroup.Clear();
+            {
+                if (slider != null)
+                {
+                    slider.DeleteMe();
+                    sliderGroup.Clear();
+                }
             }
 
+        }
+
+        public bool IsVisible()
+        {
+            return slider != null;
         }
 
         VectorRect SliderArea(bool includeMoveY)
@@ -108,56 +116,59 @@ namespace VikingEngine.HUD.RichMenu
             bool viewOutline = false;
             bool result = false;
 
-            if (mouseDown)
+            if (IsVisible())
             {
-                viewOutline = true;
-                if (Input.Mouse.IsButtonDown(MouseButton.Left))
-                {                    
-                    float diff = Input.Mouse.Position.Y - mouseDownY;
-                    sliderGroup.ParentY = Bound.Set(diff + mouseDown_SliderY, 0, slideRange);
-                    scrollResult = -valuerange.GetFromPercent(sliderGroup.ParentY / slideRange);
 
-                    result = true;
-                }
-                else
-                {
-                    slider.SetColor(Color.White);
-                    mouseDown = false;
-                }
-            }
-            else
-            {
-                if (SliderArea(true).IntersectPoint(Input.Mouse.Position))
+                if (mouseDown)
                 {
                     viewOutline = true;
-
-                    if (Input.Mouse.ButtonDownEvent(MouseButton.Left))
+                    if (Input.Mouse.IsButtonDown(MouseButton.Left))
                     {
-                        mouseDown = true;
-                        mouseDownY = Input.Mouse.Position.Y;
-                        mouseDown_SliderY = sliderGroup.ParentY;
-                        slider.SetColor(RichBox.Artistic.ArtButton.MouseDownCol);
-                    }
-                }
-            }
+                        float diff = Input.Mouse.Position.Y - mouseDownY;
+                        sliderGroup.ParentY = Bound.Set(diff + mouseDown_SliderY, 0, slideRange);
+                        scrollResult = -valuerange.GetFromPercent(sliderGroup.ParentY / slideRange);
 
-            if (viewOutline)
-            {
-                if (selectionOutline == null)
-                {
-                    selectionOutline = new RectangleLines(SliderArea(true), 2, 1, layer - 1);
+                        result = true;
+                    }
+                    else
+                    {
+                        slider.SetColor(Color.White);
+                        mouseDown = false;
+                    }
                 }
                 else
                 {
-                    selectionOutline.Refresh(SliderArea(true));
+                    if (SliderArea(true).IntersectPoint(Input.Mouse.Position))
+                    {
+                        viewOutline = true;
+
+                        if (Input.Mouse.ButtonDownEvent(MouseButton.Left))
+                        {
+                            mouseDown = true;
+                            mouseDownY = Input.Mouse.Position.Y;
+                            mouseDown_SliderY = sliderGroup.ParentY;
+                            slider.SetColor(RichBox.Artistic.ArtButton.MouseDownCol);
+                        }
+                    }
+                }
+
+                if (viewOutline)
+                {
+                    if (selectionOutline == null)
+                    {
+                        selectionOutline = new RectangleLines(SliderArea(true), 2, 1, layer - 1);
+                    }
+                    else
+                    {
+                        selectionOutline.Refresh(SliderArea(true));
+                    }
+                }
+                else
+                {
+                    selectionOutline?.DeleteMe();
+                    selectionOutline = null;
                 }
             }
-            else
-            {
-                selectionOutline?.DeleteMe();
-                selectionOutline = null;
-            }
-
             return result;
         }
 

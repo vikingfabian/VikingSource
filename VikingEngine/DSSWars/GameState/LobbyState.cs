@@ -29,6 +29,7 @@ using System.IO;
 using VikingEngine.DataStream;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.HUD.RichBox.Artistic;
+using System.Reflection.Metadata;
 
 namespace VikingEngine.DSSWars
 {
@@ -51,7 +52,10 @@ namespace VikingEngine.DSSWars
         bool inKeyMapsMenu = false;
         List<Keys> availableKeyboardKeys;
 
+        VectorRect underMenuArea;
         RichMenu richmenu;
+        const float MenuBgOpacity = 0.9f;
+        RichMenu topMenu, underMenu;
         public LobbyState()
             : base()
         {
@@ -104,12 +108,14 @@ namespace VikingEngine.DSSWars
 
             //testMenu2();
             createMenuLayout();
+
+            newGameSettings2();
         }
 
         void createMenuLayout()
         {
             VectorRect leftArea = Screen.SafeArea;
-            leftArea.Width = Screen.IconSize * 8;
+            leftArea.Width = Screen.IconSize * 5;
             leftArea.Round();
 
             VectorRect titleArea = leftArea;
@@ -122,19 +128,48 @@ namespace VikingEngine.DSSWars
             const int BgOffScreenLength = 10;
 
             VectorRect titleBgArea = titleArea;
-            titleBgArea.X = -BgOffScreenLength;
-            titleBgArea.SetRight(titleArea.Right, true);
-            titleBgArea.Y = -BgOffScreenLength;
-            titleBgArea.SetBottom(titleArea.Bottom, true);
+            {
+                titleBgArea.X = -BgOffScreenLength;
+                titleBgArea.SetRight(titleArea.Right, true);
+                titleBgArea.Y = -BgOffScreenLength;
+                titleBgArea.SetBottom(titleArea.Bottom, true);
 
-            NineSplitAreaTexture titleBg = new NineSplitAreaTexture(new NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 6, 1f, true, true), titleBgArea, ImageLayers.Lay8);
+                NineSplitAreaTexture titleBg = new NineSplitAreaTexture(new NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 6, 1f, true, true), titleBgArea, ImageLayers.Lay8);
+            }
+
+            new TextG(LoadedFont.Bold, titleArea.Center, Screen.TextTitleScale * 2f, Align.CenterAll, "DSS 2", HudLib.TitleColor_Head, ImageLayers.Lay4);
 
             VectorRect menuBgArea = menuArea;
-            menuBgArea.X = titleBgArea.X;
-            menuBgArea.SetRight(titleBgArea.Right, true);
-            menuBgArea.SetBottom(Engine.Screen.Area.Bottom + BgOffScreenLength, true);
-            NineSplitAreaTexture menuBg = new NineSplitAreaTexture(new NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 6, 1f, true, true), menuBgArea, ImageLayers.Lay9);
+            {
+                menuBgArea.X = titleBgArea.X;
+                menuBgArea.SetRight(titleBgArea.Right, true);
+                menuBgArea.SetBottom(Engine.Screen.Area.Bottom + BgOffScreenLength, true);
+                NineSplitAreaTexture menuBg = new NineSplitAreaTexture(new NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 6, 1f, true, true), menuBgArea, ImageLayers.Lay9);
+                //menuBg.SetOpacity(MenuBgOpacity);
+            }
+
+            VectorRect menuContentArea = menuArea;
+            //menuContentArea.AddRadius(-8);
+
+            topMenu = new RichMenu(HudLib.RbSettings, menuContentArea, new Vector2(8), RichMenu.DefaultRenderEdge, ImageLayers.Lay4, new PlayerData(PlayerData.AllPlayers));
+
+            topMenu.Refresh(new RichBoxContent() { new RbNewLine() });
+            refreshMainMenu2();
+
+            underMenuArea = new VectorRect(menuBgArea.Right + Screen.BorderWidth, menuContentArea.Y, Screen.IconSize * 6, menuContentArea.Height);
+            
         }
+
+        void openUnderMenu()
+        {
+            if (underMenu == null)
+            {
+                underMenu = new RichMenu(HudLib.RbSettings, underMenuArea, new Vector2(8), RichMenu.DefaultRenderEdge, ImageLayers.Lay4, new PlayerData(PlayerData.AllPlayers));
+                underMenu.addBackground(new NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 6, 1f, true, true), ImageLayers.Lay9).SetOpacity(MenuBgOpacity);
+            }
+        }
+
+        
 
         void testMenu2()
         {
@@ -260,6 +295,60 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        void refreshMainMenu2()
+        {
+            const float ButtonTextTabbing = 0.15f;
+            const float ArrowTabbing = 0.9f;
+            const float ArrowScale = 0.6f;
+            SpriteName moreOptArrow = SpriteName.LfMenuMoreMenusArrow;
+            RichBoxContent content = new RichBoxContent();
+
+            {
+                content.newLine();
+
+                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
+                    new RbBeginTitle(), 
+                    new RbImage(SpriteName.MissingImage), 
+                    new RbTab(ButtonTextTabbing), 
+                    new RbText(DssRef.lang.Settings_NewGame),
+                    new RbTab(ArrowTabbing),
+                    new RbImage(moreOptArrow, ArrowScale),
+                }, 
+                    null, null);
+                btn.fillWidth = true;
+                content.Add(btn);
+            }
+            {
+                content.newLine();
+                var btn = new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { 
+                    new RbImage(SpriteName.MissingImage), new RbTab(ButtonTextTabbing), new RbText(DssRef.lang.GameMenu_LoadState),
+                    new RbTab(ArrowTabbing),
+                    new RbImage(moreOptArrow, ArrowScale),
+                }, null, null);
+                btn.fillWidth = true;
+                content.Add(btn);
+            }
+           
+            content.newParagraph();
+            {
+                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.MenuIconSettings) }, null);
+                content.Add(btn);
+            }
+            {
+                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.MissingImage) }, null);
+                content.Add(btn);
+            }
+
+            content.Add(new RbNewLine_AtHeight(topMenu.richboxArea.Height - topMenu.richBox.lineSpacing * 2f));
+            {
+                content.newParagraph();
+                var btn = new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbImage(SpriteName.MissingImage), new RbTab(ButtonTextTabbing), new RbText(DssRef.lang.Lobby_ExitGame) }, null, null);
+                //btn.fillWidth = true;
+                content.Add(btn);
+            }
+
+            topMenu.Refresh(content);
+        }
         void mainMenu()
         {
             controllerStartGameUpdate = false;
@@ -519,7 +608,47 @@ namespace VikingEngine.DSSWars
             newGameSettings();
         }
 
+        void newGameSettings2()
+        {
+            openUnderMenu();
+            RichBoxContent content = new RichBoxContent();
 
+            var start = new ArtButton(RbButtonStyle.Primary, 
+                new List<AbsRichBoxMember> { new RbBeginTitle(), new RbText(DssRef.lang.Lobby_Start) },
+                new RbAction(startGame));
+            //start.fillWidth = false;
+            content.Add(start);
+
+            content.newParagraph();
+            content.text(DssRef.lang.Lobby_MapSizeTitle).overrideColor = HudLib.TitleColor_Label;
+            for (MapSize sz = 0; sz < MapSize.NUM; ++sz)
+            {
+                content.newLine();
+                content.Add( new ArtOption(DssRef.storage.mapSize == sz, new List<AbsRichBoxMember> { new RbText(WorldData.SizeString(sz)) },
+                    null));
+            }
+
+            content.newParagraph();
+            content.text(string.Format(DssRef.lang.Settings_DifficultyLevel, DssRef.difficulty.PercDifficulty)).overrideColor = HudLib.TitleColor_Label;
+            Difficulty.OptionsRb(content);
+
+            content.newParagraph();
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_AllowPause) }, allowPauseProperty));
+            content.newLine();
+            //new GuiCheckbox(DssRef.lang.Settings_AllowPause, null, allowPauseProperty, layout);
+
+            content.newParagraph();
+            content.text(DssRef.lang.Settings_GameMode).overrideColor = HudLib.TitleColor_Label;
+            for (GameMode mode = 0; mode < GameMode.NUM; ++mode)
+            {
+                content.newLine();
+                gameModeText(mode, out string caption, out string desc);
+                content.Add(new ArtOption(mode == DssRef.difficulty.setting_gameMode, new List<AbsRichBoxMember> { new RbText(caption) }, null)); 
+            }
+
+            underMenu.Refresh(content);
+
+        }
         void newGameSettings()
         {
             var mapSizes = new List<GuiOption<MapSize>>((int)MapSize.NUM);
@@ -686,7 +815,10 @@ namespace VikingEngine.DSSWars
             //}
 
             //string Settings_TotalDifficulty = "Total Difficulty {0}%";
-            difficultyLevelText.text.TextString = string.Format(DssRef.lang.Settings_TotalDifficulty, DssRef.difficulty.TotalDifficulty());
+            if (difficultyLevelText != null)
+            {
+                difficultyLevelText.text.TextString = string.Format(DssRef.lang.Settings_TotalDifficulty, DssRef.difficulty.TotalDifficulty());
+            }
         }
 
         public bool allowPauseProperty(int index, bool set, bool value)
@@ -1081,6 +1213,10 @@ namespace VikingEngine.DSSWars
             base.Time_Update(time);
 
             menuSystem.menu?.Update();
+
+            topMenu.updateMouseInput();
+            underMenu?.updateMouseInput();
+
             splitScreenDisplay.update();
             if (mapBackgroundLoading != null)
             {

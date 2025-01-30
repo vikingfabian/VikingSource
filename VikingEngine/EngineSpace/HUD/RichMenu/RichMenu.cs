@@ -75,9 +75,10 @@ namespace VikingEngine.HUD.RichMenu
             tooltip = null;
         }
 
-        public void addBackground(NineSplitSettings texture, ImageLayers layer)
+        public NineSplitAreaTexture addBackground(NineSplitSettings texture, ImageLayers layer)
         {
             backgroundTextures = new NineSplitAreaTexture(texture, edgeArea, layer + 1);
+            return backgroundTextures;
         }
 
         public void Refresh(RichBoxContent content)
