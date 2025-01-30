@@ -8,6 +8,7 @@ using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
+using VikingEngine.PJ;
 
 namespace VikingEngine.DSSWars.GameState.MapEditor
 {
@@ -33,13 +34,24 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             RichBoxContent content = new RichBoxContent();
             content.h1("Map editor - generate", HudLib.TitleColor_Head);
 
+            content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary,
                 new List<AbsRichBoxMember> { new RbText("Generate") }, new RbAction(state.generate)));
 
             content.Add(new ArtButton(RbButtonStyle.Primary,
                 new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_NewGame) }, new RbAction(state.startNewGame)));
+
+            content.newParagraph();
+            content.Add(new ArtButton(RbButtonStyle.Primary,
+                new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_ExitGame) }, new RbAction(exit)));
+
+
+            menu.Refresh(content);
         }
 
-        
+        void exit()
+        {
+            new ExitToLobbyState();
+        }
     }
 }

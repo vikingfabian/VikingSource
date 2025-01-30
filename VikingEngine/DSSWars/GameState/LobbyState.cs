@@ -1267,6 +1267,11 @@ namespace VikingEngine.DSSWars
                 voxeleditor();
             }
 
+            if (VikingEngine.Input.Keyboard.Ctrl && VikingEngine.Input.Keyboard.KeyDownEvent(Keys.M))
+            {
+                openMapEditor();
+            }
+
             if (Ref.music != null)
             {
                 Ref.music.Update();
