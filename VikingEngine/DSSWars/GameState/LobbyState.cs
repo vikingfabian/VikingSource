@@ -30,6 +30,7 @@ using VikingEngine.DataStream;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.HUD.RichBox.Artistic;
 using System.Reflection.Metadata;
+using VikingEngine.DSSWars.GameState.MapEditor;
 
 namespace VikingEngine.DSSWars
 {
@@ -109,7 +110,7 @@ namespace VikingEngine.DSSWars
             //testMenu2();
             createMenuLayout();
 
-            newGameSettings2();
+            //newGameSettings2();
         }
 
         void createMenuLayout()
@@ -314,7 +315,7 @@ namespace VikingEngine.DSSWars
                     new RbTab(ArrowTabbing),
                     new RbImage(moreOptArrow, ArrowScale),
                 }, 
-                    null, null);
+                    new RbAction(newGameSettings2), null);
                 btn.fillWidth = true;
                 content.Add(btn);
             }
@@ -335,20 +336,38 @@ namespace VikingEngine.DSSWars
                 content.Add(btn);
             }
             {
-                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.MissingImage) }, null);
+                var btn = new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.EditorToolPencil) }, new RbAction(listEditors), new RbTooltip_Text("Editor"));
                 content.Add(btn);
             }
 
             content.Add(new RbNewLine_AtHeight(topMenu.richboxArea.Height - topMenu.richBox.lineSpacing * 2f));
             {
                 content.newParagraph();
-                var btn = new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbImage(SpriteName.MissingImage), new RbTab(ButtonTextTabbing), new RbText(DssRef.lang.Lobby_ExitGame) }, null, null);
+                var btn = new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbImage(SpriteName.MissingImage), new RbTab(ButtonTextTabbing), new RbText(DssRef.lang.Lobby_ExitGame) }, new RbAction(exitGame), null);
                 //btn.fillWidth = true;
                 content.Add(btn);
             }
 
             topMenu.Refresh(content);
         }
+
+        void listEditors()
+        {
+            openUnderMenu();
+
+            RichBoxContent content = new RichBoxContent();
+
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>() { new RbText("Map editor") },
+                new RbAction(openMapEditor)));
+
+            underMenu.Refresh(content);
+        }
+
+        void openMapEditor()
+        {
+            new MapEditor_Generator();
+        }
+
         void mainMenu()
         {
             controllerStartGameUpdate = false;

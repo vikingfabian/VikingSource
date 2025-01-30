@@ -16,6 +16,7 @@ namespace VikingEngine.DSSWars.Display
 
         public EditorBackground()
         {
+            Ref.draw.ClrColor = new Color(40, 45, 47);
             new Timer.AsynchActionTrigger(load_asynch, true);
         }
         void load_asynch()

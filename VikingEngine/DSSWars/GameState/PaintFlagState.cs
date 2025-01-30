@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars
         public PaintFlagState(int profileIx, bool bController)
             : base(false)
         {
-            draw.ClrColor = new Color(40, 45, 47);
+            
 
             Engine.XGuide.UnjoinAll();
             int player = 0;
