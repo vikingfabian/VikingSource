@@ -17,6 +17,8 @@ namespace VikingEngine.HUD.RichBox.Artistic
         CheckBox,
         OptionSelected,
         OptionNotSelected,
+        DropDownSelected,
+        DropDownNotSelected,
         TabSelected,
         TabNotSelected,
         HoverArea,
@@ -65,6 +67,12 @@ namespace VikingEngine.HUD.RichBox.Artistic
                     break;
                 case RbButtonStyle.OptionNotSelected:
                     textureSett = group.settings.artOptionButtonTex.Selected(false);
+                    break;
+                case RbButtonStyle.DropDownSelected:
+                    textureSett = group.settings.artDropDownButtonTex;
+                    break;
+                case RbButtonStyle.DropDownNotSelected:
+                    textureSett = group.settings.artDropDownButtonTex.Selected(false);
                     break;
                 case RbButtonStyle.TabSelected:
                     textureSett = group.settings.artTabTex;

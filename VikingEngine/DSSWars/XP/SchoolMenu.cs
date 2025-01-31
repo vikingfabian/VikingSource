@@ -52,7 +52,7 @@ namespace VikingEngine.DSSWars.XP
                     var buttonContent = new List<AbsRichBoxMember>()
                     {
                         new RbImage(icon),
-                        new RichBoxSpace(),
+                        new RbSpace(),
                         new RbText(text),
                     };
 
@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars.XP
                         var buttonContent = new List<AbsRichBoxMember>()
                     {
                         new RbImage(icon),
-                        new RichBoxSpace(),
+                        new RbSpace(),
                         new RbText(text),
                     };
 
@@ -122,7 +122,7 @@ namespace VikingEngine.DSSWars.XP
 
                         content.Add(new RbButton(new List<AbsRichBoxMember>(){
                         new RbImage(icon),
-                        new RichBoxSpace(),
+                        new RbSpace(),
                         caption,
                         }, new RbAction1Arg<int>(selectClick, i, SoundLib.menu)));
 

@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.Display
 
             if (DssRef.storage.playerCount > 1)
             {
-                float borderW = Screen.Width * 0.1f;
+                float borderW = Screen.Width * 0.05f;
                 float w = Screen.Width - menuRight;
                 w -= borderW * 2;
                 float x = menuRight + borderW;
@@ -66,13 +66,13 @@ namespace VikingEngine.DSSWars.Display
                     screenbg.Color = Color.DarkOliveGreen;
                     images.Add(screenbg);
 
-                    Graphics.ImageAdvanced profileIcon = new ImageAdvanced(SpriteName.NO_IMAGE, area2.Position + Engine.Screen.SmallIconSizeV2, Engine.Screen.IconSizeV2, ImageLayers.Lay6, false);
-                    var profileData = DssRef.storage.flagStorage.flagDesigns[player.profile];
+                    Graphics.ImageAdvanced profileIcon = new ImageAdvanced(SpriteName.NO_IMAGE, area2.Position + Engine.Screen.SmallIconSizeV2, Engine.Screen.SmallIconSizeV2, ImageLayers.Lay6, false);
+                    var profileData = DssRef.storage.flagStorage.flagDesigns[player.flagDesignIndex];
                     profileIcon.Texture = profileData.flagDesign.CreateTexture(profileData);
                     profileIcon.SetFullTextureSource();
                     images.Add(profileIcon);
 
-                    Graphics.TextG playerName = new Graphics.TextG(LoadedFont.Bold, profileIcon.RightCenter, Engine.Screen.TextSizeV2, Align.CenterHeight,
+                    Graphics.TextG playerName = new Graphics.TextG(LoadedFont.Bold, profileIcon.RightCenter, Engine.Screen.TextTitleScale, Align.CenterHeight,
                         string.Format(DssRef.lang.Player_DefaultName, player.index+1), Color.White, ImageLayers.Lay6);
                     playerName.Xpos += 4;
                     images.Add(playerName);
@@ -82,7 +82,7 @@ namespace VikingEngine.DSSWars.Display
                     controllerIcon.Width *= 1.5f;
                     controllerIcon.Xpos -= controllerIcon.Width * 0.4f;
                     images.Add(controllerIcon);
-                    Graphics.TextG inputType = new TextG(LoadedFont.Regular, controllerIcon.RightCenter, Engine.Screen.TextSizeV2, Align.CenterHeight,
+                    Graphics.TextG inputType = new TextG(LoadedFont.Regular, controllerIcon.RightCenter, Engine.Screen.TextBreadScale, Align.CenterHeight,
                         player.inputSource.ToString(), Color.White, ImageLayers.Lay6);
                     images.Add(inputType);
                     //button.icon.Texture = flagDesign.CreateTexture(this);

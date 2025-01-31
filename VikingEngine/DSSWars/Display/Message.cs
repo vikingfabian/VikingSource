@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars.Display
             if (player.input.inputSource.IsController)
             {
                 RichBoxContent.ButtonMap(player.input.ControllerMessageClick, button);
-                button.Add(new RichBoxSpace());
+                button.Add(new RbSpace());
             }
         }
 

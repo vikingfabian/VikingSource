@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Valve.Steamworks;
+using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 
 namespace VikingEngine.DSSWars.Data
@@ -36,7 +38,8 @@ namespace VikingEngine.DSSWars.Data
 
         public bool setting_allowPauseCommand = true;
         public float setting_foodMulti = 1;
-        public GameMode setting_gameMode = GameMode.FullStory;
+        public const GameMode DefaultMode = GameMode.FullStory;
+        public GameMode setting_gameMode = DefaultMode;
         public bool runEvents = true;
         public bool peaceful = false;
         //public bool toPeacefulCheck = true;
@@ -78,14 +81,18 @@ namespace VikingEngine.DSSWars.Data
             }
         }
 
-        public static void OptionsRb(RichBoxContent content)
+        public static void OptionsRb(RichBoxContent content, RichMenu menu, Action<int> callback)
         {
+            DropDownBuilder mapSzOptions = new DropDownBuilder("difficulty");
             for (int i = 0; i < options.Length; i++)
             {
                 Difficulty difficultyLvl = new Difficulty(i);
                 content.newLine();
-                content.Add(new ArtOption(DssRef.difficulty.difficulty == i, new List<AbsRichBoxMember> { new RbText(options[i].ToString() + "%") }, null));
+                mapSzOptions.AddOption(options[i].ToString() + "%", DssRef.difficulty.difficulty == i, DefaultOption == i,
+                    new RbAction1Arg<int>(callback, i), null);
+                //content.Add(new ArtOption(DssRef.difficulty.difficulty == i, new List<AbsRichBoxMember> { new RbText(options[i].ToString() + "%") }, null));
             }
+            mapSzOptions.DropDown(content, string.Format(DssRef.lang.Settings_DifficultyLevel, DssRef.difficulty.PercDifficulty), menu.OnDropDownClick, menu.activeDropDown);
         }
         public void set(int difficulty)
         {

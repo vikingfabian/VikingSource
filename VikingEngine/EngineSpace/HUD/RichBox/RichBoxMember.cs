@@ -275,6 +275,8 @@ namespace VikingEngine.HUD.RichBox
         public override Vector2 Size => pointer.size;
     }
 
+    
+
     class RbOverlapImage : AbsRichBoxImage
     {
         SpriteName sprite;
@@ -415,11 +417,11 @@ namespace VikingEngine.HUD.RichBox
         public override Vector2 Size => pointer.size;
     }
 
-    class RichBoxSpace : AbsRichBoxMember
+    class RbSpace : AbsRichBoxMember
     {
         float spaces;
 
-        public RichBoxSpace(float spaces = 1f)
+        public RbSpace(float spaces = 1f)
         {
             this.spaces = spaces;
         }

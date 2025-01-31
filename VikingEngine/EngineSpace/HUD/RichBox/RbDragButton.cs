@@ -53,13 +53,26 @@ namespace VikingEngine.HUD.RichBox
         RbText textPointer;
         ThreeSplitTexture_Hori texture;
         
-        public RbDragButton(DragButtonSettings settings, IntGetSet intValue)
-        { 
+        public RbDragButton(DragButtonSettings settings, IntGetSet intValue, AbsRbAction enter = null)
+        {
+            this.enter = enter;
             this.settings = settings;
             this.intValue = intValue;
             valueTypeInt = true;
 
             textPointer = new RbText(TextLib.LargeNumber((int)settings.max));
+            this.content = new List<AbsRichBoxMember> { textPointer };
+            enabled = true;
+        }
+
+        public RbDragButton(DragButtonSettings settings, FloatGetSet floatValue, AbsRbAction enter = null)
+        {
+            this.enter = enter;
+            this.settings = settings;
+            this.floatValue = floatValue;
+            valueTypeInt = false;
+
+            textPointer = new RbText(TextLib.OneDecimal(settings.max));
             this.content = new List<AbsRichBoxMember> { textPointer };
             enabled = true;
         }
@@ -109,11 +122,21 @@ namespace VikingEngine.HUD.RichBox
                 }
                 textPointer.pointer.TextString = TextLib.LargeNumber(value);
             }
+            else
+            {
+                float value = floatValue.Invoke(false, 0);
+                if (change != 0)
+                {
+                    value = Bound.Set(value + change * settings.step, settings.min, settings.max);
+                    floatValue.Invoke(true, value);
+                }
+                textPointer.pointer.TextString = TextLib.OneDecimal(value);
+            }
         }
 
         protected override float ButtonEdgeToContentSpace(RichBoxGroup group, bool left)
         {
-            return group.settings.dragButtonTex.TotalSideLeght();
+            return group.settings.dragButtonTex.TotalSideLeght() + 12;
         }
 
         public override bool UseButtonContentSettings()
@@ -163,7 +186,7 @@ namespace VikingEngine.HUD.RichBox
             float move = Input.Mouse.Position.X - prevMousePos.X;
             if (Math.Abs(move) > moveLengthForValueChange)
             {
-                int change = (int)(move / moveLengthForValueChange);
+                float change = (int)(move / moveLengthForValueChange);
                 prevMousePos.X += change * moveLengthForValueChange;
 
                 if (Input.Mouse.Position.X < mouseXRange.Min)

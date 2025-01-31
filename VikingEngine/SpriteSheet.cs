@@ -36,6 +36,8 @@ namespace VikingEngine
 
         public static readonly IntVector2 PjModeSz = new IntVector2(112, 64);
 
+        public static readonly IntVector2 DSS2Logo = new IntVector2(5, 2);
+
         public const int GolfGrassTexWidth = 120;
         public const int CmdLetterSz = 18;
         const int NineSplitSz = 30;
@@ -2623,6 +2625,20 @@ namespace VikingEngine
                     add(SpriteName.WarsHudSecondaryButtonDisabled);
                     add(SpriteName.WarsHudHeadBarTabSelected);
                     add(SpriteName.WarsHudHeadBarTabNotSelected);
+
+                    add(SpriteName.WarsHudDropDownArrow);
+                    add(SpriteName.WarsHudYellowDot);
+                    add(SpriteName.WarsHudBrownDot);
+                    add(SpriteName.WarsHudRoundButtonNotSelected);
+                    add(SpriteName.WarsHudListArrowSelected);
+                    add(SpriteName.WarsHudListArrowDefault);
+                    add(SpriteName.WarsHudListArrowNotSelected);
+
+                    add(SpriteName.WarsHudIconExit);
+                    add(SpriteName.WarsHudIconSettings);
+                    add(SpriteName.WarsHudIconAdd);
+                    add(SpriteName.WarsHudIconOpen);
+                    add(SpriteName.WarsHudIconStart);
                 }
 
                 currentIndex = numTilesWidth * 101;
@@ -2644,6 +2660,7 @@ namespace VikingEngine
                     add(SpriteName.WarsHudFlagBorder, 2, 2);
                     add(SpriteName.WarsHudHeadBarBg, 2, 2);
                     add(SpriteName.WarsHudToolUpButton, 1, 2);
+                    add(SpriteName.DSS2MainMenu, DSS2Logo.X, DSS2Logo.Y);
                 }
 
                 currentIndex = numTilesWidth * 106;

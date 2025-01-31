@@ -336,14 +336,14 @@ namespace VikingEngine.DSSWars.Delivery
                 content.newParagraph();
                 content.Add(new RbButton(new List<AbsRichBoxMember> {
                     new RbImage(player.input.Copy.Icon),
-                    new RichBoxSpace(0.5f),
+                    new RbSpace(0.5f),
                     new RbText(DssRef.lang.Hud_CopySetup) },
                 new RbAction1Arg<LocalPlayer>(city.copyDelivery, player, SoundLib.menuCopy)));
 
                 content.space();
                 content.Add(new RbButton(new List<AbsRichBoxMember> {
                     new RbImage(player.input.Paste.Icon),
-                    new RichBoxSpace(0.5f),
+                    new RbSpace(0.5f),
                     new RbText(DssRef.lang.Hud_Paste)
                 },
                 new RbAction1Arg<LocalPlayer>(city.pasteDelivery, player, SoundLib.menuPaste)));

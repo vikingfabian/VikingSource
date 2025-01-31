@@ -769,9 +769,9 @@ namespace VikingEngine.DSSWars.Build
             if (buildMode != SelectTileResult.None)
             {
                 var button = new RbButton(new List<AbsRichBoxMember> { 
-                    new RichBoxSpace(),
+                    new RbSpace(),
                     new RbText(DssRef.lang.Hud_EndSessionIcon),
-                    new RichBoxSpace(),
+                    new RbSpace(),
                     },
                     new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.None, SoundLib.menuBack));
                 button.setGroupSelectionColor(HudLib.RbSettings, false);
@@ -874,7 +874,7 @@ namespace VikingEngine.DSSWars.Build
 
                         var optButton = new RbButton(new List<AbsRichBoxMember> {
                         new RbImage(build.sprite),
-                        new RichBoxSpace(),
+                        new RbSpace(),
                         new RbText(build.Label())
                     }, new RbAction(() =>
                     {

@@ -2453,6 +2453,22 @@ namespace VikingEngine
         WarsHudHeadBarBg,
         WarsHudToolUpButton,
 
+        WarsHudDropDownArrow,
+        WarsHudYellowDot,
+        WarsHudBrownDot,
+        WarsHudRoundButtonNotSelected,
+        WarsHudListArrowSelected,
+        WarsHudListArrowDefault,
+        WarsHudListArrowNotSelected,
+
+        WarsHudIconExit,
+        WarsHudIconSettings,
+        WarsHudIconAdd,
+        WarsHudIconOpen,
+        WarsHudIconStart,
+        DSS2MainMenu,
+
+
         WarsNightmareEyeGlow,
         WarsGroundTex,
         warsFoliageSquareShadow,

@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.Data
 
         public GameStorage()
         {
-            DssRef.storage = this;
+            //DssRef.storage = this;
             flagStorage = new FlagStorage();
             meta = new SaveMeta();
 
@@ -48,6 +48,14 @@ namespace VikingEngine.DSSWars.Data
             {
                 localPlayers[i] = new LocalPlayerStorage(i);
             }
+
+            defaultGameSettings();
+        }
+
+        public void defaultGameSettings()
+        {
+            mapSize = MapSize.Medium;
+            centralGold = true;
         }
 
 

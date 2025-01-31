@@ -132,7 +132,7 @@ namespace VikingEngine.DSSWars.Players
         public void assignPlayer(int playerindex, int numPlayers, bool newGame)
         {
             var pStorage = DssRef.storage.localPlayers[playerindex];
-            faction.SetProfile(DssRef.storage.flagStorage.flagDesigns[pStorage.profile]);
+            faction.SetProfile(DssRef.storage.flagStorage.flagDesigns[pStorage.flagDesignIndex]);
             faction.diplomaticSide = DiplomaticSide.Light;
 
             tabArmy = faction.armies.counter();

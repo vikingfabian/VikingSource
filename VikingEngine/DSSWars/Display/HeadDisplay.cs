@@ -133,7 +133,7 @@ namespace VikingEngine.DSSWars.Display
             void input(Input.IButtonMap button, string text)
             {
                 content.Add(new RbImage(button.Icon));
-                content.Add(new RichBoxSpace());
+                content.Add(new RbSpace());
                 content.Add(new RbText(text));
 
                 content.Add(new RbNewLine());

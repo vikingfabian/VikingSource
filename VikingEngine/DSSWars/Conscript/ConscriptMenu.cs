@@ -280,13 +280,13 @@ namespace VikingEngine.DSSWars.Conscript
                 content.newParagraph();
                 content.Add(new RbButton(new List<AbsRichBoxMember> {
                     new RbImage(player.input.Copy.Icon),
-                    new RichBoxSpace(0.5f),
+                    new RbSpace(0.5f),
                     new RbText(DssRef.lang.Hud_CopySetup) },
                     new RbAction1Arg<LocalPlayer>(city.copyConscript, player, SoundLib.menuCopy)));
                 content.space();
                 content.Add(new RbButton(new List<AbsRichBoxMember> {
                     new RbImage(player.input.Paste.Icon),
-                    new RichBoxSpace(0.5f),
+                    new RbSpace(0.5f),
                     new RbText(DssRef.lang.Hud_Paste) },
                     new RbAction1Arg<LocalPlayer>(city.pasteConscript, player, SoundLib.menuPaste)));
 
@@ -360,7 +360,7 @@ namespace VikingEngine.DSSWars.Conscript
                         new RbImage(
                             new SoldierConscriptProfile(){ conscript = currentProfile.profile }.Icon()
                             ),
-                        new RichBoxSpace(),
+                        new RbSpace(),
                         caption,
                         new RbNewLine(),
                         info,
@@ -437,7 +437,7 @@ namespace VikingEngine.DSSWars.Conscript
             RichBoxContent content = new RichBoxContent
             {
                 new RbImage(SpriteName.warsArmyTag_Shield),
-                new RichBoxSpace(),
+                new RbSpace(),
                 new RbText(string.Format(DssRef.lang.Conscript_ArmorHealth, ConscriptProfile.ArmorHealth(armor)))
             };
 

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars;
@@ -38,6 +39,9 @@ namespace VikingEngine.HUD.RichMenu
         ImageLayers layer;
         public PlayerData playerData;
         RichTooltip tooltip = null;
+        public string activeDropDown = null;
+        public bool needRefresh = false;
+        public List<string> menuStack = new List<string>();
 
         public RichMenu(RichBoxSettings settings, VectorRect edgeArea, Vector2 edgeThickness, Vector2 renderEdge, ImageLayers layer, PlayerData playerData)
         { 
@@ -61,6 +65,32 @@ namespace VikingEngine.HUD.RichMenu
             
             scrollBar = new RichScrollbar(HudLib.HudMenuScollButton, HudLib.HudMenuScollBackground, edgeArea, scrollerWidth, layer -2);
             mouseScrollArea = scrollBar.IncludeScrollArea(edgeArea);
+        }
+
+        
+
+        public void OnDropDownClick(string name)
+        {
+            if (activeDropDown == name)
+            {
+                activeDropDown = null;
+            }
+            else
+            {
+                activeDropDown = name;
+            }
+            needRefresh = true;
+        }
+
+        public void Refresh()
+        {
+            needRefresh = true;
+        }
+
+        public void CloseDropDown()
+        {
+            activeDropDown = null;
+            needRefresh = true;
         }
 
         public void addToolTip(RichBoxContent content, VectorRect buttonArea)
@@ -97,6 +127,22 @@ namespace VikingEngine.HUD.RichMenu
             return backgroundTextures;
         }
 
+        public void OpenMenu(string menuName, bool stack)
+        {
+            if (!stack)
+            {
+                menuStack.Clear();
+            }
+            menuStack.Add(menuName);
+            needRefresh = true;
+        }
+
+        public void OpenMenu(RichBoxContent content, string menuName)
+        {
+            menuStack.Add(menuName);
+            Refresh(content);
+        }
+
         public void Refresh(RichBoxContent content)
         {
             deleteContent();
@@ -110,10 +156,12 @@ namespace VikingEngine.HUD.RichMenu
 
             scrollBar.Refresh(richBox.area.Height + renderEdge.Y * 2, renderArea.Height - renderEdge.Y * 2, settings.button.size);
             interaction = new RbInteraction(content, layer, new Input.MouseButtonMap(MouseButton.Left));
-            //interaction.outlineOffset = renderEdge;
+           
             interaction.drawContainer = renderList;
 
             updateContentScroll();
+
+            needRefresh = false;
         }
 
         void deleteContent()
@@ -125,23 +173,7 @@ namespace VikingEngine.HUD.RichMenu
         {
             if (interaction != null)
             {
-                //if (interaction.interactionStack == null && scrollBar.updateMouseInput())
-                updateContentScroll();
-            }
-            else if (renderArea.IntersectPoint(Input.Mouse.Position) ||
-                interaction.interactionStack != null)
-            {
-                interaction.update(-renderArea.Position, this, out _);
-            }
-            else
-            {
-                deleteTooltip();
-                interaction.clearSelection();
-            }
-
-            if (mouseScrollArea.IntersectPoint(Input.Mouse.Position))
-            {
-                if (scrollBar.updateScrollWheel())
+                if (interaction.interactionStack == null && scrollBar.updateMouseInput())
                 {
                     updateContentScroll();
                 }
@@ -152,7 +184,7 @@ namespace VikingEngine.HUD.RichMenu
                 }
                 else
                 {
-
+                    deleteTooltip();
                     interaction.clearSelection();
                 }
 
@@ -161,6 +193,24 @@ namespace VikingEngine.HUD.RichMenu
                     if (scrollBar.updateScrollWheel())
                     {
                         updateContentScroll();
+                    }
+                    //else if (renderArea.IntersectPoint(Input.Mouse.Position) ||
+                    //    interaction.interactionStack != null)
+                    //{
+                    //    interaction.update(-renderArea.Position, this, out _);
+                    //}
+                    //else
+                    //{
+
+                    //    interaction.clearSelection();
+                    //}
+
+                    if (mouseScrollArea.IntersectPoint(Input.Mouse.Position))
+                    {
+                        if (scrollBar.updateScrollWheel())
+                        {
+                            updateContentScroll();
+                        }
                     }
                 }
             }

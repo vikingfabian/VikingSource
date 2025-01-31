@@ -755,7 +755,7 @@ namespace VikingEngine.DSSWars.Display
 
                 var infoContent = new List<AbsRichBoxMember>(2);
                 infoContent.Add(new RbImage(typeIcon));
-                infoContent.Add(new RichBoxSpace());
+                infoContent.Add(new RbSpace());
                 var amountText = new RbText(city_res.amount.ToString());
                 amountText.overrideColor = Color.White;
                 infoContent.Add(amountText);

@@ -59,13 +59,15 @@ namespace VikingEngine.DSSWars
         public static RichboxGuiSettings richboxGui;
         public static RichboxGuiSettings cutsceneGui;
 
+        public static readonly Color MenuMoreOptionsArrowCol = new Color(131, 63, 17);
+
         public static void Init()
         {
             const float TextToIconSz = 1.2f;
 
             HudMenuBackground = new HUD.NineSplitSettings(SpriteName.WarsHudMenuBg, 1, 8, 1f, true, true);
 
-            HudMenuScollBackground = new HUD.NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 8, 1f, true, true); ;
+            HudMenuScollBackground = new HUD.NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 8, 1f, true, true);
             HudMenuScollButton = new HUD.NineSplitSettings(SpriteName.WarsHudScrollerSlider, 1, 8, 1f, true, true);
 
             RbSettings = new HUD.RichBox.RichBoxSettings(
@@ -95,12 +97,17 @@ namespace VikingEngine.DSSWars
             RbSettings.artOutlineButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudOutlineButton, 1, 8, 1f, true, true);
             RbSettings.artHoverAreaTex = new HUD.NineSplitSettings(SpriteName.WarsHudHoverArea, 1, 8, 1f, true, true);
 
-            RbSettings.dragButtonTex = new ThreeSplitSettings(SpriteName.cmdHudBorderTooltip, 1, 8);
+            RbSettings.dragButtonTex = new ThreeSplitSettings(SpriteName.WarsHudDragButton, 1, 15);
 
-            RbSettings.artCheckButtonTex = new NineSplitSettings(SpriteName.WarsHudRoundButton, 1, 8, 1f, true, true);
+            RbSettings.artCheckButtonTex = new NineSplitSettings(SpriteName.WarsHudOptionSelected, 1, 8, 1f, true, true);
             RbSettings.artOptionButtonTex = new NineSplitSettings(SpriteName.WarsHudOptionSelected, 1, 8, 1f, true, true)
             {
                 notSelectedTexture = SpriteName.WarsHudOptionNotSelected,
+            };
+
+            RbSettings.artDropDownButtonTex = new NineSplitSettings(SpriteName.WarsHudRoundButton, 1, 8, 1f, true, true)
+            {
+                notSelectedTexture = SpriteName.WarsHudRoundButtonNotSelected,
             };
 
             RbSettings.artTabTex = new NineSplitSettings(SpriteName.WarsHudTabSelected, 1, 8, 1f, true, true)
@@ -270,7 +277,7 @@ namespace VikingEngine.DSSWars
             content.space();
         }
 
-        public static void InfoButton(RichBoxContent content, AbsRbAction enterAction)
+        public static void InfoButton(List<AbsRichBoxMember> content, AbsRbAction enterAction)
         {
             var text = new RbText(DssRef.lang.Info_ButtonIcon);
             text.overrideColor = InfoYellow_Light;
@@ -303,7 +310,7 @@ namespace VikingEngine.DSSWars
             x.overrideColor = Color.White;
 
            var button = new RbButton(new List<AbsRichBoxMember>
-                    { new RichBoxSpace(), x,new RichBoxSpace(), },
+                    { new RbSpace(), x,new RbSpace(), },
                     click);
             button.overrideBgColor = Color.DarkRed;
 

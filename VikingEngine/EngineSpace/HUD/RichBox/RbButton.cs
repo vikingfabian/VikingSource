@@ -19,7 +19,7 @@ namespace VikingEngine.HUD.RichBox
 
         virtual protected float ButtonEdgeToContentSpace(RichBoxGroup group, bool left)
         {
-            const float HoriSpace = 6;
+            const float HoriSpace = 8;
             return HoriSpace;
         }
 
