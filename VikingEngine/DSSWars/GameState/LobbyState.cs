@@ -265,7 +265,7 @@ namespace VikingEngine.DSSWars
 
         void load_asynch()
         {
-            bgTex = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "dss_bg");
+            bgTex = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "darkforest_bg");//"dss_bg");
             new Timer.Action0ArgTrigger(loadingComplete);
         }
 
@@ -273,7 +273,7 @@ namespace VikingEngine.DSSWars
         {
             float w = Engine.Screen.SafeArea.Width;
             float h = w / bgTex.Width * bgTex.Height;
-            float x = Engine.Screen.SafeArea.X;
+            float x = Engine.Screen.Area.Right - w;
             float y = Screen.CenterScreen.Y - h * 0.5f;
 
             bgImage = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE,
@@ -282,10 +282,10 @@ namespace VikingEngine.DSSWars
             bgImage.SetFullTextureSource();
             bgImage.Opacity = 0.5f;
 
-            Vector2 promoworkerSz = new Vector2(9, 6) * new Vector2(h * 0.02f);
+            //Vector2 promoworkerSz = new Vector2(9, 6) * new Vector2(h * 0.02f);
 
-            var worker1 = new Graphics.Image(SpriteName.warsWorkerPromoCannon, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.7f, 1f), -promoworkerSz.Y * 0.9f), promoworkerSz, ImageLayers.Background5);
-            worker1.LayerAbove(bgImage);
+            //var worker1 = new Graphics.Image(SpriteName.warsWorkerPromoCannon, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.7f, 1f), -promoworkerSz.Y * 0.9f), promoworkerSz, ImageLayers.Background5);
+            //worker1.LayerAbove(bgImage);
         }
 
         void playMusic()
