@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Valve.Steamworks;
 using VikingEngine.DSSWars.Data;
-using static VikingEngine.DSSWars.Map.Generate.MapBackgroundLoading;
 
 namespace VikingEngine.DSSWars.Map.Generate
 {
@@ -28,15 +27,8 @@ namespace VikingEngine.DSSWars.Map.Generate
             this.loadMeta = loadMeta;
             if (loadMeta != null)
             {
-                
-
                 DssRef.storage.generateNewMaps = loadMeta.worldmeta.IsGenerated;
                 DssRef.storage.mapSize = loadMeta.worldmeta.mapSize;
-
-                //if (loadMeta.metaVersion >= 3)
-                //{
-
-                //}
             }
 
             if (DssRef.storage.generateNewMaps)
@@ -95,7 +87,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         seed = Ref.rnd.Ushort();
                     }
 
-                    bool success = dataGenerate.Generate(false, world);
+                    bool success = dataGenerate.Generate(false, world, new MapGenerateSettings());
 
                     if (success)
                     {
@@ -189,7 +181,6 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         public string ProgressString()
         {
-            //string maploading = "Map loading: ";
             if (loadingState == LoadingState.Complete)
             {
                 return string.Format(DssRef.lang.Progressbar_MapLoadingState, DssRef.lang.Progressbar_ProgressComplete);
@@ -198,7 +189,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             {
                 if (DssRef.storage.generateNewMaps && !generateSuccess)
                 {
-                    return string.Format(DssRef.lang.Progressbar_MapLoadingState_GeneratingPercentage, GenerateMap.LoadStatus, failCount);//"Generating: " + GenerateMap.LoadStatus.ToString() + "%. (Fails " + failCount.ToString()+ ")";
+                    return string.Format(DssRef.lang.Progressbar_MapLoadingState_GeneratingPercentage, GenerateMap.LoadStatus, failCount);
                 }
 
                 string part = string.Format(DssRef.lang.Progressbar_MapLoadingState_LoadPart, (int)loadingState, (int)LoadingState.Complete);

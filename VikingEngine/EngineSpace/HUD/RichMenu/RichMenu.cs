@@ -90,9 +90,11 @@ namespace VikingEngine.HUD.RichMenu
             backgroundArea.Height = richBox.area.Size.Y + edgeThickness * 3;
         }
 
-        public void addBackground(NineSplitSettings texture, ImageLayers layer)
+        //public void addBackground(NineSplitSettings texture, ImageLayers layer)
+        public NineSplitAreaTexture addBackground(NineSplitSettings texture, ImageLayers layer)
         {
             backgroundTextures = new NineSplitAreaTexture(texture, backgroundArea, layer + 1);
+            return backgroundTextures;
         }
 
         public void Refresh(RichBoxContent content)
@@ -121,8 +123,9 @@ namespace VikingEngine.HUD.RichMenu
 
         public void updateMouseInput()
         {
-            if (interaction.interactionStack == null && scrollBar.updateMouseInput())
+            if (interaction != null)
             {
+                //if (interaction.interactionStack == null && scrollBar.updateMouseInput())
                 updateContentScroll();
             }
             else if (renderArea.IntersectPoint(Input.Mouse.Position) ||
@@ -141,6 +144,24 @@ namespace VikingEngine.HUD.RichMenu
                 if (scrollBar.updateScrollWheel())
                 {
                     updateContentScroll();
+                }
+                else if (renderArea.IntersectPoint(Input.Mouse.Position) ||
+                    interaction.interactionStack != null)
+                {
+                    interaction.update(-renderArea.Position, this, out _);
+                }
+                else
+                {
+
+                    interaction.clearSelection();
+                }
+
+                if (mouseScrollArea.IntersectPoint(Input.Mouse.Position))
+                {
+                    if (scrollBar.updateScrollWheel())
+                    {
+                        updateContentScroll();
+                    }
                 }
             }
         }

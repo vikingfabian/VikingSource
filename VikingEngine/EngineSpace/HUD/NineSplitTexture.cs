@@ -233,6 +233,14 @@ namespace VikingEngine.HUD
             }
         }
 
+        public void SetOpacity(float value)
+        {
+            foreach (var m in images)
+            {
+                m.Opacity = value;
+            }
+        }
+
         public VectorRect GetAreaAdjusted()
         {
             var result = area;

@@ -82,6 +82,21 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
+    class RbNewLine_AtHeight : AbsRichBoxMember
+    {
+        float setHeight;
+
+        public RbNewLine_AtHeight(float setHeight)
+        {
+            this.setHeight = setHeight;
+        }
+
+        public override void Create(RichBoxGroup group)
+        {
+            group.newLine_SetHeight(setHeight);
+        }
+    }
+
     class RbBeginTitle : AbsRichBoxMember
     {
         int level;

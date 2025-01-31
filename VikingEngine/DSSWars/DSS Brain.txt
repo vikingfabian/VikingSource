@@ -91,6 +91,13 @@ Polish
 -attack ally yes/no warning
 
 #Art
+main menu icons:
+exit
+new game
+continue
+load
+start
+
 placement bonus icon
 work skill icons (carpenting)
 

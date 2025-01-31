@@ -130,6 +130,15 @@ namespace VikingEngine.HUD.RichBox
             prepLine();
         }
 
+        public void newLine_SetHeight(float height)
+        {
+            completeLine();
+
+            position.Y = height;
+           
+            prepLine();
+        }
+
         public void newLine()
         {
             if (!lockNewLine)

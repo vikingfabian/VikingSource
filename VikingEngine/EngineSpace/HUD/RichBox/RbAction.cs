@@ -41,6 +41,26 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
+    class RbTooltip_Text : AbsRbAction
+    {
+        string text;
+        public RbTooltip_Text(string text)
+            :base()
+        {
+            this.text = text;
+        }
+
+        public override void actionTrigger()
+        { }
+
+        override public RichBoxContent tooltip()
+        {
+            RichBoxContent content = new RichBoxContent();
+            content.text(text);
+            return content;
+        }
+    }
+
     class RbAction : AbsRbAction
     {
         public Action action;

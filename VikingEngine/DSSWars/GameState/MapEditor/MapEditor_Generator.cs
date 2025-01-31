@@ -6,7 +6,25 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.GameState.MapEditor
 {
-    internal class MapEditor_Generator
+    class MapEditor_Generator : AbsDssState
     {
+        MapGeneratorDisplay display;
+
+        public MapEditor_Generator()
+            :base() 
+        { 
+            display = new MapGeneratorDisplay(this);
+            new Display.EditorBackground();
+        }
+
+        public void generate()
+        { 
+            
+        }
+
+        public void startNewGame()
+        {
+
+        }
     }
 }
