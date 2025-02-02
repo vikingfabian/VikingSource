@@ -17,6 +17,7 @@ namespace VikingEngine.DSSWars
 {
     static class HudLib
     {
+        public const float MenuEdgeSize = 8;
         public const float HeadDisplayBgOpacity = 0.9f;
         public static float HeadDisplayWidth, HeadDisplayEdge;
 
@@ -51,8 +52,13 @@ namespace VikingEngine.DSSWars
 
         public static NineSplitSettings HudMenuBackground;
         public static NineSplitSettings HudMenuScollBackground;
+        public static NineSplitSettings MessageBackground;
+        public static float MessageDisplayWidth;
+
         public static NineSplitSettings HudMenuScollButton;
         public static RichBoxSettings RbSettings;
+        public static RichBoxSettings RbSettings_Head;
+        public static RichBoxSettings RbSettings_HeadOptions;
         public static RichBoxSettings RbOnGuiSettings;
         public static RichBoxSettings TooltipSettings;
 
@@ -69,6 +75,8 @@ namespace VikingEngine.DSSWars
 
             HudMenuScollBackground = new HUD.NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 8, 1f, true, true);
             HudMenuScollButton = new HUD.NineSplitSettings(SpriteName.WarsHudScrollerSlider, 1, 8, 1f, true, true);
+
+            MessageBackground = new HUD.NineSplitSettings(SpriteName.WarsHudMessageBg, 1, 8, 1f, true, true);
 
             RbSettings = new HUD.RichBox.RichBoxSettings(
                 new TextFormat(LoadedFont.Regular, Engine.Screen.TextBreadHeight, Color.White, ColorExt.Empty),
@@ -121,8 +129,19 @@ namespace VikingEngine.DSSWars
             TooltipSettings = RbSettings;
             TooltipSettings.windowBackground = new NineSplitSettings(SpriteName.cmdHudBorderTooltip, 1, 8, 1f, true, true);
 
-            HeadDisplayWidth = Engine.Screen.IconSize * 7;
+            RbSettings_Head = RbSettings;
+            RbSettings_Head.artOptionButtonTex = new NineSplitSettings(SpriteName.WarsHudHeadBarTabSelected, 1, 8, 1f, true, true)
+            {
+                notSelectedTexture = SpriteName.WarsHudHeadBarTabNotSelected,
+            };
+            RbSettings_Head.artPrimaryButtonTex = new NineSplitSettings(SpriteName.WarsHudHeadBarButton, 1, 8, 1f, true, true);
+
+            RbSettings_HeadOptions = RbSettings_Head;
+            RbSettings_HeadOptions.artOptionButtonTex = RbSettings.artOptionButtonTex;
+
+            HeadDisplayWidth = (int)( Engine.Screen.IconSize * 7);
             HeadDisplayEdge = Engine.Screen.BorderWidth;
+            MessageDisplayWidth = (int)(Engine.Screen.IconSize * 6);
 
             richboxGui = new RichboxGuiSettings()
             {

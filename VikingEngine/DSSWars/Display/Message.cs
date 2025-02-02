@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichMenu;
 using VikingEngine.Network;
 using VikingEngine.ToGG;
 
@@ -206,81 +207,90 @@ namespace VikingEngine.DSSWars.Display
 
     class Message
     {
-        public RichBoxGroup richBox;
+        public RichMenu menu;
+        //public RichBoxGroup richBox;
         protected RichBoxContent content = new RichBoxContent();
-        protected Graphics.Image bg;
+        //protected Graphics.Image bg;
+        //NineSplitAreaTexture bg;
         public VectorRect area;
         public TimeStamp time;
-        Vector2 contentOffset;
-        RbInteraction interaction;
+        //Vector2 contentOffset;
+        //RbInteraction interaction;
 
         public Message(LocalPlayer player, RichBoxContent content, RichboxGuiSettings settings)
         {
-            richBox = new RichBoxGroup(Vector2.Zero,
-            settings.width, settings.contentLayer, settings.RbSettings, content, true, true, false);
-            area = richBox.area;
+            menu = new RichMenu(HudLib.RbSettings, new VectorRect(player.hud.headOptions.MessageStart, new Vector2(HudLib.MessageDisplayWidth, 500)),
+                new Vector2(HudLib.MenuEdgeSize), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
 
-            bg = new Graphics.Image(SpriteName.WhiteArea, Vector2.Zero, Vector2.Zero, settings.bglayer);
-            bg.ColorAndAlpha(settings.bgCol, settings.bgAlpha);
+            menu.Refresh(content);
+            menu.updateHeightFromContent();
+            menu.addBackground(HudLib.MessageBackground, HudLib.GUILayer + 2);
+            //richBox = new RichBoxGroup(Vector2.Zero, HudLib.MessageDisplayWidth, settings.contentLayer, 
+            //    settings.RbSettings, content, true, true, false);
+            //area = richBox.area;
 
-            contentOffset = new Vector2(settings.edgeWidth);
+            //bg = new Graphics.Image(SpriteName.WhiteArea, Vector2.Zero, Vector2.Zero, settings.bglayer);
+            //bg.ColorAndAlpha(settings.bgCol, settings.bgAlpha);
+
+            //contentOffset = new Vector2(settings.edgeWidth);
 
             area.AddRadius(settings.edgeWidth);
             time = TimeStamp.Now();
-            interaction = new RbInteraction(content, settings.contentLayer,
-                    player.input.RichboxGuiSelect);
+            //interaction = new RbInteraction(content, settings.contentLayer,
+            //        player.input.RichboxGuiSelect);
         }
 
         public bool onControllerClick()
         {
-            if (richBox.buttonGrid_Y_X.Count > 0 && richBox.buttonGrid_Y_X[0].Count > 0)
-            {
-                if (time.msPassed(200))
-                {
-                    richBox.buttonGrid_Y_X[0][0].onClick(null);
-                }
-                return true;
-            }
+            //if (richBox.buttonGrid_Y_X.Count > 0 && richBox.buttonGrid_Y_X[0].Count > 0)
+            //{
+            //    if (time.msPassed(200))
+            //    {
+            //        richBox.buttonGrid_Y_X[0][0].onClick(null);
+            //    }
+            //    return true;
+            //}
             return false;
         }
 
 
-            public Vector2 UpdatePoisitions(Vector2 position, float screenAreaBottom)
+        public Vector2 UpdatePoisitions(Vector2 position, float screenAreaBottom)
         {
-            area.Position = position;
-            bg.Area = area;
-            richBox.SetOffset(area.Position + contentOffset);
+            //area.Position = position;
+            //bg.Area = area;
+            //richBox.SetOffset(area.Position + contentOffset);
             
-            bool visible = bg.Bottom <= screenAreaBottom;
+            //bool visible = bg.Bottom <= screenAreaBottom;
 
-            bg.Visible = visible;
-            richBox.SetVisible(visible);
+            //bg.Visible = visible;
+            //richBox.SetVisible(visible);
 
             return area.LeftBottom;
         }
 
         public void update()
         {
-            if (bg.Visible)
-            {
-                interaction.update(Vector2.Zero, null, out _);
-            }
+            //if (bg.Visible)
+            //{
+            //    interaction.update(Vector2.Zero, null, out _);
+            //}
         }
 
         public bool mouseOver()
         {
-            if (bg.Visible)
-            {
-                return bg.Area.IntersectPoint(Input.Mouse.Position);
-            }
+            //if (bg.Visible)
+            //{
+            //    return bg.Area.IntersectPoint(Input.Mouse.Position);
+            //}
             return false;
         }
 
         public void DeleteMe()
         {
-            interaction.DeleteMe();
-            bg.DeleteMe();
-            richBox.DeleteAll();
+            //interaction.DeleteMe();
+            //bg.DeleteMe();
+            //richBox.DeleteAll();
+
         }
     }
 }

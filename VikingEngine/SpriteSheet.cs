@@ -36,7 +36,7 @@ namespace VikingEngine
 
         public static readonly IntVector2 PjModeSz = new IntVector2(112, 64);
 
-        public static readonly IntVector2 DSS2Logo = new IntVector2(5, 2);
+        public static readonly IntVector2 DSS2Logo = new IntVector2(12, 7);
 
         public const int GolfGrassTexWidth = 120;
         public const int CmdLetterSz = 18;
@@ -2174,6 +2174,36 @@ namespace VikingEngine
                 add(SpriteName.WarsBuild_GoldDeliver, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_GoldDeliverLevel2, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_GoldDeliverLevel3, currentIndex, 3, 3);
+
+                add(SpriteName.WarsFlagType_LongBanner, 3, 3);
+                add(SpriteName.WarsFlagType_Banner, 3, 3);
+                add(SpriteName.WarsFlagType_SlimBanner, 3, 3);
+
+                add(SpriteName.WarsFlagType_Flag, 3, 3);
+                add(SpriteName.WarsFlagType_FlagRound, 3, 3);
+                add(SpriteName.WarsFlagType_FlagLarge, 3, 3);
+                add(SpriteName.WarsFlagType_Streamer, 3, 3);
+                add(SpriteName.WarsFlagType_Triangle, 3, 3);
+                add(SpriteName.WarsBuild_GardenFourBushes, 3, 3);
+                add(SpriteName.WarsBuild_GardenLongTree, 3, 3);
+                add(SpriteName.WarsBuild_GardenWalledBush, 3, 3);
+                add(SpriteName.WarsBuild_GardenMemoryStone, 3, 3);
+                add(SpriteName.WarsBuild_GardenBird, 3, 3);
+                add(SpriteName.WarsBuild_PavementLamp, 3, 3);
+                add(SpriteName.WarsBuild_PavemenFountain, 3, 3);
+                add(SpriteName.WarsBuild_PavementRectFlower, 3, 3);
+                add(SpriteName.WarsBuild_StoneWall, 3, 3);
+                add(SpriteName.WarsBuild_StoneWallGreen, 3, 3);
+                add(SpriteName.WarsBuild_StoneWallBlueRoof, 3, 3);
+                add(SpriteName.WarsBuild_StoneWallWoodHouse, 3, 3);
+                add(SpriteName.WarsBuild_StoneTower, 3, 3);
+                add(SpriteName.WarsBuild_StoneGate, 3, 3);
+                add(SpriteName.WarsBuild_StoneHouse, 3, 3);
+                add(SpriteName.WarsBuild_GardenGrass, 3, 3);
+                add(SpriteName.WarsBuild_Statue_Lion, 3, 3);
+                add(SpriteName.WarsBuild_Statue_Leader, 3, 3);
+                add(SpriteName.WarsBuild_Statue_Horse, 3, 3);
+                add(SpriteName.WarsBuild_Statue_Pillar, 3, 3);
             }
 
             if (PlatformSettings.RunProgram == StartProgram.ToGG ||
@@ -2480,35 +2510,7 @@ namespace VikingEngine
                     add(SpriteName.WarsBuild_CannonBarracks, 3, 3);
 
 
-                    add(SpriteName.WarsFlagType_LongBanner, 3, 3);
-                    add(SpriteName.WarsFlagType_Banner, 3, 3);
-                    add(SpriteName.WarsFlagType_SlimBanner, 3, 3);
-
-                    add(SpriteName.WarsFlagType_Flag, 3, 3);
-                    add(SpriteName.WarsFlagType_FlagRound, 3, 3);
-                    add(SpriteName.WarsFlagType_FlagLarge, 3, 3);
-                    add(SpriteName.WarsFlagType_Streamer, 3, 3);
-                    add(SpriteName.WarsFlagType_Triangle, 3, 3);
-                    add(SpriteName.WarsBuild_GardenFourBushes, 3, 3);
-                    add(SpriteName.WarsBuild_GardenLongTree, 3, 3);
-                    add(SpriteName.WarsBuild_GardenWalledBush, 3, 3);
-                    add(SpriteName.WarsBuild_GardenMemoryStone, 3, 3);
-                    add(SpriteName.WarsBuild_GardenBird, 3, 3);
-                    add(SpriteName.WarsBuild_PavementLamp, 3, 3);
-                    add(SpriteName.WarsBuild_PavemenFountain, 3, 3);
-                    add(SpriteName.WarsBuild_PavementRectFlower, 3, 3);
-                    add(SpriteName.WarsBuild_StoneWall, 3, 3);                    
-                    add(SpriteName.WarsBuild_StoneWallGreen, 3, 3);
-                    add(SpriteName.WarsBuild_StoneWallBlueRoof, 3, 3);
-                    add(SpriteName.WarsBuild_StoneWallWoodHouse, 3, 3);
-                    add(SpriteName.WarsBuild_StoneTower, 3, 3);
-                    add(SpriteName.WarsBuild_StoneGate, 3, 3);
-                    add(SpriteName.WarsBuild_StoneHouse, 3, 3);                   
-                    add(SpriteName.WarsBuild_GardenGrass, 3, 3);
-                    add(SpriteName.WarsBuild_Statue_Lion, 3, 3);
-                    add(SpriteName.WarsBuild_Statue_Leader, 3, 3);
-                    add(SpriteName.WarsBuild_Statue_Horse, 3, 3);
-                    add(SpriteName.WarsBuild_Statue_Pillar, 3, 3);
+                    
                     //add(SpriteName.WarsBuild_SmallCityHouse, 3, 3);
                     //add(SpriteName.WarsBuild_BigCityHouse, 3, 3);
                     //add(SpriteName.WarsBuild_CitySquare, 3, 3);
@@ -2639,6 +2641,9 @@ namespace VikingEngine
                     add(SpriteName.WarsHudIconAdd);
                     add(SpriteName.WarsHudIconOpen);
                     add(SpriteName.WarsHudIconStart);
+
+                    add(SpriteName.WarsHudMessageBg);
+                    add(SpriteName.WarsHudIconEditor);
                 }
 
                 currentIndex = numTilesWidth * 101;
@@ -2660,7 +2665,7 @@ namespace VikingEngine
                     add(SpriteName.WarsHudFlagBorder, 2, 2);
                     add(SpriteName.WarsHudHeadBarBg, 2, 2);
                     add(SpriteName.WarsHudToolUpButton, 1, 2);
-                    add(SpriteName.DSS2MainMenu, DSS2Logo.X, DSS2Logo.Y);
+                    //add(SpriteName.DSS2MainMenu, DSS2Logo.X, DSS2Logo.Y); x = 5
                 }
 
                 currentIndex = numTilesWidth * 106;
@@ -2749,6 +2754,8 @@ namespace VikingEngine
                 add(SpriteName.warsWorkerPromoBox, 6, 6);
 
                 add(SpriteName.warsWorkerPromoCannon, 9, 6);
+
+                add(SpriteName.DSS2MainMenu, DSS2Logo.X, DSS2Logo.Y);
             }
 
             currentIndex = numTilesWidth * 118;

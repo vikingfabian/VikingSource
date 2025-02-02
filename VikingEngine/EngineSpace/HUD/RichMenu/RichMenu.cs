@@ -22,14 +22,13 @@ namespace VikingEngine.HUD.RichMenu
 
         public RichBoxGroup richBox;
         protected RichBoxContent content = new RichBoxContent();
-        //protected Graphics.Image bg;
+        
         NineSplitAreaTexture backgroundTextures;
         public VectorRect backgroundArea, edgeArea, renderArea, richboxArea, mouseScrollArea;
         Vector2 renderEdge;
         public RbInteraction interaction = null;
-        //protected RichboxGui gui;
+        
         Graphics.RectangleLines outLine;
-
         RenderTargetDrawContainer renderList = null;//Is a target image, rendering the menu content
         
         RichBoxSettings settings;
@@ -109,14 +108,29 @@ namespace VikingEngine.HUD.RichMenu
         public void move(Vector2 move)
         {
             backgroundArea.Position  += move;
+            renderArea.Position += move;
             renderList.position += move;
         }
 
-        public void updateHeightFromContent()
+        public void updateWidthFromContent(bool resetFirst = true)
         {
             float edgeThickness = edgeArea.Bottom - renderArea.Bottom;
 
-            backgroundArea = edgeArea;
+            if (resetFirst)
+            {
+                backgroundArea = edgeArea;
+            }
+            backgroundArea.Width = richBox.maxArea.Size.X + edgeThickness * 2;
+        }
+
+
+        public void updateHeightFromContent(bool resetFirst = true)
+        {
+            float edgeThickness = edgeArea.Bottom - renderArea.Bottom;
+            if (resetFirst)
+            {
+                backgroundArea = edgeArea;
+            }
             backgroundArea.Height = richBox.area.Size.Y + edgeThickness * 3;
         }
 
@@ -169,7 +183,7 @@ namespace VikingEngine.HUD.RichMenu
             renderList.renderList.Clear();
         }
 
-        public void updateMouseInput()
+        public void updateMouseInput(ref bool mouseOver)
         {
             if (interaction != null)
             {
@@ -188,7 +202,7 @@ namespace VikingEngine.HUD.RichMenu
                     interaction.clearSelection();
                 }
 
-                if (mouseScrollArea.IntersectPoint(Input.Mouse.Position))
+                if (scrollBar.IsVisible() && mouseScrollArea.IntersectPoint(Input.Mouse.Position))
                 {
                     if (scrollBar.updateScrollWheel())
                     {
@@ -205,13 +219,13 @@ namespace VikingEngine.HUD.RichMenu
                     //    interaction.clearSelection();
                     //}
 
-                    if (mouseScrollArea.IntersectPoint(Input.Mouse.Position))
-                    {
-                        if (scrollBar.updateScrollWheel())
-                        {
-                            updateContentScroll();
-                        }
-                    }
+                    //if (mouseScrollArea.IntersectPoint(Input.Mouse.Position))
+                    //{
+                    //    if (scrollBar.updateScrollWheel())
+                    //    {
+                    //        updateContentScroll();
+                    //    }
+                    //}
                 }
             }
         }

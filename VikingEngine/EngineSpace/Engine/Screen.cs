@@ -259,6 +259,7 @@ namespace VikingEngine.Engine
             var result = new List<int>
             {
                 100,
+                90,
                 67,
                 50,
             };
@@ -283,6 +284,8 @@ namespace VikingEngine.Engine
                     return new IntVector2(2560,1440);
                 case RecordingPresets.YouTube2160p:
                     return new IntVector2(3840,2160);
+                case RecordingPresets.YouTube4320p:
+                    return new IntVector2(7680, 4320);
                 default:
                     throw new NotImplementedException();
             }
@@ -325,6 +328,7 @@ namespace VikingEngine.Engine
         YouTube1080p,
         YouTube1440p,
         YouTube2160p,
+        YouTube4320p,//4320p (8k): 7680x4320
         NumNon,
     }
 }

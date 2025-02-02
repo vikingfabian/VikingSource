@@ -28,6 +28,7 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using System.Net.Http.Headers;
 using System.Drawing;
+using VikingEngine.HUD.RichBox.Artistic;
 
 namespace VikingEngine.DSSWars.Players
 {
@@ -127,7 +128,42 @@ namespace VikingEngine.DSSWars.Players
             faction.addMoney_factionWide(10000);
         }
 
+        public void headOptionsMenu(RichBoxContent content)
+        {
+            //content.Add(new RichBoxScale(1.6f));
+
+            content.Add(new ArtButton(RbButtonStyle.Primary,
+                new List<AbsRichBoxMember> { new RbImage(Ref.isPaused ?  SpriteName.WarsHudHeadBarPauseIcon : SpriteName.WarsHudHeadBarPlayIcon) },
+                new RbAction(DssRef.state.pauseAction), new RbTooltip_Text(DssRef.lang.GameMenu_Title)));
+
+            for (int i = 0; i < GameSpeedOptions.Length; i++)
+            {
+                int speed = GameSpeedOptions[i];
+                content.Add(new ArtOption(Ref.TargetGameTimeSpeed == speed,
+                    new List<AbsRichBoxMember> { new RbText(speed.ToString()) },
+                    new RbAction1Arg<int>(gameSpeedClick, speed), 
+                    new RbTooltip_Text(string.Format(DssRef.lang.Hud_XTimes, speed))));
+                //var button = new RbButton(
+                //        new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_XTimes, player.GameSpeedOptions[i])) },
+                //        new RbAction1Arg<int>(gameSpeedClick, player.GameSpeedOptions[i]), null, true);
+                //button.setGroupSelectionColor(HudLib.RbSettings, Ref.TargetGameTimeSpeed == player.GameSpeedOptions[i]);
+                //content.Add(button);
+                //content.space();
+
+            }
+
+            content.space();
+            content.Add(new ArtButton(RbButtonStyle.Primary, 
+                new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarMenuIcon) },
+                new RbAction(DssRef.state.menuSystem.pauseMenu), new RbTooltip_Text(DssRef.lang.GameMenu_Title)));
+
+        }        
         
+
+        void gameSpeedClick(int toSpeed)
+        {
+            Ref.SetGameSpeed(toSpeed);
+        }
 
         public void assignPlayer(int playerindex, int numPlayers, bool newGame)
         {
@@ -167,7 +203,7 @@ namespace VikingEngine.DSSWars.Players
             playerData.view.SetDrawArea(numPlayers, pStorage.screenIndex, false, null);
 
 
-            hud = new GameHud(this, numPlayers);
+            new GameHud(this, numPlayers);
             buildControls = new Build.BuildControls(this);
 
 
@@ -716,7 +752,8 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {
-                    battleLineUpTest(true);
+                    hud.messages.Add("Message", "text xtet txex");
+                    //battleLineUpTest(true);
                 }
 
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
@@ -1669,7 +1706,7 @@ namespace VikingEngine.DSSWars.Players
             }
 
             automation.oneSecondUpdate();
-            hud.hudmenu.oneSecondUpdate(this);
+            //hud.oneSecondUpdate(this);
         }
 
         public override void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType farm, out bool intelligent)

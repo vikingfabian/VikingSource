@@ -2419,6 +2419,7 @@ namespace VikingEngine
         #endregion
 
         #region DSS WARS
+        WarsHudMessageBg,
         WarsHudScrollerBg,
         WarsHudScrollerSlider,
         WarsHudTabSelected,
@@ -2466,6 +2467,7 @@ namespace VikingEngine
         WarsHudIconAdd,
         WarsHudIconOpen,
         WarsHudIconStart,
+        WarsHudIconEditor,
         DSS2MainMenu,
 
 

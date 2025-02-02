@@ -226,11 +226,11 @@ namespace VikingEngine.DSSWars
                     case MenuTab.Info:
                         icon = SpriteName.WarsHudInfoIcon; break;
                     case MenuTab.Economy:
-                        icon = SpriteName.rtsIncome; break;
+                        icon = SpriteName.rtsMoney; break;
                     case MenuTab.Resources:
                         icon = SpriteName.WarsResource_Wood; break;
                     case MenuTab.Work:
-                        icon = SpriteName.WarsWorker; break;
+                        icon = SpriteName.WarsHammer; break;
                     case MenuTab.Automation:
                         icon = SpriteName.AutomationGearIcon; break;
                     case MenuTab.Progress:
@@ -238,19 +238,28 @@ namespace VikingEngine.DSSWars
 
                 }
 
-                content.Add(new ArtOption(HeadDisplay.Tabs[i] == player.factionTab,new List<AbsRichBoxMember>
-                        {
-                            new RbImage(icon)
-                        }, null, enter));
-
-                //if (HeadDisplay.Tabs[i] == player.factionTab)
-                //{
-                //    tabSel = i;
-                //}
+                content.Add(new ArtOption(HeadDisplay.Tabs[i] == player.factionTab, 
+                    new List<AbsRichBoxMember>
+                    {
+                        new RbImage(icon)
+                    }, null, enter));
             }
 
-            //content.Add(new ArtTabgroup(tabs, tabSel, player.factionTabClick, null, SoundLib.menutab, null));
-
+            content.space(2);
+            {
+                RichBoxContent buttonContent = new RichBoxContent();
+                buttonContent.Add(new RbImage(SpriteName.WarsCityHall));
+                buttonContent.space(0.5f);
+                buttonContent.Add(new RbText(cityCount.ToString()));
+                content.Add(new ArtButton(RbButtonStyle.HoverArea, buttonContent, null));
+            }
+            {
+                RichBoxContent buttonContent = new RichBoxContent();
+                buttonContent.Add(new RbImage(SpriteName.WarsFlagType_Banner));
+                buttonContent.space(0.5f);
+                buttonContent.Add(new RbText(armyCount.ToString()));
+                content.Add(new ArtButton(RbButtonStyle.HoverArea, buttonContent, null));
+            }
         }
 
         virtual public void writeGameState(System.IO.BinaryWriter w)

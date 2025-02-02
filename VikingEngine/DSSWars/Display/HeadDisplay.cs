@@ -254,7 +254,6 @@ namespace VikingEngine.DSSWars.Display
                                 content.space(); 
                                 
                             }
-                            //content.newLine();
                         }
                     }
                     else

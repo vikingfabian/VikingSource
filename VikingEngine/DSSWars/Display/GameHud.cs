@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest;
@@ -19,15 +20,25 @@ namespace VikingEngine.DSSWars.Display
         public HudDetailLevel detailLevel = HudDetailLevel.Normal;
 
         public GameHudDisplays displays;
-        public GameHudMenu hudmenu;
+        //public GameHudMenu hudmenu;
         public MessageGroup messages;
         public bool menuFocus = false;
+
+        public PlayerHud_Head head;
+        public PlayerHud_HeadOptions headOptions;
+        public PlayerHud_Object objMenu;
+
 
         public GameHud(LocalPlayer player, int numPlayers)
         {
             this.player = player;
+            player.hud = this;
             displays = new GameHudDisplays(player);
-            hudmenu = new GameHudMenu(player);
+
+            head = new PlayerHud_Head(player);
+            headOptions = new PlayerHud_HeadOptions(player);
+            objMenu = new PlayerHud_Object(player);
+            //hudmenu = new GameHudMenu(player);
             messages = new MessageGroup(player, numPlayers, HudLib.richboxGui);
             tooltip = new Tooltip();
         }
@@ -110,12 +121,18 @@ namespace VikingEngine.DSSWars.Display
             if (refresh)
             {
                 refreshTimer.Reset();
+                head.oneSecondUpdate(player);
             }
 
-            if ( player.input.inputSource.HasMouse)
+            if (player.input.inputSource.HasMouse)
             {
-                needRefresh |= displays.update();
-                mouseOver = hudMouseOver();
+                //needRefresh |= displays.update();
+                //mouseOver = hudMouseOver();
+
+                needRefresh |= head.updateMouseInput();
+                needRefresh |= headOptions.updateMouseInput();
+                needRefresh |= objMenu.updateMouseInput();
+
             }
 
             if (displays.menuStateHasChange)
@@ -187,10 +204,15 @@ namespace VikingEngine.DSSWars.Display
                     //Vector2 pos = displays.headDisplay.area.LeftBottom;
                     //pos.Y += Engine.Screen.BorderWidth * 2f;
                     //displays.objectDisplay.refresh(player, obj, selected, pos);
-                    hudmenu.refreshObject(player, obj, selected);
+                    objMenu.refreshObject(player, obj, selected);
                 }
             }
         }
+
+        //public void oneSecondUpdate(LocalPlayer player)
+        //{
+        //    refreshFaction(player);
+        //}
 
         public bool hudMouseOver()
         {
