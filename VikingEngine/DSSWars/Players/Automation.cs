@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 
 namespace VikingEngine.DSSWars.Players
 {
@@ -196,14 +197,14 @@ namespace VikingEngine.DSSWars.Players
             //}
             //content.newParagraph();
 
-            content.Add(new RbCheckbox(new List<AbsRichBoxMember>
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember>
                 {
                     new RbText( DssRef.lang.CityOption_Repair),
                 }, AutoRepairCityProperty));
 
             content.newLine();
 
-            content.Add(new RbCheckbox(new List<AbsRichBoxMember>
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember>
                 {
                     new RbText(string.Format(DssRef.lang.XP_UpgradeBuildingX, DssRef.lang.BuildingType_Logistics)),
                 }, AutoUpgradeLogisticsProperty));
@@ -216,7 +217,7 @@ namespace VikingEngine.DSSWars.Players
 
             //content.newLine();
 
-            content.Add(new RbCheckbox(new List<AbsRichBoxMember>
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember>
                 {
                     new RbText( DssRef.lang.CityOption_ExpandGuardSize),
                 }, AutoExpandGuardProperty));

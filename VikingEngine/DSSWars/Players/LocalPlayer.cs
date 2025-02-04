@@ -75,7 +75,7 @@ namespace VikingEngine.DSSWars.Players
         const double MercenaryMarketAddPerSec_Speed2 = 0.3;
         public FloatingInt mercenaryMarket = new FloatingInt() { value = DssLib.MercenaryPurchaseCount * 2 };
 
-        public MenuTab factionTab = HeadDisplay.Tabs[0];
+        public MenuTab factionTab = MenuTab.NUM_NONE;//HeadDisplay.Tabs[0];
         public MenuTab cityTab = CityMenu.Tabs[0];
         public MenuTab armyTab = ArmyMenu.Tabs[0];
         public ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview_Resources;
@@ -128,42 +128,10 @@ namespace VikingEngine.DSSWars.Players
             faction.addMoney_factionWide(10000);
         }
 
-        public void headOptionsMenu(RichBoxContent content)
-        {
-            //content.Add(new RichBoxScale(1.6f));
-
-            content.Add(new ArtButton(RbButtonStyle.Primary,
-                new List<AbsRichBoxMember> { new RbImage(Ref.isPaused ?  SpriteName.WarsHudHeadBarPauseIcon : SpriteName.WarsHudHeadBarPlayIcon) },
-                new RbAction(DssRef.state.pauseAction), new RbTooltip_Text(DssRef.lang.GameMenu_Title)));
-
-            for (int i = 0; i < GameSpeedOptions.Length; i++)
-            {
-                int speed = GameSpeedOptions[i];
-                content.Add(new ArtOption(Ref.TargetGameTimeSpeed == speed,
-                    new List<AbsRichBoxMember> { new RbText(speed.ToString()) },
-                    new RbAction1Arg<int>(gameSpeedClick, speed), 
-                    new RbTooltip_Text(string.Format(DssRef.lang.Hud_XTimes, speed))));
-                //var button = new RbButton(
-                //        new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_XTimes, player.GameSpeedOptions[i])) },
-                //        new RbAction1Arg<int>(gameSpeedClick, player.GameSpeedOptions[i]), null, true);
-                //button.setGroupSelectionColor(HudLib.RbSettings, Ref.TargetGameTimeSpeed == player.GameSpeedOptions[i]);
-                //content.Add(button);
-                //content.space();
-
-            }
-
-            content.space();
-            content.Add(new ArtButton(RbButtonStyle.Primary, 
-                new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarMenuIcon) },
-                new RbAction(DssRef.state.menuSystem.pauseMenu), new RbTooltip_Text(DssRef.lang.GameMenu_Title)));
-
-        }        
+        
         
 
-        void gameSpeedClick(int toSpeed)
-        {
-            Ref.SetGameSpeed(toSpeed);
-        }
+        
 
         public void assignPlayer(int playerindex, int numPlayers, bool newGame)
         {
@@ -485,17 +453,7 @@ namespace VikingEngine.DSSWars.Players
             hud.tooltip.create(this, content, true);
         }
 
-        public void perSecondTooltip(bool minuteAverage)
-        {
-            RichBoxContent content = new RichBoxContent();
-            content.text(DssRef.lang.Info_PerSecond);
-            if (minuteAverage)
-            {
-                content.text(DssRef.lang.Info_MinuteAverage);
-            }
-
-            hud.tooltip.create(this, content, true);
-        }
+       
 
         public override void createStartUnits()
         {
@@ -1147,85 +1105,126 @@ namespace VikingEngine.DSSWars.Players
             //CITY
             if (input.NextCity.DownEvent && faction.cities.Count > 0)
             {
-                if (Input.Keyboard.Shift)
-                {
-                    tabCity--;
-                    if (tabCity < 0)
-                    {
-                        tabCity = faction.cities.Count-1;
-                    }
-                }
-                else
-                {
-                    tabCity++;
-                    if (tabCity >= faction.cities.Count)
-                    {
-                        tabCity = 0;
-                    }
-                }
-                    
+                nextCity(!Input.Keyboard.Shift);
+                //if (Input.Keyboard.Shift)
+                //{
+                //    tabCity--;
+                //    if (tabCity < 0)
+                //    {
+                //        tabCity = faction.cities.Count-1;
+                //    }
+                //}
+                //else
+                //{
+                //    tabCity++;
+                //    if (tabCity >= faction.cities.Count)
+                //    {
+                //        tabCity = 0;
+                //    }
+                //}
 
-                int current = 0;
-                var citiesC = faction.cities.counter();
-                while (citiesC.Next())
-                {
-                    if (current == tabCity)
-                    { 
-                        //focus on city
-                        mapControls.cameraFocus = citiesC.sel;
-                        mapSelect(citiesC.sel);
 
-                        return;
-                    }
-                    current++;
-                }
+                //int current = 0;
+                //var citiesC = faction.cities.counter();
+                //while (citiesC.Next())
+                //{
+                //    if (current == tabCity)
+                //    { 
+                //        //focus on city
+                //        mapControls.cameraFocus = citiesC.sel;
+                //        mapSelect(citiesC.sel);
+
+                //        return;
+                //    }
+                //    current++;
+                //}
             }
 
             //ARMY
             if (input.NextArmy.DownEvent)
             {
-                if (Input.Keyboard.Shift)
-                {
-                    if (tabArmy.Prev_Rollover())
-                    {
-                        mapControls.cameraFocus = tabArmy.sel;
-                        mapSelect(tabArmy.sel);
+                nextArmy(!Input.Keyboard.Shift);
+                //if (Input.Keyboard.Shift)
+                //{
+                //    if (tabArmy.Prev_Rollover())
+                //    {
+                //        mapControls.cameraFocus = tabArmy.sel;
+                //        mapSelect(tabArmy.sel);
 
-                        return;
-                    }
+                //        return;
+                //    }
+                //}
+                //else
+                //{
+                //    if (tabArmy.Next_Rollover())
+                //    {
+                //        mapControls.cameraFocus = tabArmy.sel;
+                //        mapSelect(tabArmy.sel);
+
+                //        return;
+                //    }
+                //}
+            }
+
+        }
+
+        public void nextCity(bool forward)
+        {
+            if (forward)
+            {
+                tabCity++;
+                if (tabCity >= faction.cities.Count)
+                {
+                    tabCity = 0;
                 }
-                else
+            }
+            else
+            {
+                tabCity--;
+                if (tabCity < 0)
                 {
-                    if (tabArmy.Next_Rollover())
-                    {
-                        mapControls.cameraFocus = tabArmy.sel;
-                        mapSelect(tabArmy.sel);
-
-                        return;
-                    }
+                    tabCity = faction.cities.Count - 1;
                 }
             }
 
-            //BATTLE
-            //if (input.NextBattle.DownEvent)
-            //{
-            //    if (Input.Keyboard.Shift)
-            //    {
-            //        if (tabBattle.Prev_Rollover())
-            //        {
-            //            mapControls.cameraFocus = tabBattle.sel;
-            //            return;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (tabBattle.Next_Rollover())
-            //        {
-            //            mapControls.cameraFocus = tabBattle.sel;
-            //            return;
-            //        }
-            //    }
-            //}
+
+            int current = 0;
+            var citiesC = faction.cities.counter();
+            while (citiesC.Next())
+            {
+                if (current == tabCity)
+                {
+                    //focus on city
+                    mapControls.cameraFocus = citiesC.sel;
+                    mapSelect(citiesC.sel);
+
+                    return;
+                }
+                current++;
+            }
+        }
+        public void nextArmy(bool forward)
+        {
+            if (forward)
+            {
+               if (tabArmy.Next_Rollover())
+                {
+                    mapControls.cameraFocus = tabArmy.sel;
+                    mapSelect(tabArmy.sel);
+
+                    return;
+                }
+            }
+            else
+            {
+                if (tabArmy.Prev_Rollover())
+                {
+                    mapControls.cameraFocus = tabArmy.sel;
+                    mapSelect(tabArmy.sel);
+
+                    return;
+                }
+            }
         }
 
         void updateMapOverlays()
@@ -1273,7 +1272,7 @@ namespace VikingEngine.DSSWars.Players
                 input.PauseGame.DownEvent && 
                 DssRef.state.localPlayers.Count == 1)//IsLocalHost())
             {
-                DssRef.state.pauseAction();
+                hud.headOptions.pauseAction();
             }
 
             if (DssRef.state.IsSinglePlayer() && input.GameSpeed.DownEvent)

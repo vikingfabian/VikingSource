@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.Display
                 default:
                     int tabSel = 0;
 
-                    var tabs = new List<RbTabMember>((int)MenuTab.NUM);
+                    var tabs = new List<RbTabMember>((int)MenuTab.NUM_NONE);
 
                     List<MenuTab> availableTabs = player.AvailableArmyTabs();
                     for (int i = 0; i < availableTabs.Count; ++i)

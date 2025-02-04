@@ -79,7 +79,7 @@ namespace VikingEngine.DSSWars.Display
 
                 int tabSel = 0;
 
-                var tabs = new List<ArtTabMember>((int)MenuTab.NUM);
+                var tabs = new List<ArtTabMember>((int)MenuTab.NUM_NONE);
 
                 List<MenuTab> availableTabs = player.AvailableCityTabs();
                 for (int i = 0; i < availableTabs.Count; ++i)
@@ -2172,7 +2172,7 @@ namespace VikingEngine.DSSWars.Display
         Divide,
         Progress,
         Mix,
-        NUM
+        NUM_NONE
     }
 
     enum MixTabEditType

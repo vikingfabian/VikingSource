@@ -26,6 +26,7 @@ namespace VikingEngine.DSSWars.Display
 
         public PlayerHud_Head head;
         public PlayerHud_HeadOptions headOptions;
+        public PlayerHud_Faction factionMenu;
         public PlayerHud_Object objMenu;
 
 
@@ -38,6 +39,7 @@ namespace VikingEngine.DSSWars.Display
             head = new PlayerHud_Head(player);
             headOptions = new PlayerHud_HeadOptions(player);
             objMenu = new PlayerHud_Object(player);
+            factionMenu = new PlayerHud_Faction();
             //hudmenu = new GameHudMenu(player);
             messages = new MessageGroup(player, numPlayers, HudLib.richboxGui);
             tooltip = new Tooltip();
@@ -99,6 +101,9 @@ namespace VikingEngine.DSSWars.Display
 
         public void update()
         {
+            //Debug.Log("game hud update");
+
+            mouseOver = false;
             bool refresh = refreshTimer.Update();
 
             refresh |= player.mapControls.selection.isNew ||
@@ -116,34 +121,33 @@ namespace VikingEngine.DSSWars.Display
             }
 
             needRefresh = false;
-            updateMenuDisplays(refresh);
+            //updateMenuDisplays(refresh);
             
-            if (refresh)
-            {
-                refreshTimer.Reset();
-                head.oneSecondUpdate(player);
-            }
+            
 
             if (player.input.inputSource.HasMouse)
             {
                 //needRefresh |= displays.update();
                 //mouseOver = hudMouseOver();
 
-                needRefresh |= head.updateMouseInput();
-                needRefresh |= headOptions.updateMouseInput();
-                needRefresh |= objMenu.updateMouseInput();
+                
+                needRefresh |= head.updateMouseInput(ref mouseOver);
+                needRefresh |= headOptions.updateMouseInput(ref mouseOver);
+                needRefresh |= objMenu.updateMouseInput(ref mouseOver);
+                needRefresh |= factionMenu.updateMouseInput(ref mouseOver);
+                //mouseOver = false;
 
             }
 
             if (displays.menuStateHasChange)
             {
-                updateMenuDisplays(true);
+               refresh = true;
                 displays.menuStateHasChange = false;
             }
 
             if (mouseOver)
             {
-                tooltip.updateDiplayTip(player, displays.hasInteractButtonHover());
+                //tooltip.updateDiplayTip(player, displays.hasInteractButtonHover());
             }
             else
             {
@@ -153,13 +157,24 @@ namespace VikingEngine.DSSWars.Display
                 }
             }
 
+            if (refresh)
+            {
+                //Debug.Log("game hud -refresh");
+                refreshTimer.Reset();
+                head.refreshUpdate(player);
+                headOptions.refreshUpdate();
+                updateMenuDisplays(true);
+                factionMenu.refreshUpdate(player);
+            }
+
             messages.Update(displays.BottomLeft());
 
             void updateMenuDisplays(bool refresh)
             {
+                
                 if (player.diplomacyMap != null)
-                {                    
-                    displays.headDisplay.refreshUpdate(player, !player.diplomacyMap.hasSelectionOrHover(), refresh, player.faction);
+                {
+                    //displays.headDisplay.refreshUpdate(player, !player.diplomacyMap.hasSelectionOrHover(), refresh, player.faction);
 
                     if (player.diplomacyMap.hasSelectionOrHover())
                     {
@@ -176,22 +191,29 @@ namespace VikingEngine.DSSWars.Display
                         displays.diplomacyDisplay.setVisible(false);
                     }
                     displays.objectDisplay.setVisible(false);
+                    player.factionTab = MenuTab.NUM_NONE;
                 }
                 else if (player.mapControls.selection.obj != null)
                 {
-                    displays.headDisplay.refreshUpdate(player, false, refresh, player.faction);
+                    //displays.headDisplay.refreshUpdate(player, false, refresh, player.faction);
                     updateObjectDisplay(player.mapControls.selection.obj, true, refresh);
                     displays.diplomacyDisplay.setVisible(false);
+                    player.factionTab = MenuTab.NUM_NONE;
                 }
                 else if (player.mapControls.hover.obj != null)
                 {
-                    displays.headDisplay.refreshUpdate(player, false, refresh, player.faction);
+                    //displays.headDisplay.refreshUpdate(player, false, refresh, player.faction);
                     updateObjectDisplay(player.mapControls.hover.obj, false, refresh);
                     displays.diplomacyDisplay.setVisible(false);
+                    player.factionTab = MenuTab.NUM_NONE;
+                }
+                else if (player.factionTab != MenuTab.NUM_NONE)
+                {
+                    updateObjectDisplay(null, false, refresh);
                 }
                 else
                 {
-                    displays.headDisplay.refreshUpdate(player, true, refresh, player.faction);
+                    //displays.headDisplay.refreshUpdate(player, true, refresh, player.faction);
                     updateObjectDisplay(null, false, refresh);
                     displays.diplomacyDisplay.setVisible(false);
                 }
@@ -216,7 +238,8 @@ namespace VikingEngine.DSSWars.Display
 
         public bool hudMouseOver()
         {
-            return displays.mouseOver() || messages.mouseOver();
+            return mouseOver;
+            //return displays.mouseOver() || messages.mouseOver();
         }
     }
     enum HudDetailLevel

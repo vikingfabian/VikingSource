@@ -29,6 +29,11 @@ namespace VikingEngine.HUD.RichBox.Artistic
         }
         override public VectorRect area()
         {
+            var img = content.FirstOrDefault() as RbImage;
+            if (img != null)
+            {
+                return img.pointer.RealArea();
+            }
             return bgArea;
         }
         override public void setGroupSelectionColor(RichBoxSettings settings, bool selected)

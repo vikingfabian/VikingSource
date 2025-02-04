@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.XP
                 WorkExperienceType.Chemistry,
             };
 
-            
+
 
             Unlocks advBuildingUnlock = new Unlocks(); advBuildingUnlock.UnlockAdvancedBuilding();
             tech(technology.advancedBuilding, TechnologyTemplate.Start.advancedBuilding, SpriteName.WarsBuild_Nobelhouse, DssRef.todoLang.Technology_AdvancedBuildings, advBuildingUnlock, advBuildingFields);
@@ -167,17 +167,28 @@ namespace VikingEngine.DSSWars.XP
                 content.Add(new RbText($"{DssRef.lang.Diplomacy_RelationType_Good}: {string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_GoodRelation_PerMin))}"));
                 content.space();
 
-                HudLib.InfoButton(content, new RbAction(() =>
+                HudLib.InfoButton(content, new RbTooltip(tip)); //new RbAction(() =>
+                //{
+                //    RichBoxContent content = new RichBoxContent();
+                //    var info = new RbText(string.Format(DssRef.todoLang.Technology_GainByNeigborRelation, DssRef.lang.Diplomacy_RelationType_Good,
+                //        string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_GoodRelation_PerMin))));
+                //    info.overrideColor = HudLib.InfoYellow_Light;
+                //    content.Add(info);
+
+                //    player.hud.tooltip.create(player, content, true);
+                //}));
+
+                void tip(RichBoxContent content, object tag)
                 {
-                    RichBoxContent content = new RichBoxContent();
                     var info = new RbText(string.Format(DssRef.todoLang.Technology_GainByNeigborRelation, DssRef.lang.Diplomacy_RelationType_Good,
-                        string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_GoodRelation_PerMin))));
+                       string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_GoodRelation_PerMin))));
                     info.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info);
-
-                    player.hud.tooltip.create(player, content, true);
-                }));
+                }
             }
+
+            
+
             content.newLine();
             {
                 HudLib.BulletPoint(content);
@@ -185,16 +196,15 @@ namespace VikingEngine.DSSWars.XP
                 content.Add(new RbText($"{DssRef.lang.Diplomacy_RelationType_Ally}: {string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_AllyRelation_PerMin))}"));
                 content.space();
 
-                HudLib.InfoButton(content, new RbAction(() =>
+                HudLib.InfoButton(content, new RbTooltip(tip));
+
+                void tip(RichBoxContent content, object tag)
                 {
-                    RichBoxContent content = new RichBoxContent();
                     var info = new RbText(string.Format(DssRef.todoLang.Technology_GainByNeigborRelation, DssRef.lang.Diplomacy_RelationType_Ally,
-                    string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_AllyRelation_PerMin))));
+                     string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_AllyRelation_PerMin))));
                     info.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info);
-
-                    player.hud.tooltip.create(player, content, true);
-                }));
+                }
             }
             content.newLine();
             {
@@ -203,16 +213,15 @@ namespace VikingEngine.DSSWars.XP
                 content.Add(new RbText($"{DssRef.lang.UnitType_City}: {string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_CitySpread))}"));
                 content.space();
 
-                HudLib.InfoButton(content, new RbAction(() =>
+                HudLib.InfoButton(content, new RbTooltip(tip));
+
+                void tip(RichBoxContent content, object tag)
                 {
-                    RichBoxContent content = new RichBoxContent();
                     var info = new RbText(string.Format(DssRef.todoLang.Technology_CitySpread,
                     string.Format(DssRef.todoLang.Hud_PointsPerMinute, TextLib.PlusMinus(DssConst.TechnologyGain_CitySpread))));
                     info.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info);
-
-                    player.hud.tooltip.create(player, content, true);
-                }));
+                }
             }
 
             content.newLine();
@@ -222,15 +231,14 @@ namespace VikingEngine.DSSWars.XP
                 content.Add(new RbText($"{DssRef.todoLang.ExperienceLevel_4}: {TextLib.PlusMinus(DssConst.TechnologyGain_Master)}"));
                 content.space();
 
-                HudLib.InfoButton(content, new RbAction(() =>
+                HudLib.InfoButton(content, new RbTooltip(tip));
+
+                void tip(RichBoxContent content, object tag)
                 {
-                    RichBoxContent content = new RichBoxContent();
                     var info = new RbText(string.Format(DssRef.todoLang.Technology_ForEachMaster, DssRef.lang.ResourceType_Workers, DssRef.todoLang.ExperienceLevel_4, TextLib.PlusMinus(DssConst.TechnologyGain_Master)));
                     info.overrideColor = HudLib.InfoYellow_Light;
                     content.Add(info);
-
-                    player.hud.tooltip.create(player, content, true);
-                }));
+                }
             }
 
             content.newLine();
@@ -245,7 +253,7 @@ namespace VikingEngine.DSSWars.XP
             {
                 content.newLine();
 
-                
+
                 bool unlocked = value >= unlockValue;
 
                 if (!cityView)
@@ -265,55 +273,14 @@ namespace VikingEngine.DSSWars.XP
                 infoContent.Add(new RbImage(unlocked ? SpriteName.WarsTechnology_Unlocked : SpriteName.WarsTechnology_Locked));
                 infoContent.Add(new RbImage(icon));
                 infoContent.space();
-               
+
                 var captionText = new RbText(caption);
                 captionText.overrideColor = unlocked ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                 infoContent.Add(captionText);
 
-                var infoButton = new RbButton(infoContent, null, new RbAction(() =>
-                {
-                    var items = unlocks.ListItems();
-                    var buildings = unlocks.ListBuildings();
-                    RichBoxContent content = new RichBoxContent();
-
-                    content.h2(DssRef.todoLang.Hud_Unlock).overrideColor = HudLib.TitleColor_Label;
-                    foreach (var item in items)
-                    {
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.Add(new RbImage(Resource.ResourceLib.Icon(item)));
-                        content.space();
-                        content.Add(new RbText(Display.Translation.LangLib.Item(item)));
-                    }
-
-                    foreach (var item in buildings)
-                    {
-                        var opt = Build.BuildLib.BuildOptions[(int)item];
-
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.Add(new RbImage(opt.sprite));
-                        content.space();
-                        content.Add(new RbText(opt.Label()));
-                    }
-
-                    content.newParagraph();
-
-                    content.h2(DssRef.todoLang.Technology_ShareField).overrideColor = HudLib.TitleColor_Label;
-                    foreach (var xpType in experienceField)
-                    {
-                        LangLib.ExperienceType(xpType, out string name, out SpriteName icon);
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.Add(new RbImage(icon));
-                        content.space();
-                        content.Add(new RbText(name));
-                    }
-
-                    player.hud.tooltip.create(player, content, true);
-                }));
-
-                infoButton.overrideBgColor = HudLib.InfoYellow_BG;
+                var infoButton = new ArtButton(RbButtonStyle.HoverArea, infoContent, null,
+                    new RbTooltip(techTip, new TechTipArgs() { experienceField = experienceField, unlocks = unlocks }));
+                
                 content.Add(infoButton);
 
                 if (cityView && !unlocked)
@@ -323,6 +290,58 @@ namespace VikingEngine.DSSWars.XP
                 }
             }
         }
+
+        class TechTipArgs
+        {
+            public bool cityView;
+            public int value;
+            public Unlocks unlocks;
+            public List<WorkExperienceType> experienceField;
+        }
+        void techTip(RichBoxContent content, object tag)
+        {
+            TechTipArgs args = (TechTipArgs)tag;
+
+            var items = args.unlocks.ListItems();
+            var buildings = args.unlocks.ListBuildings();
+            //RichBoxContent content = new RichBoxContent();
+
+            content.h2(DssRef.todoLang.Hud_Unlock).overrideColor = HudLib.TitleColor_Label;
+            foreach (var item in items)
+            {
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(Resource.ResourceLib.Icon(item)));
+                content.space();
+                content.Add(new RbText(Display.Translation.LangLib.Item(item)));
+            }
+
+            foreach (var item in buildings)
+            {
+                var opt = Build.BuildLib.BuildOptions[(int)item];
+
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(opt.sprite));
+                content.space();
+                content.Add(new RbText(opt.Label()));
+            }
+
+            content.newParagraph();
+
+            content.h2(DssRef.todoLang.Technology_ShareField).overrideColor = HudLib.TitleColor_Label;
+            foreach (var xpType in args.experienceField)
+            {
+                LangLib.ExperienceType(xpType, out string name, out SpriteName icon);
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(icon));
+                content.space();
+                content.Add(new RbText(name));
+            }
+        }
+
+        
 
     }
 }

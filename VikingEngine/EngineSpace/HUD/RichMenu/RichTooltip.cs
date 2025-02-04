@@ -30,6 +30,7 @@ namespace VikingEngine.HUD.RichMenu
             new Timer.TimedAction0ArgTrigger(view, 120);
         }
 
+
         public void DeleteMe()
         {
             if (content != null)

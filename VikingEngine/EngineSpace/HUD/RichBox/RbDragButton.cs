@@ -181,7 +181,7 @@ namespace VikingEngine.HUD.RichBox
             moveLengthForValueChange = Screen.MinClickSize * 0.8f; 
 
         }
-        public override bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, out bool endInteraction)
+        public override bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClick, out bool endInteraction)
         {
             float move = Input.Mouse.Position.X - prevMousePos.X;
             if (Math.Abs(move) > moveLengthForValueChange)

@@ -88,11 +88,16 @@ namespace VikingEngine.HUD.RichMenu
             {
                 if (slider != null)
                 {
-                    slider.DeleteMe();
-                    sliderGroup.Clear();
+                    slider = null;
+                    sliderGroup.DeleteMe();
                 }
             }
 
+        }
+
+        public void DeleteMe()
+        {
+            setVisible(false);
         }
 
         public bool IsVisible()

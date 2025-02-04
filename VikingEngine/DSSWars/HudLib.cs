@@ -310,9 +310,19 @@ namespace VikingEngine.DSSWars
 
         public static void PerSecondInfo(Players.LocalPlayer player, RichBoxContent content, bool minuteAverage)
         {
-            InfoButton(content, new RbAction1Arg<bool>(player.perSecondTooltip, minuteAverage));
+            InfoButton(content, new RbTooltip(perSecondTooltip, minuteAverage));
         }
+        static void perSecondTooltip(RichBoxContent content, object tag)//bool minuteAverage)
+        {
+            bool minuteAverage = (bool)tag;
+            //RichBoxContent content = new RichBoxContent();
+            content.text(DssRef.lang.Info_PerSecond);
+            if (minuteAverage)
+            {
+                content.text(DssRef.lang.Info_MinuteAverage);
+            }
 
+        }
         public static void Description(RichBoxContent content, string description)
         {
             content.text("\"" + description + "\"").overrideColor = InfoYellow_Light;

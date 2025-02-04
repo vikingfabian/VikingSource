@@ -12,11 +12,16 @@ namespace VikingEngine.Graphics
     {
         public List<Graphics.AbsDraw> renderList;
 
-        public RenderTargetDrawContainer(Vector2 pos, Vector2 size, ImageLayers layer, List<Graphics.AbsDraw> renderList2D)
+        public RenderTargetDrawContainer(Vector2 pos, Vector2 size, ImageLayers layer, List<Graphics.AbsDraw> renderList2D, 
+            bool addToUpdate = true)
            : base(pos, size, layer)
         {
             this.renderList = renderList2D;
-            Ref.update.AddToOrRemoveFromUpdate(this, true);
+
+            if (addToUpdate)
+            {
+                Ref.update.AddToOrRemoveFromUpdate(this, true);
+            }
         }
 
         public void AddImage(Graphics.AbsDraw image)
@@ -43,6 +48,11 @@ namespace VikingEngine.Graphics
         public UpdateType UpdateType { get { return VikingEngine.UpdateType.Full; } }
         public void Time_Update(float time)
         {
+            Render();
+        }
+
+        public void Render()
+        { 
             if (visible)
             {
                 DrawImagesToTarget(renderList, true);

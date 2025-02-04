@@ -7,6 +7,7 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
@@ -125,8 +126,8 @@ namespace VikingEngine.DSSWars
                 switch (resourcesSubTab)
                 {
                     case ResourcesSubTab.Overview_Resources:
-                        tabContent.Add(new RbText(DssRef.lang.Resource_Tab_Overview));
-                        tabContent.space();
+                        //tabContent.Add(new RbText(DssRef.lang.Resource_Tab_Overview));
+                        //tabContent.space();
                         tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
                         break;
 
@@ -151,14 +152,14 @@ namespace VikingEngine.DSSWars
                         tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
                         break;
                 }
-                var subTab = new RbButton(tabContent,
+                var subTab = new ArtOption(player.resourcesSubTab == resourcesSubTab, tabContent,
                     new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                     {
                         player.resourcesSubTab = resourcesSubTab;
                     }, resourcesSubTab, SoundLib.menutab));
-                subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
+                //subTab.setGroupSelectionColor(HudLib.RbSettings, );
                 content.Add(subTab);
-                content.space();
+                //content.space();
             }
 
             switch (player.resourcesSubTab)

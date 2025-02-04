@@ -1429,7 +1429,6 @@ namespace VikingEngine.DSSWars
 
         void openProfileEditor(int ProfileIx)
         {
-
             int p = -1;
             bool bController = Input.XInput.KeyIsDown(Buttons.A, ref p) || Input.XInput.KeyIsDown(Buttons.X, ref p);
             new PaintFlagState(ProfileIx, bController);
@@ -1443,14 +1442,15 @@ namespace VikingEngine.DSSWars
 
         public override void Time_Update(float time)
         {
+            bool mouseOver = false;
             base.Time_Update(time);
 
             menuSystem.menu?.Update();
 
-            topMenu.updateMouseInput();
+            topMenu.updateMouseInput(ref mouseOver);
             if (underMenu != null)
             {
-                underMenu.updateMouseInput();
+                underMenu.updateMouseInput(ref mouseOver);
                 if (underMenu.needRefresh)
                 {
                     refreshUnderMenu();

@@ -74,6 +74,9 @@ namespace VikingEngine.DSSWars.Display.Translation
 
         public string Work_SmeltX => "Smelt {0}";
 
+        public string Info_TotalFoodProduction => "Total food production";
+        public string Info_TotalFoodSpending => "Total food spending";
+
         public string Info_FooodAndDeliveryLocation => "By default, workers go to the city hall to eat or drop off items";
         public string GameMenu_UseSpeedX => "{0} speed option";
 

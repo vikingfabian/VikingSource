@@ -514,10 +514,7 @@ namespace VikingEngine.DSSWars
             base.OnDestroy();
         }
 
-        public void pauseAction()
-        {
-            Ref.SetPause(!Ref.isPaused);
-        }
+        
 
         
 

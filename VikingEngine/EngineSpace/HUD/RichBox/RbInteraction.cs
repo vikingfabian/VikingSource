@@ -10,7 +10,7 @@ namespace VikingEngine.HUD.RichBox
 {
     abstract class AbsRbInteraction
     {
-        abstract public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, out bool endInteraction);
+        abstract public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool endInteraction);
     }
     class RbInteraction: AbsRbInteraction
     {
@@ -35,12 +35,12 @@ namespace VikingEngine.HUD.RichBox
         }
 
         /// <returns>Any interaction happened (to avoid multiple)</returns>
-        override public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, out bool unused1)
+        override public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool unused1)
         {
             unused1 = false;
             if (interactionStack != null)
             {
-                var result = interactionStack.update(mousePosOffSet, menu, out bool endInteraction);
+                var result = interactionStack.update(mousePosOffSet, menu, useClickInput, out bool endInteraction);
                 if (endInteraction)
                 {
                     interactionStack = null;
@@ -82,7 +82,7 @@ namespace VikingEngine.HUD.RichBox
 
             if (hover != null)
             {
-                if (clickInput.DownEvent)
+                if (clickInput.DownEvent && useClickInput)
                 {
                     hover.onClick(menu);
                     hover.clickAnimation(true);
@@ -113,11 +113,14 @@ namespace VikingEngine.HUD.RichBox
 
         public void clearSelection()
         {
-            Ref.draw.AddToContainer = drawContainer;
-            hover = null;
-            selectionOutline?.DeleteMe();
-            selectionOutline = null;
-            Ref.draw.AddToContainer = null;
+            if (selectionOutline != null)
+            {
+                Ref.draw.AddToContainer = drawContainer;
+                hover = null;
+                selectionOutline?.DeleteMe();
+                selectionOutline = null;
+                Ref.draw.AddToContainer = null;
+            }
         }
 
         public void DeleteMe()

@@ -71,13 +71,9 @@ namespace VikingEngine.DSSWars.Map
             model.Effect = MapLayer_Detail.ModelEffect;
             model.Visible = false;
             
-            //var tile = DssRef.world.tileGrid.Get(pos);
-            //if (tile.heightLevel != Height.DeepWaterHeight)
-            //{
-            //polygonBlock(pos, tile);
-            //}
         }
 
+        
         public void polygonBlock(IntVector2 pos, Tile tile)
         {
             this.pos = pos;
@@ -503,7 +499,7 @@ namespace VikingEngine.DSSWars.Map
                     newFoliage().init(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f);
                     break;
                 case TerrainBuildingType.WorkerHut:
-                    newFoliage().init(LootFest.VoxelModelName.city_workerhut, rnd, wp, WorldData.SubTileWidth * 1.4f);
+                    newFoliage().init(LootFest.VoxelModelName.city_workerhut, rnd, wp, WorldData.SubTileWidth * 1.0f);
                     break;
                 case TerrainBuildingType.Tavern:
                     newFoliage().init(LootFest.VoxelModelName.city_tavern, rnd, wp, WorldData.SubTileWidth * 0.9f);
@@ -967,11 +963,11 @@ namespace VikingEngine.DSSWars.Map
 
         public bool synchToRender()
         {
-            if (add)
-            {
+            //if (add)
+            //{
                 //var tile = DssRef.world.tileGrid.Get(pos);
 
-                if (hasPolygons)//model != null)
+                if (verticeData != null)//model != null)
                 {
                     //if (!model.InRenderList)
                     //{
@@ -1011,13 +1007,18 @@ namespace VikingEngine.DSSWars.Map
                         m.create(pos);
                     }
                 }
-            }
-            else
-            {
-                DeleteMe();
-            }
+            //}
+            //else
+            //{
+            //    DeleteMe();
+            //}
 
             return add;
+        }
+        public void recycle()
+        {
+            add = true;
+            DeleteMe();
         }
 
         public void DeleteMe()
@@ -1028,12 +1029,15 @@ namespace VikingEngine.DSSWars.Map
             {
                 m.DeleteMe();
             }
+            foliageModels.Clear();
+
             foreach (var m in flagModels)
             {
                 m.DeleteMe();
             }
-            foliageModels.Clear();
             flagModels.Clear();
+
+            animalData?.Clear();
         }
     }
 }
