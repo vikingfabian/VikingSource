@@ -12,8 +12,6 @@ namespace VikingEngine.HUD.RichMenu
 {
     class RichScrollbar
     {
-        //RenderTargetDrawContainer scrollerRenderer = null;
-
         NineSplitAreaTexture slider;
         NineSplitAreaTexture background;
         IntervalF valuerange;
@@ -57,14 +55,15 @@ namespace VikingEngine.HUD.RichMenu
                 float sliderH = Math.Max(area.Height * displayHeightPerc, Engine.Screen.MinClickSize); 
                 slideRange = area.Height - sliderH;
                 valuerange = new IntervalF(0, contentHeight - displayHeight);
-                scrollResult = 0;
-
+                //scrollResult = 0;
+                updateScrollBound();
                 sliderHeight = sliderH;
 
                 setVisible(true);
             }
             else
             {
+                scrollResult = 0;
                 setVisible(false);
             }   
         }
@@ -75,14 +74,15 @@ namespace VikingEngine.HUD.RichMenu
 
             if (visible)
             {
-                //VectorRect size = area;
-                //size.Height = sliderHeight;
-                slider = new NineSplitAreaTexture(sliderTex, SliderArea(false), layer);
-                if (sliderGroup == null)
+                if (slider == null)
                 {
-                    sliderGroup = new ImageGroupParent2D();
+                    slider = new NineSplitAreaTexture(sliderTex, SliderArea(false), layer);
+                    if (sliderGroup == null)
+                    {
+                        sliderGroup = new ImageGroupParent2D();
+                    }
+                    sliderGroup.Add(slider.images);
                 }
-                sliderGroup.Add(slider.images);
             }
             else
             {
@@ -91,6 +91,9 @@ namespace VikingEngine.HUD.RichMenu
                     slider = null;
                     sliderGroup.DeleteMe();
                 }
+
+                selectionOutline?.DeleteMe();
+                selectionOutline = null;
             }
 
         }
@@ -188,6 +191,11 @@ namespace VikingEngine.HUD.RichMenu
             }
 
             return false;
+        }
+
+        void updateScrollBound()
+        {
+            scrollResult = -valuerange.SetBounds(-scrollResult);
         }
 
     }
