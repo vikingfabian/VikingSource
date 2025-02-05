@@ -222,18 +222,18 @@ namespace VikingEngine.HUD.RichMenu
                     interaction.clearSelection();
                 }
 
-                //if (scrollBar.IsVisible() && mouseScrollArea.IntersectPoint(Input.Mouse.Position))
-                //{
-                //    mouseOver = true;
-                //    if (interaction.interactionStack == null && scrollBar.updateMouseInput())
-                //    {                        
-                //        updateContentScroll();
-                //    }
-                //    if (scrollBar.updateScrollWheel())
-                //    {
-                //        updateContentScroll();
-                //    }
-                //}
+                if (scrollBar.IsVisible() && mouseScrollArea.IntersectPoint(Input.Mouse.Position))
+                {
+                    mouseOver = true;
+                    if (interaction.interactionStack == null && scrollBar.updateMouseInput())
+                    {
+                        updateContentScroll();
+                    }
+                    if (scrollBar.updateScrollWheel())
+                    {
+                        updateContentScroll();
+                    }
+                }
             }
         }
 
