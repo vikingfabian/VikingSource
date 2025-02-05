@@ -102,7 +102,7 @@ namespace VikingEngine.DSSWars
             {
                 disableTexture = SpriteName.WarsHudSecondaryButtonDisabled
             };
-            RbSettings.artOutlineButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudOutlineButton, 1, 8, 1f, true, true);
+            RbSettings.artOutlineButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudHeadBarOutlineButton, 1, 8, 1f, true, true);
             RbSettings.artHoverAreaTex = new HUD.NineSplitSettings(SpriteName.WarsHudHoverArea, 1, 8, 1f, true, true);
 
             RbSettings.dragButtonTex = new ThreeSplitSettings(SpriteName.WarsHudDragButton, 1, 15);
@@ -121,6 +121,11 @@ namespace VikingEngine.DSSWars
             RbSettings.artTabTex = new NineSplitSettings(SpriteName.WarsHudTabSelected, 1, 8, 1f, true, true)
             {
                 notSelectedTexture = SpriteName.WarsHudTabNotSelected,
+            };
+
+            RbSettings.artSubTabTex = new NineSplitSettings(SpriteName.WarsHudSubTabSelected, 1, 8, 1f, true, true)
+            {
+                notSelectedTexture = SpriteName.WarsHudSubTabNotSelected,
             };
 
             RbOnGuiSettings = RbSettings;

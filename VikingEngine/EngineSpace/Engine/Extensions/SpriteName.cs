@@ -2424,12 +2424,15 @@ namespace VikingEngine
         WarsHudScrollerSlider,
         WarsHudTabSelected,
         WarsHudTabNotSelected,
+        WarsHudSubTabSelected,
+        WarsHudSubTabNotSelected,
         WarsHud,
         WarsHudPrimaryButton,
         WarsHudPrimaryButtonDisabled,
         WarsHudSecondaryButton,
         WarsHudSecondaryButtonDisabled,
         WarsHudOutlineButton,
+       
         WarsHudOptionSelected,
         WarsHudOptionNotSelected,
         WarsHudRoundButton,
@@ -2444,6 +2447,8 @@ namespace VikingEngine
         WarsHudHeadBarButton,
         WarsHudHeadBarTabSelected,
         WarsHudHeadBarTabNotSelected,
+        WarsHudHeadBarOutlineButton,
+
 
         WarsHudHeadBarPlayIcon,
         WarsHudHeadBarPauseIcon,

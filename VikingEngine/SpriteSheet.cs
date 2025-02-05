@@ -2644,6 +2644,10 @@ namespace VikingEngine
 
                     add(SpriteName.WarsHudMessageBg);
                     add(SpriteName.WarsHudIconEditor);
+
+                    add(SpriteName.WarsHudHeadBarOutlineButton);
+                    add(SpriteName.WarsHudSubTabSelected);
+                    add(SpriteName.WarsHudSubTabNotSelected);
                 }
 
                 currentIndex = numTilesWidth * 101;

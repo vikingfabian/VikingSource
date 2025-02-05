@@ -21,6 +21,8 @@ namespace VikingEngine.HUD.RichBox.Artistic
         DropDownNotSelected,
         TabSelected,
         TabNotSelected,
+        SubTabSelected,
+        SubTabNotSelected,
         HoverArea,
     }
 
@@ -79,6 +81,12 @@ namespace VikingEngine.HUD.RichBox.Artistic
                     break;
                 case RbButtonStyle.TabNotSelected:
                     textureSett = group.settings.artTabTex.Selected(false);
+                    break;
+                case RbButtonStyle.SubTabSelected:
+                    textureSett = group.settings.artSubTabTex;
+                    break;
+                case RbButtonStyle.SubTabNotSelected:
+                    textureSett = group.settings.artSubTabTex.Selected(false);
                     break;
                 case RbButtonStyle.HoverArea:
                     textureSett = group.settings.artHoverAreaTex;

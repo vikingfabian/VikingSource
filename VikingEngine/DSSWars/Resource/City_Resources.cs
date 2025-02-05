@@ -12,6 +12,7 @@ using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.PJ.Joust;
 
@@ -1240,17 +1241,16 @@ namespace VikingEngine.DSSWars.GameObject
                 else
                 {
                     var infoContent = new RichBoxContent();
-
                     infoContent.Add(icon);
                    
-                    var infoButton = new RbButton(infoContent, 
+                    var infoButton = new ArtButton( RbButtonStyle.HoverArea, infoContent, 
                         new RbAction(()=> 
                         {
                             player.resourcesSubTab = stockpileLink;  
                         }),                        
-                        new RbAction(() =>
+                        new RbTooltip((RichBoxContent content, object tag) =>
                         {
-                            RichBoxContent content = new RichBoxContent();
+                            //RichBoxContent content = new RichBoxContent();
                             HudLib.Label(content, DssRef.lang.Resource_Tab_Stockpile);
                             content.newLine();
                             content.Add(new RbImage(stockIcon));
@@ -1258,15 +1258,17 @@ namespace VikingEngine.DSSWars.GameObject
                             content.Add(new RbText(city.GetGroupedResource(item).goalBuffer.ToString()));
                         
 
-                            player.hud.tooltip.create(player, content, true);
+                            //player.hud.tooltip.create(player, content, true);
                         }));
 
-                    infoButton.overrideBgColor = HudLib.InfoYellow_BG;
+                    //infoButton.overrideBgColor = HudLib.InfoYellow_BG;
                     content.space();
                     content.Add(infoButton);
                 }
                 
             }
+
+            
         }
 
         public static void BufferIconInfo(RichBoxContent content, bool safeguard)
