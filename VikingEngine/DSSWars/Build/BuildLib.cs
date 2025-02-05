@@ -127,8 +127,8 @@ namespace VikingEngine.DSSWars.Build
             BuildAndExpandType.Storehouse,
             BuildAndExpandType.Tavern,
             BuildAndExpandType.Brewery,
-            BuildAndExpandType.CoalPit,
-            BuildAndExpandType.Foundry,
+            //BuildAndExpandType.CoalPit,
+            //BuildAndExpandType.Foundry,
             BuildAndExpandType.School,
 
         };
@@ -313,7 +313,6 @@ namespace VikingEngine.DSSWars.Build
             list.Add(BuildAndExpandType.CitySquare);
             list.Add(BuildAndExpandType.CobbleStones);
 
-            list.Add(BuildAndExpandType.GardenBird);
             list.Add(BuildAndExpandType.GardenMemoryStone);
             list.Add(BuildAndExpandType.Statue_Leader);
             list.Add(BuildAndExpandType.Statue_Lion);
@@ -403,40 +402,40 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.WoodWall,TerrainMainType.Wall, (int)TerrainWallType.WoodWall, SpriteName.MissingImage, CraftBuildingLib.WoodWall, false);
             new BuildOption(BuildAndExpandType.WoodTower,TerrainMainType.Wall, (int)TerrainWallType.WoodTower, SpriteName.MissingImage, CraftBuildingLib.WoodTower, false);
             new BuildOption(BuildAndExpandType.StoneWall,TerrainMainType.Wall, (int)TerrainWallType.StoneWall, SpriteName.MissingImage, CraftBuildingLib.StoneWall, false);
-            new BuildOption(BuildAndExpandType.StoneTower,TerrainMainType.Wall, (int)TerrainWallType.StoneTower, SpriteName.MissingImage, CraftBuildingLib.StoneTower, false);
-            new BuildOption(BuildAndExpandType.StoneWallGreen,TerrainMainType.Wall, (int)TerrainWallType.StoneWallGreen, SpriteName.MissingImage, CraftBuildingLib.StoneWallGreen, false);
-             new BuildOption(BuildAndExpandType.StoneWallBlueRoof,TerrainMainType.Wall, (int)TerrainWallType.StoneWallBlueRoof, SpriteName.MissingImage, CraftBuildingLib.StoneWallBlueRoof, false);
-             new BuildOption(BuildAndExpandType.StoneWallWoodHouse,TerrainMainType.Wall, (int)TerrainWallType.StoneWallWoodHouse, SpriteName.MissingImage, CraftBuildingLib.StoneWallWoodHouse, false);
-             new BuildOption(BuildAndExpandType.StoneGate,TerrainMainType.Wall, (int)TerrainWallType.StoneGate, SpriteName.MissingImage, CraftBuildingLib.StoneGate, false);
-             new BuildOption(BuildAndExpandType.StoneHouse,TerrainMainType.Wall, (int)TerrainWallType.StoneHouse, SpriteName.MissingImage, CraftBuildingLib.StoneHouse, false);
-             new BuildOption(BuildAndExpandType.PavementLamp,TerrainMainType.Decor, (int)TerrainDecorType.PavementLamp, SpriteName.MissingImage, CraftBuildingLib.PavementLamp, false);
-            new BuildOption(BuildAndExpandType.PavemenFountain,TerrainMainType.Decor, (int)TerrainDecorType.PavemenFountain, SpriteName.MissingImage, CraftBuildingLib.PavemenFountain, false);
-            new BuildOption(BuildAndExpandType.PavementRectFlower,TerrainMainType.Decor, (int)TerrainDecorType.PavementRectFlower, SpriteName.MissingImage, CraftBuildingLib.PavementRectFlower, false);
-            new BuildOption(BuildAndExpandType.GardenGrass, TerrainMainType.Decor, (int)TerrainDecorType.GardenGrass, SpriteName.MissingImage, CraftBuildingLib.GardenGrass, false);
-            new BuildOption(BuildAndExpandType.GardenBird, TerrainMainType.Decor, (int)TerrainDecorType.GardenBird, SpriteName.MissingImage, CraftBuildingLib.GardenBird, false);
-            new BuildOption(BuildAndExpandType.GardenFourBushes, TerrainMainType.Decor, (int)TerrainDecorType.GardenFourBushes, SpriteName.MissingImage, CraftBuildingLib.GardenFourBushes, false);
-            new BuildOption(BuildAndExpandType.GardenLongTree,TerrainMainType.Decor, (int)TerrainDecorType.GardenLongTree, SpriteName.MissingImage, CraftBuildingLib.GardenLongTree, false);
-            new BuildOption(BuildAndExpandType.GardenWalledBush,TerrainMainType.Decor, (int)TerrainDecorType.GardenWalledBush, SpriteName.MissingImage, CraftBuildingLib.GardenWalledBush, false);
+            new BuildOption(BuildAndExpandType.StoneTower,TerrainMainType.Wall, (int)TerrainWallType.StoneTower, SpriteName.WarsBuild_StoneTower, CraftBuildingLib.StoneTower, false);
+            new BuildOption(BuildAndExpandType.StoneWallGreen,TerrainMainType.Wall, (int)TerrainWallType.StoneWallGreen, SpriteName.WarsBuild_StoneWallGreen, CraftBuildingLib.StoneWallGreen, false);
+             new BuildOption(BuildAndExpandType.StoneWallBlueRoof,TerrainMainType.Wall, (int)TerrainWallType.StoneWallBlueRoof, SpriteName.WarsBuild_StoneWallBlueRoof, CraftBuildingLib.StoneWallBlueRoof, false);
+             new BuildOption(BuildAndExpandType.StoneWallWoodHouse,TerrainMainType.Wall, (int)TerrainWallType.StoneWallWoodHouse, SpriteName.WarsBuild_StoneWallWoodHouse, CraftBuildingLib.StoneWallWoodHouse, false);
+             new BuildOption(BuildAndExpandType.StoneGate,TerrainMainType.Wall, (int)TerrainWallType.StoneGate, SpriteName.cmdTileStoneGate, CraftBuildingLib.StoneGate, false);
+             new BuildOption(BuildAndExpandType.StoneHouse,TerrainMainType.Wall, (int)TerrainWallType.StoneHouse, SpriteName.WarsBuild_StoneHouse, CraftBuildingLib.StoneHouse, false);
+             new BuildOption(BuildAndExpandType.PavementLamp,TerrainMainType.Decor, (int)TerrainDecorType.PavementLamp, SpriteName.WarsBuild_PavementLamp, CraftBuildingLib.PavementLamp, false);
+            new BuildOption(BuildAndExpandType.PavemenFountain,TerrainMainType.Decor, (int)TerrainDecorType.PavemenFountain, SpriteName.WarsBuild_PavemenFountain, CraftBuildingLib.PavemenFountain, false);
+            new BuildOption(BuildAndExpandType.PavementRectFlower,TerrainMainType.Decor, (int)TerrainDecorType.PavementRectFlower, SpriteName.WarsBuild_PavementFlowers, CraftBuildingLib.PavementRectFlower, false);
+            new BuildOption(BuildAndExpandType.GardenGrass, TerrainMainType.Decor, (int)TerrainDecorType.GardenGrass, SpriteName.WarsBuild_GardenGrass, CraftBuildingLib.GardenGrass, false);
+            new BuildOption(BuildAndExpandType.GardenBird, TerrainMainType.Decor, (int)TerrainDecorType.GardenBird, SpriteName.WarsBuild_GardenBird, CraftBuildingLib.GardenBird, false);
+            new BuildOption(BuildAndExpandType.GardenFourBushes, TerrainMainType.Decor, (int)TerrainDecorType.GardenFourBushes, SpriteName.WarsBuild_GardenFourBushes, CraftBuildingLib.GardenFourBushes, false);
+            new BuildOption(BuildAndExpandType.GardenLongTree,TerrainMainType.Decor, (int)TerrainDecorType.GardenLongTree, SpriteName.WarsBuild_GardenLongTree, CraftBuildingLib.GardenLongTree, false);
+            new BuildOption(BuildAndExpandType.GardenWalledBush,TerrainMainType.Decor, (int)TerrainDecorType.GardenWalledBush, SpriteName.WarsBuild_GardenWalledBush, CraftBuildingLib.GardenWalledBush, false);
             new BuildOption(BuildAndExpandType.SmallCityHouse,TerrainMainType.Building, (int)TerrainBuildingType.SmallHouse, SpriteName.MissingImage, CraftBuildingLib.SmallCityHouse, false);
             new BuildOption(BuildAndExpandType.BigCityHouse,TerrainMainType.Building, (int)TerrainBuildingType.BigHouse, SpriteName.MissingImage, CraftBuildingLib.BigCityHouse, false);
             new BuildOption(BuildAndExpandType.CitySquare,TerrainMainType.Building, (int)TerrainBuildingType.Square, SpriteName.MissingImage, CraftBuildingLib.CitySquare, false);
             new BuildOption(BuildAndExpandType.CobbleStones,TerrainMainType.Building, (int)TerrainBuildingType.CobbleStones, SpriteName.MissingImage, CraftBuildingLib.CobbleStones, false);
 
-            new BuildOption(BuildAndExpandType.GardenMemoryStone, TerrainMainType.Decor, (int)TerrainDecorType.GardenMemoryStone, SpriteName.MissingImage, CraftBuildingLib.GardenMemoryStone, false);
-            new BuildOption(BuildAndExpandType.Statue_Leader, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Leader, SpriteName.MissingImage, CraftBuildingLib.Statue_Leader, false);
-            new BuildOption(BuildAndExpandType.Statue_Lion, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Lion, SpriteName.MissingImage, CraftBuildingLib.Statue_Lion, false);
-            new BuildOption(BuildAndExpandType.Statue_Horse, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Horse, SpriteName.MissingImage, CraftBuildingLib.Statue_Horse, false);
-            new BuildOption(BuildAndExpandType.Statue_Pillar, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Pillar, SpriteName.MissingImage, CraftBuildingLib.Statue_Pillar, false);
+            new BuildOption(BuildAndExpandType.GardenMemoryStone, TerrainMainType.Decor, (int)TerrainDecorType.GardenMemoryStone, SpriteName.WarsBuild_GardenMemoryStone, CraftBuildingLib.GardenMemoryStone, false);
+            new BuildOption(BuildAndExpandType.Statue_Leader, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Leader, SpriteName.WarsBuild_Statue_Leader, CraftBuildingLib.Statue_Leader, false);
+            new BuildOption(BuildAndExpandType.Statue_Lion, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Lion, SpriteName.WarsBuild_Statue_Lion, CraftBuildingLib.Statue_Lion, false);
+            new BuildOption(BuildAndExpandType.Statue_Horse, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Horse, SpriteName.WarsBuild_Statue_Horse, CraftBuildingLib.Statue_Horse, false);
+            new BuildOption(BuildAndExpandType.Statue_Pillar, TerrainMainType.Decor, (int)TerrainDecorType.Statue_Pillar, SpriteName.WarsBuild_Statue_Pillar, CraftBuildingLib.Statue_Pillar, false);
 
-            new BuildOption(BuildAndExpandType.FlagPole_LongBanner, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_LongBanner, SpriteName.MissingImage, CraftBuildingLib.FlagPole_LongBanner, false);
-            new BuildOption(BuildAndExpandType.FlagPole_Banner, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_Banner, SpriteName.MissingImage, CraftBuildingLib.FlagPole_Banner, false);
-            new BuildOption(BuildAndExpandType.FlagPole_SlimBanner, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_SlimBanner, SpriteName.MissingImage, CraftBuildingLib.FlagPole_SlimBanner, false);
+            new BuildOption(BuildAndExpandType.FlagPole_LongBanner, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_LongBanner, SpriteName.WarsFlagType_LongBanner, CraftBuildingLib.FlagPole_LongBanner, false);
+            new BuildOption(BuildAndExpandType.FlagPole_Banner, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_Banner, SpriteName.WarsFlagType_Banner, CraftBuildingLib.FlagPole_Banner, false);
+            new BuildOption(BuildAndExpandType.FlagPole_SlimBanner, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_SlimBanner, SpriteName.WarsFlagType_SlimBanner, CraftBuildingLib.FlagPole_SlimBanner, false);
 
-            new BuildOption(BuildAndExpandType.FlagPole_Flag, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_Flag, SpriteName.MissingImage, CraftBuildingLib.FlagPole_Flag, false);
-            new BuildOption(BuildAndExpandType.FlagPole_FlagRound, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_FlagRound, SpriteName.MissingImage, CraftBuildingLib.FlagPole_FlagRound, false);
-            new BuildOption(BuildAndExpandType.FlagPole_FlagLarge, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_FlagLarge, SpriteName.MissingImage, CraftBuildingLib.FlagPole_FlagLarge, false);
-            new BuildOption(BuildAndExpandType.FlagPole_Streamer, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_Streamer, SpriteName.MissingImage, CraftBuildingLib.FlagPole_Streamer, false);
-            new BuildOption(BuildAndExpandType.FlagPole_Triangle, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_Triangle, SpriteName.MissingImage, CraftBuildingLib.FlagPole_Triangle, false);
+            new BuildOption(BuildAndExpandType.FlagPole_Flag, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_Flag, SpriteName.WarsFlagType_Flag, CraftBuildingLib.FlagPole_Flag, false);
+            new BuildOption(BuildAndExpandType.FlagPole_FlagRound, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_FlagRound, SpriteName.WarsFlagType_FlagRound, CraftBuildingLib.FlagPole_FlagRound, false);
+            new BuildOption(BuildAndExpandType.FlagPole_FlagLarge, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_FlagLarge, SpriteName.WarsFlagType_FlagLarge, CraftBuildingLib.FlagPole_FlagLarge, false);
+            new BuildOption(BuildAndExpandType.FlagPole_Streamer, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_Streamer, SpriteName.WarsFlagType_Streamer, CraftBuildingLib.FlagPole_Streamer, false);
+            new BuildOption(BuildAndExpandType.FlagPole_Triangle, TerrainMainType.Decor, (int)TerrainDecorType.FlagPole_Triangle, SpriteName.WarsFlagType_Triangle, CraftBuildingLib.FlagPole_Triangle, false);
 
 
         }

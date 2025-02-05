@@ -2648,6 +2648,7 @@ namespace VikingEngine
                     add(SpriteName.WarsHudHeadBarOutlineButton);
                     add(SpriteName.WarsHudSubTabSelected);
                     add(SpriteName.WarsHudSubTabNotSelected);
+                    add(SpriteName.WarsHudToggleNotSelected);
                 }
 
                 currentIndex = numTilesWidth * 101;

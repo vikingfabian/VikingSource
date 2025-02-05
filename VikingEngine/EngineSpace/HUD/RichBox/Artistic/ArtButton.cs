@@ -17,6 +17,8 @@ namespace VikingEngine.HUD.RichBox.Artistic
         CheckBox,
         OptionSelected,
         OptionNotSelected,
+        ToggleSelected,
+        ToggleNotSelected,
         DropDownSelected,
         DropDownNotSelected,
         TabSelected,
@@ -30,7 +32,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
     {
         public static readonly Color MouseDownCol = Color.LightGray;
         protected RbButtonStyle buttonStyle;
-        HUD.NineSplitAreaTexture texture;
+        protected HUD.NineSplitAreaTexture texture;
         public ArtButton()
         { }
 
@@ -69,6 +71,12 @@ namespace VikingEngine.HUD.RichBox.Artistic
                     break;
                 case RbButtonStyle.OptionNotSelected:
                     textureSett = group.settings.artOptionButtonTex.Selected(false);
+                    break;
+                case RbButtonStyle.ToggleSelected:
+                    textureSett = group.settings.artToggleButtonTex;
+                    break;
+                case RbButtonStyle.ToggleNotSelected:
+                    textureSett = group.settings.artToggleButtonTex.Selected(false);
                     break;
                 case RbButtonStyle.DropDownSelected:
                     textureSett = group.settings.artDropDownButtonTex;

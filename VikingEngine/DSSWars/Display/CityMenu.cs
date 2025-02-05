@@ -38,7 +38,7 @@ namespace VikingEngine.DSSWars.Display
 
         Players.LocalPlayer player;
         City city;
-        static readonly List<int> StockPileControls = new List<int> { 100, 1000 };
+        static readonly List<int> StockPileControls = new List<int> { 100/*, 1000*/ };
 
         public static readonly AutomationFocus[] AvailableAutomationFocuses =
         {
@@ -1142,7 +1142,7 @@ namespace VikingEngine.DSSWars.Display
                         new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                         {
                             player.resourcesSubTab = resourcesSubTab;
-                        }, resourcesSubTab, SoundLib.menutab));
+                        }, resourcesSubTab, SoundLib.menutab), new RbTooltip_Text("Select item cathegory"));
                     //subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
                     content.Add(subTab);
 
@@ -1207,7 +1207,7 @@ namespace VikingEngine.DSSWars.Display
                     blueprintButton(player, content, CraftResourceLib.Food1, CraftResourceLib.Food2);
                     content.space();
 
-                    content.Add(new ArtButton( RbButtonStyle.CheckBox, new List<AbsRichBoxMember> {
+                    content.Add(new ArtToggle(city.res_food_safeguard,new List<AbsRichBoxMember> {
                             new RbImage(city.res_food_safeguard? SpriteName.WarsProtectedStockpileOn : SpriteName.WarsProtectedStockpileOff, 0.7f),
                         },
                     new RbAction(() =>{
@@ -1437,7 +1437,7 @@ namespace VikingEngine.DSSWars.Display
                     break;
 
                 case ResourcesSubTab.Stockpile_Resources:
-                    //content.h1(DssRef.lang.Resource_Tab_Stockpile).overrideColor = HudLib.TitleColor_Label;
+                    content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
 
                     stockpile(ItemResourceType.Wood_Group);
                     stockpile(ItemResourceType.Stone_G);
@@ -1464,6 +1464,8 @@ namespace VikingEngine.DSSWars.Display
                     break;
 
                 case ResourcesSubTab.Stockpile_Metals:
+                    content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
+
                     stockpile(ItemResourceType.IronOre_G);
                     stockpile(ItemResourceType.TinOre);
                     stockpile(ItemResourceType.CopperOre);
@@ -1487,6 +1489,7 @@ namespace VikingEngine.DSSWars.Display
 
                     break;
                 case ResourcesSubTab.Stockpile_Weapons:
+                    content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
                     stockpile(ItemResourceType.BronzeSword);
                     stockpile(ItemResourceType.ShortSword);
                     stockpile(ItemResourceType.Sword);
@@ -1502,7 +1505,8 @@ namespace VikingEngine.DSSWars.Display
                     break;
 
                 case ResourcesSubTab.Stockpile_Projectile:
-                    
+                    content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
+
                     stockpile(ItemResourceType.SlingShot);
                     stockpile(ItemResourceType.ThrowingSpear);
                     stockpile(ItemResourceType.Bow);
@@ -1530,6 +1534,7 @@ namespace VikingEngine.DSSWars.Display
                     break;
 
                 case ResourcesSubTab.Stockpile_Armor:
+                    content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
                     stockpile(ItemResourceType.HeavyPaddedArmor);
                     stockpile(ItemResourceType.PaddedArmor);
                     stockpile(ItemResourceType.IronArmor);
@@ -1540,20 +1545,28 @@ namespace VikingEngine.DSSWars.Display
                     break;
 
                 default:
+                    content.h2(DssRef.lang.Work_OrderPrioTitle, HudLib.TitleColor_Head);
                     city.workTemplate.toHud(player, content, player.resourcesSubTab, city.faction, city);
                     break;
             }
 
             void stockpile(ItemResourceType item)
-            {
-                
+            {   
                 GroupedResource res = city.GetGroupedResource(item);
 
                 content.newLine();
-                var icon = new RbImage(res.amount >= res.goalBuffer ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd);
-               
-                content.Add(icon);
-                content.Add(new RbImage(ResourceLib.Icon(item)));
+
+                content.Add(new ArtButton(RbButtonStyle.HoverArea, 
+                    new List<AbsRichBoxMember>{
+                        new RbImage(res.amount >= res.goalBuffer ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd),
+                        new RbImage(ResourceLib.Icon(item))},null,
+                        new RbTooltip((RichBoxContent content, object tag) =>
+                        {
+                            bool buffer = false;
+                            city.GetGroupedResource(item).toMenu(content, item, false, ref buffer);                           
+                        }
+                        )));
+                
                 content.space();
                
                 stockPileEdit(content, item, res);

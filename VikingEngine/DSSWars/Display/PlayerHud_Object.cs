@@ -45,6 +45,10 @@ namespace VikingEngine.DSSWars.Display
 
         public void refreshObject(Players.LocalPlayer player, GameObject.AbsGameObject obj, bool selected)
         {
+            if (menu != null && menu.BlockRefresh())
+            {
+                return;
+            }
             //interaction?.DeleteMe();
             //interaction = null;
 

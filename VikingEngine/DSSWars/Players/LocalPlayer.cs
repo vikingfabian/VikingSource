@@ -432,26 +432,7 @@ namespace VikingEngine.DSSWars.Players
         //public RbAction WorkSafeguardTooltip;
         
 
-        public void followFactionTooltip(bool follows, double currentFactionValue)
-        {
-            RichBoxContent content = new RichBoxContent();
-
-            content.h2(DssRef.lang.Hud_ToggleFollowFaction).overrideColor = HudLib.TitleColor_Action;
-            content.newParagraph();
-
-            string current;
-            if (follows)
-            {
-                current = DssRef.lang.Hud_FollowFaction_Yes;
-            }
-            else
-            { 
-                current = string.Format(DssRef.lang.Hud_FollowFaction_No, currentFactionValue);
-            }
-            content.text(current).overrideColor = HudLib.InfoYellow_Light;
-
-            hud.tooltip.create(this, content, true);
-        }
+       
 
        
 

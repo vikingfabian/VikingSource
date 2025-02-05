@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
+using VikingEngine.Network;
 
 namespace VikingEngine.HUD.RichBox
 {
@@ -95,7 +96,7 @@ namespace VikingEngine.HUD.RichBox
         public override void Create(RichBoxGroup group)
         {
             base.Create(group);
-            valueChangeInput(0);
+            valueChangeInput(0, false);
         }
 
         protected override void createBackground(RichBoxGroup group, VectorRect area, ImageLayers layer)
@@ -110,14 +111,19 @@ namespace VikingEngine.HUD.RichBox
             new DragButtonInteraction(menu, this);
         }
 
-        public void valueChangeInput(float change)
+        public void valueChangeInput(float change, bool dragStep)
         {
+            if (dragStep)
+            {
+                change *= settings.step;
+            }
+
             if (valueTypeInt)
             {
                 int value = intValue.Invoke(false, 0);
                 if (change != 0)
                 {
-                    value = Convert.ToInt32(Bound.Set(value + change * settings.step, settings.min, settings.max));
+                    value = Convert.ToInt32(Bound.Set(value + change, settings.min, settings.max));
                     intValue.Invoke(true, value);
                 }
                 textPointer.pointer.TextString = TextLib.LargeNumber(value);
@@ -161,7 +167,7 @@ namespace VikingEngine.HUD.RichBox
 
         public override void onClick(RichMenu.RichMenu menu)
         {
-            parent.valueChangeInput(add);
+            parent.valueChangeInput(add, false);
         }
     }
 
@@ -177,7 +183,7 @@ namespace VikingEngine.HUD.RichBox
             this.dragButton = dragButton;
             menu.interaction.interactionStack = this;
 
-            mouseXRange = new IntervalF(menu.edgeArea.X, menu.edgeArea.Right);
+            
             moveLengthForValueChange = Screen.MinClickSize * 0.8f; 
 
         }
@@ -188,7 +194,7 @@ namespace VikingEngine.HUD.RichBox
             {
                 float change = (int)(move / moveLengthForValueChange);
                 prevMousePos.X += change * moveLengthForValueChange;
-
+                mouseXRange = new IntervalF(menu.backgroundArea.X + Engine.Screen.IconSize, menu.backgroundArea.Right - Engine.Screen.IconSize);
                 if (Input.Mouse.Position.X < mouseXRange.Min)
                 {
                     Input.Mouse.SetPosition(new IntVector2(mouseXRange.Max + (mouseXRange.Min - Input.Mouse.Position.X), Input.Mouse.Position.Y));
@@ -199,11 +205,11 @@ namespace VikingEngine.HUD.RichBox
                     Input.Mouse.SetPosition(new IntVector2( mouseXRange.Min + (Input.Mouse.Position.X- mouseXRange.Max), Input.Mouse.Position.Y));
                     prevMousePos.X = mouseXRange.Min;
                 }
-                dragButton.valueChangeInput(change);
+                dragButton.valueChangeInput(change, true );
             }
 
             endInteraction = Input.Mouse.ButtonUpEvent(MouseButton.Left);
-            return true;
+            return false;
         }
     }
 }

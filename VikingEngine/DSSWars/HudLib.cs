@@ -113,6 +113,11 @@ namespace VikingEngine.DSSWars
                 notSelectedTexture = SpriteName.WarsHudOptionNotSelected,
             };
 
+            RbSettings.artToggleButtonTex = new NineSplitSettings(SpriteName.WarsHudOptionSelected, 1, 8, 1f, true, true)
+            {
+                notSelectedTexture = SpriteName.WarsHudToggleNotSelected,
+            };
+
             RbSettings.artDropDownButtonTex = new NineSplitSettings(SpriteName.WarsHudRoundButton, 1, 8, 1f, true, true)
             {
                 notSelectedTexture = SpriteName.WarsHudRoundButtonNotSelected,
@@ -291,14 +296,59 @@ namespace VikingEngine.DSSWars
         }
         public static void FollowFactionButton(bool followFaction, double currentFactionValue, AbsRbAction action, Players.LocalPlayer player, RichBoxContent content)
         {
-            var followFactionButton = new RbButton(new List<AbsRichBoxMember> { new RbImage(followFaction ? SpriteName.WarsFollowFactionYes : SpriteName.WarsFollowFactionNo) },
-                        action, new RbAction2Arg<bool, double>( player.followFactionTooltip, followFaction, currentFactionValue));//new RbAction2Arg<ItemResourceType, City>(faction.tradeFollowFactionClick, resource, city));
-            if (!followFaction)
+            SpriteName sprite;
+            //RbButtonStyle buttonStyle;
+
+            if (followFaction)
             {
-                followFactionButton.overrideBgColor = OffStandardOrange;
+                sprite = SpriteName.WarsFollowFactionYes;
+                //buttonStyle = RbButtonStyle.OptionSelected;
             }
+            else
+            {
+                sprite = SpriteName.WarsFollowFactionNo;
+                //buttonStyle = RbButtonStyle.OptionNotSelected;
+            }
+
+
+            var followFactionButton = new ArtToggle(followFaction, new List<AbsRichBoxMember> { new RbImage(sprite) },
+                        action, //new RbAction2Arg<bool, double>( player.followFactionTooltip, followFaction, currentFactionValue));
+                        new RbTooltip(followFactionTooltip, new FollowFactionTooltipArgs() { follows = followFaction , currentFactionValue = currentFactionValue}));
+            //if (!followFaction)
+            //{
+            //    followFactionButton.overrideBgColor = OffStandardOrange;
+            //}
             content.Add(followFactionButton);
             content.space();
+
+
+            
+            void followFactionTooltip(RichBoxContent content, object tag)//bool follows, double currentFactionValue)
+            {
+                FollowFactionTooltipArgs args = (FollowFactionTooltipArgs)tag;
+
+                content.h2(DssRef.lang.Hud_ToggleFollowFaction).overrideColor = HudLib.TitleColor_Action;
+                content.newParagraph();
+
+                string current;
+                if (args.follows)
+                {
+                    current = DssRef.lang.Hud_FollowFaction_Yes;
+                }
+                else
+                {
+                    current = string.Format(DssRef.lang.Hud_FollowFaction_No, currentFactionValue);
+                }
+                content.text(current).overrideColor = HudLib.InfoYellow_Light;
+
+                //hud.tooltip.create(this, content, true);
+            }
+
+            
+        }
+        struct FollowFactionTooltipArgs
+        {
+            public bool follows; public double currentFactionValue;
         }
 
         public static void InfoButton(List<AbsRichBoxMember> content, AbsRbAction enterAction)

@@ -2435,6 +2435,8 @@ namespace VikingEngine
        
         WarsHudOptionSelected,
         WarsHudOptionNotSelected,
+        
+        WarsHudToggleNotSelected,
         WarsHudRoundButton,
         WarsHudCheckYes,
         WarsHudCheckNo,
