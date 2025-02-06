@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.PJ.Match3;
@@ -27,16 +28,35 @@ namespace VikingEngine.HUD.RichBox
         {
             this.layer = layer;
             this.clickInput = clickInput;
-           
+
+            //foreach (var m in content)
+            //{
+            //    m.getButtons(buttons);
+            //}
+            refresh(content);
+        }
+
+        public void refresh(List<AbsRichBoxMember> content)
+        {
+            buttons.Clear();
             foreach (var m in content)
             {
                 m.getButtons(buttons);
             }
         }
 
+       
+
+        //public void inherit(RbInteraction prev)
+        //{
+        //    hover = prev.hover;
+        //    selectionOutline = prev.selectionOutline;
+        //}
+
         /// <returns>Any interaction happened (to avoid multiple)</returns>
         override public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool unused1)
         {
+            
             unused1 = false;
             if (interactionStack != null)
             {
@@ -70,6 +90,7 @@ namespace VikingEngine.HUD.RichBox
 
             if (hover != prev)
             {
+                
                 if (prev != null)
                 {
                     prev.clickAnimation(false);
@@ -113,6 +134,11 @@ namespace VikingEngine.HUD.RichBox
 
         public void clearSelection()
         {
+            if (Input.Keyboard.Ctrl)
+            {
+                lib.DoNothing();
+            }
+
             if (selectionOutline != null)
             {
                 Ref.draw.AddToContainer = drawContainer;

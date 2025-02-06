@@ -103,6 +103,10 @@ namespace VikingEngine.HUD.RichMenu
 
         public void deleteTooltip()
         {
+            if (Input.Keyboard.Ctrl)
+            {
+                lib.DoNothing();
+            }
             //Debug.Log("delete Tooltip");
             tooltip?.DeleteMe();
             tooltip = null;
@@ -175,19 +179,32 @@ namespace VikingEngine.HUD.RichMenu
             scrollBar.Refresh(richBox.area.Height + renderEdge.Y * 2, renderArea.Height - renderEdge.Y * 2, settings.button.size);
             bool hadSelection = interaction != null && interaction.hover != null;
 
-            interaction = new RbInteraction(content, layer, new Input.MouseButtonMap(MouseButton.Left));
-           
-            interaction.drawContainer = renderList;
+            //var prevInteract = interaction;
 
+            if (interaction == null || interaction.drawContainer != renderList)
+            {
+
+                interaction = new RbInteraction(content, layer, new Input.MouseButtonMap(MouseButton.Left));
+
+                interaction.drawContainer = renderList;
+            }
+            else
+            {
+                interaction.refresh(content);
+            }
             updateContentScroll();
 
             needRefresh = false;
 
             if (hadSelection)
             {
-                deleteTooltip();
-                interaction.update(-renderArea.Position, this, false, out _);
-                tooltip?.view();
+                //interaction.inherit(prevInteract);
+                //deleteTooltip();
+                //interaction.update(-renderArea.Position, this, false, out _);
+
+                //tooltip?.view();
+
+                //interaction.update(-renderArea.Position, this, false, out _);
             }
         }
 

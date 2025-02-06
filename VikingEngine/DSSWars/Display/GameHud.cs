@@ -131,10 +131,10 @@ namespace VikingEngine.DSSWars.Display
                 //mouseOver = hudMouseOver();
 
                 
-                needRefresh |= head.updateMouseInput(ref mouseOver);
-                needRefresh |= headOptions.updateMouseInput(ref mouseOver);
+                //needRefresh |= head.updateMouseInput(ref mouseOver);
+                //needRefresh |= headOptions.updateMouseInput(ref mouseOver);
                 needRefresh |= objMenu.updateMouseInput(ref mouseOver);
-                needRefresh |= factionMenu.updateMouseInput(ref mouseOver);
+                //needRefresh |= factionMenu.updateMouseInput(ref mouseOver);
                 //mouseOver = false;
 
             }
