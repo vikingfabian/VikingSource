@@ -32,6 +32,7 @@ namespace VikingEngine.DSSWars.Display
         {
             this.player = player;   
             this.settings = settings;
+            position = player.hud.headOptions.MessageStart;
         }
 
         public void blockFoodWarning(bool block)
@@ -154,19 +155,19 @@ namespace VikingEngine.DSSWars.Display
             return messages.Count < 3;
         }
 
-        public void Update(Vector2 position)
+        public void Update(/*Vector2 position, */ref bool mouseOver)
         {
-            if (this.position != position)
-            { 
-                this.position = position;
-                UpdatePositions();
-            }
+            //if (this.position != position)
+            //{ 
+            //    this.position = position;
+            //    UpdatePositions();
+            //}
 
             if (messages.Count > 0)
             {
                 foreach (var message in messages)
                 {
-                    message.update();
+                    message.update(ref mouseOver);
                 }
 
                 if (messages.Last().time.secPassed(20))
@@ -181,28 +182,30 @@ namespace VikingEngine.DSSWars.Display
             
 
             Vector2 currentPos = position;
-            if (messages.Count > 0)
-            {                
-                foreach (var message in messages)
-                {
-                    currentPos.Y += settings.edgeWidth * 2f;
-                    currentPos = message.UpdatePoisitions(currentPos, screenAreaBottom);                    
-                }
-            }
-        }
-
-        public bool mouseOver()
-        {
-            foreach (var p in messages)
+            //if (messages.Count > 0)
+            //{                
+            foreach (var message in messages)
             {
-                if (p.mouseOver())
-                {
-                    return true;
-                }
-            }
+                   
+                currentPos = message.UpdatePoisitions(currentPos, screenAreaBottom);
 
-            return false;
+                currentPos.Y += settings.edgeWidth * 2f;
+            }
+            //}
         }
+
+        //public bool mouseOver()
+        //{
+        //    foreach (var p in messages)
+        //    {
+        //        if (p.mouseOver())
+        //        {
+        //            return true;
+        //        }
+        //    }
+
+        //    return false;
+        //}
     }
 
     class Message
@@ -212,14 +215,14 @@ namespace VikingEngine.DSSWars.Display
         protected RichBoxContent content = new RichBoxContent();
         //protected Graphics.Image bg;
         //NineSplitAreaTexture bg;
-        public VectorRect area;
+        //public VectorRect area;
         public TimeStamp time;
         //Vector2 contentOffset;
         //RbInteraction interaction;
 
         public Message(LocalPlayer player, RichBoxContent content, RichboxGuiSettings settings)
         {
-            menu = new RichMenu(HudLib.RbSettings, new VectorRect(player.hud.headOptions.MessageStart, new Vector2(HudLib.MessageDisplayWidth, 500)),
+            menu = new RichMenu(HudLib.RbSettings, new VectorRect(VectorExt.V2FromX( player.hud.headOptions.MessageStart.X), new Vector2(HudLib.MessageDisplayWidth, 500)),
                 new Vector2(HudLib.MenuEdgeSize), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
 
             menu.Refresh(content);
@@ -234,7 +237,7 @@ namespace VikingEngine.DSSWars.Display
 
             //contentOffset = new Vector2(settings.edgeWidth);
 
-            area.AddRadius(settings.edgeWidth);
+            //area.AddRadius(settings.edgeWidth);
             time = TimeStamp.Now();
             //interaction = new RbInteraction(content, settings.contentLayer,
             //        player.input.RichboxGuiSelect);
@@ -259,34 +262,37 @@ namespace VikingEngine.DSSWars.Display
             //area.Position = position;
             //bg.Area = area;
             //richBox.SetOffset(area.Position + contentOffset);
-            
+
             //bool visible = bg.Bottom <= screenAreaBottom;
 
             //bg.Visible = visible;
             //richBox.SetVisible(visible);
+            menu.moveToY(position.Y);
 
-            return area.LeftBottom;
+            return menu.backgroundArea.LeftBottom;
         }
 
-        public void update()
+        public void update(ref bool mouseOver)
         {
+            menu.updateMouseInput(ref mouseOver);
             //if (bg.Visible)
             //{
             //    interaction.update(Vector2.Zero, null, out _);
             //}
         }
 
-        public bool mouseOver()
-        {
-            //if (bg.Visible)
-            //{
-            //    return bg.Area.IntersectPoint(Input.Mouse.Position);
-            //}
-            return false;
-        }
+        //public bool mouseOver()
+        //{
+        //    //if (bg.Visible)
+        //    //{
+        //    //    return bg.Area.IntersectPoint(Input.Mouse.Position);
+        //    //}
+        //    return false;
+        //}
 
         public void DeleteMe()
         {
+            menu.DeleteMe();
             //interaction.DeleteMe();
             //bg.DeleteMe();
             //richBox.DeleteAll();

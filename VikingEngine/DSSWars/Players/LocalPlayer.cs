@@ -679,7 +679,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {
-                    hud.messages.Add("Message", "text xtet txex");
+                    hud.messages.Add(new RichBoxContent() { new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("message test") }, null) });
                     //battleLineUpTest(true);
                 }
 

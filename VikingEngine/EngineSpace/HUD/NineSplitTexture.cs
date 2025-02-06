@@ -14,7 +14,7 @@ namespace VikingEngine.HUD
         public SpriteName baseTexture;
         
         public SpriteName disableTexture;
-        public SpriteName notSelectedTexture;//maybe add primary, secondary
+        public SpriteName notSelectedTexture;
         
         /// <summary>
         /// Edge space on the spritesheet
@@ -214,7 +214,6 @@ namespace VikingEngine.HUD
             {
                 m.DeleteMe();
             }
-            //images = null;
         }
 
         public void SetVisible(bool visible)
@@ -238,6 +237,14 @@ namespace VikingEngine.HUD
             foreach (var m in images)
             {
                 m.Opacity = value;
+            }
+        }
+
+        public void Move(Vector2 move)
+        {
+            foreach (var m in images)
+            {
+                m.AddXY(move);
             }
         }
 

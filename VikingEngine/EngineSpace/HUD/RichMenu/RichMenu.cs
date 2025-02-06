@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars;
 using VikingEngine.Engine;
@@ -117,6 +118,18 @@ namespace VikingEngine.HUD.RichMenu
             backgroundArea.Position  += move;
             renderArea.Position += move;
             renderList.position += move;
+
+            backgroundTextures?.Move(move);
+            //backgroundTextures.images
+        }
+
+        public void moveToY(float y)
+        {
+            //backgroundArea.Position += move;
+            //renderArea.Position += move;
+            //renderList.position += move;
+            Vector2 moveDist= VectorExt.V2FromY(y- backgroundArea.Y);
+            this.move(moveDist);
         }
 
         public void updateWidthFromContent(bool resetFirst = true)

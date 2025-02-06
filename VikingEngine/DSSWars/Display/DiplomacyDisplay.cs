@@ -91,9 +91,9 @@ namespace VikingEngine.DSSWars.Display
                             new RbImage(SpriteName.WarsRelationTruce),
                             new RbText(string.Format( DssRef.lang.Diplomacy_ForgeNewRelationTo, DssRef.lang.Diplomacy_RelationType_Truce)),//"Forge truce"),
                         },
-                            new RbAction1Arg<bool>(peaceAction, false, SoundLib.menuBuy),
-                            new RbAction1Arg<bool>(peaceTooltip, false),
-                            canForgePeace(false)));
+                        new RbAction1Arg<bool>(peaceAction, false, SoundLib.menuBuy),
+                        new RbAction1Arg<bool>(peaceTooltip, false),
+                        canForgePeace(false)));
 
                     }
                     else if (selectedRelation.Relation == RelationType.RelationTypeN2_Truce)

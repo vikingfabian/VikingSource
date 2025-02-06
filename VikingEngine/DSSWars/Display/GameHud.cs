@@ -137,7 +137,9 @@ namespace VikingEngine.DSSWars.Display
                 needRefresh |= factionMenu.updateMouseInput(ref mouseOver);
                 //mouseOver = false;
 
+                messages.Update(ref mouseOver);
             }
+
 
             if (displays.menuStateHasChange)
             {
@@ -167,7 +169,7 @@ namespace VikingEngine.DSSWars.Display
                 factionMenu.refreshUpdate(player);
             }
 
-            messages.Update(displays.BottomLeft());
+            
 
             void updateMenuDisplays(bool refresh)
             {
