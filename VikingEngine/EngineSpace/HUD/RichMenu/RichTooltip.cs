@@ -48,6 +48,7 @@ namespace VikingEngine.HUD.RichMenu
         {
             if (content != null)
             {
+                Debug.Log("tooltip view");
                 const float ButtonSpaceing = 10;
                 float borderW = settings.windowBackground.BorderWidth();
                 float width = Engine.Screen.IconSize * 8;

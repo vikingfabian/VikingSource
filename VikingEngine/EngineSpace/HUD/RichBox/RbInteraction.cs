@@ -56,7 +56,10 @@ namespace VikingEngine.HUD.RichBox
         /// <returns>Any interaction happened (to avoid multiple)</returns>
         override public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool unused1)
         {
-            
+            //Debug.Log("Interaction UPDATE");
+            //Debug.Log($"Mouse offset: {mousePosOffSet}");
+            //Debug.Log($"Menu bg pos: {menu.backgroundArea.Position}");
+            //Debug.Log($"Menu content offset: {menu.richBox.GetOffset()}");
             unused1 = false;
             if (interactionStack != null)
             {
@@ -69,31 +72,57 @@ namespace VikingEngine.HUD.RichBox
             }
 
             AbsRbButton prev = hover;
-
+            int buttonIndex = 0;
+            VectorRect area = VectorRect.Zero;
+            //VectorRect area2 = VectorRect.Zero;
+            //int hoverIx = 0;
             if (clickInput.IsMouse)
             {
                 Vector2 pos = Input.Mouse.Position + mousePosOffSet;
-               
+                //Debug.Log($"mouse pos: {pos}");
                 hover = null;
-                VectorRect area = VectorRect.Zero;
+                
 
                 foreach (var m in buttons)
                 {
                     area = m.area();
                     if (area.IntersectPoint(pos))
                     {
+                        //if (Input.Keyboard.Ctrl && m != prev)
+                        //{
+                        //    lib.DoNothing();
+                        //}
                         hover = m;
+                        //area2 = hover.area();
                         break;
                     }
+                    ++buttonIndex;
                 }
             }
 
             if (hover != prev)
             {
                 
+                //Debug.Log("hover != prev");
+
+                //Debug.Log($"Mouse offset: {mousePosOffSet}");
+                //Debug.Log($"Mouse pos: {Input.Mouse.Position}");
+                //Debug.Log($"First button: {buttons[0].area()}");
+                //Debug.Log($"Menu render pos: {menu.renderList.position}");
+
+                //if (hover == null)
+                //{
+                //    Debug.Log($"Hover: null");
+                //}
+                //else
+                //{
+                //    Debug.Log($"Hover, ix{buttonIndex}: {hover.area()}");
+                //}
+
                 if (prev != null)
                 {
                     prev.clickAnimation(false);
+                    //Debug.Log("deleteTooltip: new hover");
                     menu?.deleteTooltip();
                 }
                 refreshSelectOutline();

@@ -32,6 +32,13 @@ namespace VikingEngine.HUD.RichBox
         bool lockNewLine = false;
         public float groupScale = 1f;
 
+        public override void SetOffset(Vector2 position)
+        {
+            Debug.Log($"Richbox set offset {position}");
+            base.SetOffset(position);
+
+        }
+
         public RichBoxGroup(Vector2 topleft, float boxWidth, ImageLayers layer, 
             RichBoxSettings settings, List<AbsRichBoxMember> content,
             bool bRemoveDeadHeightSpace = true, 

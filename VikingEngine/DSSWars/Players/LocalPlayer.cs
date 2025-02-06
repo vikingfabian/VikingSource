@@ -415,19 +415,7 @@ namespace VikingEngine.DSSWars.Players
                 buildControls.buildMode != SelectTileResult.None;                        
         }
 
-        public void childrenTooltip(City city)
-        {
-            RichBoxContent content = new RichBoxContent();
-            content.text(string.Format(DssRef.lang.WorkForce_ChildToManTime, 2));
-
-            content.newParagraph();
-            content.h2(DssRef.lang.WorkForce_ChildBirthRequirements);
-            content.text(string.Format(DssRef.lang.WorkForce_AvailableHomes, city.homesUnused())).overrideColor = HudLib.ResourceCostColor(city.homesUnused() > 0);
-            //content.text(DssRef.lang.WorkForce_Peace).overrideColor = HudLib.ResourceCostColor(city.battleGroup == null);
-            HudLib.ItemCount(content, DssRef.lang.Resource_TypeName_Food, city.res_food.amount.ToString()).overrideColor = HudLib.ResourceCostColor(city.res_food.amount > 0);
-
-            hud.tooltip.create(this, content, true);
-        }
+        
 
         //public RbAction WorkSafeguardTooltip;
         

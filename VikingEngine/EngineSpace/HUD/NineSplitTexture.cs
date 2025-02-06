@@ -244,7 +244,7 @@ namespace VikingEngine.HUD
         public VectorRect GetAreaAdjusted()
         {
             var result = area;
-            area.Position = images[0].position;
+            result.Position = images[0].position;
             return result;
         }
     }

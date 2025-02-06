@@ -11,6 +11,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.GO.Gadgets;
 
 namespace VikingEngine.DSSWars.Conscript
@@ -62,11 +63,6 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType.SiegeCannonIron,
             ItemResourceType.ManCannonIron,
         };
-
-        //static readonly int[] SendSizeOptions =
-        // {
-
-        //};
 
         City city;
         LocalPlayer player;
@@ -148,13 +144,13 @@ namespace VikingEngine.DSSWars.Conscript
                         buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
                     }
 
-                    var button = new RbButton(buttonContent,
+                    var button = new ArtOption(weapon == currentStatus.profile.weapon,buttonContent,
                     new RbAction1Arg<ItemResourceType>(weaponClick, weapon, SoundLib.menu),
-                    new RbAction1Arg<ItemResourceType>(weaponTooltip, weapon)
+                    new RbTooltip(weaponTooltip, weapon)
                     );
-                    button.setGroupSelectionColor(HudLib.RbSettings, weapon == currentStatus.profile.weapon);
+                    //button.setGroupSelectionColor(HudLib.RbSettings, weapon == currentStatus.profile.weapon);
                     content.Add(button);
-                    content.space();
+                    //content.space();
                 }
 
                 content.newParagraph();
@@ -193,12 +189,12 @@ namespace VikingEngine.DSSWars.Conscript
                     }
                     buttonContent.Add(new RbText(LangLib.Item(armorLvl)));
 
-                    var button = new RbButton(buttonContent,
+                    var button = new ArtOption(armorLvl == currentStatus.profile.armorLevel,buttonContent,
                         new RbAction1Arg<ItemResourceType>(armorClick, armorLvl, SoundLib.menu),
-                    new RbAction1Arg<ItemResourceType>(armorTooltip, armorLvl));
-                    button.setGroupSelectionColor(HudLib.RbSettings, armorLvl == currentStatus.profile.armorLevel);
+                    new RbTooltip(armorTooltip, armorLvl));
+                    //button.setGroupSelectionColor(HudLib.RbSettings, armorLvl == currentStatus.profile.armorLevel);
                     content.Add(button);
-                    content.space();
+                    //content.space();
                 }
 
                 content.newParagraph();
@@ -214,26 +210,26 @@ namespace VikingEngine.DSSWars.Conscript
                 }
                 for (TrainingLevel training = minLevel; training <= maxLevel; training++)
                 {
-                    var button = new RbButton(new List<AbsRichBoxMember>{
+                    var button = new ArtOption(training == currentStatus.profile.training,new List<AbsRichBoxMember>{
                         new RbImage((SpriteName)((int)SpriteName.WarsUnitLevelMinimal + (int)training)),
                         new RbText( LangLib.Training(training))
                     }, new RbAction1Arg<TrainingLevel>(trainingClick, training, SoundLib.menu),
-                    new RbAction2Arg<TrainingLevel, Build.BuildAndExpandType>(trainingTooltip, training, currentStatus.type));
-                    button.setGroupSelectionColor(HudLib.RbSettings, training == currentStatus.profile.training);
+                    new RbTooltip(trainingTooltip, new TrainingTooltipArgs() { training = training, buildtype = currentStatus.type }));
+                    //button.setGroupSelectionColor(HudLib.RbSettings, training == currentStatus.profile.training);
                     content.Add(button);
-                    content.space();
+                    //content.space();
                 }
 
                 content.newParagraph();
 
                 HudLib.Label(content, DssRef.lang.Conscript_SpecializationTitle);
                 content.space();
-                HudLib.InfoButton(content, new RbAction(() =>
-                {
-                    RichBoxContent content = new RichBoxContent();
-                    content.text(string.Format(DssRef.lang.Conscript_SpecializationDescription, TextLib.PercentText(DssConst.Conscript_SpecializePercentage)));
-                    player.hud.tooltip.create(player, content, true);
-                }));
+                HudLib.InfoButton(content, new RbTooltip_Text(string.Format(DssRef.lang.Conscript_SpecializationDescription, TextLib.PercentText(DssConst.Conscript_SpecializePercentage))));
+                //{
+                //    RichBoxContent content = new RichBoxContent();
+                //    content.text(string.Format(DssRef.lang.Conscript_SpecializationDescription, TextLib.PercentText(DssConst.Conscript_SpecializePercentage)));
+                //    player.hud.tooltip.create(player, content, true);
+                //}));
                 content.newLine();
 
                 SpecializationType[] specializationTypes = currentStatus.profile.avaialableSpecializations();
@@ -241,12 +237,12 @@ namespace VikingEngine.DSSWars.Conscript
 
                 foreach (var specialization in specializationTypes)
                 {
-                    var button = new RbButton(new List<AbsRichBoxMember>{
+                    var button = new ArtOption(specialization == currentStatus.profile.specialization,new List<AbsRichBoxMember>{
                        new RbText( LangLib.SpecializationTypeName(specialization))
                     }, new RbAction1Arg<SpecializationType>(specializationClick, specialization, SoundLib.menu));
-                    button.setGroupSelectionColor(HudLib.RbSettings, specialization == currentStatus.profile.specialization);
+                    //button.setGroupSelectionColor(HudLib.RbSettings, specialization == currentStatus.profile.specialization);
                     content.Add(button);
-                    content.space();
+                    //content.space();
                 }
 
                 content.newParagraph();
@@ -278,15 +274,17 @@ namespace VikingEngine.DSSWars.Conscript
 
 
                 content.newParagraph();
-                content.Add(new RbButton(new List<AbsRichBoxMember> {
-                    new RbImage(player.input.Copy.Icon),
-                    new RbSpace(0.5f),
+                content.Add(new RbImage(player.input.Copy.Icon));
+                    //new RbSpace(0.5f),
+                content.Add(new ArtButton( RbButtonStyle.Primary,new List<AbsRichBoxMember> {                    
                     new RbText(DssRef.lang.Hud_CopySetup) },
                     new RbAction1Arg<LocalPlayer>(city.copyConscript, player, SoundLib.menuCopy)));
+
                 content.space();
-                content.Add(new RbButton(new List<AbsRichBoxMember> {
-                    new RbImage(player.input.Paste.Icon),
-                    new RbSpace(0.5f),
+                content.Add(new RbImage(player.input.Paste.Icon));
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    //new RbImage(player.input.Paste.Icon),
+                    //new RbSpace(0.5f),
                     new RbText(DssRef.lang.Hud_Paste) },
                     new RbAction1Arg<LocalPlayer>(city.pasteConscript, player, SoundLib.menuPaste)));
 
@@ -356,7 +354,7 @@ namespace VikingEngine.DSSWars.Conscript
                             );
                         info.overrideColor = HudLib.InfoYellow_Light;
 
-                        content.Add(new RbButton(new List<AbsRichBoxMember>(){
+                        content.Add(new ArtButton( RbButtonStyle.Primary,new List<AbsRichBoxMember>(){
                         new RbImage(
                             new SoldierConscriptProfile(){ conscript = currentProfile.profile }.Icon()
                             ),
@@ -388,9 +386,10 @@ namespace VikingEngine.DSSWars.Conscript
             set(currentProfile);
         }
 
-        void weaponTooltip(ItemResourceType weapon)
+        void weaponTooltip(RichBoxContent content, object tag)
         {
-            RichBoxContent content = new RichBoxContent();
+            ItemResourceType weapon = (ItemResourceType)tag;
+            //RichBoxContent content = new RichBoxContent();
             content.Add(new RbImage(SpriteName.warsArmyTag_Hit));
             content.space();
             content.Add(new RbText(string.Format(DssRef.lang.Conscript_WeaponDamage, ConscriptProfile.WeaponDamage(weapon, out int splashCount))));
@@ -423,7 +422,7 @@ namespace VikingEngine.DSSWars.Conscript
             //{
             //    GroupedResource.BufferIconInfo(content);
             //}
-            player.hud.tooltip.create(player, content, true);
+            //player.hud.tooltip.create(player, content, true);
         }
         void armorClick(ItemResourceType armor)
         {
@@ -431,15 +430,12 @@ namespace VikingEngine.DSSWars.Conscript
             currentProfile.profile.armorLevel = armor;
             set(currentProfile);
         }
-        void armorTooltip(ItemResourceType armor)
+        void armorTooltip(RichBoxContent content, object tag)//ItemResourceType armor)
         {
-
-            RichBoxContent content = new RichBoxContent
-            {
-                new RbImage(SpriteName.warsArmyTag_Shield),
-                new RbSpace(),
-                new RbText(string.Format(DssRef.lang.Conscript_ArmorHealth, ConscriptProfile.ArmorHealth(armor)))
-            };
+            ItemResourceType armor = (ItemResourceType)tag;
+            content.Add(new RbImage(SpriteName.warsArmyTag_Shield));
+            content.Add(new RbSpace());
+            content.Add(new RbText(string.Format(DssRef.lang.Conscript_ArmorHealth, ConscriptProfile.ArmorHealth(armor))));
 
             if (armor != ItemResourceType.NONE)
             {
@@ -455,7 +451,7 @@ namespace VikingEngine.DSSWars.Conscript
                 //}
             }
 
-            player.hud.tooltip.create(player, content, true);
+            //player.hud.tooltip.create(player, content, true);
         }
 
         void trainingClick(TrainingLevel training)
@@ -465,14 +461,19 @@ namespace VikingEngine.DSSWars.Conscript
 
             set(currentProfile);
         }
-        void trainingTooltip(TrainingLevel training, Build.BuildAndExpandType type)
+
+        struct TrainingTooltipArgs
         {
+            public TrainingLevel training;
+            public Build.BuildAndExpandType buildtype;
+        }
+        void trainingTooltip(RichBoxContent content, object tag)//TrainingLevel training, Build.BuildAndExpandType type)
+        {
+            TrainingTooltipArgs args = (TrainingTooltipArgs)tag;
+            content.text(string.Format(DssRef.lang.Conscript_TrainingTime, new TimeLength(ConscriptProfile.TrainingTime(args.training, args.buildtype)).LongString()));
+            content.text(string.Format(DssRef.lang.Conscript_TrainingSpeed, TextLib.OneDecimal(ConscriptProfile.TrainingAttackSpeed(args.training))));
 
-            RichBoxContent content = new RichBoxContent();
-            content.text(string.Format(DssRef.lang.Conscript_TrainingTime, new TimeLength(ConscriptProfile.TrainingTime(training, type)).LongString()));
-            content.text(string.Format(DssRef.lang.Conscript_TrainingSpeed, TextLib.OneDecimal(ConscriptProfile.TrainingAttackSpeed(training))));
-
-            player.hud.tooltip.create(player, content, true);
+            //player.hud.tooltip.create(player, content, true);
         }
         void queClick(int length)
         {

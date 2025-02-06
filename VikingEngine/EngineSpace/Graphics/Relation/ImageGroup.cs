@@ -175,8 +175,10 @@ namespace VikingEngine.Graphics
             return posOffset != Vector2.Zero;
         }
 
-        public void SetOffset(Vector2 position)
+        virtual public void SetOffset(Vector2 position)
         {
+
+
             Vector2 move = position - posOffset;
 
             if (VectorExt.SideLength(move) >= 1f)

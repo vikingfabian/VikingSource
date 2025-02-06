@@ -29,7 +29,7 @@ namespace VikingEngine.HUD.RichMenu
         public RbInteraction interaction = null;
         
         //Graphics.RectangleLines outLine;
-        RenderTargetDrawContainer renderList = null;//Is a target image, rendering the menu content
+        public RenderTargetDrawContainer renderList = null;//Is a target image, rendering the menu content
         
         RichBoxSettings settings;
 
@@ -94,7 +94,7 @@ namespace VikingEngine.HUD.RichMenu
 
         public void addToolTip(RichBoxContent content, VectorRect buttonArea)
         {
-            
+            //Debug.Log("deleteTooltip: add");
             deleteTooltip();
             //Debug.Log("add Tooltip");
             buttonArea.Position += renderList.position;
@@ -166,7 +166,7 @@ namespace VikingEngine.HUD.RichMenu
 
         public void Refresh(RichBoxContent content)
         {
-            
+            //Debug.Log("Rich menu REFRESH");
             deleteContent();
 
             Ref.draw.AddToContainer = renderList;
@@ -180,10 +180,9 @@ namespace VikingEngine.HUD.RichMenu
             bool hadSelection = interaction != null && interaction.hover != null;
 
             //var prevInteract = interaction;
-
+            //updateContentScroll();
             if (interaction == null || interaction.drawContainer != renderList)
             {
-
                 interaction = new RbInteraction(content, layer, new Input.MouseButtonMap(MouseButton.Left));
 
                 interaction.drawContainer = renderList;
@@ -192,17 +191,19 @@ namespace VikingEngine.HUD.RichMenu
             {
                 interaction.refresh(content);
             }
+            //Debug.Log("Rich menu SCROLL");
             updateContentScroll();
 
             needRefresh = false;
 
             if (hadSelection)
             {
+                
                 //interaction.inherit(prevInteract);
                 //deleteTooltip();
-                //interaction.update(-renderArea.Position, this, false, out _);
+                interaction.update(-renderArea.Position, this, false, out _);
 
-                //tooltip?.view();
+                tooltip?.view();
 
                 //interaction.update(-renderArea.Position, this, false, out _);
             }
@@ -217,6 +218,7 @@ namespace VikingEngine.HUD.RichMenu
         {
             renderList.DeleteMe();
             backgroundTextures.DeleteMe();
+            //Debug.Log("deleteTooltip: del menu");
             deleteTooltip();
             scrollBar.DeleteMe();
         }
@@ -237,6 +239,7 @@ namespace VikingEngine.HUD.RichMenu
                 }
                 else
                 {
+                    //Debug.Log("deleteTooltip: outside menu");
                     deleteTooltip();
                     interaction.clearSelection();
                 }
@@ -263,6 +266,7 @@ namespace VikingEngine.HUD.RichMenu
 
         void updateContentScroll()
         {
+
             richBox.SetOffset( new Vector2(renderEdge.X, renderEdge.Y + scrollBar.scrollResult));
         }
     }

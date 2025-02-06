@@ -1746,18 +1746,19 @@ namespace VikingEngine.DSSWars.GameObject
                                     break;
                             }
 
-                            var button = new RbButton(new List<AbsRichBoxMember>
-                            {
-                                new RbText(caption),
-                            },
-                            new RbAction(() =>
-                            {
-                                automationFocus = focus;
-                            }, SoundLib.menu));
+                            var button = new ArtOption(automationFocus == focus,
+                                new List<AbsRichBoxMember>
+                                {
+                                    new RbText(caption),
+                                },
+                                new RbAction(() =>
+                                {
+                                    automationFocus = focus;
+                                }, SoundLib.menu));
 
-                            button.setGroupSelectionColor(HudLib.RbSettings, automationFocus == focus);
+                            //button.setGroupSelectionColor(HudLib.RbSettings, automationFocus == focus);
                             content.Add(button);
-                            content.space();
+                            //content.space();
                         }
 
                         content.Add(new RbSeperationLine());
@@ -1773,7 +1774,7 @@ namespace VikingEngine.DSSWars.GameObject
                 content.space();
                 if (interactive)
                 {
-                    HudLib.InfoButton(content, new RbAction1Arg<City>(player.childrenTooltip, this));
+                    HudLib.InfoButton(content, new RbTooltip(childrenTooltip, this));
                 }
 
                 HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.amount, homesTotal()));
@@ -1816,20 +1817,27 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
         }
+        public void childrenTooltip(RichBoxContent content, object tag)
+        {
+            City city = (City)tag;
+            //RichBoxContent content = new RichBoxContent();
+            content.text(string.Format(DssRef.lang.WorkForce_ChildToManTime, 2));
 
+            content.newParagraph();
+            content.h2(DssRef.lang.WorkForce_ChildBirthRequirements);
+            content.text(string.Format(DssRef.lang.WorkForce_AvailableHomes, city.homesUnused())).overrideColor = HudLib.ResourceCostColor(city.homesUnused() > 0);
+            //content.text(DssRef.lang.WorkForce_Peace).overrideColor = HudLib.ResourceCostColor(city.battleGroup == null);
+            HudLib.ItemCount(content, DssRef.lang.Resource_TypeName_Food, city.res_food.amount.ToString()).overrideColor = HudLib.ResourceCostColor(city.res_food.amount > 0);
+
+            //hud.tooltip.create(this, content, true);
+        }
         public void cultureToHud(LocalPlayer player, RichBoxContent content, bool interactive)
         {
             content.icontext(SpriteName.WarsCultureIcon, string.Format(DssRef.lang.CityCulture_CultureIsX, Display.Translation.LangLib.CityCulture(Culture, true)));
             if (interactive)
             {
                 content.space();
-                HudLib.InfoButton(content, new RbAction(() =>
-                {
-                    RichBoxContent content = new RichBoxContent();
-                    content.text(Display.Translation.LangLib.CityCulture(Culture, false));
-
-                    player.hud.tooltip.create(player, content, true);
-                }));//cultureToolTip));
+                HudLib.InfoButton(content, new RbTooltip_Text(Display.Translation.LangLib.CityCulture(Culture, false)));
             }
             else
             {

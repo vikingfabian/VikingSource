@@ -28,6 +28,7 @@ namespace VikingEngine.DSSWars.XP
 
             content.newLine();
             content.Add(new RbImage(SpriteName.WarsTechnology_Unlocked));
+            content.space();
 
             tech(technology.advancedBuilding, SpriteName.WarsBuild_Nobelhouse, DssRef.todoLang.Technology_AdvancedBuildings);
 
@@ -55,9 +56,10 @@ namespace VikingEngine.DSSWars.XP
 
                     infoContent.Add(new RbImage(icon));
 
-                    var infoButton = new ArtButton( RbButtonStyle.HoverArea, infoContent, null, new RbAction(() =>
+                    var infoButton = new ArtButton( RbButtonStyle.HoverArea, infoContent, null, 
+                        new RbTooltip((RichBoxContent content, object tag) =>
                     {
-                        RichBoxContent content = new RichBoxContent();
+                        //RichBoxContent content = new RichBoxContent();
 
                         content.h2(DssRef.todoLang.Technology_Title).overrideColor = HudLib.TitleColor_Label;
                         content.newLine();
@@ -66,12 +68,12 @@ namespace VikingEngine.DSSWars.XP
                         content.Add(new RbText(caption));
 
 
-                        player.hud.tooltip.create(player, content, true);
+                        //player.hud.tooltip.create(player, content, true);
                     }));
 
                     //infoButton.overrideBgColor = HudLib.InfoYellow_BG;
                     content.Add(infoButton);
-                    content.space();
+                    //content.space();
                 }
             }
         }
