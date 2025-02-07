@@ -1144,6 +1144,471 @@
 /processorParam:TextureFormat=Compressed
 /build:Model/sphere.fbx
 
+#begin PjContent/bagatelle_bg.tga
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PjContent/bagatelle_bg.tga
+
+#begin PjContent/barrel_explo.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/barrel_explo.wav
+
+#begin PjContent/bass_pluck.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/bass_pluck.wav
+
+#begin PjContent/Bassbomb.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Bassbomb.wav
+
+#begin PjContent/Button_Clicked.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Button_Clicked.wav
+
+#begin PjContent/carballfield.tga
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PjContent/carballfield.tga
+
+#begin PjContent/coin1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/coin1.wav
+
+#begin PjContent/coin2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/coin2.wav
+
+#begin PjContent/coin3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/coin3.wav
+
+#begin PjContent/Cursor_Moved.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Cursor_Moved.wav
+
+#begin PjContent/Elevating.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:PjContent/Elevating.mp3
+
+#begin PjContent/flap.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/flap.wav
+
+#begin PjContent/flowerfire.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/flowerfire.wav
+
+#begin PjContent/Hemisphere Three.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:PjContent/Hemisphere Three.mp3
+
+#begin PjContent/hi_100ms.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/hi_100ms.wav
+
+#begin PjContent/IntroScene.tga
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PjContent/IntroScene.tga
+
+#begin PjContent/joust_bg.tga
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PjContent/joust_bg.tga
+
+#begin PjContent/JoustSpeed_loop.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:PjContent/JoustSpeed_loop.mp3
+
+#begin PjContent/jump_scare.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/jump_scare.wav
+
+#begin PjContent/lo_100ms.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/lo_100ms.wav
+
+#begin PjContent/m3bg.tga
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PjContent/m3bg.tga
+
+#begin PjContent/minefire.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/minefire.wav
+
+#begin PjContent/MiniGolf/angrymouth.lvl
+/copy:PjContent/MiniGolf/angrymouth.lvl
+
+#begin PjContent/MiniGolf/ArrowBarrel.lvl
+/copy:PjContent/MiniGolf/ArrowBarrel.lvl
+
+#begin PjContent/MiniGolf/blob.lvl
+/copy:PjContent/MiniGolf/blob.lvl
+
+#begin PjContent/MiniGolf/BoxInBox1.lvl
+/copy:PjContent/MiniGolf/BoxInBox1.lvl
+
+#begin PjContent/MiniGolf/BoxInBox2.lvl
+/copy:PjContent/MiniGolf/BoxInBox2.lvl
+
+#begin PjContent/MiniGolf/endgoal.lvl
+/copy:PjContent/MiniGolf/endgoal.lvl
+
+#begin PjContent/MiniGolf/et.lvl
+/copy:PjContent/MiniGolf/et.lvl
+
+#begin PjContent/MiniGolf/fivesquare.lvl
+/copy:PjContent/MiniGolf/fivesquare.lvl
+
+#begin PjContent/MiniGolf/lines.lvl
+/copy:PjContent/MiniGolf/lines.lvl
+
+#begin PjContent/MiniGolf/plus.lvl
+/copy:PjContent/MiniGolf/plus.lvl
+
+#begin PjContent/MiniGolf/snake1.lvl
+/copy:PjContent/MiniGolf/snake1.lvl
+
+#begin PjContent/MiniGolf/tarm.lvl
+/copy:PjContent/MiniGolf/tarm.lvl
+
+#begin PjContent/Music/AgriculturalHuts.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:PjContent/Music/AgriculturalHuts.mp3
+
+#begin PjContent/Music/BunnyMassacre.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:PjContent/Music/BunnyMassacre.mp3
+
+#begin PjContent/Music/Endless Plains.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:PjContent/Music/Endless Plains.mp3
+
+#begin PjContent/Music/lazy_town.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:PjContent/Music/lazy_town.mp3
+
+#begin PjContent/Music/loot.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:PjContent/Music/loot.mp3
+
+#begin PjContent/Music/Mysterious Grotto.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:PjContent/Music/Mysterious Grotto.mp3
+
+#begin PjContent/Music/RM 10 - Incubation.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:PjContent/Music/RM 10 - Incubation.mp3
+
+#begin PjContent/Music/RM 6 - Auderesne.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:PjContent/Music/RM 6 - Auderesne.mp3
+
+#begin PjContent/Music/void.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:PjContent/Music/void.mp3
+
+#begin PjContent/Not_Allowed.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Not_Allowed.wav
+
+#begin PjContent/RetroYay_Loop.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:PjContent/RetroYay_Loop.mp3
+
+#begin PjContent/Returning.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Returning.wav
+
+#begin PjContent/shieldcrash.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/shieldcrash.wav
+
+#begin PjContent/smack.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/smack.wav
+
+#begin PjContent/SmackEchoes.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/SmackEchoes.wav
+
+#begin PjContent/Sound/airhorn.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/airhorn.wav
+
+#begin PjContent/Sound/Ballong bump hard.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/Ballong bump hard.wav
+
+#begin PjContent/Sound/Ballong bump soft.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/Ballong bump soft.wav
+
+#begin PjContent/Sound/ballong pop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/ballong pop.wav
+
+#begin PjContent/Sound/BassExplo.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/BassExplo.wav
+
+#begin PjContent/Sound/deathpop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/deathpop.wav
+
+#begin PjContent/Sound/golf hit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/golf hit.wav
+
+#begin PjContent/Sound/golf hole appear.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/golf hole appear.wav
+
+#begin PjContent/Sound/golf hole.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/golf hole.wav
+
+#begin PjContent/Sound/golf load.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/golf load.wav
+
+#begin PjContent/Sound/Heal.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/Heal.wav
+
+#begin PjContent/Sound/open_map.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/open_map.wav
+
+#begin PjContent/Sound/rc drive.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/rc drive.wav
+
+#begin PjContent/Sound/rc tire screetch.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/rc tire screetch.wav
+
+#begin PjContent/Sound/rc turn1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/rc turn1.wav
+
+#begin PjContent/Sound/rc turn2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/rc turn2.wav
+
+#begin PjContent/Sound/sand.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/sand.wav
+
+#begin PjContent/Sound/SoftExplo.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/SoftExplo.wav
+
+#begin PjContent/Sound/Tetris fall clonk.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/Tetris fall clonk.wav
+
+#begin PjContent/Sound/Tetris success1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/Tetris success1.wav
+
+#begin PjContent/Sound/Tetris success2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/Tetris success2.wav
+
+#begin PjContent/Sound/Tetris top move.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/Tetris top move.wav
+
+#begin PjContent/Sound/Tetris turn block.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/Tetris turn block.wav
+
+#begin PjContent/Sound/Tone250Hz.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/Sound/Tone250Hz.wav
+
+#begin PjContent/times_up.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/times_up.wav
+
+#begin PjContent/toasty.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/toasty.wav
+
+#begin PjContent/violin_pluck.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PjContent/violin_pluck.wav
+
+#begin PjContent/worldmap1.tga
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PjContent/worldmap1.tga
+
+#begin PjContent/worldmapdata1.sav
+/copy:PjContent/worldmapdata1.sav
+
 #begin Shaders/DeferredRenderer/DepthWriter.fx
 /importer:EffectImporter
 /processor:EffectProcessor
