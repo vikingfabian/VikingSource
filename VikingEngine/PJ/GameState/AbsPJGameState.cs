@@ -7,6 +7,7 @@ using VikingEngine.SteamWrapping;
 using VikingEngine.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework;
+using VikingEngine.PJ.Lobby;
 
 namespace VikingEngine.PJ
 {
@@ -21,6 +22,8 @@ namespace VikingEngine.PJ
         public int matchCount;
         public float timeSinceInput = 0;
 
+       
+
         public AbsPJGameState(bool isPlayState)
             : base()
         {
@@ -34,6 +37,11 @@ namespace VikingEngine.PJ
                 Ref.steam.stats.upload();
             }
 #endif
+            if (Ref.lobby == null)
+            {
+                new NetLobby();
+            }
+            Ref.lobby.EnterLobby(!isPlayState);
         }
 
         protected void set1080pScreenArea()
@@ -289,7 +297,13 @@ namespace VikingEngine.PJ
             base.NetEvent_PeerJoined(gamer);
             PjLib.checkHostStatus();
         }
-        
+
+        public override void Time_Update(float time)
+        {
+            base.Time_Update(time);
+            Ref.lobby?.update();
+        }
+
         virtual protected void setMenuLayer()
         { }
 

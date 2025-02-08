@@ -153,7 +153,7 @@ namespace VikingEngine.PJ
         {
             if (sender.Tag == null)
             {
-                return null;
+                sender.Tag = new Player.RemoteGamerData(sender); ;
             }
 
             return (Player.RemoteGamerData)sender.Tag;

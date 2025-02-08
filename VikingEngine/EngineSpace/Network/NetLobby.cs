@@ -57,6 +57,9 @@ namespace VikingEngine.Network
             }
         }
 
+        virtual public void EnterLobby(bool enter)
+        { }
+
         public void createSession()
         {
 #if PCGAME

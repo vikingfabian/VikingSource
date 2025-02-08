@@ -101,14 +101,14 @@ namespace VikingEngine.PJ
                     Ref.netSession.setLobbyJoinable(true);//Ref.steam.LobbyMatchmaker.setJoinable(true);
                     availableSessionsDisplay = new AvailableSessionsDisplay(topBar.Height);
 
-                    if (PjRef.hasAllContentDLC)
-                    {
+                    //if (PjRef.hasAllContentDLC)
+                    //{
                         Ref.netSession.LobbyPublicity = PjRef.storage.lobbyPublicity;//Ref.steam.LobbyMatchmaker.lobbyPublicity = PjRef.storage.lobbyPublicity;
 
 #if PCGAME
-                        Ref.steam.LobbyMatchmaker.CreateLobbyIfNotInOne();
+                        //Ref.steam.LobbyMatchmaker.CreateLobbyIfNotInOne();
 #endif
-                    }
+                    //}
                     PjRef.PublicNetwork = PjRef.storage.lobbyPublicity == LobbyPublicity.Public;
                 }
                 else
@@ -600,7 +600,10 @@ namespace VikingEngine.PJ
 
         void netWriteJoinedGamers()
         {
-            PjLib.NetWriteJoinedGamers(joinedLocalGamers);
+            if (Ref.netSession.IsHost)
+            {
+                PjLib.NetWriteJoinedGamers(joinedLocalGamers);
+            }
         }
 
         void netReadJoindedGamers(Network.ReceivedPacket packet)

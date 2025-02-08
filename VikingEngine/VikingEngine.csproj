@@ -25,13 +25,13 @@
     <Optimize>False</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>$(DefineConstants);DSS;PCGAME</DefineConstants>
+    <DefineConstants>$(DefineConstants);PCGAME;PJ</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <DefineConstants>$(DefineConstants);DSS;PCGAME</DefineConstants>
+    <DefineConstants>$(DefineConstants);PCGAME;PJ</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-    <DefineConstants>$(DefineConstants);DSS;PCGAME</DefineConstants>
+    <DefineConstants>$(DefineConstants);PCGAME;PJ</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Linux ARM|AnyCPU'">
     <DefineConstants>$(DefineConstants);DSS;PCGAME</DefineConstants>

@@ -60,29 +60,6 @@ namespace VikingEngine.DSSWars.Net
             applyNewSettings();
         }
 
-        //public override void applyNewSettings()
-        //{
-        //    base.applyNewSettings();
-
-        //    //if (Ref.netSession.InMultiplayerSession)
-        //    //{
-        //    //    searchLobbies = false;
-        //    //}
-        //    //else
-        //    //{
-        //    //    //bool pvpLobby = warsRef.storage.StartPvpLobby;
-
-        //    //    searchLobbies = true;
-        //    //    autoCreateLobby = false;
-
-        //    //    //if (!pvpLobby)
-        //    //    //{
-        //    //    //    disconnect();
-        //    //    //    clearLobbies();
-        //    //    //}
-        //    //}
-        //}
-
         public override void NetworkStatusMessage(NetworkStatusMessage message)
         {
             base.NetworkStatusMessage(message);
@@ -246,5 +223,6 @@ namespace VikingEngine.DSSWars.Net
                 images.DeleteMe();
             }
         }
+        
     }
 }
