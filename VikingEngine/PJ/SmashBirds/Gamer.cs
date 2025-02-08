@@ -78,7 +78,7 @@ namespace VikingEngine.PJ.SmashBirds
 
             animalSetup = AnimalSetup.Get(data.joustAnimal);
 
-            Vector2 startPos = Engine.Screen.Area.PercentToPosition(new Vector2(0.5f, 0.8f));
+            Vector2 startPos = Engine.Screen.Area.PercentToPosition(new Vector2(0.5f, 0.7f));
             IntervalF xrange = IntervalF.FromCenter(startPos.X, SmashRef.map.tileWidth * 2f * gamersCount);
             startPos.X = xrange.GetFromPercent(data.GamerIndex / (gamersCount - 1));
 
