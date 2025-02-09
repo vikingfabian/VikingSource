@@ -8,7 +8,7 @@ namespace VikingEngine.PJ
 {
     class Storage
     {
-        const int Version = 3;
+        const int Version = 4;
 
         public List<GamerData> joinedGamersSetup = null;
         public List<GamerData> startingRemoteGamers = null;
@@ -69,10 +69,11 @@ namespace VikingEngine.PJ
         {
             int version = r.ReadInt32();
 
-            if (version >= 3)
+            if (version <4)
             {
-                Ref.gamesett.readEmbeddedSettingsAndVersion(r);
+                return;
             }
+            Ref.gamesett.readEmbeddedSettingsAndVersion(r);
 
             mode = (PartyGameMode)r.ReadByte();
             modeSettings = new GameModeSettings(mode);

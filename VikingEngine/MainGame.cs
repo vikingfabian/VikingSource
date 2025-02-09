@@ -24,6 +24,7 @@ namespace VikingEngine
     {
         /* Static Properties */
         public static bool GameIsActive { get { return gameIsActive; } }
+
         public static int NextThreadIx { get { threadIndex++; return threadIndex; } }
 #if PCGAME
         public static bool IsMainThread { get { return System.Threading.Thread.CurrentThread.ManagedThreadId == mainThreadID; } }

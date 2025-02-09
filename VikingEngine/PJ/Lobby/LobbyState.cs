@@ -600,10 +600,10 @@ namespace VikingEngine.PJ
 
         void netWriteJoinedGamers()
         {
-            if (Ref.netSession.IsHost)
-            {
+            //if (Ref.netSession.IsHost)
+            //{
                 PjLib.NetWriteJoinedGamers(joinedLocalGamers);
-            }
+            //}
         }
 
         void netReadJoindedGamers(Network.ReceivedPacket packet)

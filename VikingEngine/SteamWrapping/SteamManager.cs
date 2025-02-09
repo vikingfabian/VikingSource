@@ -193,7 +193,7 @@ namespace VikingEngine.SteamWrapping
             stats = new SteamStats(gamestats);
 
             if (PlatformSettings.RunProgram == StartProgram.LootFest3 ||
-                PlatformSettings.RunProgram == StartProgram.PartyJousting ||
+                //PlatformSettings.RunProgram == StartProgram.PartyJousting ||
                 PlatformSettings.RunProgram == StartProgram.DSS ||
                 PlatformSettings.RunProgram == StartProgram.ToGG)
             {

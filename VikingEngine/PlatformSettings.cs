@@ -13,7 +13,7 @@ namespace VikingEngine
     {
         public static readonly BuildDebugLevel DebugLevel
 #if DEBUG
-            = BuildDebugLevel.Dev;
+            = BuildDebugLevel.Release;
 #else
             = BuildDebugLevel.Release;
 #endif
@@ -35,7 +35,7 @@ namespace VikingEngine
 
         public static readonly bool Debug_SteamAPI = true;
 
-        public static readonly bool Debug_SteamStats = false;
+        public static readonly bool Debug_SteamStats = true;
 
         public static readonly bool Debug_AllowDisconnect = false;
 
@@ -131,7 +131,7 @@ namespace VikingEngine
         /// </summary>
         const bool LockedToFalse = false;
 
-        public static readonly bool DevBuild = DebugLevel <= BuildDebugLevel.DebugDemo;
+        public static readonly bool DevBuild = DebugLevel <= BuildDebugLevel.Dev;
 
         public static readonly bool ReleaseBuild = DebugLevel > BuildDebugLevel.DebugDemo;
 

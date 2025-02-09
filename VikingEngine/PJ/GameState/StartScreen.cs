@@ -99,7 +99,7 @@ namespace VikingEngine.PJ
 
                 new LoadBaseTextures();
                 new SpriteSheet();
-                new Network.Session();
+                //new Network.Session();
                 PjRef.Init();
 
                 new Storage();

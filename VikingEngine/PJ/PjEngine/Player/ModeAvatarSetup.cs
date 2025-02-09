@@ -92,10 +92,10 @@ namespace VikingEngine.PJ.PjEngine
 
             availableHats = new List<Hat> { Hat.NoHat };
 
-            if (PlatformSettings.DebugLevel < BuildDebugLevel.Release)
-            {
+            //if (PlatformSettings.DebugLevel < BuildDebugLevel.Release)
+            //{
                 Dlc1Characters = true;
-            }
+            //}
                         
             if (Dlc1Characters || Dlc2Bling)
             {
