@@ -347,12 +347,12 @@ namespace VikingEngine.DSSWars.Conscript
                                 LangLib.Item(currentProfile.profile.weapon) + ", " +
                                 LangLib.Item(currentProfile.profile.armorLevel)
                             );
-                        caption.overrideColor = HudLib.TitleColor_Name;
+                        caption.overrideColor = HudLib.TitleColor_Label_Dark;
 
                         var info = new RbText(
                                 currentProfile.shortActiveString()
                             );
-                        info.overrideColor = HudLib.InfoYellow_Light;
+                        info.overrideColor = HudLib.InfoYellow_Dark;
 
                         content.Add(new ArtButton( RbButtonStyle.Primary,new List<AbsRichBoxMember>(){
                         new RbImage(

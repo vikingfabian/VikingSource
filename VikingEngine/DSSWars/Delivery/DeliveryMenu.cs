@@ -117,7 +117,7 @@ namespace VikingEngine.DSSWars.Delivery
                         var tabContent = new RichBoxContent();
                         tabContent.Add(new RbImage(SpriteName.AutomationGearIcon));
 
-                        var subTab = new ArtToggle(player.resourcesSubTab == ResourcesSubTab.Auto, tabContent,
+                        var subTab = new ArtToggle(currentStatus.profile.type == ItemResourceType.AutomatedItem, tabContent,
                             new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                             {
                                 player.resourcesSubTab = resourcesSubTab;
@@ -430,26 +430,37 @@ namespace VikingEngine.DSSWars.Delivery
                         DeliveryStatus currentProfile = city.deliveryServices[i];
 
                         string title;
+                        SpriteName icon;
                         if (currentProfile.IsRecruitment())
                         {
+                            icon = SpriteName.WarsWorker;
                             title = DssRef.lang.BuildingType_Recruitment;
                         }
                         else
                         {
+                            icon = ResourceLib.Icon(currentProfile.profile.type);
                             title = DssRef.lang.BuildingType_Postal + ": " + currentProfile.profile.type.ToString();
                         }
 
                         var caption = new RbText(
                                 title
                             );
-                        caption.overrideColor = HudLib.TitleColor_Name;
+                        caption.overrideColor = HudLib.TitleColor_Label_Dark;
 
-                        content.Add(new RbButton(new List<AbsRichBoxMember>(){
-                        new RbBeginTitle(2),
-                        caption,
-                        new RbNewLine(),
-                        new RbText(currentProfile.shortActiveString())
-                    }, new RbAction1Arg<int>(selectClick, i, SoundLib.menu)));
+                        var buttonContent = new List<AbsRichBoxMember>(){
+                            new RbBeginTitle(2),
+                            caption,
+                            new RbNewLine(),
+                            new RbText(currentProfile.shortActiveString(),  HudLib.InfoYellow_Dark)
+                        };
+
+                        if (icon != SpriteName.NO_IMAGE)
+                        {
+                            buttonContent.Insert(1, new RbImage(icon));
+                        }
+
+                        content.Add(new ArtButton( RbButtonStyle.Primary, buttonContent,
+                            new RbAction1Arg<int>(selectClick, i, SoundLib.menu)));
 
                     }
                 }

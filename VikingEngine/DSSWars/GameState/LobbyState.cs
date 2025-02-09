@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars
         const float MoreArrowTabbing = 0.9f;
         const float MoreArrowScale = 0.4f;
         SpriteName moreOptArrow = SpriteName.LfMenuMoreMenusArrow;
-
+        SaveStateMeta loadGame = null;
         public LobbyState()
             : base()
         {
@@ -730,6 +730,7 @@ namespace VikingEngine.DSSWars
             switch (underMenu.menuStack.LastOrDefault())
             {
                 case UnderMenu_NewGame:
+                    loadGame = null;
                     newGameSettings2();
                     break;
 
@@ -1233,7 +1234,7 @@ namespace VikingEngine.DSSWars
 
             checkScreenIndexes();
 
-            splitScreenDisplay.Refresh(underMenu.edgeArea.Right);
+            splitScreenDisplay.Refresh(underMenuArea.Right);
         }
 
         void checkScreenIndexes()
@@ -1533,38 +1534,91 @@ namespace VikingEngine.DSSWars
                 }
             }
         }
-
-
-        void startGame()
+        public void loadFileClick(SaveStateMeta saveMeta)
         {
-            if (DssRef.storage.playerCount == 1)
+            loadGame = saveMeta;
+            openUnderMenu(UnderMenu_PlayerSetup, true);
+        }
+
+        public void continueFromSave(SaveStateMeta saveMeta)//int listIndex)
+        {
+            //var save =DssRef.storage.meta.listSaves()[listIndex];
+
+            if (saveMeta == null)
             {
+                return;
+            }
+
+            if (saveMeta.localPlayerCount == DssRef.storage.playerCount)
+            {
+                if (mapBackgroundLoading != null)
+                {
+                    mapBackgroundLoading.Abort();
+                }
+                //mapBackgroundLoading = new MapBackgroundLoading(save);
+
                 var availableList = availableInput();
                 if (availableList.Count > 1)
                 {
                     controllerStartGameUpdate = true;
-                    selectInputMenu(1, true, null);
+                    selectInputMenu(1, true, saveMeta);
                 }
                 else
                 {
-                    selectController_startGame(availableList[0], null);
+                    selectController_startGame(availableList[0], saveMeta);
                 }
-                return;
+                //new StartGame(netLobby, save, mapBackgroundLoading);
             }
             else
             {
-                //Check if a player is without input
-                for (int i = 0; i < DssRef.storage.playerCount; ++i)
+                setPlayerCount(saveMeta.localPlayerCount, false);
+                GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_WarningTitle, menuSystem.menu);
                 {
-                    if (DssRef.storage.localPlayers[i].inputSource.sourceType == InputSourceType.Num_Non)
-                    {
-                        inputWarningMenu();
-                        return;
-                    }
+                    new GuiLabel(string.Format(DssRef.lang.GameMenu_Load_PlayerCountError, saveMeta.localPlayerCount), layout);
+                    new GuiIconTextButton(SpriteName.MenuIconResume, Ref.langOpt.Hud_OK, null, mainMenu, false, layout);
                 }
-
+                layout.End();
             }
-            startGame_nochecks();
+
+        }
+
+        void startGame()
+        {
+            if (loadGame != null)
+            {
+                continueFromSave(loadGame);
+            }
+            else
+            {
+                if (DssRef.storage.playerCount == 1)
+                {
+                    var availableList = availableInput();
+                    if (availableList.Count > 1)
+                    {
+                        controllerStartGameUpdate = true;
+                        selectInputMenu(1, true, null);
+                    }
+                    else
+                    {
+                        selectController_startGame(availableList[0], null);
+                    }
+                    return;
+                }
+                else
+                {
+                    //Check if a player is without input
+                    for (int i = 0; i < DssRef.storage.playerCount; ++i)
+                    {
+                        if (DssRef.storage.localPlayers[i].inputSource.sourceType == InputSourceType.Num_Non)
+                        {
+                            inputWarningMenu();
+                            return;
+                        }
+                    }
+
+                }
+                startGame_nochecks();
+            }
         }
 
         void startGame_nochecks()
@@ -1594,7 +1648,7 @@ namespace VikingEngine.DSSWars
                                     new RbTab(MoreArrowTabbing),
                                     moreArrow,
                                 },
-                    new RbAction2Arg<string, bool>(openUnderMenu, UnderMenu_PlayerSetup, true), 
+                    new RbAction1Arg<SaveStateMeta>(loadFileClick, save), 
                     new RbTooltip_Text(save.InfoString()));
 
                 btn.fillWidth = true;
@@ -1708,47 +1762,7 @@ namespace VikingEngine.DSSWars
             meta.loadImportMeta();
         }
 
-        public void continueFromSave(SaveStateMeta saveMeta)//int listIndex)
-        {
-            //var save =DssRef.storage.meta.listSaves()[listIndex];
-
-            if (saveMeta == null) 
-            {
-                return;
-            }
-
-            if (saveMeta.localPlayerCount == DssRef.storage.playerCount)
-            {
-                if (mapBackgroundLoading != null)
-                {
-                    mapBackgroundLoading.Abort();
-                }
-                //mapBackgroundLoading = new MapBackgroundLoading(save);
-
-                var availableList = availableInput();
-                if (availableList.Count > 1)
-                {
-                    controllerStartGameUpdate = true;
-                    selectInputMenu(1, true, saveMeta);
-                }
-                else
-                {
-                    selectController_startGame(availableList[0], saveMeta);
-                }
-                //new StartGame(netLobby, save, mapBackgroundLoading);
-            }
-            else
-            {
-                setPlayerCount(saveMeta.localPlayerCount, false);
-                GuiLayout layout = new GuiLayout(DssRef.lang.Lobby_WarningTitle, menuSystem.menu);
-                {
-                    new GuiLabel(string.Format( DssRef.lang.GameMenu_Load_PlayerCountError, saveMeta.localPlayerCount), layout);
-                    new GuiIconTextButton(SpriteName.MenuIconResume, Ref.langOpt.Hud_OK, null, mainMenu, false, layout);
-                }
-                layout.End();                
-            }
-            
-        }
+        
 
         void selectController_startGame(InputSource inputSource, SaveStateMeta saveMeta)
         {
