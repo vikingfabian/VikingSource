@@ -316,6 +316,7 @@ namespace VikingEngine.DSSWars
             RichBoxContent content = new RichBoxContent();
 #if DEBUG
             content.Button("start", new RbAction(startGame), null, true);
+            content.Button("map editor", new RbAction(openMapEditor), null, true);
 #endif
             {
                 content.newLine();

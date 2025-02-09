@@ -37,6 +37,10 @@ namespace VikingEngine.DSSWars
         public const int EpicMapHeigth = 1024;
         public const double TileWidthInKm = 0.064;
 
+        public const int CustomMapSize_Min = 16;
+        public const int CustomMapSize_Max = 4096;
+
+
         public const int TileSubDivitions = 8;
         public const int HalfTileSubDivitions = TileSubDivitions / 2;
         public const int TileSubDivitions_MaxIndex = TileSubDivitions-1;
