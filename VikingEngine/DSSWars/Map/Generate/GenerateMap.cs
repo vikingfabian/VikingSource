@@ -41,21 +41,15 @@ namespace VikingEngine.DSSWars.Map.Generate
             new IntervalF(5, 7),
         };
         
-        public bool Generate(bool save, Data.WorldMetaData worldMeta, MapGenerateSettings generateSettings)//, int number, ushort seed) 
+        public bool Generate(bool save, Data.WorldMetaData worldMeta, MapGenerateSettings generateSettings)
         {
-            //ushort seed = Ref.rnd.Ushort();
             world = new WorldData(worldMeta);//new Data.WorldMetaData(seed, size, number));
             world.availableGenericAiTypes = WorldData.AvailableGenericAiTypes();
             biomsLayout = new BiomsLayout(world.rnd);
 
             try
             {
-                //bool splitLandChainProcess = world.Size.X > (LandChainMaxRadius + chainLengthRange.Max) * 3;
-                //int paintStrokeSafeDistance = (int)( (LandChainMaxRadius + chainLengthRange.Max) * 3);
-                //int processDivideX = world.Size.X / paintStrokeSafeDistance;
-                //int processDivideY = world.Size.Y / paintStrokeSafeDistance;
-
-
+         
                 ForXYLoop loop = new ForXYLoop(new IntVector2(world.Size.X, world.Size.Y));
                 while (loop.Next())
                 {

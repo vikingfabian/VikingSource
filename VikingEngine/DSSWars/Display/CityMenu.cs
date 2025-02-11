@@ -38,7 +38,7 @@ namespace VikingEngine.DSSWars.Display
 
         Players.LocalPlayer player;
         City city;
-        static readonly List<int> StockPileControls = new List<int> { 100/*, 1000*/ };
+        static readonly List<float> StockPileControls = new List<float> { 100/*, 1000*/ };
 
         public static readonly AutomationFocus[] AvailableAutomationFocuses =
         {

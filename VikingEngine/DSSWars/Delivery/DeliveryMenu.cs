@@ -19,8 +19,8 @@ namespace VikingEngine.DSSWars.Delivery
 {
     class DeliveryMenu
     {
-        static readonly int[] BoundControls = { 10, 100, 1000 };
-        static readonly int[] BoundControls_Gold = { 100, 1000, 10000 };
+        static readonly float[] BoundControls = { 10, 100, 1000 };
+        static readonly float[] BoundControls_Gold = { 100, 1000, 10000 };
 
         City city;
         LocalPlayer player;
@@ -486,7 +486,7 @@ namespace VikingEngine.DSSWars.Delivery
                 current = currentStatus.recieverMax;
             }
 
-            List<int> bounds = new List<int>( currentStatus.IsGold() ? BoundControls_Gold : BoundControls);
+            List<float> bounds = new List<float>( currentStatus.IsGold() ? BoundControls_Gold : BoundControls);
 
             RbDragButton.RbDragButtonGroup(content, bounds, new DragButtonSettings(0, 10000, bounds[0]),
                minCap ? MinProperty : MaxProperty );

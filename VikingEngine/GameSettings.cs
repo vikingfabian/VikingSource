@@ -307,7 +307,7 @@ namespace VikingEngine
                 content.space();
                 content.Add(new RbText(Ref.langOpt.SoundOption_MusicVolume));
                 content.space();
-                content.Add(new RbDragButton(new DragButtonSettings(0,4,0.1f), musicVolProperty));
+                content.Add(new RbDragButton(new DragButtonSettings(0,4,0.1f), musicVolProperty, true));
             }
 
             content.newLine();
@@ -315,7 +315,7 @@ namespace VikingEngine
             content.space();
             content.Add(new RbText(Ref.langOpt.SoundOption_SoundVolume));
             content.space();
-            content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), soundVolProperty));
+            content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), soundVolProperty, true));
         }
 
         public void graphicsOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
@@ -388,7 +388,7 @@ namespace VikingEngine
             //content.Add(new RbImage(SpriteName.LFIconLetter));
             content.Add(new RbText( Ref.langOpt.GraphicsOption_UiScale));
             content.space();
-            content.Add(new RbDragButton(new DragButtonSettings(0.5f, 2f, 0.1f), uiScaleProperty));
+            content.Add(new RbDragButton(new DragButtonSettings(0.5f, 2f, 0.1f), uiScaleProperty, true));
             content.space();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Apply") },
                 new RbAction(Ref.gamestate.OnResolutionChange)));

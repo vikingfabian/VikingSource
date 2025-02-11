@@ -29,7 +29,7 @@ namespace VikingEngine.HUD.RichBox
         /// A drag button sourronded by + - buttons
         /// </summary>
         /// <param name="options">Positive values, low to high</param>
-        public static void RbDragButtonGroup(RichBoxContent content, List<int> options, DragButtonSettings settings, IntGetSet intValue)
+        public static void RbDragButtonGroup(RichBoxContent content, List<float> options, DragButtonSettings settings, IntGetSet intValue)
         {
             var dragButton = new RbDragButton(settings, intValue);
 
@@ -46,8 +46,25 @@ namespace VikingEngine.HUD.RichBox
             }
         }
 
+        public static void RbDragButtonGroup(RichBoxContent content, List<float> options, DragButtonSettings settings, FloatGetSet floatValue, bool oneDecimal = true)
+        {
+            var dragButton = new RbDragButton(settings, floatValue, oneDecimal);
+
+            for (int i = options.Count - 1; i >= 0; --i)
+            {
+                content.Add(new RbDragOptionButton(dragButton, -options[i]));
+            }
+
+            content.Add(dragButton);
+
+            for (int i = 0; i < options.Count; ++i)
+            {
+                content.Add(new RbDragOptionButton(dragButton, options[i]));
+            }
+        }
+
         DragButtonSettings settings;
-        bool valueTypeInt;
+        DragValueType valueType;
         IntGetSet intValue;
         FloatGetSet floatValue;
 
@@ -59,21 +76,21 @@ namespace VikingEngine.HUD.RichBox
             this.enter = enter;
             this.settings = settings;
             this.intValue = intValue;
-            valueTypeInt = true;
+            valueType = DragValueType.Int;
 
             textPointer = new RbText(TextLib.LargeNumber((int)settings.max));
             this.content = new List<AbsRichBoxMember> { textPointer };
             enabled = true;
         }
 
-        public RbDragButton(DragButtonSettings settings, FloatGetSet floatValue, AbsRbAction enter = null)
+        public RbDragButton(DragButtonSettings settings, FloatGetSet floatValue, bool oneDecimal, AbsRbAction enter = null)
         {
             this.enter = enter;
             this.settings = settings;
             this.floatValue = floatValue;
-            valueTypeInt = false;
+            valueType = oneDecimal? DragValueType.Float_1Dec : DragValueType.Float_2Dec;
 
-            textPointer = new RbText(TextLib.OneDecimal(settings.max));
+            textPointer = new RbText(oneDecimal? TextLib.OneDecimal(settings.max) : TextLib.TwoDecimal(settings.max));
             this.content = new List<AbsRichBoxMember> { textPointer };
             enabled = true;
         }
@@ -118,7 +135,7 @@ namespace VikingEngine.HUD.RichBox
                 change *= settings.step;
             }
 
-            if (valueTypeInt)
+            if (valueType == DragValueType.Int)
             {
                 int value = intValue.Invoke(false, 0);
                 if (change != 0)
@@ -136,7 +153,7 @@ namespace VikingEngine.HUD.RichBox
                     value = Bound.Set(value + change * settings.step, settings.min, settings.max);
                     floatValue.Invoke(true, value);
                 }
-                textPointer.pointer.TextString = TextLib.OneDecimal(value);
+                textPointer.pointer.TextString = valueType == DragValueType.Float_1Dec? TextLib.OneDecimal(value) : TextLib.TwoDecimal(value);
             }
         }
 
@@ -151,12 +168,20 @@ namespace VikingEngine.HUD.RichBox
         }
     }
 
+    enum DragValueType
+    { 
+        Int,
+        Float_1Dec,
+        Float_2Dec,
+
+    }
+
     class RbDragOptionButton : Artistic.ArtButton
     {
         RbDragButton parent;
-        int add;
+        float add;
 
-        public RbDragOptionButton(RbDragButton parent, int add)
+        public RbDragOptionButton(RbDragButton parent, float add)
         {
             this.parent = parent;
             this.buttonStyle = Artistic.RbButtonStyle.Primary;

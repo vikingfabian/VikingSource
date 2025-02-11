@@ -210,7 +210,7 @@ namespace VikingEngine.DSSWars
             content.newLine();
             content.Add(new RbDragButton(new DragButtonSettings(1, 100, 1), IntGetSet));
             content.newLine();
-            RbDragButton.RbDragButtonGroup(content, new List<int> { 1,10 }, new DragButtonSettings(1, 100, 1), IntGetSet);
+            RbDragButton.RbDragButtonGroup(content, new List<float> { 1,10 }, new DragButtonSettings(1, 100, 1), IntGetSet);
 
             content.newLine();
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("check") }, BoolGetSet));
@@ -717,7 +717,7 @@ namespace VikingEngine.DSSWars
             content.space();
             content.Add(new RbText(DssRef.lang.Settings_FoodMultiplier, HudLib.TitleColor_Label));
             content.space();
-            content.Add(new RbDragButton(new DragButtonSettings(0.5f, 10f, 0.1f), foodMultiProperty, new RbTooltip_Text(DssRef.lang.Settings_FoodMultiplier_Description)));
+            content.Add(new RbDragButton(new DragButtonSettings(0.5f, 10f, 0.1f), foodMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_FoodMultiplier_Description)));
             //new GuiTextButton(DssRef.lang.Settings_ResetToDefault, null, resetToDefault, false, layout);
 
             content.newParagraph();

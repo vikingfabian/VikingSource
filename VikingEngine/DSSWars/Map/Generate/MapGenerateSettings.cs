@@ -20,10 +20,13 @@ namespace VikingEngine.DSSWars.Map.Generate
         public float DigChainsCount_per100Tiles = 1 / 18f; //Per 100 tiles 
 
         public int repeatBuildDigCount = 3;
+        public MapStartAs StartAs = MapStartAs.Water;
 
         public MapGenerateSettings()
         {
             startRadiusRange = new IntervalF(LandChainMinRadius, LandChainMaxRadius * 0.5f);
         }
+
+        
     }
 }
