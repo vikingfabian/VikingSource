@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars;
 using VikingEngine.Engine;
@@ -214,8 +215,8 @@ namespace VikingEngine.HUD.RichMenu
                 
                 //interaction.inherit(prevInteract);
                 //deleteTooltip();
-                interaction.update(-renderArea.Position, this, false, out _);
-
+                interaction.update(-renderArea.Position, this, false, out _, out _);
+                
                 tooltip?.view();
 
                 //interaction.update(-renderArea.Position, this, false, out _);
@@ -245,10 +246,11 @@ namespace VikingEngine.HUD.RichMenu
                     interaction.interactionStack != null)
                 {
                     mouseOver = true;
-                    if (interaction.update(-renderArea.Position, this, true, out _))
+                    if (interaction.update(-renderArea.Position, this, true, out bool interactRefresh, out _))
                     {
                         needRefresh = true;
                     }
+                    needRefresh |= interactRefresh;
                 }
                 else
                 {

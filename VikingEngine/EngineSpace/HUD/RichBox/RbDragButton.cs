@@ -81,6 +81,8 @@ namespace VikingEngine.HUD.RichBox
             textPointer = new RbText(TextLib.LargeNumber((int)settings.max));
             this.content = new List<AbsRichBoxMember> { textPointer };
             enabled = true;
+
+            //refreshValueDisplay();
         }
 
         public RbDragButton(DragButtonSettings settings, FloatGetSet floatValue, bool oneDecimal, AbsRbAction enter = null)
@@ -93,6 +95,8 @@ namespace VikingEngine.HUD.RichBox
             textPointer = new RbText(oneDecimal? TextLib.OneDecimal(settings.max) : TextLib.TwoDecimal(settings.max));
             this.content = new List<AbsRichBoxMember> { textPointer };
             enabled = true;
+
+            //refreshValueDisplay();
         }
 
         public override VectorRect area()
@@ -113,7 +117,8 @@ namespace VikingEngine.HUD.RichBox
         public override void Create(RichBoxGroup group)
         {
             base.Create(group);
-            valueChangeInput(0, false);
+            //valueChangeInput(0, false);
+            refreshValueDisplay();
         }
 
         protected override void createBackground(RichBoxGroup group, VectorRect area, ImageLayers layer)
@@ -130,30 +135,49 @@ namespace VikingEngine.HUD.RichBox
 
         public void valueChangeInput(float change, bool dragStep)
         {
-            if (dragStep)
+            if (change != 0)
             {
-                change *= settings.step;
-            }
 
+                if (dragStep)
+                {
+                    change *= settings.step;
+                }
+
+                if (valueType == DragValueType.Int)
+                {
+                    int value = intValue.Invoke(false, 0);
+
+                    value = Convert.ToInt32(Bound.Set(value + change, settings.min, settings.max));
+                    intValue.Invoke(true, value);
+
+                    textPointer.pointer.TextString = TextLib.LargeNumber(value);
+                }
+                else
+                {
+                    float value = floatValue.Invoke(false, 0);
+
+
+                    value = Bound.Set(value + change, settings.min, settings.max);
+                    floatValue.Invoke(true, value);
+
+                    textPointer.pointer.TextString = valueType == DragValueType.Float_1Dec ? TextLib.OneDecimal(value) : TextLib.TwoDecimal(value);
+                }
+            }
+        }
+
+        public void refreshValueDisplay()
+        {
             if (valueType == DragValueType.Int)
             {
                 int value = intValue.Invoke(false, 0);
-                if (change != 0)
-                {
-                    value = Convert.ToInt32(Bound.Set(value + change, settings.min, settings.max));
-                    intValue.Invoke(true, value);
-                }
+
                 textPointer.pointer.TextString = TextLib.LargeNumber(value);
             }
             else
             {
                 float value = floatValue.Invoke(false, 0);
-                if (change != 0)
-                {
-                    value = Bound.Set(value + change * settings.step, settings.min, settings.max);
-                    floatValue.Invoke(true, value);
-                }
-                textPointer.pointer.TextString = valueType == DragValueType.Float_1Dec? TextLib.OneDecimal(value) : TextLib.TwoDecimal(value);
+
+                textPointer.pointer.TextString = valueType == DragValueType.Float_1Dec ? TextLib.OneDecimal(value) : TextLib.TwoDecimal(value);
             }
         }
 
@@ -212,7 +236,7 @@ namespace VikingEngine.HUD.RichBox
             moveLengthForValueChange = Screen.MinClickSize * 0.8f; 
 
         }
-        public override bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClick, out bool endInteraction)
+        public override bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClick, out bool needRefresh, out bool endInteraction)
         {
             float move = Input.Mouse.Position.X - prevMousePos.X;
             if (Math.Abs(move) > moveLengthForValueChange)
@@ -227,10 +251,15 @@ namespace VikingEngine.HUD.RichBox
                 }
                 else if (Input.Mouse.Position.X > mouseXRange.Max)
                 {
-                    Input.Mouse.SetPosition(new IntVector2( mouseXRange.Min + (Input.Mouse.Position.X- mouseXRange.Max), Input.Mouse.Position.Y));
+                    Input.Mouse.SetPosition(new IntVector2(mouseXRange.Min + (Input.Mouse.Position.X - mouseXRange.Max), Input.Mouse.Position.Y));
                     prevMousePos.X = mouseXRange.Min;
                 }
-                dragButton.valueChangeInput(change, true );
+                needRefresh = true;
+                dragButton.valueChangeInput(change, true);
+            }
+            else
+            {
+                needRefresh = false;
             }
 
             endInteraction = Input.Mouse.ButtonUpEvent(MouseButton.Left);

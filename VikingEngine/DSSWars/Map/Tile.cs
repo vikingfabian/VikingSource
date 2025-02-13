@@ -359,7 +359,7 @@ namespace VikingEngine.DSSWars.Map
 
         public bool HasBorderImage() { return BorderCount > 0; }
 
-        public Color MinimapColor(IntVector2 pos)
+        public Color MinimapColor_Faction(IntVector2 pos)
         {
             
             if (tileContent == TileContent.City)
@@ -373,6 +373,22 @@ namespace VikingEngine.DSSWars.Map
             else
             {
                 return heightAndFactionCol(pos);
+            }
+        }
+
+        public Color MinimapColor_Terrain(IntVector2 pos)
+        {
+            if (tileContent == TileContent.City)
+                return cityColor;
+
+            if (heightLevel <= Height.LowWaterHeight)
+            {
+                return lib.IsEven(pos.X + pos.Y) ?
+                    WorldData.WaterDarkCol : WorldData.WaterDarkCol2;
+            }
+            else
+            {
+                return DssRef.map.bioms.bioms[(int)biom].Color(this).Color;
             }
         }
 

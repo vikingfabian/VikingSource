@@ -11,19 +11,17 @@ namespace VikingEngine.DSSWars.Map
     {
         
         Graphics.Mesh model;
-        Graphics.PixelTexture texture;
+        public Graphics.PixelTexture texture;
 
         public FactionColorsTexture(Vector3 pos, Vector3 scale)
             :base(Vector3.Zero, Vector3.Zero, false)
         {
-            texture = new Graphics.PixelTexture(DssRef.world.Size);
-
+            initTexture();
             Sprite source = new Sprite();
             source.SourceF = VectorRect.ZeroOne;
 
             source.SourceF.AddXRadius(-0.007f);
             source.SourceF.AddYRadius(-0.007f);
-
             model = new Graphics.Mesh(LoadedMesh.plane, VectorExt.SetY(pos, DssLib.OverviewMapYpos), scale, 
                 TextureEffectType.Flat, SpriteName.NO_IMAGE, Color.White, false);
             model.texture = texture;
@@ -33,19 +31,26 @@ namespace VikingEngine.DSSWars.Map
             Ref.draw.AddToRenderList(this);
             Ref.draw.CurrentRenderLayer = DrawGame.TerrainLayer;
 
-            quedEvent();
+            RefreshWorld_FactionCol();
         }
 
-        public void quedEvent()
-        {
-            updateArea(DssRef.world.tileBounds);
-        }
-        public void SetNewTexture()
-        {
-            texture.ApplyPixelsToTexture();
+        public FactionColorsTexture()
+          : base()
+        {             
         }
 
-        void updateArea(Rectangle2 area)
+        public void initTexture()
+        {
+            texture = new Graphics.PixelTexture(DssRef.world.Size);
+        }
+
+        public void RefreshWorld_FactionCol()
+        {
+            refreshArea_FactionCol(DssRef.world.tileBounds);
+        }
+        
+
+        void refreshArea_FactionCol(Rectangle2 area)
         {
             Tile t;
 
@@ -53,12 +58,35 @@ namespace VikingEngine.DSSWars.Map
             while (loop.Next())
             {
                 t = DssRef.world.tileGrid.Get(loop.Position);
-                texture.SetPixel(loop.Position, t.MinimapColor(loop.Position));
+                texture.SetPixel(loop.Position, t.MinimapColor_Faction(loop.Position));
             }
 
             texture.ApplyPixelsToTexture();
         }
 
+        public void RefreshWorld_TerrainCol()
+        {
+            refreshArea_TerrainCol(DssRef.world.tileBounds);
+        }
+
+
+        void refreshArea_TerrainCol(Rectangle2 area)
+        {
+            Tile t;
+
+            ForXYLoop loop = new ForXYLoop(area);
+            while (loop.Next())
+            {
+                t = DssRef.world.tileGrid.Get(loop.Position);
+                texture.SetPixel(loop.Position, t.MinimapColor_Terrain(loop.Position));
+            }
+
+            texture.ApplyPixelsToTexture();
+        }
+        public void SetNewTexture()
+        {
+            texture.ApplyPixelsToTexture();
+        }
 
         Graphics.Motion3d fadeMotion;
         void fadeIn(Vector3 dir)

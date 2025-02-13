@@ -23,12 +23,16 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
         RichMenu menu;
         MapEditor_Generator state;
         MapGeneratorTab tab=0;
+        public Vector2 topRight;
         public MapGeneratorDisplay(MapEditor_Generator state) 
         { 
             this.state = state;
 
             var area = Screen.SafeArea;
             area.Width = Screen.IconSize * 8;
+
+            topRight = area.RightTop;
+            topRight.X += Engine.Screen.BorderWidth;
 
             menu = new RichMenu(HudLib.RbSettings, area, new Vector2(10), RichMenu.DefaultRenderEdge, ImageLayers.Top1, new PlayerData(PlayerData.AllPlayers));
             menu.addBackground(HudLib.HudMenuBackground, ImageLayers.Top1_Back);
@@ -114,7 +118,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                                 Sett.BuildChainsCount_per100Tiles = value;
                             }
                             return Sett.BuildChainsCount_per100Tiles;
-                        });
+                        }, false);
                     content.space();
                     HudLib.InfoButton(content, new RbTooltip_Text("Measured in paint strokes per 100 tiles"));
 
@@ -136,7 +140,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                                 this.Sett.DigChainsCount_per100Tiles = value;
                             }
                             return this.Sett.DigChainsCount_per100Tiles;
-                        });
+                        }, false);
                     content.space();
                     HudLib.InfoButton(content, new RbTooltip_Text("Measured in paint strokes per 100 tiles"));
 
@@ -146,8 +150,6 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                         content.Add(new ArtButton(RbButtonStyle.Primary,
                             new List<AbsRichBoxMember> { new RbText("Run Dig") }, new RbAction(state.generate_paintDig)));
                     }
-
-
 
                     break;
                 //case MapGeneratorTab.Step:
@@ -164,13 +166,6 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             }
 
             
-
-            
-            
-            
-
-            
-
             content.newParagraph();
             content.Add(new RbSeperationLine());
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Advanced settings") }, state.storage.ViewAdvancedProperty));
@@ -178,13 +173,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             content.Add(new ArtButton(RbButtonStyle.Primary,
                 new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_ExitGame) }, new RbAction(exit)));
 
-
-
-
             menu.Refresh(content);
         }
-
-
 
         public void update(ref bool mouseOver)
         {

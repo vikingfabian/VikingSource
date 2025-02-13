@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.Map
 
         public void asyncTask()
         {
-            factionColorsTex.quedEvent();
+            factionColorsTex.RefreshWorld_FactionCol();
         }
 
         public void syncTask()

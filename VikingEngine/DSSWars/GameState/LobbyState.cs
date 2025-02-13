@@ -84,8 +84,7 @@ namespace VikingEngine.DSSWars
 
             menuSystem = new Display.MenuSystem(new InputMap(Engine.XGuide.LocalHostIndex), Display.MenuType.Lobby);
             DssRef.storage.checkConnected();
-            //mainMenu();
-
+           
             Graphics.TextG version = new Graphics.TextG(LoadedFont.Console, Screen.SafeArea.RightBottom,
                 Engine.Screen.TextSizeV2, new Align(Vector2.One), string.Format(DssRef.lang.Lobby_GameVersion, Engine.LoadContent.SteamVersion),
                 Color.LightYellow, ImageLayers.Background2);

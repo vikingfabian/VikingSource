@@ -10,8 +10,8 @@ using VikingEngine.PJ.Match3;
 namespace VikingEngine.HUD.RichBox
 {
     abstract class AbsRbInteraction
-    {
-        abstract public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool endInteraction);
+    {   
+        abstract public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction);
     }
     class RbInteraction: AbsRbInteraction
     {
@@ -54,16 +54,17 @@ namespace VikingEngine.HUD.RichBox
         //}
 
         /// <returns>Any interaction happened (to avoid multiple)</returns>
-        override public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool unused1)
+        override public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool unused1)
         {
             //Debug.Log("Interaction UPDATE");
             //Debug.Log($"Mouse offset: {mousePosOffSet}");
             //Debug.Log($"Menu bg pos: {menu.backgroundArea.Position}");
             //Debug.Log($"Menu content offset: {menu.richBox.GetOffset()}");
             unused1 = false;
+            needRefresh = false;
             if (interactionStack != null)
             {
-                var result = interactionStack.update(mousePosOffSet, menu, useClickInput, out bool endInteraction);
+                var result = interactionStack.update(mousePosOffSet, menu, useClickInput, out needRefresh, out bool endInteraction);
                 if (endInteraction)
                 {
                     interactionStack = null;
